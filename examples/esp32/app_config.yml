@@ -1,0 +1,107 @@
+# ESP32 TMC5160 Driver - Apps Configuration
+# This file centralizes all app definitions, their source files, and metadata
+# Used by build scripts, flash scripts, CI workflows, and CMake
+#
+# HIERARCHICAL CONFIGURATION:
+# - Global settings in 'metadata' section apply to all apps by default
+# - Individual apps can override 'idf_versions' and 'build_types' if needed
+# - Apps without overrides use global settings automatically
+
+version: "1.0"
+metadata:
+  project: "ESP32 TMC5160 Driver Examples"
+  default_app: "basic_positioning"
+  target: "esp32c6"
+  idf_versions: ["release/v5.5", "release/v5.4"]
+  build_types: [["Debug", "Release"], ["Debug"]]
+
+apps:
+  basic_positioning:
+    description: "Basic positioning mode example - move motor to target position"
+    source_file: "basic_positioning.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
+  velocity_mode:
+    description: "Velocity mode example - continuous motor rotation"
+    source_file: "velocity_mode.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
+  stealthchop:
+    description: "StealthChop silent operation example"
+    source_file: "stealthchop.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
+  encoder:
+    description: "Encoder closed-loop control example"
+    source_file: "encoder.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
+  stallguard:
+    description: "StallGuard2 stall detection example"
+    source_file: "stallguard.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
+  sinusoidal:
+    description: "Sinusoidal motion pattern example"
+    source_file: "sinusoidal.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
+  comprehensive_test:
+    description: "Comprehensive test suite covering all driver features"
+    source_file: "comprehensive_test.cpp"
+    category: "testing"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
+build_config:
+  build_types:
+    Debug:
+      description: "Debug symbols, verbose logging, assertions enabled"
+      cmake_build_type: "Debug"
+      optimization: "-O0"
+      debug_level: "-g3"
+      defines: ["DEBUG"]
+    Release:
+      description: "Release build optimized for performance and size"
+      cmake_build_type: "Release"
+      optimization: "-O2"
+      debug_level: "-g0"
+      defines: ["NDEBUG"]
+
+  build_directory_pattern: "build-app-{app_type}-type-{build_type}-target-{target}-idf-{idf_version}"
+  project_name_pattern: "esp32_tmc5160_{app_type}_app"
+
+ci_config:
+  timeout_minutes: 30
+  fail_fast: false
+  # Apps to exclude from specific build types (if needed)
+  exclude_combinations: []
+  # Apps that require special handling
+  special_apps: []
+
