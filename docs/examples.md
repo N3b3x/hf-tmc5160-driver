@@ -205,6 +205,193 @@ int main() {
 }
 ```
 
+## Example 6: Bounds Finding and Sinuous Motion
+
+This comprehensive example demonstrates:
+- **Sensorless bounds finding** using StallGuard2 in both directions
+- **Bounded and unbounded modes** (handles cases with/without mechanical stops)
+- **Degree/radian support** for intuitive angle-based control
+- **Home position reset** by relative angles
+- **Sinuous motion** between bounds with configurable wait times and waypoints
+
+### Key Features
+
+1. **Automatic Bounds Detection**: Finds mechanical stops in both directions using sensorless homing
+2. **Unbounded Mode**: Handles cases where no stops are found, using current position as home
+3. **Angle-Based Control**: Work with degrees or radians instead of steps
+4. **Home Reset**: Reset home position by relative angle offset
+5. **Sinuous Motion**: Smooth sinusoidal motion between bounds with customizable parameters
+
+### Basic Usage
+
+```cpp
+#include "inc/tmc5160.hpp"
+#include "esp32_tmc5160_bus.hpp"
+
+// Create driver instance
+Esp32SPI spi(SPI2_HOST, GPIO_NUM_23, GPIO_NUM_19, GPIO_NUM_18, GPIO_NUM_5,
+             GPIO_NUM_2, GPIO_NUM_4, GPIO_NUM_15, 4000000);
+tmc5160::TMC5160 driver(spi);
+
+// Initialize driver
+tmc5160::DriverConfig cfg{};
+cfg.motor.irun = 20;
+cfg.motor.ihold = 10;
+cfg.chopper.mres = 5; // 32 microsteps
+driver.Initialize(cfg);
+
+// Create motion controller
+BoundedSinuousMotion motion(&driver);
+
+// Configure motor parameters (needed for degree/radian conversions)
+uint16_t steps_per_rev = 200 * 32; // 200 steps * 32 microsteps
+motion.ConfigureMotor(steps_per_rev, AngleUnit::DEGREES);
+
+// After finding bounds (see full example), set bounds in degrees
+motion.SetBoundsDegrees(-90.0f, 90.0f);  // -90° to +90° from home
+
+// Or set bounds in radians
+motion.SetBoundsRadians(-M_PI/2, M_PI/2);
+
+// Reset home position by relative degrees
+motion.ResetHomeByDegrees(45.0f);  // Move home +45° from current position
+
+// Configure sinuous motion
+motion.SetSinuousAmplitudeDegrees(60.0f);  // 60° amplitude
+motion.SetSinuousParams(0, 0.5f);  // 0.5 Hz frequency
+
+// Set wait times at bounds (can be 0 to disable)
+motion.SetDefaultWaits(500, 500, 300);  // min, max, home (ms)
+
+// Add waypoints (optional)
+motion.AddWaypoint(tmc5160::DegreesToSteps(-30.0f, steps_per_rev), 200);
+motion.AddWaypoint(tmc5160::DegreesToSteps(30.0f, steps_per_rev), 200);
+
+// Start motion
+motion.Start();
+
+// Update in main loop
+while (true) {
+    motion.Update();
+    vTaskDelay(pdMS_TO_TICKS(10));
+}
+```
+
+### Unbounded Mode
+
+When no mechanical stops are detected, the system automatically enters unbounded mode:
+
+```cpp
+// System detects no stops found
+if (!motion.IsBounded()) {
+    // Use current position as home
+    motion.SetUnbounded(current_position, 10000);  // Default range: 10000 steps
+    
+    // User can reset home to any relative angle
+    motion.ResetHomeByDegrees(45.0f);
+    
+    // Bounds are automatically recalculated
+    float min_deg, max_deg;
+    motion.GetBoundsDegrees(min_deg, max_deg);
+}
+```
+
+### Working with Angles
+
+The example provides full support for degree and radian operations:
+
+```cpp
+// Set bounds in degrees (relative to home)
+motion.SetBoundsDegrees(-90.0f, 90.0f);
+
+// Set bounds in radians
+motion.SetBoundsRadians(-M_PI/2, M_PI/2);
+
+// Get bounds in degrees
+float min_deg, max_deg;
+motion.GetBoundsDegrees(min_deg, max_deg);
+
+// Get bounds in radians
+float min_rad, max_rad;
+motion.GetBoundsRadians(min_rad, max_rad);
+
+// Reset home by degrees
+motion.ResetHomeByDegrees(30.0f);
+
+// Reset home by radians
+motion.ResetHomeByRadians(M_PI/6);
+
+// Set sinuous amplitude in degrees
+motion.SetSinuousAmplitudeDegrees(45.0f);
+
+// Set sinuous amplitude in radians
+motion.SetSinuousAmplitudeRadians(M_PI/4);
+```
+
+### Waypoint Management
+
+Add, remove, and manage waypoints with wait times:
+
+```cpp
+// Add waypoints
+motion.AddWaypoint(position_in_steps, wait_time_ms);
+
+// Remove waypoint by index
+motion.RemoveWaypoint(0);
+
+// Clear all waypoints
+motion.ClearWaypoints();
+
+// Get waypoint count
+size_t count = motion.GetWaypointCount();
+```
+
+### Complete Example Flow
+
+1. **Find Bounds**: Automatically detects mechanical stops in both directions
+2. **Set Home**: Sets middle position as home (or uses current position if unbounded)
+3. **Configure**: Set up sinuous motion parameters, wait times, and waypoints
+4. **Start Motion**: Begin sinuous motion pattern
+5. **Update Loop**: Continuously update motion controller
+
+### Running the Example
+
+For ESP32:
+
+```bash
+cd examples/esp32
+idf.py set-target esp32c6  # or your target
+idf.py build
+idf.py -p /dev/ttyUSB0 flash monitor
+```
+
+Select the example:
+```bash
+idf.py menuconfig
+# Navigate to: Example Configuration -> Example to run
+# Select: bounds_finding_sinuous_motion
+```
+
+Or build directly:
+```bash
+idf.py build -DAPP_TYPE=bounds_finding_sinuous_motion
+```
+
+### Configuration Notes
+
+- **Steps per Revolution**: Must be configured correctly for degree/radian conversions
+  - Base steps: 200 for 1.8° motors, 400 for 0.9° motors
+  - With microsteps: multiply by microstep factor (e.g., 200 × 32 = 6400)
+- **Stall Threshold**: Tune `sgt` parameter for your motor and mechanical system
+- **Search Speed**: Adjust based on your application (typically 200-1000 steps/s)
+- **Default Range**: For unbounded mode, set appropriate default range based on your application
+
+### See Also
+
+- [Sensorless Homing Guide](special_features_sensorless_homing.md) - Detailed StallGuard2 configuration
+- [Unit Conversions](special_features_unit_conversions.md) - Physical unit conversion functions
+- [API Reference](api_reference.md) - Complete API documentation
+
 ## Running the Examples
 
 ### ESP32
