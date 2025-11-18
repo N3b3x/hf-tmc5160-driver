@@ -1,0 +1,19 @@
+<map id="app_main" name="app_main">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,169,92,194"/>
+<area shape="rect" id="Node000002" href="$namespacetmc5160.html#a5a0db2a4fafbb16e129455ac5c8033d2" title="Convert acceleration from mm/s² to steps/s²" alt="" coords="143,5,349,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="54,167,85,113,109,82,138,55,147,50,150,54,142,59,113,86,89,116,58,170"/>
+<area shape="rect" id="Node000003" href="$namespacetmc5160.html#ab5cc044f8d1b33d3aabba5f6e84a6fe1" title="Convert belt drive distance (teeth) to steps." alt="" coords="147,70,345,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="60,167,93,135,139,104,156,97,158,102,141,109,96,139,63,171"/>
+<area shape="rect" id="Node000004" href="$namespacetmc5160.html#a125b02e40c40c77eb5e08e68502e239e" title="Convert degrees to steps." alt="" coords="151,119,341,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="91,166,139,153,173,145,174,150,141,159,93,172"/>
+<area shape="rect" id="Node000005" href="$classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44" title="Initialize the SPI interface." alt="" coords="173,169,319,194"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="92,179,159,179,159,184,92,184"/>
+<area shape="rect" id="Node000006" href="$classtmc5160_1_1TMC5160.html#ac90ae8eb92120142753c49fc61fcce89" title="Initialize the TMC5160 driver with configuration." alt="" coords="140,218,352,243"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="93,190,141,203,178,212,177,217,139,208,91,195"/>
+<area shape="rect" id="Node000008" href="$namespacetmc5160.html#a79abd58070d1876b3f7cebf88192b7d4" title="Convert steps per second to RPM." alt="" coords="141,267,351,293"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="64,192,97,223,141,252,162,261,159,266,139,257,94,227,60,196"/>
+<area shape="rect" id="Node000009" href="$namespacetmc5160.html#a29e5fff6de2d7590153c6bc315c7c4f0" title="Convert steps to millimeters." alt="" coords="165,317,327,342"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="58,193,88,246,112,276,142,302,154,309,152,314,138,306,108,280,84,249,53,195"/>
+<area shape="rect" id="Node000007" href="$tmc5160_8cpp.html#a6b5c74bc9056ff38815021d63986f681" title=" " alt="" coords="400,218,483,243"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="352,228,386,228,386,233,352,233"/>
+</map>

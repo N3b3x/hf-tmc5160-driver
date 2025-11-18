@@ -1,0 +1,8 @@
+<map id="tmc5160_config.hpp" name="tmc5160_config.hpp">
+<area shape="rect" id="Node000001" title="Configuration structures for TMC5160 stepper motor driver." alt="" coords="60,5,213,31"/>
+<area shape="rect" id="Node000002" href="$tmc5160__types_8hpp.html" title="Type definitions and enumerations for TMC5160 stepper motor driver." alt="" coords="5,79,156,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,33,100,69,96,66,125,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="103,152,170,177"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="147,29,161,51,171,78,173,95,170,112,156,141,151,139,165,110,167,95,166,79,156,54,143,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="92,103,121,140,117,143,88,106"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="tmc5160::TMC5160::Initialize" name="tmc5160::TMC5160::Initialize">
+<area shape="rect" id="Node000001" title="Initialize the TMC5160 driver with configuration." alt="" coords="5,5,217,31"/>
+<area shape="rect" id="Node000002" href="$tmc5160_8cpp.html#a6b5c74bc9056ff38815021d63986f681" title=" " alt="" coords="265,5,348,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,15,252,15,252,21,217,21"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="tmc5160::CommInterface::ReadRegister" name="tmc5160::CommInterface::ReadRegister">
+<area shape="rect" id="Node000001" title="Read a 32&#45;bit register from the TMC5160." alt="" coords="285,37,473,77"/>
+<area shape="poly" id="edge3_Node000001_Node000001" title=" " alt="" coords="423,26,408,19,379,16,355,18,340,23,334,29,337,36,332,38,329,28,337,18,353,13,379,11,409,14,425,21"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1TMC5160_1_1Diagnostics.html#adef74af33774678290eade6ea2a968ab" title="Get driver status register value." alt="" coords="5,5,237,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="271,47,237,42,238,37,272,41"/>
+<area shape="rect" id="Node000003" href="$structtmc5160_1_1TMC5160_1_1Diagnostics.html#adc4c3ad53d860a37087cf5648f187b44" title="Get ramp status register value." alt="" coords="5,69,237,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="272,73,238,78,237,72,271,68"/>
+</map>

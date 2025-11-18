@@ -1,0 +1,952 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  <style id="jtd-nav-activation">
+  
+
+    .site-nav > ul.nav-list:first-child > li > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li > a,
+    
+    .site-nav > ul.nav-list:first-child > li > ul > li > ul > li:not(:nth-child(12)) > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li > ul > li > ul > li a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:not(:first-child) a,
+    .site-nav li.external a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > ul > li:nth-child(12) > a {
+      font-weight: 600;
+      text-decoration: none;
+    }.site-nav > ul.nav-list:first-child > li:nth-child(1) > button svg,
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > button svg,
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > ul > li:nth-child(12) > button svg {
+      transform: rotate(-90deg);
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list,
+    .site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(1) > ul.nav-list,
+    .site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(12) > ul.nav-list {
+      display: block;
+    }
+  </style>
+
+  
+
+  
+    <script src="/hf-tmc5160-driver/development/assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="/hf-tmc5160-driver/development/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>🔧 Advanced Configuration | HardFOC TMC5160 Driver - development</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="🔧 Advanced Configuration" />
+<meta name="author" content="N3b3x" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Advanced features: CoolStep, dcStep, freewheeling, and more" />
+<meta property="og:description" content="Advanced features: CoolStep, dcStep, freewheeling, and more" />
+<link rel="canonical" href="https://n3b3x.github.io/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" />
+<meta property="og:url" content="https://n3b3x.github.io/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" />
+<meta property="og:site_name" content="HardFOC TMC5160 Driver - development" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="🔧 Advanced Configuration" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Advanced features: CoolStep, dcStep, freewheeling, and more","headline":"🔧 Advanced Configuration","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- =============================================================================
+     Custom Head Content for HardFOC Driver Documentation
+     =============================================================================
+     This file is included in the <head> section of every page.
+     It loads custom CSS and JavaScript for enhanced functionality.
+     ============================================================================= -->
+
+<!-- Custom CSS for enhanced styling and fixes -->
+<link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/custom.css">
+
+<!-- Custom JavaScript for interactive features -->
+<script src="/hf-tmc5160-driver/development/assets/js/custom.js" defer></script>
+
+
+
+</head>
+
+<body>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    <div class="side-bar">
+  <div class="site-header" role="banner">
+    <a href="/hf-tmc5160-driver/development/" class="site-title lh-tight">
+  HardFOC TMC5160 Driver - development
+
+</a>
+    <button id="menu-button" class="site-button btn-reset" aria-label="Toggle menu" aria-pressed="false">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Main" id="site-nav" class="site-nav">
+  
+  
+    <ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in HardFOC TMC5160 Driver category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC5160 Driver</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li></ul></li></ul></li></ul>
+  
+</nav>
+
+
+
+
+  
+  
+    <footer class="site-footer">
+      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+    </footer>
+  
+</div>
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header">
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search HardFOC TMC5160 Driver - development" aria-label="Search HardFOC TMC5160 Driver - development" autocomplete="off">
+    <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+    <nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    
+      <li class="aux-nav-list-item">
+        <a href="/hf-tmc5160-driver/development/api/index.html" class="site-button"
+          
+        >
+          📖 API Reference
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver" class="site-button"
+          
+        >
+          📚 GitHub Repository
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/issues" class="site-button"
+          
+        >
+          🐛 Report Issues
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/stargazers" class="site-button"
+          
+        >
+          ⭐ Star on GitHub
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+
+  
+</div>
+
+    <div class="main-content-wrap">
+      <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+  <ol class="breadcrumb-nav-list">
+    <li class="breadcrumb-nav-list-item"><a href="/hf-tmc5160-driver/development/">HardFOC TMC5160 Driver</a></li>
+    <li class="breadcrumb-nav-list-item"><a href="/hf-tmc5160-driver/development/docs/">📚 Documentation</a></li>
+    <li class="breadcrumb-nav-list-item"><span>🔧 Advanced Configuration</span></li>
+  </ol>
+</nav>
+
+
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <h1 id="advanced-configuration">
+  
+  
+    <a href="#advanced-configuration" class="anchor-heading" aria-labelledby="advanced-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Advanced Configuration
+  
+  
+</h1>
+    
+
+<p>This guide covers advanced TMC5160 features including CoolStep current reduction, dcStep automatic commutation, freewheeling modes, reference switches, and microstep lookup tables.</p>
+<h2 id="overview">
+  
+  
+    <a href="#overview" class="anchor-heading" aria-labelledby="overview"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Overview
+  
+  
+</h2>
+    
+
+<p>The TMC5160 provides several advanced features for optimizing motor performance:</p>
+
+<ul>
+  <li><strong>CoolStep</strong>: Automatically reduces current when load is low</li>
+  <li><strong>dcStep</strong>: Automatic commutation for DC motor-like operation</li>
+  <li><strong>Freewheeling</strong>: Low-power modes when motor is stationary</li>
+  <li><strong>Reference Switches</strong>: Endstop support for homing and limits</li>
+  <li><strong>Microstep Lookup Tables</strong>: Custom microstep interpolation</li>
+</ul>
+<h2 id="coolstep-current-reduction">
+  
+  
+    <a href="#coolstep-current-reduction" class="anchor-heading" aria-labelledby="coolstep-current-reduction"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> CoolStep Current Reduction
+  
+  
+</h2>
+    
+
+<p>CoolStep automatically reduces motor current when the load is low, reducing power consumption and heat generation.</p>
+<h3 id="when-to-use-coolstep">
+  
+  
+    <a href="#when-to-use-coolstep" class="anchor-heading" aria-labelledby="when-to-use-coolstep"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> When to Use CoolStep
+  
+  
+</h3>
+    
+
+<ul>
+  <li>✅ Applications with varying load</li>
+  <li>✅ Battery-powered systems</li>
+  <li>✅ When motor runs hot</li>
+  <li>✅ Long-running applications</li>
+  <li>❌ Constant high-load applications</li>
+  <li>❌ When precise current control is needed</li>
+</ul>
+<h3 id="configuration">
+  
+  
+    <a href="#configuration" class="anchor-heading" aria-labelledby="configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configuration
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"tmc5160.hpp"</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">configureCoolStep</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">tmc5160</span><span class="o">::</span><span class="n">CoolStepConfig</span> <span class="n">coolstep</span><span class="p">{};</span>
+    <span class="n">coolstep</span><span class="p">.</span><span class="n">semin</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>   <span class="c1">// Minimum SG value to enable CoolStep (0-15)</span>
+    <span class="n">coolstep</span><span class="p">.</span><span class="n">semax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>   <span class="c1">// Hysteresis for CoolStep (0-15)</span>
+    <span class="n">coolstep</span><span class="p">.</span><span class="n">seup</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>    <span class="c1">// Current increment step (0-3)</span>
+    <span class="n">coolstep</span><span class="p">.</span><span class="n">sedn</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>    <span class="c1">// Current decrement step (0-3)</span>
+    <span class="n">coolstep</span><span class="p">.</span><span class="n">seimin</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>  <span class="c1">// Minimum current (false = use ihold)</span>
+    <span class="n">coolstep</span><span class="p">.</span><span class="n">sfilt</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>    <span class="c1">// Enable StallGuard filter</span>
+    
+    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">ConfigureCoolStep</span><span class="p">(</span><span class="n">coolstep</span><span class="p">);</span>
+    
+    <span class="c1">// Set velocity threshold for CoolStep activation</span>
+    <span class="c1">// CoolStep activates between TCOOLTHRS and THIGH</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetModeChangeSpeeds</span><span class="p">(</span>
+        <span class="mf">1000.0</span><span class="n">f</span><span class="p">,</span>  <span class="c1">// TPWMTHRS: stealthChop threshold</span>
+        <span class="mf">500.0</span><span class="n">f</span><span class="p">,</span>   <span class="c1">// TCOOLTHRS: CoolStep lower threshold</span>
+        <span class="mf">5000.0</span><span class="n">f</span>   <span class="c1">// THIGH: CoolStep upper threshold</span>
+    <span class="p">);</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="how-coolstep-works">
+  
+  
+    <a href="#how-coolstep-works" class="anchor-heading" aria-labelledby="how-coolstep-works"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> How CoolStep Works
+  
+  
+</h3>
+    
+
+<ol>
+  <li><strong>StallGuard2 Monitoring</strong>: Continuously monitors motor load</li>
+  <li><strong>Current Reduction</strong>: When load is low (high SG value), reduces current</li>
+  <li><strong>Current Increase</strong>: When load increases (low SG value), increases current</li>
+  <li><strong>Hysteresis</strong>: <code class="language-plaintext highlighter-rouge">semax</code> prevents rapid current changes</li>
+</ol>
+<h2 id="dcstep-automatic-commutation">
+  
+  
+    <a href="#dcstep-automatic-commutation" class="anchor-heading" aria-labelledby="dcstep-automatic-commutation"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> dcStep Automatic Commutation
+  
+  
+</h2>
+    
+
+<p>dcStep enables automatic commutation for smoother operation at low speeds, similar to DC motor control.</p>
+<h3 id="when-to-use-dcstep">
+  
+  
+    <a href="#when-to-use-dcstep" class="anchor-heading" aria-labelledby="when-to-use-dcstep"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> When to Use dcStep
+  
+  
+</h3>
+    
+
+<ul>
+  <li>✅ Low-speed applications requiring smooth motion</li>
+  <li>✅ Applications where step loss can be tolerated</li>
+  <li>✅ When smoother motion is more important than precision</li>
+  <li>❌ High-precision positioning applications</li>
+  <li>❌ When step loss is unacceptable</li>
+</ul>
+<h3 id="configuration-1">
+  
+  
+    <a href="#configuration-1" class="anchor-heading" aria-labelledby="configuration-1"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configuration
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">configureDcStep</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">tmc5160</span><span class="o">::</span><span class="n">DcStepConfig</span> <span class="n">dcstep</span><span class="p">{};</span>
+    <span class="c1">// Set velocity threshold (0.0f = disabled)</span>
+    <span class="c1">// dcStep activates below this threshold</span>
+    <span class="n">dcstep</span><span class="p">.</span><span class="n">vdc_min</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="n">f</span><span class="p">;</span>  <span class="c1">// steps/s threshold</span>
+    
+    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">ConfigureDcStep</span><span class="p">(</span><span class="n">dcstep</span><span class="p">);</span>
+    
+    <span class="c1">// Note: dcStep requires SD_MODE=1 (external step/dir mode)</span>
+    <span class="c1">// This is typically set in GCONF register</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="freewheeling-mode">
+  
+  
+    <a href="#freewheeling-mode" class="anchor-heading" aria-labelledby="freewheeling-mode"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Freewheeling Mode
+  
+  
+</h2>
+    
+
+<p>Freewheeling controls motor behavior when <code class="language-plaintext highlighter-rouge">ihold=0</code> (no hold current).</p>
+<h3 id="freewheeling-options">
+  
+  
+    <a href="#freewheeling-options" class="anchor-heading" aria-labelledby="freewheeling-options"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Freewheeling Options
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">configureFreewheeling</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Normal operation (coast when ihold=0)</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetFreewheelingMode</span><span class="p">(</span><span class="n">tmc5160</span><span class="o">::</span><span class="n">PWMFreewheel</span><span class="o">::</span><span class="n">NORMAL</span><span class="p">);</span>
+    
+    <span class="c1">// Freewheeling enabled (low resistance)</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetFreewheelingMode</span><span class="p">(</span><span class="n">tmc5160</span><span class="o">::</span><span class="n">PWMFreewheel</span><span class="o">::</span><span class="n">ENABLED</span><span class="p">);</span>
+    
+    <span class="c1">// Coil shorted using low-side drivers</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetFreewheelingMode</span><span class="p">(</span><span class="n">tmc5160</span><span class="o">::</span><span class="n">PWMFreewheel</span><span class="o">::</span><span class="n">SHORT_LS</span><span class="p">);</span>
+    
+    <span class="c1">// Coil shorted using high-side drivers</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetFreewheelingMode</span><span class="p">(</span><span class="n">tmc5160</span><span class="o">::</span><span class="n">PWMFreewheel</span><span class="o">::</span><span class="n">SHORT_HS</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="use-cases">
+  
+  
+    <a href="#use-cases" class="anchor-heading" aria-labelledby="use-cases"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Use Cases
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>NORMAL</strong>: Standard operation, motor coasts</li>
+  <li><strong>ENABLED</strong>: Low power consumption, easy to turn</li>
+  <li><strong>SHORT_LS/HS</strong>: Braking effect, motor resists rotation</li>
+</ul>
+<h2 id="reference-switches-endstops">
+  
+  
+    <a href="#reference-switches-endstops" class="anchor-heading" aria-labelledby="reference-switches-endstops"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Reference Switches (Endstops)
+  
+  
+</h2>
+    
+
+<p>Reference switches provide hardware endstops for homing and limit detection.</p>
+<h3 id="configuration-2">
+  
+  
+    <a href="#configuration-2" class="anchor-heading" aria-labelledby="configuration-2"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configuration
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">configureEndstops</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">tmc5160</span><span class="o">::</span><span class="n">ReferenceSwitchConfig</span> <span class="n">ref_switch</span><span class="p">{};</span>
+    
+    <span class="c1">// Enable left endstop</span>
+    <span class="n">ref_switch</span><span class="p">.</span><span class="n">stop_left_enable</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">ref_switch</span><span class="p">.</span><span class="n">pol_stop_left</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>  <span class="c1">// Active high</span>
+    
+    <span class="c1">// Enable right endstop</span>
+    <span class="n">ref_switch</span><span class="p">.</span><span class="n">stop_right_enable</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">ref_switch</span><span class="p">.</span><span class="n">pol_stop_right</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>  <span class="c1">// Active high</span>
+    
+    <span class="c1">// Latch position on switch activation</span>
+    <span class="n">ref_switch</span><span class="p">.</span><span class="n">latch_left_active</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">ref_switch</span><span class="p">.</span><span class="n">latch_right_active</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    
+    <span class="c1">// Enable soft stop (uses deceleration ramp)</span>
+    <span class="n">ref_switch</span><span class="p">.</span><span class="n">en_softstop</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    
+    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">ConfigureReferenceSwitch</span><span class="p">(</span><span class="n">ref_switch</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="reading-latched-position">
+  
+  
+    <a href="#reading-latched-position" class="anchor-heading" aria-labelledby="reading-latched-position"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Reading Latched Position
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">homeToEndstop</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Move toward endstop</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc5160</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">VELOCITY_NEG</span><span class="p">);</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">500.0</span><span class="n">f</span><span class="p">);</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+    
+    <span class="c1">// Wait for endstop (check RAMP_STAT register)</span>
+    <span class="c1">// Or use GetLatchedPosition() after switch triggers</span>
+    
+    <span class="kt">int32_t</span> <span class="n">latched_pos</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">GetLatchedPosition</span><span class="p">();</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetCurrentPosition</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>  <span class="c1">// Set as home</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="microstep-lookup-tables">
+  
+  
+    <a href="#microstep-lookup-tables" class="anchor-heading" aria-labelledby="microstep-lookup-tables"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Microstep Lookup Tables
+  
+  
+</h2>
+    
+
+<p>Custom microstep lookup tables allow fine-tuning of microstep interpolation for smoother motion.</p>
+<h3 id="default-lookup-table">
+  
+  
+    <a href="#default-lookup-table" class="anchor-heading" aria-labelledby="default-lookup-table"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Default Lookup Table
+  
+  
+</h3>
+    
+
+<p>The TMC5160 uses a default sinusoidal lookup table. For most applications, this is sufficient.</p>
+<h3 id="custom-lookup-table">
+  
+  
+    <a href="#custom-lookup-table" class="anchor-heading" aria-labelledby="custom-lookup-table"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Custom Lookup Table
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">configureCustomMicrosteps</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Set lookup table entries (8 entries, 32 bits each)</span>
+    <span class="c1">// Each entry defines current for a microstep segment</span>
+    
+    <span class="c1">// Example: Custom table for smoother motion</span>
+    <span class="kt">uint32_t</span> <span class="n">lut_values</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="mh">0xAAAAB554</span><span class="p">,</span>  <span class="c1">// Entry 0</span>
+        <span class="mh">0xAAAAB554</span><span class="p">,</span>  <span class="c1">// Entry 1</span>
+        <span class="mh">0xAAAAB554</span><span class="p">,</span>  <span class="c1">// Entry 2</span>
+        <span class="mh">0xAAAAB554</span><span class="p">,</span>  <span class="c1">// Entry 3</span>
+        <span class="mh">0xAAAAB554</span><span class="p">,</span>  <span class="c1">// Entry 4</span>
+        <span class="mh">0xAAAAB554</span><span class="p">,</span>  <span class="c1">// Entry 5</span>
+        <span class="mh">0xAAAAB554</span><span class="p">,</span>  <span class="c1">// Entry 6</span>
+        <span class="mh">0xAAAAB554</span>   <span class="c1">// Entry 7</span>
+    <span class="p">};</span>
+    
+    <span class="k">for</span> <span class="p">(</span><span class="kt">uint8_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetMicrostepLookupTable</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">lut_values</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+    
+    <span class="c1">// Configure lookup table segmentation</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetMicrostepLookupTableSegmentation</span><span class="p">(</span>
+        <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>  <span class="c1">// Width selections (0-3)</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>      <span class="c1">// Segment start positions</span>
+    <span class="p">);</span>
+    
+    <span class="c1">// Set start current</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetMicrostepLookupTableStart</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Note</strong>: Custom lookup tables require deep understanding of motor control. Most users should use the default table.</p>
+<h2 id="position-comparison-x_compare">
+  
+  
+    <a href="#position-comparison-x_compare" class="anchor-heading" aria-labelledby="position-comparison-x_compare"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Position Comparison (X_COMPARE)
+  
+  
+</h2>
+    
+
+<p>The X_COMPARE register generates a pulse when XACTUAL equals the compare value.</p>
+<h3 id="use-case">
+  
+  
+    <a href="#use-case" class="anchor-heading" aria-labelledby="use-case"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Use Case
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">setupPositionPulse</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Generate pulse when position reaches 1000 steps</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetComparePosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+    
+    <span class="c1">// The pulse appears on SWP_DIAG1 output pin</span>
+    <span class="c1">// Useful for triggering external events at specific positions</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="lost-steps-counter">
+  
+  
+    <a href="#lost-steps-counter" class="anchor-heading" aria-labelledby="lost-steps-counter"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Lost Steps Counter
+  
+  
+</h2>
+    
+
+<p>When dcStep is enabled, the driver can count lost steps.</p>
+<h3 id="reading-lost-steps">
+  
+  
+    <a href="#reading-lost-steps" class="anchor-heading" aria-labelledby="reading-lost-steps"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Reading Lost Steps
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">checkStepLoss</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">lost_steps</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">GetLostSteps</span><span class="p">();</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">lost_steps</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Warning: %u steps lost</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">lost_steps</span><span class="p">);</span>
+        <span class="c1">// Handle step loss (re-home, adjust current, etc.)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Note</strong>: Lost steps counter only works when <code class="language-plaintext highlighter-rouge">SD_MODE=1</code> (external step/dir mode).</p>
+<h2 id="complete-advanced-setup-example">
+  
+  
+    <a href="#complete-advanced-setup-example" class="anchor-heading" aria-labelledby="complete-advanced-setup-example"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Complete Advanced Setup Example
+  
+  
+</h2>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"tmc5160.hpp"</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">setupAdvancedMotor</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Basic initialization</span>
+    <span class="n">tmc5160</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+    
+    <span class="c1">// Configure CoolStep</span>
+    <span class="n">tmc5160</span><span class="o">::</span><span class="n">CoolStepConfig</span> <span class="n">coolstep</span><span class="p">{};</span>
+    <span class="n">coolstep</span><span class="p">.</span><span class="n">semin</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">coolstep</span><span class="p">.</span><span class="n">semax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+    <span class="n">coolstep</span><span class="p">.</span><span class="n">seup</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">coolstep</span><span class="p">.</span><span class="n">sedn</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">ConfigureCoolStep</span><span class="p">(</span><span class="n">coolstep</span><span class="p">);</span>
+    
+    <span class="c1">// Configure reference switches</span>
+    <span class="n">tmc5160</span><span class="o">::</span><span class="n">ReferenceSwitchConfig</span> <span class="n">ref_switch</span><span class="p">{};</span>
+    <span class="n">ref_switch</span><span class="p">.</span><span class="n">stop_left_enable</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">ref_switch</span><span class="p">.</span><span class="n">stop_right_enable</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">ref_switch</span><span class="p">.</span><span class="n">en_softstop</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">ConfigureReferenceSwitch</span><span class="p">(</span><span class="n">ref_switch</span><span class="p">);</span>
+    
+    <span class="c1">// Set mode change speeds</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetModeChangeSpeeds</span><span class="p">(</span>
+        <span class="mf">1000.0</span><span class="n">f</span><span class="p">,</span>  <span class="c1">// stealthChop threshold</span>
+        <span class="mf">500.0</span><span class="n">f</span><span class="p">,</span>   <span class="c1">// CoolStep threshold</span>
+        <span class="mf">5000.0</span><span class="n">f</span>   <span class="c1">// High-speed threshold</span>
+    <span class="p">);</span>
+    
+    <span class="c1">// Enable motor</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="troubleshooting">
+  
+  
+    <a href="#troubleshooting" class="anchor-heading" aria-labelledby="troubleshooting"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Troubleshooting
+  
+  
+</h2>
+    
+<h3 id="coolstep-not-activating">
+  
+  
+    <a href="#coolstep-not-activating" class="anchor-heading" aria-labelledby="coolstep-not-activating"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> CoolStep Not Activating
+  
+  
+</h3>
+    
+
+<p><strong>Problem</strong>: Current doesn’t reduce despite low load</p>
+
+<p><strong>Solution</strong>:</p>
+<ul>
+  <li>Verify <code class="language-plaintext highlighter-rouge">TCOOLTHRS</code> is set correctly</li>
+  <li>Check that motor speed is between <code class="language-plaintext highlighter-rouge">TCOOLTHRS</code> and <code class="language-plaintext highlighter-rouge">THIGH</code></li>
+  <li>Ensure StallGuard2 is properly configured</li>
+  <li>Verify <code class="language-plaintext highlighter-rouge">semin</code> threshold is appropriate</li>
+</ul>
+<h3 id="dcstep-causes-step-loss">
+  
+  
+    <a href="#dcstep-causes-step-loss" class="anchor-heading" aria-labelledby="dcstep-causes-step-loss"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> dcStep Causes Step Loss
+  
+  
+</h3>
+    
+
+<p><strong>Problem</strong>: Steps are lost when dcStep is active</p>
+
+<p><strong>Solution</strong>:</p>
+<ul>
+  <li>Increase motor current</li>
+  <li>Reduce <code class="language-plaintext highlighter-rouge">vdc_min</code> threshold</li>
+  <li>Disable dcStep if precision is critical</li>
+  <li>Check mechanical system for binding</li>
+</ul>
+<h3 id="reference-switches-not-working">
+  
+  
+    <a href="#reference-switches-not-working" class="anchor-heading" aria-labelledby="reference-switches-not-working"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Reference Switches Not Working
+  
+  
+</h3>
+    
+
+<p><strong>Problem</strong>: Endstops don’t trigger stop</p>
+
+<p><strong>Solution</strong>:</p>
+<ul>
+  <li>Verify switch wiring and polarity</li>
+  <li>Check <code class="language-plaintext highlighter-rouge">stop_left_enable</code> / <code class="language-plaintext highlighter-rouge">stop_right_enable</code> are set</li>
+  <li>Verify switch signal reaches driver (check IO_INPUT register)</li>
+  <li>Ensure <code class="language-plaintext highlighter-rouge">en_softstop</code> is enabled for smooth stopping</li>
+</ul><hr />
+
+<p><strong>Navigation</strong>
+⬅️ <a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/">Previous: Sensorless Homing</a> | <a href="/hf-tmc5160-driver/development/docs/troubleshooting/">Next: Troubleshooting ➡️</a> | <a href="/hf-tmc5160-driver/development/docs/">Docs Hub 📚</a></p>
+
+          
+
+          
+            
+          
+        </main>
+        
+
+  <hr>
+  <footer>
+    
+
+    <!-- =============================================================================
+     Custom Footer Content for HardFOC Driver Documentation
+     =============================================================================
+     This footer is displayed at the bottom of every page.
+     ============================================================================= -->
+
+<footer class="site-footer">
+  <div class="site-footer-credits">
+    <p>Built with ❤️ using <a href="https://just-the-docs.github.io/just-the-docs/">Just the Docs</a></p>
+    <p>
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development/blob/main/LICENSE">GPL v3 License</a> • 
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development">View on GitHub</a>
+    </p>
+  </div>
+</footer>
+
+
+
+    
+  </footer>
+
+
+      </div>
+    </div>
+    
+      
+<button id="search-button" class="search-button btn-reset" aria-label="Focus on search">
+  <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+</button>
+
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+</body>
+</html>
+

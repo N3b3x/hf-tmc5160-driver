@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['of_20contents_0',['📚 Table of Contents',['../index.html#autotoc_md7',1,'']]],
+  ['offset_5fread_1',['OFFSET_READ',['../namespacetmc5160_1_1Registers.html#acc605daa9f88b3d235978f75ea4c7eff',1,'tmc5160::Registers']]],
+  ['offset_5fread_5fregister_2',['OFFSET_READ_Register',['../uniontmc5160_1_1OFFSET__READ__Register.html',1,'tmc5160']]],
+  ['ok_3',['OK',['../namespacetmc5160.html#a81fcaffbc5dc91f6f544da54c1cf8c3bae0aa021e21dddbd6d8cecec71e9cf564',1,'tmc5160']]],
+  ['ola_4',['ola',['../uniontmc5160_1_1DRV__STATUS__Register.html#acac73f77426552a08b77f4781f25ef0b',1,'tmc5160::DRV_STATUS_Register']]],
+  ['olb_5',['olb',['../uniontmc5160_1_1DRV__STATUS__Register.html#a86ffa9fb3624346b88d30f03c4648c80',1,'tmc5160::DRV_STATUS_Register']]],
+  ['operator_3d_6',['operator=',['../classtmc5160_1_1CommInterface.html#abe291d816be3fbff14338f0f988e75be',1,'tmc5160::CommInterface::operator=(const CommInterface &amp;)=delete'],['../classtmc5160_1_1CommInterface.html#ad8356d7708e0d688d5fd03c8b73dcbcd',1,'tmc5160::CommInterface::operator=(CommInterface &amp;&amp;)=default'],['../classtmc5160_1_1SpiCommInterface.html#a0823b17b507499702a95de46bf8654e9',1,'tmc5160::SpiCommInterface::operator=(const SpiCommInterface &amp;)=delete'],['../classtmc5160_1_1SpiCommInterface.html#a83b3d561b54c2d506adbdab902d5628a',1,'tmc5160::SpiCommInterface::operator=(SpiCommInterface &amp;&amp;)=default'],['../classtmc5160_1_1UartCommInterface.html#adf0f1e2bd963d3b6cc428810e314298c',1,'tmc5160::UartCommInterface::operator=(const UartCommInterface &amp;)=delete'],['../classtmc5160_1_1UartCommInterface.html#a42a14cdb62e3360d3af70afbccbb8aa9',1,'tmc5160::UartCommInterface::operator=(UartCommInterface &amp;&amp;)=default']]],
+  ['ot_7',['ot',['../uniontmc5160_1_1DRV__STATUS__Register.html#ad26eb69c686c3580e88647c4067a69a4',1,'tmc5160::DRV_STATUS_Register']]],
+  ['ot_8',['OT',['../namespacetmc5160.html#a81fcaffbc5dc91f6f544da54c1cf8c3ba583dce1e7a2507b30a9eb71314c47d1c',1,'tmc5160']]],
+  ['other_5ferr_9',['OTHER_ERR',['../namespacetmc5160.html#a81fcaffbc5dc91f6f544da54c1cf8c3ba598c6a2431f188feea077b1a92b28f2b',1,'tmc5160']]],
+  ['otp_5fbbm_10',['otp_bbm',['../uniontmc5160_1_1OTP__READ__Register.html#a984d48b97f30c728576106ec5f6bd07c',1,'tmc5160::OTP_READ_Register']]],
+  ['otp_5ffclktrim_11',['otp_fclktrim',['../uniontmc5160_1_1OTP__READ__Register.html#a974fe47f88a7adfad880e15cd1f2d9b7',1,'tmc5160::OTP_READ_Register']]],
+  ['otp_5fprog_12',['OTP_PROG',['../namespacetmc5160_1_1Registers.html#ab64a52ca4637e29cfa133343bd45b829',1,'tmc5160::Registers']]],
+  ['otp_5fprog_5fregister_13',['OTP_PROG_Register',['../uniontmc5160_1_1OTP__PROG__Register.html',1,'tmc5160']]],
+  ['otp_5fread_14',['OTP_READ',['../namespacetmc5160_1_1Registers.html#a0810f89c100c5256d966236f0df36f21',1,'tmc5160::Registers']]],
+  ['otp_5fread_5fregister_15',['OTP_READ_Register',['../uniontmc5160_1_1OTP__READ__Register.html',1,'tmc5160']]],
+  ['otp_5fs2_5flevel_16',['otp_S2_level',['../uniontmc5160_1_1OTP__READ__Register.html#ae74152aee705a6bc96b43bd301572aa1',1,'tmc5160::OTP_READ_Register']]],
+  ['otp_5ftbl_17',['otp_tbl',['../uniontmc5160_1_1OTP__READ__Register.html#a5b902f42d8e5ba850df294dae22f95e8',1,'tmc5160::OTP_READ_Register']]],
+  ['otpbit_18',['otpbit',['../uniontmc5160_1_1OTP__PROG__Register.html#a49cf65469dee704140f4c0ba032275cc',1,'tmc5160::OTP_PROG_Register']]],
+  ['otpbyte_19',['otpbyte',['../uniontmc5160_1_1OTP__PROG__Register.html#a9d0b852cae1e6c3161d1d8135afe35ae',1,'tmc5160::OTP_PROG_Register']]],
+  ['otpmagic_20',['otpmagic',['../uniontmc5160_1_1OTP__PROG__Register.html#ad7bd7bfcdb4c83b28f704216a251584c',1,'tmc5160::OTP_PROG_Register']]],
+  ['otpw_21',['otpw',['../uniontmc5160_1_1DRV__STATUS__Register.html#aa8d8f02fcf50fbbf178c21d8bcf4a064',1,'tmc5160::DRV_STATUS_Register']]],
+  ['otpw_22',['OTPW',['../namespacetmc5160.html#a81fcaffbc5dc91f6f544da54c1cf8c3baac0b147690352ccd55facc0f3468846a',1,'tmc5160']]],
+  ['otselect_23',['otselect',['../uniontmc5160_1_1DRV__CONF__Register.html#a905488b9f382aa7234129e61bebca8cf',1,'tmc5160::DRV_CONF_Register']]],
+  ['overview_24',['📦 Overview',['../index.html#autotoc_md8',1,'']]]
+];

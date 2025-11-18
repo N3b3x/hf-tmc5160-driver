@@ -1,0 +1,791 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  <style id="jtd-nav-activation">
+  
+
+    .site-nav > ul.nav-list:first-child > li > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li > a,
+    
+    .site-nav > ul.nav-list:first-child > li > ul > li > ul > li:not(:nth-child(5)) > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li > ul > li > ul > li a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:not(:first-child) a,
+    .site-nav li.external a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > ul > li:nth-child(5) > a {
+      font-weight: 600;
+      text-decoration: none;
+    }.site-nav > ul.nav-list:first-child > li:nth-child(1) > button svg,
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > button svg,
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > ul > li:nth-child(5) > button svg {
+      transform: rotate(-90deg);
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list,
+    .site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(1) > ul.nav-list,
+    .site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(5) > ul.nav-list {
+      display: block;
+    }
+  </style>
+
+  
+
+  
+    <script src="/hf-tmc5160-driver/development/assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="/hf-tmc5160-driver/development/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>⚙️ Configuration | HardFOC TMC5160 Driver - development</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="⚙️ Configuration" />
+<meta name="author" content="N3b3x" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Configuration options for the TMC5160 driver" />
+<meta property="og:description" content="Configuration options for the TMC5160 driver" />
+<link rel="canonical" href="https://n3b3x.github.io/hf-tmc5160-driver/development/docs/configuration/" />
+<meta property="og:url" content="https://n3b3x.github.io/hf-tmc5160-driver/development/docs/configuration/" />
+<meta property="og:site_name" content="HardFOC TMC5160 Driver - development" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="⚙️ Configuration" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Configuration options for the TMC5160 driver","headline":"⚙️ Configuration","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/docs/configuration/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- =============================================================================
+     Custom Head Content for HardFOC Driver Documentation
+     =============================================================================
+     This file is included in the <head> section of every page.
+     It loads custom CSS and JavaScript for enhanced functionality.
+     ============================================================================= -->
+
+<!-- Custom CSS for enhanced styling and fixes -->
+<link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/custom.css">
+
+<!-- Custom JavaScript for interactive features -->
+<script src="/hf-tmc5160-driver/development/assets/js/custom.js" defer></script>
+
+
+
+</head>
+
+<body>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    <div class="side-bar">
+  <div class="site-header" role="banner">
+    <a href="/hf-tmc5160-driver/development/" class="site-title lh-tight">
+  HardFOC TMC5160 Driver - development
+
+</a>
+    <button id="menu-button" class="site-button btn-reset" aria-label="Toggle menu" aria-pressed="false">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Main" id="site-nav" class="site-nav">
+  
+  
+    <ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in HardFOC TMC5160 Driver category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC5160 Driver</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li></ul></li></ul></li></ul>
+  
+</nav>
+
+
+
+
+  
+  
+    <footer class="site-footer">
+      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+    </footer>
+  
+</div>
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header">
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search HardFOC TMC5160 Driver - development" aria-label="Search HardFOC TMC5160 Driver - development" autocomplete="off">
+    <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+    <nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    
+      <li class="aux-nav-list-item">
+        <a href="/hf-tmc5160-driver/development/api/index.html" class="site-button"
+          
+        >
+          📖 API Reference
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver" class="site-button"
+          
+        >
+          📚 GitHub Repository
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/issues" class="site-button"
+          
+        >
+          🐛 Report Issues
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/stargazers" class="site-button"
+          
+        >
+          ⭐ Star on GitHub
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+
+  
+</div>
+
+    <div class="main-content-wrap">
+      <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+  <ol class="breadcrumb-nav-list">
+    <li class="breadcrumb-nav-list-item"><a href="/hf-tmc5160-driver/development/">HardFOC TMC5160 Driver</a></li>
+    <li class="breadcrumb-nav-list-item"><a href="/hf-tmc5160-driver/development/docs/">📚 Documentation</a></li>
+    <li class="breadcrumb-nav-list-item"><span>⚙️ Configuration</span></li>
+  </ol>
+</nav>
+
+
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <h1 id="configuration">
+  
+  
+    <a href="#configuration" class="anchor-heading" aria-labelledby="configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configuration
+  
+  
+</h1>
+    
+
+<p>This guide covers all configuration options available for the TMC5160 driver.</p>
+<h2 id="compile-time-configuration">
+  
+  
+    <a href="#compile-time-configuration" class="anchor-heading" aria-labelledby="compile-time-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Compile-Time Configuration
+  
+  
+</h2>
+    
+<h3 id="debug-logging">
+  
+  
+    <a href="#debug-logging" class="anchor-heading" aria-labelledby="debug-logging"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Debug Logging
+  
+  
+</h3>
+    
+
+<p>You can disable debug logging at compile time to reduce code size:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="cp">#define TMC5160_DISABLE_DEBUG_LOGGING
+#include</span> <span class="cpf">"inc/tmc5160.hpp"</span><span class="cp">
+</span></pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p>When disabled, all debug logging code is optimized out completely.</p>
+<h2 id="runtime-configuration">
+  
+  
+    <a href="#runtime-configuration" class="anchor-heading" aria-labelledby="runtime-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Runtime Configuration
+  
+  
+</h2>
+    
+<h3 id="driver-configuration-structure">
+  
+  
+    <a href="#driver-configuration-structure" class="anchor-heading" aria-labelledby="driver-configuration-structure"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Driver Configuration Structure
+  
+  
+</h3>
+    
+
+<p>The driver uses a <code class="language-plaintext highlighter-rouge">DriverConfig</code> structure for initialization:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+</pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
+
+<span class="c1">// Power stage configuration</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">power_stage</span><span class="p">.</span><span class="n">drv_strength</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>  <span class="c1">// Gate driver current (0-3)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">power_stage</span><span class="p">.</span><span class="n">bbm_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>      <span class="c1">// Break-before-make time (0-24 ns)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">power_stage</span><span class="p">.</span><span class="n">bbm_clks</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>      <span class="c1">// BBM clock cycles (0-15)</span>
+
+<span class="c1">// Motor current configuration</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">global_scaler</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>      <span class="c1">// Global current scaler (32-256)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>               <span class="c1">// Run current (0-31, recommended 16-31)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>              <span class="c1">// Hold current (0-31, typically 70% of irun)</span>
+
+<span class="c1">// Chopper configuration</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">toff</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>              <span class="c1">// Off time (0-15, 0=disabled)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">hstrt</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>             <span class="c1">// Hysteresis start (0-7)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">hend</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>              <span class="c1">// Hysteresis end (0-15)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">tbl</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>               <span class="c1">// Blank time (0-3)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">vsense</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>         <span class="c1">// High sensitivity mode</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">mres</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>              <span class="c1">// Microstep resolution (0-8, 4=16 microsteps)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">intpol</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>         <span class="c1">// Enable interpolation</span>
+
+<span class="c1">// StealthChop configuration</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">stealthchop</span><span class="p">.</span><span class="n">pwm_ofs</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>      <span class="c1">// PWM offset (0-255)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">stealthchop</span><span class="p">.</span><span class="n">pwm_grad</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>      <span class="c1">// PWM gradient (0-255)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">stealthchop</span><span class="p">.</span><span class="n">pwm_freq</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>      <span class="c1">// PWM frequency (0-3)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">stealthchop</span><span class="p">.</span><span class="n">pwm_autoscale</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>  <span class="c1">// Enable auto-scaling</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">stealthchop</span><span class="p">.</span><span class="n">pwm_autograd</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>   <span class="c1">// Enable auto-gradient</span>
+
+<span class="c1">// Short protection</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">short_protection</span><span class="p">.</span><span class="n">s2vs_level</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>   <span class="c1">// Short to VS sensitivity (4-15)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">short_protection</span><span class="p">.</span><span class="n">s2g_level</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>    <span class="c1">// Short to GND sensitivity (2-15)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">short_protection</span><span class="p">.</span><span class="n">shortfilter</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// Filter bandwidth (0-3)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">short_protection</span><span class="p">.</span><span class="n">shortdelay</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>   <span class="c1">// Detection delay (0-1)</span>
+
+<span class="c1">// Motor direction</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">tmc5160</span><span class="o">::</span><span class="n">MotorDirection</span><span class="o">::</span><span class="n">NORMAL</span><span class="p">;</span>
+
+<span class="c1">// Clock frequency</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">f_clk</span> <span class="o">=</span> <span class="mi">12000000</span><span class="p">;</span>  <span class="c1">// 12 MHz (default)</span>
+
+<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="configuration-methods">
+  
+  
+    <a href="#configuration-methods" class="anchor-heading" aria-labelledby="configuration-methods"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configuration Methods
+  
+  
+</h2>
+    
+<h3 id="ramp-control-configuration">
+  
+  
+    <a href="#ramp-control-configuration" class="anchor-heading" aria-labelledby="ramp-control-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Ramp Control Configuration
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c1">// Set ramp mode</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc5160</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">POSITIONING</span><span class="p">);</span>
+
+<span class="c1">// Set motion parameters</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">1000.0</span><span class="n">f</span><span class="p">);</span>      <span class="c1">// steps/s</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetAcceleration</span><span class="p">(</span><span class="mf">500.0</span><span class="n">f</span><span class="p">);</span>   <span class="c1">// steps/s²</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampSpeeds</span><span class="p">(</span><span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.1</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">);</span> <span class="c1">// start, stop, transition</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="motor-control-configuration">
+  
+  
+    <a href="#motor-control-configuration" class="anchor-heading" aria-labelledby="motor-control-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Motor Control Configuration
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="c1">// Set motor currents</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetCurrent</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>  <span class="c1">// irun, ihold</span>
+
+<span class="c1">// Configure chopper</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">ChopperConfig</span> <span class="n">chop_cfg</span><span class="p">{};</span>
+<span class="n">chop_cfg</span><span class="p">.</span><span class="n">toff</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="n">chop_cfg</span><span class="p">.</span><span class="n">mres</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>  <span class="c1">// 16 microsteps</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">ConfigureChopper</span><span class="p">(</span><span class="n">chop_cfg</span><span class="p">);</span>
+
+<span class="c1">// Configure stealthChop</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">StealthChopConfig</span> <span class="n">stealth_cfg</span><span class="p">{};</span>
+<span class="n">stealth_cfg</span><span class="p">.</span><span class="n">pwm_autoscale</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">ConfigureStealthChop</span><span class="p">(</span><span class="n">stealth_cfg</span><span class="p">);</span>
+
+<span class="c1">// Set mode change speeds</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetModeChangeSpeeds</span><span class="p">(</span><span class="mf">100.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">500.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">2000.0</span><span class="n">f</span><span class="p">);</span>
+<span class="c1">// pwm_thrs: stealthChop threshold</span>
+<span class="c1">// cool_thrs: coolStep threshold</span>
+<span class="c1">// high_thrs: high-speed mode threshold</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="encoder-configuration">
+  
+  
+    <a href="#encoder-configuration" class="anchor-heading" aria-labelledby="encoder-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Encoder Configuration
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">EncoderConfig</span> <span class="n">enc_cfg</span><span class="p">{};</span>
+<span class="n">enc_cfg</span><span class="p">.</span><span class="n">pol_n</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>           <span class="c1">// N channel active high</span>
+<span class="n">enc_cfg</span><span class="p">.</span><span class="n">ignore_ab</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>       <span class="c1">// Ignore A/B polarity</span>
+<span class="n">enc_cfg</span><span class="p">.</span><span class="n">sensitivity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>         <span class="c1">// No edge sensitivity</span>
+<span class="n">enc_cfg</span><span class="p">.</span><span class="n">enc_sel_decimal</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// Binary mode</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">Configure</span><span class="p">(</span><span class="n">enc_cfg</span><span class="p">);</span>
+
+<span class="c1">// Set encoder resolution</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">SetResolution</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span> <span class="c1">// 200 steps/rev, 1000 pulses/rev</span>
+
+<span class="c1">// Set allowed deviation</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">SetAllowedDeviation</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span> <span class="c1">// 10 steps</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="stallguard-configuration">
+  
+  
+    <a href="#stallguard-configuration" class="anchor-heading" aria-labelledby="stallguard-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> StallGuard Configuration
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">StallGuardConfig</span> <span class="n">sg_cfg</span><span class="p">{};</span>
+<span class="n">sg_cfg</span><span class="p">.</span><span class="n">sgt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>        <span class="c1">// StallGuard threshold (-64 to 63)</span>
+<span class="n">sg_cfg</span><span class="p">.</span><span class="n">semin</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>      <span class="c1">// Minimum SG value (0-15)</span>
+<span class="n">sg_cfg</span><span class="p">.</span><span class="n">semax</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>      <span class="c1">// SG hysteresis (0-15)</span>
+<span class="n">sg_cfg</span><span class="p">.</span><span class="n">sfilt</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>  <span class="c1">// Enable filter</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">ConfigureStallGuard</span><span class="p">(</span><span class="n">sg_cfg</span><span class="p">);</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="default-values">
+  
+  
+    <a href="#default-values" class="anchor-heading" aria-labelledby="default-values"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Default Values
+  
+  
+</h2>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">power_stage.drv_strength</code></td>
+      <td>2</td>
+      <td>Gate driver current</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">power_stage.bbm_time</code></td>
+      <td>0</td>
+      <td>BBM time in ns</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">power_stage.bbm_clks</code></td>
+      <td>4</td>
+      <td>BBM clock cycles</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">motor.global_scaler</code></td>
+      <td>32</td>
+      <td>Global current scaler</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">motor.irun</code></td>
+      <td>16</td>
+      <td>Run current</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">motor.ihold</code></td>
+      <td>0</td>
+      <td>Hold current</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">chopper.toff</code></td>
+      <td>5</td>
+      <td>Off time</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">chopper.mres</code></td>
+      <td>4</td>
+      <td>16 microsteps</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">stealthchop.pwm_autoscale</code></td>
+      <td>true</td>
+      <td>Auto-scaling enabled</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">short_protection.s2vs_level</code></td>
+      <td>6</td>
+      <td>Short to VS sensitivity</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">short_protection.s2g_level</code></td>
+      <td>6</td>
+      <td>Short to GND sensitivity</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">f_clk</code></td>
+      <td>12000000</td>
+      <td>Clock frequency (12 MHz)</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="recommended-settings">
+  
+  
+    <a href="#recommended-settings" class="anchor-heading" aria-labelledby="recommended-settings"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Recommended Settings
+  
+  
+</h2>
+    
+<h3 id="for-silent-operation-stealthchop">
+  
+  
+    <a href="#for-silent-operation-stealthchop" class="anchor-heading" aria-labelledby="for-silent-operation-stealthchop"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> For Silent Operation (stealthChop)
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">toff</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">mres</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>  <span class="c1">// 16 microsteps</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">stealthchop</span><span class="p">.</span><span class="n">pwm_autoscale</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">stealthchop</span><span class="p">.</span><span class="n">pwm_autograd</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+
+<span class="c1">// Enable stealthChop</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetModeChangeSpeeds</span><span class="p">(</span><span class="mf">100.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">);</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="for-high-torque-spreadcycle">
+  
+  
+    <a href="#for-high-torque-spreadcycle" class="anchor-heading" aria-labelledby="for-high-torque-spreadcycle"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> For High Torque (spreadCycle)
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">25</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">toff</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">mres</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>  <span class="c1">// 32 microsteps</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">chm</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// spreadCycle mode</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+
+<span class="c1">// Disable stealthChop (use spreadCycle)</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetModeChangeSpeeds</span><span class="p">(</span><span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">);</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="for-closed-loop-control-with-encoder">
+  
+  
+    <a href="#for-closed-loop-control-with-encoder" class="anchor-heading" aria-labelledby="for-closed-loop-control-with-encoder"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> For Closed-Loop Control (with Encoder)
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+
+<span class="c1">// Configure encoder</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">EncoderConfig</span> <span class="n">enc_cfg</span><span class="p">{};</span>
+<span class="n">enc_cfg</span><span class="p">.</span><span class="n">enc_sel_decimal</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// Binary mode</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">Configure</span><span class="p">(</span><span class="n">enc_cfg</span><span class="p">);</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">SetResolution</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">SetAllowedDeviation</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="next-steps">
+  
+  
+    <a href="#next-steps" class="anchor-heading" aria-labelledby="next-steps"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Next Steps
+  
+  
+</h2>
+    
+
+<ul>
+  <li>See <a href="/hf-tmc5160-driver/development/docs/examples/">Examples</a> for configuration examples</li>
+  <li>Review <a href="/hf-tmc5160-driver/development/docs/api_reference/">API Reference</a> for all configuration methods</li>
+</ul><hr />
+
+<p><strong>Navigation</strong>
+⬅️ <a href="/hf-tmc5160-driver/development/docs/platform_integration/">Platform Integration</a> | <a href="/hf-tmc5160-driver/development/docs/api_reference/">Next: API Reference ➡️</a> | <a href="/hf-tmc5160-driver/development/docs/">Back to Index</a></p>
+
+          
+
+          
+            
+          
+        </main>
+        
+
+  <hr>
+  <footer>
+    
+
+    <!-- =============================================================================
+     Custom Footer Content for HardFOC Driver Documentation
+     =============================================================================
+     This footer is displayed at the bottom of every page.
+     ============================================================================= -->
+
+<footer class="site-footer">
+  <div class="site-footer-credits">
+    <p>Built with ❤️ using <a href="https://just-the-docs.github.io/just-the-docs/">Just the Docs</a></p>
+    <p>
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development/blob/main/LICENSE">GPL v3 License</a> • 
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development">View on GitHub</a>
+    </p>
+  </div>
+</footer>
+
+
+
+    
+  </footer>
+
+
+      </div>
+    </div>
+    
+      
+<button id="search-button" class="search-button btn-reset" aria-label="Focus on search">
+  <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+</button>
+
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+</body>
+</html>
+

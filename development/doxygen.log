@@ -1,0 +1,741 @@
+warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.iNAUQ0
+warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.iNAUQ0' has become obsolete.
+         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
+Doxygen version used: 1.10.0 (ebc57c6dd303a980bd19dd74b8b61c8f3f5180ca)
+Searching for include files...
+Searching for example files...
+Searching for images...
+Searching for dot files...
+Searching for msc files...
+Searching for dia files...
+Searching for files to exclude
+Searching INPUT for files to process...
+Searching for files in directory /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/src
+Searching for files in directory /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc
+Searching for files in directory /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main
+Reading and parsing tag files
+Parsing files
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/src/tmc5160.cpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/src/tmc5160.cpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc5160.hpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc5160.hpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc5160_comm_interface.hpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc5160_comm_interface.hpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc5160_config.hpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc5160_config.hpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc5160_registers.hpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc5160_registers.hpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc5160_types.hpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc5160_types.hpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc5160_units.hpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc5160_units.hpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/basic_positioning.cpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/basic_positioning.cpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/comprehensive_test.cpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/comprehensive_test.cpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/encoder.cpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/encoder.cpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/esp32_tmc5160_bus.hpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/esp32_tmc5160_bus.hpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/motor_setup_from_spec.cpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/motor_setup_from_spec.cpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/sensorless_homing.cpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/sensorless_homing.cpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/sinusoidal.cpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/sinusoidal.cpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/stallguard.cpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/stallguard.cpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/stealthchop.cpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/stealthchop.cpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/unit_conversions.cpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/error: Style sheet '_config/doxygen-extensions/doxygen-awesome-css/doxygen-awesome.css' specified by HTML_EXTRA_STYLESHEET does not exist!
+error: Style sheet '_config/doxygen-extensions/doxygen-awesome-css/doxygen-awesome-sidebar-only.css' specified by HTML_EXTRA_STYLESHEET does not exist!
+error: Style sheet '_config/doxygen-extensions/doxygen-awesome-css/doxygen-awesome-sidebar-only-darkmode-toggle.css' specified by HTML_EXTRA_STYLESHEET does not exist!
+error: Extra file '_config/doxygen-extensions/doxygen-awesome-css/doxygen-awesome-darkmode-toggle.js' specified in HTML_EXTRA_FILES does not exist!
+error: Extra file '_config/doxygen-extensions/doxygen-awesome-css/doxygen-awesome-fragment-copy-button.js' specified in HTML_EXTRA_FILES does not exist!
+error: Extra file '_config/doxygen-extensions/doxygen-awesome-css/doxygen-awesome-paragraph-link.js' specified in HTML_EXTRA_FILES does not exist!
+error: Extra file '_config/doxygen-extensions/doxygen-awesome-css/doxygen-awesome-interactive-toc.js' specified in HTML_EXTRA_FILES does not exist!
+error: Extra file '_config/doxygen-extensions/doxygen-awesome-css/doxygen-awesome-tabs.js' specified in HTML_EXTRA_FILES does not exist!
+error: Extra file '_config/doxygen-extensions/doxygen-awesome-css/doxygen-custom/toggle-alternative-theme.js' specified in HTML_EXTRA_FILES does not exist!
+error: Extra file '_config/doxygen-extensions/doxygen-awesome-css/doxygen-custom/theme-round.css' specified in HTML_EXTRA_FILES does not exist!
+error: Extra file '_config/doxygen-extensions/doxygen-awesome-css/doxygen-custom/theme-robot.css' specified in HTML_EXTRA_FILES does not exist!
+examples/esp32/main/unit_conversions.cpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/velocity_mode.cpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/velocity_mode.cpp...
+Reading /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md...
+Building macro definition list...
+Building group list...
+Building directory list...
+Building namespace list...
+Building file list...
+Building class list...
+Building concept list...
+Computing nesting relations for classes...
+Associating documentation with classes...
+Associating documentation with concepts...
+Associating documentation with modules...
+Building example list...
+Searching for enumerations...
+Searching for documented typedefs...
+Searching for members imported via using declarations...
+Searching for included using directives...
+Searching for documented variables...
+Building interface member list...
+Building member list...
+Searching for friends...
+Searching for documented defines...
+Computing class inheritance relations...
+Computing class usage relations...
+Flushing cached template relations that have become invalid...
+Computing class relations...
+Add enum values to enums...
+Searching for member function documentation...
+Creating members for template instances...
+Building page list...
+Search for main page...
+Computing page relations...
+Determining the scope of groups...
+Computing module relations...
+Sorting lists...
+Determining which enums are documented
+Computing member relations...
+Building full member lists recursively...
+Adding members to member groups.
+Computing member references...
+Inheriting documentation...
+Generating disk names...
+Adding source references...
+Adding xrefitems...
+Sorting member lists...
+Setting anonymous enum type...
+Computing dependencies between directories...
+Generating citations page...
+Counting members...
+Counting data structures...
+Resolving user defined references...
+Finding anchors and sections in the documentation...
+Transferring function references...
+Combining using relations...
+Adding members to index pages...
+Correcting members for VHDL...
+Computing tooltip texts...
+Generating style sheet...
+Generating search indices...
+Generating example documentation...
+Generating file sources...
+Parsing code for file basic_positioning.cpp...
+Parsing code for file comprehensive_test.cpp...
+Parsing code for file encoder.cpp...
+Generating code for file esp32_tmc5160_bus.hpp...
+Parsing code for file motor_setup_from_spec.cpp...
+Parsing code for file sensorless_homing.cpp...
+Parsing code for file sinusoidal.cpp...
+Parsing code for file stallguard.cpp...
+Parsing code for file stealthchop.cpp...
+Parsing code for file unit_conversions.cpp...
+Parsing code for file velocity_mode.cpp...
+Generating code for file tmc5160.hpp...
+Generating code for file tmc5160_comm_interface.hpp...
+Generating code for file tmc5160_config.hpp...
+Generating code for file tmc5160_registers.hpp...
+Generating code for file tmc5160_types.hpp...
+Generating code for file tmc5160_units.hpp...
+Parsing code for file README.md...
+Generating code for file tmc5160.cpp...
+Generating file documentation...
+Generating docs for file basic_positioning.cpp...
+Generating call graph for function app_main
+Generating docs for file comprehensive_test.cpp...
+Generating call graph for function app_main
+Generating docs for file encoder.cpp...
+Generating call graph for function app_main
+Generating docs for file esp32_tmc5160_bus.hpp...
+Generating docs for file motor_setup_from_spec.cpp...
+Generating call graph for function app_main
+Generating docs for file sensorless_homing.cpp...
+Generating call graph for function app_main
+Generating docs for file sinusoidal.cpp...
+Generating call graph for function app_main
+Generating docs for file stallguard.cpp...
+Generating call graph for function app_main
+Generating docs for file stealthchop.cpp...
+Generating call graph for function app_main
+Generating docs for file unit_conversions.cpp...
+Generating call graph for function app_main
+Generating docs for file velocity_mode.cpp...
+Generating call graph for function app_main
+Generating docs for file tmc5160.hpp...
+Generating docs for file tmc5160_comm_interface.hpp...
+Generating docs for file tmc5160_config.hpp...
+Generating docs for file tmc5160_registers.hpp...
+Generating docs for file tmc5160_types.hpp...
+Generating docs for file tmc5160_units.hpp...
+Generating docs for file README.md...
+Generating docs for file tmc5160.cpp...
+Generating caller graph for function constrain
+Generating page documentation...
+Generating group documentation...
+Generating class documentation...
+Generating docs for compound Esp32SPI...
+Generating call graph for function Esp32SPI::~Esp32SPI
+Generating caller graph for function Esp32SPI::Deinitialize
+Generating caller graph for function Esp32SPI::DelayUs
+Generating call graph for function Esp32SPI::GpioSet
+Generating caller graph for function Esp32SPI::GpioSet
+Generating caller graph for function Esp32SPI::Initialize
+Generating docs for compound SinusoidalMotion...
+Generating caller graph for function SinusoidalMotion::calculateTimeDelay
+Generating caller graph for function SinusoidalMotion::Config
+Generating caller graph for function SinusoidalMotion::GetAmplitude
+Generating caller graph for function SinusoidalMotion::GetFrequency
+Generating caller graph for function SinusoidalMotion::GetRounds
+Generating caller graph for function SinusoidalMotion::GetStepCount
+Generating call graph for function SinusoidalMotion::Run
+Generating caller graph for function SinusoidalMotion::Run
+Generating concept documentation...
+Generating module documentation...
+Generating namespace documentation...
+Generating docs for namespace tmc5160
+Generating caller graph for function tmc5160::AccelerationMmToSteps
+Generating caller graph for function tmc5160::BeltTeethToSteps
+Generating caller graph for function tmc5160::calculateCrc8
+Generating caller graph for function tmc5160::DegreesToSteps
+Generating caller graph for function tmc5160::MmToSteps
+Generating caller graph for function tmc5160::RpmToStepsPerSec
+Generating caller graph for function tmc5160::StepsPerSecToRpm
+Generating caller graph for function tmc5160::StepsToMm
+Generating docs for compound tmc5160::CHOPCONF_Register...
+Generating docs for compound tmc5160::ChopperConfig...
+Generating docs for compound tmc5160::CommInterface...
+Generating caller graph for function tmc5160::CommInterface::CommInterface
+Generating call graph for function tmc5160::CommInterface::DebugLog
+Generating caller graph for function tmc5160::CommInterface::DebugLog
+Generating call graph for function tmc5160::CommInterface::DelayMs
+Generating caller graph for function tmc5160::CommInterface::DelayMs
+Generating call graph for function tmc5160::CommInterface::DelayUs
+Generating caller graph for function tmc5160::CommInterface::DelayUs
+Generating call graph for function tmc5160::CommInterface::GetMode
+Generating caller graph for function tmc5160::CommInterface::GetMode
+Generating call graph for function tmc5160::CommInterface::GpioRead
+Generating caller graph for function tmc5160::CommInterface::GpioRead
+Generating call graph for function tmc5160::CommInterface::GpioSet
+Generating caller graph for function tmc5160::CommInterface::GpioSet
+Generating call graph for function tmc5160::CommInterface::GpioSetActive
+Generating caller graph for function tmc5160::CommInterface::GpioSetActive
+Generating call graph for function tmc5160::CommInterface::GpioSetInactive
+Generating caller graph for function tmc5160::CommInterface::GpioSetInactive
+Generating call graph for function tmc5160::CommInterface::LogDebug
+Generating call graph for function tmc5160::CommInterface::ReadRegister
+Generating caller graph for function tmc5160::CommInterface::ReadRegister
+Generating caller graph for function tmc5160::CommInterface::SignalToGpioLevel
+Generating call graph for function tmc5160::CommInterface::WriteRegister
+Generating caller graph for function tmc5160::CommInterface::WriteRegister
+Generating docs for compound tmc5160::COOLCONF_Register...
+Generating docs for compound tmc5160::CoolStepConfig...
+Generating docs for compound tmc5160::DCCTRL_Register...
+Generating docs for compound tmc5160::DcStepConfig...
+Generating docs for compound tmc5160::DriverConfig...
+Generating docs for compound tmc5160::DRV_CONF_Register...
+Generating docs for compound tmc5160::DRV_STATUS_Register...
+Generating docs for compound tmc5160::ENC_STATUS_Register...
+Generating docs for compound tmc5160::ENCMODE_Register...
+Generating docs for compound tmc5160::EncoderConfig...
+Generating docs for compound tmc5160::GCONF_Register...
+Generating docs for compound tmc5160::GSTAT_Register...
+Generating docs for compound tmc5160::IHOLD_IRUN_Register...
+Generating docs for compound tmc5160::IOIN_Register...
+Generating docs for compound tmc5160::MechanicalSystem...
+Generating docs for compound tmc5160::MotorCurrentConfig...
+Generating docs for compound tmc5160::MotorParameters...
+Generating docs for compound tmc5160::MotorSpec...
+Generating docs for compound tmc5160::OFFSET_READ_Register...
+Generating docs for compound tmc5160::OTP_PROG_Register...
+Generating docs for compound tmc5160::OTP_READ_Register...
+Generating docs for compound tmc5160::PowerStageParameters...
+Generating docs for compound tmc5160::PWM_AUTO_Register...
+Generating docs for compound tmc5160::PWM_SCALE_Register...
+Generating docs for compound tmc5160::PWMCONF_Register...
+Generating docs for compound tmc5160::RAMP_STAT_Register...
+Generating docs for compound tmc5160::ReferenceSwitchConfig...
+Generating docs for compound tmc5160::SHORT_CONF_Register...
+Generating docs for compound tmc5160::ShortProtectionConfig...
+Generating docs for compound tmc5160::SLAVECONF_Register...
+Generating docs for compound tmc5160::SpiCommInterface...
+Generating call graph for function tmc5160::SpiCommInterface::ReadRegister
+Generating call graph for function tmc5160::SpiCommInterface::SpiTransfer
+Generating caller graph for function tmc5160::SpiCommInterface::SpiTransfer
+Generating call graph for function tmc5160::SpiCommInterface::WriteRegister
+Generating docs for compound tmc5160::StallGuardConfig...
+Generating docs for compound tmc5160::StealthChopConfig...
+Generating docs for compound tmc5160::SW_MODE_Register...
+Generating docs for compound tmc5160::TMC5160...
+Generating caller graph for function tmc5160::TMC5160::GetComm
+Generating call graph for function tmc5160::TMC5160::Initialize
+Generating caller graph for function tmc5160::TMC5160::Initialize
+Generating call graph for function tmc5160::TMC5160::Reset
+Generating docs for nested compound tmc5160::TMC5160::Diagnostics...
+Generating call graph for function tmc5160::TMC5160::Diagnostics::ConfigureStallGuard
+Generating call graph for function tmc5160::TMC5160::Diagnostics::GetDriverStatusRegister
+Generating call graph for function tmc5160::TMC5160::Diagnostics::GetRampStatusRegister
+Generating docs for nested compound tmc5160::TMC5160::Encoder...
+Generating call graph for function tmc5160::TMC5160::Encoder::ClearDeviationFlag
+Generating call graph for function tmc5160::TMC5160::Encoder::Configure
+Generating call graph for function tmc5160::TMC5160::Encoder::SetResolution
+Generating docs for nested compound tmc5160::TMC5160::MotorControl...
+Generating call graph for function tmc5160::TMC5160::MotorControl::ConfigureChopper
+Generating call graph for function tmc5160::TMC5160::MotorControl::SetCurrent
+Generating call graph for function tmc5160::TMC5160::MotorControl::SetMicrostepLookupTableSegmentation
+Generating docs for nested compound tmc5160::TMC5160::Protection...
+Generating docs for nested compound tmc5160::TMC5160::RampControl...
+Generating call graph for function tmc5160::TMC5160::RampControl::SetComparePosition
+Generating call graph for function tmc5160::TMC5160::RampControl::SetMaxSpeedRpm
+Generating call graph for function tmc5160::TMC5160::RampControl::SetRampMode
+Generating call graph for function tmc5160::TMC5160::RampControl::SetTargetPositionMm
+Generating call graph for function tmc5160::TMC5160::RampControl::Stop
+Generating docs for compound tmc5160::UartCommInterface...
+Generating call graph for function tmc5160::UartCommInterface::ReadRegister
+Generating call graph for f/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:11: warning: unable to resolve reference to '-overview' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:12: warning: unable to resolve reference to '-features' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:13: warning: unable to resolve reference to '-quick-start' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:14: warning: unable to resolve reference to '-installation' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:15: warning: unable to resolve reference to '-api-reference' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:16: warning: unable to resolve reference to '-examples' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:17: warning: unable to resolve reference to '-documentation' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:18: warning: unable to resolve reference to '-contributing' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:19: warning: unable to resolve reference to '-license' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:76: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/installation.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:76: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/quickstart.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:81: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/platform_integration.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:88: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/installation.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:104: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/api_reference.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:110: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/examples.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:114: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/index.md' for \ref command
+unction tmc5160::UartCommInterface::UartReceive
+Generating caller graph for function tmc5160::UartCommInterface::UartReceive
+Generating call graph for function tmc5160::UartCommInterface::UartSend
+Generating caller graph for function tmc5160::UartCommInterface::UartSend
+Generating call graph for function tmc5160::UartCommInterface::WriteRegister
+Generating docs for namespace tmc5160::ClockFreq
+Generating docs for namespace tmc5160::Microsteps
+Generating docs for namespace tmc5160::Registers
+Generating graph info page...
+Generating directory documentation...
+Generating dependency graph for directory esp32
+Generating dependency graph for directory examples
+Generating dependency graph for directory inc
+Generating dependency graph for directory main
+Generating dependency graph for directory src
+Generating index page...
+Generating main page...
+Generating page index...
+Generating topic index...
+Generating module index...
+Generating module member index...
+Generating namespace index...
+Generating namespace member index...
+Generating concept index...
+Generating annotated compound index...
+Generating alphabetical compound index...
+Generating hierarchical class index...
+Generating graphical class hierarchy...
+Generating member index...
+Generating file index...
+Generating file member index...
+Generating example index...
+finalizing index lists...
+writing tag file...
+Running plantuml with JAVA...
+Running dot...
+Generating dot graphs using 5 parallel threads...
+Running dot for graph 1/176
+Running dot for graph 2/176
+Running dot for graph 3/176
+Running dot for graph 4/176
+Running dot for graph 5/176
+Running dot for graph 6/176
+Running dot for graph 7/176
+Running dot for graph 8/176
+Running dot for graph 9/176
+Running dot for graph 10/176
+Running dot for graph 11/176
+Running dot for graph 12/176
+Running dot for graph 13/176
+Running dot for graph 14/176
+Running dot for graph 15/176
+Running dot for graph 16/176
+Running dot for graph 17/176
+Running dot for graph 18/176
+Running dot for graph 19/176
+Running dot for graph 20/176
+Running dot for graph 21/176
+Running dot for graph 22/176
+Running dot for graph 23/176
+Running dot for graph 24/176
+Running dot for graph 25/176
+Running dot for graph 26/176
+Running dot for graph 27/176
+Running dot for graph 28/176
+Running dot for graph 29/176
+Running dot for graph 30/176
+Running dot for graph 31/176
+Running dot for graph 32/176
+Running dot for graph 33/176
+Running dot for graph 34/176
+Running dot for graph 35/176
+Running dot for graph 36/176
+Running dot for graph 37/176
+Running dot for graph 38/176
+Running dot for graph 39/176
+Running dot for graph 40/176
+Running dot for graph 41/176
+Running dot for graph 42/176
+Running dot for graph 43/176
+Running dot for graph 44/176
+Running dot for graph 45/176
+Running dot for graph 46/176
+Running dot for graph 47/176
+Running dot for graph 48/176
+Running dot for graph 49/176
+Running dot for graph 50/176
+Running dot for graph 51/176
+Running dot for graph 52/176
+Running dot for graph 53/176
+Running dot for graph 54/176
+Running dot for graph 55/176
+Running dot for graph 56/176
+Running dot for graph 57/176
+Running dot for graph 58/176
+Running dot for graph 59/176
+Running dot for graph 60/176
+Running dot for graph 61/176
+Running dot for graph 62/176
+Running dot for graph 63/176
+Running dot for graph 64/176
+Running dot for graph 65/176
+Running dot for graph 66/176
+Running dot for graph 67/176
+Running dot for graph 68/176
+Running dot for graph 69/176
+Running dot for graph 70/176
+Running dot for graph 71/176
+Running dot for graph 72/176
+Running dot for graph 73/176
+Running dot for graph 74/176
+Running dot for graph 75/176
+Running dot for graph 76/176
+Running dot for graph 77/176
+Running dot for graph 78/176
+Running dot for graph 79/176
+Running dot for graph 80/176
+Running dot for graph 81/176
+Running dot for graph 82/176
+Running dot for graph 83/176
+Running dot for graph 84/176
+Running dot for graph 85/176
+Running dot for graph 86/176
+Running dot for graph 87/176
+Running dot for graph 88/176
+Running dot for graph 89/176
+Running dot for graph 90/176
+Running dot for graph 91/176
+Running dot for graph 92/176
+Running dot for graph 93/176
+Running dot for graph 94/176
+Running dot for graph 95/176
+Running dot for graph 96/176
+Running dot for graph 97/176
+Running dot for graph 98/176
+Running dot for graph 99/176
+Running dot for graph 100/176
+Running dot for graph 101/176
+Running dot for graph 102/176
+Running dot for graph 103/176
+Running dot for graph 104/176
+Running dot for graph 105/176
+Running dot for graph 106/176
+Running dot for graph 107/176
+Running dot for graph 108/176
+Running dot for graph 109/176
+Running dot for graph 110/176
+Running dot for graph 111/176
+Running dot for graph 112/176
+Running dot for graph 113/176
+Running dot for graph 114/176
+Running dot for graph 115/176
+Running dot for graph 116/176
+Running dot for graph 117/176
+Running dot for graph 118/176
+Running dot for graph 119/176
+Running dot for graph 120/176
+Running dot for graph 121/176
+Running dot for graph 122/176
+Running dot for graph 123/176
+Running dot for graph 124/176
+Running dot for graph 125/176
+Running dot for graph 126/176
+Running dot for graph 127/176
+Running dot for graph 128/176
+Running dot for graph 129/176
+Running dot for graph 130/176
+Running dot for graph 131/176
+Running dot for graph 132/176
+Running dot for graph 133/176
+Running dot for graph 134/176
+Running dot for graph 135/176
+Running dot for graph 136/176
+Running dot for graph 137/176
+Running dot for graph 138/176
+Running dot for graph 139/176
+Running dot for graph 140/176
+Running dot for graph 141/176
+Running dot for graph 142/176
+Running dot for graph 143/176
+Running dot for graph 144/176
+Running dot for graph 145/176
+Running dot for graph 146/176
+Running dot for graph 147/176
+Running dot for graph 148/176
+Running dot for graph 149/176
+Running dot for graph 150/176
+Running dot for graph 151/176
+Running dot for graph 152/176
+Running dot for graph 153/176
+Running dot for graph 154/176
+Running dot for graph 155/176
+Running dot for graph 156/176
+Running dot for graph 157/176
+Running dot for graph 158/176
+Running dot for graph 159/176
+Running dot for graph 160/176
+Running dot for graph 161/176
+Running dot for graph 162/176
+Running dot for graph 163/176
+Running dot for graph 164/176
+Running dot for graph 165/176
+Running dot for graph 166/176
+Running dot for graph 167/176
+Running dot for graph 168/176
+Running dot for graph 169/176
+Running dot for graph 170/176
+Running dot for graph 171/176
+Running dot for graph 172/176
+Running dot for graph 173/176
+Running dot for graph 174/176
+Running dot for graph 175/176
+Running dot for graph 176/176
+Patching output file 1/213
+Patching output file 2/213
+Patching output file 3/213
+Patching output file 4/213
+Patching output file 5/213
+Patching output file 6/213
+Patching output file 7/213
+Patching output file 8/213
+Patching output file 9/213
+Patching output file 10/213
+Patching output file 11/213
+Patching output file 12/213
+Patching output file 13/213
+Patching output file 14/213
+Patching output file 15/213
+Patching output file 16/213
+Patching output file 17/213
+Patching output file 18/213
+Patching output file 19/213
+Patching output file 20/213
+Patching output file 21/213
+Patching output file 22/213
+Patching output file 23/213
+Patching output file 24/213
+Patching output file 25/213
+Patching output file 26/213
+Patching output file 27/213
+Patching output file 28/213
+Patching output file 29/213
+Patching output file 30/213
+Patching output file 31/213
+Patching output file 32/213
+Patching output file 33/213
+Patching output file 34/213
+Patching output file 35/213
+Patching output file 36/213
+Patching output file 37/213
+Patching output file 38/213
+Patching output file 39/213
+Patching output file 40/213
+Patching output file 41/213
+Patching output file 42/213
+Patching output file 43/213
+Patching output file 44/213
+Patching output file 45/213
+Patching output file 46/213
+Patching output file 47/213
+Patching output file 48/213
+Patching output file 49/213
+Patching output file 50/213
+Patching output file 51/213
+Patching output file 52/213
+Patching output file 53/213
+Patching output file 54/213
+Patching output file 55/213
+Patching output file 56/213
+Patching output file 57/213
+Patching output file 58/213
+Patching output file 59/213
+Patching output file 60/213
+Patching output file 61/213
+Patching output file 62/213
+Patching output file 63/213
+Patching output file 64/213
+Patching output file 65/213
+Patching output file 66/213
+Patching output file 67/213
+Patching output file 68/213
+Patching output file 69/213
+Patching output file 70/213
+Patching output file 71/213
+Patching output file 72/213
+Patching output file 73/213
+Patching output file 74/213
+Patching output file 75/213
+Patching output file 76/213
+Patching output file 77/213
+Patching output file 78/213
+Patching output file 79/213
+Patching output file 80/213
+Patching output file 81/213
+Patching output file 82/213
+Patching output file 83/213
+Patching output file 84/213
+Patching output file 85/213
+Patching output file 86/213
+Patching output file 87/213
+Patching output file 88/213
+Patching output file 89/213
+Patching output file 90/213
+Patching output file 91/213
+Patching output file 92/213
+Patching output file 93/213
+Patching output file 94/213
+Patching output file 95/213
+Patching output file 96/213
+Patching output file 97/213
+Patching output file 98/213
+Patching output file 99/213
+Patching output file 100/213
+Patching output file 101/213
+Patching output file 102/213
+Patching output file 103/213
+Patching output file 104/213
+Patching output file 105/213
+Patching output file 106/213
+Patching output file 107/213
+Patching output file 108/213
+Patching output file 109/213
+Patching output file 110/213
+Patching output file 111/213
+Patching output file 112/213
+Patching output file 113/213
+Patching output file 114/213
+Patching output file 115/213
+Patching output file 116/213
+Patching output file 117/213
+Patching output file 118/213
+Patching output file 119/213
+Patching output file 120/213
+Patching output file 121/213
+Patching output file 122/213
+Patching output file 123/213
+Patching output file 124/213
+Patching output file 125/213
+Patching output file 126/213
+Patching output file 127/213
+Patching output file 128/213
+Patching output file 129/213
+Patching output file 130/213
+Patching output file 131/213
+Patching output file 132/213
+Patching output file 133/213
+Patching output file 134/213
+Patching output file 135/213
+Patching output file 136/213
+Patching output file 137/213
+Patching output file 138/213
+Patching output file 139/213
+Patching output file 140/213
+Patching output file 141/213
+Patching output file 142/213
+Patching output file 143/213
+Patching output file 144/213
+Patching output file 145/213
+Patching output file 146/213
+Patching output file 147/213
+Patching output file 148/213
+Patching output file 149/213
+Patching output file 150/213
+Patching output file 151/213
+Patching output file 152/213
+Patching output file 153/213
+Patching output file 154/213
+Patching output file 155/213
+Patching output file 156/213
+Patching output file 157/213
+Patching output file 158/213
+Patching output file 159/213
+Patching output file 160/213
+Patching output file 161/213
+Patching output file 162/213
+Patching output file 163/213
+Patching output file 164/213
+Patching output file 165/213
+Patching output file 166/213
+Patching output file 167/213
+Patching output file 168/213
+Patching output file 169/213
+Patching output file 170/213
+Patching output file 171/213
+Patching output file 172/213
+Patching output file 173/213
+Patching output file 174/213
+Patching output file 175/213
+Patching output file 176/213
+Patching output file 177/213
+Patching output file 178/213
+Patching output file 179/213
+Patching output file 180/213
+Patching output file 181/213
+Patching output file 182/213
+Patching output file 183/213
+Patching output file 184/213
+Patching output file 185/213
+Patching output file 186/213
+Patching output file 187/213
+Patching output file 188/213
+Patching output file 189/213
+Patching output file 190/213
+Patching output file 191/213
+Patching output file 192/213
+Patching output file 193/213
+Patching output file 194/213
+Patching output file 195/213
+Patching output file 196/213
+Patching output file 197/213
+Patching output file 198/213
+Patching output file 199/213
+Patching output file 200/213
+Patching output file 201/213
+Patching output file 202/213
+Patching output file 203/213
+Patching output file 204/213
+Patching output file 205/213
+Patching output file 206/213
+Patching output file 207/213
+Patching output file 208/213
+Patching output file 209/213
+Patching output file 210/213
+Patching output file 211/213
+Patching output file 212/213
+Patching output file 213/213
+type lookup cache used 2133/65536 hits=6995 misses=2209
+symbol lookup cache used 1388/65536 hits=3211 misses=1388
+finished...

@@ -1,0 +1,151 @@
+###############################################################################
+#  TMC5160 Driver – ESP-IDF Component Manager Manifest
+#
+#  This manifest file describes the TMC5160 driver component for the ESP-IDF
+#  Component Manager. The TMC5160 is a hardware-agnostic stepper motor driver
+#  IC that supports advanced features like stealthChop, spreadCycle, StallGuard2,
+#  and encoder support.
+#
+#  For more information about the ESP-IDF Component Manager manifest format,
+#  see: https://docs.espressif.com/projects/idf-component-manager/en/latest/reference/manifest_file.html
+###############################################################################
+
+# ─── Component Metadata ───────────────────────────────────────────────────────
+name: hf-tmc5160-driver
+version: "1.0.0"
+description: |
+  TMC5160 Hardware-Agnostic Stepper Motor Driver - comprehensive driver library for the
+  TMC5160 stepper motor control IC. Features stealthChop for silent operation,
+  spreadCycle for high torque, StallGuard2 for stall detection, encoder support
+  for closed-loop control, and comprehensive protection systems. Designed for
+  embedded systems with full ESP32 family support and modern ESP-IDF v5.0+ integration.
+
+# ─── External Links ───────────────────────────────────────────────────────────
+url: "https://www.trinamic.com/products/integrated-circuits/details/tmc5160/"
+repository: "https://github.com/N3b3x/hf-tmc5160-driver.git"
+documentation: "https://github.com/N3b3x/hf-tmc5160-driver/blob/main/README.md"
+issues: "https://github.com/N3b3x/hf-tmc5160-driver/issues"
+
+# ─── Licensing and Maintenance ───────────────────────────────────────────────
+license: "GPL-3.0"
+maintainers:
+  - "Nebiyu Tadesse <nebysma@gmail.com>"
+
+# ─── Component Classification ────────────────────────────────────────────────
+tags:
+  - "tmc5160"          # TMC5160 motor driver
+  - "motor-control"    # Motor control systems
+  - "stepper"          # Stepper motor control
+  - "stealthchop"      # Silent operation mode
+  - "spreadcycle"      # High torque mode
+  - "stallguard"       # Stall detection
+  - "encoder"          # Encoder support
+  - "driver"           # Device drivers
+  - "esp-idf"          # ESP-IDF framework
+  - "esp32"            # ESP32 family
+  - "hardware-agnostic" # Platform independent
+  - "spi"              # SPI communication
+  - "uart"             # UART communication
+
+# ─── Supported Targets ───────────────────────────────────────────────────────
+targets:
+  - esp32              # ESP32 classic
+  - esp32c6            # ESP32-C6
+  - esp32s2            # ESP32-S2
+  - esp32s3            # ESP32-S3
+  - esp32c3            # ESP32-C3
+  - esp32c2            # ESP32-C2
+  - esp32h2            # ESP32-H2
+
+# ─── Dependencies ────────────────────────────────────────────────────────────
+dependencies:
+  # ESP-IDF Framework (required for all ESP32 development)
+  idf: ">=5.0.0"
+
+  # ESP-IDF Core Components (built-in, no external dependencies needed)
+  # These are automatically available when using ESP-IDF
+
+# ─── Packaging Configuration ─────────────────────────────────────────────────
+files:
+  # Include all source files and headers
+  include:
+    - "inc/**/*"
+    - "CMakeLists.txt"
+    - "idf_component.yml"
+    - "LICENSE"
+    - "README.md"
+
+  # Exclude development and documentation files to minimize package size
+  exclude:
+    # Documentation and examples (kept separate)
+    - "**/docs/**"
+    - "**/examples/**"
+    - "**/tests/**"
+
+    # Development and CI files
+    - "**/.github/**"
+    - "**/.gitlab-ci.yml"
+    - "**/.git/**"
+    - "**/.svn/**"
+
+    # IDE and editor files
+    - "**/.idea/**"
+    - "**/.vscode/**"
+    - "**/.settings/**"
+    - "**/.DS_Store"
+    - "**/Thumbs.db"
+
+    # Build artifacts
+    - "**/build/**"
+    - "**/dist/**"
+    - "**/managed_components/**"
+    - "**/dependencies.lock"
+    - "**/sdkconfig"
+    - "**/sdkconfig.old"
+    - "**/.component_hash"
+
+    # Python and cache files
+    - "**/__pycache__/**"
+    - "**/*.pyc"
+    - "**/*.pyd"
+    - "**/*.pyo"
+
+###############################################################################
+#  Component Architecture Overview
+#
+#  The TMC5160 Driver consists of several layers:
+#
+#  1. Core Driver Classes (inc/)
+#     - tmc5160.hpp: Main driver class with hardware-agnostic interface
+#     - tmc5160_comm_interface.hpp: Communication interface abstraction (SPI/UART)
+#     - tmc5160_registers.hpp: Register definitions and bitfield structures
+#     - tmc5160_types.hpp: Type definitions and enumerations
+#     - tmc5160_config.hpp: Configuration structures
+#
+#  2. Subsystem Classes
+#     - RampControl: Positioning, velocity, and hold modes
+#     - MotorControl: Current control, chopper, stealthChop configuration
+#     - Encoder: Encoder configuration and closed-loop control
+#     - Diagnostics: StallGuard2, driver status, error detection
+#     - Protection: Short circuit and overtemperature protection
+#
+#  Usage Example:
+#  ```cpp
+#  #include "tmc5160.hpp"
+#
+#  // Create driver instance
+#  MySPI spi;
+#  tmc5160::TMC5160 driver(spi);
+#
+#  // Initialize driver
+#  tmc5160::DriverConfig cfg{};
+#  cfg.motor.irun = 20;
+#  driver.Initialize(cfg);
+#
+#  // Configure and start motor
+#  driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+#  driver.rampControl.SetTargetPosition(1000);
+#  driver.motorControl.Enable();
+#  ```
+###############################################################################
+

@@ -1,0 +1,2015 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  <style id="jtd-nav-activation">
+  
+
+    .site-nav > ul.nav-list:first-child > li > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li > a,
+    
+    .site-nav > ul.nav-list:first-child > li > ul > li > ul > li:not(:nth-child(6)) > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li > ul > li > ul > li a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:not(:first-child) a,
+    .site-nav li.external a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > ul > li:nth-child(6) > a {
+      font-weight: 600;
+      text-decoration: none;
+    }.site-nav > ul.nav-list:first-child > li:nth-child(1) > button svg,
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > button svg,
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > ul > li:nth-child(6) > button svg {
+      transform: rotate(-90deg);
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list,
+    .site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(1) > ul.nav-list,
+    .site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(6) > ul.nav-list {
+      display: block;
+    }
+  </style>
+
+  
+
+  
+    <script src="/hf-tmc5160-driver/development/assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="/hf-tmc5160-driver/development/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>📖 API Reference | HardFOC TMC5160 Driver - development</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="📖 API Reference" />
+<meta name="author" content="N3b3x" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Complete API documentation for the TMC5160 driver" />
+<meta property="og:description" content="Complete API documentation for the TMC5160 driver" />
+<link rel="canonical" href="https://n3b3x.github.io/hf-tmc5160-driver/development/docs/api_reference/" />
+<meta property="og:url" content="https://n3b3x.github.io/hf-tmc5160-driver/development/docs/api_reference/" />
+<meta property="og:site_name" content="HardFOC TMC5160 Driver - development" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="📖 API Reference" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Complete API documentation for the TMC5160 driver","headline":"📖 API Reference","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/docs/api_reference/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- =============================================================================
+     Custom Head Content for HardFOC Driver Documentation
+     =============================================================================
+     This file is included in the <head> section of every page.
+     It loads custom CSS and JavaScript for enhanced functionality.
+     ============================================================================= -->
+
+<!-- Custom CSS for enhanced styling and fixes -->
+<link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/custom.css">
+
+<!-- Custom JavaScript for interactive features -->
+<script src="/hf-tmc5160-driver/development/assets/js/custom.js" defer></script>
+
+
+
+</head>
+
+<body>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    <div class="side-bar">
+  <div class="site-header" role="banner">
+    <a href="/hf-tmc5160-driver/development/" class="site-title lh-tight">
+  HardFOC TMC5160 Driver - development
+
+</a>
+    <button id="menu-button" class="site-button btn-reset" aria-label="Toggle menu" aria-pressed="false">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Main" id="site-nav" class="site-nav">
+  
+  
+    <ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in HardFOC TMC5160 Driver category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC5160 Driver</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li></ul></li></ul></li></ul>
+  
+</nav>
+
+
+
+
+  
+  
+    <footer class="site-footer">
+      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+    </footer>
+  
+</div>
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header">
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search HardFOC TMC5160 Driver - development" aria-label="Search HardFOC TMC5160 Driver - development" autocomplete="off">
+    <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+    <nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    
+      <li class="aux-nav-list-item">
+        <a href="/hf-tmc5160-driver/development/api/index.html" class="site-button"
+          
+        >
+          📖 API Reference
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver" class="site-button"
+          
+        >
+          📚 GitHub Repository
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/issues" class="site-button"
+          
+        >
+          🐛 Report Issues
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/stargazers" class="site-button"
+          
+        >
+          ⭐ Star on GitHub
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+
+  
+</div>
+
+    <div class="main-content-wrap">
+      <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+  <ol class="breadcrumb-nav-list">
+    <li class="breadcrumb-nav-list-item"><a href="/hf-tmc5160-driver/development/">HardFOC TMC5160 Driver</a></li>
+    <li class="breadcrumb-nav-list-item"><a href="/hf-tmc5160-driver/development/docs/">📚 Documentation</a></li>
+    <li class="breadcrumb-nav-list-item"><span>📖 API Reference</span></li>
+  </ol>
+</nav>
+
+
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <h1 id="api-reference">
+  
+  
+    <a href="#api-reference" class="anchor-heading" aria-labelledby="api-reference"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> API Reference
+  
+  
+</h1>
+    
+
+<p>Complete reference documentation for all public methods and types in the TMC5160 driver.</p>
+<h2 id="source-code">
+  
+  
+    <a href="#source-code" class="anchor-heading" aria-labelledby="source-code"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Source Code
+  
+  
+</h2>
+    
+
+<ul>
+  <li><strong>Main Header</strong>: <a href="../inc/tmc5160.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160.hpp</code></a></li>
+  <li><strong>Communication Interface</strong>: <a href="../inc/tmc5160_comm_interface.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_comm_interface.hpp</code></a></li>
+  <li><strong>Registers</strong>: <a href="../inc/tmc5160_registers.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_registers.hpp</code></a></li>
+  <li><strong>Types</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></li>
+  <li><strong>Unit Conversions</strong>: <a href="../inc/tmc5160_units.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_units.hpp</code></a></li>
+</ul>
+<h2 id="tmc5160-class">
+  
+  
+    <a href="#tmc5160-class" class="anchor-heading" aria-labelledby="tmc5160-class"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> TMC5160 Class
+  
+  
+</h2>
+    
+
+<p>Main driver class for interfacing with the TMC5160 stepper motor controller.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160.hpp</code></a></p>
+<h3 id="constructor">
+  
+  
+    <a href="#constructor" class="anchor-heading" aria-labelledby="constructor"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Constructor
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">TMC5160()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">TMC5160(CommType&amp; comm, uint32_t f_clk = 12000000)</code></td>
+      <td>Construct driver instance with communication interface and clock frequency</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="core-methods">
+  
+  
+    <a href="#core-methods" class="anchor-heading" aria-labelledby="core-methods"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Core Methods
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetComm()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">CommType&amp; GetComm() noexcept</code></td>
+      <td>Reference to comm interface</td>
+      <td>Get communication interface reference</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Initialize()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool Initialize(const DriverConfig&amp; config = DriverConfig()) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Initialize driver with configuration</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Reset()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool Reset() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Perform software reset</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">IsInitialized()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool IsInitialized() const noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> if initialized</td>
+      <td>Check initialization status</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="rampcontrol-subsystem">
+  
+  
+    <a href="#rampcontrol-subsystem" class="anchor-heading" aria-labelledby="rampcontrol-subsystem"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RampControl Subsystem
+  
+  
+</h2>
+    
+
+<p>Ramp control and motion planning subsystem.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160.hpp</code></a></p>
+<h3 id="methods">
+  
+  
+    <a href="#methods" class="anchor-heading" aria-labelledby="methods"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetRampMode()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetRampMode(RampMode mode) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set ramp mode (POSITIONING, VELOCITY_POS, VELOCITY_NEG, HOLD)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetTargetPosition()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetTargetPosition(int32_t position) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set target position for positioning mode</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetCurrentPosition()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">int32_t GetCurrentPosition() noexcept</code></td>
+      <td>Position in steps (0 on error)</td>
+      <td>Get current motor position</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetCurrentPosition()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetCurrentPosition(int32_t position, bool update_encoder = false) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set current position (optionally update encoder)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetMaxSpeed()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetMaxSpeed(float speed) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set maximum velocity (steps/s)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetAcceleration()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetAcceleration(float acceleration) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set acceleration/deceleration (steps/s²)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetAccelerations()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetAccelerations(float acceleration, float deceleration) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set acceleration and deceleration separately</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetRampSpeeds()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetRampSpeeds(float start_speed, float stop_speed, float transition_speed) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set ramp start, stop, and transition speeds</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetCurrentSpeed()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float GetCurrentSpeed() noexcept</code></td>
+      <td>Speed in steps/s (0.0f on error)</td>
+      <td>Get current motor velocity</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">IsTargetReached()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool IsTargetReached() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> if reached</td>
+      <td>Check if target position reached</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">IsTargetVelocityReached()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool IsTargetVelocityReached() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> if reached</td>
+      <td>Check if target velocity reached</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Stop()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool Stop() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Stop motor immediately</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetTargetPositionMm()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetTargetPositionMm(float position_mm, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set target position in millimeters</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetMaxSpeedRpm()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetMaxSpeedRpm(float rpm, uint16_t steps_per_rev) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set maximum speed in RPM</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigureReferenceSwitch()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ConfigureReferenceSwitch(const ReferenceSwitchConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Configure reference switches/endstops</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetLatchedPosition()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">int32_t GetLatchedPosition() noexcept</code></td>
+      <td>Latched position (0 on error)</td>
+      <td>Get position latched on switch event</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetComparePosition()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetComparePosition(int32_t position) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set position comparison register (X_COMPARE)</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="motorcontrol-subsystem">
+  
+  
+    <a href="#motorcontrol-subsystem" class="anchor-heading" aria-labelledby="motorcontrol-subsystem"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> MotorControl Subsystem
+  
+  
+</h2>
+    
+
+<p>Motor control and configuration subsystem.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160.hpp</code></a></p>
+<h3 id="methods-1">
+  
+  
+    <a href="#methods-1" class="anchor-heading" aria-labelledby="methods-1"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Enable()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool Enable() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Enable motor driver</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Disable()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool Disable() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Disable motor driver</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetCurrent()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetCurrent(uint8_t irun, uint8_t ihold) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set run current (0-31) and hold current (0-31)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigureChopper()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ConfigureChopper(const ChopperConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Configure chopper settings (toff, hstrt, hend, tbl, mres, etc.)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigureStealthChop()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ConfigureStealthChop(const StealthChopConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Configure stealthChop PWM mode</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetModeChangeSpeeds()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set velocity thresholds for mode switching</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetGlobalScaler()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetGlobalScaler(uint16_t scaler) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set global current scaler (32-256)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetFreewheelingMode()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetFreewheelingMode(PWMFreewheel mode) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set freewheeling mode (NORMAL, ENABLED, SHORT_LS, SHORT_HS)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigureCoolStep()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ConfigureCoolStep(const CoolStepConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Configure CoolStep current reduction</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigureDcStep()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ConfigureDcStep(const DcStepConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Configure dcStep automatic commutation</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetMicrostepLookupTable()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetMicrostepLookupTable(uint8_t index, uint32_t value) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set microstep lookup table entry (0-7)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetMicrostepLookupTableSegmentation()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetMicrostepLookupTableSegmentation(uint8_t width_sel_0, uint8_t width_sel_1, uint8_t width_sel_2, uint8_t width_sel_3, uint8_t lut_seg_start1, uint8_t lut_seg_start2, uint8_t lut_seg_start3) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set microstep lookup table segmentation</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetMicrostepLookupTableStart()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetMicrostepLookupTableStart(uint16_t start_current) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set microstep lookup table start current</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetupMotorFromSpec()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetupMotorFromSpec(const MotorSpec&amp; motor_spec, const MechanicalSystem* mechanical_system = nullptr) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Setup motor from high-level specifications</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="encoder-subsystem">
+  
+  
+    <a href="#encoder-subsystem" class="anchor-heading" aria-labelledby="encoder-subsystem"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Encoder Subsystem
+  
+  
+</h2>
+    
+
+<p>Encoder integration and closed-loop control subsystem.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160.hpp</code></a></p>
+<h3 id="methods-2">
+  
+  
+    <a href="#methods-2" class="anchor-heading" aria-labelledby="methods-2"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Configure()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool Configure(const EncoderConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Configure encoder settings (polarity, filtering, etc.)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetPosition()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">int32_t GetPosition() noexcept</code></td>
+      <td>Encoder position (0 on error)</td>
+      <td>Get encoder position</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetResolution()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetResolution(int32_t motor_steps, int32_t enc_resolution, bool inverted = false) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set encoder resolution (motor steps per encoder resolution)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetAllowedDeviation()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetAllowedDeviation(int32_t deviation) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set allowed encoder deviation threshold</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">IsDeviationDetected()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool IsDeviationDetected() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> if deviation detected</td>
+      <td>Check if encoder deviation detected</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ClearDeviationFlag()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ClearDeviationFlag() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Clear encoder deviation flag</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="diagnostics-subsystem">
+  
+  
+    <a href="#diagnostics-subsystem" class="anchor-heading" aria-labelledby="diagnostics-subsystem"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Diagnostics Subsystem
+  
+  
+</h2>
+    
+
+<p>Driver status monitoring and diagnostics subsystem.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160.hpp</code></a></p>
+<h3 id="methods-3">
+  
+  
+    <a href="#methods-3" class="anchor-heading" aria-labelledby="methods-3"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetStatus()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">DriverStatus GetStatus() noexcept</code></td>
+      <td>DriverStatus enum</td>
+      <td>Get driver status (OK, CP_UV, S2VSA, etc.)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetStallGuard()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint16_t GetStallGuard() noexcept</code></td>
+      <td>StallGuard value (0-1023)</td>
+      <td>Get StallGuard2 value</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigureStallGuard()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ConfigureStallGuard(const StallGuardConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Configure StallGuard2 settings</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetDriverStatusRegister()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool GetDriverStatusRegister(uint32_t&amp; status) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Read DRV_STATUS register</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetRampStatusRegister()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool GetRampStatusRegister(uint32_t&amp; status) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Read RAMP_STAT register</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetLostSteps()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint32_t GetLostSteps() noexcept</code></td>
+      <td>Lost steps count (0 on error)</td>
+      <td>Get lost steps counter (dcStep mode only)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">PerformSensorlessHoming()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool PerformSensorlessHoming(bool direction, int8_t stall_threshold, float search_speed, int32_t&amp; final_position) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Perform sensorless homing using StallGuard2</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="protection-subsystem">
+  
+  
+    <a href="#protection-subsystem" class="anchor-heading" aria-labelledby="protection-subsystem"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Protection Subsystem
+  
+  
+</h2>
+    
+
+<p>Protection and safety features subsystem.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160.hpp</code></a></p>
+<h3 id="methods-4">
+  
+  
+    <a href="#methods-4" class="anchor-heading" aria-labelledby="methods-4"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigureShortProtection()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ConfigureShortProtection(const ShortProtectionConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Configure short circuit protection</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetShortProtectionLevels()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter, uint8_t shortdelay) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set short protection levels directly</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="communication-interface-methods">
+  
+  
+    <a href="#communication-interface-methods" class="anchor-heading" aria-labelledby="communication-interface-methods"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Communication Interface Methods
+  
+  
+</h2>
+    
+
+<p>Methods available through <code class="language-plaintext highlighter-rouge">GetComm()</code> for direct communication interface access.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_comm_interface.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_comm_interface.hpp</code></a></p>
+<h3 id="methods-5">
+  
+  
+    <a href="#methods-5" class="anchor-heading" aria-labelledby="methods-5"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetMode()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">CommMode GetMode() const noexcept</code></td>
+      <td>CommMode enum</td>
+      <td>Get communication mode (SPI or UART)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ReadRegister()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ReadRegister(uint8_t address, uint32_t&amp; value) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Read 32-bit register</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">WriteRegister()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool WriteRegister(uint8_t address, uint32_t value) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Write 32-bit register</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GpioSet()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set GPIO pin state</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GpioRead()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool GpioRead(TMC5160CtrlPin pin, GpioSignal&amp; signal) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Read GPIO pin state</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GpioSetActive()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool GpioSetActive(TMC5160CtrlPin pin) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set GPIO pin to active state</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GpioSetInactive()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool GpioSetInactive(TMC5160CtrlPin pin) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set GPIO pin to inactive state</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SignalToGpioLevel()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SignalToGpioLevel(TMC5160CtrlPin pin, GpioSignal signal) const noexcept</code></td>
+      <td>GPIO level</td>
+      <td>Convert signal to physical GPIO level</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GpioLevelToSignal()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">GpioSignal GpioLevelToSignal(TMC5160CtrlPin pin, bool gpio_level) const noexcept</code></td>
+      <td>GpioSignal enum</td>
+      <td>Convert GPIO level to signal</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetPinActiveLevel()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetPinActiveLevel(TMC5160CtrlPin pin, bool active_level) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Configure pin active level</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">DelayMs()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">void DelayMs(uint32_t ms) noexcept</code></td>
+      <td>void</td>
+      <td>Delay milliseconds</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">DelayUs()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">void DelayUs(uint32_t us) noexcept</code></td>
+      <td>void</td>
+      <td>Delay microseconds</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">LogDebug()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">void LogDebug(int level, const char* tag, const char* format, ...) noexcept</code></td>
+      <td>void</td>
+      <td>Debug logging</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="enums">
+  
+  
+    <a href="#enums" class="anchor-heading" aria-labelledby="enums"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Enums
+  
+  
+</h2>
+    
+<h3 id="rampmode">
+  
+  
+    <a href="#rampmode" class="anchor-heading" aria-labelledby="rampmode"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RampMode
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">POSITIONING</code></td>
+      <td>Positioning mode - move to target position</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">VELOCITY_POS</code></td>
+      <td>Velocity mode - positive direction</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">VELOCITY_NEG</code></td>
+      <td>Velocity mode - negative direction</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">HOLD</code></td>
+      <td>Hold mode - maintain current position</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+<h3 id="driverstatus">
+  
+  
+    <a href="#driverstatus" class="anchor-heading" aria-labelledby="driverstatus"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> DriverStatus
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">OK</code></td>
+      <td>No errors</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">CP_UV</code></td>
+      <td>Charge pump undervoltage</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">S2VSA</code></td>
+      <td>Short to supply phase A</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">S2VSB</code></td>
+      <td>Short to supply phase B</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">S2GSA</code></td>
+      <td>Short to ground phase A</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">S2GSB</code></td>
+      <td>Short to ground phase B</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">OT</code></td>
+      <td>Overtemperature</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">OTPW</code></td>
+      <td>Overtemperature pre-warning</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">S2GA</code></td>
+      <td>Short to ground phase A</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">S2GB</code></td>
+      <td>Short to ground phase B</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+<h3 id="commmode">
+  
+  
+    <a href="#commmode" class="anchor-heading" aria-labelledby="commmode"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> CommMode
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SPI</code></td>
+      <td>SPI communication mode</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">UART</code></td>
+      <td>UART communication mode</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_comm_interface.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_comm_interface.hpp</code></a></p>
+<h3 id="tmc5160ctrlpin">
+  
+  
+    <a href="#tmc5160ctrlpin" class="anchor-heading" aria-labelledby="tmc5160ctrlpin"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> TMC5160CtrlPin
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">EN</code></td>
+      <td>Enable pin</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">DIR</code></td>
+      <td>Direction pin</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">STEP</code></td>
+      <td>Step pin</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+<h3 id="gpiosignal">
+  
+  
+    <a href="#gpiosignal" class="anchor-heading" aria-labelledby="gpiosignal"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> GpioSignal
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ACTIVE</code></td>
+      <td>Active signal state</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">INACTIVE</code></td>
+      <td>Inactive signal state</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+<h2 id="configuration-structures">
+  
+  
+    <a href="#configuration-structures" class="anchor-heading" aria-labelledby="configuration-structures"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configuration Structures
+  
+  
+</h2>
+    
+<h3 id="driverconfig">
+  
+  
+    <a href="#driverconfig" class="anchor-heading" aria-labelledby="driverconfig"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> DriverConfig
+  
+  
+</h3>
+    
+
+<p>Main driver configuration structure.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_config.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_config.hpp</code></a></p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">motor</code></td>
+      <td><code class="language-plaintext highlighter-rouge">MotorConfig</code></td>
+      <td>Motor current and scaler settings</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">chopper</code></td>
+      <td><code class="language-plaintext highlighter-rouge">ChopperConfig</code></td>
+      <td>Chopper timing and microstep settings</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">stealthchop</code></td>
+      <td><code class="language-plaintext highlighter-rouge">StealthChopConfig</code></td>
+      <td>StealthChop PWM configuration</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">power_stage</code></td>
+      <td><code class="language-plaintext highlighter-rouge">PowerStageConfig</code></td>
+      <td>Power stage driver strength and blanking</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">short_protection</code></td>
+      <td><code class="language-plaintext highlighter-rouge">ShortProtectionConfig</code></td>
+      <td>Short circuit protection levels</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="chopperconfig">
+  
+  
+    <a href="#chopperconfig" class="anchor-heading" aria-labelledby="chopperconfig"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ChopperConfig
+  
+  
+</h3>
+    
+
+<p>Chopper configuration structure.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Range</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">toff</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-15</td>
+      <td>Chopper off time</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">hstrt</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-7</td>
+      <td>Chopper hysteresis start</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">hend</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-15</td>
+      <td>Chopper hysteresis end</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">tbl</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-3</td>
+      <td>Blanking time</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">vsense</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>-</td>
+      <td>Voltage sense mode</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mres</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-8</td>
+      <td>Microstep resolution</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">intpol</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>-</td>
+      <td>Interpolation enable</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">dedge</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>-</td>
+      <td>Double edge step</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="stealthchopconfig">
+  
+  
+    <a href="#stealthchopconfig" class="anchor-heading" aria-labelledby="stealthchopconfig"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> StealthChopConfig
+  
+  
+</h3>
+    
+
+<p>StealthChop PWM configuration structure.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Range</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pwm_ofs</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-255</td>
+      <td>PWM offset</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pwm_grad</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-255</td>
+      <td>PWM gradient</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pwm_freq</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-3</td>
+      <td>PWM frequency</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pwm_autoscale</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>-</td>
+      <td>Auto-scale PWM amplitude</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pwm_autograd</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>-</td>
+      <td>Auto-scale PWM gradient</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pwm_reg</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-15</td>
+      <td>PWM register</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pwm_lim</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-15</td>
+      <td>PWM limit</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="encoderconfig">
+  
+  
+    <a href="#encoderconfig" class="anchor-heading" aria-labelledby="encoderconfig"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> EncoderConfig
+  
+  
+</h3>
+    
+
+<p>Encoder configuration structure.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pol_a</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Encoder A polarity</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pol_b</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Encoder B polarity</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pol_n</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Encoder N polarity</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ignore_ab</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Ignore A/B signals</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">clr_cont</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Clear continuously</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">clr_once</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Clear once</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">sensitivity</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>Sensitivity (0-3)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">clr_enc_x</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Clear encoder on XACTUAL</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">latch_x_act</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Latch XACTUAL</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="stallguardconfig">
+  
+  
+    <a href="#stallguardconfig" class="anchor-heading" aria-labelledby="stallguardconfig"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> StallGuardConfig
+  
+  
+</h3>
+    
+
+<p>StallGuard2 configuration structure.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Range</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">semin</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-15</td>
+      <td>Minimum StallGuard value</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">semax</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-15</td>
+      <td>Maximum StallGuard value</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">seup</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-3</td>
+      <td>StallGuard up step</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">sedn</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-3</td>
+      <td>StallGuard down step</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">seimin</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>-</td>
+      <td>Minimum current</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">sfilt</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>-</td>
+      <td>StallGuard filter</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">sgt</code></td>
+      <td><code class="language-plaintext highlighter-rouge">int8_t</code></td>
+      <td>-64 to 63</td>
+      <td>StallGuard threshold</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="shortprotectionconfig">
+  
+  
+    <a href="#shortprotectionconfig" class="anchor-heading" aria-labelledby="shortprotectionconfig"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ShortProtectionConfig
+  
+  
+</h3>
+    
+
+<p>Short circuit protection configuration structure.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Range</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">s2vs_level</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>4-15</td>
+      <td>Short to VS level</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">s2g_level</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>2-15</td>
+      <td>Short to GND level</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">shortfilter</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-3</td>
+      <td>Short filter time</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">shortdelay</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-1</td>
+      <td>Short delay</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="motorspec">
+  
+  
+    <a href="#motorspec" class="anchor-heading" aria-labelledby="motorspec"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> MotorSpec
+  
+  
+</h3>
+    
+
+<p>Motor specification structure for high-level setup.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">steps_per_rev</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint16_t</code></td>
+      <td>Steps per revolution (typically 200 for 1.8° motors)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">rated_current_ma</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint16_t</code></td>
+      <td>Rated motor current in milliamps</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">rated_voltage_mv</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint16_t</code></td>
+      <td>Rated motor voltage in millivolts</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">winding_resistance_mohm</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint32_t</code></td>
+      <td>Winding resistance in milliohms (optional, 0 = not specified)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">winding_inductance_uh</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint32_t</code></td>
+      <td>Winding inductance in microhenries (optional, 0 = not specified)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">holding_torque_mnm</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint32_t</code></td>
+      <td>Holding torque in milliNewton-meters (optional, 0 = not specified)</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="mechanicalsystem">
+  
+  
+    <a href="#mechanicalsystem" class="anchor-heading" aria-labelledby="mechanicalsystem"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> MechanicalSystem
+  
+  
+</h3>
+    
+
+<p>Mechanical system configuration for unit conversions.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">system_type</code></td>
+      <td><code class="language-plaintext highlighter-rouge">MechanicalSystemType</code></td>
+      <td>System type (DirectDrive, LeadScrew, BeltDrive, Gearbox)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">lead_screw_pitch_mm</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float</code></td>
+      <td>Lead screw pitch in mm (for LeadScrew)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">belt_pulley_teeth</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint16_t</code></td>
+      <td>Number of teeth on motor pulley (for BeltDrive)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">belt_pitch_mm</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float</code></td>
+      <td>Belt pitch in mm (for BeltDrive)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">gear_ratio</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float</code></td>
+      <td>Gear ratio (output/input, for Gearbox)</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="coolstepconfig">
+  
+  
+    <a href="#coolstepconfig" class="anchor-heading" aria-labelledby="coolstepconfig"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> CoolStepConfig
+  
+  
+</h3>
+    
+
+<p>CoolStep current reduction configuration.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Range</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">semin</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-15</td>
+      <td>Minimum StallGuard2 value for CoolStep</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">semax</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-15</td>
+      <td>StallGuard2 hysteresis value</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">seup</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-3</td>
+      <td>Current increment step width</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">sedn</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>0-3</td>
+      <td>Current decrement step speed</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">seimin</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>-</td>
+      <td>Minimum current for smart current control</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">sfilt</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>-</td>
+      <td>Enable StallGuard2 filter</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="referenceswitchconfig">
+  
+  
+    <a href="#referenceswitchconfig" class="anchor-heading" aria-labelledby="referenceswitchconfig"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ReferenceSwitchConfig
+  
+  
+</h3>
+    
+
+<p>Reference switch/endstop configuration.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">stop_left_enable</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Enable automatic motor stop on left switch</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">stop_right_enable</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Enable automatic motor stop on right switch</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pol_stop_left</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Left switch polarity (true=inverted/low active)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pol_stop_right</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Right switch polarity (true=inverted/low active)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">swap_left_right</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Swap left and right switch inputs</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">latch_left_active</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Latch position on active edge of left switch</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">latch_left_inactive</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Latch position on inactive edge of left switch</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">latch_right_active</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Latch position on active edge of right switch</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">latch_right_inactive</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Latch position on inactive edge of right switch</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">en_latch_encoder</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Latch encoder position on switch event</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">en_softstop</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Enable soft stop using deceleration ramp</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="dcstepconfig">
+  
+  
+    <a href="#dcstepconfig" class="anchor-heading" aria-labelledby="dcstepconfig"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> DcStepConfig
+  
+  
+</h3>
+    
+
+<p>dcStep automatic commutation configuration.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">vdc_min</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float</code></td>
+      <td>Velocity threshold for enabling dcStep in steps/s (0.0f = disabled)</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="unit-conversion-functions">
+  
+  
+    <a href="#unit-conversion-functions" class="anchor-heading" aria-labelledby="unit-conversion-functions"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Unit Conversion Functions
+  
+  
+</h2>
+    
+
+<p>Free functions for converting between physical units and driver steps.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_units.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_units.hpp</code></a></p>
+<h3 id="position-conversions">
+  
+  
+    <a href="#position-conversions" class="anchor-heading" aria-labelledby="position-conversions"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Position Conversions
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">MmToSteps()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">int32_t MmToSteps(float mm, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept</code></td>
+      <td>Steps</td>
+      <td>Convert millimeters to steps</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">StepsToMm()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float StepsToMm(int32_t steps, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept</code></td>
+      <td>Millimeters</td>
+      <td>Convert steps to millimeters</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">DegreesToSteps()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">int32_t DegreesToSteps(float degrees, uint16_t steps_per_rev) noexcept</code></td>
+      <td>Steps</td>
+      <td>Convert degrees to steps</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">StepsToDegrees()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float StepsToDegrees(int32_t steps, uint16_t steps_per_rev) noexcept</code></td>
+      <td>Degrees</td>
+      <td>Convert steps to degrees</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">BeltTeethToSteps()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">int32_t BeltTeethToSteps(uint32_t teeth, uint16_t steps_per_rev, uint16_t belt_pulley_teeth) noexcept</code></td>
+      <td>Steps</td>
+      <td>Convert belt teeth to steps</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">StepsToBeltTeeth()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float StepsToBeltTeeth(int32_t steps, uint16_t steps_per_rev, uint16_t belt_pulley_teeth) noexcept</code></td>
+      <td>Belt teeth</td>
+      <td>Convert steps to belt teeth</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="speed-conversions">
+  
+  
+    <a href="#speed-conversions" class="anchor-heading" aria-labelledby="speed-conversions"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Speed Conversions
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">RpmToStepsPerSec()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float RpmToStepsPerSec(float rpm, uint16_t steps_per_rev) noexcept</code></td>
+      <td>Steps/s</td>
+      <td>Convert RPM to steps per second</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">StepsPerSecToRpm()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float StepsPerSecToRpm(float steps_per_sec, uint16_t steps_per_rev) noexcept</code></td>
+      <td>RPM</td>
+      <td>Convert steps per second to RPM</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">MmPerSecToStepsPerSec()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float MmPerSecToStepsPerSec(float mm_per_sec, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept</code></td>
+      <td>Steps/s</td>
+      <td>Convert mm/s to steps/s</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">StepsPerSecToMmPerSec()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float StepsPerSecToMmPerSec(float steps_per_sec, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept</code></td>
+      <td>mm/s</td>
+      <td>Convert steps/s to mm/s</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="acceleration-conversions">
+  
+  
+    <a href="#acceleration-conversions" class="anchor-heading" aria-labelledby="acceleration-conversions"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Acceleration Conversions
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">AccelerationMmToSteps()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float AccelerationMmToSteps(float accel_mm_per_sec2, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept</code></td>
+      <td>Steps/s²</td>
+      <td>Convert mm/s² to steps/s²</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">AccelerationStepsToMm()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float AccelerationStepsToMm(float accel_steps_per_sec2, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept</code></td>
+      <td>mm/s²</td>
+      <td>Convert steps/s² to mm/s²</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="error-handling">
+  
+  
+    <a href="#error-handling" class="anchor-heading" aria-labelledby="error-handling"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Error Handling
+  
+  
+</h2>
+    
+
+<p>The driver uses boolean return values for error handling:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">true</code> indicates success</li>
+  <li><code class="language-plaintext highlighter-rouge">false</code> indicates failure</li>
+</ul>
+
+<p>Always check return values:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// Handle error</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="next-steps">
+  
+  
+    <a href="#next-steps" class="anchor-heading" aria-labelledby="next-steps"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Next Steps
+  
+  
+</h2>
+    
+
+<ul>
+  <li>See <a href="/hf-tmc5160-driver/development/docs/examples/">Examples</a> for usage examples</li>
+  <li>Check <a href="/hf-tmc5160-driver/development/docs/configuration/">Configuration</a> for configuration options</li>
+</ul><hr />
+
+<p><strong>Navigation</strong>
+⬅️ <a href="/hf-tmc5160-driver/development/docs/configuration/">Configuration</a> | <a href="/hf-tmc5160-driver/development/docs/examples/">Next: Examples ➡️</a> | <a href="/hf-tmc5160-driver/development/docs/">Back to Index</a></p>
+
+          
+
+          
+            
+          
+        </main>
+        
+
+  <hr>
+  <footer>
+    
+
+    <!-- =============================================================================
+     Custom Footer Content for HardFOC Driver Documentation
+     =============================================================================
+     This footer is displayed at the bottom of every page.
+     ============================================================================= -->
+
+<footer class="site-footer">
+  <div class="site-footer-credits">
+    <p>Built with ❤️ using <a href="https://just-the-docs.github.io/just-the-docs/">Just the Docs</a></p>
+    <p>
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development/blob/main/LICENSE">GPL v3 License</a> • 
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development">View on GitHub</a>
+    </p>
+  </div>
+</footer>
+
+
+
+    
+  </footer>
+
+
+      </div>
+    </div>
+    
+      
+<button id="search-button" class="search-button btn-reset" aria-label="Focus on search">
+  <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+</button>
+
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+</body>
+</html>
+

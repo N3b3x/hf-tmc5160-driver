@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['getamplitude_0',['GetAmplitude',['../classSinusoidalMotion.html#aa144689e1fd98974312fd8a909216834',1,'SinusoidalMotion']]],
+  ['getcomm_1',['GetComm',['../classtmc5160_1_1TMC5160.html#a721b663605378407cc1303b5c8f5b6fb',1,'tmc5160::TMC5160']]],
+  ['getcurrentposition_2',['GetCurrentPosition',['../structtmc5160_1_1TMC5160_1_1RampControl.html#ab5d6bfba1552092ae38b59484728d229',1,'tmc5160::TMC5160::RampControl']]],
+  ['getcurrentspeed_3',['GetCurrentSpeed',['../structtmc5160_1_1TMC5160_1_1RampControl.html#ab5e5af5bc3d21cf0b495097e4ba985b9',1,'tmc5160::TMC5160::RampControl']]],
+  ['getdriverstatusregister_4',['GetDriverStatusRegister',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#adef74af33774678290eade6ea2a968ab',1,'tmc5160::TMC5160::Diagnostics']]],
+  ['getfrequency_5',['GetFrequency',['../classSinusoidalMotion.html#ad21adf0211f89e9450ce377d5c0fc788',1,'SinusoidalMotion']]],
+  ['getlatchedposition_6',['GetLatchedPosition',['../structtmc5160_1_1TMC5160_1_1RampControl.html#a0211c70d0469eaffc824a9e63c1785a4',1,'tmc5160::TMC5160::RampControl']]],
+  ['getloststeps_7',['GetLostSteps',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#a203b92a84193d1dd595c1557f65bf92f',1,'tmc5160::TMC5160::Diagnostics']]],
+  ['getmode_8',['GetMode',['../classtmc5160_1_1CommInterface.html#a46c4b49c490bef634653fb5083720c0a',1,'tmc5160::CommInterface::GetMode()'],['../classtmc5160_1_1SpiCommInterface.html#ae258b33b551a3ee3f58cce4425c8b2a6',1,'tmc5160::SpiCommInterface::GetMode()'],['../classtmc5160_1_1UartCommInterface.html#a01c82d5366961de5f6342173aedf648c',1,'tmc5160::UartCommInterface::GetMode()'],['../classEsp32SPI.html#a6b547757c5877541d1c188aadd8522c9',1,'Esp32SPI::GetMode()']]],
+  ['getposition_9',['GetPosition',['../structtmc5160_1_1TMC5160_1_1Encoder.html#ab075d6979cd5a2c8328ec109a338f924',1,'tmc5160::TMC5160::Encoder']]],
+  ['getrampstatusregister_10',['GetRampStatusRegister',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#adc4c3ad53d860a37087cf5648f187b44',1,'tmc5160::TMC5160::Diagnostics']]],
+  ['getrounds_11',['GetRounds',['../classSinusoidalMotion.html#a315d00b13a693ce61041721ed36dbfed',1,'SinusoidalMotion']]],
+  ['getslaveaddress_12',['getSlaveAddress',['../classtmc5160_1_1UartCommInterface.html#a1d2961e29464b365c2b8425032e02db7',1,'tmc5160::UartCommInterface']]],
+  ['getstallguard_13',['GetStallGuard',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#a4233fd68c4b3c8912978cd474b2dd0e9',1,'tmc5160::TMC5160::Diagnostics']]],
+  ['getstatus_14',['GetStatus',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#aeb75e99c3181b491be9334cfdf4f806f',1,'tmc5160::TMC5160::Diagnostics']]],
+  ['getstepcount_15',['GetStepCount',['../classSinusoidalMotion.html#aeaefdf22cb97d3eccb97bc73a70aa536',1,'SinusoidalMotion']]],
+  ['gpioleveltosignal_16',['GpioLevelToSignal',['../classtmc5160_1_1CommInterface.html#a867b98108ee6b70cbb86d362fd76baf1',1,'tmc5160::CommInterface']]],
+  ['gpioread_17',['GpioRead',['../classtmc5160_1_1CommInterface.html#a71f53cca7f2c86a1d37755e5d6f6fe8b',1,'tmc5160::CommInterface::GpioRead()'],['../classEsp32SPI.html#acfee848bde351b677ecbc4d69d6381f1',1,'Esp32SPI::GpioRead()']]],
+  ['gpioset_18',['GpioSet',['../classtmc5160_1_1CommInterface.html#a0818553fce7d54fb807d0c381a9738e9',1,'tmc5160::CommInterface::GpioSet()'],['../classEsp32SPI.html#a31c4d53a51a04f8b7d8fab4f5cfca4ca',1,'Esp32SPI::GpioSet()']]],
+  ['gpiosetactive_19',['GpioSetActive',['../classtmc5160_1_1CommInterface.html#a04a535eca26abe5bb4202599a5c16236',1,'tmc5160::CommInterface']]],
+  ['gpiosetinactive_20',['GpioSetInactive',['../classtmc5160_1_1CommInterface.html#ad064b6a453060d10c27ce67ca88158ba',1,'tmc5160::CommInterface']]]
+];

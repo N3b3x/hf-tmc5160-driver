@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['ifcnt_0',['IFCNT',['../namespacetmc5160_1_1Registers.html#aec6f465255df1d3efe68893b9c4d5f3e',1,'tmc5160::Registers']]],
+  ['ignore_5fab_1',['ignore_ab',['../structtmc5160_1_1EncoderConfig.html#a5beb6166a530b4ad376756133ece8350',1,'tmc5160::EncoderConfig']]],
+  ['ignore_5fab_2',['ignore_AB',['../uniontmc5160_1_1ENCMODE__Register.html#a2f13fd5e5e2f611517dcd7c6f12d6288',1,'tmc5160::ENCMODE_Register']]],
+  ['ihold_3',['ihold',['../uniontmc5160_1_1IHOLD__IRUN__Register.html#a0b23ffa535b67bcdf29b0bc2467ce1bc',1,'tmc5160::IHOLD_IRUN_Register::ihold'],['../structtmc5160_1_1MotorParameters.html#a0c9bd33f076960e2adbc223d6747113e',1,'tmc5160::MotorParameters::ihold']]],
+  ['ihold_5firun_4',['IHOLD_IRUN',['../namespacetmc5160_1_1Registers.html#a4be9ec5f992b0991cd00f78c59b1c9e2',1,'tmc5160::Registers']]],
+  ['ihold_5firun_5fregister_5',['IHOLD_IRUN_Register',['../uniontmc5160_1_1IHOLD__IRUN__Register.html',1,'tmc5160']]],
+  ['iholddelay_6',['iholddelay',['../uniontmc5160_1_1IHOLD__IRUN__Register.html#a5f28c945a7125021686dd6add5c247a0',1,'tmc5160::IHOLD_IRUN_Register']]],
+  ['inactive_7',['INACTIVE',['../namespacetmc5160.html#ad4733e3e6e71c8220c4c71ea2dba44b4a6b273343c454f9c53dcfc9c4ccf171d2',1,'tmc5160']]],
+  ['init_5ftime_5f_8',['init_time_',['../classSinusoidalMotion.html#a1528869eb9ec0fc50fa50c1cc17a72ab',1,'SinusoidalMotion']]],
+  ['initialize_9',['Initialize',['../classtmc5160_1_1TMC5160.html#ac90ae8eb92120142753c49fc61fcce89',1,'tmc5160::TMC5160::Initialize()'],['../classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44',1,'Esp32SPI::Initialize()']]],
+  ['initialized_5f_10',['initialized_',['../classtmc5160_1_1TMC5160.html#a18e2cc0dd277443c86ac266f1f5eaba2',1,'tmc5160::TMC5160::initialized_'],['../classEsp32SPI.html#a0920d2de140e51d54c94b5e01eed3fa4',1,'Esp32SPI::initialized_'],['../classSinusoidalMotion.html#a1c3209998e2d3b5c5f7430ed36dc66dd',1,'SinusoidalMotion::initialized_']]],
+  ['installation_11',['🔧 Installation',['../index.html#autotoc_md11',1,'']]],
+  ['interface_12',['Interface',['../classtmc5160_1_1TMC5160.html#autotoc_md1',1,'Communication Interface'],['../group__TMC5160__GPIOControl.html',1,'GPIO Control Interface']]],
+  ['interfaces_13',['Interfaces',['../group__TMC5160__CommInterface.html',1,'Communication Interfaces'],['../group__TMC5160__Subsystems.html',1,'Subsystem Interfaces']]],
+  ['intpol_14',['intpol',['../uniontmc5160_1_1CHOPCONF__Register.html#a9ed25461616557eb1480edf2acf85888',1,'tmc5160::CHOPCONF_Register::intpol'],['../structtmc5160_1_1ChopperConfig.html#a404b826fc57563ee6f9913c3be37d00a',1,'tmc5160::ChopperConfig::intpol']]],
+  ['inverse_15',['INVERSE',['../namespacetmc5160.html#a20e941105f83108e502d1fe328c01c9ea1955bdc302911f376074eb9b02e56639',1,'tmc5160']]],
+  ['io_5finput_5foutput_16',['IO_INPUT_OUTPUT',['../namespacetmc5160_1_1Registers.html#ada7c9166ffd8864c45515309778d3cb5',1,'tmc5160::Registers']]],
+  ['ioin_5fregister_17',['IOIN_Register',['../uniontmc5160_1_1IOIN__Register.html',1,'tmc5160']]],
+  ['irun_18',['irun',['../uniontmc5160_1_1IHOLD__IRUN__Register.html#a7f6d417a35ee5fdd7669659348635593',1,'tmc5160::IHOLD_IRUN_Register::irun'],['../structtmc5160_1_1MotorParameters.html#a85b0794271573d33b1c811285ca14a35',1,'tmc5160::MotorParameters::irun']]],
+  ['isdeviationdetected_19',['IsDeviationDetected',['../structtmc5160_1_1TMC5160_1_1Encoder.html#ac628da3d5d56752e0a9518e59b00b784',1,'tmc5160::TMC5160::Encoder']]],
+  ['isinitialized_20',['IsInitialized',['../classtmc5160_1_1TMC5160.html#a83396df16c903cb74e5d5380f3f2eff2',1,'tmc5160::TMC5160']]],
+  ['istargetreached_21',['IsTargetReached',['../structtmc5160_1_1TMC5160_1_1RampControl.html#a668ce782e665f4b6056d4f08ed10b8f4',1,'tmc5160::TMC5160::RampControl']]],
+  ['istargetvelocityreached_22',['IsTargetVelocityReached',['../structtmc5160_1_1TMC5160_1_1RampControl.html#ac54d81af1622f7f946d1feda09fcf04d',1,'tmc5160::TMC5160::RampControl']]]
+];

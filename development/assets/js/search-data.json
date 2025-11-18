@@ -1,0 +1,1808 @@
+{"0": {
+    "doc": "HardFOC TMC5160 Driver",
+    "title": "HF-TMC5160 Driver",
+    "content": "C++17 hardware-agnostic driver for Trinamic TMC5160 stepper motor controller with advanced features . ",
+    "url": "/hf-tmc5160-driver/development/#hf-tmc5160-driver",
+    
+    "relUrl": "/#hf-tmc5160-driver"
+  },"1": {
+    "doc": "HardFOC TMC5160 Driver",
+    "title": "📚 Table of Contents",
+    "content": ". | Overview | Features | Quick Start | Installation | API Reference | Examples | Documentation | Contributing | License | . ",
+    "url": "/hf-tmc5160-driver/development/#-table-of-contents",
+    
+    "relUrl": "/#-table-of-contents"
+  },"2": {
+    "doc": "HardFOC TMC5160 Driver",
+    "title": "📦 Overview",
+    "content": "📖 📚🌐 Live Complete Documentation - Interactive guides, examples, and step-by-step tutorials . HF-TMC5160 is a portable C++17 driver for the Trinamic TMC5160 stepper motor controller IC. The TMC5160 is a sophisticated stepper motor driver supporting advanced features including stealthChop for silent operation, spreadCycle for high torque, StallGuard2 for stall detection, and encoder support for closed-loop control. The driver provides hardware-agnostic communication interfaces, allowing it to run on any platform (ESP32, STM32, etc.) with SPI or UART. The driver exposes the full register interface, providing access to all TMC5160 registers through an intuitive C++ API. It supports ramp control (positioning, velocity, hold modes), motor current configuration, chopper settings, stealthChop PWM mode, encoder integration, and comprehensive protection systems. ",
+    "url": "/hf-tmc5160-driver/development/#-overview",
+    
+    "relUrl": "/#-overview"
+  },"3": {
+    "doc": "HardFOC TMC5160 Driver",
+    "title": "✨ Features",
+    "content": ". | ✅ Ramp Control: Positioning, velocity, and hold modes with configurable acceleration profiles | ✅ Current Control: Configurable run and hold currents with global scaler | ✅ Chopper Modes: spreadCycle and stealthChop operation modes | ✅ StealthChop: Silent operation with automatic PWM amplitude scaling | ✅ StallGuard2: Stall detection and prevention with configurable thresholds | ✅ Encoder Support: Closed-loop control with encoder feedback and deviation detection | ✅ Protection Systems: Short circuit, overtemperature, and overvoltage protection | ✅ Hardware Agnostic: SPI or UART interface for platform independence | ✅ Modern C++17: Type-safe API with RAII principles | ✅ Zero Overhead: CRTP-based design for compile-time polymorphism | . ",
+    "url": "/hf-tmc5160-driver/development/#-features",
+    
+    "relUrl": "/#-features"
+  },"4": {
+    "doc": "HardFOC TMC5160 Driver",
+    "title": "🚀 Quick Start",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 . | #include \"inc/tmc5160.hpp\" // 1. Implement the communication interface (see platform_integration.md) class MySPI : public tmc5160::SpiCommInterface&lt;MySPI&gt; { // ... implement required methods }; // 2. Create driver instance MySPI spi; tmc5160::TMC5160 driver(spi); // 3. Initialize driver tmc5160::DriverConfig cfg{}; cfg.motor.irun = 20; // Run current (0-31) cfg.motor.ihold = 10; // Hold current (0-31) driver.Initialize(cfg); // 4. Configure and start motor driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING); driver.rampControl.SetTargetPosition(1000); driver.rampControl.SetMaxSpeed(1000.0f); driver.rampControl.SetAcceleration(500.0f); driver.motorControl.Enable(); . | . For detailed setup, see Installation and Quick Start Guide. ",
+    "url": "/hf-tmc5160-driver/development/#-quick-start",
+    
+    "relUrl": "/#-quick-start"
+  },"5": {
+    "doc": "HardFOC TMC5160 Driver",
+    "title": "🔧 Installation",
+    "content": ". | Clone or copy the driver files into your project | Implement the communication interface for your platform (see Platform Integration) | Include the header in your code: | 1 . | #include \"inc/tmc5160.hpp\" . | . | Compile with a C++17 or newer compiler | . For detailed installation instructions, see docs/installation.md. ",
+    "url": "/hf-tmc5160-driver/development/#-installation",
+    
+    "relUrl": "/#-installation"
+  },"6": {
+    "doc": "HardFOC TMC5160 Driver",
+    "title": "📖 API Reference",
+    "content": "| Method | Description | . | Initialize() | Initialize the driver with configuration | . | rampControl.SetRampMode() | Set ramp mode (positioning, velocity, hold) | . | rampControl.SetTargetPosition() | Set target position for positioning mode | . | rampControl.SetMaxSpeed() | Set maximum velocity | . | rampControl.SetAcceleration() | Set acceleration/deceleration | . | motorControl.Enable() | Enable the motor driver | . | motorControl.Disable() | Disable the motor driver | . | motorControl.SetCurrent() | Set run and hold currents | . | diagnostics.GetStatus() | Get driver status and error conditions | . For complete API documentation, see docs/api_reference.md. ",
+    "url": "/hf-tmc5160-driver/development/#-api-reference",
+    
+    "relUrl": "/#-api-reference"
+  },"7": {
+    "doc": "HardFOC TMC5160 Driver",
+    "title": "📊 Examples",
+    "content": "For ESP32 examples, see the examples/esp32 directory. Detailed example walkthroughs are available in docs/examples.md. ",
+    "url": "/hf-tmc5160-driver/development/#-examples",
+    
+    "relUrl": "/#-examples"
+  },"8": {
+    "doc": "HardFOC TMC5160 Driver",
+    "title": "📚 Documentation",
+    "content": "For complete documentation, see the docs directory. ",
+    "url": "/hf-tmc5160-driver/development/#-documentation",
+    
+    "relUrl": "/#-documentation"
+  },"9": {
+    "doc": "HardFOC TMC5160 Driver",
+    "title": "🤝 Contributing",
+    "content": "Pull requests and suggestions are welcome! Please follow the existing code style and include tests for new features. ",
+    "url": "/hf-tmc5160-driver/development/#-contributing",
+    
+    "relUrl": "/#-contributing"
+  },"10": {
+    "doc": "HardFOC TMC5160 Driver",
+    "title": "📄 License",
+    "content": "This project is licensed under the GNU General Public License v3.0. See the LICENSE file for details. ",
+    "url": "/hf-tmc5160-driver/development/#-license",
+    
+    "relUrl": "/#-license"
+  },"11": {
+    "doc": "HardFOC TMC5160 Driver",
+    "title": "HardFOC TMC5160 Driver",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/",
+    
+    "relUrl": "/"
+  },"12": {
+    "doc": "📖 API Reference",
+    "title": "API Reference",
+    "content": "Complete reference documentation for all public methods and types in the TMC5160 driver. ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#api-reference",
+    
+    "relUrl": "/docs/api_reference/#api-reference"
+  },"13": {
+    "doc": "📖 API Reference",
+    "title": "Source Code",
+    "content": ". | Main Header: inc/tmc5160.hpp | Communication Interface: inc/tmc5160_comm_interface.hpp | Registers: inc/tmc5160_registers.hpp | Types: inc/tmc5160_types.hpp | Unit Conversions: inc/tmc5160_units.hpp | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#source-code",
+    
+    "relUrl": "/docs/api_reference/#source-code"
+  },"14": {
+    "doc": "📖 API Reference",
+    "title": "TMC5160 Class",
+    "content": "Main driver class for interfacing with the TMC5160 stepper motor controller. Location: inc/tmc5160.hpp . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#tmc5160-class",
+    
+    "relUrl": "/docs/api_reference/#tmc5160-class"
+  },"15": {
+    "doc": "📖 API Reference",
+    "title": "Constructor",
+    "content": "| Method | Signature | Description | . | TMC5160() | TMC5160(CommType&amp; comm, uint32_t f_clk = 12000000) | Construct driver instance with communication interface and clock frequency | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#constructor",
+    
+    "relUrl": "/docs/api_reference/#constructor"
+  },"16": {
+    "doc": "📖 API Reference",
+    "title": "Core Methods",
+    "content": "| Method | Signature | Returns | Description | . | GetComm() | CommType&amp; GetComm() noexcept | Reference to comm interface | Get communication interface reference | . | Initialize() | bool Initialize(const DriverConfig&amp; config = DriverConfig()) noexcept | true on success | Initialize driver with configuration | . | Reset() | bool Reset() noexcept | true on success | Perform software reset | . | IsInitialized() | bool IsInitialized() const noexcept | true if initialized | Check initialization status | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#core-methods",
+    
+    "relUrl": "/docs/api_reference/#core-methods"
+  },"17": {
+    "doc": "📖 API Reference",
+    "title": "RampControl Subsystem",
+    "content": "Ramp control and motion planning subsystem. Location: inc/tmc5160.hpp . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#rampcontrol-subsystem",
+    
+    "relUrl": "/docs/api_reference/#rampcontrol-subsystem"
+  },"18": {
+    "doc": "📖 API Reference",
+    "title": "Methods",
+    "content": "| Method | Signature | Returns | Description | . | SetRampMode() | bool SetRampMode(RampMode mode) noexcept | true on success | Set ramp mode (POSITIONING, VELOCITY_POS, VELOCITY_NEG, HOLD) | . | SetTargetPosition() | bool SetTargetPosition(int32_t position) noexcept | true on success | Set target position for positioning mode | . | GetCurrentPosition() | int32_t GetCurrentPosition() noexcept | Position in steps (0 on error) | Get current motor position | . | SetCurrentPosition() | bool SetCurrentPosition(int32_t position, bool update_encoder = false) noexcept | true on success | Set current position (optionally update encoder) | . | SetMaxSpeed() | bool SetMaxSpeed(float speed) noexcept | true on success | Set maximum velocity (steps/s) | . | SetAcceleration() | bool SetAcceleration(float acceleration) noexcept | true on success | Set acceleration/deceleration (steps/s²) | . | SetAccelerations() | bool SetAccelerations(float acceleration, float deceleration) noexcept | true on success | Set acceleration and deceleration separately | . | SetRampSpeeds() | bool SetRampSpeeds(float start_speed, float stop_speed, float transition_speed) noexcept | true on success | Set ramp start, stop, and transition speeds | . | GetCurrentSpeed() | float GetCurrentSpeed() noexcept | Speed in steps/s (0.0f on error) | Get current motor velocity | . | IsTargetReached() | bool IsTargetReached() noexcept | true if reached | Check if target position reached | . | IsTargetVelocityReached() | bool IsTargetVelocityReached() noexcept | true if reached | Check if target velocity reached | . | Stop() | bool Stop() noexcept | true on success | Stop motor immediately | . | SetTargetPositionMm() | bool SetTargetPositionMm(float position_mm, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept | true on success | Set target position in millimeters | . | SetMaxSpeedRpm() | bool SetMaxSpeedRpm(float rpm, uint16_t steps_per_rev) noexcept | true on success | Set maximum speed in RPM | . | ConfigureReferenceSwitch() | bool ConfigureReferenceSwitch(const ReferenceSwitchConfig&amp; config) noexcept | true on success | Configure reference switches/endstops | . | GetLatchedPosition() | int32_t GetLatchedPosition() noexcept | Latched position (0 on error) | Get position latched on switch event | . | SetComparePosition() | bool SetComparePosition(int32_t position) noexcept | true on success | Set position comparison register (X_COMPARE) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#methods",
+    
+    "relUrl": "/docs/api_reference/#methods"
+  },"19": {
+    "doc": "📖 API Reference",
+    "title": "MotorControl Subsystem",
+    "content": "Motor control and configuration subsystem. Location: inc/tmc5160.hpp . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#motorcontrol-subsystem",
+    
+    "relUrl": "/docs/api_reference/#motorcontrol-subsystem"
+  },"20": {
+    "doc": "📖 API Reference",
+    "title": "Methods",
+    "content": "| Method | Signature | Returns | Description | . | Enable() | bool Enable() noexcept | true on success | Enable motor driver | . | Disable() | bool Disable() noexcept | true on success | Disable motor driver | . | SetCurrent() | bool SetCurrent(uint8_t irun, uint8_t ihold) noexcept | true on success | Set run current (0-31) and hold current (0-31) | . | ConfigureChopper() | bool ConfigureChopper(const ChopperConfig&amp; config) noexcept | true on success | Configure chopper settings (toff, hstrt, hend, tbl, mres, etc.) | . | ConfigureStealthChop() | bool ConfigureStealthChop(const StealthChopConfig&amp; config) noexcept | true on success | Configure stealthChop PWM mode | . | SetModeChangeSpeeds() | bool SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs) noexcept | true on success | Set velocity thresholds for mode switching | . | SetGlobalScaler() | bool SetGlobalScaler(uint16_t scaler) noexcept | true on success | Set global current scaler (32-256) | . | SetFreewheelingMode() | bool SetFreewheelingMode(PWMFreewheel mode) noexcept | true on success | Set freewheeling mode (NORMAL, ENABLED, SHORT_LS, SHORT_HS) | . | ConfigureCoolStep() | bool ConfigureCoolStep(const CoolStepConfig&amp; config) noexcept | true on success | Configure CoolStep current reduction | . | ConfigureDcStep() | bool ConfigureDcStep(const DcStepConfig&amp; config) noexcept | true on success | Configure dcStep automatic commutation | . | SetMicrostepLookupTable() | bool SetMicrostepLookupTable(uint8_t index, uint32_t value) noexcept | true on success | Set microstep lookup table entry (0-7) | . | SetMicrostepLookupTableSegmentation() | bool SetMicrostepLookupTableSegmentation(uint8_t width_sel_0, uint8_t width_sel_1, uint8_t width_sel_2, uint8_t width_sel_3, uint8_t lut_seg_start1, uint8_t lut_seg_start2, uint8_t lut_seg_start3) noexcept | true on success | Set microstep lookup table segmentation | . | SetMicrostepLookupTableStart() | bool SetMicrostepLookupTableStart(uint16_t start_current) noexcept | true on success | Set microstep lookup table start current | . | SetupMotorFromSpec() | bool SetupMotorFromSpec(const MotorSpec&amp; motor_spec, const MechanicalSystem* mechanical_system = nullptr) noexcept | true on success | Setup motor from high-level specifications | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#methods-1",
+    
+    "relUrl": "/docs/api_reference/#methods-1"
+  },"21": {
+    "doc": "📖 API Reference",
+    "title": "Encoder Subsystem",
+    "content": "Encoder integration and closed-loop control subsystem. Location: inc/tmc5160.hpp . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#encoder-subsystem",
+    
+    "relUrl": "/docs/api_reference/#encoder-subsystem"
+  },"22": {
+    "doc": "📖 API Reference",
+    "title": "Methods",
+    "content": "| Method | Signature | Returns | Description | . | Configure() | bool Configure(const EncoderConfig&amp; config) noexcept | true on success | Configure encoder settings (polarity, filtering, etc.) | . | GetPosition() | int32_t GetPosition() noexcept | Encoder position (0 on error) | Get encoder position | . | SetResolution() | bool SetResolution(int32_t motor_steps, int32_t enc_resolution, bool inverted = false) noexcept | true on success | Set encoder resolution (motor steps per encoder resolution) | . | SetAllowedDeviation() | bool SetAllowedDeviation(int32_t deviation) noexcept | true on success | Set allowed encoder deviation threshold | . | IsDeviationDetected() | bool IsDeviationDetected() noexcept | true if deviation detected | Check if encoder deviation detected | . | ClearDeviationFlag() | bool ClearDeviationFlag() noexcept | true on success | Clear encoder deviation flag | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#methods-2",
+    
+    "relUrl": "/docs/api_reference/#methods-2"
+  },"23": {
+    "doc": "📖 API Reference",
+    "title": "Diagnostics Subsystem",
+    "content": "Driver status monitoring and diagnostics subsystem. Location: inc/tmc5160.hpp . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#diagnostics-subsystem",
+    
+    "relUrl": "/docs/api_reference/#diagnostics-subsystem"
+  },"24": {
+    "doc": "📖 API Reference",
+    "title": "Methods",
+    "content": "| Method | Signature | Returns | Description | . | GetStatus() | DriverStatus GetStatus() noexcept | DriverStatus enum | Get driver status (OK, CP_UV, S2VSA, etc.) | . | GetStallGuard() | uint16_t GetStallGuard() noexcept | StallGuard value (0-1023) | Get StallGuard2 value | . | ConfigureStallGuard() | bool ConfigureStallGuard(const StallGuardConfig&amp; config) noexcept | true on success | Configure StallGuard2 settings | . | GetDriverStatusRegister() | bool GetDriverStatusRegister(uint32_t&amp; status) noexcept | true on success | Read DRV_STATUS register | . | GetRampStatusRegister() | bool GetRampStatusRegister(uint32_t&amp; status) noexcept | true on success | Read RAMP_STAT register | . | GetLostSteps() | uint32_t GetLostSteps() noexcept | Lost steps count (0 on error) | Get lost steps counter (dcStep mode only) | . | PerformSensorlessHoming() | bool PerformSensorlessHoming(bool direction, int8_t stall_threshold, float search_speed, int32_t&amp; final_position) noexcept | true on success | Perform sensorless homing using StallGuard2 | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#methods-3",
+    
+    "relUrl": "/docs/api_reference/#methods-3"
+  },"25": {
+    "doc": "📖 API Reference",
+    "title": "Protection Subsystem",
+    "content": "Protection and safety features subsystem. Location: inc/tmc5160.hpp . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#protection-subsystem",
+    
+    "relUrl": "/docs/api_reference/#protection-subsystem"
+  },"26": {
+    "doc": "📖 API Reference",
+    "title": "Methods",
+    "content": "| Method | Signature | Returns | Description | . | ConfigureShortProtection() | bool ConfigureShortProtection(const ShortProtectionConfig&amp; config) noexcept | true on success | Configure short circuit protection | . | SetShortProtectionLevels() | bool SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter, uint8_t shortdelay) noexcept | true on success | Set short protection levels directly | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#methods-4",
+    
+    "relUrl": "/docs/api_reference/#methods-4"
+  },"27": {
+    "doc": "📖 API Reference",
+    "title": "Communication Interface Methods",
+    "content": "Methods available through GetComm() for direct communication interface access. Location: inc/tmc5160_comm_interface.hpp . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#communication-interface-methods",
+    
+    "relUrl": "/docs/api_reference/#communication-interface-methods"
+  },"28": {
+    "doc": "📖 API Reference",
+    "title": "Methods",
+    "content": "| Method | Signature | Returns | Description | . | GetMode() | CommMode GetMode() const noexcept | CommMode enum | Get communication mode (SPI or UART) | . | ReadRegister() | bool ReadRegister(uint8_t address, uint32_t&amp; value) noexcept | true on success | Read 32-bit register | . | WriteRegister() | bool WriteRegister(uint8_t address, uint32_t value) noexcept | true on success | Write 32-bit register | . | GpioSet() | bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) noexcept | true on success | Set GPIO pin state | . | GpioRead() | bool GpioRead(TMC5160CtrlPin pin, GpioSignal&amp; signal) noexcept | true on success | Read GPIO pin state | . | GpioSetActive() | bool GpioSetActive(TMC5160CtrlPin pin) noexcept | true on success | Set GPIO pin to active state | . | GpioSetInactive() | bool GpioSetInactive(TMC5160CtrlPin pin) noexcept | true on success | Set GPIO pin to inactive state | . | SignalToGpioLevel() | bool SignalToGpioLevel(TMC5160CtrlPin pin, GpioSignal signal) const noexcept | GPIO level | Convert signal to physical GPIO level | . | GpioLevelToSignal() | GpioSignal GpioLevelToSignal(TMC5160CtrlPin pin, bool gpio_level) const noexcept | GpioSignal enum | Convert GPIO level to signal | . | SetPinActiveLevel() | bool SetPinActiveLevel(TMC5160CtrlPin pin, bool active_level) noexcept | true on success | Configure pin active level | . | DelayMs() | void DelayMs(uint32_t ms) noexcept | void | Delay milliseconds | . | DelayUs() | void DelayUs(uint32_t us) noexcept | void | Delay microseconds | . | LogDebug() | void LogDebug(int level, const char* tag, const char* format, ...) noexcept | void | Debug logging | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#methods-5",
+    
+    "relUrl": "/docs/api_reference/#methods-5"
+  },"29": {
+    "doc": "📖 API Reference",
+    "title": "Enums",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#enums",
+    
+    "relUrl": "/docs/api_reference/#enums"
+  },"30": {
+    "doc": "📖 API Reference",
+    "title": "RampMode",
+    "content": "| Value | Description | . | POSITIONING | Positioning mode - move to target position | . | VELOCITY_POS | Velocity mode - positive direction | . | VELOCITY_NEG | Velocity mode - negative direction | . | HOLD | Hold mode - maintain current position | . Location: inc/tmc5160_types.hpp . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#rampmode",
+    
+    "relUrl": "/docs/api_reference/#rampmode"
+  },"31": {
+    "doc": "📖 API Reference",
+    "title": "DriverStatus",
+    "content": "| Value | Description | . | OK | No errors | . | CP_UV | Charge pump undervoltage | . | S2VSA | Short to supply phase A | . | S2VSB | Short to supply phase B | . | S2GSA | Short to ground phase A | . | S2GSB | Short to ground phase B | . | OT | Overtemperature | . | OTPW | Overtemperature pre-warning | . | S2GA | Short to ground phase A | . | S2GB | Short to ground phase B | . Location: inc/tmc5160_types.hpp . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#driverstatus",
+    
+    "relUrl": "/docs/api_reference/#driverstatus"
+  },"32": {
+    "doc": "📖 API Reference",
+    "title": "CommMode",
+    "content": "| Value | Description | . | SPI | SPI communication mode | . | UART | UART communication mode | . Location: inc/tmc5160_comm_interface.hpp . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#commmode",
+    
+    "relUrl": "/docs/api_reference/#commmode"
+  },"33": {
+    "doc": "📖 API Reference",
+    "title": "TMC5160CtrlPin",
+    "content": "| Value | Description | . | EN | Enable pin | . | DIR | Direction pin | . | STEP | Step pin | . Location: inc/tmc5160_types.hpp . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#tmc5160ctrlpin",
+    
+    "relUrl": "/docs/api_reference/#tmc5160ctrlpin"
+  },"34": {
+    "doc": "📖 API Reference",
+    "title": "GpioSignal",
+    "content": "| Value | Description | . | ACTIVE | Active signal state | . | INACTIVE | Inactive signal state | . Location: inc/tmc5160_types.hpp . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#gpiosignal",
+    
+    "relUrl": "/docs/api_reference/#gpiosignal"
+  },"35": {
+    "doc": "📖 API Reference",
+    "title": "Configuration Structures",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#configuration-structures",
+    
+    "relUrl": "/docs/api_reference/#configuration-structures"
+  },"36": {
+    "doc": "📖 API Reference",
+    "title": "DriverConfig",
+    "content": "Main driver configuration structure. Location: inc/tmc5160_config.hpp . | Field | Type | Description | . | motor | MotorConfig | Motor current and scaler settings | . | chopper | ChopperConfig | Chopper timing and microstep settings | . | stealthchop | StealthChopConfig | StealthChop PWM configuration | . | power_stage | PowerStageConfig | Power stage driver strength and blanking | . | short_protection | ShortProtectionConfig | Short circuit protection levels | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#driverconfig",
+    
+    "relUrl": "/docs/api_reference/#driverconfig"
+  },"37": {
+    "doc": "📖 API Reference",
+    "title": "ChopperConfig",
+    "content": "Chopper configuration structure. Location: inc/tmc5160_types.hpp . | Field | Type | Range | Description | . | toff | uint8_t | 0-15 | Chopper off time | . | hstrt | uint8_t | 0-7 | Chopper hysteresis start | . | hend | uint8_t | 0-15 | Chopper hysteresis end | . | tbl | uint8_t | 0-3 | Blanking time | . | vsense | bool | - | Voltage sense mode | . | mres | uint8_t | 0-8 | Microstep resolution | . | intpol | bool | - | Interpolation enable | . | dedge | bool | - | Double edge step | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#chopperconfig",
+    
+    "relUrl": "/docs/api_reference/#chopperconfig"
+  },"38": {
+    "doc": "📖 API Reference",
+    "title": "StealthChopConfig",
+    "content": "StealthChop PWM configuration structure. Location: inc/tmc5160_types.hpp . | Field | Type | Range | Description | . | pwm_ofs | uint8_t | 0-255 | PWM offset | . | pwm_grad | uint8_t | 0-255 | PWM gradient | . | pwm_freq | uint8_t | 0-3 | PWM frequency | . | pwm_autoscale | bool | - | Auto-scale PWM amplitude | . | pwm_autograd | bool | - | Auto-scale PWM gradient | . | pwm_reg | uint8_t | 0-15 | PWM register | . | pwm_lim | uint8_t | 0-15 | PWM limit | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#stealthchopconfig",
+    
+    "relUrl": "/docs/api_reference/#stealthchopconfig"
+  },"39": {
+    "doc": "📖 API Reference",
+    "title": "EncoderConfig",
+    "content": "Encoder configuration structure. Location: inc/tmc5160_types.hpp . | Field | Type | Description | . | pol_a | bool | Encoder A polarity | . | pol_b | bool | Encoder B polarity | . | pol_n | bool | Encoder N polarity | . | ignore_ab | bool | Ignore A/B signals | . | clr_cont | bool | Clear continuously | . | clr_once | bool | Clear once | . | sensitivity | uint8_t | Sensitivity (0-3) | . | clr_enc_x | bool | Clear encoder on XACTUAL | . | latch_x_act | bool | Latch XACTUAL | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#encoderconfig",
+    
+    "relUrl": "/docs/api_reference/#encoderconfig"
+  },"40": {
+    "doc": "📖 API Reference",
+    "title": "StallGuardConfig",
+    "content": "StallGuard2 configuration structure. Location: inc/tmc5160_types.hpp . | Field | Type | Range | Description | . | semin | uint8_t | 0-15 | Minimum StallGuard value | . | semax | uint8_t | 0-15 | Maximum StallGuard value | . | seup | uint8_t | 0-3 | StallGuard up step | . | sedn | uint8_t | 0-3 | StallGuard down step | . | seimin | bool | - | Minimum current | . | sfilt | bool | - | StallGuard filter | . | sgt | int8_t | -64 to 63 | StallGuard threshold | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#stallguardconfig",
+    
+    "relUrl": "/docs/api_reference/#stallguardconfig"
+  },"41": {
+    "doc": "📖 API Reference",
+    "title": "ShortProtectionConfig",
+    "content": "Short circuit protection configuration structure. Location: inc/tmc5160_types.hpp . | Field | Type | Range | Description | . | s2vs_level | uint8_t | 4-15 | Short to VS level | . | s2g_level | uint8_t | 2-15 | Short to GND level | . | shortfilter | uint8_t | 0-3 | Short filter time | . | shortdelay | uint8_t | 0-1 | Short delay | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#shortprotectionconfig",
+    
+    "relUrl": "/docs/api_reference/#shortprotectionconfig"
+  },"42": {
+    "doc": "📖 API Reference",
+    "title": "MotorSpec",
+    "content": "Motor specification structure for high-level setup. Location: inc/tmc5160_types.hpp . | Field | Type | Description | . | steps_per_rev | uint16_t | Steps per revolution (typically 200 for 1.8° motors) | . | rated_current_ma | uint16_t | Rated motor current in milliamps | . | rated_voltage_mv | uint16_t | Rated motor voltage in millivolts | . | winding_resistance_mohm | uint32_t | Winding resistance in milliohms (optional, 0 = not specified) | . | winding_inductance_uh | uint32_t | Winding inductance in microhenries (optional, 0 = not specified) | . | holding_torque_mnm | uint32_t | Holding torque in milliNewton-meters (optional, 0 = not specified) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#motorspec",
+    
+    "relUrl": "/docs/api_reference/#motorspec"
+  },"43": {
+    "doc": "📖 API Reference",
+    "title": "MechanicalSystem",
+    "content": "Mechanical system configuration for unit conversions. Location: inc/tmc5160_types.hpp . | Field | Type | Description | . | system_type | MechanicalSystemType | System type (DirectDrive, LeadScrew, BeltDrive, Gearbox) | . | lead_screw_pitch_mm | float | Lead screw pitch in mm (for LeadScrew) | . | belt_pulley_teeth | uint16_t | Number of teeth on motor pulley (for BeltDrive) | . | belt_pitch_mm | float | Belt pitch in mm (for BeltDrive) | . | gear_ratio | float | Gear ratio (output/input, for Gearbox) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#mechanicalsystem",
+    
+    "relUrl": "/docs/api_reference/#mechanicalsystem"
+  },"44": {
+    "doc": "📖 API Reference",
+    "title": "CoolStepConfig",
+    "content": "CoolStep current reduction configuration. Location: inc/tmc5160_types.hpp . | Field | Type | Range | Description | . | semin | uint8_t | 0-15 | Minimum StallGuard2 value for CoolStep | . | semax | uint8_t | 0-15 | StallGuard2 hysteresis value | . | seup | uint8_t | 0-3 | Current increment step width | . | sedn | uint8_t | 0-3 | Current decrement step speed | . | seimin | bool | - | Minimum current for smart current control | . | sfilt | bool | - | Enable StallGuard2 filter | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#coolstepconfig",
+    
+    "relUrl": "/docs/api_reference/#coolstepconfig"
+  },"45": {
+    "doc": "📖 API Reference",
+    "title": "ReferenceSwitchConfig",
+    "content": "Reference switch/endstop configuration. Location: inc/tmc5160_types.hpp . | Field | Type | Description | . | stop_left_enable | bool | Enable automatic motor stop on left switch | . | stop_right_enable | bool | Enable automatic motor stop on right switch | . | pol_stop_left | bool | Left switch polarity (true=inverted/low active) | . | pol_stop_right | bool | Right switch polarity (true=inverted/low active) | . | swap_left_right | bool | Swap left and right switch inputs | . | latch_left_active | bool | Latch position on active edge of left switch | . | latch_left_inactive | bool | Latch position on inactive edge of left switch | . | latch_right_active | bool | Latch position on active edge of right switch | . | latch_right_inactive | bool | Latch position on inactive edge of right switch | . | en_latch_encoder | bool | Latch encoder position on switch event | . | en_softstop | bool | Enable soft stop using deceleration ramp | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#referenceswitchconfig",
+    
+    "relUrl": "/docs/api_reference/#referenceswitchconfig"
+  },"46": {
+    "doc": "📖 API Reference",
+    "title": "DcStepConfig",
+    "content": "dcStep automatic commutation configuration. Location: inc/tmc5160_types.hpp . | Field | Type | Description | . | vdc_min | float | Velocity threshold for enabling dcStep in steps/s (0.0f = disabled) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#dcstepconfig",
+    
+    "relUrl": "/docs/api_reference/#dcstepconfig"
+  },"47": {
+    "doc": "📖 API Reference",
+    "title": "Unit Conversion Functions",
+    "content": "Free functions for converting between physical units and driver steps. Location: inc/tmc5160_units.hpp . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#unit-conversion-functions",
+    
+    "relUrl": "/docs/api_reference/#unit-conversion-functions"
+  },"48": {
+    "doc": "📖 API Reference",
+    "title": "Position Conversions",
+    "content": "| Function | Signature | Returns | Description | . | MmToSteps() | int32_t MmToSteps(float mm, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept | Steps | Convert millimeters to steps | . | StepsToMm() | float StepsToMm(int32_t steps, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept | Millimeters | Convert steps to millimeters | . | DegreesToSteps() | int32_t DegreesToSteps(float degrees, uint16_t steps_per_rev) noexcept | Steps | Convert degrees to steps | . | StepsToDegrees() | float StepsToDegrees(int32_t steps, uint16_t steps_per_rev) noexcept | Degrees | Convert steps to degrees | . | BeltTeethToSteps() | int32_t BeltTeethToSteps(uint32_t teeth, uint16_t steps_per_rev, uint16_t belt_pulley_teeth) noexcept | Steps | Convert belt teeth to steps | . | StepsToBeltTeeth() | float StepsToBeltTeeth(int32_t steps, uint16_t steps_per_rev, uint16_t belt_pulley_teeth) noexcept | Belt teeth | Convert steps to belt teeth | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#position-conversions",
+    
+    "relUrl": "/docs/api_reference/#position-conversions"
+  },"49": {
+    "doc": "📖 API Reference",
+    "title": "Speed Conversions",
+    "content": "| Function | Signature | Returns | Description | . | RpmToStepsPerSec() | float RpmToStepsPerSec(float rpm, uint16_t steps_per_rev) noexcept | Steps/s | Convert RPM to steps per second | . | StepsPerSecToRpm() | float StepsPerSecToRpm(float steps_per_sec, uint16_t steps_per_rev) noexcept | RPM | Convert steps per second to RPM | . | MmPerSecToStepsPerSec() | float MmPerSecToStepsPerSec(float mm_per_sec, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept | Steps/s | Convert mm/s to steps/s | . | StepsPerSecToMmPerSec() | float StepsPerSecToMmPerSec(float steps_per_sec, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept | mm/s | Convert steps/s to mm/s | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#speed-conversions",
+    
+    "relUrl": "/docs/api_reference/#speed-conversions"
+  },"50": {
+    "doc": "📖 API Reference",
+    "title": "Acceleration Conversions",
+    "content": "| Function | Signature | Returns | Description | . | AccelerationMmToSteps() | float AccelerationMmToSteps(float accel_mm_per_sec2, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept | Steps/s² | Convert mm/s² to steps/s² | . | AccelerationStepsToMm() | float AccelerationStepsToMm(float accel_steps_per_sec2, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept | mm/s² | Convert steps/s² to mm/s² | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#acceleration-conversions",
+    
+    "relUrl": "/docs/api_reference/#acceleration-conversions"
+  },"51": {
+    "doc": "📖 API Reference",
+    "title": "Error Handling",
+    "content": "The driver uses boolean return values for error handling: . | true indicates success | false indicates failure | . Always check return values: . | 1 2 3 . | if (!driver.rampControl.SetTargetPosition(1000)) { // Handle error } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#error-handling",
+    
+    "relUrl": "/docs/api_reference/#error-handling"
+  },"52": {
+    "doc": "📖 API Reference",
+    "title": "Next Steps",
+    "content": ". | See Examples for usage examples | Check Configuration for configuration options | . Navigation ⬅️ Configuration | Next: Examples ➡️ | Back to Index . ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/#next-steps",
+    
+    "relUrl": "/docs/api_reference/#next-steps"
+  },"53": {
+    "doc": "📖 API Reference",
+    "title": "📖 API Reference",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/api_reference/",
+    
+    "relUrl": "/docs/api_reference/"
+  },"54": {
+    "doc": "⚙️ Configuration",
+    "title": "Configuration",
+    "content": "This guide covers all configuration options available for the TMC5160 driver. ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#configuration",
+    
+    "relUrl": "/docs/configuration/#configuration"
+  },"55": {
+    "doc": "⚙️ Configuration",
+    "title": "Compile-Time Configuration",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#compile-time-configuration",
+    
+    "relUrl": "/docs/configuration/#compile-time-configuration"
+  },"56": {
+    "doc": "⚙️ Configuration",
+    "title": "Debug Logging",
+    "content": "You can disable debug logging at compile time to reduce code size: . | 1 2 . | #define TMC5160_DISABLE_DEBUG_LOGGING #include \"inc/tmc5160.hpp\" . | . When disabled, all debug logging code is optimized out completely. ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#debug-logging",
+    
+    "relUrl": "/docs/configuration/#debug-logging"
+  },"57": {
+    "doc": "⚙️ Configuration",
+    "title": "Runtime Configuration",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#runtime-configuration",
+    
+    "relUrl": "/docs/configuration/#runtime-configuration"
+  },"58": {
+    "doc": "⚙️ Configuration",
+    "title": "Driver Configuration Structure",
+    "content": "The driver uses a DriverConfig structure for initialization: . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 . | tmc5160::DriverConfig cfg{}; // Power stage configuration cfg.power_stage.drv_strength = 2; // Gate driver current (0-3) cfg.power_stage.bbm_time = 0; // Break-before-make time (0-24 ns) cfg.power_stage.bbm_clks = 4; // BBM clock cycles (0-15) // Motor current configuration cfg.motor.global_scaler = 32; // Global current scaler (32-256) cfg.motor.irun = 20; // Run current (0-31, recommended 16-31) cfg.motor.ihold = 10; // Hold current (0-31, typically 70% of irun) // Chopper configuration cfg.chopper.toff = 5; // Off time (0-15, 0=disabled) cfg.chopper.hstrt = 4; // Hysteresis start (0-7) cfg.chopper.hend = 0; // Hysteresis end (0-15) cfg.chopper.tbl = 2; // Blank time (0-3) cfg.chopper.vsense = true; // High sensitivity mode cfg.chopper.mres = 4; // Microstep resolution (0-8, 4=16 microsteps) cfg.chopper.intpol = true; // Enable interpolation // StealthChop configuration cfg.stealthchop.pwm_ofs = 30; // PWM offset (0-255) cfg.stealthchop.pwm_grad = 0; // PWM gradient (0-255) cfg.stealthchop.pwm_freq = 1; // PWM frequency (0-3) cfg.stealthchop.pwm_autoscale = true; // Enable auto-scaling cfg.stealthchop.pwm_autograd = true; // Enable auto-gradient // Short protection cfg.short_protection.s2vs_level = 6; // Short to VS sensitivity (4-15) cfg.short_protection.s2g_level = 6; // Short to GND sensitivity (2-15) cfg.short_protection.shortfilter = 1; // Filter bandwidth (0-3) cfg.short_protection.shortdelay = 0; // Detection delay (0-1) // Motor direction cfg.direction = tmc5160::MotorDirection::NORMAL; // Clock frequency cfg.f_clk = 12000000; // 12 MHz (default) driver.Initialize(cfg); . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#driver-configuration-structure",
+    
+    "relUrl": "/docs/configuration/#driver-configuration-structure"
+  },"59": {
+    "doc": "⚙️ Configuration",
+    "title": "Configuration Methods",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#configuration-methods",
+    
+    "relUrl": "/docs/configuration/#configuration-methods"
+  },"60": {
+    "doc": "⚙️ Configuration",
+    "title": "Ramp Control Configuration",
+    "content": "| 1 2 3 4 5 6 7 8 . | // Set ramp mode driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING); // Set motion parameters driver.rampControl.SetTargetPosition(1000); driver.rampControl.SetMaxSpeed(1000.0f); // steps/s driver.rampControl.SetAcceleration(500.0f); // steps/s² driver.rampControl.SetRampSpeeds(0.0f, 0.1f, 0.0f); // start, stop, transition . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#ramp-control-configuration",
+    
+    "relUrl": "/docs/configuration/#ramp-control-configuration"
+  },"61": {
+    "doc": "⚙️ Configuration",
+    "title": "Motor Control Configuration",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 . | // Set motor currents driver.motorControl.SetCurrent(20, 10); // irun, ihold // Configure chopper tmc5160::ChopperConfig chop_cfg{}; chop_cfg.toff = 5; chop_cfg.mres = 4; // 16 microsteps driver.motorControl.ConfigureChopper(chop_cfg); // Configure stealthChop tmc5160::StealthChopConfig stealth_cfg{}; stealth_cfg.pwm_autoscale = true; driver.motorControl.ConfigureStealthChop(stealth_cfg); // Set mode change speeds driver.motorControl.SetModeChangeSpeeds(100.0f, 500.0f, 2000.0f); // pwm_thrs: stealthChop threshold // cool_thrs: coolStep threshold // high_thrs: high-speed mode threshold . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#motor-control-configuration",
+    
+    "relUrl": "/docs/configuration/#motor-control-configuration"
+  },"62": {
+    "doc": "⚙️ Configuration",
+    "title": "Encoder Configuration",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 . | tmc5160::EncoderConfig enc_cfg{}; enc_cfg.pol_n = true; // N channel active high enc_cfg.ignore_ab = true; // Ignore A/B polarity enc_cfg.sensitivity = 0; // No edge sensitivity enc_cfg.enc_sel_decimal = false; // Binary mode driver.encoder.Configure(enc_cfg); // Set encoder resolution driver.encoder.SetResolution(200, 1000, false); // 200 steps/rev, 1000 pulses/rev // Set allowed deviation driver.encoder.SetAllowedDeviation(10); // 10 steps . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#encoder-configuration",
+    
+    "relUrl": "/docs/configuration/#encoder-configuration"
+  },"63": {
+    "doc": "⚙️ Configuration",
+    "title": "StallGuard Configuration",
+    "content": "| 1 2 3 4 5 6 . | tmc5160::StallGuardConfig sg_cfg{}; sg_cfg.sgt = 0; // StallGuard threshold (-64 to 63) sg_cfg.semin = 0; // Minimum SG value (0-15) sg_cfg.semax = 0; // SG hysteresis (0-15) sg_cfg.sfilt = false; // Enable filter driver.diagnostics.ConfigureStallGuard(sg_cfg); . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#stallguard-configuration",
+    
+    "relUrl": "/docs/configuration/#stallguard-configuration"
+  },"64": {
+    "doc": "⚙️ Configuration",
+    "title": "Default Values",
+    "content": "| Option | Default | Description | . | power_stage.drv_strength | 2 | Gate driver current | . | power_stage.bbm_time | 0 | BBM time in ns | . | power_stage.bbm_clks | 4 | BBM clock cycles | . | motor.global_scaler | 32 | Global current scaler | . | motor.irun | 16 | Run current | . | motor.ihold | 0 | Hold current | . | chopper.toff | 5 | Off time | . | chopper.mres | 4 | 16 microsteps | . | stealthchop.pwm_autoscale | true | Auto-scaling enabled | . | short_protection.s2vs_level | 6 | Short to VS sensitivity | . | short_protection.s2g_level | 6 | Short to GND sensitivity | . | f_clk | 12000000 | Clock frequency (12 MHz) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#default-values",
+    
+    "relUrl": "/docs/configuration/#default-values"
+  },"65": {
+    "doc": "⚙️ Configuration",
+    "title": "Recommended Settings",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#recommended-settings",
+    
+    "relUrl": "/docs/configuration/#recommended-settings"
+  },"66": {
+    "doc": "⚙️ Configuration",
+    "title": "For Silent Operation (stealthChop)",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 . | tmc5160::DriverConfig cfg{}; cfg.motor.irun = 20; cfg.motor.ihold = 10; cfg.chopper.toff = 5; cfg.chopper.mres = 4; // 16 microsteps cfg.stealthchop.pwm_autoscale = true; cfg.stealthchop.pwm_autograd = true; driver.Initialize(cfg); // Enable stealthChop driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f); . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#for-silent-operation-stealthchop",
+    
+    "relUrl": "/docs/configuration/#for-silent-operation-stealthchop"
+  },"67": {
+    "doc": "⚙️ Configuration",
+    "title": "For High Torque (spreadCycle)",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 . | tmc5160::DriverConfig cfg{}; cfg.motor.irun = 25; cfg.motor.ihold = 15; cfg.chopper.toff = 5; cfg.chopper.mres = 3; // 32 microsteps cfg.chopper.chm = false; // spreadCycle mode driver.Initialize(cfg); // Disable stealthChop (use spreadCycle) driver.motorControl.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f); . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#for-high-torque-spreadcycle",
+    
+    "relUrl": "/docs/configuration/#for-high-torque-spreadcycle"
+  },"68": {
+    "doc": "⚙️ Configuration",
+    "title": "For Closed-Loop Control (with Encoder)",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 . | tmc5160::DriverConfig cfg{}; cfg.motor.irun = 20; cfg.motor.ihold = 10; driver.Initialize(cfg); // Configure encoder tmc5160::EncoderConfig enc_cfg{}; enc_cfg.enc_sel_decimal = false; // Binary mode driver.encoder.Configure(enc_cfg); driver.encoder.SetResolution(200, 1000, false); driver.encoder.SetAllowedDeviation(10); . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#for-closed-loop-control-with-encoder",
+    
+    "relUrl": "/docs/configuration/#for-closed-loop-control-with-encoder"
+  },"69": {
+    "doc": "⚙️ Configuration",
+    "title": "Next Steps",
+    "content": ". | See Examples for configuration examples | Review API Reference for all configuration methods | . Navigation ⬅️ Platform Integration | Next: API Reference ➡️ | Back to Index . ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/#next-steps",
+    
+    "relUrl": "/docs/configuration/#next-steps"
+  },"70": {
+    "doc": "⚙️ Configuration",
+    "title": "⚙️ Configuration",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/configuration/",
+    
+    "relUrl": "/docs/configuration/"
+  },"71": {
+    "doc": "💡 Examples",
+    "title": "Examples",
+    "content": "This guide provides complete, working examples demonstrating various use cases for the TMC5160 driver. ",
+    "url": "/hf-tmc5160-driver/development/docs/examples/#examples",
+    
+    "relUrl": "/docs/examples/#examples"
+  },"72": {
+    "doc": "💡 Examples",
+    "title": "Example 1: Basic Positioning Mode",
+    "content": "This example shows basic stepper motor control in positioning mode. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 . | #include \"inc/tmc5160.hpp\" // Assume MySPI is implemented (see platform_integration.md) MySPI spi(true, true, true); // EN, DIR, STEP active high tmc5160::TMC5160 driver(spi); int main() { // Initialize driver tmc5160::DriverConfig cfg{}; cfg.motor.irun = 20; cfg.motor.ihold = 10; driver.Initialize(cfg); // Configure positioning mode driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING); driver.rampControl.SetTargetPosition(1000); // Move 1000 steps driver.rampControl.SetMaxSpeed(1000.0f); // 1000 steps/s driver.rampControl.SetAcceleration(500.0f); // 500 steps/s² // Enable motor driver.motorControl.Enable(); // Wait for target reached while (!driver.rampControl.IsTargetReached()) { // Motion in progress } return 0; } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/examples/#example-1-basic-positioning-mode",
+    
+    "relUrl": "/docs/examples/#example-1-basic-positioning-mode"
+  },"73": {
+    "doc": "💡 Examples",
+    "title": "Explanation",
+    "content": ". | Initialize: Configure motor currents and initialize driver | Set Ramp Mode: Select positioning mode | Configure Motion: Set target position, speed, and acceleration | Enable: Enable motor driver | Wait: Poll until target position is reached | . ",
+    "url": "/hf-tmc5160-driver/development/docs/examples/#explanation",
+    
+    "relUrl": "/docs/examples/#explanation"
+  },"74": {
+    "doc": "💡 Examples",
+    "title": "Example 2: Velocity Mode",
+    "content": "This example demonstrates velocity mode operation. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 . | #include \"inc/tmc5160.hpp\" MySPI spi(true, true, true); tmc5160::TMC5160 driver(spi); int main() { tmc5160::DriverConfig cfg{}; cfg.motor.irun = 20; driver.Initialize(cfg); // Set velocity mode driver.rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS); driver.rampControl.SetMaxSpeed(500.0f); // 500 steps/s forward driver.rampControl.SetAcceleration(200.0f); driver.motorControl.Enable(); // Motor runs continuously at 500 steps/s // To stop, call driver.rampControl.Stop() return 0; } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/examples/#example-2-velocity-mode",
+    
+    "relUrl": "/docs/examples/#example-2-velocity-mode"
+  },"75": {
+    "doc": "💡 Examples",
+    "title": "Example 3: StealthChop Silent Operation",
+    "content": "This example configures the driver for silent operation using stealthChop. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 . | #include \"inc/tmc5160.hpp\" MySPI spi(true, true, true); tmc5160::TMC5160 driver(spi); int main() { tmc5160::DriverConfig cfg{}; cfg.motor.irun = 20; cfg.motor.ihold = 10; cfg.chopper.mres = 4; // 16 microsteps for smooth operation cfg.stealthchop.pwm_autoscale = true; cfg.stealthchop.pwm_autograd = true; driver.Initialize(cfg); // Configure stealthChop thresholds // Below 100 steps/s: stealthChop mode (silent) // Above 100 steps/s: spreadCycle mode (more torque) driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f); driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING); driver.rampControl.SetTargetPosition(1000); driver.rampControl.SetMaxSpeed(50.0f); // Low speed = stealthChop driver.motorControl.Enable(); while (!driver.rampControl.IsTargetReached()) { // Silent operation } return 0; } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/examples/#example-3-stealthchop-silent-operation",
+    
+    "relUrl": "/docs/examples/#example-3-stealthchop-silent-operation"
+  },"76": {
+    "doc": "💡 Examples",
+    "title": "Example 4: Encoder Closed-Loop Control",
+    "content": "This example demonstrates encoder-based closed-loop control. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 . | #include \"inc/tmc5160.hpp\" MySPI spi(true, true, true); tmc5160::TMC5160 driver(spi); int main() { tmc5160::DriverConfig cfg{}; cfg.motor.irun = 20; driver.Initialize(cfg); // Configure encoder tmc5160::EncoderConfig enc_cfg{}; enc_cfg.enc_sel_decimal = false; // Binary mode driver.encoder.Configure(enc_cfg); // Set encoder resolution: 200 steps/rev motor, 1000 pulses/rev encoder driver.encoder.SetResolution(200, 1000, false); driver.encoder.SetAllowedDeviation(10); // 10 steps tolerance // Move to position driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING); driver.rampControl.SetTargetPosition(1000); driver.rampControl.SetMaxSpeed(1000.0f); driver.motorControl.Enable(); // Monitor encoder deviation while (!driver.rampControl.IsTargetReached()) { if (driver.encoder.IsDeviationDetected()) { // Step loss detected - take corrective action driver.encoder.ClearDeviationFlag(); } } return 0; } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/examples/#example-4-encoder-closed-loop-control",
+    
+    "relUrl": "/docs/examples/#example-4-encoder-closed-loop-control"
+  },"77": {
+    "doc": "💡 Examples",
+    "title": "Example 5: StallGuard Stall Detection",
+    "content": "This example shows how to use StallGuard2 for stall detection. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 . | #include \"inc/tmc5160.hpp\" MySPI spi(true, true, true); tmc5160::TMC5160 driver(spi); int main() { tmc5160::DriverConfig cfg{}; cfg.motor.irun = 20; driver.Initialize(cfg); // Configure StallGuard2 tmc5160::StallGuardConfig sg_cfg{}; sg_cfg.sgt = 0; // Threshold (tune for your motor) sg_cfg.semin = 0; // Minimum SG value sg_cfg.semax = 0; // Hysteresis sg_cfg.sfilt = false; // Filter disabled driver.diagnostics.ConfigureStallGuard(sg_cfg); driver.rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS); driver.rampControl.SetMaxSpeed(500.0f); driver.motorControl.Enable(); // Monitor StallGuard value while (true) { uint16_t sg_value = driver.diagnostics.GetStallGuard(); if (sg_value &lt; 100) { // Threshold depends on motor // Stall detected - stop motor driver.rampControl.Stop(); break; } } return 0; } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/examples/#example-5-stallguard-stall-detection",
+    
+    "relUrl": "/docs/examples/#example-5-stallguard-stall-detection"
+  },"78": {
+    "doc": "💡 Examples",
+    "title": "Running the Examples",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/examples/#running-the-examples",
+    
+    "relUrl": "/docs/examples/#running-the-examples"
+  },"79": {
+    "doc": "💡 Examples",
+    "title": "ESP32",
+    "content": "| 1 2 . | cd examples/esp32 idf.py build flash monitor . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/examples/#esp32",
+    
+    "relUrl": "/docs/examples/#esp32"
+  },"80": {
+    "doc": "💡 Examples",
+    "title": "Other Platforms",
+    "content": "Compile with C++17 support: . | 1 . | g++ -std=c++17 -I inc/ example.cpp -o example . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/examples/#other-platforms",
+    
+    "relUrl": "/docs/examples/#other-platforms"
+  },"81": {
+    "doc": "💡 Examples",
+    "title": "Next Steps",
+    "content": ". | Review the API Reference for method details | Check Troubleshooting if you encounter issues | Explore the examples directory for more examples | . Navigation ⬅️ API Reference | Next: Troubleshooting ➡️ | Back to Index . ",
+    "url": "/hf-tmc5160-driver/development/docs/examples/#next-steps",
+    
+    "relUrl": "/docs/examples/#next-steps"
+  },"82": {
+    "doc": "💡 Examples",
+    "title": "💡 Examples",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/examples/",
+    
+    "relUrl": "/docs/examples/"
+  },"83": {
+    "doc": "🔌 Hardware Setup",
+    "title": "Hardware Setup",
+    "content": "This guide covers the physical connections and hardware requirements for the TMC5160 stepper motor driver chip. ",
+    "url": "/hf-tmc5160-driver/development/docs/hardware_setup/#hardware-setup",
+    
+    "relUrl": "/docs/hardware_setup/#hardware-setup"
+  },"84": {
+    "doc": "🔌 Hardware Setup",
+    "title": "Pin Connections",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/hardware_setup/#pin-connections",
+    
+    "relUrl": "/docs/hardware_setup/#pin-connections"
+  },"85": {
+    "doc": "🔌 Hardware Setup",
+    "title": "SPI Interface Connections",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 . | MCU TMC5160 ───────────────────────── 3.3V ────── VDD GND ────── GND SCK ────── SCK MOSI ────── SDI MISO ────── SDO CS ────── CSN EN ────── EN (optional, can be tied high) DIR ────── DIR (for step/dir mode) STEP ────── STEP (for step/dir mode) . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/hardware_setup/#spi-interface-connections",
+    
+    "relUrl": "/docs/hardware_setup/#spi-interface-connections"
+  },"86": {
+    "doc": "🔌 Hardware Setup",
+    "title": "UART Interface Connections",
+    "content": "| 1 2 3 4 5 6 7 . | MCU TMC5160 ───────────────────────── 3.3V ────── VDD GND ────── GND TX ────── UART_RXD RX ────── UART_TXD TX_EN ────── UART_TXEN (optional, for transceiver) . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/hardware_setup/#uart-interface-connections",
+    
+    "relUrl": "/docs/hardware_setup/#uart-interface-connections"
+  },"87": {
+    "doc": "🔌 Hardware Setup",
+    "title": "Motor Connections",
+    "content": "| 1 2 3 4 5 6 . | TMC5160 Stepper Motor ────────────────────────────── 1B ────── Motor Coil B+ 1A ────── Motor Coil B- 2B ────── Motor Coil A+ 2A ────── Motor Coil A- . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/hardware_setup/#motor-connections",
+    
+    "relUrl": "/docs/hardware_setup/#motor-connections"
+  },"88": {
+    "doc": "🔌 Hardware Setup",
+    "title": "Pin Descriptions",
+    "content": "| Pin | Name | Description | Required | . | VDD | Power | 3.3V power supply | Yes | . | GND | Ground | Ground reference | Yes | . | SCK | Clock | SPI clock line | Yes (SPI) | . | SDI | Data In | SPI data input (MOSI) | Yes (SPI) | . | SDO | Data Out | SPI data output (MISO) | Yes (SPI) | . | CSN | Chip Select | SPI chip select (active low) | Yes (SPI) | . | UART_RXD | UART RX | UART receive data | Yes (UART) | . | UART_TXD | UART TX | UART transmit data | Yes (UART) | . | EN | Enable | Driver enable (active low) | Optional | . | DIR | Direction | Step/dir direction input | Optional | . | STEP | Step | Step pulse input | Optional | . ",
+    "url": "/hf-tmc5160-driver/development/docs/hardware_setup/#pin-descriptions",
+    
+    "relUrl": "/docs/hardware_setup/#pin-descriptions"
+  },"89": {
+    "doc": "🔌 Hardware Setup",
+    "title": "Power Requirements",
+    "content": ". | Motor Supply Voltage: 8V to 60V DC | Logic Supply Voltage: 3.3V (VDD) | Current Consumption: ~20mA typical (logic), motor current depends on load | Power Supply: Separate motor supply recommended with proper decoupling | . ",
+    "url": "/hf-tmc5160-driver/development/docs/hardware_setup/#power-requirements",
+    
+    "relUrl": "/docs/hardware_setup/#power-requirements"
+  },"90": {
+    "doc": "🔌 Hardware Setup",
+    "title": "Bus Configuration",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/hardware_setup/#bus-configuration",
+    
+    "relUrl": "/docs/hardware_setup/#bus-configuration"
+  },"91": {
+    "doc": "🔌 Hardware Setup",
+    "title": "SPI Configuration",
+    "content": ". | Mode: SPI Mode 3 (CPOL=1, CPHA=1) | Speed: Up to 4 MHz (recommended) | Bit Order: MSB first | CS Polarity: Active low | . ",
+    "url": "/hf-tmc5160-driver/development/docs/hardware_setup/#spi-configuration",
+    
+    "relUrl": "/docs/hardware_setup/#spi-configuration"
+  },"92": {
+    "doc": "🔌 Hardware Setup",
+    "title": "UART Configuration",
+    "content": ". | Baud Rate: Typically 500000 bps (configurable) | Data Format: 8 data bits, 1 stop bit, no parity | Slave Address: 0-127 (7-bit address) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/hardware_setup/#uart-configuration",
+    
+    "relUrl": "/docs/hardware_setup/#uart-configuration"
+  },"93": {
+    "doc": "🔌 Hardware Setup",
+    "title": "Physical Layout Recommendations",
+    "content": ". | Keep SPI/UART traces short (&lt; 10cm recommended) | Use ground plane for noise reduction | Place decoupling capacitors (100nF ceramic + 10µF electrolytic) close to VDD pin | Use separate ground planes for motor power and logic if possible | Route motor power traces away from sensitive logic signals | Use twisted pair cables for motor connections | . ",
+    "url": "/hf-tmc5160-driver/development/docs/hardware_setup/#physical-layout-recommendations",
+    
+    "relUrl": "/docs/hardware_setup/#physical-layout-recommendations"
+  },"94": {
+    "doc": "🔌 Hardware Setup",
+    "title": "Example Wiring Diagram",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 . | TMC5160 ┌─────────┐ 3.3V ───────┤ VDD │ GND ───────┤ GND │ SCK ───────┤ SCK │ MOSI ───────┤ SDI │ MISO ───────┤ SDO │ CS ───────┤ CSN │ EN ───────┤ EN │ └─────────┘ . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/hardware_setup/#example-wiring-diagram",
+    
+    "relUrl": "/docs/hardware_setup/#example-wiring-diagram"
+  },"95": {
+    "doc": "🔌 Hardware Setup",
+    "title": "Next Steps",
+    "content": ". | Verify connections with a multimeter | Proceed to Quick Start to test the connection | Review Platform Integration for software setup | . Navigation ⬅️ Quick Start | Next: Platform Integration ➡️ | Back to Index . ",
+    "url": "/hf-tmc5160-driver/development/docs/hardware_setup/#next-steps",
+    
+    "relUrl": "/docs/hardware_setup/#next-steps"
+  },"96": {
+    "doc": "🔌 Hardware Setup",
+    "title": "🔌 Hardware Setup",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/hardware_setup/",
+    
+    "relUrl": "/docs/hardware_setup/"
+  },"97": {
+    "doc": "📚 Documentation",
+    "title": "HF-TMC5160 Documentation",
+    "content": "Welcome! This directory contains step-by-step guides for installing, building, and using the HF-TMC5160 library. ",
+    "url": "/hf-tmc5160-driver/development/docs/#hf-tmc5160-documentation",
+    
+    "relUrl": "/docs/#hf-tmc5160-documentation"
+  },"98": {
+    "doc": "📚 Documentation",
+    "title": "📚 Documentation Structure",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/#-documentation-structure",
+    
+    "relUrl": "/docs/#-documentation-structure"
+  },"99": {
+    "doc": "📚 Documentation",
+    "title": "Getting Started",
+    "content": ". | 🛠️ Installation – Prerequisites and how to obtain the source | ⚡ Quick Start – Minimal working example to get you running | 🔌 Hardware Setup – Wiring diagrams and pin connections | . ",
+    "url": "/hf-tmc5160-driver/development/docs/#getting-started",
+    
+    "relUrl": "/docs/#getting-started"
+  },"100": {
+    "doc": "📚 Documentation",
+    "title": "Integration",
+    "content": ". | 🔧 Platform Integration – Implement the CRTP communication interface for your platform | ⚙️ Configuration – Configuration options and settings | . ",
+    "url": "/hf-tmc5160-driver/development/docs/#integration",
+    
+    "relUrl": "/docs/#integration"
+  },"101": {
+    "doc": "📚 Documentation",
+    "title": "Reference",
+    "content": ". | 📖 API Reference – Complete API documentation | 💡 Examples – Detailed example walkthroughs | . ",
+    "url": "/hf-tmc5160-driver/development/docs/#reference",
+    
+    "relUrl": "/docs/#reference"
+  },"102": {
+    "doc": "📚 Documentation",
+    "title": "Advanced Features",
+    "content": ". | 📐 Unit Conversions – Converting between physical units and driver steps | ⚙️ Motor Setup from Specifications – High-level motor configuration from physical parameters | 🏠 Sensorless Homing – Homing without endstops using StallGuard2 | 🔧 Advanced Configuration – CoolStep, dcStep, freewheeling, and more | . ",
+    "url": "/hf-tmc5160-driver/development/docs/#advanced-features",
+    
+    "relUrl": "/docs/#advanced-features"
+  },"103": {
+    "doc": "📚 Documentation",
+    "title": "Troubleshooting",
+    "content": ". | 🐛 Troubleshooting – Common issues and solutions | . ",
+    "url": "/hf-tmc5160-driver/development/docs/#troubleshooting",
+    
+    "relUrl": "/docs/#troubleshooting"
+  },"104": {
+    "doc": "📚 Documentation",
+    "title": "🚀 Quick Start Path",
+    "content": "New to TMC5160? Follow this recommended path: . | Start with Installation to prepare your environment | Follow Hardware Setup to wire your hardware | Read Quick Start for a minimal working example | Check Platform Integration to implement the interface | Explore Examples for more advanced usage | . ",
+    "url": "/hf-tmc5160-driver/development/docs/#-quick-start-path",
+    
+    "relUrl": "/docs/#-quick-start-path"
+  },"105": {
+    "doc": "📚 Documentation",
+    "title": "💡 Need Help?",
+    "content": ". | 🐛 Found a bug? Check the Troubleshooting guide | ❓ Have questions? Review the API Reference | 📝 Want to contribute? See the contributing guidelines in the main README | . Navigation ➡️ Installation . ",
+    "url": "/hf-tmc5160-driver/development/docs/#-need-help",
+    
+    "relUrl": "/docs/#-need-help"
+  },"106": {
+    "doc": "📚 Documentation",
+    "title": "📚 Documentation",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/",
+    
+    "relUrl": "/docs/"
+  },"107": {
+    "doc": "🛠️ Installation",
+    "title": "Installation",
+    "content": "This guide covers how to obtain, build, and verify the TMC5160 driver library. ",
+    "url": "/hf-tmc5160-driver/development/docs/installation/#installation",
+    
+    "relUrl": "/docs/installation/#installation"
+  },"108": {
+    "doc": "🛠️ Installation",
+    "title": "Prerequisites",
+    "content": "Before installing the driver, ensure you have: . | C++17 Compiler: GCC 7+, Clang 5+, or MSVC 2017+ | Build System: CMake 3.15+ or ESP-IDF (for ESP32 examples) | Platform SDK: ESP-IDF, STM32 HAL, or Arduino (depending on your platform) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/installation/#prerequisites",
+    
+    "relUrl": "/docs/installation/#prerequisites"
+  },"109": {
+    "doc": "🛠️ Installation",
+    "title": "Obtaining the Source",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/installation/#obtaining-the-source",
+    
+    "relUrl": "/docs/installation/#obtaining-the-source"
+  },"110": {
+    "doc": "🛠️ Installation",
+    "title": "Option 1: Git Clone",
+    "content": "| 1 2 . | git clone https://github.com/N3b3x/hf-tmc5160-driver.git cd hf-tmc5160-driver . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/installation/#option-1-git-clone",
+    
+    "relUrl": "/docs/installation/#option-1-git-clone"
+  },"111": {
+    "doc": "🛠️ Installation",
+    "title": "Option 2: Copy Files",
+    "content": "Copy the following files into your project: . | 1 2 3 4 5 6 . | inc/ ├── tmc5160.hpp ├── tmc5160_comm_interface.hpp ├── tmc5160_registers.hpp ├── tmc5160_types.hpp └── tmc5160_config.hpp . | . The driver is header-only (template-based), so no separate source files are needed. ",
+    "url": "/hf-tmc5160-driver/development/docs/installation/#option-2-copy-files",
+    
+    "relUrl": "/docs/installation/#option-2-copy-files"
+  },"112": {
+    "doc": "🛠️ Installation",
+    "title": "Building the Library",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/installation/#building-the-library",
+    
+    "relUrl": "/docs/installation/#building-the-library"
+  },"113": {
+    "doc": "🛠️ Installation",
+    "title": "Using ESP-IDF Component",
+    "content": "For ESP32 projects, add the driver as a component: . | Copy the driver to your components/ directory: | 1 . | cp -r hf-tmc5160-driver components/hf_tmc5160 . | . | Include in your CMakeLists.txt: | 1 2 3 4 . | idf_component_register( INCLUDE_DIRS \"inc\" REQUIRES driver ) . | . | Use in your code: | 1 . | #include \"tmc5160.hpp\" . | . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/installation/#using-esp-idf-component",
+    
+    "relUrl": "/docs/installation/#using-esp-idf-component"
+  },"114": {
+    "doc": "🛠️ Installation",
+    "title": "Using CMake",
+    "content": "| 1 2 . | add_subdirectory(hf-tmc5160-driver) target_link_libraries(your_target PRIVATE hf_tmc5160) . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/installation/#using-cmake",
+    
+    "relUrl": "/docs/installation/#using-cmake"
+  },"115": {
+    "doc": "🛠️ Installation",
+    "title": "Header-Only Usage",
+    "content": "Since the driver is header-only, you can simply include it: . | 1 . | #include \"inc/tmc5160.hpp\" . | . Make sure your compiler has C++17 support enabled. ",
+    "url": "/hf-tmc5160-driver/development/docs/installation/#header-only-usage",
+    
+    "relUrl": "/docs/installation/#header-only-usage"
+  },"116": {
+    "doc": "🛠️ Installation",
+    "title": "Verification",
+    "content": "To verify the installation: . | Include the header in a test file: | 1 . | #include \"inc/tmc5160.hpp\" . | . | Compile a simple test: | 1 . | g++ -std=c++17 -I inc/ -c test.cpp -o test.o . | . | If compilation succeeds, the library is properly installed. | . ",
+    "url": "/hf-tmc5160-driver/development/docs/installation/#verification",
+    
+    "relUrl": "/docs/installation/#verification"
+  },"117": {
+    "doc": "🛠️ Installation",
+    "title": "Next Steps",
+    "content": ". | Follow the Quick Start guide to create your first application | Review Hardware Setup for wiring instructions | Check Platform Integration to implement the communication interface | . Navigation ⬅️ Back to Index | Next: Quick Start ➡️ . ",
+    "url": "/hf-tmc5160-driver/development/docs/installation/#next-steps",
+    
+    "relUrl": "/docs/installation/#next-steps"
+  },"118": {
+    "doc": "🛠️ Installation",
+    "title": "🛠️ Installation",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/installation/",
+    
+    "relUrl": "/docs/installation/"
+  },"119": {
+    "doc": "🔧 Platform Integration",
+    "title": "Platform Integration Guide",
+    "content": "This guide explains how to implement the hardware abstraction interface for the TMC5160 driver on your platform. ",
+    "url": "/hf-tmc5160-driver/development/docs/platform_integration/#platform-integration-guide",
+    
+    "relUrl": "/docs/platform_integration/#platform-integration-guide"
+  },"120": {
+    "doc": "🔧 Platform Integration",
+    "title": "Understanding CRTP (Curiously Recurring Template Pattern)",
+    "content": "The TMC5160 driver uses CRTP (Curiously Recurring Template Pattern) for hardware abstraction. This design choice provides several critical benefits for embedded systems: . ",
+    "url": "/hf-tmc5160-driver/development/docs/platform_integration/#understanding-crtp-curiously-recurring-template-pattern",
+    
+    "relUrl": "/docs/platform_integration/#understanding-crtp-curiously-recurring-template-pattern"
+  },"121": {
+    "doc": "🔧 Platform Integration",
+    "title": "Why CRTP Instead of Virtual Functions?",
+    "content": "1. Zero Runtime Overhead . | Virtual functions: Require a vtable lookup (indirect call) = ~5-10 CPU cycles overhead per call | CRTP: Direct function calls = 0 overhead, compiler can inline | Impact: In time-critical embedded code, this matters significantly | . 2. Compile-Time Polymorphism . | Virtual functions: Runtime dispatch - the compiler cannot optimize across the abstraction boundary | CRTP: Compile-time dispatch - full optimization, dead code elimination, constant propagation | Impact: Smaller code size, faster execution | . 3. Memory Efficiency . | Virtual functions: Each object needs a vtable pointer (4-8 bytes) | CRTP: No vtable pointer needed | Impact: Critical in memory-constrained systems | . ",
+    "url": "/hf-tmc5160-driver/development/docs/platform_integration/#why-crtp-instead-of-virtual-functions",
+    
+    "relUrl": "/docs/platform_integration/#why-crtp-instead-of-virtual-functions"
+  },"122": {
+    "doc": "🔧 Platform Integration",
+    "title": "SPI Interface Implementation",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/platform_integration/#spi-interface-implementation",
+    
+    "relUrl": "/docs/platform_integration/#spi-interface-implementation"
+  },"123": {
+    "doc": "🔧 Platform Integration",
+    "title": "ESP32 (ESP-IDF) Example",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 . | #include \"driver/spi_master.h\" #include \"driver/gpio.h\" #include \"inc/tmc5160.hpp\" class Esp32SPI : public tmc5160::SpiCommInterface&lt;Esp32SPI&gt; { private: spi_device_handle_t spi_device_; gpio_num_t cs_pin_; gpio_num_t en_pin_; gpio_num_t dir_pin_; gpio_num_t step_pin_; public: Esp32SPI(spi_host_device_t host, gpio_num_t cs_pin, gpio_num_t en_pin, gpio_num_t dir_pin, gpio_num_t step_pin) : SpiCommInterface(true, true, true), // EN, DIR, STEP active high cs_pin_(cs_pin), en_pin_(en_pin), dir_pin_(dir_pin), step_pin_(step_pin) { spi_device_interface_config_t dev_config = {}; dev_config.clock_speed_hz = 4 * 1000 * 1000; // 4 MHz dev_config.mode = 3; // SPI Mode 3 dev_config.spics_io_num = cs_pin_; dev_config.queue_size = 1; spi_bus_add_device(host, &amp;dev_config, &amp;spi_device_); // Configure GPIO pins gpio_set_direction(en_pin_, GPIO_MODE_OUTPUT); gpio_set_direction(dir_pin_, GPIO_MODE_OUTPUT); gpio_set_direction(step_pin_, GPIO_MODE_OUTPUT); } CommMode GetMode() const noexcept { return CommMode::SPI; } bool SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) noexcept { spi_transaction_t trans = {}; trans.length = length * 8; trans.tx_buffer = tx; trans.rx_buffer = rx; esp_err_t ret = spi_device_transmit(spi_device_, &amp;trans); return ret == ESP_OK; } bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) noexcept { gpio_num_t gpio_pin; switch (pin) { case TMC5160CtrlPin::EN: gpio_pin = en_pin_; break; case TMC5160CtrlPin::DIR: gpio_pin = dir_pin_; break; case TMC5160CtrlPin::STEP: gpio_pin = step_pin_; break; default: return false; } bool level = SignalToGpioLevel(pin, signal); gpio_set_level(gpio_pin, level ? 1 : 0); return true; } bool GpioRead(TMC5160CtrlPin pin, GpioSignal&amp; signal) noexcept { // TMC5160 doesn't have input pins for reading, but implement for completeness return false; } void DebugLog(int level, const char* tag, const char* format, va_list args) noexcept { esp_log_level_t esp_level; switch (level) { case 0: esp_level = ESP_LOG_ERROR; break; case 1: esp_level = ESP_LOG_WARN; break; case 2: esp_level = ESP_LOG_INFO; break; case 3: esp_level = ESP_LOG_DEBUG; break; default: esp_level = ESP_LOG_VERBOSE; break; } esp_log_writev(esp_level, tag, format, args); } void DelayMs(uint32_t ms) noexcept { vTaskDelay(pdMS_TO_TICKS(ms)); } void DelayUs(uint32_t us) noexcept { esp_rom_delay_us(us); } }; . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/platform_integration/#esp32-esp-idf-example",
+    
+    "relUrl": "/docs/platform_integration/#esp32-esp-idf-example"
+  },"124": {
+    "doc": "🔧 Platform Integration",
+    "title": "STM32 (HAL) Example",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 . | #include \"stm32f4xx_hal.h\" #include \"inc/tmc5160.hpp\" class STM32SPI : public tmc5160::SpiCommInterface&lt;STM32SPI&gt; { private: SPI_HandleTypeDef* hspi_; GPIO_TypeDef* cs_port_; uint16_t cs_pin_; GPIO_TypeDef* en_port_; uint16_t en_pin_; public: STM32SPI(SPI_HandleTypeDef* hspi, GPIO_TypeDef* cs_port, uint16_t cs_pin, GPIO_TypeDef* en_port, uint16_t en_pin) : SpiCommInterface(true, true, true), hspi_(hspi), cs_port_(cs_port), cs_pin_(cs_pin), en_port_(en_port), en_pin_(en_pin) {} CommMode GetMode() const noexcept { return CommMode::SPI; } bool SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) noexcept { HAL_GPIO_WritePin(cs_port_, cs_pin_, GPIO_PIN_RESET); HAL_StatusTypeDef status = HAL_SPI_TransmitReceive(hspi_, const_cast&lt;uint8_t*&gt;(tx), const_cast&lt;uint8_t*&gt;(rx), length, HAL_MAX_DELAY); HAL_GPIO_WritePin(cs_port_, cs_pin_, GPIO_PIN_SET); return status == HAL_OK; } bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) noexcept { GPIO_TypeDef* port; uint16_t gpio_pin; switch (pin) { case TMC5160CtrlPin::EN: port = en_port_; gpio_pin = en_pin_; break; default: return false; } bool level = SignalToGpioLevel(pin, signal); HAL_GPIO_WritePin(port, gpio_pin, level ? GPIO_PIN_SET : GPIO_PIN_RESET); return true; } bool GpioRead(TMC5160CtrlPin pin, GpioSignal&amp; signal) noexcept { return false; } void DebugLog(int level, const char* tag, const char* format, va_list args) noexcept { // Implement your logging } void DelayMs(uint32_t ms) noexcept { HAL_Delay(ms); } void DelayUs(uint32_t us) noexcept { // STM32 HAL doesn't have microsecond delay, use DWT or timer // For now, approximate with HAL_Delay if (us &gt;= 1000) { HAL_Delay(us / 1000); } } }; . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/platform_integration/#stm32-hal-example",
+    
+    "relUrl": "/docs/platform_integration/#stm32-hal-example"
+  },"125": {
+    "doc": "🔧 Platform Integration",
+    "title": "UART Interface Implementation",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/platform_integration/#uart-interface-implementation",
+    
+    "relUrl": "/docs/platform_integration/#uart-interface-implementation"
+  },"126": {
+    "doc": "🔧 Platform Integration",
+    "title": "ESP32 UART Example",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 . | #include \"driver/uart.h\" #include \"inc/tmc5160.hpp\" class Esp32UART : public tmc5160::UartCommInterface&lt;Esp32UART&gt; { private: uart_port_t uart_num_; gpio_num_t tx_pin_; gpio_num_t rx_pin_; gpio_num_t txen_pin_; public: Esp32UART(uart_port_t uart_num, gpio_num_t tx_pin, gpio_num_t rx_pin, gpio_num_t txen_pin, uint8_t slave_address) : UartCommInterface(true, true, true, slave_address), uart_num_(uart_num), tx_pin_(tx_pin), rx_pin_(rx_pin), txen_pin_(txen_pin) { uart_config_t uart_config = {}; uart_config.baud_rate = 500000; uart_config.data_bits = UART_DATA_8_BITS; uart_config.parity = UART_PARITY_DISABLE; uart_config.stop_bits = UART_STOP_BITS_1; uart_config.flow_ctrl = UART_HW_FLOWCTRL_DISABLE; uart_param_config(uart_num_, &amp;uart_config); uart_set_pin(uart_num_, tx_pin_, rx_pin_, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE); uart_driver_install(uart_num_, 1024, 1024, 0, NULL, 0); gpio_set_direction(txen_pin_, GPIO_MODE_OUTPUT); } CommMode GetMode() const noexcept { return CommMode::UART; } bool UartSend(const uint8_t* data, size_t length) noexcept { gpio_set_level(txen_pin_, 1); // Enable transmitter int bytes_written = uart_write_bytes(uart_num_, data, length); uart_wait_tx_done(uart_num_, portMAX_DELAY); gpio_set_level(txen_pin_, 0); // Disable transmitter return bytes_written == length; } bool UartReceive(uint8_t* data, size_t length) noexcept { int bytes_read = uart_read_bytes(uart_num_, data, length, pdMS_TO_TICKS(100)); return bytes_read == length; } bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) noexcept { return true; // UART mode doesn't use GPIO pins } bool GpioRead(TMC5160CtrlPin pin, GpioSignal&amp; signal) noexcept { return false; } void DebugLog(int level, const char* tag, const char* format, va_list args) noexcept { esp_log_writev(ESP_LOG_DEBUG, tag, format, args); } void DelayMs(uint32_t ms) noexcept { vTaskDelay(pdMS_TO_TICKS(ms)); } void DelayUs(uint32_t us) noexcept { esp_rom_delay_us(us); } }; . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/platform_integration/#esp32-uart-example",
+    
+    "relUrl": "/docs/platform_integration/#esp32-uart-example"
+  },"127": {
+    "doc": "🔧 Platform Integration",
+    "title": "Required Methods Summary",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/platform_integration/#required-methods-summary",
+    
+    "relUrl": "/docs/platform_integration/#required-methods-summary"
+  },"128": {
+    "doc": "🔧 Platform Integration",
+    "title": "SPI Interface",
+    "content": "You must implement: . | GetMode() - Return CommMode::SPI | SpiTransfer() - Perform SPI transfer | GpioSet() - Set GPIO pins (EN, DIR, STEP) | GpioRead() - Read GPIO pins (if needed) | DebugLog() - Debug logging (optional) | DelayMs() - Millisecond delay | DelayUs() - Microsecond delay | . ",
+    "url": "/hf-tmc5160-driver/development/docs/platform_integration/#spi-interface",
+    
+    "relUrl": "/docs/platform_integration/#spi-interface"
+  },"129": {
+    "doc": "🔧 Platform Integration",
+    "title": "UART Interface",
+    "content": "You must implement: . | GetMode() - Return CommMode::UART | UartSend() - Send bytes via UART | UartReceive() - Receive bytes via UART | GpioSet() - Set GPIO pins (if needed) | GpioRead() - Read GPIO pins (if needed) | DebugLog() - Debug logging (optional) | DelayMs() - Millisecond delay | DelayUs() - Microsecond delay | . ",
+    "url": "/hf-tmc5160-driver/development/docs/platform_integration/#uart-interface",
+    
+    "relUrl": "/docs/platform_integration/#uart-interface"
+  },"130": {
+    "doc": "🔧 Platform Integration",
+    "title": "Next Steps",
+    "content": ". | Review the Configuration guide for driver settings | Check Examples for complete working examples | See API Reference for all available methods | . Navigation ⬅️ Hardware Setup | Next: Configuration ➡️ | Back to Index . ",
+    "url": "/hf-tmc5160-driver/development/docs/platform_integration/#next-steps",
+    
+    "relUrl": "/docs/platform_integration/#next-steps"
+  },"131": {
+    "doc": "🔧 Platform Integration",
+    "title": "🔧 Platform Integration",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/platform_integration/",
+    
+    "relUrl": "/docs/platform_integration/"
+  },"132": {
+    "doc": "⚡ Quick Start",
+    "title": "Quick Start",
+    "content": "This guide will get you up and running with the TMC5160 driver in just a few steps. ",
+    "url": "/hf-tmc5160-driver/development/docs/quickstart/#quick-start",
+    
+    "relUrl": "/docs/quickstart/#quick-start"
+  },"133": {
+    "doc": "⚡ Quick Start",
+    "title": "Prerequisites",
+    "content": ". | Driver installed | Hardware wired | Communication interface implemented (see Platform Integration) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/quickstart/#prerequisites",
+    
+    "relUrl": "/docs/quickstart/#prerequisites"
+  },"134": {
+    "doc": "⚡ Quick Start",
+    "title": "Minimal Example",
+    "content": "Here’s a complete working example: . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 . | #include \"inc/tmc5160.hpp\" // 1. Implement your communication interface (see platform_integration.md) class MySPI : public tmc5160::SpiCommInterface&lt;MySPI&gt; { public: CommMode GetMode() const noexcept { return CommMode::SPI; } bool SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) { // Your SPI transfer implementation return true; } bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) { // Your GPIO set implementation return true; } bool GpioRead(TMC5160CtrlPin pin, GpioSignal&amp; signal) { // Your GPIO read implementation return true; } void DebugLog(int level, const char* tag, const char* format, va_list args) { // Your logging implementation (optional) } void DelayMs(uint32_t ms) { // Your delay implementation } void DelayUs(uint32_t us) { // Your delay implementation } }; int main() { // 2. Create communication interface MySPI spi(true, true, true); // EN, DIR, STEP active high // 3. Create driver instance tmc5160::TMC5160 driver(spi); // 4. Initialize driver tmc5160::DriverConfig cfg{}; cfg.motor.irun = 20; // Run current (0-31) cfg.motor.ihold = 10; // Hold current (0-31) if (!driver.Initialize(cfg)) { // Handle initialization failure return -1; } // 5. Configure ramp control driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING); driver.rampControl.SetTargetPosition(1000); // 1000 steps driver.rampControl.SetMaxSpeed(1000.0f); // 1000 steps/s driver.rampControl.SetAcceleration(500.0f); // 500 steps/s² // 6. Enable motor driver.motorControl.Enable(); // 7. Wait for target reached while (!driver.rampControl.IsTargetReached()) { // Wait for motion to complete } return 0; } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/quickstart/#minimal-example",
+    
+    "relUrl": "/docs/quickstart/#minimal-example"
+  },"135": {
+    "doc": "⚡ Quick Start",
+    "title": "Step-by-Step Explanation",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/quickstart/#step-by-step-explanation",
+    
+    "relUrl": "/docs/quickstart/#step-by-step-explanation"
+  },"136": {
+    "doc": "⚡ Quick Start",
+    "title": "Step 1: Implement Communication Interface",
+    "content": "You must implement either SpiCommInterface or UartCommInterface for your platform. See Platform Integration for detailed examples. ",
+    "url": "/hf-tmc5160-driver/development/docs/quickstart/#step-1-implement-communication-interface",
+    
+    "relUrl": "/docs/quickstart/#step-1-implement-communication-interface"
+  },"137": {
+    "doc": "⚡ Quick Start",
+    "title": "Step 2: Create Driver Instance",
+    "content": "| 1 . | tmc5160::TMC5160 driver(spi); . | . The driver takes a reference to your communication interface. ",
+    "url": "/hf-tmc5160-driver/development/docs/quickstart/#step-2-create-driver-instance",
+    
+    "relUrl": "/docs/quickstart/#step-2-create-driver-instance"
+  },"138": {
+    "doc": "⚡ Quick Start",
+    "title": "Step 3: Initialize Driver",
+    "content": "| 1 2 3 4 . | tmc5160::DriverConfig cfg{}; cfg.motor.irun = 20; cfg.motor.ihold = 10; driver.Initialize(cfg); . | . Configure motor currents and other settings, then initialize the driver. ",
+    "url": "/hf-tmc5160-driver/development/docs/quickstart/#step-3-initialize-driver",
+    
+    "relUrl": "/docs/quickstart/#step-3-initialize-driver"
+  },"139": {
+    "doc": "⚡ Quick Start",
+    "title": "Step 4: Configure Ramp Control",
+    "content": "| 1 2 3 4 . | driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING); driver.rampControl.SetTargetPosition(1000); driver.rampControl.SetMaxSpeed(1000.0f); driver.rampControl.SetAcceleration(500.0f); . | . Set the ramp mode, target position, maximum speed, and acceleration. ",
+    "url": "/hf-tmc5160-driver/development/docs/quickstart/#step-4-configure-ramp-control",
+    
+    "relUrl": "/docs/quickstart/#step-4-configure-ramp-control"
+  },"140": {
+    "doc": "⚡ Quick Start",
+    "title": "Step 5: Enable Motor",
+    "content": "| 1 . | driver.motorControl.Enable(); . | . Enable the motor driver to start motion. ",
+    "url": "/hf-tmc5160-driver/development/docs/quickstart/#step-5-enable-motor",
+    
+    "relUrl": "/docs/quickstart/#step-5-enable-motor"
+  },"141": {
+    "doc": "⚡ Quick Start",
+    "title": "Expected Output",
+    "content": "When running this example, the motor should: . | Move to position 1000 steps | Accelerate to 1000 steps/s | Decelerate and stop at the target position | . ",
+    "url": "/hf-tmc5160-driver/development/docs/quickstart/#expected-output",
+    
+    "relUrl": "/docs/quickstart/#expected-output"
+  },"142": {
+    "doc": "⚡ Quick Start",
+    "title": "Troubleshooting",
+    "content": "If you encounter issues: . | Compilation errors: Check that you’ve implemented all required communication interface methods | Motor doesn’t move: Verify hardware connections and motor enable pin | Communication errors: Check SPI/UART wiring and clock frequency | See: Troubleshooting for common issues | . ",
+    "url": "/hf-tmc5160-driver/development/docs/quickstart/#troubleshooting",
+    
+    "relUrl": "/docs/quickstart/#troubleshooting"
+  },"143": {
+    "doc": "⚡ Quick Start",
+    "title": "Next Steps",
+    "content": ". | Explore Examples for more advanced usage | Review the API Reference for all available methods | Check Configuration for customization options | . Navigation ⬅️ Installation | Next: Hardware Setup ➡️ | Back to Index . ",
+    "url": "/hf-tmc5160-driver/development/docs/quickstart/#next-steps",
+    
+    "relUrl": "/docs/quickstart/#next-steps"
+  },"144": {
+    "doc": "⚡ Quick Start",
+    "title": "⚡ Quick Start",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/quickstart/",
+    
+    "relUrl": "/docs/quickstart/"
+  },"145": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Advanced Configuration",
+    "content": "This guide covers advanced TMC5160 features including CoolStep current reduction, dcStep automatic commutation, freewheeling modes, reference switches, and microstep lookup tables. ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#advanced-configuration",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#advanced-configuration"
+  },"146": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Overview",
+    "content": "The TMC5160 provides several advanced features for optimizing motor performance: . | CoolStep: Automatically reduces current when load is low | dcStep: Automatic commutation for DC motor-like operation | Freewheeling: Low-power modes when motor is stationary | Reference Switches: Endstop support for homing and limits | Microstep Lookup Tables: Custom microstep interpolation | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#overview",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#overview"
+  },"147": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "CoolStep Current Reduction",
+    "content": "CoolStep automatically reduces motor current when the load is low, reducing power consumption and heat generation. ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#coolstep-current-reduction",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#coolstep-current-reduction"
+  },"148": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "When to Use CoolStep",
+    "content": ". | ✅ Applications with varying load | ✅ Battery-powered systems | ✅ When motor runs hot | ✅ Long-running applications | ❌ Constant high-load applications | ❌ When precise current control is needed | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#when-to-use-coolstep",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#when-to-use-coolstep"
+  },"149": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Configuration",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 . | #include \"tmc5160.hpp\" void configureCoolStep() { tmc5160::CoolStepConfig coolstep{}; coolstep.semin = 2; // Minimum SG value to enable CoolStep (0-15) coolstep.semax = 5; // Hysteresis for CoolStep (0-15) coolstep.seup = 1; // Current increment step (0-3) coolstep.sedn = 2; // Current decrement step (0-3) coolstep.seimin = false; // Minimum current (false = use ihold) coolstep.sfilt = true; // Enable StallGuard filter driver.motorControl.ConfigureCoolStep(coolstep); // Set velocity threshold for CoolStep activation // CoolStep activates between TCOOLTHRS and THIGH driver.motorControl.SetModeChangeSpeeds( 1000.0f, // TPWMTHRS: stealthChop threshold 500.0f, // TCOOLTHRS: CoolStep lower threshold 5000.0f // THIGH: CoolStep upper threshold ); } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#configuration",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#configuration"
+  },"150": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "How CoolStep Works",
+    "content": ". | StallGuard2 Monitoring: Continuously monitors motor load | Current Reduction: When load is low (high SG value), reduces current | Current Increase: When load increases (low SG value), increases current | Hysteresis: semax prevents rapid current changes | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#how-coolstep-works",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#how-coolstep-works"
+  },"151": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "dcStep Automatic Commutation",
+    "content": "dcStep enables automatic commutation for smoother operation at low speeds, similar to DC motor control. ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#dcstep-automatic-commutation",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#dcstep-automatic-commutation"
+  },"152": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "When to Use dcStep",
+    "content": ". | ✅ Low-speed applications requiring smooth motion | ✅ Applications where step loss can be tolerated | ✅ When smoother motion is more important than precision | ❌ High-precision positioning applications | ❌ When step loss is unacceptable | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#when-to-use-dcstep",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#when-to-use-dcstep"
+  },"153": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Configuration",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 . | void configureDcStep() { tmc5160::DcStepConfig dcstep{}; // Set velocity threshold (0.0f = disabled) // dcStep activates below this threshold dcstep.vdc_min = 1000.0f; // steps/s threshold driver.motorControl.ConfigureDcStep(dcstep); // Note: dcStep requires SD_MODE=1 (external step/dir mode) // This is typically set in GCONF register } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#configuration-1",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#configuration-1"
+  },"154": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Freewheeling Mode",
+    "content": "Freewheeling controls motor behavior when ihold=0 (no hold current). ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#freewheeling-mode",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#freewheeling-mode"
+  },"155": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Freewheeling Options",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 . | void configureFreewheeling() { // Normal operation (coast when ihold=0) driver.motorControl.SetFreewheelingMode(tmc5160::PWMFreewheel::NORMAL); // Freewheeling enabled (low resistance) driver.motorControl.SetFreewheelingMode(tmc5160::PWMFreewheel::ENABLED); // Coil shorted using low-side drivers driver.motorControl.SetFreewheelingMode(tmc5160::PWMFreewheel::SHORT_LS); // Coil shorted using high-side drivers driver.motorControl.SetFreewheelingMode(tmc5160::PWMFreewheel::SHORT_HS); } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#freewheeling-options",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#freewheeling-options"
+  },"156": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Use Cases",
+    "content": ". | NORMAL: Standard operation, motor coasts | ENABLED: Low power consumption, easy to turn | SHORT_LS/HS: Braking effect, motor resists rotation | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#use-cases",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#use-cases"
+  },"157": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Reference Switches (Endstops)",
+    "content": "Reference switches provide hardware endstops for homing and limit detection. ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#reference-switches-endstops",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#reference-switches-endstops"
+  },"158": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Configuration",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 . | void configureEndstops() { tmc5160::ReferenceSwitchConfig ref_switch{}; // Enable left endstop ref_switch.stop_left_enable = true; ref_switch.pol_stop_left = false; // Active high // Enable right endstop ref_switch.stop_right_enable = true; ref_switch.pol_stop_right = false; // Active high // Latch position on switch activation ref_switch.latch_left_active = true; ref_switch.latch_right_active = true; // Enable soft stop (uses deceleration ramp) ref_switch.en_softstop = true; driver.rampControl.ConfigureReferenceSwitch(ref_switch); } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#configuration-2",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#configuration-2"
+  },"159": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Reading Latched Position",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 . | void homeToEndstop() { // Move toward endstop driver.rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_NEG); driver.rampControl.SetMaxSpeed(500.0f); driver.motorControl.Enable(); // Wait for endstop (check RAMP_STAT register) // Or use GetLatchedPosition() after switch triggers int32_t latched_pos = driver.rampControl.GetLatchedPosition(); driver.rampControl.SetCurrentPosition(0); // Set as home } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#reading-latched-position",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#reading-latched-position"
+  },"160": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Microstep Lookup Tables",
+    "content": "Custom microstep lookup tables allow fine-tuning of microstep interpolation for smoother motion. ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#microstep-lookup-tables",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#microstep-lookup-tables"
+  },"161": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Default Lookup Table",
+    "content": "The TMC5160 uses a default sinusoidal lookup table. For most applications, this is sufficient. ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#default-lookup-table",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#default-lookup-table"
+  },"162": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Custom Lookup Table",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 . | void configureCustomMicrosteps() { // Set lookup table entries (8 entries, 32 bits each) // Each entry defines current for a microstep segment // Example: Custom table for smoother motion uint32_t lut_values[8] = { 0xAAAAB554, // Entry 0 0xAAAAB554, // Entry 1 0xAAAAB554, // Entry 2 0xAAAAB554, // Entry 3 0xAAAAB554, // Entry 4 0xAAAAB554, // Entry 5 0xAAAAB554, // Entry 6 0xAAAAB554 // Entry 7 }; for (uint8_t i = 0; i &lt; 8; i++) { driver.motorControl.SetMicrostepLookupTable(i, lut_values[i]); } // Configure lookup table segmentation driver.motorControl.SetMicrostepLookupTableSegmentation( 2, 2, 2, 2, // Width selections (0-3) 0, 0, 0 // Segment start positions ); // Set start current driver.motorControl.SetMicrostepLookupTableStart(0); } . | . Note: Custom lookup tables require deep understanding of motor control. Most users should use the default table. ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#custom-lookup-table",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#custom-lookup-table"
+  },"163": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Position Comparison (X_COMPARE)",
+    "content": "The X_COMPARE register generates a pulse when XACTUAL equals the compare value. ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#position-comparison-x_compare",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#position-comparison-x_compare"
+  },"164": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Use Case",
+    "content": "| 1 2 3 4 5 6 7 . | void setupPositionPulse() { // Generate pulse when position reaches 1000 steps driver.rampControl.SetComparePosition(1000); // The pulse appears on SWP_DIAG1 output pin // Useful for triggering external events at specific positions } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#use-case",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#use-case"
+  },"165": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Lost Steps Counter",
+    "content": "When dcStep is enabled, the driver can count lost steps. ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#lost-steps-counter",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#lost-steps-counter"
+  },"166": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Reading Lost Steps",
+    "content": "| 1 2 3 4 5 6 7 8 . | void checkStepLoss() { uint32_t lost_steps = driver.diagnostics.GetLostSteps(); if (lost_steps &gt; 0) { printf(\"Warning: %u steps lost\\n\", lost_steps); // Handle step loss (re-home, adjust current, etc.) } } . | . Note: Lost steps counter only works when SD_MODE=1 (external step/dir mode). ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#reading-lost-steps",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#reading-lost-steps"
+  },"167": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Complete Advanced Setup Example",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 . | #include \"tmc5160.hpp\" void setupAdvancedMotor() { // Basic initialization tmc5160::DriverConfig cfg{}; driver.Initialize(cfg); // Configure CoolStep tmc5160::CoolStepConfig coolstep{}; coolstep.semin = 2; coolstep.semax = 5; coolstep.seup = 1; coolstep.sedn = 2; driver.motorControl.ConfigureCoolStep(coolstep); // Configure reference switches tmc5160::ReferenceSwitchConfig ref_switch{}; ref_switch.stop_left_enable = true; ref_switch.stop_right_enable = true; ref_switch.en_softstop = true; driver.rampControl.ConfigureReferenceSwitch(ref_switch); // Set mode change speeds driver.motorControl.SetModeChangeSpeeds( 1000.0f, // stealthChop threshold 500.0f, // CoolStep threshold 5000.0f // High-speed threshold ); // Enable motor driver.motorControl.Enable(); } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#complete-advanced-setup-example",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#complete-advanced-setup-example"
+  },"168": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Troubleshooting",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#troubleshooting",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#troubleshooting"
+  },"169": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "CoolStep Not Activating",
+    "content": "Problem: Current doesn’t reduce despite low load . Solution: . | Verify TCOOLTHRS is set correctly | Check that motor speed is between TCOOLTHRS and THIGH | Ensure StallGuard2 is properly configured | Verify semin threshold is appropriate | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#coolstep-not-activating",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#coolstep-not-activating"
+  },"170": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "dcStep Causes Step Loss",
+    "content": "Problem: Steps are lost when dcStep is active . Solution: . | Increase motor current | Reduce vdc_min threshold | Disable dcStep if precision is critical | Check mechanical system for binding | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#dcstep-causes-step-loss",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#dcstep-causes-step-loss"
+  },"171": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "Reference Switches Not Working",
+    "content": "Problem: Endstops don’t trigger stop . Solution: . | Verify switch wiring and polarity | Check stop_left_enable / stop_right_enable are set | Verify switch signal reaches driver (check IO_INPUT register) | Ensure en_softstop is enabled for smooth stopping | . Navigation ⬅️ Previous: Sensorless Homing | Next: Troubleshooting ➡️ | Docs Hub 📚 . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/#reference-switches-not-working",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/#reference-switches-not-working"
+  },"172": {
+    "doc": "🔧 Advanced Configuration",
+    "title": "🔧 Advanced Configuration",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/",
+    
+    "relUrl": "/docs/special_features_advanced_configuration/"
+  },"173": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Motor Setup from Specifications",
+    "content": "Instead of manually calculating irun, ihold, and global_scaler values, you can use SetupMotorFromSpec() to automatically configure the driver from your motor’s physical specifications. ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#motor-setup-from-specifications",
+    
+    "relUrl": "/docs/special_features_motor_setup/#motor-setup-from-specifications"
+  },"174": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Overview",
+    "content": "The SetupMotorFromSpec() function takes high-level motor parameters (rated current, steps per revolution, etc.) and automatically calculates the appropriate driver settings. This makes it much easier to get started, especially for users unfamiliar with the low-level driver parameters. ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#overview",
+    
+    "relUrl": "/docs/special_features_motor_setup/#overview"
+  },"175": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "When to Use Motor Setup from Specs",
+    "content": ". | ✅ Quick prototyping and initial setup | ✅ When you know motor specifications but not driver parameters | ✅ Educational projects and learning | ✅ Applications where exact current control isn’t critical | ❌ Production systems requiring precise current control | ❌ When you need fine-tuned performance optimization | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#when-to-use-motor-setup-from-specs",
+    
+    "relUrl": "/docs/special_features_motor_setup/#when-to-use-motor-setup-from-specs"
+  },"176": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Basic Usage",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#basic-usage",
+    
+    "relUrl": "/docs/special_features_motor_setup/#basic-usage"
+  },"177": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Simple Setup",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 . | #include \"tmc5160.hpp\" // Define motor specifications tmc5160::MotorSpec motor_spec{}; motor_spec.steps_per_rev = 200; // 1.8° stepper motor motor_spec.rated_current_ma = 1500; // 1.5A rated current motor_spec.rated_voltage_mv = 12000; // 12V rated voltage // Setup motor automatically if (!driver.motorControl.SetupMotorFromSpec(motor_spec)) { // Handle error return; } // Motor is now configured and ready to use! driver.motorControl.Enable(); . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#simple-setup",
+    
+    "relUrl": "/docs/special_features_motor_setup/#simple-setup"
+  },"178": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "With Mechanical System",
+    "content": "| 1 2 3 4 5 6 7 . | // Define mechanical system tmc5160::MechanicalSystem mech_system{}; mech_system.system_type = tmc5160::MechanicalSystemType::LeadScrew; mech_system.lead_screw_pitch_mm = 2.0f; // 2mm pitch // Setup with mechanical system info driver.motorControl.SetupMotorFromSpec(motor_spec, &amp;mech_system); . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#with-mechanical-system",
+    
+    "relUrl": "/docs/special_features_motor_setup/#with-mechanical-system"
+  },"179": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Motor Specification Structure",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#motor-specification-structure",
+    
+    "relUrl": "/docs/special_features_motor_setup/#motor-specification-structure"
+  },"180": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Required Parameters",
+    "content": "| 1 2 3 4 5 . | struct MotorSpec { uint16_t steps_per_rev; // Steps per revolution (typically 200 for 1.8°) uint16_t rated_current_ma; // Rated current in milliamps uint16_t rated_voltage_mv; // Rated voltage in millivolts }; . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#required-parameters",
+    
+    "relUrl": "/docs/special_features_motor_setup/#required-parameters"
+  },"181": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Optional Parameters (for Advanced Configuration)",
+    "content": "| 1 2 3 4 5 6 7 . | struct MotorSpec { // ... required parameters ... uint32_t winding_resistance_mohm; // Winding resistance (0 = not specified) uint32_t winding_inductance_uh; // Winding inductance (0 = not specified) uint32_t holding_torque_mnm; // Holding torque (0 = not specified) }; . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#optional-parameters-for-advanced-configuration",
+    
+    "relUrl": "/docs/special_features_motor_setup/#optional-parameters-for-advanced-configuration"
+  },"182": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "How It Works",
+    "content": "The SetupMotorFromSpec() function: . | Calculates Global Scaler: Based on rated current . | Formula: global_scaler ≈ (rated_current_ma * 32) / 1500 | Clamped to range 32-256 | . | Calculates Run Current (irun): . | Uses 80% of rated current | Ensures irun is between 16-31 for best performance | . | Calculates Hold Current (ihold): . | Uses 30% of rated current | Reduces power consumption when motor is stationary | . | Configures Chopper (if inductance specified): . | Adjusts blank time for high-inductance motors | . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#how-it-works",
+    
+    "relUrl": "/docs/special_features_motor_setup/#how-it-works"
+  },"183": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Complete Example",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 . | #include \"tmc5160.hpp\" void setupNema17Motor() { // NEMA 17 motor specifications tmc5160::MotorSpec nema17{}; nema17.steps_per_rev = 200; // 1.8° per step nema17.rated_current_ma = 1500; // 1.5A rated nema17.rated_voltage_mv = 12000; // 12V rated nema17.winding_resistance_mohm = 3200; // 3.2Ω per phase nema17.winding_inductance_uh = 2800; // 2.8mH per phase // Lead screw mechanical system tmc5160::MechanicalSystem lead_screw{}; lead_screw.system_type = tmc5160::MechanicalSystemType::LeadScrew; lead_screw.lead_screw_pitch_mm = 2.0f; // Initialize driver tmc5160::DriverConfig cfg{}; driver.Initialize(cfg); // Setup motor from specifications if (!driver.motorControl.SetupMotorFromSpec(nema17, &amp;lead_screw)) { printf(\"Failed to setup motor\\n\"); return; } // Configure motion parameters driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING); driver.rampControl.SetMaxSpeedRpm(100.0f, nema17.steps_per_rev); driver.rampControl.SetAcceleration(500.0f); // Enable motor driver.motorControl.Enable(); } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#complete-example",
+    
+    "relUrl": "/docs/special_features_motor_setup/#complete-example"
+  },"184": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Manual Current Configuration",
+    "content": "If you need precise control, you can still set current manually: . | 1 2 3 4 5 6 7 8 9 10 11 . | // Set current directly (irun=20, ihold=10) driver.motorControl.SetCurrent(20, 10); // Or use MotorCurrentConfig for physical units tmc5160::MotorCurrentConfig current_cfg{}; current_cfg.run_current_ma = 1200; // 1.2A run current current_cfg.hold_current_ma = 400; // 400mA hold current current_cfg.hold_current_delay_ms = 10; // 10ms delay before reducing current // Calculate and set (you would implement this helper) // driver.motorControl.SetCurrentFromMa(current_cfg); . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#manual-current-configuration",
+    
+    "relUrl": "/docs/special_features_motor_setup/#manual-current-configuration"
+  },"185": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Mechanical System Types",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#mechanical-system-types",
+    
+    "relUrl": "/docs/special_features_motor_setup/#mechanical-system-types"
+  },"186": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Direct Drive",
+    "content": "| 1 2 3 . | tmc5160::MechanicalSystem direct{}; direct.system_type = tmc5160::MechanicalSystemType::DirectDrive; // No additional parameters needed . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#direct-drive",
+    
+    "relUrl": "/docs/special_features_motor_setup/#direct-drive"
+  },"187": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Lead Screw",
+    "content": "| 1 2 3 . | tmc5160::MechanicalSystem lead_screw{}; lead_screw.system_type = tmc5160::MechanicalSystemType::LeadScrew; lead_screw.lead_screw_pitch_mm = 2.0f; // 2mm pitch . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#lead-screw",
+    
+    "relUrl": "/docs/special_features_motor_setup/#lead-screw"
+  },"188": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Belt Drive",
+    "content": "| 1 2 3 4 . | tmc5160::MechanicalSystem belt{}; belt.system_type = tmc5160::MechanicalSystemType::BeltDrive; belt.belt_pulley_teeth = 20; // 20-tooth motor pulley belt.belt_pitch_mm = 2.0f; // 2mm belt pitch (GT2) . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#belt-drive",
+    
+    "relUrl": "/docs/special_features_motor_setup/#belt-drive"
+  },"189": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Gearbox",
+    "content": "| 1 2 3 . | tmc5160::MechanicalSystem gearbox{}; gearbox.system_type = tmc5160::MechanicalSystemType::Gearbox; gearbox.gear_ratio = 10.0f; // 10:1 reduction (output/input) . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#gearbox",
+    
+    "relUrl": "/docs/special_features_motor_setup/#gearbox"
+  },"190": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Troubleshooting",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#troubleshooting",
+    
+    "relUrl": "/docs/special_features_motor_setup/#troubleshooting"
+  },"191": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Motor Doesn’t Move",
+    "content": "Problem: Motor configured but doesn’t move . Solution: . | Verify rated_current_ma is correct (check motor datasheet) | Ensure irun is at least 16 (check calculated value) | Verify motor is enabled: driver.motorControl.Enable() | Check chopper is enabled (toff &gt; 0) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#motor-doesnt-move",
+    
+    "relUrl": "/docs/special_features_motor_setup/#motor-doesnt-move"
+  },"192": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Motor Runs Too Hot",
+    "content": "Problem: Motor gets hot during operation . Solution: . | Reduce rated_current_ma in MotorSpec (setup will recalculate) | Or manually reduce irun value | Check that ihold is reasonable (30% of run current) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#motor-runs-too-hot",
+    
+    "relUrl": "/docs/special_features_motor_setup/#motor-runs-too-hot"
+  },"193": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Insufficient Torque",
+    "content": "Problem: Motor stalls under load . Solution: . | Increase rated_current_ma in MotorSpec | Verify power supply can deliver required current | Check mechanical system isn’t binding | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#insufficient-torque",
+    
+    "relUrl": "/docs/special_features_motor_setup/#insufficient-torque"
+  },"194": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "Advanced: Custom Current Calculation",
+    "content": "For production systems, you may want to implement your own current calculation: . | 1 2 3 4 5 6 7 8 9 . | uint8_t calculateIrun(uint16_t target_current_ma, uint16_t global_scaler) { // Your custom calculation based on sense resistor, etc. // This is a simplified example float sense_resistor_current = 1.5f; // Amps at irun=31, scaler=32 float target_amps = target_current_ma / 1000.0f; uint8_t irun = static_cast&lt;uint8_t&gt;( (target_amps * 32.0f) / (sense_resistor_current * global_scaler / 32.0f)); return std::min(31U, std::max(16U, static_cast&lt;uint32_t&gt;(irun))); } . | . Navigation ⬅️ Previous: Unit Conversions | Next: Sensorless Homing ➡️ | Docs Hub 📚 . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/#advanced-custom-current-calculation",
+    
+    "relUrl": "/docs/special_features_motor_setup/#advanced-custom-current-calculation"
+  },"195": {
+    "doc": "⚙️ Motor Setup from Specifications",
+    "title": "⚙️ Motor Setup from Specifications",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_motor_setup/",
+    
+    "relUrl": "/docs/special_features_motor_setup/"
+  },"196": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "Sensorless Homing",
+    "content": "The TMC5160 supports sensorless homing using StallGuard2 stall detection. This allows you to home the motor without physical endstop switches by detecting when the motor stalls against a mechanical stop. ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#sensorless-homing",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#sensorless-homing"
+  },"197": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "Overview",
+    "content": "Sensorless homing uses the StallGuard2 feature to detect when the motor stalls. When the motor hits a mechanical stop, the load increases, causing StallGuard2 to trigger. The driver can automatically stop the motor when a stall is detected. ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#overview",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#overview"
+  },"198": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "When to Use Sensorless Homing",
+    "content": ". | ✅ Applications without space for endstop switches | ✅ Cost-sensitive designs | ✅ Homing to a known mechanical stop | ✅ When stall detection is acceptable (not too sensitive) | ❌ Applications requiring precise homing position | ❌ When mechanical stops aren’t reliable | ❌ High-speed homing applications | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#when-to-use-sensorless-homing",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#when-to-use-sensorless-homing"
+  },"199": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "Prerequisites",
+    "content": ". | Mechanical Stop: A reliable physical stop that the motor can hit | StallGuard2 Configuration: Properly tuned stall threshold | Motor Enabled: Motor must be enabled before homing | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#prerequisites",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#prerequisites"
+  },"200": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "Basic Usage",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#basic-usage",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#basic-usage"
+  },"201": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "Simple Homing Sequence",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 . | #include \"tmc5160.hpp\" bool homeMotor() { // Configure StallGuard2 for homing tmc5160::StallGuardConfig sg_config{}; sg_config.sgt = -10; // Stall threshold (tune for your motor) sg_config.sfilt = true; // Enable filter for stability if (!driver.diagnostics.ConfigureStallGuard(sg_config)) { return false; } // Perform homing in negative direction int32_t home_position = 0; float search_speed = 500.0f; // steps/s if (!driver.diagnostics.PerformSensorlessHoming( false, // false = negative direction -10, // stall threshold search_speed, home_position)) { return false; } // Set current position as home (0) driver.rampControl.SetCurrentPosition(0); printf(\"Homed to position: %d\\n\", home_position); return true; } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#simple-homing-sequence",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#simple-homing-sequence"
+  },"202": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "StallGuard2 Configuration",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#stallguard2-configuration",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#stallguard2-configuration"
+  },"203": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "Understanding Stall Threshold (sgt)",
+    "content": "The sgt parameter controls stall sensitivity: . | Range: -64 to +63 | Lower values (more negative): More sensitive, detects stall earlier | Higher values (more positive): Less sensitive, requires more load | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#understanding-stall-threshold-sgt",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#understanding-stall-threshold-sgt"
+  },"204": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "Tuning Stall Threshold",
+    "content": ". | Start with a conservative value: sgt = 0 | Move motor toward stop slowly | Monitor StallGuard value: | . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 . | void tuneStallThreshold() { // Move motor slowly driver.rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS); driver.rampControl.SetMaxSpeed(100.0f); // Slow speed driver.motorControl.Enable(); // Monitor StallGuard value while (!driver.rampControl.IsTargetReached()) { uint16_t sg_value = driver.diagnostics.GetStallGuard(); printf(\"StallGuard: %d\\n\", sg_value); // When motor hits stop, SG value will drop significantly if (sg_value &lt; 100) { // Threshold depends on your motor printf(\"Stall detected!\\n\"); break; } } driver.rampControl.Stop(); } . | . | Set threshold: Use a value slightly above the stall value . | If stall occurs at SG=50, use sgt = 30-40 | If stall occurs at SG=200, use sgt = 150-180 | . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#tuning-stall-threshold",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#tuning-stall-threshold"
+  },"205": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "Complete Homing Example",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 . | #include \"tmc5160.hpp\" class MotorController { private: tmc5160::TMC5160&lt;Esp32SPI&gt; &amp;driver_; int8_t stall_threshold_; public: MotorController(tmc5160::TMC5160&lt;Esp32SPI&gt; &amp;driver) : driver_(driver), stall_threshold_(-10) {} bool home() { // 1. Configure StallGuard2 tmc5160::StallGuardConfig sg_config{}; sg_config.sgt = stall_threshold_; sg_config.sfilt = true; // Filter for stability if (!driver_.diagnostics.ConfigureStallGuard(sg_config)) { return false; } // 2. Enable StallGuard stop in SW_MODE // (PerformSensorlessHoming does this automatically) // 3. Home in negative direction int32_t home_pos = 0; float search_speed = 500.0f; // steps/s if (!driver_.diagnostics.PerformSensorlessHoming( false, // negative direction stall_threshold_, search_speed, home_pos)) { return false; } // 4. Set position to zero driver_.rampControl.SetCurrentPosition(0); return true; } bool moveToHome() { // Move to home position (0) driver_.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING); driver_.rampControl.SetTargetPosition(0); driver_.motorControl.Enable(); // Wait for completion while (!driver_.rampControl.IsTargetReached()) { // Could add timeout here } return true; } }; . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#complete-homing-example",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#complete-homing-example"
+  },"206": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "Homing Sequence Best Practices",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#homing-sequence-best-practices",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#homing-sequence-best-practices"
+  },"207": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "1. Pre-Home Setup",
+    "content": "| 1 2 3 4 5 6 7 8 . | // Ensure motor is enabled driver.motorControl.Enable(); // Set appropriate speed (not too fast) driver.rampControl.SetMaxSpeed(500.0f); // steps/s // Set acceleration driver.rampControl.SetAcceleration(1000.0f); . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#1-pre-home-setup",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#1-pre-home-setup"
+  },"208": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "2. Homing Direction",
+    "content": ". | Negative direction: Typically used for homing to “zero” position | Positive direction: Can be used if mechanical stop is at max position | Choose direction that moves away from work area | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#2-homing-direction",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#2-homing-direction"
+  },"209": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "3. Post-Home Actions",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 . | // After homing completes: // 1. Set current position to zero driver.rampControl.SetCurrentPosition(0); // 2. Move away from stop slightly (optional) driver.rampControl.SetTargetPosition(100); // Move 100 steps away while (!driver.rampControl.IsTargetReached()) { // Wait } // 3. Set new zero position driver.rampControl.SetCurrentPosition(0); . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#3-post-home-actions",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#3-post-home-actions"
+  },"210": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "Troubleshooting",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#troubleshooting",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#troubleshooting"
+  },"211": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "Motor Doesn’t Stop at Stall",
+    "content": "Problem: Motor continues moving after hitting stop . Solution: . | Lower sgt value (more negative) | Increase sfilt filter for stability | Verify sg_stop is enabled in SW_MODE | Check that StallGuard2 is properly configured | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#motor-doesnt-stop-at-stall",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#motor-doesnt-stop-at-stall"
+  },"212": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "False Stall Detection",
+    "content": "Problem: Motor stops before reaching mechanical stop . Solution: . | Increase sgt value (less sensitive) | Check for mechanical binding | Verify motor current is sufficient | Reduce acceleration to avoid false triggers | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#false-stall-detection",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#false-stall-detection"
+  },"213": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "Inconsistent Homing Position",
+    "content": "Problem: Home position varies between homing cycles . Solution: . | Use sfilt filter for stable readings | Ensure consistent mechanical stop | Consider moving away from stop after homing | Use reference switches for more precision | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#inconsistent-homing-position",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#inconsistent-homing-position"
+  },"214": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "Advanced: Manual Stall Detection",
+    "content": "For more control, you can implement manual stall detection: . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 . | bool homeManual() { // Configure StallGuard2 tmc5160::StallGuardConfig sg_config{}; sg_config.sgt = -10; sg_config.sfilt = true; driver.diagnostics.ConfigureStallGuard(sg_config); // Start movement driver.rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_NEG); driver.rampControl.SetMaxSpeed(500.0f); driver.motorControl.Enable(); // Monitor for stall const uint16_t STALL_THRESHOLD = 100; const uint32_t TIMEOUT_MS = 10000; uint32_t start_time = getCurrentTimeMs(); while (getCurrentTimeMs() - start_time &lt; TIMEOUT_MS) { uint16_t sg_value = driver.diagnostics.GetStallGuard(); if (sg_value &lt; STALL_THRESHOLD) { // Stall detected driver.rampControl.Stop(); driver.rampControl.SetCurrentPosition(0); return true; } } // Timeout driver.rampControl.Stop(); return false; } . | . Navigation ⬅️ Previous: Motor Setup | Next: Advanced Configuration ➡️ | Docs Hub 📚 . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/#advanced-manual-stall-detection",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/#advanced-manual-stall-detection"
+  },"215": {
+    "doc": "🏠 Sensorless Homing",
+    "title": "🏠 Sensorless Homing",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/",
+    
+    "relUrl": "/docs/special_features_sensorless_homing/"
+  },"216": {
+    "doc": "📐 Unit Conversions",
+    "title": "Unit Conversions",
+    "content": "The TMC5160 driver works internally with steps, but most applications need to work with physical units like millimeters, degrees, or RPM. This guide shows how to use the unit conversion functions to work with intuitive units. ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#unit-conversions",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#unit-conversions"
+  },"217": {
+    "doc": "📐 Unit Conversions",
+    "title": "Overview",
+    "content": "The driver provides free functions in the tmc5160 namespace for converting between: . | Physical units: millimeters, degrees, RPM, mm/s, mm/s² | Driver units: steps, steps/s, steps/s² | . All conversion functions require knowledge of your motor’s steps per revolution and mechanical system parameters (e.g., lead screw pitch). ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#overview",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#overview"
+  },"218": {
+    "doc": "📐 Unit Conversions",
+    "title": "When to Use Unit Conversions",
+    "content": ". | ✅ Setting target positions in millimeters for lead screw systems | ✅ Setting speeds in RPM instead of steps per second | ✅ Working with belt drives using pulley teeth | ✅ Converting encoder readings to physical positions | ❌ Low-level register access (use raw steps) | ❌ When maximum performance is critical (direct step calculations may be faster) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#when-to-use-unit-conversions",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#when-to-use-unit-conversions"
+  },"219": {
+    "doc": "📐 Unit Conversions",
+    "title": "Basic Usage",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#basic-usage",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#basic-usage"
+  },"220": {
+    "doc": "📐 Unit Conversions",
+    "title": "Including the Header",
+    "content": "| 1 . | #include \"tmc5160_units.hpp\" . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#including-the-header",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#including-the-header"
+  },"221": {
+    "doc": "📐 Unit Conversions",
+    "title": "Lead Screw Example",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 . | // Motor: 200 steps/rev, Lead screw: 2mm pitch constexpr uint16_t STEPS_PER_REV = 200; constexpr float LEAD_SCREW_PITCH_MM = 2.0f; // Move 10mm int32_t steps = tmc5160::MmToSteps(10.0f, STEPS_PER_REV, LEAD_SCREW_PITCH_MM); driver.rampControl.SetTargetPosition(steps); // Or use the convenience function driver.rampControl.SetTargetPositionMm(10.0f, STEPS_PER_REV, LEAD_SCREW_PITCH_MM); // Get current position in mm int32_t current_steps = driver.rampControl.GetCurrentPosition(); float current_mm = tmc5160::StepsToMm(current_steps, STEPS_PER_REV, LEAD_SCREW_PITCH_MM); . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#lead-screw-example",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#lead-screw-example"
+  },"222": {
+    "doc": "📐 Unit Conversions",
+    "title": "Speed in RPM",
+    "content": "| 1 2 3 4 5 6 . | // Set maximum speed to 100 RPM driver.rampControl.SetMaxSpeedRpm(100.0f, STEPS_PER_REV); // Or convert manually float steps_per_sec = tmc5160::RpmToStepsPerSec(100.0f, STEPS_PER_REV); driver.rampControl.SetMaxSpeed(steps_per_sec); . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#speed-in-rpm",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#speed-in-rpm"
+  },"223": {
+    "doc": "📐 Unit Conversions",
+    "title": "Belt Drive Example",
+    "content": "| 1 2 3 4 5 6 . | // Motor: 200 steps/rev, Pulley: 20 teeth constexpr uint16_t PULLEY_TEETH = 20; // Move 100 belt teeth int32_t steps = tmc5160::BeltTeethToSteps(100, STEPS_PER_REV, PULLEY_TEETH); driver.rampControl.SetTargetPosition(steps); . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#belt-drive-example",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#belt-drive-example"
+  },"224": {
+    "doc": "📐 Unit Conversions",
+    "title": "Available Conversion Functions",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#available-conversion-functions",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#available-conversion-functions"
+  },"225": {
+    "doc": "📐 Unit Conversions",
+    "title": "Position Conversions",
+    "content": "| Function | Description | Example | . | MmToSteps() | Convert mm to steps | MmToSteps(10.0f, 200, 2.0f) | . | StepsToMm() | Convert steps to mm | StepsToMm(1000, 200, 2.0f) | . | DegreesToSteps() | Convert degrees to steps | DegreesToSteps(90.0f, 200) | . | StepsToDegrees() | Convert steps to degrees | StepsToDegrees(50, 200) | . | BeltTeethToSteps() | Convert belt teeth to steps | BeltTeethToSteps(100, 200, 20) | . | StepsToBeltTeeth() | Convert steps to belt teeth | StepsToBeltTeeth(1000, 200, 20) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#position-conversions",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#position-conversions"
+  },"226": {
+    "doc": "📐 Unit Conversions",
+    "title": "Speed Conversions",
+    "content": "| Function | Description | Example | . | RpmToStepsPerSec() | Convert RPM to steps/s | RpmToStepsPerSec(100.0f, 200) | . | StepsPerSecToRpm() | Convert steps/s to RPM | StepsPerSecToRpm(333.3f, 200) | . | MmPerSecToStepsPerSec() | Convert mm/s to steps/s | MmPerSecToStepsPerSec(10.0f, 200, 2.0f) | . | StepsPerSecToMmPerSec() | Convert steps/s to mm/s | StepsPerSecToMmPerSec(333.3f, 200, 2.0f) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#speed-conversions",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#speed-conversions"
+  },"227": {
+    "doc": "📐 Unit Conversions",
+    "title": "Acceleration Conversions",
+    "content": "| Function | Description | Example | . | AccelerationMmToSteps() | Convert mm/s² to steps/s² | AccelerationMmToSteps(100.0f, 200, 2.0f) | . | AccelerationStepsToMm() | Convert steps/s² to mm/s² | AccelerationStepsToMm(5000.0f, 200, 2.0f) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#acceleration-conversions",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#acceleration-conversions"
+  },"228": {
+    "doc": "📐 Unit Conversions",
+    "title": "Complete Example",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 . | #include \"tmc5160.hpp\" #include \"tmc5160_units.hpp\" // Motor and mechanical system parameters constexpr uint16_t STEPS_PER_REV = 200; // 1.8° stepper constexpr float LEAD_SCREW_PITCH_MM = 2.0f; // 2mm pitch lead screw void setupMotor() { // Initialize driver tmc5160::DriverConfig cfg{}; driver.Initialize(cfg); // Set speeds in RPM driver.rampControl.SetMaxSpeedRpm(100.0f, STEPS_PER_REV); // Set acceleration in mm/s² float accel_mm_per_sec2 = 50.0f; float accel_steps_per_sec2 = tmc5160::AccelerationMmToSteps( accel_mm_per_sec2, STEPS_PER_REV, LEAD_SCREW_PITCH_MM); driver.rampControl.SetAcceleration(accel_steps_per_sec2); } void moveToPosition(float target_mm) { // Move to position in millimeters driver.rampControl.SetTargetPositionMm( target_mm, STEPS_PER_REV, LEAD_SCREW_PITCH_MM); // Wait for completion while (!driver.rampControl.IsTargetReached()) { // Monitor position in mm int32_t steps = driver.rampControl.GetCurrentPosition(); float mm = tmc5160::StepsToMm(steps, STEPS_PER_REV, LEAD_SCREW_PITCH_MM); printf(\"Current position: %.2f mm\\n\", mm); } } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#complete-example",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#complete-example"
+  },"229": {
+    "doc": "📐 Unit Conversions",
+    "title": "Performance Considerations",
+    "content": ". | Compile-time evaluation: All conversion functions are constexpr and can be evaluated at compile time for constant inputs | Runtime overhead: Minimal - simple arithmetic operations | Precision: Uses float for physical units, int32_t for steps | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#performance-considerations",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#performance-considerations"
+  },"230": {
+    "doc": "📐 Unit Conversions",
+    "title": "Troubleshooting",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#troubleshooting",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#troubleshooting"
+  },"231": {
+    "doc": "📐 Unit Conversions",
+    "title": "Incorrect Movement Distance",
+    "content": "Problem: Motor moves wrong distance . Solution: . | Verify steps_per_rev matches your motor (typically 200 for 1.8° motors) | Check mechanical system parameters (lead screw pitch, pulley teeth) | Ensure consistent units (mm vs inches) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#incorrect-movement-distance",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#incorrect-movement-distance"
+  },"232": {
+    "doc": "📐 Unit Conversions",
+    "title": "Speed Too Fast/Slow",
+    "content": "Problem: Motor speed doesn’t match expected RPM . Solution: . | Verify steps_per_rev is correct | Check that microstep resolution matches your chopper configuration | Remember: internal calculations use microsteps (256 per step) | . Navigation ⬅️ Previous: Examples | Next: Motor Setup ➡️ | Docs Hub 📚 . ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/#speed-too-fastslow",
+    
+    "relUrl": "/docs/special_features_unit_conversions/#speed-too-fastslow"
+  },"233": {
+    "doc": "📐 Unit Conversions",
+    "title": "📐 Unit Conversions",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/special_features_unit_conversions/",
+    
+    "relUrl": "/docs/special_features_unit_conversions/"
+  },"234": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Troubleshooting",
+    "content": "This guide helps you diagnose and resolve common issues when using the TMC5160 driver. ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#troubleshooting",
+    
+    "relUrl": "/docs/troubleshooting/#troubleshooting"
+  },"235": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Common Error Messages",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#common-error-messages",
+    
+    "relUrl": "/docs/troubleshooting/#common-error-messages"
+  },"236": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Error: “Motor doesn’t move”",
+    "content": "Symptoms: . | Driver initializes successfully | No motor movement | No error status reported | . Causes: . | Motor not enabled | Enable pin not configured correctly | Motor current too low | Chopper disabled (toff = 0) | . Solutions: . | Verify driver.motorControl.Enable() is called | Check enable pin wiring and active level configuration | Increase motor current: cfg.motor.irun = 20 (minimum 16 recommended) | Verify chopper is enabled: cfg.chopper.toff &gt; 0 | . ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#error-motor-doesnt-move",
+    
+    "relUrl": "/docs/troubleshooting/#error-motor-doesnt-move"
+  },"237": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Error: “Communication timeout”",
+    "content": "Symptoms: . | Register reads/writes fail | Driver initialization fails | . Causes: . | Incorrect SPI/UART wiring | Wrong SPI mode or baud rate | CS pin not configured correctly | Clock frequency too high | . Solutions: . | Verify SPI mode is 3 (CPOL=1, CPHA=1) | Check CS pin is pulled high when not in use | Reduce SPI clock frequency to 4 MHz or lower | Verify UART baud rate matches (typically 500000 bps) | Check signal integrity with oscilloscope | . ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#error-communication-timeout",
+    
+    "relUrl": "/docs/troubleshooting/#error-communication-timeout"
+  },"238": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Hardware Issues",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#hardware-issues",
+    
+    "relUrl": "/docs/troubleshooting/#hardware-issues"
+  },"239": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Device Not Detected",
+    "content": "Symptoms: . | Initialization fails | No response from device | Register reads return 0xFFFFFFFF or 0x00000000 | . Checklist: . | Verify power supply voltage is correct (3.3V for VDD, 8-60V for motor) | Check all connections are secure | Verify SPI CS line is correct and active low | Check UART slave address matches configuration | Use oscilloscope/logic analyzer to verify bus activity | Verify motor supply is connected (driver needs motor supply even if motor not connected) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#device-not-detected",
+    
+    "relUrl": "/docs/troubleshooting/#device-not-detected"
+  },"240": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Communication Errors",
+    "content": "Symptoms: . | Timeout errors | CRC/checksum errors (UART) | Incorrect register values | . Solutions: . | Check bus speed is within IC specifications (SPI: max 4 MHz, UART: typically 500kbps) | Verify signal integrity (noise, reflections, crosstalk) | Ensure proper bus termination | Check for loose connections | Verify CS timing (minimum CS high time: 2*tclk + 10ns) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#communication-errors",
+    
+    "relUrl": "/docs/troubleshooting/#communication-errors"
+  },"241": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Motor Issues",
+    "content": "Symptoms: . | Motor doesn’t move | Motor moves erratically | Motor makes noise but doesn’t move | Motor loses steps | . Solutions: . | Doesn’t move: Check enable pin, verify motor current &gt; 0, check chopper enabled | Erratic movement: Check motor wiring, verify current settings, check for short circuits | Noise but no movement: Verify motor supply voltage, check motor connections, verify current settings | Loses steps: Increase motor current, reduce acceleration, check mechanical load | . ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#motor-issues",
+    
+    "relUrl": "/docs/troubleshooting/#motor-issues"
+  },"242": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Software Issues",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#software-issues",
+    
+    "relUrl": "/docs/troubleshooting/#software-issues"
+  },"243": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Compilation Errors",
+    "content": "Error: “No matching function” . Solution: . | Ensure you’ve implemented all required communication interface methods | Check method signatures match the interface definition exactly | Verify template parameter is correct: TMC5160&lt;MySPI&gt; | . Error: “Undefined reference” . Solution: . | Driver is header-only, no linking needed | Check include paths are correct | Verify C++17 standard is enabled: -std=c++17 | . Error: “Incomplete type” . Solution: . | Include all necessary headers: tmc5160.hpp includes everything needed | Check for circular dependencies | . ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#compilation-errors",
+    
+    "relUrl": "/docs/troubleshooting/#compilation-errors"
+  },"244": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Runtime Errors",
+    "content": "Initialization Fails . Checklist: . | Communication interface is properly initialized | Hardware connections are correct | Configuration parameters are valid (currents 0-31, etc.) | Device is powered and ready | SPI/UART is configured correctly | . Unexpected Behavior . Checklist: . | Verify configuration matches your use case | Check for timing issues (delays between operations) | Review error handling code | Verify register values match expected values | Check driver status: driver.diagnostics.GetStatus() | . ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#runtime-errors",
+    
+    "relUrl": "/docs/troubleshooting/#runtime-errors"
+  },"245": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Debugging Tips",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#debugging-tips",
+    
+    "relUrl": "/docs/troubleshooting/#debugging-tips"
+  },"246": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Enable Debug Output",
+    "content": "| 1 2 3 4 . | // Debug logging is enabled by default // To disable (reduce code size): #define TMC5160_DISABLE_DEBUG_LOGGING #include \"inc/tmc5160.hpp\" . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#enable-debug-output",
+    
+    "relUrl": "/docs/troubleshooting/#enable-debug-output"
+  },"247": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Use a Logic Analyzer",
+    "content": "For bus communication issues, a logic analyzer can help: . | Verify correct protocol timing | Check for signal integrity issues | Validate data being sent/received | Verify CS timing | . ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#use-a-logic-analyzer",
+    
+    "relUrl": "/docs/troubleshooting/#use-a-logic-analyzer"
+  },"248": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Check Register Values",
+    "content": "Read back registers to verify configuration: . | 1 2 3 . | uint32_t gconf = 0; driver.GetComm().ReadRegister(Registers::GCONF, gconf); // Verify expected values . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#check-register-values",
+    
+    "relUrl": "/docs/troubleshooting/#check-register-values"
+  },"249": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Monitor Driver Status",
+    "content": "| 1 2 3 4 . | DriverStatus status = driver.diagnostics.GetStatus(); if (status != DriverStatus::OK) { // Handle error condition } . | . ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#monitor-driver-status",
+    
+    "relUrl": "/docs/troubleshooting/#monitor-driver-status"
+  },"250": {
+    "doc": "🐛 Troubleshooting",
+    "title": "FAQ",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#faq",
+    
+    "relUrl": "/docs/troubleshooting/#faq"
+  },"251": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Q: What is the recommended motor current setting?",
+    "content": "A: For best performance, set irun between 16 and 31 (50% to 100% of global scaler). Set ihold to about 70% of irun or lower. ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#q-what-is-the-recommended-motor-current-setting",
+    
+    "relUrl": "/docs/troubleshooting/#q-what-is-the-recommended-motor-current-setting"
+  },"252": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Q: How do I choose between stealthChop and spreadCycle?",
+    "content": "A: Use stealthChop for silent operation at low speeds. Use spreadCycle for high torque at higher speeds. Set mode change speeds to switch automatically. ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#q-how-do-i-choose-between-stealthchop-and-spreadcycle",
+    
+    "relUrl": "/docs/troubleshooting/#q-how-do-i-choose-between-stealthchop-and-spreadcycle"
+  },"253": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Q: What microstep resolution should I use?",
+    "content": "A: Common values: . | mres = 4: 16 microsteps (good balance) | mres = 3: 32 microsteps (smoother, lower torque) | mres = 8: Full step (maximum torque) | . ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#q-what-microstep-resolution-should-i-use",
+    
+    "relUrl": "/docs/troubleshooting/#q-what-microstep-resolution-should-i-use"
+  },"254": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Q: How do I tune StallGuard2?",
+    "content": "A: Start with sgt = 0 and adjust based on your motor: . | Lower values = more sensitive (detects stall earlier) | Higher values = less sensitive | Monitor SG value during normal operation and set threshold below that value | . ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#q-how-do-i-tune-stallguard2",
+    
+    "relUrl": "/docs/troubleshooting/#q-how-do-i-tune-stallguard2"
+  },"255": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Q: Why is my motor noisy?",
+    "content": "A: Possible causes: . | Using spreadCycle mode (normal chopper noise) | Low microstep resolution | Incorrect chopper settings | Try stealthChop mode for silent operation | . ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#q-why-is-my-motor-noisy",
+    
+    "relUrl": "/docs/troubleshooting/#q-why-is-my-motor-noisy"
+  },"256": {
+    "doc": "🐛 Troubleshooting",
+    "title": "Getting More Help",
+    "content": "If you’re still experiencing issues: . | Check the API Reference for method details | Review Examples for working code | Search existing issues on GitHub | Open a new issue with: . | Description of the problem | Steps to reproduce | Hardware setup details | Error messages/logs | Register values (if applicable) | . | . Navigation ⬅️ Examples | Back to Index . ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#getting-more-help",
+    
+    "relUrl": "/docs/troubleshooting/#getting-more-help"
+  },"257": {
+    "doc": "🐛 Troubleshooting",
+    "title": "🐛 Troubleshooting",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/troubleshooting/",
+    
+    "relUrl": "/docs/troubleshooting/"
+  }
+}

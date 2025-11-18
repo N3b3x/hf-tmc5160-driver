@@ -1,0 +1,5 @@
+<map id="Esp32SPI::~Esp32SPI" name="Esp32SPI::~Esp32SPI">
+<area shape="rect" id="Node000001" title="Destructor &#45; cleans up SPI resources." alt="" coords="5,5,164,31"/>
+<area shape="rect" id="Node000002" href="$classEsp32SPI.html#adfd033d198f8b5393443939b523a08d5" title="Deinitialize the SPI interface." alt="" coords="212,5,375,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,15,198,15,198,21,164,21"/>
+</map>

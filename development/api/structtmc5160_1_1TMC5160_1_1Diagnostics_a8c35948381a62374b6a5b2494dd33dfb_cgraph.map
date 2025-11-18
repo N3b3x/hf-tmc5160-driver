@@ -1,0 +1,8 @@
+<map id="tmc5160::TMC5160::Diagnostics::ConfigureStallGuard" name="tmc5160::TMC5160::Diagnostics::ConfigureStallGuard">
+<area shape="rect" id="Node000001" title="Configure StallGuard2." alt="" coords="5,39,237,79"/>
+<area shape="rect" id="Node000002" href="$tmc5160_8cpp.html#a6b5c74bc9056ff38815021d63986f681" title=" " alt="" coords="338,5,421,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="237,38,324,24,325,29,238,43"/>
+<area shape="rect" id="Node000003" href="$classtmc5160_1_1CommInterface.html#a2f8127178f5ff374733a0d5d855feba3" title="Write a 32&#45;bit register to the TMC5160." alt="" coords="285,79,473,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="238,75,272,80,271,85,237,80"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="332,80,329,70,337,60,353,55,379,53,409,56,425,63,423,68,408,61,379,58,355,60,340,65,334,71,337,78"/>
+</map>

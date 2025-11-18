@@ -1,0 +1,12 @@
+var topics =
+[
+    [ "Core TMC5160 Driver", "group__TMC5160__Core.html", "group__TMC5160__Core" ],
+    [ "Subsystem Interfaces", "group__TMC5160__Subsystems.html", "group__TMC5160__Subsystems" ],
+    [ "Type Definitions", "group__TMC5160__Types.html", null ],
+    [ "Communication Interfaces", "group__TMC5160__CommInterface.html", null ],
+    [ "GPIO Control Interface", "group__TMC5160__GPIOControl.html", null ],
+    [ "Type Definitions", "group__TMC5160__CommTypes.html", null ],
+    [ "Configuration Structures", "group__TMC5160__Config.html", null ],
+    [ "Register Definitions", "group__TMC5160__Registers.html", null ],
+    [ "Unit Conversions", "group__TMC5160__Units.html", null ]
+];

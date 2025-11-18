@@ -1,0 +1,26 @@
+<map id="tmc5160::CommInterface::WriteRegister" name="tmc5160::CommInterface::WriteRegister">
+<area shape="rect" id="Node000001" title="Write a 32&#45;bit register to the TMC5160." alt="" coords="340,312,528,352"/>
+<area shape="poly" id="edge12_Node000001_Node000001" title=" " alt="" coords="483,300,466,293,434,291,406,293,389,298,383,303,386,311,381,313,378,302,387,293,405,287,434,285,467,288,485,295"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1TMC5160_1_1Encoder.html#aac326b9ca35afbb82d78f914bdc3684b" title="Clear encoder deviation flag." alt="" coords="45,5,253,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="423,299,407,246,381,180,342,115,318,85,290,60,252,40,254,35,294,55,322,81,347,111,386,178,412,244,428,298"/>
+<area shape="rect" id="Node000003" href="$structtmc5160_1_1TMC5160_1_1Encoder.html#a918402de884ffc263dc91df230e6d1ce" title="Configure encoder settings." alt="" coords="45,69,253,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="417,300,398,259,371,210,335,163,291,124,252,105,254,100,293,119,339,159,375,208,403,256,422,297"/>
+<area shape="rect" id="Node000004" href="$structtmc5160_1_1TMC5160_1_1Diagnostics.html#a8c35948381a62374b6a5b2494dd33dfb" title="Configure StallGuard2." alt="" coords="33,133,265,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="409,302,360,243,327,213,291,188,264,175,266,171,293,183,330,209,363,239,413,299"/>
+<area shape="rect" id="Node000005" href="$classtmc5160_1_1TMC5160.html#a67006dc0336428ec9a623c84188412cc" title="Reset the TMC5160 driver." alt="" coords="52,198,245,223"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="398,305,349,270,291,238,245,225,246,219,293,234,352,265,401,301"/>
+<area shape="rect" id="Node000006" href="$structtmc5160_1_1TMC5160_1_1RampControl.html#af6ee69032beee9ca17c7e229d6b154dd" title="Set acceleration and deceleration." alt="" coords="29,248,269,288"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="331,312,291,303,238,291,240,285,293,297,332,306"/>
+<area shape="rect" id="Node000007" href="$structtmc5160_1_1TMC5160_1_1RampControl.html#a74fd41db686650c5178c8f3562051b51" title="Set position comparison register." alt="" coords="28,312,269,352"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="326,335,270,335,270,329,326,329"/>
+<area shape="rect" id="Node000008" href="$structtmc5160_1_1TMC5160_1_1MotorControl.html#a8ade07072feadfed50a097f7f62cbc1a" title="Set motor run and hold current." alt="" coords="28,376,269,416"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="332,358,293,367,240,379,238,373,291,361,331,352"/>
+<area shape="rect" id="Node000009" href="$structtmc5160_1_1TMC5160_1_1MotorControl.html#adbeb65e81e314bf9ea650ca677719f20" title="Set microstep lookup table segmentation." alt="" coords="5,440,292,480"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="400,363,351,398,293,430,260,442,258,437,291,426,348,394,397,359"/>
+<area shape="rect" id="Node000010" href="$structtmc5160_1_1TMC5160_1_1RampControl.html#a7094de806ef17e9ffc4a5e427189469d" title="Set the ramp mode." alt="" coords="28,504,269,544"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="416,365,366,432,332,466,293,494,269,506,266,501,291,490,329,462,362,428,411,362"/>
+<area shape="rect" id="Node000011" href="$structtmc5160_1_1TMC5160_1_1Encoder.html#a9a686216cb074a94494adec6b3ccb794" title="Set encoder resolution." alt="" coords="45,568,253,608"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="424,366,405,410,378,462,340,514,318,538,293,558,254,578,252,573,291,554,315,534,336,511,373,460,401,408,419,364"/>
+<area shape="rect" id="Node000012" href="$structtmc5160_1_1TMC5160_1_1RampControl.html#ad2ad80fe557a2249e54cd9593b68570e" title="Stop the motor." alt="" coords="28,632,269,672"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="429,366,414,422,388,492,370,528,348,562,323,594,294,622,271,636,268,631,290,618,319,591,344,559,365,525,383,490,409,421,424,365"/>
+</map>
