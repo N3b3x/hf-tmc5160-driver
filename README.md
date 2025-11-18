@@ -9,10 +9,10 @@ permalink: /
 # HF-TMC5160 Driver
 **C++17 hardware-agnostic driver for Trinamic TMC5160 stepper motor controller with advanced features**
 
-[![C++](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.cppreference.com/w/cpp/17)
+[![C++](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.cppreference.com/w/cpp/17.html)
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![CI](https://github.com/N3b3x/hf-tmc5160-driver/actions/workflows/esp32-examples-build-ci.yml/badge.svg?branch=main)](https://github.com/N3b3x/hf-tmc5160-driver/actions/workflows/esp32-examples-build-ci.yml)
-[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://n3b3x.github.io/hf-tmc5160-driver/)
+[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://github.com/N3b3x/hf-tmc5160-driver/tree/main/docs)
 
 ## 📚 Table of Contents
 1. [Overview](#-overview)
@@ -27,7 +27,7 @@ permalink: /
 
 ## 📦 Overview
 
-> **📖 [📚🌐 Live Complete Documentation](https://n3b3x.github.io/hf-tmc5160-driver/)** -
+> **📖 [📚🌐 Complete Documentation](docs/index.md)** -
 > Interactive guides, examples, and step-by-step tutorials
 
 **HF-TMC5160** is a portable C++17 driver for the **Trinamic TMC5160** stepper motor controller IC. The TMC5160 is a
