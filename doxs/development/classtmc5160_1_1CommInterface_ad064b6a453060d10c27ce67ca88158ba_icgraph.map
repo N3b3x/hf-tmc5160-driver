@@ -1,0 +1,7 @@
+<map id="tmc5160::CommInterface::GpioSetInactive" name="tmc5160::CommInterface::GpioSetInactive">
+<area shape="rect" id="Node000001" title="Set GPIO pin to inactive state (convenience method)" alt="" coords="355,5,543,45"/>
+<area shape="rect" id="Node000002" href="$classSinusoidalMotion.html#ad6726f6da321f0c178bd223d17305d74" title="Run sinusoidal motion (call repeatedly in loop)" alt="" coords="140,13,307,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="341,28,307,28,307,23,341,23"/>
+<area shape="rect" id="Node000003" href="$sinusoidal_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,13,92,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,28,92,28,92,23,126,23"/>
+</map>

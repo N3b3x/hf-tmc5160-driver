@@ -1,0 +1,7 @@
+<map id="tmc5160::CommInterface::CommInterface" name="tmc5160::CommInterface::CommInterface">
+<area shape="rect" id="Node000001" title="Construct communication interface with pin active level configuration." alt="" coords="261,37,449,77"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1SpiCommInterface.html#a8e820cc63d01a28383495beca697fafa" title="Read a 32&#45;bit register via SPI." alt="" coords="5,5,213,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="248,46,213,42,214,36,248,41"/>
+<area shape="rect" id="Node000003" href="$classtmc5160_1_1SpiCommInterface.html#a9112ac2388495ac9fd779b2ccd5cf464" title="Write a 32&#45;bit register via SPI." alt="" coords="5,69,213,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="248,74,214,78,213,73,248,69"/>
+</map>

@@ -1,0 +1,21 @@
+<map id="SinusoidalMotion::Run" name="SinusoidalMotion::Run">
+<area shape="rect" id="Node000001" title="Run sinusoidal motion (call repeatedly in loop)" alt="" coords="5,145,172,170"/>
+<area shape="rect" id="Node000002" href="$classSinusoidalMotion.html#aa7d3638a1785109004b834bff0ef9973" title="Calculate time delay for next step based on sinusoidal function." alt="" coords="231,5,432,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,142,151,100,183,76,219,55,234,48,237,53,221,60,186,80,154,104,105,146"/>
+<area shape="rect" id="Node000003" href="$classEsp32SPI.html#a7d824ef0096f7ac31b76b53ec8e536c2" title="Delay microseconds." alt="" coords="259,70,403,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="118,142,219,104,250,96,251,101,221,109,120,147"/>
+<area shape="rect" id="Node000004" href="$classtmc5160_1_1TMC5160.html#a721b663605378407cc1303b5c8f5b6fb" title="Get the communication interface used by this TMC5160 instance." alt="" coords="220,119,443,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="172,146,206,142,207,148,173,151"/>
+<area shape="rect" id="Node000005" href="$classEsp32SPI.html#a31c4d53a51a04f8b7d8fab4f5cfca4ca" title="Set GPIO pin state." alt="" coords="261,169,401,194"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="173,163,248,170,247,176,172,168"/>
+<area shape="rect" id="Node000007" href="$classtmc5160_1_1CommInterface.html#a04a535eca26abe5bb4202599a5c16236" title="Set GPIO pin to active state (convenience method)" alt="" coords="237,219,425,259"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="124,168,221,203,249,212,247,217,219,208,122,173"/>
+<area shape="rect" id="Node000009" href="$classtmc5160_1_1CommInterface.html#ad064b6a453060d10c27ce67ca88158ba" title="Set GPIO pin to inactive state (convenience method)" alt="" coords="237,283,425,323"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="103,168,151,217,185,245,221,268,235,275,232,280,219,273,182,249,148,221,99,172"/>
+<area shape="rect" id="Node000006" href="$classtmc5160_1_1CommInterface.html#a67225c93493fa73755ebb0fc91d46488" title="Convert signal state to physical GPIO level." alt="" coords="491,161,679,201"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="402,179,477,179,477,184,402,184"/>
+<area shape="rect" id="Node000008" href="$classtmc5160_1_1CommInterface.html#a0818553fce7d54fb807d0c381a9738e9" title="Set GPIO pin signal state (output control)" alt="" coords="491,265,679,305"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="426,253,477,263,476,268,425,259"/>
+<area shape="poly" id="edge8_Node000008_Node000008" title=" " alt="" coords="538,266,535,256,542,246,559,241,585,239,614,242,630,249,628,254,613,247,585,244,560,246,545,251,540,257,543,264"/>
+<area shape="poly" id="edge10_Node000009_Node000008" title=" " alt="" coords="425,294,477,290,477,295,426,299"/>
+</map>
