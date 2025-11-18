@@ -81,7 +81,7 @@ set(MAIN_REQUIRES
 # =============================================================================
 # Register the main component with ESP-IDF build system
 idf_component_register(
-    SRCS "comprehensive_test.cpp" "stallguard.cpp" "encoder.cpp" "stealthchop.cpp" "velocity_mode.cpp" "sinusoidal.cpp" "basic_positioning.cpp" "${APP_SOURCE_FILE}"              # Source file (determined by build_app.sh)
+    SRCS "${APP_SOURCE_FILE}"              # Source file (determined by build_app.sh)
     INCLUDE_DIRS ${MAIN_INCLUDE_DIRS}      # Include directories defined above
     REQUIRES ${MAIN_REQUIRES}              # Component dependencies defined above
 )

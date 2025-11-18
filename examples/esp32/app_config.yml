@@ -106,6 +106,15 @@ apps:
     ci_enabled: true
     featured: true
 
+  bounds_finding_sinuous_motion:
+    description: "Comprehensive example: Sensorless bounds finding and sinuous motion with degree/radian support"
+    source_file: "bounds_finding_sinuous_motion.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
 build_config:
   build_types:
     Debug:
