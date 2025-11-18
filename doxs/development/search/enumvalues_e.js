@@ -6,6 +6,8 @@ var searchData=
   ['s2vsb_3',['S2VSB',['../namespacetmc5160.html#a81fcaffbc5dc91f6f544da54c1cf8c3ba5e668cce2f93aa0daecf4f63ad5d3a26',1,'tmc5160']]],
   ['short_5fhs_4',['SHORT_HS',['../namespacetmc5160.html#afd8e06e7eda04c891d35f72236085722acfc47c02fa806a942e75b88155de3a41',1,'tmc5160']]],
   ['short_5fls_5',['SHORT_LS',['../namespacetmc5160.html#afd8e06e7eda04c891d35f72236085722aeb51cc63a45cb5784abfe6676612cd39',1,'tmc5160']]],
-  ['spi_6',['SPI',['../namespacetmc5160.html#a1e94179bbf4494f80ebac49f8a3fe4f4a33dc5312b091968f5a120c2484d40df8',1,'tmc5160']]],
-  ['step_7',['STEP',['../namespacetmc5160.html#af27bf60aaa4c5b13ce49bfa70fa47059a522f694f92e679d874a1cc2b2616c3d7',1,'tmc5160']]]
+  ['sinuous_5fmotion_6',['SINUOUS_MOTION',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a3f674955b15905c3adebfcc669546b8d',1,'FatigueTestMotion']]],
+  ['spi_7',['SPI',['../namespacetmc5160.html#a1e94179bbf4494f80ebac49f8a3fe4f4a33dc5312b091968f5a120c2484d40df8',1,'tmc5160']]],
+  ['step_8',['STEP',['../namespacetmc5160.html#af27bf60aaa4c5b13ce49bfa70fa47059a522f694f92e679d874a1cc2b2616c3d7',1,'tmc5160']]],
+  ['stopped_9',['STOPPED',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a',1,'FatigueTestMotion']]]
 ];

@@ -7,7 +7,9 @@ var searchData=
   ['uartsend_4',['UartSend',['../classtmc5160_1_1UartCommInterface.html#a12c4a55cd8e33a81c572b4c3f70ce75c',1,'tmc5160::UartCommInterface']]],
   ['unit_20conversions_5',['Unit Conversions',['../group__TMC5160__Units.html',1,'']]],
   ['unit_5fconversions_2ecpp_6',['unit_conversions.cpp',['../unit__conversions_8cpp.html',1,'']]],
-  ['usage_20example_7',['Usage Example',['../classtmc5160_1_1TMC5160.html#autotoc_md2',1,'']]],
-  ['ustep_5fcount_8',['USTEP_COUNT',['../namespacetmc5160_1_1Microsteps.html#ac5061f1a2a8687cc56812dd04fe2526c',1,'tmc5160::Microsteps']]],
-  ['uv_5fcp_9',['uv_cp',['../uniontmc5160_1_1GSTAT__Register.html#af69976ac380c49a90aafd7af7a5c539f',1,'tmc5160::GSTAT_Register']]]
+  ['update_7',['Update',['../classFatigueTestMotion.html#a777c56bbf999c6e34d3c84233dd809c2',1,'FatigueTestMotion']]],
+  ['updatesinuousmotion_8',['UpdateSinuousMotion',['../classFatigueTestMotion.html#a9ba30193c059f3b9f6d116d77b1bc678',1,'FatigueTestMotion']]],
+  ['usage_20example_9',['Usage Example',['../classtmc5160_1_1TMC5160.html#autotoc_md2',1,'']]],
+  ['ustep_5fcount_10',['USTEP_COUNT',['../namespacetmc5160_1_1Microsteps.html#ac5061f1a2a8687cc56812dd04fe2526c',1,'tmc5160::Microsteps']]],
+  ['uv_5fcp_11',['uv_cp',['../uniontmc5160_1_1GSTAT__Register.html#af69976ac380c49a90aafd7af7a5c539f',1,'tmc5160::GSTAT_Register']]]
 ];

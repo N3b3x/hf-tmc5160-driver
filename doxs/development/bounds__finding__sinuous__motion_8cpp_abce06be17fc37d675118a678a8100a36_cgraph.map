@@ -1,0 +1,60 @@
+<map id="app_main" name="app_main">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,521,92,546"/>
+<area shape="rect" id="Node000002" href="$classFatigueTestMotion.html#a57d0678f2182efbd2c59a1d1712403c3" title="Configure motor parameters for unit conversions." alt="" coords="173,5,321,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="48,520,55,429,70,290,82,217,97,149,115,94,138,56,159,39,162,44,142,59,120,96,102,151,87,218,75,290,60,429,53,521"/>
+<area shape="rect" id="Node000003" href="$classFatigueTestMotion.html#a50c0c03d93791661197a43ec7e73ae21" title="Get current cycle count." alt="" coords="173,69,321,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="49,520,57,441,75,323,102,206,119,159,138,126,160,109,163,113,142,130,123,161,107,207,80,324,63,442,54,521"/>
+<area shape="rect" id="Node000004" href="$classFatigueTestMotion.html#a251d1485ac886cfa095078c0d823be06" title="Get global bounds in degrees." alt="" coords="641,120,831,160"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="49,520,57,449,75,344,101,242,118,203,138,177,174,157,225,143,286,133,354,127,498,125,628,130,628,135,498,130,354,133,286,138,226,148,176,162,142,181,123,205,106,244,80,346,63,450,54,521"/>
+<area shape="rect" id="Node000005" href="$namespacetmc5160.html#a13c113ece8bf9e72134ead3dcd3e45f0" title="Convert steps to degrees." alt="" coords="879,671,1069,697"/>
+<area shape="poly" id="edge31_Node000001_Node000005" title=" " alt="" coords="49,520,59,458,78,370,104,285,120,252,138,231,156,221,178,214,231,206,294,207,361,214,494,239,594,267,667,290,724,311,776,341,833,391,860,424,885,459,924,534,952,604,969,657,963,659,947,606,919,536,880,462,856,427,829,395,773,345,722,316,666,295,593,272,493,245,361,220,294,213,232,212,179,219,158,226,142,235,125,255,109,287,83,371,65,459,54,521"/>
+<area shape="rect" id="Node000006" href="$classFatigueTestMotion.html#adb48883ffeba77479fe43c94db6b1ca7" title="Get local bounds in degrees." alt="" coords="645,405,827,445"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="47,521,49,472,61,403,72,365,88,330,110,298,138,271,174,250,211,236,249,228,289,226,329,228,370,234,450,257,526,290,595,326,699,395,696,399,592,331,524,294,448,262,369,240,329,233,289,231,250,234,212,241,176,255,142,275,114,301,93,332,77,367,66,404,55,472,52,521"/>
+<area shape="rect" id="Node000007" href="$classFatigueTestMotion.html#a682e2ee6030f143b0afcd0792952481a" title="Get target cycle count." alt="" coords="173,285,321,325"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="50,520,58,484,74,434,100,381,118,357,138,335,159,322,162,326,142,339,122,360,105,384,79,436,63,485,55,521"/>
+<area shape="rect" id="Node000008" href="$classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44" title="Initialize the SPI interface." alt="" coords="175,350,320,375"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="52,519,62,491,80,454,105,416,138,385,160,373,163,378,142,389,110,420,85,457,67,493,57,521"/>
+<area shape="rect" id="Node000009" href="$classtmc5160_1_1TMC5160.html#ac90ae8eb92120142753c49fc61fcce89" title="Initialize the TMC5160 driver with configuration." alt="" coords="141,399,353,425"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="56,519,89,477,112,454,139,435,155,427,157,432,141,440,115,458,93,481,60,522"/>
+<area shape="rect" id="Node000011" href="$classFatigueTestMotion.html#a78c90c075b28961cccb6621b7c5e1a8e" title="Check if system is bounded." alt="" coords="173,449,321,489"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="84,518,139,499,164,491,165,496,141,504,85,523"/>
+<area shape="rect" id="Node000012" href="$classFatigueTestMotion.html#a2510d84cc3b0a31ca42312a50fc55a2c" title="Check if motion is running." alt="" coords="173,513,321,553"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="92,531,160,531,160,536,92,536"/>
+<area shape="rect" id="Node000013" href="$classFatigueTestMotion.html#aa96be6ff3aa7e5be78b32c40c143d955" title="Set dwell times (can be changed in real&#45;time, 0 to disable)" alt="" coords="173,577,321,617"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="85,544,141,563,165,571,164,576,139,568,84,549"/>
+<area shape="rect" id="Node000014" href="$classFatigueTestMotion.html#a37342414e2ee84a7814da2bb7f2540b0" title="Set global bounds (hardware limits found during initialization)" alt="" coords="424,635,572,675"/>
+<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="60,545,91,587,114,609,141,627,208,650,279,662,348,665,410,663,410,668,348,671,279,667,207,655,139,632,111,614,87,591,55,548"/>
+<area shape="rect" id="Node000016" href="$classFatigueTestMotion.html#aa2532cbafa00e73a3f107f1664f7fc74" title="Set local bounds in degrees." alt="" coords="158,756,337,796"/>
+<area shape="poly" id="edge18_Node000001_Node000016" title=" " alt="" coords="54,546,62,584,77,637,103,694,121,719,142,742,148,747,145,751,138,746,117,723,99,696,72,639,57,586,49,547"/>
+<area shape="rect" id="Node000019" href="$classFatigueTestMotion.html#a4831596d40862c18ffd072ae65596af2" title="Set sinuous motion amplitude in degrees (can be changed in real&#45;time)" alt="" coords="140,692,355,732"/>
+<area shape="poly" id="edge23_Node000001_Node000019" title=" " alt="" coords="57,545,87,605,111,641,142,671,160,684,158,688,138,675,107,644,83,608,52,547"/>
+<area shape="rect" id="Node000020" href="$classFatigueTestMotion.html#ac6c8d0e41c69721d1e9fb87456bebd19" title="Set sinuous motion parameters (can be changed in real&#45;time)" alt="" coords="662,809,810,849"/>
+<area shape="poly" id="edge25_Node000001_Node000020" title=" " alt="" coords="52,546,54,597,65,669,76,708,92,745,113,778,142,806,179,824,232,836,297,844,369,847,518,844,648,835,648,841,518,849,369,852,296,849,231,842,177,829,138,810,109,782,87,747,71,710,59,670,49,598,47,547"/>
+<area shape="rect" id="Node000021" href="$classFatigueTestMotion.html#a77cfbc28f45791d0ebc044c6ed10face" title="Set target cycle count (0 = infinite)" alt="" coords="173,871,321,911"/>
+<area shape="poly" id="edge27_Node000001_Node000021" title=" " alt="" coords="52,546,54,601,65,682,76,727,92,771,114,813,142,850,162,866,159,870,138,854,109,816,87,773,71,728,60,683,49,601,47,546"/>
+<area shape="rect" id="Node000022" href="$classFatigueTestMotion.html#a32079e5f391949179c85d3d876e97c17" title="Set unbounded mode (no mechanical stops found) Uses current position as home and sets reasonable defa..." alt="" coords="662,901,810,941"/>
+<area shape="poly" id="edge28_Node000001_Node000022" title=" " alt="" coords="54,546,61,624,77,739,89,798,103,851,121,894,142,921,179,939,232,950,296,955,368,956,518,947,648,932,649,937,519,952,368,961,296,961,231,955,177,944,138,925,116,896,98,853,83,799,72,740,55,624,48,546"/>
+<area shape="rect" id="Node000023" href="$classFatigueTestMotion.html#af12fde7f71a5f69142d51c7c782707d1" title="Start sinuous motion (can be called at any time)" alt="" coords="173,985,321,1025"/>
+<area shape="poly" id="edge30_Node000001_Node000023" title=" " alt="" coords="54,546,62,630,79,756,105,882,122,931,142,965,163,982,159,986,138,968,118,933,100,883,73,756,56,630,48,546"/>
+<area shape="rect" id="Node000024" href="$classFatigueTestMotion.html#a777c56bbf999c6e34d3c84233dd809c2" title="Update motion (call this in main loop)" alt="" coords="173,1049,321,1089"/>
+<area shape="poly" id="edge32_Node000001_Node000024" title=" " alt="" coords="53,546,59,642,74,790,85,867,101,938,119,996,142,1036,162,1051,159,1055,138,1039,114,998,95,939,80,868,68,791,54,643,48,547"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="808,158,833,177,876,236,909,302,934,371,952,441,964,508,971,568,976,657,970,658,966,569,959,509,947,442,929,373,905,304,871,239,829,181,805,162"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="758,444,954,659,950,663,754,447"/>
+<area shape="rect" id="Node000010" href="$tmc5160_8cpp.html#a6b5c74bc9056ff38815021d63986f681" title=" " alt="" coords="457,399,539,425"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="353,409,443,409,443,415,353,415"/>
+<area shape="poly" id="edge17_Node000014_Node000005" title=" " alt="" coords="572,657,865,675,865,680,572,662"/>
+<area shape="rect" id="Node000015" href="$classFatigueTestMotion.html#a34b6ba545694153f2819ec292712d09d" title="Clip local bounds to global bounds." alt="" coords="643,692,829,732"/>
+<area shape="poly" id="edge15_Node000014_Node000015" title=" " alt="" coords="573,670,640,686,639,691,572,675"/>
+<area shape="poly" id="edge16_Node000015_Node000005" title=" " alt="" coords="829,698,865,694,865,699,829,704"/>
+<area shape="rect" id="Node000017" href="$namespacetmc5160.html#a125b02e40c40c77eb5e08e68502e239e" title="Convert degrees to steps." alt="" coords="403,699,593,725"/>
+<area shape="poly" id="edge19_Node000016_Node000017" title=" " alt="" coords="326,753,434,726,435,731,327,759"/>
+<area shape="rect" id="Node000018" href="$classFatigueTestMotion.html#a5209a34cc3c31f7b464c5839b898a359" title="Set local bounds (oscillation range, will be clipped to global bounds)" alt="" coords="424,749,572,789"/>
+<area shape="poly" id="edge20_Node000016_Node000018" title=" " alt="" coords="337,771,410,769,411,774,337,776"/>
+<area shape="poly" id="edge22_Node000018_Node000005" title=" " alt="" coords="572,768,694,762,763,754,830,741,886,723,936,701,938,705,888,728,831,747,763,760,694,768,572,773"/>
+<area shape="poly" id="edge21_Node000018_Node000015" title=" " alt="" coords="572,749,639,733,640,738,573,754"/>
+<area shape="poly" id="edge24_Node000019_Node000017" title=" " alt="" coords="355,709,389,709,389,715,355,715"/>
+<area shape="poly" id="edge26_Node000020_Node000005" title=" " alt="" coords="787,807,829,786,893,744,945,703,949,708,896,748,832,790,789,812"/>
+<area shape="poly" id="edge29_Node000022_Node000005" title=" " alt="" coords="773,899,829,859,868,820,903,779,955,707,959,710,907,782,871,824,832,863,776,903"/>
+<area shape="rect" id="Node000025" href="$classFatigueTestMotion.html#a9ba30193c059f3b9f6d116d77b1bc678" title="Update sinuous motion target position." alt="" coords="415,1049,581,1089"/>
+<area shape="poly" id="edge33_Node000024_Node000025" title=" " alt="" coords="321,1067,402,1067,402,1072,321,1072"/>
+</map>

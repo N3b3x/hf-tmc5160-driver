@@ -1,0 +1,9 @@
+<map id="FatigueTestMotion::SetGlobalBounds" name="FatigueTestMotion::SetGlobalBounds">
+<area shape="rect" id="Node000001" title="Set global bounds (hardware limits found during initialization)" alt="" coords="473,27,621,67"/>
+<area shape="rect" id="Node000002" href="$bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="289,5,375,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="459,38,375,26,376,21,460,33"/>
+<area shape="rect" id="Node000003" href="$classFatigueTestMotion.html#ae4ddb098e200d61d43d1f211970fa647" title="Set global bounds in degrees." alt="" coords="239,55,425,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="460,61,426,66,425,61,459,56"/>
+<area shape="rect" id="Node000004" href="$classFatigueTestMotion.html#ac68016108b82382b98eb1d9c7a33810a" title="Set global bounds in radians." alt="" coords="5,55,191,95"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="225,78,191,78,191,73,225,73"/>
+</map>

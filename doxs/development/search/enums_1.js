@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['driverstatus_0',['DriverStatus',['../namespacetmc5160.html#a81fcaffbc5dc91f6f544da54c1cf8c3b',1,'tmc5160']]]
+  ['commmode_0',['CommMode',['../namespacetmc5160.html#a1e94179bbf4494f80ebac49f8a3fe4f4',1,'tmc5160']]]
 ];

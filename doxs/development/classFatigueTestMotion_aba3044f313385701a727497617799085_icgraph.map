@@ -1,0 +1,7 @@
+<map id="FatigueTestMotion::ResetHomeByAngle" name="FatigueTestMotion::ResetHomeByAngle">
+<area shape="rect" id="Node000001" title="Reset home position by relative angle." alt="" coords="223,37,375,77"/>
+<area shape="rect" id="Node000002" href="$classFatigueTestMotion.html#acaa6eca1e7f6d28fe67e93c972708bff" title="Reset home position by relative degrees." alt="" coords="5,5,175,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="209,46,175,41,175,36,210,41"/>
+<area shape="rect" id="Node000003" href="$classFatigueTestMotion.html#ae5c30c3eb8c20f88d2b14ac22535a7af" title="Reset home position by relative radians." alt="" coords="7,69,173,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="210,74,174,79,173,74,209,68"/>
+</map>

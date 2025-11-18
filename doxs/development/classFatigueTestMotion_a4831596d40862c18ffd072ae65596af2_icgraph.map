@@ -1,0 +1,7 @@
+<map id="FatigueTestMotion::SetSinuousAmplitudeDegrees" name="FatigueTestMotion::SetSinuousAmplitudeDegrees">
+<area shape="rect" id="Node000001" title="Set sinuous motion amplitude in degrees (can be changed in real&#45;time)" alt="" coords="267,27,481,67"/>
+<area shape="rect" id="Node000002" href="$bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="69,5,155,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="253,36,155,25,156,20,253,31"/>
+<area shape="rect" id="Node000003" href="$classFatigueTestMotion.html#ac6abaa3786152c2db05a0e197f9bf015" title="Set sinuous motion amplitude in radians (can be changed in real&#45;time)" alt="" coords="5,55,219,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="253,63,219,67,219,61,253,58"/>
+</map>

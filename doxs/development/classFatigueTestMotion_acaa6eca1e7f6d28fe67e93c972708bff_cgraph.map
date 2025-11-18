@@ -1,0 +1,11 @@
+<map id="FatigueTestMotion::ResetHomeByDegrees" name="FatigueTestMotion::ResetHomeByDegrees">
+<area shape="rect" id="Node000001" title="Reset home position by relative degrees." alt="" coords="5,35,175,75"/>
+<area shape="rect" id="Node000002" href="$classFatigueTestMotion.html#aba3044f313385701a727497617799085" title="Reset home position by relative angle." alt="" coords="223,35,375,75"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,52,209,52,209,57,175,57"/>
+<area shape="rect" id="Node000003" href="$classFatigueTestMotion.html#a34b6ba545694153f2819ec292712d09d" title="Clip local bounds to global bounds." alt="" coords="425,5,611,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="375,42,411,37,412,42,376,47"/>
+<area shape="rect" id="Node000005" href="$namespacetmc5160.html#a125b02e40c40c77eb5e08e68502e239e" title="Convert degrees to steps." alt="" coords="423,70,613,95"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="376,62,409,66,409,71,375,67"/>
+<area shape="rect" id="Node000004" href="$namespacetmc5160.html#a13c113ece8bf9e72134ead3dcd3e45f0" title="Convert steps to degrees." alt="" coords="661,13,852,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="611,23,647,23,647,28,611,28"/>
+</map>
