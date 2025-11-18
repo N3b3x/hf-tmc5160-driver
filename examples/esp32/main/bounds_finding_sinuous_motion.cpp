@@ -79,6 +79,13 @@ private:
   uint32_t dwell_at_max_ms_;   // Dwell time at maximum bound
   uint32_t dwell_at_center_ms_; // Dwell time at center/home (optional)
 
+  // Cycle tracking
+  uint32_t target_cycles_;     // Target number of cycles (0 = infinite)
+  uint32_t current_cycles_;    // Current cycle count
+  bool cycle_complete_;         // Whether target cycles reached
+  int32_t last_extreme_pos_;    // Last extreme position for cycle counting
+  bool last_extreme_was_min_;   // Whether last extreme was minimum
+
   // State machine
   enum class MotionState {
     SINUOUS_MOTION,
@@ -98,6 +105,8 @@ public:
         start_time_us_(0), phase_offset_(0.0f), bounded_(false),
         steps_per_rev_(200), angle_unit_(AngleUnit::DEGREES),
         dwell_at_min_ms_(0), dwell_at_max_ms_(0), dwell_at_center_ms_(0),
+        target_cycles_(0), current_cycles_(0), cycle_complete_(false),
+        last_extreme_pos_(0), last_extreme_was_min_(false),
         state_(MotionState::STOPPED), dwell_start_time_ms_(0) {}
 
   /**
@@ -281,14 +290,14 @@ public:
   }
 
   /**
-   * @brief Set sinuous motion parameters
+   * @brief Set sinuous motion parameters (can be changed in real-time)
    * @param amplitude_steps Amplitude in steps
    * @param frequency_hz Frequency in Hz
    */
   void SetSinuousParams(float amplitude_steps, float frequency_hz) {
     amplitude_ = amplitude_steps;
     frequency_hz_ = frequency_hz;
-    ESP_LOGI(TAG, "Sinuous params: amplitude=%.1f steps, frequency=%.2f Hz",
+    ESP_LOGI(TAG, "Sinuous params updated: amplitude=%.1f steps, frequency=%.2f Hz",
              amplitude_, frequency_hz_);
     if (steps_per_rev_ > 0) {
       float amp_deg = tmc5160::StepsToDegrees(static_cast<int32_t>(amplitude_), steps_per_rev_);
@@ -297,7 +306,7 @@ public:
   }
 
   /**
-   * @brief Set sinuous motion amplitude in degrees
+   * @brief Set sinuous motion amplitude in degrees (can be changed in real-time)
    */
   void SetSinuousAmplitudeDegrees(float amplitude_degrees) {
     if (steps_per_rev_ == 0) {
@@ -305,11 +314,11 @@ public:
       return;
     }
     amplitude_ = static_cast<float>(tmc5160::DegreesToSteps(amplitude_degrees, steps_per_rev_));
-    ESP_LOGI(TAG, "Sinuous amplitude set: %.2f° (%.1f steps)", amplitude_degrees, amplitude_);
+    ESP_LOGI(TAG, "Sinuous amplitude updated: %.2f° (%.1f steps)", amplitude_degrees, amplitude_);
   }
 
   /**
-   * @brief Set sinuous motion amplitude in radians
+   * @brief Set sinuous motion amplitude in radians (can be changed in real-time)
    */
   void SetSinuousAmplitudeRadians(float amplitude_radians) {
     float degrees = amplitude_radians * 180.0f / M_PI;
@@ -317,7 +326,15 @@ public:
   }
 
   /**
-   * @brief Set dwell times (can be 0 to disable)
+   * @brief Set frequency (can be changed in real-time)
+   */
+  void SetFrequency(float frequency_hz) {
+    frequency_hz_ = frequency_hz;
+    ESP_LOGI(TAG, "Frequency updated: %.2f Hz", frequency_hz_);
+  }
+
+  /**
+   * @brief Set dwell times (can be changed in real-time, 0 to disable)
    * @param dwell_at_min_ms Dwell time at minimum bound (ms)
    * @param dwell_at_max_ms Dwell time at maximum bound (ms)
    * @param dwell_at_center_ms Dwell time at center (ms, optional, 0 to disable)
@@ -327,8 +344,43 @@ public:
     dwell_at_min_ms_ = dwell_at_min_ms;
     dwell_at_max_ms_ = dwell_at_max_ms;
     dwell_at_center_ms_ = dwell_at_center_ms;
-    ESP_LOGI(TAG, "Dwell times: min=%lu ms, max=%lu ms, center=%lu ms",
+    ESP_LOGI(TAG, "Dwell times updated: min=%lu ms, max=%lu ms, center=%lu ms",
              dwell_at_min_ms_, dwell_at_max_ms_, dwell_at_center_ms_);
+  }
+
+  /**
+   * @brief Set target cycle count (0 = infinite)
+   * @param cycles Target number of cycles (0 for infinite)
+   */
+  void SetTargetCycles(uint32_t cycles) {
+    target_cycles_ = cycles;
+    ESP_LOGI(TAG, "Target cycles set: %lu (0 = infinite)", target_cycles_);
+  }
+
+  /**
+   * @brief Get current cycle count
+   */
+  uint32_t GetCurrentCycles() const { return current_cycles_; }
+
+  /**
+   * @brief Get target cycle count
+   */
+  uint32_t GetTargetCycles() const { return target_cycles_; }
+
+  /**
+   * @brief Check if cycle count reached
+   */
+  bool IsCycleComplete() const { return cycle_complete_; }
+
+  /**
+   * @brief Reset cycle count
+   */
+  void ResetCycles() {
+    current_cycles_ = 0;
+    cycle_complete_ = false;
+    last_extreme_pos_ = 0;
+    last_extreme_was_min_ = false;
+    ESP_LOGI(TAG, "Cycle count reset");
   }
 
   /**
@@ -373,7 +425,7 @@ public:
   bool IsBounded() const { return bounded_; }
 
   /**
-   * @brief Start sinuous motion
+   * @brief Start sinuous motion (can be called at any time)
    */
   void Start() {
     if (local_min_bound_ == 0 && local_max_bound_ == 0) {
@@ -381,29 +433,61 @@ public:
       return;
     }
 
+    if (cycle_complete_) {
+      ESP_LOGW(TAG, "Cycle count reached. Reset cycles or set new target to continue.");
+      return;
+    }
+
     running_ = true;
     state_ = MotionState::SINUOUS_MOTION;
     start_time_us_ = esp_timer_get_time();
-    phase_offset_ = 0.0f;
+    
+    // If resuming from stop, calculate phase offset from current position
+    int32_t current_pos = driver_->rampControl.GetCurrentPosition();
+    int32_t pos_relative = current_pos - home_position_;
+    if (amplitude_ > 0) {
+      double normalized_pos = static_cast<double>(pos_relative) / amplitude_;
+      if (normalized_pos > 1.0) normalized_pos = 1.0;
+      if (normalized_pos < -1.0) normalized_pos = -1.0;
+      phase_offset_ = asin(normalized_pos);
+    } else {
+      phase_offset_ = 0.0f;
+    }
 
-    ESP_LOGI(TAG, "Starting fatigue test motion");
+    ESP_LOGI(TAG, "Starting fatigue test motion (cycles: %lu/%lu)", 
+             current_cycles_, target_cycles_ == 0 ? 0xFFFFFFFF : target_cycles_);
   }
 
   /**
-   * @brief Stop sinuous motion
+   * @brief Stop sinuous motion (can be called at any time)
    */
   void Stop() {
     running_ = false;
     state_ = MotionState::STOPPED;
     driver_->rampControl.Stop();
-    ESP_LOGI(TAG, "Stopped fatigue test motion");
+    ESP_LOGI(TAG, "Stopped fatigue test motion (cycles completed: %lu)", current_cycles_);
   }
+
+  /**
+   * @brief Check if motion is running
+   */
+  bool IsRunning() const { return running_ && state_ != MotionState::STOPPED; }
 
   /**
    * @brief Update motion (call this in main loop)
    */
   void Update() {
     if (!running_ || state_ == MotionState::STOPPED) {
+      return;
+    }
+
+    // Check if cycle count reached
+    if (target_cycles_ > 0 && current_cycles_ >= target_cycles_) {
+      if (!cycle_complete_) {
+        cycle_complete_ = true;
+        ESP_LOGI(TAG, "Target cycle count reached: %lu cycles", current_cycles_);
+        Stop();
+      }
       return;
     }
 
@@ -494,21 +578,57 @@ private:
     // Clamp to local bounds and handle dwell states
     if (target <= local_min_bound_) {
       target = local_min_bound_;
-      // Hit minimum bound, dwell if configured
-      if (dwell_at_min_ms_ > 0 && state_ == MotionState::SINUOUS_MOTION) {
-        state_ = MotionState::DWELL_AT_MIN;
-        dwell_start_time_ms_ = esp_timer_get_time() / 1000;
-        driver_->rampControl.SetTargetPosition(target);
-        return;
+      // Hit minimum bound, count cycle and dwell if configured
+      if (state_ == MotionState::SINUOUS_MOTION) {
+        // Count cycle: one cycle = min -> max -> min (full back-and-forth)
+        // Check if we were previously at max and now reached min (completes a cycle)
+        if (!last_extreme_was_min_ && last_extreme_pos_ == local_max_bound_) {
+          // Completed a cycle: was at max, now at min
+          current_cycles_++;
+          if (target_cycles_ > 0 && current_cycles_ >= target_cycles_) {
+            cycle_complete_ = true;
+            ESP_LOGI(TAG, "Cycle %lu completed (target: %lu)", current_cycles_, target_cycles_);
+          }
+        }
+        // Update tracking
+        if (last_extreme_pos_ != target || !last_extreme_was_min_) {
+          last_extreme_pos_ = target;
+          last_extreme_was_min_ = true;
+        }
+        
+        if (dwell_at_min_ms_ > 0) {
+          state_ = MotionState::DWELL_AT_MIN;
+          dwell_start_time_ms_ = esp_timer_get_time() / 1000;
+          driver_->rampControl.SetTargetPosition(target);
+          return;
+        }
       }
     } else if (target >= local_max_bound_) {
       target = local_max_bound_;
-      // Hit maximum bound, dwell if configured
-      if (dwell_at_max_ms_ > 0 && state_ == MotionState::SINUOUS_MOTION) {
-        state_ = MotionState::DWELL_AT_MAX;
-        dwell_start_time_ms_ = esp_timer_get_time() / 1000;
-        driver_->rampControl.SetTargetPosition(target);
-        return;
+      // Hit maximum bound, count cycle and dwell if configured
+      if (state_ == MotionState::SINUOUS_MOTION) {
+        // Count cycle: one cycle = min -> max -> min (full back-and-forth)
+        // Check if we were previously at min and now reached max (completes a cycle)
+        if (last_extreme_was_min_ && last_extreme_pos_ == local_min_bound_) {
+          // Completed a cycle: was at min, now at max
+          current_cycles_++;
+          if (target_cycles_ > 0 && current_cycles_ >= target_cycles_) {
+            cycle_complete_ = true;
+            ESP_LOGI(TAG, "Cycle %lu completed (target: %lu)", current_cycles_, target_cycles_);
+          }
+        }
+        // Update tracking
+        if (last_extreme_pos_ != target || last_extreme_was_min_) {
+          last_extreme_pos_ = target;
+          last_extreme_was_min_ = false;
+        }
+        
+        if (dwell_at_max_ms_ > 0) {
+          state_ = MotionState::DWELL_AT_MAX;
+          dwell_start_time_ms_ = esp_timer_get_time() / 1000;
+          driver_->rampControl.SetTargetPosition(target);
+          return;
+        }
       }
     }
 
@@ -756,18 +876,27 @@ extern "C" void app_main() {
                         2000,  // 2 seconds at maximum bound
                         0);    // No dwell at center (set to >0 to enable)
 
+  // Set target cycle count (0 = infinite)
+  motion.SetTargetCycles(1000);  // Run for 1000 cycles, then stop
+
   ESP_LOGI(TAG, "Fatigue test configured:");
   motion.GetLocalBoundsDegrees(min_deg, max_deg);
   ESP_LOGI(TAG, "  Local bounds: min=%.2f°, max=%.2f°", min_deg, max_deg);
   ESP_LOGI(TAG, "  Frequency: 0.5 Hz");
+  ESP_LOGI(TAG, "  Target cycles: %lu", motion.GetTargetCycles());
   ESP_LOGI(TAG, "  Bounded: %s", motion.IsBounded() ? "Yes" : "No");
 
   // Start motion
   motion.Start();
 
+  // Example: Settings can be changed in real-time
+  // motion.SetFrequency(1.0f);  // Change frequency to 1.0 Hz
+  // motion.SetSinuousAmplitudeDegrees(45.0f);  // Change amplitude to 45°
+  // motion.SetDwellTimes(1000, 1000, 0);  // Change dwell times
+  // motion.SetTargetCycles(2000);  // Change target cycles
+
   // Main loop - update motion controller
   ESP_LOGI(TAG, "Running fatigue test (press reset to stop)...");
-  uint32_t cycle_count = 0;
   uint32_t last_log_time = 0;
 
   while (true) {
@@ -780,9 +909,27 @@ extern "C" void app_main() {
       int32_t pos = driver.rampControl.GetCurrentPosition();
       float speed = driver.rampControl.GetCurrentSpeed();
       float pos_deg = tmc5160::StepsToDegrees(pos, steps_per_rev);
-      ESP_LOGI(TAG, "Position: %d steps (%.2f°), Speed: %.1f steps/s, Cycles: %lu",
-               pos, pos_deg, speed, cycle_count);
+      uint32_t cycles = motion.GetCurrentCycles();
+      uint32_t target = motion.GetTargetCycles();
+      ESP_LOGI(TAG, "Position: %d steps (%.2f°), Speed: %.1f steps/s, Cycles: %lu/%lu %s",
+               pos, pos_deg, speed, cycles, target == 0 ? 0xFFFFFFFF : target,
+               motion.IsRunning() ? "(running)" : "(stopped)");
       last_log_time = current_time;
     }
+
+    // Example: Stop and restart motion
+    // uint32_t current_cycles = motion.GetCurrentCycles();
+    // if (current_cycles >= 500 && current_cycles < 501) {
+    //   motion.Stop();
+    //   vTaskDelay(pdMS_TO_TICKS(2000));
+    //   motion.Start();  // Resume motion
+    // }
+
+    // Example: Change settings in real-time
+    // uint32_t current_cycles = motion.GetCurrentCycles();
+    // if (current_cycles == 100) {
+    //   motion.SetFrequency(1.0f);  // Increase frequency
+    //   motion.SetSinuousAmplitudeDegrees(45.0f);  // Reduce amplitude
+    // }
   }
 }

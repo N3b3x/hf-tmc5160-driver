@@ -272,12 +272,32 @@ motion.SetDwellTimes(2000,  // 2 seconds at minimum bound
                       2000,  // 2 seconds at maximum bound
                       0);    // No dwell at center (set to >0 to enable)
 
-// Start motion
+// Set target cycle count (0 = infinite)
+motion.SetTargetCycles(1000);  // Run for 1000 cycles, then auto-stop
+
+// Start motion (can be called at any time)
 motion.Start();
 
 // Update in main loop
 while (true) {
     motion.Update();
+    
+    // Settings can be changed in real-time while running:
+    // motion.SetFrequency(1.0f);  // Change frequency
+    // motion.SetSinuousAmplitudeDegrees(45.0f);  // Change amplitude
+    // motion.SetDwellTimes(1000, 1000, 0);  // Change dwell times
+    // motion.SetTargetCycles(2000);  // Change target cycles
+    
+    // Stop and restart at any time:
+    // motion.Stop();
+    // vTaskDelay(pdMS_TO_TICKS(2000));
+    // motion.Start();  // Resume from current position
+    
+    // Check status:
+    // uint32_t cycles = motion.GetCurrentCycles();
+    // bool running = motion.IsRunning();
+    // bool complete = motion.IsCycleComplete();
+    
     vTaskDelay(pdMS_TO_TICKS(10));
 }
 ```
@@ -351,7 +371,7 @@ motion.SetSinuousAmplitudeRadians(M_PI/4);
 
 ### Dwell Times
 
-Configure dwell times at bounds and optionally at center:
+Configure dwell times at bounds and optionally at center (can be changed in real-time):
 
 ```cpp
 // Set dwell times (in milliseconds, 0 to disable)
@@ -363,6 +383,73 @@ motion.SetDwellTimes(
 
 // For pure fatigue testing without dwells:
 motion.SetDwellTimes(0, 0, 0);  // No dwells, continuous motion
+
+// Change dwell times while running:
+motion.SetDwellTimes(1000, 1000, 0);  // Update in real-time
+```
+
+### Cycle Count
+
+Set target cycle count and track progress:
+
+```cpp
+// Set target cycle count (0 = infinite)
+motion.SetTargetCycles(1000);  // Run for 1000 cycles
+
+// Get current cycle count
+uint32_t cycles = motion.GetCurrentCycles();
+
+// Get target cycles
+uint32_t target = motion.GetTargetCycles();
+
+// Check if cycle count reached
+if (motion.IsCycleComplete()) {
+    ESP_LOGI(TAG, "Test complete: %lu cycles", motion.GetCurrentCycles());
+}
+
+// Reset cycle count
+motion.ResetCycles();
+
+// Change target cycles while running
+motion.SetTargetCycles(2000);  // Update target in real-time
+```
+
+### Start/Stop Control
+
+Motion can be started and stopped at any time:
+
+```cpp
+// Start motion (can be called at any time)
+motion.Start();
+
+// Stop motion (can be called at any time)
+motion.Stop();
+
+// Check if running
+if (motion.IsRunning()) {
+    // Motion is active
+}
+
+// Resume after stop (continues from current position)
+motion.Start();
+```
+
+### Real-Time Setting Changes
+
+All settings can be changed while motion is running:
+
+```cpp
+// Change frequency in real-time
+motion.SetFrequency(1.0f);  // Increase to 1.0 Hz
+
+// Change amplitude in real-time
+motion.SetSinuousAmplitudeDegrees(45.0f);  // Reduce to 45°
+
+// Change dwell times in real-time
+motion.SetDwellTimes(1000, 1000, 0);
+
+// Change target cycles in real-time
+motion.SetTargetCycles(2000);
 ```
 
 ### Complete Example Flow
@@ -370,9 +457,11 @@ motion.SetDwellTimes(0, 0, 0);  // No dwells, continuous motion
 1. **Find Global Bounds**: Automatically detects mechanical stops in both directions
 2. **Set Home**: Sets middle position as home (or uses current position if unbounded)
 3. **Set Local Bounds**: Define oscillation range (automatically clipped to global bounds)
-4. **Configure**: Set up sinuous motion parameters and dwell times
+4. **Configure**: Set up sinuous motion parameters, dwell times, and cycle count
 5. **Start Motion**: Begin pure sinusoidal back-and-forth motion
 6. **Update Loop**: Continuously update motion controller
+7. **Monitor**: Track cycle count and adjust settings in real-time as needed
+8. **Stop**: Motion stops automatically when cycle count reached, or can be stopped manually
 
 ### Fatigue Testing Best Practices
 
@@ -422,6 +511,16 @@ idf.py build -DAPP_TYPE=bounds_finding_sinuous_motion
   - Set to 0 to disable dwells for continuous motion
   - Typical values: 1-5 seconds at extremes for fatigue testing
   - Center dwell is optional and typically not needed for pure fatigue testing
+  - Can be changed in real-time while motion is running
+- **Cycle Count**:
+  - Set target cycles (0 = infinite)
+  - Motion automatically stops when target reached
+  - Cycle count can be changed in real-time
+  - Use `ResetCycles()` to restart counting
+- **Start/Stop Control**:
+  - Motion can be started and stopped at any time
+  - Resuming after stop continues from current position
+  - All settings can be changed while motion is running
 
 ### See Also
 
