@@ -205,22 +205,31 @@ int main() {
 }
 ```
 
-## Example 6: Bounds Finding and Sinuous Motion
+## Example 6: Fatigue Testing - Bounds Finding and Sinuous Motion
 
-This comprehensive example demonstrates:
+This example is designed for **cable/strain relief fatigue testing** and demonstrates:
 - **Sensorless bounds finding** using StallGuard2 in both directions
-- **Bounded and unbounded modes** (handles cases with/without mechanical stops)
+- **Global bounds** (hardware limits) and **local bounds** (oscillation range)
+- **Automatic clipping** of local bounds to global bounds
 - **Degree/radian support** for intuitive angle-based control
-- **Home position reset** by relative angles
-- **Sinuous motion** between bounds with configurable wait times and waypoints
+- **Pure sinusoidal back-and-forth motion** optimized for fatigue testing
+- **Dwell times** at bounds and optionally at center
 
 ### Key Features
 
-1. **Automatic Bounds Detection**: Finds mechanical stops in both directions using sensorless homing
-2. **Unbounded Mode**: Handles cases where no stops are found, using current position as home
-3. **Angle-Based Control**: Work with degrees or radians instead of steps
-4. **Home Reset**: Reset home position by relative angle offset
-5. **Sinuous Motion**: Smooth sinusoidal motion between bounds with customizable parameters
+1. **Global vs Local Bounds**: 
+   - Global bounds are hardware limits found during initialization
+   - Local bounds define the oscillation range for testing
+   - Local bounds are automatically clipped to global bounds if they exceed them
+
+2. **Fatigue Testing Optimized**: 
+   - Pure sinusoidal motion between two bounds (ideal for fatigue testing)
+   - Configurable dwell times at extremes (simulates holding tool in awkward positions)
+   - Optional center dwell for specific test requirements
+
+3. **Unbounded Mode**: Handles cases where no stops are found, using current position as home
+
+4. **Angle-Based Control**: Work with degrees or radians instead of steps
 
 ### Basic Usage
 
@@ -240,32 +249,28 @@ cfg.motor.ihold = 10;
 cfg.chopper.mres = 5; // 32 microsteps
 driver.Initialize(cfg);
 
-// Create motion controller
-BoundedSinuousMotion motion(&driver);
+// Create fatigue test motion controller
+FatigueTestMotion motion(&driver);
 
 // Configure motor parameters (needed for degree/radian conversions)
 uint16_t steps_per_rev = 200 * 32; // 200 steps * 32 microsteps
 motion.ConfigureMotor(steps_per_rev, AngleUnit::DEGREES);
 
-// After finding bounds (see full example), set bounds in degrees
-motion.SetBoundsDegrees(-90.0f, 90.0f);  // -90° to +90° from home
+// After finding global bounds (see full example), set global bounds
+motion.SetGlobalBoundsDegrees(-90.0f, 90.0f);  // Hardware limits: -90° to +90°
 
-// Or set bounds in radians
-motion.SetBoundsRadians(-M_PI/2, M_PI/2);
-
-// Reset home position by relative degrees
-motion.ResetHomeByDegrees(45.0f);  // Move home +45° from current position
+// Set local bounds for oscillation (will be clipped to global bounds if needed)
+motion.SetLocalBoundsDegrees(-60.0f, 60.0f);  // Oscillate ±60° from home
 
 // Configure sinuous motion
 motion.SetSinuousAmplitudeDegrees(60.0f);  // 60° amplitude
 motion.SetSinuousParams(0, 0.5f);  // 0.5 Hz frequency
 
-// Set wait times at bounds (can be 0 to disable)
-motion.SetDefaultWaits(500, 500, 300);  // min, max, home (ms)
-
-// Add waypoints (optional)
-motion.AddWaypoint(tmc5160::DegreesToSteps(-30.0f, steps_per_rev), 200);
-motion.AddWaypoint(tmc5160::DegreesToSteps(30.0f, steps_per_rev), 200);
+// Set dwell times at bounds (can be 0 to disable)
+// For fatigue testing: dwell at extremes simulates holding tool in awkward positions
+motion.SetDwellTimes(2000,  // 2 seconds at minimum bound
+                      2000,  // 2 seconds at maximum bound
+                      0);    // No dwell at center (set to >0 to enable)
 
 // Start motion
 motion.Start();
@@ -275,6 +280,21 @@ while (true) {
     motion.Update();
     vTaskDelay(pdMS_TO_TICKS(10));
 }
+```
+
+### Global vs Local Bounds
+
+The system distinguishes between global bounds (hardware limits) and local bounds (oscillation range):
+
+```cpp
+// Set global bounds (hardware limits found during initialization)
+motion.SetGlobalBoundsDegrees(-90.0f, 90.0f);
+
+// Set local bounds for oscillation (will be clipped to global bounds automatically)
+motion.SetLocalBoundsDegrees(-60.0f, 60.0f);  // Oscillate ±60°
+
+// If local bounds exceed global bounds, they are automatically clipped
+motion.SetLocalBoundsDegrees(-100.0f, 100.0f);  // Will be clipped to ±90°
 ```
 
 ### Unbounded Mode
@@ -290,9 +310,9 @@ if (!motion.IsBounded()) {
     // User can reset home to any relative angle
     motion.ResetHomeByDegrees(45.0f);
     
-    // Bounds are automatically recalculated
+    // Get local bounds
     float min_deg, max_deg;
-    motion.GetBoundsDegrees(min_deg, max_deg);
+    motion.GetLocalBoundsDegrees(min_deg, max_deg);
 }
 ```
 
@@ -301,19 +321,20 @@ if (!motion.IsBounded()) {
 The example provides full support for degree and radian operations:
 
 ```cpp
-// Set bounds in degrees (relative to home)
-motion.SetBoundsDegrees(-90.0f, 90.0f);
+// Set global bounds in degrees
+motion.SetGlobalBoundsDegrees(-90.0f, 90.0f);
+
+// Set local bounds in degrees
+motion.SetLocalBoundsDegrees(-60.0f, 60.0f);
 
 // Set bounds in radians
-motion.SetBoundsRadians(-M_PI/2, M_PI/2);
+motion.SetGlobalBoundsRadians(-M_PI/2, M_PI/2);
+motion.SetLocalBoundsRadians(-M_PI/3, M_PI/3);
 
 // Get bounds in degrees
 float min_deg, max_deg;
-motion.GetBoundsDegrees(min_deg, max_deg);
-
-// Get bounds in radians
-float min_rad, max_rad;
-motion.GetBoundsRadians(min_rad, max_rad);
+motion.GetLocalBoundsDegrees(min_deg, max_deg);
+motion.GetGlobalBoundsDegrees(min_deg, max_deg);
 
 // Reset home by degrees
 motion.ResetHomeByDegrees(30.0f);
@@ -328,31 +349,40 @@ motion.SetSinuousAmplitudeDegrees(45.0f);
 motion.SetSinuousAmplitudeRadians(M_PI/4);
 ```
 
-### Waypoint Management
+### Dwell Times
 
-Add, remove, and manage waypoints with wait times:
+Configure dwell times at bounds and optionally at center:
 
 ```cpp
-// Add waypoints
-motion.AddWaypoint(position_in_steps, wait_time_ms);
+// Set dwell times (in milliseconds, 0 to disable)
+motion.SetDwellTimes(
+    2000,  // Dwell at minimum bound: 2 seconds
+    2000,  // Dwell at maximum bound: 2 seconds
+    500    // Dwell at center: 0.5 seconds (optional, 0 to disable)
+);
 
-// Remove waypoint by index
-motion.RemoveWaypoint(0);
-
-// Clear all waypoints
-motion.ClearWaypoints();
-
-// Get waypoint count
-size_t count = motion.GetWaypointCount();
+// For pure fatigue testing without dwells:
+motion.SetDwellTimes(0, 0, 0);  // No dwells, continuous motion
 ```
 
 ### Complete Example Flow
 
-1. **Find Bounds**: Automatically detects mechanical stops in both directions
+1. **Find Global Bounds**: Automatically detects mechanical stops in both directions
 2. **Set Home**: Sets middle position as home (or uses current position if unbounded)
-3. **Configure**: Set up sinuous motion parameters, wait times, and waypoints
-4. **Start Motion**: Begin sinuous motion pattern
-5. **Update Loop**: Continuously update motion controller
+3. **Set Local Bounds**: Define oscillation range (automatically clipped to global bounds)
+4. **Configure**: Set up sinuous motion parameters and dwell times
+5. **Start Motion**: Begin pure sinusoidal back-and-forth motion
+6. **Update Loop**: Continuously update motion controller
+
+### Fatigue Testing Best Practices
+
+For cable/strain relief fatigue testing:
+
+- **Pure sinusoidal motion** between two bounds is ideal for worst-case fatigue testing
+- **Dwell at extremes** (1-5 seconds) simulates holding tool in awkward positions
+- **No center dwell** typically needed for pure fatigue testing
+- **Constant frequency** maximizes cycles per hour for faster test completion
+- **Angle selection**: Use realistic but aggressive angles (e.g., ±60-90°)
 
 ### Running the Example
 
@@ -384,7 +414,14 @@ idf.py build -DAPP_TYPE=bounds_finding_sinuous_motion
   - With microsteps: multiply by microstep factor (e.g., 200 × 32 = 6400)
 - **Stall Threshold**: Tune `sgt` parameter for your motor and mechanical system
 - **Search Speed**: Adjust based on your application (typically 200-1000 steps/s)
-- **Default Range**: For unbounded mode, set appropriate default range based on your application
+- **Global vs Local Bounds**: 
+  - Global bounds are hardware limits (found during initialization)
+  - Local bounds define oscillation range (clipped to global bounds automatically)
+  - If local bounds exceed global bounds, they are automatically clipped
+- **Dwell Times**: 
+  - Set to 0 to disable dwells for continuous motion
+  - Typical values: 1-5 seconds at extremes for fatigue testing
+  - Center dwell is optional and typically not needed for pure fatigue testing
 
 ### See Also
 

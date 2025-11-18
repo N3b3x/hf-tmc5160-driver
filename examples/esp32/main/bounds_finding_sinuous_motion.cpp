@@ -1,22 +1,21 @@
 /**
  * @file bounds_finding_sinuous_motion.cpp
- * @brief Comprehensive example: Sensorless bounds finding and sinuous motion
+ * @brief Fatigue testing example: Sensorless bounds finding and sinusoidal motion
  *
- * This example demonstrates:
+ * This example is designed for cable/strain relief fatigue testing:
  * 1. Finding motor bounds using sensorless homing (both directions)
- * 2. Setting the middle position as home
- * 3. Performing sinuous motion between bounds with:
+ * 2. Setting global bounds (hardware limits) and local bounds (oscillation range)
+ * 3. Performing pure sinusoidal back-and-forth motion between local bounds with:
  *    - Configurable angle amplitude and frequency
- *    - Customizable wait times at ends and middle
- *    - User-defined waypoints with wait times
- *    - Ability to add/remove waypoints
+ *    - Dwell times at bounds and optionally at center
+ *    - Automatic clipping of local bounds to global bounds
  *
  * Hardware Requirements:
  * - ESP32 development board
  * - TMC5160 stepper motor driver
  * - Stepper motor connected to TMC5160
  * - SPI connection between ESP32 and TMC5160
- * - Mechanical stops at both ends for bounds finding
+ * - Mechanical stops at both ends for bounds finding (optional - handles unbounded)
  *
  * Pin Configuration (modify as needed):
  * - SPI: MOSI=23, MISO=19, SCLK=18, CS=5
@@ -33,9 +32,9 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include <cmath>
-#include <vector>
+#include <algorithm>
 
-static const char *TAG = "BoundsSinuous";
+static const char *TAG = "FatigueTest";
 
 /**
  * @brief Angle unit enumeration
@@ -46,70 +45,60 @@ enum class AngleUnit {
 };
 
 /**
- * @brief Structure for waypoint with wait time
+ * @brief Fatigue test motion controller
+ * 
+ * Provides pure sinusoidal back-and-forth motion between bounds for fatigue testing.
+ * Supports global bounds (hardware limits) and local bounds (oscillation range).
  */
-struct Waypoint {
-  int32_t position;  // Position in steps
-  uint32_t wait_ms;  // Wait time in milliseconds
-
-  Waypoint(int32_t pos, uint32_t wait) : position(pos), wait_ms(wait) {}
-};
-
-/**
- * @brief Sinuous motion controller with bounds and waypoints
- */
-class BoundedSinuousMotion {
+class FatigueTestMotion {
 private:
   tmc5160::TMC5160<Esp32SPI> *driver_;
-  int32_t min_bound_;      // Minimum position (negative end) in steps
-  int32_t max_bound_;      // Maximum position (positive end) in steps
-  int32_t home_position_;  // Home position (middle) in steps
-  float amplitude_;        // Amplitude in steps
-  float frequency_hz_;     // Frequency in Hz
+  
+  // Global bounds (hardware limits found during initialization)
+  int32_t global_min_bound_;  // Global minimum position in steps
+  int32_t global_max_bound_;  // Global maximum position in steps
+  
+  // Local bounds (oscillation range, clipped to global bounds)
+  int32_t local_min_bound_;   // Local minimum for oscillation in steps
+  int32_t local_max_bound_;   // Local maximum for oscillation in steps
+  
+  int32_t home_position_;      // Home position (center) in steps
+  float amplitude_;            // Amplitude in steps
+  float frequency_hz_;        // Frequency in Hz
   bool running_;
   uint32_t start_time_us_;
-  int32_t current_target_;
   float phase_offset_;
-  bool bounded_;           // Whether bounds were found (false = unbounded)
+  bool bounded_;              // Whether global bounds were found
 
   // Motor configuration for unit conversions
-  uint16_t steps_per_rev_; // Steps per revolution (needed for degree/radian conversion)
-  AngleUnit angle_unit_;   // Preferred angle unit (degrees or radians)
+  uint16_t steps_per_rev_;   // Steps per revolution
+  AngleUnit angle_unit_;      // Preferred angle unit
 
-  // Default wait points (always exist, can be set to 0)
-  uint32_t wait_at_min_ms_;  // Wait time at minimum bound
-  uint32_t wait_at_max_ms_;  // Wait time at maximum bound
-  uint32_t wait_at_home_ms_; // Wait time at home/middle
-
-  // User-defined waypoints
-  std::vector<Waypoint> waypoints_;
+  // Dwell times (can be set to 0 to disable)
+  uint32_t dwell_at_min_ms_;   // Dwell time at minimum bound
+  uint32_t dwell_at_max_ms_;   // Dwell time at maximum bound
+  uint32_t dwell_at_center_ms_; // Dwell time at center/home (optional)
 
   // State machine
   enum class MotionState {
-    MOVING_TO_MIN,
-    WAITING_AT_MIN,
-    MOVING_TO_MAX,
-    WAITING_AT_MAX,
-    MOVING_TO_HOME,
-    WAITING_AT_HOME,
-    MOVING_TO_WAYPOINT,
-    WAITING_AT_WAYPOINT,
     SINUOUS_MOTION,
+    DWELL_AT_MIN,
+    DWELL_AT_MAX,
+    DWELL_AT_CENTER,
     STOPPED
   };
   MotionState state_;
-  size_t current_waypoint_idx_;
-  uint32_t wait_start_time_ms_;
+  uint32_t dwell_start_time_ms_;
 
 public:
-  BoundedSinuousMotion(tmc5160::TMC5160<Esp32SPI> *driver)
-      : driver_(driver), min_bound_(0), max_bound_(0), home_position_(0),
+  FatigueTestMotion(tmc5160::TMC5160<Esp32SPI> *driver)
+      : driver_(driver), global_min_bound_(0), global_max_bound_(0),
+        local_min_bound_(0), local_max_bound_(0), home_position_(0),
         amplitude_(1000.0f), frequency_hz_(0.5f), running_(false),
-        start_time_us_(0), current_target_(0), phase_offset_(0.0f),
-        bounded_(false), steps_per_rev_(200), angle_unit_(AngleUnit::DEGREES),
-        wait_at_min_ms_(500), wait_at_max_ms_(500), wait_at_home_ms_(300),
-        state_(MotionState::STOPPED), current_waypoint_idx_(0),
-        wait_start_time_ms_(0) {}
+        start_time_us_(0), phase_offset_(0.0f), bounded_(false),
+        steps_per_rev_(200), angle_unit_(AngleUnit::DEGREES),
+        dwell_at_min_ms_(0), dwell_at_max_ms_(0), dwell_at_center_ms_(0),
+        state_(MotionState::STOPPED), dwell_start_time_ms_(0) {}
 
   /**
    * @brief Configure motor parameters for unit conversions
@@ -124,72 +113,110 @@ public:
   }
 
   /**
-   * @brief Set bounds in steps (must be called before starting motion)
+   * @brief Set global bounds (hardware limits found during initialization)
+   * @param min_bound Global minimum position in steps
+   * @param max_bound Global maximum position in steps
    */
-  void SetBounds(int32_t min_bound, int32_t max_bound) {
-    min_bound_ = min_bound;
-    max_bound_ = max_bound;
-    home_position_ = (min_bound + max_bound) / 2;
+  void SetGlobalBounds(int32_t min_bound, int32_t max_bound) {
+    global_min_bound_ = min_bound;
+    global_max_bound_ = max_bound;
     bounded_ = true;
-    ESP_LOGI(TAG, "Bounds set: min=%d, max=%d, home=%d steps", min_bound_, max_bound_,
-             home_position_);
+    ESP_LOGI(TAG, "Global bounds set: min=%d, max=%d steps", global_min_bound_, global_max_bound_);
     if (steps_per_rev_ > 0) {
-      float min_deg = tmc5160::StepsToDegrees(min_bound_, steps_per_rev_);
-      float max_deg = tmc5160::StepsToDegrees(max_bound_, steps_per_rev_);
-      ESP_LOGI(TAG, "Bounds in degrees: min=%.2f°, max=%.2f°", min_deg, max_deg);
+      float min_deg = tmc5160::StepsToDegrees(global_min_bound_, steps_per_rev_);
+      float max_deg = tmc5160::StepsToDegrees(global_max_bound_, steps_per_rev_);
+      ESP_LOGI(TAG, "Global bounds: min=%.2f°, max=%.2f°", min_deg, max_deg);
+    }
+    
+    // Clip local bounds to global bounds if they exist
+    if (local_min_bound_ != 0 || local_max_bound_ != 0) {
+      ClipLocalBoundsToGlobal();
     }
   }
 
   /**
-   * @brief Set bounds in degrees (relative to current home)
-   * @param min_degrees Minimum bound in degrees (negative value)
-   * @param max_degrees Maximum bound in degrees (positive value)
+   * @brief Set global bounds in degrees
    */
-  void SetBoundsDegrees(float min_degrees, float max_degrees) {
+  void SetGlobalBoundsDegrees(float min_degrees, float max_degrees) {
     if (steps_per_rev_ == 0) {
-      ESP_LOGE(TAG, "Cannot set bounds in degrees: steps_per_rev not configured");
+      ESP_LOGE(TAG, "Cannot set global bounds in degrees: steps_per_rev not configured");
       return;
     }
     int32_t min_steps = tmc5160::DegreesToSteps(min_degrees, steps_per_rev_);
     int32_t max_steps = tmc5160::DegreesToSteps(max_degrees, steps_per_rev_);
-    SetBounds(min_steps, max_steps);
-    ESP_LOGI(TAG, "Bounds set in degrees: min=%.2f°, max=%.2f°", min_degrees, max_degrees);
+    SetGlobalBounds(min_steps, max_steps);
   }
 
   /**
-   * @brief Set bounds in radians (relative to current home)
-   * @param min_radians Minimum bound in radians (negative value)
-   * @param max_radians Maximum bound in radians (positive value)
+   * @brief Set global bounds in radians
    */
-  void SetBoundsRadians(float min_radians, float max_radians) {
-    if (steps_per_rev_ == 0) {
-      ESP_LOGE(TAG, "Cannot set bounds in radians: steps_per_rev not configured");
-      return;
-    }
-    // Convert radians to degrees first
+  void SetGlobalBoundsRadians(float min_radians, float max_radians) {
     float min_degrees = min_radians * 180.0f / M_PI;
     float max_degrees = max_radians * 180.0f / M_PI;
-    SetBoundsDegrees(min_degrees, max_degrees);
-    ESP_LOGI(TAG, "Bounds set in radians: min=%.4f rad, max=%.4f rad", min_radians, max_radians);
+    SetGlobalBoundsDegrees(min_degrees, max_degrees);
+  }
+
+  /**
+   * @brief Set local bounds (oscillation range, will be clipped to global bounds)
+   * @param min_bound Local minimum position in steps
+   * @param max_bound Local maximum position in steps
+   */
+  void SetLocalBounds(int32_t min_bound, int32_t max_bound) {
+    local_min_bound_ = min_bound;
+    local_max_bound_ = max_bound;
+    home_position_ = (local_min_bound_ + local_max_bound_) / 2;
+    
+    // Clip to global bounds if they exist
+    if (bounded_) {
+      ClipLocalBoundsToGlobal();
+    }
+    
+    ESP_LOGI(TAG, "Local bounds set: min=%d, max=%d steps", local_min_bound_, local_max_bound_);
+    if (steps_per_rev_ > 0) {
+      float min_deg = tmc5160::StepsToDegrees(local_min_bound_, steps_per_rev_);
+      float max_deg = tmc5160::StepsToDegrees(local_max_bound_, steps_per_rev_);
+      ESP_LOGI(TAG, "Local bounds: min=%.2f°, max=%.2f°", min_deg, max_deg);
+    }
+  }
+
+  /**
+   * @brief Set local bounds in degrees
+   */
+  void SetLocalBoundsDegrees(float min_degrees, float max_degrees) {
+    if (steps_per_rev_ == 0) {
+      ESP_LOGE(TAG, "Cannot set local bounds in degrees: steps_per_rev not configured");
+      return;
+    }
+    int32_t min_steps = tmc5160::DegreesToSteps(min_degrees, steps_per_rev_);
+    int32_t max_steps = tmc5160::DegreesToSteps(max_degrees, steps_per_rev_);
+    SetLocalBounds(min_steps, max_steps);
+  }
+
+  /**
+   * @brief Set local bounds in radians
+   */
+  void SetLocalBoundsRadians(float min_radians, float max_radians) {
+    float min_degrees = min_radians * 180.0f / M_PI;
+    float max_degrees = max_radians * 180.0f / M_PI;
+    SetLocalBoundsDegrees(min_degrees, max_degrees);
   }
 
   /**
    * @brief Set unbounded mode (no mechanical stops found)
-   * Chooses a random home position and sets reasonable default bounds
+   * Uses current position as home and sets reasonable default global bounds
    */
   void SetUnbounded(int32_t current_position, int32_t default_range_steps = 10000) {
     bounded_ = false;
     home_position_ = current_position;
-    // Set default bounds around current position
-    min_bound_ = current_position - default_range_steps / 2;
-    max_bound_ = current_position + default_range_steps / 2;
+    global_min_bound_ = current_position - default_range_steps / 2;
+    global_max_bound_ = current_position + default_range_steps / 2;
     driver_->rampControl.SetCurrentPosition(0);
     ESP_LOGW(TAG, "Unbounded mode: No mechanical stops found");
     ESP_LOGI(TAG, "Using current position as home: %d steps", current_position);
-    ESP_LOGI(TAG, "Default range: [%d, %d] steps", min_bound_, max_bound_);
+    ESP_LOGI(TAG, "Default global range: [%d, %d] steps", global_min_bound_, global_max_bound_);
     if (steps_per_rev_ > 0) {
       float range_deg = tmc5160::StepsToDegrees(default_range_steps, steps_per_rev_);
-      ESP_LOGI(TAG, "Default range: %.2f°", range_deg);
+      ESP_LOGI(TAG, "Default global range: %.2f°", range_deg);
     }
   }
 
@@ -202,7 +229,6 @@ public:
     if (angle_unit_ == AngleUnit::DEGREES) {
       offset_steps = tmc5160::DegreesToSteps(relative_angle, steps_per_rev_);
     } else {
-      // Convert radians to degrees
       float degrees = relative_angle * 180.0f / M_PI;
       offset_steps = tmc5160::DegreesToSteps(degrees, steps_per_rev_);
     }
@@ -216,7 +242,6 @@ public:
     driver_->rampControl.SetMaxSpeed(1000.0f);
     driver_->rampControl.SetAcceleration(2000.0f);
 
-    // Wait for movement
     while (!driver_->rampControl.IsTargetReached()) {
       vTaskDelay(pdMS_TO_TICKS(10));
     }
@@ -226,51 +251,25 @@ public:
     home_position_ = 0;
 
     // Recalculate bounds relative to new home
-    int32_t old_min = min_bound_;
-    int32_t old_max = max_bound_;
-    min_bound_ = old_min - new_home_pos;
-    max_bound_ = old_max - new_home_pos;
+    global_min_bound_ -= new_home_pos;
+    global_max_bound_ -= new_home_pos;
+    local_min_bound_ -= new_home_pos;
+    local_max_bound_ -= new_home_pos;
+
+    // Clip local bounds to global bounds
+    if (bounded_) {
+      ClipLocalBoundsToGlobal();
+    }
 
     ESP_LOGI(TAG, "Home reset by %.2f %s", relative_angle,
              angle_unit_ == AngleUnit::DEGREES ? "degrees" : "radians");
-    ESP_LOGI(TAG, "New bounds: min=%d, max=%d steps", min_bound_, max_bound_);
-    if (steps_per_rev_ > 0) {
-      float min_deg = tmc5160::StepsToDegrees(min_bound_, steps_per_rev_);
-      float max_deg = tmc5160::StepsToDegrees(max_bound_, steps_per_rev_);
-      ESP_LOGI(TAG, "New bounds: min=%.2f°, max=%.2f°", min_deg, max_deg);
-    }
   }
 
   /**
    * @brief Reset home position by relative degrees
    */
   void ResetHomeByDegrees(float relative_degrees) {
-    int32_t offset_steps = tmc5160::DegreesToSteps(relative_degrees, steps_per_rev_);
-    int32_t current_pos = driver_->rampControl.GetCurrentPosition();
-    int32_t new_home_pos = current_pos + offset_steps;
-
-    // Move to new home position
-    driver_->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    driver_->rampControl.SetTargetPosition(new_home_pos);
-    driver_->rampControl.SetMaxSpeed(1000.0f);
-    driver_->rampControl.SetAcceleration(2000.0f);
-
-    while (!driver_->rampControl.IsTargetReached()) {
-      vTaskDelay(pdMS_TO_TICKS(10));
-    }
-
-    // Set new home position
-    driver_->rampControl.SetCurrentPosition(0);
-    home_position_ = 0;
-
-    // Recalculate bounds relative to new home
-    int32_t old_min = min_bound_;
-    int32_t old_max = max_bound_;
-    min_bound_ = old_min - new_home_pos;
-    max_bound_ = old_max - new_home_pos;
-
-    ESP_LOGI(TAG, "Home reset by %.2f degrees", relative_degrees);
-    ESP_LOGI(TAG, "New bounds: min=%d, max=%d steps", min_bound_, max_bound_);
+    ResetHomeByAngle(relative_degrees);
   }
 
   /**
@@ -278,40 +277,13 @@ public:
    */
   void ResetHomeByRadians(float relative_radians) {
     float degrees = relative_radians * 180.0f / M_PI;
-    ResetHomeByDegrees(degrees);
-    ESP_LOGI(TAG, "Home reset by %.4f radians (%.2f degrees)", relative_radians, degrees);
+    ResetHomeByAngle(degrees);
   }
-
-  /**
-   * @brief Get bounds in degrees
-   */
-  void GetBoundsDegrees(float &min_degrees, float &max_degrees) const {
-    if (steps_per_rev_ == 0) {
-      min_degrees = 0.0f;
-      max_degrees = 0.0f;
-      return;
-    }
-    min_degrees = tmc5160::StepsToDegrees(min_bound_, steps_per_rev_);
-    max_degrees = tmc5160::StepsToDegrees(max_bound_, steps_per_rev_);
-  }
-
-  /**
-   * @brief Get bounds in radians
-   */
-  void GetBoundsRadians(float &min_radians, float &max_radians) const {
-    float min_deg, max_deg;
-    GetBoundsDegrees(min_deg, max_deg);
-    min_radians = min_deg * M_PI / 180.0f;
-    max_radians = max_deg * M_PI / 180.0f;
-  }
-
-  /**
-   * @brief Check if system is bounded
-   */
-  bool IsBounded() const { return bounded_; }
 
   /**
    * @brief Set sinuous motion parameters
+   * @param amplitude_steps Amplitude in steps
+   * @param frequency_hz Frequency in Hz
    */
   void SetSinuousParams(float amplitude_steps, float frequency_hz) {
     amplitude_ = amplitude_steps;
@@ -345,111 +317,76 @@ public:
   }
 
   /**
-   * @brief Set default wait times (can be 0 to disable)
+   * @brief Set dwell times (can be 0 to disable)
+   * @param dwell_at_min_ms Dwell time at minimum bound (ms)
+   * @param dwell_at_max_ms Dwell time at maximum bound (ms)
+   * @param dwell_at_center_ms Dwell time at center (ms, optional, 0 to disable)
    */
-  void SetDefaultWaits(uint32_t wait_at_min_ms, uint32_t wait_at_max_ms,
-                       uint32_t wait_at_home_ms) {
-    wait_at_min_ms_ = wait_at_min_ms;
-    wait_at_max_ms_ = wait_at_max_ms;
-    wait_at_home_ms_ = wait_at_home_ms;
-    ESP_LOGI(TAG, "Default waits: min=%lu ms, max=%lu ms, home=%lu ms",
-             wait_at_min_ms_, wait_at_max_ms_, wait_at_home_ms_);
+  void SetDwellTimes(uint32_t dwell_at_min_ms, uint32_t dwell_at_max_ms,
+                      uint32_t dwell_at_center_ms = 0) {
+    dwell_at_min_ms_ = dwell_at_min_ms;
+    dwell_at_max_ms_ = dwell_at_max_ms;
+    dwell_at_center_ms_ = dwell_at_center_ms;
+    ESP_LOGI(TAG, "Dwell times: min=%lu ms, max=%lu ms, center=%lu ms",
+             dwell_at_min_ms_, dwell_at_max_ms_, dwell_at_center_ms_);
   }
 
   /**
-   * @brief Add a waypoint with wait time
-   * @return true if added successfully
+   * @brief Get local bounds in degrees
    */
-  bool AddWaypoint(int32_t position, uint32_t wait_ms) {
-    // Validate position is within bounds
-    if (position < min_bound_ || position > max_bound_) {
-      ESP_LOGW(TAG, "Waypoint position %d is outside bounds [%d, %d]",
-               position, min_bound_, max_bound_);
-      return false;
+  void GetLocalBoundsDegrees(float &min_degrees, float &max_degrees) const {
+    if (steps_per_rev_ == 0) {
+      min_degrees = 0.0f;
+      max_degrees = 0.0f;
+      return;
     }
-
-    waypoints_.emplace_back(position, wait_ms);
-    ESP_LOGI(TAG, "Added waypoint: position=%d, wait=%lu ms", position,
-             wait_ms);
-    return true;
+    min_degrees = tmc5160::StepsToDegrees(local_min_bound_, steps_per_rev_);
+    max_degrees = tmc5160::StepsToDegrees(local_max_bound_, steps_per_rev_);
   }
 
   /**
-   * @brief Remove waypoint at index
-   * @return true if removed successfully
+   * @brief Get local bounds in radians
    */
-  bool RemoveWaypoint(size_t index) {
-    if (index >= waypoints_.size()) {
-      return false;
+  void GetLocalBoundsRadians(float &min_radians, float &max_radians) const {
+    float min_deg, max_deg;
+    GetLocalBoundsDegrees(min_deg, max_deg);
+    min_radians = min_deg * M_PI / 180.0f;
+    max_radians = max_deg * M_PI / 180.0f;
+  }
+
+  /**
+   * @brief Get global bounds in degrees
+   */
+  void GetGlobalBoundsDegrees(float &min_degrees, float &max_degrees) const {
+    if (steps_per_rev_ == 0) {
+      min_degrees = 0.0f;
+      max_degrees = 0.0f;
+      return;
     }
-    waypoints_.erase(waypoints_.begin() + index);
-    ESP_LOGI(TAG, "Removed waypoint at index %zu", index);
-    return true;
+    min_degrees = tmc5160::StepsToDegrees(global_min_bound_, steps_per_rev_);
+    max_degrees = tmc5160::StepsToDegrees(global_max_bound_, steps_per_rev_);
   }
 
   /**
-   * @brief Clear all waypoints
+   * @brief Check if system is bounded
    */
-  void ClearWaypoints() {
-    waypoints_.clear();
-    ESP_LOGI(TAG, "Cleared all waypoints");
-  }
-
-  /**
-   * @brief Get number of waypoints
-   */
-  size_t GetWaypointCount() const { return waypoints_.size(); }
-
-  /**
-   * @brief Get current bounds
-   */
-  void GetBounds(int32_t &min_bound, int32_t &max_bound) const {
-    min_bound = min_bound_;
-    max_bound = max_bound_;
-  }
-
-  /**
-   * @brief Get home position
-   */
-  int32_t GetHomePosition() const { return home_position_; }
-
-  /**
-   * @brief Check if motion is running
-   */
-  bool IsRunning() const { return running_; }
+  bool IsBounded() const { return bounded_; }
 
   /**
    * @brief Start sinuous motion
    */
   void Start() {
-    if (min_bound_ == 0 && max_bound_ == 0) {
-      ESP_LOGE(TAG, "Cannot start: bounds not set!");
+    if (local_min_bound_ == 0 && local_max_bound_ == 0) {
+      ESP_LOGE(TAG, "Cannot start: local bounds not set!");
       return;
     }
 
     running_ = true;
-    current_waypoint_idx_ = 0;
+    state_ = MotionState::SINUOUS_MOTION;
     start_time_us_ = esp_timer_get_time();
     phase_offset_ = 0.0f;
 
-    // If waypoints exist, visit them first, otherwise go to home
-    if (!waypoints_.empty()) {
-      state_ = MotionState::MOVING_TO_WAYPOINT;
-      int32_t target = waypoints_[0].position;
-      driver_->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-      driver_->rampControl.SetTargetPosition(target);
-      driver_->rampControl.SetMaxSpeed(1000.0f);
-      driver_->rampControl.SetAcceleration(2000.0f);
-      ESP_LOGI(TAG, "Starting waypoint sequence, then sinuous motion");
-    } else {
-      // No waypoints, go directly to home then start sinuous motion
-      state_ = MotionState::MOVING_TO_HOME;
-      driver_->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-      driver_->rampControl.SetTargetPosition(home_position_);
-      driver_->rampControl.SetMaxSpeed(1000.0f);
-      driver_->rampControl.SetAcceleration(2000.0f);
-      ESP_LOGI(TAG, "Starting sinuous motion from home position");
-    }
+    ESP_LOGI(TAG, "Starting fatigue test motion");
   }
 
   /**
@@ -459,7 +396,7 @@ public:
     running_ = false;
     state_ = MotionState::STOPPED;
     driver_->rampControl.Stop();
-    ESP_LOGI(TAG, "Stopped sinuous motion");
+    ESP_LOGI(TAG, "Stopped fatigue test motion");
   }
 
   /**
@@ -473,83 +410,32 @@ public:
     uint32_t current_time_ms = esp_timer_get_time() / 1000;
 
     switch (state_) {
-    case MotionState::MOVING_TO_MIN:
-      if (driver_->rampControl.IsTargetReached()) {
-        ESP_LOGI(TAG, "Reached minimum bound");
-        if (wait_at_min_ms_ > 0) {
-          state_ = MotionState::WAITING_AT_MIN;
-          wait_start_time_ms_ = current_time_ms;
-        } else {
-          // Resume sinuous motion immediately
-          state_ = MotionState::SINUOUS_MOTION;
-        }
-      }
-      break;
-
-    case MotionState::WAITING_AT_MIN:
-      if (current_time_ms - wait_start_time_ms_ >= wait_at_min_ms_) {
-        // Resume sinuous motion after waiting at minimum bound
-        // Reset timing and set phase to start from minimum (sin = -1, angle = -π/2)
+    case MotionState::DWELL_AT_MIN:
+      if (current_time_ms - dwell_start_time_ms_ >= dwell_at_min_ms_) {
         state_ = MotionState::SINUOUS_MOTION;
         start_time_us_ = esp_timer_get_time();
         phase_offset_ = -M_PI / 2.0; // Start from minimum position
       }
       break;
 
-    case MotionState::MOVING_TO_MAX:
-      if (driver_->rampControl.IsTargetReached()) {
-        ESP_LOGI(TAG, "Reached maximum bound");
-        if (wait_at_max_ms_ > 0) {
-          state_ = MotionState::WAITING_AT_MAX;
-          wait_start_time_ms_ = current_time_ms;
-        } else {
-          // Resume sinuous motion immediately
-          state_ = MotionState::SINUOUS_MOTION;
-        }
-      }
-      break;
-
-    case MotionState::WAITING_AT_MAX:
-      if (current_time_ms - wait_start_time_ms_ >= wait_at_max_ms_) {
-        // Resume sinuous motion after waiting at maximum bound
-        // Reset timing and set phase to start from maximum (sin = +1, angle = π/2)
+    case MotionState::DWELL_AT_MAX:
+      if (current_time_ms - dwell_start_time_ms_ >= dwell_at_max_ms_) {
         state_ = MotionState::SINUOUS_MOTION;
         start_time_us_ = esp_timer_get_time();
         phase_offset_ = M_PI / 2.0; // Start from maximum position
       }
       break;
 
-    case MotionState::MOVING_TO_HOME:
-      if (driver_->rampControl.IsTargetReached()) {
-        ESP_LOGI(TAG, "Reached home position");
-        if (wait_at_home_ms_ > 0) {
-          state_ = MotionState::WAITING_AT_HOME;
-          wait_start_time_ms_ = current_time_ms;
-        } else {
-          StartSinuousMotion();
-        }
-      }
-      break;
-
-    case MotionState::WAITING_AT_HOME:
-      if (current_time_ms - wait_start_time_ms_ >= wait_at_home_ms_) {
-        StartSinuousMotion();
-      }
-      break;
-
-    case MotionState::MOVING_TO_WAYPOINT:
-      if (driver_->rampControl.IsTargetReached()) {
-        HandleWaypointReached();
-      }
-      break;
-
-    case MotionState::WAITING_AT_WAYPOINT:
-      if (current_time_ms - wait_start_time_ms_ >=
-          waypoints_[current_waypoint_idx_].wait_ms) {
-        current_waypoint_idx_++;
-        // After visiting all waypoints, start sinuous motion
-        // (waypoints don't loop - they're visited once before sinuous motion)
-        StartSinuousMotion();
+    case MotionState::DWELL_AT_CENTER:
+      if (current_time_ms - dwell_start_time_ms_ >= dwell_at_center_ms_) {
+        state_ = MotionState::SINUOUS_MOTION;
+        start_time_us_ = esp_timer_get_time();
+        // Continue from current phase (don't reset, just resume)
+        int32_t current_pos = driver_->rampControl.GetCurrentPosition();
+        double normalized_pos = static_cast<double>(current_pos - home_position_) / amplitude_;
+        if (normalized_pos > 1.0) normalized_pos = 1.0;
+        if (normalized_pos < -1.0) normalized_pos = -1.0;
+        phase_offset_ = asin(normalized_pos);
       }
       break;
 
@@ -564,29 +450,30 @@ public:
 
 private:
   /**
-   * @brief Start sinuous motion pattern
+   * @brief Clip local bounds to global bounds
    */
-  void StartSinuousMotion() {
-    // Check if we should visit more waypoints
-    if (!waypoints_.empty() && current_waypoint_idx_ < waypoints_.size()) {
-      // Move to next waypoint
-      int32_t target = waypoints_[current_waypoint_idx_].position;
-      driver_->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-      driver_->rampControl.SetTargetPosition(target);
-      driver_->rampControl.SetMaxSpeed(1000.0f);
-      driver_->rampControl.SetAcceleration(2000.0f);
-      state_ = MotionState::MOVING_TO_WAYPOINT;
-      ESP_LOGI(TAG, "Moving to waypoint %zu at position %d",
-               current_waypoint_idx_, target);
-      return;
-    }
+  void ClipLocalBoundsToGlobal() {
+    if (!bounded_) return;
 
-    // All waypoints visited (or none exist), start sinuous motion
-    state_ = MotionState::SINUOUS_MOTION;
-    start_time_us_ = esp_timer_get_time();
-    phase_offset_ = 0.0f;
-    ESP_LOGI(TAG, "Starting sinuous motion between bounds [%d, %d]",
-             min_bound_, max_bound_);
+    int32_t old_min = local_min_bound_;
+    int32_t old_max = local_max_bound_;
+
+    // Clip local bounds to global bounds
+    local_min_bound_ = std::max(local_min_bound_, global_min_bound_);
+    local_max_bound_ = std::min(local_max_bound_, global_max_bound_);
+
+    // Update home position
+    home_position_ = (local_min_bound_ + local_max_bound_) / 2;
+
+    if (old_min != local_min_bound_ || old_max != local_max_bound_) {
+      ESP_LOGW(TAG, "Local bounds clipped to global bounds");
+      ESP_LOGI(TAG, "Clipped local bounds: min=%d, max=%d steps", local_min_bound_, local_max_bound_);
+      if (steps_per_rev_ > 0) {
+        float min_deg = tmc5160::StepsToDegrees(local_min_bound_, steps_per_rev_);
+        float max_deg = tmc5160::StepsToDegrees(local_max_bound_, steps_per_rev_);
+        ESP_LOGI(TAG, "Clipped local bounds: min=%.2f°, max=%.2f°", min_deg, max_deg);
+      }
+    }
   }
 
   /**
@@ -601,32 +488,50 @@ private:
     double angle = 2.0 * M_PI * frequency_hz_ * elapsed_s + phase_offset_;
     double sin_value = sin(angle);
 
-    // Calculate target position (clamped to bounds)
-    int32_t target = home_position_ +
-                     static_cast<int32_t>(amplitude_ * sin_value);
+    // Calculate target position
+    int32_t target = home_position_ + static_cast<int32_t>(amplitude_ * sin_value);
 
-    // Clamp to bounds and handle wait states
-    if (target < min_bound_) {
-      target = min_bound_;
-      // Hit minimum bound, wait if configured
-      if (wait_at_min_ms_ > 0 && state_ == MotionState::SINUOUS_MOTION) {
-        state_ = MotionState::WAITING_AT_MIN;
-        wait_start_time_ms_ = esp_timer_get_time() / 1000;
-        // Stop motion while waiting
+    // Clamp to local bounds and handle dwell states
+    if (target <= local_min_bound_) {
+      target = local_min_bound_;
+      // Hit minimum bound, dwell if configured
+      if (dwell_at_min_ms_ > 0 && state_ == MotionState::SINUOUS_MOTION) {
+        state_ = MotionState::DWELL_AT_MIN;
+        dwell_start_time_ms_ = esp_timer_get_time() / 1000;
         driver_->rampControl.SetTargetPosition(target);
         return;
       }
-    } else if (target > max_bound_) {
-      target = max_bound_;
-      // Hit maximum bound, wait if configured
-      if (wait_at_max_ms_ > 0 && state_ == MotionState::SINUOUS_MOTION) {
-        state_ = MotionState::WAITING_AT_MAX;
-        wait_start_time_ms_ = esp_timer_get_time() / 1000;
-        // Stop motion while waiting
+    } else if (target >= local_max_bound_) {
+      target = local_max_bound_;
+      // Hit maximum bound, dwell if configured
+      if (dwell_at_max_ms_ > 0 && state_ == MotionState::SINUOUS_MOTION) {
+        state_ = MotionState::DWELL_AT_MAX;
+        dwell_start_time_ms_ = esp_timer_get_time() / 1000;
         driver_->rampControl.SetTargetPosition(target);
         return;
       }
     }
+
+    // Check if we're passing through center and need to dwell
+    // Simple approach: detect when we cross through center (sign change of position relative to home)
+    static int32_t last_position_relative = 0;
+    int32_t current_position_relative = driver_->rampControl.GetCurrentPosition() - home_position_;
+    
+    if (dwell_at_center_ms_ > 0) {
+      // Check if we crossed through center (sign change)
+      if ((last_position_relative < 0 && current_position_relative >= 0) ||
+          (last_position_relative > 0 && current_position_relative <= 0)) {
+        // We crossed through center, start dwell
+        if (abs(current_position_relative) < 50) { // Within 50 steps of center
+          state_ = MotionState::DWELL_AT_CENTER;
+          dwell_start_time_ms_ = esp_timer_get_time() / 1000;
+          driver_->rampControl.SetTargetPosition(home_position_);
+          last_position_relative = 0;
+          return;
+        }
+      }
+    }
+    last_position_relative = current_position_relative;
 
     // Update target position if it changed significantly
     int32_t current_pos = driver_->rampControl.GetCurrentPosition();
@@ -637,33 +542,10 @@ private:
       driver_->rampControl.SetAcceleration(2000.0f);
     }
   }
-
-  /**
-   * @brief Handle waypoint reached
-   */
-  void HandleWaypointReached() {
-    if (current_waypoint_idx_ < waypoints_.size()) {
-      uint32_t wait_time = waypoints_[current_waypoint_idx_].wait_ms;
-      ESP_LOGI(TAG, "Reached waypoint %zu at position %d (wait: %lu ms)",
-               current_waypoint_idx_, waypoints_[current_waypoint_idx_].position,
-               wait_time);
-      if (wait_time > 0) {
-        state_ = MotionState::WAITING_AT_WAYPOINT;
-        wait_start_time_ms_ = esp_timer_get_time() / 1000;
-      } else {
-        // No wait time, move to next waypoint immediately
-        current_waypoint_idx_++;
-        StartSinuousMotion();
-      }
-    } else {
-      // No more waypoints, start sinuous motion
-      StartSinuousMotion();
-    }
-  }
 };
 
 extern "C" void app_main() {
-  ESP_LOGI(TAG, "TMC5160 Bounds Finding and Sinuous Motion Example");
+  ESP_LOGI(TAG, "TMC5160 Fatigue Test: Bounds Finding and Sinuous Motion");
 
   // Create SPI communication interface
   Esp32SPI spi(SPI2_HOST, GPIO_NUM_23, GPIO_NUM_19, GPIO_NUM_18, GPIO_NUM_5,
@@ -717,30 +599,23 @@ extern "C" void app_main() {
   // IMPORTANT: Set this based on your motor specifications
   uint16_t steps_per_rev = 200; // Example: 200 steps/rev for 1.8° motor
   // Adjust based on microsteps: if using 32 microsteps, steps_per_rev = 200 * 32 = 6400
-  // For this example, assuming 32 microsteps (mres=5)
   steps_per_rev = 200 * 32; // 6400 steps per revolution with 32 microsteps
 
   // ============================================================
-  // STEP 1: Find bounds using sensorless homing
+  // STEP 1: Find global bounds using sensorless homing
   // ============================================================
-  ESP_LOGI(TAG, "=== Step 1: Finding bounds ===");
+  ESP_LOGI(TAG, "=== Step 1: Finding global bounds ===");
 
   // Find minimum bound (negative direction)
   ESP_LOGI(TAG, "Finding minimum bound (negative direction)...");
   int32_t min_position = 0;
   float search_speed = 500.0f; // steps/s
 
-  // Set initial position to a safe starting point
   driver.rampControl.SetCurrentPosition(0);
 
-  // Perform sensorless homing in negative direction
-  bool min_found = driver.diagnostics.PerformSensorlessHoming(false, // negative direction
-                                                               -10,   // stall threshold
-                                                               search_speed, min_position);
+  bool min_found = driver.diagnostics.PerformSensorlessHoming(false, -10, search_speed, min_position);
 
-  // Wait for movement to complete and stall detection
-  ESP_LOGI(TAG, "Waiting for stall detection...");
-  uint32_t timeout_ms = 30000; // 30 second timeout
+  uint32_t timeout_ms = 30000;
   uint32_t start_time = esp_timer_get_time() / 1000;
   bool stall_detected_min = false;
   int32_t initial_pos = driver.rampControl.GetCurrentPosition();
@@ -749,10 +624,8 @@ extern "C" void app_main() {
     uint16_t sg_value = driver.diagnostics.GetStallGuard();
     int32_t current_pos = driver.rampControl.GetCurrentPosition();
 
-    // Check if motor has stopped (stall detected)
-    // Also check if we've moved significantly from initial position
     if (driver.rampControl.IsTargetReached() || sg_value < 100 ||
-        abs(current_pos - initial_pos) > 1000) { // Moved more than 1000 steps
+        abs(current_pos - initial_pos) > 1000) {
       min_position = current_pos;
       stall_detected_min = true;
       ESP_LOGI(TAG, "Stall detected! Minimum position: %d steps", min_position);
@@ -766,36 +639,25 @@ extern "C" void app_main() {
     ESP_LOGW(TAG, "No stall detected in negative direction - may be unbounded");
     min_position = driver.rampControl.GetCurrentPosition();
   } else {
-    // Stall detected, move away from stop slightly
     driver.rampControl.Stop();
     vTaskDelay(pdMS_TO_TICKS(500));
-
     ESP_LOGI(TAG, "Moving 100 steps away from minimum stop...");
     driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
     driver.rampControl.SetTargetPosition(min_position + 100);
     driver.rampControl.SetMaxSpeed(500.0f);
     driver.rampControl.SetAcceleration(1000.0f);
-
     while (!driver.rampControl.IsTargetReached()) {
       vTaskDelay(pdMS_TO_TICKS(100));
     }
-
     min_position = driver.rampControl.GetCurrentPosition();
-    driver.rampControl.SetCurrentPosition(0); // Reset position counter
-    ESP_LOGI(TAG, "Minimum bound found: %d steps (offset from new zero)",
-             min_position);
+    driver.rampControl.SetCurrentPosition(0);
   }
 
   // Find maximum bound (positive direction)
   ESP_LOGI(TAG, "Finding maximum bound (positive direction)...");
-
   int32_t max_position = 0;
-  bool max_found = driver.diagnostics.PerformSensorlessHoming(true, // positive direction
-                                                               -10,  // stall threshold
-                                                               search_speed, max_position);
+  bool max_found = driver.diagnostics.PerformSensorlessHoming(true, -10, search_speed, max_position);
 
-  // Wait for movement to complete and stall detection
-  ESP_LOGI(TAG, "Waiting for stall detection...");
   start_time = esp_timer_get_time() / 1000;
   bool stall_detected_max = false;
   initial_pos = driver.rampControl.GetCurrentPosition();
@@ -805,7 +667,7 @@ extern "C" void app_main() {
     int32_t current_pos = driver.rampControl.GetCurrentPosition();
 
     if (driver.rampControl.IsTargetReached() || sg_value < 100 ||
-        abs(current_pos - initial_pos) > 1000) { // Moved more than 1000 steps
+        abs(current_pos - initial_pos) > 1000) {
       max_position = current_pos;
       stall_detected_max = true;
       ESP_LOGI(TAG, "Stall detected! Maximum position: %d steps", max_position);
@@ -819,110 +681,36 @@ extern "C" void app_main() {
     ESP_LOGW(TAG, "No stall detected in positive direction - may be unbounded");
     max_position = driver.rampControl.GetCurrentPosition();
   } else {
-    // Stall detected, move away from stop slightly
     driver.rampControl.Stop();
     vTaskDelay(pdMS_TO_TICKS(500));
-
     ESP_LOGI(TAG, "Moving 100 steps away from maximum stop...");
     driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
     driver.rampControl.SetTargetPosition(max_position - 100);
     driver.rampControl.SetMaxSpeed(500.0f);
     driver.rampControl.SetAcceleration(1000.0f);
-
     while (!driver.rampControl.IsTargetReached()) {
       vTaskDelay(pdMS_TO_TICKS(100));
     }
-
     max_position = driver.rampControl.GetCurrentPosition();
-    ESP_LOGI(TAG, "Maximum bound found: %d steps", max_position);
   }
 
   // ============================================================
-  // STEP 2: Determine if bounded or unbounded
+  // STEP 2: Set up global bounds and home
   // ============================================================
-  ESP_LOGI(TAG, "=== Step 2: Determining bounds status ===");
+  ESP_LOGI(TAG, "=== Step 2: Setting global bounds and home ===");
 
   bool bounded = stall_detected_min && stall_detected_max;
   int32_t current_pos = driver.rampControl.GetCurrentPosition();
-  int32_t min_bound, max_bound;
 
-  // Create sinuous motion controller
-  BoundedSinuousMotion motion(&driver);
-
-  // Configure motor parameters (needed for degree/radian conversions)
+  FatigueTestMotion motion(&driver);
   motion.ConfigureMotor(steps_per_rev, AngleUnit::DEGREES);
 
   if (!bounded) {
-    // Unbounded case: no mechanical stops found
     ESP_LOGW(TAG, "=== UNBOUNDED MODE ===");
-    ESP_LOGW(TAG, "No mechanical stops detected in one or both directions");
-    ESP_LOGI(TAG, "Setting up unbounded mode with default range");
-
-    // Stop motor and get current position
-    driver.rampControl.Stop();
-    vTaskDelay(pdMS_TO_TICKS(500));
-    current_pos = driver.rampControl.GetCurrentPosition();
-
-    // Use current position as home and set default range
-    motion.SetUnbounded(current_pos, 10000); // 10000 steps default range
-
-    // Get the default bounds that were set
-    motion.GetBounds(min_bound, max_bound);
-
-    ESP_LOGI(TAG, "Unbounded mode configured:");
-    ESP_LOGI(TAG, "  Current position set as home: %d steps", current_pos);
-    ESP_LOGI(TAG, "  Default bounds: min=%d, max=%d steps", min_bound, max_bound);
-
-    float min_deg, max_deg;
-    motion.GetBoundsDegrees(min_deg, max_deg);
-    ESP_LOGI(TAG, "  Default bounds: min=%.2f°, max=%.2f°", min_deg, max_deg);
-
-    // Example: User can reset home position by relative degrees
-    ESP_LOGI(TAG, "=== Example: Resetting home by +45 degrees ===");
-    motion.ResetHomeByDegrees(45.0f);
-    motion.GetBounds(min_bound, max_bound);
-    motion.GetBoundsDegrees(min_deg, max_deg);
-    ESP_LOGI(TAG, "After reset: bounds are min=%.2f°, max=%.2f°", min_deg, max_deg);
-
+    motion.SetUnbounded(current_pos, 10000);
   } else {
-    // Bounded case: both stops found
     ESP_LOGI(TAG, "=== BOUNDED MODE ===");
-    ESP_LOGI(TAG, "Both mechanical stops found successfully");
-
-    // Move away from stops slightly
-    driver.rampControl.Stop();
-    vTaskDelay(pdMS_TO_TICKS(500));
-
-    // Move away from minimum stop
-    ESP_LOGI(TAG, "Moving 100 steps away from minimum stop...");
-    driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(min_position + 100);
-    driver.rampControl.SetMaxSpeed(500.0f);
-    driver.rampControl.SetAcceleration(1000.0f);
-
-    while (!driver.rampControl.IsTargetReached()) {
-      vTaskDelay(pdMS_TO_TICKS(100));
-    }
-
-    min_position = driver.rampControl.GetCurrentPosition();
-    driver.rampControl.SetCurrentPosition(0); // Reset position counter
-    ESP_LOGI(TAG, "Minimum bound found: %d steps (offset from new zero)",
-             min_position);
-
-    // Move away from maximum stop
-    ESP_LOGI(TAG, "Moving 100 steps away from maximum stop...");
-    driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(max_position - 100);
-    driver.rampControl.SetMaxSpeed(500.0f);
-    driver.rampControl.SetAcceleration(1000.0f);
-
-    while (!driver.rampControl.IsTargetReached()) {
-      vTaskDelay(pdMS_TO_TICKS(100));
-    }
-
-    max_position = driver.rampControl.GetCurrentPosition();
-    ESP_LOGI(TAG, "Maximum bound found: %d steps", max_position);
-
+    
     // Set middle as home
     int32_t middle_position = (min_position + max_position) / 2;
     ESP_LOGI(TAG, "Moving to middle position: %d steps", middle_position);
@@ -936,100 +724,64 @@ extern "C" void app_main() {
       vTaskDelay(pdMS_TO_TICKS(100));
     }
 
-    // Set current position as home (0)
     driver.rampControl.SetCurrentPosition(0);
     ESP_LOGI(TAG, "Home position set to 0 (middle of bounds)");
 
-    // Recalculate bounds relative to new home
-    min_bound = min_position - middle_position;
-    max_bound = max_position - middle_position;
-    ESP_LOGI(TAG, "Bounds relative to home: min=%d, max=%d steps", min_bound,
-             max_bound);
+    // Set global bounds relative to new home
+    int32_t global_min = min_position - middle_position;
+    int32_t global_max = max_position - middle_position;
+    motion.SetGlobalBounds(global_min, global_max);
 
-    // Set bounds in the motion controller
-    motion.SetBounds(min_bound, max_bound);
-
-    // Display bounds in degrees
     float min_deg, max_deg;
-    motion.GetBoundsDegrees(min_deg, max_deg);
-    ESP_LOGI(TAG, "Bounds in degrees: min=%.2f°, max=%.2f°", min_deg, max_deg);
-
-    // Example: User can also set bounds directly in degrees
-    ESP_LOGI(TAG, "=== Example: Setting bounds in degrees ===");
-    ESP_LOGI(TAG, "User can set bounds using: motion.SetBoundsDegrees(-90.0, 90.0)");
-    // Uncomment to use:
-    // motion.SetBoundsDegrees(-90.0f, 90.0f);
-
-    // Example: User can reset home position by relative degrees
-    ESP_LOGI(TAG, "=== Example: Resetting home by -30 degrees ===");
-    motion.ResetHomeByDegrees(-30.0f);
-    motion.GetBounds(min_bound, max_bound);
-    motion.GetBoundsDegrees(min_deg, max_deg);
-    ESP_LOGI(TAG, "After reset: bounds are min=%.2f°, max=%.2f°", min_deg, max_deg);
+    motion.GetGlobalBoundsDegrees(min_deg, max_deg);
+    ESP_LOGI(TAG, "Global bounds: min=%.2f°, max=%.2f°", min_deg, max_deg);
   }
 
   // ============================================================
-  // STEP 3: Configure and start sinuous motion
+  // STEP 3: Set local bounds (oscillation range) and start motion
   // ============================================================
-  ESP_LOGI(TAG, "=== Step 3: Starting sinuous motion ===");
+  ESP_LOGI(TAG, "=== Step 3: Configuring fatigue test ===");
 
-  // Get current bounds (may have been modified by home reset)
-  motion.GetBounds(min_bound, max_bound);
-  float min_deg, max_deg;
-  motion.GetBoundsDegrees(min_deg, max_deg);
+  // Set local bounds for oscillation (will be clipped to global bounds if needed)
+  // Example: ±60 degrees for fatigue testing
+  motion.SetLocalBoundsDegrees(-60.0f, 60.0f);
 
-  // Configure sinuous motion parameters
-  // Option 1: Set amplitude in steps
-  float amplitude_steps = (max_bound - min_bound) / 2.0f * 0.8f; // 80% of half range
-  float frequency = 0.5f; // 0.5 Hz (2 second period)
-  motion.SetSinuousParams(amplitude_steps, frequency);
+  // Configure sinuous motion
+  motion.SetSinuousAmplitudeDegrees(60.0f);  // 60° amplitude
+  motion.SetSinuousParams(0, 0.5f);  // 0.5 Hz frequency
 
-  // Option 2: Set amplitude in degrees (alternative)
-  // float amplitude_degrees = (max_deg - min_deg) / 2.0f * 0.8f;
-  // motion.SetSinuousAmplitudeDegrees(amplitude_degrees);
-  // motion.SetSinuousParams(0, frequency); // frequency only
+  // Set dwell times (can be 0 to disable)
+  // For fatigue testing: dwell at extremes simulates holding tool in awkward positions
+  motion.SetDwellTimes(2000,  // 2 seconds at minimum bound
+                        2000,  // 2 seconds at maximum bound
+                        0);    // No dwell at center (set to >0 to enable)
 
-  // Option 3: Set amplitude in radians (alternative)
-  // float amplitude_radians = (max_deg - min_deg) / 2.0f * 0.8f * M_PI / 180.0f;
-  // motion.SetSinuousAmplitudeRadians(amplitude_radians);
-
-  // Configure default wait times (user can set these to 0 to disable)
-  motion.SetDefaultWaits(500,  // Wait 500ms at minimum bound
-                         500,  // Wait 500ms at maximum bound
-                         300); // Wait 300ms at home/middle
-
-  // Add some example waypoints (optional)
-  int32_t waypoint1 = min_bound / 3;
-  int32_t waypoint2 = max_bound / 3;
-  motion.AddWaypoint(waypoint1, 200); // Wait 200ms at waypoint 1
-  motion.AddWaypoint(waypoint2, 200); // Wait 200ms at waypoint 2
-
-  ESP_LOGI(TAG, "Sinuous motion configured:");
-  ESP_LOGI(TAG, "  Amplitude: %.1f steps", amplitude_steps);
-  float amp_deg;
-  motion.GetBoundsDegrees(min_deg, max_deg);
-  amp_deg = (max_deg - min_deg) / 2.0f * 0.8f;
-  ESP_LOGI(TAG, "  Amplitude: ~%.2f°", amp_deg);
-  ESP_LOGI(TAG, "  Frequency: %.2f Hz", frequency);
+  ESP_LOGI(TAG, "Fatigue test configured:");
+  motion.GetLocalBoundsDegrees(min_deg, max_deg);
+  ESP_LOGI(TAG, "  Local bounds: min=%.2f°, max=%.2f°", min_deg, max_deg);
+  ESP_LOGI(TAG, "  Frequency: 0.5 Hz");
   ESP_LOGI(TAG, "  Bounded: %s", motion.IsBounded() ? "Yes" : "No");
-  ESP_LOGI(TAG, "  Waypoints: %zu", motion.GetWaypointCount());
 
-  // Start sinuous motion
+  // Start motion
   motion.Start();
 
   // Main loop - update motion controller
-  ESP_LOGI(TAG, "Running sinuous motion (press reset to stop)...");
+  ESP_LOGI(TAG, "Running fatigue test (press reset to stop)...");
+  uint32_t cycle_count = 0;
+  uint32_t last_log_time = 0;
+
   while (true) {
     motion.Update();
-    vTaskDelay(pdMS_TO_TICKS(10)); // 10ms update rate
+    vTaskDelay(pdMS_TO_TICKS(10));
 
-    // Optional: Log position periodically
-    static uint32_t last_log_time = 0;
+    // Log cycle count periodically
     uint32_t current_time = esp_timer_get_time() / 1000;
-    if (current_time - last_log_time > 1000) { // Log every second
+    if (current_time - last_log_time > 10000) { // Log every 10 seconds
       int32_t pos = driver.rampControl.GetCurrentPosition();
       float speed = driver.rampControl.GetCurrentSpeed();
-      ESP_LOGI(TAG, "Position: %d steps, Speed: %.1f steps/s", pos, speed);
+      float pos_deg = tmc5160::StepsToDegrees(pos, steps_per_rev);
+      ESP_LOGI(TAG, "Position: %d steps (%.2f°), Speed: %.1f steps/s, Cycles: %lu",
+               pos, pos_deg, speed, cycle_count);
       last_log_time = current_time;
     }
   }
