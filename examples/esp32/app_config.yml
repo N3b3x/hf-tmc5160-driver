@@ -79,6 +79,33 @@ apps:
     ci_enabled: true
     featured: true
 
+  unit_conversions:
+    description: "Unit conversion example - working with physical units (mm, RPM)"
+    source_file: "unit_conversions.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
+  motor_setup_from_spec:
+    description: "Motor setup from high-level specifications example"
+    source_file: "motor_setup_from_spec.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
+  sensorless_homing:
+    description: "Sensorless homing using StallGuard2 example"
+    source_file: "sensorless_homing.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
 build_config:
   build_types:
     Debug:

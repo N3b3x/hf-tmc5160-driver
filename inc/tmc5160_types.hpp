@@ -211,6 +211,155 @@ struct ShortProtectionConfig {
       : s2vs_level(6), s2g_level(6), shortfilter(1), shortdelay(0) {}
 };
 
+/**
+ * @brief Mechanical system type enumeration
+ *
+ * Defines the type of mechanical system connected to the motor.
+ */
+enum class MechanicalSystemType {
+  DirectDrive,  ///< Direct drive (motor shaft directly connected)
+  LeadScrew,    ///< Lead screw drive
+  BeltDrive,    ///< Belt drive with pulleys
+  Gearbox       ///< Gearbox reduction
+};
+
+/**
+ * @brief Mechanical system configuration structure
+ *
+ * Configuration parameters for the mechanical system connected to the motor.
+ * Used for unit conversions between physical units and steps.
+ */
+struct MechanicalSystem {
+  MechanicalSystemType system_type; ///< Type of mechanical system
+  float lead_screw_pitch_mm;        ///< Lead screw pitch in mm (for LeadScrew)
+  uint16_t belt_pulley_teeth;       ///< Number of teeth on motor pulley (for BeltDrive)
+  float belt_pitch_mm;              ///< Belt pitch in mm (for BeltDrive)
+  float gear_ratio;                 ///< Gear ratio (output/input, for Gearbox)
+
+  /**
+   * @brief Default constructor
+   *
+   * Initializes with direct drive configuration.
+   */
+  MechanicalSystem()
+      : system_type(MechanicalSystemType::DirectDrive), lead_screw_pitch_mm(0.0f),
+        belt_pulley_teeth(0), belt_pitch_mm(0.0f), gear_ratio(1.0f) {}
+};
+
+/**
+ * @brief Motor specification structure
+ *
+ * High-level motor specifications for easy setup from physical parameters.
+ * Used with SetupMotorFromSpec() to automatically configure the driver.
+ */
+struct MotorSpec {
+  uint16_t steps_per_rev;      ///< Steps per revolution (typically 200 for 1.8° motors)
+  uint16_t rated_current_ma;   ///< Rated motor current in milliamps
+  uint16_t rated_voltage_mv;   ///< Rated motor voltage in millivolts
+  uint32_t winding_resistance_mohm; ///< Winding resistance in milliohms (optional, 0 = not specified)
+  uint32_t winding_inductance_uh;   ///< Winding inductance in microhenries (optional, 0 = not specified)
+  uint32_t holding_torque_mnm;      ///< Holding torque in milliNewton-meters (optional, 0 = not specified)
+
+  /**
+   * @brief Default constructor
+   *
+   * Initializes with common NEMA 17 motor defaults.
+   */
+  MotorSpec()
+      : steps_per_rev(200), rated_current_ma(1500), rated_voltage_mv(12000),
+        winding_resistance_mohm(0), winding_inductance_uh(0),
+        holding_torque_mnm(0) {}
+};
+
+/**
+ * @brief Motor current configuration helper structure
+ *
+ * Configuration for motor current in physical units (milliamps).
+ * Automatically calculates irun, ihold, and iholddelay values.
+ */
+struct MotorCurrentConfig {
+  uint16_t run_current_ma;     ///< Run current in milliamps
+  uint16_t hold_current_ma;    ///< Hold current in milliamps
+  uint16_t hold_current_delay_ms; ///< Hold current delay in milliseconds
+
+  /**
+   * @brief Default constructor
+   *
+   * Initializes with default values.
+   */
+  MotorCurrentConfig()
+      : run_current_ma(1500), hold_current_ma(500), hold_current_delay_ms(10) {}
+};
+
+/**
+ * @brief CoolStep configuration structure
+ *
+ * Configuration parameters for CoolStep current reduction feature.
+ */
+struct CoolStepConfig {
+  uint8_t semin;  ///< Minimum StallGuard2 value for smart current control (0-15)
+  uint8_t semax;  ///< StallGuard2 hysteresis value (0-15)
+  uint8_t seup;   ///< Current increment step width (0-3)
+  uint8_t sedn;   ///< Current decrement step speed (0-3)
+  bool seimin;    ///< Minimum current for smart current control
+  bool sfilt;     ///< Enable StallGuard2 filter
+
+  /**
+   * @brief Default constructor
+   *
+   * Initializes with recommended default values.
+   */
+  CoolStepConfig()
+      : semin(0), semax(0), seup(0), sedn(0), seimin(false), sfilt(false) {}
+};
+
+/**
+ * @brief Reference switch configuration structure
+ *
+ * Configuration parameters for reference switches/endstops.
+ */
+struct ReferenceSwitchConfig {
+  bool stop_left_enable;      ///< Enable automatic motor stop on left switch
+  bool stop_right_enable;     ///< Enable automatic motor stop on right switch
+  bool pol_stop_left;         ///< Left switch polarity (true=inverted/low active)
+  bool pol_stop_right;        ///< Right switch polarity (true=inverted/low active)
+  bool swap_left_right;       ///< Swap left and right switch inputs
+  bool latch_left_active;     ///< Latch position on active edge of left switch
+  bool latch_left_inactive;   ///< Latch position on inactive edge of left switch
+  bool latch_right_active;    ///< Latch position on active edge of right switch
+  bool latch_right_inactive;  ///< Latch position on inactive edge of right switch
+  bool en_latch_encoder;      ///< Latch encoder position on switch event
+  bool en_softstop;           ///< Enable soft stop using deceleration ramp
+
+  /**
+   * @brief Default constructor
+   *
+   * Initializes with default values (switches disabled).
+   */
+  ReferenceSwitchConfig()
+      : stop_left_enable(false), stop_right_enable(false),
+        pol_stop_left(false), pol_stop_right(false), swap_left_right(false),
+        latch_left_active(false), latch_left_inactive(false),
+        latch_right_active(false), latch_right_inactive(false),
+        en_latch_encoder(false), en_softstop(true) {}
+};
+
+/**
+ * @brief dcStep configuration structure
+ *
+ * Configuration parameters for dcStep automatic commutation mode.
+ */
+struct DcStepConfig {
+  float vdc_min; ///< Velocity threshold for enabling dcStep in steps/s (0.0f = disabled)
+
+  /**
+   * @brief Default constructor
+   *
+   * Initializes with dcStep disabled.
+   */
+  DcStepConfig() : vdc_min(0.0f) {}
+};
+
 } // namespace tmc5160
 
 #endif // TMC5160_TYPES_HPP

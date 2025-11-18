@@ -269,6 +269,48 @@ public:
      * Stops the motor by setting VSTART and VMAX to 0.
      */
     bool Stop() noexcept;
+
+    /**
+     * @brief Set target position in millimeters
+     * @param position_mm Target position in millimeters
+     * @param steps_per_rev Steps per revolution of the motor
+     * @param lead_screw_pitch_mm Lead screw pitch in millimeters
+     * @return true if set successfully, false otherwise
+     */
+    bool SetTargetPositionMm(float position_mm, uint16_t steps_per_rev,
+                             float lead_screw_pitch_mm) noexcept;
+
+    /**
+     * @brief Set maximum speed in RPM
+     * @param rpm Maximum speed in revolutions per minute
+     * @param steps_per_rev Steps per revolution of the motor
+     * @return true if set successfully, false otherwise
+     */
+    bool SetMaxSpeedRpm(float rpm, uint16_t steps_per_rev) noexcept;
+
+    /**
+     * @brief Configure reference switches/endstops
+     * @param config Reference switch configuration structure
+     * @return true if configured successfully, false otherwise
+     */
+    bool ConfigureReferenceSwitch(const ReferenceSwitchConfig &config) noexcept;
+
+    /**
+     * @brief Get latched position
+     * @return Latched position in steps, or 0 on error
+     *
+     * Reads the position that was latched on the last reference switch event.
+     */
+    int32_t GetLatchedPosition() noexcept;
+
+    /**
+     * @brief Set position comparison register
+     * @param position Position value for comparison
+     * @return true if set successfully, false otherwise
+     *
+     * When XACTUAL equals X_COMPARE, the position pulse output becomes high.
+     */
+    bool SetComparePosition(int32_t position) noexcept;
   } rampControl{this};
 
   /**
@@ -337,6 +379,73 @@ public:
      * @return true if set successfully, false otherwise
      */
     bool SetGlobalScaler(uint16_t scaler) noexcept;
+
+    /**
+     * @brief Set freewheeling mode
+     * @param mode Freewheeling mode (NORMAL, ENABLED, SHORT_LS, SHORT_HS)
+     * @return true if set successfully, false otherwise
+     *
+     * Controls the behavior when motor current setting is zero (I_HOLD=0).
+     */
+    bool SetFreewheelingMode(PWMFreewheel mode) noexcept;
+
+    /**
+     * @brief Configure CoolStep current reduction
+     * @param config CoolStep configuration structure
+     * @return true if configured successfully, false otherwise
+     */
+    bool ConfigureCoolStep(const CoolStepConfig &config) noexcept;
+
+    /**
+     * @brief Configure dcStep automatic commutation
+     * @param config dcStep configuration structure
+     * @return true if configured successfully, false otherwise
+     */
+    bool ConfigureDcStep(const DcStepConfig &config) noexcept;
+
+    /**
+     * @brief Set microstep lookup table entry
+     * @param index Lookup table index (0-7)
+     * @param value Lookup table value (32-bit)
+     * @return true if set successfully, false otherwise
+     */
+    bool SetMicrostepLookupTable(uint8_t index, uint32_t value) noexcept;
+
+    /**
+     * @brief Set microstep lookup table segmentation
+     * @param width_sel_0 Width selection for segment 0 (0-3)
+     * @param width_sel_1 Width selection for segment 1 (0-3)
+     * @param width_sel_2 Width selection for segment 2 (0-3)
+     * @param width_sel_3 Width selection for segment 3 (0-3)
+     * @param lut_seg_start1 Start position for segment 1 (0-255)
+     * @param lut_seg_start2 Start position for segment 2 (0-255)
+     * @param lut_seg_start3 Start position for segment 3 (0-255)
+     * @return true if set successfully, false otherwise
+     */
+    bool SetMicrostepLookupTableSegmentation(uint8_t width_sel_0, uint8_t width_sel_1,
+                                             uint8_t width_sel_2, uint8_t width_sel_3,
+                                             uint8_t lut_seg_start1,
+                                             uint8_t lut_seg_start2,
+                                             uint8_t lut_seg_start3) noexcept;
+
+    /**
+     * @brief Set microstep lookup table start current
+     * @param start_current Start current value (0-255)
+     * @return true if set successfully, false otherwise
+     */
+    bool SetMicrostepLookupTableStart(uint16_t start_current) noexcept;
+
+    /**
+     * @brief Setup motor from high-level specifications
+     * @param motor_spec Motor specification structure
+     * @param mechanical_system Optional mechanical system configuration
+     * @return true if setup successfully, false otherwise
+     *
+     * Automatically calculates and sets motor current, chopper configuration,
+     * and other parameters based on motor specifications.
+     */
+    bool SetupMotorFromSpec(const MotorSpec &motor_spec,
+                            const MechanicalSystem *mechanical_system = nullptr) noexcept;
   } motorControl{this};
 
   /**
@@ -445,6 +554,28 @@ public:
      * @return true if read successfully, false otherwise
      */
     bool GetRampStatusRegister(uint32_t &status) noexcept;
+
+    /**
+     * @brief Get lost steps counter
+     * @return Number of lost steps, or 0 on error
+     *
+     * Only valid when dcStep mode is enabled (SD_MODE = 1).
+     */
+    uint32_t GetLostSteps() noexcept;
+
+    /**
+     * @brief Perform sensorless homing using StallGuard2
+     * @param direction Direction to search (true = positive, false = negative)
+     * @param stall_threshold StallGuard2 threshold for stall detection
+     * @param search_speed Speed for homing search in steps/s
+     * @param final_position Reference to store final position after homing
+     * @return true if homing succeeded, false otherwise
+     *
+     * Moves motor in specified direction until stall is detected, then stops.
+     */
+    bool PerformSensorlessHoming(bool direction, int8_t stall_threshold,
+                                  float search_speed,
+                                  int32_t &final_position) noexcept;
   } diagnostics{this};
 
   /**
