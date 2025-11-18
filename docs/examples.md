@@ -390,7 +390,7 @@ motion.SetDwellTimes(1000, 1000, 0);  // Update in real-time
 
 ### Cycle Count
 
-Set target cycle count and track progress:
+Set target cycle count and track progress. **One cycle = center → min → max → center** (or center → max → min → center). Cycles are counted at the center crossing point (0 crossing).
 
 ```cpp
 // Set target cycle count (0 = infinite)
@@ -405,6 +405,7 @@ uint32_t target = motion.GetTargetCycles();
 // Check if cycle count reached
 if (motion.IsCycleComplete()) {
     ESP_LOGI(TAG, "Test complete: %lu cycles", motion.GetCurrentCycles());
+    // Motion automatically stops at center position when cycles complete
 }
 
 // Reset cycle count
@@ -413,6 +414,8 @@ motion.ResetCycles();
 // Change target cycles while running
 motion.SetTargetCycles(2000);  // Update target in real-time
 ```
+
+**Note**: When target cycles are reached, motion automatically moves to center position and stops there (amplitude = 0).
 
 ### Start/Stop Control
 
@@ -514,7 +517,9 @@ idf.py build -DAPP_TYPE=bounds_finding_sinuous_motion
   - Can be changed in real-time while motion is running
 - **Cycle Count**:
   - Set target cycles (0 = infinite)
-  - Motion automatically stops when target reached
+  - **One cycle = center → min → max → center** (or center → max → min → center)
+  - Cycles are counted at center crossing point (0 crossing)
+  - Motion automatically stops at center position when target cycles reached
   - Cycle count can be changed in real-time
   - Use `ResetCycles()` to restart counting
 - **Start/Stop Control**:

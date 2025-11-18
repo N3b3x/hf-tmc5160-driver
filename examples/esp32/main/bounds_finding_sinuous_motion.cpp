@@ -7,8 +7,10 @@
  * 2. Setting global bounds (hardware limits) and local bounds (oscillation range)
  * 3. Performing pure sinusoidal back-and-forth motion between local bounds with:
  *    - Configurable angle amplitude and frequency
+ *    - Target cycle count (cycles counted at center crossing)
  *    - Dwell times at bounds and optionally at center
  *    - Automatic clipping of local bounds to global bounds
+ *    - Automatic stop at center when cycle count reached
  *
  * Hardware Requirements:
  * - ESP32 development board
@@ -83,8 +85,9 @@ private:
   uint32_t target_cycles_;     // Target number of cycles (0 = infinite)
   uint32_t current_cycles_;    // Current cycle count
   bool cycle_complete_;         // Whether target cycles reached
-  int32_t last_extreme_pos_;    // Last extreme position for cycle counting
-  bool last_extreme_was_min_;   // Whether last extreme was minimum
+  bool last_was_negative_;     // Last position relative to center (for cycle counting)
+  bool cycle_started_;          // Whether a cycle has started (left center)
+  int32_t last_target_relative_; // Last target position relative to center (for cycle counting)
 
   // State machine
   enum class MotionState {
@@ -106,7 +109,7 @@ public:
         steps_per_rev_(200), angle_unit_(AngleUnit::DEGREES),
         dwell_at_min_ms_(0), dwell_at_max_ms_(0), dwell_at_center_ms_(0),
         target_cycles_(0), current_cycles_(0), cycle_complete_(false),
-        last_extreme_pos_(0), last_extreme_was_min_(false),
+        last_was_negative_(false), cycle_started_(false), last_target_relative_(0),
         state_(MotionState::STOPPED), dwell_start_time_ms_(0) {}
 
   /**
@@ -378,8 +381,9 @@ public:
   void ResetCycles() {
     current_cycles_ = 0;
     cycle_complete_ = false;
-    last_extreme_pos_ = 0;
-    last_extreme_was_min_ = false;
+    last_was_negative_ = false;
+    cycle_started_ = false;
+    last_target_relative_ = 0;
     ESP_LOGI(TAG, "Cycle count reset");
   }
 
@@ -450,8 +454,14 @@ public:
       if (normalized_pos > 1.0) normalized_pos = 1.0;
       if (normalized_pos < -1.0) normalized_pos = -1.0;
       phase_offset_ = asin(normalized_pos);
+      // Initialize cycle tracking based on current position
+      last_was_negative_ = (pos_relative < 0);
+      cycle_started_ = (abs(pos_relative) > 10); // Started if away from center
+      last_target_relative_ = pos_relative;
     } else {
       phase_offset_ = 0.0f;
+      last_was_negative_ = false;
+      cycle_started_ = false;
     }
 
     ESP_LOGI(TAG, "Starting fatigue test motion (cycles: %lu/%lu)", 
@@ -481,12 +491,23 @@ public:
       return;
     }
 
-    // Check if cycle count reached
+    // Check if cycle count reached - if so, move to center and stop
     if (target_cycles_ > 0 && current_cycles_ >= target_cycles_) {
       if (!cycle_complete_) {
         cycle_complete_ = true;
         ESP_LOGI(TAG, "Target cycle count reached: %lu cycles", current_cycles_);
-        Stop();
+        // Move to center before stopping
+        driver_->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+        driver_->rampControl.SetTargetPosition(home_position_);
+        driver_->rampControl.SetMaxSpeed(1000.0f);
+        driver_->rampControl.SetAcceleration(2000.0f);
+        state_ = MotionState::STOPPED;
+        // Wait for center to be reached
+        while (!driver_->rampControl.IsTargetReached()) {
+          vTaskDelay(pdMS_TO_TICKS(10));
+        }
+        running_ = false;
+        ESP_LOGI(TAG, "Motion stopped at center position");
       }
       return;
     }
@@ -514,12 +535,19 @@ public:
       if (current_time_ms - dwell_start_time_ms_ >= dwell_at_center_ms_) {
         state_ = MotionState::SINUOUS_MOTION;
         start_time_us_ = esp_timer_get_time();
-        // Continue from current phase (don't reset, just resume)
+        // Continue from center (phase = 0 or π)
         int32_t current_pos = driver_->rampControl.GetCurrentPosition();
-        double normalized_pos = static_cast<double>(current_pos - home_position_) / amplitude_;
-        if (normalized_pos > 1.0) normalized_pos = 1.0;
-        if (normalized_pos < -1.0) normalized_pos = -1.0;
-        phase_offset_ = asin(normalized_pos);
+        int32_t pos_relative = current_pos - home_position_;
+        if (abs(pos_relative) < 10) {
+          // At center, determine direction from last position
+          phase_offset_ = last_was_negative_ ? M_PI : 0.0f;
+        } else {
+          // Near center, calculate phase
+          double normalized_pos = static_cast<double>(pos_relative) / amplitude_;
+          if (normalized_pos > 1.0) normalized_pos = 1.0;
+          if (normalized_pos < -1.0) normalized_pos = -1.0;
+          phase_offset_ = asin(normalized_pos);
+        }
       }
       break;
 
@@ -575,83 +603,75 @@ private:
     // Calculate target position
     int32_t target = home_position_ + static_cast<int32_t>(amplitude_ * sin_value);
 
+    // Get current position relative to center for cycle counting
+    int32_t current_pos = driver_->rampControl.GetCurrentPosition();
+    int32_t current_pos_relative = current_pos - home_position_;
+    int32_t target_relative = target - home_position_;
+    
+    // Cycle counting: one cycle = center → min → max → center (or center → max → min → center)
+    // Count cycles when crossing through center (0 crossing point)
+    if (state_ == MotionState::SINUOUS_MOTION) {
+      // Check if we're crossing through center (sign change of target position)
+      bool currently_negative = (target_relative < 0);
+      bool last_was_negative = (last_target_relative_ < 0);
+      bool crossing_center = (last_was_negative != currently_negative) && 
+                              (abs(target_relative) < 30) && 
+                              (abs(last_target_relative_) < 30);
+      
+      // If we've started a cycle (left center) and now crossing back through center
+      if (cycle_started_ && crossing_center) {
+        // Completed a cycle: center → extreme → center
+        current_cycles_++;
+        cycle_started_ = false; // Reset for next cycle
+        ESP_LOGI(TAG, "Cycle %lu completed at center (target: %lu)", 
+                 current_cycles_, target_cycles_);
+        
+        // Check if target cycles reached
+        if (target_cycles_ > 0 && current_cycles_ >= target_cycles_) {
+          cycle_complete_ = true;
+          // Will be handled in Update() to stop at center
+        }
+      } else if (!cycle_started_ && abs(target_relative) > 30) {
+        // We've left center, cycle has started
+        cycle_started_ = true;
+        last_was_negative_ = currently_negative;
+      }
+      
+      // Update tracking
+      last_target_relative_ = target_relative;
+      if (abs(target_relative) > 10) { // Only update if significantly away from center
+        last_was_negative_ = currently_negative;
+      }
+    }
+
     // Clamp to local bounds and handle dwell states
     if (target <= local_min_bound_) {
       target = local_min_bound_;
-      // Hit minimum bound, count cycle and dwell if configured
-      if (state_ == MotionState::SINUOUS_MOTION) {
-        // Count cycle: one cycle = min -> max -> min (full back-and-forth)
-        // Check if we were previously at max and now reached min (completes a cycle)
-        if (!last_extreme_was_min_ && last_extreme_pos_ == local_max_bound_) {
-          // Completed a cycle: was at max, now at min
-          current_cycles_++;
-          if (target_cycles_ > 0 && current_cycles_ >= target_cycles_) {
-            cycle_complete_ = true;
-            ESP_LOGI(TAG, "Cycle %lu completed (target: %lu)", current_cycles_, target_cycles_);
-          }
-        }
-        // Update tracking
-        if (last_extreme_pos_ != target || !last_extreme_was_min_) {
-          last_extreme_pos_ = target;
-          last_extreme_was_min_ = true;
-        }
-        
-        if (dwell_at_min_ms_ > 0) {
-          state_ = MotionState::DWELL_AT_MIN;
-          dwell_start_time_ms_ = esp_timer_get_time() / 1000;
-          driver_->rampControl.SetTargetPosition(target);
-          return;
-        }
+      if (state_ == MotionState::SINUOUS_MOTION && dwell_at_min_ms_ > 0) {
+        state_ = MotionState::DWELL_AT_MIN;
+        dwell_start_time_ms_ = esp_timer_get_time() / 1000;
+        driver_->rampControl.SetTargetPosition(target);
+        return;
       }
     } else if (target >= local_max_bound_) {
       target = local_max_bound_;
-      // Hit maximum bound, count cycle and dwell if configured
-      if (state_ == MotionState::SINUOUS_MOTION) {
-        // Count cycle: one cycle = min -> max -> min (full back-and-forth)
-        // Check if we were previously at min and now reached max (completes a cycle)
-        if (last_extreme_was_min_ && last_extreme_pos_ == local_min_bound_) {
-          // Completed a cycle: was at min, now at max
-          current_cycles_++;
-          if (target_cycles_ > 0 && current_cycles_ >= target_cycles_) {
-            cycle_complete_ = true;
-            ESP_LOGI(TAG, "Cycle %lu completed (target: %lu)", current_cycles_, target_cycles_);
-          }
-        }
-        // Update tracking
-        if (last_extreme_pos_ != target || last_extreme_was_min_) {
-          last_extreme_pos_ = target;
-          last_extreme_was_min_ = false;
-        }
-        
-        if (dwell_at_max_ms_ > 0) {
-          state_ = MotionState::DWELL_AT_MAX;
-          dwell_start_time_ms_ = esp_timer_get_time() / 1000;
-          driver_->rampControl.SetTargetPosition(target);
-          return;
-        }
+      if (state_ == MotionState::SINUOUS_MOTION && dwell_at_max_ms_ > 0) {
+        state_ = MotionState::DWELL_AT_MAX;
+        dwell_start_time_ms_ = esp_timer_get_time() / 1000;
+        driver_->rampControl.SetTargetPosition(target);
+        return;
       }
     }
 
     // Check if we're passing through center and need to dwell
-    // Simple approach: detect when we cross through center (sign change of position relative to home)
-    static int32_t last_position_relative = 0;
-    int32_t current_position_relative = driver_->rampControl.GetCurrentPosition() - home_position_;
-    
-    if (dwell_at_center_ms_ > 0) {
-      // Check if we crossed through center (sign change)
-      if ((last_position_relative < 0 && current_position_relative >= 0) ||
-          (last_position_relative > 0 && current_position_relative <= 0)) {
-        // We crossed through center, start dwell
-        if (abs(current_position_relative) < 50) { // Within 50 steps of center
-          state_ = MotionState::DWELL_AT_CENTER;
-          dwell_start_time_ms_ = esp_timer_get_time() / 1000;
-          driver_->rampControl.SetTargetPosition(home_position_);
-          last_position_relative = 0;
-          return;
-        }
+    if (dwell_at_center_ms_ > 0 && state_ == MotionState::SINUOUS_MOTION) {
+      if (abs(target_relative) < 20) { // Within 20 steps of center
+        state_ = MotionState::DWELL_AT_CENTER;
+        dwell_start_time_ms_ = esp_timer_get_time() / 1000;
+        driver_->rampControl.SetTargetPosition(home_position_);
+        return;
       }
     }
-    last_position_relative = current_position_relative;
 
     // Update target position if it changed significantly
     int32_t current_pos = driver_->rampControl.GetCurrentPosition();
