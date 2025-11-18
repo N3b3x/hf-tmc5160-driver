@@ -1,0 +1,5 @@
+<map id="FatigueTestMotion::SetSinuousAmplitudeDegrees" name="FatigueTestMotion::SetSinuousAmplitudeDegrees">
+<area shape="rect" id="Node000001" title="Set sinuous motion amplitude in degrees (can be changed in real&#45;time)" alt="" coords="5,5,220,45"/>
+<area shape="rect" id="Node000002" href="$namespacetmc5160.html#a125b02e40c40c77eb5e08e68502e239e" title="Convert degrees to steps." alt="" coords="268,13,459,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,23,254,23,254,28,220,28"/>
+</map>

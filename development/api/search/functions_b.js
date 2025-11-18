@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['rampcontrol_0',['RampControl',['../structtmc5160_1_1TMC5160_1_1RampControl.html#a4d7c79f95e92b966c09a58bc9d99f5a7',1,'tmc5160::TMC5160::RampControl']]],
-  ['readregister_1',['ReadRegister',['../classtmc5160_1_1CommInterface.html#a50c8919fccd830488249d914c0793f46',1,'tmc5160::CommInterface::ReadRegister()'],['../classtmc5160_1_1SpiCommInterface.html#a8e820cc63d01a28383495beca697fafa',1,'tmc5160::SpiCommInterface::ReadRegister()'],['../classtmc5160_1_1UartCommInterface.html#a4f560e5cddb1db05010fbd4cc7a29f4b',1,'tmc5160::UartCommInterface::ReadRegister()']]],
-  ['referenceswitchconfig_2',['ReferenceSwitchConfig',['../structtmc5160_1_1ReferenceSwitchConfig.html#a7fbc3cbd596594ad40ed2fe3e5f48adb',1,'tmc5160::ReferenceSwitchConfig']]],
-  ['reset_3',['Reset',['../classtmc5160_1_1TMC5160.html#a67006dc0336428ec9a623c84188412cc',1,'tmc5160::TMC5160']]],
-  ['rpmtostepspersec_4',['RpmToStepsPerSec',['../namespacetmc5160.html#a086e668f7c59055a454e010eb8d430a0',1,'tmc5160']]],
-  ['run_5',['Run',['../classSinusoidalMotion.html#ad6726f6da321f0c178bd223d17305d74',1,'SinusoidalMotion']]]
+  ['performsensorlesshoming_0',['PerformSensorlessHoming',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#a426ca13ede401ba4c524b27754335929',1,'tmc5160::TMC5160::Diagnostics']]],
+  ['powerstageparameters_1',['PowerStageParameters',['../structtmc5160_1_1PowerStageParameters.html#a60486bf7825c1867c5bd71c3a901b702',1,'tmc5160::PowerStageParameters']]],
+  ['protection_2',['Protection',['../structtmc5160_1_1TMC5160_1_1Protection.html#a15ece266c510042dd4e62d9540b483dc',1,'tmc5160::TMC5160::Protection']]]
 ];

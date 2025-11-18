@@ -1,0 +1,7 @@
+<map id="FatigueTestMotion::GetLocalBoundsRadians" name="FatigueTestMotion::GetLocalBoundsRadians">
+<area shape="rect" id="Node000001" title="Get local bounds in radians." alt="" coords="5,5,184,45"/>
+<area shape="rect" id="Node000002" href="$classFatigueTestMotion.html#adb48883ffeba77479fe43c94db6b1ca7" title="Get local bounds in degrees." alt="" coords="232,5,413,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,23,218,23,218,28,184,28"/>
+<area shape="rect" id="Node000003" href="$namespacetmc5160.html#a13c113ece8bf9e72134ead3dcd3e45f0" title="Convert steps to degrees." alt="" coords="461,13,652,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="413,23,448,23,448,28,413,28"/>
+</map>

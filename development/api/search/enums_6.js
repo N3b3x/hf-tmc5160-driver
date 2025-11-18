@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['rampmode_0',['RampMode',['../namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2',1,'tmc5160']]]
+  ['pwmfreewheel_0',['PWMFreewheel',['../namespacetmc5160.html#afd8e06e7eda04c891d35f72236085722',1,'tmc5160']]]
 ];

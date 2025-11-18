@@ -22,6 +22,7 @@ var hierarchy =
     [ "tmc5160::ENCMODE_Register", "uniontmc5160_1_1ENCMODE__Register.html", null ],
     [ "tmc5160::TMC5160< CommType >::Encoder", "structtmc5160_1_1TMC5160_1_1Encoder.html", null ],
     [ "tmc5160::EncoderConfig", "structtmc5160_1_1EncoderConfig.html", null ],
+    [ "FatigueTestMotion", "classFatigueTestMotion.html", null ],
     [ "tmc5160::GCONF_Register", "uniontmc5160_1_1GCONF__Register.html", null ],
     [ "tmc5160::GSTAT_Register", "uniontmc5160_1_1GSTAT__Register.html", null ],
     [ "tmc5160::IHOLD_IRUN_Register", "uniontmc5160_1_1IHOLD__IRUN__Register.html", null ],

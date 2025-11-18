@@ -1,0 +1,7 @@
+<map id="FatigueTestMotion::GetLocalBoundsDegrees" name="FatigueTestMotion::GetLocalBoundsDegrees">
+<area shape="rect" id="Node000001" title="Get local bounds in degrees." alt="" coords="232,27,413,67"/>
+<area shape="rect" id="Node000002" href="$bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="51,5,138,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="218,37,138,26,139,21,219,31"/>
+<area shape="rect" id="Node000003" href="$classFatigueTestMotion.html#a07b0ad359341958f0287172986d2635f" title="Get local bounds in radians." alt="" coords="5,55,184,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="219,63,185,67,184,62,218,57"/>
+</map>

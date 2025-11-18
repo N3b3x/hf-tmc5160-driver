@@ -19,8 +19,11 @@ var searchData=
   ['io_5finput_5foutput_16',['IO_INPUT_OUTPUT',['../namespacetmc5160_1_1Registers.html#ada7c9166ffd8864c45515309778d3cb5',1,'tmc5160::Registers']]],
   ['ioin_5fregister_17',['IOIN_Register',['../uniontmc5160_1_1IOIN__Register.html',1,'tmc5160']]],
   ['irun_18',['irun',['../uniontmc5160_1_1IHOLD__IRUN__Register.html#a7f6d417a35ee5fdd7669659348635593',1,'tmc5160::IHOLD_IRUN_Register::irun'],['../structtmc5160_1_1MotorParameters.html#a85b0794271573d33b1c811285ca14a35',1,'tmc5160::MotorParameters::irun']]],
-  ['isdeviationdetected_19',['IsDeviationDetected',['../structtmc5160_1_1TMC5160_1_1Encoder.html#ac628da3d5d56752e0a9518e59b00b784',1,'tmc5160::TMC5160::Encoder']]],
-  ['isinitialized_20',['IsInitialized',['../classtmc5160_1_1TMC5160.html#a83396df16c903cb74e5d5380f3f2eff2',1,'tmc5160::TMC5160']]],
-  ['istargetreached_21',['IsTargetReached',['../structtmc5160_1_1TMC5160_1_1RampControl.html#a668ce782e665f4b6056d4f08ed10b8f4',1,'tmc5160::TMC5160::RampControl']]],
-  ['istargetvelocityreached_22',['IsTargetVelocityReached',['../structtmc5160_1_1TMC5160_1_1RampControl.html#ac54d81af1622f7f946d1feda09fcf04d',1,'tmc5160::TMC5160::RampControl']]]
+  ['isbounded_19',['IsBounded',['../classFatigueTestMotion.html#a78c90c075b28961cccb6621b7c5e1a8e',1,'FatigueTestMotion']]],
+  ['iscyclecomplete_20',['IsCycleComplete',['../classFatigueTestMotion.html#a197861d0037a80e57a377af4354dc2f7',1,'FatigueTestMotion']]],
+  ['isdeviationdetected_21',['IsDeviationDetected',['../structtmc5160_1_1TMC5160_1_1Encoder.html#ac628da3d5d56752e0a9518e59b00b784',1,'tmc5160::TMC5160::Encoder']]],
+  ['isinitialized_22',['IsInitialized',['../classtmc5160_1_1TMC5160.html#a83396df16c903cb74e5d5380f3f2eff2',1,'tmc5160::TMC5160']]],
+  ['isrunning_23',['IsRunning',['../classFatigueTestMotion.html#a2510d84cc3b0a31ca42312a50fc55a2c',1,'FatigueTestMotion']]],
+  ['istargetreached_24',['IsTargetReached',['../structtmc5160_1_1TMC5160_1_1RampControl.html#a668ce782e665f4b6056d4f08ed10b8f4',1,'tmc5160::TMC5160::RampControl']]],
+  ['istargetvelocityreached_25',['IsTargetVelocityReached',['../structtmc5160_1_1TMC5160_1_1RampControl.html#ac54d81af1622f7f946d1feda09fcf04d',1,'tmc5160::TMC5160::RampControl']]]
 ];

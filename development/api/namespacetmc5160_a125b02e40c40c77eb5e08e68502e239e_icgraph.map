@@ -1,5 +1,26 @@
 <map id="tmc5160::DegreesToSteps" name="tmc5160::DegreesToSteps">
-<area shape="rect" id="Node000001" title="Convert degrees to steps." alt="" coords="140,5,331,31"/>
-<area shape="rect" id="Node000002" href="$unit__conversions_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,5,92,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,21,92,21,92,15,126,15"/>
+<area shape="rect" id="Node000001" title="Convert degrees to steps." alt="" coords="529,141,720,166"/>
+<area shape="rect" id="Node000002" href="$unit__conversions_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="331,19,417,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="596,134,544,96,480,60,449,49,417,41,418,36,450,44,482,55,547,91,599,130"/>
+<area shape="rect" id="Node000003" href="$classFatigueTestMotion.html#aba3044f313385701a727497617799085" title="Reset home position by relative angle." alt="" coords="298,69,450,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="560,140,450,111,451,106,561,135"/>
+<area shape="rect" id="Node000006" href="$classFatigueTestMotion.html#ae4ddb098e200d61d43d1f211970fa647" title="Set global bounds in degrees." alt="" coords="281,133,467,173"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="516,156,468,156,468,151,516,151"/>
+<area shape="rect" id="Node000008" href="$classFatigueTestMotion.html#aa2532cbafa00e73a3f107f1664f7fc74" title="Set local bounds in degrees." alt="" coords="285,197,463,237"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="561,172,454,200,452,195,560,167"/>
+<area shape="rect" id="Node000011" href="$classFatigueTestMotion.html#a4831596d40862c18ffd072ae65596af2" title="Set sinuous motion amplitude in degrees (can be changed in real&#45;time)" alt="" coords="267,261,481,301"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="599,177,547,215,483,252,453,264,451,259,480,247,544,210,595,173"/>
+<area shape="rect" id="Node000004" href="$classFatigueTestMotion.html#acaa6eca1e7f6d28fe67e93c972708bff" title="Reset home position by relative degrees." alt="" coords="27,5,197,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="284,70,194,48,195,43,285,65"/>
+<area shape="rect" id="Node000005" href="$classFatigueTestMotion.html#ae5c30c3eb8c20f88d2b14ac22535a7af" title="Reset home position by relative radians." alt="" coords="29,69,195,109"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="284,92,195,92,195,87,284,87"/>
+<area shape="rect" id="Node000007" href="$classFatigueTestMotion.html#ac68016108b82382b98eb1d9c7a33810a" title="Set global bounds in radians." alt="" coords="19,133,205,173"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="267,156,205,156,205,151,267,151"/>
+<area shape="rect" id="Node000009" href="$bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="69,262,155,287"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="272,242,156,268,155,263,270,237"/>
+<area shape="rect" id="Node000010" href="$classFatigueTestMotion.html#ae1b2a2cdf81dda2475116e0dd35b96fe" title="Set local bounds in radians." alt="" coords="23,197,201,237"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="271,220,201,220,201,215,271,215"/>
+<area shape="poly" id="edge11_Node000011_Node000009" title=" " alt="" coords="253,281,156,278,156,273,253,276"/>
+<area shape="rect" id="Node000012" href="$classFatigueTestMotion.html#ac6abaa3786152c2db05a0e197f9bf015" title="Set sinuous motion amplitude in radians (can be changed in real&#45;time)" alt="" coords="5,312,219,352"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="257,307,216,315,215,309,256,301"/>
 </map>

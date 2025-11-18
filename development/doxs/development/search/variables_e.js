@@ -16,5 +16,6 @@ var searchData=
   ['reset_13',['reset',['../uniontmc5160_1_1GSTAT__Register.html#ae28282f89265ce4e7a19b551fe1a9c10',1,'tmc5160::GSTAT_Register']]],
   ['rndtf_14',['rndtf',['../uniontmc5160_1_1CHOPCONF__Register.html#ada195ac2b533690c5dda191c983a5434',1,'tmc5160::CHOPCONF_Register']]],
   ['rounds_5f_15',['rounds_',['../classSinusoidalMotion.html#a6c5b63ac007068efe71d65e09fc9eac6',1,'SinusoidalMotion']]],
-  ['run_5fcurrent_5fma_16',['run_current_ma',['../structtmc5160_1_1MotorCurrentConfig.html#ab984c9d834e10fdc94e52845121423c7',1,'tmc5160::MotorCurrentConfig']]]
+  ['run_5fcurrent_5fma_16',['run_current_ma',['../structtmc5160_1_1MotorCurrentConfig.html#ab984c9d834e10fdc94e52845121423c7',1,'tmc5160::MotorCurrentConfig']]],
+  ['running_5f_17',['running_',['../classFatigueTestMotion.html#a3607e5eeb857dda0a98966573b97368d',1,'FatigueTestMotion']]]
 ];

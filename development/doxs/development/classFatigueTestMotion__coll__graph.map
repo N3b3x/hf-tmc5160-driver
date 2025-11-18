@@ -1,0 +1,32 @@
+<map id="FatigueTestMotion" name="FatigueTestMotion">
+<area shape="rect" id="Node000001" title="Fatigue test motion controller." alt="" coords="1359,178,1499,203"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1TMC5160.html" title=" " alt="" coords="1024,178,1261,203"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1275,188,1359,188,1359,193,1275,193"/>
+<area shape="rect" id="Node000003" href="$structtmc5160_1_1TMC5160_1_1RampControl.html" title="Ramp control subsystem." alt="" coords="5,107,241,147"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="195,100,331,62,418,43,514,28,615,18,719,16,823,25,923,47,988,74,1048,110,1096,147,1130,176,1126,180,1093,151,1045,114,986,79,922,52,822,30,719,22,616,23,515,33,419,48,333,67,196,105"/>
+<area shape="rect" id="Node000004" href="$classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver." alt="" coords="339,159,589,185"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="255,141,369,157,368,162,254,147"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="324,179,265,173,218,163,175,149,177,144,220,158,266,168,325,174"/>
+<area shape="rect" id="Node000005" href="$structtmc5160_1_1TMC5160_1_1MotorControl.html" title="Motor control subsystem." alt="" coords="687,61,923,101"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="497,150,550,123,613,99,686,85,687,90,614,104,552,128,499,155"/>
+<area shape="rect" id="Node000006" href="$structtmc5160_1_1TMC5160_1_1Encoder.html" title="Encoder subsystem." alt="" coords="687,143,923,183"/>
+<area shape="poly" id="edge8_Node000006_Node000004" title=" " alt="" coords="583,155,613,153,663,153,686,154,686,159,663,159,613,159,583,161"/>
+<area shape="rect" id="Node000007" href="$structtmc5160_1_1TMC5160_1_1Diagnostics.html" title="Diagnostics subsystem." alt="" coords="687,207,923,247"/>
+<area shape="poly" id="edge10_Node000007_Node000004" title=" " alt="" coords="557,184,687,205,686,210,557,189"/>
+<area shape="rect" id="Node000008" href="$structtmc5160_1_1TMC5160_1_1Protection.html" title="Protection subsystem." alt="" coords="687,288,923,328"/>
+<area shape="poly" id="edge12_Node000008_Node000004" title=" " alt="" coords="488,193,542,242,577,266,614,286,650,297,687,303,686,309,648,302,612,290,574,271,539,246,484,197"/>
+<area shape="poly" id="edge13_Node000002_Node000005" title=" " alt="" coords="881,103,1103,175,1101,180,880,108"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="716,108,513,162,512,157,715,102"/>
+<area shape="poly" id="edge14_Node000002_Node000006" title=" " alt="" coords="937,171,1024,178,1024,184,936,176"/>
+<area shape="poly" id="edge7_Node000004_Node000006" title=" " alt="" coords="673,173,663,173,590,175,590,169,663,168,673,168"/>
+<area shape="poly" id="edge15_Node000002_Node000007" title=" " alt="" coords="936,210,1024,201,1024,206,937,215"/>
+<area shape="poly" id="edge9_Node000004_Node000007" title=" " alt="" coords="744,254,681,268,646,269,613,264,572,248,534,227,478,187,482,183,537,223,574,244,614,259,647,264,680,263,743,249"/>
+<area shape="poly" id="edge16_Node000002_Node000008" title=" " alt="" coords="875,281,1104,201,1106,206,877,286"/>
+<area shape="poly" id="edge11_Node000004_Node000008" title=" " alt="" coords="737,335,667,354,635,358,612,355,585,338,559,318,518,270,487,222,469,186,473,184,492,219,522,266,563,314,588,334,614,349,635,353,666,349,736,330"/>
+<area shape="rect" id="Node000009" href="$classEsp32SPI.html" title="ESP32 SPI implementation of TMC5160 communication interface." alt="" coords="764,369,845,394"/>
+<area shape="poly" id="edge17_Node000002_Node000009" title=" " alt="" coords="857,364,922,338,983,303,1040,264,1124,201,1127,206,1043,269,985,307,924,342,859,368"/>
+<area shape="rect" id="Node000010" href="$classtmc5160_1_1SpiCommInterface.html" title=" " alt="" coords="360,377,568,417"/>
+<area shape="poly" id="edge18_Node000009_Node000010" title=" " alt="" coords="581,389,764,381,764,386,582,394"/>
+<area shape="rect" id="Node000011" href="$classtmc5160_1_1CommInterface.html" title="CRTP&#45;based communication interface for register read/write operations." alt="" coords="29,377,217,417"/>
+<area shape="poly" id="edge19_Node000010_Node000011" title=" " alt="" coords="231,395,360,395,360,400,231,400"/>
+</map>

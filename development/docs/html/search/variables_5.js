@@ -7,5 +7,6 @@ var searchData=
   ['filt_5fisense_4',['filt_isense',['../uniontmc5160_1_1DRV__CONF__Register.html#afd73e8196047558bd00b2e5d184e3c05',1,'tmc5160::DRV_CONF_Register']]],
   ['freewheel_5',['freewheel',['../uniontmc5160_1_1PWMCONF__Register.html#a2ff81b7258d7564f46fd169819867759',1,'tmc5160::PWMCONF_Register']]],
   ['frequency_5f_6',['frequency_',['../classSinusoidalMotion.html#a545fa096b7ed5749633eba34ae4e6627',1,'SinusoidalMotion']]],
-  ['fsactive_7',['fsactive',['../uniontmc5160_1_1DRV__STATUS__Register.html#adb0d3b07337fc61e73e0d3eb6c8db2c6',1,'tmc5160::DRV_STATUS_Register']]]
+  ['frequency_5fhz_5f_7',['frequency_hz_',['../classFatigueTestMotion.html#a8b53c33780fa6312f614e52caf7a34c3',1,'FatigueTestMotion']]],
+  ['fsactive_8',['fsactive',['../uniontmc5160_1_1DRV__STATUS__Register.html#adb0d3b07337fc61e73e0d3eb6c8db2c6',1,'tmc5160::DRV_STATUS_Register']]]
 ];

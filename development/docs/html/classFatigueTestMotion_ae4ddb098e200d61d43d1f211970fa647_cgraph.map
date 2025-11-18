@@ -1,0 +1,12 @@
+<map id="FatigueTestMotion::SetGlobalBoundsDegrees" name="FatigueTestMotion::SetGlobalBoundsDegrees">
+<area shape="rect" id="Node000001" title="Set global bounds in degrees." alt="" coords="5,27,192,67"/>
+<area shape="rect" id="Node000002" href="$namespacetmc5160.html#a125b02e40c40c77eb5e08e68502e239e" title="Convert degrees to steps." alt="" coords="240,5,431,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,33,226,29,227,34,192,38"/>
+<area shape="rect" id="Node000003" href="$classFatigueTestMotion.html#a37342414e2ee84a7814da2bb7f2540b0" title="Set global bounds (hardware limits found during initialization)" alt="" coords="261,55,409,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="192,56,248,62,247,68,192,61"/>
+<area shape="rect" id="Node000004" href="$classFatigueTestMotion.html#a34b6ba545694153f2819ec292712d09d" title="Clip local bounds to global bounds." alt="" coords="479,26,664,66"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="410,63,465,57,465,62,410,69"/>
+<area shape="rect" id="Node000005" href="$namespacetmc5160.html#a13c113ece8bf9e72134ead3dcd3e45f0" title="Convert steps to degrees." alt="" coords="712,63,903,88"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="410,74,479,75,664,75,698,75,698,80,664,81,479,81,410,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="665,55,699,59,698,64,664,60"/>
+</map>

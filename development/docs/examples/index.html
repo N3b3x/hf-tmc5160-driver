@@ -650,6 +650,621 @@
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="example-6-fatigue-testing---bounds-finding-and-sinuous-motion">
+  
+  
+    <a href="#example-6-fatigue-testing---bounds-finding-and-sinuous-motion" class="anchor-heading" aria-labelledby="example-6-fatigue-testing---bounds-finding-and-sinuous-motion"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Example 6: Fatigue Testing - Bounds Finding and Sinuous Motion
+  
+  
+</h2>
+    
+
+<p>This example is designed for <strong>cable/strain relief fatigue testing</strong> and demonstrates:</p>
+<ul>
+  <li><strong>Sensorless bounds finding</strong> using StallGuard2 in both directions</li>
+  <li><strong>Global bounds</strong> (hardware limits) and <strong>local bounds</strong> (oscillation range)</li>
+  <li><strong>Automatic clipping</strong> of local bounds to global bounds</li>
+  <li><strong>Degree/radian support</strong> for intuitive angle-based control</li>
+  <li><strong>Pure sinusoidal back-and-forth motion</strong> optimized for fatigue testing</li>
+  <li><strong>Dwell times</strong> at bounds and optionally at center</li>
+</ul>
+<h3 id="key-features">
+  
+  
+    <a href="#key-features" class="anchor-heading" aria-labelledby="key-features"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Key Features
+  
+  
+</h3>
+    
+
+<ol>
+  <li><strong>Global vs Local Bounds</strong>:
+    <ul>
+      <li>Global bounds are hardware limits found during initialization</li>
+      <li>Local bounds define the oscillation range for testing</li>
+      <li>Local bounds are automatically clipped to global bounds if they exceed them</li>
+    </ul>
+  </li>
+  <li><strong>Fatigue Testing Optimized</strong>:
+    <ul>
+      <li>Pure sinusoidal motion between two bounds (ideal for fatigue testing)</li>
+      <li>Configurable dwell times at extremes (simulates holding tool in awkward positions)</li>
+      <li>Optional center dwell for specific test requirements</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Unbounded Mode</strong>: Handles cases where no stops are found, using current position as home</p>
+  </li>
+  <li><strong>Angle-Based Control</strong>: Work with degrees or radians instead of steps</li>
+</ol>
+<h3 id="basic-usage">
+  
+  
+    <a href="#basic-usage" class="anchor-heading" aria-labelledby="basic-usage"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Basic Usage
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+</pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"inc/tmc5160.hpp"</span><span class="cp">
+#include</span> <span class="cpf">"esp32_tmc5160_bus.hpp"</span><span class="cp">
+</span>
+<span class="c1">// Create driver instance</span>
+<span class="n">Esp32SPI</span> <span class="nf">spi</span><span class="p">(</span><span class="n">SPI2_HOST</span><span class="p">,</span> <span class="n">GPIO_NUM_23</span><span class="p">,</span> <span class="n">GPIO_NUM_19</span><span class="p">,</span> <span class="n">GPIO_NUM_18</span><span class="p">,</span> <span class="n">GPIO_NUM_5</span><span class="p">,</span>
+             <span class="n">GPIO_NUM_2</span><span class="p">,</span> <span class="n">GPIO_NUM_4</span><span class="p">,</span> <span class="n">GPIO_NUM_15</span><span class="p">,</span> <span class="mi">4000000</span><span class="p">);</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="nf">driver</span><span class="p">(</span><span class="n">spi</span><span class="p">);</span>
+
+<span class="c1">// Initialize driver</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">mres</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="c1">// 32 microsteps</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+
+<span class="c1">// Create fatigue test motion controller</span>
+<span class="n">FatigueTestMotion</span> <span class="n">motion</span><span class="p">(</span><span class="o">&amp;</span><span class="n">driver</span><span class="p">);</span>
+
+<span class="c1">// Configure motor parameters (needed for degree/radian conversions)</span>
+<span class="kt">uint16_t</span> <span class="n">steps_per_rev</span> <span class="o">=</span> <span class="mi">200</span> <span class="o">*</span> <span class="mi">32</span><span class="p">;</span> <span class="c1">// 200 steps * 32 microsteps</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">ConfigureMotor</span><span class="p">(</span><span class="n">steps_per_rev</span><span class="p">,</span> <span class="n">AngleUnit</span><span class="o">::</span><span class="n">DEGREES</span><span class="p">);</span>
+
+<span class="c1">// After finding global bounds (see full example), set global bounds</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetGlobalBoundsDegrees</span><span class="p">(</span><span class="o">-</span><span class="mf">90.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">90.0</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Hardware limits: -90° to +90°</span>
+
+<span class="c1">// Set local bounds for oscillation (will be clipped to global bounds if needed)</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetLocalBoundsDegrees</span><span class="p">(</span><span class="o">-</span><span class="mf">60.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">60.0</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Oscillate ±60° from home</span>
+
+<span class="c1">// Configure sinuous motion</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetSinuousAmplitudeDegrees</span><span class="p">(</span><span class="mf">60.0</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// 60° amplitude</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetSinuousParams</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// 0.5 Hz frequency</span>
+
+<span class="c1">// Set dwell times at bounds (can be 0 to disable)</span>
+<span class="c1">// For fatigue testing: dwell at extremes simulates holding tool in awkward positions</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetDwellTimes</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span>  <span class="c1">// 2 seconds at minimum bound</span>
+                      <span class="mi">2000</span><span class="p">,</span>  <span class="c1">// 2 seconds at maximum bound</span>
+                      <span class="mi">0</span><span class="p">);</span>    <span class="c1">// No dwell at center (set to &gt;0 to enable)</span>
+
+<span class="c1">// Set target cycle count (0 = infinite)</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetTargetCycles</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>  <span class="c1">// Run for 1000 cycles, then auto-stop</span>
+
+<span class="c1">// Start motion (can be called at any time)</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+
+<span class="c1">// Update in main loop</span>
+<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">motion</span><span class="p">.</span><span class="n">Update</span><span class="p">();</span>
+    
+    <span class="c1">// Settings can be changed in real-time while running:</span>
+    <span class="c1">// motion.SetFrequency(1.0f);  // Change frequency</span>
+    <span class="c1">// motion.SetSinuousAmplitudeDegrees(45.0f);  // Change amplitude</span>
+    <span class="c1">// motion.SetDwellTimes(1000, 1000, 0);  // Change dwell times</span>
+    <span class="c1">// motion.SetTargetCycles(2000);  // Change target cycles</span>
+    
+    <span class="c1">// Stop and restart at any time:</span>
+    <span class="c1">// motion.Stop();</span>
+    <span class="c1">// vTaskDelay(pdMS_TO_TICKS(2000));</span>
+    <span class="c1">// motion.Start();  // Resume from current position</span>
+    
+    <span class="c1">// Check status:</span>
+    <span class="c1">// uint32_t cycles = motion.GetCurrentCycles();</span>
+    <span class="c1">// bool running = motion.IsRunning();</span>
+    <span class="c1">// bool complete = motion.IsCycleComplete();</span>
+    
+    <span class="n">vTaskDelay</span><span class="p">(</span><span class="n">pdMS_TO_TICKS</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="global-vs-local-bounds">
+  
+  
+    <a href="#global-vs-local-bounds" class="anchor-heading" aria-labelledby="global-vs-local-bounds"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Global vs Local Bounds
+  
+  
+</h3>
+    
+
+<p>The system distinguishes between global bounds (hardware limits) and local bounds (oscillation range):</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c1">// Set global bounds (hardware limits found during initialization)</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetGlobalBoundsDegrees</span><span class="p">(</span><span class="o">-</span><span class="mf">90.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">90.0</span><span class="n">f</span><span class="p">);</span>
+
+<span class="c1">// Set local bounds for oscillation (will be clipped to global bounds automatically)</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetLocalBoundsDegrees</span><span class="p">(</span><span class="o">-</span><span class="mf">60.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">60.0</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Oscillate ±60°</span>
+
+<span class="c1">// If local bounds exceed global bounds, they are automatically clipped</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetLocalBoundsDegrees</span><span class="p">(</span><span class="o">-</span><span class="mf">100.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">100.0</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Will be clipped to ±90°</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="unbounded-mode">
+  
+  
+    <a href="#unbounded-mode" class="anchor-heading" aria-labelledby="unbounded-mode"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Unbounded Mode
+  
+  
+</h3>
+    
+
+<p>When no mechanical stops are detected, the system automatically enters unbounded mode:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="c1">// System detects no stops found</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">motion</span><span class="p">.</span><span class="n">IsBounded</span><span class="p">())</span> <span class="p">{</span>
+    <span class="c1">// Use current position as home</span>
+    <span class="n">motion</span><span class="p">.</span><span class="n">SetUnbounded</span><span class="p">(</span><span class="n">current_position</span><span class="p">,</span> <span class="mi">10000</span><span class="p">);</span>  <span class="c1">// Default range: 10000 steps</span>
+    
+    <span class="c1">// User can reset home to any relative angle</span>
+    <span class="n">motion</span><span class="p">.</span><span class="n">ResetHomeByDegrees</span><span class="p">(</span><span class="mf">45.0</span><span class="n">f</span><span class="p">);</span>
+    
+    <span class="c1">// Get local bounds</span>
+    <span class="kt">float</span> <span class="n">min_deg</span><span class="p">,</span> <span class="n">max_deg</span><span class="p">;</span>
+    <span class="n">motion</span><span class="p">.</span><span class="n">GetLocalBoundsDegrees</span><span class="p">(</span><span class="n">min_deg</span><span class="p">,</span> <span class="n">max_deg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="working-with-angles">
+  
+  
+    <a href="#working-with-angles" class="anchor-heading" aria-labelledby="working-with-angles"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Working with Angles
+  
+  
+</h3>
+    
+
+<p>The example provides full support for degree and radian operations:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></td><td class="rouge-code"><pre><span class="c1">// Set global bounds in degrees</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetGlobalBoundsDegrees</span><span class="p">(</span><span class="o">-</span><span class="mf">90.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">90.0</span><span class="n">f</span><span class="p">);</span>
+
+<span class="c1">// Set local bounds in degrees</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetLocalBoundsDegrees</span><span class="p">(</span><span class="o">-</span><span class="mf">60.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">60.0</span><span class="n">f</span><span class="p">);</span>
+
+<span class="c1">// Set bounds in radians</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetGlobalBoundsRadians</span><span class="p">(</span><span class="o">-</span><span class="n">M_PI</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">M_PI</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetLocalBoundsRadians</span><span class="p">(</span><span class="o">-</span><span class="n">M_PI</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="n">M_PI</span><span class="o">/</span><span class="mi">3</span><span class="p">);</span>
+
+<span class="c1">// Get bounds in degrees</span>
+<span class="kt">float</span> <span class="n">min_deg</span><span class="p">,</span> <span class="n">max_deg</span><span class="p">;</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">GetLocalBoundsDegrees</span><span class="p">(</span><span class="n">min_deg</span><span class="p">,</span> <span class="n">max_deg</span><span class="p">);</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">GetGlobalBoundsDegrees</span><span class="p">(</span><span class="n">min_deg</span><span class="p">,</span> <span class="n">max_deg</span><span class="p">);</span>
+
+<span class="c1">// Reset home by degrees</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">ResetHomeByDegrees</span><span class="p">(</span><span class="mf">30.0</span><span class="n">f</span><span class="p">);</span>
+
+<span class="c1">// Reset home by radians</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">ResetHomeByRadians</span><span class="p">(</span><span class="n">M_PI</span><span class="o">/</span><span class="mi">6</span><span class="p">);</span>
+
+<span class="c1">// Set sinuous amplitude in degrees</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetSinuousAmplitudeDegrees</span><span class="p">(</span><span class="mf">45.0</span><span class="n">f</span><span class="p">);</span>
+
+<span class="c1">// Set sinuous amplitude in radians</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetSinuousAmplitudeRadians</span><span class="p">(</span><span class="n">M_PI</span><span class="o">/</span><span class="mi">4</span><span class="p">);</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="dwell-times">
+  
+  
+    <a href="#dwell-times" class="anchor-heading" aria-labelledby="dwell-times"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Dwell Times
+  
+  
+</h3>
+    
+
+<p>Configure dwell times at bounds and optionally at center (can be changed in real-time):</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="c1">// Set dwell times (in milliseconds, 0 to disable)</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetDwellTimes</span><span class="p">(</span>
+    <span class="mi">2000</span><span class="p">,</span>  <span class="c1">// Dwell at minimum bound: 2 seconds</span>
+    <span class="mi">2000</span><span class="p">,</span>  <span class="c1">// Dwell at maximum bound: 2 seconds</span>
+    <span class="mi">500</span>    <span class="c1">// Dwell at center: 0.5 seconds (optional, 0 to disable)</span>
+<span class="p">);</span>
+
+<span class="c1">// For pure fatigue testing without dwells:</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetDwellTimes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  <span class="c1">// No dwells, continuous motion</span>
+
+<span class="c1">// Change dwell times while running:</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetDwellTimes</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  <span class="c1">// Update in real-time</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="cycle-count">
+  
+  
+    <a href="#cycle-count" class="anchor-heading" aria-labelledby="cycle-count"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Cycle Count
+  
+  
+</h3>
+    
+
+<p>Set target cycle count and track progress. <strong>One cycle = center → min → max → center</strong> (or center → max → min → center). Cycles are counted at the center crossing point (0 crossing).</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="rouge-code"><pre><span class="c1">// Set target cycle count (0 = infinite)</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetTargetCycles</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>  <span class="c1">// Run for 1000 cycles</span>
+
+<span class="c1">// Get current cycle count</span>
+<span class="kt">uint32_t</span> <span class="n">cycles</span> <span class="o">=</span> <span class="n">motion</span><span class="p">.</span><span class="n">GetCurrentCycles</span><span class="p">();</span>
+
+<span class="c1">// Get target cycles</span>
+<span class="kt">uint32_t</span> <span class="n">target</span> <span class="o">=</span> <span class="n">motion</span><span class="p">.</span><span class="n">GetTargetCycles</span><span class="p">();</span>
+
+<span class="c1">// Check if cycle count reached</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">motion</span><span class="p">.</span><span class="n">IsCycleComplete</span><span class="p">())</span> <span class="p">{</span>
+    <span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s">"Test complete: %lu cycles"</span><span class="p">,</span> <span class="n">motion</span><span class="p">.</span><span class="n">GetCurrentCycles</span><span class="p">());</span>
+    <span class="c1">// Motion automatically stops at center position when cycles complete</span>
+<span class="p">}</span>
+
+<span class="c1">// Reset cycle count</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">ResetCycles</span><span class="p">();</span>
+
+<span class="c1">// Change target cycles while running</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetTargetCycles</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span>  <span class="c1">// Update target in real-time</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Note</strong>: When target cycles are reached, motion automatically moves to center position and stops there (amplitude = 0).</p>
+<h3 id="startstop-control">
+  
+  
+    <a href="#startstop-control" class="anchor-heading" aria-labelledby="startstop-control"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Start/Stop Control
+  
+  
+</h3>
+    
+
+<p>Motion can be started and stopped at any time:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="c1">// Start motion (can be called at any time)</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+
+<span class="c1">// Stop motion (can be called at any time)</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">Stop</span><span class="p">();</span>
+
+<span class="c1">// Check if running</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">motion</span><span class="p">.</span><span class="n">IsRunning</span><span class="p">())</span> <span class="p">{</span>
+    <span class="c1">// Motion is active</span>
+<span class="p">}</span>
+
+<span class="c1">// Resume after stop (continues from current position)</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="real-time-setting-changes">
+  
+  
+    <a href="#real-time-setting-changes" class="anchor-heading" aria-labelledby="real-time-setting-changes"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Real-Time Setting Changes
+  
+  
+</h3>
+    
+
+<p>All settings can be changed while motion is running:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="c1">// Change frequency in real-time</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetFrequency</span><span class="p">(</span><span class="mf">1.0</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Increase to 1.0 Hz</span>
+
+<span class="c1">// Change amplitude in real-time</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetSinuousAmplitudeDegrees</span><span class="p">(</span><span class="mf">45.0</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Reduce to 45°</span>
+
+<span class="c1">// Change dwell times in real-time</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetDwellTimes</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// Change target cycles in real-time</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">SetTargetCycles</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="complete-example-flow">
+  
+  
+    <a href="#complete-example-flow" class="anchor-heading" aria-labelledby="complete-example-flow"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Complete Example Flow
+  
+  
+</h3>
+    
+
+<ol>
+  <li><strong>Find Global Bounds</strong>: Automatically detects mechanical stops in both directions</li>
+  <li><strong>Set Home</strong>: Sets middle position as home (or uses current position if unbounded)</li>
+  <li><strong>Set Local Bounds</strong>: Define oscillation range (automatically clipped to global bounds)</li>
+  <li><strong>Configure</strong>: Set up sinuous motion parameters, dwell times, and cycle count</li>
+  <li><strong>Start Motion</strong>: Begin pure sinusoidal back-and-forth motion</li>
+  <li><strong>Update Loop</strong>: Continuously update motion controller</li>
+  <li><strong>Monitor</strong>: Track cycle count and adjust settings in real-time as needed</li>
+  <li><strong>Stop</strong>: Motion stops automatically when cycle count reached, or can be stopped manually</li>
+</ol>
+<h3 id="fatigue-testing-best-practices">
+  
+  
+    <a href="#fatigue-testing-best-practices" class="anchor-heading" aria-labelledby="fatigue-testing-best-practices"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Fatigue Testing Best Practices
+  
+  
+</h3>
+    
+
+<p>For cable/strain relief fatigue testing:</p>
+
+<ul>
+  <li><strong>Pure sinusoidal motion</strong> between two bounds is ideal for worst-case fatigue testing</li>
+  <li><strong>Dwell at extremes</strong> (1-5 seconds) simulates holding tool in awkward positions</li>
+  <li><strong>No center dwell</strong> typically needed for pure fatigue testing</li>
+  <li><strong>Constant frequency</strong> maximizes cycles per hour for faster test completion</li>
+  <li><strong>Angle selection</strong>: Use realistic but aggressive angles (e.g., ±60-90°)</li>
+</ul>
+<h3 id="running-the-example">
+  
+  
+    <a href="#running-the-example" class="anchor-heading" aria-labelledby="running-the-example"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Running the Example
+  
+  
+</h3>
+    
+
+<p>For ESP32:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="nb">cd </span>examples/esp32
+idf.py set-target esp32c6  <span class="c"># or your target</span>
+idf.py build
+idf.py <span class="nt">-p</span> /dev/ttyUSB0 flash monitor
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p>Select the example:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre>idf.py menuconfig
+<span class="c"># Navigate to: Example Configuration -&gt; Example to run</span>
+<span class="c"># Select: bounds_finding_sinuous_motion</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p>Or build directly:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>idf.py build <span class="nt">-DAPP_TYPE</span><span class="o">=</span>bounds_finding_sinuous_motion
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="configuration-notes">
+  
+  
+    <a href="#configuration-notes" class="anchor-heading" aria-labelledby="configuration-notes"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configuration Notes
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>Steps per Revolution</strong>: Must be configured correctly for degree/radian conversions
+    <ul>
+      <li>Base steps: 200 for 1.8° motors, 400 for 0.9° motors</li>
+      <li>With microsteps: multiply by microstep factor (e.g., 200 × 32 = 6400)</li>
+    </ul>
+  </li>
+  <li><strong>Stall Threshold</strong>: Tune <code class="language-plaintext highlighter-rouge">sgt</code> parameter for your motor and mechanical system</li>
+  <li><strong>Search Speed</strong>: Adjust based on your application (typically 200-1000 steps/s)</li>
+  <li><strong>Global vs Local Bounds</strong>:
+    <ul>
+      <li>Global bounds are hardware limits (found during initialization)</li>
+      <li>Local bounds define oscillation range (clipped to global bounds automatically)</li>
+      <li>If local bounds exceed global bounds, they are automatically clipped</li>
+    </ul>
+  </li>
+  <li><strong>Dwell Times</strong>:
+    <ul>
+      <li>Set to 0 to disable dwells for continuous motion</li>
+      <li>Typical values: 1-5 seconds at extremes for fatigue testing</li>
+      <li>Center dwell is optional and typically not needed for pure fatigue testing</li>
+      <li>Can be changed in real-time while motion is running</li>
+    </ul>
+  </li>
+  <li><strong>Cycle Count</strong>:
+    <ul>
+      <li>Set target cycles (0 = infinite)</li>
+      <li><strong>One cycle = center → min → max → center</strong> (or center → max → min → center)</li>
+      <li>Cycles are counted at center crossing point (0 crossing)</li>
+      <li>Motion automatically stops at center position when target cycles reached</li>
+      <li>Cycle count can be changed in real-time</li>
+      <li>Use <code class="language-plaintext highlighter-rouge">ResetCycles()</code> to restart counting</li>
+    </ul>
+  </li>
+  <li><strong>Start/Stop Control</strong>:
+    <ul>
+      <li>Motion can be started and stopped at any time</li>
+      <li>Resuming after stop continues from current position</li>
+      <li>All settings can be changed while motion is running</li>
+    </ul>
+  </li>
+</ul>
+<h3 id="see-also">
+  
+  
+    <a href="#see-also" class="anchor-heading" aria-labelledby="see-also"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> See Also
+  
+  
+</h3>
+    
+
+<ul>
+  <li><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/">Sensorless Homing Guide</a> - Detailed StallGuard2 configuration</li>
+  <li><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/">Unit Conversions</a> - Physical unit conversion functions</li>
+  <li><a href="/hf-tmc5160-driver/development/docs/api_reference/">API Reference</a> - Complete API documentation</li>
+</ul>
 <h2 id="running-the-examples">
   
   

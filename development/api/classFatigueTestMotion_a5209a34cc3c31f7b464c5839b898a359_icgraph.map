@@ -1,0 +1,9 @@
+<map id="FatigueTestMotion::SetLocalBounds" name="FatigueTestMotion::SetLocalBounds">
+<area shape="rect" id="Node000001" title="Set local bounds (oscillation range, will be clipped to global bounds)" alt="" coords="457,27,605,67"/>
+<area shape="rect" id="Node000002" href="$classFatigueTestMotion.html#aa2532cbafa00e73a3f107f1664f7fc74" title="Set local bounds in degrees." alt="" coords="231,27,409,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="443,50,409,50,409,45,443,45"/>
+<area shape="rect" id="Node000003" href="$bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="51,5,137,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="217,37,137,26,138,21,218,31"/>
+<area shape="rect" id="Node000004" href="$classFatigueTestMotion.html#ae1b2a2cdf81dda2475116e0dd35b96fe" title="Set local bounds in radians." alt="" coords="5,55,183,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="217,63,183,67,183,62,217,57"/>
+</map>

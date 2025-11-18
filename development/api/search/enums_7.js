@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tmc5160ctrlpin_0',['TMC5160CtrlPin',['../namespacetmc5160.html#af27bf60aaa4c5b13ce49bfa70fa47059',1,'tmc5160']]]
+  ['rampmode_0',['RampMode',['../namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2',1,'tmc5160']]]
 ];

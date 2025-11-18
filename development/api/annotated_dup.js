@@ -42,5 +42,6 @@ var annotated_dup =
       [ "UartCommInterface", "classtmc5160_1_1UartCommInterface.html", "classtmc5160_1_1UartCommInterface" ]
     ] ],
     [ "Esp32SPI", "classEsp32SPI.html", "classEsp32SPI" ],
+    [ "FatigueTestMotion", "classFatigueTestMotion.html", "classFatigueTestMotion" ],
     [ "SinusoidalMotion", "classSinusoidalMotion.html", "classSinusoidalMotion" ]
 ];

@@ -11,5 +11,8 @@ var searchData=
   ['coolconf_8',['COOLCONF',['../namespacetmc5160_1_1Registers.html#accdaede901651402bd58238c6eec0d92',1,'tmc5160::Registers']]],
   ['cs_5factual_9',['cs_actual',['../uniontmc5160_1_1DRV__STATUS__Register.html#a306cc8629c359cad062f47b187e083f8',1,'tmc5160::DRV_STATUS_Register']]],
   ['cs_5fpin_5f_10',['cs_pin_',['../classEsp32SPI.html#acd7534240676fbe61da7b622d0e03380',1,'Esp32SPI']]],
-  ['current_5fstep_5f_11',['current_step_',['../classSinusoidalMotion.html#a3336f82ca755b7e1eebd73fefb937a73',1,'SinusoidalMotion']]]
+  ['current_5fcycles_5f_11',['current_cycles_',['../classFatigueTestMotion.html#a0dfd3f01a973ce8e153a4e66822e8926',1,'FatigueTestMotion']]],
+  ['current_5fstep_5f_12',['current_step_',['../classSinusoidalMotion.html#a3336f82ca755b7e1eebd73fefb937a73',1,'SinusoidalMotion']]],
+  ['cycle_5fcomplete_5f_13',['cycle_complete_',['../classFatigueTestMotion.html#ac1935a4905b5752b3b7aa835b346c24e',1,'FatigueTestMotion']]],
+  ['cycle_5fstarted_5f_14',['cycle_started_',['../classFatigueTestMotion.html#ae9bd3f6bea4c6bb279aeb0fd1940c097',1,'FatigueTestMotion']]]
 ];

@@ -1,6 +1,7 @@
 var dir_7751913d9073a449937b5bcfd50bf3a6 =
 [
     [ "basic_positioning.cpp", "basic__positioning_8cpp.html", "basic__positioning_8cpp" ],
+    [ "bounds_finding_sinuous_motion.cpp", "bounds__finding__sinuous__motion_8cpp.html", "bounds__finding__sinuous__motion_8cpp" ],
     [ "comprehensive_test.cpp", "comprehensive__test_8cpp.html", "comprehensive__test_8cpp" ],
     [ "encoder.cpp", "encoder_8cpp.html", "encoder_8cpp" ],
     [ "esp32_tmc5160_bus.hpp", "esp32__tmc5160__bus_8hpp.html", "esp32__tmc5160__bus_8hpp" ],

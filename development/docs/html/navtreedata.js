@@ -52,7 +52,8 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", null ],
-        [ "Variables", "functions_vars.html", "functions_vars" ]
+        [ "Variables", "functions_vars.html", "functions_vars" ],
+        [ "Enumerations", "functions_enum.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -61,6 +62,7 @@ var NAVTREE =
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
         [ "Variables", "globals_vars.html", null ],
+        [ "Enumerations", "globals_enum.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
@@ -70,11 +72,11 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"namespacemembers.html",
-"structtmc5160_1_1MotorCurrentConfig.html#aebbe327c7b62a8796e207b3b97d82ebc",
-"tmc5160__registers_8hpp.html#aa48aba25053e172a56e21d9ff7726faa",
-"uniontmc5160_1_1ENC__STATUS__Register.html#ad19c88f1c159e1fc8248f9db1d20f828",
-"uniontmc5160_1_1SHORT__CONF__Register.html#a557cd6282bf55183e494fe2a7a980b5d"
+"functions_f.html",
+"structtmc5160_1_1CoolStepConfig.html#ae6a31a91112e87b1199d2ba5c98a3159",
+"structtmc5160_1_1TMC5160_1_1RampControl.html#af8a09d45e0f919dff7d47f49f7946a7b",
+"uniontmc5160_1_1DRV__STATUS__Register.html#a186420ce369617ad1cd320391f4011d8",
+"uniontmc5160_1_1PWM__AUTO__Register.html#a25dd1e6f85906cc68935835002cac2d6"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

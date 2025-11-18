@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['encodersensitivity_0',['EncoderSensitivity',['../namespacetmc5160.html#a4eaf32584629b8ef44ee951e7ebf4916',1,'tmc5160']]]
+  ['driverstatus_0',['DriverStatus',['../namespacetmc5160.html#a81fcaffbc5dc91f6f544da54c1cf8c3b',1,'tmc5160']]]
 ];

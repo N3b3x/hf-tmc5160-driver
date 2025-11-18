@@ -1,0 +1,14 @@
+<map id="FatigueTestMotion::SetLocalBoundsRadians" name="FatigueTestMotion::SetLocalBoundsRadians">
+<area shape="rect" id="Node000001" title="Set local bounds in radians." alt="" coords="5,27,183,67"/>
+<area shape="rect" id="Node000002" href="$classFatigueTestMotion.html#aa2532cbafa00e73a3f107f1664f7fc74" title="Set local bounds in degrees." alt="" coords="231,27,409,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,45,217,45,217,50,183,50"/>
+<area shape="rect" id="Node000003" href="$namespacetmc5160.html#a125b02e40c40c77eb5e08e68502e239e" title="Convert degrees to steps." alt="" coords="457,5,648,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="409,33,443,29,444,34,410,39"/>
+<area shape="rect" id="Node000004" href="$classFatigueTestMotion.html#a5209a34cc3c31f7b464c5839b898a359" title="Set local bounds (oscillation range, will be clipped to global bounds)" alt="" coords="479,55,627,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="410,55,465,62,465,67,409,61"/>
+<area shape="rect" id="Node000005" href="$classFatigueTestMotion.html#a34b6ba545694153f2819ec292712d09d" title="Clip local bounds to global bounds." alt="" coords="696,26,881,66"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="627,63,682,57,683,62,628,69"/>
+<area shape="rect" id="Node000006" href="$namespacetmc5160.html#a13c113ece8bf9e72134ead3dcd3e45f0" title="Convert steps to degrees." alt="" coords="929,63,1120,88"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="627,74,696,75,881,75,915,75,916,80,881,81,696,81,627,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="882,55,916,59,915,64,881,60"/>
+</map>
