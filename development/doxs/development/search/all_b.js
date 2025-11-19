@@ -11,7 +11,7 @@ var searchData=
   ['motionstate_8',['MotionState',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136',1,'FatigueTestMotion']]],
   ['motor_9',['motor',['../structtmc5160_1_1DriverConfig.html#a0e86dedca15de4295d3d92754886a606',1,'tmc5160::DriverConfig']]],
   ['motor_5fsetup_5ffrom_5fspec_2ecpp_10',['motor_setup_from_spec.cpp',['../motor__setup__from__spec_8cpp.html',1,'']]],
-  ['motorcontrol_11',['MotorControl',['../structtmc5160_1_1TMC5160_1_1MotorControl.html',1,'tmc5160::TMC5160&lt; CommType &gt;::MotorControl'],['../structtmc5160_1_1TMC5160_1_1MotorControl.html#a3186a8dbfe24e2451178031e9a75bcd7',1,'tmc5160::TMC5160::MotorControl::MotorControl()']]],
+  ['motorcontrol_11',['MotorControl',['../structtmc5160_1_1TMC5160_1_1MotorControl.html',1,'tmc5160::TMC5160&lt; CommType &gt;::MotorControl'],['../structtmc5160_1_1TMC5160_1_1MotorControl.html#a4564d7ab30e0b34c245e19d77e31edf1',1,'tmc5160::TMC5160::MotorControl::MotorControl()']]],
   ['motorcurrentconfig_12',['MotorCurrentConfig',['../structtmc5160_1_1MotorCurrentConfig.html',1,'tmc5160::MotorCurrentConfig'],['../structtmc5160_1_1MotorCurrentConfig.html#aebbe327c7b62a8796e207b3b97d82ebc',1,'tmc5160::MotorCurrentConfig::MotorCurrentConfig()']]],
   ['motordirection_13',['MotorDirection',['../namespacetmc5160.html#a20e941105f83108e502d1fe328c01c9e',1,'tmc5160']]],
   ['motorparameters_14',['MotorParameters',['../structtmc5160_1_1MotorParameters.html',1,'tmc5160::MotorParameters'],['../structtmc5160_1_1MotorParameters.html#a2e8b560d07526df6ee91f2759b87903e',1,'tmc5160::MotorParameters::MotorParameters()']]],

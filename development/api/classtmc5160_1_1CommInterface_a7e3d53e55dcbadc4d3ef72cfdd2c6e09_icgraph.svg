@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classtmc5160_1_1SpiCommInterface.html#a8e820cc63d01a28383495beca697fafa" target="_top" xlink:title="Read a 32&#45;bit register via SPI.">
+<g id="a_Node000002"><a xlink:href="classtmc5160_1_1SpiCommInterface.html#a7f6dfc07d2092acafd31d75a1a580f73" target="_top" xlink:title="Read a 32&#45;bit register via SPI with optional chip selection.">
 <polygon fill="white" stroke="#666666" points="156,-78 0,-78 0,-48 156,-48 156,-78"/>
 <text text-anchor="start" x="8" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::SpiCommInterface</text>
 <text text-anchor="middle" x="78" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">::ReadRegister</text>
@@ -40,7 +40,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classtmc5160_1_1SpiCommInterface.html#a9112ac2388495ac9fd779b2ccd5cf464" target="_top" xlink:title="Write a 32&#45;bit register via SPI.">
+<g id="a_Node000003"><a xlink:href="classtmc5160_1_1SpiCommInterface.html#ac3efc029d4d87218476bce759bfdc65f" target="_top" xlink:title="Write a 32&#45;bit register via SPI with optional chip selection.">
 <polygon fill="white" stroke="#666666" points="156,-30 0,-30 0,0 156,0 156,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::SpiCommInterface</text>
 <text text-anchor="middle" x="78" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::WriteRegister</text>

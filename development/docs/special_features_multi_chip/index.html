@@ -1,0 +1,797 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  <style id="jtd-nav-activation">
+  
+
+    .site-nav > ul.nav-list:first-child > li > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li > a,
+    
+    .site-nav > ul.nav-list:first-child > li > ul > li > ul > li:not(:nth-child(13)) > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li > ul > li > ul > li a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:not(:first-child) a,
+    .site-nav li.external a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > ul > li:nth-child(13) > a {
+      font-weight: 600;
+      text-decoration: none;
+    }.site-nav > ul.nav-list:first-child > li:nth-child(1) > button svg,
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > button svg,
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > ul > li:nth-child(13) > button svg {
+      transform: rotate(-90deg);
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list,
+    .site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(1) > ul.nav-list,
+    .site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(13) > ul.nav-list {
+      display: block;
+    }
+  </style>
+
+  
+
+  
+    <script src="/hf-tmc5160-driver/development/assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="/hf-tmc5160-driver/development/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>🔗 Multi-Chip Communication | HardFOC TMC5160 Driver - development</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="🔗 Multi-Chip Communication" />
+<meta name="author" content="N3b3x" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="SPI daisy chaining and UART multi-node addressing for TMC5160" />
+<meta property="og:description" content="SPI daisy chaining and UART multi-node addressing for TMC5160" />
+<link rel="canonical" href="https://n3b3x.github.io/hf-tmc5160-driver/development/docs/special_features_multi_chip/" />
+<meta property="og:url" content="https://n3b3x.github.io/hf-tmc5160-driver/development/docs/special_features_multi_chip/" />
+<meta property="og:site_name" content="HardFOC TMC5160 Driver - development" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="🔗 Multi-Chip Communication" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"SPI daisy chaining and UART multi-node addressing for TMC5160","headline":"🔗 Multi-Chip Communication","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/docs/special_features_multi_chip/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- =============================================================================
+     Custom Head Content for HardFOC Driver Documentation
+     =============================================================================
+     This file is included in the <head> section of every page.
+     It loads custom CSS and JavaScript for enhanced functionality.
+     ============================================================================= -->
+
+<!-- Custom CSS for enhanced styling and fixes -->
+<link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/custom.css">
+
+<!-- Custom JavaScript for interactive features -->
+<script src="/hf-tmc5160-driver/development/assets/js/custom.js" defer></script>
+
+
+
+</head>
+
+<body>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    <div class="side-bar">
+  <div class="site-header" role="banner">
+    <a href="/hf-tmc5160-driver/development/" class="site-title lh-tight">
+  HardFOC TMC5160 Driver - development
+
+</a>
+    <button id="menu-button" class="site-button btn-reset" aria-label="Toggle menu" aria-pressed="false">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Main" id="site-nav" class="site-nav">
+  
+  
+    <ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in HardFOC TMC5160 Driver category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC5160 Driver</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li></ul></li></ul></li></ul>
+  
+</nav>
+
+
+
+
+  
+  
+    <footer class="site-footer">
+      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+    </footer>
+  
+</div>
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header">
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search HardFOC TMC5160 Driver - development" aria-label="Search HardFOC TMC5160 Driver - development" autocomplete="off">
+    <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+    <nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    
+      <li class="aux-nav-list-item">
+        <a href="/hf-tmc5160-driver/development/api/index.html" class="site-button"
+          
+        >
+          📖 API Reference
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver" class="site-button"
+          
+        >
+          📚 GitHub Repository
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/issues" class="site-button"
+          
+        >
+          🐛 Report Issues
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/stargazers" class="site-button"
+          
+        >
+          ⭐ Star on GitHub
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+
+  
+</div>
+
+    <div class="main-content-wrap">
+      <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+  <ol class="breadcrumb-nav-list">
+    <li class="breadcrumb-nav-list-item"><a href="/hf-tmc5160-driver/development/">HardFOC TMC5160 Driver</a></li>
+    <li class="breadcrumb-nav-list-item"><a href="/hf-tmc5160-driver/development/docs/">📚 Documentation</a></li>
+    <li class="breadcrumb-nav-list-item"><span>🔗 Multi-Chip Communication</span></li>
+  </ol>
+</nav>
+
+
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <h1 id="multi-chip-communication">
+  
+  
+    <a href="#multi-chip-communication" class="anchor-heading" aria-labelledby="multi-chip-communication"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Multi-Chip Communication
+  
+  
+</h1>
+    
+
+<p>The TMC5160 driver supports multiple chips on a single communication bus through two methods:</p>
+
+<ol>
+  <li><strong>SPI Daisy Chaining</strong>: Multiple TMC5160 chips can be connected on a single SPI bus using chip select (CSN) pins or extended SPI transfers.</li>
+  <li><strong>UART Multi-Node Addressing</strong>: Up to 255 TMC5160 chips can be addressed on a single UART bus using slave addresses and NAI/NAO pin daisy chaining.</li>
+</ol>
+<h2 id="overview">
+  
+  
+    <a href="#overview" class="anchor-heading" aria-labelledby="overview"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Overview
+  
+  
+</h2>
+    
+
+<p>When multiple TMC5160 chips are used in a system, each chip must be individually addressable. The driver provides methods for:</p>
+
+<ul>
+  <li><strong>SPI</strong>: Chip selection via CSN pins or extended transfers (&gt;40 bits)</li>
+  <li><strong>UART</strong>: Slave address configuration via SLAVECONF register and NAI/NAO pin control</li>
+</ul>
+<h2 id="spi-daisy-chaining">
+  
+  
+    <a href="#spi-daisy-chaining" class="anchor-heading" aria-labelledby="spi-daisy-chaining"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> SPI Daisy Chaining
+  
+  
+</h2>
+    
+<h3 id="hardware-setup">
+  
+  
+    <a href="#hardware-setup" class="anchor-heading" aria-labelledby="hardware-setup"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Hardware Setup
+  
+  
+</h3>
+    
+
+<p>For SPI daisy chaining, you have two options:</p>
+<h4 id="option-1-multiple-csn-pins-recommended">
+  
+  
+    <a href="#option-1-multiple-csn-pins-recommended" class="anchor-heading" aria-labelledby="option-1-multiple-csn-pins-recommended"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Option 1: Multiple CSN Pins (Recommended)
+  
+  
+</h4>
+    
+
+<p>Each TMC5160 chip has its own CSN (chip select) pin connected to the MCU:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre>MCU              TMC5160 #1          TMC5160 #2          TMC5160 #3
+─────────────────────────────────────────────────────────────────────
+SCK       ────── SCK                ────── SCK          ────── SCK
+MOSI      ────── SDI                ────── SDI          ────── SDI
+MISO      ────── SDO                ────── SDO          ────── SDO
+CSN1      ────── CSN
+CSN2                                ────── CSN
+CSN3                                                    ────── CSN
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="software-implementation">
+  
+  
+    <a href="#software-implementation" class="anchor-heading" aria-labelledby="software-implementation"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Software Implementation
+  
+  
+</h3>
+    
+
+<p>Override <code class="language-plaintext highlighter-rouge">SetChipSelect()</code> in your SPI communication interface for multi-chip setups:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre></td><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">MyMultiChipSPI</span> <span class="o">:</span> <span class="k">public</span> <span class="n">tmc5160</span><span class="o">::</span><span class="n">SpiCommInterface</span><span class="o">&lt;</span><span class="n">MyMultiChipSPI</span><span class="o">&gt;</span> <span class="p">{</span>
+<span class="nl">private:</span>
+  <span class="n">gpio_num_t</span> <span class="n">csn_pins_</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span> <span class="c1">// CSN pins for 3 chips</span>
+
+<span class="nl">public:</span>
+  <span class="kt">bool</span> <span class="n">SetChipSelect</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">csn_pin_index</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">active</span><span class="p">)</span> <span class="k">noexcept</span> <span class="k">override</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">csn_pin_index</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">gpio_set_level</span><span class="p">(</span><span class="n">csn_pins_</span><span class="p">[</span><span class="n">csn_pin_index</span><span class="p">],</span> <span class="n">active</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// Active low</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1">// ... other required methods ...</span>
+<span class="p">};</span>
+
+<span class="c1">// Usage</span>
+<span class="n">MyMultiChipSPI</span> <span class="n">spi</span><span class="p">(</span><span class="cm">/* ... */</span><span class="p">);</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="n">driver1</span><span class="p">(</span><span class="n">spi</span><span class="p">);</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="n">driver2</span><span class="p">(</span><span class="n">spi</span><span class="p">);</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="n">driver3</span><span class="p">(</span><span class="n">spi</span><span class="p">);</span>
+
+<span class="c1">// Read from chip 1 (CSN index 0)</span>
+<span class="kt">uint32_t</span> <span class="n">value</span><span class="p">;</span>
+<span class="n">driver1</span><span class="p">.</span><span class="n">GetComm</span><span class="p">().</span><span class="n">ReadRegister</span><span class="p">(</span><span class="mh">0x00</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// Read from chip 2 (CSN index 1)</span>
+<span class="n">driver2</span><span class="p">.</span><span class="n">GetComm</span><span class="p">().</span><span class="n">ReadRegister</span><span class="p">(</span><span class="mh">0x00</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="c1">// Read from chip 3 (CSN index 2)</span>
+<span class="n">driver3</span><span class="p">.</span><span class="n">GetComm</span><span class="p">().</span><span class="n">ReadRegister</span><span class="p">(</span><span class="mh">0x00</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="uart-multi-node-addressing">
+  
+  
+    <a href="#uart-multi-node-addressing" class="anchor-heading" aria-labelledby="uart-multi-node-addressing"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> UART Multi-Node Addressing
+  
+  
+</h2>
+    
+<h3 id="hardware-setup-1">
+  
+  
+    <a href="#hardware-setup-1" class="anchor-heading" aria-labelledby="hardware-setup-1"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Hardware Setup
+  
+  
+</h3>
+    
+
+<p>For UART multi-node addressing, connect chips in a daisy chain using NAI/NAO pins:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre>MCU              TMC5160 #1          TMC5160 #2          TMC5160 #3
+─────────────────────────────────────────────────────────────────────
+TXD       ────── UART_RXD     ────── UART_RXD     ────── UART_RXD
+RXD       ────── UART_TXD     ────── UART_TXD     ────── UART_TXD
+NAI       ────── NAI (GND)
+NAO       ────── NAI
+                  NAO       ────── NAI
+                              NAO       ────── NAI
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="sequential-addressing-procedure">
+  
+  
+    <a href="#sequential-addressing-procedure" class="anchor-heading" aria-labelledby="sequential-addressing-procedure"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Sequential Addressing Procedure
+  
+  
+</h3>
+    
+
+<p>To program addresses for multiple chips:</p>
+
+<ol>
+  <li><strong>First chip</strong>: NAI tied to GND → responds to address 0</li>
+  <li><strong>Program first chip</strong>: Set SLAVECONF.slaveaddr = 1, set NAO low</li>
+  <li><strong>Second chip</strong>: Now responds to address 1</li>
+  <li><strong>Program second chip</strong>: Set SLAVECONF.slaveaddr = 2, set NAO low</li>
+  <li><strong>Continue</strong> for remaining chips</li>
+</ol>
+<h3 id="software-implementation-1">
+  
+  
+    <a href="#software-implementation-1" class="anchor-heading" aria-labelledby="software-implementation-1"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Software Implementation
+  
+  
+</h3>
+    
+<h4 id="configure-slave-address">
+  
+  
+    <a href="#configure-slave-address" class="anchor-heading" aria-labelledby="configure-slave-address"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configure Slave Address
+  
+  
+</h4>
+    
+
+<p>Use the <code class="language-plaintext highlighter-rouge">Communication</code> subsystem to configure slave addresses:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="nf">driver</span><span class="p">(</span><span class="n">uart_comm</span><span class="p">);</span>
+
+<span class="c1">// Configure slave address for this chip</span>
+<span class="c1">// send_delay should be &gt;1 when multiple slaves are present</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">communication</span><span class="p">.</span><span class="n">ConfigureSlaveAddress</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// Address 1, delay 2 bit times</span>
+
+<span class="c1">// Get current slave address</span>
+<span class="kt">uint8_t</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">communication</span><span class="p">.</span><span class="n">GetSlaveAddress</span><span class="p">();</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h4 id="nainao-pin-control">
+  
+  
+    <a href="#nainao-pin-control" class="anchor-heading" aria-labelledby="nainao-pin-control"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> NAI/NAO Pin Control
+  
+  
+</h4>
+    
+
+<p>Override <code class="language-plaintext highlighter-rouge">SetNaiPin()</code> and <code class="language-plaintext highlighter-rouge">GetNaoPin()</code> in your UART interface:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">MyUART</span> <span class="o">:</span> <span class="k">public</span> <span class="n">tmc5160</span><span class="o">::</span><span class="n">UartCommInterface</span><span class="o">&lt;</span><span class="n">MyUART</span><span class="o">&gt;</span> <span class="p">{</span>
+<span class="nl">private:</span>
+  <span class="n">gpio_num_t</span> <span class="n">nai_pin_</span><span class="p">;</span>
+  <span class="n">gpio_num_t</span> <span class="n">nao_pin_</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+  <span class="kt">bool</span> <span class="n">SetNaiPin</span><span class="p">(</span><span class="kt">bool</span> <span class="n">active</span><span class="p">)</span> <span class="k">noexcept</span> <span class="k">override</span> <span class="p">{</span>
+    <span class="n">gpio_set_level</span><span class="p">(</span><span class="n">nai_pin_</span><span class="p">,</span> <span class="n">active</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kt">bool</span> <span class="n">GetNaoPin</span><span class="p">(</span><span class="kt">bool</span> <span class="o">&amp;</span><span class="n">active</span><span class="p">)</span> <span class="k">noexcept</span> <span class="k">override</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">level</span> <span class="o">=</span> <span class="n">gpio_get_level</span><span class="p">(</span><span class="n">nao_pin_</span><span class="p">);</span>
+    <span class="n">active</span> <span class="o">=</span> <span class="p">(</span><span class="n">level</span> <span class="o">==</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1">// ... other required methods ...</span>
+<span class="p">};</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h4 id="sequential-address-programming-example">
+  
+  
+    <a href="#sequential-address-programming-example" class="anchor-heading" aria-labelledby="sequential-address-programming-example"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Sequential Address Programming Example
+  
+  
+</h4>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">programSlaveAddresses</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">MyUART</span> <span class="n">uart</span><span class="p">(</span><span class="cm">/* ... */</span><span class="p">);</span>
+  
+  <span class="c1">// First chip: NAI tied to GND (address 0)</span>
+  <span class="n">uart</span><span class="p">.</span><span class="n">SetNaiPin</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span> <span class="c1">// Set NAI low</span>
+  <span class="n">uart</span><span class="p">.</span><span class="n">SetSlaveAddress</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+  
+  <span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="n">driver1</span><span class="p">(</span><span class="n">uart</span><span class="p">);</span>
+  <span class="n">driver1</span><span class="p">.</span><span class="n">communication</span><span class="p">.</span><span class="n">ConfigureSlaveAddress</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// Program to address 1</span>
+  
+  <span class="c1">// Set NAO low to enable next chip</span>
+  <span class="kt">bool</span> <span class="n">nao_state</span><span class="p">;</span>
+  <span class="n">uart</span><span class="p">.</span><span class="n">GetNaoPin</span><span class="p">(</span><span class="n">nao_state</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">nao_state</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Read NAO from chip 1, connect to NAI of chip 2</span>
+    <span class="c1">// In hardware: chip1.NAO -&gt; chip2.NAI</span>
+    <span class="c1">// Software: Set chip 2's NAI based on chip 1's NAO</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// Second chip: Now responds to address 1</span>
+  <span class="n">uart</span><span class="p">.</span><span class="n">SetSlaveAddress</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="n">driver2</span><span class="p">(</span><span class="n">uart</span><span class="p">);</span>
+  <span class="n">driver2</span><span class="p">.</span><span class="n">communication</span><span class="p">.</span><span class="n">ConfigureSlaveAddress</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// Program to address 2</span>
+  
+  <span class="c1">// Continue for remaining chips...</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="communication-interface-methods">
+  
+  
+    <a href="#communication-interface-methods" class="anchor-heading" aria-labelledby="communication-interface-methods"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Communication Interface Methods
+  
+  
+</h2>
+    
+<h3 id="spi-methods">
+  
+  
+    <a href="#spi-methods" class="anchor-heading" aria-labelledby="spi-methods"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> SPI Methods
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetChipSelect(csn_pin_index, active)</code></td>
+      <td>Set CSN pin state for chip selection</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ReadRegister(address, value, csn_pin_index)</code></td>
+      <td>Read register with optional chip selection</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">WriteRegister(address, value, csn_pin_index)</code></td>
+      <td>Write register with optional chip selection</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="uart-methods">
+  
+  
+    <a href="#uart-methods" class="anchor-heading" aria-labelledby="uart-methods"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> UART Methods
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetSlaveAddress(address)</code></td>
+      <td>Set 7-bit slave address (0-127)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetSlaveAddress()</code></td>
+      <td>Get current slave address</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetNaiPin(active)</code></td>
+      <td>Set NAI pin state for daisy chaining</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetNaoPin(active)</code></td>
+      <td>Read NAO pin state</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigureSlaveAddress(address, send_delay)</code></td>
+      <td>Configure SLAVECONF register</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="best-practices">
+  
+  
+    <a href="#best-practices" class="anchor-heading" aria-labelledby="best-practices"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Best Practices
+  
+  
+</h2>
+    
+
+<ol>
+  <li><strong>SPI Multi-Chip Setup</strong>:
+    <ul>
+      <li>Use separate CSN pins for each chip for better performance and reliability</li>
+      <li>Ensure CSN timing requirements are met (minimum 2*tclk + 10ns)</li>
+      <li>Always deassert CSN after transactions to avoid bus conflicts</li>
+    </ul>
+  </li>
+  <li><strong>UART Multi-Node</strong>:
+    <ul>
+      <li>Set <code class="language-plaintext highlighter-rouge">send_delay</code> &gt; 1 when multiple slaves are present</li>
+      <li>Program addresses sequentially starting from address 0</li>
+      <li>Verify addresses after programming</li>
+    </ul>
+  </li>
+  <li><strong>Error Handling</strong>:
+    <ul>
+      <li>Always check return values from communication methods</li>
+      <li>Implement timeout handling for multi-chip operations</li>
+      <li>Verify chip selection before register access</li>
+    </ul>
+  </li>
+</ol>
+<h2 id="limitations">
+  
+  
+    <a href="#limitations" class="anchor-heading" aria-labelledby="limitations"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Limitations
+  
+  
+</h2>
+    
+
+<ul>
+  <li><strong>SPI</strong>: Each chip requires a separate CSN pin on the MCU</li>
+  <li><strong>UART</strong>: Maximum 255 nodes (7-bit address space)</li>
+  <li><strong>Timing</strong>: Ensure proper timing between chip selection and data transfer</li>
+  <li><strong>Hardware</strong>: NAI/NAO pins require external connections for UART daisy chaining</li>
+</ul><hr />
+
+<p><strong>Navigation</strong>
+⬅️ <a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/">Previous: Advanced Configuration</a> | <a href="/hf-tmc5160-driver/development/docs/troubleshooting/">Next: Troubleshooting ➡️</a> | <a href="/hf-tmc5160-driver/development/docs/">Docs Hub 📚</a></p>
+
+          
+
+          
+            
+          
+        </main>
+        
+
+  <hr>
+  <footer>
+    
+
+    <!-- =============================================================================
+     Custom Footer Content for HardFOC Driver Documentation
+     =============================================================================
+     This footer is displayed at the bottom of every page.
+     ============================================================================= -->
+
+<footer class="site-footer">
+  <div class="site-footer-credits">
+    <p>Built with ❤️ using <a href="https://just-the-docs.github.io/just-the-docs/">Just the Docs</a></p>
+    <p>
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development/blob/main/LICENSE">GPL v3 License</a> • 
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development">View on GitHub</a>
+    </p>
+  </div>
+</footer>
+
+
+
+    
+  </footer>
+
+
+      </div>
+    </div>
+    
+      
+<button id="search-button" class="search-button btn-reset" aria-label="Focus on search">
+  <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+</button>
+
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+</body>
+</html>
+

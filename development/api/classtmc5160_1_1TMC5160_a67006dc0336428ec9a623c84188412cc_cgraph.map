@@ -1,6 +1,6 @@
 <map id="tmc5160::TMC5160::Reset" name="tmc5160::TMC5160::Reset">
 <area shape="rect" id="Node000001" title="Reset the TMC5160 driver." alt="" coords="5,37,199,62"/>
-<area shape="rect" id="Node000002" href="$classtmc5160_1_1CommInterface.html#a2f8127178f5ff374733a0d5d855feba3" title="Write a 32&#45;bit register to the TMC5160." alt="" coords="247,29,435,69"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1CommInterface.html#a3c08161d95e23ba9abf660a98a2546f0" title="Write a 32&#45;bit register to the TMC5160." alt="" coords="247,29,435,69"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,47,233,47,233,52,199,52"/>
 <area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="296,30,294,20,301,10,317,5,341,3,368,6,383,13,381,18,367,11,341,8,318,10,304,15,299,21,302,28"/>
 </map>

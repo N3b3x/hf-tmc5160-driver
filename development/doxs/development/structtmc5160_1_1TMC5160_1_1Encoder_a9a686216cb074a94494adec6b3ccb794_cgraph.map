@@ -1,6 +1,6 @@
 <map id="tmc5160::TMC5160::Encoder::SetResolution" name="tmc5160::TMC5160::Encoder::SetResolution">
 <area shape="rect" id="Node000001" title="Set encoder resolution." alt="" coords="5,29,213,69"/>
-<area shape="rect" id="Node000002" href="$classtmc5160_1_1CommInterface.html#a2f8127178f5ff374733a0d5d855feba3" title="Write a 32&#45;bit register to the TMC5160." alt="" coords="261,29,449,69"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1CommInterface.html#a3c08161d95e23ba9abf660a98a2546f0" title="Write a 32&#45;bit register to the TMC5160." alt="" coords="261,29,449,69"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="214,47,248,47,248,52,214,52"/>
 <area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="310,30,307,20,314,10,331,5,355,3,384,6,399,13,397,18,382,11,355,8,332,10,317,15,312,21,315,28"/>
 </map>

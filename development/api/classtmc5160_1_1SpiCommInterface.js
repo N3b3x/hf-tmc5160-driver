@@ -7,7 +7,8 @@ var classtmc5160_1_1SpiCommInterface =
     [ "GetMode", "classtmc5160_1_1SpiCommInterface.html#ae258b33b551a3ee3f58cce4425c8b2a6", null ],
     [ "operator=", "classtmc5160_1_1SpiCommInterface.html#a0823b17b507499702a95de46bf8654e9", null ],
     [ "operator=", "classtmc5160_1_1SpiCommInterface.html#a83b3d561b54c2d506adbdab902d5628a", null ],
-    [ "ReadRegister", "classtmc5160_1_1SpiCommInterface.html#a8e820cc63d01a28383495beca697fafa", null ],
+    [ "ReadRegister", "classtmc5160_1_1SpiCommInterface.html#a7f6dfc07d2092acafd31d75a1a580f73", null ],
+    [ "SetChipSelect", "classtmc5160_1_1SpiCommInterface.html#a304db9bea4b10436ab7bcdbf1afa9635", null ],
     [ "SpiTransfer", "classtmc5160_1_1SpiCommInterface.html#a6f970ddedcc8a0e3202db220f3d3b713", null ],
-    [ "WriteRegister", "classtmc5160_1_1SpiCommInterface.html#a9112ac2388495ac9fd779b2ccd5cf464", null ]
+    [ "WriteRegister", "classtmc5160_1_1SpiCommInterface.html#ac3efc029d4d87218476bce759bfdc65f", null ]
 ];

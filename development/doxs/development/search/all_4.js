@@ -18,7 +18,7 @@ var searchData=
   ['encb_5fdcen_5fcfg4_15',['encb_dcen_cfg4',['../uniontmc5160_1_1IOIN__Register.html#a468052d97271d21ce894b469fbea43e2',1,'tmc5160::IOIN_Register']]],
   ['encmode_16',['ENCMODE',['../namespacetmc5160_1_1Registers.html#ab66c528befe77aa29c93cccbf5615f0f',1,'tmc5160::Registers']]],
   ['encmode_5fregister_17',['ENCMODE_Register',['../uniontmc5160_1_1ENCMODE__Register.html',1,'tmc5160']]],
-  ['encoder_18',['Encoder',['../structtmc5160_1_1TMC5160_1_1Encoder.html',1,'tmc5160::TMC5160&lt; CommType &gt;::Encoder'],['../structtmc5160_1_1TMC5160_1_1Encoder.html#a609d95a260c5f07d88db992ed801a550',1,'tmc5160::TMC5160::Encoder::Encoder()']]],
+  ['encoder_18',['Encoder',['../structtmc5160_1_1TMC5160_1_1Encoder.html',1,'tmc5160::TMC5160&lt; CommType &gt;::Encoder'],['../structtmc5160_1_1TMC5160_1_1Encoder.html#a7917434bc024f8afa474f8687fce4e9b',1,'tmc5160::TMC5160::Encoder::Encoder()']]],
   ['encoder_2ecpp_19',['encoder.cpp',['../encoder_8cpp.html',1,'']]],
   ['encoderconfig_20',['EncoderConfig',['../structtmc5160_1_1EncoderConfig.html',1,'tmc5160::EncoderConfig'],['../structtmc5160_1_1EncoderConfig.html#a343f5a1b92c7d389dfca7a3a379836c8',1,'tmc5160::EncoderConfig::EncoderConfig()']]],
   ['encodersensitivity_21',['EncoderSensitivity',['../namespacetmc5160.html#a4eaf32584629b8ef44ee951e7ebf4916',1,'tmc5160']]],

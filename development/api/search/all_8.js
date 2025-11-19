@@ -1,8 +1,8 @@
 var searchData=
 [
   ['ifcnt_0',['IFCNT',['../namespacetmc5160_1_1Registers.html#aec6f465255df1d3efe68893b9c4d5f3e',1,'tmc5160::Registers']]],
-  ['ignore_5fab_1',['ignore_ab',['../structtmc5160_1_1EncoderConfig.html#a5beb6166a530b4ad376756133ece8350',1,'tmc5160::EncoderConfig']]],
-  ['ignore_5fab_2',['ignore_AB',['../uniontmc5160_1_1ENCMODE__Register.html#a2f13fd5e5e2f611517dcd7c6f12d6288',1,'tmc5160::ENCMODE_Register']]],
+  ['ignore_5fab_1',['ignore_AB',['../uniontmc5160_1_1ENCMODE__Register.html#a2f13fd5e5e2f611517dcd7c6f12d6288',1,'tmc5160::ENCMODE_Register']]],
+  ['ignore_5fab_2',['ignore_ab',['../structtmc5160_1_1EncoderConfig.html#a5beb6166a530b4ad376756133ece8350',1,'tmc5160::EncoderConfig']]],
   ['ihold_3',['ihold',['../uniontmc5160_1_1IHOLD__IRUN__Register.html#a0b23ffa535b67bcdf29b0bc2467ce1bc',1,'tmc5160::IHOLD_IRUN_Register::ihold'],['../structtmc5160_1_1MotorParameters.html#a0c9bd33f076960e2adbc223d6747113e',1,'tmc5160::MotorParameters::ihold']]],
   ['ihold_5firun_4',['IHOLD_IRUN',['../namespacetmc5160_1_1Registers.html#a4be9ec5f992b0991cd00f78c59b1c9e2',1,'tmc5160::Registers']]],
   ['ihold_5firun_5fregister_5',['IHOLD_IRUN_Register',['../uniontmc5160_1_1IHOLD__IRUN__Register.html',1,'tmc5160']]],

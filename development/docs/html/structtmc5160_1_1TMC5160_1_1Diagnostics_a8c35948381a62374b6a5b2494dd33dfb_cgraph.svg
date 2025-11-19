@@ -39,7 +39,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classtmc5160_1_1CommInterface.html#a2f8127178f5ff374733a0d5d855feba3" target="_top" xlink:title="Write a 32&#45;bit register to the TMC5160.">
+<g id="a_Node000003"><a xlink:href="classtmc5160_1_1CommInterface.html#a3c08161d95e23ba9abf660a98a2546f0" target="_top" xlink:title="Write a 32&#45;bit register to the TMC5160.">
 <polygon fill="white" stroke="#666666" points="351,-30 210,-30 210,0 351,0 351,-30"/>
 <text text-anchor="start" x="218" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::CommInterface</text>
 <text text-anchor="middle" x="280.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::WriteRegister</text>

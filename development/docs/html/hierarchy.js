@@ -10,6 +10,7 @@ var hierarchy =
       [ "tmc5160::UartCommInterface< Derived >", "classtmc5160_1_1UartCommInterface.html", null ]
     ] ],
     [ "tmc5160::CommInterface< Esp32SPI >", "classtmc5160_1_1CommInterface.html", null ],
+    [ "tmc5160::TMC5160< CommType >::Communication", "structtmc5160_1_1TMC5160_1_1Communication.html", null ],
     [ "tmc5160::COOLCONF_Register", "uniontmc5160_1_1COOLCONF__Register.html", null ],
     [ "tmc5160::CoolStepConfig", "structtmc5160_1_1CoolStepConfig.html", null ],
     [ "tmc5160::DCCTRL_Register", "uniontmc5160_1_1DCCTRL__Register.html", null ],

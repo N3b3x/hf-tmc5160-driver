@@ -176,7 +176,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
       </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC5160 Driver</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
-      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li></ul></li></ul></li></ul>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li></ul></li></ul></li></ul>
   
 </nav>
 
@@ -766,6 +766,57 @@
     </tr>
   </tbody>
 </table></div>
+<h2 id="communication-subsystem">
+  
+  
+    <a href="#communication-subsystem" class="anchor-heading" aria-labelledby="communication-subsystem"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Communication Subsystem
+  
+  
+</h2>
+    
+
+<p>UART slave addressing and multi-chip communication configuration.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160.hpp</code></a></p>
+<h3 id="methods-4">
+  
+  
+    <a href="#methods-4" class="anchor-heading" aria-labelledby="methods-4"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigureSlaveAddress()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ConfigureSlaveAddress(uint8_t slave_address, uint8_t send_delay = 0) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Configure UART slave address and send delay</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetSlaveAddress()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t GetSlaveAddress() noexcept</code></td>
+      <td>Slave address (0-127) or 0xFF on error</td>
+      <td>Get current slave address from SLAVECONF register</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetSendDelay()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t GetSendDelay() noexcept</code></td>
+      <td>Send delay (0-15) or 0xFF on error</td>
+      <td>Get current send delay from SLAVECONF register</td>
+    </tr>
+  </tbody>
+</table></div>
 <h2 id="protection-subsystem">
   
   
@@ -778,10 +829,10 @@
 <p>Protection and safety features subsystem.</p>
 
 <p><strong>Location</strong>: <a href="../inc/tmc5160.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160.hpp</code></a></p>
-<h3 id="methods-4">
+<h3 id="methods-5">
   
   
-    <a href="#methods-4" class="anchor-heading" aria-labelledby="methods-4"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
+    <a href="#methods-5" class="anchor-heading" aria-labelledby="methods-5"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
   
   
 </h3>
@@ -823,10 +874,10 @@
 <p>Methods available through <code class="language-plaintext highlighter-rouge">GetComm()</code> for direct communication interface access.</p>
 
 <p><strong>Location</strong>: <a href="../inc/tmc5160_comm_interface.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_comm_interface.hpp</code></a></p>
-<h3 id="methods-5">
+<h3 id="methods-6">
   
   
-    <a href="#methods-5" class="anchor-heading" aria-labelledby="methods-5"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
+    <a href="#methods-6" class="anchor-heading" aria-labelledby="methods-6"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
   
   
 </h3>
@@ -850,15 +901,15 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ReadRegister()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ReadRegister(uint8_t address, uint32_t&amp; value) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ReadRegister(uint8_t address, uint32_t&amp; value, uint8_t chip_index = 0) noexcept</code></td>
       <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Read 32-bit register</td>
+      <td>Read 32-bit register with optional chip selection</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">WriteRegister()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool WriteRegister(uint8_t address, uint32_t value) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool WriteRegister(uint8_t address, uint32_t value, uint8_t chip_index = 0) noexcept</code></td>
       <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Write 32-bit register</td>
+      <td>Write 32-bit register with optional chip selection</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GpioSet()</code></td>
@@ -919,6 +970,36 @@
       <td><code class="language-plaintext highlighter-rouge">void LogDebug(int level, const char* tag, const char* format, ...) noexcept</code></td>
       <td>void</td>
       <td>Debug logging</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetChipSelect()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetChipSelect(uint8_t csn_pin_index, bool active) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set CSN pin state for SPI multi-chip setups (SPI only)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetSlaveAddress()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">void SetSlaveAddress(uint8_t address) noexcept</code></td>
+      <td>void</td>
+      <td>Set UART slave address (UART only)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetSlaveAddress()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t GetSlaveAddress() const noexcept</code></td>
+      <td>Slave address (0-127)</td>
+      <td>Get current UART slave address (UART only)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetNaiPin()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetNaiPin(bool active) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set NAI pin state for UART daisy chaining (UART only)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetNaoPin()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool GetNaoPin(bool&amp; active) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Read NAO pin state for UART daisy chaining (UART only)</td>
     </tr>
   </tbody>
 </table></div>

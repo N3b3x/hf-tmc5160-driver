@@ -1,0 +1,25 @@
+<map id="tmc5160::CommInterface::WriteRegister" name="tmc5160::CommInterface::WriteRegister">
+<area shape="rect" id="Node000001" title="Write a 32&#45;bit register to the TMC5160." alt="" coords="295,248,483,288"/>
+<area shape="poly" id="edge12_Node000001_Node000001" title=" " alt="" coords="433,236,418,229,389,227,363,229,348,233,342,239,345,247,340,248,337,238,345,229,362,223,389,221,419,224,435,231"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1TMC5160_1_1Encoder.html#aac326b9ca35afbb82d78f914bdc3684b" title="Clear encoder deviation flag." alt="" coords="22,5,230,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="372,236,352,195,325,147,289,100,245,59,224,48,227,43,248,55,293,96,329,144,357,193,377,234"/>
+<area shape="rect" id="Node000003" href="$structtmc5160_1_1TMC5160_1_1Diagnostics.html#a8c35948381a62374b6a5b2494dd33dfb" title="Configure StallGuard2." alt="" coords="10,69,242,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="363,238,314,179,281,149,245,124,221,112,223,107,248,119,284,145,317,176,367,235"/>
+<area shape="rect" id="Node000004" href="$classtmc5160_1_1TMC5160.html#a67006dc0336428ec9a623c84188412cc" title="Reset the TMC5160 driver." alt="" coords="29,134,223,159"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="352,242,303,206,246,174,207,162,209,157,248,170,306,202,355,237"/>
+<area shape="rect" id="Node000005" href="$structtmc5160_1_1TMC5160_1_1RampControl.html#a74fd41db686650c5178c8f3562051b51" title="Set position comparison register." alt="" coords="5,184,247,224"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="280,253,178,227,179,221,282,248"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="321,247,245,227,246,222,323,241"/>
+<area shape="rect" id="Node000006" href="$structtmc5160_1_1TMC5160_1_1MotorControl.html#a8ade07072feadfed50a097f7f62cbc1a" title="Set motor run and hold current." alt="" coords="5,248,247,288"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="281,271,247,271,247,265,281,265"/>
+<area shape="rect" id="Node000007" href="$structtmc5160_1_1TMC5160_1_1MotorControl.html#aa5d51306b110669ffa7fd80db5a528ab" title="Set mode change speeds." alt="" coords="5,312,247,352"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="293,294,209,315,208,309,292,289"/>
+<area shape="rect" id="Node000008" href="$structtmc5160_1_1TMC5160_1_1RampControl.html#a7094de806ef17e9ffc4a5e427189469d" title="Set the ramp mode." alt="" coords="5,376,247,416"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="354,299,306,334,248,366,217,378,215,373,246,362,303,329,351,294"/>
+<area shape="rect" id="Node000009" href="$structtmc5160_1_1TMC5160_1_1Encoder.html#a9a686216cb074a94494adec6b3ccb794" title="Set encoder resolution." alt="" coords="22,440,230,480"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="370,301,320,367,286,401,248,430,224,442,222,437,245,426,283,397,316,363,366,298"/>
+<area shape="rect" id="Node000010" href="$structtmc5160_1_1TMC5160_1_1RampControl.html#ae3b0affca3ae24ee0007a65fa26acd4f" title="Set target position." alt="" coords="5,504,247,544"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="378,302,359,346,331,398,295,450,248,494,228,506,225,502,245,490,290,446,327,395,355,343,373,300"/>
+<area shape="rect" id="Node000011" href="$structtmc5160_1_1TMC5160_1_1RampControl.html#ad2ad80fe557a2249e54cd9593b68570e" title="Stop the motor." alt="" coords="5,568,247,608"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="383,302,368,358,341,427,302,498,277,530,248,558,230,570,227,565,245,554,273,526,298,495,337,425,363,356,378,301"/>
+</map>

@@ -605,7 +605,6 @@ private:
 
     // Get current position relative to center for cycle counting
     int32_t current_pos = driver_->rampControl.GetCurrentPosition();
-    int32_t current_pos_relative = current_pos - home_position_;
     int32_t target_relative = target - home_position_;
     
     // Cycle counting: one cycle = center → min → max → center (or center → max → min → center)
@@ -674,7 +673,7 @@ private:
     }
 
     // Update target position if it changed significantly
-    int32_t current_pos = driver_->rampControl.GetCurrentPosition();
+    // Reuse current_pos from above (line 607)
     if (abs(target - current_pos) > 10) { // Update threshold: 10 steps
       driver_->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
       driver_->rampControl.SetTargetPosition(target);
@@ -753,7 +752,9 @@ extern "C" void app_main() {
 
   driver.rampControl.SetCurrentPosition(0);
 
-  bool min_found = driver.diagnostics.PerformSensorlessHoming(false, -10, search_speed, min_position);
+  if (!driver.diagnostics.PerformSensorlessHoming(false, -10, search_speed, min_position)) {
+    ESP_LOGW(TAG, "Failed to find minimum bound, using default");
+  }
 
   uint32_t timeout_ms = 30000;
   uint32_t start_time = esp_timer_get_time() / 1000;
@@ -796,7 +797,9 @@ extern "C" void app_main() {
   // Find maximum bound (positive direction)
   ESP_LOGI(TAG, "Finding maximum bound (positive direction)...");
   int32_t max_position = 0;
-  bool max_found = driver.diagnostics.PerformSensorlessHoming(true, -10, search_speed, max_position);
+  if (!driver.diagnostics.PerformSensorlessHoming(true, -10, search_speed, max_position)) {
+    ESP_LOGW(TAG, "Failed to find maximum bound, using default");
+  }
 
   start_time = esp_timer_get_time() / 1000;
   bool stall_detected_max = false;
@@ -900,6 +903,8 @@ extern "C" void app_main() {
   motion.SetTargetCycles(1000);  // Run for 1000 cycles, then stop
 
   ESP_LOGI(TAG, "Fatigue test configured:");
+  float min_deg = 0.0f;
+  float max_deg = 0.0f;
   motion.GetLocalBoundsDegrees(min_deg, max_deg);
   ESP_LOGI(TAG, "  Local bounds: min=%.2f°, max=%.2f°", min_deg, max_deg);
   ESP_LOGI(TAG, "  Frequency: 0.5 Hz");
