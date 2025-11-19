@@ -299,7 +299,7 @@ public:
     }
 
     bool level = SignalToGpioLevel(pin, signal);
-    gpio_set_level(gpio_pin, level ? 1 : 0);
+    gpio_set_level(gpio_pin, static_cast<uint32_t>(level ? 1U : 0U));
     return true;
   }
 
@@ -367,7 +367,7 @@ public:
     }
 
     int level = gpio_get_level(gpio_pin);
-    signal = GpioLevelToSignal(pin, level != 0);
+    signal = GpioLevelToSignal(pin, static_cast<bool>(level != 0));
     return true;
   }
 
@@ -445,23 +445,23 @@ private:
     // Configure output pins (control signals)
     if (pin_config_.en_pin != GPIO_NUM_NC) {
       gpio_set_direction(pin_config_.en_pin, GPIO_MODE_OUTPUT);
-      gpio_set_level(pin_config_.en_pin, 0); // Disable by default
+      gpio_set_level(pin_config_.en_pin, static_cast<uint32_t>(0U)); // Disable by default
     }
     if (pin_config_.dir_pin != GPIO_NUM_NC) {
       gpio_set_direction(pin_config_.dir_pin, GPIO_MODE_OUTPUT);
-      gpio_set_level(pin_config_.dir_pin, 0);
+      gpio_set_level(pin_config_.dir_pin, static_cast<uint32_t>(0U));
     }
     if (pin_config_.step_pin != GPIO_NUM_NC) {
       gpio_set_direction(pin_config_.step_pin, GPIO_MODE_OUTPUT);
-      gpio_set_level(pin_config_.step_pin, 0);
+      gpio_set_level(pin_config_.step_pin, static_cast<uint32_t>(0U));
     }
     if (pin_config_.refl_step_pin != GPIO_NUM_NC) {
       gpio_set_direction(pin_config_.refl_step_pin, GPIO_MODE_OUTPUT);
-      gpio_set_level(pin_config_.refl_step_pin, 0);
+      gpio_set_level(pin_config_.refl_step_pin, static_cast<uint32_t>(0U));
     }
     if (pin_config_.refr_dir_pin != GPIO_NUM_NC) {
       gpio_set_direction(pin_config_.refr_dir_pin, GPIO_MODE_OUTPUT);
-      gpio_set_level(pin_config_.refr_dir_pin, 0);
+      gpio_set_level(pin_config_.refr_dir_pin, static_cast<uint32_t>(0U));
     }
     if (pin_config_.enca_pin != GPIO_NUM_NC) {
       gpio_set_direction(pin_config_.enca_pin, GPIO_MODE_OUTPUT);
@@ -474,11 +474,11 @@ private:
     }
     if (pin_config_.sd_mode_pin != GPIO_NUM_NC) {
       gpio_set_direction(pin_config_.sd_mode_pin, GPIO_MODE_OUTPUT);
-      gpio_set_level(pin_config_.sd_mode_pin, 0); // Default: internal motion controller
+      gpio_set_level(pin_config_.sd_mode_pin, static_cast<uint32_t>(0U)); // Default: internal motion controller
     }
     if (pin_config_.spi_mode_pin != GPIO_NUM_NC) {
       gpio_set_direction(pin_config_.spi_mode_pin, GPIO_MODE_OUTPUT);
-      gpio_set_level(pin_config_.spi_mode_pin, 1); // Default: SPI mode
+      gpio_set_level(pin_config_.spi_mode_pin, static_cast<uint32_t>(1U)); // Default: SPI mode
     }
     if (pin_config_.clk_pin != GPIO_NUM_NC) {
       gpio_set_direction(pin_config_.clk_pin, GPIO_MODE_OUTPUT);
@@ -486,7 +486,7 @@ private:
     }
     if (pin_config_.drv_enn_pin != GPIO_NUM_NC) {
       gpio_set_direction(pin_config_.drv_enn_pin, GPIO_MODE_OUTPUT);
-      gpio_set_level(pin_config_.drv_enn_pin, 1); // Active low, so set high to disable initially
+      gpio_set_level(pin_config_.drv_enn_pin, static_cast<uint32_t>(1U)); // Active low, so set high to disable initially
     }
 
     // Configure input pins (diagnostic/status signals)

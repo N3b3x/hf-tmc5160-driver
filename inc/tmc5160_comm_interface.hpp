@@ -207,15 +207,16 @@ public:
                 bool step_active_level) noexcept
       : pinActiveLevels_{} {
     // Initialize all pins to HIGH active by default
-    for (size_t i = 0; i < sizeof(pinActiveLevels_) / sizeof(pinActiveLevels_[0]); ++i) {
+    constexpr size_t array_size = sizeof(pinActiveLevels_) / sizeof(pinActiveLevels_[0]);
+    for (size_t i = 0; i < array_size; ++i) {
       pinActiveLevels_[i] = true; // Default: active high
     }
     // Set the three basic pins
-    pinActiveLevels_[static_cast<int>(TMC5160CtrlPin::EN)] = en_active_level;
-    pinActiveLevels_[static_cast<int>(TMC5160CtrlPin::DIR)] = dir_active_level;
-    pinActiveLevels_[static_cast<int>(TMC5160CtrlPin::STEP)] = step_active_level;
+    pinActiveLevels_[static_cast<size_t>(TMC5160CtrlPin::EN)] = en_active_level;
+    pinActiveLevels_[static_cast<size_t>(TMC5160CtrlPin::DIR)] = dir_active_level;
+    pinActiveLevels_[static_cast<size_t>(TMC5160CtrlPin::STEP)] = step_active_level;
     // Set defaults for pins that are typically active-low
-    pinActiveLevels_[static_cast<int>(TMC5160CtrlPin::DRV_ENN)] = false; // Active low
+    pinActiveLevels_[static_cast<size_t>(TMC5160CtrlPin::DRV_ENN)] = false; // Active low
   }
 
   /**
@@ -279,8 +280,9 @@ public:
    * @return Physical GPIO level (true=HIGH, false=LOW)
    */
   bool SignalToGpioLevel(TMC5160CtrlPin pin, GpioSignal signal) const noexcept {
-    int pin_index = static_cast<int>(pin);
-    if (pin_index < 0 || pin_index >= static_cast<int>(sizeof(pinActiveLevels_) / sizeof(pinActiveLevels_[0]))) {
+    constexpr size_t array_size = sizeof(pinActiveLevels_) / sizeof(pinActiveLevels_[0]);
+    size_t pin_index = static_cast<size_t>(pin);
+    if (pin_index >= array_size) {
       return false; // Invalid pin, default to LOW
     }
     bool active_level = pinActiveLevels_[pin_index];
@@ -295,8 +297,9 @@ public:
    */
   GpioSignal GpioLevelToSignal(TMC5160CtrlPin pin,
                                bool gpio_level) const noexcept {
-    int pin_index = static_cast<int>(pin);
-    if (pin_index < 0 || pin_index >= static_cast<int>(sizeof(pinActiveLevels_) / sizeof(pinActiveLevels_[0]))) {
+    constexpr size_t array_size = sizeof(pinActiveLevels_) / sizeof(pinActiveLevels_[0]);
+    size_t pin_index = static_cast<size_t>(pin);
+    if (pin_index >= array_size) {
       return GpioSignal::INACTIVE; // Invalid pin, default to INACTIVE
     }
     bool active_level = pinActiveLevels_[pin_index];
@@ -329,7 +332,12 @@ public:
    * @return true if the configuration was successful, false otherwise
    */
   bool SetPinActiveLevel(TMC5160CtrlPin pin, bool active_level) noexcept {
-    pinActiveLevels_[static_cast<int>(pin)] = active_level;
+    constexpr size_t array_size = sizeof(pinActiveLevels_) / sizeof(pinActiveLevels_[0]);
+    size_t pin_index = static_cast<size_t>(pin);
+    if (pin_index >= array_size) {
+      return false; // Invalid pin index
+    }
+    pinActiveLevels_[pin_index] = active_level;
     return true;
   }
 
