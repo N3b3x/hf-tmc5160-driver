@@ -1,5 +1,5 @@
-warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.fJuZRk
-warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.fJuZRk' has become obsolete.
+warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.g06pz9
+warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.g06pz9' has become obsolete.
          To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
 Doxygen version used: 1.10.0 (ebc57c6dd303a980bd19dd74b8b61c8f3f5180ca)
 Searching for include files...
@@ -401,112 +401,7 @@ finalizing index lists...
 writing tag file...
 Running plantuml with JAVA...
 Running dot...
-Generating dot graphs using 5 parallel threads...
-Running dot for graph 1/45
-Running dot for graph 2/45
-Running dot for graph 3/45
-Running dot for graph 4/45
-Running dot for graph 5/45
-Running dot for graph 6/45
-Running dot for graph 7/45
-Running dot for graph 8/45
-Running dot for graph 9/45
-Running dot for graph 10/45
-Running dot for graph 11/45
-Running dot for graph 12/45
-Running dot for graph 13/45
-Running dot for graph 14/45
-Running dot for graph 15/45
-Running dot for graph 16/45
-Running dot for graph 17/45
-Running dot for graph 18/45
-Running dot for graph 19/45
-Running dot for graph 20/45
-Running dot for graph 21/45
-Running dot for graph 22/45
-Running dot for graph 23/45
-Running dot for graph 24/45
-Running dot for graph 25/45
-Running dot for graph 26/45
-Running dot for graph 27/45
-Running dot for graph 28/45
-Running dot for graph 29/45
-Running dot for graph 30/45
-Running dot for graph 31/45
-Running dot for graph 32/45
-Running dot for graph 33/45
-Running dot for graph 34/45
-Running dot for graph 35/45
-Running dot for graph 36/45
-Running dot for graph 37/45
-Running dot for graph 38/45
-Running dot for graph 39/45
-Running dot for graph 40/45
-Running dot for graph 41/45
-Running dot for graph 42/45
-Running dot for graph 43/45
-Running dot for graph 44/45
-Running dot for graph 45/45
-Patching output file 1/60
-Patching output file 2/60
-Patching output file 3/60
-Patching output file 4/60
-Patching output file 5/60
-Patching output file 6/60
-Patching output file 7/60
-Patching output file 8/60
-Patching output file 9/60
-Patching output file 10/60
-Patching output file 11/60
-Patching output file 12/60
-Patching output file 13/60
-Patching output file 14/60
-Patching output file 15/60
-Patching output file 16/60
-Patching output file 17/60
-Patching output file 18/60
-Patching output file 19/60
-Patching output file 20/60
-Patching output file 21/60
-Patching output file 22/60
-Patching output file 23/60
-Patching output file 24/60
-Patching output file 25/60
-Patching output file 26/60
-Patching output file 27/60
-Patching output file 28/60
-Patching output file 29/60
-Patching output file 30/60
-Patching output file 31/60
-Patching output file 32/60
-Patching output file 33/60
-Patching output file 34/60
-Patching output file 35/60
-Patching output file 36/60
-Patching output file 37/60
-Patching output file 38/60
-Patching output file 39/60
-Patching output file 40/60
-Patching output file 41/60
-Patching output file 42/60
-Patching output file 43/60
-Patching output file 44/60
-Patching output file 45/60
-Patching output file 46/60
-Patching output file 47/60
-Patching output file 48/60
-Patching output file 49/60
-Patching output file 50/60
-Patching output file 51/60
-Patching output file 52/60
-Patching output file 53/60
-Patching output file 54/60
-Patching output file 55/60
-Patching output file 56/60
-Patching output file 57/60
-Patching output file 58/60
-Patching output file 59/60
-Patching output file 60/60
+Patching output file 1/1
 type lookup cache used 2384/65536 hits=8162 misses=2473
 symbol lookup cache used 1534/65536 hits=4535 misses=1534
 finished...
