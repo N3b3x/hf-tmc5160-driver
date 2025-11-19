@@ -95,11 +95,39 @@ enum class CommMode {
  *
  * These pin identifiers abstract the physical pin assignments to provide
  * a consistent interface regardless of board implementation.
+ *
+ * All pins are optional - implementations should gracefully handle cases
+ * where pins are not connected (e.g., return false from GpioSet/GpioRead
+ * if pin is not configured).
  */
 enum class TMC5160CtrlPin {
-  EN,  ///< Enable pin - Enables/disables motor driver outputs
-  DIR, ///< Direction pin - Sets motor rotation direction
-  STEP ///< Step pin - Step pulse input for external step/dir mode
+  // Basic control pins (commonly used)
+  EN,   ///< Enable pin - Enables/disables motor driver outputs (DRV_ENN, Pin 28)
+  DIR,  ///< Direction pin - Sets motor rotation direction (REFR_DIR, Pin 18 when SD_MODE=1)
+  STEP, ///< Step pin - Step pulse input for external step/dir mode (REFL_STEP, Pin 17 when SD_MODE=1)
+
+  // Reference switch pins (when SD_MODE=0, internal ramp generator mode)
+  REFL_STEP, ///< Left reference switch input OR STEP input when SD_MODE=1 (Pin 17)
+  REFR_DIR,  ///< Right reference switch input OR DIR input when SD_MODE=1 (Pin 18)
+
+  // Encoder interface pins (optional)
+  ENCA_DCIN_CFG5, ///< Encoder A input (SD_MODE=0) OR DcStep gating input (SD_MODE=1, SPI_MODE=1) (Pin 24)
+  ENCB_DCEN_CFG4, ///< Encoder B input (SD_MODE=0) OR DcStep enable input (Pin 23)
+  ENCN_DCO_CFG6,  ///< Encoder N input (SD_MODE=0) OR DcStep ready output (SD_MODE=1) (Pin 25)
+
+  // Diagnostic/interrupt output pins (open-drain, need pull-ups)
+  DIAG0_SWN, ///< DIAG0 output / Interrupt / STEP output / Single-wire UART negative (Pin 26)
+  DIAG1_SWP, ///< DIAG1 output / Position-compare / DIR output / Single-wire UART positive (Pin 27)
+
+  // Mode selection pins
+  SD_MODE,   ///< Mode select: Low=Internal motion controller, High=Step/Dir (Pin 21)
+  SPI_MODE,  ///< SPI/CFG/UART mode select: Low=standalone/CFG/UART, High=SPI (Pin 22)
+
+  // Clock input
+  CLK, ///< External clock input (12-16 MHz) or tie to GND for internal clock (Pin 12)
+
+  // Driver enable (hardware kill signal)
+  DRV_ENN ///< Active-low driver enable - High=outputs disabled (Pin 28, same as EN but hardware-level)
 };
 
 /**
@@ -170,10 +198,24 @@ public:
    * (true=HIGH, false=LOW)
    * @param step_active_level Physical GPIO level for STEP pin when ACTIVE
    * (true=HIGH, false=LOW)
+   *
+   * Note: Additional pins can have their active levels configured using
+   * SetPinActiveLevel() after construction. Default active levels for
+   * other pins are set to HIGH (true).
    */
   CommInterface(bool en_active_level, bool dir_active_level,
                 bool step_active_level) noexcept
-      : pinActiveLevels_{en_active_level, dir_active_level, step_active_level} {
+      : pinActiveLevels_{} {
+    // Initialize all pins to HIGH active by default
+    for (size_t i = 0; i < sizeof(pinActiveLevels_) / sizeof(pinActiveLevels_[0]); ++i) {
+      pinActiveLevels_[i] = true; // Default: active high
+    }
+    // Set the three basic pins
+    pinActiveLevels_[static_cast<int>(TMC5160CtrlPin::EN)] = en_active_level;
+    pinActiveLevels_[static_cast<int>(TMC5160CtrlPin::DIR)] = dir_active_level;
+    pinActiveLevels_[static_cast<int>(TMC5160CtrlPin::STEP)] = step_active_level;
+    // Set defaults for pins that are typically active-low
+    pinActiveLevels_[static_cast<int>(TMC5160CtrlPin::DRV_ENN)] = false; // Active low
   }
 
   /**
@@ -237,7 +279,11 @@ public:
    * @return Physical GPIO level (true=HIGH, false=LOW)
    */
   bool SignalToGpioLevel(TMC5160CtrlPin pin, GpioSignal signal) const noexcept {
-    bool active_level = pinActiveLevels_[static_cast<int>(pin)];
+    int pin_index = static_cast<int>(pin);
+    if (pin_index < 0 || pin_index >= static_cast<int>(sizeof(pinActiveLevels_) / sizeof(pinActiveLevels_[0]))) {
+      return false; // Invalid pin, default to LOW
+    }
+    bool active_level = pinActiveLevels_[pin_index];
     return (signal == GpioSignal::ACTIVE) ? active_level : !active_level;
   }
 
@@ -249,7 +295,11 @@ public:
    */
   GpioSignal GpioLevelToSignal(TMC5160CtrlPin pin,
                                bool gpio_level) const noexcept {
-    bool active_level = pinActiveLevels_[static_cast<int>(pin)];
+    int pin_index = static_cast<int>(pin);
+    if (pin_index < 0 || pin_index >= static_cast<int>(sizeof(pinActiveLevels_) / sizeof(pinActiveLevels_[0]))) {
+      return GpioSignal::INACTIVE; // Invalid pin, default to INACTIVE
+    }
+    bool active_level = pinActiveLevels_[pin_index];
     return (gpio_level == active_level) ? GpioSignal::ACTIVE
                                         : GpioSignal::INACTIVE;
   }
@@ -290,9 +340,10 @@ protected:
    * Stores the physical GPIO level (HIGH or LOW) that corresponds to the
    * ACTIVE state for each TMC5160 control pin.
    *
-   * Array indices: [EN, DIR, STEP]
+   * Array size accommodates all TMC5160CtrlPin enum values.
+   * Default: most pins are active-high, except DRV_ENN which is active-low.
    */
-  bool pinActiveLevels_[3];
+  bool pinActiveLevels_[16]; // Sufficient for all TMC5160CtrlPin values
 
   /**
    * @brief Debug logging function for detailed debugging information
