@@ -239,6 +239,27 @@ public:
    */
   void DelayUs(uint32_t us) noexcept { esp_rom_delay_us(us); }
 
+  /**
+   * @brief Set chip select (CSN) pin state for daisy chaining
+   * @param csn_pin_index Index of the CSN pin (0-based) for multi-chip setups
+   * @param active true to assert CSN (active low), false to deassert
+   * @return true if CSN was set successfully
+   *
+   * For single-chip setups (index 0), CSN is handled by hardware SPI driver.
+   * For multi-chip setups, override this method to control additional CSN pins.
+   */
+  bool SetChipSelect(uint8_t csn_pin_index, bool active) noexcept {
+    // Single-chip operation: CSN handled by ESP-IDF SPI driver
+    if (csn_pin_index == 0) {
+      return true;
+    }
+    // Multi-chip: would need additional CSN pins - not implemented by default
+    ESP_LOGW(BUS_TAG, "Multi-chip CSN control not implemented for index %u",
+             csn_pin_index);
+    return false;
+  }
+
+
 private:
   spi_host_device_t host_;
   gpio_num_t mosi_pin_;

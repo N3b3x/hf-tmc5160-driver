@@ -175,13 +175,11 @@ public:
    * velocity control, and hold modes.
    */
   struct RampControl {
-    TMC5160 *driver_; ///< Pointer to parent driver instance
-
     /**
      * @brief Construct ramp control subsystem
-     * @param driver Pointer to parent TMC5160 driver instance
+     * @param driver Reference to parent TMC5160 driver instance
      */
-    explicit RampControl(TMC5160 *driver) noexcept : driver_(driver) {}
+    explicit RampControl(TMC5160 &driver) noexcept : driver_(driver) {}
 
     /**
      * @brief Set the ramp mode
@@ -311,7 +309,10 @@ public:
      * When XACTUAL equals X_COMPARE, the position pulse output becomes high.
      */
     bool SetComparePosition(int32_t position) noexcept;
-  } rampControl{this};
+
+  private:
+    TMC5160 &driver_; ///< Reference to parent driver instance
+  } rampControl{*this};
 
   /**
    * @brief Motor control subsystem
@@ -321,13 +322,11 @@ public:
    * and stealthChop operation.
    */
   struct MotorControl {
-    TMC5160 *driver_; ///< Pointer to parent driver instance
-
     /**
      * @brief Construct motor control subsystem
-     * @param driver Pointer to parent TMC5160 driver instance
+     * @param driver Reference to parent TMC5160 driver instance
      */
-    explicit MotorControl(TMC5160 *driver) noexcept : driver_(driver) {}
+    explicit MotorControl(TMC5160 &driver) noexcept : driver_(driver) {}
 
     /**
      * @brief Enable the motor driver
@@ -446,7 +445,49 @@ public:
      */
     bool SetupMotorFromSpec(const MotorSpec &motor_spec,
                             const MechanicalSystem *mechanical_system = nullptr) noexcept;
-  } motorControl{this};
+
+  private:
+    TMC5160 &driver_; ///< Reference to parent driver instance
+  } motorControl{*this};
+
+  /**
+   * @brief Communication subsystem
+   * @ingroup TMC5160_Subsystems
+   *
+   * Provides methods for configuring UART slave addressing and multi-chip setups.
+   */
+  struct Communication {
+    /**
+     * @brief Construct communication subsystem
+     * @param driver Reference to parent TMC5160 driver instance
+     */
+    explicit Communication(TMC5160 &driver) noexcept : driver_(driver) {}
+
+    /**
+     * @brief Configure UART slave address and send delay
+     * @param slave_address 7-bit slave address (0-127)
+     * @param send_delay Number of bit times before replying to register read
+     *                   (0-15, set >1 with multiple slaves)
+     * @return true if configured successfully, false otherwise
+     */
+    bool ConfigureSlaveAddress(uint8_t slave_address,
+                               uint8_t send_delay = 0) noexcept;
+
+    /**
+     * @brief Get current slave address from SLAVECONF register
+     * @return Slave address (0-127), or 0xFF on error
+     */
+    uint8_t GetSlaveAddress() noexcept;
+
+    /**
+     * @brief Get current send delay from SLAVECONF register
+     * @return Send delay (0-15), or 0xFF on error
+     */
+    uint8_t GetSendDelay() noexcept;
+
+  private:
+    TMC5160 &driver_; ///< Reference to parent driver instance
+  } communication{*this};
 
   /**
    * @brief Encoder subsystem
@@ -455,13 +496,11 @@ public:
    * Provides methods for encoder configuration and reading encoder position.
    */
   struct Encoder {
-    TMC5160 *driver_; ///< Pointer to parent driver instance
-
     /**
      * @brief Construct encoder subsystem
-     * @param driver Pointer to parent TMC5160 driver instance
+     * @param driver Reference to parent TMC5160 driver instance
      */
-    explicit Encoder(TMC5160 *driver) noexcept : driver_(driver) {}
+    explicit Encoder(TMC5160 &driver) noexcept : driver_(driver) {}
 
     /**
      * @brief Configure encoder settings
@@ -504,7 +543,10 @@ public:
      * @return true if cleared successfully, false otherwise
      */
     bool ClearDeviationFlag() noexcept;
-  } encoder{this};
+
+  private:
+    TMC5160 &driver_; ///< Reference to parent driver instance
+  } encoder{*this};
 
   /**
    * @brief Diagnostics subsystem
@@ -514,13 +556,11 @@ public:
    * detection.
    */
   struct Diagnostics {
-    TMC5160 *driver_; ///< Pointer to parent driver instance
-
     /**
      * @brief Construct diagnostics subsystem
-     * @param driver Pointer to parent TMC5160 driver instance
+     * @param driver Reference to parent TMC5160 driver instance
      */
-    explicit Diagnostics(TMC5160 *driver) noexcept : driver_(driver) {}
+    explicit Diagnostics(TMC5160 &driver) noexcept : driver_(driver) {}
 
     /**
      * @brief Get driver status
@@ -576,7 +616,10 @@ public:
     bool PerformSensorlessHoming(bool direction, int8_t stall_threshold,
                                   float search_speed,
                                   int32_t &final_position) noexcept;
-  } diagnostics{this};
+
+  private:
+    TMC5160 &driver_; ///< Reference to parent driver instance
+  } diagnostics{*this};
 
   /**
    * @brief Protection subsystem
@@ -586,13 +629,11 @@ public:
    * detection and overtemperature protection.
    */
   struct Protection {
-    TMC5160 *driver_; ///< Pointer to parent driver instance
-
     /**
      * @brief Construct protection subsystem
-     * @param driver Pointer to parent TMC5160 driver instance
+     * @param driver Reference to parent TMC5160 driver instance
      */
-    explicit Protection(TMC5160 *driver) noexcept : driver_(driver) {}
+    explicit Protection(TMC5160 &driver) noexcept : driver_(driver) {}
 
     /**
      * @brief Configure short protection levels
@@ -612,7 +653,10 @@ public:
     bool SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level,
                                   uint8_t shortfilter,
                                   uint8_t shortdelay) noexcept;
-  } protection{this};
+
+  private:
+    TMC5160 &driver_; ///< Reference to parent driver instance
+  } protection{*this};
 
   // @}
 

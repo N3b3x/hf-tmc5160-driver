@@ -128,6 +128,20 @@ Driver status monitoring and diagnostics subsystem.
 | `GetLostSteps()` | `uint32_t GetLostSteps() noexcept` | Lost steps count (0 on error) | Get lost steps counter (dcStep mode only) |
 | `PerformSensorlessHoming()` | `bool PerformSensorlessHoming(bool direction, int8_t stall_threshold, float search_speed, int32_t& final_position) noexcept` | `true` on success | Perform sensorless homing using StallGuard2 |
 
+## Communication Subsystem
+
+UART slave addressing and multi-chip communication configuration.
+
+**Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+
+### Methods
+
+| Method | Signature | Returns | Description |
+|--------|-----------|---------|-------------|
+| `ConfigureSlaveAddress()` | `bool ConfigureSlaveAddress(uint8_t slave_address, uint8_t send_delay = 0) noexcept` | `true` on success | Configure UART slave address and send delay |
+| `GetSlaveAddress()` | `uint8_t GetSlaveAddress() noexcept` | Slave address (0-127) or 0xFF on error | Get current slave address from SLAVECONF register |
+| `GetSendDelay()` | `uint8_t GetSendDelay() noexcept` | Send delay (0-15) or 0xFF on error | Get current send delay from SLAVECONF register |
+
 ## Protection Subsystem
 
 Protection and safety features subsystem.
@@ -152,8 +166,8 @@ Methods available through `GetComm()` for direct communication interface access.
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
 | `GetMode()` | `CommMode GetMode() const noexcept` | CommMode enum | Get communication mode (SPI or UART) |
-| `ReadRegister()` | `bool ReadRegister(uint8_t address, uint32_t& value) noexcept` | `true` on success | Read 32-bit register |
-| `WriteRegister()` | `bool WriteRegister(uint8_t address, uint32_t value) noexcept` | `true` on success | Write 32-bit register |
+| `ReadRegister()` | `bool ReadRegister(uint8_t address, uint32_t& value, uint8_t chip_index = 0) noexcept` | `true` on success | Read 32-bit register with optional chip selection |
+| `WriteRegister()` | `bool WriteRegister(uint8_t address, uint32_t value, uint8_t chip_index = 0) noexcept` | `true` on success | Write 32-bit register with optional chip selection |
 | `GpioSet()` | `bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) noexcept` | `true` on success | Set GPIO pin state |
 | `GpioRead()` | `bool GpioRead(TMC5160CtrlPin pin, GpioSignal& signal) noexcept` | `true` on success | Read GPIO pin state |
 | `GpioSetActive()` | `bool GpioSetActive(TMC5160CtrlPin pin) noexcept` | `true` on success | Set GPIO pin to active state |
@@ -164,6 +178,11 @@ Methods available through `GetComm()` for direct communication interface access.
 | `DelayMs()` | `void DelayMs(uint32_t ms) noexcept` | void | Delay milliseconds |
 | `DelayUs()` | `void DelayUs(uint32_t us) noexcept` | void | Delay microseconds |
 | `LogDebug()` | `void LogDebug(int level, const char* tag, const char* format, ...) noexcept` | void | Debug logging |
+| `SetChipSelect()` | `bool SetChipSelect(uint8_t csn_pin_index, bool active) noexcept` | `true` on success | Set CSN pin state for SPI multi-chip setups (SPI only) |
+| `SetSlaveAddress()` | `void SetSlaveAddress(uint8_t address) noexcept` | void | Set UART slave address (UART only) |
+| `GetSlaveAddress()` | `uint8_t GetSlaveAddress() const noexcept` | Slave address (0-127) | Get current UART slave address (UART only) |
+| `SetNaiPin()` | `bool SetNaiPin(bool active) noexcept` | `true` on success | Set NAI pin state for UART daisy chaining (UART only) |
+| `GetNaoPin()` | `bool GetNaoPin(bool& active) noexcept` | `true` on success | Read NAO pin state for UART daisy chaining (UART only) |
 
 ## Enums
 

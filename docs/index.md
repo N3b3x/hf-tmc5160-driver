@@ -36,6 +36,7 @@ Welcome! This directory contains step-by-step guides for installing, building, a
 9. **[⚙️ Motor Setup from Specifications](special_features_motor_setup.md)** – High-level motor configuration from physical parameters
 10. **[🏠 Sensorless Homing](special_features_sensorless_homing.md)** – Homing without endstops using StallGuard2
 11. **[🔧 Advanced Configuration](special_features_advanced_configuration.md)** – CoolStep, dcStep, freewheeling, and more
+12. **[🔗 Multi-Chip Communication](special_features_multi_chip.md)** – SPI daisy chaining and UART multi-node addressing
 
 ### **Troubleshooting**
 

@@ -188,20 +188,26 @@ public:
    * @brief Read a 32-bit register from the TMC5160
    * @param address Register address (0x00-0x73)
    * @param value Reference to store the read value
+   * @param chip_index Optional chip index for multi-chip setups (default: 0)
    * @return true if read succeeded, false otherwise
    */
-  bool ReadRegister(uint8_t address, uint32_t &value) noexcept {
-    return static_cast<Derived *>(this)->ReadRegister(address, value);
+  bool ReadRegister(uint8_t address, uint32_t &value,
+                    uint8_t chip_index = 0) noexcept {
+    return static_cast<Derived *>(this)->ReadRegister(address, value,
+                                                       chip_index);
   }
 
   /**
    * @brief Write a 32-bit register to the TMC5160
    * @param address Register address (0x00-0x73)
    * @param value 32-bit value to write
+   * @param chip_index Optional chip index for multi-chip setups (default: 0)
    * @return true if write succeeded, false otherwise
    */
-  bool WriteRegister(uint8_t address, uint32_t value) noexcept {
-    return static_cast<Derived *>(this)->WriteRegister(address, value);
+  bool WriteRegister(uint8_t address, uint32_t value,
+                     uint8_t chip_index = 0) noexcept {
+    return static_cast<Derived *>(this)->WriteRegister(address, value,
+                                                       chip_index);
   }
 
   /**
@@ -436,12 +442,38 @@ public:
   }
 
   /**
-   * @brief Read a 32-bit register via SPI
+   * @brief Set chip select (CSN) pin state for daisy chaining
+   * @param csn_pin_index Index of the CSN pin (0-based) for multi-chip setups
+   * @param active true to assert CSN (active low), false to deassert
+   * @return true if CSN was set successfully
+   *
+   * For multi-chip SPI setups, this allows selecting which TMC5160 chip
+   * to communicate with. The default implementation assumes single-chip
+   * operation (index 0). Override in derived class for multi-chip support.
+   */
+  bool SetChipSelect(uint8_t csn_pin_index, bool active) noexcept {
+    // Default: single-chip operation, ignore chip index
+    if (csn_pin_index == 0) {
+      return true; // Single chip, CSN handled by hardware
+    }
+    // Multi-chip: delegate to derived class
+    return static_cast<Derived *>(this)->SetChipSelect(csn_pin_index, active);
+  }
+
+  /**
+   * @brief Read a 32-bit register via SPI with optional chip selection
    * @param address Register address (0x00-0x73)
    * @param value Reference to store the read value
+   * @param csn_pin_index Optional chip select index for daisy chaining (default: 0)
    * @return true if read succeeded, false otherwise
    */
-  bool ReadRegister(uint8_t address, uint32_t &value) noexcept {
+  bool ReadRegister(uint8_t address, uint32_t &value,
+                    uint8_t csn_pin_index = 0) noexcept {
+    // Select chip if multi-chip setup
+    if (csn_pin_index > 0) {
+      SetChipSelect(csn_pin_index, true); // Assert CSN
+    }
+
     std::array<uint8_t, 8> tx_buf{};
     std::array<uint8_t, 8> rx_buf{};
 
@@ -453,11 +485,14 @@ public:
 
     TMC5160_LOG_DEBUG(
         *static_cast<Derived *>(this), 3, "SPI",
-        "Read register 0x%02X: TX %02X %02X %02X %02X %02X %02X %02X %02X",
-        address, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4],
-        tx_buf[5], tx_buf[6], tx_buf[7]);
+        "Read register 0x%02X (CSN=%u): TX %02X %02X %02X %02X %02X %02X %02X %02X",
+        address, csn_pin_index, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3],
+        tx_buf[4], tx_buf[5], tx_buf[6], tx_buf[7]);
 
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), 8)) {
+      if (csn_pin_index > 0) {
+        SetChipSelect(csn_pin_index, false); // Deassert CSN on error
+      }
       return false;
     }
 
@@ -467,7 +502,15 @@ public:
 
     // Second transaction: Send address again, receive actual data
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), 8)) {
+      if (csn_pin_index > 0) {
+        SetChipSelect(csn_pin_index, false); // Deassert CSN on error
+      }
       return false;
+    }
+
+    // Deassert CSN if multi-chip setup
+    if (csn_pin_index > 0) {
+      SetChipSelect(csn_pin_index, false);
     }
 
     TMC5160_LOG_DEBUG(
@@ -486,16 +529,23 @@ public:
   }
 
   /**
-   * @brief Write a 32-bit register via SPI
+   * @brief Write a 32-bit register via SPI with optional chip selection
    * @param address Register address (0x00-0x73)
    * @param value 32-bit value to write
+   * @param csn_pin_index Optional chip select index for daisy chaining (default: 0)
    * @return true if write succeeded, false otherwise
    */
-  bool WriteRegister(uint8_t address, uint32_t value) noexcept {
+  bool WriteRegister(uint8_t address, uint32_t value,
+                     uint8_t csn_pin_index = 0) noexcept {
+    // Select chip if multi-chip setup
+    if (csn_pin_index > 0) {
+      SetChipSelect(csn_pin_index, true); // Assert CSN
+    }
+
     std::array<uint8_t, 8> tx_buf{};
     std::array<uint8_t, 8> rx_buf{};
 
-    // SPI write: address | 0x80, then 4 bytes of data
+    // First transaction: Send write command, receive dummy/previous data
     tx_buf[0] = (address & 0x7F) | 0x80; // Set write bit
     tx_buf[1] = static_cast<uint8_t>((value >> 24) & 0xFF);
     tx_buf[2] = static_cast<uint8_t>((value >> 16) & 0xFF);
@@ -506,18 +556,52 @@ public:
     }
 
     TMC5160_LOG_DEBUG(*static_cast<Derived *>(this), 3, "SPI",
-                      "Write register 0x%02X = 0x%08X: TX %02X %02X %02X %02X "
+                      "Write register 0x%02X = 0x%08X (CSN=%u): TX %02X %02X %02X %02X "
                       "%02X %02X %02X %02X",
-                      address, value, tx_buf[0], tx_buf[1], tx_buf[2],
-                      tx_buf[3], tx_buf[4], tx_buf[5], tx_buf[6], tx_buf[7]);
+                      address, value, csn_pin_index, tx_buf[0], tx_buf[1],
+                      tx_buf[2], tx_buf[3], tx_buf[4], tx_buf[5], tx_buf[6],
+                      tx_buf[7]);
 
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), 8)) {
+      if (csn_pin_index > 0) {
+        SetChipSelect(csn_pin_index, false); // Deassert CSN on error
+      }
       return false;
     }
 
     TMC5160_LOG_DEBUG(
         *static_cast<Derived *>(this), 3, "SPI",
-        "Write register 0x%02X: RX %02X %02X %02X %02X %02X %02X %02X %02X",
+        "Write register 0x%02X (TX1): RX %02X %02X %02X %02X %02X %02X %02X %02X",
+        address, rx_buf[0], rx_buf[1], rx_buf[2], rx_buf[3], rx_buf[4],
+        rx_buf[5], rx_buf[6], rx_buf[7]);
+
+    // Minimum CSN high time: 2*tclk + 10ns (typically ~176ns with 12MHz clock)
+    // Use 1us delay for safety
+    this->DelayUs(1);
+
+    // Second transaction: Send dummy read to receive write confirmation/status
+    // The response from the second transaction contains the status/confirmation
+    // for the write command sent in the first transaction
+    tx_buf[0] = address & 0x7F; // Read address (clear write bit)
+    for (size_t i = 1; i < 8; ++i) {
+      tx_buf[i] = 0x00;
+    }
+
+    if (!SpiTransfer(tx_buf.data(), rx_buf.data(), 8)) {
+      if (csn_pin_index > 0) {
+        SetChipSelect(csn_pin_index, false); // Deassert CSN on error
+      }
+      return false;
+    }
+
+    // Deassert CSN if multi-chip setup
+    if (csn_pin_index > 0) {
+      SetChipSelect(csn_pin_index, false);
+    }
+
+    TMC5160_LOG_DEBUG(
+        *static_cast<Derived *>(this), 3, "SPI",
+        "Write register 0x%02X (TX2): RX %02X %02X %02X %02X %02X %02X %02X %02X",
         address, rx_buf[0], rx_buf[1], rx_buf[2], rx_buf[3], rx_buf[4],
         rx_buf[5], rx_buf[6], rx_buf[7]);
 
@@ -600,14 +684,44 @@ public:
    * @brief Get current slave address
    * @return 7-bit slave address
    */
-  uint8_t getSlaveAddress() const noexcept { return slaveAddress_; }
+  uint8_t GetSlaveAddress() const noexcept { return slaveAddress_; }
 
   /**
    * @brief Set slave address
    * @param address 7-bit slave address (0-127)
    */
-  void setSlaveAddress(uint8_t address) noexcept {
+  void SetSlaveAddress(uint8_t address) noexcept {
     slaveAddress_ = address & 0x7F;
+  }
+
+  /**
+   * @brief Set NAI (Next Address Input) pin state for daisy chaining
+   * @param active true to set NAI active (high), false to set inactive (low)
+   * @return true if NAI was set successfully
+   *
+   * For UART daisy chaining, NAI controls the addressing sequence.
+   * When NAI is active, the slave address increments by one.
+   *
+   * Default implementation delegates to derived class. Override for
+   * hardware-specific NAI pin control.
+   */
+  bool SetNaiPin(bool active) noexcept {
+    return static_cast<Derived *>(this)->SetNaiPin(active);
+  }
+
+  /**
+   * @brief Read NAO (Next Address Output) pin state
+   * @param active Reference to store NAO pin state
+   * @return true if NAO was read successfully
+   *
+   * NAO is the output from one TMC5160 that connects to the next
+   * TMC5160's NAI input in a daisy chain.
+   *
+   * Default implementation delegates to derived class. Override for
+   * hardware-specific NAO pin reading.
+   */
+  bool GetNaoPin(bool &active) noexcept {
+    return static_cast<Derived *>(this)->GetNaoPin(active);
   }
 
   /**
