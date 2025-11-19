@@ -11,6 +11,7 @@ var classEsp32SPI =
     [ "GpioRead", "classEsp32SPI.html#acfee848bde351b677ecbc4d69d6381f1", null ],
     [ "GpioSet", "classEsp32SPI.html#a31c4d53a51a04f8b7d8fab4f5cfca4ca", null ],
     [ "Initialize", "classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44", null ],
+    [ "SetChipSelect", "classEsp32SPI.html#aa0ddbd149803b6f2f4341398dfd2141e", null ],
     [ "SpiTransfer", "classEsp32SPI.html#a4c71304d66ef780db718e8575c4e8aa1", null ],
     [ "clock_speed_hz_", "classEsp32SPI.html#a4d45170c0d7fb1027827bec0f403b59b", null ],
     [ "cs_pin_", "classEsp32SPI.html#acd7534240676fbe61da7b622d0e03380", null ],

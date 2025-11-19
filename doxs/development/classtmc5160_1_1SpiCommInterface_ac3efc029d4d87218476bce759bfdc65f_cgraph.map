@@ -1,0 +1,14 @@
+<map id="tmc5160::SpiCommInterface::WriteRegister" name="tmc5160::SpiCommInterface::WriteRegister">
+<area shape="rect" id="Node000001" title="Write a 32&#45;bit register via SPI with optional chip selection." alt="" coords="5,137,213,177"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1CommInterface.html#a7e3d53e55dcbadc4d3ef72cfdd2c6e09" title="Construct communication interface with pin active level configuration." alt="" coords="271,5,459,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,135,190,95,260,55,277,48,279,53,263,60,193,100,138,139"/>
+<area shape="rect" id="Node000003" href="$classtmc5160_1_1CommInterface.html#a26c5fc863f83fd076de9ae14e3917543" title="Delay execution for specified microseconds." alt="" coords="271,93,459,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="213,137,257,129,258,134,214,142"/>
+<area shape="rect" id="Node000004" href="$classtmc5160_1_1SpiCommInterface.html#a304db9bea4b10436ab7bcdbf1afa9635" title="Set chip select (CSN) pin state for daisy chaining." alt="" coords="261,181,469,221"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="214,173,248,179,247,184,213,178"/>
+<area shape="rect" id="Node000005" href="$classtmc5160_1_1SpiCommInterface.html#a6f970ddedcc8a0e3202db220f3d3b713" title="Low&#45;level SPI transfer for register read/write." alt="" coords="261,269,469,309"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="150,175,314,260,312,265,148,180"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="318,94,315,84,323,74,339,69,365,67,395,70,411,77,409,82,394,75,365,72,341,74,326,79,320,85,323,92"/>
+<area shape="poly" id="edge5_Node000004_Node000004" title=" " alt="" coords="318,182,315,172,323,162,339,157,365,155,395,158,411,165,409,170,394,163,365,160,341,162,326,167,320,173,323,180"/>
+<area shape="poly" id="edge7_Node000005_Node000005" title=" " alt="" coords="318,270,315,260,323,250,339,245,365,243,395,246,411,253,409,258,394,251,365,248,341,250,326,255,320,261,323,268"/>
+</map>

@@ -14,10 +14,11 @@ var group__TMC5160__Core =
       [ "comm_", "classtmc5160_1_1TMC5160.html#a28beb064e980894007c1bf34caf0e2c8", null ],
       [ "f_clk_", "classtmc5160_1_1TMC5160.html#a44bacd51262d02e69dc90aea64f30cef", null ],
       [ "initialized_", "classtmc5160_1_1TMC5160.html#a18e2cc0dd277443c86ac266f1f5eaba2", null ],
-      [ "this", "group__TMC5160__Subsystems.html#ga239c1ebae29ef7ed1e1b83360a9b8513", null ],
-      [ "this", "group__TMC5160__Subsystems.html#ga224f6d13e3fe2e44ac2e47801bae73c2", null ],
-      [ "this", "group__TMC5160__Subsystems.html#gad7932837edaf401381a7cc3794813175", null ],
-      [ "this", "group__TMC5160__Subsystems.html#ga3f4c57fad46339f883d2e525b03a855d", null ],
-      [ "this", "group__TMC5160__Subsystems.html#gae8426d9879bafe4f6df634a0d2956393", null ]
+      [ "this", "group__TMC5160__Subsystems.html#ga8cdc0e66e8b7b3ab3814df397d2012ee", null ],
+      [ "this", "group__TMC5160__Subsystems.html#gaba566a13a44b42f828a94837f7ab985b", null ],
+      [ "this", "group__TMC5160__Subsystems.html#ga03d0c0dd6eb02c1facae6d854377197b", null ],
+      [ "this", "group__TMC5160__Subsystems.html#gab494a88869c3a7b44fd7a158a4bae9d6", null ],
+      [ "this", "group__TMC5160__Subsystems.html#ga7ac9d8f62884e7e0d0f28a4cce68bf4d", null ],
+      [ "this", "group__TMC5160__Subsystems.html#ga666b5258660cab925fb3b98a66bedb40", null ]
     ] ]
 ];

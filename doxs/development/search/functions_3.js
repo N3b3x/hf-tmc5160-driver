@@ -6,7 +6,7 @@ var searchData=
   ['deinitialize_3',['Deinitialize',['../classEsp32SPI.html#adfd033d198f8b5393443939b523a08d5',1,'Esp32SPI']]],
   ['delayms_4',['DelayMs',['../classtmc5160_1_1CommInterface.html#ab6624610e9b8fcb46f37b600ec6939a0',1,'tmc5160::CommInterface::DelayMs()'],['../classEsp32SPI.html#ac9b9d58fe2109257179e443fde42b02d',1,'Esp32SPI::DelayMs()']]],
   ['delayus_5',['DelayUs',['../classtmc5160_1_1CommInterface.html#a26c5fc863f83fd076de9ae14e3917543',1,'tmc5160::CommInterface::DelayUs()'],['../classEsp32SPI.html#a7d824ef0096f7ac31b76b53ec8e536c2',1,'Esp32SPI::DelayUs()']]],
-  ['diagnostics_6',['Diagnostics',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#abb66dd8d16f59df3d44a744f51410855',1,'tmc5160::TMC5160::Diagnostics']]],
+  ['diagnostics_6',['Diagnostics',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0059ad48463547ed6a617dc819e24322',1,'tmc5160::TMC5160::Diagnostics']]],
   ['disable_7',['Disable',['../structtmc5160_1_1TMC5160_1_1MotorControl.html#a860bc6a5bd4a901b2b30f146e588c157',1,'tmc5160::TMC5160::MotorControl']]],
   ['driverconfig_8',['DriverConfig',['../structtmc5160_1_1DriverConfig.html#a7dfdf8d480ddcb696af100f740f01757',1,'tmc5160::DriverConfig']]]
 ];
