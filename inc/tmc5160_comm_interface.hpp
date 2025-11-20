@@ -1126,7 +1126,8 @@ public:
                    bool step_active_level) noexcept
       : CommInterface<Derived>(en_active_level, dir_active_level,
                                step_active_level),
-        total_chain_length_(0) {} // 0 = unknown/single chip, >0 = total number of devices
+        total_chain_length_(0), // 0 = unknown/single chip, >0 = total number of devices
+        chain_length_auto_detected_(false) {} // Track if auto-detection has been attempted
 
   /**
    * @brief Set the total number of devices in the daisy chain
@@ -1137,9 +1138,14 @@ public:
    *       when only the device position k is known (not the total chain length n)
    * @note This should be set once during initialization, before any register access
    * @note For optimal efficiency with TMC5160DaisyChain, set this to match the chain length
+   * @note If explicitly set (even to 0), auto-detection will be skipped on first SPI access.
+   *       If not set, auto-detection will occur automatically on the first SPI read/write operation.
    */
   void SetDaisyChainLength(uint8_t total_length) noexcept {
     total_chain_length_ = total_length;
+    // Mark as detected when explicitly set (even if 0) to skip auto-detection
+    // This indicates the user has explicitly configured the chain length
+    chain_length_auto_detected_ = true;
   }
 
   /**
@@ -1325,6 +1331,12 @@ public:
    * - Daisy-chain (daisy_chain_position > 0): Sends command with padding to shift
    *   it to the target device position in the chain
    *
+   * **Auto-Detection:**
+   * If the chain length is not known (total_chain_length_ == 0) and has not been
+   * explicitly set, this method will automatically detect the chain length on the
+   * first SPI access before performing the read operation. This ensures optimal
+   * response extraction using the datasheet formula.
+   *
    * **Daisy-Chain Padding Logic:**
    * When communicating with a single chip in a daisy chain:
    * - Command is placed at bytes 0-4 (the 40-bit SPI frame)
@@ -1343,6 +1355,12 @@ public:
    */
   bool ReadRegister(uint8_t address, uint32_t &value,
                     uint8_t daisy_chain_position = 0) noexcept {
+    // Auto-detect chain length on first SPI access if not known
+    if (total_chain_length_ == 0 && !chain_length_auto_detected_) {
+      AutoDetectChainLength();
+      chain_length_auto_detected_ = true;
+    }
+    
     // Build command using SpiCommand structure (union-based frame)
     SpiCommand cmd = SpiCommand::Read(address);
 
@@ -1494,6 +1512,12 @@ public:
    * - Daisy-chain (daisy_chain_position > 0): Sends command with padding to shift
    *   it to the target device position in the chain
    *
+   * **Auto-Detection:**
+   * If the chain length is not known (total_chain_length_ == 0) and has not been
+   * explicitly set, this method will automatically detect the chain length on the
+   * first SPI access before performing the write operation. This ensures optimal
+   * response extraction using the datasheet formula.
+   *
    * **Daisy-Chain Padding Logic:**
    * Same as ReadRegister() - command at bytes 0-4, padding (zeros) from byte 5 onwards.
    * Total transfer size = (daisy_chain_position + 1) * 5 bytes.
@@ -1508,6 +1532,12 @@ public:
    */
   bool WriteRegister(uint8_t address, uint32_t value,
                      uint8_t daisy_chain_position = 0) noexcept {
+    // Auto-detect chain length on first SPI access if not known
+    if (total_chain_length_ == 0 && !chain_length_auto_detected_) {
+      AutoDetectChainLength();
+      chain_length_auto_detected_ = true;
+    }
+    
     // Build command using SpiCommand structure (union-based frame)
     SpiCommand cmd = SpiCommand::Write(address, value);
 
@@ -1703,6 +1733,14 @@ protected:
    * ReadRegister and WriteRegister use the optimal datasheet formula.
    */
   uint8_t total_chain_length_;
+  
+  /**
+   * @brief Flag to track if chain length auto-detection has been attempted
+   * 
+   * Prevents multiple auto-detection attempts. Set to true after first
+   * auto-detection attempt or when chain length is explicitly set.
+   */
+  bool chain_length_auto_detected_;
 
   /**
    * @brief Protected destructor
