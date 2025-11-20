@@ -111,16 +111,16 @@ Collaboration diagram for tmc5160::TMC5160&lt; CommType &gt;::Communication:</di
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acdbfaf3a5695a8118dcf84af786ceca3" id="r_acdbfaf3a5695a8118dcf84af786ceca3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acdbfaf3a5695a8118dcf84af786ceca3">Communication</a> (<a class="el" href="classtmc5160_1_1TMC5160.html">TMC5160</a> &amp;<a class="el" href="classtmc5160_1_1CommInterface.html">driver</a>) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:acdbfaf3a5695a8118dcf84af786ceca3" id="r_acdbfaf3a5695a8118dcf84af786ceca3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acdbfaf3a5695a8118dcf84af786ceca3">Communication</a> (<a class="el" href="classtmc5160_1_1TMC5160.html">TMC5160</a> &amp;driver) noexcept</td></tr>
 <tr class="memdesc:acdbfaf3a5695a8118dcf84af786ceca3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct communication subsystem.  <br /></td></tr>
 <tr class="separator:acdbfaf3a5695a8118dcf84af786ceca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc57f53b52bf7bda5113b976ce9401ec" id="r_afc57f53b52bf7bda5113b976ce9401ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc57f53b52bf7bda5113b976ce9401ec">ConfigureSlaveAddress</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> <a class="el" href="classtmc5160_1_1CommInterface.html">slave_address</a>, <a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> <a class="el" href="classtmc5160_1_1CommInterface.html">send_delay</a>=0) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:afc57f53b52bf7bda5113b976ce9401ec" id="r_afc57f53b52bf7bda5113b976ce9401ec"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc57f53b52bf7bda5113b976ce9401ec">ConfigureSlaveAddress</a> (uint8_t slave_address, uint8_t send_delay=0) noexcept</td></tr>
 <tr class="memdesc:afc57f53b52bf7bda5113b976ce9401ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure UART slave address and send delay.  <br /></td></tr>
 <tr class="separator:afc57f53b52bf7bda5113b976ce9401ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf6dfd32076b84e4d8271c99f4fe83c9" id="r_abf6dfd32076b84e4d8271c99f4fe83c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf6dfd32076b84e4d8271c99f4fe83c9">GetSlaveAddress</a> () <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:abf6dfd32076b84e4d8271c99f4fe83c9" id="r_abf6dfd32076b84e4d8271c99f4fe83c9"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf6dfd32076b84e4d8271c99f4fe83c9">GetSlaveAddress</a> () noexcept</td></tr>
 <tr class="memdesc:abf6dfd32076b84e4d8271c99f4fe83c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current slave address from SLAVECONF register.  <br /></td></tr>
 <tr class="separator:abf6dfd32076b84e4d8271c99f4fe83c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9fb044de9ca9cd959474b4d6b994bfa" id="r_af9fb044de9ca9cd959474b4d6b994bfa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9fb044de9ca9cd959474b4d6b994bfa">GetSendDelay</a> () <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:af9fb044de9ca9cd959474b4d6b994bfa" id="r_af9fb044de9ca9cd959474b4d6b994bfa"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9fb044de9ca9cd959474b4d6b994bfa">GetSendDelay</a> () noexcept</td></tr>
 <tr class="memdesc:af9fb044de9ca9cd959474b4d6b994bfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current send delay from SLAVECONF register.  <br /></td></tr>
 <tr class="separator:af9fb044de9ca9cd959474b4d6b994bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -131,7 +131,7 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a480f579da9e4cd282f7a7d4d381a2aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a> <a class="el" href="classtmc5160_1_1CommInterface.html">CommType</a>&gt;<br />
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename CommType&gt;<br />
 struct tmc5160::TMC5160&lt; CommType &gt;::Communication</div><p><a class="el" href="structtmc5160_1_1TMC5160_1_1Communication.html" title="Communication subsystem.">Communication</a> subsystem. </p>
 <p>Provides methods for configuring UART slave addressing and multi-chip setups. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -141,13 +141,13 @@ struct tmc5160::TMC5160&lt; CommType &gt;::Communication</div><p><a class="el" h
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a> <a class="el" href="classtmc5160_1_1CommInterface.html">CommType</a> &gt; </div>
+template&lt;typename CommType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; <a class="el" href="classtmc5160_1_1CommInterface.html">CommType</a> &gt;::Communication::Communication </td>
+          <td class="memname"><a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; CommType &gt;::Communication::Communication </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classtmc5160_1_1TMC5160.html">TMC5160</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>driver</em></span></td><td>)</td>
           <td></td>
@@ -177,20 +177,20 @@ template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a> <a class="el" href="classtmc5160_1_1CommInterface.html">CommType</a> &gt; </div>
+template&lt;typename CommType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">bool</a> TMC5160::Communication::ConfigureSlaveAddress </td>
+          <td class="memname">bool TMC5160::Communication::ConfigureSlaveAddress </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a></td>          <td class="paramname"><span class="paramname"><em>slave_address</em>, </span></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>slave_address</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a></td>          <td class="paramname"><span class="paramname"><em>send_delay</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span>&#160;)</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>send_delay</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -218,13 +218,13 @@ template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a> <a class="el" href="classtmc5160_1_1CommInterface.html">CommType</a> &gt; </div>
+template&lt;typename CommType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> TMC5160::Communication::GetSendDelay </td>
+          <td class="memname">uint8_t TMC5160::Communication::GetSendDelay </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -248,13 +248,13 @@ template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a> <a class="el" href="classtmc5160_1_1CommInterface.html">CommType</a> &gt; </div>
+template&lt;typename CommType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> TMC5160::Communication::GetSlaveAddress </td>
+          <td class="memname">uint8_t TMC5160::Communication::GetSlaveAddress </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -279,13 +279,13 @@ template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a> <a class="el" href="classtmc5160_1_1CommInterface.html">CommType</a> &gt; </div>
+template&lt;typename CommType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1TMC5160.html">TMC5160</a>&amp; <a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; <a class="el" href="classtmc5160_1_1CommInterface.html">CommType</a> &gt;::Communication::driver_</td>
+          <td class="memname"><a class="el" href="classtmc5160_1_1TMC5160.html">TMC5160</a>&amp; <a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; CommType &gt;::Communication::driver_</td>
         </tr>
       </table>
   </td>

@@ -255,6 +255,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc5160_1_1TMC5160MultiNode.html">TMC5160MultiNode</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">High-level manager for multiple <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> drivers in a UART multi-node configuration.  <a href="classtmc5160_1_1TMC5160MultiNode.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc5160_1_1TMC5160PinConfig.html">TMC5160PinConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> GPIO pin configuration structure.  <a href="structtmc5160_1_1TMC5160PinConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc5160_1_1UartCommInterface.html">UartCommInterface</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CRTP-based UART implementation of TMC5160CommInterface.  <a href="classtmc5160_1_1UartCommInterface.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -264,28 +267,44 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a1e94179bbf4494f80ebac49f8a3fe4f4" id="r_a1e94179bbf4494f80ebac49f8a3fe4f4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e94179bbf4494f80ebac49f8a3fe4f4">CommMode</a> { <a class="el" href="#a1e94179bbf4494f80ebac49f8a3fe4f4a33dc5312b091968f5a120c2484d40df8">SPI</a>
-, <a class="el" href="#a1e94179bbf4494f80ebac49f8a3fe4f4acec5769b01fb096efaf0d6186823c78f">UART</a>
+<tr class="memitem:a784e320454a771e190b3b376a67d9c29" id="r_a784e320454a771e190b3b376a67d9c29"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a784e320454a771e190b3b376a67d9c29">CommMode</a> : uint8_t { <a class="el" href="#a784e320454a771e190b3b376a67d9c29a33dc5312b091968f5a120c2484d40df8">SPI</a>
+, <a class="el" href="#a784e320454a771e190b3b376a67d9c29acec5769b01fb096efaf0d6186823c78f">UART</a>
  }</td></tr>
-<tr class="memdesc:a1e94179bbf4494f80ebac49f8a3fe4f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Supported physical communication modes for TMC5160.  <a href="#a1e94179bbf4494f80ebac49f8a3fe4f4">More...</a><br /></td></tr>
-<tr class="separator:a1e94179bbf4494f80ebac49f8a3fe4f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af27bf60aaa4c5b13ce49bfa70fa47059" id="r_af27bf60aaa4c5b13ce49bfa70fa47059"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af27bf60aaa4c5b13ce49bfa70fa47059">TMC5160CtrlPin</a> { <a class="el" href="#af27bf60aaa4c5b13ce49bfa70fa47059aaa85f1840e282d8a8304dbc2c0d7c9b2">EN</a>
-, <a class="el" href="#af27bf60aaa4c5b13ce49bfa70fa47059ac1561b120842fabe1310417083827590">DIR</a>
-, <a class="el" href="#af27bf60aaa4c5b13ce49bfa70fa47059a522f694f92e679d874a1cc2b2616c3d7">STEP</a>
+<tr class="memdesc:a784e320454a771e190b3b376a67d9c29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Supported physical communication modes for TMC5160.  <a href="#a784e320454a771e190b3b376a67d9c29">More...</a><br /></td></tr>
+<tr class="separator:a784e320454a771e190b3b376a67d9c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a674cfb7fa2b17e4182eb1a87e79267e4" id="r_a674cfb7fa2b17e4182eb1a87e79267e4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4">TMC5160CtrlPin</a> : uint8_t { <br />
+&#160;&#160;<a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4aaa85f1840e282d8a8304dbc2c0d7c9b2">EN</a>
+, <a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4ac1561b120842fabe1310417083827590">DIR</a>
+, <a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4a522f694f92e679d874a1cc2b2616c3d7">STEP</a>
+, <a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4a4a12e55d1f7a734e479eb5fd2f87f4a0">REFL_STEP</a>
+, <br />
+&#160;&#160;<a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4ae3f98f6082347dbcb851880a110ded3f">REFR_DIR</a>
+, <a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4a096538213f7a62873f3e7f37801559de">DIAG0</a>
+, <a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4a7ba8a2a766732ac17ad64ec3826f0281">DIAG1</a>
+, <a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4a9b124d075302f51d5412a1fbe6d83ac9">ENCA</a>
+, <br />
+&#160;&#160;<a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4a75da289ed9e532ac25b29a971675c64c">ENCB</a>
+, <a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4a70273f6707f8d960a22a5157ef454bd8">ENCN</a>
+, <a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4ac61f660d0a38ca70970b88ade5b9c205">DCEN</a>
+, <a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4ac87f65790239520034c32e73b50e3a12">DCIN</a>
+, <br />
+&#160;&#160;<a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4a56326fb851c1918c9b954a13cd007c57">DCO</a>
+, <a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4afcea8677932f698f06799f81e024d7ab">CLK</a>
+<br />
  }</td></tr>
-<tr class="memdesc:af27bf60aaa4c5b13ce49bfa70fa47059"><td class="mdescLeft">&#160;</td><td class="mdescRight">TMC5160 control pin identifiers with board-agnostic naming.  <a href="#af27bf60aaa4c5b13ce49bfa70fa47059">More...</a><br /></td></tr>
-<tr class="separator:af27bf60aaa4c5b13ce49bfa70fa47059"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4733e3e6e71c8220c4c71ea2dba44b4" id="r_ad4733e3e6e71c8220c4c71ea2dba44b4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4733e3e6e71c8220c4c71ea2dba44b4">GpioSignal</a> { <a class="el" href="#ad4733e3e6e71c8220c4c71ea2dba44b4a6b273343c454f9c53dcfc9c4ccf171d2">INACTIVE</a> = 0
-, <a class="el" href="#ad4733e3e6e71c8220c4c71ea2dba44b4a18ff74f43da410c5529f7d6fca84f115">ACTIVE</a> = 1
+<tr class="memdesc:a674cfb7fa2b17e4182eb1a87e79267e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">TMC5160 control pin identifiers with board-agnostic naming.  <a href="#a674cfb7fa2b17e4182eb1a87e79267e4">More...</a><br /></td></tr>
+<tr class="separator:a674cfb7fa2b17e4182eb1a87e79267e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad80db8b24f711cb069ac28ec227783b8" id="r_ad80db8b24f711cb069ac28ec227783b8"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad80db8b24f711cb069ac28ec227783b8">GpioSignal</a> : uint8_t { <a class="el" href="#ad80db8b24f711cb069ac28ec227783b8a6b273343c454f9c53dcfc9c4ccf171d2">INACTIVE</a> = 0
+, <a class="el" href="#ad80db8b24f711cb069ac28ec227783b8a18ff74f43da410c5529f7d6fca84f115">ACTIVE</a> = 1
  }</td></tr>
-<tr class="memdesc:ad4733e3e6e71c8220c4c71ea2dba44b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPIO signal states with board-agnostic naming.  <a href="#ad4733e3e6e71c8220c4c71ea2dba44b4">More...</a><br /></td></tr>
-<tr class="separator:ad4733e3e6e71c8220c4c71ea2dba44b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ddc16da531e7afc309647644e3269f3" id="r_a3ddc16da531e7afc309647644e3269f3"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ddc16da531e7afc309647644e3269f3">UartFrameType</a> { <a class="el" href="#a3ddc16da531e7afc309647644e3269f3a0d351c9de65e962d661a3f4eb99a3a56">WriteAccess</a>
-, <a class="el" href="#a3ddc16da531e7afc309647644e3269f3ad749f894b7e5ae7433808c7250399cc1">ReadRequest</a>
-, <a class="el" href="#a3ddc16da531e7afc309647644e3269f3a0613aa8c12237f8c13aa3e590fac811b">ReadReply</a>
+<tr class="memdesc:ad80db8b24f711cb069ac28ec227783b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPIO signal states with board-agnostic naming.  <a href="#ad80db8b24f711cb069ac28ec227783b8">More...</a><br /></td></tr>
+<tr class="separator:ad80db8b24f711cb069ac28ec227783b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d51978d589f95d86a558f8c6ce9e35f" id="r_a0d51978d589f95d86a558f8c6ce9e35f"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0d51978d589f95d86a558f8c6ce9e35f">UartFrameType</a> : uint8_t { <a class="el" href="#a0d51978d589f95d86a558f8c6ce9e35fa0d351c9de65e962d661a3f4eb99a3a56">WriteAccess</a>
+, <a class="el" href="#a0d51978d589f95d86a558f8c6ce9e35fad749f894b7e5ae7433808c7250399cc1">ReadRequest</a>
+, <a class="el" href="#a0d51978d589f95d86a558f8c6ce9e35fa0613aa8c12237f8c13aa3e590fac811b">ReadReply</a>
  }</td></tr>
-<tr class="memdesc:a3ddc16da531e7afc309647644e3269f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">TMC5160 UART frame types.  <a href="#a3ddc16da531e7afc309647644e3269f3">More...</a><br /></td></tr>
-<tr class="separator:a3ddc16da531e7afc309647644e3269f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a0d51978d589f95d86a558f8c6ce9e35f"><td class="mdescLeft">&#160;</td><td class="mdescRight">TMC5160 UART frame types.  <a href="#a0d51978d589f95d86a558f8c6ce9e35f">More...</a><br /></td></tr>
+<tr class="separator:a0d51978d589f95d86a558f8c6ce9e35f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac039fd52ff49abd3359ab16891f4afc2" id="r_ac039fd52ff49abd3359ab16891f4afc2"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac039fd52ff49abd3359ab16891f4afc2">RampMode</a> : uint8_t { <a class="el" href="#ac039fd52ff49abd3359ab16891f4afc2a1e66935e3ab51cc2128e078cfd49d845">POSITIONING</a> = 0x00
 , <a class="el" href="#ac039fd52ff49abd3359ab16891f4afc2a7bcfb8bf64b1e3308d24ad10baf53fa5">VELOCITY_POS</a> = 0x01
 , <a class="el" href="#ac039fd52ff49abd3359ab16891f4afc2a155d6ef5b0ee9bf966b419b00d4b6034">VELOCITY_NEG</a> = 0x02
@@ -303,84 +322,84 @@ Enumerations</h2></td></tr>
 <tr class="memitem:a4eaf32584629b8ef44ee951e7ebf4916" id="r_a4eaf32584629b8ef44ee951e7ebf4916"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4eaf32584629b8ef44ee951e7ebf4916">EncoderSensitivity</a> : uint8_t { <a class="el" href="#a4eaf32584629b8ef44ee951e7ebf4916a38a74ee0f8764437c5fce05a7b4964e1">NO_EDGE</a> = 0x00
 , <a class="el" href="#a4eaf32584629b8ef44ee951e7ebf4916ad85243a747ac5537ef0b7adde99c3e98">RISING_EDGE</a> = 0x01
 , <a class="el" href="#a4eaf32584629b8ef44ee951e7ebf4916a297f5ea19073f4b51715b029f48d5d52">FALLING_EDGE</a> = 0x02
-, <a class="el" href="#a4eaf32584629b8ef44ee951e7ebf4916a03495d0b1362f1d841b59007e2887c7f">BOTH_EDGES</a>
+, <a class="el" href="#a4eaf32584629b8ef44ee951e7ebf4916a03495d0b1362f1d841b59007e2887c7f">BOTH_EDGES</a> = 0x03
  }</td></tr>
 <tr class="memdesc:a4eaf32584629b8ef44ee951e7ebf4916"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder N channel sensitivity enumeration values.  <a href="#a4eaf32584629b8ef44ee951e7ebf4916">More...</a><br /></td></tr>
 <tr class="separator:a4eaf32584629b8ef44ee951e7ebf4916"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81fcaffbc5dc91f6f544da54c1cf8c3b" id="r_a81fcaffbc5dc91f6f544da54c1cf8c3b"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a81fcaffbc5dc91f6f544da54c1cf8c3b">DriverStatus</a> { <br />
-&#160;&#160;<a class="el" href="#a81fcaffbc5dc91f6f544da54c1cf8c3bae0aa021e21dddbd6d8cecec71e9cf564">OK</a>
-, <a class="el" href="#a81fcaffbc5dc91f6f544da54c1cf8c3ba848c66a6c6a998b6e878f953df237b53">CP_UV</a>
-, <a class="el" href="#a81fcaffbc5dc91f6f544da54c1cf8c3bab89dbd670535c4ac41ed104e0954944f">S2VSA</a>
-, <a class="el" href="#a81fcaffbc5dc91f6f544da54c1cf8c3ba5e668cce2f93aa0daecf4f63ad5d3a26">S2VSB</a>
+<tr class="memitem:aabe2f8a8b4cb7d6533ac67eb7980dc01" id="r_aabe2f8a8b4cb7d6533ac67eb7980dc01"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aabe2f8a8b4cb7d6533ac67eb7980dc01">DriverStatus</a> : uint8_t { <br />
+&#160;&#160;<a class="el" href="#aabe2f8a8b4cb7d6533ac67eb7980dc01ae0aa021e21dddbd6d8cecec71e9cf564">OK</a>
+, <a class="el" href="#aabe2f8a8b4cb7d6533ac67eb7980dc01a848c66a6c6a998b6e878f953df237b53">CP_UV</a>
+, <a class="el" href="#aabe2f8a8b4cb7d6533ac67eb7980dc01ab89dbd670535c4ac41ed104e0954944f">S2VSA</a>
+, <a class="el" href="#aabe2f8a8b4cb7d6533ac67eb7980dc01a5e668cce2f93aa0daecf4f63ad5d3a26">S2VSB</a>
 , <br />
-&#160;&#160;<a class="el" href="#a81fcaffbc5dc91f6f544da54c1cf8c3baac32f1f51a63ec65f351fc4301c6b2ad">S2GA</a>
-, <a class="el" href="#a81fcaffbc5dc91f6f544da54c1cf8c3ba93a35a657ce0c4927017b02e28e95d82">S2GB</a>
-, <a class="el" href="#a81fcaffbc5dc91f6f544da54c1cf8c3ba583dce1e7a2507b30a9eb71314c47d1c">OT</a>
-, <a class="el" href="#a81fcaffbc5dc91f6f544da54c1cf8c3ba598c6a2431f188feea077b1a92b28f2b">OTHER_ERR</a>
+&#160;&#160;<a class="el" href="#aabe2f8a8b4cb7d6533ac67eb7980dc01aac32f1f51a63ec65f351fc4301c6b2ad">S2GA</a>
+, <a class="el" href="#aabe2f8a8b4cb7d6533ac67eb7980dc01a93a35a657ce0c4927017b02e28e95d82">S2GB</a>
+, <a class="el" href="#aabe2f8a8b4cb7d6533ac67eb7980dc01a583dce1e7a2507b30a9eb71314c47d1c">OT</a>
+, <a class="el" href="#aabe2f8a8b4cb7d6533ac67eb7980dc01a598c6a2431f188feea077b1a92b28f2b">OTHER_ERR</a>
 , <br />
-&#160;&#160;<a class="el" href="#a81fcaffbc5dc91f6f544da54c1cf8c3baac0b147690352ccd55facc0f3468846a">OTPW</a>
+&#160;&#160;<a class="el" href="#aabe2f8a8b4cb7d6533ac67eb7980dc01aac0b147690352ccd55facc0f3468846a">OTPW</a>
 <br />
  }</td></tr>
-<tr class="memdesc:a81fcaffbc5dc91f6f544da54c1cf8c3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Driver status enumeration.  <a href="#a81fcaffbc5dc91f6f544da54c1cf8c3b">More...</a><br /></td></tr>
-<tr class="separator:a81fcaffbc5dc91f6f544da54c1cf8c3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20e941105f83108e502d1fe328c01c9e" id="r_a20e941105f83108e502d1fe328c01c9e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20e941105f83108e502d1fe328c01c9e">MotorDirection</a> { <a class="el" href="#a20e941105f83108e502d1fe328c01c9ea1e23852820b9154316c7c06e2b7ba051">NORMAL</a> = 0
-, <a class="el" href="#a20e941105f83108e502d1fe328c01c9ea1955bdc302911f376074eb9b02e56639">INVERSE</a> = 1
+<tr class="memdesc:aabe2f8a8b4cb7d6533ac67eb7980dc01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Driver status enumeration.  <a href="#aabe2f8a8b4cb7d6533ac67eb7980dc01">More...</a><br /></td></tr>
+<tr class="separator:aabe2f8a8b4cb7d6533ac67eb7980dc01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e7804f8a437f39b4ba4b7cd6b3da1a4" id="r_a6e7804f8a437f39b4ba4b7cd6b3da1a4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e7804f8a437f39b4ba4b7cd6b3da1a4">MotorDirection</a> : uint8_t { <a class="el" href="#a6e7804f8a437f39b4ba4b7cd6b3da1a4a1e23852820b9154316c7c06e2b7ba051">NORMAL</a> = 0
+, <a class="el" href="#a6e7804f8a437f39b4ba4b7cd6b3da1a4a1955bdc302911f376074eb9b02e56639">INVERSE</a> = 1
  }</td></tr>
-<tr class="memdesc:a20e941105f83108e502d1fe328c01c9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor direction enumeration.  <a href="#a20e941105f83108e502d1fe328c01c9e">More...</a><br /></td></tr>
-<tr class="separator:a20e941105f83108e502d1fe328c01c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d4c2f0f6102aeb24f1bf337c5d1d38d" id="r_a9d4c2f0f6102aeb24f1bf337c5d1d38d"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d4c2f0f6102aeb24f1bf337c5d1d38d">MechanicalSystemType</a> { <a class="el" href="#a9d4c2f0f6102aeb24f1bf337c5d1d38daeaa47a40d5ae24b55e477563e264c94f">DirectDrive</a>
-, <a class="el" href="#a9d4c2f0f6102aeb24f1bf337c5d1d38da6f645ee65c04d44c3039f8b55622bb70">LeadScrew</a>
-, <a class="el" href="#a9d4c2f0f6102aeb24f1bf337c5d1d38dad3fe043af498c0c3096222212fbeef50">BeltDrive</a>
-, <a class="el" href="#a9d4c2f0f6102aeb24f1bf337c5d1d38da5927394ea5c7e8451c52b39dbb6f9629">Gearbox</a>
+<tr class="memdesc:a6e7804f8a437f39b4ba4b7cd6b3da1a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor direction enumeration.  <a href="#a6e7804f8a437f39b4ba4b7cd6b3da1a4">More...</a><br /></td></tr>
+<tr class="separator:a6e7804f8a437f39b4ba4b7cd6b3da1a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00679448289a759ed7f70e47f9d11596" id="r_a00679448289a759ed7f70e47f9d11596"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00679448289a759ed7f70e47f9d11596">MechanicalSystemType</a> : uint8_t { <a class="el" href="#a00679448289a759ed7f70e47f9d11596aeaa47a40d5ae24b55e477563e264c94f">DirectDrive</a>
+, <a class="el" href="#a00679448289a759ed7f70e47f9d11596a6f645ee65c04d44c3039f8b55622bb70">LeadScrew</a>
+, <a class="el" href="#a00679448289a759ed7f70e47f9d11596ad3fe043af498c0c3096222212fbeef50">BeltDrive</a>
+, <a class="el" href="#a00679448289a759ed7f70e47f9d11596a5927394ea5c7e8451c52b39dbb6f9629">Gearbox</a>
  }</td></tr>
-<tr class="memdesc:a9d4c2f0f6102aeb24f1bf337c5d1d38d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mechanical system type enumeration.  <a href="#a9d4c2f0f6102aeb24f1bf337c5d1d38d">More...</a><br /></td></tr>
-<tr class="separator:a9d4c2f0f6102aeb24f1bf337c5d1d38d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a00679448289a759ed7f70e47f9d11596"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mechanical system type enumeration.  <a href="#a00679448289a759ed7f70e47f9d11596">More...</a><br /></td></tr>
+<tr class="separator:a00679448289a759ed7f70e47f9d11596"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab650ebb70be7f1da00a2dea1f2fe662e" id="r_ab650ebb70be7f1da00a2dea1f2fe662e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">static</a> <a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab650ebb70be7f1da00a2dea1f2fe662e">calculateCrc8</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">const</a> <a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> *<a class="el" href="classtmc5160_1_1CommInterface.html">data</a>, <a class="el" href="classtmc5160_1_1CommInterface.html">size_t</a> <a class="el" href="classtmc5160_1_1CommInterface.html">length</a>) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:ab650ebb70be7f1da00a2dea1f2fe662e" id="r_ab650ebb70be7f1da00a2dea1f2fe662e"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab650ebb70be7f1da00a2dea1f2fe662e">calculateCrc8</a> (const uint8_t *data, size_t length) noexcept</td></tr>
 <tr class="memdesc:ab650ebb70be7f1da00a2dea1f2fe662e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate CRC8 checksum for UART communication.  <br /></td></tr>
 <tr class="separator:ab650ebb70be7f1da00a2dea1f2fe662e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29e5fff6de2d7590153c6bc315c7c4f0" id="r_a29e5fff6de2d7590153c6bc315c7c4f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29e5fff6de2d7590153c6bc315c7c4f0">StepsToMm</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">int32_t</a> <a class="el" href="classtmc5160_1_1CommInterface.html">steps</a>, <a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> steps_per_rev, <a class="el" href="classtmc5160_1_1CommInterface.html">float</a> lead_screw_pitch_mm) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:a29e5fff6de2d7590153c6bc315c7c4f0" id="r_a29e5fff6de2d7590153c6bc315c7c4f0"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29e5fff6de2d7590153c6bc315c7c4f0">StepsToMm</a> (int32_t steps, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept</td></tr>
 <tr class="memdesc:a29e5fff6de2d7590153c6bc315c7c4f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert steps to millimeters.  <br /></td></tr>
 <tr class="separator:a29e5fff6de2d7590153c6bc315c7c4f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e78a19f84b991207c30401e90eb6ebd" id="r_a6e78a19f84b991207c30401e90eb6ebd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">int32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e78a19f84b991207c30401e90eb6ebd">MmToSteps</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">float</a> <a class="el" href="classtmc5160_1_1CommInterface.html">mm</a>, <a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> steps_per_rev, <a class="el" href="classtmc5160_1_1CommInterface.html">float</a> lead_screw_pitch_mm) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:a6e78a19f84b991207c30401e90eb6ebd" id="r_a6e78a19f84b991207c30401e90eb6ebd"><td class="memItemLeft" align="right" valign="top">constexpr int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e78a19f84b991207c30401e90eb6ebd">MmToSteps</a> (float mm, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept</td></tr>
 <tr class="memdesc:a6e78a19f84b991207c30401e90eb6ebd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert millimeters to steps.  <br /></td></tr>
 <tr class="separator:a6e78a19f84b991207c30401e90eb6ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13c113ece8bf9e72134ead3dcd3e45f0" id="r_a13c113ece8bf9e72134ead3dcd3e45f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13c113ece8bf9e72134ead3dcd3e45f0">StepsToDegrees</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">int32_t</a> <a class="el" href="classtmc5160_1_1CommInterface.html">steps</a>, <a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> steps_per_rev) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:a13c113ece8bf9e72134ead3dcd3e45f0" id="r_a13c113ece8bf9e72134ead3dcd3e45f0"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13c113ece8bf9e72134ead3dcd3e45f0">StepsToDegrees</a> (int32_t steps, uint16_t steps_per_rev) noexcept</td></tr>
 <tr class="memdesc:a13c113ece8bf9e72134ead3dcd3e45f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert steps to degrees.  <br /></td></tr>
 <tr class="separator:a13c113ece8bf9e72134ead3dcd3e45f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a125b02e40c40c77eb5e08e68502e239e" id="r_a125b02e40c40c77eb5e08e68502e239e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">int32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a125b02e40c40c77eb5e08e68502e239e">DegreesToSteps</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">float</a> <a class="el" href="classtmc5160_1_1CommInterface.html">degrees</a>, <a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> steps_per_rev) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:a125b02e40c40c77eb5e08e68502e239e" id="r_a125b02e40c40c77eb5e08e68502e239e"><td class="memItemLeft" align="right" valign="top">constexpr int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a125b02e40c40c77eb5e08e68502e239e">DegreesToSteps</a> (float degrees, uint16_t steps_per_rev) noexcept</td></tr>
 <tr class="memdesc:a125b02e40c40c77eb5e08e68502e239e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert degrees to steps.  <br /></td></tr>
 <tr class="separator:a125b02e40c40c77eb5e08e68502e239e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a086e668f7c59055a454e010eb8d430a0" id="r_a086e668f7c59055a454e010eb8d430a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a086e668f7c59055a454e010eb8d430a0">RpmToStepsPerSec</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">float</a> <a class="el" href="classtmc5160_1_1CommInterface.html">rpm</a>, <a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> steps_per_rev) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:a086e668f7c59055a454e010eb8d430a0" id="r_a086e668f7c59055a454e010eb8d430a0"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a086e668f7c59055a454e010eb8d430a0">RpmToStepsPerSec</a> (float rpm, uint16_t steps_per_rev) noexcept</td></tr>
 <tr class="memdesc:a086e668f7c59055a454e010eb8d430a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert RPM to steps per second.  <br /></td></tr>
 <tr class="separator:a086e668f7c59055a454e010eb8d430a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79abd58070d1876b3f7cebf88192b7d4" id="r_a79abd58070d1876b3f7cebf88192b7d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a79abd58070d1876b3f7cebf88192b7d4">StepsPerSecToRpm</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">float</a> <a class="el" href="classtmc5160_1_1CommInterface.html">steps_per_sec</a>, <a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> steps_per_rev) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:a79abd58070d1876b3f7cebf88192b7d4" id="r_a79abd58070d1876b3f7cebf88192b7d4"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a79abd58070d1876b3f7cebf88192b7d4">StepsPerSecToRpm</a> (float steps_per_sec, uint16_t steps_per_rev) noexcept</td></tr>
 <tr class="memdesc:a79abd58070d1876b3f7cebf88192b7d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert steps per second to RPM.  <br /></td></tr>
 <tr class="separator:a79abd58070d1876b3f7cebf88192b7d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35dbbcb72e22539dc46aaa7098770312" id="r_a35dbbcb72e22539dc46aaa7098770312"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35dbbcb72e22539dc46aaa7098770312">MmPerSecToStepsPerSec</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">float</a> <a class="el" href="classtmc5160_1_1CommInterface.html">mm_per_sec</a>, <a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> steps_per_rev, <a class="el" href="classtmc5160_1_1CommInterface.html">float</a> lead_screw_pitch_mm) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:a35dbbcb72e22539dc46aaa7098770312" id="r_a35dbbcb72e22539dc46aaa7098770312"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35dbbcb72e22539dc46aaa7098770312">MmPerSecToStepsPerSec</a> (float mm_per_sec, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept</td></tr>
 <tr class="memdesc:a35dbbcb72e22539dc46aaa7098770312"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert millimeters per second to steps per second.  <br /></td></tr>
 <tr class="separator:a35dbbcb72e22539dc46aaa7098770312"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ca0a55137bd6942ec881f0a1f6e2c88" id="r_a3ca0a55137bd6942ec881f0a1f6e2c88"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ca0a55137bd6942ec881f0a1f6e2c88">StepsPerSecToMmPerSec</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">float</a> <a class="el" href="classtmc5160_1_1CommInterface.html">steps_per_sec</a>, <a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> steps_per_rev, <a class="el" href="classtmc5160_1_1CommInterface.html">float</a> lead_screw_pitch_mm) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:a3ca0a55137bd6942ec881f0a1f6e2c88" id="r_a3ca0a55137bd6942ec881f0a1f6e2c88"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ca0a55137bd6942ec881f0a1f6e2c88">StepsPerSecToMmPerSec</a> (float steps_per_sec, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept</td></tr>
 <tr class="memdesc:a3ca0a55137bd6942ec881f0a1f6e2c88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert steps per second to millimeters per second.  <br /></td></tr>
 <tr class="separator:a3ca0a55137bd6942ec881f0a1f6e2c88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a0db2a4fafbb16e129455ac5c8033d2" id="r_a5a0db2a4fafbb16e129455ac5c8033d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a0db2a4fafbb16e129455ac5c8033d2">AccelerationMmToSteps</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">float</a> <a class="el" href="classtmc5160_1_1CommInterface.html">accel_mm_per_sec2</a>, <a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> steps_per_rev, <a class="el" href="classtmc5160_1_1CommInterface.html">float</a> lead_screw_pitch_mm) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:a5a0db2a4fafbb16e129455ac5c8033d2" id="r_a5a0db2a4fafbb16e129455ac5c8033d2"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a0db2a4fafbb16e129455ac5c8033d2">AccelerationMmToSteps</a> (float accel_mm_per_sec2, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept</td></tr>
 <tr class="memdesc:a5a0db2a4fafbb16e129455ac5c8033d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert acceleration from mm/s² to steps/s²  <br /></td></tr>
 <tr class="separator:a5a0db2a4fafbb16e129455ac5c8033d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab2bb5b65536d0c4157917a6159870da" id="r_aab2bb5b65536d0c4157917a6159870da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab2bb5b65536d0c4157917a6159870da">AccelerationStepsToMm</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">float</a> <a class="el" href="classtmc5160_1_1CommInterface.html">accel_steps_per_sec2</a>, <a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> steps_per_rev, <a class="el" href="classtmc5160_1_1CommInterface.html">float</a> lead_screw_pitch_mm) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:aab2bb5b65536d0c4157917a6159870da" id="r_aab2bb5b65536d0c4157917a6159870da"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab2bb5b65536d0c4157917a6159870da">AccelerationStepsToMm</a> (float accel_steps_per_sec2, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept</td></tr>
 <tr class="memdesc:aab2bb5b65536d0c4157917a6159870da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert acceleration from steps/s² to mm/s²  <br /></td></tr>
 <tr class="separator:aab2bb5b65536d0c4157917a6159870da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5cc044f8d1b33d3aabba5f6e84a6fe1" id="r_ab5cc044f8d1b33d3aabba5f6e84a6fe1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">int32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5cc044f8d1b33d3aabba5f6e84a6fe1">BeltTeethToSteps</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">uint32_t</a> <a class="el" href="classtmc5160_1_1CommInterface.html">teeth</a>, <a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> steps_per_rev, <a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> belt_pulley_teeth) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:ab5cc044f8d1b33d3aabba5f6e84a6fe1" id="r_ab5cc044f8d1b33d3aabba5f6e84a6fe1"><td class="memItemLeft" align="right" valign="top">constexpr int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5cc044f8d1b33d3aabba5f6e84a6fe1">BeltTeethToSteps</a> (uint32_t teeth, uint16_t steps_per_rev, uint16_t belt_pulley_teeth) noexcept</td></tr>
 <tr class="memdesc:ab5cc044f8d1b33d3aabba5f6e84a6fe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert belt drive distance (teeth) to steps.  <br /></td></tr>
 <tr class="separator:ab5cc044f8d1b33d3aabba5f6e84a6fe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa11d045a26705ebd8c142414d9b3d0b7" id="r_aa11d045a26705ebd8c142414d9b3d0b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa11d045a26705ebd8c142414d9b3d0b7">StepsToBeltTeeth</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">int32_t</a> <a class="el" href="classtmc5160_1_1CommInterface.html">steps</a>, <a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> steps_per_rev, <a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> belt_pulley_teeth) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:aa11d045a26705ebd8c142414d9b3d0b7" id="r_aa11d045a26705ebd8c142414d9b3d0b7"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa11d045a26705ebd8c142414d9b3d0b7">StepsToBeltTeeth</a> (int32_t steps, uint16_t steps_per_rev, uint16_t belt_pulley_teeth) noexcept</td></tr>
 <tr class="memdesc:aa11d045a26705ebd8c142414d9b3d0b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert steps to belt drive distance (teeth)  <br /></td></tr>
 <tr class="separator:aa11d045a26705ebd8c142414d9b3d0b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a1e94179bbf4494f80ebac49f8a3fe4f4" name="a1e94179bbf4494f80ebac49f8a3fe4f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e94179bbf4494f80ebac49f8a3fe4f4">&#9670;&#160;</a></span>CommMode</h2>
+<a id="a784e320454a771e190b3b376a67d9c29" name="a784e320454a771e190b3b376a67d9c29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a784e320454a771e190b3b376a67d9c29">&#9670;&#160;</a></span>CommMode</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -389,7 +408,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">enum</a> <a class="el" href="classtmc5160_1_1CommInterface.html">class</a> <a class="el" href="#a1e94179bbf4494f80ebac49f8a3fe4f4">tmc5160::CommMode</a></td>
+          <td class="memname">enum class <a class="el" href="#a784e320454a771e190b3b376a67d9c29">tmc5160::CommMode</a> : uint8_t</td>
         </tr>
       </table>
   </td>
@@ -401,16 +420,16 @@ Functions</h2></td></tr>
 
 <p>Supported physical communication modes for <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a>. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1e94179bbf4494f80ebac49f8a3fe4f4a33dc5312b091968f5a120c2484d40df8" name="a1e94179bbf4494f80ebac49f8a3fe4f4a33dc5312b091968f5a120c2484d40df8"></a>SPI&#160;</td><td class="fielddoc"><p>SPI (Serial Peripheral Interface) mode - 4-wire synchronous communication </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a784e320454a771e190b3b376a67d9c29a33dc5312b091968f5a120c2484d40df8" name="a784e320454a771e190b3b376a67d9c29a33dc5312b091968f5a120c2484d40df8"></a>SPI&#160;</td><td class="fielddoc"><p>SPI (Serial Peripheral Interface) mode - 4-wire synchronous communication </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a1e94179bbf4494f80ebac49f8a3fe4f4acec5769b01fb096efaf0d6186823c78f" name="a1e94179bbf4494f80ebac49f8a3fe4f4acec5769b01fb096efaf0d6186823c78f"></a>UART&#160;</td><td class="fielddoc"><p>UART (Universal Asynchronous Receiver-Transmitter) mode - 2-wire asynchronous communication </p>
+<tr><td class="fieldname"><a id="a784e320454a771e190b3b376a67d9c29acec5769b01fb096efaf0d6186823c78f" name="a784e320454a771e190b3b376a67d9c29acec5769b01fb096efaf0d6186823c78f"></a>UART&#160;</td><td class="fielddoc"><p>UART (Universal Asynchronous Receiver-Transmitter) mode - 2-wire asynchronous communication </p>
 </td></tr>
 </table>
 
 </div>
 </div>
-<a id="a81fcaffbc5dc91f6f544da54c1cf8c3b" name="a81fcaffbc5dc91f6f544da54c1cf8c3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81fcaffbc5dc91f6f544da54c1cf8c3b">&#9670;&#160;</a></span>DriverStatus</h2>
+<a id="aabe2f8a8b4cb7d6533ac67eb7980dc01" name="aabe2f8a8b4cb7d6533ac67eb7980dc01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabe2f8a8b4cb7d6533ac67eb7980dc01">&#9670;&#160;</a></span>DriverStatus</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -419,7 +438,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">enum</a> <a class="el" href="classtmc5160_1_1CommInterface.html">class</a> <a class="el" href="#a81fcaffbc5dc91f6f544da54c1cf8c3b">tmc5160::DriverStatus</a></td>
+          <td class="memname">enum class <a class="el" href="#aabe2f8a8b4cb7d6533ac67eb7980dc01">tmc5160::DriverStatus</a> : uint8_t</td>
         </tr>
       </table>
   </td>
@@ -432,23 +451,23 @@ Functions</h2></td></tr>
 <p>Driver status enumeration. </p>
 <p>Indicates the current status of the <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> driver, including error conditions and warnings. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a81fcaffbc5dc91f6f544da54c1cf8c3bae0aa021e21dddbd6d8cecec71e9cf564" name="a81fcaffbc5dc91f6f544da54c1cf8c3bae0aa021e21dddbd6d8cecec71e9cf564"></a>OK&#160;</td><td class="fielddoc"><p>No error condition. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aabe2f8a8b4cb7d6533ac67eb7980dc01ae0aa021e21dddbd6d8cecec71e9cf564" name="aabe2f8a8b4cb7d6533ac67eb7980dc01ae0aa021e21dddbd6d8cecec71e9cf564"></a>OK&#160;</td><td class="fielddoc"><p>No error condition. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a81fcaffbc5dc91f6f544da54c1cf8c3ba848c66a6c6a998b6e878f953df237b53" name="a81fcaffbc5dc91f6f544da54c1cf8c3ba848c66a6c6a998b6e878f953df237b53"></a>CP_UV&#160;</td><td class="fielddoc"><p>Charge pump undervoltage. </p>
+<tr><td class="fieldname"><a id="aabe2f8a8b4cb7d6533ac67eb7980dc01a848c66a6c6a998b6e878f953df237b53" name="aabe2f8a8b4cb7d6533ac67eb7980dc01a848c66a6c6a998b6e878f953df237b53"></a>CP_UV&#160;</td><td class="fielddoc"><p>Charge pump undervoltage. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a81fcaffbc5dc91f6f544da54c1cf8c3bab89dbd670535c4ac41ed104e0954944f" name="a81fcaffbc5dc91f6f544da54c1cf8c3bab89dbd670535c4ac41ed104e0954944f"></a>S2VSA&#160;</td><td class="fielddoc"><p>Short to supply phase A. </p>
+<tr><td class="fieldname"><a id="aabe2f8a8b4cb7d6533ac67eb7980dc01ab89dbd670535c4ac41ed104e0954944f" name="aabe2f8a8b4cb7d6533ac67eb7980dc01ab89dbd670535c4ac41ed104e0954944f"></a>S2VSA&#160;</td><td class="fielddoc"><p>Short to supply phase A. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a81fcaffbc5dc91f6f544da54c1cf8c3ba5e668cce2f93aa0daecf4f63ad5d3a26" name="a81fcaffbc5dc91f6f544da54c1cf8c3ba5e668cce2f93aa0daecf4f63ad5d3a26"></a>S2VSB&#160;</td><td class="fielddoc"><p>Short to supply phase B. </p>
+<tr><td class="fieldname"><a id="aabe2f8a8b4cb7d6533ac67eb7980dc01a5e668cce2f93aa0daecf4f63ad5d3a26" name="aabe2f8a8b4cb7d6533ac67eb7980dc01a5e668cce2f93aa0daecf4f63ad5d3a26"></a>S2VSB&#160;</td><td class="fielddoc"><p>Short to supply phase B. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a81fcaffbc5dc91f6f544da54c1cf8c3baac32f1f51a63ec65f351fc4301c6b2ad" name="a81fcaffbc5dc91f6f544da54c1cf8c3baac32f1f51a63ec65f351fc4301c6b2ad"></a>S2GA&#160;</td><td class="fielddoc"><p>Short to ground phase A. </p>
+<tr><td class="fieldname"><a id="aabe2f8a8b4cb7d6533ac67eb7980dc01aac32f1f51a63ec65f351fc4301c6b2ad" name="aabe2f8a8b4cb7d6533ac67eb7980dc01aac32f1f51a63ec65f351fc4301c6b2ad"></a>S2GA&#160;</td><td class="fielddoc"><p>Short to ground phase A. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a81fcaffbc5dc91f6f544da54c1cf8c3ba93a35a657ce0c4927017b02e28e95d82" name="a81fcaffbc5dc91f6f544da54c1cf8c3ba93a35a657ce0c4927017b02e28e95d82"></a>S2GB&#160;</td><td class="fielddoc"><p>Short to ground phase B. </p>
+<tr><td class="fieldname"><a id="aabe2f8a8b4cb7d6533ac67eb7980dc01a93a35a657ce0c4927017b02e28e95d82" name="aabe2f8a8b4cb7d6533ac67eb7980dc01a93a35a657ce0c4927017b02e28e95d82"></a>S2GB&#160;</td><td class="fielddoc"><p>Short to ground phase B. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a81fcaffbc5dc91f6f544da54c1cf8c3ba583dce1e7a2507b30a9eb71314c47d1c" name="a81fcaffbc5dc91f6f544da54c1cf8c3ba583dce1e7a2507b30a9eb71314c47d1c"></a>OT&#160;</td><td class="fielddoc"><p>Overtemperature (error) </p>
+<tr><td class="fieldname"><a id="aabe2f8a8b4cb7d6533ac67eb7980dc01a583dce1e7a2507b30a9eb71314c47d1c" name="aabe2f8a8b4cb7d6533ac67eb7980dc01a583dce1e7a2507b30a9eb71314c47d1c"></a>OT&#160;</td><td class="fielddoc"><p>Overtemperature (error) </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a81fcaffbc5dc91f6f544da54c1cf8c3ba598c6a2431f188feea077b1a92b28f2b" name="a81fcaffbc5dc91f6f544da54c1cf8c3ba598c6a2431f188feea077b1a92b28f2b"></a>OTHER_ERR&#160;</td><td class="fielddoc"><p>GSTAT drv_err is set but none of the above conditions is found. </p>
+<tr><td class="fieldname"><a id="aabe2f8a8b4cb7d6533ac67eb7980dc01a598c6a2431f188feea077b1a92b28f2b" name="aabe2f8a8b4cb7d6533ac67eb7980dc01a598c6a2431f188feea077b1a92b28f2b"></a>OTHER_ERR&#160;</td><td class="fielddoc"><p>GSTAT drv_err is set but none of the above conditions is found. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a81fcaffbc5dc91f6f544da54c1cf8c3baac0b147690352ccd55facc0f3468846a" name="a81fcaffbc5dc91f6f544da54c1cf8c3baac0b147690352ccd55facc0f3468846a"></a>OTPW&#160;</td><td class="fielddoc"><p>Overtemperature pre-warning. </p>
+<tr><td class="fieldname"><a id="aabe2f8a8b4cb7d6533ac67eb7980dc01aac0b147690352ccd55facc0f3468846a" name="aabe2f8a8b4cb7d6533ac67eb7980dc01aac0b147690352ccd55facc0f3468846a"></a>OTPW&#160;</td><td class="fielddoc"><p>Overtemperature pre-warning. </p>
 </td></tr>
 </table>
 
@@ -464,7 +483,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">enum</a> <a class="el" href="classtmc5160_1_1CommInterface.html">class</a> <a class="el" href="#a4eaf32584629b8ef44ee951e7ebf4916">tmc5160::EncoderSensitivity</a> : <a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a></td>
+          <td class="memname">enum class <a class="el" href="#a4eaf32584629b8ef44ee951e7ebf4916">tmc5160::EncoderSensitivity</a> : uint8_t</td>
         </tr>
       </table>
   </td>
@@ -488,8 +507,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad4733e3e6e71c8220c4c71ea2dba44b4" name="ad4733e3e6e71c8220c4c71ea2dba44b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4733e3e6e71c8220c4c71ea2dba44b4">&#9670;&#160;</a></span>GpioSignal</h2>
+<a id="ad80db8b24f711cb069ac28ec227783b8" name="ad80db8b24f711cb069ac28ec227783b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad80db8b24f711cb069ac28ec227783b8">&#9670;&#160;</a></span>GpioSignal</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -498,7 +517,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">enum</a> <a class="el" href="classtmc5160_1_1CommInterface.html">class</a> <a class="el" href="#ad4733e3e6e71c8220c4c71ea2dba44b4">tmc5160::GpioSignal</a></td>
+          <td class="memname">enum class <a class="el" href="#ad80db8b24f711cb069ac28ec227783b8">tmc5160::GpioSignal</a> : uint8_t</td>
         </tr>
       </table>
   </td>
@@ -510,16 +529,16 @@ Functions</h2></td></tr>
 
 <p>GPIO signal states with board-agnostic naming. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad4733e3e6e71c8220c4c71ea2dba44b4a6b273343c454f9c53dcfc9c4ccf171d2" name="ad4733e3e6e71c8220c4c71ea2dba44b4a6b273343c454f9c53dcfc9c4ccf171d2"></a>INACTIVE&#160;</td><td class="fielddoc"><p>Inactive signal state (logical low) </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad80db8b24f711cb069ac28ec227783b8a6b273343c454f9c53dcfc9c4ccf171d2" name="ad80db8b24f711cb069ac28ec227783b8a6b273343c454f9c53dcfc9c4ccf171d2"></a>INACTIVE&#160;</td><td class="fielddoc"><p>Inactive signal state (logical low) </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ad4733e3e6e71c8220c4c71ea2dba44b4a18ff74f43da410c5529f7d6fca84f115" name="ad4733e3e6e71c8220c4c71ea2dba44b4a18ff74f43da410c5529f7d6fca84f115"></a>ACTIVE&#160;</td><td class="fielddoc"><p>Active signal state (logical high) </p>
+<tr><td class="fieldname"><a id="ad80db8b24f711cb069ac28ec227783b8a18ff74f43da410c5529f7d6fca84f115" name="ad80db8b24f711cb069ac28ec227783b8a18ff74f43da410c5529f7d6fca84f115"></a>ACTIVE&#160;</td><td class="fielddoc"><p>Active signal state (logical high) </p>
 </td></tr>
 </table>
 
 </div>
 </div>
-<a id="a9d4c2f0f6102aeb24f1bf337c5d1d38d" name="a9d4c2f0f6102aeb24f1bf337c5d1d38d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d4c2f0f6102aeb24f1bf337c5d1d38d">&#9670;&#160;</a></span>MechanicalSystemType</h2>
+<a id="a00679448289a759ed7f70e47f9d11596" name="a00679448289a759ed7f70e47f9d11596"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00679448289a759ed7f70e47f9d11596">&#9670;&#160;</a></span>MechanicalSystemType</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -528,7 +547,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">enum</a> <a class="el" href="classtmc5160_1_1CommInterface.html">class</a> <a class="el" href="#a9d4c2f0f6102aeb24f1bf337c5d1d38d">tmc5160::MechanicalSystemType</a></td>
+          <td class="memname">enum class <a class="el" href="#a00679448289a759ed7f70e47f9d11596">tmc5160::MechanicalSystemType</a> : uint8_t</td>
         </tr>
       </table>
   </td>
@@ -541,20 +560,20 @@ Functions</h2></td></tr>
 <p>Mechanical system type enumeration. </p>
 <p>Defines the type of mechanical system connected to the motor. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a9d4c2f0f6102aeb24f1bf337c5d1d38daeaa47a40d5ae24b55e477563e264c94f" name="a9d4c2f0f6102aeb24f1bf337c5d1d38daeaa47a40d5ae24b55e477563e264c94f"></a>DirectDrive&#160;</td><td class="fielddoc"><p>Direct drive (motor shaft directly connected) </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a00679448289a759ed7f70e47f9d11596aeaa47a40d5ae24b55e477563e264c94f" name="a00679448289a759ed7f70e47f9d11596aeaa47a40d5ae24b55e477563e264c94f"></a>DirectDrive&#160;</td><td class="fielddoc"><p>Direct drive (motor shaft directly connected) </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a9d4c2f0f6102aeb24f1bf337c5d1d38da6f645ee65c04d44c3039f8b55622bb70" name="a9d4c2f0f6102aeb24f1bf337c5d1d38da6f645ee65c04d44c3039f8b55622bb70"></a>LeadScrew&#160;</td><td class="fielddoc"><p>Lead screw drive. </p>
+<tr><td class="fieldname"><a id="a00679448289a759ed7f70e47f9d11596a6f645ee65c04d44c3039f8b55622bb70" name="a00679448289a759ed7f70e47f9d11596a6f645ee65c04d44c3039f8b55622bb70"></a>LeadScrew&#160;</td><td class="fielddoc"><p>Lead screw drive. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a9d4c2f0f6102aeb24f1bf337c5d1d38dad3fe043af498c0c3096222212fbeef50" name="a9d4c2f0f6102aeb24f1bf337c5d1d38dad3fe043af498c0c3096222212fbeef50"></a>BeltDrive&#160;</td><td class="fielddoc"><p>Belt drive with pulleys. </p>
+<tr><td class="fieldname"><a id="a00679448289a759ed7f70e47f9d11596ad3fe043af498c0c3096222212fbeef50" name="a00679448289a759ed7f70e47f9d11596ad3fe043af498c0c3096222212fbeef50"></a>BeltDrive&#160;</td><td class="fielddoc"><p>Belt drive with pulleys. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a9d4c2f0f6102aeb24f1bf337c5d1d38da5927394ea5c7e8451c52b39dbb6f9629" name="a9d4c2f0f6102aeb24f1bf337c5d1d38da5927394ea5c7e8451c52b39dbb6f9629"></a>Gearbox&#160;</td><td class="fielddoc"><p>Gearbox reduction. </p>
+<tr><td class="fieldname"><a id="a00679448289a759ed7f70e47f9d11596a5927394ea5c7e8451c52b39dbb6f9629" name="a00679448289a759ed7f70e47f9d11596a5927394ea5c7e8451c52b39dbb6f9629"></a>Gearbox&#160;</td><td class="fielddoc"><p>Gearbox reduction. </p>
 </td></tr>
 </table>
 
 </div>
 </div>
-<a id="a20e941105f83108e502d1fe328c01c9e" name="a20e941105f83108e502d1fe328c01c9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20e941105f83108e502d1fe328c01c9e">&#9670;&#160;</a></span>MotorDirection</h2>
+<a id="a6e7804f8a437f39b4ba4b7cd6b3da1a4" name="a6e7804f8a437f39b4ba4b7cd6b3da1a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e7804f8a437f39b4ba4b7cd6b3da1a4">&#9670;&#160;</a></span>MotorDirection</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -563,7 +582,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">enum</a> <a class="el" href="classtmc5160_1_1CommInterface.html">class</a> <a class="el" href="#a20e941105f83108e502d1fe328c01c9e">tmc5160::MotorDirection</a></td>
+          <td class="memname">enum class <a class="el" href="#a6e7804f8a437f39b4ba4b7cd6b3da1a4">tmc5160::MotorDirection</a> : uint8_t</td>
         </tr>
       </table>
   </td>
@@ -575,9 +594,9 @@ Functions</h2></td></tr>
 
 <p>Motor direction enumeration. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a20e941105f83108e502d1fe328c01c9ea1e23852820b9154316c7c06e2b7ba051" name="a20e941105f83108e502d1fe328c01c9ea1e23852820b9154316c7c06e2b7ba051"></a>NORMAL&#160;</td><td class="fielddoc"><p>Normal motor direction. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6e7804f8a437f39b4ba4b7cd6b3da1a4a1e23852820b9154316c7c06e2b7ba051" name="a6e7804f8a437f39b4ba4b7cd6b3da1a4a1e23852820b9154316c7c06e2b7ba051"></a>NORMAL&#160;</td><td class="fielddoc"><p>Normal motor direction. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a20e941105f83108e502d1fe328c01c9ea1955bdc302911f376074eb9b02e56639" name="a20e941105f83108e502d1fe328c01c9ea1955bdc302911f376074eb9b02e56639"></a>INVERSE&#160;</td><td class="fielddoc"><p>Inverse motor direction. </p>
+<tr><td class="fieldname"><a id="a6e7804f8a437f39b4ba4b7cd6b3da1a4a1955bdc302911f376074eb9b02e56639" name="a6e7804f8a437f39b4ba4b7cd6b3da1a4a1955bdc302911f376074eb9b02e56639"></a>INVERSE&#160;</td><td class="fielddoc"><p>Inverse motor direction. </p>
 </td></tr>
 </table>
 
@@ -593,7 +612,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">enum</a> <a class="el" href="classtmc5160_1_1CommInterface.html">class</a> <a class="el" href="#afd8e06e7eda04c891d35f72236085722">tmc5160::PWMFreewheel</a> : <a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a></td>
+          <td class="memname">enum class <a class="el" href="#afd8e06e7eda04c891d35f72236085722">tmc5160::PWMFreewheel</a> : uint8_t</td>
         </tr>
       </table>
   </td>
@@ -627,7 +646,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">enum</a> <a class="el" href="classtmc5160_1_1CommInterface.html">class</a> <a class="el" href="#ac039fd52ff49abd3359ab16891f4afc2">tmc5160::RampMode</a> : <a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a></td>
+          <td class="memname">enum class <a class="el" href="#ac039fd52ff49abd3359ab16891f4afc2">tmc5160::RampMode</a> : uint8_t</td>
         </tr>
       </table>
   </td>
@@ -651,8 +670,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="af27bf60aaa4c5b13ce49bfa70fa47059" name="af27bf60aaa4c5b13ce49bfa70fa47059"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af27bf60aaa4c5b13ce49bfa70fa47059">&#9670;&#160;</a></span>TMC5160CtrlPin</h2>
+<a id="a674cfb7fa2b17e4182eb1a87e79267e4" name="a674cfb7fa2b17e4182eb1a87e79267e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a674cfb7fa2b17e4182eb1a87e79267e4">&#9670;&#160;</a></span>TMC5160CtrlPin</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -661,7 +680,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">enum</a> <a class="el" href="classtmc5160_1_1CommInterface.html">class</a> <a class="el" href="#af27bf60aaa4c5b13ce49bfa70fa47059">tmc5160::TMC5160CtrlPin</a></td>
+          <td class="memname">enum class <a class="el" href="#a674cfb7fa2b17e4182eb1a87e79267e4">tmc5160::TMC5160CtrlPin</a> : uint8_t</td>
         </tr>
       </table>
   </td>
@@ -672,20 +691,66 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p><a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> control pin identifiers with board-agnostic naming. </p>
-<p>These pin identifiers abstract the physical pin assignments to provide a consistent interface regardless of board implementation. </p>
+<p>These pin identifiers abstract the physical pin assignments to provide a consistent interface regardless of board implementation.</p>
+<p>Pin functions depend on mode configuration (SPI_MODE, SD_MODE):</p><ul>
+<li>SPI_MODE=1, SD_MODE=0: Internal ramp generator mode (motion controller)<ul>
+<li>REFL_STEP, REFR_DIR: Reference switch inputs</li>
+<li>ENCA, ENCB, ENCN: Encoder inputs</li>
+<li>DIAG0, DIAG1: Diagnostic outputs</li>
+</ul>
+</li>
+<li>SPI_MODE=1, SD_MODE=1: External step/dir mode<ul>
+<li>REFL_STEP, REFR_DIR: STEP/DIR inputs (same physical pins)</li>
+<li>DCEN, DCIN, DCO: DC Step control pins (same physical pins as ENCB, ENCA, ENCN)</li>
+<li>DIAG0, DIAG1: Diagnostic outputs</li>
+</ul>
+</li>
+<li>SPI_MODE=0, SD_MODE=0: UART single wire interface mode<ul>
+<li>DIAG1_SWP (pin 27): Single wire I/O (positive) - Use SWP alone for single wire UART</li>
+<li>DIAG0_SWN (pin 26): Single wire I/O (negative) - Use SWP+SWN for RS485 differential bus</li>
+<li>SDI_CFG1 (pin 15): Next address input (NAI) for sequential addressing</li>
+<li>SDO_CFG0 (pin 16): Next address output (NAO) for sequential addressing</li>
+<li>CSN_CFG3, SCK_CFG2, ENCB_CFG4, ENCA_CFG5: Configuration inputs (CFG functions)</li>
+<li>Other pins: Not used for communication in UART mode</li>
+</ul>
+</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Some pins have multiple functions depending on mode. See datasheet section 2.2 for complete pin function descriptions. </dd></dl>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af27bf60aaa4c5b13ce49bfa70fa47059aaa85f1840e282d8a8304dbc2c0d7c9b2" name="af27bf60aaa4c5b13ce49bfa70fa47059aaa85f1840e282d8a8304dbc2c0d7c9b2"></a>EN&#160;</td><td class="fielddoc"><p>Enable pin - Enables/disables motor driver outputs. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a674cfb7fa2b17e4182eb1a87e79267e4aaa85f1840e282d8a8304dbc2c0d7c9b2" name="a674cfb7fa2b17e4182eb1a87e79267e4aaa85f1840e282d8a8304dbc2c0d7c9b2"></a>EN&#160;</td><td class="fielddoc"><p>Enable pin (DRV_ENN, pin 28) - Active HIGH disables power stage. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af27bf60aaa4c5b13ce49bfa70fa47059ac1561b120842fabe1310417083827590" name="af27bf60aaa4c5b13ce49bfa70fa47059ac1561b120842fabe1310417083827590"></a>DIR&#160;</td><td class="fielddoc"><p>Direction pin - Sets motor rotation direction. </p>
+<tr><td class="fieldname"><a id="a674cfb7fa2b17e4182eb1a87e79267e4ac1561b120842fabe1310417083827590" name="a674cfb7fa2b17e4182eb1a87e79267e4ac1561b120842fabe1310417083827590"></a>DIR&#160;</td><td class="fielddoc"><p>Direction pin (REFR_DIR, pin 18) - DIR input when SD_MODE=1, Right reference when SD_MODE=0. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af27bf60aaa4c5b13ce49bfa70fa47059a522f694f92e679d874a1cc2b2616c3d7" name="af27bf60aaa4c5b13ce49bfa70fa47059a522f694f92e679d874a1cc2b2616c3d7"></a>STEP&#160;</td><td class="fielddoc"><p>Step pin - Step pulse input for external step/dir mode. </p>
+<tr><td class="fieldname"><a id="a674cfb7fa2b17e4182eb1a87e79267e4a522f694f92e679d874a1cc2b2616c3d7" name="a674cfb7fa2b17e4182eb1a87e79267e4a522f694f92e679d874a1cc2b2616c3d7"></a>STEP&#160;</td><td class="fielddoc"><p>Step pin (REFL_STEP, pin 17) - STEP input when SD_MODE=1, Left reference when SD_MODE=0. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a674cfb7fa2b17e4182eb1a87e79267e4a4a12e55d1f7a734e479eb5fd2f87f4a0" name="a674cfb7fa2b17e4182eb1a87e79267e4a4a12e55d1f7a734e479eb5fd2f87f4a0"></a>REFL_STEP&#160;</td><td class="fielddoc"><p>Left reference switch input (REFL_STEP, pin 17) - Used when SD_MODE=0. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a674cfb7fa2b17e4182eb1a87e79267e4ae3f98f6082347dbcb851880a110ded3f" name="a674cfb7fa2b17e4182eb1a87e79267e4ae3f98f6082347dbcb851880a110ded3f"></a>REFR_DIR&#160;</td><td class="fielddoc"><p>Right reference switch input (REFR_DIR, pin 18) - Used when SD_MODE=0. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a674cfb7fa2b17e4182eb1a87e79267e4a096538213f7a62873f3e7f37801559de" name="a674cfb7fa2b17e4182eb1a87e79267e4a096538213f7a62873f3e7f37801559de"></a>DIAG0&#160;</td><td class="fielddoc"><p>Diagnostic output 0 (DIAG0_SWN, pin 26) - Interrupt/STEP output when SD_MODE=0, SPI_MODE=1. Single wire I/O (negative) when SD_MODE=0, SPI_MODE=0 (UART mode). Use with DIAG1_SWP for RS485 bus. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a674cfb7fa2b17e4182eb1a87e79267e4a7ba8a2a766732ac17ad64ec3826f0281" name="a674cfb7fa2b17e4182eb1a87e79267e4a7ba8a2a766732ac17ad64ec3826f0281"></a>DIAG1&#160;</td><td class="fielddoc"><p>Diagnostic output 1 (DIAG1_SWP, pin 27) - Position-compare/DIR output when SD_MODE=0, SPI_MODE=1. Single wire I/O (positive) when SD_MODE=0, SPI_MODE=0 (UART mode). Use alone for single wire UART. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a674cfb7fa2b17e4182eb1a87e79267e4a9b124d075302f51d5412a1fbe6d83ac9" name="a674cfb7fa2b17e4182eb1a87e79267e4a9b124d075302f51d5412a1fbe6d83ac9"></a>ENCA&#160;</td><td class="fielddoc"><p>Encoder A-channel input (ENCA_DCIN_CFG5, pin 24) - Used when SD_MODE=0. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a674cfb7fa2b17e4182eb1a87e79267e4a75da289ed9e532ac25b29a971675c64c" name="a674cfb7fa2b17e4182eb1a87e79267e4a75da289ed9e532ac25b29a971675c64c"></a>ENCB&#160;</td><td class="fielddoc"><p>Encoder B-channel input (ENCB_DCEN_CFG4, pin 23) - Used when SD_MODE=0. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a674cfb7fa2b17e4182eb1a87e79267e4a70273f6707f8d960a22a5157ef454bd8" name="a674cfb7fa2b17e4182eb1a87e79267e4a70273f6707f8d960a22a5157ef454bd8"></a>ENCN&#160;</td><td class="fielddoc"><p>Encoder N-channel input (ENCN_DCO_CFG6, pin 25) - Used when SD_MODE=0. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a674cfb7fa2b17e4182eb1a87e79267e4ac61f660d0a38ca70970b88ade5b9c205" name="a674cfb7fa2b17e4182eb1a87e79267e4ac61f660d0a38ca70970b88ade5b9c205"></a>DCEN&#160;</td><td class="fielddoc"><p>DC Step enable input (ENCB_DCEN_CFG4, pin 23) - Used when SD_MODE=1, SPI_MODE=1. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a674cfb7fa2b17e4182eb1a87e79267e4ac87f65790239520034c32e73b50e3a12" name="a674cfb7fa2b17e4182eb1a87e79267e4ac87f65790239520034c32e73b50e3a12"></a>DCIN&#160;</td><td class="fielddoc"><p>DC Step gating input (ENCA_DCIN_CFG5, pin 24) - Used when SD_MODE=1, SPI_MODE=1. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a674cfb7fa2b17e4182eb1a87e79267e4a56326fb851c1918c9b954a13cd007c57" name="a674cfb7fa2b17e4182eb1a87e79267e4a56326fb851c1918c9b954a13cd007c57"></a>DCO&#160;</td><td class="fielddoc"><p>DC Step ready output (ENCN_DCO_CFG6, pin 25) - Used when SD_MODE=1, SPI_MODE=1. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a674cfb7fa2b17e4182eb1a87e79267e4afcea8677932f698f06799f81e024d7ab" name="a674cfb7fa2b17e4182eb1a87e79267e4afcea8677932f698f06799f81e024d7ab"></a>CLK&#160;</td><td class="fielddoc"><p>Clock input (CLK, pin 12) - External clock input (tie to GND for internal clock) </p>
 </td></tr>
 </table>
 
 </div>
 </div>
-<a id="a3ddc16da531e7afc309647644e3269f3" name="a3ddc16da531e7afc309647644e3269f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ddc16da531e7afc309647644e3269f3">&#9670;&#160;</a></span>UartFrameType</h2>
+<a id="a0d51978d589f95d86a558f8c6ce9e35f" name="a0d51978d589f95d86a558f8c6ce9e35f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d51978d589f95d86a558f8c6ce9e35f">&#9670;&#160;</a></span>UartFrameType</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -694,7 +759,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">enum</a> <a class="el" href="classtmc5160_1_1CommInterface.html">class</a> <a class="el" href="#a3ddc16da531e7afc309647644e3269f3">tmc5160::UartFrameType</a></td>
+          <td class="memname">enum class <a class="el" href="#a0d51978d589f95d86a558f8c6ce9e35f">tmc5160::UartFrameType</a> : uint8_t</td>
         </tr>
       </table>
   </td>
@@ -706,11 +771,11 @@ Functions</h2></td></tr>
 
 <p><a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> UART frame types. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3ddc16da531e7afc309647644e3269f3a0d351c9de65e962d661a3f4eb99a3a56" name="a3ddc16da531e7afc309647644e3269f3a0d351c9de65e962d661a3f4eb99a3a56"></a>WriteAccess&#160;</td><td class="fielddoc"><p>Write access datagram (9 bytes: 8 bytes + CRC) </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a0d51978d589f95d86a558f8c6ce9e35fa0d351c9de65e962d661a3f4eb99a3a56" name="a0d51978d589f95d86a558f8c6ce9e35fa0d351c9de65e962d661a3f4eb99a3a56"></a>WriteAccess&#160;</td><td class="fielddoc"><p>Write access datagram (9 bytes: 8 bytes + CRC) </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a3ddc16da531e7afc309647644e3269f3ad749f894b7e5ae7433808c7250399cc1" name="a3ddc16da531e7afc309647644e3269f3ad749f894b7e5ae7433808c7250399cc1"></a>ReadRequest&#160;</td><td class="fielddoc"><p>Read access request datagram (5 bytes: 4 bytes + CRC) </p>
+<tr><td class="fieldname"><a id="a0d51978d589f95d86a558f8c6ce9e35fad749f894b7e5ae7433808c7250399cc1" name="a0d51978d589f95d86a558f8c6ce9e35fad749f894b7e5ae7433808c7250399cc1"></a>ReadRequest&#160;</td><td class="fielddoc"><p>Read access request datagram (5 bytes: 4 bytes + CRC) </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a3ddc16da531e7afc309647644e3269f3a0613aa8c12237f8c13aa3e590fac811b" name="a3ddc16da531e7afc309647644e3269f3a0613aa8c12237f8c13aa3e590fac811b"></a>ReadReply&#160;</td><td class="fielddoc"><p>Read access reply datagram (9 bytes: 8 bytes + CRC) </p>
+<tr><td class="fieldname"><a id="a0d51978d589f95d86a558f8c6ce9e35fa0613aa8c12237f8c13aa3e590fac811b" name="a0d51978d589f95d86a558f8c6ce9e35fa0613aa8c12237f8c13aa3e590fac811b"></a>ReadReply&#160;</td><td class="fielddoc"><p>Read access reply datagram (9 bytes: 8 bytes + CRC) </p>
 </td></tr>
 </table>
 
@@ -727,19 +792,19 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a> tmc5160::AccelerationMmToSteps </td>
+          <td class="memname">constexpr float tmc5160::AccelerationMmToSteps </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a></td>          <td class="paramname"><span class="paramname"><em>accel_mm_per_sec2</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>accel_mm_per_sec2</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a></td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a></td>          <td class="paramname"><span class="paramname"><em>lead_screw_pitch_mm</em></span>&#160;)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>lead_screw_pitch_mm</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -759,11 +824,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Acceleration in steps per second squared </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc5160_a5a0db2a4fafbb16e129455ac5c8033d2_icgraph.svg" width="352" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -777,19 +837,19 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a> tmc5160::AccelerationStepsToMm </td>
+          <td class="memname">constexpr float tmc5160::AccelerationStepsToMm </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a></td>          <td class="paramname"><span class="paramname"><em>accel_steps_per_sec2</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>accel_steps_per_sec2</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a></td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a></td>          <td class="paramname"><span class="paramname"><em>lead_screw_pitch_mm</em></span>&#160;)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>lead_screw_pitch_mm</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -822,19 +882,19 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">int32_t</a> tmc5160::BeltTeethToSteps </td>
+          <td class="memname">constexpr int32_t tmc5160::BeltTeethToSteps </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint32_t</a></td>          <td class="paramname"><span class="paramname"><em>teeth</em>, </span></td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>teeth</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a></td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a></td>          <td class="paramname"><span class="paramname"><em>belt_pulley_teeth</em></span>&#160;)</td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>belt_pulley_teeth</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -854,11 +914,6 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of steps </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc5160_ab5cc044f8d1b33d3aabba5f6e84a6fe1_icgraph.svg" width="344" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -872,14 +927,14 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">static</a> <a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> tmc5160::calculateCrc8 </td>
+          <td class="memname">static constexpr uint8_t tmc5160::calculateCrc8 </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">const</a> <a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> *</td>          <td class="paramname"><span class="paramname"><em>data</em>, </span></td>
+          <td class="paramtype">const uint8_t *</td>          <td class="paramname"><span class="paramname"><em>data</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>length</em></span>&#160;)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>length</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -903,7 +958,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc5160_ab650ebb70be7f1da00a2dea1f2fe662e_icgraph.svg" width="654" height="179"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc5160_ab650ebb70be7f1da00a2dea1f2fe662e_icgraph.svg" width="858" height="240"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -918,14 +973,14 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">int32_t</a> tmc5160::DegreesToSteps </td>
+          <td class="memname">constexpr int32_t tmc5160::DegreesToSteps </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a></td>          <td class="paramname"><span class="paramname"><em>degrees</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>degrees</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a></td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em></span>&#160;)</td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -947,7 +1002,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc5160_a125b02e40c40c77eb5e08e68502e239e_icgraph.svg" width="726" height="358"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc5160_a125b02e40c40c77eb5e08e68502e239e_icgraph.svg" width="639" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -962,19 +1017,19 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a> tmc5160::MmPerSecToStepsPerSec </td>
+          <td class="memname">constexpr float tmc5160::MmPerSecToStepsPerSec </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a></td>          <td class="paramname"><span class="paramname"><em>mm_per_sec</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>mm_per_sec</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a></td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a></td>          <td class="paramname"><span class="paramname"><em>lead_screw_pitch_mm</em></span>&#160;)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>lead_screw_pitch_mm</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1007,19 +1062,19 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">int32_t</a> tmc5160::MmToSteps </td>
+          <td class="memname">constexpr int32_t tmc5160::MmToSteps </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a></td>          <td class="paramname"><span class="paramname"><em>mm</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>mm</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a></td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a></td>          <td class="paramname"><span class="paramname"><em>lead_screw_pitch_mm</em></span>&#160;)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>lead_screw_pitch_mm</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1042,7 +1097,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc5160_a6e78a19f84b991207c30401e90eb6ebd_icgraph.svg" width="444" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc5160_a6e78a19f84b991207c30401e90eb6ebd_icgraph.svg" width="598" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1057,14 +1112,14 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a> tmc5160::RpmToStepsPerSec </td>
+          <td class="memname">constexpr float tmc5160::RpmToStepsPerSec </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a></td>          <td class="paramname"><span class="paramname"><em>rpm</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>rpm</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a></td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em></span>&#160;)</td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1086,7 +1141,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc5160_a086e668f7c59055a454e010eb8d430a0_icgraph.svg" width="524" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc5160_a086e668f7c59055a454e010eb8d430a0_icgraph.svg" width="646" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1101,19 +1156,19 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a> tmc5160::StepsPerSecToMmPerSec </td>
+          <td class="memname">constexpr float tmc5160::StepsPerSecToMmPerSec </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a></td>          <td class="paramname"><span class="paramname"><em>steps_per_sec</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>steps_per_sec</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a></td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a></td>          <td class="paramname"><span class="paramname"><em>lead_screw_pitch_mm</em></span>&#160;)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>lead_screw_pitch_mm</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1146,14 +1201,14 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a> tmc5160::StepsPerSecToRpm </td>
+          <td class="memname">constexpr float tmc5160::StepsPerSecToRpm </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a></td>          <td class="paramname"><span class="paramname"><em>steps_per_sec</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>steps_per_sec</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a></td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em></span>&#160;)</td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1172,11 +1227,6 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Speed in RPM </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc5160_a79abd58070d1876b3f7cebf88192b7d4_icgraph.svg" width="356" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -1190,19 +1240,19 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a> tmc5160::StepsToBeltTeeth </td>
+          <td class="memname">constexpr float tmc5160::StepsToBeltTeeth </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">int32_t</a></td>          <td class="paramname"><span class="paramname"><em>steps</em>, </span></td>
+          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>steps</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a></td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a></td>          <td class="paramname"><span class="paramname"><em>belt_pulley_teeth</em></span>&#160;)</td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>belt_pulley_teeth</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1235,14 +1285,14 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a> tmc5160::StepsToDegrees </td>
+          <td class="memname">constexpr float tmc5160::StepsToDegrees </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">int32_t</a></td>          <td class="paramname"><span class="paramname"><em>steps</em>, </span></td>
+          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>steps</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a></td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em></span>&#160;)</td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1264,7 +1314,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc5160_a13c113ece8bf9e72134ead3dcd3e45f0_icgraph.svg" width="1140" height="548"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc5160_a13c113ece8bf9e72134ead3dcd3e45f0_icgraph.svg" width="944" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1279,19 +1329,19 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">constexpr</a> <a class="el" href="classtmc5160_1_1CommInterface.html">float</a> tmc5160::StepsToMm </td>
+          <td class="memname">constexpr float tmc5160::StepsToMm </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">int32_t</a></td>          <td class="paramname"><span class="paramname"><em>steps</em>, </span></td>
+          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>steps</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a></td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a></td>          <td class="paramname"><span class="paramname"><em>lead_screw_pitch_mm</em></span>&#160;)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>lead_screw_pitch_mm</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1312,11 +1362,6 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Distance in millimeters</dd></dl>
 <p>For lead screws: distance = (steps / steps_per_rev) * lead_screw_pitch_mm </p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc5160_a29e5fff6de2d7590153c6bc315c7c4f0_icgraph.svg" width="308" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

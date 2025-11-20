@@ -1,0 +1,5 @@
+<map id="test_task_trampoline" name="test_task_trampoline">
+<area shape="rect" id="Node000001" title="FreeRTOS task trampoline to execute a test with a larger dedicated stack." alt="" coords="5,5,165,31"/>
+<area shape="rect" id="Node000002" href="$structTestResults.html#a257eba3a9005a5c19c68ae27774948f7" title="Add test result and update statistics." alt="" coords="213,5,385,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,15,200,15,200,21,165,21"/>
+</map>

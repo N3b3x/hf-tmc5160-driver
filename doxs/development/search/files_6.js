@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['sensorless_5fhoming_2ecpp_0',['sensorless_homing.cpp',['../sensorless__homing_8cpp.html',1,'']]],
-  ['sinusoidal_2ecpp_1',['sinusoidal.cpp',['../sinusoidal_8cpp.html',1,'']]],
-  ['stallguard_2ecpp_2',['stallguard.cpp',['../stallguard_8cpp.html',1,'']]],
-  ['stealthchop_2ecpp_3',['stealthchop.cpp',['../stealthchop_8cpp.html',1,'']]]
+  ['pin_5fconfig_5fstruct_5fexample_2ecpp_0',['pin_config_struct_example.cpp',['../pin__config__struct__example_8cpp.html',1,'']]],
+  ['protection_5fcomprehensive_5ftest_2ecpp_1',['protection_comprehensive_test.cpp',['../protection__comprehensive__test_8cpp.html',1,'']]]
 ];

@@ -1,0 +1,46 @@
+<map id="CommandEntry" name="CommandEntry">
+<area shape="rect" id="Node000001" title="Command registry entry." alt="" coords="1604,282,1727,307"/>
+<area shape="rect" id="Node000002" href="$structCommandArg.html" title="Command argument structure for modular command parsing." alt="" coords="1377,258,1488,283"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1502,275,1604,286,1604,291,1502,280"/>
+<area shape="rect" id="Node000003" href="$classFatigueTestMotion.html" title="Fatigue test motion controller." alt="" coords="1363,307,1503,333"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1516,311,1580,304,1604,301,1604,306,1580,309,1516,316"/>
+<area shape="rect" id="Node000004" href="$classtmc5160_1_1TMC5160.html" title=" " alt="" coords="1024,281,1261,306"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1275,303,1363,311,1362,316,1275,308"/>
+<area shape="rect" id="Node000005" href="$structtmc5160_1_1TMC5160_1_1RampControl.html" title="Ramp control subsystem." alt="" coords="5,203,241,243"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="167,193,223,162,299,124,389,85,489,51,597,25,652,17,708,14,763,15,818,21,872,33,924,52,964,74,1001,102,1034,134,1063,168,1109,232,1137,279,1132,281,1105,235,1059,171,1030,138,997,106,961,79,922,57,870,38,817,26,763,20,708,19,653,23,598,30,491,56,390,90,301,129,226,166,169,198"/>
+<area shape="rect" id="Node000006" href="$classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver." alt="" coords="339,255,589,281"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="255,237,369,253,368,258,254,243"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="324,275,265,269,218,259,175,245,177,240,220,254,266,264,325,270"/>
+<area shape="rect" id="Node000007" href="$structtmc5160_1_1TMC5160_1_1MotorControl.html" title="Motor control subsystem." alt="" coords="687,67,923,107"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="480,243,534,182,571,150,612,123,648,108,685,97,687,102,650,113,615,128,574,154,538,186,484,246"/>
+<area shape="rect" id="Node000008" href="$structtmc5160_1_1TMC5160_1_1Communication.html" title="Communication subsystem." alt="" coords="687,157,923,197"/>
+<area shape="poly" id="edge10_Node000008_Node000006" title=" " alt="" coords="497,246,550,219,613,195,686,181,687,186,614,200,552,224,499,251"/>
+<area shape="rect" id="Node000009" href="$structtmc5160_1_1TMC5160_1_1Encoder.html" title="Encoder subsystem." alt="" coords="687,239,923,279"/>
+<area shape="poly" id="edge12_Node000009_Node000006" title=" " alt="" coords="583,251,613,249,663,249,686,250,686,255,663,255,613,255,583,257"/>
+<area shape="rect" id="Node000010" href="$structtmc5160_1_1TMC5160_1_1Diagnostics.html" title="Diagnostics subsystem." alt="" coords="687,303,923,343"/>
+<area shape="poly" id="edge14_Node000010_Node000006" title=" " alt="" coords="557,280,687,301,686,306,557,285"/>
+<area shape="rect" id="Node000011" href="$structtmc5160_1_1TMC5160_1_1UartConfig.html" title="UART configuration subsystem." alt="" coords="687,384,923,424"/>
+<area shape="poly" id="edge16_Node000011_Node000006" title=" " alt="" coords="488,289,542,337,577,361,614,380,650,391,687,398,686,404,648,397,612,385,574,366,539,341,485,292"/>
+<area shape="rect" id="Node000012" href="$structtmc5160_1_1TMC5160_1_1Protection.html" title="Protection subsystem." alt="" coords="687,475,923,515"/>
+<area shape="poly" id="edge18_Node000012_Node000006" title=" " alt="" coords="477,292,496,334,526,385,565,435,589,457,615,475,649,490,687,497,686,502,648,495,612,480,585,461,561,439,521,388,492,337,472,294"/>
+<area shape="poly" id="edge19_Node000004_Node000007" title=" " alt="" coords="863,111,924,143,1041,218,1126,278,1123,283,1038,222,921,148,861,115"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="737,114,677,140,615,170,540,216,484,257,480,253,537,212,612,166,675,135,735,109"/>
+<area shape="poly" id="edge20_Node000004_Node000008" title=" " alt="" coords="878,199,1106,278,1104,283,876,204"/>
+<area shape="poly" id="edge9_Node000006_Node000008" title=" " alt="" coords="716,204,513,258,512,253,715,198"/>
+<area shape="poly" id="edge21_Node000004_Node000009" title=" " alt="" coords="937,269,1024,279,1024,284,936,275"/>
+<area shape="poly" id="edge11_Node000006_Node000009" title=" " alt="" coords="673,269,663,269,590,271,590,265,663,264,673,264"/>
+<area shape="poly" id="edge22_Node000004_Node000010" title=" " alt="" coords="937,314,1000,309,1053,303,1054,309,1000,315,937,319"/>
+<area shape="poly" id="edge13_Node000006_Node000010" title=" " alt="" coords="744,350,681,364,646,365,613,360,572,344,534,323,478,283,482,279,537,319,574,340,614,355,647,360,680,359,743,345"/>
+<area shape="poly" id="edge23_Node000004_Node000011" title=" " alt="" coords="897,377,949,359,999,335,1010,325,1023,315,1054,304,1055,309,1025,320,1014,329,1001,340,951,364,899,382"/>
+<area shape="poly" id="edge15_Node000006_Node000011" title=" " alt="" coords="760,433,727,447,689,458,650,460,612,450,585,434,559,414,518,366,487,318,469,282,473,280,492,315,522,362,563,410,588,430,614,446,650,455,688,452,725,442,757,428"/>
+<area shape="poly" id="edge24_Node000004_Node000012" title=" " alt="" coords="875,467,941,431,972,408,998,380,1006,363,1008,347,1011,331,1022,315,1040,304,1043,308,1026,319,1016,333,1013,348,1011,365,1002,383,975,412,944,436,878,472"/>
+<area shape="poly" id="edge17_Node000006_Node000012" title=" " alt="" coords="740,522,667,542,635,546,612,541,577,514,548,481,523,444,504,406,478,333,465,281,470,280,483,331,509,403,528,442,552,478,581,510,614,536,636,541,666,537,739,517"/>
+<area shape="rect" id="Node000013" href="$classEsp32SPI.html" title="ESP32 SPI implementation of TMC5160 communication interface." alt="" coords="764,555,845,581"/>
+<area shape="poly" id="edge25_Node000004_Node000013" title=" " alt="" coords="858,553,890,541,921,524,967,491,982,472,998,446,1004,427,1007,410,1004,378,1004,347,1010,331,1022,315,1037,304,1040,308,1026,319,1015,334,1009,348,1009,378,1012,410,1010,429,1002,448,986,475,970,495,924,529,892,545,860,558"/>
+<area shape="rect" id="Node000014" href="$classtmc5160_1_1SpiCommInterface.html" title=" " alt="" coords="360,564,568,604"/>
+<area shape="poly" id="edge26_Node000013_Node000014" title=" " alt="" coords="581,576,764,567,764,573,582,581"/>
+<area shape="rect" id="Node000015" href="$classtmc5160_1_1CommInterface.html" title="CRTP&#45;based communication interface for register read/write operations." alt="" coords="29,564,217,604"/>
+<area shape="poly" id="edge27_Node000014_Node000015" title=" " alt="" coords="231,581,360,581,360,587,231,587"/>
+<area shape="rect" id="Node000016" href="$classEsp32TmcMutex.html" title="ESP32 TMC mutex wrapper using FreeRTOS semaphore." alt="" coords="1077,330,1208,355"/>
+<area shape="poly" id="edge28_Node000003_Node000016" title=" " alt="" coords="1222,342,1338,337,1381,330,1382,335,1339,343,1222,348"/>
+</map>

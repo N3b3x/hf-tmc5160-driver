@@ -1,0 +1,15 @@
+<map id="app_main" name="app_main">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,80,92,105"/>
+<area shape="rect" id="Node000002" href="$classEsp32SPI.html#ac1efd880f523f135eaaa31bdb6377116" title="Get pin mapping for a TMC5160 control pin." alt="" coords="152,5,340,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="67,78,100,58,139,40,162,32,164,37,141,44,103,63,70,82"/>
+<area shape="rect" id="Node000003" href="$classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44" title="Initialize the SPI interface." alt="" coords="173,55,319,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="92,85,159,76,160,81,93,90"/>
+<area shape="rect" id="Node000004" href="$classtmc5160_1_1TMC5160.html#ac90ae8eb92120142753c49fc61fcce89" title="Initialize the TMC5160 driver with configuration." alt="" coords="140,104,352,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="93,95,129,100,128,105,92,101"/>
+<area shape="rect" id="Node000006" href="$classEsp32SPI.html#aa4931ec5eda8d9564173548a0a6631c7" title="Set pin mapping for a TMC5160 control pin." alt="" coords="153,155,339,180"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="71,103,103,122,141,140,168,148,166,153,139,144,101,127,68,108"/>
+<area shape="rect" id="Node000005" href="$tmc5160_8cpp.html#a6b5c74bc9056ff38815021d63986f681" title=" " alt="" coords="453,101,535,127"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="352,113,439,112,439,117,352,118"/>
+<area shape="rect" id="Node000007" href="$classtmc5160_1_1CommInterface.html#a371ba647c308b5cb3f8fdca5ff0bbf14" title="Configure the active level for a specific pin." alt="" coords="400,151,588,191"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="339,166,386,167,386,172,339,172"/>
+</map>

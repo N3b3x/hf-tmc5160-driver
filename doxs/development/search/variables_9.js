@@ -12,8 +12,10 @@ var searchData=
   ['latch_5fright_5finactive_9',['latch_right_inactive',['../structtmc5160_1_1ReferenceSwitchConfig.html#ae19e2acd4f86e0c05b7c87d94c2cd386',1,'tmc5160::ReferenceSwitchConfig']]],
   ['latch_5fx_5fact_10',['latch_x_act',['../uniontmc5160_1_1ENCMODE__Register.html#a47123d2c0dcb197f03961ad1574b93bd',1,'tmc5160::ENCMODE_Register::latch_x_act'],['../structtmc5160_1_1EncoderConfig.html#a8a456a8b431443a672c2f6a09b6ba0a0',1,'tmc5160::EncoderConfig::latch_x_act']]],
   ['lead_5fscrew_5fpitch_5fmm_11',['lead_screw_pitch_mm',['../structtmc5160_1_1MechanicalSystem.html#ad3428b94827098f6f759d60a87d78d71',1,'tmc5160::MechanicalSystem']]],
-  ['lead_5fscrew_5fpitch_5fmm_12',['LEAD_SCREW_PITCH_MM',['../unit__conversions_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370',1,'unit_conversions.cpp']]],
+  ['lead_5fscrew_5fpitch_5fmm_12',['LEAD_SCREW_PITCH_MM',['../ramp__control__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370',1,'ramp_control_comprehensive_test.cpp']]],
   ['local_5fmax_5fbound_5f_13',['local_max_bound_',['../classFatigueTestMotion.html#a2aaf6bf3cf4026a7f62f0a3947fbfc03',1,'FatigueTestMotion']]],
   ['local_5fmin_5fbound_5f_14',['local_min_bound_',['../classFatigueTestMotion.html#a905d65f7afc6bb7ad992e5296437ceb7',1,'FatigueTestMotion']]],
-  ['lost_5fsteps_15',['LOST_STEPS',['../namespacetmc5160_1_1Registers.html#a8a9750657716117b97c272f44398856f',1,'tmc5160::Registers']]]
+  ['locked_5f_15',['locked_',['../classTmcMutexGuard.html#a57ef84d5629c9f4ad53660b8a9747e7d',1,'TmcMutexGuard']]],
+  ['long_5fname_16',['long_name',['../structCommandArg.html#a0a484202a6f9ef4350cd979750154e15',1,'CommandArg']]],
+  ['lost_5fsteps_17',['LOST_STEPS',['../namespacetmc5160_1_1Registers.html#a8a9750657716117b97c272f44398856f',1,'tmc5160::Registers']]]
 ];

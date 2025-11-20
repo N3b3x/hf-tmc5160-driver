@@ -1,0 +1,7 @@
+<map id="UartCommandParser::ProcessUartCommands" name="UartCommandParser::ProcessUartCommands">
+<area shape="rect" id="Node000001" title="Read and process commands from UART." alt="" coords="343,5,517,45"/>
+<area shape="rect" id="Node000002" href="$bounds__finding__sinuous__motion_8cpp.html#a257128a931ab6472c0421a29abeb0443" title="UART command processing task." alt="" coords="140,13,295,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="329,28,295,28,295,23,329,23"/>
+<area shape="rect" id="Node000003" href="$bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,13,92,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,28,92,28,92,23,126,23"/>
+</map>

@@ -1,6 +1,6 @@
 var structtmc5160_1_1ReferenceSwitchConfig =
 [
-    [ "ReferenceSwitchConfig", "structtmc5160_1_1ReferenceSwitchConfig.html#a7fbc3cbd596594ad40ed2fe3e5f48adb", null ],
+    [ "ReferenceSwitchConfig", "structtmc5160_1_1ReferenceSwitchConfig.html#a2fe9e4e03427fee227897bf161e13603", null ],
     [ "en_latch_encoder", "structtmc5160_1_1ReferenceSwitchConfig.html#add0a50030b2fffaafdf9df7d5461ec55", null ],
     [ "en_softstop", "structtmc5160_1_1ReferenceSwitchConfig.html#ae2a0cb32f8ec89e8a6480bcf245334ff", null ],
     [ "latch_left_active", "structtmc5160_1_1ReferenceSwitchConfig.html#a1a4a5ac19912d749ddd6bdcf67bf7214", null ],

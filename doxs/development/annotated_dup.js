@@ -48,11 +48,19 @@ var annotated_dup =
       [ "TMC5160", "classtmc5160_1_1TMC5160.html", "classtmc5160_1_1TMC5160" ],
       [ "TMC5160DaisyChain", "classtmc5160_1_1TMC5160DaisyChain.html", "classtmc5160_1_1TMC5160DaisyChain" ],
       [ "TMC5160MultiNode", "classtmc5160_1_1TMC5160MultiNode.html", "classtmc5160_1_1TMC5160MultiNode" ],
+      [ "TMC5160PinConfig", "structtmc5160_1_1TMC5160PinConfig.html", "structtmc5160_1_1TMC5160PinConfig" ],
       [ "UartCommInterface", "classtmc5160_1_1UartCommInterface.html", "classtmc5160_1_1UartCommInterface" ],
       [ "UartFrame", "structtmc5160_1_1UartFrame.html", "structtmc5160_1_1UartFrame" ]
     ] ],
+    [ "CommandArg", "structCommandArg.html", "structCommandArg" ],
+    [ "CommandEntry", "structCommandEntry.html", "structCommandEntry" ],
     [ "Esp32SPI", "classEsp32SPI.html", "classEsp32SPI" ],
-    [ "Esp32UART", "classEsp32UART.html", "classEsp32UART" ],
+    [ "Esp32TmcMutex", "classEsp32TmcMutex.html", "classEsp32TmcMutex" ],
     [ "FatigueTestMotion", "classFatigueTestMotion.html", "classFatigueTestMotion" ],
-    [ "SinusoidalMotion", "classSinusoidalMotion.html", "classSinusoidalMotion" ]
+    [ "SinusoidalMotion", "classSinusoidalMotion.html", "classSinusoidalMotion" ],
+    [ "TestDriverHandle", "structTestDriverHandle.html", "structTestDriverHandle" ],
+    [ "TestResults", "structTestResults.html", "structTestResults" ],
+    [ "TestTaskContext", "structTestTaskContext.html", "structTestTaskContext" ],
+    [ "TmcMutexGuard", "classTmcMutexGuard.html", "classTmcMutexGuard" ],
+    [ "UartCommandParser", "classUartCommandParser.html", "classUartCommandParser" ]
 ];

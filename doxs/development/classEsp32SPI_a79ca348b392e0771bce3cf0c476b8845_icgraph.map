@@ -1,0 +1,5 @@
+<map id="Esp32SPI::ApplyPinConfig" name="Esp32SPI::ApplyPinConfig">
+<area shape="rect" id="Node000001" title="Apply pin configuration structure (handles compound pins automatically)" alt="" coords="201,5,388,31"/>
+<area shape="rect" id="Node000002" href="$classEsp32SPI.html#ad552c0d09f771a64ba4b77820eabea5e" title="Construct ESP32 SPI communication interface with pin configuration struct." alt="" coords="5,5,153,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,21,154,21,154,15,188,15"/>
+</map>
