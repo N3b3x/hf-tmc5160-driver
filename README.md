@@ -19,8 +19,8 @@ This branch contains the versioned documentation for this repository.
 
 - **Version**: development
 - **Type**: development
-- **Deployed**: 2025-11-19T17:37:58Z
-- **Commit**: d48b12911981888ad2caf0429efa31a395543f2e
+- **Deployed**: 2025-11-20T00:47:49Z
+- **Commit**: 0b7d82abbdf62769ed0d8e648b4fc39ac1b5f15b
 
 ---
 
