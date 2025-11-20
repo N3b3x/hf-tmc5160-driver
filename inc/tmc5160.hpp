@@ -188,17 +188,6 @@ public:
     return uart_node_address_;
   }
 
-protected:
-  /**
-   * @brief Get the appropriate address parameter for ReadRegister/WriteRegister
-   * @return daisy_chain_position_ for SPI, uart_node_address_ for UART
-   *
-   * This method is protected so that subsystem classes can access it.
-   */
-  [[nodiscard]] uint8_t GetCommAddress() const noexcept {
-    return (comm_.GetMode() == CommMode::UART) ? uart_node_address_ : daisy_chain_position_;
-  }
-
   /**
    * @brief Initialize the TMC5160 driver with configuration
    * @param config Driver configuration structure
@@ -215,20 +204,6 @@ protected:
    * 8. Configure global settings
    */
   bool Initialize(const DriverConfig &config = DriverConfig()) noexcept;
-
-  /**
-   * @brief Reset the TMC5160 driver
-   * @return true if reset succeeded, false otherwise
-   *
-   * Performs a software reset by writing to the GSTAT register.
-   */
-  bool Reset() noexcept;
-
-  /**
-   * @brief Check if the driver is initialized
-   * @return true if initialized, false otherwise
-   */
-  [[nodiscard]] bool IsInitialized() const noexcept { return initialized_; }
 
   // @}
 
@@ -893,6 +868,31 @@ protected:
   } protection{*this};
 
   // @}
+
+protected:
+  /**
+   * @brief Get the appropriate address parameter for ReadRegister/WriteRegister
+   * @return daisy_chain_position_ for SPI, uart_node_address_ for UART
+   *
+   * This method is protected so that subsystem classes can access it.
+   */
+  [[nodiscard]] uint8_t GetCommAddress() const noexcept {
+    return (comm_.GetMode() == CommMode::UART) ? uart_node_address_ : daisy_chain_position_;
+  }
+
+  /**
+   * @brief Reset the TMC5160 driver
+   * @return true if reset succeeded, false otherwise
+   *
+   * Performs a software reset by writing to the GSTAT register.
+   */
+  bool Reset() noexcept;
+
+  /**
+   * @brief Check if the driver is initialized
+   * @return true if initialized, false otherwise
+   */
+  [[nodiscard]] bool IsInitialized() const noexcept { return initialized_; }
 
 private:
   CommType &comm_;            ///< Communication interface reference
