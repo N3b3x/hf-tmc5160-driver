@@ -1,8 +1,8 @@
 <map id="tmc5160::UartCommInterface::UartSend" name="tmc5160::UartCommInterface::UartSend">
 <area shape="rect" id="Node000001" title="Send raw bytes via UART." alt="" coords="269,37,485,77"/>
 <area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="422,26,407,19,377,16,352,18,336,23,331,29,333,36,328,38,325,28,333,18,351,13,377,11,408,13,425,21"/>
-<area shape="rect" id="Node000002" href="$classtmc5160_1_1UartCommInterface.html#a24e0c2df30575aa2ddae36c837060539" title="Read a 32&#45;bit register via UART." alt="" coords="5,5,221,45"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1UartCommInterface.html#a64b75cdc47fd603833f23a196faa9375" title="Read a 32&#45;bit register via UART." alt="" coords="5,5,221,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="256,45,221,41,222,36,256,40"/>
-<area shape="rect" id="Node000003" href="$classtmc5160_1_1UartCommInterface.html#addcfde992781a891bd972314ebcd0bb8" title="Write a 32&#45;bit register via UART." alt="" coords="5,69,221,109"/>
+<area shape="rect" id="Node000003" href="$classtmc5160_1_1UartCommInterface.html#a404c95887d9f030faae597b9f7ee4c7b" title="Write a 32&#45;bit register via UART." alt="" coords="5,69,221,109"/>
 <area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="256,75,222,79,221,74,256,69"/>
 </map>

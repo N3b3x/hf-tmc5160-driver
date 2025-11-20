@@ -578,9 +578,13 @@ In)
 <p><strong>How Daisy-Chain Padding Works:</strong></p>
 
 <ol>
-  <li>Each <code class="language-plaintext highlighter-rouge">TMC5160</code> instance stores its own <code class="language-plaintext highlighter-rouge">daisy_chain_position_</code> (set in constructor or via <code class="language-plaintext highlighter-rouge">SetDaisyChainPosition()</code>)</li>
-  <li>When <code class="language-plaintext highlighter-rouge">ReadRegister()</code> or <code class="language-plaintext highlighter-rouge">WriteRegister()</code> is called, the driver passes its <code class="language-plaintext highlighter-rouge">daisy_chain_position_</code> to the communication interface</li>
-  <li>The <code class="language-plaintext highlighter-rouge">SpiCommInterface</code> calculates the correct transfer size and padding:
+  <li>Each <code class="language-plaintext highlighter-rouge">TMC5160</code> instance stores its own <code class="language-plaintext highlighter-rouge">daisy_chain_position_</code> (set in constructor or via <code class="language-plaintext highlighter-rouge">SetDaisyChainPosition()</code>)
+    <ul>
+      <li><strong>Important</strong>: Position is tracked by the <code class="language-plaintext highlighter-rouge">TMC5160</code> class, NOT by the communication interface</li>
+    </ul>
+  </li>
+  <li>When <code class="language-plaintext highlighter-rouge">ReadRegister()</code> or <code class="language-plaintext highlighter-rouge">WriteRegister()</code> is called, the driver automatically passes its <code class="language-plaintext highlighter-rouge">daisy_chain_position_</code> as a parameter to the communication interface methods</li>
+  <li>The <code class="language-plaintext highlighter-rouge">SpiCommInterface</code> uses the position parameter along with the total chain length (set via <code class="language-plaintext highlighter-rouge">SetDaisyChainLength()</code>) to calculate the correct transfer size and padding:
     <ul>
       <li>Position 0: 5 bytes (command only)</li>
       <li>Position 1: 10 bytes (command + 5 bytes padding)</li>
@@ -710,6 +714,60 @@ In)
 <p><strong>Note:</strong> The <code class="language-plaintext highlighter-rouge">TMC5160DaisyChain</code> class automatically handles proper chain length
 configuration and sequential positioning. Individual <code class="language-plaintext highlighter-rouge">TMC5160</code> instances can also
 be created manually, but users must ensure positions match the physical chain order.</p>
+<h3 id="auto-detecting-chain-length">
+  
+  
+    <a href="#auto-detecting-chain-length" class="anchor-heading" aria-labelledby="auto-detecting-chain-length"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Auto-Detecting Chain Length
+  
+  
+</h3>
+    
+
+<p>The <code class="language-plaintext highlighter-rouge">SpiCommInterface</code> provides an <code class="language-plaintext highlighter-rouge">AutoDetectChainLength()</code> method that can automatically
+detect the number of devices in the daisy chain by sending a unique command that loops back:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="c1">// Auto-detect chain length (probes up to 8 devices by default)</span>
+<span class="kt">uint8_t</span> <span class="n">detected</span> <span class="o">=</span> <span class="n">spi</span><span class="p">.</span><span class="n">AutoDetectChainLength</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">detected</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Chain length automatically set, can also use return value</span>
+  <span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s">"Detected %u devices in chain"</span><span class="p">,</span> <span class="n">detected</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="c1">// Detection failed or single chip</span>
+  <span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s">"Single chip or detection failed"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Or specify max devices to probe</span>
+<span class="kt">uint8_t</span> <span class="n">detected</span> <span class="o">=</span> <span class="n">spi</span><span class="p">.</span><span class="n">AutoDetectChainLength</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span> <span class="c1">// Probe up to 16 devices</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>How It Works:</strong></p>
+<ol>
+  <li>Sends a unique read command (register 0x73) to position <code class="language-plaintext highlighter-rouge">(max_devices+1)</code> (beyond last device)</li>
+  <li>Sends enough padding to allow command to loop through all devices and back</li>
+  <li>Searches received data for the exact command pattern</li>
+  <li>When found at offset <code class="language-plaintext highlighter-rouge">(n+1)*5</code> bytes, chain length = <code class="language-plaintext highlighter-rouge">n</code></li>
+  <li>Automatically sets the chain length via <code class="language-plaintext highlighter-rouge">SetDaisyChainLength()</code></li>
+</ol>
+
+<p><strong>Important Notes:</strong></p>
+<ul>
+  <li>Requires devices to be powered (but don’t need to be initialized)</li>
+  <li>Uses a safe read operation that doesn’t modify device state</li>
+  <li>Requires exact 5-byte pattern match to confirm loopback</li>
+  <li>Returns 0 if detection fails (assumes single chip)</li>
+</ul>
 <h2 id="uart-multi-node-addressing">
   
   
@@ -718,6 +776,8 @@ be created manually, but users must ensure positions match the physical chain or
   
 </h2>
     
+
+<p><strong>Important</strong>: UART multi-node addressing is <strong>NOT</strong> daisy-chaining like SPI. It uses a shared UART bus with node addresses (0-254) programmed via SLAVECONF register. Multiple TMC5160 instances share one <code class="language-plaintext highlighter-rouge">UartCommInterface</code> on the same UART bus. <strong>Per datasheet procedure, devices are programmed backwards starting from address 254</strong> (254, 253, 252, …).</p>
 <h3 id="uart-mode-requirements">
   
   
@@ -727,7 +787,7 @@ be created manually, but users must ensure positions match the physical chain or
 </h3>
     
 
-<p>For UART daisy chaining, the TMC5160 must be configured in UART mode:</p>
+<p>For UART multi-node addressing, the TMC5160 must be configured in UART mode:</p>
 
 <ul>
   <li><strong>SD_MODE</strong> (pin 21): Must be tied <strong>LOW</strong> (0)</li>
@@ -743,7 +803,7 @@ be created manually, but users must ensure positions match the physical chain or
 </h3>
     
 
-<p>In UART mode (SD_MODE=0, SPI_MODE=0), certain pins take on special functions for daisy chaining:</p>
+<p>In UART mode (SD_MODE=0, SPI_MODE=0), certain pins take on special functions for sequential addressing:</p>
 
 <div class="table-wrapper"><table>
   <thead>
@@ -903,7 +963,10 @@ MCU GND        |
 <ul>
   <li>Use the sequential addressing procedure described below</li>
   <li>Each device must be programmed sequentially</li>
-  <li>First device starts at address 0, then each device is programmed to its target address</li>
+  <li><strong>Per datasheet Figure 5.1, devices are programmed backwards from address 254</strong> (254, 253, 252, …)</li>
+  <li>First device (logical index 0) is programmed to address 254</li>
+  <li>Second device (logical index 1) is programmed to address 253</li>
+  <li>Continue: device at logical index i is programmed to address (254 - i)</li>
 </ul>
 <h3 id="sequential-addressing-procedure">
   
@@ -914,35 +977,36 @@ MCU GND        |
 </h3>
     
 
-<p>To program addresses for multiple chips (up to 255 nodes):</p>
+<p>To program addresses for multiple chips (up to 255 nodes), follow the datasheet procedure (Figure 5.1):</p>
 
-<p><strong>Initial State:</strong></p>
+<p><strong>Initial State at Power-Up:</strong></p>
 <ul>
   <li>First chip: NAI tied to GND → responds to address 0</li>
-  <li>All other chips: NAI connected to previous chip’s NAO → initially respond to address 1</li>
+  <li>All other chips: NAI connected to previous chip’s NAO (HIGH) → initially respond to address 1</li>
 </ul>
 
-<p><strong>Programming Sequence:</strong></p>
+<p><strong>Programming Sequence (Per Datasheet):</strong></p>
 
 <ol>
   <li><strong>Addressing Phase 1</strong>: First chip responds to address 0 (NAI = GND)
     <ul>
-      <li>Program first chip to its target address (e.g., address 1)</li>
-      <li>Set SLAVECONF.slaveaddr = 1</li>
-      <li><strong>Important</strong>: After programming, the chip’s NAO must be set LOW to enable the next chip</li>
+      <li>Program first chip (logical index 0) to address <strong>254</strong></li>
+      <li>Set SLAVECONF.slaveaddr = 254</li>
+      <li><strong>After programming, the chip’s NAO automatically goes LOW</strong> → next chip becomes accessible at address 0</li>
     </ul>
   </li>
-  <li><strong>Addressing Phase 2</strong>: Second chip now responds to address 1
+  <li><strong>Addressing Phase 2</strong>: Second chip now responds to address 0 (because previous chip’s NAO is LOW)
     <ul>
-      <li>Program second chip to its target address (e.g., address 2)</li>
-      <li>Set SLAVECONF.slaveaddr = 2</li>
-      <li>Set NAO LOW to enable next chip</li>
+      <li>Program second chip (logical index 1) to address <strong>253</strong></li>
+      <li>Set SLAVECONF.slaveaddr = 253</li>
+      <li>After programming, NAO goes LOW → next chip becomes accessible at address 0</li>
     </ul>
   </li>
   <li><strong>Addressing Phase 3+</strong>: Continue for remaining chips
     <ul>
-      <li>Each chip is programmed sequentially</li>
-      <li>After programming, set NAO LOW to enable the next chip in the chain</li>
+      <li>Each chip is programmed sequentially, accessible at address 0</li>
+      <li>Device at logical index i is programmed to address <strong>(254 - i)</strong></li>
+      <li>After programming, NAO goes LOW automatically → next chip becomes accessible at address 0</li>
       <li>Continue until all chips are programmed</li>
     </ul>
   </li>
@@ -952,10 +1016,12 @@ MCU GND        |
 <ul>
   <li>Tie the NAI pin of the first TMC5160 to GND</li>
   <li>Interconnect NAO output of each chip to the next chip’s NAI pin</li>
-  <li>Program each chip sequentially, starting from address 0</li>
-  <li><strong>After programming each chip, its NAO output must be set to logic LOW</strong> to differentiate the next chip from all following devices</li>
-  <li>The next chip becomes accessible only after the previous chip’s NAO is set LOW</li>
+  <li><strong>Program devices backwards from address 254</strong> (254, 253, 252, …) per datasheet</li>
+  <li>After programming each chip, its NAO output automatically goes LOW to enable the next chip</li>
+  <li>The next chip becomes accessible at address 0 only after the previous chip’s NAO is LOW</li>
 </ul>
+
+<p><strong>Note</strong>: The logical device indices (0, 1, 2, …) used in software correspond to physical addresses (254, 253, 252, …) programmed into the chips. This follows the datasheet procedure for addressing up to 255 nodes.</p>
 <h3 id="software-implementation-1">
   
   
@@ -964,16 +1030,32 @@ MCU GND        |
   
 </h3>
     
-<h4 id="configure-slave-address">
+<h4 id="architecture">
   
   
-    <a href="#configure-slave-address" class="anchor-heading" aria-labelledby="configure-slave-address"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configure Slave Address
+    <a href="#architecture" class="anchor-heading" aria-labelledby="architecture"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Architecture
   
   
 </h4>
     
 
-<p>Use the <code class="language-plaintext highlighter-rouge">Communication</code> subsystem to configure slave addresses:</p>
+<ul>
+  <li><strong>One UartCommInterface</strong>: Shared by all TMC5160 instances on the same UART bus</li>
+  <li><strong>Multiple TMC5160 Instances</strong>: One per device, each with its own programmed node address</li>
+  <li><strong>Node Address Storage</strong>: Each <code class="language-plaintext highlighter-rouge">TMC5160</code> instance stores its own <code class="language-plaintext highlighter-rouge">uart_node_address_</code> (like <code class="language-plaintext highlighter-rouge">daisy_chain_position_</code> for SPI)</li>
+  <li><strong>ReadRegister/WriteRegister</strong>: Accept <code class="language-plaintext highlighter-rouge">node_address</code> parameter (UART uses this, SPI uses <code class="language-plaintext highlighter-rouge">daisy_chain_position</code>)</li>
+  <li><strong>Logical vs Physical Addressing</strong>: Devices are accessed via logical indices (0, 1, 2, …) but programmed with physical addresses (254, 253, 252, …) per datasheet</li>
+</ul>
+<h4 id="configure-node-address-manual-method">
+  
+  
+    <a href="#configure-node-address-manual-method" class="anchor-heading" aria-labelledby="configure-node-address-manual-method"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configure Node Address (Manual Method)
+  
+  
+</h4>
+    
+
+<p>For manual programming without the manager class:</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -983,14 +1065,48 @@ MCU GND        |
 6
 7
 8
-</pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="nf">driver</span><span class="p">(</span><span class="n">uart_comm</span><span class="p">);</span>
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+</pre></td><td class="rouge-code"><pre><span class="c1">// Create shared UART communication interface</span>
+<span class="n">MyUART</span> <span class="nf">uart_comm</span><span class="p">(</span><span class="cm">/* ... */</span><span class="p">);</span>
 
-<span class="c1">// Configure slave address for this chip</span>
-<span class="c1">// send_delay should be &gt;1 when multiple slaves are present</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">communication</span><span class="p">.</span><span class="n">ConfigureSlaveAddress</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// Address 1, delay 2 bit times</span>
+<span class="c1">// Create TMC5160 instances (initial address 0, will be programmed)</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="nf">driver0</span><span class="p">(</span><span class="n">uart_comm</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// Logical index 0</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="nf">driver1</span><span class="p">(</span><span class="n">uart_comm</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// Logical index 1</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="nf">driver2</span><span class="p">(</span><span class="n">uart_comm</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// Logical index 2</span>
 
-<span class="c1">// Get current slave address</span>
-<span class="kt">uint8_t</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">communication</span><span class="p">.</span><span class="n">GetSlaveAddress</span><span class="p">();</span>
+<span class="c1">// Program devices sequentially per datasheet (backwards from 254)</span>
+<span class="c1">// First chip: accessible at address 0, program to address 254</span>
+<span class="n">driver0</span><span class="p">.</span><span class="n">uartConfig</span><span class="p">.</span><span class="n">ConfigureSlave</span><span class="p">(</span><span class="mi">254</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// Address 254, delay 2 bit times</span>
+<span class="n">driver0</span><span class="p">.</span><span class="n">SetUartNodeAddress</span><span class="p">(</span><span class="mi">254</span><span class="p">);</span>
+<span class="c1">// After programming, NAO goes LOW → next chip accessible at address 0</span>
+
+<span class="c1">// Second chip: accessible at address 0, program to address 253</span>
+<span class="n">driver1</span><span class="p">.</span><span class="n">uartConfig</span><span class="p">.</span><span class="n">ConfigureSlave</span><span class="p">(</span><span class="mi">253</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// Address 253, delay 2 bit times</span>
+<span class="n">driver1</span><span class="p">.</span><span class="n">SetUartNodeAddress</span><span class="p">(</span><span class="mi">253</span><span class="p">);</span>
+<span class="c1">// After programming, NAO goes LOW → next chip accessible at address 0</span>
+
+<span class="c1">// Third chip: accessible at address 0, program to address 252</span>
+<span class="n">driver2</span><span class="p">.</span><span class="n">uartConfig</span><span class="p">.</span><span class="n">ConfigureSlave</span><span class="p">(</span><span class="mi">252</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// Address 252, delay 2 bit times</span>
+<span class="n">driver2</span><span class="p">.</span><span class="n">SetUartNodeAddress</span><span class="p">(</span><span class="mi">252</span><span class="p">);</span>
+
+<span class="c1">// Get current node address</span>
+<span class="kt">uint8_t</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">driver0</span><span class="p">.</span><span class="n">GetUartNodeAddress</span><span class="p">();</span> <span class="c1">// Returns 254</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h4 id="nainao-pin-control">
   
@@ -1042,16 +1158,16 @@ MCU GND        |
   <span class="c1">// ... other required methods ...</span>
 <span class="p">};</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
-<h4 id="sequential-address-programming-example">
+<h4 id="using-tmc5160multinode-manager-class-recommended">
   
   
-    <a href="#sequential-address-programming-example" class="anchor-heading" aria-labelledby="sequential-address-programming-example"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Sequential Address Programming Example
+    <a href="#using-tmc5160multinode-manager-class-recommended" class="anchor-heading" aria-labelledby="using-tmc5160multinode-manager-class-recommended"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Using TMC5160MultiNode Manager Class (Recommended)
   
   
 </h4>
     
 
-<p>Here’s a complete example for programming multiple chips sequentially:</p>
+<p>The easiest way to manage multiple UART nodes is using the <code class="language-plaintext highlighter-rouge">TMC5160MultiNode</code> class:</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -1092,112 +1208,56 @@ MCU GND        |
 37
 38
 39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-</pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"tmc5160.hpp"</span><span class="cp">
+</pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"tmc5160_multi_node.hpp"</span><span class="cp">
 </span>
-<span class="c1">// Helper function to program a chip and enable the next one</span>
-<span class="kt">bool</span> <span class="nf">programChipAndEnableNext</span><span class="p">(</span><span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span><span class="o">&amp;</span> <span class="n">driver</span><span class="p">,</span> 
-                               <span class="kt">uint8_t</span> <span class="n">target_address</span><span class="p">,</span>
-                               <span class="n">MyUART</span><span class="o">&amp;</span> <span class="n">uart_interface</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// Configure slave address (send_delay should be &gt;= 2 for multi-node systems)</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">driver</span><span class="p">.</span><span class="n">communication</span><span class="p">.</span><span class="n">ConfigureSlaveAddress</span><span class="p">(</span><span class="n">target_address</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-  <span class="p">}</span>
-  
-  <span class="c1">// Update the UART interface's slave address for subsequent operations</span>
-  <span class="n">uart_interface</span><span class="p">.</span><span class="n">SetSlaveAddress</span><span class="p">(</span><span class="n">target_address</span><span class="p">);</span>
-  
-  <span class="c1">// Verify the address was set correctly</span>
-  <span class="kt">uint8_t</span> <span class="n">read_addr</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">communication</span><span class="p">.</span><span class="n">GetSlaveAddress</span><span class="p">();</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">read_addr</span> <span class="o">!=</span> <span class="n">target_address</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-  <span class="p">}</span>
-  
-  <span class="c1">// After programming, the chip's NAO should be LOW to enable next chip</span>
-  <span class="c1">// In hardware, NAO is automatically controlled, but you may need to verify</span>
-  <span class="kt">bool</span> <span class="n">nao_state</span><span class="p">;</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">uart_interface</span><span class="p">.</span><span class="n">GetNaoPin</span><span class="p">(</span><span class="n">nao_state</span><span class="p">))</span> <span class="p">{</span>
-    <span class="c1">// NAO should be LOW after programming to enable next chip</span>
-    <span class="c1">// If it's HIGH, the next chip won't be accessible</span>
-  <span class="p">}</span>
-  
-  <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="c1">// Create shared UART communication interface</span>
+<span class="n">MyUART</span> <span class="nf">uart_comm</span><span class="p">(</span><span class="cm">/* ... constructor args ... */</span><span class="p">);</span>
+
+<span class="c1">// Create multi-node manager with 3 onboard devices, capacity for 5 total</span>
+<span class="c1">// Onboard devices are created with initial address 0 (will be programmed)</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160MultiNode</span><span class="o">&lt;</span><span class="n">MyUART</span><span class="p">,</span> <span class="mi">5</span><span class="o">&gt;</span> <span class="n">nodes</span><span class="p">(</span><span class="n">uart_comm</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">);</span>
+
+<span class="c1">// Program all devices sequentially (required at startup)</span>
+<span class="c1">// This programs devices to addresses 254, 253, 252 per datasheet procedure</span>
+<span class="c1">// Device at logical index 0 → address 254</span>
+<span class="c1">// Device at logical index 1 → address 253</span>
+<span class="c1">// Device at logical index 2 → address 252</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">nodes</span><span class="p">.</span><span class="n">ProgramSequentially</span><span class="p">())</span> <span class="p">{</span>
+  <span class="c1">// Error handling</span>
+  <span class="k">return</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">programSlaveAddresses</span><span class="p">()</span> <span class="p">{</span>
-  <span class="n">MyUART</span> <span class="n">uart</span><span class="p">(</span><span class="cm">/* ... constructor args ... */</span><span class="p">);</span>
-  
-  <span class="c1">// First chip: NAI is tied to GND in hardware (responds to address 0)</span>
-  <span class="n">uart</span><span class="p">.</span><span class="n">SetSlaveAddress</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-  <span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="n">driver1</span><span class="p">(</span><span class="n">uart</span><span class="p">);</span>
-  
-  <span class="c1">// Program first chip to address 1</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">programChipAndEnableNext</span><span class="p">(</span><span class="n">driver1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">uart</span><span class="p">))</span> <span class="p">{</span>
-    <span class="c1">// Error handling</span>
-    <span class="k">return</span><span class="p">;</span>
-  <span class="p">}</span>
-  
-  <span class="c1">// Second chip: Now responds to address 1 (NAI connected to chip 1's NAO)</span>
-  <span class="n">uart</span><span class="p">.</span><span class="n">SetSlaveAddress</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-  <span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="n">driver2</span><span class="p">(</span><span class="n">uart</span><span class="p">);</span>
-  
-  <span class="c1">// Program second chip to address 2</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">programChipAndEnableNext</span><span class="p">(</span><span class="n">driver2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">uart</span><span class="p">))</span> <span class="p">{</span>
-    <span class="c1">// Error handling</span>
-    <span class="k">return</span><span class="p">;</span>
-  <span class="p">}</span>
-  
-  <span class="c1">// Third chip: Now responds to address 2</span>
-  <span class="n">uart</span><span class="p">.</span><span class="n">SetSlaveAddress</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-  <span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="n">driver3</span><span class="p">(</span><span class="n">uart</span><span class="p">);</span>
-  
-  <span class="c1">// Program third chip to address 3</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">programChipAndEnableNext</span><span class="p">(</span><span class="n">driver3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">uart</span><span class="p">))</span> <span class="p">{</span>
-    <span class="c1">// Error handling</span>
-    <span class="k">return</span><span class="p">;</span>
-  <span class="p">}</span>
-  
-  <span class="c1">// Continue for remaining chips...</span>
-  <span class="c1">// Each chip must be programmed sequentially</span>
-<span class="p">}</span>
+<span class="c1">// Initialize all devices</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="n">nodes</span><span class="p">.</span><span class="n">InitializeAll</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+
+<span class="c1">// Create user-friendly aliases using logical indices</span>
+<span class="k">auto</span><span class="o">&amp;</span> <span class="n">x_axis</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>  <span class="c1">// Logical index 0, programmed to address 254</span>
+<span class="k">auto</span><span class="o">&amp;</span> <span class="n">y_axis</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>  <span class="c1">// Logical index 1, programmed to address 253</span>
+<span class="k">auto</span><span class="o">&amp;</span> <span class="n">z_axis</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>  <span class="c1">// Logical index 2, programmed to address 252</span>
+
+<span class="c1">// Use devices (access via logical indices, communication uses programmed addresses)</span>
+<span class="n">x_axis</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<span class="n">y_axis</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">500.0</span><span class="n">f</span><span class="p">);</span>
+<span class="n">z_axis</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+
+<span class="c1">// Check actual programmed addresses</span>
+<span class="kt">uint8_t</span> <span class="n">x_addr</span> <span class="o">=</span> <span class="n">x_axis</span><span class="p">.</span><span class="n">GetUartNodeAddress</span><span class="p">();</span> <span class="c1">// Returns 254</span>
+<span class="kt">uint8_t</span> <span class="n">y_addr</span> <span class="o">=</span> <span class="n">y_axis</span><span class="p">.</span><span class="n">GetUartNodeAddress</span><span class="p">();</span> <span class="c1">// Returns 253</span>
+<span class="kt">uint8_t</span> <span class="n">z_addr</span> <span class="o">=</span> <span class="n">z_axis</span><span class="p">.</span><span class="n">GetUartNodeAddress</span><span class="p">();</span> <span class="c1">// Returns 252</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
-<h4 id="alternative-program-all-chips-to-sequential-addresses">
+<h4 id="manual-sequential-programming-example">
   
   
-    <a href="#alternative-program-all-chips-to-sequential-addresses" class="anchor-heading" aria-labelledby="alternative-program-all-chips-to-sequential-addresses"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Alternative: Program All Chips to Sequential Addresses
+    <a href="#manual-sequential-programming-example" class="anchor-heading" aria-labelledby="manual-sequential-programming-example"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Manual Sequential Programming Example
   
   
 </h4>
     
 
-<p>For a system where you want chips at addresses 1, 2, 3, …, N:</p>
+<p>For manual control without the manager class:</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -1230,32 +1290,48 @@ MCU GND        |
 29
 30
 31
-</pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">programAllChipsSequentially</span><span class="p">(</span><span class="n">MyUART</span><span class="o">&amp;</span> <span class="n">uart</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">num_chips</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// First chip starts at address 0 (NAI tied to GND)</span>
-  <span class="n">uart</span><span class="p">.</span><span class="n">SetSlaveAddress</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-  
+32
+33
+34
+35
+36
+37
+38
+39
+</pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"tmc5160.hpp"</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">programAllChipsSequentially</span><span class="p">(</span><span class="n">MyUART</span><span class="o">&amp;</span> <span class="n">uart</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">num_chips</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Create TMC5160 instances (initial address 0, will be programmed)</span>
+  <span class="c1">// All instances share the same UartCommInterface</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span><span class="o">&lt;</span><span class="n">MyUART</span><span class="o">&gt;&gt;</span> <span class="n">drivers</span><span class="p">;</span>
   <span class="k">for</span> <span class="p">(</span><span class="kt">uint8_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_chips</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// Create driver instance for current chip</span>
-    <span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="n">driver</span><span class="p">(</span><span class="n">uart</span><span class="p">);</span>
+    <span class="n">drivers</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">uart</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// f_clk, daisy_pos=0, initial uart_addr=0</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// Program each device sequentially per datasheet (backwards from 254)</span>
+  <span class="c1">// First chip: NAI is tied to GND (hardware) → responds to address 0</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">uint8_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_chips</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Calculate target address: 254 - i (per datasheet)</span>
+    <span class="kt">uint8_t</span> <span class="n">target_address</span> <span class="o">=</span> <span class="mi">254</span> <span class="o">-</span> <span class="n">i</span><span class="p">;</span>
     
-    <span class="c1">// Target address is i+1 (chips will be at addresses 1, 2, 3, ...)</span>
-    <span class="kt">uint8_t</span> <span class="n">target_addr</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
-    
-    <span class="c1">// Program chip to target address</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">driver</span><span class="p">.</span><span class="n">communication</span><span class="p">.</span><span class="n">ConfigureSlaveAddress</span><span class="p">(</span><span class="n">target_addr</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// Program device to target address</span>
+    <span class="c1">// send_delay should be &gt;= 2 for multi-node systems</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">drivers</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">uartConfig</span><span class="p">.</span><span class="n">ConfigureSlave</span><span class="p">(</span><span class="n">target_address</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="p">{</span>
       <span class="c1">// Error: failed to program chip</span>
       <span class="k">break</span><span class="p">;</span>
     <span class="p">}</span>
     
-    <span class="c1">// Update UART interface address for next iteration</span>
-    <span class="n">uart</span><span class="p">.</span><span class="n">SetSlaveAddress</span><span class="p">(</span><span class="n">target_addr</span><span class="p">);</span>
+    <span class="c1">// Update the driver's node address</span>
+    <span class="n">drivers</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">SetUartNodeAddress</span><span class="p">(</span><span class="n">target_address</span><span class="p">);</span>
     
+    <span class="c1">// After programming, chip's NAO goes LOW automatically to enable next chip</span>
+    <span class="c1">// Next chip becomes accessible at address 0</span>
     <span class="c1">// Small delay to ensure NAO settles</span>
     <span class="n">uart</span><span class="p">.</span><span class="n">DelayMs</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
     
     <span class="c1">// Verify address</span>
-    <span class="kt">uint8_t</span> <span class="n">verify_addr</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">communication</span><span class="p">.</span><span class="n">GetSlaveAddress</span><span class="p">();</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">verify_addr</span> <span class="o">!=</span> <span class="n">target_addr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">uint8_t</span> <span class="n">verify_addr</span> <span class="o">=</span> <span class="n">drivers</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetUartNodeAddress</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">verify_addr</span> <span class="o">!=</span> <span class="n">target_address</span><span class="p">)</span> <span class="p">{</span>
       <span class="c1">// Error: address verification failed</span>
       <span class="k">break</span><span class="p">;</span>
     <span class="p">}</span>
@@ -1299,11 +1375,11 @@ MCU GND        |
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ReadRegister(address, value, daisy_chain_position = 0)</code></td>
-      <td>Read register with optional daisy-chain position</td>
+      <td>Read register with optional daisy-chain position parameter</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">WriteRegister(address, value, daisy_chain_position = 0)</code></td>
-      <td>Write register with optional daisy-chain position</td>
+      <td>Write register with optional daisy-chain position parameter</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetDaisyChainLength(total_length)</code></td>
@@ -1313,8 +1389,14 @@ MCU GND        |
       <td><code class="language-plaintext highlighter-rouge">GetDaisyChainLength()</code></td>
       <td>Get current chain length setting</td>
     </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">AutoDetectChainLength(max_devices = 8)</code></td>
+      <td>Auto-detect chain length by sending command that loops back</td>
+    </tr>
   </tbody>
 </table></div>
+
+<p><strong>Note</strong>: The <code class="language-plaintext highlighter-rouge">daisy_chain_position</code> parameter in <code class="language-plaintext highlighter-rouge">ReadRegister()</code> and <code class="language-plaintext highlighter-rouge">WriteRegister()</code> is provided by the <code class="language-plaintext highlighter-rouge">TMC5160</code> class automatically. The <code class="language-plaintext highlighter-rouge">SpiCommInterface</code> does NOT track individual device positions - only the total chain length.</p>
 <h3 id="uart-methods">
   
   
@@ -1333,24 +1415,96 @@ MCU GND        |
   </thead>
   <tbody>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">SetSlaveAddress(address)</code></td>
-      <td>Set 7-bit slave address (0-127)</td>
+      <td><code class="language-plaintext highlighter-rouge">ReadRegister(address, value, node_address = 0)</code></td>
+      <td>Read register with node address parameter</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">GetSlaveAddress()</code></td>
-      <td>Get current slave address</td>
+      <td><code class="language-plaintext highlighter-rouge">WriteRegister(address, value, node_address = 0)</code></td>
+      <td>Write register with node address parameter</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetNaiPin(active)</code></td>
-      <td>Set NAI pin state for daisy chaining</td>
+      <td>Set NAI pin state for sequential addressing</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetNaoPin(active)</code></td>
       <td>Read NAO pin state</td>
     </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Note</strong>: The <code class="language-plaintext highlighter-rouge">node_address</code> parameter in <code class="language-plaintext highlighter-rouge">ReadRegister()</code> and <code class="language-plaintext highlighter-rouge">WriteRegister()</code> is provided by the <code class="language-plaintext highlighter-rouge">TMC5160</code> class automatically via <code class="language-plaintext highlighter-rouge">GetCommAddress()</code>. The <code class="language-plaintext highlighter-rouge">UartCommInterface</code> does NOT store node addresses - multiple <code class="language-plaintext highlighter-rouge">TMC5160</code> instances share one <code class="language-plaintext highlighter-rouge">UartCommInterface</code> on the same UART bus.</p>
+<h3 id="tmc5160-class-methods-uart">
+  
+  
+    <a href="#tmc5160-class-methods-uart" class="anchor-heading" aria-labelledby="tmc5160-class-methods-uart"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> TMC5160 Class Methods (UART)
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">ConfigureSlaveAddress(address, send_delay)</code></td>
-      <td>Configure SLAVECONF register</td>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetUartNodeAddress(address)</code></td>
+      <td>Set UART node address (0-127) for this instance</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetUartNodeAddress()</code></td>
+      <td>Get current UART node address</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">uartConfig.ConfigureSlave(address, send_delay)</code></td>
+      <td>Configure SLAVECONF register with node address</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="tmc5160multinode-manager-class">
+  
+  
+    <a href="#tmc5160multinode-manager-class" class="anchor-heading" aria-labelledby="tmc5160multinode-manager-class"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> TMC5160MultiNode Manager Class
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ProgramSequentially(send_delay = 2)</code></td>
+      <td>Program all active devices sequentially using NAI/NAO. Programs devices to addresses (254, 253, 252, …) per datasheet.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ProgramDevice(index, send_delay = 2)</code></td>
+      <td>Program a single device at logical index to address (254 - index)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">AddDevice(index)</code></td>
+      <td>Add an extra device at specified logical index</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">RemoveDevice(index)</code></td>
+      <td>Remove an extra device at specified logical index</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">operator[](index)</code></td>
+      <td>Access individual TMC5160 driver by logical index (0, 1, 2, …). Actual programmed addresses are (254, 253, 252, …).</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">InitializeAll(config)</code></td>
+      <td>Initialize all active devices with same configuration</td>
     </tr>
   </tbody>
 </table></div>
@@ -1371,15 +1525,19 @@ MCU GND        |
       <li>CSN control is handled in your <code class="language-plaintext highlighter-rouge">SpiTransfer()</code> implementation</li>
       <li>Use <code class="language-plaintext highlighter-rouge">TMC5160DaisyChain</code> class for managing multiple devices efficiently</li>
       <li>Set chain length using <code class="language-plaintext highlighter-rouge">SetDaisyChainLength()</code> for proper response extraction</li>
+      <li>Optionally use <code class="language-plaintext highlighter-rouge">AutoDetectChainLength()</code> to automatically detect chain length</li>
     </ul>
   </li>
   <li><strong>UART Multi-Node</strong>:
     <ul>
       <li><strong>Mode Configuration</strong>: Ensure SD_MODE=0 and SPI_MODE=0 for UART operation</li>
       <li><strong>Hardware Setup</strong>: First chip’s NAI must be tied to GND; chain NAO→NAI for subsequent chips</li>
-      <li><strong>Send Delay</strong>: Set <code class="language-plaintext highlighter-rouge">send_delay</code> &gt;= 2 when multiple slaves are present (via <code class="language-plaintext highlighter-rouge">ConfigureSlaveAddress()</code>)</li>
-      <li><strong>Sequential Programming</strong>: Program addresses sequentially starting from address 0</li>
-      <li><strong>NAO Control</strong>: After programming each chip, its NAO must be LOW to enable the next chip</li>
+      <li><strong>Shared Interface</strong>: Multiple <code class="language-plaintext highlighter-rouge">TMC5160</code> instances share one <code class="language-plaintext highlighter-rouge">UartCommInterface</code> on the same UART bus</li>
+      <li><strong>Node Address Storage</strong>: Each <code class="language-plaintext highlighter-rouge">TMC5160</code> instance stores its own <code class="language-plaintext highlighter-rouge">uart_node_address_</code> (like <code class="language-plaintext highlighter-rouge">daisy_chain_position_</code> for SPI)</li>
+      <li><strong>Send Delay</strong>: Set <code class="language-plaintext highlighter-rouge">send_delay</code> &gt;= 2 when multiple nodes are present (via <code class="language-plaintext highlighter-rouge">uartConfig.ConfigureSlave()</code>)</li>
+      <li><strong>Sequential Programming</strong>: Program addresses backwards from 254 (254, 253, 252, …) per datasheet procedure (use <code class="language-plaintext highlighter-rouge">TMC5160MultiNode::ProgramSequentially()</code>)</li>
+      <li><strong>Logical vs Physical</strong>: Devices accessed via logical indices (0, 1, 2, …) but programmed with physical addresses (254, 253, 252, …)</li>
+      <li><strong>NAO Control</strong>: After programming each chip, its NAO automatically goes LOW to enable the next chip</li>
       <li><strong>Verification</strong>: Always verify addresses after programming</li>
       <li><strong>Pin Mapping</strong>: Remember that in UART mode, SDI_CFG1→NAI, SDO_CFG0→NAO, DIAG0_SWN→SWION, DIAG1_SWP→SWIOP</li>
     </ul>
@@ -1413,6 +1571,8 @@ MCU GND        |
       <li>Maximum 255 nodes (8-bit address space, 0-254)</li>
       <li>Requires SD_MODE=0 and SPI_MODE=0 for UART operation</li>
       <li>Sequential programming required - cannot program chips out of order</li>
+      <li>Devices programmed backwards from address 254 (254, 253, 252, …) per datasheet</li>
+      <li>Logical indices (0, 1, 2, …) map to physical addresses (254, 253, 252, …)</li>
       <li>NAI/NAO pins must be properly connected (first chip NAI to GND, chain NAO→NAI)</li>
       <li>Send delay must be &gt;= 2 for multi-node systems</li>
     </ul>

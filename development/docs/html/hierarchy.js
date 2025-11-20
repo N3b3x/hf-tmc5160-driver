@@ -67,6 +67,7 @@ var hierarchy =
     [ "tmc5160::TMC5160< CommType >", "classtmc5160_1_1TMC5160.html", null ],
     [ "tmc5160::TMC5160< Esp32SPI >", "classtmc5160_1_1TMC5160.html", null ],
     [ "tmc5160::TMC5160DaisyChain< CommType, MaxDevices >", "classtmc5160_1_1TMC5160DaisyChain.html", null ],
+    [ "tmc5160::TMC5160MultiNode< CommType, MaxDevices >", "classtmc5160_1_1TMC5160MultiNode.html", null ],
     [ "tmc5160::TMC5160< CommType >::UartConfig", "structtmc5160_1_1TMC5160_1_1UartConfig.html", null ],
     [ "tmc5160::UartFrame", "structtmc5160_1_1UartFrame.html", null ]
 ];

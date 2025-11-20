@@ -569,19 +569,45 @@
 11
 12
 13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
 </pre></td><td class="rouge-code"><pre><span class="c1">// Create one SPI interface (shared by all chips)</span>
 <span class="n">MySPI</span> <span class="nf">spi</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
 <span class="n">spi</span><span class="p">.</span><span class="n">Initialize</span><span class="p">();</span>
 
+<span class="c1">// Option 1: Auto-detect chain length</span>
+<span class="kt">uint8_t</span> <span class="n">chain_length</span> <span class="o">=</span> <span class="n">spi</span><span class="p">.</span><span class="n">AutoDetectChainLength</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span> <span class="c1">// Probe up to 8 devices</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">chain_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Chain length automatically set</span>
+<span class="p">}</span>
+
+<span class="c1">// Option 2: Manually set chain length (if known)</span>
+<span class="n">spi</span><span class="p">.</span><span class="n">SetDaisyChainLength</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="c1">// 3 devices in chain</span>
+
 <span class="c1">// Create multiple drivers with different daisy-chain positions</span>
-<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="nf">driver1</span><span class="p">(</span><span class="n">spi</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// Position 0 (first chip)</span>
-<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="nf">driver2</span><span class="p">(</span><span class="n">spi</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// Position 1 (second chip)</span>
-<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="nf">driver3</span><span class="p">(</span><span class="n">spi</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// Position 2 (third chip)</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="n">driver1</span><span class="p">(</span><span class="n">spi</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// Position 0 (first chip)</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="n">driver2</span><span class="p">(</span><span class="n">spi</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// Position 1 (second chip)</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="n">driver3</span><span class="p">(</span><span class="n">spi</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// Position 2 (third chip)</span>
 
 <span class="c1">// Each driver automatically uses its own position</span>
 <span class="n">driver1</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span> <span class="c1">// Accesses chip 0</span>
 <span class="n">driver2</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span> <span class="c1">// Accesses chip 1</span>
 <span class="n">driver3</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span> <span class="c1">// Accesses chip 2</span>
+
+<span class="c1">// Or use TMC5160DaisyChain for easier management</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160DaisyChain</span><span class="o">&lt;</span><span class="n">MySPI</span><span class="p">,</span> <span class="mi">5</span><span class="o">&gt;</span> <span class="n">chain</span><span class="p">(</span><span class="n">spi</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">);</span>
+<span class="n">chain</span><span class="p">.</span><span class="n">InitializeAll</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 
 <p>See <a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/">Multi-Chip Communication</a> for detailed information.</p>

@@ -1,7 +1,9 @@
 <map id="tmc5160::SpiCommand::Read" name="tmc5160::SpiCommand::Read">
-<area shape="rect" id="Node000001" title="Construct a read command." alt="" coords="261,37,436,77"/>
-<area shape="rect" id="Node000002" href="$classtmc5160_1_1SpiCommInterface.html#ad5148180affea0e047e8c4a40d83485c" title="Read a 32&#45;bit register via SPI." alt="" coords="5,5,213,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,46,213,42,214,37,248,41"/>
-<area shape="rect" id="Node000003" href="$classtmc5160_1_1SpiCommInterface.html#a2ba4efb58323a9e2b221ce9a80a56470" title="Write a 32&#45;bit register via SPI." alt="" coords="5,69,213,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="248,73,214,78,213,73,247,68"/>
+<area shape="rect" id="Node000001" title="Construct a read command." alt="" coords="261,69,436,109"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1SpiCommInterface.html#a20f64045d16543de0e3f625b38b4734f" title="Auto&#45;detect the daisy chain length by sending a unique command that loops back." alt="" coords="5,5,213,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="259,68,184,48,185,43,261,63"/>
+<area shape="rect" id="Node000003" href="$classtmc5160_1_1SpiCommInterface.html#ad5148180affea0e047e8c4a40d83485c" title="Read a 32&#45;bit register via SPI." alt="" coords="5,69,213,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="248,92,214,92,214,87,248,87"/>
+<area shape="rect" id="Node000004" href="$classtmc5160_1_1SpiCommInterface.html#a2ba4efb58323a9e2b221ce9a80a56470" title="Write a 32&#45;bit register via SPI." alt="" coords="5,133,213,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="261,116,185,136,184,131,259,110"/>
 </map>

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['management_0',['Daisy-Chain Management',['../group__TMC5160__DaisyChain.html',1,'']]],
+  ['management_0',['Management',['../group__TMC5160__DaisyChain.html',1,'Daisy-Chain Management'],['../group__TMC5160__MultiNode.html',1,'Multi-Node Management']]],
   ['max_5ff_5fclk_1',['MAX_F_CLK',['../namespacetmc5160_1_1ClockFreq.html#ac88522ac32b3f0c1534834d1def6e2a6',1,'tmc5160::ClockFreq']]],
   ['mechanicalsystem_2',['MechanicalSystem',['../structtmc5160_1_1MechanicalSystem.html',1,'tmc5160::MechanicalSystem'],['../structtmc5160_1_1MechanicalSystem.html#ae09fa6d1b3130c58abc06aa2585170ba',1,'tmc5160::MechanicalSystem::MechanicalSystem()']]],
   ['mechanicalsystemtype_3',['MechanicalSystemType',['../namespacetmc5160.html#a9d4c2f0f6102aeb24f1bf337c5d1d38d',1,'tmc5160']]],
@@ -34,5 +34,6 @@ var searchData=
   ['mslutsel_31',['MSLUTSEL',['../namespacetmc5160_1_1Registers.html#a181b886dc9a821803cddfa190356b874',1,'tmc5160::Registers']]],
   ['mslutsel_5fregister_32',['MSLUTSEL_Register',['../uniontmc5160_1_1MSLUTSEL__Register.html',1,'tmc5160']]],
   ['mslutstart_33',['MSLUTSTART',['../namespacetmc5160_1_1Registers.html#afc27ebfa5defb6e898f09d5b56ad22ef',1,'tmc5160::Registers']]],
-  ['multistep_5ffilt_34',['multistep_filt',['../uniontmc5160_1_1GCONF__Register.html#a4c22d133ddb6f3f66ee00344a25e56f3',1,'tmc5160::GCONF_Register::multistep_filt'],['../structtmc5160_1_1GlobalConfig.html#a2890c8fe7a1b7f026cdc3903c8346291',1,'tmc5160::GlobalConfig::multistep_filt']]]
+  ['multi_20node_20management_34',['Multi-Node Management',['../group__TMC5160__MultiNode.html',1,'']]],
+  ['multistep_5ffilt_35',['multistep_filt',['../uniontmc5160_1_1GCONF__Register.html#a4c22d133ddb6f3f66ee00344a25e56f3',1,'tmc5160::GCONF_Register::multistep_filt'],['../structtmc5160_1_1GlobalConfig.html#a2890c8fe7a1b7f026cdc3903c8346291',1,'tmc5160::GlobalConfig::multistep_filt']]]
 ];

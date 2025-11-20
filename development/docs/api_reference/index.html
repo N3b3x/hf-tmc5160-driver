@@ -320,8 +320,8 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">TMC5160()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">TMC5160(CommType&amp; comm, uint32_t f_clk = 12000000)</code></td>
-      <td>Construct driver instance with communication interface and clock frequency</td>
+      <td><code class="language-plaintext highlighter-rouge">TMC5160(CommType&amp; comm, uint32_t f_clk = 12000000, uint8_t daisy_chain_position = 0, uint8_t uart_node_address = 0)</code></td>
+      <td>Construct driver instance. For SPI: daisy_chain_position. For UART: uart_node_address.</td>
     </tr>
   </tbody>
 </table></div>
@@ -351,25 +351,36 @@
       <td>Get communication interface reference</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">Initialize()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool Initialize(const DriverConfig&amp; config = DriverConfig()) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Initialize driver with configuration</td>
+      <td><code class="language-plaintext highlighter-rouge">SetDaisyChainPosition()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">void SetDaisyChainPosition(uint8_t position) noexcept</code></td>
+      <td>void</td>
+      <td>Set daisy-chain position for SPI (0 = first chip)</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">Reset()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool Reset() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Perform software reset</td>
+      <td><code class="language-plaintext highlighter-rouge">GetDaisyChainPosition()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t GetDaisyChainPosition() const noexcept</code></td>
+      <td>Position (0-255)</td>
+      <td>Get current daisy-chain position for SPI</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">IsInitialized()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool IsInitialized() const noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> if initialized</td>
-      <td>Check initialization status</td>
+      <td><code class="language-plaintext highlighter-rouge">SetUartNodeAddress()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">void SetUartNodeAddress(uint8_t address) noexcept</code></td>
+      <td>void</td>
+      <td>Set UART node address (0-254) for UART multi-node</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetUartNodeAddress()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t GetUartNodeAddress() const noexcept</code></td>
+      <td>Address (0-254)</td>
+      <td>Get current UART node address</td>
     </tr>
   </tbody>
 </table></div>
+
+<p><strong>Note</strong>: Per datasheet procedure, devices are programmed backwards from address 254 (254, 253, 252, …). Logical device indices (0, 1, 2, …) map to physical addresses (254, 253, 252, …). Use <code class="language-plaintext highlighter-rouge">TMC5160MultiNode</code> class for managing multiple devices.
+| <code class="language-plaintext highlighter-rouge">Initialize()</code> | <code class="language-plaintext highlighter-rouge">bool Initialize(const DriverConfig&amp; config = DriverConfig()) noexcept</code> | <code class="language-plaintext highlighter-rouge">true</code> on success | Initialize driver with configuration |
+| <code class="language-plaintext highlighter-rouge">Reset()</code> | <code class="language-plaintext highlighter-rouge">bool Reset() noexcept</code> | <code class="language-plaintext highlighter-rouge">true</code> on success | Perform software reset |
+| <code class="language-plaintext highlighter-rouge">IsInitialized()</code> | <code class="language-plaintext highlighter-rouge">bool IsInitialized() const noexcept</code> | <code class="language-plaintext highlighter-rouge">true</code> if initialized | Check initialization status |</p>
 <h2 id="rampcontrol-subsystem">
   
   
@@ -801,7 +812,7 @@
       <td><code class="language-plaintext highlighter-rouge">ConfigureSlaveAddress()</code></td>
       <td><code class="language-plaintext highlighter-rouge">bool ConfigureSlaveAddress(uint8_t slave_address, uint8_t send_delay = 0) noexcept</code></td>
       <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Configure UART slave address and send delay</td>
+      <td>Configure UART slave address and send delay (deprecated, use <code class="language-plaintext highlighter-rouge">uartConfig.ConfigureSlave()</code> instead)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetSlaveAddress()</code></td>
@@ -817,6 +828,45 @@
     </tr>
   </tbody>
 </table></div>
+<h2 id="uartconfig-subsystem">
+  
+  
+    <a href="#uartconfig-subsystem" class="anchor-heading" aria-labelledby="uartconfig-subsystem"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> UartConfig Subsystem
+  
+  
+</h2>
+    
+
+<p>UART configuration subsystem for multi-node addressing.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160.hpp</code></a></p>
+<h3 id="methods-5">
+  
+  
+    <a href="#methods-5" class="anchor-heading" aria-labelledby="methods-5"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigureSlave()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ConfigureSlave(uint8_t slave_address, uint8_t send_delay) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Configure SLAVECONF register with node address (0-254) and send delay. Updates the driver’s <code class="language-plaintext highlighter-rouge">uart_node_address_</code>. Per datasheet, devices are typically programmed backwards from 254.</td>
+    </tr>
+  </tbody>
+</table></div>
 <h2 id="protection-subsystem">
   
   
@@ -829,10 +879,10 @@
 <p>Protection and safety features subsystem.</p>
 
 <p><strong>Location</strong>: <a href="../inc/tmc5160.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160.hpp</code></a></p>
-<h3 id="methods-5">
+<h3 id="methods-6">
   
   
-    <a href="#methods-5" class="anchor-heading" aria-labelledby="methods-5"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
+    <a href="#methods-6" class="anchor-heading" aria-labelledby="methods-6"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
   
   
 </h3>
@@ -874,10 +924,10 @@
 <p>Methods available through <code class="language-plaintext highlighter-rouge">GetComm()</code> for direct communication interface access.</p>
 
 <p><strong>Location</strong>: <a href="../inc/tmc5160_comm_interface.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_comm_interface.hpp</code></a></p>
-<h3 id="methods-6">
+<h3 id="methods-7">
   
   
-    <a href="#methods-6" class="anchor-heading" aria-labelledby="methods-6"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
+    <a href="#methods-7" class="anchor-heading" aria-labelledby="methods-7"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
   
   
 </h3>
@@ -903,13 +953,13 @@
       <td><code class="language-plaintext highlighter-rouge">ReadRegister()</code></td>
       <td><code class="language-plaintext highlighter-rouge">bool ReadRegister(uint8_t address, uint32_t&amp; value, uint8_t daisy_chain_position = 0) noexcept</code></td>
       <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Read 32-bit register with optional daisy-chain position</td>
+      <td>Read 32-bit register. For SPI: daisy-chain position. For UART: node address.</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">WriteRegister()</code></td>
       <td><code class="language-plaintext highlighter-rouge">bool WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept</code></td>
       <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Write 32-bit register with optional daisy-chain position</td>
+      <td>Write 32-bit register. For SPI: daisy-chain position. For UART: node address.</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GpioSet()</code></td>
@@ -971,56 +1021,90 @@
       <td>void</td>
       <td>Debug logging</td>
     </tr>
+  </tbody>
+</table></div>
+<h2 id="tmc5160-class-methods">
+  
+  
+    <a href="#tmc5160-class-methods" class="anchor-heading" aria-labelledby="tmc5160-class-methods"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> TMC5160 Class Methods
+  
+  
+</h2>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetDaisyChainPosition()</code></td>
       <td><code class="language-plaintext highlighter-rouge">void SetDaisyChainPosition(uint8_t position) noexcept</code></td>
       <td>void</td>
-      <td>Set daisy-chain position for this TMC5160 instance (TMC5160 class method)</td>
+      <td>Set daisy-chain position for this TMC5160 instance</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetDaisyChainPosition()</code></td>
       <td><code class="language-plaintext highlighter-rouge">uint8_t GetDaisyChainPosition() const noexcept</code></td>
       <td>Position (0-255)</td>
-      <td>Get current daisy-chain position (TMC5160 class method)</td>
+      <td>Get current daisy-chain position</td>
     </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Note</strong>: Each <code class="language-plaintext highlighter-rouge">TMC5160</code> instance tracks its own daisy-chain position. This position is automatically passed to <code class="language-plaintext highlighter-rouge">ReadRegister()</code> and <code class="language-plaintext highlighter-rouge">WriteRegister()</code> methods in the communication interface.</p>
+<h2 id="spicomminterface-methods-spi-only">
+  
+  
+    <a href="#spicomminterface-methods-spi-only" class="anchor-heading" aria-labelledby="spicomminterface-methods-spi-only"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> SpiCommInterface Methods (SPI Only)
+  
+  
+</h2>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetDaisyChainLength()</code></td>
       <td><code class="language-plaintext highlighter-rouge">void SetDaisyChainLength(uint8_t total_length) noexcept</code></td>
       <td>void</td>
-      <td>Set total number of devices in daisy chain (SPI only)</td>
+      <td>Set total number of devices in daisy chain (for proper response extraction)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetDaisyChainLength()</code></td>
       <td><code class="language-plaintext highlighter-rouge">uint8_t GetDaisyChainLength() const noexcept</code></td>
       <td>Chain length (0-255)</td>
-      <td>Get current daisy chain length setting (SPI only)</td>
+      <td>Get current daisy chain length setting</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">SetSlaveAddress()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">void SetSlaveAddress(uint8_t address) noexcept</code></td>
-      <td>void</td>
-      <td>Set UART slave address (UART only)</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">GetSlaveAddress()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">uint8_t GetSlaveAddress() const noexcept</code></td>
-      <td>Slave address (0-127)</td>
-      <td>Get current UART slave address (UART only)</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">SetNaiPin()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetNaiPin(bool active) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set NAI pin state for UART daisy chaining (UART only)</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">GetNaoPin()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetNaoPin(bool&amp; active) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Read NAO pin state for UART daisy chaining (UART only)</td>
+      <td><code class="language-plaintext highlighter-rouge">AutoDetectChainLength()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t AutoDetectChainLength(uint8_t max_devices = 8) noexcept</code></td>
+      <td>Detected length (0-255)</td>
+      <td>Auto-detect daisy chain length by sending command that loops back</td>
     </tr>
   </tbody>
 </table></div>
+
+<p><strong>Note</strong>: <code class="language-plaintext highlighter-rouge">SetDaisyChainLength()</code> is critical for proper response extraction using the datasheet formula <code class="language-plaintext highlighter-rouge">40·(n-k+1)</code>. The chain length represents the total number of devices in the daisy chain, not individual device positions.
+| <code class="language-plaintext highlighter-rouge">SetNaiPin()</code> | <code class="language-plaintext highlighter-rouge">bool SetNaiPin(bool active) noexcept</code> | <code class="language-plaintext highlighter-rouge">true</code> on success | Set NAI pin state for UART sequential addressing (UART only) |
+| <code class="language-plaintext highlighter-rouge">GetNaoPin()</code> | <code class="language-plaintext highlighter-rouge">bool GetNaoPin(bool&amp; active) noexcept</code> | <code class="language-plaintext highlighter-rouge">true</code> on success | Read NAO pin state for UART sequential addressing (UART only) |</p>
+
+<p><strong>Note</strong>: <code class="language-plaintext highlighter-rouge">UartCommInterface</code> no longer stores node addresses. Multiple <code class="language-plaintext highlighter-rouge">TMC5160</code> instances share one <code class="language-plaintext highlighter-rouge">UartCommInterface</code> on the same UART bus. Each <code class="language-plaintext highlighter-rouge">TMC5160</code> instance stores its own <code class="language-plaintext highlighter-rouge">uart_node_address_</code> and passes it to <code class="language-plaintext highlighter-rouge">ReadRegister()</code>/<code class="language-plaintext highlighter-rouge">WriteRegister()</code> automatically.</p>
+
+<p><strong>UART Addressing</strong>: Per datasheet procedure (Figure 5.1), devices are programmed backwards from address 254 (254, 253, 252, …). Logical device indices (0, 1, 2, …) used in software correspond to physical addresses (254, 253, 252, …) programmed into chips. Use <code class="language-plaintext highlighter-rouge">TMC5160MultiNode</code> class for managing multiple devices with sequential programming.</p>
 <h2 id="enums">
   
   

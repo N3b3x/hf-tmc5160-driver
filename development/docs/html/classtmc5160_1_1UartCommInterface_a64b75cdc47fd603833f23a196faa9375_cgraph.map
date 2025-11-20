@@ -1,0 +1,15 @@
+<map id="tmc5160::UartCommInterface::ReadRegister" name="tmc5160::UartCommInterface::ReadRegister">
+<area shape="rect" id="Node000001" title="Read a 32&#45;bit register via UART." alt="" coords="5,113,221,153"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1UartFrame.html#a0be40d8ee6bc7916b4a67ebf699946ac" title="Construct a read reply frame from received bytes." alt="" coords="299,5,455,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,111,205,83,268,55,289,47,291,52,270,60,208,88,153,116"/>
+<area shape="rect" id="Node000003" href="$structtmc5160_1_1UartFrame.html#aa2fe56fa7916d51ac827a7dbd6c8011b" title="Construct a read request frame." alt="" coords="299,69,455,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="221,113,285,102,286,107,222,118"/>
+<area shape="rect" id="Node000005" href="$classtmc5160_1_1UartCommInterface.html#a6d4cfd5d31ad3136308bc60e50ff01f3" title="Receive raw bytes via UART." alt="" coords="269,157,485,197"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="222,149,256,154,255,160,221,154"/>
+<area shape="rect" id="Node000006" href="$classtmc5160_1_1UartCommInterface.html#a12c4a55cd8e33a81c572b4c3f70ce75c" title="Send raw bytes via UART." alt="" coords="269,245,485,285"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="156,151,325,237,323,242,153,156"/>
+<area shape="rect" id="Node000004" href="$namespacetmc5160.html#ab650ebb70be7f1da00a2dea1f2fe662e" title="Calculate CRC8 checksum for UART communication." alt="" coords="533,77,708,102"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="455,87,519,87,519,92,455,92"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="332,158,329,148,337,138,353,133,377,131,406,134,421,141,419,146,404,139,377,136,354,138,340,143,335,149,337,156"/>
+<area shape="poly" id="edge7_Node000006_Node000006" title=" " alt="" coords="332,246,329,236,337,226,353,221,377,219,406,222,421,229,419,234,404,227,377,224,354,226,340,231,335,237,337,244"/>
+</map>

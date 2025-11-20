@@ -4,6 +4,7 @@ var classtmc5160_1_1SpiCommInterface =
     [ "~SpiCommInterface", "classtmc5160_1_1SpiCommInterface.html#ae8e442cc0ae880b3f4a131af6769040d", null ],
     [ "SpiCommInterface", "classtmc5160_1_1SpiCommInterface.html#a76f611bc2098fccad328994da8122402", null ],
     [ "SpiCommInterface", "classtmc5160_1_1SpiCommInterface.html#a64013c34c8a49b7fb950062d5a08c8a3", null ],
+    [ "AutoDetectChainLength", "classtmc5160_1_1SpiCommInterface.html#a20f64045d16543de0e3f625b38b4734f", null ],
     [ "GetDaisyChainLength", "classtmc5160_1_1SpiCommInterface.html#ab05ee9d4730a81797159444cc8ce3f81", null ],
     [ "GetMode", "classtmc5160_1_1SpiCommInterface.html#ae258b33b551a3ee3f58cce4425c8b2a6", null ],
     [ "operator=", "classtmc5160_1_1SpiCommInterface.html#a0823b17b507499702a95de46bf8654e9", null ],

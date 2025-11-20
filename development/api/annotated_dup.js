@@ -47,6 +47,7 @@ var annotated_dup =
       [ "SW_MODE_Register", "uniontmc5160_1_1SW__MODE__Register.html", "uniontmc5160_1_1SW__MODE__Register" ],
       [ "TMC5160", "classtmc5160_1_1TMC5160.html", "classtmc5160_1_1TMC5160" ],
       [ "TMC5160DaisyChain", "classtmc5160_1_1TMC5160DaisyChain.html", "classtmc5160_1_1TMC5160DaisyChain" ],
+      [ "TMC5160MultiNode", "classtmc5160_1_1TMC5160MultiNode.html", "classtmc5160_1_1TMC5160MultiNode" ],
       [ "UartCommInterface", "classtmc5160_1_1UartCommInterface.html", "classtmc5160_1_1UartCommInterface" ],
       [ "UartFrame", "structtmc5160_1_1UartFrame.html", "structtmc5160_1_1UartFrame" ]
     ] ],

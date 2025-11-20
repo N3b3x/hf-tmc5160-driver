@@ -1,6 +1,6 @@
 var classEsp32UART =
 [
-    [ "Esp32UART", "classEsp32UART.html#a927692ec72bba5cc81d6d39630f380cf", null ],
+    [ "Esp32UART", "classEsp32UART.html#a20779cb911dd35d45cd21f1a648ade96", null ],
     [ "DebugLog", "classEsp32UART.html#a8affc0807bcf3959e8ca3534324551c5", null ],
     [ "DelayMs", "classEsp32UART.html#ac34744ef8bc82544c0fb05200f516821", null ],
     [ "DelayUs", "classEsp32UART.html#aec6eab03f0a0d48d4dd40a49a56bbcc1", null ],

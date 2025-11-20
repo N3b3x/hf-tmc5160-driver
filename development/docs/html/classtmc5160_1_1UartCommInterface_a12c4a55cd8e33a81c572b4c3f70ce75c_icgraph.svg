@@ -30,7 +30,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classtmc5160_1_1UartCommInterface.html#a24e0c2df30575aa2ddae36c837060539" target="_top" xlink:title="Read a 32&#45;bit register via UART.">
+<g id="a_Node000002"><a xlink:href="classtmc5160_1_1UartCommInterface.html#a64b75cdc47fd603833f23a196faa9375" target="_top" xlink:title="Read a 32&#45;bit register via UART.">
 <polygon fill="white" stroke="#666666" points="162,-78 0,-78 0,-48 162,-48 162,-78"/>
 <text text-anchor="start" x="8" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::UartCommInterface</text>
 <text text-anchor="middle" x="81" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">::ReadRegister</text>
@@ -49,7 +49,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classtmc5160_1_1UartCommInterface.html#addcfde992781a891bd972314ebcd0bb8" target="_top" xlink:title="Write a 32&#45;bit register via UART.">
+<g id="a_Node000003"><a xlink:href="classtmc5160_1_1UartCommInterface.html#a404c95887d9f030faae597b9f7ee4c7b" target="_top" xlink:title="Write a 32&#45;bit register via UART.">
 <polygon fill="white" stroke="#666666" points="162,-30 0,-30 0,0 162,0 162,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::UartCommInterface</text>
 <text text-anchor="middle" x="81" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::WriteRegister</text>

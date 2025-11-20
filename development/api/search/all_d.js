@@ -1,13 +1,13 @@
 var searchData=
 [
-  ['of_20contents_0',['📚 Table of Contents',['../index.html#autotoc_md15',1,'']]],
+  ['of_20contents_0',['📚 Table of Contents',['../index.html#autotoc_md19',1,'']]],
   ['offset_5fread_1',['OFFSET_READ',['../namespacetmc5160_1_1Registers.html#acc605daa9f88b3d235978f75ea4c7eff',1,'tmc5160::Registers']]],
   ['offset_5fread_5fregister_2',['OFFSET_READ_Register',['../uniontmc5160_1_1OFFSET__READ__Register.html',1,'tmc5160']]],
   ['ok_3',['OK',['../namespacetmc5160.html#a81fcaffbc5dc91f6f544da54c1cf8c3bae0aa021e21dddbd6d8cecec71e9cf564',1,'tmc5160']]],
   ['ola_4',['ola',['../uniontmc5160_1_1DRV__STATUS__Register.html#acac73f77426552a08b77f4781f25ef0b',1,'tmc5160::DRV_STATUS_Register']]],
   ['olb_5',['olb',['../uniontmc5160_1_1DRV__STATUS__Register.html#a86ffa9fb3624346b88d30f03c4648c80',1,'tmc5160::DRV_STATUS_Register']]],
   ['operator_3d_6',['operator=',['../classtmc5160_1_1CommInterface.html#abe291d816be3fbff14338f0f988e75be',1,'tmc5160::CommInterface::operator=(const CommInterface &amp;)=delete'],['../classtmc5160_1_1CommInterface.html#ad8356d7708e0d688d5fd03c8b73dcbcd',1,'tmc5160::CommInterface::operator=(CommInterface &amp;&amp;)=default'],['../classtmc5160_1_1SpiCommInterface.html#a0823b17b507499702a95de46bf8654e9',1,'tmc5160::SpiCommInterface::operator=(const SpiCommInterface &amp;)=delete'],['../classtmc5160_1_1SpiCommInterface.html#a83b3d561b54c2d506adbdab902d5628a',1,'tmc5160::SpiCommInterface::operator=(SpiCommInterface &amp;&amp;)=default'],['../classtmc5160_1_1UartCommInterface.html#adf0f1e2bd963d3b6cc428810e314298c',1,'tmc5160::UartCommInterface::operator=(const UartCommInterface &amp;)=delete'],['../classtmc5160_1_1UartCommInterface.html#a42a14cdb62e3360d3af70afbccbb8aa9',1,'tmc5160::UartCommInterface::operator=(UartCommInterface &amp;&amp;)=default']]],
-  ['operator_5b_5d_7',['operator[]',['../classtmc5160_1_1TMC5160DaisyChain.html#aaa24eb05a5723d6054d5a568be269210',1,'tmc5160::TMC5160DaisyChain::operator[](uint8_t index) noexcept'],['../classtmc5160_1_1TMC5160DaisyChain.html#aa1ab28790be4dabd9fbc160d78ef8857',1,'tmc5160::TMC5160DaisyChain::operator[](uint8_t index) const noexcept']]],
+  ['operator_5b_5d_7',['operator[]',['../classtmc5160_1_1TMC5160DaisyChain.html#aaa24eb05a5723d6054d5a568be269210',1,'tmc5160::TMC5160DaisyChain::operator[](uint8_t index) noexcept'],['../classtmc5160_1_1TMC5160DaisyChain.html#aa1ab28790be4dabd9fbc160d78ef8857',1,'tmc5160::TMC5160DaisyChain::operator[](uint8_t index) const noexcept'],['../classtmc5160_1_1TMC5160MultiNode.html#ac340aecac44405f394b5e4da217e9d88',1,'tmc5160::TMC5160MultiNode::operator[](uint8_t index) noexcept'],['../classtmc5160_1_1TMC5160MultiNode.html#aa4e81ab0554196e4b39dfb763db2c212',1,'tmc5160::TMC5160MultiNode::operator[](uint8_t index) const noexcept']]],
   ['ot_8',['ot',['../uniontmc5160_1_1DRV__STATUS__Register.html#ad26eb69c686c3580e88647c4067a69a4',1,'tmc5160::DRV_STATUS_Register']]],
   ['ot_9',['OT',['../namespacetmc5160.html#a81fcaffbc5dc91f6f544da54c1cf8c3ba583dce1e7a2507b30a9eb71314c47d1c',1,'tmc5160']]],
   ['other_5ferr_10',['OTHER_ERR',['../namespacetmc5160.html#a81fcaffbc5dc91f6f544da54c1cf8c3ba598c6a2431f188feea077b1a92b28f2b',1,'tmc5160']]],
@@ -25,5 +25,5 @@ var searchData=
   ['otpw_22',['otpw',['../uniontmc5160_1_1DRV__STATUS__Register.html#aa8d8f02fcf50fbbf178c21d8bcf4a064',1,'tmc5160::DRV_STATUS_Register']]],
   ['otpw_23',['OTPW',['../namespacetmc5160.html#a81fcaffbc5dc91f6f544da54c1cf8c3baac0b147690352ccd55facc0f3468846a',1,'tmc5160']]],
   ['otselect_24',['otselect',['../uniontmc5160_1_1DRV__CONF__Register.html#a905488b9f382aa7234129e61bebca8cf',1,'tmc5160::DRV_CONF_Register::otselect'],['../structtmc5160_1_1PowerStageParameters.html#a27b1e22327646482d6648dcea0aa2393',1,'tmc5160::PowerStageParameters::otselect']]],
-  ['overview_25',['📦 Overview',['../index.html#autotoc_md16',1,'']]]
+  ['overview_25',['📦 Overview',['../index.html#autotoc_md20',1,'']]]
 ];

@@ -59,9 +59,8 @@ static const char *TAG = "UartDaisyChain";
 class Esp32UART : public tmc5160::UartCommInterface<Esp32UART> {
 public:
   Esp32UART(uart_port_t uart_num, gpio_num_t tx_pin, gpio_num_t rx_pin,
-            gpio_num_t txen_pin, gpio_num_t nai_pin, gpio_num_t nao_pin,
-            uint8_t slave_address)
-      : UartCommInterface(true, true, true, slave_address),
+            gpio_num_t txen_pin, gpio_num_t nai_pin, gpio_num_t nao_pin)
+      : UartCommInterface(true, true, true),
         uart_num_(uart_num), tx_pin_(tx_pin), rx_pin_(rx_pin),
         txen_pin_(txen_pin), nai_pin_(nai_pin), nao_pin_(nao_pin) {
     // Configure UART
@@ -201,20 +200,17 @@ bool programChipAndVerify(tmc5160::TMC5160<CommType> &driver, uint8_t target_add
                          CommType &uart_interface) {
   ESP_LOGI(TAG, "Programming chip to address %d...", target_address);
 
-  // Configure slave address (send_delay >= 2 for multi-node systems)
-  if (!driver.communication.ConfigureSlaveAddress(target_address, 2)) {
-    ESP_LOGE(TAG, "Failed to configure slave address %d", target_address);
+  // Configure node address (send_delay >= 2 for multi-node systems)
+  if (!driver.uartConfig.ConfigureSlave(target_address, 2)) {
+    ESP_LOGE(TAG, "Failed to configure node address %d", target_address);
     return false;
   }
-
-  // Update the UART interface's slave address for subsequent operations
-  uart_interface.SetSlaveAddress(target_address);
 
   // Small delay to ensure register write completes
   uart_interface.DelayMs(10);
 
   // Verify the address was set correctly
-  uint8_t read_addr = driver.communication.GetSlaveAddress();
+  uint8_t read_addr = driver.GetUartNodeAddress();
   if (read_addr != target_address) {
     ESP_LOGE(TAG, "Address verification failed: expected %d, got %d",
              target_address, read_addr);
@@ -246,52 +242,45 @@ extern "C" void app_main() {
   const gpio_num_t NAI_PIN = GPIO_NUM_25;  // NAI pin (SDI_CFG1, pin 15)
   const gpio_num_t NAO_PIN = GPIO_NUM_26;  // NAO pin (SDO_CFG0, pin 16)
 
-  // Create UART interface for first chip (starts at address 0)
+  // Create shared UART interface (all chips share the same UART bus)
   // First chip's NAI is tied to GND in hardware
-  Esp32UART uart1(UART_NUM_1, UART_TX, UART_RX, UART_TXEN, NAI_PIN, NAO_PIN, 0);
-  uart1.SetNaiPin(false); // Ensure NAI is LOW (tied to GND for first chip)
+  Esp32UART uart_comm(UART_NUM_1, UART_TX, UART_RX, UART_TXEN, NAI_PIN, NAO_PIN);
+  uart_comm.SetNaiPin(false); // Ensure NAI is LOW (tied to GND for first chip)
 
   ESP_LOGI(TAG, "UART interface initialized");
   ESP_LOGI(TAG, "First chip: NAI tied to GND, responds to address 0");
 
-  // Create driver instance for first chip
-  tmc5160::TMC5160 driver1(uart1, 12'000'000); // 12 MHz clock
+  // Create driver instance for first chip (address 0)
+  // Parameters: comm, f_clk, daisy_chain_position (0 for UART), uart_node_address (0)
+  tmc5160::TMC5160 driver1(uart_comm, 12'000'000, 0, 0);
 
-  // Program first chip to address 1
-  if (!programChipAndVerify(driver1, 1, uart1)) {
+  // Program first chip to address 0
+  if (!programChipAndVerify(driver1, 0, uart_comm)) {
     ESP_LOGE(TAG, "Failed to program first chip");
     return;
   }
 
   // After programming first chip, its NAO should be LOW to enable second chip
   // In hardware: chip1.NAO -> chip2.NAI
-  // For this example, we'll create a new UART interface for the second chip
-  // In a real system, you might reuse the same interface and just change the address
-
-  // Create UART interface for second chip (now responds to address 1)
-  // Note: In hardware, chip2's NAI is connected to chip1's NAO
-  Esp32UART uart2(UART_NUM_1, UART_TX, UART_RX, UART_TXEN, GPIO_NUM_NC,
-                  GPIO_NUM_NC, 1);
-  uart2.SetSlaveAddress(1);
+  // Second chip now responds to address 1
 
   ESP_LOGI(TAG, "Second chip: NAI connected to chip1 NAO, responds to address 1");
 
-  // Create driver instance for second chip
-  tmc5160::TMC5160 driver2(uart2, 12'000'000);
+  // Create driver instance for second chip (address 1)
+  // All chips share the same UartCommInterface
+  tmc5160::TMC5160 driver2(uart_comm, 12'000'000, 0, 1);
 
-  // Program second chip to address 2
-  if (!programChipAndVerify(driver2, 2, uart2)) {
+  // Program second chip to address 1
+  if (!programChipAndVerify(driver2, 1, uart_comm)) {
     ESP_LOGE(TAG, "Failed to program second chip");
     return;
   }
 
   // Uncomment for third chip:
   /*
-  Esp32UART uart3(UART_NUM_1, UART_TX, UART_RX, UART_TXEN, GPIO_NUM_NC,
-                  GPIO_NUM_NC, 2);
-  uart3.SetSlaveAddress(2);
-  tmc5160::TMC5160 driver3(uart3, 12'000'000);
-  if (!programChipAndVerify(driver3, 3, uart3)) {
+  // Create driver instance for third chip (address 2)
+  tmc5160::TMC5160 driver3(uart_comm, 12'000'000, 0, 2);
+  if (!programChipAndVerify(driver3, 2, uart_comm)) {
     ESP_LOGE(TAG, "Failed to program third chip");
     return;
   }
@@ -365,12 +354,14 @@ extern "C" void app_main() {
   ESP_LOGI(TAG, "Reading status from each chip...");
 
   uint32_t gstat1, gstat2;
-  if (driver1.GetComm().ReadRegister(0x00, gstat1)) {
-    ESP_LOGI(TAG, "Driver 1 (addr 1) GSTAT: 0x%08lX", gstat1);
+  // When calling ReadRegister directly on GetComm(), pass the node address explicitly
+  // (TMC5160 class methods automatically use GetCommAddress() internally)
+  if (driver1.GetComm().ReadRegister(0x00, gstat1, driver1.GetUartNodeAddress())) {
+    ESP_LOGI(TAG, "Driver 1 (addr 0) GSTAT: 0x%08lX", gstat1);
   }
 
-  if (driver2.GetComm().ReadRegister(0x00, gstat2)) {
-    ESP_LOGI(TAG, "Driver 2 (addr 2) GSTAT: 0x%08lX", gstat2);
+  if (driver2.GetComm().ReadRegister(0x00, gstat2, driver2.GetUartNodeAddress())) {
+    ESP_LOGI(TAG, "Driver 2 (addr 1) GSTAT: 0x%08lX", gstat2);
   }
 
   // Disable motors
