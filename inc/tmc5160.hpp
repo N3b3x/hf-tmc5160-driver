@@ -23,6 +23,7 @@
 #include <cmath>
 #include <cstdint>
 #include <limits>
+#include <type_traits>
 
 #include "tmc5160_comm_interface.hpp"
 #include "tmc5160_config.hpp"
@@ -108,10 +109,14 @@ public:
    * @param comm Reference to a user-implemented communication interface (SPI,
    * UART, etc)
    * @param f_clk TMC5160 clock frequency in Hz (default: 12 MHz)
+   * @param daisy_chain_position Position in daisy chain (0 = first chip/single chip, 1 = second, etc.)
+   *                             Only used for SPI daisy-chaining. Default: 0 (single chip)
    */
   explicit TMC5160(CommType &comm,
-                   uint32_t f_clk = ClockFreq::DEFAULT_F_CLK) noexcept
-      : comm_(comm), f_clk_(f_clk), initialized_(false) {}
+                   uint32_t f_clk = ClockFreq::DEFAULT_F_CLK,
+                   uint8_t daisy_chain_position = 0) noexcept
+      : comm_(comm), f_clk_(f_clk), daisy_chain_position_(daisy_chain_position),
+        initialized_(false) {}
 
   /**
    * @brief Destructor for TMC5160, cleans up resources
@@ -128,6 +133,30 @@ public:
    * @return Reference to the communication interface (SPI, UART, etc)
    */
   [[nodiscard]] CommType &GetComm() noexcept { return comm_; }
+
+  /**
+   * @brief Set the daisy-chain position for this TMC5160 instance
+   * @param position Position in daisy chain (0 = first chip/single chip, 1 = second, etc.)
+   *
+   * This method configures the position of this driver in a daisy-chained SPI setup.
+   * The position is used when calling ReadRegister() and WriteRegister() to determine
+   * the correct padding for daisy-chain communication.
+   *
+   * @note The daisy-chain position determines how many 40-bit dummy datagrams are
+   *       sent before this chip's command, ensuring the command reaches the correct
+   *       chip in the chain. Only applicable for SPI communication interfaces.
+   */
+  void SetDaisyChainPosition(uint8_t position) noexcept {
+    daisy_chain_position_ = position;
+  }
+
+  /**
+   * @brief Get the current daisy-chain position for this TMC5160 instance
+   * @return Daisy-chain position (0 = first chip/single chip, 1 = second, etc.)
+   */
+  [[nodiscard]] uint8_t GetDaisyChainPosition() const noexcept {
+    return daisy_chain_position_;
+  }
 
   /**
    * @brief Initialize the TMC5160 driver with configuration
@@ -310,6 +339,35 @@ public:
      */
     bool SetComparePosition(int32_t position) noexcept;
 
+    /**
+     * @brief Set power down delay
+     * @param tpowerdown Power down delay (0-255, time range ~0 to 5.6 seconds)
+     * @return true if set successfully, false otherwise
+     *
+     * Sets the delay before power down when motor enters standstill.
+     * Minimum setting of 2 is required to allow automatic tuning of stealthChop PWM_OFFS_AUTO.
+     */
+    bool SetPowerDownDelay(uint8_t tpowerdown) noexcept;
+
+    /**
+     * @brief Set zero wait time
+     * @param tzerowait Waiting time after ramping down to zero velocity in clock cycles (0-65535)
+     * @return true if set successfully, false otherwise
+     *
+     * Sets the waiting time after ramping down to zero velocity before next
+     * movement or direction inversion can start.
+     */
+    bool SetZeroWaitTime(uint16_t tzerowait) noexcept;
+
+    /**
+     * @brief Set first acceleration phase
+     * @param a1 First acceleration between VSTART and V1 in steps/s²
+     * @return true if set successfully, false otherwise
+     *
+     * Sets the first acceleration phase. If 0.0f, AMAX is used for this phase.
+     */
+    bool SetFirstAcceleration(float a1) noexcept;
+
   private:
     TMC5160 &driver_; ///< Reference to parent driver instance
   } rampControl{*this};
@@ -446,6 +504,13 @@ public:
     bool SetupMotorFromSpec(const MotorSpec &motor_spec,
                             const MechanicalSystem *mechanical_system = nullptr) noexcept;
 
+    /**
+     * @brief Configure global configuration (GCONF register)
+     * @param config Global configuration structure
+     * @return true if configured successfully, false otherwise
+     */
+    bool ConfigureGlobalConfig(const GlobalConfig &config) noexcept;
+
   private:
     TMC5160 &driver_; ///< Reference to parent driver instance
   } motorControl{*this};
@@ -544,6 +609,14 @@ public:
      */
     bool ClearDeviationFlag() noexcept;
 
+    /**
+     * @brief Get encoder latched position
+     * @return Encoder position latched on N event, or 0 on error
+     *
+     * Reads the encoder position that was latched on the last N channel event.
+     */
+    int32_t GetLatchedPosition() noexcept;
+
   private:
     TMC5160 &driver_; ///< Reference to parent driver instance
   } encoder{*this};
@@ -617,9 +690,129 @@ public:
                                   float search_speed,
                                   int32_t &final_position) noexcept;
 
+    /**
+     * @brief Get actual time between microsteps
+     * @return Time between microsteps in clock cycles, or 0 on error
+     *
+     * Read-only register showing actual time between microsteps.
+     */
+    uint32_t GetTimeBetweenMicrosteps() noexcept;
+
+    /**
+     * @brief Get microstep counter
+     * @return Actual position in microstep table (0-1023), or 0 on error
+     *
+     * Read-only register showing actual position in the microstep table.
+     */
+    uint16_t GetMicrostepCounter() noexcept;
+
+    /**
+     * @brief Get microstep current
+     * @param phase_a Reference to store phase A current (signed, -256 to 255)
+     * @param phase_b Reference to store phase B current (signed, -256 to 255)
+     * @return true if read successfully, false otherwise
+     *
+     * Read-only register showing actual microstep current for both phases.
+     * Values are signed 9-bit as read from MSLUT (not scaled by current).
+     */
+    bool GetMicrostepCurrent(int16_t &phase_a, int16_t &phase_b) noexcept;
+
+    /**
+     * @brief Get PWM scale results
+     * @param pwm_scale_sum Reference to store actual PWM duty cycle (0-255)
+     * @param pwm_scale_auto Reference to store automatic regulation result (signed -255...+255)
+     * @return true if read successfully, false otherwise
+     *
+     * Read-only register showing stealthChop PWM scale results.
+     */
+    bool GetPwmScale(uint8_t &pwm_scale_sum, int16_t &pwm_scale_auto) noexcept;
+
+    /**
+     * @brief Get automatically determined PWM values
+     * @param pwm_ofs_auto Reference to store auto-determined offset (0-255)
+     * @param pwm_grad_auto Reference to store auto-determined gradient (0-255)
+     * @return true if read successfully, false otherwise
+     *
+     * Read-only register showing automatically determined PWM configuration values.
+     */
+    bool GetPwmAuto(uint8_t &pwm_ofs_auto, uint8_t &pwm_grad_auto) noexcept;
+
+    /**
+     * @brief Read GPIO input pins
+     * @param io_pins Reference to store IO pin states
+     * @return true if read successfully, false otherwise
+     *
+     * Reads the state of all GPIO input pins.
+     */
+    bool ReadGpioPins(uint32_t &io_pins) noexcept;
+
+    /**
+     * @brief Read factory configuration
+     * @param fclktrim Reference to store FCLKTRIM value (0-31)
+     * @return true if read successfully, false otherwise
+     *
+     * Reads the factory configuration/clock trim value.
+     */
+    bool ReadFactoryConfig(uint8_t &fclktrim) noexcept;
+
+    /**
+     * @brief Read OTP configuration
+     * @param otp_fclktrim Reference to store OTP FCLKTRIM (0-31)
+     * @param otp_s2_level Reference to store OTP S2 level (0-1)
+     * @param otp_bbm Reference to store OTP BBM (0-1)
+     * @param otp_tbl Reference to store OTP TBL (0-1)
+     * @return true if read successfully, false otherwise
+     *
+     * Reads the one-time programmable configuration memory.
+     */
+    bool ReadOtpConfig(uint8_t &otp_fclktrim, bool &otp_s2_level,
+                       bool &otp_bbm, bool &otp_tbl) noexcept;
+
+    /**
+     * @brief Get UART transmission counter
+     * @return UART transmission counter value, or 0 on error
+     *
+     * Returns the number of UART transmissions since last read.
+     */
+    uint8_t GetUartTransmissionCount() noexcept;
+
+    /**
+     * @brief Read offset calibration results
+     * @param phase_a Reference to store phase A offset (0-255)
+     * @param phase_b Reference to store phase B offset (0-255)
+     * @return true if read successfully, false otherwise
+     *
+     * Reads the results from offset calibration procedure.
+     */
+    bool ReadOffsetCalibration(uint8_t &phase_a, uint8_t &phase_b) noexcept;
+
   private:
     TMC5160 &driver_; ///< Reference to parent driver instance
   } diagnostics{*this};
+
+  /**
+   * @brief UART configuration subsystem
+   * @ingroup TMC5160_Subsystems
+   *
+   * Provides methods for configuring UART slave mode operation.
+   */
+  struct UartConfig {
+    TMC5160 *driver_; ///< Pointer to parent driver instance
+
+    /**
+     * @brief Construct UART configuration subsystem
+     * @param driver Pointer to parent TMC5160 driver instance
+     */
+    explicit UartConfig(TMC5160 *driver) noexcept : driver_(driver) {}
+
+    /**
+     * @brief Configure UART slave settings
+     * @param slave_address UART slave address (0-127)
+     * @param send_delay Number of bit times before replying (0-15)
+     * @return true if configured successfully, false otherwise
+     */
+    bool ConfigureSlave(uint8_t slave_address, uint8_t send_delay) noexcept;
+  } uartConfig{this};
 
   /**
    * @brief Protection subsystem
@@ -661,8 +854,9 @@ public:
   // @}
 
 private:
-  CommType &comm_;   ///< Communication interface reference
-  uint32_t f_clk_;   ///< TMC5160 clock frequency in Hz
+  CommType &comm_;            ///< Communication interface reference
+  uint32_t f_clk_;            ///< TMC5160 clock frequency in Hz
+  uint8_t daisy_chain_position_; ///< Position in daisy chain (0 = first chip/single chip)
   bool initialized_; ///< Initialization status flag
 
   /**

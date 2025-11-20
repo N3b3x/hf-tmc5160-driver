@@ -52,13 +52,15 @@ struct PowerStageParameters {
   uint8_t bbm_time; ///< Break Before Make duration specified in ns (0 to 24)
   uint8_t bbm_clks; ///< Break Before Make duration specified in clock cycles (0
                     ///< to 15)
+  uint8_t otselect; ///< Over temperature level selection for bridge disable (0-3)
+  uint8_t filt_isense; ///< Filter time constant of sense amplifier (0-3)
 
   /**
    * @brief Default constructor
    *
    * Initializes with recommended default values.
    */
-  PowerStageParameters() : drv_strength(2), bbm_time(0), bbm_clks(4) {}
+  PowerStageParameters() : drv_strength(2), bbm_time(0), bbm_clks(4), otselect(0), filt_isense(0) {}
 };
 
 /**
@@ -351,13 +353,74 @@ struct ReferenceSwitchConfig {
  */
 struct DcStepConfig {
   float vdc_min; ///< Velocity threshold for enabling dcStep in steps/s (0.0f = disabled)
+  uint16_t dc_time; ///< Upper PWM on time limit for commutation (0-1023)
+  uint8_t dc_sg; ///< Max PWM on time for step loss detection (0-255)
 
   /**
    * @brief Default constructor
    *
    * Initializes with dcStep disabled.
    */
-  DcStepConfig() : vdc_min(0.0f) {}
+  DcStepConfig() : vdc_min(0.0f), dc_time(0), dc_sg(0) {}
+};
+
+/**
+ * @brief Global configuration (GCONF) structure
+ *
+ * Configuration for global TMC5160 driver settings.
+ * See GCONF_Register documentation for detailed bit descriptions and SD_MODE dependencies.
+ */
+struct GlobalConfig {
+  bool recalibrate; ///< Bit 0: Zero crossing recalibration during driver disable
+  bool faststandstill; ///< Bit 1: Standstill timeout (true=2^18 clocks, false=2^20 clocks)
+  bool en_pwm_mode; ///< Bit 2: Enable StealthChop voltage PWM mode (switch only in standstill at IHOLD=IRUN)
+  bool multistep_filt; ///< Bit 3: Enable step input filtering for StealthChop optimization (default=true recommended)
+  bool shaft; ///< Bit 4: Inverse motor direction (false=normal, true=inverse)
+  bool diag0_error; ///< Bit 5: (SD_MODE=1 only) Enable DIAG0 on driver errors (OT, S2G, UV_CP). Always shows reset-status.
+  bool diag0_otpw; ///< Bit 6: (SD_MODE=1 only) Enable DIAG0 on overtemperature prewarning
+  bool diag0_stall_step; ///< Bit 7: (SD_MODE=1) DIAG0 on stall. (SD_MODE=0) DIAG0 as STEP output (half frequency, dual edge)
+  bool diag1_stall_dir; ///< Bit 8: (SD_MODE=1) DIAG1 on stall. (SD_MODE=0) DIAG1 as DIR output
+  bool diag1_index; ///< Bit 9: (SD_MODE=1 only) Enable DIAG1 on index position (microstep LUT position 0)
+  bool diag1_onstate; ///< Bit 10: (SD_MODE=1 only) Enable DIAG1 when chopper is on (second half of fullstep coil)
+  bool diag1_steps_skipped; ///< Bit 11: (SD_MODE=1 only) Enable output toggle when steps skipped in dcStep mode. Do not enable with other DIAG1 options.
+  bool diag0_int_pushpull; ///< Bit 12: SWN_DIAG0 output mode (false=open collector active low, true=push pull active high)
+  bool diag1_poscomp_pushpull; ///< Bit 13: SWP_DIAG1 output mode (false=open collector active low, true=push pull active high)
+  bool small_hysteresis; ///< Bit 14: Step frequency comparison hysteresis (false=1/16, true=1/32)
+  bool stop_enable; ///< Bit 15: Emergency stop: ENCA_DCIN stops sequencer when high (motor goes to standstill)
+  bool direct_mode; ///< Bit 16: Direct coil control via XTARGET (bits 8..0=coil A, 24..16=coil B, scaled by IHOLD)
+  bool test_mode; ///< Bit 17: Analog test output on ENCN_DCO (not for normal use, keep false)
+
+  /**
+   * @brief Default constructor
+   *
+   * Initializes with recommended default values.
+   */
+  GlobalConfig()
+      : recalibrate(false), faststandstill(false), en_pwm_mode(true),
+        multistep_filt(true), shaft(false), diag0_error(false),
+        diag0_otpw(false), diag0_stall_step(false), diag1_stall_dir(false),
+        diag1_index(false), diag1_onstate(false), diag1_steps_skipped(false),
+        diag0_int_pushpull(false), diag1_poscomp_pushpull(false),
+        small_hysteresis(false), stop_enable(false), direct_mode(false),
+        test_mode(false) {}
+};
+
+/**
+ * @brief Ramp parameters structure
+ *
+ * Additional ramp control parameters for fine-tuning motion profiles.
+ */
+struct RampParameters {
+  uint8_t tpowerdown; ///< Delay before power down (0-255, time range ~0 to 5.6 seconds)
+  uint16_t tzerowait; ///< Waiting time after ramping down to zero velocity (0-65535, time range ~0 to 2 seconds)
+  float a1; ///< First acceleration between VSTART and V1 (steps/s², 0.0f = use AMAX)
+
+  /**
+   * @brief Default constructor
+   *
+   * Initializes with default values.
+   */
+  RampParameters() : tpowerdown(20), tzerowait(0), a1(0.0f) {}
 };
 
 } // namespace tmc5160

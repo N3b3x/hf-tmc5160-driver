@@ -38,9 +38,13 @@ Welcome! This directory contains step-by-step guides for installing, building, a
 11. **[🔧 Advanced Configuration](special_features_advanced_configuration.md)** – CoolStep, dcStep, freewheeling, and more
 12. **[🔗 Multi-Chip Communication](special_features_multi_chip.md)** – SPI daisy chaining and UART multi-node addressing
 
+### **Analysis & Comparison**
+
+13. **[📊 Coverage Analysis](special_features_coverage_analysis.md)** – Complete feature and register coverage analysis
+
 ### **Troubleshooting**
 
-12. **[🐛 Troubleshooting](troubleshooting.md)** – Common issues and solutions
+14. **[🐛 Troubleshooting](troubleshooting.md)** – Common issues and solutions
 
 ---
 

@@ -115,6 +115,24 @@ apps:
     ci_enabled: true
     featured: true
 
+  daisy_chain_example:
+    description: "Daisy-chain example - multiple TMC5160 drivers on a single SPI bus"
+    source_file: "daisy_chain_example.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
+  uart_daisy_chain_example:
+    description: "UART daisy-chain example - multiple TMC5160 drivers on a single UART bus with NAI/NAO addressing"
+    source_file: "uart_daisy_chain_example.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
 build_config:
   build_types:
     Debug:

@@ -30,6 +30,8 @@ public:
     CommMode GetMode() const noexcept { return CommMode::SPI; }
     bool SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) {
         // Your SPI transfer implementation
+        // CSN control is handled here (hardware SPI peripheral typically handles it automatically)
+        // For daisy-chaining, ensure CSN stays low during entire transfer
         return true;
     }
     bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) {
@@ -147,11 +149,34 @@ If you encounter issues:
 - **Communication errors**: Check SPI/UART wiring and clock frequency
 - **See**: [Troubleshooting](troubleshooting.md) for common issues
 
+## Multi-Chip Daisy-Chaining
+
+For multiple TMC5160 drivers on a single SPI bus:
+
+```cpp
+// Create one SPI interface (shared by all chips)
+MySPI spi(true, true, true);
+spi.Initialize();
+
+// Create multiple drivers with different daisy-chain positions
+tmc5160::TMC5160 driver1(spi, 12'000'000, 0); // Position 0 (first chip)
+tmc5160::TMC5160 driver2(spi, 12'000'000, 1); // Position 1 (second chip)
+tmc5160::TMC5160 driver3(spi, 12'000'000, 2); // Position 2 (third chip)
+
+// Each driver automatically uses its own position
+driver1.Initialize(cfg); // Accesses chip 0
+driver2.Initialize(cfg); // Accesses chip 1
+driver3.Initialize(cfg); // Accesses chip 2
+```
+
+See [Multi-Chip Communication](special_features_multi_chip.md) for detailed information.
+
 ## Next Steps
 
 - Explore [Examples](examples.md) for more advanced usage
 - Review the [API Reference](api_reference.md) for all available methods
 - Check [Configuration](configuration.md) for customization options
+- Learn about [Multi-Chip Communication](special_features_multi_chip.md) for daisy-chaining
 
 ---
 

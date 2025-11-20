@@ -166,8 +166,8 @@ Methods available through `GetComm()` for direct communication interface access.
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
 | `GetMode()` | `CommMode GetMode() const noexcept` | CommMode enum | Get communication mode (SPI or UART) |
-| `ReadRegister()` | `bool ReadRegister(uint8_t address, uint32_t& value, uint8_t chip_index = 0) noexcept` | `true` on success | Read 32-bit register with optional chip selection |
-| `WriteRegister()` | `bool WriteRegister(uint8_t address, uint32_t value, uint8_t chip_index = 0) noexcept` | `true` on success | Write 32-bit register with optional chip selection |
+| `ReadRegister()` | `bool ReadRegister(uint8_t address, uint32_t& value, uint8_t daisy_chain_position = 0) noexcept` | `true` on success | Read 32-bit register with optional daisy-chain position |
+| `WriteRegister()` | `bool WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept` | `true` on success | Write 32-bit register with optional daisy-chain position |
 | `GpioSet()` | `bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) noexcept` | `true` on success | Set GPIO pin state |
 | `GpioRead()` | `bool GpioRead(TMC5160CtrlPin pin, GpioSignal& signal) noexcept` | `true` on success | Read GPIO pin state |
 | `GpioSetActive()` | `bool GpioSetActive(TMC5160CtrlPin pin) noexcept` | `true` on success | Set GPIO pin to active state |
@@ -178,7 +178,10 @@ Methods available through `GetComm()` for direct communication interface access.
 | `DelayMs()` | `void DelayMs(uint32_t ms) noexcept` | void | Delay milliseconds |
 | `DelayUs()` | `void DelayUs(uint32_t us) noexcept` | void | Delay microseconds |
 | `LogDebug()` | `void LogDebug(int level, const char* tag, const char* format, ...) noexcept` | void | Debug logging |
-| `SetChipSelect()` | `bool SetChipSelect(uint8_t csn_pin_index, bool active) noexcept` | `true` on success | Set CSN pin state for SPI multi-chip setups (SPI only) |
+| `SetDaisyChainPosition()` | `void SetDaisyChainPosition(uint8_t position) noexcept` | void | Set daisy-chain position for this TMC5160 instance (TMC5160 class method) |
+| `GetDaisyChainPosition()` | `uint8_t GetDaisyChainPosition() const noexcept` | Position (0-255) | Get current daisy-chain position (TMC5160 class method) |
+| `SetDaisyChainLength()` | `void SetDaisyChainLength(uint8_t total_length) noexcept` | void | Set total number of devices in daisy chain (SPI only) |
+| `GetDaisyChainLength()` | `uint8_t GetDaisyChainLength() const noexcept` | Chain length (0-255) | Get current daisy chain length setting (SPI only) |
 | `SetSlaveAddress()` | `void SetSlaveAddress(uint8_t address) noexcept` | void | Set UART slave address (UART only) |
 | `GetSlaveAddress()` | `uint8_t GetSlaveAddress() const noexcept` | Slave address (0-127) | Get current UART slave address (UART only) |
 | `SetNaiPin()` | `bool SetNaiPin(bool active) noexcept` | `true` on success | Set NAI pin state for UART daisy chaining (UART only) |
@@ -445,6 +448,103 @@ Free functions for converting between physical units and driver steps.
 | `AccelerationMmToSteps()` | `float AccelerationMmToSteps(float accel_mm_per_sec2, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept` | Steps/s² | Convert mm/s² to steps/s² |
 | `AccelerationStepsToMm()` | `float AccelerationStepsToMm(float accel_steps_per_sec2, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept` | mm/s² | Convert steps/s² to mm/s² |
 
+## Feature Implementation Summary
+
+The TMC5160 driver provides comprehensive coverage of all chipset features. This section summarizes the implementation status and available features.
+
+### Core Functionality: 100% ✅
+
+- **Ramp Control**: Complete - positioning, velocity, hold modes with configurable acceleration profiles
+- **Current Control**: Complete - run/hold currents with global scaler
+- **Chopper Modes**: Complete - spreadCycle and stealthChop operation
+- **Encoder Support**: Complete - closed-loop control with deviation detection
+- **StallGuard2**: Complete - stall detection with configurable thresholds
+- **dcStep**: Complete - automatic commutation configuration
+- **Protection**: Complete - short circuit, overtemperature, overvoltage protection
+
+### Advanced Features: 100% ✅
+
+- **Diagnostics**: Complete - access to all read-only diagnostic registers
+  - `TSTEP` - Actual time between microsteps
+  - `MSCNT` - Microstep table position
+  - `MSCURACT` - Actual microstep current
+  - `PWM_SCALE` - stealthChop PWM scale results
+  - `PWM_AUTO` - Automatically determined PWM values
+  - `ENC_LATCH` - Encoder position latched on N event
+  - `IO_INPUT_OUTPUT` - GPIO pin read access
+- **Factory Configuration**: Complete - clock trim read access
+- **OTP Read**: Complete - OTP configuration read (programming intentionally not implemented)
+- **UART Configuration**: Complete - slave address and send delay configuration
+- **Offset Calibration**: Complete - phase offset calibration results
+
+### Global Configuration (GCONF)
+
+All GCONF register bits are now accessible through the `GlobalConfig` structure:
+
+- `recalibrate` - Zero crossing recalibration
+- `faststandstill` - Standstill detection timeout
+- `multistep_filt` - Step input filtering
+- `diag0_error` - DIAG0 on driver errors
+- `diag0_otpw` - DIAG0 on overtemperature prewarning
+- `diag0_stall_step` - DIAG0 on stall/STEP output
+- `diag1_stall_dir` - DIAG1 on stall/DIR output
+- `diag1_index` - DIAG1 on index position
+- `diag1_onstate` - DIAG1 when chopper on
+- `diag1_steps_skipped` - DIAG1 on skipped steps
+- `diag0_int_pushpull` - DIAG0 push-pull output
+- `diag1_poscomp_pushpull` - DIAG1 push-pull output
+- `small_hysteresis` - Small hysteresis for step frequency
+- `stop_enable` - Emergency stop enable
+- `direct_mode` - Direct motor coil control
+- `test_mode` - Test mode
+
+**Usage:**
+```cpp
+tmc5160::GlobalConfig gconf{};
+gconf.faststandstill = true;
+gconf.diag0_error = true;
+driver.motorControl.ConfigureGlobalConfig(gconf);
+```
+
+### Ramp Parameters
+
+All ramp parameters are now accessible:
+
+- `TPOWERDOWN` - Power down delay configuration
+  - Method: `RampControl::SetPowerDownDelay(uint16_t tpowerdown)`
+- `TZEROWAIT` - Zero wait time configuration
+  - Method: `RampControl::SetZeroWaitTime(uint16_t tzerowait)`
+- `A_1` - First acceleration phase
+  - Method: `RampControl::SetFirstAcceleration(float a1)`
+
+**Usage:**
+```cpp
+driver.rampControl.SetPowerDownDelay(10);  // 10 * 2^18 clocks
+driver.rampControl.SetZeroWaitTime(100);   // 100 * 2^18 clocks
+driver.rampControl.SetFirstAcceleration(500.0f); // 500 steps/s²
+```
+
+### Power Stage Enhancements
+
+- `DRV_CONF.otselect` - Over temperature level selection
+- `DRV_CONF.filt_isense` - Sense amplifier filter time constant
+
+Both are accessible through the `PowerStageParameters` structure in `DriverConfig`.
+
+### dcStep Enhancements
+
+- `DCCTRL` register configuration with:
+  - `dc_time` - dcStep time window
+  - `dc_sg` - dcStep stallGuard threshold
+
+**Usage:**
+```cpp
+tmc5160::DcStepConfig dc_config{};
+dc_config.dc_time = 100;
+dc_config.dc_sg = 50;
+driver.motorControl.ConfigureDcStep(dc_config);
+```
+
 ## Error Handling
 
 The driver uses boolean return values for error handling:
@@ -463,6 +563,7 @@ if (!driver.rampControl.SetTargetPosition(1000)) {
 
 - See [Examples](examples.md) for usage examples
 - Check [Configuration](configuration.md) for configuration options
+- Review [Multi-Chip Communication](special_features_multi_chip.md) for daisy-chaining
 
 ---
 

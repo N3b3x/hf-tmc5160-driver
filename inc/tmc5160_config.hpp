@@ -49,6 +49,8 @@ struct DriverConfig {
   StealthChopConfig stealthchop;    ///< StealthChop configuration
   ShortProtectionConfig
       short_protection; ///< Short circuit protection configuration
+  GlobalConfig global_config; ///< Global configuration (GCONF register)
+  RampParameters ramp_params; ///< Additional ramp parameters
   uint32_t f_clk;       ///< TMC5160 clock frequency in Hz (default: 12 MHz)
 
   /**
@@ -58,7 +60,8 @@ struct DriverConfig {
    */
   DriverConfig()
       : power_stage(), motor(), direction(MotorDirection::NORMAL), chopper(),
-        stealthchop(), short_protection(), f_clk(ClockFreq::DEFAULT_F_CLK) {}
+        stealthchop(), short_protection(), global_config(), ramp_params(),
+        f_clk(ClockFreq::DEFAULT_F_CLK) {}
 };
 
 } // namespace tmc5160
