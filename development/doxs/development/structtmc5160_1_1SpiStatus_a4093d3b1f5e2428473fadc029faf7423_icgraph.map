@@ -1,5 +1,7 @@
 <map id="tmc5160::SpiStatus::VelocityReached" name="tmc5160::SpiStatus::VelocityReached">
-<area shape="rect" id="Node000001" title="Get velocity reached flag (bit 4)" alt="" coords="261,5,409,45"/>
+<area shape="rect" id="Node000001" title="Get velocity reached flag (bit 4)" alt="" coords="261,37,409,77"/>
 <area shape="rect" id="Node000002" href="$classtmc5160_1_1SpiCommInterface.html#ad5148180affea0e047e8c4a40d83485c" title="Read a 32&#45;bit register via SPI." alt="" coords="5,5,213,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="248,28,214,28,214,23,248,23"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,48,213,43,214,37,248,42"/>
+<area shape="rect" id="Node000003" href="$classtmc5160_1_1SpiCommInterface.html#a2ba4efb58323a9e2b221ce9a80a56470" title="Write a 32&#45;bit register via SPI." alt="" coords="5,69,213,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="248,72,214,77,213,72,247,67"/>
 </map>

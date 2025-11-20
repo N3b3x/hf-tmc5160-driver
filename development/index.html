@@ -170,7 +170,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
       </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC5160 Driver</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
-      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_coverage_analysis.html" class="nav-list-link">TMC5160 Feature Coverage Analysis Report</a></li></ul>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/gpio_pin_configuration.html" class="nav-list-link">GPIO Pin Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_coverage_analysis.html" class="nav-list-link">TMC5160 Feature Coverage Analysis Report</a></li></ul>
   
 </nav>
 
@@ -297,12 +297,17 @@ Interactive guides, examples, and step-by-step tutorials</p>
 
 <p><strong>HF-TMC5160</strong> is a portable C++17 driver for the <strong>Trinamic TMC5160</strong> stepper motor controller IC. The TMC5160 is a
 sophisticated stepper motor driver supporting advanced features including stealthChop for silent operation, spreadCycle
-for high torque, StallGuard2 for stall detection, and encoder support for closed-loop control. The driver provides
-hardware-agnostic communication interfaces, allowing it to run on any platform (ESP32, STM32, etc.) with SPI or UART.</p>
+for high torque, StallGuard2 for stall detection, and encoder support for closed-loop control.</p>
 
-<p>The driver exposes the full register interface, providing access to all TMC5160 registers through an intuitive C++ API.
+<p>This driver provides <strong>complete feature coverage</strong> of all 47 TMC5160 registers with 72+ public API methods organized into
+intuitive subsystems. It supports <strong>multi-chip communication</strong> via SPI daisy chaining and UART multi-node addressing,
+<strong>physical unit conversions</strong> (mm, degrees, RPM), <strong>sensorless homing</strong>, and many other advanced features not found in
+other TMC5160 drivers. The driver provides hardware-agnostic communication interfaces, allowing it to run on any platform
+(ESP32, STM32, etc.) with SPI or UART.</p>
+
+<p>The driver exposes the full register interface, providing access to all 47 TMC5160 registers through an intuitive C++ API.
 It supports ramp control (positioning, velocity, hold modes), motor current configuration, chopper settings, stealthChop
-PWM mode, encoder integration, and comprehensive protection systems.</p>
+PWM mode, encoder integration, comprehensive protection systems, and advanced multi-chip communication.</p>
 <h2 id="-features">
   
   
@@ -311,7 +316,14 @@ PWM mode, encoder integration, and comprehensive protection systems.</p>
   
 </h2>
     
-
+<h3 id="core-motor-control">
+  
+  
+    <a href="#core-motor-control" class="anchor-heading" aria-labelledby="core-motor-control"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Core Motor Control
+  
+  
+</h3>
+    
 <ul>
   <li>✅ <strong>Ramp Control</strong>: Positioning, velocity, and hold modes with configurable acceleration profiles</li>
   <li>✅ <strong>Current Control</strong>: Configurable run and hold currents with global scaler</li>
@@ -320,9 +332,51 @@ PWM mode, encoder integration, and comprehensive protection systems.</p>
   <li>✅ <strong>StallGuard2</strong>: Stall detection and prevention with configurable thresholds</li>
   <li>✅ <strong>Encoder Support</strong>: Closed-loop control with encoder feedback and deviation detection</li>
   <li>✅ <strong>Protection Systems</strong>: Short circuit, overtemperature, and overvoltage protection</li>
+</ul>
+<h3 id="multi-chip-communication">
+  
+  
+    <a href="#multi-chip-communication" class="anchor-heading" aria-labelledby="multi-chip-communication"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Multi-Chip Communication
+  
+  
+</h3>
+    
+<ul>
+  <li>✅ <strong>SPI Daisy Chaining</strong>: Connect multiple TMC5160 chips on a single SPI bus with automatic chain length detection</li>
+  <li>✅ <strong>TMC5160DaisyChain Class</strong>: High-level manager for multiple drivers with dynamic device management</li>
+  <li>✅ <strong>UART Multi-Node</strong>: Support for up to 255 devices on a single UART bus with slave addressing</li>
+</ul>
+<h3 id="advanced-features">
+  
+  
+    <a href="#advanced-features" class="anchor-heading" aria-labelledby="advanced-features"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Advanced Features
+  
+  
+</h3>
+    
+<ul>
+  <li>✅ <strong>Unit Conversions</strong>: Physical unit support (millimeters, degrees, RPM, belt teeth) with convenience methods</li>
+  <li>✅ <strong>Sensorless Homing</strong>: StallGuard2-based sensorless homing for endstop-free operation</li>
+  <li>✅ <strong>CoolStep</strong>: Automatic current reduction when load is low for power efficiency</li>
+  <li>✅ <strong>dcStep</strong>: Automatic commutation for DC motor-like operation</li>
+  <li>✅ <strong>Microstep Lookup Tables</strong>: Custom microstep interpolation for optimized motion profiles</li>
+  <li>✅ <strong>Lost Steps Detection</strong>: Monitor and detect step loss during operation</li>
+  <li>✅ <strong>OTP Programming</strong>: One-time programmable memory read/write support</li>
+  <li>✅ <strong>Factory Configuration</strong>: Read factory calibration and configuration data</li>
+</ul>
+<h3 id="platform--architecture">
+  
+  
+    <a href="#platform--architecture" class="anchor-heading" aria-labelledby="platform--architecture"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Platform &amp; Architecture
+  
+  
+</h3>
+    
+<ul>
   <li>✅ <strong>Hardware Agnostic</strong>: SPI or UART interface for platform independence</li>
   <li>✅ <strong>Modern C++17</strong>: Type-safe API with RAII principles</li>
   <li>✅ <strong>Zero Overhead</strong>: CRTP-based design for compile-time polymorphism</li>
+  <li>✅ <strong>Complete Register Coverage</strong>: All 47 registers (0x00-0x73) with 72+ public API methods</li>
 </ul>
 <h2 id="-quick-start">
   
@@ -331,6 +385,14 @@ PWM mode, encoder integration, and comprehensive protection systems.</p>
   
   
 </h2>
+    
+<h3 id="single-motor-setup">
+  
+  
+    <a href="#single-motor-setup" class="anchor-heading" aria-labelledby="single-motor-setup"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Single Motor Setup
+  
+  
+</h3>
     
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
@@ -380,6 +442,106 @@ PWM mode, encoder integration, and comprehensive protection systems.</p>
 <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetAcceleration</span><span class="p">(</span><span class="mf">500.0</span><span class="n">f</span><span class="p">);</span>
 <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="multi-motor-daisy-chain-setup">
+  
+  
+    <a href="#multi-motor-daisy-chain-setup" class="anchor-heading" aria-labelledby="multi-motor-daisy-chain-setup"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Multi-Motor Daisy Chain Setup
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"inc/tmc5160.hpp"</span><span class="cp">
+#include</span> <span class="cpf">"inc/tmc5160_daisy_chain.hpp"</span><span class="cp">
+</span>
+<span class="c1">// 1. Create SPI communication interface (shared by all devices)</span>
+<span class="n">MySPI</span> <span class="n">spi</span><span class="p">;</span>
+<span class="n">spi</span><span class="p">.</span><span class="n">Initialize</span><span class="p">();</span>
+
+<span class="c1">// 2. Create daisy-chain manager with 3 onboard devices</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160DaisyChain</span><span class="o">&lt;</span><span class="n">MySPI</span><span class="p">,</span> <span class="mi">5</span><span class="o">&gt;</span> <span class="n">chain</span><span class="p">(</span><span class="n">spi</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">);</span>
+
+<span class="c1">// 3. Initialize all devices</span>
+<span class="n">tmc5160</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="n">chain</span><span class="p">.</span><span class="n">InitializeAll</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+
+<span class="c1">// 4. Access individual motors</span>
+<span class="k">auto</span><span class="o">&amp;</span> <span class="n">x_axis</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="k">auto</span><span class="o">&amp;</span> <span class="n">y_axis</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="k">auto</span><span class="o">&amp;</span> <span class="n">z_axis</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+
+<span class="n">x_axis</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<span class="n">y_axis</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">500.0</span><span class="n">f</span><span class="p">);</span>
+<span class="n">z_axis</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="using-physical-units">
+  
+  
+    <a href="#using-physical-units" class="anchor-heading" aria-labelledby="using-physical-units"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Using Physical Units
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"inc/tmc5160.hpp"</span><span class="cp">
+#include</span> <span class="cpf">"inc/tmc5160_units.hpp"</span><span class="cp">
+</span>
+<span class="c1">// Motor: 200 steps/rev, Lead screw: 2mm pitch</span>
+<span class="k">constexpr</span> <span class="kt">uint16_t</span> <span class="n">STEPS_PER_REV</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+<span class="k">constexpr</span> <span class="kt">float</span> <span class="n">LEAD_SCREW_PITCH_MM</span> <span class="o">=</span> <span class="mf">2.0</span><span class="n">f</span><span class="p">;</span>
+
+<span class="c1">// Move 10mm using convenience method</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPositionMm</span><span class="p">(</span><span class="mf">10.0</span><span class="n">f</span><span class="p">,</span> <span class="n">STEPS_PER_REV</span><span class="p">,</span> <span class="n">LEAD_SCREW_PITCH_MM</span><span class="p">);</span>
+
+<span class="c1">// Set speed in RPM</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeedRpm</span><span class="p">(</span><span class="mf">100.0</span><span class="n">f</span><span class="p">,</span> <span class="n">STEPS_PER_REV</span><span class="p">);</span>
+
+<span class="c1">// Or use conversion functions directly</span>
+<span class="kt">int32_t</span> <span class="n">steps</span> <span class="o">=</span> <span class="n">tmc5160</span><span class="o">::</span><span class="n">MmToSteps</span><span class="p">(</span><span class="mf">10.0</span><span class="n">f</span><span class="p">,</span> <span class="n">STEPS_PER_REV</span><span class="p">,</span> <span class="n">LEAD_SCREW_PITCH_MM</span><span class="p">);</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="n">steps</span><span class="p">);</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
 
 <p>For detailed setup, see <a href="/hf-tmc5160-driver/development/docs/installation/">Installation</a> and <a href="/hf-tmc5160-driver/development/docs/quickstart/">Quick Start Guide</a>.</p>
 <h2 id="-installation">
@@ -410,6 +572,14 @@ PWM mode, encoder integration, and comprehensive protection systems.</p>
   
   
 </h2>
+    
+<h3 id="core-methods">
+  
+  
+    <a href="#core-methods" class="anchor-heading" aria-labelledby="core-methods"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Core Methods
+  
+  
+</h3>
     
 
 <div class="table-wrapper"><table>
@@ -458,6 +628,123 @@ PWM mode, encoder integration, and comprehensive protection systems.</p>
     </tr>
   </tbody>
 </table></div>
+<h3 id="multi-chip-methods">
+  
+  
+    <a href="#multi-chip-methods" class="anchor-heading" aria-labelledby="multi-chip-methods"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Multi-Chip Methods
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetDaisyChainPosition()</code></td>
+      <td>Set position in SPI daisy chain</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetDaisyChainLength()</code></td>
+      <td>Configure total chain length for optimal response extraction</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">TMC5160DaisyChain</code></td>
+      <td>High-level manager for multiple drivers on shared SPI bus</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="unit-conversion-methods">
+  
+  
+    <a href="#unit-conversion-methods" class="anchor-heading" aria-labelledby="unit-conversion-methods"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Unit Conversion Methods
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">rampControl.SetTargetPositionMm()</code></td>
+      <td>Set target position in millimeters</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">rampControl.SetMaxSpeedRpm()</code></td>
+      <td>Set maximum speed in RPM</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">MmToSteps()</code> / <code class="language-plaintext highlighter-rouge">StepsToMm()</code></td>
+      <td>Convert between millimeters and steps</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">RpmToStepsPerSec()</code> / <code class="language-plaintext highlighter-rouge">StepsPerSecToRpm()</code></td>
+      <td>Convert between RPM and steps/s</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">DegreesToSteps()</code> / <code class="language-plaintext highlighter-rouge">StepsToDegrees()</code></td>
+      <td>Convert between degrees and steps</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="advanced-features-1">
+  
+  
+    <a href="#advanced-features-1" class="anchor-heading" aria-labelledby="advanced-features-1"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Advanced Features
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">PerformSensorlessHoming()</code></td>
+      <td>Sensorless homing using StallGuard2</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigureCoolStep()</code></td>
+      <td>Configure automatic current reduction</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigureDcStep()</code></td>
+      <td>Configure dcStep automatic commutation</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetMicrostepLookupTable()</code></td>
+      <td>Configure custom microstep interpolation</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetLostSteps()</code></td>
+      <td>Read lost steps counter</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ReadOtpConfig()</code></td>
+      <td>Read OTP memory</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ReadFactoryConfig()</code></td>
+      <td>Read factory calibration data</td>
+    </tr>
+  </tbody>
+</table></div>
 
 <p>For complete API documentation, see <a href="/hf-tmc5160-driver/development/docs/api_reference/">docs/api_reference.md</a>.</p>
 <h2 id="-examples">
@@ -469,7 +756,31 @@ PWM mode, encoder integration, and comprehensive protection systems.</p>
 </h2>
     
 
-<p>For ESP32 examples, see the <a href="examples/esp32/">examples/esp32</a> directory.</p>
+<p>Comprehensive ESP32 examples are available in the <a href="examples/esp32/">examples/esp32</a> directory, including:</p>
+
+<ul>
+  <li><strong>Core Functionality</strong>: Basic motor control, ramp modes, current configuration</li>
+  <li><strong>Multi-Chip Communication</strong>:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">spi_daisy_chain_comprehensive_test.cpp</code> - SPI daisy chaining with multiple motors</li>
+      <li><code class="language-plaintext highlighter-rouge">uart_multi_node_comprehensive_test.cpp</code> - UART multi-node addressing</li>
+    </ul>
+  </li>
+  <li><strong>Advanced Features</strong>:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">encoder_comprehensive_test.cpp</code> - Encoder integration and closed-loop control</li>
+      <li><code class="language-plaintext highlighter-rouge">diagnostics_comprehensive_test.cpp</code> - Comprehensive diagnostics and status monitoring</li>
+      <li><code class="language-plaintext highlighter-rouge">protection_comprehensive_test.cpp</code> - Protection system configuration and monitoring</li>
+    </ul>
+  </li>
+  <li><strong>Motor Control</strong>:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">motor_control_comprehensive_test.cpp</code> - Advanced motor control features</li>
+      <li><code class="language-plaintext highlighter-rouge">ramp_control_comprehensive_test.cpp</code> - Ramp control and motion profiles</li>
+      <li><code class="language-plaintext highlighter-rouge">bounds_finding_sinuous_motion.cpp</code> - Advanced motion control with bounds finding</li>
+    </ul>
+  </li>
+</ul>
 
 <p>Detailed example walkthroughs are available in <a href="/hf-tmc5160-driver/development/docs/examples/">docs/examples.md</a>.</p>
 <h2 id="-documentation">

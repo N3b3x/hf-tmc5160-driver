@@ -176,7 +176,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
       </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC5160 Driver</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
-      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_coverage_analysis.html" class="nav-list-link">TMC5160 Feature Coverage Analysis Report</a></li></ul>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/gpio_pin_configuration.html" class="nav-list-link">GPIO Pin Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_coverage_analysis.html" class="nav-list-link">TMC5160 Feature Coverage Analysis Report</a></li></ul>
   
 </nav>
 
@@ -321,7 +321,7 @@
     <tr>
       <td><code class="language-plaintext highlighter-rouge">TMC5160()</code></td>
       <td><code class="language-plaintext highlighter-rouge">TMC5160(CommType&amp; comm, uint32_t f_clk = 12000000, uint8_t daisy_chain_position = 0, uint8_t uart_node_address = 0)</code></td>
-      <td>Construct driver instance. For SPI: daisy_chain_position. For UART: uart_node_address.</td>
+      <td>Construct driver instance. For SPI: use <code class="language-plaintext highlighter-rouge">daisy_chain_position</code> (0 = first chip). For UART: use <code class="language-plaintext highlighter-rouge">uart_node_address</code> (0-254).</td>
     </tr>
   </tbody>
 </table></div>
@@ -514,6 +514,24 @@
       <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
       <td>Set position comparison register (X_COMPARE)</td>
     </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetPowerDownDelay()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetPowerDownDelay(uint8_t tpowerdown) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set power down delay (0-255)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetZeroWaitTime()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetZeroWaitTime(uint16_t tzerowait) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set zero wait time after ramping down (0-65535)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetFirstAcceleration()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool SetFirstAcceleration(float a1) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Set first acceleration phase A1 (steps/s², 0.0f = use AMAX)</td>
+    </tr>
   </tbody>
 </table></div>
 <h2 id="motorcontrol-subsystem">
@@ -631,6 +649,12 @@
       <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
       <td>Setup motor from high-level specifications</td>
     </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigureGlobalConfig()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ConfigureGlobalConfig(const GlobalConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Configure global configuration (GCONF register)</td>
+    </tr>
   </tbody>
 </table></div>
 <h2 id="encoder-subsystem">
@@ -699,6 +723,12 @@
       <td><code class="language-plaintext highlighter-rouge">bool ClearDeviationFlag() noexcept</code></td>
       <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
       <td>Clear encoder deviation flag</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetLatchedPosition()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">int32_t GetLatchedPosition() noexcept</code></td>
+      <td>Encoder latched position (0 on error)</td>
+      <td>Get encoder position latched on N event</td>
     </tr>
   </tbody>
 </table></div>
@@ -774,6 +804,66 @@
       <td><code class="language-plaintext highlighter-rouge">bool PerformSensorlessHoming(bool direction, int8_t stall_threshold, float search_speed, int32_t&amp; final_position) noexcept</code></td>
       <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
       <td>Perform sensorless homing using StallGuard2</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetTimeBetweenMicrosteps()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint32_t GetTimeBetweenMicrosteps() noexcept</code></td>
+      <td>Time in clock cycles (0 on error)</td>
+      <td>Get actual time between microsteps (TSTEP register)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetMicrostepCounter()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint16_t GetMicrostepCounter() noexcept</code></td>
+      <td>Position in table (0-1023, 0 on error)</td>
+      <td>Get actual position in microstep table (MSCNT register)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetMicrostepCurrent()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool GetMicrostepCurrent(int16_t&amp; phase_a, int16_t&amp; phase_b) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Get actual microstep current for both phases (MSCURACT register)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetPwmScale()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool GetPwmScale(uint8_t&amp; pwm_scale_sum, int16_t&amp; pwm_scale_auto) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Get stealthChop PWM scale results (PWM_SCALE register)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetPwmAuto()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool GetPwmAuto(uint8_t&amp; pwm_ofs_auto, uint8_t&amp; pwm_grad_auto) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Get automatically determined PWM values (PWM_AUTO register)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ReadGpioPins()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ReadGpioPins(uint32_t&amp; io_pins) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Read GPIO input pin states (IO_INPUT_OUTPUT register)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ReadFactoryConfig()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ReadFactoryConfig(uint8_t&amp; fclktrim) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Read factory configuration/clock trim (FACTORY_CONF register)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ReadOtpConfig()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ReadOtpConfig(uint8_t&amp; otp_fclktrim, bool&amp; otp_s2_level, bool&amp; otp_bbm, bool&amp; otp_tbl) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Read OTP configuration memory (OTP_READ register)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetUartTransmissionCount()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t GetUartTransmissionCount() noexcept</code></td>
+      <td>Transmission count (0 on error)</td>
+      <td>Get UART transmission counter (IFCNT register)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ReadOffsetCalibration()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ReadOffsetCalibration(uint8_t&amp; phase_a, uint8_t&amp; phase_b) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Read offset calibration results (OFFSET_READ register)</td>
     </tr>
   </tbody>
 </table></div>
@@ -863,7 +953,7 @@
       <td><code class="language-plaintext highlighter-rouge">ConfigureSlave()</code></td>
       <td><code class="language-plaintext highlighter-rouge">bool ConfigureSlave(uint8_t slave_address, uint8_t send_delay) noexcept</code></td>
       <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Configure SLAVECONF register with node address (0-254) and send delay. Updates the driver’s <code class="language-plaintext highlighter-rouge">uart_node_address_</code>. Per datasheet, devices are typically programmed backwards from 254.</td>
+      <td>Configure SLAVECONF register with node address (0-127) and send delay. Updates the driver’s <code class="language-plaintext highlighter-rouge">uart_node_address_</code>. Per datasheet, devices are typically programmed backwards from 254.</td>
     </tr>
   </tbody>
 </table></div>
@@ -1356,6 +1446,26 @@
       <td><code class="language-plaintext highlighter-rouge">short_protection</code></td>
       <td><code class="language-plaintext highlighter-rouge">ShortProtectionConfig</code></td>
       <td>Short circuit protection levels</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">global_config</code></td>
+      <td><code class="language-plaintext highlighter-rouge">GlobalConfig</code></td>
+      <td>Global configuration (GCONF register)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ramp_params</code></td>
+      <td><code class="language-plaintext highlighter-rouge">RampParameters</code></td>
+      <td>Ramp parameters (TPOWERDOWN, TZEROWAIT, A1)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">direction</code></td>
+      <td><code class="language-plaintext highlighter-rouge">MotorDirection</code></td>
+      <td>Motor direction (NORMAL or INVERTED)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">f_clk</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint32_t</code></td>
+      <td>Clock frequency in Hz (default: 12000000)</td>
     </tr>
   </tbody>
 </table></div>
@@ -1954,6 +2064,169 @@
       <td><code class="language-plaintext highlighter-rouge">float</code></td>
       <td>Velocity threshold for enabling dcStep in steps/s (0.0f = disabled)</td>
     </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">dc_time</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>dcStep time window (0-255)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">dc_sg</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>dcStep StallGuard threshold (0-255)</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="globalconfig">
+  
+  
+    <a href="#globalconfig" class="anchor-heading" aria-labelledby="globalconfig"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> GlobalConfig
+  
+  
+</h3>
+    
+
+<p>Global configuration (GCONF register) structure.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">recalibrate</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Zero crossing recalibration during driver disable</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">faststandstill</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Standstill detection timeout (true=2^18 clocks, false=2^20 clocks)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">en_pwm_mode</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Enable StealthChop voltage PWM mode</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">multistep_filt</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Enable step input filtering for StealthChop optimization</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">shaft</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Inverse motor direction</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">diag0_error</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Enable DIAG0 on driver errors (SD_MODE=1 only)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">diag0_otpw</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Enable DIAG0 on overtemperature prewarning (SD_MODE=1 only)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">diag0_stall_step</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>DIAG0 on stall/STEP output</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">diag1_stall_dir</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>DIAG1 on stall/DIR output</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">diag1_index</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Enable DIAG1 on index position (SD_MODE=1 only)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">diag1_onstate</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Enable DIAG1 when chopper is on (SD_MODE=1 only)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">diag1_steps_skipped</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Enable DIAG1 on skipped steps in dcStep mode (SD_MODE=1 only)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">diag0_int_pushpull</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>DIAG0 push-pull output mode</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">diag1_poscomp_pushpull</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>DIAG1 push-pull output mode</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">small_hysteresis</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Small hysteresis for step frequency comparison</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">stop_enable</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Emergency stop enable (ENCA_DCIN stops sequencer)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">direct_mode</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Direct motor coil control via XTARGET</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">test_mode</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Analog test output on ENCN_DCO (not for normal use)</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="rampparameters">
+  
+  
+    <a href="#rampparameters" class="anchor-heading" aria-labelledby="rampparameters"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RampParameters
+  
+  
+</h3>
+    
+
+<p>Additional ramp parameters structure.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">tpowerdown</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
+      <td>Power down delay (0-255)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">tzerowait</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint16_t</code></td>
+      <td>Zero wait time after ramping down (0-65535)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">a1</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float</code></td>
+      <td>First acceleration phase A1 (steps/s², 0.0f = use AMAX)</td>
+    </tr>
   </tbody>
 </table></div>
 <h2 id="unit-conversion-functions">
@@ -2300,6 +2573,238 @@
 </pre></td><td class="rouge-code"><pre><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span> <span class="p">{</span>
     <span class="c1">// Handle error</span>
 <span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="helper-classes">
+  
+  
+    <a href="#helper-classes" class="anchor-heading" aria-labelledby="helper-classes"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Helper Classes
+  
+  
+</h2>
+    
+<h3 id="tmc5160daisychain">
+  
+  
+    <a href="#tmc5160daisychain" class="anchor-heading" aria-labelledby="tmc5160daisychain"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> TMC5160DaisyChain
+  
+  
+</h3>
+    
+
+<p>High-level manager for multiple TMC5160 drivers in a SPI daisy-chain configuration.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_daisy_chain.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_daisy_chain.hpp</code></a></p>
+<h4 id="constructor-1">
+  
+  
+    <a href="#constructor-1" class="anchor-heading" aria-labelledby="constructor-1"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Constructor
+  
+  
+</h4>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">TMC5160DaisyChain()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">TMC5160DaisyChain(CommType&amp; comm, uint8_t num_onboard_devices, uint32_t f_clk = 12000000)</code></td>
+      <td>Create daisy-chain manager with specified number of onboard devices</td>
+    </tr>
+  </tbody>
+</table></div>
+<h4 id="methods-8">
+  
+  
+    <a href="#methods-8" class="anchor-heading" aria-labelledby="methods-8"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
+  
+  
+</h4>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">operator[]</code></td>
+      <td><code class="language-plaintext highlighter-rouge">TMC5160&lt;CommType&gt;&amp; operator[](size_t index)</code></td>
+      <td>Reference to driver</td>
+      <td>Access driver at specified position (0-based)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">InitializeAll()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool InitializeAll(const DriverConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Initialize all onboard devices with same config</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">AddDevice()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool AddDevice(size_t position) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Add extra device at specified position</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">RemoveDevice()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool RemoveDevice(size_t position) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Remove extra device at specified position</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetNumDevices()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">size_t GetNumDevices() const noexcept</code></td>
+      <td>Number of devices</td>
+      <td>Get total number of devices (onboard + extra)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetOnboardCount()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">size_t GetOnboardCount() const noexcept</code></td>
+      <td>Number of onboard devices</td>
+      <td>Get number of onboard devices</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Usage:</strong></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160DaisyChain</span><span class="o">&lt;</span><span class="n">MySPI</span><span class="p">,</span> <span class="mi">5</span><span class="o">&gt;</span> <span class="n">chain</span><span class="p">(</span><span class="n">spiComm</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">);</span>
+<span class="n">chain</span><span class="p">.</span><span class="n">InitializeAll</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">auto</span><span class="o">&amp;</span> <span class="n">motor_x</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="n">motor_x</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="tmc5160multinode">
+  
+  
+    <a href="#tmc5160multinode" class="anchor-heading" aria-labelledby="tmc5160multinode"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> TMC5160MultiNode
+  
+  
+</h3>
+    
+
+<p>High-level manager for multiple TMC5160 drivers in a UART multi-node configuration.</p>
+
+<p><strong>Location</strong>: <a href="../inc/tmc5160_multi_node.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_multi_node.hpp</code></a></p>
+<h4 id="constructor-2">
+  
+  
+    <a href="#constructor-2" class="anchor-heading" aria-labelledby="constructor-2"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Constructor
+  
+  
+</h4>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">TMC5160MultiNode()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">TMC5160MultiNode(CommType&amp; comm, uint8_t num_onboard_devices, uint32_t f_clk = 12000000)</code></td>
+      <td>Create multi-node manager with specified number of onboard devices</td>
+    </tr>
+  </tbody>
+</table></div>
+<h4 id="methods-9">
+  
+  
+    <a href="#methods-9" class="anchor-heading" aria-labelledby="methods-9"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Methods
+  
+  
+</h4>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">operator[]</code></td>
+      <td><code class="language-plaintext highlighter-rouge">TMC5160&lt;CommType&gt;&amp; operator[](size_t index)</code></td>
+      <td>Reference to driver</td>
+      <td>Access driver at specified logical index (0-based)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ProgramSequentially()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ProgramSequentially() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Program all devices sequentially using NAI/NAO pins (required at startup)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ProgramDevice()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ProgramDevice(size_t index) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Program single device at specified index (must be accessible at address 0)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">InitializeAll()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool InitializeAll(const DriverConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Initialize all onboard devices with same config</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">AddDevice()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool AddDevice(size_t index) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Add extra device at specified logical index</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">RemoveDevice()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool RemoveDevice(size_t index) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td>Remove extra device at specified logical index</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetNumDevices()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">size_t GetNumDevices() const noexcept</code></td>
+      <td>Number of devices</td>
+      <td>Get total number of devices (onboard + extra)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetOnboardCount()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">size_t GetOnboardCount() const noexcept</code></td>
+      <td>Number of onboard devices</td>
+      <td>Get number of onboard devices</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Usage:</strong></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160MultiNode</span><span class="o">&lt;</span><span class="n">MyUART</span><span class="p">,</span> <span class="mi">5</span><span class="o">&gt;</span> <span class="n">nodes</span><span class="p">(</span><span class="n">uartComm</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">);</span>
+<span class="n">nodes</span><span class="p">.</span><span class="n">ProgramSequentially</span><span class="p">();</span> <span class="c1">// Required at startup</span>
+<span class="n">nodes</span><span class="p">.</span><span class="n">InitializeAll</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">auto</span><span class="o">&amp;</span> <span class="n">motor_x</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="n">motor_x</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h2 id="next-steps">
   

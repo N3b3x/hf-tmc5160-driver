@@ -1,6 +1,6 @@
 var structtmc5160_1_1MotorSpec =
 [
-    [ "MotorSpec", "structtmc5160_1_1MotorSpec.html#a30dde78b27aa5719a3d629682ffbc117", null ],
+    [ "MotorSpec", "structtmc5160_1_1MotorSpec.html#afc5c87895399b43dd969cbe7a47074ca", null ],
     [ "holding_torque_mnm", "structtmc5160_1_1MotorSpec.html#a52393f5cb5c4a671f92d94b4aa9105aa", null ],
     [ "rated_current_ma", "structtmc5160_1_1MotorSpec.html#aa319b5b1b44f2e29b4dff2b5ac7b0dce", null ],
     [ "rated_voltage_mv", "structtmc5160_1_1MotorSpec.html#a75733555f4dcb14a5336bdd376bec5e2", null ],

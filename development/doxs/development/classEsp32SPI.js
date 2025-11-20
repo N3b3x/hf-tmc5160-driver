@@ -1,16 +1,20 @@
 var classEsp32SPI =
 [
-    [ "Esp32SPI", "classEsp32SPI.html#ad90a55a4a85c7d7669cfd48e61af7599", null ],
+    [ "Esp32SPI", "classEsp32SPI.html#ad552c0d09f771a64ba4b77820eabea5e", null ],
+    [ "Esp32SPI", "classEsp32SPI.html#ab43d0ea3e5fabdc17493bce1196a5cd2", null ],
     [ "~Esp32SPI", "classEsp32SPI.html#aa03430f3ec8cf9bcae8ca0d04b191b1b", null ],
+    [ "ApplyPinConfig", "classEsp32SPI.html#a79ca348b392e0771bce3cf0c476b8845", null ],
     [ "configureGpioPins", "classEsp32SPI.html#ad0abed1b45f0943c0b24d1eb84603b48", null ],
     [ "DebugLog", "classEsp32SPI.html#a10a000397aaf658a2ca2c907b96a2cea", null ],
     [ "Deinitialize", "classEsp32SPI.html#adfd033d198f8b5393443939b523a08d5", null ],
     [ "DelayMs", "classEsp32SPI.html#ac9b9d58fe2109257179e443fde42b02d", null ],
     [ "DelayUs", "classEsp32SPI.html#a7d824ef0096f7ac31b76b53ec8e536c2", null ],
     [ "GetMode", "classEsp32SPI.html#a6b547757c5877541d1c188aadd8522c9", null ],
+    [ "GetPinMapping", "classEsp32SPI.html#ac1efd880f523f135eaaa31bdb6377116", null ],
     [ "GpioRead", "classEsp32SPI.html#acfee848bde351b677ecbc4d69d6381f1", null ],
     [ "GpioSet", "classEsp32SPI.html#a31c4d53a51a04f8b7d8fab4f5cfca4ca", null ],
     [ "Initialize", "classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44", null ],
+    [ "SetPinMapping", "classEsp32SPI.html#aa4931ec5eda8d9564173548a0a6631c7", null ],
     [ "SpiTransfer", "classEsp32SPI.html#a4c71304d66ef780db718e8575c4e8aa1", null ],
     [ "clock_speed_hz_", "classEsp32SPI.html#a4d45170c0d7fb1027827bec0f403b59b", null ],
     [ "cs_pin_", "classEsp32SPI.html#acd7534240676fbe61da7b622d0e03380", null ],
@@ -21,6 +25,7 @@ var classEsp32SPI =
     [ "initialized_", "classEsp32SPI.html#a0920d2de140e51d54c94b5e01eed3fa4", null ],
     [ "miso_pin_", "classEsp32SPI.html#ae7a830005a87b108f49eeafd7d07d2c0", null ],
     [ "mosi_pin_", "classEsp32SPI.html#a5c2653246fc10efe26990097fbffc92d", null ],
+    [ "pin_mapping_", "classEsp32SPI.html#a51f234d67772d220f169d27811d187a6", null ],
     [ "sclk_pin_", "classEsp32SPI.html#a6e052263dab4270986ae0c923bd9baca", null ],
     [ "step_pin_", "classEsp32SPI.html#acf87059491f5257cbfe3a97dd20dadf2", null ]
 ];

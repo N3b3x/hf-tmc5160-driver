@@ -176,7 +176,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
       </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC5160 Driver</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
-      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_coverage_analysis.html" class="nav-list-link">TMC5160 Feature Coverage Analysis Report</a></li></ul>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/gpio_pin_configuration.html" class="nav-list-link">GPIO Pin Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_coverage_analysis.html" class="nav-list-link">TMC5160 Feature Coverage Analysis Report</a></li></ul>
   
 </nav>
 
@@ -513,6 +513,12 @@ In)
 38
 39
 40
+41
+42
+43
+44
+45
+46
 </pre></td><td class="rouge-code"><pre><span class="c1">// Create one SPI communication interface (shared by all chips)</span>
 <span class="n">Esp32SPI</span> <span class="nf">spi</span><span class="p">(</span><span class="n">SPI2_HOST</span><span class="p">,</span> 
              <span class="n">GPIO_NUM_23</span><span class="p">,</span> <span class="c1">// MOSI</span>
@@ -527,6 +533,10 @@ In)
 <span class="c1">// Initialize SPI interface</span>
 <span class="n">spi</span><span class="p">.</span><span class="n">Initialize</span><span class="p">();</span>
 
+<span class="c1">// OPTIONAL: Set chain length manually (if known)</span>
+<span class="c1">// If not set, chain length will be auto-detected on first access</span>
+<span class="n">spi</span><span class="p">.</span><span class="n">SetDaisyChainLength</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="c1">// 3 devices in chain</span>
+
 <span class="c1">// Create multiple TMC5160 instances, each with its own daisy-chain position</span>
 <span class="c1">// Position 0 = first chip, Position 1 = second chip, etc.</span>
 <span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160</span> <span class="nf">driver1</span><span class="p">(</span><span class="n">spi</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// First chip (position 0)</span>
@@ -538,7 +548,9 @@ In)
 <span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
 
-<span class="n">driver1</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="c1">// Chain length is auto-detected on first access if not manually set</span>
+<span class="c1">// If manually set, it is verified against auto-detected length</span>
+<span class="n">driver1</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span> <span class="c1">// First access - triggers auto-detection if needed</span>
 <span class="n">driver2</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
 <span class="n">driver3</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
 
@@ -584,78 +596,103 @@ In)
     </ul>
   </li>
   <li>When <code class="language-plaintext highlighter-rouge">ReadRegister()</code> or <code class="language-plaintext highlighter-rouge">WriteRegister()</code> is called, the driver automatically passes its <code class="language-plaintext highlighter-rouge">daisy_chain_position_</code> as a parameter to the communication interface methods</li>
-  <li>The <code class="language-plaintext highlighter-rouge">SpiCommInterface</code> uses the position parameter along with the total chain length (set via <code class="language-plaintext highlighter-rouge">SetDaisyChainLength()</code>) to calculate the correct transfer size and padding:
+  <li>The <code class="language-plaintext highlighter-rouge">SpiCommInterface</code> uses the position parameter along with the total chain length to calculate the correct transfer size:
     <ul>
-      <li>Position 0: 5 bytes (command only)</li>
-      <li>Position 1: 10 bytes (command + 5 bytes padding)</li>
-      <li>Position 2: 15 bytes (command + 10 bytes padding)</li>
+      <li><strong>Sending</strong>: To address device k, send (k+1)<em>5 bytes (command + k</em>5 bytes padding)</li>
+      <li><strong>Receiving</strong>: To receive response from device k in chain of n devices, use (n-k+1)*5 bytes total</li>
+      <li><strong>Transfer Size</strong>: Use (n-k+1)<em>5 bytes (datasheet formula, always &gt;= (k+1)</em>5 for valid k &lt; n)</li>
+      <li><strong>Response Offset</strong>: Extract response from offset (n-k-1)*5 bytes (reverse order: last device first)</li>
     </ul>
   </li>
   <li>The command is placed at bytes 0-4, padding (zeros) from byte 5 onwards</li>
-  <li>The response from chip N is extracted from bytes <code class="language-plaintext highlighter-rouge">(N * 5)</code> to <code class="language-plaintext highlighter-rouge">(N * 5 + 4)</code></li>
+  <li><strong>CRITICAL</strong>: Chain length MUST be known - it is auto-detected on first access if not manually set. If detection fails, operation returns false.</li>
 </ol>
 
 <p><strong>Transfer Size Calculation:</strong></p>
 
-<p>For a chip at position N:</p>
+<p>For a chip at position k in a chain of n devices:</p>
 <ul>
-  <li><strong>Command</strong>: 5 bytes (40 bits) at offset 0</li>
-  <li><strong>Padding</strong>: N * 5 bytes (N * 40 bits) starting at offset 5</li>
-  <li><strong>Total</strong>: (N + 1) * 5 bytes</li>
-  <li><strong>Response</strong>: Extracted from bytes (N * 5) to (N * 5 + 4)</li>
+  <li><strong>Sending (Command Transmission)</strong>: (k+1)*5 bytes to address device k
+    <ul>
+      <li>Command: 5 bytes (40 bits) at offset 0</li>
+      <li>Padding: k * 5 bytes (k * 40 bits) starting at offset 5</li>
+      <li>Total: (k+1)*5 bytes</li>
+    </ul>
+  </li>
+  <li><strong>Receiving (Response Extraction)</strong>: (n-k+1)*5 bytes total (datasheet formula)
+    <ul>
+      <li>Response appears at offset (n-k-1)*5 bytes (reverse order: last device first)</li>
+      <li>Response: Extracted from bytes (n-k-1)<em>5 to (n-k-1)</em>5+4</li>
+    </ul>
+  </li>
+  <li><strong>Transfer Size</strong>: Use max((k+1)<em>5, (n-k+1)</em>5) bytes
+    <ul>
+      <li>Sending requirement: (k+1)*5 bytes to shift command to device k</li>
+      <li>Receiving requirement: (n-k+1)*5 bytes to shift response back (datasheet formula)</li>
+      <li>Use max() to ensure both requirements are met:
+        <ul>
+          <li>For k &lt; n/2: (n-k+1)<em>5 &gt;= (k+1)</em>5, so (n-k+1)*5 dominates</li>
+          <li>For k &gt;= n/2: (k+1)<em>5 &gt; (n-k+1)</em>5, so (k+1)*5 dominates</li>
+        </ul>
+      </li>
+      <li>Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex behavior</li>
+    </ul>
+  </li>
 </ul>
 
 <p><strong>Important Note on Response Ordering:</strong></p>
 <ul>
   <li>Responses come back in <strong>REVERSE order</strong> (last device first, first device last)</li>
   <li>Per datasheet: To read from device k in a chain of n devices, send 40·(n-k+1) dummy bits total</li>
-  <li>Our implementation uses (k+1)*5 bytes when we only know k (device position), not n (total chain length)</li>
-  <li>The response from device k is correctly extracted from the last 5 bytes of the transfer (offset k*5 bytes)</li>
+  <li><strong>CRITICAL</strong>: Chain length n MUST be known. It is automatically detected on first access if not manually set.</li>
+  <li>The response from device k is extracted from offset (n-k-1)*5 bytes using the datasheet formula</li>
 </ul>
 
-<p><strong>Example Transfer Sizes:</strong></p>
+<p><strong>Example Transfer Sizes (for chain of n=4 devices):</strong></p>
 
 <div class="table-wrapper"><table>
   <thead>
     <tr>
-      <th>Position</th>
-      <th>Total Bytes</th>
-      <th>Command</th>
-      <th>Padding</th>
-      <th>Response Offset</th>
+      <th>Position k</th>
+      <th>Sending (k+1)*5</th>
+      <th>Receiving (n-k+1)*5</th>
+      <th>Transfer Size max((k+1)<em>5, (n-k+1)</em>5)</th>
+      <th>Response Offset (n-k-1)*5</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>0</td>
-      <td>5</td>
-      <td>5</td>
-      <td>0</td>
-      <td>0</td>
+      <td>5 bytes</td>
+      <td>20 bytes</td>
+      <td>20 bytes (receiving dominates)</td>
+      <td>15 bytes</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>10</td>
-      <td>5</td>
-      <td>5</td>
-      <td>5</td>
+      <td>10 bytes</td>
+      <td>15 bytes</td>
+      <td>15 bytes (receiving dominates)</td>
+      <td>10 bytes</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>15</td>
-      <td>5</td>
-      <td>10</td>
-      <td>10</td>
+      <td>15 bytes</td>
+      <td>10 bytes</td>
+      <td>15 bytes (sending dominates)</td>
+      <td>5 bytes</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>20</td>
-      <td>5</td>
-      <td>15</td>
-      <td>15</td>
+      <td>20 bytes</td>
+      <td>5 bytes</td>
+      <td>20 bytes (sending dominates)</td>
+      <td>0 bytes</td>
     </tr>
   </tbody>
 </table></div>
+
+<p><strong>Note</strong>: Transfer size uses max((k+1)<em>5, (n-k+1)</em>5) to ensure both sending and receiving requirements are met. For k &lt; n/2, receiving requirement dominates. For k &gt;= n/2, sending requirement dominates. Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex response extraction.</p>
 <h3 id="using-tmc5160daisychain-for-multiple-devices">
   
   
@@ -767,6 +804,23 @@ detect the number of devices in the daisy chain by sending a unique command that
   <li>Uses a safe read operation that doesn’t modify device state</li>
   <li>Requires exact 5-byte pattern match to confirm loopback</li>
   <li>Returns 0 if detection fails (assumes single chip)</li>
+</ul>
+
+<p><strong>Automatic Detection on First Access:</strong></p>
+<ul>
+  <li>If chain length is not set and <code class="language-plaintext highlighter-rouge">daisy_chain_position &gt; 0</code>, chain length is automatically
+detected on the first <code class="language-plaintext highlighter-rouge">ReadRegister()</code> or <code class="language-plaintext highlighter-rouge">WriteRegister()</code> call</li>
+  <li>This ensures correct response extraction using the datasheet formula <code class="language-plaintext highlighter-rouge">40·(n-k+1)</code></li>
+  <li>Detection happens transparently - no user action required</li>
+</ul>
+
+<p><strong>Verification of User-Specified Length:</strong></p>
+<ul>
+  <li>If user calls <code class="language-plaintext highlighter-rouge">SetDaisyChainLength(n)</code>, the specified length is verified against
+auto-detected length on first access</li>
+  <li>If mismatch is detected, an error is logged: “DAISY CHAIN LENGTH MISMATCH!”</li>
+  <li>The detected length is used (not the user-specified value) to ensure correctness</li>
+  <li>This prevents incorrect response extraction due to configuration errors</li>
 </ul>
 <h2 id="uart-multi-node-addressing">
   
@@ -1212,7 +1266,7 @@ MCU GND        |
 </span>
 <span class="c1">// Create shared UART communication interface</span>
 <span class="n">MyUART</span> <span class="nf">uart_comm</span><span class="p">(</span><span class="cm">/* ... constructor args ... */</span><span class="p">);</span>
-
+  
 <span class="c1">// Create multi-node manager with 3 onboard devices, capacity for 5 total</span>
 <span class="c1">// Onboard devices are created with initial address 0 (will be programmed)</span>
 <span class="n">tmc5160</span><span class="o">::</span><span class="n">TMC5160MultiNode</span><span class="o">&lt;</span><span class="n">MyUART</span><span class="p">,</span> <span class="mi">5</span><span class="o">&gt;</span> <span class="n">nodes</span><span class="p">(</span><span class="n">uart_comm</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">);</span>
@@ -1375,15 +1429,15 @@ MCU GND        |
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ReadRegister(address, value, daisy_chain_position = 0)</code></td>
-      <td>Read register with optional daisy-chain position parameter</td>
+      <td>Read register with optional daisy-chain position parameter. <strong>Auto-detects chain length on first access</strong> if <code class="language-plaintext highlighter-rouge">daisy_chain_position &gt; 0</code> and chain length is unknown. <strong>Returns false if detection fails</strong> (chain length is required).</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">WriteRegister(address, value, daisy_chain_position = 0)</code></td>
-      <td>Write register with optional daisy-chain position parameter</td>
+      <td>Write register with optional daisy-chain position parameter. <strong>Auto-detects chain length on first access</strong> if <code class="language-plaintext highlighter-rouge">daisy_chain_position &gt; 0</code> and chain length is unknown. <strong>Returns false if detection fails</strong> (chain length is required).</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetDaisyChainLength(total_length)</code></td>
-      <td>Set total number of devices in chain (for proper response extraction)</td>
+      <td>Set total number of devices in chain. If set, length is <strong>verified against auto-detected value</strong> on first access. Mismatch logs error and uses detected length.</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetDaisyChainLength()</code></td>
@@ -1391,12 +1445,53 @@ MCU GND        |
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">AutoDetectChainLength(max_devices = 8)</code></td>
-      <td>Auto-detect chain length by sending command that loops back</td>
+      <td>Auto-detect chain length by sending command that loops back. Can be called manually, but is also called automatically on first access if needed.</td>
     </tr>
   </tbody>
 </table></div>
 
 <p><strong>Note</strong>: The <code class="language-plaintext highlighter-rouge">daisy_chain_position</code> parameter in <code class="language-plaintext highlighter-rouge">ReadRegister()</code> and <code class="language-plaintext highlighter-rouge">WriteRegister()</code> is provided by the <code class="language-plaintext highlighter-rouge">TMC5160</code> class automatically. The <code class="language-plaintext highlighter-rouge">SpiCommInterface</code> does NOT track individual device positions - only the total chain length.</p>
+
+<p><strong>CRITICAL: Chain Length MUST Always Be Known</strong></p>
+
+<p><strong>Sending vs Receiving Calculations:</strong></p>
+<ul>
+  <li><strong>Sending (Command Transmission)</strong>: To address device k, send (k+1)<em>40 bits = (k+1)</em>5 bytes minimum
+    <ul>
+      <li>This shifts the command through k devices to reach device k</li>
+      <li>This calculation only requires knowing k (device position)</li>
+    </ul>
+  </li>
+  <li><strong>Receiving (Response Extraction)</strong>: To receive response from device k in chain of n devices:
+    <ul>
+      <li>Total transfer size: 40·(n-k+1) bits = (n-k+1)*5 bytes (datasheet formula)</li>
+      <li>Response appears at offset (n-k-1)*5 bytes (reverse order: last device first)</li>
+      <li>This calculation <strong>REQUIRES knowing n</strong> (total chain length)</li>
+    </ul>
+  </li>
+  <li><strong>Transfer Size</strong>: For simultaneous send/receive, use max((k+1)<em>5, (n-k+1)</em>5) bytes
+    <ul>
+      <li>Sending requirement: (k+1)*5 bytes to shift command to device k</li>
+      <li>Receiving requirement: (n-k+1)*5 bytes to shift response back (datasheet formula)</li>
+      <li>Use max() to ensure both requirements are met:
+        <ul>
+          <li>For k &lt; n/2: (n-k+1)<em>5 &gt;= (k+1)</em>5, so (n-k+1)*5 dominates</li>
+          <li>For k &gt;= n/2: (k+1)<em>5 &gt; (n-k+1)</em>5, so (k+1)*5 dominates</li>
+        </ul>
+      </li>
+      <li>Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex behavior</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Chain Length Requirements:</strong></p>
+<ul>
+  <li>Chain length <strong>MUST be known</strong> for correct response extraction</li>
+  <li>If <code class="language-plaintext highlighter-rouge">daisy_chain_position &gt; 0</code> and chain length is unknown, it is automatically detected</li>
+  <li>If detection fails, operation returns false (chain length is required)</li>
+  <li>For single chip (<code class="language-plaintext highlighter-rouge">daisy_chain_position == 0</code>), chain length defaults to 1</li>
+  <li>The implementation <strong>always uses the datasheet formula</strong> - no simplified fallback</li>
+</ul>
 <h3 id="uart-methods">
   
   
@@ -1524,8 +1619,14 @@ MCU GND        |
       <li>Ensure CSN timing requirements are met (minimum 2*tclk + 10ns)</li>
       <li>CSN control is handled in your <code class="language-plaintext highlighter-rouge">SpiTransfer()</code> implementation</li>
       <li>Use <code class="language-plaintext highlighter-rouge">TMC5160DaisyChain</code> class for managing multiple devices efficiently</li>
-      <li>Set chain length using <code class="language-plaintext highlighter-rouge">SetDaisyChainLength()</code> for proper response extraction</li>
-      <li>Optionally use <code class="language-plaintext highlighter-rouge">AutoDetectChainLength()</code> to automatically detect chain length</li>
+      <li><strong>CRITICAL</strong>: Chain length <strong>MUST be known</strong> - it is automatically detected on first access if not manually set</li>
+      <li>If detection fails, operations return false (chain length is required)</li>
+      <li>Optionally call <code class="language-plaintext highlighter-rouge">SetDaisyChainLength()</code> to manually specify length (will be verified)</li>
+      <li>If manually set length doesn’t match detected length, error is logged and detected length is used</li>
+      <li><strong>Sending</strong>: (k+1)*5 bytes to address device k</li>
+      <li><strong>Receiving</strong>: (n-k+1)<em>5 bytes total, response at offset (n-k-1)</em>5 bytes</li>
+      <li><strong>Transfer Size</strong>: Always use max((k+1)<em>5, (n-k+1)</em>5) bytes</li>
+      <li>Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex behavior</li>
     </ul>
   </li>
   <li><strong>UART Multi-Node</strong>:

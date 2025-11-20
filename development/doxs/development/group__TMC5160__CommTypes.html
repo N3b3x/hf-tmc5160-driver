@@ -133,7 +133,8 @@ SPI Protocol</h2>
 UART Protocol</h2>
 <p>TMC5160 uses UART single wire interface per datasheet section 5.1. Each byte is transmitted LSB...MSB, highest byte transmitted first.</p>
 <p>Write Access Datagram (64 bits = 8 bytes + CRC = 9 bytes total):</p><ul>
-<li>Byte 0: Sync nibble (bits 0-3: 1,0,1,0) + Reserved (bits 4-7, don't cares but included in CRC) + NODEADDR (8 bits)<ul>
+<li>Byte 0: Sync nibble (bits 0-3: 1,0,1,0) + Reserved (bits 4-7, don't cares but included in CRC)</li>
+<li>NODEADDR (8 bits)<ul>
 <li>Bits 0-3: Sync pattern (1,0,1,0) for baud rate synchronization</li>
 <li>Bits 4-7: Reserved (don't cares, but included in CRC calculation)</li>
 <li>Bits 8-15: NODEADDR (8-bit node address, 0-127)</li>

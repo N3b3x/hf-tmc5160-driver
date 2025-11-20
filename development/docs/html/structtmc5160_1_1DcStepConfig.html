@@ -106,19 +106,19 @@ $(function(){initNavTree('structtmc5160_1_1DcStepConfig.html',''); initResizable
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4b019043c4069525f4169bb4205808ec" id="r_a4b019043c4069525f4169bb4205808ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4b019043c4069525f4169bb4205808ec">DcStepConfig</a> ()</td></tr>
-<tr class="memdesc:a4b019043c4069525f4169bb4205808ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
-<tr class="separator:a4b019043c4069525f4169bb4205808ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6ff3d3c4b63c418626abf991f1db1bd" id="r_ab6ff3d3c4b63c418626abf991f1db1bd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6ff3d3c4b63c418626abf991f1db1bd">DcStepConfig</a> ()=default</td></tr>
+<tr class="memdesc:ab6ff3d3c4b63c418626abf991f1db1bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
+<tr class="separator:ab6ff3d3c4b63c418626abf991f1db1bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a5557fc72383d2878037a8fabfe945280" id="r_a5557fc72383d2878037a8fabfe945280"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5557fc72383d2878037a8fabfe945280">vdc_min</a></td></tr>
-<tr class="memdesc:a5557fc72383d2878037a8fabfe945280"><td class="mdescLeft">&#160;</td><td class="mdescRight">Velocity threshold for enabling dcStep in steps/s (0.0f = disabled)  <br /></td></tr>
+<tr class="memitem:a5557fc72383d2878037a8fabfe945280" id="r_a5557fc72383d2878037a8fabfe945280"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5557fc72383d2878037a8fabfe945280">vdc_min</a> {0.0F}</td></tr>
+<tr class="memdesc:a5557fc72383d2878037a8fabfe945280"><td class="mdescLeft">&#160;</td><td class="mdescRight">Velocity threshold for enabling dcStep in steps/s (0.0F = disabled)  <br /></td></tr>
 <tr class="separator:a5557fc72383d2878037a8fabfe945280"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59a9a429430b0f69bb34fb00415084bf" id="r_a59a9a429430b0f69bb34fb00415084bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59a9a429430b0f69bb34fb00415084bf">dc_time</a></td></tr>
+<tr class="memitem:a59a9a429430b0f69bb34fb00415084bf" id="r_a59a9a429430b0f69bb34fb00415084bf"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59a9a429430b0f69bb34fb00415084bf">dc_time</a> {0}</td></tr>
 <tr class="memdesc:a59a9a429430b0f69bb34fb00415084bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Upper PWM on time limit for commutation (0-1023)  <br /></td></tr>
 <tr class="separator:a59a9a429430b0f69bb34fb00415084bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc471ad6987ea3ed6a90059363ca2e7d" id="r_afc471ad6987ea3ed6a90059363ca2e7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc471ad6987ea3ed6a90059363ca2e7d">dc_sg</a></td></tr>
+<tr class="memitem:afc471ad6987ea3ed6a90059363ca2e7d" id="r_afc471ad6987ea3ed6a90059363ca2e7d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc471ad6987ea3ed6a90059363ca2e7d">dc_sg</a> {0}</td></tr>
 <tr class="memdesc:afc471ad6987ea3ed6a90059363ca2e7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max PWM on time for step loss detection (0-255)  <br /></td></tr>
 <tr class="separator:afc471ad6987ea3ed6a90059363ca2e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -126,8 +126,8 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><p>dcStep configuration structure </p>
 <p>Configuration parameters for dcStep automatic commutation mode. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a4b019043c4069525f4169bb4205808ec" name="a4b019043c4069525f4169bb4205808ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b019043c4069525f4169bb4205808ec">&#9670;&#160;</a></span>DcStepConfig()</h2>
+<a id="ab6ff3d3c4b63c418626abf991f1db1bd" name="ab6ff3d3c4b63c418626abf991f1db1bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6ff3d3c4b63c418626abf991f1db1bd">&#9670;&#160;</a></span>DcStepConfig()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,13 +144,13 @@ Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Initializes with dcStep disabled. </p>
+<p>Initializes with dcStep disabled. All members use default member initializers, so constructor is empty. </p>
 
 </div>
 </div>
@@ -162,7 +162,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> tmc5160::DcStepConfig::dc_sg</td>
+          <td class="memname">uint8_t tmc5160::DcStepConfig::dc_sg {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -178,7 +178,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> tmc5160::DcStepConfig::dc_time</td>
+          <td class="memname">uint16_t tmc5160::DcStepConfig::dc_time {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -194,12 +194,12 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a> tmc5160::DcStepConfig::vdc_min</td>
+          <td class="memname">float tmc5160::DcStepConfig::vdc_min {0.0F}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Velocity threshold for enabling dcStep in steps/s (0.0f = disabled) </p>
+<p>Velocity threshold for enabling dcStep in steps/s (0.0F = disabled) </p>
 
 </div>
 </div>

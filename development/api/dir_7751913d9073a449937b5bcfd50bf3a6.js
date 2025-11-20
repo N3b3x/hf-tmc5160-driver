@@ -1,17 +1,17 @@
 var dir_7751913d9073a449937b5bcfd50bf3a6 =
 [
-    [ "basic_positioning.cpp", "basic__positioning_8cpp.html", "basic__positioning_8cpp" ],
     [ "bounds_finding_sinuous_motion.cpp", "bounds__finding__sinuous__motion_8cpp.html", "bounds__finding__sinuous__motion_8cpp" ],
-    [ "comprehensive_test.cpp", "comprehensive__test_8cpp.html", "comprehensive__test_8cpp" ],
-    [ "daisy_chain_example.cpp", "daisy__chain__example_8cpp.html", "daisy__chain__example_8cpp" ],
-    [ "encoder.cpp", "encoder_8cpp.html", "encoder_8cpp" ],
+    [ "core_comprehensive_test.cpp", "core__comprehensive__test_8cpp.html", "core__comprehensive__test_8cpp" ],
+    [ "diagnostics_comprehensive_test.cpp", "diagnostics__comprehensive__test_8cpp.html", "diagnostics__comprehensive__test_8cpp" ],
+    [ "encoder_comprehensive_test.cpp", "encoder__comprehensive__test_8cpp.html", "encoder__comprehensive__test_8cpp" ],
     [ "esp32_tmc5160_bus.hpp", "esp32__tmc5160__bus_8hpp.html", "esp32__tmc5160__bus_8hpp" ],
-    [ "motor_setup_from_spec.cpp", "motor__setup__from__spec_8cpp.html", "motor__setup__from__spec_8cpp" ],
-    [ "sensorless_homing.cpp", "sensorless__homing_8cpp.html", "sensorless__homing_8cpp" ],
+    [ "gpio_pin_config_example.cpp", "gpio__pin__config__example_8cpp.html", "gpio__pin__config__example_8cpp" ],
+    [ "motor_control_comprehensive_test.cpp", "motor__control__comprehensive__test_8cpp.html", "motor__control__comprehensive__test_8cpp" ],
+    [ "pin_config_struct_example.cpp", "pin__config__struct__example_8cpp.html", "pin__config__struct__example_8cpp" ],
+    [ "protection_comprehensive_test.cpp", "protection__comprehensive__test_8cpp.html", "protection__comprehensive__test_8cpp" ],
+    [ "ramp_control_comprehensive_test.cpp", "ramp__control__comprehensive__test_8cpp.html", "ramp__control__comprehensive__test_8cpp" ],
     [ "sinusoidal.cpp", "sinusoidal_8cpp.html", "sinusoidal_8cpp" ],
-    [ "stallguard.cpp", "stallguard_8cpp.html", "stallguard_8cpp" ],
-    [ "stealthchop.cpp", "stealthchop_8cpp.html", "stealthchop_8cpp" ],
-    [ "uart_daisy_chain_example.cpp", "uart__daisy__chain__example_8cpp.html", "uart__daisy__chain__example_8cpp" ],
-    [ "unit_conversions.cpp", "unit__conversions_8cpp.html", "unit__conversions_8cpp" ],
-    [ "velocity_mode.cpp", "velocity__mode_8cpp.html", "velocity__mode_8cpp" ]
+    [ "spi_daisy_chain_comprehensive_test.cpp", "spi__daisy__chain__comprehensive__test_8cpp.html", "spi__daisy__chain__comprehensive__test_8cpp" ],
+    [ "TestFramework.h", "TestFramework_8h.html", "TestFramework_8h" ],
+    [ "uart_multi_node_comprehensive_test.cpp", "uart__multi__node__comprehensive__test_8cpp.html", "uart__multi__node__comprehensive__test_8cpp" ]
 ];

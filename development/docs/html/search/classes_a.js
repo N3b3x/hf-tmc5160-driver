@@ -10,6 +10,7 @@ var searchData=
   ['spiresponse_7',['SpiResponse',['../structtmc5160_1_1SpiResponse.html',1,'tmc5160']]],
   ['spistatus_8',['SpiStatus',['../structtmc5160_1_1SpiStatus.html',1,'tmc5160']]],
   ['stallguardconfig_9',['StallGuardConfig',['../structtmc5160_1_1StallGuardConfig.html',1,'tmc5160']]],
-  ['stealthchopconfig_10',['StealthChopConfig',['../structtmc5160_1_1StealthChopConfig.html',1,'tmc5160']]],
-  ['sw_5fmode_5fregister_11',['SW_MODE_Register',['../uniontmc5160_1_1SW__MODE__Register.html',1,'tmc5160']]]
+  ['status_10',['Status',['../structFatigueTestMotion_1_1Status.html',1,'FatigueTestMotion']]],
+  ['stealthchopconfig_11',['StealthChopConfig',['../structtmc5160_1_1StealthChopConfig.html',1,'tmc5160']]],
+  ['sw_5fmode_5fregister_12',['SW_MODE_Register',['../uniontmc5160_1_1SW__MODE__Register.html',1,'tmc5160']]]
 ];

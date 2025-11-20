@@ -106,19 +106,19 @@ $(function(){initNavTree('structtmc5160_1_1MotorCurrentConfig.html',''); initRes
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aebbe327c7b62a8796e207b3b97d82ebc" id="r_aebbe327c7b62a8796e207b3b97d82ebc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebbe327c7b62a8796e207b3b97d82ebc">MotorCurrentConfig</a> ()</td></tr>
-<tr class="memdesc:aebbe327c7b62a8796e207b3b97d82ebc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
-<tr class="separator:aebbe327c7b62a8796e207b3b97d82ebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebfa19d8c0a33e94e645420cddd2e719" id="r_aebfa19d8c0a33e94e645420cddd2e719"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebfa19d8c0a33e94e645420cddd2e719">MotorCurrentConfig</a> ()=default</td></tr>
+<tr class="memdesc:aebfa19d8c0a33e94e645420cddd2e719"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
+<tr class="separator:aebfa19d8c0a33e94e645420cddd2e719"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ab984c9d834e10fdc94e52845121423c7" id="r_ab984c9d834e10fdc94e52845121423c7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab984c9d834e10fdc94e52845121423c7">run_current_ma</a></td></tr>
+<tr class="memitem:ab984c9d834e10fdc94e52845121423c7" id="r_ab984c9d834e10fdc94e52845121423c7"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab984c9d834e10fdc94e52845121423c7">run_current_ma</a> {1500}</td></tr>
 <tr class="memdesc:ab984c9d834e10fdc94e52845121423c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run current in milliamps.  <br /></td></tr>
 <tr class="separator:ab984c9d834e10fdc94e52845121423c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe3cf0368637bcac8e00aafeab12efdd" id="r_afe3cf0368637bcac8e00aafeab12efdd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe3cf0368637bcac8e00aafeab12efdd">hold_current_ma</a></td></tr>
+<tr class="memitem:afe3cf0368637bcac8e00aafeab12efdd" id="r_afe3cf0368637bcac8e00aafeab12efdd"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe3cf0368637bcac8e00aafeab12efdd">hold_current_ma</a> {500}</td></tr>
 <tr class="memdesc:afe3cf0368637bcac8e00aafeab12efdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hold current in milliamps.  <br /></td></tr>
 <tr class="separator:afe3cf0368637bcac8e00aafeab12efdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91b5071fa8887e5b1ea327fc9eededf5" id="r_a91b5071fa8887e5b1ea327fc9eededf5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91b5071fa8887e5b1ea327fc9eededf5">hold_current_delay_ms</a></td></tr>
+<tr class="memitem:a91b5071fa8887e5b1ea327fc9eededf5" id="r_a91b5071fa8887e5b1ea327fc9eededf5"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91b5071fa8887e5b1ea327fc9eededf5">hold_current_delay_ms</a> {10}</td></tr>
 <tr class="memdesc:a91b5071fa8887e5b1ea327fc9eededf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hold current delay in milliseconds.  <br /></td></tr>
 <tr class="separator:a91b5071fa8887e5b1ea327fc9eededf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -126,8 +126,8 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><p>Motor current configuration helper structure. </p>
 <p>Configuration for motor current in physical units (milliamps). Automatically calculates irun, ihold, and iholddelay values. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aebbe327c7b62a8796e207b3b97d82ebc" name="aebbe327c7b62a8796e207b3b97d82ebc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebbe327c7b62a8796e207b3b97d82ebc">&#9670;&#160;</a></span>MotorCurrentConfig()</h2>
+<a id="aebfa19d8c0a33e94e645420cddd2e719" name="aebfa19d8c0a33e94e645420cddd2e719"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebfa19d8c0a33e94e645420cddd2e719">&#9670;&#160;</a></span>MotorCurrentConfig()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,13 +144,13 @@ Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Initializes with default values. </p>
+<p>Initializes with default values. All members use default member initializers, so constructor is empty. </p>
 
 </div>
 </div>
@@ -162,7 +162,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> tmc5160::MotorCurrentConfig::hold_current_delay_ms</td>
+          <td class="memname">uint16_t tmc5160::MotorCurrentConfig::hold_current_delay_ms {10}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -178,7 +178,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> tmc5160::MotorCurrentConfig::hold_current_ma</td>
+          <td class="memname">uint16_t tmc5160::MotorCurrentConfig::hold_current_ma {500}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -194,7 +194,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> tmc5160::MotorCurrentConfig::run_current_ma</td>
+          <td class="memname">uint16_t tmc5160::MotorCurrentConfig::run_current_ma {1500}</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -1,0 +1,7 @@
+<map id="tmc5160::UartFrame::GetFrame" name="tmc5160::UartFrame::GetFrame">
+<area shape="rect" id="Node000001" title="Get the frame as raw bytes." alt="" coords="269,37,425,77"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1UartCommInterface.html#a64b75cdc47fd603833f23a196faa9375" title="Read a 32&#45;bit register via UART." alt="" coords="5,5,221,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="255,47,221,43,222,37,256,42"/>
+<area shape="rect" id="Node000003" href="$classtmc5160_1_1UartCommInterface.html#a404c95887d9f030faae597b9f7ee4c7b" title="Write a 32&#45;bit register via UART." alt="" coords="5,69,221,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="256,72,222,77,221,72,255,67"/>
+</map>

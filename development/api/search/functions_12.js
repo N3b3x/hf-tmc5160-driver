@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['write_0',['Write',['../structtmc5160_1_1SpiCommand.html#a8eb940551faeecd6c6e3838d424f6447',1,'tmc5160::SpiCommand::Write()'],['../structtmc5160_1_1UartFrame.html#aa02430ce7c4926551529916e15713356',1,'tmc5160::UartFrame::Write()']]],
-  ['writeregister_1',['WriteRegister',['../classtmc5160_1_1CommInterface.html#ae8ac318a721a19100d7096485395d21e',1,'tmc5160::CommInterface::WriteRegister()'],['../classtmc5160_1_1SpiCommInterface.html#a2ba4efb58323a9e2b221ce9a80a56470',1,'tmc5160::SpiCommInterface::WriteRegister()'],['../classtmc5160_1_1UartCommInterface.html#a404c95887d9f030faae597b9f7ee4c7b',1,'tmc5160::UartCommInterface::WriteRegister()']]]
+  ['velocityreached_0',['VelocityReached',['../structtmc5160_1_1SpiStatus.html#a4093d3b1f5e2428473fadc029faf7423',1,'tmc5160::SpiStatus']]],
+  ['verifycrc_1',['VerifyCrc',['../structtmc5160_1_1UartFrame.html#a45e2ddbd74129ee2f4b3f158339552d1',1,'tmc5160::UartFrame']]]
 ];

@@ -106,32 +106,34 @@ $(function(){initNavTree('structtmc5160_1_1MotorParameters.html',''); initResiza
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2e8b560d07526df6ee91f2759b87903e" id="r_a2e8b560d07526df6ee91f2759b87903e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e8b560d07526df6ee91f2759b87903e">MotorParameters</a> ()</td></tr>
-<tr class="memdesc:a2e8b560d07526df6ee91f2759b87903e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
-<tr class="separator:a2e8b560d07526df6ee91f2759b87903e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a198756265cda9f36a41fdd138be4b594" id="r_a198756265cda9f36a41fdd138be4b594"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a198756265cda9f36a41fdd138be4b594">MotorParameters</a> ()=default</td></tr>
+<tr class="memdesc:a198756265cda9f36a41fdd138be4b594"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
+<tr class="separator:a198756265cda9f36a41fdd138be4b594"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a8553db97913794dd2f8d616e9aad94e1" id="r_a8553db97913794dd2f8d616e9aad94e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8553db97913794dd2f8d616e9aad94e1">global_scaler</a></td></tr>
+<tr class="memitem:a8553db97913794dd2f8d616e9aad94e1" id="r_a8553db97913794dd2f8d616e9aad94e1"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8553db97913794dd2f8d616e9aad94e1">global_scaler</a> {32}</td></tr>
 <tr class="memdesc:a8553db97913794dd2f8d616e9aad94e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Global current scaling (32 to 256)  <br /></td></tr>
 <tr class="separator:a8553db97913794dd2f8d616e9aad94e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85b0794271573d33b1c811285ca14a35" id="r_a85b0794271573d33b1c811285ca14a35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85b0794271573d33b1c811285ca14a35">irun</a></td></tr>
+<tr class="memitem:a85b0794271573d33b1c811285ca14a35" id="r_a85b0794271573d33b1c811285ca14a35"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85b0794271573d33b1c811285ca14a35">irun</a> {16}</td></tr>
+<tr class="memdesc:a85b0794271573d33b1c811285ca14a35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor run current (0 to 31). For best performance don't set lower than 16.  <br /></td></tr>
 <tr class="separator:a85b0794271573d33b1c811285ca14a35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c9bd33f076960e2adbc223d6747113e" id="r_a0c9bd33f076960e2adbc223d6747113e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c9bd33f076960e2adbc223d6747113e">ihold</a></td></tr>
+<tr class="memitem:a0c9bd33f076960e2adbc223d6747113e" id="r_a0c9bd33f076960e2adbc223d6747113e"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c9bd33f076960e2adbc223d6747113e">ihold</a> {0}</td></tr>
 <tr class="memdesc:a0c9bd33f076960e2adbc223d6747113e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standstill current (0 to 31). Set 70% of irun or lower.  <br /></td></tr>
 <tr class="separator:a0c9bd33f076960e2adbc223d6747113e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa944e4895a89ef7871aa2bbe76732a59" id="r_aa944e4895a89ef7871aa2bbe76732a59"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa944e4895a89ef7871aa2bbe76732a59">pwm_ofs_initial</a></td></tr>
+<tr class="memitem:aa944e4895a89ef7871aa2bbe76732a59" id="r_aa944e4895a89ef7871aa2bbe76732a59"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa944e4895a89ef7871aa2bbe76732a59">pwm_ofs_initial</a> {30}</td></tr>
 <tr class="memdesc:aa944e4895a89ef7871aa2bbe76732a59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial stealthChop PWM amplitude offset (0-255)  <br /></td></tr>
 <tr class="separator:aa944e4895a89ef7871aa2bbe76732a59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4484d195d9bd65e7f2b693029ace45f4" id="r_a4484d195d9bd65e7f2b693029ace45f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4484d195d9bd65e7f2b693029ace45f4">pwm_grad_initial</a></td></tr>
+<tr class="memitem:a4484d195d9bd65e7f2b693029ace45f4" id="r_a4484d195d9bd65e7f2b693029ace45f4"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4484d195d9bd65e7f2b693029ace45f4">pwm_grad_initial</a> {0}</td></tr>
+<tr class="memdesc:a4484d195d9bd65e7f2b693029ace45f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial stealthChop velocity dependent gradient for PWM amplitude.  <br /></td></tr>
 <tr class="separator:a4484d195d9bd65e7f2b693029ace45f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Motor parameters structure. </p>
 <p>Configuration parameters for motor current and stealthChop operation. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a2e8b560d07526df6ee91f2759b87903e" name="a2e8b560d07526df6ee91f2759b87903e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e8b560d07526df6ee91f2759b87903e">&#9670;&#160;</a></span>MotorParameters()</h2>
+<a id="a198756265cda9f36a41fdd138be4b594" name="a198756265cda9f36a41fdd138be4b594"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a198756265cda9f36a41fdd138be4b594">&#9670;&#160;</a></span>MotorParameters()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -148,13 +150,13 @@ Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Initializes with recommended default values. </p>
+<p>Initializes with recommended default values. All members use default member initializers, so constructor is empty. </p>
 
 </div>
 </div>
@@ -166,7 +168,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> tmc5160::MotorParameters::global_scaler</td>
+          <td class="memname">uint16_t tmc5160::MotorParameters::global_scaler {32}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -182,7 +184,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> tmc5160::MotorParameters::ihold</td>
+          <td class="memname">uint8_t tmc5160::MotorParameters::ihold {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -198,11 +200,12 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> tmc5160::MotorParameters::irun</td>
+          <td class="memname">uint8_t tmc5160::MotorParameters::irun {16}</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Motor run current (0 to 31). For best performance don't set lower than 16 </p>
+
+<p>Motor run current (0 to 31). For best performance don't set lower than 16. </p>
 
 </div>
 </div>
@@ -213,11 +216,12 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> tmc5160::MotorParameters::pwm_grad_initial</td>
+          <td class="memname">uint8_t tmc5160::MotorParameters::pwm_grad_initial {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Initial stealthChop velocity dependent gradient for PWM amplitude </p>
+
+<p>Initial stealthChop velocity dependent gradient for PWM amplitude. </p>
 
 </div>
 </div>
@@ -228,7 +232,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> tmc5160::MotorParameters::pwm_ofs_initial</td>
+          <td class="memname">uint8_t tmc5160::MotorParameters::pwm_ofs_initial {30}</td>
         </tr>
       </table>
 </div><div class="memdoc">

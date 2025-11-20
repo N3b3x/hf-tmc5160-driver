@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['motor_5fsetup_5ffrom_5fspec_2ecpp_0',['motor_setup_from_spec.cpp',['../motor__setup__from__spec_8cpp.html',1,'']]]
+  ['gpio_5fpin_5fconfig_5fexample_2ecpp_0',['gpio_pin_config_example.cpp',['../gpio__pin__config__example_8cpp.html',1,'']]]
 ];

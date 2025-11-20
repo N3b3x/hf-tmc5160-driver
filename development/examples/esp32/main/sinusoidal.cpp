@@ -30,7 +30,7 @@
 #include "freertos/task.h"
 #include <cmath>
 
-static const char *TAG = "Sinusoidal";
+static const char* TAG = "Sinusoidal";
 
 /**
  * @brief Sinusoidal motion controller class
@@ -39,7 +39,7 @@ static const char *TAG = "Sinusoidal";
  */
 class SinusoidalMotion {
 private:
-  tmc5160::TMC5160<Esp32SPI> *driver_;
+  tmc5160::TMC5160<Esp32SPI>* driver_;
   double frequency_;      // Frequency in Hz
   int amplitude_;         // Amplitude (affects step timing variation)
   uint32_t step_count_;   // Total steps per round
@@ -51,16 +51,23 @@ private:
   bool initialized_;
 
 public:
-  SinusoidalMotion(tmc5160::TMC5160<Esp32SPI> *driver)
-      : driver_(driver), frequency_(5.0), amplitude_(500), step_count_(55000),
-        rounds_(2), direction_(true), init_time_(0), timestamp_(0),
-        current_step_(0), initialized_(false) {}
+  SinusoidalMotion(tmc5160::TMC5160<Esp32SPI>* driver)
+      : driver_(driver), frequency_(5.0), amplitude_(500), step_count_(55000), rounds_(2), direction_(true),
+        init_time_(0), timestamp_(0), current_step_(0), initialized_(false) {}
 
   // Getters for logging
-  double GetFrequency() const { return frequency_; }
-  int GetAmplitude() const { return amplitude_; }
-  uint32_t GetStepCount() const { return step_count_; }
-  int GetRounds() const { return rounds_; }
+  double GetFrequency() const {
+    return frequency_;
+  }
+  int GetAmplitude() const {
+    return amplitude_;
+  }
+  uint32_t GetStepCount() const {
+    return step_count_;
+  }
+  int GetRounds() const {
+    return rounds_;
+  }
 
   /**
    * @brief Configure sinusoidal motion parameters
@@ -116,10 +123,8 @@ public:
       current_step_++;
 
       // Update direction pin
-      driver_->GetComm().GpioSet(direction_ ? tmc5160::TMC5160CtrlPin::DIR
-                                            : tmc5160::TMC5160CtrlPin::DIR,
-                                 direction_ ? tmc5160::GpioSignal::ACTIVE
-                                            : tmc5160::GpioSignal::INACTIVE);
+      driver_->GetComm().GpioSet(direction_ ? tmc5160::TMC5160CtrlPin::DIR : tmc5160::TMC5160CtrlPin::DIR,
+                                 direction_ ? tmc5160::GpioSignal::ACTIVE : tmc5160::GpioSignal::INACTIVE);
     }
   }
 
@@ -135,8 +140,7 @@ private:
     const double time_format_factor = 300.0; // Scaling factor
 
     uint32_t elapsed_time = (esp_timer_get_time() / 1000) - init_time_;
-    double sin_value =
-        sin(frequency_ * radian_conversion * elapsed_time / time_format_factor);
+    double sin_value = sin(frequency_ * radian_conversion * elapsed_time / time_format_factor);
 
     int base_delay = 150; // Base delay in microseconds
     int variable_delay = static_cast<int>(amplitude_ * sin_value);
@@ -198,8 +202,7 @@ extern "C" void app_main() {
   ESP_LOGI(TAG,
            "Starting sinusoidal motion: freq=%.1f Hz, amplitude=%d, steps=%lu, "
            "rounds=%d",
-           motion.GetFrequency(), motion.GetAmplitude(), motion.GetStepCount(),
-           motion.GetRounds());
+           motion.GetFrequency(), motion.GetAmplitude(), motion.GetStepCount(), motion.GetRounds());
 
   // Run sinusoidal motion
   while (true) {

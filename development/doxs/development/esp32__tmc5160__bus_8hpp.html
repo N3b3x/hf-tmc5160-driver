@@ -102,6 +102,7 @@ $(function(){initNavTree('esp32__tmc5160__bus_8hpp.html',''); initResizable(); }
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="tmc5160__comm__interface_8hpp_source.html">../../../inc/tmc5160_comm_interface.hpp</a>&quot;</code><br />
 <code>#include &quot;driver/gpio.h&quot;</code><br />
+<code>#include &quot;driver/ledc.h&quot;</code><br />
 <code>#include &quot;driver/spi_master.h&quot;</code><br />
 <code>#include &quot;driver/uart.h&quot;</code><br />
 <code>#include &quot;esp_log.h&quot;</code><br />
@@ -114,12 +115,12 @@ $(function(){initNavTree('esp32__tmc5160__bus_8hpp.html',''); initResizable(); }
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for esp32_tmc5160_bus.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="esp32__tmc5160__bus_8hpp__incl.svg" width="1427" height="198"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="esp32__tmc5160__bus_8hpp__incl.svg" width="1582" height="198"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="esp32__tmc5160__bus_8hpp__dep__incl.svg" width="2131" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="esp32__tmc5160__bus_8hpp__dep__incl.svg" width="2646" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="esp32__tmc5160__bus_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -138,6 +139,14 @@ Variables</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>ESP32-specific communication interfaces for TMC5160 using SPI and UART. </p>
 <p>This file provides ESP32-specific implementations of the TMC5160 communication interfaces using ESP-IDF SPI and UART drivers.</p>
+<p>Pin Configuration Support:</p><ul>
+<li>Supports all TMC5160 control pins (EN, DIR, STEP, REFL_STEP, REFR_DIR, DIAG0, DIAG1, ENCA, ENCB, ENCN, CLK)</li>
+<li>Supports user-defined GPIO pins for custom board configurations</li>
+<li>Diagnostic pins (DIAG0, DIAG1) can be read via GpioRead()</li>
+<li>Reference switch pins (REFL_STEP, REFR_DIR) can be read/written depending on mode</li>
+<li>Encoder pins (ENCA, ENCB, ENCN) can be read depending on mode</li>
+<li>CLK pin can be configured for external clock input (PWM support via user implementation)</li>
+</ul>
 <dl class="section author"><dt>Author</dt><dd>Nebiyu Tadesse </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2025 </dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>HardFOC </dd></dl>

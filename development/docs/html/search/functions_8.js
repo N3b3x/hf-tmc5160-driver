@@ -1,15 +1,18 @@
 var searchData=
 [
-  ['initialize_0',['Initialize',['../classtmc5160_1_1TMC5160.html#ac90ae8eb92120142753c49fc61fcce89',1,'tmc5160::TMC5160::Initialize()'],['../classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44',1,'Esp32SPI::Initialize()']]],
-  ['initializeall_1',['InitializeAll',['../classtmc5160_1_1TMC5160DaisyChain.html#ab19440cc1c845aaf3ee6383d2e3b00c9',1,'tmc5160::TMC5160DaisyChain::InitializeAll()'],['../classtmc5160_1_1TMC5160MultiNode.html#ade60d406324b37fe8a012c5a207f2e28',1,'tmc5160::TMC5160MultiNode::InitializeAll()']]],
-  ['isbounded_2',['IsBounded',['../classFatigueTestMotion.html#a78c90c075b28961cccb6621b7c5e1a8e',1,'FatigueTestMotion']]],
-  ['iscyclecomplete_3',['IsCycleComplete',['../classFatigueTestMotion.html#a197861d0037a80e57a377af4354dc2f7',1,'FatigueTestMotion']]],
-  ['isdeviationdetected_4',['IsDeviationDetected',['../structtmc5160_1_1TMC5160_1_1Encoder.html#ac628da3d5d56752e0a9518e59b00b784',1,'tmc5160::TMC5160::Encoder']]],
-  ['isdeviceactive_5',['IsDeviceActive',['../classtmc5160_1_1TMC5160DaisyChain.html#a98efa2181ae0aed4ef1f7c53c214afee',1,'tmc5160::TMC5160DaisyChain::IsDeviceActive()'],['../classtmc5160_1_1TMC5160MultiNode.html#a4d17dd0eef9df1a61192c6f7fa3bf7ab',1,'tmc5160::TMC5160MultiNode::IsDeviceActive()']]],
-  ['isinitialized_6',['IsInitialized',['../classtmc5160_1_1TMC5160.html#a83396df16c903cb74e5d5380f3f2eff2',1,'tmc5160::TMC5160']]],
-  ['isrunning_7',['IsRunning',['../classFatigueTestMotion.html#a2510d84cc3b0a31ca42312a50fc55a2c',1,'FatigueTestMotion']]],
-  ['istargetreached_8',['IsTargetReached',['../structtmc5160_1_1TMC5160_1_1RampControl.html#a668ce782e665f4b6056d4f08ed10b8f4',1,'tmc5160::TMC5160::RampControl']]],
-  ['istargetvelocityreached_9',['IsTargetVelocityReached',['../structtmc5160_1_1TMC5160_1_1RampControl.html#ac54d81af1622f7f946d1feda09fcf04d',1,'tmc5160::TMC5160::RampControl']]],
-  ['isvalid_10',['IsValid',['../structtmc5160_1_1UartFrame.html#acc3df3189eeff3ba3215f88a37f752c4',1,'tmc5160::UartFrame']]],
-  ['iswrite_11',['IsWrite',['../structtmc5160_1_1SpiCommand.html#adacf140085d9631e8cda2f9ac9679212',1,'tmc5160::SpiCommand::IsWrite()'],['../structtmc5160_1_1UartFrame.html#aeb584eacadda8d1446333ba86653d730',1,'tmc5160::UartFrame::IsWrite()']]]
+  ['init_5ftest_5fprogress_5findicator_0',['init_test_progress_indicator',['../TestFramework_8h.html#a3967179ac699a5b02ef9787b549409fe',1,'TestFramework.h']]],
+  ['initialize_1',['Initialize',['../classtmc5160_1_1TMC5160.html#ac90ae8eb92120142753c49fc61fcce89',1,'tmc5160::TMC5160::Initialize()'],['../classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44',1,'Esp32SPI::Initialize()']]],
+  ['initializeall_2',['InitializeAll',['../classtmc5160_1_1TMC5160DaisyChain.html#ab19440cc1c845aaf3ee6383d2e3b00c9',1,'tmc5160::TMC5160DaisyChain::InitializeAll()'],['../classtmc5160_1_1TMC5160MultiNode.html#ade60d406324b37fe8a012c5a207f2e28',1,'tmc5160::TMC5160MultiNode::InitializeAll()']]],
+  ['is_5flocked_3',['is_locked',['../classTmcMutexGuard.html#accf4c4610524c92923c4c3656e49bfdf',1,'TmcMutexGuard']]],
+  ['is_5fvalid_4',['is_valid',['../classEsp32TmcMutex.html#aa1c5042b5ace0f9a58c140b0f02db0f2',1,'Esp32TmcMutex']]],
+  ['isbounded_5',['IsBounded',['../classFatigueTestMotion.html#a75bd49a56a86c97665e846a2eaf7f010',1,'FatigueTestMotion']]],
+  ['iscyclecomplete_6',['IsCycleComplete',['../classFatigueTestMotion.html#a3d07d8e0acf0bbd5867da9e14f8ce7f2',1,'FatigueTestMotion']]],
+  ['isdeviationdetected_7',['IsDeviationDetected',['../structtmc5160_1_1TMC5160_1_1Encoder.html#ac628da3d5d56752e0a9518e59b00b784',1,'tmc5160::TMC5160::Encoder']]],
+  ['isdeviceactive_8',['IsDeviceActive',['../classtmc5160_1_1TMC5160DaisyChain.html#a98efa2181ae0aed4ef1f7c53c214afee',1,'tmc5160::TMC5160DaisyChain::IsDeviceActive()'],['../classtmc5160_1_1TMC5160MultiNode.html#a4d17dd0eef9df1a61192c6f7fa3bf7ab',1,'tmc5160::TMC5160MultiNode::IsDeviceActive()']]],
+  ['isinitialized_9',['IsInitialized',['../classtmc5160_1_1TMC5160.html#a83396df16c903cb74e5d5380f3f2eff2',1,'tmc5160::TMC5160']]],
+  ['isrunning_10',['IsRunning',['../classFatigueTestMotion.html#a23d9f8430ce81b0f5b1376209bf9b0e6',1,'FatigueTestMotion']]],
+  ['istargetreached_11',['IsTargetReached',['../structtmc5160_1_1TMC5160_1_1RampControl.html#a668ce782e665f4b6056d4f08ed10b8f4',1,'tmc5160::TMC5160::RampControl']]],
+  ['istargetvelocityreached_12',['IsTargetVelocityReached',['../structtmc5160_1_1TMC5160_1_1RampControl.html#ac54d81af1622f7f946d1feda09fcf04d',1,'tmc5160::TMC5160::RampControl']]],
+  ['isvalid_13',['IsValid',['../structtmc5160_1_1UartFrame.html#acc3df3189eeff3ba3215f88a37f752c4',1,'tmc5160::UartFrame']]],
+  ['iswrite_14',['IsWrite',['../structtmc5160_1_1SpiCommand.html#adacf140085d9631e8cda2f9ac9679212',1,'tmc5160::SpiCommand::IsWrite()'],['../structtmc5160_1_1UartFrame.html#aeb584eacadda8d1446333ba86653d730',1,'tmc5160::UartFrame::IsWrite()']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['daisy_5fchain_5fexample_2ecpp_0',['daisy_chain_example.cpp',['../daisy__chain__example_8cpp.html',1,'']]]
+  ['diagnostics_5fcomprehensive_5ftest_2ecpp_0',['diagnostics_comprehensive_test.cpp',['../diagnostics__comprehensive__test_8cpp.html',1,'']]]
 ];

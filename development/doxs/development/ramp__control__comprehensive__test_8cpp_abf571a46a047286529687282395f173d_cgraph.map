@@ -1,0 +1,9 @@
+<map id="test_unit_conversions" name="test_unit_conversions">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,169,80"/>
+<area shape="rect" id="Node000002" href="$ramp__control__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="253,5,393,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,52,247,31,248,36,149,57"/>
+<area shape="rect" id="Node000003" href="$namespacetmc5160.html#a6e78a19f84b991207c30401e90eb6ebd" title="Convert millimeters to steps." alt="" coords="241,55,404,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="169,65,227,65,227,70,169,70"/>
+<area shape="rect" id="Node000004" href="$namespacetmc5160.html#a086e668f7c59055a454e010eb8d430a0" title="Convert RPM to steps per second." alt="" coords="217,104,428,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="149,77,248,98,247,104,148,83"/>
+</map>

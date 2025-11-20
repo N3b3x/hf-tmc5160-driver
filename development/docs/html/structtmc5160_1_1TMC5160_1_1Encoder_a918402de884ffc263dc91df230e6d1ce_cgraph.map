@@ -1,8 +1,5 @@
 <map id="tmc5160::TMC5160::Encoder::Configure" name="tmc5160::TMC5160::Encoder::Configure">
-<area shape="rect" id="Node000001" title="Configure encoder settings." alt="" coords="5,39,213,79"/>
-<area shape="rect" id="Node000002" href="$tmc5160_8cpp.html#a6b5c74bc9056ff38815021d63986f681" title=" " alt="" coords="314,5,397,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="213,39,300,24,301,30,214,44"/>
-<area shape="rect" id="Node000003" href="$classtmc5160_1_1CommInterface.html#ae8ac318a721a19100d7096485395d21e" title="Write a 32&#45;bit register to the TMC5160." alt="" coords="261,79,449,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="214,74,248,79,247,85,213,79"/>
-<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="310,80,307,70,314,60,331,55,355,53,384,56,399,63,397,68,382,61,355,58,332,60,317,65,312,71,315,78"/>
+<area shape="rect" id="Node000001" title="Configure encoder settings." alt="" coords="5,5,213,45"/>
+<area shape="rect" id="Node000002" href="$tmc5160_8cpp.html#a6b5c74bc9056ff38815021d63986f681" title=" " alt="" coords="261,13,344,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="214,23,248,23,248,28,214,28"/>
 </map>

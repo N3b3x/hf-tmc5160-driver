@@ -1,5 +1,7 @@
 <map id="Esp32SPI::GpioSet" name="Esp32SPI::GpioSet">
-<area shape="rect" id="Node000001" title="Set GPIO pin state." alt="" coords="5,13,145,38"/>
-<area shape="rect" id="Node000002" href="$classtmc5160_1_1CommInterface.html#a67225c93493fa73755ebb0fc91d46488" title="Convert signal state to physical GPIO level." alt="" coords="193,5,381,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,23,180,23,180,28,146,28"/>
+<area shape="rect" id="Node000001" title="Set GPIO pin state." alt="" coords="5,35,145,60"/>
+<area shape="rect" id="Node000002" href="$classEsp32SPI.html#ac1efd880f523f135eaaa31bdb6377116" title="Get pin mapping for a TMC5160 control pin." alt="" coords="193,5,381,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,35,182,30,182,35,146,40"/>
+<area shape="rect" id="Node000003" href="$classtmc5160_1_1CommInterface.html#a67225c93493fa73755ebb0fc91d46488" title="Convert signal state to physical GPIO level." alt="" coords="193,55,381,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="146,54,180,58,179,64,145,59"/>
 </map>

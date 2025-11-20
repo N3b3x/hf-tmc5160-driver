@@ -1,6 +1,6 @@
 var structtmc5160_1_1ChopperConfig =
 [
-    [ "ChopperConfig", "structtmc5160_1_1ChopperConfig.html#a0762f76ff4b9401d18e3132c588342e5", null ],
+    [ "ChopperConfig", "structtmc5160_1_1ChopperConfig.html#a6909f9bb7fc6c45f162b3b36713308cb", null ],
     [ "chm", "structtmc5160_1_1ChopperConfig.html#a158635657fb63ea801c9214da8a8d6be", null ],
     [ "dedge", "structtmc5160_1_1ChopperConfig.html#a1bc83007c1ed384e619fd780bb9b1b81", null ],
     [ "hend", "structtmc5160_1_1ChopperConfig.html#a25a86c90d130952f9b776e41ebb6d110", null ],

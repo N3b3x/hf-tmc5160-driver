@@ -1,6 +1,6 @@
 var structtmc5160_1_1DriverConfig =
 [
-    [ "DriverConfig", "structtmc5160_1_1DriverConfig.html#a7dfdf8d480ddcb696af100f740f01757", null ],
+    [ "DriverConfig", "structtmc5160_1_1DriverConfig.html#a20155632a6bc4bab534dacf9f819c1b0", null ],
     [ "chopper", "structtmc5160_1_1DriverConfig.html#a5f3276e947b0ed19d1b70b2a935e7c8b", null ],
     [ "direction", "structtmc5160_1_1DriverConfig.html#af3a66be3129a6ac3c1d7c275dc7a1e8b", null ],
     [ "f_clk", "structtmc5160_1_1DriverConfig.html#a6ff22b49e6285012045e824f9cd1300b", null ],

@@ -1,0 +1,5 @@
+<map id="FatigueTestMotion::GetLocalBoundsFromCenterDegrees" name="FatigueTestMotion::GetLocalBoundsFromCenterDegrees">
+<area shape="rect" id="Node000001" title="Get local bounds in degrees from center (thread&#45;safe)" alt="" coords="5,5,263,45"/>
+<area shape="rect" id="Node000002" href="$namespacetmc5160.html#a13c113ece8bf9e72134ead3dcd3e45f0" title="Convert steps to degrees." alt="" coords="311,13,501,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="263,23,297,23,297,28,263,28"/>
+</map>

@@ -1,13 +1,18 @@
 <map id="tmc5160::calculateCrc8" name="tmc5160::calculateCrc8">
-<area shape="rect" id="Node000001" title="Calculate CRC8 checksum for UART communication." alt="" coords="473,77,648,102"/>
-<area shape="rect" id="Node000002" href="$structtmc5160_1_1UartFrame.html#af2892a83211233ab1674ced3e51daae8" title="Calculate and set CRC8 checksum for the frame CRC8 is calculated over all bytes except the CRC byte i..." alt="" coords="269,5,425,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="504,75,414,48,416,43,505,70"/>
-<area shape="rect" id="Node000003" href="$structtmc5160_1_1UartFrame.html#aa2fe56fa7916d51ac827a7dbd6c8011b" title="Construct a read request frame." alt="" coords="269,69,425,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="460,92,425,92,425,87,460,87"/>
-<area shape="rect" id="Node000005" href="$structtmc5160_1_1UartFrame.html#a45e2ddbd74129ee2f4b3f158339552d1" title="Verify CRC8 checksum of the frame." alt="" coords="269,133,425,173"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="505,109,416,136,414,131,504,104"/>
-<area shape="rect" id="Node000004" href="$classtmc5160_1_1UartCommInterface.html#a64b75cdc47fd603833f23a196faa9375" title="Read a 32&#45;bit register via UART." alt="" coords="5,69,221,109"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="256,92,221,92,221,87,256,87"/>
-<area shape="rect" id="Node000006" href="$structtmc5160_1_1UartFrame.html#acc3df3189eeff3ba3215f88a37f752c4" title="Check if frame is valid (CRC verified and structure correct)" alt="" coords="35,133,191,173"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="255,156,191,156,191,151,255,151"/>
+<area shape="rect" id="Node000001" title="Calculate CRC8 checksum for UART communication." alt="" coords="677,70,852,95"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1UartFrame.html#af2892a83211233ab1674ced3e51daae8" title="Calculate and set CRC8 checksum for the frame CRC8 is calculated over all bytes except the CRC byte i..." alt="" coords="473,5,629,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="703,69,625,48,627,43,704,64"/>
+<area shape="rect" id="Node000003" href="$structtmc5160_1_1UartFrame.html#aa2fe56fa7916d51ac827a7dbd6c8011b" title="Construct a read request frame." alt="" coords="269,48,425,88"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="663,82,425,73,426,68,664,76"/>
+<area shape="rect" id="Node000005" href="$structtmc5160_1_1UartFrame.html#a45e2ddbd74129ee2f4b3f158339552d1" title="Verify CRC8 checksum of the frame." alt="" coords="473,135,629,175"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="714,102,612,137,610,132,712,97"/>
+<area shape="rect" id="Node000004" href="$classtmc5160_1_1UartCommInterface.html#a64b75cdc47fd603833f23a196faa9375" title="Read a 32&#45;bit register via UART." alt="" coords="5,105,221,145"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="256,93,196,108,195,103,255,88"/>
+<area shape="poly" id="edge8_Node000005_Node000004" title=" " alt="" coords="459,151,221,135,222,130,460,146"/>
+<area shape="rect" id="Node000006" href="$structtmc5160_1_1UartFrame.html#acc3df3189eeff3ba3215f88a37f752c4" title="Check if frame is valid (CRC verified and structure correct)" alt="" coords="269,163,425,203"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="460,170,426,175,425,169,460,165"/>
+<area shape="rect" id="Node000007" href="$classtmc5160_1_1UartCommInterface.html#a404c95887d9f030faae597b9f7ee4c7b" title="Write a 32&#45;bit register via UART." alt="" coords="5,195,221,235"/>
+<area shape="poly" id="edge9_Node000005_Node000007" title=" " alt="" coords="507,184,469,203,426,217,374,226,321,230,222,229,222,224,321,225,374,221,425,212,467,198,505,179"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="255,163,195,148,196,143,256,158"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="256,198,222,203,221,197,255,193"/>
 </map>

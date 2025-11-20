@@ -1,6 +1,6 @@
 var structtmc5160_1_1CoolStepConfig =
 [
-    [ "CoolStepConfig", "structtmc5160_1_1CoolStepConfig.html#af66fcb6130a6ff54d73b9720dd688534", null ],
+    [ "CoolStepConfig", "structtmc5160_1_1CoolStepConfig.html#a3f32c1180d42b3550a21f6ad4b2d3bfc", null ],
     [ "sedn", "structtmc5160_1_1CoolStepConfig.html#ac481f87dfa780a357328483432eaa886", null ],
     [ "seimin", "structtmc5160_1_1CoolStepConfig.html#a0653f07672cde17c847ac1fcc02ded13", null ],
     [ "semax", "structtmc5160_1_1CoolStepConfig.html#a52a7487bc150625b0565920a23c34e74", null ],

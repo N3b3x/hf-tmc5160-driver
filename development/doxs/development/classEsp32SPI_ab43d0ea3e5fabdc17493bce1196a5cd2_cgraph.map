@@ -1,0 +1,5 @@
+<map id="Esp32SPI::Esp32SPI" name="Esp32SPI::Esp32SPI">
+<area shape="rect" id="Node000001" title="Construct ESP32 SPI communication interface (legacy constructor for backward compatibility)" alt="" coords="5,13,153,38"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1CommInterface.html#a371ba647c308b5cb3f8fdca5ff0bbf14" title="Configure the active level for a specific pin." alt="" coords="201,5,389,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,23,188,23,188,28,153,28"/>
+</map>

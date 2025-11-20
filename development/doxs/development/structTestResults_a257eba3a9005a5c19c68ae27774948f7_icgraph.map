@@ -1,0 +1,5 @@
+<map id="TestResults::add_result" name="TestResults::add_result">
+<area shape="rect" id="Node000001" title="Add test result and update statistics." alt="" coords="213,5,385,31"/>
+<area shape="rect" id="Node000002" href="$TestFramework_8h.html#ae0c6ad85cd439fc16572fe4b495e5479" title="FreeRTOS task trampoline to execute a test with a larger dedicated stack." alt="" coords="5,5,165,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,21,166,21,166,15,200,15"/>
+</map>

@@ -111,10 +111,10 @@ Collaboration diagram for tmc5160::TMC5160&lt; CommType &gt;::UartConfig:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9d4678800f1c5100b147f33ae2f2c468" id="r_a9d4678800f1c5100b147f33ae2f2c468"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d4678800f1c5100b147f33ae2f2c468">UartConfig</a> (<a class="el" href="classtmc5160_1_1TMC5160.html">TMC5160</a> *<a class="el" href="classtmc5160_1_1CommInterface.html">driver</a>) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:a9d4678800f1c5100b147f33ae2f2c468" id="r_a9d4678800f1c5100b147f33ae2f2c468"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d4678800f1c5100b147f33ae2f2c468">UartConfig</a> (<a class="el" href="classtmc5160_1_1TMC5160.html">TMC5160</a> *driver) noexcept</td></tr>
 <tr class="memdesc:a9d4678800f1c5100b147f33ae2f2c468"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct UART configuration subsystem.  <br /></td></tr>
 <tr class="separator:a9d4678800f1c5100b147f33ae2f2c468"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebc5edf90ae4af5ac23a5edba3d56057" id="r_aebc5edf90ae4af5ac23a5edba3d56057"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebc5edf90ae4af5ac23a5edba3d56057">ConfigureSlave</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> <a class="el" href="classtmc5160_1_1CommInterface.html">slave_address</a>, <a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> <a class="el" href="classtmc5160_1_1CommInterface.html">send_delay</a>) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memitem:aebc5edf90ae4af5ac23a5edba3d56057" id="r_aebc5edf90ae4af5ac23a5edba3d56057"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebc5edf90ae4af5ac23a5edba3d56057">ConfigureSlave</a> (uint8_t slave_address, uint8_t send_delay) noexcept</td></tr>
 <tr class="memdesc:aebc5edf90ae4af5ac23a5edba3d56057"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure UART slave settings.  <br /></td></tr>
 <tr class="separator:aebc5edf90ae4af5ac23a5edba3d56057"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -125,7 +125,7 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a83096fae7b831b11c21e56127dcd0453"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a> <a class="el" href="classtmc5160_1_1CommInterface.html">CommType</a>&gt;<br />
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename CommType&gt;<br />
 struct tmc5160::TMC5160&lt; CommType &gt;::UartConfig</div><p>UART configuration subsystem. </p>
 <p>Provides methods for configuring UART slave mode operation. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -135,13 +135,13 @@ struct tmc5160::TMC5160&lt; CommType &gt;::UartConfig</div><p>UART configuration
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a> <a class="el" href="classtmc5160_1_1CommInterface.html">CommType</a> &gt; </div>
+template&lt;typename CommType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; <a class="el" href="classtmc5160_1_1CommInterface.html">CommType</a> &gt;::UartConfig::UartConfig </td>
+          <td class="memname"><a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; CommType &gt;::UartConfig::UartConfig </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classtmc5160_1_1TMC5160.html">TMC5160</a> *</td>          <td class="paramname"><span class="paramname"><em>driver</em></span></td><td>)</td>
           <td></td>
@@ -171,20 +171,20 @@ template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a> <a class="el" href="classtmc5160_1_1CommInterface.html">CommType</a> &gt; </div>
+template&lt;typename CommType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">bool</a> TMC5160::UartConfig::ConfigureSlave </td>
+          <td class="memname">bool TMC5160::UartConfig::ConfigureSlave </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a></td>          <td class="paramname"><span class="paramname"><em>slave_address</em>, </span></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>slave_address</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a></td>          <td class="paramname"><span class="paramname"><em>send_delay</em></span>&#160;)</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>send_delay</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -203,11 +203,6 @@ template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1UartConfig_aebc5edf90ae4af5ac23a5edba3d56057_cgraph.svg" width="472" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -218,10 +213,10 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a> <a class="el" href="classtmc5160_1_1CommInterface.html">CommType</a> &gt; </div>
+template&lt;typename CommType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1TMC5160.html">TMC5160</a>* <a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; <a class="el" href="classtmc5160_1_1CommInterface.html">CommType</a> &gt;::UartConfig::driver_</td>
+          <td class="memname"><a class="el" href="classtmc5160_1_1TMC5160.html">TMC5160</a>* <a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; CommType &gt;::UartConfig::driver_</td>
         </tr>
       </table>
 </div><div class="memdoc">

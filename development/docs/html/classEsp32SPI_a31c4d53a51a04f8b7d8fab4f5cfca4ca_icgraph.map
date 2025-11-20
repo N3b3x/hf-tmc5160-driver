@@ -1,7 +1,9 @@
 <map id="Esp32SPI::GpioSet" name="Esp32SPI::GpioSet">
-<area shape="rect" id="Node000001" title="Set GPIO pin state." alt="" coords="355,5,495,31"/>
-<area shape="rect" id="Node000002" href="$classSinusoidalMotion.html#ad6726f6da321f0c178bd223d17305d74" title="Run sinusoidal motion (call repeatedly in loop)" alt="" coords="140,5,307,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="341,21,307,21,307,15,341,15"/>
-<area shape="rect" id="Node000003" href="$sinusoidal_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,5,92,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,21,92,21,92,15,126,15"/>
+<area shape="rect" id="Node000001" title="Set GPIO pin state." alt="" coords="355,31,495,56"/>
+<area shape="rect" id="Node000002" href="$gpio__pin__config__example_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="180,5,267,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="341,35,267,26,267,21,341,30"/>
+<area shape="rect" id="Node000003" href="$classSinusoidalMotion.html#ad6726f6da321f0c178bd223d17305d74" title="Run sinusoidal motion (call repeatedly in loop)" alt="" coords="140,55,307,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="341,56,307,60,306,55,341,51"/>
+<area shape="rect" id="Node000004" href="$sinusoidal_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,55,92,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="126,70,92,70,92,65,126,65"/>
 </map>

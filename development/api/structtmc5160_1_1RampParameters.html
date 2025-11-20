@@ -106,28 +106,27 @@ $(function(){initNavTree('structtmc5160_1_1RampParameters.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1e8c416578bfe900d8b64945b287d950" id="r_a1e8c416578bfe900d8b64945b287d950"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e8c416578bfe900d8b64945b287d950">RampParameters</a> ()</td></tr>
-<tr class="memdesc:a1e8c416578bfe900d8b64945b287d950"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
-<tr class="separator:a1e8c416578bfe900d8b64945b287d950"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf90410a55b735f7e0f760c25889e11f" id="r_adf90410a55b735f7e0f760c25889e11f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf90410a55b735f7e0f760c25889e11f">RampParameters</a> ()=default</td></tr>
+<tr class="memdesc:adf90410a55b735f7e0f760c25889e11f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
+<tr class="separator:adf90410a55b735f7e0f760c25889e11f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a2114cbb8b65e0587b6aa9d933c2bd4f8" id="r_a2114cbb8b65e0587b6aa9d933c2bd4f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2114cbb8b65e0587b6aa9d933c2bd4f8">tpowerdown</a></td></tr>
+<tr class="memitem:a2114cbb8b65e0587b6aa9d933c2bd4f8" id="r_a2114cbb8b65e0587b6aa9d933c2bd4f8"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2114cbb8b65e0587b6aa9d933c2bd4f8">tpowerdown</a> {20}</td></tr>
 <tr class="memdesc:a2114cbb8b65e0587b6aa9d933c2bd4f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delay before power down (0-255, time range ~0 to 5.6 seconds)  <br /></td></tr>
 <tr class="separator:a2114cbb8b65e0587b6aa9d933c2bd4f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a441bd5c22e5652cc245743063f166ae0" id="r_a441bd5c22e5652cc245743063f166ae0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a441bd5c22e5652cc245743063f166ae0">tzerowait</a></td></tr>
-<tr class="memdesc:a441bd5c22e5652cc245743063f166ae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waiting time after ramping down to zero velocity (0-65535, time range ~0 to 2 seconds)  <br /></td></tr>
+<tr class="memitem:a441bd5c22e5652cc245743063f166ae0" id="r_a441bd5c22e5652cc245743063f166ae0"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a441bd5c22e5652cc245743063f166ae0">tzerowait</a> {0}</td></tr>
 <tr class="separator:a441bd5c22e5652cc245743063f166ae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ca4d900f4d6e6455c4692404b8b0d61" id="r_a0ca4d900f4d6e6455c4692404b8b0d61"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ca4d900f4d6e6455c4692404b8b0d61">a1</a></td></tr>
-<tr class="memdesc:a0ca4d900f4d6e6455c4692404b8b0d61"><td class="mdescLeft">&#160;</td><td class="mdescRight">First acceleration between VSTART and V1 (steps/s², 0.0f = use AMAX)  <br /></td></tr>
+<tr class="memitem:a0ca4d900f4d6e6455c4692404b8b0d61" id="r_a0ca4d900f4d6e6455c4692404b8b0d61"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ca4d900f4d6e6455c4692404b8b0d61">a1</a> {0.0F}</td></tr>
+<tr class="memdesc:a0ca4d900f4d6e6455c4692404b8b0d61"><td class="mdescLeft">&#160;</td><td class="mdescRight">First acceleration between VSTART and V1 (steps/s², 0.0F = use AMAX)  <br /></td></tr>
 <tr class="separator:a0ca4d900f4d6e6455c4692404b8b0d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Ramp parameters structure. </p>
 <p>Additional ramp control parameters for fine-tuning motion profiles. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1e8c416578bfe900d8b64945b287d950" name="a1e8c416578bfe900d8b64945b287d950"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e8c416578bfe900d8b64945b287d950">&#9670;&#160;</a></span>RampParameters()</h2>
+<a id="adf90410a55b735f7e0f760c25889e11f" name="adf90410a55b735f7e0f760c25889e11f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf90410a55b735f7e0f760c25889e11f">&#9670;&#160;</a></span>RampParameters()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,13 +143,13 @@ Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Initializes with default values. </p>
+<p>Initializes with default values. All members use default member initializers, so constructor is empty. </p>
 
 </div>
 </div>
@@ -162,12 +161,12 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a> tmc5160::RampParameters::a1</td>
+          <td class="memname">float tmc5160::RampParameters::a1 {0.0F}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>First acceleration between VSTART and V1 (steps/s², 0.0f = use AMAX) </p>
+<p>First acceleration between VSTART and V1 (steps/s², 0.0F = use AMAX) </p>
 
 </div>
 </div>
@@ -178,7 +177,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> tmc5160::RampParameters::tpowerdown</td>
+          <td class="memname">uint8_t tmc5160::RampParameters::tpowerdown {20}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -194,11 +193,10 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> tmc5160::RampParameters::tzerowait</td>
+          <td class="memname">uint16_t tmc5160::RampParameters::tzerowait {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
 <p>Waiting time after ramping down to zero velocity (0-65535, time range ~0 to 2 seconds) </p>
 
 </div>

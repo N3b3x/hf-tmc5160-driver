@@ -1,6 +1,6 @@
 var structtmc5160_1_1EncoderConfig =
 [
-    [ "EncoderConfig", "structtmc5160_1_1EncoderConfig.html#a343f5a1b92c7d389dfca7a3a379836c8", null ],
+    [ "EncoderConfig", "structtmc5160_1_1EncoderConfig.html#a2ea2ef3c7ff921e4e8e4eecfb36eeb6f", null ],
     [ "clr_cont", "structtmc5160_1_1EncoderConfig.html#acc3f4827c02fa10049c87ab8912da6c4", null ],
     [ "clr_enc_x", "structtmc5160_1_1EncoderConfig.html#ae92528fe7fca5a6ab2bc93364f78b714", null ],
     [ "clr_once", "structtmc5160_1_1EncoderConfig.html#ab6a65dd0b4083ef203e1957acfb834f3", null ],

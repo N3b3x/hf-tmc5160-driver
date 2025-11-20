@@ -2,7 +2,9 @@ var searchData=
 [
   ['enable_0',['Enable',['../structtmc5160_1_1TMC5160_1_1MotorControl.html#ace8864faa1c9a514823fa9cbd58d2095',1,'tmc5160::TMC5160::MotorControl']]],
   ['encoder_1',['Encoder',['../structtmc5160_1_1TMC5160_1_1Encoder.html#a7917434bc024f8afa474f8687fce4e9b',1,'tmc5160::TMC5160::Encoder']]],
-  ['encoderconfig_2',['EncoderConfig',['../structtmc5160_1_1EncoderConfig.html#a343f5a1b92c7d389dfca7a3a379836c8',1,'tmc5160::EncoderConfig']]],
-  ['esp32spi_3',['Esp32SPI',['../classEsp32SPI.html#ad90a55a4a85c7d7669cfd48e61af7599',1,'Esp32SPI']]],
-  ['esp32uart_4',['Esp32UART',['../classEsp32UART.html#a20779cb911dd35d45cd21f1a648ade96',1,'Esp32UART']]]
+  ['encoderconfig_2',['EncoderConfig',['../structtmc5160_1_1EncoderConfig.html#a2ea2ef3c7ff921e4e8e4eecfb36eeb6f',1,'tmc5160::EncoderConfig']]],
+  ['ensure_5fgpio14_5finitialized_3',['ensure_gpio14_initialized',['../TestFramework_8h.html#a57a48f91a141d98e45f82937581e1a97',1,'TestFramework.h']]],
+  ['ensurechainlengthknown_4',['EnsureChainLengthKnown',['../classtmc5160_1_1SpiCommInterface.html#a363d3e5f15495a687695ac48e422d066',1,'tmc5160::SpiCommInterface']]],
+  ['esp32spi_5',['Esp32SPI',['../classEsp32SPI.html#ad552c0d09f771a64ba4b77820eabea5e',1,'Esp32SPI::Esp32SPI(spi_host_device_t host, gpio_num_t mosi_pin, gpio_num_t miso_pin, gpio_num_t sclk_pin, gpio_num_t cs_pin, const tmc5160::TMC5160PinConfig &amp;pin_config, uint32_t clock_speed_hz=4000000) noexcept'],['../classEsp32SPI.html#ab43d0ea3e5fabdc17493bce1196a5cd2',1,'Esp32SPI::Esp32SPI(spi_host_device_t host, gpio_num_t mosi_pin, gpio_num_t miso_pin, gpio_num_t sclk_pin, gpio_num_t cs_pin, gpio_num_t en_pin, gpio_num_t dir_pin=static_cast&lt; gpio_num_t &gt;(-1), gpio_num_t step_pin=static_cast&lt; gpio_num_t &gt;(-1), uint32_t clock_speed_hz=4000000) noexcept']]],
+  ['esp32tmcmutex_6',['Esp32TmcMutex',['../classEsp32TmcMutex.html#a8a7a13fbab3996bff02102a83d96e025',1,'Esp32TmcMutex::Esp32TmcMutex() noexcept'],['../classEsp32TmcMutex.html#a1114d8a3298004cc2faed8c9a34f5220',1,'Esp32TmcMutex::Esp32TmcMutex(const Esp32TmcMutex &amp;)=delete'],['../classEsp32TmcMutex.html#a32e7758c58991ef8ea3acee576fc93a9',1,'Esp32TmcMutex::Esp32TmcMutex(Esp32TmcMutex &amp;&amp;other) noexcept']]]
 ];

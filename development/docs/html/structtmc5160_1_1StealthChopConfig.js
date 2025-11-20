@@ -1,6 +1,6 @@
 var structtmc5160_1_1StealthChopConfig =
 [
-    [ "StealthChopConfig", "structtmc5160_1_1StealthChopConfig.html#a99dfecb5b453903938d3eaeab5db880d", null ],
+    [ "StealthChopConfig", "structtmc5160_1_1StealthChopConfig.html#afe186986cb49797f040e4337363c8865", null ],
     [ "pwm_autograd", "structtmc5160_1_1StealthChopConfig.html#ac3daacede8f269aec469929eaf204a46", null ],
     [ "pwm_autoscale", "structtmc5160_1_1StealthChopConfig.html#af4baa735be57547bb2208c72d9e36c63", null ],
     [ "pwm_freq", "structtmc5160_1_1StealthChopConfig.html#ad01d6030bf31c2f4b29629b251cb27ef", null ],

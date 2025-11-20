@@ -1,6 +1,6 @@
 <map id="tmc5160::SpiCommInterface::AutoDetectChainLength" name="tmc5160::SpiCommInterface::AutoDetectChainLength">
 <area shape="rect" id="Node000001" title="Auto&#45;detect the daisy chain length by sending a unique command that loops back." alt="" coords="5,69,213,109"/>
-<area shape="rect" id="Node000002" href="$classtmc5160_1_1CommInterface.html#a7e3d53e55dcbadc4d3ef72cfdd2c6e09" title="Construct communication interface with pin active level configuration." alt="" coords="271,5,459,45"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1SpiCommand.html#a7a494940da08740590602ebd1d05f0bd" title="Get the 5&#45;byte frame as raw bytes." alt="" coords="278,5,453,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="189,67,271,46,273,51,191,72"/>
 <area shape="rect" id="Node000003" href="$structtmc5160_1_1SpiCommand.html#a1d7b973d64aa58532c5fbcdc1a09ec0c" title="Construct a read command." alt="" coords="278,69,453,109"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="213,87,264,87,264,92,213,92"/>

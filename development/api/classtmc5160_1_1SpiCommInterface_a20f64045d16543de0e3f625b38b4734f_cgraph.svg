@@ -21,10 +21,10 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classtmc5160_1_1CommInterface.html#a7e3d53e55dcbadc4d3ef72cfdd2c6e09" target="_top" xlink:title="Construct communication interface with pin active level configuration.">
-<polygon fill="white" stroke="#666666" points="340.5,-144 199.5,-144 199.5,-114 340.5,-114 340.5,-144"/>
-<text text-anchor="start" x="207.5" y="-132" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::CommInterface</text>
-<text text-anchor="middle" x="270" y="-121" font-family="Helvetica,sans-Serif" font-size="10.00">::CommInterface</text>
+<g id="a_Node000002"><a xlink:href="structtmc5160_1_1SpiCommand.html#a7a494940da08740590602ebd1d05f0bd" target="_top" xlink:title="Get the 5&#45;byte frame as raw bytes.">
+<polygon fill="white" stroke="#666666" points="335.5,-144 204.5,-144 204.5,-114 335.5,-114 335.5,-144"/>
+<text text-anchor="start" x="212.5" y="-132" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::SpiCommand</text>
+<text text-anchor="middle" x="270" y="-121" font-family="Helvetica,sans-Serif" font-size="10.00">::GetFrame</text>
 </a>
 </g>
 </g>

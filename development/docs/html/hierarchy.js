@@ -2,18 +2,16 @@ var hierarchy =
 [
     [ "tmc5160::CHOPCONF_Register", "uniontmc5160_1_1CHOPCONF__Register.html", null ],
     [ "tmc5160::ChopperConfig", "structtmc5160_1_1ChopperConfig.html", null ],
+    [ "CommandArg", "structCommandArg.html", null ],
+    [ "CommandEntry", "structCommandEntry.html", null ],
     [ "tmc5160::CommInterface< Derived >", "classtmc5160_1_1CommInterface.html", [
       [ "tmc5160::SpiCommInterface< Esp32SPI >", "classtmc5160_1_1SpiCommInterface.html", [
         [ "Esp32SPI", "classEsp32SPI.html", null ]
-      ] ],
-      [ "tmc5160::UartCommInterface< Esp32UART >", "classtmc5160_1_1UartCommInterface.html", [
-        [ "Esp32UART", "classEsp32UART.html", null ]
       ] ],
       [ "tmc5160::SpiCommInterface< Derived >", "classtmc5160_1_1SpiCommInterface.html", null ],
       [ "tmc5160::UartCommInterface< Derived >", "classtmc5160_1_1UartCommInterface.html", null ]
     ] ],
     [ "tmc5160::CommInterface< Esp32SPI >", "classtmc5160_1_1CommInterface.html", null ],
-    [ "tmc5160::CommInterface< Esp32UART >", "classtmc5160_1_1CommInterface.html", null ],
     [ "tmc5160::TMC5160< CommType >::Communication", "structtmc5160_1_1TMC5160_1_1Communication.html", null ],
     [ "tmc5160::COOLCONF_Register", "uniontmc5160_1_1COOLCONF__Register.html", null ],
     [ "tmc5160::CoolStepConfig", "structtmc5160_1_1CoolStepConfig.html", null ],
@@ -27,6 +25,7 @@ var hierarchy =
     [ "tmc5160::ENCMODE_Register", "uniontmc5160_1_1ENCMODE__Register.html", null ],
     [ "tmc5160::TMC5160< CommType >::Encoder", "structtmc5160_1_1TMC5160_1_1Encoder.html", null ],
     [ "tmc5160::EncoderConfig", "structtmc5160_1_1EncoderConfig.html", null ],
+    [ "Esp32TmcMutex", "classEsp32TmcMutex.html", null ],
     [ "FatigueTestMotion", "classFatigueTestMotion.html", null ],
     [ "tmc5160::SpiCommand::Frame", "uniontmc5160_1_1SpiCommand_1_1Frame.html", null ],
     [ "tmc5160::UartFrame::Frame", "uniontmc5160_1_1UartFrame_1_1Frame.html", null ],
@@ -62,12 +61,19 @@ var hierarchy =
     [ "tmc5160::SpiResponse", "structtmc5160_1_1SpiResponse.html", null ],
     [ "tmc5160::SpiStatus", "structtmc5160_1_1SpiStatus.html", null ],
     [ "tmc5160::StallGuardConfig", "structtmc5160_1_1StallGuardConfig.html", null ],
+    [ "FatigueTestMotion::Status", "structFatigueTestMotion_1_1Status.html", null ],
     [ "tmc5160::StealthChopConfig", "structtmc5160_1_1StealthChopConfig.html", null ],
     [ "tmc5160::SW_MODE_Register", "uniontmc5160_1_1SW__MODE__Register.html", null ],
+    [ "TestDriverHandle", "structTestDriverHandle.html", null ],
+    [ "TestResults", "structTestResults.html", null ],
+    [ "TestTaskContext", "structTestTaskContext.html", null ],
     [ "tmc5160::TMC5160< CommType >", "classtmc5160_1_1TMC5160.html", null ],
     [ "tmc5160::TMC5160< Esp32SPI >", "classtmc5160_1_1TMC5160.html", null ],
     [ "tmc5160::TMC5160DaisyChain< CommType, MaxDevices >", "classtmc5160_1_1TMC5160DaisyChain.html", null ],
     [ "tmc5160::TMC5160MultiNode< CommType, MaxDevices >", "classtmc5160_1_1TMC5160MultiNode.html", null ],
+    [ "tmc5160::TMC5160PinConfig", "structtmc5160_1_1TMC5160PinConfig.html", null ],
+    [ "TmcMutexGuard", "classTmcMutexGuard.html", null ],
+    [ "UartCommandParser", "classUartCommandParser.html", null ],
     [ "tmc5160::TMC5160< CommType >::UartConfig", "structtmc5160_1_1TMC5160_1_1UartConfig.html", null ],
     [ "tmc5160::UartFrame", "structtmc5160_1_1UartFrame.html", null ]
 ];

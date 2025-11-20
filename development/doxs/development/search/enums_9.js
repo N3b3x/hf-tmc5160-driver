@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['uartframetype_0',['UartFrameType',['../namespacetmc5160.html#a3ddc16da531e7afc309647644e3269f3',1,'tmc5160']]]
+  ['uartframetype_0',['UartFrameType',['../namespacetmc5160.html#a0d51978d589f95d86a558f8c6ce9e35f',1,'tmc5160']]]
 ];

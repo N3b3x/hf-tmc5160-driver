@@ -1,0 +1,7 @@
+<map id="TmcMutexGuard::unlock" name="TmcMutexGuard::unlock">
+<area shape="rect" id="Node000001" title="Manually unlock mutex (called automatically in destructor)" alt="" coords="5,35,187,60"/>
+<area shape="rect" id="Node000002" href="$classEsp32TmcMutex.html#aa1c5042b5ace0f9a58c140b0f02db0f2" title="Check if mutex is valid." alt="" coords="235,5,423,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,33,221,29,222,34,187,39"/>
+<area shape="rect" id="Node000003" href="$classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f" title="Get native mutex handle." alt="" coords="239,55,418,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="187,56,226,60,225,66,187,61"/>
+</map>

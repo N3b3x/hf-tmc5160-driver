@@ -93,6 +93,7 @@ $(function(){initNavTree('bounds__finding__sinuous__motion_8cpp.html',''); initR
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
@@ -100,27 +101,57 @@ $(function(){initNavTree('bounds__finding__sinuous__motion_8cpp.html',''); initR
 </div><!--header-->
 <div class="contents">
 
-<p>Fatigue testing example: Sensorless bounds finding and sinusoidal motion.  
+<p>Fatigue testing platform: Sensorless bounds finding and sinusoidal motion with UART command interface.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="tmc5160_8hpp_source.html">../../../inc/tmc5160.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="esp32__tmc5160__bus_8hpp_source.html">esp32_tmc5160_bus.hpp</a>&quot;</code><br />
 <code>#include &quot;esp_log.h&quot;</code><br />
 <code>#include &quot;esp_timer.h&quot;</code><br />
+<code>#include &quot;driver/uart.h&quot;</code><br />
 <code>#include &quot;freertos/FreeRTOS.h&quot;</code><br />
 <code>#include &quot;freertos/task.h&quot;</code><br />
-<code>#include &lt;cmath&gt;</code><br />
+<code>#include &quot;freertos/semphr.h&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;cstring&gt;</code><br />
+<code>#include &lt;cstdlib&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for bounds_finding_sinuous_motion.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp__incl.svg" width="2487" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp__incl.svg" width="2552" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEsp32TmcMutex.html">Esp32TmcMutex</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ESP32 TMC mutex wrapper using FreeRTOS semaphore.  <a href="classEsp32TmcMutex.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTmcMutexGuard.html">TmcMutexGuard</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">RAII mutex guard for automatic lock/unlock.  <a href="classTmcMutexGuard.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFatigueTestMotion.html">FatigueTestMotion</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fatigue test motion controller.  <a href="classFatigueTestMotion.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFatigueTestMotion_1_1Status.html">FatigueTestMotion::Status</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get status information (thread-safe)  <a href="structFatigueTestMotion_1_1Status.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCommandArg.html">CommandArg</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command argument structure for modular command parsing.  <a href="structCommandArg.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCommandEntry.html">CommandEntry</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command registry entry.  <a href="structCommandEntry.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUartCommandParser.html">UartCommandParser</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modular UART command parser with Linux-like argument structure.  <a href="classUartCommandParser.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ac536514426d26b8983323b7b7dcbb376" id="r_ac536514426d26b8983323b7b7dcbb376"><td class="memItemLeft" align="right" valign="top">typedef bool(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac536514426d26b8983323b7b7dcbb376">CommandHandler</a>) (const std::vector&lt; std::string &gt; &amp;args, <a class="el" href="classFatigueTestMotion.html">FatigueTestMotion</a> &amp;motion) noexcept</td></tr>
+<tr class="memdesc:ac536514426d26b8983323b7b7dcbb376"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command handler function type.  <br /></td></tr>
+<tr class="separator:ac536514426d26b8983323b7b7dcbb376"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -132,17 +163,35 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:abce06be17fc37d675118a678a8100a36" id="r_abce06be17fc37d675118a678a8100a36"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abce06be17fc37d675118a678a8100a36">app_main</a> ()</td></tr>
+<tr class="memitem:a468299e399fa65feaeb080eecfcd654f" id="r_a468299e399fa65feaeb080eecfcd654f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a468299e399fa65feaeb080eecfcd654f">HandleFrequency</a> (const std::vector&lt; std::string &gt; &amp;args, <a class="el" href="classFatigueTestMotion.html">FatigueTestMotion</a> &amp;motion) noexcept</td></tr>
+<tr class="separator:a468299e399fa65feaeb080eecfcd654f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d0d2bd312981ee8f4d16b1c83d6faf2" id="r_a0d0d2bd312981ee8f4d16b1c83d6faf2"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0d0d2bd312981ee8f4d16b1c83d6faf2">HandleDwell</a> (const std::vector&lt; std::string &gt; &amp;args, <a class="el" href="classFatigueTestMotion.html">FatigueTestMotion</a> &amp;motion) noexcept</td></tr>
+<tr class="separator:a0d0d2bd312981ee8f4d16b1c83d6faf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f27ed3ceaa20624467d32d610c23d7f" id="r_a7f27ed3ceaa20624467d32d610c23d7f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f27ed3ceaa20624467d32d610c23d7f">HandleBounds</a> (const std::vector&lt; std::string &gt; &amp;args, <a class="el" href="classFatigueTestMotion.html">FatigueTestMotion</a> &amp;motion) noexcept</td></tr>
+<tr class="separator:a7f27ed3ceaa20624467d32d610c23d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ac23d1ea8f5bd1fdc1b62db4484e296" id="r_a4ac23d1ea8f5bd1fdc1b62db4484e296"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ac23d1ea8f5bd1fdc1b62db4484e296">HandleCycles</a> (const std::vector&lt; std::string &gt; &amp;args, <a class="el" href="classFatigueTestMotion.html">FatigueTestMotion</a> &amp;motion) noexcept</td></tr>
+<tr class="separator:a4ac23d1ea8f5bd1fdc1b62db4484e296"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ce1f915a66444f56a02e43bde4cc0c5" id="r_a8ce1f915a66444f56a02e43bde4cc0c5"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ce1f915a66444f56a02e43bde4cc0c5">HandleAction</a> (const std::vector&lt; std::string &gt; &amp;args, <a class="el" href="classFatigueTestMotion.html">FatigueTestMotion</a> &amp;motion) noexcept</td></tr>
+<tr class="separator:a8ce1f915a66444f56a02e43bde4cc0c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1393ad4a23750c0916847967cc4032f" id="r_ae1393ad4a23750c0916847967cc4032f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1393ad4a23750c0916847967cc4032f">HandleStatus</a> (const std::vector&lt; std::string &gt; &amp;args, <a class="el" href="classFatigueTestMotion.html">FatigueTestMotion</a> &amp;motion) noexcept</td></tr>
+<tr class="separator:ae1393ad4a23750c0916847967cc4032f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7704c2c8716e80dc20804e4c7fb8fd4" id="r_aa7704c2c8716e80dc20804e4c7fb8fd4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7704c2c8716e80dc20804e4c7fb8fd4">motion_control_task</a> (void *param) noexcept</td></tr>
+<tr class="memdesc:aa7704c2c8716e80dc20804e4c7fb8fd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motion control task - handles bounds finding and sinusoidal motion.  <br /></td></tr>
+<tr class="separator:aa7704c2c8716e80dc20804e4c7fb8fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a257128a931ab6472c0421a29abeb0443" id="r_a257128a931ab6472c0421a29abeb0443"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a257128a931ab6472c0421a29abeb0443">uart_command_task</a> (void *param) noexcept</td></tr>
+<tr class="memdesc:a257128a931ab6472c0421a29abeb0443"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART command processing task.  <br /></td></tr>
+<tr class="separator:a257128a931ab6472c0421a29abeb0443"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abce06be17fc37d675118a678a8100a36" id="r_abce06be17fc37d675118a678a8100a36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abce06be17fc37d675118a678a8100a36">app_main</a> ()</td></tr>
 <tr class="separator:abce06be17fc37d675118a678a8100a36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a5a85b9c772bbeb480b209a3e6ea92b4c" id="r_a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">static</a> <a class="el" href="classtmc5160_1_1CommInterface.html">const</a> <a class="el" href="classtmc5160_1_1CommInterface.html">char</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a85b9c772bbeb480b209a3e6ea92b4c">TAG</a> = &quot;FatigueTest&quot;</td></tr>
+<tr class="memitem:a5a85b9c772bbeb480b209a3e6ea92b4c" id="r_a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a85b9c772bbeb480b209a3e6ea92b4c">TAG</a> = &quot;FatigueTest&quot;</td></tr>
 <tr class="separator:a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Fatigue testing example: Sensorless bounds finding and sinusoidal motion. </p>
-<p>This example is designed for cable/strain relief fatigue testing:</p><ol type="1">
+<div class="textblock"><p>Fatigue testing platform: Sensorless bounds finding and sinusoidal motion with UART command interface. </p>
+<p>This example is designed for cable/strain relief fatigue testing platforms:</p><ol type="1">
 <li>Finding motor bounds using sensorless homing (both directions)</li>
 <li>Setting global bounds (hardware limits) and local bounds (oscillation range)</li>
 <li>Performing pure sinusoidal back-and-forth motion between local bounds with:<ul>
@@ -153,6 +202,7 @@ Variables</h2></td></tr>
 <li>Automatic stop at center when cycle count reached</li>
 </ul>
 </li>
+<li>UART command interface for real-time parameter adjustment</li>
 </ol>
 <p>Hardware Requirements:</p><ul>
 <li>ESP32 development board</li>
@@ -160,14 +210,45 @@ Variables</h2></td></tr>
 <li>Stepper motor connected to TMC5160</li>
 <li>SPI connection between ESP32 and TMC5160</li>
 <li>Mechanical stops at both ends for bounds finding (optional - handles unbounded)</li>
+<li>UART debug port for command interface (typically UART_NUM_0 for USB serial)</li>
 </ul>
 <p>Pin Configuration (modify as needed):</p><ul>
 <li>SPI: MOSI=23, MISO=19, SCLK=18, CS=5</li>
 <li>Control: EN=2, DIR=4, STEP=15</li>
+<li>UART: Uses default UART_NUM_0 (USB serial port)</li>
 </ul>
+<p>UART Command Interface: Commands follow Linux-like argument structure: -f </p>
+<p>or &ndash;freq </p>
+<p>: Set frequency in Hz -d &lt;min&gt; &lt;max&gt; [center] : Set dwell times in ms (min, max, optional center) -b &lt;min&gt; &lt;max&gt; or &ndash;bounds &lt;min&gt; &lt;max&gt; : Set angle bounds from center in degrees -c &lt;count&gt; or &ndash;cycles &lt;count&gt; : Set target cycle count (0 = infinite) -a start|stop|reset : Action commands (start motion, stop, reset cycles) -s or &ndash;status : Show current status -h or &ndash;help : Show help message</p>
+<p>Examples: -f 0.5 : Set frequency to 0.5 Hz -d 2000 2000 500 : Set dwell times: 2s at min, 2s at max, 0.5s at center -b -60 60 : Set bounds to ±60 degrees from center -c 1000 : Set target to 1000 cycles -a start : Start motion -a stop : Stop motion -a reset : Reset cycle count -s : Show status</p>
 <dl class="section author"><dt>Author</dt><dd>Nebiyu Tadesse </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2025 </dd></dl>
-</div><h2 class="groupheader">Enumeration Type Documentation</h2>
+</div><h2 class="groupheader">Typedef Documentation</h2>
+<a id="ac536514426d26b8983323b7b7dcbb376" name="ac536514426d26b8983323b7b7dcbb376"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac536514426d26b8983323b7b7dcbb376">&#9670;&#160;</a></span>CommandHandler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef bool(* CommandHandler) (const std::vector&lt; std::string &gt; &amp;args, <a class="el" href="classFatigueTestMotion.html">FatigueTestMotion</a> &amp;motion) noexcept</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Command handler function type. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a70ab36d1d4920fdd314279845af152c5" name="a70ab36d1d4920fdd314279845af152c5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a70ab36d1d4920fdd314279845af152c5">&#9670;&#160;</a></span>AngleUnit</h2>
 
@@ -178,7 +259,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">enum</a> <a class="el" href="classtmc5160_1_1CommInterface.html">class</a> <a class="el" href="#a70ab36d1d4920fdd314279845af152c5">AngleUnit</a></td>
+          <td class="memname">enum class <a class="el" href="#a70ab36d1d4920fdd314279845af152c5">AngleUnit</a></td>
         </tr>
       </table>
   </td>
@@ -204,9 +285,9 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">void</a> app_main </td>
+          <td class="memname">void app_main </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -214,7 +295,285 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="1075" height="1095"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="1114" height="1206"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a8ce1f915a66444f56a02e43bde4cc0c5" name="a8ce1f915a66444f56a02e43bde4cc0c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ce1f915a66444f56a02e43bde4cc0c5">&#9670;&#160;</a></span>HandleAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool HandleAction </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>args</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classFatigueTestMotion.html">FatigueTestMotion</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>motion</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_a8ce1f915a66444f56a02e43bde4cc0c5_icgraph.svg" width="255" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a7f27ed3ceaa20624467d32d610c23d7f" name="a7f27ed3ceaa20624467d32d610c23d7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f27ed3ceaa20624467d32d610c23d7f">&#9670;&#160;</a></span>HandleBounds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool HandleBounds </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>args</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classFatigueTestMotion.html">FatigueTestMotion</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>motion</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_a7f27ed3ceaa20624467d32d610c23d7f_icgraph.svg" width="262" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a4ac23d1ea8f5bd1fdc1b62db4484e296" name="a4ac23d1ea8f5bd1fdc1b62db4484e296"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ac23d1ea8f5bd1fdc1b62db4484e296">&#9670;&#160;</a></span>HandleCycles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool HandleCycles </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>args</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classFatigueTestMotion.html">FatigueTestMotion</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>motion</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_a4ac23d1ea8f5bd1fdc1b62db4484e296_icgraph.svg" width="256" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a0d0d2bd312981ee8f4d16b1c83d6faf2" name="a0d0d2bd312981ee8f4d16b1c83d6faf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d0d2bd312981ee8f4d16b1c83d6faf2">&#9670;&#160;</a></span>HandleDwell()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool HandleDwell </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>args</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classFatigueTestMotion.html">FatigueTestMotion</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>motion</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_a0d0d2bd312981ee8f4d16b1c83d6faf2_icgraph.svg" width="251" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a468299e399fa65feaeb080eecfcd654f" name="a468299e399fa65feaeb080eecfcd654f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a468299e399fa65feaeb080eecfcd654f">&#9670;&#160;</a></span>HandleFrequency()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool HandleFrequency </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>args</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classFatigueTestMotion.html">FatigueTestMotion</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>motion</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_a468299e399fa65feaeb080eecfcd654f_icgraph.svg" width="280" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ae1393ad4a23750c0916847967cc4032f" name="ae1393ad4a23750c0916847967cc4032f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1393ad4a23750c0916847967cc4032f">&#9670;&#160;</a></span>HandleStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool HandleStatus </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>args</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classFatigueTestMotion.html">FatigueTestMotion</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>motion</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_ae1393ad4a23750c0916847967cc4032f_icgraph.svg" width="255" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aa7704c2c8716e80dc20804e4c7fb8fd4" name="aa7704c2c8716e80dc20804e4c7fb8fd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7704c2c8716e80dc20804e4c7fb8fd4">&#9670;&#160;</a></span>motion_control_task()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void motion_control_task </td>
+          <td>(</td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>param</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Motion control task - handles bounds finding and sinusoidal motion. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_aa7704c2c8716e80dc20804e4c7fb8fd4_cgraph.svg" width="827" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_aa7704c2c8716e80dc20804e4c7fb8fd4_icgraph.svg" width="300" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a257128a931ab6472c0421a29abeb0443" name="a257128a931ab6472c0421a29abeb0443"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a257128a931ab6472c0421a29abeb0443">&#9670;&#160;</a></span>uart_command_task()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void uart_command_task </td>
+          <td>(</td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>param</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>UART command processing task. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_a257128a931ab6472c0421a29abeb0443_cgraph.svg" width="815" height="179"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_a257128a931ab6472c0421a29abeb0443_icgraph.svg" width="300" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -230,7 +589,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">const</a> <a class="el" href="classtmc5160_1_1CommInterface.html">char</a>* TAG = &quot;FatigueTest&quot;</td>
+          <td class="memname">const char* TAG = &quot;FatigueTest&quot;</td>
         </tr>
       </table>
   </td>

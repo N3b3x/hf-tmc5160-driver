@@ -27,14 +27,29 @@ var NAVTREE =
   [ "HF-TMC5160 Driver", "index.html", [
     [ "📚 Table of Contents", "index.html#autotoc_md19", null ],
     [ "📦 Overview", "index.html#autotoc_md20", null ],
-    [ "✨ Features", "index.html#autotoc_md21", null ],
-    [ "🚀 Quick Start", "index.html#autotoc_md22", null ],
-    [ "🔧 Installation", "index.html#autotoc_md23", null ],
-    [ "📖 API Reference", "index.html#autotoc_md24", null ],
-    [ "📊 Examples", "index.html#autotoc_md25", null ],
-    [ "📚 Documentation", "index.html#autotoc_md26", null ],
-    [ "🤝 Contributing", "index.html#autotoc_md27", null ],
-    [ "📄 License", "index.html#autotoc_md28", null ],
+    [ "✨ Features", "index.html#autotoc_md21", [
+      [ "Core Motor Control", "index.html#autotoc_md22", null ],
+      [ "Multi-Chip Communication", "index.html#autotoc_md23", null ],
+      [ "Advanced Features", "index.html#autotoc_md24", null ],
+      [ "Platform & Architecture", "index.html#autotoc_md25", null ]
+    ] ],
+    [ "🚀 Quick Start", "index.html#autotoc_md26", [
+      [ "Single Motor Setup", "index.html#autotoc_md27", null ],
+      [ "Multi-Motor Daisy Chain Setup", "index.html#autotoc_md28", null ],
+      [ "Using Physical Units", "index.html#autotoc_md29", null ]
+    ] ],
+    [ "🔧 Installation", "index.html#autotoc_md30", null ],
+    [ "📖 API Reference", "index.html#autotoc_md31", [
+      [ "Core Methods", "index.html#autotoc_md32", null ],
+      [ "Multi-Chip Methods", "index.html#autotoc_md33", null ],
+      [ "Unit Conversion Methods", "index.html#autotoc_md34", null ],
+      [ "Advanced Features", "index.html#autotoc_md35", null ]
+    ] ],
+    [ "📊 Examples", "index.html#autotoc_md36", null ],
+    [ "📚 Documentation", "index.html#autotoc_md37", null ],
+    [ "🤝 Contributing", "index.html#autotoc_md38", null ],
+    [ "📄 License", "index.html#autotoc_md39", null ],
+    [ "Deprecated List", "deprecated.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -59,9 +74,10 @@ var NAVTREE =
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
-        [ "All", "globals.html", null ],
+        [ "All", "globals.html", "globals_dup" ],
         [ "Functions", "globals_func.html", null ],
         [ "Variables", "globals_vars.html", null ],
+        [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
@@ -71,13 +87,15 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"annotated.html",
-"classtmc5160_1_1TMC5160MultiNode.html#a1d16d907f1db02096b2ac6134d05d0ad",
-"namespacetmc5160_1_1Registers.html#a24ad03c40854d44dd43c5212db37fe01",
-"structtmc5160_1_1MotorSpec.html#aa790dd6afb3245cc5077d927472ed91e",
-"structtmc5160_1_1UartFrame.html#a9283cda85637016dc3ceffd1472cd59d",
-"uniontmc5160_1_1DCCTRL__Register.html#a4c0d79923360dbe7053d761a65af81d1",
-"uniontmc5160_1_1OFFSET__READ__Register.html#a4e8de7eb4c4c3281416b2dabeedfb050"
+"TestFramework_8h.html",
+"classtmc5160_1_1SpiCommInterface.html#ad5148180affea0e047e8c4a40d83485c",
+"globals_o.html",
+"ramp__control__comprehensive__test_8cpp.html",
+"structtmc5160_1_1MotorParameters.html#a8553db97913794dd2f8d616e9aad94e1",
+"structtmc5160_1_1TMC5160_1_1MotorControl.html#a8f67da30507f54d18b770ca06c31ded6",
+"uart__multi__node__comprehensive__test_8cpp.html#ae9557a3af436dca83c9aba80d29adda7",
+"uniontmc5160_1_1IHOLD__IRUN__Register.html#a3529b302be54403c8b5512bee157b562",
+"uniontmc5160_1_1SW__MODE__Register.html#a2d386b880580b1b61a73b3703ba2f094"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,6 +1,6 @@
 var structtmc5160_1_1StallGuardConfig =
 [
-    [ "StallGuardConfig", "structtmc5160_1_1StallGuardConfig.html#ad2e8a7ff5342ed0d825af8e743bedaf7", null ],
+    [ "StallGuardConfig", "structtmc5160_1_1StallGuardConfig.html#ac2d2cad3ce48f42c1a6c1c9fc00b9e66", null ],
     [ "sedn", "structtmc5160_1_1StallGuardConfig.html#a2d0e6b2074d524b3d4a4b1b3e1446ab8", null ],
     [ "seimin", "structtmc5160_1_1StallGuardConfig.html#a049d54d4d71572c063707b67f9d32b1a", null ],
     [ "semax", "structtmc5160_1_1StallGuardConfig.html#ac3e83c3ca13a91032a8f7cf8b399221d", null ],
