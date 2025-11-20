@@ -97,7 +97,8 @@ namespace tmc5160 {
  * @tparam CommType The communication interface type (must inherit from
  *                  SpiCommInterface<CommType> or UartCommInterface<CommType>)
  */
-template <typename CommType> class TMC5160 {
+template <typename CommType>
+class TMC5160 {
 public:
   //================================================================================
   // @name Core Initialization and Management
@@ -109,20 +110,18 @@ public:
    * @param comm Reference to a user-implemented communication interface (SPI,
    * UART, etc)
    * @param f_clk TMC5160 clock frequency in Hz (default: 12 MHz)
-   * @param daisy_chain_position Position in daisy chain (0 = first chip/single chip, 1 = second, etc.)
-   *                             Only used for SPI daisy-chaining. Default: 0 (single chip)
+   * @param daisy_chain_position Position in daisy chain (0 = first chip/single chip, 1 = second,
+   * etc.) Only used for SPI daisy-chaining. Default: 0 (single chip)
    * @param uart_node_address UART node address (0-254). Only used for UART multi-node addressing.
    *                          Default: 0 (single node or first node).
    *                          For sequential programming via TMC5160MultiNode, this is set to 0
    *                          initially and updated automatically after ProgramSequentially().
    *                          For devices already programmed, specify the known address here.
    */
-  explicit TMC5160(CommType &comm,
-                   uint32_t f_clk = ClockFreq::DEFAULT_F_CLK,
-                   uint8_t daisy_chain_position = 0,
+  explicit TMC5160(CommType& comm, uint32_t f_clk = ClockFreq::DEFAULT_F_CLK, uint8_t daisy_chain_position = 0,
                    uint8_t uart_node_address = 0) noexcept
       : comm_(comm), f_clk_(f_clk), daisy_chain_position_(daisy_chain_position),
-        uart_node_address_(uart_node_address & 0xFF), initialized_(false) {}
+        uart_node_address_(uart_node_address & 0xFF) {}
 
   /**
    * @brief Destructor for TMC5160, cleans up resources
@@ -138,7 +137,9 @@ public:
    * @brief Get the communication interface used by this TMC5160 instance
    * @return Reference to the communication interface (SPI, UART, etc)
    */
-  [[nodiscard]] CommType &GetComm() noexcept { return comm_; }
+  [[nodiscard]] CommType& GetComm() noexcept {
+    return comm_;
+  }
 
   /**
    * @brief Set the daisy-chain position for this TMC5160 instance
@@ -203,7 +204,7 @@ public:
    * 7. Set ramp mode to positioning
    * 8. Configure global settings
    */
-  bool Initialize(const DriverConfig &config = DriverConfig()) noexcept;
+  bool Initialize(const DriverConfig& config = DriverConfig()) noexcept;
 
   // @}
 
@@ -224,7 +225,7 @@ public:
      * @brief Construct ramp control subsystem
      * @param driver Reference to parent TMC5160 driver instance
      */
-    explicit RampControl(TMC5160 &driver) noexcept : driver_(driver) {}
+    explicit RampControl(TMC5160& driver) noexcept : driver_(driver) {}
 
     /**
      * @brief Set the ramp mode
@@ -252,8 +253,7 @@ public:
      * @param update_encoder If true, also update encoder position
      * @return true if set successfully, false otherwise
      */
-    bool SetCurrentPosition(int32_t position,
-                            bool update_encoder = false) noexcept;
+    bool SetCurrentPosition(int32_t position, bool update_encoder = false) noexcept;
 
     /**
      * @brief Set maximum speed
@@ -284,8 +284,7 @@ public:
      * @param transition_speed Transition speed in steps per second
      * @return true if set successfully, false otherwise
      */
-    bool SetRampSpeeds(float start_speed, float stop_speed,
-                       float transition_speed) noexcept;
+    bool SetRampSpeeds(float start_speed, float stop_speed, float transition_speed) noexcept;
 
     /**
      * @brief Get current speed
@@ -320,8 +319,7 @@ public:
      * @param lead_screw_pitch_mm Lead screw pitch in millimeters
      * @return true if set successfully, false otherwise
      */
-    bool SetTargetPositionMm(float position_mm, uint16_t steps_per_rev,
-                             float lead_screw_pitch_mm) noexcept;
+    bool SetTargetPositionMm(float position_mm, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept;
 
     /**
      * @brief Set maximum speed in RPM
@@ -336,7 +334,7 @@ public:
      * @param config Reference switch configuration structure
      * @return true if configured successfully, false otherwise
      */
-    bool ConfigureReferenceSwitch(const ReferenceSwitchConfig &config) noexcept;
+    bool ConfigureReferenceSwitch(const ReferenceSwitchConfig& config) noexcept;
 
     /**
      * @brief Get latched position
@@ -385,7 +383,7 @@ public:
     bool SetFirstAcceleration(float a1) noexcept;
 
   private:
-    TMC5160 &driver_; ///< Reference to parent driver instance
+    TMC5160& driver_; ///< Reference to parent driver instance
   } rampControl{*this};
 
   /**
@@ -400,7 +398,7 @@ public:
      * @brief Construct motor control subsystem
      * @param driver Reference to parent TMC5160 driver instance
      */
-    explicit MotorControl(TMC5160 &driver) noexcept : driver_(driver) {}
+    explicit MotorControl(TMC5160& driver) noexcept : driver_(driver) {}
 
     /**
      * @brief Enable the motor driver
@@ -427,14 +425,14 @@ public:
      * @param config Chopper configuration structure
      * @return true if configured successfully, false otherwise
      */
-    bool ConfigureChopper(const ChopperConfig &config) noexcept;
+    bool ConfigureChopper(const ChopperConfig& config) noexcept;
 
     /**
      * @brief Configure stealthChop settings
      * @param config StealthChop configuration structure
      * @return true if configured successfully, false otherwise
      */
-    bool ConfigureStealthChop(const StealthChopConfig &config) noexcept;
+    bool ConfigureStealthChop(const StealthChopConfig& config) noexcept;
 
     /**
      * @brief Set mode change speeds
@@ -443,8 +441,7 @@ public:
      * @param high_thrs Speed threshold for high-speed mode (steps/s)
      * @return true if set successfully, false otherwise
      */
-    bool SetModeChangeSpeeds(float pwm_thrs, float cool_thrs,
-                             float high_thrs) noexcept;
+    bool SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs) noexcept;
 
     /**
      * @brief Set global current scaler
@@ -467,14 +464,14 @@ public:
      * @param config CoolStep configuration structure
      * @return true if configured successfully, false otherwise
      */
-    bool ConfigureCoolStep(const CoolStepConfig &config) noexcept;
+    bool ConfigureCoolStep(const CoolStepConfig& config) noexcept;
 
     /**
      * @brief Configure dcStep automatic commutation
      * @param config dcStep configuration structure
      * @return true if configured successfully, false otherwise
      */
-    bool ConfigureDcStep(const DcStepConfig &config) noexcept;
+    bool ConfigureDcStep(const DcStepConfig& config) noexcept;
 
     /**
      * @brief Set microstep lookup table entry
@@ -495,10 +492,8 @@ public:
      * @param lut_seg_start3 Start position for segment 3 (0-255)
      * @return true if set successfully, false otherwise
      */
-    bool SetMicrostepLookupTableSegmentation(uint8_t width_sel_0, uint8_t width_sel_1,
-                                             uint8_t width_sel_2, uint8_t width_sel_3,
-                                             uint8_t lut_seg_start1,
-                                             uint8_t lut_seg_start2,
+    bool SetMicrostepLookupTableSegmentation(uint8_t width_sel_0, uint8_t width_sel_1, uint8_t width_sel_2,
+                                             uint8_t width_sel_3, uint8_t lut_seg_start1, uint8_t lut_seg_start2,
                                              uint8_t lut_seg_start3) noexcept;
 
     /**
@@ -517,18 +512,17 @@ public:
      * Automatically calculates and sets motor current, chopper configuration,
      * and other parameters based on motor specifications.
      */
-    bool SetupMotorFromSpec(const MotorSpec &motor_spec,
-                            const MechanicalSystem *mechanical_system = nullptr) noexcept;
+    bool SetupMotorFromSpec(const MotorSpec& motor_spec, const MechanicalSystem* mechanical_system = nullptr) noexcept;
 
     /**
      * @brief Configure global configuration (GCONF register)
      * @param config Global configuration structure
      * @return true if configured successfully, false otherwise
      */
-    bool ConfigureGlobalConfig(const GlobalConfig &config) noexcept;
+    bool ConfigureGlobalConfig(const GlobalConfig& config) noexcept;
 
   private:
-    TMC5160 &driver_; ///< Reference to parent driver instance
+    TMC5160& driver_; ///< Reference to parent driver instance
   } motorControl{*this};
 
   /**
@@ -542,7 +536,7 @@ public:
      * @brief Construct communication subsystem
      * @param driver Reference to parent TMC5160 driver instance
      */
-    explicit Communication(TMC5160 &driver) noexcept : driver_(driver) {}
+    explicit Communication(TMC5160& driver) noexcept : driver_(driver) {}
 
     /**
      * @brief Configure UART slave address and send delay
@@ -551,8 +545,7 @@ public:
      *                   (0-15, set >1 with multiple slaves)
      * @return true if configured successfully, false otherwise
      */
-    bool ConfigureSlaveAddress(uint8_t slave_address,
-                               uint8_t send_delay = 0) noexcept;
+    bool ConfigureSlaveAddress(uint8_t slave_address, uint8_t send_delay = 0) noexcept;
 
     /**
      * @brief Get current slave address from SLAVECONF register
@@ -567,7 +560,7 @@ public:
     uint8_t GetSendDelay() noexcept;
 
   private:
-    TMC5160 &driver_; ///< Reference to parent driver instance
+    TMC5160& driver_; ///< Reference to parent driver instance
   } communication{*this};
 
   /**
@@ -581,14 +574,14 @@ public:
      * @brief Construct encoder subsystem
      * @param driver Reference to parent TMC5160 driver instance
      */
-    explicit Encoder(TMC5160 &driver) noexcept : driver_(driver) {}
+    explicit Encoder(TMC5160& driver) noexcept : driver_(driver) {}
 
     /**
      * @brief Configure encoder settings
      * @param config Encoder configuration structure
      * @return true if configured successfully, false otherwise
      */
-    bool Configure(const EncoderConfig &config) noexcept;
+    bool Configure(const EncoderConfig& config) noexcept;
 
     /**
      * @brief Get encoder position
@@ -603,8 +596,7 @@ public:
      * @param inverted Whether encoder and motor rotations are inverted
      * @return true if exact match found, false if approximation used
      */
-    bool SetResolution(int32_t motor_steps, int32_t enc_resolution,
-                       bool inverted = false) noexcept;
+    bool SetResolution(int32_t motor_steps, int32_t enc_resolution, bool inverted = false) noexcept;
 
     /**
      * @brief Set encoder allowed deviation
@@ -634,7 +626,7 @@ public:
     int32_t GetLatchedPosition() noexcept;
 
   private:
-    TMC5160 &driver_; ///< Reference to parent driver instance
+    TMC5160& driver_; ///< Reference to parent driver instance
   } encoder{*this};
 
   /**
@@ -649,7 +641,7 @@ public:
      * @brief Construct diagnostics subsystem
      * @param driver Reference to parent TMC5160 driver instance
      */
-    explicit Diagnostics(TMC5160 &driver) noexcept : driver_(driver) {}
+    explicit Diagnostics(TMC5160& driver) noexcept : driver_(driver) {}
 
     /**
      * @brief Get driver status
@@ -668,21 +660,21 @@ public:
      * @param config StallGuard configuration structure
      * @return true if configured successfully, false otherwise
      */
-    bool ConfigureStallGuard(const StallGuardConfig &config) noexcept;
+    bool ConfigureStallGuard(const StallGuardConfig& config) noexcept;
 
     /**
      * @brief Get driver status register value
      * @param status Reference to store the DRV_STATUS register value
      * @return true if read successfully, false otherwise
      */
-    bool GetDriverStatusRegister(uint32_t &status) noexcept;
+    bool GetDriverStatusRegister(uint32_t& status) noexcept;
 
     /**
      * @brief Get ramp status register value
      * @param status Reference to store the RAMP_STAT register value
      * @return true if read successfully, false otherwise
      */
-    bool GetRampStatusRegister(uint32_t &status) noexcept;
+    bool GetRampStatusRegister(uint32_t& status) noexcept;
 
     /**
      * @brief Get lost steps counter
@@ -702,9 +694,8 @@ public:
      *
      * Moves motor in specified direction until stall is detected, then stops.
      */
-    bool PerformSensorlessHoming(bool direction, int8_t stall_threshold,
-                                  float search_speed,
-                                  int32_t &final_position) noexcept;
+    bool PerformSensorlessHoming(bool direction, int8_t stall_threshold, float search_speed,
+                                 int32_t& final_position) noexcept;
 
     /**
      * @brief Get actual time between microsteps
@@ -731,7 +722,7 @@ public:
      * Read-only register showing actual microstep current for both phases.
      * Values are signed 9-bit as read from MSLUT (not scaled by current).
      */
-    bool GetMicrostepCurrent(int16_t &phase_a, int16_t &phase_b) noexcept;
+    bool GetMicrostepCurrent(int16_t& phase_a, int16_t& phase_b) noexcept;
 
     /**
      * @brief Get PWM scale results
@@ -741,7 +732,7 @@ public:
      *
      * Read-only register showing stealthChop PWM scale results.
      */
-    bool GetPwmScale(uint8_t &pwm_scale_sum, int16_t &pwm_scale_auto) noexcept;
+    bool GetPwmScale(uint8_t& pwm_scale_sum, int16_t& pwm_scale_auto) noexcept;
 
     /**
      * @brief Get automatically determined PWM values
@@ -751,7 +742,7 @@ public:
      *
      * Read-only register showing automatically determined PWM configuration values.
      */
-    bool GetPwmAuto(uint8_t &pwm_ofs_auto, uint8_t &pwm_grad_auto) noexcept;
+    bool GetPwmAuto(uint8_t& pwm_ofs_auto, uint8_t& pwm_grad_auto) noexcept;
 
     /**
      * @brief Read GPIO input pins
@@ -760,7 +751,7 @@ public:
      *
      * Reads the state of all GPIO input pins.
      */
-    bool ReadGpioPins(uint32_t &io_pins) noexcept;
+    bool ReadGpioPins(uint32_t& io_pins) noexcept;
 
     /**
      * @brief Read factory configuration
@@ -769,7 +760,7 @@ public:
      *
      * Reads the factory configuration/clock trim value.
      */
-    bool ReadFactoryConfig(uint8_t &fclktrim) noexcept;
+    bool ReadFactoryConfig(uint8_t& fclktrim) noexcept;
 
     /**
      * @brief Read OTP configuration
@@ -781,8 +772,7 @@ public:
      *
      * Reads the one-time programmable configuration memory.
      */
-    bool ReadOtpConfig(uint8_t &otp_fclktrim, bool &otp_s2_level,
-                       bool &otp_bbm, bool &otp_tbl) noexcept;
+    bool ReadOtpConfig(uint8_t& otp_fclktrim, bool& otp_s2_level, bool& otp_bbm, bool& otp_tbl) noexcept;
 
     /**
      * @brief Get UART transmission counter
@@ -800,10 +790,10 @@ public:
      *
      * Reads the results from offset calibration procedure.
      */
-    bool ReadOffsetCalibration(uint8_t &phase_a, uint8_t &phase_b) noexcept;
+    bool ReadOffsetCalibration(uint8_t& phase_a, uint8_t& phase_b) noexcept;
 
   private:
-    TMC5160 &driver_; ///< Reference to parent driver instance
+    TMC5160& driver_; ///< Reference to parent driver instance
   } diagnostics{*this};
 
   /**
@@ -813,13 +803,13 @@ public:
    * Provides methods for configuring UART slave mode operation.
    */
   struct UartConfig {
-    TMC5160 *driver_; ///< Pointer to parent driver instance
+    TMC5160* driver_; ///< Pointer to parent driver instance
 
     /**
      * @brief Construct UART configuration subsystem
      * @param driver Pointer to parent TMC5160 driver instance
      */
-    explicit UartConfig(TMC5160 *driver) noexcept : driver_(driver) {}
+    explicit UartConfig(TMC5160* driver) noexcept : driver_(driver) {}
 
     /**
      * @brief Configure UART slave settings
@@ -842,14 +832,14 @@ public:
      * @brief Construct protection subsystem
      * @param driver Reference to parent TMC5160 driver instance
      */
-    explicit Protection(TMC5160 &driver) noexcept : driver_(driver) {}
+    explicit Protection(TMC5160& driver) noexcept : driver_(driver) {}
 
     /**
      * @brief Configure short protection levels
      * @param config Short protection configuration structure
      * @return true if configured successfully, false otherwise
      */
-    bool ConfigureShortProtection(const ShortProtectionConfig &config) noexcept;
+    bool ConfigureShortProtection(const ShortProtectionConfig& config) noexcept;
 
     /**
      * @brief Set short protection levels
@@ -859,12 +849,11 @@ public:
      * @param shortdelay Short detection delay (0-1)
      * @return true if set successfully, false otherwise
      */
-    bool SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level,
-                                  uint8_t shortfilter,
+    bool SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter,
                                   uint8_t shortdelay) noexcept;
 
   private:
-    TMC5160 &driver_; ///< Reference to parent driver instance
+    TMC5160& driver_; ///< Reference to parent driver instance
   } protection{*this};
 
   // @}
@@ -892,42 +881,44 @@ protected:
    * @brief Check if the driver is initialized
    * @return true if initialized, false otherwise
    */
-  [[nodiscard]] bool IsInitialized() const noexcept { return initialized_; }
+  [[nodiscard]] bool IsInitialized() const noexcept {
+    return initialized_;
+  }
 
 private:
-  CommType &comm_;            ///< Communication interface reference
-  uint32_t f_clk_;            ///< TMC5160 clock frequency in Hz
+  CommType& comm_;               ///< Communication interface reference
+  uint32_t f_clk_;               ///< TMC5160 clock frequency in Hz
   uint8_t daisy_chain_position_; ///< Position in daisy chain (0 = first chip/single chip)
-  uint8_t uart_node_address_; ///< UART node address (0-127) for multi-node addressing
-  bool initialized_; ///< Initialization status flag
+  uint8_t uart_node_address_;    ///< UART node address (0-127) for multi-node addressing
+  bool initialized_{false};      ///< Initialization status flag
 
   /**
    * @brief Convert speed from Hz to internal TMC5160 units
    * @param speed_hz Speed in steps per second
    * @return Speed in internal TMC5160 units
    */
-  int32_t speedToInternal(float speed_hz) const noexcept;
+  [[nodiscard]] int32_t speedToInternal(float speed_hz) const noexcept;
 
   /**
    * @brief Convert speed from internal TMC5160 units to Hz
    * @param speed_internal Speed in internal TMC5160 units
    * @return Speed in steps per second
    */
-  float speedFromInternal(int32_t speed_internal) const noexcept;
+  [[nodiscard]] float speedFromInternal(int32_t speed_internal) const noexcept;
 
   /**
    * @brief Convert acceleration from Hz/s to internal TMC5160 units
    * @param accel_hz Acceleration in steps per second squared
    * @return Acceleration in internal TMC5160 units
    */
-  int32_t accelToInternal(float accel_hz) const noexcept;
+  [[nodiscard]] int32_t accelToInternal(float accel_hz) const noexcept;
 
   /**
    * @brief Convert threshold speed to TSTEP format
    * @param speed_hz Speed threshold in steps per second
    * @return TSTEP value (0 if speed is 0)
    */
-  int32_t thresholdSpeedToTstep(float speed_hz) const noexcept;
+  [[nodiscard]] int32_t thresholdSpeedToTstep(float speed_hz) const noexcept;
 };
 
 } // namespace tmc5160

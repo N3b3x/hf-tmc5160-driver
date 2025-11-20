@@ -21,10 +21,9 @@ namespace tmc5160 {
  * @brief TMC5160 clock frequency constants
  */
 namespace ClockFreq {
-constexpr uint32_t DEFAULT_F_CLK =
-    12000000U; ///< Typical internal clock frequency in Hz (12 MHz)
-constexpr uint32_t MIN_F_CLK = 8000000U;  ///< Minimum clock frequency in Hz
-constexpr uint32_t MAX_F_CLK = 16000000U; ///< Maximum clock frequency in Hz
+constexpr uint32_t DEFAULT_F_CLK = 12000000U; ///< Typical internal clock frequency in Hz (12 MHz)
+constexpr uint32_t MIN_F_CLK = 8000000U;      ///< Minimum clock frequency in Hz
+constexpr uint32_t MAX_F_CLK = 16000000U;     ///< Maximum clock frequency in Hz
 } // namespace ClockFreq
 
 /**
@@ -42,26 +41,22 @@ constexpr uint16_t USTEP_COUNT = 256U; ///< Number of microsteps per full step
  * operation.
  */
 struct DriverConfig {
-  PowerStageParameters power_stage; ///< Power stage configuration
-  MotorParameters motor;            ///< Motor current configuration
-  MotorDirection direction;         ///< Motor direction (normal or inverse)
-  ChopperConfig chopper;            ///< Chopper configuration
-  StealthChopConfig stealthchop;    ///< StealthChop configuration
-  ShortProtectionConfig
-      short_protection; ///< Short circuit protection configuration
-  GlobalConfig global_config; ///< Global configuration (GCONF register)
-  RampParameters ramp_params; ///< Additional ramp parameters
-  uint32_t f_clk;       ///< TMC5160 clock frequency in Hz (default: 12 MHz)
+  PowerStageParameters power_stage;                 ///< Power stage configuration
+  MotorParameters motor;                            ///< Motor current configuration
+  MotorDirection direction{MotorDirection::NORMAL}; ///< Motor direction (normal or inverse)
+  ChopperConfig chopper;                            ///< Chopper configuration
+  StealthChopConfig stealthchop;                    ///< StealthChop configuration
+  ShortProtectionConfig short_protection;           ///< Short circuit protection configuration
+  GlobalConfig global_config;                       ///< Global configuration (GCONF register)
+  RampParameters ramp_params;                       ///< Additional ramp parameters
+  uint32_t f_clk;                                   ///< TMC5160 clock frequency in Hz (default: 12 MHz)
 
   /**
    * @brief Default constructor
    *
    * Initializes with recommended default values.
    */
-  DriverConfig()
-      : power_stage(), motor(), direction(MotorDirection::NORMAL), chopper(),
-        stealthchop(), short_protection(), global_config(), ramp_params(),
-        f_clk(ClockFreq::DEFAULT_F_CLK) {}
+  DriverConfig() noexcept : f_clk(ClockFreq::DEFAULT_F_CLK) {}
 };
 
 } // namespace tmc5160

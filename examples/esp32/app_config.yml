@@ -10,96 +10,90 @@
 version: "1.0"
 metadata:
   project: "ESP32 TMC5160 Driver Examples"
-  default_app: "basic_positioning"
+  default_app: "core_comprehensive_test"
   target: "esp32c6"
   idf_versions: ["release/v5.5", "release/v5.4"]
   build_types: [["Debug", "Release"], ["Debug"]]
 
 apps:
-  basic_positioning:
-    description: "Basic positioning mode example - move motor to target position"
-    source_file: "basic_positioning.cpp"
-    category: "motor_control"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: true
-    featured: true
-
-  velocity_mode:
-    description: "Velocity mode example - continuous motor rotation"
-    source_file: "velocity_mode.cpp"
-    category: "motor_control"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: true
-    featured: true
-
-  stealthchop:
-    description: "StealthChop silent operation example"
-    source_file: "stealthchop.cpp"
-    category: "motor_control"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: true
-    featured: true
-
-  encoder:
-    description: "Encoder closed-loop control example"
-    source_file: "encoder.cpp"
-    category: "motor_control"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: true
-    featured: true
-
-  stallguard:
-    description: "StallGuard2 stall detection example"
-    source_file: "stallguard.cpp"
-    category: "motor_control"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: true
-    featured: true
-
-  sinusoidal:
-    description: "Sinusoidal motion pattern example"
-    source_file: "sinusoidal.cpp"
-    category: "motor_control"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: true
-    featured: true
-
-  comprehensive_test:
-    description: "Comprehensive test suite covering all driver features"
-    source_file: "comprehensive_test.cpp"
+  # Comprehensive Test Suites (Single Motor)
+  core_comprehensive_test:
+    description: "Comprehensive core initialization and basic setup testing suite (single motor)"
+    source_file: "core_comprehensive_test.cpp"
     category: "testing"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]
     ci_enabled: true
     featured: true
 
-  unit_conversions:
-    description: "Unit conversion example - working with physical units (mm, RPM)"
-    source_file: "unit_conversions.cpp"
-    category: "motor_control"
+  ramp_control_comprehensive_test:
+    description: "Comprehensive ramp control testing suite - ramp modes, position control, speed control, unit conversions (single motor)"
+    source_file: "ramp_control_comprehensive_test.cpp"
+    category: "testing"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]
     ci_enabled: true
     featured: true
 
-  motor_setup_from_spec:
-    description: "Motor setup from high-level specifications example"
-    source_file: "motor_setup_from_spec.cpp"
-    category: "motor_control"
+  motor_control_comprehensive_test:
+    description: "Comprehensive motor control testing suite - enable/disable, current control, chopper, stealthChop, CoolStep, DCStep, LUT, motor setup (single motor)"
+    source_file: "motor_control_comprehensive_test.cpp"
+    category: "testing"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]
     ci_enabled: true
     featured: true
 
-  sensorless_homing:
-    description: "Sensorless homing using StallGuard2 example"
-    source_file: "sensorless_homing.cpp"
+  encoder_comprehensive_test:
+    description: "Comprehensive encoder testing suite - encoder configuration, resolution, position reading, deviation detection (single motor)"
+    source_file: "encoder_comprehensive_test.cpp"
+    category: "testing"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
+  diagnostics_comprehensive_test:
+    description: "Comprehensive diagnostics testing suite - driver status, StallGuard2, lost steps, phase currents, PWM scale, microstep diagnostics, GPIO, factory/OTP config, sensorless homing (single motor)"
+    source_file: "diagnostics_comprehensive_test.cpp"
+    category: "testing"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
+  protection_comprehensive_test:
+    description: "Comprehensive protection testing suite - short circuit and overtemperature protection (single motor)"
+    source_file: "protection_comprehensive_test.cpp"
+    category: "testing"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
+  # Comprehensive Test Suites (Multi-Motor - Requires Special Hardware)
+  spi_daisy_chain_comprehensive_test:
+    description: "Comprehensive SPI daisy chain testing suite - SPI daisy chain setup, position management, multi-motor coordination (MULTI-MOTOR HARDWARE REQUIRED)"
+    source_file: "spi_daisy_chain_comprehensive_test.cpp"
+    category: "testing"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: false
+    featured: false
+
+  uart_multi_node_comprehensive_test:
+    description: "Comprehensive UART multi-node testing suite - UART node addressing, slave address configuration, send delay, multi-node coordination (MULTI-MOTOR HARDWARE REQUIRED)"
+    source_file: "uart_multi_node_comprehensive_test.cpp"
+    category: "testing"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: false
+    featured: false
+
+  # Specialized Examples (Not covered by comprehensive tests)
+  sinusoidal:
+    description: "Sinusoidal motion pattern example"
+    source_file: "sinusoidal.cpp"
     category: "motor_control"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]
@@ -115,18 +109,18 @@ apps:
     ci_enabled: true
     featured: true
 
-  daisy_chain_example:
-    description: "Daisy-chain example - multiple TMC5160 drivers on a single SPI bus"
-    source_file: "daisy_chain_example.cpp"
+  gpio_pin_config_example:
+    description: "GPIO pin configuration example - demonstrates all TMC5160 control pins (DIAG0, DIAG1, CLK, reference switches, encoder)"
+    source_file: "gpio_pin_config_example.cpp"
     category: "motor_control"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]
     ci_enabled: true
-    featured: true
+    featured: false
 
-  uart_daisy_chain_example:
-    description: "UART daisy-chain example - multiple TMC5160 drivers on a single UART bus with NAI/NAO addressing"
-    source_file: "uart_daisy_chain_example.cpp"
+  pin_config_struct_example:
+    description: "Pin configuration struct example - demonstrates TMC5160PinConfig struct with automatic compound pin handling"
+    source_file: "pin_config_struct_example.cpp"
     category: "motor_control"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]
@@ -158,4 +152,3 @@ ci_config:
   exclude_combinations: []
   # Apps that require special handling
   special_apps: []
-

@@ -55,10 +55,11 @@ public:
 
 int main() {
     // 2. Create communication interface
-    MySPI spi(true, true, true); // EN, DIR, STEP active high
+    MySPI spi;
+    spi.Initialize(); // Initialize your SPI hardware
     
     // 3. Create driver instance
-    tmc5160::TMC5160 driver(spi);
+    tmc5160::TMC5160<MySPI> driver(spi);
     
     // 4. Initialize driver
     tmc5160::DriverConfig cfg{};
@@ -155,31 +156,35 @@ For multiple TMC5160 drivers on a single SPI bus:
 
 ```cpp
 // Create one SPI interface (shared by all chips)
-MySPI spi(true, true, true);
+MySPI spi;
 spi.Initialize();
 
-// Option 1: Auto-detect chain length
+// Option 1: Use TMC5160DaisyChain helper class (recommended)
+tmc5160::TMC5160DaisyChain<MySPI, 5> chain(spi, 3, 12'000'000);
+// Auto-detects chain length and configures properly
+chain.InitializeAll(cfg);
+
+// Access individual drivers
+auto& driver1 = chain[0]; // Position 0 (first chip)
+auto& driver2 = chain[1]; // Position 1 (second chip)
+auto& driver3 = chain[2]; // Position 2 (third chip)
+
+// Option 2: Manual setup
+// Auto-detect chain length
 uint8_t chain_length = spi.AutoDetectChainLength(8); // Probe up to 8 devices
 if (chain_length > 0) {
-    // Chain length automatically set
+    spi.SetDaisyChainLength(chain_length);
 }
 
-// Option 2: Manually set chain length (if known)
-spi.SetDaisyChainLength(3); // 3 devices in chain
-
 // Create multiple drivers with different daisy-chain positions
-tmc5160::TMC5160 driver1(spi, 12'000'000, 0); // Position 0 (first chip)
-tmc5160::TMC5160 driver2(spi, 12'000'000, 1); // Position 1 (second chip)
-tmc5160::TMC5160 driver3(spi, 12'000'000, 2); // Position 2 (third chip)
+tmc5160::TMC5160<MySPI> driver1(spi, 12'000'000, 0); // Position 0 (first chip)
+tmc5160::TMC5160<MySPI> driver2(spi, 12'000'000, 1); // Position 1 (second chip)
+tmc5160::TMC5160<MySPI> driver3(spi, 12'000'000, 2); // Position 2 (third chip)
 
 // Each driver automatically uses its own position
 driver1.Initialize(cfg); // Accesses chip 0
 driver2.Initialize(cfg); // Accesses chip 1
 driver3.Initialize(cfg); // Accesses chip 2
-
-// Or use TMC5160DaisyChain for easier management
-tmc5160::TMC5160DaisyChain<MySPI, 5> chain(spi, 3, 12'000'000);
-chain.InitializeAll(cfg);
 ```
 
 See [Multi-Chip Communication](special_features_multi_chip.md) for detailed information.

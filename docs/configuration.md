@@ -68,6 +68,16 @@ cfg.short_protection.shortdelay = 0;   // Detection delay (0-1)
 // Motor direction
 cfg.direction = tmc5160::MotorDirection::NORMAL;
 
+// Global configuration (GCONF register)
+cfg.global_config.en_pwm_mode = true;  // Enable stealthChop
+cfg.global_config.multistep_filt = true; // Enable step filtering
+cfg.global_config.shaft = false;  // Normal direction
+
+// Ramp parameters
+cfg.ramp_params.tpowerdown = 10;  // Power down delay
+cfg.ramp_params.tzerowait = 0;    // Zero wait time
+cfg.ramp_params.a1 = 0.0f;         // Use AMAX for first acceleration
+
 // Clock frequency
 cfg.f_clk = 12000000;  // 12 MHz (default)
 

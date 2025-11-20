@@ -125,6 +125,10 @@ Esp32SPI spi(SPI2_HOST,
 // Initialize SPI interface
 spi.Initialize();
 
+// OPTIONAL: Set chain length manually (if known)
+// If not set, chain length will be auto-detected on first access
+spi.SetDaisyChainLength(3); // 3 devices in chain
+
 // Create multiple TMC5160 instances, each with its own daisy-chain position
 // Position 0 = first chip, Position 1 = second chip, etc.
 tmc5160::TMC5160 driver1(spi, 12'000'000, 0); // First chip (position 0)
@@ -136,7 +140,9 @@ tmc5160::DriverConfig cfg{};
 cfg.motor.irun = 20;
 cfg.motor.ihold = 10;
 
-driver1.Initialize(cfg);
+// Chain length is auto-detected on first access if not manually set
+// If manually set, it is verified against auto-detected length
+driver1.Initialize(cfg); // First access - triggers auto-detection if needed
 driver2.Initialize(cfg);
 driver3.Initialize(cfg);
 
@@ -171,35 +177,50 @@ uint8_t pos = driver.GetDaisyChainPosition(); // Returns 2
 1. Each `TMC5160` instance stores its own `daisy_chain_position_` (set in constructor or via `SetDaisyChainPosition()`)
    - **Important**: Position is tracked by the `TMC5160` class, NOT by the communication interface
 2. When `ReadRegister()` or `WriteRegister()` is called, the driver automatically passes its `daisy_chain_position_` as a parameter to the communication interface methods
-3. The `SpiCommInterface` uses the position parameter along with the total chain length (set via `SetDaisyChainLength()`) to calculate the correct transfer size and padding:
-   - Position 0: 5 bytes (command only)
-   - Position 1: 10 bytes (command + 5 bytes padding)
-   - Position 2: 15 bytes (command + 10 bytes padding)
+3. The `SpiCommInterface` uses the position parameter along with the total chain length to calculate the correct transfer size:
+   - **Sending**: To address device k, send (k+1)*5 bytes (command + k*5 bytes padding)
+   - **Receiving**: To receive response from device k in chain of n devices, use (n-k+1)*5 bytes total
+   - **Transfer Size**: Use (n-k+1)*5 bytes (datasheet formula, always >= (k+1)*5 for valid k < n)
+   - **Response Offset**: Extract response from offset (n-k-1)*5 bytes (reverse order: last device first)
 4. The command is placed at bytes 0-4, padding (zeros) from byte 5 onwards
-5. The response from chip N is extracted from bytes `(N * 5)` to `(N * 5 + 4)`
+5. **CRITICAL**: Chain length MUST be known - it is auto-detected on first access if not manually set. If detection fails, operation returns false.
 
 **Transfer Size Calculation:**
 
-For a chip at position N:
-- **Command**: 5 bytes (40 bits) at offset 0
-- **Padding**: N * 5 bytes (N * 40 bits) starting at offset 5
-- **Total**: (N + 1) * 5 bytes
-- **Response**: Extracted from bytes (N * 5) to (N * 5 + 4)
+For a chip at position k in a chain of n devices:
+- **Sending (Command Transmission)**: (k+1)*5 bytes to address device k
+  - Command: 5 bytes (40 bits) at offset 0
+  - Padding: k * 5 bytes (k * 40 bits) starting at offset 5
+  - Total: (k+1)*5 bytes
+  
+- **Receiving (Response Extraction)**: (n-k+1)*5 bytes total (datasheet formula)
+  - Response appears at offset (n-k-1)*5 bytes (reverse order: last device first)
+  - Response: Extracted from bytes (n-k-1)*5 to (n-k-1)*5+4
+  
+- **Transfer Size**: Use max((k+1)*5, (n-k+1)*5) bytes
+  - Sending requirement: (k+1)*5 bytes to shift command to device k
+  - Receiving requirement: (n-k+1)*5 bytes to shift response back (datasheet formula)
+  - Use max() to ensure both requirements are met:
+    * For k < n/2: (n-k+1)*5 >= (k+1)*5, so (n-k+1)*5 dominates
+    * For k >= n/2: (k+1)*5 > (n-k+1)*5, so (k+1)*5 dominates
+  - Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex behavior
 
 **Important Note on Response Ordering:**
 - Responses come back in **REVERSE order** (last device first, first device last)
 - Per datasheet: To read from device k in a chain of n devices, send 40·(n-k+1) dummy bits total
-- Our implementation uses (k+1)*5 bytes when we only know k (device position), not n (total chain length)
-- The response from device k is correctly extracted from the last 5 bytes of the transfer (offset k*5 bytes)
+- **CRITICAL**: Chain length n MUST be known. It is automatically detected on first access if not manually set.
+- The response from device k is extracted from offset (n-k-1)*5 bytes using the datasheet formula
 
-**Example Transfer Sizes:**
+**Example Transfer Sizes (for chain of n=4 devices):**
 
-| Position | Total Bytes | Command | Padding | Response Offset |
-|----------|-------------|---------|---------|-----------------|
-| 0        | 5           | 5       | 0       | 0               |
-| 1        | 10          | 5       | 5       | 5               |
-| 2        | 15          | 5       | 10      | 10              |
-| 3        | 20          | 5       | 15      | 15              |
+| Position k | Sending (k+1)*5 | Receiving (n-k+1)*5 | Transfer Size max((k+1)*5, (n-k+1)*5) | Response Offset (n-k-1)*5 |
+|------------|----------------|---------------------|--------------------------------------|---------------------------|
+| 0          | 5 bytes        | 20 bytes            | 20 bytes (receiving dominates)        | 15 bytes                  |
+| 1          | 10 bytes       | 15 bytes            | 15 bytes (receiving dominates)       | 10 bytes                  |
+| 2          | 15 bytes       | 10 bytes            | 15 bytes (sending dominates)         | 5 bytes                   |
+| 3          | 20 bytes       | 5 bytes             | 20 bytes (sending dominates)          | 0 bytes                   |
+
+**Note**: Transfer size uses max((k+1)*5, (n-k+1)*5) to ensure both sending and receiving requirements are met. For k < n/2, receiving requirement dominates. For k >= n/2, sending requirement dominates. Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex response extraction.
 
 ### Using TMC5160DaisyChain for Multiple Devices
 
@@ -265,6 +286,19 @@ uint8_t detected = spi.AutoDetectChainLength(16); // Probe up to 16 devices
 - Uses a safe read operation that doesn't modify device state
 - Requires exact 5-byte pattern match to confirm loopback
 - Returns 0 if detection fails (assumes single chip)
+
+**Automatic Detection on First Access:**
+- If chain length is not set and `daisy_chain_position > 0`, chain length is automatically
+  detected on the first `ReadRegister()` or `WriteRegister()` call
+- This ensures correct response extraction using the datasheet formula `40·(n-k+1)`
+- Detection happens transparently - no user action required
+
+**Verification of User-Specified Length:**
+- If user calls `SetDaisyChainLength(n)`, the specified length is verified against
+  auto-detected length on first access
+- If mismatch is detected, an error is logged: "DAISY CHAIN LENGTH MISMATCH!"
+- The detected length is used (not the user-specified value) to ensure correctness
+- This prevents incorrect response extraction due to configuration errors
 
 ## UART Multi-Node Addressing
 
@@ -469,7 +503,7 @@ The easiest way to manage multiple UART nodes is using the `TMC5160MultiNode` cl
 
 // Create shared UART communication interface
 MyUART uart_comm(/* ... constructor args ... */);
-
+  
 // Create multi-node manager with 3 onboard devices, capacity for 5 total
 // Onboard devices are created with initial address 0 (will be programmed)
 tmc5160::TMC5160MultiNode<MyUART, 5> nodes(uart_comm, 3, 12'000'000);
@@ -566,13 +600,40 @@ void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
 
 | Method | Description |
 |--------|-------------|
-| `ReadRegister(address, value, daisy_chain_position = 0)` | Read register with optional daisy-chain position parameter |
-| `WriteRegister(address, value, daisy_chain_position = 0)` | Write register with optional daisy-chain position parameter |
-| `SetDaisyChainLength(total_length)` | Set total number of devices in chain (for proper response extraction) |
+| `ReadRegister(address, value, daisy_chain_position = 0)` | Read register with optional daisy-chain position parameter. **Auto-detects chain length on first access** if `daisy_chain_position > 0` and chain length is unknown. **Returns false if detection fails** (chain length is required). |
+| `WriteRegister(address, value, daisy_chain_position = 0)` | Write register with optional daisy-chain position parameter. **Auto-detects chain length on first access** if `daisy_chain_position > 0` and chain length is unknown. **Returns false if detection fails** (chain length is required). |
+| `SetDaisyChainLength(total_length)` | Set total number of devices in chain. If set, length is **verified against auto-detected value** on first access. Mismatch logs error and uses detected length. |
 | `GetDaisyChainLength()` | Get current chain length setting |
-| `AutoDetectChainLength(max_devices = 8)` | Auto-detect chain length by sending command that loops back |
+| `AutoDetectChainLength(max_devices = 8)` | Auto-detect chain length by sending command that loops back. Can be called manually, but is also called automatically on first access if needed. |
 
 **Note**: The `daisy_chain_position` parameter in `ReadRegister()` and `WriteRegister()` is provided by the `TMC5160` class automatically. The `SpiCommInterface` does NOT track individual device positions - only the total chain length.
+
+**CRITICAL: Chain Length MUST Always Be Known**
+
+**Sending vs Receiving Calculations:**
+- **Sending (Command Transmission)**: To address device k, send (k+1)*40 bits = (k+1)*5 bytes minimum
+  - This shifts the command through k devices to reach device k
+  - This calculation only requires knowing k (device position)
+  
+- **Receiving (Response Extraction)**: To receive response from device k in chain of n devices:
+  - Total transfer size: 40·(n-k+1) bits = (n-k+1)*5 bytes (datasheet formula)
+  - Response appears at offset (n-k-1)*5 bytes (reverse order: last device first)
+  - This calculation **REQUIRES knowing n** (total chain length)
+  
+- **Transfer Size**: For simultaneous send/receive, use max((k+1)*5, (n-k+1)*5) bytes
+  - Sending requirement: (k+1)*5 bytes to shift command to device k
+  - Receiving requirement: (n-k+1)*5 bytes to shift response back (datasheet formula)
+  - Use max() to ensure both requirements are met:
+    * For k < n/2: (n-k+1)*5 >= (k+1)*5, so (n-k+1)*5 dominates
+    * For k >= n/2: (k+1)*5 > (n-k+1)*5, so (k+1)*5 dominates
+  - Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex behavior
+
+**Chain Length Requirements:**
+- Chain length **MUST be known** for correct response extraction
+- If `daisy_chain_position > 0` and chain length is unknown, it is automatically detected
+- If detection fails, operation returns false (chain length is required)
+- For single chip (`daisy_chain_position == 0`), chain length defaults to 1
+- The implementation **always uses the datasheet formula** - no simplified fallback
 
 ### UART Methods
 
@@ -611,8 +672,14 @@ void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
    - Ensure CSN timing requirements are met (minimum 2*tclk + 10ns)
    - CSN control is handled in your `SpiTransfer()` implementation
    - Use `TMC5160DaisyChain` class for managing multiple devices efficiently
-   - Set chain length using `SetDaisyChainLength()` for proper response extraction
-   - Optionally use `AutoDetectChainLength()` to automatically detect chain length
+   - **CRITICAL**: Chain length **MUST be known** - it is automatically detected on first access if not manually set
+   - If detection fails, operations return false (chain length is required)
+   - Optionally call `SetDaisyChainLength()` to manually specify length (will be verified)
+   - If manually set length doesn't match detected length, error is logged and detected length is used
+   - **Sending**: (k+1)*5 bytes to address device k
+   - **Receiving**: (n-k+1)*5 bytes total, response at offset (n-k-1)*5 bytes
+   - **Transfer Size**: Always use max((k+1)*5, (n-k+1)*5) bytes
+   - Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex behavior
 
 2. **UART Multi-Node**:
    - **Mode Configuration**: Ensure SD_MODE=0 and SPI_MODE=0 for UART operation

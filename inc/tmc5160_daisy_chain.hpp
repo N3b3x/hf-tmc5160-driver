@@ -123,10 +123,10 @@ public:
    * @note Onboard devices are created immediately and cannot be removed.
    *       Extra devices can be added/removed at runtime up to MaxDevices total.
    */
-  explicit TMC5160DaisyChain(CommType &comm, uint8_t num_onboard_devices,
+  explicit TMC5160DaisyChain(CommType& comm, uint8_t num_onboard_devices,
                              uint32_t f_clk = ClockFreq::DEFAULT_F_CLK) noexcept
-      : comm_(comm), num_onboard_devices_(num_onboard_devices), 
-        num_active_devices_(num_onboard_devices), f_clk_(f_clk) {
+      : comm_(comm), num_onboard_devices_(num_onboard_devices), num_active_devices_(num_onboard_devices),
+        f_clk_(f_clk) {
     // Validate num_onboard_devices
     if (num_onboard_devices == 0 || num_onboard_devices > MaxDevices) {
       num_onboard_devices_ = 1;
@@ -289,7 +289,7 @@ public:
    *       No bounds checking is performed for performance reasons.
    *       Use IsDeviceActive() to verify device exists before access.
    */
-  [[nodiscard]] TMC5160<CommType> &operator[](uint8_t index) noexcept {
+  [[nodiscard]] TMC5160<CommType>& operator[](uint8_t index) noexcept {
     return drivers_[index].value();
   }
 
@@ -298,7 +298,7 @@ public:
    * @param index Device index (0 = first device, 1 = second, etc.)
    * @return Const reference to TMC5160 driver instance
    */
-  [[nodiscard]] const TMC5160<CommType> &operator[](uint8_t index) const noexcept {
+  [[nodiscard]] const TMC5160<CommType>& operator[](uint8_t index) const noexcept {
     return drivers_[index].value();
   }
 
@@ -307,7 +307,7 @@ public:
    * @param config Driver configuration (applied to all active devices)
    * @return true if all devices initialized successfully, false otherwise
    */
-  bool InitializeAll(const DriverConfig &config = DriverConfig()) noexcept {
+  bool InitializeAll(const DriverConfig& config = DriverConfig()) noexcept {
     bool all_success = true;
     for (size_t i = 0; i < MaxDevices; ++i) {
       if (drivers_[i].has_value()) {
@@ -322,7 +322,7 @@ public:
 private:
   /**
    * @brief Update the chain length on SpiCommInterface
-   * 
+   *
    * This is called whenever devices are added or removed to ensure the
    * SpiCommInterface knows the correct total chain length for proper
    * response extraction using the datasheet formula 40·(n-k+1).
@@ -335,17 +335,18 @@ private:
         max_position = static_cast<uint8_t>(i);
       }
     }
-    
+
     // Total chain length is max_position + 1 (0-indexed to 1-indexed)
     uint8_t total_length = max_position + 1;
     comm_.SetDaisyChainLength(total_length);
   }
 
-  CommType &comm_;                                                      ///< Shared SPI communication interface
-  uint8_t num_onboard_devices_;                                        ///< Number of onboard devices (fixed)
-  uint8_t num_active_devices_;                                         ///< Total number of active devices (onboard + extra)
-  uint32_t f_clk_;                                                     ///< TMC5160 clock frequency
-  std::array<std::optional<TMC5160<CommType>>, MaxDevices> drivers_;  ///< TMC5160 driver instances (optional for dynamic devices)
+  CommType& comm_;              ///< Shared SPI communication interface
+  uint8_t num_onboard_devices_; ///< Number of onboard devices (fixed)
+  uint8_t num_active_devices_;  ///< Total number of active devices (onboard + extra)
+  uint32_t f_clk_;              ///< TMC5160 clock frequency
+  std::array<std::optional<TMC5160<CommType>>, MaxDevices>
+      drivers_; ///< TMC5160 driver instances (optional for dynamic devices)
 };
 
 } // namespace tmc5160

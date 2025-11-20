@@ -49,17 +49,17 @@ namespace tmc5160 {
  * ## Important: Sequential Addressing (Per Datasheet)
  *
  * In UART multi-node mode, devices are programmed sequentially using NAI/NAO pins:
- * 
+ *
  * **Initial State at Power-Up:**
  * - First chip: NAI tied to GND (hardware) → responds to address 0
  * - All other chips: NAI=HIGH (from previous chip's NAO) → respond to address 1
- * 
+ *
  * **Programming Sequence (Per Datasheet Figure 5.1):**
  * - Program first chip (accessible at address 0) to address 254, NAO goes LOW
  * - Next chip becomes accessible at address 0 (because previous chip's NAO is LOW)
  * - Program second chip (accessible at address 0) to address 253, NAO goes LOW
  * - Continue: program chip i to address (254 - i)
- * 
+ *
  * **Logical vs Physical Addressing:**
  * - Devices are accessed via operator[] using logical indices (0, 1, 2, ...)
  * - Physical addresses programmed into chips are (254, 253, 252, ...)
@@ -148,10 +148,10 @@ public:
    * @note After construction, call ProgramSequentially() to program all devices
    *       to addresses (254, 253, 252, ...) per datasheet procedure.
    */
-  explicit TMC5160MultiNode(CommType &comm, uint8_t num_onboard_devices,
-                             uint32_t f_clk = ClockFreq::DEFAULT_F_CLK) noexcept
-      : comm_(comm), num_onboard_devices_(num_onboard_devices), 
-        num_active_devices_(num_onboard_devices), f_clk_(f_clk) {
+  explicit TMC5160MultiNode(CommType& comm, uint8_t num_onboard_devices,
+                            uint32_t f_clk = ClockFreq::DEFAULT_F_CLK) noexcept
+      : comm_(comm), num_onboard_devices_(num_onboard_devices), num_active_devices_(num_onboard_devices),
+        f_clk_(f_clk) {
     // Validate num_onboard_devices
     if (num_onboard_devices == 0 || num_onboard_devices > MaxDevices) {
       num_onboard_devices_ = 1;
@@ -213,18 +213,18 @@ public:
    * @return true if all devices programmed successfully, false otherwise
    *
    * This method programs all active devices sequentially using the datasheet procedure:
-   * 
+   *
    * Initial state at power-up:
    * - First chip: NAI=GND (hardware) → responds to address 0
    * - All other chips: NAI=HIGH (from previous chip's NAO) → respond to address 1
-   * 
+   *
    * Programming sequence (per datasheet Figure 5.1):
    * 1. Program first chip (accessible at address 0) to address (254 - 0) = 254
    *    After programming, chip's NAO goes LOW → next chip becomes accessible at address 0
    * 2. Program second chip (accessible at address 0) to address (254 - 1) = 253
    *    After programming, chip's NAO goes LOW → next chip becomes accessible at address 0
    * 3. Continue for all devices: program chip i to address (254 - i)
-   * 
+   *
    * The devices are stored with their logical indices (0, 1, 2, ...) but programmed
    * with addresses (254, 253, 252, ...) as per datasheet specification.
    *
@@ -250,7 +250,7 @@ public:
     // but assign addresses in reverse order (254, 253, 252, ...)
     // First chip: accessible at address 0 (NAI=GND)
     // After each programming, next chip becomes accessible at address 0
-    
+
     uint8_t device_index = 0;
     for (size_t i = 0; i < MaxDevices; ++i) {
       if (!drivers_[i].has_value()) {
@@ -406,7 +406,7 @@ public:
    *       Use IsDeviceActive() to verify device exists before access.
    * @note The device's actual programmed address is (254 - index) per datasheet.
    */
-  [[nodiscard]] TMC5160<CommType> &operator[](uint8_t index) noexcept {
+  [[nodiscard]] TMC5160<CommType>& operator[](uint8_t index) noexcept {
     return drivers_[index].value();
   }
 
@@ -415,7 +415,7 @@ public:
    * @param index Logical device index (0 = first device, 1 = second, etc.)
    * @return Const reference to TMC5160 driver instance
    */
-  [[nodiscard]] const TMC5160<CommType> &operator[](uint8_t index) const noexcept {
+  [[nodiscard]] const TMC5160<CommType>& operator[](uint8_t index) const noexcept {
     return drivers_[index].value();
   }
 
@@ -424,7 +424,7 @@ public:
    * @param config Driver configuration (applied to all active devices)
    * @return true if all devices initialized successfully, false otherwise
    */
-  bool InitializeAll(const DriverConfig &config = DriverConfig()) noexcept {
+  bool InitializeAll(const DriverConfig& config = DriverConfig()) noexcept {
     bool all_success = true;
     for (size_t i = 0; i < MaxDevices; ++i) {
       if (drivers_[i].has_value()) {
@@ -437,14 +437,14 @@ public:
   }
 
 private:
-  CommType &comm_;                                                      ///< Shared UART communication interface
-  uint8_t num_onboard_devices_;                                        ///< Number of onboard devices (fixed)
-  uint8_t num_active_devices_;                                         ///< Total number of active devices (onboard + extra)
-  uint32_t f_clk_;                                                     ///< TMC5160 clock frequency
-  std::array<std::optional<TMC5160<CommType>>, MaxDevices> drivers_;  ///< TMC5160 driver instances (optional for dynamic devices)
+  CommType& comm_;              ///< Shared UART communication interface
+  uint8_t num_onboard_devices_; ///< Number of onboard devices (fixed)
+  uint8_t num_active_devices_;  ///< Total number of active devices (onboard + extra)
+  uint32_t f_clk_;              ///< TMC5160 clock frequency
+  std::array<std::optional<TMC5160<CommType>>, MaxDevices>
+      drivers_; ///< TMC5160 driver instances (optional for dynamic devices)
 };
 
 } // namespace tmc5160
 
 #endif // TMC5160_MULTI_NODE_HPP
-

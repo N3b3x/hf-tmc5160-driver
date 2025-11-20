@@ -29,7 +29,7 @@ Main driver class for interfacing with the TMC5160 stepper motor controller.
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `TMC5160()` | `TMC5160(CommType& comm, uint32_t f_clk = 12000000, uint8_t daisy_chain_position = 0, uint8_t uart_node_address = 0)` | Construct driver instance. For SPI: daisy_chain_position. For UART: uart_node_address. |
+| `TMC5160()` | `TMC5160(CommType& comm, uint32_t f_clk = 12000000, uint8_t daisy_chain_position = 0, uint8_t uart_node_address = 0)` | Construct driver instance. For SPI: use `daisy_chain_position` (0 = first chip). For UART: use `uart_node_address` (0-254). |
 
 ### Core Methods
 
@@ -73,6 +73,9 @@ Ramp control and motion planning subsystem.
 | `ConfigureReferenceSwitch()` | `bool ConfigureReferenceSwitch(const ReferenceSwitchConfig& config) noexcept` | `true` on success | Configure reference switches/endstops |
 | `GetLatchedPosition()` | `int32_t GetLatchedPosition() noexcept` | Latched position (0 on error) | Get position latched on switch event |
 | `SetComparePosition()` | `bool SetComparePosition(int32_t position) noexcept` | `true` on success | Set position comparison register (X_COMPARE) |
+| `SetPowerDownDelay()` | `bool SetPowerDownDelay(uint8_t tpowerdown) noexcept` | `true` on success | Set power down delay (0-255) |
+| `SetZeroWaitTime()` | `bool SetZeroWaitTime(uint16_t tzerowait) noexcept` | `true` on success | Set zero wait time after ramping down (0-65535) |
+| `SetFirstAcceleration()` | `bool SetFirstAcceleration(float a1) noexcept` | `true` on success | Set first acceleration phase A1 (steps/s², 0.0f = use AMAX) |
 
 ## MotorControl Subsystem
 
@@ -98,6 +101,7 @@ Motor control and configuration subsystem.
 | `SetMicrostepLookupTableSegmentation()` | `bool SetMicrostepLookupTableSegmentation(uint8_t width_sel_0, uint8_t width_sel_1, uint8_t width_sel_2, uint8_t width_sel_3, uint8_t lut_seg_start1, uint8_t lut_seg_start2, uint8_t lut_seg_start3) noexcept` | `true` on success | Set microstep lookup table segmentation |
 | `SetMicrostepLookupTableStart()` | `bool SetMicrostepLookupTableStart(uint16_t start_current) noexcept` | `true` on success | Set microstep lookup table start current |
 | `SetupMotorFromSpec()` | `bool SetupMotorFromSpec(const MotorSpec& motor_spec, const MechanicalSystem* mechanical_system = nullptr) noexcept` | `true` on success | Setup motor from high-level specifications |
+| `ConfigureGlobalConfig()` | `bool ConfigureGlobalConfig(const GlobalConfig& config) noexcept` | `true` on success | Configure global configuration (GCONF register) |
 
 ## Encoder Subsystem
 
@@ -115,6 +119,7 @@ Encoder integration and closed-loop control subsystem.
 | `SetAllowedDeviation()` | `bool SetAllowedDeviation(int32_t deviation) noexcept` | `true` on success | Set allowed encoder deviation threshold |
 | `IsDeviationDetected()` | `bool IsDeviationDetected() noexcept` | `true` if deviation detected | Check if encoder deviation detected |
 | `ClearDeviationFlag()` | `bool ClearDeviationFlag() noexcept` | `true` on success | Clear encoder deviation flag |
+| `GetLatchedPosition()` | `int32_t GetLatchedPosition() noexcept` | Encoder latched position (0 on error) | Get encoder position latched on N event |
 
 ## Diagnostics Subsystem
 
@@ -133,6 +138,16 @@ Driver status monitoring and diagnostics subsystem.
 | `GetRampStatusRegister()` | `bool GetRampStatusRegister(uint32_t& status) noexcept` | `true` on success | Read RAMP_STAT register |
 | `GetLostSteps()` | `uint32_t GetLostSteps() noexcept` | Lost steps count (0 on error) | Get lost steps counter (dcStep mode only) |
 | `PerformSensorlessHoming()` | `bool PerformSensorlessHoming(bool direction, int8_t stall_threshold, float search_speed, int32_t& final_position) noexcept` | `true` on success | Perform sensorless homing using StallGuard2 |
+| `GetTimeBetweenMicrosteps()` | `uint32_t GetTimeBetweenMicrosteps() noexcept` | Time in clock cycles (0 on error) | Get actual time between microsteps (TSTEP register) |
+| `GetMicrostepCounter()` | `uint16_t GetMicrostepCounter() noexcept` | Position in table (0-1023, 0 on error) | Get actual position in microstep table (MSCNT register) |
+| `GetMicrostepCurrent()` | `bool GetMicrostepCurrent(int16_t& phase_a, int16_t& phase_b) noexcept` | `true` on success | Get actual microstep current for both phases (MSCURACT register) |
+| `GetPwmScale()` | `bool GetPwmScale(uint8_t& pwm_scale_sum, int16_t& pwm_scale_auto) noexcept` | `true` on success | Get stealthChop PWM scale results (PWM_SCALE register) |
+| `GetPwmAuto()` | `bool GetPwmAuto(uint8_t& pwm_ofs_auto, uint8_t& pwm_grad_auto) noexcept` | `true` on success | Get automatically determined PWM values (PWM_AUTO register) |
+| `ReadGpioPins()` | `bool ReadGpioPins(uint32_t& io_pins) noexcept` | `true` on success | Read GPIO input pin states (IO_INPUT_OUTPUT register) |
+| `ReadFactoryConfig()` | `bool ReadFactoryConfig(uint8_t& fclktrim) noexcept` | `true` on success | Read factory configuration/clock trim (FACTORY_CONF register) |
+| `ReadOtpConfig()` | `bool ReadOtpConfig(uint8_t& otp_fclktrim, bool& otp_s2_level, bool& otp_bbm, bool& otp_tbl) noexcept` | `true` on success | Read OTP configuration memory (OTP_READ register) |
+| `GetUartTransmissionCount()` | `uint8_t GetUartTransmissionCount() noexcept` | Transmission count (0 on error) | Get UART transmission counter (IFCNT register) |
+| `ReadOffsetCalibration()` | `bool ReadOffsetCalibration(uint8_t& phase_a, uint8_t& phase_b) noexcept` | `true` on success | Read offset calibration results (OFFSET_READ register) |
 
 ## Communication Subsystem
 
@@ -158,7 +173,7 @@ UART configuration subsystem for multi-node addressing.
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `ConfigureSlave()` | `bool ConfigureSlave(uint8_t slave_address, uint8_t send_delay) noexcept` | `true` on success | Configure SLAVECONF register with node address (0-254) and send delay. Updates the driver's `uart_node_address_`. Per datasheet, devices are typically programmed backwards from 254. |
+| `ConfigureSlave()` | `bool ConfigureSlave(uint8_t slave_address, uint8_t send_delay) noexcept` | `true` on success | Configure SLAVECONF register with node address (0-127) and send delay. Updates the driver's `uart_node_address_`. Per datasheet, devices are typically programmed backwards from 254. |
 
 ## Protection Subsystem
 
@@ -295,6 +310,10 @@ Main driver configuration structure.
 | `stealthchop` | `StealthChopConfig` | StealthChop PWM configuration |
 | `power_stage` | `PowerStageConfig` | Power stage driver strength and blanking |
 | `short_protection` | `ShortProtectionConfig` | Short circuit protection levels |
+| `global_config` | `GlobalConfig` | Global configuration (GCONF register) |
+| `ramp_params` | `RampParameters` | Ramp parameters (TPOWERDOWN, TZEROWAIT, A1) |
+| `direction` | `MotorDirection` | Motor direction (NORMAL or INVERTED) |
+| `f_clk` | `uint32_t` | Clock frequency in Hz (default: 12000000) |
 
 ### ChopperConfig
 
@@ -449,6 +468,47 @@ dcStep automatic commutation configuration.
 | Field | Type | Description |
 |-------|------|-------------|
 | `vdc_min` | `float` | Velocity threshold for enabling dcStep in steps/s (0.0f = disabled) |
+| `dc_time` | `uint8_t` | dcStep time window (0-255) |
+| `dc_sg` | `uint8_t` | dcStep StallGuard threshold (0-255) |
+
+### GlobalConfig
+
+Global configuration (GCONF register) structure.
+
+**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `recalibrate` | `bool` | Zero crossing recalibration during driver disable |
+| `faststandstill` | `bool` | Standstill detection timeout (true=2^18 clocks, false=2^20 clocks) |
+| `en_pwm_mode` | `bool` | Enable StealthChop voltage PWM mode |
+| `multistep_filt` | `bool` | Enable step input filtering for StealthChop optimization |
+| `shaft` | `bool` | Inverse motor direction |
+| `diag0_error` | `bool` | Enable DIAG0 on driver errors (SD_MODE=1 only) |
+| `diag0_otpw` | `bool` | Enable DIAG0 on overtemperature prewarning (SD_MODE=1 only) |
+| `diag0_stall_step` | `bool` | DIAG0 on stall/STEP output |
+| `diag1_stall_dir` | `bool` | DIAG1 on stall/DIR output |
+| `diag1_index` | `bool` | Enable DIAG1 on index position (SD_MODE=1 only) |
+| `diag1_onstate` | `bool` | Enable DIAG1 when chopper is on (SD_MODE=1 only) |
+| `diag1_steps_skipped` | `bool` | Enable DIAG1 on skipped steps in dcStep mode (SD_MODE=1 only) |
+| `diag0_int_pushpull` | `bool` | DIAG0 push-pull output mode |
+| `diag1_poscomp_pushpull` | `bool` | DIAG1 push-pull output mode |
+| `small_hysteresis` | `bool` | Small hysteresis for step frequency comparison |
+| `stop_enable` | `bool` | Emergency stop enable (ENCA_DCIN stops sequencer) |
+| `direct_mode` | `bool` | Direct motor coil control via XTARGET |
+| `test_mode` | `bool` | Analog test output on ENCN_DCO (not for normal use) |
+
+### RampParameters
+
+Additional ramp parameters structure.
+
+**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `tpowerdown` | `uint8_t` | Power down delay (0-255) |
+| `tzerowait` | `uint16_t` | Zero wait time after ramping down (0-65535) |
+| `a1` | `float` | First acceleration phase A1 (steps/s², 0.0f = use AMAX) |
 
 ## Unit Conversion Functions
 
@@ -592,6 +652,73 @@ Always check return values:
 if (!driver.rampControl.SetTargetPosition(1000)) {
     // Handle error
 }
+```
+
+## Helper Classes
+
+### TMC5160DaisyChain
+
+High-level manager for multiple TMC5160 drivers in a SPI daisy-chain configuration.
+
+**Location**: [`inc/tmc5160_daisy_chain.hpp`](../inc/tmc5160_daisy_chain.hpp)
+
+#### Constructor
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `TMC5160DaisyChain()` | `TMC5160DaisyChain(CommType& comm, uint8_t num_onboard_devices, uint32_t f_clk = 12000000)` | Create daisy-chain manager with specified number of onboard devices |
+
+#### Methods
+
+| Method | Signature | Returns | Description |
+|--------|-----------|---------|-------------|
+| `operator[]` | `TMC5160<CommType>& operator[](size_t index)` | Reference to driver | Access driver at specified position (0-based) |
+| `InitializeAll()` | `bool InitializeAll(const DriverConfig& config) noexcept` | `true` on success | Initialize all onboard devices with same config |
+| `AddDevice()` | `bool AddDevice(size_t position) noexcept` | `true` on success | Add extra device at specified position |
+| `RemoveDevice()` | `bool RemoveDevice(size_t position) noexcept` | `true` on success | Remove extra device at specified position |
+| `GetNumDevices()` | `size_t GetNumDevices() const noexcept` | Number of devices | Get total number of devices (onboard + extra) |
+| `GetOnboardCount()` | `size_t GetOnboardCount() const noexcept` | Number of onboard devices | Get number of onboard devices |
+
+**Usage:**
+```cpp
+tmc5160::TMC5160DaisyChain<MySPI, 5> chain(spiComm, 3, 12'000'000);
+chain.InitializeAll(cfg);
+auto& motor_x = chain[0];
+motor_x.rampControl.SetTargetPosition(1000);
+```
+
+### TMC5160MultiNode
+
+High-level manager for multiple TMC5160 drivers in a UART multi-node configuration.
+
+**Location**: [`inc/tmc5160_multi_node.hpp`](../inc/tmc5160_multi_node.hpp)
+
+#### Constructor
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `TMC5160MultiNode()` | `TMC5160MultiNode(CommType& comm, uint8_t num_onboard_devices, uint32_t f_clk = 12000000)` | Create multi-node manager with specified number of onboard devices |
+
+#### Methods
+
+| Method | Signature | Returns | Description |
+|--------|-----------|---------|-------------|
+| `operator[]` | `TMC5160<CommType>& operator[](size_t index)` | Reference to driver | Access driver at specified logical index (0-based) |
+| `ProgramSequentially()` | `bool ProgramSequentially() noexcept` | `true` on success | Program all devices sequentially using NAI/NAO pins (required at startup) |
+| `ProgramDevice()` | `bool ProgramDevice(size_t index) noexcept` | `true` on success | Program single device at specified index (must be accessible at address 0) |
+| `InitializeAll()` | `bool InitializeAll(const DriverConfig& config) noexcept` | `true` on success | Initialize all onboard devices with same config |
+| `AddDevice()` | `bool AddDevice(size_t index) noexcept` | `true` on success | Add extra device at specified logical index |
+| `RemoveDevice()` | `bool RemoveDevice(size_t index) noexcept` | `true` on success | Remove extra device at specified logical index |
+| `GetNumDevices()` | `size_t GetNumDevices() const noexcept` | Number of devices | Get total number of devices (onboard + extra) |
+| `GetOnboardCount()` | `size_t GetOnboardCount() const noexcept` | Number of onboard devices | Get number of onboard devices |
+
+**Usage:**
+```cpp
+tmc5160::TMC5160MultiNode<MyUART, 5> nodes(uartComm, 3, 12'000'000);
+nodes.ProgramSequentially(); // Required at startup
+nodes.InitializeAll(cfg);
+auto& motor_x = nodes[0];
+motor_x.rampControl.SetTargetPosition(1000);
 ```
 
 ## Next Steps

@@ -13,8 +13,8 @@
 #ifndef TMC5160_UNITS_HPP
 #define TMC5160_UNITS_HPP
 
-#include <cstdint>
 #include <cmath>
+#include <cstdint>
 
 namespace tmc5160 {
 
@@ -27,13 +27,11 @@ namespace tmc5160 {
  *
  * For lead screws: distance = (steps / steps_per_rev) * lead_screw_pitch_mm
  */
-constexpr float StepsToMm(int32_t steps, uint16_t steps_per_rev,
-                          float lead_screw_pitch_mm) noexcept {
+constexpr float StepsToMm(int32_t steps, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept {
   if (steps_per_rev == 0) {
-    return 0.0f;
+    return 0.0F;
   }
-  return (static_cast<float>(steps) / static_cast<float>(steps_per_rev)) *
-         lead_screw_pitch_mm;
+  return (static_cast<float>(steps) / static_cast<float>(steps_per_rev)) * lead_screw_pitch_mm;
 }
 
 /**
@@ -43,13 +41,11 @@ constexpr float StepsToMm(int32_t steps, uint16_t steps_per_rev,
  * @param lead_screw_pitch_mm Lead screw pitch in millimeters
  * @return Number of steps
  */
-constexpr int32_t MmToSteps(float mm, uint16_t steps_per_rev,
-                            float lead_screw_pitch_mm) noexcept {
-  if (lead_screw_pitch_mm == 0.0f || steps_per_rev == 0) {
+constexpr int32_t MmToSteps(float mm, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept {
+  if (lead_screw_pitch_mm == 0.0F || steps_per_rev == 0) {
     return 0;
   }
-  return static_cast<int32_t>(
-      std::round((mm / lead_screw_pitch_mm) * static_cast<float>(steps_per_rev)));
+  return static_cast<int32_t>(std::round((mm / lead_screw_pitch_mm) * static_cast<float>(steps_per_rev)));
 }
 
 /**
@@ -58,13 +54,11 @@ constexpr int32_t MmToSteps(float mm, uint16_t steps_per_rev,
  * @param steps_per_rev Steps per revolution of the motor
  * @return Angle in degrees
  */
-constexpr float StepsToDegrees(int32_t steps,
-                                uint16_t steps_per_rev) noexcept {
+constexpr float StepsToDegrees(int32_t steps, uint16_t steps_per_rev) noexcept {
   if (steps_per_rev == 0) {
-    return 0.0f;
+    return 0.0F;
   }
-  return (static_cast<float>(steps) / static_cast<float>(steps_per_rev)) *
-         360.0f;
+  return (static_cast<float>(steps) / static_cast<float>(steps_per_rev)) * 360.0F;
 }
 
 /**
@@ -73,13 +67,11 @@ constexpr float StepsToDegrees(int32_t steps,
  * @param steps_per_rev Steps per revolution of the motor
  * @return Number of steps
  */
-constexpr int32_t DegreesToSteps(float degrees,
-                                  uint16_t steps_per_rev) noexcept {
+constexpr int32_t DegreesToSteps(float degrees, uint16_t steps_per_rev) noexcept {
   if (steps_per_rev == 0) {
     return 0;
   }
-  return static_cast<int32_t>(
-      std::round((degrees / 360.0f) * static_cast<float>(steps_per_rev)));
+  return static_cast<int32_t>(std::round((degrees / 360.0F) * static_cast<float>(steps_per_rev)));
 }
 
 /**
@@ -89,7 +81,7 @@ constexpr int32_t DegreesToSteps(float degrees,
  * @return Speed in steps per second
  */
 constexpr float RpmToStepsPerSec(float rpm, uint16_t steps_per_rev) noexcept {
-  return (rpm / 60.0f) * static_cast<float>(steps_per_rev);
+  return (rpm / 60.0F) * static_cast<float>(steps_per_rev);
 }
 
 /**
@@ -98,12 +90,11 @@ constexpr float RpmToStepsPerSec(float rpm, uint16_t steps_per_rev) noexcept {
  * @param steps_per_rev Steps per revolution of the motor
  * @return Speed in RPM
  */
-constexpr float StepsPerSecToRpm(float steps_per_sec,
-                                  uint16_t steps_per_rev) noexcept {
+constexpr float StepsPerSecToRpm(float steps_per_sec, uint16_t steps_per_rev) noexcept {
   if (steps_per_rev == 0) {
-    return 0.0f;
+    return 0.0F;
   }
-  return (steps_per_sec / static_cast<float>(steps_per_rev)) * 60.0f;
+  return (steps_per_sec / static_cast<float>(steps_per_rev)) * 60.0F;
 }
 
 /**
@@ -113,13 +104,11 @@ constexpr float StepsPerSecToRpm(float steps_per_sec,
  * @param lead_screw_pitch_mm Lead screw pitch in millimeters
  * @return Speed in steps per second
  */
-constexpr float MmPerSecToStepsPerSec(float mm_per_sec, uint16_t steps_per_rev,
-                                       float lead_screw_pitch_mm) noexcept {
-  if (lead_screw_pitch_mm == 0.0f || steps_per_rev == 0) {
-    return 0.0f;
+constexpr float MmPerSecToStepsPerSec(float mm_per_sec, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept {
+  if (lead_screw_pitch_mm == 0.0F || steps_per_rev == 0) {
+    return 0.0F;
   }
-  return (mm_per_sec / lead_screw_pitch_mm) *
-         static_cast<float>(steps_per_rev);
+  return (mm_per_sec / lead_screw_pitch_mm) * static_cast<float>(steps_per_rev);
 }
 
 /**
@@ -129,15 +118,11 @@ constexpr float MmPerSecToStepsPerSec(float mm_per_sec, uint16_t steps_per_rev,
  * @param lead_screw_pitch_mm Lead screw pitch in millimeters
  * @return Speed in millimeters per second
  */
-constexpr float StepsPerSecToMmPerSec(float steps_per_sec,
-                                       uint16_t steps_per_rev,
-                                       float lead_screw_pitch_mm) noexcept {
+constexpr float StepsPerSecToMmPerSec(float steps_per_sec, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept {
   if (steps_per_rev == 0) {
-    return 0.0f;
+    return 0.0F;
   }
-  return (static_cast<float>(steps_per_sec) /
-          static_cast<float>(steps_per_rev)) *
-         lead_screw_pitch_mm;
+  return (steps_per_sec / static_cast<float>(steps_per_rev)) * lead_screw_pitch_mm;
 }
 
 /**
@@ -147,14 +132,12 @@ constexpr float StepsPerSecToMmPerSec(float steps_per_sec,
  * @param lead_screw_pitch_mm Lead screw pitch in millimeters
  * @return Acceleration in steps per second squared
  */
-constexpr float AccelerationMmToSteps(float accel_mm_per_sec2,
-                                      uint16_t steps_per_rev,
+constexpr float AccelerationMmToSteps(float accel_mm_per_sec2, uint16_t steps_per_rev,
                                       float lead_screw_pitch_mm) noexcept {
-  if (lead_screw_pitch_mm == 0.0f || steps_per_rev == 0) {
-    return 0.0f;
+  if (lead_screw_pitch_mm == 0.0F || steps_per_rev == 0) {
+    return 0.0F;
   }
-  return (accel_mm_per_sec2 / lead_screw_pitch_mm) *
-         static_cast<float>(steps_per_rev);
+  return (accel_mm_per_sec2 / lead_screw_pitch_mm) * static_cast<float>(steps_per_rev);
 }
 
 /**
@@ -164,14 +147,12 @@ constexpr float AccelerationMmToSteps(float accel_mm_per_sec2,
  * @param lead_screw_pitch_mm Lead screw pitch in millimeters
  * @return Acceleration in millimeters per second squared
  */
-constexpr float AccelerationStepsToMm(float accel_steps_per_sec2,
-                                       uint16_t steps_per_rev,
-                                       float lead_screw_pitch_mm) noexcept {
+constexpr float AccelerationStepsToMm(float accel_steps_per_sec2, uint16_t steps_per_rev,
+                                      float lead_screw_pitch_mm) noexcept {
   if (steps_per_rev == 0) {
-    return 0.0f;
+    return 0.0F;
   }
-  return (accel_steps_per_sec2 / static_cast<float>(steps_per_rev)) *
-         lead_screw_pitch_mm;
+  return (accel_steps_per_sec2 / static_cast<float>(steps_per_rev)) * lead_screw_pitch_mm;
 }
 
 /**
@@ -181,14 +162,12 @@ constexpr float AccelerationStepsToMm(float accel_steps_per_sec2,
  * @param belt_pulley_teeth Number of teeth on the motor pulley
  * @return Number of steps
  */
-constexpr int32_t BeltTeethToSteps(uint32_t teeth, uint16_t steps_per_rev,
-                                    uint16_t belt_pulley_teeth) noexcept {
+constexpr int32_t BeltTeethToSteps(uint32_t teeth, uint16_t steps_per_rev, uint16_t belt_pulley_teeth) noexcept {
   if (belt_pulley_teeth == 0 || steps_per_rev == 0) {
     return 0;
   }
-  return static_cast<int32_t>(
-      std::round((static_cast<float>(teeth) / static_cast<float>(belt_pulley_teeth)) *
-                 static_cast<float>(steps_per_rev)));
+  return static_cast<int32_t>(std::round((static_cast<float>(teeth) / static_cast<float>(belt_pulley_teeth)) *
+                                         static_cast<float>(steps_per_rev)));
 }
 
 /**
@@ -198,16 +177,13 @@ constexpr int32_t BeltTeethToSteps(uint32_t teeth, uint16_t steps_per_rev,
  * @param belt_pulley_teeth Number of teeth on the motor pulley
  * @return Number of belt teeth
  */
-constexpr float StepsToBeltTeeth(int32_t steps, uint16_t steps_per_rev,
-                                   uint16_t belt_pulley_teeth) noexcept {
+constexpr float StepsToBeltTeeth(int32_t steps, uint16_t steps_per_rev, uint16_t belt_pulley_teeth) noexcept {
   if (steps_per_rev == 0) {
-    return 0.0f;
+    return 0.0F;
   }
-  return (static_cast<float>(steps) / static_cast<float>(steps_per_rev)) *
-         static_cast<float>(belt_pulley_teeth);
+  return (static_cast<float>(steps) / static_cast<float>(steps_per_rev)) * static_cast<float>(belt_pulley_teeth);
 }
 
 } // namespace tmc5160
 
 #endif // TMC5160_UNITS_HPP
-
