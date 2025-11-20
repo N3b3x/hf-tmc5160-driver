@@ -18,5 +18,5 @@ var searchData=
   ['mslut_5f7_15',['MSLUT_7',['../namespacetmc5160_1_1Registers.html#ae16a7ab7ea1e7713bfb33c143cf0ef45',1,'tmc5160::Registers']]],
   ['mslutsel_16',['MSLUTSEL',['../namespacetmc5160_1_1Registers.html#a181b886dc9a821803cddfa190356b874',1,'tmc5160::Registers']]],
   ['mslutstart_17',['MSLUTSTART',['../namespacetmc5160_1_1Registers.html#afc27ebfa5defb6e898f09d5b56ad22ef',1,'tmc5160::Registers']]],
-  ['multistep_5ffilt_18',['multistep_filt',['../uniontmc5160_1_1GCONF__Register.html#a4c22d133ddb6f3f66ee00344a25e56f3',1,'tmc5160::GCONF_Register']]]
+  ['multistep_5ffilt_18',['multistep_filt',['../uniontmc5160_1_1GCONF__Register.html#a4c22d133ddb6f3f66ee00344a25e56f3',1,'tmc5160::GCONF_Register::multistep_filt'],['../structtmc5160_1_1GlobalConfig.html#a2890c8fe7a1b7f026cdc3903c8346291',1,'tmc5160::GlobalConfig::multistep_filt']]]
 ];

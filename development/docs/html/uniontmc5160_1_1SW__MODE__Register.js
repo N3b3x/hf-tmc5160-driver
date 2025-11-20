@@ -1,6 +1,6 @@
 var uniontmc5160_1_1SW__MODE__Register =
 [
-    [ "bits", "uniontmc5160_1_1SW__MODE__Register.html#abfd58c922e1a3b5a663edacd8f9e6abc", null ],
+    [ "bits", "uniontmc5160_1_1SW__MODE__Register.html#a33fc459a4d72de91cec30e075ba48bec", null ],
     [ "en_latch_encoder", "uniontmc5160_1_1SW__MODE__Register.html#a53081a2eacee4b87e64587584c110175", null ],
     [ "en_softstop", "uniontmc5160_1_1SW__MODE__Register.html#a615fa0d36b01bce1343fc3085921ae2b", null ],
     [ "latch_l_active", "uniontmc5160_1_1SW__MODE__Register.html#af32b9204e72268a3dbddadf03ee9d5c1", null ],

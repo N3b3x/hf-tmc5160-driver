@@ -1,0 +1,9 @@
+<map id="tmc5160::UartFrame::IsValid" name="tmc5160::UartFrame::IsValid">
+<area shape="rect" id="Node000001" title="Check if frame is valid (CRC verified and structure correct)" alt="" coords="5,27,161,67"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1UartFrame.html#a45e2ddbd74129ee2f4b3f158339552d1" title="Verify CRC8 checksum of the frame." alt="" coords="209,27,365,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,45,196,45,196,50,161,50"/>
+<area shape="rect" id="Node000003" href="$namespacetmc5160.html#ab650ebb70be7f1da00a2dea1f2fe662e" title="Calculate CRC8 checksum for UART communication." alt="" coords="413,5,588,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="366,34,400,29,400,34,366,39"/>
+<area shape="rect" id="Node000004" href="$structtmc5160_1_1UartFrame.html#ae12cc57962d5da4004c0dfb234b7f416" title="Get frame size in bytes based on type." alt="" coords="423,55,579,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="366,55,409,61,409,66,366,60"/>
+</map>

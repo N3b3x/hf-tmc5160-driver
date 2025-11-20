@@ -1,13 +1,8 @@
 var searchData=
 [
-  ['rampcontrol_0',['RampControl',['../structtmc5160_1_1TMC5160_1_1RampControl.html#ab0ce8379972c7d62dcd07827db4d65a5',1,'tmc5160::TMC5160::RampControl']]],
-  ['readregister_1',['ReadRegister',['../classtmc5160_1_1CommInterface.html#a5b62ccbcce492137f18f58e0b8e5f29c',1,'tmc5160::CommInterface::ReadRegister()'],['../classtmc5160_1_1SpiCommInterface.html#a7f6dfc07d2092acafd31d75a1a580f73',1,'tmc5160::SpiCommInterface::ReadRegister()'],['../classtmc5160_1_1UartCommInterface.html#a4f560e5cddb1db05010fbd4cc7a29f4b',1,'tmc5160::UartCommInterface::ReadRegister()']]],
-  ['referenceswitchconfig_2',['ReferenceSwitchConfig',['../structtmc5160_1_1ReferenceSwitchConfig.html#a7fbc3cbd596594ad40ed2fe3e5f48adb',1,'tmc5160::ReferenceSwitchConfig']]],
-  ['reset_3',['Reset',['../classtmc5160_1_1TMC5160.html#a67006dc0336428ec9a623c84188412cc',1,'tmc5160::TMC5160']]],
-  ['resetcycles_4',['ResetCycles',['../classFatigueTestMotion.html#a768269735badc19329d2dc9ace28b7dd',1,'FatigueTestMotion']]],
-  ['resethomebyangle_5',['ResetHomeByAngle',['../classFatigueTestMotion.html#aba3044f313385701a727497617799085',1,'FatigueTestMotion']]],
-  ['resethomebydegrees_6',['ResetHomeByDegrees',['../classFatigueTestMotion.html#acaa6eca1e7f6d28fe67e93c972708bff',1,'FatigueTestMotion']]],
-  ['resethomebyradians_7',['ResetHomeByRadians',['../classFatigueTestMotion.html#ae5c30c3eb8c20f88d2b14ac22535a7af',1,'FatigueTestMotion']]],
-  ['rpmtostepspersec_8',['RpmToStepsPerSec',['../namespacetmc5160.html#a086e668f7c59055a454e010eb8d430a0',1,'tmc5160']]],
-  ['run_9',['Run',['../classSinusoidalMotion.html#ad6726f6da321f0c178bd223d17305d74',1,'SinusoidalMotion']]]
+  ['performsensorlesshoming_0',['PerformSensorlessHoming',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#a426ca13ede401ba4c524b27754335929',1,'tmc5160::TMC5160::Diagnostics']]],
+  ['positionreached_1',['PositionReached',['../structtmc5160_1_1SpiStatus.html#a35ba2998ed3b82b65d4cc9e7a9116ac8',1,'tmc5160::SpiStatus']]],
+  ['powerstageparameters_2',['PowerStageParameters',['../structtmc5160_1_1PowerStageParameters.html#a60486bf7825c1867c5bd71c3a901b702',1,'tmc5160::PowerStageParameters']]],
+  ['programchipandverify_3',['programChipAndVerify',['../uart__daisy__chain__example_8cpp.html#a129bc2a1b5361eea7b99de3dffde3621',1,'uart_daisy_chain_example.cpp']]],
+  ['protection_4',['Protection',['../structtmc5160_1_1TMC5160_1_1Protection.html#a85270eb978ec479670d6db946660c959',1,'tmc5160::TMC5160::Protection']]]
 ];

@@ -1,5 +1,11 @@
 var tmc5160__comm__interface_8hpp =
 [
+    [ "tmc5160::SpiStatus", "structtmc5160_1_1SpiStatus.html", "structtmc5160_1_1SpiStatus" ],
+    [ "tmc5160::SpiCommand", "structtmc5160_1_1SpiCommand.html", "structtmc5160_1_1SpiCommand" ],
+    [ "tmc5160::SpiCommand::Frame", "uniontmc5160_1_1SpiCommand_1_1Frame.html", "uniontmc5160_1_1SpiCommand_1_1Frame" ],
+    [ "tmc5160::SpiResponse", "structtmc5160_1_1SpiResponse.html", "structtmc5160_1_1SpiResponse" ],
+    [ "tmc5160::UartFrame", "structtmc5160_1_1UartFrame.html", "structtmc5160_1_1UartFrame" ],
+    [ "tmc5160::UartFrame::Frame", "uniontmc5160_1_1UartFrame_1_1Frame.html", "uniontmc5160_1_1UartFrame_1_1Frame" ],
     [ "tmc5160::CommInterface< Derived >", "classtmc5160_1_1CommInterface.html", "classtmc5160_1_1CommInterface" ],
     [ "tmc5160::SpiCommInterface< Derived >", "classtmc5160_1_1SpiCommInterface.html", "classtmc5160_1_1SpiCommInterface" ],
     [ "tmc5160::UartCommInterface< Derived >", "classtmc5160_1_1UartCommInterface.html", "classtmc5160_1_1UartCommInterface" ],
@@ -16,6 +22,11 @@ var tmc5160__comm__interface_8hpp =
       [ "EN", "tmc5160__comm__interface_8hpp.html#af27bf60aaa4c5b13ce49bfa70fa47059aaa85f1840e282d8a8304dbc2c0d7c9b2", null ],
       [ "DIR", "tmc5160__comm__interface_8hpp.html#af27bf60aaa4c5b13ce49bfa70fa47059ac1561b120842fabe1310417083827590", null ],
       [ "STEP", "tmc5160__comm__interface_8hpp.html#af27bf60aaa4c5b13ce49bfa70fa47059a522f694f92e679d874a1cc2b2616c3d7", null ]
+    ] ],
+    [ "UartFrameType", "tmc5160__comm__interface_8hpp.html#a3ddc16da531e7afc309647644e3269f3", [
+      [ "WriteAccess", "tmc5160__comm__interface_8hpp.html#a3ddc16da531e7afc309647644e3269f3a0d351c9de65e962d661a3f4eb99a3a56", null ],
+      [ "ReadRequest", "tmc5160__comm__interface_8hpp.html#a3ddc16da531e7afc309647644e3269f3ad749f894b7e5ae7433808c7250399cc1", null ],
+      [ "ReadReply", "tmc5160__comm__interface_8hpp.html#a3ddc16da531e7afc309647644e3269f3a0613aa8c12237f8c13aa3e590fac811b", null ]
     ] ],
     [ "calculateCrc8", "tmc5160__comm__interface_8hpp.html#ab650ebb70be7f1da00a2dea1f2fe662e", null ]
 ];

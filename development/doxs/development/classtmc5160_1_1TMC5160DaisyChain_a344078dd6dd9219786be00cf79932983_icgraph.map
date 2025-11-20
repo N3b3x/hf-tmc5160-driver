@@ -1,0 +1,9 @@
+<map id="tmc5160::TMC5160DaisyChain::UpdateChainLength" name="tmc5160::TMC5160DaisyChain::UpdateChainLength">
+<area shape="rect" id="Node000001" title="Update the chain length on SpiCommInterface." alt="" coords="276,69,499,109"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1TMC5160DaisyChain.html#a3e2c37660a90d088e5f2e1b7e04e6f65" title="Add an extra device at the specified position." alt="" coords="5,5,228,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="288,69,201,48,202,43,289,63"/>
+<area shape="rect" id="Node000003" href="$classtmc5160_1_1TMC5160DaisyChain.html#aa06fc5d9c168ecf21cb9fc2514e7c9e3" title="Remove an extra device at the specified position." alt="" coords="5,69,228,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="262,92,228,92,228,87,262,87"/>
+<area shape="rect" id="Node000004" href="$classtmc5160_1_1TMC5160DaisyChain.html#ae3742d708b4d41bc2a6b38035dc122b6" title="Construct a daisy&#45;chain manager." alt="" coords="5,133,228,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="289,115,202,136,201,131,288,110"/>
+</map>

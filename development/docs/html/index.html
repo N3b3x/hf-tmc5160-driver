@@ -96,7 +96,7 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a><b>C++17 hardware-agnostic driver for Trinamic TMC5160 stepper motor controller with advanced features</b></p>
 <p><a href="https://en.cppreference.com/w/cpp/17.html"><img src="https://img.shields.io/badge/C%2B%2B-17-blue.svg" alt="C++" style="pointer-events: none;" class="inline"/></a> <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/N3b3x/hf-tmc5160-driver/actions/workflows/esp32-examples-build-ci.yml"><img src="https://github.com/N3b3x/hf-tmc5160-driver/actions/workflows/esp32-examples-build-ci.yml/badge.svg?branch=main" alt="CI" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/N3b3x/hf-tmc5160-driver/tree/main/docs"><img src="https://img.shields.io/badge/docs-GitHub%20Pages-blue" alt="Docs" class="inline"/></a></p>
-<h1><a class="anchor" id="autotoc_md7"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 📚 Table of Contents</h1>
 <ol type="1">
 <li>Overview</li>
@@ -109,14 +109,14 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 <li>Contributing</li>
 <li>License</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 📦 Overview</h1>
 <blockquote class="doxtable">
 <p>&zwj;<b>📖 📚🌐 Complete Documentation</b> - Interactive guides, examples, and step-by-step tutorials </p>
 </blockquote>
 <p><b>HF-TMC5160</b> is a portable C++17 driver for the <b>Trinamic TMC5160</b> stepper motor controller IC. The TMC5160 is a sophisticated stepper motor driver supporting advanced features including stealthChop for silent operation, spreadCycle for high torque, StallGuard2 for stall detection, and encoder support for closed-loop control. The driver provides hardware-agnostic communication interfaces, allowing it to run on any platform (ESP32, STM32, etc.) with SPI or UART.</p>
 <p>The driver exposes the full register interface, providing access to all TMC5160 registers through an intuitive C++ API. It supports ramp control (positioning, velocity, hold modes), motor current configuration, chopper settings, stealthChop PWM mode, encoder integration, and comprehensive protection systems.</p>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md17"></a>
 ✨ Features</h1>
 <ul>
 <li>✅ <b>Ramp Control</b>: Positioning, velocity, and hold modes with configurable acceleration profiles</li>
@@ -130,7 +130,7 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 <li>✅ <b>Modern C++17</b>: Type-safe API with RAII principles</li>
 <li>✅ <b>Zero Overhead</b>: CRTP-based design for compile-time polymorphism</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md18"></a>
 🚀 Quick Start</h1>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="tmc5160_8hpp.html">inc/tmc5160.hpp</a>&quot;</span></div>
 <div class="line"> </div>
@@ -155,15 +155,15 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 <div class="line">driver.rampControl.SetMaxSpeed(1000.0f);</div>
 <div class="line">driver.rampControl.SetAcceleration(500.0f);</div>
 <div class="line">driver.motorControl.Enable();</div>
-<div class="ttc" id="aclasstmc5160_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:410</div></div>
-<div class="ttc" id="aclasstmc5160_1_1TMC5160_html"><div class="ttname"><a href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a></div><div class="ttdoc">Main class representing a TMC5160 stepper motor driver.</div><div class="ttdef"><b>Definition</b> tmc5160.hpp:99</div></div>
+<div class="ttc" id="aclasstmc5160_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:1112</div></div>
+<div class="ttc" id="aclasstmc5160_1_1TMC5160_html"><div class="ttname"><a href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a></div><div class="ttdoc">Main class representing a TMC5160 stepper motor driver.</div><div class="ttdef"><b>Definition</b> tmc5160.hpp:100</div></div>
 <div class="ttc" id="anamespacetmc5160_html_ac039fd52ff49abd3359ab16891f4afc2a1e66935e3ab51cc2128e078cfd49d845"><div class="ttname"><a href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a1e66935e3ab51cc2128e078cfd49d845">tmc5160::RampMode::POSITIONING</a></div><div class="ttdeci">@ POSITIONING</div><div class="ttdoc">Positioning mode using all A, D and V parameters.</div></div>
 <div class="ttc" id="astructtmc5160_1_1DriverConfig_html"><div class="ttname"><a href="structtmc5160_1_1DriverConfig.html">tmc5160::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc5160_config.hpp:44</div></div>
 <div class="ttc" id="astructtmc5160_1_1DriverConfig_html_a0e86dedca15de4295d3d92754886a606"><div class="ttname"><a href="structtmc5160_1_1DriverConfig.html#a0e86dedca15de4295d3d92754886a606">tmc5160::DriverConfig::motor</a></div><div class="ttdeci">MotorParameters motor</div><div class="ttdoc">Motor current configuration.</div><div class="ttdef"><b>Definition</b> tmc5160_config.hpp:46</div></div>
-<div class="ttc" id="astructtmc5160_1_1MotorParameters_html_a85b0794271573d33b1c811285ca14a35"><div class="ttname"><a href="structtmc5160_1_1MotorParameters.html#a85b0794271573d33b1c811285ca14a35">tmc5160::MotorParameters::irun</a></div><div class="ttdeci">uint8_t irun</div><div class="ttdef"><b>Definition</b> tmc5160_types.hpp:71</div></div>
+<div class="ttc" id="astructtmc5160_1_1MotorParameters_html_a85b0794271573d33b1c811285ca14a35"><div class="ttname"><a href="structtmc5160_1_1MotorParameters.html#a85b0794271573d33b1c811285ca14a35">tmc5160::MotorParameters::irun</a></div><div class="ttdeci">uint8_t irun</div><div class="ttdef"><b>Definition</b> tmc5160_types.hpp:73</div></div>
 <div class="ttc" id="atmc5160_8hpp_html"><div class="ttname"><a href="tmc5160_8hpp.html">tmc5160.hpp</a></div><div class="ttdoc">Main TMC5160 stepper motor driver interface and subsystem classes.</div></div>
 </div><!-- fragment --><p>For detailed setup, see Installation and Quick Start Guide.</p>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 🔧 Installation</h1>
 <ol type="1">
 <li><b>Clone or copy</b> the driver files into your project</li>
@@ -173,7 +173,7 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 <li>Compile with a <b>C++17</b> or newer compiler</li>
 </ol>
 <p>For detailed installation instructions, see docs/installation.md.</p>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 📖 API Reference</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -198,17 +198,17 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 <td class="markdownTableBodyNone"><code>diagnostics.GetStatus()</code>   </td><td class="markdownTableBodyNone">Get driver status and error conditions   </td></tr>
 </table>
 <p>For complete API documentation, see docs/api_reference.md.</p>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 📊 Examples</h1>
 <p>For ESP32 examples, see the <a href="examples/esp32/">examples/esp32</a> directory.</p>
 <p>Detailed example walkthroughs are available in docs/examples.md.</p>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md22"></a>
 📚 Documentation</h1>
 <p>For complete documentation, see the docs directory.</p>
-<h1><a class="anchor" id="autotoc_md15"></a>
+<h1><a class="anchor" id="autotoc_md23"></a>
 🤝 Contributing</h1>
 <p>Pull requests and suggestions are welcome! Please follow the existing code style and include tests for new features.</p>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md24"></a>
 📄 License</h1>
 <p>This project is licensed under the <b>GNU General Public License v3.0</b>. See the [LICENSE](LICENSE) file for details. </p>
 </div></div><!-- PageDoc -->

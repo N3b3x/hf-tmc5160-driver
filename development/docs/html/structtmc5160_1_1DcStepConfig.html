@@ -115,6 +115,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a5557fc72383d2878037a8fabfe945280" id="r_a5557fc72383d2878037a8fabfe945280"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5557fc72383d2878037a8fabfe945280">vdc_min</a></td></tr>
 <tr class="memdesc:a5557fc72383d2878037a8fabfe945280"><td class="mdescLeft">&#160;</td><td class="mdescRight">Velocity threshold for enabling dcStep in steps/s (0.0f = disabled)  <br /></td></tr>
 <tr class="separator:a5557fc72383d2878037a8fabfe945280"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59a9a429430b0f69bb34fb00415084bf" id="r_a59a9a429430b0f69bb34fb00415084bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59a9a429430b0f69bb34fb00415084bf">dc_time</a></td></tr>
+<tr class="memdesc:a59a9a429430b0f69bb34fb00415084bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Upper PWM on time limit for commutation (0-1023)  <br /></td></tr>
+<tr class="separator:a59a9a429430b0f69bb34fb00415084bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc471ad6987ea3ed6a90059363ca2e7d" id="r_afc471ad6987ea3ed6a90059363ca2e7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc471ad6987ea3ed6a90059363ca2e7d">dc_sg</a></td></tr>
+<tr class="memdesc:afc471ad6987ea3ed6a90059363ca2e7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max PWM on time for step loss detection (0-255)  <br /></td></tr>
+<tr class="separator:afc471ad6987ea3ed6a90059363ca2e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>dcStep configuration structure </p>
@@ -149,6 +155,38 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="afc471ad6987ea3ed6a90059363ca2e7d" name="afc471ad6987ea3ed6a90059363ca2e7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc471ad6987ea3ed6a90059363ca2e7d">&#9670;&#160;</a></span>dc_sg</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> tmc5160::DcStepConfig::dc_sg</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Max PWM on time for step loss detection (0-255) </p>
+
+</div>
+</div>
+<a id="a59a9a429430b0f69bb34fb00415084bf" name="a59a9a429430b0f69bb34fb00415084bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59a9a429430b0f69bb34fb00415084bf">&#9670;&#160;</a></span>dc_time</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint16_t</a> tmc5160::DcStepConfig::dc_time</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Upper PWM on time limit for commutation (0-1023) </p>
+
+</div>
+</div>
 <a id="a5557fc72383d2878037a8fabfe945280" name="a5557fc72383d2878037a8fabfe945280"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5557fc72383d2878037a8fabfe945280">&#9670;&#160;</a></span>vdc_min</h2>
 

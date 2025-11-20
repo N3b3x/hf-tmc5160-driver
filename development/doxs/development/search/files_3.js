@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['motor_5fsetup_5ffrom_5fspec_2ecpp_0',['motor_setup_from_spec.cpp',['../motor__setup__from__spec_8cpp.html',1,'']]]
+  ['encoder_2ecpp_0',['encoder.cpp',['../encoder_8cpp.html',1,'']]],
+  ['esp32_5ftmc5160_5fbus_2ehpp_1',['esp32_tmc5160_bus.hpp',['../esp32__tmc5160__bus_8hpp.html',1,'']]]
 ];

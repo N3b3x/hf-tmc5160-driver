@@ -3,7 +3,7 @@ var searchData=
   ['en_0',['EN',['../namespacetmc5160.html#af27bf60aaa4c5b13ce49bfa70fa47059aaa85f1840e282d8a8304dbc2c0d7c9b2',1,'tmc5160']]],
   ['en_5flatch_5fencoder_1',['en_latch_encoder',['../uniontmc5160_1_1SW__MODE__Register.html#a53081a2eacee4b87e64587584c110175',1,'tmc5160::SW_MODE_Register::en_latch_encoder'],['../structtmc5160_1_1ReferenceSwitchConfig.html#add0a50030b2fffaafdf9df7d5461ec55',1,'tmc5160::ReferenceSwitchConfig::en_latch_encoder']]],
   ['en_5fpin_5f_2',['en_pin_',['../classEsp32SPI.html#a77cd874b8a36873b8b807b08f8f4ff9a',1,'Esp32SPI']]],
-  ['en_5fpwm_5fmode_3',['en_pwm_mode',['../uniontmc5160_1_1GCONF__Register.html#a62d654c9c27d9e7be53391281b21aa01',1,'tmc5160::GCONF_Register']]],
+  ['en_5fpwm_5fmode_3',['en_pwm_mode',['../uniontmc5160_1_1GCONF__Register.html#a62d654c9c27d9e7be53391281b21aa01',1,'tmc5160::GCONF_Register::en_pwm_mode'],['../structtmc5160_1_1GlobalConfig.html#a525a3b17e031272d30ba886a3da9d74d',1,'tmc5160::GlobalConfig::en_pwm_mode']]],
   ['en_5fsoftstop_4',['en_softstop',['../uniontmc5160_1_1SW__MODE__Register.html#a615fa0d36b01bce1343fc3085921ae2b',1,'tmc5160::SW_MODE_Register::en_softstop'],['../structtmc5160_1_1ReferenceSwitchConfig.html#ae2a0cb32f8ec89e8a6480bcf245334ff',1,'tmc5160::ReferenceSwitchConfig::en_softstop']]],
   ['enable_5',['Enable',['../structtmc5160_1_1TMC5160_1_1MotorControl.html#ace8864faa1c9a514823fa9cbd58d2095',1,'tmc5160::TMC5160::MotorControl']]],
   ['enabled_6',['ENABLED',['../namespacetmc5160.html#afd8e06e7eda04c891d35f72236085722ac8cf6eea8f096ed51160b484d97c5bbd',1,'tmc5160']]],
@@ -24,10 +24,11 @@ var searchData=
   ['encodersensitivity_21',['EncoderSensitivity',['../namespacetmc5160.html#a4eaf32584629b8ef44ee951e7ebf4916',1,'tmc5160']]],
   ['esp32_5ftmc5160_5fbus_2ehpp_22',['esp32_tmc5160_bus.hpp',['../esp32__tmc5160__bus_8hpp.html',1,'']]],
   ['esp32spi_23',['Esp32SPI',['../classEsp32SPI.html',1,'Esp32SPI'],['../classEsp32SPI.html#ad90a55a4a85c7d7669cfd48e61af7599',1,'Esp32SPI::Esp32SPI()']]],
-  ['event_5fpos_5freached_24',['event_pos_reached',['../uniontmc5160_1_1RAMP__STAT__Register.html#a9ddbad20c5cbaa0f6b0bb53460d23e32',1,'tmc5160::RAMP_STAT_Register']]],
-  ['event_5fstop_5fl_25',['event_stop_l',['../uniontmc5160_1_1RAMP__STAT__Register.html#accfe22d6209396f78ad8b2656a77e9fc',1,'tmc5160::RAMP_STAT_Register']]],
-  ['event_5fstop_5fr_26',['event_stop_r',['../uniontmc5160_1_1RAMP__STAT__Register.html#a35942197deb6cafcb5944bfaec26d241',1,'tmc5160::RAMP_STAT_Register']]],
-  ['event_5fstop_5fsg_27',['event_stop_sg',['../uniontmc5160_1_1RAMP__STAT__Register.html#a8d5ff6b91270a8c50767f423bde0644a',1,'tmc5160::RAMP_STAT_Register']]],
-  ['example_28',['Usage Example',['../classtmc5160_1_1TMC5160.html#autotoc_md2',1,'']]],
-  ['examples_29',['📊 Examples',['../index.html#autotoc_md13',1,'']]]
+  ['esp32uart_24',['Esp32UART',['../classEsp32UART.html',1,'Esp32UART'],['../classEsp32UART.html#a927692ec72bba5cc81d6d39630f380cf',1,'Esp32UART::Esp32UART()']]],
+  ['event_5fpos_5freached_25',['event_pos_reached',['../uniontmc5160_1_1RAMP__STAT__Register.html#a9ddbad20c5cbaa0f6b0bb53460d23e32',1,'tmc5160::RAMP_STAT_Register']]],
+  ['event_5fstop_5fl_26',['event_stop_l',['../uniontmc5160_1_1RAMP__STAT__Register.html#accfe22d6209396f78ad8b2656a77e9fc',1,'tmc5160::RAMP_STAT_Register']]],
+  ['event_5fstop_5fr_27',['event_stop_r',['../uniontmc5160_1_1RAMP__STAT__Register.html#a35942197deb6cafcb5944bfaec26d241',1,'tmc5160::RAMP_STAT_Register']]],
+  ['event_5fstop_5fsg_28',['event_stop_sg',['../uniontmc5160_1_1RAMP__STAT__Register.html#a8d5ff6b91270a8c50767f423bde0644a',1,'tmc5160::RAMP_STAT_Register']]],
+  ['example_29',['Example',['../classtmc5160_1_1TMC5160.html#autotoc_md2',1,'Usage Example'],['../classtmc5160_1_1TMC5160DaisyChain.html#autotoc_md13',1,'Usage Example']]],
+  ['examples_30',['📊 Examples',['../index.html#autotoc_md21',1,'']]]
 ];

@@ -1,5 +1,5 @@
 <map id="tmc5160::MmToSteps" name="tmc5160::MmToSteps">
-<area shape="rect" id="Node000001" title="Convert millimeters to steps." alt="" coords="295,13,457,38"/>
-<area shape="rect" id="Node000002" href="$structtmc5160_1_1TMC5160_1_1RampControl.html#af8a09d45e0f919dff7d47f49f7946a7b" title="Set target position in millimeters." alt="" coords="5,5,247,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="281,28,247,28,247,23,281,23"/>
+<area shape="rect" id="Node000001" title="Convert millimeters to steps." alt="" coords="332,13,495,38"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1TMC5160_1_1MotorControl.html#a92c34c7b4b997da292f70b416f8f19d5" title="Configure stealthChop settings." alt="" coords="5,5,284,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="318,28,284,28,284,23,318,23"/>
 </map>

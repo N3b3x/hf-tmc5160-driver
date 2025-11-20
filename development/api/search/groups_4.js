@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['register_20definitions_0',['Register Definitions',['../group__TMC5160__Registers.html',1,'']]]
+  ['management_0',['Daisy-Chain Management',['../group__TMC5160__DaisyChain.html',1,'']]]
 ];

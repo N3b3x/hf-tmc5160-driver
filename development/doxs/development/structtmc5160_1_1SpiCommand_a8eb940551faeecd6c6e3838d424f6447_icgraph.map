@@ -1,0 +1,5 @@
+<map id="tmc5160::SpiCommand::Write" name="tmc5160::SpiCommand::Write">
+<area shape="rect" id="Node000001" title="Construct a write command." alt="" coords="261,5,436,45"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1SpiCommInterface.html#a2ba4efb58323a9e2b221ce9a80a56470" title="Write a 32&#45;bit register via SPI." alt="" coords="5,5,213,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="248,28,214,28,214,23,248,23"/>
+</map>

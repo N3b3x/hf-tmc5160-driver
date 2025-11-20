@@ -1,6 +1,6 @@
 var uniontmc5160_1_1COOLCONF__Register =
 [
-    [ "bits", "uniontmc5160_1_1COOLCONF__Register.html#a498ebfdf3b0f3d97c9c0086c106e66db", null ],
+    [ "bits", "uniontmc5160_1_1COOLCONF__Register.html#a35d0ef02ad1b54106cf8932a2e5e3263", null ],
     [ "reserved1", "uniontmc5160_1_1COOLCONF__Register.html#af8b6bca5ee8830ac8431b1c076a81354", null ],
     [ "reserved2", "uniontmc5160_1_1COOLCONF__Register.html#a5923275d016f2835db3dff26c157280d", null ],
     [ "reserved3", "uniontmc5160_1_1COOLCONF__Register.html#af4102d539e790f6329e137902af4bae6", null ],
@@ -12,6 +12,6 @@ var uniontmc5160_1_1COOLCONF__Register =
     [ "semin", "uniontmc5160_1_1COOLCONF__Register.html#ababee7adae2419a974d0b95ea50d67e5", null ],
     [ "seup", "uniontmc5160_1_1COOLCONF__Register.html#ae13e532212025ea94810261f6f006320", null ],
     [ "sfilt", "uniontmc5160_1_1COOLCONF__Register.html#a2e5262335c98a4da99a79eab2e13eaf8", null ],
-    [ "sgt", "uniontmc5160_1_1COOLCONF__Register.html#a8f8101c458dd957e6ffd69e8d0454609", null ],
+    [ "sgt", "uniontmc5160_1_1COOLCONF__Register.html#af38cc095e5c4c6f58e192c79d2cd6f85", null ],
     [ "value", "uniontmc5160_1_1COOLCONF__Register.html#abad08b63040ac247577196ba75ccb8cb", null ]
 ];

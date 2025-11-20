@@ -13,6 +13,8 @@ var tmc5160__types_8hpp =
     [ "tmc5160::CoolStepConfig", "structtmc5160_1_1CoolStepConfig.html", "structtmc5160_1_1CoolStepConfig" ],
     [ "tmc5160::ReferenceSwitchConfig", "structtmc5160_1_1ReferenceSwitchConfig.html", "structtmc5160_1_1ReferenceSwitchConfig" ],
     [ "tmc5160::DcStepConfig", "structtmc5160_1_1DcStepConfig.html", "structtmc5160_1_1DcStepConfig" ],
+    [ "tmc5160::GlobalConfig", "structtmc5160_1_1GlobalConfig.html", "structtmc5160_1_1GlobalConfig" ],
+    [ "tmc5160::RampParameters", "structtmc5160_1_1RampParameters.html", "structtmc5160_1_1RampParameters" ],
     [ "DriverStatus", "tmc5160__types_8hpp.html#a81fcaffbc5dc91f6f544da54c1cf8c3b", [
       [ "OK", "tmc5160__types_8hpp.html#a81fcaffbc5dc91f6f544da54c1cf8c3bae0aa021e21dddbd6d8cecec71e9cf564", null ],
       [ "CP_UV", "tmc5160__types_8hpp.html#a81fcaffbc5dc91f6f544da54c1cf8c3ba848c66a6c6a998b6e878f953df237b53", null ],

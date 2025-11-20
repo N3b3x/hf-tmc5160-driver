@@ -1,0 +1,13 @@
+<map id="tmc5160::UartFrame::GetSize" name="tmc5160::UartFrame::GetSize">
+<area shape="rect" id="Node000001" title="Get frame size in bytes based on type." alt="" coords="413,101,569,141"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1UartFrame.html#af2892a83211233ab1674ced3e51daae8" title="Calculate and set CRC8 checksum for the frame CRC8 is calculated over all bytes except the CRC byte i..." alt="" coords="209,5,365,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="439,97,364,60,337,48,339,43,366,55,442,92"/>
+<area shape="rect" id="Node000003" href="$structtmc5160_1_1UartFrame.html#ac001f285d7668ef6eb100ec9e18c9065" title="Get the frame as raw bytes." alt="" coords="209,69,365,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="400,110,365,104,366,99,400,104"/>
+<area shape="rect" id="Node000004" href="$structtmc5160_1_1UartFrame.html#a5440702be58b53452a63a373969d78ad" title="Set the frame from raw bytes." alt="" coords="209,133,365,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="400,138,366,144,365,138,400,133"/>
+<area shape="rect" id="Node000005" href="$structtmc5160_1_1UartFrame.html#a45e2ddbd74129ee2f4b3f158339552d1" title="Verify CRC8 checksum of the frame." alt="" coords="209,197,365,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="442,150,366,188,339,200,337,195,364,183,439,145"/>
+<area shape="rect" id="Node000006" href="$structtmc5160_1_1UartFrame.html#acc3df3189eeff3ba3215f88a37f752c4" title="Check if frame is valid (CRC verified and structure correct)" alt="" coords="5,197,161,237"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="196,220,161,220,161,215,196,215"/>
+</map>

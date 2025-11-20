@@ -176,7 +176,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
       </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC5160 Driver</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
-      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li></ul></li></ul></li></ul>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_coverage_analysis.html" class="nav-list-link">TMC5160 Feature Coverage Analysis Report</a></li></ul>
   
 </nav>
 
@@ -901,15 +901,15 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ReadRegister()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ReadRegister(uint8_t address, uint32_t&amp; value, uint8_t chip_index = 0) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ReadRegister(uint8_t address, uint32_t&amp; value, uint8_t daisy_chain_position = 0) noexcept</code></td>
       <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Read 32-bit register with optional chip selection</td>
+      <td>Read 32-bit register with optional daisy-chain position</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">WriteRegister()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool WriteRegister(uint8_t address, uint32_t value, uint8_t chip_index = 0) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept</code></td>
       <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Write 32-bit register with optional chip selection</td>
+      <td>Write 32-bit register with optional daisy-chain position</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GpioSet()</code></td>
@@ -972,10 +972,28 @@
       <td>Debug logging</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">SetChipSelect()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetChipSelect(uint8_t csn_pin_index, bool active) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set CSN pin state for SPI multi-chip setups (SPI only)</td>
+      <td><code class="language-plaintext highlighter-rouge">SetDaisyChainPosition()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">void SetDaisyChainPosition(uint8_t position) noexcept</code></td>
+      <td>void</td>
+      <td>Set daisy-chain position for this TMC5160 instance (TMC5160 class method)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetDaisyChainPosition()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t GetDaisyChainPosition() const noexcept</code></td>
+      <td>Position (0-255)</td>
+      <td>Get current daisy-chain position (TMC5160 class method)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetDaisyChainLength()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">void SetDaisyChainLength(uint8_t total_length) noexcept</code></td>
+      <td>void</td>
+      <td>Set total number of devices in daisy chain (SPI only)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetDaisyChainLength()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint8_t GetDaisyChainLength() const noexcept</code></td>
+      <td>Chain length (0-255)</td>
+      <td>Get current daisy chain length setting (SPI only)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetSlaveAddress()</code></td>
@@ -2001,6 +2019,180 @@
     </tr>
   </tbody>
 </table></div>
+<h2 id="feature-implementation-summary">
+  
+  
+    <a href="#feature-implementation-summary" class="anchor-heading" aria-labelledby="feature-implementation-summary"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Feature Implementation Summary
+  
+  
+</h2>
+    
+
+<p>The TMC5160 driver provides comprehensive coverage of all chipset features. This section summarizes the implementation status and available features.</p>
+<h3 id="core-functionality-100-">
+  
+  
+    <a href="#core-functionality-100-" class="anchor-heading" aria-labelledby="core-functionality-100-"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Core Functionality: 100% ✅
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>Ramp Control</strong>: Complete - positioning, velocity, hold modes with configurable acceleration profiles</li>
+  <li><strong>Current Control</strong>: Complete - run/hold currents with global scaler</li>
+  <li><strong>Chopper Modes</strong>: Complete - spreadCycle and stealthChop operation</li>
+  <li><strong>Encoder Support</strong>: Complete - closed-loop control with deviation detection</li>
+  <li><strong>StallGuard2</strong>: Complete - stall detection with configurable thresholds</li>
+  <li><strong>dcStep</strong>: Complete - automatic commutation configuration</li>
+  <li><strong>Protection</strong>: Complete - short circuit, overtemperature, overvoltage protection</li>
+</ul>
+<h3 id="advanced-features-100-">
+  
+  
+    <a href="#advanced-features-100-" class="anchor-heading" aria-labelledby="advanced-features-100-"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Advanced Features: 100% ✅
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>Diagnostics</strong>: Complete - access to all read-only diagnostic registers
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">TSTEP</code> - Actual time between microsteps</li>
+      <li><code class="language-plaintext highlighter-rouge">MSCNT</code> - Microstep table position</li>
+      <li><code class="language-plaintext highlighter-rouge">MSCURACT</code> - Actual microstep current</li>
+      <li><code class="language-plaintext highlighter-rouge">PWM_SCALE</code> - stealthChop PWM scale results</li>
+      <li><code class="language-plaintext highlighter-rouge">PWM_AUTO</code> - Automatically determined PWM values</li>
+      <li><code class="language-plaintext highlighter-rouge">ENC_LATCH</code> - Encoder position latched on N event</li>
+      <li><code class="language-plaintext highlighter-rouge">IO_INPUT_OUTPUT</code> - GPIO pin read access</li>
+    </ul>
+  </li>
+  <li><strong>Factory Configuration</strong>: Complete - clock trim read access</li>
+  <li><strong>OTP Read</strong>: Complete - OTP configuration read (programming intentionally not implemented)</li>
+  <li><strong>UART Configuration</strong>: Complete - slave address and send delay configuration</li>
+  <li><strong>Offset Calibration</strong>: Complete - phase offset calibration results</li>
+</ul>
+<h3 id="global-configuration-gconf">
+  
+  
+    <a href="#global-configuration-gconf" class="anchor-heading" aria-labelledby="global-configuration-gconf"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Global Configuration (GCONF)
+  
+  
+</h3>
+    
+
+<p>All GCONF register bits are now accessible through the <code class="language-plaintext highlighter-rouge">GlobalConfig</code> structure:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">recalibrate</code> - Zero crossing recalibration</li>
+  <li><code class="language-plaintext highlighter-rouge">faststandstill</code> - Standstill detection timeout</li>
+  <li><code class="language-plaintext highlighter-rouge">multistep_filt</code> - Step input filtering</li>
+  <li><code class="language-plaintext highlighter-rouge">diag0_error</code> - DIAG0 on driver errors</li>
+  <li><code class="language-plaintext highlighter-rouge">diag0_otpw</code> - DIAG0 on overtemperature prewarning</li>
+  <li><code class="language-plaintext highlighter-rouge">diag0_stall_step</code> - DIAG0 on stall/STEP output</li>
+  <li><code class="language-plaintext highlighter-rouge">diag1_stall_dir</code> - DIAG1 on stall/DIR output</li>
+  <li><code class="language-plaintext highlighter-rouge">diag1_index</code> - DIAG1 on index position</li>
+  <li><code class="language-plaintext highlighter-rouge">diag1_onstate</code> - DIAG1 when chopper on</li>
+  <li><code class="language-plaintext highlighter-rouge">diag1_steps_skipped</code> - DIAG1 on skipped steps</li>
+  <li><code class="language-plaintext highlighter-rouge">diag0_int_pushpull</code> - DIAG0 push-pull output</li>
+  <li><code class="language-plaintext highlighter-rouge">diag1_poscomp_pushpull</code> - DIAG1 push-pull output</li>
+  <li><code class="language-plaintext highlighter-rouge">small_hysteresis</code> - Small hysteresis for step frequency</li>
+  <li><code class="language-plaintext highlighter-rouge">stop_enable</code> - Emergency stop enable</li>
+  <li><code class="language-plaintext highlighter-rouge">direct_mode</code> - Direct motor coil control</li>
+  <li><code class="language-plaintext highlighter-rouge">test_mode</code> - Test mode</li>
+</ul>
+
+<p><strong>Usage:</strong></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">GlobalConfig</span> <span class="n">gconf</span><span class="p">{};</span>
+<span class="n">gconf</span><span class="p">.</span><span class="n">faststandstill</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="n">gconf</span><span class="p">.</span><span class="n">diag0_error</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">ConfigureGlobalConfig</span><span class="p">(</span><span class="n">gconf</span><span class="p">);</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="ramp-parameters">
+  
+  
+    <a href="#ramp-parameters" class="anchor-heading" aria-labelledby="ramp-parameters"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Ramp Parameters
+  
+  
+</h3>
+    
+
+<p>All ramp parameters are now accessible:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">TPOWERDOWN</code> - Power down delay configuration
+    <ul>
+      <li>Method: <code class="language-plaintext highlighter-rouge">RampControl::SetPowerDownDelay(uint16_t tpowerdown)</code></li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">TZEROWAIT</code> - Zero wait time configuration
+    <ul>
+      <li>Method: <code class="language-plaintext highlighter-rouge">RampControl::SetZeroWaitTime(uint16_t tzerowait)</code></li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">A_1</code> - First acceleration phase
+    <ul>
+      <li>Method: <code class="language-plaintext highlighter-rouge">RampControl::SetFirstAcceleration(float a1)</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Usage:</strong></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetPowerDownDelay</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>  <span class="c1">// 10 * 2^18 clocks</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetZeroWaitTime</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>   <span class="c1">// 100 * 2^18 clocks</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetFirstAcceleration</span><span class="p">(</span><span class="mf">500.0</span><span class="n">f</span><span class="p">);</span> <span class="c1">// 500 steps/s²</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="power-stage-enhancements">
+  
+  
+    <a href="#power-stage-enhancements" class="anchor-heading" aria-labelledby="power-stage-enhancements"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Power Stage Enhancements
+  
+  
+</h3>
+    
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">DRV_CONF.otselect</code> - Over temperature level selection</li>
+  <li><code class="language-plaintext highlighter-rouge">DRV_CONF.filt_isense</code> - Sense amplifier filter time constant</li>
+</ul>
+
+<p>Both are accessible through the <code class="language-plaintext highlighter-rouge">PowerStageParameters</code> structure in <code class="language-plaintext highlighter-rouge">DriverConfig</code>.</p>
+<h3 id="dcstep-enhancements">
+  
+  
+    <a href="#dcstep-enhancements" class="anchor-heading" aria-labelledby="dcstep-enhancements"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> dcStep Enhancements
+  
+  
+</h3>
+    
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">DCCTRL</code> register configuration with:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">dc_time</code> - dcStep time window</li>
+      <li><code class="language-plaintext highlighter-rouge">dc_sg</code> - dcStep stallGuard threshold</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Usage:</strong></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">DcStepConfig</span> <span class="n">dc_config</span><span class="p">{};</span>
+<span class="n">dc_config</span><span class="p">.</span><span class="n">dc_time</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="n">dc_config</span><span class="p">.</span><span class="n">dc_sg</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">ConfigureDcStep</span><span class="p">(</span><span class="n">dc_config</span><span class="p">);</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
 <h2 id="error-handling">
   
   
@@ -2037,6 +2229,7 @@
 <ul>
   <li>See <a href="/hf-tmc5160-driver/development/docs/examples/">Examples</a> for usage examples</li>
   <li>Check <a href="/hf-tmc5160-driver/development/docs/configuration/">Configuration</a> for configuration options</li>
+  <li>Review <a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/">Multi-Chip Communication</a> for daisy-chaining</li>
 </ul><hr />
 
 <p><strong>Navigation</strong>

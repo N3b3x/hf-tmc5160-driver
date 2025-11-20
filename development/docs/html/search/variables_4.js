@@ -2,7 +2,7 @@ var searchData=
 [
   ['en_5flatch_5fencoder_0',['en_latch_encoder',['../uniontmc5160_1_1SW__MODE__Register.html#a53081a2eacee4b87e64587584c110175',1,'tmc5160::SW_MODE_Register::en_latch_encoder'],['../structtmc5160_1_1ReferenceSwitchConfig.html#add0a50030b2fffaafdf9df7d5461ec55',1,'tmc5160::ReferenceSwitchConfig::en_latch_encoder']]],
   ['en_5fpin_5f_1',['en_pin_',['../classEsp32SPI.html#a77cd874b8a36873b8b807b08f8f4ff9a',1,'Esp32SPI']]],
-  ['en_5fpwm_5fmode_2',['en_pwm_mode',['../uniontmc5160_1_1GCONF__Register.html#a62d654c9c27d9e7be53391281b21aa01',1,'tmc5160::GCONF_Register']]],
+  ['en_5fpwm_5fmode_2',['en_pwm_mode',['../uniontmc5160_1_1GCONF__Register.html#a62d654c9c27d9e7be53391281b21aa01',1,'tmc5160::GCONF_Register::en_pwm_mode'],['../structtmc5160_1_1GlobalConfig.html#a525a3b17e031272d30ba886a3da9d74d',1,'tmc5160::GlobalConfig::en_pwm_mode']]],
   ['en_5fsoftstop_3',['en_softstop',['../uniontmc5160_1_1SW__MODE__Register.html#a615fa0d36b01bce1343fc3085921ae2b',1,'tmc5160::SW_MODE_Register::en_softstop'],['../structtmc5160_1_1ReferenceSwitchConfig.html#ae2a0cb32f8ec89e8a6480bcf245334ff',1,'tmc5160::ReferenceSwitchConfig::en_softstop']]],
   ['enc_5fconst_4',['ENC_CONST',['../namespacetmc5160_1_1Registers.html#a464a37ac8a7c9bc0c0e371ae817e5d3a',1,'tmc5160::Registers']]],
   ['enc_5fdeviation_5',['ENC_DEVIATION',['../namespacetmc5160_1_1Registers.html#a8e08a809c06a712c28187545b97e77a3',1,'tmc5160::Registers']]],

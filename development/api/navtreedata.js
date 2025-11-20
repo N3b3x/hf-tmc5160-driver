@@ -25,16 +25,16 @@
 var NAVTREE =
 [
   [ "HF-TMC5160 Driver", "index.html", [
-    [ "📚 Table of Contents", "index.html#autotoc_md7", null ],
-    [ "📦 Overview", "index.html#autotoc_md8", null ],
-    [ "✨ Features", "index.html#autotoc_md9", null ],
-    [ "🚀 Quick Start", "index.html#autotoc_md10", null ],
-    [ "🔧 Installation", "index.html#autotoc_md11", null ],
-    [ "📖 API Reference", "index.html#autotoc_md12", null ],
-    [ "📊 Examples", "index.html#autotoc_md13", null ],
-    [ "📚 Documentation", "index.html#autotoc_md14", null ],
-    [ "🤝 Contributing", "index.html#autotoc_md15", null ],
-    [ "📄 License", "index.html#autotoc_md16", null ],
+    [ "📚 Table of Contents", "index.html#autotoc_md15", null ],
+    [ "📦 Overview", "index.html#autotoc_md16", null ],
+    [ "✨ Features", "index.html#autotoc_md17", null ],
+    [ "🚀 Quick Start", "index.html#autotoc_md18", null ],
+    [ "🔧 Installation", "index.html#autotoc_md19", null ],
+    [ "📖 API Reference", "index.html#autotoc_md20", null ],
+    [ "📊 Examples", "index.html#autotoc_md21", null ],
+    [ "📚 Documentation", "index.html#autotoc_md22", null ],
+    [ "🤝 Contributing", "index.html#autotoc_md23", null ],
+    [ "📄 License", "index.html#autotoc_md24", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -51,7 +51,7 @@ var NAVTREE =
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
-        [ "Functions", "functions_func.html", null ],
+        [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", "functions_vars" ],
         [ "Enumerations", "functions_enum.html", null ]
       ] ]
@@ -72,11 +72,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"functions.html",
-"structtmc5160_1_1CoolStepConfig.html#a0d593480d8c7982137b5784b34fecd6e",
-"structtmc5160_1_1TMC5160_1_1RampControl.html#a668ce782e665f4b6056d4f08ed10b8f4",
-"uniontmc5160_1_1DRV__CONF__Register.html#a7c6b82a21186b2afaa4abacbfd6c3637",
-"uniontmc5160_1_1PWMCONF__Register.html#abd82d8f2456e5cef6ea40356e2ab410a"
+"classtmc5160_1_1UartCommInterface.html#a1791c2ea2bfc41bafc541ba2cc3ebea4",
+"namespacetmc5160_1_1Registers.html#a7fed788b4e1bc3adaf927a7bfc64ce84",
+"structtmc5160_1_1RampParameters.html#a0ca4d900f4d6e6455c4692404b8b0d61",
+"structtmc5160_1_1UartFrame.html#af2892a83211233ab1674ced3e51daae8",
+"uniontmc5160_1_1DRV__CONF__Register.html#a905488b9f382aa7234129e61bebca8cf",
+"uniontmc5160_1_1OTP__PROG__Register.html#af11675438ffe7bb20875a5ff10712fc3"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

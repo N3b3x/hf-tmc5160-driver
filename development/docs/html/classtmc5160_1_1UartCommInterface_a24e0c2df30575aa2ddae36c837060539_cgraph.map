@@ -1,0 +1,17 @@
+<map id="tmc5160::UartCommInterface::ReadRegister" name="tmc5160::UartCommInterface::ReadRegister">
+<area shape="rect" id="Node000001" title="Read a 32&#45;bit register via UART." alt="" coords="5,133,221,173"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1CommInterface.html#a7e3d53e55dcbadc4d3ef72cfdd2c6e09" title="Construct communication interface with pin active level configuration." alt="" coords="283,5,471,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,131,198,93,268,55,286,48,288,52,270,60,201,98,143,136"/>
+<area shape="rect" id="Node000003" href="$structtmc5160_1_1UartFrame.html#a0be40d8ee6bc7916b4a67ebf699946ac" title="Construct a read reply frame from received bytes." alt="" coords="299,69,455,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="196,131,285,109,287,114,197,136"/>
+<area shape="rect" id="Node000004" href="$structtmc5160_1_1UartFrame.html#aa2fe56fa7916d51ac827a7dbd6c8011b" title="Construct a read request frame." alt="" coords="299,133,455,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="221,151,286,151,286,156,221,156"/>
+<area shape="rect" id="Node000006" href="$classtmc5160_1_1UartCommInterface.html#a6d4cfd5d31ad3136308bc60e50ff01f3" title="Receive raw bytes via UART." alt="" coords="269,221,485,261"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="175,171,304,214,303,219,174,176"/>
+<area shape="rect" id="Node000007" href="$classtmc5160_1_1UartCommInterface.html#a12c4a55cd8e33a81c572b4c3f70ce75c" title="Send raw bytes via UART." alt="" coords="269,309,485,349"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="139,171,198,219,271,271,323,301,320,305,268,276,195,223,136,175"/>
+<area shape="rect" id="Node000005" href="$namespacetmc5160.html#ab650ebb70be7f1da00a2dea1f2fe662e" title="Calculate CRC8 checksum for UART communication." alt="" coords="533,141,708,166"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="455,151,519,151,519,156,455,156"/>
+<area shape="poly" id="edge6_Node000006_Node000006" title=" " alt="" coords="332,222,329,212,337,202,353,197,377,195,406,198,421,205,419,210,404,203,377,200,354,202,340,207,335,213,337,220"/>
+<area shape="poly" id="edge8_Node000007_Node000007" title=" " alt="" coords="332,310,329,300,337,290,353,285,377,283,406,286,421,293,419,298,404,291,377,288,354,290,340,295,335,301,337,308"/>
+</map>

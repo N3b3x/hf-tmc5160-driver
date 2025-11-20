@@ -106,7 +106,7 @@ $(function(){initNavTree('structtmc5160_1_1TMC5160_1_1Encoder.html',''); initRes
 <div class="dynheader">
 Collaboration diagram for tmc5160::TMC5160&lt; CommType &gt;::Encoder:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1Encoder__coll__graph.svg" width="595" height="588"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1Encoder__coll__graph.svg" width="595" height="680"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -132,6 +132,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aac326b9ca35afbb82d78f914bdc3684b" id="r_aac326b9ca35afbb82d78f914bdc3684b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac326b9ca35afbb82d78f914bdc3684b">ClearDeviationFlag</a> () <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
 <tr class="memdesc:aac326b9ca35afbb82d78f914bdc3684b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear encoder deviation flag.  <br /></td></tr>
 <tr class="separator:aac326b9ca35afbb82d78f914bdc3684b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a750c32f2a5a9ac074317396031050cd5" id="r_a750c32f2a5a9ac074317396031050cd5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">int32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a750c32f2a5a9ac074317396031050cd5">GetLatchedPosition</a> () <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memdesc:a750c32f2a5a9ac074317396031050cd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get encoder latched position.  <br /></td></tr>
+<tr class="separator:a750c32f2a5a9ac074317396031050cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -248,6 +251,42 @@ template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1Encoder_a918402de884ffc263dc91df230e6d1ce_cgraph.svg" width="455" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a750c32f2a5a9ac074317396031050cd5" name="a750c32f2a5a9ac074317396031050cd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a750c32f2a5a9ac074317396031050cd5">&#9670;&#160;</a></span>GetLatchedPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a> <a class="el" href="classtmc5160_1_1CommInterface.html">CommType</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">int32_t</a> TMC5160::Encoder::GetLatchedPosition </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get encoder latched position. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structtmc5160_1_1TMC5160_1_1Encoder.html" title="Encoder subsystem.">Encoder</a> position latched on N event, or 0 on error</dd></dl>
+<p>Reads the encoder position that was latched on the last N channel event. </p>
 
 </div>
 </div>
@@ -391,11 +430,6 @@ template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if exact match found, false if approximation used </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1Encoder_a9a686216cb074a94494adec6b3ccb794_cgraph.svg" width="455" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

@@ -4,11 +4,13 @@ var classtmc5160_1_1SpiCommInterface =
     [ "~SpiCommInterface", "classtmc5160_1_1SpiCommInterface.html#ae8e442cc0ae880b3f4a131af6769040d", null ],
     [ "SpiCommInterface", "classtmc5160_1_1SpiCommInterface.html#a76f611bc2098fccad328994da8122402", null ],
     [ "SpiCommInterface", "classtmc5160_1_1SpiCommInterface.html#a64013c34c8a49b7fb950062d5a08c8a3", null ],
+    [ "GetDaisyChainLength", "classtmc5160_1_1SpiCommInterface.html#ab05ee9d4730a81797159444cc8ce3f81", null ],
     [ "GetMode", "classtmc5160_1_1SpiCommInterface.html#ae258b33b551a3ee3f58cce4425c8b2a6", null ],
     [ "operator=", "classtmc5160_1_1SpiCommInterface.html#a0823b17b507499702a95de46bf8654e9", null ],
     [ "operator=", "classtmc5160_1_1SpiCommInterface.html#a83b3d561b54c2d506adbdab902d5628a", null ],
-    [ "ReadRegister", "classtmc5160_1_1SpiCommInterface.html#a7f6dfc07d2092acafd31d75a1a580f73", null ],
-    [ "SetChipSelect", "classtmc5160_1_1SpiCommInterface.html#a304db9bea4b10436ab7bcdbf1afa9635", null ],
+    [ "ReadRegister", "classtmc5160_1_1SpiCommInterface.html#ad5148180affea0e047e8c4a40d83485c", null ],
+    [ "SetDaisyChainLength", "classtmc5160_1_1SpiCommInterface.html#acc9a45867e03a067c428f633b600da4d", null ],
     [ "SpiTransfer", "classtmc5160_1_1SpiCommInterface.html#a6f970ddedcc8a0e3202db220f3d3b713", null ],
-    [ "WriteRegister", "classtmc5160_1_1SpiCommInterface.html#ac3efc029d4d87218476bce759bfdc65f", null ]
+    [ "WriteRegister", "classtmc5160_1_1SpiCommInterface.html#a2ba4efb58323a9e2b221ce9a80a56470", null ],
+    [ "total_chain_length_", "classtmc5160_1_1SpiCommInterface.html#af9a7fb21605ab7a334271d4c7cde0477", null ]
 ];

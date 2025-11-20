@@ -1,0 +1,5 @@
+<map id="tmc5160::UartFrame::VerifyCrc" name="tmc5160::UartFrame::VerifyCrc">
+<area shape="rect" id="Node000001" title="Verify CRC8 checksum of the frame." alt="" coords="209,5,365,45"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1UartFrame.html#acc3df3189eeff3ba3215f88a37f752c4" title="Check if frame is valid (CRC verified and structure correct)" alt="" coords="5,5,161,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,28,161,28,161,23,196,23"/>
+</map>

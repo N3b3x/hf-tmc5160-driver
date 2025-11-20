@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['encoder_2ecpp_0',['encoder.cpp',['../encoder_8cpp.html',1,'']]],
-  ['esp32_5ftmc5160_5fbus_2ehpp_1',['esp32_tmc5160_bus.hpp',['../esp32__tmc5160__bus_8hpp.html',1,'']]]
+  ['daisy_5fchain_5fexample_2ecpp_0',['daisy_chain_example.cpp',['../daisy__chain__example_8cpp.html',1,'']]]
 ];

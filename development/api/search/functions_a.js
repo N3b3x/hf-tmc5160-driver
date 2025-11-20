@@ -1,4 +1,10 @@
 var searchData=
 [
-  ['operator_3d_0',['operator=',['../classtmc5160_1_1CommInterface.html#abe291d816be3fbff14338f0f988e75be',1,'tmc5160::CommInterface::operator=(const CommInterface &amp;)=delete'],['../classtmc5160_1_1CommInterface.html#ad8356d7708e0d688d5fd03c8b73dcbcd',1,'tmc5160::CommInterface::operator=(CommInterface &amp;&amp;)=default'],['../classtmc5160_1_1SpiCommInterface.html#a0823b17b507499702a95de46bf8654e9',1,'tmc5160::SpiCommInterface::operator=(const SpiCommInterface &amp;)=delete'],['../classtmc5160_1_1SpiCommInterface.html#a83b3d561b54c2d506adbdab902d5628a',1,'tmc5160::SpiCommInterface::operator=(SpiCommInterface &amp;&amp;)=default'],['../classtmc5160_1_1UartCommInterface.html#adf0f1e2bd963d3b6cc428810e314298c',1,'tmc5160::UartCommInterface::operator=(const UartCommInterface &amp;)=delete'],['../classtmc5160_1_1UartCommInterface.html#a42a14cdb62e3360d3af70afbccbb8aa9',1,'tmc5160::UartCommInterface::operator=(UartCommInterface &amp;&amp;)=default']]]
+  ['mechanicalsystem_0',['MechanicalSystem',['../structtmc5160_1_1MechanicalSystem.html#ae09fa6d1b3130c58abc06aa2585170ba',1,'tmc5160::MechanicalSystem']]],
+  ['mmpersectostepspersec_1',['MmPerSecToStepsPerSec',['../namespacetmc5160.html#a35dbbcb72e22539dc46aaa7098770312',1,'tmc5160']]],
+  ['mmtosteps_2',['MmToSteps',['../namespacetmc5160.html#a6e78a19f84b991207c30401e90eb6ebd',1,'tmc5160']]],
+  ['motorcontrol_3',['MotorControl',['../structtmc5160_1_1TMC5160_1_1MotorControl.html#a4564d7ab30e0b34c245e19d77e31edf1',1,'tmc5160::TMC5160::MotorControl']]],
+  ['motorcurrentconfig_4',['MotorCurrentConfig',['../structtmc5160_1_1MotorCurrentConfig.html#aebbe327c7b62a8796e207b3b97d82ebc',1,'tmc5160::MotorCurrentConfig']]],
+  ['motorparameters_5',['MotorParameters',['../structtmc5160_1_1MotorParameters.html#a2e8b560d07526df6ee91f2759b87903e',1,'tmc5160::MotorParameters']]],
+  ['motorspec_6',['MotorSpec',['../structtmc5160_1_1MotorSpec.html#a30dde78b27aa5719a3d629682ffbc117',1,'tmc5160::MotorSpec']]]
 ];

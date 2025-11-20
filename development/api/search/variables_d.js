@@ -6,8 +6,8 @@ var searchData=
   ['pinactivelevels_5f_3',['pinActiveLevels_',['../classtmc5160_1_1CommInterface.html#ae4ebfab3b59d95eefdaf537d42e289bd',1,'tmc5160::CommInterface']]],
   ['pol_5fa_4',['pol_A',['../uniontmc5160_1_1ENCMODE__Register.html#a21966749c3363fe950feeb7c553e19ca',1,'tmc5160::ENCMODE_Register']]],
   ['pol_5fa_5',['pol_a',['../structtmc5160_1_1EncoderConfig.html#a108e690887d4c6420028624ffe084839',1,'tmc5160::EncoderConfig']]],
-  ['pol_5fb_6',['pol_B',['../uniontmc5160_1_1ENCMODE__Register.html#ac3a177221f1740bf4bda716b40b1caea',1,'tmc5160::ENCMODE_Register']]],
-  ['pol_5fb_7',['pol_b',['../structtmc5160_1_1EncoderConfig.html#aa23dc09588fbf19c30cafca6c91f651c',1,'tmc5160::EncoderConfig']]],
+  ['pol_5fb_6',['pol_b',['../structtmc5160_1_1EncoderConfig.html#aa23dc09588fbf19c30cafca6c91f651c',1,'tmc5160::EncoderConfig']]],
+  ['pol_5fb_7',['pol_B',['../uniontmc5160_1_1ENCMODE__Register.html#ac3a177221f1740bf4bda716b40b1caea',1,'tmc5160::ENCMODE_Register']]],
   ['pol_5fn_8',['pol_N',['../uniontmc5160_1_1ENCMODE__Register.html#a0080536a11ce01683f9d4750f21c4a0a',1,'tmc5160::ENCMODE_Register']]],
   ['pol_5fn_9',['pol_n',['../structtmc5160_1_1EncoderConfig.html#a1fcf36c9696f3782c5e35dbcc11e13eb',1,'tmc5160::EncoderConfig']]],
   ['pol_5fstop_5fl_10',['pol_stop_l',['../uniontmc5160_1_1SW__MODE__Register.html#a85ffb096231be19a5b36d6adf1ca8601',1,'tmc5160::SW_MODE_Register']]],
@@ -29,7 +29,7 @@ var searchData=
   ['pwm_5fofs_5finitial_26',['pwm_ofs_initial',['../structtmc5160_1_1MotorParameters.html#aa944e4895a89ef7871aa2bbe76732a59',1,'tmc5160::MotorParameters']]],
   ['pwm_5freg_27',['pwm_reg',['../uniontmc5160_1_1PWMCONF__Register.html#aea20fa87b80ff1844cff5ffdcaaa7437',1,'tmc5160::PWMCONF_Register::pwm_reg'],['../structtmc5160_1_1StealthChopConfig.html#a3b8a4b0a03f8110929f55f3ad588bd59',1,'tmc5160::StealthChopConfig::pwm_reg']]],
   ['pwm_5fscale_28',['PWM_SCALE',['../namespacetmc5160_1_1Registers.html#ac65389c147a6e5ec8a9dff5933973180',1,'tmc5160::Registers']]],
-  ['pwm_5fscale_5fauto_29',['pwm_scale_auto',['../uniontmc5160_1_1PWM__SCALE__Register.html#abac3bec6aa8cbd9edcee8a9089daf634',1,'tmc5160::PWM_SCALE_Register']]],
+  ['pwm_5fscale_5fauto_29',['pwm_scale_auto',['../uniontmc5160_1_1PWM__SCALE__Register.html#a765ab143e773c0072cd1a0571ffbca2e',1,'tmc5160::PWM_SCALE_Register']]],
   ['pwm_5fscale_5fsum_30',['pwm_scale_sum',['../uniontmc5160_1_1PWM__SCALE__Register.html#a2b3204023c94b42699a2637db7c4af63',1,'tmc5160::PWM_SCALE_Register']]],
   ['pwmconf_31',['PWMCONF',['../namespacetmc5160_1_1Registers.html#a0c1fe418e4ca1a0520cee9f7c36bbf42',1,'tmc5160::Registers']]]
 ];

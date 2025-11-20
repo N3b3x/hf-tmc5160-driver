@@ -1,0 +1,15 @@
+<map id="app_main" name="app_main">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,80,92,105"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1TMC5160.html#a721b663605378407cc1303b5c8f5b6fb" title="Get the communication interface used by this TMC5160 instance." alt="" coords="140,5,363,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="67,78,100,58,139,40,163,32,165,37,141,44,103,63,70,82"/>
+<area shape="rect" id="Node000003" href="$classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44" title="Initialize the SPI interface." alt="" coords="179,55,324,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="92,85,165,75,165,81,93,90"/>
+<area shape="rect" id="Node000004" href="$classtmc5160_1_1TMC5160.html#ac90ae8eb92120142753c49fc61fcce89" title="Initialize the TMC5160 driver with configuration." alt="" coords="145,104,357,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="93,95,132,100,131,105,92,100"/>
+<area shape="rect" id="Node000006" href="$classtmc5160_1_1SpiCommInterface.html#acc9a45867e03a067c428f633b600da4d" title="Set the total number of devices in the daisy chain." alt="" coords="147,154,355,194"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="71,103,141,140,161,147,159,152,139,144,69,108"/>
+<area shape="rect" id="Node000005" href="$tmc5160_8cpp.html#a6b5c74bc9056ff38815021d63986f681" title=" " alt="" coords="463,104,546,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="358,114,450,114,450,119,358,119"/>
+<area shape="rect" id="Node000007" href="$classtmc5160_1_1CommInterface.html#a7e3d53e55dcbadc4d3ef72cfdd2c6e09" title="Construct communication interface with pin active level configuration." alt="" coords="411,154,599,194"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="355,171,397,171,397,177,355,177"/>
+</map>

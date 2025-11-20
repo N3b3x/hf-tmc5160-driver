@@ -3,13 +3,13 @@ var indexSectionsWithContent =
   0: "abcdefghiklmnopqrstuvwx~✨📄📊📖📚📦🔧🚀🤝",
   1: "cdefgimoprstu",
   2: "t",
-  3: "bcemrstuv",
-  4: "abcdefgilmoprstuw~",
+  3: "bcdemrstuv",
+  4: "abcdefghilmoprstuvw~",
   5: "abcdefghilmnoprstuvwx",
-  6: "acdegmprt",
-  7: "abcdefghilnoprsuv",
+  6: "acdegmprtu",
+  7: "abcdefghilnoprsuvw",
   8: "t",
-  9: "cdgirstu",
+  9: "cdgimrstu",
   10: "dht"
 };
 
