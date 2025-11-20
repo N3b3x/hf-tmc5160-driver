@@ -126,6 +126,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab05ee9d4730a81797159444cc8ce3f81" id="r_ab05ee9d4730a81797159444cc8ce3f81"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab05ee9d4730a81797159444cc8ce3f81">GetDaisyChainLength</a> () <a class="el" href="classtmc5160_1_1CommInterface.html">const</a> <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
 <tr class="memdesc:ab05ee9d4730a81797159444cc8ce3f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the total number of devices in the daisy chain.  <br /></td></tr>
 <tr class="separator:ab05ee9d4730a81797159444cc8ce3f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20f64045d16543de0e3f625b38b4734f" id="r_a20f64045d16543de0e3f625b38b4734f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20f64045d16543de0e3f625b38b4734f">AutoDetectChainLength</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> <a class="el" href="classtmc5160_1_1CommInterface.html">max_devices</a>=8) <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
+<tr class="memdesc:a20f64045d16543de0e3f625b38b4734f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Auto-detect the daisy chain length by sending a unique command that loops back.  <br /></td></tr>
+<tr class="separator:a20f64045d16543de0e3f625b38b4734f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae258b33b551a3ee3f58cce4425c8b2a6" id="r_ae258b33b551a3ee3f58cce4425c8b2a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#a1e94179bbf4494f80ebac49f8a3fe4f4">CommMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae258b33b551a3ee3f58cce4425c8b2a6">GetMode</a> () <a class="el" href="classtmc5160_1_1CommInterface.html">const</a> <a class="el" href="classtmc5160_1_1CommInterface.html">noexcept</a></td></tr>
 <tr class="memdesc:ae258b33b551a3ee3f58cce4425c8b2a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get communication mode (always SPI for this interface)  <br /></td></tr>
 <tr class="separator:ae258b33b551a3ee3f58cce4425c8b2a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -346,11 +349,12 @@ Daisy-Chaining Support</h2>
 <li>Read response from chip k: Send 40·(n-k+1) dummy bits total (40·(n-k) padding + 40 command) Response appears at offset (n-k-1)*5 bytes (reverse order: last device first) <b>CRITICAL</b>: Responses come back in REVERSE order - device n-1 response first, then n-2, ..., device 0 last</li>
 </ul>
 <p>Architecture:</p><ul>
-<li>Each <a class="el" href="classtmc5160_1_1SpiCommInterface.html" title="CRTP-based SPI implementation of TMC5160CommInterface.">SpiCommInterface</a> instance supports ONE <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> driver on ONE SPI bus</li>
-<li>For daisy-chaining: Use SetDaisyChainPosition() to specify chip position (0, 1, 2, ...)</li>
+<li>Each <a class="el" href="classtmc5160_1_1SpiCommInterface.html" title="CRTP-based SPI implementation of TMC5160CommInterface.">SpiCommInterface</a> instance supports ONE SPI bus (shared by multiple <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> drivers)</li>
+<li>For daisy-chaining: Each <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> instance tracks its own position and passes it to <a class="el" href="#ad5148180affea0e047e8c4a40d83485c" title="Read a 32-bit register via SPI.">ReadRegister()</a>/WriteRegister()</li>
 <li>For multi-CS setups: Create separate <a class="el" href="classtmc5160_1_1SpiCommInterface.html" title="CRTP-based SPI implementation of TMC5160CommInterface.">SpiCommInterface</a> instances (one per chip)</li>
-<li><a class="el" href="#ad5148180affea0e047e8c4a40d83485c" title="Read a 32-bit register via SPI.">ReadRegister()</a> and <a class="el" href="#a2ba4efb58323a9e2b221ce9a80a56470" title="Write a 32-bit register via SPI.">WriteRegister()</a> automatically handle daisy-chaining based on position</li>
-<li>For higher-level multi-driver management, use <a class="el" href="classtmc5160_1_1TMC5160DaisyChain.html" title="High-level manager for multiple TMC5160 drivers in a daisy-chain configuration.">TMC5160DaisyChain</a> class that manages multiple <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> instances on a single SPI bus</li>
+<li><a class="el" href="#ad5148180affea0e047e8c4a40d83485c" title="Read a 32-bit register via SPI.">ReadRegister()</a> and <a class="el" href="#a2ba4efb58323a9e2b221ce9a80a56470" title="Write a 32-bit register via SPI.">WriteRegister()</a> automatically handle daisy-chaining based on position parameter</li>
+<li><a class="el" href="#acc9a45867e03a067c428f633b600da4d" title="Set the total number of devices in the daisy chain.">SetDaisyChainLength()</a> must be called to enable optimal response extraction using datasheet formula</li>
+<li>For higher-level multi-driver management, use <a class="el" href="classtmc5160_1_1TMC5160DaisyChain.html" title="High-level manager for multiple TMC5160 drivers in a daisy-chain configuration.">TMC5160DaisyChain</a> class that manages multiple <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> instances on a single SPI bus and automatically configures chain length</li>
 </ul>
 <p>Example usage: </p><div class="fragment"><div class="line"><span class="keyword">class </span><a class="code hl_class" href="classtmc5160_1_1CommInterface.html">MySPI</a> : <span class="keyword">public</span> <a class="code hl_class" href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a>&lt;MySPI&gt; {</div>
 <div class="line"><span class="keyword">public</span>:</div>
@@ -364,7 +368,7 @@ Daisy-Chaining Support</h2>
 <div class="line">};</div>
 <div class="ttc" id="aclasstmc5160_1_1CommInterface_html"><div class="ttname"><a href="classtmc5160_1_1CommInterface.html">tmc5160::CommInterface</a></div><div class="ttdoc">CRTP-based communication interface for register read/write operations.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:731</div></div>
 <div class="ttc" id="aclasstmc5160_1_1CommInterface_html_a7e3d53e55dcbadc4d3ef72cfdd2c6e09"><div class="ttname"><a href="classtmc5160_1_1CommInterface.html#a7e3d53e55dcbadc4d3ef72cfdd2c6e09">tmc5160::CommInterface::CommInterface</a></div><div class="ttdeci">CommInterface(bool en_active_level, bool dir_active_level, bool step_active_level) noexcept</div><div class="ttdoc">Construct communication interface with pin active level configuration.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:743</div></div>
-<div class="ttc" id="aclasstmc5160_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:1112</div></div>
+<div class="ttc" id="aclasstmc5160_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:1113</div></div>
 <div class="ttc" id="anamespacetmc5160_html_a1e94179bbf4494f80ebac49f8a3fe4f4"><div class="ttname"><a href="namespacetmc5160.html#a1e94179bbf4494f80ebac49f8a3fe4f4">tmc5160::CommMode</a></div><div class="ttdeci">CommMode</div><div class="ttdoc">Supported physical communication modes for TMC5160.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:146</div></div>
 <div class="ttc" id="anamespacetmc5160_html_a1e94179bbf4494f80ebac49f8a3fe4f4a33dc5312b091968f5a120c2484d40df8"><div class="ttname"><a href="namespacetmc5160.html#a1e94179bbf4494f80ebac49f8a3fe4f4a33dc5312b091968f5a120c2484d40df8">tmc5160::CommMode::SPI</a></div><div class="ttdeci">@ SPI</div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
@@ -504,6 +508,62 @@ template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a20f64045d16543de0e3f625b38b4734f" name="a20f64045d16543de0e3f625b38b4734f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20f64045d16543de0e3f625b38b4734f">&#9670;&#160;</a></span>AutoDetectChainLength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classtmc5160_1_1CommInterface.html">typename</a> <a class="el" href="classtmc5160_1_1CommInterface.html">Derived</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a> <a class="el" href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a>&lt; <a class="el" href="classtmc5160_1_1CommInterface.html">Derived</a> &gt;::AutoDetectChainLength </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtmc5160_1_1CommInterface.html">uint8_t</a></td>          <td class="paramname"><span class="paramname"><em>max_devices</em><span class="paramdefsep"> = </span><span class="paramdefval">8</span></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Auto-detect the daisy chain length by sending a unique command that loops back. </p>
+<p>This method sends a command with a unique, recognizable pattern to position (max_devices+1), which is beyond the last device. The command will shift through all devices and loop back to the MCU via the last device's SDO. By searching for our exact command pattern in the received data, we can determine the actual chain length.</p>
+<p>Algorithm:</p><ol type="1">
+<li>Create a unique command with a distinctive pattern (e.g., read register 0x73 with unique data)</li>
+<li>Send command to position (max_devices+1) - beyond the last device</li>
+<li>Send enough padding: (max_devices+2)*40 bits total to ensure loopback is captured</li>
+<li>The command loops back after (n+1)*40 bits where n is the actual chain length</li>
+<li>Search received data for our exact command pattern</li>
+<li>When found at offset (n+1)*5, chain length = n</li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">max_devices</td><td>Maximum number of devices to probe (default: 8, max: 255) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Detected chain length (0 = single chip or detection failed, &gt;0 = number of devices)</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This method requires that devices are powered (but don't need to be initialized) </dd>
+<dd>
+The command uses a read operation which is safe and doesn't modify device state </dd>
+<dd>
+The detected length is automatically set via <a class="el" href="#acc9a45867e03a067c428f633b600da4d" title="Set the total number of devices in the daisy chain.">SetDaisyChainLength()</a></dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>This method performs a full SPI transaction and may take time </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1SpiCommInterface_a20f64045d16543de0e3f625b38b4734f_cgraph.svg" width="475" height="203"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="ab05ee9d4730a81797159444cc8ce3f81" name="ab05ee9d4730a81797159444cc8ce3f81"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab05ee9d4730a81797159444cc8ce3f81">&#9670;&#160;</a></span>GetDaisyChainLength()</h2>
 
@@ -784,7 +844,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1SpiCommInterface_a6f970ddedcc8a0e3202db220f3d3b713_icgraph.svg" width="475" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1SpiCommInterface_a6f970ddedcc8a0e3202db220f3d3b713_icgraph.svg" width="475" height="179"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

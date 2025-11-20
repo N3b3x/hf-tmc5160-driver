@@ -1,0 +1,5 @@
+<map id="programChipAndVerify" name="programChipAndVerify">
+<area shape="rect" id="Node000001" title="Helper function to program a chip and verify its address." alt="" coords="5,13,173,38"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1TMC5160.html#a223f9de0e084d2b2208ad324ec59c41f" title="Get the current UART node address for this TMC5160 instance." alt="" coords="221,5,428,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="173,23,207,23,207,28,173,28"/>
+</map>

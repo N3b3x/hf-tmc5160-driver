@@ -1,4 +1,6 @@
 <map id="tmc5160::CommInterface::DelayMs" name="tmc5160::CommInterface::DelayMs">
-<area shape="rect" id="Node000001" title="Delay execution for specified milliseconds." alt="" coords="5,29,193,69"/>
-<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="131,17,120,11,99,8,82,10,71,15,67,21,69,28,64,30,62,20,68,11,80,5,99,3,121,6,133,13"/>
+<area shape="rect" id="Node000001" title="Delay execution for specified milliseconds." alt="" coords="268,29,456,69"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="404,18,389,11,362,8,338,10,324,15,318,21,321,28,316,30,313,20,321,10,337,5,362,3,391,6,407,13"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1TMC5160MultiNode.html#a8abdba0be91c2d0c6f4d5589560ce002" title="Program all active devices sequentially using NAI/NAO addressing." alt="" coords="5,29,220,69"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="254,52,220,52,220,47,254,47"/>
 </map>
