@@ -1,5 +1,5 @@
-warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.ga3KzW
-warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.ga3KzW' has become obsolete.
+warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.4nFMts
+warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.4nFMts' has become obsolete.
          To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
 Doxygen version used: 1.10.0 (ebc57c6dd303a980bd19dd74b8b61c8f3f5180ca)
 Searching for include files...
@@ -362,6 +362,7 @@ Generating docs for compound tmc5160::StealthChopConfig...
 Generating docs for compound tmc5160::SW_MODE_Register...
 Generating docs for compound tmc5160::TMC5160...
 Generating caller graph for function tmc5160::TMC5160::GetComm
+Generating caller graph for function tmc5160::TMC5160::GetCommAddress
 Generating caller graph for function tmc5160::TMC5160::GetUartNodeAddress
 Generating call graph for function tmc5160::TMC5160::Initialize
 Generating caller graph for function tmc5160::TMC5160::Initialize
@@ -376,16 +377,14 @@ Generating docs for nested compound tmc5160::TMC5160::Encoder...
 Generating call graph for function tmc5160::TMC5160::Encoder::ClearDeviationFlag
 Generating docs for nested compound tmc5160::TMC5160::MotorControl...
 Generating call graph for function tmc5160::TMC5160::MotorControl::ConfigureChopper
-Generating call graph for function tmc5160::TMC5160::MotorControl::ConfigureStealthChop
-Generating call graph for function tmc5160::TMC5160::MotorControl::SetCurrent
-Generating call graph for function tmc5160::TMC5160::MotorControl::SetFreewheelingMode
+Generating call graph for function tmc5160::TMC5160::MotorControl::ConfigureDcStep
+Generating call graph for function tmc5160::TMC5160::MotorControl::SetModeChangeSpeeds
 Generating docs for nested compound tmc5160::TMC5160::Protection...
 Generating docs for nested compound tmc5160::TMC5160::RampControl...
+Generating call graph for function tmc5160::TMC5160::RampControl::GetCurrentPosition
 Generating call graph for function tmc5160::TMC5160::RampControl::SetComparePosition
-Generating call graph for function tmc5160::TMC5160::RampControl::SetMaxSpeedRpm
 Generating call graph for function tmc5160::TMC5160::RampControl::SetRampMode
-Generating call graph for function tmc5160::TMC5160::RampControl::SetTargetPositionMm
-Generating call graph for function tmc5160::TMC5160::RampControl::Stop
+Generating call graph for function tmc5160::TMC5160::RampControl::SetTargetPosition
 Generating docs for nested compound tmc5160::TMC5160::UartConfig...
 Generating call graph for function tmc5160::TMC5160::UartConfig::ConfigureSlave
 Generating docs for compound tmc5160::TMC5160DaisyChain...
@@ -409,7 +408,8 @@ Generating call graph for function tmc5160::UartCommInterface::WriteRegister
 Generating docs for compound tmc5160::UartFrame...
 Generating call graph for function tmc5160::UartFrame::CalculateCrc
 Generating call graph for function tmc5160::UartFrame::GetFrame
-Generating caller gra/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:11: warning: unable to resolve reference to '-overview' for \ref command
+Generating caller graph for function tmc5160::UartFrame::GetSize
+Generating call graph for function tmc/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:11: warning: unable to resolve reference to '-overview' for \ref command
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:12: warning: unable to resolve reference to '-features' for \ref command
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:13: warning: unable to resolve reference to '-quick-start' for \ref command
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:14: warning: unable to resolve reference to '-installation' for \ref command
@@ -426,8 +426,7 @@ Generating caller gra/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/READM
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:104: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/api_reference.md' for \ref command
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:110: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/examples.md' for \ref command
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:114: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/index.md' for \ref command
-ph for function tmc5160::UartFrame::GetSize
-Generating call graph for function tmc5160::UartFrame::IsValid
+5160::UartFrame::IsValid
 Generating caller graph for function tmc5160::UartFrame::ReadReply
 Generating call graph for function tmc5160::UartFrame::ReadRequest
 Generating caller graph for function tmc5160::UartFrame::ReadRequest
@@ -468,100 +467,33 @@ writing tag file...
 Running plantuml with JAVA...
 Running dot...
 Generating dot graphs using 5 parallel threads...
-Running dot for graph 1/36
-Running dot for graph 2/36
-Running dot for graph 3/36
-Running dot for graph 4/36
-Running dot for graph 5/36
-Running dot for graph 6/36
-Running dot for graph 7/36
-Running dot for graph 8/36
-Running dot for graph 9/36
-Running dot for graph 10/36
-Running dot for graph 11/36
-Running dot for graph 12/36
-Running dot for graph 13/36
-Running dot for graph 14/36
-Running dot for graph 15/36
-Running dot for graph 16/36
-Running dot for graph 17/36
-Running dot for graph 18/36
-Running dot for graph 19/36
-Running dot for graph 20/36
-Running dot for graph 21/36
-Running dot for graph 22/36
-Running dot for graph 23/36
-Running dot for graph 24/36
-Running dot for graph 25/36
-Running dot for graph 26/36
-Running dot for graph 27/36
-Running dot for graph 28/36
-Running dot for graph 29/36
-Running dot for graph 30/36
-Running dot for graph 31/36
-Running dot for graph 32/36
-Running dot for graph 33/36
-Running dot for graph 34/36
-Running dot for graph 35/36
-Running dot for graph 36/36
-Patching output file 1/58
-Patching output file 2/58
-Patching output file 3/58
-Patching output file 4/58
-Patching output file 5/58
-Patching output file 6/58
-Patching output file 7/58
-Patching output file 8/58
-Patching output file 9/58
-Patching output file 10/58
-Patching output file 11/58
-Patching output file 12/58
-Patching output file 13/58
-Patching output file 14/58
-Patching output file 15/58
-Patching output file 16/58
-Patching output file 17/58
-Patching output file 18/58
-Patching output file 19/58
-Patching output file 20/58
-Patching output file 21/58
-Patching output file 22/58
-Patching output file 23/58
-Patching output file 24/58
-Patching output file 25/58
-Patching output file 26/58
-Patching output file 27/58
-Patching output file 28/58
-Patching output file 29/58
-Patching output file 30/58
-Patching output file 31/58
-Patching output file 32/58
-Patching output file 33/58
-Patching output file 34/58
-Patching output file 35/58
-Patching output file 36/58
-Patching output file 37/58
-Patching output file 38/58
-Patching output file 39/58
-Patching output file 40/58
-Patching output file 41/58
-Patching output file 42/58
-Patching output file 43/58
-Patching output file 44/58
-Patching output file 45/58
-Patching output file 46/58
-Patching output file 47/58
-Patching output file 48/58
-Patching output file 49/58
-Patching output file 50/58
-Patching output file 51/58
-Patching output file 52/58
-Patching output file 53/58
-Patching output file 54/58
-Patching output file 55/58
-Patching output file 56/58
-Patching output file 57/58
-Patching output file 58/58
-type lookup cache used 3241/65536 hits=11526 misses=3357
-symbol lookup cache used 2050/65536 hits=6667 misses=2050
+Running dot for graph 1/10
+Running dot for graph 2/10
+Running dot for graph 3/10
+Running dot for graph 4/10
+Running dot for graph 5/10
+Running dot for graph 6/10
+Running dot for graph 7/10
+Running dot for graph 8/10
+Running dot for graph 9/10
+Running dot for graph 10/10
+Patching output file 1/17
+Patching output file 2/17
+Patching output file 3/17
+Patching output file 4/17
+Patching output file 5/17
+Patching output file 6/17
+Patching output file 7/17
+Patching output file 8/17
+Patching output file 9/17
+Patching output file 10/17
+Patching output file 11/17
+Patching output file 12/17
+Patching output file 13/17
+Patching output file 14/17
+Patching output file 15/17
+Patching output file 16/17
+Patching output file 17/17
+type lookup cache used 3246/65536 hits=11554 misses=3362
+symbol lookup cache used 2055/65536 hits=6675 misses=2055
 finished...

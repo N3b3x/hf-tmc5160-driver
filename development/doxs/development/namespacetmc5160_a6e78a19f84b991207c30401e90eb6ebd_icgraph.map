@@ -1,5 +1,5 @@
 <map id="tmc5160::MmToSteps" name="tmc5160::MmToSteps">
-<area shape="rect" id="Node000001" title="Convert millimeters to steps." alt="" coords="295,13,457,38"/>
-<area shape="rect" id="Node000002" href="$structtmc5160_1_1TMC5160_1_1RampControl.html#af8a09d45e0f919dff7d47f49f7946a7b" title="Set target position in millimeters." alt="" coords="5,5,247,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="281,28,247,28,247,23,281,23"/>
+<area shape="rect" id="Node000001" title="Convert millimeters to steps." alt="" coords="276,13,439,38"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1TMC5160_1_1MotorControl.html#a8ade07072feadfed50a097f7f62cbc1a" title="Set motor run and hold current." alt="" coords="5,5,228,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="262,28,228,28,228,23,262,23"/>
 </map>
