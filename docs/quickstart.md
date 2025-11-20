@@ -158,6 +158,15 @@ For multiple TMC5160 drivers on a single SPI bus:
 MySPI spi(true, true, true);
 spi.Initialize();
 
+// Option 1: Auto-detect chain length
+uint8_t chain_length = spi.AutoDetectChainLength(8); // Probe up to 8 devices
+if (chain_length > 0) {
+    // Chain length automatically set
+}
+
+// Option 2: Manually set chain length (if known)
+spi.SetDaisyChainLength(3); // 3 devices in chain
+
 // Create multiple drivers with different daisy-chain positions
 tmc5160::TMC5160 driver1(spi, 12'000'000, 0); // Position 0 (first chip)
 tmc5160::TMC5160 driver2(spi, 12'000'000, 1); // Position 1 (second chip)
@@ -167,6 +176,10 @@ tmc5160::TMC5160 driver3(spi, 12'000'000, 2); // Position 2 (third chip)
 driver1.Initialize(cfg); // Accesses chip 0
 driver2.Initialize(cfg); // Accesses chip 1
 driver3.Initialize(cfg); // Accesses chip 2
+
+// Or use TMC5160DaisyChain for easier management
+tmc5160::TMC5160DaisyChain<MySPI, 5> chain(spi, 3, 12'000'000);
+chain.InitializeAll(cfg);
 ```
 
 See [Multi-Chip Communication](special_features_multi_chip.md) for detailed information.

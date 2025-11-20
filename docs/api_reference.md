@@ -29,13 +29,19 @@ Main driver class for interfacing with the TMC5160 stepper motor controller.
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `TMC5160()` | `TMC5160(CommType& comm, uint32_t f_clk = 12000000)` | Construct driver instance with communication interface and clock frequency |
+| `TMC5160()` | `TMC5160(CommType& comm, uint32_t f_clk = 12000000, uint8_t daisy_chain_position = 0, uint8_t uart_node_address = 0)` | Construct driver instance. For SPI: daisy_chain_position. For UART: uart_node_address. |
 
 ### Core Methods
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
 | `GetComm()` | `CommType& GetComm() noexcept` | Reference to comm interface | Get communication interface reference |
+| `SetDaisyChainPosition()` | `void SetDaisyChainPosition(uint8_t position) noexcept` | void | Set daisy-chain position for SPI (0 = first chip) |
+| `GetDaisyChainPosition()` | `uint8_t GetDaisyChainPosition() const noexcept` | Position (0-255) | Get current daisy-chain position for SPI |
+| `SetUartNodeAddress()` | `void SetUartNodeAddress(uint8_t address) noexcept` | void | Set UART node address (0-254) for UART multi-node |
+| `GetUartNodeAddress()` | `uint8_t GetUartNodeAddress() const noexcept` | Address (0-254) | Get current UART node address |
+
+**Note**: Per datasheet procedure, devices are programmed backwards from address 254 (254, 253, 252, ...). Logical device indices (0, 1, 2, ...) map to physical addresses (254, 253, 252, ...). Use `TMC5160MultiNode` class for managing multiple devices.
 | `Initialize()` | `bool Initialize(const DriverConfig& config = DriverConfig()) noexcept` | `true` on success | Initialize driver with configuration |
 | `Reset()` | `bool Reset() noexcept` | `true` on success | Perform software reset |
 | `IsInitialized()` | `bool IsInitialized() const noexcept` | `true` if initialized | Check initialization status |
@@ -138,9 +144,21 @@ UART slave addressing and multi-chip communication configuration.
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `ConfigureSlaveAddress()` | `bool ConfigureSlaveAddress(uint8_t slave_address, uint8_t send_delay = 0) noexcept` | `true` on success | Configure UART slave address and send delay |
+| `ConfigureSlaveAddress()` | `bool ConfigureSlaveAddress(uint8_t slave_address, uint8_t send_delay = 0) noexcept` | `true` on success | Configure UART slave address and send delay (deprecated, use `uartConfig.ConfigureSlave()` instead) |
 | `GetSlaveAddress()` | `uint8_t GetSlaveAddress() noexcept` | Slave address (0-127) or 0xFF on error | Get current slave address from SLAVECONF register |
 | `GetSendDelay()` | `uint8_t GetSendDelay() noexcept` | Send delay (0-15) or 0xFF on error | Get current send delay from SLAVECONF register |
+
+## UartConfig Subsystem
+
+UART configuration subsystem for multi-node addressing.
+
+**Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+
+### Methods
+
+| Method | Signature | Returns | Description |
+|--------|-----------|---------|-------------|
+| `ConfigureSlave()` | `bool ConfigureSlave(uint8_t slave_address, uint8_t send_delay) noexcept` | `true` on success | Configure SLAVECONF register with node address (0-254) and send delay. Updates the driver's `uart_node_address_`. Per datasheet, devices are typically programmed backwards from 254. |
 
 ## Protection Subsystem
 
@@ -166,8 +184,8 @@ Methods available through `GetComm()` for direct communication interface access.
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
 | `GetMode()` | `CommMode GetMode() const noexcept` | CommMode enum | Get communication mode (SPI or UART) |
-| `ReadRegister()` | `bool ReadRegister(uint8_t address, uint32_t& value, uint8_t daisy_chain_position = 0) noexcept` | `true` on success | Read 32-bit register with optional daisy-chain position |
-| `WriteRegister()` | `bool WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept` | `true` on success | Write 32-bit register with optional daisy-chain position |
+| `ReadRegister()` | `bool ReadRegister(uint8_t address, uint32_t& value, uint8_t daisy_chain_position = 0) noexcept` | `true` on success | Read 32-bit register. For SPI: daisy-chain position. For UART: node address. |
+| `WriteRegister()` | `bool WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept` | `true` on success | Write 32-bit register. For SPI: daisy-chain position. For UART: node address. |
 | `GpioSet()` | `bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) noexcept` | `true` on success | Set GPIO pin state |
 | `GpioRead()` | `bool GpioRead(TMC5160CtrlPin pin, GpioSignal& signal) noexcept` | `true` on success | Read GPIO pin state |
 | `GpioSetActive()` | `bool GpioSetActive(TMC5160CtrlPin pin) noexcept` | `true` on success | Set GPIO pin to active state |
@@ -178,14 +196,31 @@ Methods available through `GetComm()` for direct communication interface access.
 | `DelayMs()` | `void DelayMs(uint32_t ms) noexcept` | void | Delay milliseconds |
 | `DelayUs()` | `void DelayUs(uint32_t us) noexcept` | void | Delay microseconds |
 | `LogDebug()` | `void LogDebug(int level, const char* tag, const char* format, ...) noexcept` | void | Debug logging |
-| `SetDaisyChainPosition()` | `void SetDaisyChainPosition(uint8_t position) noexcept` | void | Set daisy-chain position for this TMC5160 instance (TMC5160 class method) |
-| `GetDaisyChainPosition()` | `uint8_t GetDaisyChainPosition() const noexcept` | Position (0-255) | Get current daisy-chain position (TMC5160 class method) |
-| `SetDaisyChainLength()` | `void SetDaisyChainLength(uint8_t total_length) noexcept` | void | Set total number of devices in daisy chain (SPI only) |
-| `GetDaisyChainLength()` | `uint8_t GetDaisyChainLength() const noexcept` | Chain length (0-255) | Get current daisy chain length setting (SPI only) |
-| `SetSlaveAddress()` | `void SetSlaveAddress(uint8_t address) noexcept` | void | Set UART slave address (UART only) |
-| `GetSlaveAddress()` | `uint8_t GetSlaveAddress() const noexcept` | Slave address (0-127) | Get current UART slave address (UART only) |
-| `SetNaiPin()` | `bool SetNaiPin(bool active) noexcept` | `true` on success | Set NAI pin state for UART daisy chaining (UART only) |
-| `GetNaoPin()` | `bool GetNaoPin(bool& active) noexcept` | `true` on success | Read NAO pin state for UART daisy chaining (UART only) |
+
+## TMC5160 Class Methods
+
+| Method | Signature | Returns | Description |
+|--------|-----------|---------|-------------|
+| `SetDaisyChainPosition()` | `void SetDaisyChainPosition(uint8_t position) noexcept` | void | Set daisy-chain position for this TMC5160 instance |
+| `GetDaisyChainPosition()` | `uint8_t GetDaisyChainPosition() const noexcept` | Position (0-255) | Get current daisy-chain position |
+
+**Note**: Each `TMC5160` instance tracks its own daisy-chain position. This position is automatically passed to `ReadRegister()` and `WriteRegister()` methods in the communication interface.
+
+## SpiCommInterface Methods (SPI Only)
+
+| Method | Signature | Returns | Description |
+|--------|-----------|---------|-------------|
+| `SetDaisyChainLength()` | `void SetDaisyChainLength(uint8_t total_length) noexcept` | void | Set total number of devices in daisy chain (for proper response extraction) |
+| `GetDaisyChainLength()` | `uint8_t GetDaisyChainLength() const noexcept` | Chain length (0-255) | Get current daisy chain length setting |
+| `AutoDetectChainLength()` | `uint8_t AutoDetectChainLength(uint8_t max_devices = 8) noexcept` | Detected length (0-255) | Auto-detect daisy chain length by sending command that loops back |
+
+**Note**: `SetDaisyChainLength()` is critical for proper response extraction using the datasheet formula `40·(n-k+1)`. The chain length represents the total number of devices in the daisy chain, not individual device positions.
+| `SetNaiPin()` | `bool SetNaiPin(bool active) noexcept` | `true` on success | Set NAI pin state for UART sequential addressing (UART only) |
+| `GetNaoPin()` | `bool GetNaoPin(bool& active) noexcept` | `true` on success | Read NAO pin state for UART sequential addressing (UART only) |
+
+**Note**: `UartCommInterface` no longer stores node addresses. Multiple `TMC5160` instances share one `UartCommInterface` on the same UART bus. Each `TMC5160` instance stores its own `uart_node_address_` and passes it to `ReadRegister()`/`WriteRegister()` automatically.
+
+**UART Addressing**: Per datasheet procedure (Figure 5.1), devices are programmed backwards from address 254 (254, 253, 252, ...). Logical device indices (0, 1, 2, ...) used in software correspond to physical addresses (254, 253, 252, ...) programmed into chips. Use `TMC5160MultiNode` class for managing multiple devices with sequential programming.
 
 ## Enums
 

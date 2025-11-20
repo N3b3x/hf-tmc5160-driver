@@ -399,6 +399,7 @@ struct DriverConfig {
 - `UartCommInterface<Derived>` - Full UART support with multi-node
 - `TMC5160DaisyChain` class - High-level daisy-chain management
 - Automatic chain length configuration for proper response extraction
+- `AutoDetectChainLength()` - Auto-detect chain length by command loopback
 - Sequential positioning enforcement
 - Dynamic device addition/removal support
 

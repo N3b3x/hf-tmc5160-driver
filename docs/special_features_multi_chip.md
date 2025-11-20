@@ -169,8 +169,9 @@ uint8_t pos = driver.GetDaisyChainPosition(); // Returns 2
 **How Daisy-Chain Padding Works:**
 
 1. Each `TMC5160` instance stores its own `daisy_chain_position_` (set in constructor or via `SetDaisyChainPosition()`)
-2. When `ReadRegister()` or `WriteRegister()` is called, the driver passes its `daisy_chain_position_` to the communication interface
-3. The `SpiCommInterface` calculates the correct transfer size and padding:
+   - **Important**: Position is tracked by the `TMC5160` class, NOT by the communication interface
+2. When `ReadRegister()` or `WriteRegister()` is called, the driver automatically passes its `daisy_chain_position_` as a parameter to the communication interface methods
+3. The `SpiCommInterface` uses the position parameter along with the total chain length (set via `SetDaisyChainLength()`) to calculate the correct transfer size and padding:
    - Position 0: 5 bytes (command only)
    - Position 1: 10 bytes (command + 5 bytes padding)
    - Position 2: 15 bytes (command + 10 bytes padding)
@@ -232,11 +233,46 @@ if (chain.AddDevice(3)) {
 configuration and sequential positioning. Individual `TMC5160` instances can also
 be created manually, but users must ensure positions match the physical chain order.
 
+### Auto-Detecting Chain Length
+
+The `SpiCommInterface` provides an `AutoDetectChainLength()` method that can automatically
+detect the number of devices in the daisy chain by sending a unique command that loops back:
+
+```cpp
+// Auto-detect chain length (probes up to 8 devices by default)
+uint8_t detected = spi.AutoDetectChainLength();
+if (detected > 0) {
+  // Chain length automatically set, can also use return value
+  ESP_LOGI(TAG, "Detected %u devices in chain", detected);
+} else {
+  // Detection failed or single chip
+  ESP_LOGI(TAG, "Single chip or detection failed");
+}
+
+// Or specify max devices to probe
+uint8_t detected = spi.AutoDetectChainLength(16); // Probe up to 16 devices
+```
+
+**How It Works:**
+1. Sends a unique read command (register 0x73) to position `(max_devices+1)` (beyond last device)
+2. Sends enough padding to allow command to loop through all devices and back
+3. Searches received data for the exact command pattern
+4. When found at offset `(n+1)*5` bytes, chain length = `n`
+5. Automatically sets the chain length via `SetDaisyChainLength()`
+
+**Important Notes:**
+- Requires devices to be powered (but don't need to be initialized)
+- Uses a safe read operation that doesn't modify device state
+- Requires exact 5-byte pattern match to confirm loopback
+- Returns 0 if detection fails (assumes single chip)
+
 ## UART Multi-Node Addressing
+
+**Important**: UART multi-node addressing is **NOT** daisy-chaining like SPI. It uses a shared UART bus with node addresses (0-254) programmed via SLAVECONF register. Multiple TMC5160 instances share one `UartCommInterface` on the same UART bus. **Per datasheet procedure, devices are programmed backwards starting from address 254** (254, 253, 252, ...).
 
 ### UART Mode Requirements
 
-For UART daisy chaining, the TMC5160 must be configured in UART mode:
+For UART multi-node addressing, the TMC5160 must be configured in UART mode:
 
 - **SD_MODE** (pin 21): Must be tied **LOW** (0)
 - **SPI_MODE** (pin 22): Must be tied **LOW** (0)
@@ -244,7 +280,7 @@ For UART daisy chaining, the TMC5160 must be configured in UART mode:
 
 ### Pin Functions in UART Mode
 
-In UART mode (SD_MODE=0, SPI_MODE=0), certain pins take on special functions for daisy chaining:
+In UART mode (SD_MODE=0, SPI_MODE=0), certain pins take on special functions for sequential addressing:
 
 | Pin Name | Pin Number | Function in UART Mode | Description |
 |----------|------------|----------------------|-------------|
@@ -316,55 +352,86 @@ For systems with more than two devices (up to 255 nodes):
 
 - Use the sequential addressing procedure described below
 - Each device must be programmed sequentially
-- First device starts at address 0, then each device is programmed to its target address
+- **Per datasheet Figure 5.1, devices are programmed backwards from address 254** (254, 253, 252, ...)
+- First device (logical index 0) is programmed to address 254
+- Second device (logical index 1) is programmed to address 253
+- Continue: device at logical index i is programmed to address (254 - i)
 
 ### Sequential Addressing Procedure
 
-To program addresses for multiple chips (up to 255 nodes):
+To program addresses for multiple chips (up to 255 nodes), follow the datasheet procedure (Figure 5.1):
 
-**Initial State:**
+**Initial State at Power-Up:**
 - First chip: NAI tied to GND → responds to address 0
-- All other chips: NAI connected to previous chip's NAO → initially respond to address 1
+- All other chips: NAI connected to previous chip's NAO (HIGH) → initially respond to address 1
 
-**Programming Sequence:**
+**Programming Sequence (Per Datasheet):**
 
 1. **Addressing Phase 1**: First chip responds to address 0 (NAI = GND)
-   - Program first chip to its target address (e.g., address 1)
-   - Set SLAVECONF.slaveaddr = 1
-   - **Important**: After programming, the chip's NAO must be set LOW to enable the next chip
+   - Program first chip (logical index 0) to address **254**
+   - Set SLAVECONF.slaveaddr = 254
+   - **After programming, the chip's NAO automatically goes LOW** → next chip becomes accessible at address 0
 
-2. **Addressing Phase 2**: Second chip now responds to address 1
-   - Program second chip to its target address (e.g., address 2)
-   - Set SLAVECONF.slaveaddr = 2
-   - Set NAO LOW to enable next chip
+2. **Addressing Phase 2**: Second chip now responds to address 0 (because previous chip's NAO is LOW)
+   - Program second chip (logical index 1) to address **253**
+   - Set SLAVECONF.slaveaddr = 253
+   - After programming, NAO goes LOW → next chip becomes accessible at address 0
 
 3. **Addressing Phase 3+**: Continue for remaining chips
-   - Each chip is programmed sequentially
-   - After programming, set NAO LOW to enable the next chip in the chain
+   - Each chip is programmed sequentially, accessible at address 0
+   - Device at logical index i is programmed to address **(254 - i)**
+   - After programming, NAO goes LOW automatically → next chip becomes accessible at address 0
    - Continue until all chips are programmed
 
 **Critical Steps:**
 - Tie the NAI pin of the first TMC5160 to GND
 - Interconnect NAO output of each chip to the next chip's NAI pin
-- Program each chip sequentially, starting from address 0
-- **After programming each chip, its NAO output must be set to logic LOW** to differentiate the next chip from all following devices
-- The next chip becomes accessible only after the previous chip's NAO is set LOW
+- **Program devices backwards from address 254** (254, 253, 252, ...) per datasheet
+- After programming each chip, its NAO output automatically goes LOW to enable the next chip
+- The next chip becomes accessible at address 0 only after the previous chip's NAO is LOW
+
+**Note**: The logical device indices (0, 1, 2, ...) used in software correspond to physical addresses (254, 253, 252, ...) programmed into the chips. This follows the datasheet procedure for addressing up to 255 nodes.
 
 ### Software Implementation
 
-#### Configure Slave Address
+#### Architecture
 
-Use the `Communication` subsystem to configure slave addresses:
+- **One UartCommInterface**: Shared by all TMC5160 instances on the same UART bus
+- **Multiple TMC5160 Instances**: One per device, each with its own programmed node address
+- **Node Address Storage**: Each `TMC5160` instance stores its own `uart_node_address_` (like `daisy_chain_position_` for SPI)
+- **ReadRegister/WriteRegister**: Accept `node_address` parameter (UART uses this, SPI uses `daisy_chain_position`)
+- **Logical vs Physical Addressing**: Devices are accessed via logical indices (0, 1, 2, ...) but programmed with physical addresses (254, 253, 252, ...) per datasheet
+
+#### Configure Node Address (Manual Method)
+
+For manual programming without the manager class:
 
 ```cpp
-tmc5160::TMC5160 driver(uart_comm);
+// Create shared UART communication interface
+MyUART uart_comm(/* ... */);
 
-// Configure slave address for this chip
-// send_delay should be >1 when multiple slaves are present
-driver.communication.ConfigureSlaveAddress(1, 2); // Address 1, delay 2 bit times
+// Create TMC5160 instances (initial address 0, will be programmed)
+tmc5160::TMC5160 driver0(uart_comm, 12'000'000, 0, 0); // Logical index 0
+tmc5160::TMC5160 driver1(uart_comm, 12'000'000, 0, 0); // Logical index 1
+tmc5160::TMC5160 driver2(uart_comm, 12'000'000, 0, 0); // Logical index 2
 
-// Get current slave address
-uint8_t addr = driver.communication.GetSlaveAddress();
+// Program devices sequentially per datasheet (backwards from 254)
+// First chip: accessible at address 0, program to address 254
+driver0.uartConfig.ConfigureSlave(254, 2); // Address 254, delay 2 bit times
+driver0.SetUartNodeAddress(254);
+// After programming, NAO goes LOW → next chip accessible at address 0
+
+// Second chip: accessible at address 0, program to address 253
+driver1.uartConfig.ConfigureSlave(253, 2); // Address 253, delay 2 bit times
+driver1.SetUartNodeAddress(253);
+// After programming, NAO goes LOW → next chip accessible at address 0
+
+// Third chip: accessible at address 0, program to address 252
+driver2.uartConfig.ConfigureSlave(252, 2); // Address 252, delay 2 bit times
+driver2.SetUartNodeAddress(252);
+
+// Get current node address
+uint8_t addr = driver0.GetUartNodeAddress(); // Returns 254
 ```
 
 #### NAI/NAO Pin Control
@@ -393,111 +460,91 @@ public:
 };
 ```
 
-#### Sequential Address Programming Example
+#### Using TMC5160MultiNode Manager Class (Recommended)
 
-Here's a complete example for programming multiple chips sequentially:
+The easiest way to manage multiple UART nodes is using the `TMC5160MultiNode` class:
+
+```cpp
+#include "tmc5160_multi_node.hpp"
+
+// Create shared UART communication interface
+MyUART uart_comm(/* ... constructor args ... */);
+
+// Create multi-node manager with 3 onboard devices, capacity for 5 total
+// Onboard devices are created with initial address 0 (will be programmed)
+tmc5160::TMC5160MultiNode<MyUART, 5> nodes(uart_comm, 3, 12'000'000);
+
+// Program all devices sequentially (required at startup)
+// This programs devices to addresses 254, 253, 252 per datasheet procedure
+// Device at logical index 0 → address 254
+// Device at logical index 1 → address 253
+// Device at logical index 2 → address 252
+if (!nodes.ProgramSequentially()) {
+  // Error handling
+  return;
+}
+
+// Initialize all devices
+tmc5160::DriverConfig cfg{};
+cfg.motor.irun = 20;
+cfg.motor.ihold = 10;
+nodes.InitializeAll(cfg);
+
+// Create user-friendly aliases using logical indices
+auto& x_axis = nodes[0];  // Logical index 0, programmed to address 254
+auto& y_axis = nodes[1];  // Logical index 1, programmed to address 253
+auto& z_axis = nodes[2];  // Logical index 2, programmed to address 252
+
+// Use devices (access via logical indices, communication uses programmed addresses)
+x_axis.rampControl.SetTargetPosition(1000);
+y_axis.rampControl.SetMaxSpeed(500.0f);
+z_axis.motorControl.Enable();
+
+// Check actual programmed addresses
+uint8_t x_addr = x_axis.GetUartNodeAddress(); // Returns 254
+uint8_t y_addr = y_axis.GetUartNodeAddress(); // Returns 253
+uint8_t z_addr = z_axis.GetUartNodeAddress(); // Returns 252
+```
+
+#### Manual Sequential Programming Example
+
+For manual control without the manager class:
 
 ```cpp
 #include "tmc5160.hpp"
 
-// Helper function to program a chip and enable the next one
-bool programChipAndEnableNext(tmc5160::TMC5160& driver, 
-                               uint8_t target_address,
-                               MyUART& uart_interface) {
-  // Configure slave address (send_delay should be >= 2 for multi-node systems)
-  if (!driver.communication.ConfigureSlaveAddress(target_address, 2)) {
-    return false;
-  }
-  
-  // Update the UART interface's slave address for subsequent operations
-  uart_interface.SetSlaveAddress(target_address);
-  
-  // Verify the address was set correctly
-  uint8_t read_addr = driver.communication.GetSlaveAddress();
-  if (read_addr != target_address) {
-    return false;
-  }
-  
-  // After programming, the chip's NAO should be LOW to enable next chip
-  // In hardware, NAO is automatically controlled, but you may need to verify
-  bool nao_state;
-  if (uart_interface.GetNaoPin(nao_state)) {
-    // NAO should be LOW after programming to enable next chip
-    // If it's HIGH, the next chip won't be accessible
-  }
-  
-  return true;
-}
-
-void programSlaveAddresses() {
-  MyUART uart(/* ... constructor args ... */);
-  
-  // First chip: NAI is tied to GND in hardware (responds to address 0)
-  uart.SetSlaveAddress(0);
-  tmc5160::TMC5160 driver1(uart);
-  
-  // Program first chip to address 1
-  if (!programChipAndEnableNext(driver1, 1, uart)) {
-    // Error handling
-    return;
-  }
-  
-  // Second chip: Now responds to address 1 (NAI connected to chip 1's NAO)
-  uart.SetSlaveAddress(1);
-  tmc5160::TMC5160 driver2(uart);
-  
-  // Program second chip to address 2
-  if (!programChipAndEnableNext(driver2, 2, uart)) {
-    // Error handling
-    return;
-  }
-  
-  // Third chip: Now responds to address 2
-  uart.SetSlaveAddress(2);
-  tmc5160::TMC5160 driver3(uart);
-  
-  // Program third chip to address 3
-  if (!programChipAndEnableNext(driver3, 3, uart)) {
-    // Error handling
-    return;
-  }
-  
-  // Continue for remaining chips...
-  // Each chip must be programmed sequentially
-}
-```
-
-#### Alternative: Program All Chips to Sequential Addresses
-
-For a system where you want chips at addresses 1, 2, 3, ..., N:
-
-```cpp
 void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
-  // First chip starts at address 0 (NAI tied to GND)
-  uart.SetSlaveAddress(0);
-  
+  // Create TMC5160 instances (initial address 0, will be programmed)
+  // All instances share the same UartCommInterface
+  std::vector<tmc5160::TMC5160<MyUART>> drivers;
   for (uint8_t i = 0; i < num_chips; i++) {
-    // Create driver instance for current chip
-    tmc5160::TMC5160 driver(uart);
+    drivers.emplace_back(uart, 12'000'000, 0, 0); // f_clk, daisy_pos=0, initial uart_addr=0
+  }
+  
+  // Program each device sequentially per datasheet (backwards from 254)
+  // First chip: NAI is tied to GND (hardware) → responds to address 0
+  for (uint8_t i = 0; i < num_chips; i++) {
+    // Calculate target address: 254 - i (per datasheet)
+    uint8_t target_address = 254 - i;
     
-    // Target address is i+1 (chips will be at addresses 1, 2, 3, ...)
-    uint8_t target_addr = i + 1;
-    
-    // Program chip to target address
-    if (!driver.communication.ConfigureSlaveAddress(target_addr, 2)) {
+    // Program device to target address
+    // send_delay should be >= 2 for multi-node systems
+    if (!drivers[i].uartConfig.ConfigureSlave(target_address, 2)) {
       // Error: failed to program chip
       break;
     }
     
-    // Update UART interface address for next iteration
-    uart.SetSlaveAddress(target_addr);
+    // Update the driver's node address
+    drivers[i].SetUartNodeAddress(target_address);
     
+    // After programming, chip's NAO goes LOW automatically to enable next chip
+    // Next chip becomes accessible at address 0
     // Small delay to ensure NAO settles
     uart.DelayMs(10);
     
     // Verify address
-    uint8_t verify_addr = driver.communication.GetSlaveAddress();
-    if (verify_addr != target_addr) {
+    uint8_t verify_addr = drivers[i].GetUartNodeAddress();
+    if (verify_addr != target_address) {
       // Error: address verification failed
       break;
     }
@@ -519,20 +566,43 @@ void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
 
 | Method | Description |
 |--------|-------------|
-| `ReadRegister(address, value, daisy_chain_position = 0)` | Read register with optional daisy-chain position |
-| `WriteRegister(address, value, daisy_chain_position = 0)` | Write register with optional daisy-chain position |
+| `ReadRegister(address, value, daisy_chain_position = 0)` | Read register with optional daisy-chain position parameter |
+| `WriteRegister(address, value, daisy_chain_position = 0)` | Write register with optional daisy-chain position parameter |
 | `SetDaisyChainLength(total_length)` | Set total number of devices in chain (for proper response extraction) |
 | `GetDaisyChainLength()` | Get current chain length setting |
+| `AutoDetectChainLength(max_devices = 8)` | Auto-detect chain length by sending command that loops back |
+
+**Note**: The `daisy_chain_position` parameter in `ReadRegister()` and `WriteRegister()` is provided by the `TMC5160` class automatically. The `SpiCommInterface` does NOT track individual device positions - only the total chain length.
 
 ### UART Methods
 
 | Method | Description |
 |--------|-------------|
-| `SetSlaveAddress(address)` | Set 7-bit slave address (0-127) |
-| `GetSlaveAddress()` | Get current slave address |
-| `SetNaiPin(active)` | Set NAI pin state for daisy chaining |
+| `ReadRegister(address, value, node_address = 0)` | Read register with node address parameter |
+| `WriteRegister(address, value, node_address = 0)` | Write register with node address parameter |
+| `SetNaiPin(active)` | Set NAI pin state for sequential addressing |
 | `GetNaoPin(active)` | Read NAO pin state |
-| `ConfigureSlaveAddress(address, send_delay)` | Configure SLAVECONF register |
+
+**Note**: The `node_address` parameter in `ReadRegister()` and `WriteRegister()` is provided by the `TMC5160` class automatically via `GetCommAddress()`. The `UartCommInterface` does NOT store node addresses - multiple `TMC5160` instances share one `UartCommInterface` on the same UART bus.
+
+### TMC5160 Class Methods (UART)
+
+| Method | Description |
+|--------|-------------|
+| `SetUartNodeAddress(address)` | Set UART node address (0-127) for this instance |
+| `GetUartNodeAddress()` | Get current UART node address |
+| `uartConfig.ConfigureSlave(address, send_delay)` | Configure SLAVECONF register with node address |
+
+### TMC5160MultiNode Manager Class
+
+| Method | Description |
+|--------|-------------|
+| `ProgramSequentially(send_delay = 2)` | Program all active devices sequentially using NAI/NAO. Programs devices to addresses (254, 253, 252, ...) per datasheet. |
+| `ProgramDevice(index, send_delay = 2)` | Program a single device at logical index to address (254 - index) |
+| `AddDevice(index)` | Add an extra device at specified logical index |
+| `RemoveDevice(index)` | Remove an extra device at specified logical index |
+| `operator[](index)` | Access individual TMC5160 driver by logical index (0, 1, 2, ...). Actual programmed addresses are (254, 253, 252, ...). |
+| `InitializeAll(config)` | Initialize all active devices with same configuration |
 
 ## Best Practices
 
@@ -542,13 +612,17 @@ void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
    - CSN control is handled in your `SpiTransfer()` implementation
    - Use `TMC5160DaisyChain` class for managing multiple devices efficiently
    - Set chain length using `SetDaisyChainLength()` for proper response extraction
+   - Optionally use `AutoDetectChainLength()` to automatically detect chain length
 
 2. **UART Multi-Node**:
    - **Mode Configuration**: Ensure SD_MODE=0 and SPI_MODE=0 for UART operation
    - **Hardware Setup**: First chip's NAI must be tied to GND; chain NAO→NAI for subsequent chips
-   - **Send Delay**: Set `send_delay` >= 2 when multiple slaves are present (via `ConfigureSlaveAddress()`)
-   - **Sequential Programming**: Program addresses sequentially starting from address 0
-   - **NAO Control**: After programming each chip, its NAO must be LOW to enable the next chip
+   - **Shared Interface**: Multiple `TMC5160` instances share one `UartCommInterface` on the same UART bus
+   - **Node Address Storage**: Each `TMC5160` instance stores its own `uart_node_address_` (like `daisy_chain_position_` for SPI)
+   - **Send Delay**: Set `send_delay` >= 2 when multiple nodes are present (via `uartConfig.ConfigureSlave()`)
+   - **Sequential Programming**: Program addresses backwards from 254 (254, 253, 252, ...) per datasheet procedure (use `TMC5160MultiNode::ProgramSequentially()`)
+   - **Logical vs Physical**: Devices accessed via logical indices (0, 1, 2, ...) but programmed with physical addresses (254, 253, 252, ...)
+   - **NAO Control**: After programming each chip, its NAO automatically goes LOW to enable the next chip
    - **Verification**: Always verify addresses after programming
    - **Pin Mapping**: Remember that in UART mode, SDI_CFG1→NAI, SDO_CFG0→NAO, DIAG0_SWN→SWION, DIAG1_SWP→SWIOP
 
@@ -567,6 +641,8 @@ void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
   - Maximum 255 nodes (8-bit address space, 0-254)
   - Requires SD_MODE=0 and SPI_MODE=0 for UART operation
   - Sequential programming required - cannot program chips out of order
+  - Devices programmed backwards from address 254 (254, 253, 252, ...) per datasheet
+  - Logical indices (0, 1, 2, ...) map to physical addresses (254, 253, 252, ...)
   - NAI/NAO pins must be properly connected (first chip NAI to GND, chain NAO→NAI)
   - Send delay must be >= 2 for multi-node systems
   

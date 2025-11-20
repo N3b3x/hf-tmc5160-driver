@@ -1085,12 +1085,13 @@ public:
  *   **CRITICAL**: Responses come back in REVERSE order - device n-1 response first, then n-2, ..., device 0 last
  *
  * Architecture:
- * - Each SpiCommInterface instance supports ONE TMC5160 driver on ONE SPI bus
- * - For daisy-chaining: Use SetDaisyChainPosition() to specify chip position (0, 1, 2, ...)
+ * - Each SpiCommInterface instance supports ONE SPI bus (shared by multiple TMC5160 drivers)
+ * - For daisy-chaining: Each TMC5160 instance tracks its own position and passes it to ReadRegister()/WriteRegister()
  * - For multi-CS setups: Create separate SpiCommInterface instances (one per chip)
- * - ReadRegister() and WriteRegister() automatically handle daisy-chaining based on position
+ * - ReadRegister() and WriteRegister() automatically handle daisy-chaining based on position parameter
+ * - SetDaisyChainLength() must be called to enable optimal response extraction using datasheet formula
  * - For higher-level multi-driver management, use TMC5160DaisyChain class that manages multiple
- *   TMC5160 instances on a single SPI bus
+ *   TMC5160 instances on a single SPI bus and automatically configures chain length
  *
  * Example usage:
  * @code
@@ -1147,6 +1148,150 @@ public:
    */
   uint8_t GetDaisyChainLength() const noexcept {
     return total_chain_length_;
+  }
+
+  /**
+   * @brief Auto-detect the daisy chain length by sending a unique command that loops back
+   * 
+   * This method sends a command with a unique, recognizable pattern to position (max_devices+1),
+   * which is beyond the last device. The command will shift through all devices and loop back
+   * to the MCU via the last device's SDO. By searching for our exact command pattern in the
+   * received data, we can determine the actual chain length.
+   * 
+   * Algorithm:
+   * 1. Create a unique command with a distinctive pattern (e.g., read register 0x73 with unique data)
+   * 2. Send command to position (max_devices+1) - beyond the last device
+   * 3. Send enough padding: (max_devices+2)*40 bits total to ensure loopback is captured
+   * 4. The command loops back after (n+1)*40 bits where n is the actual chain length
+   * 5. Search received data for our exact command pattern
+   * 6. When found at offset (n+1)*5, chain length = n
+   * 
+   * @param max_devices Maximum number of devices to probe (default: 8, max: 255)
+   * @return Detected chain length (0 = single chip or detection failed, >0 = number of devices)
+   * 
+   * @note This method requires that devices are powered (but don't need to be initialized)
+   * @note The command uses a read operation which is safe and doesn't modify device state
+   * @note The detected length is automatically set via SetDaisyChainLength()
+   * 
+   * @warning This method performs a full SPI transaction and may take time
+   */
+  uint8_t AutoDetectChainLength(uint8_t max_devices = 8) noexcept {
+    if (max_devices == 0 || max_devices > 255) {
+      max_devices = 8; // Default to 8 devices
+    }
+
+    // Create a unique command pattern that we can reliably identify when it loops back
+    // Use a read command to a register that's safe to read (GSTAT = 0x00)
+    // But we'll use a unique address pattern to make it more distinctive
+    // Actually, let's use a write command with a unique value that we can recognize
+    // But writes modify state... better to use read with a unique address
+    
+    // Best approach: Use a read command with a distinctive address
+    // We'll use address 0x73 (last register) which is safe to read
+    // The command pattern will be: [0x73] [0x00] [0x00] [0x00] [0x00]
+    // This is distinctive enough to identify
+    
+    // Actually, even better: Use a read to an address that's unlikely to appear in device responses
+    // Let's use 0x73 (last register address) - this is distinctive
+    SpiCommand cmd = SpiCommand::Read(0x73); // Read last register (0x73)
+    
+    // Get the command frame bytes so we can search for it
+    uint8_t cmd_bytes[5];
+    cmd.GetFrame(cmd_bytes);
+    
+    // Send command to position (max_devices+1) - beyond the last device
+    // Total transfer: (max_devices+2)*40 bits to ensure we capture loopback
+    size_t transfer_bytes = static_cast<size_t>(max_devices + 2) * 5;
+    
+    std::vector<uint8_t> tx_buf(transfer_bytes, 0);
+    std::vector<uint8_t> rx_buf(transfer_bytes, 0);
+    
+    // Place command at the beginning (bytes 0-4)
+    cmd.GetFrame(tx_buf.data());
+    // Rest is padding (zeros) - already initialized to 0
+    
+    TMC5160_LOG_DEBUG(*static_cast<Derived *>(this), 2, "SPI",
+                      "AutoDetectChainLength: Probing up to %u devices, transfer_bytes=%zu, cmd_pattern=%02X %02X %02X %02X %02X",
+                      max_devices, transfer_bytes,
+                      cmd_bytes[0], cmd_bytes[1], cmd_bytes[2], cmd_bytes[3], cmd_bytes[4]);
+    
+    // Perform SPI transfer
+    if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
+      TMC5160_LOG_DEBUG(*static_cast<Derived *>(this), 1, "SPI",
+                        "AutoDetectChainLength: SPI transfer failed");
+      return 0;
+    }
+    
+    // Search for our exact command pattern in the received data
+    // The command loops back after (n+1)*40 bits, appearing at offset (n+1)*5 bytes
+    // Since each device delays data by 40 clocks, our command should appear unmodified
+    // at the loopback point
+    
+    uint8_t detected_length = 0;
+    
+    // Search backwards from max_devices to find where our command appears
+    // For n devices, our command appears at offset (n+1)*5 after looping back
+    // We require an EXACT match of all 5 bytes to confirm loopback
+    for (int8_t n = max_devices; n >= 1; --n) {
+      size_t loopback_offset = static_cast<size_t>(n + 1) * 5;
+      
+      if (loopback_offset + 4 < rx_buf.size()) {
+        // Check if the 5-byte chunk at loopback_offset matches our command pattern EXACTLY
+        // This is the only reliable way to confirm the command looped back correctly
+        bool exact_match = true;
+        
+        for (uint8_t i = 0; i < 5; ++i) {
+          if (rx_buf[loopback_offset + i] != cmd_bytes[i]) {
+            exact_match = false;
+            break;
+          }
+        }
+        
+        if (exact_match) {
+          // Found our exact command pattern! This confirms it looped back after n devices
+          detected_length = static_cast<uint8_t>(n);
+          TMC5160_LOG_DEBUG(*static_cast<Derived *>(this), 2, "SPI",
+                            "AutoDetectChainLength: Found EXACT command pattern match at offset %zu (expected for n=%u), chain length = %u",
+                            loopback_offset, n, detected_length);
+          break;
+        }
+      }
+    }
+    
+    // If exact match failed, log debug info to help diagnose
+    if (detected_length == 0) {
+      TMC5160_LOG_DEBUG(*static_cast<Derived *>(this), 1, "SPI",
+                        "AutoDetectChainLength: Exact command pattern not found in received data");
+      TMC5160_LOG_DEBUG(*static_cast<Derived *>(this), 3, "SPI",
+                        "AutoDetectChainLength: Expected pattern: %02X %02X %02X %02X %02X",
+                        cmd_bytes[0], cmd_bytes[1], cmd_bytes[2], cmd_bytes[3], cmd_bytes[4]);
+      
+      // Log first few potential loopback positions for debugging
+      for (uint8_t n = 1; n <= 3 && n <= max_devices; ++n) {
+        size_t loopback_offset = static_cast<size_t>(n + 1) * 5;
+        if (loopback_offset + 4 < rx_buf.size()) {
+          TMC5160_LOG_DEBUG(*static_cast<Derived *>(this), 3, "SPI",
+                            "AutoDetectChainLength: At offset %zu (n=%u): %02X %02X %02X %02X %02X",
+                            loopback_offset, n,
+                            rx_buf[loopback_offset], rx_buf[loopback_offset + 1],
+                            rx_buf[loopback_offset + 2], rx_buf[loopback_offset + 3],
+                            rx_buf[loopback_offset + 4]);
+        }
+      }
+    }
+    
+    // If we detected a length, set it
+    if (detected_length > 0) {
+      total_chain_length_ = detected_length;
+      TMC5160_LOG_DEBUG(*static_cast<Derived *>(this), 2, "SPI",
+                        "AutoDetectChainLength: Detected chain length = %u", detected_length);
+    } else {
+      TMC5160_LOG_DEBUG(*static_cast<Derived *>(this), 1, "SPI",
+                        "AutoDetectChainLength: Command pattern not found, assuming single chip");
+      total_chain_length_ = 0; // Assume single chip
+    }
+    
+    return detected_length;
   }
 
   /**
@@ -1684,33 +1829,21 @@ public:
    * (true=HIGH, false=LOW)
    * @param step_active_level Physical GPIO level for STEP pin when ACTIVE
    * (true=HIGH, false=LOW)
-   * @param slave_address 7-bit slave address (0-127)
+   *
+   * @note Multiple TMC5160 instances can share one UartCommInterface on the same
+   *       UART bus. The node address is passed per transaction via ReadRegister()
+   *       and WriteRegister() methods.
    */
   UartCommInterface(bool en_active_level, bool dir_active_level,
-                    bool step_active_level, uint8_t slave_address) noexcept
+                    bool step_active_level) noexcept
       : CommInterface<Derived>(en_active_level, dir_active_level,
-                               step_active_level),
-        slaveAddress_(slave_address & 0x7F) {}
+                               step_active_level) {}
 
   /**
    * @brief Get communication mode (always UART for this interface)
    * @return CommMode::UART
    */
   CommMode GetMode() const noexcept { return CommMode::UART; }
-
-  /**
-   * @brief Get current slave address
-   * @return 7-bit slave address
-   */
-  uint8_t GetSlaveAddress() const noexcept { return slaveAddress_; }
-
-  /**
-   * @brief Set slave address
-   * @param address 7-bit slave address (0-127)
-   */
-  void SetSlaveAddress(uint8_t address) noexcept {
-    slaveAddress_ = address & 0x7F;
-  }
 
   /**
    * @brief Set NAI (Next Address Input) pin state for daisy chaining
@@ -1778,17 +1911,16 @@ public:
    * @brief Read a 32-bit register via UART
    * @param address Register address (0x00-0x73)
    * @param value Reference to store the read value
-   * @param daisy_chain_position Ignored for UART (UART uses slave address instead)
+   * @param node_address UART node address (0-127) for multi-node addressing
    * @return true if read succeeded, false otherwise
    */
   bool ReadRegister(uint8_t address, uint32_t &value,
-                    uint8_t daisy_chain_position = 0) noexcept {
-    (void)daisy_chain_position; // Unused for UART
-    
+                    uint8_t node_address = 0) noexcept {
     // Build read request frame using UartFrame structure
     // Note: Current implementation uses 9-byte frame for compatibility, but datasheet
     // specifies 5 bytes for read request. Set use_9byte_frame=true for compatibility.
-    UartFrame read_request = UartFrame::ReadRequest(slaveAddress_, address, true);
+    uint8_t node_addr = node_address & 0x7F;
+    UartFrame read_request = UartFrame::ReadRequest(node_addr, address, true);
     
     // Get frame bytes (9 bytes for compatibility, though datasheet specifies 5)
     std::array<uint8_t, 9> tx_buf{};
@@ -1801,7 +1933,7 @@ public:
     TMC5160_LOG_DEBUG(
         *static_cast<Derived *>(this), 3, "UART",
         "Read register 0x%02X (NodeAddr=0x%02X): TX %02X %02X %02X %02X %02X %02X %02X %02X %02X",
-        address, slaveAddress_, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4],
+        address, node_addr, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4],
         tx_buf[5], tx_buf[6], tx_buf[7], tx_buf[8]);
 
     if (!UartSend(tx_buf.data(), tx_size)) {
@@ -1848,16 +1980,15 @@ public:
    * @brief Write a 32-bit register via UART
    * @param address Register address (0x00-0x73)
    * @param value 32-bit value to write
-   * @param daisy_chain_position Ignored for UART (UART uses slave address instead)
+   * @param node_address UART node address (0-127) for multi-node addressing
    * @return true if write succeeded, false otherwise
    */
   bool WriteRegister(uint8_t address, uint32_t value,
-                     uint8_t daisy_chain_position = 0) noexcept {
-    (void)daisy_chain_position; // Unused for UART
-    
+                     uint8_t node_address = 0) noexcept {
     // Build write access frame using UartFrame structure
     // CRC8 is automatically calculated by UartFrame::Write()
-    UartFrame write_frame = UartFrame::Write(slaveAddress_, address, value);
+    uint8_t node_addr = node_address & 0x7F;
+    UartFrame write_frame = UartFrame::Write(node_addr, address, value);
     
     // Get frame bytes (9 bytes per datasheet)
     std::array<uint8_t, 9> tx_buf{};
@@ -1866,7 +1997,7 @@ public:
     TMC5160_LOG_DEBUG(*static_cast<Derived *>(this), 3, "UART",
                       "Write register 0x%02X = 0x%08X (NodeAddr=0x%02X): TX %02X %02X %02X %02X "
                       "%02X %02X %02X %02X %02X",
-                      address, value, slaveAddress_, tx_buf[0], tx_buf[1], tx_buf[2],
+                      address, value, node_addr, tx_buf[0], tx_buf[1], tx_buf[2],
                       tx_buf[3], tx_buf[4], tx_buf[5], tx_buf[6], tx_buf[7],
                       tx_buf[8]);
 
@@ -1922,8 +2053,6 @@ protected:
   UartCommInterface(UartCommInterface &&) = default;
   UartCommInterface &operator=(UartCommInterface &&) = default;
 
-private:
-  uint8_t slaveAddress_; ///< 7-bit slave address for UART communication
 };
 
 } // namespace tmc5160

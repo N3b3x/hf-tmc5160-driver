@@ -111,12 +111,18 @@ public:
    * @param f_clk TMC5160 clock frequency in Hz (default: 12 MHz)
    * @param daisy_chain_position Position in daisy chain (0 = first chip/single chip, 1 = second, etc.)
    *                             Only used for SPI daisy-chaining. Default: 0 (single chip)
+   * @param uart_node_address UART node address (0-254). Only used for UART multi-node addressing.
+   *                          Default: 0 (single node or first node).
+   *                          For sequential programming via TMC5160MultiNode, this is set to 0
+   *                          initially and updated automatically after ProgramSequentially().
+   *                          For devices already programmed, specify the known address here.
    */
   explicit TMC5160(CommType &comm,
                    uint32_t f_clk = ClockFreq::DEFAULT_F_CLK,
-                   uint8_t daisy_chain_position = 0) noexcept
+                   uint8_t daisy_chain_position = 0,
+                   uint8_t uart_node_address = 0) noexcept
       : comm_(comm), f_clk_(f_clk), daisy_chain_position_(daisy_chain_position),
-        initialized_(false) {}
+        uart_node_address_(uart_node_address & 0xFF), initialized_(false) {}
 
   /**
    * @brief Destructor for TMC5160, cleans up resources
@@ -156,6 +162,41 @@ public:
    */
   [[nodiscard]] uint8_t GetDaisyChainPosition() const noexcept {
     return daisy_chain_position_;
+  }
+
+  /**
+   * @brief Set the UART node address for this TMC5160 instance
+   * @param address UART node address (0-127)
+   *
+   * This method configures the node address of this driver in a UART multi-node setup.
+   * The address is used when calling ReadRegister() and WriteRegister() to determine
+   * the correct node address for UART communication.
+   *
+   * @note The node address must be programmed into the chip via SLAVECONF register
+   *       (using UartConfig::ConfigureSlave()). This method only updates the software
+   *       representation. Only applicable for UART communication interfaces.
+   */
+  void SetUartNodeAddress(uint8_t address) noexcept {
+    uart_node_address_ = address & 0xFF; // Address range is 0-254 (8-bit)
+  }
+
+  /**
+   * @brief Get the current UART node address for this TMC5160 instance
+   * @return UART node address (0-127)
+   */
+  [[nodiscard]] uint8_t GetUartNodeAddress() const noexcept {
+    return uart_node_address_;
+  }
+
+protected:
+  /**
+   * @brief Get the appropriate address parameter for ReadRegister/WriteRegister
+   * @return daisy_chain_position_ for SPI, uart_node_address_ for UART
+   *
+   * This method is protected so that subsystem classes can access it.
+   */
+  [[nodiscard]] uint8_t GetCommAddress() const noexcept {
+    return (comm_.GetMode() == CommMode::UART) ? uart_node_address_ : daisy_chain_position_;
   }
 
   /**
@@ -857,6 +898,7 @@ private:
   CommType &comm_;            ///< Communication interface reference
   uint32_t f_clk_;            ///< TMC5160 clock frequency in Hz
   uint8_t daisy_chain_position_; ///< Position in daisy chain (0 = first chip/single chip)
+  uint8_t uart_node_address_; ///< UART node address (0-127) for multi-node addressing
   bool initialized_; ///< Initialization status flag
 
   /**

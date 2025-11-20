@@ -40,7 +40,7 @@ bool TMC5160<CommType>::Initialize(const DriverConfig &config) noexcept {
   gstat.bits.reset = true;
   gstat.bits.drv_err = true;
   gstat.bits.uv_cp = true;
-  if (!this->comm_.WriteRegister(Registers::GSTAT, gstat.value, this->daisy_chain_position_)) {
+  if (!this->comm_.WriteRegister(Registers::GSTAT, gstat.value, this->GetCommAddress())) {
     return false;
   }
 
@@ -57,14 +57,14 @@ bool TMC5160<CommType>::Initialize(const DriverConfig &config) noexcept {
       config.power_stage.otselect, 0U, 3U);
   drv_conf.bits.filt_isense = constrain<decltype(config.power_stage.filt_isense)>(
       config.power_stage.filt_isense, 0U, 3U);
-  if (!this->comm_.WriteRegister(Registers::DRV_CONF, drv_conf.value, this->daisy_chain_position_)) {
+  if (!this->comm_.WriteRegister(Registers::DRV_CONF, drv_conf.value, this->GetCommAddress())) {
     return false;
   }
 
   // Configure global scaler
   uint16_t scaler = constrain<decltype(config.motor.global_scaler)>(
       config.motor.global_scaler, 32U, 256U);
-  if (!this->comm_.WriteRegister(Registers::GLOBAL_SCALER, scaler, this->daisy_chain_position_)) {
+  if (!this->comm_.WriteRegister(Registers::GLOBAL_SCALER, scaler, this->GetCommAddress())) {
     return false;
   }
 
@@ -75,7 +75,7 @@ bool TMC5160<CommType>::Initialize(const DriverConfig &config) noexcept {
   iholdrun.bits.irun =
       constrain<decltype(config.motor.irun)>(config.motor.irun, 0U, 31U);
   iholdrun.bits.iholddelay = 7;
-  if (!this->comm_.WriteRegister(Registers::IHOLD_IRUN, iholdrun.value, this->daisy_chain_position_)) {
+  if (!this->comm_.WriteRegister(Registers::IHOLD_IRUN, iholdrun.value, this->GetCommAddress())) {
     return false;
   }
 
@@ -93,7 +93,7 @@ bool TMC5160<CommType>::Initialize(const DriverConfig &config) noexcept {
   short_conf.bits.shortdelay =
       constrain<decltype(config.short_protection.shortdelay)>(
           config.short_protection.shortdelay, 0U, 1U);
-  if (!this->comm_.WriteRegister(Registers::SHORT_CONF, short_conf.value, this->daisy_chain_position_)) {
+  if (!this->comm_.WriteRegister(Registers::SHORT_CONF, short_conf.value, this->GetCommAddress())) {
     return false;
   }
 
@@ -113,7 +113,7 @@ bool TMC5160<CommType>::Initialize(const DriverConfig &config) noexcept {
   chopconf.bits.intpol = config.chopper.intpol ? 1 : 0;
   chopconf.bits.dedge = config.chopper.dedge ? 1 : 0;
   chopconf.bits.chm = config.chopper.chm ? 1 : 0;
-  if (!this->comm_.WriteRegister(Registers::CHOPCONF, chopconf.value, this->daisy_chain_position_)) {
+  if (!this->comm_.WriteRegister(Registers::CHOPCONF, chopconf.value, this->GetCommAddress())) {
     return false;
   }
 
@@ -129,7 +129,7 @@ bool TMC5160<CommType>::Initialize(const DriverConfig &config) noexcept {
       config.stealthchop.pwm_reg, 0U, 15U);
   pwmconf.bits.pwm_lim = constrain<decltype(config.stealthchop.pwm_lim)>(
       config.stealthchop.pwm_lim, 0U, 15U);
-  if (!this->comm_.WriteRegister(Registers::PWMCONF, pwmconf.value, this->daisy_chain_position_)) {
+  if (!this->comm_.WriteRegister(Registers::PWMCONF, pwmconf.value, this->GetCommAddress())) {
     return false;
   }
 
@@ -159,7 +159,7 @@ bool TMC5160<CommType>::Initialize(const DriverConfig &config) noexcept {
   gconf.bits.stop_enable = config.global_config.stop_enable ? 1 : 0;
   gconf.bits.direct_mode = config.global_config.direct_mode ? 1 : 0;
   gconf.bits.test_mode = config.global_config.test_mode ? 1 : 0;
-  if (!this->comm_.WriteRegister(Registers::GCONF, gconf.value, this->daisy_chain_position_)) {
+  if (!this->comm_.WriteRegister(Registers::GCONF, gconf.value, this->GetCommAddress())) {
     return false;
   }
 
@@ -182,7 +182,7 @@ bool TMC5160<CommType>::Initialize(const DriverConfig &config) noexcept {
   }
 
   // Set default D1 (must not be 0 in positioning mode)
-  if (!this->comm_.WriteRegister(Registers::D_1, 100, this->daisy_chain_position_)) {
+  if (!this->comm_.WriteRegister(Registers::D_1, 100, this->GetCommAddress())) {
     return false;
   }
 
@@ -193,7 +193,7 @@ bool TMC5160<CommType>::Initialize(const DriverConfig &config) noexcept {
 template <typename CommType> bool TMC5160<CommType>::Reset() noexcept {
   GSTAT_Register gstat{};
   gstat.bits.reset = true;
-  return this->comm_.WriteRegister(Registers::GSTAT, gstat.value, this->daisy_chain_position_);
+  return this->comm_.WriteRegister(Registers::GSTAT, gstat.value, this->GetCommAddress());
 }
 
 template <typename CommType>
@@ -265,7 +265,7 @@ TMC5160<CommType>::thresholdSpeedToTstep(float speed_hz) const noexcept {
 template <typename CommType>
 bool TMC5160<CommType>::RampControl::SetRampMode(RampMode mode) noexcept {
   uint8_t mode_value = static_cast<uint8_t>(mode);
-  return driver_.comm_.WriteRegister(Registers::RAMPMODE, mode_value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::RAMPMODE, mode_value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -278,7 +278,7 @@ bool TMC5160<CommType>::RampControl::SetTargetPosition(
 template <typename CommType>
 int32_t TMC5160<CommType>::RampControl::GetCurrentPosition() noexcept {
   uint32_t value = 0;
-  if (!driver_.comm_.ReadRegister(Registers::XACTUAL, value, driver_.daisy_chain_position_)) {
+  if (!driver_.comm_.ReadRegister(Registers::XACTUAL, value, driver_.GetCommAddress())) {
     return 0;
   }
   // Sign extend from 32-bit signed
@@ -300,7 +300,7 @@ bool TMC5160<CommType>::RampControl::SetCurrentPosition(
     // Clear deviation flag
     ENC_STATUS_Register enc_status{};
     enc_status.bits.deviation_warn = true;
-    driver_.comm_.WriteRegister(Registers::ENC_STATUS, enc_status.value, driver_.daisy_chain_position_);
+    driver_.comm_.WriteRegister(Registers::ENC_STATUS, enc_status.value, driver_.GetCommAddress());
   }
   return true;
 }
@@ -322,7 +322,7 @@ bool TMC5160<CommType>::RampControl::SetMaxSpeed(float speed) noexcept {
       uint8_t new_mode = (speed < 0.0f)
                              ? static_cast<uint8_t>(RampMode::VELOCITY_NEG)
                              : static_cast<uint8_t>(RampMode::VELOCITY_POS);
-      driver_.comm_.WriteRegister(Registers::RAMPMODE, new_mode, driver_.daisy_chain_position_);
+      driver_.comm_.WriteRegister(Registers::RAMPMODE, new_mode, driver_.GetCommAddress());
     }
   }
   return true;
@@ -412,8 +412,8 @@ bool TMC5160<CommType>::RampControl::IsTargetVelocityReached() noexcept {
 template <typename CommType>
 bool TMC5160<CommType>::RampControl::Stop() noexcept {
   bool success = true;
-  success &= driver_.comm_.WriteRegister(Registers::VSTART, 0, driver_.daisy_chain_position_);
-  success &= driver_.comm_.WriteRegister(Registers::VMAX, 0, driver_.daisy_chain_position_);
+  success &= driver_.comm_.WriteRegister(Registers::VSTART, 0, driver_.GetCommAddress());
+  success &= driver_.comm_.WriteRegister(Registers::VMAX, 0, driver_.GetCommAddress());
   return success;
 }
 
@@ -447,7 +447,7 @@ bool TMC5160<CommType>::RampControl::ConfigureReferenceSwitch(
   sw_mode.bits.latch_r_inactive = config.latch_right_inactive ? 1 : 0;
   sw_mode.bits.en_latch_encoder = config.en_latch_encoder ? 1 : 0;
   sw_mode.bits.en_softstop = config.en_softstop ? 1 : 0;
-  return driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -485,7 +485,7 @@ bool TMC5160<CommType>::RampControl::SetFirstAcceleration(
     float a1) noexcept {
   if (a1 == 0.0f) {
     // Set to 0 to use AMAX for this phase
-    return driver_.comm_.WriteRegister(Registers::A_1, 0, driver_.daisy_chain_position_);
+    return driver_.comm_.WriteRegister(Registers::A_1, 0, driver_.GetCommAddress());
   }
   int32_t a1_internal = driver_.accelToInternal(std::abs(a1));
   a1_internal = std::min(
@@ -508,7 +508,7 @@ bool TMC5160<CommType>::MotorControl::Enable() noexcept {
     // Restore saved toff value (default to 5 if not set)
     chopconf.bits.toff = 5;
   }
-  return driver_.comm_.WriteRegister(Registers::CHOPCONF, chopconf.value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::CHOPCONF, chopconf.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -520,7 +520,7 @@ bool TMC5160<CommType>::MotorControl::Disable() noexcept {
   CHOPCONF_Register chopconf{};
   chopconf.value = chopconf_value;
   chopconf.bits.toff = 0; // Disable driver
-  return driver_.comm_.WriteRegister(Registers::CHOPCONF, chopconf.value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::CHOPCONF, chopconf.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -530,7 +530,7 @@ bool TMC5160<CommType>::MotorControl::SetCurrent(uint8_t irun,
   iholdrun.bits.irun = constrain<decltype(irun)>(irun, 0U, 31U);
   iholdrun.bits.ihold = constrain<decltype(ihold)>(ihold, 0U, 31U);
   iholdrun.bits.iholddelay = 7;
-  return driver_.comm_.WriteRegister(Registers::IHOLD_IRUN, iholdrun.value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::IHOLD_IRUN, iholdrun.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -548,7 +548,7 @@ bool TMC5160<CommType>::MotorControl::ConfigureChopper(
   chopconf.bits.intpol = config.intpol ? 1 : 0;
   chopconf.bits.dedge = config.dedge ? 1 : 0;
   chopconf.bits.chm = config.chm ? 1 : 0;
-  return driver_.comm_.WriteRegister(Registers::CHOPCONF, chopconf.value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::CHOPCONF, chopconf.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -565,7 +565,7 @@ bool TMC5160<CommType>::MotorControl::ConfigureStealthChop(
       constrain<decltype(config.pwm_reg)>(config.pwm_reg, 0U, 15U);
   pwmconf.bits.pwm_lim =
       constrain<decltype(config.pwm_lim)>(config.pwm_lim, 0U, 15U);
-  return driver_.comm_.WriteRegister(Registers::PWMCONF, pwmconf.value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::PWMCONF, pwmconf.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -592,7 +592,7 @@ template <typename CommType>
 bool TMC5160<CommType>::MotorControl::SetGlobalScaler(
     uint16_t scaler) noexcept {
   scaler = constrain<decltype(scaler)>(scaler, 32U, 256U);
-  return driver_.comm_.WriteRegister(Registers::GLOBAL_SCALER, scaler, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::GLOBAL_SCALER, scaler, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -605,7 +605,7 @@ bool TMC5160<CommType>::MotorControl::SetFreewheelingMode(
   PWMCONF_Register pwmconf{};
   pwmconf.value = pwmconf_value;
   pwmconf.bits.freewheel = static_cast<uint8_t>(mode);
-  return driver_.comm_.WriteRegister(Registers::PWMCONF, pwmconf.value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::PWMCONF, pwmconf.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -630,7 +630,7 @@ bool TMC5160<CommType>::MotorControl::ConfigureCoolStep(
   coolconf.bits.sfilt = config.sfilt ? 1 : 0;
   coolconf.bits.reserved5 = 0; // Bits 31..25: Reserved, set to 0
   // Note: sgt can be configured separately via ConfigureStallGuard() if needed
-  return driver_.comm_.WriteRegister(Registers::COOLCONF, coolconf.value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::COOLCONF, coolconf.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -656,7 +656,7 @@ bool TMC5160<CommType>::MotorControl::ConfigureDcStep(
     DCCTRL_Register dcctrl{};
     dcctrl.bits.dc_time = constrain<decltype(config.dc_time)>(config.dc_time, 0U, 1023U);
     dcctrl.bits.dc_sg = constrain<decltype(config.dc_sg)>(config.dc_sg, 0U, 255U);
-    success &= driver_.comm_.WriteRegister(Registers::DCCTRL, dcctrl.value, driver_.daisy_chain_position_);
+    success &= driver_.comm_.WriteRegister(Registers::DCCTRL, dcctrl.value, driver_.GetCommAddress());
   }
   return success;
 }
@@ -683,7 +683,7 @@ bool TMC5160<CommType>::MotorControl::ConfigureGlobalConfig(
   gconf.bits.stop_enable = config.stop_enable ? 1 : 0;
   gconf.bits.direct_mode = config.direct_mode ? 1 : 0;
   gconf.bits.test_mode = config.test_mode ? 1 : 0;
-  return driver_.comm_.WriteRegister(Registers::GCONF, gconf.value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::GCONF, gconf.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -696,7 +696,7 @@ bool TMC5160<CommType>::MotorControl::SetMicrostepLookupTable(
                                 Registers::MSLUT_2, Registers::MSLUT_3,
                                 Registers::MSLUT_4, Registers::MSLUT_5,
                                 Registers::MSLUT_6, Registers::MSLUT_7};
-  return driver_.comm_.WriteRegister(registers[index], value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(registers[index], value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -712,14 +712,14 @@ bool TMC5160<CommType>::MotorControl::SetMicrostepLookupTableSegmentation(
   mslutsel.bits.x1 = lut_seg_start1;       // Bits 15..8
   mslutsel.bits.x2 = lut_seg_start2;      // Bits 23..16
   mslutsel.bits.x3 = lut_seg_start3;     // Bits 31..24
-  return driver_.comm_.WriteRegister(Registers::MSLUTSEL, mslutsel.value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::MSLUTSEL, mslutsel.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
 bool TMC5160<CommType>::MotorControl::SetMicrostepLookupTableStart(
     uint16_t start_current) noexcept {
   start_current = constrain<decltype(start_current)>(start_current, 0U, 255U);
-  return driver_.comm_.WriteRegister(Registers::MSLUTSTART, start_current, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::MSLUTSTART, start_current, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -803,7 +803,7 @@ bool TMC5160<CommType>::Encoder::Configure(
   encmode.bits.clr_enc_x = config.clr_enc_x ? 1 : 0;
   encmode.bits.latch_x_act = config.latch_x_act ? 1 : 0;
   encmode.bits.enc_sel_decimal = config.enc_sel_decimal ? 1 : 0;
-  return driver_.comm_.WriteRegister(Registers::ENCMODE, encmode.value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::ENCMODE, encmode.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -895,7 +895,7 @@ template <typename CommType>
 bool TMC5160<CommType>::Encoder::ClearDeviationFlag() noexcept {
   ENC_STATUS_Register enc_status{};
   enc_status.bits.deviation_warn = true;
-  return driver_.comm_.WriteRegister(Registers::ENC_STATUS, enc_status.value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::ENC_STATUS, enc_status.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -986,19 +986,19 @@ bool TMC5160<CommType>::Diagnostics::ConfigureStallGuard(
   coolconf.bits.reserved4 = 0; // Bit 23: Reserved, set to 0
   coolconf.bits.sfilt = config.sfilt ? 1 : 0;
   coolconf.bits.reserved5 = 0; // Bits 31..25: Reserved, set to 0
-  return driver_.comm_.WriteRegister(Registers::COOLCONF, coolconf.value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::COOLCONF, coolconf.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
 bool TMC5160<CommType>::Diagnostics::GetDriverStatusRegister(
     uint32_t &status) noexcept {
-  return driver_.comm_.ReadRegister(Registers::DRV_STATUS, status, driver_.daisy_chain_position_);
+  return driver_.comm_.ReadRegister(Registers::DRV_STATUS, status, driver_.GetCommAddress());
 }
 
 template <typename CommType>
 bool TMC5160<CommType>::Diagnostics::GetRampStatusRegister(
     uint32_t &status) noexcept {
-  return driver_.comm_.ReadRegister(Registers::RAMP_STAT, status, driver_.daisy_chain_position_);
+  return driver_.comm_.ReadRegister(Registers::RAMP_STAT, status, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -1121,7 +1121,7 @@ bool TMC5160<CommType>::Protection::SetShortProtectionLevels(
       constrain<decltype(s2g_level)>(s2g_level, 2U, 15U);
   short_conf.bits.shortfilter = constrain<uint8_t>(shortfilter, 0U, 3U);
   short_conf.bits.shortdelay = constrain<uint8_t>(shortdelay, 0U, 1U);
-  return driver_.comm_.WriteRegister(Registers::SHORT_CONF, short_conf.value, driver_.daisy_chain_position_);
+  return driver_.comm_.WriteRegister(Registers::SHORT_CONF, short_conf.value, driver_.GetCommAddress());
 }
 
 // Diagnostics read-only register implementations
@@ -1205,7 +1205,7 @@ bool TMC5160<CommType>::Diagnostics::GetPwmAuto(
 
 template <typename CommType>
 bool TMC5160<CommType>::Diagnostics::ReadGpioPins(uint32_t &io_pins) noexcept {
-  return driver_.comm_.ReadRegister(Registers::IO_INPUT_OUTPUT, io_pins, driver_.daisy_chain_position_);
+  return driver_.comm_.ReadRegister(Registers::IO_INPUT_OUTPUT, io_pins, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -1264,10 +1264,24 @@ bool TMC5160<CommType>::Diagnostics::ReadOffsetCalibration(
 template <typename CommType>
 bool TMC5160<CommType>::UartConfig::ConfigureSlave(
     uint8_t slave_address, uint8_t send_delay) noexcept {
+  // During sequential programming, the device is accessible at address 0
+  // (first device: NAI=GND, subsequent devices: previous NAO=LOW)
+  // We need to use address 0 to communicate, not the target address
+  uint8_t current_accessible_address = 0;
+  
   SLAVECONF_Register slaveconf{};
-  slaveconf.bits.slaveaddr = constrain<decltype(slave_address)>(slave_address, 0U, 127U);
+  slaveconf.bits.slaveaddr = slave_address & 0xFF; // Address range is 0-254 (8-bit)
   slaveconf.bits.senddelay = constrain<decltype(send_delay)>(send_delay, 0U, 15U);
-  return driver_->comm_.WriteRegister(Registers::SLAVECONF, slaveconf.value, driver_->daisy_chain_position_);
+  
+  // Write to SLAVECONF using current accessible address (0)
+  bool success = driver_->comm_.WriteRegister(Registers::SLAVECONF, slaveconf.value, current_accessible_address);
+  
+  // Only update the driver's node address after successful programming
+  if (success) {
+    driver_->uart_node_address_ = slave_address & 0xFF; // Address range is 0-254
+  }
+  
+  return success;
 }
 
 #endif // TMC5160_IMPL
