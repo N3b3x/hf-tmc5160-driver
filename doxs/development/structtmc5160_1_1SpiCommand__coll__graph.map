@@ -1,0 +1,5 @@
+<map id="tmc5160::SpiCommand" name="tmc5160::SpiCommand">
+<area shape="rect" id="Node000001" title="TMC5160 SPI command structure with union&#45;based frame representation." alt="" coords="5,108,180,133"/>
+<area shape="rect" id="Node000002" href="$uniontmc5160_1_1SpiCommand_1_1Frame.html" title="Union for accessing the 40&#45;bit SPI frame in different ways." alt="" coords="5,5,180,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,59,95,108,90,108,90,59"/>
+</map>

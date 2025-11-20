@@ -16,9 +16,9 @@ var classtmc5160_1_1CommInterface =
     [ "LogDebug", "classtmc5160_1_1CommInterface.html#a1398cb696532caeeb971ea6157bb296f", null ],
     [ "operator=", "classtmc5160_1_1CommInterface.html#ad8356d7708e0d688d5fd03c8b73dcbcd", null ],
     [ "operator=", "classtmc5160_1_1CommInterface.html#abe291d816be3fbff14338f0f988e75be", null ],
-    [ "ReadRegister", "classtmc5160_1_1CommInterface.html#a5b62ccbcce492137f18f58e0b8e5f29c", null ],
+    [ "ReadRegister", "classtmc5160_1_1CommInterface.html#a2933d03314c4c69eebfb53a170e331a5", null ],
     [ "SetPinActiveLevel", "classtmc5160_1_1CommInterface.html#a371ba647c308b5cb3f8fdca5ff0bbf14", null ],
     [ "SignalToGpioLevel", "classtmc5160_1_1CommInterface.html#a67225c93493fa73755ebb0fc91d46488", null ],
-    [ "WriteRegister", "classtmc5160_1_1CommInterface.html#a3c08161d95e23ba9abf660a98a2546f0", null ],
+    [ "WriteRegister", "classtmc5160_1_1CommInterface.html#ae8ac318a721a19100d7096485395d21e", null ],
     [ "pinActiveLevels_", "classtmc5160_1_1CommInterface.html#ae4ebfab3b59d95eefdaf537d42e289bd", null ]
 ];

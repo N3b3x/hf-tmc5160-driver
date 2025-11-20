@@ -1,0 +1,5 @@
+<map id="tmc5160::SpiResponse" name="tmc5160::SpiResponse">
+<area shape="rect" id="Node000001" title="TMC5160 SPI response structure." alt="" coords="5,93,176,119"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1SpiStatus.html" title="SPI_STATUS structure &#45; status flags returned with each SPI datagram." alt="" coords="17,5,165,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,45,93,93,88,93,88,45"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="tmc5160::SpiStatus::ResetFlag" name="tmc5160::SpiStatus::ResetFlag">
+<area shape="rect" id="Node000001" title="Get reset flag (bit 0)" alt="" coords="261,37,409,77"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1SpiCommInterface.html#ad5148180affea0e047e8c4a40d83485c" title="Read a 32&#45;bit register via SPI." alt="" coords="5,5,213,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,48,213,43,214,37,248,42"/>
+<area shape="rect" id="Node000003" href="$structtmc5160_1_1SpiStatus.html#a7027c462bf5be610a3af8049bcd4d54d" title="Format status flags as human&#45;readable string." alt="" coords="35,69,183,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="248,72,184,82,183,76,247,67"/>
+</map>

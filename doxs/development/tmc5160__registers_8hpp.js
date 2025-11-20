@@ -14,6 +14,8 @@ var tmc5160__registers_8hpp =
     [ "tmc5160::RAMP_STAT_Register", "uniontmc5160_1_1RAMP__STAT__Register.html", "uniontmc5160_1_1RAMP__STAT__Register" ],
     [ "tmc5160::ENCMODE_Register", "uniontmc5160_1_1ENCMODE__Register.html", "uniontmc5160_1_1ENCMODE__Register" ],
     [ "tmc5160::ENC_STATUS_Register", "uniontmc5160_1_1ENC__STATUS__Register.html", "uniontmc5160_1_1ENC__STATUS__Register" ],
+    [ "tmc5160::MSLUTSEL_Register", "uniontmc5160_1_1MSLUTSEL__Register.html", "uniontmc5160_1_1MSLUTSEL__Register" ],
+    [ "tmc5160::MSCURACT_Register", "uniontmc5160_1_1MSCURACT__Register.html", "uniontmc5160_1_1MSCURACT__Register" ],
     [ "tmc5160::CHOPCONF_Register", "uniontmc5160_1_1CHOPCONF__Register.html", "uniontmc5160_1_1CHOPCONF__Register" ],
     [ "tmc5160::COOLCONF_Register", "uniontmc5160_1_1COOLCONF__Register.html", "uniontmc5160_1_1COOLCONF__Register" ],
     [ "tmc5160::DCCTRL_Register", "uniontmc5160_1_1DCCTRL__Register.html", "uniontmc5160_1_1DCCTRL__Register" ],

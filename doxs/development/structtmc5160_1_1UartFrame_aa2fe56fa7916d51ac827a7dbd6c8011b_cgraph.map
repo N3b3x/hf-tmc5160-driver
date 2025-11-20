@@ -1,0 +1,5 @@
+<map id="tmc5160::UartFrame::ReadRequest" name="tmc5160::UartFrame::ReadRequest">
+<area shape="rect" id="Node000001" title="Construct a read request frame." alt="" coords="5,5,161,45"/>
+<area shape="rect" id="Node000002" href="$namespacetmc5160.html#ab650ebb70be7f1da00a2dea1f2fe662e" title="Calculate CRC8 checksum for UART communication." alt="" coords="209,13,384,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="162,23,196,23,196,28,162,28"/>
+</map>

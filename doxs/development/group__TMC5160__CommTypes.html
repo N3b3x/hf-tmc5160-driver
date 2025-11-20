@@ -100,22 +100,80 @@ $(function(){initNavTree('group__TMC5160__CommTypes.html',''); initResizable(); 
 <p>Enums and type definitions for communication interfaces. </p>
 <h2><a class="anchor" id="autotoc_md4"></a>
 SPI Protocol</h2>
-<p>TMC5160 uses an 8-byte SPI protocol:</p><ul>
-<li>Byte 0: Register address (bit 7 = 0 for read, 1 for write)</li>
-<li>Bytes 1-4: 32-bit data (MSB-first)</li>
-<li>Bytes 5-7: Unused (dummy bytes for read)</li>
+<p>TMC5160 uses 40-bit SPI datagrams per datasheet section 4.1:</p><ul>
+<li>Datagram structure: 8-bit address + 32-bit data = 40 bits (5 bytes)</li>
+<li>Bit positions: bit 39 (MSB, transmitted first) ... bit 0 (LSB, transmitted last)</li>
+<li>Bit 39: W (WRITE_notREAD bit) - 0 for read, 1 for write</li>
+<li>Bits 38-32: 7-bit register address</li>
+<li>Bits 31-0: 32-bit data (right-aligned)</li>
 </ul>
-<p>SPI Mode: Mode 3 (CPOL=1, CPHA=1) Clock: MSB-first</p>
+<p>Byte structure (MSB transmitted first):</p><ul>
+<li>Byte 0: W bit (bit 7) + 7-bit address (bits 6-0)<ul>
+<li>Read access: bit 7 = 0, address in bits 6-0</li>
+<li>Write access: bit 7 = 1, address in bits 6-0 (add 0x80 to address)</li>
+</ul>
+</li>
+<li>Bytes 1-4: 32-bit data (MSB-first, right-aligned)</li>
+<li>Bytes 5-7: Unused (optional, can be used for daisy-chaining multiple chips)</li>
+</ul>
+<p>Response structure (40 bits):</p><ul>
+<li>Byte 0: SPI_STATUS (8 bits, bits 39-32) - Status flags</li>
+<li>Bytes 1-4: 32-bit data (bits 31-0, MSB-first)</li>
+</ul>
+<p>Read access behavior (pipelined):</p><ul>
+<li>First transfer: Send address with dummy data, receive dummy response</li>
+<li>Second transfer: Send address again, receive actual data from previous read</li>
+</ul>
+<p>Write access behavior:</p><ul>
+<li>Send address | 0x80, then 4 bytes of data</li>
+<li>Response contains SPI_STATUS + previously written data</li>
+</ul>
+<p>SPI Mode: Mode 3 (CPOL=1, CPHA=1) Clock: MSB-first Minimum: 40 SCK clock cycles required CSN: Must stay low during entire transaction</p>
 <h2><a class="anchor" id="autotoc_md5"></a>
 UART Protocol</h2>
-<p>TMC5160 uses a 9-byte UART protocol:</p><ul>
-<li>Byte 0: Sync bit (bit 0) + Slave address (bits 1-7)</li>
-<li>Byte 1: Register address (bit 7 = 0 for read, 1 for write)</li>
-<li>Bytes 2-5: 32-bit data (MSB-first)</li>
-<li>Byte 6-7: Unused</li>
+<p>TMC5160 uses UART single wire interface per datasheet section 5.1. Each byte is transmitted LSB...MSB, highest byte transmitted first.</p>
+<p>Write Access Datagram (64 bits = 8 bytes + CRC = 9 bytes total):</p><ul>
+<li>Byte 0: Sync nibble (bits 0-3: 1,0,1,0) + Reserved (bits 4-7, don't cares but included in CRC) + NODEADDR (8 bits)<ul>
+<li>Bits 0-3: Sync pattern (1,0,1,0) for baud rate synchronization</li>
+<li>Bits 4-7: Reserved (don't cares, but included in CRC calculation)</li>
+<li>Bits 8-15: NODEADDR (8-bit node address, 0-127)</li>
+</ul>
+</li>
+<li>Byte 1: RW bit (bit 8 = 1 for write) + 7-bit register address (bits 9-15)</li>
+<li>Bytes 2-5: 32-bit data (bits 16-55, high byte to low byte, MSB-first)</li>
+<li>Bytes 6-7: Reserved (bits 56-63, don't cares but included in CRC)</li>
+<li>Byte 8: CRC8 checksum (bits 56-63, calculated over bytes 0-7)</li>
+</ul>
+<p>Read Access Request Datagram (32 bits = 4 bytes + CRC = 5 bytes total):</p><ul>
+<li>Byte 0: Sync nibble + Reserved + NODEADDR (same as write)</li>
+<li>Byte 1: RW bit (bit 8 = 0 for read) + 7-bit register address</li>
+<li>Bytes 2-3: Reserved (don't cares but included in CRC)</li>
+<li>Byte 4: CRC8 checksum</li>
+</ul>
+<p>Read Access Reply Datagram (64 bits = 8 bytes + CRC = 9 bytes total):</p><ul>
+<li>Byte 0: Sync nibble + Reserved (0) + 0xFF (address code for master)</li>
+<li>Byte 1: Register address (0)</li>
+<li>Bytes 2-5: 32-bit data (high byte to low byte, MSB-first)</li>
+<li>Bytes 6-7: Reserved (0)</li>
 <li>Byte 8: CRC8 checksum</li>
 </ul>
-<p>Baud rate: Typically 500000 bps </p>
+<p>CRC8: CRC8-ATM polynomial (0x07), applied LSB to MSB, including sync and addressing byte. Sync nibble is assumed to always be correct.</p>
+<p>Baud Rate:</p><ul>
+<li>Minimum: 9000 baud (assuming 20 MHz clock, worst case for low baud rate)</li>
+<li>Maximum: fCLK/16 (due to required stability of baud clock)</li>
+<li>Baud rate is automatically detected from sync frame timing</li>
+<li>Each byte starts with start bit (logic 0) and ends with stop bit (logic 1)</li>
+</ul>
+<p>Communication Reset:</p><ul>
+<li>Pause time &gt; 63 bit times between start bits of two successive bytes resets communication</li>
+<li>Minimum 12 bit times of bus idle time required after reset before restart</li>
+<li>Any pulse on idle data line &lt; 16 clock cycles treated as glitch (12 bit time timeout)</li>
+</ul>
+<p>SENDDELAY:</p><ul>
+<li>Programmable delay time after read request before reply (multiples of 8 bit times)</li>
+<li>Default: 8 bit times</li>
+<li>Multi-node systems: Set SENDDELAY to minimum 2 for all nodes </li>
+</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

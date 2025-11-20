@@ -1,5 +1,5 @@
 <map id="tmc5160::RpmToStepsPerSec" name="tmc5160::RpmToStepsPerSec">
-<area shape="rect" id="Node000001" title="Convert RPM to steps per second." alt="" coords="295,13,505,38"/>
-<area shape="rect" id="Node000002" href="$structtmc5160_1_1TMC5160_1_1RampControl.html#a62b34f08cb68321daf451ec7fdee907f" title="Set maximum speed in RPM." alt="" coords="5,5,247,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="281,28,247,28,247,23,281,23"/>
+<area shape="rect" id="Node000001" title="Convert RPM to steps per second." alt="" coords="297,20,508,45"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1TMC5160_1_1MotorControl.html#aa5d51306b110669ffa7fd80db5a528ab" title="Set mode change speeds." alt="" coords="5,5,249,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="284,35,250,35,250,30,284,30"/>
 </map>

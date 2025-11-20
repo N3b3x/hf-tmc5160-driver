@@ -1,8 +1,8 @@
 <map id="tmc5160::SpiCommInterface::SpiTransfer" name="tmc5160::SpiCommInterface::SpiTransfer">
 <area shape="rect" id="Node000001" title="Low&#45;level SPI transfer for register read/write." alt="" coords="261,37,469,77"/>
 <area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="409,26,394,19,365,16,341,18,326,23,320,29,323,36,318,38,315,28,323,18,339,13,365,11,395,14,411,21"/>
-<area shape="rect" id="Node000002" href="$classtmc5160_1_1SpiCommInterface.html#a7f6dfc07d2092acafd31d75a1a580f73" title="Read a 32&#45;bit register via SPI with optional chip selection." alt="" coords="5,5,213,45"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1SpiCommInterface.html#ad5148180affea0e047e8c4a40d83485c" title="Read a 32&#45;bit register via SPI." alt="" coords="5,5,213,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="248,45,213,41,214,36,248,40"/>
-<area shape="rect" id="Node000003" href="$classtmc5160_1_1SpiCommInterface.html#ac3efc029d4d87218476bce759bfdc65f" title="Write a 32&#45;bit register via SPI with optional chip selection." alt="" coords="5,69,213,109"/>
+<area shape="rect" id="Node000003" href="$classtmc5160_1_1SpiCommInterface.html#a2ba4efb58323a9e2b221ce9a80a56470" title="Write a 32&#45;bit register via SPI." alt="" coords="5,69,213,109"/>
 <area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="248,75,214,79,213,74,248,69"/>
 </map>
