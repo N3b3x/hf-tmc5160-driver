@@ -40,11 +40,11 @@ Welcome! This directory contains step-by-step guides for installing, building, a
 
 ### **Analysis & Comparison**
 
-13. **[📊 Coverage Analysis](special_features_coverage_analysis.md)** – Complete feature and register coverage analysis
+14. **[📊 Coverage Analysis](special_features_coverage_analysis.md)** – Complete feature and register coverage analysis
 
 ### **Troubleshooting**
 
-14. **[🐛 Troubleshooting](troubleshooting.md)** – Common issues and solutions
+15. **[🐛 Troubleshooting](troubleshooting.md)** – Common issues and solutions
 
 ---
 

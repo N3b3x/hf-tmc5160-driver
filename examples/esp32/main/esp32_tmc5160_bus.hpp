@@ -62,19 +62,63 @@ static const char* BUS_TAG = "TMC5160_Bus";
 class Esp32SPI : public tmc5160::SpiCommInterface<Esp32SPI> {
 public:
   /**
-   * @brief Construct ESP32 SPI communication interface with pin configuration struct
+   * @brief Construct ESP32 SPI communication interface with complete pin configuration
+   * @param host SPI host device (e.g., SPI2_HOST)
+   * @param pin_config Complete pin configuration including SPI pins and TMC5160 control pins
+   * @param clock_speed_hz SPI clock speed in Hz (max 4 MHz recommended)
+   *
+   * This is the recommended constructor as it allows all GPIO pins (SPI + TMC5160 control)
+   * to be configured in a single structure, making it easier to manage pin assignments.
+   *
+   * @note Compound pins are automatically handled - if you specify dir_pin, ref_right_pin
+   *       is automatically mapped to the same GPIO (and vice versa). Same for step_pin/ref_left_pin,
+   *       enc_a_pin/dc_in_pin, enc_b_pin/dc_en_pin, and enc_n_pin/dc_out_pin.
+   * @note EN pin (DRV_ENN) is active HIGH to disable the power stage (inverted logic).
+   */
+  Esp32SPI(spi_host_device_t host, const tmc5160::Esp32SpiPinConfig& pin_config,
+           uint32_t clock_speed_hz = 4000000) noexcept
+      : SpiCommInterface(true, true, true), // EN, DIR, STEP active high (EN is inverted: HIGH=disable)
+        host_(host), mosi_pin_(static_cast<gpio_num_t>(pin_config.spi_mosi)),
+        miso_pin_(static_cast<gpio_num_t>(pin_config.spi_miso)),
+        sclk_pin_(static_cast<gpio_num_t>(pin_config.spi_sclk)),
+        cs_pin_(static_cast<gpio_num_t>(pin_config.spi_cs)),
+        en_pin_(static_cast<gpio_num_t>(pin_config.tmc5160_pins.en_pin)),
+        dir_pin_(static_cast<gpio_num_t>(pin_config.tmc5160_pins.dir_pin != -1
+                                             ? pin_config.tmc5160_pins.dir_pin
+                                             : pin_config.tmc5160_pins.ref_right_pin)),
+        step_pin_(static_cast<gpio_num_t>(pin_config.tmc5160_pins.step_pin != -1
+                                              ? pin_config.tmc5160_pins.step_pin
+                                              : pin_config.tmc5160_pins.ref_left_pin)),
+        clock_speed_hz_(clock_speed_hz), device_handle_(nullptr), initialized_(false) {
+    // Initialize pin mapping array (all pins unmapped by default, use -1)
+    constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
+    for (size_t i = 0; i < sizeof(pin_mapping_) / sizeof(pin_mapping_[0]); ++i) {
+      pin_mapping_[i] = UNMAPPED_PIN;
+    }
+
+    // Apply pin configuration (handles compound pins automatically)
+    ApplyPinConfig(pin_config.tmc5160_pins);
+
+    // Configure EN pin active level: HIGH = disable (inverted logic for DRV_ENN)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, true);
+  }
+
+  /**
+   * @brief Construct ESP32 SPI communication interface with separate SPI pins and TMC5160 pin config
    * @param host SPI host device (e.g., SPI2_HOST)
    * @param mosi_pin MOSI GPIO pin
    * @param miso_pin MISO GPIO pin
    * @param sclk_pin SCLK GPIO pin
    * @param cs_pin CS GPIO pin
-   * @param pin_config Pin configuration structure (handles compound pins automatically)
+   * @param pin_config TMC5160 pin configuration structure (handles compound pins automatically)
    * @param clock_speed_hz SPI clock speed in Hz (max 4 MHz recommended)
    *
    * @note Compound pins are automatically handled - if you specify dir_pin, ref_right_pin
    *       is automatically mapped to the same GPIO (and vice versa). Same for step_pin/ref_left_pin,
    *       enc_a_pin/dc_in_pin, enc_b_pin/dc_en_pin, and enc_n_pin/dc_out_pin.
    * @note EN pin (DRV_ENN) is active HIGH to disable the power stage (inverted logic).
+   * @note This constructor is provided for backward compatibility. Consider using the
+   *       constructor with Esp32SpiPinConfig for a more unified configuration.
    */
   Esp32SPI(spi_host_device_t host, gpio_num_t mosi_pin, gpio_num_t miso_pin, gpio_num_t sclk_pin, gpio_num_t cs_pin,
            const tmc5160::TMC5160PinConfig& pin_config, uint32_t clock_speed_hz = 4000000) noexcept
@@ -245,6 +289,15 @@ public:
       SetPinMapping(tmc5160::TMC5160CtrlPin::CLK, static_cast<gpio_num_t>(pin_config.clk_pin));
     }
 
+    // Mode configuration pins (if available as control pins)
+    // ⚠️ WARNING: These are typically hardwired. Only configure if connected to GPIO.
+    if (pin_config.spi_mode_pin != -1) {
+      SetPinMapping(tmc5160::TMC5160CtrlPin::SPI_MODE, static_cast<gpio_num_t>(pin_config.spi_mode_pin));
+    }
+    if (pin_config.sd_mode_pin != -1) {
+      SetPinMapping(tmc5160::TMC5160CtrlPin::SD_MODE, static_cast<gpio_num_t>(pin_config.sd_mode_pin));
+    }
+
     return true;
   }
 
@@ -302,6 +355,16 @@ public:
         // Default to input, user can configure as output if needed for PWM clock
         gpio_set_direction(gpio_pin, GPIO_MODE_INPUT);
       }
+      // Mode configuration pins (SPI_MODE, SD_MODE) - outputs to control chip mode
+      else if (pin == tmc5160::TMC5160CtrlPin::SPI_MODE || pin == tmc5160::TMC5160CtrlPin::SD_MODE) {
+        gpio_set_direction(gpio_pin, GPIO_MODE_OUTPUT); // Output to control chip mode
+        // Set default state based on pin (SPI_MODE typically HIGH, SD_MODE typically LOW for SPI+Internal Ramp)
+        if (pin == tmc5160::TMC5160CtrlPin::SPI_MODE) {
+          gpio_set_level(gpio_pin, 1); // Default: HIGH (SPI mode)
+        } else {
+          gpio_set_level(gpio_pin, 0); // Default: LOW (Internal ramp mode)
+        }
+      }
       // Other pins default to output
       else {
         gpio_set_direction(gpio_pin, GPIO_MODE_OUTPUT);
@@ -336,16 +399,16 @@ public:
     // Configure GPIO pins that are mapped
     constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
     if (en_pin_ != UNMAPPED_PIN) {
-      gpio_set_direction(en_pin_, GPIO_MODE_OUTPUT);
+    gpio_set_direction(en_pin_, GPIO_MODE_OUTPUT);
       gpio_set_level(en_pin_, 1); // Disable by default (EN is active HIGH to disable)
     }
     if (dir_pin_ != UNMAPPED_PIN) {
-      gpio_set_direction(dir_pin_, GPIO_MODE_OUTPUT);
+    gpio_set_direction(dir_pin_, GPIO_MODE_OUTPUT);
       gpio_set_level(dir_pin_, 0);
     }
     if (step_pin_ != UNMAPPED_PIN) {
-      gpio_set_direction(step_pin_, GPIO_MODE_OUTPUT);
-      gpio_set_level(step_pin_, 0);
+    gpio_set_direction(step_pin_, GPIO_MODE_OUTPUT);
+    gpio_set_level(step_pin_, 0);
     }
 
     // Configure SPI bus
@@ -355,7 +418,7 @@ public:
     bus_config.sclk_io_num = sclk_pin_;
     bus_config.quadwp_io_num = -1;
     bus_config.quadhd_io_num = -1;
-    bus_config.max_transfer_sz = 8; // TMC5160 uses 8-byte transfers
+    bus_config.max_transfer_sz = 64; // Support up to 64 bytes for daisy-chain auto-detection (8 devices * 8 bytes)
     bus_config.flags = SPICOMMON_BUSFLAG_MASTER;
 
     esp_err_t ret = spi_bus_initialize(host_, &bus_config, SPI_DMA_CH_AUTO);
@@ -493,7 +556,7 @@ public:
     gpio_num_t gpio_pin = GetPinMapping(pin);
     constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
     if (gpio_pin == UNMAPPED_PIN) {
-      return false;
+    return false;
     }
 
     int level = gpio_get_level(gpio_pin);
@@ -559,7 +622,7 @@ private:
    * Array indices correspond to TMC5160CtrlPin enum values.
    * -1 indicates the pin is not mapped.
    */
-  gpio_num_t pin_mapping_[15]{}; // Updated to support all pin types (15 pins total)
+  gpio_num_t pin_mapping_[16]{}; // Updated to support all pin types (16 pins: EN through SD_MODE)
 
   bool configureGpioPins() noexcept {
     // GPIO pins are configured in Initialize() and SetPinMapping()

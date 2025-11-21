@@ -119,9 +119,9 @@ public:
    *                          For devices already programmed, specify the known address here.
    */
   explicit TMC5160(CommType& comm, uint32_t f_clk = ClockFreq::DEFAULT_F_CLK, uint8_t daisy_chain_position = 0,
-                   uint8_t uart_node_address = 0) noexcept
-      : comm_(comm), f_clk_(f_clk), daisy_chain_position_(daisy_chain_position),
-        uart_node_address_(uart_node_address & 0xFF) {}
+                     uint8_t uart_node_address = 0) noexcept
+        : comm_(comm), f_clk_(f_clk), daisy_chain_position_(daisy_chain_position),
+          uart_node_address_(uart_node_address & 0xFF), send_delay_(0) {}
 
   /**
    * @brief Destructor for TMC5160, cleans up resources
@@ -188,6 +188,44 @@ public:
   [[nodiscard]] uint8_t GetUartNodeAddress() const noexcept {
     return uart_node_address_;
   }
+
+  /**
+   * @brief Set the chip communication mode via SPI_MODE and SD_MODE pins
+   * @param mode Chip communication mode (SPI_INTERNAL_RAMP, SPI_EXTERNAL_STEPDIR, UART_INTERNAL_RAMP)
+   * @return true if mode was set successfully, false if pins are not configured
+   *
+   * This method controls the SPI_MODE (pin 22) and SD_MODE (pin 21) pins if they
+   * are connected to GPIO outputs. These pins determine the TMC5160 operating mode.
+   *
+   * ⚠️ CRITICAL WARNINGS:
+   * - These pins are typically hardwired and read at startup
+   * - Only use this method if SPI_MODE and SD_MODE pins are connected to GPIO outputs
+   * - Changing the mode requires a chip reset (power cycle or reset pin) to take effect
+   * - The mode pins are read at startup, so changes won't be effective until reset
+   * - Ensure pins are configured in TMC5160PinConfig (spi_mode_pin and sd_mode_pin)
+   *
+   * @note After calling this method, you must reset the chip for the new mode to take effect.
+   *       The driver does not automatically reset the chip - you must handle this externally.
+   *
+   * @note Mode pin mapping:
+   * - SPI_INTERNAL_RAMP: SPI_MODE=HIGH, SD_MODE=LOW
+   * - SPI_EXTERNAL_STEPDIR: SPI_MODE=HIGH, SD_MODE=HIGH
+   * - UART_INTERNAL_RAMP: SPI_MODE=LOW, SD_MODE=LOW
+   */
+  bool SetChipCommMode(ChipCommMode mode) noexcept;
+
+  /**
+   * @brief Get the current chip communication mode from SPI_MODE and SD_MODE pins
+   * @param mode Reference to store the current mode
+   * @return true if mode was read successfully, false if pins are not configured
+   *
+   * This method reads the current state of SPI_MODE (pin 22) and SD_MODE (pin 21) pins
+   * if they are connected to GPIO inputs/outputs.
+   *
+   * @note This reads the current pin state, which may not reflect the actual chip mode
+   *       if the chip hasn't been reset since the pins were changed.
+   */
+  bool GetChipCommMode(ChipCommMode& mode) const noexcept;
 
   /**
    * @brief Initialize the TMC5160 driver with configuration
@@ -450,14 +488,6 @@ public:
      */
     bool SetGlobalScaler(uint16_t scaler) noexcept;
 
-    /**
-     * @brief Set freewheeling mode
-     * @param mode Freewheeling mode (NORMAL, ENABLED, SHORT_LS, SHORT_HS)
-     * @return true if set successfully, false otherwise
-     *
-     * Controls the behavior when motor current setting is zero (I_HOLD=0).
-     */
-    bool SetFreewheelingMode(PWMFreewheel mode) noexcept;
 
     /**
      * @brief Configure CoolStep current reduction
@@ -540,24 +570,15 @@ public:
 
     /**
      * @brief Configure UART slave address and send delay
-     * @param slave_address 7-bit slave address (0-127)
-     * @param send_delay Number of bit times before replying to register read
-     *                   (0-15, set >1 with multiple slaves)
+     * @param slave_address 7-bit slave address (0-127), same as UART node address
+     * @param send_delay Number of bit times before replying to register read (0-15), stored locally
      * @return true if configured successfully, false otherwise
+     * 
+     * Note: Slave address and UART node address are the same value.
+     * Send delay is stored locally since SLAVECONF register is write-only.
      */
     bool ConfigureSlaveAddress(uint8_t slave_address, uint8_t send_delay = 0) noexcept;
 
-    /**
-     * @brief Get current slave address from SLAVECONF register
-     * @return Slave address (0-127), or 0xFF on error
-     */
-    uint8_t GetSlaveAddress() noexcept;
-
-    /**
-     * @brief Get current send delay from SLAVECONF register
-     * @return Send delay (0-15), or 0xFF on error
-     */
-    uint8_t GetSendDelay() noexcept;
 
   private:
     TMC5160& driver_; ///< Reference to parent driver instance
@@ -889,7 +910,8 @@ private:
   CommType& comm_;               ///< Communication interface reference
   uint32_t f_clk_;               ///< TMC5160 clock frequency in Hz
   uint8_t daisy_chain_position_; ///< Position in daisy chain (0 = first chip/single chip)
-  uint8_t uart_node_address_;    ///< UART node address (0-127) for multi-node addressing
+  uint8_t uart_node_address_;    ///< UART node address / slave address (0-127) for multi-node addressing
+  uint8_t send_delay_;           ///< UART send delay (0-15) stored locally from SLAVECONF register
   bool initialized_{false};      ///< Initialization status flag
 
   /**

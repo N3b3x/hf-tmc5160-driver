@@ -71,6 +71,32 @@ This allows multiple `TMC5160` instances to share the same `SpiCommInterface` in
 
 ## SPI Daisy Chaining
 
+### Mode Pin Configuration for SPI
+
+For SPI daisy chaining, all TMC5160 chips must be configured for SPI mode:
+
+- **SPI_MODE** (pin 22): Must be tied **HIGH** (3.3V) - **Required**
+- **SD_MODE** (pin 21): Typically tied **LOW** (GND) for internal ramp generator mode, or **HIGH** (3.3V) for external step/dir mode
+
+**⚠️ CRITICAL**: These mode pins are read at startup and cannot be changed via software. They must be configured correctly before power-up.
+
+#### Recommended Configuration: SPI + Internal Ramp Generator
+
+```
+SPI_MODE (pin 22) ──────> 3.3V (HIGH)
+SD_MODE  (pin 21) ──────> GND  (LOW)
+```
+
+**Wiring:**
+- Connect SPI_MODE directly to 3.3V, or use pull-up resistor (10kΩ) to 3.3V
+- Connect SD_MODE directly to GND, or use pull-down resistor (10kΩ) to GND
+- **DO NOT** leave these pins floating - they must be tied to defined logic levels
+
+**Software Control (Advanced):**
+- If SPI_MODE and SD_MODE pins are connected to GPIO outputs, they can be controlled via software
+- Configure pins in `TMC5160PinConfig` (spi_mode_pin, sd_mode_pin) and use `driver.SetChipCommMode()`
+- **⚠️ CRITICAL**: Mode changes require a chip reset to take effect (pins are read at startup)
+
 ### Hardware Setup
 
 For SPI daisy chaining, connect multiple TMC5160 chips on a single SPI bus:
@@ -105,6 +131,7 @@ In)
 - All chips share SCK and MOSI (SDI)
 - MISO (SDO) is daisy-chained: Chip 1 SDO → Chip 2 SDI → Chip 2 SDO → Chip 3 SDI → Chip 3 SDO → MCU MISO
 - CSN is handled automatically by the SPI hardware peripheral or your `SpiTransfer()` implementation
+- **All chips must have the same mode pin configuration** (SPI_MODE=HIGH, SD_MODE=LOW for internal ramp mode)
 
 ### Software Implementation
 
@@ -179,8 +206,8 @@ uint8_t pos = driver.GetDaisyChainPosition(); // Returns 2
 2. When `ReadRegister()` or `WriteRegister()` is called, the driver automatically passes its `daisy_chain_position_` as a parameter to the communication interface methods
 3. The `SpiCommInterface` uses the position parameter along with the total chain length to calculate the correct transfer size:
    - **Sending**: To address device k, send (k+1)*5 bytes (command + k*5 bytes padding)
-   - **Receiving**: To receive response from device k in chain of n devices, use (n-k+1)*5 bytes total
-   - **Transfer Size**: Use (n-k+1)*5 bytes (datasheet formula, always >= (k+1)*5 for valid k < n)
+   - **Receiving**: To receive response from device k in chain of n devices, use (n-k)*5 bytes total
+   - **Transfer Size**: Use (n-k)*5 bytes (datasheet formula, always >= (k+1)*5 for valid k < n)
    - **Response Offset**: Extract response from offset (n-k-1)*5 bytes (reverse order: last device first)
 4. The command is placed at bytes 0-4, padding (zeros) from byte 5 onwards
 5. **CRITICAL**: Chain length MUST be known - it is auto-detected on first access if not manually set. If detection fails, operation returns false.
@@ -193,34 +220,34 @@ For a chip at position k in a chain of n devices:
   - Padding: k * 5 bytes (k * 40 bits) starting at offset 5
   - Total: (k+1)*5 bytes
   
-- **Receiving (Response Extraction)**: (n-k+1)*5 bytes total (datasheet formula)
+- **Receiving (Response Extraction)**: (n-k)*5 bytes total (datasheet formula)
   - Response appears at offset (n-k-1)*5 bytes (reverse order: last device first)
   - Response: Extracted from bytes (n-k-1)*5 to (n-k-1)*5+4
   
-- **Transfer Size**: Use max((k+1)*5, (n-k+1)*5) bytes
+- **Transfer Size**: Use max((k+1)*5, (n-k)*5) bytes
   - Sending requirement: (k+1)*5 bytes to shift command to device k
-  - Receiving requirement: (n-k+1)*5 bytes to shift response back (datasheet formula)
+  - Receiving requirement: (n-k)*5 bytes to shift response back (datasheet formula)
   - Use max() to ensure both requirements are met:
-    * For k < n/2: (n-k+1)*5 >= (k+1)*5, so (n-k+1)*5 dominates
-    * For k >= n/2: (k+1)*5 > (n-k+1)*5, so (k+1)*5 dominates
+    * For k < n/2: (n-k)*5 >= (k+1)*5, so (n-k)*5 dominates
+    * For k >= n/2: (k+1)*5 > (n-k)*5, so (k+1)*5 dominates
   - Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex behavior
 
 **Important Note on Response Ordering:**
 - Responses come back in **REVERSE order** (last device first, first device last)
-- Per datasheet: To read from device k in a chain of n devices, send 40·(n-k+1) dummy bits total
+- Per datasheet: To read from device k in a chain of n devices, send 40·(n-k) dummy bits total
 - **CRITICAL**: Chain length n MUST be known. It is automatically detected on first access if not manually set.
 - The response from device k is extracted from offset (n-k-1)*5 bytes using the datasheet formula
 
 **Example Transfer Sizes (for chain of n=4 devices):**
 
-| Position k | Sending (k+1)*5 | Receiving (n-k+1)*5 | Transfer Size max((k+1)*5, (n-k+1)*5) | Response Offset (n-k-1)*5 |
-|------------|----------------|---------------------|--------------------------------------|---------------------------|
-| 0          | 5 bytes        | 20 bytes            | 20 bytes (receiving dominates)        | 15 bytes                  |
-| 1          | 10 bytes       | 15 bytes            | 15 bytes (receiving dominates)       | 10 bytes                  |
-| 2          | 15 bytes       | 10 bytes            | 15 bytes (sending dominates)         | 5 bytes                   |
-| 3          | 20 bytes       | 5 bytes             | 20 bytes (sending dominates)          | 0 bytes                   |
+| Position k | Sending (k+1)*5 | Receiving (n-k)*5 | Transfer Size max((k+1)*5, (n-k)*5) | Response Offset (n-k-1)*5 |
+|------------|----------------|------------------|-------------------------------------|---------------------------|
+| 0          | 5 bytes        | 20 bytes         | 20 bytes (receiving dominates)      | 15 bytes                  |
+| 1          | 10 bytes       | 15 bytes         | 15 bytes (receiving dominates)      | 10 bytes                  |
+| 2          | 15 bytes       | 10 bytes         | 15 bytes (sending dominates)        | 5 bytes                   |
+| 3          | 20 bytes       | 5 bytes          | 20 bytes (sending dominates)        | 0 bytes                   |
 
-**Note**: Transfer size uses max((k+1)*5, (n-k+1)*5) to ensure both sending and receiving requirements are met. For k < n/2, receiving requirement dominates. For k >= n/2, sending requirement dominates. Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex response extraction.
+**Note**: Transfer size uses max((k+1)*5, (n-k)*5) to ensure both sending and receiving requirements are met. For k < n/2, receiving requirement dominates. For k >= n/2, sending requirement dominates. Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex response extraction.
 
 ### Using TMC5160DaisyChain for Multiple Devices
 
@@ -290,7 +317,7 @@ uint8_t detected = spi.AutoDetectChainLength(16); // Probe up to 16 devices
 **Automatic Detection on First Access:**
 - If chain length is not set and `daisy_chain_position > 0`, chain length is automatically
   detected on the first `ReadRegister()` or `WriteRegister()` call
-- This ensures correct response extraction using the datasheet formula `40·(n-k+1)`
+- This ensures correct response extraction using the datasheet formula `40·(n-k)`
 - Detection happens transparently - no user action required
 
 **Verification of User-Specified Length:**
@@ -308,9 +335,23 @@ uint8_t detected = spi.AutoDetectChainLength(16); // Probe up to 16 devices
 
 For UART multi-node addressing, the TMC5160 must be configured in UART mode:
 
-- **SD_MODE** (pin 21): Must be tied **LOW** (0)
-- **SPI_MODE** (pin 22): Must be tied **LOW** (0)
+- **SD_MODE** (pin 21): Must be tied **LOW** (GND) - **Required**
+- **SPI_MODE** (pin 22): Must be tied **LOW** (GND) - **Required**
 - When both are LOW, UART operation is enabled
+
+**⚠️ CRITICAL**: These mode pins are read at startup and cannot be changed via software. They must be configured correctly before power-up.
+
+#### Mode Pin Configuration for UART
+
+```
+SPI_MODE (pin 22) ──────> GND  (LOW)
+SD_MODE  (pin 21) ──────> GND  (LOW)
+```
+
+**Wiring:**
+- Connect both pins directly to GND, or
+- Use pull-down resistors (10kΩ) to GND
+- **DO NOT** leave these pins floating - they must be tied to GND
 
 ### Pin Functions in UART Mode
 
@@ -616,16 +657,16 @@ void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
   - This calculation only requires knowing k (device position)
   
 - **Receiving (Response Extraction)**: To receive response from device k in chain of n devices:
-  - Total transfer size: 40·(n-k+1) bits = (n-k+1)*5 bytes (datasheet formula)
+  - Total transfer size: 40·(n-k) bits = (n-k)*5 bytes (datasheet formula)
   - Response appears at offset (n-k-1)*5 bytes (reverse order: last device first)
   - This calculation **REQUIRES knowing n** (total chain length)
   
-- **Transfer Size**: For simultaneous send/receive, use max((k+1)*5, (n-k+1)*5) bytes
+- **Transfer Size**: For simultaneous send/receive, use max((k+1)*5, (n-k)*5) bytes
   - Sending requirement: (k+1)*5 bytes to shift command to device k
-  - Receiving requirement: (n-k+1)*5 bytes to shift response back (datasheet formula)
+  - Receiving requirement: (n-k)*5 bytes to shift response back (datasheet formula)
   - Use max() to ensure both requirements are met:
-    * For k < n/2: (n-k+1)*5 >= (k+1)*5, so (n-k+1)*5 dominates
-    * For k >= n/2: (k+1)*5 > (n-k+1)*5, so (k+1)*5 dominates
+    * For k < n/2: (n-k)*5 >= (k+1)*5, so (n-k)*5 dominates
+    * For k >= n/2: (k+1)*5 > (n-k)*5, so (k+1)*5 dominates
   - Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex behavior
 
 **Chain Length Requirements:**
@@ -677,8 +718,8 @@ void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
    - Optionally call `SetDaisyChainLength()` to manually specify length (will be verified)
    - If manually set length doesn't match detected length, error is logged and detected length is used
    - **Sending**: (k+1)*5 bytes to address device k
-   - **Receiving**: (n-k+1)*5 bytes total, response at offset (n-k-1)*5 bytes
-   - **Transfer Size**: Always use max((k+1)*5, (n-k+1)*5) bytes
+   - **Receiving**: (n-k)*5 bytes total, response at offset (n-k-1)*5 bytes
+   - **Transfer Size**: Always use max((k+1)*5, (n-k)*5) bytes
    - Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex behavior
 
 2. **UART Multi-Node**:

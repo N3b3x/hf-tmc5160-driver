@@ -16,8 +16,33 @@ Complete reference documentation for all public methods and types in the TMC5160
 - **Main Header**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
 - **Communication Interface**: [`inc/tmc5160_comm_interface.hpp`](../inc/tmc5160_comm_interface.hpp)
 - **Registers**: [`inc/tmc5160_registers.hpp`](../inc/tmc5160_registers.hpp)
+- **Register Access Types**: [`inc/tmc5160_register_access.hpp`](../inc/tmc5160_register_access.hpp)
 - **Types**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
 - **Unit Conversions**: [`inc/tmc5160_units.hpp`](../inc/tmc5160_units.hpp)
+
+## Register Access Types
+
+All TMC5160 registers have specific access types (Read-Only, Write-Only, Read-Write, or Read-Write with Clear behavior). See the [Register Access Table](register_access_table.md) for a complete reference.
+
+The driver provides compile-time utilities to check register access types:
+
+```cpp
+#include "tmc5160_register_access.hpp"
+
+// Check if register is readable
+if (tmc5160::IsRegisterReadable(0x6F)) {  // DRV_STATUS
+    uint32_t status;
+    driver.GetComm().ReadRegister(0x6F, status);
+}
+
+// Check if register is writable
+if (tmc5160::IsRegisterWritable(0x00)) {  // GCONF
+    driver.GetComm().WriteRegister(0x00, value);
+}
+
+// Get access type
+tmc5160::RegisterAccess access = tmc5160::GetRegisterAccess(0x12);  // TSTEP = READ_ONLY
+```
 
 ## TMC5160 Class
 
@@ -40,8 +65,19 @@ Main driver class for interfacing with the TMC5160 stepper motor controller.
 | `GetDaisyChainPosition()` | `uint8_t GetDaisyChainPosition() const noexcept` | Position (0-255) | Get current daisy-chain position for SPI |
 | `SetUartNodeAddress()` | `void SetUartNodeAddress(uint8_t address) noexcept` | void | Set UART node address (0-254) for UART multi-node |
 | `GetUartNodeAddress()` | `uint8_t GetUartNodeAddress() const noexcept` | Address (0-254) | Get current UART node address |
+| `SetChipCommMode()` | `bool SetChipCommMode(ChipCommMode mode) noexcept` | `true` on success | Set chip communication mode via SPI_MODE and SD_MODE pins (if available as GPIO) |
+| `GetChipCommMode()` | `bool GetChipCommMode(ChipCommMode& mode) const noexcept` | `true` on success | Get current chip communication mode from SPI_MODE and SD_MODE pins |
 
 **Note**: Per datasheet procedure, devices are programmed backwards from address 254 (254, 253, 252, ...). Logical device indices (0, 1, 2, ...) map to physical addresses (254, 253, 252, ...). Use `TMC5160MultiNode` class for managing multiple devices.
+
+**⚠️ Chip Communication Mode Control:**
+- `SetChipCommMode()` and `GetChipCommMode()` control SPI_MODE (pin 22) and SD_MODE (pin 21) pins
+- These pins are **typically hardwired** and read at startup
+- Only use these methods if SPI_MODE and SD_MODE are connected to GPIO outputs
+- Configure pins in `TMC5160PinConfig` (spi_mode_pin, sd_mode_pin) before use
+- **CRITICAL**: Mode changes require a chip reset (power cycle or reset pin) to take effect
+- The mode pins are read at startup, so changes won't be effective until reset
+
 | `Initialize()` | `bool Initialize(const DriverConfig& config = DriverConfig()) noexcept` | `true` on success | Initialize driver with configuration |
 | `Reset()` | `bool Reset() noexcept` | `true` on success | Perform software reset |
 | `IsInitialized()` | `bool IsInitialized() const noexcept` | `true` if initialized | Check initialization status |
@@ -275,6 +311,24 @@ Methods available through `GetComm()` for direct communication interface access.
 | `UART` | UART communication mode |
 
 **Location**: [`inc/tmc5160_comm_interface.hpp`](../inc/tmc5160_comm_interface.hpp)
+
+### ChipCommMode
+
+Chip communication and motion control mode configuration. Represents the combination of SPI_MODE (pin 22) and SD_MODE (pin 21) pins.
+
+| Value | Description | SPI_MODE | SD_MODE |
+|-------|-------------|----------|---------|
+| `SPI_INTERNAL_RAMP` | SPI interface with internal ramp generator (motion controller) | HIGH | LOW |
+| `SPI_EXTERNAL_STEPDIR` | SPI interface with external step/dir inputs | HIGH | HIGH |
+| `UART_INTERNAL_RAMP` | UART interface with internal ramp generator (motion controller) | LOW | LOW |
+
+**⚠️ WARNING**: 
+- These pins are **typically hardwired** and read at startup
+- Only use `SetChipCommMode()` if SPI_MODE and SD_MODE are connected to GPIO outputs
+- Mode changes require a chip reset (power cycle or reset pin) to take effect
+- The mode pins are read at startup, so changes won't be effective until reset
+
+**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
 
 ### TMC5160CtrlPin
 

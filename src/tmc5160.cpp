@@ -27,6 +27,77 @@
 
 using namespace tmc5160;
 
+// Implementation of chip communication mode control methods
+template <typename CommType>
+bool TMC5160<CommType>::SetChipCommMode(ChipCommMode mode) noexcept {
+  const char* mode_name = (mode == ChipCommMode::SPI_INTERNAL_RAMP) ? "SPI_INTERNAL_RAMP" :
+                          (mode == ChipCommMode::SPI_EXTERNAL_STEPDIR) ? "SPI_EXTERNAL_STEPDIR" :
+                          (mode == ChipCommMode::UART_INTERNAL_RAMP) ? "UART_INTERNAL_RAMP" : "UNKNOWN";
+  TMC5160_LOG_DEBUG(comm_, 2, "TMC5160", "SetChipCommMode(%s)", mode_name);
+
+  // Map mode to SPI_MODE and SD_MODE pin states
+  GpioSignal spi_mode_signal, sd_mode_signal;
+  
+  switch (mode) {
+    case ChipCommMode::SPI_INTERNAL_RAMP:
+      spi_mode_signal = GpioSignal::ACTIVE;  // HIGH
+      sd_mode_signal = GpioSignal::INACTIVE; // LOW
+      break;
+    case ChipCommMode::SPI_EXTERNAL_STEPDIR:
+      spi_mode_signal = GpioSignal::ACTIVE;  // HIGH
+      sd_mode_signal = GpioSignal::ACTIVE;   // HIGH
+      break;
+    case ChipCommMode::UART_INTERNAL_RAMP:
+      spi_mode_signal = GpioSignal::INACTIVE; // LOW
+      sd_mode_signal = GpioSignal::INACTIVE;  // LOW
+      break;
+    default:
+      return false;
+  }
+  
+  // Set SPI_MODE pin
+  if (!this->comm_.GpioSet(TMC5160CtrlPin::SPI_MODE, spi_mode_signal)) {
+    return false;
+  }
+  
+  // Set SD_MODE pin
+  if (!this->comm_.GpioSet(TMC5160CtrlPin::SD_MODE, sd_mode_signal)) {
+    return false;
+  }
+  
+  return true;
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::GetChipCommMode(ChipCommMode& mode) const noexcept {
+  GpioSignal spi_mode_signal, sd_mode_signal;
+  
+  // Read SPI_MODE pin
+  if (!this->comm_.GpioRead(TMC5160CtrlPin::SPI_MODE, spi_mode_signal)) {
+    return false;
+  }
+  
+  // Read SD_MODE pin
+  if (!this->comm_.GpioRead(TMC5160CtrlPin::SD_MODE, sd_mode_signal)) {
+    return false;
+  }
+  
+  // Determine mode from pin states
+  if (spi_mode_signal == GpioSignal::ACTIVE) {
+    // SPI_MODE = HIGH
+    if (sd_mode_signal == GpioSignal::ACTIVE) {
+      mode = ChipCommMode::SPI_EXTERNAL_STEPDIR;
+    } else {
+      mode = ChipCommMode::SPI_INTERNAL_RAMP;
+    }
+  } else {
+    // SPI_MODE = LOW (UART mode)
+    mode = ChipCommMode::UART_INTERNAL_RAMP;
+  }
+  
+  return true;
+}
+
 // Helper function to constrain value between min and max
 template <typename T>
 static constexpr T constrain(T value, T min_val, T max_val) noexcept {
@@ -41,6 +112,10 @@ static constexpr T constrain(T value, T min_val, T max_val) noexcept {
 
 template <typename CommType>
 bool TMC5160<CommType>::Initialize(const DriverConfig& config) noexcept {
+  TMC5160_LOG_DEBUG(comm_, 2, "TMC5160", "Initialize(irun=%u, ihold=%u, global_scaler=%u, toff=%u, mres=%u)",
+                     config.motor.irun, config.motor.ihold, config.motor.global_scaler,
+                     config.chopper.toff, config.chopper.mres);
+
   // Clear reset and error flags
   GSTAT_Register gstat{};
   gstat.bits.reset = true;
@@ -65,6 +140,7 @@ bool TMC5160<CommType>::Initialize(const DriverConfig& config) noexcept {
 
   // Configure global scaler
   auto scaler = constrain<decltype(config.motor.global_scaler)>(config.motor.global_scaler, 32U, 256U);
+  TMC5160_LOG_DEBUG(comm_, 3, "TMC5160", "Initialize: Setting GLOBAL_SCALER=%u", scaler);
   if (!this->comm_.WriteRegister(Registers::GLOBAL_SCALER, scaler, this->GetCommAddress())) {
     return false;
   }
@@ -74,6 +150,8 @@ bool TMC5160<CommType>::Initialize(const DriverConfig& config) noexcept {
   iholdrun.bits.ihold = constrain<decltype(config.motor.ihold)>(config.motor.ihold, 0U, 31U);
   iholdrun.bits.irun = constrain<decltype(config.motor.irun)>(config.motor.irun, 0U, 31U);
   iholdrun.bits.iholddelay = 7;
+  TMC5160_LOG_DEBUG(comm_, 3, "TMC5160", "Initialize: Setting IHOLD_IRUN(irun=%u, ihold=%u, iholddelay=7)",
+                     iholdrun.bits.irun, iholdrun.bits.ihold);
   if (!this->comm_.WriteRegister(Registers::IHOLD_IRUN, iholdrun.value, this->GetCommAddress())) {
     return false;
   }
@@ -116,11 +194,13 @@ bool TMC5160<CommType>::Initialize(const DriverConfig& config) noexcept {
   pwmconf.bits.pwm_autograd = config.stealthchop.pwm_autograd ? 1 : 0;
   pwmconf.bits.pwm_reg = constrain<decltype(config.stealthchop.pwm_reg)>(config.stealthchop.pwm_reg, 0U, 15U);
   pwmconf.bits.pwm_lim = constrain<decltype(config.stealthchop.pwm_lim)>(config.stealthchop.pwm_lim, 0U, 15U);
+  pwmconf.bits.freewheel = static_cast<uint8_t>(config.stealthchop.freewheel);
   if (!this->comm_.WriteRegister(Registers::PWMCONF, pwmconf.value, this->GetCommAddress())) {
     return false;
   }
 
   // Set ramp mode to positioning
+  TMC5160_LOG_DEBUG(comm_, 3, "TMC5160", "Initialize: Setting ramp mode to POSITIONING");
   if (!rampControl.SetRampMode(RampMode::POSITIONING)) {
     return false;
   }
@@ -250,11 +330,16 @@ int32_t TMC5160<CommType>::thresholdSpeedToTstep(float speed_hz) const noexcept 
 template <typename CommType>
 bool TMC5160<CommType>::RampControl::SetRampMode(RampMode mode) noexcept {
   auto mode_value = static_cast<uint8_t>(mode);
+  const char* mode_name = (mode == RampMode::POSITIONING) ? "POSITIONING" :
+                          (mode == RampMode::VELOCITY_POS) ? "VELOCITY_POS" :
+                          (mode == RampMode::VELOCITY_NEG) ? "VELOCITY_NEG" : "HOLD";
+  TMC5160_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetRampMode(%s)", mode_name);
   return driver_.comm_.WriteRegister(Registers::RAMPMODE, mode_value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
 bool TMC5160<CommType>::RampControl::SetTargetPosition(int32_t position) noexcept {
+  TMC5160_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetTargetPosition(%d)", position);
   return driver_.comm_.WriteRegister(Registers::XTARGET, static_cast<uint32_t>(position));
 }
 
@@ -287,6 +372,7 @@ bool TMC5160<CommType>::RampControl::SetCurrentPosition(int32_t position, bool u
 
 template <typename CommType>
 bool TMC5160<CommType>::RampControl::SetMaxSpeed(float speed) noexcept {
+  TMC5160_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetMaxSpeed(%.2f steps/s)", speed);
   int32_t internal = driver_.speedToInternal(std::abs(speed));
   internal = std::min(internal, static_cast<decltype(internal)>(0x7FFFFF)); // VMAX is 23 bits
   if (!driver_.comm_.WriteRegister(Registers::VMAX, static_cast<uint32_t>(internal))) {
@@ -312,6 +398,8 @@ bool TMC5160<CommType>::RampControl::SetAcceleration(float acceleration) noexcep
 
 template <typename CommType>
 bool TMC5160<CommType>::RampControl::SetAccelerations(float acceleration, float deceleration) noexcept {
+  TMC5160_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetAccelerations(accel=%.2f, decel=%.2f steps/s²)",
+                     acceleration, deceleration);
   int32_t accel_internal = driver_.accelToInternal(std::abs(acceleration));
   int32_t decel_internal = driver_.accelToInternal(std::abs(deceleration));
   accel_internal = std::min(accel_internal,
@@ -453,6 +541,7 @@ bool TMC5160<CommType>::RampControl::SetFirstAcceleration(float a1) noexcept {
 // MotorControl implementation
 template <typename CommType>
 bool TMC5160<CommType>::MotorControl::Enable() noexcept {
+  TMC5160_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "MotorControl::Enable()");
   uint32_t chopconf_value = 0;
   if (!driver_.comm_.ReadRegister(Registers::CHOPCONF, chopconf_value)) {
     return false;
@@ -468,6 +557,7 @@ bool TMC5160<CommType>::MotorControl::Enable() noexcept {
 
 template <typename CommType>
 bool TMC5160<CommType>::MotorControl::Disable() noexcept {
+  TMC5160_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "MotorControl::Disable()");
   uint32_t chopconf_value = 0;
   if (!driver_.comm_.ReadRegister(Registers::CHOPCONF, chopconf_value)) {
     return false;
@@ -480,6 +570,7 @@ bool TMC5160<CommType>::MotorControl::Disable() noexcept {
 
 template <typename CommType>
 bool TMC5160<CommType>::MotorControl::SetCurrent(uint8_t irun, uint8_t ihold) noexcept {
+  TMC5160_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "MotorControl::SetCurrent(irun=%u, ihold=%u)", irun, ihold);
   IHOLD_IRUN_Register iholdrun{};
   iholdrun.bits.irun = constrain<decltype(irun)>(irun, 0U, 31U);
   iholdrun.bits.ihold = constrain<decltype(ihold)>(ihold, 0U, 31U);
@@ -512,6 +603,7 @@ bool TMC5160<CommType>::MotorControl::ConfigureStealthChop(const StealthChopConf
   pwmconf.bits.pwm_autograd = config.pwm_autograd ? 1 : 0;
   pwmconf.bits.pwm_reg = constrain<decltype(config.pwm_reg)>(config.pwm_reg, 0U, 15U);
   pwmconf.bits.pwm_lim = constrain<decltype(config.pwm_lim)>(config.pwm_lim, 0U, 15U);
+  pwmconf.bits.freewheel = static_cast<uint8_t>(config.freewheel);
   return driver_.comm_.WriteRegister(Registers::PWMCONF, pwmconf.value, driver_.GetCommAddress());
 }
 
@@ -536,17 +628,6 @@ bool TMC5160<CommType>::MotorControl::SetGlobalScaler(uint16_t scaler) noexcept 
   return driver_.comm_.WriteRegister(Registers::GLOBAL_SCALER, scaler, driver_.GetCommAddress());
 }
 
-template <typename CommType>
-bool TMC5160<CommType>::MotorControl::SetFreewheelingMode(PWMFreewheel mode) noexcept {
-  uint32_t pwmconf_value = 0;
-  if (!driver_.comm_.ReadRegister(Registers::PWMCONF, pwmconf_value)) {
-    return false;
-  }
-  PWMCONF_Register pwmconf{};
-  pwmconf.value = pwmconf_value;
-  pwmconf.bits.freewheel = static_cast<uint8_t>(mode);
-  return driver_.comm_.WriteRegister(Registers::PWMCONF, pwmconf.value, driver_.GetCommAddress());
-}
 
 template <typename CommType>
 bool TMC5160<CommType>::MotorControl::ConfigureCoolStep(const CoolStepConfig& config) noexcept {
@@ -972,6 +1053,12 @@ bool TMC5160<CommType>::Communication::ConfigureSlaveAddress(uint8_t slave_addre
     return false;
   }
 
+  // Store send delay locally (slave address is same as uart_node_address)
+  driver_.send_delay_ = constrain<uint8_t>(send_delay, 0U, 15U);
+  
+  // Update UART node address (slave address and UART node address are the same)
+  driver_.uart_node_address_ = slave_address & 0xFF;
+
   // Update UART interface slave address if using UART
   if (driver_.comm_.GetMode() == CommMode::UART) {
     // Cast to UART interface and update address
@@ -982,27 +1069,6 @@ bool TMC5160<CommType>::Communication::ConfigureSlaveAddress(uint8_t slave_addre
   return true;
 }
 
-template <typename CommType>
-uint8_t TMC5160<CommType>::Communication::GetSlaveAddress() noexcept {
-  SLAVECONF_Register slaveconf{};
-  uint32_t value = 0;
-  if (!driver_.comm_.ReadRegister(Registers::SLAVECONF, value)) {
-    return 0xFF;
-  }
-  slaveconf.value = value;
-  return static_cast<uint8_t>(slaveconf.bits.slaveaddr);
-}
-
-template <typename CommType>
-uint8_t TMC5160<CommType>::Communication::GetSendDelay() noexcept {
-  SLAVECONF_Register slaveconf{};
-  uint32_t value = 0;
-  if (!driver_.comm_.ReadRegister(Registers::SLAVECONF, value)) {
-    return 0xFF;
-  }
-  slaveconf.value = value;
-  return static_cast<uint8_t>(slaveconf.bits.senddelay);
-}
 
 // Protection implementation
 template <typename CommType>
@@ -1166,9 +1232,10 @@ bool TMC5160<CommType>::UartConfig::ConfigureSlave(uint8_t slave_address, uint8_
   // Write to SLAVECONF using current accessible address (0)
   bool success = driver_->comm_.WriteRegister(Registers::SLAVECONF, slaveconf.value, current_accessible_address);
 
-  // Only update the driver's node address after successful programming
+  // Only update the driver's node address and send delay after successful programming
   if (success) {
-    driver_->uart_node_address_ = slave_address & 0xFF; // Address range is 0-254
+    driver_->uart_node_address_ = slave_address & 0xFF; // Address range is 0-254 (slave address == UART node address)
+    driver_->send_delay_ = constrain<decltype(send_delay)>(send_delay, 0U, 15U); // Store send delay locally
   }
 
   return success;

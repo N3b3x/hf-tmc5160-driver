@@ -122,6 +122,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <string>
 #include <vector>
 
 namespace tmc5160 {
@@ -207,7 +208,14 @@ enum class TMC5160CtrlPin : uint8_t {
   DCO,  ///< DC Step ready output (ENCN_DCO_CFG6, pin 25) - Used when SD_MODE=1, SPI_MODE=1
 
   // Clock pin (optional external clock)
-  CLK ///< Clock input (CLK, pin 12) - External clock input (tie to GND for internal clock)
+  CLK, ///< Clock input (CLK, pin 12) - External clock input (tie to GND for internal clock)
+
+  // Mode configuration pins (if made available as control pins)
+  // ⚠️ WARNING: These pins are typically hardwired and read at startup.
+  // Only use these if you have connected these pins to GPIO outputs for dynamic control.
+  // Changing these pins requires a chip reset to take effect.
+  SPI_MODE, ///< SPI/UART mode select (pin 22) - HIGH=SPI, LOW=UART. Typically hardwired.
+  SD_MODE   ///< Step/Dir mode select (pin 21) - HIGH=External step/dir, LOW=Internal ramp. Typically hardwired.
 };
 
 /**
@@ -263,6 +271,13 @@ struct TMC5160PinConfig {
   // Clock pin
   int clk_pin{-1}; ///< Clock input (CLK, pin 12) - Optional
 
+  // Mode configuration pins (if made available as control pins)
+  // ⚠️ WARNING: These pins are typically hardwired and read at startup.
+  // Only configure these if you have connected SPI_MODE (pin 22) and SD_MODE (pin 21)
+  // to GPIO outputs for dynamic mode control. Changing these requires a chip reset.
+  int spi_mode_pin{-1}; ///< SPI_MODE pin (pin 22) - Optional, typically hardwired. HIGH=SPI, LOW=UART
+  int sd_mode_pin{-1};  ///< SD_MODE pin (pin 21) - Optional, typically hardwired. HIGH=External step/dir, LOW=Internal ramp
+
   /**
    * @brief Default constructor - all pins unmapped (-1)
    */
@@ -275,6 +290,59 @@ struct TMC5160PinConfig {
    * @param step STEP pin (optional, -1 if not used)
    */
   TMC5160PinConfig(int en, int dir = -1, int step = -1) noexcept : en_pin(en), dir_pin(dir), step_pin(step) {}
+};
+
+/**
+ * @brief Complete ESP32 SPI bus and TMC5160 pin configuration structure
+ *
+ * This structure extends TMC5160PinConfig to include SPI bus pins, providing
+ * a single configuration structure for all GPIO pins used by the ESP32 SPI
+ * communication interface.
+ *
+ * This allows users to define all pin assignments in one place, making it
+ * easier to manage and configure the hardware setup.
+ *
+ * @note SPI pins are required for SPI communication.
+ * @note TMC5160 control pins are optional and depend on the operating mode.
+ */
+struct Esp32SpiPinConfig {
+  // SPI bus pins (required for SPI communication)
+  int spi_mosi{-1};  ///< SPI MOSI pin (Master Out, Slave In)
+  int spi_miso{-1};  ///< SPI MISO pin (Master In, Slave Out)
+  int spi_sclk{-1};  ///< SPI clock pin (SCLK)
+  int spi_cs{-1};    ///< SPI chip select pin (CS)
+
+  // TMC5160 control pins (from TMC5160PinConfig)
+  TMC5160PinConfig tmc5160_pins; ///< TMC5160 control pin configuration
+
+  /**
+   * @brief Default constructor - all pins unmapped (-1)
+   */
+  Esp32SpiPinConfig() = default;
+
+  /**
+   * @brief Constructor with SPI pins and basic TMC5160 pins
+   * @param mosi SPI MOSI pin
+   * @param miso SPI MISO pin
+   * @param sclk SPI clock pin
+   * @param cs SPI chip select pin
+   * @param en TMC5160 EN pin (required)
+   * @param dir TMC5160 DIR pin (optional, -1 if not used)
+   * @param step TMC5160 STEP pin (optional, -1 if not used)
+   */
+  Esp32SpiPinConfig(int mosi, int miso, int sclk, int cs, int en, int dir = -1, int step = -1) noexcept
+      : spi_mosi(mosi), spi_miso(miso), spi_sclk(sclk), spi_cs(cs), tmc5160_pins(en, dir, step) {}
+
+  /**
+   * @brief Constructor with SPI pins and full TMC5160 pin config
+   * @param mosi SPI MOSI pin
+   * @param miso SPI MISO pin
+   * @param sclk SPI clock pin
+   * @param cs SPI chip select pin
+   * @param tmc_pins TMC5160 pin configuration structure
+   */
+  Esp32SpiPinConfig(int mosi, int miso, int sclk, int cs, const TMC5160PinConfig& tmc_pins) noexcept
+      : spi_mosi(mosi), spi_miso(miso), spi_sclk(sclk), spi_cs(cs), tmc5160_pins(tmc_pins) {}
 };
 
 /**
@@ -368,6 +436,24 @@ struct SpiStatus {
    */
   [[nodiscard]] bool StopRight() const noexcept {
     return (value & 0x80) != 0;
+  }
+
+  /**
+   * @brief Format status bits as compact string (bit names and values)
+   * @return String with format "RST:0 STST:0 VEL:0 POS:0 STOP_L:0 STOP_R:0 SG2:0 DRV_ERR:0"
+   */
+  [[nodiscard]] std::string FormatStatusBits() const noexcept {
+    char buf[128];
+    snprintf(buf, sizeof(buf), "RST:%d STST:%d VEL:%d POS:%d STOP_L:%d STOP_R:%d SG2:%d DRV_ERR:%d",
+             ResetFlag() ? 1 : 0,
+             Standstill() ? 1 : 0,
+             VelocityReached() ? 1 : 0,
+             PositionReached() ? 1 : 0,
+             StopLeft() ? 1 : 0,
+             StopRight() ? 1 : 0,
+             StallGuard2() ? 1 : 0,
+             DriverError() ? 1 : 0);
+    return std::string(buf);
   }
 
   /**
@@ -517,11 +603,11 @@ struct SpiResponse {
  */
 static constexpr uint8_t calculateCrc8(const uint8_t* data, size_t length) noexcept {
   uint8_t crc = 0; // Initial value is zero per datasheet
-
+  
   // Process each byte LSB to MSB
   for (size_t i = 0; i < length; ++i) {
     uint8_t currentByte = data[i];
-
+    
     // Process each bit LSB to MSB (j=0 is LSB, j=7 is MSB)
     for (uint8_t j = 0; j < 8; ++j) {
       // Check: (CRC >> 7) XOR (currentByte & 0x01)
@@ -534,7 +620,7 @@ static constexpr uint8_t calculateCrc8(const uint8_t* data, size_t length) noexc
       currentByte = currentByte >> 1; // Shift to next bit (LSB to MSB)
     }
   }
-
+  
   return crc;
 }
 
@@ -1154,17 +1240,17 @@ public:
  *     shift register after (k+1)*40 clock cycles
  *
  * Response Reading (per datasheet):
- * - Response from chip k in a chain of n devices requires sending 40·(n-k+1) dummy bits total
- *   Formula: 40·(n-k) bits of padding + 40 bits of command = 40·(n-k+1) bits
+ * - Response from chip k in a chain of n devices requires sending 40·(n-k) dummy bits total
+ *   Formula: 40·(n-k) bits of padding + 40 bits of command = 40·(n-k) bits (command included in total)
  * - **CRITICAL**: Responses come back in REVERSE order (last device first, first device last)
  *   - Device n-1's response appears FIRST (at byte 0)
  *   - Device n-2's response appears second (at byte 5)
  *   - ...
  *   - Device 0's response appears LAST (at byte (n-1)*5)
  * - To read from device k in chain of n devices:
- *   - Send 40·(n-k+1) bits total (40·(n-k) padding + 40 command)
+ *   - Send 40·(n-k) bits total (40·(n-k-1) padding + 40 command, or just 40 command if k=n-1)
  *   - Response from device k appears at offset (n-k-1)*5 bytes in received data
- *   - Example: For n=3, k=1: Send 40*(3-1+1)=120 bits, response at offset (3-1-1)*5=5 bytes
+ *   - Example: For n=3, k=1: Send 40*(3-1)=80 bits, response at offset (3-1-1)*5=5 bytes
  *
  * **CRITICAL: Chain Length MUST Always Be Known**
  *
@@ -1174,16 +1260,16 @@ public:
  *   - This calculation only requires knowing k (device position)
  *
  * - **Receiving (Response Extraction)**: To receive response from device k in chain of n devices:
- *   - Total transfer size: 40·(n-k+1) bits = (n-k+1)*5 bytes (datasheet formula)
+ *   - Total transfer size: 40·(n-k) bits = (n-k)*5 bytes (datasheet formula)
  *   - Response appears at offset (n-k-1)*5 bytes (reverse order: last device first)
  *   - This calculation REQUIRES knowing n (total chain length)
  *
- * - **Transfer Size**: For simultaneous send/receive, use max((k+1)*5, (n-k+1)*5) bytes
+ * - **Transfer Size**: For simultaneous send/receive, use max((k+1)*5, (n-k)*5) bytes
  *   - Sending requirement: (k+1)*5 bytes needed to shift command to device k
- *   - Receiving requirement: (n-k+1)*5 bytes needed to shift response back (datasheet formula)
+ *   - Receiving requirement: (n-k)*5 bytes needed to shift response back (datasheet formula)
  *   - Use max() to ensure both requirements are met:
- *     * For k < n/2: (n-k+1)*5 >= (k+1)*5, so (n-k+1)*5 dominates
- *     * For k >= n/2: (k+1)*5 > (n-k+1)*5, so (k+1)*5 dominates
+ *     * For k < n/2: (n-k)*5 >= (k+1)*5, so (n-k)*5 dominates
+ *     * For k >= n/2: (k+1)*5 > (n-k)*5, so (k+1)*5 dominates
  *   - Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex response extraction
  *
  * **Chain Length Requirements:**
@@ -1239,7 +1325,7 @@ public:
  *     - Device 0 latches cmd_0 ✓
  *     - Device 1 latches cmd_1 ✓
  *     - Device 2 latches cmd_2 ✓
- * - Read response from chip k: Send 40·(n-k+1) dummy bits total (40·(n-k) padding + 40 command)
+ * - Read response from chip k: Send 40·(n-k) dummy bits total (40·(n-k-1) padding + 40 command, or just 40 command if k=n-1)
  *   Response appears at offset (n-k-1)*5 bytes (reverse order: last device first)
  *   **CRITICAL**: Responses come back in REVERSE order - device n-1 response first, then n-2, ...,
  * device 0 last
@@ -1292,7 +1378,7 @@ public:
    * @brief Set the total number of devices in the daisy chain
    * @param total_length Total number of devices in the chain (1 = single chip, 2 = two chips, etc.)
    *                     Set to 0 to disable daisy-chain mode (single chip, default)
-   * @note This is CRITICAL for proper response extraction using the datasheet formula 40·(n-k+1)
+   * @note This is CRITICAL for proper response extraction using the datasheet formula 40·(n-k)
    * @note This should be set once during initialization, before any register access
    * @note For optimal efficiency with TMC5160DaisyChain, set this to match the chain length
    * @note If set to a non-zero value, it will be verified against auto-detected length on first
@@ -1388,17 +1474,17 @@ public:
     }
 
     // Search for our exact command pattern in the received data
-    // The command loops back after (n+1)*40 bits, appearing at offset (n+1)*5 bytes
+    // The command loops back after n*40 bits, appearing at offset n*5 bytes
     // Since each device delays data by 40 clocks, our command should appear unmodified
     // at the loopback point
 
     uint8_t detected_length = 0;
 
     // Search backwards from max_devices to find where our command appears
-    // For n devices, our command appears at offset (n+1)*5 after looping back
+    // For n devices, our command appears at offset n*5 after looping back
     // We require an EXACT match of all 5 bytes to confirm loopback
     for (uint8_t n = max_devices; n >= 1; --n) {
-      size_t loopback_offset = static_cast<size_t>(n + 1) * 5;
+      size_t loopback_offset = static_cast<size_t>(n) * 5;
 
       if (loopback_offset + 4 < rx_buf.size()) {
         // Check if the 5-byte chunk at loopback_offset matches our command pattern EXACTLY
@@ -1434,7 +1520,7 @@ public:
 
       // Log first few potential loopback positions for debugging
       for (uint8_t n = 1; n <= 3 && n <= max_devices; ++n) {
-        size_t loopback_offset = static_cast<size_t>(n + 1) * 5;
+        size_t loopback_offset = static_cast<size_t>(n) * 5;
         if (loopback_offset + 4 < rx_buf.size()) {
           TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                             "AutoDetectChainLength: At offset %zu (n=%u): %02X %02X %02X %02X %02X", loopback_offset, n,
@@ -1456,8 +1542,10 @@ public:
     } else {
       TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "AutoDetectChainLength: Command pattern not found, assuming single chip");
-      if (user_specified_chain_length_ == 0) {
-        total_chain_length_ = 0; // Assume single chip only if not user-specified
+      // Don't reset total_chain_length_ if it was already set (e.g., to 1 for single-chip mode)
+      // Only reset if it was 0 and user hasn't specified a length
+      if (user_specified_chain_length_ == 0 && total_chain_length_ == 0) {
+        // Keep it at 0 - caller will handle single-chip case
       }
     }
 
@@ -1510,17 +1598,17 @@ public:
    *
    * **Receiving (Response Extraction):**
    * - To receive response from device k in chain of n devices:
-   *   - Total transfer size: 40·(n-k+1) bits = (n-k+1)*5 bytes (datasheet formula)
+   *   - Total transfer size: 40·(n-k) bits = (n-k)*5 bytes (datasheet formula)
    *   - Response appears at offset (n-k-1)*5 bytes (reverse order: last device first)
    *   - This requires knowing total chain length n
-   *
+ *
    * **Transfer Size Calculation:**
-   * - For simultaneous send/receive, use max((k+1)*5, (n-k+1)*5) bytes
+   * - For simultaneous send/receive, use max((k+1)*5, (n-k)*5) bytes
    *   - Sending requirement: (k+1)*5 bytes to shift command to device k
-   *   - Receiving requirement: (n-k+1)*5 bytes to shift response back (datasheet formula)
+   *   - Receiving requirement: (n-k)*5 bytes to shift response back (datasheet formula)
    *   - Use max() to ensure both requirements are met:
-   *     * For k < n/2: (n-k+1)*5 >= (k+1)*5, so (n-k+1)*5 dominates
-   *     * For k >= n/2: (k+1)*5 > (n-k+1)*5, so (k+1)*5 dominates
+   *     * For k < n/2: (n-k)*5 >= (k+1)*5, so (n-k)*5 dominates
+   *     * For k >= n/2: (k+1)*5 > (n-k)*5, so (k+1)*5 dominates
    *   - Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex behavior
    *
    * **Auto-Detection and Verification:**
@@ -1540,6 +1628,15 @@ public:
    * For daisy-chaining, all chips share the same CSN (tied together).
    */
   bool ReadRegister(uint8_t address, uint32_t& value, uint8_t daisy_chain_position = 0) noexcept {
+    // Log function call with arguments
+    if (daisy_chain_position > 0) {
+      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+                        "ReadRegister(0x%02X, daisy_chain=%u)", address, daisy_chain_position);
+    } else {
+      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+                        "ReadRegister(0x%02X)", address);
+    }
+
     // CRITICAL: Chain length MUST be known for correct response extraction
     // Ensure chain length is known and verified (auto-detects if needed)
     if (!EnsureChainLengthKnown(daisy_chain_position, "ReadRegister")) {
@@ -1561,9 +1658,9 @@ public:
     }
 
     // Calculate transfer size and response offset using datasheet formula
-    // Transfer size: max((k+1)*5, (n-k+1)*5) bytes
+    // Transfer size: max((k+1)*5, (n-k)*5) bytes
     //   - Sending: (k+1)*5 bytes needed to address device k
-    //   - Receiving: (n-k+1)*5 bytes needed to shift response back (datasheet formula)
+    //   - Receiving: (n-k)*5 bytes needed to shift response back (datasheet formula)
     //   - Use max() to ensure both requirements are met
     // Response offset: (n-k-1)*5 bytes (reverse order: last device first)
     uint8_t n = total_chain_length_;
@@ -1580,7 +1677,7 @@ public:
 
     // Calculate transfer size: max of sending and receiving requirements
     size_t sending_bytes = static_cast<size_t>(k + 1) * 5;       // Command must reach device k
-    size_t receiving_bytes = static_cast<size_t>(n - k + 1) * 5; // Response extraction (datasheet formula)
+    size_t receiving_bytes = static_cast<size_t>(n - k) * 5;    // Response extraction (datasheet formula)
     size_t transfer_bytes = std::max(sending_bytes, receiving_bytes);
 
     // Response offset: (n-k-1)*5 bytes (based on reverse order of devices)
@@ -1612,31 +1709,67 @@ public:
     // Padding structure:
     //   - Bytes 5 to (k+1)*5-1: Padding to shift command to device k
     //   - Bytes (k+1)*5 to transfer_bytes-1: Additional padding for full-duplex response extraction
-    //     (only present if transfer_bytes > (k+1)*5, i.e., when (n-k+1)*5 > (k+1)*5)
+    //     (only present if transfer_bytes > (k+1)*5, i.e., when (n-k)*5 > (k+1)*5)
     cmd.GetFrame(tx_buf.data());
     // Bytes 5 onwards are padding (zeros) - already initialized to 0 by vector constructor
 
-    // Log first 8 bytes for debug (or all if less than 8)
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
-                      "Read register 0x%02X (DaisyPos=%u, Bytes=%zu): TX %02X %02X %02X %02X %02X %02X %02X %02X",
-                      address, daisy_chain_position, transfer_bytes, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3],
-                      tx_buf[4], (transfer_bytes > 5) ? tx_buf[5] : 0, (transfer_bytes > 6) ? tx_buf[6] : 0,
-                      (transfer_bytes > 7) ? tx_buf[7] : 0);
-
+    // First transaction: Send read command (TX1), receive status (RX1)
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
       return false;
     }
+    
+    // Log [TX1]/RX1 after first transfer
+    // Show "=0x00000000" for reads to align with Write format (read command has no data, all zeros)
+    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+                      "Read 0x%02X=0x00000000: [TX1] %02X %02X %02X %02X %02X / RX1 %02X %02X %02X %02X %02X",
+                      address,
+                      tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4],
+                      rx_buf[response_byte_offset], 
+                      (response_byte_offset + 1 < rx_buf.size()) ? rx_buf[response_byte_offset + 1] : 0,
+                      (response_byte_offset + 2 < rx_buf.size()) ? rx_buf[response_byte_offset + 2] : 0,
+                      (response_byte_offset + 3 < rx_buf.size()) ? rx_buf[response_byte_offset + 3] : 0,
+                      (response_byte_offset + 4 < rx_buf.size()) ? rx_buf[response_byte_offset + 4] : 0);
 
     // Minimum CSN high time: 2*tclk + 10ns (typically ~176ns with 12MHz clock)
-    // Use 1us delay for safety
-    this->DelayUs(1);
+    // Per datasheet: CSN must go high between pipelined read transfers
+    // Use 10us delay to ensure TMC5160 has time to prepare pipelined data
+    // Some registers (like GLOBAL_SCALER, X_COMPARE) may require longer delay
+    // Note: ESP32 spi_device_transmit automatically handles CSN (pulls high after transfer)
+    this->DelayUs(10);
 
-    // Second transaction: Send address again, receive actual data (pipelined read)
+    // Second transaction: Send address again (TX2), receive actual data (RX2 - pipelined read)
     // Per datasheet: Read data is transferred back with the subsequent access
     // Use same transfer size for daisy-chaining consistency
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
       return false;
     }
+    
+    // Log TX2/[RX2] after second transfer (RX2 contains the actual read data)
+    // Align TX2 line with TX1 line by padding address field
+    SpiStatus status = SpiStatus::FromByte(rx_buf[response_byte_offset]);
+    std::string status_bits = status.FormatStatusBits();
+    
+    // Align TX2 bytes with TX1 bytes: "Read 0xXX=0x00000000: " (25) + "[TX1] " (6) = 31 chars to first byte
+    // For TX2: "Read 0xXX=0x00000000: " (25) + "      " (6 spaces) + "TX2 " (4) = 35, but bytes should be at 31
+    // Actually: align "TX2" label with "[TX1]" label, then bytes naturally align
+    // "Read 0xXX=0x00000000: [TX1] " = 31, bytes at 31
+    // "Read 0xXX=0x00000000:      TX2 " = 31 (25 + 6), bytes at 31 ✓
+    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+                      "Read 0x%02X:             TX2 %02X %02X %02X %02X %02X / [RX2] %02X %02X %02X %02X %02X (STATUS=0x%02X)",
+                      address,
+                      tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4],
+                      rx_buf[response_byte_offset],
+                      (response_byte_offset + 1 < rx_buf.size()) ? rx_buf[response_byte_offset + 1] : 0,
+                      (response_byte_offset + 2 < rx_buf.size()) ? rx_buf[response_byte_offset + 2] : 0,
+                      (response_byte_offset + 3 < rx_buf.size()) ? rx_buf[response_byte_offset + 3] : 0,
+                      (response_byte_offset + 4 < rx_buf.size()) ? rx_buf[response_byte_offset + 4] : 0,
+                      rx_buf[response_byte_offset]);
+    
+    // Log status bit breakdown with arrow pointing to STATUS byte
+    // Calculate position: "Read 0xXX:            TX2 XX XX XX XX XX / [RX2] " = ~60 chars, then STATUS byte at ~68
+    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+                      "                                                   └─> %s",
+                      status_bits.c_str());
 
     // Extract response data based on daisy-chain position
     // IMPORTANT: Responses come back in REVERSE order (last device first, first device last)
@@ -1647,22 +1780,42 @@ public:
 
     // Extract SPI_STATUS from response byte 0 (bits 39-32 per datasheet section 4.1.2)
     // For daisy-chaining, this is at the calculated offset
+    // (status was already extracted above for logging)
     if (response_byte_offset >= rx_buf.size()) {
       TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "Read register 0x%02X: Response offset %zu exceeds buffer size %zu", address,
                         response_byte_offset, rx_buf.size());
       return false;
     }
-    SpiStatus status = SpiStatus::FromByte(rx_buf[response_byte_offset]);
 
     // Log SPI_STATUS with detailed flag information
+    // Note: Only RESET (bit 0) and DRV_ERR (bit 1) are errors; others are informational
     if (status.HasError()) {
+      // Build error flags string (only actual errors)
+      const char* error_flags = "";
+      if (status.ResetFlag() && status.DriverError()) {
+        error_flags = "RESET|DRV_ERR";
+      } else if (status.ResetFlag()) {
+        error_flags = "RESET";
+      } else if (status.DriverError()) {
+        error_flags = "DRV_ERR";
+      }
+      
+      // Build informational flags string
+      char info_flags[64] = "";
+      if (status.StallGuard2() || status.Standstill() || status.VelocityReached() || 
+          status.PositionReached() || status.StopLeft() || status.StopRight()) {
+        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s]",
+                 status.StallGuard2() ? "SG2 " : "",
+                 status.Standstill() ? "STST " : "",
+                 status.VelocityReached() ? "VEL " : "",
+                 status.PositionReached() ? "POS " : "",
+                 status.StopLeft() ? "STOP_L " : "",
+                 status.StopRight() ? "STOP_R " : "");
+      }
+      
       TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
-                        "Read register 0x%02X: SPI_STATUS=0x%02X [%s%s%s%s%s%s%s%s] - ERROR DETECTED", address,
-                        status.value, status.ResetFlag() ? "RESET " : "", status.DriverError() ? "DRV_ERR " : "",
-                        status.StallGuard2() ? "SG2 " : "", status.Standstill() ? "STST " : "",
-                        status.VelocityReached() ? "VEL " : "", status.PositionReached() ? "POS " : "",
-                        status.StopLeft() ? "STOP_L " : "", status.StopRight() ? "STOP_R " : "");
+                        "Read 0x%02X: STATUS=0x%02X ERROR=%s%s", address, status.value, error_flags, info_flags);
     } else {
       // Log response bytes (first 8 or all if less)
       size_t log_rx_bytes = (rx_buf.size() < 8) ? rx_buf.size() : 8;
@@ -1688,6 +1841,8 @@ public:
                         response_byte_offset, rx_buf.size());
       return false;
     }
+    
+    // Extract 32-bit value from RX2 (bytes response_byte_offset+1 to response_byte_offset+4)
     value = (static_cast<uint32_t>(rx_buf[response_byte_offset + 1]) << 24) |
             (static_cast<uint32_t>(rx_buf[response_byte_offset + 2]) << 16) |
             (static_cast<uint32_t>(rx_buf[response_byte_offset + 3]) << 8) |
@@ -1716,8 +1871,8 @@ public:
    * **Key Points:**
    * - Chain length MUST be known (auto-detected if not set)
    * - Sending: (k+1)*5 bytes to address device k
-   * - Receiving: (n-k+1)*5 bytes total, response at offset (n-k-1)*5 bytes
-   * - Transfer size: max((k+1)*5, (n-k+1)*5) bytes
+   * - Receiving: (n-k)*5 bytes total, response at offset (n-k-1)*5 bytes
+   * - Transfer size: max((k+1)*5, (n-k)*5) bytes
    * - Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex behavior
    *
    * **Auto-Detection and Verification:**
@@ -1734,6 +1889,15 @@ public:
    * For daisy-chaining, all chips share the same CSN (tied together).
    */
   bool WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept {
+    // Log function call with arguments
+    if (daisy_chain_position > 0) {
+      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+                        "WriteRegister(0x%02X=0x%08X, daisy_chain=%u)", address, value, daisy_chain_position);
+    } else {
+      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+                        "WriteRegister(0x%02X=0x%08X)", address, value);
+    }
+
     // CRITICAL: Chain length MUST be known for correct response extraction
     // Ensure chain length is known and verified (auto-detects if needed)
     if (!EnsureChainLengthKnown(daisy_chain_position, "WriteRegister")) {
@@ -1755,9 +1919,9 @@ public:
     }
 
     // Calculate transfer size and response offset using datasheet formula
-    // Transfer size: max((k+1)*5, (n-k+1)*5) bytes
+    // Transfer size: max((k+1)*5, (n-k)*5) bytes
     //   - Sending: (k+1)*5 bytes needed to address device k
-    //   - Receiving: (n-k+1)*5 bytes needed to shift response back (datasheet formula)
+    //   - Receiving: (n-k)*5 bytes needed to shift response back (datasheet formula)
     //   - Use max() to ensure both requirements are met
     //   - Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex behavior
     // Response offset: (n-k-1)*5 bytes (reverse order: last device first)
@@ -1775,7 +1939,7 @@ public:
 
     // Calculate transfer size: max of sending and receiving requirements
     size_t sending_bytes = static_cast<size_t>(k + 1) * 5;       // Command must reach device k
-    size_t receiving_bytes = static_cast<size_t>(n - k + 1) * 5; // Response extraction (datasheet formula)
+    size_t receiving_bytes = static_cast<size_t>(n - k) * 5;     // Response extraction (datasheet formula)
     size_t transfer_bytes = std::max(sending_bytes, receiving_bytes);
 
     // Response offset: (n-k-1)*5 bytes (based on reverse order of devices)
@@ -1807,23 +1971,25 @@ public:
     // Padding structure:
     //   - Bytes 5 to (k+1)*5-1: Padding to shift command to device k
     //   - Bytes (k+1)*5 to transfer_bytes-1: Additional padding for full-duplex response extraction
-    //     (only present if transfer_bytes > (k+1)*5, i.e., when (n-k+1)*5 > (k+1)*5)
+    //     (only present if transfer_bytes > (k+1)*5, i.e., when (n-k)*5 > (k+1)*5)
     cmd.GetFrame(tx_buf.data());
     // Bytes 5 onwards are padding (zeros) - already initialized to 0 by vector constructor
 
-    // Log first 8 bytes for debug
-    size_t log_tx_bytes = (tx_buf.size() < 8) ? tx_buf.size() : 8;
-    TMC5160_LOG_DEBUG(
-        *static_cast<Derived*>(this), 3, "SPI",
-        "Write register 0x%02X = 0x%08X (DaisyPos=%u, Bytes=%zu): TX %02X %02X %02X %02X "
-        "%02X %02X %02X %02X",
-        address, value, daisy_chain_position, transfer_bytes, tx_buf[0], (log_tx_bytes > 1) ? tx_buf[1] : 0,
-        (log_tx_bytes > 2) ? tx_buf[2] : 0, (log_tx_bytes > 3) ? tx_buf[3] : 0, (log_tx_bytes > 4) ? tx_buf[4] : 0,
-        (log_tx_bytes > 5) ? tx_buf[5] : 0, (log_tx_bytes > 6) ? tx_buf[6] : 0, (log_tx_bytes > 7) ? tx_buf[7] : 0);
-
+    // First transaction: Send write command (TX1), receive status (RX1)
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
       return false;
     }
+    
+    // Log [TX1]/RX1 after first transfer
+    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+                      "Write 0x%02X=0x%08X: [TX1] %02X %02X %02X %02X %02X / RX1 %02X %02X %02X %02X %02X",
+                      address, value,
+                      tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4],
+                      rx_buf[response_byte_offset],
+                      (response_byte_offset + 1 < rx_buf.size()) ? rx_buf[response_byte_offset + 1] : 0,
+                      (response_byte_offset + 2 < rx_buf.size()) ? rx_buf[response_byte_offset + 2] : 0,
+                      (response_byte_offset + 3 < rx_buf.size()) ? rx_buf[response_byte_offset + 3] : 0,
+                      (response_byte_offset + 4 < rx_buf.size()) ? rx_buf[response_byte_offset + 4] : 0);
 
     // Extract response data based on daisy-chain position
     // IMPORTANT: Responses come back in REVERSE order (last device first, first device last)
@@ -1842,13 +2008,33 @@ public:
     // Per datasheet: First write response contains SPI_STATUS + dummy/previous data
     SpiStatus status1 = SpiStatus::FromByte(rx_buf[response_byte_offset]);
 
+    // Note: Only RESET (bit 0) and DRV_ERR (bit 1) are errors; others are informational
     if (status1.HasError()) {
+      // Build error flags string (only actual errors)
+      const char* error_flags = "";
+      if (status1.ResetFlag() && status1.DriverError()) {
+        error_flags = "RESET|DRV_ERR";
+      } else if (status1.ResetFlag()) {
+        error_flags = "RESET";
+      } else if (status1.DriverError()) {
+        error_flags = "DRV_ERR";
+      }
+      
+      // Build informational flags string
+      char info_flags[64] = "";
+      if (status1.StallGuard2() || status1.Standstill() || status1.VelocityReached() || 
+          status1.PositionReached() || status1.StopLeft() || status1.StopRight()) {
+        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s]",
+                 status1.StallGuard2() ? "SG2 " : "",
+                 status1.Standstill() ? "STST " : "",
+                 status1.VelocityReached() ? "VEL " : "",
+                 status1.PositionReached() ? "POS " : "",
+                 status1.StopLeft() ? "STOP_L " : "",
+                 status1.StopRight() ? "STOP_R " : "");
+      }
+      
       TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
-                        "Write register 0x%02X (TX1): SPI_STATUS=0x%02X [%s%s%s%s%s%s%s%s] - ERROR DETECTED", address,
-                        status1.value, status1.ResetFlag() ? "RESET " : "", status1.DriverError() ? "DRV_ERR " : "",
-                        status1.StallGuard2() ? "SG2 " : "", status1.Standstill() ? "STST " : "",
-                        status1.VelocityReached() ? "VEL " : "", status1.PositionReached() ? "POS " : "",
-                        status1.StopLeft() ? "STOP_L " : "", status1.StopRight() ? "STOP_R " : "");
+                        "Write 0x%02X (TX1): STATUS=0x%02X ERROR=%s%s", address, status1.value, error_flags, info_flags);
     } else {
       // Log response bytes (first 8 or all if less)
       size_t log_rx1_bytes = (rx_buf.size() < 8) ? rx_buf.size() : 8;
@@ -1881,25 +2067,71 @@ public:
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
       return false;
     }
+    
+    // Log TX2/[RX2] after second transfer (RX2 contains the write confirmation)
+    // Align TX2 line with TX1 line by padding address field
+    SpiStatus status2 = SpiStatus::FromByte(rx_buf[response_byte_offset]);
+    std::string status2_bits = status2.FormatStatusBits();
+    
+    // Align TX2 bytes with TX1 bytes: "Write 0xXX=0xXXXXXXXX: " (25) + "[TX1] " (6) = 31 chars to first byte
+    // For TX2: "Write 0xXX: " (13) + padding to reach 31 = 18 spaces needed
+    // But we want "TX2 " to align with "[TX1] ", so: "Write 0xXX: " (13) + 6 spaces + "TX2 " (4) = 23
+    // To align bytes: "Write 0xXX: " (13) + 18 spaces = 31, then bytes start
+    // Actually simpler: align "TX2" label with "[TX1]" label, then bytes naturally align
+    // "Write 0xXX=0xXXXXXXXX: [TX1] " = 31, bytes at 31
+    // "Write 0xXX:            TX2 " = 31 (13 + 18), bytes at 31 ✓
+    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+                      "Write 0x%02X:             TX2 %02X %02X %02X %02X %02X / [RX2] %02X %02X %02X %02X %02X (STATUS=0x%02X)",
+                      address,
+                      tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4],
+                      rx_buf[response_byte_offset],
+                      (response_byte_offset + 1 < rx_buf.size()) ? rx_buf[response_byte_offset + 1] : 0,
+                      (response_byte_offset + 2 < rx_buf.size()) ? rx_buf[response_byte_offset + 2] : 0,
+                      (response_byte_offset + 3 < rx_buf.size()) ? rx_buf[response_byte_offset + 3] : 0,
+                      (response_byte_offset + 4 < rx_buf.size()) ? rx_buf[response_byte_offset + 4] : 0,
+                      rx_buf[response_byte_offset]);
+    
+    // Log status bit breakdown with arrow pointing to STATUS byte
+    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+                      "                                                   └─> %s",
+                      status2_bits.c_str());
 
-    // Extract SPI_STATUS from second transaction response
-    // Per datasheet: This contains the status latched at the end of the write access
-    // Use same response_byte_offset as first transaction
+    // Validate response offset (status2 was already extracted above for logging)
     if (response_byte_offset >= rx_buf.size()) {
       TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "Write register 0x%02X (TX2): Response offset %zu exceeds buffer size %zu", address,
                         response_byte_offset, rx_buf.size());
       return false;
     }
-    SpiStatus status2 = SpiStatus::FromByte(rx_buf[response_byte_offset]);
 
+    // Note: Only RESET (bit 0) and DRV_ERR (bit 1) are errors; others are informational
+    // (status2 was already extracted above for logging)
     if (status2.HasError()) {
+      // Build error flags string (only actual errors)
+      const char* error_flags = "";
+      if (status2.ResetFlag() && status2.DriverError()) {
+        error_flags = "RESET|DRV_ERR";
+      } else if (status2.ResetFlag()) {
+        error_flags = "RESET";
+      } else if (status2.DriverError()) {
+        error_flags = "DRV_ERR";
+      }
+      
+      // Build informational flags string
+      char info_flags[64] = "";
+      if (status2.StallGuard2() || status2.Standstill() || status2.VelocityReached() || 
+          status2.PositionReached() || status2.StopLeft() || status2.StopRight()) {
+        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s]",
+                 status2.StallGuard2() ? "SG2 " : "",
+                 status2.Standstill() ? "STST " : "",
+                 status2.VelocityReached() ? "VEL " : "",
+                 status2.PositionReached() ? "POS " : "",
+                 status2.StopLeft() ? "STOP_L " : "",
+                 status2.StopRight() ? "STOP_R " : "");
+      }
+      
       TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
-                        "Write register 0x%02X (TX2): SPI_STATUS=0x%02X [%s%s%s%s%s%s%s%s] - ERROR DETECTED", address,
-                        status2.value, status2.ResetFlag() ? "RESET " : "", status2.DriverError() ? "DRV_ERR " : "",
-                        status2.StallGuard2() ? "SG2 " : "", status2.Standstill() ? "STST " : "",
-                        status2.VelocityReached() ? "VEL " : "", status2.PositionReached() ? "POS " : "",
-                        status2.StopLeft() ? "STOP_L " : "", status2.StopRight() ? "STOP_R " : "");
+                        "Write 0x%02X (TX2): STATUS=0x%02X ERROR=%s%s", address, status2.value, error_flags, info_flags);
     } else {
       // Log response bytes (first 8 or all if less)
       size_t log_rx2_bytes = (rx_buf.size() < 8) ? rx_buf.size() : 8;
@@ -1917,6 +2149,26 @@ public:
     }
 
     // Per datasheet: Write access returns SPI_STATUS (byte 0) + previously written data (bytes 1-4)
+    // "If the previous access was a write access, then the data read back mirrors the previously received write data."
+    // Verify that the returned data matches what we wrote
+    if (response_byte_offset + 4 < rx_buf.size()) {
+      uint32_t returned_value = (static_cast<uint32_t>(rx_buf[response_byte_offset + 1]) << 24) |
+                                 (static_cast<uint32_t>(rx_buf[response_byte_offset + 2]) << 16) |
+                                 (static_cast<uint32_t>(rx_buf[response_byte_offset + 3]) << 8) |
+                                 static_cast<uint32_t>(rx_buf[response_byte_offset + 4]);
+      
+      if (returned_value != value) {
+        TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+                          "WriteRegister(0x%02X): Write verification failed - wrote 0x%08X, got back 0x%08X",
+                          address, value, returned_value);
+        // Don't fail the write operation, but log the mismatch for debugging
+      } else {
+        TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
+                          "WriteRegister(0x%02X): Write verification passed - wrote 0x%08X, got back 0x%08X",
+                          address, value, returned_value);
+      }
+    }
+
     // Check for critical errors in the final status (status2 is the latched status after write)
     if (status2.ResetFlag() || status2.DriverError()) {
       return false;
@@ -1930,7 +2182,7 @@ protected:
    * @brief Total number of devices in the daisy chain
    *
    * 0 = unknown/single chip (uses simplified approach)
-   * >0 = total number of devices (uses datasheet formula 40·(n-k+1))
+   * >0 = total number of devices (uses datasheet formula 40·(n-k))
    *
    * This is CRITICAL for proper response extraction. When set correctly,
    * ReadRegister and WriteRegister use the optimal datasheet formula.
@@ -1990,6 +2242,7 @@ private:
     if (daisy_chain_position == 0 && total_chain_length_ == 0) {
       // Single chip mode - this is valid
       total_chain_length_ = 1; // Set to 1 for single chip (n=1, k=0)
+      chain_length_verified_ = true; // Single-chip mode doesn't need verification
     }
 
     // Verify chain length if user specified one
@@ -2015,16 +2268,24 @@ private:
       }
     } else if (!chain_length_verified_ && total_chain_length_ > 0) {
       // Chain length was set but not verified yet, verify it now
-      uint8_t detected_length = AutoDetectChainLength(8);
-      if (detected_length > 0 && detected_length != total_chain_length_) {
-        TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
-                          "%s: DAISY CHAIN LENGTH MISMATCH! "
-                          "Specified: %u, Auto-detected: %u. "
-                          "Updating to detected length.",
-                          context, total_chain_length_, detected_length);
-        total_chain_length_ = detected_length;
+      // Skip verification for single-chip mode (daisy_chain_position == 0, total_chain_length_ == 1)
+      // Auto-detection can fail for single-chip setups, so we trust the set value
+      if (daisy_chain_position == 0 && total_chain_length_ == 1) {
+        // Single-chip mode - no verification needed
+        chain_length_verified_ = true;
+      } else {
+        // Multi-chip mode - verify chain length
+        uint8_t detected_length = AutoDetectChainLength(8);
+        if (detected_length > 0 && detected_length != total_chain_length_) {
+          TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+                            "%s: DAISY CHAIN LENGTH MISMATCH! "
+                            "Specified: %u, Auto-detected: %u. "
+                            "Updating to detected length.",
+                            context, total_chain_length_, detected_length);
+          total_chain_length_ = detected_length;
+        }
+        chain_length_verified_ = true;
       }
-      chain_length_verified_ = true;
     }
 
     return true;

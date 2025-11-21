@@ -35,6 +35,7 @@
 
 #include "../../../inc/tmc5160.hpp"
 #include "esp32_tmc5160_bus.hpp"
+#include "esp32_tmc5160_bus_config.hpp"
 #include "TestFramework.h"
 #include <memory>
 #include <vector>
@@ -72,9 +73,13 @@ std::unique_ptr<TestDriverHandle> create_daisy_chain_drivers() noexcept {
   auto handle = std::make_unique<TestDriverHandle>();
   
   // Create shared SPI communication interface
+  // Get complete pin configuration from test config
+  tmc5160::Esp32SpiPinConfig pin_config = tmc5160_test_config::GetDefaultPinConfig();
+  
   handle->spi = std::make_unique<Esp32SPI>(
-    SPI2_HOST, GPIO_NUM_23, GPIO_NUM_19, GPIO_NUM_18, GPIO_NUM_5,
-    GPIO_NUM_2, GPIO_NUM_4, GPIO_NUM_15, 4000000);
+    tmc5160_test_config::SPI_HOST,
+    pin_config,
+    tmc5160_test_config::SPI_CLOCK_SPEED_HZ);
   
   if (!handle->spi->Initialize()) {
     ESP_LOGE(TAG, "Failed to initialize SPI interface");
@@ -88,6 +93,26 @@ std::unique_ptr<TestDriverHandle> create_daisy_chain_drivers() noexcept {
   for (uint8_t pos = 0; pos < TEST_CHAIN_LENGTH; ++pos) {
     handle->drivers.push_back(
       std::make_unique<tmc5160::TMC5160<Esp32SPI>>(*handle->spi, 12'000'000, pos));
+  }
+  
+  // Verify mode pins match expected communication mode (if pins are configured)
+  // Only check the first driver (all drivers share the same SPI interface)
+  if (!handle->drivers.empty()) {
+    tmc5160::ChipCommMode actual_mode;
+    if (handle->drivers[0]->GetChipCommMode(actual_mode)) {
+      gpio_num_t spi_mode_gpio = handle->spi->GetPinMapping(tmc5160::TMC5160CtrlPin::SPI_MODE);
+      gpio_num_t sd_mode_gpio = handle->spi->GetPinMapping(tmc5160::TMC5160CtrlPin::SD_MODE);
+      constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
+      
+      if (spi_mode_gpio != UNMAPPED_PIN && sd_mode_gpio != UNMAPPED_PIN) {
+        if (actual_mode == tmc5160::ChipCommMode::SPI_INTERNAL_RAMP ||
+            actual_mode == tmc5160::ChipCommMode::SPI_EXTERNAL_STEPDIR) {
+          ESP_LOGI(TAG, "✓ Mode pin verification passed for daisy chain (SPI mode)");
+        } else {
+          ESP_LOGE(TAG, "✗ Mode pin verification FAILED for daisy chain: Mode pins indicate non-SPI mode");
+        }
+      }
+    }
   }
   
   return handle;

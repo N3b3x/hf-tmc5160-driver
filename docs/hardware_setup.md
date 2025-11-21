@@ -52,12 +52,66 @@ TMC5160          Stepper Motor
 2A        ────── Motor Coil A-
 ```
 
+### Mode Configuration Pins
+
+The TMC5160 has two critical mode configuration pins that determine the operating mode and pin functions:
+
+| Pin | Name | Pin Number | Description | Required |
+|-----|------|------------|-------------|----------|
+| **SPI_MODE** | SPI Mode Select | 22 | Determines communication interface (SPI vs UART) | **Yes** |
+| **SD_MODE** | Step/Dir Mode Select | 21 | Determines motion control mode (internal ramp vs external step/dir) | **Yes** |
+
+**⚠️ CRITICAL**: These pins **MUST** be configured correctly before power-up. They are read at startup and determine the chip's operating mode.
+
+#### Mode Configuration Table
+
+| SPI_MODE | SD_MODE | Operating Mode | Communication | Motion Control | Pin Functions |
+|----------|---------|----------------|---------------|----------------|---------------|
+| **HIGH (1)** | **LOW (0)** | **SPI + Internal Ramp** | SPI interface | Internal ramp generator (motion controller) | REFL_STEP/REFR_DIR: Reference switches<br>ENCA/ENCB/ENCN: Encoder inputs<br>DIAG0/DIAG1: Diagnostic outputs |
+| **HIGH (1)** | **HIGH (1)** | **SPI + External Step/Dir** | SPI interface | External step/dir inputs | REFL_STEP/REFR_DIR: STEP/DIR inputs<br>DCIN/DCEN/DCO: DC Step control<br>DIAG0/DIAG1: Diagnostic outputs |
+| **LOW (0)** | **LOW (0)** | **UART Single Wire** | UART interface | Internal ramp generator (motion controller) | DIAG0_SWN/DIAG1_SWP: UART I/O<br>SDI_CFG1/SDO_CFG0: NAI/NAO addressing<br>Other pins: Configuration inputs |
+
+#### Wiring Mode Configuration Pins
+
+**For SPI + Internal Ramp Generator Mode (Recommended for most applications):**
+```
+SPI_MODE (pin 22) ──────> 3.3V (HIGH)
+SD_MODE  (pin 21) ──────> GND  (LOW)
+```
+
+**For SPI + External Step/Dir Mode:**
+```
+SPI_MODE (pin 22) ──────> 3.3V (HIGH)
+SD_MODE  (pin 21) ──────> 3.3V (HIGH)
+```
+
+**For UART Single Wire Mode:**
+```
+SPI_MODE (pin 22) ──────> GND  (LOW)
+SD_MODE  (pin 21) ──────> GND  (LOW)
+```
+
+**Important Notes:**
+- These pins are **read at startup** - the chip reads their state during initialization
+- Must be configured **before** power-up or reset
+- Use pull-up resistors (10kΩ) to 3.3V for HIGH, or tie directly to GND for LOW
+- Do **NOT** leave these pins floating - they must be tied to a defined logic level
+
+**Software Control (Advanced):**
+- If SPI_MODE and SD_MODE pins are connected to GPIO outputs (instead of hardwired), they can be controlled via software
+- Use `TMC5160PinConfig` to configure `spi_mode_pin` and `sd_mode_pin` if available
+- Use `driver.SetChipCommMode()` to change modes programmatically
+- **⚠️ CRITICAL**: Changing mode pins requires a chip reset (power cycle or reset pin) to take effect
+- The mode pins are read at startup, so changes won't be effective until the chip is reset
+
 ### Pin Descriptions
 
 | Pin | Name | Description | Required |
 |-----|------|-------------|----------|
 | VDD | Power | 3.3V power supply | Yes |
 | GND | Ground | Ground reference | Yes |
+| **SPI_MODE** | Mode Select | SPI/UART mode selection (pin 22) | **Yes** |
+| **SD_MODE** | Mode Select | Step/Dir mode selection (pin 21) | **Yes** |
 | SCK | Clock | SPI clock line | Yes (SPI) |
 | SDI | Data In | SPI data input (MOSI) | Yes (SPI) |
 | SDO | Data Out | SPI data output (MISO) | Yes (SPI) |
@@ -99,18 +153,36 @@ TMC5160          Stepper Motor
 - Route motor power traces away from sensitive logic signals
 - Use twisted pair cables for motor connections
 
-## Example Wiring Diagram
+## Example Wiring Diagrams
+
+### SPI + Internal Ramp Generator Mode (Recommended)
 
 ```
                     TMC5160
                     ┌─────────┐
         3.3V ───────┤ VDD     │
         GND  ───────┤ GND     │
+        3.3V ───────┤ SPI_MODE│ (pin 22) - HIGH
+        GND  ───────┤ SD_MODE │ (pin 21) - LOW
         SCK  ───────┤ SCK     │
         MOSI ───────┤ SDI     │
         MISO ───────┤ SDO     │
         CS   ───────┤ CSN     │
         EN   ───────┤ EN      │
+                    └─────────┘
+```
+
+### UART Single Wire Mode
+
+```
+                    TMC5160
+                    ┌─────────┐
+        3.3V ───────┤ VDD     │
+        GND  ───────┤ GND     │
+        GND  ───────┤ SPI_MODE│ (pin 22) - LOW
+        GND  ───────┤ SD_MODE │ (pin 21) - LOW
+        TX   ───────┤ UART_RXD│
+        RX   ───────┤ UART_TXD│
                     └─────────┘
 ```
 

@@ -13,6 +13,7 @@
 #define TMC5160_TYPES_HPP
 
 #include <cstdint>
+#include "tmc5160_registers.hpp"
 
 namespace tmc5160 {
 
@@ -40,6 +41,27 @@ enum class DriverStatus : uint8_t {
 enum class MotorDirection : uint8_t {
   NORMAL = 0, ///< Normal motor direction
   INVERSE = 1 ///< Inverse motor direction
+};
+
+/**
+ * @brief Chip communication and motion control mode configuration
+ *
+ * This enumeration represents the combination of SPI_MODE and SD_MODE pins
+ * that determine the TMC5160 operating mode. These pins are typically
+ * hardwired and read at startup, but can be controlled via GPIO if connected.
+ *
+ * ⚠️ WARNING: Changing the mode requires a chip reset to take effect.
+ * The mode pins are read at startup, so any changes must be followed by
+ * a reset cycle (power cycle or reset pin).
+ *
+ * @note These modes correspond to the hardware pin configuration:
+ * - SPI_MODE (pin 22): HIGH=SPI, LOW=UART
+ * - SD_MODE (pin 21): HIGH=External step/dir, LOW=Internal ramp generator
+ */
+enum class ChipCommMode : uint8_t {
+  SPI_INTERNAL_RAMP = 0, ///< SPI_MODE=HIGH, SD_MODE=LOW - SPI interface with internal ramp generator (motion controller)
+  SPI_EXTERNAL_STEPDIR = 1, ///< SPI_MODE=HIGH, SD_MODE=HIGH - SPI interface with external step/dir inputs
+  UART_INTERNAL_RAMP = 2 ///< SPI_MODE=LOW, SD_MODE=LOW - UART interface with internal ramp generator (motion controller)
 };
 
 /**
@@ -122,6 +144,7 @@ struct StealthChopConfig {
   bool pwm_autograd{true};  ///< Enable PWM automatic gradient adaptation
   uint8_t pwm_reg{4};       ///< Regulation loop gradient (0-15)
   uint8_t pwm_lim{12};      ///< PWM automatic scale amplitude limit (0-15)
+  PWMFreewheel freewheel{PWMFreewheel::NORMAL}; ///< Freewheeling mode when I_HOLD=0
 
   /**
    * @brief Default constructor
