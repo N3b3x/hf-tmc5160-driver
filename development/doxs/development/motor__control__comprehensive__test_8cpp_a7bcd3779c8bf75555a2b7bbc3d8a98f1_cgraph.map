@@ -1,5 +1,7 @@
 <map id="test_stealthchop_configuration" name="test_stealthchop_configuration">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,228,31"/>
-<area shape="rect" id="Node000002" href="$motor__control__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="276,5,416,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="228,15,262,15,262,21,228,21"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,228,38"/>
+<area shape="rect" id="Node000002" href="$motor__control__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="276,13,416,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="228,23,262,23,262,28,228,28"/>
+<area shape="rect" id="Node000003" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="464,5,627,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="416,23,450,23,450,28,416,28"/>
 </map>

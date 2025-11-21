@@ -1,0 +1,5 @@
+<map id="tmc5160::IsRegisterReadable" name="tmc5160::IsRegisterReadable">
+<area shape="rect" id="Node000001" title="Check if register is readable." alt="" coords="5,5,219,31"/>
+<area shape="rect" id="Node000002" href="$namespacetmc5160.html#adba9532e925a4da2989de23e2d2062bf" title="Get register access type from address." alt="" coords="267,5,476,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,15,253,15,253,21,219,21"/>
+</map>

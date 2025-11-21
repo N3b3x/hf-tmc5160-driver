@@ -15,6 +15,11 @@ var tmc5160__types_8hpp =
     [ "tmc5160::DcStepConfig", "structtmc5160_1_1DcStepConfig.html", "structtmc5160_1_1DcStepConfig" ],
     [ "tmc5160::GlobalConfig", "structtmc5160_1_1GlobalConfig.html", "structtmc5160_1_1GlobalConfig" ],
     [ "tmc5160::RampParameters", "structtmc5160_1_1RampParameters.html", "structtmc5160_1_1RampParameters" ],
+    [ "ChipCommMode", "tmc5160__types_8hpp.html#a2e3d563a97d0296b1d7c74bd530c6573", [
+      [ "SPI_INTERNAL_RAMP", "tmc5160__types_8hpp.html#a2e3d563a97d0296b1d7c74bd530c6573ade9b62ad581f590543b7355a2958077e", null ],
+      [ "SPI_EXTERNAL_STEPDIR", "tmc5160__types_8hpp.html#a2e3d563a97d0296b1d7c74bd530c6573ab967b9681d8b42559306c86608a5601b", null ],
+      [ "UART_INTERNAL_RAMP", "tmc5160__types_8hpp.html#a2e3d563a97d0296b1d7c74bd530c6573aee770912474919e17ca4da2f54c9cd6b", null ]
+    ] ],
     [ "DriverStatus", "tmc5160__types_8hpp.html#aabe2f8a8b4cb7d6533ac67eb7980dc01", [
       [ "OK", "tmc5160__types_8hpp.html#aabe2f8a8b4cb7d6533ac67eb7980dc01ae0aa021e21dddbd6d8cecec71e9cf564", null ],
       [ "CP_UV", "tmc5160__types_8hpp.html#aabe2f8a8b4cb7d6533ac67eb7980dc01a848c66a6c6a998b6e878f953df237b53", null ],

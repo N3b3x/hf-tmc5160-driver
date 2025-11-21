@@ -8,7 +8,7 @@ var searchData=
   ['fields_5',['fields',['../uniontmc5160_1_1SpiCommand_1_1Frame.html#a0a1fb9f854c8a9e4333c74acf18b9cd0',1,'tmc5160::SpiCommand::Frame']]],
   ['filt_5fisense_6',['filt_isense',['../uniontmc5160_1_1DRV__CONF__Register.html#afd73e8196047558bd00b2e5d184e3c05',1,'tmc5160::DRV_CONF_Register::filt_isense'],['../structtmc5160_1_1PowerStageParameters.html#af49c226aa79c7b8b209492a10a170a46',1,'tmc5160::PowerStageParameters::filt_isense']]],
   ['frame_7',['frame',['../structtmc5160_1_1SpiCommand.html#aaaa5e5c5b1d6d0c3619fe2172d6b8518',1,'tmc5160::SpiCommand::frame'],['../structtmc5160_1_1UartFrame.html#a84edd8d99f920406335ae3a0a7e8cd42',1,'tmc5160::UartFrame::frame']]],
-  ['freewheel_8',['freewheel',['../uniontmc5160_1_1PWMCONF__Register.html#a2ff81b7258d7564f46fd169819867759',1,'tmc5160::PWMCONF_Register']]],
+  ['freewheel_8',['freewheel',['../uniontmc5160_1_1PWMCONF__Register.html#a2ff81b7258d7564f46fd169819867759',1,'tmc5160::PWMCONF_Register::freewheel'],['../structtmc5160_1_1StealthChopConfig.html#a0e6b1d5107d3cbb3d5f5b564a440de22',1,'tmc5160::StealthChopConfig::freewheel']]],
   ['frequency_5f_9',['frequency_',['../classSinusoidalMotion.html#a545fa096b7ed5749633eba34ae4e6627',1,'SinusoidalMotion']]],
   ['frequency_5fhz_10',['frequency_hz',['../structFatigueTestMotion_1_1Status.html#a7dafafe0ba6c6ede0418474c52b1778d',1,'FatigueTestMotion::Status']]],
   ['frequency_5fhz_5f_11',['frequency_hz_',['../classFatigueTestMotion.html#a8b53c33780fa6312f614e52caf7a34c3',1,'FatigueTestMotion']]],

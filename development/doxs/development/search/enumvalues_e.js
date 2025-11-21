@@ -1,13 +1,12 @@
 var searchData=
 [
-  ['s2ga_0',['S2GA',['../namespacetmc5160.html#aabe2f8a8b4cb7d6533ac67eb7980dc01aac32f1f51a63ec65f351fc4301c6b2ad',1,'tmc5160']]],
-  ['s2gb_1',['S2GB',['../namespacetmc5160.html#aabe2f8a8b4cb7d6533ac67eb7980dc01a93a35a657ce0c4927017b02e28e95d82',1,'tmc5160']]],
-  ['s2vsa_2',['S2VSA',['../namespacetmc5160.html#aabe2f8a8b4cb7d6533ac67eb7980dc01ab89dbd670535c4ac41ed104e0954944f',1,'tmc5160']]],
-  ['s2vsb_3',['S2VSB',['../namespacetmc5160.html#aabe2f8a8b4cb7d6533ac67eb7980dc01a5e668cce2f93aa0daecf4f63ad5d3a26',1,'tmc5160']]],
-  ['short_5fhs_4',['SHORT_HS',['../namespacetmc5160.html#afd8e06e7eda04c891d35f72236085722acfc47c02fa806a942e75b88155de3a41',1,'tmc5160']]],
-  ['short_5fls_5',['SHORT_LS',['../namespacetmc5160.html#afd8e06e7eda04c891d35f72236085722aeb51cc63a45cb5784abfe6676612cd39',1,'tmc5160']]],
-  ['sinuous_5fmotion_6',['SINUOUS_MOTION',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a3f674955b15905c3adebfcc669546b8d',1,'FatigueTestMotion']]],
-  ['spi_7',['SPI',['../namespacetmc5160.html#a784e320454a771e190b3b376a67d9c29a33dc5312b091968f5a120c2484d40df8',1,'tmc5160']]],
-  ['step_8',['STEP',['../namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4a522f694f92e679d874a1cc2b2616c3d7',1,'tmc5160']]],
-  ['stopped_9',['STOPPED',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a',1,'FatigueTestMotion']]]
+  ['radians_0',['RADIANS',['../bounds__finding__sinuous__motion_8cpp.html#a70ab36d1d4920fdd314279845af152c5aea3c82298fac1c706a4076b4aff53015',1,'bounds_finding_sinuous_motion.cpp']]],
+  ['read_5fonly_1',['READ_ONLY',['../namespacetmc5160.html#a5b766c6bacee416e68b263d3933fc00ea47c7e7cb36a953a8c47e02000036bb44',1,'tmc5160']]],
+  ['read_5fwrite_2',['READ_WRITE',['../namespacetmc5160.html#a5b766c6bacee416e68b263d3933fc00eaa7b843fb734e3b3fea8e5f902d3f4144',1,'tmc5160']]],
+  ['read_5fwrite_5fclear_3',['READ_WRITE_CLEAR',['../namespacetmc5160.html#a5b766c6bacee416e68b263d3933fc00ea97f9799a08eeff13921e419334656c80',1,'tmc5160']]],
+  ['readreply_4',['ReadReply',['../namespacetmc5160.html#a0d51978d589f95d86a558f8c6ce9e35fa0613aa8c12237f8c13aa3e590fac811b',1,'tmc5160']]],
+  ['readrequest_5',['ReadRequest',['../namespacetmc5160.html#a0d51978d589f95d86a558f8c6ce9e35fad749f894b7e5ae7433808c7250399cc1',1,'tmc5160']]],
+  ['refl_5fstep_6',['REFL_STEP',['../namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4a4a12e55d1f7a734e479eb5fd2f87f4a0',1,'tmc5160']]],
+  ['refr_5fdir_7',['REFR_DIR',['../namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4ae3f98f6082347dbcb851880a110ded3f',1,'tmc5160']]],
+  ['rising_5fedge_8',['RISING_EDGE',['../namespacetmc5160.html#a4eaf32584629b8ef44ee951e7ebf4916ad85243a747ac5537ef0b7adde99c3e98',1,'tmc5160']]]
 ];

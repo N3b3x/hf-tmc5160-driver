@@ -1,5 +1,7 @@
 <map id="test_lost_steps" name="test_lost_steps">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,125,31"/>
-<area shape="rect" id="Node000002" href="$diagnostics__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="173,5,313,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,15,160,15,160,21,126,21"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,125,38"/>
+<area shape="rect" id="Node000002" href="$diagnostics__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="173,13,313,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,23,160,23,160,28,126,28"/>
+<area shape="rect" id="Node000003" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="361,5,524,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="313,23,348,23,348,28,313,28"/>
 </map>

@@ -89,13 +89,13 @@ var NAVTREEINDEX =
 [
 "TestFramework_8h.html",
 "classtmc5160_1_1SpiCommInterface.html#ad5148180affea0e047e8c4a40d83485c",
-"globals_o.html",
-"ramp__control__comprehensive__test_8cpp.html",
-"structtmc5160_1_1MotorParameters.html#a8553db97913794dd2f8d616e9aad94e1",
-"structtmc5160_1_1TMC5160_1_1MotorControl.html#a8f67da30507f54d18b770ca06c31ded6",
-"uart__multi__node__comprehensive__test_8cpp.html#ae9557a3af436dca83c9aba80d29adda7",
-"uniontmc5160_1_1IHOLD__IRUN__Register.html#a3529b302be54403c8b5512bee157b562",
-"uniontmc5160_1_1SW__MODE__Register.html#a2d386b880580b1b61a73b3703ba2f094"
+"functions_vars_f.html",
+"namespacetmc5160_1_1Registers.html#a367f1faf293dfbed7cebebf4b4929430",
+"structtmc5160_1_1EncoderConfig.html#acc3f4827c02fa10049c87ab8912da6c4",
+"structtmc5160_1_1StallGuardConfig.html#a20b7d71d6f726a3fd14946617bf05613",
+"tmc5160__register__access_8hpp.html#ad84ee2a7a1e0de193278e7a3a64a6b29",
+"uniontmc5160_1_1DRV__CONF__Register.html#a89f9c634da6bb470b5722b387c34dc64",
+"uniontmc5160_1_1OTP__PROG__Register.html#ad7bd7bfcdb4c83b28f704216a251584c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

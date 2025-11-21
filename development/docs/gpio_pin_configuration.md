@@ -37,6 +37,12 @@ The TMC5160 driver supports comprehensive GPIO pin configuration for all TMC5160
 ### Clock Pin
 - **CLK** (CLK, pin 12): Clock input - External clock input (tie to GND for internal clock)
 
+### Mode Configuration Pins (Advanced - if available as control pins)
+- **SPI_MODE** (pin 22): SPI/UART mode select - HIGH=SPI, LOW=UART. Typically hardwired.
+- **SD_MODE** (pin 21): Step/Dir mode select - HIGH=External step/dir, LOW=Internal ramp. Typically hardwired.
+
+**⚠️ WARNING**: These pins are typically hardwired and read at startup. Only configure these if you have connected SPI_MODE (pin 22) and SD_MODE (pin 21) to GPIO outputs for dynamic mode control. Changing these pins requires a chip reset to take effect.
+
 ## Pin Function Dependencies
 
 ### Mode Configuration
@@ -434,6 +440,73 @@ spi.SetPinMapping(tmc5160::TMC5160CtrlPin::DIAG0, GPIO_NUM_B); // RS485 B (SWN -
 3. **Diagnostic Monitoring**: Use diagnostic pins for real-time error detection (SPI mode)
 4. **Reference Switches**: Configure reference switches for safe operation
 5. **Mode Awareness**: Understand which pins are active in your mode configuration (SPI_MODE, SD_MODE)
+
+## Software Control of Mode Pins (Advanced)
+
+If SPI_MODE (pin 22) and SD_MODE (pin 21) are connected to GPIO outputs instead of being hardwired, you can control the chip communication mode programmatically.
+
+### Configuration
+
+```cpp
+#include "esp32_tmc5160_bus.hpp"
+#include "../../../inc/tmc5160.hpp"
+
+// Configure pin config with mode pins
+tmc5160::TMC5160PinConfig pin_config{};
+pin_config.en_pin = GPIO_NUM_11;
+pin_config.spi_mode_pin = GPIO_NUM_22;  // SPI_MODE pin (if available as GPIO)
+pin_config.sd_mode_pin = GPIO_NUM_21;   // SD_MODE pin (if available as GPIO)
+
+// Create SPI interface with pin config
+Esp32SPI spi(SPI2_HOST, 
+             GPIO_NUM_6,  // MOSI
+             GPIO_NUM_2,  // MISO
+             GPIO_NUM_5,  // SCK
+             GPIO_NUM_18, // CS
+             pin_config,
+             4000000);
+
+// Initialize SPI
+spi.Initialize();
+
+// Create driver
+tmc5160::TMC5160<Esp32SPI> driver(spi);
+```
+
+### Changing Communication Mode
+
+```cpp
+// Set mode to SPI + Internal Ramp Generator
+if (driver.SetChipCommMode(tmc5160::ChipCommMode::SPI_INTERNAL_RAMP)) {
+  ESP_LOGI(TAG, "Mode set to SPI + Internal Ramp");
+  // ⚠️ CRITICAL: Must reset chip for mode change to take effect
+  // The mode pins are read at startup, so changes require a reset
+  // You must handle chip reset externally (power cycle or reset pin)
+}
+
+// Read current mode
+tmc5160::ChipCommMode current_mode;
+if (driver.GetChipCommMode(current_mode)) {
+  ESP_LOGI(TAG, "Current mode: %d", static_cast<int>(current_mode));
+}
+```
+
+### Important Warnings
+
+⚠️ **CRITICAL REQUIREMENTS:**
+- Mode pins are **read at startup** - changes require a chip reset to take effect
+- You must reset the chip (power cycle or reset pin) after changing mode pins
+- The driver does **NOT** automatically reset the chip - you must handle this externally
+- Ensure pins are configured as outputs in `TMC5160PinConfig` before use
+- These pins are typically hardwired - only use software control if connected to GPIO
+
+### Mode Pin States
+
+| Mode | SPI_MODE (pin 22) | SD_MODE (pin 21) |
+|------|-------------------|------------------|
+| `SPI_INTERNAL_RAMP` | HIGH (1) | LOW (0) |
+| `SPI_EXTERNAL_STEPDIR` | HIGH (1) | HIGH (1) |
+| `UART_INTERNAL_RAMP` | LOW (0) | LOW (0) |
 6. **UART Mode**: In UART mode, DIAG0/DIAG1 become UART pins - use SWP alone for single wire, or SWP+SWN for RS485
 
 ## See Also

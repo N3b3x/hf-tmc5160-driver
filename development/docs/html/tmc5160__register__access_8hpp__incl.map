@@ -1,0 +1,7 @@
+<map id="tmc5160_register_access.hpp" name="tmc5160_register_access.hpp">
+<area shape="rect" id="Node000001" title="Register access type definitions and utilities for TMC5160." alt="" coords="9,5,223,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,72,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,33,63,71,60,67,102,29"/>
+<area shape="rect" id="Node000003" href="$tmc5160__register__defs_8hpp.html" title="X&#45;MACRO definitions for TMC5160 registers." alt="" coords="95,79,294,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="130,29,174,68,170,71,127,33"/>
+</map>

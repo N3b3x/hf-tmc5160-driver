@@ -1,5 +1,6 @@
 var classEsp32SPI =
 [
+    [ "Esp32SPI", "classEsp32SPI.html#af5b390abc6fe8790c6efef4ce9b21c13", null ],
     [ "Esp32SPI", "classEsp32SPI.html#ad552c0d09f771a64ba4b77820eabea5e", null ],
     [ "Esp32SPI", "classEsp32SPI.html#ab43d0ea3e5fabdc17493bce1196a5cd2", null ],
     [ "~Esp32SPI", "classEsp32SPI.html#aa03430f3ec8cf9bcae8ca0d04b191b1b", null ],
@@ -25,7 +26,7 @@ var classEsp32SPI =
     [ "initialized_", "classEsp32SPI.html#a0920d2de140e51d54c94b5e01eed3fa4", null ],
     [ "miso_pin_", "classEsp32SPI.html#ae7a830005a87b108f49eeafd7d07d2c0", null ],
     [ "mosi_pin_", "classEsp32SPI.html#a5c2653246fc10efe26990097fbffc92d", null ],
-    [ "pin_mapping_", "classEsp32SPI.html#a51f234d67772d220f169d27811d187a6", null ],
+    [ "pin_mapping_", "classEsp32SPI.html#a13a97f1e317116fbe4ad7c5f6f55881f", null ],
     [ "sclk_pin_", "classEsp32SPI.html#a6e052263dab4270986ae0c923bd9baca", null ],
     [ "step_pin_", "classEsp32SPI.html#acf87059491f5257cbfe3a97dd20dadf2", null ]
 ];

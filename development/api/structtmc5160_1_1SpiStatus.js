@@ -1,6 +1,7 @@
 var structtmc5160_1_1SpiStatus =
 [
     [ "DriverError", "structtmc5160_1_1SpiStatus.html#a4464785395ac0a9a2eedd5bd0a8e78a3", null ],
+    [ "FormatStatusBits", "structtmc5160_1_1SpiStatus.html#ae6d06a77f656e01cf5d6eb883ed2951d", null ],
     [ "FromByte", "structtmc5160_1_1SpiStatus.html#a239b9c3beda1236f315af5f126cf283d", null ],
     [ "HasError", "structtmc5160_1_1SpiStatus.html#a3dc0b84dd68921278debcecd853e110a", null ],
     [ "PositionReached", "structtmc5160_1_1SpiStatus.html#a35ba2998ed3b82b65d4cc9e7a9116ac8", null ],

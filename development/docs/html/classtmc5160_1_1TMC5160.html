@@ -160,6 +160,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a223f9de0e084d2b2208ad324ec59c41f" id="r_a223f9de0e084d2b2208ad324ec59c41f"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a223f9de0e084d2b2208ad324ec59c41f">GetUartNodeAddress</a> () const noexcept</td></tr>
 <tr class="memdesc:a223f9de0e084d2b2208ad324ec59c41f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current UART node address for this <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> instance.  <br /></td></tr>
 <tr class="separator:a223f9de0e084d2b2208ad324ec59c41f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12f76f30d3cf734b5a395ebad0acc917" id="r_a12f76f30d3cf734b5a395ebad0acc917"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a12f76f30d3cf734b5a395ebad0acc917">SetChipCommMode</a> (<a class="el" href="namespacetmc5160.html#a2e3d563a97d0296b1d7c74bd530c6573">ChipCommMode</a> mode) noexcept</td></tr>
+<tr class="memdesc:a12f76f30d3cf734b5a395ebad0acc917"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the chip communication mode via SPI_MODE and SD_MODE pins.  <br /></td></tr>
+<tr class="separator:a12f76f30d3cf734b5a395ebad0acc917"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af89607dcb45b6985add58ce368dc6469" id="r_af89607dcb45b6985add58ce368dc6469"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af89607dcb45b6985add58ce368dc6469">GetChipCommMode</a> (<a class="el" href="namespacetmc5160.html#a2e3d563a97d0296b1d7c74bd530c6573">ChipCommMode</a> &amp;mode) const noexcept</td></tr>
+<tr class="memdesc:af89607dcb45b6985add58ce368dc6469"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current chip communication mode from SPI_MODE and SD_MODE pins.  <br /></td></tr>
+<tr class="separator:af89607dcb45b6985add58ce368dc6469"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac90ae8eb92120142753c49fc61fcce89" id="r_ac90ae8eb92120142753c49fc61fcce89"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac90ae8eb92120142753c49fc61fcce89">Initialize</a> (const <a class="el" href="structtmc5160_1_1DriverConfig.html">DriverConfig</a> &amp;config=<a class="el" href="structtmc5160_1_1DriverConfig.html">DriverConfig</a>()) noexcept</td></tr>
 <tr class="memdesc:ac90ae8eb92120142753c49fc61fcce89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> driver with configuration.  <br /></td></tr>
 <tr class="separator:ac90ae8eb92120142753c49fc61fcce89"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,8 +226,11 @@ Private Attributes</h2></td></tr>
 <tr class="memdesc:a53d34333f7367f722f56e3b8a8e63faf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position in daisy chain (0 = first chip/single chip)  <br /></td></tr>
 <tr class="separator:a53d34333f7367f722f56e3b8a8e63faf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83c39af0450e98ad8b162eacae4d98f4" id="r_a83c39af0450e98ad8b162eacae4d98f4"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83c39af0450e98ad8b162eacae4d98f4">uart_node_address_</a></td></tr>
-<tr class="memdesc:a83c39af0450e98ad8b162eacae4d98f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART node address (0-127) for multi-node addressing.  <br /></td></tr>
+<tr class="memdesc:a83c39af0450e98ad8b162eacae4d98f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART node address / slave address (0-127) for multi-node addressing.  <br /></td></tr>
 <tr class="separator:a83c39af0450e98ad8b162eacae4d98f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac09f79b3082822e3342de8972161cdb2" id="r_ac09f79b3082822e3342de8972161cdb2"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac09f79b3082822e3342de8972161cdb2">send_delay_</a></td></tr>
+<tr class="memdesc:ac09f79b3082822e3342de8972161cdb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART send delay (0-15) stored locally from SLAVECONF register.  <br /></td></tr>
+<tr class="separator:ac09f79b3082822e3342de8972161cdb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18e2cc0dd277443c86ac266f1f5eaba2" id="r_a18e2cc0dd277443c86ac266f1f5eaba2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18e2cc0dd277443c86ac266f1f5eaba2">initialized_</a> {false}</td></tr>
 <tr class="memdesc:a18e2cc0dd277443c86ac266f1f5eaba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization status flag.  <br /></td></tr>
 <tr class="separator:a18e2cc0dd277443c86ac266f1f5eaba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -272,12 +281,12 @@ Usage Example</h2>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Enable motor</span></div>
 <div class="line">driver.motorControl.Enable();</div>
-<div class="ttc" id="aclasstmc5160_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:1276</div></div>
+<div class="ttc" id="aclasstmc5160_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:1362</div></div>
 <div class="ttc" id="aclasstmc5160_1_1TMC5160_html"><div class="ttname"><a href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a></div><div class="ttdoc">Main class representing a TMC5160 stepper motor driver.</div><div class="ttdef"><b>Definition</b> tmc5160.hpp:101</div></div>
 <div class="ttc" id="anamespacetmc5160_html_ac039fd52ff49abd3359ab16891f4afc2a1e66935e3ab51cc2128e078cfd49d845"><div class="ttname"><a href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a1e66935e3ab51cc2128e078cfd49d845">tmc5160::RampMode::POSITIONING</a></div><div class="ttdeci">@ POSITIONING</div><div class="ttdoc">Positioning mode using all A, D and V parameters.</div></div>
 <div class="ttc" id="astructtmc5160_1_1DriverConfig_html"><div class="ttname"><a href="structtmc5160_1_1DriverConfig.html">tmc5160::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc5160_config.hpp:43</div></div>
 <div class="ttc" id="astructtmc5160_1_1DriverConfig_html_a0e86dedca15de4295d3d92754886a606"><div class="ttname"><a href="structtmc5160_1_1DriverConfig.html#a0e86dedca15de4295d3d92754886a606">tmc5160::DriverConfig::motor</a></div><div class="ttdeci">MotorParameters motor</div><div class="ttdoc">Motor current configuration.</div><div class="ttdef"><b>Definition</b> tmc5160_config.hpp:45</div></div>
-<div class="ttc" id="astructtmc5160_1_1MotorParameters_html_a85b0794271573d33b1c811285ca14a35"><div class="ttname"><a href="structtmc5160_1_1MotorParameters.html#a85b0794271573d33b1c811285ca14a35">tmc5160::MotorParameters::irun</a></div><div class="ttdeci">uint8_t irun</div><div class="ttdoc">Motor run current (0 to 31). For best performance don't set lower than 16.</div><div class="ttdef"><b>Definition</b> tmc5160_types.hpp:73</div></div>
+<div class="ttc" id="astructtmc5160_1_1MotorParameters_html_a85b0794271573d33b1c811285ca14a35"><div class="ttname"><a href="structtmc5160_1_1MotorParameters.html#a85b0794271573d33b1c811285ca14a35">tmc5160::MotorParameters::irun</a></div><div class="ttdeci">uint8_t irun</div><div class="ttdoc">Motor run current (0 to 31). For best performance don't set lower than 16.</div><div class="ttdef"><b>Definition</b> tmc5160_types.hpp:95</div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">CommType</td><td>The communication interface type (must inherit from SpiCommInterface&lt;CommType&gt; or UartCommInterface&lt;CommType&gt;) </td></tr>
@@ -403,6 +412,44 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
+<a id="af89607dcb45b6985add58ce368dc6469" name="af89607dcb45b6985add58ce368dc6469"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af89607dcb45b6985add58ce368dc6469">&#9670;&#160;</a></span>GetChipCommMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::GetChipCommMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a2e3d563a97d0296b1d7c74bd530c6573">ChipCommMode</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>mode</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the current chip communication mode from SPI_MODE and SD_MODE pins. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>Reference to store the current mode </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if mode was read successfully, false if pins are not configured</dd></dl>
+<p>This method reads the current state of SPI_MODE (pin 22) and SD_MODE (pin 21) pins if they are connected to GPIO inputs/outputs.</p>
+<dl class="section note"><dt>Note</dt><dd>This reads the current pin state, which may not reflect the actual chip mode if the chip hasn't been reset since the pins were changed. </dd></dl>
+
+</div>
+</div>
 <a id="a721b663605378407cc1303b5c8f5b6fb" name="a721b663605378407cc1303b5c8f5b6fb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a721b663605378407cc1303b5c8f5b6fb">&#9670;&#160;</a></span>GetComm()</h2>
 
@@ -466,6 +513,11 @@ template&lt;typename CommType &gt; </div>
 <p>Get the appropriate address parameter for ReadRegister/WriteRegister. </p>
 <dl class="section return"><dt>Returns</dt><dd>daisy_chain_position_ for SPI, uart_node_address_ for UART</dd></dl>
 <p>This method is protected so that subsystem classes can access it. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1TMC5160_a4186305fb6a2d84c75d03dc04e059a96_icgraph.svg" width="523" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -643,6 +695,58 @@ template&lt;typename CommType &gt; </div>
 <p>Reset the <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> driver. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if reset succeeded, false otherwise</dd></dl>
 <p>Performs a software reset by writing to the GSTAT register. </p>
+
+</div>
+</div>
+<a id="a12f76f30d3cf734b5a395ebad0acc917" name="a12f76f30d3cf734b5a395ebad0acc917"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12f76f30d3cf734b5a395ebad0acc917">&#9670;&#160;</a></span>SetChipCommMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::SetChipCommMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a2e3d563a97d0296b1d7c74bd530c6573">ChipCommMode</a></td>          <td class="paramname"><span class="paramname"><em>mode</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the chip communication mode via SPI_MODE and SD_MODE pins. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>Chip communication mode (SPI_INTERNAL_RAMP, SPI_EXTERNAL_STEPDIR, UART_INTERNAL_RAMP) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if mode was set successfully, false if pins are not configured</dd></dl>
+<p>This method controls the SPI_MODE (pin 22) and SD_MODE (pin 21) pins if they are connected to GPIO outputs. These pins determine the <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> operating mode.</p>
+<p>⚠️ CRITICAL WARNINGS:</p><ul>
+<li>These pins are typically hardwired and read at startup</li>
+<li>Only use this method if SPI_MODE and SD_MODE pins are connected to GPIO outputs</li>
+<li>Changing the mode requires a chip reset (power cycle or reset pin) to take effect</li>
+<li>The mode pins are read at startup, so changes won't be effective until reset</li>
+<li>Ensure pins are configured in <a class="el" href="structtmc5160_1_1TMC5160PinConfig.html" title="TMC5160 GPIO pin configuration structure.">TMC5160PinConfig</a> (spi_mode_pin and sd_mode_pin)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>After calling this method, you must reset the chip for the new mode to take effect. The driver does not automatically reset the chip - you must handle this externally.</dd>
+<dd>
+Mode pin mapping:<ul>
+<li>SPI_INTERNAL_RAMP: SPI_MODE=HIGH, SD_MODE=LOW</li>
+<li>SPI_EXTERNAL_STEPDIR: SPI_MODE=HIGH, SD_MODE=HIGH</li>
+<li>UART_INTERNAL_RAMP: SPI_MODE=LOW, SD_MODE=LOW </li>
+</ul>
+</dd></dl>
 
 </div>
 </div>
@@ -933,6 +1037,32 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
+<a id="ac09f79b3082822e3342de8972161cdb2" name="ac09f79b3082822e3342de8972161cdb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac09f79b3082822e3342de8972161cdb2">&#9670;&#160;</a></span>send_delay_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t <a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; CommType &gt;::send_delay_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>UART send delay (0-15) stored locally from SLAVECONF register. </p>
+
+</div>
+</div>
 <a id="a83c39af0450e98ad8b162eacae4d98f4" name="a83c39af0450e98ad8b162eacae4d98f4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a83c39af0450e98ad8b162eacae4d98f4">&#9670;&#160;</a></span>uart_node_address_</h2>
 
@@ -955,7 +1085,7 @@ template&lt;typename CommType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>UART node address (0-127) for multi-node addressing. </p>
+<p>UART node address / slave address (0-127) for multi-node addressing. </p>
 
 </div>
 </div>

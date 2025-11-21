@@ -1,14 +1,17 @@
 <map id="tmc5160::CommInterface::SetPinActiveLevel" name="tmc5160::CommInterface::SetPinActiveLevel">
-<area shape="rect" id="Node000001" title="Configure the active level for a specific pin." alt="" coords="671,22,859,62"/>
-<area shape="rect" id="Node000002" href="$classEsp32SPI.html#ad552c0d09f771a64ba4b77820eabea5e" title="Construct ESP32 SPI communication interface with pin configuration struct." alt="" coords="5,30,153,55"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="657,25,622,21,504,12,412,8,320,11,202,21,134,32,133,27,201,16,319,6,412,3,504,6,623,16,657,20"/>
-<area shape="rect" id="Node000003" href="$classEsp32SPI.html#ab43d0ea3e5fabdc17493bce1196a5cd2" title="Construct ESP32 SPI communication interface (legacy constructor for backward compatibility)" alt="" coords="455,30,603,55"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="657,45,603,45,603,40,657,40"/>
-<area shape="rect" id="Node000004" href="$classEsp32SPI.html#aa4931ec5eda8d9564173548a0a6631c7" title="Set pin mapping for a TMC5160 control pin." alt="" coords="436,79,623,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="658,67,591,82,590,76,657,62"/>
-<area shape="rect" id="Node000005" href="$gpio__pin__config__example_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="251,30,338,55"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="454,79,338,54,339,49,456,74"/>
-<area shape="rect" id="Node000006" href="$classEsp32SPI.html#a79ca348b392e0771bce3cf0c476b8845" title="Apply pin configuration structure (handles compound pins automatically)" alt="" coords="201,79,388,104"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="423,94,388,94,388,89,423,89"/>
-<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="225,79,135,58,136,52,226,73"/>
+<area shape="rect" id="Node000001" title="Configure the active level for a specific pin." alt="" coords="671,55,859,95"/>
+<area shape="rect" id="Node000002" href="$classEsp32SPI.html#af5b390abc6fe8790c6efef4ce9b21c13" title="Construct ESP32 SPI communication interface with complete pin configuration." alt="" coords="5,11,153,37"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="706,52,665,37,622,27,494,12,365,8,248,12,154,19,153,13,248,7,365,3,494,6,623,21,667,32,708,47"/>
+<area shape="rect" id="Node000003" href="$classEsp32SPI.html#ad552c0d09f771a64ba4b77820eabea5e" title="Construct ESP32 SPI communication interface with separate SPI pins and TMC5160 pin config." alt="" coords="5,86,153,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="706,102,666,116,623,127,505,143,413,146,320,139,201,127,129,114,130,109,202,121,320,134,413,140,505,137,622,121,665,111,705,97"/>
+<area shape="rect" id="Node000004" href="$classEsp32SPI.html#ab43d0ea3e5fabdc17493bce1196a5cd2" title="Construct ESP32 SPI communication interface (legacy constructor for backward compatibility)" alt="" coords="455,86,603,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="657,88,604,94,603,88,656,83"/>
+<area shape="rect" id="Node000005" href="$classEsp32SPI.html#aa4931ec5eda8d9564173548a0a6631c7" title="Set pin mapping for a TMC5160 control pin." alt="" coords="436,37,623,62"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="657,66,622,62,623,57,657,60"/>
+<area shape="rect" id="Node000006" href="$gpio__pin__config__example_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="251,86,338,111"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="456,67,339,92,338,87,454,62"/>
+<area shape="rect" id="Node000007" href="$classEsp32SPI.html#a79ca348b392e0771bce3cf0c476b8845" title="Apply pin configuration structure (handles compound pins automatically)" alt="" coords="201,37,388,62"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="423,52,388,52,388,47,423,47"/>
+<area shape="poly" id="edge7_Node000007_Node000002" title=" " alt="" coords="187,39,153,35,154,30,188,34"/>
+<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="226,68,136,88,135,83,225,62"/>
 </map>

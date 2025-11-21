@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['no_5fedge_0',['NO_EDGE',['../namespacetmc5160.html#a4eaf32584629b8ef44ee951e7ebf4916a38a74ee0f8764437c5fce05a7b4964e1',1,'tmc5160']]],
-  ['normal_1',['NORMAL',['../namespacetmc5160.html#afd8e06e7eda04c891d35f72236085722a1e23852820b9154316c7c06e2b7ba051',1,'tmc5160::NORMAL'],['../namespacetmc5160.html#a6e7804f8a437f39b4ba4b7cd6b3da1a4a1e23852820b9154316c7c06e2b7ba051',1,'tmc5160::NORMAL']]]
+  ['microstep_0',['MICROSTEP',['../namespacetmc5160.html#afefeb2a1b9691235f96586d280632621a74fc4d692f678cd9842a3821e1090cb9',1,'tmc5160']]],
+  ['motion_1',['MOTION',['../namespacetmc5160.html#afefeb2a1b9691235f96586d280632621af96e6ea7a7375bd60bad3f3caae3cf27',1,'tmc5160']]]
 ];

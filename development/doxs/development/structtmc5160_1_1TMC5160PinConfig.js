@@ -15,5 +15,7 @@ var structtmc5160_1_1TMC5160PinConfig =
     [ "enc_n_pin", "structtmc5160_1_1TMC5160PinConfig.html#a3209ef6d5f36c01028f052abf0f11edc", null ],
     [ "ref_left_pin", "structtmc5160_1_1TMC5160PinConfig.html#a59e0080e40c92c358fd7336e8edc5085", null ],
     [ "ref_right_pin", "structtmc5160_1_1TMC5160PinConfig.html#a09a4d3e9d4c2daa7a2f4e485b4cf0045", null ],
+    [ "sd_mode_pin", "structtmc5160_1_1TMC5160PinConfig.html#a8b635e1adfa280490386ae6ef1d2f498", null ],
+    [ "spi_mode_pin", "structtmc5160_1_1TMC5160PinConfig.html#ac2bece9f3091171d9fdfa4d68add4ff8", null ],
     [ "step_pin", "structtmc5160_1_1TMC5160PinConfig.html#a29fe381defd1fc06ea83d93a6b0304c9", null ]
 ];

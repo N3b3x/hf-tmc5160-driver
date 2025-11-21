@@ -34,7 +34,6 @@ var group__TMC5160__Subsystems =
       [ "Disable", "structtmc5160_1_1TMC5160_1_1MotorControl.html#a860bc6a5bd4a901b2b30f146e588c157", null ],
       [ "Enable", "structtmc5160_1_1TMC5160_1_1MotorControl.html#ace8864faa1c9a514823fa9cbd58d2095", null ],
       [ "SetCurrent", "structtmc5160_1_1TMC5160_1_1MotorControl.html#a8ade07072feadfed50a097f7f62cbc1a", null ],
-      [ "SetFreewheelingMode", "structtmc5160_1_1TMC5160_1_1MotorControl.html#a8a3ade9a83c9c9bc4705571cbec1a1f2", null ],
       [ "SetGlobalScaler", "structtmc5160_1_1TMC5160_1_1MotorControl.html#ae4dc0f6fde9d817bb758f80fed277a51", null ],
       [ "SetMicrostepLookupTable", "structtmc5160_1_1TMC5160_1_1MotorControl.html#ad221524110e1d256d89e18dc13cfbc4f", null ],
       [ "SetMicrostepLookupTableSegmentation", "structtmc5160_1_1TMC5160_1_1MotorControl.html#adbeb65e81e314bf9ea650ca677719f20", null ],
@@ -46,8 +45,6 @@ var group__TMC5160__Subsystems =
     [ "tmc5160::TMC5160< CommType >::Communication", "structtmc5160_1_1TMC5160_1_1Communication.html", [
       [ "Communication", "structtmc5160_1_1TMC5160_1_1Communication.html#acdbfaf3a5695a8118dcf84af786ceca3", null ],
       [ "ConfigureSlaveAddress", "structtmc5160_1_1TMC5160_1_1Communication.html#afc57f53b52bf7bda5113b976ce9401ec", null ],
-      [ "GetSendDelay", "structtmc5160_1_1TMC5160_1_1Communication.html#af9fb044de9ca9cd959474b4d6b994bfa", null ],
-      [ "GetSlaveAddress", "structtmc5160_1_1TMC5160_1_1Communication.html#abf6dfd32076b84e4d8271c99f4fe83c9", null ],
       [ "driver_", "structtmc5160_1_1TMC5160_1_1Communication.html#a480f579da9e4cd282f7a7d4d381a2aac", null ]
     ] ],
     [ "tmc5160::TMC5160< CommType >::Encoder", "structtmc5160_1_1TMC5160_1_1Encoder.html", [

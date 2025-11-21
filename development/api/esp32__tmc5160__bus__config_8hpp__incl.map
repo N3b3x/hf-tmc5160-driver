@@ -1,0 +1,25 @@
+<map id="esp32_tmc5160_bus_config.hpp" name="esp32_tmc5160_bus_config.hpp">
+<area shape="rect" id="Node000001" title="ESP32 GPIO pin configuration for TMC5160 driver tests." alt="" coords="219,5,448,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="203,86,307,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="324,33,278,78,274,74,320,29"/>
+<area shape="rect" id="Node000003" href="$tmc5160__comm__interface_8hpp.html" title="Communication interfaces for TMC5160 stepper motor driver using SPI and UART." alt="" coords="331,79,493,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="347,29,385,67,381,71,343,33"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,167,91,192"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="331,120,104,169,103,163,330,115"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="115,167,171,192"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="348,121,185,169,183,163,347,116"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="195,167,266,192"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="370,121,271,164,269,159,368,116"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="291,167,357,192"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="392,121,349,159,346,155,389,117"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="381,167,443,192"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="415,119,415,153,409,153,409,119"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="467,167,533,192"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="435,117,478,155,475,159,432,121"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="557,167,624,192"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="456,116,553,159,551,164,454,121"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="648,167,707,192"/>
+<area shape="poly" id="edge10_Node000003_Node000011" title=" " alt="" coords="476,116,635,163,634,168,475,121"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="731,167,794,192"/>
+<area shape="poly" id="edge11_Node000003_Node000012" title=" " alt="" coords="494,114,718,164,717,169,493,119"/>
+</map>

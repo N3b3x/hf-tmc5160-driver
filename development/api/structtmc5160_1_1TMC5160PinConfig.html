@@ -157,6 +157,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a0525361876309e2b8c8735d61808e278" id="r_a0525361876309e2b8c8735d61808e278"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0525361876309e2b8c8735d61808e278">clk_pin</a> {-1}</td></tr>
 <tr class="memdesc:a0525361876309e2b8c8735d61808e278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clock input (CLK, pin 12) - Optional.  <br /></td></tr>
 <tr class="separator:a0525361876309e2b8c8735d61808e278"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2bece9f3091171d9fdfa4d68add4ff8" id="r_ac2bece9f3091171d9fdfa4d68add4ff8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac2bece9f3091171d9fdfa4d68add4ff8">spi_mode_pin</a> {-1}</td></tr>
+<tr class="memdesc:ac2bece9f3091171d9fdfa4d68add4ff8"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI_MODE pin (pin 22) - Optional, typically hardwired. HIGH=SPI, LOW=UART.  <br /></td></tr>
+<tr class="separator:ac2bece9f3091171d9fdfa4d68add4ff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b635e1adfa280490386ae6ef1d2f498" id="r_a8b635e1adfa280490386ae6ef1d2f498"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b635e1adfa280490386ae6ef1d2f498">sd_mode_pin</a> {-1}</td></tr>
+<tr class="memdesc:a8b635e1adfa280490386ae6ef1d2f498"><td class="mdescLeft">&#160;</td><td class="mdescRight">SD_MODE pin (pin 21) - Optional, typically hardwired. HIGH=External step/dir, LOW=Internal ramp.  <br /></td></tr>
+<tr class="separator:a8b635e1adfa280490386ae6ef1d2f498"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> GPIO pin configuration structure. </p>
@@ -449,6 +455,38 @@ The ApplyPinConfig() method automatically handles compound pin mapping. </dd></d
 </div><div class="memdoc">
 
 <p>Right reference switch (REFR_DIR, pin 18) - Same as dir_pin. </p>
+
+</div>
+</div>
+<a id="a8b635e1adfa280490386ae6ef1d2f498" name="a8b635e1adfa280490386ae6ef1d2f498"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b635e1adfa280490386ae6ef1d2f498">&#9670;&#160;</a></span>sd_mode_pin</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int tmc5160::TMC5160PinConfig::sd_mode_pin {-1}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>SD_MODE pin (pin 21) - Optional, typically hardwired. HIGH=External step/dir, LOW=Internal ramp. </p>
+
+</div>
+</div>
+<a id="ac2bece9f3091171d9fdfa4d68add4ff8" name="ac2bece9f3091171d9fdfa4d68add4ff8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2bece9f3091171d9fdfa4d68add4ff8">&#9670;&#160;</a></span>spi_mode_pin</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int tmc5160::TMC5160PinConfig::spi_mode_pin {-1}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>SPI_MODE pin (pin 22) - Optional, typically hardwired. HIGH=SPI, LOW=UART. </p>
 
 </div>
 </div>

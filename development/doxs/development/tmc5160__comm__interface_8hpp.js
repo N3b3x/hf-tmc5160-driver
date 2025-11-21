@@ -1,6 +1,7 @@
 var tmc5160__comm__interface_8hpp =
 [
     [ "tmc5160::TMC5160PinConfig", "structtmc5160_1_1TMC5160PinConfig.html", "structtmc5160_1_1TMC5160PinConfig" ],
+    [ "tmc5160::Esp32SpiPinConfig", "structtmc5160_1_1Esp32SpiPinConfig.html", "structtmc5160_1_1Esp32SpiPinConfig" ],
     [ "tmc5160::SpiStatus", "structtmc5160_1_1SpiStatus.html", "structtmc5160_1_1SpiStatus" ],
     [ "tmc5160::SpiCommand", "structtmc5160_1_1SpiCommand.html", "structtmc5160_1_1SpiCommand" ],
     [ "tmc5160::SpiCommand::Frame", "uniontmc5160_1_1SpiCommand_1_1Frame.html", "uniontmc5160_1_1SpiCommand_1_1Frame" ],
@@ -33,7 +34,9 @@ var tmc5160__comm__interface_8hpp =
       [ "DCEN", "tmc5160__comm__interface_8hpp.html#a674cfb7fa2b17e4182eb1a87e79267e4ac61f660d0a38ca70970b88ade5b9c205", null ],
       [ "DCIN", "tmc5160__comm__interface_8hpp.html#a674cfb7fa2b17e4182eb1a87e79267e4ac87f65790239520034c32e73b50e3a12", null ],
       [ "DCO", "tmc5160__comm__interface_8hpp.html#a674cfb7fa2b17e4182eb1a87e79267e4a56326fb851c1918c9b954a13cd007c57", null ],
-      [ "CLK", "tmc5160__comm__interface_8hpp.html#a674cfb7fa2b17e4182eb1a87e79267e4afcea8677932f698f06799f81e024d7ab", null ]
+      [ "CLK", "tmc5160__comm__interface_8hpp.html#a674cfb7fa2b17e4182eb1a87e79267e4afcea8677932f698f06799f81e024d7ab", null ],
+      [ "SPI_MODE", "tmc5160__comm__interface_8hpp.html#a674cfb7fa2b17e4182eb1a87e79267e4a4d7aa7898beee1c19acd8d5b20d2793c", null ],
+      [ "SD_MODE", "tmc5160__comm__interface_8hpp.html#a674cfb7fa2b17e4182eb1a87e79267e4a415ca8c606083f84fd210e197d820f61", null ]
     ] ],
     [ "UartFrameType", "tmc5160__comm__interface_8hpp.html#a0d51978d589f95d86a558f8c6ce9e35f", [
       [ "WriteAccess", "tmc5160__comm__interface_8hpp.html#a0d51978d589f95d86a558f8c6ce9e35fa0d351c9de65e962d661a3f4eb99a3a56", null ],

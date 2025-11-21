@@ -102,10 +102,11 @@ $(function(){initNavTree('tmc5160__types_8hpp.html',''); initResizable(); });
 <p>Type definitions and enumerations for TMC5160 stepper motor driver.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;cstdint&gt;</code><br />
+<code>#include &quot;<a class="el" href="tmc5160__registers_8hpp_source.html">tmc5160_registers.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tmc5160_types.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc5160__types_8hpp__incl.svg" width="162" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tmc5160__types_8hpp__incl.svg" width="234" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -191,6 +192,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a6e7804f8a437f39b4ba4b7cd6b3da1a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor direction enumeration.  <a href="namespacetmc5160.html#a6e7804f8a437f39b4ba4b7cd6b3da1a4">More...</a><br /></td></tr>
 <tr class="separator:a6e7804f8a437f39b4ba4b7cd6b3da1a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e3d563a97d0296b1d7c74bd530c6573" id="r_a2e3d563a97d0296b1d7c74bd530c6573"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc5160.html#a2e3d563a97d0296b1d7c74bd530c6573">tmc5160::ChipCommMode</a> : uint8_t { <a class="el" href="namespacetmc5160.html#a2e3d563a97d0296b1d7c74bd530c6573ade9b62ad581f590543b7355a2958077e">tmc5160::SPI_INTERNAL_RAMP</a> = 0
+, <a class="el" href="namespacetmc5160.html#a2e3d563a97d0296b1d7c74bd530c6573ab967b9681d8b42559306c86608a5601b">tmc5160::SPI_EXTERNAL_STEPDIR</a> = 1
+, <a class="el" href="namespacetmc5160.html#a2e3d563a97d0296b1d7c74bd530c6573aee770912474919e17ca4da2f54c9cd6b">tmc5160::UART_INTERNAL_RAMP</a> = 2
+ }</td></tr>
+<tr class="memdesc:a2e3d563a97d0296b1d7c74bd530c6573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chip communication and motion control mode configuration.  <a href="namespacetmc5160.html#a2e3d563a97d0296b1d7c74bd530c6573">More...</a><br /></td></tr>
+<tr class="separator:a2e3d563a97d0296b1d7c74bd530c6573"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00679448289a759ed7f70e47f9d11596" id="r_a00679448289a759ed7f70e47f9d11596"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc5160.html#a00679448289a759ed7f70e47f9d11596">tmc5160::MechanicalSystemType</a> : uint8_t { <a class="el" href="namespacetmc5160.html#a00679448289a759ed7f70e47f9d11596aeaa47a40d5ae24b55e477563e264c94f">tmc5160::DirectDrive</a>
 , <a class="el" href="namespacetmc5160.html#a00679448289a759ed7f70e47f9d11596a6f645ee65c04d44c3039f8b55622bb70">tmc5160::LeadScrew</a>
 , <a class="el" href="namespacetmc5160.html#a00679448289a759ed7f70e47f9d11596ad3fe043af498c0c3096222212fbeef50">tmc5160::BeltDrive</a>

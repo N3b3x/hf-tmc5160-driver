@@ -1,5 +1,7 @@
 <map id="test_mode_change_speeds" name="test_mode_change_speeds">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,204,31"/>
-<area shape="rect" id="Node000002" href="$motor__control__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="252,5,392,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,15,238,15,238,21,205,21"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,204,38"/>
+<area shape="rect" id="Node000002" href="$motor__control__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="252,13,392,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,23,238,23,238,28,205,28"/>
+<area shape="rect" id="Node000003" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="440,5,603,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="392,23,426,23,426,28,392,28"/>
 </map>

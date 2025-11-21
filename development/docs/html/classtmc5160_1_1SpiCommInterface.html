@@ -299,7 +299,7 @@ Daisy-Chaining Support</h2>
 </li>
 </ul>
 <p>Response Reading (per datasheet):</p><ul>
-<li>Response from chip k in a chain of n devices requires sending 40·(n-k+1) dummy bits total Formula: 40·(n-k) bits of padding + 40 bits of command = 40·(n-k+1) bits</li>
+<li>Response from chip k in a chain of n devices requires sending 40·(n-k) dummy bits total Formula: 40·(n-k) bits of padding + 40 bits of command = 40·(n-k) bits (command included in total)</li>
 <li><b>CRITICAL</b>: Responses come back in REVERSE order (last device first, first device last)<ul>
 <li>Device n-1's response appears FIRST (at byte 0)</li>
 <li>Device n-2's response appears second (at byte 5)</li>
@@ -308,9 +308,9 @@ Daisy-Chaining Support</h2>
 </ul>
 </li>
 <li>To read from device k in chain of n devices:<ul>
-<li>Send 40·(n-k+1) bits total (40·(n-k) padding + 40 command)</li>
+<li>Send 40·(n-k) bits total (40·(n-k-1) padding + 40 command, or just 40 command if k=n-1)</li>
 <li>Response from device k appears at offset (n-k-1)*5 bytes in received data</li>
-<li>Example: For n=3, k=1: Send 40*(3-1+1)=120 bits, response at offset (3-1-1)*5=5 bytes</li>
+<li>Example: For n=3, k=1: Send 40*(3-1)=80 bits, response at offset (3-1-1)*5=5 bytes</li>
 </ul>
 </li>
 </ul>
@@ -322,17 +322,17 @@ Daisy-Chaining Support</h2>
 </ul>
 </li>
 <li><b>Receiving (Response Extraction)</b>: To receive response from device k in chain of n devices:<ul>
-<li>Total transfer size: 40·(n-k+1) bits = (n-k+1)*5 bytes (datasheet formula)</li>
+<li>Total transfer size: 40·(n-k) bits = (n-k)*5 bytes (datasheet formula)</li>
 <li>Response appears at offset (n-k-1)*5 bytes (reverse order: last device first)</li>
 <li>This calculation REQUIRES knowing n (total chain length)</li>
 </ul>
 </li>
-<li><b>Transfer Size</b>: For simultaneous send/receive, use max((k+1)*5, (n-k+1)*5) bytes<ul>
+<li><b>Transfer Size</b>: For simultaneous send/receive, use max((k+1)*5, (n-k)*5) bytes<ul>
 <li>Sending requirement: (k+1)*5 bytes needed to shift command to device k</li>
-<li>Receiving requirement: (n-k+1)*5 bytes needed to shift response back (datasheet formula)</li>
+<li>Receiving requirement: (n-k)*5 bytes needed to shift response back (datasheet formula)</li>
 <li>Use max() to ensure both requirements are met:<ul>
-<li>For k &lt; n/2: (n-k+1)*5 &gt;= (k+1)*5, so (n-k+1)*5 dominates</li>
-<li>For k &gt;= n/2: (k+1)*5 &gt; (n-k+1)*5, so (k+1)*5 dominates</li>
+<li>For k &lt; n/2: (n-k)*5 &gt;= (k+1)*5, so (n-k)*5 dominates</li>
+<li>For k &gt;= n/2: (k+1)*5 &gt; (n-k)*5, so (k+1)*5 dominates</li>
 </ul>
 </li>
 <li>Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex response extraction</li>
@@ -394,7 +394,7 @@ Daisy-Chaining Support</h2>
 </li>
 </ul>
 </li>
-<li>Read response from chip k: Send 40·(n-k+1) dummy bits total (40·(n-k) padding + 40 command) Response appears at offset (n-k-1)*5 bytes (reverse order: last device first) <b>CRITICAL</b>: Responses come back in REVERSE order - device n-1 response first, then n-2, ..., device 0 last</li>
+<li>Read response from chip k: Send 40·(n-k) dummy bits total (40·(n-k-1) padding + 40 command, or just 40 command if k=n-1) Response appears at offset (n-k-1)*5 bytes (reverse order: last device first) <b>CRITICAL</b>: Responses come back in REVERSE order - device n-1 response first, then n-2, ..., device 0 last</li>
 </ul>
 <p>Architecture:</p><ul>
 <li>Each <a class="el" href="classtmc5160_1_1SpiCommInterface.html" title="CRTP-based SPI implementation of TMC5160CommInterface.">SpiCommInterface</a> instance supports ONE SPI bus (shared by multiple <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> drivers)</li>
@@ -414,8 +414,8 @@ Daisy-Chaining Support</h2>
 <div class="line">  <span class="keywordtype">void</span> delayMs(...) { ... }</div>
 <div class="line">  <span class="keywordtype">void</span> delayUs(...) { ... }</div>
 <div class="line">};</div>
-<div class="ttc" id="aclasstmc5160_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:1276</div></div>
-<div class="ttc" id="anamespacetmc5160_html_a784e320454a771e190b3b376a67d9c29"><div class="ttname"><a href="namespacetmc5160.html#a784e320454a771e190b3b376a67d9c29">tmc5160::CommMode</a></div><div class="ttdeci">CommMode</div><div class="ttdoc">Supported physical communication modes for TMC5160.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:147</div></div>
+<div class="ttc" id="aclasstmc5160_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:1362</div></div>
+<div class="ttc" id="anamespacetmc5160_html_a784e320454a771e190b3b376a67d9c29"><div class="ttname"><a href="namespacetmc5160.html#a784e320454a771e190b3b376a67d9c29">tmc5160::CommMode</a></div><div class="ttdeci">CommMode</div><div class="ttdoc">Supported physical communication modes for TMC5160.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:148</div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Derived</td><td>The derived class type (CRTP pattern) </td></tr>
@@ -849,19 +849,19 @@ template&lt;typename Derived &gt; </div>
 </ul>
 <p><b>Receiving (Response Extraction):</b></p><ul>
 <li>To receive response from device k in chain of n devices:<ul>
-<li>Total transfer size: 40·(n-k+1) bits = (n-k+1)*5 bytes (datasheet formula)</li>
+<li>Total transfer size: 40·(n-k) bits = (n-k)*5 bytes (datasheet formula)</li>
 <li>Response appears at offset (n-k-1)*5 bytes (reverse order: last device first)</li>
 <li>This requires knowing total chain length n</li>
 </ul>
 </li>
 </ul>
 <p><b>Transfer Size Calculation:</b></p><ul>
-<li>For simultaneous send/receive, use max((k+1)*5, (n-k+1)*5) bytes<ul>
+<li>For simultaneous send/receive, use max((k+1)*5, (n-k)*5) bytes<ul>
 <li>Sending requirement: (k+1)*5 bytes to shift command to device k</li>
-<li>Receiving requirement: (n-k+1)*5 bytes to shift response back (datasheet formula)</li>
+<li>Receiving requirement: (n-k)*5 bytes to shift response back (datasheet formula)</li>
 <li>Use max() to ensure both requirements are met:<ul>
-<li>For k &lt; n/2: (n-k+1)*5 &gt;= (k+1)*5, so (n-k+1)*5 dominates</li>
-<li>For k &gt;= n/2: (k+1)*5 &gt; (n-k+1)*5, so (k+1)*5 dominates</li>
+<li>For k &lt; n/2: (n-k)*5 &gt;= (k+1)*5, so (n-k)*5 dominates</li>
+<li>For k &gt;= n/2: (k+1)*5 &gt; (n-k)*5, so (k+1)*5 dominates</li>
 </ul>
 </li>
 <li>Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex behavior</li>
@@ -879,7 +879,7 @@ template&lt;typename Derived &gt; </div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1SpiCommInterface_ad5148180affea0e047e8c4a40d83485c_cgraph.svg" width="987" height="931"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1SpiCommInterface_ad5148180affea0e047e8c4a40d83485c_cgraph.svg" width="987" height="891"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -916,7 +916,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>This is CRITICAL for proper response extraction using the datasheet formula 40·(n-k+1) </dd>
+<dl class="section note"><dt>Note</dt><dd>This is CRITICAL for proper response extraction using the datasheet formula 40·(n-k) </dd>
 <dd>
 This should be set once during initialization, before any register access </dd>
 <dd>
@@ -1037,8 +1037,8 @@ template&lt;typename Derived &gt; </div>
 <p><b>Key Points:</b></p><ul>
 <li>Chain length MUST be known (auto-detected if not set)</li>
 <li>Sending: (k+1)*5 bytes to address device k</li>
-<li>Receiving: (n-k+1)*5 bytes total, response at offset (n-k-1)*5 bytes</li>
-<li>Transfer size: max((k+1)*5, (n-k+1)*5) bytes</li>
+<li>Receiving: (n-k)*5 bytes total, response at offset (n-k-1)*5 bytes</li>
+<li>Transfer size: max((k+1)*5, (n-k)*5) bytes</li>
 <li>Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex behavior</li>
 </ul>
 <p><b>Auto-Detection and Verification:</b> Same as <a class="el" href="#ad5148180affea0e047e8c4a40d83485c" title="Read a 32-bit register via SPI.">ReadRegister()</a> - chain length is auto-detected on first access if needed, and user-specified length is verified against detected length. If detection fails, operation returns false.</p>
@@ -1047,7 +1047,7 @@ template&lt;typename Derived &gt; </div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1SpiCommInterface_a2ba4efb58323a9e2b221ce9a80a56470_cgraph.svg" width="987" height="995"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1SpiCommInterface_a2ba4efb58323a9e2b221ce9a80a56470_cgraph.svg" width="987" height="952"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1101,7 +1101,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Total number of devices in the daisy chain. </p>
-<p>0 = unknown/single chip (uses simplified approach) &gt;0 = total number of devices (uses datasheet formula 40·(n-k+1))</p>
+<p>0 = unknown/single chip (uses simplified approach) &gt;0 = total number of devices (uses datasheet formula 40·(n-k))</p>
 <p>This is CRITICAL for proper response extraction. When set correctly, ReadRegister and WriteRegister use the optimal datasheet formula. Total number of devices in daisy chain (0 = unknown/single chip) </p>
 
 </div>
