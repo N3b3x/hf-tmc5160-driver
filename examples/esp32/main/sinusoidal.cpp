@@ -170,7 +170,7 @@ extern "C" void app_main() {
   }
 
   // Create TMC5160 driver instance
-  tmc5160::TMC5160 driver(spi);
+  tmc5160::TMC5160<Esp32SPI> driver(spi);
 
   // Configure driver
   tmc5160::DriverConfig cfg{};

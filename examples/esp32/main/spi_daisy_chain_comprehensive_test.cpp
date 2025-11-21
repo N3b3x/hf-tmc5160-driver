@@ -65,7 +65,7 @@ bool test_multi_motor_coordination() noexcept;
 // Helper functions
 struct TestDriverHandle {
   std::unique_ptr<Esp32SPI> spi;
-  std::vector<std::unique_ptr<tmc5160::TMC5160>> drivers;
+  std::vector<std::unique_ptr<tmc5160::TMC5160<Esp32SPI>>> drivers;
 };
 
 std::unique_ptr<TestDriverHandle> create_daisy_chain_drivers() noexcept {
@@ -87,7 +87,7 @@ std::unique_ptr<TestDriverHandle> create_daisy_chain_drivers() noexcept {
   // Create driver instances for each position in chain
   for (uint8_t pos = 0; pos < TEST_CHAIN_LENGTH; ++pos) {
     handle->drivers.push_back(
-      std::make_unique<tmc5160::TMC5160>(*handle->spi, 12'000'000, pos));
+      std::make_unique<tmc5160::TMC5160<Esp32SPI>>(*handle->spi, 12'000'000, pos));
   }
   
   return handle;

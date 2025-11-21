@@ -60,7 +60,7 @@ bool test_latched_position() noexcept;
 // Helper functions
 struct TestDriverHandle {
   std::unique_ptr<Esp32SPI> spi;
-  std::unique_ptr<tmc5160::TMC5160> driver;
+  std::unique_ptr<tmc5160::TMC5160<Esp32SPI>> driver;
 };
 
 std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
@@ -75,7 +75,7 @@ std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
     return nullptr;
   }
   
-  handle->driver = std::make_unique<tmc5160::TMC5160>(*handle->spi);
+  handle->driver = std::make_unique<tmc5160::TMC5160<Esp32SPI>>(*handle->spi);
   
   tmc5160::DriverConfig cfg{};
   cfg.motor.irun = TEST_IRUN;
