@@ -1084,7 +1084,7 @@ protected:
    * - Encoder pins: Read-only, level depends on encoder state
    * - DC Step pins: DCEN/DCIN typically active HIGH, DCO is output
    */
-  bool pinActiveLevels_[15]{}; // Updated to support all pin types (15 pins total)
+  bool pinActiveLevels_[16]{}; // Updated to support all pin types (16 pins total)
 
   /**
    * @brief Debug logging function for detailed debugging information
