@@ -86,7 +86,7 @@ extern "C" void app_main() {
   ESP_LOGI(TAG, "SPI interface initialized");
 
   // Create TMC5160 driver instance
-  tmc5160::TMC5160 driver(spi);
+  tmc5160::TMC5160<Esp32SPI> driver(spi);
 
   // Configure driver
   tmc5160::DriverConfig cfg{};
