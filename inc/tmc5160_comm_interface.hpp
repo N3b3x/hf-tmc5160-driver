@@ -1427,7 +1427,7 @@ public:
    * @warning This method performs a full SPI transaction and may take time
    */
   uint8_t AutoDetectChainLength(uint8_t max_devices = 8) noexcept {
-    if (max_devices == 0 || max_devices > 255) {
+    if (max_devices == 0) {
       max_devices = 8; // Default to 8 devices
     }
 
