@@ -4,6 +4,8 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="422,34,338,25,339,20,423,29"/>
 <area shape="rect" id="Node000003" href="$classEsp32SPI.html#a79ca348b392e0771bce3cf0c476b8845" title="Apply pin configuration structure (handles compound pins automatically)" alt="" coords="201,55,388,80"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="423,57,389,60,388,55,422,52"/>
-<area shape="rect" id="Node000004" href="$classEsp32SPI.html#ad552c0d09f771a64ba4b77820eabea5e" title="Construct ESP32 SPI communication interface with pin configuration struct." alt="" coords="5,55,153,80"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="188,70,154,70,154,65,188,65"/>
+<area shape="rect" id="Node000004" href="$classEsp32SPI.html#af5b390abc6fe8790c6efef4ce9b21c13" title="Construct ESP32 SPI communication interface with complete pin configuration." alt="" coords="5,29,153,55"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="187,57,153,53,154,48,188,52"/>
+<area shape="rect" id="Node000005" href="$classEsp32SPI.html#ad552c0d09f771a64ba4b77820eabea5e" title="Construct ESP32 SPI communication interface with separate SPI pins and TMC5160 pin config." alt="" coords="5,79,153,104"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="188,82,154,86,153,80,187,77"/>
 </map>

@@ -12,13 +12,14 @@ var searchData=
   ['filt_5fisense_9',['filt_isense',['../uniontmc5160_1_1DRV__CONF__Register.html#afd73e8196047558bd00b2e5d184e3c05',1,'tmc5160::DRV_CONF_Register::filt_isense'],['../structtmc5160_1_1PowerStageParameters.html#af49c226aa79c7b8b209492a10a170a46',1,'tmc5160::PowerStageParameters::filt_isense']]],
   ['findcommand_10',['FindCommand',['../classUartCommandParser.html#a39f6e678ffc3965cbce920bb025b0906',1,'UartCommandParser']]],
   ['flip_5ftest_5fprogress_5findicator_11',['flip_test_progress_indicator',['../TestFramework_8h.html#a7bb80345e5681c19686df292fa897daf',1,'TestFramework.h']]],
-  ['frame_12',['Frame',['../uniontmc5160_1_1SpiCommand_1_1Frame.html',1,'tmc5160::SpiCommand::Frame'],['../uniontmc5160_1_1UartFrame_1_1Frame.html',1,'tmc5160::UartFrame::Frame']]],
-  ['frame_13',['frame',['../structtmc5160_1_1SpiCommand.html#aaaa5e5c5b1d6d0c3619fe2172d6b8518',1,'tmc5160::SpiCommand::frame'],['../structtmc5160_1_1UartFrame.html#a84edd8d99f920406335ae3a0a7e8cd42',1,'tmc5160::UartFrame::frame']]],
-  ['freewheel_14',['freewheel',['../uniontmc5160_1_1PWMCONF__Register.html#a2ff81b7258d7564f46fd169819867759',1,'tmc5160::PWMCONF_Register']]],
-  ['frequency_5f_15',['frequency_',['../classSinusoidalMotion.html#a545fa096b7ed5749633eba34ae4e6627',1,'SinusoidalMotion']]],
-  ['frequency_5fhz_16',['frequency_hz',['../structFatigueTestMotion_1_1Status.html#a7dafafe0ba6c6ede0418474c52b1778d',1,'FatigueTestMotion::Status']]],
-  ['frequency_5fhz_5f_17',['frequency_hz_',['../classFatigueTestMotion.html#a8b53c33780fa6312f614e52caf7a34c3',1,'FatigueTestMotion']]],
-  ['frombyte_18',['FromByte',['../structtmc5160_1_1SpiStatus.html#a239b9c3beda1236f315af5f126cf283d',1,'tmc5160::SpiStatus']]],
-  ['fsactive_19',['fsactive',['../uniontmc5160_1_1DRV__STATUS__Register.html#adb0d3b07337fc61e73e0d3eb6c8db2c6',1,'tmc5160::DRV_STATUS_Register']]],
-  ['functions_20in_20uart_20mode_20',['Pin Functions in UART Mode',['../classtmc5160_1_1UartCommInterface.html#autotoc_md8',1,'']]]
+  ['formatstatusbits_12',['FormatStatusBits',['../structtmc5160_1_1SpiStatus.html#ae6d06a77f656e01cf5d6eb883ed2951d',1,'tmc5160::SpiStatus']]],
+  ['frame_13',['Frame',['../uniontmc5160_1_1SpiCommand_1_1Frame.html',1,'tmc5160::SpiCommand::Frame'],['../uniontmc5160_1_1UartFrame_1_1Frame.html',1,'tmc5160::UartFrame::Frame']]],
+  ['frame_14',['frame',['../structtmc5160_1_1SpiCommand.html#aaaa5e5c5b1d6d0c3619fe2172d6b8518',1,'tmc5160::SpiCommand::frame'],['../structtmc5160_1_1UartFrame.html#a84edd8d99f920406335ae3a0a7e8cd42',1,'tmc5160::UartFrame::frame']]],
+  ['freewheel_15',['freewheel',['../uniontmc5160_1_1PWMCONF__Register.html#a2ff81b7258d7564f46fd169819867759',1,'tmc5160::PWMCONF_Register::freewheel'],['../structtmc5160_1_1StealthChopConfig.html#a0e6b1d5107d3cbb3d5f5b564a440de22',1,'tmc5160::StealthChopConfig::freewheel']]],
+  ['frequency_5f_16',['frequency_',['../classSinusoidalMotion.html#a545fa096b7ed5749633eba34ae4e6627',1,'SinusoidalMotion']]],
+  ['frequency_5fhz_17',['frequency_hz',['../structFatigueTestMotion_1_1Status.html#a7dafafe0ba6c6ede0418474c52b1778d',1,'FatigueTestMotion::Status']]],
+  ['frequency_5fhz_5f_18',['frequency_hz_',['../classFatigueTestMotion.html#a8b53c33780fa6312f614e52caf7a34c3',1,'FatigueTestMotion']]],
+  ['frombyte_19',['FromByte',['../structtmc5160_1_1SpiStatus.html#a239b9c3beda1236f315af5f126cf283d',1,'tmc5160::SpiStatus']]],
+  ['fsactive_20',['fsactive',['../uniontmc5160_1_1DRV__STATUS__Register.html#adb0d3b07337fc61e73e0d3eb6c8db2c6',1,'tmc5160::DRV_STATUS_Register']]],
+  ['functions_20in_20uart_20mode_21',['Pin Functions in UART Mode',['../classtmc5160_1_1UartCommInterface.html#autotoc_md8',1,'']]]
 ];

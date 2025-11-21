@@ -85,6 +85,7 @@ var namespacetmc5160 =
     [ "ENC_STATUS_Register", "uniontmc5160_1_1ENC__STATUS__Register.html", "uniontmc5160_1_1ENC__STATUS__Register" ],
     [ "ENCMODE_Register", "uniontmc5160_1_1ENCMODE__Register.html", "uniontmc5160_1_1ENCMODE__Register" ],
     [ "EncoderConfig", "structtmc5160_1_1EncoderConfig.html", "structtmc5160_1_1EncoderConfig" ],
+    [ "Esp32SpiPinConfig", "structtmc5160_1_1Esp32SpiPinConfig.html", "structtmc5160_1_1Esp32SpiPinConfig" ],
     [ "GCONF_Register", "uniontmc5160_1_1GCONF__Register.html", "uniontmc5160_1_1GCONF__Register" ],
     [ "GlobalConfig", "structtmc5160_1_1GlobalConfig.html", "structtmc5160_1_1GlobalConfig" ],
     [ "GSTAT_Register", "uniontmc5160_1_1GSTAT__Register.html", "uniontmc5160_1_1GSTAT__Register" ],
@@ -106,6 +107,7 @@ var namespacetmc5160 =
     [ "RAMP_STAT_Register", "uniontmc5160_1_1RAMP__STAT__Register.html", "uniontmc5160_1_1RAMP__STAT__Register" ],
     [ "RampParameters", "structtmc5160_1_1RampParameters.html", "structtmc5160_1_1RampParameters" ],
     [ "ReferenceSwitchConfig", "structtmc5160_1_1ReferenceSwitchConfig.html", "structtmc5160_1_1ReferenceSwitchConfig" ],
+    [ "RegisterInfo", "structtmc5160_1_1RegisterInfo.html", "structtmc5160_1_1RegisterInfo" ],
     [ "SHORT_CONF_Register", "uniontmc5160_1_1SHORT__CONF__Register.html", "uniontmc5160_1_1SHORT__CONF__Register" ],
     [ "ShortProtectionConfig", "structtmc5160_1_1ShortProtectionConfig.html", "structtmc5160_1_1ShortProtectionConfig" ],
     [ "SLAVECONF_Register", "uniontmc5160_1_1SLAVECONF__Register.html", "uniontmc5160_1_1SLAVECONF__Register" ],
@@ -122,6 +124,11 @@ var namespacetmc5160 =
     [ "TMC5160PinConfig", "structtmc5160_1_1TMC5160PinConfig.html", "structtmc5160_1_1TMC5160PinConfig" ],
     [ "UartCommInterface", "classtmc5160_1_1UartCommInterface.html", "classtmc5160_1_1UartCommInterface" ],
     [ "UartFrame", "structtmc5160_1_1UartFrame.html", "structtmc5160_1_1UartFrame" ],
+    [ "ChipCommMode", "namespacetmc5160.html#a2e3d563a97d0296b1d7c74bd530c6573", [
+      [ "SPI_INTERNAL_RAMP", "namespacetmc5160.html#a2e3d563a97d0296b1d7c74bd530c6573ade9b62ad581f590543b7355a2958077e", null ],
+      [ "SPI_EXTERNAL_STEPDIR", "namespacetmc5160.html#a2e3d563a97d0296b1d7c74bd530c6573ab967b9681d8b42559306c86608a5601b", null ],
+      [ "UART_INTERNAL_RAMP", "namespacetmc5160.html#a2e3d563a97d0296b1d7c74bd530c6573aee770912474919e17ca4da2f54c9cd6b", null ]
+    ] ],
     [ "CommMode", "namespacetmc5160.html#a784e320454a771e190b3b376a67d9c29", [
       [ "SPI", "namespacetmc5160.html#a784e320454a771e190b3b376a67d9c29a33dc5312b091968f5a120c2484d40df8", null ],
       [ "UART", "namespacetmc5160.html#a784e320454a771e190b3b376a67d9c29acec5769b01fb096efaf0d6186823c78f", null ]
@@ -169,6 +176,24 @@ var namespacetmc5160 =
       [ "VELOCITY_NEG", "namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a155d6ef5b0ee9bf966b419b00d4b6034", null ],
       [ "HOLD", "namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a0c6d9dfb485b43c6fba87439f9f73ac4", null ]
     ] ],
+    [ "RegisterAccess", "namespacetmc5160.html#a5b766c6bacee416e68b263d3933fc00e", [
+      [ "READ_ONLY", "namespacetmc5160.html#a5b766c6bacee416e68b263d3933fc00ea47c7e7cb36a953a8c47e02000036bb44", null ],
+      [ "WRITE_ONLY", "namespacetmc5160.html#a5b766c6bacee416e68b263d3933fc00ead8fddf06187e680ab5a6355f76a17357", null ],
+      [ "READ_WRITE", "namespacetmc5160.html#a5b766c6bacee416e68b263d3933fc00eaa7b843fb734e3b3fea8e5f902d3f4144", null ],
+      [ "READ_WRITE_CLEAR", "namespacetmc5160.html#a5b766c6bacee416e68b263d3933fc00ea97f9799a08eeff13921e419334656c80", null ]
+    ] ],
+    [ "RegisterCategory", "namespacetmc5160.html#afefeb2a1b9691235f96586d280632621", [
+      [ "CONFIG", "namespacetmc5160.html#afefeb2a1b9691235f96586d280632621a73e99d350a4aa6f1a5af04ec29173f73", null ],
+      [ "STATUS", "namespacetmc5160.html#afefeb2a1b9691235f96586d280632621a5f241c8c8f985b3c51e05d39cf030f4c", null ],
+      [ "MOTION", "namespacetmc5160.html#afefeb2a1b9691235f96586d280632621af96e6ea7a7375bd60bad3f3caae3cf27", null ],
+      [ "CURRENT", "namespacetmc5160.html#afefeb2a1b9691235f96586d280632621aa2770969c827f0f2910f6179418462df", null ],
+      [ "CHOPPER", "namespacetmc5160.html#afefeb2a1b9691235f96586d280632621add23e0121f664275969828b2905a1def", null ],
+      [ "ENCODER", "namespacetmc5160.html#afefeb2a1b9691235f96586d280632621a9e1de45ee3c680d9a2ff400816f05e0f", null ],
+      [ "MICROSTEP", "namespacetmc5160.html#afefeb2a1b9691235f96586d280632621a74fc4d692f678cd9842a3821e1090cb9", null ],
+      [ "PROTECTION", "namespacetmc5160.html#afefeb2a1b9691235f96586d280632621ae4fa5555709453166935ef887d97dad6", null ],
+      [ "OTP", "namespacetmc5160.html#afefeb2a1b9691235f96586d280632621ad9d1e60e50119d9752001d4196ee6b3c", null ],
+      [ "IO", "namespacetmc5160.html#afefeb2a1b9691235f96586d280632621acf3882f1c43ab22bff0bd9d82d83251b", null ]
+    ] ],
     [ "TMC5160CtrlPin", "namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4", [
       [ "EN", "namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4aaa85f1840e282d8a8304dbc2c0d7c9b2", null ],
       [ "DIR", "namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4ac1561b120842fabe1310417083827590", null ],
@@ -183,7 +208,9 @@ var namespacetmc5160 =
       [ "DCEN", "namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4ac61f660d0a38ca70970b88ade5b9c205", null ],
       [ "DCIN", "namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4ac87f65790239520034c32e73b50e3a12", null ],
       [ "DCO", "namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4a56326fb851c1918c9b954a13cd007c57", null ],
-      [ "CLK", "namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4afcea8677932f698f06799f81e024d7ab", null ]
+      [ "CLK", "namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4afcea8677932f698f06799f81e024d7ab", null ],
+      [ "SPI_MODE", "namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4a4d7aa7898beee1c19acd8d5b20d2793c", null ],
+      [ "SD_MODE", "namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4a415ca8c606083f84fd210e197d820f61", null ]
     ] ],
     [ "UartFrameType", "namespacetmc5160.html#a0d51978d589f95d86a558f8c6ce9e35f", [
       [ "WriteAccess", "namespacetmc5160.html#a0d51978d589f95d86a558f8c6ce9e35fa0d351c9de65e962d661a3f4eb99a3a56", null ],
@@ -195,6 +222,10 @@ var namespacetmc5160 =
     [ "BeltTeethToSteps", "namespacetmc5160.html#ab5cc044f8d1b33d3aabba5f6e84a6fe1", null ],
     [ "calculateCrc8", "namespacetmc5160.html#ab650ebb70be7f1da00a2dea1f2fe662e", null ],
     [ "DegreesToSteps", "namespacetmc5160.html#a125b02e40c40c77eb5e08e68502e239e", null ],
+    [ "GetAccessTypeString", "namespacetmc5160.html#a4538a6c954f871459aa037c0ae3dbd56", null ],
+    [ "GetRegisterAccess", "namespacetmc5160.html#adba9532e925a4da2989de23e2d2062bf", null ],
+    [ "IsRegisterReadable", "namespacetmc5160.html#a323b6ac0b0cc78024fddd65237bbdc55", null ],
+    [ "IsRegisterWritable", "namespacetmc5160.html#a47bd080b7ced8aa8be9c67b561328e61", null ],
     [ "MmPerSecToStepsPerSec", "namespacetmc5160.html#a35dbbcb72e22539dc46aaa7098770312", null ],
     [ "MmToSteps", "namespacetmc5160.html#a6e78a19f84b991207c30401e90eb6ebd", null ],
     [ "RpmToStepsPerSec", "namespacetmc5160.html#a086e668f7c59055a454e010eb8d430a0", null ],

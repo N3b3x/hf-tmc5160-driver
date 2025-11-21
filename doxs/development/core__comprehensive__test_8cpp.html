@@ -103,12 +103,14 @@ $(function(){initNavTree('core__comprehensive__test_8cpp.html',''); initResizabl
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="tmc5160_8hpp_source.html">../../../inc/tmc5160.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="esp32__tmc5160__bus_8hpp_source.html">esp32_tmc5160_bus.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp32__tmc5160__bus__config_8hpp_source.html">esp32_tmc5160_bus_config.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="TestFramework_8h_source.html">TestFramework.h</a>&quot;</code><br />
+<code>#include &quot;driver/gpio.h&quot;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for core_comprehensive_test.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp__incl.svg" width="2858" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp__incl.svg" width="2662" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -120,6 +122,17 @@ Classes</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a23a89a76051da3d9c138085a52b89771" id="r_a23a89a76051da3d9c138085a52b89771"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a23a89a76051da3d9c138085a52b89771">test_driver_initialization</a> () noexcept</td></tr>
 <tr class="separator:a23a89a76051da3d9c138085a52b89771"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc4946e009df1458d86c324ea206cf63" id="r_afc4946e009df1458d86c324ea206cf63"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc4946e009df1458d86c324ea206cf63">test_register_read_write</a> () noexcept</td></tr>
+<tr class="separator:afc4946e009df1458d86c324ea206cf63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdf7e542cbf22ddd24d4042951fa2b67" id="r_acdf7e542cbf22ddd24d4042951fa2b67"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acdf7e542cbf22ddd24d4042951fa2b67">test_motor_parameter_settings</a> () noexcept</td></tr>
+<tr class="separator:acdf7e542cbf22ddd24d4042951fa2b67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a264a26cca5257487e044755be5d90b64" id="r_a264a26cca5257487e044755be5d90b64"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a264a26cca5257487e044755be5d90b64">test_ramp_parameter_settings</a> () noexcept</td></tr>
+<tr class="separator:a264a26cca5257487e044755be5d90b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18321790bb3a72af955b7b75fb4c1e2c" id="r_a18321790bb3a72af955b7b75fb4c1e2c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18321790bb3a72af955b7b75fb4c1e2c">test_global_configuration</a> () noexcept</td></tr>
+<tr class="separator:a18321790bb3a72af955b7b75fb4c1e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31cfb3926eb0c837bde126c1120fb3b9" id="r_a31cfb3926eb0c837bde126c1120fb3b9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31cfb3926eb0c837bde126c1120fb3b9">verify_mode_pins</a> (const <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &amp;spi, const <a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &amp;driver, <a class="el" href="namespacetmc5160.html#a784e320454a771e190b3b376a67d9c29">tmc5160::CommMode</a> expected_comm_mode) noexcept</td></tr>
+<tr class="memdesc:a31cfb3926eb0c837bde126c1120fb3b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Verify mode pins match expected communication mode.  <br /></td></tr>
+<tr class="separator:a31cfb3926eb0c837bde126c1120fb3b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12a1e9488c1c4af4e9d79e2f8e390c5f" id="r_a12a1e9488c1c4af4e9d79e2f8e390c5f"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="structTestDriverHandle.html">TestDriverHandle</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a12a1e9488c1c4af4e9d79e2f8e390c5f">create_test_driver</a> () noexcept</td></tr>
 <tr class="separator:a12a1e9488c1c4af4e9d79e2f8e390c5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a630544a7f0a2cc40d8a7fefab7e2fe70" id="r_a630544a7f0a2cc40d8a7fefab7e2fe70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a630544a7f0a2cc40d8a7fefab7e2fe70">app_main</a> (void)</td></tr>
@@ -133,6 +146,14 @@ Variables</h2></td></tr>
 <tr class="separator:aaff89257c54366921eebb8ec1348b1fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7772e69feb610f76ed793f35074a592" id="r_ab7772e69feb610f76ed793f35074a592"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7772e69feb610f76ed793f35074a592">ENABLE_INITIALIZATION_TESTS</a> = true</td></tr>
 <tr class="separator:ab7772e69feb610f76ed793f35074a592"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d09c2af8ab10bbd42d0b33e4986fb88" id="r_a3d09c2af8ab10bbd42d0b33e4986fb88"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d09c2af8ab10bbd42d0b33e4986fb88">ENABLE_REGISTER_ACCESS_TESTS</a> = true</td></tr>
+<tr class="separator:a3d09c2af8ab10bbd42d0b33e4986fb88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab04d1774c21cd78b2e3f4b6544beb923" id="r_ab04d1774c21cd78b2e3f4b6544beb923"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab04d1774c21cd78b2e3f4b6544beb923">ENABLE_MOTOR_PARAMETER_TESTS</a> = true</td></tr>
+<tr class="separator:ab04d1774c21cd78b2e3f4b6544beb923"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bb804f194a3a64d7342c1093dad1ab5" id="r_a4bb804f194a3a64d7342c1093dad1ab5"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4bb804f194a3a64d7342c1093dad1ab5">ENABLE_RAMP_PARAMETER_TESTS</a> = true</td></tr>
+<tr class="separator:a4bb804f194a3a64d7342c1093dad1ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68b56c85e47de4b8461cbb82b8a67819" id="r_a68b56c85e47de4b8461cbb82b8a67819"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a68b56c85e47de4b8461cbb82b8a67819">ENABLE_GLOBAL_CONFIG_TESTS</a> = true</td></tr>
+<tr class="separator:a68b56c85e47de4b8461cbb82b8a67819"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83d0ba1eda12d12b516f53b6f3d7bf15" id="r_a83d0ba1eda12d12b516f53b6f3d7bf15"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83d0ba1eda12d12b516f53b6f3d7bf15">TEST_IRUN</a> = 20</td></tr>
 <tr class="separator:a83d0ba1eda12d12b516f53b6f3d7bf15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43f36d608ddb89bbbc098f546646a914" id="r_a43f36d608ddb89bbbc098f546646a914"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43f36d608ddb89bbbc098f546646a914">TEST_IHOLD</a> = 10</td></tr>
@@ -143,13 +164,22 @@ Variables</h2></td></tr>
 <tr class="separator:a41fcf4530de550ff6f72008fcded08cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b32e418bcfce482b3d94e1e6a0999a2" id="r_a3b32e418bcfce482b3d94e1e6a0999a2"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b32e418bcfce482b3d94e1e6a0999a2">TEST_MRES</a> = 4</td></tr>
 <tr class="separator:a3b32e418bcfce482b3d94e1e6a0999a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3d0fed63baf4ab7c3d37b83168859e8" id="r_ad3d0fed63baf4ab7c3d37b83168859e8"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3d0fed63baf4ab7c3d37b83168859e8">TEST_MAX_SPEED</a> = 1000.0F</td></tr>
+<tr class="separator:ad3d0fed63baf4ab7c3d37b83168859e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66044a83a16364900a1e4ea4e2a33b64" id="r_a66044a83a16364900a1e4ea4e2a33b64"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a66044a83a16364900a1e4ea4e2a33b64">TEST_ACCELERATION</a> = 500.0F</td></tr>
+<tr class="separator:a66044a83a16364900a1e4ea4e2a33b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c99465b0fea99d743ad558c61a8062d" id="r_a0c99465b0fea99d743ad558c61a8062d"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c99465b0fea99d743ad558c61a8062d">TEST_DECELERATION</a> = 500.0F</td></tr>
+<tr class="separator:a0c99465b0fea99d743ad558c61a8062d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Comprehensive Core initialization and basic setup testing suite for TMC5160 (single motor) </p>
 <p>This file contains comprehensive testing for TMC5160 core initialization and basic setup:</p><ul>
 <li>Driver initialization and configuration</li>
-<li>Basic driver instance creation</li>
-<li>Configuration validation</li>
+<li>Register read/write operations</li>
+<li>Setting and verifying motor parameters (current, microsteps, chopper)</li>
+<li>Setting and verifying ramp parameters (speed, acceleration)</li>
+<li>Global configuration settings</li>
+<li>Register persistence verification</li>
 </ul>
 <p>Hardware Requirements:</p><ul>
 <li>ESP32 development board</li>
@@ -181,7 +211,7 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_a630544a7f0a2cc40d8a7fefab7e2fe70_cgraph.svg" width="748" height="215"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_a630544a7f0a2cc40d8a7fefab7e2fe70_cgraph.svg" width="779" height="456"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -209,9 +239,14 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 <div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_a12a1e9488c1c4af4e9d79e2f8e390c5f_cgraph.svg" width="362" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_a12a1e9488c1c4af4e9d79e2f8e390c5f_icgraph.svg" width="514" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_a12a1e9488c1c4af4e9d79e2f8e390c5f_icgraph.svg" width="520" height="279"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -241,7 +276,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_a23a89a76051da3d9c138085a52b89771_cgraph.svg" width="379" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_a23a89a76051da3d9c138085a52b89771_cgraph.svg" width="590" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -251,7 +286,219 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a18321790bb3a72af955b7b75fb4c1e2c" name="a18321790bb3a72af955b7b75fb4c1e2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18321790bb3a72af955b7b75fb4c1e2c">&#9670;&#160;</a></span>test_global_configuration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool test_global_configuration </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_a18321790bb3a72af955b7b75fb4c1e2c_cgraph.svg" width="596" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_a18321790bb3a72af955b7b75fb4c1e2c_icgraph.svg" width="332" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="acdf7e542cbf22ddd24d4042951fa2b67" name="acdf7e542cbf22ddd24d4042951fa2b67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdf7e542cbf22ddd24d4042951fa2b67">&#9670;&#160;</a></span>test_motor_parameter_settings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool test_motor_parameter_settings </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_acdf7e542cbf22ddd24d4042951fa2b67_cgraph.svg" width="578" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_acdf7e542cbf22ddd24d4042951fa2b67_icgraph.svg" width="314" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a264a26cca5257487e044755be5d90b64" name="a264a26cca5257487e044755be5d90b64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a264a26cca5257487e044755be5d90b64">&#9670;&#160;</a></span>test_ramp_parameter_settings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool test_ramp_parameter_settings </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_a264a26cca5257487e044755be5d90b64_cgraph.svg" width="572" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_a264a26cca5257487e044755be5d90b64_icgraph.svg" width="308" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="afc4946e009df1458d86c324ea206cf63" name="afc4946e009df1458d86c324ea206cf63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc4946e009df1458d86c324ea206cf63">&#9670;&#160;</a></span>test_register_read_write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool test_register_read_write </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_afc4946e009df1458d86c324ea206cf63_cgraph.svg" width="550" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_afc4946e009df1458d86c324ea206cf63_icgraph.svg" width="286" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a31cfb3926eb0c837bde126c1120fb3b9" name="a31cfb3926eb0c837bde126c1120fb3b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31cfb3926eb0c837bde126c1120fb3b9">&#9670;&#160;</a></span>verify_mode_pins()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool verify_mode_pins </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>spi</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>driver</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a784e320454a771e190b3b376a67d9c29">tmc5160::CommMode</a></td>          <td class="paramname"><span class="paramname"><em>expected_comm_mode</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Verify mode pins match expected communication mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spi</td><td>SPI communication interface </td></tr>
+    <tr><td class="paramname">driver</td><td>TMC5160 driver instance </td></tr>
+    <tr><td class="paramname">expected_comm_mode</td><td>Expected communication mode (SPI or UART) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if verification passed or pins not configured, false on mismatch </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="core__comprehensive__test_8cpp_a31cfb3926eb0c837bde126c1120fb3b9_icgraph.svg" width="706" height="279"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a68b56c85e47de4b8461cbb82b8a67819" name="a68b56c85e47de4b8461cbb82b8a67819"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68b56c85e47de4b8461cbb82b8a67819">&#9670;&#160;</a></span>ENABLE_GLOBAL_CONFIG_TESTS</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool ENABLE_GLOBAL_CONFIG_TESTS = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ab7772e69feb610f76ed793f35074a592" name="ab7772e69feb610f76ed793f35074a592"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab7772e69feb610f76ed793f35074a592">&#9670;&#160;</a></span>ENABLE_INITIALIZATION_TESTS</h2>
 
@@ -263,6 +510,72 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">constexpr bool ENABLE_INITIALIZATION_TESTS = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab04d1774c21cd78b2e3f4b6544beb923" name="ab04d1774c21cd78b2e3f4b6544beb923"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab04d1774c21cd78b2e3f4b6544beb923">&#9670;&#160;</a></span>ENABLE_MOTOR_PARAMETER_TESTS</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool ENABLE_MOTOR_PARAMETER_TESTS = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4bb804f194a3a64d7342c1093dad1ab5" name="a4bb804f194a3a64d7342c1093dad1ab5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bb804f194a3a64d7342c1093dad1ab5">&#9670;&#160;</a></span>ENABLE_RAMP_PARAMETER_TESTS</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool ENABLE_RAMP_PARAMETER_TESTS = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3d09c2af8ab10bbd42d0b33e4986fb88" name="a3d09c2af8ab10bbd42d0b33e4986fb88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d09c2af8ab10bbd42d0b33e4986fb88">&#9670;&#160;</a></span>ENABLE_REGISTER_ACCESS_TESTS</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool ENABLE_REGISTER_ACCESS_TESTS = true</td>
         </tr>
       </table>
   </td>
@@ -312,6 +625,50 @@ Here is the caller graph for this function:</div>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a66044a83a16364900a1e4ea4e2a33b64" name="a66044a83a16364900a1e4ea4e2a33b64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66044a83a16364900a1e4ea4e2a33b64">&#9670;&#160;</a></span>TEST_ACCELERATION</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr float TEST_ACCELERATION = 500.0F</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0c99465b0fea99d743ad558c61a8062d" name="a0c99465b0fea99d743ad558c61a8062d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c99465b0fea99d743ad558c61a8062d">&#9670;&#160;</a></span>TEST_DECELERATION</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr float TEST_DECELERATION = 500.0F</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -373,6 +730,28 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">constexpr uint8_t TEST_IRUN = 20</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad3d0fed63baf4ab7c3d37b83168859e8" name="ad3d0fed63baf4ab7c3d37b83168859e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3d0fed63baf4ab7c3d37b83168859e8">&#9670;&#160;</a></span>TEST_MAX_SPEED</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr float TEST_MAX_SPEED = 1000.0F</td>
         </tr>
       </table>
   </td>

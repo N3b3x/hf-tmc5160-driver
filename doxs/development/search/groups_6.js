@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['register_20definitions_0',['Register Definitions',['../group__TMC5160__Registers.html',1,'']]]
+  ['node_20management_0',['Multi-Node Management',['../group__TMC5160__MultiNode.html',1,'']]]
 ];

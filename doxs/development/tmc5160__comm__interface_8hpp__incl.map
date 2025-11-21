@@ -1,19 +1,21 @@
 <map id="tmc5160_comm_interface.hpp" name="tmc5160_comm_interface.hpp">
-<area shape="rect" id="Node000001" title="Communication interfaces for TMC5160 stepper motor driver using SPI and UART." alt="" coords="258,5,478,31"/>
+<area shape="rect" id="Node000001" title="Communication interfaces for TMC5160 stepper motor driver using SPI and UART." alt="" coords="302,5,522,31"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,79,91,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="317,33,105,80,104,75,316,28"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="351,33,105,81,104,76,350,28"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="115,79,171,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="333,33,185,80,183,75,331,28"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="367,33,185,81,184,76,366,28"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="195,79,266,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="347,33,266,75,264,70,345,28"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="384,33,274,76,272,71,382,28"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="291,79,357,104"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="363,32,341,68,336,66,358,30"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="400,33,351,72,347,68,396,29"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="381,79,443,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="378,30,400,66,395,68,373,32"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="415,31,415,65,409,65,409,31"/>
 <area shape="rect" id="Node000007" title=" " alt="" coords="467,79,533,104"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="390,28,468,70,465,74,388,33"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="428,29,477,68,473,72,424,33"/>
 <area shape="rect" id="Node000008" title=" " alt="" coords="557,79,624,104"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="405,28,545,73,544,78,403,33"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="649,79,711,104"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="423,28,636,76,635,81,421,33"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="442,28,550,71,548,76,440,33"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="648,79,707,104"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="456,28,636,76,634,81,455,33"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="731,79,794,104"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="477,28,718,76,717,81,476,33"/>
 </map>

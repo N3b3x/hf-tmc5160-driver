@@ -9,13 +9,14 @@ var searchData=
   ['velocity_5fpos_6',['VELOCITY_POS',['../namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a7bcfb8bf64b1e3308d24ad10baf53fa5',1,'tmc5160']]],
   ['velocity_5freached_7',['velocity_reached',['../uniontmc5160_1_1RAMP__STAT__Register.html#a09edbfa5a5460b304b37f4e9235ae760',1,'tmc5160::RAMP_STAT_Register']]],
   ['velocityreached_8',['VelocityReached',['../structtmc5160_1_1SpiStatus.html#a4093d3b1f5e2428473fadc029faf7423',1,'tmc5160::SpiStatus']]],
-  ['verifycrc_9',['VerifyCrc',['../structtmc5160_1_1UartFrame.html#a45e2ddbd74129ee2f4b3f158339552d1',1,'tmc5160::UartFrame']]],
-  ['version_10',['version',['../uniontmc5160_1_1IOIN__Register.html#a5b1e42b3b58b7df5f3eb8db1ce6c6c31',1,'tmc5160::IOIN_Register']]],
-  ['vhighchm_11',['vhighchm',['../uniontmc5160_1_1CHOPCONF__Register.html#a5f78e2d2615a989bf2db9c4bedeceb89',1,'tmc5160::CHOPCONF_Register']]],
-  ['vhighfs_12',['vhighfs',['../uniontmc5160_1_1CHOPCONF__Register.html#ac20d18091f5cc3260c9d5d371abe6e70',1,'tmc5160::CHOPCONF_Register']]],
-  ['vmax_13',['VMAX',['../namespacetmc5160_1_1Registers.html#a11e0f66b884b3838f810d5934f502847',1,'tmc5160::Registers']]],
-  ['vsense_14',['vsense',['../structtmc5160_1_1ChopperConfig.html#a695144ab471371991585703c6029b95a',1,'tmc5160::ChopperConfig']]],
-  ['vstart_15',['VSTART',['../namespacetmc5160_1_1Registers.html#af5968af756b1e146807ba17bbd6d2f50',1,'tmc5160::Registers']]],
-  ['vstop_16',['VSTOP',['../namespacetmc5160_1_1Registers.html#a5f89bd1de3d85598297cc5ad6503b7e5',1,'tmc5160::Registers']]],
-  ['vzero_17',['vzero',['../uniontmc5160_1_1RAMP__STAT__Register.html#a27cd5e075f2f0cf14bc455d01dcbe5d1',1,'tmc5160::RAMP_STAT_Register']]]
+  ['verify_5fmode_5fpins_9',['verify_mode_pins',['../core__comprehensive__test_8cpp.html#a31cfb3926eb0c837bde126c1120fb3b9',1,'core_comprehensive_test.cpp']]],
+  ['verifycrc_10',['VerifyCrc',['../structtmc5160_1_1UartFrame.html#a45e2ddbd74129ee2f4b3f158339552d1',1,'tmc5160::UartFrame']]],
+  ['version_11',['version',['../uniontmc5160_1_1IOIN__Register.html#a5b1e42b3b58b7df5f3eb8db1ce6c6c31',1,'tmc5160::IOIN_Register']]],
+  ['vhighchm_12',['vhighchm',['../uniontmc5160_1_1CHOPCONF__Register.html#a5f78e2d2615a989bf2db9c4bedeceb89',1,'tmc5160::CHOPCONF_Register']]],
+  ['vhighfs_13',['vhighfs',['../uniontmc5160_1_1CHOPCONF__Register.html#ac20d18091f5cc3260c9d5d371abe6e70',1,'tmc5160::CHOPCONF_Register']]],
+  ['vmax_14',['VMAX',['../namespacetmc5160_1_1Registers.html#a11e0f66b884b3838f810d5934f502847',1,'tmc5160::Registers']]],
+  ['vsense_15',['vsense',['../structtmc5160_1_1ChopperConfig.html#a695144ab471371991585703c6029b95a',1,'tmc5160::ChopperConfig']]],
+  ['vstart_16',['VSTART',['../namespacetmc5160_1_1Registers.html#af5968af756b1e146807ba17bbd6d2f50',1,'tmc5160::Registers']]],
+  ['vstop_17',['VSTOP',['../namespacetmc5160_1_1Registers.html#a5f89bd1de3d85598297cc5ad6503b7e5',1,'tmc5160::Registers']]],
+  ['vzero_18',['vzero',['../uniontmc5160_1_1RAMP__STAT__Register.html#a27cd5e075f2f0cf14bc455d01dcbe5d1',1,'tmc5160::RAMP_STAT_Register']]]
 ];

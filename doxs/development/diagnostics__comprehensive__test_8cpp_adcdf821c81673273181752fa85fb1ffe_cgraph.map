@@ -1,5 +1,7 @@
 <map id="test_pwm_scale" name="test_pwm_scale">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,132,31"/>
-<area shape="rect" id="Node000002" href="$diagnostics__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="180,5,320,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="132,15,166,15,166,21,132,21"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,132,38"/>
+<area shape="rect" id="Node000002" href="$diagnostics__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="180,13,320,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="132,23,166,23,166,28,132,28"/>
+<area shape="rect" id="Node000003" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="368,5,531,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="320,23,354,23,354,28,320,28"/>
 </map>

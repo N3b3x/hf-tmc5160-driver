@@ -5,5 +5,6 @@ var searchData=
   ['encoder_2',['Encoder',['../structtmc5160_1_1TMC5160_1_1Encoder.html',1,'tmc5160::TMC5160']]],
   ['encoderconfig_3',['EncoderConfig',['../structtmc5160_1_1EncoderConfig.html',1,'tmc5160']]],
   ['esp32spi_4',['Esp32SPI',['../classEsp32SPI.html',1,'']]],
-  ['esp32tmcmutex_5',['Esp32TmcMutex',['../classEsp32TmcMutex.html',1,'']]]
+  ['esp32spipinconfig_5',['Esp32SpiPinConfig',['../structtmc5160_1_1Esp32SpiPinConfig.html',1,'tmc5160']]],
+  ['esp32tmcmutex_6',['Esp32TmcMutex',['../classEsp32TmcMutex.html',1,'']]]
 ];

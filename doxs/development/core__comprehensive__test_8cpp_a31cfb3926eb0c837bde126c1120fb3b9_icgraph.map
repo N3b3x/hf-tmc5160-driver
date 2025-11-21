@@ -1,0 +1,21 @@
+<map id="verify_mode_pins" name="verify_mode_pins">
+<area shape="rect" id="Node000001" title="Verify mode pins match expected communication mode." alt="" coords="563,112,700,137"/>
+<area shape="rect" id="Node000002" href="$core__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="375,112,515,137"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="549,127,515,127,515,122,549,122"/>
+<area shape="rect" id="Node000003" href="$core__comprehensive__test_8cpp.html#a23a89a76051da3d9c138085a52b89771" title=" " alt="" coords="143,5,323,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="417,105,375,74,326,44,295,33,297,28,328,40,378,69,420,101"/>
+<area shape="rect" id="Node000005" href="$core__comprehensive__test_8cpp.html#a18321790bb3a72af955b7b75fb4c1e2c" title=" " alt="" coords="140,55,327,80"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="383,111,280,83,282,77,385,106"/>
+<area shape="rect" id="Node000006" href="$core__comprehensive__test_8cpp.html#acdf7e542cbf22ddd24d4042951fa2b67" title=" " alt="" coords="149,105,317,145"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="361,127,318,127,318,122,361,122"/>
+<area shape="rect" id="Node000007" href="$core__comprehensive__test_8cpp.html#a264a26cca5257487e044755be5d90b64" title=" " alt="" coords="152,169,315,209"/>
+<area shape="poly" id="edge8_Node000002_Node000007" title=" " alt="" coords="390,144,301,171,299,166,388,139"/>
+<area shape="rect" id="Node000008" href="$core__comprehensive__test_8cpp.html#afc4946e009df1458d86c324ea206cf63" title=" " alt="" coords="163,233,303,273"/>
+<area shape="poly" id="edge10_Node000002_Node000008" title=" " alt="" coords="423,149,381,186,328,223,303,235,301,230,325,218,377,182,419,145"/>
+<area shape="rect" id="Node000004" href="$core__comprehensive__test_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,112,92,137"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="155,38,141,44,117,60,95,79,62,114,58,110,91,75,114,56,139,40,153,33"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="171,86,141,95,85,114,83,109,139,90,169,81"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="136,127,92,127,92,122,136,122"/>
+<area shape="poly" id="edge9_Node000007_Node000004" title=" " alt="" coords="160,167,139,159,85,140,86,135,141,154,162,162"/>
+<area shape="poly" id="edge11_Node000008_Node000004" title=" " alt="" coords="149,229,139,223,113,203,90,180,57,139,61,136,94,176,116,199,141,218,152,225"/>
+</map>
