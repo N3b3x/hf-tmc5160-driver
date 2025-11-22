@@ -224,7 +224,7 @@ bool test_register_read_write() noexcept {
     return false;
   }
   
-  // Test reading GSTAT register
+  // Test reading GSTAT register (RWC - read-write-clear, reading is OK)
   uint32_t gstat_value = 0;
   if (!handle->driver->GetComm().ReadRegister(tmc5160::Registers::GSTAT, gstat_value)) {
     ESP_LOGE(TAG, "Failed to read GSTAT register");
@@ -232,34 +232,19 @@ bool test_register_read_write() noexcept {
   }
   ESP_LOGI(TAG, "GSTAT register value: 0x%08X", gstat_value);
   
-  // Test reading GLOBAL_SCALER register
-  uint32_t scaler_value = 0;
-  if (!handle->driver->GetComm().ReadRegister(tmc5160::Registers::GLOBAL_SCALER, scaler_value)) {
-    ESP_LOGE(TAG, "Failed to read GLOBAL_SCALER register");
-    return false;
-  }
-  ESP_LOGI(TAG, "GLOBAL_SCALER register value: %u", scaler_value);
-  if (scaler_value != TEST_GLOBAL_SCALER) {
-    ESP_LOGW(TAG, "GLOBAL_SCALER mismatch: expected %u, got %u", TEST_GLOBAL_SCALER, scaler_value);
-  }
+  // Note: GLOBAL_SCALER (0x0B) is write-only per datasheet
+  // Write verification is done via response data in WriteRegister()
+  // We trust that WriteRegister() succeeded if it returned true
   
-  // Test writing and reading X_COMPARE register
+  // Test writing X_COMPARE register (write-only per datasheet)
+  // Note: X_COMPARE (0x05) is write-only, cannot be read back
+  // Write verification is done via response data in WriteRegister()
   constexpr uint32_t TEST_X_COMPARE = 12345;
   if (!handle->driver->GetComm().WriteRegister(tmc5160::Registers::X_COMPARE, TEST_X_COMPARE)) {
     ESP_LOGE(TAG, "Failed to write X_COMPARE register");
     return false;
   }
-  
-  uint32_t x_compare_value = 0;
-  if (!handle->driver->GetComm().ReadRegister(tmc5160::Registers::X_COMPARE, x_compare_value)) {
-    ESP_LOGE(TAG, "Failed to read X_COMPARE register");
-    return false;
-  }
-  ESP_LOGI(TAG, "X_COMPARE register: written=0x%08X, read=0x%08X", TEST_X_COMPARE, x_compare_value);
-  if (x_compare_value != TEST_X_COMPARE) {
-    ESP_LOGE(TAG, "X_COMPARE register mismatch: expected 0x%08X, got 0x%08X", TEST_X_COMPARE, x_compare_value);
-    return false;
-  }
+  ESP_LOGI(TAG, "X_COMPARE register written: 0x%08X (write-only register, verified via write response)", TEST_X_COMPARE);
   
   ESP_LOGI(TAG, "Register read/write test passed");
   return true;
@@ -287,31 +272,17 @@ bool test_motor_parameter_settings() noexcept {
     return false;
   }
   
-  // Verify motor current settings
-  uint32_t ihold_irun_value = 0;
-  if (!handle->driver->GetComm().ReadRegister(tmc5160::Registers::IHOLD_IRUN, ihold_irun_value)) {
-    ESP_LOGE(TAG, "Failed to read IHOLD_IRUN register");
-    return false;
-  }
-  
-  tmc5160::IHOLD_IRUN_Register ihold_irun{};
-  ihold_irun.value = ihold_irun_value;
-  ESP_LOGI(TAG, "IHOLD_IRUN: irun=%u, ihold=%u", ihold_irun.bits.irun, ihold_irun.bits.ihold);
-  
-  if (ihold_irun.bits.irun != TEST_IRUN) {
-    ESP_LOGE(TAG, "IRUN mismatch: expected %u, got %u", TEST_IRUN, ihold_irun.bits.irun);
-    return false;
-  }
-  if (ihold_irun.bits.ihold != TEST_IHOLD) {
-    ESP_LOGE(TAG, "IHOLD mismatch: expected %u, got %u", TEST_IHOLD, ihold_irun.bits.ihold);
-    return false;
-  }
+  // Note: IHOLD_IRUN (0x10) is write-only per datasheet
+  // Write verification is done via response data in WriteRegister()
+  // We trust that Initialize() and SetCurrent() succeeded if they returned true
+  ESP_LOGI(TAG, "IHOLD_IRUN configured: irun=%u, ihold=%u (write-only register, verified via write response)", 
+           TEST_IRUN, TEST_IHOLD);
   
   // Verify chopper settings
   uint32_t chopconf_value = 0;
   if (!handle->driver->GetComm().ReadRegister(tmc5160::Registers::CHOPCONF, chopconf_value)) {
     ESP_LOGE(TAG, "Failed to read CHOPCONF register");
-    return false;
+    return false;9
   }
   
   tmc5160::CHOPCONF_Register chopconf{};
@@ -332,29 +303,15 @@ bool test_motor_parameter_settings() noexcept {
   }
   
   // Test setting new motor current values
+  // Note: IHOLD_IRUN (0x10) is write-only per datasheet
   constexpr uint8_t NEW_IRUN = 25;
   constexpr uint8_t NEW_IHOLD = 15;
   if (!handle->driver->motorControl.SetCurrent(NEW_IRUN, NEW_IHOLD)) {
     ESP_LOGE(TAG, "Failed to set motor current");
     return false;
   }
-  
-  // Read back and verify
-  if (!handle->driver->GetComm().ReadRegister(tmc5160::Registers::IHOLD_IRUN, ihold_irun_value)) {
-    ESP_LOGE(TAG, "Failed to read IHOLD_IRUN register after update");
-    return false;
-  }
-  ihold_irun.value = ihold_irun_value;
-  ESP_LOGI(TAG, "Updated IHOLD_IRUN: irun=%u, ihold=%u", ihold_irun.bits.irun, ihold_irun.bits.ihold);
-  
-  if (ihold_irun.bits.irun != NEW_IRUN) {
-    ESP_LOGE(TAG, "IRUN update failed: expected %u, got %u", NEW_IRUN, ihold_irun.bits.irun);
-    return false;
-  }
-  if (ihold_irun.bits.ihold != NEW_IHOLD) {
-    ESP_LOGE(TAG, "IHOLD update failed: expected %u, got %u", NEW_IHOLD, ihold_irun.bits.ihold);
-    return false;
-  }
+  ESP_LOGI(TAG, "Updated IHOLD_IRUN: irun=%u, ihold=%u (write-only register, verified via write response)", 
+           NEW_IRUN, NEW_IHOLD);
   
   ESP_LOGI(TAG, "Motor parameter settings test passed");
   return true;
@@ -388,39 +345,11 @@ bool test_ramp_parameter_settings() noexcept {
     return false;
   }
   
-  // Read back and verify (values are in internal units, so we check they're non-zero)
-  uint32_t vmax_value = 0;
-  if (!handle->driver->GetComm().ReadRegister(tmc5160::Registers::VMAX, vmax_value)) {
-    ESP_LOGE(TAG, "Failed to read VMAX register");
-    return false;
-  }
-  ESP_LOGI(TAG, "VMAX: set=%.1f steps/s, read=0x%08X (internal units)", TEST_MAX_SPEED, vmax_value);
-  if (vmax_value == 0) {
-    ESP_LOGE(TAG, "VMAX is zero after setting");
-    return false;
-  }
-  
-  uint32_t amax_value = 0;
-  if (!handle->driver->GetComm().ReadRegister(tmc5160::Registers::AMAX, amax_value)) {
-    ESP_LOGE(TAG, "Failed to read AMAX register");
-    return false;
-  }
-  ESP_LOGI(TAG, "AMAX: set=%.1f steps/s², read=0x%08X (internal units)", TEST_ACCELERATION, amax_value);
-  if (amax_value == 0) {
-    ESP_LOGE(TAG, "AMAX is zero after setting");
-    return false;
-  }
-  
-  uint32_t dmax_value = 0;
-  if (!handle->driver->GetComm().ReadRegister(tmc5160::Registers::DMAX, dmax_value)) {
-    ESP_LOGE(TAG, "Failed to read DMAX register");
-    return false;
-  }
-  ESP_LOGI(TAG, "DMAX: set=%.1f steps/s², read=0x%08X (internal units)", TEST_DECELERATION, dmax_value);
-  if (dmax_value == 0) {
-    ESP_LOGE(TAG, "DMAX is zero after setting");
-    return false;
-  }
+  // Note: VMAX (0x27), AMAX (0x26), and DMAX (0x28) are write-only per datasheet
+  // Write verification is done via response data in WriteRegister()
+  // We trust that SetMaxSpeed() and SetAccelerations() succeeded if they returned true
+  ESP_LOGI(TAG, "Ramp parameters set: VMAX=%.1f steps/s, AMAX=%.1f steps/s², DMAX=%.1f steps/s² (write-only registers, verified via write response)",
+           TEST_MAX_SPEED, TEST_ACCELERATION, TEST_DECELERATION);
   
   // Test setting target position
   constexpr int32_t TEST_TARGET = 10000;

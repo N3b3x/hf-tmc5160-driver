@@ -368,10 +368,13 @@ struct SpiStatus {
 
   /**
    * @brief Check if any error flags are set
-   * @return true if driver_error or reset_flag is set
+   * @return true if driver_error is set (reset_flag is informational, not an error)
+   * 
+   * Note: Reset flag indicates the chip was reset (normal on power-up) and is cleared when read.
+   * Only driver_error indicates an actual error condition.
    */
   [[nodiscard]] bool HasError() const noexcept {
-    return (value & 0x03) != 0; // Bits 0-1: reset_flag and driver_error
+    return DriverError(); // Only bit 1 (driver_error) is an error; bit 0 (reset) is informational
   }
 
   /**
@@ -459,18 +462,17 @@ struct SpiStatus {
   /**
    * @brief Format status flags as human-readable string
    * @return String describing active flags (for debug logging)
+   * 
+   * Note: Reset flag is informational (normal on power-up), not an error
    */
   [[nodiscard]] const char* ToString() const noexcept {
     // This is a simplified version - in practice, you'd want a buffer
     // For now, return a static description of key flags
     if (HasError()) {
-      if (ResetFlag() && DriverError()) {
-        return "RESET|DRV_ERR";
-      }
-      if (ResetFlag()) {
-        return "RESET";
-      }
-      return "DRV_ERR";
+      return "DRV_ERR"; // Only driver_error is an error
+    }
+    if (ResetFlag()) {
+      return "RST"; // Reset is informational
     }
     return "OK";
   }
@@ -1789,23 +1791,17 @@ public:
     }
 
     // Log SPI_STATUS with detailed flag information
-    // Note: Only RESET (bit 0) and DRV_ERR (bit 1) are errors; others are informational
+    // Note: RESET (bit 0) is informational (normal on power-up), only DRV_ERR (bit 1) is an error
     if (status.HasError()) {
       // Build error flags string (only actual errors)
-      const char* error_flags = "";
-      if (status.ResetFlag() && status.DriverError()) {
-        error_flags = "RESET|DRV_ERR";
-      } else if (status.ResetFlag()) {
-        error_flags = "RESET";
-      } else if (status.DriverError()) {
-        error_flags = "DRV_ERR";
-      }
+      const char* error_flags = "DRV_ERR";
       
-      // Build informational flags string
+      // Build informational flags string (reset + status flags)
       char info_flags[64] = "";
-      if (status.StallGuard2() || status.Standstill() || status.VelocityReached() || 
+      if (status.ResetFlag() || status.StallGuard2() || status.Standstill() || status.VelocityReached() || 
           status.PositionReached() || status.StopLeft() || status.StopRight()) {
-        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s]",
+        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s%s]",
+                 status.ResetFlag() ? "RST " : "",
                  status.StallGuard2() ? "SG2 " : "",
                  status.Standstill() ? "STST " : "",
                  status.VelocityReached() ? "VEL " : "",
@@ -1826,7 +1822,7 @@ public:
                         (log_rx_bytes > 2) ? rx_buf[2] : 0, (log_rx_bytes > 3) ? rx_buf[3] : 0,
                         (log_rx_bytes > 4) ? rx_buf[4] : 0, (log_rx_bytes > 5) ? rx_buf[5] : 0,
                         (log_rx_bytes > 6) ? rx_buf[6] : 0, (log_rx_bytes > 7) ? rx_buf[7] : 0, status.value,
-                        status.ResetFlag() ? "RESET " : "", status.DriverError() ? "DRV_ERR " : "",
+                        status.ResetFlag() ? "RST " : "", status.DriverError() ? "DRV_ERR " : "",
                         status.StallGuard2() ? "SG2 " : "", status.Standstill() ? "STST " : "",
                         status.VelocityReached() ? "VEL " : "", status.PositionReached() ? "POS " : "",
                         status.StopLeft() ? "STOP_L " : "", status.StopRight() ? "STOP_R " : "");
@@ -1849,7 +1845,8 @@ public:
             static_cast<uint32_t>(rx_buf[response_byte_offset + 4]);
 
     // Return false if critical errors detected (but still extract value)
-    return !(status.ResetFlag() || status.DriverError());
+    // Note: Reset flag is informational (normal on power-up), not an error
+    return !status.DriverError();
   }
 
   /**
@@ -2008,23 +2005,17 @@ public:
     // Per datasheet: First write response contains SPI_STATUS + dummy/previous data
     SpiStatus status1 = SpiStatus::FromByte(rx_buf[response_byte_offset]);
 
-    // Note: Only RESET (bit 0) and DRV_ERR (bit 1) are errors; others are informational
+    // Note: RESET (bit 0) is informational (normal on power-up), only DRV_ERR (bit 1) is an error
     if (status1.HasError()) {
       // Build error flags string (only actual errors)
-      const char* error_flags = "";
-      if (status1.ResetFlag() && status1.DriverError()) {
-        error_flags = "RESET|DRV_ERR";
-      } else if (status1.ResetFlag()) {
-        error_flags = "RESET";
-      } else if (status1.DriverError()) {
-        error_flags = "DRV_ERR";
-      }
+      const char* error_flags = "DRV_ERR";
       
-      // Build informational flags string
+      // Build informational flags string (reset + status flags)
       char info_flags[64] = "";
-      if (status1.StallGuard2() || status1.Standstill() || status1.VelocityReached() || 
+      if (status1.ResetFlag() || status1.StallGuard2() || status1.Standstill() || status1.VelocityReached() || 
           status1.PositionReached() || status1.StopLeft() || status1.StopRight()) {
-        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s]",
+        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s%s]",
+                 status1.ResetFlag() ? "RST " : "",
                  status1.StallGuard2() ? "SG2 " : "",
                  status1.Standstill() ? "STST " : "",
                  status1.VelocityReached() ? "VEL " : "",
@@ -2045,7 +2036,7 @@ public:
                         (log_rx1_bytes > 2) ? rx_buf[2] : 0, (log_rx1_bytes > 3) ? rx_buf[3] : 0,
                         (log_rx1_bytes > 4) ? rx_buf[4] : 0, (log_rx1_bytes > 5) ? rx_buf[5] : 0,
                         (log_rx1_bytes > 6) ? rx_buf[6] : 0, (log_rx1_bytes > 7) ? rx_buf[7] : 0, status1.value,
-                        status1.ResetFlag() ? "RESET " : "", status1.DriverError() ? "DRV_ERR " : "",
+                        status1.ResetFlag() ? "RST " : "", status1.DriverError() ? "DRV_ERR " : "",
                         status1.StallGuard2() ? "SG2 " : "", status1.Standstill() ? "STST " : "",
                         status1.VelocityReached() ? "VEL " : "", status1.PositionReached() ? "POS " : "",
                         status1.StopLeft() ? "STOP_L " : "", status1.StopRight() ? "STOP_R " : "");
@@ -2104,24 +2095,18 @@ public:
       return false;
     }
 
-    // Note: Only RESET (bit 0) and DRV_ERR (bit 1) are errors; others are informational
+    // Note: RESET (bit 0) is informational (normal on power-up), only DRV_ERR (bit 1) is an error
     // (status2 was already extracted above for logging)
     if (status2.HasError()) {
       // Build error flags string (only actual errors)
-      const char* error_flags = "";
-      if (status2.ResetFlag() && status2.DriverError()) {
-        error_flags = "RESET|DRV_ERR";
-      } else if (status2.ResetFlag()) {
-        error_flags = "RESET";
-      } else if (status2.DriverError()) {
-        error_flags = "DRV_ERR";
-      }
+      const char* error_flags = "DRV_ERR";
       
-      // Build informational flags string
+      // Build informational flags string (reset + status flags)
       char info_flags[64] = "";
-      if (status2.StallGuard2() || status2.Standstill() || status2.VelocityReached() || 
+      if (status2.ResetFlag() || status2.StallGuard2() || status2.Standstill() || status2.VelocityReached() || 
           status2.PositionReached() || status2.StopLeft() || status2.StopRight()) {
-        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s]",
+        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s%s]",
+                 status2.ResetFlag() ? "RST " : "",
                  status2.StallGuard2() ? "SG2 " : "",
                  status2.Standstill() ? "STST " : "",
                  status2.VelocityReached() ? "VEL " : "",
@@ -2142,7 +2127,7 @@ public:
                         (log_rx2_bytes > 2) ? rx_buf[2] : 0, (log_rx2_bytes > 3) ? rx_buf[3] : 0,
                         (log_rx2_bytes > 4) ? rx_buf[4] : 0, (log_rx2_bytes > 5) ? rx_buf[5] : 0,
                         (log_rx2_bytes > 6) ? rx_buf[6] : 0, (log_rx2_bytes > 7) ? rx_buf[7] : 0, status2.value,
-                        status2.ResetFlag() ? "RESET " : "", status2.DriverError() ? "DRV_ERR " : "",
+                        status2.ResetFlag() ? "RST " : "", status2.DriverError() ? "DRV_ERR " : "",
                         status2.StallGuard2() ? "SG2 " : "", status2.Standstill() ? "STST " : "",
                         status2.VelocityReached() ? "VEL " : "", status2.PositionReached() ? "POS " : "",
                         status2.StopLeft() ? "STOP_L " : "", status2.StopRight() ? "STOP_R " : "");
@@ -2170,7 +2155,8 @@ public:
     }
 
     // Check for critical errors in the final status (status2 is the latched status after write)
-    if (status2.ResetFlag() || status2.DriverError()) {
+    // Note: Reset flag is informational (normal on power-up), not an error
+    if (status2.DriverError()) {
       return false;
     }
 
