@@ -2,6 +2,6 @@
 <area shape="rect" id="Node000001" title="Apply pin configuration structure (handles compound pins automatically)" alt="" coords="5,13,192,38"/>
 <area shape="rect" id="Node000002" href="$classEsp32SPI.html#aa4931ec5eda8d9564173548a0a6631c7" title="Set pin mapping for a TMC5160 control pin." alt="" coords="240,13,427,38"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,23,226,23,226,28,192,28"/>
-<area shape="rect" id="Node000003" href="$classtmc5160_1_1CommInterface.html#a371ba647c308b5cb3f8fdca5ff0bbf14" title="Configure the active level for a specific pin." alt="" coords="475,5,663,45"/>
+<area shape="rect" id="Node000003" href="$structtmc5160_1_1PinActiveLevels.html#a0bb83080a85a2001666b91a7a79477fb" title="Set active level for a specific pin." alt="" coords="475,5,665,45"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="427,23,461,23,461,28,427,28"/>
 </map>

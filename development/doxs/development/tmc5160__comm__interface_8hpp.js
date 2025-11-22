@@ -1,5 +1,6 @@
 var tmc5160__comm__interface_8hpp =
 [
+    [ "tmc5160::PinActiveLevels", "structtmc5160_1_1PinActiveLevels.html", "structtmc5160_1_1PinActiveLevels" ],
     [ "tmc5160::TMC5160PinConfig", "structtmc5160_1_1TMC5160PinConfig.html", "structtmc5160_1_1TMC5160PinConfig" ],
     [ "tmc5160::Esp32SpiPinConfig", "structtmc5160_1_1Esp32SpiPinConfig.html", "structtmc5160_1_1Esp32SpiPinConfig" ],
     [ "tmc5160::SpiStatus", "structtmc5160_1_1SpiStatus.html", "structtmc5160_1_1SpiStatus" ],

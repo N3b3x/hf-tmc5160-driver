@@ -45,6 +45,7 @@ var hierarchy =
     [ "tmc5160::OFFSET_READ_Register", "uniontmc5160_1_1OFFSET__READ__Register.html", null ],
     [ "tmc5160::OTP_PROG_Register", "uniontmc5160_1_1OTP__PROG__Register.html", null ],
     [ "tmc5160::OTP_READ_Register", "uniontmc5160_1_1OTP__READ__Register.html", null ],
+    [ "tmc5160::PinActiveLevels", "structtmc5160_1_1PinActiveLevels.html", null ],
     [ "tmc5160::PowerStageParameters", "structtmc5160_1_1PowerStageParameters.html", null ],
     [ "tmc5160::TMC5160< CommType >::Protection", "structtmc5160_1_1TMC5160_1_1Protection.html", null ],
     [ "tmc5160::PWM_AUTO_Register", "uniontmc5160_1_1PWM__AUTO__Register.html", null ],

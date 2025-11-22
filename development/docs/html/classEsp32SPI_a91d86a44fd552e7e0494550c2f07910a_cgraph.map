@@ -1,0 +1,5 @@
+<map id="Esp32SPI::GpioLevelToSignal" name="Esp32SPI::GpioLevelToSignal">
+<area shape="rect" id="Node000001" title="Convert physical GPIO level to signal state." alt="" coords="5,13,213,38"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1PinActiveLevels.html#a313ecef17f2a5420625bb98495d2242c" title="Get active level for a specific pin." alt="" coords="261,5,452,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="213,23,247,23,247,28,213,28"/>
+</map>

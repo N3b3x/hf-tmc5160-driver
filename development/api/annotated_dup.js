@@ -29,6 +29,7 @@ var annotated_dup =
       [ "OFFSET_READ_Register", "uniontmc5160_1_1OFFSET__READ__Register.html", "uniontmc5160_1_1OFFSET__READ__Register" ],
       [ "OTP_PROG_Register", "uniontmc5160_1_1OTP__PROG__Register.html", "uniontmc5160_1_1OTP__PROG__Register" ],
       [ "OTP_READ_Register", "uniontmc5160_1_1OTP__READ__Register.html", "uniontmc5160_1_1OTP__READ__Register" ],
+      [ "PinActiveLevels", "structtmc5160_1_1PinActiveLevels.html", "structtmc5160_1_1PinActiveLevels" ],
       [ "PowerStageParameters", "structtmc5160_1_1PowerStageParameters.html", "structtmc5160_1_1PowerStageParameters" ],
       [ "PWM_AUTO_Register", "uniontmc5160_1_1PWM__AUTO__Register.html", "uniontmc5160_1_1PWM__AUTO__Register" ],
       [ "PWM_SCALE_Register", "uniontmc5160_1_1PWM__SCALE__Register.html", "uniontmc5160_1_1PWM__SCALE__Register" ],
