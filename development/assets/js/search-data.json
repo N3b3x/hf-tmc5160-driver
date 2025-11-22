@@ -176,7 +176,7 @@
   },"25": {
     "doc": "📖 API Reference",
     "title": "Register Access Types",
-    "content": "All TMC5160 registers have specific access types (Read-Only, Write-Only, Read-Write, or Read-Write with Clear behavior). See the Register Access Table for a complete reference. The driver provides compile-time utilities to check register access types: . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 . | #include \"tmc5160_register_access.hpp\" // Check if register is readable if (tmc5160::IsRegisterReadable(0x6F)) { // DRV_STATUS uint32_t status; driver.GetComm().ReadRegister(0x6F, status); } // Check if register is writable if (tmc5160::IsRegisterWritable(0x00)) { // GCONF driver.GetComm().WriteRegister(0x00, value); } // Get access type tmc5160::RegisterAccess access = tmc5160::GetRegisterAccess(0x12); // TSTEP = READ_ONLY . | . ",
+    "content": "All TMC5160 registers have specific access types (Read-Only, Write-Only, Read-Write, or Read-Write with Clear behavior). See the Register Access Types and Special Behaviors for a complete reference. The driver provides compile-time utilities to check register access types: . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 . | #include \"tmc5160_register_access.hpp\" // Check if register is readable if (tmc5160::IsRegisterReadable(0x6F)) { // DRV_STATUS uint32_t status; driver.GetComm().ReadRegister(0x6F, status); } // Check if register is writable if (tmc5160::IsRegisterWritable(0x00)) { // GCONF driver.GetComm().WriteRegister(0x00, value); } // Get access type tmc5160::RegisterAccess access = tmc5160::GetRegisterAccess(0x12); // TSTEP = READ_ONLY . | . ",
     "url": "/hf-tmc5160-driver/development/docs/api_reference/#register-access-types",
     
     "relUrl": "/docs/api_reference/#register-access-types"

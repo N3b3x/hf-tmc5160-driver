@@ -20,5 +20,5 @@ var classtmc5160_1_1CommInterface =
     [ "SetPinActiveLevel", "classtmc5160_1_1CommInterface.html#a371ba647c308b5cb3f8fdca5ff0bbf14", null ],
     [ "SignalToGpioLevel", "classtmc5160_1_1CommInterface.html#a67225c93493fa73755ebb0fc91d46488", null ],
     [ "WriteRegister", "classtmc5160_1_1CommInterface.html#ae8ac318a721a19100d7096485395d21e", null ],
-    [ "pinActiveLevels_", "classtmc5160_1_1CommInterface.html#a9fd0455712c342b4e2baca8b3f9aae31", null ]
+    [ "pinActiveLevels_", "classtmc5160_1_1CommInterface.html#aa882e0b693093e9be2ebc64b3c5337b5", null ]
 ];

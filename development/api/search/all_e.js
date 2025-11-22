@@ -10,7 +10,7 @@ var searchData=
   ['pin_20functions_20in_20uart_20mode_7',['Pin Functions in UART Mode',['../classtmc5160_1_1UartCommInterface.html#autotoc_md8',1,'']]],
   ['pin_5fconfig_5fstruct_5fexample_2ecpp_8',['pin_config_struct_example.cpp',['../pin__config__struct__example_8cpp.html',1,'']]],
   ['pin_5fmapping_5f_9',['pin_mapping_',['../classEsp32SPI.html#a13a97f1e317116fbe4ad7c5f6f55881f',1,'Esp32SPI']]],
-  ['pinactivelevels_5f_10',['pinActiveLevels_',['../classtmc5160_1_1CommInterface.html#a9fd0455712c342b4e2baca8b3f9aae31',1,'tmc5160::CommInterface']]],
+  ['pinactivelevels_5f_10',['pinActiveLevels_',['../classtmc5160_1_1CommInterface.html#aa882e0b693093e9be2ebc64b3c5337b5',1,'tmc5160::CommInterface']]],
   ['platform_20architecture_11',['Platform &amp; Architecture',['../index.html#autotoc_md25',1,'']]],
   ['pol_5fa_12',['pol_A',['../uniontmc5160_1_1ENCMODE__Register.html#a21966749c3363fe950feeb7c553e19ca',1,'tmc5160::ENCMODE_Register']]],
   ['pol_5fa_13',['pol_a',['../structtmc5160_1_1EncoderConfig.html#a108e690887d4c6420028624ffe084839',1,'tmc5160::EncoderConfig']]],

@@ -5,7 +5,7 @@ var searchData=
   ['phase_5fb_2',['phase_b',['../uniontmc5160_1_1OFFSET__READ__Register.html#a09eec8d371fed28db744f3c70bb57638',1,'tmc5160::OFFSET_READ_Register']]],
   ['phase_5foffset_5f_3',['phase_offset_',['../classFatigueTestMotion.html#a42a30a8f39c0f24b246c7b7816f6c678',1,'FatigueTestMotion']]],
   ['pin_5fmapping_5f_4',['pin_mapping_',['../classEsp32SPI.html#a13a97f1e317116fbe4ad7c5f6f55881f',1,'Esp32SPI']]],
-  ['pinactivelevels_5f_5',['pinActiveLevels_',['../classtmc5160_1_1CommInterface.html#a9fd0455712c342b4e2baca8b3f9aae31',1,'tmc5160::CommInterface']]],
+  ['pinactivelevels_5f_5',['pinActiveLevels_',['../classtmc5160_1_1CommInterface.html#aa882e0b693093e9be2ebc64b3c5337b5',1,'tmc5160::CommInterface']]],
   ['pol_5fa_6',['pol_A',['../uniontmc5160_1_1ENCMODE__Register.html#a21966749c3363fe950feeb7c553e19ca',1,'tmc5160::ENCMODE_Register']]],
   ['pol_5fa_7',['pol_a',['../structtmc5160_1_1EncoderConfig.html#a108e690887d4c6420028624ffe084839',1,'tmc5160::EncoderConfig']]],
   ['pol_5fb_8',['pol_b',['../structtmc5160_1_1EncoderConfig.html#aa23dc09588fbf19c30cafca6c91f651c',1,'tmc5160::EncoderConfig']]],
