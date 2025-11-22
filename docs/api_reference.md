@@ -22,7 +22,7 @@ Complete reference documentation for all public methods and types in the TMC5160
 
 ## Register Access Types
 
-All TMC5160 registers have specific access types (Read-Only, Write-Only, Read-Write, or Read-Write with Clear behavior). See the [Register Access Table](register_access_table.md) for a complete reference.
+All TMC5160 registers have specific access types (Read-Only, Write-Only, Read-Write, or Read-Write with Clear behavior). See the [Register Access Types and Special Behaviors](special_features_register_access.md) for a complete reference.
 
 The driver provides compile-time utilities to check register access types:
 
