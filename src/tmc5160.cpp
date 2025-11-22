@@ -543,9 +543,9 @@ template <typename CommType>
 bool TMC5160<CommType>::MotorControl::Enable() noexcept {
   TMC5160_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "MotorControl::Enable()");
   
-  // Enable via EN pin GPIO (EN is active HIGH to disable, so set to INACTIVE/LOW to enable)
+  // Enable via EN pin GPIO (EN is active LOW to enable, so set to ACTIVE/LOW to enable power stage)
   // This must be done first to enable the power stage
-  driver_.comm_.GpioSet(TMC5160CtrlPin::EN, GpioSignal::INACTIVE);
+  driver_.comm_.GpioSet(TMC5160CtrlPin::EN, GpioSignal::ACTIVE);
   
   // Enable via CHOPCONF register (set toff > 0)
   uint32_t chopconf_value = 0;
@@ -576,8 +576,8 @@ bool TMC5160<CommType>::MotorControl::Disable() noexcept {
   
   bool success = driver_.comm_.WriteRegister(Registers::CHOPCONF, chopconf.value, driver_.GetCommAddress());
   
-  // Disable via EN pin GPIO (EN is active HIGH to disable, so set to ACTIVE/HIGH to disable)
-  driver_.comm_.GpioSet(TMC5160CtrlPin::EN, GpioSignal::ACTIVE);
+  // Disable via EN pin GPIO (EN is active LOW to enable, so set to INACTIVE/HIGH to disable power stage)
+  driver_.comm_.GpioSet(TMC5160CtrlPin::EN, GpioSignal::INACTIVE);
   
   return success;
 }

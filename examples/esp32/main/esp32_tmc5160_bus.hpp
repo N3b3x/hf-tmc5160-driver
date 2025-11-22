@@ -73,11 +73,11 @@ public:
    * @note Compound pins are automatically handled - if you specify dir_pin, ref_right_pin
    *       is automatically mapped to the same GPIO (and vice versa). Same for step_pin/ref_left_pin,
    *       enc_a_pin/dc_in_pin, enc_b_pin/dc_en_pin, and enc_n_pin/dc_out_pin.
-   * @note EN pin (DRV_ENN) is active HIGH to disable the power stage (inverted logic).
+   * @note EN pin (DRV_ENN) is active LOW to enable the power stage.
    */
   Esp32SPI(spi_host_device_t host, const tmc5160::Esp32SpiPinConfig& pin_config,
            uint32_t clock_speed_hz = 4000000) noexcept
-      : SpiCommInterface(true, true, true), // EN, DIR, STEP active high (EN is inverted: HIGH=disable)
+      : SpiCommInterface(true, true, true), // DIR, STEP active high; EN active level overridden below
         host_(host), mosi_pin_(static_cast<gpio_num_t>(pin_config.spi_mosi)),
         miso_pin_(static_cast<gpio_num_t>(pin_config.spi_miso)),
         sclk_pin_(static_cast<gpio_num_t>(pin_config.spi_sclk)),
@@ -99,8 +99,8 @@ public:
     // Apply pin configuration (handles compound pins automatically)
     ApplyPinConfig(pin_config.tmc5160_pins);
 
-    // Configure EN pin active level: HIGH = disable (inverted logic for DRV_ENN)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, true);
+    // Configure EN pin active level: LOW = enable (DRV_ENN is active LOW to enable power stage)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, false);
   }
 
   /**
@@ -116,13 +116,13 @@ public:
    * @note Compound pins are automatically handled - if you specify dir_pin, ref_right_pin
    *       is automatically mapped to the same GPIO (and vice versa). Same for step_pin/ref_left_pin,
    *       enc_a_pin/dc_in_pin, enc_b_pin/dc_en_pin, and enc_n_pin/dc_out_pin.
-   * @note EN pin (DRV_ENN) is active HIGH to disable the power stage (inverted logic).
+   * @note EN pin (DRV_ENN) is active LOW to enable the power stage.
    * @note This constructor is provided for backward compatibility. Consider using the
    *       constructor with Esp32SpiPinConfig for a more unified configuration.
    */
   Esp32SPI(spi_host_device_t host, gpio_num_t mosi_pin, gpio_num_t miso_pin, gpio_num_t sclk_pin, gpio_num_t cs_pin,
            const tmc5160::TMC5160PinConfig& pin_config, uint32_t clock_speed_hz = 4000000) noexcept
-      : SpiCommInterface(true, true, true), // EN, DIR, STEP active high (EN is inverted: HIGH=disable)
+      : SpiCommInterface(true, true, true), // DIR, STEP active high; EN active level overridden below
         host_(host), mosi_pin_(mosi_pin), miso_pin_(miso_pin), sclk_pin_(sclk_pin), cs_pin_(cs_pin),
         en_pin_(static_cast<gpio_num_t>(pin_config.en_pin)),
         dir_pin_(static_cast<gpio_num_t>(pin_config.dir_pin != -1 ? pin_config.dir_pin : pin_config.ref_right_pin)),
@@ -137,8 +137,8 @@ public:
     // Apply pin configuration (handles compound pins automatically)
     ApplyPinConfig(pin_config);
 
-    // Configure EN pin active level: HIGH = disable (inverted logic for DRV_ENN)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, true);
+    // Configure EN pin active level: LOW = enable (DRV_ENN is active LOW to enable power stage)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, false);
   }
 
   /**
@@ -148,21 +148,21 @@ public:
    * @param miso_pin MISO GPIO pin
    * @param sclk_pin SCLK GPIO pin
    * @param cs_pin CS GPIO pin
-   * @param en_pin EN control pin (DRV_ENN, active HIGH disables power stage)
+   * @param en_pin EN control pin (DRV_ENN, active LOW enables power stage)
    * @param dir_pin DIR control pin (REFR_DIR, optional - used in external step/dir mode, use -1 if not connected)
    * @param step_pin STEP control pin (REFL_STEP, optional - used in external step/dir mode, use -1 if not connected)
    * @param clock_speed_hz SPI clock speed in Hz (max 4 MHz recommended)
    *
    * @note For SPI mode with internal ramp generator (SD_MODE=0), DIR and STEP pins
    *       are not used. Pass -1 if not connected.
-   * @note EN pin (DRV_ENN) is active HIGH to disable the power stage (inverted logic).
-   *       Set active level accordingly: SetPinActiveLevel(TMC5160CtrlPin::EN, true)
+   * @note EN pin (DRV_ENN) is active LOW to enable the power stage.
+   *       Active level is automatically configured: SetPinActiveLevel(TMC5160CtrlPin::EN, false)
    * @deprecated Use constructor with TMC5160PinConfig struct for better pin management
    */
   Esp32SPI(spi_host_device_t host, gpio_num_t mosi_pin, gpio_num_t miso_pin, gpio_num_t sclk_pin, gpio_num_t cs_pin,
            gpio_num_t en_pin, gpio_num_t dir_pin = static_cast<gpio_num_t>(-1),
            gpio_num_t step_pin = static_cast<gpio_num_t>(-1), uint32_t clock_speed_hz = 4000000) noexcept
-      : SpiCommInterface(true, true, true), // EN, DIR, STEP active high (EN is inverted: HIGH=disable)
+      : SpiCommInterface(true, true, true), // DIR, STEP active high; EN active level overridden below
         host_(host), mosi_pin_(mosi_pin), miso_pin_(miso_pin), sclk_pin_(sclk_pin), cs_pin_(cs_pin), en_pin_(en_pin),
         dir_pin_(dir_pin), step_pin_(step_pin), clock_speed_hz_(clock_speed_hz), device_handle_(nullptr),
         initialized_(false) {
@@ -183,8 +183,8 @@ public:
       pin_mapping_[static_cast<size_t>(tmc5160::TMC5160CtrlPin::REFL_STEP)] = step_pin; // Same physical pin
     }
 
-    // Configure EN pin active level: HIGH = disable (inverted logic for DRV_ENN)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, true);
+    // Configure EN pin active level: LOW = enable (DRV_ENN is active LOW to enable power stage)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, false);
   }
 
   /**
@@ -397,8 +397,8 @@ public:
     constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
     if (en_pin_ != UNMAPPED_PIN) {
       gpio_set_direction(en_pin_, GPIO_MODE_OUTPUT);
-      // Disable by default using signal abstraction (EN is active HIGH to disable)
-      GpioSet(tmc5160::TMC5160CtrlPin::EN, tmc5160::GpioSignal::ACTIVE);
+      // Disable by default using signal abstraction (EN is active LOW, so INACTIVE = HIGH = disabled)
+      GpioSet(tmc5160::TMC5160CtrlPin::EN, tmc5160::GpioSignal::INACTIVE);
     }
     if (dir_pin_ != UNMAPPED_PIN) {
       gpio_set_direction(dir_pin_, GPIO_MODE_OUTPUT);
