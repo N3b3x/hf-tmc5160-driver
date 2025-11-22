@@ -1078,13 +1078,16 @@ protected:
    * ACTIVE state for each TMC5160 control pin.
    *
    * Array size matches the number of pins in TMC5160CtrlPin enum.
-   * Default active levels:
-   * - EN: HIGH = disable (DRV_ENN is active HIGH to disable)
-   * - DIR, STEP: HIGH = active
+   * Default active levels (per TMC5160 datasheet):
+   * - EN: LOW = enable (DRV_ENN is active LOW - LOW enables power stage, HIGH disables)
+   * - DIR, STEP: HIGH = active (REFR_DIR/REFL_STEP are active HIGH inputs)
    * - Reference switches: LOW = active (typically active LOW)
    * - Diagnostic pins: Read-only, level depends on TMC5160 state
    * - Encoder pins: Read-only, level depends on encoder state
    * - DC Step pins: DCEN/DCIN typically active HIGH, DCO is output
+   * 
+   * Note: Users can override these defaults via SetPinActiveLevel() if their board
+   * has inverters, NOT gates, or other logic that changes pin polarity.
    */
   bool pinActiveLevels_[16]{}; // Updated to support all pin types (16 pins total)
 

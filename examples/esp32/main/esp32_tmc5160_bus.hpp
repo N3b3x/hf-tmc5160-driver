@@ -77,7 +77,7 @@ public:
    */
   Esp32SPI(spi_host_device_t host, const tmc5160::Esp32SpiPinConfig& pin_config,
            uint32_t clock_speed_hz = 4000000) noexcept
-      : SpiCommInterface(true, true, true), // DIR, STEP active high; EN active level overridden below
+      : SpiCommInterface(false, true, true), // EN active LOW (DRV_ENN: LOW=enable), DIR/STEP active HIGH (datasheet defaults)
         host_(host), mosi_pin_(static_cast<gpio_num_t>(pin_config.spi_mosi)),
         miso_pin_(static_cast<gpio_num_t>(pin_config.spi_miso)),
         sclk_pin_(static_cast<gpio_num_t>(pin_config.spi_sclk)),
@@ -99,8 +99,13 @@ public:
     // Apply pin configuration (handles compound pins automatically)
     ApplyPinConfig(pin_config.tmc5160_pins);
 
-    // Configure EN pin active level: LOW = enable (DRV_ENN is active LOW to enable power stage)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, false);
+    // Configure pin active levels based on TMC5160 datasheet defaults
+    // Users can override these via SetPinActiveLevel() if their board has inverters/NOT gates
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, false);      // DRV_ENN: LOW=enable (active LOW)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::DIR, true);      // REFR_DIR: HIGH=active (active HIGH)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::STEP, true);     // REFL_STEP: HIGH=active (active HIGH)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::REFR_DIR, true); // Same as DIR (active HIGH)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::REFL_STEP, true); // Same as STEP (active HIGH)
   }
 
   /**
@@ -122,7 +127,7 @@ public:
    */
   Esp32SPI(spi_host_device_t host, gpio_num_t mosi_pin, gpio_num_t miso_pin, gpio_num_t sclk_pin, gpio_num_t cs_pin,
            const tmc5160::TMC5160PinConfig& pin_config, uint32_t clock_speed_hz = 4000000) noexcept
-      : SpiCommInterface(true, true, true), // DIR, STEP active high; EN active level overridden below
+      : SpiCommInterface(false, true, true), // EN active LOW (DRV_ENN: LOW=enable), DIR/STEP active HIGH (datasheet defaults)
         host_(host), mosi_pin_(mosi_pin), miso_pin_(miso_pin), sclk_pin_(sclk_pin), cs_pin_(cs_pin),
         en_pin_(static_cast<gpio_num_t>(pin_config.en_pin)),
         dir_pin_(static_cast<gpio_num_t>(pin_config.dir_pin != -1 ? pin_config.dir_pin : pin_config.ref_right_pin)),
@@ -137,8 +142,13 @@ public:
     // Apply pin configuration (handles compound pins automatically)
     ApplyPinConfig(pin_config);
 
-    // Configure EN pin active level: LOW = enable (DRV_ENN is active LOW to enable power stage)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, false);
+    // Configure pin active levels based on TMC5160 datasheet defaults
+    // Users can override these via SetPinActiveLevel() if their board has inverters/NOT gates
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, false);      // DRV_ENN: LOW=enable (active LOW)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::DIR, true);       // REFR_DIR: HIGH=active (active HIGH)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::STEP, true);      // REFL_STEP: HIGH=active (active HIGH)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::REFR_DIR, true);  // Same as DIR (active HIGH)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::REFL_STEP, true); // Same as STEP (active HIGH)
   }
 
   /**
@@ -162,7 +172,7 @@ public:
   Esp32SPI(spi_host_device_t host, gpio_num_t mosi_pin, gpio_num_t miso_pin, gpio_num_t sclk_pin, gpio_num_t cs_pin,
            gpio_num_t en_pin, gpio_num_t dir_pin = static_cast<gpio_num_t>(-1),
            gpio_num_t step_pin = static_cast<gpio_num_t>(-1), uint32_t clock_speed_hz = 4000000) noexcept
-      : SpiCommInterface(true, true, true), // DIR, STEP active high; EN active level overridden below
+      : SpiCommInterface(false, true, true), // EN active LOW (DRV_ENN: LOW=enable), DIR/STEP active HIGH (datasheet defaults)
         host_(host), mosi_pin_(mosi_pin), miso_pin_(miso_pin), sclk_pin_(sclk_pin), cs_pin_(cs_pin), en_pin_(en_pin),
         dir_pin_(dir_pin), step_pin_(step_pin), clock_speed_hz_(clock_speed_hz), device_handle_(nullptr),
         initialized_(false) {
@@ -183,8 +193,13 @@ public:
       pin_mapping_[static_cast<size_t>(tmc5160::TMC5160CtrlPin::REFL_STEP)] = step_pin; // Same physical pin
     }
 
-    // Configure EN pin active level: LOW = enable (DRV_ENN is active LOW to enable power stage)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, false);
+    // Configure pin active levels based on TMC5160 datasheet defaults
+    // Users can override these via SetPinActiveLevel() if their board has inverters/NOT gates
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, false);      // DRV_ENN: LOW=enable (active LOW)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::DIR, true);     // REFR_DIR: HIGH=active (active HIGH)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::STEP, true);     // REFL_STEP: HIGH=active (active HIGH)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::REFR_DIR, true); // Same as DIR (active HIGH)
+    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::REFL_STEP, true); // Same as STEP (active HIGH)
   }
 
   /**
