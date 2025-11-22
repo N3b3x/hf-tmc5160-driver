@@ -355,15 +355,12 @@ public:
         // Default to input, user can configure as output if needed for PWM clock
         gpio_set_direction(gpio_pin, GPIO_MODE_INPUT);
       }
-      // Mode configuration pins (SPI_MODE, SD_MODE) - outputs to control chip mode
+      // Mode configuration pins (SPI_MODE, SD_MODE) - INPUT by default (read-only)
+      // These pins are typically hardwired on dev boards. Only set as OUTPUT if user
+      // explicitly calls SetChipCommMode() or GpioSet() to control them.
       else if (pin == tmc5160::TMC5160CtrlPin::SPI_MODE || pin == tmc5160::TMC5160CtrlPin::SD_MODE) {
-        gpio_set_direction(gpio_pin, GPIO_MODE_OUTPUT); // Output to control chip mode
-        // Set default state based on pin (SPI_MODE typically HIGH, SD_MODE typically LOW for SPI+Internal Ramp)
-        if (pin == tmc5160::TMC5160CtrlPin::SPI_MODE) {
-          gpio_set_level(gpio_pin, 1); // Default: HIGH (SPI mode)
-        } else {
-          gpio_set_level(gpio_pin, 0); // Default: LOW (Internal ramp mode)
-        }
+        gpio_set_direction(gpio_pin, GPIO_MODE_INPUT); // Input to read chip mode (hardwired on dev boards)
+        gpio_set_pull_mode(gpio_pin, GPIO_PULLUP_ONLY); // Pullup for stable reading
       }
       // Other pins default to output
       else {
@@ -534,6 +531,12 @@ public:
     if (gpio_pin == UNMAPPED_PIN) {
       ESP_LOGW(BUS_TAG, "Pin not mapped: %d", static_cast<int>(pin));
       return false;
+    }
+
+    // If user is trying to set SPI_MODE or SD_MODE pins, configure them as OUTPUT
+    // (they default to INPUT for read-only mode on hardwired dev boards)
+    if (pin == tmc5160::TMC5160CtrlPin::SPI_MODE || pin == tmc5160::TMC5160CtrlPin::SD_MODE) {
+      gpio_set_direction(gpio_pin, GPIO_MODE_OUTPUT);
     }
 
     bool level = SignalToGpioLevel(pin, signal);
