@@ -1084,7 +1084,7 @@ protected:
    * - Encoder pins: Read-only, level depends on encoder state
    * - DC Step pins: DCEN/DCIN typically active HIGH, DCO is output
    */
-  bool pinActiveLevels_[15]{}; // Updated to support all pin types (15 pins total)
+  bool pinActiveLevels_[16]{}; // Updated to support all pin types (16 pins total)
 
   /**
    * @brief Debug logging function for detailed debugging information
@@ -1427,7 +1427,7 @@ public:
    * @warning This method performs a full SPI transaction and may take time
    */
   uint8_t AutoDetectChainLength(uint8_t max_devices = 8) noexcept {
-    if (max_devices == 0 || max_devices > 255) {
+    if (max_devices == 0) {
       max_devices = 8; // Default to 8 devices
     }
 
