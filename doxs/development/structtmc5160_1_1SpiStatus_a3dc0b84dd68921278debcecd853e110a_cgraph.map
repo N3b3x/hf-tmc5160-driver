@@ -1,0 +1,5 @@
+<map id="tmc5160::SpiStatus::HasError" name="tmc5160::SpiStatus::HasError">
+<area shape="rect" id="Node000001" title="Check if any error flags are set." alt="" coords="5,5,153,45"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1SpiStatus.html#a4464785395ac0a9a2eedd5bd0a8e78a3" title="Get driver error flag (bit 1)" alt="" coords="201,5,349,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,23,187,23,187,28,154,28"/>
+</map>

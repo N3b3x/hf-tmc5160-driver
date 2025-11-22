@@ -1,9 +1,9 @@
 <map id="tmc5160::SpiStatus::ToString" name="tmc5160::SpiStatus::ToString">
-<area shape="rect" id="Node000001" title="Format status flags as human&#45;readable string." alt="" coords="5,69,153,109"/>
-<area shape="rect" id="Node000002" href="$structtmc5160_1_1SpiStatus.html#a4464785395ac0a9a2eedd5bd0a8e78a3" title="Get driver error flag (bit 1)" alt="" coords="201,5,349,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,67,200,47,202,52,142,72"/>
-<area shape="rect" id="Node000003" href="$structtmc5160_1_1SpiStatus.html#a3dc0b84dd68921278debcecd853e110a" title="Check if any error flags are set." alt="" coords="201,69,349,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="154,87,187,87,187,92,154,92"/>
-<area shape="rect" id="Node000004" href="$structtmc5160_1_1SpiStatus.html#a961dca10a570bc51830a2c96b2bb4665" title="Get reset flag (bit 0)" alt="" coords="201,133,349,173"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="142,107,202,127,200,132,140,112"/>
+<area shape="rect" id="Node000001" title="Format status flags as human&#45;readable string." alt="" coords="5,37,153,77"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1SpiStatus.html#a3dc0b84dd68921278debcecd853e110a" title="Check if any error flags are set." alt="" coords="201,5,349,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,43,187,37,188,42,154,48"/>
+<area shape="rect" id="Node000004" href="$structtmc5160_1_1SpiStatus.html#a961dca10a570bc51830a2c96b2bb4665" title="Get reset flag (bit 0)" alt="" coords="201,69,349,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="154,67,188,72,187,78,153,72"/>
+<area shape="rect" id="Node000003" href="$structtmc5160_1_1SpiStatus.html#a4464785395ac0a9a2eedd5bd0a8e78a3" title="Get driver error flag (bit 1)" alt="" coords="397,5,545,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="350,23,383,23,383,28,350,28"/>
 </map>

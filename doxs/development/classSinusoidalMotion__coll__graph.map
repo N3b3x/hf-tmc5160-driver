@@ -1,5 +1,5 @@
 <map id="SinusoidalMotion" name="SinusoidalMotion">
-<area shape="rect" id="Node000001" title="Sinusoidal motion controller class." alt="" coords="1359,274,1493,299"/>
+<area shape="rect" id="Node000001" title="Sinusoidal motion controller class using internal ramp generator." alt="" coords="1359,274,1493,299"/>
 <area shape="rect" id="Node000002" href="$classtmc5160_1_1TMC5160.html" title=" " alt="" coords="1024,274,1261,299"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1275,284,1359,284,1359,289,1275,289"/>
 <area shape="rect" id="Node000003" href="$structtmc5160_1_1TMC5160_1_1RampControl.html" title="Ramp control subsystem." alt="" coords="5,203,241,243"/>

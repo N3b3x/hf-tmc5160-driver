@@ -22,7 +22,7 @@ var searchData=
   ['cur_5fb_19',['cur_b',['../uniontmc5160_1_1MSCURACT__Register.html#ac3a327e869f95a83989d988a1bb81fb6',1,'tmc5160::MSCURACT_Register']]],
   ['current_5fcycles_20',['current_cycles',['../structFatigueTestMotion_1_1Status.html#a934be032d312b43aef21b6c1729e9c96',1,'FatigueTestMotion::Status']]],
   ['current_5fcycles_5f_21',['current_cycles_',['../classFatigueTestMotion.html#a0dfd3f01a973ce8e153a4e66822e8926',1,'FatigueTestMotion']]],
-  ['current_5fstep_5f_22',['current_step_',['../classSinusoidalMotion.html#a3336f82ca755b7e1eebd73fefb937a73',1,'SinusoidalMotion']]],
+  ['current_5fround_5f_22',['current_round_',['../classSinusoidalMotion.html#ac0c2dd531cf93986dd76df2155a59175',1,'SinusoidalMotion']]],
   ['cycle_5fcomplete_5f_23',['cycle_complete_',['../classFatigueTestMotion.html#ac1935a4905b5752b3b7aa835b346c24e',1,'FatigueTestMotion']]],
   ['cycle_5fstarted_5f_24',['cycle_started_',['../classFatigueTestMotion.html#ae9bd3f6bea4c6bb279aeb0fd1940c097',1,'FatigueTestMotion']]]
 ];
