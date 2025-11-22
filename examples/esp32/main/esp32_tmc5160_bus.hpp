@@ -93,6 +93,7 @@ public:
            uint32_t clock_speed_hz = 4000000,
            const tmc5160::PinActiveLevels& active_levels = tmc5160::PinActiveLevels{}) noexcept
       : SpiCommInterface(), // Active level management handled in this derived class
+        active_levels_(active_levels), // Store the struct directly
         host_(host), mosi_pin_(static_cast<gpio_num_t>(pin_config.spi_mosi)),
         miso_pin_(static_cast<gpio_num_t>(pin_config.spi_miso)),
         sclk_pin_(static_cast<gpio_num_t>(pin_config.spi_sclk)),
@@ -113,31 +114,17 @@ public:
 
     // Apply pin configuration (handles compound pins automatically)
     ApplyPinConfig(pin_config.tmc5160_pins);
-
-    // Configure pin active levels from provided struct (or defaults)
-    // Apply active levels for all pins
-    for (int pin_idx = 0; pin_idx < 16; ++pin_idx) {
-      auto pin = static_cast<tmc5160::TMC5160CtrlPin>(pin_idx);
-      SetPinActiveLevel(pin, active_levels.GetActiveLevel(pin));
-    }
   }
 
 private:
   /**
    * @brief Pin active level configuration storage
    *
-   * Stores the physical GPIO level (HIGH or LOW) that corresponds to the
-   * ACTIVE state for each TMC5160 control pin.
-   *
-   * Default active levels (per TMC5160 datasheet):
-   * - EN: LOW = enable (DRV_ENN is active LOW - LOW enables power stage, HIGH disables)
-   * - DIR, STEP: HIGH = active (REFR_DIR/REFL_STEP are active HIGH inputs)
-   * - Reference switches: LOW = active (typically active LOW)
-   * 
-   * Users can override these defaults via SetPinActiveLevel() if their board
-   * has inverters, NOT gates, or other logic that changes pin polarity.
+   * Stores the PinActiveLevels struct which defines the physical GPIO level
+   * (HIGH or LOW) that corresponds to the ACTIVE state for each TMC5160 control pin.
+   * This struct is initialized from the constructor parameter (or defaults).
    */
-  bool pinActiveLevels_[16]{}; // Updated to support all pin types (16 pins total)
+  tmc5160::PinActiveLevels active_levels_;
 
   /**
    * @brief Convert signal state to physical GPIO level
@@ -146,7 +133,7 @@ private:
    * @return Physical GPIO level (true=HIGH, false=LOW)
    */
   [[nodiscard]] bool SignalToGpioLevel(tmc5160::TMC5160CtrlPin pin, tmc5160::GpioSignal signal) const noexcept {
-    bool active_level = pinActiveLevels_[static_cast<int>(pin)];
+    bool active_level = active_levels_.GetActiveLevel(pin);
     return (signal == tmc5160::GpioSignal::ACTIVE) ? active_level : !active_level;
   }
 
@@ -157,19 +144,8 @@ private:
    * @return Signal state (ACTIVE or INACTIVE)
    */
   [[nodiscard]] tmc5160::GpioSignal GpioLevelToSignal(tmc5160::TMC5160CtrlPin pin, bool gpio_level) const noexcept {
-    bool active_level = pinActiveLevels_[static_cast<int>(pin)];
+    bool active_level = active_levels_.GetActiveLevel(pin);
     return (gpio_level == active_level) ? tmc5160::GpioSignal::ACTIVE : tmc5160::GpioSignal::INACTIVE;
-  }
-
-  /**
-   * @brief Configure the active level for a specific pin
-   * @param pin The TMC5160 control pin to configure
-   * @param active_level The physical GPIO level that represents ACTIVE state
-   * @return true if the configuration was successful, false otherwise
-   */
-  bool SetPinActiveLevel(tmc5160::TMC5160CtrlPin pin, bool active_level) noexcept {
-    pinActiveLevels_[static_cast<int>(pin)] = active_level;
-    return true;
   }
 
 public:
@@ -188,23 +164,15 @@ public:
    * @endcode
    */
   void ConfigureActiveLevels(const tmc5160::PinActiveLevels& active_levels) noexcept {
-    for (int pin_idx = 0; pin_idx < 16; ++pin_idx) {
-      auto pin = static_cast<tmc5160::TMC5160CtrlPin>(pin_idx);
-      SetPinActiveLevel(pin, active_levels.GetActiveLevel(pin));
-    }
+    active_levels_ = active_levels; // Simply copy the struct
   }
 
   /**
    * @brief Get current active level configuration
    * @return PinActiveLevels struct with current active level settings
    */
-  [[nodiscard]] tmc5160::PinActiveLevels GetActiveLevels() const noexcept {
-    tmc5160::PinActiveLevels levels;
-    for (int pin_idx = 0; pin_idx < 16; ++pin_idx) {
-      auto pin = static_cast<tmc5160::TMC5160CtrlPin>(pin_idx);
-      levels.SetActiveLevel(pin, pinActiveLevels_[pin_idx]);
-    }
-    return levels;
+  [[nodiscard]] const tmc5160::PinActiveLevels& GetActiveLevels() const noexcept {
+    return active_levels_; // Return reference to stored struct
   }
 
   /**
@@ -229,6 +197,7 @@ public:
            const tmc5160::TMC5160PinConfig& pin_config, uint32_t clock_speed_hz = 4000000,
            const tmc5160::PinActiveLevels& active_levels = tmc5160::PinActiveLevels{}) noexcept
       : SpiCommInterface(), // Active level management handled in this derived class
+        active_levels_(active_levels), // Store the struct directly
         host_(host), mosi_pin_(mosi_pin), miso_pin_(miso_pin), sclk_pin_(sclk_pin), cs_pin_(cs_pin),
         en_pin_(static_cast<gpio_num_t>(pin_config.en_pin)),
         dir_pin_(static_cast<gpio_num_t>(pin_config.dir_pin != -1 ? pin_config.dir_pin : pin_config.ref_right_pin)),
@@ -242,13 +211,6 @@ public:
 
     // Apply pin configuration (handles compound pins automatically)
     ApplyPinConfig(pin_config);
-
-    // Configure pin active levels from provided struct (or defaults)
-    // Apply active levels for all pins
-    for (int pin_idx = 0; pin_idx < 16; ++pin_idx) {
-      auto pin = static_cast<tmc5160::TMC5160CtrlPin>(pin_idx);
-      SetPinActiveLevel(pin, active_levels.GetActiveLevel(pin));
-    }
   }
 
   /**
@@ -275,6 +237,7 @@ public:
            gpio_num_t step_pin = static_cast<gpio_num_t>(-1), uint32_t clock_speed_hz = 4000000,
            const tmc5160::PinActiveLevels& active_levels = tmc5160::PinActiveLevels{}) noexcept
       : SpiCommInterface(), // Active level management handled in this derived class
+        active_levels_(active_levels), // Store the struct directly
         host_(host), mosi_pin_(mosi_pin), miso_pin_(miso_pin), sclk_pin_(sclk_pin), cs_pin_(cs_pin), en_pin_(en_pin),
         dir_pin_(dir_pin), step_pin_(step_pin), clock_speed_hz_(clock_speed_hz), device_handle_(nullptr),
         initialized_(false) {
@@ -293,13 +256,6 @@ public:
     if (step_pin != UNMAPPED_PIN) {
       pin_mapping_[static_cast<size_t>(tmc5160::TMC5160CtrlPin::STEP)] = step_pin;
       pin_mapping_[static_cast<size_t>(tmc5160::TMC5160CtrlPin::REFL_STEP)] = step_pin; // Same physical pin
-    }
-
-    // Configure pin active levels from provided struct (or defaults)
-    // Apply active levels for all pins
-    for (int pin_idx = 0; pin_idx < 16; ++pin_idx) {
-      auto pin = static_cast<tmc5160::TMC5160CtrlPin>(pin_idx);
-      SetPinActiveLevel(pin, active_levels.GetActiveLevel(pin));
     }
   }
 
