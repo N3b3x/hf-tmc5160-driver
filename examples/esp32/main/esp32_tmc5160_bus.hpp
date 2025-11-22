@@ -396,16 +396,19 @@ public:
     // Configure GPIO pins that are mapped
     constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
     if (en_pin_ != UNMAPPED_PIN) {
-    gpio_set_direction(en_pin_, GPIO_MODE_OUTPUT);
-      gpio_set_level(en_pin_, 1); // Disable by default (EN is active HIGH to disable)
+      gpio_set_direction(en_pin_, GPIO_MODE_OUTPUT);
+      // Disable by default using signal abstraction (EN is active HIGH to disable)
+      GpioSet(tmc5160::TMC5160CtrlPin::EN, tmc5160::GpioSignal::ACTIVE);
     }
     if (dir_pin_ != UNMAPPED_PIN) {
-    gpio_set_direction(dir_pin_, GPIO_MODE_OUTPUT);
-      gpio_set_level(dir_pin_, 0);
+      gpio_set_direction(dir_pin_, GPIO_MODE_OUTPUT);
+      // Set DIR to inactive by default using signal abstraction
+      GpioSet(tmc5160::TMC5160CtrlPin::DIR, tmc5160::GpioSignal::INACTIVE);
     }
     if (step_pin_ != UNMAPPED_PIN) {
-    gpio_set_direction(step_pin_, GPIO_MODE_OUTPUT);
-    gpio_set_level(step_pin_, 0);
+      gpio_set_direction(step_pin_, GPIO_MODE_OUTPUT);
+      // Set STEP to inactive by default using signal abstraction
+      GpioSet(tmc5160::TMC5160CtrlPin::STEP, tmc5160::GpioSignal::INACTIVE);
     }
 
     // Configure SPI bus
