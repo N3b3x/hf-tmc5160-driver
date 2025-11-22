@@ -21,7 +21,7 @@ var searchData=
   ['addressing_20per_20datasheet_18',['Important: Sequential Addressing (Per Datasheet)',['../classtmc5160_1_1TMC5160MultiNode.html#autotoc_md16',1,'']]],
   ['advanced_20features_19',['Advanced Features',['../index.html#autotoc_md24',1,'Advanced Features'],['../index.html#autotoc_md35',1,'Advanced Features']]],
   ['amax_20',['AMAX',['../namespacetmc5160_1_1Registers.html#ae8fa4f33adb9eed36868bb6801efd4ba',1,'tmc5160::Registers']]],
-  ['amplitude_5f_21',['amplitude_',['../classFatigueTestMotion.html#a5e1422dc0e09efc8facd3768d8813158',1,'FatigueTestMotion::amplitude_'],['../classSinusoidalMotion.html#a34227aca48e9df86eae4e0dd25645449',1,'SinusoidalMotion::amplitude_']]],
+  ['amplitude_5f_21',['amplitude_',['../classFatigueTestMotion.html#a5e1422dc0e09efc8facd3768d8813158',1,'FatigueTestMotion']]],
   ['angle_5funit_5f_22',['angle_unit_',['../classFatigueTestMotion.html#ad3532cc21841d56a71d8683375167167',1,'FatigueTestMotion']]],
   ['angleunit_23',['AngleUnit',['../bounds__finding__sinuous__motion_8cpp.html#a70ab36d1d4920fdd314279845af152c5',1,'bounds_finding_sinuous_motion.cpp']]],
   ['api_20reference_24',['📖 API Reference',['../index.html#autotoc_md31',1,'']]],

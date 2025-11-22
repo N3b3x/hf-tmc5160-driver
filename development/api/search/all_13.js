@@ -21,12 +21,13 @@ var searchData=
   ['unit_20conversions_18',['Unit Conversions',['../group__TMC5160__Units.html',1,'']]],
   ['units_19',['Using Physical Units',['../index.html#autotoc_md29',1,'']]],
   ['unlock_20',['unlock',['../classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf',1,'TmcMutexGuard']]],
-  ['update_21',['Update',['../classFatigueTestMotion.html#a40e43a61bc8beddb3df12e7d3b72b141',1,'FatigueTestMotion']]],
-  ['updatechainlength_22',['UpdateChainLength',['../classtmc5160_1_1TMC5160DaisyChain.html#a344078dd6dd9219786be00cf79932983',1,'tmc5160::TMC5160DaisyChain']]],
-  ['updatesinuousmotion_23',['UpdateSinuousMotion',['../classFatigueTestMotion.html#a00b20bc353584e6851ec34eb34c95205',1,'FatigueTestMotion']]],
-  ['usage_20example_24',['Usage Example',['../classtmc5160_1_1TMC5160.html#autotoc_md2',1,'Usage Example'],['../classtmc5160_1_1TMC5160DaisyChain.html#autotoc_md13',1,'Usage Example'],['../classtmc5160_1_1TMC5160MultiNode.html#autotoc_md17',1,'Usage Example']]],
-  ['user_5fspecified_5fchain_5flength_5f_25',['user_specified_chain_length_',['../classtmc5160_1_1SpiCommInterface.html#ac2231a4f01abd77a0957c8832693b9c1',1,'tmc5160::SpiCommInterface']]],
-  ['using_20physical_20units_26',['Using Physical Units',['../index.html#autotoc_md29',1,'']]],
-  ['ustep_5fcount_27',['USTEP_COUNT',['../namespacetmc5160_1_1Microsteps.html#ac5061f1a2a8687cc56812dd04fe2526c',1,'tmc5160::Microsteps']]],
-  ['uv_5fcp_28',['uv_cp',['../uniontmc5160_1_1GSTAT__Register.html#af69976ac380c49a90aafd7af7a5c539f',1,'tmc5160::GSTAT_Register']]]
+  ['update_21',['Update',['../classFatigueTestMotion.html#a40e43a61bc8beddb3df12e7d3b72b141',1,'FatigueTestMotion::Update()'],['../classSinusoidalMotion.html#a512c1210fa12ebccb44c33502b59b29f',1,'SinusoidalMotion::Update()']]],
+  ['update_5fperiod_5fms_5f_22',['update_period_ms_',['../classSinusoidalMotion.html#a4c45a6b70d5ed1d514fd017bec6b4321',1,'SinusoidalMotion']]],
+  ['updatechainlength_23',['UpdateChainLength',['../classtmc5160_1_1TMC5160DaisyChain.html#a344078dd6dd9219786be00cf79932983',1,'tmc5160::TMC5160DaisyChain']]],
+  ['updatesinuousmotion_24',['UpdateSinuousMotion',['../classFatigueTestMotion.html#a00b20bc353584e6851ec34eb34c95205',1,'FatigueTestMotion']]],
+  ['usage_20example_25',['Usage Example',['../classtmc5160_1_1TMC5160.html#autotoc_md2',1,'Usage Example'],['../classtmc5160_1_1TMC5160DaisyChain.html#autotoc_md13',1,'Usage Example'],['../classtmc5160_1_1TMC5160MultiNode.html#autotoc_md17',1,'Usage Example']]],
+  ['user_5fspecified_5fchain_5flength_5f_26',['user_specified_chain_length_',['../classtmc5160_1_1SpiCommInterface.html#ac2231a4f01abd77a0957c8832693b9c1',1,'tmc5160::SpiCommInterface']]],
+  ['using_20physical_20units_27',['Using Physical Units',['../index.html#autotoc_md29',1,'']]],
+  ['ustep_5fcount_28',['USTEP_COUNT',['../namespacetmc5160_1_1Microsteps.html#ac5061f1a2a8687cc56812dd04fe2526c',1,'tmc5160::Microsteps']]],
+  ['uv_5fcp_29',['uv_cp',['../uniontmc5160_1_1GSTAT__Register.html#af69976ac380c49a90aafd7af7a5c539f',1,'tmc5160::GSTAT_Register']]]
 ];

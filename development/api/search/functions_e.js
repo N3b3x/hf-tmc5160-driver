@@ -16,6 +16,5 @@ var searchData=
   ['reset_13',['Reset',['../classtmc5160_1_1TMC5160.html#a67006dc0336428ec9a623c84188412cc',1,'tmc5160::TMC5160']]],
   ['resetcycles_14',['ResetCycles',['../classFatigueTestMotion.html#a86de353c719ceba5e708513e94c7c002',1,'FatigueTestMotion']]],
   ['resetflag_15',['ResetFlag',['../structtmc5160_1_1SpiStatus.html#a961dca10a570bc51830a2c96b2bb4665',1,'tmc5160::SpiStatus']]],
-  ['rpmtostepspersec_16',['RpmToStepsPerSec',['../namespacetmc5160.html#a086e668f7c59055a454e010eb8d430a0',1,'tmc5160']]],
-  ['run_17',['Run',['../classSinusoidalMotion.html#ad6726f6da321f0c178bd223d17305d74',1,'SinusoidalMotion']]]
+  ['rpmtostepspersec_16',['RpmToStepsPerSec',['../namespacetmc5160.html#a086e668f7c59055a454e010eb8d430a0',1,'tmc5160']]]
 ];

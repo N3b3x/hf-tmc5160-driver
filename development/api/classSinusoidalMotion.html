@@ -93,14 +93,13 @@ $(function(){initNavTree('classSinusoidalMotion.html',''); initResizable(); });
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classSinusoidalMotion-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SinusoidalMotion Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Sinusoidal motion controller class.  
+<p>Sinusoidal motion controller class using internal ramp generator.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for SinusoidalMotion:</div>
@@ -112,26 +111,18 @@ Collaboration diagram for SinusoidalMotion:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a386c45566b0dc951967b5d6b9e7ae611" id="r_a386c45566b0dc951967b5d6b9e7ae611"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a386c45566b0dc951967b5d6b9e7ae611">SinusoidalMotion</a> (<a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; *driver)</td></tr>
 <tr class="separator:a386c45566b0dc951967b5d6b9e7ae611"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad21adf0211f89e9450ce377d5c0fc788" id="r_ad21adf0211f89e9450ce377d5c0fc788"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad21adf0211f89e9450ce377d5c0fc788">GetFrequency</a> () const</td></tr>
-<tr class="separator:ad21adf0211f89e9450ce377d5c0fc788"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa144689e1fd98974312fd8a909216834" id="r_aa144689e1fd98974312fd8a909216834"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa144689e1fd98974312fd8a909216834">GetAmplitude</a> () const</td></tr>
-<tr class="separator:aa144689e1fd98974312fd8a909216834"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeaefdf22cb97d3eccb97bc73a70aa536" id="r_aeaefdf22cb97d3eccb97bc73a70aa536"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeaefdf22cb97d3eccb97bc73a70aa536">GetStepCount</a> () const</td></tr>
-<tr class="separator:aeaefdf22cb97d3eccb97bc73a70aa536"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a315d00b13a693ce61041721ed36dbfed" id="r_a315d00b13a693ce61041721ed36dbfed"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a315d00b13a693ce61041721ed36dbfed">GetRounds</a> () const</td></tr>
-<tr class="separator:a315d00b13a693ce61041721ed36dbfed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84866baa00051c7aa60ffd0a1c1abc0d" id="r_a84866baa00051c7aa60ffd0a1c1abc0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a84866baa00051c7aa60ffd0a1c1abc0d">Config</a> (double freq, int amp, uint32_t steps, bool dir, int rnds)</td></tr>
-<tr class="memdesc:a84866baa00051c7aa60ffd0a1c1abc0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure sinusoidal motion parameters.  <br /></td></tr>
-<tr class="separator:a84866baa00051c7aa60ffd0a1c1abc0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6726f6da321f0c178bd223d17305d74" id="r_ad6726f6da321f0c178bd223d17305d74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6726f6da321f0c178bd223d17305d74">Run</a> ()</td></tr>
-<tr class="memdesc:ad6726f6da321f0c178bd223d17305d74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run sinusoidal motion (call repeatedly in loop)  <br /></td></tr>
-<tr class="separator:ad6726f6da321f0c178bd223d17305d74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:aa7d3638a1785109004b834bff0ef9973" id="r_aa7d3638a1785109004b834bff0ef9973"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7d3638a1785109004b834bff0ef9973">calculateTimeDelay</a> ()</td></tr>
-<tr class="memdesc:aa7d3638a1785109004b834bff0ef9973"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate time delay for next step based on sinusoidal function.  <br /></td></tr>
-<tr class="separator:aa7d3638a1785109004b834bff0ef9973"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab65834bd79febfd3451ed80165e6d075" id="r_ab65834bd79febfd3451ed80165e6d075"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab65834bd79febfd3451ed80165e6d075">Config</a> (double freq, float max_vel, float base_vel, uint32_t update_period_ms, int rounds=-1)</td></tr>
+<tr class="memdesc:ab65834bd79febfd3451ed80165e6d075"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure sinusoidal motion parameters.  <br /></td></tr>
+<tr class="separator:ab65834bd79febfd3451ed80165e6d075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51a5379e8aa711434061d1765e453a5d" id="r_a51a5379e8aa711434061d1765e453a5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51a5379e8aa711434061d1765e453a5d">Start</a> ()</td></tr>
+<tr class="memdesc:a51a5379e8aa711434061d1765e453a5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize and start sinusoidal motion.  <br /></td></tr>
+<tr class="separator:a51a5379e8aa711434061d1765e453a5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a512c1210fa12ebccb44c33502b59b29f" id="r_a512c1210fa12ebccb44c33502b59b29f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a512c1210fa12ebccb44c33502b59b29f">Update</a> ()</td></tr>
+<tr class="memdesc:a512c1210fa12ebccb44c33502b59b29f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update sinusoidal motion (call periodically)  <br /></td></tr>
+<tr class="separator:a512c1210fa12ebccb44c33502b59b29f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a026ba561e2570d0871d50733860ecfcc" id="r_a026ba561e2570d0871d50733860ecfcc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a026ba561e2570d0871d50733860ecfcc">Stop</a> ()</td></tr>
+<tr class="memdesc:a026ba561e2570d0871d50733860ecfcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop sinusoidal motion.  <br /></td></tr>
+<tr class="separator:a026ba561e2570d0871d50733860ecfcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -139,26 +130,24 @@ Private Attributes</h2></td></tr>
 <tr class="separator:ab79211d19479aa71b8d6b2b3c4fce5bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a545fa096b7ed5749633eba34ae4e6627" id="r_a545fa096b7ed5749633eba34ae4e6627"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a545fa096b7ed5749633eba34ae4e6627">frequency_</a></td></tr>
 <tr class="separator:a545fa096b7ed5749633eba34ae4e6627"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34227aca48e9df86eae4e0dd25645449" id="r_a34227aca48e9df86eae4e0dd25645449"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34227aca48e9df86eae4e0dd25645449">amplitude_</a></td></tr>
-<tr class="separator:a34227aca48e9df86eae4e0dd25645449"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab46049cc30b59177732856564b073701" id="r_ab46049cc30b59177732856564b073701"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab46049cc30b59177732856564b073701">step_count_</a></td></tr>
-<tr class="separator:ab46049cc30b59177732856564b073701"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c5b63ac007068efe71d65e09fc9eac6" id="r_a6c5b63ac007068efe71d65e09fc9eac6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c5b63ac007068efe71d65e09fc9eac6">rounds_</a></td></tr>
-<tr class="separator:a6c5b63ac007068efe71d65e09fc9eac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abcf7685eff702af2bb3410e6f7dfa316" id="r_abcf7685eff702af2bb3410e6f7dfa316"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abcf7685eff702af2bb3410e6f7dfa316">direction_</a></td></tr>
-<tr class="separator:abcf7685eff702af2bb3410e6f7dfa316"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0c49161831ada4dde253e01e548bfd7" id="r_ad0c49161831ada4dde253e01e548bfd7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad0c49161831ada4dde253e01e548bfd7">max_velocity_</a></td></tr>
+<tr class="separator:ad0c49161831ada4dde253e01e548bfd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaab668bb9cf43562a916034536ebde5a" id="r_aaab668bb9cf43562a916034536ebde5a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaab668bb9cf43562a916034536ebde5a">base_velocity_</a></td></tr>
+<tr class="separator:aaab668bb9cf43562a916034536ebde5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c45a6b70d5ed1d514fd017bec6b4321" id="r_a4c45a6b70d5ed1d514fd017bec6b4321"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c45a6b70d5ed1d514fd017bec6b4321">update_period_ms_</a></td></tr>
+<tr class="separator:a4c45a6b70d5ed1d514fd017bec6b4321"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1528869eb9ec0fc50fa50c1cc17a72ab" id="r_a1528869eb9ec0fc50fa50c1cc17a72ab"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1528869eb9ec0fc50fa50c1cc17a72ab">init_time_</a></td></tr>
 <tr class="separator:a1528869eb9ec0fc50fa50c1cc17a72ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62e4f8a1dd1672dcc8d30a3bbcf3a5cc" id="r_a62e4f8a1dd1672dcc8d30a3bbcf3a5cc"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62e4f8a1dd1672dcc8d30a3bbcf3a5cc">timestamp_</a></td></tr>
-<tr class="separator:a62e4f8a1dd1672dcc8d30a3bbcf3a5cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3336f82ca755b7e1eebd73fefb937a73" id="r_a3336f82ca755b7e1eebd73fefb937a73"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3336f82ca755b7e1eebd73fefb937a73">current_step_</a></td></tr>
-<tr class="separator:a3336f82ca755b7e1eebd73fefb937a73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c3209998e2d3b5c5f7430ed36dc66dd" id="r_a1c3209998e2d3b5c5f7430ed36dc66dd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1c3209998e2d3b5c5f7430ed36dc66dd">initialized_</a></td></tr>
 <tr class="separator:a1c3209998e2d3b5c5f7430ed36dc66dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c5b63ac007068efe71d65e09fc9eac6" id="r_a6c5b63ac007068efe71d65e09fc9eac6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c5b63ac007068efe71d65e09fc9eac6">rounds_</a></td></tr>
+<tr class="separator:a6c5b63ac007068efe71d65e09fc9eac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0c2dd531cf93986dd76df2155a59175" id="r_ac0c2dd531cf93986dd76df2155a59175"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0c2dd531cf93986dd76df2155a59175">current_round_</a></td></tr>
+<tr class="separator:ac0c2dd531cf93986dd76df2155a59175"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Sinusoidal motion controller class. </p>
-<p>Generates sinusoidal step timing based on frequency and amplitude parameters. </p>
+<div class="textblock"><p>Sinusoidal motion controller class using internal ramp generator. </p>
+<p>Generates sinusoidal velocity profile using TMC5160's velocity mode. The velocity varies sinusoidally, creating smooth back-and-forth motion. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a386c45566b0dc951967b5d6b9e7ae611" name="a386c45566b0dc951967b5d6b9e7ae611"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a386c45566b0dc951967b5d6b9e7ae611">&#9670;&#160;</a></span>SinusoidalMotion()</h2>
@@ -186,41 +175,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa7d3638a1785109004b834bff0ef9973" name="aa7d3638a1785109004b834bff0ef9973"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa7d3638a1785109004b834bff0ef9973">&#9670;&#160;</a></span>calculateTimeDelay()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int SinusoidalMotion::calculateTimeDelay </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Calculate time delay for next step based on sinusoidal function. </p>
-<dl class="section return"><dt>Returns</dt><dd>Time delay in milliseconds </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classSinusoidalMotion_aa7d3638a1785109004b834bff0ef9973_icgraph.svg" width="562" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a84866baa00051c7aa60ffd0a1c1abc0d" name="a84866baa00051c7aa60ffd0a1c1abc0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84866baa00051c7aa60ffd0a1c1abc0d">&#9670;&#160;</a></span>Config()</h2>
+<a id="ab65834bd79febfd3451ed80165e6d075" name="ab65834bd79febfd3451ed80165e6d075"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab65834bd79febfd3451ed80165e6d075">&#9670;&#160;</a></span>Config()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -236,22 +192,22 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>amp</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>max_vel</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>steps</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>base_vel</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>dir</em>, </span></td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>update_period_ms</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>rnds</em></span>&#160;)</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>rounds</em><span class="paramdefsep"> = </span><span class="paramdefval">-1</span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -264,54 +220,24 @@ Here is the caller graph for this function:</div>
 <p>Configure sinusoidal motion parameters. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freq</td><td>Frequency in Hz </td></tr>
-    <tr><td class="paramname">amp</td><td>Amplitude (affects timing variation) </td></tr>
-    <tr><td class="paramname">steps</td><td>Number of steps per round </td></tr>
-    <tr><td class="paramname">dir</td><td>Direction (true=forward, false=backward) </td></tr>
-    <tr><td class="paramname">rnds</td><td>Number of rounds </td></tr>
+    <tr><td class="paramname">freq</td><td>Frequency in Hz (how fast the sinusoidal cycle repeats) </td></tr>
+    <tr><td class="paramname">max_vel</td><td>Maximum velocity in steps/s (amplitude of velocity variation) </td></tr>
+    <tr><td class="paramname">base_vel</td><td>Base velocity offset in steps/s (0 for bidirectional, &gt;0 for unidirectional) </td></tr>
+    <tr><td class="paramname">update_period_ms</td><td>Update period in milliseconds (how often to update velocity) </td></tr>
+    <tr><td class="paramname">rounds</td><td>Number of rounds (-1 for infinite) </td></tr>
   </table>
   </dd>
 </dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classSinusoidalMotion_a84866baa00051c7aa60ffd0a1c1abc0d_icgraph.svg" width="328" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classSinusoidalMotion_ab65834bd79febfd3451ed80165e6d075_icgraph.svg" width="328" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="aa144689e1fd98974312fd8a909216834" name="aa144689e1fd98974312fd8a909216834"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa144689e1fd98974312fd8a909216834">&#9670;&#160;</a></span>GetAmplitude()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int SinusoidalMotion::GetAmplitude </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classSinusoidalMotion_aa144689e1fd98974312fd8a909216834_icgraph.svg" width="378" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="ad21adf0211f89e9450ce377d5c0fc788" name="ad21adf0211f89e9450ce377d5c0fc788"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad21adf0211f89e9450ce377d5c0fc788">&#9670;&#160;</a></span>GetFrequency()</h2>
+<a id="a51a5379e8aa711434061d1765e453a5d" name="a51a5379e8aa711434061d1765e453a5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51a5379e8aa711434061d1765e453a5d">&#9670;&#160;</a></span>Start()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -320,97 +246,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double SinusoidalMotion::GetFrequency </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classSinusoidalMotion_ad21adf0211f89e9450ce377d5c0fc788_icgraph.svg" width="378" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a315d00b13a693ce61041721ed36dbfed" name="a315d00b13a693ce61041721ed36dbfed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a315d00b13a693ce61041721ed36dbfed">&#9670;&#160;</a></span>GetRounds()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int SinusoidalMotion::GetRounds </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classSinusoidalMotion_a315d00b13a693ce61041721ed36dbfed_icgraph.svg" width="359" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="aeaefdf22cb97d3eccb97bc73a70aa536" name="aeaefdf22cb97d3eccb97bc73a70aa536"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeaefdf22cb97d3eccb97bc73a70aa536">&#9670;&#160;</a></span>GetStepCount()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t SinusoidalMotion::GetStepCount </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classSinusoidalMotion_aeaefdf22cb97d3eccb97bc73a70aa536_icgraph.svg" width="340" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="ad6726f6da321f0c178bd223d17305d74" name="ad6726f6da321f0c178bd223d17305d74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6726f6da321f0c178bd223d17305d74">&#9670;&#160;</a></span>Run()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SinusoidalMotion::Run </td>
+          <td class="memname">void SinusoidalMotion::Start </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -423,23 +259,83 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Run sinusoidal motion (call repeatedly in loop) </p>
+<p>Initialize and start sinusoidal motion. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classSinusoidalMotion_a51a5379e8aa711434061d1765e453a5d_icgraph.svg" width="556" height="62"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a026ba561e2570d0871d50733860ecfcc" name="a026ba561e2570d0871d50733860ecfcc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a026ba561e2570d0871d50733860ecfcc">&#9670;&#160;</a></span>Stop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SinusoidalMotion::Stop </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stop sinusoidal motion. </p>
+
+</div>
+</div>
+<a id="a512c1210fa12ebccb44c33502b59b29f" name="a512c1210fa12ebccb44c33502b59b29f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a512c1210fa12ebccb44c33502b59b29f">&#9670;&#160;</a></span>Update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SinusoidalMotion::Update </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Update sinusoidal motion (call periodically) </p>
+<dl class="section return"><dt>Returns</dt><dd>true if motion is active, false if completed </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classSinusoidalMotion_ad6726f6da321f0c178bd223d17305d74_cgraph.svg" width="684" height="328"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classSinusoidalMotion_a512c1210fa12ebccb44c33502b59b29f_cgraph.svg" width="422" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classSinusoidalMotion_ad6726f6da321f0c178bd223d17305d74_icgraph.svg" width="312" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classSinusoidalMotion_a512c1210fa12ebccb44c33502b59b29f_icgraph.svg" width="335" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a34227aca48e9df86eae4e0dd25645449" name="a34227aca48e9df86eae4e0dd25645449"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34227aca48e9df86eae4e0dd25645449">&#9670;&#160;</a></span>amplitude_</h2>
+<a id="aaab668bb9cf43562a916034536ebde5a" name="aaab668bb9cf43562a916034536ebde5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaab668bb9cf43562a916034536ebde5a">&#9670;&#160;</a></span>base_velocity_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -448,7 +344,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int SinusoidalMotion::amplitude_</td>
+          <td class="memname">float SinusoidalMotion::base_velocity_</td>
         </tr>
       </table>
   </td>
@@ -460,8 +356,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a3336f82ca755b7e1eebd73fefb937a73" name="a3336f82ca755b7e1eebd73fefb937a73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3336f82ca755b7e1eebd73fefb937a73">&#9670;&#160;</a></span>current_step_</h2>
+<a id="ac0c2dd531cf93986dd76df2155a59175" name="ac0c2dd531cf93986dd76df2155a59175"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c2dd531cf93986dd76df2155a59175">&#9670;&#160;</a></span>current_round_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -470,29 +366,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t SinusoidalMotion::current_step_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="abcf7685eff702af2bb3410e6f7dfa316" name="abcf7685eff702af2bb3410e6f7dfa316"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abcf7685eff702af2bb3410e6f7dfa316">&#9670;&#160;</a></span>direction_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SinusoidalMotion::direction_</td>
+          <td class="memname">int SinusoidalMotion::current_round_</td>
         </tr>
       </table>
   </td>
@@ -592,6 +466,28 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="ad0c49161831ada4dde253e01e548bfd7" name="ad0c49161831ada4dde253e01e548bfd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0c49161831ada4dde253e01e548bfd7">&#9670;&#160;</a></span>max_velocity_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SinusoidalMotion::max_velocity_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a6c5b63ac007068efe71d65e09fc9eac6" name="a6c5b63ac007068efe71d65e09fc9eac6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6c5b63ac007068efe71d65e09fc9eac6">&#9670;&#160;</a></span>rounds_</h2>
 
@@ -614,8 +510,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="ab46049cc30b59177732856564b073701" name="ab46049cc30b59177732856564b073701"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab46049cc30b59177732856564b073701">&#9670;&#160;</a></span>step_count_</h2>
+<a id="a4c45a6b70d5ed1d514fd017bec6b4321" name="a4c45a6b70d5ed1d514fd017bec6b4321"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c45a6b70d5ed1d514fd017bec6b4321">&#9670;&#160;</a></span>update_period_ms_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -624,29 +520,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t SinusoidalMotion::step_count_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a62e4f8a1dd1672dcc8d30a3bbcf3a5cc" name="a62e4f8a1dd1672dcc8d30a3bbcf3a5cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62e4f8a1dd1672dcc8d30a3bbcf3a5cc">&#9670;&#160;</a></span>timestamp_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t SinusoidalMotion::timestamp_</td>
+          <td class="memname">uint32_t SinusoidalMotion::update_period_ms_</td>
         </tr>
       </table>
   </td>

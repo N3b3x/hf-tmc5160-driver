@@ -47,14 +47,14 @@ var searchData=
   ['stallguard2_44',['StallGuard2',['../structtmc5160_1_1SpiStatus.html#a708bc91f37943e9c691524285ef852b8',1,'tmc5160::SpiStatus']]],
   ['stallguardconfig_45',['StallGuardConfig',['../structtmc5160_1_1StallGuardConfig.html#ac2d2cad3ce48f42c1a6c1c9fc00b9e66',1,'tmc5160::StallGuardConfig']]],
   ['standstill_46',['Standstill',['../structtmc5160_1_1SpiStatus.html#a33e43cfc96cf5a589b42a713b1320e8e',1,'tmc5160::SpiStatus']]],
-  ['start_47',['Start',['../classFatigueTestMotion.html#aedf901d32a07a14e2eba330abf2988e9',1,'FatigueTestMotion']]],
+  ['start_47',['Start',['../classFatigueTestMotion.html#aedf901d32a07a14e2eba330abf2988e9',1,'FatigueTestMotion::Start()'],['../classSinusoidalMotion.html#a51a5379e8aa711434061d1765e453a5d',1,'SinusoidalMotion::Start()']]],
   ['stealthchopconfig_48',['StealthChopConfig',['../structtmc5160_1_1StealthChopConfig.html#afe186986cb49797f040e4337363c8865',1,'tmc5160::StealthChopConfig']]],
   ['stepspersectommpersec_49',['StepsPerSecToMmPerSec',['../namespacetmc5160.html#a3ca0a55137bd6942ec881f0a1f6e2c88',1,'tmc5160']]],
   ['stepspersectorpm_50',['StepsPerSecToRpm',['../namespacetmc5160.html#a79abd58070d1876b3f7cebf88192b7d4',1,'tmc5160']]],
   ['stepstobeltteeth_51',['StepsToBeltTeeth',['../namespacetmc5160.html#aa11d045a26705ebd8c142414d9b3d0b7',1,'tmc5160']]],
   ['stepstodegrees_52',['StepsToDegrees',['../namespacetmc5160.html#a13c113ece8bf9e72134ead3dcd3e45f0',1,'tmc5160']]],
   ['stepstomm_53',['StepsToMm',['../namespacetmc5160.html#a29e5fff6de2d7590153c6bc315c7c4f0',1,'tmc5160']]],
-  ['stop_54',['Stop',['../structtmc5160_1_1TMC5160_1_1RampControl.html#ad2ad80fe557a2249e54cd9593b68570e',1,'tmc5160::TMC5160::RampControl::Stop()'],['../classFatigueTestMotion.html#a1b73c95ad6dfe1deaa3dc5a3b271bd2e',1,'FatigueTestMotion::Stop()']]],
+  ['stop_54',['Stop',['../structtmc5160_1_1TMC5160_1_1RampControl.html#ad2ad80fe557a2249e54cd9593b68570e',1,'tmc5160::TMC5160::RampControl::Stop()'],['../classFatigueTestMotion.html#a1b73c95ad6dfe1deaa3dc5a3b271bd2e',1,'FatigueTestMotion::Stop()'],['../classSinusoidalMotion.html#a026ba561e2570d0871d50733860ecfcc',1,'SinusoidalMotion::Stop()']]],
   ['stopleft_55',['StopLeft',['../structtmc5160_1_1SpiStatus.html#a463b57b65713d2d2dea0e37f582bca01',1,'tmc5160::SpiStatus']]],
   ['stopright_56',['StopRight',['../structtmc5160_1_1SpiStatus.html#a066c26ebb9822c48d934e711dc4635c9',1,'tmc5160::SpiStatus']]]
 ];

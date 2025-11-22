@@ -7,7 +7,7 @@ var searchData=
   ['uartreceive_4',['UartReceive',['../classtmc5160_1_1UartCommInterface.html#a6d4cfd5d31ad3136308bc60e50ff01f3',1,'tmc5160::UartCommInterface']]],
   ['uartsend_5',['UartSend',['../classtmc5160_1_1UartCommInterface.html#a12c4a55cd8e33a81c572b4c3f70ce75c',1,'tmc5160::UartCommInterface']]],
   ['unlock_6',['unlock',['../classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf',1,'TmcMutexGuard']]],
-  ['update_7',['Update',['../classFatigueTestMotion.html#a40e43a61bc8beddb3df12e7d3b72b141',1,'FatigueTestMotion']]],
+  ['update_7',['Update',['../classFatigueTestMotion.html#a40e43a61bc8beddb3df12e7d3b72b141',1,'FatigueTestMotion::Update()'],['../classSinusoidalMotion.html#a512c1210fa12ebccb44c33502b59b29f',1,'SinusoidalMotion::Update()']]],
   ['updatechainlength_8',['UpdateChainLength',['../classtmc5160_1_1TMC5160DaisyChain.html#a344078dd6dd9219786be00cf79932983',1,'tmc5160::TMC5160DaisyChain']]],
   ['updatesinuousmotion_9',['UpdateSinuousMotion',['../classFatigueTestMotion.html#a00b20bc353584e6851ec34eb34c95205',1,'FatigueTestMotion']]]
 ];

@@ -1,13 +1,8 @@
 <map id="tmc5160::CommInterface::GpioSet" name="tmc5160::CommInterface::GpioSet">
-<area shape="rect" id="Node000001" title="Set GPIO pin signal state (output control)" alt="" coords="591,37,779,77"/>
-<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="725,26,711,19,685,16,662,18,648,23,643,29,646,36,641,38,638,28,645,18,661,13,685,11,712,14,727,21"/>
-<area shape="rect" id="Node000002" href="$classtmc5160_1_1CommInterface.html#a04a535eca26abe5bb4202599a5c16236" title="Set GPIO pin to active state (convenience method)" alt="" coords="355,5,543,45"/>
-<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="577,45,543,41,543,35,578,40"/>
-<area shape="rect" id="Node000005" href="$classtmc5160_1_1CommInterface.html#ad064b6a453060d10c27ce67ca88158ba" title="Set GPIO pin to inactive state (convenience method)" alt="" coords="355,69,543,109"/>
-<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="578,75,543,79,543,74,577,69"/>
-<area shape="rect" id="Node000003" href="$classSinusoidalMotion.html#ad6726f6da321f0c178bd223d17305d74" title="Run sinusoidal motion (call repeatedly in loop)" alt="" coords="140,45,307,70"/>
-<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="341,43,307,48,306,43,340,38"/>
-<area shape="rect" id="Node000004" href="$sinusoidal_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,45,92,70"/>
-<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="126,60,92,60,92,55,126,55"/>
-<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="340,77,306,72,307,66,341,71"/>
+<area shape="rect" id="Node000001" title="Set GPIO pin signal state (output control)" alt="" coords="241,37,429,77"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="375,26,361,19,335,16,313,18,299,23,294,29,297,36,292,38,289,28,296,18,312,13,335,11,363,14,378,21"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1CommInterface.html#a04a535eca26abe5bb4202599a5c16236" title="Set GPIO pin to active state (convenience method)" alt="" coords="5,5,193,45"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="227,45,193,41,194,35,228,40"/>
+<area shape="rect" id="Node000003" href="$classtmc5160_1_1CommInterface.html#ad064b6a453060d10c27ce67ca88158ba" title="Set GPIO pin to inactive state (convenience method)" alt="" coords="5,69,193,109"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="228,75,194,79,193,74,227,69"/>
 </map>

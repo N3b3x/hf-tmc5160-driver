@@ -1,11 +1,7 @@
 <map id="tmc5160::CommInterface::SignalToGpioLevel" name="tmc5160::CommInterface::SignalToGpioLevel">
-<area shape="rect" id="Node000001" title="Convert signal state to physical GPIO level." alt="" coords="543,23,731,63"/>
-<area shape="rect" id="Node000002" href="$classEsp32SPI.html#a31c4d53a51a04f8b7d8fab4f5cfca4ca" title="Set GPIO pin state." alt="" coords="355,31,495,56"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="529,46,495,46,495,41,529,41"/>
-<area shape="rect" id="Node000003" href="$gpio__pin__config__example_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="180,5,267,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="341,35,267,26,267,21,341,30"/>
-<area shape="rect" id="Node000004" href="$classSinusoidalMotion.html#ad6726f6da321f0c178bd223d17305d74" title="Run sinusoidal motion (call repeatedly in loop)" alt="" coords="140,55,307,80"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="341,56,307,60,306,55,341,51"/>
-<area shape="rect" id="Node000005" href="$sinusoidal_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,55,92,80"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="126,70,92,70,92,65,126,65"/>
+<area shape="rect" id="Node000001" title="Convert signal state to physical GPIO level." alt="" coords="328,5,516,45"/>
+<area shape="rect" id="Node000002" href="$classEsp32SPI.html#a31c4d53a51a04f8b7d8fab4f5cfca4ca" title="Set GPIO pin state." alt="" coords="140,13,280,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="314,28,280,28,280,23,314,23"/>
+<area shape="rect" id="Node000003" href="$gpio__pin__config__example_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,13,92,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="127,28,92,28,92,23,127,23"/>
 </map>

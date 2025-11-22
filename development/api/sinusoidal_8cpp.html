@@ -103,6 +103,7 @@ $(function(){initNavTree('sinusoidal_8cpp.html',''); initResizable(); });
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="tmc5160_8hpp_source.html">../../../inc/tmc5160.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="esp32__tmc5160__bus_8hpp_source.html">esp32_tmc5160_bus.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp32__tmc5160__bus__config_8hpp_source.html">esp32_tmc5160_bus_config.hpp</a>&quot;</code><br />
 <code>#include &quot;esp_log.h&quot;</code><br />
 <code>#include &quot;esp_timer.h&quot;</code><br />
 <code>#include &quot;freertos/FreeRTOS.h&quot;</code><br />
@@ -111,13 +112,13 @@ $(function(){initNavTree('sinusoidal_8cpp.html',''); initResizable(); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for sinusoidal.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="sinusoidal_8cpp__incl.svg" width="2503" height="403"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="sinusoidal_8cpp__incl.svg" width="2611" height="403"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSinusoidalMotion.html">SinusoidalMotion</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sinusoidal motion controller class.  <a href="classSinusoidalMotion.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sinusoidal motion controller class using internal ramp generator.  <a href="classSinusoidalMotion.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -132,18 +133,26 @@ Variables</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Sinusoidal motion pattern example for TMC5160 stepper motor driver. </p>
-<p>This example demonstrates sinusoidal motion control using the TMC5160 driver. The motor moves in a sinusoidal pattern with configurable frequency, amplitude, and number of rounds.</p>
+<p>This example demonstrates sinusoidal motion control using the TMC5160's internal ramp generator. The motor velocity varies in a sinusoidal pattern using velocity mode control.</p>
+<p>Configured for NEMA 44mm x 44mm body stepper motors (regular small steppers):</p><ul>
+<li>Typical specs: 1.8° step angle (200 steps/rev), 0.5-1.5A per phase, 24V</li>
+<li>Uses 16 microsteps for smooth motion</li>
+<li>Current set to ~1.0A run, ~0.3A hold (adjust based on your motor)</li>
+<li>Optimized for 24V operation (better performance than 12V)</li>
+</ul>
 <p>Hardware Requirements:</p><ul>
 <li>ESP32 development board</li>
 <li>TMC5160 stepper motor driver</li>
-<li>Stepper motor connected to TMC5160</li>
+<li>NEMA 44mm stepper motor connected to TMC5160</li>
 <li>SPI connection between ESP32 and TMC5160</li>
+<li>Chip must be in SPI_INTERNAL_RAMP mode (SPI_MODE=HIGH, SD_MODE=LOW)</li>
 </ul>
-<p>Pin Configuration (modify as needed):</p><ul>
-<li>SPI: MOSI=23, MISO=19, SCLK=18, CS=5</li>
-<li>Control: EN=2, DIR=4, STEP=15</li>
+<p>Pin Configuration (using standard test config):</p><ul>
+<li>SPI: MOSI=6, MISO=2, SCLK=5, CS=18</li>
+<li>Control: EN=11</li>
+<li>Clock: CLK=10</li>
+<li>Diagnostics: DIAG0=23, DIAG1=15</li>
 </ul>
-<p>Algorithm adapted from TMC5160-Sinusoidal-Movement archived driver.</p>
 <dl class="section author"><dt>Author</dt><dd>Nebiyu Tadesse </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2025 </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
@@ -164,7 +173,7 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="sinusoidal_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="884" height="634"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="sinusoidal_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="590" height="480"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

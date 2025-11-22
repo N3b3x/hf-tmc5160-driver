@@ -1,0 +1,5 @@
+<map id="SinusoidalMotion::Update" name="SinusoidalMotion::Update">
+<area shape="rect" id="Node000001" title="Update sinusoidal motion (call periodically)" alt="" coords="5,5,195,31"/>
+<area shape="rect" id="Node000002" href="$classSinusoidalMotion.html#a51a5379e8aa711434061d1765e453a5d" title="Initialize and start sinusoidal motion." alt="" coords="243,5,416,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,15,229,15,229,21,195,21"/>
+</map>

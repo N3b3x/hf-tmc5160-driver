@@ -1,16 +1,12 @@
 <map id="Esp32SPI::GetPinMapping" name="Esp32SPI::GetPinMapping">
-<area shape="rect" id="Node000001" title="Get pin mapping for a TMC5160 control pin." alt="" coords="555,55,743,80"/>
-<area shape="rect" id="Node000002" href="$pin__config__struct__example_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="387,5,474,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="578,54,473,30,475,25,579,49"/>
-<area shape="rect" id="Node000003" href="$classEsp32SPI.html#acfee848bde351b677ecbc4d69d6381f1" title="Read GPIO pin state." alt="" coords="355,55,507,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="540,70,507,70,507,65,540,65"/>
-<area shape="rect" id="Node000005" href="$classEsp32SPI.html#a31c4d53a51a04f8b7d8fab4f5cfca4ca" title="Set GPIO pin state." alt="" coords="361,104,501,129"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="579,86,488,107,487,101,578,80"/>
-<area shape="rect" id="Node000004" href="$gpio__pin__config__example_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="180,55,267,80"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="341,70,267,70,267,65,341,65"/>
-<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="363,103,266,80,268,75,364,98"/>
-<area shape="rect" id="Node000006" href="$classSinusoidalMotion.html#ad6726f6da321f0c178bd223d17305d74" title="Run sinusoidal motion (call repeatedly in loop)" alt="" coords="140,104,307,129"/>
-<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="347,119,307,119,307,114,347,114"/>
-<area shape="rect" id="Node000007" href="$sinusoidal_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,104,92,129"/>
-<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="126,119,92,119,92,114,126,114"/>
+<area shape="rect" id="Node000001" title="Get pin mapping for a TMC5160 control pin." alt="" coords="340,55,528,80"/>
+<area shape="rect" id="Node000002" href="$pin__config__struct__example_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="173,5,259,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="363,54,259,30,260,25,364,49"/>
+<area shape="rect" id="Node000003" href="$classEsp32SPI.html#acfee848bde351b677ecbc4d69d6381f1" title="Read GPIO pin state." alt="" coords="140,55,292,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="326,70,293,70,293,65,326,65"/>
+<area shape="rect" id="Node000005" href="$classEsp32SPI.html#a31c4d53a51a04f8b7d8fab4f5cfca4ca" title="Set GPIO pin state." alt="" coords="146,104,286,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="365,86,274,107,272,101,363,80"/>
+<area shape="rect" id="Node000004" href="$gpio__pin__config__example_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,80,92,105"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="127,84,93,89,92,84,126,78"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="132,107,92,101,93,96,133,102"/>
 </map>

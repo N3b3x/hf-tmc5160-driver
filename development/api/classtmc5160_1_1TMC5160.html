@@ -281,7 +281,7 @@ Usage Example</h2>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Enable motor</span></div>
 <div class="line">driver.motorControl.Enable();</div>
-<div class="ttc" id="aclasstmc5160_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:1362</div></div>
+<div class="ttc" id="aclasstmc5160_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:1364</div></div>
 <div class="ttc" id="aclasstmc5160_1_1TMC5160_html"><div class="ttname"><a href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a></div><div class="ttdoc">Main class representing a TMC5160 stepper motor driver.</div><div class="ttdef"><b>Definition</b> tmc5160.hpp:101</div></div>
 <div class="ttc" id="anamespacetmc5160_html_ac039fd52ff49abd3359ab16891f4afc2a1e66935e3ab51cc2128e078cfd49d845"><div class="ttname"><a href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a1e66935e3ab51cc2128e078cfd49d845">tmc5160::RampMode::POSITIONING</a></div><div class="ttdeci">@ POSITIONING</div><div class="ttdoc">Positioning mode using all A, D and V parameters.</div></div>
 <div class="ttc" id="astructtmc5160_1_1DriverConfig_html"><div class="ttname"><a href="structtmc5160_1_1DriverConfig.html">tmc5160::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc5160_config.hpp:43</div></div>
@@ -447,6 +447,11 @@ template&lt;typename CommType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true if mode was read successfully, false if pins are not configured</dd></dl>
 <p>This method reads the current state of SPI_MODE (pin 22) and SD_MODE (pin 21) pins if they are connected to GPIO inputs/outputs.</p>
 <dl class="section note"><dt>Note</dt><dd>This reads the current pin state, which may not reflect the actual chip mode if the chip hasn't been reset since the pins were changed. </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1TMC5160_af89607dcb45b6985add58ce368dc6469_icgraph.svg" width="354" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -480,7 +485,7 @@ template&lt;typename CommType &gt; </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1TMC5160_a721b663605378407cc1303b5c8f5b6fb_icgraph.svg" width="583" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1TMC5160_a721b663605378407cc1303b5c8f5b6fb_icgraph.svg" width="368" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -747,6 +752,11 @@ Mode pin mapping:<ul>
 <li>UART_INTERNAL_RAMP: SPI_MODE=LOW, SD_MODE=LOW </li>
 </ul>
 </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1TMC5160_a12f76f30d3cf734b5a395ebad0acc917_icgraph.svg" width="352" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
