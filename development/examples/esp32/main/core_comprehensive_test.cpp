@@ -282,7 +282,7 @@ bool test_motor_parameter_settings() noexcept {
   uint32_t chopconf_value = 0;
   if (!handle->driver->GetComm().ReadRegister(tmc5160::Registers::CHOPCONF, chopconf_value)) {
     ESP_LOGE(TAG, "Failed to read CHOPCONF register");
-    return false;9
+    return false;
   }
   
   tmc5160::CHOPCONF_Register chopconf{};
