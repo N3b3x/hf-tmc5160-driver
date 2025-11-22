@@ -66,6 +66,7 @@ public:
    * @param host SPI host device (e.g., SPI2_HOST)
    * @param pin_config Complete pin configuration including SPI pins and TMC5160 control pins
    * @param clock_speed_hz SPI clock speed in Hz (max 4 MHz recommended)
+   * @param active_levels Pin active level configuration (optional, uses datasheet defaults if not provided)
    *
    * This is the recommended constructor as it allows all GPIO pins (SPI + TMC5160 control)
    * to be configured in a single structure, making it easier to manage pin assignments.
@@ -73,10 +74,24 @@ public:
    * @note Compound pins are automatically handled - if you specify dir_pin, ref_right_pin
    *       is automatically mapped to the same GPIO (and vice versa). Same for step_pin/ref_left_pin,
    *       enc_a_pin/dc_in_pin, enc_b_pin/dc_en_pin, and enc_n_pin/dc_out_pin.
-   * @note EN pin (DRV_ENN) is active LOW to enable the power stage.
+   * @note EN pin (DRV_ENN) is active LOW to enable the power stage by default.
+   * @note Users can override active levels by creating a PinActiveLevels struct, modifying
+   *       specific pins, and passing it to this constructor.
+   *
+   * Example:
+   * @code
+   * // Use defaults
+   * Esp32SPI spi(SPI2_HOST, pin_config);
+   *
+   * // Override for custom board
+   * tmc5160::PinActiveLevels levels;
+   * levels.en = true; // Board has inverter on EN pin
+   * Esp32SPI spi(SPI2_HOST, pin_config, 4000000, levels);
+   * @endcode
    */
   Esp32SPI(spi_host_device_t host, const tmc5160::Esp32SpiPinConfig& pin_config,
-           uint32_t clock_speed_hz = 4000000) noexcept
+           uint32_t clock_speed_hz = 4000000,
+           const tmc5160::PinActiveLevels& active_levels = tmc5160::PinActiveLevels{}) noexcept
       : SpiCommInterface(), // Active level management handled in this derived class
         host_(host), mosi_pin_(static_cast<gpio_num_t>(pin_config.spi_mosi)),
         miso_pin_(static_cast<gpio_num_t>(pin_config.spi_miso)),
@@ -99,13 +114,12 @@ public:
     // Apply pin configuration (handles compound pins automatically)
     ApplyPinConfig(pin_config.tmc5160_pins);
 
-    // Configure pin active levels based on TMC5160 datasheet defaults
-    // Users can override these via SetPinActiveLevel() if their board has inverters/NOT gates
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, false);      // DRV_ENN: LOW=enable (active LOW)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::DIR, true);      // REFR_DIR: HIGH=active (active HIGH)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::STEP, true);     // REFL_STEP: HIGH=active (active HIGH)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::REFR_DIR, true); // Same as DIR (active HIGH)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::REFL_STEP, true); // Same as STEP (active HIGH)
+    // Configure pin active levels from provided struct (or defaults)
+    // Apply active levels for all pins
+    for (int pin_idx = 0; pin_idx < 16; ++pin_idx) {
+      auto pin = static_cast<tmc5160::TMC5160CtrlPin>(pin_idx);
+      SetPinActiveLevel(pin, active_levels.GetActiveLevel(pin));
+    }
   }
 
 private:
@@ -159,6 +173,39 @@ private:
   }
 
 public:
+  /**
+   * @brief Configure pin active levels from PinActiveLevels struct
+   * @param active_levels Pin active level configuration structure
+   * 
+   * Allows users to update active levels after construction, useful for
+   * runtime configuration or if board setup changes.
+   * 
+   * Example:
+   * @code
+   * tmc5160::PinActiveLevels levels;
+   * levels.en = true; // Override EN pin active level
+   * spi.ConfigureActiveLevels(levels);
+   * @endcode
+   */
+  void ConfigureActiveLevels(const tmc5160::PinActiveLevels& active_levels) noexcept {
+    for (int pin_idx = 0; pin_idx < 16; ++pin_idx) {
+      auto pin = static_cast<tmc5160::TMC5160CtrlPin>(pin_idx);
+      SetPinActiveLevel(pin, active_levels.GetActiveLevel(pin));
+    }
+  }
+
+  /**
+   * @brief Get current active level configuration
+   * @return PinActiveLevels struct with current active level settings
+   */
+  [[nodiscard]] tmc5160::PinActiveLevels GetActiveLevels() const noexcept {
+    tmc5160::PinActiveLevels levels;
+    for (int pin_idx = 0; pin_idx < 16; ++pin_idx) {
+      auto pin = static_cast<tmc5160::TMC5160CtrlPin>(pin_idx);
+      levels.SetActiveLevel(pin, pinActiveLevels_[pin_idx]);
+    }
+    return levels;
+  }
 
   /**
    * @brief Construct ESP32 SPI communication interface with separate SPI pins and TMC5160 pin config
@@ -169,16 +216,18 @@ public:
    * @param cs_pin CS GPIO pin
    * @param pin_config TMC5160 pin configuration structure (handles compound pins automatically)
    * @param clock_speed_hz SPI clock speed in Hz (max 4 MHz recommended)
+   * @param active_levels Pin active level configuration (optional, uses datasheet defaults if not provided)
    *
    * @note Compound pins are automatically handled - if you specify dir_pin, ref_right_pin
    *       is automatically mapped to the same GPIO (and vice versa). Same for step_pin/ref_left_pin,
    *       enc_a_pin/dc_in_pin, enc_b_pin/dc_en_pin, and enc_n_pin/dc_out_pin.
-   * @note EN pin (DRV_ENN) is active LOW to enable the power stage.
+   * @note EN pin (DRV_ENN) is active LOW to enable the power stage by default.
    * @note This constructor is provided for backward compatibility. Consider using the
    *       constructor with Esp32SpiPinConfig for a more unified configuration.
    */
   Esp32SPI(spi_host_device_t host, gpio_num_t mosi_pin, gpio_num_t miso_pin, gpio_num_t sclk_pin, gpio_num_t cs_pin,
-           const tmc5160::TMC5160PinConfig& pin_config, uint32_t clock_speed_hz = 4000000) noexcept
+           const tmc5160::TMC5160PinConfig& pin_config, uint32_t clock_speed_hz = 4000000,
+           const tmc5160::PinActiveLevels& active_levels = tmc5160::PinActiveLevels{}) noexcept
       : SpiCommInterface(), // Active level management handled in this derived class
         host_(host), mosi_pin_(mosi_pin), miso_pin_(miso_pin), sclk_pin_(sclk_pin), cs_pin_(cs_pin),
         en_pin_(static_cast<gpio_num_t>(pin_config.en_pin)),
@@ -194,13 +243,12 @@ public:
     // Apply pin configuration (handles compound pins automatically)
     ApplyPinConfig(pin_config);
 
-    // Configure pin active levels based on TMC5160 datasheet defaults
-    // Users can override these via SetPinActiveLevel() if their board has inverters/NOT gates
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, false);      // DRV_ENN: LOW=enable (active LOW)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::DIR, true);       // REFR_DIR: HIGH=active (active HIGH)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::STEP, true);      // REFL_STEP: HIGH=active (active HIGH)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::REFR_DIR, true);  // Same as DIR (active HIGH)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::REFL_STEP, true); // Same as STEP (active HIGH)
+    // Configure pin active levels from provided struct (or defaults)
+    // Apply active levels for all pins
+    for (int pin_idx = 0; pin_idx < 16; ++pin_idx) {
+      auto pin = static_cast<tmc5160::TMC5160CtrlPin>(pin_idx);
+      SetPinActiveLevel(pin, active_levels.GetActiveLevel(pin));
+    }
   }
 
   /**
@@ -215,15 +263,17 @@ public:
    * @param step_pin STEP control pin (REFL_STEP, optional - used in external step/dir mode, use -1 if not connected)
    * @param clock_speed_hz SPI clock speed in Hz (max 4 MHz recommended)
    *
+   * @param active_levels Pin active level configuration (optional, uses datasheet defaults if not provided)
+   *
    * @note For SPI mode with internal ramp generator (SD_MODE=0), DIR and STEP pins
    *       are not used. Pass -1 if not connected.
-   * @note EN pin (DRV_ENN) is active LOW to enable the power stage.
-   *       Active level is automatically configured: SetPinActiveLevel(TMC5160CtrlPin::EN, false)
+   * @note EN pin (DRV_ENN) is active LOW to enable the power stage by default.
    * @deprecated Use constructor with TMC5160PinConfig struct for better pin management
    */
   Esp32SPI(spi_host_device_t host, gpio_num_t mosi_pin, gpio_num_t miso_pin, gpio_num_t sclk_pin, gpio_num_t cs_pin,
            gpio_num_t en_pin, gpio_num_t dir_pin = static_cast<gpio_num_t>(-1),
-           gpio_num_t step_pin = static_cast<gpio_num_t>(-1), uint32_t clock_speed_hz = 4000000) noexcept
+           gpio_num_t step_pin = static_cast<gpio_num_t>(-1), uint32_t clock_speed_hz = 4000000,
+           const tmc5160::PinActiveLevels& active_levels = tmc5160::PinActiveLevels{}) noexcept
       : SpiCommInterface(), // Active level management handled in this derived class
         host_(host), mosi_pin_(mosi_pin), miso_pin_(miso_pin), sclk_pin_(sclk_pin), cs_pin_(cs_pin), en_pin_(en_pin),
         dir_pin_(dir_pin), step_pin_(step_pin), clock_speed_hz_(clock_speed_hz), device_handle_(nullptr),
@@ -245,13 +295,12 @@ public:
       pin_mapping_[static_cast<size_t>(tmc5160::TMC5160CtrlPin::REFL_STEP)] = step_pin; // Same physical pin
     }
 
-    // Configure pin active levels based on TMC5160 datasheet defaults
-    // Users can override these via SetPinActiveLevel() if their board has inverters/NOT gates
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, false);      // DRV_ENN: LOW=enable (active LOW)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::DIR, true);     // REFR_DIR: HIGH=active (active HIGH)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::STEP, true);     // REFL_STEP: HIGH=active (active HIGH)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::REFR_DIR, true); // Same as DIR (active HIGH)
-    SetPinActiveLevel(tmc5160::TMC5160CtrlPin::REFL_STEP, true); // Same as STEP (active HIGH)
+    // Configure pin active levels from provided struct (or defaults)
+    // Apply active levels for all pins
+    for (int pin_idx = 0; pin_idx < 16; ++pin_idx) {
+      auto pin = static_cast<tmc5160::TMC5160CtrlPin>(pin_idx);
+      SetPinActiveLevel(pin, active_levels.GetActiveLevel(pin));
+    }
   }
 
   /**

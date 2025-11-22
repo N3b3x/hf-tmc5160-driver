@@ -227,6 +227,116 @@ enum class GpioSignal : uint8_t {
 };
 
 /**
+ * @brief Pin active level configuration structure
+ *
+ * This structure defines the physical GPIO level (HIGH or LOW) that corresponds
+ * to the ACTIVE state for each TMC5160 control pin. Default values are based
+ * on the TMC5160 datasheet specifications.
+ *
+ * Users can create an instance of this struct, modify specific pin active levels
+ * if their board has inverters, NOT gates, or other logic that changes pin
+ * polarity, and pass it to the communication interface constructor.
+ *
+ * Example usage:
+ * @code
+ * // Use defaults (datasheet-compliant)
+ * tmc5160::PinActiveLevels active_levels; // Uses all defaults
+ *
+ * // Override for custom board with inverter on EN pin
+ * tmc5160::PinActiveLevels active_levels;
+ * active_levels.en = true; // EN pin has inverter, so ACTIVE = HIGH
+ *
+ * // Pass to constructor
+ * Esp32SPI spi(SPI2_HOST, pin_config, 4000000, active_levels);
+ * @endcode
+ */
+struct PinActiveLevels {
+  // Basic control pins (per TMC5160 datasheet)
+  bool en{false};      ///< EN pin (DRV_ENN, pin 28): LOW=enable (active LOW)
+  bool dir{true};      ///< DIR pin (REFR_DIR, pin 18): HIGH=active (active HIGH)
+  bool step{true};     ///< STEP pin (REFL_STEP, pin 17): HIGH=active (active HIGH)
+
+  // Reference switch pins (when SD_MODE=0)
+  bool ref_left{false};  ///< REFL_STEP (pin 17): LOW=active (typically active LOW)
+  bool ref_right{false}; ///< REFR_DIR (pin 18): LOW=active (typically active LOW)
+
+  // Diagnostic pins (read-only outputs from TMC5160 - not typically configured)
+  bool diag0{true};  ///< DIAG0 (pin 26): Read-only output (default HIGH, but not used for control)
+  bool diag1{true};  ///< DIAG1 (pin 27): Read-only output (default HIGH, but not used for control)
+
+  // Encoder pins (when SD_MODE=0, read-only inputs)
+  bool enca{true};  ///< ENCA (pin 24): Read-only input (default HIGH, but not used for control)
+  bool encb{true};  ///< ENCB (pin 23): Read-only input (default HIGH, but not used for control)
+  bool encn{true};  ///< ENCN (pin 25): Read-only input (default HIGH, but not used for control)
+
+  // DC Step pins (when SD_MODE=1, SPI_MODE=1)
+  bool dcen{true};  ///< DCEN (pin 23): HIGH=active (active HIGH)
+  bool dcin{true};  ///< DCIN (pin 24): HIGH=active (active HIGH)
+  bool dco{true};   ///< DCO (pin 25): Read-only output (default HIGH, but not used for control)
+
+  // Clock pin
+  bool clk{true}; ///< CLK (pin 12): HIGH=active (active HIGH, if used as output)
+
+  // Mode configuration pins (if available as control pins)
+  bool spi_mode{true};  ///< SPI_MODE (pin 22): HIGH=SPI mode (active HIGH)
+  bool sd_mode{false};  ///< SD_MODE (pin 21): LOW=Internal ramp (active LOW for internal ramp mode)
+
+  /**
+   * @brief Get active level for a specific pin
+   * @param pin The TMC5160 control pin
+   * @return The active level (true=HIGH, false=LOW) for the pin
+   */
+  [[nodiscard]] bool GetActiveLevel(TMC5160CtrlPin pin) const noexcept {
+    switch (pin) {
+      case TMC5160CtrlPin::EN:        return en;
+      case TMC5160CtrlPin::DIR:       return dir;
+      case TMC5160CtrlPin::STEP:      return step;
+      case TMC5160CtrlPin::REFL_STEP: return ref_left;
+      case TMC5160CtrlPin::REFR_DIR:  return ref_right;
+      case TMC5160CtrlPin::DIAG0:     return diag0;
+      case TMC5160CtrlPin::DIAG1:     return diag1;
+      case TMC5160CtrlPin::ENCA:      return enca;
+      case TMC5160CtrlPin::ENCB:      return encb;
+      case TMC5160CtrlPin::ENCN:      return encn;
+      case TMC5160CtrlPin::DCEN:      return dcen;
+      case TMC5160CtrlPin::DCIN:      return dcin;
+      case TMC5160CtrlPin::DCO:       return dco;
+      case TMC5160CtrlPin::CLK:       return clk;
+      case TMC5160CtrlPin::SPI_MODE:  return spi_mode;
+      case TMC5160CtrlPin::SD_MODE:   return sd_mode;
+      default:                        return true; // Default to HIGH
+    }
+  }
+
+  /**
+   * @brief Set active level for a specific pin
+   * @param pin The TMC5160 control pin
+   * @param active_level The active level (true=HIGH, false=LOW)
+   */
+  void SetActiveLevel(TMC5160CtrlPin pin, bool active_level) noexcept {
+    switch (pin) {
+      case TMC5160CtrlPin::EN:        en = active_level; break;
+      case TMC5160CtrlPin::DIR:       dir = active_level; break;
+      case TMC5160CtrlPin::STEP:      step = active_level; break;
+      case TMC5160CtrlPin::REFL_STEP: ref_left = active_level; break;
+      case TMC5160CtrlPin::REFR_DIR:  ref_right = active_level; break;
+      case TMC5160CtrlPin::DIAG0:     diag0 = active_level; break;
+      case TMC5160CtrlPin::DIAG1:     diag1 = active_level; break;
+      case TMC5160CtrlPin::ENCA:      enca = active_level; break;
+      case TMC5160CtrlPin::ENCB:      encb = active_level; break;
+      case TMC5160CtrlPin::ENCN:      encn = active_level; break;
+      case TMC5160CtrlPin::DCEN:      dcen = active_level; break;
+      case TMC5160CtrlPin::DCIN:      dcin = active_level; break;
+      case TMC5160CtrlPin::DCO:       dco = active_level; break;
+      case TMC5160CtrlPin::CLK:       clk = active_level; break;
+      case TMC5160CtrlPin::SPI_MODE:  spi_mode = active_level; break;
+      case TMC5160CtrlPin::SD_MODE:   sd_mode = active_level; break;
+      default:                        break;
+    }
+  }
+};
+
+/**
  * @brief TMC5160 GPIO pin configuration structure
  *
  * This structure allows configuring all TMC5160 control pins in a single place.
