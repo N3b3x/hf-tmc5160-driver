@@ -1,6 +1,6 @@
 var classtmc5160_1_1SpiCommInterface =
 [
-    [ "SpiCommInterface", "classtmc5160_1_1SpiCommInterface.html#afbb5c21bacf9d8c2d7c4ee0d049b7e7d", null ],
+    [ "SpiCommInterface", "classtmc5160_1_1SpiCommInterface.html#aa89c2b30d1ecc5d235d5349ca8831b7b", null ],
     [ "~SpiCommInterface", "classtmc5160_1_1SpiCommInterface.html#ae8e442cc0ae880b3f4a131af6769040d", null ],
     [ "SpiCommInterface", "classtmc5160_1_1SpiCommInterface.html#a76f611bc2098fccad328994da8122402", null ],
     [ "SpiCommInterface", "classtmc5160_1_1SpiCommInterface.html#a64013c34c8a49b7fb950062d5a08c8a3", null ],

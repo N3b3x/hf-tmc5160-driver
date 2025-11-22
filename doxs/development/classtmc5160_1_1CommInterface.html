@@ -94,7 +94,6 @@ $(function(){initNavTree('classtmc5160_1_1CommInterface.html',''); initResizable
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classtmc5160_1_1CommInterface-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">tmc5160::CommInterface&lt; Derived &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -112,9 +111,9 @@ Inheritance diagram for tmc5160::CommInterface&lt; Derived &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7e3d53e55dcbadc4d3ef72cfdd2c6e09" id="r_a7e3d53e55dcbadc4d3ef72cfdd2c6e09"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7e3d53e55dcbadc4d3ef72cfdd2c6e09">CommInterface</a> (bool en_active_level, bool dir_active_level, bool step_active_level) noexcept</td></tr>
-<tr class="memdesc:a7e3d53e55dcbadc4d3ef72cfdd2c6e09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct communication interface with pin active level configuration.  <br /></td></tr>
-<tr class="separator:a7e3d53e55dcbadc4d3ef72cfdd2c6e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1146e6d0fe00fb39c231b0f497894320" id="r_a1146e6d0fe00fb39c231b0f497894320"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1146e6d0fe00fb39c231b0f497894320">CommInterface</a> () noexcept=default</td></tr>
+<tr class="memdesc:a1146e6d0fe00fb39c231b0f497894320"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct communication interface.  <br /></td></tr>
+<tr class="separator:a1146e6d0fe00fb39c231b0f497894320"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46c4b49c490bef634653fb5083720c0a" id="r_a46c4b49c490bef634653fb5083720c0a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#a784e320454a771e190b3b376a67d9c29">CommMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a46c4b49c490bef634653fb5083720c0a">GetMode</a> () const noexcept</td></tr>
 <tr class="memdesc:a46c4b49c490bef634653fb5083720c0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the underlying communication mode used by this interface.  <br /></td></tr>
 <tr class="separator:a46c4b49c490bef634653fb5083720c0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,21 +129,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a71f53cca7f2c86a1d37755e5d6f6fe8b" id="r_a71f53cca7f2c86a1d37755e5d6f6fe8b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a71f53cca7f2c86a1d37755e5d6f6fe8b">GpioRead</a> (<a class="el" href="namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4">TMC5160CtrlPin</a> pin, <a class="el" href="namespacetmc5160.html#ad80db8b24f711cb069ac28ec227783b8">GpioSignal</a> &amp;signal) noexcept</td></tr>
 <tr class="memdesc:a71f53cca7f2c86a1d37755e5d6f6fe8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read GPIO pin signal state (input state)  <br /></td></tr>
 <tr class="separator:a71f53cca7f2c86a1d37755e5d6f6fe8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67225c93493fa73755ebb0fc91d46488" id="r_a67225c93493fa73755ebb0fc91d46488"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67225c93493fa73755ebb0fc91d46488">SignalToGpioLevel</a> (<a class="el" href="namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4">TMC5160CtrlPin</a> pin, <a class="el" href="namespacetmc5160.html#ad80db8b24f711cb069ac28ec227783b8">GpioSignal</a> signal) const noexcept</td></tr>
-<tr class="memdesc:a67225c93493fa73755ebb0fc91d46488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert signal state to physical GPIO level.  <br /></td></tr>
-<tr class="separator:a67225c93493fa73755ebb0fc91d46488"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a867b98108ee6b70cbb86d362fd76baf1" id="r_a867b98108ee6b70cbb86d362fd76baf1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#ad80db8b24f711cb069ac28ec227783b8">GpioSignal</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a867b98108ee6b70cbb86d362fd76baf1">GpioLevelToSignal</a> (<a class="el" href="namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4">TMC5160CtrlPin</a> pin, bool gpio_level) const noexcept</td></tr>
-<tr class="memdesc:a867b98108ee6b70cbb86d362fd76baf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert physical GPIO level to signal state.  <br /></td></tr>
-<tr class="separator:a867b98108ee6b70cbb86d362fd76baf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04a535eca26abe5bb4202599a5c16236" id="r_a04a535eca26abe5bb4202599a5c16236"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04a535eca26abe5bb4202599a5c16236">GpioSetActive</a> (<a class="el" href="namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4">TMC5160CtrlPin</a> pin) noexcept</td></tr>
 <tr class="memdesc:a04a535eca26abe5bb4202599a5c16236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GPIO pin to active state (convenience method)  <br /></td></tr>
 <tr class="separator:a04a535eca26abe5bb4202599a5c16236"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad064b6a453060d10c27ce67ca88158ba" id="r_ad064b6a453060d10c27ce67ca88158ba"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad064b6a453060d10c27ce67ca88158ba">GpioSetInactive</a> (<a class="el" href="namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4">TMC5160CtrlPin</a> pin) noexcept</td></tr>
 <tr class="memdesc:ad064b6a453060d10c27ce67ca88158ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GPIO pin to inactive state (convenience method)  <br /></td></tr>
 <tr class="separator:ad064b6a453060d10c27ce67ca88158ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a371ba647c308b5cb3f8fdca5ff0bbf14" id="r_a371ba647c308b5cb3f8fdca5ff0bbf14"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a371ba647c308b5cb3f8fdca5ff0bbf14">SetPinActiveLevel</a> (<a class="el" href="namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4">TMC5160CtrlPin</a> pin, bool active_level) noexcept</td></tr>
-<tr class="memdesc:a371ba647c308b5cb3f8fdca5ff0bbf14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the active level for a specific pin.  <br /></td></tr>
-<tr class="separator:a371ba647c308b5cb3f8fdca5ff0bbf14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6624610e9b8fcb46f37b600ec6939a0" id="r_ab6624610e9b8fcb46f37b600ec6939a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6624610e9b8fcb46f37b600ec6939a0">DelayMs</a> (uint32_t ms) noexcept</td></tr>
 <tr class="memdesc:ab6624610e9b8fcb46f37b600ec6939a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delay execution for specified milliseconds.  <br /></td></tr>
 <tr class="separator:ab6624610e9b8fcb46f37b600ec6939a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,12 +161,6 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:ab963945f2ea8295488f51fb1d1625987"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8356d7708e0d688d5fd03c8b73dcbcd" id="r_ad8356d7708e0d688d5fd03c8b73dcbcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc5160_1_1CommInterface.html">CommInterface</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8356d7708e0d688d5fd03c8b73dcbcd">operator=</a> (<a class="el" href="classtmc5160_1_1CommInterface.html">CommInterface</a> &amp;&amp;)=default</td></tr>
 <tr class="separator:ad8356d7708e0d688d5fd03c8b73dcbcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:aa882e0b693093e9be2ebc64b3c5337b5" id="r_aa882e0b693093e9be2ebc64b3c5337b5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa882e0b693093e9be2ebc64b3c5337b5">pinActiveLevels_</a> [16] {}</td></tr>
-<tr class="memdesc:aa882e0b693093e9be2ebc64b3c5337b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pin active level configuration storage.  <br /></td></tr>
-<tr class="separator:aa882e0b693093e9be2ebc64b3c5337b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename Derived&gt;<br />
@@ -190,7 +174,7 @@ class tmc5160::CommInterface&lt; Derived &gt;</div><p>CRTP-based communication i
 <div class="line">  <span class="keywordtype">bool</span> gpioSet(...) { ... }</div>
 <div class="line">  <span class="comment">// ... implement other required methods</span></div>
 <div class="line">};</div>
-<div class="ttc" id="aclasstmc5160_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:1364</div></div>
+<div class="ttc" id="aclasstmc5160_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:1420</div></div>
 <div class="ttc" id="anamespacetmc5160_html_a784e320454a771e190b3b376a67d9c29"><div class="ttname"><a href="namespacetmc5160.html#a784e320454a771e190b3b376a67d9c29">tmc5160::CommMode</a></div><div class="ttdeci">CommMode</div><div class="ttdoc">Supported physical communication modes for TMC5160.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:148</div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
@@ -199,8 +183,8 @@ class tmc5160::CommInterface&lt; Derived &gt;</div><p>CRTP-based communication i
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a7e3d53e55dcbadc4d3ef72cfdd2c6e09" name="a7e3d53e55dcbadc4d3ef72cfdd2c6e09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e3d53e55dcbadc4d3ef72cfdd2c6e09">&#9670;&#160;</a></span>CommInterface() <span class="overload">[1/3]</span></h2>
+<a id="a1146e6d0fe00fb39c231b0f497894320" name="a1146e6d0fe00fb39c231b0f497894320"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1146e6d0fe00fb39c231b0f497894320">&#9670;&#160;</a></span>CommInterface() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -213,35 +197,19 @@ template&lt;typename Derived &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classtmc5160_1_1CommInterface.html">tmc5160::CommInterface</a>&lt; Derived &gt;::CommInterface </td>
           <td>(</td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>en_active_level</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>dir_active_level</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>step_active_level</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Construct communication interface with pin active level configuration. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">en_active_level</td><td>Physical GPIO level for EN pin when ACTIVE (true=HIGH, false=LOW) </td></tr>
-    <tr><td class="paramname">dir_active_level</td><td>Physical GPIO level for DIR pin when ACTIVE (true=HIGH, false=LOW) </td></tr>
-    <tr><td class="paramname">step_active_level</td><td>Physical GPIO level for STEP pin when ACTIVE (true=HIGH, false=LOW) </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Construct communication interface. </p>
+<p>Note: Pin active level configuration is handled by the derived class. The base class only deals with abstract signals (ACTIVE/INACTIVE). </p>
 
 </div>
 </div>
@@ -517,52 +485,6 @@ Here is the call graph for this function:</div>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1CommInterface_a46c4b49c490bef634653fb5083720c0a_icgraph.svg" width="199" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a867b98108ee6b70cbb86d362fd76baf1" name="a867b98108ee6b70cbb86d362fd76baf1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a867b98108ee6b70cbb86d362fd76baf1">&#9670;&#160;</a></span>GpioLevelToSignal()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Derived &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacetmc5160.html#ad80db8b24f711cb069ac28ec227783b8">GpioSignal</a> <a class="el" href="classtmc5160_1_1CommInterface.html">tmc5160::CommInterface</a>&lt; Derived &gt;::GpioLevelToSignal </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4">TMC5160CtrlPin</a></td>          <td class="paramname"><span class="paramname"><em>pin</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>gpio_level</em></span>&#160;) const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Convert physical GPIO level to signal state. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pin</td><td>The <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> control pin </td></tr>
-    <tr><td class="paramname">gpio_level</td><td>Physical GPIO level (true=HIGH, false=LOW) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Signal state (ACTIVE or INACTIVE) </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1CommInterface_a867b98108ee6b70cbb86d362fd76baf1_icgraph.svg" width="534" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -920,98 +842,6 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a371ba647c308b5cb3f8fdca5ff0bbf14" name="a371ba647c308b5cb3f8fdca5ff0bbf14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a371ba647c308b5cb3f8fdca5ff0bbf14">&#9670;&#160;</a></span>SetPinActiveLevel()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Derived &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classtmc5160_1_1CommInterface.html">tmc5160::CommInterface</a>&lt; Derived &gt;::SetPinActiveLevel </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4">TMC5160CtrlPin</a></td>          <td class="paramname"><span class="paramname"><em>pin</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>active_level</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Configure the active level for a specific pin. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pin</td><td>The <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> control pin to configure </td></tr>
-    <tr><td class="paramname">active_level</td><td>The physical GPIO level that represents ACTIVE state </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the configuration was successful, false otherwise </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1CommInterface_a371ba647c308b5cb3f8fdca5ff0bbf14_icgraph.svg" width="864" height="150"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a67225c93493fa73755ebb0fc91d46488" name="a67225c93493fa73755ebb0fc91d46488"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67225c93493fa73755ebb0fc91d46488">&#9670;&#160;</a></span>SignalToGpioLevel()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Derived &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classtmc5160_1_1CommInterface.html">tmc5160::CommInterface</a>&lt; Derived &gt;::SignalToGpioLevel </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4">TMC5160CtrlPin</a></td>          <td class="paramname"><span class="paramname"><em>pin</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacetmc5160.html#ad80db8b24f711cb069ac28ec227783b8">GpioSignal</a></td>          <td class="paramname"><span class="paramname"><em>signal</em></span>&#160;) const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Convert signal state to physical GPIO level. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pin</td><td>The <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> control pin </td></tr>
-    <tr><td class="paramname">signal</td><td>The signal state (ACTIVE or INACTIVE) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Physical GPIO level (true=HIGH, false=LOW) </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1CommInterface_a67225c93493fa73755ebb0fc91d46488_icgraph.svg" width="522" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
 <a id="ae8ac318a721a19100d7096485395d21e" name="ae8ac318a721a19100d7096485395d21e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae8ac318a721a19100d7096485395d21e">&#9670;&#160;</a></span>WriteRegister()</h2>
 
@@ -1067,42 +897,6 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1CommInterface_ae8ac318a721a19100d7096485395d21e_icgraph.svg" width="199" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="aa882e0b693093e9be2ebc64b3c5337b5" name="aa882e0b693093e9be2ebc64b3c5337b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa882e0b693093e9be2ebc64b3c5337b5">&#9670;&#160;</a></span>pinActiveLevels_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Derived &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classtmc5160_1_1CommInterface.html">tmc5160::CommInterface</a>&lt; Derived &gt;::pinActiveLevels_[16] {}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Pin active level configuration storage. </p>
-<p>Stores the physical GPIO level (HIGH or LOW) that corresponds to the ACTIVE state for each <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> control pin.</p>
-<p>Array size matches the number of pins in TMC5160CtrlPin enum. Default active levels:</p><ul>
-<li>EN: HIGH = disable (DRV_ENN is active HIGH to disable)</li>
-<li>DIR, STEP: HIGH = active</li>
-<li>Reference switches: LOW = active (typically active LOW)</li>
-<li>Diagnostic pins: Read-only, level depends on <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> state</li>
-<li>Encoder pins: Read-only, level depends on encoder state</li>
-<li>DC Step pins: DCEN/DCIN typically active HIGH, DCO is output </li>
-</ul>
 
 </div>
 </div>
