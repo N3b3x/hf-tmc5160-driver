@@ -945,17 +945,12 @@ template <typename Derived>
 class CommInterface {
 public:
   /**
-   * @brief Construct communication interface with pin active level
-   * configuration
-   * @param en_active_level Physical GPIO level for EN pin when ACTIVE
-   * (true=HIGH, false=LOW)
-   * @param dir_active_level Physical GPIO level for DIR pin when ACTIVE
-   * (true=HIGH, false=LOW)
-   * @param step_active_level Physical GPIO level for STEP pin when ACTIVE
-   * (true=HIGH, false=LOW)
+   * @brief Construct communication interface
+   * 
+   * Note: Pin active level configuration is handled by the derived class.
+   * The base class only deals with abstract signals (ACTIVE/INACTIVE).
    */
-  CommInterface(bool en_active_level, bool dir_active_level, bool step_active_level) noexcept
-      : pinActiveLevels_{en_active_level, dir_active_level, step_active_level} {}
+  CommInterface() noexcept = default;
 
   /**
    * @brief Get the underlying communication mode used by this interface
@@ -1020,28 +1015,6 @@ public:
   }
 
   /**
-   * @brief Convert signal state to physical GPIO level
-   * @param pin The TMC5160 control pin
-   * @param signal The signal state (ACTIVE or INACTIVE)
-   * @return Physical GPIO level (true=HIGH, false=LOW)
-   */
-  [[nodiscard]] bool SignalToGpioLevel(TMC5160CtrlPin pin, GpioSignal signal) const noexcept {
-    bool active_level = pinActiveLevels_[static_cast<int>(pin)];
-    return (signal == GpioSignal::ACTIVE) ? active_level : !active_level;
-  }
-
-  /**
-   * @brief Convert physical GPIO level to signal state
-   * @param pin The TMC5160 control pin
-   * @param gpio_level Physical GPIO level (true=HIGH, false=LOW)
-   * @return Signal state (ACTIVE or INACTIVE)
-   */
-  [[nodiscard]] GpioSignal GpioLevelToSignal(TMC5160CtrlPin pin, bool gpio_level) const noexcept {
-    bool active_level = pinActiveLevels_[static_cast<int>(pin)];
-    return (gpio_level == active_level) ? GpioSignal::ACTIVE : GpioSignal::INACTIVE;
-  }
-
-  /**
    * @brief Set GPIO pin to active state (convenience method)
    * @param pin The TMC5160 control pin to set active
    * @return true if the GPIO was set successfully, false otherwise
@@ -1059,37 +1032,7 @@ public:
     return GpioSet(pin, GpioSignal::INACTIVE);
   }
 
-  /**
-   * @brief Configure the active level for a specific pin
-   * @param pin The TMC5160 control pin to configure
-   * @param active_level The physical GPIO level that represents ACTIVE state
-   * @return true if the configuration was successful, false otherwise
-   */
-  bool SetPinActiveLevel(TMC5160CtrlPin pin, bool active_level) noexcept {
-    pinActiveLevels_[static_cast<int>(pin)] = active_level;
-    return true;
-  }
-
 protected:
-  /**
-   * @brief Pin active level configuration storage
-   *
-   * Stores the physical GPIO level (HIGH or LOW) that corresponds to the
-   * ACTIVE state for each TMC5160 control pin.
-   *
-   * Array size matches the number of pins in TMC5160CtrlPin enum.
-   * Default active levels (per TMC5160 datasheet):
-   * - EN: LOW = enable (DRV_ENN is active LOW - LOW enables power stage, HIGH disables)
-   * - DIR, STEP: HIGH = active (REFR_DIR/REFL_STEP are active HIGH inputs)
-   * - Reference switches: LOW = active (typically active LOW)
-   * - Diagnostic pins: Read-only, level depends on TMC5160 state
-   * - Encoder pins: Read-only, level depends on encoder state
-   * - DC Step pins: DCEN/DCIN typically active HIGH, DCO is output
-   * 
-   * Note: Users can override these defaults via SetPinActiveLevel() if their board
-   * has inverters, NOT gates, or other logic that changes pin polarity.
-   */
-  bool pinActiveLevels_[16]{}; // Updated to support all pin types (16 pins total)
 
   /**
    * @brief Debug logging function for detailed debugging information
@@ -1367,17 +1310,12 @@ template <typename Derived>
 class SpiCommInterface : public CommInterface<Derived> {
 public:
   /**
-   * @brief Construct SPI communication interface with pin active level
-   * configuration
-   * @param en_active_level Physical GPIO level for EN pin when ACTIVE
-   * (true=HIGH, false=LOW)
-   * @param dir_active_level Physical GPIO level for DIR pin when ACTIVE
-   * (true=HIGH, false=LOW)
-   * @param step_active_level Physical GPIO level for STEP pin when ACTIVE
-   * (true=HIGH, false=LOW)
+   * @brief Construct SPI communication interface
+   * 
+   * Note: Pin active level configuration is handled by the derived class.
+   * The base class only deals with abstract signals (ACTIVE/INACTIVE).
    */
-  SpiCommInterface(bool en_active_level, bool dir_active_level, bool step_active_level) noexcept
-      : CommInterface<Derived>(en_active_level, dir_active_level, step_active_level) {}
+  SpiCommInterface() noexcept : CommInterface<Derived>() {}
 
   /**
    * @brief Set the total number of devices in the daisy chain
@@ -2388,8 +2326,7 @@ public:
    *       UART bus. The node address is passed per transaction via ReadRegister()
    *       and WriteRegister() methods.
    */
-  UartCommInterface(bool en_active_level, bool dir_active_level, bool step_active_level) noexcept
-      : CommInterface<Derived>(en_active_level, dir_active_level, step_active_level) {}
+  UartCommInterface() noexcept : CommInterface<Derived>() {}
 
   /**
    * @brief Get communication mode (always UART for this interface)

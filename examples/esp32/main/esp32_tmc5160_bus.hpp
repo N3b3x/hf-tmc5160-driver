@@ -77,7 +77,7 @@ public:
    */
   Esp32SPI(spi_host_device_t host, const tmc5160::Esp32SpiPinConfig& pin_config,
            uint32_t clock_speed_hz = 4000000) noexcept
-      : SpiCommInterface(false, true, true), // EN active LOW (DRV_ENN: LOW=enable), DIR/STEP active HIGH (datasheet defaults)
+      : SpiCommInterface(), // Active level management handled in this derived class
         host_(host), mosi_pin_(static_cast<gpio_num_t>(pin_config.spi_mosi)),
         miso_pin_(static_cast<gpio_num_t>(pin_config.spi_miso)),
         sclk_pin_(static_cast<gpio_num_t>(pin_config.spi_sclk)),
@@ -108,6 +108,58 @@ public:
     SetPinActiveLevel(tmc5160::TMC5160CtrlPin::REFL_STEP, true); // Same as STEP (active HIGH)
   }
 
+private:
+  /**
+   * @brief Pin active level configuration storage
+   *
+   * Stores the physical GPIO level (HIGH or LOW) that corresponds to the
+   * ACTIVE state for each TMC5160 control pin.
+   *
+   * Default active levels (per TMC5160 datasheet):
+   * - EN: LOW = enable (DRV_ENN is active LOW - LOW enables power stage, HIGH disables)
+   * - DIR, STEP: HIGH = active (REFR_DIR/REFL_STEP are active HIGH inputs)
+   * - Reference switches: LOW = active (typically active LOW)
+   * 
+   * Users can override these defaults via SetPinActiveLevel() if their board
+   * has inverters, NOT gates, or other logic that changes pin polarity.
+   */
+  bool pinActiveLevels_[16]{}; // Updated to support all pin types (16 pins total)
+
+  /**
+   * @brief Convert signal state to physical GPIO level
+   * @param pin The TMC5160 control pin
+   * @param signal The signal state (ACTIVE or INACTIVE)
+   * @return Physical GPIO level (true=HIGH, false=LOW)
+   */
+  [[nodiscard]] bool SignalToGpioLevel(tmc5160::TMC5160CtrlPin pin, tmc5160::GpioSignal signal) const noexcept {
+    bool active_level = pinActiveLevels_[static_cast<int>(pin)];
+    return (signal == tmc5160::GpioSignal::ACTIVE) ? active_level : !active_level;
+  }
+
+  /**
+   * @brief Convert physical GPIO level to signal state
+   * @param pin The TMC5160 control pin
+   * @param gpio_level Physical GPIO level (true=HIGH, false=LOW)
+   * @return Signal state (ACTIVE or INACTIVE)
+   */
+  [[nodiscard]] tmc5160::GpioSignal GpioLevelToSignal(tmc5160::TMC5160CtrlPin pin, bool gpio_level) const noexcept {
+    bool active_level = pinActiveLevels_[static_cast<int>(pin)];
+    return (gpio_level == active_level) ? tmc5160::GpioSignal::ACTIVE : tmc5160::GpioSignal::INACTIVE;
+  }
+
+  /**
+   * @brief Configure the active level for a specific pin
+   * @param pin The TMC5160 control pin to configure
+   * @param active_level The physical GPIO level that represents ACTIVE state
+   * @return true if the configuration was successful, false otherwise
+   */
+  bool SetPinActiveLevel(tmc5160::TMC5160CtrlPin pin, bool active_level) noexcept {
+    pinActiveLevels_[static_cast<int>(pin)] = active_level;
+    return true;
+  }
+
+public:
+
   /**
    * @brief Construct ESP32 SPI communication interface with separate SPI pins and TMC5160 pin config
    * @param host SPI host device (e.g., SPI2_HOST)
@@ -127,7 +179,7 @@ public:
    */
   Esp32SPI(spi_host_device_t host, gpio_num_t mosi_pin, gpio_num_t miso_pin, gpio_num_t sclk_pin, gpio_num_t cs_pin,
            const tmc5160::TMC5160PinConfig& pin_config, uint32_t clock_speed_hz = 4000000) noexcept
-      : SpiCommInterface(false, true, true), // EN active LOW (DRV_ENN: LOW=enable), DIR/STEP active HIGH (datasheet defaults)
+      : SpiCommInterface(), // Active level management handled in this derived class
         host_(host), mosi_pin_(mosi_pin), miso_pin_(miso_pin), sclk_pin_(sclk_pin), cs_pin_(cs_pin),
         en_pin_(static_cast<gpio_num_t>(pin_config.en_pin)),
         dir_pin_(static_cast<gpio_num_t>(pin_config.dir_pin != -1 ? pin_config.dir_pin : pin_config.ref_right_pin)),
@@ -172,7 +224,7 @@ public:
   Esp32SPI(spi_host_device_t host, gpio_num_t mosi_pin, gpio_num_t miso_pin, gpio_num_t sclk_pin, gpio_num_t cs_pin,
            gpio_num_t en_pin, gpio_num_t dir_pin = static_cast<gpio_num_t>(-1),
            gpio_num_t step_pin = static_cast<gpio_num_t>(-1), uint32_t clock_speed_hz = 4000000) noexcept
-      : SpiCommInterface(false, true, true), // EN active LOW (DRV_ENN: LOW=enable), DIR/STEP active HIGH (datasheet defaults)
+      : SpiCommInterface(), // Active level management handled in this derived class
         host_(host), mosi_pin_(mosi_pin), miso_pin_(miso_pin), sclk_pin_(sclk_pin), cs_pin_(cs_pin), en_pin_(en_pin),
         dir_pin_(dir_pin), step_pin_(step_pin), clock_speed_hz_(clock_speed_hz), device_handle_(nullptr),
         initialized_(false) {
