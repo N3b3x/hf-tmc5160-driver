@@ -420,7 +420,7 @@ public:
       else if (pin == tmc5160::TMC5160CtrlPin::REFL_STEP || pin == tmc5160::TMC5160CtrlPin::REFR_DIR) {
         gpio_set_direction(gpio_pin, GPIO_MODE_INPUT);
         gpio_set_pull_mode(gpio_pin, GPIO_PULLUP_ONLY); // Typically active LOW
-        SetPinActiveLevel(pin, false);                  // Active LOW for reference switches
+        active_levels_.SetActiveLevel(pin, false);      // Active LOW for reference switches
       }
       // CLK pin can be output (for external clock) or input (for reading clock state)
       else if (pin == tmc5160::TMC5160CtrlPin::CLK) {
