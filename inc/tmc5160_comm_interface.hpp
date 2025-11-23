@@ -1681,12 +1681,12 @@ public:
    * For daisy-chaining, all chips share the same CSN (tied together).
    */
   bool ReadRegister(uint8_t address, uint32_t& value, uint8_t daisy_chain_position = 0) noexcept {
-    // Log function call with arguments
+    // Log function call with arguments (level 3 = DEBUG, only shows at DEBUG log level)
     if (daisy_chain_position > 0) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                         "ReadRegister(0x%02X, daisy_chain=%u)", address, daisy_chain_position);
     } else {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                         "ReadRegister(0x%02X)", address);
     }
 
@@ -1773,11 +1773,11 @@ public:
     
     // Log [TX1]/RX1 after first transfer
     // Show "=0x00000000" for reads to align with Write format (read command has no data, all zeros)
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                       "Read 0x%02X=0x00000000: [TX1] %02X %02X %02X %02X %02X / RX1 %02X %02X %02X %02X %02X",
                       address,
                       tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4],
-                      rx_buf[response_byte_offset], 
+                      rx_buf[response_byte_offset],
                       (response_byte_offset + 1 < rx_buf.size()) ? rx_buf[response_byte_offset + 1] : 0,
                       (response_byte_offset + 2 < rx_buf.size()) ? rx_buf[response_byte_offset + 2] : 0,
                       (response_byte_offset + 3 < rx_buf.size()) ? rx_buf[response_byte_offset + 3] : 0,
@@ -1807,7 +1807,7 @@ public:
     // Actually: align "TX2" label with "[TX1]" label, then bytes naturally align
     // "Read 0xXX=0x00000000: [TX1] " = 31, bytes at 31
     // "Read 0xXX=0x00000000:      TX2 " = 31 (25 + 6), bytes at 31 ✓
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                       "Read 0x%02X:             TX2 %02X %02X %02X %02X %02X / [RX2] %02X %02X %02X %02X %02X (STATUS=0x%02X)",
                       address,
                       tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4],
@@ -1820,7 +1820,7 @@ public:
     
     // Log status bit breakdown with arrow pointing to STATUS byte
     // Calculate position: "Read 0xXX:            TX2 XX XX XX XX XX / [RX2] " = ~60 chars, then STATUS byte at ~68
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                       "                                                   └─> %s",
                       status_bits.c_str());
 
@@ -1937,12 +1937,12 @@ public:
    * For daisy-chaining, all chips share the same CSN (tied together).
    */
   bool WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept {
-    // Log function call with arguments
+    // Log function call with arguments (level 3 = DEBUG, only shows at DEBUG log level)
     if (daisy_chain_position > 0) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                         "WriteRegister(0x%02X=0x%08X, daisy_chain=%u)", address, value, daisy_chain_position);
     } else {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                         "WriteRegister(0x%02X=0x%08X)", address, value);
     }
 
@@ -2029,7 +2029,7 @@ public:
     }
     
     // Log [TX1]/RX1 after first transfer
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                       "Write 0x%02X=0x%08X: [TX1] %02X %02X %02X %02X %02X / RX1 %02X %02X %02X %02X %02X",
                       address, value,
                       tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4],
@@ -2122,7 +2122,7 @@ public:
     // Actually simpler: align "TX2" label with "[TX1]" label, then bytes naturally align
     // "Write 0xXX=0xXXXXXXXX: [TX1] " = 31, bytes at 31
     // "Write 0xXX:            TX2 " = 31 (13 + 18), bytes at 31 ✓
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                       "Write 0x%02X:             TX2 %02X %02X %02X %02X %02X / [RX2] %02X %02X %02X %02X %02X (STATUS=0x%02X)",
                       address,
                       tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4],
@@ -2134,7 +2134,7 @@ public:
                       rx_buf[response_byte_offset]);
     
     // Log status bit breakdown with arrow pointing to STATUS byte
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                       "                                                   └─> %s",
                       status2_bits.c_str());
 
