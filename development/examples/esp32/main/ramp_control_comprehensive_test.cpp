@@ -12,15 +12,24 @@
  * - Reference switch/endstop configuration
  * - Unit conversions (mm, RPM)
  *
+ * Configured for NEMA 44mm x 44mm body stepper motors (2A rated):
+ * - Typical specs: 1.8° step angle (200 steps/rev), 2.0A per phase, 24V
+ * - Uses 16 microsteps for smooth motion
+ * - Current set to ~1.6A run, ~0.6A hold (80% and 30% of 2A rated)
+ * - Optimized for 24V operation
+ *
  * Hardware Requirements:
  * - ESP32 development board
  * - TMC5160 stepper motor driver
- * - Single stepper motor connected to TMC5160
+ * - NEMA 44mm stepper motor (2A) connected to TMC5160
  * - SPI connection between ESP32 and TMC5160
+ * - Chip must be in SPI_INTERNAL_RAMP mode (SPI_MODE=HIGH, SD_MODE=LOW)
  *
- * Pin Configuration (modify as needed):
- * - SPI: MOSI=23, MISO=19, SCLK=18, CS=5
- * - Control: EN=2, DIR=4, STEP=15
+ * Pin Configuration (using standard test config):
+ * - SPI: MOSI=6, MISO=2, SCLK=5, CS=18
+ * - Control: EN=11
+ * - Clock: CLK=10
+ * - Diagnostics: DIAG0=23, DIAG1=15
  *
  * @author Nebiyu Tadesse
  * @date 2025
@@ -48,14 +57,16 @@ static constexpr bool ENABLE_RAMP_PARAMETER_TESTS = true;
 static constexpr bool ENABLE_REFERENCE_SWITCH_TESTS = true;
 static constexpr bool ENABLE_UNIT_CONVERSION_TESTS = true;
 
-// Test configuration constants
-static constexpr uint8_t TEST_IRUN = 20;
-static constexpr uint8_t TEST_IHOLD = 10;
-static constexpr uint8_t TEST_GLOBAL_SCALER = 32;
-static constexpr uint8_t TEST_TOFF = 5;
-static constexpr uint8_t TEST_MRES = 4; // 16 microsteps
-static constexpr uint16_t STEPS_PER_REV = 200;
-static constexpr float LEAD_SCREW_PITCH_MM = 2.0F;
+// Test configuration constants for NEMA 44mm 2A motor at 24V
+// Current calculation: For 2A motor, use ~80% for run (1.6A), ~30% for hold (0.6A)
+// With global_scaler=32: irun=26 gives ~1.6A, ihold=10 gives ~0.6A
+static constexpr uint8_t TEST_IRUN = 26;        // Run current (~1.6A for 2A motor, 80% of rated)
+static constexpr uint8_t TEST_IHOLD = 10;       // Hold current (~0.6A for 2A motor, 30% of rated)
+static constexpr uint8_t TEST_GLOBAL_SCALER = 32; // Global scaler (32 is standard for small motors)
+static constexpr uint8_t TEST_TOFF = 5;          // Chopper off time (5 is good for 2A motors)
+static constexpr uint8_t TEST_MRES = 4;          // 16 microsteps (256/16=16 microsteps per full step)
+static constexpr uint16_t STEPS_PER_REV = 200;   // Steps per revolution (1.8° per step)
+static constexpr float LEAD_SCREW_PITCH_MM = 2.0F; // Lead screw pitch (adjust for your setup)
 
 // Forward declarations
 bool test_ramp_modes() noexcept;
@@ -105,16 +116,33 @@ std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
     }
   }
   
+  // Configure driver for NEMA 44mm 2A stepper motor at 24V
   tmc5160::DriverConfig cfg{};
   cfg.motor.irun = TEST_IRUN;
   cfg.motor.ihold = TEST_IHOLD;
   cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
+  
+  // Chopper settings for 2A motor at 24V
   cfg.chopper.toff = TEST_TOFF;
   cfg.chopper.mres = TEST_MRES;
   cfg.chopper.intpol = true;
-  cfg.power_stage.drv_strength = 0;
-  cfg.power_stage.bbm_time = 24;
-  cfg.power_stage.bbm_clks = 4;
+  cfg.chopper.hend = 3;          // Hysteresis end (3 is good for 2A motors)
+  cfg.chopper.hstrt = 0;         // Hysteresis start
+  
+  // StealthChop settings for quiet operation at 24V
+  cfg.stealthchop.pwm_ofs = 30;   // PWM offset for smooth start
+  cfg.stealthchop.pwm_autoscale = true; // Auto-scale PWM (important for 24V)
+  cfg.stealthchop.pwm_autograd = true;  // Auto-gradient PWM
+  cfg.stealthchop.pwm_freq = 1;   // PWM frequency (1 = 23.4kHz)
+  
+  // Power stage settings for 2A motor
+  cfg.power_stage.drv_strength = 2;  // Driver strength (2 is good for 2A motors)
+  cfg.power_stage.bbm_time = 24;     // Break-before-make time
+  cfg.power_stage.bbm_clks = 4;      // Break-before-make clocks
+  
+  // Short protection for 2A motor
+  cfg.short_protection.s2vs_level = 6;  // Short to VS level
+  cfg.short_protection.s2g_level = 4;   // Short to GND level
   
   if (!handle->driver->Initialize(cfg)) {
     ESP_LOGE(TAG, "Failed to initialize TMC5160 driver");
@@ -204,20 +232,22 @@ bool test_speed_control() noexcept {
   
   bool success = true;
   
-  // Test setting max speed
-  if (!handle->driver->rampControl.SetMaxSpeed(1000.0F)) {
+  // Test setting max speed (appropriate for NEMA 44mm 2A motor)
+  // 2000 steps/s = 10 rev/s = 600 RPM (good for small motors)
+  if (!handle->driver->rampControl.SetMaxSpeed(2000.0F)) {
     ESP_LOGE(TAG, "Failed to set max speed");
     success = false;
   }
   
-  // Test setting acceleration
-  if (!handle->driver->rampControl.SetAcceleration(500.0F)) {
+  // Test setting acceleration (appropriate for NEMA 44mm 2A motor)
+  // 2000 steps/s² provides good acceleration for small motors
+  if (!handle->driver->rampControl.SetAcceleration(2000.0F)) {
     ESP_LOGE(TAG, "Failed to set acceleration");
     success = false;
   }
   
-  // Test setting accelerations (both)
-  if (!handle->driver->rampControl.SetAccelerations(400.0F, 600.0F)) {
+  // Test setting accelerations (both) - higher decel for faster stopping
+  if (!handle->driver->rampControl.SetAccelerations(2000.0F, 2500.0F)) {
     ESP_LOGE(TAG, "Failed to set accelerations");
     success = false;
   }

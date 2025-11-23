@@ -1,5 +1,5 @@
-warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.lRHfJ8
-warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.lRHfJ8' has become obsolete.
+warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.raSC0x
+warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.raSC0x' has become obsolete.
          To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
 Doxygen version used: 1.10.0 (ebc57c6dd303a980bd19dd74b8b61c8f3f5180ca)
 Searching for include files...
@@ -636,6 +636,6 @@ writing tag file...
 Running plantuml with JAVA...
 Running dot...
 Patching output file 1/1
-type lookup cache used 5587/65536 hits=26221 misses=5714
-symbol lookup cache used 4629/65536 hits=27385 misses=4629
+type lookup cache used 5587/65536 hits=26229 misses=5714
+symbol lookup cache used 4631/65536 hits=27393 misses=4631
 finished...

@@ -155,7 +155,7 @@ Variables</h2></td></tr>
 <tr class="separator:a994ca757fbb8b3ce86ee8380a457bc46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d041156ad5cc719a1d736f1008fc46f" id="r_a2d041156ad5cc719a1d736f1008fc46f"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d041156ad5cc719a1d736f1008fc46f">ENABLE_UNIT_CONVERSION_TESTS</a> = true</td></tr>
 <tr class="separator:a2d041156ad5cc719a1d736f1008fc46f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83d0ba1eda12d12b516f53b6f3d7bf15" id="r_a83d0ba1eda12d12b516f53b6f3d7bf15"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83d0ba1eda12d12b516f53b6f3d7bf15">TEST_IRUN</a> = 20</td></tr>
+<tr class="memitem:a83d0ba1eda12d12b516f53b6f3d7bf15" id="r_a83d0ba1eda12d12b516f53b6f3d7bf15"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83d0ba1eda12d12b516f53b6f3d7bf15">TEST_IRUN</a> = 26</td></tr>
 <tr class="separator:a83d0ba1eda12d12b516f53b6f3d7bf15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43f36d608ddb89bbbc098f546646a914" id="r_a43f36d608ddb89bbbc098f546646a914"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43f36d608ddb89bbbc098f546646a914">TEST_IHOLD</a> = 10</td></tr>
 <tr class="separator:a43f36d608ddb89bbbc098f546646a914"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,15 +182,24 @@ Variables</h2></td></tr>
 <li>Reference switch/endstop configuration</li>
 <li>Unit conversions (mm, RPM)</li>
 </ul>
+<p>Configured for NEMA 44mm x 44mm body stepper motors (2A rated):</p><ul>
+<li>Typical specs: 1.8° step angle (200 steps/rev), 2.0A per phase, 24V</li>
+<li>Uses 16 microsteps for smooth motion</li>
+<li>Current set to ~1.6A run, ~0.6A hold (80% and 30% of 2A rated)</li>
+<li>Optimized for 24V operation</li>
+</ul>
 <p>Hardware Requirements:</p><ul>
 <li>ESP32 development board</li>
 <li>TMC5160 stepper motor driver</li>
-<li>Single stepper motor connected to TMC5160</li>
+<li>NEMA 44mm stepper motor (2A) connected to TMC5160</li>
 <li>SPI connection between ESP32 and TMC5160</li>
+<li>Chip must be in SPI_INTERNAL_RAMP mode (SPI_MODE=HIGH, SD_MODE=LOW)</li>
 </ul>
-<p>Pin Configuration (modify as needed):</p><ul>
-<li>SPI: MOSI=23, MISO=19, SCLK=18, CS=5</li>
-<li>Control: EN=2, DIR=4, STEP=15</li>
+<p>Pin Configuration (using standard test config):</p><ul>
+<li>SPI: MOSI=6, MISO=2, SCLK=5, CS=18</li>
+<li>Control: EN=11</li>
+<li>Clock: CLK=10</li>
+<li>Diagnostics: DIAG0=23, DIAG1=15</li>
 </ul>
 <dl class="section author"><dt>Author</dt><dd>Nebiyu Tadesse </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2025 </dd></dl>
@@ -737,7 +746,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t TEST_IRUN = 20</td>
+          <td class="memname">constexpr uint8_t TEST_IRUN = 26</td>
         </tr>
       </table>
   </td>
