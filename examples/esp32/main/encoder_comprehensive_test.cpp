@@ -140,7 +140,6 @@ bool test_encoder_configuration() noexcept {
   enc_cfg.pol_a = false;
   enc_cfg.pol_b = false;
   enc_cfg.ignore_ab = false;
-  enc_cfg.invert_dir = Test::Encoder::INVERT_DIR;
   
   if (!handle->driver->encoder.Configure(enc_cfg)) {
     ESP_LOGE(TAG, "Failed to configure encoder");
