@@ -299,29 +299,38 @@ bool test_ramp_parameters() noexcept {
 }
 
 bool test_reference_switch_configuration() noexcept {
-  ESP_LOGI(TAG, "Testing reference switch configuration...");
+  ESP_LOGI(TAG, "Testing reference switch configuration and homing...");
   
   auto handle = create_test_driver();
   if (!handle) {
     return false;
   }
   
+  // Test configuration
   tmc5160::ReferenceSwitchConfig ref_cfg{};
   ref_cfg.swap_left_right = false;
   ref_cfg.pol_stop_left = false;
   ref_cfg.pol_stop_right = false;
   ref_cfg.latch_left_active = true;
   ref_cfg.latch_right_active = true;
-  ref_cfg.latch_left_inactive = false;
-  ref_cfg.latch_right_inactive = false;
-  ref_cfg.en_softstop = false;
-  ref_cfg.stop_left_enable = false;
-  ref_cfg.stop_right_enable = false;
-  ref_cfg.en_latch_encoder = false;
   
   if (!handle->driver->rampControl.ConfigureReferenceSwitch(ref_cfg)) {
     ESP_LOGE(TAG, "Failed to configure reference switch");
     return false;
+  }
+
+  // Test Switch Homing (Simulation / API check)
+  // Since we don't have physical switches in this test, we just verify the API call works
+  // and timeouts (as expected without a switch press).
+  ESP_LOGI(TAG, "Testing PerformSwitchHoming API (expect timeout)...");
+  int32_t final_pos = 0;
+  // Use short timeout for test
+  bool result = handle->driver->diagnostics.PerformSwitchHoming(true, 1000.0f, 100.0f, final_pos, true, 100);
+  
+  if (!result) {
+    ESP_LOGI(TAG, "Homing timed out as expected (no physical switch)");
+  } else {
+    ESP_LOGW(TAG, "Homing reported success unexpectedly (switch noise?)");
   }
   
   return true;

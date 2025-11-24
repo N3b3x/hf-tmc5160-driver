@@ -711,12 +711,32 @@ public:
      * @param stall_threshold StallGuard2 threshold for stall detection
      * @param search_speed Speed for homing search in steps/s
      * @param final_position Reference to store final position after homing
-     * @return true if homing succeeded, false otherwise
+     * @param timeout_ms Maximum time to wait for stall in milliseconds (default: 10000ms)
+     * @return true if stall detected and motor stopped, false if timeout or error
      *
      * Moves motor in specified direction until stall is detected, then stops.
+     * Uses a polling loop to monitor stall status.
      */
     bool PerformSensorlessHoming(bool direction, int8_t stall_threshold, float search_speed,
-                                 int32_t& final_position) noexcept;
+                                 int32_t& final_position, uint32_t timeout_ms = 10000) noexcept;
+
+    /**
+     * @brief Perform homing using a reference switch (Section 12.4)
+     * @param direction Direction to search (true = positive, false = negative)
+     * @param search_speed Speed for homing search in steps/s
+     * @param switch_speed Speed for slow approach to switch in steps/s
+     * @param final_position Reference to store final position after homing
+     * @param use_left_switch true to use REFL, false to use REFR
+     * @param timeout_ms Maximum time to wait for switch in milliseconds (default: 10000ms)
+     * @return true if switch hit and motor stopped, false if timeout or error
+     *
+     * Implements homing procedure from datasheet section 12.4:
+     * 1. Moves towards switch at search_speed
+     * 2. Stops on switch hit (hard stop)
+     * 3. Updates final_position with latched position
+     */
+    bool PerformSwitchHoming(bool direction, float search_speed, float switch_speed,
+                             int32_t& final_position, bool use_left_switch, uint32_t timeout_ms = 10000) noexcept;
 
     /**
      * @brief Get actual time between microsteps
