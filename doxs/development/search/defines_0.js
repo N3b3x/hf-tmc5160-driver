@@ -1,9 +1,12 @@
 var searchData=
 [
-  ['access_5fto_5fenum_0',['ACCESS_TO_ENUM',['../tmc5160__register__access_8hpp.html#a9fe8599677c969b1d57b4371b227a166',1,'tmc5160_register_access.hpp']]],
-  ['access_5fto_5fenum_5fimpl_1',['ACCESS_TO_ENUM_IMPL',['../tmc5160__register__access_8hpp.html#a31b812a22e69a58afd2eb19fe7026c6c',1,'tmc5160_register_access.hpp']]],
-  ['access_5fto_5fenum_5fr_2',['ACCESS_TO_ENUM_R',['../tmc5160__register__access_8hpp.html#a124698e65940bd542bf33fd9869e7ee0',1,'tmc5160_register_access.hpp']]],
-  ['access_5fto_5fenum_5frw_3',['ACCESS_TO_ENUM_RW',['../tmc5160__register__access_8hpp.html#a22fcc5decd4f972b44b1ba6f82ccb821',1,'tmc5160_register_access.hpp']]],
-  ['access_5fto_5fenum_5frwc_4',['ACCESS_TO_ENUM_RWC',['../tmc5160__register__access_8hpp.html#ab98ccb103ba8318ed6647e2e3b5a3210',1,'tmc5160_register_access.hpp']]],
-  ['access_5fto_5fenum_5fw_5',['ACCESS_TO_ENUM_W',['../tmc5160__register__access_8hpp.html#ad84ee2a7a1e0de193278e7a3a64a6b29',1,'tmc5160_register_access.hpp']]]
+  ['register_5flist_0',['REGISTER_LIST',['../tmc5160__register__defs_8hpp.html#a551b7a02a3fa068ff7ddd37031c83036',1,'tmc5160_register_defs.hpp']]],
+  ['run_5fsingle_5ftest_5fif_5fenabled_1',['RUN_SINGLE_TEST_IF_ENABLED',['../TestFramework_8h.html#a7bc8e45ec7ef683e0b1692c05328b784',1,'TestFramework.h']]],
+  ['run_5ftest_2',['RUN_TEST',['../TestFramework_8h.html#a36936b10eceab520bb9d3d95534a00db',1,'TestFramework.h']]],
+  ['run_5ftest_5fgroup_5fif_5fenabled_3',['RUN_TEST_GROUP_IF_ENABLED',['../TestFramework_8h.html#a069d023efb0dd03f8c2304a56b4a9564',1,'TestFramework.h']]],
+  ['run_5ftest_5fin_5ftask_4',['RUN_TEST_IN_TASK',['../TestFramework_8h.html#a214e38e25939e45e31ae73a073fca47f',1,'TestFramework.h']]],
+  ['run_5ftest_5fsection_5fif_5fenabled_5',['RUN_TEST_SECTION_IF_ENABLED',['../TestFramework_8h.html#a742c0e25111e9ee95def05464cab957b',1,'TestFramework.h']]],
+  ['run_5ftest_5fsection_5fif_5fenabled_5fauto_5fprogress_6',['RUN_TEST_SECTION_IF_ENABLED_AUTO_PROGRESS',['../TestFramework_8h.html#a42013656a31f033788afe39c84e96bec',1,'TestFramework.h']]],
+  ['run_5ftest_5fsection_5fif_5fenabled_5fwith_5fpattern_7',['RUN_TEST_SECTION_IF_ENABLED_WITH_PATTERN',['../TestFramework_8h.html#ab72cc2ae0fb724218e81479185ab38c6',1,'TestFramework.h']]],
+  ['run_5ftest_5fsection_5fif_5fenabled_5fwith_5fprogress_8',['RUN_TEST_SECTION_IF_ENABLED_WITH_PROGRESS',['../TestFramework_8h.html#a75c45174f9dde97eb43339fcd0ac79c8',1,'TestFramework.h']]]
 ];

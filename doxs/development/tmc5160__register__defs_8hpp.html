@@ -92,7 +92,8 @@ $(function(){initNavTree('tmc5160__register__defs_8hpp.html',''); initResizable(
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">tmc5160_register_defs.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -102,20 +103,26 @@ $(function(){initNavTree('tmc5160__register__defs_8hpp.html',''); initResizable(
 <div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc5160__register__defs_8hpp__dep__incl.svg" width="226" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tmc5160__register__defs_8hpp__dep__incl.svg" width="3203" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="tmc5160__register__defs_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a551b7a02a3fa068ff7ddd37031c83036" id="r_a551b7a02a3fa068ff7ddd37031c83036"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a551b7a02a3fa068ff7ddd37031c83036">REGISTER_LIST</a>(<a class="el" href="tmc5160__register__access_8hpp.html#a24630b3eab1c0d05d738a64b2eb2a5a8">X</a>)</td></tr>
+<tr class="memitem:a551b7a02a3fa068ff7ddd37031c83036" id="r_a551b7a02a3fa068ff7ddd37031c83036"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a551b7a02a3fa068ff7ddd37031c83036">REGISTER_LIST</a>(<a class="el" href="tmc5160__register__defs_8cpp.html#a24630b3eab1c0d05d738a64b2eb2a5a8">X</a>)</td></tr>
 <tr class="separator:a551b7a02a3fa068ff7ddd37031c83036"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:aee22e57b17c3239886f6748c2e0f2581" id="r_aee22e57b17c3239886f6748c2e0f2581"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee22e57b17c3239886f6748c2e0f2581">GetRegisterDef</a> (uint8_t address)</td></tr>
+<tr class="memdesc:aee22e57b17c3239886f6748c2e0f2581"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get register definition string.  <br /></td></tr>
+<tr class="separator:aee22e57b17c3239886f6748c2e0f2581"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>X-MACRO definitions for TMC5160 registers. </p>
 <p>This file uses the X-MACRO pattern to define all TMC5160 registers with their addresses, access types, and metadata. This allows generating multiple data structures from a single source of truth.</p>
-<p>Usage follows TMC9660 pattern: #define <a class="el" href="tmc5160__register__access_8hpp.html#a24630b3eab1c0d05d738a64b2eb2a5a8">X(addr, name, access, category, desc)</a> ... <a class="el" href="#a551b7a02a3fa068ff7ddd37031c83036">REGISTER_LIST(X)</a> #undef X</p>
+<p>Usage follows TMC9660 pattern: #define <a class="el" href="tmc5160__register__defs_8cpp.html#a24630b3eab1c0d05d738a64b2eb2a5a8">X(addr, name, access, category, desc)</a> ... <a class="el" href="#a551b7a02a3fa068ff7ddd37031c83036">REGISTER_LIST(X)</a> #undef X</p>
 <p>Access types:</p><ul>
 <li>R: Read-only</li>
 <li>W: Write-only</li>
@@ -144,11 +151,38 @@ Macros</h2></td></tr>
         <tr>
           <td class="memname">#define REGISTER_LIST</td>
           <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><a class="el" href="tmc5160__register__access_8hpp.html#a24630b3eab1c0d05d738a64b2eb2a5a8">X</a></span></td><td>)</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><a class="el" href="tmc5160__register__defs_8cpp.html#a24630b3eab1c0d05d738a64b2eb2a5a8">X</a></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="aee22e57b17c3239886f6748c2e0f2581" name="aee22e57b17c3239886f6748c2e0f2581"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee22e57b17c3239886f6748c2e0f2581">&#9670;&#160;</a></span>GetRegisterDef()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * GetRegisterDef </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>address</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get register definition string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">address</td><td>Register address </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>String containing register name and description, or nullptr if not found </dd></dl>
 
 </div>
 </div>

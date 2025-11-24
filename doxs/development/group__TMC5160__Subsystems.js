@@ -12,6 +12,7 @@ var group__TMC5160__Subsystems =
       [ "SetAccelerations", "structtmc5160_1_1TMC5160_1_1RampControl.html#a42767aabaf81b299c915577724535e5a", null ],
       [ "SetComparePosition", "structtmc5160_1_1TMC5160_1_1RampControl.html#a74fd41db686650c5178c8f3562051b51", null ],
       [ "SetCurrentPosition", "structtmc5160_1_1TMC5160_1_1RampControl.html#a689da653096e4718d2f41e02abbff572", null ],
+      [ "SetFinalDeceleration", "structtmc5160_1_1TMC5160_1_1RampControl.html#aebc84e340e2f53c6f5a04cf0cc6152bb", null ],
       [ "SetFirstAcceleration", "structtmc5160_1_1TMC5160_1_1RampControl.html#afd779f5520bb29e30cdd30d46023a12e", null ],
       [ "SetMaxSpeed", "structtmc5160_1_1TMC5160_1_1RampControl.html#a68552fbf5f675c15844486c4b910c7d9", null ],
       [ "SetMaxSpeedRpm", "structtmc5160_1_1TMC5160_1_1RampControl.html#a62b34f08cb68321daf451ec7fdee907f", null ],
@@ -76,8 +77,12 @@ var group__TMC5160__Subsystems =
       [ "PerformSwitchHoming", "structtmc5160_1_1TMC5160_1_1Diagnostics.html#ae52ee957475af0babba3daafa428d39e", null ],
       [ "ReadFactoryConfig", "structtmc5160_1_1TMC5160_1_1Diagnostics.html#abf878f0c5b0a1533f19a1fc5d539dfc9", null ],
       [ "ReadGpioPins", "structtmc5160_1_1TMC5160_1_1Diagnostics.html#a24c2ed291dd4491799a5c64f300d07bb", null ],
+      [ "ReadIcVersion", "structtmc5160_1_1TMC5160_1_1Diagnostics.html#ad6b456a7eb9dd8ceeb76f5c9449d3178", null ],
+      [ "ReadInputStatus", "structtmc5160_1_1TMC5160_1_1Diagnostics.html#aa3477caff8643a2d71a9aaca26a48eaa", null ],
       [ "ReadOffsetCalibration", "structtmc5160_1_1TMC5160_1_1Diagnostics.html#a178d060f7fdecbc8050782d0376f22d9", null ],
       [ "ReadOtpConfig", "structtmc5160_1_1TMC5160_1_1Diagnostics.html#aa1fb77fb2b5610502bf5915cd99b3330", null ],
+      [ "SetSdoCfg0Polarity", "structtmc5160_1_1TMC5160_1_1Diagnostics.html#a8ae1d76559766403177c80506955a4fe", null ],
+      [ "VerifySetup", "structtmc5160_1_1TMC5160_1_1Diagnostics.html#a5180d6e984236cbc1bcb44c6a76b6052", null ],
       [ "driver_", "structtmc5160_1_1TMC5160_1_1Diagnostics.html#a376a2e9eecd357511964c9ddb7017125", null ]
     ] ],
     [ "tmc5160::TMC5160< CommType >::UartConfig", "structtmc5160_1_1TMC5160_1_1UartConfig.html", [

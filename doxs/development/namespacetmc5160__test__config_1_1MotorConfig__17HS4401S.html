@@ -97,7 +97,7 @@ $(function(){initNavTree('namespacetmc5160__test__config_1_1MotorConfig__17HS440
 </div><!--header-->
 <div class="contents">
 
-<p>Motor Configuration for 17HS4401S-PG518 NEMA 17 Stepper Motor.  
+<p>Motor Configuration for 17HS4401S-PG518 NEMA 17 Stepper Motor (WITH GEARBOX)  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
@@ -114,7 +114,7 @@ Variables</h2></td></tr>
 <tr class="separator:a6d108e46bc3c3b9c348f82ff9b7849dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4673d3c4e52729bc9e731c053b629006" id="r_a4673d3c4e52729bc9e731c053b629006"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4673d3c4e52729bc9e731c053b629006">GLOBAL_SCALER</a> = 160</td></tr>
 <tr class="separator:a4673d3c4e52729bc9e731c053b629006"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae5d8935197956c0d82d3d387800bc00" id="r_aae5d8935197956c0d82d3d387800bc00"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae5d8935197956c0d82d3d387800bc00">IRUN</a> = 25</td></tr>
+<tr class="memitem:aae5d8935197956c0d82d3d387800bc00" id="r_aae5d8935197956c0d82d3d387800bc00"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae5d8935197956c0d82d3d387800bc00">IRUN</a> = 20</td></tr>
 <tr class="separator:aae5d8935197956c0d82d3d387800bc00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d9a446812715fa7b9116185d4f96d4b" id="r_a9d9a446812715fa7b9116185d4f96d4b"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d9a446812715fa7b9116185d4f96d4b">IHOLD</a> = 10</td></tr>
 <tr class="separator:a9d9a446812715fa7b9116185d4f96d4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -138,9 +138,15 @@ Variables</h2></td></tr>
 <tr class="separator:af74e7c836e2200ab12efc935e01e4220"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a905d1e5ce31a41bca35a005914244fd7" id="r_a905d1e5ce31a41bca35a005914244fd7"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a905d1e5ce31a41bca35a005914244fd7">STEALTH_OFS</a> = 30</td></tr>
 <tr class="separator:a905d1e5ce31a41bca35a005914244fd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7206560cc583fa739bb028c571fb8d72" id="r_a7206560cc583fa739bb028c571fb8d72"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7206560cc583fa739bb028c571fb8d72">DRV_STRENGTH</a> = 0</td></tr>
+<tr class="separator:a7206560cc583fa739bb028c571fb8d72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bddca392ff19570f79c9f3bf3691cab" id="r_a8bddca392ff19570f79c9f3bf3691cab"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8bddca392ff19570f79c9f3bf3691cab">BBM_TIME</a> = 0</td></tr>
+<tr class="separator:a8bddca392ff19570f79c9f3bf3691cab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaeed25957e0b67d405aea33115ed9d8f" id="r_aaeed25957e0b67d405aea33115ed9d8f"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaeed25957e0b67d405aea33115ed9d8f">BBM_CLKS</a> = 0</td></tr>
+<tr class="separator:aaeed25957e0b67d405aea33115ed9d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Motor Configuration for 17HS4401S-PG518 NEMA 17 Stepper Motor. </p>
+<div class="textblock"><p>Motor Configuration for 17HS4401S-PG518 NEMA 17 Stepper Motor (WITH GEARBOX) </p>
 <p>Model: 17HS4401S-PG518 (with Planetary Gearbox)</p><ul>
 <li>Rated Current: 1.68A / Phase</li>
 <li>Step Angle (Motor): 1.8°</li>
@@ -150,11 +156,77 @@ Variables</h2></td></tr>
 </ul>
 <p>Driver Settings for Smoothness:</p><ul>
 <li>Microsteps: 256 (MRES=0) for maximum smoothness</li>
-<li>Current: Run=1.4A (~83%), Hold=0.5A (~30%)</li>
+<li>Current: Run=1.88A (~112%), Hold=0.94A (~56%)</li>
 <li>Global Scaler: 160 (Optimal range &gt;128)</li>
-<li>Chopper: TOFF=5, HEND=3, HSTRT=0 (Typical for NEMA17) </li>
+<li>Chopper: TOFF=5, HEND=3, HSTRT=4 (Typical for NEMA17) </li>
 </ul>
 </div><h2 class="groupheader">Variable Documentation</h2>
+<a id="aaeed25957e0b67d405aea33115ed9d8f" name="aaeed25957e0b67d405aea33115ed9d8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaeed25957e0b67d405aea33115ed9d8f">&#9670;&#160;</a></span>BBM_CLKS</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t tmc5160_test_config::MotorConfig_17HS4401S::BBM_CLKS = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8bddca392ff19570f79c9f3bf3691cab" name="a8bddca392ff19570f79c9f3bf3691cab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bddca392ff19570f79c9f3bf3691cab">&#9670;&#160;</a></span>BBM_TIME</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t tmc5160_test_config::MotorConfig_17HS4401S::BBM_TIME = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7206560cc583fa739bb028c571fb8d72" name="a7206560cc583fa739bb028c571fb8d72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7206560cc583fa739bb028c571fb8d72">&#9670;&#160;</a></span>DRV_STRENGTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t tmc5160_test_config::MotorConfig_17HS4401S::DRV_STRENGTH = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a264560cc51bab1eef38fd5b5b00ffc44" name="a264560cc51bab1eef38fd5b5b00ffc44"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a264560cc51bab1eef38fd5b5b00ffc44">&#9670;&#160;</a></span>GEAR_RATIO</h2>
 
@@ -297,7 +369,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t tmc5160_test_config::MotorConfig_17HS4401S::IRUN = 25</td>
+          <td class="memname">constexpr uint8_t tmc5160_test_config::MotorConfig_17HS4401S::IRUN = 20</td>
         </tr>
       </table>
   </td>
