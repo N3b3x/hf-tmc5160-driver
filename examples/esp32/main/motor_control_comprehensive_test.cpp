@@ -209,7 +209,7 @@ bool test_chopper_configuration() noexcept {
 }
 
 bool test_stealthchop_configuration() noexcept {
-  ESP_LOGI(TAG, "Testing StealthChop configuration...");
+  ESP_LOGI(TAG, "Testing StealthChop configuration and Automatic Tuning (AT)...");
   
   auto handle = create_test_driver();
   if (!handle) {
@@ -229,6 +229,44 @@ bool test_stealthchop_configuration() noexcept {
     ESP_LOGE(TAG, "Failed to configure StealthChop");
     return false;
   }
+
+  // Demonstrate Automatic Tuning Sequence (Datasheet Section 7.1)
+  // Step 1: AT#1 - Standstill at nominal current
+  ESP_LOGI(TAG, "Demonstrating AT#1: Enabling driver and waiting in standstill...");
+  if (!handle->driver->motorControl.Enable()) {
+    ESP_LOGE(TAG, "Failed to enable motor for AT#1");
+    return false;
+  }
+  
+  // Wait > 130ms for AT#1 (Datasheet requires ~130ms)
+  vTaskDelay(pdMS_TO_TICKS(200));
+  ESP_LOGI(TAG, "AT#1 Wait Complete. Check PWM_OFS_AUTO if needed.");
+
+  // Step 2: AT#2 - Move at medium velocity
+  // Move at ~60-300 RPM. 
+  // Using 200 steps/rev: 100 RPM = 1.67 RPS = 333 steps/s
+  ESP_LOGI(TAG, "Demonstrating AT#2: Moving at medium velocity (300 steps/s)...");
+  
+  // Configure ramp for motion
+  handle->driver->rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS);
+  handle->driver->rampControl.SetMaxSpeed(300.0f); // ~90 RPM
+  handle->driver->rampControl.SetAcceleration(500.0f);
+
+  // Let it run for a bit to allow AT#2 tuning (requires ~8 fullsteps per change of +/-1)
+  vTaskDelay(pdMS_TO_TICKS(1000)); // 1 second run
+  
+  ESP_LOGI(TAG, "AT#2 Motion Complete.");
+
+  // Read back auto-tuned values (optional check)
+  uint8_t pwm_ofs_auto = 0, pwm_grad_auto = 0;
+  if (handle->driver->diagnostics.GetPwmAuto(pwm_ofs_auto, pwm_grad_auto)) {
+    ESP_LOGI(TAG, "Auto-Tuned Values: PWM_OFS_AUTO=%d, PWM_GRAD_AUTO=%d", pwm_ofs_auto, pwm_grad_auto);
+  }
+
+  // Stop and Disable
+  handle->driver->rampControl.Stop();
+  vTaskDelay(pdMS_TO_TICKS(500));
+  handle->driver->motorControl.Disable();
   
   return true;
 }
