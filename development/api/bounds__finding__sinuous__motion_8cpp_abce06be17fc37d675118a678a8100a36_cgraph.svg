@@ -58,7 +58,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="namespacetmc5160.html#a13c113ece8bf9e72134ead3dcd3e45f0" target="_top" xlink:title="Convert steps to degrees.">
+<g id="a_Node000004"><a xlink:href="namespacetmc5160.html#a17db4658c61b62396b32c1a022e54d75" target="_top" xlink:title="Convert steps to degrees.">
 <polygon fill="white" stroke="#666666" points="656.5,-413.5 513.5,-413.5 513.5,-394.5 656.5,-394.5 656.5,-413.5"/>
 <text text-anchor="middle" x="585" y="-401.5" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::StepsToDegrees</text>
 </a>
@@ -665,7 +665,7 @@
 <!-- Node31 -->
 <g id="Node000031" class="node">
 <title>Node31</title>
-<g id="a_Node000031"><a xlink:href="namespacetmc5160.html#a125b02e40c40c77eb5e08e68502e239e" target="_top" xlink:title="Convert degrees to steps.">
+<g id="a_Node000031"><a xlink:href="namespacetmc5160.html#afb1c3789f431ec5b7872d5dc456c7678" target="_top" xlink:title="Convert degrees to steps.">
 <polygon fill="white" stroke="#666666" points="471,-239.5 328,-239.5 328,-220.5 471,-220.5 471,-239.5"/>
 <text text-anchor="middle" x="399.5" y="-227.5" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::DegreesToSteps</text>
 </a>

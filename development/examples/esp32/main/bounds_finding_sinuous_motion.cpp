@@ -52,6 +52,7 @@
 
 #include "../../../inc/tmc5160.hpp"
 #include "esp32_tmc5160_bus.hpp"
+#include "esp32_tmc5160_bus_config.hpp"
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "driver/uart.h"
@@ -792,7 +793,7 @@ private:
     uint64_t elapsed_us;
     float freq, amp;
     int32_t home, local_min, local_max;
-    uint32_t target_cycles, current_cycles;
+    uint32_t target_cycles;
     bool cycle_started;
     int32_t last_target_rel;
     uint32_t dwell_min, dwell_max, dwell_center;
@@ -808,7 +809,6 @@ private:
       local_min = local_min_bound_;
       local_max = local_max_bound_;
       target_cycles = target_cycles_;
-      current_cycles = current_cycles_;
       cycle_started = cycle_started_;
       last_target_rel = last_target_relative_;
       dwell_min = dwell_at_min_ms_;
@@ -1245,13 +1245,31 @@ extern "C" void app_main() {
   // Create TMC5160 driver instance
   tmc5160::TMC5160<Esp32SPI> driver(spi);
 
+  // Use centralized configuration
+  namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+  namespace Test = tmc5160_test_config::TestConfig_17HS4401S;
+
   // Configure driver
   tmc5160::DriverConfig cfg{};
-  cfg.motor.irun = 20;
-  cfg.motor.ihold = 10;
-  cfg.motor.global_scaler = 32;
-  cfg.chopper.mres = 5; // 32 microsteps for smooth motion
-  cfg.chopper.intpol = true;
+  cfg.motor.irun = Motor::IRUN;
+  cfg.motor.ihold = Motor::IHOLD;
+  cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
+  cfg.chopper.mres = Motor::MRES; // 256 microsteps (MRES=0)
+  cfg.chopper.toff = Motor::TOFF;
+  cfg.chopper.hend = Motor::HEND;
+  cfg.chopper.hstrt = Motor::HSTRT;
+  cfg.chopper.intpol = Motor::INTERPOLATION;
+  cfg.chopper.tbl = Motor::TBL;
+  
+  // StealthChop settings
+  cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+  cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+  cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
+  cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+  
+  // Protection settings
+  cfg.short_protection.s2vs_level = 6;
+  cfg.short_protection.s2g_level = 4;
 
   if (!driver.Initialize(cfg)) {
     ESP_LOGE(TAG, "Failed to initialize TMC5160 driver");
@@ -1260,12 +1278,12 @@ extern "C" void app_main() {
 
   ESP_LOGI(TAG, "Driver initialized successfully");
 
-  // Configure StallGuard2 for bounds finding
+  // Configure StallGuard2 for bounds finding using test defaults
   tmc5160::StallGuardConfig sg_config{};
-  sg_config.sgt = -10;    // Stall threshold (tune for your motor)
-  sg_config.sfilt = true; // Enable filter for stability
-  sg_config.semin = 2;
-  sg_config.semax = 5;
+  sg_config.sgt = Test::StallGuard::SGT_HOMING; 
+  sg_config.sfilt = Test::StallGuard::FILTER_ENABLED;
+  sg_config.semin = Test::StallGuard::SEMIN;
+  sg_config.semax = Test::StallGuard::SEMAX;
 
   ESP_LOGI(TAG, "Configuring StallGuard2: sgt=%d", sg_config.sgt);
   if (!driver.diagnostics.ConfigureStallGuard(sg_config)) {
@@ -1282,8 +1300,10 @@ extern "C" void app_main() {
   ESP_LOGI(TAG, "Motor enabled");
 
   // Configure motor parameters for unit conversions
-  uint16_t steps_per_rev = 200 * 32; // 6400 steps per revolution with 32 microsteps
-
+  // Steps per output revolution = Motor Full Steps * Gear Ratio * Microsteps
+  // 200 * 5.18 * 256 = ~265,216 steps/rev
+  float steps_per_rev = static_cast<float>(Motor::OUTPUT_FULL_STEPS) * 256.0f; 
+  
   // ============================================================
   // STEP 1: Find global bounds using sensorless homing
   // ============================================================
@@ -1294,92 +1314,74 @@ extern "C" void app_main() {
   // Find minimum bound (negative direction)
   ESP_LOGI(TAG, "Finding minimum bound (negative direction)...");
   int32_t min_position = 0;
-  float search_speed = 500.0F; // steps/s
+  float search_speed = Test::Motion::BOUNDS_SEARCH_SPEED; // steps/s (needs to be fast enough for BEMF)
 
   driver.rampControl.SetCurrentPosition(0);
 
-  if (!driver.diagnostics.PerformSensorlessHoming(false, -10, search_speed, min_position)) {
-    ESP_LOGW(TAG, "Failed to find minimum bound, using default");
-  }
-
-  uint32_t timeout_ms = 30000;
-  uint32_t start_time = esp_timer_get_time() / 1000;
-  bool stall_detected_min = false;
-  int32_t initial_pos = driver.rampControl.GetCurrentPosition();
-
-  while ((esp_timer_get_time() / 1000 - start_time) < timeout_ms) {
-    uint16_t sg_value = driver.diagnostics.GetStallGuard();
-    int32_t current_pos = driver.rampControl.GetCurrentPosition();
-
-    if (driver.rampControl.IsTargetReached() || sg_value < 100 || abs(current_pos - initial_pos) > 1000) {
-      min_position = current_pos;
-      stall_detected_min = true;
-      ESP_LOGI(TAG, "Stall detected! Minimum position: %d steps", min_position);
-      break;
-    }
-
-    vTaskDelay(pdMS_TO_TICKS(100));
-  }
-
-  if (!stall_detected_min) {
-    ESP_LOGW(TAG, "No stall detected in negative direction - may be unbounded");
+  // Use updated PerformSensorlessHoming which includes timeout and polling
+  // Pass updated timeout from config
+  if (!driver.diagnostics.PerformSensorlessHoming(false, Test::StallGuard::SGT_HOMING, search_speed, 
+                                                  min_position, Test::Motion::HOMING_TIMEOUT_MS)) {
+    ESP_LOGW(TAG, "Failed to find minimum bound (timeout or no stall), using default");
     min_position = driver.rampControl.GetCurrentPosition();
+    // If no stall, assume unbounded or problem
   } else {
+    ESP_LOGI(TAG, "Stall detected! Minimum position: %ld steps", min_position);
+    
+    // Back off
     driver.rampControl.Stop();
     vTaskDelay(pdMS_TO_TICKS(500));
-    ESP_LOGI(TAG, "Moving 100 steps away from minimum stop...");
+    ESP_LOGI(TAG, "Moving away from minimum stop...");
+    
+    // Move away relative (e.g. 5000 steps = ~7 degrees at output)
+    int32_t backoff = 5000;
     driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(min_position + 100);
-    driver.rampControl.SetMaxSpeed(500.0F);
-    driver.rampControl.SetAcceleration(1000.0F);
+    driver.rampControl.SetTargetPosition(min_position + backoff);
+    driver.rampControl.SetMaxSpeed(search_speed / 2.0f);
+    driver.rampControl.SetAcceleration(search_speed);
     while (!driver.rampControl.IsTargetReached()) {
       vTaskDelay(pdMS_TO_TICKS(100));
     }
+    
+    // Reset position to 0 after backoff for cleaner coordinates? 
+    // Or keep absolute. Let's keep absolute but update min_position reference.
     min_position = driver.rampControl.GetCurrentPosition();
-    driver.rampControl.SetCurrentPosition(0);
+    driver.rampControl.SetCurrentPosition(0); // Reset 0 to this new "safe" minimum
+    min_position = 0; 
   }
-
+  
   // Find maximum bound (positive direction)
   ESP_LOGI(TAG, "Finding maximum bound (positive direction)...");
   int32_t max_position = 0;
-  if (!driver.diagnostics.PerformSensorlessHoming(true, -10, search_speed, max_position)) {
-    ESP_LOGW(TAG, "Failed to find maximum bound, using default");
-  }
-
-  start_time = esp_timer_get_time() / 1000;
-  bool stall_detected_max = false;
-  initial_pos = driver.rampControl.GetCurrentPosition();
-
-  while ((esp_timer_get_time() / 1000 - start_time) < timeout_ms) {
-    uint16_t sg_value = driver.diagnostics.GetStallGuard();
-    int32_t current_pos = driver.rampControl.GetCurrentPosition();
-
-    if (driver.rampControl.IsTargetReached() || sg_value < 100 || abs(current_pos - initial_pos) > 1000) {
-      max_position = current_pos;
-      stall_detected_max = true;
-      ESP_LOGI(TAG, "Stall detected! Maximum position: %d steps", max_position);
-      break;
-    }
-
-    vTaskDelay(pdMS_TO_TICKS(100));
-  }
-
-  if (!stall_detected_max) {
-    ESP_LOGW(TAG, "No stall detected in positive direction - may be unbounded");
-    max_position = driver.rampControl.GetCurrentPosition();
+  
+  if (!driver.diagnostics.PerformSensorlessHoming(true, Test::StallGuard::SGT_HOMING, search_speed, 
+                                                  max_position, Test::Motion::HOMING_TIMEOUT_MS)) {
+     ESP_LOGW(TAG, "Failed to find maximum bound, using default");
+     max_position = driver.rampControl.GetCurrentPosition();
   } else {
+    ESP_LOGI(TAG, "Stall detected! Maximum position: %ld steps", max_position);
+    
     driver.rampControl.Stop();
     vTaskDelay(pdMS_TO_TICKS(500));
-    ESP_LOGI(TAG, "Moving 100 steps away from maximum stop...");
+    ESP_LOGI(TAG, "Moving away from maximum stop...");
+    
+    int32_t backoff = 5000;
     driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(max_position - 100);
-    driver.rampControl.SetMaxSpeed(500.0F);
-    driver.rampControl.SetAcceleration(1000.0F);
+    driver.rampControl.SetTargetPosition(max_position - backoff);
+    driver.rampControl.SetMaxSpeed(search_speed / 2.0f);
+    driver.rampControl.SetAcceleration(search_speed);
     while (!driver.rampControl.IsTargetReached()) {
       vTaskDelay(pdMS_TO_TICKS(100));
     }
     max_position = driver.rampControl.GetCurrentPosition();
   }
+  
+  // Note: We replaced the manual polling loops with the robust PerformSensorlessHoming call
+  // which handles the timeout and status checks internally now.
+  
+  bool stall_detected_min = (min_position == 0); // Since we reset to 0 at min
+  bool stall_detected_max = (max_position > 10000); // Assume valid if moved significantly
+
 
   // ============================================================
   // STEP 2: Set up global bounds and home
@@ -1434,15 +1436,15 @@ extern "C" void app_main() {
   ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
 
   // Set default local bounds for oscillation (will be clipped to global bounds if needed)
-  motion.SetLocalBoundsFromCenterDegrees(-60.0F, 60.0F);
+  float amplitude = Test::Motion::FATIGUE_AMPLITUDE_DEG;
+  motion.SetLocalBoundsFromCenterDegrees(-amplitude, amplitude);
 
   // Configure default sinuous motion parameters
-  motion.SetFrequency(0.5F); // 0.5 Hz default frequency
+  motion.SetFrequency(Test::Motion::FATIGUE_FREQ_HZ);
 
   // Set default dwell times
-  motion.SetDwellTimes(2000, // 2 seconds at minimum bound
-                       2000, // 2 seconds at maximum bound
-                       0);   // No dwell at center
+  uint32_t dwell = Test::Motion::DWELL_MS;
+  motion.SetDwellTimes(dwell, dwell, 0);   // No dwell at center
 
   // Set default target cycle count (0 = infinite)
   motion.SetTargetCycles(0); // Infinite by default, can be changed via UART

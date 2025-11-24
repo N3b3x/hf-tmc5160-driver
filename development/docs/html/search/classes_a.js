@@ -1,16 +1,8 @@
 var searchData=
 [
-  ['short_5fconf_5fregister_0',['SHORT_CONF_Register',['../uniontmc5160_1_1SHORT__CONF__Register.html',1,'tmc5160']]],
-  ['shortprotectionconfig_1',['ShortProtectionConfig',['../structtmc5160_1_1ShortProtectionConfig.html',1,'tmc5160']]],
-  ['sinusoidalmotion_2',['SinusoidalMotion',['../classSinusoidalMotion.html',1,'']]],
-  ['slaveconf_5fregister_3',['SLAVECONF_Register',['../uniontmc5160_1_1SLAVECONF__Register.html',1,'tmc5160']]],
-  ['spicommand_4',['SpiCommand',['../structtmc5160_1_1SpiCommand.html',1,'tmc5160']]],
-  ['spicomminterface_5',['SpiCommInterface',['../classtmc5160_1_1SpiCommInterface.html',1,'tmc5160']]],
-  ['spicomminterface_3c_20esp32spi_20_3e_6',['SpiCommInterface&lt; Esp32SPI &gt;',['../classtmc5160_1_1SpiCommInterface.html',1,'tmc5160']]],
-  ['spiresponse_7',['SpiResponse',['../structtmc5160_1_1SpiResponse.html',1,'tmc5160']]],
-  ['spistatus_8',['SpiStatus',['../structtmc5160_1_1SpiStatus.html',1,'tmc5160']]],
-  ['stallguardconfig_9',['StallGuardConfig',['../structtmc5160_1_1StallGuardConfig.html',1,'tmc5160']]],
-  ['status_10',['Status',['../structFatigueTestMotion_1_1Status.html',1,'FatigueTestMotion']]],
-  ['stealthchopconfig_11',['StealthChopConfig',['../structtmc5160_1_1StealthChopConfig.html',1,'tmc5160']]],
-  ['sw_5fmode_5fregister_12',['SW_MODE_Register',['../uniontmc5160_1_1SW__MODE__Register.html',1,'tmc5160']]]
+  ['ramp_5fstat_5fregister_0',['RAMP_STAT_Register',['../uniontmc5160_1_1RAMP__STAT__Register.html',1,'tmc5160']]],
+  ['rampcontrol_1',['RampControl',['../structtmc5160_1_1TMC5160_1_1RampControl.html',1,'tmc5160::TMC5160']]],
+  ['rampparameters_2',['RampParameters',['../structtmc5160_1_1RampParameters.html',1,'tmc5160']]],
+  ['referenceswitchconfig_3',['ReferenceSwitchConfig',['../structtmc5160_1_1ReferenceSwitchConfig.html',1,'tmc5160']]],
+  ['registerinfo_4',['RegisterInfo',['../structtmc5160_1_1RegisterInfo.html',1,'tmc5160']]]
 ];

@@ -132,9 +132,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a203b92a84193d1dd595c1557f65bf92f" id="r_a203b92a84193d1dd595c1557f65bf92f"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a203b92a84193d1dd595c1557f65bf92f">GetLostSteps</a> () noexcept</td></tr>
 <tr class="memdesc:a203b92a84193d1dd595c1557f65bf92f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get lost steps counter.  <br /></td></tr>
 <tr class="separator:a203b92a84193d1dd595c1557f65bf92f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a426ca13ede401ba4c524b27754335929" id="r_a426ca13ede401ba4c524b27754335929"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a426ca13ede401ba4c524b27754335929">PerformSensorlessHoming</a> (bool direction, int8_t stall_threshold, float search_speed, int32_t &amp;final_position) noexcept</td></tr>
-<tr class="memdesc:a426ca13ede401ba4c524b27754335929"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform sensorless homing using StallGuard2.  <br /></td></tr>
-<tr class="separator:a426ca13ede401ba4c524b27754335929"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebaa249c3bf5cced2009e077c48f1872" id="r_aebaa249c3bf5cced2009e077c48f1872"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebaa249c3bf5cced2009e077c48f1872">PerformSensorlessHoming</a> (bool direction, int8_t stall_threshold, float search_speed, int32_t &amp;final_position, uint32_t timeout_ms=10000) noexcept</td></tr>
+<tr class="memdesc:aebaa249c3bf5cced2009e077c48f1872"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform sensorless homing using StallGuard2.  <br /></td></tr>
+<tr class="separator:aebaa249c3bf5cced2009e077c48f1872"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae52ee957475af0babba3daafa428d39e" id="r_ae52ee957475af0babba3daafa428d39e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae52ee957475af0babba3daafa428d39e">PerformSwitchHoming</a> (bool direction, float search_speed, float switch_speed, int32_t &amp;final_position, bool use_left_switch, uint32_t timeout_ms=10000) noexcept</td></tr>
+<tr class="memdesc:ae52ee957475af0babba3daafa428d39e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform homing using a reference switch (Section 12.4)  <br /></td></tr>
+<tr class="separator:ae52ee957475af0babba3daafa428d39e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f4c2b24f2fec3168a366f0122ca53b6" id="r_a0f4c2b24f2fec3168a366f0122ca53b6"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f4c2b24f2fec3168a366f0122ca53b6">GetTimeBetweenMicrosteps</a> () noexcept</td></tr>
 <tr class="memdesc:a0f4c2b24f2fec3168a366f0122ca53b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get actual time between microsteps.  <br /></td></tr>
 <tr class="separator:a0f4c2b24f2fec3168a366f0122ca53b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -636,8 +639,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="a426ca13ede401ba4c524b27754335929" name="a426ca13ede401ba4c524b27754335929"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a426ca13ede401ba4c524b27754335929">&#9670;&#160;</a></span>PerformSensorlessHoming()</h2>
+<a id="aebaa249c3bf5cced2009e077c48f1872" name="aebaa249c3bf5cced2009e077c48f1872"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebaa249c3bf5cced2009e077c48f1872">&#9670;&#160;</a></span>PerformSensorlessHoming()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -665,7 +668,12 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int32_t &amp;</td>          <td class="paramname"><span class="paramname"><em>final_position</em></span>&#160;)</td>
+          <td class="paramtype">int32_t &amp;</td>          <td class="paramname"><span class="paramname"><em>final_position</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>timeout_ms</em><span class="paramdefsep"> = </span><span class="paramdefval">10000</span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -682,11 +690,82 @@ template&lt;typename CommType &gt; </div>
     <tr><td class="paramname">stall_threshold</td><td>StallGuard2 threshold for stall detection </td></tr>
     <tr><td class="paramname">search_speed</td><td>Speed for homing search in steps/s </td></tr>
     <tr><td class="paramname">final_position</td><td>Reference to store final position after homing </td></tr>
+    <tr><td class="paramname">timeout_ms</td><td>Maximum time to wait for stall in milliseconds (default: 10000ms) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if homing succeeded, false otherwise</dd></dl>
-<p>Moves motor in specified direction until stall is detected, then stops. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if stall detected and motor stopped, false if timeout or error</dd></dl>
+<p>Moves motor in specified direction until stall is detected, then stops. Uses a polling loop to monitor stall status. </p>
+
+</div>
+</div>
+<a id="ae52ee957475af0babba3daafa428d39e" name="ae52ee957475af0babba3daafa428d39e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae52ee957475af0babba3daafa428d39e">&#9670;&#160;</a></span>PerformSwitchHoming()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Diagnostics::PerformSwitchHoming </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>direction</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>search_speed</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>switch_speed</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t &amp;</td>          <td class="paramname"><span class="paramname"><em>final_position</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>use_left_switch</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>timeout_ms</em><span class="paramdefsep"> = </span><span class="paramdefval">10000</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Perform homing using a reference switch (Section 12.4) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>Direction to search (true = positive, false = negative) </td></tr>
+    <tr><td class="paramname">search_speed</td><td>Speed for homing search in steps/s </td></tr>
+    <tr><td class="paramname">switch_speed</td><td>Speed for slow approach to switch in steps/s </td></tr>
+    <tr><td class="paramname">final_position</td><td>Reference to store final position after homing </td></tr>
+    <tr><td class="paramname">use_left_switch</td><td>true to use REFL, false to use REFR </td></tr>
+    <tr><td class="paramname">timeout_ms</td><td>Maximum time to wait for switch in milliseconds (default: 10000ms) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if switch hit and motor stopped, false if timeout or error</dd></dl>
+<p>Implements homing procedure from datasheet section 12.4:</p><ol type="1">
+<li>Moves towards switch at search_speed</li>
+<li>Stops on switch hit (hard stop)</li>
+<li>Updates final_position with latched position </li>
+</ol>
 
 </div>
 </div>

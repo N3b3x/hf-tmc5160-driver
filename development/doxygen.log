@@ -1,5 +1,5 @@
-warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.4WYi3G
-warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.4WYi3G' has become obsolete.
+warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.NSq0bb
+warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.NSq0bb' has become obsolete.
          To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
 Doxygen version used: 1.10.0 (ebc57c6dd303a980bd19dd74b8b61c8f3f5180ca)
 Searching for include files...
@@ -356,6 +356,12 @@ Generating page documentation...
 Generating docs for page deprecated...
 Generating group documentation...
 Generating class documentation...
+Generating docs for compound BackAndForthMotion...
+Generating caller graph for function BackAndForthMotion::Config
+Generating caller graph for function BackAndForthMotion::Start
+Generating caller graph for function BackAndForthMotion::Stop
+Generating call graph for function BackAndForthMotion::Update
+Generating caller graph for function BackAndForthMotion::Update
 Generating docs for compound CommandArg...
 Generating docs for compound CommandEntry...
 Generating docs for compound Esp32SPI...
@@ -400,11 +406,6 @@ Generating call graph for function FatigueTestMotion::Update
 Generating caller graph for function FatigueTestMotion::Update
 Generating caller graph for function FatigueTestMotion::UpdateSinuousMotion
 Generating docs for nested compound FatigueTestMotion::Status...
-Generating docs for compound SinusoidalMotion...
-Generating caller graph for function SinusoidalMotion::Config
-Generating caller graph for function SinusoidalMotion::Start
-Generating call graph for function SinusoidalMotion::Update
-Generating caller graph for function SinusoidalMotion::Update
 Generating docs for compound TestDriverHandle...
 Generating docs for compound TestResults...
 Generating caller graph for function TestResults::add_result
@@ -502,9 +503,9 @@ Generating caller graph for function tmc5160::SpiCommand::Read
 Generating caller graph for function tmc5160::SpiCommand::Write
 Generating docs for nested compound tmc5160::SpiCommand::Frame...
 Generating docs for compound tmc5160::SpiCommInterface...
-Generating call graph for function tmc5160::SpiCommInterface::AutoDetectChainLength
-Generating caller graph for function tmc5160:/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc5160_comm_interface.hpp:2428: warning: tmc5160::UartCommInterface::UartCommInterface has @param documentation sections but no arguments
-:SpiCommInterface::AutoDetectChainLength
+Generating call graph for function tmc5160::SpiCommInterf/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc5160_comm_interface.hpp:2428: warning: tmc5160::UartCommInterface::UartCommInterface has @param documentation sections but no arguments
+ace::AutoDetectChainLength
+Generating caller graph for function tmc5160::SpiCommInterface::AutoDetectChainLength
 Generating call graph for function tmc5160::SpiCommInterface::EnsureChainLengthKnown
 Generating caller graph for function tmc5160::SpiCommInterface::EnsureChainLengthKnown
 Generating call graph for function tmc5160::SpiCommInterface::ReadRegister
@@ -561,8 +562,7 @@ Generating docs for compound tmc5160::TMC5160PinConfig...
 Generating docs for compound tmc5160::UartCommInterface...
 Generating call graph for function tmc5160::UartCommInterface::GetNaoPin
 Generating caller graph for function tmc5160::UartCommInterface::GetNaoPin
-Generating call graph for function tmc5160::UartCommInterface::ReadRegister
-Generating call graph for function tmc5160::U/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:11: warning: unable to resolve reference to '-overview' for \ref command
+Generating call graph for function tmc5160::UartC/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:11: warning: unable to resolve reference to '-overview' for \ref command
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:12: warning: unable to resolve reference to '-features' for \ref command
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:13: warning: unable to resolve reference to '-quick-start' for \ref command
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:14: warning: unable to resolve reference to '-installation' for \ref command
@@ -579,7 +579,8 @@ Generating call graph for function tmc5160::U/home/runner/work/hf-tmc5160-driver
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:212: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/api_reference.md' for \ref command
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:231: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/examples.md' for \ref command
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:235: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/index.md' for \ref command
-artCommInterface::SetNaiPin
+ommInterface::ReadRegister
+Generating call graph for function tmc5160::UartCommInterface::SetNaiPin
 Generating caller graph for function tmc5160::UartCommInterface::SetNaiPin
 Generating call graph for function tmc5160::UartCommInterface::UartReceive
 Generating caller graph for function tmc5160::UartCommInterface::UartReceive
@@ -607,6 +608,12 @@ Generating docs for namespace tmc5160::Microsteps
 Generating docs for namespace tmc5160::Registers
 Generating docs for namespace tmc5160_test_config
 Generating caller graph for function tmc5160_test_config::GetDefaultPinConfig
+Generating docs for namespace tmc5160_test_config::MotorConfig_17HS4401S
+Generating docs for namespace tmc5160_test_config::TestConfig_17HS4401S
+Generating docs for namespace tmc5160_test_config::TestConfig_17HS4401S::Encoder
+Generating docs for namespace tmc5160_test_config::TestConfig_17HS4401S::Motion
+Generating docs for namespace tmc5160_test_config::TestConfig_17HS4401S::StallGuard
+Generating docs for namespace tmc5160_test_config::TestConfig_17HS4401S::Switches
 Generating graph info page...
 Generating directory documentation...
 Generating dependency graph for directory esp32
@@ -635,7 +642,85 @@ finalizing index lists...
 writing tag file...
 Running plantuml with JAVA...
 Running dot...
-Patching output file 1/1
-type lookup cache used 5661/65536 hits=27205 misses=5788
-symbol lookup cache used 4690/65536 hits=28069 misses=4690
+Generating dot graphs using 5 parallel threads...
+Running dot for graph 1/33
+Running dot for graph 2/33
+Running dot for graph 3/33
+Running dot for graph 4/33
+Running dot for graph 5/33
+Running dot for graph 6/33
+Running dot for graph 7/33
+Running dot for graph 8/33
+Running dot for graph 9/33
+Running dot for graph 10/33
+Running dot for graph 11/33
+Running dot for graph 12/33
+Running dot for graph 13/33
+Running dot for graph 14/33
+Running dot for graph 15/33
+Running dot for graph 16/33
+Running dot for graph 17/33
+Running dot for graph 18/33
+Running dot for graph 19/33
+Running dot for graph 20/33
+Running dot for graph 21/33
+Running dot for graph 22/33
+Running dot for graph 23/33
+Running dot for graph 24/33
+Running dot for graph 25/33
+Running dot for graph 26/33
+Running dot for graph 27/33
+Running dot for graph 28/33
+Running dot for graph 29/33
+Running dot for graph 30/33
+Running dot for graph 31/33
+Running dot for graph 32/33
+Running dot for graph 33/33
+Patching output file 1/45
+Patching output file 2/45
+Patching output file 3/45
+Patching output file 4/45
+Patching output file 5/45
+Patching output file 6/45
+Patching output file 7/45
+Patching output file 8/45
+Patching output file 9/45
+Patching output file 10/45
+Patching output file 11/45
+Patching output file 12/45
+Patching output file 13/45
+Patching output file 14/45
+Patching output file 15/45
+Patching output file 16/45
+Patching output file 17/45
+Patching output file 18/45
+Patching output file 19/45
+Patching output file 20/45
+Patching output file 21/45
+Patching output file 22/45
+Patching output file 23/45
+Patching output file 24/45
+Patching output file 25/45
+Patching output file 26/45
+Patching output file 27/45
+Patching output file 28/45
+Patching output file 29/45
+Patching output file 30/45
+Patching output file 31/45
+Patching output file 32/45
+Patching output file 33/45
+Patching output file 34/45
+Patching output file 35/45
+Patching output file 36/45
+Patching output file 37/45
+Patching output file 38/45
+Patching output file 39/45
+Patching output file 40/45
+Patching output file 41/45
+Patching output file 42/45
+Patching output file 43/45
+Patching output file 44/45
+Patching output file 45/45
+type lookup cache used 5959/65536 hits=28988 misses=6086
+symbol lookup cache used 5422/65536 hits=34805 misses=5422
 finished...

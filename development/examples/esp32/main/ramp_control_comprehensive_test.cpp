@@ -57,15 +57,19 @@ static constexpr bool ENABLE_RAMP_PARAMETER_TESTS = true;
 static constexpr bool ENABLE_REFERENCE_SWITCH_TESTS = true;
 static constexpr bool ENABLE_UNIT_CONVERSION_TESTS = true;
 
-// Test configuration constants for NEMA 44mm 2A motor at 24V
-// Current calculation: For 2A motor, use ~80% for run (1.6A), ~30% for hold (0.6A)
-// With global_scaler=32: irun=26 gives ~1.6A, ihold=10 gives ~0.6A
-static constexpr uint8_t TEST_IRUN = 26;        // Run current (~1.6A for 2A motor, 80% of rated)
-static constexpr uint8_t TEST_IHOLD = 10;       // Hold current (~0.6A for 2A motor, 30% of rated)
-static constexpr uint8_t TEST_GLOBAL_SCALER = 32; // Global scaler (32 is standard for small motors)
-static constexpr uint8_t TEST_TOFF = 5;          // Chopper off time (5 is good for 2A motors)
-static constexpr uint8_t TEST_MRES = 4;          // 16 microsteps (256/16=16 microsteps per full step)
-static constexpr uint16_t STEPS_PER_REV = 200;   // Steps per revolution (1.8° per step)
+// Motor configuration using 17HS4401S-PG518 profile from header
+namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+namespace Test = tmc5160_test_config::TestConfig_17HS4401S;
+
+static constexpr uint8_t TEST_IRUN = Motor::IRUN;
+static constexpr uint8_t TEST_IHOLD = Motor::IHOLD;
+static constexpr uint8_t TEST_GLOBAL_SCALER = Motor::GLOBAL_SCALER;
+static constexpr uint8_t TEST_TOFF = Motor::TOFF;
+static constexpr uint8_t TEST_MRES = Motor::MRES; // 0 (256 microsteps)
+static constexpr float MICROSTEPS = 256.0f;
+// Steps per revolution for unit conversions (Output Shaft full steps * Microsteps)
+// 17HS4401S-PG518: 200 steps * 5.18 ratio * 256 microsteps = ~265,216 steps/rev
+static constexpr float STEPS_PER_REV = static_cast<float>(Motor::OUTPUT_FULL_STEPS) * MICROSTEPS;
 static constexpr float LEAD_SCREW_PITCH_MM = 2.0F; // Lead screw pitch (adjust for your setup)
 
 // Forward declarations
@@ -116,24 +120,25 @@ std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
     }
   }
   
-  // Configure driver for NEMA 44mm 2A stepper motor at 24V
+  // Configure driver for NEMA 17 (17HS4401S-PG518)
   tmc5160::DriverConfig cfg{};
   cfg.motor.irun = TEST_IRUN;
   cfg.motor.ihold = TEST_IHOLD;
   cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
   
-  // Chopper settings for 2A motor at 24V
+  // Chopper settings
   cfg.chopper.toff = TEST_TOFF;
   cfg.chopper.mres = TEST_MRES;
-  cfg.chopper.intpol = true;
-  cfg.chopper.hend = 3;          // Hysteresis end (3 is good for 2A motors)
-  cfg.chopper.hstrt = 0;         // Hysteresis start
+  cfg.chopper.intpol = Motor::INTERPOLATION;
+  cfg.chopper.hend = Motor::HEND;
+  cfg.chopper.hstrt = Motor::HSTRT;
+  cfg.chopper.tbl = Motor::TBL;
   
-  // StealthChop settings for quiet operation at 24V
-  cfg.stealthchop.pwm_ofs = 30;   // PWM offset for smooth start
-  cfg.stealthchop.pwm_autoscale = true; // Auto-scale PWM (important for 24V)
-  cfg.stealthchop.pwm_autograd = true;  // Auto-gradient PWM
-  cfg.stealthchop.pwm_freq = 1;   // PWM frequency (1 = 23.4kHz)
+  // StealthChop settings
+  cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+  cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+  cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+  cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
   
   // Power stage settings for 2A motor
   cfg.power_stage.drv_strength = 2;  // Driver strength (2 is good for 2A motors)
@@ -233,21 +238,23 @@ bool test_speed_control() noexcept {
   bool success = true;
   
   // Test setting max speed (appropriate for NEMA 44mm 2A motor)
-  // 2000 steps/s = 10 rev/s = 600 RPM (good for small motors)
-  if (!handle->driver->rampControl.SetMaxSpeed(2000.0F)) {
+  // Use 2 revolutions per second (output shaft)
+  float max_speed = STEPS_PER_REV * 2.0f;
+  if (!handle->driver->rampControl.SetMaxSpeed(max_speed)) {
     ESP_LOGE(TAG, "Failed to set max speed");
     success = false;
   }
   
   // Test setting acceleration (appropriate for NEMA 44mm 2A motor)
-  // 2000 steps/s² provides good acceleration for small motors
-  if (!handle->driver->rampControl.SetAcceleration(2000.0F)) {
+  // Reach max speed in 0.5s
+  float accel = max_speed * 2.0f;
+  if (!handle->driver->rampControl.SetAcceleration(accel)) {
     ESP_LOGE(TAG, "Failed to set acceleration");
     success = false;
   }
   
   // Test setting accelerations (both) - higher decel for faster stopping
-  if (!handle->driver->rampControl.SetAccelerations(2000.0F, 2500.0F)) {
+  if (!handle->driver->rampControl.SetAccelerations(accel, accel * 1.5f)) {
     ESP_LOGE(TAG, "Failed to set accelerations");
     success = false;
   }
@@ -269,8 +276,11 @@ bool test_ramp_parameters() noexcept {
   
   bool success = true;
   
+  float vstart = STEPS_PER_REV * 0.01f; // 0.01 RPS start
+  float vstop = STEPS_PER_REV * 0.005f; // 0.005 RPS stop
+  
   // Test ramp speeds
-  if (!handle->driver->rampControl.SetRampSpeeds(10.0F, 5.0F, 2.0F)) {
+  if (!handle->driver->rampControl.SetRampSpeeds(vstart, vstop, 0.0f)) {
     ESP_LOGE(TAG, "Failed to set ramp speeds");
     success = false;
   }
@@ -288,7 +298,7 @@ bool test_ramp_parameters() noexcept {
   }
   
   // Test first acceleration
-  if (!handle->driver->rampControl.SetFirstAcceleration(300.0F)) {
+  if (!handle->driver->rampControl.SetFirstAcceleration(vstart * 5.0f)) {
     ESP_LOGE(TAG, "Failed to set first acceleration");
     success = false;
   }
@@ -297,29 +307,41 @@ bool test_ramp_parameters() noexcept {
 }
 
 bool test_reference_switch_configuration() noexcept {
-  ESP_LOGI(TAG, "Testing reference switch configuration...");
+  ESP_LOGI(TAG, "Testing reference switch configuration and homing...");
   
   auto handle = create_test_driver();
   if (!handle) {
     return false;
   }
   
+  // Test configuration using defaults from header
   tmc5160::ReferenceSwitchConfig ref_cfg{};
-  ref_cfg.swap_left_right = false;
-  ref_cfg.pol_stop_left = false;
-  ref_cfg.pol_stop_right = false;
-  ref_cfg.latch_left_active = true;
-  ref_cfg.latch_right_active = true;
-  ref_cfg.latch_left_inactive = false;
-  ref_cfg.latch_right_inactive = false;
-  ref_cfg.en_softstop = false;
-  ref_cfg.stop_left_enable = false;
-  ref_cfg.stop_right_enable = false;
-  ref_cfg.en_latch_encoder = false;
+  ref_cfg.swap_left_right = Test::Switches::SWAP_INPUTS;
+  ref_cfg.pol_stop_left = Test::Switches::POLARITY_LEFT;
+  ref_cfg.pol_stop_right = Test::Switches::POLARITY_RIGHT;
+  ref_cfg.latch_left_active = Test::Switches::LATCH_LEFT;
+  ref_cfg.latch_right_active = Test::Switches::LATCH_RIGHT;
   
   if (!handle->driver->rampControl.ConfigureReferenceSwitch(ref_cfg)) {
     ESP_LOGE(TAG, "Failed to configure reference switch");
     return false;
+  }
+
+  // Test Switch Homing (Simulation / API check)
+  // Since we don't have physical switches in this test, we just verify the API call works
+  // and timeouts (as expected without a switch press).
+  ESP_LOGI(TAG, "Testing PerformSwitchHoming API (expect timeout)...");
+  int32_t final_pos = 0;
+  // Use short timeout for test
+  bool result = handle->driver->diagnostics.PerformSwitchHoming(true, 
+                                                                Test::Motion::HOMING_SEARCH_SPEED, 
+                                                                Test::Motion::HOMING_SWITCH_SPEED, 
+                                                                final_pos, true, 100);
+  
+  if (!result) {
+    ESP_LOGI(TAG, "Homing timed out as expected (no physical switch)");
+  } else {
+    ESP_LOGW(TAG, "Homing reported success unexpectedly (switch noise?)");
   }
   
   return true;

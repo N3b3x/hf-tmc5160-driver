@@ -2,9 +2,9 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,62,169,87"/>
 <area shape="rect" id="Node000002" href="$ramp__control__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="253,13,393,38"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,59,247,38,248,44,149,65"/>
-<area shape="rect" id="Node000004" href="$namespacetmc5160.html#a6e78a19f84b991207c30401e90eb6ebd" title="Convert millimeters to steps." alt="" coords="241,62,404,87"/>
+<area shape="rect" id="Node000004" href="$namespacetmc5160.html#affbfa04d45ce3729d6becb2551d3376e" title="Convert millimeters to steps." alt="" coords="241,62,404,87"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="169,72,227,72,227,77,169,77"/>
-<area shape="rect" id="Node000005" href="$namespacetmc5160.html#a086e668f7c59055a454e010eb8d430a0" title="Convert RPM to steps per second." alt="" coords="217,111,428,137"/>
+<area shape="rect" id="Node000005" href="$namespacetmc5160.html#a3b57c5f7f1d5a42e8a64151813c2aa74" title="Convert RPM to steps per second." alt="" coords="217,111,428,137"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="149,85,248,106,247,111,148,90"/>
 <area shape="rect" id="Node000003" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="476,5,639,45"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="393,23,462,23,462,28,393,28"/>

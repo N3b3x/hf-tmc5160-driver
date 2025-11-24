@@ -138,15 +138,15 @@ Variables</h2></td></tr>
 <tr class="separator:a7e9c3eca301b210e737ebb6f0564c139"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9b26b3fd5c0860cdc7a3bad3a5d4647" id="r_ac9b26b3fd5c0860cdc7a3bad3a5d4647"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9b26b3fd5c0860cdc7a3bad3a5d4647">ENABLE_OVERTEMPERATURE_TESTS</a> = true</td></tr>
 <tr class="separator:ac9b26b3fd5c0860cdc7a3bad3a5d4647"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83d0ba1eda12d12b516f53b6f3d7bf15" id="r_a83d0ba1eda12d12b516f53b6f3d7bf15"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83d0ba1eda12d12b516f53b6f3d7bf15">TEST_IRUN</a> = 20</td></tr>
+<tr class="memitem:a83d0ba1eda12d12b516f53b6f3d7bf15" id="r_a83d0ba1eda12d12b516f53b6f3d7bf15"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83d0ba1eda12d12b516f53b6f3d7bf15">TEST_IRUN</a> = Motor::IRUN</td></tr>
 <tr class="separator:a83d0ba1eda12d12b516f53b6f3d7bf15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43f36d608ddb89bbbc098f546646a914" id="r_a43f36d608ddb89bbbc098f546646a914"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43f36d608ddb89bbbc098f546646a914">TEST_IHOLD</a> = 10</td></tr>
+<tr class="memitem:a43f36d608ddb89bbbc098f546646a914" id="r_a43f36d608ddb89bbbc098f546646a914"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43f36d608ddb89bbbc098f546646a914">TEST_IHOLD</a> = Motor::IHOLD</td></tr>
 <tr class="separator:a43f36d608ddb89bbbc098f546646a914"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca2e55a43fbb2e21649216d80ec402f0" id="r_aca2e55a43fbb2e21649216d80ec402f0"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca2e55a43fbb2e21649216d80ec402f0">TEST_GLOBAL_SCALER</a> = 32</td></tr>
+<tr class="memitem:aca2e55a43fbb2e21649216d80ec402f0" id="r_aca2e55a43fbb2e21649216d80ec402f0"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca2e55a43fbb2e21649216d80ec402f0">TEST_GLOBAL_SCALER</a> = Motor::GLOBAL_SCALER</td></tr>
 <tr class="separator:aca2e55a43fbb2e21649216d80ec402f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41fcf4530de550ff6f72008fcded08cc" id="r_a41fcf4530de550ff6f72008fcded08cc"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41fcf4530de550ff6f72008fcded08cc">TEST_TOFF</a> = 5</td></tr>
+<tr class="memitem:a41fcf4530de550ff6f72008fcded08cc" id="r_a41fcf4530de550ff6f72008fcded08cc"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41fcf4530de550ff6f72008fcded08cc">TEST_TOFF</a> = Motor::TOFF</td></tr>
 <tr class="separator:a41fcf4530de550ff6f72008fcded08cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b32e418bcfce482b3d94e1e6a0999a2" id="r_a3b32e418bcfce482b3d94e1e6a0999a2"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b32e418bcfce482b3d94e1e6a0999a2">TEST_MRES</a> = 4</td></tr>
+<tr class="memitem:a3b32e418bcfce482b3d94e1e6a0999a2" id="r_a3b32e418bcfce482b3d94e1e6a0999a2"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b32e418bcfce482b3d94e1e6a0999a2">TEST_MRES</a> = Motor::MRES</td></tr>
 <tr class="separator:a3b32e418bcfce482b3d94e1e6a0999a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -394,7 +394,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t TEST_GLOBAL_SCALER = 32</td>
+          <td class="memname">constexpr uint8_t TEST_GLOBAL_SCALER = Motor::GLOBAL_SCALER</td>
         </tr>
       </table>
   </td>
@@ -416,7 +416,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t TEST_IHOLD = 10</td>
+          <td class="memname">constexpr uint8_t TEST_IHOLD = Motor::IHOLD</td>
         </tr>
       </table>
   </td>
@@ -438,7 +438,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t TEST_IRUN = 20</td>
+          <td class="memname">constexpr uint8_t TEST_IRUN = Motor::IRUN</td>
         </tr>
       </table>
   </td>
@@ -460,7 +460,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t TEST_MRES = 4</td>
+          <td class="memname">constexpr uint8_t TEST_MRES = Motor::MRES</td>
         </tr>
       </table>
   </td>
@@ -482,7 +482,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t TEST_TOFF = 5</td>
+          <td class="memname">constexpr uint8_t TEST_TOFF = Motor::TOFF</td>
         </tr>
       </table>
   </td>

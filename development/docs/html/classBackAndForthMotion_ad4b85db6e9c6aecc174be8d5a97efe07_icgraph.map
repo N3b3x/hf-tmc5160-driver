@@ -1,0 +1,7 @@
+<map id="BackAndForthMotion::Stop" name="BackAndForthMotion::Stop">
+<area shape="rect" id="Node000001" title="Stop back&#45;and&#45;forth motion." alt="" coords="345,5,503,45"/>
+<area shape="rect" id="Node000002" href="$classBackAndForthMotion.html#afac7a78a30c9fafbcee5eb2626e3f409" title="Update back&#45;and&#45;forth motion (call periodically)" alt="" coords="140,5,297,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="331,28,298,28,298,23,331,23"/>
+<area shape="rect" id="Node000003" href="$sinusoidal_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,13,92,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,28,92,28,92,23,126,23"/>
+</map>

@@ -88,14 +88,15 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "TestFramework_8h.html",
-"classtmc5160_1_1SpiCommInterface.html#ae8e442cc0ae880b3f4a131af6769040d",
-"functions_vars_o.html",
-"namespacetmc5160_1_1Registers.html#a5f89bd1de3d85598297cc5ad6503b7e5",
-"structtmc5160_1_1Esp32SpiPinConfig.html",
-"structtmc5160_1_1SpiStatus.html",
-"tmc5160__comm__interface_8hpp.html#ab650ebb70be7f1da00a2dea1f2fe662e",
-"uniontmc5160_1_1COOLCONF__Register.html#af4102d539e790f6329e137902af4bae6",
-"uniontmc5160_1_1MSLUTSEL__Register.html#ad23f2c4ccf4fea71bc1d4e3e6e3e557e"
+"classtmc5160_1_1SpiCommInterface.html#ae258b33b551a3ee3f58cce4425c8b2a6",
+"functions_func_f.html",
+"namespacetmc5160.html#afefeb2a1b9691235f96586d280632621",
+"structtmc5160_1_1ChopperConfig.html#a25a86c90d130952f9b776e41ebb6d110",
+"structtmc5160_1_1PowerStageParameters.html#af49c226aa79c7b8b209492a10a170a46",
+"structtmc5160_1_1TMC5160_1_1RampControl.html#a2fdc3106ebc36934faca112dd62031a0",
+"tmc5160__units_8hpp.html#aebbb75082074583de0237592ae2b14e2",
+"uniontmc5160_1_1GCONF__Register.html#affda4b8fac1c35058bdc9b67b3876bd8",
+"uniontmc5160_1_1SLAVECONF__Register.html#a36c116e865ed068b0e25168e74b79aca"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

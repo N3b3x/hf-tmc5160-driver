@@ -1,5 +1,5 @@
 <map id="tmc5160::TMC5160::RampControl::SetMaxSpeedRpm" name="tmc5160::TMC5160::RampControl::SetMaxSpeedRpm">
 <area shape="rect" id="Node000001" title="Set maximum speed in RPM." alt="" coords="5,5,247,45"/>
-<area shape="rect" id="Node000002" href="$namespacetmc5160.html#a086e668f7c59055a454e010eb8d430a0" title="Convert RPM to steps per second." alt="" coords="295,13,505,38"/>
+<area shape="rect" id="Node000002" href="$namespacetmc5160.html#a3b57c5f7f1d5a42e8a64151813c2aa74" title="Convert RPM to steps per second." alt="" coords="295,13,505,38"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,23,281,23,281,28,247,28"/>
 </map>

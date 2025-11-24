@@ -1,0 +1,7 @@
+<map id="BackAndForthMotion::Update" name="BackAndForthMotion::Update">
+<area shape="rect" id="Node000001" title="Update back&#45;and&#45;forth motion (call periodically)" alt="" coords="5,37,163,77"/>
+<area shape="rect" id="Node000002" href="$classBackAndForthMotion.html#a6ababa55b07f6a7ccbe591b597f64ea3" title="Initialize and start back&#45;and&#45;forth motion." alt="" coords="211,5,368,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,42,197,37,198,42,164,48"/>
+<area shape="rect" id="Node000003" href="$classBackAndForthMotion.html#ad4b85db6e9c6aecc174be8d5a97efe07" title="Stop back&#45;and&#45;forth motion." alt="" coords="211,69,368,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,67,198,72,197,78,163,72"/>
+</map>

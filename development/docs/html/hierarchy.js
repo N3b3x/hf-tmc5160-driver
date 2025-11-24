@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "BackAndForthMotion", "classBackAndForthMotion.html", null ],
     [ "tmc5160::CHOPCONF_Register", "uniontmc5160_1_1CHOPCONF__Register.html", null ],
     [ "tmc5160::ChopperConfig", "structtmc5160_1_1ChopperConfig.html", null ],
     [ "CommandArg", "structCommandArg.html", null ],
@@ -58,7 +59,6 @@ var hierarchy =
     [ "tmc5160::RegisterInfo", "structtmc5160_1_1RegisterInfo.html", null ],
     [ "tmc5160::SHORT_CONF_Register", "uniontmc5160_1_1SHORT__CONF__Register.html", null ],
     [ "tmc5160::ShortProtectionConfig", "structtmc5160_1_1ShortProtectionConfig.html", null ],
-    [ "SinusoidalMotion", "classSinusoidalMotion.html", null ],
     [ "tmc5160::SLAVECONF_Register", "uniontmc5160_1_1SLAVECONF__Register.html", null ],
     [ "tmc5160::SpiCommand", "structtmc5160_1_1SpiCommand.html", null ],
     [ "tmc5160::SpiResponse", "structtmc5160_1_1SpiResponse.html", null ],

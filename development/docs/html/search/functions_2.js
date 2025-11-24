@@ -8,7 +8,7 @@ var searchData=
   ['cliplocalboundstoglobal_5',['ClipLocalBoundsToGlobal',['../classFatigueTestMotion.html#afd810bcf984589fb9b837d8fd5a2a1c5',1,'FatigueTestMotion']]],
   ['comminterface_6',['CommInterface',['../classtmc5160_1_1CommInterface.html#a1146e6d0fe00fb39c231b0f497894320',1,'tmc5160::CommInterface::CommInterface() noexcept=default'],['../classtmc5160_1_1CommInterface.html#add2463bdece92ba554f4c11fbe83cbea',1,'tmc5160::CommInterface::CommInterface(const CommInterface &amp;)=delete'],['../classtmc5160_1_1CommInterface.html#ab963945f2ea8295488f51fb1d1625987',1,'tmc5160::CommInterface::CommInterface(CommInterface &amp;&amp;)=default']]],
   ['communication_7',['Communication',['../structtmc5160_1_1TMC5160_1_1Communication.html#acdbfaf3a5695a8118dcf84af786ceca3',1,'tmc5160::TMC5160::Communication']]],
-  ['config_8',['Config',['../classSinusoidalMotion.html#ab65834bd79febfd3451ed80165e6d075',1,'SinusoidalMotion']]],
+  ['config_8',['Config',['../classBackAndForthMotion.html#aeb03477ad8ae99e527c39ee417e4eabf',1,'BackAndForthMotion']]],
   ['configure_9',['Configure',['../structtmc5160_1_1TMC5160_1_1Encoder.html#a918402de884ffc263dc91df230e6d1ce',1,'tmc5160::TMC5160::Encoder']]],
   ['configureactivelevels_10',['ConfigureActiveLevels',['../classEsp32SPI.html#a3013236ecd0308bf6b4529a936f8f1d8',1,'Esp32SPI']]],
   ['configurechopper_11',['ConfigureChopper',['../structtmc5160_1_1TMC5160_1_1MotorControl.html#aa38ded98f6b82a6df62bb0de79773a0f',1,'tmc5160::TMC5160::MotorControl']]],

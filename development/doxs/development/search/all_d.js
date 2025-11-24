@@ -26,6 +26,7 @@ var searchData=
   ['otpw_23',['otpw',['../uniontmc5160_1_1DRV__STATUS__Register.html#aa8d8f02fcf50fbbf178c21d8bcf4a064',1,'tmc5160::DRV_STATUS_Register']]],
   ['otpw_24',['OTPW',['../namespacetmc5160.html#aabe2f8a8b4cb7d6533ac67eb7980dc01aac0b147690352ccd55facc0f3468846a',1,'tmc5160']]],
   ['otselect_25',['otselect',['../uniontmc5160_1_1DRV__CONF__Register.html#a905488b9f382aa7234129e61bebca8cf',1,'tmc5160::DRV_CONF_Register::otselect'],['../structtmc5160_1_1PowerStageParameters.html#a27b1e22327646482d6648dcea0aa2393',1,'tmc5160::PowerStageParameters::otselect']]],
-  ['output_5fsection_5findicator_26',['output_section_indicator',['../TestFramework_8h.html#a0b263a245b65a247ab95a28992b8cc4c',1,'TestFramework.h']]],
-  ['overview_27',['📦 Overview',['../index.html#autotoc_md20',1,'']]]
+  ['output_5ffull_5fsteps_26',['OUTPUT_FULL_STEPS',['../namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a6d108e46bc3c3b9c348f82ff9b7849dc',1,'tmc5160_test_config::MotorConfig_17HS4401S']]],
+  ['output_5fsection_5findicator_27',['output_section_indicator',['../TestFramework_8h.html#a0b263a245b65a247ab95a28992b8cc4c',1,'TestFramework.h']]],
+  ['overview_28',['📦 Overview',['../index.html#autotoc_md20',1,'']]]
 ];

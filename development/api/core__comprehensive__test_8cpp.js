@@ -15,6 +15,8 @@ var core__comprehensive__test_8cpp =
     [ "ENABLE_RAMP_PARAMETER_TESTS", "core__comprehensive__test_8cpp.html#a4bb804f194a3a64d7342c1093dad1ab5", null ],
     [ "ENABLE_REGISTER_ACCESS_TESTS", "core__comprehensive__test_8cpp.html#a3d09c2af8ab10bbd42d0b33e4986fb88", null ],
     [ "g_test_results", "core__comprehensive__test_8cpp.html#aaff89257c54366921eebb8ec1348b1fd", null ],
+    [ "MICROSTEPS", "core__comprehensive__test_8cpp.html#ac0fcb659b270b34d64fb809691ccb95b", null ],
+    [ "STEPS_PER_REV", "core__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba", null ],
     [ "TAG", "core__comprehensive__test_8cpp.html#a5a85b9c772bbeb480b209a3e6ea92b4c", null ],
     [ "TEST_ACCELERATION", "core__comprehensive__test_8cpp.html#a66044a83a16364900a1e4ea4e2a33b64", null ],
     [ "TEST_DECELERATION", "core__comprehensive__test_8cpp.html#a0c99465b0fea99d743ad558c61a8062d", null ],

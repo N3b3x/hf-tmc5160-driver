@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="namespacetmc5160.html#a086e668f7c59055a454e010eb8d430a0" target="_top" xlink:title="Convert RPM to steps per second.">
+<g id="a_Node000002"><a xlink:href="namespacetmc5160.html#a3b57c5f7f1d5a42e8a64151813c2aa74" target="_top" xlink:title="Convert RPM to steps per second.">
 <polygon fill="white" stroke="#666666" points="375,-24.5 217,-24.5 217,-5.5 375,-5.5 375,-24.5"/>
 <text text-anchor="middle" x="296" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::RpmToStepsPerSec</text>
 </a>
