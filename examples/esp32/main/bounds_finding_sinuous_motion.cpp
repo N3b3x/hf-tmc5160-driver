@@ -1246,8 +1246,8 @@ extern "C" void app_main() {
   tmc5160::TMC5160<Esp32SPI> driver(spi);
 
   // Use centralized configuration
-  using Motor = tmc5160_test_config::MotorConfig_17HS4401S;
-  using Test = tmc5160_test_config::TestConfig_17HS4401S;
+  namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+  namespace Test = tmc5160_test_config::TestConfig_17HS4401S;
 
   // Configure driver
   tmc5160::DriverConfig cfg{};

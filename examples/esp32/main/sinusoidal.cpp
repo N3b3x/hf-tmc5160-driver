@@ -203,7 +203,7 @@ extern "C" void app_main() {
   tmc5160::TMC5160<Esp32SPI> driver(spi);
 
   // Configure driver using standardized MotorConfig for 17HS4401S-PG518
-  using Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+  namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
   tmc5160::DriverConfig cfg{};
   
   // Motor current settings

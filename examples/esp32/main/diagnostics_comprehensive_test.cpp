@@ -55,8 +55,8 @@ static constexpr bool ENABLE_OFFSET_CALIBRATION_TESTS = true;
 static constexpr bool ENABLE_SENSORLESS_HOMING_TESTS = true;
 
 // Test configuration constants
-using Motor = tmc5160_test_config::MotorConfig_17HS4401S;
-using Test = tmc5160_test_config::TestConfig_17HS4401S;
+namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+namespace Test = tmc5160_test_config::TestConfig_17HS4401S;
 
 static constexpr uint8_t TEST_IRUN = Motor::IRUN;
 static constexpr uint8_t TEST_IHOLD = Motor::IHOLD;
