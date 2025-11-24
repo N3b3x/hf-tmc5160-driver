@@ -1,7 +1,7 @@
 <map id="FatigueTestMotion::SetLocalBoundsFromCenterDegrees" name="FatigueTestMotion::SetLocalBoundsFromCenterDegrees">
 <area shape="rect" id="Node000001" title="Set local bounds in degrees from center (thread&#45;safe)" alt="" coords="5,23,260,63"/>
-<area shape="rect" id="Node000002" href="$namespacetmc5160.html#a125b02e40c40c77eb5e08e68502e239e" title="Convert degrees to steps." alt="" coords="308,5,499,31"/>
+<area shape="rect" id="Node000002" href="$namespacetmc5160.html#afb1c3789f431ec5b7872d5dc456c7678" title="Convert degrees to steps." alt="" coords="308,5,499,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="260,29,294,26,294,31,260,34"/>
-<area shape="rect" id="Node000003" href="$namespacetmc5160.html#a13c113ece8bf9e72134ead3dcd3e45f0" title="Convert steps to degrees." alt="" coords="308,55,499,80"/>
+<area shape="rect" id="Node000003" href="$namespacetmc5160.html#a17db4658c61b62396b32c1a022e54d75" title="Convert steps to degrees." alt="" coords="308,55,499,80"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="260,52,294,55,294,60,260,57"/>
 </map>

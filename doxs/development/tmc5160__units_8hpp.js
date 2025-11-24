@@ -1,15 +1,15 @@
 var tmc5160__units_8hpp =
 [
-    [ "AccelerationMmToSteps", "tmc5160__units_8hpp.html#a5a0db2a4fafbb16e129455ac5c8033d2", null ],
-    [ "AccelerationStepsToMm", "tmc5160__units_8hpp.html#aab2bb5b65536d0c4157917a6159870da", null ],
-    [ "BeltTeethToSteps", "tmc5160__units_8hpp.html#ab5cc044f8d1b33d3aabba5f6e84a6fe1", null ],
-    [ "DegreesToSteps", "tmc5160__units_8hpp.html#a125b02e40c40c77eb5e08e68502e239e", null ],
-    [ "MmPerSecToStepsPerSec", "tmc5160__units_8hpp.html#a35dbbcb72e22539dc46aaa7098770312", null ],
-    [ "MmToSteps", "tmc5160__units_8hpp.html#a6e78a19f84b991207c30401e90eb6ebd", null ],
-    [ "RpmToStepsPerSec", "tmc5160__units_8hpp.html#a086e668f7c59055a454e010eb8d430a0", null ],
-    [ "StepsPerSecToMmPerSec", "tmc5160__units_8hpp.html#a3ca0a55137bd6942ec881f0a1f6e2c88", null ],
-    [ "StepsPerSecToRpm", "tmc5160__units_8hpp.html#a79abd58070d1876b3f7cebf88192b7d4", null ],
-    [ "StepsToBeltTeeth", "tmc5160__units_8hpp.html#aa11d045a26705ebd8c142414d9b3d0b7", null ],
-    [ "StepsToDegrees", "tmc5160__units_8hpp.html#a13c113ece8bf9e72134ead3dcd3e45f0", null ],
-    [ "StepsToMm", "tmc5160__units_8hpp.html#a29e5fff6de2d7590153c6bc315c7c4f0", null ]
+    [ "AccelerationMmToSteps", "tmc5160__units_8hpp.html#a7373ea9de3f9032b4f6e23a5f9a3c987", null ],
+    [ "AccelerationStepsToMm", "tmc5160__units_8hpp.html#aebbb75082074583de0237592ae2b14e2", null ],
+    [ "BeltTeethToSteps", "tmc5160__units_8hpp.html#a57675908f5067a3e5440a6c8bc04eac4", null ],
+    [ "DegreesToSteps", "tmc5160__units_8hpp.html#afb1c3789f431ec5b7872d5dc456c7678", null ],
+    [ "MmPerSecToStepsPerSec", "tmc5160__units_8hpp.html#a10397a604d3a3add091c0c13f8e806e6", null ],
+    [ "MmToSteps", "tmc5160__units_8hpp.html#affbfa04d45ce3729d6becb2551d3376e", null ],
+    [ "RpmToStepsPerSec", "tmc5160__units_8hpp.html#a3b57c5f7f1d5a42e8a64151813c2aa74", null ],
+    [ "StepsPerSecToMmPerSec", "tmc5160__units_8hpp.html#aafb3c02f993af356092a5c031d6c4288", null ],
+    [ "StepsPerSecToRpm", "tmc5160__units_8hpp.html#a44baf1ae9c43274c954c20960e37c06f", null ],
+    [ "StepsToBeltTeeth", "tmc5160__units_8hpp.html#a899c4bb4bafcde8fe40ebeafb9ac84d9", null ],
+    [ "StepsToDegrees", "tmc5160__units_8hpp.html#a17db4658c61b62396b32c1a022e54d75", null ],
+    [ "StepsToMm", "tmc5160__units_8hpp.html#a48de9ed6575299b32f69aac0b20e649e", null ]
 ];

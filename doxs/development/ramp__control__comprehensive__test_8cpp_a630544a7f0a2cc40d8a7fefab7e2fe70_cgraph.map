@@ -32,8 +32,8 @@
 <area shape="poly" id="edge15_Node000012_Node000008" title=" " alt="" coords="308,340,380,331,381,336,309,345"/>
 <area shape="poly" id="edge17_Node000013_Node000008" title=" " alt="" coords="271,394,310,381,419,339,421,344,312,387,272,399"/>
 <area shape="poly" id="edge19_Node000014_Node000008" title=" " alt="" coords="278,443,309,431,380,388,436,344,440,348,383,392,312,436,280,448"/>
-<area shape="rect" id="Node000015" href="$namespacetmc5160.html#a6e78a19f84b991207c30401e90eb6ebd" title="Convert millimeters to steps." alt="" coords="383,421,545,446"/>
+<area shape="rect" id="Node000015" href="$namespacetmc5160.html#affbfa04d45ce3729d6becb2551d3376e" title="Convert millimeters to steps." alt="" coords="383,421,545,446"/>
 <area shape="poly" id="edge20_Node000014_Node000015" title=" " alt="" coords="308,447,368,441,369,446,308,453"/>
-<area shape="rect" id="Node000016" href="$namespacetmc5160.html#a086e668f7c59055a454e010eb8d430a0" title="Convert RPM to steps per second." alt="" coords="359,470,569,495"/>
+<area shape="rect" id="Node000016" href="$namespacetmc5160.html#a3b57c5f7f1d5a42e8a64151813c2aa74" title="Convert RPM to steps per second." alt="" coords="359,470,569,495"/>
 <area shape="poly" id="edge21_Node000014_Node000016" title=" " alt="" coords="308,464,345,468,345,473,308,470"/>
 </map>

@@ -55,12 +55,12 @@ var annotated_dup =
       [ "UartCommInterface", "classtmc5160_1_1UartCommInterface.html", "classtmc5160_1_1UartCommInterface" ],
       [ "UartFrame", "structtmc5160_1_1UartFrame.html", "structtmc5160_1_1UartFrame" ]
     ] ],
+    [ "BackAndForthMotion", "classBackAndForthMotion.html", "classBackAndForthMotion" ],
     [ "CommandArg", "structCommandArg.html", "structCommandArg" ],
     [ "CommandEntry", "structCommandEntry.html", "structCommandEntry" ],
     [ "Esp32SPI", "classEsp32SPI.html", "classEsp32SPI" ],
     [ "Esp32TmcMutex", "classEsp32TmcMutex.html", "classEsp32TmcMutex" ],
     [ "FatigueTestMotion", "classFatigueTestMotion.html", "classFatigueTestMotion" ],
-    [ "SinusoidalMotion", "classSinusoidalMotion.html", "classSinusoidalMotion" ],
     [ "TestDriverHandle", "structTestDriverHandle.html", "structTestDriverHandle" ],
     [ "TestResults", "structTestResults.html", "structTestResults" ],
     [ "TestTaskContext", "structTestTaskContext.html", "structTestTaskContext" ],

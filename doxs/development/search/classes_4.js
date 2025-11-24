@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['gconf_5fregister_0',['GCONF_Register',['../uniontmc5160_1_1GCONF__Register.html',1,'tmc5160']]],
-  ['globalconfig_1',['GlobalConfig',['../structtmc5160_1_1GlobalConfig.html',1,'tmc5160']]],
-  ['gstat_5fregister_2',['GSTAT_Register',['../uniontmc5160_1_1GSTAT__Register.html',1,'tmc5160']]]
+  ['fatiguetestmotion_0',['FatigueTestMotion',['../classFatigueTestMotion.html',1,'']]],
+  ['frame_1',['Frame',['../uniontmc5160_1_1SpiCommand_1_1Frame.html',1,'tmc5160::SpiCommand::Frame'],['../uniontmc5160_1_1UartFrame_1_1Frame.html',1,'tmc5160::UartFrame::Frame']]]
 ];

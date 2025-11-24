@@ -28,6 +28,8 @@ var motor__control__comprehensive__test_8cpp =
     [ "ENABLE_MOTOR_SETUP_TESTS", "motor__control__comprehensive__test_8cpp.html#a5920db428da5c73806bf8615632a0d74", null ],
     [ "ENABLE_STEALTHCHOP_TESTS", "motor__control__comprehensive__test_8cpp.html#a36611f96a779ade6a5f6aba6aab15664", null ],
     [ "g_test_results", "motor__control__comprehensive__test_8cpp.html#aaff89257c54366921eebb8ec1348b1fd", null ],
+    [ "MICROSTEPS", "motor__control__comprehensive__test_8cpp.html#ac0fcb659b270b34d64fb809691ccb95b", null ],
+    [ "STEPS_PER_REV_OUTPUT", "motor__control__comprehensive__test_8cpp.html#a10c8bfc744a2174937abfe32bd1d743e", null ],
     [ "TAG", "motor__control__comprehensive__test_8cpp.html#a5a85b9c772bbeb480b209a3e6ea92b4c", null ],
     [ "TEST_GLOBAL_SCALER", "motor__control__comprehensive__test_8cpp.html#aca2e55a43fbb2e21649216d80ec402f0", null ],
     [ "TEST_IHOLD", "motor__control__comprehensive__test_8cpp.html#a43f36d608ddb89bbbc098f546646a914", null ],

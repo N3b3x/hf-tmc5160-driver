@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['accelerationmmtosteps_0',['AccelerationMmToSteps',['../namespacetmc5160.html#a5a0db2a4fafbb16e129455ac5c8033d2',1,'tmc5160']]],
-  ['accelerationstepstomm_1',['AccelerationStepsToMm',['../namespacetmc5160.html#aab2bb5b65536d0c4157917a6159870da',1,'tmc5160']]],
+  ['accelerationmmtosteps_0',['AccelerationMmToSteps',['../namespacetmc5160.html#a7373ea9de3f9032b4f6e23a5f9a3c987',1,'tmc5160']]],
+  ['accelerationstepstomm_1',['AccelerationStepsToMm',['../namespacetmc5160.html#aebbb75082074583de0237592ae2b14e2',1,'tmc5160']]],
   ['acceltointernal_2',['accelToInternal',['../classtmc5160_1_1TMC5160.html#a5ab96bcc5f971b83ada90576a71717bd',1,'tmc5160::TMC5160']]],
   ['add_5fresult_3',['add_result',['../structTestResults.html#a257eba3a9005a5c19c68ae27774948f7',1,'TestResults']]],
   ['adddevice_4',['AddDevice',['../classtmc5160_1_1TMC5160DaisyChain.html#a3e2c37660a90d088e5f2e1b7e04e6f65',1,'tmc5160::TMC5160DaisyChain::AddDevice()'],['../classtmc5160_1_1TMC5160MultiNode.html#a3118d880e53a7013afe40f3cae86d967',1,'tmc5160::TMC5160MultiNode::AddDevice()']]],
