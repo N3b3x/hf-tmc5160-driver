@@ -59,11 +59,13 @@ static constexpr bool ENABLE_UNIT_CONVERSION_TESTS = true;
 
 // Test configuration constants for NEMA 44mm 2A motor at 24V
 // Current calculation: For 2A motor, use ~80% for run (1.6A), ~30% for hold (0.6A)
-// With global_scaler=32: irun=26 gives ~1.6A, ihold=10 gives ~0.6A
-static constexpr uint8_t TEST_IRUN = 26;        // Run current (~1.6A for 2A motor, 80% of rated)
-static constexpr uint8_t TEST_IHOLD = 10;       // Hold current (~0.6A for 2A motor, 30% of rated)
-static constexpr uint8_t TEST_GLOBAL_SCALER = 32; // Global scaler (32 is standard for small motors)
-static constexpr uint8_t TEST_TOFF = 5;          // Chopper off time (5 is good for 2A motors)
+// With global_scaler=160 (recommended >128): 
+// Scaled Max = 160/256 * 3A(typ) = ~1.875A
+// irun=27 (27/32) * 1.875A = ~1.58A
+static constexpr uint8_t TEST_IRUN = 27;          // Run current (~1.6A for 2A motor)
+static constexpr uint8_t TEST_IHOLD = 10;         // Hold current (~0.6A for 2A motor)
+static constexpr uint8_t TEST_GLOBAL_SCALER = 160; // Global scaler (>128 recommended by datasheet)
+static constexpr uint8_t TEST_TOFF = 5;           // Chopper off time (5 is good for 2A motors)
 static constexpr uint8_t TEST_MRES = 4;          // 16 microsteps (256/16=16 microsteps per full step)
 static constexpr uint16_t STEPS_PER_REV = 200;   // Steps per revolution (1.8° per step)
 static constexpr float LEAD_SCREW_PITCH_MM = 2.0F; // Lead screw pitch (adjust for your setup)

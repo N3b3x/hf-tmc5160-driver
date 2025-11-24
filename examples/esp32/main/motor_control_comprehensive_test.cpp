@@ -58,7 +58,7 @@ static constexpr bool ENABLE_GLOBAL_CONFIG_TESTS = true;
 // Test configuration constants
 static constexpr uint8_t TEST_IRUN = 20;
 static constexpr uint8_t TEST_IHOLD = 10;
-static constexpr uint8_t TEST_GLOBAL_SCALER = 32;
+static constexpr uint8_t TEST_GLOBAL_SCALER = 160; // Recommended > 128 per datasheet
 static constexpr uint8_t TEST_TOFF = 5;
 static constexpr uint8_t TEST_MRES = 4; // 16 microsteps
 

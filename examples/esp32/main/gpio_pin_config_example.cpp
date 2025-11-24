@@ -92,7 +92,7 @@ extern "C" void app_main() {
   tmc5160::DriverConfig cfg{};
   cfg.motor.irun = 20;
   cfg.motor.ihold = 10;
-  cfg.motor.global_scaler = 32;
+  cfg.motor.global_scaler = 160; // Recommended >128 per datasheet
   cfg.chopper.toff = 5;
   cfg.chopper.mres = 4; // 16 microsteps
   cfg.chopper.intpol = true;

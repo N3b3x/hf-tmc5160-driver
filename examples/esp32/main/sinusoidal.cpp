@@ -207,10 +207,11 @@ extern "C" void app_main() {
   // Motor current settings for NEMA 44mm with gearbox at 24V
   // Geared motors need more current due to gearbox load and friction
   // Increase current for better torque to overcome gearbox resistance
-  // Note: global_scaler=32 is the minimum. 100 provides much better torque capability.
-  cfg.motor.global_scaler = 100;  // Increased from 32 to 100 (~40% of max current capability)
-  cfg.motor.irun = 24;            // Run current (~1.2A - increased for geared motor torque)
-  cfg.motor.ihold = 10;           // Hold current (~0.5A, 40% of run - higher for gearbox)
+  // Note: Datasheet recommends global_scaler > 128 for best results (chopper hysteresis).
+  // 160 = 160/256 ≈ 62.5% of full scale current.
+  cfg.motor.global_scaler = 160;  // Increased to >128 per datasheet recommendation
+  cfg.motor.irun = 24;            // Run current (~75% of global scaled limit)
+  cfg.motor.ihold = 10;           // Hold current (~30% of global scaled limit)
   
   // Chopper settings for smooth motion at 24V
   cfg.chopper.toff = 5;           // Chopper off time (5 is good for small motors at 24V)
