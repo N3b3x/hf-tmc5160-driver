@@ -59,6 +59,7 @@ static constexpr bool ENABLE_UNIT_CONVERSION_TESTS = true;
 
 // Motor configuration using 17HS4401S-PG518 profile from header
 using Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+using Test = tmc5160_test_config::TestConfig_17HS4401S;
 
 static constexpr uint8_t TEST_IRUN = Motor::IRUN;
 static constexpr uint8_t TEST_IHOLD = Motor::IHOLD;
@@ -237,21 +238,23 @@ bool test_speed_control() noexcept {
   bool success = true;
   
   // Test setting max speed (appropriate for NEMA 44mm 2A motor)
-  // 2000 steps/s = 10 rev/s = 600 RPM (good for small motors)
-  if (!handle->driver->rampControl.SetMaxSpeed(2000.0F)) {
+  // Use 2 revolutions per second (output shaft)
+  float max_speed = STEPS_PER_REV * 2.0f;
+  if (!handle->driver->rampControl.SetMaxSpeed(max_speed)) {
     ESP_LOGE(TAG, "Failed to set max speed");
     success = false;
   }
   
   // Test setting acceleration (appropriate for NEMA 44mm 2A motor)
-  // 2000 steps/s² provides good acceleration for small motors
-  if (!handle->driver->rampControl.SetAcceleration(2000.0F)) {
+  // Reach max speed in 0.5s
+  float accel = max_speed * 2.0f;
+  if (!handle->driver->rampControl.SetAcceleration(accel)) {
     ESP_LOGE(TAG, "Failed to set acceleration");
     success = false;
   }
   
   // Test setting accelerations (both) - higher decel for faster stopping
-  if (!handle->driver->rampControl.SetAccelerations(2000.0F, 2500.0F)) {
+  if (!handle->driver->rampControl.SetAccelerations(accel, accel * 1.5f)) {
     ESP_LOGE(TAG, "Failed to set accelerations");
     success = false;
   }
@@ -273,8 +276,11 @@ bool test_ramp_parameters() noexcept {
   
   bool success = true;
   
+  float vstart = STEPS_PER_REV * 0.01f; // 0.01 RPS start
+  float vstop = STEPS_PER_REV * 0.005f; // 0.005 RPS stop
+  
   // Test ramp speeds
-  if (!handle->driver->rampControl.SetRampSpeeds(10.0F, 5.0F, 2.0F)) {
+  if (!handle->driver->rampControl.SetRampSpeeds(vstart, vstop, 0.0f)) {
     ESP_LOGE(TAG, "Failed to set ramp speeds");
     success = false;
   }
@@ -292,7 +298,7 @@ bool test_ramp_parameters() noexcept {
   }
   
   // Test first acceleration
-  if (!handle->driver->rampControl.SetFirstAcceleration(300.0F)) {
+  if (!handle->driver->rampControl.SetFirstAcceleration(vstart * 5.0f)) {
     ESP_LOGE(TAG, "Failed to set first acceleration");
     success = false;
   }
@@ -308,13 +314,13 @@ bool test_reference_switch_configuration() noexcept {
     return false;
   }
   
-  // Test configuration
+  // Test configuration using defaults from header
   tmc5160::ReferenceSwitchConfig ref_cfg{};
-  ref_cfg.swap_left_right = false;
-  ref_cfg.pol_stop_left = false;
-  ref_cfg.pol_stop_right = false;
-  ref_cfg.latch_left_active = true;
-  ref_cfg.latch_right_active = true;
+  ref_cfg.swap_left_right = Test::Switches::SWAP_INPUTS;
+  ref_cfg.pol_stop_left = Test::Switches::POLARITY_LEFT;
+  ref_cfg.pol_stop_right = Test::Switches::POLARITY_RIGHT;
+  ref_cfg.latch_left_active = Test::Switches::LATCH_LEFT;
+  ref_cfg.latch_right_active = Test::Switches::LATCH_RIGHT;
   
   if (!handle->driver->rampControl.ConfigureReferenceSwitch(ref_cfg)) {
     ESP_LOGE(TAG, "Failed to configure reference switch");
@@ -327,7 +333,10 @@ bool test_reference_switch_configuration() noexcept {
   ESP_LOGI(TAG, "Testing PerformSwitchHoming API (expect timeout)...");
   int32_t final_pos = 0;
   // Use short timeout for test
-  bool result = handle->driver->diagnostics.PerformSwitchHoming(true, 1000.0f, 100.0f, final_pos, true, 100);
+  bool result = handle->driver->diagnostics.PerformSwitchHoming(true, 
+                                                                Test::Motion::HOMING_SEARCH_SPEED, 
+                                                                Test::Motion::HOMING_SWITCH_SPEED, 
+                                                                final_pos, true, 100);
   
   if (!result) {
     ESP_LOGI(TAG, "Homing timed out as expected (no physical switch)");

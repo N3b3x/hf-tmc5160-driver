@@ -43,13 +43,16 @@ static constexpr bool ENABLE_DEVIATION_DETECTION_TESTS = true;
 static constexpr bool ENABLE_LATCHED_POSITION_TESTS = true;
 
 // Test configuration constants
-static constexpr uint8_t TEST_IRUN = 20;
-static constexpr uint8_t TEST_IHOLD = 10;
-static constexpr uint8_t TEST_GLOBAL_SCALER = 32;
-static constexpr uint8_t TEST_TOFF = 5;
-static constexpr uint8_t TEST_MRES = 4; // 16 microsteps
-static constexpr uint16_t TEST_MOTOR_STEPS_PER_REV = 200;
-static constexpr uint16_t TEST_ENCODER_PULSES_PER_REV = 1000;
+using Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+using Test = tmc5160_test_config::TestConfig_17HS4401S;
+
+static constexpr uint8_t TEST_IRUN = Motor::IRUN;
+static constexpr uint8_t TEST_IHOLD = Motor::IHOLD;
+static constexpr uint8_t TEST_GLOBAL_SCALER = Motor::GLOBAL_SCALER;
+static constexpr uint8_t TEST_TOFF = Motor::TOFF;
+static constexpr uint8_t TEST_MRES = Motor::MRES; // 256 microsteps
+static constexpr uint16_t TEST_MOTOR_STEPS_PER_REV = Motor::MOTOR_FULL_STEPS;
+static constexpr uint16_t TEST_ENCODER_PULSES_PER_REV = Test::Encoder::PULSES_PER_REV;
 
 // Forward declarations
 bool test_encoder_configuration() noexcept;
@@ -102,10 +105,15 @@ std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
   cfg.motor.irun = TEST_IRUN;
   cfg.motor.ihold = TEST_IHOLD;
   cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
+  
   cfg.chopper.toff = TEST_TOFF;
   cfg.chopper.mres = TEST_MRES;
-  cfg.chopper.intpol = true;
-  cfg.power_stage.drv_strength = 0;
+  cfg.chopper.intpol = Motor::INTERPOLATION;
+  cfg.chopper.hend = Motor::HEND;
+  cfg.chopper.hstrt = Motor::HSTRT;
+  cfg.chopper.tbl = Motor::TBL;
+  
+  cfg.power_stage.drv_strength = 2;
   cfg.power_stage.bbm_time = 24;
   cfg.power_stage.bbm_clks = 4;
   
@@ -132,6 +140,7 @@ bool test_encoder_configuration() noexcept {
   enc_cfg.pol_a = false;
   enc_cfg.pol_b = false;
   enc_cfg.ignore_ab = false;
+  enc_cfg.invert_dir = Test::Encoder::INVERT_DIR;
   
   if (!handle->driver->encoder.Configure(enc_cfg)) {
     ESP_LOGE(TAG, "Failed to configure encoder");
