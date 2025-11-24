@@ -131,9 +131,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adb7bc74c6feb62aa83ccffcd61090cd7" id="r_adb7bc74c6feb62aa83ccffcd61090cd7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb7bc74c6feb62aa83ccffcd61090cd7">GetValue</a> () const noexcept</td></tr>
 <tr class="memdesc:adb7bc74c6feb62aa83ccffcd61090cd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get 32-bit data value from frame.  <br /></td></tr>
 <tr class="separator:adb7bc74c6feb62aa83ccffcd61090cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f64f1f96da0d1f2b1bc8ba2cf5a9ff5" id="r_a9f64f1f96da0d1f2b1bc8ba2cf5a9ff5"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f64f1f96da0d1f2b1bc8ba2cf5a9ff5">GetNodeAddress</a> () const noexcept</td></tr>
-<tr class="memdesc:a9f64f1f96da0d1f2b1bc8ba2cf5a9ff5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get node address from frame.  <br /></td></tr>
-<tr class="separator:a9f64f1f96da0d1f2b1bc8ba2cf5a9ff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2892a83211233ab1674ced3e51daae8" id="r_af2892a83211233ab1674ced3e51daae8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af2892a83211233ab1674ced3e51daae8">CalculateCrc</a> () noexcept</td></tr>
 <tr class="memdesc:af2892a83211233ab1674ced3e51daae8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate and set CRC8 checksum for the frame CRC8 is calculated over all bytes except the CRC byte itself.  <br /></td></tr>
 <tr class="separator:af2892a83211233ab1674ced3e51daae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,43 +140,42 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5440702be58b53452a63a373969d78ad" id="r_a5440702be58b53452a63a373969d78ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5440702be58b53452a63a373969d78ad">SetFrame</a> (const uint8_t *bytes, <a class="el" href="namespacetmc5160.html#a0d51978d589f95d86a558f8c6ce9e35f">UartFrameType</a> frame_type) noexcept</td></tr>
 <tr class="memdesc:a5440702be58b53452a63a373969d78ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the frame from raw bytes.  <br /></td></tr>
 <tr class="separator:a5440702be58b53452a63a373969d78ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac001f285d7668ef6eb100ec9e18c9065" id="r_ac001f285d7668ef6eb100ec9e18c9065"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac001f285d7668ef6eb100ec9e18c9065">GetFrame</a> (uint8_t *bytes, bool full_frame=false) const noexcept</td></tr>
-<tr class="memdesc:ac001f285d7668ef6eb100ec9e18c9065"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the frame as raw bytes.  <br /></td></tr>
-<tr class="separator:ac001f285d7668ef6eb100ec9e18c9065"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15d26ea4233a976d6b8b5a7bc0c3fbfd" id="r_a15d26ea4233a976d6b8b5a7bc0c3fbfd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15d26ea4233a976d6b8b5a7bc0c3fbfd">GetFrame</a> (uint8_t *bytes) const noexcept</td></tr>
+<tr class="memdesc:a15d26ea4233a976d6b8b5a7bc0c3fbfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the frame as raw bytes.  <br /></td></tr>
+<tr class="separator:a15d26ea4233a976d6b8b5a7bc0c3fbfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc3df3189eeff3ba3215f88a37f752c4" id="r_acc3df3189eeff3ba3215f88a37f752c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc3df3189eeff3ba3215f88a37f752c4">IsValid</a> () const noexcept</td></tr>
-<tr class="memdesc:acc3df3189eeff3ba3215f88a37f752c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if frame is valid (CRC verified and structure correct)  <br /></td></tr>
+<tr class="memdesc:acc3df3189eeff3ba3215f88a37f752c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if frame is valid.  <br /></td></tr>
 <tr class="separator:acc3df3189eeff3ba3215f88a37f752c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aa02430ce7c4926551529916e15713356" id="r_aa02430ce7c4926551529916e15713356"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structtmc5160_1_1UartFrame.html">UartFrame</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa02430ce7c4926551529916e15713356">Write</a> (uint8_t node_addr, uint8_t reg_addr, uint32_t value) noexcept</td></tr>
-<tr class="memdesc:aa02430ce7c4926551529916e15713356"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a write access frame.  <br /></td></tr>
+<tr class="memdesc:aa02430ce7c4926551529916e15713356"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a write access frame (8 bytes)  <br /></td></tr>
 <tr class="separator:aa02430ce7c4926551529916e15713356"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2fe56fa7916d51ac827a7dbd6c8011b" id="r_aa2fe56fa7916d51ac827a7dbd6c8011b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structtmc5160_1_1UartFrame.html">UartFrame</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2fe56fa7916d51ac827a7dbd6c8011b">ReadRequest</a> (uint8_t node_addr, uint8_t reg_addr, bool use_9byte_frame=false) noexcept</td></tr>
-<tr class="memdesc:aa2fe56fa7916d51ac827a7dbd6c8011b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a read request frame.  <br /></td></tr>
-<tr class="separator:aa2fe56fa7916d51ac827a7dbd6c8011b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3162ba0fb568c90531606ca5844fc108" id="r_a3162ba0fb568c90531606ca5844fc108"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structtmc5160_1_1UartFrame.html">UartFrame</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3162ba0fb568c90531606ca5844fc108">ReadRequest</a> (uint8_t node_addr, uint8_t reg_addr) noexcept</td></tr>
+<tr class="memdesc:a3162ba0fb568c90531606ca5844fc108"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a read request frame (4 bytes)  <br /></td></tr>
+<tr class="separator:a3162ba0fb568c90531606ca5844fc108"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0be40d8ee6bc7916b4a67ebf699946ac" id="r_a0be40d8ee6bc7916b4a67ebf699946ac"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structtmc5160_1_1UartFrame.html">UartFrame</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0be40d8ee6bc7916b4a67ebf699946ac">ReadReply</a> (const uint8_t *bytes) noexcept</td></tr>
-<tr class="memdesc:a0be40d8ee6bc7916b4a67ebf699946ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a read reply frame from received bytes.  <br /></td></tr>
+<tr class="memdesc:a0be40d8ee6bc7916b4a67ebf699946ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a read reply frame from received bytes (8 bytes)  <br /></td></tr>
 <tr class="separator:a0be40d8ee6bc7916b4a67ebf699946ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a84edd8d99f920406335ae3a0a7e8cd42" id="r_a84edd8d99f920406335ae3a0a7e8cd42"><td class="memItemLeft" align="right" valign="top">union <a class="el" href="uniontmc5160_1_1UartFrame_1_1Frame.html">tmc5160::UartFrame::Frame</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a84edd8d99f920406335ae3a0a7e8cd42">frame</a></td></tr>
-<tr class="memdesc:a84edd8d99f920406335ae3a0a7e8cd42"><td class="mdescLeft">&#160;</td><td class="mdescRight">The UART frame (up to 9 bytes)  <br /></td></tr>
 <tr class="separator:a84edd8d99f920406335ae3a0a7e8cd42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68672faf921e989c0030715d545e6001" id="r_a68672faf921e989c0030715d545e6001"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#a0d51978d589f95d86a558f8c6ce9e35f">UartFrameType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a68672faf921e989c0030715d545e6001">type</a></td></tr>
-<tr class="memdesc:a68672faf921e989c0030715d545e6001"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="uniontmc5160_1_1UartFrame_1_1Frame.html" title="Union for accessing UART frames in different ways.">Frame</a> type (WriteAccess, ReadRequest, or ReadReply)  <br /></td></tr>
+<tr class="memdesc:a68672faf921e989c0030715d545e6001"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="uniontmc5160_1_1UartFrame_1_1Frame.html" title="Union for accessing UART frames in different ways.">Frame</a> type.  <br /></td></tr>
 <tr class="separator:a68672faf921e989c0030715d545e6001"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> UART command/response frame structure with built-in CRC8. </p>
-<p>Represents a <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> UART frame per datasheet section 5.1. Supports write access (9 bytes), read request (5 bytes), and read reply (9 bytes). Automatically calculates and verifies CRC8 checksum.</p>
+<p>Represents a <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> UART frame per datasheet section 5.1. Supports write access (8 bytes), read request (4 bytes), and read reply (8 bytes). Automatically calculates and verifies CRC8 checksum.</p>
 <p><a class="el" href="uniontmc5160_1_1UartFrame_1_1Frame.html" title="Union for accessing UART frames in different ways.">Frame</a> Structure (per datasheet section 5.1):</p><ul>
-<li>Write Access: Byte 0 (sync+nodeaddr), Byte 1 (RW+addr), Bytes 2-5 (data), Bytes 6-7 (reserved), Byte 8 (CRC)</li>
-<li>Read Request: Byte 0 (sync+nodeaddr), Byte 1 (RW+addr), Bytes 2-3 (reserved), Byte 4 (CRC)</li>
-<li>Read Reply: Byte 0 (sync+0xFF), Byte 1 (addr=0), Bytes 2-5 (data), Bytes 6-7 (reserved), Byte 8 (CRC)</li>
+<li>Write Access: Byte 0 (sync+rsv), Byte 1 (nodeaddr), Byte 2 (RW+addr), Bytes 3-6 (data), Byte 7 (CRC)</li>
+<li>Read Request: Byte 0 (sync+rsv), Byte 1 (nodeaddr), Byte 2 (RW+addr), Byte 3 (CRC)</li>
+<li>Read Reply: Byte 0 (sync+rsv), Byte 1 (0xFF), Byte 2 (addr=0), Bytes 3-6 (data), Byte 7 (CRC)</li>
 </ul>
-<p>Sync nibble: Bits 0-3 = 1,0,1,0 (0x0A) per datasheet section 5.1.1 </p>
+<p>Sync nibble: 0x05 (Bits 0-3 = 1,0,1,0 transmitted LSB first) </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="af2892a83211233ab1674ced3e51daae8" name="af2892a83211233ab1674ced3e51daae8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af2892a83211233ab1674ced3e51daae8">&#9670;&#160;</a></span>CalculateCrc()</h2>
@@ -241,8 +237,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="ac001f285d7668ef6eb100ec9e18c9065" name="ac001f285d7668ef6eb100ec9e18c9065"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac001f285d7668ef6eb100ec9e18c9065">&#9670;&#160;</a></span>GetFrame()</h2>
+<a id="a15d26ea4233a976d6b8b5a7bc0c3fbfd" name="a15d26ea4233a976d6b8b5a7bc0c3fbfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15d26ea4233a976d6b8b5a7bc0c3fbfd">&#9670;&#160;</a></span>GetFrame()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -253,12 +249,8 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">void tmc5160::UartFrame::GetFrame </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>bytes</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>full_frame</em><span class="paramdefsep"> = </span><span class="paramdefval">false</span></span>&#160;) const</td>
+          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>bytes</em></span></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -271,49 +263,20 @@ Here is the call graph for this function:</div>
 <p>Get the frame as raw bytes. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">bytes</td><td>Output buffer (must be at least <a class="el" href="#ae12cc57962d5da4004c0dfb234b7f416" title="Get frame size in bytes based on type.">GetSize()</a> bytes, or 9 bytes for full frame) </td></tr>
-    <tr><td class="paramname">full_frame</td><td>If true, always copy all 9 bytes (for compatibility mode), otherwise copy <a class="el" href="#ae12cc57962d5da4004c0dfb234b7f416" title="Get frame size in bytes based on type.">GetSize()</a> bytes </td></tr>
+    <tr><td class="paramname">bytes</td><td>Output buffer (must be at least <a class="el" href="#ae12cc57962d5da4004c0dfb234b7f416" title="Get frame size in bytes based on type.">GetSize()</a> bytes) </td></tr>
   </table>
   </dd>
 </dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1UartFrame_ac001f285d7668ef6eb100ec9e18c9065_cgraph.svg" width="371" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1UartFrame_a15d26ea4233a976d6b8b5a7bc0c3fbfd_cgraph.svg" width="371" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1UartFrame_ac001f285d7668ef6eb100ec9e18c9065_icgraph.svg" width="431" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1UartFrame_a15d26ea4233a976d6b8b5a7bc0c3fbfd_icgraph.svg" width="431" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-
-</div>
-</div>
-<a id="a9f64f1f96da0d1f2b1bc8ba2cf5a9ff5" name="a9f64f1f96da0d1f2b1bc8ba2cf5a9ff5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f64f1f96da0d1f2b1bc8ba2cf5a9ff5">&#9670;&#160;</a></span>GetNodeAddress()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t tmc5160::UartFrame::GetNodeAddress </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get node address from frame. </p>
-<dl class="section return"><dt>Returns</dt><dd>Node address (0-127) or 0xFF for master address in ReadReply </dd></dl>
 
 </div>
 </div>
@@ -341,11 +304,11 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Get frame size in bytes based on type. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="uniontmc5160_1_1UartFrame_1_1Frame.html" title="Union for accessing UART frames in different ways.">Frame</a> size: 9 bytes for WriteAccess/ReadReply, 5 bytes for ReadRequest </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="uniontmc5160_1_1UartFrame_1_1Frame.html" title="Union for accessing UART frames in different ways.">Frame</a> size: 8 bytes for Write/Reply, 4 bytes for ReadRequest </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1UartFrame_ae12cc57962d5da4004c0dfb234b7f416_icgraph.svg" width="839" height="230"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1UartFrame_ae12cc57962d5da4004c0dfb234b7f416_icgraph.svg" width="899" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -374,7 +337,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Get 32-bit data value from frame. </p>
-<dl class="section return"><dt>Returns</dt><dd>32-bit value (MSB-first from data bytes) or 0 if ReadRequest </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>32-bit value (MSB-first) or 0 if ReadRequest </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -406,8 +369,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Check if frame is valid (CRC verified and structure correct) </p>
-<dl class="section return"><dt>Returns</dt><dd>true if frame is valid, false otherwise </dd></dl>
+<p>Check if frame is valid. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if valid </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -416,7 +379,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1UartFrame_acc3df3189eeff3ba3215f88a37f752c4_icgraph.svg" width="431" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1UartFrame_acc3df3189eeff3ba3215f88a37f752c4_icgraph.svg" width="431" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -445,7 +408,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Check if this is a write frame. </p>
-<dl class="section return"><dt>Returns</dt><dd>true if write frame (WriteAccess type) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if write frame </dd></dl>
 
 </div>
 </div>
@@ -472,24 +435,24 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Construct a read reply frame from received bytes. </p>
+<p>Construct a read reply frame from received bytes (8 bytes) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">bytes</td><td>Pointer to received frame bytes (9 bytes) </td></tr>
+    <tr><td class="paramname">bytes</td><td>Pointer to received frame bytes </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structtmc5160_1_1UartFrame.html" title="TMC5160 UART command/response frame structure with built-in CRC8.">UartFrame</a> parsed from bytes, or invalid frame if CRC fails </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structtmc5160_1_1UartFrame.html" title="TMC5160 UART command/response frame structure with built-in CRC8.">UartFrame</a> parsed from bytes </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1UartFrame_a0be40d8ee6bc7916b4a67ebf699946ac_icgraph.svg" width="431" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1UartFrame_a0be40d8ee6bc7916b4a67ebf699946ac_icgraph.svg" width="431" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="aa2fe56fa7916d51ac827a7dbd6c8011b" name="aa2fe56fa7916d51ac827a7dbd6c8011b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2fe56fa7916d51ac827a7dbd6c8011b">&#9670;&#160;</a></span>ReadRequest()</h2>
+<a id="a3162ba0fb568c90531606ca5844fc108" name="a3162ba0fb568c90531606ca5844fc108"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3162ba0fb568c90531606ca5844fc108">&#9670;&#160;</a></span>ReadRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -505,12 +468,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>reg_addr</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>use_9byte_frame</em><span class="paramdefsep"> = </span><span class="paramdefval">false</span></span>&#160;)</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>reg_addr</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -520,25 +478,19 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Construct a read request frame. </p>
+<p>Construct a read request frame (4 bytes) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">node_addr</td><td>8-bit node address (0-127) </td></tr>
     <tr><td class="paramname">reg_addr</td><td>Register address to read (0x00-0x73) </td></tr>
-    <tr><td class="paramname">use_9byte_frame</td><td>If true, uses 9-byte frame for compatibility (default: false, uses 5-byte per datasheet) </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structtmc5160_1_1UartFrame.html" title="TMC5160 UART command/response frame structure with built-in CRC8.">UartFrame</a> with CRC8 automatically calculated </dd></dl>
 <div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1UartFrame_aa2fe56fa7916d51ac827a7dbd6c8011b_cgraph.svg" width="390" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1UartFrame_aa2fe56fa7916d51ac827a7dbd6c8011b_icgraph.svg" width="431" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1UartFrame_a3162ba0fb568c90531606ca5844fc108_icgraph.svg" width="431" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -619,7 +571,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1UartFrame_a45e2ddbd74129ee2f4b3f158339552d1_icgraph.svg" width="635" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1UartFrame_a45e2ddbd74129ee2f4b3f158339552d1_icgraph.svg" width="635" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -656,7 +608,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Construct a write access frame. </p>
+<p>Construct a write access frame (8 bytes) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">node_addr</td><td>8-bit node address (0-127) </td></tr>
@@ -687,8 +639,6 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>The UART frame (up to 9 bytes) </p>
-
 </div>
 </div>
 <a id="a68672faf921e989c0030715d545e6001" name="a68672faf921e989c0030715d545e6001"></a>
@@ -703,7 +653,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="uniontmc5160_1_1UartFrame_1_1Frame.html" title="Union for accessing UART frames in different ways.">Frame</a> type (WriteAccess, ReadRequest, or ReadReply) </p>
+<p><a class="el" href="uniontmc5160_1_1UartFrame_1_1Frame.html" title="Union for accessing UART frames in different ways.">Frame</a> type. </p>
 
 </div>
 </div>

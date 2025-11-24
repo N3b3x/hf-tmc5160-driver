@@ -6,18 +6,17 @@
  * internal ramp generator. The motor velocity varies in a sinusoidal pattern
  * using velocity mode control.
  *
- * Configured for NEMA 44mm x 44mm body stepper motors (regular small steppers):
- * - Typical specs: 1.8° step angle (200 steps/rev), 0.5-1.5A per phase, 24V
- * - Uses 16 microsteps for smooth motion
- * - Current set to ~1.0A run, ~0.3A hold (adjust based on your motor)
- * - Optimized for 24V operation (better performance than 12V)
+ * MOTOR SELECTION:
+ * Motor selection is done via a static constexpr variable at the top of this file.
+ * See esp32_tmc5160_bus_config.hpp for detailed motor specifications and selection guide.
  *
  * Hardware Requirements:
  * - ESP32 development board
  * - TMC5160 stepper motor driver
- * - NEMA 44mm stepper motor connected to TMC5160
+ * - Stepper motor connected to TMC5160 (see motor selection above)
  * - SPI connection between ESP32 and TMC5160
  * - Chip must be in SPI_INTERNAL_RAMP mode (SPI_MODE=HIGH, SD_MODE=LOW)
+ * - Power supply: 12-36V DC (ensure adequate current capacity for selected motor)
  *
  * Pin Configuration (using standard test config):
  * - SPI: MOSI=6, MISO=2, SCLK=5, CS=18
@@ -37,6 +36,14 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include <cmath>
+
+//=============================================================================
+// MOTOR SELECTION - Change this to select which motor configuration to use
+//=============================================================================
+// See esp32_tmc5160_bus_config.hpp for detailed motor specifications.
+// Change the value below to select a different motor:
+static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
+    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
 
 static const char* TAG = "Sinusoidal";
 
@@ -207,34 +214,90 @@ extern "C" void app_main() {
   // Create TMC5160 driver instance
   tmc5160::TMC5160<Esp32SPI> driver(spi);
 
-  // Configure driver using standardized MotorConfig for 17HS4401S-PG518
-  namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+  // Select motor configuration based on compile-time selection
+  // Note: Namespace aliases must be declared at namespace scope, so we use conditional compilation
+  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    ESP_LOGI(TAG, "Selected Motor: 17HS4401S with 5.18:1 gearbox");
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    ESP_LOGI(TAG, "Selected Motor: 17HS4401S direct drive (no gearbox)");
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    ESP_LOGI(TAG, "Selected Motor: Applied Motion 5034-369 NEMA 34 (high torque, 4.17A)");
+  }
+  
+  // Configure driver - use conditional compilation for namespace selection
   tmc5160::DriverConfig cfg{};
   
-  // Motor current settings
-  cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
-  cfg.motor.irun = Motor::IRUN;
-  cfg.motor.ihold = Motor::IHOLD;
+  // Motor configuration constants (extracted for use later in code)
+  uint16_t output_full_steps = 0;
+  float gear_ratio = 1.0f;
   
-  // Chopper settings
-  cfg.chopper.toff = Motor::TOFF;
-  cfg.chopper.mres = Motor::MRES; // 256 microsteps
-  cfg.chopper.intpol = Motor::INTERPOLATION;
-  cfg.chopper.hend = Motor::HEND;
-  cfg.chopper.hstrt = Motor::HSTRT;
-  cfg.chopper.tbl = Motor::TBL;
+  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+    cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
+    cfg.motor.irun = Motor::IRUN;
+    cfg.motor.ihold = Motor::IHOLD;
+    cfg.chopper.toff = Motor::TOFF;
+    cfg.chopper.mres = Motor::MRES;
+    cfg.chopper.intpol = Motor::INTERPOLATION;
+    cfg.chopper.hend = Motor::HEND;
+    cfg.chopper.hstrt = Motor::HSTRT;
+    cfg.chopper.tbl = Motor::TBL;
+    cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+    cfg.stealthchop.pwm_grad = 0;
+    cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+    cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+    cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
+    cfg.power_stage.drv_strength = Motor::DRV_STRENGTH;
+    cfg.power_stage.bbm_time = Motor::BBM_TIME;
+    cfg.power_stage.bbm_clks = Motor::BBM_CLKS;
+    output_full_steps = Motor::OUTPUT_FULL_STEPS;
+    gear_ratio = Motor::GEAR_RATIO;
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S_Direct;
+    cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
+    cfg.motor.irun = Motor::IRUN;
+    cfg.motor.ihold = Motor::IHOLD;
+    cfg.chopper.toff = Motor::TOFF;
+    cfg.chopper.mres = Motor::MRES;
+    cfg.chopper.intpol = Motor::INTERPOLATION;
+    cfg.chopper.hend = Motor::HEND;
+    cfg.chopper.hstrt = Motor::HSTRT;
+    cfg.chopper.tbl = Motor::TBL;
+    cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+    cfg.stealthchop.pwm_grad = 0;
+    cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+    cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+    cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
+    cfg.power_stage.drv_strength = Motor::DRV_STRENGTH;
+    cfg.power_stage.bbm_time = Motor::BBM_TIME;
+    cfg.power_stage.bbm_clks = Motor::BBM_CLKS;
+    output_full_steps = Motor::OUTPUT_FULL_STEPS;
+    gear_ratio = Motor::GEAR_RATIO;
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    namespace Motor = tmc5160_test_config::MotorConfig_AppliedMotion_5034_369;
+    cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
+    cfg.motor.irun = Motor::IRUN;
+    cfg.motor.ihold = Motor::IHOLD;
+    cfg.chopper.toff = Motor::TOFF;
+    cfg.chopper.mres = Motor::MRES;
+    cfg.chopper.intpol = Motor::INTERPOLATION;
+    cfg.chopper.hend = Motor::HEND;
+    cfg.chopper.hstrt = Motor::HSTRT;
+    cfg.chopper.tbl = Motor::TBL;
+    cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+    cfg.stealthchop.pwm_grad = 0;
+    cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+    cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+    cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
+    cfg.power_stage.drv_strength = Motor::DRV_STRENGTH;
+    cfg.power_stage.bbm_time = Motor::BBM_TIME;
+    cfg.power_stage.bbm_clks = Motor::BBM_CLKS;
+    output_full_steps = Motor::OUTPUT_FULL_STEPS;
+    gear_ratio = Motor::GEAR_RATIO;
+  }
   
-  // StealthChop settings
-  cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
-  cfg.stealthchop.pwm_grad = 0;
-  cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
-  cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
-  cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
-  
-  // Power stage
-  cfg.power_stage.drv_strength = 2;
-  cfg.power_stage.bbm_time = 24;
-  cfg.power_stage.bbm_clks = 4;
+  // Enable StealthChop
+  cfg.global_config.en_pwm_mode = true; // Enable StealthChop
 
   // Short protection
   cfg.short_protection.s2vs_level = 6;
@@ -246,7 +309,16 @@ extern "C" void app_main() {
     return;
   }
 
-  ESP_LOGI(TAG, "Driver initialized successfully for NEMA 44mm motor (17HS4401S-PG518)");
+  ESP_LOGI(TAG, "Driver initialized successfully");
+  
+  // Run verification immediately after initialization
+  ESP_LOGI(TAG, "Running startup verification...");
+  if (!driver.diagnostics.VerifySetup()) {
+      ESP_LOGW(TAG, "Startup verification flagged issues - check logs above");
+  } else {
+      ESP_LOGI(TAG, "Startup verification passed");
+  }
+
   ESP_LOGI(TAG, "Motor settings: irun=%u, ihold=%u, microsteps=256, global_scaler=%u",
            cfg.motor.irun, cfg.motor.ihold, cfg.motor.global_scaler);
   
@@ -297,12 +369,13 @@ extern "C" void app_main() {
     }
   }
   
-  // 2. Set TCOOLTHRS to maximum to disable StallGuard2 at all speeds
+  // 2. Set TCOOLTHRS to 0 to disable StallGuard2 at all speeds
   // TCOOLTHRS = velocity threshold below which StallGuard2 is disabled
-  // Setting to maximum (0xFFFFF) ensures StallGuard2 is disabled at all velocities
-  uint32_t tcoolthrs = 0xFFFFF; // Maximum value (20 bits) - disables SG2 at all speeds
+  // Enabled if TSTEP < TCOOLTHRS (Velocity > Threshold)
+  // To disable, we want Threshold to be infinite (TCOOLTHRS = 0)
+  uint32_t tcoolthrs = 0; // 0 = infinite velocity threshold = disabled everywhere
   if (driver.GetComm().WriteRegister(tmc5160::Registers::TCOOLTHRS, tcoolthrs)) {
-    ESP_LOGI(TAG, "✓ TCOOLTHRS set to maximum (0x%05X) - StallGuard2 disabled at all speeds", tcoolthrs);
+    ESP_LOGI(TAG, "✓ TCOOLTHRS set to 0 - StallGuard2 disabled at all speeds");
   } else {
     ESP_LOGE(TAG, "✗ Failed to set TCOOLTHRS");
   }
@@ -319,6 +392,7 @@ extern "C" void app_main() {
   
   // 4. Configure StallGuard2 threshold to be least sensitive (even though it's disabled)
   // This is just for diagnostics - it won't stop the motor
+  // NOTE: StallGuard2 ONLY works in SpreadCycle mode! In StealthChop, SG_RESULT is invalid/zero.
   tmc5160::StallGuardConfig sg_cfg{};
   sg_cfg.sgt = 63;        // Maximum threshold (least sensitive) - won't trigger
   sg_cfg.semin = 0;       // Disable CoolStep (semin=0 means CoolStep off)
@@ -327,6 +401,9 @@ extern "C" void app_main() {
   if (driver.diagnostics.ConfigureStallGuard(sg_cfg)) {
     ESP_LOGI(TAG, "✓ StallGuard2 configured for diagnostics only (sgt=63, least sensitive)");
     ESP_LOGI(TAG, "  Note: StallGuard2 is DISABLED and will NOT stop the motor");
+    if (cfg.global_config.en_pwm_mode) {
+      ESP_LOGW(TAG, "  Note: StealthChop is enabled, so StallGuard2 values will be invalid (usually 0)");
+    }
   } else {
     ESP_LOGW(TAG, "Failed to configure StallGuard2 (may not be critical)");
   }
@@ -491,26 +568,20 @@ extern "C" void app_main() {
         }
         
         if (pwm_scale_auto_signed == 0 || (pwm_scale_auto_signed > -10 && pwm_scale_auto_signed < 10)) {
-          ESP_LOGE(TAG, "❌ CRITICAL: StealthChop is enabled but NOT CALIBRATED (pwm_scale_auto=%d)!", pwm_scale_auto_signed);
-          ESP_LOGE(TAG, "   The motor will report movement but won't physically turn!");
-          ESP_LOGE(TAG, "   Solution: Disable StealthChop to use SpreadCycle mode (more reliable)");
-          ESP_LOGE(TAG, "   OR: Wait 130ms+ at standstill for AT#1 calibration, then move for AT#2");
-          
-          // Optionally disable StealthChop for testing
-          ESP_LOGW(TAG, "Disabling StealthChop to use SpreadCycle mode (more reliable for testing)...");
-          gconf.bits.en_pwm_mode = 0;
-          if (driver.GetComm().WriteRegister(tmc5160::Registers::GCONF, gconf.value)) {
-            ESP_LOGI(TAG, "✓ StealthChop disabled - using SpreadCycle mode");
-            ESP_LOGI(TAG, "  Motor should now move physically. If it does, re-enable StealthChop after calibration.");
-          } else {
-            ESP_LOGE(TAG, "✗ Failed to disable StealthChop");
-          }
+          ESP_LOGW(TAG, "⚠️ StealthChop is enabled but NOT YET CALIBRATED (pwm_scale_auto=%d)", pwm_scale_auto_signed);
+          ESP_LOGI(TAG, "   Calibration will occur automatically:");
+          ESP_LOGI(TAG, "   AT#1: Wait 130ms+ at standstill with CS=IRUN for PWM_OFS_AUTO");
+          ESP_LOGI(TAG, "         (Current: IRUN=%d, IHOLD=%d - motor will use IRUN during motion)", 
+                   cfg.motor.irun, cfg.motor.ihold);
+          ESP_LOGI(TAG, "   AT#2: Move motor at 60-300 RPM for PWM_GRAD_AUTO (~400 fullsteps)");
+          ESP_LOGI(TAG, "   Motor may not move until calibration completes - this is normal");
+          ESP_LOGI(TAG, "   Keeping StealthChop enabled - calibration will happen during operation");
         } else {
           ESP_LOGI(TAG, "✓ StealthChop appears calibrated (pwm_scale_auto=%d)", pwm_scale_auto_signed);
         }
       }
     } else {
-      ESP_LOGI(TAG, "✓ StealthChop is DISABLED - using SpreadCycle mode (more reliable)");
+      ESP_LOGI(TAG, "✓ StealthChop is DISABLED - using SpreadCycle mode");
     }
   }
   
@@ -627,12 +698,18 @@ extern "C" void app_main() {
         ESP_LOGI(TAG, "  stallguard=%d (SG result, 0=highest load, higher=less load)",
                  drv_status.bits.sg_result);
         
-        // Check for wiring issues
+        // Check for wiring issues / stall
+        // Note: SG_RESULT is generally invalid in StealthChop mode on TMC5160!
+        // Only report wiring issues if in SpreadCycle (en_pwm_mode=0)
         if (drv_status.bits.sg_result == 0) {
-          ESP_LOGE(TAG, "  ⚠️ WIRING ISSUE: SG=0 with no load suggests:");
-          ESP_LOGE(TAG, "     - Motor phases may be swapped or incorrectly wired");
-          ESP_LOGE(TAG, "     - Check: A+/A- and B+/B- connections");
-          ESP_LOGE(TAG, "     - Try swapping one phase pair (A+/A- or B+/B-)");
+          if (!gconf.bits.en_pwm_mode) {
+            ESP_LOGE(TAG, "  ⚠️ WIRING ISSUE: SG=0 with no load suggests:");
+            ESP_LOGE(TAG, "     - Motor phases may be swapped or incorrectly wired");
+            ESP_LOGE(TAG, "     - Check: A+/A- and B+/B- connections");
+            ESP_LOGE(TAG, "     - Try swapping one phase pair (A+/A- or B+/B-)");
+          } else {
+            ESP_LOGI(TAG, "  (Note: SG=0 is expected in StealthChop mode - measurement invalid)");
+          }
         }
         
         // Correlate with DIAG0
@@ -764,7 +841,7 @@ extern "C" void app_main() {
   // Calculate motion parameters
   // Travel distance: ~2 full output revolutions = 2 * 265,216 = ~530,432 microsteps
   // Or use a more reasonable distance like 1 output revolution = ~265,216 microsteps
-  float output_steps_per_rev = static_cast<float>(Motor::OUTPUT_FULL_STEPS) * 256.0f;
+  float output_steps_per_rev = static_cast<float>(output_full_steps) * 256.0f;
   int32_t travel_distance = static_cast<int32_t>(output_steps_per_rev * 1.0f); // 1 full output revolution each direction
   
   // Max velocity: ~0.5 RPS output = ~132,608 steps/s
@@ -826,6 +903,14 @@ extern "C" void app_main() {
         gstat.value = gstat_value;
       }
       
+      // Read GCONF to check StealthChop mode (needed for StallGuard2 interpretation)
+      uint32_t gconf_value = 0;
+      bool has_gconf = driver.GetComm().ReadRegister(tmc5160::Registers::GCONF, gconf_value);
+      tmc5160::GCONF_Register gconf{};
+      if (has_gconf) {
+        gconf.value = gconf_value;
+      }
+      
       // Note: VSTART, VSTOP, AMAX are WRITE-ONLY registers - they always read as 0
       // We can't verify them by reading, but we know they were set in BackAndForthMotion::Start()
       // VSTART=1000, VSTOP=100, AMAX=acceleration (from SetRampSpeeds and SetAccelerations)
@@ -875,8 +960,7 @@ extern "C" void app_main() {
       // Example: If gearbox is 5.18:1, then output_revolutions = motor_revolutions / 5.18
       // For the 17HS4401S-PG518 motor, the gearbox ratio is 5.18:1
       // Set to 1.0 for direct drive (no gearbox) or to match your actual gearbox ratio
-      constexpr float gearbox_ratio = Motor::GEAR_RATIO; // Use configured gearbox ratio
-      float output_revolutions = motor_revolutions / gearbox_ratio;
+      float output_revolutions = motor_revolutions / gear_ratio;
       
       ESP_LOGI(TAG, "Diagnostics: VACTUAL=%.1f steps/s, XACTUAL=%d", actual_velocity, actual_position);
       ESP_LOGI(TAG, "  Position change: %d microsteps in %d ms = %.1f steps/s (calculated)", 
@@ -951,12 +1035,18 @@ extern "C" void app_main() {
         // 3. StallGuard2 threshold needs adjustment
         // 4. StealthChop calibration issue
         if (drv_status.bits.sg_result == 0) {
-          ESP_LOGE(TAG, "  ⚠️ CRITICAL: SG result = 0 (highest load) but motor has NO mechanical load!");
-          ESP_LOGE(TAG, "  This indicates a PROBLEM:");
-          ESP_LOGE(TAG, "    1. Check motor wiring (phases may be swapped or wrong)");
-          ESP_LOGE(TAG, "    2. Motor current may be too high (try reducing irun)");
-          ESP_LOGE(TAG, "    3. StealthChop may need recalibration");
-          ESP_LOGE(TAG, "    4. Motor may be electrically stalling");
+          if (has_gconf && !gconf.bits.en_pwm_mode) {
+            // In SpreadCycle mode, SG=0 indicates a real problem
+            ESP_LOGE(TAG, "  ⚠️ CRITICAL: SG result = 0 (highest load) but motor has NO mechanical load!");
+            ESP_LOGE(TAG, "  This indicates a PROBLEM:");
+            ESP_LOGE(TAG, "    1. Check motor wiring (phases may be swapped or wrong)");
+            ESP_LOGE(TAG, "    2. Motor current may be too high (try reducing irun)");
+            ESP_LOGE(TAG, "    3. StallGuard2 threshold needs adjustment");
+            ESP_LOGE(TAG, "    4. Motor may be electrically stalling");
+          } else {
+            // In StealthChop mode, SG_RESULT=0 is expected and normal (measurement invalid)
+            ESP_LOGI(TAG, "  StallGuard2 result: 0 (Expected in StealthChop mode - measurement invalid)");
+          }
         } else if (drv_status.bits.sg_result < 100) {
           ESP_LOGW(TAG, "  ⚠️ High mechanical load detected (SG=%d < 100)", drv_status.bits.sg_result);
           ESP_LOGW(TAG, "  This is normal for geared motors, but may indicate stall if too low");

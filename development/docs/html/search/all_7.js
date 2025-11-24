@@ -10,7 +10,7 @@ var searchData=
   ['handlestatus_7',['HandleStatus',['../bounds__finding__sinuous__motion_8cpp.html#ae1393ad4a23750c0916847967cc4032f',1,'bounds_finding_sinuous_motion.cpp']]],
   ['haserror_8',['HasError',['../structtmc5160_1_1SpiStatus.html#a3dc0b84dd68921278debcecd853e110a',1,'tmc5160::SpiStatus']]],
   ['hend_9',['hend',['../structtmc5160_1_1ChopperConfig.html#a25a86c90d130952f9b776e41ebb6d110',1,'tmc5160::ChopperConfig']]],
-  ['hend_10',['HEND',['../namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#add8c56c28f8118885b44edca10088029',1,'tmc5160_test_config::MotorConfig_17HS4401S']]],
+  ['hend_10',['HEND',['../namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#add8c56c28f8118885b44edca10088029',1,'tmc5160_test_config::MotorConfig_17HS4401S::HEND'],['../namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#affd707c003de55036533ad819e983a8a',1,'tmc5160_test_config::MotorConfig_17HS4401S_Direct::HEND'],['../namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#ae849e5127d88a382a8630075c0e92fe0',1,'tmc5160_test_config::MotorConfig_AppliedMotion_5034_369::HEND']]],
   ['hend_5foffset_11',['hend_offset',['../uniontmc5160_1_1CHOPCONF__Register.html#aaa1cff3b2e3e2748a26e21d858314098',1,'tmc5160::CHOPCONF_Register']]],
   ['hf_20tmc5160_20driver_12',['HF-TMC5160 Driver',['../index.html',1,'']]],
   ['hold_13',['HOLD',['../namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a0c6d9dfb485b43c6fba87439f9f73ac4',1,'tmc5160']]],
@@ -23,6 +23,6 @@ var searchData=
   ['homing_5ftimeout_5fms_20',['HOMING_TIMEOUT_MS',['../namespacetmc5160__test__config_1_1TestConfig__17HS4401S_1_1Motion.html#a56742803327052383736d14d7d0f7039',1,'tmc5160_test_config::TestConfig_17HS4401S::Motion']]],
   ['host_5f_21',['host_',['../classEsp32SPI.html#a2a9f2b32920fff6516071194bfaa8b02',1,'Esp32SPI']]],
   ['hstrt_22',['hstrt',['../structtmc5160_1_1ChopperConfig.html#aeb9e1c4cae086be625e758799d1595cb',1,'tmc5160::ChopperConfig']]],
-  ['hstrt_23',['HSTRT',['../namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a9913149a86ac0004e971080dfb105508',1,'tmc5160_test_config::MotorConfig_17HS4401S']]],
+  ['hstrt_23',['HSTRT',['../namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a9913149a86ac0004e971080dfb105508',1,'tmc5160_test_config::MotorConfig_17HS4401S::HSTRT'],['../namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#ab893e2ceee2846665e6cc85cfb19468d',1,'tmc5160_test_config::MotorConfig_17HS4401S_Direct::HSTRT'],['../namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#aac4e0e1b809e6c36778a7e7bcf4be3e9',1,'tmc5160_test_config::MotorConfig_AppliedMotion_5034_369::HSTRT']]],
   ['hstrt_5ftfd_24',['hstrt_tfd',['../uniontmc5160_1_1CHOPCONF__Register.html#a19130edab028b10f7ac3f3257e77cbd0',1,'tmc5160::CHOPCONF_Register']]]
 ];

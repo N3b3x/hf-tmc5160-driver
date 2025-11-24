@@ -15,7 +15,7 @@
   
 
     
-    .site-nav > ul.nav-list:first-child > li:not(:nth-child(3)) > a,
+    .site-nav > ul.nav-list:first-child > li:not(:nth-child(19)) > a,
     .site-nav > ul.nav-list:first-child > li > ul > li a {
       background-image: none;
     }
@@ -25,12 +25,12 @@
       background-image: none;
     }
 
-    .site-nav > ul.nav-list:first-child > li:nth-child(3) > a {
+    .site-nav > ul.nav-list:first-child > li:nth-child(19) > a {
       font-weight: 600;
       text-decoration: none;
-    }.site-nav > ul.nav-list:first-child > li:nth-child(3) > button svg {
+    }.site-nav > ul.nav-list:first-child > li:nth-child(19) > button svg {
       transform: rotate(-90deg);
-    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(3) > ul.nav-list {
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(19) > ul.nav-list {
       display: block;
     }
   </style>
@@ -50,9 +50,9 @@
 
 
   <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>Register Access Types and Special Behaviors | HardFOC TMC5160 Driver - development</title>
+<title>TMC5160 Register Access and Configuration Guide | HardFOC TMC5160 Driver - development</title>
 <meta name="generator" content="Jekyll v3.10.0" />
-<meta property="og:title" content="Register Access Types and Special Behaviors" />
+<meta property="og:title" content="TMC5160 Register Access and Configuration Guide" />
 <meta name="author" content="N3b3x" />
 <meta property="og:locale" content="en" />
 <meta name="description" content="Hardware-Agnostic TMC5160 Stepper Motor Controller Driver with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
@@ -62,9 +62,9 @@
 <meta property="og:site_name" content="HardFOC TMC5160 Driver - development" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Register Access Types and Special Behaviors" />
+<meta property="twitter:title" content="TMC5160 Register Access and Configuration Guide" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Hardware-Agnostic TMC5160 Stepper Motor Controller Driver with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support","headline":"Register Access Types and Special Behaviors","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/docs/special_features_register_access.html"}</script>
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Hardware-Agnostic TMC5160 Stepper Motor Controller Driver with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support","headline":"TMC5160 Register Access and Configuration Guide","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/docs/special_features_register_access.html"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -170,7 +170,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
       </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC5160 Driver</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
-      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/gpio_pin_configuration.html" class="nav-list-link">GPIO Pin Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_register_access.html" class="nav-list-link">Register Access Types and Special Behaviors</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_coverage_analysis.html" class="nav-list-link">TMC5160 Feature Coverage Analysis Report</a></li></ul>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/dev_board_setup/" class="nav-list-link">🛠️ Dev Board Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/bounds_finding_sinuous_motion.html" class="nav-list-link">Bounds Finding &amp; Sinusoidal Motion Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_communication_interface.html" class="nav-list-link">Communication Interface</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/core_comprehensive_test.html" class="nav-list-link">Core Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/diagnostics_comprehensive_test.html" class="nav-list-link">Diagnostics Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/" class="nav-list-link">ESP32 Examples and Tests Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/encoder_comprehensive_test.html" class="nav-list-link">Encoder Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/gpio_pin_config_example.html" class="nav-list-link">GPIO Pin Configuration Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/gpio_pin_configuration.html" class="nav-list-link">GPIO Pin Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html" class="nav-list-link">Motor Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_control_comprehensive_test.html" class="nav-list-link">Motor Control Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/pin_config_struct_example.html" class="nav-list-link">Pin Configuration Struct Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/protection_comprehensive_test.html" class="nav-list-link">Protection Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/ramp_control_comprehensive_test.html" class="nav-list-link">Ramp Control Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/spi_daisy_chain_comprehensive_test.html" class="nav-list-link">SPI Daisy Chain Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/sinusoidal.html" class="nav-list-link">Sinusoidal Motion Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/" class="nav-list-link">TMC5160 Driver - ESP32 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_coverage_analysis.html" class="nav-list-link">TMC5160 Feature Coverage Analysis Report</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_register_access.html" class="nav-list-link">TMC5160 Register Access and Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/uart_multi_node_comprehensive_test.html" class="nav-list-link">UART Multi-Node Comprehensive Test</a></li></ul>
   
 </nav>
 
@@ -248,861 +248,627 @@
       <div id="main-content" class="main-content">
         <main>
           
-            <h1 id="register-access-types-and-special-behaviors">
+            <h1 id="tmc5160-register-access-and-configuration-guide">
   
   
-    <a href="#register-access-types-and-special-behaviors" class="anchor-heading" aria-labelledby="register-access-types-and-special-behaviors"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Register Access Types and Special Behaviors
+    <a href="#tmc5160-register-access-and-configuration-guide" class="anchor-heading" aria-labelledby="tmc5160-register-access-and-configuration-guide"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> TMC5160 Register Access and Configuration Guide
   
   
 </h1>
     
 
-<p>This document provides comprehensive information about TMC5160 register access types, verified against the TMC5160A datasheet Rev 1.18.</p>
-<h2 id="register-access-type-overview">
+<p>This guide provides a comprehensive overview of the TMC5160 registers, their access permissions, and recommended configuration strategies. It is based on the verified driver implementation and the TMC5160 datasheet.</p>
+<h2 id="1-register-map-and-access-types">
   
   
-    <a href="#register-access-type-overview" class="anchor-heading" aria-labelledby="register-access-type-overview"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Register Access Type Overview
+    <a href="#1-register-map-and-access-types" class="anchor-heading" aria-labelledby="1-register-map-and-access-types"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 1. Register Map and Access Types
   
   
 </h2>
     
 
-<p>The TMC5160 has 47 registers with the following access type distribution:</p>
-
-<div class="table-wrapper"><table>
-  <thead>
-    <tr>
-      <th>Access Type</th>
-      <th>Count</th>
-      <th>Percentage</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Read-Write (RW)</strong></td>
-      <td>16</td>
-      <td>34.0%</td>
-      <td>Configuration and control registers</td>
-    </tr>
-    <tr>
-      <td><strong>Read-Only (R)</strong></td>
-      <td>10</td>
-      <td>21.3%</td>
-      <td>Status, result, and read-only registers</td>
-    </tr>
-    <tr>
-      <td><strong>Write-Only (W)</strong></td>
-      <td>21</td>
-      <td>44.7%</td>
-      <td>Write-only configuration and parameter registers</td>
-    </tr>
-    <tr>
-      <td><strong>Read-Write-Clear (RWC)</strong></td>
-      <td>3</td>
-      <td>6.4%</td>
-      <td>Registers with special clear behavior</td>
-    </tr>
-  </tbody>
-</table></div>
-<h2 id="complete-register-access-table">
+<p>The TMC5160 registers are divided into functional groups. Each register has specific access permissions:</p>
+<ul>
+  <li><strong>RW</strong>: Read and Write</li>
+  <li><strong>R</strong>: Read-Only</li>
+  <li><strong>W</strong>: Write-Only</li>
+  <li><strong>RWC</strong>: Read, Write-1-to-Clear</li>
+</ul>
+<h3 id="11-general-configuration-0x000x0f">
   
   
-    <a href="#complete-register-access-table" class="anchor-heading" aria-labelledby="complete-register-access-table"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Complete Register Access Table
+    <a href="#11-general-configuration-0x000x0f" class="anchor-heading" aria-labelledby="11-general-configuration-0x000x0f"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 1.1 General Configuration (0x00…0x0F)
   
   
-</h2>
+</h3>
     
 
 <div class="table-wrapper"><table>
   <thead>
     <tr>
-      <th>Address</th>
-      <th>Register Name</th>
-      <th>Access</th>
-      <th>Category</th>
-      <th>Description</th>
+      <th style="text-align: left">Address</th>
+      <th style="text-align: left">Register</th>
+      <th style="text-align: left">Access</th>
+      <th style="text-align: left">Description</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>0x00</td>
-      <td>GCONF</td>
-      <td>R/W</td>
-      <td>Configuration</td>
-      <td>Global configuration flags</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x00</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">GCONF</code></td>
+      <td style="text-align: left"><strong>RW</strong></td>
+      <td style="text-align: left">Global configuration flags (direction, PWM mode, diagnostics).</td>
     </tr>
     <tr>
-      <td>0x01</td>
-      <td>GSTAT</td>
-      <td>R/W (clear)</td>
-      <td>Status</td>
-      <td>Global status flags (bits cleared on read)</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x01</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">GSTAT</code></td>
+      <td style="text-align: left"><strong>RWC</strong></td>
+      <td style="text-align: left">Global status flags (reset, error, UV). Write 1 to clear flags.</td>
     </tr>
     <tr>
-      <td>0x02</td>
-      <td>IFCNT</td>
-      <td>R</td>
-      <td>Status</td>
-      <td>UART transmission counter (incremented on each transmission)</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x02</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">IFCNT</code></td>
+      <td style="text-align: left"><strong>R</strong></td>
+      <td style="text-align: left">Interface transmission counter (UART only).</td>
     </tr>
     <tr>
-      <td>0x03</td>
-      <td>SLAVECONF</td>
-      <td>W</td>
-      <td>Configuration</td>
-      <td>UART slave configuration (write-only per datasheet, though reads may work)</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x03</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">SLAVECONF</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">UART slave address and send delay configuration.</td>
     </tr>
     <tr>
-      <td>0x04</td>
-      <td>IO_INPUT_OUTPUT</td>
-      <td>R/W</td>
-      <td>I/O</td>
-      <td>Read input pins / write output pins (dual-purpose: R for INPUT bits, W for OUTPUT bit)</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x04</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">IOIN</code></td>
+      <td style="text-align: left"><strong>R</strong></td>
+      <td style="text-align: left">Reads state of all digital input pins.</td>
     </tr>
     <tr>
-      <td>0x05</td>
-      <td>X_COMPARE</td>
-      <td>W</td>
-      <td>Motion Control</td>
-      <td>Position comparison register (write-only)</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x04</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">OUTPUT</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Sets SDO_CFG0 pin polarity (Bit 0). Same address as IOIN!</td>
     </tr>
     <tr>
-      <td>0x06</td>
-      <td>OTP_PROG</td>
-      <td>W</td>
-      <td>OTP</td>
-      <td>OTP programming register (write-only)</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x05</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">X_COMPARE</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Position comparison value for position pulse output.</td>
     </tr>
     <tr>
-      <td>0x07</td>
-      <td>OTP_READ</td>
-      <td>R</td>
-      <td>OTP</td>
-      <td>OTP read register (read-only)</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x06</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">OTP_PROG</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">OTP programming register (Factory use).</td>
     </tr>
     <tr>
-      <td>0x08</td>
-      <td>FACTORY_CONF</td>
-      <td>R/W</td>
-      <td>Factory</td>
-      <td>Factory configuration (clock trim, can override OTP default)</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x07</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">OTP_READ</code></td>
+      <td style="text-align: left"><strong>R</strong></td>
+      <td style="text-align: left">Reads OTP memory contents.</td>
     </tr>
     <tr>
-      <td>0x09</td>
-      <td>SHORT_CONF</td>
-      <td>W</td>
-      <td>Protection</td>
-      <td>Short detector configuration (write-only)</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x08</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">FACTORY_CONF</code></td>
+      <td style="text-align: left"><strong>RW</strong></td>
+      <td style="text-align: left">Factory clock trim (FCLKTRIM).</td>
     </tr>
     <tr>
-      <td>0x0A</td>
-      <td>DRV_CONF</td>
-      <td>W</td>
-      <td>Configuration</td>
-      <td>Driver configuration (write-only)</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x09</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">SHORT_CONF</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Short circuit detection sensitivity and filtering.</td>
     </tr>
     <tr>
-      <td>0x0B</td>
-      <td>GLOBAL_SCALER</td>
-      <td>W</td>
-      <td>Current Control</td>
-      <td>Global scaling of motor current (write-only, 32-256)</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x0A</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">DRV_CONF</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Driver strength, BBM time, and OT protection settings.</td>
     </tr>
     <tr>
-      <td>0x0C</td>
-      <td>OFFSET_READ</td>
-      <td>R</td>
-      <td>Calibration</td>
-      <td>Offset calibration results (read-only)</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x0B</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">GLOBAL_SCALER</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Global current scaling factor (32-256).</td>
     </tr>
     <tr>
-      <td>0x10</td>
-      <td>IHOLD_IRUN</td>
-      <td>W</td>
-      <td>Current Control</td>
-      <td>Driver current control (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x11</td>
-      <td>TPOWERDOWN</td>
-      <td>W</td>
-      <td>Power Management</td>
-      <td>Delay before power down (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x12</td>
-      <td>TSTEP</td>
-      <td>R</td>
-      <td>Status</td>
-      <td>Actual time between microsteps (read-only)</td>
-    </tr>
-    <tr>
-      <td>0x13</td>
-      <td>TPWMTHRS</td>
-      <td>W</td>
-      <td>Velocity Threshold</td>
-      <td>Upper velocity for stealthChop voltage PWM mode (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x14</td>
-      <td>TCOOLTHRS</td>
-      <td>W</td>
-      <td>Velocity Threshold</td>
-      <td>Lower threshold velocity for coolStep and stallGuard (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x15</td>
-      <td>THIGH</td>
-      <td>W</td>
-      <td>Velocity Threshold</td>
-      <td>Velocity threshold for chopper mode switching and fullstepping (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x20</td>
-      <td>RAMPMODE</td>
-      <td>R/W</td>
-      <td>Motion Control</td>
-      <td>Driving mode (Velocity, Positioning, Hold)</td>
-    </tr>
-    <tr>
-      <td>0x21</td>
-      <td>XACTUAL</td>
-      <td>R/W</td>
-      <td>Motion Control</td>
-      <td>Actual motor position (can be written to set position)</td>
-    </tr>
-    <tr>
-      <td>0x22</td>
-      <td>VACTUAL</td>
-      <td>R</td>
-      <td>Status</td>
-      <td>Actual motor velocity from ramp generator (read-only)</td>
-    </tr>
-    <tr>
-      <td>0x23</td>
-      <td>VSTART</td>
-      <td>W</td>
-      <td>Motion Control</td>
-      <td>Motor start velocity (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x24</td>
-      <td>A_1</td>
-      <td>W</td>
-      <td>Motion Control</td>
-      <td>First acceleration between VSTART and V1 (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x25</td>
-      <td>V_1</td>
-      <td>W</td>
-      <td>Motion Control</td>
-      <td>First acceleration/deceleration phase target velocity (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x26</td>
-      <td>AMAX</td>
-      <td>W</td>
-      <td>Motion Control</td>
-      <td>Second acceleration between V1 and VMAX (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x27</td>
-      <td>VMAX</td>
-      <td>W</td>
-      <td>Motion Control</td>
-      <td>Target velocity in velocity mode (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x28</td>
-      <td>DMAX</td>
-      <td>W</td>
-      <td>Motion Control</td>
-      <td>Deceleration between VMAX and V1 (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x2A</td>
-      <td>D_1</td>
-      <td>W</td>
-      <td>Motion Control</td>
-      <td>Deceleration between V1 and VSTOP (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x2B</td>
-      <td>VSTOP</td>
-      <td>W</td>
-      <td>Motion Control</td>
-      <td>Motor stop velocity (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x2C</td>
-      <td>TZEROWAIT</td>
-      <td>W</td>
-      <td>Motion Control</td>
-      <td>Waiting time after ramping down to zero velocity (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x2D</td>
-      <td>XTARGET</td>
-      <td>R/W</td>
-      <td>Motion Control</td>
-      <td>Target position for ramp mode</td>
-    </tr>
-    <tr>
-      <td>0x33</td>
-      <td>VDCMIN</td>
-      <td>W</td>
-      <td>Motion Control</td>
-      <td>Velocity threshold for enabling dcStep (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x34</td>
-      <td>SW_MODE</td>
-      <td>R/W</td>
-      <td>Switch Configuration</td>
-      <td>Switch mode configuration (reference switches, latching)</td>
-    </tr>
-    <tr>
-      <td>0x35</td>
-      <td>RAMP_STAT</td>
-      <td>R/W (clear)</td>
-      <td>Status</td>
-      <td>Ramp status and switch event status (some bits cleared by writing ‘1’)</td>
-    </tr>
-    <tr>
-      <td>0x36</td>
-      <td>XLATCH</td>
-      <td>R</td>
-      <td>Status</td>
-      <td>Ramp generator latch position upon switch event (read-only)</td>
-    </tr>
-    <tr>
-      <td>0x38</td>
-      <td>ENCMODE</td>
-      <td>R/W</td>
-      <td>Encoder</td>
-      <td>Encoder configuration and use of N channel</td>
-    </tr>
-    <tr>
-      <td>0x39</td>
-      <td>X_ENC</td>
-      <td>R/W</td>
-      <td>Status</td>
-      <td>Actual encoder position (can be written to set position)</td>
-    </tr>
-    <tr>
-      <td>0x3A</td>
-      <td>ENC_CONST</td>
-      <td>W</td>
-      <td>Encoder</td>
-      <td>Accumulation constant (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x3B</td>
-      <td>ENC_STATUS</td>
-      <td>R/W (clear)</td>
-      <td>Status</td>
-      <td>Encoder status information (bits cleared by writing ‘1’)</td>
-    </tr>
-    <tr>
-      <td>0x3C</td>
-      <td>ENC_LATCH</td>
-      <td>R</td>
-      <td>Status</td>
-      <td>Encoder position latched on N event (read-only)</td>
-    </tr>
-    <tr>
-      <td>0x3D</td>
-      <td>ENC_DEVIATION</td>
-      <td>W</td>
-      <td>Encoder</td>
-      <td>Maximum number of steps deviation between encoder and XACTUAL (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x60</td>
-      <td>MSLUT_0</td>
-      <td>W</td>
-      <td>Microstep</td>
-      <td>Microstep lookup table entry 0 (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x61</td>
-      <td>MSLUT_1</td>
-      <td>W</td>
-      <td>Microstep</td>
-      <td>Microstep lookup table entry 1 (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x62</td>
-      <td>MSLUT_2</td>
-      <td>W</td>
-      <td>Microstep</td>
-      <td>Microstep lookup table entry 2 (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x63</td>
-      <td>MSLUT_3</td>
-      <td>W</td>
-      <td>Microstep</td>
-      <td>Microstep lookup table entry 3 (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x64</td>
-      <td>MSLUT_4</td>
-      <td>W</td>
-      <td>Microstep</td>
-      <td>Microstep lookup table entry 4 (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x65</td>
-      <td>MSLUT_5</td>
-      <td>W</td>
-      <td>Microstep</td>
-      <td>Microstep lookup table entry 5 (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x66</td>
-      <td>MSLUT_6</td>
-      <td>W</td>
-      <td>Microstep</td>
-      <td>Microstep lookup table entry 6 (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x67</td>
-      <td>MSLUT_7</td>
-      <td>W</td>
-      <td>Microstep</td>
-      <td>Microstep lookup table entry 7 (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x68</td>
-      <td>MSLUTSEL</td>
-      <td>W</td>
-      <td>Microstep</td>
-      <td>Look up table segmentation definition (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x69</td>
-      <td>MSLUTSTART</td>
-      <td>W</td>
-      <td>Microstep</td>
-      <td>Absolute current at microstep table entries 0 and 256 (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x6A</td>
-      <td>MSCNT</td>
-      <td>R</td>
-      <td>Status</td>
-      <td>Actual position in the microstep table (read-only)</td>
-    </tr>
-    <tr>
-      <td>0x6B</td>
-      <td>MSCURACT</td>
-      <td>R</td>
-      <td>Status</td>
-      <td>Actual microstep current (read-only)</td>
-    </tr>
-    <tr>
-      <td>0x6C</td>
-      <td>CHOPCONF</td>
-      <td>R/W</td>
-      <td>Chopper</td>
-      <td>Chopper and driver configuration</td>
-    </tr>
-    <tr>
-      <td>0x6D</td>
-      <td>COOLCONF</td>
-      <td>W</td>
-      <td>CoolStep</td>
-      <td>coolStep smart current control and stallGuard2 configuration (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x6E</td>
-      <td>DCCTRL</td>
-      <td>W</td>
-      <td>dcStep</td>
-      <td>dcStep automatic commutation configuration (write-only)</td>
-    </tr>
-    <tr>
-      <td>0x6F</td>
-      <td>DRV_STATUS</td>
-      <td>R</td>
-      <td>Status</td>
-      <td>stallGuard2 value and driver error flags (read-only)</td>
-    </tr>
-    <tr>
-      <td>0x70</td>
-      <td>PWMCONF</td>
-      <td>W</td>
-      <td>StealthChop</td>
-      <td>stealthChop voltage PWM mode chopper configuration (write-only per datasheet)</td>
-    </tr>
-    <tr>
-      <td>0x71</td>
-      <td>PWM_SCALE</td>
-      <td>R</td>
-      <td>Status</td>
-      <td>Results of stealthChop amplitude regulator (read-only)</td>
-    </tr>
-    <tr>
-      <td>0x72</td>
-      <td>PWM_AUTO</td>
-      <td>R</td>
-      <td>Status</td>
-      <td>Automatically determined PWM config values (read-only)</td>
-    </tr>
-    <tr>
-      <td>0x73</td>
-      <td>LOST_STEPS</td>
-      <td>R</td>
-      <td>Status</td>
-      <td>Number of input steps skipped due to dcStep (read-only, SD_MODE=1 only)</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x0C</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">OFFSET_READ</code></td>
+      <td style="text-align: left"><strong>R</strong></td>
+      <td style="text-align: left">Reads offset calibration results.</td>
     </tr>
   </tbody>
 </table></div>
-<h2 id="register-access-types-explained">
+
+<p><strong>Usage Recommendations:</strong></p>
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">GCONF</code></strong>: Configure at startup. Use <code class="language-plaintext highlighter-rouge">driver.ConfigureGlobalConfig()</code>.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">GSTAT</code></strong>: Check for <code class="language-plaintext highlighter-rouge">uv_cp</code> (Charge Pump Undervoltage) if motor stops unexpectedly. Clear <code class="language-plaintext highlighter-rouge">reset</code> flag after initialization.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">IOIN</code></strong>: Use <code class="language-plaintext highlighter-rouge">driver.diagnostics.ReadInputStatus()</code> to verify wiring (e.g., <code class="language-plaintext highlighter-rouge">REFL</code>/<code class="language-plaintext highlighter-rouge">REFR</code> switches, <code class="language-plaintext highlighter-rouge">DRV_ENN</code>).</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">GLOBAL_SCALER</code></strong>: Set to appropriate value (e.g., 160-256) to match motor current capability.</li>
+</ul>
+<h3 id="12-velocity-dependent-driver-feature-control-0x100x1f">
   
   
-    <a href="#register-access-types-explained" class="anchor-heading" aria-labelledby="register-access-types-explained"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Register Access Types Explained
+    <a href="#12-velocity-dependent-driver-feature-control-0x100x1f" class="anchor-heading" aria-labelledby="12-velocity-dependent-driver-feature-control-0x100x1f"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 1.2 Velocity Dependent Driver Feature Control (0x10…0x1F)
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Address</th>
+      <th style="text-align: left">Register</th>
+      <th style="text-align: left">Access</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x10</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">IHOLD_IRUN</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Run and Hold current settings.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x11</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">TPOWERDOWN</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Delay before power down to stand still current.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x12</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">TSTEP</code></td>
+      <td style="text-align: left"><strong>R</strong></td>
+      <td style="text-align: left">Measured time between microsteps (inverse of velocity).</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x13</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">TPWMTHRS</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Upper velocity threshold for StealthChop.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x14</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">TCOOLTHRS</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Lower velocity threshold for CoolStep/StallGuard.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x15</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">THIGH</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Velocity threshold for high-speed chopper/fullstep mode.</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Usage Recommendations:</strong></p>
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">IHOLD_IRUN</code></strong>: Use <code class="language-plaintext highlighter-rouge">driver.motorControl.SetCurrent(irun, ihold)</code>. Typical <code class="language-plaintext highlighter-rouge">irun=16-31</code>, <code class="language-plaintext highlighter-rouge">ihold=0-16</code>.</li>
+  <li><strong>Thresholds</strong>: Use <code class="language-plaintext highlighter-rouge">driver.motorControl.SetModeChangeSpeeds()</code> to set <code class="language-plaintext highlighter-rouge">TPWMTHRS</code>, <code class="language-plaintext highlighter-rouge">TCOOLTHRS</code>, and <code class="language-plaintext highlighter-rouge">THIGH</code> in steps/s.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">TPWMTHRS</code>: Set typical cruising speed limit for silent operation.</li>
+      <li><code class="language-plaintext highlighter-rouge">TCOOLTHRS</code>: Set above startup speed to enable StallGuard only when moving stably.</li>
+    </ul>
+  </li>
+</ul>
+<h3 id="13-ramp-generator-motion-control-0x200x2d">
+  
+  
+    <a href="#13-ramp-generator-motion-control-0x200x2d" class="anchor-heading" aria-labelledby="13-ramp-generator-motion-control-0x200x2d"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 1.3 Ramp Generator Motion Control (0x20…0x2D)
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Address</th>
+      <th style="text-align: left">Register</th>
+      <th style="text-align: left">Access</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x20</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">RAMPMODE</code></td>
+      <td style="text-align: left"><strong>RW</strong></td>
+      <td style="text-align: left">0=Positioning, 1=Vel(+), 2=Vel(-), 3=Hold.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x21</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">XACTUAL</code></td>
+      <td style="text-align: left"><strong>RW</strong></td>
+      <td style="text-align: left">Actual position (signed 32-bit).</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x22</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">VACTUAL</code></td>
+      <td style="text-align: left"><strong>R</strong></td>
+      <td style="text-align: left">Actual velocity (signed 24-bit).</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x23</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">VSTART</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Start velocity. Set &gt; 0 (e.g., 100) to avoid jerky starts.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x24</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">A1</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">First acceleration (Start -&gt; V1).</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x25</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">V1</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Threshold velocity for A1-&gt;AMAX transition.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x26</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">AMAX</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Max acceleration (standard).</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x27</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">VMAX</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Target velocity.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x28</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">DMAX</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Max deceleration (standard).</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x2A</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">D1</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Final deceleration (V1 -&gt; Stop). <strong>Do not set to 0!</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x2B</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">VSTOP</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Stop velocity. Set &gt;= VSTART.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x2C</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">TZEROWAIT</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Wait time after stop before direction change.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x2D</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">XTARGET</code></td>
+      <td style="text-align: left"><strong>RW</strong></td>
+      <td style="text-align: left">Target position (signed 32-bit).</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Usage Recommendations:</strong></p>
+<ul>
+  <li><strong>Positioning</strong>: Set <code class="language-plaintext highlighter-rouge">VMAX</code>, <code class="language-plaintext highlighter-rouge">AMAX</code>, <code class="language-plaintext highlighter-rouge">DMAX</code> first, then write <code class="language-plaintext highlighter-rouge">XTARGET</code> to start move.</li>
+  <li><strong>Velocity Mode</strong>: Use <code class="language-plaintext highlighter-rouge">driver.rampControl.SetMaxSpeed()</code> with positive/negative value to control direction.</li>
+  <li><strong>S-Curve</strong>: For smoother motion, set <code class="language-plaintext highlighter-rouge">V1 &gt; 0</code> and use <code class="language-plaintext highlighter-rouge">A1</code>/<code class="language-plaintext highlighter-rouge">D1</code> for start/stop phases.</li>
+  <li><strong>Safety</strong>: Always ensure <code class="language-plaintext highlighter-rouge">D1 != 0</code> in positioning mode.</li>
+</ul>
+<h3 id="14-ramp-generator-driver-features-0x300x36">
+  
+  
+    <a href="#14-ramp-generator-driver-features-0x300x36" class="anchor-heading" aria-labelledby="14-ramp-generator-driver-features-0x300x36"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 1.4 Ramp Generator Driver Features (0x30…0x36)
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Address</th>
+      <th style="text-align: left">Register</th>
+      <th style="text-align: left">Access</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x33</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">VDCMIN</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Velocity threshold for DcStep commutation.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x34</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">SW_MODE</code></td>
+      <td style="text-align: left"><strong>RW</strong></td>
+      <td style="text-align: left">Switch stop configuration (endstops, stall stop).</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x35</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">RAMP_STAT</code></td>
+      <td style="text-align: left"><strong>RWC</strong></td>
+      <td style="text-align: left">Ramp status flags (reached, stop event, stall).</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x36</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">XLATCH</code></td>
+      <td style="text-align: left"><strong>R</strong></td>
+      <td style="text-align: left">Position latched on switch/stall event.</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Usage Recommendations:</strong></p>
+<ul>
+  <li><strong>Homing</strong>: Use <code class="language-plaintext highlighter-rouge">driver.diagnostics.PerformSensorlessHoming()</code> or <code class="language-plaintext highlighter-rouge">PerformSwitchHoming()</code>.</li>
+  <li><strong>Endstops</strong>: Configure with <code class="language-plaintext highlighter-rouge">driver.rampControl.ConfigureReferenceSwitch()</code>. Use <code class="language-plaintext highlighter-rouge">ReadInputStatus</code> to verify wiring logic (NO/NC).</li>
+</ul>
+<h3 id="15-encoder-registers-0x380x3c">
+  
+  
+    <a href="#15-encoder-registers-0x380x3c" class="anchor-heading" aria-labelledby="15-encoder-registers-0x380x3c"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 1.5 Encoder Registers (0x38…0x3C)
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Address</th>
+      <th style="text-align: left">Register</th>
+      <th style="text-align: left">Access</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x38</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">ENCMODE</code></td>
+      <td style="text-align: left"><strong>RW</strong></td>
+      <td style="text-align: left">Encoder configuration (polarity, prescaler).</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x39</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">X_ENC</code></td>
+      <td style="text-align: left"><strong>RW</strong></td>
+      <td style="text-align: left">Actual encoder position.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x3A</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">ENC_CONST</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Encoder resolution matching factor.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x3B</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">ENC_STATUS</code></td>
+      <td style="text-align: left"><strong>RWC</strong></td>
+      <td style="text-align: left">Encoder events (N-channel, deviation).</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x3C</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">ENC_LATCH</code></td>
+      <td style="text-align: left"><strong>R</strong></td>
+      <td style="text-align: left">Encoder position latched on N-event.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x3D</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">ENC_DEVIATION</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Max deviation for warning flag.</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Usage Recommendations:</strong></p>
+<ul>
+  <li><strong>Calibration</strong>: Use <code class="language-plaintext highlighter-rouge">driver.encoder.SetResolution()</code> to automatically calculate <code class="language-plaintext highlighter-rouge">ENC_CONST</code>.</li>
+  <li><strong>Verification</strong>: Check <code class="language-plaintext highlighter-rouge">ENC_STATUS</code> periodically for deviation warnings if using closed loop.</li>
+</ul>
+<h3 id="16-motor-driver-registers-0x600x7f">
+  
+  
+    <a href="#16-motor-driver-registers-0x600x7f" class="anchor-heading" aria-labelledby="16-motor-driver-registers-0x600x7f"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 1.6 Motor Driver Registers (0x60…0x7F)
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Address</th>
+      <th style="text-align: left">Register</th>
+      <th style="text-align: left">Access</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x60</code>..<code class="language-plaintext highlighter-rouge">0x67</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">MSLUT[0..7]</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Microstep lookup table entries.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x68</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">MSLUTSEL</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">LUT segment configuration.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x69</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">MSLUTSTART</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">Start current for LUT.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x6A</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">MSCNT</code></td>
+      <td style="text-align: left"><strong>R</strong></td>
+      <td style="text-align: left">Microstep counter (0-1023).</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x6B</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">MSCURACT</code></td>
+      <td style="text-align: left"><strong>R</strong></td>
+      <td style="text-align: left">Actual microstep current (signed 9-bit).</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x6C</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">CHOPCONF</code></td>
+      <td style="text-align: left"><strong>RW</strong></td>
+      <td style="text-align: left">Chopper configuration (TOFF, TBL, HSTRT, HEND).</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x6D</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">COOLCONF</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">CoolStep and StallGuard2 configuration.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x6E</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">DCCTRL</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">DcStep configuration.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x6F</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">DRV_STATUS</code></td>
+      <td style="text-align: left"><strong>R</strong></td>
+      <td style="text-align: left">Driver status (StallGuard result, OT/Short flags).</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x70</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">PWMCONF</code></td>
+      <td style="text-align: left"><strong>W</strong></td>
+      <td style="text-align: left">StealthChop PWM configuration.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x71</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">PWM_SCALE</code></td>
+      <td style="text-align: left"><strong>R</strong></td>
+      <td style="text-align: left">StealthChop regulator result.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x72</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">PWM_AUTO</code></td>
+      <td style="text-align: left"><strong>R</strong></td>
+      <td style="text-align: left">Auto-tuned PWM values.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">0x73</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">LOST_STEPS</code></td>
+      <td style="text-align: left"><strong>R</strong></td>
+      <td style="text-align: left">Lost step counter (DcStep only).</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Usage Recommendations:</strong></p>
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">CHOPCONF</code></strong>: Set <code class="language-plaintext highlighter-rouge">TOFF &gt; 0</code> to enable driver. <code class="language-plaintext highlighter-rouge">TOFF=0</code> disables driver.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">DRV_STATUS</code></strong>: Monitor <code class="language-plaintext highlighter-rouge">SG_RESULT</code> for load estimation. 0 = High Load, 1023 = Low Load.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">PWM_SCALE</code></strong>: Use to verify StealthChop calibration. If <code class="language-plaintext highlighter-rouge">PWM_SCALE_AUTO</code> is 0 or very low, calibration failed (increase standstill time).</li>
+</ul>
+<h2 id="2-configuration-workflows">
+  
+  
+    <a href="#2-configuration-workflows" class="anchor-heading" aria-labelledby="2-configuration-workflows"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 2. Configuration Workflows
   
   
 </h2>
     
-
-<ul>
-  <li><strong>R/W</strong>: Read-Write - Register can be both read and written</li>
-  <li><strong>R</strong>: Read-Only - Register can only be read (status/result registers)</li>
-  <li><strong>W</strong>: Write-Only - Register can only be written (command/trigger registers)</li>
-  <li><strong>R/W (clear)</strong>: Read-Write with special clear behavior - Some bits can be cleared by writing ‘1’</li>
-</ul>
-<h2 id="special-register-behaviors">
+<h3 id="21-startup-verification">
   
   
-    <a href="#special-register-behaviors" class="anchor-heading" aria-labelledby="special-register-behaviors"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Special Register Behaviors
-  
-  
-</h2>
-    
-<h3 id="clear-on-readwrite-registers-rwc">
-  
-  
-    <a href="#clear-on-readwrite-registers-rwc" class="anchor-heading" aria-labelledby="clear-on-readwrite-registers-rwc"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Clear-on-Read/Write Registers (RWC)
+    <a href="#21-startup-verification" class="anchor-heading" aria-labelledby="21-startup-verification"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 2.1 Startup Verification
   
   
 </h3>
     
-
-<p>These registers have special behavior where certain bits are cleared when read or written:</p>
-
-<ol>
-  <li><strong>GSTAT (0x01)</strong>: Global status flags
-    <ul>
-      <li>Status bits are automatically cleared when read</li>
-      <li>Can also be cleared by writing ‘1’ to the corresponding bit</li>
-      <li>While technically R/W, status bits are automatically cleared when read</li>
-    </ul>
-  </li>
-  <li><strong>RAMP_STAT (0x35)</strong>: Ramp status and switch event status
-    <ul>
-      <li>Contains both read-only status bits and event bits that can be cleared</li>
-      <li>Event bits (<code class="language-plaintext highlighter-rouge">event_stop_l</code>, <code class="language-plaintext highlighter-rouge">event_stop_r</code>, <code class="language-plaintext highlighter-rouge">event_stop_sg</code>, <code class="language-plaintext highlighter-rouge">event_pos_reached</code>, <code class="language-plaintext highlighter-rouge">second_move</code>) can be cleared by writing ‘1’</li>
-      <li>Status bits (<code class="language-plaintext highlighter-rouge">status_sg</code>, <code class="language-plaintext highlighter-rouge">vzero</code>, <code class="language-plaintext highlighter-rouge">position_reached</code>, etc.) are read-only</li>
-    </ul>
-  </li>
-  <li><strong>ENC_STATUS (0x3B)</strong>: Encoder status information
-    <ul>
-      <li>Status bits can be cleared by writing ‘1’ to the corresponding bit position</li>
-      <li><code class="language-plaintext highlighter-rouge">deviation_warn</code> cannot be cleared while a warning still persists</li>
-    </ul>
-  </li>
-</ol>
-<h3 id="read-write-registers-with-special-behavior">
-  
-  
-    <a href="#read-write-registers-with-special-behavior" class="anchor-heading" aria-labelledby="read-write-registers-with-special-behavior"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Read-Write Registers with Special Behavior
-  
-  
-</h3>
-    
-
-<ol>
-  <li><strong>FACTORY_CONF (0x08)</strong>: Factory configuration (clock trim)
-    <ul>
-      <li><strong>Access</strong>: Read-Write (RW)</li>
-      <li><strong>Note</strong>: Can be written to override OTP defaults</li>
-      <li><strong>Usage</strong>: Typically read-only, but writing allows customization of clock trim settings</li>
-    </ul>
-  </li>
-  <li><strong>IO_INPUT_OUTPUT (0x04)</strong>: Input/output pin register
-    <ul>
-      <li><strong>Access</strong>: Read-Write (RW)</li>
-      <li><strong>Note</strong>: Dual-purpose register - INPUT bits (0-7, 24-31) are read-only, OUTPUT bit (0) is write-only</li>
-      <li><strong>Usage</strong>: Read to get input pin states, write to set output pin polarity</li>
-    </ul>
-  </li>
-  <li><strong>XACTUAL (0x21)</strong>: Actual motor position
-    <ul>
-      <li><strong>Access</strong>: Read-Write (RW)</li>
-      <li><strong>Note</strong>: Can be written to set/initialize position (useful for homing)</li>
-      <li><strong>Warning</strong>: Writing to XACTUAL in positioning mode will start a motion</li>
-    </ul>
-  </li>
-  <li><strong>X_ENC (0x39)</strong>: Actual encoder position
-    <ul>
-      <li><strong>Access</strong>: Read-Write (RW)</li>
-      <li><strong>Note</strong>: Can be written to synchronize encoder position with motor position</li>
-    </ul>
-  </li>
-</ol>
-<h2 id="register-categories">
-  
-  
-    <a href="#register-categories" class="anchor-heading" aria-labelledby="register-categories"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Register Categories
-  
-  
-</h2>
-    
-<h3 id="read-only-status-registers">
-  
-  
-    <a href="#read-only-status-registers" class="anchor-heading" aria-labelledby="read-only-status-registers"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Read-Only Status Registers
-  
-  
-</h3>
-    
-<p>These registers provide real-time status information and cannot be written:</p>
-<ul>
-  <li><strong>IFCNT (0x02)</strong>: UART transmission counter</li>
-  <li><strong>TSTEP (0x12)</strong>: Actual time between microsteps</li>
-  <li><strong>VACTUAL (0x22)</strong>: Actual motor velocity</li>
-  <li><strong>XLATCH (0x36)</strong>: Latched position on switch event</li>
-  <li><strong>ENC_LATCH (0x3C)</strong>: Encoder position latched on N event</li>
-  <li><strong>MSCNT (0x6A)</strong>: Microstep table position</li>
-  <li><strong>MSCURACT (0x6B)</strong>: Actual microstep current</li>
-  <li><strong>DRV_STATUS (0x6F)</strong>: Driver status and StallGuard2 value</li>
-  <li><strong>PWM_SCALE (0x71)</strong>: PWM scale results</li>
-  <li><strong>PWM_AUTO (0x72)</strong>: Auto-determined PWM values</li>
-  <li><strong>LOST_STEPS (0x73)</strong>: Lost steps counter (only valid when dcStep mode is enabled, SD_MODE=1)</li>
-</ul>
-<h3 id="write-only-configuration-registers">
-  
-  
-    <a href="#write-only-configuration-registers" class="anchor-heading" aria-labelledby="write-only-configuration-registers"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Write-Only Configuration Registers
-  
-  
-</h3>
-    
-<p>These registers are write-only per datasheet (though some may be readable in practice):</p>
-<ul>
-  <li><strong>SLAVECONF (0x03)</strong>: UART slave configuration</li>
-  <li><strong>X_COMPARE (0x05)</strong>: Position comparison register</li>
-  <li><strong>OTP_PROG (0x06)</strong>: OTP programming register</li>
-  <li><strong>SHORT_CONF (0x09)</strong>: Short detector configuration</li>
-  <li><strong>DRV_CONF (0x0A)</strong>: Driver configuration</li>
-  <li><strong>GLOBAL_SCALER (0x0B)</strong>: Global current scaler</li>
-  <li><strong>IHOLD_IRUN (0x10)</strong>: Driver current control</li>
-  <li><strong>TPOWERDOWN (0x11)</strong>: Power down delay</li>
-  <li><strong>TPWMTHRS (0x13)</strong>: StealthChop threshold</li>
-  <li><strong>TCOOLTHRS (0x14)</strong>: CoolStep threshold</li>
-  <li><strong>THIGH (0x15)</strong>: High-speed threshold</li>
-  <li><strong>VSTART (0x23)</strong>: Motor start velocity</li>
-  <li><strong>A_1 (0x24)</strong>: First acceleration phase</li>
-  <li><strong>V_1 (0x25)</strong>: Transition velocity</li>
-  <li><strong>AMAX (0x26)</strong>: Maximum acceleration</li>
-  <li><strong>VMAX (0x27)</strong>: Maximum velocity</li>
-  <li><strong>DMAX (0x28)</strong>: Maximum deceleration</li>
-  <li><strong>D_1 (0x2A)</strong>: Final deceleration</li>
-  <li><strong>VSTOP (0x2B)</strong>: Motor stop velocity</li>
-  <li><strong>TZEROWAIT (0x2C)</strong>: Zero wait time</li>
-  <li><strong>VDCMIN (0x33)</strong>: dcStep velocity threshold</li>
-  <li><strong>ENC_CONST (0x3A)</strong>: Encoder accumulation constant</li>
-  <li><strong>ENC_DEVIATION (0x3D)</strong>: Encoder deviation threshold</li>
-  <li><strong>MSLUT_0 through MSLUT_7 (0x60-0x67)</strong>: Microstep lookup table entries</li>
-  <li><strong>MSLUTSEL (0x68)</strong>: Microstep lookup table segmentation</li>
-  <li><strong>MSLUTSTART (0x69)</strong>: Microstep lookup table start values</li>
-  <li><strong>COOLCONF (0x6D)</strong>: CoolStep and StallGuard2 configuration</li>
-  <li><strong>DCCTRL (0x6E)</strong>: dcStep automatic commutation configuration</li>
-  <li><strong>PWMCONF (0x70)</strong>: StealthChop voltage PWM mode configuration</li>
-</ul>
-<h3 id="factoryotp-registers">
-  
-  
-    <a href="#factoryotp-registers" class="anchor-heading" aria-labelledby="factoryotp-registers"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Factory/OTP Registers
-  
-  
-</h3>
-    
-<ul>
-  <li><strong>FACTORY_CONF (0x08)</strong>: Read-write factory configuration (can override OTP)</li>
-  <li><strong>OTP_READ (0x07)</strong>: Read-only OTP memory</li>
-  <li><strong>OTP_PROG (0x06)</strong>: Write-only OTP programming (requires special sequence)</li>
-</ul>
-<h3 id="position-registers">
-  
-  
-    <a href="#position-registers" class="anchor-heading" aria-labelledby="position-registers"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Position Registers
-  
-  
-</h3>
-    
-<ul>
-  <li><strong>XACTUAL (0x21)</strong>: Can be read (current position) or written (set position)</li>
-  <li><strong>XTARGET (0x2D)</strong>: Write target position for positioning mode</li>
-  <li><strong>X_ENC (0x39)</strong>: Can be read (encoder position) or written (synchronize position)</li>
-</ul>
-<h2 id="implementation-details">
-  
-  
-    <a href="#implementation-details" class="anchor-heading" aria-labelledby="implementation-details"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Implementation Details
-  
-  
-</h2>
-    
-<h3 id="register-definitions">
-  
-  
-    <a href="#register-definitions" class="anchor-heading" aria-labelledby="register-definitions"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Register Definitions
-  
-  
-</h3>
-    
-
-<p>All register definitions use an X-MACRO pattern (following TMC9660 style) for maintainability and single source of truth:</p>
-
-<ul>
-  <li><strong>Register Definitions</strong>: <code class="language-plaintext highlighter-rouge">inc/tmc5160_register_defs.hpp</code> - X-MACRO list of all registers</li>
-  <li><strong>Access Type Functions</strong>: <code class="language-plaintext highlighter-rouge">inc/tmc5160_register_access.hpp</code> - Functions to query register access types</li>
-</ul>
-<h3 id="access-type-query-functions">
-  
-  
-    <a href="#access-type-query-functions" class="anchor-heading" aria-labelledby="access-type-query-functions"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Access Type Query Functions
-  
-  
-</h3>
-    
-
-<p>The following functions are available to query register access types:</p>
-
+<p>Always perform a setup verification at startup to catch hardware issues early:</p>
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-</pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"tmc5160_register_access.hpp"</span><span class="cp">
-</span>
-<span class="c1">// Get register access type</span>
-<span class="n">RegisterAccess</span> <span class="nf">GetRegisterAccess</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">address</span><span class="p">);</span>
-
-<span class="c1">// Check if register is readable</span>
-<span class="kt">bool</span> <span class="nf">IsRegisterReadable</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">address</span><span class="p">);</span>
-
-<span class="c1">// Check if register is writable</span>
-<span class="kt">bool</span> <span class="nf">IsRegisterWritable</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">address</span><span class="p">);</span>
-
-<span class="c1">// Get access type string representation</span>
-<span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">GetAccessTypeString</span><span class="p">(</span><span class="n">RegisterAccess</span> <span class="n">access</span><span class="p">);</span>
-</pre></td></tr></tbody></table></div></code></pre></div></div>
-<h3 id="usage-example">
-  
-  
-    <a href="#usage-example" class="anchor-heading" aria-labelledby="usage-example"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Usage Example
-  
-  
-</h3>
-    
-
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-</pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"tmc5160_register_access.hpp"</span><span class="cp">
-</span>
-<span class="c1">// Check register access before operation</span>
-<span class="kt">uint8_t</span> <span class="n">reg_addr</span> <span class="o">=</span> <span class="mh">0x6F</span><span class="p">;</span> <span class="c1">// DRV_STATUS</span>
-
-<span class="k">if</span> <span class="p">(</span><span class="n">tmc5160</span><span class="o">::</span><span class="n">IsRegisterReadable</span><span class="p">(</span><span class="n">reg_addr</span><span class="p">))</span> <span class="p">{</span>
-    <span class="kt">uint32_t</span> <span class="n">status</span><span class="p">;</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">GetComm</span><span class="p">().</span><span class="n">ReadRegister</span><span class="p">(</span><span class="n">reg_addr</span><span class="p">,</span> <span class="n">status</span><span class="p">);</span>
-    <span class="c1">// Process status...</span>
+</pre></td><td class="rouge-code"><pre><span class="c1">// Verify IC connection and Input Pins</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">VerifySetup</span><span class="p">())</span> <span class="p">{</span>
+    <span class="c1">// Handle error - check power/wiring</span>
 <span class="p">}</span>
-
-<span class="c1">// Get access type information</span>
-<span class="n">tmc5160</span><span class="o">::</span><span class="n">RegisterAccess</span> <span class="n">access</span> <span class="o">=</span> <span class="n">tmc5160</span><span class="o">::</span><span class="n">GetRegisterAccess</span><span class="p">(</span><span class="n">reg_addr</span><span class="p">);</span>
-<span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">access_str</span> <span class="o">=</span> <span class="n">tmc5160</span><span class="o">::</span><span class="n">GetAccessTypeString</span><span class="p">(</span><span class="n">access</span><span class="p">);</span>
-<span class="c1">// access_str = "R" for read-only registers</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
-<h2 id="best-practices">
+<h3 id="22-silent-operation-stealthchop">
   
   
-    <a href="#best-practices" class="anchor-heading" aria-labelledby="best-practices"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Best Practices
+    <a href="#22-silent-operation-stealthchop" class="anchor-heading" aria-labelledby="22-silent-operation-stealthchop"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 2.2 Silent Operation (StealthChop)
   
   
-</h2>
+</h3>
     
-
 <ol>
-  <li><strong>Write-Only Registers</strong>: Never attempt to read write-only registers. Always maintain full register state internally if partial updates are needed</li>
-  <li><strong>Write Verification</strong>: Verify writes by checking the response data matches what was sent (if supported by communication interface), not by reading back write-only registers</li>
-  <li><strong>Clear Bits</strong>: For RWC registers, write ‘1’ to clear event bits, not ‘0’</li>
-  <li><strong>Position Registers</strong>: Be careful when writing to XACTUAL or X_ENC as this may trigger motion or affect position tracking</li>
-  <li><strong>Status Registers</strong>: Read status registers regularly to clear event flags and monitor driver state</li>
-  <li><strong>Register Access Compliance</strong>: All functions strictly follow datasheet register access types (R/W/C). Functions that violate access types have been removed</li>
+  <li>Set <code class="language-plaintext highlighter-rouge">GCONF.en_pwm_mode = 1</code>.</li>
+  <li>Set <code class="language-plaintext highlighter-rouge">TPWMTHRS</code> to a high value (e.g. 5000 steps/s).</li>
+  <li><strong>Crucial</strong>: Allow motor to stand still for &gt;130ms after enabling to allow <code class="language-plaintext highlighter-rouge">PWM_OFS_AUTO</code> calibration.</li>
+  <li>Monitor <code class="language-plaintext highlighter-rouge">PWM_SCALE</code> to confirm regulation is active.</li>
 </ol>
-<h2 id="verification-status">
+<h3 id="23-high-torque--high-speed-spreadcycle">
   
   
-    <a href="#verification-status" class="anchor-heading" aria-labelledby="verification-status"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Verification Status
+    <a href="#23-high-torque--high-speed-spreadcycle" class="anchor-heading" aria-labelledby="23-high-torque--high-speed-spreadcycle"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 2.3 High Torque / High Speed (SpreadCycle)
   
   
-</h2>
+</h3>
     
-
-<p>✅ <strong>All register access types verified against:</strong></p>
-<ul>
-  <li>TMC5160A Datasheet Rev 1.18 (2023-MAR-01)</li>
-  <li>Current implementation in <code class="language-plaintext highlighter-rouge">src/tmc5160.cpp</code></li>
-  <li>Register definitions in <code class="language-plaintext highlighter-rouge">inc/tmc5160_registers.hpp</code></li>
-</ul>
-<h2 id="key-findings">
-  
-  
-    <a href="#key-findings" class="anchor-heading" aria-labelledby="key-findings"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Key Findings
-  
-  
-</h2>
-    
-
 <ol>
-  <li><strong>Read-Only Registers</strong>: All status and result registers are correctly marked as read-only</li>
-  <li><strong>Write-Only Registers</strong>: 21 registers are write-only per datasheet specification - these registers cannot be read</li>
-  <li><strong>Clear Behavior</strong>: GSTAT, RAMP_STAT, and ENC_STATUS have special clear-on-read/write behavior (RWC)</li>
-  <li><strong>Position Registers</strong>: XACTUAL and X_ENC can be both read and written (used to set position)</li>
-  <li><strong>Dual-Purpose Register</strong>: IO_INPUT_OUTPUT serves dual purpose - reading returns inputs, writing controls outputs</li>
-  <li><strong>Access Compliance</strong>: All functions strictly comply with datasheet register access types. Functions that attempted to read write-only registers have been removed</li>
-</ol><hr />
+  <li>Set <code class="language-plaintext highlighter-rouge">GCONF.en_pwm_mode = 0</code>.</li>
+  <li>Configure <code class="language-plaintext highlighter-rouge">CHOPCONF</code> (<code class="language-plaintext highlighter-rouge">TOFF</code>, <code class="language-plaintext highlighter-rouge">TBL</code>, <code class="language-plaintext highlighter-rouge">HSTRT</code>, <code class="language-plaintext highlighter-rouge">HEND</code>) for your motor inductance.</li>
+  <li>This mode is louder but provides dynamic torque and prevents “ runaway” calibration issues at high loads.</li>
+</ol>
+<h3 id="24-sensorless-homing">
+  
+  
+    <a href="#24-sensorless-homing" class="anchor-heading" aria-labelledby="24-sensorless-homing"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 2.4 Sensorless Homing
+  
+  
+</h3>
+    
+<ol>
+  <li>Configure <code class="language-plaintext highlighter-rouge">StallGuard</code> (<code class="language-plaintext highlighter-rouge">COOLCONF</code>) with <code class="language-plaintext highlighter-rouge">SGT</code> (Threshold).</li>
+  <li>Set <code class="language-plaintext highlighter-rouge">TCOOLTHRS</code> low enough to cover homing speed.</li>
+  <li>Call <code class="language-plaintext highlighter-rouge">driver.diagnostics.PerformSensorlessHoming()</code>.
+    <ul>
+      <li>This internally sets <code class="language-plaintext highlighter-rouge">SW_MODE.sg_stop = 1</code>.</li>
+      <li>Moves motor until stall detected.</li>
+      <li>Stops and returns position.</li>
+    </ul>
+  </li>
+</ol>
+<h2 id="3-troubleshooting">
+  
+  
+    <a href="#3-troubleshooting" class="anchor-heading" aria-labelledby="3-troubleshooting"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 3. Troubleshooting
+  
+  
+</h2>
+    
 
-<p><strong>Last Updated</strong>: Based on TMC5160A Datasheet Rev 1.18 (2023-MAR-01)</p>
+<ul>
+  <li><strong>Motor not moving</strong>: Check <code class="language-plaintext highlighter-rouge">GSTAT.uv_cp</code> (Undervoltage), <code class="language-plaintext highlighter-rouge">CHOPCONF.toff</code> (Driver Enabled?), <code class="language-plaintext highlighter-rouge">DRV_ENN</code> pin state.</li>
+  <li><strong>Motor stalling early</strong>: Decrease acceleration (<code class="language-plaintext highlighter-rouge">AMAX</code>, <code class="language-plaintext highlighter-rouge">A1</code>). Check <code class="language-plaintext highlighter-rouge">Run Current</code> (<code class="language-plaintext highlighter-rouge">IRUN</code>).</li>
+  <li><strong>StealthChop noise</strong>: Check <code class="language-plaintext highlighter-rouge">PWM_SCALE_AUTO</code>. If near limits (+/- 255), adjust <code class="language-plaintext highlighter-rouge">PWM_GRAD</code>.</li>
+  <li><strong>Position loss</strong>: Check <code class="language-plaintext highlighter-rouge">DRV_STATUS</code> for <code class="language-plaintext highlighter-rouge">ot</code> (Overtemp) or <code class="language-plaintext highlighter-rouge">s2g</code> (Short) events which disable the bridge.</li>
+</ul>
 
           
 

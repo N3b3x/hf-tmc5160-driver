@@ -1,0 +1,503 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  <style id="jtd-nav-activation">
+  
+
+    
+    .site-nav > ul.nav-list:first-child > li:not(:nth-child(6)) > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:not(:first-child) a,
+    .site-nav li.external a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:first-child > li:nth-child(6) > a {
+      font-weight: 600;
+      text-decoration: none;
+    }.site-nav > ul.nav-list:first-child > li:nth-child(6) > button svg {
+      transform: rotate(-90deg);
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(6) > ul.nav-list {
+      display: block;
+    }
+  </style>
+
+  
+
+  
+    <script src="/hf-tmc5160-driver/development/assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="/hf-tmc5160-driver/development/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>ESP32 Examples and Tests Documentation | HardFOC TMC5160 Driver - development</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="ESP32 Examples and Tests Documentation" />
+<meta name="author" content="N3b3x" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Hardware-Agnostic TMC5160 Stepper Motor Controller Driver with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
+<meta property="og:description" content="Hardware-Agnostic TMC5160 Stepper Motor Controller Driver with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
+<link rel="canonical" href="https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32/docs/" />
+<meta property="og:url" content="https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32/docs/" />
+<meta property="og:site_name" content="HardFOC TMC5160 Driver - development" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="ESP32 Examples and Tests Documentation" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Hardware-Agnostic TMC5160 Stepper Motor Controller Driver with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support","headline":"ESP32 Examples and Tests Documentation","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32/docs/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- =============================================================================
+     Custom Head Content for HardFOC Driver Documentation
+     =============================================================================
+     This file is included in the <head> section of every page.
+     It loads custom CSS and JavaScript for enhanced functionality.
+     ============================================================================= -->
+
+<!-- Custom CSS for enhanced styling and fixes -->
+<link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/custom.css">
+
+<!-- Custom JavaScript for interactive features -->
+<script src="/hf-tmc5160-driver/development/assets/js/custom.js" defer></script>
+
+
+
+</head>
+
+<body>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    <div class="side-bar">
+  <div class="site-header" role="banner">
+    <a href="/hf-tmc5160-driver/development/" class="site-title lh-tight">
+  HardFOC TMC5160 Driver - development
+
+</a>
+    <button id="menu-button" class="site-button btn-reset" aria-label="Toggle menu" aria-pressed="false">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Main" id="site-nav" class="site-nav">
+  
+  
+    <ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in HardFOC TMC5160 Driver category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC5160 Driver</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/dev_board_setup/" class="nav-list-link">🛠️ Dev Board Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/bounds_finding_sinuous_motion.html" class="nav-list-link">Bounds Finding &amp; Sinusoidal Motion Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_communication_interface.html" class="nav-list-link">Communication Interface</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/core_comprehensive_test.html" class="nav-list-link">Core Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/diagnostics_comprehensive_test.html" class="nav-list-link">Diagnostics Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/" class="nav-list-link">ESP32 Examples and Tests Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/encoder_comprehensive_test.html" class="nav-list-link">Encoder Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/gpio_pin_config_example.html" class="nav-list-link">GPIO Pin Configuration Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/gpio_pin_configuration.html" class="nav-list-link">GPIO Pin Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html" class="nav-list-link">Motor Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_control_comprehensive_test.html" class="nav-list-link">Motor Control Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/pin_config_struct_example.html" class="nav-list-link">Pin Configuration Struct Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/protection_comprehensive_test.html" class="nav-list-link">Protection Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/ramp_control_comprehensive_test.html" class="nav-list-link">Ramp Control Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/spi_daisy_chain_comprehensive_test.html" class="nav-list-link">SPI Daisy Chain Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/sinusoidal.html" class="nav-list-link">Sinusoidal Motion Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/" class="nav-list-link">TMC5160 Driver - ESP32 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_coverage_analysis.html" class="nav-list-link">TMC5160 Feature Coverage Analysis Report</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_register_access.html" class="nav-list-link">TMC5160 Register Access and Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/uart_multi_node_comprehensive_test.html" class="nav-list-link">UART Multi-Node Comprehensive Test</a></li></ul>
+  
+</nav>
+
+
+
+
+  
+  
+    <footer class="site-footer">
+      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+    </footer>
+  
+</div>
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header">
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search HardFOC TMC5160 Driver - development" aria-label="Search HardFOC TMC5160 Driver - development" autocomplete="off">
+    <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+    <nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    
+      <li class="aux-nav-list-item">
+        <a href="/hf-tmc5160-driver/development/api/index.html" class="site-button"
+          
+        >
+          📖 API Reference
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver" class="site-button"
+          
+        >
+          📚 GitHub Repository
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/issues" class="site-button"
+          
+        >
+          🐛 Report Issues
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/stargazers" class="site-button"
+          
+        >
+          ⭐ Star on GitHub
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+
+  
+</div>
+
+    <div class="main-content-wrap">
+      
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <h1 id="esp32-examples-and-tests-documentation">
+  
+  
+    <a href="#esp32-examples-and-tests-documentation" class="anchor-heading" aria-labelledby="esp32-examples-and-tests-documentation"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ESP32 Examples and Tests Documentation
+  
+  
+</h1>
+    
+
+<p>This directory contains comprehensive documentation for all ESP32 examples and test suites for the TMC5160 stepper motor driver library.</p>
+<h2 id="overview">
+  
+  
+    <a href="#overview" class="anchor-heading" aria-labelledby="overview"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Overview
+  
+  
+</h2>
+    
+
+<p>The ESP32 examples demonstrate practical applications of the TMC5160 driver, while the comprehensive test suites provide thorough validation of all driver features. All examples and tests support multiple motor configurations selected at compile-time.</p>
+<h2 id="motor-configuration">
+  
+  
+    <a href="#motor-configuration" class="anchor-heading" aria-labelledby="motor-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Motor Configuration
+  
+  
+</h2>
+    
+
+<p>All examples and tests support three motor configurations:</p>
+
+<ul>
+  <li><strong>MOTOR_17HS4401S_GEARBOX</strong> (default): 17HS4401S with 5.18:1 planetary gearbox</li>
+  <li><strong>MOTOR_17HS4401S_DIRECT</strong>: 17HS4401S direct drive (no gearbox)</li>
+  <li><strong>MOTOR_APPLIED_MOTION_5034</strong>: Applied Motion 5034-369 NEMA 34 (high torque)</li>
+</ul>
+
+<p>See <a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html">Motor Configuration Guide</a> for detailed specifications and selection instructions.</p>
+<h2 id="examples">
+  
+  
+    <a href="#examples" class="anchor-heading" aria-labelledby="examples"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Examples
+  
+  
+</h2>
+    
+
+<p>Practical applications demonstrating real-world usage:</p>
+<h3 id="motion-control-examples">
+  
+  
+    <a href="#motion-control-examples" class="anchor-heading" aria-labelledby="motion-control-examples"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Motion Control Examples
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong><a href="/hf-tmc5160-driver/development/examples/esp32/docs/sinusoidal.html">Sinusoidal Motion</a></strong> - Simple back-and-forth motion using positioning mode</li>
+  <li><strong><a href="/hf-tmc5160-driver/development/examples/esp32/docs/bounds_finding_sinuous_motion.html">Bounds Finding &amp; Sinusoidal Motion</a></strong> - Fatigue testing platform with sensorless bounds finding and UART command interface</li>
+</ul>
+<h3 id="configuration-examples">
+  
+  
+    <a href="#configuration-examples" class="anchor-heading" aria-labelledby="configuration-examples"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configuration Examples
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong><a href="/hf-tmc5160-driver/development/examples/esp32/docs/gpio_pin_config_example.html">GPIO Pin Configuration</a></strong> - Demonstrates GPIO pin setup and usage</li>
+  <li><strong><a href="/hf-tmc5160-driver/development/examples/esp32/docs/pin_config_struct_example.html">Pin Configuration Struct</a></strong> - Shows how to use the pin configuration struct</li>
+</ul>
+<h2 id="comprehensive-test-suites">
+  
+  
+    <a href="#comprehensive-test-suites" class="anchor-heading" aria-labelledby="comprehensive-test-suites"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Comprehensive Test Suites
+  
+  
+</h2>
+    
+
+<p>Thorough validation of driver features:</p>
+<h3 id="single-motor-tests">
+  
+  
+    <a href="#single-motor-tests" class="anchor-heading" aria-labelledby="single-motor-tests"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Single Motor Tests
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong><a href="/hf-tmc5160-driver/development/examples/esp32/docs/core_comprehensive_test.html">Core Comprehensive Test</a></strong> - Driver initialization, register access, and basic setup</li>
+  <li><strong><a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_control_comprehensive_test.html">Motor Control Comprehensive Test</a></strong> - Enable/disable, current control, chopper, StealthChop</li>
+  <li><strong><a href="/hf-tmc5160-driver/development/examples/esp32/docs/ramp_control_comprehensive_test.html">Ramp Control Comprehensive Test</a></strong> - All ramp modes, position control, speed control</li>
+  <li><strong><a href="/hf-tmc5160-driver/development/examples/esp32/docs/diagnostics_comprehensive_test.html">Diagnostics Comprehensive Test</a></strong> - Driver status, StallGuard2, lost steps, phase currents</li>
+  <li><strong><a href="/hf-tmc5160-driver/development/examples/esp32/docs/encoder_comprehensive_test.html">Encoder Comprehensive Test</a></strong> - Encoder configuration, position reading, deviation detection</li>
+  <li><strong><a href="/hf-tmc5160-driver/development/examples/esp32/docs/protection_comprehensive_test.html">Protection Comprehensive Test</a></strong> - Short circuit and overtemperature protection</li>
+</ul>
+<h3 id="multi-motor-tests">
+  
+  
+    <a href="#multi-motor-tests" class="anchor-heading" aria-labelledby="multi-motor-tests"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Multi-Motor Tests
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong><a href="/hf-tmc5160-driver/development/examples/esp32/docs/spi_daisy_chain_comprehensive_test.html">SPI Daisy Chain Comprehensive Test</a></strong> - Multi-motor SPI daisy chain configuration and coordination</li>
+  <li><strong><a href="/hf-tmc5160-driver/development/examples/esp32/docs/uart_multi_node_comprehensive_test.html">UART Multi-Node Comprehensive Test</a></strong> - Multi-motor UART network with node addressing</li>
+</ul>
+<h2 id="quick-start">
+  
+  
+    <a href="#quick-start" class="anchor-heading" aria-labelledby="quick-start"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Quick Start
+  
+  
+</h2>
+    
+
+<ol>
+  <li><strong>Select Your Motor</strong>: Edit the <code class="language-plaintext highlighter-rouge">SELECTED_MOTOR</code> constant at the top of your example/test file</li>
+  <li><strong>Configure Pins</strong>: Modify pin assignments in <code class="language-plaintext highlighter-rouge">esp32_tmc5160_bus_config.hpp</code> if needed</li>
+  <li><strong>Build</strong>: Use ESP-IDF build system (<code class="language-plaintext highlighter-rouge">idf.py build</code>)</li>
+  <li><strong>Flash</strong>: Flash to your ESP32 board (<code class="language-plaintext highlighter-rouge">idf.py flash</code>)</li>
+  <li><strong>Monitor</strong>: View output via serial monitor (<code class="language-plaintext highlighter-rouge">idf.py monitor</code>)</li>
+</ol>
+<h2 id="hardware-requirements">
+  
+  
+    <a href="#hardware-requirements" class="anchor-heading" aria-labelledby="hardware-requirements"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Hardware Requirements
+  
+  
+</h2>
+    
+
+<ul>
+  <li>ESP32 development board (ESP32, ESP32-C3, ESP32-C6, etc.)</li>
+  <li>TMC5160 stepper motor driver board</li>
+  <li>Stepper motor (see motor configuration guide)</li>
+  <li>Power supply: 12-36V DC (ensure adequate current capacity)</li>
+  <li>SPI connection (for SPI examples/tests)</li>
+  <li>UART connection (for UART examples/tests)</li>
+</ul>
+<h2 id="common-configuration">
+  
+  
+    <a href="#common-configuration" class="anchor-heading" aria-labelledby="common-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Common Configuration
+  
+  
+</h2>
+    
+
+<p>All examples and tests use shared configuration files:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">esp32_tmc5160_bus_config.hpp</code> - Pin assignments and motor configurations</li>
+  <li><code class="language-plaintext highlighter-rouge">esp32_tmc5160_bus.hpp</code> - ESP32-specific communication interface implementations</li>
+</ul>
+<h2 id="documentation-structure">
+  
+  
+    <a href="#documentation-structure" class="anchor-heading" aria-labelledby="documentation-structure"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Documentation Structure
+  
+  
+</h2>
+    
+
+<p>Each example/test has its own documentation file covering:</p>
+
+<ul>
+  <li>Purpose and use cases</li>
+  <li>Hardware requirements</li>
+  <li>Pin configuration</li>
+  <li>Motor selection</li>
+  <li>Key features demonstrated</li>
+  <li>Usage instructions</li>
+  <li>Expected behavior</li>
+  <li>Troubleshooting tips</li>
+</ul>
+<h2 id="support">
+  
+  
+    <a href="#support" class="anchor-heading" aria-labelledby="support"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Support
+  
+  
+</h2>
+    
+
+<p>For issues or questions:</p>
+
+<ol>
+  <li>Check the specific example/test documentation</li>
+  <li>Review the main library documentation</li>
+  <li>Check hardware connections and power supply</li>
+  <li>Verify motor configuration matches your hardware</li>
+</ol>
+
+          
+
+          
+            
+          
+        </main>
+        
+
+  <hr>
+  <footer>
+    
+
+    <!-- =============================================================================
+     Custom Footer Content for HardFOC Driver Documentation
+     =============================================================================
+     This footer is displayed at the bottom of every page.
+     ============================================================================= -->
+
+<footer class="site-footer">
+  <div class="site-footer-credits">
+    <p>Built with ❤️ using <a href="https://just-the-docs.github.io/just-the-docs/">Just the Docs</a></p>
+    <p>
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development/blob/main/LICENSE">GPL v3 License</a> • 
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development">View on GitHub</a>
+    </p>
+  </div>
+</footer>
+
+
+
+    
+  </footer>
+
+
+      </div>
+    </div>
+    
+      
+<button id="search-button" class="search-button btn-reset" aria-label="Focus on search">
+  <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+</button>
+
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+</body>
+</html>
+

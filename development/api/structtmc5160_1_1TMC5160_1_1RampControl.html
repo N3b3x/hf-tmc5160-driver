@@ -174,6 +174,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afd779f5520bb29e30cdd30d46023a12e" id="r_afd779f5520bb29e30cdd30d46023a12e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd779f5520bb29e30cdd30d46023a12e">SetFirstAcceleration</a> (float a1) noexcept</td></tr>
 <tr class="memdesc:afd779f5520bb29e30cdd30d46023a12e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set first acceleration phase.  <br /></td></tr>
 <tr class="separator:afd779f5520bb29e30cdd30d46023a12e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebc84e340e2f53c6f5a04cf0cc6152bb" id="r_aebc84e340e2f53c6f5a04cf0cc6152bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebc84e340e2f53c6f5a04cf0cc6152bb">SetFinalDeceleration</a> (float d1) noexcept</td></tr>
+<tr class="memdesc:aebc84e340e2f53c6f5a04cf0cc6152bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set final deceleration phase.  <br /></td></tr>
+<tr class="separator:aebc84e340e2f53c6f5a04cf0cc6152bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -569,6 +572,43 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
+<a id="aebc84e340e2f53c6f5a04cf0cc6152bb" name="aebc84e340e2f53c6f5a04cf0cc6152bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebc84e340e2f53c6f5a04cf0cc6152bb">&#9670;&#160;</a></span>SetFinalDeceleration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::RampControl::SetFinalDeceleration </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>d1</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set final deceleration phase. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">d1</td><td>Deceleration between V1 and VSTOP in steps/s² </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise</dd></dl>
+<p>Sets the final deceleration phase (D1). Attention: Do not set 0 in positioning mode (datasheet 6.3.1). If set to 0, the driver might behave unexpectedly in positioning mode. A safe minimum (e.g., 100) is recommended if unsure. </p>
+
+</div>
+</div>
 <a id="afd779f5520bb29e30cdd30d46023a12e" name="afd779f5520bb29e30cdd30d46023a12e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afd779f5520bb29e30cdd30d46023a12e">&#9670;&#160;</a></span>SetFirstAcceleration()</h2>
 
@@ -888,11 +928,6 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1RampControl_af8a09d45e0f919dff7d47f49f7946a7b_cgraph.svg" width="463" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

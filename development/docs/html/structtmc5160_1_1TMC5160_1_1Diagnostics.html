@@ -153,12 +153,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1441d825f5f0992dd5b84a20dd3ebf8a" id="r_a1441d825f5f0992dd5b84a20dd3ebf8a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1441d825f5f0992dd5b84a20dd3ebf8a">GetPwmAuto</a> (uint8_t &amp;pwm_ofs_auto, uint8_t &amp;pwm_grad_auto) noexcept</td></tr>
 <tr class="memdesc:a1441d825f5f0992dd5b84a20dd3ebf8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get automatically determined PWM values.  <br /></td></tr>
 <tr class="separator:a1441d825f5f0992dd5b84a20dd3ebf8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3477caff8643a2d71a9aaca26a48eaa" id="r_aa3477caff8643a2d71a9aaca26a48eaa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa3477caff8643a2d71a9aaca26a48eaa">ReadInputStatus</a> (<a class="el" href="structtmc5160_1_1InputStatus.html">InputStatus</a> &amp;input_status) noexcept</td></tr>
+<tr class="memdesc:aa3477caff8643a2d71a9aaca26a48eaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read GPIO input pins.  <br /></td></tr>
+<tr class="separator:aa3477caff8643a2d71a9aaca26a48eaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6b456a7eb9dd8ceeb76f5c9449d3178" id="r_ad6b456a7eb9dd8ceeb76f5c9449d3178"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6b456a7eb9dd8ceeb76f5c9449d3178">ReadIcVersion</a> (uint8_t &amp;version) noexcept</td></tr>
+<tr class="memdesc:ad6b456a7eb9dd8ceeb76f5c9449d3178"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read IC version.  <br /></td></tr>
+<tr class="separator:ad6b456a7eb9dd8ceeb76f5c9449d3178"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24c2ed291dd4491799a5c64f300d07bb" id="r_a24c2ed291dd4491799a5c64f300d07bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24c2ed291dd4491799a5c64f300d07bb">ReadGpioPins</a> (uint32_t &amp;io_pins) noexcept</td></tr>
-<tr class="memdesc:a24c2ed291dd4491799a5c64f300d07bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read GPIO input pins.  <br /></td></tr>
+<tr class="memdesc:a24c2ed291dd4491799a5c64f300d07bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read GPIO input pins (raw)  <br /></td></tr>
 <tr class="separator:a24c2ed291dd4491799a5c64f300d07bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf878f0c5b0a1533f19a1fc5d539dfc9" id="r_abf878f0c5b0a1533f19a1fc5d539dfc9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf878f0c5b0a1533f19a1fc5d539dfc9">ReadFactoryConfig</a> (uint8_t &amp;fclktrim) noexcept</td></tr>
 <tr class="memdesc:abf878f0c5b0a1533f19a1fc5d539dfc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read factory configuration.  <br /></td></tr>
 <tr class="separator:abf878f0c5b0a1533f19a1fc5d539dfc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ae1d76559766403177c80506955a4fe" id="r_a8ae1d76559766403177c80506955a4fe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ae1d76559766403177c80506955a4fe">SetSdoCfg0Polarity</a> (bool polarity) noexcept</td></tr>
+<tr class="memdesc:a8ae1d76559766403177c80506955a4fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set SDO_CFG0 pin polarity (UART/Single Wire mode)  <br /></td></tr>
+<tr class="separator:a8ae1d76559766403177c80506955a4fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1fb77fb2b5610502bf5915cd99b3330" id="r_aa1fb77fb2b5610502bf5915cd99b3330"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa1fb77fb2b5610502bf5915cd99b3330">ReadOtpConfig</a> (uint8_t &amp;otp_fclktrim, bool &amp;otp_s2_level, bool &amp;otp_bbm, bool &amp;otp_tbl) noexcept</td></tr>
 <tr class="memdesc:aa1fb77fb2b5610502bf5915cd99b3330"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read OTP configuration.  <br /></td></tr>
 <tr class="separator:aa1fb77fb2b5610502bf5915cd99b3330"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,6 +177,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a178d060f7fdecbc8050782d0376f22d9" id="r_a178d060f7fdecbc8050782d0376f22d9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a178d060f7fdecbc8050782d0376f22d9">ReadOffsetCalibration</a> (uint8_t &amp;phase_a, uint8_t &amp;phase_b) noexcept</td></tr>
 <tr class="memdesc:a178d060f7fdecbc8050782d0376f22d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read offset calibration results.  <br /></td></tr>
 <tr class="separator:a178d060f7fdecbc8050782d0376f22d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5180d6e984236cbc1bcb44c6a76b6052" id="r_a5180d6e984236cbc1bcb44c6a76b6052"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5180d6e984236cbc1bcb44c6a76b6052">VerifySetup</a> () noexcept</td></tr>
+<tr class="memdesc:a5180d6e984236cbc1bcb44c6a76b6052"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run comprehensive startup verification.  <br /></td></tr>
+<tr class="separator:a5180d6e984236cbc1bcb44c6a76b6052"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -831,15 +843,89 @@ template&lt;typename CommType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Read GPIO input pins. </p>
+<p>Read GPIO input pins (raw) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">io_pins</td><td>Reference to store IO pin states </td></tr>
+    <tr><td class="paramname">io_pins</td><td>Reference to store raw IO pin register value </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if read successfully, false otherwise</dd></dl>
-<p>Reads the state of all GPIO input pins. </p>
+<p>Reads the raw state of all GPIO input pins (register 0x04). </p>
+
+</div>
+</div>
+<a id="ad6b456a7eb9dd8ceeb76f5c9449d3178" name="ad6b456a7eb9dd8ceeb76f5c9449d3178"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6b456a7eb9dd8ceeb76f5c9449d3178">&#9670;&#160;</a></span>ReadIcVersion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Diagnostics::ReadIcVersion </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t &amp;</td>          <td class="paramname"><span class="paramname"><em>version</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Read IC version. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">version</td><td>Reference to store the 8-bit IC version </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if read successfully, false otherwise</dd></dl>
+<p>Reads the VERSION field from IOIN register (0x04). Expected value for <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> is 0x30. </p>
+
+</div>
+</div>
+<a id="aa3477caff8643a2d71a9aaca26a48eaa" name="aa3477caff8643a2d71a9aaca26a48eaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3477caff8643a2d71a9aaca26a48eaa">&#9670;&#160;</a></span>ReadInputStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Diagnostics::ReadInputStatus </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structtmc5160_1_1InputStatus.html">InputStatus</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>input_status</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Read GPIO input pins. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input_status</td><td>Reference to store parsed input pin states </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if read successfully, false otherwise</dd></dl>
+<p>Reads the state of all GPIO input pins and the IC version from register 0x04 (IOIN). </p>
 
 </div>
 </div>
@@ -936,6 +1022,79 @@ template&lt;typename CommType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if read successfully, false otherwise</dd></dl>
 <p>Reads the one-time programmable configuration memory. </p>
+
+</div>
+</div>
+<a id="a8ae1d76559766403177c80506955a4fe" name="a8ae1d76559766403177c80506955a4fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ae1d76559766403177c80506955a4fe">&#9670;&#160;</a></span>SetSdoCfg0Polarity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Diagnostics::SetSdoCfg0Polarity </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>polarity</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set SDO_CFG0 pin polarity (UART/Single Wire mode) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">polarity</td><td>Output pin polarity (false=normal/active high, true=inverted/active low) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise</dd></dl>
+<p>Sets the polarity of the SDO_CFG0 pin when used as Next Address Output (NAO) in single-wire UART chain mode.</p>
+<dl class="section note"><dt>Note</dt><dd>This affects the OUTPUT register (0x04), bit 0. The reset value is 1 (active low/inverted) for use as NAO. </dd></dl>
+
+</div>
+</div>
+<a id="a5180d6e984236cbc1bcb44c6a76b6052" name="a5180d6e984236cbc1bcb44c6a76b6052"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5180d6e984236cbc1bcb44c6a76b6052">&#9670;&#160;</a></span>VerifySetup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Diagnostics::VerifySetup </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Run comprehensive startup verification. </p>
+<p>Performs a full verification of the driver setup including:</p><ul>
+<li>IC Version check</li>
+<li>Input pin state logging</li>
+<li>Critical register checks</li>
+</ul>
+<p>Logs all findings using the system logger. </p><dl class="section return"><dt>Returns</dt><dd>true if basic verification passed (IC found), false otherwise </dd></dl>
 
 </div>
 </div>

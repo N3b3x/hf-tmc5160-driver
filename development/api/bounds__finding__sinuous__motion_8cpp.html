@@ -121,7 +121,7 @@ $(function(){initNavTree('bounds__finding__sinuous__motion_8cpp.html',''); initR
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for bounds_finding_sinuous_motion.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp__incl.svg" width="2538" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp__incl.svg" width="2802" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -187,6 +187,8 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a9358c3a0a9cb0c8d1dadda705d99d31e" id="r_a9358c3a0a9cb0c8d1dadda705d99d31e"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4f">tmc5160_test_config::MotorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9358c3a0a9cb0c8d1dadda705d99d31e">SELECTED_MOTOR</a></td></tr>
+<tr class="separator:a9358c3a0a9cb0c8d1dadda705d99d31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a85b9c772bbeb480b209a3e6ea92b4c" id="r_a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a85b9c772bbeb480b209a3e6ea92b4c">TAG</a> = &quot;FatigueTest&quot;</td></tr>
 <tr class="separator:a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -205,13 +207,15 @@ Variables</h2></td></tr>
 </li>
 <li>UART command interface for real-time parameter adjustment</li>
 </ol>
+<p>MOTOR SELECTION: Motor selection is done via a static constexpr variable at the top of this file. See <a class="el" href="esp32__tmc5160__bus__config_8hpp.html" title="ESP32 GPIO pin configuration for TMC5160 driver tests.">esp32_tmc5160_bus_config.hpp</a> for detailed motor specifications and selection guide.</p>
 <p>Hardware Requirements:</p><ul>
 <li>ESP32 development board</li>
 <li>TMC5160 stepper motor driver</li>
-<li>Stepper motor connected to TMC5160</li>
+<li>Stepper motor connected to TMC5160 (see motor selection above)</li>
 <li>SPI connection between ESP32 and TMC5160</li>
 <li>Mechanical stops at both ends for bounds finding (optional - handles unbounded)</li>
 <li>UART debug port for command interface (typically UART_NUM_0 for USB serial)</li>
+<li>Power supply: 12-36V DC (ensure adequate current capacity for selected motor)</li>
 </ul>
 <p>Pin Configuration (modify as needed):</p><ul>
 <li>SPI: MOSI=23, MISO=19, SCLK=18, CS=5</li>
@@ -296,7 +300,7 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="1134" height="1206"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="1134" height="1336"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -532,7 +536,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_aa7704c2c8716e80dc20804e4c7fb8fd4_cgraph.svg" width="827" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_aa7704c2c8716e80dc20804e4c7fb8fd4_cgraph.svg" width="827" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -580,6 +584,31 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a9358c3a0a9cb0c8d1dadda705d99d31e" name="a9358c3a0a9cb0c8d1dadda705d99d31e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9358c3a0a9cb0c8d1dadda705d99d31e">&#9670;&#160;</a></span>SELECTED_MOTOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4f">tmc5160_test_config::MotorType</a> SELECTED_MOTOR</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= </div>
+<div class="line">    <a class="code hl_enumvalue" href="namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fa750ecf224ef9e7f6264bb40d22ab1d70">tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX</a></div>
+<div class="ttc" id="anamespacetmc5160__test__config_html_a3165d26db7a8ad8512c448ec601add4fa750ecf224ef9e7f6264bb40d22ab1d70"><div class="ttname"><a href="namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fa750ecf224ef9e7f6264bb40d22ab1d70">tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX</a></div><div class="ttdeci">@ MOTOR_17HS4401S_GEARBOX</div><div class="ttdoc">17HS4401S with 5.18:1 planetary gearbox</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a5a85b9c772bbeb480b209a3e6ea92b4c" name="a5a85b9c772bbeb480b209a3e6ea92b4c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5a85b9c772bbeb480b209a3e6ea92b4c">&#9670;&#160;</a></span>TAG</h2>
 

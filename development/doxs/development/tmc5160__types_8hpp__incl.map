@@ -1,8 +1,10 @@
 <map id="tmc5160_types.hpp" name="tmc5160_types.hpp">
-<area shape="rect" id="Node000001" title="Type definitions and enumerations for TMC5160 stepper motor driver." alt="" coords="5,5,156,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="47,152,114,177"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,32,59,53,47,79,46,95,49,111,64,140,60,142,44,113,40,95,42,78,54,51,69,29"/>
-<area shape="rect" id="Node000003" href="$tmc5160__registers_8hpp.html" title="Register definitions and bitfield structures for TMC5160 stepper motor driver." alt="" coords="57,79,227,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="93,29,125,66,121,70,89,33"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="134,106,102,143,98,140,130,103"/>
+<area shape="rect" id="Node000001" title="Type definitions and enumerations for TMC5160 stepper motor driver." alt="" coords="25,5,175,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,152,72,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,32,66,80,47,139,42,137,62,78,90,29"/>
+<area shape="rect" id="Node000003" href="$tmc5160__registers_8hpp.html" title="Register definitions and bitfield structures for TMC5160 stepper motor driver." alt="" coords="76,79,247,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="112,29,144,66,140,70,108,33"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="143,106,72,147,69,143,140,102"/>
+<area shape="rect" id="Node000004" href="$tmc5160__register__defs_8hpp.html" title="X&#45;MACRO definitions for TMC5160 registers." alt="" coords="95,152,294,177"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="169,103,186,139,181,141,164,105"/>
 </map>

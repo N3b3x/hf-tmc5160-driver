@@ -1,25 +1,13 @@
 <map id="tmc5160::UartCommInterface::WriteRegister" name="tmc5160::UartCommInterface::WriteRegister">
-<area shape="rect" id="Node000001" title="Write a 32&#45;bit register via UART." alt="" coords="5,177,221,217"/>
-<area shape="rect" id="Node000002" href="$structtmc5160_1_1UartFrame.html#ac001f285d7668ef6eb100ec9e18c9065" title="Get the frame as raw bytes." alt="" coords="533,5,689,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,176,150,146,182,110,222,75,268,48,331,27,397,16,462,12,520,13,520,19,462,18,398,21,333,33,270,53,226,80,186,114,154,149,131,179"/>
-<area shape="rect" id="Node000004" href="$structtmc5160_1_1UartFrame.html#acc3df3189eeff3ba3215f88a37f752c4" title="Check if frame is valid (CRC verified and structure correct)" alt="" coords="299,63,455,103"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="152,175,268,119,303,105,305,110,270,124,154,180"/>
-<area shape="rect" id="Node000005" href="$structtmc5160_1_1UartFrame.html#a45e2ddbd74129ee2f4b3f158339552d1" title="Verify CRC8 checksum of the frame." alt="" coords="533,69,689,109"/>
-<area shape="poly" id="edge12_Node000001_Node000005" title=" " alt="" coords="206,175,519,106,520,112,207,180"/>
-<area shape="rect" id="Node000007" href="$structtmc5160_1_1UartFrame.html#a0be40d8ee6bc7916b4a67ebf699946ac" title="Construct a read reply frame from received bytes." alt="" coords="299,177,455,217"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="221,195,286,195,286,200,221,200"/>
-<area shape="rect" id="Node000008" href="$classtmc5160_1_1UartCommInterface.html#a6d4cfd5d31ad3136308bc60e50ff01f3" title="Receive raw bytes via UART." alt="" coords="269,265,485,305"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="175,215,304,258,303,263,174,220"/>
-<area shape="rect" id="Node000009" href="$classtmc5160_1_1UartCommInterface.html#a12c4a55cd8e33a81c572b4c3f70ce75c" title="Send raw bytes via UART." alt="" coords="269,353,485,393"/>
-<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="139,215,198,263,271,315,323,345,320,349,268,320,195,267,136,219"/>
-<area shape="rect" id="Node000010" href="$structtmc5160_1_1UartFrame.html#aa02430ce7c4926551529916e15713356" title="Construct a write access frame." alt="" coords="299,417,455,457"/>
-<area shape="poly" id="edge13_Node000001_Node000010" title=" " alt="" coords="127,217,148,256,180,307,221,359,271,403,288,413,285,418,268,407,217,362,175,310,143,259,122,219"/>
-<area shape="rect" id="Node000003" href="$structtmc5160_1_1UartFrame.html#ae12cc57962d5da4004c0dfb234b7f416" title="Get frame size in bytes based on type." alt="" coords="747,9,903,49"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="690,24,733,25,733,30,690,29"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="456,82,520,84,520,89,456,88"/>
-<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="683,67,739,51,740,56,684,72"/>
-<area shape="rect" id="Node000006" href="$namespacetmc5160.html#ab650ebb70be7f1da00a2dea1f2fe662e" title="Calculate CRC8 checksum for UART communication." alt="" coords="737,77,912,102"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="690,87,724,87,724,92,690,92"/>
-<area shape="poly" id="edge9_Node000008_Node000008" title=" " alt="" coords="334,266,331,256,338,246,354,241,377,239,404,242,419,249,417,254,403,247,377,244,355,246,342,251,337,257,339,264"/>
-<area shape="poly" id="edge11_Node000009_Node000009" title=" " alt="" coords="334,354,331,344,338,334,354,329,377,327,404,330,419,337,417,342,403,335,377,332,355,334,342,339,337,345,339,352"/>
+<area shape="rect" id="Node000001" title="Write a 32&#45;bit register via UART." alt="" coords="5,104,221,144"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1UartFrame.html#a15d26ea4233a976d6b8b5a7bc0c3fbfd" title="Get the frame as raw bytes." alt="" coords="299,5,455,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,101,268,62,306,48,308,53,270,66,166,106"/>
+<area shape="rect" id="Node000003" href="$structtmc5160_1_1UartFrame.html#ae12cc57962d5da4004c0dfb234b7f416" title="Get frame size in bytes based on type." alt="" coords="533,35,689,75"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="221,106,519,65,520,70,222,112"/>
+<area shape="rect" id="Node000004" href="$classtmc5160_1_1UartCommInterface.html#a12c4a55cd8e33a81c572b4c3f70ce75c" title="Send raw bytes via UART." alt="" coords="269,144,485,184"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="222,138,256,143,255,148,221,143"/>
+<area shape="rect" id="Node000005" href="$structtmc5160_1_1UartFrame.html#aa02430ce7c4926551529916e15713356" title="Construct a write access frame (8 bytes)" alt="" coords="299,208,455,248"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="155,142,270,194,292,201,290,206,268,198,153,147"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="456,32,520,41,519,46,455,38"/>
+<area shape="poly" id="edge5_Node000004_Node000004" title=" " alt="" coords="334,144,331,134,338,125,354,119,377,117,404,120,419,127,417,132,403,125,377,123,355,125,342,129,337,135,339,143"/>
 </map>

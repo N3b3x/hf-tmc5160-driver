@@ -21,5 +21,6 @@ var bounds__finding__sinuous__motion_8cpp =
     [ "HandleStatus", "bounds__finding__sinuous__motion_8cpp.html#ae1393ad4a23750c0916847967cc4032f", null ],
     [ "motion_control_task", "bounds__finding__sinuous__motion_8cpp.html#aa7704c2c8716e80dc20804e4c7fb8fd4", null ],
     [ "uart_command_task", "bounds__finding__sinuous__motion_8cpp.html#a257128a931ab6472c0421a29abeb0443", null ],
+    [ "SELECTED_MOTOR", "bounds__finding__sinuous__motion_8cpp.html#a9358c3a0a9cb0c8d1dadda705d99d31e", null ],
     [ "TAG", "bounds__finding__sinuous__motion_8cpp.html#a5a85b9c772bbeb480b209a3e6ea92b4c", null ]
 ];

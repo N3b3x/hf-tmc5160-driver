@@ -105,82 +105,80 @@ $(function(){initNavTree('uniontmc5160_1_1UartFrame_1_1Frame.html',''); initResi
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a4794f46e20d0aacc474e9bf4d5bd3424" id="r_a4794f46e20d0aacc474e9bf4d5bd3424"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4794f46e20d0aacc474e9bf4d5bd3424">bytes</a> [9]</td></tr>
-<tr class="memdesc:a4794f46e20d0aacc474e9bf4d5bd3424"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="uniontmc5160_1_1UartFrame_1_1Frame.html" title="Union for accessing UART frames in different ways.">Frame</a> as 9 bytes (maximum size for write/reply)  <br /></td></tr>
-<tr class="separator:a4794f46e20d0aacc474e9bf4d5bd3424"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abeffb91529f6a490018ca14aaa3e76e7" id="r_abeffb91529f6a490018ca14aaa3e76e7"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abeffb91529f6a490018ca14aaa3e76e7">bytes</a> [8]</td></tr>
+<tr class="memdesc:abeffb91529f6a490018ca14aaa3e76e7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="uniontmc5160_1_1UartFrame_1_1Frame.html" title="Union for accessing UART frames in different ways.">Frame</a> as 8 bytes (maximum size)  <br /></td></tr>
+<tr class="separator:abeffb91529f6a490018ca14aaa3e76e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cabc56582166f3e837d8f7a3f492620" id="r_a8cabc56582166f3e837d8f7a3f492620"><td class="memItemLeft" >struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed2e0cef74fe3fc1201e7f8a4c65b9a9" id="r_aed2e0cef74fe3fc1201e7f8a4c65b9a9"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a3ef19b74b329a5a321f5012d832a60e7">sync_nodeaddr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:aed2e0cef74fe3fc1201e7f8a4c65b9a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f4f78edd2fb5da472e9fd6fda34f6b2" id="r_a0f4f78edd2fb5da472e9fd6fda34f6b2"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a1414af483a757d578189d1837c55553d">sync_reserved</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a0f4f78edd2fb5da472e9fd6fda34f6b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 0: Sync (0x05)  <a href="#a1414af483a757d578189d1837c55553d">More...</a><br /></td></tr>
+<tr class="separator:a0f4f78edd2fb5da472e9fd6fda34f6b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b07b234b6e3da508de0d4f4192cc91a" id="r_a1b07b234b6e3da508de0d4f4192cc91a"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a77376d3e9b08f9722cd4bf8eb1832938">node_addr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a1b07b234b6e3da508de0d4f4192cc91a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 1: Node Address.  <a href="#a77376d3e9b08f9722cd4bf8eb1832938">More...</a><br /></td></tr>
+<tr class="separator:a1b07b234b6e3da508de0d4f4192cc91a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83d6d0c6807d8d88000b2e9cee98a3cf" id="r_a83d6d0c6807d8d88000b2e9cee98a3cf"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#adae19fca6a2bdade06ef0ab0d1037f12">rw_address</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a83d6d0c6807d8d88000b2e9cee98a3cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 1: RW bit (bit 7 = 1 for write, 0 for read) + 7-bit register address.  <a href="#adae19fca6a2bdade06ef0ab0d1037f12">More...</a><br /></td></tr>
+<tr class="memdesc:a83d6d0c6807d8d88000b2e9cee98a3cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 2: RW bit (1) + 7-bit register address.  <a href="#adae19fca6a2bdade06ef0ab0d1037f12">More...</a><br /></td></tr>
 <tr class="separator:a83d6d0c6807d8d88000b2e9cee98a3cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad08bb06184e3c28bddfb237ad7015e28" id="r_ad08bb06184e3c28bddfb237ad7015e28"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a57fd6ba5948ce00263db3b3c38cca430">data_bytes</a> [4]&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:ad08bb06184e3c28bddfb237ad7015e28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bytes 2-5: 32-bit data (high byte to low byte, MSB-first)  <a href="#a57fd6ba5948ce00263db3b3c38cca430">More...</a><br /></td></tr>
+<tr class="memdesc:ad08bb06184e3c28bddfb237ad7015e28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bytes 3-6: 32-bit data (MSB-first)  <a href="#a57fd6ba5948ce00263db3b3c38cca430">More...</a><br /></td></tr>
 <tr class="separator:ad08bb06184e3c28bddfb237ad7015e28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20426f36ea4cde242e7ff73edd6a8ae5" id="r_a20426f36ea4cde242e7ff73edd6a8ae5"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a37c05d365700e7327b6853e9a575ad0e">reserved</a> [2]&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a20426f36ea4cde242e7ff73edd6a8ae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bytes 6-7: Reserved (don't cares but included in CRC)  <a href="#a37c05d365700e7327b6853e9a575ad0e">More...</a><br /></td></tr>
-<tr class="separator:a20426f36ea4cde242e7ff73edd6a8ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0801ed781ffcf91a0e5aa8e058c1d8bf" id="r_a0801ed781ffcf91a0e5aa8e058c1d8bf"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a6f407a75012926e70fde7a3c799d875e">crc</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a0801ed781ffcf91a0e5aa8e058c1d8bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 8: CRC8 checksum.  <a href="#a6f407a75012926e70fde7a3c799d875e">More...</a><br /></td></tr>
+<tr class="memdesc:a0801ed781ffcf91a0e5aa8e058c1d8bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 7: CRC8 checksum.  <a href="#a6f407a75012926e70fde7a3c799d875e">More...</a><br /></td></tr>
 <tr class="separator:a0801ed781ffcf91a0e5aa8e058c1d8bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cabc56582166f3e837d8f7a3f492620" id="r_a8cabc56582166f3e837d8f7a3f492620"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8cabc56582166f3e837d8f7a3f492620">write_fields</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a8cabc56582166f3e837d8f7a3f492620"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write access frame structure.  <br /></td></tr>
 <tr class="separator:a8cabc56582166f3e837d8f7a3f492620"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9042e0a13ce152c5de3e5e1c3aba95b" id="r_aa9042e0a13ce152c5de3e5e1c3aba95b"><td class="memItemLeft" >struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a802fd7997687388c7b3503f516a1fb0d" id="r_a802fd7997687388c7b3503f516a1fb0d"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a3ef19b74b329a5a321f5012d832a60e7">sync_nodeaddr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a802fd7997687388c7b3503f516a1fb0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 0: Sync nibble + Reserved + NODEADDR.  <a href="#a3ef19b74b329a5a321f5012d832a60e7">More...</a><br /></td></tr>
-<tr class="separator:a802fd7997687388c7b3503f516a1fb0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92cf2a3453c3614901d947fdbe4c6f41" id="r_a92cf2a3453c3614901d947fdbe4c6f41"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a1414af483a757d578189d1837c55553d">sync_reserved</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a92cf2a3453c3614901d947fdbe4c6f41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 0: Sync (0x05)  <a href="#a1414af483a757d578189d1837c55553d">More...</a><br /></td></tr>
+<tr class="separator:a92cf2a3453c3614901d947fdbe4c6f41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a486a8bcfcbe835920e204d6f76b0c439" id="r_a486a8bcfcbe835920e204d6f76b0c439"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a77376d3e9b08f9722cd4bf8eb1832938">node_addr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a486a8bcfcbe835920e204d6f76b0c439"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 1: Node Address.  <a href="#a77376d3e9b08f9722cd4bf8eb1832938">More...</a><br /></td></tr>
+<tr class="separator:a486a8bcfcbe835920e204d6f76b0c439"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96df43a1c56843e320977afe911bf8fc" id="r_a96df43a1c56843e320977afe911bf8fc"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#adae19fca6a2bdade06ef0ab0d1037f12">rw_address</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a96df43a1c56843e320977afe911bf8fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 1: RW bit (bit 7 = 0 for read) + 7-bit register address.  <a href="#adae19fca6a2bdade06ef0ab0d1037f12">More...</a><br /></td></tr>
+<tr class="memdesc:a96df43a1c56843e320977afe911bf8fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 2: RW bit (0) + 7-bit register address.  <a href="#adae19fca6a2bdade06ef0ab0d1037f12">More...</a><br /></td></tr>
 <tr class="separator:a96df43a1c56843e320977afe911bf8fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45124a6ed3bc3b99db3cad7683758de3" id="r_a45124a6ed3bc3b99db3cad7683758de3"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a37c05d365700e7327b6853e9a575ad0e">reserved</a> [2]&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a45124a6ed3bc3b99db3cad7683758de3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bytes 2-3: Reserved (don't cares but included in CRC)  <a href="#a37c05d365700e7327b6853e9a575ad0e">More...</a><br /></td></tr>
-<tr class="separator:a45124a6ed3bc3b99db3cad7683758de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35683610060b0d9901e6f9428f68cec4" id="r_a35683610060b0d9901e6f9428f68cec4"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a6f407a75012926e70fde7a3c799d875e">crc</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a35683610060b0d9901e6f9428f68cec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 4: CRC8 checksum.  <a href="#a6f407a75012926e70fde7a3c799d875e">More...</a><br /></td></tr>
+<tr class="memdesc:a35683610060b0d9901e6f9428f68cec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 3: CRC8 checksum.  <a href="#a6f407a75012926e70fde7a3c799d875e">More...</a><br /></td></tr>
 <tr class="separator:a35683610060b0d9901e6f9428f68cec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9042e0a13ce152c5de3e5e1c3aba95b" id="r_aa9042e0a13ce152c5de3e5e1c3aba95b"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9042e0a13ce152c5de3e5e1c3aba95b">read_request_fields</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:aa9042e0a13ce152c5de3e5e1c3aba95b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read request frame structure.  <br /></td></tr>
 <tr class="separator:aa9042e0a13ce152c5de3e5e1c3aba95b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7900651b693c9537c6c9f09e04d09062" id="r_a7900651b693c9537c6c9f09e04d09062"><td class="memItemLeft" >struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad39272fb1407366197384bf861bb1e77" id="r_ad39272fb1407366197384bf861bb1e77"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#ab38f3d5290b26e6dfbb9a41159f7015d">sync_master</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:ad39272fb1407366197384bf861bb1e77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 0: Sync nibble + Reserved (0) + 0xFF (address code for master)  <a href="#ab38f3d5290b26e6dfbb9a41159f7015d">More...</a><br /></td></tr>
-<tr class="separator:ad39272fb1407366197384bf861bb1e77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a496b3811518d26566f68baa1dc361ddf" id="r_a496b3811518d26566f68baa1dc361ddf"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a13805369df9ee590228de0736163f770">register_addr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a496b3811518d26566f68baa1dc361ddf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 1: Register address (0)  <a href="#a13805369df9ee590228de0736163f770">More...</a><br /></td></tr>
-<tr class="separator:a496b3811518d26566f68baa1dc361ddf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f8f88b12b0c77b9e1125ec72ebc29fb" id="r_a2f8f88b12b0c77b9e1125ec72ebc29fb"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a1414af483a757d578189d1837c55553d">sync_reserved</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a2f8f88b12b0c77b9e1125ec72ebc29fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 0: Sync (0x05)  <a href="#a1414af483a757d578189d1837c55553d">More...</a><br /></td></tr>
+<tr class="separator:a2f8f88b12b0c77b9e1125ec72ebc29fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a451e54d7b6cbeba1c4b440d45c578857" id="r_a451e54d7b6cbeba1c4b440d45c578857"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#ac33b0eaff0c77104e5e0d6e629546ab9">master_addr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a451e54d7b6cbeba1c4b440d45c578857"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 1: Master Address (0xFF)  <a href="#ac33b0eaff0c77104e5e0d6e629546ab9">More...</a><br /></td></tr>
+<tr class="separator:a451e54d7b6cbeba1c4b440d45c578857"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9764a08cdb73217569a8a29d35325b9c" id="r_a9764a08cdb73217569a8a29d35325b9c"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a501cb1970d29f3c9b5efea4d63303db0">reg_addr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a9764a08cdb73217569a8a29d35325b9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 2: Register Address (0x00)  <a href="#a501cb1970d29f3c9b5efea4d63303db0">More...</a><br /></td></tr>
+<tr class="separator:a9764a08cdb73217569a8a29d35325b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d5888fd6667dff75966a69a54212bd0" id="r_a1d5888fd6667dff75966a69a54212bd0"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a57fd6ba5948ce00263db3b3c38cca430">data_bytes</a> [4]&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a1d5888fd6667dff75966a69a54212bd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bytes 2-5: 32-bit data (high byte to low byte, MSB-first)  <a href="#a57fd6ba5948ce00263db3b3c38cca430">More...</a><br /></td></tr>
+<tr class="memdesc:a1d5888fd6667dff75966a69a54212bd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bytes 3-6: 32-bit data (MSB-first)  <a href="#a57fd6ba5948ce00263db3b3c38cca430">More...</a><br /></td></tr>
 <tr class="separator:a1d5888fd6667dff75966a69a54212bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82987d66bf404216676d0968333770b3" id="r_a82987d66bf404216676d0968333770b3"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a37c05d365700e7327b6853e9a575ad0e">reserved</a> [2]&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a82987d66bf404216676d0968333770b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bytes 6-7: Reserved (0)  <a href="#a37c05d365700e7327b6853e9a575ad0e">More...</a><br /></td></tr>
-<tr class="separator:a82987d66bf404216676d0968333770b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c0c39a5f9e40c5927af8a257f55a08b" id="r_a0c0c39a5f9e40c5927af8a257f55a08b"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a6f407a75012926e70fde7a3c799d875e">crc</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a0c0c39a5f9e40c5927af8a257f55a08b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 8: CRC8 checksum.  <a href="#a6f407a75012926e70fde7a3c799d875e">More...</a><br /></td></tr>
+<tr class="memdesc:a0c0c39a5f9e40c5927af8a257f55a08b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 7: CRC8 checksum.  <a href="#a6f407a75012926e70fde7a3c799d875e">More...</a><br /></td></tr>
 <tr class="separator:a0c0c39a5f9e40c5927af8a257f55a08b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7900651b693c9537c6c9f09e04d09062" id="r_a7900651b693c9537c6c9f09e04d09062"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7900651b693c9537c6c9f09e04d09062">read_reply_fields</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a7900651b693c9537c6c9f09e04d09062"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read reply frame structure.  <br /></td></tr>
 <tr class="separator:a7900651b693c9537c6c9f09e04d09062"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Union for accessing UART frames in different ways. </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a4794f46e20d0aacc474e9bf4d5bd3424" name="a4794f46e20d0aacc474e9bf4d5bd3424"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4794f46e20d0aacc474e9bf4d5bd3424">&#9670;&#160;</a></span>bytes</h2>
+<a id="abeffb91529f6a490018ca14aaa3e76e7" name="abeffb91529f6a490018ca14aaa3e76e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abeffb91529f6a490018ca14aaa3e76e7">&#9670;&#160;</a></span>bytes</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t tmc5160::UartFrame::Frame::bytes[9]</td>
+          <td class="memname">uint8_t tmc5160::UartFrame::Frame::bytes[8]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="uniontmc5160_1_1UartFrame_1_1Frame.html" title="Union for accessing UART frames in different ways.">Frame</a> as 9 bytes (maximum size for write/reply) </p>
+<p><a class="el" href="uniontmc5160_1_1UartFrame_1_1Frame.html" title="Union for accessing UART frames in different ways.">Frame</a> as 8 bytes (maximum size) </p>
 
 </div>
 </div>
@@ -196,8 +194,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Byte 8: CRC8 checksum. </p>
-<p>Byte 4: CRC8 checksum. </p>
+<p>Byte 7: CRC8 checksum. </p>
+<p>Byte 3: CRC8 checksum. </p>
 
 </div>
 </div>
@@ -213,7 +211,39 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Bytes 2-5: 32-bit data (high byte to low byte, MSB-first) </p>
+<p>Bytes 3-6: 32-bit data (MSB-first) </p>
+
+</div>
+</div>
+<a id="ac33b0eaff0c77104e5e0d6e629546ab9" name="ac33b0eaff0c77104e5e0d6e629546ab9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac33b0eaff0c77104e5e0d6e629546ab9">&#9670;&#160;</a></span>master_addr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t tmc5160::UartFrame::Frame::master_addr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Byte 1: Master Address (0xFF) </p>
+
+</div>
+</div>
+<a id="a77376d3e9b08f9722cd4bf8eb1832938" name="a77376d3e9b08f9722cd4bf8eb1832938"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77376d3e9b08f9722cd4bf8eb1832938">&#9670;&#160;</a></span>node_addr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t tmc5160::UartFrame::Frame::node_addr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Byte 1: Node Address. </p>
 
 </div>
 </div>
@@ -229,8 +259,6 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Read reply frame structure. </p>
-
 </div>
 </div>
 <a id="aa9042e0a13ce152c5de3e5e1c3aba95b" name="aa9042e0a13ce152c5de3e5e1c3aba95b"></a>
@@ -245,41 +273,21 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Read request frame structure. </p>
-
 </div>
 </div>
-<a id="a13805369df9ee590228de0736163f770" name="a13805369df9ee590228de0736163f770"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13805369df9ee590228de0736163f770">&#9670;&#160;</a></span>register_addr</h2>
+<a id="a501cb1970d29f3c9b5efea4d63303db0" name="a501cb1970d29f3c9b5efea4d63303db0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a501cb1970d29f3c9b5efea4d63303db0">&#9670;&#160;</a></span>reg_addr</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t tmc5160::UartFrame::Frame::register_addr</td>
+          <td class="memname">uint8_t tmc5160::UartFrame::Frame::reg_addr</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Byte 1: Register address (0) </p>
-
-</div>
-</div>
-<a id="a37c05d365700e7327b6853e9a575ad0e" name="a37c05d365700e7327b6853e9a575ad0e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37c05d365700e7327b6853e9a575ad0e">&#9670;&#160;</a></span>reserved</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t tmc5160::UartFrame::Frame::reserved[2]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Bytes 6-7: Reserved (don't cares but included in CRC) </p>
-<p>Bytes 6-7: Reserved (0)</p>
-<p>Bytes 2-3: Reserved (don't cares but included in CRC) </p>
+<p>Byte 2: Register Address (0x00) </p>
 
 </div>
 </div>
@@ -295,41 +303,24 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Byte 1: RW bit (bit 7 = 1 for write, 0 for read) + 7-bit register address. </p>
-<p>Byte 1: RW bit (bit 7 = 0 for read) + 7-bit register address. </p>
+<p>Byte 2: RW bit (1) + 7-bit register address. </p>
+<p>Byte 2: RW bit (0) + 7-bit register address. </p>
 
 </div>
 </div>
-<a id="ab38f3d5290b26e6dfbb9a41159f7015d" name="ab38f3d5290b26e6dfbb9a41159f7015d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab38f3d5290b26e6dfbb9a41159f7015d">&#9670;&#160;</a></span>sync_master</h2>
+<a id="a1414af483a757d578189d1837c55553d" name="a1414af483a757d578189d1837c55553d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1414af483a757d578189d1837c55553d">&#9670;&#160;</a></span>sync_reserved</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t tmc5160::UartFrame::Frame::sync_master</td>
+          <td class="memname">uint8_t tmc5160::UartFrame::Frame::sync_reserved</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Byte 0: Sync nibble + Reserved (0) + 0xFF (address code for master) </p>
-
-</div>
-</div>
-<a id="a3ef19b74b329a5a321f5012d832a60e7" name="a3ef19b74b329a5a321f5012d832a60e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ef19b74b329a5a321f5012d832a60e7">&#9670;&#160;</a></span>sync_nodeaddr</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t tmc5160::UartFrame::Frame::sync_nodeaddr</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Byte 0: Sync nibble + Reserved + NODEADDR. </p>
-<p>Byte 0: Sync nibble (bits 0-3: 1,0,1,0) + Reserved (bits 4-7) + NODEADDR (8 bits) </p>
+<p>Byte 0: Sync (0x05) </p>
 
 </div>
 </div>
@@ -344,8 +335,6 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Write access frame structure. </p>
 
 </div>
 </div>

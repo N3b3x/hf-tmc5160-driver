@@ -1,5 +1,6 @@
 var tmc5160__types_8hpp =
 [
+    [ "tmc5160::InputStatus", "structtmc5160_1_1InputStatus.html", "structtmc5160_1_1InputStatus" ],
     [ "tmc5160::PowerStageParameters", "structtmc5160_1_1PowerStageParameters.html", "structtmc5160_1_1PowerStageParameters" ],
     [ "tmc5160::MotorParameters", "structtmc5160_1_1MotorParameters.html", "structtmc5160_1_1MotorParameters" ],
     [ "tmc5160::ChopperConfig", "structtmc5160_1_1ChopperConfig.html", "structtmc5160_1_1ChopperConfig" ],

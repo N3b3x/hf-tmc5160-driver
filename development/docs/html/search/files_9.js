@@ -7,7 +7,7 @@ var searchData=
   ['tmc5160_5fconfig_2ehpp_4',['tmc5160_config.hpp',['../tmc5160__config_8hpp.html',1,'']]],
   ['tmc5160_5fdaisy_5fchain_2ehpp_5',['tmc5160_daisy_chain.hpp',['../tmc5160__daisy__chain_8hpp.html',1,'']]],
   ['tmc5160_5fmulti_5fnode_2ehpp_6',['tmc5160_multi_node.hpp',['../tmc5160__multi__node_8hpp.html',1,'']]],
-  ['tmc5160_5fregister_5faccess_2ehpp_7',['tmc5160_register_access.hpp',['../tmc5160__register__access_8hpp.html',1,'']]],
+  ['tmc5160_5fregister_5fdefs_2ecpp_7',['tmc5160_register_defs.cpp',['../tmc5160__register__defs_8cpp.html',1,'']]],
   ['tmc5160_5fregister_5fdefs_2ehpp_8',['tmc5160_register_defs.hpp',['../tmc5160__register__defs_8hpp.html',1,'']]],
   ['tmc5160_5fregisters_2ehpp_9',['tmc5160_registers.hpp',['../tmc5160__registers_8hpp.html',1,'']]],
   ['tmc5160_5ftypes_2ehpp_10',['tmc5160_types.hpp',['../tmc5160__types_8hpp.html',1,'']]],

@@ -1,0 +1,5 @@
+<map id="tmc5160::UartFrame::ReadRequest" name="tmc5160::UartFrame::ReadRequest">
+<area shape="rect" id="Node000001" title="Construct a read request frame (4 bytes)" alt="" coords="269,5,425,45"/>
+<area shape="rect" id="Node000002" href="$classtmc5160_1_1UartCommInterface.html#a64b75cdc47fd603833f23a196faa9375" title="Read a 32&#45;bit register via UART." alt="" coords="5,5,221,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="256,28,221,28,221,23,256,23"/>
+</map>
