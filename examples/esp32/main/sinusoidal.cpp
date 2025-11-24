@@ -187,7 +187,7 @@ extern "C" void app_main() {
   auto pin_config = tmc5160_test_config::GetDefaultPinConfig();
 
   // Create SPI communication interface with pin configuration
-  Esp32SPI spi(tmc5160_test_config::SPI_HOST, pin_config, 4000000); // 4 MHz SPI clock
+  Esp32SPI spi(tmc5160_test_config::SPI_HOST, pin_config, 1000000); // 1 MHz SPI clock (reduced for stability)
 
   // Initialize SPI interface
   if (!spi.Initialize()) {
@@ -207,7 +207,8 @@ extern "C" void app_main() {
   // Motor current settings for NEMA 44mm with gearbox at 24V
   // Geared motors need more current due to gearbox load and friction
   // Increase current for better torque to overcome gearbox resistance
-  cfg.motor.global_scaler = 32;  // Standard scaling for small motors
+  // Note: global_scaler=32 is the minimum. 100 provides much better torque capability.
+  cfg.motor.global_scaler = 100;  // Increased from 32 to 100 (~40% of max current capability)
   cfg.motor.irun = 24;            // Run current (~1.2A - increased for geared motor torque)
   cfg.motor.ihold = 10;           // Hold current (~0.5A, 40% of run - higher for gearbox)
   
@@ -404,6 +405,19 @@ extern "C" void app_main() {
     return;
   }
   ESP_LOGI(TAG, "Motor enabled");
+  
+  // Check for Charge Pump Undervoltage immediately after enabling
+  uint32_t gstat_val = 0;
+  if (driver.GetComm().ReadRegister(tmc5160::Registers::GSTAT, gstat_val)) {
+    tmc5160::GSTAT_Register gstat{};
+    gstat.value = gstat_val;
+    if (gstat.bits.uv_cp) {
+      ESP_LOGE(TAG, "CRITICAL HARDWARE ERROR: Charge Pump Undervoltage (uv_cp=1) detected immediately!");
+      ESP_LOGE(TAG, "  This usually means VSA/VS voltage is too low or the charge pump capacitor is missing/bad.");
+      ESP_LOGE(TAG, "  The motor DRIVER STAGE IS DISABLED by the chip protection.");
+      ESP_LOGE(TAG, "  Please check your power supply (12-36V) and wiring.");
+    }
+  }
   
   // Verify motor is enabled by checking CHOPCONF register
   uint32_t chopconf_value = 0;
@@ -732,7 +746,9 @@ extern "C" void app_main() {
       // NOTE: Adjust this ratio based on your actual gearbox!
       // Example: If gearbox is 100:1, then output_revolutions = motor_revolutions / 100
       // For now, assume 1:1 to show motor movement (change this to your actual ratio)
-      float gearbox_ratio = 1.0f; // CHANGE THIS to your actual gearbox ratio!
+      // If you have a gearbox, set this ratio to match (e.g., 5.18, 100, etc.)
+      // For testing/debugging, 1.0 allows you to see the motor shaft movement directly in logs.
+      float gearbox_ratio = 1.0f;
       float output_revolutions = motor_revolutions / gearbox_ratio;
       
       ESP_LOGI(TAG, "Diagnostics: VACTUAL=%.1f steps/s, XACTUAL=%d", actual_velocity, actual_position);
