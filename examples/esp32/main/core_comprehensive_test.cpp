@@ -46,14 +46,22 @@ static constexpr bool ENABLE_RAMP_PARAMETER_TESTS = true;
 static constexpr bool ENABLE_GLOBAL_CONFIG_TESTS = true;
 
 // Test configuration constants
-static constexpr uint8_t TEST_IRUN = 20;
-static constexpr uint8_t TEST_IHOLD = 10;
-static constexpr uint8_t TEST_GLOBAL_SCALER = 32;
-static constexpr uint8_t TEST_TOFF = 5;
-static constexpr uint8_t TEST_MRES = 4; // 16 microsteps
-static constexpr float TEST_MAX_SPEED = 1000.0F;
-static constexpr float TEST_ACCELERATION = 500.0F;
-static constexpr float TEST_DECELERATION = 500.0F;
+namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+namespace Test = tmc5160_test_config::TestConfig_17HS4401S;
+
+static constexpr uint8_t TEST_IRUN = Motor::IRUN;
+static constexpr uint8_t TEST_IHOLD = Motor::IHOLD;
+static constexpr uint8_t TEST_GLOBAL_SCALER = Motor::GLOBAL_SCALER;
+static constexpr uint8_t TEST_TOFF = Motor::TOFF;
+static constexpr uint8_t TEST_MRES = Motor::MRES; // 256 microsteps
+static constexpr float MICROSTEPS = 256.0f;
+// Steps per revolution for unit conversions (Output Shaft full steps * Microsteps)
+// 17HS4401S-PG518: 200 steps * 5.18 ratio * 256 microsteps = ~265,216 steps/rev
+static constexpr float STEPS_PER_REV = static_cast<float>(Motor::OUTPUT_FULL_STEPS) * MICROSTEPS;
+
+static constexpr float TEST_MAX_SPEED = STEPS_PER_REV * 1.0f; // 1 rev/s
+static constexpr float TEST_ACCELERATION = TEST_MAX_SPEED * 2.0f; // 0.5s to full speed
+static constexpr float TEST_DECELERATION = TEST_MAX_SPEED * 2.0f;
 
 // Forward declarations
 bool test_driver_initialization() noexcept;
@@ -185,9 +193,18 @@ bool test_driver_initialization() noexcept {
   cfg.motor.ihold = TEST_IHOLD;
   cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
   cfg.chopper.toff = TEST_TOFF;
-  cfg.chopper.mres = TEST_MRES; // 16 microsteps
-  cfg.chopper.intpol = true;
-  cfg.power_stage.drv_strength = 0;
+  cfg.chopper.mres = TEST_MRES;
+  cfg.chopper.intpol = Motor::INTERPOLATION;
+  cfg.chopper.hend = Motor::HEND;
+  cfg.chopper.hstrt = Motor::HSTRT;
+  cfg.chopper.tbl = Motor::TBL;
+  
+  cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+  cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+  cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+  cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
+
+  cfg.power_stage.drv_strength = 2;
   cfg.power_stage.bbm_time = 24;
   cfg.power_stage.bbm_clks = 4;
   
@@ -219,6 +236,10 @@ bool test_register_read_write() noexcept {
   tmc5160::DriverConfig cfg{};
   cfg.motor.irun = TEST_IRUN;
   cfg.motor.ihold = TEST_IHOLD;
+  cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
+  cfg.chopper.toff = TEST_TOFF;
+  cfg.chopper.mres = TEST_MRES;
+  
   if (!handle->driver->Initialize(cfg)) {
     ESP_LOGE(TAG, "Failed to initialize TMC5160 driver");
     return false;
@@ -230,7 +251,7 @@ bool test_register_read_write() noexcept {
     ESP_LOGE(TAG, "Failed to read GSTAT register");
     return false;
   }
-  ESP_LOGI(TAG, "GSTAT register value: 0x%08X", gstat_value);
+  ESP_LOGI(TAG, "GSTAT register value: 0x%08lX", gstat_value);
   
   // Note: GLOBAL_SCALER (0x0B) is write-only per datasheet
   // Write verification is done via response data in WriteRegister()
@@ -244,7 +265,7 @@ bool test_register_read_write() noexcept {
     ESP_LOGE(TAG, "Failed to write X_COMPARE register");
     return false;
   }
-  ESP_LOGI(TAG, "X_COMPARE register written: 0x%08X (write-only register, verified via write response)", TEST_X_COMPARE);
+  ESP_LOGI(TAG, "X_COMPARE register written: 0x%08lX (write-only register, verified via write response)", TEST_X_COMPARE);
   
   ESP_LOGI(TAG, "Register read/write test passed");
   return true;
@@ -266,7 +287,11 @@ bool test_motor_parameter_settings() noexcept {
   cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
   cfg.chopper.toff = TEST_TOFF;
   cfg.chopper.mres = TEST_MRES;
-  cfg.chopper.intpol = true;
+  cfg.chopper.intpol = Motor::INTERPOLATION;
+  cfg.chopper.hend = Motor::HEND;
+  cfg.chopper.hstrt = Motor::HSTRT;
+  cfg.chopper.tbl = Motor::TBL;
+  
   if (!handle->driver->Initialize(cfg)) {
     ESP_LOGE(TAG, "Failed to initialize TMC5160 driver");
     return false;
@@ -297,8 +322,8 @@ bool test_motor_parameter_settings() noexcept {
     ESP_LOGE(TAG, "MRES mismatch: expected %u, got %u", TEST_MRES, chopconf.bits.mres);
     return false;
   }
-  if (chopconf.bits.intpol != 1) {
-    ESP_LOGE(TAG, "INTPOL mismatch: expected 1, got %u", chopconf.bits.intpol);
+  if (chopconf.bits.intpol != Motor::INTERPOLATION) {
+    ESP_LOGE(TAG, "INTPOL mismatch: expected %d, got %u", Motor::INTERPOLATION, chopconf.bits.intpol);
     return false;
   }
   
@@ -330,6 +355,10 @@ bool test_ramp_parameter_settings() noexcept {
   tmc5160::DriverConfig cfg{};
   cfg.motor.irun = TEST_IRUN;
   cfg.motor.ihold = TEST_IHOLD;
+  cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
+  cfg.chopper.toff = TEST_TOFF;
+  cfg.chopper.mres = TEST_MRES;
+  
   if (!handle->driver->Initialize(cfg)) {
     ESP_LOGE(TAG, "Failed to initialize TMC5160 driver");
     return false;
@@ -356,7 +385,7 @@ bool test_ramp_parameter_settings() noexcept {
   handle->driver->rampControl.SetTargetPosition(TEST_TARGET);
   
   int32_t current_pos = handle->driver->rampControl.GetCurrentPosition();
-  ESP_LOGI(TAG, "Target position set to %d, current position: %d", TEST_TARGET, current_pos);
+  ESP_LOGI(TAG, "Target position set to %ld, current position: %ld", TEST_TARGET, current_pos);
   
   ESP_LOGI(TAG, "Ramp parameter settings test passed");
   return true;

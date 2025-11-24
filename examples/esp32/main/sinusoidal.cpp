@@ -41,127 +41,121 @@
 static const char* TAG = "Sinusoidal";
 
 /**
- * @brief Sinusoidal motion controller class using internal ramp generator
+ * @brief Back-and-forth motion controller using positioning mode
  *
- * Generates sinusoidal velocity profile using TMC5160's velocity mode.
- * The velocity varies sinusoidally, creating smooth back-and-forth motion.
+ * Simple back-and-forth motion using TMC5160's positioning mode.
+ * Sets target position to one end, waits until reached, then sets target to other end.
+ * Repeats continuously.
  */
-class SinusoidalMotion {
+class BackAndForthMotion {
 private:
   tmc5160::TMC5160<Esp32SPI>* driver_;
-  double frequency_;           // Frequency in Hz
   float max_velocity_;        // Maximum velocity in steps/s
-  float base_velocity_;      // Base velocity offset (for unidirectional motion)
-  uint32_t update_period_ms_; // Update period in milliseconds
-  uint32_t init_time_;        // Initial time reference
+  float acceleration_;        // Acceleration in steps/s²
+  int32_t travel_distance_;  // Distance to travel in each direction (in microsteps)
+  int32_t center_position_;   // Center position (starting point)
+  int32_t target_position_;   // Current target position
+  bool moving_forward_;        // Direction flag (true = forward, false = backward)
   bool initialized_;
-  int rounds_;                // Number of rounds to execute (-1 for infinite)
-  int current_round_;
+  uint32_t cycles_completed_; // Number of complete back-and-forth cycles
+  int max_cycles_;            // Maximum cycles (-1 for infinite)
 
 public:
-  SinusoidalMotion(tmc5160::TMC5160<Esp32SPI>* driver)
-      : driver_(driver), frequency_(1.0), max_velocity_(500.0), base_velocity_(0.0),
-        update_period_ms_(50), init_time_(0), initialized_(false), rounds_(-1), current_round_(0) {}
+  BackAndForthMotion(tmc5160::TMC5160<Esp32SPI>* driver)
+      : driver_(driver), max_velocity_(10000.0f), acceleration_(50000.0f),
+        travel_distance_(100000), center_position_(0), target_position_(0),
+        moving_forward_(true), initialized_(false), cycles_completed_(0), max_cycles_(-1) {}
 
   /**
-   * @brief Configure sinusoidal motion parameters
-   * @param freq Frequency in Hz (how fast the sinusoidal cycle repeats)
-   * @param max_vel Maximum velocity in steps/s (amplitude of velocity variation)
-   * @param base_vel Base velocity offset in steps/s (0 for bidirectional, >0 for unidirectional)
-   * @param update_period_ms Update period in milliseconds (how often to update velocity)
-   * @param rounds Number of rounds (-1 for infinite)
+   * @brief Configure back-and-forth motion parameters
+   * @param max_vel Maximum velocity in steps/s
+   * @param accel Acceleration in steps/s²
+   * @param travel_dist Distance to travel in each direction (in microsteps)
+   * @param max_cycles Maximum number of back-and-forth cycles (-1 for infinite)
    */
-  void Config(double freq, float max_vel, float base_vel, uint32_t update_period_ms, int rounds = -1) {
-    frequency_ = freq;
+  void Config(float max_vel, float accel, int32_t travel_dist, int max_cycles = -1) {
     max_velocity_ = max_vel;
-    base_velocity_ = base_vel;
-    update_period_ms_ = update_period_ms;
-    rounds_ = rounds;
+    acceleration_ = accel;
+    travel_distance_ = travel_dist;
+    max_cycles_ = max_cycles;
     initialized_ = false;
-    current_round_ = 0;
+    cycles_completed_ = 0;
   }
 
   /**
-   * @brief Initialize and start sinusoidal motion
+   * @brief Initialize and start back-and-forth motion
    */
   void Start() {
     if (initialized_) {
       return;
     }
 
-    // Set acceleration for smooth velocity changes
-    // For geared motors: Lower acceleration to avoid gearbox backlash and stress
-    // But not too low - need enough to overcome static friction
-    driver_->rampControl.SetAccelerations(1500.0, 1500.0); // 1500 steps/s² (increased from 1000)
+    // Set acceleration and deceleration
+    driver_->rampControl.SetAccelerations(acceleration_, acceleration_);
     
-    // Set start/stop velocities - VSTART must be > 0 for motion to start
-    // For geared motors: Higher VSTART to overcome gearbox friction and static load
-    // The "jerk" suggests VSTART might be too low - increase it significantly
-    // VSTOP should be low for smooth stopping, VSTART should be much higher for geared motors
-    driver_->rampControl.SetRampSpeeds(100.0, 30.0, 0.0); // VSTART=100 (increased from 50), VSTOP=30, V1=0
+    // Set start/stop velocities
+    driver_->rampControl.SetRampSpeeds(1000.0f, 100.0f, 0.0f);
     
-    // Set to velocity mode (will be updated in Update() based on velocity sign)
-    driver_->rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS);
+    // Set maximum velocity
+    driver_->rampControl.SetMaxSpeed(max_velocity_);
     
-    // Set initial velocity to start motion
-    driver_->rampControl.SetMaxSpeed(100.0); // Start with small velocity
+    // Set to positioning mode
+    driver_->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+    
+    // Get current position as center
+    center_position_ = driver_->rampControl.GetCurrentPosition();
+    
+    // Start by moving forward (positive direction)
+    moving_forward_ = true;
+    target_position_ = center_position_ + travel_distance_;
+    driver_->rampControl.SetTargetPosition(target_position_);
     
     initialized_ = true;
-    init_time_ = esp_timer_get_time() / 1000; // Convert to milliseconds
-    current_round_ = 0;
+    cycles_completed_ = 0;
     
-    ESP_LOGI(TAG, "Sinusoidal motion started: freq=%.2f Hz, max_vel=%.1f steps/s, base_vel=%.1f steps/s",
-             frequency_, max_velocity_, base_velocity_);
+    ESP_LOGI(TAG, "Back-and-forth motion started:");
+    ESP_LOGI(TAG, "  Max velocity: %.1f steps/s", max_velocity_);
+    ESP_LOGI(TAG, "  Acceleration: %.1f steps/s²", acceleration_);
+    ESP_LOGI(TAG, "  Travel distance: %ld microsteps (%.2f mm per direction)", 
+             travel_distance_, travel_distance_ / 51200.0f); // Assuming 200 steps/rev, 256 microsteps
+    ESP_LOGI(TAG, "  Center position: %ld", center_position_);
+    ESP_LOGI(TAG, "  Target position: %ld", target_position_);
   }
 
   /**
-   * @brief Update sinusoidal motion (call periodically)
+   * @brief Update back-and-forth motion (call periodically)
    * @return true if motion is active, false if completed
    */
   bool Update() {
     if (!initialized_) {
       Start();
+      return true;
     }
 
-    // Calculate elapsed time in seconds
-    uint32_t current_time = esp_timer_get_time() / 1000;
-    float elapsed_seconds = (current_time - init_time_) / 1000.0f;
-    
-    // Calculate sinusoidal velocity: base + max * sin(2*PI*frequency*time)
-    float sin_value = sin(2.0 * M_PI * frequency_ * elapsed_seconds);
-    float current_velocity = base_velocity_ + max_velocity_ * sin_value;
-    
-    // Determine direction based on velocity sign
-    // Use a minimum velocity threshold to ensure motion starts
-    const float min_velocity = 10.0f; // Minimum velocity to ensure motion
-    
-    if (current_velocity > min_velocity) {
-      driver_->rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS);
-      driver_->rampControl.SetMaxSpeed(current_velocity);
-    } else if (current_velocity < -min_velocity) {
-      driver_->rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_NEG);
-      driver_->rampControl.SetMaxSpeed(-current_velocity);
-    } else {
-      // Near zero velocity - use small velocity to keep motor active
-      if (current_velocity >= 0.0f) {
-        driver_->rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS);
-        driver_->rampControl.SetMaxSpeed(min_velocity);
+    // Check if target position has been reached
+    if (driver_->rampControl.IsTargetReached()) {
+      // Target reached - switch direction
+      if (moving_forward_) {
+        // Just finished moving forward, now move backward
+        moving_forward_ = false;
+        target_position_ = center_position_ - travel_distance_;
+        driver_->rampControl.SetTargetPosition(target_position_);
+        ESP_LOGI(TAG, "Reached forward end, reversing to position %ld", target_position_);
       } else {
-        driver_->rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_NEG);
-        driver_->rampControl.SetMaxSpeed(min_velocity);
-      }
-    }
-    
-    // Check if we've completed the requested number of rounds
-    if (rounds_ > 0) {
-      float cycles_completed = elapsed_seconds * frequency_;
-      if (cycles_completed >= rounds_) {
-        // Stop motion
-        driver_->rampControl.SetRampMode(tmc5160::RampMode::HOLD);
-        driver_->rampControl.SetMaxSpeed(0.0);
-        initialized_ = false;
-        ESP_LOGI(TAG, "Sinusoidal motion completed: %d rounds", rounds_);
-        return false;
+        // Just finished moving backward, now move forward
+        moving_forward_ = true;
+        target_position_ = center_position_ + travel_distance_;
+        driver_->rampControl.SetTargetPosition(target_position_);
+        cycles_completed_++;
+        ESP_LOGI(TAG, "Reached backward end, reversing to position %ld (cycle %lu complete)", 
+                 target_position_, cycles_completed_);
+        
+        // Check if we've completed the requested number of cycles
+        if (max_cycles_ > 0 && cycles_completed_ >= static_cast<uint32_t>(max_cycles_)) {
+          ESP_LOGI(TAG, "Back-and-forth motion completed: %lu cycles", cycles_completed_);
+          Stop();
+          return false;
+        }
       }
     }
     
@@ -169,25 +163,40 @@ public:
   }
 
   /**
-   * @brief Stop sinusoidal motion
+   * @brief Stop back-and-forth motion
    */
   void Stop() {
     driver_->rampControl.SetRampMode(tmc5160::RampMode::HOLD);
     driver_->rampControl.SetMaxSpeed(0.0);
     initialized_ = false;
-    ESP_LOGI(TAG, "Sinusoidal motion stopped");
+    ESP_LOGI(TAG, "Back-and-forth motion stopped after %lu cycles", cycles_completed_);
+  }
+
+  /**
+   * @brief Get number of completed cycles
+   */
+  uint32_t GetCyclesCompleted() const {
+    return cycles_completed_;
   }
 };
 
 extern "C" void app_main() {
-  ESP_LOGI(TAG, "TMC5160 Sinusoidal Motion Example for NEMA 44mm Motors");
-  ESP_LOGI(TAG, "Using internal ramp generator with velocity control");
+  ESP_LOGI(TAG, "TMC5160 Back-and-Forth Motion Example for NEMA 44mm Motors");
+  ESP_LOGI(TAG, "Using internal ramp generator with positioning control");
 
   // Get standard pin configuration
   auto pin_config = tmc5160_test_config::GetDefaultPinConfig();
 
   // Create SPI communication interface with pin configuration
-  Esp32SPI spi(tmc5160_test_config::SPI_HOST, pin_config, 4000000); // 4 MHz SPI clock
+  // Check if EN pin needs to be inverted (some boards have inverters on EN pin)
+  // Default: EN is active LOW (LOW = enable, HIGH = disable) per TMC5160 datasheet
+  // If your board has an inverter, set en = true in PinActiveLevels
+  tmc5160::PinActiveLevels active_levels; // Uses defaults: en=false (LOW=enable)
+  
+  // Uncomment the line below if your board has an inverter on the EN pin:
+  // active_levels.en = true; // EN pin has inverter, so ACTIVE = HIGH to enable
+  
+  Esp32SPI spi(tmc5160_test_config::SPI_HOST, pin_config, 1000000, active_levels); // 1 MHz SPI clock (reduced for stability)
 
   // Initialize SPI interface
   if (!spi.Initialize()) {
@@ -198,37 +207,38 @@ extern "C" void app_main() {
   // Create TMC5160 driver instance
   tmc5160::TMC5160<Esp32SPI> driver(spi);
 
-  // Configure driver for NEMA 44mm stepper motor with gearbox at 24V
-  // Geared motors need: Higher current (more torque), Lower speed, Different acceleration
-  // Typical specs: 200 steps/rev, 0.5-1.5A per phase, 24V operation
-  // 24V provides better performance: faster acceleration, higher speeds, better torque
+  // Configure driver using standardized MotorConfig for 17HS4401S-PG518
+  namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
   tmc5160::DriverConfig cfg{};
   
-  // Motor current settings for NEMA 44mm with gearbox at 24V
-  // Geared motors need more current due to gearbox load and friction
-  // Increase current for better torque to overcome gearbox resistance
-  cfg.motor.global_scaler = 32;  // Standard scaling for small motors
-  cfg.motor.irun = 24;            // Run current (~1.2A - increased for geared motor torque)
-  cfg.motor.ihold = 10;           // Hold current (~0.5A, 40% of run - higher for gearbox)
+  // Motor current settings
+  cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
+  cfg.motor.irun = Motor::IRUN;
+  cfg.motor.ihold = Motor::IHOLD;
   
-  // Chopper settings for smooth motion at 24V
-  cfg.chopper.toff = 5;           // Chopper off time (5 is good for small motors at 24V)
-  cfg.chopper.mres = 4;           // 16 microsteps (256/16=16 microsteps per full step)
-  cfg.chopper.intpol = true;      // Enable interpolation for smoother motion
-  cfg.chopper.hend = 3;          // Hysteresis end (3 is good for small motors)
-  cfg.chopper.hstrt = 0;         // Hysteresis start
+  // Chopper settings
+  cfg.chopper.toff = Motor::TOFF;
+  cfg.chopper.mres = Motor::MRES; // 256 microsteps
+  cfg.chopper.intpol = Motor::INTERPOLATION;
+  cfg.chopper.hend = Motor::HEND;
+  cfg.chopper.hstrt = Motor::HSTRT;
+  cfg.chopper.tbl = Motor::TBL;
   
-  // StealthChop settings optimized for 24V operation
-  // At 24V, PWM can be more aggressive for better performance
-  cfg.stealthchop.pwm_ofs = 30;   // PWM offset for smooth start (good for 24V)
-  cfg.stealthchop.pwm_grad = 0;   // PWM gradient (auto-gradient handles this)
-  cfg.stealthchop.pwm_autoscale = true; // Auto-scale PWM (important for 24V)
-  cfg.stealthchop.pwm_autograd = true;  // Auto-gradient PWM (optimizes for 24V)
-  cfg.stealthchop.pwm_freq = 1;   // PWM frequency (1 = 23.4kHz, good for 24V operation)
+  // StealthChop settings
+  cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+  cfg.stealthchop.pwm_grad = 0;
+  cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+  cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+  cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
   
-  // Short protection (important for small motors)
-  cfg.short_protection.s2vs_level = 6;  // Short to VS level (6 is conservative)
-  cfg.short_protection.s2g_level = 4;  // Short to GND level (4 is conservative)
+  // Power stage
+  cfg.power_stage.drv_strength = 2;
+  cfg.power_stage.bbm_time = 24;
+  cfg.power_stage.bbm_clks = 4;
+
+  // Short protection
+  cfg.short_protection.s2vs_level = 6;
+  cfg.short_protection.s2g_level = 4;
 
   // Initialize driver
   if (!driver.Initialize(cfg)) {
@@ -236,9 +246,9 @@ extern "C" void app_main() {
     return;
   }
 
-  ESP_LOGI(TAG, "Driver initialized successfully for NEMA 44mm motor");
-  ESP_LOGI(TAG, "Motor settings: irun=%u, ihold=%u, microsteps=16, global_scaler=%u",
-           cfg.motor.irun, cfg.motor.ihold, 16, cfg.motor.global_scaler);
+  ESP_LOGI(TAG, "Driver initialized successfully for NEMA 44mm motor (17HS4401S-PG518)");
+  ESP_LOGI(TAG, "Motor settings: irun=%u, ihold=%u, microsteps=256, global_scaler=%u",
+           cfg.motor.irun, cfg.motor.ihold, cfg.motor.global_scaler);
   
   // CLK16 (CLK pin) configuration note:
   // The CLK pin (pin 12) should be TIED TO GND in hardware when using internal clock
@@ -405,6 +415,29 @@ extern "C" void app_main() {
   }
   ESP_LOGI(TAG, "Motor enabled");
   
+  // Diagnostic: Check EN pin state to verify enable logic
+  tmc5160::GpioSignal en_signal;
+  if (spi.GpioRead(tmc5160::TMC5160CtrlPin::EN, en_signal)) {
+    ESP_LOGI(TAG, "EN pin state after Enable(): %s", 
+             en_signal == tmc5160::GpioSignal::ACTIVE ? "ACTIVE" : "INACTIVE");
+    ESP_LOGI(TAG, "  Note: TMC5160 DRV_ENN is active LOW (LOW=enable, HIGH=disable)");
+    ESP_LOGI(TAG, "  If motor doesn't move, check if your board has an inverter on EN pin");
+    ESP_LOGI(TAG, "  If so, configure: active_levels.en = true in PinActiveLevels");
+  }
+  
+  // Check for Charge Pump Undervoltage immediately after enabling
+  uint32_t gstat_val = 0;
+  if (driver.GetComm().ReadRegister(tmc5160::Registers::GSTAT, gstat_val)) {
+    tmc5160::GSTAT_Register gstat{};
+    gstat.value = gstat_val;
+    if (gstat.bits.uv_cp) {
+      ESP_LOGE(TAG, "CRITICAL HARDWARE ERROR: Charge Pump Undervoltage (uv_cp=1) detected immediately!");
+      ESP_LOGE(TAG, "  This usually means VSA/VS voltage is too low or the charge pump capacitor is missing/bad.");
+      ESP_LOGE(TAG, "  The motor DRIVER STAGE IS DISABLED by the chip protection.");
+      ESP_LOGE(TAG, "  Please check your power supply (12-36V) and wiring.");
+    }
+  }
+  
   // Verify motor is enabled by checking CHOPCONF register
   uint32_t chopconf_value = 0;
   if (driver.GetComm().ReadRegister(tmc5160::Registers::CHOPCONF, chopconf_value)) {
@@ -417,6 +450,89 @@ extern "C" void app_main() {
     } else {
       ESP_LOGI(TAG, "Motor driver verified enabled (CHOPCONF.toff=%u)", chopconf.bits.toff);
     }
+  }
+  
+  // CRITICAL: Check StealthChop status - if enabled but not calibrated, motor won't move!
+  uint32_t gconf_value = 0;
+  if (driver.GetComm().ReadRegister(tmc5160::Registers::GCONF, gconf_value)) {
+    tmc5160::GCONF_Register gconf{};
+    gconf.value = gconf_value;
+    
+    ESP_LOGI(TAG, "=== StealthChop Diagnostic ===");
+    ESP_LOGI(TAG, "GCONF.en_pwm_mode = %d (1=enabled, 0=disabled/SpreadCycle)", gconf.bits.en_pwm_mode ? 1 : 0);
+    
+    if (gconf.bits.en_pwm_mode) {
+      ESP_LOGW(TAG, "⚠️ StealthChop is ENABLED - checking calibration...");
+      
+      // Read PWM_SCALE to check if StealthChop is actually working
+      uint32_t pwm_scale_value = 0;
+      if (driver.GetComm().ReadRegister(tmc5160::Registers::PWM_SCALE, pwm_scale_value)) {
+        tmc5160::PWM_SCALE_Register pwm_scale{};
+        pwm_scale.value = pwm_scale_value;
+        
+        ESP_LOGI(TAG, "PWM_SCALE: pwm_scale_sum=%d, pwm_scale_auto=%d", 
+                 pwm_scale.bits.pwm_scale_sum, pwm_scale.bits.pwm_scale_auto);
+        
+        // Also check PWM_AUTO for calibration status
+        uint32_t pwm_auto_value = 0;
+        bool has_pwm_auto = driver.GetComm().ReadRegister(tmc5160::Registers::PWM_AUTO, pwm_auto_value);
+        if (has_pwm_auto) {
+          tmc5160::PWM_AUTO_Register pwm_auto{};
+          pwm_auto.value = pwm_auto_value;
+          ESP_LOGI(TAG, "PWM_AUTO: pwm_ofs_auto=%d, pwm_grad_auto=%d", 
+                   pwm_auto.bits.pwm_ofs_auto, pwm_auto.bits.pwm_grad_auto);
+        }
+        
+        // If pwm_scale_auto is 0, StealthChop is not calibrated!
+        // pwm_scale_auto is a 9-bit signed value, so 0 or very small values indicate no calibration
+        int16_t pwm_scale_auto_signed = static_cast<int16_t>(pwm_scale.bits.pwm_scale_auto);
+        if (pwm_scale_auto_signed & 0x100) { // Sign extend 9-bit to 16-bit
+          pwm_scale_auto_signed |= 0xFE00;
+        }
+        
+        if (pwm_scale_auto_signed == 0 || (pwm_scale_auto_signed > -10 && pwm_scale_auto_signed < 10)) {
+          ESP_LOGE(TAG, "❌ CRITICAL: StealthChop is enabled but NOT CALIBRATED (pwm_scale_auto=%d)!", pwm_scale_auto_signed);
+          ESP_LOGE(TAG, "   The motor will report movement but won't physically turn!");
+          ESP_LOGE(TAG, "   Solution: Disable StealthChop to use SpreadCycle mode (more reliable)");
+          ESP_LOGE(TAG, "   OR: Wait 130ms+ at standstill for AT#1 calibration, then move for AT#2");
+          
+          // Optionally disable StealthChop for testing
+          ESP_LOGW(TAG, "Disabling StealthChop to use SpreadCycle mode (more reliable for testing)...");
+          gconf.bits.en_pwm_mode = 0;
+          if (driver.GetComm().WriteRegister(tmc5160::Registers::GCONF, gconf.value)) {
+            ESP_LOGI(TAG, "✓ StealthChop disabled - using SpreadCycle mode");
+            ESP_LOGI(TAG, "  Motor should now move physically. If it does, re-enable StealthChop after calibration.");
+          } else {
+            ESP_LOGE(TAG, "✗ Failed to disable StealthChop");
+          }
+        } else {
+          ESP_LOGI(TAG, "✓ StealthChop appears calibrated (pwm_scale_auto=%d)", pwm_scale_auto_signed);
+        }
+      }
+    } else {
+      ESP_LOGI(TAG, "✓ StealthChop is DISABLED - using SpreadCycle mode (more reliable)");
+    }
+  }
+  
+  // Check motor current settings
+  // NOTE: IHOLD_IRUN and GLOBAL_SCALER are WRITE-ONLY registers per datasheet!
+  // We cannot read them back, so we display the configured values instead.
+  ESP_LOGI(TAG, "=== Motor Current Diagnostic ===");
+  ESP_LOGI(TAG, "Configured IRUN = %d (0-31, higher = more current)", cfg.motor.irun);
+  ESP_LOGI(TAG, "Configured IHOLD = %d (0-31, higher = more hold current)", cfg.motor.ihold);
+  ESP_LOGI(TAG, "Configured GLOBAL_SCALER = %u (32-256, higher = more current capacity)", cfg.motor.global_scaler);
+  ESP_LOGI(TAG, "Note: IHOLD_IRUN and GLOBAL_SCALER are write-only registers - cannot verify by reading");
+  
+  // If current is too low, motor might not have enough torque
+  if (cfg.motor.irun < 20) {
+    ESP_LOGW(TAG, "⚠️ Motor current (IRUN=%d) may be too low for reliable motion", cfg.motor.irun);
+    ESP_LOGW(TAG, "   Consider increasing IRUN to 25-31 for better torque");
+  } else {
+    ESP_LOGI(TAG, "✓ Motor current appears adequate (IRUN=%d)", cfg.motor.irun);
+  }
+  
+  if (cfg.motor.global_scaler < 128) {
+    ESP_LOGW(TAG, "⚠️ GLOBAL_SCALER is low (%u) - consider increasing to 160+ for better performance", cfg.motor.global_scaler);
   }
   
   // Comprehensive DIAG pin diagnostic function
@@ -638,32 +754,40 @@ extern "C" void app_main() {
     ESP_LOGW(TAG, "  ✗ Motor is NOT moving (VACTUAL=0)");
   }
 
-  // Create sinusoidal motion controller
-  SinusoidalMotion motion(&driver);
+  // Create back-and-forth motion controller
+  BackAndForthMotion motion(&driver);
 
-  // Configure sinusoidal motion for NEMA 44mm motor with gearbox
-  // For 200 steps/rev with 16 microsteps = 3200 microsteps per revolution
-  // Geared motors: Lower max velocity, higher base velocity to overcome gearbox friction
-  // If motor "jerks" then stops, increase base_velocity and max_velocity
-  double frequency = 0.5;        // Frequency in Hz (0.5 Hz = one complete cycle every 2 seconds)
-  float max_velocity = 400.0;    // Maximum velocity in steps/s (increased from 300 for better motion)
-  float base_velocity = 200.0;   // Base velocity offset (increased from 150 to overcome friction better)
-  uint32_t update_period_ms = 50; // Update velocity every 50ms (20 Hz update rate)
-  int rounds = -1;                // Number of complete cycles (-1 for infinite)
+  // Configure back-and-forth motion for NEMA 44mm motor with gearbox
+  // For 200 steps/rev with 256 microsteps = 51,200 microsteps per motor revolution
+  // With 5.18 gearbox = ~265,216 microsteps per output revolution
   
-  motion.Config(frequency, max_velocity, base_velocity, update_period_ms, rounds);
+  // Calculate motion parameters
+  // Travel distance: ~2 full output revolutions = 2 * 265,216 = ~530,432 microsteps
+  // Or use a more reasonable distance like 1 output revolution = ~265,216 microsteps
+  float output_steps_per_rev = static_cast<float>(Motor::OUTPUT_FULL_STEPS) * 256.0f;
+  int32_t travel_distance = static_cast<int32_t>(output_steps_per_rev * 1.0f); // 1 full output revolution each direction
+  
+  // Max velocity: ~0.5 RPS output = ~132,608 steps/s
+  float max_velocity = output_steps_per_rev * 0.5f;
+  
+  // Acceleration: reach max velocity in ~0.2 seconds
+  float acceleration = max_velocity * 5.0f; // 5x max_velocity for 0.2s ramp time
+  if (acceleration < 50000.0f) acceleration = 50000.0f; // Minimum acceleration
+  
+  int max_cycles = -1; // Infinite cycles
+  
+  motion.Config(max_velocity, acceleration, travel_distance, max_cycles);
 
-  ESP_LOGI(TAG, "Starting sinusoidal motion for NEMA 44mm motor:");
-  ESP_LOGI(TAG, "  Frequency: %.2f Hz (one cycle every %.1f seconds)",
-           frequency, 1.0 / frequency);
-  ESP_LOGI(TAG, "  Max velocity: %.1f steps/s", max_velocity);
-  ESP_LOGI(TAG, "  Base velocity: %.1f steps/s", base_velocity);
-  ESP_LOGI(TAG, "  Update period: %lu ms", update_period_ms);
-  ESP_LOGI(TAG, "  Rounds: %d", rounds > 0 ? rounds : -1);
-  ESP_LOGI(TAG, "  Using internal ramp generator - TMC5160 handles step generation");
+  ESP_LOGI(TAG, "Starting back-and-forth motion for NEMA 44mm motor:");
+  ESP_LOGI(TAG, "  Max velocity: %.1f steps/s (%.2f RPS output)", max_velocity, 0.5f);
+  ESP_LOGI(TAG, "  Acceleration: %.1f steps/s²", acceleration);
+  ESP_LOGI(TAG, "  Travel distance: %ld microsteps (%.2f output revolutions per direction)", 
+           travel_distance, travel_distance / output_steps_per_rev);
+  ESP_LOGI(TAG, "  Max cycles: %d", max_cycles > 0 ? max_cycles : -1);
+  ESP_LOGI(TAG, "  Using internal ramp generator with positioning mode");
 
-  // Run sinusoidal motion
-  // Update velocity periodically based on sinusoidal function
+  // Run back-and-forth motion
+  // Check position periodically and switch direction when target is reached
   uint32_t last_diag_time = 0;
   while (true) {
     if (!motion.Update()) {
@@ -703,16 +827,32 @@ extern "C" void app_main() {
       }
       
       // Note: VSTART, VSTOP, AMAX are WRITE-ONLY registers - they always read as 0
-      // We can't verify them by reading, but we know they were set in SinusoidalMotion::Start()
-      // VSTART=100, VSTOP=30, AMAX=1500 (from SetRampSpeeds and SetAccelerations)
+      // We can't verify them by reading, but we know they were set in BackAndForthMotion::Start()
+      // VSTART=1000, VSTOP=100, AMAX=acceleration (from SetRampSpeeds and SetAccelerations)
       
-      // Read RAMPMODE to verify we're in velocity mode
+      // Read RAMPMODE to verify we're in positioning mode
       uint32_t rampmode_value = 0;
-      bool in_velocity_mode = false;
+      bool in_positioning_mode = false;
       if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMPMODE, rampmode_value)) {
-        in_velocity_mode = (rampmode_value == 1 || rampmode_value == 2); // VELOCITY_POS or VELOCITY_NEG
-        ESP_LOGI(TAG, "  RAMPMODE=%lu (%s)", rampmode_value, 
-                 in_velocity_mode ? "VELOCITY" : (rampmode_value == 0 ? "POSITIONING" : "HOLD"));
+        in_positioning_mode = (rampmode_value == 0); // POSITIONING mode
+        const char* mode_str = (rampmode_value == 0) ? "POSITIONING" :
+                              (rampmode_value == 1) ? "VELOCITY_POS" :
+                              (rampmode_value == 2) ? "VELOCITY_NEG" : "HOLD";
+        ESP_LOGI(TAG, "  RAMPMODE=%lu (%s)", rampmode_value, mode_str);
+        
+        if (!in_positioning_mode) {
+          ESP_LOGW(TAG, "  ⚠️ WARNING: Not in POSITIONING mode! Expected RAMPMODE=0");
+        }
+      }
+      
+      // Read target position
+      uint32_t xtarget_value = 0;
+      if (driver.GetComm().ReadRegister(tmc5160::Registers::XTARGET, xtarget_value)) {
+        int32_t target_pos = static_cast<int32_t>(xtarget_value);
+        ESP_LOGI(TAG, "  XTARGET (target position): %ld", target_pos);
+        ESP_LOGI(TAG, "  XACTUAL (current position): %d", actual_position);
+        int32_t distance_to_target = target_pos - actual_position;
+        ESP_LOGI(TAG, "  Distance to target: %ld microsteps", distance_to_target);
       }
       
       // Calculate position change since last diagnostic
@@ -725,14 +865,17 @@ extern "C" void app_main() {
       last_diag_time_pos = current_time;
       
       // Calculate output shaft movement (assuming gearbox ratio)
-      // For typical NEMA 44mm with gearbox: 200 steps/rev motor, 16 microsteps = 3200 microsteps/rev
+      // Motor is configured with 256 microsteps (MRES=0) and 200 steps/rev
+      // So: 200 steps/rev * 256 microsteps = 51,200 microsteps per motor revolution
       // Position delta is in microsteps, so divide by microsteps per rev to get motor revolutions
-      float motor_revolutions = position_delta / 3200.0f;
+      constexpr float MICROSTEPS_PER_MOTOR_REV = 200.0f * 256.0f; // 51,200 microsteps/rev
+      float motor_revolutions = position_delta / MICROSTEPS_PER_MOTOR_REV;
       
       // NOTE: Adjust this ratio based on your actual gearbox!
-      // Example: If gearbox is 100:1, then output_revolutions = motor_revolutions / 100
-      // For now, assume 1:1 to show motor movement (change this to your actual ratio)
-      float gearbox_ratio = 1.0f; // CHANGE THIS to your actual gearbox ratio!
+      // Example: If gearbox is 5.18:1, then output_revolutions = motor_revolutions / 5.18
+      // For the 17HS4401S-PG518 motor, the gearbox ratio is 5.18:1
+      // Set to 1.0 for direct drive (no gearbox) or to match your actual gearbox ratio
+      constexpr float gearbox_ratio = Motor::GEAR_RATIO; // Use configured gearbox ratio
       float output_revolutions = motor_revolutions / gearbox_ratio;
       
       ESP_LOGI(TAG, "Diagnostics: VACTUAL=%.1f steps/s, XACTUAL=%d", actual_velocity, actual_position);
@@ -740,7 +883,7 @@ extern "C" void app_main() {
                position_delta, time_delta, position_change_rate);
       ESP_LOGI(TAG, "  Motor: %.3f rev (%.1f deg) in %.1f seconds", 
                motor_revolutions, motor_revolutions * 360.0f, time_delta / 1000.0f);
-      ESP_LOGI(TAG, "  Output: %.3f rev (%.1f deg) [gearbox=%.0f:1]", 
+      ESP_LOGI(TAG, "  Output: %.3f rev (%.1f deg) [gearbox=%.2f:1]", 
                output_revolutions, output_revolutions * 360.0f, gearbox_ratio);
       
       // Calculate output speed
@@ -859,7 +1002,7 @@ extern "C" void app_main() {
       }
     }
     
-    // Delay for update period
-    vTaskDelay(pdMS_TO_TICKS(update_period_ms));
+    // Delay for update period (check position every 50ms)
+    vTaskDelay(pdMS_TO_TICKS(50));
   }
 }

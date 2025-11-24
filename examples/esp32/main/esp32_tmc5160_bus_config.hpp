@@ -79,6 +79,123 @@ inline tmc5160::Esp32SpiPinConfig GetDefaultPinConfig() noexcept {
   return config;
 }
 
+/**
+ * @brief Motor Configuration for 17HS4401S-PG518 NEMA 17 Stepper Motor
+ * 
+ * Model: 17HS4401S-PG518 (with Planetary Gearbox)
+ * - Rated Current: 1.68A / Phase
+ * - Step Angle (Motor): 1.8°
+ * - Holding Torque (Motor): 40Ncm (before gearbox)
+ * - Gear Ratio: 5.18:1 (Planetary)
+ * - Steps/Rev (Output Shaft): 200 * 5.18 = 1036 steps
+ * 
+ * Driver Settings for Smoothness:
+ * - Microsteps: 256 (MRES=0) for maximum smoothness
+ * - Current: Run=1.4A (~83%), Hold=0.5A (~30%)
+ * - Global Scaler: 160 (Optimal range >128)
+ * - Chopper: TOFF=5, HEND=3, HSTRT=0 (Typical for NEMA17)
+ */
+namespace MotorConfig_17HS4401S {
+    // Physical Motor Specs
+    constexpr uint16_t RATED_CURRENT_MA = 1680;  // 1.68A
+    constexpr float GEAR_RATIO = 5.18f;
+    constexpr float MOTOR_STEP_ANGLE = 1.8f;
+    constexpr uint16_t MOTOR_FULL_STEPS = 200;
+    constexpr uint16_t OUTPUT_FULL_STEPS = static_cast<uint16_t>(MOTOR_FULL_STEPS * GEAR_RATIO); // ~1036
+
+    // Driver Configuration
+    constexpr uint8_t GLOBAL_SCALER = 160;       // >128 recommended for best performance
+    
+    // Current Calculation with Scaler 160:
+    // Full Scale Current = (325mV / Rsense) * (GLOBAL_SCALER/256)
+    // Assuming Rsense = 0.075 Ohm (Standard on many Eval boards/SilentStepSticks)
+    // If Rsense is different (e.g. 0.10 Ohm), these values scale linearly.
+    // Here we set register values to target ~1.4A Run / 0.5A Hold relative to Full Scale.
+    constexpr uint8_t IRUN = 25;                 // ~80-85% of scaler limit
+    constexpr uint8_t IHOLD = 10;                // ~30-35% of scaler limit
+    
+    // Microstepping for Maximum Smoothness
+    constexpr uint8_t MRES = 0;                  // 0 = 256 microsteps (Highest Resolution)
+    constexpr bool INTERPOLATION = true;         // Interpolation (always on for smoothness)
+    
+    // Chopper Configuration (SpreadCycle default for NEMA 17)
+    constexpr uint8_t TOFF = 5;
+    constexpr uint8_t HEND = 3;
+    constexpr uint8_t HSTRT = 4;
+    constexpr uint8_t TBL = 2;                   // Blank time 36 clocks
+    
+    // StealthChop Configuration
+    constexpr bool STEALTH_AUTOSCALE = true;
+    constexpr bool STEALTH_AUTOGRAD = true;
+    constexpr uint8_t STEALTH_FREQ = 1;          // 1 = ~35kHz @ 12MHz clock (Good balance)
+    constexpr uint8_t STEALTH_OFS = 30;
+}
+
+/**
+ * @brief Test Rig Configuration Defaults
+ * 
+ * Contains tuned parameters for various test scenarios.
+ * These are "best guess" defaults for a typical setup with the 17HS4401S motor.
+ */
+namespace TestConfig_17HS4401S {
+    
+    // --- Sensorless Homing / StallGuard Configuration ---
+    namespace StallGuard {
+        // SGT: StallGuard2 Threshold (-64 to +63).
+        // Lower values = Higher sensitivity (stops easier).
+        // Higher values = Lower sensitivity (needs more force to stop).
+        // -10 is a good starting point for NEMA 17 at moderate speeds.
+        constexpr int8_t SGT_HOMING = -10;  
+        
+        // CoolStep configuration for homing (usually disabled or tuned for stability)
+        constexpr bool FILTER_ENABLED = true;
+        constexpr uint8_t SEMIN = 2;
+        constexpr uint8_t SEMAX = 5;
+    }
+
+    // --- Reference Switch Configuration ---
+    namespace Switches {
+        // Assuming Normally Open (NO) switches connecting to GND (Standard 3D printer style)
+        // Pin states: HIGH when open (pullup), LOW when triggered (closed).
+        // TMC5160 Polarity: 0=Active Low, 1=Active High.
+        // If switch closes to GND, it pulls pin LOW.
+        constexpr bool POLARITY_LEFT = false;   // Active Low (trigger on GND)
+        constexpr bool POLARITY_RIGHT = false;  // Active Low (trigger on GND)
+        constexpr bool LATCH_LEFT = true;       // Latch position on trigger
+        constexpr bool LATCH_RIGHT = true;      // Latch position on trigger
+        constexpr bool SWAP_INPUTS = false;     // Don't swap left/right inputs
+    }
+
+    // --- Encoder Configuration (AS5047U) ---
+    namespace Encoder {
+        // AS5047U Specs:
+        // ABI Resolution: Default 4096 ppr (pulses per rev) = 16384 counts per rev (edges)
+        // SPI Resolution: 14-bit = 16384 positions
+        constexpr uint16_t PULSES_PER_REV = 4096; 
+        constexpr uint16_t COUNTS_PER_REV = 16384;
+        
+        // Configuration
+        constexpr bool INVERT_DIR = false; // Match encoder direction to motor?
+    }
+
+    // --- Motion Profiles ---
+    namespace Motion {
+        // Homing Speeds (Steps/s)
+        // Needs to be fast enough for back-EMF sensing (Sensorless)
+        constexpr float HOMING_SEARCH_SPEED = 20000.0f; // ~30-40 RPM output (at 256 usteps, 5.18 gear)
+        constexpr float HOMING_SWITCH_SPEED = 2000.0f;  // Slower for precision
+        
+        // Bounds Finding Test
+        constexpr float BOUNDS_SEARCH_SPEED = 20000.0f;
+        constexpr uint32_t HOMING_TIMEOUT_MS = 30000;
+        
+        // Fatigue Test Defaults
+        constexpr float FATIGUE_FREQ_HZ = 0.5f;
+        constexpr float FATIGUE_AMPLITUDE_DEG = 60.0f;
+        constexpr uint32_t DWELL_MS = 2000;
+    }
+}
+
 } // namespace tmc5160_test_config
 
 #endif // ESP32_TMC5160_BUS_CONFIG_HPP

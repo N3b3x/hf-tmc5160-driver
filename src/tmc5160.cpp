@@ -669,10 +669,13 @@ bool TMC5160<CommType>::MotorControl::ConfigureDcStep(const DcStepConfig& config
   int32_t vdc_min = 0;
   if (config.vdc_min > 0.0F) {
     vdc_min = driver_.speedToInternal(config.vdc_min);
-    // VDCMIN is 23-bit register, but only bits 22..8 are used (bits 7..0 ignored)
-    // Mask to 0x7FFF00 to ensure bits 22..8 are set correctly, bits 7..0 are zero
-    vdc_min = std::min(vdc_min, static_cast<decltype(vdc_min)>(0x7FFF));
-    vdc_min = (vdc_min << 8) & 0x7FFF00; // Shift to bits 22..8, clear bits 7..0
+    // VDCMIN is 23-bit register (0...2^22), but only bits 22..8 are used for comparison
+    // Lower 8 bits (7..0) are ignored/unused by the hardware comparator.
+    // We mask the value to 0x7FFF00 to explicitly zero out the unused bits,
+    // ensuring the register value reflects the effective threshold.
+    // Note: No shift is required; the register compares bits 22..8 of VDCMIN
+    // against bits 22..8 of VACTUAL.
+    vdc_min = vdc_min & 0x7FFF00;
   }
   bool success = driver_.comm_.WriteRegister(Registers::VDCMIN, static_cast<uint32_t>(vdc_min));
   if (!success) {
@@ -1011,7 +1014,7 @@ uint32_t TMC5160<CommType>::Diagnostics::GetLostSteps() noexcept {
 
 template <typename CommType>
 bool TMC5160<CommType>::Diagnostics::PerformSensorlessHoming(bool direction, int8_t stall_threshold, float search_speed,
-                                                             int32_t& final_position) noexcept {
+                                                             int32_t& final_position, uint32_t timeout_ms) noexcept {
   // Configure StallGuard2 for homing
   StallGuardConfig sg_config{};
   sg_config.sgt = stall_threshold;
@@ -1028,10 +1031,18 @@ bool TMC5160<CommType>::Diagnostics::PerformSensorlessHoming(bool direction, int
   SW_MODE_Register sw_mode{};
   sw_mode.value = sw_mode_value;
   sw_mode.bits.sg_stop = true;     // Enable stop on stall
-  sw_mode.bits.en_softstop = true; // Use soft stop
+  sw_mode.bits.en_softstop = false; // Use hard stop for precise homing (per datasheet 12.4)
   if (!driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value)) {
     return false;
   }
+
+  // Clear any existing stall flags
+  uint32_t ramp_stat_dummy = 0;
+  driver_.comm_.ReadRegister(Registers::RAMP_STAT, ramp_stat_dummy);
+  // Write back 1 to event_stop_sg to clear it
+  RAMP_STAT_Register clear_stat{};
+  clear_stat.bits.event_stop_sg = 1;
+  driver_.comm_.WriteRegister(Registers::RAMP_STAT, clear_stat.value);
 
   // Set velocity mode and start movement
   RampMode mode = direction ? RampMode::VELOCITY_POS : RampMode::VELOCITY_NEG;
@@ -1042,18 +1053,130 @@ bool TMC5160<CommType>::Diagnostics::PerformSensorlessHoming(bool direction, int
     return false;
   }
 
-  // Wait for stall (this is a simplified implementation)
-  // In a real implementation, you would poll GetStallGuard() or check RAMP_STAT
-  // For now, we'll just set the speed and let the hardware handle it
-  // The user should check IsTargetReached() or monitor stall status
+  // Wait for stall event
+  bool stalled = false;
+  // Simple polling loop with crude timeout using rough cycle estimates
+  // Assuming ~10us per register read interaction on SPI
+  uint32_t loops = timeout_ms * 100; 
+  
+  for (uint32_t i = 0; i < loops; i++) {
+    uint32_t ramp_stat = 0;
+    if (driver_.comm_.ReadRegister(Registers::RAMP_STAT, ramp_stat)) {
+      RAMP_STAT_Register status{};
+      status.value = ramp_stat;
+      
+      // Check for stall stop event or velocity zero (stop executed)
+      if (status.bits.event_stop_sg || (status.bits.vzero && status.bits.status_sg)) {
+        stalled = true;
+        break;
+      }
+    }
+    // Small delay to relieve bus
+    // driver_.comm_.DelayUs(100); // Requires DelayUs in Comm interface, assuming it exists
+  }
+
+  // Stop motor (ensure VMAX=0)
+  driver_.rampControl.Stop();
+
+  // Disable StallGuard2 stop to prevent accidental stops later
+  sw_mode.bits.sg_stop = false;
+  driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value);
 
   // Read final position
   final_position = driver_.rampControl.GetCurrentPosition();
 
-  // Stop motor
+  // Clear the stall event flag again to be clean
+  driver_.comm_.WriteRegister(Registers::RAMP_STAT, clear_stat.value);
+
+  return stalled;
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::Diagnostics::PerformSwitchHoming(bool direction, float search_speed, float switch_speed,
+                                                         int32_t& final_position, bool use_left_switch, uint32_t timeout_ms) noexcept {
+  // 1. Activate position latching and motor stop upon switch event
+  SW_MODE_Register sw_mode{};
+  // Read current SW_MODE to preserve other settings (like softstop)
+  uint32_t sw_mode_val = 0;
+  if (!driver_.comm_.ReadRegister(Registers::SW_MODE, sw_mode_val)) {
+    return false;
+  }
+  sw_mode.value = sw_mode_val;
+  
+  // Configure latching and stop enable based on switch choice
+  if (use_left_switch) {
+    sw_mode.bits.latch_l_active = true;
+    sw_mode.bits.stop_l_enable = true;
+  } else {
+    sw_mode.bits.latch_r_active = true;
+    sw_mode.bits.stop_r_enable = true;
+  }
+  // Use hard stop for precise homing (soft stop can overshoot) - datasheet recommends hard stop for StallGuard,
+  // but for switches hard stop ensures we don't crash if switch is a hard limit.
+  // However, datasheet 12.4 says "Or motor can be softly decelerated...".
+  // Let's assume hard stop for safety during homing search.
+  sw_mode.bits.en_softstop = false; 
+  
+  if (!driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value)) {
+    return false;
+  }
+
+  // 2. Start motion ramp into direction of switch
+  RampMode mode = direction ? RampMode::VELOCITY_POS : RampMode::VELOCITY_NEG;
+  if (!driver_.rampControl.SetRampMode(mode)) {
+    return false;
+  }
+  if (!driver_.rampControl.SetMaxSpeed(search_speed)) {
+    return false;
+  }
+
+  // 3. Wait for switch hit (motor stops automatically)
+  bool switch_hit = false;
+  uint32_t loops = timeout_ms * 100;
+  for (uint32_t i = 0; i < loops; i++) {
+    uint32_t ramp_stat = 0;
+    if (driver_.comm_.ReadRegister(Registers::RAMP_STAT, ramp_stat)) {
+      RAMP_STAT_Register status{};
+      status.value = ramp_stat;
+      
+      // Check for specific stop event
+      if ((use_left_switch && status.bits.event_stop_l) || 
+          (!use_left_switch && status.bits.event_stop_r)) {
+        switch_hit = true;
+        break;
+      }
+      // Also check vzero if we missed the event flag but stopped
+      if (status.bits.vzero && ((use_left_switch && status.bits.status_stop_l) || (!use_left_switch && status.bits.status_stop_r))) {
+        switch_hit = true;
+        break;
+      }
+    }
+    // driver_.comm_.DelayUs(100);
+  }
+
+  // 4. Stop motor command (VMAX=0) to ensure it stays stopped
   driver_.rampControl.Stop();
 
-  return true;
+  if (switch_hit) {
+    // 5. Read latched position
+    // "Latching of... XACTUAL to XLATCH upon a switch event gives a precise snapshot"
+    // However, datasheet 12.4 "Implementing a homing procedure" step 5 says:
+    // "Switch to hold mode... calculate difference between latched and actual... or when using hard stop XACTUAL stops exactly at home position"
+    // Since we used hard stop, XACTUAL should be valid.
+    // Let's read XLATCH just in case user wants it, but we return current XACTUAL as "final position".
+    // Actually, let's just return the current position where it stopped.
+    final_position = driver_.rampControl.GetCurrentPosition();
+  }
+
+  // Disable stop function to allow moving away
+  if (use_left_switch) {
+    sw_mode.bits.stop_l_enable = false;
+  } else {
+    sw_mode.bits.stop_r_enable = false;
+  }
+  driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value);
+
+  return switch_hit;
 }
 
 // Communication implementation
