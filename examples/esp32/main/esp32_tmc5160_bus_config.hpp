@@ -79,6 +79,58 @@ inline tmc5160::Esp32SpiPinConfig GetDefaultPinConfig() noexcept {
   return config;
 }
 
+/**
+ * @brief Motor Configuration for 17HS4401S-PG518 NEMA 17 Stepper Motor
+ * 
+ * Model: 17HS4401S-PG518 (with Planetary Gearbox)
+ * - Rated Current: 1.68A / Phase
+ * - Step Angle (Motor): 1.8°
+ * - Holding Torque (Motor): 40Ncm (before gearbox)
+ * - Gear Ratio: 5.18:1 (Planetary)
+ * - Steps/Rev (Output Shaft): 200 * 5.18 = 1036 steps
+ * 
+ * Driver Settings for Smoothness:
+ * - Microsteps: 256 (MRES=0) for maximum smoothness
+ * - Current: Run=1.4A (~83%), Hold=0.5A (~30%)
+ * - Global Scaler: 160 (Optimal range >128)
+ * - Chopper: TOFF=5, HEND=3, HSTRT=0 (Typical for NEMA17)
+ */
+namespace MotorConfig_17HS4401S {
+    // Physical Motor Specs
+    constexpr uint16_t RATED_CURRENT_MA = 1680;  // 1.68A
+    constexpr float GEAR_RATIO = 5.18f;
+    constexpr float MOTOR_STEP_ANGLE = 1.8f;
+    constexpr uint16_t MOTOR_FULL_STEPS = 200;
+    constexpr uint16_t OUTPUT_FULL_STEPS = static_cast<uint16_t>(MOTOR_FULL_STEPS * GEAR_RATIO); // ~1036
+
+    // Driver Configuration
+    constexpr uint8_t GLOBAL_SCALER = 160;       // >128 recommended for best performance
+    
+    // Current Calculation with Scaler 160:
+    // Full Scale Current = (325mV / Rsense) * (GLOBAL_SCALER/256)
+    // Assuming Rsense = 0.075 Ohm (Standard on many Eval boards/SilentStepSticks)
+    // If Rsense is different (e.g. 0.10 Ohm), these values scale linearly.
+    // Here we set register values to target ~1.4A Run / 0.5A Hold relative to Full Scale.
+    constexpr uint8_t IRUN = 25;                 // ~80-85% of scaler limit
+    constexpr uint8_t IHOLD = 10;                // ~30-35% of scaler limit
+    
+    // Microstepping for Maximum Smoothness
+    constexpr uint8_t MRES = 0;                  // 0 = 256 microsteps (Highest Resolution)
+    constexpr bool INTERPOLATION = true;         // Interpolation (always on for smoothness)
+    
+    // Chopper Configuration (SpreadCycle default for NEMA 17)
+    constexpr uint8_t TOFF = 5;
+    constexpr uint8_t HEND = 3;
+    constexpr uint8_t HSTRT = 4;
+    constexpr uint8_t TBL = 2;                   // Blank time 36 clocks
+    
+    // StealthChop Configuration
+    constexpr bool STEALTH_AUTOSCALE = true;
+    constexpr bool STEALTH_AUTOGRAD = true;
+    constexpr uint8_t STEALTH_FREQ = 1;          // 1 = ~35kHz @ 12MHz clock (Good balance)
+    constexpr uint8_t STEALTH_OFS = 30;
+}
+
 } // namespace tmc5160_test_config
 
 #endif // ESP32_TMC5160_BUS_CONFIG_HPP

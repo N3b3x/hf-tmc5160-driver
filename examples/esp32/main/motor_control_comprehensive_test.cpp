@@ -55,12 +55,16 @@ static constexpr bool ENABLE_LUT_TESTS = true;
 static constexpr bool ENABLE_MOTOR_SETUP_TESTS = true;
 static constexpr bool ENABLE_GLOBAL_CONFIG_TESTS = true;
 
-// Test configuration constants
-static constexpr uint8_t TEST_IRUN = 20;
-static constexpr uint8_t TEST_IHOLD = 10;
-static constexpr uint8_t TEST_GLOBAL_SCALER = 160; // Recommended > 128 per datasheet
-static constexpr uint8_t TEST_TOFF = 5;
-static constexpr uint8_t TEST_MRES = 4; // 16 microsteps
+// Motor configuration using 17HS4401S-PG518 profile from header
+using Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+
+static constexpr uint8_t TEST_IRUN = Motor::IRUN;
+static constexpr uint8_t TEST_IHOLD = Motor::IHOLD;
+static constexpr uint8_t TEST_GLOBAL_SCALER = Motor::GLOBAL_SCALER;
+static constexpr uint8_t TEST_TOFF = Motor::TOFF;
+static constexpr uint8_t TEST_MRES = Motor::MRES; // 0 (256 microsteps)
+static constexpr float MICROSTEPS = 256.0f;
+static constexpr float STEPS_PER_REV_OUTPUT = static_cast<float>(Motor::OUTPUT_FULL_STEPS) * MICROSTEPS;
 
 // Forward declarations
 bool test_enable_disable() noexcept;
@@ -120,10 +124,20 @@ std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
   cfg.motor.irun = TEST_IRUN;
   cfg.motor.ihold = TEST_IHOLD;
   cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
+  
   cfg.chopper.toff = TEST_TOFF;
   cfg.chopper.mres = TEST_MRES;
-  cfg.chopper.intpol = true;
-  cfg.power_stage.drv_strength = 0;
+  cfg.chopper.intpol = Motor::INTERPOLATION;
+  cfg.chopper.hend = Motor::HEND;
+  cfg.chopper.hstrt = Motor::HSTRT;
+  cfg.chopper.tbl = Motor::TBL;
+  
+  cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+  cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+  cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+  cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
+
+  cfg.power_stage.drv_strength = 2;
   cfg.power_stage.bbm_time = 24;
   cfg.power_stage.bbm_clks = 4;
   
@@ -190,13 +204,13 @@ bool test_chopper_configuration() noexcept {
   }
   
   tmc5160::ChopperConfig chop_cfg{};
-  chop_cfg.toff = 5;
-  chop_cfg.hstrt = 4;
-  chop_cfg.hend = 1;
-  chop_cfg.tbl = 2;
+  chop_cfg.toff = Motor::TOFF;
+  chop_cfg.hstrt = Motor::HSTRT;
+  chop_cfg.hend = Motor::HEND;
+  chop_cfg.tbl = Motor::TBL;
   chop_cfg.vsense = true;
-  chop_cfg.mres = 4;
-  chop_cfg.intpol = true;
+  chop_cfg.mres = TEST_MRES;
+  chop_cfg.intpol = Motor::INTERPOLATION;
   chop_cfg.dedge = false;
   chop_cfg.chm = false;
   
@@ -217,11 +231,11 @@ bool test_stealthchop_configuration() noexcept {
   }
   
   tmc5160::StealthChopConfig stealth_cfg{};
-  stealth_cfg.pwm_autoscale = true;
-  stealth_cfg.pwm_autograd = true;
-  stealth_cfg.pwm_freq = 1;
+  stealth_cfg.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+  stealth_cfg.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+  stealth_cfg.pwm_freq = Motor::STEALTH_FREQ;
   stealth_cfg.pwm_grad = 0;
-  stealth_cfg.pwm_ofs = 30;
+  stealth_cfg.pwm_ofs = Motor::STEALTH_OFS;
   stealth_cfg.pwm_reg = 4;
   stealth_cfg.pwm_lim = 12;
   
@@ -243,17 +257,18 @@ bool test_stealthchop_configuration() noexcept {
   ESP_LOGI(TAG, "AT#1 Wait Complete. Check PWM_OFS_AUTO if needed.");
 
   // Step 2: AT#2 - Move at medium velocity
-  // Move at ~60-300 RPM. 
-  // Using 200 steps/rev: 100 RPM = 1.67 RPS = 333 steps/s
-  ESP_LOGI(TAG, "Demonstrating AT#2: Moving at medium velocity (300 steps/s)...");
+  // Move at ~60-120 RPM output speed. 
+  // 90 RPM output = 1.5 rev/s output = 1.5 * STEPS_PER_REV_OUTPUT steps/s
+  float at2_speed = 1.5f * STEPS_PER_REV_OUTPUT;
+  ESP_LOGI(TAG, "Demonstrating AT#2: Moving at medium velocity (%.2f steps/s)...", at2_speed);
   
   // Configure ramp for motion
   handle->driver->rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS);
-  handle->driver->rampControl.SetMaxSpeed(300.0f); // ~90 RPM
-  handle->driver->rampControl.SetAcceleration(500.0f);
+  handle->driver->rampControl.SetMaxSpeed(at2_speed); 
+  handle->driver->rampControl.SetAcceleration(at2_speed * 2.0f); // Reach speed in 0.5s
 
   // Let it run for a bit to allow AT#2 tuning (requires ~8 fullsteps per change of +/-1)
-  vTaskDelay(pdMS_TO_TICKS(1000)); // 1 second run
+  vTaskDelay(pdMS_TO_TICKS(1500)); // 1.5 second run
   
   ESP_LOGI(TAG, "AT#2 Motion Complete.");
 
@@ -279,7 +294,12 @@ bool test_mode_change_speeds() noexcept {
     return false;
   }
   
-  if (!handle->driver->motorControl.SetModeChangeSpeeds(100.0F, 200.0F, 500.0F)) {
+  // Use reasonable speeds for 256 microsteps (fractions of 1 output revolution per second)
+  float low = STEPS_PER_REV_OUTPUT * 0.2f;
+  float med = STEPS_PER_REV_OUTPUT * 0.5f;
+  float high = STEPS_PER_REV_OUTPUT * 1.0f;
+
+  if (!handle->driver->motorControl.SetModeChangeSpeeds(low, med, high)) {
     ESP_LOGE(TAG, "Failed to set mode change speeds");
     return false;
   }
@@ -316,6 +336,11 @@ bool test_freewheeling_mode() noexcept {
   // Test setting freewheeling mode through ConfigureStealthChop
   tmc5160::StealthChopConfig stealth_config{};
   stealth_config.freewheel = tmc5160::PWMFreewheel::NORMAL;
+  stealth_config.pwm_autoscale = Motor::STEALTH_AUTOSCALE; // Maintain required settings
+  stealth_config.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+  stealth_config.pwm_freq = Motor::STEALTH_FREQ;
+  stealth_config.pwm_ofs = Motor::STEALTH_OFS;
+
   if (!handle->driver->motorControl.ConfigureStealthChop(stealth_config)) {
     ESP_LOGE(TAG, "Failed to set freewheeling to NORMAL");
     success = false;
@@ -329,6 +354,7 @@ bool test_freewheeling_mode() noexcept {
   
   return success;
 }
+
 
 bool test_coolstep_configuration() noexcept {
   ESP_LOGI(TAG, "Testing CoolStep configuration...");
@@ -412,9 +438,9 @@ bool test_motor_setup_from_spec() noexcept {
   }
   
   tmc5160::MotorSpec motor_spec{};
-  motor_spec.steps_per_rev = 200;
-  motor_spec.rated_current_ma = 1500;
-  motor_spec.rated_voltage_mv = 12000;
+  motor_spec.steps_per_rev = Motor::MOTOR_FULL_STEPS;
+  motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
+  motor_spec.rated_voltage_mv = 24000;
   
   // Note: SetupMotorFromSpec may use approximation, so we use a warning-level test
   bool result = handle->driver->motorControl.SetupMotorFromSpec(motor_spec);

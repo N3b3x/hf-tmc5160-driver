@@ -57,17 +57,18 @@ static constexpr bool ENABLE_RAMP_PARAMETER_TESTS = true;
 static constexpr bool ENABLE_REFERENCE_SWITCH_TESTS = true;
 static constexpr bool ENABLE_UNIT_CONVERSION_TESTS = true;
 
-// Test configuration constants for NEMA 44mm 2A motor at 24V
-// Current calculation: For 2A motor, use ~80% for run (1.6A), ~30% for hold (0.6A)
-// With global_scaler=160 (recommended >128): 
-// Scaled Max = 160/256 * 3A(typ) = ~1.875A
-// irun=27 (27/32) * 1.875A = ~1.58A
-static constexpr uint8_t TEST_IRUN = 27;          // Run current (~1.6A for 2A motor)
-static constexpr uint8_t TEST_IHOLD = 10;         // Hold current (~0.6A for 2A motor)
-static constexpr uint8_t TEST_GLOBAL_SCALER = 160; // Global scaler (>128 recommended by datasheet)
-static constexpr uint8_t TEST_TOFF = 5;           // Chopper off time (5 is good for 2A motors)
-static constexpr uint8_t TEST_MRES = 4;          // 16 microsteps (256/16=16 microsteps per full step)
-static constexpr uint16_t STEPS_PER_REV = 200;   // Steps per revolution (1.8° per step)
+// Motor configuration using 17HS4401S-PG518 profile from header
+using Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+
+static constexpr uint8_t TEST_IRUN = Motor::IRUN;
+static constexpr uint8_t TEST_IHOLD = Motor::IHOLD;
+static constexpr uint8_t TEST_GLOBAL_SCALER = Motor::GLOBAL_SCALER;
+static constexpr uint8_t TEST_TOFF = Motor::TOFF;
+static constexpr uint8_t TEST_MRES = Motor::MRES; // 0 (256 microsteps)
+static constexpr float MICROSTEPS = 256.0f;
+// Steps per revolution for unit conversions (Output Shaft full steps * Microsteps)
+// 17HS4401S-PG518: 200 steps * 5.18 ratio * 256 microsteps = ~265,216 steps/rev
+static constexpr float STEPS_PER_REV = static_cast<float>(Motor::OUTPUT_FULL_STEPS) * MICROSTEPS;
 static constexpr float LEAD_SCREW_PITCH_MM = 2.0F; // Lead screw pitch (adjust for your setup)
 
 // Forward declarations
@@ -118,24 +119,25 @@ std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
     }
   }
   
-  // Configure driver for NEMA 44mm 2A stepper motor at 24V
+  // Configure driver for NEMA 17 (17HS4401S-PG518)
   tmc5160::DriverConfig cfg{};
   cfg.motor.irun = TEST_IRUN;
   cfg.motor.ihold = TEST_IHOLD;
   cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
   
-  // Chopper settings for 2A motor at 24V
+  // Chopper settings
   cfg.chopper.toff = TEST_TOFF;
   cfg.chopper.mres = TEST_MRES;
-  cfg.chopper.intpol = true;
-  cfg.chopper.hend = 3;          // Hysteresis end (3 is good for 2A motors)
-  cfg.chopper.hstrt = 0;         // Hysteresis start
+  cfg.chopper.intpol = Motor::INTERPOLATION;
+  cfg.chopper.hend = Motor::HEND;
+  cfg.chopper.hstrt = Motor::HSTRT;
+  cfg.chopper.tbl = Motor::TBL;
   
-  // StealthChop settings for quiet operation at 24V
-  cfg.stealthchop.pwm_ofs = 30;   // PWM offset for smooth start
-  cfg.stealthchop.pwm_autoscale = true; // Auto-scale PWM (important for 24V)
-  cfg.stealthchop.pwm_autograd = true;  // Auto-gradient PWM
-  cfg.stealthchop.pwm_freq = 1;   // PWM frequency (1 = 23.4kHz)
+  // StealthChop settings
+  cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+  cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+  cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+  cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
   
   // Power stage settings for 2A motor
   cfg.power_stage.drv_strength = 2;  // Driver strength (2 is good for 2A motors)

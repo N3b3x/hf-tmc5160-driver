@@ -90,21 +90,25 @@ public:
     }
 
     // Set acceleration for smooth velocity changes
-    // For geared motors: Lower acceleration to avoid gearbox backlash and stress
-    // But not too low - need enough to overcome static friction
-    driver_->rampControl.SetAccelerations(1500.0, 1500.0); // 1500 steps/s² (increased from 1000)
+    // For 256 microsteps, values need to be much higher
+    // Use dynamic calculation based on max_velocity to ensure reachability
+    // Reach max velocity in ~0.1 seconds
+    float accel = max_velocity_ * 10.0f;
+    // Clamp minimum to ensure motion isn't sluggish
+    if (accel < 50000.0f) accel = 50000.0f;
+
+    driver_->rampControl.SetAccelerations(accel, accel);
     
-    // Set start/stop velocities - VSTART must be > 0 for motion to start
-    // For geared motors: Higher VSTART to overcome gearbox friction and static load
-    // The "jerk" suggests VSTART might be too low - increase it significantly
-    // VSTOP should be low for smooth stopping, VSTART should be much higher for geared motors
-    driver_->rampControl.SetRampSpeeds(100.0, 30.0, 0.0); // VSTART=100 (increased from 50), VSTOP=30, V1=0
+    // Set start/stop velocities
+    // VSTART needs to be higher for 256 microsteps to overcome friction
+    // VSTART = 1000, VSTOP = 100
+    driver_->rampControl.SetRampSpeeds(1000.0f, 100.0f, 0.0f);
     
-    // Set to velocity mode (will be updated in Update() based on velocity sign)
+    // Set to velocity mode
     driver_->rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS);
     
-    // Set initial velocity to start motion
-    driver_->rampControl.SetMaxSpeed(100.0); // Start with small velocity
+    // Set initial velocity
+    driver_->rampControl.SetMaxSpeed(1000.0f);
     
     initialized_ = true;
     init_time_ = esp_timer_get_time() / 1000; // Convert to milliseconds
@@ -133,7 +137,7 @@ public:
     
     // Determine direction based on velocity sign
     // Use a minimum velocity threshold to ensure motion starts
-    const float min_velocity = 10.0f; // Minimum velocity to ensure motion
+    const float min_velocity = 100.0f; // Minimum velocity to ensure motion (increased for 256 usteps)
     
     if (current_velocity > min_velocity) {
       driver_->rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS);
@@ -198,39 +202,38 @@ extern "C" void app_main() {
   // Create TMC5160 driver instance
   tmc5160::TMC5160<Esp32SPI> driver(spi);
 
-  // Configure driver for NEMA 44mm stepper motor with gearbox at 24V
-  // Geared motors need: Higher current (more torque), Lower speed, Different acceleration
-  // Typical specs: 200 steps/rev, 0.5-1.5A per phase, 24V operation
-  // 24V provides better performance: faster acceleration, higher speeds, better torque
+  // Configure driver using standardized MotorConfig for 17HS4401S-PG518
+  using Motor = tmc5160_test_config::MotorConfig_17HS4401S;
   tmc5160::DriverConfig cfg{};
   
-  // Motor current settings for NEMA 44mm with gearbox at 24V
-  // Geared motors need more current due to gearbox load and friction
-  // Increase current for better torque to overcome gearbox resistance
-  // Note: Datasheet recommends global_scaler > 128 for best results (chopper hysteresis).
-  // 160 = 160/256 ≈ 62.5% of full scale current.
-  cfg.motor.global_scaler = 160;  // Increased to >128 per datasheet recommendation
-  cfg.motor.irun = 24;            // Run current (~75% of global scaled limit)
-  cfg.motor.ihold = 10;           // Hold current (~30% of global scaled limit)
+  // Motor current settings
+  cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
+  cfg.motor.irun = Motor::IRUN;
+  cfg.motor.ihold = Motor::IHOLD;
   
-  // Chopper settings for smooth motion at 24V
-  cfg.chopper.toff = 5;           // Chopper off time (5 is good for small motors at 24V)
-  cfg.chopper.mres = 4;           // 16 microsteps (256/16=16 microsteps per full step)
-  cfg.chopper.intpol = true;      // Enable interpolation for smoother motion
-  cfg.chopper.hend = 3;          // Hysteresis end (3 is good for small motors)
-  cfg.chopper.hstrt = 0;         // Hysteresis start
+  // Chopper settings
+  cfg.chopper.toff = Motor::TOFF;
+  cfg.chopper.mres = Motor::MRES; // 256 microsteps
+  cfg.chopper.intpol = Motor::INTERPOLATION;
+  cfg.chopper.hend = Motor::HEND;
+  cfg.chopper.hstrt = Motor::HSTRT;
+  cfg.chopper.tbl = Motor::TBL;
   
-  // StealthChop settings optimized for 24V operation
-  // At 24V, PWM can be more aggressive for better performance
-  cfg.stealthchop.pwm_ofs = 30;   // PWM offset for smooth start (good for 24V)
-  cfg.stealthchop.pwm_grad = 0;   // PWM gradient (auto-gradient handles this)
-  cfg.stealthchop.pwm_autoscale = true; // Auto-scale PWM (important for 24V)
-  cfg.stealthchop.pwm_autograd = true;  // Auto-gradient PWM (optimizes for 24V)
-  cfg.stealthchop.pwm_freq = 1;   // PWM frequency (1 = 23.4kHz, good for 24V operation)
+  // StealthChop settings
+  cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+  cfg.stealthchop.pwm_grad = 0;
+  cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+  cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+  cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
   
-  // Short protection (important for small motors)
-  cfg.short_protection.s2vs_level = 6;  // Short to VS level (6 is conservative)
-  cfg.short_protection.s2g_level = 4;  // Short to GND level (4 is conservative)
+  // Power stage
+  cfg.power_stage.drv_strength = 2;
+  cfg.power_stage.bbm_time = 24;
+  cfg.power_stage.bbm_clks = 4;
+
+  // Short protection
+  cfg.short_protection.s2vs_level = 6;
+  cfg.short_protection.s2g_level = 4;
 
   // Initialize driver
   if (!driver.Initialize(cfg)) {
@@ -238,9 +241,9 @@ extern "C" void app_main() {
     return;
   }
 
-  ESP_LOGI(TAG, "Driver initialized successfully for NEMA 44mm motor");
-  ESP_LOGI(TAG, "Motor settings: irun=%u, ihold=%u, microsteps=16, global_scaler=%u",
-           cfg.motor.irun, cfg.motor.ihold, 16, cfg.motor.global_scaler);
+  ESP_LOGI(TAG, "Driver initialized successfully for NEMA 44mm motor (17HS4401S-PG518)");
+  ESP_LOGI(TAG, "Motor settings: irun=%u, ihold=%u, microsteps=256, global_scaler=%u",
+           cfg.motor.irun, cfg.motor.ihold, cfg.motor.global_scaler);
   
   // CLK16 (CLK pin) configuration note:
   // The CLK pin (pin 12) should be TIED TO GND in hardware when using internal clock
@@ -657,13 +660,18 @@ extern "C" void app_main() {
   SinusoidalMotion motion(&driver);
 
   // Configure sinusoidal motion for NEMA 44mm motor with gearbox
-  // For 200 steps/rev with 16 microsteps = 3200 microsteps per revolution
-  // Geared motors: Lower max velocity, higher base velocity to overcome gearbox friction
-  // If motor "jerks" then stops, increase base_velocity and max_velocity
-  double frequency = 0.5;        // Frequency in Hz (0.5 Hz = one complete cycle every 2 seconds)
-  float max_velocity = 400.0;    // Maximum velocity in steps/s (increased from 300 for better motion)
-  float base_velocity = 200.0;   // Base velocity offset (increased from 150 to overcome friction better)
-  uint32_t update_period_ms = 50; // Update velocity every 50ms (20 Hz update rate)
+  // For 200 steps/rev with 256 microsteps = 51,200 microsteps per motor revolution
+  // With 5.18 gearbox = ~265,216 microsteps per output revolution
+  double frequency = 0.5;        // Frequency in Hz
+  
+  // Calculate velocities based on output RPM
+  // Max: ~0.8 RPS output = ~212,000 steps/s
+  // Base: ~0.2 RPS output = ~53,000 steps/s
+  float output_steps_per_rev = static_cast<float>(Motor::OUTPUT_FULL_STEPS) * 256.0f;
+  float max_velocity = output_steps_per_rev * 0.8f; 
+  float base_velocity = output_steps_per_rev * 0.2f;
+  
+  uint32_t update_period_ms = 50; // Update velocity every 50ms
   int rounds = -1;                // Number of complete cycles (-1 for infinite)
   
   motion.Config(frequency, max_velocity, base_velocity, update_period_ms, rounds);
@@ -671,8 +679,8 @@ extern "C" void app_main() {
   ESP_LOGI(TAG, "Starting sinusoidal motion for NEMA 44mm motor:");
   ESP_LOGI(TAG, "  Frequency: %.2f Hz (one cycle every %.1f seconds)",
            frequency, 1.0 / frequency);
-  ESP_LOGI(TAG, "  Max velocity: %.1f steps/s", max_velocity);
-  ESP_LOGI(TAG, "  Base velocity: %.1f steps/s", base_velocity);
+  ESP_LOGI(TAG, "  Max velocity: %.1f steps/s (%.2f RPS output)", max_velocity, 0.8f);
+  ESP_LOGI(TAG, "  Base velocity: %.1f steps/s (%.2f RPS output)", base_velocity, 0.2f);
   ESP_LOGI(TAG, "  Update period: %lu ms", update_period_ms);
   ESP_LOGI(TAG, "  Rounds: %d", rounds > 0 ? rounds : -1);
   ESP_LOGI(TAG, "  Using internal ramp generator - TMC5160 handles step generation");
