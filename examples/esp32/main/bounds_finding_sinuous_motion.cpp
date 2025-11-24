@@ -13,13 +13,18 @@
  *    - Automatic stop at center when cycle count reached
  * 4. UART command interface for real-time parameter adjustment
  *
+ * MOTOR SELECTION:
+ * Motor selection is done via a static constexpr variable at the top of this file.
+ * See esp32_tmc5160_bus_config.hpp for detailed motor specifications and selection guide.
+ *
  * Hardware Requirements:
  * - ESP32 development board
  * - TMC5160 stepper motor driver
- * - Stepper motor connected to TMC5160
+ * - Stepper motor connected to TMC5160 (see motor selection above)
  * - SPI connection between ESP32 and TMC5160
  * - Mechanical stops at both ends for bounds finding (optional - handles unbounded)
  * - UART debug port for command interface (typically UART_NUM_0 for USB serial)
+ * - Power supply: 12-36V DC (ensure adequate current capacity for selected motor)
  *
  * Pin Configuration (modify as needed):
  * - SPI: MOSI=23, MISO=19, SCLK=18, CS=5
@@ -52,7 +57,16 @@
 
 #include "../../../inc/tmc5160.hpp"
 #include "esp32_tmc5160_bus.hpp"
+
 #include "esp32_tmc5160_bus_config.hpp"
+
+//=============================================================================
+// MOTOR SELECTION - Change this to select which motor configuration to use
+//=============================================================================
+// See esp32_tmc5160_bus_config.hpp for detailed motor specifications.
+// Change the value below to select a different motor:
+static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
+    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "driver/uart.h"
@@ -245,12 +259,77 @@ private:
   int32_t last_target_relative_; // Last target position relative to center (for cycle counting)
 
   // State machine
-  enum class MotionState { SINUOUS_MOTION, DWELL_AT_MIN, DWELL_AT_MAX, DWELL_AT_CENTER, STOPPED };
+  enum class MotionState { MOVING_TO_MIN, MOVING_TO_MAX, DWELL_AT_MIN, DWELL_AT_MAX, DWELL_AT_CENTER, STOPPED };
   MotionState state_;
   uint32_t dwell_start_time_ms_;
 
+  // Computed trajectory parameters
+  float calculated_vmax_;
+  float calculated_amax_;
+  float estimated_frequency_hz_;
+
   // Thread safety
   mutable Esp32TmcMutex mutex_;
+
+  /**
+   * @brief Recalculate trajectory parameters based on frequency, bounds, and dwell
+   */
+  void RecalculateTrajectory() noexcept {
+    // NOTE: Must be called with mutex locked
+    
+    // Calculate total travel distance (one way)
+    int32_t distance = abs(local_max_bound_ - local_min_bound_);
+    if (distance == 0 || frequency_hz_ <= 0.0001f) {
+      calculated_vmax_ = 1000.0f; // Default safe fallback
+      calculated_amax_ = 5000.0f;
+      estimated_frequency_hz_ = 0.0f;
+      return;
+    }
+
+    // Target cycle period (total time for there + back + dwells)
+    float target_period_s = 1.0f / frequency_hz_;
+    
+    // Total dwell time per cycle (min + max + center*2 if center dwell enabled)
+    // Note: Center dwell happens twice per cycle if enabled (passing through)
+    // For simplicity, let's assume center dwell happens once per direction if enabled?
+    // Actually, center dwell is usually for visual inspection. Let's stick to min/max for frequency tuning.
+    float total_dwell_s = (dwell_at_min_ms_ + dwell_at_max_ms_) / 1000.0f;
+    
+    // Time available for motion (there + back)
+    float total_move_time_s = target_period_s - total_dwell_s;
+    
+    if (total_move_time_s <= 0.0f) {
+      // Frequency is too high for the requested dwell times
+      total_move_time_s = 0.1f; // Minimal fallback
+      ESP_LOGW(TAG, "Requested frequency %.2f Hz is impossible with given dwell times!", frequency_hz_);
+    }
+    
+    // Time for one leg (one way)
+    float leg_time_s = total_move_time_s / 2.0f;
+    
+    // Calculate VMAX and AMAX for Trapezoidal Profile (no center dwell)
+    // We want to reach the target distance D in time T (leg_time_s).
+    // Profile: Accel -> Constant Vel -> Decel.
+    // Let's assume 1/3 Accel, 1/3 Const, 1/3 Decel for smooth motion.
+    // Vmax = 1.5 * Distance / Time.
+    // Accel = Vmax / (Time/3) = 4.5 * Distance / Time^2.
+    
+    calculated_vmax_ = (1.5f * distance) / leg_time_s;
+    calculated_amax_ = calculated_vmax_ / (leg_time_s / 3.0f);
+    
+    // Clamp to driver limits (approximate)
+    if (calculated_vmax_ > 5000000.0f) calculated_vmax_ = 5000000.0f; // Cap velocity (higher limit)
+    if (calculated_amax_ > 5000000.0f) calculated_amax_ = 5000000.0f; // Cap acceleration
+    
+    // Recalculate actual expected frequency based on calculated parameters
+    // T_leg_actual = Distance/Vavg. For 1/3-1/3-1/3 profile, Vavg = 2/3 Vmax.
+    // So T_leg = D / (2/3 * 1.5 * D/T) = T. It should match.
+    estimated_frequency_hz_ = 1.0f / (2.0f * leg_time_s + total_dwell_s);
+    
+    ESP_LOGI(TAG, "Trajectory Recalculated: Dist=%ld steps, LegTime=%.3fs", distance, leg_time_s);
+    ESP_LOGI(TAG, "  Target Freq=%.2fHz, Est Freq=%.2fHz", frequency_hz_, estimated_frequency_hz_);
+    ESP_LOGI(TAG, "  VMAX=%.1f, AMAX=%.1f", calculated_vmax_, calculated_amax_);
+  }
 
 public:
   FatigueTestMotion(tmc5160::TMC5160<Esp32SPI>* driver) noexcept
@@ -259,7 +338,7 @@ public:
         phase_offset_(0.0F), bounded_(false), steps_per_rev_(200), angle_unit_(AngleUnit::DEGREES), dwell_at_min_ms_(0),
         dwell_at_max_ms_(0), dwell_at_center_ms_(0), target_cycles_(0), current_cycles_(0), cycle_complete_(false),
         last_was_negative_(false), cycle_started_(false), last_target_relative_(0), state_(MotionState::STOPPED),
-        dwell_start_time_ms_(0) {
+        dwell_start_time_ms_(0), calculated_vmax_(10000.0f), calculated_amax_(5000.0f), estimated_frequency_hz_(0.0f) {
     // Mutex is automatically created by Esp32TmcMutex constructor
   }
 
@@ -402,6 +481,12 @@ public:
     float actual_min = tmc5160::StepsToDegrees(min_steps, steps);
     float actual_max = tmc5160::StepsToDegrees(max_steps, steps);
     ESP_LOGI(TAG, "Local bounds set: min=%.2f°, max=%.2f° from center", actual_min, actual_max);
+    
+    // Recalculate trajectory with new bounds
+    {
+      TmcMutexGuard guard(mutex_);
+      RecalculateTrajectory();
+    }
     return true;
   }
 
@@ -416,8 +501,9 @@ public:
     {
       TmcMutexGuard guard(mutex_);
       frequency_hz_ = frequency_hz;
+      RecalculateTrajectory();
     }
-    ESP_LOGI(TAG, "Frequency updated: %.2f Hz", frequency_hz_);
+    ESP_LOGI(TAG, "Frequency updated: %.2f Hz", frequency_hz);
     return true;
   }
 
@@ -438,9 +524,10 @@ public:
       dwell_at_min_ms_ = dwell_at_min_ms;
       dwell_at_max_ms_ = dwell_at_max_ms;
       dwell_at_center_ms_ = dwell_at_center_ms;
+      RecalculateTrajectory();
     }
     ESP_LOGI(TAG, "Dwell times updated: min=%lu ms, max=%lu ms, center=%lu ms", 
-             dwell_at_min_ms_, dwell_at_max_ms_, dwell_at_center_ms_);
+             dwell_at_min_ms, dwell_at_max_ms, dwell_at_center_ms);
     return true;
   }
 
@@ -539,6 +626,8 @@ public:
    */
   bool Start() noexcept {
     uint32_t current_cycles, target_cycles;
+    int32_t min_pos, max_pos, current_pos;
+    
     {
       TmcMutexGuard guard(mutex_);
       if (local_min_bound_ == 0 && local_max_bound_ == 0) {
@@ -550,36 +639,47 @@ public:
         ESP_LOGW(TAG, "Cycle count reached. Reset cycles or set new target to continue.");
         return false;
       }
+      
+      // Update trajectory before starting
+      RecalculateTrajectory();
+
+      // Configure driver for positioning mode
+      driver_->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+      driver_->rampControl.SetMaxSpeed(calculated_vmax_);
+      driver_->rampControl.SetAcceleration(calculated_amax_);
+      driver_->rampControl.SetDeceleration(calculated_amax_); // Symmetric
+      // Ensure VSTART/VSTOP/VZERO are reasonable
+      driver_->rampControl.SetRampSpeeds(1000.0f, 100.0f, 0.0f);
 
       running_ = true;
-      state_ = MotionState::SINUOUS_MOTION;
       start_time_us_ = esp_timer_get_time();
-
-      // If resuming from stop, calculate phase offset from current position
-      int32_t current_pos = driver_->rampControl.GetCurrentPosition();
-      int32_t pos_relative = current_pos - home_position_;
-      if (amplitude_ > 0) {
-        double normalized_pos = static_cast<double>(pos_relative) / amplitude_;
-        if (normalized_pos > 1.0)
-          normalized_pos = 1.0;
-        if (normalized_pos < -1.0)
-          normalized_pos = -1.0;
-        phase_offset_ = asin(normalized_pos);
-        // Initialize cycle tracking based on current position
-        last_was_negative_ = (pos_relative < 0);
-        cycle_started_ = (abs(pos_relative) > 10); // Started if away from center
-        last_target_relative_ = pos_relative;
+      
+      // Determine initial state based on current position
+      current_pos = driver_->rampControl.GetCurrentPosition();
+      min_pos = local_min_bound_;
+      max_pos = local_max_bound_;
+      
+      // Find closest bound or determine direction
+      int32_t dist_to_min = abs(current_pos - min_pos);
+      int32_t dist_to_max = abs(current_pos - max_pos);
+      
+      // Default to moving towards min unless we're already there
+      if (dist_to_min < 100) {
+        state_ = MotionState::MOVING_TO_MAX;
+        driver_->rampControl.SetTargetPosition(max_pos);
       } else {
-        phase_offset_ = 0.0F;
-        last_was_negative_ = false;
-        cycle_started_ = false;
+        state_ = MotionState::MOVING_TO_MIN;
+        driver_->rampControl.SetTargetPosition(min_pos);
       }
+
       current_cycles = current_cycles_;
       target_cycles = target_cycles_;
     }
 
-    ESP_LOGI(TAG, "Starting fatigue test motion (cycles: %lu/%lu)", current_cycles,
+    ESP_LOGI(TAG, "Starting fatigue test (cycles: %lu/%lu)", current_cycles,
              target_cycles == 0 ? 0xFFFFFFFF : target_cycles);
+    ESP_LOGI(TAG, "  Motion: Positioning mode, VMAX=%.1f, AMAX=%.1f", 
+             calculated_vmax_, calculated_amax_);
     return true;
   }
 
@@ -616,29 +716,25 @@ public:
         return;
       }
 
-      // Check if cycle count reached - if so, move to center and stop
+      // Check if cycle count reached
       if (target_cycles_ > 0 && current_cycles_ >= target_cycles_) {
         if (!cycle_complete_) {
           cycle_complete_ = true;
           uint32_t cycles = current_cycles_;
           int32_t home = home_position_;
-          guard.unlock();
-          ESP_LOGI(TAG, "Target cycle count reached: %lu cycles", cycles);
+          
           // Move to center before stopping
-          driver_->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-          driver_->rampControl.SetTargetPosition(home);
-          driver_->rampControl.SetMaxSpeed(1000.0F);
-          driver_->rampControl.SetAcceleration(2000.0F);
-          // Wait for center to be reached
-          while (!driver_->rampControl.IsTargetReached()) {
-            vTaskDelay(pdMS_TO_TICKS(10));
-          }
-          {
-            TmcMutexGuard guard2(mutex_);
-            state_ = MotionState::STOPPED;
-            running_ = false;
-          }
-          ESP_LOGI(TAG, "Motion stopped at center position");
+          // We can just set target to home, and switch to a special "GOING_HOME" state if needed,
+          // but essentially we just want to stop safely.
+          // For simplicity, let's just stop update logic and let Start() handle restart.
+          // Or better, trigger a move to home.
+          
+          state_ = MotionState::STOPPED;
+          running_ = false;
+          guard.unlock();
+          
+          ESP_LOGI(TAG, "Target cycle count reached: %lu cycles. Stopping.", cycles);
+          driver_->rampControl.Stop();
         }
         return;
       }
@@ -646,60 +742,91 @@ public:
 
     uint32_t current_time_ms = esp_timer_get_time() / 1000;
     MotionState current_state;
-    uint32_t dwell_min, dwell_max, dwell_center, dwell_start;
+    uint32_t dwell_min, dwell_max, dwell_start;
+    int32_t min_bound, max_bound;
+    
     {
       TmcMutexGuard guard(mutex_);
       current_state = state_;
       dwell_min = dwell_at_min_ms_;
       dwell_max = dwell_at_max_ms_;
-      dwell_center = dwell_at_center_ms_;
       dwell_start = dwell_start_time_ms_;
+      min_bound = local_min_bound_;
+      max_bound = local_max_bound_;
     }
 
     switch (current_state) {
+    case MotionState::MOVING_TO_MAX:
+      if (driver_->rampControl.IsTargetReached()) {
+        // Reached Max
+        TmcMutexGuard guard(mutex_);
+        if (dwell_max > 0) {
+          state_ = MotionState::DWELL_AT_MAX;
+          dwell_start_time_ms_ = esp_timer_get_time() / 1000;
+        } else {
+          state_ = MotionState::MOVING_TO_MIN;
+          // Apply potentially new speed/accel for next leg
+          driver_->rampControl.SetMaxSpeed(calculated_vmax_);
+          driver_->rampControl.SetAcceleration(calculated_amax_);
+          driver_->rampControl.SetDeceleration(calculated_amax_);
+          driver_->rampControl.SetTargetPosition(min_bound);
+        }
+      }
+      break;
+
+    case MotionState::MOVING_TO_MIN:
+      if (driver_->rampControl.IsTargetReached()) {
+        // Reached Min - Cycle Complete!
+        {
+          TmcMutexGuard guard(mutex_);
+          current_cycles_++;
+          if (dwell_min > 0) {
+            state_ = MotionState::DWELL_AT_MIN;
+            dwell_start_time_ms_ = esp_timer_get_time() / 1000;
+          } else {
+            state_ = MotionState::MOVING_TO_MAX;
+            // Apply potentially new speed/accel for next leg
+            driver_->rampControl.SetMaxSpeed(calculated_vmax_);
+            driver_->rampControl.SetAcceleration(calculated_amax_);
+            driver_->rampControl.SetDeceleration(calculated_amax_);
+            driver_->rampControl.SetTargetPosition(max_bound);
+          }
+        }
+      }
+      break;
+
     case MotionState::DWELL_AT_MIN:
       if (current_time_ms - dwell_start >= dwell_min) {
         TmcMutexGuard guard(mutex_);
-        state_ = MotionState::SINUOUS_MOTION;
-        start_time_us_ = esp_timer_get_time();
-        phase_offset_ = -M_PI / 2.0; // Start from minimum position
+        state_ = MotionState::MOVING_TO_MAX;
+        // Apply potentially new speed/accel for next leg
+        driver_->rampControl.SetMaxSpeed(calculated_vmax_);
+        driver_->rampControl.SetAcceleration(calculated_amax_);
+        driver_->rampControl.SetDeceleration(calculated_amax_);
+        driver_->rampControl.SetTargetPosition(max_bound);
       }
       break;
 
     case MotionState::DWELL_AT_MAX:
       if (current_time_ms - dwell_start >= dwell_max) {
         TmcMutexGuard guard(mutex_);
-        state_ = MotionState::SINUOUS_MOTION;
-        start_time_us_ = esp_timer_get_time();
-        phase_offset_ = M_PI / 2.0; // Start from maximum position
+        state_ = MotionState::MOVING_TO_MIN;
+        // Apply potentially new speed/accel for next leg
+        driver_->rampControl.SetMaxSpeed(calculated_vmax_);
+        driver_->rampControl.SetAcceleration(calculated_amax_);
+        driver_->rampControl.SetDeceleration(calculated_amax_);
+        driver_->rampControl.SetTargetPosition(min_bound);
       }
       break;
 
     case MotionState::DWELL_AT_CENTER:
-      if (current_time_ms - dwell_start >= dwell_center) {
+      // Deprecated: No dwell at center per user request
+      // Just transition to appropriate move state if we somehow end up here
+      {
         TmcMutexGuard guard(mutex_);
-        state_ = MotionState::SINUOUS_MOTION;
-        start_time_us_ = esp_timer_get_time();
-        // Continue from center (phase = 0 or π)
-        int32_t current_pos = driver_->rampControl.GetCurrentPosition();
-        int32_t pos_relative = current_pos - home_position_;
-        if (abs(pos_relative) < 10) {
-          // At center, determine direction from last position
-          phase_offset_ = last_was_negative_ ? M_PI : 0.0F;
-        } else {
-          // Near center, calculate phase
-          double normalized_pos = static_cast<double>(pos_relative) / amplitude_;
-          if (normalized_pos > 1.0)
-            normalized_pos = 1.0;
-          if (normalized_pos < -1.0)
-            normalized_pos = -1.0;
-          phase_offset_ = asin(normalized_pos);
-        }
+        state_ = MotionState::MOVING_TO_MAX;
+        driver_->rampControl.SetTargetPosition(max_bound);
       }
-      break;
-
-    case MotionState::SINUOUS_MOTION:
-      UpdateSinuousMotion();
       break;
 
     case MotionState::STOPPED:
@@ -754,6 +881,14 @@ public:
     }
     
     return status;
+  }
+
+  /**
+   * @brief Get estimated actual frequency (thread-safe)
+   */
+  float GetEstimatedFrequency() const noexcept {
+    TmcMutexGuard guard(mutex_);
+    return estimated_frequency_hz_;
   }
 
 private:
@@ -1102,19 +1237,20 @@ static bool HandleFrequency(const std::vector<std::string>& args, FatigueTestMot
   return motion.SetFrequency(freq);
 }
 
-static bool HandleDwell(const std::vector<std::string>& args, FatigueTestMotion& motion) noexcept {
-  if (args.size() < 2) {
-    ESP_LOGE(TAG, "Dwell command requires at least 2 arguments (min_ms, max_ms)");
-    return false;
+  static bool HandleDwell(const std::vector<std::string>& args, FatigueTestMotion& motion) noexcept {
+    if (args.size() < 2) {
+      ESP_LOGE(TAG, "Dwell command requires at least 2 arguments (min_ms, max_ms)");
+      return false;
+    }
+    uint32_t min_ms = std::strtoul(args[0].c_str(), nullptr, 10);
+    uint32_t max_ms = std::strtoul(args[1].c_str(), nullptr, 10);
+    // Center dwell deprecated/removed per request
+    uint32_t center_ms = 0;
+    if (args.size() >= 3) {
+      ESP_LOGW(TAG, "Center dwell argument ignored (feature removed)");
+    }
+    return motion.SetDwellTimes(min_ms, max_ms, center_ms);
   }
-  uint32_t min_ms = std::strtoul(args[0].c_str(), nullptr, 10);
-  uint32_t max_ms = std::strtoul(args[1].c_str(), nullptr, 10);
-  uint32_t center_ms = 0;
-  if (args.size() >= 3) {
-    center_ms = std::strtoul(args[2].c_str(), nullptr, 10);
-  }
-  return motion.SetDwellTimes(min_ms, max_ms, center_ms);
-}
 
 static bool HandleBounds(const std::vector<std::string>& args, FatigueTestMotion& motion) noexcept {
   if (args.size() < 2) {
@@ -1165,7 +1301,7 @@ static bool HandleStatus(const std::vector<std::string>& args, FatigueTestMotion
   ESP_LOGI(TAG, "╠══════════════════════════════════════════════════════════════════════════════╣");
   ESP_LOGI(TAG, "  Running: %s", status.running ? "YES" : "NO");
   ESP_LOGI(TAG, "  Bounded: %s", status.bounded ? "YES" : "NO");
-  ESP_LOGI(TAG, "  Frequency: %.2f Hz", status.frequency_hz);
+  ESP_LOGI(TAG, "  Frequency: %.2f Hz (Estimated: %.2f Hz)", status.frequency_hz, motion.GetEstimatedFrequency());
   ESP_LOGI(TAG, "  Local Bounds: %.2f° to %.2f° from center", 
            status.min_degrees_from_center, status.max_degrees_from_center);
   ESP_LOGI(TAG, "  Global Bounds: %.2f° to %.2f° from center", 
@@ -1245,27 +1381,73 @@ extern "C" void app_main() {
   // Create TMC5160 driver instance
   tmc5160::TMC5160<Esp32SPI> driver(spi);
 
-  // Use centralized configuration
-  namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+  // Select motor configuration based on compile-time selection
+  // Motor configuration constants (extracted for use later in code)
+  uint16_t output_full_steps = 0;
+  
+  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    ESP_LOGI(TAG, "Selected Motor: 17HS4401S with 5.18:1 gearbox");
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    ESP_LOGI(TAG, "Selected Motor: 17HS4401S direct drive (no gearbox)");
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    ESP_LOGI(TAG, "Selected Motor: Applied Motion 5034-369 NEMA 34 (high torque, 4.17A)");
+  }
+  
+  // Test configuration (currently shared across motors, can be motor-specific if needed)
   namespace Test = tmc5160_test_config::TestConfig_17HS4401S;
 
-  // Configure driver
+  // Configure driver - use conditional compilation for namespace selection
   tmc5160::DriverConfig cfg{};
-  cfg.motor.irun = Motor::IRUN;
-  cfg.motor.ihold = Motor::IHOLD;
-  cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
-  cfg.chopper.mres = Motor::MRES; // 256 microsteps (MRES=0)
-  cfg.chopper.toff = Motor::TOFF;
-  cfg.chopper.hend = Motor::HEND;
-  cfg.chopper.hstrt = Motor::HSTRT;
-  cfg.chopper.intpol = Motor::INTERPOLATION;
-  cfg.chopper.tbl = Motor::TBL;
   
-  // StealthChop settings
-  cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
-  cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
-  cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
-  cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+    cfg.motor.irun = Motor::IRUN;
+    cfg.motor.ihold = Motor::IHOLD;
+    cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
+    cfg.chopper.mres = Motor::MRES;
+    cfg.chopper.toff = Motor::TOFF;
+    cfg.chopper.hend = Motor::HEND;
+    cfg.chopper.hstrt = Motor::HSTRT;
+    cfg.chopper.intpol = Motor::INTERPOLATION;
+    cfg.chopper.tbl = Motor::TBL;
+    cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+    cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+    cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
+    cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+    output_full_steps = Motor::OUTPUT_FULL_STEPS;
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S_Direct;
+    cfg.motor.irun = Motor::IRUN;
+    cfg.motor.ihold = Motor::IHOLD;
+    cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
+    cfg.chopper.mres = Motor::MRES;
+    cfg.chopper.toff = Motor::TOFF;
+    cfg.chopper.hend = Motor::HEND;
+    cfg.chopper.hstrt = Motor::HSTRT;
+    cfg.chopper.intpol = Motor::INTERPOLATION;
+    cfg.chopper.tbl = Motor::TBL;
+    cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+    cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+    cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
+    cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+    output_full_steps = Motor::OUTPUT_FULL_STEPS;
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    namespace Motor = tmc5160_test_config::MotorConfig_AppliedMotion_5034_369;
+    cfg.motor.irun = Motor::IRUN;
+    cfg.motor.ihold = Motor::IHOLD;
+    cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
+    cfg.chopper.mres = Motor::MRES;
+    cfg.chopper.toff = Motor::TOFF;
+    cfg.chopper.hend = Motor::HEND;
+    cfg.chopper.hstrt = Motor::HSTRT;
+    cfg.chopper.intpol = Motor::INTERPOLATION;
+    cfg.chopper.tbl = Motor::TBL;
+    cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+    cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+    cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
+    cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+    output_full_steps = Motor::OUTPUT_FULL_STEPS;
+  }
   
   // Protection settings
   cfg.short_protection.s2vs_level = 6;
@@ -1301,8 +1483,8 @@ extern "C" void app_main() {
 
   // Configure motor parameters for unit conversions
   // Steps per output revolution = Motor Full Steps * Gear Ratio * Microsteps
-  // 200 * 5.18 * 256 = ~265,216 steps/rev
-  float steps_per_rev = static_cast<float>(Motor::OUTPUT_FULL_STEPS) * 256.0f; 
+  // 200 * 5.18 * 256 = ~265,216 steps/rev (for geared motor)
+  float steps_per_rev = static_cast<float>(output_full_steps) * 256.0f; 
   
   // ============================================================
   // STEP 1: Find global bounds using sensorless homing

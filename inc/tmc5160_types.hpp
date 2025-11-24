@@ -18,6 +18,23 @@
 namespace tmc5160 {
 
 /**
+ * @brief Input pin status structure
+ * 
+ * Represents the state of the TMC5160 input pins as read from the IOIN register.
+ */
+struct InputStatus {
+  bool refl_step{false};      ///< Reference left / step input
+  bool refr_dir{false};       ///< Reference right / direction input
+  bool encb_dcen_cfg4{false}; ///< Encoder B / DCEN / CFG4
+  bool enca_dcin_cfg5{false}; ///< Encoder A / DCIN / CFG5
+  bool drv_enn{false};        ///< Driver enable (inverted)
+  bool enc_n_dco_cfg6{false}; ///< Encoder N / DCO / CFG6
+  bool sd_mode{false};        ///< SD_MODE pin (1=External step and dir source)
+  bool swcomp_in{false};      ///< Software comparator input
+  uint8_t version{0};         ///< IC version (should be 0x30 for TMC5160-TA)
+};
+
+/**
  * @brief Driver status enumeration
  *
  * Indicates the current status of the TMC5160 driver, including

@@ -1,266 +1,165 @@
-# Register Access Types and Special Behaviors
+# TMC5160 Register Access and Configuration Guide
 
-This document provides comprehensive information about TMC5160 register access types, verified against the TMC5160A datasheet Rev 1.18.
+This guide provides a comprehensive overview of the TMC5160 registers, their access permissions, and recommended configuration strategies. It is based on the verified driver implementation and the TMC5160 datasheet.
 
-## Register Access Type Overview
+## 1. Register Map and Access Types
 
-The TMC5160 has 47 registers with the following access type distribution:
+The TMC5160 registers are divided into functional groups. Each register has specific access permissions:
+- **RW**: Read and Write
+- **R**: Read-Only
+- **W**: Write-Only
+- **RWC**: Read, Write-1-to-Clear
 
-| Access Type | Count | Percentage | Description |
-|-------------|-------|------------|-------------|
-| **Read-Write (RW)** | 16 | 34.0% | Configuration and control registers |
-| **Read-Only (R)** | 10 | 21.3% | Status, result, and read-only registers |
-| **Write-Only (W)** | 21 | 44.7% | Write-only configuration and parameter registers |
-| **Read-Write-Clear (RWC)** | 3 | 6.4% | Registers with special clear behavior |
+### 1.1 General Configuration (0x00...0x0F)
 
-## Complete Register Access Table
+| Address | Register | Access | Description |
+| :--- | :--- | :--- | :--- |
+| `0x00` | `GCONF` | **RW** | Global configuration flags (direction, PWM mode, diagnostics). |
+| `0x01` | `GSTAT` | **RWC** | Global status flags (reset, error, UV). Write 1 to clear flags. |
+| `0x02` | `IFCNT` | **R** | Interface transmission counter (UART only). |
+| `0x03` | `SLAVECONF`| **W** | UART slave address and send delay configuration. |
+| `0x04` | `IOIN` | **R** | Reads state of all digital input pins. |
+| `0x04` | `OUTPUT` | **W** | Sets SDO_CFG0 pin polarity (Bit 0). Same address as IOIN! |
+| `0x05` | `X_COMPARE`| **W** | Position comparison value for position pulse output. |
+| `0x06` | `OTP_PROG` | **W** | OTP programming register (Factory use). |
+| `0x07` | `OTP_READ` | **R** | Reads OTP memory contents. |
+| `0x08` | `FACTORY_CONF`| **RW** | Factory clock trim (FCLKTRIM). |
+| `0x09` | `SHORT_CONF`| **W** | Short circuit detection sensitivity and filtering. |
+| `0x0A` | `DRV_CONF` | **W** | Driver strength, BBM time, and OT protection settings. |
+| `0x0B` | `GLOBAL_SCALER`| **W** | Global current scaling factor (32-256). |
+| `0x0C` | `OFFSET_READ`| **R** | Reads offset calibration results. |
 
-| Address | Register Name | Access | Category | Description |
-|---------|---------------|--------|----------|-------------|
-| 0x00 | GCONF | R/W | Configuration | Global configuration flags |
-| 0x01 | GSTAT | R/W (clear) | Status | Global status flags (bits cleared on read) |
-| 0x02 | IFCNT | R | Status | UART transmission counter (incremented on each transmission) |
-| 0x03 | SLAVECONF | W | Configuration | UART slave configuration (write-only per datasheet, though reads may work) |
-| 0x04 | IO_INPUT_OUTPUT | R/W | I/O | Read input pins / write output pins (dual-purpose: R for INPUT bits, W for OUTPUT bit) |
-| 0x05 | X_COMPARE | W | Motion Control | Position comparison register (write-only) |
-| 0x06 | OTP_PROG | W | OTP | OTP programming register (write-only) |
-| 0x07 | OTP_READ | R | OTP | OTP read register (read-only) |
-| 0x08 | FACTORY_CONF | R/W | Factory | Factory configuration (clock trim, can override OTP default) |
-| 0x09 | SHORT_CONF | W | Protection | Short detector configuration (write-only) |
-| 0x0A | DRV_CONF | W | Configuration | Driver configuration (write-only) |
-| 0x0B | GLOBAL_SCALER | W | Current Control | Global scaling of motor current (write-only, 32-256) |
-| 0x0C | OFFSET_READ | R | Calibration | Offset calibration results (read-only) |
-| 0x10 | IHOLD_IRUN | W | Current Control | Driver current control (write-only) |
-| 0x11 | TPOWERDOWN | W | Power Management | Delay before power down (write-only) |
-| 0x12 | TSTEP | R | Status | Actual time between microsteps (read-only) |
-| 0x13 | TPWMTHRS | W | Velocity Threshold | Upper velocity for stealthChop voltage PWM mode (write-only) |
-| 0x14 | TCOOLTHRS | W | Velocity Threshold | Lower threshold velocity for coolStep and stallGuard (write-only) |
-| 0x15 | THIGH | W | Velocity Threshold | Velocity threshold for chopper mode switching and fullstepping (write-only) |
-| 0x20 | RAMPMODE | R/W | Motion Control | Driving mode (Velocity, Positioning, Hold) |
-| 0x21 | XACTUAL | R/W | Motion Control | Actual motor position (can be written to set position) |
-| 0x22 | VACTUAL | R | Status | Actual motor velocity from ramp generator (read-only) |
-| 0x23 | VSTART | W | Motion Control | Motor start velocity (write-only) |
-| 0x24 | A_1 | W | Motion Control | First acceleration between VSTART and V1 (write-only) |
-| 0x25 | V_1 | W | Motion Control | First acceleration/deceleration phase target velocity (write-only) |
-| 0x26 | AMAX | W | Motion Control | Second acceleration between V1 and VMAX (write-only) |
-| 0x27 | VMAX | W | Motion Control | Target velocity in velocity mode (write-only) |
-| 0x28 | DMAX | W | Motion Control | Deceleration between VMAX and V1 (write-only) |
-| 0x2A | D_1 | W | Motion Control | Deceleration between V1 and VSTOP (write-only) |
-| 0x2B | VSTOP | W | Motion Control | Motor stop velocity (write-only) |
-| 0x2C | TZEROWAIT | W | Motion Control | Waiting time after ramping down to zero velocity (write-only) |
-| 0x2D | XTARGET | R/W | Motion Control | Target position for ramp mode |
-| 0x33 | VDCMIN | W | Motion Control | Velocity threshold for enabling dcStep (write-only) |
-| 0x34 | SW_MODE | R/W | Switch Configuration | Switch mode configuration (reference switches, latching) |
-| 0x35 | RAMP_STAT | R/W (clear) | Status | Ramp status and switch event status (some bits cleared by writing '1') |
-| 0x36 | XLATCH | R | Status | Ramp generator latch position upon switch event (read-only) |
-| 0x38 | ENCMODE | R/W | Encoder | Encoder configuration and use of N channel |
-| 0x39 | X_ENC | R/W | Status | Actual encoder position (can be written to set position) |
-| 0x3A | ENC_CONST | W | Encoder | Accumulation constant (write-only) |
-| 0x3B | ENC_STATUS | R/W (clear) | Status | Encoder status information (bits cleared by writing '1') |
-| 0x3C | ENC_LATCH | R | Status | Encoder position latched on N event (read-only) |
-| 0x3D | ENC_DEVIATION | W | Encoder | Maximum number of steps deviation between encoder and XACTUAL (write-only) |
-| 0x60 | MSLUT_0 | W | Microstep | Microstep lookup table entry 0 (write-only) |
-| 0x61 | MSLUT_1 | W | Microstep | Microstep lookup table entry 1 (write-only) |
-| 0x62 | MSLUT_2 | W | Microstep | Microstep lookup table entry 2 (write-only) |
-| 0x63 | MSLUT_3 | W | Microstep | Microstep lookup table entry 3 (write-only) |
-| 0x64 | MSLUT_4 | W | Microstep | Microstep lookup table entry 4 (write-only) |
-| 0x65 | MSLUT_5 | W | Microstep | Microstep lookup table entry 5 (write-only) |
-| 0x66 | MSLUT_6 | W | Microstep | Microstep lookup table entry 6 (write-only) |
-| 0x67 | MSLUT_7 | W | Microstep | Microstep lookup table entry 7 (write-only) |
-| 0x68 | MSLUTSEL | W | Microstep | Look up table segmentation definition (write-only) |
-| 0x69 | MSLUTSTART | W | Microstep | Absolute current at microstep table entries 0 and 256 (write-only) |
-| 0x6A | MSCNT | R | Status | Actual position in the microstep table (read-only) |
-| 0x6B | MSCURACT | R | Status | Actual microstep current (read-only) |
-| 0x6C | CHOPCONF | R/W | Chopper | Chopper and driver configuration |
-| 0x6D | COOLCONF | W | CoolStep | coolStep smart current control and stallGuard2 configuration (write-only) |
-| 0x6E | DCCTRL | W | dcStep | dcStep automatic commutation configuration (write-only) |
-| 0x6F | DRV_STATUS | R | Status | stallGuard2 value and driver error flags (read-only) |
-| 0x70 | PWMCONF | W | StealthChop | stealthChop voltage PWM mode chopper configuration (write-only per datasheet) |
-| 0x71 | PWM_SCALE | R | Status | Results of stealthChop amplitude regulator (read-only) |
-| 0x72 | PWM_AUTO | R | Status | Automatically determined PWM config values (read-only) |
-| 0x73 | LOST_STEPS | R | Status | Number of input steps skipped due to dcStep (read-only, SD_MODE=1 only) |
+**Usage Recommendations:**
+- **`GCONF`**: Configure at startup. Use `driver.ConfigureGlobalConfig()`.
+- **`GSTAT`**: Check for `uv_cp` (Charge Pump Undervoltage) if motor stops unexpectedly. Clear `reset` flag after initialization.
+- **`IOIN`**: Use `driver.diagnostics.ReadInputStatus()` to verify wiring (e.g., `REFL`/`REFR` switches, `DRV_ENN`).
+- **`GLOBAL_SCALER`**: Set to appropriate value (e.g., 160-256) to match motor current capability.
 
-## Register Access Types Explained
+### 1.2 Velocity Dependent Driver Feature Control (0x10...0x1F)
 
-- **R/W**: Read-Write - Register can be both read and written
-- **R**: Read-Only - Register can only be read (status/result registers)
-- **W**: Write-Only - Register can only be written (command/trigger registers)
-- **R/W (clear)**: Read-Write with special clear behavior - Some bits can be cleared by writing '1'
+| Address | Register | Access | Description |
+| :--- | :--- | :--- | :--- |
+| `0x10` | `IHOLD_IRUN`| **W** | Run and Hold current settings. |
+| `0x11` | `TPOWERDOWN`| **W** | Delay before power down to stand still current. |
+| `0x12` | `TSTEP` | **R** | Measured time between microsteps (inverse of velocity). |
+| `0x13` | `TPWMTHRS` | **W** | Upper velocity threshold for StealthChop. |
+| `0x14` | `TCOOLTHRS`| **W** | Lower velocity threshold for CoolStep/StallGuard. |
+| `0x15` | `THIGH` | **W** | Velocity threshold for high-speed chopper/fullstep mode. |
 
-## Special Register Behaviors
+**Usage Recommendations:**
+- **`IHOLD_IRUN`**: Use `driver.motorControl.SetCurrent(irun, ihold)`. Typical `irun=16-31`, `ihold=0-16`.
+- **Thresholds**: Use `driver.motorControl.SetModeChangeSpeeds()` to set `TPWMTHRS`, `TCOOLTHRS`, and `THIGH` in steps/s.
+    - `TPWMTHRS`: Set typical cruising speed limit for silent operation.
+    - `TCOOLTHRS`: Set above startup speed to enable StallGuard only when moving stably.
 
-### Clear-on-Read/Write Registers (RWC)
+### 1.3 Ramp Generator Motion Control (0x20...0x2D)
 
-These registers have special behavior where certain bits are cleared when read or written:
+| Address | Register | Access | Description |
+| :--- | :--- | :--- | :--- |
+| `0x20` | `RAMPMODE` | **RW** | 0=Positioning, 1=Vel(+), 2=Vel(-), 3=Hold. |
+| `0x21` | `XACTUAL` | **RW** | Actual position (signed 32-bit). |
+| `0x22` | `VACTUAL` | **R** | Actual velocity (signed 24-bit). |
+| `0x23` | `VSTART` | **W** | Start velocity. Set > 0 (e.g., 100) to avoid jerky starts. |
+| `0x24` | `A1` | **W** | First acceleration (Start -> V1). |
+| `0x25` | `V1` | **W** | Threshold velocity for A1->AMAX transition. |
+| `0x26` | `AMAX` | **W** | Max acceleration (standard). |
+| `0x27` | `VMAX` | **W** | Target velocity. |
+| `0x28` | `DMAX` | **W** | Max deceleration (standard). |
+| `0x2A` | `D1` | **W** | Final deceleration (V1 -> Stop). **Do not set to 0!** |
+| `0x2B` | `VSTOP` | **W** | Stop velocity. Set >= VSTART. |
+| `0x2C` | `TZEROWAIT`| **W** | Wait time after stop before direction change. |
+| `0x2D` | `XTARGET` | **RW** | Target position (signed 32-bit). |
 
-1. **GSTAT (0x01)**: Global status flags
-   - Status bits are automatically cleared when read
-   - Can also be cleared by writing '1' to the corresponding bit
-   - While technically R/W, status bits are automatically cleared when read
+**Usage Recommendations:**
+- **Positioning**: Set `VMAX`, `AMAX`, `DMAX` first, then write `XTARGET` to start move.
+- **Velocity Mode**: Use `driver.rampControl.SetMaxSpeed()` with positive/negative value to control direction.
+- **S-Curve**: For smoother motion, set `V1 > 0` and use `A1`/`D1` for start/stop phases.
+- **Safety**: Always ensure `D1 != 0` in positioning mode.
 
-2. **RAMP_STAT (0x35)**: Ramp status and switch event status
-   - Contains both read-only status bits and event bits that can be cleared
-   - Event bits (`event_stop_l`, `event_stop_r`, `event_stop_sg`, `event_pos_reached`, `second_move`) can be cleared by writing '1'
-   - Status bits (`status_sg`, `vzero`, `position_reached`, etc.) are read-only
+### 1.4 Ramp Generator Driver Features (0x30...0x36)
 
-3. **ENC_STATUS (0x3B)**: Encoder status information
-   - Status bits can be cleared by writing '1' to the corresponding bit position
-   - `deviation_warn` cannot be cleared while a warning still persists
+| Address | Register | Access | Description |
+| :--- | :--- | :--- | :--- |
+| `0x33` | `VDCMIN` | **W** | Velocity threshold for DcStep commutation. |
+| `0x34` | `SW_MODE` | **RW** | Switch stop configuration (endstops, stall stop). |
+| `0x35` | `RAMP_STAT`| **RWC** | Ramp status flags (reached, stop event, stall). |
+| `0x36` | `XLATCH` | **R** | Position latched on switch/stall event. |
 
+**Usage Recommendations:**
+- **Homing**: Use `driver.diagnostics.PerformSensorlessHoming()` or `PerformSwitchHoming()`.
+- **Endstops**: Configure with `driver.rampControl.ConfigureReferenceSwitch()`. Use `ReadInputStatus` to verify wiring logic (NO/NC).
 
-### Read-Write Registers with Special Behavior
+### 1.5 Encoder Registers (0x38...0x3C)
 
-1. **FACTORY_CONF (0x08)**: Factory configuration (clock trim)
-   - **Access**: Read-Write (RW)
-   - **Note**: Can be written to override OTP defaults
-   - **Usage**: Typically read-only, but writing allows customization of clock trim settings
+| Address | Register | Access | Description |
+| :--- | :--- | :--- | :--- |
+| `0x38` | `ENCMODE` | **RW** | Encoder configuration (polarity, prescaler). |
+| `0x39` | `X_ENC` | **RW** | Actual encoder position. |
+| `0x3A` | `ENC_CONST`| **W** | Encoder resolution matching factor. |
+| `0x3B` | `ENC_STATUS`| **RWC** | Encoder events (N-channel, deviation). |
+| `0x3C` | `ENC_LATCH`| **R** | Encoder position latched on N-event. |
+| `0x3D` | `ENC_DEVIATION`| **W** | Max deviation for warning flag. |
 
-2. **IO_INPUT_OUTPUT (0x04)**: Input/output pin register
-   - **Access**: Read-Write (RW)
-   - **Note**: Dual-purpose register - INPUT bits (0-7, 24-31) are read-only, OUTPUT bit (0) is write-only
-   - **Usage**: Read to get input pin states, write to set output pin polarity
+**Usage Recommendations:**
+- **Calibration**: Use `driver.encoder.SetResolution()` to automatically calculate `ENC_CONST`.
+- **Verification**: Check `ENC_STATUS` periodically for deviation warnings if using closed loop.
 
-3. **XACTUAL (0x21)**: Actual motor position
-   - **Access**: Read-Write (RW)
-   - **Note**: Can be written to set/initialize position (useful for homing)
-   - **Warning**: Writing to XACTUAL in positioning mode will start a motion
+### 1.6 Motor Driver Registers (0x60...0x7F)
 
-4. **X_ENC (0x39)**: Actual encoder position
-   - **Access**: Read-Write (RW)
-   - **Note**: Can be written to synchronize encoder position with motor position
+| Address | Register | Access | Description |
+| :--- | :--- | :--- | :--- |
+| `0x60`..`0x67`| `MSLUT[0..7]`| **W** | Microstep lookup table entries. |
+| `0x68` | `MSLUTSEL` | **W** | LUT segment configuration. |
+| `0x69` | `MSLUTSTART`| **W** | Start current for LUT. |
+| `0x6A` | `MSCNT` | **R** | Microstep counter (0-1023). |
+| `0x6B` | `MSCURACT` | **R** | Actual microstep current (signed 9-bit). |
+| `0x6C` | `CHOPCONF` | **RW** | Chopper configuration (TOFF, TBL, HSTRT, HEND). |
+| `0x6D` | `COOLCONF` | **W** | CoolStep and StallGuard2 configuration. |
+| `0x6E` | `DCCTRL` | **W** | DcStep configuration. |
+| `0x6F` | `DRV_STATUS`| **R** | Driver status (StallGuard result, OT/Short flags). |
+| `0x70` | `PWMCONF` | **W** | StealthChop PWM configuration. |
+| `0x71` | `PWM_SCALE`| **R** | StealthChop regulator result. |
+| `0x72` | `PWM_AUTO` | **R** | Auto-tuned PWM values. |
+| `0x73` | `LOST_STEPS`| **R** | Lost step counter (DcStep only). |
 
-## Register Categories
+**Usage Recommendations:**
+- **`CHOPCONF`**: Set `TOFF > 0` to enable driver. `TOFF=0` disables driver.
+- **`DRV_STATUS`**: Monitor `SG_RESULT` for load estimation. 0 = High Load, 1023 = Low Load.
+- **`PWM_SCALE`**: Use to verify StealthChop calibration. If `PWM_SCALE_AUTO` is 0 or very low, calibration failed (increase standstill time).
 
-### Read-Only Status Registers
-These registers provide real-time status information and cannot be written:
-- **IFCNT (0x02)**: UART transmission counter
-- **TSTEP (0x12)**: Actual time between microsteps
-- **VACTUAL (0x22)**: Actual motor velocity
-- **XLATCH (0x36)**: Latched position on switch event
-- **ENC_LATCH (0x3C)**: Encoder position latched on N event
-- **MSCNT (0x6A)**: Microstep table position
-- **MSCURACT (0x6B)**: Actual microstep current
-- **DRV_STATUS (0x6F)**: Driver status and StallGuard2 value
-- **PWM_SCALE (0x71)**: PWM scale results
-- **PWM_AUTO (0x72)**: Auto-determined PWM values
-- **LOST_STEPS (0x73)**: Lost steps counter (only valid when dcStep mode is enabled, SD_MODE=1)
+## 2. Configuration Workflows
 
-### Write-Only Configuration Registers
-These registers are write-only per datasheet (though some may be readable in practice):
-- **SLAVECONF (0x03)**: UART slave configuration
-- **X_COMPARE (0x05)**: Position comparison register
-- **OTP_PROG (0x06)**: OTP programming register
-- **SHORT_CONF (0x09)**: Short detector configuration
-- **DRV_CONF (0x0A)**: Driver configuration
-- **GLOBAL_SCALER (0x0B)**: Global current scaler
-- **IHOLD_IRUN (0x10)**: Driver current control
-- **TPOWERDOWN (0x11)**: Power down delay
-- **TPWMTHRS (0x13)**: StealthChop threshold
-- **TCOOLTHRS (0x14)**: CoolStep threshold
-- **THIGH (0x15)**: High-speed threshold
-- **VSTART (0x23)**: Motor start velocity
-- **A_1 (0x24)**: First acceleration phase
-- **V_1 (0x25)**: Transition velocity
-- **AMAX (0x26)**: Maximum acceleration
-- **VMAX (0x27)**: Maximum velocity
-- **DMAX (0x28)**: Maximum deceleration
-- **D_1 (0x2A)**: Final deceleration
-- **VSTOP (0x2B)**: Motor stop velocity
-- **TZEROWAIT (0x2C)**: Zero wait time
-- **VDCMIN (0x33)**: dcStep velocity threshold
-- **ENC_CONST (0x3A)**: Encoder accumulation constant
-- **ENC_DEVIATION (0x3D)**: Encoder deviation threshold
-- **MSLUT_0 through MSLUT_7 (0x60-0x67)**: Microstep lookup table entries
-- **MSLUTSEL (0x68)**: Microstep lookup table segmentation
-- **MSLUTSTART (0x69)**: Microstep lookup table start values
-- **COOLCONF (0x6D)**: CoolStep and StallGuard2 configuration
-- **DCCTRL (0x6E)**: dcStep automatic commutation configuration
-- **PWMCONF (0x70)**: StealthChop voltage PWM mode configuration
-
-### Factory/OTP Registers
-- **FACTORY_CONF (0x08)**: Read-write factory configuration (can override OTP)
-- **OTP_READ (0x07)**: Read-only OTP memory
-- **OTP_PROG (0x06)**: Write-only OTP programming (requires special sequence)
-
-### Position Registers
-- **XACTUAL (0x21)**: Can be read (current position) or written (set position)
-- **XTARGET (0x2D)**: Write target position for positioning mode
-- **X_ENC (0x39)**: Can be read (encoder position) or written (synchronize position)
-
-## Implementation Details
-
-### Register Definitions
-
-All register definitions use an X-MACRO pattern (following TMC9660 style) for maintainability and single source of truth:
-
-- **Register Definitions**: `inc/tmc5160_register_defs.hpp` - X-MACRO list of all registers
-- **Access Type Functions**: `inc/tmc5160_register_access.hpp` - Functions to query register access types
-
-### Access Type Query Functions
-
-The following functions are available to query register access types:
-
+### 2.1 Startup Verification
+Always perform a setup verification at startup to catch hardware issues early:
 ```cpp
-#include "tmc5160_register_access.hpp"
-
-// Get register access type
-RegisterAccess GetRegisterAccess(uint8_t address);
-
-// Check if register is readable
-bool IsRegisterReadable(uint8_t address);
-
-// Check if register is writable
-bool IsRegisterWritable(uint8_t address);
-
-// Get access type string representation
-const char* GetAccessTypeString(RegisterAccess access);
-```
-
-### Usage Example
-
-```cpp
-#include "tmc5160_register_access.hpp"
-
-// Check register access before operation
-uint8_t reg_addr = 0x6F; // DRV_STATUS
-
-if (tmc5160::IsRegisterReadable(reg_addr)) {
-    uint32_t status;
-    driver.GetComm().ReadRegister(reg_addr, status);
-    // Process status...
+// Verify IC connection and Input Pins
+if (!driver.diagnostics.VerifySetup()) {
+    // Handle error - check power/wiring
 }
-
-// Get access type information
-tmc5160::RegisterAccess access = tmc5160::GetRegisterAccess(reg_addr);
-const char* access_str = tmc5160::GetAccessTypeString(access);
-// access_str = "R" for read-only registers
 ```
 
-## Best Practices
+### 2.2 Silent Operation (StealthChop)
+1. Set `GCONF.en_pwm_mode = 1`.
+2. Set `TPWMTHRS` to a high value (e.g. 5000 steps/s).
+3. **Crucial**: Allow motor to stand still for >130ms after enabling to allow `PWM_OFS_AUTO` calibration.
+4. Monitor `PWM_SCALE` to confirm regulation is active.
 
-1. **Write-Only Registers**: Never attempt to read write-only registers. Always maintain full register state internally if partial updates are needed
-2. **Write Verification**: Verify writes by checking the response data matches what was sent (if supported by communication interface), not by reading back write-only registers
-3. **Clear Bits**: For RWC registers, write '1' to clear event bits, not '0'
-4. **Position Registers**: Be careful when writing to XACTUAL or X_ENC as this may trigger motion or affect position tracking
-5. **Status Registers**: Read status registers regularly to clear event flags and monitor driver state
-6. **Register Access Compliance**: All functions strictly follow datasheet register access types (R/W/C). Functions that violate access types have been removed
+### 2.3 High Torque / High Speed (SpreadCycle)
+1. Set `GCONF.en_pwm_mode = 0`.
+2. Configure `CHOPCONF` (`TOFF`, `TBL`, `HSTRT`, `HEND`) for your motor inductance.
+3. This mode is louder but provides dynamic torque and prevents " runaway" calibration issues at high loads.
 
-## Verification Status
+### 2.4 Sensorless Homing
+1. Configure `StallGuard` (`COOLCONF`) with `SGT` (Threshold).
+2. Set `TCOOLTHRS` low enough to cover homing speed.
+3. Call `driver.diagnostics.PerformSensorlessHoming()`.
+   - This internally sets `SW_MODE.sg_stop = 1`.
+   - Moves motor until stall detected.
+   - Stops and returns position.
 
-✅ **All register access types verified against:**
-- TMC5160A Datasheet Rev 1.18 (2023-MAR-01)
-- Current implementation in `src/tmc5160.cpp`
-- Register definitions in `inc/tmc5160_registers.hpp`
+## 3. Troubleshooting
 
-## Key Findings
-
-1. **Read-Only Registers**: All status and result registers are correctly marked as read-only
-2. **Write-Only Registers**: 21 registers are write-only per datasheet specification - these registers cannot be read
-3. **Clear Behavior**: GSTAT, RAMP_STAT, and ENC_STATUS have special clear-on-read/write behavior (RWC)
-4. **Position Registers**: XACTUAL and X_ENC can be both read and written (used to set position)
-5. **Dual-Purpose Register**: IO_INPUT_OUTPUT serves dual purpose - reading returns inputs, writing controls outputs
-6. **Access Compliance**: All functions strictly comply with datasheet register access types. Functions that attempted to read write-only registers have been removed
-
----
-
-**Last Updated**: Based on TMC5160A Datasheet Rev 1.18 (2023-MAR-01)
+- **Motor not moving**: Check `GSTAT.uv_cp` (Undervoltage), `CHOPCONF.toff` (Driver Enabled?), `DRV_ENN` pin state.
+- **Motor stalling early**: Decrease acceleration (`AMAX`, `A1`). Check `Run Current` (`IRUN`).
+- **StealthChop noise**: Check `PWM_SCALE_AUTO`. If near limits (+/- 255), adjust `PWM_GRAD`.
+- **Position loss**: Check `DRV_STATUS` for `ot` (Overtemp) or `s2g` (Short) events which disable the bridge.

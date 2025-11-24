@@ -30,6 +30,21 @@ Sensorless homing uses the StallGuard2 feature to detect when the motor stalls. 
 1. **Mechanical Stop**: A reliable physical stop that the motor can hit
 2. **StallGuard2 Configuration**: Properly tuned stall threshold
 3. **Motor Enabled**: Motor must be enabled before homing
+4. **SpreadCycle Mode**: StallGuard2 ONLY works in SpreadCycle mode (`en_pwm_mode = 0`). It DOES NOT work in StealthChop mode.
+
+## Important: StallGuard2 and StealthChop Compatibility
+
+**StallGuard2 and StealthChop are mutually exclusive.**
+
+- **StealthChop (`en_pwm_mode = 1`)**: Voltage-controlled mode for silent operation. The driver cannot measure back-EMF load accurately, so StallGuard2 values are invalid or zero.
+- **SpreadCycle (`en_pwm_mode = 0`)**: Current-controlled mode for higher torque. The driver can measure load, enabling StallGuard2.
+
+**To perform sensorless homing:**
+1. Disable StealthChop (switch to SpreadCycle)
+2. Perform the homing sequence
+3. Re-enable StealthChop (if desired for normal operation)
+
+**Note on Mode Switching**: Switching between StealthChop and SpreadCycle can cause a small jerk or "click" sound. This is normal. Ideally, perform the switch at standstill.
 
 ## Basic Usage
 

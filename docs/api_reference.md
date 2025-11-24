@@ -16,33 +16,8 @@ Complete reference documentation for all public methods and types in the TMC5160
 - **Main Header**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
 - **Communication Interface**: [`inc/tmc5160_comm_interface.hpp`](../inc/tmc5160_comm_interface.hpp)
 - **Registers**: [`inc/tmc5160_registers.hpp`](../inc/tmc5160_registers.hpp)
-- **Register Access Types**: [`inc/tmc5160_register_access.hpp`](../inc/tmc5160_register_access.hpp)
 - **Types**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
 - **Unit Conversions**: [`inc/tmc5160_units.hpp`](../inc/tmc5160_units.hpp)
-
-## Register Access Types
-
-All TMC5160 registers have specific access types (Read-Only, Write-Only, Read-Write, or Read-Write with Clear behavior). See the [Register Access Types and Special Behaviors](special_features_register_access.md) for a complete reference.
-
-The driver provides compile-time utilities to check register access types:
-
-```cpp
-#include "tmc5160_register_access.hpp"
-
-// Check if register is readable
-if (tmc5160::IsRegisterReadable(0x6F)) {  // DRV_STATUS
-    uint32_t status;
-    driver.GetComm().ReadRegister(0x6F, status);
-}
-
-// Check if register is writable
-if (tmc5160::IsRegisterWritable(0x00)) {  // GCONF
-    driver.GetComm().WriteRegister(0x00, value);
-}
-
-// Get access type
-tmc5160::RegisterAccess access = tmc5160::GetRegisterAccess(0x12);  // TSTEP = READ_ONLY
-```
 
 ## TMC5160 Class
 

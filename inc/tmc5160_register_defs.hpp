@@ -106,4 +106,11 @@
     X(0x72, PWM_AUTO, R, STATUS, "Automatically determined PWM config values") \
     X(0x73, LOST_STEPS, R, STATUS, "Number of input steps skipped due to dcStep (SD_MODE=1 only)")
 
+/**
+ * @brief Get register definition string
+ * @param address Register address
+ * @return String containing register name and description, or nullptr if not found
+ */
+const char* GetRegisterDef(uint8_t address);
+
 #endif // TMC5160_REGISTER_DEFS_HPP

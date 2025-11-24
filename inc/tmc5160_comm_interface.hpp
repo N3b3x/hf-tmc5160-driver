@@ -68,48 +68,41 @@
  * TMC5160 uses UART single wire interface per datasheet section 5.1.
  * Each byte is transmitted LSB...MSB, highest byte transmitted first.
  *
- * Write Access Datagram (64 bits = 8 bytes + CRC = 9 bytes total):
- * - Byte 0: Sync nibble (bits 0-3: 1,0,1,0) + Reserved (bits 4-7, don't cares but included in CRC)
- * + NODEADDR (8 bits)
- *   - Bits 0-3: Sync pattern (1,0,1,0) for baud rate synchronization
- *   - Bits 4-7: Reserved (don't cares, but included in CRC calculation)
- *   - Bits 8-15: NODEADDR (8-bit node address, 0-127)
- * - Byte 1: RW bit (bit 8 = 1 for write) + 7-bit register address (bits 9-15)
- * - Bytes 2-5: 32-bit data (bits 16-55, high byte to low byte, MSB-first)
- * - Bytes 6-7: Reserved (bits 56-63, don't cares but included in CRC)
- * - Byte 8: CRC8 checksum (bits 56-63, calculated over bytes 0-7)
+ * Write Access Datagram (64 bits = 8 bytes total):
+ * - Byte 0: Sync nibble (0x05 = 1,0,1,0) + Reserved (0)
+ * - Byte 1: NODEADDR (8-bit node address, 0-254)
+ * - Byte 2: RW bit (bit 7 = 1 for write) + 7-bit register address
+ * - Bytes 3-6: 32-bit data (high byte to low byte, MSB-first)
+ * - Byte 7: CRC8 checksum (calculated over bytes 0-6)
  *
- * Read Access Request Datagram (32 bits = 4 bytes + CRC = 5 bytes total):
- * - Byte 0: Sync nibble + Reserved + NODEADDR (same as write)
- * - Byte 1: RW bit (bit 8 = 0 for read) + 7-bit register address
- * - Bytes 2-3: Reserved (don't cares but included in CRC)
- * - Byte 4: CRC8 checksum
+ * Read Access Request Datagram (32 bits = 4 bytes total):
+ * - Byte 0: Sync nibble (0x05) + Reserved (0)
+ * - Byte 1: NODEADDR (8-bit node address)
+ * - Byte 2: RW bit (bit 7 = 0 for read) + 7-bit register address
+ * - Byte 3: CRC8 checksum (calculated over bytes 0-2)
  *
- * Read Access Reply Datagram (64 bits = 8 bytes + CRC = 9 bytes total):
- * - Byte 0: Sync nibble + Reserved (0) + 0xFF (address code for master)
- * - Byte 1: Register address (0)
- * - Bytes 2-5: 32-bit data (high byte to low byte, MSB-first)
- * - Bytes 6-7: Reserved (0)
- * - Byte 8: CRC8 checksum
+ * Read Access Reply Datagram (64 bits = 8 bytes total):
+ * - Byte 0: Sync nibble (0x05) + Reserved (0)
+ * - Byte 1: Master Address (0xFF)
+ * - Byte 2: Register Address (0x00)
+ * - Bytes 3-6: 32-bit data (high byte to low byte, MSB-first)
+ * - Byte 7: CRC8 checksum (calculated over bytes 0-6)
  *
- * CRC8: CRC8-ATM polynomial (0x07), applied LSB to MSB, including sync and addressing byte.
- * Sync nibble is assumed to always be correct.
+ * CRC8: CRC8-ATM polynomial (0x07), applied LSB to MSB.
  *
  * Baud Rate:
- * - Minimum: 9000 baud (assuming 20 MHz clock, worst case for low baud rate)
- * - Maximum: fCLK/16 (due to required stability of baud clock)
+ * - Minimum: 9000 baud
+ * - Maximum: fCLK/16
  * - Baud rate is automatically detected from sync frame timing
- * - Each byte starts with start bit (logic 0) and ends with stop bit (logic 1)
  *
  * Communication Reset:
- * - Pause time > 63 bit times between start bits of two successive bytes resets communication
- * - Minimum 12 bit times of bus idle time required after reset before restart
- * - Any pulse on idle data line < 16 clock cycles treated as glitch (12 bit time timeout)
+ * - Pause time > 63 bit times between start bits resets communication
+ * - Recovery time: 12 bit times of bus idle time
  *
  * SENDDELAY:
- * - Programmable delay time after read request before reply (multiples of 8 bit times)
+ * - Programmable delay time after read request before reply
  * - Default: 8 bit times
- * - Multi-node systems: Set SENDDELAY to minimum 2 for all nodes
+ * - Multi-node systems: Set SENDDELAY to min. 2 for all nodes
  */
 
 #ifndef TMC5160_COMM_INTERFACE_HPP
@@ -279,7 +272,7 @@ struct PinActiveLevels {
 
   // Mode configuration pins (if available as control pins)
   bool spi_mode{true};  ///< SPI_MODE (pin 22): HIGH=SPI mode (active HIGH)
-  bool sd_mode{false};  ///< SD_MODE (pin 21): LOW=Internal ramp (active LOW for internal ramp mode)
+  bool sd_mode{true};   ///< SD_MODE (pin 21): HIGH=External Step/Dir (active HIGH)
 
   /**
    * @brief Get active level for a specific pin
@@ -740,64 +733,68 @@ static constexpr uint8_t calculateCrc8(const uint8_t* data, size_t length) noexc
  * @brief TMC5160 UART frame types
  */
 enum class UartFrameType : uint8_t {
-  WriteAccess, ///< Write access datagram (9 bytes: 8 bytes + CRC)
-  ReadRequest, ///< Read access request datagram (5 bytes: 4 bytes + CRC)
-  ReadReply    ///< Read access reply datagram (9 bytes: 8 bytes + CRC)
+  WriteAccess, ///< Write access datagram (8 bytes: 7 bytes + CRC)
+  ReadRequest, ///< Read access request datagram (4 bytes: 3 bytes + CRC)
+  ReadReply    ///< Read access reply datagram (8 bytes: 7 bytes + CRC)
 };
 
 /**
  * @brief TMC5160 UART command/response frame structure with built-in CRC8
  *
  * Represents a TMC5160 UART frame per datasheet section 5.1.
- * Supports write access (9 bytes), read request (5 bytes), and read reply (9 bytes).
+ * Supports write access (8 bytes), read request (4 bytes), and read reply (8 bytes).
  * Automatically calculates and verifies CRC8 checksum.
  *
  * Frame Structure (per datasheet section 5.1):
- * - Write Access: Byte 0 (sync+nodeaddr), Byte 1 (RW+addr), Bytes 2-5 (data), Bytes 6-7 (reserved),
- * Byte 8 (CRC)
- * - Read Request: Byte 0 (sync+nodeaddr), Byte 1 (RW+addr), Bytes 2-3 (reserved), Byte 4 (CRC)
- * - Read Reply: Byte 0 (sync+0xFF), Byte 1 (addr=0), Bytes 2-5 (data), Bytes 6-7 (reserved), Byte 8
- * (CRC)
+ * - Write Access: Byte 0 (sync+rsv), Byte 1 (nodeaddr), Byte 2 (RW+addr), Bytes 3-6 (data), Byte 7 (CRC)
+ * - Read Request: Byte 0 (sync+rsv), Byte 1 (nodeaddr), Byte 2 (RW+addr), Byte 3 (CRC)
+ * - Read Reply: Byte 0 (sync+rsv), Byte 1 (0xFF), Byte 2 (addr=0), Bytes 3-6 (data), Byte 7 (CRC)
  *
- * Sync nibble: Bits 0-3 = 1,0,1,0 (0x0A) per datasheet section 5.1.1
+ * Sync nibble: 0x05 (Bits 0-3 = 1,0,1,0 transmitted LSB first)
  */
 struct UartFrame {
   /**
    * @brief Union for accessing UART frames in different ways
    */
   union Frame {
-    uint8_t bytes[9]; ///< Frame as 9 bytes (maximum size for write/reply)
+    uint8_t bytes[8]; ///< Frame as 8 bytes (maximum size)
+    
+    // Write Access Structure (8 bytes)
     struct {
-      uint8_t sync_nodeaddr; ///< Byte 0: Sync nibble (bits 0-3: 1,0,1,0) + Reserved (bits 4-7) +
-                             ///< NODEADDR (8 bits)
-      uint8_t rw_address;    ///< Byte 1: RW bit (bit 7 = 1 for write, 0 for read) + 7-bit register address
-      uint8_t data_bytes[4]; ///< Bytes 2-5: 32-bit data (high byte to low byte, MSB-first)
-      uint8_t reserved[2];   ///< Bytes 6-7: Reserved (don't cares but included in CRC)
-      uint8_t crc;           ///< Byte 8: CRC8 checksum
-    } write_fields;          ///< Write access frame structure
+      uint8_t sync_reserved; ///< Byte 0: Sync (0x05)
+      uint8_t node_addr;     ///< Byte 1: Node Address
+      uint8_t rw_address;    ///< Byte 2: RW bit (1) + 7-bit register address
+      uint8_t data_bytes[4]; ///< Bytes 3-6: 32-bit data (MSB-first)
+      uint8_t crc;           ///< Byte 7: CRC8 checksum
+    } write_fields;
+    
+    // Read Request Structure (4 bytes)
     struct {
-      uint8_t sync_nodeaddr; ///< Byte 0: Sync nibble + Reserved + NODEADDR
-      uint8_t rw_address;    ///< Byte 1: RW bit (bit 7 = 0 for read) + 7-bit register address
-      uint8_t reserved[2];   ///< Bytes 2-3: Reserved (don't cares but included in CRC)
-      uint8_t crc;           ///< Byte 4: CRC8 checksum
-    } read_request_fields;   ///< Read request frame structure
+      uint8_t sync_reserved; ///< Byte 0: Sync (0x05)
+      uint8_t node_addr;     ///< Byte 1: Node Address
+      uint8_t rw_address;    ///< Byte 2: RW bit (0) + 7-bit register address
+      uint8_t crc;           ///< Byte 3: CRC8 checksum
+    } read_request_fields;
+    
+    // Read Reply Structure (8 bytes)
     struct {
-      uint8_t sync_master;   ///< Byte 0: Sync nibble + Reserved (0) + 0xFF (address code for master)
-      uint8_t register_addr; ///< Byte 1: Register address (0)
-      uint8_t data_bytes[4]; ///< Bytes 2-5: 32-bit data (high byte to low byte, MSB-first)
-      uint8_t reserved[2];   ///< Bytes 6-7: Reserved (0)
-      uint8_t crc;           ///< Byte 8: CRC8 checksum
-    } read_reply_fields;     ///< Read reply frame structure
-  } frame;                   ///< The UART frame (up to 9 bytes)
+      uint8_t sync_reserved; ///< Byte 0: Sync (0x05)
+      uint8_t master_addr;   ///< Byte 1: Master Address (0xFF)
+      uint8_t reg_addr;      ///< Byte 2: Register Address (0x00)
+      uint8_t data_bytes[4]; ///< Bytes 3-6: 32-bit data (MSB-first)
+      uint8_t crc;           ///< Byte 7: CRC8 checksum
+    } read_reply_fields;
+    
+  } frame;
 
-  UartFrameType type; ///< Frame type (WriteAccess, ReadRequest, or ReadReply)
+  UartFrameType type; ///< Frame type
 
   /**
    * @brief Get frame size in bytes based on type
-   * @return Frame size: 9 bytes for WriteAccess/ReadReply, 5 bytes for ReadRequest
+   * @return Frame size: 8 bytes for Write/Reply, 4 bytes for ReadRequest
    */
   [[nodiscard]] size_t GetSize() const noexcept {
-    return (type == UartFrameType::ReadRequest) ? 5 : 9;
+    return (type == UartFrameType::ReadRequest) ? 4 : 8;
   }
 
   /**
@@ -806,14 +803,16 @@ struct UartFrame {
    */
   [[nodiscard]] uint8_t GetAddress() const noexcept {
     if (type == UartFrameType::ReadReply) {
-      return frame.read_reply_fields.register_addr;
+      return frame.read_reply_fields.reg_addr;
     }
+    // For ReadRequest and WriteAccess, address is in the same byte (Byte 2)
+    // Need to mask off RW bit (bit 7)
     return frame.write_fields.rw_address & 0x7F;
   }
 
   /**
    * @brief Check if this is a write frame
-   * @return true if write frame (WriteAccess type)
+   * @return true if write frame
    */
   [[nodiscard]] bool IsWrite() const noexcept {
     return type == UartFrameType::WriteAccess;
@@ -821,31 +820,17 @@ struct UartFrame {
 
   /**
    * @brief Get 32-bit data value from frame
-   * @return 32-bit value (MSB-first from data bytes) or 0 if ReadRequest
+   * @return 32-bit value (MSB-first) or 0 if ReadRequest
    */
   [[nodiscard]] uint32_t GetValue() const noexcept {
     if (type == UartFrameType::ReadRequest) {
-      return 0; // Read request has no data
+      return 0;
     }
-    // Both WriteAccess and ReadReply have data_bytes at same position
+    // Both WriteAccess and ReadReply have data at offset 3
     return (static_cast<uint32_t>(frame.write_fields.data_bytes[0]) << 24) |
            (static_cast<uint32_t>(frame.write_fields.data_bytes[1]) << 16) |
            (static_cast<uint32_t>(frame.write_fields.data_bytes[2]) << 8) |
            static_cast<uint32_t>(frame.write_fields.data_bytes[3]);
-  }
-
-  /**
-   * @brief Get node address from frame
-   * @return Node address (0-127) or 0xFF for master address in ReadReply
-   */
-  [[nodiscard]] uint8_t GetNodeAddress() const noexcept {
-    if (type == UartFrameType::ReadReply) {
-      return 0xFF; // Master address code
-    }
-    // Extract NODEADDR from sync_nodeaddr byte (bits 0-7, but sync nibble is bits 0-3)
-    // Per datasheet: sync nibble is bits 0-3: 1,0,1,0, NODEADDR follows
-    // Current implementation uses simplified sync (bit 0 = 1), so NODEADDR is bits 1-7
-    return frame.write_fields.sync_nodeaddr & 0x7F;
   }
 
   /**
@@ -871,7 +856,6 @@ struct UartFrame {
     size_t frame_size = GetSize();
     size_t crc_length = frame_size - 1; // All bytes except CRC byte
 
-    // Calculate CRC over bytes 0 to (frame_size-2)
     uint8_t calculated_crc = calculateCrc8(frame.bytes, crc_length);
 
     // Compare with received CRC (last byte)
@@ -889,9 +873,9 @@ struct UartFrame {
     for (size_t i = 0; i < frame_size; ++i) {
       frame.bytes[i] = bytes[i];
     }
-    // Zero out unused bytes for safety
-    if (frame_size < 9) {
-      for (size_t i = frame_size; i < 9; ++i) {
+    // Zero out unused bytes for safety (if any)
+    if (frame_size < 8) {
+      for (size_t i = frame_size; i < 8; ++i) {
         frame.bytes[i] = 0;
       }
     }
@@ -899,25 +883,17 @@ struct UartFrame {
 
   /**
    * @brief Get the frame as raw bytes
-   * @param bytes Output buffer (must be at least GetSize() bytes, or 9 bytes for full frame)
-   * @param full_frame If true, always copy all 9 bytes (for compatibility mode), otherwise copy
-   * GetSize() bytes
+   * @param bytes Output buffer (must be at least GetSize() bytes)
    */
-  void GetFrame(uint8_t* bytes, bool full_frame = false) const noexcept {
-    size_t frame_size = full_frame ? 9 : GetSize();
+  void GetFrame(uint8_t* bytes) const noexcept {
+    size_t frame_size = GetSize();
     for (size_t i = 0; i < frame_size; ++i) {
       bytes[i] = frame.bytes[i];
-    }
-    // Zero out remaining bytes if copying full frame but type is smaller
-    if (full_frame && GetSize() < 9) {
-      for (size_t i = GetSize(); i < 9; ++i) {
-        bytes[i] = 0;
-      }
     }
   }
 
   /**
-   * @brief Construct a write access frame
+   * @brief Construct a write access frame (8 bytes)
    * @param node_addr 8-bit node address (0-127)
    * @param reg_addr Register address to write (0x00-0x73)
    * @param value 32-bit value to write
@@ -927,77 +903,56 @@ struct UartFrame {
     UartFrame uart_frame{};
     uart_frame.type = UartFrameType::WriteAccess;
 
-    // Byte 0: Sync nibble (bits 0-3: 1,0,1,0 = 0x0A) + Reserved (bits 4-7) + NODEADDR
-    // Note: Current implementation uses simplified sync (bit 0 = 1) for compatibility
-    // Full sync pattern would be: (node_addr & 0x7F) | 0x0A
-    // Simplified: (node_addr & 0x7F) | 0x01
-    uart_frame.frame.write_fields.sync_nodeaddr = (node_addr & 0x7F) | 0x01;
+    // Byte 0: Sync nibble (0x05)
+    uart_frame.frame.write_fields.sync_reserved = 0x05;
 
-    // Byte 1: RW bit (bit 7 = 1 for write) + 7-bit register address
+    // Byte 1: Node Address
+    uart_frame.frame.write_fields.node_addr = node_addr;
+
+    // Byte 2: RW bit (1) + Register Address
     uart_frame.frame.write_fields.rw_address = (reg_addr & 0x7F) | 0x80;
 
-    // Bytes 2-5: 32-bit data (high byte to low byte, MSB-first)
+    // Bytes 3-6: Data (MSB-first)
     uart_frame.frame.write_fields.data_bytes[0] = static_cast<uint8_t>((value >> 24) & 0xFF);
     uart_frame.frame.write_fields.data_bytes[1] = static_cast<uint8_t>((value >> 16) & 0xFF);
     uart_frame.frame.write_fields.data_bytes[2] = static_cast<uint8_t>((value >> 8) & 0xFF);
     uart_frame.frame.write_fields.data_bytes[3] = static_cast<uint8_t>(value & 0xFF);
 
-    // Bytes 6-7: Reserved (don't cares but included in CRC)
-    uart_frame.frame.write_fields.reserved[0] = 0x00;
-    uart_frame.frame.write_fields.reserved[1] = 0x00;
-
-    // Byte 8: CRC8 checksum (calculated automatically)
+    // Byte 7: CRC (calculated)
     uart_frame.CalculateCrc();
 
     return uart_frame;
   }
 
   /**
-   * @brief Construct a read request frame
+   * @brief Construct a read request frame (4 bytes)
    * @param node_addr 8-bit node address (0-127)
    * @param reg_addr Register address to read (0x00-0x73)
-   * @param use_9byte_frame If true, uses 9-byte frame for compatibility (default: false, uses
-   * 5-byte per datasheet)
    * @return UartFrame with CRC8 automatically calculated
    */
-  static UartFrame ReadRequest(uint8_t node_addr, uint8_t reg_addr, bool use_9byte_frame = false) noexcept {
+  static UartFrame ReadRequest(uint8_t node_addr, uint8_t reg_addr) noexcept {
     UartFrame uart_frame{};
     uart_frame.type = UartFrameType::ReadRequest;
 
-    // Byte 0: Sync nibble + Reserved + NODEADDR
-    // Note: Current implementation uses simplified sync (bit 0 = 1) for compatibility
-    // Full sync pattern per datasheet: bits 0-3 = 1,0,1,0 (0x0A)
-    uart_frame.frame.read_request_fields.sync_nodeaddr = (node_addr & 0x7F) | 0x01;
+    // Byte 0: Sync nibble (0x05)
+    uart_frame.frame.read_request_fields.sync_reserved = 0x05;
 
-    // Byte 1: RW bit (bit 7 = 0 for read) + 7-bit register address
+    // Byte 1: Node Address
+    uart_frame.frame.read_request_fields.node_addr = node_addr;
+
+    // Byte 2: RW bit (0) + Register Address
     uart_frame.frame.read_request_fields.rw_address = reg_addr & 0x7F;
 
-    // Bytes 2-3: Reserved (don't cares but included in CRC)
-    uart_frame.frame.read_request_fields.reserved[0] = 0x00;
-    uart_frame.frame.read_request_fields.reserved[1] = 0x00;
-
-    // For 9-byte frame compatibility, pad bytes 4-7 with zeros
-    if (use_9byte_frame) {
-      // Zero out bytes 4-7 (they're not part of the 5-byte frame but may be sent)
-      for (size_t i = 4; i < 8; ++i) {
-        uart_frame.frame.bytes[i] = 0x00;
-      }
-      // Calculate CRC over 8 bytes (bytes 0-7) for 9-byte frame
-      size_t crc_length = 8;
-      uint8_t calculated_crc = calculateCrc8(uart_frame.frame.bytes, crc_length);
-      uart_frame.frame.bytes[8] = calculated_crc;
-    } else {
-      // Standard 5-byte frame per datasheet: CRC over bytes 0-3, CRC in byte 4
-      uart_frame.CalculateCrc();
-    }
+    // Byte 3: CRC (calculated)
+    uart_frame.CalculateCrc();
 
     return uart_frame;
   }
 
   /**
-   * @brief Construct a read reply frame from received bytes
-   * @param bytes Pointer to received frame bytes (9 bytes)
-   * @return UartFrame parsed from bytes, or invalid frame if CRC fails
+   * @brief Construct a read reply frame from received bytes (8 bytes)
+   * @param bytes Pointer to received frame bytes
+   * @return UartFrame parsed from bytes
    */
   static UartFrame ReadReply(const uint8_t* bytes) noexcept {
     UartFrame uart_frame{};
@@ -1007,22 +962,17 @@ struct UartFrame {
   }
 
   /**
-   * @brief Check if frame is valid (CRC verified and structure correct)
-   * @return true if frame is valid, false otherwise
+   * @brief Check if frame is valid
+   * @return true if valid
    */
   [[nodiscard]] bool IsValid() const noexcept {
-    // Verify CRC
     if (!VerifyCrc()) {
       return false;
     }
-
-    // Verify structure based on type
     if (type == UartFrameType::ReadReply) {
-      // Read reply: Byte 0 should have 0xFF for master address, Byte 1 should be 0
-      return (frame.read_reply_fields.sync_master == 0xFF) && (frame.read_reply_fields.register_addr == 0);
+      // Verify Master Address (Byte 1) is 0xFF
+      return frame.read_reply_fields.master_addr == 0xFF;
     }
-
-    // WriteAccess and ReadRequest are valid if CRC passes
     return true;
   }
 };
@@ -2516,32 +2466,26 @@ public:
    * @return true if read succeeded, false otherwise
    */
   bool ReadRegister(uint8_t address, uint32_t& value, uint8_t node_address = 0) noexcept {
-    // Build read request frame using UartFrame structure
-    // Note: Current implementation uses 9-byte frame for compatibility, but datasheet
-    // specifies 5 bytes for read request. Set use_9byte_frame=true for compatibility.
+    // Build read request frame (4 bytes)
     uint8_t node_addr = node_address & 0x7F;
-    UartFrame read_request = UartFrame::ReadRequest(node_addr, address, true);
+    UartFrame read_request = UartFrame::ReadRequest(node_addr, address);
 
-    // Get frame bytes (9 bytes for compatibility, though datasheet specifies 5)
-    std::array<uint8_t, 9> tx_buf{};
-    read_request.GetFrame(tx_buf.data(), true); // Get full 9-byte frame for compatibility
-
-    // Note: For strict datasheet compliance, read request should be 5 bytes
-    // Current implementation sends 9 bytes (with padding) for compatibility
-    size_t tx_size = 9; // Using 9-byte frame for compatibility
+    // Get frame bytes (4 bytes)
+    std::array<uint8_t, 8> tx_buf{}; // Max size for any frame is 8
+    read_request.GetFrame(tx_buf.data());
+    size_t tx_size = read_request.GetSize(); // 4 bytes
 
     TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "UART",
-                      "Read register 0x%02X (NodeAddr=0x%02X): TX %02X %02X %02X %02X %02X %02X %02X %02X %02X",
-                      address, node_addr, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4], tx_buf[5], tx_buf[6],
-                      tx_buf[7], tx_buf[8]);
+                      "Read register 0x%02X (NodeAddr=0x%02X): TX %02X %02X %02X %02X",
+                      address, node_addr, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3]);
 
     if (!UartSend(tx_buf.data(), tx_size)) {
       return false;
     }
 
-    // Receive read reply (9 bytes per datasheet)
-    std::array<uint8_t, 9> rx_buf{};
-    if (!UartReceive(rx_buf.data(), 9)) {
+    // Receive read reply (8 bytes)
+    std::array<uint8_t, 8> rx_buf{};
+    if (!UartReceive(rx_buf.data(), 8)) {
       return false;
     }
 
@@ -2549,10 +2493,10 @@ public:
     UartFrame read_reply = UartFrame::ReadReply(rx_buf.data());
 
     TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "UART",
-                      "Read register 0x%02X: RX %02X %02X %02X %02X %02X %02X %02X %02X %02X", address, rx_buf[0],
-                      rx_buf[1], rx_buf[2], rx_buf[3], rx_buf[4], rx_buf[5], rx_buf[6], rx_buf[7], rx_buf[8]);
+                      "Read register 0x%02X: RX %02X %02X %02X %02X %02X %02X %02X %02X", address, rx_buf[0],
+                      rx_buf[1], rx_buf[2], rx_buf[3], rx_buf[4], rx_buf[5], rx_buf[6], rx_buf[7]);
 
-    // Verify CRC8 and frame validity using UartFrame methods
+    // Verify CRC8 and frame validity
     if (!read_reply.VerifyCrc()) {
       TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "UART", "Read register 0x%02X: CRC8 verification failed",
                         address);
@@ -2565,7 +2509,7 @@ public:
       return false;
     }
 
-    // Extract 32-bit value using UartFrame method
+    // Extract 32-bit value
     value = read_reply.GetValue();
 
     return true;
@@ -2579,53 +2523,30 @@ public:
    * @return true if write succeeded, false otherwise
    */
   bool WriteRegister(uint8_t address, uint32_t value, uint8_t node_address = 0) noexcept {
-    // Build write access frame using UartFrame structure
-    // CRC8 is automatically calculated by UartFrame::Write()
+    // Build write access frame (8 bytes)
     uint8_t node_addr = node_address & 0x7F;
     UartFrame write_frame = UartFrame::Write(node_addr, address, value);
 
-    // Get frame bytes (9 bytes per datasheet)
-    std::array<uint8_t, 9> tx_buf{};
+    // Get frame bytes (8 bytes)
+    std::array<uint8_t, 8> tx_buf{};
     write_frame.GetFrame(tx_buf.data());
+    size_t tx_size = write_frame.GetSize(); // 8 bytes
 
     TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "UART",
                       "Write register 0x%02X = 0x%08X (NodeAddr=0x%02X): TX %02X %02X %02X %02X "
-                      "%02X %02X %02X %02X %02X",
+                      "%02X %02X %02X %02X",
                       address, value, node_addr, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4], tx_buf[5],
-                      tx_buf[6], tx_buf[7], tx_buf[8]);
+                      tx_buf[6], tx_buf[7]);
 
-    if (!UartSend(tx_buf.data(), 9)) {
+    if (!UartSend(tx_buf.data(), tx_size)) {
       return false;
     }
 
-    // Receive write acknowledgment (9 bytes per datasheet)
-    std::array<uint8_t, 9> rx_buf{};
-    if (!UartReceive(rx_buf.data(), 9)) {
-      return false;
-    }
-
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "UART",
-                      "Write register 0x%02X: RX %02X %02X %02X %02X %02X %02X "
-                      "%02X %02X %02X",
-                      address, rx_buf[0], rx_buf[1], rx_buf[2], rx_buf[3], rx_buf[4], rx_buf[5], rx_buf[6], rx_buf[7],
-                      rx_buf[8]);
-
-    // Parse and verify write acknowledgment using UartFrame structure
-    UartFrame write_ack = UartFrame::ReadReply(rx_buf.data());
-
-    // Verify CRC8 using UartFrame method
-    if (!write_ack.VerifyCrc()) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "UART", "Write register 0x%02X: CRC8 verification failed",
-                        address);
-      return false;
-    }
-
-    // Verify frame validity (write acknowledgment should have 0xFF in byte 0)
-    if (!write_ack.IsValid()) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "UART",
-                        "Write register 0x%02X: Invalid acknowledgment frame structure", address);
-      return false;
-    }
+    // Write does NOT have a reply packet from the device (only updates internal counter).
+    // We return true if send was successful.
+    // Note: Some single-wire implementations receive their own TX (echo). 
+    // If so, the derived class or HAL should handle flushing the echo.
+    // This interface assumes UartSend handles the transmission.
 
     return true;
   }

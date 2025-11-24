@@ -420,6 +420,18 @@ public:
      */
     bool SetFirstAcceleration(float a1) noexcept;
 
+    /**
+     * @brief Set final deceleration phase
+     * @param d1 Deceleration between V1 and VSTOP in steps/s²
+     * @return true if set successfully, false otherwise
+     *
+     * Sets the final deceleration phase (D1).
+     * Attention: Do not set 0 in positioning mode (datasheet 6.3.1).
+     * If set to 0, the driver might behave unexpectedly in positioning mode.
+     * A safe minimum (e.g., 100) is recommended if unsure.
+     */
+    bool SetFinalDeceleration(float d1) noexcept;
+
   private:
     TMC5160& driver_; ///< Reference to parent driver instance
   } rampControl{*this};
@@ -787,10 +799,29 @@ public:
 
     /**
      * @brief Read GPIO input pins
-     * @param io_pins Reference to store IO pin states
+     * @param input_status Reference to store parsed input pin states
      * @return true if read successfully, false otherwise
      *
-     * Reads the state of all GPIO input pins.
+     * Reads the state of all GPIO input pins and the IC version from register 0x04 (IOIN).
+     */
+    bool ReadInputStatus(InputStatus& input_status) noexcept;
+
+    /**
+     * @brief Read IC version
+     * @param version Reference to store the 8-bit IC version
+     * @return true if read successfully, false otherwise
+     * 
+     * Reads the VERSION field from IOIN register (0x04).
+     * Expected value for TMC5160 is 0x30.
+     */
+    bool ReadIcVersion(uint8_t& version) noexcept;
+
+    /**
+     * @brief Read GPIO input pins (raw)
+     * @param io_pins Reference to store raw IO pin register value
+     * @return true if read successfully, false otherwise
+     *
+     * Reads the raw state of all GPIO input pins (register 0x04).
      */
     bool ReadGpioPins(uint32_t& io_pins) noexcept;
 
@@ -802,6 +833,19 @@ public:
      * Reads the factory configuration/clock trim value.
      */
     bool ReadFactoryConfig(uint8_t& fclktrim) noexcept;
+
+    /**
+     * @brief Set SDO_CFG0 pin polarity (UART/Single Wire mode)
+     * @param polarity Output pin polarity (false=normal/active high, true=inverted/active low)
+     * @return true if set successfully, false otherwise
+     *
+     * Sets the polarity of the SDO_CFG0 pin when used as Next Address Output (NAO)
+     * in single-wire UART chain mode.
+     *
+     * @note This affects the OUTPUT register (0x04), bit 0.
+     *       The reset value is 1 (active low/inverted) for use as NAO.
+     */
+    bool SetSdoCfg0Polarity(bool polarity) noexcept;
 
     /**
      * @brief Read OTP configuration
@@ -832,6 +876,19 @@ public:
      * Reads the results from offset calibration procedure.
      */
     bool ReadOffsetCalibration(uint8_t& phase_a, uint8_t& phase_b) noexcept;
+
+    /**
+     * @brief Run comprehensive startup verification
+     * 
+     * Performs a full verification of the driver setup including:
+     * - IC Version check
+     * - Input pin state logging
+     * - Critical register checks
+     * 
+     * Logs all findings using the system logger.
+     * @return true if basic verification passed (IC found), false otherwise
+     */
+    bool VerifySetup() noexcept;
 
   private:
     TMC5160& driver_; ///< Reference to parent driver instance

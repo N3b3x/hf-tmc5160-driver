@@ -80,7 +80,67 @@ inline tmc5160::Esp32SpiPinConfig GetDefaultPinConfig() noexcept {
 }
 
 /**
- * @brief Motor Configuration for 17HS4401S-PG518 NEMA 17 Stepper Motor
+ * @brief Motor type enumeration for compile-time motor selection
+ * 
+ * This enumeration defines the available motor configurations that can be selected
+ * at compile time. Each motor has its own configuration namespace with optimized
+ * settings for current, chopper, and StealthChop parameters.
+ * 
+ * MOTOR SELECTION GUIDE:
+ * 
+ * 1. MOTOR_17HS4401S_GEARBOX (default):
+ *    - Model: 17HS4401S-PG518 with 5.18:1 planetary gearbox
+ *    - Rated Current: 1.68A RMS per phase
+ *    - Step Angle: 1.8° (200 steps/rev motor, ~1036 steps/rev output)
+ *    - Holding Torque: 40Ncm (motor), ~207Ncm (output with gearbox)
+ *    - Current Settings: IRUN=20 (~1.88A RMS), IHOLD=10 (~0.94A RMS)
+ *    - Use for: Applications requiring high torque and precision positioning
+ *    - Power Supply: 2-3A recommended
+ * 
+ * 2. MOTOR_17HS4401S_DIRECT:
+ *    - Model: 17HS4401S direct drive (no gearbox)
+ *    - Rated Current: 1.68A RMS per phase
+ *    - Step Angle: 1.8° (200 steps/rev)
+ *    - Holding Torque: 40Ncm
+ *    - Current Settings: IRUN=20 (~1.88A RMS), IHOLD=10 (~0.94A RMS)
+ *    - Use for: Applications requiring higher speed and lower torque
+ *    - Power Supply: 2-3A recommended
+ * 
+ * 3. MOTOR_APPLIED_MOTION_5034:
+ *    - Model: Applied Motion Products 5034-369 NEMA 34
+ *    - Rated Current: 4.17A RMS per phase (bipolar series)
+ *    - Step Angle: 1.8° (200 steps/rev)
+ *    - Holding Torque: 636 oz-in (4.5 Nm)
+ *    - Resistance: 0.84 Ohms/phase (bipolar series)
+ *    - Inductance: 10.4 mH/phase (bipolar series)
+ *    - Current Settings: IRUN=28 (~4.17A RMS), IHOLD=14 (~2.15A RMS)
+ *    - Use for: High-torque applications requiring 4A+ current
+ *    - WARNING: Requires power supply capable of 5A+ continuous current
+ * 
+ * USAGE:
+ * In your example file, declare a static constexpr variable at global scope:
+ * 
+ *     static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
+ *         tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+ * 
+ * Then use conditional compilation or if constexpr to select the motor namespace:
+ * 
+ *     if constexpr (SELECTED_MOTOR == MotorType::MOTOR_17HS4401S_GEARBOX) {
+ *         namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+ *     } else if constexpr (SELECTED_MOTOR == MotorType::MOTOR_17HS4401S_DIRECT) {
+ *         namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S_Direct;
+ *     } else if constexpr (SELECTED_MOTOR == MotorType::MOTOR_APPLIED_MOTION_5034) {
+ *         namespace Motor = tmc5160_test_config::MotorConfig_AppliedMotion_5034_369;
+ *     }
+ */
+enum class MotorType {
+    MOTOR_17HS4401S_GEARBOX,      ///< 17HS4401S with 5.18:1 planetary gearbox
+    MOTOR_17HS4401S_DIRECT,       ///< 17HS4401S direct drive (no gearbox)
+    MOTOR_APPLIED_MOTION_5034     ///< Applied Motion 5034-369 NEMA 34 (high torque)
+};
+
+/**
+ * @brief Motor Configuration for 17HS4401S-PG518 NEMA 17 Stepper Motor (WITH GEARBOX)
  * 
  * Model: 17HS4401S-PG518 (with Planetary Gearbox)
  * - Rated Current: 1.68A / Phase
@@ -91,9 +151,9 @@ inline tmc5160::Esp32SpiPinConfig GetDefaultPinConfig() noexcept {
  * 
  * Driver Settings for Smoothness:
  * - Microsteps: 256 (MRES=0) for maximum smoothness
- * - Current: Run=1.4A (~83%), Hold=0.5A (~30%)
+ * - Current: Run=1.88A (~112%), Hold=0.94A (~56%)
  * - Global Scaler: 160 (Optimal range >128)
- * - Chopper: TOFF=5, HEND=3, HSTRT=0 (Typical for NEMA17)
+ * - Chopper: TOFF=5, HEND=3, HSTRT=4 (Typical for NEMA17)
  */
 namespace MotorConfig_17HS4401S {
     // Physical Motor Specs
@@ -104,15 +164,27 @@ namespace MotorConfig_17HS4401S {
     constexpr uint16_t OUTPUT_FULL_STEPS = static_cast<uint16_t>(MOTOR_FULL_STEPS * GEAR_RATIO); // ~1036
 
     // Driver Configuration
-    constexpr uint8_t GLOBAL_SCALER = 160;       // >128 recommended for best performance
-    
-    // Current Calculation with Scaler 160:
-    // Full Scale Current = (325mV / Rsense) * (GLOBAL_SCALER/256)
-    // Assuming Rsense = 0.075 Ohm (Standard on many Eval boards/SilentStepSticks)
-    // If Rsense is different (e.g. 0.10 Ohm), these values scale linearly.
-    // Here we set register values to target ~1.4A Run / 0.5A Hold relative to Full Scale.
-    constexpr uint8_t IRUN = 25;                 // ~80-85% of scaler limit
-    constexpr uint8_t IHOLD = 10;                // ~30-35% of scaler limit
+    // NOTE: Board has 0.05 Ohm Sense Resistors (1W, low-inductance type required).
+    // Per datasheet table: RSENSE=0.05Ω → Max RMS=4.7A, Max Peak=6.6A (at CS=31, GLOBAL_SCALER=256)
+    // 
+    // Current Calculation (datasheet formula):
+    // I_RMS = (GLOBAL_SCALER/256) * ((IRUN+1)/32) * (VFS/RSENSE) * (1/√2)
+    // Where VFS = 0.325V (typical full-scale voltage)
+    // 
+    // With GLOBAL_SCALER=160, RSENSE=0.05Ω:
+    // Max Peak Current = 6.5A * (160/256) = 4.06A Peak (at IRUN=31)
+    // 
+    // For 17HS4401S motor (1.68A RMS rated):
+    // IRUN=20: I_RMS = 0.625 * 0.65625 * 6.5 * 0.707 = ~1.88A RMS
+    // IRUN=20: I_Peak = 4.06A * 0.65625 = ~2.66A Peak
+    // 
+    // Increased to IRUN=20 for better StealthChop calibration:
+    // - IRUN ≥ 8 is minimum for StealthChop automatic tuning
+    // - IRUN 16-31 recommended for best microstep performance
+    // - Current is slightly above motor rating but acceptable for testing
+    constexpr uint8_t GLOBAL_SCALER = 160;       // Fine-tunes current range (0=256=full scale)
+    constexpr uint8_t IRUN = 20;                 // ~1.88A RMS, ~2.66A Peak (improved StealthChop)
+    constexpr uint8_t IHOLD = 10;                // ~0.94A RMS, ~1.33A Peak (50% of Run)
     
     // Microstepping for Maximum Smoothness
     constexpr uint8_t MRES = 0;                  // 0 = 256 microsteps (Highest Resolution)
@@ -129,6 +201,143 @@ namespace MotorConfig_17HS4401S {
     constexpr bool STEALTH_AUTOGRAD = true;
     constexpr uint8_t STEALTH_FREQ = 1;          // 1 = ~35kHz @ 12MHz clock (Good balance)
     constexpr uint8_t STEALTH_OFS = 30;
+
+    // Power Stage Configuration (BSC072N08NS5)
+    // Critical for preventing uv_cp errors with low Qg MOSFETs
+    constexpr uint8_t DRV_STRENGTH = 0;          // Weakest setting for low Qg MOSFETs (<10nC)
+    constexpr uint8_t BBM_TIME = 0;              // 0 = ~100ns (Sufficient for fast MOSFETs)
+    constexpr uint8_t BBM_CLKS = 0;              // 0 = Off
+}
+
+/**
+ * @brief Motor Configuration for 17HS4401S NEMA 17 Stepper Motor (DIRECT DRIVE, NO GEARBOX)
+ * 
+ * Model: 17HS4401S (Direct Drive, No Gearbox)
+ * - Rated Current: 1.68A / Phase
+ * - Step Angle: 1.8°
+ * - Holding Torque: 40Ncm
+ * - Gear Ratio: 1.0:1 (Direct Drive)
+ * - Steps/Rev (Output Shaft): 200 steps
+ * 
+ * Driver Settings:
+ * - Microsteps: 256 (MRES=0) for maximum smoothness
+ * - Current: Run=1.88A (~112%), Hold=0.94A (~56%)
+ * - Global Scaler: 160
+ * - Chopper: TOFF=5, HEND=3, HSTRT=4 (Typical for NEMA17)
+ */
+namespace MotorConfig_17HS4401S_Direct {
+    // Physical Motor Specs
+    constexpr uint16_t RATED_CURRENT_MA = 1680;  // 1.68A
+    constexpr float GEAR_RATIO = 1.0f;            // Direct drive (no gearbox)
+    constexpr float MOTOR_STEP_ANGLE = 1.8f;
+    constexpr uint16_t MOTOR_FULL_STEPS = 200;
+    constexpr uint16_t OUTPUT_FULL_STEPS = MOTOR_FULL_STEPS; // Same as motor (no gearbox)
+
+    // Driver Configuration
+    // NOTE: Board has 0.05 Ohm Sense Resistors (1W, low-inductance type required).
+    // Same current settings as geared version since motor is identical
+    constexpr uint8_t GLOBAL_SCALER = 160;       // Fine-tunes current range (0=256=full scale)
+    constexpr uint8_t IRUN = 20;                 // ~1.88A RMS, ~2.66A Peak
+    constexpr uint8_t IHOLD = 10;                // ~0.94A RMS, ~1.33A Peak (50% of Run)
+    
+    // Microstepping for Maximum Smoothness
+    constexpr uint8_t MRES = 0;                  // 0 = 256 microsteps (Highest Resolution)
+    constexpr bool INTERPOLATION = true;         // Interpolation (always on for smoothness)
+    
+    // Chopper Configuration (SpreadCycle default for NEMA 17)
+    constexpr uint8_t TOFF = 5;
+    constexpr uint8_t HEND = 3;
+    constexpr uint8_t HSTRT = 4;
+    constexpr uint8_t TBL = 2;                   // Blank time 36 clocks
+    
+    // StealthChop Configuration
+    constexpr bool STEALTH_AUTOSCALE = true;
+    constexpr bool STEALTH_AUTOGRAD = true;
+    constexpr uint8_t STEALTH_FREQ = 1;          // 1 = ~35kHz @ 12MHz clock (Good balance)
+    constexpr uint8_t STEALTH_OFS = 30;
+
+    // Power Stage Configuration (BSC072N08NS5)
+    constexpr uint8_t DRV_STRENGTH = 0;          // Weakest setting for low Qg MOSFETs (<10nC)
+    constexpr uint8_t BBM_TIME = 0;              // 0 = ~100ns (Sufficient for fast MOSFETs)
+    constexpr uint8_t BBM_CLKS = 0;              // 0 = Off
+}
+
+/**
+ * @brief Motor Configuration for Applied Motion 5034-369 NEMA 34 Stepper Motor
+ * 
+ * Model: Applied Motion Products 5034-369
+ * - Rated Current (Bipolar Series): 4.17A / Phase
+ * - Step Angle: 1.8°
+ * - Holding Torque (Bipolar Series): 636 oz-in (4.5 Nm)
+ * - Resistance (Bipolar Series): 0.84 Ohms/phase
+ * - Inductance (Bipolar Series): 10.4 mH/phase
+ * - Gear Ratio: 1.0:1 (Direct Drive)
+ * - Steps/Rev (Output Shaft): 200 steps
+ * 
+ * Driver Settings:
+ * - Microsteps: 256 (MRES=0) for maximum smoothness
+ * - Current: Run=4.17A (100% rated), Hold=2.08A (50% rated)
+ * - Global Scaler: 256 (Full scale for maximum current capacity)
+ * - Chopper: TOFF=5, HEND=3, HSTRT=4 (Typical for NEMA34)
+ * 
+ * NOTE: This motor requires significantly higher current than NEMA 17 motors.
+ * Ensure power supply can deliver adequate current (5A+ recommended).
+ */
+namespace MotorConfig_AppliedMotion_5034_369 {
+    // Physical Motor Specs
+    constexpr uint16_t RATED_CURRENT_MA = 4170;  // 4.17A RMS (bipolar series)
+    constexpr float GEAR_RATIO = 1.0f;            // Direct drive (no gearbox)
+    constexpr float MOTOR_STEP_ANGLE = 1.8f;
+    constexpr uint16_t MOTOR_FULL_STEPS = 200;
+    constexpr uint16_t OUTPUT_FULL_STEPS = MOTOR_FULL_STEPS; // Same as motor (no gearbox)
+    constexpr float RESISTANCE_OHMS = 0.84f;      // Bipolar series resistance
+    constexpr float INDUCTANCE_MH = 10.4f;        // Bipolar series inductance
+
+    // Driver Configuration
+    // NOTE: Board has 0.05 Ohm Sense Resistors (1W, low-inductance type required).
+    // 
+    // Current Calculation (datasheet formula):
+    // I_RMS = (GLOBAL_SCALER/256) * ((IRUN+1)/32) * (VFS/RSENSE) * (1/√2)
+    // Where VFS = 0.325V (typical full-scale voltage), RSENSE = 0.05Ω
+    // 
+    // With GLOBAL_SCALER=256 (full scale), RSENSE=0.05Ω:
+    // Max Peak Current = 6.5A Peak (at IRUN=31)
+    // Max RMS Current = 6.5A * 0.707 = 4.6A RMS (at IRUN=31)
+    // 
+    // For Applied Motion 5034-369 motor (4.17A RMS rated):
+    // Target: 4.17A RMS = 5.9A Peak
+    // But max available is 4.6A RMS, so we'll use maximum available:
+    // IRUN=31: I_RMS = 1.0 * 1.0 * 6.5 * 0.707 = ~4.6A RMS (slightly above rated)
+    // IRUN=28: I_RMS = 1.0 * 0.90625 * 6.5 * 0.707 = ~4.17A RMS (exact match)
+    // 
+    // Using IRUN=28 for exact rated current, or IRUN=31 for maximum available
+    constexpr uint8_t GLOBAL_SCALER = 256;       // Full scale for maximum current capacity
+    constexpr uint8_t IRUN = 28;                 // ~4.17A RMS (100% rated), ~5.9A Peak
+    constexpr uint8_t IHOLD = 14;                // ~2.15A RMS (~51.5% of Run), ~3.04A Peak
+    
+    // Microstepping for Maximum Smoothness
+    constexpr uint8_t MRES = 0;                  // 0 = 256 microsteps (Highest Resolution)
+    constexpr bool INTERPOLATION = true;         // Interpolation (always on for smoothness)
+    
+    // Chopper Configuration (SpreadCycle for NEMA 34)
+    // NEMA 34 motors typically need slightly different chopper settings
+    constexpr uint8_t TOFF = 5;
+    constexpr uint8_t HEND = 3;
+    constexpr uint8_t HSTRT = 4;
+    constexpr uint8_t TBL = 2;                   // Blank time 36 clocks
+    
+    // StealthChop Configuration
+    // Higher current motors may need different StealthChop settings
+    constexpr bool STEALTH_AUTOSCALE = true;
+    constexpr bool STEALTH_AUTOGRAD = true;
+    constexpr uint8_t STEALTH_FREQ = 1;          // 1 = ~35kHz @ 12MHz clock
+    constexpr uint8_t STEALTH_OFS = 30;          // May need adjustment for higher current motor
+
+    // Power Stage Configuration (BSC072N08NS5)
+    // Higher current may require different drive strength
+    constexpr uint8_t DRV_STRENGTH = 0;          // Weakest setting for low Qg MOSFETs (<10nC)
+    constexpr uint8_t BBM_TIME = 0;              // 0 = ~100ns (Sufficient for fast MOSFETs)
+    constexpr uint8_t BBM_CLKS = 0;              // 0 = Off
 }
 
 /**

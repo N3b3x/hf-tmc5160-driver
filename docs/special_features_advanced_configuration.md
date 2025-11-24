@@ -52,6 +52,7 @@ void configureCoolStep() {
     
     // Set velocity threshold for CoolStep activation
     // CoolStep activates between TCOOLTHRS and THIGH
+    // IMPORTANT: CoolStep requires SpreadCycle mode (en_pwm_mode=0)
     driver.motorControl.SetModeChangeSpeeds(
         1000.0f,  // TPWMTHRS: stealthChop threshold
         500.0f,   // TCOOLTHRS: CoolStep lower threshold
@@ -66,6 +67,8 @@ void configureCoolStep() {
 2. **Current Reduction**: When load is low (high SG value), reduces current
 3. **Current Increase**: When load increases (low SG value), increases current
 4. **Hysteresis**: `semax` prevents rapid current changes
+
+**Note**: CoolStep requires StallGuard2, which ONLY works in SpreadCycle mode. CoolStep is automatically disabled if StealthChop is enabled (`en_pwm_mode=1`).
 
 ## dcStep Automatic Commutation
 

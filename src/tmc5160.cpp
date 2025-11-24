@@ -538,6 +538,25 @@ bool TMC5160<CommType>::RampControl::SetFirstAcceleration(float a1) noexcept {
   return driver_.comm_.WriteRegister(Registers::A_1, static_cast<uint32_t>(a1_internal));
 }
 
+template <typename CommType>
+bool TMC5160<CommType>::RampControl::SetFinalDeceleration(float d1) noexcept {
+  if (d1 == 0.0F) {
+    // Datasheet warning: "Attention: Do not set 0 in positioning mode, even if V1=0!"
+    // We allow setting 0 here as it might be used in other modes or user intends it,
+    // but we log a warning if logging is enabled? 
+    // For now, we just pass it through, but user should be aware.
+  }
+  int32_t d1_internal = driver_.accelToInternal(std::abs(d1));
+  d1_internal = std::min(d1_internal,
+      static_cast<decltype(d1_internal)>(0xFFFF)); // D_1 is 16 bits
+  // Ensure value is at least 1 if user tries to set very low non-zero value that rounds to 0?
+  // The register range starts at 1.
+  if (d1_internal == 0 && d1 != 0.0F) {
+      d1_internal = 1;
+  }
+  return driver_.comm_.WriteRegister(Registers::D_1, static_cast<uint32_t>(d1_internal));
+}
+
 // MotorControl implementation
 template <typename CommType>
 bool TMC5160<CommType>::MotorControl::Enable() noexcept {
@@ -1301,6 +1320,41 @@ bool TMC5160<CommType>::Diagnostics::GetPwmAuto(uint8_t& pwm_ofs_auto, uint8_t& 
 }
 
 template <typename CommType>
+bool TMC5160<CommType>::Diagnostics::ReadInputStatus(InputStatus& input_status) noexcept {
+  uint32_t io_pins = 0;
+  if (!ReadGpioPins(io_pins)) {
+    return false;
+  }
+  
+  IOIN_Register ioin{};
+  ioin.value = io_pins;
+  
+  input_status.refl_step = ioin.bits.refl_step != 0;
+  input_status.refr_dir = ioin.bits.refr_dir != 0;
+  input_status.encb_dcen_cfg4 = ioin.bits.encb_dcen_cfg4 != 0;
+  input_status.enca_dcin_cfg5 = ioin.bits.enca_dcin_cfg5 != 0;
+  input_status.drv_enn = ioin.bits.drv_enn != 0;
+  input_status.enc_n_dco_cfg6 = ioin.bits.enc_n_dco_cfg6 != 0;
+  input_status.sd_mode = ioin.bits.sd_mode != 0;
+  input_status.swcomp_in = ioin.bits.swcomp_in != 0;
+  input_status.version = static_cast<uint8_t>(ioin.bits.version);
+  
+  return true;
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::Diagnostics::ReadIcVersion(uint8_t& version) noexcept {
+  uint32_t io_pins = 0;
+  if (!ReadGpioPins(io_pins)) {
+    return false;
+  }
+  IOIN_Register ioin{};
+  ioin.value = io_pins;
+  version = static_cast<uint8_t>(ioin.bits.version);
+  return true;
+}
+
+template <typename CommType>
 bool TMC5160<CommType>::Diagnostics::ReadGpioPins(uint32_t& io_pins) noexcept {
   return driver_.comm_.ReadRegister(Registers::IO_INPUT_OUTPUT, io_pins, driver_.GetCommAddress());
 }
@@ -1314,6 +1368,23 @@ bool TMC5160<CommType>::Diagnostics::ReadFactoryConfig(uint8_t& fclktrim) noexce
   // FACTORY_CONF contains FCLKTRIM in bits 0-4
   fclktrim = static_cast<uint8_t>(value & 0x1F);
   return true;
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::Diagnostics::SetSdoCfg0Polarity(bool polarity) noexcept {
+  // Register 0x04 is dual purpose:
+  // - Read: IOIN (Input states)
+  // - Write: OUTPUT (Output configuration)
+  //
+  // Bit 0 of OUTPUT register controls the polarity of SDO_CFG0 pin in UART mode.
+  // 0: Normal / Active High (Logic 1 = High Voltage)
+  // 1: Inverted / Active Low (Logic 1 = Low Voltage) - Default reset value
+  //
+  // NOTE: Writing to 0x04 DOES NOT overwrite input flags (as they are read-only at this address).
+  // Writing only affects the output configuration latch.
+  
+  uint32_t value = polarity ? 1 : 0;
+  return driver_.comm_.WriteRegister(Registers::IO_INPUT_OUTPUT, value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -1351,6 +1422,53 @@ bool TMC5160<CommType>::Diagnostics::ReadOffsetCalibration(uint8_t& phase_a, uin
   offset_read.value = value;
   phase_a = static_cast<uint8_t>(offset_read.bits.phase_a);
   phase_b = static_cast<uint8_t>(offset_read.bits.phase_b);
+  return true;
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::Diagnostics::VerifySetup() noexcept {
+  TMC5160_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "--- TMC5160 Setup Verification ---");
+
+  // 1. Check IC Version
+  uint8_t version = 0;
+  if (ReadIcVersion(version)) {
+    if (version == 0x30) {
+      TMC5160_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "IC Version: 0x30 (Matches TMC5160)");
+    } else {
+      TMC5160_LOG_DEBUG(driver_.comm_, 0, "VerifySetup", "IC Version MISMATCH: 0x%02X (Expected 0x30)", version);
+      // If version is 0x00 or 0xFF, it's likely a communication error
+      if (version == 0x00 || version == 0xFF) {
+        TMC5160_LOG_DEBUG(driver_.comm_, 0, "VerifySetup", "CRITICAL: Bus communication likely failed!");
+        return false;
+      }
+    }
+  } else {
+    TMC5160_LOG_DEBUG(driver_.comm_, 0, "VerifySetup", "Failed to read IC Version!");
+    return false;
+  }
+
+  // 2. Check Input Pins (Reg 0x04)
+  InputStatus inputs;
+  if (ReadInputStatus(inputs)) {
+    TMC5160_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "--- Input Pins (IOIN 0x04) ---");
+    TMC5160_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "REFL_STEP:      %s", inputs.refl_step ? "HIGH" : "LOW");
+    TMC5160_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "REFR_DIR:       %s", inputs.refr_dir ? "HIGH" : "LOW");
+    TMC5160_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "ENCB_DCEN_CFG4: %s", inputs.encb_dcen_cfg4 ? "HIGH" : "LOW");
+    TMC5160_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "ENCA_DCIN_CFG5: %s", inputs.enca_dcin_cfg5 ? "HIGH" : "LOW");
+    TMC5160_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "DRV_ENN:        %s (Active LOW)", inputs.drv_enn ? "HIGH (Disabled)" : "LOW (Enabled)");
+    TMC5160_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "ENC_N_DCO_CFG6: %s", inputs.enc_n_dco_cfg6 ? "HIGH" : "LOW");
+    TMC5160_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "SD_MODE:        %s %s", inputs.sd_mode ? "HIGH" : "LOW", inputs.sd_mode ? "(External Step/Dir)" : "(Internal Ramp)");
+    TMC5160_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "SWCOMP_IN:      %s", inputs.swcomp_in ? "HIGH" : "LOW");
+    
+    // Warn about configuration mismatches
+    if (inputs.drv_enn) {
+       TMC5160_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "NOTE: DRV_ENN is HIGH. Driver power stage is currently DISABLED.");
+    }
+  } else {
+    TMC5160_LOG_DEBUG(driver_.comm_, 0, "VerifySetup", "Failed to read Input Status!");
+  }
+
+  TMC5160_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "----------------------------------");
   return true;
 }
 
