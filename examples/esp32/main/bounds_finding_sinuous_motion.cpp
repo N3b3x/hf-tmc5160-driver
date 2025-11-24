@@ -52,6 +52,7 @@
 
 #include "../../../inc/tmc5160.hpp"
 #include "esp32_tmc5160_bus.hpp"
+#include "esp32_tmc5160_bus_config.hpp"
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "driver/uart.h"
@@ -792,7 +793,7 @@ private:
     uint64_t elapsed_us;
     float freq, amp;
     int32_t home, local_min, local_max;
-    uint32_t target_cycles, current_cycles;
+    uint32_t target_cycles;
     bool cycle_started;
     int32_t last_target_rel;
     uint32_t dwell_min, dwell_max, dwell_center;
@@ -808,7 +809,6 @@ private:
       local_min = local_min_bound_;
       local_max = local_max_bound_;
       target_cycles = target_cycles_;
-      current_cycles = current_cycles_;
       cycle_started = cycle_started_;
       last_target_rel = last_target_relative_;
       dwell_min = dwell_at_min_ms_;
