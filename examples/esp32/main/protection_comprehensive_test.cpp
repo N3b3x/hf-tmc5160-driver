@@ -36,11 +36,14 @@ static constexpr bool ENABLE_SHORT_CIRCUIT_TESTS = true;
 static constexpr bool ENABLE_OVERTEMPERATURE_TESTS = true;
 
 // Test configuration constants
-static constexpr uint8_t TEST_IRUN = 20;
-static constexpr uint8_t TEST_IHOLD = 10;
-static constexpr uint8_t TEST_GLOBAL_SCALER = 32;
-static constexpr uint8_t TEST_TOFF = 5;
-static constexpr uint8_t TEST_MRES = 4; // 16 microsteps
+using Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+using Test = tmc5160_test_config::TestConfig_17HS4401S;
+
+static constexpr uint8_t TEST_IRUN = Motor::IRUN;
+static constexpr uint8_t TEST_IHOLD = Motor::IHOLD;
+static constexpr uint8_t TEST_GLOBAL_SCALER = Motor::GLOBAL_SCALER;
+static constexpr uint8_t TEST_TOFF = Motor::TOFF;
+static constexpr uint8_t TEST_MRES = Motor::MRES; // 256 microsteps
 
 // Forward declarations
 bool test_short_circuit_protection() noexcept;
@@ -92,8 +95,12 @@ std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
   cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
   cfg.chopper.toff = TEST_TOFF;
   cfg.chopper.mres = TEST_MRES;
-  cfg.chopper.intpol = true;
-  cfg.power_stage.drv_strength = 0;
+  cfg.chopper.intpol = Motor::INTERPOLATION;
+  cfg.chopper.hend = Motor::HEND;
+  cfg.chopper.hstrt = Motor::HSTRT;
+  cfg.chopper.tbl = Motor::TBL;
+  
+  cfg.power_stage.drv_strength = 2;
   cfg.power_stage.bbm_time = 24;
   cfg.power_stage.bbm_clks = 4;
   

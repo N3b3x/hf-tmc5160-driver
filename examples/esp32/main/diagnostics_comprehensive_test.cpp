@@ -55,11 +55,14 @@ static constexpr bool ENABLE_OFFSET_CALIBRATION_TESTS = true;
 static constexpr bool ENABLE_SENSORLESS_HOMING_TESTS = true;
 
 // Test configuration constants
-static constexpr uint8_t TEST_IRUN = 20;
-static constexpr uint8_t TEST_IHOLD = 10;
-static constexpr uint8_t TEST_GLOBAL_SCALER = 32;
-static constexpr uint8_t TEST_TOFF = 5;
-static constexpr uint8_t TEST_MRES = 4; // 16 microsteps
+using Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+using Test = tmc5160_test_config::TestConfig_17HS4401S;
+
+static constexpr uint8_t TEST_IRUN = Motor::IRUN;
+static constexpr uint8_t TEST_IHOLD = Motor::IHOLD;
+static constexpr uint8_t TEST_GLOBAL_SCALER = Motor::GLOBAL_SCALER;
+static constexpr uint8_t TEST_TOFF = Motor::TOFF;
+static constexpr uint8_t TEST_MRES = Motor::MRES; // 256 microsteps
 
 // Forward declarations
 bool test_driver_status() noexcept;
@@ -118,10 +121,15 @@ std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
   cfg.motor.irun = TEST_IRUN;
   cfg.motor.ihold = TEST_IHOLD;
   cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
+  
   cfg.chopper.toff = TEST_TOFF;
   cfg.chopper.mres = TEST_MRES;
-  cfg.chopper.intpol = true;
-  cfg.power_stage.drv_strength = 0;
+  cfg.chopper.intpol = Motor::INTERPOLATION;
+  cfg.chopper.hend = Motor::HEND;
+  cfg.chopper.hstrt = Motor::HSTRT;
+  cfg.chopper.tbl = Motor::TBL;
+  
+  cfg.power_stage.drv_strength = 2;
   cfg.power_stage.bbm_time = 24;
   cfg.power_stage.bbm_clks = 4;
   
@@ -155,8 +163,12 @@ bool test_stallguard() noexcept {
     return false;
   }
   
+  // Use default test configuration for StallGuard
   tmc5160::StallGuardConfig sg_cfg{};
-  sg_cfg.sgt = 0;
+  sg_cfg.sgt = Test::StallGuard::SGT_HOMING;
+  sg_cfg.sfilt = Test::StallGuard::FILTER_ENABLED;
+  sg_cfg.semin = Test::StallGuard::SEMIN;
+  sg_cfg.semax = Test::StallGuard::SEMAX;
   
   if (!handle->driver->diagnostics.ConfigureStallGuard(sg_cfg)) {
     ESP_LOGE(TAG, "Failed to configure StallGuard");
@@ -164,7 +176,7 @@ bool test_stallguard() noexcept {
   }
   
   uint16_t sg_value = handle->driver->diagnostics.GetStallGuard();
-  ESP_LOGI(TAG, "StallGuard Value: %u", sg_value);
+  ESP_LOGI(TAG, "StallGuard Value: %u (SGT=%d)", sg_value, sg_cfg.sgt);
   
   return true;
 }
@@ -328,12 +340,12 @@ bool test_sensorless_homing() noexcept {
     return false;
   }
   
-  // Configure StallGuard2 for homing
+  // Configure StallGuard2 for homing using default test config
   tmc5160::StallGuardConfig sg_config{};
-  sg_config.sgt = -10;
-  sg_config.sfilt = true;
-  sg_config.semin = 2;
-  sg_config.semax = 5;
+  sg_config.sgt = Test::StallGuard::SGT_HOMING;
+  sg_config.sfilt = Test::StallGuard::FILTER_ENABLED;
+  sg_config.semin = Test::StallGuard::SEMIN;
+  sg_config.semax = Test::StallGuard::SEMAX;
   
   if (!handle->driver->diagnostics.ConfigureStallGuard(sg_config)) {
     ESP_LOGE(TAG, "Failed to configure StallGuard2 for homing");
@@ -342,7 +354,7 @@ bool test_sensorless_homing() noexcept {
   
   // Note: PerformSensorlessHoming requires motor movement and may not complete
   // in a test environment, so we just verify the configuration
-  ESP_LOGI(TAG, "StallGuard2 configured for sensorless homing");
+  ESP_LOGI(TAG, "StallGuard2 configured for sensorless homing (SGT=%d)", sg_config.sgt);
   
   return true;
 }
