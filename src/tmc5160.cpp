@@ -1076,6 +1076,24 @@ bool TMC5160<CommType>::Diagnostics::PerformSensorlessHoming(bool direction, int
   if (!driver_.rampControl.SetRampMode(mode)) {
     return false;
   }
+  
+  // CRITICAL: Set acceleration/deceleration BEFORE setting speeds
+  // Velocity mode requires AMAX > 0 to actually accelerate from VSTART to VMAX
+  // Use reasonable acceleration: reach VMAX in ~0.1 seconds
+  float acceleration = std::max(search_speed * 10.0f, 50000.0f); // At least 50k steps/s²
+  if (!driver_.rampControl.SetAcceleration(acceleration)) {
+    return false;
+  }
+  if (!driver_.rampControl.SetDeceleration(acceleration)) {
+    return false;
+  }
+  
+  // Set VSTART > 0 to actually start motion in velocity mode
+  // VSTART should be reasonable but less than VMAX - use 10% of search speed or minimum 1000 steps/s
+  float vstart_speed = std::max(search_speed * 0.1f, 1000.0f);
+  if (!driver_.rampControl.SetRampSpeeds(vstart_speed, 100.0f, 0.0f)) {
+    return false;
+  }
   if (!driver_.rampControl.SetMaxSpeed(search_speed)) {
     return false;
   }

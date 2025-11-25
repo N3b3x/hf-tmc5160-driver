@@ -178,7 +178,7 @@ struct StealthChopConfig {
  * Configuration parameters for StallGuard2 stall detection.
  */
 struct StallGuardConfig {
-  uint8_t sgt{0};     ///< StallGuard2 threshold value (-64 to 63, stored as 7-bit signed)
+  int8_t sgt{0};      ///< StallGuard2 threshold value (-64 to 63, stored as 7-bit signed)
   uint8_t semin{0};   ///< Minimum stallGuard2 value for smart current control (0-15)
   uint8_t semax{0};   ///< StallGuard2 hysteresis value (0-15)
   uint8_t seup{0};    ///< Current increment step width (0-3)
