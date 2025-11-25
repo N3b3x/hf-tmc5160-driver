@@ -274,72 +274,86 @@ public:
 
     /**
      * @brief Set target position
-     * @param position Target position in steps
+     * @param value Target position value
+     * @param unit Unit of the value (default: Steps)
      * @return true if set successfully, false otherwise
      */
-    bool SetTargetPosition(int32_t position) noexcept;
+    bool SetTargetPosition(float value, Unit unit = Unit::Steps) noexcept;
 
     /**
      * @brief Get current position
-     * @return Current position in steps, or 0 on error
+     * @param unit Unit to return the position in (default: Steps)
+     * @return Current position in specified unit, or 0 on error
      */
-    int32_t GetCurrentPosition() noexcept;
+    float GetCurrentPosition(Unit unit = Unit::Steps) noexcept;
+
+    /**
+     * @brief Get target position
+     * @param unit Unit to return the position in (default: Steps)
+     * @return Target position in specified unit, or 0 on error
+     */
+    float GetTargetPosition(Unit unit = Unit::Steps) noexcept;
 
     /**
      * @brief Set current position
-     * @param position Position value in steps
+     * @param value Position value
+     * @param unit Unit of the value (default: Steps)
      * @param update_encoder If true, also update encoder position
      * @return true if set successfully, false otherwise
      */
-    bool SetCurrentPosition(int32_t position, bool update_encoder = false) noexcept;
+    bool SetCurrentPosition(float value, Unit unit = Unit::Steps, bool update_encoder = false) noexcept;
 
     /**
      * @brief Set maximum speed
-     * @param speed Maximum speed in steps per second
+     * @param value Maximum speed value
+     * @param unit Unit of the value (default: Steps)
      * @return true if set successfully, false otherwise
      */
-    bool SetMaxSpeed(float speed) noexcept;
+    bool SetMaxSpeed(float value, Unit unit = Unit::Steps) noexcept;
 
     /**
      * @brief Set acceleration and deceleration
-     * @param acceleration Acceleration in steps per second squared
+     * @param value Acceleration value
+     * @param unit Unit of the value (default: Steps)
      * @return true if set successfully, false otherwise
      */
-    bool SetAcceleration(float acceleration) noexcept;
+    bool SetAcceleration(float value, Unit unit = Unit::Steps) noexcept;
 
     /**
      * @brief Set acceleration and deceleration separately
-     * @param acceleration Acceleration in steps per second squared
-     * @param deceleration Deceleration in steps per second squared
+     * @param accel_val Acceleration value
+     * @param decel_val Deceleration value
+     * @param unit Unit of the values (default: Steps)
      * @return true if set successfully, false otherwise
      */
-    bool SetAccelerations(float acceleration, float deceleration) noexcept;
+    bool SetAccelerations(float accel_val, float decel_val, Unit unit = Unit::Steps) noexcept;
 
     /**
      * @brief Set deceleration only (DMAX register)
-     * @param deceleration Deceleration in steps per second squared
+     * @param value Deceleration value
+     * @param unit Unit of the value (default: Steps)
      * @return true if set successfully, false otherwise
      *
      * Sets only the deceleration rate (DMAX register) without affecting acceleration (AMAX).
-     * This is useful when you want to adjust deceleration independently, for example to
-     * implement asymmetric motion profiles or fine-tune stopping behavior.
      */
-    bool SetDeceleration(float deceleration) noexcept;
+    bool SetDeceleration(float value, Unit unit = Unit::Steps) noexcept;
 
     /**
      * @brief Set ramp speeds
-     * @param start_speed Start speed in steps per second
-     * @param stop_speed Stop speed in steps per second
-     * @param transition_speed Transition speed in steps per second
+     * @param start_speed Start speed value
+     * @param stop_speed Stop speed value
+     * @param transition_speed Transition speed value
+     * @param unit Unit of the speed values (default: Steps)
      * @return true if set successfully, false otherwise
      */
-    bool SetRampSpeeds(float start_speed, float stop_speed, float transition_speed) noexcept;
+    bool SetRampSpeeds(float start_speed, float stop_speed, float transition_speed, Unit unit = Unit::Steps) noexcept;
 
     /**
      * @brief Get current speed
-     * @return Current speed in steps per second, or 0.0f on error
+     * @param unit Unit to return the speed in (default: Steps)
+     * @return Current speed in specified unit, or 0.0f on error
      */
-    float GetCurrentSpeed() noexcept;
+    float GetCurrentSpeed(Unit unit = Unit::Steps) noexcept;
 
     /**
      * @brief Check if target position is reached
@@ -362,23 +376,6 @@ public:
     bool Stop() noexcept;
 
     /**
-     * @brief Set target position in millimeters
-     * @param position_mm Target position in millimeters
-     * @param steps_per_rev Steps per revolution of the motor
-     * @param lead_screw_pitch_mm Lead screw pitch in millimeters
-     * @return true if set successfully, false otherwise
-     */
-    bool SetTargetPositionMm(float position_mm, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept;
-
-    /**
-     * @brief Set maximum speed in RPM
-     * @param rpm Maximum speed in revolutions per minute
-     * @param steps_per_rev Steps per revolution of the motor
-     * @return true if set successfully, false otherwise
-     */
-    bool SetMaxSpeedRpm(float rpm, uint16_t steps_per_rev) noexcept;
-
-    /**
      * @brief Configure reference switches/endstops
      * @param config Reference switch configuration structure
      * @return true if configured successfully, false otherwise
@@ -387,20 +384,22 @@ public:
 
     /**
      * @brief Get latched position
-     * @return Latched position in steps, or 0 on error
+     * @param unit Unit to return the position in (default: Steps)
+     * @return Latched position in specified unit, or 0 on error
      *
      * Reads the position that was latched on the last reference switch event.
      */
-    int32_t GetLatchedPosition() noexcept;
+    float GetLatchedPosition(Unit unit = Unit::Steps) noexcept;
 
     /**
      * @brief Set position comparison register
-     * @param position Position value for comparison
+     * @param value Position value for comparison
+     * @param unit Unit of the value (default: Steps)
      * @return true if set successfully, false otherwise
      *
      * When XACTUAL equals X_COMPARE, the position pulse output becomes high.
      */
-    bool SetComparePosition(int32_t position) noexcept;
+    bool SetComparePosition(float value, Unit unit = Unit::Steps) noexcept;
 
     /**
      * @brief Set power down delay
@@ -424,16 +423,18 @@ public:
 
     /**
      * @brief Set first acceleration phase
-     * @param a1 First acceleration between VSTART and V1 in steps/s²
+     * @param a1 First acceleration value
+     * @param unit Unit of the value (default: Steps)
      * @return true if set successfully, false otherwise
      *
      * Sets the first acceleration phase. If 0.0f, AMAX is used for this phase.
      */
-    bool SetFirstAcceleration(float a1) noexcept;
+    bool SetFirstAcceleration(float a1, Unit unit = Unit::Steps) noexcept;
 
     /**
      * @brief Set final deceleration phase
-     * @param d1 Deceleration between V1 and VSTOP in steps/s²
+     * @param d1 Deceleration value
+     * @param unit Unit of the value (default: Steps)
      * @return true if set successfully, false otherwise
      *
      * Sets the final deceleration phase (D1).
@@ -441,10 +442,14 @@ public:
      * If set to 0, the driver might behave unexpectedly in positioning mode.
      * A safe minimum (e.g., 100) is recommended if unsure.
      */
-    bool SetFinalDeceleration(float d1) noexcept;
+    bool SetFinalDeceleration(float d1, Unit unit = Unit::Steps) noexcept;
 
   private:
     TMC5160& driver_; ///< Reference to parent driver instance
+
+    // Internal helper methods (used by unit-aware public methods)
+    bool SetTargetPosition(int32_t position) noexcept;
+    bool SetCurrentPosition(int32_t position, bool update_encoder = false) noexcept;
   } rampControl{*this};
 
   /**
@@ -505,12 +510,34 @@ public:
     bool SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs) noexcept;
 
     /**
+     * @brief Set CoolStep velocity threshold (TCOOLTHRS)
+     * @param value Velocity threshold value
+     * @param unit Unit of the value (default: Steps)
+     * @return true if set successfully, false otherwise
+     */
+    bool SetCoolStepThreshold(float value, Unit unit = Unit::Steps) noexcept;
+
+    /**
+     * @brief Set High-Speed velocity threshold (THIGH)
+     * @param value Velocity threshold value
+     * @param unit Unit of the value (default: Steps)
+     * @return true if set successfully, false otherwise
+     */
+    bool SetHighSpeedThreshold(float value, Unit unit = Unit::Steps) noexcept;
+
+    /**
      * @brief Set global current scaler
      * @param scaler Global scaler value (32-256)
      * @return true if set successfully, false otherwise
      */
     bool SetGlobalScaler(uint16_t scaler) noexcept;
 
+    /**
+     * @brief Get global configuration
+     * @param config Reference to store current GlobalConfig
+     * @return true if read successfully, false otherwise
+     */
+    bool GetGlobalConfig(GlobalConfig& config) noexcept;
 
     /**
      * @brief Configure CoolStep current reduction
@@ -573,6 +600,60 @@ public:
      * @return true if configured successfully, false otherwise
      */
     bool ConfigureGlobalConfig(const GlobalConfig& config) noexcept;
+
+    /**
+     * @brief Enable/Disable StealthChop (PWM mode)
+     * @param enabled true to enable StealthChop, false for SpreadCycle
+     * @return true if configured successfully, false otherwise
+     */
+    bool SetStealthChopEnabled(bool enabled) noexcept;
+
+    /**
+     * @brief Get chopper configuration
+     * @param config Reference to store current ChopperConfig
+     * @return true if read successfully, false otherwise
+     */
+    bool GetChopperConfig(ChopperConfig& config) noexcept;
+
+    /**
+     * @brief Get DIAG0 pin configuration
+     * @param config Reference to store current Diag0Config
+     * @return true if read successfully, false otherwise
+     * 
+     * Reads DIAG0 configuration from GCONF register using read-modify-write pattern.
+     */
+    bool GetDiag0Config(Diag0Config& config) noexcept;
+
+    /**
+     * @brief Set DIAG0 pin configuration
+     * @param config Diag0Config structure with DIAG0 settings
+     * @return true if configured successfully, false otherwise
+     * 
+     * Writes DIAG0 configuration to GCONF register using read-modify-write pattern.
+     * Preserves all other GCONF bits.
+     */
+    bool SetDiag0Config(const Diag0Config& config) noexcept;
+
+    /**
+     * @brief Get DIAG1 pin configuration
+     * @param config Reference to store current Diag1Config
+     * @return true if read successfully, false otherwise
+     * 
+     * Reads DIAG1 configuration from GCONF register using read-modify-write pattern.
+     */
+    bool GetDiag1Config(Diag1Config& config) noexcept;
+
+    /**
+     * @brief Set DIAG1 pin configuration
+     * @param config Diag1Config structure with DIAG1 settings
+     * @return true if configured successfully, false otherwise
+     * 
+     * Writes DIAG1 configuration to GCONF register using read-modify-write pattern.
+     * Preserves all other GCONF bits.
+     * 
+     * @note steps_skipped should not be enabled with other DIAG1 options (mutually exclusive).
+     */
+    bool SetDiag1Config(const Diag1Config& config) noexcept;
 
   private:
     TMC5160& driver_; ///< Reference to parent driver instance
@@ -694,6 +775,15 @@ public:
     DriverStatus GetStatus() noexcept;
 
     /**
+     * @brief Get global status flags (GSTAT)
+     * @param reset Reference to store reset flag
+     * @param drv_err Reference to store driver error flag
+     * @param uv_cp Reference to store undervoltage charge pump flag
+     * @return true if read successfully, false otherwise
+     */
+    bool GetGlobalStatus(bool& reset, bool& drv_err, bool& uv_cp) noexcept;
+
+    /**
      * @brief Get StallGuard2 value
      * @return StallGuard2 value (0-1023), or 0 on error
      */
@@ -705,6 +795,25 @@ public:
      * @return true if configured successfully, false otherwise
      */
     bool ConfigureStallGuard(const StallGuardConfig& config) noexcept;
+
+    /**
+     * @brief Enable/Disable stop on stall (sg_stop in SW_MODE)
+     * @param enable true to enable stop on stall, false to disable
+     * @return true if configured successfully, false otherwise
+     */
+    bool EnableStopOnStall(bool enable) noexcept;
+
+    /**
+     * @brief Clear stall event flag (event_stop_sg in RAMP_STAT)
+     * @return true if cleared successfully, false otherwise
+     */
+    bool ClearStallFlag() noexcept;
+
+    /**
+     * @brief Check if stall was detected (event_stop_sg in RAMP_STAT)
+     * @return true if stall event detected, false otherwise
+     */
+    bool IsStallDetected() noexcept;
 
     /**
      * @brief Get driver status register value
@@ -901,6 +1010,29 @@ public:
      */
     bool VerifySetup() noexcept;
 
+    /**
+     * @brief Automatically tune StallGuard threshold (SGT)
+     * @param target_velocity Velocity to tune at
+     * @param final_sgt Reference to store the tuned SGT value
+     * @param min_sgt Minimum SGT to try (default: -10)
+     * @param max_sgt Maximum SGT to try (default: 63)
+     * @param acceleration Acceleration/deceleration (default: 3000.0f steps/s^2)
+     * @param min_velocity Minimum velocity to verify tuning at (0 = disabled)
+     * @param max_velocity Maximum velocity to verify tuning at (0 = disabled)
+     * @param velocity_unit Unit for velocity and acceleration parameters (default: Steps)
+     * @return true if tuning succeeded, false if failed (e.g., stall never cleared)
+     * 
+     * Implements the automatic tuning algorithm:
+     * 1. Sets SGT to min_sgt
+     * 2. Accelerates to target_velocity
+     * 3. Monitors SG_RESULT
+     * 4. Increases SGT until SG_RESULT is consistently > 0
+     * 5. Verifies SGT at min_velocity and max_velocity if specified
+     */
+    bool TuneStallGuard(float target_velocity, int8_t& final_sgt, int8_t min_sgt = -10, int8_t max_sgt = 63, 
+                        float acceleration = 3000.0f, float min_velocity = 0.0f, float max_velocity = 0.0f, 
+                        Unit velocity_unit = Unit::Steps) noexcept;
+
   private:
     TMC5160& driver_; ///< Reference to parent driver instance
   } diagnostics{*this};
@@ -945,10 +1077,10 @@ public:
 
     /**
      * @brief Configure short protection levels
-     * @param config Short protection configuration structure
+     * @param config Power stage parameters structure (contains short protection fields)
      * @return true if configured successfully, false otherwise
      */
-    bool ConfigureShortProtection(const ShortProtectionConfig& config) noexcept;
+    bool ConfigureShortProtection(const PowerStageParameters& config) noexcept;
 
     /**
      * @brief Set short protection levels
@@ -1001,6 +1133,56 @@ private:
   uint8_t uart_node_address_;    ///< UART node address / slave address (0-127) for multi-node addressing
   uint8_t send_delay_;           ///< UART send delay (0-15) stored locally from SLAVECONF register
   bool initialized_{false};      ///< Initialization status flag
+
+  // Physical configuration for unit conversions
+  MotorSpec motor_spec_;
+  MechanicalSystem mechanical_system_;
+  
+  // Calculated motor current settings (stored internally, not in MotorSpec)
+  uint16_t calculated_global_scaler_{0};
+  uint8_t calculated_irun_{0};
+  uint8_t calculated_ihold_{0};
+  uint16_t current_microsteps_{256};
+
+  /**
+   * @brief Convert speed value to internal steps/s
+   * @param value Speed value in specified unit
+   * @param unit Unit of the value
+   * @return Speed in steps/s
+   */
+  [[nodiscard]] float convertSpeedToSteps(float value, Unit unit) const noexcept;
+
+  /**
+   * @brief Convert acceleration value to internal steps/s²
+   * @param value Acceleration value in specified unit
+   * @param unit Unit of the value
+   * @return Acceleration in steps/s²
+   */
+  [[nodiscard]] float convertAccelerationToSteps(float value, Unit unit) const noexcept;
+
+  /**
+   * @brief Convert position value to steps
+   * @param value Position value in specified unit
+   * @param unit Unit of the value
+   * @return Position in steps
+   */
+  [[nodiscard]] float convertPositionToSteps(float value, Unit unit) const noexcept;
+
+  /**
+   * @brief Convert steps to specified unit (for position)
+   * @param steps Position in steps
+   * @param unit Target unit
+   * @return Position in target unit
+   */
+  [[nodiscard]] float convertStepsToUnit(int32_t steps, Unit unit) const noexcept;
+
+  /**
+   * @brief Convert speed (steps/s) to specified unit
+   * @param steps_per_sec Speed in steps/s
+   * @param unit Target unit
+   * @return Speed in target unit
+   */
+  [[nodiscard]] float convertSpeedToUnit(float steps_per_sec, Unit unit) const noexcept;
 
   /**
    * @brief Convert speed from Hz to internal TMC5160 units

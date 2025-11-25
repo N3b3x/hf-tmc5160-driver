@@ -248,9 +248,8 @@ extern "C" void app_main() {
     cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
     cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
     cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
-    cfg.power_stage.drv_strength = Motor::DRV_STRENGTH;
-    cfg.power_stage.bbm_time = Motor::BBM_TIME;
-    cfg.power_stage.bbm_clks = Motor::BBM_CLKS;
+    cfg.power_stage.mosfet_miller_charge_nc = Motor::MOSFET_MILLER_CHARGE_NC;
+    cfg.power_stage.bbm_time_ns = Motor::BBM_TIME_NS;
     output_full_steps = Motor::OUTPUT_FULL_STEPS;
     gear_ratio = Motor::GEAR_RATIO;
   } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
@@ -269,9 +268,8 @@ extern "C" void app_main() {
     cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
     cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
     cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
-    cfg.power_stage.drv_strength = Motor::DRV_STRENGTH;
-    cfg.power_stage.bbm_time = Motor::BBM_TIME;
-    cfg.power_stage.bbm_clks = Motor::BBM_CLKS;
+    cfg.power_stage.mosfet_miller_charge_nc = Motor::MOSFET_MILLER_CHARGE_NC;
+    cfg.power_stage.bbm_time_ns = Motor::BBM_TIME_NS;
     output_full_steps = Motor::OUTPUT_FULL_STEPS;
     gear_ratio = Motor::GEAR_RATIO;
   } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
@@ -290,9 +288,8 @@ extern "C" void app_main() {
     cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
     cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
     cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
-    cfg.power_stage.drv_strength = Motor::DRV_STRENGTH;
-    cfg.power_stage.bbm_time = Motor::BBM_TIME;
-    cfg.power_stage.bbm_clks = Motor::BBM_CLKS;
+    cfg.power_stage.mosfet_miller_charge_nc = Motor::MOSFET_MILLER_CHARGE_NC;
+    cfg.power_stage.bbm_time_ns = Motor::BBM_TIME_NS;
     output_full_steps = Motor::OUTPUT_FULL_STEPS;
     gear_ratio = Motor::GEAR_RATIO;
   }
@@ -300,9 +297,9 @@ extern "C" void app_main() {
   // Enable StealthChop
   cfg.global_config.en_pwm_mode = true; // Enable StealthChop
 
-  // Short protection
-  cfg.short_protection.s2vs_level = 6;
-  cfg.short_protection.s2g_level = 4;
+  // Short protection (user-friendly voltage thresholds)
+  cfg.power_stage.s2vs_voltage_mv = 625;  // 625mV = S2VS_LEVEL=6 (recommended)
+  cfg.power_stage.s2g_voltage_mv = 500;  // ~500mV = S2G_LEVEL=4 (higher sensitivity)
 
   // Initialize driver
   if (!driver.Initialize(cfg)) {

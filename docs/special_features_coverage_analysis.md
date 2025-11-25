@@ -347,19 +347,21 @@ The current implementation uses a comprehensive hierarchical configuration struc
 
 ```cpp
 struct DriverConfig {
-    PowerStageParameters power_stage;      // 5 parameters
-    MotorParameters motor;                  // 5 parameters
-    MotorDirection direction;              // 1 parameter
+    PowerStageParameters power_stage;      // 9 parameters (MOSFET, BBM, sense filter, OT protection, short protection)
+    MotorSpec motor_spec;                   // Motor specification with user-friendly parameters
+    MechanicalSystem mechanical;            // Mechanical system configuration
+    MotorDirection direction;               // 1 parameter
     ChopperConfig chopper;                  // 9 parameters
     StealthChopConfig stealthchop;         // 7 parameters
-    ShortProtectionConfig short_protection; // 4 parameters
-    GlobalConfig global_config;            // 18 parameters
+    GlobalConfig global_config;             // 18 parameters
     RampParameters ramp_params;            // 3 parameters
     uint32_t f_clk;                        // 1 parameter
 };
 ```
 
-**Total: 53 configuration parameters** organized into 8 logical groups.
+**Total: 53+ configuration parameters** organized into 8 logical groups.
+
+**Note**: Short protection parameters are now part of `PowerStageParameters` using user-friendly voltage thresholds (`s2vs_voltage_mv`, `s2g_voltage_mv`, `short_detection_delay_us_x10`) instead of raw register levels.
 
 ### Comparison with Archived Drivers
 
@@ -370,7 +372,7 @@ struct DriverConfig {
 | **Motor Parameters** | ✓ (5 params) | ✓ (5 params) | ✓ | ✓ |
 | **Chopper Config** | ✓ (9 params) | ✗ (direct register) | ✓ | ✓ |
 | **StealthChop Config** | ✓ (7 params) | ✗ (direct register) | ✓ | ✓ |
-| **Short Protection** | ✓ (4 params) | ✗ (direct register) | ✓ | ✗ |
+| **Short Protection** | ✓ (4 params, voltage-based) | ✗ (direct register) | ✓ | ✗ |
 | **Global Config** | ✓ (18 params) | ✗ (direct register) | ✓ | ✓ |
 | **Ramp Parameters** | ✓ (3 params) | ✗ (direct methods) | ✗ | ✗ |
 | **High-Level Setup** | ✓ (MotorSpec) | ✗ | ✗ | ✗ |

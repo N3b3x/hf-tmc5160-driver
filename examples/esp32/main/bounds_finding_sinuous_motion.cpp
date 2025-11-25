@@ -8,7 +8,7 @@
  * 3. Performing pure sinusoidal back-and-forth motion between local bounds with:
  *    - Configurable angle amplitude and frequency
  *    - Target cycle count (cycles counted at center crossing)
- *    - Dwell times at bounds and optionally at center
+ *    - Dwell times at bounds
  *    - Automatic clipping of local bounds to global bounds
  *    - Automatic stop at center when cycle count reached
  * 4. UART command interface for real-time parameter adjustment
@@ -34,7 +34,7 @@
  * UART Command Interface:
  * Commands follow Linux-like argument structure:
  *   -f <value> or --freq <value>     : Set frequency in Hz
- *   -d <min> <max> [center]          : Set dwell times in ms (min, max, optional center)
+ *   -d <min> <max>                   : Set dwell times in ms (min, max)
  *   -b <min> <max> or --bounds <min> <max> : Set angle bounds from center in degrees
  *   -c <count> or --cycles <count>   : Set target cycle count (0 = infinite)
  *   -a start|stop|reset              : Action commands (start motion, stop, reset cycles)
@@ -43,7 +43,7 @@
  *
  * Examples:
  *   -f 0.5                           : Set frequency to 0.5 Hz
- *   -d 2000 2000 500                 : Set dwell times: 2s at min, 2s at max, 0.5s at center
+ *   -d 2000 2000                     : Set dwell times: 2s at min, 2s at max
  *   -b -60 60                        : Set bounds to ±60 degrees from center
  *   -c 1000                          : Set target to 1000 cycles
  *   -a start                         : Start motion
@@ -248,7 +248,6 @@ private:
   // Dwell times (can be set to 0 to disable)
   uint32_t dwell_at_min_ms_;    // Dwell time at minimum bound
   uint32_t dwell_at_max_ms_;    // Dwell time at maximum bound
-  uint32_t dwell_at_center_ms_; // Dwell time at center/home (optional)
 
   // Cycle tracking
   uint32_t target_cycles_;       // Target number of cycles (0 = infinite)
@@ -260,7 +259,7 @@ private:
 
   // State machine
   // Note: Sinusoidal motion uses the same states - it's a motion mode, not a separate state
-  enum class MotionState { MOVING_TO_MIN, MOVING_TO_MAX, DWELL_AT_MIN, DWELL_AT_MAX, DWELL_AT_CENTER, STOPPED };
+  enum class MotionState { MOVING_TO_MIN, MOVING_TO_MAX, DWELL_AT_MIN, DWELL_AT_MAX, STOPPED };
   MotionState state_;
   uint32_t dwell_start_time_ms_;
   
@@ -293,10 +292,7 @@ private:
     // Target cycle period (total time for there + back + dwells)
     float target_period_s = 1.0f / frequency_hz_;
     
-    // Total dwell time per cycle (min + max + center*2 if center dwell enabled)
-    // Note: Center dwell happens twice per cycle if enabled (passing through)
-    // For simplicity, let's assume center dwell happens once per direction if enabled?
-    // Actually, center dwell is usually for visual inspection. Let's stick to min/max for frequency tuning.
+    // Total dwell time per cycle (min + max)
     float total_dwell_s = (dwell_at_min_ms_ + dwell_at_max_ms_) / 1000.0f;
     
     // Time available for motion (there + back)
@@ -340,7 +336,7 @@ public:
       : driver_(driver), global_min_bound_(0), global_max_bound_(0), local_min_bound_(0), local_max_bound_(0),
         home_position_(0), amplitude_(1000.0F), frequency_hz_(0.5F), running_(false), start_time_us_(0),
         phase_offset_(0.0F), bounded_(false), steps_per_rev_(200), angle_unit_(AngleUnit::DEGREES), dwell_at_min_ms_(0),
-        dwell_at_max_ms_(0), dwell_at_center_ms_(0), target_cycles_(0), current_cycles_(0), cycle_complete_(false),
+        dwell_at_max_ms_(0), target_cycles_(0), current_cycles_(0), cycle_complete_(false),
         last_was_negative_(false), cycle_started_(false), last_target_relative_(0), state_(MotionState::STOPPED),
         dwell_start_time_ms_(0), sinusoidal_mode_(false), calculated_vmax_(10000.0f), calculated_amax_(5000.0f), estimated_frequency_hz_(0.0f) {
     // Mutex is automatically created by Esp32TmcMutex constructor
@@ -522,27 +518,25 @@ public:
   /**
    * @brief Set dwell times (thread-safe, can be changed in real-time)
    */
-  bool SetDwellTimes(uint32_t dwell_at_min_ms, uint32_t dwell_at_max_ms, uint32_t dwell_at_center_ms = 0) noexcept {
+  bool SetDwellTimes(uint32_t dwell_at_min_ms, uint32_t dwell_at_max_ms) noexcept {
     {
       TmcMutexGuard guard(mutex_);
       dwell_at_min_ms_ = dwell_at_min_ms;
       dwell_at_max_ms_ = dwell_at_max_ms;
-      dwell_at_center_ms_ = dwell_at_center_ms;
       RecalculateTrajectory();
     }
-    ESP_LOGI(TAG, "Dwell times updated: min=%lu ms, max=%lu ms, center=%lu ms", 
-             dwell_at_min_ms, dwell_at_max_ms, dwell_at_center_ms);
+    ESP_LOGI(TAG, "Dwell times updated: min=%lu ms, max=%lu ms", 
+             dwell_at_min_ms, dwell_at_max_ms);
     return true;
   }
 
   /**
    * @brief Get dwell times (thread-safe)
    */
-  void GetDwellTimes(uint32_t& dwell_at_min_ms, uint32_t& dwell_at_max_ms, uint32_t& dwell_at_center_ms) const noexcept {
+  void GetDwellTimes(uint32_t& dwell_at_min_ms, uint32_t& dwell_at_max_ms) const noexcept {
     TmcMutexGuard guard(mutex_);
     dwell_at_min_ms = dwell_at_min_ms_;
     dwell_at_max_ms = dwell_at_max_ms_;
-    dwell_at_center_ms = dwell_at_center_ms_;
   }
 
   /**
@@ -754,8 +748,7 @@ public:
     
     // If sinusoidal mode and not in a dwell state, use sinusoidal update
     if (use_sinusoidal && current_state != MotionState::DWELL_AT_MIN && 
-        current_state != MotionState::DWELL_AT_MAX && 
-        current_state != MotionState::DWELL_AT_CENTER) {
+        current_state != MotionState::DWELL_AT_MAX) {
       // Sinusoidal motion mode - update continuously based on sine wave
       UpdateSinuousMotion();
       return;
@@ -852,16 +845,6 @@ public:
       }
       break;
 
-    case MotionState::DWELL_AT_CENTER:
-      // Deprecated: No dwell at center per user request
-      // Just transition to appropriate move state if we somehow end up here
-      {
-        TmcMutexGuard guard(mutex_);
-        state_ = MotionState::MOVING_TO_MAX;
-        driver_->rampControl.SetTargetPosition(max_bound);
-      }
-      break;
-
     case MotionState::STOPPED:
       break;
     }
@@ -880,7 +863,6 @@ public:
     uint32_t target_cycles;
     uint32_t dwell_min_ms;
     uint32_t dwell_max_ms;
-    uint32_t dwell_center_ms;
     float global_min_degrees;
     float global_max_degrees;
   };
@@ -898,7 +880,6 @@ public:
       status.target_cycles = target_cycles_;
       status.dwell_min_ms = dwell_at_min_ms_;
       status.dwell_max_ms = dwell_at_max_ms_;
-      status.dwell_center_ms = dwell_at_center_ms_;
       min_bound = local_min_bound_;
       max_bound = local_max_bound_;
       global_min = global_min_bound_;
@@ -964,7 +945,7 @@ private:
     uint32_t target_cycles;
     bool cycle_started;
     int32_t last_target_rel;
-    uint32_t dwell_min, dwell_max, dwell_center;
+    uint32_t dwell_min, dwell_max;
     float phase_off;
     
     {
@@ -980,7 +961,6 @@ private:
       last_target_rel = last_target_relative_;
       dwell_min = dwell_at_min_ms_;
       dwell_max = dwell_at_max_ms_;
-      dwell_center = dwell_at_center_ms_;
       phase_off = phase_offset_;
     }
 
@@ -1069,17 +1049,6 @@ private:
         state_ = MotionState::MOVING_TO_MAX;
       } else {
         state_ = MotionState::MOVING_TO_MIN;
-      }
-    }
-
-    // Check if we're passing through center and need to dwell
-    if (dwell_center > 0) {
-      if (abs(target_relative) < 20) { // Within 20 steps of center
-        TmcMutexGuard guard(mutex_);
-        state_ = MotionState::DWELL_AT_CENTER;
-        dwell_start_time_ms_ = esp_timer_get_time() / 1000;
-        driver_->rampControl.SetTargetPosition(home);
-        return;
       }
     }
 
@@ -1290,14 +1259,12 @@ static bool HandleFrequency(const std::vector<std::string>& args, FatigueTestMot
       ESP_LOGE(TAG, "Dwell command requires at least 2 arguments (min_ms, max_ms)");
       return false;
     }
+    if (args.size() > 2) {
+      ESP_LOGW(TAG, "Extra arguments ignored. Dwell command takes exactly 2 arguments (min_ms, max_ms)");
+    }
     uint32_t min_ms = std::strtoul(args[0].c_str(), nullptr, 10);
     uint32_t max_ms = std::strtoul(args[1].c_str(), nullptr, 10);
-    // Center dwell deprecated/removed per request
-    uint32_t center_ms = 0;
-    if (args.size() >= 3) {
-      ESP_LOGW(TAG, "Center dwell argument ignored (feature removed)");
-    }
-    return motion.SetDwellTimes(min_ms, max_ms, center_ms);
+    return motion.SetDwellTimes(min_ms, max_ms);
   }
 
 static bool HandleBounds(const std::vector<std::string>& args, FatigueTestMotion& motion) noexcept {
@@ -1357,8 +1324,8 @@ static bool HandleStatus(const std::vector<std::string>& args, FatigueTestMotion
   ESP_LOGI(TAG, "  Cycles: %lu / %lu %s", status.current_cycles, 
            status.target_cycles == 0 ? 0xFFFFFFFF : status.target_cycles,
            status.target_cycles == 0 ? "(infinite)" : "");
-  ESP_LOGI(TAG, "  Dwell Times: min=%lu ms, max=%lu ms, center=%lu ms",
-           status.dwell_min_ms, status.dwell_max_ms, status.dwell_center_ms);
+  ESP_LOGI(TAG, "  Dwell Times: min=%lu ms, max=%lu ms",
+           status.dwell_min_ms, status.dwell_max_ms);
   ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
   return true;
 }
@@ -1458,6 +1425,12 @@ extern "C" void app_main() {
   
   if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
     namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+    
+    // Set physical specs
+    cfg.motor_spec.steps_per_rev = Motor::MOTOR_FULL_STEPS;
+    cfg.motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
+    cfg.mechanical.gear_ratio = Motor::GEAR_RATIO;
+    
     cfg.motor.irun = Motor::IRUN;
     cfg.motor.ihold = Motor::IHOLD;
     cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
@@ -1474,6 +1447,12 @@ extern "C" void app_main() {
     output_full_steps = Motor::OUTPUT_FULL_STEPS;
   } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
     namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S_Direct;
+    
+    // Set physical specs
+    cfg.motor_spec.steps_per_rev = Motor::MOTOR_FULL_STEPS;
+    cfg.motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
+    cfg.mechanical.gear_ratio = Motor::GEAR_RATIO;
+
     cfg.motor.irun = Motor::IRUN;
     cfg.motor.ihold = Motor::IHOLD;
     cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
@@ -1490,6 +1469,14 @@ extern "C" void app_main() {
     output_full_steps = Motor::OUTPUT_FULL_STEPS;
   } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
     namespace Motor = tmc5160_test_config::MotorConfig_AppliedMotion_5034_369;
+    
+    // Set physical specs
+    cfg.motor_spec.steps_per_rev = Motor::MOTOR_FULL_STEPS;
+    cfg.motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
+    cfg.mechanical.gear_ratio = Motor::GEAR_RATIO;
+    cfg.motor_spec.winding_resistance_mohm = static_cast<uint32_t>(Motor::RESISTANCE_OHMS * 1000);
+    cfg.motor_spec.winding_inductance_uh = static_cast<uint32_t>(Motor::INDUCTANCE_MH * 1000);
+
     cfg.motor.irun = Motor::IRUN;
     cfg.motor.ihold = Motor::IHOLD;
     cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
@@ -1506,9 +1493,9 @@ extern "C" void app_main() {
     output_full_steps = Motor::OUTPUT_FULL_STEPS;
   }
   
-  // Protection settings
-  cfg.short_protection.s2vs_level = 6;
-  cfg.short_protection.s2g_level = 4;
+  // Protection settings (user-friendly voltage thresholds)
+  cfg.power_stage.s2vs_voltage_mv = 625;  // 625mV = S2VS_LEVEL=6 (recommended)
+  cfg.power_stage.s2g_voltage_mv = 500;  // ~500mV = S2G_LEVEL=4 (higher sensitivity)
 
   if (!driver.Initialize(cfg)) {
     ESP_LOGE(TAG, "Failed to initialize TMC5160 driver");
@@ -1519,45 +1506,30 @@ extern "C" void app_main() {
 
   // CRITICAL: StallGuard2 ONLY works in SpreadCycle mode (en_pwm_mode=0)!
   // Explicitly enable SpreadCycle mode for sensorless homing
-  uint32_t gconf_value = 0;
-  if (!driver.GetComm().ReadRegister(tmc5160::Registers::GCONF, gconf_value)) {
+  tmc5160::GlobalConfig gconf_read;
+  if (!driver.motorControl.GetGlobalConfig(gconf_read)) {
     ESP_LOGE(TAG, "Failed to read GCONF register");
     return;
   }
   
-  tmc5160::GCONF_Register gconf{};
-  gconf.value = gconf_value;
-  
   // Always ensure SpreadCycle is enabled (en_pwm_mode = 0)
-  bool needs_update = false;
-  if (gconf.bits.en_pwm_mode) {
+  if (gconf_read.en_pwm_mode) {
     ESP_LOGW(TAG, "StealthChop is enabled - switching to SpreadCycle mode for StallGuard2");
-    gconf.bits.en_pwm_mode = false; // Enable SpreadCycle (disable StealthChop)
-    needs_update = true;
-  } else {
-    ESP_LOGI(TAG, "Already in SpreadCycle mode - verifying for StallGuard2");
-  }
-  
-  // Write register if update needed, then always verify SpreadCycle is enabled
-  if (needs_update) {
-    if (!driver.GetComm().WriteRegister(tmc5160::Registers::GCONF, gconf.value)) {
+    if (!driver.motorControl.SetStealthChopEnabled(false)) {
       ESP_LOGE(TAG, "Failed to enable SpreadCycle mode");
       return;
     }
     vTaskDelay(pdMS_TO_TICKS(100)); // Small delay for mode switch
+  } else {
+    ESP_LOGI(TAG, "Already in SpreadCycle mode - verifying for StallGuard2");
   }
   
-  // Always verify SpreadCycle is enabled (critical for StallGuard2)
-  uint32_t gconf_verify = 0;
-  if (driver.GetComm().ReadRegister(tmc5160::Registers::GCONF, gconf_verify)) {
-    tmc5160::GCONF_Register verify{};
-    verify.value = gconf_verify;
-    if (verify.bits.en_pwm_mode == 0) {
+  // Verify SpreadCycle is enabled
+  if (driver.motorControl.GetGlobalConfig(gconf_read)) {
+    if (!gconf_read.en_pwm_mode) {
       ESP_LOGI(TAG, "✓ SpreadCycle mode confirmed enabled (en_pwm_mode=0) - StallGuard2 ready");
     } else {
-      ESP_LOGE(TAG, "✗ CRITICAL: SpreadCycle mode NOT enabled! en_pwm_mode=%d (should be 0)", 
-               verify.bits.en_pwm_mode ? 1 : 0);
-      ESP_LOGE(TAG, "StallGuard2 will NOT work in StealthChop mode!");
+      ESP_LOGE(TAG, "✗ CRITICAL: SpreadCycle mode NOT enabled!");
       return;
     }
   } else {
@@ -1568,17 +1540,15 @@ extern "C" void app_main() {
   // TCOOLTHRS = velocity threshold below which StallGuard2 is disabled
   // For homing, we want StallGuard2 active at search speed, so set appropriately
   // Setting to a low value ensures StallGuard2 is active at search speeds
-  uint32_t tcoolthrs = 1000; // Low threshold - StallGuard2 active at speeds > ~1000 steps/s
-  if (driver.GetComm().WriteRegister(tmc5160::Registers::TCOOLTHRS, tcoolthrs)) {
-    ESP_LOGI(TAG, "✓ TCOOLTHRS set to %lu - StallGuard2 active at search speeds", tcoolthrs);
+  if (driver.motorControl.SetCoolStepThreshold(1000.0f, tmc5160::Unit::Steps)) {
+    ESP_LOGI(TAG, "✓ TCOOLTHRS set to 1000 - StallGuard2 active at search speeds");
   } else {
     ESP_LOGE(TAG, "✗ Failed to set TCOOLTHRS");
   }
   
   // THIGH = velocity threshold for chopper mode switching (set high to avoid interference)
-  uint32_t thigh = 0xFFFFF; // Maximum value
-  if (driver.GetComm().WriteRegister(tmc5160::Registers::THIGH, thigh)) {
-    ESP_LOGI(TAG, "✓ THIGH set to maximum (0x%05X)", thigh);
+  if (driver.motorControl.SetHighSpeedThreshold(1048575.0f, tmc5160::Unit::Steps)) { // 0xFFFFF
+    ESP_LOGI(TAG, "✓ THIGH set to maximum (0xFFFFF)");
   } else {
     ESP_LOGW(TAG, "Failed to set THIGH (may not be critical)");
   }
@@ -1616,11 +1586,7 @@ extern "C" void app_main() {
   ESP_LOGI(TAG, "Motor enabled");
   
   // Ensure clean state before homing - clear any existing stall flags
-  uint32_t ramp_stat_clean = 0;
-  driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat_clean);
-  tmc5160::RAMP_STAT_Register clear_stat{};
-  clear_stat.bits.event_stop_sg = 1; // Write 1 to clear
-  driver.GetComm().WriteRegister(tmc5160::Registers::RAMP_STAT, clear_stat.value);
+  driver.diagnostics.ClearStallFlag();
   ESP_LOGI(TAG, "Cleared any existing stall flags");
 
   // Configure motor parameters for unit conversions
@@ -1724,19 +1690,8 @@ extern "C" void app_main() {
   //   Bit 10 (sg_stop): 1 = Enable stop by StallGuard2
   //   Bit 11 (en_softstop): 0 = Hard stop (REQUIRED for StallGuard2)
   //   Datasheet: "Attention: Do not use soft stop in combination with StallGuard2"
-  uint32_t sw_mode_value = 0;
-  if (!driver.GetComm().ReadRegister(tmc5160::Registers::SW_MODE, sw_mode_value)) {
-    ESP_LOGE(TAG, "Failed to read SW_MODE");
-    return;
-  }
-  tmc5160::SW_MODE_Register sw_mode{};
-  sw_mode.value = sw_mode_value;
-  sw_mode.bits.sg_stop = true;     // Bit 10: Enable automatic stop on stall
-  sw_mode.bits.en_softstop = false; // Bit 11: Hard stop (REQUIRED - datasheet says don't use soft stop with StallGuard2)
-  // CRITICAL: Ensure reference switches remain disabled
-  sw_mode.bits.stop_l_enable = false;
-  sw_mode.bits.stop_r_enable = false;
-  if (!driver.GetComm().WriteRegister(tmc5160::Registers::SW_MODE, sw_mode.value)) {
+  // Note: Reference switches are already disabled via ConfigureReferenceSwitch above
+  if (!driver.diagnostics.EnableStopOnStall(true)) {
     ESP_LOGE(TAG, "Failed to enable StallGuard2 stop");
     return;
   }
@@ -1777,41 +1732,26 @@ extern "C" void app_main() {
   }
   
   // Clear any existing stall flags and verify they're cleared
-  uint32_t ramp_stat_clear = 0;
-  driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat_clear);
-  tmc5160::RAMP_STAT_Register clear_stat_init{};
-  clear_stat_init.bits.event_stop_sg = 1; // Write 1 to clear
-  if (!driver.GetComm().WriteRegister(tmc5160::Registers::RAMP_STAT, clear_stat_init.value)) {
+  if (!driver.diagnostics.ClearStallFlag()) {
     ESP_LOGE(TAG, "Failed to clear stall flags");
     return;
   }
   
   // Verify stall flag is cleared
   vTaskDelay(pdMS_TO_TICKS(50)); // Small delay for register write
-  uint32_t ramp_stat_verify = 0;
-  if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat_verify)) {
-    tmc5160::RAMP_STAT_Register verify{};
-    verify.value = ramp_stat_verify;
-    if (verify.bits.event_stop_sg) {
-      ESP_LOGW(TAG, "Warning: Stall flag still set after clear attempt");
-    }
+  if (driver.diagnostics.IsStallDetected()) {
+    ESP_LOGW(TAG, "Warning: Stall flag still set after clear attempt");
   }
   
   // Read initial SG_RESULT for baseline diagnostics
-  uint32_t drv_status_init = 0;
-  uint16_t sg_result_baseline = 0;
-  if (driver.GetComm().ReadRegister(tmc5160::Registers::DRV_STATUS, drv_status_init)) {
-    tmc5160::DRV_STATUS_Register drv_status{};
-    drv_status.value = drv_status_init;
-    sg_result_baseline = drv_status.bits.sg_result;
-    ESP_LOGI(TAG, "Initial SG_RESULT baseline: %d (at standstill)", sg_result_baseline);
-    if (sg_result_baseline == 0) {
-      ESP_LOGE(TAG, "⚠️ CRITICAL: SG_RESULT=0 at standstill indicates:");
-      ESP_LOGE(TAG, "  1. Motor wiring may be incorrect (phases swapped)");
-      ESP_LOGE(TAG, "  2. Motor current too high (try reducing IRUN)");
-      ESP_LOGE(TAG, "  3. StallGuard2 threshold needs adjustment (SGT too sensitive)");
-      ESP_LOGE(TAG, "  Current SGT=%d - consider increasing to 0 or +10", Test::StallGuard::SGT_HOMING);
-    }
+  uint16_t sg_result_baseline = driver.diagnostics.GetStallGuard();
+  ESP_LOGI(TAG, "Initial SG_RESULT baseline: %d (at standstill)", sg_result_baseline);
+  if (sg_result_baseline == 0) {
+    ESP_LOGE(TAG, "⚠️ CRITICAL: SG_RESULT=0 at standstill indicates:");
+    ESP_LOGE(TAG, "  1. Motor wiring may be incorrect (phases swapped)");
+    ESP_LOGE(TAG, "  2. Motor current too high (try reducing IRUN)");
+    ESP_LOGE(TAG, "  3. StallGuard2 threshold needs adjustment (SGT too sensitive)");
+    ESP_LOGE(TAG, "  Current SGT=%d - consider increasing to 0 or +10", Test::StallGuard::SGT_HOMING);
   }
   
   // Configure positioning mode parameters
@@ -2064,8 +2004,22 @@ extern "C" void app_main() {
       }
     }
     
-    // If stall event detected, verify it's a real stall
-    if (stall_event) {
+    // ALSO check SG_RESULT directly as fallback (sg_stop might not always set event_stop_sg flag)
+    // If SG_RESULT=0 and motor is moving, it's a stall condition
+    uint32_t drv_status_check = 0;
+    bool sg_result_stall = false;
+    if (driver.GetComm().ReadRegister(tmc5160::Registers::DRV_STATUS, drv_status_check)) {
+      tmc5160::DRV_STATUS_Register drv_status_check_reg{};
+      drv_status_check_reg.value = drv_status_check;
+      // SG_RESULT=0 means maximum load/stall, and motor should be moving for it to be valid
+      if (drv_status_check_reg.bits.sg_result == 0 && std::abs(vactual) > 1000.0f) {
+        sg_result_stall = true;
+        ESP_LOGW(TAG, "⚠️ SG_RESULT=0 detected (stall condition) at V=%.1f steps/s, but event_stop_sg flag not set!", vactual);
+      }
+    }
+    
+    // If stall event detected OR SG_RESULT=0, verify it's a real stall
+    if (stall_event || sg_result_stall) {
       // Read DRV_STATUS to get SG_RESULT for diagnostics
       uint32_t drv_status_val = 0;
       uint16_t sg_result = 0;
@@ -2075,6 +2029,19 @@ extern "C" void app_main() {
         drv_status.value = drv_status_val;
         sg_result = drv_status.bits.sg_result;
         motor_moving = !drv_status.bits.stst; // stst=1 means standstill
+      }
+      
+      // If detected via SG_RESULT=0 (not flag), manually stop the motor
+      if (sg_result_stall && !stall_event) {
+        ESP_LOGW(TAG, "⚠️ Stall detected via SG_RESULT=0 (event_stop_sg flag not set) - sg_stop may not be working!");
+        ESP_LOGW(TAG, "  Position=%ld, VACTUAL=%.1f steps/s, SG_RESULT=%d", current_pos, vactual, sg_result);
+        ESP_LOGW(TAG, "  Manually stopping motor due to SG_RESULT=0...");
+        // Manually stop the motor since sg_stop didn't work
+        driver.rampControl.Stop();
+        vTaskDelay(pdMS_TO_TICKS(200)); // Wait for stop to take effect
+        // Re-read velocity to confirm stop
+        vactual = driver.rampControl.GetCurrentSpeed();
+        ESP_LOGI(TAG, "  After manual stop: VACTUAL=%.1f steps/s", vactual);
       }
       
       // Check if motor is actually moving (not already stopped)
@@ -2541,7 +2508,7 @@ extern "C" void app_main() {
 
   // Set default dwell times
   uint32_t dwell = Test::Motion::DWELL_MS;
-  motion.SetDwellTimes(dwell, dwell, 0);   // No dwell at center
+  motion.SetDwellTimes(dwell, dwell);
 
   // Set default target cycle count (0 = infinite)
   motion.SetTargetCycles(0); // Infinite by default, can be changed via UART
@@ -2566,7 +2533,7 @@ extern "C" void app_main() {
 
   // Register commands (modular structure for easy extension)
   parser.RegisterCommand({"-f", "--freq", "Set frequency in Hz (0.0-10.0)", 1, 1}, HandleFrequency);
-  parser.RegisterCommand({"-d", "--dwell", "Set dwell times in ms (min max [center])", 2, 3}, HandleDwell);
+  parser.RegisterCommand({"-d", "--dwell", "Set dwell times in ms (min max)", 2, 2}, HandleDwell);
   parser.RegisterCommand({"-b", "--bounds", "Set angle bounds from center in degrees (min max)", 2, 2}, HandleBounds);
   parser.RegisterCommand({"-c", "--cycles", "Set target cycle count (0 = infinite)", 1, 1}, HandleCycles);
   parser.RegisterCommand({"-a", "--action", "Action: start, stop, or reset", 1, 1}, HandleAction);

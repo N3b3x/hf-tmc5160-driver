@@ -37,19 +37,32 @@ constexpr uint16_t USTEP_COUNT = 256U; ///< Number of microsteps per full step
  * @brief Driver initialization configuration structure
  *
  * Complete configuration structure for initializing the TMC5160 driver.
- * Contains all necessary parameters for power stage, motor, and driver
- * operation.
+ * Contains all necessary parameters for power stage, motor, and driver operation.
+ *
+ * ## Automatic Current Calculation
+ *
+ * If `motor_spec.global_scaler == 0` or `motor_spec.irun == 0`, the driver will automatically
+ * calculate IRUN, IHOLD, and GLOBAL_SCALER from `motor_spec.user` parameters using datasheet equations.
+ * This requires:
+ * - `motor_spec.sense_resistor_mohm` (e.g., 50 for 0.05Ω)
+ * - `motor_spec.supply_voltage_mv` (e.g., 24000 for 24V)
+ * - `motor_spec.rated_current_ma` or `motor_spec.run_current_ma`
+ * - `motor_spec.winding_resistance_mohm` (for StealthChop lower limit validation)
+ * - `motor_spec.scaler_adjustment_percent`, `irun_adjustment_percent`, `ihold_adjustment_percent` (optional fine-tuning)
+ *
+ * See `tmc5160_motor_calc.hpp` for calculation details.
  */
 struct DriverConfig {
-  PowerStageParameters power_stage;                 ///< Power stage configuration
-  MotorParameters motor;                            ///< Motor current configuration
+  PowerStageParameters power_stage;                 ///< Power stage configuration (includes short protection)
   MotorDirection direction{MotorDirection::NORMAL}; ///< Motor direction (normal or inverse)
   ChopperConfig chopper;                            ///< Chopper configuration
   StealthChopConfig stealthchop;                    ///< StealthChop configuration
-  ShortProtectionConfig short_protection;           ///< Short circuit protection configuration
   GlobalConfig global_config;                       ///< Global configuration (GCONF register)
   RampParameters ramp_params;                       ///< Additional ramp parameters
   uint32_t f_clk;                                   ///< TMC5160 clock frequency in Hz (default: 12 MHz)
+  
+  MotorSpec motor_spec;                             ///< Motor specifications (user parameters + calculated current settings)
+  MechanicalSystem mechanical;                      ///< Mechanical system configuration (gearing, leadscrew, etc.)
 
   /**
    * @brief Default constructor

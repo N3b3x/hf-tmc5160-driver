@@ -196,8 +196,8 @@ Protection and safety features subsystem.
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `ConfigureShortProtection()` | `bool ConfigureShortProtection(const ShortProtectionConfig& config) noexcept` | `true` on success | Configure short circuit protection |
-| `SetShortProtectionLevels()` | `bool SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter, uint8_t shortdelay) noexcept` | `true` on success | Set short protection levels directly |
+| `ConfigureShortProtection()` | `bool ConfigureShortProtection(const PowerStageParameters& config) noexcept` | `true` on success | Configure short circuit protection using user-friendly voltage thresholds |
+| `SetShortProtectionLevels()` | `bool SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter, uint8_t shortdelay) noexcept` | `true` on success | Set short protection levels directly (low-level API, register values) |
 
 ## Communication Interface Methods
 
@@ -337,8 +337,7 @@ Main driver configuration structure.
 | `motor` | `MotorConfig` | Motor current and scaler settings |
 | `chopper` | `ChopperConfig` | Chopper timing and microstep settings |
 | `stealthchop` | `StealthChopConfig` | StealthChop PWM configuration |
-| `power_stage` | `PowerStageConfig` | Power stage driver strength and blanking |
-| `short_protection` | `ShortProtectionConfig` | Short circuit protection levels |
+| `power_stage` | `PowerStageParameters` | Power stage configuration including MOSFET parameters, BBM time, sense filter, over-temperature protection, and short protection (voltage thresholds) |
 | `global_config` | `GlobalConfig` | Global configuration (GCONF register) |
 | `ramp_params` | `RampParameters` | Ramp parameters (TPOWERDOWN, TZEROWAIT, A1) |
 | `direction` | `MotorDirection` | Motor direction (NORMAL or INVERTED) |
@@ -411,18 +410,31 @@ StallGuard2 configuration structure.
 | `sfilt` | `bool` | - | StallGuard filter |
 | `sgt` | `int8_t` | -64 to 63 | StallGuard threshold |
 
-### ShortProtectionConfig
+### PowerStageParameters (Short Protection Fields)
 
-Short circuit protection configuration structure.
+Short circuit protection is configured through the `PowerStageParameters` structure using user-friendly voltage thresholds and timing values. The driver automatically converts these to register values based on datasheet specifications.
 
 **Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
 
 | Field | Type | Range | Description |
 |-------|------|-------|-------------|
-| `s2vs_level` | `uint8_t` | 4-15 | Short to VS level |
-| `s2g_level` | `uint8_t` | 2-15 | Short to GND level |
-| `shortfilter` | `uint8_t` | 0-3 | Short filter time |
-| `shortdelay` | `uint8_t` | 0-1 | Short delay |
+| `s2vs_voltage_mv` | `uint16_t` | 0 (auto) or 400-2000 | Short to VS voltage threshold in mV (0 = auto = 625mV, equivalent to S2VS_LEVEL=6) |
+| `s2g_voltage_mv` | `uint16_t` | 0 (auto) or 400-2000 | Short to GND voltage threshold in mV (0 = auto = 625mV, equivalent to S2G_LEVEL=6). Minimum 1200mV if VS>52V |
+| `shortfilter` | `uint8_t` | 0-3 | Spike filter bandwidth (0=100ns, 1=1µs default, 2=2µs, 3=3µs) |
+| `short_detection_delay_us_x10` | `uint8_t` | 0 (auto) or 5-25 | Detection delay in 0.1µs units (0 = auto = 0.85µs, equivalent to shortdelay=0) |
+
+**Datasheet Voltage Thresholds (typical values):**
+- **S2VS_LEVEL=6**: 550-625-700mV (recommended for normal operation)
+- **S2VS_LEVEL=15**: 1400-1560-1720mV (lowest sensitivity)
+- **S2G_LEVEL=6 (VS<50V)**: 460-625-800mV (recommended for normal operation)
+- **S2G_LEVEL=15 (VS<52V)**: 1200-1560-1900mV
+- **S2G_LEVEL=15 (VS<55V)**: 850mV (minimum for VS>52V to prevent false triggers)
+
+**Detection Delay Timing (typical values):**
+- **shortdelay=0**: 0.5-0.85-1.1µs (normal, recommended for most applications)
+- **shortdelay=1**: 1.1-1.6-2.2µs (high delay)
+
+The driver automatically converts voltage thresholds to register levels using interpolation based on datasheet specifications.
 
 ### MotorSpec
 
