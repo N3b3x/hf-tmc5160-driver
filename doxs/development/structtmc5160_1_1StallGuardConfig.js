@@ -7,5 +7,5 @@ var structtmc5160_1_1StallGuardConfig =
     [ "semin", "structtmc5160_1_1StallGuardConfig.html#a20b7d71d6f726a3fd14946617bf05613", null ],
     [ "seup", "structtmc5160_1_1StallGuardConfig.html#aa28f47f696fea7ba412e76c3aa77a79f", null ],
     [ "sfilt", "structtmc5160_1_1StallGuardConfig.html#a6e8623aa674d7726e1028875221f1fe4", null ],
-    [ "sgt", "structtmc5160_1_1StallGuardConfig.html#a24876fc3348794d2c18f85a626e71750", null ]
+    [ "sgt", "structtmc5160_1_1StallGuardConfig.html#a84da82c3e0775de30668b0ea065b6de0", null ]
 ];

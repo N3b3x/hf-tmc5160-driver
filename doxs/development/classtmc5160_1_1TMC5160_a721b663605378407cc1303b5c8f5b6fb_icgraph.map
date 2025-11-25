@@ -1,5 +1,5 @@
 <map id="tmc5160::TMC5160::GetComm" name="tmc5160::TMC5160::GetComm">
 <area shape="rect" id="Node000001" title="Get the communication interface used by this TMC5160 instance." alt="" coords="140,5,363,31"/>
-<area shape="rect" id="Node000002" href="$sinusoidal_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,5,92,31"/>
+<area shape="rect" id="Node000002" href="$bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,5,92,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,21,92,21,92,15,126,15"/>
 </map>
