@@ -1,8 +1,5 @@
 <map id="tmc5160::TMC5160::MotorControl::ConfigureDcStep" name="tmc5160::TMC5160::MotorControl::ConfigureDcStep">
-<area shape="rect" id="Node000001" title="Configure dcStep automatic commutation." alt="" coords="5,39,247,79"/>
-<area shape="rect" id="Node000002" href="$tmc5160_8cpp.html#a6b5c74bc9056ff38815021d63986f681" title=" " alt="" coords="347,5,430,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="246,38,333,24,334,29,247,43"/>
-<area shape="rect" id="Node000003" href="$classtmc5160_1_1CommInterface.html#ae8ac318a721a19100d7096485395d21e" title="Write a 32&#45;bit register to the TMC5160." alt="" coords="295,79,483,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="247,75,282,80,281,86,246,80"/>
-<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="340,80,337,70,345,60,362,55,389,53,419,56,435,63,433,68,418,61,389,58,363,60,348,65,342,71,345,78"/>
+<area shape="rect" id="Node000001" title="Configure dcStep automatic commutation." alt="" coords="5,5,247,45"/>
+<area shape="rect" id="Node000002" href="$tmc5160_8cpp.html#a6b5c74bc9056ff38815021d63986f681" title=" " alt="" coords="295,13,377,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,23,281,23,281,28,247,28"/>
 </map>

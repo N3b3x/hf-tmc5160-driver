@@ -13,6 +13,7 @@ var dir_7751913d9073a449937b5bcfd50bf3a6 =
     [ "ramp_control_comprehensive_test.cpp", "ramp__control__comprehensive__test_8cpp.html", "ramp__control__comprehensive__test_8cpp" ],
     [ "sinusoidal.cpp", "sinusoidal_8cpp.html", "sinusoidal_8cpp" ],
     [ "spi_daisy_chain_comprehensive_test.cpp", "spi__daisy__chain__comprehensive__test_8cpp.html", "spi__daisy__chain__comprehensive__test_8cpp" ],
+    [ "stallguard_tuning.cpp", "stallguard__tuning_8cpp.html", "stallguard__tuning_8cpp" ],
     [ "TestFramework.h", "TestFramework_8h.html", "TestFramework_8h" ],
     [ "uart_multi_node_comprehensive_test.cpp", "uart__multi__node__comprehensive__test_8cpp.html", "uart__multi__node__comprehensive__test_8cpp" ]
 ];

@@ -16,11 +16,15 @@ var searchData=
   ['lead_5fscrew_5fpitch_5fmm_13',['lead_screw_pitch_mm',['../structtmc5160_1_1MechanicalSystem.html#ad3428b94827098f6f759d60a87d78d71',1,'tmc5160::MechanicalSystem']]],
   ['lead_5fscrew_5fpitch_5fmm_14',['LEAD_SCREW_PITCH_MM',['../ramp__control__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370',1,'ramp_control_comprehensive_test.cpp']]],
   ['leadscrew_15',['LeadScrew',['../namespacetmc5160.html#a00679448289a759ed7f70e47f9d11596a6f645ee65c04d44c3039f8b55622bb70',1,'tmc5160']]],
-  ['license_16',['📄 License',['../index.html#autotoc_md39',1,'']]],
-  ['list_17',['Deprecated List',['../deprecated.html',1,'']]],
-  ['local_5fmax_5fbound_5f_18',['local_max_bound_',['../classFatigueTestMotion.html#a2aaf6bf3cf4026a7f62f0a3947fbfc03',1,'FatigueTestMotion']]],
-  ['local_5fmin_5fbound_5f_19',['local_min_bound_',['../classFatigueTestMotion.html#a905d65f7afc6bb7ad992e5296437ceb7',1,'FatigueTestMotion']]],
-  ['locked_5f_20',['locked_',['../classTmcMutexGuard.html#a57ef84d5629c9f4ad53660b8a9747e7d',1,'TmcMutexGuard']]],
-  ['logdebug_21',['LogDebug',['../classtmc5160_1_1CommInterface.html#a1398cb696532caeeb971ea6157bb296f',1,'tmc5160::CommInterface']]],
-  ['long_5fname_22',['long_name',['../structCommandArg.html#a0a484202a6f9ef4350cd979750154e15',1,'CommandArg']]]
+  ['level0_16',['Level0',['../namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bda8292f4c72596c343cc85cfd818469fe0',1,'tmc5160']]],
+  ['level1_17',['Level1',['../namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bda63664aa8bee7544118de87bf48d529ee',1,'tmc5160']]],
+  ['level2_18',['Level2',['../namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bda0cbbfd5a182368f83190bf23d2bd5fde',1,'tmc5160']]],
+  ['level3_19',['Level3',['../namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bda68290d8bb76fe3ceb98d34e8b068f6be',1,'tmc5160']]],
+  ['license_20',['📄 License',['../index.html#autotoc_md40',1,'']]],
+  ['list_21',['Deprecated List',['../deprecated.html',1,'']]],
+  ['local_5fmax_5fbound_5f_22',['local_max_bound_',['../classFatigueTestMotion.html#a2aaf6bf3cf4026a7f62f0a3947fbfc03',1,'FatigueTestMotion']]],
+  ['local_5fmin_5fbound_5f_23',['local_min_bound_',['../classFatigueTestMotion.html#a905d65f7afc6bb7ad992e5296437ceb7',1,'FatigueTestMotion']]],
+  ['locked_5f_24',['locked_',['../classTmcMutexGuard.html#a57ef84d5629c9f4ad53660b8a9747e7d',1,'TmcMutexGuard']]],
+  ['logdebug_25',['LogDebug',['../classtmc5160_1_1CommInterface.html#a1398cb696532caeeb971ea6157bb296f',1,'tmc5160::CommInterface']]],
+  ['long_5fname_26',['long_name',['../structCommandArg.html#a0a484202a6f9ef4350cd979750154e15',1,'CommandArg']]]
 ];

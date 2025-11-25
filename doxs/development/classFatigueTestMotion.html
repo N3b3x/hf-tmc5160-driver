@@ -107,7 +107,7 @@ $(function(){initNavTree('classFatigueTestMotion.html',''); initResizable(); });
 <div class="dynheader">
 Collaboration diagram for FatigueTestMotion:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion__coll__graph.svg" width="1556" height="652"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion__coll__graph.svg" width="1692" height="806"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -143,12 +143,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abbbaba6ecf52385510a88ab272065a1a" id="r_abbbaba6ecf52385510a88ab272065a1a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abbbaba6ecf52385510a88ab272065a1a">GetFrequency</a> () const noexcept</td></tr>
 <tr class="memdesc:abbbaba6ecf52385510a88ab272065a1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get frequency (thread-safe)  <br /></td></tr>
 <tr class="separator:abbbaba6ecf52385510a88ab272065a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86ebd3d311881f3bab591d44445c2f29" id="r_a86ebd3d311881f3bab591d44445c2f29"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a86ebd3d311881f3bab591d44445c2f29">SetDwellTimes</a> (uint32_t dwell_at_min_ms, uint32_t dwell_at_max_ms, uint32_t dwell_at_center_ms=0) noexcept</td></tr>
-<tr class="memdesc:a86ebd3d311881f3bab591d44445c2f29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set dwell times (thread-safe, can be changed in real-time)  <br /></td></tr>
-<tr class="separator:a86ebd3d311881f3bab591d44445c2f29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa5166b10ba2d429aa2cee89dbebd6c1" id="r_afa5166b10ba2d429aa2cee89dbebd6c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa5166b10ba2d429aa2cee89dbebd6c1">GetDwellTimes</a> (uint32_t &amp;dwell_at_min_ms, uint32_t &amp;dwell_at_max_ms, uint32_t &amp;dwell_at_center_ms) const noexcept</td></tr>
-<tr class="memdesc:afa5166b10ba2d429aa2cee89dbebd6c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get dwell times (thread-safe)  <br /></td></tr>
-<tr class="separator:afa5166b10ba2d429aa2cee89dbebd6c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff0fb00f39c558bed824dfb79cad5a2a" id="r_aff0fb00f39c558bed824dfb79cad5a2a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff0fb00f39c558bed824dfb79cad5a2a">SetDwellTimes</a> (uint32_t dwell_at_min_ms, uint32_t dwell_at_max_ms) noexcept</td></tr>
+<tr class="memdesc:aff0fb00f39c558bed824dfb79cad5a2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set dwell times (thread-safe, can be changed in real-time)  <br /></td></tr>
+<tr class="separator:aff0fb00f39c558bed824dfb79cad5a2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d8da15caed8d14757161e6a93c02378" id="r_a1d8da15caed8d14757161e6a93c02378"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d8da15caed8d14757161e6a93c02378">GetDwellTimes</a> (uint32_t &amp;dwell_at_min_ms, uint32_t &amp;dwell_at_max_ms) const noexcept</td></tr>
+<tr class="memdesc:a1d8da15caed8d14757161e6a93c02378"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get dwell times (thread-safe)  <br /></td></tr>
+<tr class="separator:a1d8da15caed8d14757161e6a93c02378"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f155b2c8b97f4d94c1284a31d5031bd" id="r_a2f155b2c8b97f4d94c1284a31d5031bd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f155b2c8b97f4d94c1284a31d5031bd">SetTargetCycles</a> (uint32_t cycles) noexcept</td></tr>
 <tr class="memdesc:a2f155b2c8b97f4d94c1284a31d5031bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set target cycle count (thread-safe)  <br /></td></tr>
 <tr class="separator:a2f155b2c8b97f4d94c1284a31d5031bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,8 +196,7 @@ Private Types</h2></td></tr>
 , <a class="el" href="#ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803">DWELL_AT_MIN</a>
 , <a class="el" href="#ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857">DWELL_AT_MAX</a>
 , <br />
-&#160;&#160;<a class="el" href="#ae22ab1035e138c237927f4a508d78136a876eb6477c5f7a37d2d28cb80a4c1ce6">DWELL_AT_CENTER</a>
-, <a class="el" href="#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a">STOPPED</a>
+&#160;&#160;<a class="el" href="#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a">STOPPED</a>
 <br />
  }</td></tr>
 <tr class="separator:ae22ab1035e138c237927f4a508d78136"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -248,8 +247,6 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a362f847562751ac3beb6d0c1ebdafdad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a397ce03f808f2ff874cbdfff8d0154f8" id="r_a397ce03f808f2ff874cbdfff8d0154f8"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a397ce03f808f2ff874cbdfff8d0154f8">dwell_at_max_ms_</a></td></tr>
 <tr class="separator:a397ce03f808f2ff874cbdfff8d0154f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfbf084dde13f4728180869699f6f241" id="r_abfbf084dde13f4728180869699f6f241"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abfbf084dde13f4728180869699f6f241">dwell_at_center_ms_</a></td></tr>
-<tr class="separator:abfbf084dde13f4728180869699f6f241"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8b0180575da7d3fc71599d5ff402dea" id="r_af8b0180575da7d3fc71599d5ff402dea"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af8b0180575da7d3fc71599d5ff402dea">target_cycles_</a></td></tr>
 <tr class="separator:af8b0180575da7d3fc71599d5ff402dea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dfd3f01a973ce8e153a4e66822e8926" id="r_a0dfd3f01a973ce8e153a4e66822e8926"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0dfd3f01a973ce8e153a4e66822e8926">current_cycles_</a></td></tr>
@@ -305,7 +302,6 @@ Private Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a824f3e9ffe184b2fb3d359586a21d64c" name="ae22ab1035e138c237927f4a508d78136a824f3e9ffe184b2fb3d359586a21d64c"></a>MOVING_TO_MAX&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803" name="ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803"></a>DWELL_AT_MIN&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857" name="ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857"></a>DWELL_AT_MAX&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a876eb6477c5f7a37d2d28cb80a4c1ce6" name="ae22ab1035e138c237927f4a508d78136a876eb6477c5f7a37d2d28cb80a4c1ce6"></a>DWELL_AT_CENTER&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a" name="ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a"></a>STOPPED&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
@@ -470,8 +466,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="afa5166b10ba2d429aa2cee89dbebd6c1" name="afa5166b10ba2d429aa2cee89dbebd6c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa5166b10ba2d429aa2cee89dbebd6c1">&#9670;&#160;</a></span>GetDwellTimes()</h2>
+<a id="a1d8da15caed8d14757161e6a93c02378" name="a1d8da15caed8d14757161e6a93c02378"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d8da15caed8d14757161e6a93c02378">&#9670;&#160;</a></span>GetDwellTimes()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -487,12 +483,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t &amp;</td>          <td class="paramname"><span class="paramname"><em>dwell_at_max_ms</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t &amp;</td>          <td class="paramname"><span class="paramname"><em>dwell_at_center_ms</em></span>&#160;) const</td>
+          <td class="paramtype">uint32_t &amp;</td>          <td class="paramname"><span class="paramname"><em>dwell_at_max_ms</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -839,8 +830,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a86ebd3d311881f3bab591d44445c2f29" name="a86ebd3d311881f3bab591d44445c2f29"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86ebd3d311881f3bab591d44445c2f29">&#9670;&#160;</a></span>SetDwellTimes()</h2>
+<a id="aff0fb00f39c558bed824dfb79cad5a2a" name="aff0fb00f39c558bed824dfb79cad5a2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff0fb00f39c558bed824dfb79cad5a2a">&#9670;&#160;</a></span>SetDwellTimes()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -856,12 +847,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>dwell_at_max_ms</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>dwell_at_center_ms</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span>&#160;)</td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>dwell_at_max_ms</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -875,12 +861,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_a86ebd3d311881f3bab591d44445c2f29_cgraph.svg" width="370" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_aff0fb00f39c558bed824dfb79cad5a2a_cgraph.svg" width="370" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_a86ebd3d311881f3bab591d44445c2f29_icgraph.svg" width="294" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_aff0fb00f39c558bed824dfb79cad5a2a_icgraph.svg" width="294" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1407,28 +1393,6 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt;<a class="el" href="classEsp32SPI.html">Esp32SPI</a>&gt;* FatigueTestMotion::driver_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="abfbf084dde13f4728180869699f6f241" name="abfbf084dde13f4728180869699f6f241"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfbf084dde13f4728180869699f6f241">&#9670;&#160;</a></span>dwell_at_center_ms_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t FatigueTestMotion::dwell_at_center_ms_</td>
         </tr>
       </table>
   </td>

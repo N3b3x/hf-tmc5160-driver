@@ -1,6 +1,10 @@
 var structtmc5160_1_1GlobalConfig =
 [
     [ "GlobalConfig", "structtmc5160_1_1GlobalConfig.html#a43f602928925cbc5a60987559fd86ebf", null ],
+    [ "GetDiag0Config", "structtmc5160_1_1GlobalConfig.html#a6bc2d8c9a2e049e24559d3a387a20023", null ],
+    [ "GetDiag1Config", "structtmc5160_1_1GlobalConfig.html#a58dba57e26e6e235f6d60fc8ac23e937", null ],
+    [ "SetDiag0Config", "structtmc5160_1_1GlobalConfig.html#aec47cd2b82bc84df4776e61a9adfb59f", null ],
+    [ "SetDiag1Config", "structtmc5160_1_1GlobalConfig.html#a04d5e35d590f2514899f34f06a9cf3f9", null ],
     [ "diag0_error", "structtmc5160_1_1GlobalConfig.html#ae347108689ae6fe0ba6e3eeb35498bba", null ],
     [ "diag0_int_pushpull", "structtmc5160_1_1GlobalConfig.html#a8ae7154051df5b667a147eca62e37ecb", null ],
     [ "diag0_otpw", "structtmc5160_1_1GlobalConfig.html#a1c8807d89be67d0b6ac93e225776b8a7", null ],

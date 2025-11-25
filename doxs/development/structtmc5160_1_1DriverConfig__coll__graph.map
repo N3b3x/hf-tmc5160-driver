@@ -1,17 +1,17 @@
 <map id="tmc5160::DriverConfig" name="tmc5160::DriverConfig">
-<area shape="rect" id="Node000001" title="Driver initialization configuration structure." alt="" coords="403,153,571,179"/>
+<area shape="rect" id="Node000001" title="Driver initialization configuration structure." alt="" coords="387,153,555,179"/>
 <area shape="rect" id="Node000002" href="$structtmc5160_1_1PowerStageParameters.html" title="Power stage parameters structure." alt="" coords="5,5,244,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="258,26,320,40,380,64,411,84,439,108,478,151,474,155,435,111,408,88,377,68,319,45,257,31"/>
-<area shape="rect" id="Node000003" href="$structtmc5160_1_1MotorParameters.html" title="Motor parameters structure." alt="" coords="25,55,224,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="238,78,309,91,380,110,427,130,466,151,463,156,424,135,378,115,307,96,237,83"/>
-<area shape="rect" id="Node000004" href="$structtmc5160_1_1ChopperConfig.html" title="Chopper configuration structure." alt="" coords="33,104,216,129"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="230,124,379,143,422,151,421,156,378,149,229,130"/>
-<area shape="rect" id="Node000005" href="$structtmc5160_1_1StealthChopConfig.html" title="StealthChop configuration structure." alt="" coords="21,153,228,179"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="241,163,402,163,402,169,241,169"/>
-<area shape="rect" id="Node000006" href="$structtmc5160_1_1ShortProtectionConfig.html" title="Short protection configuration structure." alt="" coords="31,203,218,243"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="232,206,378,183,420,176,420,181,379,189,233,211"/>
-<area shape="rect" id="Node000007" href="$structtmc5160_1_1GlobalConfig.html" title="Global configuration (GCONF) structure." alt="" coords="39,268,210,293"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="221,263,299,246,378,221,425,199,464,177,467,181,427,204,380,226,300,251,222,268"/>
-<area shape="rect" id="Node000008" href="$structtmc5160_1_1RampParameters.html" title="Ramp parameters structure." alt="" coords="25,317,224,343"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="237,318,309,303,344,290,377,274,409,252,436,226,475,177,479,181,440,229,412,256,380,279,346,295,310,308,238,324"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="251,31,309,46,364,69,394,88,421,110,460,151,456,155,417,114,391,92,361,74,307,51,250,36"/>
+<area shape="rect" id="Node000003" href="$structtmc5160_1_1ChopperConfig.html" title="Chopper configuration structure." alt="" coords="33,55,216,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="230,79,296,93,364,111,410,131,449,151,446,156,408,136,362,117,295,98,229,84"/>
+<area shape="rect" id="Node000004" href="$structtmc5160_1_1StealthChopConfig.html" title="StealthChop configuration structure." alt="" coords="21,104,228,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="242,127,363,143,406,151,405,156,362,149,241,132"/>
+<area shape="rect" id="Node000005" href="$structtmc5160_1_1GlobalConfig.html" title="Global configuration (GCONF) structure." alt="" coords="39,153,210,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="224,163,386,163,386,169,224,169"/>
+<area shape="rect" id="Node000006" href="$structtmc5160_1_1RampParameters.html" title="Ramp configuration structure." alt="" coords="25,203,224,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="237,200,362,183,405,176,406,181,363,189,238,206"/>
+<area shape="rect" id="Node000007" href="$structtmc5160_1_1MotorSpec.html" title="Motor specification structure." alt="" coords="47,252,203,277"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="216,251,288,237,362,217,408,197,447,177,449,181,410,202,364,222,289,242,217,256"/>
+<area shape="rect" id="Node000008" href="$structtmc5160_1_1MechanicalSystem.html" title="Mechanical system configuration structure." alt="" coords="19,301,230,327"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="243,299,303,284,361,261,391,242,418,219,457,177,461,181,422,223,395,246,364,266,305,289,244,304"/>
 </map>

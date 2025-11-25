@@ -11,8 +11,9 @@ var searchData=
   ['isdeviceactive_8',['IsDeviceActive',['../classtmc5160_1_1TMC5160DaisyChain.html#a98efa2181ae0aed4ef1f7c53c214afee',1,'tmc5160::TMC5160DaisyChain::IsDeviceActive()'],['../classtmc5160_1_1TMC5160MultiNode.html#a4d17dd0eef9df1a61192c6f7fa3bf7ab',1,'tmc5160::TMC5160MultiNode::IsDeviceActive()']]],
   ['isinitialized_9',['IsInitialized',['../classtmc5160_1_1TMC5160.html#a83396df16c903cb74e5d5380f3f2eff2',1,'tmc5160::TMC5160']]],
   ['isrunning_10',['IsRunning',['../classFatigueTestMotion.html#a23d9f8430ce81b0f5b1376209bf9b0e6',1,'FatigueTestMotion']]],
-  ['istargetreached_11',['IsTargetReached',['../structtmc5160_1_1TMC5160_1_1RampControl.html#a668ce782e665f4b6056d4f08ed10b8f4',1,'tmc5160::TMC5160::RampControl']]],
-  ['istargetvelocityreached_12',['IsTargetVelocityReached',['../structtmc5160_1_1TMC5160_1_1RampControl.html#ac54d81af1622f7f946d1feda09fcf04d',1,'tmc5160::TMC5160::RampControl']]],
-  ['isvalid_13',['IsValid',['../structtmc5160_1_1UartFrame.html#acc3df3189eeff3ba3215f88a37f752c4',1,'tmc5160::UartFrame']]],
-  ['iswrite_14',['IsWrite',['../structtmc5160_1_1SpiCommand.html#adacf140085d9631e8cda2f9ac9679212',1,'tmc5160::SpiCommand::IsWrite()'],['../structtmc5160_1_1UartFrame.html#aeb584eacadda8d1446333ba86653d730',1,'tmc5160::UartFrame::IsWrite()']]]
+  ['isstalldetected_11',['IsStallDetected',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#ad8ab2f085d83c8ae9a9a2041a799d6f3',1,'tmc5160::TMC5160::Diagnostics']]],
+  ['istargetreached_12',['IsTargetReached',['../structtmc5160_1_1TMC5160_1_1RampControl.html#a668ce782e665f4b6056d4f08ed10b8f4',1,'tmc5160::TMC5160::RampControl']]],
+  ['istargetvelocityreached_13',['IsTargetVelocityReached',['../structtmc5160_1_1TMC5160_1_1RampControl.html#ac54d81af1622f7f946d1feda09fcf04d',1,'tmc5160::TMC5160::RampControl']]],
+  ['isvalid_14',['IsValid',['../structtmc5160_1_1UartFrame.html#acc3df3189eeff3ba3215f88a37f752c4',1,'tmc5160::UartFrame']]],
+  ['iswrite_15',['IsWrite',['../structtmc5160_1_1SpiCommand.html#adacf140085d9631e8cda2f9ac9679212',1,'tmc5160::SpiCommand::IsWrite()'],['../structtmc5160_1_1UartFrame.html#aeb584eacadda8d1446333ba86653d730',1,'tmc5160::UartFrame::IsWrite()']]]
 ];

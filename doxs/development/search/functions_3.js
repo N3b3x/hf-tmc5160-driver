@@ -6,8 +6,10 @@ var searchData=
   ['deinitialize_3',['Deinitialize',['../classEsp32SPI.html#adfd033d198f8b5393443939b523a08d5',1,'Esp32SPI']]],
   ['delayms_4',['DelayMs',['../classtmc5160_1_1CommInterface.html#ab6624610e9b8fcb46f37b600ec6939a0',1,'tmc5160::CommInterface::DelayMs()'],['../classEsp32SPI.html#ac9b9d58fe2109257179e443fde42b02d',1,'Esp32SPI::DelayMs()']]],
   ['delayus_5',['DelayUs',['../classtmc5160_1_1CommInterface.html#a26c5fc863f83fd076de9ae14e3917543',1,'tmc5160::CommInterface::DelayUs()'],['../classEsp32SPI.html#a7d824ef0096f7ac31b76b53ec8e536c2',1,'Esp32SPI::DelayUs()']]],
-  ['diagnostics_6',['Diagnostics',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0059ad48463547ed6a617dc819e24322',1,'tmc5160::TMC5160::Diagnostics']]],
-  ['disable_7',['Disable',['../structtmc5160_1_1TMC5160_1_1MotorControl.html#a860bc6a5bd4a901b2b30f146e588c157',1,'tmc5160::TMC5160::MotorControl']]],
-  ['driverconfig_8',['DriverConfig',['../structtmc5160_1_1DriverConfig.html#a20155632a6bc4bab534dacf9f819c1b0',1,'tmc5160::DriverConfig']]],
-  ['drivererror_9',['DriverError',['../structtmc5160_1_1SpiStatus.html#a4464785395ac0a9a2eedd5bd0a8e78a3',1,'tmc5160::SpiStatus']]]
+  ['diag0config_6',['Diag0Config',['../structtmc5160_1_1Diag0Config.html#a8cd486543cab0749eeeb1b26b77f3bae',1,'tmc5160::Diag0Config']]],
+  ['diag1config_7',['Diag1Config',['../structtmc5160_1_1Diag1Config.html#aa7b783fa945ed493ef61bcbbf54b407c',1,'tmc5160::Diag1Config']]],
+  ['diagnostics_8',['Diagnostics',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0059ad48463547ed6a617dc819e24322',1,'tmc5160::TMC5160::Diagnostics']]],
+  ['disable_9',['Disable',['../structtmc5160_1_1TMC5160_1_1MotorControl.html#a860bc6a5bd4a901b2b30f146e588c157',1,'tmc5160::TMC5160::MotorControl']]],
+  ['driverconfig_10',['DriverConfig',['../structtmc5160_1_1DriverConfig.html#a20155632a6bc4bab534dacf9f819c1b0',1,'tmc5160::DriverConfig']]],
+  ['drivererror_11',['DriverError',['../structtmc5160_1_1SpiStatus.html#a4464785395ac0a9a2eedd5bd0a8e78a3',1,'tmc5160::SpiStatus']]]
 ];

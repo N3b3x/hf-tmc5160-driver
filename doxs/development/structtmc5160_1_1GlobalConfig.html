@@ -109,6 +109,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a43f602928925cbc5a60987559fd86ebf" id="r_a43f602928925cbc5a60987559fd86ebf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43f602928925cbc5a60987559fd86ebf">GlobalConfig</a> ()=default</td></tr>
 <tr class="memdesc:a43f602928925cbc5a60987559fd86ebf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:a43f602928925cbc5a60987559fd86ebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bc2d8c9a2e049e24559d3a387a20023" id="r_a6bc2d8c9a2e049e24559d3a387a20023"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc5160_1_1Diag0Config.html">Diag0Config</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6bc2d8c9a2e049e24559d3a387a20023">GetDiag0Config</a> () const noexcept</td></tr>
+<tr class="memdesc:a6bc2d8c9a2e049e24559d3a387a20023"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract DIAG0 configuration from <a class="el" href="structtmc5160_1_1GlobalConfig.html" title="Global configuration (GCONF) structure.">GlobalConfig</a>.  <br /></td></tr>
+<tr class="separator:a6bc2d8c9a2e049e24559d3a387a20023"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58dba57e26e6e235f6d60fc8ac23e937" id="r_a58dba57e26e6e235f6d60fc8ac23e937"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc5160_1_1Diag1Config.html">Diag1Config</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a58dba57e26e6e235f6d60fc8ac23e937">GetDiag1Config</a> () const noexcept</td></tr>
+<tr class="memdesc:a58dba57e26e6e235f6d60fc8ac23e937"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract DIAG1 configuration from <a class="el" href="structtmc5160_1_1GlobalConfig.html" title="Global configuration (GCONF) structure.">GlobalConfig</a>.  <br /></td></tr>
+<tr class="separator:a58dba57e26e6e235f6d60fc8ac23e937"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec47cd2b82bc84df4776e61a9adfb59f" id="r_aec47cd2b82bc84df4776e61a9adfb59f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aec47cd2b82bc84df4776e61a9adfb59f">SetDiag0Config</a> (const <a class="el" href="structtmc5160_1_1Diag0Config.html">Diag0Config</a> &amp;config) noexcept</td></tr>
+<tr class="memdesc:aec47cd2b82bc84df4776e61a9adfb59f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set DIAG0 configuration in <a class="el" href="structtmc5160_1_1GlobalConfig.html" title="Global configuration (GCONF) structure.">GlobalConfig</a>.  <br /></td></tr>
+<tr class="separator:aec47cd2b82bc84df4776e61a9adfb59f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04d5e35d590f2514899f34f06a9cf3f9" id="r_a04d5e35d590f2514899f34f06a9cf3f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04d5e35d590f2514899f34f06a9cf3f9">SetDiag1Config</a> (const <a class="el" href="structtmc5160_1_1Diag1Config.html">Diag1Config</a> &amp;config) noexcept</td></tr>
+<tr class="memdesc:a04d5e35d590f2514899f34f06a9cf3f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set DIAG1 configuration in <a class="el" href="structtmc5160_1_1GlobalConfig.html" title="Global configuration (GCONF) structure.">GlobalConfig</a>.  <br /></td></tr>
+<tr class="separator:a04d5e35d590f2514899f34f06a9cf3f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -121,7 +133,6 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a525a3b17e031272d30ba886a3da9d74d" id="r_a525a3b17e031272d30ba886a3da9d74d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a525a3b17e031272d30ba886a3da9d74d">en_pwm_mode</a> {true}</td></tr>
 <tr class="separator:a525a3b17e031272d30ba886a3da9d74d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2890c8fe7a1b7f026cdc3903c8346291" id="r_a2890c8fe7a1b7f026cdc3903c8346291"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2890c8fe7a1b7f026cdc3903c8346291">multistep_filt</a> {true}</td></tr>
-<tr class="memdesc:a2890c8fe7a1b7f026cdc3903c8346291"><td class="mdescLeft">&#160;</td><td class="mdescRight">(default=true recommended)  <br /></td></tr>
 <tr class="separator:a2890c8fe7a1b7f026cdc3903c8346291"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae187c973011b708f1ff732712ffe3667" id="r_ae187c973011b708f1ff732712ffe3667"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae187c973011b708f1ff732712ffe3667">shaft</a> {false}</td></tr>
 <tr class="memdesc:ae187c973011b708f1ff732712ffe3667"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit 4: Inverse motor direction (false=normal, true=inverse)  <br /></td></tr>
@@ -187,6 +198,129 @@ Public Attributes</h2></td></tr>
 
 <p>Default constructor. </p>
 <p>Initializes with recommended default values. All members use default member initializers, so constructor is empty. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6bc2d8c9a2e049e24559d3a387a20023" name="a6bc2d8c9a2e049e24559d3a387a20023"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6bc2d8c9a2e049e24559d3a387a20023">&#9670;&#160;</a></span>GetDiag0Config()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structtmc5160_1_1Diag0Config.html">Diag0Config</a> tmc5160::GlobalConfig::GetDiag0Config </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Extract DIAG0 configuration from <a class="el" href="structtmc5160_1_1GlobalConfig.html" title="Global configuration (GCONF) structure.">GlobalConfig</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structtmc5160_1_1Diag0Config.html" title="DIAG0 pin configuration structure.">Diag0Config</a> struct with current DIAG0 settings </dd></dl>
+
+</div>
+</div>
+<a id="a58dba57e26e6e235f6d60fc8ac23e937" name="a58dba57e26e6e235f6d60fc8ac23e937"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58dba57e26e6e235f6d60fc8ac23e937">&#9670;&#160;</a></span>GetDiag1Config()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structtmc5160_1_1Diag1Config.html">Diag1Config</a> tmc5160::GlobalConfig::GetDiag1Config </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Extract DIAG1 configuration from <a class="el" href="structtmc5160_1_1GlobalConfig.html" title="Global configuration (GCONF) structure.">GlobalConfig</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structtmc5160_1_1Diag1Config.html" title="DIAG1 pin configuration structure.">Diag1Config</a> struct with current DIAG1 settings </dd></dl>
+
+</div>
+</div>
+<a id="aec47cd2b82bc84df4776e61a9adfb59f" name="aec47cd2b82bc84df4776e61a9adfb59f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec47cd2b82bc84df4776e61a9adfb59f">&#9670;&#160;</a></span>SetDiag0Config()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tmc5160::GlobalConfig::SetDiag0Config </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structtmc5160_1_1Diag0Config.html">Diag0Config</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>config</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set DIAG0 configuration in <a class="el" href="structtmc5160_1_1GlobalConfig.html" title="Global configuration (GCONF) structure.">GlobalConfig</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">config</td><td><a class="el" href="structtmc5160_1_1Diag0Config.html" title="DIAG0 pin configuration structure.">Diag0Config</a> struct with DIAG0 settings </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a04d5e35d590f2514899f34f06a9cf3f9" name="a04d5e35d590f2514899f34f06a9cf3f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04d5e35d590f2514899f34f06a9cf3f9">&#9670;&#160;</a></span>SetDiag1Config()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tmc5160::GlobalConfig::SetDiag1Config </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structtmc5160_1_1Diag1Config.html">Diag1Config</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>config</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set DIAG1 configuration in <a class="el" href="structtmc5160_1_1GlobalConfig.html" title="Global configuration (GCONF) structure.">GlobalConfig</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">config</td><td><a class="el" href="structtmc5160_1_1Diag1Config.html" title="DIAG1 pin configuration structure.">Diag1Config</a> struct with DIAG1 settings </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -386,9 +520,7 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>(default=true recommended) </p>
-<p>Bit 3: Enable step input filtering for StealthChop optimization </p>
+<p>Bit 3: Enable step input filtering for StealthChop optimization (default=true recommended) </p>
 
 </div>
 </div>

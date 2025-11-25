@@ -25,30 +25,30 @@
 var NAVTREE =
 [
   [ "HF-TMC5160 Driver", "index.html", [
-    [ "📚 Table of Contents", "index.html#autotoc_md19", null ],
-    [ "📦 Overview", "index.html#autotoc_md20", null ],
-    [ "✨ Features", "index.html#autotoc_md21", [
-      [ "Core Motor Control", "index.html#autotoc_md22", null ],
-      [ "Multi-Chip Communication", "index.html#autotoc_md23", null ],
-      [ "Advanced Features", "index.html#autotoc_md24", null ],
-      [ "Platform & Architecture", "index.html#autotoc_md25", null ]
+    [ "📚 Table of Contents", "index.html#autotoc_md20", null ],
+    [ "📦 Overview", "index.html#autotoc_md21", null ],
+    [ "✨ Features", "index.html#autotoc_md22", [
+      [ "Core Motor Control", "index.html#autotoc_md23", null ],
+      [ "Multi-Chip Communication", "index.html#autotoc_md24", null ],
+      [ "Advanced Features", "index.html#autotoc_md25", null ],
+      [ "Platform & Architecture", "index.html#autotoc_md26", null ]
     ] ],
-    [ "🚀 Quick Start", "index.html#autotoc_md26", [
-      [ "Single Motor Setup", "index.html#autotoc_md27", null ],
-      [ "Multi-Motor Daisy Chain Setup", "index.html#autotoc_md28", null ],
-      [ "Using Physical Units", "index.html#autotoc_md29", null ]
+    [ "🚀 Quick Start", "index.html#autotoc_md27", [
+      [ "Single Motor Setup", "index.html#autotoc_md28", null ],
+      [ "Multi-Motor Daisy Chain Setup", "index.html#autotoc_md29", null ],
+      [ "Using Physical Units", "index.html#autotoc_md30", null ]
     ] ],
-    [ "🔧 Installation", "index.html#autotoc_md30", null ],
-    [ "📖 API Reference", "index.html#autotoc_md31", [
-      [ "Core Methods", "index.html#autotoc_md32", null ],
-      [ "Multi-Chip Methods", "index.html#autotoc_md33", null ],
-      [ "Unit Conversion Methods", "index.html#autotoc_md34", null ],
-      [ "Advanced Features", "index.html#autotoc_md35", null ]
+    [ "🔧 Installation", "index.html#autotoc_md31", null ],
+    [ "📖 API Reference", "index.html#autotoc_md32", [
+      [ "Core Methods", "index.html#autotoc_md33", null ],
+      [ "Multi-Chip Methods", "index.html#autotoc_md34", null ],
+      [ "Unit Conversion Methods", "index.html#autotoc_md35", null ],
+      [ "Advanced Features", "index.html#autotoc_md36", null ]
     ] ],
-    [ "📊 Examples", "index.html#autotoc_md36", null ],
-    [ "📚 Documentation", "index.html#autotoc_md37", null ],
-    [ "🤝 Contributing", "index.html#autotoc_md38", null ],
-    [ "📄 License", "index.html#autotoc_md39", null ],
+    [ "📊 Examples", "index.html#autotoc_md37", null ],
+    [ "📚 Documentation", "index.html#autotoc_md38", null ],
+    [ "🤝 Contributing", "index.html#autotoc_md39", null ],
+    [ "📄 License", "index.html#autotoc_md40", null ],
     [ "Deprecated List", "deprecated.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Namespaces", "namespaces.html", [
@@ -88,15 +88,15 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "TestFramework_8h.html",
-"classtmc5160_1_1SpiCommInterface.html#ab05ee9d4730a81797159444cc8ce3f81",
-"esp32__tmc5160__bus__config_8hpp.html#a9913149a86ac0004e971080dfb105508",
-"namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4a415ca8c606083f84fd210e197d820f61",
-"structFatigueTestMotion_1_1Status.html#a9cdc62642314a5e278d163c59747e1a5",
-"structtmc5160_1_1PinActiveLevels.html",
-"structtmc5160_1_1TMC5160_1_1Diagnostics.html#aa3477caff8643a2d71a9aaca26a48eaa",
-"uniontmc5160_1_1CHOPCONF__Register.html#a7ce9ff96c9b3cffc76b8b428e3993cdf",
-"uniontmc5160_1_1IOIN__Register.html#a5b1e42b3b58b7df5f3eb8db1ce6c6c31",
-"uniontmc5160_1_1SpiCommand_1_1Frame.html#a0a1fb9f854c8a9e4333c74acf18b9cd0"
+"classtmc5160_1_1SpiCommInterface.html#ac2231a4f01abd77a0957c8832693b9c1",
+"esp32__tmc5160__bus__config_8hpp.html#a85d06d18983f55f81d8cd5f3d0b69a42",
+"namespacetmc5160.html#a4eaf32584629b8ef44ee951e7ebf4916",
+"spi__daisy__chain__comprehensive__test_8cpp.html#a41fcf4530de550ff6f72008fcded08cc",
+"structtmc5160_1_1InputStatus.html#aad391a47b04174edcb6f741bf568aee4",
+"structtmc5160_1_1TMC5160PinConfig.html#a1818578a38679042d5c7643252c52936",
+"tmc5160__types_8hpp.html#a00679448289a759ed7f70e47f9d11596a6f645ee65c04d44c3039f8b55622bb70",
+"uniontmc5160_1_1ENC__STATUS__Register.html#ad19c88f1c159e1fc8248f9db1d20f828",
+"uniontmc5160_1_1RAMP__STAT__Register.html#a6ca0b72a55525e43456372ca789e959f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

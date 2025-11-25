@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classFatigueTestMotion.html#a86ebd3d311881f3bab591d44445c2f29" target="_top" xlink:title="Set dwell times (thread&#45;safe, can be changed in real&#45;time)">
+<g id="a_Node000002"><a xlink:href="classFatigueTestMotion.html#aff0fb00f39c558bed824dfb79cad5a2a" target="_top" xlink:title="Set dwell times (thread&#45;safe, can be changed in real&#45;time)">
 <polygon fill="white" stroke="#666666" points="252,-174 141,-174 141,-144 252,-144 252,-174"/>
 <text text-anchor="start" x="149" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00">FatigueTestMotion::</text>
 <text text-anchor="middle" x="196.5" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">SetDwellTimes</text>
