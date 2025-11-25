@@ -259,9 +259,13 @@ private:
   int32_t last_target_relative_; // Last target position relative to center (for cycle counting)
 
   // State machine
+  // Note: Sinusoidal motion uses the same states - it's a motion mode, not a separate state
   enum class MotionState { MOVING_TO_MIN, MOVING_TO_MAX, DWELL_AT_MIN, DWELL_AT_MAX, DWELL_AT_CENTER, STOPPED };
   MotionState state_;
   uint32_t dwell_start_time_ms_;
+  
+  // Motion mode flag (true = sinusoidal, false = ramp-based)
+  bool sinusoidal_mode_;
 
   // Computed trajectory parameters
   float calculated_vmax_;
@@ -338,7 +342,7 @@ public:
         phase_offset_(0.0F), bounded_(false), steps_per_rev_(200), angle_unit_(AngleUnit::DEGREES), dwell_at_min_ms_(0),
         dwell_at_max_ms_(0), dwell_at_center_ms_(0), target_cycles_(0), current_cycles_(0), cycle_complete_(false),
         last_was_negative_(false), cycle_started_(false), last_target_relative_(0), state_(MotionState::STOPPED),
-        dwell_start_time_ms_(0), calculated_vmax_(10000.0f), calculated_amax_(5000.0f), estimated_frequency_hz_(0.0f) {
+        dwell_start_time_ms_(0), sinusoidal_mode_(false), calculated_vmax_(10000.0f), calculated_amax_(5000.0f), estimated_frequency_hz_(0.0f) {
     // Mutex is automatically created by Esp32TmcMutex constructor
   }
 
@@ -647,7 +651,7 @@ public:
       driver_->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
       driver_->rampControl.SetMaxSpeed(calculated_vmax_);
       driver_->rampControl.SetAcceleration(calculated_amax_);
-      driver_->rampControl.SetDeceleration(calculated_amax_); // Symmetric
+      driver_->rampControl.SetDeceleration(calculated_amax_); // Symmetric acceleration/deceleration
       // Ensure VSTART/VSTOP/VZERO are reasonable
       driver_->rampControl.SetRampSpeeds(1000.0f, 100.0f, 0.0f);
 
@@ -740,8 +744,26 @@ public:
       }
     }
 
-    uint32_t current_time_ms = esp_timer_get_time() / 1000;
+    // Check if we're in sinusoidal mode
+    bool use_sinusoidal;
     MotionState current_state;
+    {
+      TmcMutexGuard guard(mutex_);
+      use_sinusoidal = sinusoidal_mode_;
+      current_state = state_;
+    }
+    
+    // If sinusoidal mode and not in a dwell state, use sinusoidal update
+    if (use_sinusoidal && current_state != MotionState::DWELL_AT_MIN && 
+        current_state != MotionState::DWELL_AT_MAX && 
+        current_state != MotionState::DWELL_AT_CENTER) {
+      // Sinusoidal motion mode - update continuously based on sine wave
+      UpdateSinuousMotion();
+      return;
+    }
+    
+    // Handle dwell states or ramp-based motion mode
+    uint32_t current_time_ms = esp_timer_get_time() / 1000;
     uint32_t dwell_min, dwell_max, dwell_start;
     int32_t min_bound, max_bound;
     
@@ -798,24 +820,36 @@ public:
     case MotionState::DWELL_AT_MIN:
       if (current_time_ms - dwell_start >= dwell_min) {
         TmcMutexGuard guard(mutex_);
-        state_ = MotionState::MOVING_TO_MAX;
-        // Apply potentially new speed/accel for next leg
+        // Resume motion - if sinusoidal mode, UpdateSinuousMotion() will handle it
+        // Otherwise, move to max bound
+        if (!sinusoidal_mode_) {
+          state_ = MotionState::MOVING_TO_MAX;
         driver_->rampControl.SetMaxSpeed(calculated_vmax_);
         driver_->rampControl.SetAcceleration(calculated_amax_);
         driver_->rampControl.SetDeceleration(calculated_amax_);
         driver_->rampControl.SetTargetPosition(max_bound);
+        } else {
+          // Sinusoidal mode - will be handled by UpdateSinuousMotion()
+          state_ = MotionState::MOVING_TO_MAX;
+        }
       }
       break;
 
     case MotionState::DWELL_AT_MAX:
       if (current_time_ms - dwell_start >= dwell_max) {
         TmcMutexGuard guard(mutex_);
-        state_ = MotionState::MOVING_TO_MIN;
-        // Apply potentially new speed/accel for next leg
-        driver_->rampControl.SetMaxSpeed(calculated_vmax_);
-        driver_->rampControl.SetAcceleration(calculated_amax_);
-        driver_->rampControl.SetDeceleration(calculated_amax_);
-        driver_->rampControl.SetTargetPosition(min_bound);
+        // Resume motion - if sinusoidal mode, UpdateSinuousMotion() will handle it
+        // Otherwise, move to min bound
+        if (!sinusoidal_mode_) {
+          state_ = MotionState::MOVING_TO_MIN;
+          driver_->rampControl.SetMaxSpeed(calculated_vmax_);
+          driver_->rampControl.SetAcceleration(calculated_amax_);
+          driver_->rampControl.SetDeceleration(calculated_amax_);
+          driver_->rampControl.SetTargetPosition(min_bound);
+        } else {
+          // Sinusoidal mode - will be handled by UpdateSinuousMotion()
+          state_ = MotionState::MOVING_TO_MIN;
+        }
       }
       break;
 
@@ -967,65 +1001,82 @@ private:
 
     // Cycle counting: one cycle = center → min → max → center (or center → max → min → center)
     // Count cycles when crossing through center (0 crossing point)
-    if (current_state == MotionState::SINUOUS_MOTION) {
-      // Check if we're crossing through center (sign change of target position)
-      bool currently_negative = (target_relative < 0);
-      bool last_was_negative = (last_target_rel < 0);
-      bool crossing_center =
-          (last_was_negative != currently_negative) && (abs(target_relative) < 30) && (abs(last_target_rel) < 30);
+    // Check if we're crossing through center (sign change of target position)
+    bool currently_negative = (target_relative < 0);
+    bool last_was_negative = (last_target_rel < 0);
+    bool crossing_center =
+        (last_was_negative != currently_negative) && (abs(target_relative) < 30) && (abs(last_target_rel) < 30);
 
-      // If we've started a cycle (left center) and now crossing back through center
-      if (cycle_started && crossing_center) {
-        // Completed a cycle: center → extreme → center
-        uint32_t new_cycles;
-        {
-          TmcMutexGuard guard(mutex_);
-          current_cycles_++;
-          cycle_started_ = false; // Reset for next cycle
-          new_cycles = current_cycles_;
-        }
-        ESP_LOGI(TAG, "Cycle %lu completed at center (target: %lu)", new_cycles, 
-                 target_cycles == 0 ? 0xFFFFFFFF : target_cycles);
-      } else if (!cycle_started && abs(target_relative) > 30) {
-        // We've left center, cycle has started
-        TmcMutexGuard guard(mutex_);
-        cycle_started_ = true;
-        last_was_negative_ = currently_negative;
-      }
-
-      // Update tracking
+    // If we've started a cycle (left center) and now crossing back through center
+    if (cycle_started && crossing_center) {
+      // Completed a cycle: center → extreme → center
+      uint32_t new_cycles;
       {
         TmcMutexGuard guard(mutex_);
-        last_target_relative_ = target_relative;
-        if (abs(target_relative) > 10) { // Only update if significantly away from center
-          last_was_negative_ = currently_negative;
-        }
+        current_cycles_++;
+        cycle_started_ = false; // Reset for next cycle
+        new_cycles = current_cycles_;
+      }
+      ESP_LOGI(TAG, "Cycle %lu completed at center (target: %lu)", new_cycles, 
+               target_cycles == 0 ? 0xFFFFFFFF : target_cycles);
+    } else if (!cycle_started && abs(target_relative) > 30) {
+      // We've left center, cycle has started
+      TmcMutexGuard guard(mutex_);
+      cycle_started_ = true;
+      last_was_negative_ = currently_negative;
+    }
+
+    // Update tracking
+    {
+      TmcMutexGuard guard(mutex_);
+      last_target_relative_ = target_relative;
+      if (abs(target_relative) > 10) { // Only update if significantly away from center
+        last_was_negative_ = currently_negative;
       }
     }
 
     // Clamp to local bounds and handle dwell states
+    // During sinusoidal motion, we transition to proper motion states when hitting bounds
     if (target <= local_min) {
       target = local_min;
-      if (current_state == MotionState::SINUOUS_MOTION && dwell_min > 0) {
+      if (dwell_min > 0) {
         TmcMutexGuard guard(mutex_);
         state_ = MotionState::DWELL_AT_MIN;
         dwell_start_time_ms_ = esp_timer_get_time() / 1000;
         driver_->rampControl.SetTargetPosition(target);
         return;
+      } else {
+        // No dwell - continue sinusoidal motion (will reverse direction naturally)
+        // Update state to indicate we're moving away from min
+        TmcMutexGuard guard(mutex_);
+        state_ = MotionState::MOVING_TO_MAX;
       }
     } else if (target >= local_max) {
       target = local_max;
-      if (current_state == MotionState::SINUOUS_MOTION && dwell_max > 0) {
+      if (dwell_max > 0) {
         TmcMutexGuard guard(mutex_);
         state_ = MotionState::DWELL_AT_MAX;
         dwell_start_time_ms_ = esp_timer_get_time() / 1000;
         driver_->rampControl.SetTargetPosition(target);
         return;
+      } else {
+        // No dwell - continue sinusoidal motion (will reverse direction naturally)
+        // Update state to indicate we're moving away from max
+        TmcMutexGuard guard(mutex_);
+        state_ = MotionState::MOVING_TO_MIN;
+      }
+    } else {
+      // Between bounds - update state based on direction
+      TmcMutexGuard guard(mutex_);
+      if (target_relative > 0) {
+        state_ = MotionState::MOVING_TO_MAX;
+      } else {
+        state_ = MotionState::MOVING_TO_MIN;
       }
     }
 
     // Check if we're passing through center and need to dwell
-    if (dwell_center > 0 && current_state == MotionState::SINUOUS_MOTION) {
+    if (dwell_center > 0) {
       if (abs(target_relative) < 20) { // Within 20 steps of center
         TmcMutexGuard guard(mutex_);
         state_ = MotionState::DWELL_AT_CENTER;

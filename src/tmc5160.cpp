@@ -412,6 +412,14 @@ bool TMC5160<CommType>::RampControl::SetAccelerations(float acceleration, float 
 }
 
 template <typename CommType>
+bool TMC5160<CommType>::RampControl::SetDeceleration(float deceleration) noexcept {
+  TMC5160_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetDeceleration(decel=%.2f steps/s²)", deceleration);
+  int32_t decel_internal = driver_.accelToInternal(std::abs(deceleration));
+  decel_internal = std::min(decel_internal, static_cast<decltype(decel_internal)>(0xFFFF)); // DMAX is 16 bits
+  return driver_.comm_.WriteRegister(Registers::DMAX, static_cast<uint32_t>(decel_internal));
+}
+
+template <typename CommType>
 bool TMC5160<CommType>::RampControl::SetRampSpeeds(float start_speed, float stop_speed,
                                                    float transition_speed) noexcept {
   int32_t vstart = driver_.speedToInternal(std::abs(start_speed));

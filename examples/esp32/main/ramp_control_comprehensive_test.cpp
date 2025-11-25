@@ -254,8 +254,12 @@ bool test_speed_control() noexcept {
   }
   
   // Test setting accelerations (both) - higher decel for faster stopping
-  if (!handle->driver->rampControl.SetAccelerations(accel, accel * 1.5f)) {
-    ESP_LOGE(TAG, "Failed to set accelerations");
+  if (!handle->driver->rampControl.SetAcceleration(accel)) {
+    ESP_LOGE(TAG, "Failed to set acceleration");
+    success = false;
+  }
+  if (!handle->driver->rampControl.SetDeceleration(accel * 1.5f)) {
+    ESP_LOGE(TAG, "Failed to set deceleration");
     success = false;
   }
   

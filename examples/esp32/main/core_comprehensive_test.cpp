@@ -369,14 +369,18 @@ bool test_ramp_parameter_settings() noexcept {
     ESP_LOGE(TAG, "Failed to set max speed");
     return false;
   }
-  if (!handle->driver->rampControl.SetAccelerations(TEST_ACCELERATION, TEST_DECELERATION)) {
-    ESP_LOGE(TAG, "Failed to set accelerations");
+  if (!handle->driver->rampControl.SetAcceleration(TEST_ACCELERATION)) {
+    ESP_LOGE(TAG, "Failed to set acceleration");
+    return false;
+  }
+  if (!handle->driver->rampControl.SetDeceleration(TEST_DECELERATION)) {
+    ESP_LOGE(TAG, "Failed to set deceleration");
     return false;
   }
   
   // Note: VMAX (0x27), AMAX (0x26), and DMAX (0x28) are write-only per datasheet
   // Write verification is done via response data in WriteRegister()
-  // We trust that SetMaxSpeed() and SetAccelerations() succeeded if they returned true
+  // We trust that SetMaxSpeed(), SetAcceleration(), and SetDeceleration() succeeded if they returned true
   ESP_LOGI(TAG, "Ramp parameters set: VMAX=%.1f steps/s, AMAX=%.1f steps/s², DMAX=%.1f steps/s² (write-only registers, verified via write response)",
            TEST_MAX_SPEED, TEST_ACCELERATION, TEST_DECELERATION);
   

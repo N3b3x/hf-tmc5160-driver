@@ -316,6 +316,17 @@ public:
     bool SetAccelerations(float acceleration, float deceleration) noexcept;
 
     /**
+     * @brief Set deceleration only (DMAX register)
+     * @param deceleration Deceleration in steps per second squared
+     * @return true if set successfully, false otherwise
+     *
+     * Sets only the deceleration rate (DMAX register) without affecting acceleration (AMAX).
+     * This is useful when you want to adjust deceleration independently, for example to
+     * implement asymmetric motion profiles or fine-tune stopping behavior.
+     */
+    bool SetDeceleration(float deceleration) noexcept;
+
+    /**
      * @brief Set ramp speeds
      * @param start_speed Start speed in steps per second
      * @param stop_speed Stop speed in steps per second
