@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"uniontmc5160_1_1SpiCommand_1_1Frame.html#a0a1fb9f854c8a9e4333c74acf18b9cd0":[12,0,0,43,0,3],
+"uniontmc5160_1_1SpiCommand_1_1Frame.html#a0a1fb9f854c8a9e4333c74acf18b9cd0":[13,0,0,40,0,3],
 "uniontmc5160_1_1SpiCommand_1_1Frame.html#a3f3d812c1d666b56eab01ebb10485d22":[12,0,0,43,0,4],
 "uniontmc5160_1_1SpiCommand_1_1Frame.html#a3f3d812c1d666b56eab01ebb10485d22":[13,0,0,40,0,4],
 "uniontmc5160_1_1SpiCommand_1_1Frame.html#a41c899cb40354fd2296eabd9607ea2a3":[12,0,0,43,0,0],

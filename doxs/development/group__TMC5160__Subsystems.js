@@ -12,6 +12,7 @@ var group__TMC5160__Subsystems =
       [ "SetAccelerations", "structtmc5160_1_1TMC5160_1_1RampControl.html#a42767aabaf81b299c915577724535e5a", null ],
       [ "SetComparePosition", "structtmc5160_1_1TMC5160_1_1RampControl.html#a74fd41db686650c5178c8f3562051b51", null ],
       [ "SetCurrentPosition", "structtmc5160_1_1TMC5160_1_1RampControl.html#a689da653096e4718d2f41e02abbff572", null ],
+      [ "SetDeceleration", "structtmc5160_1_1TMC5160_1_1RampControl.html#ac55d11d2f50adcc0f83e847dece08cb4", null ],
       [ "SetFinalDeceleration", "structtmc5160_1_1TMC5160_1_1RampControl.html#aebc84e340e2f53c6f5a04cf0cc6152bb", null ],
       [ "SetFirstAcceleration", "structtmc5160_1_1TMC5160_1_1RampControl.html#afd779f5520bb29e30cdd30d46023a12e", null ],
       [ "SetMaxSpeed", "structtmc5160_1_1TMC5160_1_1RampControl.html#a68552fbf5f675c15844486c4b910c7d9", null ],
