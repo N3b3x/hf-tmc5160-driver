@@ -46,15 +46,12 @@ var searchData=
   ['drv_5fen_43',['DRV_EN',['../namespacetmc5160__test__config.html#a06b05dab1b29fffb17a7f3fd2b2995ca',1,'tmc5160_test_config']]],
   ['drv_5fenn_44',['drv_enn',['../uniontmc5160_1_1IOIN__Register.html#a6742c4cad8521cb4fdc1bd7192248525',1,'tmc5160::IOIN_Register::drv_enn'],['../structtmc5160_1_1InputStatus.html#ae84ba7d773165f76737f726b606dae1c',1,'tmc5160::InputStatus::drv_enn']]],
   ['drv_5ferr_45',['drv_err',['../uniontmc5160_1_1GSTAT__Register.html#ad461f5d33c2ff1d5b13a3bb78eb4596e',1,'tmc5160::GSTAT_Register']]],
-  ['drv_5fstrength_46',['drv_strength',['../structtmc5160_1_1PowerStageParameters.html#aa45545c012066aaff226f611cf352b76',1,'tmc5160::PowerStageParameters']]],
-  ['drv_5fstrength_47',['DRV_STRENGTH',['../namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a7206560cc583fa739bb028c571fb8d72',1,'tmc5160_test_config::MotorConfig_17HS4401S::DRV_STRENGTH'],['../namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#a4a9beca8e31f65b080d37d619e2ce871',1,'tmc5160_test_config::MotorConfig_17HS4401S_Direct::DRV_STRENGTH'],['../namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a84b3833a5e325cd205dd6df4c516b7c6',1,'tmc5160_test_config::MotorConfig_AppliedMotion_5034_369::DRV_STRENGTH']]],
-  ['drvstrength_48',['drvstrength',['../uniontmc5160_1_1DRV__CONF__Register.html#a6ea57dca5245c97c2f222e9c1aab8e9e',1,'tmc5160::DRV_CONF_Register']]],
-  ['dwell_5fat_5fcenter_5fms_5f_49',['dwell_at_center_ms_',['../classFatigueTestMotion.html#abfbf084dde13f4728180869699f6f241',1,'FatigueTestMotion']]],
-  ['dwell_5fat_5fmax_5fms_5f_50',['dwell_at_max_ms_',['../classFatigueTestMotion.html#a397ce03f808f2ff874cbdfff8d0154f8',1,'FatigueTestMotion']]],
-  ['dwell_5fat_5fmin_5fms_5f_51',['dwell_at_min_ms_',['../classFatigueTestMotion.html#a362f847562751ac3beb6d0c1ebdafdad',1,'FatigueTestMotion']]],
-  ['dwell_5fcenter_5fms_52',['dwell_center_ms',['../structFatigueTestMotion_1_1Status.html#aa3f8f0ab7c71c0cf9ce91bb716b26a07',1,'FatigueTestMotion::Status']]],
-  ['dwell_5fmax_5fms_53',['dwell_max_ms',['../structFatigueTestMotion_1_1Status.html#a4fa09f80670f4ba4122b66e22b2c63f4',1,'FatigueTestMotion::Status']]],
-  ['dwell_5fmin_5fms_54',['dwell_min_ms',['../structFatigueTestMotion_1_1Status.html#a92f7241189d2853426c22f6066815515',1,'FatigueTestMotion::Status']]],
-  ['dwell_5fms_55',['DWELL_MS',['../namespacetmc5160__test__config_1_1TestConfig__17HS4401S_1_1Motion.html#a5f48a8dfa7f3d13a015023f4f3899fbc',1,'tmc5160_test_config::TestConfig_17HS4401S::Motion']]],
-  ['dwell_5fstart_5ftime_5fms_5f_56',['dwell_start_time_ms_',['../classFatigueTestMotion.html#a0105f7f638908973beb7278ea5d172d3',1,'FatigueTestMotion']]]
+  ['drv_5fstrength_46',['DRV_STRENGTH',['../namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a84b3833a5e325cd205dd6df4c516b7c6',1,'tmc5160_test_config::MotorConfig_AppliedMotion_5034_369']]],
+  ['drvstrength_47',['drvstrength',['../uniontmc5160_1_1DRV__CONF__Register.html#a6ea57dca5245c97c2f222e9c1aab8e9e',1,'tmc5160::DRV_CONF_Register']]],
+  ['dwell_5fat_5fmax_5fms_5f_48',['dwell_at_max_ms_',['../classFatigueTestMotion.html#a397ce03f808f2ff874cbdfff8d0154f8',1,'FatigueTestMotion']]],
+  ['dwell_5fat_5fmin_5fms_5f_49',['dwell_at_min_ms_',['../classFatigueTestMotion.html#a362f847562751ac3beb6d0c1ebdafdad',1,'FatigueTestMotion']]],
+  ['dwell_5fmax_5fms_50',['dwell_max_ms',['../structFatigueTestMotion_1_1Status.html#a4fa09f80670f4ba4122b66e22b2c63f4',1,'FatigueTestMotion::Status']]],
+  ['dwell_5fmin_5fms_51',['dwell_min_ms',['../structFatigueTestMotion_1_1Status.html#a92f7241189d2853426c22f6066815515',1,'FatigueTestMotion::Status']]],
+  ['dwell_5fms_52',['DWELL_MS',['../namespacetmc5160__test__config_1_1TestConfig__17HS4401S_1_1Motion.html#a5f48a8dfa7f3d13a015023f4f3899fbc',1,'tmc5160_test_config::TestConfig_17HS4401S::Motion']]],
+  ['dwell_5fstart_5ftime_5fms_5f_53',['dwell_start_time_ms_',['../classFatigueTestMotion.html#a0105f7f638908973beb7278ea5d172d3',1,'FatigueTestMotion']]]
 ];

@@ -204,9 +204,9 @@ bool test_driver_initialization() noexcept {
   cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
   cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
 
-  cfg.power_stage.drv_strength = 2;
-  cfg.power_stage.bbm_time = 24;
-  cfg.power_stage.bbm_clks = 4;
+  // Power stage: typical MOSFET with ~30nC Miller charge, 200ns BBM time
+  cfg.power_stage.mosfet_miller_charge_nc = 30.0f;
+  cfg.power_stage.bbm_time_ns = 200;
   
   // Initialize driver
   if (!handle->driver->Initialize(cfg)) {

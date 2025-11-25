@@ -7,7 +7,7 @@ var searchData=
   ['fatigue_5famplitude_5fdeg_4',['FATIGUE_AMPLITUDE_DEG',['../namespacetmc5160__test__config_1_1TestConfig__17HS4401S_1_1Motion.html#a7720d865c3403f6ca13ad74d08e6bd63',1,'tmc5160_test_config::TestConfig_17HS4401S::Motion']]],
   ['fatigue_5ffreq_5fhz_5',['FATIGUE_FREQ_HZ',['../namespacetmc5160__test__config_1_1TestConfig__17HS4401S_1_1Motion.html#ac513d43ff34494c1412d2a71dbf711b9',1,'tmc5160_test_config::TestConfig_17HS4401S::Motion']]],
   ['fields_6',['fields',['../uniontmc5160_1_1SpiCommand_1_1Frame.html#a0a1fb9f854c8a9e4333c74acf18b9cd0',1,'tmc5160::SpiCommand::Frame']]],
-  ['filt_5fisense_7',['filt_isense',['../uniontmc5160_1_1DRV__CONF__Register.html#afd73e8196047558bd00b2e5d184e3c05',1,'tmc5160::DRV_CONF_Register::filt_isense'],['../structtmc5160_1_1PowerStageParameters.html#af49c226aa79c7b8b209492a10a170a46',1,'tmc5160::PowerStageParameters::filt_isense']]],
+  ['filt_5fisense_7',['filt_isense',['../uniontmc5160_1_1DRV__CONF__Register.html#afd73e8196047558bd00b2e5d184e3c05',1,'tmc5160::DRV_CONF_Register']]],
   ['filter_5fenabled_8',['FILTER_ENABLED',['../namespacetmc5160__test__config_1_1TestConfig__17HS4401S_1_1StallGuard.html#a7328b488a28cda5f4dc801d09d61c63a',1,'tmc5160_test_config::TestConfig_17HS4401S::StallGuard']]],
   ['frame_9',['frame',['../structtmc5160_1_1SpiCommand.html#aaaa5e5c5b1d6d0c3619fe2172d6b8518',1,'tmc5160::SpiCommand::frame'],['../structtmc5160_1_1UartFrame.html#a84edd8d99f920406335ae3a0a7e8cd42',1,'tmc5160::UartFrame::frame']]],
   ['freewheel_10',['freewheel',['../uniontmc5160_1_1PWMCONF__Register.html#a2ff81b7258d7564f46fd169819867759',1,'tmc5160::PWMCONF_Register::freewheel'],['../structtmc5160_1_1StealthChopConfig.html#a0e6b1d5107d3cbb3d5f5b564a440de22',1,'tmc5160::StealthChopConfig::freewheel']]],

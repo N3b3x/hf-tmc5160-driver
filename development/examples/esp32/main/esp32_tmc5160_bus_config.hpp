@@ -204,9 +204,9 @@ namespace MotorConfig_17HS4401S {
 
     // Power Stage Configuration (BSC072N08NS5)
     // Critical for preventing uv_cp errors with low Qg MOSFETs
-    constexpr uint8_t DRV_STRENGTH = 0;          // Weakest setting for low Qg MOSFETs (<10nC)
-    constexpr uint8_t BBM_TIME = 0;              // 0 = ~100ns (Sufficient for fast MOSFETs)
-    constexpr uint8_t BBM_CLKS = 0;              // 0 = Off
+    // BSC072N08NS5 has Qg(tot) ~6nC, Qgd (Miller) ~2nC - use <10nC category
+    constexpr float MOSFET_MILLER_CHARGE_NC = 6.0f;  // Miller charge in nC (<10nC for BSC072N08NS5)
+    constexpr uint32_t BBM_TIME_NS = 100;            // Break-before-make time in nanoseconds (~100ns for fast MOSFETs)
 }
 
 /**
@@ -257,9 +257,9 @@ namespace MotorConfig_17HS4401S_Direct {
     constexpr uint8_t STEALTH_OFS = 30;
 
     // Power Stage Configuration (BSC072N08NS5)
-    constexpr uint8_t DRV_STRENGTH = 0;          // Weakest setting for low Qg MOSFETs (<10nC)
-    constexpr uint8_t BBM_TIME = 0;              // 0 = ~100ns (Sufficient for fast MOSFETs)
-    constexpr uint8_t BBM_CLKS = 0;              // 0 = Off
+    // BSC072N08NS5 has Qg(tot) ~6nC, Qgd (Miller) ~2nC - use <10nC category
+    constexpr float MOSFET_MILLER_CHARGE_NC = 6.0f;  // Miller charge in nC (<10nC for BSC072N08NS5)
+    constexpr uint32_t BBM_TIME_NS = 100;            // Break-before-make time in nanoseconds (~100ns for fast MOSFETs)
 }
 
 /**
@@ -353,8 +353,9 @@ namespace TestConfig_17HS4401S {
         // SGT: StallGuard2 Threshold (-64 to +63).
         // Lower values = Higher sensitivity (stops easier).
         // Higher values = Lower sensitivity (needs more force to stop).
-        // -10 is a good starting point for NEMA 17 at moderate speeds.
-        constexpr int8_t SGT_HOMING = -10;  
+        // Updated to SGT=10 based on automatic tuning results (stallguard_tuning example)
+        // This value was found to work well at 30-40k steps/s for the 17HS4401S motor
+        constexpr int8_t SGT_HOMING = 10;  
         
         // CoolStep configuration for homing (usually disabled or tuned for stability)
         constexpr bool FILTER_ENABLED = true;

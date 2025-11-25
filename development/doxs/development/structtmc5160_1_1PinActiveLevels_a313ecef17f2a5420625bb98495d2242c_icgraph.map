@@ -13,6 +13,8 @@
 <area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="344,54,256,31,257,26,346,49"/>
 <area shape="rect" id="Node000007" href="$classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44" title="Initialize the SPI interface." alt="" coords="140,55,285,80"/>
 <area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="325,70,285,70,285,65,325,65"/>
-<area shape="rect" id="Node000008" href="$bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,55,92,80"/>
-<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="126,70,92,70,92,65,126,65"/>
+<area shape="rect" id="Node000008" href="$bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,29,92,55"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="126,57,92,51,93,46,127,51"/>
+<area shape="rect" id="Node000009" href="$stallguard__tuning_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,79,92,104"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="127,83,93,88,92,82,126,77"/>
 </map>

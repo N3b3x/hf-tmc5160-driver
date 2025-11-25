@@ -122,9 +122,9 @@ std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
   
   // Configure driver for NEMA 17 (17HS4401S-PG518)
   tmc5160::DriverConfig cfg{};
-  cfg.motor.irun = TEST_IRUN;
-  cfg.motor.ihold = TEST_IHOLD;
-  cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
+  cfg.motor_spec.irun = TEST_IRUN;
+  cfg.motor_spec.ihold = TEST_IHOLD;
+  cfg.motor_spec.global_scaler = TEST_GLOBAL_SCALER;
   
   // Chopper settings
   cfg.chopper.toff = TEST_TOFF;
@@ -141,13 +141,13 @@ std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
   cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
   
   // Power stage settings for 2A motor
-  cfg.power_stage.drv_strength = 2;  // Driver strength (2 is good for 2A motors)
-  cfg.power_stage.bbm_time = 24;     // Break-before-make time
-  cfg.power_stage.bbm_clks = 4;      // Break-before-make clocks
+  // Power stage: typical MOSFET with ~30nC Miller charge, 200ns BBM time
+  cfg.power_stage.mosfet_miller_charge_nc = 30.0f;
+  cfg.power_stage.bbm_time_ns = 200;
   
-  // Short protection for 2A motor
-  cfg.short_protection.s2vs_level = 6;  // Short to VS level
-  cfg.short_protection.s2g_level = 4;   // Short to GND level
+  // Short protection for 2A motor (user-friendly voltage thresholds)
+  cfg.power_stage.s2vs_voltage_mv = 625;  // 625mV = S2VS_LEVEL=6 (recommended)
+  cfg.power_stage.s2g_voltage_mv = 500;  // ~500mV = S2G_LEVEL=4 (higher sensitivity)
   
   if (!handle->driver->Initialize(cfg)) {
     ESP_LOGE(TAG, "Failed to initialize TMC5160 driver");

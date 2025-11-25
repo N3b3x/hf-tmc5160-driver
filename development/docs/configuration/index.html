@@ -368,17 +368,40 @@
 49
 50
 51
+52
+53
+54
+55
+56
+57
+58
+59
+60
 </pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
 
-<span class="c1">// Power stage configuration</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">power_stage</span><span class="p">.</span><span class="n">drv_strength</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>  <span class="c1">// Gate driver current (0-3)</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">power_stage</span><span class="p">.</span><span class="n">bbm_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>      <span class="c1">// Break-before-make time (0-24 ns)</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">power_stage</span><span class="p">.</span><span class="n">bbm_clks</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>      <span class="c1">// BBM clock cycles (0-15)</span>
+<span class="c1">// Power stage configuration (user-friendly physical parameters)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">power_stage</span><span class="p">.</span><span class="n">mosfet_miller_charge_nc</span> <span class="o">=</span> <span class="mf">30.0</span><span class="n">f</span><span class="p">;</span>  <span class="c1">// MOSFET Miller charge in nC (0 = auto-calculate, auto-calculates DRVSTRENGTH)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">power_stage</span><span class="p">.</span><span class="n">bbm_time_ns</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>                 <span class="c1">// Break-before-make time in nanoseconds (0 = auto-calculate, auto-calculates BBMTIME/BBMCLKS)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">power_stage</span><span class="p">.</span><span class="n">sense_filter</span> <span class="o">=</span> <span class="n">tmc5160</span><span class="o">::</span><span class="n">SenseFilterTime</span><span class="o">::</span><span class="n">T100ns</span><span class="p">;</span> <span class="c1">// Sense amplifier filter time constant</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">power_stage</span><span class="p">.</span><span class="n">over_temp_protection</span> <span class="o">=</span> <span class="n">tmc5160</span><span class="o">::</span><span class="n">OverTempProtection</span><span class="o">::</span><span class="n">Level0</span><span class="p">;</span> <span class="c1">// Over-temperature protection (150°C threshold)</span>
 
-<span class="c1">// Motor current configuration</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">global_scaler</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>      <span class="c1">// Global current scaler (32-256)</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>               <span class="c1">// Run current (0-31, recommended 16-31)</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>              <span class="c1">// Hold current (0-31, typically 70% of irun)</span>
+<span class="c1">// Short protection (user-friendly voltage thresholds and timing)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">power_stage</span><span class="p">.</span><span class="n">s2vs_voltage_mv</span> <span class="o">=</span> <span class="mi">625</span><span class="p">;</span>  <span class="c1">// Short to VS voltage threshold in mV (0 = auto = 625mV, equivalent to S2VS_LEVEL=6)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">power_stage</span><span class="p">.</span><span class="n">s2g_voltage_mv</span> <span class="o">=</span> <span class="mi">625</span><span class="p">;</span>  <span class="c1">// Short to GND voltage threshold in mV (0 = auto = 625mV, equivalent to S2G_LEVEL=6)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">power_stage</span><span class="p">.</span><span class="n">shortfilter</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>        <span class="c1">// Spike filter bandwidth (0=100ns, 1=1µs, 2=2µs, 3=3µs)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">power_stage</span><span class="p">.</span><span class="n">short_detection_delay_us_x10</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// Detection delay in 0.1µs units (0 = auto = 0.85µs)</span>
+
+<span class="c1">// Motor specification (user-friendly physical parameters)</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">steps_per_rev</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">1680</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>  <span class="c1">// 0.05Ω</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">supply_voltage_mv</span> <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span>  <span class="c1">// 24V</span>
+
+<span class="c1">// Optional: Percentage adjustments for calculated current settings</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">scaler_adjustment_percent</span> <span class="o">=</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">;</span>  <span class="c1">// Adjust GLOBAL_SCALER by percentage</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">irun_adjustment_percent</span> <span class="o">=</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">;</span>    <span class="c1">// Adjust IRUN by percentage</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">ihold_adjustment_percent</span> <span class="o">=</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">;</span>   <span class="c1">// Adjust IHOLD by percentage</span>
+<span class="c1">// Note: IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated during initialization</span>
 
 <span class="c1">// Chopper configuration</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">toff</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>              <span class="c1">// Off time (0-15, 0=disabled)</span>
@@ -396,11 +419,6 @@
 <span class="n">cfg</span><span class="p">.</span><span class="n">stealthchop</span><span class="p">.</span><span class="n">pwm_autoscale</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>  <span class="c1">// Enable auto-scaling</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">stealthchop</span><span class="p">.</span><span class="n">pwm_autograd</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>   <span class="c1">// Enable auto-gradient</span>
 
-<span class="c1">// Short protection</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">short_protection</span><span class="p">.</span><span class="n">s2vs_level</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>   <span class="c1">// Short to VS sensitivity (4-15)</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">short_protection</span><span class="p">.</span><span class="n">s2g_level</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>    <span class="c1">// Short to GND sensitivity (2-15)</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">short_protection</span><span class="p">.</span><span class="n">shortfilter</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// Filter bandwidth (0-3)</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">short_protection</span><span class="p">.</span><span class="n">shortdelay</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>   <span class="c1">// Detection delay (0-1)</span>
 
 <span class="c1">// Motor direction</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">tmc5160</span><span class="o">::</span><span class="n">MotorDirection</span><span class="o">::</span><span class="n">NORMAL</span><span class="p">;</span>
@@ -577,34 +595,84 @@
   </thead>
   <tbody>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">power_stage.drv_strength</code></td>
-      <td>2</td>
-      <td>Gate driver current</td>
+      <td><code class="language-plaintext highlighter-rouge">power_stage.mosfet_miller_charge_nc</code></td>
+      <td>10.0f</td>
+      <td>MOSFET Miller charge in nC (0 = auto-calculate, auto-calculates DRVSTRENGTH)</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">power_stage.bbm_time</code></td>
-      <td>0</td>
-      <td>BBM time in ns</td>
+      <td><code class="language-plaintext highlighter-rouge">power_stage.bbm_time_ns</code></td>
+      <td>100</td>
+      <td>Break-before-make time in nanoseconds (0 = auto-calculate, auto-calculates BBMTIME/BBMCLKS)</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">power_stage.bbm_clks</code></td>
-      <td>4</td>
-      <td>BBM clock cycles</td>
+      <td><code class="language-plaintext highlighter-rouge">power_stage.sense_filter</code></td>
+      <td>T100ns</td>
+      <td>Sense amplifier filter time constant enum</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">motor.global_scaler</code></td>
-      <td>32</td>
-      <td>Global current scaler</td>
+      <td><code class="language-plaintext highlighter-rouge">power_stage.over_temp_protection</code></td>
+      <td>Level0</td>
+      <td>Over-temperature protection level (150°C threshold)</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">motor.irun</code></td>
-      <td>16</td>
-      <td>Run current</td>
+      <td><code class="language-plaintext highlighter-rouge">power_stage.s2vs_voltage_mv</code></td>
+      <td>0 (auto=625)</td>
+      <td>Short to VS voltage threshold in mV (0 = auto = 625mV, equivalent to S2VS_LEVEL=6)</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">motor.ihold</code></td>
-      <td>0</td>
-      <td>Hold current</td>
+      <td><code class="language-plaintext highlighter-rouge">power_stage.s2g_voltage_mv</code></td>
+      <td>0 (auto=625)</td>
+      <td>Short to GND voltage threshold in mV (0 = auto = 625mV, equivalent to S2G_LEVEL=6)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">power_stage.shortfilter</code></td>
+      <td>1</td>
+      <td>Spike filter bandwidth (0=100ns, 1=1µs, 2=2µs, 3=3µs)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">power_stage.short_detection_delay_us_x10</code></td>
+      <td>0 (auto=8.5)</td>
+      <td>Detection delay in 0.1µs units (0 = auto = 0.85µs)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">motor_spec.steps_per_rev</code></td>
+      <td>200</td>
+      <td>Steps per revolution</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">motor_spec.rated_current_ma</code></td>
+      <td>1500</td>
+      <td>Rated motor current in mA</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">motor_spec.sense_resistor_mohm</code></td>
+      <td>50</td>
+      <td>Sense resistor in mΩ (0.05Ω)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">motor_spec.supply_voltage_mv</code></td>
+      <td>24000</td>
+      <td>Supply voltage in mV (24V)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">motor_spec.scaler_adjustment_percent</code></td>
+      <td>0.0</td>
+      <td>Percentage adjustment for GLOBAL_SCALER (-50.0 to +50.0)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">motor_spec.irun_adjustment_percent</code></td>
+      <td>0.0</td>
+      <td>Percentage adjustment for IRUN (-50.0 to +50.0)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">motor_spec.ihold_adjustment_percent</code></td>
+      <td>0.0</td>
+      <td>Percentage adjustment for IHOLD (-50.0 to +50.0)</td>
+    </tr>
+    <tr>
+      <td><strong>Note</strong></td>
+      <td> </td>
+      <td>IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated during initialization</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">chopper.toff</code></td>
@@ -622,22 +690,91 @@
       <td>Auto-scaling enabled</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">short_protection.s2vs_level</code></td>
-      <td>6</td>
-      <td>Short to VS sensitivity</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">short_protection.s2g_level</code></td>
-      <td>6</td>
-      <td>Short to GND sensitivity</td>
-    </tr>
-    <tr>
       <td><code class="language-plaintext highlighter-rouge">f_clk</code></td>
       <td>12000000</td>
       <td>Clock frequency (12 MHz)</td>
     </tr>
   </tbody>
 </table></div>
+<h2 id="power-stage-parameter-conversion">
+  
+  
+    <a href="#power-stage-parameter-conversion" class="anchor-heading" aria-labelledby="power-stage-parameter-conversion"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Power Stage Parameter Conversion
+  
+  
+</h2>
+    
+
+<p>The driver automatically converts user-friendly physical parameters to register values based on datasheet specifications:</p>
+<h3 id="short-protection-voltage-thresholds">
+  
+  
+    <a href="#short-protection-voltage-thresholds" class="anchor-heading" aria-labelledby="short-protection-voltage-thresholds"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Short Protection Voltage Thresholds
+  
+  
+</h3>
+    
+
+<p>The driver converts voltage thresholds (mV) to register levels using interpolation based on datasheet typical values:</p>
+
+<p><strong>S2VS (Short to VS) Voltage Thresholds:</strong></p>
+<ul>
+  <li><strong>S2VS_LEVEL=6</strong>: 550-625-700mV (recommended, default)</li>
+  <li><strong>S2VS_LEVEL=15</strong>: 1400-1560-1720mV (lowest sensitivity)</li>
+  <li>Linear interpolation between levels 4-15</li>
+</ul>
+
+<p><strong>S2G (Short to GND) Voltage Thresholds:</strong></p>
+<ul>
+  <li><strong>S2G_LEVEL=6 (VS&lt;50V)</strong>: 460-625-800mV (recommended, default)</li>
+  <li><strong>S2G_LEVEL=15 (VS&lt;52V)</strong>: 1200-1560-1900mV</li>
+  <li><strong>S2G_LEVEL=15 (VS&lt;55V)</strong>: 850mV (minimum for VS&gt;52V to prevent false triggers)</li>
+  <li><strong>Important</strong>: For VS&gt;52V, minimum recommended is 1200mV (S2G_LEVEL=12) to prevent false triggers</li>
+</ul>
+
+<p><strong>Detection Delay Timing:</strong></p>
+<ul>
+  <li><strong>shortdelay=0</strong>: 0.5-0.85-1.1µs (normal, recommended, default)</li>
+  <li><strong>shortdelay=1</strong>: 1.1-1.6-2.2µs (high delay)</li>
+  <li>Threshold at ~1.0µs: below uses shortdelay=0, at or above uses shortdelay=1</li>
+</ul>
+<h3 id="bbm-time-conversion">
+  
+  
+    <a href="#bbm-time-conversion" class="anchor-heading" aria-labelledby="bbm-time-conversion"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> BBM Time Conversion
+  
+  
+</h3>
+    
+
+<p>Break-before-make time is converted from nanoseconds to BBMTIME/BBMCLKS register values:</p>
+
+<ul>
+  <li><strong>BBMTIME=0</strong>: 75-100ns (shortest, typical 100ns)</li>
+  <li><strong>BBMTIME=16</strong>: 200ns</li>
+  <li><strong>BBMTIME=24</strong>: 375-500ns (longest, typical 375ns)</li>
+  <li><strong>BBMCLKS</strong>: Used for times &gt;200ns (digital delay in clock cycles)</li>
+</ul>
+
+<p>The driver adds 30% headroom as recommended by the datasheet to cover production variations.</p>
+<h3 id="mosfet-miller-charge-to-drvstrength">
+  
+  
+    <a href="#mosfet-miller-charge-to-drvstrength" class="anchor-heading" aria-labelledby="mosfet-miller-charge-to-drvstrength"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> MOSFET Miller Charge to DRVSTRENGTH
+  
+  
+</h3>
+    
+
+<p>The driver selects DRVSTRENGTH based on MOSFET Miller charge:</p>
+<ul>
+  <li><strong>DRVSTRENGTH=0</strong>: Weak (default, for small MOSFETs &lt;10nC)</li>
+  <li><strong>DRVSTRENGTH=1</strong>: Weak+TC (medium above OTPW)</li>
+  <li><strong>DRVSTRENGTH=2</strong>: Medium (for medium MOSFETs ~30nC)</li>
+  <li><strong>DRVSTRENGTH=3</strong>: Strong (for large MOSFETs &gt;50nC)</li>
+</ul>
+
+<p>See <a href="../inc/tmc5160_motor_calc.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_motor_calc.hpp</code></a> for conversion function implementations.</p>
 <h2 id="recommended-settings">
   
   
@@ -666,9 +803,17 @@
 9
 10
 11
+12
+13
+14
+15
 </pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">1680</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">supply_voltage_mv</span> <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">global_scaler</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// Auto-calculate</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>           <span class="c1">// Auto-calculate</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>          <span class="c1">// Auto-calculate</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">toff</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">mres</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>  <span class="c1">// 16 microsteps</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">stealthchop</span><span class="p">.</span><span class="n">pwm_autoscale</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
@@ -697,9 +842,17 @@
 8
 9
 10
+11
+12
+13
+14
 </pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">25</span><span class="p">;</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">user</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">user</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">user</span><span class="p">.</span><span class="n">supply_voltage_mv</span> <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">global_scaler</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// Auto-calculate</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>           <span class="c1">// Auto-calculate</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>          <span class="c1">// Auto-calculate</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">toff</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">mres</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>  <span class="c1">// 32 microsteps</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">chm</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// spreadCycle mode</span>
@@ -728,9 +881,17 @@
 9
 10
 11
+12
+13
+14
+15
 </pre></td><td class="rouge-code"><pre><span class="n">tmc5160</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">1680</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">supply_voltage_mv</span> <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">global_scaler</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// Auto-calculate</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>           <span class="c1">// Auto-calculate</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>          <span class="c1">// Auto-calculate</span>
 <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
 
 <span class="c1">// Configure encoder</span>

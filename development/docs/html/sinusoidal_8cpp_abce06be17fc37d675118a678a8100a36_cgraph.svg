@@ -146,13 +146,32 @@
 </a>
 </g>
 </g>
-<!-- Node15 -->
-<g id="Node000015" class="node">
-<title>Node15</title>
-<g id="a_Node000015"><a xlink:href="classtmc5160_1_1TMC5160.html#a12f76f30d3cf734b5a395ebad0acc917" target="_top" xlink:title="Set the chip communication mode via SPI_MODE and SD_MODE pins.">
+<!-- Node14 -->
+<g id="Node000014" class="node">
+<title>Node14</title>
+<g id="a_Node000014"><a xlink:href="classtmc5160_1_1TMC5160.html#a12f76f30d3cf734b5a395ebad0acc917" target="_top" xlink:title="Set the chip communication mode via SPI_MODE and SD_MODE pins.">
 <polygon fill="white" stroke="#666666" points="262,-121 107,-121 107,-91 262,-91 262,-121"/>
 <text text-anchor="start" x="115" y="-109" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::TMC5160::SetChip</text>
 <text text-anchor="middle" x="184.5" y="-98" font-family="Helvetica,sans-Serif" font-size="10.00">CommMode</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node14 -->
+<g id="edge15_Node000001_Node000014" class="edge">
+<title>Node1&#45;&gt;Node14</title>
+<g id="a_edge15_Node000001_Node000014"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M39.74,-195.3C50.41,-179.5 73.64,-148.26 101,-131 104.32,-128.9 107.83,-126.97 111.45,-125.2"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="112.94,-128.37 120.65,-121.1 110.09,-121.98 112.94,-128.37"/>
+</a>
+</g>
+</g>
+<!-- Node15 -->
+<g id="Node000015" class="node">
+<title>Node15</title>
+<g id="a_Node000015"><a xlink:href="classBackAndForthMotion.html#a6ababa55b07f6a7ccbe591b597f64ea3" target="_top" xlink:title="Initialize and start back&#45;and&#45;forth motion.">
+<polygon fill="white" stroke="#666666" points="422,-78 304,-78 304,-48 422,-48 422,-78"/>
+<text text-anchor="start" x="312" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">BackAndForthMotion</text>
+<text text-anchor="middle" x="363" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">::Start</text>
 </a>
 </g>
 </g>
@@ -160,18 +179,18 @@
 <g id="edge16_Node000001_Node000015" class="edge">
 <title>Node1&#45;&gt;Node15</title>
 <g id="a_edge16_Node000001_Node000015"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M39.74,-195.3C50.41,-179.5 73.64,-148.26 101,-131 104.32,-128.9 107.83,-126.97 111.45,-125.2"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="112.94,-128.37 120.65,-121.1 110.09,-121.98 112.94,-128.37"/>
+<path fill="none" stroke="#63b8ff" d="M35.55,-195.16C41.15,-171.01 59.19,-108.85 101,-82 158.13,-45.32 237.51,-44.99 293.69,-51.07"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="293.56,-54.58 303.9,-52.27 294.37,-47.63 293.56,-54.58"/>
 </a>
 </g>
 </g>
 <!-- Node16 -->
 <g id="Node000016" class="node">
 <title>Node16</title>
-<g id="a_Node000016"><a xlink:href="classBackAndForthMotion.html#a6ababa55b07f6a7ccbe591b597f64ea3" target="_top" xlink:title="Initialize and start back&#45;and&#45;forth motion.">
-<polygon fill="white" stroke="#666666" points="422,-78 304,-78 304,-48 422,-48 422,-78"/>
-<text text-anchor="start" x="312" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">BackAndForthMotion</text>
-<text text-anchor="middle" x="363" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">::Start</text>
+<g id="a_Node000016"><a xlink:href="classBackAndForthMotion.html#afac7a78a30c9fafbcee5eb2626e3f409" target="_top" xlink:title="Update back&#45;and&#45;forth motion (call periodically)">
+<polygon fill="white" stroke="#666666" points="243.5,-35 125.5,-35 125.5,-5 243.5,-5 243.5,-35"/>
+<text text-anchor="start" x="133.5" y="-23" font-family="Helvetica,sans-Serif" font-size="10.00">BackAndForthMotion</text>
+<text text-anchor="middle" x="184.5" y="-12" font-family="Helvetica,sans-Serif" font-size="10.00">::Update</text>
 </a>
 </g>
 </g>
@@ -179,25 +198,6 @@
 <g id="edge17_Node000001_Node000016" class="edge">
 <title>Node1&#45;&gt;Node16</title>
 <g id="a_edge17_Node000001_Node000016"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M35.55,-195.16C41.15,-171.01 59.19,-108.85 101,-82 158.13,-45.32 237.51,-44.99 293.69,-51.07"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="293.56,-54.58 303.9,-52.27 294.37,-47.63 293.56,-54.58"/>
-</a>
-</g>
-</g>
-<!-- Node17 -->
-<g id="Node000017" class="node">
-<title>Node17</title>
-<g id="a_Node000017"><a xlink:href="classBackAndForthMotion.html#afac7a78a30c9fafbcee5eb2626e3f409" target="_top" xlink:title="Update back&#45;and&#45;forth motion (call periodically)">
-<polygon fill="white" stroke="#666666" points="243.5,-35 125.5,-35 125.5,-5 243.5,-5 243.5,-35"/>
-<text text-anchor="start" x="133.5" y="-23" font-family="Helvetica,sans-Serif" font-size="10.00">BackAndForthMotion</text>
-<text text-anchor="middle" x="184.5" y="-12" font-family="Helvetica,sans-Serif" font-size="10.00">::Update</text>
-</a>
-</g>
-</g>
-<!-- Node1&#45;&gt;Node17 -->
-<g id="edge18_Node000001_Node000017" class="edge">
-<title>Node1&#45;&gt;Node17</title>
-<g id="a_edge18_Node000001_Node000017"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M34.93,-195.41C39.44,-168.42 55.88,-91.05 101,-49 105.59,-44.72 110.85,-41.07 116.45,-37.95"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="118.06,-41.06 125.46,-33.48 114.95,-34.78 118.06,-41.06"/>
 </a>
@@ -312,47 +312,29 @@
 </a>
 </g>
 </g>
-<!-- Node14 -->
-<g id="Node000014" class="node">
-<title>Node14</title>
-<g id="a_Node000014"><a xlink:href="tmc5160_8cpp.html#a6b5c74bc9056ff38815021d63986f681" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="394,-158.5 332,-158.5 332,-139.5 394,-139.5 394,-158.5"/>
-<text text-anchor="middle" x="363" y="-146.5" font-family="Helvetica,sans-Serif" font-size="10.00">constrain</text>
-</a>
-</g>
-</g>
-<!-- Node13&#45;&gt;Node14 -->
-<g id="edge15_Node000013_Node000014" class="edge">
-<title>Node13&#45;&gt;Node14</title>
-<g id="a_edge15_Node000013_Node000014"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M264.2,-149C283.99,-149 304.43,-149 321.48,-149"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="321.62,-152.5 331.62,-149 321.62,-145.5 321.62,-152.5"/>
-</a>
-</g>
-</g>
-<!-- Node17&#45;&gt;Node16 -->
-<g id="edge19_Node000017_Node000016" class="edge">
-<title>Node17&#45;&gt;Node16</title>
-<g id="a_edge19_Node000017_Node000016"><a xlink:title=" ">
+<!-- Node16&#45;&gt;Node15 -->
+<g id="edge18_Node000016_Node000015" class="edge">
+<title>Node16&#45;&gt;Node15</title>
+<g id="a_edge18_Node000016_Node000015"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M243.78,-34.2C259.75,-38.09 277.2,-42.34 293.67,-46.35"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="293.24,-49.85 303.78,-48.82 294.89,-43.05 293.24,-49.85"/>
 </a>
 </g>
 </g>
-<!-- Node18 -->
-<g id="Node000018" class="node">
-<title>Node18</title>
-<g id="a_Node000018"><a xlink:href="classBackAndForthMotion.html#ad4b85db6e9c6aecc174be8d5a97efe07" target="_top" xlink:title="Stop back&#45;and&#45;forth motion.">
+<!-- Node17 -->
+<g id="Node000017" class="node">
+<title>Node17</title>
+<g id="a_Node000017"><a xlink:href="classBackAndForthMotion.html#ad4b85db6e9c6aecc174be8d5a97efe07" target="_top" xlink:title="Stop back&#45;and&#45;forth motion.">
 <polygon fill="white" stroke="#666666" points="422,-30 304,-30 304,0 422,0 422,-30"/>
 <text text-anchor="start" x="312" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">BackAndForthMotion</text>
 <text text-anchor="middle" x="363" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::Stop</text>
 </a>
 </g>
 </g>
-<!-- Node17&#45;&gt;Node18 -->
-<g id="edge20_Node000017_Node000018" class="edge">
-<title>Node17&#45;&gt;Node18</title>
-<g id="a_edge20_Node000017_Node000018"><a xlink:title=" ">
+<!-- Node16&#45;&gt;Node17 -->
+<g id="edge19_Node000016_Node000017" class="edge">
+<title>Node16&#45;&gt;Node17</title>
+<g id="a_edge19_Node000016_Node000017"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M243.78,-18.35C259.75,-17.9 277.2,-17.4 293.67,-16.94"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="293.88,-20.43 303.78,-16.65 293.68,-13.43 293.88,-20.43"/>
 </a>

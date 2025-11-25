@@ -1032,15 +1032,15 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ConfigureShortProtection()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ConfigureShortProtection(const ShortProtectionConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool ConfigureShortProtection(const PowerStageParameters&amp; config) noexcept</code></td>
       <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Configure short circuit protection</td>
+      <td>Configure short circuit protection using user-friendly voltage thresholds</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetShortProtectionLevels()</code></td>
       <td><code class="language-plaintext highlighter-rouge">bool SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter, uint8_t shortdelay) noexcept</code></td>
       <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set short protection levels directly</td>
+      <td>Set short protection levels directly (low-level API, register values)</td>
     </tr>
   </tbody>
 </table></div>
@@ -1532,13 +1532,8 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">power_stage</code></td>
-      <td><code class="language-plaintext highlighter-rouge">PowerStageConfig</code></td>
-      <td>Power stage driver strength and blanking</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">short_protection</code></td>
-      <td><code class="language-plaintext highlighter-rouge">ShortProtectionConfig</code></td>
-      <td>Short circuit protection levels</td>
+      <td><code class="language-plaintext highlighter-rouge">PowerStageParameters</code></td>
+      <td>Power stage configuration including MOSFET parameters, BBM time, sense filter, over-temperature protection, and short protection (voltage thresholds)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">global_config</code></td>
@@ -1838,16 +1833,16 @@
     </tr>
   </tbody>
 </table></div>
-<h3 id="shortprotectionconfig">
+<h3 id="powerstageparameters-short-protection-fields">
   
   
-    <a href="#shortprotectionconfig" class="anchor-heading" aria-labelledby="shortprotectionconfig"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ShortProtectionConfig
+    <a href="#powerstageparameters-short-protection-fields" class="anchor-heading" aria-labelledby="powerstageparameters-short-protection-fields"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> PowerStageParameters (Short Protection Fields)
   
   
 </h3>
     
 
-<p>Short circuit protection configuration structure.</p>
+<p>Short circuit protection is configured through the <code class="language-plaintext highlighter-rouge">PowerStageParameters</code> structure using user-friendly voltage thresholds and timing values. The driver automatically converts these to register values based on datasheet specifications.</p>
 
 <p><strong>Location</strong>: <a href="../inc/tmc5160_types.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc5160_types.hpp</code></a></p>
 
@@ -1862,31 +1857,48 @@
   </thead>
   <tbody>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">s2vs_level</code></td>
-      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
-      <td>4-15</td>
-      <td>Short to VS level</td>
+      <td><code class="language-plaintext highlighter-rouge">s2vs_voltage_mv</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint16_t</code></td>
+      <td>0 (auto) or 400-2000</td>
+      <td>Short to VS voltage threshold in mV (0 = auto = 625mV, equivalent to S2VS_LEVEL=6)</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">s2g_level</code></td>
-      <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
-      <td>2-15</td>
-      <td>Short to GND level</td>
+      <td><code class="language-plaintext highlighter-rouge">s2g_voltage_mv</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint16_t</code></td>
+      <td>0 (auto) or 400-2000</td>
+      <td>Short to GND voltage threshold in mV (0 = auto = 625mV, equivalent to S2G_LEVEL=6). Minimum 1200mV if VS&gt;52V</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">shortfilter</code></td>
       <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
       <td>0-3</td>
-      <td>Short filter time</td>
+      <td>Spike filter bandwidth (0=100ns, 1=1µs default, 2=2µs, 3=3µs)</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">shortdelay</code></td>
+      <td><code class="language-plaintext highlighter-rouge">short_detection_delay_us_x10</code></td>
       <td><code class="language-plaintext highlighter-rouge">uint8_t</code></td>
-      <td>0-1</td>
-      <td>Short delay</td>
+      <td>0 (auto) or 5-25</td>
+      <td>Detection delay in 0.1µs units (0 = auto = 0.85µs, equivalent to shortdelay=0)</td>
     </tr>
   </tbody>
 </table></div>
+
+<p><strong>Datasheet Voltage Thresholds (typical values):</strong></p>
+<ul>
+  <li><strong>S2VS_LEVEL=6</strong>: 550-625-700mV (recommended for normal operation)</li>
+  <li><strong>S2VS_LEVEL=15</strong>: 1400-1560-1720mV (lowest sensitivity)</li>
+  <li><strong>S2G_LEVEL=6 (VS&lt;50V)</strong>: 460-625-800mV (recommended for normal operation)</li>
+  <li><strong>S2G_LEVEL=15 (VS&lt;52V)</strong>: 1200-1560-1900mV</li>
+  <li><strong>S2G_LEVEL=15 (VS&lt;55V)</strong>: 850mV (minimum for VS&gt;52V to prevent false triggers)</li>
+</ul>
+
+<p><strong>Detection Delay Timing (typical values):</strong></p>
+<ul>
+  <li><strong>shortdelay=0</strong>: 0.5-0.85-1.1µs (normal, recommended for most applications)</li>
+  <li><strong>shortdelay=1</strong>: 1.1-1.6-2.2µs (high delay)</li>
+</ul>
+
+<p>The driver automatically converts voltage thresholds to register levels using interpolation based on datasheet specifications.</p>
 <h3 id="motorspec">
   
   

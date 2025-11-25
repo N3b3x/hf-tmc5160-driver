@@ -1,9 +1,7 @@
 var namespacetmc5160__test__config =
 [
     [ "MotorConfig_17HS4401S", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html", [
-      [ "BBM_CLKS", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#aaeed25957e0b67d405aea33115ed9d8f", null ],
-      [ "BBM_TIME", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a8bddca392ff19570f79c9f3bf3691cab", null ],
-      [ "DRV_STRENGTH", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a7206560cc583fa739bb028c571fb8d72", null ],
+      [ "BBM_TIME_NS", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#affa877e41c216581eca2955f14381577", null ],
       [ "GEAR_RATIO", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a264560cc51bab1eef38fd5b5b00ffc44", null ],
       [ "GLOBAL_SCALER", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a7fb8ad3fa1cbcb1357eb11c013316670", null ],
       [ "HEND", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#add8c56c28f8118885b44edca10088029", null ],
@@ -11,6 +9,7 @@ var namespacetmc5160__test__config =
       [ "IHOLD", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a9d9a446812715fa7b9116185d4f96d4b", null ],
       [ "INTERPOLATION", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#af3cf8c9a7e2c392e61839d0d7e29fcc3", null ],
       [ "IRUN", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#aae5d8935197956c0d82d3d387800bc00", null ],
+      [ "MOSFET_MILLER_CHARGE_NC", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#ae84e0d6ce0cfab4ab63369eca7d16cce", null ],
       [ "MOTOR_FULL_STEPS", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a177a888d4a1141f8d6e149561db096b2", null ],
       [ "MOTOR_STEP_ANGLE", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a2cda924b99169b019b352db1d09bcb74", null ],
       [ "MRES", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a841806fffe8d6f23f75794968ab7ddfc", null ],
@@ -24,9 +23,7 @@ var namespacetmc5160__test__config =
       [ "TOFF", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#af2b87e95ff531cc6882019680e9f21f8", null ]
     ] ],
     [ "MotorConfig_17HS4401S_Direct", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html", [
-      [ "BBM_CLKS", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#add63af5700e1b047123b51719046893a", null ],
-      [ "BBM_TIME", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#ad17aeddac4207a959f67cd3c479d9353", null ],
-      [ "DRV_STRENGTH", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#a4a9beca8e31f65b080d37d619e2ce871", null ],
+      [ "BBM_TIME_NS", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#a778a351333da0e113f38717049dea51f", null ],
       [ "GEAR_RATIO", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#abd632e3ba9c885dee434447e51c71565", null ],
       [ "GLOBAL_SCALER", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#ad72a4385a10dd516dfd2ad8d961d8fd0", null ],
       [ "HEND", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#affd707c003de55036533ad819e983a8a", null ],
@@ -34,6 +31,7 @@ var namespacetmc5160__test__config =
       [ "IHOLD", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#a220b3239282dc884398573d972954e6b", null ],
       [ "INTERPOLATION", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#a13b21630b7236510369064661f41e9d7", null ],
       [ "IRUN", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#a0a82ed2b376755c1d28073e5e05cb9bc", null ],
+      [ "MOSFET_MILLER_CHARGE_NC", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#a28855d99fea5f27c5b8653020585126f", null ],
       [ "MOTOR_FULL_STEPS", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#a15081c26ef4b52740d995803710740d5", null ],
       [ "MOTOR_STEP_ANGLE", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#a85d06d18983f55f81d8cd5f3d0b69a42", null ],
       [ "MRES", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#ae434fd318235d9d031781299c4da4282", null ],

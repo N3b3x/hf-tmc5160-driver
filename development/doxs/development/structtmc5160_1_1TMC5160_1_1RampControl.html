@@ -93,6 +93,7 @@ $(function(){initNavTree('structtmc5160_1_1TMC5160_1_1RampControl.html',''); ini
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="structtmc5160_1_1TMC5160_1_1RampControl-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">tmc5160::TMC5160&lt; CommType &gt;::RampControl Struct Reference<div class="ingroups"><a class="el" href="group__TMC5160__Subsystems.html">Subsystem Interfaces</a></div></div></div>
@@ -106,7 +107,7 @@ $(function(){initNavTree('structtmc5160_1_1TMC5160_1_1RampControl.html',''); ini
 <div class="dynheader">
 Collaboration diagram for tmc5160::TMC5160&lt; CommType &gt;::RampControl:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1RampControl__coll__graph.svg" width="595" height="680"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1RampControl__coll__graph.svg" width="995" height="680"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -117,33 +118,36 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7094de806ef17e9ffc4a5e427189469d" id="r_a7094de806ef17e9ffc4a5e427189469d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7094de806ef17e9ffc4a5e427189469d">SetRampMode</a> (<a class="el" href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2">RampMode</a> mode) noexcept</td></tr>
 <tr class="memdesc:a7094de806ef17e9ffc4a5e427189469d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the ramp mode.  <br /></td></tr>
 <tr class="separator:a7094de806ef17e9ffc4a5e427189469d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3b0affca3ae24ee0007a65fa26acd4f" id="r_ae3b0affca3ae24ee0007a65fa26acd4f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3b0affca3ae24ee0007a65fa26acd4f">SetTargetPosition</a> (int32_t position) noexcept</td></tr>
-<tr class="memdesc:ae3b0affca3ae24ee0007a65fa26acd4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set target position.  <br /></td></tr>
-<tr class="separator:ae3b0affca3ae24ee0007a65fa26acd4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5d6bfba1552092ae38b59484728d229" id="r_ab5d6bfba1552092ae38b59484728d229"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5d6bfba1552092ae38b59484728d229">GetCurrentPosition</a> () noexcept</td></tr>
-<tr class="memdesc:ab5d6bfba1552092ae38b59484728d229"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current position.  <br /></td></tr>
-<tr class="separator:ab5d6bfba1552092ae38b59484728d229"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a689da653096e4718d2f41e02abbff572" id="r_a689da653096e4718d2f41e02abbff572"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a689da653096e4718d2f41e02abbff572">SetCurrentPosition</a> (int32_t position, bool update_encoder=false) noexcept</td></tr>
-<tr class="memdesc:a689da653096e4718d2f41e02abbff572"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set current position.  <br /></td></tr>
-<tr class="separator:a689da653096e4718d2f41e02abbff572"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68552fbf5f675c15844486c4b910c7d9" id="r_a68552fbf5f675c15844486c4b910c7d9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a68552fbf5f675c15844486c4b910c7d9">SetMaxSpeed</a> (float speed) noexcept</td></tr>
-<tr class="memdesc:a68552fbf5f675c15844486c4b910c7d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set maximum speed.  <br /></td></tr>
-<tr class="separator:a68552fbf5f675c15844486c4b910c7d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6ee69032beee9ca17c7e229d6b154dd" id="r_af6ee69032beee9ca17c7e229d6b154dd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6ee69032beee9ca17c7e229d6b154dd">SetAcceleration</a> (float acceleration) noexcept</td></tr>
-<tr class="memdesc:af6ee69032beee9ca17c7e229d6b154dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set acceleration and deceleration.  <br /></td></tr>
-<tr class="separator:af6ee69032beee9ca17c7e229d6b154dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42767aabaf81b299c915577724535e5a" id="r_a42767aabaf81b299c915577724535e5a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a42767aabaf81b299c915577724535e5a">SetAccelerations</a> (float acceleration, float deceleration) noexcept</td></tr>
-<tr class="memdesc:a42767aabaf81b299c915577724535e5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set acceleration and deceleration separately.  <br /></td></tr>
-<tr class="separator:a42767aabaf81b299c915577724535e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac55d11d2f50adcc0f83e847dece08cb4" id="r_ac55d11d2f50adcc0f83e847dece08cb4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac55d11d2f50adcc0f83e847dece08cb4">SetDeceleration</a> (float deceleration) noexcept</td></tr>
-<tr class="memdesc:ac55d11d2f50adcc0f83e847dece08cb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set deceleration only (DMAX register)  <br /></td></tr>
-<tr class="separator:ac55d11d2f50adcc0f83e847dece08cb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fdc3106ebc36934faca112dd62031a0" id="r_a2fdc3106ebc36934faca112dd62031a0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2fdc3106ebc36934faca112dd62031a0">SetRampSpeeds</a> (float start_speed, float stop_speed, float transition_speed) noexcept</td></tr>
-<tr class="memdesc:a2fdc3106ebc36934faca112dd62031a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set ramp speeds.  <br /></td></tr>
-<tr class="separator:a2fdc3106ebc36934faca112dd62031a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5e5af5bc3d21cf0b495097e4ba985b9" id="r_ab5e5af5bc3d21cf0b495097e4ba985b9"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5e5af5bc3d21cf0b495097e4ba985b9">GetCurrentSpeed</a> () noexcept</td></tr>
-<tr class="memdesc:ab5e5af5bc3d21cf0b495097e4ba985b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current speed.  <br /></td></tr>
-<tr class="separator:ab5e5af5bc3d21cf0b495097e4ba985b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad641e198e0154270a5a106fe86c9e30b" id="r_ad641e198e0154270a5a106fe86c9e30b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad641e198e0154270a5a106fe86c9e30b">SetTargetPosition</a> (float value, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
+<tr class="memdesc:ad641e198e0154270a5a106fe86c9e30b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set target position.  <br /></td></tr>
+<tr class="separator:ad641e198e0154270a5a106fe86c9e30b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9606dd3865a519925950be5d9ae205f" id="r_af9606dd3865a519925950be5d9ae205f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9606dd3865a519925950be5d9ae205f">GetCurrentPosition</a> (<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
+<tr class="memdesc:af9606dd3865a519925950be5d9ae205f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current position.  <br /></td></tr>
+<tr class="separator:af9606dd3865a519925950be5d9ae205f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a263f6a9a272eaa22b0457b8d9ebed7b4" id="r_a263f6a9a272eaa22b0457b8d9ebed7b4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a263f6a9a272eaa22b0457b8d9ebed7b4">GetTargetPosition</a> (<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
+<tr class="memdesc:a263f6a9a272eaa22b0457b8d9ebed7b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get target position.  <br /></td></tr>
+<tr class="separator:a263f6a9a272eaa22b0457b8d9ebed7b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ded903357f90d9cd313f8a31dc41680" id="r_a2ded903357f90d9cd313f8a31dc41680"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ded903357f90d9cd313f8a31dc41680">SetCurrentPosition</a> (float value, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>, bool update_encoder=false) noexcept</td></tr>
+<tr class="memdesc:a2ded903357f90d9cd313f8a31dc41680"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set current position.  <br /></td></tr>
+<tr class="separator:a2ded903357f90d9cd313f8a31dc41680"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d15fed7b04fcfabf7d462fac532303c" id="r_a9d15fed7b04fcfabf7d462fac532303c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d15fed7b04fcfabf7d462fac532303c">SetMaxSpeed</a> (float value, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
+<tr class="memdesc:a9d15fed7b04fcfabf7d462fac532303c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set maximum speed.  <br /></td></tr>
+<tr class="separator:a9d15fed7b04fcfabf7d462fac532303c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6933d7d0206dc775ae6fcc28f93a5df" id="r_aa6933d7d0206dc775ae6fcc28f93a5df"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6933d7d0206dc775ae6fcc28f93a5df">SetAcceleration</a> (float value, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
+<tr class="memdesc:aa6933d7d0206dc775ae6fcc28f93a5df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set acceleration and deceleration.  <br /></td></tr>
+<tr class="separator:aa6933d7d0206dc775ae6fcc28f93a5df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84404285ca9bc6d1b16708e8bba15e75" id="r_a84404285ca9bc6d1b16708e8bba15e75"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a84404285ca9bc6d1b16708e8bba15e75">SetAccelerations</a> (float accel_val, float decel_val, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
+<tr class="memdesc:a84404285ca9bc6d1b16708e8bba15e75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set acceleration and deceleration separately.  <br /></td></tr>
+<tr class="separator:a84404285ca9bc6d1b16708e8bba15e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83cc5802a08bb66659ec6904069a78ec" id="r_a83cc5802a08bb66659ec6904069a78ec"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83cc5802a08bb66659ec6904069a78ec">SetDeceleration</a> (float value, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
+<tr class="memdesc:a83cc5802a08bb66659ec6904069a78ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set deceleration only (DMAX register)  <br /></td></tr>
+<tr class="separator:a83cc5802a08bb66659ec6904069a78ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf4e2b1a4e501a3e764da16b53769afc" id="r_abf4e2b1a4e501a3e764da16b53769afc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf4e2b1a4e501a3e764da16b53769afc">SetRampSpeeds</a> (float start_speed, float stop_speed, float transition_speed, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
+<tr class="memdesc:abf4e2b1a4e501a3e764da16b53769afc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set ramp speeds.  <br /></td></tr>
+<tr class="separator:abf4e2b1a4e501a3e764da16b53769afc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af19f9300cc795c03b38b91263f70dc3d" id="r_af19f9300cc795c03b38b91263f70dc3d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af19f9300cc795c03b38b91263f70dc3d">GetCurrentSpeed</a> (<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
+<tr class="memdesc:af19f9300cc795c03b38b91263f70dc3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current speed.  <br /></td></tr>
+<tr class="separator:af19f9300cc795c03b38b91263f70dc3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a668ce782e665f4b6056d4f08ed10b8f4" id="r_a668ce782e665f4b6056d4f08ed10b8f4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a668ce782e665f4b6056d4f08ed10b8f4">IsTargetReached</a> () noexcept</td></tr>
 <tr class="memdesc:a668ce782e665f4b6056d4f08ed10b8f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if target position is reached.  <br /></td></tr>
 <tr class="separator:a668ce782e665f4b6056d4f08ed10b8f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,33 +157,34 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad2ad80fe557a2249e54cd9593b68570e" id="r_ad2ad80fe557a2249e54cd9593b68570e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad2ad80fe557a2249e54cd9593b68570e">Stop</a> () noexcept</td></tr>
 <tr class="memdesc:ad2ad80fe557a2249e54cd9593b68570e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop the motor.  <br /></td></tr>
 <tr class="separator:ad2ad80fe557a2249e54cd9593b68570e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8a09d45e0f919dff7d47f49f7946a7b" id="r_af8a09d45e0f919dff7d47f49f7946a7b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af8a09d45e0f919dff7d47f49f7946a7b">SetTargetPositionMm</a> (float position_mm, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept</td></tr>
-<tr class="memdesc:af8a09d45e0f919dff7d47f49f7946a7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set target position in millimeters.  <br /></td></tr>
-<tr class="separator:af8a09d45e0f919dff7d47f49f7946a7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62b34f08cb68321daf451ec7fdee907f" id="r_a62b34f08cb68321daf451ec7fdee907f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62b34f08cb68321daf451ec7fdee907f">SetMaxSpeedRpm</a> (float rpm, uint16_t steps_per_rev) noexcept</td></tr>
-<tr class="memdesc:a62b34f08cb68321daf451ec7fdee907f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set maximum speed in RPM.  <br /></td></tr>
-<tr class="separator:a62b34f08cb68321daf451ec7fdee907f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab91562b2c47e36e543da897833e2b73f" id="r_ab91562b2c47e36e543da897833e2b73f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab91562b2c47e36e543da897833e2b73f">ConfigureReferenceSwitch</a> (const <a class="el" href="structtmc5160_1_1ReferenceSwitchConfig.html">ReferenceSwitchConfig</a> &amp;config) noexcept</td></tr>
 <tr class="memdesc:ab91562b2c47e36e543da897833e2b73f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure reference switches/endstops.  <br /></td></tr>
 <tr class="separator:ab91562b2c47e36e543da897833e2b73f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0211c70d0469eaffc824a9e63c1785a4" id="r_a0211c70d0469eaffc824a9e63c1785a4"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0211c70d0469eaffc824a9e63c1785a4">GetLatchedPosition</a> () noexcept</td></tr>
-<tr class="memdesc:a0211c70d0469eaffc824a9e63c1785a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get latched position.  <br /></td></tr>
-<tr class="separator:a0211c70d0469eaffc824a9e63c1785a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74fd41db686650c5178c8f3562051b51" id="r_a74fd41db686650c5178c8f3562051b51"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a74fd41db686650c5178c8f3562051b51">SetComparePosition</a> (int32_t position) noexcept</td></tr>
-<tr class="memdesc:a74fd41db686650c5178c8f3562051b51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set position comparison register.  <br /></td></tr>
-<tr class="separator:a74fd41db686650c5178c8f3562051b51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a1298e2a4ad8ed23ea6a995ae86cd72" id="r_a7a1298e2a4ad8ed23ea6a995ae86cd72"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7a1298e2a4ad8ed23ea6a995ae86cd72">GetLatchedPosition</a> (<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
+<tr class="memdesc:a7a1298e2a4ad8ed23ea6a995ae86cd72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get latched position.  <br /></td></tr>
+<tr class="separator:a7a1298e2a4ad8ed23ea6a995ae86cd72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a9713d5205cbaa6e893eec4ffe91294" id="r_a7a9713d5205cbaa6e893eec4ffe91294"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7a9713d5205cbaa6e893eec4ffe91294">SetComparePosition</a> (float value, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
+<tr class="memdesc:a7a9713d5205cbaa6e893eec4ffe91294"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set position comparison register.  <br /></td></tr>
+<tr class="separator:a7a9713d5205cbaa6e893eec4ffe91294"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bd9a12172abfb821524593bbd25c489" id="r_a8bd9a12172abfb821524593bbd25c489"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8bd9a12172abfb821524593bbd25c489">SetPowerDownDelay</a> (uint8_t tpowerdown) noexcept</td></tr>
 <tr class="memdesc:a8bd9a12172abfb821524593bbd25c489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set power down delay.  <br /></td></tr>
 <tr class="separator:a8bd9a12172abfb821524593bbd25c489"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee0bbb3a06678f2a6334e48d49b240fb" id="r_aee0bbb3a06678f2a6334e48d49b240fb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee0bbb3a06678f2a6334e48d49b240fb">SetZeroWaitTime</a> (uint16_t tzerowait) noexcept</td></tr>
 <tr class="memdesc:aee0bbb3a06678f2a6334e48d49b240fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set zero wait time.  <br /></td></tr>
 <tr class="separator:aee0bbb3a06678f2a6334e48d49b240fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd779f5520bb29e30cdd30d46023a12e" id="r_afd779f5520bb29e30cdd30d46023a12e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd779f5520bb29e30cdd30d46023a12e">SetFirstAcceleration</a> (float a1) noexcept</td></tr>
-<tr class="memdesc:afd779f5520bb29e30cdd30d46023a12e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set first acceleration phase.  <br /></td></tr>
-<tr class="separator:afd779f5520bb29e30cdd30d46023a12e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebc84e340e2f53c6f5a04cf0cc6152bb" id="r_aebc84e340e2f53c6f5a04cf0cc6152bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebc84e340e2f53c6f5a04cf0cc6152bb">SetFinalDeceleration</a> (float d1) noexcept</td></tr>
-<tr class="memdesc:aebc84e340e2f53c6f5a04cf0cc6152bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set final deceleration phase.  <br /></td></tr>
-<tr class="separator:aebc84e340e2f53c6f5a04cf0cc6152bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabb5189c09cbf6ea12803c1b62a24f11" id="r_aabb5189c09cbf6ea12803c1b62a24f11"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aabb5189c09cbf6ea12803c1b62a24f11">SetFirstAcceleration</a> (float a1, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
+<tr class="memdesc:aabb5189c09cbf6ea12803c1b62a24f11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set first acceleration phase.  <br /></td></tr>
+<tr class="separator:aabb5189c09cbf6ea12803c1b62a24f11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f84bd6e0606de706689fce333383e6c" id="r_a2f84bd6e0606de706689fce333383e6c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f84bd6e0606de706689fce333383e6c">SetFinalDeceleration</a> (float d1, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
+<tr class="memdesc:a2f84bd6e0606de706689fce333383e6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set final deceleration phase.  <br /></td></tr>
+<tr class="separator:a2f84bd6e0606de706689fce333383e6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:ae3b0affca3ae24ee0007a65fa26acd4f" id="r_ae3b0affca3ae24ee0007a65fa26acd4f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3b0affca3ae24ee0007a65fa26acd4f">SetTargetPosition</a> (int32_t position) noexcept</td></tr>
+<tr class="separator:ae3b0affca3ae24ee0007a65fa26acd4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a689da653096e4718d2f41e02abbff572" id="r_a689da653096e4718d2f41e02abbff572"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a689da653096e4718d2f41e02abbff572">SetCurrentPosition</a> (int32_t position, bool update_encoder=false) noexcept</td></tr>
+<tr class="separator:a689da653096e4718d2f41e02abbff572"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -264,8 +269,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="ab5d6bfba1552092ae38b59484728d229" name="ab5d6bfba1552092ae38b59484728d229"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5d6bfba1552092ae38b59484728d229">&#9670;&#160;</a></span>GetCurrentPosition()</h2>
+<a id="af9606dd3865a519925950be5d9ae205f" name="af9606dd3865a519925950be5d9ae205f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9606dd3865a519925950be5d9ae205f">&#9670;&#160;</a></span>GetCurrentPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -276,9 +281,9 @@ template&lt;typename CommType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t TMC5160::RampControl::GetCurrentPosition </td>
+          <td class="memname">float TMC5160::RampControl::GetCurrentPosition </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -290,12 +295,18 @@ template&lt;typename CommType &gt; </div>
 </div><div class="memdoc">
 
 <p>Get current position. </p>
-<dl class="section return"><dt>Returns</dt><dd>Current position in steps, or 0 on error </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>Unit to return the position in (default: Steps) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Current position in specified unit, or 0 on error </dd></dl>
 
 </div>
 </div>
-<a id="ab5e5af5bc3d21cf0b495097e4ba985b9" name="ab5e5af5bc3d21cf0b495097e4ba985b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5e5af5bc3d21cf0b495097e4ba985b9">&#9670;&#160;</a></span>GetCurrentSpeed()</h2>
+<a id="af19f9300cc795c03b38b91263f70dc3d" name="af19f9300cc795c03b38b91263f70dc3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af19f9300cc795c03b38b91263f70dc3d">&#9670;&#160;</a></span>GetCurrentSpeed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -308,7 +319,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="memname">float TMC5160::RampControl::GetCurrentSpeed </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -320,12 +331,18 @@ template&lt;typename CommType &gt; </div>
 </div><div class="memdoc">
 
 <p>Get current speed. </p>
-<dl class="section return"><dt>Returns</dt><dd>Current speed in steps per second, or 0.0f on error </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>Unit to return the speed in (default: Steps) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Current speed in specified unit, or 0.0f on error </dd></dl>
 
 </div>
 </div>
-<a id="a0211c70d0469eaffc824a9e63c1785a4" name="a0211c70d0469eaffc824a9e63c1785a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0211c70d0469eaffc824a9e63c1785a4">&#9670;&#160;</a></span>GetLatchedPosition()</h2>
+<a id="a7a1298e2a4ad8ed23ea6a995ae86cd72" name="a7a1298e2a4ad8ed23ea6a995ae86cd72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a1298e2a4ad8ed23ea6a995ae86cd72">&#9670;&#160;</a></span>GetLatchedPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -336,9 +353,9 @@ template&lt;typename CommType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t TMC5160::RampControl::GetLatchedPosition </td>
+          <td class="memname">float TMC5160::RampControl::GetLatchedPosition </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -350,8 +367,50 @@ template&lt;typename CommType &gt; </div>
 </div><div class="memdoc">
 
 <p>Get latched position. </p>
-<dl class="section return"><dt>Returns</dt><dd>Latched position in steps, or 0 on error</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>Unit to return the position in (default: Steps) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Latched position in specified unit, or 0 on error</dd></dl>
 <p>Reads the position that was latched on the last reference switch event. </p>
+
+</div>
+</div>
+<a id="a263f6a9a272eaa22b0457b8d9ebed7b4" name="a263f6a9a272eaa22b0457b8d9ebed7b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a263f6a9a272eaa22b0457b8d9ebed7b4">&#9670;&#160;</a></span>GetTargetPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TMC5160::RampControl::GetTargetPosition </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get target position. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>Unit to return the position in (default: Steps) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Target position in specified unit, or 0 on error </dd></dl>
 
 </div>
 </div>
@@ -415,8 +474,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="af6ee69032beee9ca17c7e229d6b154dd" name="af6ee69032beee9ca17c7e229d6b154dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6ee69032beee9ca17c7e229d6b154dd">&#9670;&#160;</a></span>SetAcceleration()</h2>
+<a id="aa6933d7d0206dc775ae6fcc28f93a5df" name="aa6933d7d0206dc775ae6fcc28f93a5df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6933d7d0206dc775ae6fcc28f93a5df">&#9670;&#160;</a></span>SetAcceleration()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -429,8 +488,12 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="memname">bool TMC5160::RampControl::SetAcceleration </td>
           <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>acceleration</em></span></td><td>)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>value</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -443,7 +506,8 @@ template&lt;typename CommType &gt; </div>
 <p>Set acceleration and deceleration. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">acceleration</td><td>Acceleration in steps per second squared </td></tr>
+    <tr><td class="paramname">value</td><td>Acceleration value </td></tr>
+    <tr><td class="paramname">unit</td><td>Unit of the value (default: Steps) </td></tr>
   </table>
   </dd>
 </dl>
@@ -451,8 +515,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="a42767aabaf81b299c915577724535e5a" name="a42767aabaf81b299c915577724535e5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42767aabaf81b299c915577724535e5a">&#9670;&#160;</a></span>SetAccelerations()</h2>
+<a id="a84404285ca9bc6d1b16708e8bba15e75" name="a84404285ca9bc6d1b16708e8bba15e75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84404285ca9bc6d1b16708e8bba15e75">&#9670;&#160;</a></span>SetAccelerations()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -465,12 +529,17 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="memname">bool TMC5160::RampControl::SetAccelerations </td>
           <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>acceleration</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>accel_val</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>deceleration</em></span>&#160;)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>decel_val</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -483,8 +552,9 @@ template&lt;typename CommType &gt; </div>
 <p>Set acceleration and deceleration separately. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">acceleration</td><td>Acceleration in steps per second squared </td></tr>
-    <tr><td class="paramname">deceleration</td><td>Deceleration in steps per second squared </td></tr>
+    <tr><td class="paramname">accel_val</td><td>Acceleration value </td></tr>
+    <tr><td class="paramname">decel_val</td><td>Deceleration value </td></tr>
+    <tr><td class="paramname">unit</td><td>Unit of the values (default: Steps) </td></tr>
   </table>
   </dd>
 </dl>
@@ -492,8 +562,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="a74fd41db686650c5178c8f3562051b51" name="a74fd41db686650c5178c8f3562051b51"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74fd41db686650c5178c8f3562051b51">&#9670;&#160;</a></span>SetComparePosition()</h2>
+<a id="a7a9713d5205cbaa6e893eec4ffe91294" name="a7a9713d5205cbaa6e893eec4ffe91294"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a9713d5205cbaa6e893eec4ffe91294">&#9670;&#160;</a></span>SetComparePosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -506,8 +576,12 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="memname">bool TMC5160::RampControl::SetComparePosition </td>
           <td>(</td>
-          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>position</em></span></td><td>)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>value</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -520,7 +594,8 @@ template&lt;typename CommType &gt; </div>
 <p>Set position comparison register. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">position</td><td>Position value for comparison </td></tr>
+    <tr><td class="paramname">value</td><td>Position value for comparison </td></tr>
+    <tr><td class="paramname">unit</td><td>Unit of the value (default: Steps) </td></tr>
   </table>
   </dd>
 </dl>
@@ -529,8 +604,55 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
+<a id="a2ded903357f90d9cd313f8a31dc41680" name="a2ded903357f90d9cd313f8a31dc41680"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ded903357f90d9cd313f8a31dc41680">&#9670;&#160;</a></span>SetCurrentPosition() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::RampControl::SetCurrentPosition </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>value</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>update_encoder</em><span class="paramdefsep"> = </span><span class="paramdefval">false</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set current position. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>Position value </td></tr>
+    <tr><td class="paramname">unit</td><td>Unit of the value (default: Steps) </td></tr>
+    <tr><td class="paramname">update_encoder</td><td>If true, also update encoder position </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise </dd></dl>
+
+</div>
+</div>
 <a id="a689da653096e4718d2f41e02abbff572" name="a689da653096e4718d2f41e02abbff572"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a689da653096e4718d2f41e02abbff572">&#9670;&#160;</a></span>SetCurrentPosition()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a689da653096e4718d2f41e02abbff572">&#9670;&#160;</a></span>SetCurrentPosition() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -553,25 +675,15 @@ template&lt;typename CommType &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Set current position. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">position</td><td>Position value in steps </td></tr>
-    <tr><td class="paramname">update_encoder</td><td>If true, also update encoder position </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise </dd></dl>
-
 </div>
 </div>
-<a id="ac55d11d2f50adcc0f83e847dece08cb4" name="ac55d11d2f50adcc0f83e847dece08cb4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac55d11d2f50adcc0f83e847dece08cb4">&#9670;&#160;</a></span>SetDeceleration()</h2>
+<a id="a83cc5802a08bb66659ec6904069a78ec" name="a83cc5802a08bb66659ec6904069a78ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83cc5802a08bb66659ec6904069a78ec">&#9670;&#160;</a></span>SetDeceleration()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -584,8 +696,12 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="memname">bool TMC5160::RampControl::SetDeceleration </td>
           <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>deceleration</em></span></td><td>)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>value</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -598,17 +714,18 @@ template&lt;typename CommType &gt; </div>
 <p>Set deceleration only (DMAX register) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">deceleration</td><td>Deceleration in steps per second squared </td></tr>
+    <tr><td class="paramname">value</td><td>Deceleration value </td></tr>
+    <tr><td class="paramname">unit</td><td>Unit of the value (default: Steps) </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise</dd></dl>
-<p>Sets only the deceleration rate (DMAX register) without affecting acceleration (AMAX). This is useful when you want to adjust deceleration independently, for example to implement asymmetric motion profiles or fine-tune stopping behavior. </p>
+<p>Sets only the deceleration rate (DMAX register) without affecting acceleration (AMAX). </p>
 
 </div>
 </div>
-<a id="aebc84e340e2f53c6f5a04cf0cc6152bb" name="aebc84e340e2f53c6f5a04cf0cc6152bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebc84e340e2f53c6f5a04cf0cc6152bb">&#9670;&#160;</a></span>SetFinalDeceleration()</h2>
+<a id="a2f84bd6e0606de706689fce333383e6c" name="a2f84bd6e0606de706689fce333383e6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f84bd6e0606de706689fce333383e6c">&#9670;&#160;</a></span>SetFinalDeceleration()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -621,8 +738,12 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="memname">bool TMC5160::RampControl::SetFinalDeceleration </td>
           <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>d1</em></span></td><td>)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>d1</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -635,7 +756,8 @@ template&lt;typename CommType &gt; </div>
 <p>Set final deceleration phase. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">d1</td><td>Deceleration between V1 and VSTOP in steps/s² </td></tr>
+    <tr><td class="paramname">d1</td><td>Deceleration value </td></tr>
+    <tr><td class="paramname">unit</td><td>Unit of the value (default: Steps) </td></tr>
   </table>
   </dd>
 </dl>
@@ -644,8 +766,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="afd779f5520bb29e30cdd30d46023a12e" name="afd779f5520bb29e30cdd30d46023a12e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd779f5520bb29e30cdd30d46023a12e">&#9670;&#160;</a></span>SetFirstAcceleration()</h2>
+<a id="aabb5189c09cbf6ea12803c1b62a24f11" name="aabb5189c09cbf6ea12803c1b62a24f11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabb5189c09cbf6ea12803c1b62a24f11">&#9670;&#160;</a></span>SetFirstAcceleration()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -658,8 +780,12 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="memname">bool TMC5160::RampControl::SetFirstAcceleration </td>
           <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>a1</em></span></td><td>)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>a1</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -672,7 +798,8 @@ template&lt;typename CommType &gt; </div>
 <p>Set first acceleration phase. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">a1</td><td>First acceleration between VSTART and V1 in steps/s² </td></tr>
+    <tr><td class="paramname">a1</td><td>First acceleration value </td></tr>
+    <tr><td class="paramname">unit</td><td>Unit of the value (default: Steps) </td></tr>
   </table>
   </dd>
 </dl>
@@ -681,8 +808,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="a68552fbf5f675c15844486c4b910c7d9" name="a68552fbf5f675c15844486c4b910c7d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68552fbf5f675c15844486c4b910c7d9">&#9670;&#160;</a></span>SetMaxSpeed()</h2>
+<a id="a9d15fed7b04fcfabf7d462fac532303c" name="a9d15fed7b04fcfabf7d462fac532303c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d15fed7b04fcfabf7d462fac532303c">&#9670;&#160;</a></span>SetMaxSpeed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -695,8 +822,12 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="memname">bool TMC5160::RampControl::SetMaxSpeed </td>
           <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>speed</em></span></td><td>)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>value</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -709,57 +840,12 @@ template&lt;typename CommType &gt; </div>
 <p>Set maximum speed. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">speed</td><td>Maximum speed in steps per second </td></tr>
+    <tr><td class="paramname">value</td><td>Maximum speed value </td></tr>
+    <tr><td class="paramname">unit</td><td>Unit of the value (default: Steps) </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise </dd></dl>
-
-</div>
-</div>
-<a id="a62b34f08cb68321daf451ec7fdee907f" name="a62b34f08cb68321daf451ec7fdee907f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62b34f08cb68321daf451ec7fdee907f">&#9670;&#160;</a></span>SetMaxSpeedRpm()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename CommType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TMC5160::RampControl::SetMaxSpeedRpm </td>
-          <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>rpm</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Set maximum speed in RPM. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">rpm</td><td>Maximum speed in revolutions per minute </td></tr>
-    <tr><td class="paramname">steps_per_rev</td><td>Steps per revolution of the motor </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1RampControl_a62b34f08cb68321daf451ec7fdee907f_cgraph.svg" width="511" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -836,8 +922,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="a2fdc3106ebc36934faca112dd62031a0" name="a2fdc3106ebc36934faca112dd62031a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2fdc3106ebc36934faca112dd62031a0">&#9670;&#160;</a></span>SetRampSpeeds()</h2>
+<a id="abf4e2b1a4e501a3e764da16b53769afc" name="abf4e2b1a4e501a3e764da16b53769afc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf4e2b1a4e501a3e764da16b53769afc">&#9670;&#160;</a></span>SetRampSpeeds()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -860,7 +946,12 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>transition_speed</em></span>&#160;)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>transition_speed</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -873,9 +964,51 @@ template&lt;typename CommType &gt; </div>
 <p>Set ramp speeds. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">start_speed</td><td>Start speed in steps per second </td></tr>
-    <tr><td class="paramname">stop_speed</td><td>Stop speed in steps per second </td></tr>
-    <tr><td class="paramname">transition_speed</td><td>Transition speed in steps per second </td></tr>
+    <tr><td class="paramname">start_speed</td><td>Start speed value </td></tr>
+    <tr><td class="paramname">stop_speed</td><td>Stop speed value </td></tr>
+    <tr><td class="paramname">transition_speed</td><td>Transition speed value </td></tr>
+    <tr><td class="paramname">unit</td><td>Unit of the speed values (default: Steps) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise </dd></dl>
+
+</div>
+</div>
+<a id="ad641e198e0154270a5a106fe86c9e30b" name="ad641e198e0154270a5a106fe86c9e30b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad641e198e0154270a5a106fe86c9e30b">&#9670;&#160;</a></span>SetTargetPosition() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::RampControl::SetTargetPosition </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>value</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set target position. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>Target position value </td></tr>
+    <tr><td class="paramname">unit</td><td>Unit of the value (default: Steps) </td></tr>
   </table>
   </dd>
 </dl>
@@ -884,7 +1017,7 @@ template&lt;typename CommType &gt; </div>
 </div>
 </div>
 <a id="ae3b0affca3ae24ee0007a65fa26acd4f" name="ae3b0affca3ae24ee0007a65fa26acd4f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3b0affca3ae24ee0007a65fa26acd4f">&#9670;&#160;</a></span>SetTargetPosition()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3b0affca3ae24ee0007a65fa26acd4f">&#9670;&#160;</a></span>SetTargetPosition() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -903,71 +1036,10 @@ template&lt;typename CommType &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set target position. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">position</td><td>Target position in steps </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise </dd></dl>
-
-</div>
-</div>
-<a id="af8a09d45e0f919dff7d47f49f7946a7b" name="af8a09d45e0f919dff7d47f49f7946a7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8a09d45e0f919dff7d47f49f7946a7b">&#9670;&#160;</a></span>SetTargetPositionMm()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename CommType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TMC5160::RampControl::SetTargetPositionMm </td>
-          <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>position_mm</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>lead_screw_pitch_mm</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Set target position in millimeters. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">position_mm</td><td>Target position in millimeters </td></tr>
-    <tr><td class="paramname">steps_per_rev</td><td>Steps per revolution of the motor </td></tr>
-    <tr><td class="paramname">lead_screw_pitch_mm</td><td>Lead screw pitch in millimeters </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1RampControl_af8a09d45e0f919dff7d47f49f7946a7b_cgraph.svg" width="463" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

@@ -55,5 +55,6 @@ var searchData=
   ['tmc5160pinconfig_52',['TMC5160PinConfig',['../structtmc5160_1_1TMC5160PinConfig.html#a2ba9eb79e5277e26e1c8e36ef696c82c',1,'tmc5160::TMC5160PinConfig::TMC5160PinConfig()=default'],['../structtmc5160_1_1TMC5160PinConfig.html#a22066a961beb2ab377996d9bdac2e6af',1,'tmc5160::TMC5160PinConfig::TMC5160PinConfig(int en, int dir=-1, int step=-1) noexcept']]],
   ['tmcmutexguard_53',['TmcMutexGuard',['../classTmcMutexGuard.html#a1994255895c3bdf499584a5fcff5dc4c',1,'TmcMutexGuard::TmcMutexGuard(Esp32TmcMutex &amp;mutex) noexcept'],['../classTmcMutexGuard.html#a9a5d32c55145c04eef1f79c509ac12b9',1,'TmcMutexGuard::TmcMutexGuard(const TmcMutexGuard &amp;)=delete'],['../classTmcMutexGuard.html#a99aacc69a15c0bc90d48361c0102ab6b',1,'TmcMutexGuard::TmcMutexGuard(TmcMutexGuard &amp;&amp;)=delete']]],
   ['tokenize_54',['Tokenize',['../classUartCommandParser.html#a252be09aa840308655722421fafb1641',1,'UartCommandParser']]],
-  ['tostring_55',['ToString',['../structtmc5160_1_1SpiStatus.html#a7027c462bf5be610a3af8049bcd4d54d',1,'tmc5160::SpiStatus']]]
+  ['tostring_55',['ToString',['../structtmc5160_1_1SpiStatus.html#a7027c462bf5be610a3af8049bcd4d54d',1,'tmc5160::SpiStatus']]],
+  ['tunestallguard_56',['TuneStallGuard',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#adbea17fe1c967b039c3b148768de794a',1,'tmc5160::TMC5160::Diagnostics']]]
 ];

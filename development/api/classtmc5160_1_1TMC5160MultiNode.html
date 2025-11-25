@@ -165,7 +165,7 @@ Private Attributes</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename CommType, size_t MaxDevices = 8&gt;<br />
 class tmc5160::TMC5160MultiNode&lt; CommType, MaxDevices &gt;</div><p>High-level manager for multiple <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> drivers in a UART multi-node configuration. </p>
 <p>This class manages multiple <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> drivers on a single UART bus using sequential addressing with NAI/NAO pins. It supports a fixed number of onboard devices (known at construction) and allows dynamic addition/removal of extra devices up to a maximum capacity.</p>
-<h2><a class="anchor" id="autotoc_md14"></a>
+<h2><a class="anchor" id="autotoc_md15"></a>
 Key Features</h2>
 <ul>
 <li><b>Onboard Devices</b>: Fixed number of devices created at construction time</li>
@@ -173,14 +173,14 @@ Key Features</h2>
 <li><b>Sequential Programming</b>: Handles NAI/NAO pin control for sequential addressing</li>
 <li><b>Individual Access</b>: Access individual drivers via operator[] using logical indices</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md16"></a>
 Architecture</h2>
 <ul>
 <li><b>One <a class="el" href="classtmc5160_1_1UartCommInterface.html" title="CRTP-based UART implementation of TMC5160CommInterface.">UartCommInterface</a></b>: Shared by all <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> instances on the UART bus</li>
 <li><b>Multiple <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> Instances</b>: One per device, each with its own programmed node address</li>
 <li><b>Sequential Addressing</b>: Uses NAI/NAO pins for sequential programming per datasheet</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md16"></a>
+<h2><a class="anchor" id="autotoc_md17"></a>
 Important: Sequential Addressing (Per Datasheet)</h2>
 <p>In UART multi-node mode, devices are programmed sequentially using NAI/NAO pins:</p>
 <p><b>Initial State at Power-Up:</b></p><ul>
@@ -215,7 +215,7 @@ Important: Sequential Addressing (Per Datasheet)</h2>
 <div class="line">y_axis.rampControl.SetMaxSpeed(500.0f);</div>
 <div class="line">z_axis.motorControl.Enable();</div>
 <div class="ttc" id="aclasstmc5160_1_1TMC5160MultiNode_html"><div class="ttname"><a href="classtmc5160_1_1TMC5160MultiNode.html">tmc5160::TMC5160MultiNode</a></div><div class="ttdoc">High-level manager for multiple TMC5160 drivers in a UART multi-node configuration.</div><div class="ttdef"><b>Definition</b> tmc5160_multi_node.hpp:138</div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md17"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md18"></a>
 Usage Example</h2>
 <div class="fragment"><div class="line"><span class="comment">// Create UART communication interface (shared by all devices)</span></div>
 <div class="line"><span class="keyword">class </span>MyUART : <span class="keyword">public</span> <a class="code hl_class" href="classtmc5160_1_1UartCommInterface.html">tmc5160::UartCommInterface</a>&lt;MyUART&gt; { ... };</div>
@@ -234,7 +234,7 @@ Usage Example</h2>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Initialize onboard devices</span></div>
 <div class="line"><a class="code hl_struct" href="structtmc5160_1_1DriverConfig.html">tmc5160::DriverConfig</a> cfg{};</div>
-<div class="line">cfg.<a class="code hl_variable" href="structtmc5160_1_1DriverConfig.html#a0e86dedca15de4295d3d92754886a606">motor</a>.<a class="code hl_variable" href="structtmc5160_1_1MotorParameters.html#a85b0794271573d33b1c811285ca14a35">irun</a> = 20;</div>
+<div class="line">cfg.motor.irun = 20;</div>
 <div class="line">cfg.motor.ihold = 10;</div>
 <div class="line">nodes.InitializeAll(cfg);</div>
 <div class="line"> </div>
@@ -259,9 +259,7 @@ Usage Example</h2>
 <div class="line"><span class="comment">// Remove extra device when done</span></div>
 <div class="line">nodes.RemoveDevice(3);</div>
 <div class="ttc" id="aclasstmc5160_1_1UartCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1UartCommInterface.html">tmc5160::UartCommInterface</a></div><div class="ttdoc">CRTP-based UART implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:2373</div></div>
-<div class="ttc" id="astructtmc5160_1_1DriverConfig_html"><div class="ttname"><a href="structtmc5160_1_1DriverConfig.html">tmc5160::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc5160_config.hpp:43</div></div>
-<div class="ttc" id="astructtmc5160_1_1DriverConfig_html_a0e86dedca15de4295d3d92754886a606"><div class="ttname"><a href="structtmc5160_1_1DriverConfig.html#a0e86dedca15de4295d3d92754886a606">tmc5160::DriverConfig::motor</a></div><div class="ttdeci">MotorParameters motor</div><div class="ttdoc">Motor current configuration.</div><div class="ttdef"><b>Definition</b> tmc5160_config.hpp:45</div></div>
-<div class="ttc" id="astructtmc5160_1_1MotorParameters_html_a85b0794271573d33b1c811285ca14a35"><div class="ttname"><a href="structtmc5160_1_1MotorParameters.html#a85b0794271573d33b1c811285ca14a35">tmc5160::MotorParameters::irun</a></div><div class="ttdeci">uint8_t irun</div><div class="ttdoc">Motor run current (0 to 31). For best performance don't set lower than 16.</div><div class="ttdef"><b>Definition</b> tmc5160_types.hpp:112</div></div>
+<div class="ttc" id="astructtmc5160_1_1DriverConfig_html"><div class="ttname"><a href="structtmc5160_1_1DriverConfig.html">tmc5160::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc5160_config.hpp:55</div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">CommType</td><td>The communication interface type (must be UartCommInterface&lt;CommType&gt;) </td></tr>

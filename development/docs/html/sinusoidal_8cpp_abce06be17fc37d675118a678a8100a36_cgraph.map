@@ -14,12 +14,12 @@
 <area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="93,289,165,299,165,304,92,295"/>
 <area shape="rect" id="Node000013" href="$classtmc5160_1_1TMC5160.html#ac90ae8eb92120142753c49fc61fcce89" title="Initialize the TMC5160 driver with configuration." alt="" coords="145,349,357,374"/>
 <area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="71,297,103,316,141,334,169,343,167,348,139,338,101,321,68,302"/>
-<area shape="rect" id="Node000015" href="$classtmc5160_1_1TMC5160.html#a12f76f30d3cf734b5a395ebad0acc917" title="Set the chip communication mode via SPI_MODE and SD_MODE pins." alt="" coords="148,399,355,439"/>
-<area shape="poly" id="edge16_Node000001_Node000015" title=" " alt="" coords="60,298,93,340,116,363,141,383,155,391,153,395,139,388,112,367,89,343,56,301"/>
-<area shape="rect" id="Node000016" href="$classBackAndForthMotion.html#a6ababa55b07f6a7ccbe591b597f64ea3" title="Initialize and start back&#45;and&#45;forth motion." alt="" coords="411,456,568,496"/>
-<area shape="poly" id="edge17_Node000001_Node000016" title=" " alt="" coords="55,299,64,331,81,373,106,415,122,433,141,448,171,464,202,476,269,490,336,493,397,489,397,495,336,498,269,495,201,481,169,469,139,453,119,437,102,418,76,375,59,333,50,301"/>
-<area shape="rect" id="Node000017" href="$classBackAndForthMotion.html#afac7a78a30c9fafbcee5eb2626e3f409" title="Update back&#45;and&#45;forth motion (call periodically)" alt="" coords="173,513,330,553"/>
-<area shape="poly" id="edge18_Node000001_Node000017" title=" " alt="" coords="55,299,62,337,78,389,104,444,121,470,142,493,162,507,159,512,138,497,117,473,99,447,73,390,57,338,49,300"/>
+<area shape="rect" id="Node000014" href="$classtmc5160_1_1TMC5160.html#a12f76f30d3cf734b5a395ebad0acc917" title="Set the chip communication mode via SPI_MODE and SD_MODE pins." alt="" coords="148,399,355,439"/>
+<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="60,298,93,340,116,363,141,383,155,391,153,395,139,388,112,367,89,343,56,301"/>
+<area shape="rect" id="Node000015" href="$classBackAndForthMotion.html#a6ababa55b07f6a7ccbe591b597f64ea3" title="Initialize and start back&#45;and&#45;forth motion." alt="" coords="411,456,568,496"/>
+<area shape="poly" id="edge16_Node000001_Node000015" title=" " alt="" coords="55,299,64,331,81,373,106,415,122,433,141,448,171,464,202,476,269,490,336,493,397,489,397,495,336,498,269,495,201,481,169,469,139,453,119,437,102,418,76,375,59,333,50,301"/>
+<area shape="rect" id="Node000016" href="$classBackAndForthMotion.html#afac7a78a30c9fafbcee5eb2626e3f409" title="Update back&#45;and&#45;forth motion (call periodically)" alt="" coords="173,513,330,553"/>
+<area shape="poly" id="edge17_Node000001_Node000016" title=" " alt="" coords="55,299,62,337,78,389,104,444,121,470,142,493,162,507,159,512,138,497,117,473,99,447,73,390,57,338,49,300"/>
 <area shape="rect" id="Node000007" href="$classEsp32SPI.html#ac1efd880f523f135eaaa31bdb6377116" title="Get pin mapping for a TMC5160 control pin." alt="" coords="626,274,814,299"/>
 <area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="566,267,613,272,612,277,566,272"/>
 <area shape="rect" id="Node000008" href="$classEsp32SPI.html#a91d86a44fd552e7e0494550c2f07910a" title="Convert physical GPIO level to signal state." alt="" coords="616,225,824,250"/>
@@ -32,9 +32,7 @@
 <area shape="rect" id="Node000012" href="$classEsp32SPI.html#a12d86506446246fe1cc612d7b108aac6" title="Convert signal state to physical GPIO level." alt="" coords="616,323,824,349"/>
 <area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="560,317,603,321,602,326,559,322"/>
 <area shape="poly" id="edge13_Node000012_Node000009" title=" " alt="" coords="784,321,858,306,859,311,785,326"/>
-<area shape="rect" id="Node000014" href="$tmc5160_8cpp.html#a6b5c74bc9056ff38815021d63986f681" title=" " alt="" coords="448,349,531,374"/>
-<area shape="poly" id="edge15_Node000013_Node000014" title=" " alt="" coords="358,359,434,359,434,364,358,364"/>
-<area shape="poly" id="edge19_Node000017_Node000016" title=" " alt="" coords="330,512,396,496,398,501,331,517"/>
-<area shape="rect" id="Node000018" href="$classBackAndForthMotion.html#ad4b85db6e9c6aecc174be8d5a97efe07" title="Stop back&#45;and&#45;forth motion." alt="" coords="411,520,568,560"/>
-<area shape="poly" id="edge20_Node000017_Node000018" title=" " alt="" coords="330,533,397,535,397,540,330,538"/>
+<area shape="poly" id="edge18_Node000016_Node000015" title=" " alt="" coords="330,512,396,496,398,501,331,517"/>
+<area shape="rect" id="Node000017" href="$classBackAndForthMotion.html#ad4b85db6e9c6aecc174be8d5a97efe07" title="Stop back&#45;and&#45;forth motion." alt="" coords="411,520,568,560"/>
+<area shape="poly" id="edge19_Node000016_Node000017" title=" " alt="" coords="330,533,397,535,397,540,330,538"/>
 </map>

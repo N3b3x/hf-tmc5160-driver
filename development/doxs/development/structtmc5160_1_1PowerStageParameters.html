@@ -112,25 +112,34 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aa45545c012066aaff226f611cf352b76" id="r_aa45545c012066aaff226f611cf352b76"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa45545c012066aaff226f611cf352b76">drv_strength</a> {2}</td></tr>
-<tr class="memdesc:aa45545c012066aaff226f611cf352b76"><td class="mdescLeft">&#160;</td><td class="mdescRight">MOSFET gate driver current (0 to 3)  <br /></td></tr>
-<tr class="separator:aa45545c012066aaff226f611cf352b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66b02ff5c961ed41e1b99531ee9c74d7" id="r_a66b02ff5c961ed41e1b99531ee9c74d7"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a66b02ff5c961ed41e1b99531ee9c74d7">bbm_time</a> {0}</td></tr>
-<tr class="memdesc:a66b02ff5c961ed41e1b99531ee9c74d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break Before Make duration specified in ns (0 to 24)  <br /></td></tr>
-<tr class="separator:a66b02ff5c961ed41e1b99531ee9c74d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13cfd5a27a19626cc957b9fa6b5db72e" id="r_a13cfd5a27a19626cc957b9fa6b5db72e"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13cfd5a27a19626cc957b9fa6b5db72e">bbm_clks</a> {4}</td></tr>
-<tr class="memdesc:a13cfd5a27a19626cc957b9fa6b5db72e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break Before Make duration specified in clock cycles (0 to 15)  <br /></td></tr>
-<tr class="separator:a13cfd5a27a19626cc957b9fa6b5db72e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27b1e22327646482d6648dcea0aa2393" id="r_a27b1e22327646482d6648dcea0aa2393"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a27b1e22327646482d6648dcea0aa2393">otselect</a> {0}</td></tr>
-<tr class="memdesc:a27b1e22327646482d6648dcea0aa2393"><td class="mdescLeft">&#160;</td><td class="mdescRight">Over temperature level selection for bridge disable (0-3)  <br /></td></tr>
-<tr class="separator:a27b1e22327646482d6648dcea0aa2393"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af49c226aa79c7b8b209492a10a170a46" id="r_af49c226aa79c7b8b209492a10a170a46"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af49c226aa79c7b8b209492a10a170a46">filt_isense</a> {0}</td></tr>
-<tr class="memdesc:af49c226aa79c7b8b209492a10a170a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filter time constant of sense amplifier (0-3)  <br /></td></tr>
-<tr class="separator:af49c226aa79c7b8b209492a10a170a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f03a7854d802c4124bc9ca9c021acac" id="r_a0f03a7854d802c4124bc9ca9c021acac"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f03a7854d802c4124bc9ca9c021acac">mosfet_miller_charge_nc</a> {10.0f}</td></tr>
+<tr class="memdesc:a0f03a7854d802c4124bc9ca9c021acac"><td class="mdescLeft">&#160;</td><td class="mdescRight">MOSFET Miller charge in nanocoulombs (used to calculate DRVSTRENGTH)  <br /></td></tr>
+<tr class="separator:a0f03a7854d802c4124bc9ca9c021acac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11bec8a2dd60203a0f334747472f2f9d" id="r_a11bec8a2dd60203a0f334747472f2f9d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a11bec8a2dd60203a0f334747472f2f9d">bbm_time_ns</a> {100}</td></tr>
+<tr class="memdesc:a11bec8a2dd60203a0f334747472f2f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break Before Make time in nanoseconds.  <br /></td></tr>
+<tr class="separator:a11bec8a2dd60203a0f334747472f2f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b3dc95e5f4ffde22fc69054720d685a" id="r_a7b3dc95e5f4ffde22fc69054720d685a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#a665a38f92e0b840fcadd8f86abfe7cab">SenseFilterTime</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b3dc95e5f4ffde22fc69054720d685a">sense_filter</a> {<a class="el" href="namespacetmc5160.html#a665a38f92e0b840fcadd8f86abfe7cabaf310699f12f6333dad760e06c005c67d">SenseFilterTime::T100ns</a>}</td></tr>
+<tr class="memdesc:a7b3dc95e5f4ffde22fc69054720d685a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sense amplifier filter time constant.  <br /></td></tr>
+<tr class="separator:a7b3dc95e5f4ffde22fc69054720d685a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc" id="r_a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bd">OverTempProtection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc">over_temp_protection</a> {<a class="el" href="namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bda8292f4c72596c343cc85cfd818469fe0">OverTempProtection::Level0</a>}</td></tr>
+<tr class="memdesc:a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Over-temperature protection level for bridge disable.  <br /></td></tr>
+<tr class="separator:a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04ea3cd6616fbb48cd4c549d37f45943" id="r_a04ea3cd6616fbb48cd4c549d37f45943"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04ea3cd6616fbb48cd4c549d37f45943">s2vs_voltage_mv</a> {0}</td></tr>
+<tr class="memdesc:a04ea3cd6616fbb48cd4c549d37f45943"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short to VS detector voltage threshold in millivolts.  <br /></td></tr>
+<tr class="separator:a04ea3cd6616fbb48cd4c549d37f45943"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25b17f0e800ea1d273ef6675a4d66f20" id="r_a25b17f0e800ea1d273ef6675a4d66f20"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25b17f0e800ea1d273ef6675a4d66f20">s2g_voltage_mv</a> {0}</td></tr>
+<tr class="memdesc:a25b17f0e800ea1d273ef6675a4d66f20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short to GND detector voltage threshold in millivolts.  <br /></td></tr>
+<tr class="separator:a25b17f0e800ea1d273ef6675a4d66f20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88b3474936558fbf3106b4c22ce6e602" id="r_a88b3474936558fbf3106b4c22ce6e602"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a88b3474936558fbf3106b4c22ce6e602">shortfilter</a> {1}</td></tr>
+<tr class="memdesc:a88b3474936558fbf3106b4c22ce6e602"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spike filtering bandwidth for short detection (0-3)  <br /></td></tr>
+<tr class="separator:a88b3474936558fbf3106b4c22ce6e602"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c9ce07219d93b575c59e7845c3d86b8" id="r_a1c9ce07219d93b575c59e7845c3d86b8"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1c9ce07219d93b575c59e7845c3d86b8">short_detection_delay_us_x10</a> {0}</td></tr>
+<tr class="memdesc:a1c9ce07219d93b575c59e7845c3d86b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short detection delay in microseconds (0.1µs resolution)  <br /></td></tr>
+<tr class="separator:a1c9ce07219d93b575c59e7845c3d86b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Power stage parameters structure. </p>
-<p>Configuration parameters for the power stage of the <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> driver. </p>
+<p>Configuration parameters for the power stage of the <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> driver. Uses user-friendly physical parameters that are automatically converted to register values during initialization. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ade36db8aa760e9573faf1d028a520bc7" name="ade36db8aa760e9573faf1d028a520bc7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ade36db8aa760e9573faf1d028a520bc7">&#9670;&#160;</a></span>PowerStageParameters()</h2>
@@ -156,88 +165,218 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Initializes with recommended default values. All members use default member initializers, so constructor is empty. </p>
+<p>Initializes with recommended default values:</p><ul>
+<li>MOSFET Miller charge: 10nC (typical for small MOSFETs)</li>
+<li>BBM time: 100ns (typical minimum)</li>
+<li>Sense filter: 100ns (reset default)</li>
+<li>Over-temperature protection: Level0 (150°C)</li>
+<li>Short protection: s2vs_voltage_mv=0 (auto=625mV), s2g_voltage_mv=0 (auto=625mV), shortfilter=1, short_detection_delay_us_x10=0 (auto=0.85µs)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Short detection retries 3 times before switching off motor continuously (ESD protection). </dd>
+<dd>
+Once short detected, corresponding bridge (A or B) switches off and flag is set. </dd>
+<dd>
+To restart after short: disable and re-enable driver. </dd>
+<dd>
+Short protection cannot protect against all possible short events - short circuits should be avoided by design. </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a13cfd5a27a19626cc957b9fa6b5db72e" name="a13cfd5a27a19626cc957b9fa6b5db72e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13cfd5a27a19626cc957b9fa6b5db72e">&#9670;&#160;</a></span>bbm_clks</h2>
+<a id="a11bec8a2dd60203a0f334747472f2f9d" name="a11bec8a2dd60203a0f334747472f2f9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11bec8a2dd60203a0f334747472f2f9d">&#9670;&#160;</a></span>bbm_time_ns</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t tmc5160::PowerStageParameters::bbm_clks {4}</td>
+          <td class="memname">uint32_t tmc5160::PowerStageParameters::bbm_time_ns {100}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Break Before Make duration specified in clock cycles (0 to 15) </p>
+<p>Break Before Make time in nanoseconds. </p>
+<p>0 = auto-calculate from MOSFET Miller charge (100ns for small MOSFETs, lowest setting). Minimum: 75-100ns (BBMTIME=0, shortest, reset default).</p>
+<p>BBMTIME register (bits 4..0, range 0-24):</p><ul>
+<li>BBMTIME=0: 75-100ns (shortest, typical 100ns)</li>
+<li>BBMTIME=16: 200ns</li>
+<li>BBMTIME=24: 375-500ns (longest, typical 375ns)</li>
+<li>Formula: time[ns] ≈ 100ns * 32 / (32 - BBMTIME)</li>
+<li>Used for times &lt;= 200ns</li>
+</ul>
+<p>BBMCLKS register (bits 11..8, range 0-15):</p><ul>
+<li>Digital BBM time in clock cycles (typ. 83ns per cycle at 12MHz)</li>
+<li>Used for times &gt; 200ns</li>
+<li>The longer setting rules (BBMTIME vs. BBMCLKS)</li>
+</ul>
+<p>Datasheet hint: Choose the lowest setting safely covering the switching event. Add roughly 30% headroom to cover production stray of MOSFETs and driver.</p>
+<p>Typical values:</p><ul>
+<li>Fast MOSFETs: 100ns (lowest, BBMTIME=0)</li>
+<li>Medium MOSFETs: 200ns (BBMTIME=16)</li>
+<li>Large MOSFETs: 200-400ns (BBMCLKS)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Constrained to valid range: &gt;= 0 </dd></dl>
 
 </div>
 </div>
-<a id="a66b02ff5c961ed41e1b99531ee9c74d7" name="a66b02ff5c961ed41e1b99531ee9c74d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66b02ff5c961ed41e1b99531ee9c74d7">&#9670;&#160;</a></span>bbm_time</h2>
+<a id="a0f03a7854d802c4124bc9ca9c021acac" name="a0f03a7854d802c4124bc9ca9c021acac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f03a7854d802c4124bc9ca9c021acac">&#9670;&#160;</a></span>mosfet_miller_charge_nc</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t tmc5160::PowerStageParameters::bbm_time {0}</td>
+          <td class="memname">float tmc5160::PowerStageParameters::mosfet_miller_charge_nc {10.0f}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Break Before Make duration specified in ns (0 to 24) </p>
+<p>MOSFET Miller charge in nanocoulombs (used to calculate DRVSTRENGTH) </p>
+<p>0 = auto-calculate from default (10nC for small MOSFETs). Based on datasheet table 3.3:</p><ul>
+<li>&lt;10nC: DRVSTRENGTH = 0</li>
+<li>10-20nC: DRVSTRENGTH = 0 or 1</li>
+<li>20-40nC: DRVSTRENGTH = 1 or 2</li>
+<li>40-60nC: DRVSTRENGTH = 2 or 3</li>
+<li>&gt;60nC: DRVSTRENGTH = 3</li>
+</ul>
+<p>Typical values:</p><ul>
+<li>Small MOSFETs (e.g., BSC072N08NS5): ~6nC</li>
+<li>Medium MOSFETs: ~30nC</li>
+<li>Large MOSFETs: ~50nC+</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Constrained to valid range: &gt;= 0.0f </dd></dl>
 
 </div>
 </div>
-<a id="aa45545c012066aaff226f611cf352b76" name="aa45545c012066aaff226f611cf352b76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa45545c012066aaff226f611cf352b76">&#9670;&#160;</a></span>drv_strength</h2>
+<a id="a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc" name="a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc">&#9670;&#160;</a></span>over_temp_protection</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t tmc5160::PowerStageParameters::drv_strength {2}</td>
+          <td class="memname"><a class="el" href="namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bd">OverTempProtection</a> tmc5160::PowerStageParameters::over_temp_protection {<a class="el" href="namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bda8292f4c72596c343cc85cfd818469fe0">OverTempProtection::Level0</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>MOSFET gate driver current (0 to 3) </p>
+<p>Over-temperature protection level for bridge disable. </p>
+<p>0 = 150°C (default) 1 = 143°C 2 = 136°C 3 = 120°C </p>
 
 </div>
 </div>
-<a id="af49c226aa79c7b8b209492a10a170a46" name="af49c226aa79c7b8b209492a10a170a46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af49c226aa79c7b8b209492a10a170a46">&#9670;&#160;</a></span>filt_isense</h2>
+<a id="a25b17f0e800ea1d273ef6675a4d66f20" name="a25b17f0e800ea1d273ef6675a4d66f20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25b17f0e800ea1d273ef6675a4d66f20">&#9670;&#160;</a></span>s2g_voltage_mv</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t tmc5160::PowerStageParameters::filt_isense {0}</td>
+          <td class="memname">uint16_t tmc5160::PowerStageParameters::s2g_voltage_mv {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Filter time constant of sense amplifier (0-3) </p>
+<p>Short to GND detector voltage threshold in millivolts. </p>
+<p>0 = auto-calculate to recommended default (625mV for VS&lt;50V, equivalent to S2G_LEVEL=6). Detects voltage drop on high-side MOSFET (VS - VBM).</p>
+<p>Datasheet voltage thresholds (typical values, depends on supply voltage):</p><ul>
+<li>S2G_LEVEL=6 (VS&lt;50V): 460-625-800mV (recommended for normal operation)</li>
+<li>S2G_LEVEL=15 (VS&lt;52V): 1200-1560-1900mV</li>
+<li>S2G_LEVEL=15 (VS&lt;55V): 850mV (minimum for VS&gt;52V to prevent false triggers)</li>
+</ul>
+<p>Recommended: 460-800mV for normal operation (VS&lt;50V). Minimum 1200mV if bridge supply voltage can exceed 52V (prevents false triggers at 55V).</p>
+<dl class="section note"><dt>Note</dt><dd>CHOPCONF.diss2g can disable this protection (handled in <a class="el" href="structtmc5160_1_1ChopperConfig.html" title="Chopper configuration structure.">ChopperConfig</a>). </dd>
+<dd>
+Constrained to valid range: 0 (auto) or 400-2000mV </dd>
+<dd>
+Register value (S2G_LEVEL) is automatically calculated from voltage threshold </dd></dl>
 
 </div>
 </div>
-<a id="a27b1e22327646482d6648dcea0aa2393" name="a27b1e22327646482d6648dcea0aa2393"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27b1e22327646482d6648dcea0aa2393">&#9670;&#160;</a></span>otselect</h2>
+<a id="a04ea3cd6616fbb48cd4c549d37f45943" name="a04ea3cd6616fbb48cd4c549d37f45943"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04ea3cd6616fbb48cd4c549d37f45943">&#9670;&#160;</a></span>s2vs_voltage_mv</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t tmc5160::PowerStageParameters::otselect {0}</td>
+          <td class="memname">uint16_t tmc5160::PowerStageParameters::s2vs_voltage_mv {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Over temperature level selection for bridge disable (0-3) </p>
+<p>Short to VS detector voltage threshold in millivolts. </p>
+<p>0 = auto-calculate to recommended default (625mV, equivalent to S2VS_LEVEL=6). Detects voltage drop in LS MOSFET and sense resistor (VBM).</p>
+<p>Datasheet voltage thresholds (typical values):</p><ul>
+<li>S2VS_LEVEL=6: 550-625-700mV (recommended for normal operation)</li>
+<li>S2VS_LEVEL=15: 1400-1560-1720mV (lowest sensitivity)</li>
+</ul>
+<p>Can be set sensitively to detect overcurrent (150-200% of nominal peak current). Recommended: 550-700mV for normal operation, down to 400mV at low current scale.</p>
+<dl class="section note"><dt>Note</dt><dd>CHOPCONF.diss2vs can disable this protection (handled in <a class="el" href="structtmc5160_1_1ChopperConfig.html" title="Chopper configuration structure.">ChopperConfig</a>). </dd>
+<dd>
+Constrained to valid range: 0 (auto) or 400-2000mV </dd>
+<dd>
+Register value (S2VS_LEVEL) is automatically calculated from voltage threshold </dd></dl>
+
+</div>
+</div>
+<a id="a7b3dc95e5f4ffde22fc69054720d685a" name="a7b3dc95e5f4ffde22fc69054720d685a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b3dc95e5f4ffde22fc69054720d685a">&#9670;&#160;</a></span>sense_filter</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacetmc5160.html#a665a38f92e0b840fcadd8f86abfe7cab">SenseFilterTime</a> tmc5160::PowerStageParameters::sense_filter {<a class="el" href="namespacetmc5160.html#a665a38f92e0b840fcadd8f86abfe7cabaf310699f12f6333dad760e06c005c67d">SenseFilterTime::T100ns</a>}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sense amplifier filter time constant. </p>
+<p>0 = 100ns (default) 1 = 200ns 2 = 300ns 3 = 400ns </p>
+
+</div>
+</div>
+<a id="a1c9ce07219d93b575c59e7845c3d86b8" name="a1c9ce07219d93b575c59e7845c3d86b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c9ce07219d93b575c59e7845c3d86b8">&#9670;&#160;</a></span>short_detection_delay_us_x10</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t tmc5160::PowerStageParameters::short_detection_delay_us_x10 {0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Short detection delay in microseconds (0.1µs resolution) </p>
+<p>0 = auto-calculate to recommended default (0.85µs, equivalent to shortdelay=0). Total detection delay including 100ns filtering time. Should cover bridge switching time.</p>
+<p>Datasheet timing (typical values):</p><ul>
+<li>shortdelay=0: 0.5-0.85-1.1µs (normal, recommended for most applications)</li>
+<li>shortdelay=1: 1.1-1.6-2.2µs (high delay)</li>
+</ul>
+<p>Recommended: 5-11 (0.5-1.1µs) for most applications. Stored as 0.1µs units (e.g., 8 = 0.8µs, 16 = 1.6µs).</p>
+<dl class="section note"><dt>Note</dt><dd>Constrained to valid range: 0 (auto) or 5-25 (0.5-2.5µs) </dd>
+<dd>
+Register value (shortdelay bit) is automatically calculated from delay time </dd></dl>
+
+</div>
+</div>
+<a id="a88b3474936558fbf3106b4c22ce6e602" name="a88b3474936558fbf3106b4c22ce6e602"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88b3474936558fbf3106b4c22ce6e602">&#9670;&#160;</a></span>shortfilter</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t tmc5160::PowerStageParameters::shortfilter {1}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Spike filtering bandwidth for short detection (0-3) </p>
+<p>0 = lowest (100ns), 1 = 1µs (reset default), 2 = 2µs, 3 = 3µs. Good PCB layout allows setting 0, increase if erroneous detection occurs. Helps prevent spurious triggering from PCB layout or long motor cables.</p>
+<dl class="section note"><dt>Note</dt><dd>Constrained to valid range: 0-3 </dd></dl>
 
 </div>
 </div>

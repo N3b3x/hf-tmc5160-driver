@@ -135,9 +135,9 @@ bool test_daisy_chain_setup() noexcept {
   cfg.chopper.toff = TEST_TOFF;
   cfg.chopper.mres = TEST_MRES;
   cfg.chopper.intpol = true;
-  cfg.power_stage.drv_strength = 0;
-  cfg.power_stage.bbm_time = 24;
-  cfg.power_stage.bbm_clks = 4;
+  // Power stage: low Qg MOSFET (<10nC), 200ns BBM time
+  cfg.power_stage.mosfet_miller_charge_nc = 6.0f;
+  cfg.power_stage.bbm_time_ns = 200;
   
   for (size_t i = 0; i < handle->drivers.size(); ++i) {
     if (!handle->drivers[i]->Initialize(cfg)) {
@@ -203,9 +203,9 @@ bool test_multi_motor_coordination() noexcept {
   cfg.chopper.toff = TEST_TOFF;
   cfg.chopper.mres = TEST_MRES;
   cfg.chopper.intpol = true;
-  cfg.power_stage.drv_strength = 0;
-  cfg.power_stage.bbm_time = 24;
-  cfg.power_stage.bbm_clks = 4;
+  // Power stage: low Qg MOSFET (<10nC), 200ns BBM time
+  cfg.power_stage.mosfet_miller_charge_nc = 6.0f;
+  cfg.power_stage.bbm_time_ns = 200;
   
   for (auto& driver : handle->drivers) {
     if (!driver->Initialize(cfg)) {

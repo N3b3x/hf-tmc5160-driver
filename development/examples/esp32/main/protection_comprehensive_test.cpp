@@ -90,9 +90,9 @@ std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
   }
   
   tmc5160::DriverConfig cfg{};
-  cfg.motor.irun = TEST_IRUN;
-  cfg.motor.ihold = TEST_IHOLD;
-  cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
+  cfg.motor_spec.irun = TEST_IRUN;
+  cfg.motor_spec.ihold = TEST_IHOLD;
+  cfg.motor_spec.global_scaler = TEST_GLOBAL_SCALER;
   cfg.chopper.toff = TEST_TOFF;
   cfg.chopper.mres = TEST_MRES;
   cfg.chopper.intpol = Motor::INTERPOLATION;
@@ -100,9 +100,9 @@ std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
   cfg.chopper.hstrt = Motor::HSTRT;
   cfg.chopper.tbl = Motor::TBL;
   
-  cfg.power_stage.drv_strength = 2;
-  cfg.power_stage.bbm_time = 24;
-  cfg.power_stage.bbm_clks = 4;
+  // Power stage: typical MOSFET with ~30nC Miller charge, 200ns BBM time
+  cfg.power_stage.mosfet_miller_charge_nc = 30.0f;
+  cfg.power_stage.bbm_time_ns = 200;
   
   if (!handle->driver->Initialize(cfg)) {
     ESP_LOGE(TAG, "Failed to initialize TMC5160 driver");
@@ -120,13 +120,13 @@ bool test_short_circuit_protection() noexcept {
     return false;
   }
   
-  tmc5160::ShortProtectionConfig short_cfg{};
-  short_cfg.s2vs_level = 6;
-  short_cfg.s2g_level = 6;
-  short_cfg.shortfilter = 1;
-  short_cfg.shortdelay = false;
+  tmc5160::PowerStageParameters power_cfg{};
+  power_cfg.s2vs_voltage_mv = 625;  // 625mV = S2VS_LEVEL=6 (recommended)
+  power_cfg.s2g_voltage_mv = 625;  // 625mV = S2G_LEVEL=6 (recommended)
+  power_cfg.shortfilter = 1;
+  power_cfg.short_detection_delay_us_x10 = 0;  // Auto (0.85µs = shortdelay=0)
   
-  if (!handle->driver->protection.ConfigureShortProtection(short_cfg)) {
+  if (!handle->driver->protection.ConfigureShortProtection(power_cfg)) {
     ESP_LOGE(TAG, "Failed to configure short protection");
     return false;
   }

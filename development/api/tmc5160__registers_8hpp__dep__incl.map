@@ -1,44 +1,49 @@
 <map id="tmc5160_registers.hpp" name="tmc5160_registers.hpp">
-<area shape="rect" id="Node000001" title="Register definitions and bitfield structures for TMC5160 stepper motor driver." alt="" coords="1651,5,1822,31"/>
-<area shape="rect" id="Node000002" href="$tmc5160_8hpp.html" title="Main TMC5160 stepper motor driver interface and subsystem classes." alt="" coords="1627,225,1734,251"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1725,43,1709,80,1698,121,1690,162,1684,226,1679,225,1685,162,1692,120,1703,78,1720,41"/>
-<area shape="rect" id="Node000018" href="$tmc5160__types_8hpp.html" title="Type definitions and enumerations for TMC5160 stepper motor driver." alt="" coords="1719,79,1869,104"/>
-<area shape="poly" id="edge18_Node000001_Node000018" title=" " alt="" coords="1757,40,1787,77,1783,80,1752,43"/>
-<area shape="rect" id="Node000003" href="$bounds__finding__sinuous__motion_8cpp.html" title="Fatigue testing platform: Sensorless bounds finding and sinusoidal motion with UART command interface..." alt="" coords="1496,299,1673,339"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1658,261,1610,301,1606,296,1654,257"/>
-<area shape="rect" id="Node000004" href="$core__comprehensive__test_8cpp.html" title="Comprehensive Core initialization and basic setup testing suite for TMC5160 (single motor)" alt="" coords="1698,299,1855,339"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="1707,257,1755,296,1752,301,1704,261"/>
-<area shape="rect" id="Node000005" href="$diagnostics__comprehensive__test_8cpp.html" title="Comprehensive Diagnostics testing suite for TMC5160 (single motor)" alt="" coords="1879,299,2082,339"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="1738,251,1909,296,1908,301,1737,257"/>
-<area shape="rect" id="Node000006" href="$encoder__comprehensive__test_8cpp.html" title="Comprehensive Encoder testing suite for TMC5160 (single motor)" alt="" coords="2106,299,2287,339"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="1748,246,2094,296,2106,298,2105,303,2094,301,1747,251"/>
-<area shape="rect" id="Node000007" href="$gpio__pin__config__example_8cpp.html" title="Example demonstrating GPIO pin configuration for TMC5160 on ESP32&#45;C6." alt="" coords="2312,306,2527,331"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="1748,242,1991,263,2300,296,2351,303,2351,309,2299,301,1991,268,1747,247"/>
-<area shape="rect" id="Node000008" href="$motor__control__comprehensive__test_8cpp.html" title="Comprehensive Motor Control testing suite for TMC5160 (single motor)" alt="" coords="2551,299,2771,339"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="1748,239,2087,258,2312,274,2540,296,2551,297,2550,303,2539,301,2312,280,2087,263,1747,245"/>
-<area shape="rect" id="Node000009" href="$pin__config__struct__example_8cpp.html" title="Example demonstrating TMC5160PinConfig struct for GPIO pin configuration." alt="" coords="5,306,228,331"/>
-<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="1613,242,1386,245,1048,253,649,271,443,284,241,301,184,309,183,303,240,296,442,279,648,266,1047,248,1386,239,1613,237"/>
-<area shape="rect" id="Node000010" href="$protection__comprehensive__test_8cpp.html" title="Comprehensive Protection testing suite for TMC5160 (single motor)" alt="" coords="253,299,447,339"/>
-<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="1613,242,1416,246,1131,255,799,272,460,301,448,303,447,297,459,296,798,267,1131,249,1416,240,1613,237"/>
-<area shape="rect" id="Node000011" href="$ramp__control__comprehensive__test_8cpp.html" title="Comprehensive Ramp Control testing suite for TMC5160 (single motor)" alt="" coords="472,299,687,339"/>
-<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="1614,244,1225,261,965,277,700,301,688,303,687,297,699,296,964,272,1225,255,1614,239"/>
-<area shape="rect" id="Node000012" href="$sinusoidal_8cpp.html" title="Sinusoidal motion pattern example for TMC5160 stepper motor driver." alt="" coords="711,306,826,331"/>
-<area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="1613,242,1472,246,1279,254,1060,272,838,301,806,309,805,303,838,296,1059,267,1279,249,1472,240,1613,237"/>
-<area shape="rect" id="Node000013" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC5160 (MULTI&#45;MOTOR)" alt="" coords="850,299,1082,339"/>
-<area shape="poly" id="edge12_Node000002_Node000013" title=" " alt="" coords="1614,248,1384,269,1094,301,1082,303,1082,298,1094,296,1383,264,1614,242"/>
-<area shape="rect" id="Node000014" href="$tmc5160_8cpp.html" title="Implementation of TMC5160 driver methods." alt="" coords="1106,306,1213,331"/>
-<area shape="poly" id="edge13_Node000002_Node000014" title=" " alt="" coords="1614,247,1432,266,1322,282,1213,301,1185,308,1183,303,1212,296,1321,276,1431,261,1613,242"/>
-<area shape="rect" id="Node000015" href="$tmc5160__daisy__chain_8hpp.html" title="High&#45;level daisy&#45;chain manager for multiple TMC5160 drivers." alt="" coords="2795,306,2985,331"/>
-<area shape="poly" id="edge15_Node000002_Node000015" title=" " alt="" coords="1748,237,1928,242,2184,251,2481,268,2784,296,2833,303,2832,309,2783,301,2481,274,2184,256,1928,247,1748,243"/>
-<area shape="rect" id="Node000016" href="$tmc5160__multi__node_8hpp.html" title="High&#45;level multi&#45;node manager for multiple TMC5160 drivers on UART." alt="" coords="3010,306,3197,331"/>
-<area shape="poly" id="edge16_Node000002_Node000016" title=" " alt="" coords="1748,237,1958,239,2267,247,2629,265,2816,278,2998,296,3048,303,3047,309,2998,301,2815,284,2629,270,2267,252,1958,244,1748,242"/>
-<area shape="rect" id="Node000017" href="$uart__multi__node__comprehensive__test_8cpp.html" title="Comprehensive UART Multi&#45;Node testing suite for TMC5160 (MULTI&#45;MOTOR)" alt="" coords="1237,299,1471,339"/>
-<area shape="poly" id="edge17_Node000002_Node000017" title=" " alt="" coords="1621,256,1433,301,1432,296,1619,251"/>
-<area shape="poly" id="edge14_Node000014_Node000002" title=" " alt="" coords="1219,300,1236,296,1344,276,1453,261,1627,242,1628,247,1453,266,1345,282,1237,301,1221,305"/>
-<area shape="poly" id="edge19_Node000018_Node000002" title=" " alt="" coords="1778,117,1692,227,1688,223,1774,113"/>
-<area shape="rect" id="Node000019" href="$tmc5160__config_8hpp.html" title="Configuration structures for TMC5160 stepper motor driver." alt="" coords="2355,152,2508,177"/>
-<area shape="poly" id="edge20_Node000018_Node000019" title=" " alt="" coords="1883,100,2355,152,2354,157,1883,105"/>
-<area shape="poly" id="edge21_Node000019_Node000002" title=" " alt="" coords="2341,177,1735,234,1734,229,2341,172"/>
-<area shape="poly" id="edge22_Node000019_Node000015" title=" " alt="" coords="2479,179,2856,303,2854,308,2478,184"/>
-<area shape="poly" id="edge23_Node000019_Node000016" title=" " alt="" coords="2495,178,3053,303,3052,309,2494,183"/>
+<area shape="rect" id="Node000001" title="Register definitions and bitfield structures for TMC5160 stepper motor driver." alt="" coords="1706,5,1877,31"/>
+<area shape="rect" id="Node000002" href="$tmc5160_8hpp.html" title="Main TMC5160 stepper motor driver interface and subsystem classes." alt="" coords="1735,225,1842,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1779,44,1765,79,1761,121,1767,162,1786,224,1781,226,1761,163,1756,121,1759,78,1774,42"/>
+<area shape="rect" id="Node000019" href="$tmc5160__types_8hpp.html" title="Type definitions and enumerations for TMC5160 stepper motor driver." alt="" coords="1773,79,1924,104"/>
+<area shape="poly" id="edge19_Node000001_Node000019" title=" " alt="" coords="1811,40,1841,77,1837,80,1807,43"/>
+<area shape="rect" id="Node000003" href="$bounds__finding__sinuous__motion_8cpp.html" title="Fatigue testing platform: Sensorless bounds finding and sinusoidal motion with UART command interface..." alt="" coords="2667,299,2844,339"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1856,239,2198,255,2425,272,2654,296,2667,298,2666,303,2654,301,2424,277,2198,260,1855,244"/>
+<area shape="rect" id="Node000004" href="$core__comprehensive__test_8cpp.html" title="Comprehensive Core initialization and basic setup testing suite for TMC5160 (single motor)" alt="" coords="2869,299,3026,339"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="1856,237,2031,240,2279,249,2566,266,2857,296,2869,298,2868,303,2856,301,2565,272,2278,254,2030,245,1856,242"/>
+<area shape="rect" id="Node000005" href="$diagnostics__comprehensive__test_8cpp.html" title="Comprehensive Diagnostics testing suite for TMC5160 (single motor)" alt="" coords="3050,299,3253,339"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="1856,237,2056,240,2349,249,2690,267,3038,296,3050,297,3049,303,3038,301,2690,272,2348,255,2056,246,1856,242"/>
+<area shape="rect" id="Node000006" href="$encoder__comprehensive__test_8cpp.html" title="Comprehensive Encoder testing suite for TMC5160 (single motor)" alt="" coords="431,299,613,339"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="1721,242,1533,246,1262,255,947,272,626,301,614,303,613,298,626,296,947,267,1262,249,1533,240,1721,237"/>
+<area shape="rect" id="Node000007" href="$gpio__pin__config__example_8cpp.html" title="Example demonstrating GPIO pin configuration for TMC5160 on ESP32&#45;C6." alt="" coords="637,306,852,331"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="1721,244,1356,262,1112,278,865,301,811,309,810,303,864,296,1112,273,1355,256,1721,239"/>
+<area shape="rect" id="Node000008" href="$motor__control__comprehensive__test_8cpp.html" title="Comprehensive Motor Control testing suite for TMC5160 (single motor)" alt="" coords="876,299,1096,339"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="1722,246,1454,267,1109,301,1097,303,1096,298,1108,296,1453,262,1722,241"/>
+<area shape="rect" id="Node000009" href="$pin__config__struct__example_8cpp.html" title="Example demonstrating TMC5160PinConfig struct for GPIO pin configuration." alt="" coords="1120,306,1343,331"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="1722,251,1356,301,1306,309,1306,303,1355,296,1721,246"/>
+<area shape="rect" id="Node000010" href="$protection__comprehensive__test_8cpp.html" title="Comprehensive Protection testing suite for TMC5160 (single motor)" alt="" coords="1367,299,1562,339"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="1729,256,1543,301,1542,296,1728,251"/>
+<area shape="rect" id="Node000011" href="$ramp__control__comprehensive__test_8cpp.html" title="Comprehensive Ramp Control testing suite for TMC5160 (single motor)" alt="" coords="1587,299,1801,339"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="1766,261,1719,301,1715,296,1763,257"/>
+<area shape="rect" id="Node000012" href="$sinusoidal_8cpp.html" title="Sinusoidal motion pattern example for TMC5160 stepper motor driver." alt="" coords="1826,306,1941,331"/>
+<area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="1815,258,1871,304,1868,308,1812,262"/>
+<area shape="rect" id="Node000013" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC5160 (MULTI&#45;MOTOR)" alt="" coords="1965,299,2197,339"/>
+<area shape="poly" id="edge12_Node000002_Node000013" title=" " alt="" coords="1845,252,2011,296,2010,301,1844,257"/>
+<area shape="rect" id="Node000014" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool." alt="" coords="2221,306,2383,331"/>
+<area shape="poly" id="edge13_Node000002_Node000014" title=" " alt="" coords="1856,245,2017,267,2209,296,2248,303,2247,309,2208,301,2016,272,1855,250"/>
+<area shape="rect" id="Node000015" href="$tmc5160_8cpp.html" title="Implementation of TMC5160 driver methods." alt="" coords="3277,306,3383,331"/>
+<area shape="poly" id="edge14_Node000002_Node000015" title=" " alt="" coords="1856,237,2141,241,2545,251,2954,269,3124,281,3253,296,3285,303,3284,309,3252,301,3124,286,2953,274,2544,256,2141,247,1856,243"/>
+<area shape="rect" id="Node000016" href="$tmc5160__daisy__chain_8hpp.html" title="High&#45;level daisy&#45;chain manager for multiple TMC5160 drivers." alt="" coords="5,306,196,331"/>
+<area shape="poly" id="edge16_Node000002_Node000016" title=" " alt="" coords="1722,241,1475,241,1102,248,661,266,433,281,209,301,159,309,158,303,208,296,432,276,660,261,1102,243,1475,236,1722,236"/>
+<area shape="rect" id="Node000017" href="$tmc5160__multi__node_8hpp.html" title="High&#45;level multi&#45;node manager for multiple TMC5160 drivers on UART." alt="" coords="221,306,407,331"/>
+<area shape="poly" id="edge17_Node000002_Node000017" title=" " alt="" coords="1721,242,1504,243,1182,251,805,269,610,283,420,301,370,309,370,303,419,296,610,278,805,264,1182,246,1504,238,1721,236"/>
+<area shape="rect" id="Node000018" href="$uart__multi__node__comprehensive__test_8cpp.html" title="Comprehensive UART Multi&#45;Node testing suite for TMC5160 (MULTI&#45;MOTOR)" alt="" coords="2407,299,2642,339"/>
+<area shape="poly" id="edge18_Node000002_Node000018" title=" " alt="" coords="1856,242,2094,264,2396,296,2408,298,2407,303,2395,301,2094,269,1855,248"/>
+<area shape="poly" id="edge15_Node000015_Node000002" title=" " alt="" coords="3294,305,3276,301,3143,286,2965,273,2540,256,2125,246,1842,242,1842,237,2125,241,2540,250,2966,268,3143,280,3277,296,3295,300"/>
+<area shape="poly" id="edge20_Node000019_Node000002" title=" " alt="" coords="1841,118,1796,226,1791,224,1836,116"/>
+<area shape="rect" id="Node000020" href="$tmc5160__config_8hpp.html" title="Configuration structures for TMC5160 stepper motor driver." alt="" coords="968,152,1121,177"/>
+<area shape="poly" id="edge21_Node000019_Node000020" title=" " alt="" coords="1760,103,1122,159,1122,154,1759,98"/>
+<area shape="rect" id="Node000021" href="$tmc5160__motor__calc_8hpp.html" title="Motor current calculation functions for TMC5160." alt="" coords="2598,225,2785,251"/>
+<area shape="poly" id="edge25_Node000019_Node000021" title=" " alt="" coords="1929,104,2625,223,2625,228,1928,109"/>
+<area shape="poly" id="edge22_Node000020_Node000002" title=" " alt="" coords="1135,172,1735,229,1735,234,1135,177"/>
+<area shape="poly" id="edge23_Node000020_Node000016" title=" " alt="" coords="955,182,652,228,209,301,167,309,166,303,208,296,651,223,954,177"/>
+<area shape="poly" id="edge24_Node000020_Node000017" title=" " alt="" coords="977,183,370,309,369,303,976,178"/>
+<area shape="poly" id="edge26_Node000021_Node000015" title=" " alt="" coords="2799,242,3015,260,3141,276,3265,296,3295,303,3294,309,3264,301,3140,281,3014,265,2798,247"/>
 </map>

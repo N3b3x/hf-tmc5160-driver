@@ -16,6 +16,8 @@ var namespacetmc5160 =
     [ "CoolStepConfig", "structtmc5160_1_1CoolStepConfig.html", "structtmc5160_1_1CoolStepConfig" ],
     [ "DCCTRL_Register", "uniontmc5160_1_1DCCTRL__Register.html", "uniontmc5160_1_1DCCTRL__Register" ],
     [ "DcStepConfig", "structtmc5160_1_1DcStepConfig.html", "structtmc5160_1_1DcStepConfig" ],
+    [ "Diag0Config", "structtmc5160_1_1Diag0Config.html", "structtmc5160_1_1Diag0Config" ],
+    [ "Diag1Config", "structtmc5160_1_1Diag1Config.html", "structtmc5160_1_1Diag1Config" ],
     [ "DriverConfig", "structtmc5160_1_1DriverConfig.html", "structtmc5160_1_1DriverConfig" ],
     [ "DRV_CONF_Register", "uniontmc5160_1_1DRV__CONF__Register.html", "uniontmc5160_1_1DRV__CONF__Register" ],
     [ "DRV_STATUS_Register", "uniontmc5160_1_1DRV__STATUS__Register.html", "uniontmc5160_1_1DRV__STATUS__Register" ],
@@ -30,8 +32,6 @@ var namespacetmc5160 =
     [ "InputStatus", "structtmc5160_1_1InputStatus.html", "structtmc5160_1_1InputStatus" ],
     [ "IOIN_Register", "uniontmc5160_1_1IOIN__Register.html", "uniontmc5160_1_1IOIN__Register" ],
     [ "MechanicalSystem", "structtmc5160_1_1MechanicalSystem.html", "structtmc5160_1_1MechanicalSystem" ],
-    [ "MotorCurrentConfig", "structtmc5160_1_1MotorCurrentConfig.html", "structtmc5160_1_1MotorCurrentConfig" ],
-    [ "MotorParameters", "structtmc5160_1_1MotorParameters.html", "structtmc5160_1_1MotorParameters" ],
     [ "MotorSpec", "structtmc5160_1_1MotorSpec.html", "structtmc5160_1_1MotorSpec" ],
     [ "MSCURACT_Register", "uniontmc5160_1_1MSCURACT__Register.html", "uniontmc5160_1_1MSCURACT__Register" ],
     [ "MSLUTSEL_Register", "uniontmc5160_1_1MSLUTSEL__Register.html", "uniontmc5160_1_1MSLUTSEL__Register" ],
@@ -47,7 +47,6 @@ var namespacetmc5160 =
     [ "RampParameters", "structtmc5160_1_1RampParameters.html", "structtmc5160_1_1RampParameters" ],
     [ "ReferenceSwitchConfig", "structtmc5160_1_1ReferenceSwitchConfig.html", "structtmc5160_1_1ReferenceSwitchConfig" ],
     [ "SHORT_CONF_Register", "uniontmc5160_1_1SHORT__CONF__Register.html", "uniontmc5160_1_1SHORT__CONF__Register" ],
-    [ "ShortProtectionConfig", "structtmc5160_1_1ShortProtectionConfig.html", "structtmc5160_1_1ShortProtectionConfig" ],
     [ "SLAVECONF_Register", "uniontmc5160_1_1SLAVECONF__Register.html", "uniontmc5160_1_1SLAVECONF__Register" ],
     [ "SpiCommand", "structtmc5160_1_1SpiCommand.html", "structtmc5160_1_1SpiCommand" ],
     [ "SpiCommInterface", "classtmc5160_1_1SpiCommInterface.html", "classtmc5160_1_1SpiCommInterface" ],
@@ -102,6 +101,12 @@ var namespacetmc5160 =
       [ "NORMAL", "namespacetmc5160.html#a6e7804f8a437f39b4ba4b7cd6b3da1a4a1e23852820b9154316c7c06e2b7ba051", null ],
       [ "INVERSE", "namespacetmc5160.html#a6e7804f8a437f39b4ba4b7cd6b3da1a4a1955bdc302911f376074eb9b02e56639", null ]
     ] ],
+    [ "OverTempProtection", "namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bd", [
+      [ "Level0", "namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bda8292f4c72596c343cc85cfd818469fe0", null ],
+      [ "Level1", "namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bda63664aa8bee7544118de87bf48d529ee", null ],
+      [ "Level2", "namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bda0cbbfd5a182368f83190bf23d2bd5fde", null ],
+      [ "Level3", "namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bda68290d8bb76fe3ceb98d34e8b068f6be", null ]
+    ] ],
     [ "PWMFreewheel", "namespacetmc5160.html#afd8e06e7eda04c891d35f72236085722", [
       [ "NORMAL", "namespacetmc5160.html#afd8e06e7eda04c891d35f72236085722a1e23852820b9154316c7c06e2b7ba051", null ],
       [ "ENABLED", "namespacetmc5160.html#afd8e06e7eda04c891d35f72236085722ac8cf6eea8f096ed51160b484d97c5bbd", null ],
@@ -113,6 +118,12 @@ var namespacetmc5160 =
       [ "VELOCITY_POS", "namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a7bcfb8bf64b1e3308d24ad10baf53fa5", null ],
       [ "VELOCITY_NEG", "namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a155d6ef5b0ee9bf966b419b00d4b6034", null ],
       [ "HOLD", "namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a0c6d9dfb485b43c6fba87439f9f73ac4", null ]
+    ] ],
+    [ "SenseFilterTime", "namespacetmc5160.html#a665a38f92e0b840fcadd8f86abfe7cab", [
+      [ "T100ns", "namespacetmc5160.html#a665a38f92e0b840fcadd8f86abfe7cabaf310699f12f6333dad760e06c005c67d", null ],
+      [ "T200ns", "namespacetmc5160.html#a665a38f92e0b840fcadd8f86abfe7caba8376a6d5ea66b104be8f1fc5aaaebd9e", null ],
+      [ "T300ns", "namespacetmc5160.html#a665a38f92e0b840fcadd8f86abfe7caba22237192034432754020b8894e7c6e27", null ],
+      [ "T400ns", "namespacetmc5160.html#a665a38f92e0b840fcadd8f86abfe7cabab4347da9e6ae035513deafdc90aa9bd3", null ]
     ] ],
     [ "TMC5160CtrlPin", "namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4", [
       [ "EN", "namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4aaa85f1840e282d8a8304dbc2c0d7c9b2", null ],
@@ -137,10 +148,23 @@ var namespacetmc5160 =
       [ "ReadRequest", "namespacetmc5160.html#a0d51978d589f95d86a558f8c6ce9e35fad749f894b7e5ae7433808c7250399cc1", null ],
       [ "ReadReply", "namespacetmc5160.html#a0d51978d589f95d86a558f8c6ce9e35fa0613aa8c12237f8c13aa3e590fac811b", null ]
     ] ],
+    [ "Unit", "namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26", [
+      [ "Steps", "namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427", null ],
+      [ "Rad", "namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26a1d9a8ab863064e5b54a8a7641160cf3f", null ],
+      [ "Deg", "namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26ab70808dc1e3f9e2c06c9ba840cc7f44c", null ],
+      [ "Mm", "namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26a07f07b623b4a00b57dc150ff2e59cb92", null ],
+      [ "RPM", "namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26afe2284eb32d4b09d29fd34217324b19a", null ]
+    ] ],
     [ "AccelerationMmToSteps", "namespacetmc5160.html#a7373ea9de3f9032b4f6e23a5f9a3c987", null ],
     [ "AccelerationStepsToMm", "namespacetmc5160.html#aebbb75082074583de0237592ae2b14e2", null ],
     [ "BeltTeethToSteps", "namespacetmc5160.html#a57675908f5067a3e5440a6c8bc04eac4", null ],
     [ "calculateCrc8", "namespacetmc5160.html#ab650ebb70be7f1da00a2dea1f2fe662e", null ],
+    [ "CalculateMaxCurrentForSenseResistor", "namespacetmc5160.html#ab2c0eca28531a837e7c35c66e60e1dac", null ],
+    [ "CalculateMotorCurrent", "namespacetmc5160.html#ad50d662c4b5f2a13b2cdd1223b29b402", null ],
+    [ "CalculateS2GLevel", "namespacetmc5160.html#a40b1eb4b0f223a4299254a5d17a0651a", null ],
+    [ "CalculateS2VSLevel", "namespacetmc5160.html#a501c3ed225fed963f783dd80214cd525", null ],
+    [ "CalculateShortDelay", "namespacetmc5160.html#adc49d1991a23f6c09f0e96be1f110074", null ],
+    [ "CalculateStealthChopLowerLimit", "namespacetmc5160.html#a90e438844970949605b6f15d54e64f90", null ],
     [ "DegreesToSteps", "namespacetmc5160.html#afb1c3789f431ec5b7872d5dc456c7678", null ],
     [ "GetRegisterDef", "namespacetmc5160.html#a502b620b50ce2ddba6cf1e044b7b6628", null ],
     [ "MmPerSecToStepsPerSec", "namespacetmc5160.html#a10397a604d3a3add091c0c13f8e806e6", null ],

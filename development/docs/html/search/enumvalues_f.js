@@ -12,5 +12,6 @@ var searchData=
   ['spi_5finternal_5framp_9',['SPI_INTERNAL_RAMP',['../namespacetmc5160.html#a2e3d563a97d0296b1d7c74bd530c6573ade9b62ad581f590543b7355a2958077e',1,'tmc5160']]],
   ['spi_5fmode_10',['SPI_MODE',['../namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4a4d7aa7898beee1c19acd8d5b20d2793c',1,'tmc5160']]],
   ['step_11',['STEP',['../namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4a522f694f92e679d874a1cc2b2616c3d7',1,'tmc5160']]],
-  ['stopped_12',['STOPPED',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a',1,'FatigueTestMotion']]]
+  ['steps_12',['Steps',['../namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427',1,'tmc5160']]],
+  ['stopped_13',['STOPPED',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a',1,'FatigueTestMotion']]]
 ];

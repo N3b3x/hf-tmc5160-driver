@@ -8,6 +8,7 @@ var topics =
     [ "Type Definitions", "group__TMC5160__CommTypes.html", null ],
     [ "Configuration Structures", "group__TMC5160__Config.html", null ],
     [ "Daisy-Chain Management", "group__TMC5160__DaisyChain.html", "group__TMC5160__DaisyChain" ],
+    [ "Motor Current Calculation", "group__TMC5160__MotorCalc.html", null ],
     [ "Multi-Node Management", "group__TMC5160__MultiNode.html", "group__TMC5160__MultiNode" ],
     [ "Register Definitions", "group__TMC5160__Registers.html", null ],
     [ "Unit Conversions", "group__TMC5160__Units.html", null ]

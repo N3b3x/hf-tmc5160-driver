@@ -1,6 +1,6 @@
 <map id="FatigueTestMotion::RecalculateTrajectory" name="FatigueTestMotion::RecalculateTrajectory">
 <area shape="rect" id="Node000001" title="Recalculate trajectory parameters based on frequency, bounds, and dwell." alt="" coords="443,101,605,141"/>
-<area shape="rect" id="Node000002" href="$classFatigueTestMotion.html#a86ebd3d311881f3bab591d44445c2f29" title="Set dwell times (thread&#45;safe, can be changed in real&#45;time)" alt="" coords="193,5,341,45"/>
+<area shape="rect" id="Node000002" href="$classFatigueTestMotion.html#aff0fb00f39c558bed824dfb79cad5a2a" title="Set dwell times (thread&#45;safe, can be changed in real&#45;time)" alt="" coords="193,5,341,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="475,97,394,60,341,44,342,38,396,55,477,92"/>
 <area shape="rect" id="Node000004" href="$classFatigueTestMotion.html#a266568d4787b4d607e6106d5e76922c0" title="Set frequency (thread&#45;safe, can be changed in real&#45;time)" alt="" coords="193,69,341,109"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="429,112,341,101,342,96,429,107"/>

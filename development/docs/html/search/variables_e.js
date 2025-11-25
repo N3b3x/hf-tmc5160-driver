@@ -24,7 +24,7 @@ var searchData=
   ['reset_21',['reset',['../uniontmc5160_1_1GSTAT__Register.html#ae28282f89265ce4e7a19b551fe1a9c10',1,'tmc5160::GSTAT_Register']]],
   ['resistance_5fohms_22',['RESISTANCE_OHMS',['../namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a2becd27968cda118ad3a8e1b503c9766',1,'tmc5160_test_config::MotorConfig_AppliedMotion_5034_369']]],
   ['results_23',['results',['../structTestTaskContext.html#a1c97680bd267a35637278ea10a3fae0e',1,'TestTaskContext']]],
-  ['run_5fcurrent_5fma_24',['run_current_ma',['../structtmc5160_1_1MotorCurrentConfig.html#ab984c9d834e10fdc94e52845121423c7',1,'tmc5160::MotorCurrentConfig']]],
+  ['run_5fcurrent_5fma_24',['run_current_ma',['../structtmc5160_1_1MotorSpec.html#a53b47d4293971286f4c77c920c7e70cc',1,'tmc5160::MotorSpec']]],
   ['running_25',['running',['../structFatigueTestMotion_1_1Status.html#afe9b127894d5c34e0e7036b2be6be908',1,'FatigueTestMotion::Status']]],
   ['running_5f_26',['running_',['../classFatigueTestMotion.html#a3607e5eeb857dda0a98966573b97368d',1,'FatigueTestMotion']]],
   ['rw_5faddress_27',['rw_address',['../uniontmc5160_1_1UartFrame_1_1Frame.html#adae19fca6a2bdade06ef0ab0d1037f12',1,'tmc5160::UartFrame::Frame']]],

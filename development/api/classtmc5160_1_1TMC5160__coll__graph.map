@@ -1,32 +1,38 @@
 <map id="tmc5160::TMC5160&lt; CommType &gt;" name="tmc5160::TMC5160&lt; CommType &gt;">
-<area shape="rect" id="Node000001" title="Main class representing a TMC5160 stepper motor driver." alt="" coords="1000,229,1251,254"/>
-<area shape="rect" id="Node000002" href="$structtmc5160_1_1TMC5160_1_1RampControl.html" title="Ramp control subsystem." alt="" coords="5,199,241,239"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,189,225,158,300,122,389,85,489,51,596,26,651,18,707,14,762,14,817,20,871,31,924,48,958,65,990,87,1047,138,1090,189,1118,227,1113,230,1086,192,1043,141,987,91,955,70,922,53,870,36,816,25,762,20,707,19,652,23,597,31,490,56,391,90,302,127,227,163,171,194"/>
-<area shape="rect" id="Node000003" href="$classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver." alt="" coords="339,251,589,277"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="255,233,369,249,368,254,254,239"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="324,271,265,265,218,255,175,241,177,236,220,250,266,260,325,266"/>
-<area shape="rect" id="Node000004" href="$structtmc5160_1_1TMC5160_1_1MotorControl.html" title="Motor control subsystem." alt="" coords="687,63,923,103"/>
-<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="480,239,534,177,571,145,612,118,648,103,685,92,687,97,650,108,615,122,574,149,538,181,484,242"/>
-<area shape="rect" id="Node000005" href="$structtmc5160_1_1TMC5160_1_1Communication.html" title="Communication subsystem." alt="" coords="687,153,923,193"/>
-<area shape="poly" id="edge7_Node000005_Node000003" title=" " alt="" coords="495,242,549,213,613,188,686,175,687,180,614,193,551,218,498,247"/>
-<area shape="rect" id="Node000006" href="$structtmc5160_1_1TMC5160_1_1Encoder.html" title="Encoder subsystem." alt="" coords="687,221,923,261"/>
-<area shape="poly" id="edge9_Node000006_Node000003" title=" " alt="" coords="588,247,613,245,686,241,686,247,614,251,588,253"/>
-<area shape="rect" id="Node000007" href="$structtmc5160_1_1TMC5160_1_1Diagnostics.html" title="Diagnostics subsystem." alt="" coords="687,289,923,329"/>
-<area shape="poly" id="edge11_Node000007_Node000003" title=" " alt="" coords="572,276,614,281,687,291,686,296,613,287,572,281"/>
-<area shape="rect" id="Node000008" href="$structtmc5160_1_1TMC5160_1_1UartConfig.html" title="UART configuration subsystem." alt="" coords="687,380,923,420"/>
-<area shape="poly" id="edge13_Node000008_Node000003" title=" " alt="" coords="489,285,543,332,577,356,614,375,650,386,687,393,686,399,648,391,612,380,574,360,539,336,485,289"/>
-<area shape="rect" id="Node000009" href="$structtmc5160_1_1TMC5160_1_1Protection.html" title="Protection subsystem." alt="" coords="687,471,923,511"/>
-<area shape="poly" id="edge15_Node000009_Node000003" title=" " alt="" coords="477,288,496,330,526,381,565,431,589,453,615,471,649,486,687,493,686,498,648,491,612,476,585,457,561,435,521,384,492,333,472,290"/>
-<area shape="poly" id="edge16_Node000001_Node000004" title=" " alt="" coords="860,107,1099,226,1097,231,857,111"/>
-<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="735,110,675,134,615,164,540,211,483,253,480,249,537,207,612,159,673,129,733,105"/>
-<area shape="poly" id="edge17_Node000001_Node000005" title=" " alt="" coords="914,194,1065,226,1064,231,912,199"/>
-<area shape="poly" id="edge6_Node000003_Node000005" title=" " alt="" coords="716,199,614,227,513,254,512,249,613,221,714,194"/>
-<area shape="poly" id="edge18_Node000001_Node000006" title=" " alt="" coords="937,239,1000,239,1000,244,937,244"/>
-<area shape="poly" id="edge8_Node000003_Node000006" title=" " alt="" coords="673,264,663,265,590,269,590,263,662,260,673,259"/>
-<area shape="poly" id="edge19_Node000001_Node000007" title=" " alt="" coords="912,284,1064,251,1065,257,914,289"/>
-<area shape="poly" id="edge10_Node000003_Node000007" title=" " alt="" coords="754,337,722,349,687,358,649,361,613,356,572,340,534,319,478,279,482,275,537,315,574,336,614,351,650,356,686,352,721,344,752,332"/>
-<area shape="poly" id="edge20_Node000001_Node000008" title=" " alt="" coords="857,371,1097,252,1099,257,860,376"/>
-<area shape="poly" id="edge12_Node000003_Node000008" title=" " alt="" coords="760,429,727,443,689,454,650,456,612,446,585,430,559,410,518,362,487,314,469,278,473,276,492,311,522,358,563,406,588,426,614,442,650,451,688,448,725,438,757,424"/>
-<area shape="poly" id="edge21_Node000001_Node000009" title=" " alt="" coords="865,462,921,430,981,383,1035,332,1111,252,1115,256,1039,336,984,387,924,434,867,467"/>
-<area shape="poly" id="edge14_Node000003_Node000009" title=" " alt="" coords="762,520,728,536,690,547,650,549,630,545,612,537,577,510,548,477,523,440,504,402,478,329,465,277,470,276,483,327,509,399,528,438,552,474,581,506,615,532,632,540,650,544,689,542,726,531,760,515"/>
+<area shape="rect" id="Node000001" title="Main class representing a TMC5160 stepper motor driver." alt="" coords="1184,316,1435,341"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1TMC5160_1_1RampControl.html" title="Ramp control subsystem." alt="" coords="5,286,241,326"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="180,278,277,237,406,189,553,144,629,125,705,110,745,105,776,105,847,110,921,110,981,107,1038,112,1071,121,1108,136,1142,154,1174,176,1230,227,1274,277,1302,314,1297,318,1270,281,1226,231,1170,180,1139,158,1106,140,1069,126,1037,117,980,112,921,115,847,115,776,110,745,111,706,115,630,130,554,149,408,194,279,242,182,283"/>
+<area shape="rect" id="Node000003" href="$classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver." alt="" coords="431,339,681,364"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="186,328,225,341,266,350,349,358,430,358,430,363,349,363,265,355,224,346,184,333"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="424,340,406,338,241,321,242,315,407,333,424,335"/>
+<area shape="rect" id="Node000004" href="$structtmc5160_1_1TMC5160_1_1MotorControl.html" title="Motor control subsystem." alt="" coords="871,467,1107,507"/>
+<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="573,375,594,409,624,448,662,485,706,513,735,523,765,528,826,528,885,519,935,505,936,510,886,524,827,534,764,534,734,528,704,518,659,489,620,451,590,412,569,378"/>
+<area shape="rect" id="Node000005" href="$structtmc5160_1_1TMC5160_1_1Communication.html" title="Communication subsystem." alt="" coords="871,377,1107,417"/>
+<area shape="poly" id="edge7_Node000005_Node000003" title=" " alt="" coords="633,364,706,375,871,389,870,395,705,381,632,369"/>
+<area shape="rect" id="Node000006" href="$structtmc5160_1_1TMC5160_1_1Encoder.html" title="Encoder subsystem." alt="" coords="871,150,1107,190"/>
+<area shape="poly" id="edge9_Node000006_Node000003" title=" " alt="" coords="573,326,626,266,663,234,704,209,744,193,787,181,870,169,871,174,788,186,746,198,707,214,666,239,630,270,577,329"/>
+<area shape="rect" id="Node000007" href="$structtmc5160_1_1TMC5160_1_1Diagnostics.html" title="Diagnostics subsystem." alt="" coords="871,558,1107,598"/>
+<area shape="poly" id="edge11_Node000007_Node000003" title=" " alt="" coords="570,376,590,416,619,465,658,513,681,533,707,550,745,568,787,578,829,584,871,586,870,591,829,590,786,584,744,573,704,555,678,537,654,516,615,468,585,419,565,378"/>
+<area shape="rect" id="Node000008" href="$structtmc5160_1_1TMC5160_1_1UartConfig.html" title="UART configuration subsystem." alt="" coords="871,241,1107,281"/>
+<area shape="poly" id="edge13_Node000008_Node000003" title=" " alt="" coords="611,332,705,307,870,276,871,281,706,313,612,337"/>
+<area shape="rect" id="Node000009" href="$structtmc5160_1_1TMC5160_1_1Protection.html" title="Protection subsystem." alt="" coords="871,309,1107,349"/>
+<area shape="poly" id="edge15_Node000009_Node000003" title=" " alt="" coords="695,354,770,354,846,350,881,346,882,351,847,355,770,359,695,360"/>
+<area shape="poly" id="edge18_Node000001_Node000004" title=" " alt="" coords="1041,459,1281,339,1283,344,1044,463"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="857,498,780,492,741,484,704,472,660,449,621,420,566,366,570,362,624,416,663,445,706,468,743,479,781,487,857,493"/>
+<area shape="poly" id="edge19_Node000001_Node000005" title=" " alt="" coords="1096,371,1248,339,1249,344,1098,376"/>
+<area shape="poly" id="edge6_Node000003_Node000005" title=" " alt="" coords="926,424,878,438,822,449,763,452,705,443,664,428,626,407,570,366,574,362,629,402,666,423,706,438,763,446,821,443,876,433,925,419"/>
+<area shape="poly" id="edge20_Node000001_Node000006" title=" " alt="" coords="1044,194,1283,313,1281,318,1041,199"/>
+<area shape="poly" id="edge8_Node000003_Node000006" title=" " alt="" coords="914,149,865,140,812,135,757,140,731,146,707,156,678,174,653,196,611,249,582,301,565,339,560,337,577,298,607,246,649,193,675,170,704,152,730,141,757,134,812,130,866,134,915,144"/>
+<area shape="poly" id="edge21_Node000001_Node000007" title=" " alt="" coords="1049,550,1105,517,1165,470,1219,420,1295,340,1299,343,1223,423,1168,474,1108,522,1051,554"/>
+<area shape="poly" id="edge10_Node000003_Node000007" title=" " alt="" coords="939,607,887,627,827,642,795,645,764,644,733,637,704,624,669,598,640,565,615,528,596,489,570,416,557,365,562,364,575,414,601,487,620,525,644,561,673,594,707,620,735,632,764,639,795,640,826,637,886,622,937,602"/>
+<area shape="poly" id="edge22_Node000001_Node000008" title=" " alt="" coords="1098,281,1249,313,1248,319,1096,286"/>
+<area shape="poly" id="edge12_Node000003_Node000008" title=" " alt="" coords="891,241,847,235,800,234,752,237,706,247,664,266,626,292,571,341,567,337,623,288,662,262,704,242,752,232,800,228,848,230,892,236"/>
+<area shape="poly" id="edge23_Node000001_Node000009" title=" " alt="" coords="1121,326,1184,326,1184,331,1121,331"/>
+<area shape="poly" id="edge14_Node000003_Node000009" title=" " alt="" coords="857,332,705,338,665,341,665,336,705,333,857,327"/>
+<area shape="rect" id="Node000010" href="$structtmc5160_1_1MotorSpec.html" title="Motor specification structure." alt="" coords="45,5,201,31"/>
+<area shape="poly" id="edge24_Node000001_Node000010" title=" " alt="" coords="215,9,385,4,493,5,610,11,734,22,861,40,987,67,1108,104,1146,122,1180,147,1211,176,1238,208,1280,269,1304,314,1300,317,1275,272,1234,211,1207,180,1177,151,1143,126,1106,108,985,72,860,46,734,27,610,16,493,10,385,9,215,14"/>
+<area shape="poly" id="edge16_Node000003_Node000010" title=" " alt="" coords="154,37,540,336,536,340,151,42"/>
+<area shape="rect" id="Node000011" href="$structtmc5160_1_1MechanicalSystem.html" title="Mechanical system configuration structure." alt="" coords="18,576,229,601"/>
+<area shape="poly" id="edge25_Node000001_Node000011" title=" " alt="" coords="171,603,241,627,337,655,451,681,579,700,715,707,783,705,851,698,918,685,984,666,1046,641,1105,608,1144,578,1179,543,1210,504,1237,465,1278,391,1301,340,1305,342,1282,394,1241,467,1214,507,1183,546,1148,582,1108,612,1048,646,985,671,920,690,852,703,784,710,715,713,579,705,450,686,335,660,239,632,169,609"/>
+<area shape="poly" id="edge17_Node000003_Node000011" title=" " alt="" coords="159,567,530,362,533,366,161,572"/>
 </map>

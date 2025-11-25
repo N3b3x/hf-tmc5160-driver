@@ -1,0 +1,17 @@
+<map id="app_main" name="app_main">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,70,92,95"/>
+<area shape="rect" id="Node000002" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="165,5,327,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,68,163,47,164,52,93,73"/>
+<area shape="rect" id="Node000003" href="$classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44" title="Initialize the SPI interface." alt="" coords="173,70,319,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="92,80,159,80,159,85,92,85"/>
+<area shape="rect" id="Node000008" href="$classtmc5160_1_1TMC5160.html#ac90ae8eb92120142753c49fc61fcce89" title="Initialize the TMC5160 driver with configuration." alt="" coords="140,119,352,145"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="93,92,141,104,178,113,177,119,139,109,91,97"/>
+<area shape="rect" id="Node000004" href="$classEsp32SPI.html#a31c4d53a51a04f8b7d8fab4f5cfca4ca" title="Set GPIO pin state." alt="" coords="400,70,540,95"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="319,80,386,80,386,85,319,85"/>
+<area shape="rect" id="Node000005" href="$classEsp32SPI.html#ac1efd880f523f135eaaa31bdb6377116" title="Get pin mapping for a TMC5160 control pin." alt="" coords="598,45,786,70"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="540,72,584,67,585,72,540,77"/>
+<area shape="rect" id="Node000006" href="$classEsp32SPI.html#a12d86506446246fe1cc612d7b108aac6" title="Convert signal state to physical GPIO level." alt="" coords="588,94,796,119"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="540,88,575,91,574,97,540,93"/>
+<area shape="rect" id="Node000007" href="$structtmc5160_1_1PinActiveLevels.html#a313ecef17f2a5420625bb98495d2242c" title="Get active level for a specific pin." alt="" coords="844,87,1035,127"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="796,104,830,104,830,109,796,109"/>
+</map>

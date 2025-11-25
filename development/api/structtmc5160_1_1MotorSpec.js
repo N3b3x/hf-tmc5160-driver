@@ -1,10 +1,17 @@
 var structtmc5160_1_1MotorSpec =
 [
     [ "MotorSpec", "structtmc5160_1_1MotorSpec.html#afc5c87895399b43dd969cbe7a47074ca", null ],
+    [ "hold_current_ma", "structtmc5160_1_1MotorSpec.html#ad7fa9d4639389ad181fface0f73af7ed", null ],
     [ "holding_torque_mnm", "structtmc5160_1_1MotorSpec.html#a52393f5cb5c4a671f92d94b4aa9105aa", null ],
+    [ "ihold_adjustment_percent", "structtmc5160_1_1MotorSpec.html#ad14341f130fbba0278b92a7dc241cb0e", null ],
+    [ "irun_adjustment_percent", "structtmc5160_1_1MotorSpec.html#a6fdf7778f58600e451356f4436c920a8", null ],
     [ "rated_current_ma", "structtmc5160_1_1MotorSpec.html#aa319b5b1b44f2e29b4dff2b5ac7b0dce", null ],
     [ "rated_voltage_mv", "structtmc5160_1_1MotorSpec.html#a75733555f4dcb14a5336bdd376bec5e2", null ],
+    [ "run_current_ma", "structtmc5160_1_1MotorSpec.html#a53b47d4293971286f4c77c920c7e70cc", null ],
+    [ "scaler_adjustment_percent", "structtmc5160_1_1MotorSpec.html#a3277fd3c21557dbbee6c340bc1573b1d", null ],
+    [ "sense_resistor_mohm", "structtmc5160_1_1MotorSpec.html#aed63bc50da73ad71857d74cdae138d3d", null ],
     [ "steps_per_rev", "structtmc5160_1_1MotorSpec.html#a6b5d0c6f8323a2ac880417199cbbcc9f", null ],
+    [ "supply_voltage_mv", "structtmc5160_1_1MotorSpec.html#a34b5811a1c18fa9593c1a40f6ed98973", null ],
     [ "winding_inductance_uh", "structtmc5160_1_1MotorSpec.html#aa790dd6afb3245cc5077d927472ed91e", null ],
     [ "winding_resistance_mohm", "structtmc5160_1_1MotorSpec.html#a702b186a44d95471a8f3aa4e1b2a44bf", null ]
 ];

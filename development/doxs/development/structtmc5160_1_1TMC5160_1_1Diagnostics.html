@@ -106,7 +106,7 @@ $(function(){initNavTree('structtmc5160_1_1TMC5160_1_1Diagnostics.html',''); ini
 <div class="dynheader">
 Collaboration diagram for tmc5160::TMC5160&lt; CommType &gt;::Diagnostics:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1Diagnostics__coll__graph.svg" width="595" height="680"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1Diagnostics__coll__graph.svg" width="995" height="680"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -117,12 +117,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aeb75e99c3181b491be9334cfdf4f806f" id="r_aeb75e99c3181b491be9334cfdf4f806f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#aabe2f8a8b4cb7d6533ac67eb7980dc01">DriverStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb75e99c3181b491be9334cfdf4f806f">GetStatus</a> () noexcept</td></tr>
 <tr class="memdesc:aeb75e99c3181b491be9334cfdf4f806f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get driver status.  <br /></td></tr>
 <tr class="separator:aeb75e99c3181b491be9334cfdf4f806f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66dc16abdd9ab843c2d2ed30558a9665" id="r_a66dc16abdd9ab843c2d2ed30558a9665"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a66dc16abdd9ab843c2d2ed30558a9665">GetGlobalStatus</a> (bool &amp;reset, bool &amp;drv_err, bool &amp;uv_cp) noexcept</td></tr>
+<tr class="memdesc:a66dc16abdd9ab843c2d2ed30558a9665"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get global status flags (GSTAT)  <br /></td></tr>
+<tr class="separator:a66dc16abdd9ab843c2d2ed30558a9665"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4233fd68c4b3c8912978cd474b2dd0e9" id="r_a4233fd68c4b3c8912978cd474b2dd0e9"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4233fd68c4b3c8912978cd474b2dd0e9">GetStallGuard</a> () noexcept</td></tr>
 <tr class="memdesc:a4233fd68c4b3c8912978cd474b2dd0e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get StallGuard2 value.  <br /></td></tr>
 <tr class="separator:a4233fd68c4b3c8912978cd474b2dd0e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c35948381a62374b6a5b2494dd33dfb" id="r_a8c35948381a62374b6a5b2494dd33dfb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c35948381a62374b6a5b2494dd33dfb">ConfigureStallGuard</a> (const <a class="el" href="structtmc5160_1_1StallGuardConfig.html">StallGuardConfig</a> &amp;config) noexcept</td></tr>
 <tr class="memdesc:a8c35948381a62374b6a5b2494dd33dfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure StallGuard2.  <br /></td></tr>
 <tr class="separator:a8c35948381a62374b6a5b2494dd33dfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23c90d6dcba9195e486a190c114f8a31" id="r_a23c90d6dcba9195e486a190c114f8a31"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a23c90d6dcba9195e486a190c114f8a31">EnableStopOnStall</a> (bool enable) noexcept</td></tr>
+<tr class="memdesc:a23c90d6dcba9195e486a190c114f8a31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/Disable stop on stall (sg_stop in SW_MODE)  <br /></td></tr>
+<tr class="separator:a23c90d6dcba9195e486a190c114f8a31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af73b1aec6eb47cc3890e60782a5420ba" id="r_af73b1aec6eb47cc3890e60782a5420ba"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af73b1aec6eb47cc3890e60782a5420ba">ClearStallFlag</a> () noexcept</td></tr>
+<tr class="memdesc:af73b1aec6eb47cc3890e60782a5420ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear stall event flag (event_stop_sg in RAMP_STAT)  <br /></td></tr>
+<tr class="separator:af73b1aec6eb47cc3890e60782a5420ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8ab2f085d83c8ae9a9a2041a799d6f3" id="r_ad8ab2f085d83c8ae9a9a2041a799d6f3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8ab2f085d83c8ae9a9a2041a799d6f3">IsStallDetected</a> () noexcept</td></tr>
+<tr class="memdesc:ad8ab2f085d83c8ae9a9a2041a799d6f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if stall was detected (event_stop_sg in RAMP_STAT)  <br /></td></tr>
+<tr class="separator:ad8ab2f085d83c8ae9a9a2041a799d6f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adef74af33774678290eade6ea2a968ab" id="r_adef74af33774678290eade6ea2a968ab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adef74af33774678290eade6ea2a968ab">GetDriverStatusRegister</a> (uint32_t &amp;status) noexcept</td></tr>
 <tr class="memdesc:adef74af33774678290eade6ea2a968ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get driver status register value.  <br /></td></tr>
 <tr class="separator:adef74af33774678290eade6ea2a968ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,6 +192,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5180d6e984236cbc1bcb44c6a76b6052" id="r_a5180d6e984236cbc1bcb44c6a76b6052"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5180d6e984236cbc1bcb44c6a76b6052">VerifySetup</a> () noexcept</td></tr>
 <tr class="memdesc:a5180d6e984236cbc1bcb44c6a76b6052"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run comprehensive startup verification.  <br /></td></tr>
 <tr class="separator:a5180d6e984236cbc1bcb44c6a76b6052"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbea17fe1c967b039c3b148768de794a" id="r_adbea17fe1c967b039c3b148768de794a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adbea17fe1c967b039c3b148768de794a">TuneStallGuard</a> (float target_velocity, int8_t &amp;final_sgt, int8_t min_sgt=-10, int8_t max_sgt=63, float acceleration=3000.0f, float min_velocity=0.0f, float max_velocity=0.0f, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> velocity_unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
+<tr class="memdesc:adbea17fe1c967b039c3b148768de794a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automatically tune StallGuard threshold (SGT)  <br /></td></tr>
+<tr class="separator:adbea17fe1c967b039c3b148768de794a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -228,6 +243,36 @@ template&lt;typename CommType &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="af73b1aec6eb47cc3890e60782a5420ba" name="af73b1aec6eb47cc3890e60782a5420ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af73b1aec6eb47cc3890e60782a5420ba">&#9670;&#160;</a></span>ClearStallFlag()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Diagnostics::ClearStallFlag </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clear stall event flag (event_stop_sg in RAMP_STAT) </p>
+<dl class="section return"><dt>Returns</dt><dd>true if cleared successfully, false otherwise </dd></dl>
+
+</div>
+</div>
 <a id="a8c35948381a62374b6a5b2494dd33dfb" name="a8c35948381a62374b6a5b2494dd33dfb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8c35948381a62374b6a5b2494dd33dfb">&#9670;&#160;</a></span>ConfigureStallGuard()</h2>
 
@@ -261,11 +306,42 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1Diagnostics_a8c35948381a62374b6a5b2494dd33dfb_cgraph.svg" width="374" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+
 </div>
+</div>
+<a id="a23c90d6dcba9195e486a190c114f8a31" name="a23c90d6dcba9195e486a190c114f8a31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23c90d6dcba9195e486a190c114f8a31">&#9670;&#160;</a></span>EnableStopOnStall()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Diagnostics::EnableStopOnStall </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>enable</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enable/Disable stop on stall (sg_stop in SW_MODE) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable</td><td>true to enable stop on stall, false to disable </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise </dd></dl>
 
 </div>
 </div>
@@ -298,6 +374,53 @@ template&lt;typename CommType &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">status</td><td>Reference to store the DRV_STATUS register value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if read successfully, false otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a66dc16abdd9ab843c2d2ed30558a9665" name="a66dc16abdd9ab843c2d2ed30558a9665"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66dc16abdd9ab843c2d2ed30558a9665">&#9670;&#160;</a></span>GetGlobalStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Diagnostics::GetGlobalStatus </td>
+          <td>(</td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>reset</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>drv_err</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>uv_cp</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get global status flags (GSTAT) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reset</td><td>Reference to store reset flag </td></tr>
+    <tr><td class="paramname">drv_err</td><td>Reference to store driver error flag </td></tr>
+    <tr><td class="paramname">uv_cp</td><td>Reference to store undervoltage charge pump flag </td></tr>
   </table>
   </dd>
 </dl>
@@ -648,6 +771,36 @@ template&lt;typename CommType &gt; </div>
 <p>Get UART transmission counter. </p>
 <dl class="section return"><dt>Returns</dt><dd>UART transmission counter value, or 0 on error</dd></dl>
 <p>Returns the number of UART transmissions since last read. </p>
+
+</div>
+</div>
+<a id="ad8ab2f085d83c8ae9a9a2041a799d6f3" name="ad8ab2f085d83c8ae9a9a2041a799d6f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8ab2f085d83c8ae9a9a2041a799d6f3">&#9670;&#160;</a></span>IsStallDetected()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Diagnostics::IsStallDetected </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if stall was detected (event_stop_sg in RAMP_STAT) </p>
+<dl class="section return"><dt>Returns</dt><dd>true if stall event detected, false otherwise </dd></dl>
 
 </div>
 </div>
@@ -1060,6 +1213,90 @@ template&lt;typename CommType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise</dd></dl>
 <p>Sets the polarity of the SDO_CFG0 pin when used as Next Address Output (NAO) in single-wire UART chain mode.</p>
 <dl class="section note"><dt>Note</dt><dd>This affects the OUTPUT register (0x04), bit 0. The reset value is 1 (active low/inverted) for use as NAO. </dd></dl>
+
+</div>
+</div>
+<a id="adbea17fe1c967b039c3b148768de794a" name="adbea17fe1c967b039c3b148768de794a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbea17fe1c967b039c3b148768de794a">&#9670;&#160;</a></span>TuneStallGuard()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Diagnostics::TuneStallGuard </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>target_velocity</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t &amp;</td>          <td class="paramname"><span class="paramname"><em>final_sgt</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t</td>          <td class="paramname"><span class="paramname"><em>min_sgt</em><span class="paramdefsep"> = </span><span class="paramdefval">-10</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t</td>          <td class="paramname"><span class="paramname"><em>max_sgt</em><span class="paramdefsep"> = </span><span class="paramdefval">63</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>acceleration</em><span class="paramdefsep"> = </span><span class="paramdefval">3000.0f</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>min_velocity</em><span class="paramdefsep"> = </span><span class="paramdefval">0.0f</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>max_velocity</em><span class="paramdefsep"> = </span><span class="paramdefval">0.0f</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>velocity_unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Automatically tune StallGuard threshold (SGT) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target_velocity</td><td>Velocity to tune at </td></tr>
+    <tr><td class="paramname">final_sgt</td><td>Reference to store the tuned SGT value </td></tr>
+    <tr><td class="paramname">min_sgt</td><td>Minimum SGT to try (default: -10) </td></tr>
+    <tr><td class="paramname">max_sgt</td><td>Maximum SGT to try (default: 63) </td></tr>
+    <tr><td class="paramname">acceleration</td><td>Acceleration/deceleration (default: 3000.0f steps/s^2) </td></tr>
+    <tr><td class="paramname">min_velocity</td><td>Minimum velocity to verify tuning at (0 = disabled) </td></tr>
+    <tr><td class="paramname">max_velocity</td><td>Maximum velocity to verify tuning at (0 = disabled) </td></tr>
+    <tr><td class="paramname">velocity_unit</td><td>Unit for velocity and acceleration parameters (default: Steps) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if tuning succeeded, false if failed (e.g., stall never cleared)</dd></dl>
+<p>Implements the automatic tuning algorithm:</p><ol type="1">
+<li>Sets SGT to min_sgt</li>
+<li>Accelerates to target_velocity</li>
+<li>Monitors SG_RESULT</li>
+<li>Increases SGT until SG_RESULT is consistently &gt; 0</li>
+<li>Verifies SGT at min_velocity and max_velocity if specified </li>
+</ol>
 
 </div>
 </div>

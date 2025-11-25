@@ -109,6 +109,15 @@ apps:
     ci_enabled: true
     featured: true
 
+  stallguard_tuning:
+    description: "Tool to automatically tune StallGuard2 Threshold (SGT) for sensorless homing"
+    source_file: "stallguard_tuning.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
   gpio_pin_config_example:
     description: "GPIO pin configuration example - demonstrates all TMC5160 control pins (DIAG0, DIAG1, CLK, reference switches, encoder)"
     source_file: "gpio_pin_config_example.cpp"

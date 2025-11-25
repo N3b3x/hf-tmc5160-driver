@@ -2,7 +2,6 @@ var structFatigueTestMotion_1_1Status =
 [
     [ "bounded", "structFatigueTestMotion_1_1Status.html#ad1ec5392653fb35af955c6c1dc48ccda", null ],
     [ "current_cycles", "structFatigueTestMotion_1_1Status.html#a934be032d312b43aef21b6c1729e9c96", null ],
-    [ "dwell_center_ms", "structFatigueTestMotion_1_1Status.html#aa3f8f0ab7c71c0cf9ce91bb716b26a07", null ],
     [ "dwell_max_ms", "structFatigueTestMotion_1_1Status.html#a4fa09f80670f4ba4122b66e22b2c63f4", null ],
     [ "dwell_min_ms", "structFatigueTestMotion_1_1Status.html#a92f7241189d2853426c22f6066815515", null ],
     [ "frequency_hz", "structFatigueTestMotion_1_1Status.html#a7dafafe0ba6c6ede0418474c52b1778d", null ],

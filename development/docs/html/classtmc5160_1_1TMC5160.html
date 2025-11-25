@@ -110,7 +110,7 @@ $(function(){initNavTree('classtmc5160_1_1TMC5160.html',''); initResizable(); })
 <div class="dynheader">
 Collaboration diagram for tmc5160::TMC5160&lt; CommType &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1TMC5160__coll__graph.svg" width="1256" height="554"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1TMC5160__coll__graph.svg" width="1440" height="716"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -201,6 +201,21 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
+<tr class="memitem:a9ff91a2b0d7b987e7dc90146acfea60d" id="r_a9ff91a2b0d7b987e7dc90146acfea60d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9ff91a2b0d7b987e7dc90146acfea60d">convertSpeedToSteps</a> (float value, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit) const noexcept</td></tr>
+<tr class="memdesc:a9ff91a2b0d7b987e7dc90146acfea60d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert speed value to internal steps/s.  <br /></td></tr>
+<tr class="separator:a9ff91a2b0d7b987e7dc90146acfea60d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe980f95b032b06b3612e2b00ce6de81" id="r_afe980f95b032b06b3612e2b00ce6de81"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe980f95b032b06b3612e2b00ce6de81">convertAccelerationToSteps</a> (float value, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit) const noexcept</td></tr>
+<tr class="memdesc:afe980f95b032b06b3612e2b00ce6de81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert acceleration value to internal steps/s²  <br /></td></tr>
+<tr class="separator:afe980f95b032b06b3612e2b00ce6de81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a754c8b149cc539cca564b9809db71bff" id="r_a754c8b149cc539cca564b9809db71bff"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a754c8b149cc539cca564b9809db71bff">convertPositionToSteps</a> (float value, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit) const noexcept</td></tr>
+<tr class="memdesc:a754c8b149cc539cca564b9809db71bff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert position value to steps.  <br /></td></tr>
+<tr class="separator:a754c8b149cc539cca564b9809db71bff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62e31660346b97873d5fdf05da0ab794" id="r_a62e31660346b97873d5fdf05da0ab794"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62e31660346b97873d5fdf05da0ab794">convertStepsToUnit</a> (int32_t steps, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit) const noexcept</td></tr>
+<tr class="memdesc:a62e31660346b97873d5fdf05da0ab794"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert steps to specified unit (for position)  <br /></td></tr>
+<tr class="separator:a62e31660346b97873d5fdf05da0ab794"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab11ac923f2e27a1681908c8bf76aa96b" id="r_ab11ac923f2e27a1681908c8bf76aa96b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab11ac923f2e27a1681908c8bf76aa96b">convertSpeedToUnit</a> (float steps_per_sec, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit) const noexcept</td></tr>
+<tr class="memdesc:ab11ac923f2e27a1681908c8bf76aa96b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert speed (steps/s) to specified unit.  <br /></td></tr>
+<tr class="separator:ab11ac923f2e27a1681908c8bf76aa96b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acede71cbb946e820a91c0a3f81a1678e" id="r_acede71cbb946e820a91c0a3f81a1678e"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acede71cbb946e820a91c0a3f81a1678e">speedToInternal</a> (float speed_hz) const noexcept</td></tr>
 <tr class="memdesc:acede71cbb946e820a91c0a3f81a1678e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert speed from Hz to internal <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> units.  <br /></td></tr>
 <tr class="separator:acede71cbb946e820a91c0a3f81a1678e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -234,6 +249,18 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a18e2cc0dd277443c86ac266f1f5eaba2" id="r_a18e2cc0dd277443c86ac266f1f5eaba2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18e2cc0dd277443c86ac266f1f5eaba2">initialized_</a> {false}</td></tr>
 <tr class="memdesc:a18e2cc0dd277443c86ac266f1f5eaba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization status flag.  <br /></td></tr>
 <tr class="separator:a18e2cc0dd277443c86ac266f1f5eaba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbfdea4ef6c6db3b8a94c4d2b8190832" id="r_acbfdea4ef6c6db3b8a94c4d2b8190832"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc5160_1_1MotorSpec.html">MotorSpec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acbfdea4ef6c6db3b8a94c4d2b8190832">motor_spec_</a></td></tr>
+<tr class="separator:acbfdea4ef6c6db3b8a94c4d2b8190832"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05f21cf82cb92d4324869d4966061bb8" id="r_a05f21cf82cb92d4324869d4966061bb8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc5160_1_1MechanicalSystem.html">MechanicalSystem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05f21cf82cb92d4324869d4966061bb8">mechanical_system_</a></td></tr>
+<tr class="separator:a05f21cf82cb92d4324869d4966061bb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3a93ff0d08ff0f2f93dde4530a581bb" id="r_af3a93ff0d08ff0f2f93dde4530a581bb"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3a93ff0d08ff0f2f93dde4530a581bb">calculated_global_scaler_</a> {0}</td></tr>
+<tr class="separator:af3a93ff0d08ff0f2f93dde4530a581bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3078925174704ef1d55773949d42a1a" id="r_af3078925174704ef1d55773949d42a1a"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3078925174704ef1d55773949d42a1a">calculated_irun_</a> {0}</td></tr>
+<tr class="separator:af3078925174704ef1d55773949d42a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5c303482027e5640efd2cf611edc9b5" id="r_af5c303482027e5640efd2cf611edc9b5"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af5c303482027e5640efd2cf611edc9b5">calculated_ihold_</a> {0}</td></tr>
+<tr class="separator:af5c303482027e5640efd2cf611edc9b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a720e3659da89aab8afbe64c41083599f" id="r_a720e3659da89aab8afbe64c41083599f"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a720e3659da89aab8afbe64c41083599f">current_microsteps_</a> {256}</td></tr>
+<tr class="separator:a720e3659da89aab8afbe64c41083599f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename CommType&gt;<br />
@@ -269,7 +296,7 @@ Usage Example</h2>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Initialize driver</span></div>
 <div class="line"><a class="code hl_struct" href="structtmc5160_1_1DriverConfig.html">tmc5160::DriverConfig</a> cfg{};</div>
-<div class="line">cfg.<a class="code hl_variable" href="structtmc5160_1_1DriverConfig.html#a0e86dedca15de4295d3d92754886a606">motor</a>.<a class="code hl_variable" href="structtmc5160_1_1MotorParameters.html#a85b0794271573d33b1c811285ca14a35">irun</a> = 20;</div>
+<div class="line">cfg.motor.irun = 20;</div>
 <div class="line">cfg.motor.ihold = 10;</div>
 <div class="line">driver.Initialize(cfg);</div>
 <div class="line"> </div>
@@ -284,9 +311,7 @@ Usage Example</h2>
 <div class="ttc" id="aclasstmc5160_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:1370</div></div>
 <div class="ttc" id="aclasstmc5160_1_1TMC5160_html"><div class="ttname"><a href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a></div><div class="ttdoc">Main class representing a TMC5160 stepper motor driver.</div><div class="ttdef"><b>Definition</b> tmc5160.hpp:101</div></div>
 <div class="ttc" id="anamespacetmc5160_html_ac039fd52ff49abd3359ab16891f4afc2a1e66935e3ab51cc2128e078cfd49d845"><div class="ttname"><a href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a1e66935e3ab51cc2128e078cfd49d845">tmc5160::RampMode::POSITIONING</a></div><div class="ttdeci">@ POSITIONING</div><div class="ttdoc">Positioning mode using all A, D and V parameters.</div></div>
-<div class="ttc" id="astructtmc5160_1_1DriverConfig_html"><div class="ttname"><a href="structtmc5160_1_1DriverConfig.html">tmc5160::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc5160_config.hpp:43</div></div>
-<div class="ttc" id="astructtmc5160_1_1DriverConfig_html_a0e86dedca15de4295d3d92754886a606"><div class="ttname"><a href="structtmc5160_1_1DriverConfig.html#a0e86dedca15de4295d3d92754886a606">tmc5160::DriverConfig::motor</a></div><div class="ttdeci">MotorParameters motor</div><div class="ttdoc">Motor current configuration.</div><div class="ttdef"><b>Definition</b> tmc5160_config.hpp:45</div></div>
-<div class="ttc" id="astructtmc5160_1_1MotorParameters_html_a85b0794271573d33b1c811285ca14a35"><div class="ttname"><a href="structtmc5160_1_1MotorParameters.html#a85b0794271573d33b1c811285ca14a35">tmc5160::MotorParameters::irun</a></div><div class="ttdeci">uint8_t irun</div><div class="ttdoc">Motor run current (0 to 31). For best performance don't set lower than 16.</div><div class="ttdef"><b>Definition</b> tmc5160_types.hpp:112</div></div>
+<div class="ttc" id="astructtmc5160_1_1DriverConfig_html"><div class="ttname"><a href="structtmc5160_1_1DriverConfig.html">tmc5160::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc5160_config.hpp:55</div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">CommType</td><td>The communication interface type (must inherit from SpiCommInterface&lt;CommType&gt; or UartCommInterface&lt;CommType&gt;) </td></tr>
@@ -409,6 +434,211 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Acceleration in internal <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> units </dd></dl>
+
+</div>
+</div>
+<a id="afe980f95b032b06b3612e2b00ce6de81" name="afe980f95b032b06b3612e2b00ce6de81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe980f95b032b06b3612e2b00ce6de81">&#9670;&#160;</a></span>convertAccelerationToSteps()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TMC5160::convertAccelerationToSteps </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>value</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert acceleration value to internal steps/s² </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>Acceleration value in specified unit </td></tr>
+    <tr><td class="paramname">unit</td><td>Unit of the value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Acceleration in steps/s² </dd></dl>
+
+</div>
+</div>
+<a id="a754c8b149cc539cca564b9809db71bff" name="a754c8b149cc539cca564b9809db71bff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a754c8b149cc539cca564b9809db71bff">&#9670;&#160;</a></span>convertPositionToSteps()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TMC5160::convertPositionToSteps </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>value</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert position value to steps. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>Position value in specified unit </td></tr>
+    <tr><td class="paramname">unit</td><td>Unit of the value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Position in steps </dd></dl>
+
+</div>
+</div>
+<a id="a9ff91a2b0d7b987e7dc90146acfea60d" name="a9ff91a2b0d7b987e7dc90146acfea60d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ff91a2b0d7b987e7dc90146acfea60d">&#9670;&#160;</a></span>convertSpeedToSteps()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TMC5160::convertSpeedToSteps </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>value</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert speed value to internal steps/s. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>Speed value in specified unit </td></tr>
+    <tr><td class="paramname">unit</td><td>Unit of the value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Speed in steps/s </dd></dl>
+
+</div>
+</div>
+<a id="ab11ac923f2e27a1681908c8bf76aa96b" name="ab11ac923f2e27a1681908c8bf76aa96b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab11ac923f2e27a1681908c8bf76aa96b">&#9670;&#160;</a></span>convertSpeedToUnit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TMC5160::convertSpeedToUnit </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>steps_per_sec</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert speed (steps/s) to specified unit. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">steps_per_sec</td><td>Speed in steps/s </td></tr>
+    <tr><td class="paramname">unit</td><td>Target unit </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Speed in target unit </dd></dl>
+
+</div>
+</div>
+<a id="a62e31660346b97873d5fdf05da0ab794" name="a62e31660346b97873d5fdf05da0ab794"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62e31660346b97873d5fdf05da0ab794">&#9670;&#160;</a></span>convertStepsToUnit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TMC5160::convertStepsToUnit </td>
+          <td>(</td>
+          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>steps</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert steps to specified unit (for position) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">steps</td><td>Position in steps </td></tr>
+    <tr><td class="paramname">unit</td><td>Target unit </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Position in target unit </dd></dl>
 
 </div>
 </div>
@@ -625,14 +855,9 @@ template&lt;typename CommType &gt; </div>
 <li>Configure global settings </li>
 </ol>
 <div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1TMC5160_ac90ae8eb92120142753c49fc61fcce89_cgraph.svg" width="354" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1TMC5160_ac90ae8eb92120142753c49fc61fcce89_icgraph.svg" width="358" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc5160_1_1TMC5160_ac90ae8eb92120142753c49fc61fcce89_icgraph.svg" width="358" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -938,6 +1163,78 @@ template&lt;typename CommType &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="af3a93ff0d08ff0f2f93dde4530a581bb" name="af3a93ff0d08ff0f2f93dde4530a581bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3a93ff0d08ff0f2f93dde4530a581bb">&#9670;&#160;</a></span>calculated_global_scaler_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t <a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; CommType &gt;::calculated_global_scaler_ {0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af5c303482027e5640efd2cf611edc9b5" name="af5c303482027e5640efd2cf611edc9b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5c303482027e5640efd2cf611edc9b5">&#9670;&#160;</a></span>calculated_ihold_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t <a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; CommType &gt;::calculated_ihold_ {0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af3078925174704ef1d55773949d42a1a" name="af3078925174704ef1d55773949d42a1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3078925174704ef1d55773949d42a1a">&#9670;&#160;</a></span>calculated_irun_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t <a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; CommType &gt;::calculated_irun_ {0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a28beb064e980894007c1bf34caf0e2c8" name="a28beb064e980894007c1bf34caf0e2c8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a28beb064e980894007c1bf34caf0e2c8">&#9670;&#160;</a></span>comm_</h2>
 
@@ -961,6 +1258,30 @@ template&lt;typename CommType &gt; </div>
 </div><div class="memdoc">
 
 <p><a class="el" href="structtmc5160_1_1TMC5160_1_1Communication.html" title="Communication subsystem.">Communication</a> interface reference. </p>
+
+</div>
+</div>
+<a id="a720e3659da89aab8afbe64c41083599f" name="a720e3659da89aab8afbe64c41083599f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a720e3659da89aab8afbe64c41083599f">&#9670;&#160;</a></span>current_microsteps_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t <a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; CommType &gt;::current_microsteps_ {256}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1039,6 +1360,54 @@ template&lt;typename CommType &gt; </div>
 </div><div class="memdoc">
 
 <p>Initialization status flag. </p>
+
+</div>
+</div>
+<a id="a05f21cf82cb92d4324869d4966061bb8" name="a05f21cf82cb92d4324869d4966061bb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05f21cf82cb92d4324869d4966061bb8">&#9670;&#160;</a></span>mechanical_system_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structtmc5160_1_1MechanicalSystem.html">MechanicalSystem</a> <a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; CommType &gt;::mechanical_system_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acbfdea4ef6c6db3b8a94c4d2b8190832" name="acbfdea4ef6c6db3b8a94c4d2b8190832"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbfdea4ef6c6db3b8a94c4d2b8190832">&#9670;&#160;</a></span>motor_spec_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structtmc5160_1_1MotorSpec.html">MotorSpec</a> <a class="el" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a>&lt; CommType &gt;::motor_spec_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

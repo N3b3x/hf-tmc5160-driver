@@ -62,9 +62,10 @@ var searchData=
   ['encb_59',['encb',['../structtmc5160_1_1PinActiveLevels.html#ad252aca4350b9fe80cb116220a6a0711',1,'tmc5160::PinActiveLevels']]],
   ['encb_5fdcen_5fcfg4_60',['encb_dcen_cfg4',['../uniontmc5160_1_1IOIN__Register.html#a468052d97271d21ce894b469fbea43e2',1,'tmc5160::IOIN_Register::encb_dcen_cfg4'],['../structtmc5160_1_1InputStatus.html#a3eb4abe43a9641f8bc23dbf5f326f69d',1,'tmc5160::InputStatus::encb_dcen_cfg4']]],
   ['encn_61',['encn',['../structtmc5160_1_1PinActiveLevels.html#a59072a7e5b29793e49de1f614759e2f5',1,'tmc5160::PinActiveLevels']]],
-  ['estimated_5ffrequency_5fhz_5f_62',['estimated_frequency_hz_',['../classFatigueTestMotion.html#a2fe846983e6761a3ca123c4eaad8e730',1,'FatigueTestMotion']]],
-  ['event_5fpos_5freached_63',['event_pos_reached',['../uniontmc5160_1_1RAMP__STAT__Register.html#a9ddbad20c5cbaa0f6b0bb53460d23e32',1,'tmc5160::RAMP_STAT_Register']]],
-  ['event_5fstop_5fl_64',['event_stop_l',['../uniontmc5160_1_1RAMP__STAT__Register.html#accfe22d6209396f78ad8b2656a77e9fc',1,'tmc5160::RAMP_STAT_Register']]],
-  ['event_5fstop_5fr_65',['event_stop_r',['../uniontmc5160_1_1RAMP__STAT__Register.html#a35942197deb6cafcb5944bfaec26d241',1,'tmc5160::RAMP_STAT_Register']]],
-  ['event_5fstop_5fsg_66',['event_stop_sg',['../uniontmc5160_1_1RAMP__STAT__Register.html#a8d5ff6b91270a8c50767f423bde0644a',1,'tmc5160::RAMP_STAT_Register']]]
+  ['error_62',['error',['../structtmc5160_1_1Diag0Config.html#a6ac2666ac8b5ea0013eb525a9a86a56b',1,'tmc5160::Diag0Config']]],
+  ['estimated_5ffrequency_5fhz_5f_63',['estimated_frequency_hz_',['../classFatigueTestMotion.html#a2fe846983e6761a3ca123c4eaad8e730',1,'FatigueTestMotion']]],
+  ['event_5fpos_5freached_64',['event_pos_reached',['../uniontmc5160_1_1RAMP__STAT__Register.html#a9ddbad20c5cbaa0f6b0bb53460d23e32',1,'tmc5160::RAMP_STAT_Register']]],
+  ['event_5fstop_5fl_65',['event_stop_l',['../uniontmc5160_1_1RAMP__STAT__Register.html#accfe22d6209396f78ad8b2656a77e9fc',1,'tmc5160::RAMP_STAT_Register']]],
+  ['event_5fstop_5fr_66',['event_stop_r',['../uniontmc5160_1_1RAMP__STAT__Register.html#a35942197deb6cafcb5944bfaec26d241',1,'tmc5160::RAMP_STAT_Register']]],
+  ['event_5fstop_5fsg_67',['event_stop_sg',['../uniontmc5160_1_1RAMP__STAT__Register.html#a8d5ff6b91270a8c50767f423bde0644a',1,'tmc5160::RAMP_STAT_Register']]]
 ];

@@ -2357,19 +2357,21 @@
 10
 11
 </pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="nc">DriverConfig</span> <span class="p">{</span>
-    <span class="n">PowerStageParameters</span> <span class="n">power_stage</span><span class="p">;</span>      <span class="c1">// 5 parameters</span>
-    <span class="n">MotorParameters</span> <span class="n">motor</span><span class="p">;</span>                  <span class="c1">// 5 parameters</span>
-    <span class="n">MotorDirection</span> <span class="n">direction</span><span class="p">;</span>              <span class="c1">// 1 parameter</span>
+    <span class="n">PowerStageParameters</span> <span class="n">power_stage</span><span class="p">;</span>      <span class="c1">// 9 parameters (MOSFET, BBM, sense filter, OT protection, short protection)</span>
+    <span class="n">MotorSpec</span> <span class="n">motor_spec</span><span class="p">;</span>                   <span class="c1">// Motor specification with user-friendly parameters</span>
+    <span class="n">MechanicalSystem</span> <span class="n">mechanical</span><span class="p">;</span>            <span class="c1">// Mechanical system configuration</span>
+    <span class="n">MotorDirection</span> <span class="n">direction</span><span class="p">;</span>               <span class="c1">// 1 parameter</span>
     <span class="n">ChopperConfig</span> <span class="n">chopper</span><span class="p">;</span>                  <span class="c1">// 9 parameters</span>
     <span class="n">StealthChopConfig</span> <span class="n">stealthchop</span><span class="p">;</span>         <span class="c1">// 7 parameters</span>
-    <span class="n">ShortProtectionConfig</span> <span class="n">short_protection</span><span class="p">;</span> <span class="c1">// 4 parameters</span>
-    <span class="n">GlobalConfig</span> <span class="n">global_config</span><span class="p">;</span>            <span class="c1">// 18 parameters</span>
+    <span class="n">GlobalConfig</span> <span class="n">global_config</span><span class="p">;</span>             <span class="c1">// 18 parameters</span>
     <span class="n">RampParameters</span> <span class="n">ramp_params</span><span class="p">;</span>            <span class="c1">// 3 parameters</span>
     <span class="kt">uint32_t</span> <span class="n">f_clk</span><span class="p">;</span>                        <span class="c1">// 1 parameter</span>
 <span class="p">};</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 
-<p><strong>Total: 53 configuration parameters</strong> organized into 8 logical groups.</p>
+<p><strong>Total: 53+ configuration parameters</strong> organized into 8 logical groups.</p>
+
+<p><strong>Note</strong>: Short protection parameters are now part of <code class="language-plaintext highlighter-rouge">PowerStageParameters</code> using user-friendly voltage thresholds (<code class="language-plaintext highlighter-rouge">s2vs_voltage_mv</code>, <code class="language-plaintext highlighter-rouge">s2g_voltage_mv</code>, <code class="language-plaintext highlighter-rouge">short_detection_delay_us_x10</code>) instead of raw register levels.</p>
 <h3 id="comparison-with-archived-drivers">
   
   
@@ -2427,7 +2429,7 @@
     </tr>
     <tr>
       <td><strong>Short Protection</strong></td>
-      <td>✓ (4 params)</td>
+      <td>✓ (4 params, voltage-based)</td>
       <td>✗ (direct register)</td>
       <td>✓</td>
       <td>✗</td>
