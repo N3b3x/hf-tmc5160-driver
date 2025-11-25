@@ -26,9 +26,9 @@
  * - UART debug port for command interface (typically UART_NUM_0 for USB serial)
  * - Power supply: 12-36V DC (ensure adequate current capacity for selected motor)
  *
- * Pin Configuration (modify as needed):
- * - SPI: MOSI=23, MISO=19, SCLK=18, CS=5
- * - Control: EN=2, DIR=4, STEP=15
+ * Pin Configuration (uses default dev board pins from esp32_tmc5160_bus_config.hpp):
+ * - SPI: MOSI=6, MISO=2, SCLK=5, CS=18
+ * - Control: EN=11, CLK=10, DIAG0=23, DIAG1=15
  * - UART: Uses default UART_NUM_0 (USB serial port)
  *
  * UART Command Interface:
@@ -725,7 +725,6 @@ public:
         if (!cycle_complete_) {
           cycle_complete_ = true;
           uint32_t cycles = current_cycles_;
-          int32_t home = home_position_;
           
           // Move to center before stopping
           // We can just set target to home, and switch to a special "GOING_HOME" state if needed,
@@ -823,7 +822,7 @@ public:
         // Resume motion - if sinusoidal mode, UpdateSinuousMotion() will handle it
         // Otherwise, move to max bound
         if (!sinusoidal_mode_) {
-          state_ = MotionState::MOVING_TO_MAX;
+        state_ = MotionState::MOVING_TO_MAX;
         driver_->rampControl.SetMaxSpeed(calculated_vmax_);
         driver_->rampControl.SetAcceleration(calculated_amax_);
         driver_->rampControl.SetDeceleration(calculated_amax_);
@@ -841,11 +840,11 @@ public:
         // Resume motion - if sinusoidal mode, UpdateSinuousMotion() will handle it
         // Otherwise, move to min bound
         if (!sinusoidal_mode_) {
-          state_ = MotionState::MOVING_TO_MIN;
-          driver_->rampControl.SetMaxSpeed(calculated_vmax_);
-          driver_->rampControl.SetAcceleration(calculated_amax_);
-          driver_->rampControl.SetDeceleration(calculated_amax_);
-          driver_->rampControl.SetTargetPosition(min_bound);
+        state_ = MotionState::MOVING_TO_MIN;
+        driver_->rampControl.SetMaxSpeed(calculated_vmax_);
+        driver_->rampControl.SetAcceleration(calculated_amax_);
+        driver_->rampControl.SetDeceleration(calculated_amax_);
+        driver_->rampControl.SetTargetPosition(min_bound);
         } else {
           // Sinusoidal mode - will be handled by UpdateSinuousMotion()
           state_ = MotionState::MOVING_TO_MIN;
@@ -966,7 +965,6 @@ private:
     bool cycle_started;
     int32_t last_target_rel;
     uint32_t dwell_min, dwell_max, dwell_center;
-    MotionState current_state;
     float phase_off;
     
     {
@@ -983,7 +981,6 @@ private:
       dwell_min = dwell_at_min_ms_;
       dwell_max = dwell_at_max_ms_;
       dwell_center = dwell_at_center_ms_;
-      current_state = state_;
       phase_off = phase_offset_;
     }
 
@@ -1001,37 +998,37 @@ private:
 
     // Cycle counting: one cycle = center → min → max → center (or center → max → min → center)
     // Count cycles when crossing through center (0 crossing point)
-    // Check if we're crossing through center (sign change of target position)
-    bool currently_negative = (target_relative < 0);
-    bool last_was_negative = (last_target_rel < 0);
-    bool crossing_center =
-        (last_was_negative != currently_negative) && (abs(target_relative) < 30) && (abs(last_target_rel) < 30);
+      // Check if we're crossing through center (sign change of target position)
+      bool currently_negative = (target_relative < 0);
+      bool last_was_negative = (last_target_rel < 0);
+      bool crossing_center =
+          (last_was_negative != currently_negative) && (abs(target_relative) < 30) && (abs(last_target_rel) < 30);
 
-    // If we've started a cycle (left center) and now crossing back through center
-    if (cycle_started && crossing_center) {
-      // Completed a cycle: center → extreme → center
-      uint32_t new_cycles;
+      // If we've started a cycle (left center) and now crossing back through center
+      if (cycle_started && crossing_center) {
+        // Completed a cycle: center → extreme → center
+        uint32_t new_cycles;
+        {
+          TmcMutexGuard guard(mutex_);
+          current_cycles_++;
+          cycle_started_ = false; // Reset for next cycle
+          new_cycles = current_cycles_;
+        }
+        ESP_LOGI(TAG, "Cycle %lu completed at center (target: %lu)", new_cycles, 
+                 target_cycles == 0 ? 0xFFFFFFFF : target_cycles);
+      } else if (!cycle_started && abs(target_relative) > 30) {
+        // We've left center, cycle has started
+        TmcMutexGuard guard(mutex_);
+        cycle_started_ = true;
+        last_was_negative_ = currently_negative;
+      }
+
+      // Update tracking
       {
         TmcMutexGuard guard(mutex_);
-        current_cycles_++;
-        cycle_started_ = false; // Reset for next cycle
-        new_cycles = current_cycles_;
-      }
-      ESP_LOGI(TAG, "Cycle %lu completed at center (target: %lu)", new_cycles, 
-               target_cycles == 0 ? 0xFFFFFFFF : target_cycles);
-    } else if (!cycle_started && abs(target_relative) > 30) {
-      // We've left center, cycle has started
-      TmcMutexGuard guard(mutex_);
-      cycle_started_ = true;
-      last_was_negative_ = currently_negative;
-    }
-
-    // Update tracking
-    {
-      TmcMutexGuard guard(mutex_);
-      last_target_relative_ = target_relative;
-      if (abs(target_relative) > 10) { // Only update if significantly away from center
-        last_was_negative_ = currently_negative;
+        last_target_relative_ = target_relative;
+        if (abs(target_relative) > 10) { // Only update if significantly away from center
+          last_was_negative_ = currently_negative;
       }
     }
 
@@ -1420,9 +1417,18 @@ extern "C" void app_main() {
   ESP_LOGI(TAG, "║         TMC5160 Fatigue Test Platform: Bounds Finding & Sinuous Motion      ║");
   ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
 
-  // Create SPI communication interface
-  Esp32SPI spi(SPI2_HOST, GPIO_NUM_23, GPIO_NUM_19, GPIO_NUM_18, GPIO_NUM_5, GPIO_NUM_2, GPIO_NUM_4, GPIO_NUM_15,
-               4000000);
+  // Get default pin configuration (matches dev board setup)
+  auto pin_config = tmc5160_test_config::GetDefaultPinConfig();
+  
+  // Default: EN is active LOW (LOW = enable, HIGH = disable) per TMC5160 datasheet
+  // If your board has an inverter, set en = true in PinActiveLevels
+  tmc5160::PinActiveLevels active_levels; // Uses defaults: en=false (LOW=enable)
+  
+  // Uncomment the line below if your board has an inverter on the EN pin:
+  // active_levels.en = true; // EN pin has inverter, so ACTIVE = HIGH to enable
+  
+  // Create SPI communication interface using default pin configuration
+  Esp32SPI spi(tmc5160_test_config::SPI_HOST, pin_config, 1000000, active_levels); // 1 MHz SPI clock (reduced for stability)
 
   if (!spi.Initialize()) {
     ESP_LOGE(TAG, "Failed to initialize SPI interface");
@@ -1511,14 +1517,91 @@ extern "C" void app_main() {
 
   ESP_LOGI(TAG, "Driver initialized successfully");
 
+  // CRITICAL: StallGuard2 ONLY works in SpreadCycle mode (en_pwm_mode=0)!
+  // Explicitly enable SpreadCycle mode for sensorless homing
+  uint32_t gconf_value = 0;
+  if (!driver.GetComm().ReadRegister(tmc5160::Registers::GCONF, gconf_value)) {
+    ESP_LOGE(TAG, "Failed to read GCONF register");
+    return;
+  }
+  
+  tmc5160::GCONF_Register gconf{};
+  gconf.value = gconf_value;
+  
+  // Always ensure SpreadCycle is enabled (en_pwm_mode = 0)
+  bool needs_update = false;
+  if (gconf.bits.en_pwm_mode) {
+    ESP_LOGW(TAG, "StealthChop is enabled - switching to SpreadCycle mode for StallGuard2");
+    gconf.bits.en_pwm_mode = false; // Enable SpreadCycle (disable StealthChop)
+    needs_update = true;
+  } else {
+    ESP_LOGI(TAG, "Already in SpreadCycle mode - verifying for StallGuard2");
+  }
+  
+  // Write register if update needed, then always verify SpreadCycle is enabled
+  if (needs_update) {
+    if (!driver.GetComm().WriteRegister(tmc5160::Registers::GCONF, gconf.value)) {
+      ESP_LOGE(TAG, "Failed to enable SpreadCycle mode");
+      return;
+    }
+    vTaskDelay(pdMS_TO_TICKS(100)); // Small delay for mode switch
+  }
+  
+  // Always verify SpreadCycle is enabled (critical for StallGuard2)
+  uint32_t gconf_verify = 0;
+  if (driver.GetComm().ReadRegister(tmc5160::Registers::GCONF, gconf_verify)) {
+    tmc5160::GCONF_Register verify{};
+    verify.value = gconf_verify;
+    if (verify.bits.en_pwm_mode == 0) {
+      ESP_LOGI(TAG, "✓ SpreadCycle mode confirmed enabled (en_pwm_mode=0) - StallGuard2 ready");
+    } else {
+      ESP_LOGE(TAG, "✗ CRITICAL: SpreadCycle mode NOT enabled! en_pwm_mode=%d (should be 0)", 
+               verify.bits.en_pwm_mode ? 1 : 0);
+      ESP_LOGE(TAG, "StallGuard2 will NOT work in StealthChop mode!");
+      return;
+    }
+  } else {
+    ESP_LOGW(TAG, "Could not verify SpreadCycle mode - proceeding anyway");
+  }
+
+  // CRITICAL: Set TCOOLTHRS and THIGH BEFORE configuring StallGuard2
+  // TCOOLTHRS = velocity threshold below which StallGuard2 is disabled
+  // For homing, we want StallGuard2 active at search speed, so set appropriately
+  // Setting to a low value ensures StallGuard2 is active at search speeds
+  uint32_t tcoolthrs = 1000; // Low threshold - StallGuard2 active at speeds > ~1000 steps/s
+  if (driver.GetComm().WriteRegister(tmc5160::Registers::TCOOLTHRS, tcoolthrs)) {
+    ESP_LOGI(TAG, "✓ TCOOLTHRS set to %lu - StallGuard2 active at search speeds", tcoolthrs);
+  } else {
+    ESP_LOGE(TAG, "✗ Failed to set TCOOLTHRS");
+  }
+  
+  // THIGH = velocity threshold for chopper mode switching (set high to avoid interference)
+  uint32_t thigh = 0xFFFFF; // Maximum value
+  if (driver.GetComm().WriteRegister(tmc5160::Registers::THIGH, thigh)) {
+    ESP_LOGI(TAG, "✓ THIGH set to maximum (0x%05X)", thigh);
+  } else {
+    ESP_LOGW(TAG, "Failed to set THIGH (may not be critical)");
+  }
+
   // Configure StallGuard2 for bounds finding using test defaults
+  // NOTE: SGT threshold tuning guide:
+  //   - Lower values (-64 to 0) = More sensitive (stops easier, more false positives)
+  //   - Higher values (0 to +63) = Less sensitive (needs more force to stop, fewer false positives)
+  //   - For free-rotating motors with no mechanical stops, use higher values (0 to +20)
+  //   - For motors with mechanical stops, use lower values (-20 to 0)
+  //   - If getting false stalls (SG_RESULT=0 during normal motion), INCREASE SGT value
   tmc5160::StallGuardConfig sg_config{};
   sg_config.sgt = Test::StallGuard::SGT_HOMING; 
   sg_config.sfilt = Test::StallGuard::FILTER_ENABLED;
   sg_config.semin = Test::StallGuard::SEMIN;
   sg_config.semax = Test::StallGuard::SEMAX;
 
-  ESP_LOGI(TAG, "Configuring StallGuard2: sgt=%d", sg_config.sgt);
+  ESP_LOGI(TAG, "Configuring StallGuard2: sgt=%d (lower=more sensitive, higher=less sensitive)", 
+           static_cast<int>(sg_config.sgt));
+  if (sg_config.sgt < 0) {
+    ESP_LOGW(TAG, "  Note: SGT is negative (sensitive) - may cause false stalls on free-rotating motors");
+    ESP_LOGW(TAG, "  Consider increasing SGT to 0 or +10 if experiencing false stalls");
+  }
   if (!driver.diagnostics.ConfigureStallGuard(sg_config)) {
     ESP_LOGE(TAG, "Failed to configure StallGuard2");
     return;
@@ -1531,6 +1614,14 @@ extern "C" void app_main() {
   }
 
   ESP_LOGI(TAG, "Motor enabled");
+  
+  // Ensure clean state before homing - clear any existing stall flags
+  uint32_t ramp_stat_clean = 0;
+  driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat_clean);
+  tmc5160::RAMP_STAT_Register clear_stat{};
+  clear_stat.bits.event_stop_sg = 1; // Write 1 to clear
+  driver.GetComm().WriteRegister(tmc5160::Registers::RAMP_STAT, clear_stat.value);
+  ESP_LOGI(TAG, "Cleared any existing stall flags");
 
   // Configure motor parameters for unit conversions
   // Steps per output revolution = Motor Full Steps * Gear Ratio * Microsteps
@@ -1538,82 +1629,840 @@ extern "C" void app_main() {
   float steps_per_rev = static_cast<float>(output_full_steps) * 256.0f; 
   
   // ============================================================
-  // STEP 1: Find global bounds using sensorless homing
+  // STEP 1: Find global bounds using positioning mode with StallGuard2 stop
   // ============================================================
   ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
   ESP_LOGI(TAG, "║                    STEP 1: Finding Global Bounds                            ║");
   ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
 
-  // Find minimum bound (negative direction)
-  ESP_LOGI(TAG, "Finding minimum bound (negative direction)...");
-  int32_t min_position = 0;
-  float search_speed = Test::Motion::BOUNDS_SEARCH_SPEED; // steps/s (needs to be fast enough for BEMF)
-
+  // Calculate 360 degrees in steps (one full output revolution)
+  // steps_per_rev already accounts for microsteps (OUTPUT_FULL_STEPS * 256)
+  int32_t steps_per_360_deg = static_cast<int32_t>(steps_per_rev);
+  float search_speed = Test::Motion::BOUNDS_SEARCH_SPEED; // steps/s
+  
+  // Calculate 5° offset in steps (for backing off from detected stalls)
+  // Using utility function to ensure proper microstep handling
+  float offset_deg = 5.0f;
+  int32_t offset_steps = tmc5160::DegreesToSteps(offset_deg, steps_per_rev);
+  
+  // CRITICAL: Reset position to 0 and ensure clean state before starting
+  int32_t initial_position = driver.rampControl.GetCurrentPosition();
+  ESP_LOGI(TAG, "Initial position before reset: %ld steps", initial_position);
+  
+  driver.rampControl.Stop();
+  driver.rampControl.SetRampMode(tmc5160::RampMode::HOLD);
+  vTaskDelay(pdMS_TO_TICKS(100));
+  
+  // Reset position to 0
   driver.rampControl.SetCurrentPosition(0);
-
-  // Use updated PerformSensorlessHoming which includes timeout and polling
-  // Pass updated timeout from config
-  if (!driver.diagnostics.PerformSensorlessHoming(false, Test::StallGuard::SGT_HOMING, search_speed, 
-                                                  min_position, Test::Motion::HOMING_TIMEOUT_MS)) {
-    ESP_LOGW(TAG, "Failed to find minimum bound (timeout or no stall), using default");
-    min_position = driver.rampControl.GetCurrentPosition();
-    // If no stall, assume unbounded or problem
-  } else {
-    ESP_LOGI(TAG, "Stall detected! Minimum position: %ld steps", min_position);
-    
-    // Back off
-    driver.rampControl.Stop();
-    vTaskDelay(pdMS_TO_TICKS(500));
-    ESP_LOGI(TAG, "Moving away from minimum stop...");
-    
-    // Move away relative (e.g. 5000 steps = ~7 degrees at output)
-    int32_t backoff = 5000;
-    driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(min_position + backoff);
-    driver.rampControl.SetMaxSpeed(search_speed / 2.0f);
-    driver.rampControl.SetAcceleration(search_speed);
-    while (!driver.rampControl.IsTargetReached()) {
+  int32_t position_after_reset = driver.rampControl.GetCurrentPosition();
+  ESP_LOGI(TAG, "Position reset to: %ld steps (should be 0)", position_after_reset);
+  
+  // Verify motor is enabled and ready
+  uint32_t chopconf_check = 0;
+  if (driver.GetComm().ReadRegister(tmc5160::Registers::CHOPCONF, chopconf_check)) {
+    tmc5160::CHOPCONF_Register chopconf{};
+    chopconf.value = chopconf_check;
+    if (chopconf.bits.toff == 0) {
+      ESP_LOGE(TAG, "CRITICAL: Motor driver is DISABLED (toff=0)! Re-enabling...");
+      driver.motorControl.Enable();
       vTaskDelay(pdMS_TO_TICKS(100));
+    } else {
+      ESP_LOGI(TAG, "✓ Motor driver enabled (toff=%d)", chopconf.bits.toff);
     }
-    
-    // Reset position to 0 after backoff for cleaner coordinates? 
-    // Or keep absolute. Let's keep absolute but update min_position reference.
-    min_position = driver.rampControl.GetCurrentPosition();
-    driver.rampControl.SetCurrentPosition(0); // Reset 0 to this new "safe" minimum
-    min_position = 0; 
   }
   
-  // Find maximum bound (positive direction)
-  ESP_LOGI(TAG, "Finding maximum bound (positive direction)...");
-  int32_t max_position = 0;
-  
-  if (!driver.diagnostics.PerformSensorlessHoming(true, Test::StallGuard::SGT_HOMING, search_speed, 
-                                                  max_position, Test::Motion::HOMING_TIMEOUT_MS)) {
-     ESP_LOGW(TAG, "Failed to find maximum bound, using default");
-     max_position = driver.rampControl.GetCurrentPosition();
+  // CRITICAL: Disable reference switches to prevent motion blocking
+  // Use ConfigureReferenceSwitch() like sinusoidal.cpp does for proper configuration
+  tmc5160::ReferenceSwitchConfig ref_cfg{};
+  ref_cfg.stop_left_enable = false;   // Disable left reference switch
+  ref_cfg.stop_right_enable = false;  // Disable right reference switch
+  ref_cfg.en_softstop = false;        // Disable soft stop
+  if (!driver.rampControl.ConfigureReferenceSwitch(ref_cfg)) {
+    ESP_LOGW(TAG, "Failed to configure reference switches (may not be critical)");
   } else {
-    ESP_LOGI(TAG, "Stall detected! Maximum position: %ld steps", max_position);
+    ESP_LOGI(TAG, "✓ Reference switches disabled (not using endstops)");
     
+    // Verify SW_MODE register was written correctly
+    uint32_t sw_mode_verify = 0;
+    if (driver.GetComm().ReadRegister(tmc5160::Registers::SW_MODE, sw_mode_verify)) {
+      tmc5160::SW_MODE_Register sw_mode{};
+      sw_mode.value = sw_mode_verify;
+      ESP_LOGI(TAG, "SW_MODE verification: stop_l_enable=%d, stop_r_enable=%d, en_softstop=%d",
+               sw_mode.bits.stop_l_enable ? 1 : 0,
+               sw_mode.bits.stop_r_enable ? 1 : 0,
+               sw_mode.bits.en_softstop ? 1 : 0);
+      
+      if (sw_mode.bits.stop_l_enable || sw_mode.bits.stop_r_enable) {
+        ESP_LOGE(TAG, "ERROR: Reference switches still enabled in SW_MODE!");
+        ESP_LOGE(TAG, "Motion will be blocked. Re-configuring...");
+        // Try again
+        driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
+        vTaskDelay(pdMS_TO_TICKS(50));
+      } else {
+        ESP_LOGI(TAG, "✓ Reference switches confirmed disabled in SW_MODE");
+      }
+    }
+  }
+  
+  // Check physical pin states (informational only - switches are disabled)
+  uint32_t ramp_stat_precheck = 0;
+  if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat_precheck)) {
+    tmc5160::RAMP_STAT_Register stat{};
+    stat.value = ramp_stat_precheck;
+    if (stat.bits.status_stop_l || stat.bits.status_stop_r) {
+      ESP_LOGW(TAG, "Reference switch pins are active (stop_l=%d, stop_r=%d) but stops are DISABLED",
+               stat.bits.status_stop_l ? 1 : 0, stat.bits.status_stop_r ? 1 : 0);
+      ESP_LOGI(TAG, "  Motion should work since stop_l_enable=0 and stop_r_enable=0 in SW_MODE");
+      ESP_LOGI(TAG, "  The status bits just reflect pin state - they don't block motion when disabled");
+    }
+  }
+  
+  // Enable StallGuard2 stop for automatic stall detection in positioning mode
+  // IMPORTANT: Must preserve reference switch disable settings from above
+  // Per datasheet SW_MODE register (0x34):
+  //   Bit 10 (sg_stop): 1 = Enable stop by StallGuard2
+  //   Bit 11 (en_softstop): 0 = Hard stop (REQUIRED for StallGuard2)
+  //   Datasheet: "Attention: Do not use soft stop in combination with StallGuard2"
+  uint32_t sw_mode_value = 0;
+  if (!driver.GetComm().ReadRegister(tmc5160::Registers::SW_MODE, sw_mode_value)) {
+    ESP_LOGE(TAG, "Failed to read SW_MODE");
+    return;
+  }
+  tmc5160::SW_MODE_Register sw_mode{};
+  sw_mode.value = sw_mode_value;
+  sw_mode.bits.sg_stop = true;     // Bit 10: Enable automatic stop on stall
+  sw_mode.bits.en_softstop = false; // Bit 11: Hard stop (REQUIRED - datasheet says don't use soft stop with StallGuard2)
+  // CRITICAL: Ensure reference switches remain disabled
+  sw_mode.bits.stop_l_enable = false;
+  sw_mode.bits.stop_r_enable = false;
+  if (!driver.GetComm().WriteRegister(tmc5160::Registers::SW_MODE, sw_mode.value)) {
+    ESP_LOGE(TAG, "Failed to enable StallGuard2 stop");
+    return;
+  }
+  
+  // Verify SW_MODE was written correctly per datasheet requirements
+  uint32_t sw_mode_verify = 0;
+  if (driver.GetComm().ReadRegister(tmc5160::Registers::SW_MODE, sw_mode_verify)) {
+    tmc5160::SW_MODE_Register verify{};
+    verify.value = sw_mode_verify;
+    ESP_LOGI(TAG, "SW_MODE register verification:");
+    ESP_LOGI(TAG, "  Bit 10 (sg_stop): %d (1=enabled, required for StallGuard2 stop)", verify.bits.sg_stop ? 1 : 0);
+    ESP_LOGI(TAG, "  Bit 11 (en_softstop): %d (0=hard stop, REQUIRED for StallGuard2)", verify.bits.en_softstop ? 1 : 0);
+    ESP_LOGI(TAG, "  stop_l_enable: %d, stop_r_enable: %d", 
+             verify.bits.stop_l_enable ? 1 : 0, verify.bits.stop_r_enable ? 1 : 0);
+    
+    if (verify.bits.sg_stop != 1) {
+      ESP_LOGE(TAG, "✗ CRITICAL: sg_stop is not enabled! StallGuard2 stop will not work!");
+    } else {
+      ESP_LOGI(TAG, "✓ StallGuard2 stop enabled (sg_stop=1)");
+    }
+    
+    if (verify.bits.en_softstop != 0) {
+      ESP_LOGE(TAG, "✗ CRITICAL: en_softstop is enabled! Datasheet says 'Do not use soft stop in combination with StallGuard2'!");
+      ESP_LOGE(TAG, "  This will cause incorrect behavior. Fixing...");
+      sw_mode.bits.en_softstop = false;
+      driver.GetComm().WriteRegister(tmc5160::Registers::SW_MODE, sw_mode.value);
+    } else {
+      ESP_LOGI(TAG, "✓ Hard stop enabled (en_softstop=0, correct for StallGuard2)");
+    }
+    
+    if (verify.bits.stop_l_enable || verify.bits.stop_r_enable) {
+      ESP_LOGE(TAG, "✗ Reference switches are still enabled! This will block motion!");
+    } else {
+      ESP_LOGI(TAG, "✓ Reference switches disabled (stop_l_enable=0, stop_r_enable=0)");
+    }
+  } else {
+    ESP_LOGW(TAG, "Failed to verify SW_MODE register");
+  }
+  
+  // Clear any existing stall flags and verify they're cleared
+  uint32_t ramp_stat_clear = 0;
+  driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat_clear);
+  tmc5160::RAMP_STAT_Register clear_stat_init{};
+  clear_stat_init.bits.event_stop_sg = 1; // Write 1 to clear
+  if (!driver.GetComm().WriteRegister(tmc5160::Registers::RAMP_STAT, clear_stat_init.value)) {
+    ESP_LOGE(TAG, "Failed to clear stall flags");
+    return;
+  }
+  
+  // Verify stall flag is cleared
+  vTaskDelay(pdMS_TO_TICKS(50)); // Small delay for register write
+  uint32_t ramp_stat_verify = 0;
+  if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat_verify)) {
+    tmc5160::RAMP_STAT_Register verify{};
+    verify.value = ramp_stat_verify;
+    if (verify.bits.event_stop_sg) {
+      ESP_LOGW(TAG, "Warning: Stall flag still set after clear attempt");
+    }
+  }
+  
+  // Read initial SG_RESULT for baseline diagnostics
+  uint32_t drv_status_init = 0;
+  uint16_t sg_result_baseline = 0;
+  if (driver.GetComm().ReadRegister(tmc5160::Registers::DRV_STATUS, drv_status_init)) {
+    tmc5160::DRV_STATUS_Register drv_status{};
+    drv_status.value = drv_status_init;
+    sg_result_baseline = drv_status.bits.sg_result;
+    ESP_LOGI(TAG, "Initial SG_RESULT baseline: %d (at standstill)", sg_result_baseline);
+    if (sg_result_baseline == 0) {
+      ESP_LOGE(TAG, "⚠️ CRITICAL: SG_RESULT=0 at standstill indicates:");
+      ESP_LOGE(TAG, "  1. Motor wiring may be incorrect (phases swapped)");
+      ESP_LOGE(TAG, "  2. Motor current too high (try reducing IRUN)");
+      ESP_LOGE(TAG, "  3. StallGuard2 threshold needs adjustment (SGT too sensitive)");
+      ESP_LOGE(TAG, "  Current SGT=%d - consider increasing to 0 or +10", Test::StallGuard::SGT_HOMING);
+    }
+  }
+  
+  // Configure positioning mode parameters
+  // CRITICAL: Ensure motor is stopped before changing RAMPMODE
+  driver.rampControl.Stop();
+  vTaskDelay(pdMS_TO_TICKS(100)); // Wait for motor to fully stop
+  
+  // Read current RAMPMODE
+  uint32_t rampmode_before = 0;
+  if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMPMODE, rampmode_before)) {
+    ESP_LOGI(TAG, "Current RAMPMODE before setting: %lu (%s)", 
+             rampmode_before, 
+             (rampmode_before == 0) ? "HOLD" :
+             (rampmode_before == 1) ? "POSITIONING" :
+             (rampmode_before == 2) ? "VELOCITY_POS" :
+             (rampmode_before == 3) ? "VELOCITY_NEG" : "UNKNOWN");
+  }
+  
+  // CRITICAL: Set RAMPMODE to POSITIONING and verify it sticks
+  // Try using SetRampMode first
+  bool set_result = driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+  ESP_LOGI(TAG, "SetRampMode(POSITIONING) returned: %s", set_result ? "true" : "false");
+  vTaskDelay(pdMS_TO_TICKS(100)); // Longer delay for register write
+  
+  // Verify RAMPMODE was set correctly
+  uint32_t rampmode_verify = 0;
+  if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMPMODE, rampmode_verify)) {
+    ESP_LOGI(TAG, "RAMPMODE after SetRampMode: %lu (expected=1)", rampmode_verify);
+    if (rampmode_verify != 1) { // 1 = POSITIONING mode
+      ESP_LOGW(TAG, "SetRampMode didn't work, trying direct WriteRegister...");
+      
+      // Try direct register write (use default daisy chain position 0)
+      if (!driver.GetComm().WriteRegister(tmc5160::Registers::RAMPMODE, 1, 0)) {
+        ESP_LOGE(TAG, "Direct WriteRegister(RAMPMODE=1) failed!");
+        return;
+      }
+      vTaskDelay(pdMS_TO_TICKS(100));
+      
+      // Verify direct write
+      if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMPMODE, rampmode_verify)) {
+        if (rampmode_verify != 1) {
+          ESP_LOGE(TAG, "CRITICAL: Direct WriteRegister also failed! RAMPMODE=%lu", rampmode_verify);
+          ESP_LOGE(TAG, "This suggests a fundamental SPI communication issue or chip problem");
+          ESP_LOGE(TAG, "Checking other registers to verify SPI communication...");
+          
+          // Diagnostic: Try reading/writing a different register to verify SPI works
+          uint32_t gconf_test = 0;
+          if (driver.GetComm().ReadRegister(tmc5160::Registers::GCONF, gconf_test)) {
+            ESP_LOGI(TAG, "GCONF read successful: 0x%08lX (SPI communication works)", gconf_test);
+          } else {
+            ESP_LOGE(TAG, "GCONF read FAILED - SPI communication may be broken!");
+          }
+          
+          return;
+        } else {
+          ESP_LOGI(TAG, "✓ Direct WriteRegister succeeded - RAMPMODE now POSITIONING");
+        }
+      }
+    } else {
+      ESP_LOGI(TAG, "✓ RAMPMODE confirmed POSITIONING (value=1)");
+    }
+  } else {
+    ESP_LOGE(TAG, "Failed to read RAMPMODE register!");
+    return;
+  }
+  
+  driver.rampControl.SetMaxSpeed(search_speed);
+  driver.rampControl.SetAcceleration(search_speed * 2.0f); // Reasonable acceleration
+  driver.rampControl.SetDeceleration(search_speed * 2.0f);
+  driver.rampControl.SetRampSpeeds(1000.0f, 100.0f, 0.0f); // VSTART, VSTOP, V1
+  
+  // Small delay to ensure all registers are written before starting motion
+  vTaskDelay(pdMS_TO_TICKS(100));
+  
+  // ============================================================
+  // Find maximum bound: Command to +360° and detect stall
+  // ============================================================
+  ESP_LOGI(TAG, "Finding maximum bound: Commanding to +360° (%ld steps)...", steps_per_360_deg);
+  
+  // Verify current position before setting target
+  int32_t pos_before_target = driver.rampControl.GetCurrentPosition();
+  ESP_LOGI(TAG, "Current position before setting target: %ld steps", pos_before_target);
+  
+  // Set target position
+  if (!driver.rampControl.SetTargetPosition(steps_per_360_deg)) {
+    ESP_LOGE(TAG, "Failed to set target position!");
+    return;
+  }
+  
+  // Verify target was set correctly
+  uint32_t xtarget_read = 0;
+  if (driver.GetComm().ReadRegister(tmc5160::Registers::XTARGET, xtarget_read)) {
+    int32_t xtarget_value = static_cast<int32_t>(xtarget_read);
+    ESP_LOGI(TAG, "XTARGET register value: %ld steps (expected: %ld)", xtarget_value, steps_per_360_deg);
+    if (xtarget_value != steps_per_360_deg) {
+      ESP_LOGE(TAG, "CRITICAL: XTARGET mismatch! Expected %ld, got %ld", steps_per_360_deg, xtarget_value);
+    }
+  }
+  
+  // Small delay to allow motion to start
+  vTaskDelay(pdMS_TO_TICKS(100));
+  
+  // Check if motion started
+  float initial_speed = driver.rampControl.GetCurrentSpeed();
+  int32_t initial_pos_check = driver.rampControl.GetCurrentPosition();
+  ESP_LOGI(TAG, "After setting target: position=%ld, speed=%.1f steps/s", initial_pos_check, initial_speed);
+  
+  if (std::abs(initial_speed) < 10.0f && std::abs(initial_pos_check - pos_before_target) < 10) {
+    ESP_LOGW(TAG, "⚠️ Motor not moving after setting target! Checking status...");
+    
+    // Read RAMP_STAT to see why motion isn't starting
+    uint32_t ramp_stat_no_motion = 0;
+    if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat_no_motion)) {
+      tmc5160::RAMP_STAT_Register stat{};
+      stat.value = ramp_stat_no_motion;
+      ESP_LOGW(TAG, "RAMP_STAT: vzero=%d, velocity_reached=%d, position_reached=%d, stop_l=%d, stop_r=%d, event_stop_sg=%d",
+               stat.bits.vzero ? 1 : 0,
+               stat.bits.velocity_reached ? 1 : 0,
+               stat.bits.position_reached ? 1 : 0,
+               stat.bits.status_stop_l ? 1 : 0,
+               stat.bits.status_stop_r ? 1 : 0,
+               stat.bits.event_stop_sg ? 1 : 0);
+      
+      if (stat.bits.position_reached) {
+        ESP_LOGW(TAG, "  Position already reached - motor may be at target already");
+      }
+      // Check if reference switches are blocking (only if enabled)
+      if (stat.bits.status_stop_l || stat.bits.status_stop_r) {
+        // Check if switches are actually enabled
+        uint32_t sw_mode_check = 0;
+        if (driver.GetComm().ReadRegister(tmc5160::Registers::SW_MODE, sw_mode_check)) {
+          tmc5160::SW_MODE_Register sw_mode{};
+          sw_mode.value = sw_mode_check;
+          if (sw_mode.bits.stop_l_enable || sw_mode.bits.stop_r_enable) {
+            ESP_LOGE(TAG, "  CRITICAL: Reference switches are ENABLED and ACTIVE - blocking motion!");
+            ESP_LOGE(TAG, "  stop_l_enable=%d, stop_r_enable=%d", 
+                     sw_mode.bits.stop_l_enable ? 1 : 0, sw_mode.bits.stop_r_enable ? 1 : 0);
+            ESP_LOGE(TAG, "  Disabling reference switches...");
+            tmc5160::ReferenceSwitchConfig ref_cfg_disable{};
+            ref_cfg_disable.stop_left_enable = false;
+            ref_cfg_disable.stop_right_enable = false;
+            ref_cfg_disable.en_softstop = false;
+            driver.rampControl.ConfigureReferenceSwitch(ref_cfg_disable);
+            vTaskDelay(pdMS_TO_TICKS(50));
+          } else {
+            ESP_LOGI(TAG, "  Reference switch pins active but DISABLED - motion should work");
+          }
+        }
+      }
+    }
+    
+    // CRITICAL: Ensure we're in POSITIONING mode (not HOLD)
+    // Stall events or other conditions might force RAMPMODE back to HOLD
+    uint32_t rampmode_check = 0;
+    if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMPMODE, rampmode_check)) {
+      const char* mode_str = (rampmode_check == 0) ? "HOLD" :
+                            (rampmode_check == 1) ? "POSITIONING" :
+                            (rampmode_check == 2) ? "VELOCITY_POS" :
+                            (rampmode_check == 3) ? "VELOCITY_NEG" : "UNKNOWN";
+      ESP_LOGI(TAG, "RAMPMODE: %lu (%s)", rampmode_check, mode_str);
+      if (rampmode_check != 1) {
+        ESP_LOGW(TAG, "  WARNING: Not in POSITIONING mode! Current=%lu (%s), setting to POSITIONING...", 
+                 rampmode_check, mode_str);
+        
+        // Clear any stall flags first (they might be forcing HOLD mode)
+        uint32_t ramp_stat_clear = 0;
+        if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat_clear)) {
+          tmc5160::RAMP_STAT_Register clear_stat{};
+          clear_stat.value = ramp_stat_clear;
+          clear_stat.bits.event_stop_sg = 1; // Write 1 to clear
+          driver.GetComm().WriteRegister(tmc5160::Registers::RAMP_STAT, clear_stat.value);
+          vTaskDelay(pdMS_TO_TICKS(50));
+        }
+        
+        // Now set to POSITIONING
+        if (!driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING)) {
+          ESP_LOGE(TAG, "  ✗ SetRampMode() call failed!");
+        }
+        vTaskDelay(pdMS_TO_TICKS(100)); // Longer delay for register write
+        
+        // Verify it was set
+        uint32_t rampmode_verify = 0;
+        if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMPMODE, rampmode_verify)) {
+          if (rampmode_verify == 1) {
+            ESP_LOGI(TAG, "  ✓ RAMPMODE confirmed set to POSITIONING");
+          } else {
+            ESP_LOGE(TAG, "  ✗ Failed to set RAMPMODE to POSITIONING! Still %lu (%s)", 
+                     rampmode_verify, (rampmode_verify == 0) ? "HOLD" : "UNKNOWN");
+            ESP_LOGE(TAG, "  This is a critical error - motor cannot move in HOLD mode!");
+            ESP_LOGE(TAG, "  Possible causes: SPI communication issue, chip reset, or register write failure");
+          }
+        }
+      } else {
+        ESP_LOGI(TAG, "  ✓ RAMPMODE is POSITIONING (correct)");
+      }
+    }
+  }
+  
+  // Wait for motion to complete (either target reached or stall detected)
+  bool max_stall_detected = false;
+  bool max_reached_360 = false;
+  uint32_t max_start_time = esp_timer_get_time() / 1000;
+  uint32_t timeout_ms = Test::Motion::HOMING_TIMEOUT_MS;
+  
+  int32_t start_position = driver.rampControl.GetCurrentPosition();
+  int32_t last_position = start_position;
+  uint32_t last_position_check_time = max_start_time;
+  constexpr int32_t MIN_MOVEMENT_FOR_VALID_STALL = 5000; // Must move at least 5000 steps (~7°) before stall is valid
+  constexpr int32_t MIN_MOVEMENT_FOR_STALL_CHECK = 2000; // Don't even check for stalls until motor moves this much
+  uint32_t last_sg_result_time = max_start_time;
+  uint16_t last_sg_result = sg_result_baseline;
+  bool motion_started = false;
+  
+  while (true) {
+    // Check timeout
+    uint32_t elapsed = (esp_timer_get_time() / 1000) - max_start_time;
+    if (elapsed > timeout_ms) {
+      ESP_LOGW(TAG, "Maximum bound search timeout");
+      break;
+    }
+    
+    // Check if target reached (no stall, reached 360°)
+    if (driver.rampControl.IsTargetReached()) {
+      max_reached_360 = true;
+      ESP_LOGI(TAG, "Reached +360° target - no stall detected");
+      break;
+    }
+    
+    // Check current position to verify motor is actually moving
+    int32_t current_pos = driver.rampControl.GetCurrentPosition();
+    int32_t position_delta = current_pos - start_position;
+    uint32_t current_time = esp_timer_get_time() / 1000;
+    float vactual = driver.rampControl.GetCurrentSpeed();
+    
+    // Detect if motion has started
+    if (!motion_started && std::abs(position_delta) > 100) {
+      motion_started = true;
+      ESP_LOGI(TAG, "Motion started: position=%ld, speed=%.1f steps/s", current_pos, vactual);
+    }
+    
+    // Check for stall stop event unconditionally
+    // We must check this even if movement is small, because a stall might have stopped us immediately
+    uint32_t ramp_stat = 0;
+    bool stall_event = false;
+    if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat)) {
+      tmc5160::RAMP_STAT_Register stat{};
+      stat.value = ramp_stat;
+      if (stat.bits.event_stop_sg) {
+        stall_event = true;
+      }
+    }
+    
+    // If stall event detected, verify it's a real stall
+    if (stall_event) {
+      // Read DRV_STATUS to get SG_RESULT for diagnostics
+      uint32_t drv_status_val = 0;
+      uint16_t sg_result = 0;
+      bool motor_moving = false;
+      if (driver.GetComm().ReadRegister(tmc5160::Registers::DRV_STATUS, drv_status_val)) {
+        tmc5160::DRV_STATUS_Register drv_status{};
+        drv_status.value = drv_status_val;
+        sg_result = drv_status.bits.sg_result;
+        motor_moving = !drv_status.bits.stst; // stst=1 means standstill
+      }
+      
+      // Check if motor is actually moving (not already stopped)
+      if (std::abs(vactual) < 10.0f && motor_moving) {
+        ESP_LOGW(TAG, "Stall event but motor appears stopped (VACTUAL=%.1f) - may be false stall", vactual);
+      }
+      
+      // Check if motor has moved enough to consider stall valid
+      if (position_delta < MIN_MOVEMENT_FOR_VALID_STALL) {
+        ESP_LOGW(TAG, "⚠️ Stall event detected but motor hasn't moved enough (%ld steps < %d) - IGNORING FALSE STALL", 
+                 position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
+        ESP_LOGW(TAG, "  Diagnostics: SG_RESULT=%d (baseline=%d), VACTUAL=%.1f steps/s, position=%ld", 
+                 sg_result, sg_result_baseline, vactual, current_pos);
+        ESP_LOGW(TAG, "  SGT threshold=%d (lower=more sensitive) - consider increasing if false stalls persist", 
+                 Test::StallGuard::SGT_HOMING);
+        ESP_LOGW(TAG, "  Clearing stall flag and continuing search...");
+        
+        // Clear the stall event flag and continue
+        tmc5160::RAMP_STAT_Register clear_stall{};
+        clear_stall.bits.event_stop_sg = 1; // Write 1 to clear
+        if (!driver.GetComm().WriteRegister(tmc5160::Registers::RAMP_STAT, clear_stall.value)) {
+          ESP_LOGE(TAG, "Failed to clear stall flag!");
+        }
+        
+        // CRITICAL: Stall events can force RAMPMODE to HOLD - ensure it's back to POSITIONING
+        uint32_t rampmode_check = 0;
+        if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMPMODE, rampmode_check)) {
+          if (rampmode_check != 1) { // Not POSITIONING
+            ESP_LOGW(TAG, "  Stall event forced RAMPMODE to %lu - resetting to POSITIONING...", rampmode_check);
+            driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+            vTaskDelay(pdMS_TO_TICKS(50));
+          }
+        }
+        
+        // Verify stall flag cleared
+        vTaskDelay(pdMS_TO_TICKS(50));
+        uint32_t ramp_stat_after = 0;
+        if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat_after)) {
+          tmc5160::RAMP_STAT_Register after{};
+          after.value = ramp_stat_after;
+          if (after.bits.event_stop_sg) {
+            ESP_LOGE(TAG, "CRITICAL: Stall flag still set after clear - possible race condition!");
+          } else {
+            ESP_LOGI(TAG, "✓ Stall flag cleared successfully");
+          }
+        }
+        
+        continue; // Continue searching, don't break
+      }
+      
+      // Motor has moved enough - this is likely a real stall
+      max_stall_detected = true;
+      ESP_LOGI(TAG, "✓ Stall detected during maximum bound search!");
+      ESP_LOGI(TAG, "  Position moved: %ld steps from start (threshold: %d)", 
+               position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
+      ESP_LOGI(TAG, "  SG_RESULT=%d (baseline=%d, lower=more load, 0=highest load)", 
+               sg_result, sg_result_baseline);
+      ESP_LOGI(TAG, "  VACTUAL=%.1f steps/s, elapsed=%lu ms", vactual, elapsed);
+      break;
+    }
+    
+    // Monitor SG_RESULT periodically for diagnostics
+    if (current_time - last_sg_result_time >= 200) {
+      uint32_t drv_status_monitor = 0;
+      if (driver.GetComm().ReadRegister(tmc5160::Registers::DRV_STATUS, drv_status_monitor)) {
+        tmc5160::DRV_STATUS_Register drv_status{};
+        drv_status.value = drv_status_monitor;
+        uint16_t current_sg = drv_status.bits.sg_result;
+        if (current_sg != last_sg_result) {
+          ESP_LOGI(TAG, "  SG_RESULT changed: %d -> %d (position=%ld, speed=%.1f)", 
+                   last_sg_result, current_sg, current_pos, vactual);
+          last_sg_result = current_sg;
+        }
+      }
+      last_sg_result_time = current_time;
+    }
+    
+    // Log position progress periodically (every 500ms)
+    if (current_time - last_position_check_time >= 500) {
+      int32_t position_change = current_pos - last_position;
+      ESP_LOGI(TAG, "  Progress: position=%ld (+%ld from start, +%ld since last), speed=%.1f steps/s, elapsed=%lu ms",
+               current_pos, position_delta, position_change, vactual, elapsed);
+      
+      // Check if motor is stuck (position not changing but should be moving)
+      if (motion_started && std::abs(position_change) < 50 && std::abs(vactual) < 100.0f && elapsed > 1000) {
+        ESP_LOGW(TAG, "  ⚠️ Motor appears stuck: position change=%ld steps, speed=%.1f steps/s", 
+                 position_change, vactual);
+      }
+      
+      last_position_check_time = current_time;
+      last_position = current_pos;
+    }
+    
+    vTaskDelay(pdMS_TO_TICKS(10)); // Poll every 10ms
+  }
+  
+  int32_t max_position = driver.rampControl.GetCurrentPosition();
+  
+  if (max_stall_detected) {
+    ESP_LOGI(TAG, "Maximum bound found at stall: %ld steps", max_position);
+    
+    // Back off with 5° offset
     driver.rampControl.Stop();
+    driver.rampControl.SetRampMode(tmc5160::RampMode::HOLD);
     vTaskDelay(pdMS_TO_TICKS(500));
-    ESP_LOGI(TAG, "Moving away from maximum stop...");
     
-    int32_t backoff = 5000;
+    ESP_LOGI(TAG, "Backing off 5° (%ld steps) from maximum stall...", offset_steps);
     driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(max_position - backoff);
+    driver.rampControl.SetTargetPosition(max_position - offset_steps);
     driver.rampControl.SetMaxSpeed(search_speed / 2.0f);
-    driver.rampControl.SetAcceleration(search_speed);
     while (!driver.rampControl.IsTargetReached()) {
       vTaskDelay(pdMS_TO_TICKS(100));
     }
     max_position = driver.rampControl.GetCurrentPosition();
+  } else if (max_reached_360) {
+    ESP_LOGI(TAG, "No stall at +360° - will use -175° to +175° bounds");
+    // Will handle this after checking minimum bound
   }
   
-  // Note: We replaced the manual polling loops with the robust PerformSensorlessHoming call
-  // which handles the timeout and status checks internally now.
+  // ============================================================
+  // Find minimum bound: Command to -360° and detect stall
+  // ============================================================
+  ESP_LOGI(TAG, "Finding minimum bound: Commanding to -360° (%ld steps)...", -steps_per_360_deg);
   
-  bool stall_detected_min = (min_position == 0); // Since we reset to 0 at min
-  bool stall_detected_max = (max_position > 10000); // Assume valid if moved significantly
+  // Clear stall flag before starting
+  driver.GetComm().WriteRegister(tmc5160::Registers::RAMP_STAT, clear_stat_init.value);
+  
+  driver.rampControl.SetTargetPosition(-steps_per_360_deg);
+  
+  // Wait for motion to complete (either target reached or stall detected)
+  bool min_stall_detected = false;
+  bool min_reached_360 = false;
+  uint32_t min_start_time = esp_timer_get_time() / 1000;
+  int32_t min_start_position = driver.rampControl.GetCurrentPosition();
+  int32_t min_last_position = min_start_position;
+  uint32_t min_last_position_check_time = min_start_time;
+  uint32_t min_last_sg_result_time = min_start_time;
+  uint16_t min_last_sg_result = sg_result_baseline;
+  bool min_motion_started = false;
+  
+  while (true) {
+    // Check timeout
+    uint32_t elapsed = (esp_timer_get_time() / 1000) - min_start_time;
+    if (elapsed > timeout_ms) {
+      ESP_LOGW(TAG, "Minimum bound search timeout");
+      break;
+    }
+    
+    // Check if target reached (no stall, reached -360°)
+    if (driver.rampControl.IsTargetReached()) {
+      min_reached_360 = true;
+      ESP_LOGI(TAG, "Reached -360° target - no stall detected");
+      break;
+    }
+    
+    // Check current position to verify motor is actually moving
+    int32_t current_pos = driver.rampControl.GetCurrentPosition();
+    int32_t position_delta = std::abs(current_pos - min_start_position);
+    uint32_t current_time = esp_timer_get_time() / 1000;
+    float vactual = driver.rampControl.GetCurrentSpeed();
+    
+    // Detect if motion has started
+    if (!min_motion_started && position_delta > 100) {
+      min_motion_started = true;
+      ESP_LOGI(TAG, "Motion started: position=%ld, speed=%.1f steps/s", current_pos, vactual);
+    }
+    
+    // Check for stall stop event unconditionally
+    uint32_t ramp_stat = 0;
+    bool stall_event = false;
+    if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat)) {
+      tmc5160::RAMP_STAT_Register stat{};
+      stat.value = ramp_stat;
+      if (stat.bits.event_stop_sg) {
+        stall_event = true;
+      }
+    }
+    
+    // If stall event detected, verify it's a real stall
+    if (stall_event) {
+      // Read DRV_STATUS to get SG_RESULT for diagnostics
+      uint32_t drv_status_val = 0;
+      uint16_t sg_result = 0;
+      bool motor_moving = false;
+      if (driver.GetComm().ReadRegister(tmc5160::Registers::DRV_STATUS, drv_status_val)) {
+        tmc5160::DRV_STATUS_Register drv_status{};
+        drv_status.value = drv_status_val;
+        sg_result = drv_status.bits.sg_result;
+        motor_moving = !drv_status.bits.stst;
+      }
+      
+      // Check if motor is actually moving
+      if (std::abs(vactual) < 10.0f && motor_moving) {
+        ESP_LOGW(TAG, "Stall event but motor appears stopped (VACTUAL=%.1f) - may be false stall", vactual);
+      }
+      
+      // Check if motor has moved enough to consider stall valid
+      if (position_delta < MIN_MOVEMENT_FOR_VALID_STALL) {
+        ESP_LOGW(TAG, "⚠️ Stall event detected but motor hasn't moved enough (%ld steps < %d) - IGNORING FALSE STALL", 
+                 position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
+        ESP_LOGW(TAG, "  Diagnostics: SG_RESULT=%d (baseline=%d), VACTUAL=%.1f steps/s, position=%ld", 
+                 sg_result, sg_result_baseline, vactual, current_pos);
+        ESP_LOGW(TAG, "  SGT threshold=%d (lower=more sensitive) - consider increasing if false stalls persist", 
+                 Test::StallGuard::SGT_HOMING);
+        ESP_LOGW(TAG, "  Clearing stall flag and continuing search...");
+        
+        // Clear the stall event flag and continue
+        tmc5160::RAMP_STAT_Register clear_stall{};
+        clear_stall.bits.event_stop_sg = 1;
+        if (!driver.GetComm().WriteRegister(tmc5160::Registers::RAMP_STAT, clear_stall.value)) {
+          ESP_LOGE(TAG, "Failed to clear stall flag!");
+        }
+        
+        // CRITICAL: Stall events can force RAMPMODE to HOLD - ensure it's back to POSITIONING
+        uint32_t rampmode_check = 0;
+        if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMPMODE, rampmode_check)) {
+          if (rampmode_check != 1) { // Not POSITIONING
+            ESP_LOGW(TAG, "  Stall event forced RAMPMODE to %lu - resetting to POSITIONING...", rampmode_check);
+            driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+            vTaskDelay(pdMS_TO_TICKS(50));
+          }
+        }
+        
+        // Verify stall flag cleared
+        vTaskDelay(pdMS_TO_TICKS(50));
+        uint32_t ramp_stat_after = 0;
+        if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat_after)) {
+          tmc5160::RAMP_STAT_Register after{};
+          after.value = ramp_stat_after;
+          if (after.bits.event_stop_sg) {
+            ESP_LOGE(TAG, "CRITICAL: Stall flag still set after clear - possible race condition!");
+          } else {
+            ESP_LOGI(TAG, "✓ Stall flag cleared successfully");
+          }
+        }
+        
+        continue;
+      }
+      
+      // Motor has moved enough - this is likely a real stall
+      min_stall_detected = true;
+      ESP_LOGI(TAG, "✓ Stall detected during minimum bound search!");
+      ESP_LOGI(TAG, "  Position moved: %ld steps from start (threshold: %d)", 
+               position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
+      ESP_LOGI(TAG, "  SG_RESULT=%d (baseline=%d, lower=more load, 0=highest load)", 
+               sg_result, sg_result_baseline);
+      ESP_LOGI(TAG, "  VACTUAL=%.1f steps/s, elapsed=%lu ms", vactual, elapsed);
+      break;
+    }
+    
+    // Monitor SG_RESULT periodically
+    if (current_time - min_last_sg_result_time >= 200) {
+      uint32_t drv_status_monitor = 0;
+      if (driver.GetComm().ReadRegister(tmc5160::Registers::DRV_STATUS, drv_status_monitor)) {
+        tmc5160::DRV_STATUS_Register drv_status{};
+        drv_status.value = drv_status_monitor;
+        uint16_t current_sg = drv_status.bits.sg_result;
+        if (current_sg != min_last_sg_result) {
+          ESP_LOGI(TAG, "  SG_RESULT changed: %d -> %d (position=%ld, speed=%.1f)", 
+                   min_last_sg_result, current_sg, current_pos, vactual);
+          min_last_sg_result = current_sg;
+        }
+      }
+      min_last_sg_result_time = current_time;
+    }
+    
+    // Log position progress periodically (every 500ms)
+    if (current_time - min_last_position_check_time >= 500) {
+      int32_t position_change = current_pos - min_last_position;
+      ESP_LOGI(TAG, "  Progress: position=%ld (%ld from start, %ld since last), speed=%.1f steps/s, elapsed=%lu ms",
+               current_pos, current_pos - min_start_position, position_change, vactual, elapsed);
+      
+      // Check if motor is stuck
+      if (min_motion_started && std::abs(position_change) < 50 && std::abs(vactual) < 100.0f && elapsed > 1000) {
+        ESP_LOGW(TAG, "  ⚠️ Motor appears stuck: position change=%ld steps, speed=%.1f steps/s", 
+                 position_change, vactual);
+      }
+      
+      min_last_position_check_time = current_time;
+      min_last_position = current_pos;
+    }
+    
+    vTaskDelay(pdMS_TO_TICKS(10)); // Poll every 10ms
+  }
+  
+  int32_t min_position = driver.rampControl.GetCurrentPosition();
+  
+  if (min_stall_detected) {
+    ESP_LOGI(TAG, "Minimum bound found at stall: %ld steps", min_position);
+    
+    // Back off with 5° offset
+    driver.rampControl.Stop();
+    driver.rampControl.SetRampMode(tmc5160::RampMode::HOLD);
+    vTaskDelay(pdMS_TO_TICKS(500));
+    
+    ESP_LOGI(TAG, "Backing off 5° (%ld steps) from minimum stall...", offset_steps);
+    driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+    driver.rampControl.SetTargetPosition(min_position + offset_steps);
+    driver.rampControl.SetMaxSpeed(search_speed / 2.0f);
+    while (!driver.rampControl.IsTargetReached()) {
+      vTaskDelay(pdMS_TO_TICKS(100));
+    }
+    min_position = driver.rampControl.GetCurrentPosition();
+  } else if (min_reached_360) {
+    ESP_LOGI(TAG, "No stall at -360° - will use -175° to +175° bounds");
+  }
+  
+  // ============================================================
+  // Handle results and set up bounds
+  // ============================================================
+  
+  // Disable StallGuard2 stop for normal operation
+  sw_mode.bits.sg_stop = false;
+  driver.GetComm().WriteRegister(tmc5160::Registers::SW_MODE, sw_mode.value);
+  ESP_LOGI(TAG, "✓ StallGuard2 stop disabled for normal operation");
+  
+  bool stall_detected_min = min_stall_detected;
+  bool stall_detected_max = max_stall_detected;
+  bool reached_360 = (min_reached_360 && max_reached_360); // Both reached 360° = no stalls
+  
+  if (reached_360) {
+    // No stalls detected - mark current position as 0 and use -175° to +175° bounds
+    ESP_LOGI(TAG, "No stalls detected - marking current position as 0, using -175° to +175° bounds");
+    
+    driver.rampControl.Stop();
+    driver.rampControl.SetRampMode(tmc5160::RampMode::HOLD);
+    
+    // Wait for motor to stop
+    uint32_t stop_wait_start = esp_timer_get_time() / 1000;
+    while (true) {
+      float vactual = driver.rampControl.GetCurrentSpeed();
+      if (std::abs(vactual) < 10.0f) break;
+      if ((esp_timer_get_time() / 1000) - stop_wait_start > 2000) break;
+      vTaskDelay(pdMS_TO_TICKS(50));
+    }
+    
+    // Reset position to 0
+    driver.rampControl.SetCurrentPosition(0);
+    
+    // Use -175° to +175° bounds
+    // Using utility function to ensure proper microstep handling
+    float bounds_deg = 175.0f;
+    int32_t bounds_steps = tmc5160::DegreesToSteps(bounds_deg, steps_per_rev);
+    max_position = bounds_steps;
+    min_position = -bounds_steps;
+    
+    ESP_LOGI(TAG, "Position reset to 0, bounds set to ±%.1f° (%ld steps)", bounds_deg, bounds_steps);
+    
+    // Move to center (0) if not already there
+    int32_t current_pos = driver.rampControl.GetCurrentPosition();
+    if (std::abs(current_pos) > 100) {
+      ESP_LOGI(TAG, "Moving to center position (0)...");
+      driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+      driver.rampControl.SetTargetPosition(0);
+      driver.rampControl.SetMaxSpeed(1000.0f);
+      driver.rampControl.SetAcceleration(2000.0f);
+      driver.rampControl.SetDeceleration(2000.0f);
+      while (!driver.rampControl.IsTargetReached()) {
+        vTaskDelay(pdMS_TO_TICKS(100));
+      }
+      driver.rampControl.SetCurrentPosition(0);
+      ESP_LOGI(TAG, "Arrived at center position (0)");
+    }
+  } else {
+    // At least one stall detected - move to center between bounds
+    int32_t center_position = (min_position + max_position) / 2;
+    ESP_LOGI(TAG, "Moving to center position: %ld steps (between %ld and %ld)", 
+             center_position, min_position, max_position);
+    
+    driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+    driver.rampControl.SetTargetPosition(center_position);
+    driver.rampControl.SetMaxSpeed(1000.0f);
+    driver.rampControl.SetAcceleration(2000.0f);
+    driver.rampControl.SetDeceleration(2000.0f);
+    while (!driver.rampControl.IsTargetReached()) {
+      vTaskDelay(pdMS_TO_TICKS(100));
+    }
+    
+    // Reset position to 0 at center
+    driver.rampControl.SetCurrentPosition(0);
+    
+    // Adjust bounds relative to new center
+    min_position = min_position - center_position;
+    max_position = max_position - center_position;
+    
+    ESP_LOGI(TAG, "Home position set to 0 (center of bounds)");
+    ESP_LOGI(TAG, "Adjusted bounds: min=%ld, max=%ld steps", min_position, max_position);
+  }
 
 
   // ============================================================
@@ -1623,7 +2472,8 @@ extern "C" void app_main() {
   ESP_LOGI(TAG, "║              STEP 2: Setting Global Bounds and Home                        ║");
   ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
 
-  bool bounded = stall_detected_min && stall_detected_max;
+  // Determine if we're bounded (either by stall detection or 360° limit)
+  bool bounded = (stall_detected_min && stall_detected_max) || reached_360;
   int32_t current_pos = driver.rampControl.GetCurrentPosition();
 
   FatigueTestMotion motion(&driver);
@@ -1635,6 +2485,19 @@ extern "C" void app_main() {
   } else {
     ESP_LOGI(TAG, "=== BOUNDED MODE ===");
 
+    if (reached_360) {
+      // Special case: No stall detected, using -175° to +175° bounds
+      // Position is already at 0 (we reset it at 360° point and moved to center)
+      ESP_LOGI(TAG, "Using -175° to +175° bounds (no stall detected at 360°)");
+      
+      // Set global bounds directly (already relative to 0)
+      motion.SetGlobalBounds(min_position, max_position);
+      
+      float min_deg, max_deg;
+      motion.GetGlobalBoundsDegrees(min_deg, max_deg);
+      ESP_LOGI(TAG, "Global bounds: min=%.2f°, max=%.2f° from center", min_deg, max_deg);
+    } else {
+      // Normal case: Stall detected on both ends
     // Set middle as home
     int32_t middle_position = (min_position + max_position) / 2;
     ESP_LOGI(TAG, "Moving to middle position: %d steps", middle_position);
@@ -1659,6 +2522,7 @@ extern "C" void app_main() {
     float min_deg, max_deg;
     motion.GetGlobalBoundsDegrees(min_deg, max_deg);
     ESP_LOGI(TAG, "Global bounds: min=%.2f°, max=%.2f° from center", min_deg, max_deg);
+    }
   }
 
   // ============================================================

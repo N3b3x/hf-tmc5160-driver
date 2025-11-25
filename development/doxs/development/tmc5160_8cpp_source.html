@@ -1295,7 +1295,7 @@ $(function(){initNavTree('tmc5160_8cpp_source.html',''); initResizable(); });
 <div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span>                                                             int32_t&amp; final_position, uint32_t timeout_ms) <span class="keyword">noexcept</span> {</div>
 <div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span>  <span class="comment">// Configure StallGuard2 for homing</span></div>
 <div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span>  <a class="code hl_struct" href="structtmc5160_1_1StallGuardConfig.html">StallGuardConfig</a> sg_config{};</div>
-<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span>  sg_config.<a class="code hl_variable" href="structtmc5160_1_1StallGuardConfig.html#a24876fc3348794d2c18f85a626e71750">sgt</a> = stall_threshold;</div>
+<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span>  sg_config.<a class="code hl_variable" href="structtmc5160_1_1StallGuardConfig.html#a84da82c3e0775de30668b0ea065b6de0">sgt</a> = stall_threshold;</div>
 <div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span>  sg_config.sfilt = <span class="keyword">true</span>; <span class="comment">// Enable filter for stable readings</span></div>
 <div class="line"><a id="l01049" name="l01049"></a><span class="lineno"> 1049</span>  <span class="keywordflow">if</span> (!ConfigureStallGuard(sg_config)) {</div>
 <div class="line"><a id="l01050" name="l01050"></a><span class="lineno"> 1050</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
@@ -1327,474 +1327,492 @@ $(function(){initNavTree('tmc5160_8cpp_source.html',''); initResizable(); });
 <div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span>  <span class="keywordflow">if</span> (!driver_.rampControl.SetRampMode(mode)) {</div>
 <div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l01078" name="l01078"></a><span class="lineno"> 1078</span>  }</div>
-<div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span>  <span class="keywordflow">if</span> (!driver_.rampControl.SetMaxSpeed(search_speed)) {</div>
-<div class="line"><a id="l01080" name="l01080"></a><span class="lineno"> 1080</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span>  }</div>
-<div class="line"><a id="l01082" name="l01082"></a><span class="lineno"> 1082</span> </div>
-<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span>  <span class="comment">// Wait for stall event</span></div>
-<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"> 1084</span>  <span class="keywordtype">bool</span> stalled = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span>  <span class="comment">// Simple polling loop with crude timeout using rough cycle estimates</span></div>
-<div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span>  <span class="comment">// Assuming ~10us per register read interaction on SPI</span></div>
-<div class="line"><a id="l01087" name="l01087"></a><span class="lineno"> 1087</span>  uint32_t loops = timeout_ms * 100; </div>
-<div class="line"><a id="l01088" name="l01088"></a><span class="lineno"> 1088</span>  </div>
-<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; loops; i++) {</div>
-<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span>    uint32_t ramp_stat = 0;</div>
-<div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span>    <span class="keywordflow">if</span> (driver_.comm_.ReadRegister(Registers::RAMP_STAT, ramp_stat)) {</div>
-<div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span>      <a class="code hl_union" href="uniontmc5160_1_1RAMP__STAT__Register.html">RAMP_STAT_Register</a> status{};</div>
-<div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span>      status.<a class="code hl_variable" href="uniontmc5160_1_1RAMP__STAT__Register.html#ae97e83436a6f71afdfe49c9966154cc4">value</a> = ramp_stat;</div>
-<div class="line"><a id="l01094" name="l01094"></a><span class="lineno"> 1094</span>      </div>
-<div class="line"><a id="l01095" name="l01095"></a><span class="lineno"> 1095</span>      <span class="comment">// Check for stall stop event or velocity zero (stop executed)</span></div>
-<div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span>      <span class="keywordflow">if</span> (status.bits.event_stop_sg || (status.bits.vzero &amp;&amp; status.bits.status_sg)) {</div>
-<div class="line"><a id="l01097" name="l01097"></a><span class="lineno"> 1097</span>        stalled = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01098" name="l01098"></a><span class="lineno"> 1098</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span>      }</div>
-<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span>    }</div>
-<div class="line"><a id="l01101" name="l01101"></a><span class="lineno"> 1101</span>    <span class="comment">// Small delay to relieve bus</span></div>
-<div class="line"><a id="l01102" name="l01102"></a><span class="lineno"> 1102</span>    <span class="comment">// driver_.comm_.DelayUs(100); // Requires DelayUs in Comm interface, assuming it exists</span></div>
-<div class="line"><a id="l01103" name="l01103"></a><span class="lineno"> 1103</span>  }</div>
-<div class="line"><a id="l01104" name="l01104"></a><span class="lineno"> 1104</span> </div>
-<div class="line"><a id="l01105" name="l01105"></a><span class="lineno"> 1105</span>  <span class="comment">// Stop motor (ensure VMAX=0)</span></div>
-<div class="line"><a id="l01106" name="l01106"></a><span class="lineno"> 1106</span>  driver_.rampControl.Stop();</div>
-<div class="line"><a id="l01107" name="l01107"></a><span class="lineno"> 1107</span> </div>
-<div class="line"><a id="l01108" name="l01108"></a><span class="lineno"> 1108</span>  <span class="comment">// Disable StallGuard2 stop to prevent accidental stops later</span></div>
-<div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span>  sw_mode.bits.sg_stop = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span>  driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value);</div>
-<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span> </div>
-<div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span>  <span class="comment">// Read final position</span></div>
-<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span>  final_position = driver_.rampControl.GetCurrentPosition();</div>
-<div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span> </div>
-<div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span>  <span class="comment">// Clear the stall event flag again to be clean</span></div>
-<div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span>  driver_.comm_.WriteRegister(Registers::RAMP_STAT, clear_stat.value);</div>
-<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span> </div>
-<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span>  <span class="keywordflow">return</span> stalled;</div>
-<div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span>}</div>
+<div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span>  </div>
+<div class="line"><a id="l01080" name="l01080"></a><span class="lineno"> 1080</span>  <span class="comment">// CRITICAL: Set acceleration/deceleration BEFORE setting speeds</span></div>
+<div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span>  <span class="comment">// Velocity mode requires AMAX &gt; 0 to actually accelerate from VSTART to VMAX</span></div>
+<div class="line"><a id="l01082" name="l01082"></a><span class="lineno"> 1082</span>  <span class="comment">// Use reasonable acceleration: reach VMAX in ~0.1 seconds</span></div>
+<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span>  <span class="keywordtype">float</span> acceleration = std::max(search_speed * 10.0f, 50000.0f); <span class="comment">// At least 50k steps/s²</span></div>
+<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"> 1084</span>  <span class="keywordflow">if</span> (!driver_.rampControl.SetAcceleration(acceleration)) {</div>
+<div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span>  }</div>
+<div class="line"><a id="l01087" name="l01087"></a><span class="lineno"> 1087</span>  <span class="keywordflow">if</span> (!driver_.rampControl.SetDeceleration(acceleration)) {</div>
+<div class="line"><a id="l01088" name="l01088"></a><span class="lineno"> 1088</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span>  }</div>
+<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span>  </div>
+<div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span>  <span class="comment">// Set VSTART &gt; 0 to actually start motion in velocity mode</span></div>
+<div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span>  <span class="comment">// VSTART should be reasonable but less than VMAX - use 10% of search speed or minimum 1000 steps/s</span></div>
+<div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span>  <span class="keywordtype">float</span> vstart_speed = std::max(search_speed * 0.1f, 1000.0f);</div>
+<div class="line"><a id="l01094" name="l01094"></a><span class="lineno"> 1094</span>  <span class="keywordflow">if</span> (!driver_.rampControl.SetRampSpeeds(vstart_speed, 100.0f, 0.0f)) {</div>
+<div class="line"><a id="l01095" name="l01095"></a><span class="lineno"> 1095</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span>  }</div>
+<div class="line"><a id="l01097" name="l01097"></a><span class="lineno"> 1097</span>  <span class="keywordflow">if</span> (!driver_.rampControl.SetMaxSpeed(search_speed)) {</div>
+<div class="line"><a id="l01098" name="l01098"></a><span class="lineno"> 1098</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span>  }</div>
+<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span> </div>
+<div class="line"><a id="l01101" name="l01101"></a><span class="lineno"> 1101</span>  <span class="comment">// Wait for stall event</span></div>
+<div class="line"><a id="l01102" name="l01102"></a><span class="lineno"> 1102</span>  <span class="keywordtype">bool</span> stalled = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01103" name="l01103"></a><span class="lineno"> 1103</span>  <span class="comment">// Simple polling loop with crude timeout using rough cycle estimates</span></div>
+<div class="line"><a id="l01104" name="l01104"></a><span class="lineno"> 1104</span>  <span class="comment">// Assuming ~10us per register read interaction on SPI</span></div>
+<div class="line"><a id="l01105" name="l01105"></a><span class="lineno"> 1105</span>  uint32_t loops = timeout_ms * 100; </div>
+<div class="line"><a id="l01106" name="l01106"></a><span class="lineno"> 1106</span>  </div>
+<div class="line"><a id="l01107" name="l01107"></a><span class="lineno"> 1107</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; loops; i++) {</div>
+<div class="line"><a id="l01108" name="l01108"></a><span class="lineno"> 1108</span>    uint32_t ramp_stat = 0;</div>
+<div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span>    <span class="keywordflow">if</span> (driver_.comm_.ReadRegister(Registers::RAMP_STAT, ramp_stat)) {</div>
+<div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span>      <a class="code hl_union" href="uniontmc5160_1_1RAMP__STAT__Register.html">RAMP_STAT_Register</a> status{};</div>
+<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span>      status.<a class="code hl_variable" href="uniontmc5160_1_1RAMP__STAT__Register.html#ae97e83436a6f71afdfe49c9966154cc4">value</a> = ramp_stat;</div>
+<div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span>      </div>
+<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span>      <span class="comment">// Check for stall stop event or velocity zero (stop executed)</span></div>
+<div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span>      <span class="keywordflow">if</span> (status.bits.event_stop_sg || (status.bits.vzero &amp;&amp; status.bits.status_sg)) {</div>
+<div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span>        stalled = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span>      }</div>
+<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span>    }</div>
+<div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span>    <span class="comment">// Small delay to relieve bus</span></div>
+<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span>    <span class="comment">// driver_.comm_.DelayUs(100); // Requires DelayUs in Comm interface, assuming it exists</span></div>
+<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span>  }</div>
+<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span> </div>
+<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span>  <span class="comment">// Stop motor (ensure VMAX=0)</span></div>
+<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span>  driver_.rampControl.Stop();</div>
+<div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span> </div>
+<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span>  <span class="comment">// Disable StallGuard2 stop to prevent accidental stops later</span></div>
+<div class="line"><a id="l01127" name="l01127"></a><span class="lineno"> 1127</span>  sw_mode.bits.sg_stop = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01128" name="l01128"></a><span class="lineno"> 1128</span>  driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value);</div>
+<div class="line"><a id="l01129" name="l01129"></a><span class="lineno"> 1129</span> </div>
+<div class="line"><a id="l01130" name="l01130"></a><span class="lineno"> 1130</span>  <span class="comment">// Read final position</span></div>
+<div class="line"><a id="l01131" name="l01131"></a><span class="lineno"> 1131</span>  final_position = driver_.rampControl.GetCurrentPosition();</div>
+<div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span> </div>
+<div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span>  <span class="comment">// Clear the stall event flag again to be clean</span></div>
+<div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span>  driver_.comm_.WriteRegister(Registers::RAMP_STAT, clear_stat.value);</div>
+<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span> </div>
+<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span>  <span class="keywordflow">return</span> stalled;</div>
+<div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>}</div>
 </div>
-<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span> </div>
-<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01122" data-start="{" data-end="}">
-<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ae52ee957475af0babba3daafa428d39e"> 1122</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ae52ee957475af0babba3daafa428d39e">TMC5160&lt;CommType&gt;::Diagnostics::PerformSwitchHoming</a>(<span class="keywordtype">bool</span> direction, <span class="keywordtype">float</span> search_speed, <span class="keywordtype">float</span> switch_speed,</div>
-<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span>                                                         int32_t&amp; final_position, <span class="keywordtype">bool</span> use_left_switch, uint32_t timeout_ms) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span>  <span class="comment">// 1. Activate position latching and motor stop upon switch event</span></div>
-<div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span>  <a class="code hl_union" href="uniontmc5160_1_1SW__MODE__Register.html">SW_MODE_Register</a> sw_mode{};</div>
-<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span>  <span class="comment">// Read current SW_MODE to preserve other settings (like softstop)</span></div>
-<div class="line"><a id="l01127" name="l01127"></a><span class="lineno"> 1127</span>  uint32_t sw_mode_val = 0;</div>
-<div class="line"><a id="l01128" name="l01128"></a><span class="lineno"> 1128</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::SW_MODE, sw_mode_val)) {</div>
-<div class="line"><a id="l01129" name="l01129"></a><span class="lineno"> 1129</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01130" name="l01130"></a><span class="lineno"> 1130</span>  }</div>
-<div class="line"><a id="l01131" name="l01131"></a><span class="lineno"> 1131</span>  sw_mode.<a class="code hl_variable" href="uniontmc5160_1_1SW__MODE__Register.html#abe7326f117f92e0458824b46090ec7dc">value</a> = sw_mode_val;</div>
-<div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span>  </div>
-<div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span>  <span class="comment">// Configure latching and stop enable based on switch choice</span></div>
-<div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span>  <span class="keywordflow">if</span> (use_left_switch) {</div>
-<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span>    sw_mode.bits.latch_l_active = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span>    sw_mode.bits.stop_l_enable = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>  } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span>    sw_mode.bits.latch_r_active = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span>    sw_mode.bits.stop_r_enable = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01140" name="l01140"></a><span class="lineno"> 1140</span>  }</div>
-<div class="line"><a id="l01141" name="l01141"></a><span class="lineno"> 1141</span>  <span class="comment">// Use hard stop for precise homing (soft stop can overshoot) - datasheet recommends hard stop for StallGuard,</span></div>
-<div class="line"><a id="l01142" name="l01142"></a><span class="lineno"> 1142</span>  <span class="comment">// but for switches hard stop ensures we don&#39;t crash if switch is a hard limit.</span></div>
-<div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span>  <span class="comment">// However, datasheet 12.4 says &quot;Or motor can be softly decelerated...&quot;.</span></div>
-<div class="line"><a id="l01144" name="l01144"></a><span class="lineno"> 1144</span>  <span class="comment">// Let&#39;s assume hard stop for safety during homing search.</span></div>
-<div class="line"><a id="l01145" name="l01145"></a><span class="lineno"> 1145</span>  sw_mode.bits.en_softstop = <span class="keyword">false</span>; </div>
-<div class="line"><a id="l01146" name="l01146"></a><span class="lineno"> 1146</span>  </div>
-<div class="line"><a id="l01147" name="l01147"></a><span class="lineno"> 1147</span>  <span class="keywordflow">if</span> (!driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value)) {</div>
-<div class="line"><a id="l01148" name="l01148"></a><span class="lineno"> 1148</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01149" name="l01149"></a><span class="lineno"> 1149</span>  }</div>
-<div class="line"><a id="l01150" name="l01150"></a><span class="lineno"> 1150</span> </div>
-<div class="line"><a id="l01151" name="l01151"></a><span class="lineno"> 1151</span>  <span class="comment">// 2. Start motion ramp into direction of switch</span></div>
-<div class="line"><a id="l01152" name="l01152"></a><span class="lineno"> 1152</span>  <a class="code hl_enumeration" href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2">RampMode</a> mode = direction ? <a class="code hl_enumvalue" href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a7bcfb8bf64b1e3308d24ad10baf53fa5">RampMode::VELOCITY_POS</a> : <a class="code hl_enumvalue" href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a155d6ef5b0ee9bf966b419b00d4b6034">RampMode::VELOCITY_NEG</a>;</div>
-<div class="line"><a id="l01153" name="l01153"></a><span class="lineno"> 1153</span>  <span class="keywordflow">if</span> (!driver_.rampControl.SetRampMode(mode)) {</div>
-<div class="line"><a id="l01154" name="l01154"></a><span class="lineno"> 1154</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01155" name="l01155"></a><span class="lineno"> 1155</span>  }</div>
-<div class="line"><a id="l01156" name="l01156"></a><span class="lineno"> 1156</span>  <span class="keywordflow">if</span> (!driver_.rampControl.SetMaxSpeed(search_speed)) {</div>
-<div class="line"><a id="l01157" name="l01157"></a><span class="lineno"> 1157</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span> </div>
+<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01140" data-start="{" data-end="}">
+<div class="line"><a id="l01140" name="l01140"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ae52ee957475af0babba3daafa428d39e"> 1140</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ae52ee957475af0babba3daafa428d39e">TMC5160&lt;CommType&gt;::Diagnostics::PerformSwitchHoming</a>(<span class="keywordtype">bool</span> direction, <span class="keywordtype">float</span> search_speed, <span class="keywordtype">float</span> switch_speed,</div>
+<div class="line"><a id="l01141" name="l01141"></a><span class="lineno"> 1141</span>                                                         int32_t&amp; final_position, <span class="keywordtype">bool</span> use_left_switch, uint32_t timeout_ms) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01142" name="l01142"></a><span class="lineno"> 1142</span>  <span class="comment">// 1. Activate position latching and motor stop upon switch event</span></div>
+<div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span>  <a class="code hl_union" href="uniontmc5160_1_1SW__MODE__Register.html">SW_MODE_Register</a> sw_mode{};</div>
+<div class="line"><a id="l01144" name="l01144"></a><span class="lineno"> 1144</span>  <span class="comment">// Read current SW_MODE to preserve other settings (like softstop)</span></div>
+<div class="line"><a id="l01145" name="l01145"></a><span class="lineno"> 1145</span>  uint32_t sw_mode_val = 0;</div>
+<div class="line"><a id="l01146" name="l01146"></a><span class="lineno"> 1146</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::SW_MODE, sw_mode_val)) {</div>
+<div class="line"><a id="l01147" name="l01147"></a><span class="lineno"> 1147</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01148" name="l01148"></a><span class="lineno"> 1148</span>  }</div>
+<div class="line"><a id="l01149" name="l01149"></a><span class="lineno"> 1149</span>  sw_mode.<a class="code hl_variable" href="uniontmc5160_1_1SW__MODE__Register.html#abe7326f117f92e0458824b46090ec7dc">value</a> = sw_mode_val;</div>
+<div class="line"><a id="l01150" name="l01150"></a><span class="lineno"> 1150</span>  </div>
+<div class="line"><a id="l01151" name="l01151"></a><span class="lineno"> 1151</span>  <span class="comment">// Configure latching and stop enable based on switch choice</span></div>
+<div class="line"><a id="l01152" name="l01152"></a><span class="lineno"> 1152</span>  <span class="keywordflow">if</span> (use_left_switch) {</div>
+<div class="line"><a id="l01153" name="l01153"></a><span class="lineno"> 1153</span>    sw_mode.bits.latch_l_active = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01154" name="l01154"></a><span class="lineno"> 1154</span>    sw_mode.bits.stop_l_enable = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01155" name="l01155"></a><span class="lineno"> 1155</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l01156" name="l01156"></a><span class="lineno"> 1156</span>    sw_mode.bits.latch_r_active = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01157" name="l01157"></a><span class="lineno"> 1157</span>    sw_mode.bits.stop_r_enable = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l01158" name="l01158"></a><span class="lineno"> 1158</span>  }</div>
-<div class="line"><a id="l01159" name="l01159"></a><span class="lineno"> 1159</span> </div>
-<div class="line"><a id="l01160" name="l01160"></a><span class="lineno"> 1160</span>  <span class="comment">// 3. Wait for switch hit (motor stops automatically)</span></div>
-<div class="line"><a id="l01161" name="l01161"></a><span class="lineno"> 1161</span>  <span class="keywordtype">bool</span> switch_hit = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01162" name="l01162"></a><span class="lineno"> 1162</span>  uint32_t loops = timeout_ms * 100;</div>
-<div class="line"><a id="l01163" name="l01163"></a><span class="lineno"> 1163</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; loops; i++) {</div>
-<div class="line"><a id="l01164" name="l01164"></a><span class="lineno"> 1164</span>    uint32_t ramp_stat = 0;</div>
-<div class="line"><a id="l01165" name="l01165"></a><span class="lineno"> 1165</span>    <span class="keywordflow">if</span> (driver_.comm_.ReadRegister(Registers::RAMP_STAT, ramp_stat)) {</div>
-<div class="line"><a id="l01166" name="l01166"></a><span class="lineno"> 1166</span>      <a class="code hl_union" href="uniontmc5160_1_1RAMP__STAT__Register.html">RAMP_STAT_Register</a> status{};</div>
-<div class="line"><a id="l01167" name="l01167"></a><span class="lineno"> 1167</span>      status.<a class="code hl_variable" href="uniontmc5160_1_1RAMP__STAT__Register.html#ae97e83436a6f71afdfe49c9966154cc4">value</a> = ramp_stat;</div>
-<div class="line"><a id="l01168" name="l01168"></a><span class="lineno"> 1168</span>      </div>
-<div class="line"><a id="l01169" name="l01169"></a><span class="lineno"> 1169</span>      <span class="comment">// Check for specific stop event</span></div>
-<div class="line"><a id="l01170" name="l01170"></a><span class="lineno"> 1170</span>      <span class="keywordflow">if</span> ((use_left_switch &amp;&amp; status.bits.event_stop_l) || </div>
-<div class="line"><a id="l01171" name="l01171"></a><span class="lineno"> 1171</span>          (!use_left_switch &amp;&amp; status.bits.event_stop_r)) {</div>
-<div class="line"><a id="l01172" name="l01172"></a><span class="lineno"> 1172</span>        switch_hit = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01173" name="l01173"></a><span class="lineno"> 1173</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l01174" name="l01174"></a><span class="lineno"> 1174</span>      }</div>
-<div class="line"><a id="l01175" name="l01175"></a><span class="lineno"> 1175</span>      <span class="comment">// Also check vzero if we missed the event flag but stopped</span></div>
-<div class="line"><a id="l01176" name="l01176"></a><span class="lineno"> 1176</span>      <span class="keywordflow">if</span> (status.bits.vzero &amp;&amp; ((use_left_switch &amp;&amp; status.bits.status_stop_l) || (!use_left_switch &amp;&amp; status.bits.status_stop_r))) {</div>
-<div class="line"><a id="l01177" name="l01177"></a><span class="lineno"> 1177</span>        switch_hit = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01178" name="l01178"></a><span class="lineno"> 1178</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l01179" name="l01179"></a><span class="lineno"> 1179</span>      }</div>
-<div class="line"><a id="l01180" name="l01180"></a><span class="lineno"> 1180</span>    }</div>
-<div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span>    <span class="comment">// driver_.comm_.DelayUs(100);</span></div>
-<div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span>  }</div>
-<div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span> </div>
-<div class="line"><a id="l01184" name="l01184"></a><span class="lineno"> 1184</span>  <span class="comment">// 4. Stop motor command (VMAX=0) to ensure it stays stopped</span></div>
-<div class="line"><a id="l01185" name="l01185"></a><span class="lineno"> 1185</span>  driver_.rampControl.Stop();</div>
-<div class="line"><a id="l01186" name="l01186"></a><span class="lineno"> 1186</span> </div>
-<div class="line"><a id="l01187" name="l01187"></a><span class="lineno"> 1187</span>  <span class="keywordflow">if</span> (switch_hit) {</div>
-<div class="line"><a id="l01188" name="l01188"></a><span class="lineno"> 1188</span>    <span class="comment">// 5. Read latched position</span></div>
-<div class="line"><a id="l01189" name="l01189"></a><span class="lineno"> 1189</span>    <span class="comment">// &quot;Latching of... XACTUAL to XLATCH upon a switch event gives a precise snapshot&quot;</span></div>
-<div class="line"><a id="l01190" name="l01190"></a><span class="lineno"> 1190</span>    <span class="comment">// However, datasheet 12.4 &quot;Implementing a homing procedure&quot; step 5 says:</span></div>
-<div class="line"><a id="l01191" name="l01191"></a><span class="lineno"> 1191</span>    <span class="comment">// &quot;Switch to hold mode... calculate difference between latched and actual... or when using hard stop XACTUAL stops exactly at home position&quot;</span></div>
-<div class="line"><a id="l01192" name="l01192"></a><span class="lineno"> 1192</span>    <span class="comment">// Since we used hard stop, XACTUAL should be valid.</span></div>
-<div class="line"><a id="l01193" name="l01193"></a><span class="lineno"> 1193</span>    <span class="comment">// Let&#39;s read XLATCH just in case user wants it, but we return current XACTUAL as &quot;final position&quot;.</span></div>
-<div class="line"><a id="l01194" name="l01194"></a><span class="lineno"> 1194</span>    <span class="comment">// Actually, let&#39;s just return the current position where it stopped.</span></div>
-<div class="line"><a id="l01195" name="l01195"></a><span class="lineno"> 1195</span>    final_position = driver_.rampControl.GetCurrentPosition();</div>
-<div class="line"><a id="l01196" name="l01196"></a><span class="lineno"> 1196</span>  }</div>
-<div class="line"><a id="l01197" name="l01197"></a><span class="lineno"> 1197</span> </div>
-<div class="line"><a id="l01198" name="l01198"></a><span class="lineno"> 1198</span>  <span class="comment">// Disable stop function to allow moving away</span></div>
-<div class="line"><a id="l01199" name="l01199"></a><span class="lineno"> 1199</span>  <span class="keywordflow">if</span> (use_left_switch) {</div>
-<div class="line"><a id="l01200" name="l01200"></a><span class="lineno"> 1200</span>    sw_mode.bits.stop_l_enable = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01201" name="l01201"></a><span class="lineno"> 1201</span>  } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l01202" name="l01202"></a><span class="lineno"> 1202</span>    sw_mode.bits.stop_r_enable = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01203" name="l01203"></a><span class="lineno"> 1203</span>  }</div>
-<div class="line"><a id="l01204" name="l01204"></a><span class="lineno"> 1204</span>  driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value);</div>
-<div class="line"><a id="l01205" name="l01205"></a><span class="lineno"> 1205</span> </div>
-<div class="line"><a id="l01206" name="l01206"></a><span class="lineno"> 1206</span>  <span class="keywordflow">return</span> switch_hit;</div>
-<div class="line"><a id="l01207" name="l01207"></a><span class="lineno"> 1207</span>}</div>
-</div>
-<div class="line"><a id="l01208" name="l01208"></a><span class="lineno"> 1208</span> </div>
-<div class="line"><a id="l01209" name="l01209"></a><span class="lineno"> 1209</span><span class="comment">// Communication implementation</span></div>
-<div class="line"><a id="l01210" name="l01210"></a><span class="lineno"> 1210</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01211" data-start="{" data-end="}">
-<div class="line"><a id="l01211" name="l01211"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Communication.html#afc57f53b52bf7bda5113b976ce9401ec"> 1211</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Communication.html#afc57f53b52bf7bda5113b976ce9401ec">TMC5160&lt;CommType&gt;::Communication::ConfigureSlaveAddress</a>(uint8_t slave_address, uint8_t send_delay) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l01212" name="l01212"></a><span class="lineno"> 1212</span>  <a class="code hl_union" href="uniontmc5160_1_1SLAVECONF__Register.html">SLAVECONF_Register</a> slaveconf{};</div>
-<div class="line"><a id="l01213" name="l01213"></a><span class="lineno"> 1213</span>  slaveconf.<a class="code hl_variable" href="uniontmc5160_1_1SLAVECONF__Register.html#afbbeab5373856fb9898a31ceff53af6c">bits</a>.<a class="code hl_variable" href="uniontmc5160_1_1SLAVECONF__Register.html#a45201db1d08b6334e8d822966cd802d4">slaveaddr</a> = slave_address &amp; 0x7F;</div>
-<div class="line"><a id="l01214" name="l01214"></a><span class="lineno"> 1214</span>  slaveconf.bits.senddelay = constrain&lt;uint8_t&gt;(send_delay, 0U, 15U);</div>
+<div class="line"><a id="l01159" name="l01159"></a><span class="lineno"> 1159</span>  <span class="comment">// Use hard stop for precise homing (soft stop can overshoot) - datasheet recommends hard stop for StallGuard,</span></div>
+<div class="line"><a id="l01160" name="l01160"></a><span class="lineno"> 1160</span>  <span class="comment">// but for switches hard stop ensures we don&#39;t crash if switch is a hard limit.</span></div>
+<div class="line"><a id="l01161" name="l01161"></a><span class="lineno"> 1161</span>  <span class="comment">// However, datasheet 12.4 says &quot;Or motor can be softly decelerated...&quot;.</span></div>
+<div class="line"><a id="l01162" name="l01162"></a><span class="lineno"> 1162</span>  <span class="comment">// Let&#39;s assume hard stop for safety during homing search.</span></div>
+<div class="line"><a id="l01163" name="l01163"></a><span class="lineno"> 1163</span>  sw_mode.bits.en_softstop = <span class="keyword">false</span>; </div>
+<div class="line"><a id="l01164" name="l01164"></a><span class="lineno"> 1164</span>  </div>
+<div class="line"><a id="l01165" name="l01165"></a><span class="lineno"> 1165</span>  <span class="keywordflow">if</span> (!driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value)) {</div>
+<div class="line"><a id="l01166" name="l01166"></a><span class="lineno"> 1166</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01167" name="l01167"></a><span class="lineno"> 1167</span>  }</div>
+<div class="line"><a id="l01168" name="l01168"></a><span class="lineno"> 1168</span> </div>
+<div class="line"><a id="l01169" name="l01169"></a><span class="lineno"> 1169</span>  <span class="comment">// 2. Start motion ramp into direction of switch</span></div>
+<div class="line"><a id="l01170" name="l01170"></a><span class="lineno"> 1170</span>  <a class="code hl_enumeration" href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2">RampMode</a> mode = direction ? <a class="code hl_enumvalue" href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a7bcfb8bf64b1e3308d24ad10baf53fa5">RampMode::VELOCITY_POS</a> : <a class="code hl_enumvalue" href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a155d6ef5b0ee9bf966b419b00d4b6034">RampMode::VELOCITY_NEG</a>;</div>
+<div class="line"><a id="l01171" name="l01171"></a><span class="lineno"> 1171</span>  <span class="keywordflow">if</span> (!driver_.rampControl.SetRampMode(mode)) {</div>
+<div class="line"><a id="l01172" name="l01172"></a><span class="lineno"> 1172</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01173" name="l01173"></a><span class="lineno"> 1173</span>  }</div>
+<div class="line"><a id="l01174" name="l01174"></a><span class="lineno"> 1174</span>  <span class="keywordflow">if</span> (!driver_.rampControl.SetMaxSpeed(search_speed)) {</div>
+<div class="line"><a id="l01175" name="l01175"></a><span class="lineno"> 1175</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01176" name="l01176"></a><span class="lineno"> 1176</span>  }</div>
+<div class="line"><a id="l01177" name="l01177"></a><span class="lineno"> 1177</span> </div>
+<div class="line"><a id="l01178" name="l01178"></a><span class="lineno"> 1178</span>  <span class="comment">// 3. Wait for switch hit (motor stops automatically)</span></div>
+<div class="line"><a id="l01179" name="l01179"></a><span class="lineno"> 1179</span>  <span class="keywordtype">bool</span> switch_hit = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01180" name="l01180"></a><span class="lineno"> 1180</span>  uint32_t loops = timeout_ms * 100;</div>
+<div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; loops; i++) {</div>
+<div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span>    uint32_t ramp_stat = 0;</div>
+<div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span>    <span class="keywordflow">if</span> (driver_.comm_.ReadRegister(Registers::RAMP_STAT, ramp_stat)) {</div>
+<div class="line"><a id="l01184" name="l01184"></a><span class="lineno"> 1184</span>      <a class="code hl_union" href="uniontmc5160_1_1RAMP__STAT__Register.html">RAMP_STAT_Register</a> status{};</div>
+<div class="line"><a id="l01185" name="l01185"></a><span class="lineno"> 1185</span>      status.<a class="code hl_variable" href="uniontmc5160_1_1RAMP__STAT__Register.html#ae97e83436a6f71afdfe49c9966154cc4">value</a> = ramp_stat;</div>
+<div class="line"><a id="l01186" name="l01186"></a><span class="lineno"> 1186</span>      </div>
+<div class="line"><a id="l01187" name="l01187"></a><span class="lineno"> 1187</span>      <span class="comment">// Check for specific stop event</span></div>
+<div class="line"><a id="l01188" name="l01188"></a><span class="lineno"> 1188</span>      <span class="keywordflow">if</span> ((use_left_switch &amp;&amp; status.bits.event_stop_l) || </div>
+<div class="line"><a id="l01189" name="l01189"></a><span class="lineno"> 1189</span>          (!use_left_switch &amp;&amp; status.bits.event_stop_r)) {</div>
+<div class="line"><a id="l01190" name="l01190"></a><span class="lineno"> 1190</span>        switch_hit = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01191" name="l01191"></a><span class="lineno"> 1191</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l01192" name="l01192"></a><span class="lineno"> 1192</span>      }</div>
+<div class="line"><a id="l01193" name="l01193"></a><span class="lineno"> 1193</span>      <span class="comment">// Also check vzero if we missed the event flag but stopped</span></div>
+<div class="line"><a id="l01194" name="l01194"></a><span class="lineno"> 1194</span>      <span class="keywordflow">if</span> (status.bits.vzero &amp;&amp; ((use_left_switch &amp;&amp; status.bits.status_stop_l) || (!use_left_switch &amp;&amp; status.bits.status_stop_r))) {</div>
+<div class="line"><a id="l01195" name="l01195"></a><span class="lineno"> 1195</span>        switch_hit = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01196" name="l01196"></a><span class="lineno"> 1196</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l01197" name="l01197"></a><span class="lineno"> 1197</span>      }</div>
+<div class="line"><a id="l01198" name="l01198"></a><span class="lineno"> 1198</span>    }</div>
+<div class="line"><a id="l01199" name="l01199"></a><span class="lineno"> 1199</span>    <span class="comment">// driver_.comm_.DelayUs(100);</span></div>
+<div class="line"><a id="l01200" name="l01200"></a><span class="lineno"> 1200</span>  }</div>
+<div class="line"><a id="l01201" name="l01201"></a><span class="lineno"> 1201</span> </div>
+<div class="line"><a id="l01202" name="l01202"></a><span class="lineno"> 1202</span>  <span class="comment">// 4. Stop motor command (VMAX=0) to ensure it stays stopped</span></div>
+<div class="line"><a id="l01203" name="l01203"></a><span class="lineno"> 1203</span>  driver_.rampControl.Stop();</div>
+<div class="line"><a id="l01204" name="l01204"></a><span class="lineno"> 1204</span> </div>
+<div class="line"><a id="l01205" name="l01205"></a><span class="lineno"> 1205</span>  <span class="keywordflow">if</span> (switch_hit) {</div>
+<div class="line"><a id="l01206" name="l01206"></a><span class="lineno"> 1206</span>    <span class="comment">// 5. Read latched position</span></div>
+<div class="line"><a id="l01207" name="l01207"></a><span class="lineno"> 1207</span>    <span class="comment">// &quot;Latching of... XACTUAL to XLATCH upon a switch event gives a precise snapshot&quot;</span></div>
+<div class="line"><a id="l01208" name="l01208"></a><span class="lineno"> 1208</span>    <span class="comment">// However, datasheet 12.4 &quot;Implementing a homing procedure&quot; step 5 says:</span></div>
+<div class="line"><a id="l01209" name="l01209"></a><span class="lineno"> 1209</span>    <span class="comment">// &quot;Switch to hold mode... calculate difference between latched and actual... or when using hard stop XACTUAL stops exactly at home position&quot;</span></div>
+<div class="line"><a id="l01210" name="l01210"></a><span class="lineno"> 1210</span>    <span class="comment">// Since we used hard stop, XACTUAL should be valid.</span></div>
+<div class="line"><a id="l01211" name="l01211"></a><span class="lineno"> 1211</span>    <span class="comment">// Let&#39;s read XLATCH just in case user wants it, but we return current XACTUAL as &quot;final position&quot;.</span></div>
+<div class="line"><a id="l01212" name="l01212"></a><span class="lineno"> 1212</span>    <span class="comment">// Actually, let&#39;s just return the current position where it stopped.</span></div>
+<div class="line"><a id="l01213" name="l01213"></a><span class="lineno"> 1213</span>    final_position = driver_.rampControl.GetCurrentPosition();</div>
+<div class="line"><a id="l01214" name="l01214"></a><span class="lineno"> 1214</span>  }</div>
 <div class="line"><a id="l01215" name="l01215"></a><span class="lineno"> 1215</span> </div>
-<div class="line"><a id="l01216" name="l01216"></a><span class="lineno"> 1216</span>  <span class="keywordflow">if</span> (!driver_.comm_.WriteRegister(Registers::SLAVECONF, slaveconf.value)) {</div>
-<div class="line"><a id="l01217" name="l01217"></a><span class="lineno"> 1217</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01218" name="l01218"></a><span class="lineno"> 1218</span>  }</div>
-<div class="line"><a id="l01219" name="l01219"></a><span class="lineno"> 1219</span> </div>
-<div class="line"><a id="l01220" name="l01220"></a><span class="lineno"> 1220</span>  <span class="comment">// Store send delay locally (slave address is same as uart_node_address)</span></div>
-<div class="line"><a id="l01221" name="l01221"></a><span class="lineno"> 1221</span>  driver_.send_delay_ = constrain&lt;uint8_t&gt;(send_delay, 0U, 15U);</div>
-<div class="line"><a id="l01222" name="l01222"></a><span class="lineno"> 1222</span>  </div>
-<div class="line"><a id="l01223" name="l01223"></a><span class="lineno"> 1223</span>  <span class="comment">// Update UART node address (slave address and UART node address are the same)</span></div>
-<div class="line"><a id="l01224" name="l01224"></a><span class="lineno"> 1224</span>  driver_.uart_node_address_ = slave_address &amp; 0xFF;</div>
-<div class="line"><a id="l01225" name="l01225"></a><span class="lineno"> 1225</span> </div>
-<div class="line"><a id="l01226" name="l01226"></a><span class="lineno"> 1226</span>  <span class="comment">// Update UART interface slave address if using UART</span></div>
-<div class="line"><a id="l01227" name="l01227"></a><span class="lineno"> 1227</span>  <span class="keywordflow">if</span> (driver_.comm_.GetMode() == <a class="code hl_enumvalue" href="namespacetmc5160.html#a784e320454a771e190b3b376a67d9c29acec5769b01fb096efaf0d6186823c78f">CommMode::UART</a>) {</div>
-<div class="line"><a id="l01228" name="l01228"></a><span class="lineno"> 1228</span>    <span class="comment">// Cast to UART interface and update address</span></div>
-<div class="line"><a id="l01229" name="l01229"></a><span class="lineno"> 1229</span>    <span class="comment">// Note: This requires the interface to be UartCommInterface</span></div>
-<div class="line"><a id="l01230" name="l01230"></a><span class="lineno"> 1230</span>    <span class="comment">// The user should also call SetSlaveAddress on the interface directly</span></div>
-<div class="line"><a id="l01231" name="l01231"></a><span class="lineno"> 1231</span>  }</div>
-<div class="line"><a id="l01232" name="l01232"></a><span class="lineno"> 1232</span> </div>
-<div class="line"><a id="l01233" name="l01233"></a><span class="lineno"> 1233</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01234" name="l01234"></a><span class="lineno"> 1234</span>}</div>
+<div class="line"><a id="l01216" name="l01216"></a><span class="lineno"> 1216</span>  <span class="comment">// Disable stop function to allow moving away</span></div>
+<div class="line"><a id="l01217" name="l01217"></a><span class="lineno"> 1217</span>  <span class="keywordflow">if</span> (use_left_switch) {</div>
+<div class="line"><a id="l01218" name="l01218"></a><span class="lineno"> 1218</span>    sw_mode.bits.stop_l_enable = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01219" name="l01219"></a><span class="lineno"> 1219</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l01220" name="l01220"></a><span class="lineno"> 1220</span>    sw_mode.bits.stop_r_enable = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01221" name="l01221"></a><span class="lineno"> 1221</span>  }</div>
+<div class="line"><a id="l01222" name="l01222"></a><span class="lineno"> 1222</span>  driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value);</div>
+<div class="line"><a id="l01223" name="l01223"></a><span class="lineno"> 1223</span> </div>
+<div class="line"><a id="l01224" name="l01224"></a><span class="lineno"> 1224</span>  <span class="keywordflow">return</span> switch_hit;</div>
+<div class="line"><a id="l01225" name="l01225"></a><span class="lineno"> 1225</span>}</div>
 </div>
-<div class="line"><a id="l01235" name="l01235"></a><span class="lineno"> 1235</span> </div>
-<div class="line"><a id="l01236" name="l01236"></a><span class="lineno"> 1236</span> </div>
-<div class="line"><a id="l01237" name="l01237"></a><span class="lineno"> 1237</span><span class="comment">// Protection implementation</span></div>
-<div class="line"><a id="l01238" name="l01238"></a><span class="lineno"> 1238</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01239" data-start="{" data-end="}">
-<div class="line"><a id="l01239" name="l01239"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Protection.html#ad2e691e93cd278283ee4a0b7f636e7e9"> 1239</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Protection.html#ad2e691e93cd278283ee4a0b7f636e7e9">TMC5160&lt;CommType&gt;::Protection::ConfigureShortProtection</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structtmc5160_1_1ShortProtectionConfig.html">ShortProtectionConfig</a>&amp; config) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l01240" name="l01240"></a><span class="lineno"> 1240</span>  <span class="keywordflow">return</span> SetShortProtectionLevels(config.s2vs_level, config.s2g_level, config.shortfilter, config.shortdelay);</div>
-<div class="line"><a id="l01241" name="l01241"></a><span class="lineno"> 1241</span>}</div>
-</div>
-<div class="line"><a id="l01242" name="l01242"></a><span class="lineno"> 1242</span> </div>
-<div class="line"><a id="l01243" name="l01243"></a><span class="lineno"> 1243</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01244" data-start="{" data-end="}">
-<div class="line"><a id="l01244" name="l01244"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Protection.html#a7313677541215c9b6ab0e7b400ab56da"> 1244</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Protection.html#a7313677541215c9b6ab0e7b400ab56da">TMC5160&lt;CommType&gt;::Protection::SetShortProtectionLevels</a>(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter,</div>
-<div class="line"><a id="l01245" name="l01245"></a><span class="lineno"> 1245</span>    uint8_t shortdelay) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l01246" name="l01246"></a><span class="lineno"> 1246</span>  <a class="code hl_union" href="uniontmc5160_1_1SHORT__CONF__Register.html">SHORT_CONF_Register</a> short_conf{};</div>
-<div class="line"><a id="l01247" name="l01247"></a><span class="lineno"> 1247</span>  short_conf.<a class="code hl_variable" href="uniontmc5160_1_1SHORT__CONF__Register.html#ad23f18e4189ad6b975d41aabf50762f6">bits</a>.<a class="code hl_variable" href="uniontmc5160_1_1SHORT__CONF__Register.html#ac4b9ea55551267f31e1fd2d06f57f687">s2vs_level</a> = constrain&lt;decltype(s2vs_level)&gt;(s2vs_level, 4U, 15U);</div>
-<div class="line"><a id="l01248" name="l01248"></a><span class="lineno"> 1248</span>  short_conf.bits.s2g_level = constrain&lt;decltype(s2g_level)&gt;(s2g_level, 2U, 15U);</div>
-<div class="line"><a id="l01249" name="l01249"></a><span class="lineno"> 1249</span>  short_conf.bits.shortfilter = constrain&lt;uint8_t&gt;(shortfilter, 0U, 3U);</div>
-<div class="line"><a id="l01250" name="l01250"></a><span class="lineno"> 1250</span>  short_conf.bits.shortdelay = constrain&lt;uint8_t&gt;(shortdelay, 0U, 1U);</div>
-<div class="line"><a id="l01251" name="l01251"></a><span class="lineno"> 1251</span>  <span class="keywordflow">return</span> driver_.comm_.WriteRegister(Registers::SHORT_CONF, short_conf.value, driver_.GetCommAddress());</div>
+<div class="line"><a id="l01226" name="l01226"></a><span class="lineno"> 1226</span> </div>
+<div class="line"><a id="l01227" name="l01227"></a><span class="lineno"> 1227</span><span class="comment">// Communication implementation</span></div>
+<div class="line"><a id="l01228" name="l01228"></a><span class="lineno"> 1228</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01229" data-start="{" data-end="}">
+<div class="line"><a id="l01229" name="l01229"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Communication.html#afc57f53b52bf7bda5113b976ce9401ec"> 1229</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Communication.html#afc57f53b52bf7bda5113b976ce9401ec">TMC5160&lt;CommType&gt;::Communication::ConfigureSlaveAddress</a>(uint8_t slave_address, uint8_t send_delay) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01230" name="l01230"></a><span class="lineno"> 1230</span>  <a class="code hl_union" href="uniontmc5160_1_1SLAVECONF__Register.html">SLAVECONF_Register</a> slaveconf{};</div>
+<div class="line"><a id="l01231" name="l01231"></a><span class="lineno"> 1231</span>  slaveconf.<a class="code hl_variable" href="uniontmc5160_1_1SLAVECONF__Register.html#afbbeab5373856fb9898a31ceff53af6c">bits</a>.<a class="code hl_variable" href="uniontmc5160_1_1SLAVECONF__Register.html#a45201db1d08b6334e8d822966cd802d4">slaveaddr</a> = slave_address &amp; 0x7F;</div>
+<div class="line"><a id="l01232" name="l01232"></a><span class="lineno"> 1232</span>  slaveconf.bits.senddelay = constrain&lt;uint8_t&gt;(send_delay, 0U, 15U);</div>
+<div class="line"><a id="l01233" name="l01233"></a><span class="lineno"> 1233</span> </div>
+<div class="line"><a id="l01234" name="l01234"></a><span class="lineno"> 1234</span>  <span class="keywordflow">if</span> (!driver_.comm_.WriteRegister(Registers::SLAVECONF, slaveconf.value)) {</div>
+<div class="line"><a id="l01235" name="l01235"></a><span class="lineno"> 1235</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01236" name="l01236"></a><span class="lineno"> 1236</span>  }</div>
+<div class="line"><a id="l01237" name="l01237"></a><span class="lineno"> 1237</span> </div>
+<div class="line"><a id="l01238" name="l01238"></a><span class="lineno"> 1238</span>  <span class="comment">// Store send delay locally (slave address is same as uart_node_address)</span></div>
+<div class="line"><a id="l01239" name="l01239"></a><span class="lineno"> 1239</span>  driver_.send_delay_ = constrain&lt;uint8_t&gt;(send_delay, 0U, 15U);</div>
+<div class="line"><a id="l01240" name="l01240"></a><span class="lineno"> 1240</span>  </div>
+<div class="line"><a id="l01241" name="l01241"></a><span class="lineno"> 1241</span>  <span class="comment">// Update UART node address (slave address and UART node address are the same)</span></div>
+<div class="line"><a id="l01242" name="l01242"></a><span class="lineno"> 1242</span>  driver_.uart_node_address_ = slave_address &amp; 0xFF;</div>
+<div class="line"><a id="l01243" name="l01243"></a><span class="lineno"> 1243</span> </div>
+<div class="line"><a id="l01244" name="l01244"></a><span class="lineno"> 1244</span>  <span class="comment">// Update UART interface slave address if using UART</span></div>
+<div class="line"><a id="l01245" name="l01245"></a><span class="lineno"> 1245</span>  <span class="keywordflow">if</span> (driver_.comm_.GetMode() == <a class="code hl_enumvalue" href="namespacetmc5160.html#a784e320454a771e190b3b376a67d9c29acec5769b01fb096efaf0d6186823c78f">CommMode::UART</a>) {</div>
+<div class="line"><a id="l01246" name="l01246"></a><span class="lineno"> 1246</span>    <span class="comment">// Cast to UART interface and update address</span></div>
+<div class="line"><a id="l01247" name="l01247"></a><span class="lineno"> 1247</span>    <span class="comment">// Note: This requires the interface to be UartCommInterface</span></div>
+<div class="line"><a id="l01248" name="l01248"></a><span class="lineno"> 1248</span>    <span class="comment">// The user should also call SetSlaveAddress on the interface directly</span></div>
+<div class="line"><a id="l01249" name="l01249"></a><span class="lineno"> 1249</span>  }</div>
+<div class="line"><a id="l01250" name="l01250"></a><span class="lineno"> 1250</span> </div>
+<div class="line"><a id="l01251" name="l01251"></a><span class="lineno"> 1251</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l01252" name="l01252"></a><span class="lineno"> 1252</span>}</div>
 </div>
 <div class="line"><a id="l01253" name="l01253"></a><span class="lineno"> 1253</span> </div>
-<div class="line"><a id="l01254" name="l01254"></a><span class="lineno"> 1254</span><span class="comment">// Diagnostics read-only register implementations</span></div>
-<div class="line"><a id="l01255" name="l01255"></a><span class="lineno"> 1255</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01256" data-start="{" data-end="}">
-<div class="line"><a id="l01256" name="l01256"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0f4c2b24f2fec3168a366f0122ca53b6"> 1256</a></span>uint32_t <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0f4c2b24f2fec3168a366f0122ca53b6">TMC5160&lt;CommType&gt;::Diagnostics::GetTimeBetweenMicrosteps</a>() noexcept {</div>
-<div class="line"><a id="l01257" name="l01257"></a><span class="lineno"> 1257</span>  uint32_t value = 0;</div>
-<div class="line"><a id="l01258" name="l01258"></a><span class="lineno"> 1258</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::TSTEP, value)) {</div>
-<div class="line"><a id="l01259" name="l01259"></a><span class="lineno"> 1259</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l01260" name="l01260"></a><span class="lineno"> 1260</span>  }</div>
-<div class="line"><a id="l01261" name="l01261"></a><span class="lineno"> 1261</span>  <span class="keywordflow">return</span> value; <span class="comment">// TSTEP is 20 bits, but we return full 32-bit value</span></div>
-<div class="line"><a id="l01262" name="l01262"></a><span class="lineno"> 1262</span>}</div>
+<div class="line"><a id="l01254" name="l01254"></a><span class="lineno"> 1254</span> </div>
+<div class="line"><a id="l01255" name="l01255"></a><span class="lineno"> 1255</span><span class="comment">// Protection implementation</span></div>
+<div class="line"><a id="l01256" name="l01256"></a><span class="lineno"> 1256</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01257" data-start="{" data-end="}">
+<div class="line"><a id="l01257" name="l01257"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Protection.html#ad2e691e93cd278283ee4a0b7f636e7e9"> 1257</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Protection.html#ad2e691e93cd278283ee4a0b7f636e7e9">TMC5160&lt;CommType&gt;::Protection::ConfigureShortProtection</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structtmc5160_1_1ShortProtectionConfig.html">ShortProtectionConfig</a>&amp; config) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01258" name="l01258"></a><span class="lineno"> 1258</span>  <span class="keywordflow">return</span> SetShortProtectionLevels(config.s2vs_level, config.s2g_level, config.shortfilter, config.shortdelay);</div>
+<div class="line"><a id="l01259" name="l01259"></a><span class="lineno"> 1259</span>}</div>
 </div>
-<div class="line"><a id="l01263" name="l01263"></a><span class="lineno"> 1263</span> </div>
-<div class="line"><a id="l01264" name="l01264"></a><span class="lineno"> 1264</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01265" data-start="{" data-end="}">
-<div class="line"><a id="l01265" name="l01265"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ac4f5446dad9fe39acc411ebcd3b94efd"> 1265</a></span>uint16_t <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ac4f5446dad9fe39acc411ebcd3b94efd">TMC5160&lt;CommType&gt;::Diagnostics::GetMicrostepCounter</a>() noexcept {</div>
-<div class="line"><a id="l01266" name="l01266"></a><span class="lineno"> 1266</span>  uint32_t value = 0;</div>
-<div class="line"><a id="l01267" name="l01267"></a><span class="lineno"> 1267</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::MSCNT, value)) {</div>
-<div class="line"><a id="l01268" name="l01268"></a><span class="lineno"> 1268</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l01269" name="l01269"></a><span class="lineno"> 1269</span>  }</div>
-<div class="line"><a id="l01270" name="l01270"></a><span class="lineno"> 1270</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint16_t<span class="keyword">&gt;</span>(value &amp; 0x3FF); <span class="comment">// MSCNT is 10 bits</span></div>
-<div class="line"><a id="l01271" name="l01271"></a><span class="lineno"> 1271</span>}</div>
+<div class="line"><a id="l01260" name="l01260"></a><span class="lineno"> 1260</span> </div>
+<div class="line"><a id="l01261" name="l01261"></a><span class="lineno"> 1261</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01262" data-start="{" data-end="}">
+<div class="line"><a id="l01262" name="l01262"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Protection.html#a7313677541215c9b6ab0e7b400ab56da"> 1262</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Protection.html#a7313677541215c9b6ab0e7b400ab56da">TMC5160&lt;CommType&gt;::Protection::SetShortProtectionLevels</a>(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter,</div>
+<div class="line"><a id="l01263" name="l01263"></a><span class="lineno"> 1263</span>    uint8_t shortdelay) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01264" name="l01264"></a><span class="lineno"> 1264</span>  <a class="code hl_union" href="uniontmc5160_1_1SHORT__CONF__Register.html">SHORT_CONF_Register</a> short_conf{};</div>
+<div class="line"><a id="l01265" name="l01265"></a><span class="lineno"> 1265</span>  short_conf.<a class="code hl_variable" href="uniontmc5160_1_1SHORT__CONF__Register.html#ad23f18e4189ad6b975d41aabf50762f6">bits</a>.<a class="code hl_variable" href="uniontmc5160_1_1SHORT__CONF__Register.html#ac4b9ea55551267f31e1fd2d06f57f687">s2vs_level</a> = constrain&lt;decltype(s2vs_level)&gt;(s2vs_level, 4U, 15U);</div>
+<div class="line"><a id="l01266" name="l01266"></a><span class="lineno"> 1266</span>  short_conf.bits.s2g_level = constrain&lt;decltype(s2g_level)&gt;(s2g_level, 2U, 15U);</div>
+<div class="line"><a id="l01267" name="l01267"></a><span class="lineno"> 1267</span>  short_conf.bits.shortfilter = constrain&lt;uint8_t&gt;(shortfilter, 0U, 3U);</div>
+<div class="line"><a id="l01268" name="l01268"></a><span class="lineno"> 1268</span>  short_conf.bits.shortdelay = constrain&lt;uint8_t&gt;(shortdelay, 0U, 1U);</div>
+<div class="line"><a id="l01269" name="l01269"></a><span class="lineno"> 1269</span>  <span class="keywordflow">return</span> driver_.comm_.WriteRegister(Registers::SHORT_CONF, short_conf.value, driver_.GetCommAddress());</div>
+<div class="line"><a id="l01270" name="l01270"></a><span class="lineno"> 1270</span>}</div>
 </div>
-<div class="line"><a id="l01272" name="l01272"></a><span class="lineno"> 1272</span> </div>
+<div class="line"><a id="l01271" name="l01271"></a><span class="lineno"> 1271</span> </div>
+<div class="line"><a id="l01272" name="l01272"></a><span class="lineno"> 1272</span><span class="comment">// Diagnostics read-only register implementations</span></div>
 <div class="line"><a id="l01273" name="l01273"></a><span class="lineno"> 1273</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
 <div class="foldopen" id="foldopen01274" data-start="{" data-end="}">
-<div class="line"><a id="l01274" name="l01274"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a406b0f5e492cb819511806c10b00653d"> 1274</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a406b0f5e492cb819511806c10b00653d">TMC5160&lt;CommType&gt;::Diagnostics::GetMicrostepCurrent</a>(int16_t&amp; phase_a, int16_t&amp; phase_b) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01274" name="l01274"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0f4c2b24f2fec3168a366f0122ca53b6"> 1274</a></span>uint32_t <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0f4c2b24f2fec3168a366f0122ca53b6">TMC5160&lt;CommType&gt;::Diagnostics::GetTimeBetweenMicrosteps</a>() noexcept {</div>
 <div class="line"><a id="l01275" name="l01275"></a><span class="lineno"> 1275</span>  uint32_t value = 0;</div>
-<div class="line"><a id="l01276" name="l01276"></a><span class="lineno"> 1276</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::MSCURACT, value)) {</div>
-<div class="line"><a id="l01277" name="l01277"></a><span class="lineno"> 1277</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01276" name="l01276"></a><span class="lineno"> 1276</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::TSTEP, value)) {</div>
+<div class="line"><a id="l01277" name="l01277"></a><span class="lineno"> 1277</span>    <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l01278" name="l01278"></a><span class="lineno"> 1278</span>  }</div>
-<div class="line"><a id="l01279" name="l01279"></a><span class="lineno"> 1279</span>  <a class="code hl_union" href="uniontmc5160_1_1MSCURACT__Register.html">MSCURACT_Register</a> mscuract{};</div>
-<div class="line"><a id="l01280" name="l01280"></a><span class="lineno"> 1280</span>  mscuract.<a class="code hl_variable" href="uniontmc5160_1_1MSCURACT__Register.html#a3110b743d72bd5fdb004529317f85b7c">value</a> = value;</div>
-<div class="line"><a id="l01281" name="l01281"></a><span class="lineno"> 1281</span>  </div>
-<div class="line"><a id="l01282" name="l01282"></a><span class="lineno"> 1282</span>  <span class="comment">// CUR_B is bits 8..0 (signed 9-bit)</span></div>
-<div class="line"><a id="l01283" name="l01283"></a><span class="lineno"> 1283</span>  <span class="keyword">auto</span> cur_b_raw = <span class="keyword">static_cast&lt;</span>int16_t<span class="keyword">&gt;</span>(mscuract.bits.cur_b);</div>
-<div class="line"><a id="l01284" name="l01284"></a><span class="lineno"> 1284</span>  <span class="keywordflow">if</span> (cur_b_raw &amp; 0x0100) {                     <span class="comment">// Check sign bit (bit 8)</span></div>
-<div class="line"><a id="l01285" name="l01285"></a><span class="lineno"> 1285</span>    cur_b_raw |= <span class="keyword">static_cast&lt;</span>int16_t<span class="keyword">&gt;</span>(0xFE00U); <span class="comment">// Sign extend to 16-bit</span></div>
-<div class="line"><a id="l01286" name="l01286"></a><span class="lineno"> 1286</span>  }</div>
-<div class="line"><a id="l01287" name="l01287"></a><span class="lineno"> 1287</span>  phase_b = cur_b_raw;</div>
-<div class="line"><a id="l01288" name="l01288"></a><span class="lineno"> 1288</span>  </div>
-<div class="line"><a id="l01289" name="l01289"></a><span class="lineno"> 1289</span>  <span class="comment">// CUR_A is bits 24..16 (signed 9-bit)</span></div>
-<div class="line"><a id="l01290" name="l01290"></a><span class="lineno"> 1290</span>  <span class="keyword">auto</span> cur_a_raw = <span class="keyword">static_cast&lt;</span>int16_t<span class="keyword">&gt;</span>(mscuract.bits.cur_a);</div>
-<div class="line"><a id="l01291" name="l01291"></a><span class="lineno"> 1291</span>  <span class="keywordflow">if</span> (cur_a_raw &amp; 0x0100) {                     <span class="comment">// Check sign bit (bit 8)</span></div>
-<div class="line"><a id="l01292" name="l01292"></a><span class="lineno"> 1292</span>    cur_a_raw |= <span class="keyword">static_cast&lt;</span>int16_t<span class="keyword">&gt;</span>(0xFE00U); <span class="comment">// Sign extend to 16-bit</span></div>
-<div class="line"><a id="l01293" name="l01293"></a><span class="lineno"> 1293</span>  }</div>
-<div class="line"><a id="l01294" name="l01294"></a><span class="lineno"> 1294</span>  phase_a = cur_a_raw;</div>
-<div class="line"><a id="l01295" name="l01295"></a><span class="lineno"> 1295</span>  </div>
-<div class="line"><a id="l01296" name="l01296"></a><span class="lineno"> 1296</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01297" name="l01297"></a><span class="lineno"> 1297</span>}</div>
+<div class="line"><a id="l01279" name="l01279"></a><span class="lineno"> 1279</span>  <span class="keywordflow">return</span> value; <span class="comment">// TSTEP is 20 bits, but we return full 32-bit value</span></div>
+<div class="line"><a id="l01280" name="l01280"></a><span class="lineno"> 1280</span>}</div>
 </div>
-<div class="line"><a id="l01298" name="l01298"></a><span class="lineno"> 1298</span> </div>
-<div class="line"><a id="l01299" name="l01299"></a><span class="lineno"> 1299</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01300" data-start="{" data-end="}">
-<div class="line"><a id="l01300" name="l01300"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0e50567d8546713ed85e0e3d64a768b1"> 1300</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0e50567d8546713ed85e0e3d64a768b1">TMC5160&lt;CommType&gt;::Diagnostics::GetPwmScale</a>(uint8_t&amp; pwm_scale_sum, int16_t&amp; pwm_scale_auto) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l01301" name="l01301"></a><span class="lineno"> 1301</span>  uint32_t value = 0;</div>
-<div class="line"><a id="l01302" name="l01302"></a><span class="lineno"> 1302</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::PWM_SCALE, value)) {</div>
-<div class="line"><a id="l01303" name="l01303"></a><span class="lineno"> 1303</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01281" name="l01281"></a><span class="lineno"> 1281</span> </div>
+<div class="line"><a id="l01282" name="l01282"></a><span class="lineno"> 1282</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01283" data-start="{" data-end="}">
+<div class="line"><a id="l01283" name="l01283"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ac4f5446dad9fe39acc411ebcd3b94efd"> 1283</a></span>uint16_t <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ac4f5446dad9fe39acc411ebcd3b94efd">TMC5160&lt;CommType&gt;::Diagnostics::GetMicrostepCounter</a>() noexcept {</div>
+<div class="line"><a id="l01284" name="l01284"></a><span class="lineno"> 1284</span>  uint32_t value = 0;</div>
+<div class="line"><a id="l01285" name="l01285"></a><span class="lineno"> 1285</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::MSCNT, value)) {</div>
+<div class="line"><a id="l01286" name="l01286"></a><span class="lineno"> 1286</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l01287" name="l01287"></a><span class="lineno"> 1287</span>  }</div>
+<div class="line"><a id="l01288" name="l01288"></a><span class="lineno"> 1288</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint16_t<span class="keyword">&gt;</span>(value &amp; 0x3FF); <span class="comment">// MSCNT is 10 bits</span></div>
+<div class="line"><a id="l01289" name="l01289"></a><span class="lineno"> 1289</span>}</div>
+</div>
+<div class="line"><a id="l01290" name="l01290"></a><span class="lineno"> 1290</span> </div>
+<div class="line"><a id="l01291" name="l01291"></a><span class="lineno"> 1291</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01292" data-start="{" data-end="}">
+<div class="line"><a id="l01292" name="l01292"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a406b0f5e492cb819511806c10b00653d"> 1292</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a406b0f5e492cb819511806c10b00653d">TMC5160&lt;CommType&gt;::Diagnostics::GetMicrostepCurrent</a>(int16_t&amp; phase_a, int16_t&amp; phase_b) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01293" name="l01293"></a><span class="lineno"> 1293</span>  uint32_t value = 0;</div>
+<div class="line"><a id="l01294" name="l01294"></a><span class="lineno"> 1294</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::MSCURACT, value)) {</div>
+<div class="line"><a id="l01295" name="l01295"></a><span class="lineno"> 1295</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01296" name="l01296"></a><span class="lineno"> 1296</span>  }</div>
+<div class="line"><a id="l01297" name="l01297"></a><span class="lineno"> 1297</span>  <a class="code hl_union" href="uniontmc5160_1_1MSCURACT__Register.html">MSCURACT_Register</a> mscuract{};</div>
+<div class="line"><a id="l01298" name="l01298"></a><span class="lineno"> 1298</span>  mscuract.<a class="code hl_variable" href="uniontmc5160_1_1MSCURACT__Register.html#a3110b743d72bd5fdb004529317f85b7c">value</a> = value;</div>
+<div class="line"><a id="l01299" name="l01299"></a><span class="lineno"> 1299</span>  </div>
+<div class="line"><a id="l01300" name="l01300"></a><span class="lineno"> 1300</span>  <span class="comment">// CUR_B is bits 8..0 (signed 9-bit)</span></div>
+<div class="line"><a id="l01301" name="l01301"></a><span class="lineno"> 1301</span>  <span class="keyword">auto</span> cur_b_raw = <span class="keyword">static_cast&lt;</span>int16_t<span class="keyword">&gt;</span>(mscuract.bits.cur_b);</div>
+<div class="line"><a id="l01302" name="l01302"></a><span class="lineno"> 1302</span>  <span class="keywordflow">if</span> (cur_b_raw &amp; 0x0100) {                     <span class="comment">// Check sign bit (bit 8)</span></div>
+<div class="line"><a id="l01303" name="l01303"></a><span class="lineno"> 1303</span>    cur_b_raw |= <span class="keyword">static_cast&lt;</span>int16_t<span class="keyword">&gt;</span>(0xFE00U); <span class="comment">// Sign extend to 16-bit</span></div>
 <div class="line"><a id="l01304" name="l01304"></a><span class="lineno"> 1304</span>  }</div>
-<div class="line"><a id="l01305" name="l01305"></a><span class="lineno"> 1305</span>  <a class="code hl_union" href="uniontmc5160_1_1PWM__SCALE__Register.html">PWM_SCALE_Register</a> pwm_scale{};</div>
-<div class="line"><a id="l01306" name="l01306"></a><span class="lineno"> 1306</span>  pwm_scale.<a class="code hl_variable" href="uniontmc5160_1_1PWM__SCALE__Register.html#aa3904fff21424f786e6a54b816b53046">value</a> = value;</div>
-<div class="line"><a id="l01307" name="l01307"></a><span class="lineno"> 1307</span>  pwm_scale_sum = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(pwm_scale.bits.pwm_scale_sum);</div>
-<div class="line"><a id="l01308" name="l01308"></a><span class="lineno"> 1308</span>  <span class="comment">// PWM_SCALE_AUTO is signed 9-bit (bits 24..16)</span></div>
-<div class="line"><a id="l01309" name="l01309"></a><span class="lineno"> 1309</span>  <span class="keyword">auto</span> auto_raw = <span class="keyword">static_cast&lt;</span>int16_t<span class="keyword">&gt;</span>(pwm_scale.bits.pwm_scale_auto);</div>
-<div class="line"><a id="l01310" name="l01310"></a><span class="lineno"> 1310</span>  <span class="keywordflow">if</span> (auto_raw &amp; 0x0100) {                     <span class="comment">// Check sign bit (bit 8 of the 9-bit field)</span></div>
-<div class="line"><a id="l01311" name="l01311"></a><span class="lineno"> 1311</span>    auto_raw |= <span class="keyword">static_cast&lt;</span>int16_t<span class="keyword">&gt;</span>(0xFE00U); <span class="comment">// Sign extend to 16-bit</span></div>
-<div class="line"><a id="l01312" name="l01312"></a><span class="lineno"> 1312</span>  }</div>
-<div class="line"><a id="l01313" name="l01313"></a><span class="lineno"> 1313</span>  pwm_scale_auto = auto_raw;</div>
+<div class="line"><a id="l01305" name="l01305"></a><span class="lineno"> 1305</span>  phase_b = cur_b_raw;</div>
+<div class="line"><a id="l01306" name="l01306"></a><span class="lineno"> 1306</span>  </div>
+<div class="line"><a id="l01307" name="l01307"></a><span class="lineno"> 1307</span>  <span class="comment">// CUR_A is bits 24..16 (signed 9-bit)</span></div>
+<div class="line"><a id="l01308" name="l01308"></a><span class="lineno"> 1308</span>  <span class="keyword">auto</span> cur_a_raw = <span class="keyword">static_cast&lt;</span>int16_t<span class="keyword">&gt;</span>(mscuract.bits.cur_a);</div>
+<div class="line"><a id="l01309" name="l01309"></a><span class="lineno"> 1309</span>  <span class="keywordflow">if</span> (cur_a_raw &amp; 0x0100) {                     <span class="comment">// Check sign bit (bit 8)</span></div>
+<div class="line"><a id="l01310" name="l01310"></a><span class="lineno"> 1310</span>    cur_a_raw |= <span class="keyword">static_cast&lt;</span>int16_t<span class="keyword">&gt;</span>(0xFE00U); <span class="comment">// Sign extend to 16-bit</span></div>
+<div class="line"><a id="l01311" name="l01311"></a><span class="lineno"> 1311</span>  }</div>
+<div class="line"><a id="l01312" name="l01312"></a><span class="lineno"> 1312</span>  phase_a = cur_a_raw;</div>
+<div class="line"><a id="l01313" name="l01313"></a><span class="lineno"> 1313</span>  </div>
 <div class="line"><a id="l01314" name="l01314"></a><span class="lineno"> 1314</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l01315" name="l01315"></a><span class="lineno"> 1315</span>}</div>
 </div>
 <div class="line"><a id="l01316" name="l01316"></a><span class="lineno"> 1316</span> </div>
 <div class="line"><a id="l01317" name="l01317"></a><span class="lineno"> 1317</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
 <div class="foldopen" id="foldopen01318" data-start="{" data-end="}">
-<div class="line"><a id="l01318" name="l01318"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a1441d825f5f0992dd5b84a20dd3ebf8a"> 1318</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a1441d825f5f0992dd5b84a20dd3ebf8a">TMC5160&lt;CommType&gt;::Diagnostics::GetPwmAuto</a>(uint8_t&amp; pwm_ofs_auto, uint8_t&amp; pwm_grad_auto) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01318" name="l01318"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0e50567d8546713ed85e0e3d64a768b1"> 1318</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0e50567d8546713ed85e0e3d64a768b1">TMC5160&lt;CommType&gt;::Diagnostics::GetPwmScale</a>(uint8_t&amp; pwm_scale_sum, int16_t&amp; pwm_scale_auto) <span class="keyword">noexcept</span> {</div>
 <div class="line"><a id="l01319" name="l01319"></a><span class="lineno"> 1319</span>  uint32_t value = 0;</div>
-<div class="line"><a id="l01320" name="l01320"></a><span class="lineno"> 1320</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::PWM_AUTO, value)) {</div>
+<div class="line"><a id="l01320" name="l01320"></a><span class="lineno"> 1320</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::PWM_SCALE, value)) {</div>
 <div class="line"><a id="l01321" name="l01321"></a><span class="lineno"> 1321</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l01322" name="l01322"></a><span class="lineno"> 1322</span>  }</div>
-<div class="line"><a id="l01323" name="l01323"></a><span class="lineno"> 1323</span>  <a class="code hl_union" href="uniontmc5160_1_1PWM__AUTO__Register.html">PWM_AUTO_Register</a> pwm_auto{};</div>
-<div class="line"><a id="l01324" name="l01324"></a><span class="lineno"> 1324</span>  pwm_auto.<a class="code hl_variable" href="uniontmc5160_1_1PWM__AUTO__Register.html#a25dd1e6f85906cc68935835002cac2d6">value</a> = value;</div>
-<div class="line"><a id="l01325" name="l01325"></a><span class="lineno"> 1325</span>  pwm_ofs_auto = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(pwm_auto.bits.pwm_ofs_auto);</div>
-<div class="line"><a id="l01326" name="l01326"></a><span class="lineno"> 1326</span>  pwm_grad_auto = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(pwm_auto.bits.pwm_grad_auto);</div>
-<div class="line"><a id="l01327" name="l01327"></a><span class="lineno"> 1327</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01328" name="l01328"></a><span class="lineno"> 1328</span>}</div>
+<div class="line"><a id="l01323" name="l01323"></a><span class="lineno"> 1323</span>  <a class="code hl_union" href="uniontmc5160_1_1PWM__SCALE__Register.html">PWM_SCALE_Register</a> pwm_scale{};</div>
+<div class="line"><a id="l01324" name="l01324"></a><span class="lineno"> 1324</span>  pwm_scale.<a class="code hl_variable" href="uniontmc5160_1_1PWM__SCALE__Register.html#aa3904fff21424f786e6a54b816b53046">value</a> = value;</div>
+<div class="line"><a id="l01325" name="l01325"></a><span class="lineno"> 1325</span>  pwm_scale_sum = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(pwm_scale.bits.pwm_scale_sum);</div>
+<div class="line"><a id="l01326" name="l01326"></a><span class="lineno"> 1326</span>  <span class="comment">// PWM_SCALE_AUTO is signed 9-bit (bits 24..16)</span></div>
+<div class="line"><a id="l01327" name="l01327"></a><span class="lineno"> 1327</span>  <span class="keyword">auto</span> auto_raw = <span class="keyword">static_cast&lt;</span>int16_t<span class="keyword">&gt;</span>(pwm_scale.bits.pwm_scale_auto);</div>
+<div class="line"><a id="l01328" name="l01328"></a><span class="lineno"> 1328</span>  <span class="keywordflow">if</span> (auto_raw &amp; 0x0100) {                     <span class="comment">// Check sign bit (bit 8 of the 9-bit field)</span></div>
+<div class="line"><a id="l01329" name="l01329"></a><span class="lineno"> 1329</span>    auto_raw |= <span class="keyword">static_cast&lt;</span>int16_t<span class="keyword">&gt;</span>(0xFE00U); <span class="comment">// Sign extend to 16-bit</span></div>
+<div class="line"><a id="l01330" name="l01330"></a><span class="lineno"> 1330</span>  }</div>
+<div class="line"><a id="l01331" name="l01331"></a><span class="lineno"> 1331</span>  pwm_scale_auto = auto_raw;</div>
+<div class="line"><a id="l01332" name="l01332"></a><span class="lineno"> 1332</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01333" name="l01333"></a><span class="lineno"> 1333</span>}</div>
 </div>
-<div class="line"><a id="l01329" name="l01329"></a><span class="lineno"> 1329</span> </div>
-<div class="line"><a id="l01330" name="l01330"></a><span class="lineno"> 1330</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01331" data-start="{" data-end="}">
-<div class="line"><a id="l01331" name="l01331"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#aa3477caff8643a2d71a9aaca26a48eaa"> 1331</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#aa3477caff8643a2d71a9aaca26a48eaa">TMC5160&lt;CommType&gt;::Diagnostics::ReadInputStatus</a>(<a class="code hl_struct" href="structtmc5160_1_1InputStatus.html">InputStatus</a>&amp; input_status) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l01332" name="l01332"></a><span class="lineno"> 1332</span>  uint32_t io_pins = 0;</div>
-<div class="line"><a id="l01333" name="l01333"></a><span class="lineno"> 1333</span>  <span class="keywordflow">if</span> (!ReadGpioPins(io_pins)) {</div>
-<div class="line"><a id="l01334" name="l01334"></a><span class="lineno"> 1334</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01335" name="l01335"></a><span class="lineno"> 1335</span>  }</div>
-<div class="line"><a id="l01336" name="l01336"></a><span class="lineno"> 1336</span>  </div>
-<div class="line"><a id="l01337" name="l01337"></a><span class="lineno"> 1337</span>  <a class="code hl_union" href="uniontmc5160_1_1IOIN__Register.html">IOIN_Register</a> ioin{};</div>
-<div class="line"><a id="l01338" name="l01338"></a><span class="lineno"> 1338</span>  ioin.<a class="code hl_variable" href="uniontmc5160_1_1IOIN__Register.html#abf8608cc521d623569fa1f44b1e9f3e5">value</a> = io_pins;</div>
-<div class="line"><a id="l01339" name="l01339"></a><span class="lineno"> 1339</span>  </div>
-<div class="line"><a id="l01340" name="l01340"></a><span class="lineno"> 1340</span>  input_status.refl_step = ioin.bits.refl_step != 0;</div>
-<div class="line"><a id="l01341" name="l01341"></a><span class="lineno"> 1341</span>  input_status.refr_dir = ioin.bits.refr_dir != 0;</div>
-<div class="line"><a id="l01342" name="l01342"></a><span class="lineno"> 1342</span>  input_status.encb_dcen_cfg4 = ioin.bits.encb_dcen_cfg4 != 0;</div>
-<div class="line"><a id="l01343" name="l01343"></a><span class="lineno"> 1343</span>  input_status.enca_dcin_cfg5 = ioin.bits.enca_dcin_cfg5 != 0;</div>
-<div class="line"><a id="l01344" name="l01344"></a><span class="lineno"> 1344</span>  input_status.drv_enn = ioin.bits.drv_enn != 0;</div>
-<div class="line"><a id="l01345" name="l01345"></a><span class="lineno"> 1345</span>  input_status.enc_n_dco_cfg6 = ioin.bits.enc_n_dco_cfg6 != 0;</div>
-<div class="line"><a id="l01346" name="l01346"></a><span class="lineno"> 1346</span>  input_status.sd_mode = ioin.bits.sd_mode != 0;</div>
-<div class="line"><a id="l01347" name="l01347"></a><span class="lineno"> 1347</span>  input_status.swcomp_in = ioin.bits.swcomp_in != 0;</div>
-<div class="line"><a id="l01348" name="l01348"></a><span class="lineno"> 1348</span>  input_status.version = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(ioin.bits.version);</div>
-<div class="line"><a id="l01349" name="l01349"></a><span class="lineno"> 1349</span>  </div>
-<div class="line"><a id="l01350" name="l01350"></a><span class="lineno"> 1350</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01351" name="l01351"></a><span class="lineno"> 1351</span>}</div>
+<div class="line"><a id="l01334" name="l01334"></a><span class="lineno"> 1334</span> </div>
+<div class="line"><a id="l01335" name="l01335"></a><span class="lineno"> 1335</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01336" data-start="{" data-end="}">
+<div class="line"><a id="l01336" name="l01336"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a1441d825f5f0992dd5b84a20dd3ebf8a"> 1336</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a1441d825f5f0992dd5b84a20dd3ebf8a">TMC5160&lt;CommType&gt;::Diagnostics::GetPwmAuto</a>(uint8_t&amp; pwm_ofs_auto, uint8_t&amp; pwm_grad_auto) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01337" name="l01337"></a><span class="lineno"> 1337</span>  uint32_t value = 0;</div>
+<div class="line"><a id="l01338" name="l01338"></a><span class="lineno"> 1338</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::PWM_AUTO, value)) {</div>
+<div class="line"><a id="l01339" name="l01339"></a><span class="lineno"> 1339</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01340" name="l01340"></a><span class="lineno"> 1340</span>  }</div>
+<div class="line"><a id="l01341" name="l01341"></a><span class="lineno"> 1341</span>  <a class="code hl_union" href="uniontmc5160_1_1PWM__AUTO__Register.html">PWM_AUTO_Register</a> pwm_auto{};</div>
+<div class="line"><a id="l01342" name="l01342"></a><span class="lineno"> 1342</span>  pwm_auto.<a class="code hl_variable" href="uniontmc5160_1_1PWM__AUTO__Register.html#a25dd1e6f85906cc68935835002cac2d6">value</a> = value;</div>
+<div class="line"><a id="l01343" name="l01343"></a><span class="lineno"> 1343</span>  pwm_ofs_auto = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(pwm_auto.bits.pwm_ofs_auto);</div>
+<div class="line"><a id="l01344" name="l01344"></a><span class="lineno"> 1344</span>  pwm_grad_auto = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(pwm_auto.bits.pwm_grad_auto);</div>
+<div class="line"><a id="l01345" name="l01345"></a><span class="lineno"> 1345</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01346" name="l01346"></a><span class="lineno"> 1346</span>}</div>
 </div>
-<div class="line"><a id="l01352" name="l01352"></a><span class="lineno"> 1352</span> </div>
-<div class="line"><a id="l01353" name="l01353"></a><span class="lineno"> 1353</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01354" data-start="{" data-end="}">
-<div class="line"><a id="l01354" name="l01354"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ad6b456a7eb9dd8ceeb76f5c9449d3178"> 1354</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ad6b456a7eb9dd8ceeb76f5c9449d3178">TMC5160&lt;CommType&gt;::Diagnostics::ReadIcVersion</a>(uint8_t&amp; version) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l01355" name="l01355"></a><span class="lineno"> 1355</span>  uint32_t io_pins = 0;</div>
-<div class="line"><a id="l01356" name="l01356"></a><span class="lineno"> 1356</span>  <span class="keywordflow">if</span> (!ReadGpioPins(io_pins)) {</div>
-<div class="line"><a id="l01357" name="l01357"></a><span class="lineno"> 1357</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01358" name="l01358"></a><span class="lineno"> 1358</span>  }</div>
-<div class="line"><a id="l01359" name="l01359"></a><span class="lineno"> 1359</span>  <a class="code hl_union" href="uniontmc5160_1_1IOIN__Register.html">IOIN_Register</a> ioin{};</div>
-<div class="line"><a id="l01360" name="l01360"></a><span class="lineno"> 1360</span>  ioin.<a class="code hl_variable" href="uniontmc5160_1_1IOIN__Register.html#abf8608cc521d623569fa1f44b1e9f3e5">value</a> = io_pins;</div>
-<div class="line"><a id="l01361" name="l01361"></a><span class="lineno"> 1361</span>  version = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(ioin.bits.version);</div>
-<div class="line"><a id="l01362" name="l01362"></a><span class="lineno"> 1362</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01363" name="l01363"></a><span class="lineno"> 1363</span>}</div>
+<div class="line"><a id="l01347" name="l01347"></a><span class="lineno"> 1347</span> </div>
+<div class="line"><a id="l01348" name="l01348"></a><span class="lineno"> 1348</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01349" data-start="{" data-end="}">
+<div class="line"><a id="l01349" name="l01349"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#aa3477caff8643a2d71a9aaca26a48eaa"> 1349</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#aa3477caff8643a2d71a9aaca26a48eaa">TMC5160&lt;CommType&gt;::Diagnostics::ReadInputStatus</a>(<a class="code hl_struct" href="structtmc5160_1_1InputStatus.html">InputStatus</a>&amp; input_status) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01350" name="l01350"></a><span class="lineno"> 1350</span>  uint32_t io_pins = 0;</div>
+<div class="line"><a id="l01351" name="l01351"></a><span class="lineno"> 1351</span>  <span class="keywordflow">if</span> (!ReadGpioPins(io_pins)) {</div>
+<div class="line"><a id="l01352" name="l01352"></a><span class="lineno"> 1352</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01353" name="l01353"></a><span class="lineno"> 1353</span>  }</div>
+<div class="line"><a id="l01354" name="l01354"></a><span class="lineno"> 1354</span>  </div>
+<div class="line"><a id="l01355" name="l01355"></a><span class="lineno"> 1355</span>  <a class="code hl_union" href="uniontmc5160_1_1IOIN__Register.html">IOIN_Register</a> ioin{};</div>
+<div class="line"><a id="l01356" name="l01356"></a><span class="lineno"> 1356</span>  ioin.<a class="code hl_variable" href="uniontmc5160_1_1IOIN__Register.html#abf8608cc521d623569fa1f44b1e9f3e5">value</a> = io_pins;</div>
+<div class="line"><a id="l01357" name="l01357"></a><span class="lineno"> 1357</span>  </div>
+<div class="line"><a id="l01358" name="l01358"></a><span class="lineno"> 1358</span>  input_status.refl_step = ioin.bits.refl_step != 0;</div>
+<div class="line"><a id="l01359" name="l01359"></a><span class="lineno"> 1359</span>  input_status.refr_dir = ioin.bits.refr_dir != 0;</div>
+<div class="line"><a id="l01360" name="l01360"></a><span class="lineno"> 1360</span>  input_status.encb_dcen_cfg4 = ioin.bits.encb_dcen_cfg4 != 0;</div>
+<div class="line"><a id="l01361" name="l01361"></a><span class="lineno"> 1361</span>  input_status.enca_dcin_cfg5 = ioin.bits.enca_dcin_cfg5 != 0;</div>
+<div class="line"><a id="l01362" name="l01362"></a><span class="lineno"> 1362</span>  input_status.drv_enn = ioin.bits.drv_enn != 0;</div>
+<div class="line"><a id="l01363" name="l01363"></a><span class="lineno"> 1363</span>  input_status.enc_n_dco_cfg6 = ioin.bits.enc_n_dco_cfg6 != 0;</div>
+<div class="line"><a id="l01364" name="l01364"></a><span class="lineno"> 1364</span>  input_status.sd_mode = ioin.bits.sd_mode != 0;</div>
+<div class="line"><a id="l01365" name="l01365"></a><span class="lineno"> 1365</span>  input_status.swcomp_in = ioin.bits.swcomp_in != 0;</div>
+<div class="line"><a id="l01366" name="l01366"></a><span class="lineno"> 1366</span>  input_status.version = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(ioin.bits.version);</div>
+<div class="line"><a id="l01367" name="l01367"></a><span class="lineno"> 1367</span>  </div>
+<div class="line"><a id="l01368" name="l01368"></a><span class="lineno"> 1368</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01369" name="l01369"></a><span class="lineno"> 1369</span>}</div>
 </div>
-<div class="line"><a id="l01364" name="l01364"></a><span class="lineno"> 1364</span> </div>
-<div class="line"><a id="l01365" name="l01365"></a><span class="lineno"> 1365</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01366" data-start="{" data-end="}">
-<div class="line"><a id="l01366" name="l01366"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a24c2ed291dd4491799a5c64f300d07bb"> 1366</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a24c2ed291dd4491799a5c64f300d07bb">TMC5160&lt;CommType&gt;::Diagnostics::ReadGpioPins</a>(uint32_t&amp; io_pins) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l01367" name="l01367"></a><span class="lineno"> 1367</span>  <span class="keywordflow">return</span> driver_.comm_.ReadRegister(Registers::IO_INPUT_OUTPUT, io_pins, driver_.GetCommAddress());</div>
-<div class="line"><a id="l01368" name="l01368"></a><span class="lineno"> 1368</span>}</div>
+<div class="line"><a id="l01370" name="l01370"></a><span class="lineno"> 1370</span> </div>
+<div class="line"><a id="l01371" name="l01371"></a><span class="lineno"> 1371</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01372" data-start="{" data-end="}">
+<div class="line"><a id="l01372" name="l01372"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ad6b456a7eb9dd8ceeb76f5c9449d3178"> 1372</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ad6b456a7eb9dd8ceeb76f5c9449d3178">TMC5160&lt;CommType&gt;::Diagnostics::ReadIcVersion</a>(uint8_t&amp; version) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01373" name="l01373"></a><span class="lineno"> 1373</span>  uint32_t io_pins = 0;</div>
+<div class="line"><a id="l01374" name="l01374"></a><span class="lineno"> 1374</span>  <span class="keywordflow">if</span> (!ReadGpioPins(io_pins)) {</div>
+<div class="line"><a id="l01375" name="l01375"></a><span class="lineno"> 1375</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01376" name="l01376"></a><span class="lineno"> 1376</span>  }</div>
+<div class="line"><a id="l01377" name="l01377"></a><span class="lineno"> 1377</span>  <a class="code hl_union" href="uniontmc5160_1_1IOIN__Register.html">IOIN_Register</a> ioin{};</div>
+<div class="line"><a id="l01378" name="l01378"></a><span class="lineno"> 1378</span>  ioin.<a class="code hl_variable" href="uniontmc5160_1_1IOIN__Register.html#abf8608cc521d623569fa1f44b1e9f3e5">value</a> = io_pins;</div>
+<div class="line"><a id="l01379" name="l01379"></a><span class="lineno"> 1379</span>  version = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(ioin.bits.version);</div>
+<div class="line"><a id="l01380" name="l01380"></a><span class="lineno"> 1380</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01381" name="l01381"></a><span class="lineno"> 1381</span>}</div>
 </div>
-<div class="line"><a id="l01369" name="l01369"></a><span class="lineno"> 1369</span> </div>
-<div class="line"><a id="l01370" name="l01370"></a><span class="lineno"> 1370</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01371" data-start="{" data-end="}">
-<div class="line"><a id="l01371" name="l01371"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#abf878f0c5b0a1533f19a1fc5d539dfc9"> 1371</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#abf878f0c5b0a1533f19a1fc5d539dfc9">TMC5160&lt;CommType&gt;::Diagnostics::ReadFactoryConfig</a>(uint8_t&amp; fclktrim) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l01372" name="l01372"></a><span class="lineno"> 1372</span>  uint32_t value = 0;</div>
-<div class="line"><a id="l01373" name="l01373"></a><span class="lineno"> 1373</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::FACTORY_CONF, value)) {</div>
-<div class="line"><a id="l01374" name="l01374"></a><span class="lineno"> 1374</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01375" name="l01375"></a><span class="lineno"> 1375</span>  }</div>
-<div class="line"><a id="l01376" name="l01376"></a><span class="lineno"> 1376</span>  <span class="comment">// FACTORY_CONF contains FCLKTRIM in bits 0-4</span></div>
-<div class="line"><a id="l01377" name="l01377"></a><span class="lineno"> 1377</span>  fclktrim = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(value &amp; 0x1F);</div>
-<div class="line"><a id="l01378" name="l01378"></a><span class="lineno"> 1378</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01379" name="l01379"></a><span class="lineno"> 1379</span>}</div>
+<div class="line"><a id="l01382" name="l01382"></a><span class="lineno"> 1382</span> </div>
+<div class="line"><a id="l01383" name="l01383"></a><span class="lineno"> 1383</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01384" data-start="{" data-end="}">
+<div class="line"><a id="l01384" name="l01384"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a24c2ed291dd4491799a5c64f300d07bb"> 1384</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a24c2ed291dd4491799a5c64f300d07bb">TMC5160&lt;CommType&gt;::Diagnostics::ReadGpioPins</a>(uint32_t&amp; io_pins) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01385" name="l01385"></a><span class="lineno"> 1385</span>  <span class="keywordflow">return</span> driver_.comm_.ReadRegister(Registers::IO_INPUT_OUTPUT, io_pins, driver_.GetCommAddress());</div>
+<div class="line"><a id="l01386" name="l01386"></a><span class="lineno"> 1386</span>}</div>
 </div>
-<div class="line"><a id="l01380" name="l01380"></a><span class="lineno"> 1380</span> </div>
-<div class="line"><a id="l01381" name="l01381"></a><span class="lineno"> 1381</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01382" data-start="{" data-end="}">
-<div class="line"><a id="l01382" name="l01382"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a8ae1d76559766403177c80506955a4fe"> 1382</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a8ae1d76559766403177c80506955a4fe">TMC5160&lt;CommType&gt;::Diagnostics::SetSdoCfg0Polarity</a>(<span class="keywordtype">bool</span> polarity) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l01383" name="l01383"></a><span class="lineno"> 1383</span>  <span class="comment">// Register 0x04 is dual purpose:</span></div>
-<div class="line"><a id="l01384" name="l01384"></a><span class="lineno"> 1384</span>  <span class="comment">// - Read: IOIN (Input states)</span></div>
-<div class="line"><a id="l01385" name="l01385"></a><span class="lineno"> 1385</span>  <span class="comment">// - Write: OUTPUT (Output configuration)</span></div>
-<div class="line"><a id="l01386" name="l01386"></a><span class="lineno"> 1386</span>  <span class="comment">//</span></div>
-<div class="line"><a id="l01387" name="l01387"></a><span class="lineno"> 1387</span>  <span class="comment">// Bit 0 of OUTPUT register controls the polarity of SDO_CFG0 pin in UART mode.</span></div>
-<div class="line"><a id="l01388" name="l01388"></a><span class="lineno"> 1388</span>  <span class="comment">// 0: Normal / Active High (Logic 1 = High Voltage)</span></div>
-<div class="line"><a id="l01389" name="l01389"></a><span class="lineno"> 1389</span>  <span class="comment">// 1: Inverted / Active Low (Logic 1 = Low Voltage) - Default reset value</span></div>
-<div class="line"><a id="l01390" name="l01390"></a><span class="lineno"> 1390</span>  <span class="comment">//</span></div>
-<div class="line"><a id="l01391" name="l01391"></a><span class="lineno"> 1391</span>  <span class="comment">// NOTE: Writing to 0x04 DOES NOT overwrite input flags (as they are read-only at this address).</span></div>
-<div class="line"><a id="l01392" name="l01392"></a><span class="lineno"> 1392</span>  <span class="comment">// Writing only affects the output configuration latch.</span></div>
-<div class="line"><a id="l01393" name="l01393"></a><span class="lineno"> 1393</span>  </div>
-<div class="line"><a id="l01394" name="l01394"></a><span class="lineno"> 1394</span>  uint32_t value = polarity ? 1 : 0;</div>
-<div class="line"><a id="l01395" name="l01395"></a><span class="lineno"> 1395</span>  <span class="keywordflow">return</span> driver_.comm_.WriteRegister(Registers::IO_INPUT_OUTPUT, value, driver_.GetCommAddress());</div>
-<div class="line"><a id="l01396" name="l01396"></a><span class="lineno"> 1396</span>}</div>
+<div class="line"><a id="l01387" name="l01387"></a><span class="lineno"> 1387</span> </div>
+<div class="line"><a id="l01388" name="l01388"></a><span class="lineno"> 1388</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01389" data-start="{" data-end="}">
+<div class="line"><a id="l01389" name="l01389"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#abf878f0c5b0a1533f19a1fc5d539dfc9"> 1389</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#abf878f0c5b0a1533f19a1fc5d539dfc9">TMC5160&lt;CommType&gt;::Diagnostics::ReadFactoryConfig</a>(uint8_t&amp; fclktrim) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01390" name="l01390"></a><span class="lineno"> 1390</span>  uint32_t value = 0;</div>
+<div class="line"><a id="l01391" name="l01391"></a><span class="lineno"> 1391</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::FACTORY_CONF, value)) {</div>
+<div class="line"><a id="l01392" name="l01392"></a><span class="lineno"> 1392</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01393" name="l01393"></a><span class="lineno"> 1393</span>  }</div>
+<div class="line"><a id="l01394" name="l01394"></a><span class="lineno"> 1394</span>  <span class="comment">// FACTORY_CONF contains FCLKTRIM in bits 0-4</span></div>
+<div class="line"><a id="l01395" name="l01395"></a><span class="lineno"> 1395</span>  fclktrim = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(value &amp; 0x1F);</div>
+<div class="line"><a id="l01396" name="l01396"></a><span class="lineno"> 1396</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01397" name="l01397"></a><span class="lineno"> 1397</span>}</div>
 </div>
-<div class="line"><a id="l01397" name="l01397"></a><span class="lineno"> 1397</span> </div>
-<div class="line"><a id="l01398" name="l01398"></a><span class="lineno"> 1398</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01399" data-start="{" data-end="}">
-<div class="line"><a id="l01399" name="l01399"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#aa1fb77fb2b5610502bf5915cd99b3330"> 1399</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#aa1fb77fb2b5610502bf5915cd99b3330">TMC5160&lt;CommType&gt;::Diagnostics::ReadOtpConfig</a>(uint8_t&amp; otp_fclktrim, <span class="keywordtype">bool</span>&amp; otp_s2_level, <span class="keywordtype">bool</span>&amp; otp_bbm,</div>
-<div class="line"><a id="l01400" name="l01400"></a><span class="lineno"> 1400</span>                                                   <span class="keywordtype">bool</span>&amp; otp_tbl) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l01401" name="l01401"></a><span class="lineno"> 1401</span>  uint32_t value = 0;</div>
-<div class="line"><a id="l01402" name="l01402"></a><span class="lineno"> 1402</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::OTP_READ, value)) {</div>
-<div class="line"><a id="l01403" name="l01403"></a><span class="lineno"> 1403</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01404" name="l01404"></a><span class="lineno"> 1404</span>  }</div>
-<div class="line"><a id="l01405" name="l01405"></a><span class="lineno"> 1405</span>  <a class="code hl_union" href="uniontmc5160_1_1OTP__READ__Register.html">OTP_READ_Register</a> otp_read{};</div>
-<div class="line"><a id="l01406" name="l01406"></a><span class="lineno"> 1406</span>  otp_read.<a class="code hl_variable" href="uniontmc5160_1_1OTP__READ__Register.html#a313db8fe25646b9fe9de985af1d3316d">value</a> = value;</div>
-<div class="line"><a id="l01407" name="l01407"></a><span class="lineno"> 1407</span>  otp_fclktrim = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(otp_read.bits.otp_fclktrim);</div>
-<div class="line"><a id="l01408" name="l01408"></a><span class="lineno"> 1408</span>  otp_s2_level = otp_read.bits.otp_S2_level != 0;</div>
-<div class="line"><a id="l01409" name="l01409"></a><span class="lineno"> 1409</span>  otp_bbm = otp_read.bits.otp_bbm != 0;</div>
-<div class="line"><a id="l01410" name="l01410"></a><span class="lineno"> 1410</span>  otp_tbl = otp_read.bits.otp_tbl != 0;</div>
-<div class="line"><a id="l01411" name="l01411"></a><span class="lineno"> 1411</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01412" name="l01412"></a><span class="lineno"> 1412</span>}</div>
+<div class="line"><a id="l01398" name="l01398"></a><span class="lineno"> 1398</span> </div>
+<div class="line"><a id="l01399" name="l01399"></a><span class="lineno"> 1399</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01400" data-start="{" data-end="}">
+<div class="line"><a id="l01400" name="l01400"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a8ae1d76559766403177c80506955a4fe"> 1400</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a8ae1d76559766403177c80506955a4fe">TMC5160&lt;CommType&gt;::Diagnostics::SetSdoCfg0Polarity</a>(<span class="keywordtype">bool</span> polarity) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01401" name="l01401"></a><span class="lineno"> 1401</span>  <span class="comment">// Register 0x04 is dual purpose:</span></div>
+<div class="line"><a id="l01402" name="l01402"></a><span class="lineno"> 1402</span>  <span class="comment">// - Read: IOIN (Input states)</span></div>
+<div class="line"><a id="l01403" name="l01403"></a><span class="lineno"> 1403</span>  <span class="comment">// - Write: OUTPUT (Output configuration)</span></div>
+<div class="line"><a id="l01404" name="l01404"></a><span class="lineno"> 1404</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l01405" name="l01405"></a><span class="lineno"> 1405</span>  <span class="comment">// Bit 0 of OUTPUT register controls the polarity of SDO_CFG0 pin in UART mode.</span></div>
+<div class="line"><a id="l01406" name="l01406"></a><span class="lineno"> 1406</span>  <span class="comment">// 0: Normal / Active High (Logic 1 = High Voltage)</span></div>
+<div class="line"><a id="l01407" name="l01407"></a><span class="lineno"> 1407</span>  <span class="comment">// 1: Inverted / Active Low (Logic 1 = Low Voltage) - Default reset value</span></div>
+<div class="line"><a id="l01408" name="l01408"></a><span class="lineno"> 1408</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l01409" name="l01409"></a><span class="lineno"> 1409</span>  <span class="comment">// NOTE: Writing to 0x04 DOES NOT overwrite input flags (as they are read-only at this address).</span></div>
+<div class="line"><a id="l01410" name="l01410"></a><span class="lineno"> 1410</span>  <span class="comment">// Writing only affects the output configuration latch.</span></div>
+<div class="line"><a id="l01411" name="l01411"></a><span class="lineno"> 1411</span>  </div>
+<div class="line"><a id="l01412" name="l01412"></a><span class="lineno"> 1412</span>  uint32_t value = polarity ? 1 : 0;</div>
+<div class="line"><a id="l01413" name="l01413"></a><span class="lineno"> 1413</span>  <span class="keywordflow">return</span> driver_.comm_.WriteRegister(Registers::IO_INPUT_OUTPUT, value, driver_.GetCommAddress());</div>
+<div class="line"><a id="l01414" name="l01414"></a><span class="lineno"> 1414</span>}</div>
 </div>
-<div class="line"><a id="l01413" name="l01413"></a><span class="lineno"> 1413</span> </div>
-<div class="line"><a id="l01414" name="l01414"></a><span class="lineno"> 1414</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01415" data-start="{" data-end="}">
-<div class="line"><a id="l01415" name="l01415"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0dafd97b278428cec1145aa72c4b61e7"> 1415</a></span>uint8_t <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0dafd97b278428cec1145aa72c4b61e7">TMC5160&lt;CommType&gt;::Diagnostics::GetUartTransmissionCount</a>() noexcept {</div>
-<div class="line"><a id="l01416" name="l01416"></a><span class="lineno"> 1416</span>  uint32_t value = 0;</div>
-<div class="line"><a id="l01417" name="l01417"></a><span class="lineno"> 1417</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::IFCNT, value)) {</div>
-<div class="line"><a id="l01418" name="l01418"></a><span class="lineno"> 1418</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l01419" name="l01419"></a><span class="lineno"> 1419</span>  }</div>
-<div class="line"><a id="l01420" name="l01420"></a><span class="lineno"> 1420</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(value &amp; 0xFF); <span class="comment">// IFCNT is 8 bits</span></div>
-<div class="line"><a id="l01421" name="l01421"></a><span class="lineno"> 1421</span>}</div>
+<div class="line"><a id="l01415" name="l01415"></a><span class="lineno"> 1415</span> </div>
+<div class="line"><a id="l01416" name="l01416"></a><span class="lineno"> 1416</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01417" data-start="{" data-end="}">
+<div class="line"><a id="l01417" name="l01417"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#aa1fb77fb2b5610502bf5915cd99b3330"> 1417</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#aa1fb77fb2b5610502bf5915cd99b3330">TMC5160&lt;CommType&gt;::Diagnostics::ReadOtpConfig</a>(uint8_t&amp; otp_fclktrim, <span class="keywordtype">bool</span>&amp; otp_s2_level, <span class="keywordtype">bool</span>&amp; otp_bbm,</div>
+<div class="line"><a id="l01418" name="l01418"></a><span class="lineno"> 1418</span>                                                   <span class="keywordtype">bool</span>&amp; otp_tbl) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01419" name="l01419"></a><span class="lineno"> 1419</span>  uint32_t value = 0;</div>
+<div class="line"><a id="l01420" name="l01420"></a><span class="lineno"> 1420</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::OTP_READ, value)) {</div>
+<div class="line"><a id="l01421" name="l01421"></a><span class="lineno"> 1421</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01422" name="l01422"></a><span class="lineno"> 1422</span>  }</div>
+<div class="line"><a id="l01423" name="l01423"></a><span class="lineno"> 1423</span>  <a class="code hl_union" href="uniontmc5160_1_1OTP__READ__Register.html">OTP_READ_Register</a> otp_read{};</div>
+<div class="line"><a id="l01424" name="l01424"></a><span class="lineno"> 1424</span>  otp_read.<a class="code hl_variable" href="uniontmc5160_1_1OTP__READ__Register.html#a313db8fe25646b9fe9de985af1d3316d">value</a> = value;</div>
+<div class="line"><a id="l01425" name="l01425"></a><span class="lineno"> 1425</span>  otp_fclktrim = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(otp_read.bits.otp_fclktrim);</div>
+<div class="line"><a id="l01426" name="l01426"></a><span class="lineno"> 1426</span>  otp_s2_level = otp_read.bits.otp_S2_level != 0;</div>
+<div class="line"><a id="l01427" name="l01427"></a><span class="lineno"> 1427</span>  otp_bbm = otp_read.bits.otp_bbm != 0;</div>
+<div class="line"><a id="l01428" name="l01428"></a><span class="lineno"> 1428</span>  otp_tbl = otp_read.bits.otp_tbl != 0;</div>
+<div class="line"><a id="l01429" name="l01429"></a><span class="lineno"> 1429</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01430" name="l01430"></a><span class="lineno"> 1430</span>}</div>
 </div>
-<div class="line"><a id="l01422" name="l01422"></a><span class="lineno"> 1422</span> </div>
-<div class="line"><a id="l01423" name="l01423"></a><span class="lineno"> 1423</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01424" data-start="{" data-end="}">
-<div class="line"><a id="l01424" name="l01424"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a178d060f7fdecbc8050782d0376f22d9"> 1424</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a178d060f7fdecbc8050782d0376f22d9">TMC5160&lt;CommType&gt;::Diagnostics::ReadOffsetCalibration</a>(uint8_t&amp; phase_a, uint8_t&amp; phase_b) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l01425" name="l01425"></a><span class="lineno"> 1425</span>  uint32_t value = 0;</div>
-<div class="line"><a id="l01426" name="l01426"></a><span class="lineno"> 1426</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::OFFSET_READ, value)) {</div>
-<div class="line"><a id="l01427" name="l01427"></a><span class="lineno"> 1427</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01428" name="l01428"></a><span class="lineno"> 1428</span>  }</div>
-<div class="line"><a id="l01429" name="l01429"></a><span class="lineno"> 1429</span>  <a class="code hl_union" href="uniontmc5160_1_1OFFSET__READ__Register.html">OFFSET_READ_Register</a> offset_read{};</div>
-<div class="line"><a id="l01430" name="l01430"></a><span class="lineno"> 1430</span>  offset_read.<a class="code hl_variable" href="uniontmc5160_1_1OFFSET__READ__Register.html#a4e8de7eb4c4c3281416b2dabeedfb050">value</a> = value;</div>
-<div class="line"><a id="l01431" name="l01431"></a><span class="lineno"> 1431</span>  phase_a = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(offset_read.bits.phase_a);</div>
-<div class="line"><a id="l01432" name="l01432"></a><span class="lineno"> 1432</span>  phase_b = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(offset_read.bits.phase_b);</div>
-<div class="line"><a id="l01433" name="l01433"></a><span class="lineno"> 1433</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01434" name="l01434"></a><span class="lineno"> 1434</span>}</div>
+<div class="line"><a id="l01431" name="l01431"></a><span class="lineno"> 1431</span> </div>
+<div class="line"><a id="l01432" name="l01432"></a><span class="lineno"> 1432</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01433" data-start="{" data-end="}">
+<div class="line"><a id="l01433" name="l01433"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0dafd97b278428cec1145aa72c4b61e7"> 1433</a></span>uint8_t <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0dafd97b278428cec1145aa72c4b61e7">TMC5160&lt;CommType&gt;::Diagnostics::GetUartTransmissionCount</a>() noexcept {</div>
+<div class="line"><a id="l01434" name="l01434"></a><span class="lineno"> 1434</span>  uint32_t value = 0;</div>
+<div class="line"><a id="l01435" name="l01435"></a><span class="lineno"> 1435</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::IFCNT, value)) {</div>
+<div class="line"><a id="l01436" name="l01436"></a><span class="lineno"> 1436</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l01437" name="l01437"></a><span class="lineno"> 1437</span>  }</div>
+<div class="line"><a id="l01438" name="l01438"></a><span class="lineno"> 1438</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(value &amp; 0xFF); <span class="comment">// IFCNT is 8 bits</span></div>
+<div class="line"><a id="l01439" name="l01439"></a><span class="lineno"> 1439</span>}</div>
 </div>
-<div class="line"><a id="l01435" name="l01435"></a><span class="lineno"> 1435</span> </div>
-<div class="line"><a id="l01436" name="l01436"></a><span class="lineno"> 1436</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01437" data-start="{" data-end="}">
-<div class="line"><a id="l01437" name="l01437"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a5180d6e984236cbc1bcb44c6a76b6052"> 1437</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a5180d6e984236cbc1bcb44c6a76b6052">TMC5160&lt;CommType&gt;::Diagnostics::VerifySetup</a>() noexcept {</div>
-<div class="line"><a id="l01438" name="l01438"></a><span class="lineno"> 1438</span>  <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;--- TMC5160 Setup Verification ---&quot;</span>);</div>
-<div class="line"><a id="l01439" name="l01439"></a><span class="lineno"> 1439</span> </div>
-<div class="line"><a id="l01440" name="l01440"></a><span class="lineno"> 1440</span>  <span class="comment">// 1. Check IC Version</span></div>
-<div class="line"><a id="l01441" name="l01441"></a><span class="lineno"> 1441</span>  uint8_t version = 0;</div>
-<div class="line"><a id="l01442" name="l01442"></a><span class="lineno"> 1442</span>  <span class="keywordflow">if</span> (ReadIcVersion(version)) {</div>
-<div class="line"><a id="l01443" name="l01443"></a><span class="lineno"> 1443</span>    <span class="keywordflow">if</span> (version == 0x30) {</div>
-<div class="line"><a id="l01444" name="l01444"></a><span class="lineno"> 1444</span>      <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;IC Version: 0x30 (Matches TMC5160)&quot;</span>);</div>
-<div class="line"><a id="l01445" name="l01445"></a><span class="lineno"> 1445</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l01446" name="l01446"></a><span class="lineno"> 1446</span>      <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 0, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;IC Version MISMATCH: 0x%02X (Expected 0x30)&quot;</span>, version);</div>
-<div class="line"><a id="l01447" name="l01447"></a><span class="lineno"> 1447</span>      <span class="comment">// If version is 0x00 or 0xFF, it&#39;s likely a communication error</span></div>
-<div class="line"><a id="l01448" name="l01448"></a><span class="lineno"> 1448</span>      <span class="keywordflow">if</span> (version == 0x00 || version == 0xFF) {</div>
-<div class="line"><a id="l01449" name="l01449"></a><span class="lineno"> 1449</span>        <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 0, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;CRITICAL: Bus communication likely failed!&quot;</span>);</div>
-<div class="line"><a id="l01450" name="l01450"></a><span class="lineno"> 1450</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01451" name="l01451"></a><span class="lineno"> 1451</span>      }</div>
-<div class="line"><a id="l01452" name="l01452"></a><span class="lineno"> 1452</span>    }</div>
-<div class="line"><a id="l01453" name="l01453"></a><span class="lineno"> 1453</span>  } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l01454" name="l01454"></a><span class="lineno"> 1454</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 0, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;Failed to read IC Version!&quot;</span>);</div>
-<div class="line"><a id="l01455" name="l01455"></a><span class="lineno"> 1455</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01456" name="l01456"></a><span class="lineno"> 1456</span>  }</div>
+<div class="line"><a id="l01440" name="l01440"></a><span class="lineno"> 1440</span> </div>
+<div class="line"><a id="l01441" name="l01441"></a><span class="lineno"> 1441</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01442" data-start="{" data-end="}">
+<div class="line"><a id="l01442" name="l01442"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a178d060f7fdecbc8050782d0376f22d9"> 1442</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a178d060f7fdecbc8050782d0376f22d9">TMC5160&lt;CommType&gt;::Diagnostics::ReadOffsetCalibration</a>(uint8_t&amp; phase_a, uint8_t&amp; phase_b) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01443" name="l01443"></a><span class="lineno"> 1443</span>  uint32_t value = 0;</div>
+<div class="line"><a id="l01444" name="l01444"></a><span class="lineno"> 1444</span>  <span class="keywordflow">if</span> (!driver_.comm_.ReadRegister(Registers::OFFSET_READ, value)) {</div>
+<div class="line"><a id="l01445" name="l01445"></a><span class="lineno"> 1445</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01446" name="l01446"></a><span class="lineno"> 1446</span>  }</div>
+<div class="line"><a id="l01447" name="l01447"></a><span class="lineno"> 1447</span>  <a class="code hl_union" href="uniontmc5160_1_1OFFSET__READ__Register.html">OFFSET_READ_Register</a> offset_read{};</div>
+<div class="line"><a id="l01448" name="l01448"></a><span class="lineno"> 1448</span>  offset_read.<a class="code hl_variable" href="uniontmc5160_1_1OFFSET__READ__Register.html#a4e8de7eb4c4c3281416b2dabeedfb050">value</a> = value;</div>
+<div class="line"><a id="l01449" name="l01449"></a><span class="lineno"> 1449</span>  phase_a = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(offset_read.bits.phase_a);</div>
+<div class="line"><a id="l01450" name="l01450"></a><span class="lineno"> 1450</span>  phase_b = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(offset_read.bits.phase_b);</div>
+<div class="line"><a id="l01451" name="l01451"></a><span class="lineno"> 1451</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01452" name="l01452"></a><span class="lineno"> 1452</span>}</div>
+</div>
+<div class="line"><a id="l01453" name="l01453"></a><span class="lineno"> 1453</span> </div>
+<div class="line"><a id="l01454" name="l01454"></a><span class="lineno"> 1454</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01455" data-start="{" data-end="}">
+<div class="line"><a id="l01455" name="l01455"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a5180d6e984236cbc1bcb44c6a76b6052"> 1455</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a5180d6e984236cbc1bcb44c6a76b6052">TMC5160&lt;CommType&gt;::Diagnostics::VerifySetup</a>() noexcept {</div>
+<div class="line"><a id="l01456" name="l01456"></a><span class="lineno"> 1456</span>  <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;--- TMC5160 Setup Verification ---&quot;</span>);</div>
 <div class="line"><a id="l01457" name="l01457"></a><span class="lineno"> 1457</span> </div>
-<div class="line"><a id="l01458" name="l01458"></a><span class="lineno"> 1458</span>  <span class="comment">// 2. Check Input Pins (Reg 0x04)</span></div>
-<div class="line"><a id="l01459" name="l01459"></a><span class="lineno"> 1459</span>  <a class="code hl_struct" href="structtmc5160_1_1InputStatus.html">InputStatus</a> inputs;</div>
-<div class="line"><a id="l01460" name="l01460"></a><span class="lineno"> 1460</span>  <span class="keywordflow">if</span> (ReadInputStatus(inputs)) {</div>
-<div class="line"><a id="l01461" name="l01461"></a><span class="lineno"> 1461</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;--- Input Pins (IOIN 0x04) ---&quot;</span>);</div>
-<div class="line"><a id="l01462" name="l01462"></a><span class="lineno"> 1462</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;REFL_STEP:      %s&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#aad391a47b04174edcb6f741bf568aee4">refl_step</a> ? <span class="stringliteral">&quot;HIGH&quot;</span> : <span class="stringliteral">&quot;LOW&quot;</span>);</div>
-<div class="line"><a id="l01463" name="l01463"></a><span class="lineno"> 1463</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;REFR_DIR:       %s&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ac3d9aa2c4db7c9bb83e23ec45317db16">refr_dir</a> ? <span class="stringliteral">&quot;HIGH&quot;</span> : <span class="stringliteral">&quot;LOW&quot;</span>);</div>
-<div class="line"><a id="l01464" name="l01464"></a><span class="lineno"> 1464</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;ENCB_DCEN_CFG4: %s&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#a3eb4abe43a9641f8bc23dbf5f326f69d">encb_dcen_cfg4</a> ? <span class="stringliteral">&quot;HIGH&quot;</span> : <span class="stringliteral">&quot;LOW&quot;</span>);</div>
-<div class="line"><a id="l01465" name="l01465"></a><span class="lineno"> 1465</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;ENCA_DCIN_CFG5: %s&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ae4faf272f4dda465521acaeaf4a92268">enca_dcin_cfg5</a> ? <span class="stringliteral">&quot;HIGH&quot;</span> : <span class="stringliteral">&quot;LOW&quot;</span>);</div>
-<div class="line"><a id="l01466" name="l01466"></a><span class="lineno"> 1466</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;DRV_ENN:        %s (Active LOW)&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ae84ba7d773165f76737f726b606dae1c">drv_enn</a> ? <span class="stringliteral">&quot;HIGH (Disabled)&quot;</span> : <span class="stringliteral">&quot;LOW (Enabled)&quot;</span>);</div>
-<div class="line"><a id="l01467" name="l01467"></a><span class="lineno"> 1467</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;ENC_N_DCO_CFG6: %s&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ac822975504700c1be494a69db9d85f1d">enc_n_dco_cfg6</a> ? <span class="stringliteral">&quot;HIGH&quot;</span> : <span class="stringliteral">&quot;LOW&quot;</span>);</div>
-<div class="line"><a id="l01468" name="l01468"></a><span class="lineno"> 1468</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;SD_MODE:        %s %s&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ad68bb1dd6586f76a211e8c69f400f314">sd_mode</a> ? <span class="stringliteral">&quot;HIGH&quot;</span> : <span class="stringliteral">&quot;LOW&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ad68bb1dd6586f76a211e8c69f400f314">sd_mode</a> ? <span class="stringliteral">&quot;(External Step/Dir)&quot;</span> : <span class="stringliteral">&quot;(Internal Ramp)&quot;</span>);</div>
-<div class="line"><a id="l01469" name="l01469"></a><span class="lineno"> 1469</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;SWCOMP_IN:      %s&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ad58435f552f3c3433e0d0c58d3b27099">swcomp_in</a> ? <span class="stringliteral">&quot;HIGH&quot;</span> : <span class="stringliteral">&quot;LOW&quot;</span>);</div>
-<div class="line"><a id="l01470" name="l01470"></a><span class="lineno"> 1470</span>    </div>
-<div class="line"><a id="l01471" name="l01471"></a><span class="lineno"> 1471</span>    <span class="comment">// Warn about configuration mismatches</span></div>
-<div class="line"><a id="l01472" name="l01472"></a><span class="lineno"> 1472</span>    <span class="keywordflow">if</span> (inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ae84ba7d773165f76737f726b606dae1c">drv_enn</a>) {</div>
-<div class="line"><a id="l01473" name="l01473"></a><span class="lineno"> 1473</span>       <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;NOTE: DRV_ENN is HIGH. Driver power stage is currently DISABLED.&quot;</span>);</div>
-<div class="line"><a id="l01474" name="l01474"></a><span class="lineno"> 1474</span>    }</div>
-<div class="line"><a id="l01475" name="l01475"></a><span class="lineno"> 1475</span>  } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l01476" name="l01476"></a><span class="lineno"> 1476</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 0, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;Failed to read Input Status!&quot;</span>);</div>
-<div class="line"><a id="l01477" name="l01477"></a><span class="lineno"> 1477</span>  }</div>
-<div class="line"><a id="l01478" name="l01478"></a><span class="lineno"> 1478</span> </div>
-<div class="line"><a id="l01479" name="l01479"></a><span class="lineno"> 1479</span>  <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;----------------------------------&quot;</span>);</div>
-<div class="line"><a id="l01480" name="l01480"></a><span class="lineno"> 1480</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01481" name="l01481"></a><span class="lineno"> 1481</span>}</div>
+<div class="line"><a id="l01458" name="l01458"></a><span class="lineno"> 1458</span>  <span class="comment">// 1. Check IC Version</span></div>
+<div class="line"><a id="l01459" name="l01459"></a><span class="lineno"> 1459</span>  uint8_t version = 0;</div>
+<div class="line"><a id="l01460" name="l01460"></a><span class="lineno"> 1460</span>  <span class="keywordflow">if</span> (ReadIcVersion(version)) {</div>
+<div class="line"><a id="l01461" name="l01461"></a><span class="lineno"> 1461</span>    <span class="keywordflow">if</span> (version == 0x30) {</div>
+<div class="line"><a id="l01462" name="l01462"></a><span class="lineno"> 1462</span>      <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;IC Version: 0x30 (Matches TMC5160)&quot;</span>);</div>
+<div class="line"><a id="l01463" name="l01463"></a><span class="lineno"> 1463</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l01464" name="l01464"></a><span class="lineno"> 1464</span>      <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 0, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;IC Version MISMATCH: 0x%02X (Expected 0x30)&quot;</span>, version);</div>
+<div class="line"><a id="l01465" name="l01465"></a><span class="lineno"> 1465</span>      <span class="comment">// If version is 0x00 or 0xFF, it&#39;s likely a communication error</span></div>
+<div class="line"><a id="l01466" name="l01466"></a><span class="lineno"> 1466</span>      <span class="keywordflow">if</span> (version == 0x00 || version == 0xFF) {</div>
+<div class="line"><a id="l01467" name="l01467"></a><span class="lineno"> 1467</span>        <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 0, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;CRITICAL: Bus communication likely failed!&quot;</span>);</div>
+<div class="line"><a id="l01468" name="l01468"></a><span class="lineno"> 1468</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01469" name="l01469"></a><span class="lineno"> 1469</span>      }</div>
+<div class="line"><a id="l01470" name="l01470"></a><span class="lineno"> 1470</span>    }</div>
+<div class="line"><a id="l01471" name="l01471"></a><span class="lineno"> 1471</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l01472" name="l01472"></a><span class="lineno"> 1472</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 0, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;Failed to read IC Version!&quot;</span>);</div>
+<div class="line"><a id="l01473" name="l01473"></a><span class="lineno"> 1473</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01474" name="l01474"></a><span class="lineno"> 1474</span>  }</div>
+<div class="line"><a id="l01475" name="l01475"></a><span class="lineno"> 1475</span> </div>
+<div class="line"><a id="l01476" name="l01476"></a><span class="lineno"> 1476</span>  <span class="comment">// 2. Check Input Pins (Reg 0x04)</span></div>
+<div class="line"><a id="l01477" name="l01477"></a><span class="lineno"> 1477</span>  <a class="code hl_struct" href="structtmc5160_1_1InputStatus.html">InputStatus</a> inputs;</div>
+<div class="line"><a id="l01478" name="l01478"></a><span class="lineno"> 1478</span>  <span class="keywordflow">if</span> (ReadInputStatus(inputs)) {</div>
+<div class="line"><a id="l01479" name="l01479"></a><span class="lineno"> 1479</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;--- Input Pins (IOIN 0x04) ---&quot;</span>);</div>
+<div class="line"><a id="l01480" name="l01480"></a><span class="lineno"> 1480</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;REFL_STEP:      %s&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#aad391a47b04174edcb6f741bf568aee4">refl_step</a> ? <span class="stringliteral">&quot;HIGH&quot;</span> : <span class="stringliteral">&quot;LOW&quot;</span>);</div>
+<div class="line"><a id="l01481" name="l01481"></a><span class="lineno"> 1481</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;REFR_DIR:       %s&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ac3d9aa2c4db7c9bb83e23ec45317db16">refr_dir</a> ? <span class="stringliteral">&quot;HIGH&quot;</span> : <span class="stringliteral">&quot;LOW&quot;</span>);</div>
+<div class="line"><a id="l01482" name="l01482"></a><span class="lineno"> 1482</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;ENCB_DCEN_CFG4: %s&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#a3eb4abe43a9641f8bc23dbf5f326f69d">encb_dcen_cfg4</a> ? <span class="stringliteral">&quot;HIGH&quot;</span> : <span class="stringliteral">&quot;LOW&quot;</span>);</div>
+<div class="line"><a id="l01483" name="l01483"></a><span class="lineno"> 1483</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;ENCA_DCIN_CFG5: %s&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ae4faf272f4dda465521acaeaf4a92268">enca_dcin_cfg5</a> ? <span class="stringliteral">&quot;HIGH&quot;</span> : <span class="stringliteral">&quot;LOW&quot;</span>);</div>
+<div class="line"><a id="l01484" name="l01484"></a><span class="lineno"> 1484</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;DRV_ENN:        %s (Active LOW)&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ae84ba7d773165f76737f726b606dae1c">drv_enn</a> ? <span class="stringliteral">&quot;HIGH (Disabled)&quot;</span> : <span class="stringliteral">&quot;LOW (Enabled)&quot;</span>);</div>
+<div class="line"><a id="l01485" name="l01485"></a><span class="lineno"> 1485</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;ENC_N_DCO_CFG6: %s&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ac822975504700c1be494a69db9d85f1d">enc_n_dco_cfg6</a> ? <span class="stringliteral">&quot;HIGH&quot;</span> : <span class="stringliteral">&quot;LOW&quot;</span>);</div>
+<div class="line"><a id="l01486" name="l01486"></a><span class="lineno"> 1486</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;SD_MODE:        %s %s&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ad68bb1dd6586f76a211e8c69f400f314">sd_mode</a> ? <span class="stringliteral">&quot;HIGH&quot;</span> : <span class="stringliteral">&quot;LOW&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ad68bb1dd6586f76a211e8c69f400f314">sd_mode</a> ? <span class="stringliteral">&quot;(External Step/Dir)&quot;</span> : <span class="stringliteral">&quot;(Internal Ramp)&quot;</span>);</div>
+<div class="line"><a id="l01487" name="l01487"></a><span class="lineno"> 1487</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;SWCOMP_IN:      %s&quot;</span>, inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ad58435f552f3c3433e0d0c58d3b27099">swcomp_in</a> ? <span class="stringliteral">&quot;HIGH&quot;</span> : <span class="stringliteral">&quot;LOW&quot;</span>);</div>
+<div class="line"><a id="l01488" name="l01488"></a><span class="lineno"> 1488</span>    </div>
+<div class="line"><a id="l01489" name="l01489"></a><span class="lineno"> 1489</span>    <span class="comment">// Warn about configuration mismatches</span></div>
+<div class="line"><a id="l01490" name="l01490"></a><span class="lineno"> 1490</span>    <span class="keywordflow">if</span> (inputs.<a class="code hl_variable" href="structtmc5160_1_1InputStatus.html#ae84ba7d773165f76737f726b606dae1c">drv_enn</a>) {</div>
+<div class="line"><a id="l01491" name="l01491"></a><span class="lineno"> 1491</span>       <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;NOTE: DRV_ENN is HIGH. Driver power stage is currently DISABLED.&quot;</span>);</div>
+<div class="line"><a id="l01492" name="l01492"></a><span class="lineno"> 1492</span>    }</div>
+<div class="line"><a id="l01493" name="l01493"></a><span class="lineno"> 1493</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l01494" name="l01494"></a><span class="lineno"> 1494</span>    <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 0, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;Failed to read Input Status!&quot;</span>);</div>
+<div class="line"><a id="l01495" name="l01495"></a><span class="lineno"> 1495</span>  }</div>
+<div class="line"><a id="l01496" name="l01496"></a><span class="lineno"> 1496</span> </div>
+<div class="line"><a id="l01497" name="l01497"></a><span class="lineno"> 1497</span>  <a class="code hl_define" href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a>(driver_.comm_, 1, <span class="stringliteral">&quot;VerifySetup&quot;</span>, <span class="stringliteral">&quot;----------------------------------&quot;</span>);</div>
+<div class="line"><a id="l01498" name="l01498"></a><span class="lineno"> 1498</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01499" name="l01499"></a><span class="lineno"> 1499</span>}</div>
 </div>
-<div class="line"><a id="l01482" name="l01482"></a><span class="lineno"> 1482</span> </div>
-<div class="line"><a id="l01483" name="l01483"></a><span class="lineno"> 1483</span><span class="comment">// UartConfig implementation</span></div>
-<div class="line"><a id="l01484" name="l01484"></a><span class="lineno"> 1484</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
-<div class="foldopen" id="foldopen01485" data-start="{" data-end="}">
-<div class="line"><a id="l01485" name="l01485"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1UartConfig.html#aebc5edf90ae4af5ac23a5edba3d56057"> 1485</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1UartConfig.html#aebc5edf90ae4af5ac23a5edba3d56057">TMC5160&lt;CommType&gt;::UartConfig::ConfigureSlave</a>(uint8_t slave_address, uint8_t send_delay) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l01486" name="l01486"></a><span class="lineno"> 1486</span>  <span class="comment">// During sequential programming, the device is accessible at address 0</span></div>
-<div class="line"><a id="l01487" name="l01487"></a><span class="lineno"> 1487</span>  <span class="comment">// (first device: NAI=GND, subsequent devices: previous NAO=LOW)</span></div>
-<div class="line"><a id="l01488" name="l01488"></a><span class="lineno"> 1488</span>  <span class="comment">// We need to use address 0 to communicate, not the target address</span></div>
-<div class="line"><a id="l01489" name="l01489"></a><span class="lineno"> 1489</span>  uint8_t current_accessible_address = 0;</div>
-<div class="line"><a id="l01490" name="l01490"></a><span class="lineno"> 1490</span> </div>
-<div class="line"><a id="l01491" name="l01491"></a><span class="lineno"> 1491</span>  <a class="code hl_union" href="uniontmc5160_1_1SLAVECONF__Register.html">SLAVECONF_Register</a> slaveconf{};</div>
-<div class="line"><a id="l01492" name="l01492"></a><span class="lineno"> 1492</span>  slaveconf.<a class="code hl_variable" href="uniontmc5160_1_1SLAVECONF__Register.html#afbbeab5373856fb9898a31ceff53af6c">bits</a>.<a class="code hl_variable" href="uniontmc5160_1_1SLAVECONF__Register.html#a45201db1d08b6334e8d822966cd802d4">slaveaddr</a> = slave_address &amp; 0xFF; <span class="comment">// Address range is 0-254 (8-bit)</span></div>
-<div class="line"><a id="l01493" name="l01493"></a><span class="lineno"> 1493</span>  slaveconf.bits.senddelay = constrain&lt;decltype(send_delay)&gt;(send_delay, 0U, 15U);</div>
-<div class="line"><a id="l01494" name="l01494"></a><span class="lineno"> 1494</span> </div>
-<div class="line"><a id="l01495" name="l01495"></a><span class="lineno"> 1495</span>  <span class="comment">// Write to SLAVECONF using current accessible address (0)</span></div>
-<div class="line"><a id="l01496" name="l01496"></a><span class="lineno"> 1496</span>  <span class="keywordtype">bool</span> success = driver_-&gt;comm_.WriteRegister(Registers::SLAVECONF, slaveconf.value, current_accessible_address);</div>
-<div class="line"><a id="l01497" name="l01497"></a><span class="lineno"> 1497</span> </div>
-<div class="line"><a id="l01498" name="l01498"></a><span class="lineno"> 1498</span>  <span class="comment">// Only update the driver&#39;s node address and send delay after successful programming</span></div>
-<div class="line"><a id="l01499" name="l01499"></a><span class="lineno"> 1499</span>  <span class="keywordflow">if</span> (success) {</div>
-<div class="line"><a id="l01500" name="l01500"></a><span class="lineno"> 1500</span>    driver_-&gt;uart_node_address_ = slave_address &amp; 0xFF; <span class="comment">// Address range is 0-254 (slave address == UART node address)</span></div>
-<div class="line"><a id="l01501" name="l01501"></a><span class="lineno"> 1501</span>    driver_-&gt;send_delay_ = constrain&lt;decltype(send_delay)&gt;(send_delay, 0U, 15U); <span class="comment">// Store send delay locally</span></div>
-<div class="line"><a id="l01502" name="l01502"></a><span class="lineno"> 1502</span>  }</div>
-<div class="line"><a id="l01503" name="l01503"></a><span class="lineno"> 1503</span> </div>
-<div class="line"><a id="l01504" name="l01504"></a><span class="lineno"> 1504</span>  <span class="keywordflow">return</span> success;</div>
-<div class="line"><a id="l01505" name="l01505"></a><span class="lineno"> 1505</span>}</div>
+<div class="line"><a id="l01500" name="l01500"></a><span class="lineno"> 1500</span> </div>
+<div class="line"><a id="l01501" name="l01501"></a><span class="lineno"> 1501</span><span class="comment">// UartConfig implementation</span></div>
+<div class="line"><a id="l01502" name="l01502"></a><span class="lineno"> 1502</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CommType&gt;</div>
+<div class="foldopen" id="foldopen01503" data-start="{" data-end="}">
+<div class="line"><a id="l01503" name="l01503"></a><span class="lineno"><a class="line" href="structtmc5160_1_1TMC5160_1_1UartConfig.html#aebc5edf90ae4af5ac23a5edba3d56057"> 1503</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structtmc5160_1_1TMC5160_1_1UartConfig.html#aebc5edf90ae4af5ac23a5edba3d56057">TMC5160&lt;CommType&gt;::UartConfig::ConfigureSlave</a>(uint8_t slave_address, uint8_t send_delay) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l01504" name="l01504"></a><span class="lineno"> 1504</span>  <span class="comment">// During sequential programming, the device is accessible at address 0</span></div>
+<div class="line"><a id="l01505" name="l01505"></a><span class="lineno"> 1505</span>  <span class="comment">// (first device: NAI=GND, subsequent devices: previous NAO=LOW)</span></div>
+<div class="line"><a id="l01506" name="l01506"></a><span class="lineno"> 1506</span>  <span class="comment">// We need to use address 0 to communicate, not the target address</span></div>
+<div class="line"><a id="l01507" name="l01507"></a><span class="lineno"> 1507</span>  uint8_t current_accessible_address = 0;</div>
+<div class="line"><a id="l01508" name="l01508"></a><span class="lineno"> 1508</span> </div>
+<div class="line"><a id="l01509" name="l01509"></a><span class="lineno"> 1509</span>  <a class="code hl_union" href="uniontmc5160_1_1SLAVECONF__Register.html">SLAVECONF_Register</a> slaveconf{};</div>
+<div class="line"><a id="l01510" name="l01510"></a><span class="lineno"> 1510</span>  slaveconf.<a class="code hl_variable" href="uniontmc5160_1_1SLAVECONF__Register.html#afbbeab5373856fb9898a31ceff53af6c">bits</a>.<a class="code hl_variable" href="uniontmc5160_1_1SLAVECONF__Register.html#a45201db1d08b6334e8d822966cd802d4">slaveaddr</a> = slave_address &amp; 0xFF; <span class="comment">// Address range is 0-254 (8-bit)</span></div>
+<div class="line"><a id="l01511" name="l01511"></a><span class="lineno"> 1511</span>  slaveconf.bits.senddelay = constrain&lt;decltype(send_delay)&gt;(send_delay, 0U, 15U);</div>
+<div class="line"><a id="l01512" name="l01512"></a><span class="lineno"> 1512</span> </div>
+<div class="line"><a id="l01513" name="l01513"></a><span class="lineno"> 1513</span>  <span class="comment">// Write to SLAVECONF using current accessible address (0)</span></div>
+<div class="line"><a id="l01514" name="l01514"></a><span class="lineno"> 1514</span>  <span class="keywordtype">bool</span> success = driver_-&gt;comm_.WriteRegister(Registers::SLAVECONF, slaveconf.value, current_accessible_address);</div>
+<div class="line"><a id="l01515" name="l01515"></a><span class="lineno"> 1515</span> </div>
+<div class="line"><a id="l01516" name="l01516"></a><span class="lineno"> 1516</span>  <span class="comment">// Only update the driver&#39;s node address and send delay after successful programming</span></div>
+<div class="line"><a id="l01517" name="l01517"></a><span class="lineno"> 1517</span>  <span class="keywordflow">if</span> (success) {</div>
+<div class="line"><a id="l01518" name="l01518"></a><span class="lineno"> 1518</span>    driver_-&gt;uart_node_address_ = slave_address &amp; 0xFF; <span class="comment">// Address range is 0-254 (slave address == UART node address)</span></div>
+<div class="line"><a id="l01519" name="l01519"></a><span class="lineno"> 1519</span>    driver_-&gt;send_delay_ = constrain&lt;decltype(send_delay)&gt;(send_delay, 0U, 15U); <span class="comment">// Store send delay locally</span></div>
+<div class="line"><a id="l01520" name="l01520"></a><span class="lineno"> 1520</span>  }</div>
+<div class="line"><a id="l01521" name="l01521"></a><span class="lineno"> 1521</span> </div>
+<div class="line"><a id="l01522" name="l01522"></a><span class="lineno"> 1522</span>  <span class="keywordflow">return</span> success;</div>
+<div class="line"><a id="l01523" name="l01523"></a><span class="lineno"> 1523</span>}</div>
 </div>
-<div class="line"><a id="l01506" name="l01506"></a><span class="lineno"> 1506</span> </div>
-<div class="line"><a id="l01507" name="l01507"></a><span class="lineno"> 1507</span><span class="preprocessor">#endif </span><span class="comment">// TMC5160_IMPL</span></div>
+<div class="line"><a id="l01524" name="l01524"></a><span class="lineno"> 1524</span> </div>
+<div class="line"><a id="l01525" name="l01525"></a><span class="lineno"> 1525</span><span class="preprocessor">#endif </span><span class="comment">// TMC5160_IMPL</span></div>
 </div>
 </div>
 </div>
@@ -1949,29 +1967,29 @@ $(function(){initNavTree('tmc5160_8cpp_source.html',''); initResizable(); });
 <div class="ttc" id="astructtmc5160_1_1ReferenceSwitchConfig_html"><div class="ttname"><a href="structtmc5160_1_1ReferenceSwitchConfig.html">tmc5160::ReferenceSwitchConfig</a></div><div class="ttdoc">Reference switch configuration structure.</div><div class="ttdef"><b>Definition</b> tmc5160_types.hpp:349</div></div>
 <div class="ttc" id="astructtmc5160_1_1ShortProtectionConfig_html"><div class="ttname"><a href="structtmc5160_1_1ShortProtectionConfig.html">tmc5160::ShortProtectionConfig</a></div><div class="ttdoc">Short protection configuration structure.</div><div class="ttdef"><b>Definition</b> tmc5160_types.hpp:230</div></div>
 <div class="ttc" id="astructtmc5160_1_1StallGuardConfig_html"><div class="ttname"><a href="structtmc5160_1_1StallGuardConfig.html">tmc5160::StallGuardConfig</a></div><div class="ttdoc">StallGuard configuration structure.</div><div class="ttdef"><b>Definition</b> tmc5160_types.hpp:180</div></div>
-<div class="ttc" id="astructtmc5160_1_1StallGuardConfig_html_a24876fc3348794d2c18f85a626e71750"><div class="ttname"><a href="structtmc5160_1_1StallGuardConfig.html#a24876fc3348794d2c18f85a626e71750">tmc5160::StallGuardConfig::sgt</a></div><div class="ttdeci">uint8_t sgt</div><div class="ttdoc">StallGuard2 threshold value (-64 to 63, stored as 7-bit signed)</div><div class="ttdef"><b>Definition</b> tmc5160_types.hpp:181</div></div>
+<div class="ttc" id="astructtmc5160_1_1StallGuardConfig_html_a84da82c3e0775de30668b0ea065b6de0"><div class="ttname"><a href="structtmc5160_1_1StallGuardConfig.html#a84da82c3e0775de30668b0ea065b6de0">tmc5160::StallGuardConfig::sgt</a></div><div class="ttdeci">int8_t sgt</div><div class="ttdoc">StallGuard2 threshold value (-64 to 63, stored as 7-bit signed)</div><div class="ttdef"><b>Definition</b> tmc5160_types.hpp:181</div></div>
 <div class="ttc" id="astructtmc5160_1_1StealthChopConfig_html"><div class="ttname"><a href="structtmc5160_1_1StealthChopConfig.html">tmc5160::StealthChopConfig</a></div><div class="ttdoc">StealthChop configuration structure.</div><div class="ttdef"><b>Definition</b> tmc5160_types.hpp:156</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Communication_html_afc57f53b52bf7bda5113b976ce9401ec"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Communication.html#afc57f53b52bf7bda5113b976ce9401ec">tmc5160::TMC5160::Communication::ConfigureSlaveAddress</a></div><div class="ttdeci">bool ConfigureSlaveAddress(uint8_t slave_address, uint8_t send_delay=0) noexcept</div><div class="ttdoc">Configure UART slave address and send delay.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1211</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a0dafd97b278428cec1145aa72c4b61e7"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0dafd97b278428cec1145aa72c4b61e7">tmc5160::TMC5160::Diagnostics::GetUartTransmissionCount</a></div><div class="ttdeci">uint8_t GetUartTransmissionCount() noexcept</div><div class="ttdoc">Get UART transmission counter.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1415</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a0e50567d8546713ed85e0e3d64a768b1"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0e50567d8546713ed85e0e3d64a768b1">tmc5160::TMC5160::Diagnostics::GetPwmScale</a></div><div class="ttdeci">bool GetPwmScale(uint8_t &amp;pwm_scale_sum, int16_t &amp;pwm_scale_auto) noexcept</div><div class="ttdoc">Get PWM scale results.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1300</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a0f4c2b24f2fec3168a366f0122ca53b6"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0f4c2b24f2fec3168a366f0122ca53b6">tmc5160::TMC5160::Diagnostics::GetTimeBetweenMicrosteps</a></div><div class="ttdeci">uint32_t GetTimeBetweenMicrosteps() noexcept</div><div class="ttdoc">Get actual time between microsteps.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1256</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a1441d825f5f0992dd5b84a20dd3ebf8a"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a1441d825f5f0992dd5b84a20dd3ebf8a">tmc5160::TMC5160::Diagnostics::GetPwmAuto</a></div><div class="ttdeci">bool GetPwmAuto(uint8_t &amp;pwm_ofs_auto, uint8_t &amp;pwm_grad_auto) noexcept</div><div class="ttdoc">Get automatically determined PWM values.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1318</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a178d060f7fdecbc8050782d0376f22d9"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a178d060f7fdecbc8050782d0376f22d9">tmc5160::TMC5160::Diagnostics::ReadOffsetCalibration</a></div><div class="ttdeci">bool ReadOffsetCalibration(uint8_t &amp;phase_a, uint8_t &amp;phase_b) noexcept</div><div class="ttdoc">Read offset calibration results.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1424</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Communication_html_afc57f53b52bf7bda5113b976ce9401ec"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Communication.html#afc57f53b52bf7bda5113b976ce9401ec">tmc5160::TMC5160::Communication::ConfigureSlaveAddress</a></div><div class="ttdeci">bool ConfigureSlaveAddress(uint8_t slave_address, uint8_t send_delay=0) noexcept</div><div class="ttdoc">Configure UART slave address and send delay.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1229</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a0dafd97b278428cec1145aa72c4b61e7"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0dafd97b278428cec1145aa72c4b61e7">tmc5160::TMC5160::Diagnostics::GetUartTransmissionCount</a></div><div class="ttdeci">uint8_t GetUartTransmissionCount() noexcept</div><div class="ttdoc">Get UART transmission counter.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1433</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a0e50567d8546713ed85e0e3d64a768b1"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0e50567d8546713ed85e0e3d64a768b1">tmc5160::TMC5160::Diagnostics::GetPwmScale</a></div><div class="ttdeci">bool GetPwmScale(uint8_t &amp;pwm_scale_sum, int16_t &amp;pwm_scale_auto) noexcept</div><div class="ttdoc">Get PWM scale results.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1318</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a0f4c2b24f2fec3168a366f0122ca53b6"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a0f4c2b24f2fec3168a366f0122ca53b6">tmc5160::TMC5160::Diagnostics::GetTimeBetweenMicrosteps</a></div><div class="ttdeci">uint32_t GetTimeBetweenMicrosteps() noexcept</div><div class="ttdoc">Get actual time between microsteps.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1274</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a1441d825f5f0992dd5b84a20dd3ebf8a"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a1441d825f5f0992dd5b84a20dd3ebf8a">tmc5160::TMC5160::Diagnostics::GetPwmAuto</a></div><div class="ttdeci">bool GetPwmAuto(uint8_t &amp;pwm_ofs_auto, uint8_t &amp;pwm_grad_auto) noexcept</div><div class="ttdoc">Get automatically determined PWM values.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1336</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a178d060f7fdecbc8050782d0376f22d9"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a178d060f7fdecbc8050782d0376f22d9">tmc5160::TMC5160::Diagnostics::ReadOffsetCalibration</a></div><div class="ttdeci">bool ReadOffsetCalibration(uint8_t &amp;phase_a, uint8_t &amp;phase_b) noexcept</div><div class="ttdoc">Read offset calibration results.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1442</div></div>
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a203b92a84193d1dd595c1557f65bf92f"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a203b92a84193d1dd595c1557f65bf92f">tmc5160::TMC5160::Diagnostics::GetLostSteps</a></div><div class="ttdeci">uint32_t GetLostSteps() noexcept</div><div class="ttdoc">Get lost steps counter.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1034</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a24c2ed291dd4491799a5c64f300d07bb"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a24c2ed291dd4491799a5c64f300d07bb">tmc5160::TMC5160::Diagnostics::ReadGpioPins</a></div><div class="ttdeci">bool ReadGpioPins(uint32_t &amp;io_pins) noexcept</div><div class="ttdoc">Read GPIO input pins (raw)</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1366</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a406b0f5e492cb819511806c10b00653d"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a406b0f5e492cb819511806c10b00653d">tmc5160::TMC5160::Diagnostics::GetMicrostepCurrent</a></div><div class="ttdeci">bool GetMicrostepCurrent(int16_t &amp;phase_a, int16_t &amp;phase_b) noexcept</div><div class="ttdoc">Get microstep current.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1274</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a24c2ed291dd4491799a5c64f300d07bb"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a24c2ed291dd4491799a5c64f300d07bb">tmc5160::TMC5160::Diagnostics::ReadGpioPins</a></div><div class="ttdeci">bool ReadGpioPins(uint32_t &amp;io_pins) noexcept</div><div class="ttdoc">Read GPIO input pins (raw)</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1384</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a406b0f5e492cb819511806c10b00653d"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a406b0f5e492cb819511806c10b00653d">tmc5160::TMC5160::Diagnostics::GetMicrostepCurrent</a></div><div class="ttdeci">bool GetMicrostepCurrent(int16_t &amp;phase_a, int16_t &amp;phase_b) noexcept</div><div class="ttdoc">Get microstep current.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1292</div></div>
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a4233fd68c4b3c8912978cd474b2dd0e9"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a4233fd68c4b3c8912978cd474b2dd0e9">tmc5160::TMC5160::Diagnostics::GetStallGuard</a></div><div class="ttdeci">uint16_t GetStallGuard() noexcept</div><div class="ttdoc">Get StallGuard2 value.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:991</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a5180d6e984236cbc1bcb44c6a76b6052"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a5180d6e984236cbc1bcb44c6a76b6052">tmc5160::TMC5160::Diagnostics::VerifySetup</a></div><div class="ttdeci">bool VerifySetup() noexcept</div><div class="ttdoc">Run comprehensive startup verification.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1437</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a8ae1d76559766403177c80506955a4fe"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a8ae1d76559766403177c80506955a4fe">tmc5160::TMC5160::Diagnostics::SetSdoCfg0Polarity</a></div><div class="ttdeci">bool SetSdoCfg0Polarity(bool polarity) noexcept</div><div class="ttdoc">Set SDO_CFG0 pin polarity (UART/Single Wire mode)</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1382</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a5180d6e984236cbc1bcb44c6a76b6052"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a5180d6e984236cbc1bcb44c6a76b6052">tmc5160::TMC5160::Diagnostics::VerifySetup</a></div><div class="ttdeci">bool VerifySetup() noexcept</div><div class="ttdoc">Run comprehensive startup verification.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1455</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a8ae1d76559766403177c80506955a4fe"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a8ae1d76559766403177c80506955a4fe">tmc5160::TMC5160::Diagnostics::SetSdoCfg0Polarity</a></div><div class="ttdeci">bool SetSdoCfg0Polarity(bool polarity) noexcept</div><div class="ttdoc">Set SDO_CFG0 pin polarity (UART/Single Wire mode)</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1400</div></div>
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_a8c35948381a62374b6a5b2494dd33dfb"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#a8c35948381a62374b6a5b2494dd33dfb">tmc5160::TMC5160::Diagnostics::ConfigureStallGuard</a></div><div class="ttdeci">bool ConfigureStallGuard(const StallGuardConfig &amp;config) noexcept</div><div class="ttdoc">Configure StallGuard2.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1002</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_aa1fb77fb2b5610502bf5915cd99b3330"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#aa1fb77fb2b5610502bf5915cd99b3330">tmc5160::TMC5160::Diagnostics::ReadOtpConfig</a></div><div class="ttdeci">bool ReadOtpConfig(uint8_t &amp;otp_fclktrim, bool &amp;otp_s2_level, bool &amp;otp_bbm, bool &amp;otp_tbl) noexcept</div><div class="ttdoc">Read OTP configuration.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1399</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_aa3477caff8643a2d71a9aaca26a48eaa"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#aa3477caff8643a2d71a9aaca26a48eaa">tmc5160::TMC5160::Diagnostics::ReadInputStatus</a></div><div class="ttdeci">bool ReadInputStatus(InputStatus &amp;input_status) noexcept</div><div class="ttdoc">Read GPIO input pins.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1331</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_abf878f0c5b0a1533f19a1fc5d539dfc9"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#abf878f0c5b0a1533f19a1fc5d539dfc9">tmc5160::TMC5160::Diagnostics::ReadFactoryConfig</a></div><div class="ttdeci">bool ReadFactoryConfig(uint8_t &amp;fclktrim) noexcept</div><div class="ttdoc">Read factory configuration.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1371</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_ac4f5446dad9fe39acc411ebcd3b94efd"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ac4f5446dad9fe39acc411ebcd3b94efd">tmc5160::TMC5160::Diagnostics::GetMicrostepCounter</a></div><div class="ttdeci">uint16_t GetMicrostepCounter() noexcept</div><div class="ttdoc">Get microstep counter.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1265</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_ad6b456a7eb9dd8ceeb76f5c9449d3178"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ad6b456a7eb9dd8ceeb76f5c9449d3178">tmc5160::TMC5160::Diagnostics::ReadIcVersion</a></div><div class="ttdeci">bool ReadIcVersion(uint8_t &amp;version) noexcept</div><div class="ttdoc">Read IC version.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1354</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_aa1fb77fb2b5610502bf5915cd99b3330"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#aa1fb77fb2b5610502bf5915cd99b3330">tmc5160::TMC5160::Diagnostics::ReadOtpConfig</a></div><div class="ttdeci">bool ReadOtpConfig(uint8_t &amp;otp_fclktrim, bool &amp;otp_s2_level, bool &amp;otp_bbm, bool &amp;otp_tbl) noexcept</div><div class="ttdoc">Read OTP configuration.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1417</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_aa3477caff8643a2d71a9aaca26a48eaa"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#aa3477caff8643a2d71a9aaca26a48eaa">tmc5160::TMC5160::Diagnostics::ReadInputStatus</a></div><div class="ttdeci">bool ReadInputStatus(InputStatus &amp;input_status) noexcept</div><div class="ttdoc">Read GPIO input pins.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1349</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_abf878f0c5b0a1533f19a1fc5d539dfc9"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#abf878f0c5b0a1533f19a1fc5d539dfc9">tmc5160::TMC5160::Diagnostics::ReadFactoryConfig</a></div><div class="ttdeci">bool ReadFactoryConfig(uint8_t &amp;fclktrim) noexcept</div><div class="ttdoc">Read factory configuration.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1389</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_ac4f5446dad9fe39acc411ebcd3b94efd"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ac4f5446dad9fe39acc411ebcd3b94efd">tmc5160::TMC5160::Diagnostics::GetMicrostepCounter</a></div><div class="ttdeci">uint16_t GetMicrostepCounter() noexcept</div><div class="ttdoc">Get microstep counter.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1283</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_ad6b456a7eb9dd8ceeb76f5c9449d3178"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ad6b456a7eb9dd8ceeb76f5c9449d3178">tmc5160::TMC5160::Diagnostics::ReadIcVersion</a></div><div class="ttdeci">bool ReadIcVersion(uint8_t &amp;version) noexcept</div><div class="ttdoc">Read IC version.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1372</div></div>
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_adc4c3ad53d860a37087cf5648f187b44"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#adc4c3ad53d860a37087cf5648f187b44">tmc5160::TMC5160::Diagnostics::GetRampStatusRegister</a></div><div class="ttdeci">bool GetRampStatusRegister(uint32_t &amp;status) noexcept</div><div class="ttdoc">Get ramp status register value.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1029</div></div>
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_adef74af33774678290eade6ea2a968ab"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#adef74af33774678290eade6ea2a968ab">tmc5160::TMC5160::Diagnostics::GetDriverStatusRegister</a></div><div class="ttdeci">bool GetDriverStatusRegister(uint32_t &amp;status) noexcept</div><div class="ttdoc">Get driver status register value.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1024</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_ae52ee957475af0babba3daafa428d39e"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ae52ee957475af0babba3daafa428d39e">tmc5160::TMC5160::Diagnostics::PerformSwitchHoming</a></div><div class="ttdeci">bool PerformSwitchHoming(bool direction, float search_speed, float switch_speed, int32_t &amp;final_position, bool use_left_switch, uint32_t timeout_ms=10000) noexcept</div><div class="ttdoc">Perform homing using a reference switch (Section 12.4)</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1122</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_ae52ee957475af0babba3daafa428d39e"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#ae52ee957475af0babba3daafa428d39e">tmc5160::TMC5160::Diagnostics::PerformSwitchHoming</a></div><div class="ttdeci">bool PerformSwitchHoming(bool direction, float search_speed, float switch_speed, int32_t &amp;final_position, bool use_left_switch, uint32_t timeout_ms=10000) noexcept</div><div class="ttdoc">Perform homing using a reference switch (Section 12.4)</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1140</div></div>
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_aeb75e99c3181b491be9334cfdf4f806f"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#aeb75e99c3181b491be9334cfdf4f806f">tmc5160::TMC5160::Diagnostics::GetStatus</a></div><div class="ttdeci">DriverStatus GetStatus() noexcept</div><div class="ttdoc">Get driver status.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:947</div></div>
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Diagnostics_html_aebaa249c3bf5cced2009e077c48f1872"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Diagnostics.html#aebaa249c3bf5cced2009e077c48f1872">tmc5160::TMC5160::Diagnostics::PerformSensorlessHoming</a></div><div class="ttdeci">bool PerformSensorlessHoming(bool direction, int8_t stall_threshold, float search_speed, int32_t &amp;final_position, uint32_t timeout_ms=10000) noexcept</div><div class="ttdoc">Perform sensorless homing using StallGuard2.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1043</div></div>
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Encoder_html_a2606bb1409772d27d632e7fa5279bc6a"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Encoder.html#a2606bb1409772d27d632e7fa5279bc6a">tmc5160::TMC5160::Encoder::SetAllowedDeviation</a></div><div class="ttdeci">bool SetAllowedDeviation(int32_t steps) noexcept</div><div class="ttdoc">Set encoder allowed deviation.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:912</div></div>
@@ -1995,8 +2013,8 @@ $(function(){initNavTree('tmc5160_8cpp_source.html',''); initResizable(); });
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1MotorControl_html_ad221524110e1d256d89e18dc13cfbc4f"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1MotorControl.html#ad221524110e1d256d89e18dc13cfbc4f">tmc5160::TMC5160::MotorControl::SetMicrostepLookupTable</a></div><div class="ttdeci">bool SetMicrostepLookupTable(uint8_t index, uint32_t value) noexcept</div><div class="ttdoc">Set microstep lookup table entry.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:747</div></div>
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1MotorControl_html_adbeb65e81e314bf9ea650ca677719f20"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1MotorControl.html#adbeb65e81e314bf9ea650ca677719f20">tmc5160::TMC5160::MotorControl::SetMicrostepLookupTableSegmentation</a></div><div class="ttdeci">bool SetMicrostepLookupTableSegmentation(uint8_t width_sel_0, uint8_t width_sel_1, uint8_t width_sel_2, uint8_t width_sel_3, uint8_t lut_seg_start1, uint8_t lut_seg_start2, uint8_t lut_seg_start3) noexcept</div><div class="ttdoc">Set microstep lookup table segmentation.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:757</div></div>
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1MotorControl_html_ae4dc0f6fde9d817bb758f80fed277a51"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1MotorControl.html#ae4dc0f6fde9d817bb758f80fed277a51">tmc5160::TMC5160::MotorControl::SetGlobalScaler</a></div><div class="ttdeci">bool SetGlobalScaler(uint16_t scaler) noexcept</div><div class="ttdoc">Set global current scaler.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:667</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Protection_html_a7313677541215c9b6ab0e7b400ab56da"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Protection.html#a7313677541215c9b6ab0e7b400ab56da">tmc5160::TMC5160::Protection::SetShortProtectionLevels</a></div><div class="ttdeci">bool SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter, uint8_t shortdelay) noexcept</div><div class="ttdoc">Set short protection levels.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1244</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Protection_html_ad2e691e93cd278283ee4a0b7f636e7e9"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Protection.html#ad2e691e93cd278283ee4a0b7f636e7e9">tmc5160::TMC5160::Protection::ConfigureShortProtection</a></div><div class="ttdeci">bool ConfigureShortProtection(const ShortProtectionConfig &amp;config) noexcept</div><div class="ttdoc">Configure short protection levels.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1239</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Protection_html_a7313677541215c9b6ab0e7b400ab56da"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Protection.html#a7313677541215c9b6ab0e7b400ab56da">tmc5160::TMC5160::Protection::SetShortProtectionLevels</a></div><div class="ttdeci">bool SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter, uint8_t shortdelay) noexcept</div><div class="ttdoc">Set short protection levels.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1262</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1Protection_html_ad2e691e93cd278283ee4a0b7f636e7e9"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1Protection.html#ad2e691e93cd278283ee4a0b7f636e7e9">tmc5160::TMC5160::Protection::ConfigureShortProtection</a></div><div class="ttdeci">bool ConfigureShortProtection(const ShortProtectionConfig &amp;config) noexcept</div><div class="ttdoc">Configure short protection levels.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1257</div></div>
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1RampControl_html_a0211c70d0469eaffc824a9e63c1785a4"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1RampControl.html#a0211c70d0469eaffc824a9e63c1785a4">tmc5160::TMC5160::RampControl::GetLatchedPosition</a></div><div class="ttdeci">int32_t GetLatchedPosition() noexcept</div><div class="ttdoc">Get latched position.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:514</div></div>
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1RampControl_html_a2fdc3106ebc36934faca112dd62031a0"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1RampControl.html#a2fdc3106ebc36934faca112dd62031a0">tmc5160::TMC5160::RampControl::SetRampSpeeds</a></div><div class="ttdeci">bool SetRampSpeeds(float start_speed, float stop_speed, float transition_speed) noexcept</div><div class="ttdoc">Set ramp speeds.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:423</div></div>
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1RampControl_html_a42767aabaf81b299c915577724535e5a"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1RampControl.html#a42767aabaf81b299c915577724535e5a">tmc5160::TMC5160::RampControl::SetAccelerations</a></div><div class="ttdeci">bool SetAccelerations(float acceleration, float deceleration) noexcept</div><div class="ttdoc">Set acceleration and deceleration separately.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:400</div></div>
@@ -2020,7 +2038,7 @@ $(function(){initNavTree('tmc5160_8cpp_source.html',''); initResizable(); });
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1RampControl_html_af6ee69032beee9ca17c7e229d6b154dd"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1RampControl.html#af6ee69032beee9ca17c7e229d6b154dd">tmc5160::TMC5160::RampControl::SetAcceleration</a></div><div class="ttdeci">bool SetAcceleration(float acceleration) noexcept</div><div class="ttdoc">Set acceleration and deceleration.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:395</div></div>
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1RampControl_html_af8a09d45e0f919dff7d47f49f7946a7b"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1RampControl.html#af8a09d45e0f919dff7d47f49f7946a7b">tmc5160::TMC5160::RampControl::SetTargetPositionMm</a></div><div class="ttdeci">bool SetTargetPositionMm(float position_mm, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept</div><div class="ttdoc">Set target position in millimeters.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:484</div></div>
 <div class="ttc" id="astructtmc5160_1_1TMC5160_1_1RampControl_html_afd779f5520bb29e30cdd30d46023a12e"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1RampControl.html#afd779f5520bb29e30cdd30d46023a12e">tmc5160::TMC5160::RampControl::SetFirstAcceleration</a></div><div class="ttdeci">bool SetFirstAcceleration(float a1) noexcept</div><div class="ttdoc">Set first acceleration phase.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:538</div></div>
-<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1UartConfig_html_aebc5edf90ae4af5ac23a5edba3d56057"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1UartConfig.html#aebc5edf90ae4af5ac23a5edba3d56057">tmc5160::TMC5160::UartConfig::ConfigureSlave</a></div><div class="ttdeci">bool ConfigureSlave(uint8_t slave_address, uint8_t send_delay) noexcept</div><div class="ttdoc">Configure UART slave settings.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1485</div></div>
+<div class="ttc" id="astructtmc5160_1_1TMC5160_1_1UartConfig_html_aebc5edf90ae4af5ac23a5edba3d56057"><div class="ttname"><a href="structtmc5160_1_1TMC5160_1_1UartConfig.html#aebc5edf90ae4af5ac23a5edba3d56057">tmc5160::TMC5160::UartConfig::ConfigureSlave</a></div><div class="ttdeci">bool ConfigureSlave(uint8_t slave_address, uint8_t send_delay) noexcept</div><div class="ttdoc">Configure UART slave settings.</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:1503</div></div>
 <div class="ttc" id="atmc5160_8cpp_html_a6b5c74bc9056ff38815021d63986f681"><div class="ttname"><a href="tmc5160_8cpp.html#a6b5c74bc9056ff38815021d63986f681">constrain</a></div><div class="ttdeci">static constexpr T constrain(T value, T min_val, T max_val) noexcept</div><div class="ttdef"><b>Definition</b> tmc5160.cpp:103</div></div>
 <div class="ttc" id="atmc5160_8hpp_html"><div class="ttname"><a href="tmc5160_8hpp.html">tmc5160.hpp</a></div><div class="ttdoc">Main TMC5160 stepper motor driver interface and subsystem classes.</div></div>
 <div class="ttc" id="atmc5160__comm__interface_8hpp_html_ade8f77b2dfa1ce51c2303ff23f4dba15"><div class="ttname"><a href="tmc5160__comm__interface_8hpp.html#ade8f77b2dfa1ce51c2303ff23f4dba15">TMC5160_LOG_DEBUG</a></div><div class="ttdeci">#define TMC5160_LOG_DEBUG(comm_obj, level, tag,...)</div><div class="ttdoc">Compile-time debug logging control for TMC5160 library.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:132</div></div>

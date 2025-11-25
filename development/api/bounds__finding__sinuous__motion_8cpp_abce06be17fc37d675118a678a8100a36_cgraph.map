@@ -1,90 +1,95 @@
 <map id="app_main" name="app_main">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,710,92,735"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,607,92,633"/>
 <area shape="rect" id="Node000002" href="$classFatigueTestMotion.html#a1c9f125fc81bde1deddf504df1820f5f" title="Configure motor parameters for unit conversions." alt="" coords="193,5,341,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="47,710,49,588,60,394,71,291,87,196,109,117,122,86,138,62,157,46,179,35,181,40,160,50,142,66,127,88,114,119,92,197,76,292,65,394,54,588,53,710"/>
-<area shape="rect" id="Node000003" href="$classFatigueTestMotion.html#a7c7b84687216a3310300c80174ca2afc" title="Get global bounds in degrees (for command interface)" alt="" coords="443,120,633,160"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="48,710,54,617,69,477,81,404,96,336,115,280,138,242,168,215,202,193,239,175,278,161,356,143,429,136,430,141,357,148,279,166,241,180,205,197,172,219,142,246,120,283,101,338,86,405,75,478,59,618,53,710"/>
-<area shape="rect" id="Node000004" href="$namespacetmc5160.html#a17db4658c61b62396b32c1a022e54d75" title="Convert steps to degrees." alt="" coords="690,255,881,281"/>
-<area shape="poly" id="edge42_Node000001_Node000004" title=" " alt="" coords="48,710,52,606,64,444,76,359,91,281,112,217,124,192,138,173,178,145,234,122,302,104,377,92,453,86,524,86,587,92,634,106,680,133,719,170,750,209,772,242,768,245,746,212,715,174,677,138,632,110,586,98,524,91,453,91,377,97,303,109,236,127,180,149,142,177,129,195,117,219,97,282,81,360,70,445,57,606,53,710"/>
-<area shape="rect" id="Node000005" href="$classFatigueTestMotion.html#a327291e1473fae0f255e924e2787cc98" title=" " alt="" coords="464,184,612,224"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="48,709,57,629,74,510,101,392,118,345,138,313,171,284,208,260,249,241,291,226,375,208,450,201,451,206,375,214,292,232,251,246,211,264,174,288,142,316,123,347,106,393,79,511,62,630,54,710"/>
-<area shape="rect" id="Node000006" href="$bounds__finding__sinuous__motion_8cpp.html#a8ce1f915a66444f56a02e43bde4cc0c5" title=" " alt="" coords="213,710,322,735"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="92,720,199,720,199,725,92,725"/>
-<area shape="rect" id="Node000007" href="$bounds__finding__sinuous__motion_8cpp.html#a7f27ed3ceaa20624467d32d610c23d7f" title=" " alt="" coords="209,759,325,785"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="93,732,141,744,196,756,195,761,139,749,92,737"/>
-<area shape="rect" id="Node000008" href="$bounds__finding__sinuous__motion_8cpp.html#a4ac23d1ea8f5bd1fdc1b62db4484e296" title=" " alt="" coords="212,809,323,834"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="64,734,97,764,141,794,169,804,199,811,198,817,168,809,139,798,94,769,60,738"/>
-<area shape="rect" id="Node000009" href="$bounds__finding__sinuous__motion_8cpp.html#a0d0d2bd312981ee8f4d16b1c83d6faf2" title=" " alt="" coords="215,858,320,883"/>
-<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="58,734,88,788,112,818,141,843,170,857,202,864,200,869,169,862,139,848,108,822,84,791,53,737"/>
-<area shape="rect" id="Node000010" href="$bounds__finding__sinuous__motion_8cpp.html#a468299e399fa65feaeb080eecfcd654f" title=" " alt="" coords="200,907,335,933"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="55,735,64,767,81,811,106,855,123,875,142,893,163,905,187,913,186,918,161,910,138,897,119,879,102,858,76,813,59,769,50,736"/>
-<area shape="rect" id="Node000011" href="$bounds__finding__sinuous__motion_8cpp.html#ae1393ad4a23750c0916847967cc4032f" title=" " alt="" coords="213,957,322,982"/>
-<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="54,735,60,776,74,832,101,892,119,919,142,942,169,957,199,965,198,971,167,962,138,946,115,922,96,895,69,834,55,777,48,736"/>
-<area shape="rect" id="Node000012" href="$classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44" title="Initialize the SPI interface." alt="" coords="195,1006,340,1031"/>
-<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="53,736,56,784,68,854,79,892,95,928,115,962,142,991,160,1004,182,1012,180,1017,158,1008,138,995,111,965,90,931,74,893,63,855,51,785,47,736"/>
-<area shape="rect" id="Node000017" href="$classtmc5160_1_1TMC5160.html#ac90ae8eb92120142753c49fc61fcce89" title="Initialize the TMC5160 driver with configuration." alt="" coords="161,1055,373,1081"/>
-<area shape="poly" id="edge17_Node000001_Node000017" title=" " alt="" coords="52,735,52,792,62,874,73,920,89,964,112,1005,142,1041,151,1048,148,1052,138,1045,107,1008,84,966,67,921,57,875,47,792,47,735"/>
-<area shape="rect" id="Node000019" href="$bounds__finding__sinuous__motion_8cpp.html#aa7704c2c8716e80dc20804e4c7fb8fd4" title="Motion control task &#45; handles bounds finding and sinusoidal motion." alt="" coords="190,531,345,557"/>
-<area shape="poly" id="edge19_Node000001_Node000019" title=" " alt="" coords="51,709,61,679,79,641,104,601,138,567,176,550,178,555,142,572,108,604,83,643,66,681,56,711"/>
-<area shape="rect" id="Node000025" href="$classUartCommandParser.html#a01f3f8de980d57367929b29a4cc22655" title="Register a command handler." alt="" coords="185,1105,350,1145"/>
-<area shape="poly" id="edge25_Node000001_Node000025" title=" " alt="" coords="54,735,63,809,81,916,108,1022,124,1063,142,1090,156,1102,173,1110,171,1115,153,1106,138,1094,119,1065,103,1023,76,917,58,809,49,736"/>
-<area shape="rect" id="Node000026" href="$classFatigueTestMotion.html#a86ebd3d311881f3bab591d44445c2f29" title="Set dwell times (thread&#45;safe, can be changed in real&#45;time)" alt="" coords="193,645,341,685"/>
-<area shape="poly" id="edge26_Node000001_Node000026" title=" " alt="" coords="91,708,139,695,179,684,181,689,141,700,93,713"/>
-<area shape="rect" id="Node000028" href="$classFatigueTestMotion.html#a266568d4787b4d607e6106d5e76922c0" title="Set frequency (thread&#45;safe, can be changed in real&#45;time)" alt="" coords="193,581,341,621"/>
-<area shape="poly" id="edge28_Node000001_Node000028" title=" " alt="" coords="57,708,90,670,113,649,139,631,179,614,181,619,141,636,116,653,94,673,61,711"/>
-<area shape="rect" id="Node000029" href="$classFatigueTestMotion.html#aca79b6a071eb4a956ac949b3404cfe1f" title="Set global bounds (hardware limits found during initialization)" alt="" coords="193,327,341,367"/>
-<area shape="poly" id="edge30_Node000001_Node000029" title=" " alt="" coords="48,710,51,656,64,578,75,534,91,490,112,447,138,409,162,387,189,370,192,375,165,391,142,412,116,450,96,492,80,535,69,579,57,657,53,710"/>
-<area shape="rect" id="Node000031" href="$classFatigueTestMotion.html#a5d228e53872d7dd297ff2ebd834c12f1" title="Set local bounds in degrees from center (thread&#45;safe)" alt="" coords="140,467,395,507"/>
-<area shape="poly" id="edge35_Node000001_Node000031" title=" " alt="" coords="49,709,57,671,72,619,99,564,117,539,138,517,144,512,147,516,142,521,121,542,103,567,77,621,62,673,54,710"/>
-<area shape="rect" id="Node000033" href="$classFatigueTestMotion.html#a2f155b2c8b97f4d94c1284a31d5031bd" title="Set target cycle count (thread&#45;safe)" alt="" coords="193,1169,341,1209"/>
-<area shape="poly" id="edge39_Node000001_Node000033" title=" " alt="" coords="54,735,61,820,77,947,89,1013,104,1073,121,1123,142,1156,160,1169,181,1179,179,1183,157,1174,138,1159,117,1125,99,1075,84,1014,72,948,56,821,48,736"/>
-<area shape="rect" id="Node000034" href="$classFatigueTestMotion.html#acb23779dc0dce69aea1c61d5ce17c7bf" title="Set unbounded mode (no mechanical stops found) Uses current position as home and sets reasonable defa..." alt="" coords="464,413,612,453"/>
-<area shape="poly" id="edge40_Node000001_Node000034" title=" " alt="" coords="47,710,49,660,61,589,72,551,88,514,110,481,138,453,174,430,213,415,253,405,295,400,377,400,450,410,450,415,377,405,296,405,254,410,214,420,176,435,142,457,114,484,93,517,77,553,66,590,55,661,52,710"/>
-<area shape="rect" id="Node000035" href="$bounds__finding__sinuous__motion_8cpp.html#a257128a931ab6472c0421a29abeb0443" title="UART command processing task." alt="" coords="190,1234,345,1259"/>
-<area shape="poly" id="edge43_Node000001_Node000035" title=" " alt="" coords="53,736,58,831,72,978,84,1054,99,1124,118,1182,130,1203,142,1219,158,1232,177,1240,175,1245,155,1236,138,1223,125,1206,114,1184,94,1126,79,1055,67,979,53,832,48,736"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="606,158,635,170,702,207,757,245,754,249,699,212,632,174,604,163"/>
-<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="613,220,723,249,721,254,611,226"/>
-<area shape="rect" id="Node000013" href="$classEsp32SPI.html#a31c4d53a51a04f8b7d8fab4f5cfca4ca" title="Set GPIO pin state." alt="" coords="468,1006,608,1031"/>
-<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="340,1016,454,1016,454,1021,340,1021"/>
-<area shape="rect" id="Node000014" href="$classEsp32SPI.html#ac1efd880f523f135eaaa31bdb6377116" title="Get pin mapping for a TMC5160 control pin." alt="" coords="691,981,879,1006"/>
-<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="608,1009,677,1002,678,1007,608,1014"/>
-<area shape="rect" id="Node000015" href="$classEsp32SPI.html#a12d86506446246fe1cc612d7b108aac6" title="Convert signal state to physical GPIO level." alt="" coords="681,1030,889,1055"/>
-<area shape="poly" id="edge15_Node000013_Node000015" title=" " alt="" coords="608,1023,668,1029,667,1034,608,1028"/>
-<area shape="rect" id="Node000016" href="$structtmc5160_1_1PinActiveLevels.html#a313ecef17f2a5420625bb98495d2242c" title="Get active level for a specific pin." alt="" coords="937,1023,1128,1063"/>
-<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="889,1040,923,1040,923,1045,889,1045"/>
-<area shape="rect" id="Node000018" href="$tmc5160_8cpp.html#a6b5c74bc9056ff38815021d63986f681" title=" " alt="" coords="497,1055,579,1081"/>
-<area shape="poly" id="edge18_Node000017_Node000018" title=" " alt="" coords="373,1065,483,1065,483,1071,373,1071"/>
-<area shape="rect" id="Node000020" href="$classFatigueTestMotion.html#a40e43a61bc8beddb3df12e7d3b72b141" title="Update motion (call this in main loop, thread&#45;safe)" alt="" coords="464,579,612,619"/>
-<area shape="poly" id="edge20_Node000019_Node000020" title=" " alt="" coords="333,554,395,567,451,578,450,583,394,572,332,559"/>
-<area shape="rect" id="Node000021" href="$classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf" title="Manually unlock mutex (called automatically in destructor)" alt="" coords="695,446,876,471"/>
-<area shape="poly" id="edge21_Node000020_Node000021" title=" " alt="" coords="602,576,632,563,701,520,757,478,760,482,704,524,635,568,605,581"/>
-<area shape="rect" id="Node000024" href="$classFatigueTestMotion.html#a00b20bc353584e6851ec34eb34c95205" title="Update sinuous motion target position." alt="" coords="703,579,868,619"/>
-<area shape="poly" id="edge24_Node000020_Node000024" title=" " alt="" coords="612,596,689,596,689,601,612,601"/>
-<area shape="rect" id="Node000022" href="$classEsp32TmcMutex.html#aa1c5042b5ace0f9a58c140b0f02db0f2" title="Check if mutex is valid." alt="" coords="939,417,1127,442"/>
-<area shape="poly" id="edge22_Node000021_Node000022" title=" " alt="" coords="876,445,925,439,925,445,876,451"/>
-<area shape="rect" id="Node000023" href="$classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f" title="Get native mutex handle." alt="" coords="943,467,1122,507"/>
-<area shape="poly" id="edge23_Node000021_Node000023" title=" " alt="" coords="876,466,930,472,929,478,876,472"/>
-<area shape="rect" id="Node000027" href="$classFatigueTestMotion.html#af8e6c53b8ceac2943e4ea919b745782f" title="Recalculate trajectory parameters based on frequency, bounds, and dwell." alt="" coords="457,643,619,683"/>
-<area shape="poly" id="edge27_Node000026_Node000027" title=" " alt="" coords="342,662,443,661,443,666,342,667"/>
-<area shape="poly" id="edge29_Node000028_Node000027" title=" " alt="" coords="342,615,444,639,443,644,341,621"/>
-<area shape="poly" id="edge33_Node000029_Node000004" title=" " alt="" coords="341,336,477,320,633,297,716,281,717,286,634,303,478,326,342,342"/>
-<area shape="poly" id="edge34_Node000029_Node000021" title=" " alt="" coords="342,350,478,368,557,381,634,399,692,417,744,438,742,443,691,422,633,404,556,386,478,373,341,356"/>
-<area shape="rect" id="Node000030" href="$classFatigueTestMotion.html#afd810bcf984589fb9b837d8fd5a2a1c5" title="Clip local bounds to global bounds." alt="" coords="445,248,631,288"/>
-<area shape="poly" id="edge31_Node000029_Node000030" title=" " alt="" coords="336,324,455,289,456,294,338,329"/>
-<area shape="poly" id="edge32_Node000030_Node000004" title=" " alt="" coords="631,265,676,265,676,271,631,271"/>
-<area shape="poly" id="edge38_Node000031_Node000004" title=" " alt="" coords="395,502,453,503,514,498,575,486,632,463,658,447,681,427,721,380,751,332,771,292,776,294,756,335,725,383,685,430,661,451,635,468,577,491,515,504,453,508,395,507"/>
-<area shape="poly" id="edge37_Node000031_Node000027" title=" " alt="" coords="379,505,396,517,409,531,416,545,422,574,427,602,433,615,445,629,450,633,446,637,441,633,429,618,422,603,417,575,411,547,405,534,393,521,376,509"/>
-<area shape="rect" id="Node000032" href="$namespacetmc5160.html#afb1c3789f431ec5b7872d5dc456c7678" title="Convert degrees to steps." alt="" coords="443,529,633,554"/>
-<area shape="poly" id="edge36_Node000031_Node000032" title=" " alt="" coords="367,504,462,523,461,529,366,509"/>
-<area shape="poly" id="edge41_Node000034_Node000004" title=" " alt="" coords="568,411,752,286,755,291,571,415"/>
-<area shape="rect" id="Node000036" href="$classUartCommandParser.html#aa9c8b4a43f0bb19ee715e9f61f86870c" title="Read and process commands from UART." alt="" coords="451,1227,625,1267"/>
-<area shape="poly" id="edge44_Node000035_Node000036" title=" " alt="" coords="345,1244,437,1244,437,1249,345,1249"/>
-<area shape="rect" id="Node000037" href="$classUartCommandParser.html#a2c3351f22cef1fd524cb5c02f349e9b9" title="Process a command line." alt="" coords="703,1227,868,1267"/>
-<area shape="poly" id="edge45_Node000036_Node000037" title=" " alt="" coords="626,1244,689,1244,689,1249,626,1249"/>
-<area shape="rect" id="Node000038" href="$classUartCommandParser.html#a39f6e678ffc3965cbce920bb025b0906" title="Find command handler for given argument." alt="" coords="950,1163,1115,1203"/>
-<area shape="poly" id="edge46_Node000037_Node000038" title=" " alt="" coords="863,1224,941,1204,942,1209,864,1229"/>
-<area shape="rect" id="Node000039" href="$classUartCommandParser.html#a7e0070e2b7b7de1ac43ac7eeab83310a" title="Print help message." alt="" coords="950,1227,1115,1267"/>
-<area shape="poly" id="edge47_Node000037_Node000039" title=" " alt="" coords="868,1244,936,1244,936,1249,868,1249"/>
-<area shape="rect" id="Node000040" href="$classUartCommandParser.html#a252be09aa840308655722421fafb1641" title="Parse command line into tokens." alt="" coords="950,1291,1115,1331"/>
-<area shape="poly" id="edge48_Node000037_Node000040" title=" " alt="" coords="864,1264,942,1285,941,1290,863,1269"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="48,607,51,500,64,335,76,248,91,167,112,101,124,75,138,56,157,40,179,30,181,35,160,45,142,59,129,78,117,103,96,169,81,248,69,335,57,501,53,607"/>
+<area shape="rect" id="Node000003" href="$namespacetmc5160.html#afb1c3789f431ec5b7872d5dc456c7678" title="Convert degrees to steps." alt="" coords="443,490,633,515"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="47,607,50,560,62,494,74,459,90,425,111,395,138,370,172,349,203,336,233,330,263,330,293,334,324,343,396,370,436,391,471,420,500,450,522,477,518,481,496,454,467,424,433,396,394,374,323,348,292,339,262,335,234,335,205,341,174,354,142,374,115,398,94,428,79,461,68,496,56,561,53,607"/>
+<area shape="rect" id="Node000004" href="$classtmc5160_1_1TMC5160.html#a721b663605378407cc1303b5c8f5b6fb" title="Get the communication interface used by this TMC5160 instance." alt="" coords="156,119,379,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="48,607,54,517,69,381,81,310,96,245,115,192,138,156,143,151,147,155,142,159,120,194,101,247,86,311,75,382,60,518,53,607"/>
+<area shape="rect" id="Node000005" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="186,169,349,209"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="48,607,57,529,74,412,101,296,118,251,138,220,154,207,172,198,174,203,157,211,142,223,123,253,106,298,79,413,62,529,54,608"/>
+<area shape="rect" id="Node000006" href="$classFatigueTestMotion.html#a7c7b84687216a3310300c80174ca2afc" title="Get global bounds in degrees (for command interface)" alt="" coords="443,1043,633,1083"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="53,633,60,716,75,840,87,903,102,961,120,1008,142,1038,161,1049,189,1058,262,1068,347,1070,429,1068,429,1073,347,1076,262,1073,188,1063,159,1054,138,1042,116,1011,97,963,82,905,70,840,55,716,48,633"/>
+<area shape="rect" id="Node000007" href="$namespacetmc5160.html#a17db4658c61b62396b32c1a022e54d75" title="Convert steps to degrees." alt="" coords="690,993,881,1018"/>
+<area shape="poly" id="edge45_Node000001_Node000007" title=" " alt="" coords="53,633,59,723,73,858,84,928,100,991,119,1043,130,1062,142,1075,159,1087,181,1097,238,1112,305,1119,378,1121,452,1118,523,1112,633,1092,668,1079,702,1062,757,1024,760,1029,705,1066,670,1084,634,1097,524,1117,453,1124,378,1127,304,1125,237,1117,180,1102,157,1092,138,1079,125,1065,114,1045,95,993,79,929,68,858,53,723,48,633"/>
+<area shape="rect" id="Node000008" href="$classFatigueTestMotion.html#a327291e1473fae0f255e924e2787cc98" title=" " alt="" coords="464,813,612,853"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="54,632,64,695,83,785,109,871,125,903,142,923,174,944,204,958,233,965,262,965,292,961,323,952,393,923,409,912,418,899,426,885,441,870,462,857,465,862,444,874,430,888,422,902,413,916,396,928,325,957,293,966,263,971,233,970,203,963,171,949,138,927,120,906,104,873,78,786,59,696,49,633"/>
+<area shape="rect" id="Node000009" href="$bounds__finding__sinuous__motion_8cpp.html#a8ce1f915a66444f56a02e43bde4cc0c5" title=" " alt="" coords="213,385,322,410"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="49,607,56,569,72,518,98,465,117,440,138,419,167,404,198,396,200,401,169,409,142,423,121,444,103,467,77,520,62,571,54,608"/>
+<area shape="rect" id="Node000010" href="$bounds__finding__sinuous__motion_8cpp.html#a7f27ed3ceaa20624467d32d610c23d7f" title=" " alt="" coords="209,434,325,459"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="51,606,62,577,79,540,105,501,138,468,166,455,195,447,196,452,168,460,142,473,109,504,84,542,67,579,56,608"/>
+<area shape="rect" id="Node000011" href="$bounds__finding__sinuous__motion_8cpp.html#a4ac23d1ea8f5bd1fdc1b62db4484e296" title=" " alt="" coords="212,483,323,509"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="55,606,87,562,111,538,139,518,168,505,198,498,199,503,169,510,141,522,115,542,92,565,60,609"/>
+<area shape="rect" id="Node000012" href="$bounds__finding__sinuous__motion_8cpp.html#a0d0d2bd312981ee8f4d16b1c83d6faf2" title=" " alt="" coords="215,533,320,558"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="67,605,100,585,139,567,200,551,201,556,141,572,102,590,70,610"/>
+<area shape="rect" id="Node000013" href="$bounds__finding__sinuous__motion_8cpp.html#a468299e399fa65feaeb080eecfcd654f" title=" " alt="" coords="200,582,335,607"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="92,612,186,601,187,607,92,618"/>
+<area shape="rect" id="Node000014" href="$bounds__finding__sinuous__motion_8cpp.html#ae1393ad4a23750c0916847967cc4032f" title=" " alt="" coords="213,631,322,657"/>
+<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="92,622,199,634,199,639,92,627"/>
+<area shape="rect" id="Node000015" href="$classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44" title="Initialize the SPI interface." alt="" coords="195,70,340,95"/>
+<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="48,607,52,508,66,357,78,278,93,205,113,145,125,122,138,105,157,91,180,82,182,87,160,95,142,109,129,125,118,147,98,207,83,279,71,358,58,509,53,607"/>
+<area shape="rect" id="Node000020" href="$classtmc5160_1_1TMC5160.html#ac90ae8eb92120142753c49fc61fcce89" title="Initialize the TMC5160 driver with configuration." alt="" coords="161,283,373,309"/>
+<area shape="poly" id="edge20_Node000001_Node000020" title=" " alt="" coords="47,607,50,555,61,480,72,438,88,398,110,359,138,326,157,313,160,317,142,330,114,362,93,400,77,440,66,481,55,556,52,607"/>
+<area shape="rect" id="Node000022" href="$bounds__finding__sinuous__motion_8cpp.html#aa7704c2c8716e80dc20804e4c7fb8fd4" title="Motion control task &#45; handles bounds finding and sinusoidal motion." alt="" coords="190,234,345,259"/>
+<area shape="poly" id="edge22_Node000001_Node000022" title=" " alt="" coords="49,607,58,537,77,435,103,335,119,295,138,269,156,256,176,248,178,253,158,261,142,273,124,298,108,336,82,436,64,538,54,608"/>
+<area shape="rect" id="Node000028" href="$classUartCommandParser.html#a01f3f8de980d57367929b29a4cc22655" title="Register a command handler." alt="" coords="185,873,350,913"/>
+<area shape="poly" id="edge28_Node000001_Node000028" title=" " alt="" coords="53,632,59,676,73,738,84,771,99,803,118,833,142,859,173,878,170,883,138,863,114,837,94,806,79,773,67,739,53,677,48,633"/>
+<area shape="rect" id="Node000029" href="$classFatigueTestMotion.html#a86ebd3d311881f3bab591d44445c2f29" title="Set dwell times (thread&#45;safe, can be changed in real&#45;time)" alt="" coords="193,745,341,785"/>
+<area shape="poly" id="edge29_Node000001_Node000029" title=" " alt="" coords="59,631,90,681,114,708,141,731,181,749,179,754,139,736,110,712,86,684,54,634"/>
+<area shape="rect" id="Node000031" href="$classFatigueTestMotion.html#a266568d4787b4d607e6106d5e76922c0" title="Set frequency (thread&#45;safe, can be changed in real&#45;time)" alt="" coords="193,809,341,849"/>
+<area shape="poly" id="edge31_Node000001_Node000031" title=" " alt="" coords="55,632,64,666,81,710,106,756,123,777,142,795,160,807,181,815,179,820,158,812,138,799,119,781,102,759,76,712,59,667,50,634"/>
+<area shape="rect" id="Node000032" href="$classFatigueTestMotion.html#aca79b6a071eb4a956ac949b3404cfe1f" title="Set global bounds (hardware limits found during initialization)" alt="" coords="193,988,341,1028"/>
+<area shape="poly" id="edge33_Node000001_Node000032" title=" " alt="" coords="54,633,64,702,83,803,109,903,125,941,142,968,160,982,181,992,179,997,157,986,138,971,120,944,104,904,78,804,59,703,49,633"/>
+<area shape="rect" id="Node000034" href="$classFatigueTestMotion.html#a5d228e53872d7dd297ff2ebd834c12f1" title="Set local bounds in degrees from center (thread&#45;safe)" alt="" coords="140,681,395,721"/>
+<area shape="poly" id="edge38_Node000001_Node000034" title=" " alt="" coords="72,630,141,666,167,675,165,680,139,670,69,635"/>
+<area shape="rect" id="Node000035" href="$classFatigueTestMotion.html#a2f155b2c8b97f4d94c1284a31d5031bd" title="Set target cycle count (thread&#45;safe)" alt="" coords="193,1153,341,1193"/>
+<area shape="poly" id="edge42_Node000001_Node000035" title=" " alt="" coords="53,633,59,730,73,881,85,960,100,1033,119,1093,142,1133,160,1148,181,1158,179,1163,157,1152,138,1136,114,1095,95,1034,80,961,68,882,53,731,48,633"/>
+<area shape="rect" id="Node000036" href="$classFatigueTestMotion.html#acb23779dc0dce69aea1c61d5ce17c7bf" title="Set unbounded mode (no mechanical stops found) Uses current position as home and sets reasonable defa..." alt="" coords="464,1176,612,1216"/>
+<area shape="poly" id="edge43_Node000001_Node000036" title=" " alt="" coords="52,633,54,745,63,919,74,1011,90,1094,113,1161,126,1185,142,1203,179,1228,220,1243,264,1250,309,1251,354,1247,398,1239,473,1218,474,1223,399,1244,355,1252,309,1256,263,1255,218,1248,176,1232,138,1207,122,1189,108,1163,85,1095,69,1011,58,920,48,745,47,633"/>
+<area shape="rect" id="Node000037" href="$bounds__finding__sinuous__motion_8cpp.html#a257128a931ab6472c0421a29abeb0443" title="UART command processing task." alt="" coords="190,1269,345,1294"/>
+<area shape="poly" id="edge46_Node000001_Node000037" title=" " alt="" coords="53,633,55,750,66,936,77,1034,92,1124,114,1198,127,1226,142,1248,158,1261,178,1270,176,1275,155,1265,138,1251,123,1229,109,1200,87,1125,71,1034,60,936,49,750,47,633"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="624,1040,716,1018,717,1024,626,1045"/>
+<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="569,851,756,982,753,987,566,856"/>
+<area shape="rect" id="Node000016" href="$classEsp32SPI.html#a31c4d53a51a04f8b7d8fab4f5cfca4ca" title="Set GPIO pin state." alt="" coords="468,70,608,95"/>
+<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="340,80,454,80,454,85,340,85"/>
+<area shape="rect" id="Node000017" href="$classEsp32SPI.html#ac1efd880f523f135eaaa31bdb6377116" title="Get pin mapping for a TMC5160 control pin." alt="" coords="691,46,879,71"/>
+<area shape="poly" id="edge17_Node000016_Node000017" title=" " alt="" coords="608,73,677,66,678,72,608,79"/>
+<area shape="rect" id="Node000018" href="$classEsp32SPI.html#a12d86506446246fe1cc612d7b108aac6" title="Convert signal state to physical GPIO level." alt="" coords="681,95,889,121"/>
+<area shape="poly" id="edge18_Node000016_Node000018" title=" " alt="" coords="608,87,668,93,667,99,608,92"/>
+<area shape="rect" id="Node000019" href="$structtmc5160_1_1PinActiveLevels.html#a313ecef17f2a5420625bb98495d2242c" title="Get active level for a specific pin." alt="" coords="937,88,1128,128"/>
+<area shape="poly" id="edge19_Node000018_Node000019" title=" " alt="" coords="889,105,923,105,923,111,889,111"/>
+<area shape="rect" id="Node000021" href="$tmc5160_8cpp.html#a6b5c74bc9056ff38815021d63986f681" title=" " alt="" coords="497,291,579,317"/>
+<area shape="poly" id="edge21_Node000020_Node000021" title=" " alt="" coords="374,296,483,300,483,305,373,302"/>
+<area shape="rect" id="Node000023" href="$classFatigueTestMotion.html#a40e43a61bc8beddb3df12e7d3b72b141" title="Update motion (call this in main loop, thread&#45;safe)" alt="" coords="464,227,612,267"/>
+<area shape="poly" id="edge23_Node000022_Node000023" title=" " alt="" coords="345,244,450,244,450,249,345,249"/>
+<area shape="rect" id="Node000024" href="$classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf" title="Manually unlock mutex (called automatically in destructor)" alt="" coords="695,585,876,610"/>
+<area shape="poly" id="edge24_Node000023_Node000024" title=" " alt="" coords="614,263,635,277,667,311,695,349,719,390,738,432,766,510,781,570,776,572,761,512,733,434,714,392,691,352,663,314,632,281,611,267"/>
+<area shape="rect" id="Node000027" href="$classFatigueTestMotion.html#a00b20bc353584e6851ec34eb34c95205" title="Update sinuous motion target position." alt="" coords="703,227,868,267"/>
+<area shape="poly" id="edge27_Node000023_Node000027" title=" " alt="" coords="612,244,689,244,689,249,612,249"/>
+<area shape="rect" id="Node000025" href="$classEsp32TmcMutex.html#aa1c5042b5ace0f9a58c140b0f02db0f2" title="Check if mutex is valid." alt="" coords="939,555,1127,581"/>
+<area shape="poly" id="edge25_Node000024_Node000025" title=" " alt="" coords="876,584,925,578,925,583,876,589"/>
+<area shape="rect" id="Node000026" href="$classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f" title="Get native mutex handle." alt="" coords="943,605,1122,645"/>
+<area shape="poly" id="edge26_Node000024_Node000026" title=" " alt="" coords="876,605,930,611,929,616,876,610"/>
+<area shape="rect" id="Node000030" href="$classFatigueTestMotion.html#af8e6c53b8ceac2943e4ea919b745782f" title="Recalculate trajectory parameters based on frequency, bounds, and dwell." alt="" coords="457,745,619,785"/>
+<area shape="poly" id="edge30_Node000029_Node000030" title=" " alt="" coords="342,763,443,763,443,768,342,768"/>
+<area shape="poly" id="edge32_Node000031_Node000030" title=" " alt="" coords="341,809,443,785,444,790,342,815"/>
+<area shape="poly" id="edge36_Node000032_Node000007" title=" " alt="" coords="341,1005,676,1003,676,1009,341,1010"/>
+<area shape="poly" id="edge37_Node000032_Node000024" title=" " alt="" coords="341,993,368,984,393,971,408,958,416,943,425,928,441,914,468,900,493,893,540,890,584,887,607,879,632,863,661,837,686,806,728,739,757,674,774,622,779,624,762,676,733,742,691,809,665,841,635,867,609,883,585,892,540,896,494,898,470,905,444,918,429,932,421,946,412,961,396,976,370,989,343,998"/>
+<area shape="rect" id="Node000033" href="$classFatigueTestMotion.html#afd810bcf984589fb9b837d8fd5a2a1c5" title="Clip local bounds to global bounds." alt="" coords="445,928,631,968"/>
+<area shape="poly" id="edge34_Node000032_Node000033" title=" " alt="" coords="341,989,433,968,435,974,342,994"/>
+<area shape="poly" id="edge35_Node000033_Node000007" title=" " alt="" coords="626,965,717,987,716,992,624,971"/>
+<area shape="poly" id="edge39_Node000034_Node000003" title=" " alt="" coords="367,679,393,666,434,634,470,596,520,526,525,529,474,599,438,638,396,670,369,684"/>
+<area shape="poly" id="edge41_Node000034_Node000007" title=" " alt="" coords="395,682,454,681,517,688,578,704,635,731,667,756,694,787,717,820,737,856,765,924,781,978,776,980,760,926,732,858,713,823,690,790,663,760,632,736,576,709,516,693,454,687,395,687"/>
+<area shape="poly" id="edge40_Node000034_Node000030" title=" " alt="" coords="353,719,444,740,443,746,352,724"/>
+<area shape="poly" id="edge44_Node000036_Node000007" title=" " alt="" coords="574,1174,632,1137,703,1078,759,1026,763,1030,706,1082,635,1141,577,1178"/>
+<area shape="rect" id="Node000038" href="$classUartCommandParser.html#aa9c8b4a43f0bb19ee715e9f61f86870c" title="Read and process commands from UART." alt="" coords="451,1261,625,1301"/>
+<area shape="poly" id="edge47_Node000037_Node000038" title=" " alt="" coords="345,1279,437,1279,437,1284,345,1284"/>
+<area shape="rect" id="Node000039" href="$classUartCommandParser.html#a2c3351f22cef1fd524cb5c02f349e9b9" title="Process a command line." alt="" coords="703,1261,868,1301"/>
+<area shape="poly" id="edge48_Node000038_Node000039" title=" " alt="" coords="626,1279,689,1279,689,1284,626,1284"/>
+<area shape="rect" id="Node000040" href="$classUartCommandParser.html#a39f6e678ffc3965cbce920bb025b0906" title="Find command handler for given argument." alt="" coords="950,1197,1115,1237"/>
+<area shape="poly" id="edge49_Node000039_Node000040" title=" " alt="" coords="863,1259,941,1238,942,1243,864,1264"/>
+<area shape="rect" id="Node000041" href="$classUartCommandParser.html#a7e0070e2b7b7de1ac43ac7eeab83310a" title="Print help message." alt="" coords="950,1261,1115,1301"/>
+<area shape="poly" id="edge50_Node000039_Node000041" title=" " alt="" coords="868,1279,936,1279,936,1284,868,1284"/>
+<area shape="rect" id="Node000042" href="$classUartCommandParser.html#a252be09aa840308655722421fafb1641" title="Parse command line into tokens." alt="" coords="950,1325,1115,1365"/>
+<area shape="poly" id="edge51_Node000039_Node000042" title=" " alt="" coords="864,1299,942,1319,941,1324,863,1304"/>
 </map>

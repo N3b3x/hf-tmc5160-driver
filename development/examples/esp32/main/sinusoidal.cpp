@@ -1038,12 +1038,12 @@ extern "C" void app_main() {
         if (drv_status.bits.sg_result == 0) {
           if (has_gconf && !gconf.bits.en_pwm_mode) {
             // In SpreadCycle mode, SG=0 indicates a real problem
-            ESP_LOGE(TAG, "  ⚠️ CRITICAL: SG result = 0 (highest load) but motor has NO mechanical load!");
-            ESP_LOGE(TAG, "  This indicates a PROBLEM:");
-            ESP_LOGE(TAG, "    1. Check motor wiring (phases may be swapped or wrong)");
-            ESP_LOGE(TAG, "    2. Motor current may be too high (try reducing irun)");
+          ESP_LOGE(TAG, "  ⚠️ CRITICAL: SG result = 0 (highest load) but motor has NO mechanical load!");
+          ESP_LOGE(TAG, "  This indicates a PROBLEM:");
+          ESP_LOGE(TAG, "    1. Check motor wiring (phases may be swapped or wrong)");
+          ESP_LOGE(TAG, "    2. Motor current may be too high (try reducing irun)");
             ESP_LOGE(TAG, "    3. StallGuard2 threshold needs adjustment");
-            ESP_LOGE(TAG, "    4. Motor may be electrically stalling");
+          ESP_LOGE(TAG, "    4. Motor may be electrically stalling");
           } else {
             // In StealthChop mode, SG_RESULT=0 is expected and normal (measurement invalid)
             ESP_LOGI(TAG, "  StallGuard2 result: 0 (Expected in StealthChop mode - measurement invalid)");

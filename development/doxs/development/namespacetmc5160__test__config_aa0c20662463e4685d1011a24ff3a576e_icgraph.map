@@ -1,6 +1,6 @@
 <map id="tmc5160_test_config::GetDefaultPinConfig" name="tmc5160_test_config::GetDefaultPinConfig">
 <area shape="rect" id="Node000001" title="Complete pin configuration for all tests." alt="" coords="605,88,768,128"/>
-<area shape="rect" id="Node000002" href="$sinusoidal_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="441,38,527,63"/>
+<area shape="rect" id="Node000002" href="$bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="441,38,527,63"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="602,87,527,65,528,60,603,82"/>
 <area shape="rect" id="Node000003" href="$spi__daisy__chain__comprehensive__test_8cpp.html#ae1c358956ec587c7bd3a5105761b86a0" title=" " alt="" coords="411,88,557,128"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="591,111,558,111,558,105,591,105"/>
