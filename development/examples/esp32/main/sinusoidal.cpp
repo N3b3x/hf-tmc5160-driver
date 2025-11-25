@@ -98,7 +98,8 @@ public:
     }
 
     // Set acceleration and deceleration
-    driver_->rampControl.SetAccelerations(acceleration_, acceleration_);
+    driver_->rampControl.SetAcceleration(acceleration_);
+    driver_->rampControl.SetDeceleration(acceleration_);
     
     // Set start/stop velocities
     driver_->rampControl.SetRampSpeeds(1000.0f, 100.0f, 0.0f);
@@ -913,7 +914,7 @@ extern "C" void app_main() {
       
       // Note: VSTART, VSTOP, AMAX are WRITE-ONLY registers - they always read as 0
       // We can't verify them by reading, but we know they were set in BackAndForthMotion::Start()
-      // VSTART=1000, VSTOP=100, AMAX=acceleration (from SetRampSpeeds and SetAccelerations)
+      // VSTART=1000, VSTOP=100, AMAX=acceleration (from SetRampSpeeds, SetAcceleration, and SetDeceleration)
       
       // Read RAMPMODE to verify we're in positioning mode
       uint32_t rampmode_value = 0;
@@ -968,7 +969,7 @@ extern "C" void app_main() {
       ESP_LOGI(TAG, "  Motor: %.3f rev (%.1f deg) in %.1f seconds", 
                motor_revolutions, motor_revolutions * 360.0f, time_delta / 1000.0f);
       ESP_LOGI(TAG, "  Output: %.3f rev (%.1f deg) [gearbox=%.2f:1]", 
-               output_revolutions, output_revolutions * 360.0f, gearbox_ratio);
+               output_revolutions, output_revolutions * 360.0f, gear_ratio);
       
       // Calculate output speed
       float output_rpm = (output_revolutions * 60.0f) / (time_delta / 1000.0f);
@@ -980,13 +981,13 @@ extern "C" void app_main() {
                  output_revolutions, output_revolutions * 360.0f);
         ESP_LOGW(TAG, "  Output speed: %.2f RPM, %.2f deg/s", output_rpm, output_deg_per_sec);
         ESP_LOGW(TAG, "  This suggests a HIGH gearbox ratio - motor moves many steps but output moves little");
-        ESP_LOGW(TAG, "  Update gearbox_ratio in code (line ~725) to match your actual gearbox");
+        ESP_LOGW(TAG, "  Update gear_ratio in code to match your actual gearbox");
         ESP_LOGW(TAG, "  Tip: Mark the output shaft and observe movement, then adjust ratio accordingly");
       } else if (std::abs(output_revolutions) > 0.001f) {
         ESP_LOGI(TAG, "  ✓ Output shaft IS moving: %.3f rev (%.1f deg) at %.2f RPM (%.2f deg/s)", 
                  output_revolutions, output_revolutions * 360.0f, output_rpm, output_deg_per_sec);
       } else {
-        ESP_LOGW(TAG, "  ⚠️ Output movement too small to measure (%.6f rev) - check gearbox_ratio setting", output_revolutions);
+        ESP_LOGW(TAG, "  ⚠️ Output movement too small to measure (%.6f rev) - check gear_ratio setting", output_revolutions);
       }
       
       // Check if motor is actually moving

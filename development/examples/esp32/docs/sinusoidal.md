@@ -33,12 +33,13 @@ This example is ideal for:
 
 ## Pin Configuration
 
-Default pin configuration (can be modified in `esp32_tmc5160_bus_config.hpp`):
+Default pin configuration (from `esp32_tmc5160_bus_config.hpp`):
 
 - **SPI**: MOSI=6, MISO=2, SCLK=5, CS=18
 - **Control**: EN=11
 - **Clock**: CLK=10 (tied to GND for internal clock)
 - **Diagnostics**: DIAG0=23, DIAG1=15
+- **SPI Clock**: 1 MHz (this example uses 1 MHz, config default is 500 kHz)
 
 ## Motor Selection
 

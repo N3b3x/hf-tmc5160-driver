@@ -182,7 +182,7 @@ namespace MotorConfig_17HS4401S {
     // - IRUN ≥ 8 is minimum for StealthChop automatic tuning
     // - IRUN 16-31 recommended for best microstep performance
     // - Current is slightly above motor rating but acceptable for testing
-    constexpr uint8_t GLOBAL_SCALER = 160;       // Fine-tunes current range (0=256=full scale)
+    constexpr uint16_t GLOBAL_SCALER = 160;       // Fine-tunes current range (0=256=full scale)
     constexpr uint8_t IRUN = 20;                 // ~1.88A RMS, ~2.66A Peak (improved StealthChop)
     constexpr uint8_t IHOLD = 10;                // ~0.94A RMS, ~1.33A Peak (50% of Run)
     
@@ -236,7 +236,7 @@ namespace MotorConfig_17HS4401S_Direct {
     // Driver Configuration
     // NOTE: Board has 0.05 Ohm Sense Resistors (1W, low-inductance type required).
     // Same current settings as geared version since motor is identical
-    constexpr uint8_t GLOBAL_SCALER = 160;       // Fine-tunes current range (0=256=full scale)
+    constexpr uint16_t GLOBAL_SCALER = 160;       // Fine-tunes current range (0=256=full scale)
     constexpr uint8_t IRUN = 20;                 // ~1.88A RMS, ~2.66A Peak
     constexpr uint8_t IHOLD = 10;                // ~0.94A RMS, ~1.33A Peak (50% of Run)
     
@@ -311,7 +311,7 @@ namespace MotorConfig_AppliedMotion_5034_369 {
     // IRUN=28: I_RMS = 1.0 * 0.90625 * 6.5 * 0.707 = ~4.17A RMS (exact match)
     // 
     // Using IRUN=28 for exact rated current, or IRUN=31 for maximum available
-    constexpr uint8_t GLOBAL_SCALER = 256;       // Full scale for maximum current capacity
+    constexpr uint16_t GLOBAL_SCALER = 256;       // Full scale for maximum current capacity
     constexpr uint8_t IRUN = 28;                 // ~4.17A RMS (100% rated), ~5.9A Peak
     constexpr uint8_t IHOLD = 14;                // ~2.15A RMS (~51.5% of Run), ~3.04A Peak
     

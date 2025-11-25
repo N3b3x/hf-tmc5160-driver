@@ -407,7 +407,14 @@
 <p>All examples and tests use shared configuration files:</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">esp32_tmc5160_bus_config.hpp</code> - Pin assignments and motor configurations</li>
+  <li><code class="language-plaintext highlighter-rouge">esp32_tmc5160_bus_config.hpp</code> - Pin assignments, motor configurations, and test defaults
+    <ul>
+      <li>Default SPI pins: MOSI=6, MISO=2, SCLK=5, CS=18</li>
+      <li>Default control pins: EN=11, CLK=10, DIAG0=23, DIAG1=15</li>
+      <li>Default SPI clock: 500 kHz (some examples override this)</li>
+      <li>Motor configurations: 17HS4401S (geared/direct), Applied Motion 5034-369</li>
+    </ul>
+  </li>
   <li><code class="language-plaintext highlighter-rouge">esp32_tmc5160_bus.hpp</code> - ESP32-specific communication interface implementations</li>
 </ul>
 <h2 id="documentation-structure">

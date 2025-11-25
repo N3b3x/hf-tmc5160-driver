@@ -30,7 +30,8 @@ This example is ideal for:
   - Dwell times at bounds
 - **Position Mode Control**: Uses TMC5160 positioning mode for precise control
 - **Trapezoidal Profile**: 1/3 accel, 1/3 constant velocity, 1/3 decel for smooth motion
-- **No Center Dwell**: Continuous motion through center (no pause)
+- **No Center Dwell in Trajectory**: Trajectory calculation explicitly excludes center dwell for frequency tuning (continuous motion through center)
+- **Note**: Center dwell state exists in code for backward compatibility but is not used in trajectory calculations
 
 ### 3. UART Command Interface
 
@@ -60,11 +61,14 @@ Real-time parameter adjustment via serial commands:
 
 ## Pin Configuration
 
-Default pin configuration (can be modified):
+Default pin configuration (from `esp32_tmc5160_bus_config.hpp`):
 
-- **SPI**: MOSI=23, MISO=19, SCLK=18, CS=5
-- **Control**: EN=2, DIR=4, STEP=15
+- **SPI**: MOSI=6, MISO=2, SCLK=5, CS=18
+- **Control**: EN=11
+- **Clock**: CLK=10 (tied to GND for internal clock)
+- **Diagnostics**: DIAG0=23, DIAG1=15
 - **UART**: Uses default UART_NUM_0 (USB serial port)
+- **SPI Clock**: 500 kHz (from config) or 1 MHz (sinusoidal example uses 1 MHz)
 
 ## Motor Selection
 
@@ -123,13 +127,14 @@ Given:
 - Target frequency: `f` Hz
 - Travel distance: `D` steps (one way)
 - Dwell times: `T_dwell_min`, `T_dwell_max` (ms)
+- **Note**: Center dwell is not included in trajectory calculation (deprecated)
 
 Calculate:
 1. **Target Period**: `T_period = 1/f` seconds
-2. **Total Dwell**: `T_dwell_total = (T_dwell_min + T_dwell_max) / 1000` seconds
+2. **Total Dwell**: `T_dwell_total = (T_dwell_min + T_dwell_max) / 1000` seconds (center dwell excluded)
 3. **Motion Time**: `T_motion = T_period - T_dwell_total` seconds
 4. **Leg Time**: `T_leg = T_motion / 2` seconds (one way)
-5. **VMAX**: `VMAX = 1.5 * D / T_leg` steps/s
+5. **VMAX**: `VMAX = 1.5 * D / T_leg` steps/s (trapezoidal profile: 1/3 accel, 1/3 const, 1/3 decel)
 6. **AMAX**: `AMAX = VMAX / (T_leg / 3)` steps/s²
 
 ### Profile Shape
@@ -173,12 +178,13 @@ Sets oscillation frequency in Hz (0.0-10.0).
 -d <min> <max> [center]
 ```
 
-Sets dwell times in milliseconds at bounds. Center dwell argument is ignored (feature removed).
+Sets dwell times in milliseconds at bounds. **Note**: Center dwell argument is accepted but ignored (feature deprecated - trajectory calculation uses no center dwell).
 
 **Example**:
 ```
 -d 2000 2000    # Dwell 2 seconds at min and max bounds
 -d 1000 1500    # Dwell 1s at min, 1.5s at max
+-d 2000 2000 500  # Center dwell argument (500ms) will be ignored with warning
 ```
 
 #### Bounds

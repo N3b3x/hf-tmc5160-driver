@@ -1,7 +1,9 @@
 <map id="tmc5160::MmToSteps" name="tmc5160::MmToSteps">
-<area shape="rect" id="Node000001" title="Convert millimeters to steps." alt="" coords="352,5,515,31"/>
-<area shape="rect" id="Node000002" href="$ramp__control__comprehensive__test_8cpp.html#abf571a46a047286529687282395f173d" title=" " alt="" coords="140,5,304,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="339,21,304,21,304,15,339,15"/>
-<area shape="rect" id="Node000003" href="$ramp__control__comprehensive__test_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,5,92,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,21,92,21,92,15,126,15"/>
+<area shape="rect" id="Node000001" title="Convert millimeters to steps." alt="" coords="429,42,592,67"/>
+<area shape="rect" id="Node000002" href="$structtmc5160_1_1TMC5160_1_1RampControl.html#af8a09d45e0f919dff7d47f49f7946a7b" title="Set target position in millimeters." alt="" coords="140,5,381,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="415,46,381,42,382,37,416,41"/>
+<area shape="rect" id="Node000003" href="$ramp__control__comprehensive__test_8cpp.html#abf571a46a047286529687282395f173d" title=" " alt="" coords="179,70,343,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="416,68,343,76,342,71,415,63"/>
+<area shape="rect" id="Node000004" href="$ramp__control__comprehensive__test_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,70,92,95"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="165,85,92,85,92,80,165,80"/>
 </map>

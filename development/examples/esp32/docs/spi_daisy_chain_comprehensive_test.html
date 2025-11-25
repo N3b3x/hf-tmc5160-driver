@@ -447,11 +447,14 @@ CS   ──────── CSN ──────────── CSN ─�
 </h2>
     
 
-<p>Default pin configuration (shared by all chips):</p>
+<p>Default pin configuration (from <code class="language-plaintext highlighter-rouge">esp32_tmc5160_bus_config.hpp</code>, shared by all chips):</p>
 
 <ul>
-  <li><strong>SPI</strong>: MOSI=23, MISO=19, SCLK=18, CS=5 (shared)</li>
-  <li><strong>Control</strong>: EN, DIR, STEP (can be shared or separate per chip)</li>
+  <li><strong>SPI</strong>: MOSI=6, MISO=2, SCLK=5, CS=18 (shared)</li>
+  <li><strong>Control</strong>: EN=11 (can be shared or separate per chip)</li>
+  <li><strong>Clock</strong>: CLK=10 (tied to GND for internal clock)</li>
+  <li><strong>Diagnostics</strong>: DIAG0=23, DIAG1=15</li>
+  <li><strong>SPI Clock</strong>: 500 kHz (from config)</li>
 </ul>
 <h2 id="test-configuration">
   

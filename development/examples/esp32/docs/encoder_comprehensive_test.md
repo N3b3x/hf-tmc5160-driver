@@ -68,11 +68,14 @@ Tests latched position:
 
 ## Pin Configuration
 
-Default pin configuration:
+Default pin configuration (from `esp32_tmc5160_bus_config.hpp`):
 
-- **SPI**: MOSI=23, MISO=19, SCLK=18, CS=5
-- **Control**: EN=2, DIR=4, STEP=15
+- **SPI**: MOSI=6, MISO=2, SCLK=5, CS=18
+- **Control**: EN=11
+- **Clock**: CLK=10 (tied to GND for internal clock)
+- **Diagnostics**: DIAG0=23, DIAG1=15
 - **Encoder**: ENC_A, ENC_B, ENC_N (configured via code)
+- **SPI Clock**: 500 kHz (from config)
 
 ## Motor Selection
 

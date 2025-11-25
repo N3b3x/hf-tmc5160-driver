@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4a415ca8c606083f84fd210e197d820f61":[12,0,0,65,15],
 "namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4a4a12e55d1f7a734e479eb5fd2f87f4a0":[12,0,0,65,3],
 "namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4a4d7aa7898beee1c19acd8d5b20d2793c":[12,0,0,65,14],
 "namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4a522f694f92e679d874a1cc2b2616c3d7":[12,0,0,65,2],
@@ -82,9 +83,9 @@ var NAVTREEINDEX3 =
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a264560cc51bab1eef38fd5b5b00ffc44":[12,0,1,0,3],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a2cda924b99169b019b352db1d09bcb74":[12,0,1,0,11],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a456d7becc2062234b0f5bddeccffab9c":[12,0,1,0,14],
-"namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a4673d3c4e52729bc9e731c053b629006":[12,0,1,0,4],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a6d108e46bc3c3b9c348f82ff9b7849dc":[12,0,1,0,13],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a7206560cc583fa739bb028c571fb8d72":[12,0,1,0,2],
+"namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a7fb8ad3fa1cbcb1357eb11c013316670":[12,0,1,0,4],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a841806fffe8d6f23f75794968ab7ddfc":[12,0,1,0,12],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a8bddca392ff19570f79c9f3bf3691cab":[12,0,1,0,1],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a905d1e5ce31a41bca35a005914244fd7":[12,0,1,0,18],
@@ -100,7 +101,6 @@ var NAVTREEINDEX3 =
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#af5f14039093fb417ddc683bc5c830380":[12,0,1,0,19],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#af74e7c836e2200ab12efc935e01e4220":[12,0,1,0,17],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html":[12,0,1,1],
-"namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#a037942f60fbc89a4efcc24db9581b92f":[12,0,1,1,4],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#a088d1f3db1b3f03844068dfb7a863088":[12,0,1,1,17],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#a0a82ed2b376755c1d28073e5e05cb9bc":[12,0,1,1,9],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#a13b21630b7236510369064661f41e9d7":[12,0,1,1,8],
@@ -118,6 +118,7 @@ var NAVTREEINDEX3 =
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#abf76e199707ede468cadbba316b133aa":[12,0,1,1,20],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#acdbdf68266ab4349ed0d3a0d53f0295d":[12,0,1,1,15],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#ad17aeddac4207a959f67cd3c479d9353":[12,0,1,1,1],
+"namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#ad72a4385a10dd516dfd2ad8d961d8fd0":[12,0,1,1,4],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#add63af5700e1b047123b51719046893a":[12,0,1,1,0],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#ae434fd318235d9d031781299c4da4282":[12,0,1,1,12],
 "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S__Direct.html#affd707c003de55036533ad819e983a8a":[12,0,1,1,5],
@@ -131,6 +132,7 @@ var NAVTREEINDEX3 =
 "namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a5dae63e62503655af08b70c07402df20":[12,0,1,2,10],
 "namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a5ec830634dcd59ee9a4a11bbcf3b00ed":[12,0,1,2,21],
 "namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a7560924a75cb428d13944cd2c60fedd4":[12,0,1,2,0],
+"namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a7839291513ae894c3248130ced4e90f3":[12,0,1,2,4],
 "namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a8167288a59bef0b3acb6a163805c0d1a":[12,0,1,2,18],
 "namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a84b3833a5e325cd205dd6df4c516b7c6":[12,0,1,2,2],
 "namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a931230cdcea151fb738e4a61e8d6c00a":[12,0,1,2,9],
@@ -143,7 +145,6 @@ var NAVTREEINDEX3 =
 "namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#ac6e981a1d351dbfda61d46938ce704a2":[12,0,1,2,3],
 "namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#ae5313033e65de63db35f8af42ffab43d":[12,0,1,2,11],
 "namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#ae849e5127d88a382a8630075c0e92fe0":[12,0,1,2,5],
-"namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#aef458e2eb0e7da73bc0b971159bff911":[12,0,1,2,4],
 "namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#af40834c43b4b07e0d233fc75a08ce7ac":[12,0,1,2,19],
 "namespacetmc5160__test__config_1_1TestConfig__17HS4401S.html":[12,0,1,3],
 "namespacetmc5160__test__config_1_1TestConfig__17HS4401S_1_1Encoder.html":[12,0,1,3,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "structFatigueTestMotion_1_1Status.html#a619be256a8612a9a47ed7ea30eedb989":[13,0,6,0,6],
 "structFatigueTestMotion_1_1Status.html#a7dafafe0ba6c6ede0418474c52b1778d":[13,0,6,0,5],
 "structFatigueTestMotion_1_1Status.html#a92f7241189d2853426c22f6066815515":[13,0,6,0,4],
-"structFatigueTestMotion_1_1Status.html#a934be032d312b43aef21b6c1729e9c96":[13,0,6,0,1],
-"structFatigueTestMotion_1_1Status.html#a9cdc62642314a5e278d163c59747e1a5":[13,0,6,0,11]
+"structFatigueTestMotion_1_1Status.html#a934be032d312b43aef21b6c1729e9c96":[13,0,6,0,1]
 };

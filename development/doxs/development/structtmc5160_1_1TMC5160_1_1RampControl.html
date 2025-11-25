@@ -135,6 +135,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a42767aabaf81b299c915577724535e5a" id="r_a42767aabaf81b299c915577724535e5a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a42767aabaf81b299c915577724535e5a">SetAccelerations</a> (float acceleration, float deceleration) noexcept</td></tr>
 <tr class="memdesc:a42767aabaf81b299c915577724535e5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set acceleration and deceleration separately.  <br /></td></tr>
 <tr class="separator:a42767aabaf81b299c915577724535e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac55d11d2f50adcc0f83e847dece08cb4" id="r_ac55d11d2f50adcc0f83e847dece08cb4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac55d11d2f50adcc0f83e847dece08cb4">SetDeceleration</a> (float deceleration) noexcept</td></tr>
+<tr class="memdesc:ac55d11d2f50adcc0f83e847dece08cb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set deceleration only (DMAX register)  <br /></td></tr>
+<tr class="separator:ac55d11d2f50adcc0f83e847dece08cb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fdc3106ebc36934faca112dd62031a0" id="r_a2fdc3106ebc36934faca112dd62031a0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2fdc3106ebc36934faca112dd62031a0">SetRampSpeeds</a> (float start_speed, float stop_speed, float transition_speed) noexcept</td></tr>
 <tr class="memdesc:a2fdc3106ebc36934faca112dd62031a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set ramp speeds.  <br /></td></tr>
 <tr class="separator:a2fdc3106ebc36934faca112dd62031a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -288,11 +291,6 @@ template&lt;typename CommType &gt; </div>
 
 <p>Get current position. </p>
 <dl class="section return"><dt>Returns</dt><dd>Current position in steps, or 0 on error </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1RampControl_ab5d6bfba1552092ae38b59484728d229_cgraph.svg" width="523" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -569,6 +567,43 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise </dd></dl>
+
+</div>
+</div>
+<a id="ac55d11d2f50adcc0f83e847dece08cb4" name="ac55d11d2f50adcc0f83e847dece08cb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac55d11d2f50adcc0f83e847dece08cb4">&#9670;&#160;</a></span>SetDeceleration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::RampControl::SetDeceleration </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>deceleration</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set deceleration only (DMAX register) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">deceleration</td><td>Deceleration in steps per second squared </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise</dd></dl>
+<p>Sets only the deceleration rate (DMAX register) without affecting acceleration (AMAX). This is useful when you want to adjust deceleration independently, for example to implement asymmetric motion profiles or fine-tune stopping behavior. </p>
 
 </div>
 </div>
@@ -928,6 +963,11 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1RampControl_af8a09d45e0f919dff7d47f49f7946a7b_cgraph.svg" width="463" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

@@ -463,13 +463,14 @@
 </h2>
     
 
-<p>Default pin configuration:</p>
+<p>Default pin configuration (from <code class="language-plaintext highlighter-rouge">esp32_tmc5160_bus_config.hpp</code>):</p>
 
 <ul>
   <li><strong>SPI</strong>: MOSI=6, MISO=2, SCLK=5, CS=18</li>
   <li><strong>Control</strong>: EN=11</li>
-  <li><strong>Clock</strong>: CLK=10</li>
+  <li><strong>Clock</strong>: CLK=10 (tied to GND for internal clock)</li>
   <li><strong>Diagnostics</strong>: DIAG0=23, DIAG1=15</li>
+  <li><strong>SPI Clock</strong>: 500 kHz (from config)</li>
   <li><strong>Reference Switches</strong>: Configured via code (optional)</li>
 </ul>
 <h2 id="motor-selection">

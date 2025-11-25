@@ -491,12 +491,14 @@
 </h2>
     
 
-<p>Default pin configuration:</p>
+<p>Default pin configuration (from <code class="language-plaintext highlighter-rouge">esp32_tmc5160_bus_config.hpp</code>):</p>
 
 <ul>
-  <li><strong>SPI</strong>: MOSI=23, MISO=19, SCLK=18, CS=5</li>
-  <li><strong>Control</strong>: EN=2, DIR=4, STEP=15</li>
-  <li><strong>Diagnostics</strong>: DIAG0, DIAG1 (configured via code)</li>
+  <li><strong>SPI</strong>: MOSI=6, MISO=2, SCLK=5, CS=18</li>
+  <li><strong>Control</strong>: EN=11</li>
+  <li><strong>Clock</strong>: CLK=10 (tied to GND for internal clock)</li>
+  <li><strong>Diagnostics</strong>: DIAG0=23, DIAG1=15</li>
+  <li><strong>SPI Clock</strong>: 500 kHz (from config)</li>
 </ul>
 <h2 id="motor-selection">
   

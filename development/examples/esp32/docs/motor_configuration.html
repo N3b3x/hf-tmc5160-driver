@@ -427,16 +427,16 @@ I_Peak ≈ 2.66A Peak
   
 </h2>
     
-<h3 id="method-1-edit-source-file-recommended">
+<h3 id="motor-selection-method">
   
   
-    <a href="#method-1-edit-source-file-recommended" class="anchor-heading" aria-labelledby="method-1-edit-source-file-recommended"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Method 1: Edit Source File (Recommended)
+    <a href="#motor-selection-method" class="anchor-heading" aria-labelledby="motor-selection-method"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Motor Selection Method
   
   
 </h3>
     
 
-<p>At the top of your example/test file, find the motor selection section:</p>
+<p>Motor selection is done via a <code class="language-plaintext highlighter-rouge">static constexpr</code> variable at the top of your example/test file:</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -461,19 +461,29 @@ I_Peak ≈ 2.66A Peak
 <span class="k">static</span> <span class="k">constexpr</span> <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">MotorType</span> <span class="n">SELECTED_MOTOR</span> <span class="o">=</span> 
     <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_APPLIED_MOTION_5034</span><span class="p">;</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
-<h3 id="method-2-compile-time-define">
-  
-  
-    <a href="#method-2-compile-time-define" class="anchor-heading" aria-labelledby="method-2-compile-time-define"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Method 2: Compile-Time Define
-  
-  
-</h3>
-    
 
-<p>You can also set the motor via compiler flags:</p>
+<p>Then use <code class="language-plaintext highlighter-rouge">if constexpr</code> blocks to select the motor configuration namespace:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>idf.py build <span class="nt">-DMOTOR_SELECTION</span><span class="o">=</span>MOTOR_17HS4401S_DIRECT
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="k">if</span> <span class="nf">constexpr</span> <span class="p">(</span><span class="n">SELECTED_MOTOR</span> <span class="o">==</span> <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_17HS4401S_GEARBOX</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">namespace</span> <span class="n">Motor</span> <span class="o">=</span> <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">MotorConfig_17HS4401S</span><span class="p">;</span>
+    <span class="c1">// Use Motor::IRUN, Motor::IHOLD, etc.</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="k">constexpr</span> <span class="p">(</span><span class="n">SELECTED_MOTOR</span> <span class="o">==</span> <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_17HS4401S_DIRECT</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">namespace</span> <span class="n">Motor</span> <span class="o">=</span> <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">MotorConfig_17HS4401S_Direct</span><span class="p">;</span>
+    <span class="c1">// Use Motor::IRUN, Motor::IHOLD, etc.</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="k">constexpr</span> <span class="p">(</span><span class="n">SELECTED_MOTOR</span> <span class="o">==</span> <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_APPLIED_MOTION_5034</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">namespace</span> <span class="n">Motor</span> <span class="o">=</span> <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">MotorConfig_AppliedMotion_5034_369</span><span class="p">;</span>
+    <span class="c1">// Use Motor::IRUN, Motor::IHOLD, etc.</span>
+<span class="p">}</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div><hr />
 <h2 id="motor-configuration-namespaces">
   

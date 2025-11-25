@@ -1,9 +1,11 @@
 <map id="motion_control_task" name="motion_control_task">
-<area shape="rect" id="Node000001" title="Motion control task &#45; handles bounds finding and sinusoidal motion." alt="" coords="5,35,160,60"/>
-<area shape="rect" id="Node000002" href="$classFatigueTestMotion.html#a40e43a61bc8beddb3df12e7d3b72b141" title="Update motion (call this in main loop, thread&#45;safe)" alt="" coords="208,27,356,67"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,45,194,45,194,50,160,50"/>
+<area shape="rect" id="Node000001" title="Motion control task &#45; handles bounds finding and sinusoidal motion." alt="" coords="5,64,160,89"/>
+<area shape="rect" id="Node000002" href="$classFatigueTestMotion.html#a40e43a61bc8beddb3df12e7d3b72b141" title="Update motion (call this in main loop, thread&#45;safe)" alt="" coords="208,57,356,97"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,74,194,74,194,79,160,79"/>
 <area shape="rect" id="Node000003" href="$classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf" title="Manually unlock mutex (called automatically in destructor)" alt="" coords="404,35,585,60"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="356,45,390,45,390,50,356,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="356,64,390,59,391,64,357,69"/>
+<area shape="rect" id="Node000006" href="$classFatigueTestMotion.html#a00b20bc353584e6851ec34eb34c95205" title="Update sinuous motion target position." alt="" coords="412,85,577,125"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="357,84,399,89,398,95,356,89"/>
 <area shape="rect" id="Node000004" href="$classEsp32TmcMutex.html#aa1c5042b5ace0f9a58c140b0f02db0f2" title="Check if mutex is valid." alt="" coords="633,5,821,31"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="585,33,620,29,620,34,586,39"/>
 <area shape="rect" id="Node000005" href="$classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f" title="Get native mutex handle." alt="" coords="638,55,817,95"/>

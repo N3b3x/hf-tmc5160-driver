@@ -114,9 +114,9 @@ I_Peak ≈ 2.66A Peak
 
 ## How to Select a Motor
 
-### Method 1: Edit Source File (Recommended)
+### Motor Selection Method
 
-At the top of your example/test file, find the motor selection section:
+Motor selection is done via a `static constexpr` variable at the top of your example/test file:
 
 ```cpp
 static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
@@ -135,12 +135,19 @@ static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR =
     tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034;
 ```
 
-### Method 2: Compile-Time Define
+Then use `if constexpr` blocks to select the motor configuration namespace:
 
-You can also set the motor via compiler flags:
-
-```bash
-idf.py build -DMOTOR_SELECTION=MOTOR_17HS4401S_DIRECT
+```cpp
+if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+    // Use Motor::IRUN, Motor::IHOLD, etc.
+} else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S_Direct;
+    // Use Motor::IRUN, Motor::IHOLD, etc.
+} else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    namespace Motor = tmc5160_test_config::MotorConfig_AppliedMotion_5034_369;
+    // Use Motor::IRUN, Motor::IHOLD, etc.
+}
 ```
 
 ---

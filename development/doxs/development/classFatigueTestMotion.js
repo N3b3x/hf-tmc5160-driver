@@ -61,6 +61,7 @@ var classFatigueTestMotion =
     [ "mutex_", "classFatigueTestMotion.html#afeddc695cdeaa73b994a9494471c3ed5", null ],
     [ "phase_offset_", "classFatigueTestMotion.html#a42a30a8f39c0f24b246c7b7816f6c678", null ],
     [ "running_", "classFatigueTestMotion.html#a3607e5eeb857dda0a98966573b97368d", null ],
+    [ "sinusoidal_mode_", "classFatigueTestMotion.html#a5817893fcee1f26828a4de058031afbc", null ],
     [ "start_time_us_", "classFatigueTestMotion.html#a95d28e4e4dfedefe11a334ed52e73190", null ],
     [ "state_", "classFatigueTestMotion.html#ab976933dc5542749f2a1546c277acbf2", null ],
     [ "steps_per_rev_", "classFatigueTestMotion.html#af11a9fedb0cfe23ac1f5884803f1fffc", null ],
