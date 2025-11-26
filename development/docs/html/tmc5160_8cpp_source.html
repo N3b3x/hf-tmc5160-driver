@@ -2900,7 +2900,7 @@ $(function(){initNavTree('tmc5160_8cpp_source.html',''); initResizable(); });
 <div class="line"><a id="l02536" name="l02536"></a><span class="lineno"> 2536</span>  <span class="comment">//</span></div>
 <div class="line"><a id="l02537" name="l02537"></a><span class="lineno"> 2537</span>  <span class="comment">// With hard stop, difference should be ~0, so this is effectively setting XACTUAL = 0</span></div>
 <div class="line"><a id="l02538" name="l02538"></a><span class="lineno"> 2538</span>  int32_t new_position = actual_position - latched_position;</div>
-<div class="line"><a id="l02539" name="l02539"></a><span class="lineno"> 2539</span>  <span class="keywordflow">if</span> (!driver_.rampControl.SetCurrentPosition(new_position)) {</div>
+<div class="line"><a id="l02539" name="l02539"></a><span class="lineno"> 2539</span>  <span class="keywordflow">if</span> (!driver_.rampControl.SetCurrentPosition(<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(new_position), <a class="code hl_enumvalue" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>, <span class="keyword">false</span>)) {</div>
 <div class="line"><a id="l02540" name="l02540"></a><span class="lineno"> 2540</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l02541" name="l02541"></a><span class="lineno"> 2541</span>  }</div>
 <div class="line"><a id="l02542" name="l02542"></a><span class="lineno"> 2542</span>  </div>
