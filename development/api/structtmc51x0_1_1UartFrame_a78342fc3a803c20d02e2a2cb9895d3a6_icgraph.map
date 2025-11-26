@@ -1,0 +1,21 @@
+<map id="tmc51x0::UartFrame::GetSize" name="tmc51x0::UartFrame::GetSize">
+<area shape="rect" id="Node000001" title="Get frame size in bytes based on type." alt="" coords="737,152,893,192"/>
+<area shape="rect" id="Node000002" href="$structtmc51x0_1_1UartFrame.html#a7d1f26a9c643c433a7c7c50e891eb676" title="Calculate and set CRC8 checksum for the frame CRC8 is calculated over all bytes except the CRC byte i..." alt="" coords="533,5,689,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="785,144,741,101,688,60,666,48,669,43,691,55,745,97,789,140"/>
+<area shape="rect" id="Node000003" href="$structtmc51x0_1_1UartFrame.html#aa5551cacdaecb3388c4989f4486ddb85" title="Get the frame as raw bytes." alt="" coords="533,69,689,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="752,149,661,112,663,107,754,144"/>
+<area shape="rect" id="Node000004" href="$classtmc51x0_1_1UartCommInterface.html#af52f5c54246e92d1d34d006d9b148bd6" title="Read a 32&#45;bit register via UART." alt="" coords="5,205,221,245"/>
+<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="724,182,222,220,222,215,723,176"/>
+<area shape="rect" id="Node000005" href="$classtmc51x0_1_1UartCommInterface.html#a07fc8787ed9723f7cecea1a5c138afbf" title="Write a 32&#45;bit register via UART." alt="" coords="269,120,485,160"/>
+<area shape="poly" id="edge11_Node000001_Node000005" title=" " alt="" coords="723,168,485,151,486,145,724,163"/>
+<area shape="rect" id="Node000006" href="$structtmc51x0_1_1UartFrame.html#aee9c722cc60228a017c8e485f10b5955" title="Set the frame from raw bytes." alt="" coords="533,235,689,275"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="754,200,663,237,661,232,752,195"/>
+<area shape="rect" id="Node000007" href="$structtmc51x0_1_1UartFrame.html#a5a168595dd68d05e737102e0f63c666d" title="Verify CRC8 checksum of the frame." alt="" coords="533,299,689,339"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="789,204,745,247,691,289,669,301,666,296,688,284,741,243,785,200"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="519,83,462,81,398,84,333,93,270,110,229,130,192,156,135,207,132,203,189,152,227,126,268,106,332,88,398,79,462,76,519,77"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="520,112,471,123,470,117,519,107"/>
+<area shape="poly" id="edge10_Node000007_Node000004" title=" " alt="" coords="529,297,485,287,348,261,221,242,222,236,349,256,486,281,530,292"/>
+<area shape="rect" id="Node000008" href="$structtmc51x0_1_1UartFrame.html#ae17bddcde8c6a47a6bcef1e7518b3549" title="Check if frame is valid." alt="" coords="299,296,455,336"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="519,320,455,320,455,314,519,315"/>
+<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="304,294,172,248,173,243,306,289"/>
+</map>

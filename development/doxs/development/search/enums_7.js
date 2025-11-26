@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['overtempprotection_0',['OverTempProtection',['../namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bd',1,'tmc5160']]]
+  ['overtempprotection_0',['OverTempProtection',['../namespacetmc51x0.html#a06dfa560a9edb58f6e572b8e904ae79e',1,'tmc51x0']]]
 ];

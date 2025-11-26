@@ -1,0 +1,6 @@
+<map id="tmc51x0::CommInterface::GpioSetActive" name="tmc51x0::CommInterface::GpioSetActive">
+<area shape="rect" id="Node000001" title="Set GPIO pin to active state (convenience method)" alt="" coords="5,29,193,69"/>
+<area shape="rect" id="Node000002" href="$classtmc51x0_1_1CommInterface.html#a12902425a6bab863031858b3526ab667" title="Set GPIO pin signal state (output control)" alt="" coords="241,29,429,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,47,227,47,227,52,194,52"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="292,30,289,20,296,10,312,5,335,3,363,6,378,13,375,18,361,11,335,8,313,10,299,15,294,21,297,28"/>
+</map>

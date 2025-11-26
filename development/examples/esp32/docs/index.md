@@ -22,7 +22,7 @@ Practical applications demonstrating real-world usage:
 
 ### Motion Control Examples
 
-- **[Sinusoidal Motion](sinusoidal.md)** - Simple back-and-forth motion using positioning mode
+- **[Internal Ramp Sinusoidal Motion](internal_ramp_sinusoidal.md)** - Simple back-and-forth motion using positioning mode
 - **[Bounds Finding & Sinusoidal Motion](bounds_finding_sinuous_motion.md)** - Fatigue testing platform with sensorless bounds finding and UART command interface
 
 ### Configuration Examples

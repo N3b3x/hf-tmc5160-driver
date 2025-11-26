@@ -1,0 +1,77 @@
+<map id="tmc51x0::TMC51x0&lt; CommType &gt;::RampControl" name="tmc51x0::TMC51x0&lt; CommType &gt;::RampControl">
+<area shape="rect" id="Node000001" title="Ramp control subsystem." alt="" coords="1461,136,1697,176"/>
+<area shape="rect" id="Node000002" href="$classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="1113,506,1364,531"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1244,492,1260,437,1289,365,1330,290,1356,256,1386,225,1432,194,1482,174,1484,179,1434,199,1390,229,1360,259,1335,293,1294,368,1265,438,1249,493"/>
+<area shape="rect" id="Node000003" href="$structtmc51x0_1_1TMC51x0_1_1RampControl.html" title="Ramp control subsystem." alt="" coords="1461,213,1697,253"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="1245,491,1263,443,1291,381,1332,319,1358,291,1387,267,1422,248,1461,237,1462,242,1424,253,1389,272,1361,295,1337,322,1296,384,1268,445,1250,493"/>
+<area shape="rect" id="Node000004" href="$structtmc51x0_1_1TMC51x0_1_1MotorControl.html" title="Motor control subsystem." alt="" coords="1461,297,1697,337"/>
+<area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="1253,493,1307,425,1344,388,1387,358,1422,341,1460,330,1462,335,1424,346,1389,362,1347,392,1311,428,1258,496"/>
+<area shape="rect" id="Node000005" href="$structtmc51x0_1_1TMC51x0_1_1Communication.html" title="Communication subsystem." alt="" coords="1461,385,1697,425"/>
+<area shape="poly" id="edge7_Node000005_Node000002" title=" " alt="" coords="1268,496,1322,463,1387,433,1460,415,1462,420,1389,439,1324,468,1271,500"/>
+<area shape="rect" id="Node000006" href="$structtmc51x0_1_1TMC51x0_1_1Encoder.html" title="Encoder subsystem." alt="" coords="1461,667,1697,707"/>
+<area shape="poly" id="edge9_Node000006_Node000002" title=" " alt="" coords="1273,537,1389,603,1527,664,1525,669,1387,608,1270,541"/>
+<area shape="rect" id="Node000007" href="$structtmc51x0_1_1TMC51x0_1_1Diagnostics.html" title="Diagnostics subsystem." alt="" coords="1461,751,1697,791"/>
+<area shape="poly" id="edge11_Node000007_Node000002" title=" " alt="" coords="1252,543,1272,585,1302,636,1341,687,1364,710,1389,730,1424,747,1462,759,1460,764,1422,752,1387,734,1361,714,1337,691,1297,639,1267,587,1248,545"/>
+<area shape="rect" id="Node000008" href="$structtmc51x0_1_1TMC51x0_1_1Tuning.html" title="Tuning subsystem for automatic parameter optimization." alt="" coords="1461,845,1697,885"/>
+<area shape="poly" id="edge13_Node000008_Node000002" title=" " alt="" coords="1247,544,1262,602,1288,678,1307,718,1330,756,1358,792,1390,822,1424,842,1462,855,1460,860,1422,847,1386,826,1354,795,1326,759,1303,720,1284,680,1257,604,1242,545"/>
+<area shape="rect" id="Node000009" href="$structtmc51x0_1_1TMC51x0_1_1Homing.html" title="Homing subsystem with automatic settings caching." alt="" coords="1461,45,1697,85"/>
+<area shape="poly" id="edge15_Node000009_Node000002" title=" " alt="" coords="1239,492,1248,417,1271,314,1290,259,1315,205,1347,155,1386,111,1421,88,1460,74,1462,79,1423,93,1390,115,1351,158,1319,208,1295,261,1276,316,1253,418,1244,493"/>
+<area shape="rect" id="Node000012" href="$structtmc51x0_1_1TMC51x0_1_1Printer.html" title="Register printer subsystem for debugging." alt="" coords="1461,923,1697,963"/>
+<area shape="poly" id="edge19_Node000012_Node000002" title=" " alt="" coords="1244,545,1252,620,1261,668,1274,721,1293,774,1318,826,1350,874,1390,914,1423,933,1462,943,1460,948,1421,938,1386,918,1346,877,1313,829,1288,777,1269,722,1255,669,1246,620,1238,545"/>
+<area shape="rect" id="Node000013" href="$structtmc51x0_1_1TMC51x0_1_1UartConfig.html" title="UART configuration subsystem." alt="" coords="1461,476,1697,516"/>
+<area shape="poly" id="edge21_Node000013_Node000002" title=" " alt="" coords="1378,520,1437,517,1472,513,1473,519,1438,523,1378,525"/>
+<area shape="rect" id="Node000014" href="$structtmc51x0_1_1TMC51x0_1_1Protection.html" title="Protection subsystem." alt="" coords="1461,567,1697,607"/>
+<area shape="poly" id="edge23_Node000014_Node000002" title=" " alt="" coords="1278,535,1330,557,1389,575,1462,584,1461,590,1387,580,1328,562,1276,540"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1502,261,1444,287,1390,322,1341,370,1301,423,1249,507,1244,504,1296,420,1337,366,1386,318,1442,282,1499,256"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="1514,345,1453,372,1389,406,1313,460,1256,508,1253,504,1309,456,1387,402,1450,368,1512,340"/>
+<area shape="poly" id="edge6_Node000002_Node000005" title=" " alt="" coords="1506,432,1279,508,1277,503,1504,427"/>
+<area shape="poly" id="edge8_Node000002_Node000006" title=" " alt="" coords="1496,712,1441,714,1413,710,1387,701,1359,685,1334,664,1292,616,1262,569,1243,533,1248,530,1266,566,1296,613,1338,660,1362,680,1389,696,1414,705,1441,709,1495,706"/>
+<area shape="poly" id="edge10_Node000002_Node000007" title=" " alt="" coords="1517,797,1485,804,1452,807,1418,804,1387,792,1352,765,1322,732,1298,695,1279,656,1252,583,1240,532,1245,531,1257,582,1283,654,1303,692,1326,729,1355,761,1389,787,1419,799,1452,802,1484,799,1515,792"/>
+<area shape="poly" id="edge12_Node000002_Node000008" title=" " alt="" coords="1515,892,1483,898,1450,900,1417,896,1387,882,1344,845,1310,799,1285,748,1266,696,1253,644,1245,598,1238,532,1243,531,1250,597,1258,643,1271,694,1290,746,1315,796,1348,841,1389,878,1418,891,1450,895,1483,893,1514,887"/>
+<area shape="poly" id="edge14_Node000002_Node000009" title=" " alt="" coords="1511,93,1447,128,1416,152,1390,179,1359,222,1332,269,1289,366,1261,450,1246,506,1240,505,1256,449,1284,364,1327,267,1355,220,1386,176,1413,148,1444,124,1509,88"/>
+<area shape="rect" id="Node000010" href="$structtmc51x0_1_1HomingSettingsCache.html" title="Cached settings for homing operations." alt="" coords="1123,7,1354,33"/>
+<area shape="poly" id="edge16_Node000009_Node000010" title=" " alt="" coords="1349,32,1461,47,1461,52,1348,37"/>
+<area shape="rect" id="Node000011" href="$uniontmc51x0_1_1SW__MODE__Register.html" title="Switch mode configuration register (SW_MODE)" alt="" coords="719,7,935,33"/>
+<area shape="poly" id="edge17_Node000010_Node000011" title=" " alt="" coords="949,17,1123,17,1123,23,949,23"/>
+<area shape="poly" id="edge18_Node000002_Node000012" title=" " alt="" coords="1529,971,1495,983,1458,990,1421,988,1403,982,1386,973,1360,950,1336,925,1299,866,1272,801,1254,734,1243,669,1238,611,1237,532,1242,532,1243,611,1248,669,1259,733,1277,799,1303,863,1340,921,1363,946,1390,968,1405,977,1422,982,1458,984,1494,977,1527,966"/>
+<area shape="poly" id="edge20_Node000002_Node000013" title=" " alt="" coords="1447,502,1388,505,1349,509,1349,503,1388,500,1447,497"/>
+<area shape="poly" id="edge22_Node000002_Node000014" title=" " alt="" coords="1464,567,1303,534,1304,529,1465,561"/>
+<area shape="rect" id="Node000015" href="$structtmc51x0_1_1MotorSpec.html" title="Motor specification structure." alt="" coords="303,371,459,397"/>
+<area shape="poly" id="edge24_Node000002_Node000015" title=" " alt="" coords="472,379,575,379,686,387,801,402,890,420,1090,473,1196,503,1195,508,1089,479,889,426,800,408,685,392,575,385,472,384"/>
+<area shape="rect" id="Node000017" href="$structtmc51x0_1_1DriverConfig.html" title="Driver initialization configuration structure." alt="" coords="743,667,911,693"/>
+<area shape="poly" id="edge27_Node000017_Node000015" title=" " alt="" coords="473,395,595,420,649,436,687,454,715,478,740,506,780,567,808,624,824,666,819,668,804,627,776,569,736,509,711,482,684,458,648,441,594,425,472,400"/>
+<area shape="rect" id="Node000016" href="$structtmc51x0_1_1MechanicalSystem.html" title="Mechanical system configuration structure." alt="" coords="275,435,486,461"/>
+<area shape="poly" id="edge25_Node000002_Node000016" title=" " alt="" coords="500,448,686,457,929,480,1137,503,1136,509,929,485,685,463,500,454"/>
+<area shape="poly" id="edge29_Node000017_Node000016" title=" " alt="" coords="463,461,686,503,712,521,735,542,774,588,804,633,822,666,818,669,799,635,770,591,731,545,709,525,684,508,462,466"/>
+<area shape="poly" id="edge26_Node000002_Node000017" title=" " alt="" coords="873,660,1204,529,1206,534,875,665"/>
+<area shape="rect" id="Node000018" href="$structtmc51x0_1_1PowerStageParameters.html" title="Power stage parameters structure." alt="" coords="261,493,500,518"/>
+<area shape="poly" id="edge28_Node000017_Node000018" title=" " alt="" coords="497,517,615,534,686,550,729,576,767,608,818,665,814,669,763,612,726,580,684,554,614,539,497,522"/>
+<area shape="rect" id="Node000019" href="$structtmc51x0_1_1ChopperConfig.html" title="Chopper configuration structure." alt="" coords="289,542,472,567"/>
+<area shape="poly" id="edge30_Node000017_Node000019" title=" " alt="" coords="486,563,600,579,686,597,722,612,756,631,810,665,807,669,754,635,720,617,685,603,599,584,485,569"/>
+<area shape="rect" id="Node000020" href="$structtmc51x0_1_1StealthChopConfig.html" title="StealthChop configuration structure." alt="" coords="277,591,484,617"/>
+<area shape="poly" id="edge31_Node000017_Node000020" title=" " alt="" coords="498,612,590,624,686,640,785,665,783,670,685,645,589,629,497,618"/>
+<area shape="rect" id="Node000021" href="$structtmc51x0_1_1GlobalConfig.html" title="Global configuration (GCONF) structure." alt="" coords="295,641,466,666"/>
+<area shape="poly" id="edge32_Node000017_Node000021" title=" " alt="" coords="480,657,743,672,743,678,479,662"/>
+<area shape="rect" id="Node000022" href="$structtmc51x0_1_1Diag0Config.html" title="DIAG0 pin configuration structure." alt="" coords="5,617,172,642"/>
+<area shape="poly" id="edge33_Node000021_Node000022" title=" " alt="" coords="186,635,295,644,295,649,185,640"/>
+<area shape="rect" id="Node000023" href="$structtmc51x0_1_1Diag1Config.html" title="DIAG1 pin configuration structure." alt="" coords="5,666,172,691"/>
+<area shape="poly" id="edge34_Node000021_Node000023" title=" " alt="" coords="185,668,295,658,295,663,186,673"/>
+<area shape="rect" id="Node000024" href="$structtmc51x0_1_1RampConfig.html" title="Ramp configuration structure." alt="" coords="297,690,464,715"/>
+<area shape="poly" id="edge35_Node000017_Node000024" title=" " alt="" coords="478,703,578,703,685,699,755,690,756,695,686,704,578,709,478,708"/>
+<area shape="rect" id="Node000025" href="$structtmc51x0_1_1ExternalClockConfig.html" title="External clock configuration structure." alt="" coords="271,739,490,765"/>
+<area shape="poly" id="edge36_Node000017_Node000025" title=" " alt="" coords="504,757,594,749,640,739,684,724,696,714,708,703,742,690,744,695,711,708,699,718,687,729,642,744,595,754,504,762"/>
+<area shape="rect" id="Node000026" href="$structtmc51x0_1_1StallGuardConfig.html" title="StallGuard2 configuration structure." alt="" coords="283,789,479,814"/>
+<area shape="poly" id="edge37_Node000017_Node000026" title=" " alt="" coords="453,814,508,819,569,817,630,804,658,792,683,775,694,760,695,742,696,722,707,704,724,692,742,684,744,689,726,697,711,707,701,724,701,742,699,761,687,779,661,796,632,809,570,822,508,824,453,819"/>
+<area shape="rect" id="Node000027" href="$structtmc51x0_1_1CoolStepConfig.html" title="CoolStep configuration structure." alt="" coords="287,838,474,863"/>
+<area shape="poly" id="edge38_Node000017_Node000027" title=" " alt="" coords="488,858,546,861,604,860,652,853,671,847,684,839,696,825,700,809,696,775,691,739,696,721,707,704,724,691,742,683,744,688,726,696,711,707,700,723,697,740,701,775,705,810,700,827,687,843,673,852,654,858,604,865,546,866,488,864"/>
+<area shape="rect" id="Node000028" href="$structtmc51x0_1_1DcStepConfig.html" title="DcStep configuration structure." alt="" coords="293,887,468,913"/>
+<area shape="poly" id="edge39_Node000017_Node000028" title=" " alt="" coords="482,905,542,906,601,904,652,896,670,889,684,881,698,861,703,840,702,819,696,796,691,773,688,750,693,727,707,704,723,691,742,682,744,687,726,695,711,707,698,728,694,750,696,772,702,795,707,818,709,841,703,863,687,885,673,894,653,901,602,909,542,911,482,910"/>
+<area shape="rect" id="Node000029" href="$structtmc51x0_1_1ReferenceSwitchConfig.html" title="Reference switch configuration structure." alt="" coords="283,937,479,977"/>
+<area shape="poly" id="edge40_Node000017_Node000029" title=" " alt="" coords="493,975,543,977,594,971,642,955,664,942,683,926,693,909,697,883,695,817,694,751,698,723,707,704,723,690,742,682,744,687,726,695,711,707,703,725,699,751,701,817,702,884,698,911,687,930,667,947,645,960,595,976,543,982,492,981"/>
+<area shape="rect" id="Node000030" href="$structtmc51x0_1_1EncoderConfig.html" title="Encoder configuration structure." alt="" coords="291,1002,471,1027"/>
+<area shape="poly" id="edge41_Node000017_Node000030" title=" " alt="" coords="484,1020,544,1022,603,1020,652,1012,671,1005,683,997,696,974,700,940,696,853,691,765,695,729,707,704,723,690,742,682,744,687,726,695,711,707,700,731,697,766,701,853,705,941,701,976,687,1000,673,1010,654,1017,603,1025,544,1027,484,1026"/>
+<area shape="rect" id="Node000031" href="$structtmc51x0_1_1UartConfig.html" title="UART communication configuration structure." alt="" coords="303,1051,459,1077"/>
+<area shape="poly" id="edge42_Node000017_Node000031" title=" " alt="" coords="439,1077,497,1087,563,1089,597,1085,628,1076,658,1062,683,1042,692,1031,697,1016,702,977,696,876,690,775,694,734,699,717,707,704,723,690,742,682,744,687,726,695,711,707,704,719,699,735,695,775,702,876,707,977,702,1017,696,1033,687,1046,661,1067,630,1081,598,1090,564,1094,496,1092,438,1082"/>
+<area shape="rect" id="Node000032" href="$structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html" title=" " alt="" coords="709,717,945,757"/>
+<area shape="poly" id="edge43_Node000002_Node000032" title=" " alt="" coords="916,711,944,701,1019,676,1050,663,1088,642,1129,613,1167,582,1223,530,1227,533,1171,586,1132,618,1091,646,1052,668,1021,681,946,707,918,716"/>
+</map>

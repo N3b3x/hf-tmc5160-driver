@@ -46,9 +46,9 @@ apps:
     featured: false
 
   # Specialized Examples (Not covered by comprehensive tests)
-  sinusoidal:
+  internal_ramp_sinusoidal:
     description: "Sinusoidal motion pattern example"
-    source_file: "sinusoidal.cpp"
+    source_file: "internal_ramp_sinusoidal.cpp"
     category: "motor_control"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]

@@ -18,6 +18,9 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -99,18 +102,18 @@ $(function(){initNavTree('spi__daisy__chain__comprehensive__test_8cpp.html','');
 </div><!--header-->
 <div class="contents">
 
-<p>Comprehensive SPI Daisy Chain testing suite for TMC5160 (MULTI-MOTOR)  
+<p>Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI-MOTOR)  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="tmc5160_8hpp_source.html">../../../inc/tmc5160.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="esp32__tmc5160__bus_8hpp_source.html">esp32_tmc5160_bus.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="esp32__tmc5160__test__config_8hpp_source.html">esp32_tmc5160_test_config.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="TestFramework_8h_source.html">TestFramework.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="tmc51x0_8hpp_source.html">tmc51x0.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp32__tmc51x0__bus_8hpp_source.html">test_config/esp32_tmc51x0_bus.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp32__tmc51x0__test__config_8hpp_source.html">test_config/esp32_tmc51x0_test_config.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="TestFramework_8h_source.html">test_config/TestFramework.h</a>&quot;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for spi_daisy_chain_comprehensive_test.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="spi__daisy__chain__comprehensive__test_8cpp__incl.svg" width="2744" height="520"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="spi__daisy__chain__comprehensive__test_8cpp__incl.svg" width="2938" height="520"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -137,12 +140,8 @@ Variables</h2></td></tr>
 <tr class="separator:a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaff89257c54366921eebb8ec1348b1fd" id="r_aaff89257c54366921eebb8ec1348b1fd"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structTestResults.html">TestResults</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaff89257c54366921eebb8ec1348b1fd">g_test_results</a></td></tr>
 <tr class="separator:aaff89257c54366921eebb8ec1348b1fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9358c3a0a9cb0c8d1dadda705d99d31e" id="r_a9358c3a0a9cb0c8d1dadda705d99d31e"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4f">tmc5160_test_config::MotorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9358c3a0a9cb0c8d1dadda705d99d31e">SELECTED_MOTOR</a></td></tr>
-<tr class="separator:a9358c3a0a9cb0c8d1dadda705d99d31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a209e6e5bff02ee86c0334a3d8efe2678" id="r_a209e6e5bff02ee86c0334a3d8efe2678"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67">tmc5160_test_config::BoardType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a209e6e5bff02ee86c0334a3d8efe2678">SELECTED_BOARD</a></td></tr>
-<tr class="separator:a209e6e5bff02ee86c0334a3d8efe2678"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3372565a080149b5c954cc0413c4b9a1" id="r_a3372565a080149b5c954cc0413c4b9a1"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc5160__test__config.html#a48f04184f8380da9c5ca32947c0da5ec">tmc5160_test_config::PlatformType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3372565a080149b5c954cc0413c4b9a1">SELECTED_PLATFORM</a></td></tr>
-<tr class="separator:a3372565a080149b5c954cc0413c4b9a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f1e89f6e3a0be599511d4a8cc389305" id="r_a3f1e89f6e3a0be599511d4a8cc389305"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f1e89f6e3a0be599511d4a8cc389305">SELECTED_TEST_RIG</a></td></tr>
+<tr class="separator:a3f1e89f6e3a0be599511d4a8cc389305"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36d3294a1d72401f566303e25f52e96c" id="r_a36d3294a1d72401f566303e25f52e96c"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a36d3294a1d72401f566303e25f52e96c">ENABLE_DAISY_CHAIN_SETUP_TESTS</a> = true</td></tr>
 <tr class="separator:a36d3294a1d72401f566303e25f52e96c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb7576b92f35070f75ca1dfab8ee24e4" id="r_afb7576b92f35070f75ca1dfab8ee24e4"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb7576b92f35070f75ca1dfab8ee24e4">ENABLE_POSITION_MANAGEMENT_TESTS</a> = true</td></tr>
@@ -159,13 +158,13 @@ Variables</h2></td></tr>
 <tr class="separator:aca2e55a43fbb2e21649216d80ec402f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41fcf4530de550ff6f72008fcded08cc" id="r_a41fcf4530de550ff6f72008fcded08cc"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41fcf4530de550ff6f72008fcded08cc">TEST_TOFF</a> = 5</td></tr>
 <tr class="separator:a41fcf4530de550ff6f72008fcded08cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b32e418bcfce482b3d94e1e6a0999a2" id="r_a3b32e418bcfce482b3d94e1e6a0999a2"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b32e418bcfce482b3d94e1e6a0999a2">TEST_MRES</a> = 4</td></tr>
-<tr class="separator:a3b32e418bcfce482b3d94e1e6a0999a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4ac48c833f5c615fa07b1f87dacd8a5" id="r_ab4ac48c833f5c615fa07b1f87dacd8a5"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4">tmc51x0::MicrostepResolution</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4ac48c833f5c615fa07b1f87dacd8a5">TEST_MRES</a> = <a class="el" href="namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4af6a5e029c66401ac3bb0d52f2f29353e">tmc51x0::MicrostepResolution::MRES_256</a></td></tr>
+<tr class="separator:ab4ac48c833f5c615fa07b1f87dacd8a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Comprehensive SPI Daisy Chain testing suite for TMC5160 (MULTI-MOTOR) </p>
-<p>⚠️ MULTI-MOTOR HARDWARE REQUIRED ⚠️ This test suite requires multiple TMC5160 drivers connected in a SPI daisy chain. DO NOT run these tests on a single-motor setup.</p>
-<p>This file contains comprehensive testing for TMC5160 SPI daisy chain features:</p><ul>
+<div class="textblock"><p>Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI-MOTOR) </p>
+<p>⚠️ MULTI-MOTOR HARDWARE REQUIRED ⚠️ This test suite requires multiple TMC51x0 drivers connected in a SPI daisy chain. DO NOT run these tests on a single-motor setup.</p>
+<p>This file contains comprehensive testing for TMC51x0 SPI daisy chain features:</p><ul>
 <li>SPI daisy chain setup and configuration</li>
 <li>Daisy-chain position management</li>
 <li>Multi-motor coordination</li>
@@ -174,8 +173,8 @@ Variables</h2></td></tr>
 </ul>
 <p>Hardware Requirements:</p><ul>
 <li>ESP32 development board</li>
-<li>2+ TMC5160 stepper motor drivers (daisy-chained via SPI)</li>
-<li>Stepper motors connected to each TMC5160</li>
+<li>2+ TMC51x0 stepper motor drivers (daisy-chained via SPI)</li>
+<li>Stepper motors connected to each TMC51x0</li>
 <li>SPI connection: All chips share CSN, SCK, MOSI; MISO daisy-chained</li>
 </ul>
 <p>Pin Configuration (modify as needed):</p><ul>
@@ -206,7 +205,7 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="spi__daisy__chain__comprehensive__test_8cpp_a630544a7f0a2cc40d8a7fefab7e2fe70_cgraph.svg" width="830" height="452"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="spi__daisy__chain__comprehensive__test_8cpp_a630544a7f0a2cc40d8a7fefab7e2fe70_cgraph.svg" width="815" height="330"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -306,7 +305,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="spi__daisy__chain__comprehensive__test_8cpp_aea4301824809cd2c54c2b3d81bd5f039_cgraph.svg" width="647" height="288"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="spi__daisy__chain__comprehensive__test_8cpp_aea4301824809cd2c54c2b3d81bd5f039_cgraph.svg" width="591" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -341,7 +340,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="spi__daisy__chain__comprehensive__test_8cpp_a1751b60bd475b13f7f12c4e3ab674011_cgraph.svg" width="695" height="288"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="spi__daisy__chain__comprehensive__test_8cpp_a1751b60bd475b13f7f12c4e3ab674011_cgraph.svg" width="639" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -440,8 +439,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a209e6e5bff02ee86c0334a3d8efe2678" name="a209e6e5bff02ee86c0334a3d8efe2678"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a209e6e5bff02ee86c0334a3d8efe2678">&#9670;&#160;</a></span>SELECTED_BOARD</h2>
+<a id="a3f1e89f6e3a0be599511d4a8cc389305" name="a3f1e89f6e3a0be599511d4a8cc389305"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f1e89f6e3a0be599511d4a8cc389305">&#9670;&#160;</a></span>SELECTED_TEST_RIG</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -450,7 +449,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67">tmc5160_test_config::BoardType</a> SELECTED_BOARD</td>
+          <td class="memname">constexpr <a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a> SELECTED_TEST_RIG</td>
         </tr>
       </table>
   </td>
@@ -460,58 +459,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= </div>
-<div class="line">    <a class="code hl_enumvalue" href="namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67a460a09206e1dd3e0cd050257d6e45177">tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL</a></div>
-<div class="ttc" id="anamespacetmc5160__test__config_html_acdf2cd7f479bf56d446e0b23c35f1e67a460a09206e1dd3e0cd050257d6e45177"><div class="ttname"><a href="namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67a460a09206e1dd3e0cd050257d6e45177">tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL</a></div><div class="ttdeci">@ BOARD_TMC5160_EVAL</div><div class="ttdoc">TMC5160 Evaluation Kit (0.05Ω sense, 24V, BSC072N08NS5 MOSFETs)</div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a9358c3a0a9cb0c8d1dadda705d99d31e" name="a9358c3a0a9cb0c8d1dadda705d99d31e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9358c3a0a9cb0c8d1dadda705d99d31e">&#9670;&#160;</a></span>SELECTED_MOTOR</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4f">tmc5160_test_config::MotorType</a> SELECTED_MOTOR</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= </div>
-<div class="line">    <a class="code hl_enumvalue" href="namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fa750ecf224ef9e7f6264bb40d22ab1d70">tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX</a></div>
-<div class="ttc" id="anamespacetmc5160__test__config_html_a3165d26db7a8ad8512c448ec601add4fa750ecf224ef9e7f6264bb40d22ab1d70"><div class="ttname"><a href="namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fa750ecf224ef9e7f6264bb40d22ab1d70">tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX</a></div><div class="ttdeci">@ MOTOR_17HS4401S_GEARBOX</div><div class="ttdoc">17HS4401S with 5.18:1 planetary gearbox</div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a3372565a080149b5c954cc0413c4b9a1" name="a3372565a080149b5c954cc0413c4b9a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3372565a080149b5c954cc0413c4b9a1">&#9670;&#160;</a></span>SELECTED_PLATFORM</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="namespacetmc5160__test__config.html#a48f04184f8380da9c5ca32947c0da5ec">tmc5160_test_config::PlatformType</a> SELECTED_PLATFORM</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= </div>
-<div class="line">    <a class="code hl_enumvalue" href="namespacetmc5160__test__config.html#a48f04184f8380da9c5ca32947c0da5eca147fbec22e42f866983ce6cd76549179">tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG</a></div>
-<div class="ttc" id="anamespacetmc5160__test__config_html_a48f04184f8380da9c5ca32947c0da5eca147fbec22e42f866983ce6cd76549179"><div class="ttname"><a href="namespacetmc5160__test__config.html#a48f04184f8380da9c5ca32947c0da5eca147fbec22e42f866983ce6cd76549179">tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG</a></div><div class="ttdeci">@ PLATFORM_TEST_RIG</div><div class="ttdoc">Test rig platform (reference switches, encoder, gearbox)</div></div>
+<div class="line">    <a class="code hl_enumvalue" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0a81d3a109e3d88b343cd45c32f41dd824">tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER</a></div>
+<div class="ttc" id="anamespacetmc51x0__test__config_html_abbe03fa70b2e9f4f6cc025761f518df0a81d3a109e3d88b343cd45c32f41dd824"><div class="ttname"><a href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0a81d3a109e3d88b343cd45c32f41dd824">tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER</a></div><div class="ttdeci">@ TEST_RIG_CORE_DRIVER</div><div class="ttdoc">Core driver test rig (17HS4401S motor, TMC51x0 EVAL board, reference switches, encoder)</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -625,8 +574,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a3b32e418bcfce482b3d94e1e6a0999a2" name="a3b32e418bcfce482b3d94e1e6a0999a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b32e418bcfce482b3d94e1e6a0999a2">&#9670;&#160;</a></span>TEST_MRES</h2>
+<a id="ab4ac48c833f5c615fa07b1f87dacd8a5" name="ab4ac48c833f5c615fa07b1f87dacd8a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4ac48c833f5c615fa07b1f87dacd8a5">&#9670;&#160;</a></span>TEST_MRES</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -635,7 +584,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t TEST_MRES = 4</td>
+          <td class="memname">constexpr <a class="el" href="namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4">tmc51x0::MicrostepResolution</a> TEST_MRES = <a class="el" href="namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4af6a5e029c66401ac3bb0d52f2f29353e">tmc51x0::MicrostepResolution::MRES_256</a></td>
         </tr>
       </table>
   </td>

@@ -8,7 +8,7 @@ var classFatigueTestMotion =
       [ "DWELL_AT_MAX", "classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857", null ],
       [ "STOPPED", "classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a", null ]
     ] ],
-    [ "FatigueTestMotion", "classFatigueTestMotion.html#af7c7b4256b78ae5c761158039b76de87", null ],
+    [ "FatigueTestMotion", "classFatigueTestMotion.html#a373fb38818685e8852c2e238a8643f8a", null ],
     [ "~FatigueTestMotion", "classFatigueTestMotion.html#a89e5503be3a66cf75f6340fd2b8ee9ee", null ],
     [ "ClipLocalBoundsToGlobal", "classFatigueTestMotion.html#afd810bcf984589fb9b837d8fd5a2a1c5", null ],
     [ "ConfigureMotor", "classFatigueTestMotion.html#a1c9f125fc81bde1deddf504df1820f5f", null ],
@@ -43,7 +43,7 @@ var classFatigueTestMotion =
     [ "current_cycles_", "classFatigueTestMotion.html#a0dfd3f01a973ce8e153a4e66822e8926", null ],
     [ "cycle_complete_", "classFatigueTestMotion.html#ac1935a4905b5752b3b7aa835b346c24e", null ],
     [ "cycle_started_", "classFatigueTestMotion.html#ae9bd3f6bea4c6bb279aeb0fd1940c097", null ],
-    [ "driver_", "classFatigueTestMotion.html#aefbf1dbec6f3c2729ad26aaae0b8e0c2", null ],
+    [ "driver_", "classFatigueTestMotion.html#a3017e608be9368a2b53a0ad0ce60b4a5", null ],
     [ "dwell_at_max_ms_", "classFatigueTestMotion.html#a397ce03f808f2ff874cbdfff8d0154f8", null ],
     [ "dwell_at_min_ms_", "classFatigueTestMotion.html#a362f847562751ac3beb6d0c1ebdafdad", null ],
     [ "dwell_start_time_ms_", "classFatigueTestMotion.html#a0105f7f638908973beb7278ea5d172d3", null ],

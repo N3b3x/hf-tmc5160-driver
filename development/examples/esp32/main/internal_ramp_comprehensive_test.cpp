@@ -1,8 +1,8 @@
 /**
  * @file internal_ramp_comprehensive_test.cpp
- * @brief Comprehensive internal ramp test suite for TMC5160 (single motor)
+ * @brief Comprehensive internal ramp test suite for TMC51x0 (single motor)
  *
- * This file contains comprehensive testing for TMC5160 driver covering:
+ * This file contains comprehensive testing for TMC51x0 driver covering:
  * - Core initialization and basic setup
  * - Motor control features (enable/disable, current, chopper, StealthChop, etc.)
  * - Ramp control features (positioning, velocity, ramp parameters)
@@ -11,15 +11,15 @@
  *
  * Hardware Requirements:
  * - ESP32 development board
- * - TMC5160 stepper motor driver (Evaluation Board)
+ * - TMC51x0 stepper motor driver (Evaluation Board)
  * - 17HS4401S-PG518 geared stepper motor (5.18:1 gearbox)
  * - AS5047U encoder
  * - Two reference switches (endstops)
- * - SPI connection between ESP32 and TMC5160
+ * - SPI connection between ESP32 and TMC51x0
  *
  * Configuration:
  * - Motor: 17HS4401S-PG518 (gearbox)
- * - Board: TMC5160 Evaluation Kit
+ * - Board: TMC51x0 Evaluation Kit
  * - Platform: Test Rig (with encoder and reference switches)
  * - Communication Mode: SPI Internal Ramp (SPI_MODE=HIGH, SD_MODE=LOW)
  *
@@ -30,11 +30,11 @@
  * @date 2025
  */
 
-#include "../../../inc/tmc5160.hpp"
-#include "../../../inc/tmc5160_units.hpp"
-#include "esp32_tmc5160_bus.hpp"
-#include "esp32_tmc5160_test_config.hpp"
-#include "TestFramework.h"
+#include "tmc51x0.hpp"
+#include "tmc51x0_units.hpp"
+#include "test_config/esp32_tmc51x0_bus.hpp"
+#include "test_config/esp32_tmc51x0_test_config.hpp"
+#include "test_config/TestFramework.h"
 #include "driver/gpio.h"
 #include <memory>
 
@@ -42,26 +42,19 @@ static const char* TAG = "InternalRamp_Test";
 static TestResults g_test_results;
 
 //=============================================================================
-// CONFIGURATION SELECTION
+// CONFIGURATION SELECTION - Unified Test Rig Selection
 //=============================================================================
-// Motor selection (compile-time constant)
-static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
-    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
-
-// Board selection (compile-time constant)
-static constexpr tmc5160_test_config::BoardType SELECTED_BOARD = 
-    tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL;
-
-// Platform selection (compile-time constant)
-static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM = 
-    tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
+// Test rig selection (compile-time constant) - automatically selects motor, board, and platform
+// CORE DRIVER TEST RIG: Uses 17HS4401S gearbox motor, TMC51x0 EVAL board, reference switches, encoder
+static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
+    tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER;
 
 // Test configuration constants
-namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
-namespace Test = tmc5160_test_config::TestConfig_17HS4401S;
+namespace Motor = tmc51x0_test_config::MotorConfig_17HS4401S;
+namespace Test = tmc51x0_test_config::TestConfig_17HS4401S;
 
 static constexpr uint8_t TEST_TOFF = Motor::TOFF;
-static constexpr uint8_t TEST_MRES = static_cast<uint8_t>(Motor::MRES); // 256 microsteps
+static constexpr tmc51x0::MicrostepResolution TEST_MRES = Motor::MRES; // 256 microsteps
 static constexpr float MICROSTEPS = 256.0f;
 // Steps per revolution for unit conversions (Output Shaft full steps * Microsteps)
 // 17HS4401S-PG518: 200 steps * 5.18 ratio * 256 microsteps = ~265,216 steps/rev
@@ -193,17 +186,23 @@ bool test_latched_position() noexcept;
 
 struct TestDriverHandle {
   std::unique_ptr<Esp32SPI> spi;
-  std::unique_ptr<tmc5160::TMC5160<Esp32SPI>> driver;
+  std::unique_ptr<tmc51x0::TMC51x0<Esp32SPI>> driver;
 };
 
 /**
  * @brief Helper to calculate current register value (0-31) from mA
  * 
  * Converts target current in mA to IRUN/IHOLD register value (0-31) using
- * the TMC5160 current calculation formula:
+ * the TMC51x0 current calculation formula:
  * I_RMS = (GLOBAL_SCALER/256) * ((CS+1)/32) * (VFS/RSENSE) * (1/√2)
  * 
  * Reversed: CS = (I_RMS * 256 * 32) / (GLOBAL_SCALER * (VFS/RSENSE) * (1/√2)) - 1
+ * 
+ * NOTE: This is a TEST HELPER function, not part of the TMC51x0 driver API.
+ * The driver's `SetCurrent()` method takes register values (0-31) directly.
+ * The driver's `SetupMotorFromSpec()` handles mA-to-register conversion automatically
+ * during initialization, but tests need fine-grained control over specific mA values,
+ * hence this helper function.
  * 
  * @param current_ma Target current in mA
  * @param global_scaler Global scaler value (32-256). If 0, uses 256 (full scale)
@@ -214,10 +213,11 @@ uint8_t CalculateCurrentRegister(uint16_t current_ma, uint16_t global_scaler = 0
                                 uint32_t sense_resistor_mohm = 0) {
     // Get board constants if not provided
     if (sense_resistor_mohm == 0) {
-        if constexpr (SELECTED_BOARD == tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL) {
-            sense_resistor_mohm = tmc5160_test_config::BoardConfig_TMC5160_EVAL::SENSE_RESISTOR_MOHM;
+        constexpr auto board_type = tmc51x0_test_config::GetTestRigBoardType<SELECTED_TEST_RIG>();
+        if constexpr (board_type == tmc51x0_test_config::BoardType::BOARD_TMC51x0_EVAL) {
+            sense_resistor_mohm = tmc51x0_test_config::BoardConfig_TMC51x0_EVAL::SENSE_RESISTOR_MOHM;
         } else {
-            sense_resistor_mohm = tmc5160_test_config::BoardConfig_TMC5160_BOB::SENSE_RESISTOR_MOHM;
+            sense_resistor_mohm = tmc51x0_test_config::BoardConfig_TMC51x0_BOB::SENSE_RESISTOR_MOHM;
         }
     }
     
@@ -250,14 +250,14 @@ uint8_t CalculateCurrentRegister(uint16_t current_ma, uint16_t global_scaler = 0
 /**
  * @brief Verify mode pins match expected communication mode
  * @param spi SPI communication interface
- * @param driver TMC5160 driver instance
+ * @param driver TMC51x0 driver instance
  * @param expected_comm_mode Expected communication mode (SPI or UART)
  * @return true if verification passed or pins not configured, false on mismatch
  */
-bool verify_mode_pins(const Esp32SPI& spi, const tmc5160::TMC5160<Esp32SPI>& driver, tmc5160::CommMode expected_comm_mode) noexcept {
+bool verify_mode_pins(const Esp32SPI& spi, const tmc51x0::TMC51x0<Esp32SPI>& driver, tmc51x0::CommMode expected_comm_mode) noexcept {
   // Check if mode pins are configured
-  gpio_num_t spi_mode_gpio = spi.GetPinMapping(tmc5160::TMC5160CtrlPin::SPI_MODE);
-  gpio_num_t sd_mode_gpio = spi.GetPinMapping(tmc5160::TMC5160CtrlPin::SD_MODE);
+  gpio_num_t spi_mode_gpio = spi.GetPinMapping(tmc51x0::TMC51x0CtrlPin::SPI_MODE);
+  gpio_num_t sd_mode_gpio = spi.GetPinMapping(tmc51x0::TMC51x0CtrlPin::SD_MODE);
   
   constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
   
@@ -268,8 +268,8 @@ bool verify_mode_pins(const Esp32SPI& spi, const tmc5160::TMC5160<Esp32SPI>& dri
   }
   
   // Read mode pins
-  tmc5160::ChipCommMode actual_mode;
-  if (!driver.GetChipCommMode(actual_mode)) {
+  tmc51x0::ChipCommMode actual_mode;
+  if (!driver.communication.GetOperatingMode(actual_mode)) {
     ESP_LOGW(TAG, "Failed to read mode pins for verification");
     return false;
   }
@@ -278,37 +278,40 @@ bool verify_mode_pins(const Esp32SPI& spi, const tmc5160::TMC5160<Esp32SPI>& dri
   bool mode_valid = false;
   const char* mode_name = nullptr;
   
-  if (expected_comm_mode == tmc5160::CommMode::SPI) {
+  if (expected_comm_mode == tmc51x0::CommMode::SPI) {
     // For SPI, we expect SPI_MODE=HIGH
     // SD_MODE can be LOW (internal ramp) or HIGH (external step/dir)
-    if (actual_mode == tmc5160::ChipCommMode::SPI_INTERNAL_RAMP ||
-        actual_mode == tmc5160::ChipCommMode::SPI_EXTERNAL_STEPDIR) {
+    if (actual_mode == tmc51x0::ChipCommMode::SPI_INTERNAL_RAMP ||
+        actual_mode == tmc51x0::ChipCommMode::SPI_EXTERNAL_STEPDIR) {
       mode_valid = true;
-      mode_name = (actual_mode == tmc5160::ChipCommMode::SPI_INTERNAL_RAMP) 
+      mode_name = (actual_mode == tmc51x0::ChipCommMode::SPI_INTERNAL_RAMP) 
                   ? "SPI + Internal Ramp" 
                   : "SPI + External Step/Dir";
     }
-  } else if (expected_comm_mode == tmc5160::CommMode::UART) {
+  } else if (expected_comm_mode == tmc51x0::CommMode::UART) {
     // For UART, we expect SPI_MODE=LOW, SD_MODE=LOW
-    if (actual_mode == tmc5160::ChipCommMode::UART_INTERNAL_RAMP) {
+    if (actual_mode == tmc51x0::ChipCommMode::UART_INTERNAL_RAMP) {
       mode_valid = true;
       mode_name = "UART + Internal Ramp";
     }
   }
   
+  // Note: STANDALONE_EXTERNAL_STEPDIR mode (SPI_MODE=LOW, SD_MODE=HIGH) is not used
+  // with SPI or UART communication interfaces, so it's not checked here
+  
   if (mode_valid) {
     ESP_LOGI(TAG, "✓ Mode pin verification passed: %s (matches %s interface)", 
              mode_name,
-             (expected_comm_mode == tmc5160::CommMode::SPI) ? "SPI" : "UART");
+             (expected_comm_mode == tmc51x0::CommMode::SPI) ? "SPI" : "UART");
     return true;
   } else {
     ESP_LOGE(TAG, "✗ Mode pin verification FAILED: Mode pins indicate %d, but using %s interface",
              static_cast<int>(actual_mode),
-             (expected_comm_mode == tmc5160::CommMode::SPI) ? "SPI" : "UART");
+             (expected_comm_mode == tmc51x0::CommMode::SPI) ? "SPI" : "UART");
     ESP_LOGE(TAG, "  Expected: SPI_MODE=%s, SD_MODE=%s for %s",
-             (expected_comm_mode == tmc5160::CommMode::SPI) ? "HIGH" : "LOW",
-             (expected_comm_mode == tmc5160::CommMode::SPI) ? "LOW/HIGH" : "LOW",
-             (expected_comm_mode == tmc5160::CommMode::SPI) ? "SPI" : "UART");
+             (expected_comm_mode == tmc51x0::CommMode::SPI) ? "HIGH" : "LOW",
+             (expected_comm_mode == tmc51x0::CommMode::SPI) ? "LOW/HIGH" : "LOW",
+             (expected_comm_mode == tmc51x0::CommMode::SPI) ? "SPI" : "UART");
     return false;
   }
 }
@@ -316,7 +319,7 @@ bool verify_mode_pins(const Esp32SPI& spi, const tmc5160::TMC5160<Esp32SPI>& dri
 /**
  * @brief Create and initialize a test driver instance
  * 
- * This helper function creates a fully configured TMC5160 driver instance
+ * This helper function creates a fully configured TMC51x0 driver instance
  * with the selected motor, board, and platform configuration.
  * 
  * @note Reference switches are configured but with stop_enable disabled
@@ -329,13 +332,13 @@ std::unique_ptr<TestDriverHandle> create_test_driver(bool enable_ref_switch_stop
   auto handle = std::make_unique<TestDriverHandle>();
   
   // Get complete pin configuration from test config
-  tmc5160::Esp32SpiPinConfig pin_config = tmc5160_test_config::GetDefaultPinConfig();
+  tmc51x0::Esp32SpiPinConfig pin_config = tmc51x0_test_config::GetDefaultPinConfig();
   
   // Create SPI communication interface
   handle->spi = std::make_unique<Esp32SPI>(
-    tmc5160_test_config::SPI_HOST,
+    tmc51x0_test_config::SPI_HOST,
     pin_config,
-    tmc5160_test_config::SPI_CLOCK_SPEED_HZ);
+    tmc51x0_test_config::SPI_CLOCK_SPEED_HZ);
   
   // Initialize SPI interface
   if (!handle->spi->Initialize()) {
@@ -347,59 +350,42 @@ std::unique_ptr<TestDriverHandle> create_test_driver(bool enable_ref_switch_stop
   handle->spi->SetDaisyChainLength(1);
   ESP_LOGI(TAG, "Configured for single-chip mode (chain length = 1)");
   
-  // Create TMC5160 driver instance
-  handle->driver = std::make_unique<tmc5160::TMC5160<Esp32SPI>>(*handle->spi);
+  // Create TMC51x0 driver instance
+  handle->driver = std::make_unique<tmc51x0::TMC51x0<Esp32SPI>>(*handle->spi);
   
   // Verify mode pins match expected communication mode (if pins are configured)
-  if (!verify_mode_pins(*handle->spi, *handle->driver, tmc5160::CommMode::SPI)) {
+  if (!verify_mode_pins(*handle->spi, *handle->driver, tmc51x0::CommMode::SPI)) {
     ESP_LOGE(TAG, "Mode pin verification failed - driver may not work correctly");
     // Continue anyway, but log the error
   }
   
   // Configure driver using helper functions
-  tmc5160::DriverConfig cfg{};
+  tmc51x0::DriverConfig cfg{};
   
-  // Configure motor
-  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
-    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
-  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
-    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
-  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
-    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
-  }
-  
-  // Apply board configuration
-  tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
-  
-  // Apply platform configuration
-  tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
+  // Configure driver from unified test rig selection
+  tmc51x0_test_config::ConfigureDriverFromTestRig<SELECTED_TEST_RIG>(cfg);
   
   // Override with test-specific values if needed
   cfg.chopper.mres = TEST_MRES;
   
   // Initialize driver
   if (!handle->driver->Initialize(cfg)) {
-    ESP_LOGE(TAG, "Failed to initialize TMC5160 driver");
+    ESP_LOGE(TAG, "Failed to initialize TMC51x0 driver");
     return nullptr;
   }
   
-  // Configure reference switches from platform config
-  // By default, disable stop enable unless explicitly testing that feature
-  tmc5160::ReferenceSwitchConfig ref_cfg = 
-      tmc5160_test_config::GetReferenceSwitchConfig<SELECTED_PLATFORM>();
-  
+  // Reference switches and encoder are now configured automatically during Initialize()
+  // via DriverConfig. If we need to override stop enable for tests, do it after initialization.
   if (!enable_ref_switch_stop) {
     // Disable stop on reference switches for normal tests
     // This prevents the motor from stopping during tests
-    ref_cfg.left_switch_stop_enable = false;
-    ref_cfg.right_switch_stop_enable = false;
+    cfg.reference_switch_config.left_switch_stop_enable = false;
+    cfg.reference_switch_config.right_switch_stop_enable = false;
+    // Re-configure with updated settings
+    handle->driver->rampControl.ConfigureReferenceSwitch(cfg.reference_switch_config);
     ESP_LOGI(TAG, "Reference switches configured but stop disabled (normal test mode)");
   } else {
     ESP_LOGI(TAG, "Reference switches configured with stop enabled (testing switch feature)");
-  }
-  
-  if (!handle->driver->rampControl.ConfigureReferenceSwitch(ref_cfg)) {
-    ESP_LOGW(TAG, "Failed to configure reference switches (may not be critical)");
   }
   
   ESP_LOGI(TAG, "Driver initialized successfully");
@@ -421,7 +407,7 @@ bool test_driver_initialization() noexcept {
   }
   
   // Verify driver status
-  tmc5160::DriverStatus status = handle->driver->diagnostics.GetStatus();
+  tmc51x0::DriverStatus status = handle->driver->diagnostics.GetStatus();
   ESP_LOGI(TAG, "Driver Status: %d", static_cast<int>(status));
   ESP_LOGI(TAG, "✓ Driver initialized and ready");
   
@@ -437,21 +423,21 @@ bool test_register_read_write() noexcept {
     return false;
   }
   
-  // Test reading GSTAT register (RWC - read-write-clear, reading is OK)
-  uint32_t gstat_value = 0;
-  if (!handle->driver->GetComm().ReadRegister(tmc5160::Registers::GSTAT, gstat_value)) {
-    ESP_LOGE(TAG, "Failed to read GSTAT register");
+  // Test reading global status (GSTAT register)
+  bool reset = false, drv_err = false, uv_cp = false;
+  if (!handle->driver->diagnostics.GetGlobalStatus(reset, drv_err, uv_cp)) {
+    ESP_LOGE(TAG, "Failed to read global status");
     return false;
   }
-  ESP_LOGI(TAG, "GSTAT register value: 0x%08lX", gstat_value);
+  ESP_LOGI(TAG, "Global status: reset=%d, drv_err=%d, uv_cp=%d", reset ? 1 : 0, drv_err ? 1 : 0, uv_cp ? 1 : 0);
   
   // Test writing X_COMPARE register (write-only per datasheet)
-  constexpr uint32_t TEST_X_COMPARE = 12345;
-  if (!handle->driver->GetComm().WriteRegister(tmc5160::Registers::X_COMPARE, TEST_X_COMPARE)) {
+  constexpr float TEST_X_COMPARE = 12345.0f;
+  if (!handle->driver->rampControl.SetXCompare(TEST_X_COMPARE, tmc51x0::Unit::Steps)) {
     ESP_LOGE(TAG, "Failed to write X_COMPARE register");
     return false;
   }
-  ESP_LOGI(TAG, "X_COMPARE register written: 0x%08lX (write-only register, verified via write response)", TEST_X_COMPARE);
+  ESP_LOGI(TAG, "X_COMPARE register written: %.0f (write-only register, verified via write response)", TEST_X_COMPARE);
   
   ESP_LOGI(TAG, "✓ Register read/write test passed");
   return true;
@@ -467,26 +453,27 @@ bool test_motor_parameter_settings() noexcept {
   }
   
   // Verify chopper settings
-  uint32_t chopconf_value = 0;
-  if (!handle->driver->GetComm().ReadRegister(tmc5160::Registers::CHOPCONF, chopconf_value)) {
+  tmc51x0::ChopperConfig chopconf_config{};
+  if (!handle->driver->motorControl.GetChopperConfig(chopconf_config)) {
     ESP_LOGE(TAG, "Failed to read CHOPCONF register");
     return false;
   }
   
-  tmc5160::CHOPCONF_Register chopconf{};
-  chopconf.value = chopconf_value;
-  ESP_LOGI(TAG, "CHOPCONF: toff=%u, mres=%u, intpol=%u", chopconf.bits.toff, chopconf.bits.mres, chopconf.bits.intpol);
+  // Convert to register structure for bit access
+  tmc51x0::CHOPCONF_Register chopconf{};
+  // Note: We can't fully reconstruct the register from ChopperConfig, but we can check key fields
+  ESP_LOGI(TAG, "CHOPCONF: toff=%u, mres=%u, intpol=%u", chopconf_config.toff, static_cast<uint8_t>(chopconf_config.mres), chopconf_config.intpol ? 1 : 0);
   
-  if (chopconf.bits.toff != TEST_TOFF) {
-    ESP_LOGE(TAG, "TOFF mismatch: expected %u, got %u", TEST_TOFF, chopconf.bits.toff);
+  if (chopconf_config.toff != TEST_TOFF) {
+    ESP_LOGE(TAG, "TOFF mismatch: expected %u, got %u", TEST_TOFF, chopconf_config.toff);
     return false;
   }
-  if (chopconf.bits.mres != TEST_MRES) {
-    ESP_LOGE(TAG, "MRES mismatch: expected %u, got %u", TEST_MRES, chopconf.bits.mres);
+  if (chopconf_config.mres != TEST_MRES) {
+    ESP_LOGE(TAG, "MRES mismatch: expected %u, got %u", static_cast<uint8_t>(TEST_MRES), static_cast<uint8_t>(chopconf_config.mres));
     return false;
   }
-  if (chopconf.bits.intpol != Motor::INTERPOLATION) {
-    ESP_LOGE(TAG, "INTPOL mismatch: expected %d, got %u", Motor::INTERPOLATION, chopconf.bits.intpol);
+  if (chopconf_config.intpol != Motor::INTERPOLATION) {
+    ESP_LOGE(TAG, "INTPOL mismatch: expected %d, got %d", Motor::INTERPOLATION, chopconf_config.intpol ? 1 : 0);
     return false;
   }
   
@@ -536,10 +523,14 @@ bool test_ramp_parameter_settings() noexcept {
   
   // Test setting target position
   constexpr int32_t TEST_TARGET = 10000;
-  handle->driver->rampControl.SetTargetPosition(static_cast<float>(TEST_TARGET), tmc5160::Unit::Steps);
+  handle->driver->rampControl.SetTargetPosition(static_cast<float>(TEST_TARGET), tmc51x0::Unit::Steps);
   
-  int32_t current_pos = handle->driver->rampControl.GetCurrentPosition();
-  ESP_LOGI(TAG, "Target position set to %ld, current position: %ld", TEST_TARGET, current_pos);
+  float current_pos = 0.0f;
+  if (!handle->driver->rampControl.GetCurrentPosition(current_pos, tmc51x0::Unit::Steps)) {
+    ESP_LOGE(TAG, "Failed to get current position");
+    return false;
+  }
+  ESP_LOGI(TAG, "Target position set to %ld, current position: %.0f", TEST_TARGET, current_pos);
   
   ESP_LOGI(TAG, "✓ Ramp parameter settings test passed");
   return true;
@@ -555,28 +546,28 @@ bool test_global_configuration() noexcept {
   }
   
   // Configure global settings
-  tmc5160::GlobalConfig gconf{};
-  gconf.faststandstill = true;
-  gconf.diag0_error = true;
-  gconf.diag0_otpw = true;
-  gconf.multistep_filt = true;
+  tmc51x0::GlobalConfig gconf{};
+  gconf.en_short_standstill_timeout = true;
+  gconf.diag0.error = true;
+  gconf.diag0.otpw = true;
+  gconf.en_stealthchop_step_filter = true;
   handle->driver->motorControl.ConfigureGlobalConfig(gconf);
   
   // Read back and verify
   uint32_t gconf_value = 0;
-  if (!handle->driver->GetComm().ReadRegister(tmc5160::Registers::GCONF, gconf_value)) {
+  if (!handle->driver->GetComm().ReadRegister(tmc51x0::Registers::GCONF, gconf_value)) {
     ESP_LOGE(TAG, "Failed to read GCONF register");
     return false;
   }
   
-  tmc5160::GCONF_Register gconf_reg{};
+  tmc51x0::GCONF_Register gconf_reg{};
   gconf_reg.value = gconf_value;
-  ESP_LOGI(TAG, "GCONF: faststandstill=%u, diag0_error=%u, diag0_otpw=%u, multistep_filt=%u",
+  ESP_LOGI(TAG, "GCONF: en_short_standstill_timeout=%u, diag0_error=%u, diag0_otpw=%u, en_stealthchop_step_filter=%u",
            gconf_reg.bits.faststandstill, gconf_reg.bits.diag0_error, gconf_reg.bits.diag0_otpw,
            gconf_reg.bits.multistep_filt);
   
   if (gconf_reg.bits.faststandstill != 1) {
-    ESP_LOGE(TAG, "faststandstill not set correctly");
+    ESP_LOGE(TAG, "en_short_standstill_timeout not set correctly");
     return false;
   }
   if (gconf_reg.bits.diag0_error != 1) {
@@ -588,7 +579,7 @@ bool test_global_configuration() noexcept {
     return false;
   }
   if (gconf_reg.bits.multistep_filt != 1) {
-    ESP_LOGE(TAG, "multistep_filt not set correctly");
+    ESP_LOGE(TAG, "en_stealthchop_step_filter not set correctly");
     return false;
   }
   
@@ -666,16 +657,15 @@ bool test_chopper_configuration() noexcept {
     return false;
   }
   
-  tmc5160::ChopperConfig chop_cfg{};
+  tmc51x0::ChopperConfig chop_cfg{};
   chop_cfg.toff = Motor::TOFF;
   chop_cfg.hstrt = Motor::HSTRT;
   chop_cfg.hend = Motor::HEND;
   chop_cfg.tbl = Motor::TBL;
-  chop_cfg.vsense = true;
   chop_cfg.mres = TEST_MRES;
   chop_cfg.intpol = Motor::INTERPOLATION;
   chop_cfg.dedge = false;
-  chop_cfg.mode = tmc5160::ChopperMode::SPREAD_CYCLE;
+  chop_cfg.mode = tmc51x0::ChopperMode::SPREAD_CYCLE;
   
   if (!handle->driver->motorControl.ConfigureChopper(chop_cfg)) {
     ESP_LOGE(TAG, "Failed to configure chopper");
@@ -694,7 +684,7 @@ bool test_stealthchop_configuration() noexcept {
     return false;
   }
   
-  tmc5160::StealthChopConfig stealth_cfg{};
+  tmc51x0::StealthChopConfig stealth_cfg{};
   stealth_cfg.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
   stealth_cfg.pwm_autograd = Motor::STEALTH_AUTOGRAD;
   stealth_cfg.pwm_freq = Motor::STEALTH_FREQ;
@@ -733,7 +723,7 @@ bool test_stealthchop_configuration() noexcept {
   ESP_LOGI(TAG, "Demonstrating AT#2: Moving at medium velocity (%.2f steps/s)...", at2_speed);
   
   // Configure ramp for motion
-  handle->driver->rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS);
+  handle->driver->rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
   handle->driver->rampControl.SetMaxSpeed(at2_speed); 
   handle->driver->rampControl.SetAcceleration(at2_speed * 2.0f); // Reach speed in 0.5s
 
@@ -807,8 +797,8 @@ bool test_freewheeling_mode() noexcept {
   bool success = true;
   
   // Test setting freewheeling mode through ConfigureStealthChop
-  tmc5160::StealthChopConfig stealth_config{};
-  stealth_config.freewheel = tmc5160::PWMFreewheel::NORMAL;
+  tmc51x0::StealthChopConfig stealth_config{};
+  stealth_config.freewheel = tmc51x0::PWMFreewheel::NORMAL;
   stealth_config.pwm_autoscale = Motor::STEALTH_AUTOSCALE; // Maintain required settings
   stealth_config.pwm_autograd = Motor::STEALTH_AUTOGRAD;
   stealth_config.pwm_freq = Motor::STEALTH_FREQ;
@@ -819,7 +809,7 @@ bool test_freewheeling_mode() noexcept {
     success = false;
   }
   
-  stealth_config.freewheel = tmc5160::PWMFreewheel::ENABLED;
+  stealth_config.freewheel = tmc51x0::PWMFreewheel::ENABLED;
   if (!handle->driver->motorControl.ConfigureStealthChop(stealth_config)) {
     ESP_LOGE(TAG, "Failed to set freewheeling to ENABLED");
     success = false;
@@ -841,18 +831,18 @@ bool test_coolstep_configuration() noexcept {
   }
   
   // Configure CoolStep with user-friendly API
-  tmc5160::CoolStepConfig cool_cfg{};
+  tmc51x0::CoolStepConfig cool_cfg{};
   
   // Set thresholds using actual SG values (more intuitive than raw 0-15)
   cool_cfg.lower_threshold_sg = 64;   // SEMIN*32 = 2*32 (when SG < 64, increase current)
   cool_cfg.upper_threshold_sg = 256;  // (SEMIN+SEMAX+1)*32 = (2+5+1)*32 (when SG >= 256, decrease current)
   
   // Configure step sizes using enums
-  cool_cfg.increment_step = tmc5160::CoolStepIncrementStep::STEP_2;  // Moderate response speed
-  cool_cfg.decrement_speed = tmc5160::CoolStepDecrementSpeed::EVERY_8;  // Stable reduction
+  cool_cfg.increment_step = tmc51x0::CoolStepIncrementStep::STEP_2;  // Moderate response speed
+  cool_cfg.decrement_speed = tmc51x0::CoolStepDecrementSpeed::EVERY_8;  // Stable reduction
   
   // Minimum current: 50% of IRUN
-  cool_cfg.min_current = tmc5160::CoolStepMinCurrent::HALF_IRUN;
+  cool_cfg.min_current = tmc51x0::CoolStepMinCurrent::HALF_IRUN;
   
   // Disable filter for high time resolution
   cool_cfg.enable_filter = false;
@@ -860,7 +850,7 @@ bool test_coolstep_configuration() noexcept {
   // Set velocity thresholds (CoolStep only active between these speeds)
   cool_cfg.min_velocity = 500.0f;   // Enable CoolStep above 500 steps/s
   cool_cfg.max_velocity = 5000.0f;   // Disable CoolStep above 5000 steps/s
-  cool_cfg.velocity_unit = tmc5160::Unit::Steps;
+  cool_cfg.velocity_unit = tmc51x0::Unit::Steps;
   
   if (!handle->driver->motorControl.ConfigureCoolStep(cool_cfg)) {
     ESP_LOGE(TAG, "Failed to configure CoolStep");
@@ -880,17 +870,17 @@ bool test_dcstep_configuration() noexcept {
   }
   
   // Configure DcStep with user-friendly API
-  tmc5160::DcStepConfig dc_cfg{};
+  tmc51x0::DcStepConfig dc_cfg{};
   
   // Set minimum velocity threshold (with unit support)
   dc_cfg.min_velocity = 1000.0f;   // Enable DcStep above 1000 steps/s
-  dc_cfg.velocity_unit = tmc5160::Unit::Steps;
+  dc_cfg.velocity_unit = tmc51x0::Unit::Steps;
   
   // Auto-calculate PWM on-time from blank time (recommended)
   dc_cfg.pwm_on_time_us = 0.0f;  // 0 = auto-calculate
   
   // Moderate stall detection sensitivity (recommended)
-  dc_cfg.stall_sensitivity = tmc5160::DcStepStallSensitivity::MODERATE;
+  dc_cfg.stall_sensitivity = tmc51x0::DcStepStallSensitivity::MODERATE;
   
   // Don't stop on stall (continue operation)
   dc_cfg.stop_on_stall = false;
@@ -944,10 +934,9 @@ bool test_motor_setup_from_spec() noexcept {
     return false;
   }
   
-  tmc5160::MotorSpec motor_spec{};
+  tmc51x0::MotorSpec motor_spec{};
   motor_spec.steps_per_rev = Motor::MOTOR_FULL_STEPS;
   motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
-  motor_spec.rated_voltage_mv = 24000;
   
   // Note: SetupMotorFromSpec may use approximation, so we use a warning-level test
   bool result = handle->driver->motorControl.SetupMotorFromSpec(motor_spec);
@@ -974,7 +963,7 @@ bool test_ramp_modes() noexcept {
   bool success = true;
   
   // Test POSITIONING mode
-  if (!handle->driver->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING)) {
+  if (!handle->driver->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING)) {
     ESP_LOGE(TAG, "Failed to set POSITIONING mode");
     success = false;
   } else {
@@ -982,7 +971,7 @@ bool test_ramp_modes() noexcept {
   }
   
   // Test VELOCITY_POS mode
-  if (!handle->driver->rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS)) {
+  if (!handle->driver->rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS)) {
     ESP_LOGE(TAG, "Failed to set VELOCITY_POS mode");
     success = false;
   } else {
@@ -990,7 +979,7 @@ bool test_ramp_modes() noexcept {
   }
   
   // Test VELOCITY_NEG mode
-  if (!handle->driver->rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_NEG)) {
+  if (!handle->driver->rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_NEG)) {
     ESP_LOGE(TAG, "Failed to set VELOCITY_NEG mode");
     success = false;
   } else {
@@ -998,7 +987,7 @@ bool test_ramp_modes() noexcept {
   }
   
   // Test HOLD mode
-  if (!handle->driver->rampControl.SetRampMode(tmc5160::RampMode::HOLD)) {
+  if (!handle->driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD)) {
     ESP_LOGE(TAG, "Failed to set HOLD mode");
     success = false;
   } else {
@@ -1006,7 +995,7 @@ bool test_ramp_modes() noexcept {
   }
   
   // Return to POSITIONING mode
-  handle->driver->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+  handle->driver->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
   
   if (success) {
     ESP_LOGI(TAG, "✓ Ramp modes test passed");
@@ -1023,22 +1012,29 @@ bool test_position_control() noexcept {
     return false;
   }
   
-  handle->driver->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+  handle->driver->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
   
   // Test setting target position
-  if (!handle->driver->rampControl.SetTargetPosition(1000.0f, tmc5160::Unit::Steps)) {
+  if (!handle->driver->rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps)) {
     ESP_LOGE(TAG, "Failed to set target position");
     return false;
   }
   
   // Test getting current position
-  int32_t current = handle->driver->rampControl.GetCurrentPosition();
-  ESP_LOGI(TAG, "Current position: %ld", current);
+  float current = 0.0f;
+  if (!handle->driver->rampControl.GetCurrentPosition(current, tmc51x0::Unit::Steps)) {
+    ESP_LOGE(TAG, "Failed to get current position");
+    return false;
+  }
+  ESP_LOGI(TAG, "Current position: %.0f", current);
   
   // Test setting current position
-  handle->driver->rampControl.SetCurrentPosition(0.0f, tmc5160::Unit::Steps);
-  current = handle->driver->rampControl.GetCurrentPosition();
-  if (current != 0) {
+  handle->driver->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Steps);
+  if (!handle->driver->rampControl.GetCurrentPosition(current, tmc51x0::Unit::Steps)) {
+    ESP_LOGE(TAG, "Failed to get current position after set");
+    return false;
+  }
+  if (current != 0.0f) {
     ESP_LOGW(TAG, "SetCurrentPosition may not have taken effect immediately");
   }
   
@@ -1083,7 +1079,11 @@ bool test_speed_control() noexcept {
   }
   
   // Test getting current speed
-  float speed = handle->driver->rampControl.GetCurrentSpeed();
+  float speed = 0.0f;
+  if (!handle->driver->rampControl.GetCurrentSpeed(speed, tmc51x0::Unit::Steps)) {
+    ESP_LOGE(TAG, "Failed to get current speed");
+    return false;
+  }
   ESP_LOGI(TAG, "Current speed: %.2f steps/s", speed);
   
   if (success) {
@@ -1147,8 +1147,8 @@ bool test_reference_switch_configuration() noexcept {
   }
   
   // Get reference switch configuration from platform config
-  tmc5160::ReferenceSwitchConfig ref_cfg = 
-      tmc5160_test_config::GetReferenceSwitchConfig<SELECTED_PLATFORM>();
+  tmc51x0::ReferenceSwitchConfig ref_cfg = 
+      tmc51x0_test_config::GetTestRigReferenceSwitchConfig<SELECTED_TEST_RIG>();
   
   if (!handle->driver->rampControl.ConfigureReferenceSwitch(ref_cfg)) {
     ESP_LOGE(TAG, "Failed to configure reference switch");
@@ -1161,7 +1161,7 @@ bool test_reference_switch_configuration() noexcept {
   ESP_LOGI(TAG, "Testing PerformSwitchHoming API (expect timeout)...");
   int32_t final_pos = 0;
   // Use short timeout for test
-  bool result = handle->driver->diagnostics.PerformSwitchHoming(true, 
+  bool result = handle->driver->homing.PerformSwitchHoming(true, 
                                                                 Test::Motion::HOMING_SEARCH_SPEED, 
                                                                 Test::Motion::HOMING_SWITCH_SPEED, 
                                                                 final_pos, true, 100);
@@ -1184,29 +1184,29 @@ bool test_unit_conversions() noexcept {
     return false;
   }
   
-  handle->driver->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+  handle->driver->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
   
   bool success = true;
   
   // Test setting target position in millimeters
-  if (!handle->driver->rampControl.SetTargetPosition(10.0F, tmc5160::Unit::Mm)) {
+  if (!handle->driver->rampControl.SetTargetPosition(10.0F, tmc51x0::Unit::Mm)) {
     ESP_LOGE(TAG, "Failed to set target position in mm");
     success = false;
   }
   
   // Test setting max speed in RPM
-  if (!handle->driver->rampControl.SetMaxSpeed(60.0F, tmc5160::Unit::RPM)) {
+  if (!handle->driver->rampControl.SetMaxSpeed(60.0F, tmc51x0::Unit::RPM)) {
     ESP_LOGE(TAG, "Failed to set max speed in RPM");
     success = false;
   }
   
   // Test unit conversion functions
   float target_mm = 10.0F;
-  int32_t steps = tmc5160::MmToSteps(target_mm, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
+  int32_t steps = tmc51x0::MmToSteps(target_mm, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
   ESP_LOGI(TAG, "%.2f mm = %ld steps", target_mm, steps);
   
   float target_rpm = 100.0F;
-  float steps_per_sec = tmc5160::RpmToStepsPerSec(target_rpm, STEPS_PER_REV);
+  float steps_per_sec = tmc51x0::RpmToStepsPerSec(target_rpm, STEPS_PER_REV);
   ESP_LOGI(TAG, "%.2f RPM = %.2f steps/s", target_rpm, steps_per_sec);
   
   if (success) {
@@ -1228,7 +1228,7 @@ bool test_driver_status() noexcept {
     return false;
   }
   
-  tmc5160::DriverStatus status = handle->driver->diagnostics.GetStatus();
+  tmc51x0::DriverStatus status = handle->driver->diagnostics.GetStatus();
   ESP_LOGI(TAG, "Driver Status: %d", static_cast<int>(status));
   
   ESP_LOGI(TAG, "✓ Driver status test passed");
@@ -1244,7 +1244,7 @@ bool test_stallguard() noexcept {
   }
   
   // Use default test configuration for StallGuard
-  tmc5160::StallGuardConfig sg_cfg{};
+  tmc51x0::StallGuardConfig sg_cfg{};
   sg_cfg.threshold = Test::StallGuard::SGT_HOMING;
   sg_cfg.enable_filter = Test::StallGuard::FILTER_ENABLED;
   // Note: semin/semax are CoolStep parameters, not StallGuard2 parameters
@@ -1254,7 +1254,11 @@ bool test_stallguard() noexcept {
     return false;
   }
   
-  uint16_t sg_value = handle->driver->diagnostics.GetStallGuard();
+  uint16_t sg_value = 0;
+  if (!handle->driver->diagnostics.GetStallGuard(sg_value)) {
+    ESP_LOGE(TAG, "Failed to get StallGuard value");
+    return false;
+  }
   ESP_LOGI(TAG, "StallGuard Value: %u (threshold=%d)", sg_value, sg_cfg.threshold);
   
   ESP_LOGI(TAG, "✓ StallGuard2 test passed");
@@ -1269,7 +1273,11 @@ bool test_lost_steps() noexcept {
     return false;
   }
   
-  uint32_t lost_steps = handle->driver->diagnostics.GetLostSteps();
+  uint32_t lost_steps = 0;
+  if (!handle->driver->diagnostics.GetLostSteps(lost_steps)) {
+    ESP_LOGE(TAG, "Failed to get lost steps");
+    return false;
+  }
   ESP_LOGI(TAG, "Lost Steps: %lu", lost_steps);
   
   ESP_LOGI(TAG, "✓ Lost steps detection test passed");
@@ -1325,10 +1333,18 @@ bool test_microstep_diagnostics() noexcept {
     return false;
   }
   
-  uint32_t time_between = handle->driver->diagnostics.GetTimeBetweenMicrosteps();
+  uint32_t time_between = 0;
+  if (!handle->driver->diagnostics.GetTimeBetweenMicrosteps(time_between)) {
+    ESP_LOGE(TAG, "Failed to get time between microsteps");
+    return false;
+  }
   ESP_LOGI(TAG, "Time Between Microsteps: %lu", time_between);
   
-  uint16_t mscnt = handle->driver->diagnostics.GetMicrostepCounter();
+  uint16_t mscnt = 0;
+  if (!handle->driver->diagnostics.GetMicrostepCounter(mscnt)) {
+    ESP_LOGE(TAG, "Failed to get microstep counter");
+    return false;
+  }
   ESP_LOGI(TAG, "Microstep Counter: %u", mscnt);
   
   int16_t ms_current_a = 0, ms_current_b = 0;
@@ -1429,7 +1445,7 @@ bool test_sensorless_homing() noexcept {
   }
   
   // Configure StallGuard2 for homing using default test config
-  tmc5160::StallGuardConfig sg_config{};
+  tmc51x0::StallGuardConfig sg_config{};
   sg_config.threshold = Test::StallGuard::SGT_HOMING;
   sg_config.enable_filter = Test::StallGuard::FILTER_ENABLED;
   // Note: semin/semax are CoolStep parameters, not StallGuard2 parameters
@@ -1456,15 +1472,15 @@ bool test_open_load() noexcept {
   }
   
   // Ensure SpreadCycle mode (StealthChop disabled) for open load detection
-  tmc5160::GlobalConfig gconf{};
+  tmc51x0::GlobalConfig gconf{};
   if (!handle->driver->motorControl.GetGlobalConfig(gconf)) {
     ESP_LOGE(TAG, "Failed to get global config");
     return false;
   }
   
-  if (gconf.en_pwm_mode) {
+  if (gconf.en_stealthchop_mode) {
     ESP_LOGI(TAG, "Disabling StealthChop for open load detection test");
-    gconf.en_pwm_mode = false;
+    gconf.en_stealthchop_mode = false;
     if (!handle->driver->motorControl.ConfigureGlobalConfig(gconf)) {
       ESP_LOGE(TAG, "Failed to disable StealthChop");
       return false;
@@ -1474,8 +1490,8 @@ bool test_open_load() noexcept {
   
   // Move motor at low velocity (minimum 4× microstep resolution = 1024 steps)
   ESP_LOGI(TAG, "Moving motor for open load detection test");
-  handle->driver->rampControl.SetMaxSpeed(500.0f, tmc5160::Unit::Steps);
-  handle->driver->rampControl.SetTargetPosition(1024.0f, tmc5160::Unit::Steps);  // 4× microstep resolution
+  handle->driver->rampControl.SetMaxSpeed(500.0f, tmc51x0::Unit::Steps);
+  handle->driver->rampControl.SetTargetPosition(1024.0f, tmc51x0::Unit::Steps);  // 4× microstep resolution
   
   // Check for open load during motion
   bool open_load_detected = false;
@@ -1533,7 +1549,7 @@ bool test_short_circuit_protection() noexcept {
     return false;
   }
   
-  tmc5160::PowerStageParameters power_cfg{};
+  tmc51x0::PowerStageParameters power_cfg{};
   power_cfg.s2vs_voltage_mv = 625;  // 625mV = S2VS_LEVEL=6 (recommended)
   power_cfg.s2g_voltage_mv = 625;  // 625mV = S2G_LEVEL=6 (recommended)
   power_cfg.shortfilter = 1;
@@ -1557,9 +1573,9 @@ bool test_overtemperature_protection() noexcept {
   }
   
   // Overtemperature status is read via diagnostics.GetStatus()
-  tmc5160::DriverStatus prot_status = handle->driver->diagnostics.GetStatus();
-  bool has_otpw = (prot_status == tmc5160::DriverStatus::OTPW);
-  bool has_ot = (prot_status == tmc5160::DriverStatus::OT);
+  tmc51x0::DriverStatus prot_status = handle->driver->diagnostics.GetStatus();
+  bool has_otpw = (prot_status == tmc51x0::DriverStatus::OTPW);
+  bool has_ot = (prot_status == tmc51x0::DriverStatus::OT);
   ESP_LOGI(TAG, "OTPW: %s, OT: %s", has_otpw ? "true" : "false", has_ot ? "true" : "false");
   
   ESP_LOGI(TAG, "✓ Overtemperature protection test passed");
@@ -1579,8 +1595,8 @@ bool test_encoder_configuration() noexcept {
   }
   
   // Get encoder configuration from platform config
-  tmc5160::EncoderConfig enc_cfg = 
-      tmc5160_test_config::GetEncoderConfig<SELECTED_PLATFORM>();
+  tmc51x0::EncoderConfig enc_cfg = 
+      tmc51x0_test_config::GetTestRigEncoderConfig<SELECTED_TEST_RIG>();
   
   // A/B polarity requirements (set explicitly for this test)
   enc_cfg.require_a_high = false;
@@ -1597,7 +1613,7 @@ bool test_encoder_configuration() noexcept {
   }
   
   // Verify configuration by reading it back
-  tmc5160::EncoderConfig read_cfg{};
+  tmc51x0::EncoderConfig read_cfg{};
   if (!handle->driver->encoder.GetEncoderConfig(read_cfg)) {
     ESP_LOGE(TAG, "Failed to read encoder configuration");
     return false;
@@ -1619,8 +1635,8 @@ bool test_encoder_resolution() noexcept {
   // Use platform config encoder resolution
   bool result = handle->driver->encoder.SetResolution(
     Motor::MOTOR_FULL_STEPS, // Use Motor namespace constant 
-    tmc5160_test_config::GetEncoderPulsesPerRev<SELECTED_PLATFORM>(), 
-    tmc5160_test_config::GetEncoderInvertDirection<SELECTED_PLATFORM>());
+    tmc51x0_test_config::GetTestRigEncoderPulsesPerRev<SELECTED_TEST_RIG>(), 
+    tmc51x0_test_config::GetTestRigEncoderInvertDirection<SELECTED_TEST_RIG>());
   
   if (!result) {
     ESP_LOGW(TAG, "Encoder resolution set with approximation");
@@ -1638,7 +1654,11 @@ bool test_encoder_position_reading() noexcept {
     return false;
   }
   
-  int32_t enc_pos = handle->driver->encoder.GetPosition();
+  int32_t enc_pos = 0;
+  if (!handle->driver->encoder.GetPosition(enc_pos)) {
+    ESP_LOGE(TAG, "Failed to get encoder position");
+    return false;
+  }
   ESP_LOGI(TAG, "Encoder position: %ld", enc_pos);
   
   ESP_LOGI(TAG, "✓ Encoder position reading test passed");
@@ -1681,7 +1701,11 @@ bool test_latched_position() noexcept {
     return false;
   }
   
-  int32_t latched = handle->driver->encoder.GetLatchedPosition();
+  int32_t latched = 0;
+  if (!handle->driver->encoder.GetLatchedPosition(latched)) {
+    ESP_LOGE(TAG, "Failed to get latched position");
+    return false;
+  }
   ESP_LOGI(TAG, "Latched position: %ld", latched);
   
   ESP_LOGI(TAG, "✓ Latched position test passed");
@@ -1694,14 +1718,14 @@ bool test_latched_position() noexcept {
 
 extern "C" void app_main(void) {
   ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
-  ESP_LOGI(TAG, "║         ESP32 TMC5160 INTERNAL RAMP COMPREHENSIVE TEST SUITE                  ║");
-  ESP_LOGI(TAG, "║                         HardFOC TMC5160 Driver Tests                           ║");
+  ESP_LOGI(TAG, "║         ESP32 TMC51x0 INTERNAL RAMP COMPREHENSIVE TEST SUITE                  ║");
+  ESP_LOGI(TAG, "║                         HardFOC TMC51x0 Driver Tests                           ║");
   ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
   
   ESP_LOGI(TAG, "");
   ESP_LOGI(TAG, "Configuration:");
   ESP_LOGI(TAG, "  Motor: 17HS4401S-PG518 (gearbox)");
-  ESP_LOGI(TAG, "  Board: TMC5160 Evaluation Kit");
+  ESP_LOGI(TAG, "  Board: TMC51x0 Evaluation Kit");
   ESP_LOGI(TAG, "  Platform: Test Rig (with AS5047U encoder and reference switches)");
   ESP_LOGI(TAG, "  Communication Mode: SPI Internal Ramp (SPI_MODE=HIGH, SD_MODE=LOW)");
   ESP_LOGI(TAG, "");
@@ -2048,7 +2072,7 @@ extern "C" void app_main(void) {
     RUN_TEST_IN_TASK("latched_position", test_latched_position, 8192, 1);
     flip_test_progress_indicator();
   );
-
+  
   //=============================================================================
   // TEST SUMMARY
   //=============================================================================

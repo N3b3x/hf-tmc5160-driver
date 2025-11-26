@@ -1,0 +1,7 @@
+<map id="FindWorkingVelocityRange" name="FindWorkingVelocityRange">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,200,31"/>
+<area shape="rect" id="Node000002" href="$tmc51x0_8cpp.html#afdceff5e2e5ab9351a3af9a68566920d" title=" " alt="" coords="248,5,404,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,15,234,15,234,21,200,21"/>
+<area shape="rect" id="Node000003" href="$classtmc51x0_1_1TMC51x0.html#a2aca219d7b860bc5a35738a28900a151" title="Get the communication interface used by this TMC51x0 instance." alt="" coords="452,5,675,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="404,15,438,15,438,21,404,21"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="tmc51x0::CalculateS2GLevel" name="tmc51x0::CalculateS2GLevel">
+<area shape="rect" id="Node000001" title="Calculate S2G_LEVEL register value from voltage threshold." alt="" coords="276,13,485,38"/>
+<area shape="rect" id="Node000002" href="$structtmc51x0_1_1TMC51x0_1_1Protection.html#adfd9753a20f6c27bb8312148474b3e6e" title="Configure short protection levels." alt="" coords="5,5,228,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="262,28,228,28,228,23,262,23"/>
+</map>

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['leadscrew_0',['LeadScrew',['../namespacetmc5160.html#a00679448289a759ed7f70e47f9d11596a6f645ee65c04d44c3039f8b55622bb70',1,'tmc5160']]],
-  ['low_1',['LOW',['../namespacetmc5160.html#a9a573006493faa30433407b3a8de8a1ea41bc94cbd8eebea13ce0491b2ac11b88',1,'tmc5160::LOW'],['../namespacetmc5160.html#ab770990e772993b9d3609dd71d335d75a41bc94cbd8eebea13ce0491b2ac11b88',1,'tmc5160::LOW'],['../namespacetmc5160.html#a587d5c069188523bc1a1fe01e9b077baa41bc94cbd8eebea13ce0491b2ac11b88',1,'tmc5160::LOW']]]
+  ['leadscrew_0',['LeadScrew',['../namespacetmc51x0.html#a20af559eb85dbac784b3a4cb644cf63ba6f645ee65c04d44c3039f8b55622bb70',1,'tmc51x0']]],
+  ['low_1',['LOW',['../namespacetmc51x0.html#a52bd7474fc03fcfde3c7249fea7ea055a41bc94cbd8eebea13ce0491b2ac11b88',1,'tmc51x0::LOW'],['../namespacetmc51x0.html#aca6b71c611ab7e217b0d3ce4208821d9a41bc94cbd8eebea13ce0491b2ac11b88',1,'tmc51x0::LOW'],['../namespacetmc51x0.html#a4abe4fa0f128137c19f7da4f9b58a816a41bc94cbd8eebea13ce0491b2ac11b88',1,'tmc51x0::LOW']]]
 ];

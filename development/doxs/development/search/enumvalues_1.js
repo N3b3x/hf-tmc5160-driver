@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['beltdrive_0',['BeltDrive',['../namespacetmc5160.html#a00679448289a759ed7f70e47f9d11596ad3fe043af498c0c3096222212fbeef50',1,'tmc5160']]],
-  ['binary_1',['BINARY',['../namespacetmc5160.html#a3aec783c996f5aa4b0903200b060fdfda98ad0e8750ae10ad556ed7a62affb452',1,'tmc5160']]],
-  ['board_5ftmc5160_5fbob_2',['BOARD_TMC5160_BOB',['../namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67ad7b28c094830b24a8c954e00e1ead749',1,'tmc5160_test_config']]],
-  ['board_5ftmc5160_5feval_3',['BOARD_TMC5160_EVAL',['../namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67a460a09206e1dd3e0cd050257d6e45177',1,'tmc5160_test_config']]],
-  ['both_5fedges_4',['BOTH_EDGES',['../namespacetmc5160.html#a4eaf32584629b8ef44ee951e7ebf4916a03495d0b1362f1d841b59007e2887c7f',1,'tmc5160::BOTH_EDGES'],['../namespacetmc5160.html#a2ee7193a78dd507e5c413884ce8c33aca03495d0b1362f1d841b59007e2887c7f',1,'tmc5160::BOTH_EDGES'],['../namespacetmc5160.html#abd036b01466079f99682a4953bd12ac2a03495d0b1362f1d841b59007e2887c7f',1,'tmc5160::BOTH_EDGES']]]
+  ['beltdrive_0',['BeltDrive',['../namespacetmc51x0.html#a20af559eb85dbac784b3a4cb644cf63bad3fe043af498c0c3096222212fbeef50',1,'tmc51x0']]],
+  ['binary_1',['BINARY',['../namespacetmc51x0.html#a84ea1648f7a9d02773c685cf16f64c77a98ad0e8750ae10ad556ed7a62affb452',1,'tmc51x0']]],
+  ['board_5ftmc51x0_5fbob_2',['BOARD_TMC51x0_BOB',['../namespacetmc51x0__test__config.html#a51b0dba909f85650df61ff8636dae632a858346a9e3c587f6698885798237d29b',1,'tmc51x0_test_config']]],
+  ['board_5ftmc51x0_5feval_3',['BOARD_TMC51x0_EVAL',['../namespacetmc51x0__test__config.html#a51b0dba909f85650df61ff8636dae632ae4037637363e8b55b3b4d40259513ead',1,'tmc51x0_test_config']]],
+  ['both_5fedges_4',['BOTH_EDGES',['../namespacetmc51x0.html#a72806fd22f0c0112600ad9056aa3be97a03495d0b1362f1d841b59007e2887c7f',1,'tmc51x0::BOTH_EDGES'],['../namespacetmc51x0.html#a27074bd299d4daedf7fa42542a072679a03495d0b1362f1d841b59007e2887c7f',1,'tmc51x0::BOTH_EDGES'],['../namespacetmc51x0.html#a0bb937f055abebd74c4f74fb03bb5696a03495d0b1362f1d841b59007e2887c7f',1,'tmc51x0::BOTH_EDGES']]]
 ];

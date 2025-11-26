@@ -1,0 +1,28 @@
+var structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters =
+[
+    [ "a_1", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a6b409123e59624f7762ad8ef0dd4ebb2", null ],
+    [ "amax", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a9c143fb74fd022bff3362092f9b2cc20", null ],
+    [ "coolconf", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a2f89f521fb80373a595cba737d4fe7f4", null ],
+    [ "d_1", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#acffb0db283dd3614a03b642de208eb1e", null ],
+    [ "dcctrl", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#aa51ee6f26013c2f5d9a23240f4c92cd7", null ],
+    [ "dmax", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#aea4af21f9aa492491b8cf99820dc82e3", null ],
+    [ "drv_conf", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a8ae1dae0601dcb601c0cc53ab0f438fb", null ],
+    [ "enc_const", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a1ee1dd8e2a085d3f868f60bfe82ec770", null ],
+    [ "enc_deviation", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#ab262691c375aebacf8f8be2f16126c2f", null ],
+    [ "global_scaler", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a1d36f9ec49103ae8e86ab211b887f588", null ],
+    [ "ihold_irun", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a81d1eb4ae8cffd1a678644600eee5357", null ],
+    [ "pwmconf", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a2a809e9acb00225cef3cfb7990e81ee2", null ],
+    [ "short_conf", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#ada5676a36827f994675ed0bd70c47ee5", null ],
+    [ "slaveconf", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#af2db48200d7de53a6b5da3bb8d4f9de7", null ],
+    [ "tcoolthrs", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a24be831d9954e8f31f8718a7667c1b8f", null ],
+    [ "thigh", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a077dbd52da6e128be12094940b535115", null ],
+    [ "tpowerdown", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a41cdf60a8ef6e2d4f3fd747e9487bb54", null ],
+    [ "tpwmthrs", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a5109d280436253173ffc894f8ba02a2e", null ],
+    [ "tzerowait", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#af4d8cde4ecfd261ab68bc055d78d8161", null ],
+    [ "v_1", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a71c31f1613c21f4cbb7cb3b63098e7f2", null ],
+    [ "vdcmin", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a5fe94610264f977f721d45126719f3cd", null ],
+    [ "vmax", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#af0ee4ad8df0b7682346fca97c1fd8551", null ],
+    [ "vstart", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a30122a458db0de83dd67979666c793bc", null ],
+    [ "vstop", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a970543a4e1a4992392b155b9a8afc67c", null ],
+    [ "x_compare", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#aa2e262b101966d17a022e98106723d42", null ]
+];

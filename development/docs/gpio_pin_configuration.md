@@ -373,7 +373,7 @@ spi.SetPinMapping(tmc5160::TMC5160CtrlPin::ENCN, GPIO_NUM_10);
 
 // Configure encoder in driver
 tmc5160::EncoderConfig enc_cfg{};
-enc_cfg.enc_sel_decimal = false;
+enc_cfg.prescaler_mode = tmc5160::EncoderPrescalerMode::BINARY;
 driver.encoder.Configure(enc_cfg);
 driver.encoder.SetResolution(200, 1000, false);
 ```
@@ -477,7 +477,7 @@ tmc5160::TMC5160<Esp32SPI> driver(spi);
 
 ```cpp
 // Set mode to SPI + Internal Ramp Generator
-if (driver.SetChipCommMode(tmc5160::ChipCommMode::SPI_INTERNAL_RAMP)) {
+if (driver.communication.SetOperatingMode(tmc5160::ChipCommMode::SPI_INTERNAL_RAMP)) {
   ESP_LOGI(TAG, "Mode set to SPI + Internal Ramp");
   // ⚠️ CRITICAL: Must reset chip for mode change to take effect
   // The mode pins are read at startup, so changes require a reset
@@ -486,7 +486,7 @@ if (driver.SetChipCommMode(tmc5160::ChipCommMode::SPI_INTERNAL_RAMP)) {
 
 // Read current mode
 tmc5160::ChipCommMode current_mode;
-if (driver.GetChipCommMode(current_mode)) {
+if (driver.communication.GetOperatingMode(current_mode)) {
   ESP_LOGI(TAG, "Current mode: %d", static_cast<int>(current_mode));
 }
 ```
@@ -511,7 +511,6 @@ if (driver.GetChipCommMode(current_mode)) {
 
 ## See Also
 
-- `examples/esp32/main/gpio_pin_config_example.cpp` - Complete GPIO pin configuration example
-- `examples/esp32/main/esp32_tmc5160_bus.hpp` - ESP32 SPI implementation with full GPIO support
+- `examples/esp32/main/test_config/esp32_tmc5160_bus.hpp` - ESP32 SPI implementation with full GPIO support
 - TMC5160 Datasheet Section 2.2 - Pin function descriptions
 

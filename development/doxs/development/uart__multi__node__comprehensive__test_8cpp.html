@@ -18,6 +18,9 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -98,25 +101,25 @@ $(function(){initNavTree('uart__multi__node__comprehensive__test_8cpp.html','');
 </div><!--header-->
 <div class="contents">
 
-<p>Comprehensive UART Multi-Node testing suite for TMC5160 (MULTI-MOTOR)  
+<p>Comprehensive UART Multi-Node testing suite for TMC51x0 (MULTI-MOTOR)  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="tmc5160_8hpp_source.html">../../../inc/tmc5160.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="esp32__tmc5160__bus_8hpp_source.html">esp32_tmc5160_bus.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="TestFramework_8h_source.html">TestFramework.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="tmc51x0_8hpp_source.html">tmc51x0.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp32__tmc51x0__bus_8hpp_source.html">test_config/esp32_tmc51x0_bus.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="TestFramework_8h_source.html">test_config/TestFramework.h</a>&quot;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for uart_multi_node_comprehensive_test.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp__incl.svg" width="2830" height="506"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp__incl.svg" width="2903" height="520"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:af0d6b8c92d7be7f167aaecfa615f0f1a" id="r_af0d6b8c92d7be7f167aaecfa615f0f1a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0d6b8c92d7be7f167aaecfa615f0f1a">test_uart_node_addressing</a> () noexcept</td></tr>
 <tr class="separator:af0d6b8c92d7be7f167aaecfa615f0f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fcde3f5ec3f3606e4d47eaed851f4bd" id="r_a4fcde3f5ec3f3606e4d47eaed851f4bd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4fcde3f5ec3f3606e4d47eaed851f4bd">test_slave_address_configuration</a> () noexcept</td></tr>
-<tr class="separator:a4fcde3f5ec3f3606e4d47eaed851f4bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d51614a9462c934ba45b4fc950fa559" id="r_a3d51614a9462c934ba45b4fc950fa559"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d51614a9462c934ba45b4fc950fa559">test_uart_node_address_configuration</a> () noexcept</td></tr>
+<tr class="separator:a3d51614a9462c934ba45b4fc950fa559"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ee4f2081608954899837256fa107c7e" id="r_a6ee4f2081608954899837256fa107c7e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ee4f2081608954899837256fa107c7e">test_send_delay_configuration</a> () noexcept</td></tr>
 <tr class="separator:a6ee4f2081608954899837256fa107c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5540756c4425759d8d7f9a1a3cd1d8e9" id="r_a5540756c4425759d8d7f9a1a3cd1d8e9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5540756c4425759d8d7f9a1a3cd1d8e9">test_multi_node_coordination</a> () noexcept</td></tr>
@@ -132,8 +135,8 @@ Variables</h2></td></tr>
 <tr class="separator:aaff89257c54366921eebb8ec1348b1fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b0cc66ab6bfb83f4cc83b01368f70b8" id="r_a9b0cc66ab6bfb83f4cc83b01368f70b8"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b0cc66ab6bfb83f4cc83b01368f70b8">ENABLE_NODE_ADDRESSING_TESTS</a> = true</td></tr>
 <tr class="separator:a9b0cc66ab6bfb83f4cc83b01368f70b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7df5e91b9a22e1dc752dc18975e4a4e9" id="r_a7df5e91b9a22e1dc752dc18975e4a4e9"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7df5e91b9a22e1dc752dc18975e4a4e9">ENABLE_SLAVE_ADDRESS_TESTS</a> = true</td></tr>
-<tr class="separator:a7df5e91b9a22e1dc752dc18975e4a4e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47083612ee2e4bdcce0ed24b63c029bd" id="r_a47083612ee2e4bdcce0ed24b63c029bd"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47083612ee2e4bdcce0ed24b63c029bd">ENABLE_NODE_ADDRESS_TESTS</a> = true</td></tr>
+<tr class="separator:a47083612ee2e4bdcce0ed24b63c029bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97a8ccca2c3e71c12dbfa9a9027b08e7" id="r_a97a8ccca2c3e71c12dbfa9a9027b08e7"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97a8ccca2c3e71c12dbfa9a9027b08e7">ENABLE_SEND_DELAY_TESTS</a> = true</td></tr>
 <tr class="separator:a97a8ccca2c3e71c12dbfa9a9027b08e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab441e82e7badc80a7d32e15d5f9d3dbf" id="r_ab441e82e7badc80a7d32e15d5f9d3dbf"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab441e82e7badc80a7d32e15d5f9d3dbf">ENABLE_MULTI_NODE_COORDINATION_TESTS</a> = true</td></tr>
@@ -148,23 +151,23 @@ Variables</h2></td></tr>
 <tr class="separator:aca2e55a43fbb2e21649216d80ec402f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41fcf4530de550ff6f72008fcded08cc" id="r_a41fcf4530de550ff6f72008fcded08cc"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41fcf4530de550ff6f72008fcded08cc">TEST_TOFF</a> = 5</td></tr>
 <tr class="separator:a41fcf4530de550ff6f72008fcded08cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b32e418bcfce482b3d94e1e6a0999a2" id="r_a3b32e418bcfce482b3d94e1e6a0999a2"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b32e418bcfce482b3d94e1e6a0999a2">TEST_MRES</a> = 4</td></tr>
-<tr class="separator:a3b32e418bcfce482b3d94e1e6a0999a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4ac48c833f5c615fa07b1f87dacd8a5" id="r_ab4ac48c833f5c615fa07b1f87dacd8a5"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4">tmc51x0::MicrostepResolution</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4ac48c833f5c615fa07b1f87dacd8a5">TEST_MRES</a> = <a class="el" href="namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4af6a5e029c66401ac3bb0d52f2f29353e">tmc51x0::MicrostepResolution::MRES_256</a></td></tr>
+<tr class="separator:ab4ac48c833f5c615fa07b1f87dacd8a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Comprehensive UART Multi-Node testing suite for TMC5160 (MULTI-MOTOR) </p>
-<p>⚠️ MULTI-MOTOR HARDWARE REQUIRED ⚠️ This test suite requires multiple TMC5160 drivers connected in a UART network. DO NOT run these tests on a single-motor setup.</p>
-<p>This file contains comprehensive testing for TMC5160 UART multi-node features:</p><ul>
+<div class="textblock"><p>Comprehensive UART Multi-Node testing suite for TMC51x0 (MULTI-MOTOR) </p>
+<p>⚠️ MULTI-MOTOR HARDWARE REQUIRED ⚠️ This test suite requires multiple TMC51x0 drivers connected in a UART network. DO NOT run these tests on a single-motor setup.</p>
+<p>This file contains comprehensive testing for TMC51x0 UART multi-node features:</p><ul>
 <li>UART node addressing</li>
-<li>Slave address configuration</li>
+<li>UART node address configuration</li>
 <li>Send delay configuration</li>
 <li>Multi-node coordination</li>
 <li>NAI/NAO pin management</li>
 </ul>
 <p>Hardware Requirements:</p><ul>
 <li>ESP32 development board</li>
-<li>2+ TMC5160 stepper motor drivers (connected via UART with NAI/NAO daisy chain)</li>
-<li>Stepper motors connected to each TMC5160</li>
+<li>2+ TMC51x0 stepper motor drivers (connected via UART with NAI/NAO daisy chain)</li>
+<li>Stepper motors connected to each TMC51x0</li>
 <li>UART connection: All chips share TXD/RXD</li>
 <li>NAI/NAO pins for addressing: First chip NAI to GND, chain NAO→NAI</li>
 </ul>
@@ -259,8 +262,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a4fcde3f5ec3f3606e4d47eaed851f4bd" name="a4fcde3f5ec3f3606e4d47eaed851f4bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fcde3f5ec3f3606e4d47eaed851f4bd">&#9670;&#160;</a></span>test_slave_address_configuration()</h2>
+<a id="a3d51614a9462c934ba45b4fc950fa559" name="a3d51614a9462c934ba45b4fc950fa559"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d51614a9462c934ba45b4fc950fa559">&#9670;&#160;</a></span>test_uart_node_address_configuration()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -269,7 +272,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool test_slave_address_configuration </td>
+          <td class="memname">bool test_uart_node_address_configuration </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -284,7 +287,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp_a4fcde3f5ec3f3606e4d47eaed851f4bd_icgraph.svg" width="292" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp_a3d51614a9462c934ba45b4fc950fa559_icgraph.svg" width="323" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -342,6 +345,28 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a47083612ee2e4bdcce0ed24b63c029bd" name="a47083612ee2e4bdcce0ed24b63c029bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47083612ee2e4bdcce0ed24b63c029bd">&#9670;&#160;</a></span>ENABLE_NODE_ADDRESS_TESTS</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool ENABLE_NODE_ADDRESS_TESTS = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a9b0cc66ab6bfb83f4cc83b01368f70b8" name="a9b0cc66ab6bfb83f4cc83b01368f70b8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9b0cc66ab6bfb83f4cc83b01368f70b8">&#9670;&#160;</a></span>ENABLE_NODE_ADDRESSING_TESTS</h2>
 
@@ -375,28 +400,6 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">constexpr bool ENABLE_SEND_DELAY_TESTS = true</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a7df5e91b9a22e1dc752dc18975e4a4e9" name="a7df5e91b9a22e1dc752dc18975e4a4e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7df5e91b9a22e1dc752dc18975e4a4e9">&#9670;&#160;</a></span>ENABLE_SLAVE_ADDRESS_TESTS</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr bool ENABLE_SLAVE_ADDRESS_TESTS = true</td>
         </tr>
       </table>
   </td>
@@ -518,8 +521,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a3b32e418bcfce482b3d94e1e6a0999a2" name="a3b32e418bcfce482b3d94e1e6a0999a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b32e418bcfce482b3d94e1e6a0999a2">&#9670;&#160;</a></span>TEST_MRES</h2>
+<a id="ab4ac48c833f5c615fa07b1f87dacd8a5" name="ab4ac48c833f5c615fa07b1f87dacd8a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4ac48c833f5c615fa07b1f87dacd8a5">&#9670;&#160;</a></span>TEST_MRES</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -528,7 +531,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t TEST_MRES = 4</td>
+          <td class="memname">constexpr <a class="el" href="namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4">tmc51x0::MicrostepResolution</a> TEST_MRES = <a class="el" href="namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4af6a5e029c66401ac3bb0d52f2f29353e">tmc51x0::MicrostepResolution::MRES_256</a></td>
         </tr>
       </table>
   </td>

@@ -123,8 +123,8 @@ This document provides a comprehensive analysis of the current TMC5160 driver im
 - `IsTargetReached()` - Check position reached
 - `IsTargetVelocityReached()` - Check velocity reached
 - `Stop()` - Emergency stop
-- `SetTargetPositionMm()` - Set position in millimeters (unit conversion)
-- `SetMaxSpeedRpm()` - Set speed in RPM (unit conversion)
+- `SetTargetPosition()` with `Unit::Mm` - Set position in millimeters (unit conversion)
+- `SetMaxSpeed()` with `Unit::Rpm` - Set speed in RPM (unit conversion)
 - `ConfigureReferenceSwitch()` - Configure endstops/switches
 - `GetLatchedPosition()` - Get latched position
 - `SetComparePosition()` - Set X_COMPARE register
@@ -140,7 +140,7 @@ This document provides a comprehensive analysis of the current TMC5160 driver im
 - `ConfigureStealthChop()` - Configure stealthChop PWM
 - `SetModeChangeSpeeds()` - Set TPWMTHRS, TCOOLTHRS, THIGH
 - `SetGlobalScaler()` - Set global current scaler
-- `SetFreewheelingMode()` - Set freewheeling mode
+- `ConfigureStealthChop()` with `freewheel` field - Set freewheeling mode
 - `ConfigureCoolStep()` - Configure CoolStep
 - `ConfigureDcStep()` - Configure dcStep (unique to current)
 - `SetMicrostepLookupTable()` - Set MSLUT entries (unique to current)
@@ -178,16 +178,16 @@ This document provides a comprehensive analysis of the current TMC5160 driver im
 - `ReadOffsetCalibration()` - Read OFFSET_READ register (unique to current)
 
 #### Communication Subsystem (3 methods)
-- `ConfigureSlaveAddress()` - Configure UART slave address
-- `GetSlaveAddress()` - Get slave address
-- `GetSendDelay()` - Get send delay
+- `ConfigureUartNodeAddress()` - Configure UART node address
+- `GetUartNodeAddress()` - Get UART node address
+- `ConfigureUartNodeAddress()` - Configure UART node address and send delay
 
 #### Protection Subsystem (2 methods)
 - `ConfigureShortProtection()` - Configure short protection
 - `SetShortProtectionLevels()` - Set short protection levels
 
 #### UartConfig Subsystem (1 method)
-- `ConfigureSlave()` - Configure UART slave settings
+- `ConfigureUartNodeAddress()` - Configure UART node address settings
 
 **Total: 72+ public API methods**
 
@@ -222,8 +222,8 @@ The following methods are **only available** in the current implementation:
    - `GetMicrostepCurrent()` - Read MSCURACT
 
 3. **Unit Conversions:**
-   - `SetTargetPositionMm()` - Set position in millimeters
-   - `SetMaxSpeedRpm()` - Set speed in RPM
+   - `SetTargetPosition()` with `Unit::Mm` - Set position in millimeters
+   - `SetMaxSpeed()` with `Unit::Rpm` - Set speed in RPM
 
 4. **Advanced Diagnostics:**
    - `PerformSensorlessHoming()` - Sensorless homing using StallGuard2

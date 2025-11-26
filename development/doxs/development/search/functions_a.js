@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['mechanicalsystem_0',['MechanicalSystem',['../structtmc5160_1_1MechanicalSystem.html#acb59226765a34f5fefa21da645d65351',1,'tmc5160::MechanicalSystem']]],
-  ['mmpersectostepspersec_1',['MmPerSecToStepsPerSec',['../namespacetmc5160.html#a10397a604d3a3add091c0c13f8e806e6',1,'tmc5160']]],
-  ['mmtosteps_2',['MmToSteps',['../namespacetmc5160.html#affbfa04d45ce3729d6becb2551d3376e',1,'tmc5160']]],
+  ['mechanicalsystem_0',['MechanicalSystem',['../structtmc51x0_1_1MechanicalSystem.html#a38661e893946f3474f859596e8d09d4f',1,'tmc51x0::MechanicalSystem']]],
+  ['mmpersectostepspersec_1',['MmPerSecToStepsPerSec',['../namespacetmc51x0.html#a75950339da8df172472557556f439628',1,'tmc51x0']]],
+  ['mmtosteps_2',['MmToSteps',['../namespacetmc51x0.html#a67bdb4d4ee51eb6afb6483731177af81',1,'tmc51x0']]],
   ['motion_5fcontrol_5ftask_3',['motion_control_task',['../bounds__finding__sinuous__motion_8cpp.html#aa7704c2c8716e80dc20804e4c7fb8fd4',1,'bounds_finding_sinuous_motion.cpp']]],
-  ['motorcontrol_4',['MotorControl',['../structtmc5160_1_1TMC5160_1_1MotorControl.html#a4564d7ab30e0b34c245e19d77e31edf1',1,'tmc5160::TMC5160::MotorControl']]],
-  ['motorspec_5',['MotorSpec',['../structtmc5160_1_1MotorSpec.html#afc5c87895399b43dd969cbe7a47074ca',1,'tmc5160::MotorSpec']]]
+  ['motorcontrol_4',['MotorControl',['../structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a5e6d0821b2e44e448bbd495962eb7960',1,'tmc51x0::TMC51x0::MotorControl']]],
+  ['motorspec_5',['MotorSpec',['../structtmc51x0_1_1MotorSpec.html#af4072f42b1fe2615fa8bb08766b15a05',1,'tmc51x0::MotorSpec']]]
 ];

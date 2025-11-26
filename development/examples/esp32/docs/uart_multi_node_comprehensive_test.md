@@ -221,12 +221,12 @@ For initial setup:
 // Configure node 0
 SetNAIPin(0, LOW);  // Select node 0
 SetNAIPin(1, HIGH);
-node0->SetSlaveAddress(0);
+node0->communication.SetUartNodeAddress(0);
 
 // Configure node 1
 SetNAIPin(0, HIGH);
 SetNAIPin(1, LOW);  // Select node 1
-node1->SetSlaveAddress(1);
+node1->communication.SetUartNodeAddress(1);
 ```
 
 ## Expected Behavior

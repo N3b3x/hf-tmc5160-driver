@@ -1,0 +1,5 @@
+<map id="tmc51x0::UartFrame::Write" name="tmc51x0::UartFrame::Write">
+<area shape="rect" id="Node000001" title="Construct a write access frame (8 bytes)" alt="" coords="269,5,425,45"/>
+<area shape="rect" id="Node000002" href="$classtmc51x0_1_1UartCommInterface.html#a07fc8787ed9723f7cecea1a5c138afbf" title="Write a 32&#45;bit register via UART." alt="" coords="5,5,221,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="256,28,221,28,221,23,256,23"/>
+</map>

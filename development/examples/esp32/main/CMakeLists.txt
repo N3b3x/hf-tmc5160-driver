@@ -73,7 +73,7 @@ set(MAIN_REQUIRES
     driver              # ESP-IDF driver framework (GPIO, I2C, SPI, UART)
     esp_timer           # ESP-IDF timer functionality
     freertos            # FreeRTOS for threading and synchronization
-    hf_tmc5160          # TMC5160 driver component
+    hf_tmc51x0          # TMC51x0 driver component (TMC5130 & TMC5160)
 )
 
 # =============================================================================
@@ -81,7 +81,7 @@ set(MAIN_REQUIRES
 # =============================================================================
 # Register the main component with ESP-IDF build system
 idf_component_register(
-    SRCS "bounds_finding_sinuous_motion.cpp" "stallguard_tuning.cpp" "sinusoidal.cpp" "spi_daisy_chain_comprehensive_test.cpp" "internal_ramp_comprehensive_test.cpp" "${APP_SOURCE_FILE}"              # Source file (determined by build_app.sh)
+    SRCS "${APP_SOURCE_FILE}"              # Source file (determined by build_app.sh)
     INCLUDE_DIRS ${MAIN_INCLUDE_DIRS}      # Include directories defined above
     REQUIRES ${MAIN_REQUIRES}              # Component dependencies defined above
 )

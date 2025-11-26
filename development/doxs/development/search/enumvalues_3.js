@@ -1,16 +1,18 @@
 var searchData=
 [
-  ['dcen_0',['DCEN',['../namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4ac61f660d0a38ca70970b88ade5b9c205',1,'tmc5160']]],
-  ['dcin_1',['DCIN',['../namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4ac87f65790239520034c32e73b50e3a12',1,'tmc5160']]],
-  ['dco_2',['DCO',['../namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4a56326fb851c1918c9b954a13cd007c57',1,'tmc5160']]],
-  ['decimal_3',['DECIMAL',['../namespacetmc5160.html#a3aec783c996f5aa4b0903200b060fdfda13d992d671957e9a2b3e936ca0cf14a4',1,'tmc5160']]],
-  ['deg_4',['Deg',['../namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26ab70808dc1e3f9e2c06c9ba840cc7f44c',1,'tmc5160']]],
-  ['degrees_5',['DEGREES',['../bounds__finding__sinuous__motion_8cpp.html#a70ab36d1d4920fdd314279845af152c5afee20551b6d06fd83aa56a486e557307',1,'bounds_finding_sinuous_motion.cpp']]],
-  ['diag0_6',['DIAG0',['../namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4a096538213f7a62873f3e7f37801559de',1,'tmc5160']]],
-  ['diag1_7',['DIAG1',['../namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4a7ba8a2a766732ac17ad64ec3826f0281',1,'tmc5160']]],
-  ['dir_8',['DIR',['../namespacetmc5160.html#a674cfb7fa2b17e4182eb1a87e79267e4ac1561b120842fabe1310417083827590',1,'tmc5160']]],
-  ['directdrive_9',['DirectDrive',['../namespacetmc5160.html#a00679448289a759ed7f70e47f9d11596aeaa47a40d5ae24b55e477563e264c94f',1,'tmc5160']]],
-  ['disabled_10',['DISABLED',['../namespacetmc5160.html#a587d5c069188523bc1a1fe01e9b077baa055c1a591abb0e8cd86dc969727bcc0b',1,'tmc5160::DISABLED'],['../namespacetmc5160.html#a2ee7193a78dd507e5c413884ce8c33aca055c1a591abb0e8cd86dc969727bcc0b',1,'tmc5160::DISABLED'],['../namespacetmc5160.html#a99e76557ed37506f89c1bf467b67b674a055c1a591abb0e8cd86dc969727bcc0b',1,'tmc5160::DISABLED']]],
-  ['dwell_5fat_5fmax_11',['DWELL_AT_MAX',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857',1,'FatigueTestMotion']]],
-  ['dwell_5fat_5fmin_12',['DWELL_AT_MIN',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803',1,'FatigueTestMotion']]]
+  ['dc_5fmotor_5fdual_0',['DC_MOTOR_DUAL',['../namespacetmc51x0.html#a43a3659df2d2d9c81f83cfc72daad756ae3443df4784a205ea4f9a8aa73cf1c85',1,'tmc51x0']]],
+  ['dc_5fmotor_5fsingle_1',['DC_MOTOR_SINGLE',['../namespacetmc51x0.html#a43a3659df2d2d9c81f83cfc72daad756a19c03424b33bcaf23f5dbed8781c7241',1,'tmc51x0']]],
+  ['dcen_2',['DCEN',['../namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106ebac61f660d0a38ca70970b88ade5b9c205',1,'tmc51x0']]],
+  ['dcin_3',['DCIN',['../namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106ebac87f65790239520034c32e73b50e3a12',1,'tmc51x0']]],
+  ['dco_4',['DCO',['../namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eba56326fb851c1918c9b954a13cd007c57',1,'tmc51x0']]],
+  ['decimal_5',['DECIMAL',['../namespacetmc51x0.html#a84ea1648f7a9d02773c685cf16f64c77a13d992d671957e9a2b3e936ca0cf14a4',1,'tmc51x0']]],
+  ['deg_6',['Deg',['../namespacetmc51x0.html#a68e41191c288365e02cfca672681f686ab70808dc1e3f9e2c06c9ba840cc7f44c',1,'tmc51x0']]],
+  ['degrees_7',['DEGREES',['../bounds__finding__sinuous__motion_8cpp.html#a70ab36d1d4920fdd314279845af152c5afee20551b6d06fd83aa56a486e557307',1,'bounds_finding_sinuous_motion.cpp']]],
+  ['diag0_8',['DIAG0',['../namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eba096538213f7a62873f3e7f37801559de',1,'tmc51x0']]],
+  ['diag1_9',['DIAG1',['../namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eba7ba8a2a766732ac17ad64ec3826f0281',1,'tmc51x0']]],
+  ['dir_10',['DIR',['../namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106ebac1561b120842fabe1310417083827590',1,'tmc51x0']]],
+  ['directdrive_11',['DirectDrive',['../namespacetmc51x0.html#a20af559eb85dbac784b3a4cb644cf63baeaa47a40d5ae24b55e477563e264c94f',1,'tmc51x0']]],
+  ['disabled_12',['DISABLED',['../namespacetmc51x0.html#a4abe4fa0f128137c19f7da4f9b58a816a055c1a591abb0e8cd86dc969727bcc0b',1,'tmc51x0::DISABLED'],['../namespacetmc51x0.html#a27074bd299d4daedf7fa42542a072679a055c1a591abb0e8cd86dc969727bcc0b',1,'tmc51x0::DISABLED'],['../namespacetmc51x0.html#a16f1b74dc7ec9f3e7d0588b6fb2e6774a055c1a591abb0e8cd86dc969727bcc0b',1,'tmc51x0::DISABLED']]],
+  ['dwell_5fat_5fmax_13',['DWELL_AT_MAX',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857',1,'FatigueTestMotion']]],
+  ['dwell_5fat_5fmin_14',['DWELL_AT_MIN',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803',1,'FatigueTestMotion']]]
 ];

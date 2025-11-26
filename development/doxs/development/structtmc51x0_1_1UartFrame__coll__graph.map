@@ -1,0 +1,5 @@
+<map id="tmc51x0::UartFrame" name="tmc51x0::UartFrame">
+<area shape="rect" id="Node000001" title="TMC5160 UART command/response frame structure with built&#45;in CRC8." alt="" coords="5,108,161,133"/>
+<area shape="rect" id="Node000002" href="$uniontmc51x0_1_1UartFrame_1_1Frame.html" title="Union for accessing UART frames in different ways." alt="" coords="5,5,161,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="86,59,86,108,81,108,81,59"/>
+</map>

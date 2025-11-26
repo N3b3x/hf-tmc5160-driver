@@ -1,0 +1,8 @@
+<map id="tmc51x0::DegreesToSteps" name="tmc51x0::DegreesToSteps">
+<area shape="rect" id="Node000001" title="Convert degrees to steps." alt="" coords="443,5,633,31"/>
+<area shape="rect" id="Node000002" href="$bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,5,92,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="429,17,395,17,140,17,92,18,92,13,140,11,395,11,429,12"/>
+<area shape="rect" id="Node000003" href="$classFatigueTestMotion.html#a5d228e53872d7dd297ff2ebd834c12f1" title="Set local bounds in degrees from center (thread&#45;safe)" alt="" coords="140,26,395,66"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="429,32,395,35,395,30,429,27"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="126,31,92,26,93,21,127,25"/>
+</map>

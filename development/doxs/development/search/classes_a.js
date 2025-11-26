@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['ramp_5fstat_5fregister_0',['RAMP_STAT_Register',['../uniontmc5160_1_1RAMP__STAT__Register.html',1,'tmc5160']]],
-  ['rampconfig_1',['RampConfig',['../structtmc5160_1_1RampConfig.html',1,'tmc5160']]],
-  ['rampcontrol_2',['RampControl',['../structtmc5160_1_1TMC5160_1_1RampControl.html',1,'tmc5160::TMC5160']]],
-  ['referenceswitchconfig_3',['ReferenceSwitchConfig',['../structtmc5160_1_1ReferenceSwitchConfig.html',1,'tmc5160']]]
+  ['pinactivelevels_0',['PinActiveLevels',['../structtmc51x0_1_1PinActiveLevels.html',1,'tmc51x0']]],
+  ['powerstageparameters_1',['PowerStageParameters',['../structtmc51x0_1_1PowerStageParameters.html',1,'tmc51x0']]],
+  ['printer_2',['Printer',['../structtmc51x0_1_1TMC51x0_1_1Printer.html',1,'tmc51x0::TMC51x0']]],
+  ['protection_3',['Protection',['../structtmc51x0_1_1TMC51x0_1_1Protection.html',1,'tmc51x0::TMC51x0']]],
+  ['pwm_5fauto_5fregister_4',['PWM_AUTO_Register',['../uniontmc51x0_1_1PWM__AUTO__Register.html',1,'tmc51x0']]],
+  ['pwm_5fscale_5fregister_5',['PWM_SCALE_Register',['../uniontmc51x0_1_1PWM__SCALE__Register.html',1,'tmc51x0']]],
+  ['pwmconf_5fregister_6',['PWMCONF_Register',['../uniontmc51x0_1_1PWMCONF__Register.html',1,'tmc51x0']]]
 ];

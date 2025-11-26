@@ -1,0 +1,10 @@
+<map id="tmc51x0::SpiCommInterface::AutoDetectChainLength" name="tmc51x0::SpiCommInterface::AutoDetectChainLength">
+<area shape="rect" id="Node000001" title="Auto&#45;detect the daisy chain length by sending a unique command that loops back." alt="" coords="5,69,213,109"/>
+<area shape="rect" id="Node000002" href="$structtmc51x0_1_1SpiCommand.html#a8573e5d7f3f3befa0bd93b5d72f6c18b" title="Get the 5&#45;byte frame as raw bytes." alt="" coords="278,5,453,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="189,67,271,46,273,51,191,72"/>
+<area shape="rect" id="Node000003" href="$structtmc51x0_1_1SpiCommand.html#a6f972ba0748a5bb4fcb8ed233af6fa85" title="Construct a read command." alt="" coords="278,69,453,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="213,87,264,87,264,92,213,92"/>
+<area shape="rect" id="Node000004" href="$classtmc51x0_1_1SpiCommInterface.html#a86c5faa8a8e88884c16a3a2b1b2512e7" title="Low&#45;level SPI transfer for register read/write." alt="" coords="261,157,469,197"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="170,107,294,150,292,155,168,112"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="318,158,315,148,323,138,339,133,365,131,395,134,411,141,409,146,394,139,365,136,341,138,326,143,320,149,323,156"/>
+</map>

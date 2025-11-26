@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['fatiguetestmotion_0',['FatigueTestMotion',['../classFatigueTestMotion.html#af7c7b4256b78ae5c761158039b76de87',1,'FatigueTestMotion']]],
+  ['fatiguetestmotion_0',['FatigueTestMotion',['../classFatigueTestMotion.html#a373fb38818685e8852c2e238a8643f8a',1,'FatigueTestMotion']]],
   ['findcommand_1',['FindCommand',['../classUartCommandParser.html#a39f6e678ffc3965cbce920bb025b0906',1,'UartCommandParser']]],
-  ['flip_5ftest_5fprogress_5findicator_2',['flip_test_progress_indicator',['../TestFramework_8h.html#a7bb80345e5681c19686df292fa897daf',1,'TestFramework.h']]],
-  ['formatstatusbits_3',['FormatStatusBits',['../structtmc5160_1_1SpiStatus.html#ae6d06a77f656e01cf5d6eb883ed2951d',1,'tmc5160::SpiStatus']]],
-  ['frombyte_4',['FromByte',['../structtmc5160_1_1SpiStatus.html#a239b9c3beda1236f315af5f126cf283d',1,'tmc5160::SpiStatus']]]
+  ['findworkingvelocityrange_2',['FindWorkingVelocityRange',['../tmc51x0_8cpp.html#a13bc96a1c20a549d52e531f1642f7509',1,'tmc51x0.cpp']]],
+  ['flip_5ftest_5fprogress_5findicator_3',['flip_test_progress_indicator',['../TestFramework_8h.html#a7bb80345e5681c19686df292fa897daf',1,'TestFramework.h']]],
+  ['formatstatusbits_4',['FormatStatusBits',['../structtmc51x0_1_1SpiStatus.html#a074ce9431f7b5c30ef7b83e1818dfd3b',1,'tmc51x0::SpiStatus']]],
+  ['frombyte_5',['FromByte',['../structtmc51x0_1_1SpiStatus.html#a503043f0b56362c63d76225c4876b9a2',1,'tmc51x0::SpiStatus']]]
 ];

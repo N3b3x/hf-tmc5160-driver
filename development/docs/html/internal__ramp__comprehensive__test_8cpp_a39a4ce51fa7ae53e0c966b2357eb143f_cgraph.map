@@ -1,15 +1,9 @@
 <map id="test_factory_otp_config" name="test_factory_otp_config">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,177,180,203"/>
-<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="228,177,368,203"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,187,214,187,214,193,181,193"/>
-<area shape="rect" id="Node000003" href="$namespacetmc5160__test__config.html#a8d4169028f909fa4c3bcaf35a1130f19" title="Helper function to populate DriverConfig from 17HS4401S direct drive motor configuration." alt="" coords="416,5,619,60"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="307,175,350,125,381,95,414,69,422,64,425,69,418,74,384,99,354,129,311,179"/>
-<area shape="rect" id="Node000004" href="$namespacetmc5160__test__config.html#ad066428e88b18d0b8a60d3cbb3866a72" title="Helper function to populate DriverConfig from 17HS4401S gearbox motor configuration." alt="" coords="416,84,619,139"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="334,175,427,141,428,146,336,180"/>
-<area shape="rect" id="Node000005" href="$namespacetmc5160__test__config.html#a3b6d57d96a6198cd1018a9e5c55c0c6b" title="Helper function to populate DriverConfig from Applied Motion 5034 motor configuration." alt="" coords="416,163,619,217"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="368,187,402,187,402,193,368,193"/>
-<area shape="rect" id="Node000006" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="436,242,599,282"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="338,200,444,235,442,240,337,205"/>
-<area shape="rect" id="Node000007" href="$internal__ramp__comprehensive__test_8cpp.html#a31cfb3926eb0c837bde126c1120fb3b9" title="Verify mode pins match expected communication mode." alt="" coords="449,307,586,332"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="312,201,355,246,385,271,417,292,436,300,434,305,415,296,381,275,351,250,308,205"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,42,180,67"/>
+<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="228,42,368,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,52,214,52,214,57,181,57"/>
+<area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#acfa741fd46ae4ba5ed006fb0361cf188" title="Complete pin configuration for all tests." alt="" coords="416,5,579,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="368,42,402,37,403,42,369,47"/>
+<area shape="rect" id="Node000004" href="$internal__ramp__comprehensive__test_8cpp.html#a266d3b939b723d24f9230b6b22b3b8a9" title="Verify mode pins match expected communication mode." alt="" coords="429,70,566,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="368,62,415,68,414,74,368,67"/>
 </map>

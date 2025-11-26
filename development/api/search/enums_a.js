@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['sensefiltertime_0',['SenseFilterTime',['../namespacetmc5160.html#a665a38f92e0b840fcadd8f86abfe7cab',1,'tmc5160']]],
-  ['stallguardsensitivity_1',['StallGuardSensitivity',['../namespacetmc5160.html#ab770990e772993b9d3609dd71d335d75',1,'tmc5160']]],
-  ['stealthchopjerkreduction_2',['StealthChopJerkReduction',['../namespacetmc5160.html#a9a573006493faa30433407b3a8de8a1e',1,'tmc5160']]],
-  ['stealthchoppwmfreq_3',['StealthChopPwmFreq',['../namespacetmc5160.html#a54cee59d08c9c45abede2726f8fc1dac',1,'tmc5160']]],
-  ['stealthchopregulationspeed_4',['StealthChopRegulationSpeed',['../namespacetmc5160.html#ae27e0401e84b11039e2df9f708a96337',1,'tmc5160']]]
+  ['sensefiltertime_0',['SenseFilterTime',['../namespacetmc51x0.html#a9f27f97ca1d020a01458164d74abadd9',1,'tmc51x0']]],
+  ['stallguardsensitivity_1',['StallGuardSensitivity',['../namespacetmc51x0.html#aca6b71c611ab7e217b0d3ce4208821d9',1,'tmc51x0']]],
+  ['stealthchopjerkreduction_2',['StealthChopJerkReduction',['../namespacetmc51x0.html#a52bd7474fc03fcfde3c7249fea7ea055',1,'tmc51x0']]],
+  ['stealthchoppwmfreq_3',['StealthChopPwmFreq',['../namespacetmc51x0.html#a93bd28a35e3561cd6881d51ef2dbbc24',1,'tmc51x0']]],
+  ['stealthchopregulationspeed_4',['StealthChopRegulationSpeed',['../namespacetmc51x0.html#aaa19c98f87ff911ca28183768e39f607',1,'tmc51x0']]]
 ];

@@ -25,30 +25,66 @@
 var NAVTREE =
 [
   [ "HF-TMC5160 Driver", "index.html", [
-    [ "📚 Table of Contents", "index.html#autotoc_md23", null ],
-    [ "📦 Overview", "index.html#autotoc_md24", null ],
-    [ "✨ Features", "index.html#autotoc_md25", [
-      [ "Core Motor Control", "index.html#autotoc_md26", null ],
-      [ "Multi-Chip Communication", "index.html#autotoc_md27", null ],
-      [ "Advanced Features", "index.html#autotoc_md28", null ],
-      [ "Platform & Architecture", "index.html#autotoc_md29", null ]
+    [ "📚 Table of Contents", "index.html#autotoc_md27", null ],
+    [ "📦 Overview", "index.html#autotoc_md28", [
+      [ "Architecture & Design", "index.html#autotoc_md29", null ],
+      [ "Key Capabilities", "index.html#autotoc_md30", null ]
     ] ],
-    [ "🚀 Quick Start", "index.html#autotoc_md30", [
-      [ "Single Motor Setup", "index.html#autotoc_md31", null ],
-      [ "Multi-Motor Daisy Chain Setup", "index.html#autotoc_md32", null ],
-      [ "Using Physical Units", "index.html#autotoc_md33", null ]
+    [ "✨ Features", "index.html#autotoc_md31", [
+      [ "🎯 Core Motor Control", "index.html#autotoc_md32", [
+        [ "RampControl Subsystem", "index.html#autotoc_md33", null ],
+        [ "MotorControl Subsystem", "index.html#autotoc_md34", null ]
+      ] ],
+      [ "🔍 Diagnostics & Tuning", "index.html#autotoc_md35", [
+        [ "Diagnostics Subsystem", "index.html#autotoc_md36", null ],
+        [ "Tuning Subsystem ⭐ NEW", "index.html#autotoc_md37", null ]
+      ] ],
+      [ "🏠 Homing & Positioning", "index.html#autotoc_md38", [
+        [ "Homing Subsystem", "index.html#autotoc_md39", null ]
+      ] ],
+      [ "🔄 Encoder Integration", "index.html#autotoc_md40", [
+        [ "Encoder Subsystem", "index.html#autotoc_md41", null ]
+      ] ],
+      [ "🛡️ Protection Systems", "index.html#autotoc_md42", [
+        [ "Protection Subsystem", "index.html#autotoc_md43", null ]
+      ] ],
+      [ "🔗 Multi-Chip Communication", "index.html#autotoc_md44", [
+        [ "Communication Subsystem", "index.html#autotoc_md45", null ]
+      ] ],
+      [ "⚙️ Advanced Features", "index.html#autotoc_md46", null ],
+      [ "🏗️ Platform & Architecture", "index.html#autotoc_md47", null ]
     ] ],
-    [ "🔧 Installation", "index.html#autotoc_md34", null ],
-    [ "📖 API Reference", "index.html#autotoc_md35", [
-      [ "Core Methods", "index.html#autotoc_md36", null ],
-      [ "Multi-Chip Methods", "index.html#autotoc_md37", null ],
-      [ "Unit Conversion Methods", "index.html#autotoc_md38", null ],
-      [ "Advanced Features", "index.html#autotoc_md39", null ]
+    [ "🚀 Quick Start", "index.html#autotoc_md48", [
+      [ "Single Motor Setup", "index.html#autotoc_md49", null ],
+      [ "Multi-Motor Daisy Chain Setup", "index.html#autotoc_md50", null ],
+      [ "Using Physical Units", "index.html#autotoc_md51", null ]
     ] ],
-    [ "📊 Examples", "index.html#autotoc_md40", null ],
-    [ "📚 Documentation", "index.html#autotoc_md41", null ],
-    [ "🤝 Contributing", "index.html#autotoc_md42", null ],
-    [ "📄 License", "index.html#autotoc_md43", null ],
+    [ "🔧 Installation", "index.html#autotoc_md52", null ],
+    [ "📖 API Reference", "index.html#autotoc_md53", [
+      [ "Class Structure & Subsystems", "index.html#autotoc_md54", null ],
+      [ "Key Methods by Subsystem", "index.html#autotoc_md55", [
+        [ "RampControl Subsystem", "index.html#autotoc_md56", null ],
+        [ "MotorControl Subsystem", "index.html#autotoc_md57", null ],
+        [ "Diagnostics Subsystem", "index.html#autotoc_md58", null ],
+        [ "Tuning Subsystem ⭐ NEW", "index.html#autotoc_md59", null ],
+        [ "Homing Subsystem", "index.html#autotoc_md60", null ],
+        [ "Encoder Subsystem", "index.html#autotoc_md61", null ],
+        [ "Protection Subsystem", "index.html#autotoc_md62", null ],
+        [ "Communication Subsystem", "index.html#autotoc_md63", null ]
+      ] ],
+      [ "Multi-Chip Support", "index.html#autotoc_md64", null ],
+      [ "Unit Conversion Helpers", "index.html#autotoc_md65", null ]
+    ] ],
+    [ "📊 Examples", "index.html#autotoc_md66", [
+      [ "Core Functionality", "index.html#autotoc_md67", null ],
+      [ "Multi-Chip Communication", "index.html#autotoc_md68", null ],
+      [ "Advanced Features", "index.html#autotoc_md69", null ],
+      [ "Motor Control & Motion", "index.html#autotoc_md70", null ],
+      [ "Specialized Applications", "index.html#autotoc_md71", null ]
+    ] ],
+    [ "📚 Documentation", "index.html#autotoc_md72", null ],
+    [ "🤝 Contributing", "index.html#autotoc_md73", null ],
+    [ "📄 License", "index.html#autotoc_md74", null ],
     [ "Deprecated List", "deprecated.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Namespaces", "namespaces.html", [
@@ -88,16 +124,17 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "TestFramework_8h.html",
-"classtmc5160_1_1SpiCommInterface.html#ab05ee9d4730a81797159444cc8ce3f81",
-"esp32__tmc5160__test__config_8hpp.html#ac5fdeee3d0fec452ae27c470250ce644",
-"internal__ramp__comprehensive__test_8cpp.html#aee105fad1f3169ed7d839101d4d97199",
-"namespacetmc5160__test__config.html#ad8bac97c333882ab834132f4daff0860",
-"structtmc5160_1_1ChopperConfig.html#a873868ab02acac279fe319614c1be503",
-"structtmc5160_1_1MotorSpec.html#ad7fa9d4639389ad181fface0f73af7ed",
-"structtmc5160_1_1TMC5160PinConfig.html#ade528730fa53e22e7841c6f599cac246",
-"tmc5160__types_8hpp.html#a3aec783c996f5aa4b0903200b060fdfd",
-"uniontmc5160_1_1DRV__STATUS__Register.html#a306cc8629c359cad062f47b187e083f8",
-"uniontmc5160_1_1OTP__READ__Register.html#a974fe47f88a7adfad880e15cd1f2d9b7"
+"classtmc51x0_1_1SpiCommInterface.html#a9f40aef4e53519c6e73fa58a3ff15cef",
+"esp32__tmc51x0__test__config_8hpp.html#a9c295753349facf95386a659871c8059",
+"internal__ramp__comprehensive__test_8cpp.html#a3f1e89f6e3a0be599511d4a8cc389305",
+"namespacetmc51x0.html#aaa19c98f87ff911ca28183768e39f607ad3f84081b6b3a6c3f66b20414b6a7238",
+"namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#ae14a4105feee32e5a1cc248f9beb47e0",
+"structtmc51x0_1_1EncoderConfig.html#a8ac85b3a91f867fd10bcc84b78f137a7",
+"structtmc51x0_1_1ReferenceSwitchConfig.html#aa7bc962e13ef81e3b1de5e0dcac5efd6",
+"structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a16f021533385f752741f613082b7b27c",
+"tmc51x0__types_8hpp.html#a0279a9b8b855afe30f3d2f8fb8297d21ab5df3d530fe63d11b4f120792e5cbe83",
+"uniontmc51x0_1_1DRV__CONF__Register.html#a03201aa9132422c8cd8a502e19fe82c4",
+"uniontmc51x0_1_1OTP__PROG__Register.html#a3d4fc5720abdd3b3813f1abfc14fa74d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

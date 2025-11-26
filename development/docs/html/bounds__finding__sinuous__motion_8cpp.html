@@ -18,6 +18,9 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -103,9 +106,9 @@ $(function(){initNavTree('bounds__finding__sinuous__motion_8cpp.html',''); initR
 
 <p>Fatigue testing platform: Sensorless bounds finding and sinusoidal motion with UART command interface.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="tmc5160_8hpp_source.html">../../../inc/tmc5160.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="esp32__tmc5160__bus_8hpp_source.html">esp32_tmc5160_bus.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="esp32__tmc5160__test__config_8hpp_source.html">esp32_tmc5160_test_config.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="tmc51x0_8hpp_source.html">../../../inc/tmc51x0.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp32__tmc51x0__bus_8hpp_source.html">test_config/esp32_tmc51x0_bus.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp32__tmc51x0__test__config_8hpp_source.html">test_config/esp32_tmc51x0_test_config.hpp</a>&quot;</code><br />
 <code>#include &quot;esp_log.h&quot;</code><br />
 <code>#include &quot;esp_timer.h&quot;</code><br />
 <code>#include &quot;driver/uart.h&quot;</code><br />
@@ -121,7 +124,7 @@ $(function(){initNavTree('bounds__finding__sinuous__motion_8cpp.html',''); initR
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for bounds_finding_sinuous_motion.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp__incl.svg" width="2720" height="520"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp__incl.svg" width="2271" height="520"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -187,12 +190,8 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a9358c3a0a9cb0c8d1dadda705d99d31e" id="r_a9358c3a0a9cb0c8d1dadda705d99d31e"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4f">tmc5160_test_config::MotorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9358c3a0a9cb0c8d1dadda705d99d31e">SELECTED_MOTOR</a></td></tr>
-<tr class="separator:a9358c3a0a9cb0c8d1dadda705d99d31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a209e6e5bff02ee86c0334a3d8efe2678" id="r_a209e6e5bff02ee86c0334a3d8efe2678"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67">tmc5160_test_config::BoardType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a209e6e5bff02ee86c0334a3d8efe2678">SELECTED_BOARD</a></td></tr>
-<tr class="separator:a209e6e5bff02ee86c0334a3d8efe2678"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3372565a080149b5c954cc0413c4b9a1" id="r_a3372565a080149b5c954cc0413c4b9a1"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc5160__test__config.html#a48f04184f8380da9c5ca32947c0da5ec">tmc5160_test_config::PlatformType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3372565a080149b5c954cc0413c4b9a1">SELECTED_PLATFORM</a></td></tr>
-<tr class="separator:a3372565a080149b5c954cc0413c4b9a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f1e89f6e3a0be599511d4a8cc389305" id="r_a3f1e89f6e3a0be599511d4a8cc389305"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f1e89f6e3a0be599511d4a8cc389305">SELECTED_TEST_RIG</a></td></tr>
+<tr class="separator:a3f1e89f6e3a0be599511d4a8cc389305"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a85b9c772bbeb480b209a3e6ea92b4c" id="r_a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a85b9c772bbeb480b209a3e6ea92b4c">TAG</a> = &quot;FatigueTest&quot;</td></tr>
 <tr class="separator:a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -211,17 +210,17 @@ Variables</h2></td></tr>
 </li>
 <li>UART command interface for real-time parameter adjustment</li>
 </ol>
-<p>MOTOR SELECTION: Motor selection is done via a static constexpr variable at the top of this file. See <a class="el" href="esp32__tmc5160__test__config_8hpp.html" title="ESP32 GPIO pin configuration and compile-time configuration for TMC5160 driver.">esp32_tmc5160_test_config.hpp</a> for detailed motor specifications and selection guide.</p>
+<p>MOTOR SELECTION: Motor selection is done via a static constexpr variable at the top of this file. See <a class="el" href="esp32__tmc51x0__test__config_8hpp.html" title="ESP32 GPIO pin configuration and compile-time configuration for TMC51x0 driver (TMC5130 &amp; TMC51x0)">esp32_tmc51x0_test_config.hpp</a> for detailed motor specifications and selection guide.</p>
 <p>Hardware Requirements:</p><ul>
 <li>ESP32 development board</li>
-<li>TMC5160 stepper motor driver</li>
-<li>Stepper motor connected to TMC5160 (see motor selection above)</li>
-<li>SPI connection between ESP32 and TMC5160</li>
+<li>TMC51x0 stepper motor driver</li>
+<li>Stepper motor connected to TMC51x0 (see motor selection above)</li>
+<li>SPI connection between ESP32 and TMC51x0</li>
 <li>Mechanical stops at both ends for bounds finding (optional - handles unbounded)</li>
 <li>UART debug port for command interface (typically UART_NUM_0 for USB serial)</li>
 <li>Power supply: 12-36V DC (ensure adequate current capacity for selected motor)</li>
 </ul>
-<p>Pin Configuration (uses default dev board pins from <a class="el" href="esp32__tmc5160__test__config_8hpp.html" title="ESP32 GPIO pin configuration and compile-time configuration for TMC5160 driver.">esp32_tmc5160_test_config.hpp</a>):</p><ul>
+<p>Pin Configuration (uses default dev board pins from <a class="el" href="esp32__tmc51x0__test__config_8hpp.html" title="ESP32 GPIO pin configuration and compile-time configuration for TMC51x0 driver (TMC5130 &amp; TMC51x0)">esp32_tmc51x0_test_config.hpp</a>):</p><ul>
 <li>SPI: MOSI=6, MISO=2, SCLK=5, CS=18</li>
 <li>Control: EN=11, CLK=10, DIAG0=23, DIAG1=15</li>
 <li>UART: Uses default UART_NUM_0 (USB serial port)</li>
@@ -304,7 +303,7 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="1134" height="1610"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="1134" height="1323"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -588,8 +587,8 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a209e6e5bff02ee86c0334a3d8efe2678" name="a209e6e5bff02ee86c0334a3d8efe2678"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a209e6e5bff02ee86c0334a3d8efe2678">&#9670;&#160;</a></span>SELECTED_BOARD</h2>
+<a id="a3f1e89f6e3a0be599511d4a8cc389305" name="a3f1e89f6e3a0be599511d4a8cc389305"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f1e89f6e3a0be599511d4a8cc389305">&#9670;&#160;</a></span>SELECTED_TEST_RIG</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -598,7 +597,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67">tmc5160_test_config::BoardType</a> SELECTED_BOARD</td>
+          <td class="memname">constexpr <a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a> SELECTED_TEST_RIG</td>
         </tr>
       </table>
   </td>
@@ -608,58 +607,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= </div>
-<div class="line">    <a class="code hl_enumvalue" href="namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67a460a09206e1dd3e0cd050257d6e45177">tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL</a></div>
-<div class="ttc" id="anamespacetmc5160__test__config_html_acdf2cd7f479bf56d446e0b23c35f1e67a460a09206e1dd3e0cd050257d6e45177"><div class="ttname"><a href="namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67a460a09206e1dd3e0cd050257d6e45177">tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL</a></div><div class="ttdeci">@ BOARD_TMC5160_EVAL</div><div class="ttdoc">TMC5160 Evaluation Kit (0.05Ω sense, 24V, BSC072N08NS5 MOSFETs)</div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a9358c3a0a9cb0c8d1dadda705d99d31e" name="a9358c3a0a9cb0c8d1dadda705d99d31e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9358c3a0a9cb0c8d1dadda705d99d31e">&#9670;&#160;</a></span>SELECTED_MOTOR</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4f">tmc5160_test_config::MotorType</a> SELECTED_MOTOR</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= </div>
-<div class="line">    <a class="code hl_enumvalue" href="namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fa750ecf224ef9e7f6264bb40d22ab1d70">tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX</a></div>
-<div class="ttc" id="anamespacetmc5160__test__config_html_a3165d26db7a8ad8512c448ec601add4fa750ecf224ef9e7f6264bb40d22ab1d70"><div class="ttname"><a href="namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fa750ecf224ef9e7f6264bb40d22ab1d70">tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX</a></div><div class="ttdeci">@ MOTOR_17HS4401S_GEARBOX</div><div class="ttdoc">17HS4401S with 5.18:1 planetary gearbox</div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a3372565a080149b5c954cc0413c4b9a1" name="a3372565a080149b5c954cc0413c4b9a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3372565a080149b5c954cc0413c4b9a1">&#9670;&#160;</a></span>SELECTED_PLATFORM</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="namespacetmc5160__test__config.html#a48f04184f8380da9c5ca32947c0da5ec">tmc5160_test_config::PlatformType</a> SELECTED_PLATFORM</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= </div>
-<div class="line">    <a class="code hl_enumvalue" href="namespacetmc5160__test__config.html#a48f04184f8380da9c5ca32947c0da5eca147fbec22e42f866983ce6cd76549179">tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG</a></div>
-<div class="ttc" id="anamespacetmc5160__test__config_html_a48f04184f8380da9c5ca32947c0da5eca147fbec22e42f866983ce6cd76549179"><div class="ttname"><a href="namespacetmc5160__test__config.html#a48f04184f8380da9c5ca32947c0da5eca147fbec22e42f866983ce6cd76549179">tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG</a></div><div class="ttdeci">@ PLATFORM_TEST_RIG</div><div class="ttdoc">Test rig platform (reference switches, encoder, gearbox)</div></div>
+<div class="line">    <a class="code hl_enumvalue" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0af1a83fc037447a7b142f4aa8220d8d15">tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE</a></div>
+<div class="ttc" id="anamespacetmc51x0__test__config_html_abbe03fa70b2e9f4f6cc025761f518df0af1a83fc037447a7b142f4aa8220d8d15"><div class="ttname"><a href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0af1a83fc037447a7b142f4aa8220d8d15">tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE</a></div><div class="ttdeci">@ TEST_RIG_FATIGUE</div><div class="ttdoc">Fatigue test rig (Applied Motion 5034-369 motor, TMC51x0 EVAL board, reference switches,...</div></div>
 </div><!-- fragment -->
 </div>
 </div>

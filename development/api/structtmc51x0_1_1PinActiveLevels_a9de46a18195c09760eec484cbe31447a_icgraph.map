@@ -1,0 +1,7 @@
+<map id="tmc51x0::PinActiveLevels::SetActiveLevel" name="tmc51x0::PinActiveLevels::SetActiveLevel">
+<area shape="rect" id="Node000001" title="Set active level for a specific pin." alt="" coords="475,5,665,45"/>
+<area shape="rect" id="Node000002" href="$classEsp32SPI.html#ad77658ff038c4804d222cc91f64ea138" title="Set pin mapping for a TMC51x0 control pin." alt="" coords="240,13,427,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="461,28,427,28,427,23,461,23"/>
+<area shape="rect" id="Node000003" href="$classEsp32SPI.html#a9a80686bdcd3cc21f7756bf64d81e124" title="Apply pin configuration structure (handles compound pins automatically)" alt="" coords="5,13,192,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="227,28,192,28,192,23,227,23"/>
+</map>

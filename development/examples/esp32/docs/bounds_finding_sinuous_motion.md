@@ -473,7 +473,7 @@ calculated_amax_ = calculated_vmax_ / (leg_time_s / 4.0f);
 ## Related Documentation
 
 - [Motor Configuration Guide](motor_configuration.md) - Motor selection
-- [Sinusoidal Example](sinusoidal.md) - Simpler motion example
+- [Internal Ramp Sinusoidal Example](internal_ramp_sinusoidal.md) - Simpler motion example
 - [Internal Ramp Comprehensive Test](internal_ramp_comprehensive_test.md) - Comprehensive StallGuard2, ramp control, and positioning testing
 
 ## Example Output

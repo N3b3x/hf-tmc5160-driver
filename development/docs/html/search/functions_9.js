@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['logdebug_0',['LogDebug',['../classtmc5160_1_1CommInterface.html#a1398cb696532caeeb971ea6157bb296f',1,'tmc5160::CommInterface']]]
+  ['logdebug_0',['LogDebug',['../classtmc51x0_1_1CommInterface.html#aa5358fda94e214d25d2800a5564416b3',1,'tmc51x0::CommInterface']]]
 ];

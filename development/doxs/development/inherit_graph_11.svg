@@ -11,9 +11,9 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classtmc5160_1_1CommInterface.html" target="_top" xlink:title="CRTP&#45;based communication interface for register read/write operations.">
+<g id="a_Node000000"><a xlink:href="classtmc51x0_1_1CommInterface.html" target="_top" xlink:title="CRTP&#45;based communication interface for register read/write operations.">
 <polygon fill="white" stroke="#666666" points="141,-78 0,-78 0,-48 141,-48 141,-78"/>
-<text text-anchor="start" x="8" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::CommInterface</text>
+<text text-anchor="start" x="8" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::CommInterface</text>
 <text text-anchor="middle" x="70.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; Derived &gt;</text>
 </a>
 </g>
@@ -21,9 +21,9 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:href="classtmc5160_1_1SpiCommInterface.html" target="_top" xlink:title=" ">
+<g id="a_Node000001"><a xlink:href="classtmc51x0_1_1SpiCommInterface.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="336,-126 180,-126 180,-96 336,-96 336,-126"/>
-<text text-anchor="start" x="188" y="-114" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::SpiCommInterface</text>
+<text text-anchor="start" x="188" y="-114" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::SpiCommInterface</text>
 <text text-anchor="middle" x="258" y="-103" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; Esp32SPI &gt;</text>
 </a>
 </g>
@@ -40,9 +40,9 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classtmc5160_1_1SpiCommInterface.html" target="_top" xlink:title="CRTP&#45;based SPI implementation of TMC5160CommInterface.">
+<g id="a_Node000003"><a xlink:href="classtmc51x0_1_1SpiCommInterface.html" target="_top" xlink:title="CRTP&#45;based SPI implementation of TMC5160CommInterface.">
 <polygon fill="white" stroke="#666666" points="336,-78 180,-78 180,-48 336,-48 336,-78"/>
-<text text-anchor="start" x="188" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::SpiCommInterface</text>
+<text text-anchor="start" x="188" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::SpiCommInterface</text>
 <text text-anchor="middle" x="258" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; Derived &gt;</text>
 </a>
 </g>
@@ -59,9 +59,9 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classtmc5160_1_1UartCommInterface.html" target="_top" xlink:title="CRTP&#45;based UART implementation of TMC5160CommInterface.">
+<g id="a_Node000004"><a xlink:href="classtmc51x0_1_1UartCommInterface.html" target="_top" xlink:title="CRTP&#45;based UART implementation of TMC5160CommInterface.">
 <polygon fill="white" stroke="#666666" points="339,-30 177,-30 177,0 339,0 339,-30"/>
-<text text-anchor="start" x="185" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::UartCommInterface</text>
+<text text-anchor="start" x="185" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::UartCommInterface</text>
 <text text-anchor="middle" x="258" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; Derived &gt;</text>
 </a>
 </g>
@@ -78,7 +78,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classEsp32SPI.html" target="_top" xlink:title="ESP32 SPI implementation of TMC5160 communication interface.">
+<g id="a_Node000002"><a xlink:href="classEsp32SPI.html" target="_top" xlink:title="ESP32 SPI implementation of TMC51x0 communication interface.">
 <polygon fill="white" stroke="#666666" points="436,-120.5 375,-120.5 375,-101.5 436,-101.5 436,-120.5"/>
 <text text-anchor="middle" x="405.5" y="-108.5" font-family="Helvetica,sans-Serif" font-size="10.00">Esp32SPI</text>
 </a>

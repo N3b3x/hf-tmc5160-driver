@@ -1,0 +1,51 @@
+<map id="tmc51x0::SpiCommInterface::ReadRegister" name="tmc51x0::SpiCommInterface::ReadRegister">
+<area shape="rect" id="Node000001" title="Read a 32&#45;bit register via SPI." alt="" coords="5,443,213,483"/>
+<area shape="rect" id="Node000002" href="$classtmc51x0_1_1CommInterface.html#ae3a5e93e4f03f7dce22dbe476f42e6ae" title="Delay execution for specified microseconds." alt="" coords="271,29,459,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,442,122,375,148,280,167,228,192,177,223,129,259,86,275,74,278,78,263,90,227,132,197,180,172,231,153,282,127,376,116,443"/>
+<area shape="rect" id="Node000003" href="$structtmc51x0_1_1SpiStatus.html#aa01f0baca6f2b42f5c71f98df60edd1a" title="Get driver error flag (bit 1)" alt="" coords="547,117,695,157"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="110,442,120,378,145,291,165,245,190,201,221,162,260,130,294,112,330,101,368,94,406,92,481,98,546,111,545,116,480,103,406,98,369,100,331,106,296,117,263,134,225,165,194,204,169,247,150,292,126,379,115,443"/>
+<area shape="rect" id="Node000004" href="$classtmc51x0_1_1SpiCommInterface.html#a9f40aef4e53519c6e73fa58a3ff15cef" title="Ensure chain length is known and verified for daisy&#45;chain operations." alt="" coords="261,680,469,720"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="123,482,145,519,176,567,216,616,263,659,283,672,281,676,260,663,212,620,172,570,140,522,119,484"/>
+<area shape="rect" id="Node000006" href="$structtmc51x0_1_1SpiCommand.html#a8573e5d7f3f3befa0bd93b5d72f6c18b" title="Get the 5&#45;byte frame as raw bytes." alt="" coords="790,625,965,665"/>
+<area shape="poly" id="edge20_Node000001_Node000006" title=" " alt="" coords="137,481,192,521,262,559,328,583,397,602,536,628,667,641,776,645,776,650,667,646,536,633,396,607,327,588,260,564,189,525,134,485"/>
+<area shape="rect" id="Node000007" href="$structtmc51x0_1_1SpiCommand.html#a6f972ba0748a5bb4fcb8ed233af6fa85" title="Construct a read command." alt="" coords="790,691,965,731"/>
+<area shape="poly" id="edge24_Node000001_Node000007" title=" " alt="" coords="117,482,132,535,159,605,178,641,202,675,230,705,263,730,302,744,356,753,422,755,494,754,644,741,776,724,777,729,644,747,494,759,421,761,356,758,301,749,260,734,226,709,198,678,174,644,154,607,127,537,112,483"/>
+<area shape="rect" id="Node000008" href="$classtmc51x0_1_1SpiCommInterface.html#a86c5faa8a8e88884c16a3a2b1b2512e7" title="Low&#45;level SPI transfer for register read/write." alt="" coords="773,781,981,821"/>
+<area shape="poly" id="edge26_Node000001_Node000008" title=" " alt="" coords="116,482,129,540,156,618,175,659,199,698,228,733,263,762,300,779,351,791,413,800,482,805,627,808,759,805,760,810,627,814,482,810,412,805,350,796,298,784,260,766,224,737,195,701,170,662,151,620,124,542,111,484"/>
+<area shape="rect" id="Node000009" href="$structtmc51x0_1_1SpiStatus.html#a074ce9431f7b5c30ef7b83e1818dfd3b" title="Format status bits as compact string (bit names and values)" alt="" coords="291,360,439,400"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="171,440,289,402,290,407,173,445"/>
+<area shape="rect" id="Node000010" href="$structtmc51x0_1_1SpiStatus.html#a21b664e82df5831eede7110b31bae438" title="Get position reached flag (bit 5)" alt="" coords="547,181,695,221"/>
+<area shape="poly" id="edge23_Node000001_Node000010" title=" " alt="" coords="118,441,139,404,170,357,211,309,260,270,327,238,399,217,470,205,533,199,534,204,471,210,400,222,329,243,263,274,214,313,174,360,143,407,123,444"/>
+<area shape="rect" id="Node000011" href="$structtmc51x0_1_1SpiStatus.html#ab66e0c76dca0c201e220bddf3d9ffa09" title="Get reset flag (bit 0)" alt="" coords="547,245,695,285"/>
+<area shape="poly" id="edge25_Node000001_Node000011" title=" " alt="" coords="123,441,177,376,216,341,260,312,329,286,401,270,471,262,533,260,533,265,471,268,402,276,330,291,263,317,219,345,181,379,127,444"/>
+<area shape="rect" id="Node000012" href="$structtmc51x0_1_1SpiStatus.html#a8fa4f58b3dc99716878faa0a270929ac" title="Get StallGuard2 flag (bit 2)" alt="" coords="547,309,695,349"/>
+<area shape="poly" id="edge27_Node000001_Node000012" title=" " alt="" coords="127,440,183,390,220,365,260,346,330,327,403,317,472,315,534,317,533,323,472,320,403,323,331,332,262,350,223,370,186,395,131,444"/>
+<area shape="rect" id="Node000013" href="$structtmc51x0_1_1SpiStatus.html#ac5a72a773f029d759e838cae4518e7ee" title="Get standstill flag (bit 3)" alt="" coords="547,373,695,413"/>
+<area shape="poly" id="edge28_Node000001_Node000013" title=" " alt="" coords="213,446,534,402,534,408,214,451"/>
+<area shape="rect" id="Node000014" href="$structtmc51x0_1_1SpiStatus.html#a6b674314da4b0684a181283845a085d9" title="Get stop left switch flag (bit 6)" alt="" coords="547,437,695,477"/>
+<area shape="poly" id="edge29_Node000001_Node000014" title=" " alt="" coords="214,459,533,456,533,461,214,464"/>
+<area shape="rect" id="Node000015" href="$structtmc51x0_1_1SpiStatus.html#a5c1f5680f196a955e749c9d71afd6c83" title="Get stop right switch flag (bit 7)" alt="" coords="547,501,695,541"/>
+<area shape="poly" id="edge30_Node000001_Node000015" title=" " alt="" coords="214,472,534,509,533,514,213,477"/>
+<area shape="rect" id="Node000016" href="$structtmc51x0_1_1SpiStatus.html#aca542f3dcc92b6eef1a0527405857ca9" title="Get velocity reached flag (bit 4)" alt="" coords="547,565,695,605"/>
+<area shape="poly" id="edge31_Node000001_Node000016" title=" " alt="" coords="174,480,262,505,406,539,534,566,533,571,404,544,261,511,173,485"/>
+<area shape="rect" id="Node000017" href="$structtmc51x0_1_1SpiStatus.html#a503043f0b56362c63d76225c4876b9a2" title="Extract SPI_STATUS from response byte." alt="" coords="291,845,439,885"/>
+<area shape="poly" id="edge19_Node000001_Node000017" title=" " alt="" coords="116,482,128,547,154,639,174,689,198,738,228,784,263,825,281,838,278,842,260,829,223,787,193,740,169,691,149,641,123,548,111,483"/>
+<area shape="rect" id="Node000018" href="$structtmc51x0_1_1SpiStatus.html#aad5ded7d89400550078e2115489aec50" title="Check if any error flags are set." alt="" coords="291,144,439,184"/>
+<area shape="poly" id="edge21_Node000001_Node000018" title=" " alt="" coords="114,442,133,393,163,329,205,261,231,229,260,201,278,188,281,192,263,205,235,232,209,264,167,332,137,395,119,444"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="318,30,315,20,323,10,339,5,365,3,395,6,411,13,409,18,394,11,365,8,341,10,326,15,320,21,323,28"/>
+<area shape="rect" id="Node000005" href="$classtmc51x0_1_1SpiCommInterface.html#a919ad17ed88687fa30ac45f60f405a4b" title="Auto&#45;detect the daisy chain length by sending a unique command that loops back." alt="" coords="517,680,725,720"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="469,697,504,697,504,703,469,703"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="715,677,776,664,777,669,716,683"/>
+<area shape="poly" id="edge7_Node000005_Node000007" title=" " alt="" coords="725,702,776,704,776,709,725,707"/>
+<area shape="poly" id="edge8_Node000005_Node000008" title=" " alt="" coords="674,718,814,774,812,779,672,722"/>
+<area shape="poly" id="edge9_Node000008_Node000008" title=" " alt="" coords="830,782,827,772,835,762,851,757,877,755,907,758,923,765,921,770,906,763,877,760,853,762,838,767,832,773,835,780"/>
+<area shape="poly" id="edge11_Node000009_Node000003" title=" " alt="" coords="373,359,393,318,425,267,466,213,516,167,533,157,536,161,519,171,470,217,429,270,398,321,378,361"/>
+<area shape="poly" id="edge12_Node000009_Node000010" title=" " alt="" coords="380,358,436,296,474,261,516,231,533,222,536,227,519,236,477,265,439,300,384,362"/>
+<area shape="poly" id="edge13_Node000009_Node000011" title=" " alt="" coords="397,358,452,326,516,295,536,287,538,292,518,300,454,331,400,362"/>
+<area shape="poly" id="edge14_Node000009_Node000012" title=" " alt="" coords="439,363,533,344,534,349,440,368"/>
+<area shape="poly" id="edge15_Node000009_Node000013" title=" " alt="" coords="440,381,534,386,534,391,439,387"/>
+<area shape="poly" id="edge16_Node000009_Node000014" title=" " alt="" coords="433,398,542,431,541,436,432,403"/>
+<area shape="poly" id="edge17_Node000009_Node000015" title=" " alt="" coords="391,398,447,443,519,487,535,495,533,499,516,492,444,447,388,402"/>
+<area shape="poly" id="edge18_Node000009_Node000016" title=" " alt="" coords="381,399,435,473,474,515,519,551,536,560,533,565,516,556,470,519,431,477,377,402"/>
+<area shape="poly" id="edge22_Node000018_Node000003" title=" " alt="" coords="439,154,534,144,534,149,440,159"/>
+</map>

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['write_0',['Write',['../structtmc5160_1_1SpiCommand.html#a8eb940551faeecd6c6e3838d424f6447',1,'tmc5160::SpiCommand::Write()'],['../structtmc5160_1_1UartFrame.html#aa02430ce7c4926551529916e15713356',1,'tmc5160::UartFrame::Write()']]],
-  ['writeregister_1',['WriteRegister',['../classtmc5160_1_1CommInterface.html#ae8ac318a721a19100d7096485395d21e',1,'tmc5160::CommInterface::WriteRegister()'],['../classtmc5160_1_1SpiCommInterface.html#a2ba4efb58323a9e2b221ce9a80a56470',1,'tmc5160::SpiCommInterface::WriteRegister()'],['../classtmc5160_1_1UartCommInterface.html#a404c95887d9f030faae597b9f7ee4c7b',1,'tmc5160::UartCommInterface::WriteRegister()']]]
+  ['write_0',['Write',['../structtmc51x0_1_1SpiCommand.html#a3dffe69573652e9fb6fbd260f0ca4f07',1,'tmc51x0::SpiCommand::Write()'],['../structtmc51x0_1_1UartFrame.html#a2b2e2b7ac79064bf664f54f9c4c8a8bd',1,'tmc51x0::UartFrame::Write()']]],
+  ['writeregister_1',['WriteRegister',['../classtmc51x0_1_1CommInterface.html#af7d2c54c605957f53994b984dcd5e1b4',1,'tmc51x0::CommInterface::WriteRegister()'],['../classtmc51x0_1_1SpiCommInterface.html#a6fb339bcea2e78cdc00b962f347952c6',1,'tmc51x0::SpiCommInterface::WriteRegister()'],['../classtmc51x0_1_1UartCommInterface.html#a07fc8787ed9723f7cecea1a5c138afbf',1,'tmc51x0::UartCommInterface::WriteRegister()']]]
 ];

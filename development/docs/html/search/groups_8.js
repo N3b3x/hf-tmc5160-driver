@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['tmc5160_20driver_0',['Core TMC5160 Driver',['../group__TMC5160__Core.html',1,'']]],
-  ['type_20definitions_1',['Type Definitions',['../group__TMC5160__Types.html',1,'Type Definitions'],['../group__TMC5160__CommTypes.html',1,'Type Definitions']]]
+  ['tmc51x0_20driver_0',['Core TMC51x0 Driver',['../group__TMC51X0__Core.html',1,'']]],
+  ['type_20definitions_1',['Type Definitions',['../group__TMC51X0__Types.html',1,'Type Definitions'],['../group__TMC51X0__CommTypes.html',1,'Type Definitions']]]
 ];

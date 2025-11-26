@@ -1,0 +1,5 @@
+<map id="tmc51x0::TMC51x0::MotorControl::ConfigureChopper" name="tmc51x0::TMC51x0::MotorControl::ConfigureChopper">
+<area shape="rect" id="Node000001" title="Configure chopper settings." alt="" coords="5,5,247,45"/>
+<area shape="rect" id="Node000002" href="$tmc51x0_8cpp.html#a6b5c74bc9056ff38815021d63986f681" title=" " alt="" coords="295,13,377,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,23,281,23,281,28,247,28"/>
+</map>

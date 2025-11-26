@@ -18,6 +18,9 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -95,10 +98,10 @@ $(function(){initNavTree('deprecated.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt>Member <a class="el" href="classEsp32SPI.html#ad4b41dc060c69e8be5efe7d95e84166d">Esp32SPI::Esp32SPI</a>  (spi_host_device_t host, gpio_num_t mosi_pin, gpio_num_t miso_pin, gpio_num_t sclk_pin, gpio_num_t cs_pin, gpio_num_t en_pin, gpio_num_t dir_pin=static_cast&lt; gpio_num_t &gt;(-1), gpio_num_t step_pin=static_cast&lt; gpio_num_t &gt;(-1), uint32_t clock_speed_hz=4000000, const <a class="el" href="structtmc5160_1_1PinActiveLevels.html" title="Pin active level configuration structure.">tmc5160::PinActiveLevels</a> &amp;active_levels=<a class="el" href="structtmc5160_1_1PinActiveLevels.html" title="Pin active level configuration structure.">tmc5160::PinActiveLevels</a>{}) noexcept</dt>
-<dd><a class="anchor" id="_deprecated000002"></a>Use constructor with TMC5160PinConfig struct for better pin management  </dd>
-<dt>Member <a class="el" href="structtmc5160_1_1ChopperConfig.html#a695144ab471371991585703c6029b95a">tmc5160::ChopperConfig::vsense</a>  </dt>
-<dd><a class="anchor" id="_deprecated000001"></a>This field has no effect and is kept for backward compatibility only. </dd>
+<dt>Member <a class="el" href="classEsp32SPI.html#a24f866eb1388782bec06c5277b8f5439">Esp32SPI::Esp32SPI</a>  (spi_host_device_t host, gpio_num_t mosi_pin, gpio_num_t miso_pin, gpio_num_t sclk_pin, gpio_num_t cs_pin, gpio_num_t en_pin, gpio_num_t dir_pin=static_cast&lt; gpio_num_t &gt;(-1), gpio_num_t step_pin=static_cast&lt; gpio_num_t &gt;(-1), uint32_t clock_speed_hz=4000000, const <a class="el" href="structtmc51x0_1_1PinActiveLevels.html" title="Pin active level configuration structure.">tmc51x0::PinActiveLevels</a> &amp;active_levels=<a class="el" href="structtmc51x0_1_1PinActiveLevels.html" title="Pin active level configuration structure.">tmc51x0::PinActiveLevels</a>{}) noexcept</dt>
+<dd><a class="anchor" id="_deprecated000002"></a>Use constructor with TMC51x0PinConfig struct for better pin management  </dd>
+<dt>Member <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html#acfb74a9f75c53e80beb3fcf8585e0d26">tmc51x0::TMC51x0&lt; CommType &gt;::Tuning::TuneStallGuard</a>  (float target_velocity, int8_t &amp;final_sgt, int8_t min_sgt=-10, int8_t max_sgt=63, float acceleration=3000.0F, float min_velocity=0.0F, float max_velocity=0.0F, Unit velocity_unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>) noexcept</dt>
+<dd><a class="anchor" id="_deprecated000001"></a>Use the overload that returns <a class="el" href="structtmc51x0_1_1StallGuardTuningResult.html" title="Result structure for StallGuard2 threshold (SGT) tuning.">StallGuardTuningResult</a> for comprehensive results</dd>
 </dl>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

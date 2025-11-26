@@ -1,16 +1,18 @@
 var searchData=
 [
-  ['n_5fchannel_5factive_0',['n_channel_active',['../structtmc5160_1_1EncoderConfig.html#af57dad899da403cff520ff46294603bf',1,'tmc5160::EncoderConfig']]],
-  ['n_5fchannel_5factive_1',['N_CHANNEL_ACTIVE',['../namespacetmc5160__test__config_1_1PlatformConfig__TestRig_1_1Encoder.html#adbcecae125831a3c1357bd0aa0bd3be5',1,'tmc5160_test_config::PlatformConfig_TestRig::Encoder']]],
-  ['n_5fevent_2',['n_event',['../uniontmc5160_1_1ENC__STATUS__Register.html#afc398655859de6a82975b0bfed80d10b',1,'tmc5160::ENC_STATUS_Register']]],
-  ['n_5fsensitivity_3',['n_sensitivity',['../structtmc5160_1_1EncoderConfig.html#abb1574c5787f638db664a784a8382a89',1,'tmc5160::EncoderConfig']]],
-  ['n_5fsensitivity_4',['N_SENSITIVITY',['../namespacetmc5160__test__config_1_1PlatformConfig__TestRig_1_1Encoder.html#a0d5508648d8173de0b7342b4309d838d',1,'tmc5160_test_config::PlatformConfig_TestRig::Encoder']]],
+  ['n_5fchannel_5factive_0',['n_channel_active',['../structtmc51x0_1_1EncoderConfig.html#a78cf54995158a3964b8ec45d6a969355',1,'tmc51x0::EncoderConfig']]],
+  ['n_5fchannel_5factive_1',['N_CHANNEL_ACTIVE',['../namespacetmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1Encoder.html#a9abf25429d6dd105a8cbeeb620e4f747',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::Encoder::N_CHANNEL_ACTIVE'],['../namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#a41e6e0dabe13074053a1c2a449f6dc40',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::Encoder::N_CHANNEL_ACTIVE']]],
+  ['n_5fevent_2',['n_event',['../uniontmc51x0_1_1ENC__STATUS__Register.html#ae2408e51aeee2f4be9c51a678e5988b0',1,'tmc51x0::ENC_STATUS_Register']]],
+  ['n_5fsensitivity_3',['n_sensitivity',['../structtmc51x0_1_1EncoderConfig.html#aaa92bc1a9d59ef83f231b72d24296bad',1,'tmc51x0::EncoderConfig']]],
+  ['n_5fsensitivity_4',['N_SENSITIVITY',['../namespacetmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1Encoder.html#ac90062636916b223b8f120c296ffc0ee',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::Encoder::N_SENSITIVITY'],['../namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#af7f767051436d993bc22e5236723805a',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::Encoder::N_SENSITIVITY']]],
   ['native_5fhandle_5',['native_handle',['../classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f',1,'Esp32TmcMutex']]],
-  ['neg_5fedge_6',['neg_edge',['../uniontmc5160_1_1ENCMODE__Register.html#a82205cb5a0b511d61c4fccbed94fc34a',1,'tmc5160::ENCMODE_Register']]],
-  ['no_5fedge_7',['NO_EDGE',['../namespacetmc5160.html#a4eaf32584629b8ef44ee951e7ebf4916a38a74ee0f8764437c5fce05a7b4964e1',1,'tmc5160']]],
-  ['node_20management_8',['Multi-Node Management',['../group__TMC5160__MultiNode.html',1,'']]],
-  ['node_5faddr_9',['node_addr',['../uniontmc5160_1_1UartFrame_1_1Frame.html#a77376d3e9b08f9722cd4bf8eb1832938',1,'tmc5160::UartFrame::Frame']]],
-  ['normal_10',['NORMAL',['../namespacetmc5160.html#afd8e06e7eda04c891d35f72236085722a1e23852820b9154316c7c06e2b7ba051',1,'tmc5160::NORMAL'],['../namespacetmc5160.html#a6e7804f8a437f39b4ba4b7cd6b3da1a4a1e23852820b9154316c7c06e2b7ba051',1,'tmc5160::NORMAL']]],
-  ['num_5factive_5fdevices_5f_11',['num_active_devices_',['../classtmc5160_1_1TMC5160DaisyChain.html#a768e1f24ecc886433094e7ea6597b65c',1,'tmc5160::TMC5160DaisyChain::num_active_devices_'],['../classtmc5160_1_1TMC5160MultiNode.html#a8b0f07f5c6c86c39b84fe2bdf1062ba9',1,'tmc5160::TMC5160MultiNode::num_active_devices_']]],
-  ['num_5fonboard_5fdevices_5f_12',['num_onboard_devices_',['../classtmc5160_1_1TMC5160DaisyChain.html#a6ccd9c2752fb10b72b4e30e59a9444bd',1,'tmc5160::TMC5160DaisyChain::num_onboard_devices_'],['../classtmc5160_1_1TMC5160MultiNode.html#af7dbd7fc069a5a478f987bd11deafe43',1,'tmc5160::TMC5160MultiNode::num_onboard_devices_']]]
+  ['neg_5fedge_6',['neg_edge',['../uniontmc51x0_1_1ENCMODE__Register.html#a3a2426164568f62f5694c61594e886f2',1,'tmc51x0::ENCMODE_Register']]],
+  ['new_7',['NEW',['../index.html#autotoc_md37',1,'Tuning Subsystem ⭐ NEW'],['../index.html#autotoc_md59',1,'Tuning Subsystem ⭐ NEW']]],
+  ['no_5fedge_8',['NO_EDGE',['../namespacetmc51x0.html#a72806fd22f0c0112600ad9056aa3be97a38a74ee0f8764437c5fce05a7b4964e1',1,'tmc51x0']]],
+  ['node_20management_9',['Multi-Node Management',['../group__TMC51X0__MultiNode.html',1,'']]],
+  ['node_5faddr_10',['node_addr',['../uniontmc51x0_1_1UartFrame_1_1Frame.html#a33d27f1f0203472b2a5befa0922eef25',1,'tmc51x0::UartFrame::Frame']]],
+  ['node_5faddress_11',['node_address',['../structtmc51x0_1_1UartConfig.html#a3c10e16e32097acaa8734e207e1226aa',1,'tmc51x0::UartConfig']]],
+  ['normal_12',['NORMAL',['../namespacetmc51x0.html#ae988d381e96f02ccf88517740b83e5f1a1e23852820b9154316c7c06e2b7ba051',1,'tmc51x0::NORMAL'],['../namespacetmc51x0.html#a6a87b8eb4c1843e07007d7162048bf4da1e23852820b9154316c7c06e2b7ba051',1,'tmc51x0::NORMAL']]],
+  ['num_5factive_5fdevices_5f_13',['num_active_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a589a348bfced31beaf1ad6ff39bca58e',1,'tmc51x0::TMC51x0DaisyChain::num_active_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#a58c0f7968d95a448504292f5043536dd',1,'tmc51x0::TMC51x0MultiNode::num_active_devices_']]],
+  ['num_5fonboard_5fdevices_5f_14',['num_onboard_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a4fd8aa10deac6ac8e55e397a34e6fe94',1,'tmc51x0::TMC51x0DaisyChain::num_onboard_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#afd8d19c9724c0f933cdaa38f66d5e0c0',1,'tmc51x0::TMC51x0MultiNode::num_onboard_devices_']]]
 ];

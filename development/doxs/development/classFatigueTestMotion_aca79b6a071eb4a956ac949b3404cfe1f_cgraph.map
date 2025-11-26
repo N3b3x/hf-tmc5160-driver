@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="Set global bounds (hardware limits found during initialization)" alt="" coords="5,63,153,103"/>
 <area shape="rect" id="Node000002" href="$classFatigueTestMotion.html#afd810bcf984589fb9b837d8fd5a2a1c5" title="Clip local bounds to global bounds." alt="" coords="201,5,387,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,60,205,46,206,51,154,66"/>
-<area shape="rect" id="Node000003" href="$namespacetmc5160.html#a17db4658c61b62396b32c1a022e54d75" title="Convert steps to degrees." alt="" coords="435,27,625,53"/>
+<area shape="rect" id="Node000003" href="$namespacetmc51x0.html#aa654a36849533f2f559d3e113176bf35" title="Convert steps to degrees." alt="" coords="435,27,625,53"/>
 <area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="153,75,386,55,421,51,421,56,387,60,154,80"/>
 <area shape="rect" id="Node000004" href="$classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf" title="Manually unlock mutex (called automatically in destructor)" alt="" coords="203,121,385,146"/>
 <area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="154,98,227,115,226,120,153,103"/>

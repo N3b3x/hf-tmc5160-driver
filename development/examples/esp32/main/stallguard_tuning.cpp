@@ -20,9 +20,9 @@
  * @date 2025
  */
 
-#include "../../../inc/tmc5160.hpp"
-#include "esp32_tmc5160_bus.hpp"
-#include "esp32_tmc5160_test_config.hpp"
+#include "../../../inc/tmc51x0.hpp"
+#include "test_config/esp32_tmc51x0_bus.hpp"
+#include "test_config/esp32_tmc51x0_test_config.hpp"
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -32,17 +32,10 @@ static const char* TAG = "SGT_Tuning";
 //=============================================================================
 // CONFIGURATION SELECTION - Change these to select motor, board, and platform
 //=============================================================================
-// Motor selection (compile-time constant)
-static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
-    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
-
-// Board selection (compile-time constant)
-static constexpr tmc5160_test_config::BoardType SELECTED_BOARD = 
-    tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL;
-
-// Platform selection (compile-time constant)
-static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM = 
-    tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
+// Test rig selection (compile-time constant) - automatically selects motor, board, and platform
+// CORE DRIVER TEST RIG: Uses 17HS4401S gearbox motor, TMC51x0 EVAL board, reference switches, encoder
+static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
+    tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER;
 
 // Tuning Parameters
 static constexpr float TUNING_VELOCITY_STEPS_S = 30000.0f; // Target velocity for tuning
@@ -52,8 +45,8 @@ extern "C" void app_main(void) {
   ESP_LOGI(TAG, "Starting StallGuard2 Tuning Tool...");
 
   // 1. Initialize SPI Bus
-  auto pin_config = tmc5160_test_config::GetDefaultPinConfig();
-  Esp32SPI spi(tmc5160_test_config::SPI_HOST, pin_config, tmc5160_test_config::SPI_CLOCK_SPEED_HZ);
+  auto pin_config = tmc51x0_test_config::GetDefaultPinConfig();
+  Esp32SPI spi(tmc51x0_test_config::SPI_HOST, pin_config, tmc51x0_test_config::SPI_CLOCK_SPEED_HZ);
 
   if (!spi.Initialize()) {
     ESP_LOGE(TAG, "Failed to initialize SPI bus");
@@ -61,26 +54,11 @@ extern "C" void app_main(void) {
   }
 
   // 2. Initialize Driver
-  tmc5160::TMC5160<Esp32SPI> driver(spi);
-  tmc5160::DriverConfig driver_config;
+  tmc51x0::TMC51x0<Esp32SPI> driver(spi);
+  tmc51x0::DriverConfig driver_config;
 
-  // Configure motor
-  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
-    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(driver_config);
-  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
-    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(driver_config);
-  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
-    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(driver_config);
-  } else {
-    ESP_LOGE(TAG, "Unsupported motor type selected for this example");
-    return;
-  }
-  
-  // Apply board configuration
-  tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(driver_config);
-  
-  // Apply platform configuration
-  tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(driver_config);
+  // Configure driver from unified test rig selection
+  tmc51x0_test_config::ConfigureDriverFromTestRig<SELECTED_TEST_RIG>(driver_config);
 
   if (!driver.Initialize(driver_config)) {
     ESP_LOGE(TAG, "Failed to initialize driver");
@@ -118,37 +96,71 @@ extern "C" void app_main(void) {
   ESP_LOGI(TAG, "Target Velocity: %.2f steps/s", TUNING_VELOCITY_STEPS_S);
   ESP_LOGI(TAG, "Acceleration: %.2f steps/s²", TUNING_ACCELERATION_STEPS_S2);
   
-  int8_t optimal_sgt = 0;
-  // TuneStallGuard with new signature: target_vel, result_sgt, min_sgt, max_sgt, accel, min_vel, max_vel, unit
-  bool success = driver.diagnostics.TuneStallGuard(TUNING_VELOCITY_STEPS_S, optimal_sgt, -10, 63, 
-                                                  TUNING_ACCELERATION_STEPS_S2, 0.0f, 0.0f, tmc5160::Unit::Steps);
+  // Use comprehensive tuning with result struct
+  tmc51x0::StallGuardTuningResult result;
+  // TuneStallGuard: target_vel (most important), result, min_sgt, max_sgt, accel, min_vel, max_vel, unit
+  // For this example, we'll test a velocity range to demonstrate the feature
+  float min_vel = TUNING_VELOCITY_STEPS_S * 0.3f;  // 30% of target
+  float max_vel = TUNING_VELOCITY_STEPS_S * 1.5f;  // 150% of target
+  bool success = driver.tuning.TuneStallGuard(TUNING_VELOCITY_STEPS_S, result, -10, 63, 
+                                                  TUNING_ACCELERATION_STEPS_S2, min_vel, max_vel, 
+                                                  tmc51x0::Unit::Steps);
 
   if (success) {
     ESP_LOGI(TAG, "==========================================");
     ESP_LOGI(TAG, "TUNING SUCCESSFUL");
-    ESP_LOGI(TAG, "Optimal SGT: %d", optimal_sgt);
+    ESP_LOGI(TAG, "Optimal SGT (at target velocity): %d", result.optimal_sgt);
+    ESP_LOGI(TAG, "SG_RESULT at target velocity: %u", result.target_velocity_sg_result);
+    
+    if (result.min_velocity_success) {
+      ESP_LOGI(TAG, "Min velocity (%.2f steps/s): Works with SGT %d (SG_RESULT=%u)", 
+               min_vel, result.min_velocity_sgt, result.min_velocity_sg_result);
+    } else {
+      ESP_LOGW(TAG, "Min velocity (%.2f steps/s): Does NOT work with optimal SGT", min_vel);
+      if (result.actual_min_velocity > 0.0f) {
+        ESP_LOGI(TAG, "  -> Actual working min velocity: %.2f steps/s (SG_RESULT=%u)", 
+                 result.actual_min_velocity, result.min_velocity_sg_result);
+      }
+    }
+    
+    if (result.max_velocity_success) {
+      ESP_LOGI(TAG, "Max velocity (%.2f steps/s): Works with SGT %d (SG_RESULT=%u)", 
+               max_vel, result.max_velocity_sgt, result.max_velocity_sg_result);
+    } else {
+      ESP_LOGW(TAG, "Max velocity (%.2f steps/s): Does NOT work with optimal SGT", max_vel);
+      if (result.actual_max_velocity > 0.0f) {
+        ESP_LOGI(TAG, "  -> Actual working max velocity: %.2f steps/s (SG_RESULT=%u)", 
+                 result.actual_max_velocity, result.max_velocity_sg_result);
+      }
+    }
     ESP_LOGI(TAG, "==========================================");
     
     // Test run with found SGT
     ESP_LOGI(TAG, "Verifying with test run...");
-    tmc5160::StallGuardConfig sg_config;
-    sg_config.threshold = optimal_sgt;
+    tmc51x0::StallGuardConfig sg_config;
+    sg_config.threshold = result.optimal_sgt;
     sg_config.enable_filter = true; // Enable filter for verification/operation (reduces noise)
     driver.diagnostics.ConfigureStallGuard(sg_config);
     
     // Set explicit acceleration and deceleration (same value for both)
-    driver.rampControl.SetAccelerations(TUNING_ACCELERATION_STEPS_S2, TUNING_ACCELERATION_STEPS_S2, tmc5160::Unit::Steps);
+    driver.rampControl.SetAccelerations(TUNING_ACCELERATION_STEPS_S2, TUNING_ACCELERATION_STEPS_S2, tmc51x0::Unit::Steps);
     
-    driver.rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS);
-    driver.rampControl.SetMaxSpeed(TUNING_VELOCITY_STEPS_S, tmc5160::Unit::Steps);
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
+    driver.rampControl.SetMaxSpeed(TUNING_VELOCITY_STEPS_S, tmc51x0::Unit::Steps);
     
     // Monitor for a few seconds, but stop early if motor stalls
     ESP_LOGI(TAG, "Monitoring SG_RESULT (will stop if motor stalls)...");
     bool stall_detected = false;
     for(int i=0; i<50; i++) { // Run longer (5s)
         vTaskDelay(pdMS_TO_TICKS(100));
-        uint16_t sg_val = driver.diagnostics.GetStallGuard();
-        float current_speed = driver.rampControl.GetCurrentSpeed(tmc5160::Unit::Steps);
+        uint16_t sg_val = 0;
+        if (!driver.diagnostics.GetStallGuard(sg_val)) {
+          sg_val = 0;
+        }
+        float current_speed = 0.0f;
+        if (!driver.rampControl.GetCurrentSpeed(current_speed, tmc51x0::Unit::Steps)) {
+          current_speed = 0.0f;
+        }
         ESP_LOGI(TAG, "SG_RESULT: %u, VACTUAL: %.1f steps/s", sg_val, current_speed);
         
         // Ignore low-speed stalls (resonance area)
@@ -160,7 +172,11 @@ extern "C" void app_main(void) {
             // Wait for stop
             for(int j=0; j<50; j++) {
                 vTaskDelay(pdMS_TO_TICKS(100));
-                if (std::abs(driver.rampControl.GetCurrentSpeed(tmc5160::Unit::Steps)) < 10.0f) break;
+                float speed = 0.0f;
+                if (!driver.rampControl.GetCurrentSpeed(speed, tmc51x0::Unit::Steps)) {
+                  speed = 0.0f;
+                }
+                if (std::abs(speed) < 10.0f) break;
             }
             break;
         }

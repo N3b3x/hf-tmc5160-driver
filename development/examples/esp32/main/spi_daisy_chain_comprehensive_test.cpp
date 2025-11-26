@@ -1,12 +1,12 @@
 /**
  * @file spi_daisy_chain_comprehensive_test.cpp
- * @brief Comprehensive SPI Daisy Chain testing suite for TMC5160 (MULTI-MOTOR)
+ * @brief Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI-MOTOR)
  *
  * ⚠️ MULTI-MOTOR HARDWARE REQUIRED ⚠️
- * This test suite requires multiple TMC5160 drivers connected in a SPI daisy chain.
+ * This test suite requires multiple TMC51x0 drivers connected in a SPI daisy chain.
  * DO NOT run these tests on a single-motor setup.
  *
- * This file contains comprehensive testing for TMC5160 SPI daisy chain features:
+ * This file contains comprehensive testing for TMC51x0 SPI daisy chain features:
  * - SPI daisy chain setup and configuration
  * - Daisy-chain position management
  * - Multi-motor coordination
@@ -15,8 +15,8 @@
  *
  * Hardware Requirements:
  * - ESP32 development board
- * - 2+ TMC5160 stepper motor drivers (daisy-chained via SPI)
- * - Stepper motors connected to each TMC5160
+ * - 2+ TMC51x0 stepper motor drivers (daisy-chained via SPI)
+ * - Stepper motors connected to each TMC51x0
  * - SPI connection: All chips share CSN, SCK, MOSI; MISO daisy-chained
  *
  * Pin Configuration (modify as needed):
@@ -33,10 +33,10 @@
  * @date 2025
  */
 
-#include "../../../inc/tmc5160.hpp"
-#include "esp32_tmc5160_bus.hpp"
-#include "esp32_tmc5160_test_config.hpp"
-#include "TestFramework.h"
+#include "tmc51x0.hpp"
+#include "test_config/esp32_tmc51x0_bus.hpp"
+#include "test_config/esp32_tmc51x0_test_config.hpp"
+#include "test_config/TestFramework.h"
 #include <memory>
 #include <vector>
 
@@ -46,17 +46,12 @@ static TestResults g_test_results;
 //=============================================================================
 // CONFIGURATION SELECTION - Change these to select motor, board, and platform
 //=============================================================================
-// Motor selection (compile-time constant)
-static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
-    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
-
-// Board selection (compile-time constant)
-static constexpr tmc5160_test_config::BoardType SELECTED_BOARD = 
-    tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL;
-
-// Platform selection (compile-time constant)
-static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM = 
-    tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
+// CONFIGURATION SELECTION - Unified Test Rig Selection
+//=============================================================================
+// Test rig selection (compile-time constant) - automatically selects motor, board, and platform
+// CORE DRIVER TEST RIG: Uses 17HS4401S gearbox motor, TMC51x0 EVAL board, reference switches, encoder
+static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
+    tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER;
 
 //=============================================================================
 // TEST SECTION CONFIGURATION
@@ -71,7 +66,7 @@ static constexpr uint8_t TEST_IRUN = 20;
 static constexpr uint8_t TEST_IHOLD = 10;
 static constexpr uint8_t TEST_GLOBAL_SCALER = 32;
 static constexpr uint8_t TEST_TOFF = 5;
-static constexpr uint8_t TEST_MRES = 4; // 16 microsteps
+static constexpr tmc51x0::MicrostepResolution TEST_MRES = tmc51x0::MicrostepResolution::MRES_256; // 256 microsteps
 
 // Forward declarations
 bool test_daisy_chain_setup() noexcept;
@@ -81,7 +76,7 @@ bool test_multi_motor_coordination() noexcept;
 // Helper functions
 struct TestDriverHandle {
   std::unique_ptr<Esp32SPI> spi;
-  std::vector<std::unique_ptr<tmc5160::TMC5160<Esp32SPI>>> drivers;
+  std::vector<std::unique_ptr<tmc51x0::TMC51x0<Esp32SPI>>> drivers;
 };
 
 std::unique_ptr<TestDriverHandle> create_daisy_chain_drivers() noexcept {
@@ -89,12 +84,12 @@ std::unique_ptr<TestDriverHandle> create_daisy_chain_drivers() noexcept {
   
   // Create shared SPI communication interface
   // Get complete pin configuration from test config
-  tmc5160::Esp32SpiPinConfig pin_config = tmc5160_test_config::GetDefaultPinConfig();
+  tmc51x0::Esp32SpiPinConfig pin_config = tmc51x0_test_config::GetDefaultPinConfig();
   
   handle->spi = std::make_unique<Esp32SPI>(
-    tmc5160_test_config::SPI_HOST,
+    tmc51x0_test_config::SPI_HOST,
     pin_config,
-    tmc5160_test_config::SPI_CLOCK_SPEED_HZ);
+    tmc51x0_test_config::SPI_CLOCK_SPEED_HZ);
   
   if (!handle->spi->Initialize()) {
     ESP_LOGE(TAG, "Failed to initialize SPI interface");
@@ -107,21 +102,21 @@ std::unique_ptr<TestDriverHandle> create_daisy_chain_drivers() noexcept {
   // Create driver instances for each position in chain
   for (uint8_t pos = 0; pos < TEST_CHAIN_LENGTH; ++pos) {
     handle->drivers.push_back(
-      std::make_unique<tmc5160::TMC5160<Esp32SPI>>(*handle->spi, 12'000'000, pos));
+      std::make_unique<tmc51x0::TMC51x0<Esp32SPI>>(*handle->spi, 12'000'000, pos));
   }
   
   // Verify mode pins match expected communication mode (if pins are configured)
   // Only check the first driver (all drivers share the same SPI interface)
   if (!handle->drivers.empty()) {
-    tmc5160::ChipCommMode actual_mode;
-    if (handle->drivers[0]->GetChipCommMode(actual_mode)) {
-      gpio_num_t spi_mode_gpio = handle->spi->GetPinMapping(tmc5160::TMC5160CtrlPin::SPI_MODE);
-      gpio_num_t sd_mode_gpio = handle->spi->GetPinMapping(tmc5160::TMC5160CtrlPin::SD_MODE);
+    tmc51x0::ChipCommMode actual_mode;
+    if (handle->drivers[0]->communication.GetOperatingMode(actual_mode)) {
+      gpio_num_t spi_mode_gpio = handle->spi->GetPinMapping(tmc51x0::TMC51x0CtrlPin::SPI_MODE);
+      gpio_num_t sd_mode_gpio = handle->spi->GetPinMapping(tmc51x0::TMC51x0CtrlPin::SD_MODE);
       constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
       
       if (spi_mode_gpio != UNMAPPED_PIN && sd_mode_gpio != UNMAPPED_PIN) {
-        if (actual_mode == tmc5160::ChipCommMode::SPI_INTERNAL_RAMP ||
-            actual_mode == tmc5160::ChipCommMode::SPI_EXTERNAL_STEPDIR) {
+        if (actual_mode == tmc51x0::ChipCommMode::SPI_INTERNAL_RAMP ||
+            actual_mode == tmc51x0::ChipCommMode::SPI_EXTERNAL_STEPDIR) {
           ESP_LOGI(TAG, "✓ Mode pin verification passed for daisy chain (SPI mode)");
         } else {
           ESP_LOGE(TAG, "✗ Mode pin verification FAILED for daisy chain: Mode pins indicate non-SPI mode");
@@ -143,22 +138,10 @@ bool test_daisy_chain_setup() noexcept {
   }
   
   // Configure and initialize each driver using helper functions
-  tmc5160::DriverConfig cfg{};
+  tmc51x0::DriverConfig cfg{};
   
-  // Configure motor
-  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
-    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
-  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
-    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
-  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
-    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
-  }
-  
-  // Apply board configuration
-  tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
-  
-  // Apply platform configuration
-  tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
+  // Configure driver from unified test rig selection
+  tmc51x0_test_config::ConfigureDriverFromTestRig<SELECTED_TEST_RIG>(cfg);
   
   cfg.chopper.mres = TEST_MRES;
   
@@ -168,7 +151,7 @@ bool test_daisy_chain_setup() noexcept {
       return false;
     }
     
-    uint8_t pos = handle->drivers[i]->GetDaisyChainPosition();
+    uint8_t pos = handle->drivers[i]->communication.GetDaisyChainPosition();
     if (pos != i) {
       ESP_LOGE(TAG, "Position mismatch: expected %zu, got %u", i, pos);
       return false;
@@ -190,15 +173,15 @@ bool test_daisy_chain_position_management() noexcept {
   
   // Test getting and setting daisy chain positions
   for (size_t i = 0; i < handle->drivers.size(); ++i) {
-    uint8_t pos = handle->drivers[i]->GetDaisyChainPosition();
+    uint8_t pos = handle->drivers[i]->communication.GetDaisyChainPosition();
     if (pos != i) {
       ESP_LOGE(TAG, "Position mismatch: expected %zu, got %u", i, pos);
       return false;
     }
     
     // Test setting position (should remain the same)
-    handle->drivers[i]->SetDaisyChainPosition(i);
-    pos = handle->drivers[i]->GetDaisyChainPosition();
+    handle->drivers[i]->communication.SetDaisyChainPosition(i);
+    pos = handle->drivers[i]->communication.GetDaisyChainPosition();
     if (pos != i) {
       ESP_LOGE(TAG, "Position set failed: expected %zu, got %u", i, pos);
       return false;
@@ -219,21 +202,9 @@ bool test_multi_motor_coordination() noexcept {
   }
   
   // Initialize all drivers
-  tmc5160::DriverConfig cfg{};
-  // Configure motor
-  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
-    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
-  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
-    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
-  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
-    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
-  }
-  
-  // Apply board configuration
-  tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
-  
-  // Apply platform configuration
-  tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
+  tmc51x0::DriverConfig cfg{};
+  // Configure driver from unified test rig selection
+  tmc51x0_test_config::ConfigureDriverFromTestRig<SELECTED_TEST_RIG>(cfg);
   
   cfg.chopper.mres = TEST_MRES;
   
@@ -246,8 +217,8 @@ bool test_multi_motor_coordination() noexcept {
   
   // Configure ramp control for each motor
   for (size_t i = 0; i < handle->drivers.size(); ++i) {
-    handle->drivers[i]->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    handle->drivers[i]->rampControl.SetTargetPosition(static_cast<float>(1000 * (i + 1)), tmc5160::Unit::Steps);
+    handle->drivers[i]->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+    handle->drivers[i]->rampControl.SetTargetPosition(static_cast<float>(1000 * (i + 1)), tmc51x0::Unit::Steps);
     handle->drivers[i]->rampControl.SetMaxSpeed(1000.0F);
     handle->drivers[i]->rampControl.SetAcceleration(500.0F);
   }
@@ -267,7 +238,11 @@ bool test_multi_motor_coordination() noexcept {
     
     all_reached = true;
     for (size_t i = 0; i < handle->drivers.size(); ++i) {
-      int32_t pos = handle->drivers[i]->rampControl.GetCurrentPosition();
+      float pos_float = 0.0f;
+      if (!handle->drivers[i]->rampControl.GetCurrentPosition(pos_float, tmc51x0::Unit::Steps)) {
+        pos_float = 0.0f;
+      }
+      int32_t pos = static_cast<int32_t>(pos_float);
       bool reached = handle->drivers[i]->rampControl.IsTargetReached();
       
       if (!reached) {
@@ -290,8 +265,8 @@ bool test_multi_motor_coordination() noexcept {
 
 extern "C" void app_main(void) {
   ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
-  ESP_LOGI(TAG, "║         ESP32 TMC5160 SPI DAISY CHAIN COMPREHENSIVE TEST SUITE               ║");
-  ESP_LOGI(TAG, "║                         HardFOC TMC5160 Driver Tests                         ║");
+  ESP_LOGI(TAG, "║         ESP32 TMC51x0 SPI DAISY CHAIN COMPREHENSIVE TEST SUITE               ║");
+  ESP_LOGI(TAG, "║                         HardFOC TMC51x0 Driver Tests                         ║");
   ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
   ESP_LOGW(TAG, "⚠️  MULTI-MOTOR HARDWARE REQUIRED - DO NOT RUN ON SINGLE-MOTOR SETUP ⚠️");
   

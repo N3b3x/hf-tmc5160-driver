@@ -20,7 +20,7 @@ These examples are configured by default for a specific **Trinamic TMC5160 Dev/E
 
 | Example | Description |
 |---------|-------------|
-| `sinusoidal` | **Main Demo:** Smooth back-and-forth motion using internal ramp generator. |
+| `internal_ramp_sinusoidal` | **Main Demo:** Smooth back-and-forth motion using internal ramp generator. |
 | `core_comprehensive_test` | Basic register read/write and SPI communication verification. |
 | `motor_control_comprehensive_test` | Tests current settings, chopper modes, and basic motion. |
 | `ramp_control_comprehensive_test` | Validates velocity and positioning modes. |

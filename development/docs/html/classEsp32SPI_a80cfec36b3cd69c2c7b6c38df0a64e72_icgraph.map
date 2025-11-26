@@ -1,0 +1,17 @@
+<map id="Esp32SPI::GetPinMapping" name="Esp32SPI::GetPinMapping">
+<area shape="rect" id="Node000001" title="Get pin mapping for a TMC51x0 control pin." alt="" coords="540,55,728,80"/>
+<area shape="rect" id="Node000002" href="$classEsp32SPI.html#ab188cf37c0b6939a7b3b876f4c91f2a1" title="Read GPIO pin state." alt="" coords="337,5,489,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="562,54,470,33,471,28,564,49"/>
+<area shape="rect" id="Node000004" href="$classEsp32SPI.html#adcc0044c32d595f822c8f671bdb9edb0" title="Set GPIO pin state." alt="" coords="343,55,483,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="526,70,483,70,483,65,526,65"/>
+<area shape="rect" id="Node000008" href="$classEsp32SPI.html#a7630149a95a2f2d5e4f542bd909fd913" title="Set external clock frequency on CLK pin." alt="" coords="333,104,492,129"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="564,86,471,107,470,101,562,80"/>
+<area shape="rect" id="Node000003" href="$internal__ramp__sinusoidal_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="169,5,256,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="323,21,256,21,256,15,323,15"/>
+<area shape="rect" id="Node000005" href="$classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44" title="Initialize the SPI interface." alt="" coords="140,55,285,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="329,70,286,70,286,65,329,65"/>
+<area shape="rect" id="Node000006" href="$bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,29,92,55"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="126,57,92,51,93,46,127,51"/>
+<area shape="rect" id="Node000007" href="$stallguard__tuning_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,79,92,104"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="127,83,93,88,92,82,126,77"/>
+</map>

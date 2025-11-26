@@ -1,0 +1,7 @@
+<map id="tmc51x0::GlobalConfig" name="tmc51x0::GlobalConfig">
+<area shape="rect" id="Node000001" title="Global configuration (GCONF) structure." alt="" coords="98,93,269,119"/>
+<area shape="rect" id="Node000002" href="$structtmc51x0_1_1Diag0Config.html" title="DIAG0 pin configuration structure." alt="" coords="5,5,172,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,38,172,91,168,95,110,42"/>
+<area shape="rect" id="Node000003" href="$structtmc51x0_1_1Diag1Config.html" title="DIAG1 pin configuration structure." alt="" coords="196,5,363,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="258,42,198,95,195,91,255,38"/>
+</map>

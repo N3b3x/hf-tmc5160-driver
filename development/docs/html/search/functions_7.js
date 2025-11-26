@@ -6,5 +6,6 @@ var searchData=
   ['handledwell_3',['HandleDwell',['../bounds__finding__sinuous__motion_8cpp.html#a0d0d2bd312981ee8f4d16b1c83d6faf2',1,'bounds_finding_sinuous_motion.cpp']]],
   ['handlefrequency_4',['HandleFrequency',['../bounds__finding__sinuous__motion_8cpp.html#a468299e399fa65feaeb080eecfcd654f',1,'bounds_finding_sinuous_motion.cpp']]],
   ['handlestatus_5',['HandleStatus',['../bounds__finding__sinuous__motion_8cpp.html#ae1393ad4a23750c0916847967cc4032f',1,'bounds_finding_sinuous_motion.cpp']]],
-  ['haserror_6',['HasError',['../structtmc5160_1_1SpiStatus.html#a3dc0b84dd68921278debcecd853e110a',1,'tmc5160::SpiStatus']]]
+  ['haserror_6',['HasError',['../structtmc51x0_1_1SpiStatus.html#aad5ded7d89400550078e2115489aec50',1,'tmc51x0::SpiStatus']]],
+  ['homing_7',['Homing',['../structtmc51x0_1_1TMC51x0_1_1Homing.html#a9a99b07ff6f208b17a12f29e684c171f',1,'tmc51x0::TMC51x0::Homing']]]
 ];

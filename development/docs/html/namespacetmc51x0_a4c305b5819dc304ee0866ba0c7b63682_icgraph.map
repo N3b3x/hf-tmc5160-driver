@@ -1,0 +1,12 @@
+<map id="tmc51x0::calculateCrc8" name="tmc51x0::calculateCrc8">
+<area shape="rect" id="Node000001" title="Calculate CRC8 checksum for UART communication." alt="" coords="677,45,852,70"/>
+<area shape="rect" id="Node000002" href="$structtmc51x0_1_1UartFrame.html#a7d1f26a9c643c433a7c7c50e891eb676" title="Calculate and set CRC8 checksum for the frame CRC8 is calculated over all bytes except the CRC byte i..." alt="" coords="473,5,629,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="666,45,629,40,630,34,667,40"/>
+<area shape="rect" id="Node000003" href="$structtmc51x0_1_1UartFrame.html#a5a168595dd68d05e737102e0f63c666d" title="Verify CRC8 checksum of the frame." alt="" coords="473,69,629,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="667,75,630,80,629,75,666,69"/>
+<area shape="rect" id="Node000004" href="$structtmc51x0_1_1UartFrame.html#ae17bddcde8c6a47a6bcef1e7518b3549" title="Check if frame is valid." alt="" coords="269,40,425,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="460,79,425,74,426,69,460,74"/>
+<area shape="rect" id="Node000005" href="$classtmc51x0_1_1UartCommInterface.html#af52f5c54246e92d1d34d006d9b148bd6" title="Read a 32&#45;bit register via UART." alt="" coords="5,69,221,109"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="460,94,425,95,269,95,222,94,222,89,269,89,425,89,459,89"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="256,74,222,78,221,73,255,69"/>
+</map>

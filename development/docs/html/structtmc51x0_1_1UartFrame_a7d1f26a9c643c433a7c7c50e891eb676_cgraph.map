@@ -1,0 +1,7 @@
+<map id="tmc51x0::UartFrame::CalculateCrc" name="tmc51x0::UartFrame::CalculateCrc">
+<area shape="rect" id="Node000001" title="Calculate and set CRC8 checksum for the frame CRC8 is calculated over all bytes except the CRC byte i..." alt="" coords="5,27,161,67"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0.html#a4c305b5819dc304ee0866ba0c7b63682" title="Calculate CRC8 checksum for UART communication." alt="" coords="209,5,384,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="162,34,196,29,196,34,162,39"/>
+<area shape="rect" id="Node000003" href="$structtmc51x0_1_1UartFrame.html#a78342fc3a803c20d02e2a2cb9895d3a6" title="Get frame size in bytes based on type." alt="" coords="219,55,375,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="162,55,205,61,205,66,162,60"/>
+</map>

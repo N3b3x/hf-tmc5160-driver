@@ -1,6 +1,6 @@
 <map id="BackAndForthMotion::Start" name="BackAndForthMotion::Start">
 <area shape="rect" id="Node000001" title="Initialize and start back&#45;and&#45;forth motion." alt="" coords="345,5,503,45"/>
-<area shape="rect" id="Node000002" href="$sinusoidal_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,13,92,38"/>
+<area shape="rect" id="Node000002" href="$internal__ramp__sinusoidal_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,13,92,38"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="332,25,297,24,140,24,92,26,92,20,140,19,297,19,332,19"/>
 <area shape="rect" id="Node000003" href="$classBackAndForthMotion.html#afac7a78a30c9fafbcee5eb2626e3f409" title="Update back&#45;and&#45;forth motion (call periodically)" alt="" coords="140,33,297,73"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="332,41,298,45,297,40,331,35"/>

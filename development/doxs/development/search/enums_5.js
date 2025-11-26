@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gpiosignal_0',['GpioSignal',['../namespacetmc5160.html#ad80db8b24f711cb069ac28ec227783b8',1,'tmc5160']]]
+  ['gpiosignal_0',['GpioSignal',['../namespacetmc51x0.html#a066cfe7d73f5a7f546c6d7215c0b4577',1,'tmc51x0']]]
 ];

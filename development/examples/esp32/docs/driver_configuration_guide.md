@@ -204,7 +204,7 @@ driver.encoder.SetResolution(
    ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
    ApplyBoardConfig<SELECTED_BOARD>(cfg);
    ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
-   cfg.chopper.mres = 4;  // Override microstep resolution
+   cfg.chopper.mres = tmc5160::MicrostepResolution::MRES_16;  // Override microstep resolution
    ```
 
 7. **Adding New Boards/Platforms**: To add a new board or platform:
