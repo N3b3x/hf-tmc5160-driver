@@ -133,7 +133,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">dcStep automatic commutation configuration register (DCCTRL)  <a href="uniontmc5160_1_1DCCTRL__Register.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc5160_1_1DcStepConfig.html">DcStepConfig</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">dcStep configuration structure  <a href="structtmc5160_1_1DcStepConfig.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DcStep configuration structure.  <a href="structtmc5160_1_1DcStepConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc5160_1_1Diag0Config.html">Diag0Config</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DIAG0 pin configuration structure.  <a href="structtmc5160_1_1Diag0Config.html#details">More...</a><br /></td></tr>
@@ -219,8 +219,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniontmc5160_1_1RAMP__STAT__Register.html">RAMP_STAT_Register</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ramp status and switch event status register (RAMP_STAT)  <a href="uniontmc5160_1_1RAMP__STAT__Register.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc5160_1_1RampParameters.html">RampParameters</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ramp configuration structure.  <a href="structtmc5160_1_1RampParameters.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc5160_1_1RampConfig.html">RampConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ramp configuration structure.  <a href="structtmc5160_1_1RampConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc5160_1_1ReferenceSwitchConfig.html">ReferenceSwitchConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference switch configuration structure.  <a href="structtmc5160_1_1ReferenceSwitchConfig.html#details">More...</a><br /></td></tr>
@@ -244,7 +244,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI_STATUS structure - status flags returned with each SPI datagram.  <a href="structtmc5160_1_1SpiStatus.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc5160_1_1StallGuardConfig.html">StallGuardConfig</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">StallGuard configuration structure.  <a href="structtmc5160_1_1StallGuardConfig.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">StallGuard2 configuration structure.  <a href="structtmc5160_1_1StallGuardConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc5160_1_1StealthChopConfig.html">StealthChopConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">StealthChop configuration structure.  <a href="structtmc5160_1_1StealthChopConfig.html#details">More...</a><br /></td></tr>
@@ -386,13 +386,142 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a665a38f92e0b840fcadd8f86abfe7cab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sense amplifier filter time constant enumeration.  <a href="#a665a38f92e0b840fcadd8f86abfe7cab">More...</a><br /></td></tr>
 <tr class="separator:a665a38f92e0b840fcadd8f86abfe7cab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa2b6ac1cefcef55fa696acd746a69bd" id="r_afa2b6ac1cefcef55fa696acd746a69bd"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa2b6ac1cefcef55fa696acd746a69bd">OverTempProtection</a> : uint8_t { <a class="el" href="#afa2b6ac1cefcef55fa696acd746a69bda8292f4c72596c343cc85cfd818469fe0">Level0</a> = 0
-, <a class="el" href="#afa2b6ac1cefcef55fa696acd746a69bda63664aa8bee7544118de87bf48d529ee">Level1</a> = 1
-, <a class="el" href="#afa2b6ac1cefcef55fa696acd746a69bda0cbbfd5a182368f83190bf23d2bd5fde">Level2</a> = 2
-, <a class="el" href="#afa2b6ac1cefcef55fa696acd746a69bda68290d8bb76fe3ceb98d34e8b068f6be">Level3</a> = 3
+<tr class="memitem:afa2b6ac1cefcef55fa696acd746a69bd" id="r_afa2b6ac1cefcef55fa696acd746a69bd"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa2b6ac1cefcef55fa696acd746a69bd">OverTempProtection</a> : uint8_t { <a class="el" href="#afa2b6ac1cefcef55fa696acd746a69bdabee7dc0255faec605fa199c37a7c3fb0">Temp150C</a> = 0
+, <a class="el" href="#afa2b6ac1cefcef55fa696acd746a69bda88e7c98da1a9fbbc305262d9151a92cc">Temp143C</a> = 1
+, <a class="el" href="#afa2b6ac1cefcef55fa696acd746a69bda87f043f361dce072e081aa5063d3f91b">Temp136C</a> = 2
+, <a class="el" href="#afa2b6ac1cefcef55fa696acd746a69bdadf428b6611eb44f97ac5f072e5ef3bfc">Temp120C</a> = 3
  }</td></tr>
 <tr class="memdesc:afa2b6ac1cefcef55fa696acd746a69bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Over-temperature protection level enumeration.  <a href="#afa2b6ac1cefcef55fa696acd746a69bd">More...</a><br /></td></tr>
 <tr class="separator:afa2b6ac1cefcef55fa696acd746a69bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44162616b47e69b39fd84f959c9c12bb" id="r_a44162616b47e69b39fd84f959c9c12bb"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44162616b47e69b39fd84f959c9c12bb">ChopperMode</a> : bool { <a class="el" href="#a44162616b47e69b39fd84f959c9c12bbab028c799dc15f660cdcd57aa004bb290">SPREAD_CYCLE</a> = false
+, <a class="el" href="#a44162616b47e69b39fd84f959c9c12bba21994d6177b29e1128b2d7f0f8342057">CLASSIC</a> = true
+ }</td></tr>
+<tr class="memdesc:a44162616b47e69b39fd84f959c9c12bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chopper mode enumeration.  <a href="#a44162616b47e69b39fd84f959c9c12bb">More...</a><br /></td></tr>
+<tr class="separator:a44162616b47e69b39fd84f959c9c12bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a371aae30361f31f9b35d14a5fd6b7857" id="r_a371aae30361f31f9b35d14a5fd6b7857"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a371aae30361f31f9b35d14a5fd6b7857">ChopperBlankTime</a> : uint8_t { <a class="el" href="#a371aae30361f31f9b35d14a5fd6b7857ae447a0875e209a8690bcc3ede1271f04">TBL_16CLK</a> = 0
+, <a class="el" href="#a371aae30361f31f9b35d14a5fd6b7857ac96870a8adfc7829b89977043f26f286">TBL_24CLK</a> = 1
+, <a class="el" href="#a371aae30361f31f9b35d14a5fd6b7857ac420eb13a12bf6b8b1aafafc2970cf5d">TBL_36CLK</a> = 2
+, <a class="el" href="#a371aae30361f31f9b35d14a5fd6b7857a041290d8dc40841d4510c75aed0613da">TBL_54CLK</a> = 3
+ }</td></tr>
+<tr class="memdesc:a371aae30361f31f9b35d14a5fd6b7857"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparator blank time enumeration.  <a href="#a371aae30361f31f9b35d14a5fd6b7857">More...</a><br /></td></tr>
+<tr class="separator:a371aae30361f31f9b35d14a5fd6b7857"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0ef331324205d3ed8cbb3b036d18d31" id="r_af0ef331324205d3ed8cbb3b036d18d31"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0ef331324205d3ed8cbb3b036d18d31">MicrostepResolution</a> : uint8_t { <br />
+&#160;&#160;<a class="el" href="#af0ef331324205d3ed8cbb3b036d18d31af6a5e029c66401ac3bb0d52f2f29353e">MRES_256</a> = 0
+, <a class="el" href="#af0ef331324205d3ed8cbb3b036d18d31ab227ff1ca50d147d685877a0c73041c6">MRES_128</a> = 1
+, <a class="el" href="#af0ef331324205d3ed8cbb3b036d18d31a8fb86b8c54f4203fae7e604e7e377d5b">MRES_64</a> = 2
+, <a class="el" href="#af0ef331324205d3ed8cbb3b036d18d31a99fd8a14194ff4938a4fc517f9749cf1">MRES_32</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="#af0ef331324205d3ed8cbb3b036d18d31a782d5ebca14ac091682de02b0c9543fd">MRES_16</a> = 4
+, <a class="el" href="#af0ef331324205d3ed8cbb3b036d18d31acd0ef50f31291f01e6ad2f0572d56b88">MRES_8</a> = 5
+, <a class="el" href="#af0ef331324205d3ed8cbb3b036d18d31a8a54bb0f4f69caee2448f5de30c5b6a5">MRES_4</a> = 6
+, <a class="el" href="#af0ef331324205d3ed8cbb3b036d18d31ab8fce733d17943c78fc278ebff4573a8">MRES_2</a> = 7
+, <br />
+&#160;&#160;<a class="el" href="#af0ef331324205d3ed8cbb3b036d18d31a420bb3b8bd24be08a8b037864fca23e3">FULLSTEP</a> = 8
+<br />
+ }</td></tr>
+<tr class="memdesc:af0ef331324205d3ed8cbb3b036d18d31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Microstep resolution enumeration.  <a href="#af0ef331324205d3ed8cbb3b036d18d31">More...</a><br /></td></tr>
+<tr class="separator:af0ef331324205d3ed8cbb3b036d18d31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54cee59d08c9c45abede2726f8fc1dac" id="r_a54cee59d08c9c45abede2726f8fc1dac"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54cee59d08c9c45abede2726f8fc1dac">StealthChopPwmFreq</a> : uint8_t { <a class="el" href="#a54cee59d08c9c45abede2726f8fc1daca9320cca3f5079c6a9ecba3526cedbb03">PWM_FREQ_0</a> = 0
+, <a class="el" href="#a54cee59d08c9c45abede2726f8fc1daca95ca2fbd901cde6a78072539a144bbb6">PWM_FREQ_1</a> = 1
+, <a class="el" href="#a54cee59d08c9c45abede2726f8fc1dacae368d4931308d6d2ad481f53620b392c">PWM_FREQ_2</a> = 2
+, <a class="el" href="#a54cee59d08c9c45abede2726f8fc1dacaae5e615c816fa21b6f8e677dea601101">PWM_FREQ_3</a> = 3
+ }</td></tr>
+<tr class="memdesc:a54cee59d08c9c45abede2726f8fc1dac"><td class="mdescLeft">&#160;</td><td class="mdescRight">StealthChop PWM frequency enumeration.  <a href="#a54cee59d08c9c45abede2726f8fc1dac">More...</a><br /></td></tr>
+<tr class="separator:a54cee59d08c9c45abede2726f8fc1dac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae27e0401e84b11039e2df9f708a96337" id="r_ae27e0401e84b11039e2df9f708a96337"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae27e0401e84b11039e2df9f708a96337">StealthChopRegulationSpeed</a> : uint8_t { <br />
+&#160;&#160;<a class="el" href="#ae27e0401e84b11039e2df9f708a96337a3e3b94dcc31e358b26c1d8ea7d4878b1">VERY_SLOW</a> = 1
+, <a class="el" href="#ae27e0401e84b11039e2df9f708a96337a0e3066cbbd284dce8b76e7c4620d6d75">SLOW</a> = 2
+, <a class="el" href="#ae27e0401e84b11039e2df9f708a96337a5137485eff3ff278d233d993c8539599">MODERATE</a> = 4
+, <a class="el" href="#ae27e0401e84b11039e2df9f708a96337adca6e617f6fb54033deb311e7e7c93cc">FAST</a> = 8
+, <br />
+&#160;&#160;<a class="el" href="#ae27e0401e84b11039e2df9f708a96337ad3f84081b6b3a6c3f66b20414b6a7238">VERY_FAST</a> = 15
+<br />
+ }</td></tr>
+<tr class="memdesc:ae27e0401e84b11039e2df9f708a96337"><td class="mdescLeft">&#160;</td><td class="mdescRight">StealthChop regulation speed enumeration.  <a href="#ae27e0401e84b11039e2df9f708a96337">More...</a><br /></td></tr>
+<tr class="separator:ae27e0401e84b11039e2df9f708a96337"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a573006493faa30433407b3a8de8a1e" id="r_a9a573006493faa30433407b3a8de8a1e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a573006493faa30433407b3a8de8a1e">StealthChopJerkReduction</a> : uint8_t { <br />
+&#160;&#160;<a class="el" href="#a9a573006493faa30433407b3a8de8a1ea115f17a28532bbd6f0f5ec83ed20692a">MAXIMUM</a> = 8
+, <a class="el" href="#a9a573006493faa30433407b3a8de8a1eab89de3b4b81c4facfac906edf29aec8c">HIGH</a> = 10
+, <a class="el" href="#a9a573006493faa30433407b3a8de8a1ea5137485eff3ff278d233d993c8539599">MODERATE</a> = 12
+, <a class="el" href="#a9a573006493faa30433407b3a8de8a1ea41bc94cbd8eebea13ce0491b2ac11b88">LOW</a> = 14
+, <br />
+&#160;&#160;<a class="el" href="#a9a573006493faa30433407b3a8de8a1eacf0ee111afe9889278a772d631dfa150">MINIMUM</a> = 15
+<br />
+ }</td></tr>
+<tr class="memdesc:a9a573006493faa30433407b3a8de8a1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">StealthChop mode switching jerk reduction enumeration.  <a href="#a9a573006493faa30433407b3a8de8a1e">More...</a><br /></td></tr>
+<tr class="separator:a9a573006493faa30433407b3a8de8a1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab770990e772993b9d3609dd71d335d75" id="r_ab770990e772993b9d3609dd71d335d75"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab770990e772993b9d3609dd71d335d75">StallGuardSensitivity</a> : int8_t { <br />
+&#160;&#160;<a class="el" href="#ab770990e772993b9d3609dd71d335d75a2eae31361b8d1a454cadc17a8d4b70ac">VERY_HIGH</a> = -32
+, <a class="el" href="#ab770990e772993b9d3609dd71d335d75ab89de3b4b81c4facfac906edf29aec8c">HIGH</a> = -16
+, <a class="el" href="#ab770990e772993b9d3609dd71d335d75a5137485eff3ff278d233d993c8539599">MODERATE</a> = 0
+, <a class="el" href="#ab770990e772993b9d3609dd71d335d75a41bc94cbd8eebea13ce0491b2ac11b88">LOW</a> = 16
+, <br />
+&#160;&#160;<a class="el" href="#ab770990e772993b9d3609dd71d335d75ab8756489d86141704f99b4c2a999d5c3">VERY_LOW</a> = 32
+<br />
+ }</td></tr>
+<tr class="memdesc:ab770990e772993b9d3609dd71d335d75"><td class="mdescLeft">&#160;</td><td class="mdescRight">StallGuard2 sensitivity enumeration.  <a href="#ab770990e772993b9d3609dd71d335d75">More...</a><br /></td></tr>
+<tr class="separator:ab770990e772993b9d3609dd71d335d75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cb16c989efa3ed229d6e1be8590ced6" id="r_a7cb16c989efa3ed229d6e1be8590ced6"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7cb16c989efa3ed229d6e1be8590ced6">CoolStepIncrementStep</a> : uint8_t { <a class="el" href="#a7cb16c989efa3ed229d6e1be8590ced6ad4b23270977d355a765a4ca0a9279e94">STEP_1</a> = 0
+, <a class="el" href="#a7cb16c989efa3ed229d6e1be8590ced6a5bc6ccaa9c44333f09ae3967e53acf2c">STEP_2</a> = 1
+, <a class="el" href="#a7cb16c989efa3ed229d6e1be8590ced6ad08f06a540853d4034b533eb4c435c56">STEP_4</a> = 2
+, <a class="el" href="#a7cb16c989efa3ed229d6e1be8590ced6a4c4bc44c692169e8833b2a174c51aed7">STEP_8</a> = 3
+ }</td></tr>
+<tr class="memdesc:a7cb16c989efa3ed229d6e1be8590ced6"><td class="mdescLeft">&#160;</td><td class="mdescRight">CoolStep current increment step width enumeration.  <a href="#a7cb16c989efa3ed229d6e1be8590ced6">More...</a><br /></td></tr>
+<tr class="separator:a7cb16c989efa3ed229d6e1be8590ced6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72bc4eb06bff1420f2f10207f77eb7f0" id="r_a72bc4eb06bff1420f2f10207f77eb7f0"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72bc4eb06bff1420f2f10207f77eb7f0">CoolStepDecrementSpeed</a> : uint8_t { <a class="el" href="#a72bc4eb06bff1420f2f10207f77eb7f0a1a79f124cf969a8fa05d912917ad6f88">EVERY_32</a> = 0
+, <a class="el" href="#a72bc4eb06bff1420f2f10207f77eb7f0acc3653124fa2c8ef75c0dfca267e0683">EVERY_8</a> = 1
+, <a class="el" href="#a72bc4eb06bff1420f2f10207f77eb7f0a9223d9d65aaaf452a734e3d55afafb05">EVERY_2</a> = 2
+, <a class="el" href="#a72bc4eb06bff1420f2f10207f77eb7f0aa8b2b4a214cf630ba24fa7e19266c47d">EVERY_1</a> = 3
+ }</td></tr>
+<tr class="memdesc:a72bc4eb06bff1420f2f10207f77eb7f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">CoolStep current decrement speed enumeration.  <a href="#a72bc4eb06bff1420f2f10207f77eb7f0">More...</a><br /></td></tr>
+<tr class="separator:a72bc4eb06bff1420f2f10207f77eb7f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab37edcc75ac50d48df125f93ed4217dc" id="r_ab37edcc75ac50d48df125f93ed4217dc"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab37edcc75ac50d48df125f93ed4217dc">CoolStepMinCurrent</a> : uint8_t { <a class="el" href="#ab37edcc75ac50d48df125f93ed4217dcab5df3d530fe63d11b4f120792e5cbe83">HALF_IRUN</a> = 0
+, <a class="el" href="#ab37edcc75ac50d48df125f93ed4217dca0629a584c69b1a01b2e3014093704791">QUARTER_IRUN</a> = 1
+ }</td></tr>
+<tr class="memdesc:ab37edcc75ac50d48df125f93ed4217dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">CoolStep minimum current percentage enumeration.  <a href="#ab37edcc75ac50d48df125f93ed4217dc">More...</a><br /></td></tr>
+<tr class="separator:ab37edcc75ac50d48df125f93ed4217dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a587d5c069188523bc1a1fe01e9b077ba" id="r_a587d5c069188523bc1a1fe01e9b077ba"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a587d5c069188523bc1a1fe01e9b077ba">DcStepStallSensitivity</a> : uint8_t { <a class="el" href="#a587d5c069188523bc1a1fe01e9b077baa055c1a591abb0e8cd86dc969727bcc0b">DISABLED</a> = 0
+, <a class="el" href="#a587d5c069188523bc1a1fe01e9b077baa41bc94cbd8eebea13ce0491b2ac11b88">LOW</a> = 1
+, <a class="el" href="#a587d5c069188523bc1a1fe01e9b077baa5137485eff3ff278d233d993c8539599">MODERATE</a> = 2
+, <a class="el" href="#a587d5c069188523bc1a1fe01e9b077baab89de3b4b81c4facfac906edf29aec8c">HIGH</a> = 3
+ }</td></tr>
+<tr class="memdesc:a587d5c069188523bc1a1fe01e9b077ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">DcStep stall detection sensitivity enumeration.  <a href="#a587d5c069188523bc1a1fe01e9b077ba">More...</a><br /></td></tr>
+<tr class="separator:a587d5c069188523bc1a1fe01e9b077ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c9082ecbde4d00926dee0abf53be002" id="r_a7c9082ecbde4d00926dee0abf53be002"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7c9082ecbde4d00926dee0abf53be002">ReferenceSwitchActiveLevel</a> : uint8_t { <a class="el" href="#a7c9082ecbde4d00926dee0abf53be002ae434209643a0d01f383a46eece525679">ACTIVE_LOW</a>
+, <a class="el" href="#a7c9082ecbde4d00926dee0abf53be002ab868e37f0edfdbea9838600657b6f4b3">ACTIVE_HIGH</a>
+ }</td></tr>
+<tr class="memdesc:a7c9082ecbde4d00926dee0abf53be002"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference switch active level enumeration.  <a href="#a7c9082ecbde4d00926dee0abf53be002">More...</a><br /></td></tr>
+<tr class="separator:a7c9082ecbde4d00926dee0abf53be002"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ee7193a78dd507e5c413884ce8c33ac" id="r_a2ee7193a78dd507e5c413884ce8c33ac"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ee7193a78dd507e5c413884ce8c33ac">ReferenceLatchMode</a> : uint8_t { <a class="el" href="#a2ee7193a78dd507e5c413884ce8c33aca055c1a591abb0e8cd86dc969727bcc0b">DISABLED</a>
+, <a class="el" href="#a2ee7193a78dd507e5c413884ce8c33acabda1b99ab9b7a73cba44e600970cb2d8">ACTIVE_EDGE</a>
+, <a class="el" href="#a2ee7193a78dd507e5c413884ce8c33aca646caa3d5dfe86b59fe05e2f61622606">INACTIVE_EDGE</a>
+, <a class="el" href="#a2ee7193a78dd507e5c413884ce8c33aca03495d0b1362f1d841b59007e2887c7f">BOTH_EDGES</a>
+ }</td></tr>
+<tr class="memdesc:a2ee7193a78dd507e5c413884ce8c33ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position latching mode enumeration.  <a href="#a2ee7193a78dd507e5c413884ce8c33ac">More...</a><br /></td></tr>
+<tr class="separator:a2ee7193a78dd507e5c413884ce8c33ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a444e9027bfb76a7d96817b586554b915" id="r_a444e9027bfb76a7d96817b586554b915"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a444e9027bfb76a7d96817b586554b915">ReferenceStopMode</a> : uint8_t { <a class="el" href="#a444e9027bfb76a7d96817b586554b915ab34c594ae5ab85d1941f8c23280bb3aa">HARD_STOP</a>
+, <a class="el" href="#a444e9027bfb76a7d96817b586554b915abfd64c1daf3144226575a385378e55c1">SOFT_STOP</a>
+ }</td></tr>
+<tr class="memdesc:a444e9027bfb76a7d96817b586554b915"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop mode enumeration.  <a href="#a444e9027bfb76a7d96817b586554b915">More...</a><br /></td></tr>
+<tr class="separator:a444e9027bfb76a7d96817b586554b915"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd036b01466079f99682a4953bd12ac2" id="r_abd036b01466079f99682a4953bd12ac2"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd036b01466079f99682a4953bd12ac2">EncoderNSensitivity</a> : uint8_t { <a class="el" href="#abd036b01466079f99682a4953bd12ac2a82459bef64caed43b53ccc18097d751f">ACTIVE_LEVEL</a>
+, <a class="el" href="#abd036b01466079f99682a4953bd12ac2ad85243a747ac5537ef0b7adde99c3e98">RISING_EDGE</a>
+, <a class="el" href="#abd036b01466079f99682a4953bd12ac2a297f5ea19073f4b51715b029f48d5d52">FALLING_EDGE</a>
+, <a class="el" href="#abd036b01466079f99682a4953bd12ac2a03495d0b1362f1d841b59007e2887c7f">BOTH_EDGES</a>
+ }</td></tr>
+<tr class="memdesc:abd036b01466079f99682a4953bd12ac2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder N channel sensitivity enumeration.  <a href="#abd036b01466079f99682a4953bd12ac2">More...</a><br /></td></tr>
+<tr class="separator:abd036b01466079f99682a4953bd12ac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99e76557ed37506f89c1bf467b67b674" id="r_a99e76557ed37506f89c1bf467b67b674"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99e76557ed37506f89c1bf467b67b674">EncoderClearMode</a> : uint8_t { <a class="el" href="#a99e76557ed37506f89c1bf467b67b674a055c1a591abb0e8cd86dc969727bcc0b">DISABLED</a>
+, <a class="el" href="#a99e76557ed37506f89c1bf467b67b674aa32d16355630f112473d1ae254519c24">ONCE</a>
+, <a class="el" href="#a99e76557ed37506f89c1bf467b67b674ab1fa9dd3af034b3ef4291579aa673c07">CONTINUOUS</a>
+ }</td></tr>
+<tr class="memdesc:a99e76557ed37506f89c1bf467b67b674"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder clear mode enumeration.  <a href="#a99e76557ed37506f89c1bf467b67b674">More...</a><br /></td></tr>
+<tr class="separator:a99e76557ed37506f89c1bf467b67b674"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aec783c996f5aa4b0903200b060fdfd" id="r_a3aec783c996f5aa4b0903200b060fdfd"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3aec783c996f5aa4b0903200b060fdfd">EncoderPrescalerMode</a> : uint8_t { <a class="el" href="#a3aec783c996f5aa4b0903200b060fdfda98ad0e8750ae10ad556ed7a62affb452">BINARY</a>
+, <a class="el" href="#a3aec783c996f5aa4b0903200b060fdfda13d992d671957e9a2b3e936ca0cf14a4">DECIMAL</a>
+ }</td></tr>
+<tr class="memdesc:a3aec783c996f5aa4b0903200b060fdfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder prescaler mode enumeration.  <a href="#a3aec783c996f5aa4b0903200b060fdfd">More...</a><br /></td></tr>
+<tr class="separator:a3aec783c996f5aa4b0903200b060fdfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -496,6 +625,75 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a371aae30361f31f9b35d14a5fd6b7857" name="a371aae30361f31f9b35d14a5fd6b7857"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a371aae30361f31f9b35d14a5fd6b7857">&#9670;&#160;</a></span>ChopperBlankTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a371aae30361f31f9b35d14a5fd6b7857">tmc5160::ChopperBlankTime</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Comparator blank time enumeration. </p>
+<p>Blank time masks comparator input to block spikes from parasitic capacitances during switching. Longer blank time provides more protection but may limit chopper frequency.</p>
+<dl class="section note"><dt>Note</dt><dd>For most applications, TBL_24CLK or TBL_36CLK is good. </dd>
+<dd>
+For highly capacitive loads (e.g., filter networks), TBL_36CLK or TBL_54CLK may be required. </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a371aae30361f31f9b35d14a5fd6b7857ae447a0875e209a8690bcc3ede1271f04" name="a371aae30361f31f9b35d14a5fd6b7857ae447a0875e209a8690bcc3ede1271f04"></a>TBL_16CLK&#160;</td><td class="fielddoc"><p>16 clock cycles (~1.33µs @ 12MHz) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a371aae30361f31f9b35d14a5fd6b7857ac96870a8adfc7829b89977043f26f286" name="a371aae30361f31f9b35d14a5fd6b7857ac96870a8adfc7829b89977043f26f286"></a>TBL_24CLK&#160;</td><td class="fielddoc"><p>24 clock cycles (~2.0µs @ 12MHz) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a371aae30361f31f9b35d14a5fd6b7857ac420eb13a12bf6b8b1aafafc2970cf5d" name="a371aae30361f31f9b35d14a5fd6b7857ac420eb13a12bf6b8b1aafafc2970cf5d"></a>TBL_36CLK&#160;</td><td class="fielddoc"><p>36 clock cycles (~3.0µs @ 12MHz, typical) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a371aae30361f31f9b35d14a5fd6b7857a041290d8dc40841d4510c75aed0613da" name="a371aae30361f31f9b35d14a5fd6b7857a041290d8dc40841d4510c75aed0613da"></a>TBL_54CLK&#160;</td><td class="fielddoc"><p>54 clock cycles (~4.5µs @ 12MHz, for high capacitive loads) </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a44162616b47e69b39fd84f959c9c12bb" name="a44162616b47e69b39fd84f959c9c12bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44162616b47e69b39fd84f959c9c12bb">&#9670;&#160;</a></span>ChopperMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a44162616b47e69b39fd84f959c9c12bb">tmc5160::ChopperMode</a> : bool</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Chopper mode enumeration. </p>
+<p>Selects between SpreadCycle (patented high-performance algorithm) and Classic constant off-time chopper. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a44162616b47e69b39fd84f959c9c12bbab028c799dc15f660cdcd57aa004bb290" name="a44162616b47e69b39fd84f959c9c12bbab028c799dc15f660cdcd57aa004bb290"></a>SPREAD_CYCLE&#160;</td><td class="fielddoc"><p>SpreadCycle mode (recommended) - superior microstepping quality. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a44162616b47e69b39fd84f959c9c12bba21994d6177b29e1128b2d7f0f8342057" name="a44162616b47e69b39fd84f959c9c12bba21994d6177b29e1128b2d7f0f8342057"></a>CLASSIC&#160;</td><td class="fielddoc"><p>Classic constant off-time mode - alternative chopper algorithm. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="a784e320454a771e190b3b376a67d9c29" name="a784e320454a771e190b3b376a67d9c29"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a784e320454a771e190b3b376a67d9c29">&#9670;&#160;</a></span>CommMode</h2>
 
@@ -521,6 +719,142 @@ Functions</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a784e320454a771e190b3b376a67d9c29a33dc5312b091968f5a120c2484d40df8" name="a784e320454a771e190b3b376a67d9c29a33dc5312b091968f5a120c2484d40df8"></a>SPI&#160;</td><td class="fielddoc"><p>SPI (Serial Peripheral Interface) mode - 4-wire synchronous communication </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a784e320454a771e190b3b376a67d9c29acec5769b01fb096efaf0d6186823c78f" name="a784e320454a771e190b3b376a67d9c29acec5769b01fb096efaf0d6186823c78f"></a>UART&#160;</td><td class="fielddoc"><p>UART (Universal Asynchronous Receiver-Transmitter) mode - 2-wire asynchronous communication </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a72bc4eb06bff1420f2f10207f77eb7f0" name="a72bc4eb06bff1420f2f10207f77eb7f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72bc4eb06bff1420f2f10207f77eb7f0">&#9670;&#160;</a></span>CoolStepDecrementSpeed</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a72bc4eb06bff1420f2f10207f77eb7f0">tmc5160::CoolStepDecrementSpeed</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>CoolStep current decrement speed enumeration. </p>
+<p>Defines how many StallGuard2 measurements above threshold before decrementing current. Higher values provide slower current reduction, preventing rapid oscillations. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a72bc4eb06bff1420f2f10207f77eb7f0a1a79f124cf969a8fa05d912917ad6f88" name="a72bc4eb06bff1420f2f10207f77eb7f0a1a79f124cf969a8fa05d912917ad6f88"></a>EVERY_32&#160;</td><td class="fielddoc"><p>Decrement every 32 measurements (slowest reduction, most stable) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a72bc4eb06bff1420f2f10207f77eb7f0acc3653124fa2c8ef75c0dfca267e0683" name="a72bc4eb06bff1420f2f10207f77eb7f0acc3653124fa2c8ef75c0dfca267e0683"></a>EVERY_8&#160;</td><td class="fielddoc"><p>Decrement every 8 measurements. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a72bc4eb06bff1420f2f10207f77eb7f0a9223d9d65aaaf452a734e3d55afafb05" name="a72bc4eb06bff1420f2f10207f77eb7f0a9223d9d65aaaf452a734e3d55afafb05"></a>EVERY_2&#160;</td><td class="fielddoc"><p>Decrement every 2 measurements. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a72bc4eb06bff1420f2f10207f77eb7f0aa8b2b4a214cf630ba24fa7e19266c47d" name="a72bc4eb06bff1420f2f10207f77eb7f0aa8b2b4a214cf630ba24fa7e19266c47d"></a>EVERY_1&#160;</td><td class="fielddoc"><p>Decrement every measurement (fastest reduction) </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a7cb16c989efa3ed229d6e1be8590ced6" name="a7cb16c989efa3ed229d6e1be8590ced6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cb16c989efa3ed229d6e1be8590ced6">&#9670;&#160;</a></span>CoolStepIncrementStep</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a7cb16c989efa3ed229d6e1be8590ced6">tmc5160::CoolStepIncrementStep</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>CoolStep current increment step width enumeration. </p>
+<p>Defines how many current steps to increment per StallGuard2 measurement below threshold. Higher values provide faster response to increasing load but may cause oscillations. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7cb16c989efa3ed229d6e1be8590ced6ad4b23270977d355a765a4ca0a9279e94" name="a7cb16c989efa3ed229d6e1be8590ced6ad4b23270977d355a765a4ca0a9279e94"></a>STEP_1&#160;</td><td class="fielddoc"><p>Increment by 1 step per measurement (slowest, smoothest) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7cb16c989efa3ed229d6e1be8590ced6a5bc6ccaa9c44333f09ae3967e53acf2c" name="a7cb16c989efa3ed229d6e1be8590ced6a5bc6ccaa9c44333f09ae3967e53acf2c"></a>STEP_2&#160;</td><td class="fielddoc"><p>Increment by 2 steps per measurement. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7cb16c989efa3ed229d6e1be8590ced6ad08f06a540853d4034b533eb4c435c56" name="a7cb16c989efa3ed229d6e1be8590ced6ad08f06a540853d4034b533eb4c435c56"></a>STEP_4&#160;</td><td class="fielddoc"><p>Increment by 4 steps per measurement. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7cb16c989efa3ed229d6e1be8590ced6a4c4bc44c692169e8833b2a174c51aed7" name="a7cb16c989efa3ed229d6e1be8590ced6a4c4bc44c692169e8833b2a174c51aed7"></a>STEP_8&#160;</td><td class="fielddoc"><p>Increment by 8 steps per measurement (fastest response) </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ab37edcc75ac50d48df125f93ed4217dc" name="ab37edcc75ac50d48df125f93ed4217dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab37edcc75ac50d48df125f93ed4217dc">&#9670;&#160;</a></span>CoolStepMinCurrent</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#ab37edcc75ac50d48df125f93ed4217dc">tmc5160::CoolStepMinCurrent</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>CoolStep minimum current percentage enumeration. </p>
+<p>Defines the minimum motor current as a percentage of IRUN when CoolStep reduces current. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab37edcc75ac50d48df125f93ed4217dcab5df3d530fe63d11b4f120792e5cbe83" name="ab37edcc75ac50d48df125f93ed4217dcab5df3d530fe63d11b4f120792e5cbe83"></a>HALF_IRUN&#160;</td><td class="fielddoc"><p>Minimum current is 50% of IRUN (1/2) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab37edcc75ac50d48df125f93ed4217dca0629a584c69b1a01b2e3014093704791" name="ab37edcc75ac50d48df125f93ed4217dca0629a584c69b1a01b2e3014093704791"></a>QUARTER_IRUN&#160;</td><td class="fielddoc"><p>Minimum current is 25% of IRUN (1/4) </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a587d5c069188523bc1a1fe01e9b077ba" name="a587d5c069188523bc1a1fe01e9b077ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a587d5c069188523bc1a1fe01e9b077ba">&#9670;&#160;</a></span>DcStepStallSensitivity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a587d5c069188523bc1a1fe01e9b077ba">tmc5160::DcStepStallSensitivity</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>DcStep stall detection sensitivity enumeration. </p>
+<p>Defines the sensitivity of stall detection in DcStep mode. Higher sensitivity detects stalls earlier but may trigger false positives. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a587d5c069188523bc1a1fe01e9b077baa055c1a591abb0e8cd86dc969727bcc0b" name="a587d5c069188523bc1a1fe01e9b077baa055c1a591abb0e8cd86dc969727bcc0b"></a>DISABLED&#160;</td><td class="fielddoc"><p>Stall detection disabled (dc_sg = 0) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a587d5c069188523bc1a1fe01e9b077baa41bc94cbd8eebea13ce0491b2ac11b88" name="a587d5c069188523bc1a1fe01e9b077baa41bc94cbd8eebea13ce0491b2ac11b88"></a>LOW&#160;</td><td class="fielddoc"><p>Low sensitivity - fewer false positives (dc_sg ≈ dc_time / 20) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a587d5c069188523bc1a1fe01e9b077baa5137485eff3ff278d233d993c8539599" name="a587d5c069188523bc1a1fe01e9b077baa5137485eff3ff278d233d993c8539599"></a>MODERATE&#160;</td><td class="fielddoc"><p>Moderate sensitivity - balanced (dc_sg ≈ dc_time / 16, recommended) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a587d5c069188523bc1a1fe01e9b077baab89de3b4b81c4facfac906edf29aec8c" name="a587d5c069188523bc1a1fe01e9b077baab89de3b4b81c4facfac906edf29aec8c"></a>HIGH&#160;</td><td class="fielddoc"><p>High sensitivity - detects stalls earlier (dc_sg ≈ dc_time / 12) </p>
 </td></tr>
 </table>
 
@@ -566,6 +900,109 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="aabe2f8a8b4cb7d6533ac67eb7980dc01a598c6a2431f188feea077b1a92b28f2b" name="aabe2f8a8b4cb7d6533ac67eb7980dc01a598c6a2431f188feea077b1a92b28f2b"></a>OTHER_ERR&#160;</td><td class="fielddoc"><p>GSTAT drv_err is set but none of the above conditions is found. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="aabe2f8a8b4cb7d6533ac67eb7980dc01aac0b147690352ccd55facc0f3468846a" name="aabe2f8a8b4cb7d6533ac67eb7980dc01aac0b147690352ccd55facc0f3468846a"></a>OTPW&#160;</td><td class="fielddoc"><p>Overtemperature pre-warning. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a99e76557ed37506f89c1bf467b67b674" name="a99e76557ed37506f89c1bf467b67b674"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99e76557ed37506f89c1bf467b67b674">&#9670;&#160;</a></span>EncoderClearMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a99e76557ed37506f89c1bf467b67b674">tmc5160::EncoderClearMode</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Encoder clear mode enumeration. </p>
+<p>Defines when and how the encoder counter is cleared on N channel events. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a99e76557ed37506f89c1bf467b67b674a055c1a591abb0e8cd86dc969727bcc0b" name="a99e76557ed37506f89c1bf467b67b674a055c1a591abb0e8cd86dc969727bcc0b"></a>DISABLED&#160;</td><td class="fielddoc"><p>No clearing or latching (clr_cont=0, clr_once=0) N channel events are ignored </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a99e76557ed37506f89c1bf467b67b674aa32d16355630f112473d1ae254519c24" name="a99e76557ed37506f89c1bf467b67b674aa32d16355630f112473d1ae254519c24"></a>ONCE&#160;</td><td class="fielddoc"><p>Latch or latch and clear X_ENC on the next N event only (clr_once=1) Automatically disables after first N event Useful for encoders that give N signal once per revolution </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a99e76557ed37506f89c1bf467b67b674ab1fa9dd3af034b3ef4291579aa673c07" name="a99e76557ed37506f89c1bf467b67b674ab1fa9dd3af034b3ef4291579aa673c07"></a>CONTINUOUS&#160;</td><td class="fielddoc"><p>Always latch or latch and clear X_ENC upon N event (clr_cont=1) Continuously monitors N channel and triggers on every event </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="abd036b01466079f99682a4953bd12ac2" name="abd036b01466079f99682a4953bd12ac2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd036b01466079f99682a4953bd12ac2">&#9670;&#160;</a></span>EncoderNSensitivity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#abd036b01466079f99682a4953bd12ac2">tmc5160::EncoderNSensitivity</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Encoder N channel sensitivity enumeration. </p>
+<p>Defines how the N channel event is detected (level-sensitive or edge-sensitive). Similar to ReferenceLatchMode but specifically for encoder N channel edge detection. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="abd036b01466079f99682a4953bd12ac2a82459bef64caed43b53ccc18097d751f" name="abd036b01466079f99682a4953bd12ac2a82459bef64caed43b53ccc18097d751f"></a>ACTIVE_LEVEL&#160;</td><td class="fielddoc"><p>Register: pos_edge=0, neg_edge=0. </p>
+<p>N channel event is active during active N level (level-sensitive) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="abd036b01466079f99682a4953bd12ac2ad85243a747ac5537ef0b7adde99c3e98" name="abd036b01466079f99682a4953bd12ac2ad85243a747ac5537ef0b7adde99c3e98"></a>RISING_EDGE&#160;</td><td class="fielddoc"><p>Register: pos_edge=1, neg_edge=0. </p>
+<p>N channel is valid upon active going edge (positive edge) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="abd036b01466079f99682a4953bd12ac2a297f5ea19073f4b51715b029f48d5d52" name="abd036b01466079f99682a4953bd12ac2a297f5ea19073f4b51715b029f48d5d52"></a>FALLING_EDGE&#160;</td><td class="fielddoc"><p>Register: pos_edge=0, neg_edge=1. </p>
+<p>N channel is valid upon inactive going edge (negative edge) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="abd036b01466079f99682a4953bd12ac2a03495d0b1362f1d841b59007e2887c7f" name="abd036b01466079f99682a4953bd12ac2a03495d0b1362f1d841b59007e2887c7f"></a>BOTH_EDGES&#160;</td><td class="fielddoc"><p>Register: pos_edge=1, neg_edge=1. </p>
+<p>N channel is valid upon both active and inactive going edges </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a3aec783c996f5aa4b0903200b060fdfd" name="a3aec783c996f5aa4b0903200b060fdfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3aec783c996f5aa4b0903200b060fdfd">&#9670;&#160;</a></span>EncoderPrescalerMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a3aec783c996f5aa4b0903200b060fdfd">tmc5160::EncoderPrescalerMode</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Encoder prescaler mode enumeration. </p>
+<p>Defines the encoder prescaler divisor mode for ENC_CONST calculation. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3aec783c996f5aa4b0903200b060fdfda98ad0e8750ae10ad556ed7a62affb452" name="a3aec783c996f5aa4b0903200b060fdfda98ad0e8750ae10ad556ed7a62affb452"></a>BINARY&#160;</td><td class="fielddoc"><p>Binary mode - Counts ENC_CONST(fractional part) / 65536 Standard fixed-point 16.16 format </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a3aec783c996f5aa4b0903200b060fdfda13d992d671957e9a2b3e936ca0cf14a4" name="a3aec783c996f5aa4b0903200b060fdfda13d992d671957e9a2b3e936ca0cf14a4"></a>DECIMAL&#160;</td><td class="fielddoc"><p>Decimal mode - Counts ENC_CONST(fractional part) / 10000 Decimal representation: FACTOR.DECIMALS (e.g., 25.6 = 0x0019.0x1770) </p>
 </td></tr>
 </table>
 
@@ -670,6 +1107,52 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="af0ef331324205d3ed8cbb3b036d18d31" name="af0ef331324205d3ed8cbb3b036d18d31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0ef331324205d3ed8cbb3b036d18d31">&#9670;&#160;</a></span>MicrostepResolution</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#af0ef331324205d3ed8cbb3b036d18d31">tmc5160::MicrostepResolution</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Microstep resolution enumeration. </p>
+<p>Defines the number of microsteps per full step. Higher resolution provides smoother motion but may reduce maximum velocity.</p>
+<dl class="section note"><dt>Note</dt><dd>Interpolation can be enabled to extrapolate to 256 microsteps regardless of MRES setting. </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af0ef331324205d3ed8cbb3b036d18d31af6a5e029c66401ac3bb0d52f2f29353e" name="af0ef331324205d3ed8cbb3b036d18d31af6a5e029c66401ac3bb0d52f2f29353e"></a>MRES_256&#160;</td><td class="fielddoc"><p>256 microsteps per full step (highest resolution) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af0ef331324205d3ed8cbb3b036d18d31ab227ff1ca50d147d685877a0c73041c6" name="af0ef331324205d3ed8cbb3b036d18d31ab227ff1ca50d147d685877a0c73041c6"></a>MRES_128&#160;</td><td class="fielddoc"><p>128 microsteps per full step </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af0ef331324205d3ed8cbb3b036d18d31a8fb86b8c54f4203fae7e604e7e377d5b" name="af0ef331324205d3ed8cbb3b036d18d31a8fb86b8c54f4203fae7e604e7e377d5b"></a>MRES_64&#160;</td><td class="fielddoc"><p>64 microsteps per full step </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af0ef331324205d3ed8cbb3b036d18d31a99fd8a14194ff4938a4fc517f9749cf1" name="af0ef331324205d3ed8cbb3b036d18d31a99fd8a14194ff4938a4fc517f9749cf1"></a>MRES_32&#160;</td><td class="fielddoc"><p>32 microsteps per full step </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af0ef331324205d3ed8cbb3b036d18d31a782d5ebca14ac091682de02b0c9543fd" name="af0ef331324205d3ed8cbb3b036d18d31a782d5ebca14ac091682de02b0c9543fd"></a>MRES_16&#160;</td><td class="fielddoc"><p>16 microsteps per full step (typical) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af0ef331324205d3ed8cbb3b036d18d31acd0ef50f31291f01e6ad2f0572d56b88" name="af0ef331324205d3ed8cbb3b036d18d31acd0ef50f31291f01e6ad2f0572d56b88"></a>MRES_8&#160;</td><td class="fielddoc"><p>8 microsteps per full step </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af0ef331324205d3ed8cbb3b036d18d31a8a54bb0f4f69caee2448f5de30c5b6a5" name="af0ef331324205d3ed8cbb3b036d18d31a8a54bb0f4f69caee2448f5de30c5b6a5"></a>MRES_4&#160;</td><td class="fielddoc"><p>4 microsteps per full step </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af0ef331324205d3ed8cbb3b036d18d31ab8fce733d17943c78fc278ebff4573a8" name="af0ef331324205d3ed8cbb3b036d18d31ab8fce733d17943c78fc278ebff4573a8"></a>MRES_2&#160;</td><td class="fielddoc"><p>2 microsteps per full step </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af0ef331324205d3ed8cbb3b036d18d31a420bb3b8bd24be08a8b037864fca23e3" name="af0ef331324205d3ed8cbb3b036d18d31a420bb3b8bd24be08a8b037864fca23e3"></a>FULLSTEP&#160;</td><td class="fielddoc"><p>Full step (no microstepping) </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="a6e7804f8a437f39b4ba4b7cd6b3da1a4" name="a6e7804f8a437f39b4ba4b7cd6b3da1a4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6e7804f8a437f39b4ba4b7cd6b3da1a4">&#9670;&#160;</a></span>MotorDirection</h2>
 
@@ -724,13 +1207,13 @@ Functions</h2></td></tr>
 <p>Selects the over-temperature level for bridge disable. Higher values provide more protection but trigger at lower temperatures.</p>
 <dl class="section note"><dt>Note</dt><dd>Based on DRV_CONF register: OTSELECT bits </dd></dl>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="afa2b6ac1cefcef55fa696acd746a69bda8292f4c72596c343cc85cfd818469fe0" name="afa2b6ac1cefcef55fa696acd746a69bda8292f4c72596c343cc85cfd818469fe0"></a>Level0&#160;</td><td class="fielddoc"><p>150°C threshold (lowest protection, highest temperature) </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="afa2b6ac1cefcef55fa696acd746a69bdabee7dc0255faec605fa199c37a7c3fb0" name="afa2b6ac1cefcef55fa696acd746a69bdabee7dc0255faec605fa199c37a7c3fb0"></a>Temp150C&#160;</td><td class="fielddoc"><p>150°C threshold (lowest protection, highest temperature) </p>
 </td></tr>
-<tr><td class="fieldname"><a id="afa2b6ac1cefcef55fa696acd746a69bda63664aa8bee7544118de87bf48d529ee" name="afa2b6ac1cefcef55fa696acd746a69bda63664aa8bee7544118de87bf48d529ee"></a>Level1&#160;</td><td class="fielddoc"><p>143°C threshold </p>
+<tr><td class="fieldname"><a id="afa2b6ac1cefcef55fa696acd746a69bda88e7c98da1a9fbbc305262d9151a92cc" name="afa2b6ac1cefcef55fa696acd746a69bda88e7c98da1a9fbbc305262d9151a92cc"></a>Temp143C&#160;</td><td class="fielddoc"><p>143°C threshold </p>
 </td></tr>
-<tr><td class="fieldname"><a id="afa2b6ac1cefcef55fa696acd746a69bda0cbbfd5a182368f83190bf23d2bd5fde" name="afa2b6ac1cefcef55fa696acd746a69bda0cbbfd5a182368f83190bf23d2bd5fde"></a>Level2&#160;</td><td class="fielddoc"><p>136°C threshold (more protection) </p>
+<tr><td class="fieldname"><a id="afa2b6ac1cefcef55fa696acd746a69bda87f043f361dce072e081aa5063d3f91b" name="afa2b6ac1cefcef55fa696acd746a69bda87f043f361dce072e081aa5063d3f91b"></a>Temp136C&#160;</td><td class="fielddoc"><p>136°C threshold (more protection) </p>
 </td></tr>
-<tr><td class="fieldname"><a id="afa2b6ac1cefcef55fa696acd746a69bda68290d8bb76fe3ceb98d34e8b068f6be" name="afa2b6ac1cefcef55fa696acd746a69bda68290d8bb76fe3ceb98d34e8b068f6be"></a>Level3&#160;</td><td class="fielddoc"><p>120°C threshold (highest protection, lowest temperature) </p>
+<tr><td class="fieldname"><a id="afa2b6ac1cefcef55fa696acd746a69bdadf428b6611eb44f97ac5f072e5ef3bfc" name="afa2b6ac1cefcef55fa696acd746a69bdadf428b6611eb44f97ac5f072e5ef3bfc"></a>Temp120C&#160;</td><td class="fielddoc"><p>120°C threshold (highest protection, lowest temperature) </p>
 </td></tr>
 </table>
 
@@ -804,6 +1287,107 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a2ee7193a78dd507e5c413884ce8c33ac" name="a2ee7193a78dd507e5c413884ce8c33ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ee7193a78dd507e5c413884ce8c33ac">&#9670;&#160;</a></span>ReferenceLatchMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a2ee7193a78dd507e5c413884ce8c33ac">tmc5160::ReferenceLatchMode</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Position latching mode enumeration. </p>
+<p>Defines when position should be latched (captured) on switch events. Used to simplify latching configuration instead of separate boolean flags. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2ee7193a78dd507e5c413884ce8c33aca055c1a591abb0e8cd86dc969727bcc0b" name="a2ee7193a78dd507e5c413884ce8c33aca055c1a591abb0e8cd86dc969727bcc0b"></a>DISABLED&#160;</td><td class="fielddoc"><p>No position latching (latch disabled) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2ee7193a78dd507e5c413884ce8c33acabda1b99ab9b7a73cba44e600970cb2d8" name="a2ee7193a78dd507e5c413884ce8c33acabda1b99ab9b7a73cba44e600970cb2d8"></a>ACTIVE_EDGE&#160;</td><td class="fielddoc"><p>Most common for homing - captures position when switch triggers. </p>
+<p>Latch position on active edge (switch becomes active) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2ee7193a78dd507e5c413884ce8c33aca646caa3d5dfe86b59fe05e2f61622606" name="a2ee7193a78dd507e5c413884ce8c33aca646caa3d5dfe86b59fe05e2f61622606"></a>INACTIVE_EDGE&#160;</td><td class="fielddoc"><p>Useful for capturing position when switch releases. </p>
+<p>Latch position on inactive edge (switch becomes inactive) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2ee7193a78dd507e5c413884ce8c33aca03495d0b1362f1d841b59007e2887c7f" name="a2ee7193a78dd507e5c413884ce8c33aca03495d0b1362f1d841b59007e2887c7f"></a>BOTH_EDGES&#160;</td><td class="fielddoc"><p>Captures position on both switch activation and release. </p>
+<p>Latch position on both active and inactive edges </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a444e9027bfb76a7d96817b586554b915" name="a444e9027bfb76a7d96817b586554b915"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a444e9027bfb76a7d96817b586554b915">&#9670;&#160;</a></span>ReferenceStopMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a444e9027bfb76a7d96817b586554b915">tmc5160::ReferenceStopMode</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stop mode enumeration. </p>
+<p>Defines how the motor stops when a reference switch is triggered. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a444e9027bfb76a7d96817b586554b915ab34c594ae5ab85d1941f8c23280bb3aa" name="a444e9027bfb76a7d96817b586554b915ab34c594ae5ab85d1941f8c23280bb3aa"></a>HARD_STOP&#160;</td><td class="fielddoc"><p>Abrupt stop (immediate, no deceleration) Use for emergency stops and precise homing Motor stops exactly at switch position </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a444e9027bfb76a7d96817b586554b915abfd64c1daf3144226575a385378e55c1" name="a444e9027bfb76a7d96817b586554b915abfd64c1daf3144226575a385378e55c1"></a>SOFT_STOP&#160;</td><td class="fielddoc"><p>Soft stop using deceleration ramp (DMAX, V1, D1) Use for normal operation to prevent mechanical shock Motor decelerates smoothly to zero velocity </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a7c9082ecbde4d00926dee0abf53be002" name="a7c9082ecbde4d00926dee0abf53be002"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c9082ecbde4d00926dee0abf53be002">&#9670;&#160;</a></span>ReferenceSwitchActiveLevel</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a7c9082ecbde4d00926dee0abf53be002">tmc5160::ReferenceSwitchActiveLevel</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reference switch active level enumeration. </p>
+<p>Defines the electrical signal level when the switch is active/triggered. Used to automatically configure polarity for proper switch detection.</p>
+<dl class="section note"><dt>Note</dt><dd>Active level must always be specified (ACTIVE_LOW or ACTIVE_HIGH). Use stop_enable to control whether the switch stops the motor. This allows configuring polarity while enabling/disabling stop functionality in real-time. </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7c9082ecbde4d00926dee0abf53be002ae434209643a0d01f383a46eece525679" name="a7c9082ecbde4d00926dee0abf53be002ae434209643a0d01f383a46eece525679"></a>ACTIVE_LOW&#160;</td><td class="fielddoc"><p>Switch is active when signal is LOW (GND) Typically used with pull-up resistors (switch connects to GND when active) Common for normally-closed switches and failsafe configurations Recommended for safety-critical applications (broken wire = HIGH = not active = safe) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7c9082ecbde4d00926dee0abf53be002ab868e37f0edfdbea9838600657b6f4b3" name="a7c9082ecbde4d00926dee0abf53be002ab868e37f0edfdbea9838600657b6f4b3"></a>ACTIVE_HIGH&#160;</td><td class="fielddoc"><p>Switch is active when signal is HIGH (VCC) Typically used with pull-down resistors (switch connects to VCC when active) Common for normally-open switches and photo interrupters </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="a665a38f92e0b840fcadd8f86abfe7cab" name="a665a38f92e0b840fcadd8f86abfe7cab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a665a38f92e0b840fcadd8f86abfe7cab">&#9670;&#160;</a></span>SenseFilterTime</h2>
 
@@ -834,6 +1418,169 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a665a38f92e0b840fcadd8f86abfe7caba22237192034432754020b8894e7c6e27" name="a665a38f92e0b840fcadd8f86abfe7caba22237192034432754020b8894e7c6e27"></a>T300ns&#160;</td><td class="fielddoc"><p>~300ns </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a665a38f92e0b840fcadd8f86abfe7cabab4347da9e6ae035513deafdc90aa9bd3" name="a665a38f92e0b840fcadd8f86abfe7cabab4347da9e6ae035513deafdc90aa9bd3"></a>T400ns&#160;</td><td class="fielddoc"><p>~400ns </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ab770990e772993b9d3609dd71d335d75" name="ab770990e772993b9d3609dd71d335d75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab770990e772993b9d3609dd71d335d75">&#9670;&#160;</a></span>StallGuardSensitivity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#ab770990e772993b9d3609dd71d335d75">tmc5160::StallGuardSensitivity</a> : int8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>StallGuard2 sensitivity enumeration. </p>
+<p>Provides intuitive sensitivity levels for StallGuard2 threshold tuning. Lower SGT values = higher sensitivity (detects stalls easier, more false positives). Higher SGT values = lower sensitivity (requires more torque to detect stall, fewer false positives). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab770990e772993b9d3609dd71d335d75a2eae31361b8d1a454cadc17a8d4b70ac" name="ab770990e772993b9d3609dd71d335d75a2eae31361b8d1a454cadc17a8d4b70ac"></a>VERY_HIGH&#160;</td><td class="fielddoc"><p>Very high sensitivity (SGT = -32) - detects stalls very easily. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab770990e772993b9d3609dd71d335d75ab89de3b4b81c4facfac906edf29aec8c" name="ab770990e772993b9d3609dd71d335d75ab89de3b4b81c4facfac906edf29aec8c"></a>HIGH&#160;</td><td class="fielddoc"><p>High sensitivity (SGT = -16) - detects stalls easily. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab770990e772993b9d3609dd71d335d75a5137485eff3ff278d233d993c8539599" name="ab770990e772993b9d3609dd71d335d75a5137485eff3ff278d233d993c8539599"></a>MODERATE&#160;</td><td class="fielddoc"><p>Moderate sensitivity (SGT = 0) - starting value, works with most motors. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab770990e772993b9d3609dd71d335d75a41bc94cbd8eebea13ce0491b2ac11b88" name="ab770990e772993b9d3609dd71d335d75a41bc94cbd8eebea13ce0491b2ac11b88"></a>LOW&#160;</td><td class="fielddoc"><p>Low sensitivity (SGT = 16) - requires more torque to detect stall. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab770990e772993b9d3609dd71d335d75ab8756489d86141704f99b4c2a999d5c3" name="ab770990e772993b9d3609dd71d335d75ab8756489d86141704f99b4c2a999d5c3"></a>VERY_LOW&#160;</td><td class="fielddoc"><p>Very low sensitivity (SGT = 32) - requires significant torque to detect stall. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a9a573006493faa30433407b3a8de8a1e" name="a9a573006493faa30433407b3a8de8a1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a573006493faa30433407b3a8de8a1e">&#9670;&#160;</a></span>StealthChopJerkReduction</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a9a573006493faa30433407b3a8de8a1e">tmc5160::StealthChopJerkReduction</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>StealthChop mode switching jerk reduction enumeration. </p>
+<p>Controls current jerk reduction when switching from SpreadCycle to StealthChop. Lower values reduce current spike during mode switching (smoother). Higher values allow faster switching but may cause more current jerk.</p>
+<dl class="section note"><dt>Note</dt><dd>Only affects switching from SpreadCycle to StealthChop. </dd>
+<dd>
+Reduce value if experiencing current spikes during mode switching. </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a9a573006493faa30433407b3a8de8a1ea115f17a28532bbd6f0f5ec83ed20692a" name="a9a573006493faa30433407b3a8de8a1ea115f17a28532bbd6f0f5ec83ed20692a"></a>MAXIMUM&#160;</td><td class="fielddoc"><p>Maximum jerk reduction (smoothest switching) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a9a573006493faa30433407b3a8de8a1eab89de3b4b81c4facfac906edf29aec8c" name="a9a573006493faa30433407b3a8de8a1eab89de3b4b81c4facfac906edf29aec8c"></a>HIGH&#160;</td><td class="fielddoc"><p>High jerk reduction. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a9a573006493faa30433407b3a8de8a1ea5137485eff3ff278d233d993c8539599" name="a9a573006493faa30433407b3a8de8a1ea5137485eff3ff278d233d993c8539599"></a>MODERATE&#160;</td><td class="fielddoc"><p>Moderate jerk reduction (default, balanced) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a9a573006493faa30433407b3a8de8a1ea41bc94cbd8eebea13ce0491b2ac11b88" name="a9a573006493faa30433407b3a8de8a1ea41bc94cbd8eebea13ce0491b2ac11b88"></a>LOW&#160;</td><td class="fielddoc"><p>Low jerk reduction. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a9a573006493faa30433407b3a8de8a1eacf0ee111afe9889278a772d631dfa150" name="a9a573006493faa30433407b3a8de8a1eacf0ee111afe9889278a772d631dfa150"></a>MINIMUM&#160;</td><td class="fielddoc"><p>Minimum jerk reduction (fastest switching, may cause spikes) </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a54cee59d08c9c45abede2726f8fc1dac" name="a54cee59d08c9c45abede2726f8fc1dac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54cee59d08c9c45abede2726f8fc1dac">&#9670;&#160;</a></span>StealthChopPwmFreq</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a54cee59d08c9c45abede2726f8fc1dac">tmc5160::StealthChopPwmFreq</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>StealthChop PWM frequency enumeration. </p>
+<p>Provides PWM frequency selection options for StealthChop operation. Lower frequencies reduce current ripple but may limit high-velocity performance. Higher frequencies improve high-velocity performance but increase dynamic power dissipation.</p>
+<p>Recommended range: 20-50kHz for most applications.</p>
+<dl class="section note"><dt>Note</dt><dd>Actual frequency depends on clock frequency (f_CLK). </dd>
+<dd>
+For 12MHz internal clock:<ul>
+<li>PWM_FREQ_0: ~23.4kHz</li>
+<li>PWM_FREQ_1: ~35.1kHz (recommended)</li>
+<li>PWM_FREQ_2: ~46.9kHz</li>
+<li>PWM_FREQ_3: ~58.5kHz </li>
+</ul>
+</dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a54cee59d08c9c45abede2726f8fc1daca9320cca3f5079c6a9ecba3526cedbb03" name="a54cee59d08c9c45abede2726f8fc1daca9320cca3f5079c6a9ecba3526cedbb03"></a>PWM_FREQ_0&#160;</td><td class="fielddoc"><p>fPWM = 2/1024 * fCLK (~23.4kHz @ 12MHz) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a54cee59d08c9c45abede2726f8fc1daca95ca2fbd901cde6a78072539a144bbb6" name="a54cee59d08c9c45abede2726f8fc1daca95ca2fbd901cde6a78072539a144bbb6"></a>PWM_FREQ_1&#160;</td><td class="fielddoc"><p>fPWM = 2/683 * fCLK (~35.1kHz @ 12MHz, recommended) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a54cee59d08c9c45abede2726f8fc1dacae368d4931308d6d2ad481f53620b392c" name="a54cee59d08c9c45abede2726f8fc1dacae368d4931308d6d2ad481f53620b392c"></a>PWM_FREQ_2&#160;</td><td class="fielddoc"><p>fPWM = 2/512 * fCLK (~46.9kHz @ 12MHz) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a54cee59d08c9c45abede2726f8fc1dacaae5e615c816fa21b6f8e677dea601101" name="a54cee59d08c9c45abede2726f8fc1dacaae5e615c816fa21b6f8e677dea601101"></a>PWM_FREQ_3&#160;</td><td class="fielddoc"><p>fPWM = 2/410 * fCLK (~58.5kHz @ 12MHz) </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ae27e0401e84b11039e2df9f708a96337" name="ae27e0401e84b11039e2df9f708a96337"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae27e0401e84b11039e2df9f708a96337">&#9670;&#160;</a></span>StealthChopRegulationSpeed</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#ae27e0401e84b11039e2df9f708a96337">tmc5160::StealthChopRegulationSpeed</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>StealthChop regulation speed enumeration. </p>
+<p>Controls how fast the PWM amplitude regulation loop adapts to changes. Specifies maximum PWM amplitude change per half wave when using automatic scaling.</p>
+<p>Lower values provide stable, soft regulation (slower response). Higher values provide faster adaptation but may be less stable.</p>
+<dl class="section note"><dt>Note</dt><dd>Optimize for fastest required acceleration/deceleration ramp. </dd>
+<dd>
+Higher acceleration during AT#2 requires higher regulation speed. </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae27e0401e84b11039e2df9f708a96337a3e3b94dcc31e358b26c1d8ea7d4878b1" name="ae27e0401e84b11039e2df9f708a96337a3e3b94dcc31e358b26c1d8ea7d4878b1"></a>VERY_SLOW&#160;</td><td class="fielddoc"><p>0.5 increments per half wave (slowest, most stable) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae27e0401e84b11039e2df9f708a96337a0e3066cbbd284dce8b76e7c4620d6d75" name="ae27e0401e84b11039e2df9f708a96337a0e3066cbbd284dce8b76e7c4620d6d75"></a>SLOW&#160;</td><td class="fielddoc"><p>1 increment per half wave </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae27e0401e84b11039e2df9f708a96337a5137485eff3ff278d233d993c8539599" name="ae27e0401e84b11039e2df9f708a96337a5137485eff3ff278d233d993c8539599"></a>MODERATE&#160;</td><td class="fielddoc"><p>2 increments per half wave (default, balanced) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae27e0401e84b11039e2df9f708a96337adca6e617f6fb54033deb311e7e7c93cc" name="ae27e0401e84b11039e2df9f708a96337adca6e617f6fb54033deb311e7e7c93cc"></a>FAST&#160;</td><td class="fielddoc"><p>4 increments per half wave </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae27e0401e84b11039e2df9f708a96337ad3f84081b6b3a6c3f66b20414b6a7238" name="ae27e0401e84b11039e2df9f708a96337ad3f84081b6b3a6c3f66b20414b6a7238"></a>VERY_FAST&#160;</td><td class="fielddoc"><p>7.5 increments per half wave (fastest, may be less stable) </p>
 </td></tr>
 </table>
 
@@ -1490,11 +2237,6 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Lower current limit in milliamps, or 0 if calculation not possible</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Based on datasheet equation: I_Lower_Limit = t_BLANK * f_PWM * V_M / R_COIL Where t_BLANK depends on TBL setting </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc5160_a90e438844970949605b6f15d54e64f90_icgraph.svg" width="500" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

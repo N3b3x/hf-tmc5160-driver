@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['rampcontrol_0',['RampControl',['../structtmc5160_1_1TMC5160_1_1RampControl.html#ab0ce8379972c7d62dcd07827db4d65a5',1,'tmc5160::TMC5160::RampControl']]],
-  ['rampparameters_1',['RampParameters',['../structtmc5160_1_1RampParameters.html#adf90410a55b735f7e0f760c25889e11f',1,'tmc5160::RampParameters']]],
+  ['rampconfig_0',['RampConfig',['../structtmc5160_1_1RampConfig.html#ace5269c0b2ef44ad2eb5174d9c80efc4',1,'tmc5160::RampConfig']]],
+  ['rampcontrol_1',['RampControl',['../structtmc5160_1_1TMC5160_1_1RampControl.html#ab0ce8379972c7d62dcd07827db4d65a5',1,'tmc5160::TMC5160::RampControl']]],
   ['read_2',['Read',['../structtmc5160_1_1SpiCommand.html#a1d7b973d64aa58532c5fbcdc1a09ec0c',1,'tmc5160::SpiCommand']]],
   ['readfactoryconfig_3',['ReadFactoryConfig',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#abf878f0c5b0a1533f19a1fc5d539dfc9',1,'tmc5160::TMC5160::Diagnostics']]],
   ['readgpiopins_4',['ReadGpioPins',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#a24c2ed291dd4491799a5c64f300d07bb',1,'tmc5160::TMC5160::Diagnostics']]],

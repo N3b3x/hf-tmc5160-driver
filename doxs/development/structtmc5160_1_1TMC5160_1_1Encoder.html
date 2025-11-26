@@ -117,6 +117,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a918402de884ffc263dc91df230e6d1ce" id="r_a918402de884ffc263dc91df230e6d1ce"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a918402de884ffc263dc91df230e6d1ce">Configure</a> (const <a class="el" href="structtmc5160_1_1EncoderConfig.html">EncoderConfig</a> &amp;config) noexcept</td></tr>
 <tr class="memdesc:a918402de884ffc263dc91df230e6d1ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure encoder settings.  <br /></td></tr>
 <tr class="separator:a918402de884ffc263dc91df230e6d1ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7624a3d2e37f02ce2f82dadaa4687008" id="r_a7624a3d2e37f02ce2f82dadaa4687008"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7624a3d2e37f02ce2f82dadaa4687008">GetEncoderConfig</a> (<a class="el" href="structtmc5160_1_1EncoderConfig.html">EncoderConfig</a> &amp;config) noexcept</td></tr>
+<tr class="memdesc:a7624a3d2e37f02ce2f82dadaa4687008"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current encoder configuration.  <br /></td></tr>
+<tr class="separator:a7624a3d2e37f02ce2f82dadaa4687008"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a132d36406d7fab940d66bd5e0814d1c1" id="r_a132d36406d7fab940d66bd5e0814d1c1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a132d36406d7fab940d66bd5e0814d1c1">SetNChannelActiveLevel</a> (<a class="el" href="namespacetmc5160.html#a7c9082ecbde4d00926dee0abf53be002">ReferenceSwitchActiveLevel</a> active_level) noexcept</td></tr>
+<tr class="memdesc:a132d36406d7fab940d66bd5e0814d1c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set N channel active level (determines polarity)  <br /></td></tr>
+<tr class="separator:a132d36406d7fab940d66bd5e0814d1c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41776e941bb4ebc408b43b38a6e7de21" id="r_a41776e941bb4ebc408b43b38a6e7de21"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41776e941bb4ebc408b43b38a6e7de21">SetNChannelSensitivity</a> (<a class="el" href="namespacetmc5160.html#abd036b01466079f99682a4953bd12ac2">EncoderNSensitivity</a> sensitivity) noexcept</td></tr>
+<tr class="memdesc:a41776e941bb4ebc408b43b38a6e7de21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set N channel sensitivity (edge/level detection)  <br /></td></tr>
+<tr class="separator:a41776e941bb4ebc408b43b38a6e7de21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0baed40be0eb6ae7763d23a552319d43" id="r_a0baed40be0eb6ae7763d23a552319d43"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0baed40be0eb6ae7763d23a552319d43">SetClearMode</a> (<a class="el" href="namespacetmc5160.html#a99e76557ed37506f89c1bf467b67b674">EncoderClearMode</a> clear_mode) noexcept</td></tr>
+<tr class="memdesc:a0baed40be0eb6ae7763d23a552319d43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set encoder clear mode.  <br /></td></tr>
+<tr class="separator:a0baed40be0eb6ae7763d23a552319d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae10c4a961aba770a3121069ed2ab7f5a" id="r_ae10c4a961aba770a3121069ed2ab7f5a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae10c4a961aba770a3121069ed2ab7f5a">SetPrescalerMode</a> (<a class="el" href="namespacetmc5160.html#a3aec783c996f5aa4b0903200b060fdfd">EncoderPrescalerMode</a> prescaler_mode) noexcept</td></tr>
+<tr class="memdesc:ae10c4a961aba770a3121069ed2ab7f5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set encoder prescaler mode.  <br /></td></tr>
+<tr class="separator:ae10c4a961aba770a3121069ed2ab7f5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab075d6979cd5a2c8328ec109a338f924" id="r_ab075d6979cd5a2c8328ec109a338f924"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab075d6979cd5a2c8328ec109a338f924">GetPosition</a> () noexcept</td></tr>
 <tr class="memdesc:ab075d6979cd5a2c8328ec109a338f924"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get encoder position.  <br /></td></tr>
 <tr class="separator:ab075d6979cd5a2c8328ec109a338f924"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -246,11 +261,42 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc5160_1_1TMC5160_1_1Encoder_a918402de884ffc263dc91df230e6d1ce_cgraph.svg" width="350" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+
 </div>
+</div>
+<a id="a7624a3d2e37f02ce2f82dadaa4687008" name="a7624a3d2e37f02ce2f82dadaa4687008"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7624a3d2e37f02ce2f82dadaa4687008">&#9670;&#160;</a></span>GetEncoderConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Encoder::GetEncoderConfig </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structtmc5160_1_1EncoderConfig.html">EncoderConfig</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>config</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get current encoder configuration. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">config</td><td>Reference to store current configuration </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if read successfully, false otherwise </dd></dl>
 
 </div>
 </div>
@@ -378,6 +424,154 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a0baed40be0eb6ae7763d23a552319d43" name="a0baed40be0eb6ae7763d23a552319d43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0baed40be0eb6ae7763d23a552319d43">&#9670;&#160;</a></span>SetClearMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Encoder::SetClearMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a99e76557ed37506f89c1bf467b67b674">EncoderClearMode</a></td>          <td class="paramname"><span class="paramname"><em>clear_mode</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set encoder clear mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">clear_mode</td><td>Clear mode (DISABLED, ONCE, CONTINUOUS) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise</dd></dl>
+<p>Updates only clear mode, preserving other settings. </p>
+
+</div>
+</div>
+<a id="a132d36406d7fab940d66bd5e0814d1c1" name="a132d36406d7fab940d66bd5e0814d1c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a132d36406d7fab940d66bd5e0814d1c1">&#9670;&#160;</a></span>SetNChannelActiveLevel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Encoder::SetNChannelActiveLevel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7c9082ecbde4d00926dee0abf53be002">ReferenceSwitchActiveLevel</a></td>          <td class="paramname"><span class="paramname"><em>active_level</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set N channel active level (determines polarity) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">active_level</td><td>Active level (ACTIVE_LOW or ACTIVE_HIGH) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise</dd></dl>
+<p>Updates only the active level, preserving other settings. Shares ReferenceSwitchActiveLevel enum with reference switches. </p>
+
+</div>
+</div>
+<a id="a41776e941bb4ebc408b43b38a6e7de21" name="a41776e941bb4ebc408b43b38a6e7de21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41776e941bb4ebc408b43b38a6e7de21">&#9670;&#160;</a></span>SetNChannelSensitivity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Encoder::SetNChannelSensitivity </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#abd036b01466079f99682a4953bd12ac2">EncoderNSensitivity</a></td>          <td class="paramname"><span class="paramname"><em>sensitivity</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set N channel sensitivity (edge/level detection) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sensitivity</td><td>Sensitivity mode (ACTIVE_LEVEL, RISING_EDGE, FALLING_EDGE, BOTH_EDGES) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise</dd></dl>
+<p>Updates only sensitivity, preserving other settings. </p>
+
+</div>
+</div>
+<a id="ae10c4a961aba770a3121069ed2ab7f5a" name="ae10c4a961aba770a3121069ed2ab7f5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae10c4a961aba770a3121069ed2ab7f5a">&#9670;&#160;</a></span>SetPrescalerMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Encoder::SetPrescalerMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a3aec783c996f5aa4b0903200b060fdfd">EncoderPrescalerMode</a></td>          <td class="paramname"><span class="paramname"><em>prescaler_mode</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set encoder prescaler mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">prescaler_mode</td><td>Prescaler mode (BINARY or DECIMAL) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise</dd></dl>
+<p>Updates only prescaler mode, preserving other settings. </p>
 
 </div>
 </div>

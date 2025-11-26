@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['dcstepconfig_0',['DcStepConfig',['../structtmc5160_1_1DcStepConfig.html#ab6ff3d3c4b63c418626abf991f1db1bd',1,'tmc5160::DcStepConfig']]],
+  ['dcstepconfig_0',['DcStepConfig',['../structtmc5160_1_1DcStepConfig.html#ab6ff3d3c4b63c418626abf991f1db1bd',1,'tmc5160::DcStepConfig::DcStepConfig()=default'],['../structtmc5160_1_1DcStepConfig.html#a618a44a68ef420ff8dada10b876b73f6',1,'tmc5160::DcStepConfig::DcStepConfig(float min_vel, Unit vel_unit=Unit::Steps, float pwm_time_us=0.0F, DcStepStallSensitivity sensitivity=DcStepStallSensitivity::MODERATE)']]],
   ['debuglog_1',['DebugLog',['../classtmc5160_1_1CommInterface.html#a55b42e9badc546bd7d2eb9667ccb2564',1,'tmc5160::CommInterface::DebugLog()'],['../classEsp32SPI.html#a10a000397aaf658a2ca2c907b96a2cea',1,'Esp32SPI::DebugLog()']]],
   ['degreestosteps_2',['DegreesToSteps',['../namespacetmc5160.html#afb1c3789f431ec5b7872d5dc456c7678',1,'tmc5160']]],
   ['deinitialize_3',['Deinitialize',['../classEsp32SPI.html#adfd033d198f8b5393443939b523a08d5',1,'Esp32SPI']]],

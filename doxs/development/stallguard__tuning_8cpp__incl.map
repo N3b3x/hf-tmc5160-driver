@@ -10,7 +10,7 @@
 <area shape="poly" id="edge53_Node000001_Node000030" title=" " alt="" coords="2059,28,2374,145,2372,150,2058,33"/>
 <area shape="rect" id="Node000031" title=" " alt="" coords="2517,152,2634,177"/>
 <area shape="poly" id="edge54_Node000001_Node000031" title=" " alt="" coords="2071,28,2520,146,2518,151,2070,33"/>
-<area shape="rect" id="Node000032" href="$esp32__tmc5160__bus__config_8hpp.html" title="ESP32 GPIO pin configuration for TMC5160 driver tests." alt="" coords="1321,79,1550,104"/>
+<area shape="rect" id="Node000032" href="$esp32__tmc5160__bus__config_8hpp.html" title="ESP32 GPIO pin configuration and compile&#45;time configuration for TMC5160 driver." alt="" coords="1321,79,1550,104"/>
 <area shape="poly" id="edge49_Node000001_Node000032" title=" " alt="" coords="1946,32,1544,80,1544,74,1945,26"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="463,313,525,339"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="375,104,397,174,415,220,439,264,472,302,468,306,434,267,410,222,392,176,370,105"/>

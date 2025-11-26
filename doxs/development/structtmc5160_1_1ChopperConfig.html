@@ -109,26 +109,41 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6909f9bb7fc6c45f162b3b36713308cb" id="r_a6909f9bb7fc6c45f162b3b36713308cb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6909f9bb7fc6c45f162b3b36713308cb">ChopperConfig</a> ()=default</td></tr>
 <tr class="memdesc:a6909f9bb7fc6c45f162b3b36713308cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:a6909f9bb7fc6c45f162b3b36713308cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a832f9a4e679073b86edf195045167594" id="r_a832f9a4e679073b86edf195045167594"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a832f9a4e679073b86edf195045167594">ChopperConfig</a> (uint8_t off_time, uint8_t blank_time=2, uint8_t hysteresis_start=4, uint8_t hysteresis_end=0, uint8_t microstep_res=4)</td></tr>
+<tr class="memdesc:a832f9a4e679073b86edf195045167594"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper constructor for SpreadCycle mode.  <br /></td></tr>
+<tr class="separator:a832f9a4e679073b86edf195045167594"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a130a9d1560ad0c8c98df613cb44bfdff" id="r_a130a9d1560ad0c8c98df613cb44bfdff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a130a9d1560ad0c8c98df613cb44bfdff">ChopperConfig</a> (uint8_t off_time, uint8_t fast_decay_time, uint8_t sine_offset, uint8_t blank_time=2, bool disable_comparator=false, uint8_t microstep_res=4)</td></tr>
+<tr class="memdesc:a130a9d1560ad0c8c98df613cb44bfdff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper constructor for Classic mode.  <br /></td></tr>
+<tr class="separator:a130a9d1560ad0c8c98df613cb44bfdff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:ac2cf5748245e11d9c50bcdd746c1f17e" id="r_ac2cf5748245e11d9c50bcdd746c1f17e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#a44162616b47e69b39fd84f959c9c12bb">ChopperMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac2cf5748245e11d9c50bcdd746c1f17e">mode</a> {<a class="el" href="namespacetmc5160.html#a44162616b47e69b39fd84f959c9c12bbab028c799dc15f660cdcd57aa004bb290">ChopperMode::SPREAD_CYCLE</a>}</td></tr>
+<tr class="memdesc:ac2cf5748245e11d9c50bcdd746c1f17e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chopper mode selection.  <br /></td></tr>
+<tr class="separator:ac2cf5748245e11d9c50bcdd746c1f17e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44db0e4cecda6b3cc1a4d8d1a681b39b" id="r_a44db0e4cecda6b3cc1a4d8d1a681b39b"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44db0e4cecda6b3cc1a4d8d1a681b39b">toff</a> {5}</td></tr>
-<tr class="memdesc:a44db0e4cecda6b3cc1a4d8d1a681b39b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Off time setting (0 to 15). 0 = Driver disabled.  <br /></td></tr>
+<tr class="memdesc:a44db0e4cecda6b3cc1a4d8d1a681b39b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Off time (slow decay time) setting.  <br /></td></tr>
 <tr class="separator:a44db0e4cecda6b3cc1a4d8d1a681b39b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc54e5ad9de0045ffe7c9bb6502f7fe1" id="r_acc54e5ad9de0045ffe7c9bb6502f7fe1"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc54e5ad9de0045ffe7c9bb6502f7fe1">tbl</a> {2}</td></tr>
+<tr class="memdesc:acc54e5ad9de0045ffe7c9bb6502f7fe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparator blank time.  <br /></td></tr>
+<tr class="separator:acc54e5ad9de0045ffe7c9bb6502f7fe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb9e1c4cae086be625e758799d1595cb" id="r_aeb9e1c4cae086be625e758799d1595cb"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb9e1c4cae086be625e758799d1595cb">hstrt</a> {4}</td></tr>
-<tr class="memdesc:aeb9e1c4cae086be625e758799d1595cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hysteresis start value (0 to 7)  <br /></td></tr>
+<tr class="memdesc:aeb9e1c4cae086be625e758799d1595cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hysteresis start value (SpreadCycle mode only)  <br /></td></tr>
 <tr class="separator:aeb9e1c4cae086be625e758799d1595cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25a86c90d130952f9b776e41ebb6d110" id="r_a25a86c90d130952f9b776e41ebb6d110"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25a86c90d130952f9b776e41ebb6d110">hend</a> {0}</td></tr>
-<tr class="memdesc:a25a86c90d130952f9b776e41ebb6d110"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hysteresis low value (0 to 15)  <br /></td></tr>
+<tr class="memdesc:a25a86c90d130952f9b776e41ebb6d110"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hysteresis end value (SpreadCycle mode) or Sine wave offset (Classic mode)  <br /></td></tr>
 <tr class="separator:a25a86c90d130952f9b776e41ebb6d110"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc54e5ad9de0045ffe7c9bb6502f7fe1" id="r_acc54e5ad9de0045ffe7c9bb6502f7fe1"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc54e5ad9de0045ffe7c9bb6502f7fe1">tbl</a> {2}</td></tr>
-<tr class="memdesc:acc54e5ad9de0045ffe7c9bb6502f7fe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparator blank time (0 to 3)  <br /></td></tr>
-<tr class="separator:acc54e5ad9de0045ffe7c9bb6502f7fe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a695144ab471371991585703c6029b95a" id="r_a695144ab471371991585703c6029b95a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a695144ab471371991585703c6029b95a">vsense</a> {true}</td></tr>
-<tr class="memdesc:a695144ab471371991585703c6029b95a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resistor voltage sensitivity (false=Low, true=High)  <br /></td></tr>
-<tr class="separator:a695144ab471371991585703c6029b95a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff8cd887e9200f801c9999038dde46e2" id="r_aff8cd887e9200f801c9999038dde46e2"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff8cd887e9200f801c9999038dde46e2">tfd</a> {0}</td></tr>
+<tr class="memdesc:aff8cd887e9200f801c9999038dde46e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fast decay time (Classic mode only)  <br /></td></tr>
+<tr class="separator:aff8cd887e9200f801c9999038dde46e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a424e4b68a470923d36314faddd41242a" id="r_a424e4b68a470923d36314faddd41242a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a424e4b68a470923d36314faddd41242a">disfdcc</a> {false}</td></tr>
+<tr class="memdesc:a424e4b68a470923d36314faddd41242a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable fast decay comparator (Classic mode only)  <br /></td></tr>
+<tr class="separator:a424e4b68a470923d36314faddd41242a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a873868ab02acac279fe319614c1be503" id="r_a873868ab02acac279fe319614c1be503"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a873868ab02acac279fe319614c1be503">tpfd</a> {0}</td></tr>
+<tr class="memdesc:a873868ab02acac279fe319614c1be503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Passive fast decay time.  <br /></td></tr>
+<tr class="separator:a873868ab02acac279fe319614c1be503"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8d658516da497f9ff8f9abd2c75b5df" id="r_ab8d658516da497f9ff8f9abd2c75b5df"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab8d658516da497f9ff8f9abd2c75b5df">mres</a> {4}</td></tr>
-<tr class="memdesc:ab8d658516da497f9ff8f9abd2c75b5df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Microstep resolution (0=256, 1=128, ..., 8=fullstep)  <br /></td></tr>
+<tr class="memdesc:ab8d658516da497f9ff8f9abd2c75b5df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Microstep resolution.  <br /></td></tr>
 <tr class="separator:ab8d658516da497f9ff8f9abd2c75b5df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a404b826fc57563ee6f9913c3be37d00a" id="r_a404b826fc57563ee6f9913c3be37d00a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a404b826fc57563ee6f9913c3be37d00a">intpol</a> {true}</td></tr>
 <tr class="memdesc:a404b826fc57563ee6f9913c3be37d00a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable interpolation to 256 microsteps.  <br /></td></tr>
@@ -136,16 +151,37 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a1bc83007c1ed384e619fd780bb9b1b81" id="r_a1bc83007c1ed384e619fd780bb9b1b81"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1bc83007c1ed384e619fd780bb9b1b81">dedge</a> {false}</td></tr>
 <tr class="memdesc:a1bc83007c1ed384e619fd780bb9b1b81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable double edge step pulses.  <br /></td></tr>
 <tr class="separator:a1bc83007c1ed384e619fd780bb9b1b81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a158635657fb63ea801c9214da8a8d6be" id="r_a158635657fb63ea801c9214da8a8d6be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a158635657fb63ea801c9214da8a8d6be">chm</a> {false}</td></tr>
-<tr class="memdesc:a158635657fb63ea801c9214da8a8d6be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chopper mode (false=spreadCycle, true=constant off time)  <br /></td></tr>
-<tr class="separator:a158635657fb63ea801c9214da8a8d6be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20259beea225a63a7f7fdb224c7eaf88" id="r_a20259beea225a63a7f7fdb224c7eaf88"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20259beea225a63a7f7fdb224c7eaf88">vhighfs</a> {false}</td></tr>
+<tr class="memdesc:a20259beea225a63a7f7fdb224c7eaf88"><td class="mdescLeft">&#160;</td><td class="mdescRight">High velocity fullstep selection.  <br /></td></tr>
+<tr class="separator:a20259beea225a63a7f7fdb224c7eaf88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a970bee4c92b346ca3cb896cd73c09e8a" id="r_a970bee4c92b346ca3cb896cd73c09e8a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a970bee4c92b346ca3cb896cd73c09e8a">vhighchm</a> {false}</td></tr>
+<tr class="memdesc:a970bee4c92b346ca3cb896cd73c09e8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">High velocity chopper mode.  <br /></td></tr>
+<tr class="separator:a970bee4c92b346ca3cb896cd73c09e8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98a90c4983bc0594f340af4aff2fbfd6" id="r_a98a90c4983bc0594f340af4aff2fbfd6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98a90c4983bc0594f340af4aff2fbfd6">diss2g</a> {false}</td></tr>
+<tr class="memdesc:a98a90c4983bc0594f340af4aff2fbfd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short to GND protection disable.  <br /></td></tr>
+<tr class="separator:a98a90c4983bc0594f340af4aff2fbfd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5787ba0b47ff5915259a3af948b226ef" id="r_a5787ba0b47ff5915259a3af948b226ef"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5787ba0b47ff5915259a3af948b226ef">diss2vs</a> {false}</td></tr>
+<tr class="memdesc:a5787ba0b47ff5915259a3af948b226ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short to supply protection disable.  <br /></td></tr>
+<tr class="separator:a5787ba0b47ff5915259a3af948b226ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a695144ab471371991585703c6029b95a" id="r_a695144ab471371991585703c6029b95a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a695144ab471371991585703c6029b95a">vsense</a> {true}</td></tr>
+<tr class="memdesc:a695144ab471371991585703c6029b95a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resistor voltage sensitivity (deprecated)  <br /></td></tr>
+<tr class="separator:a695144ab471371991585703c6029b95a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Chopper configuration structure. </p>
-<p>Configuration parameters for the chopper (current control) operation. </p>
+<p>User-friendly configuration for SpreadCycle and Classic chopper modes. SpreadCycle is a cycle-by-cycle current control providing superior microstepping quality. Classic mode is an alternative constant off-time chopper algorithm.</p>
+<p>The chopper frequency is an important parameter. Most motors work optimally in 16-30kHz range. Frequency is influenced by TOFF, TBL, hysteresis settings, motor inductance, and supply voltage.</p>
+<dl class="section note"><dt>Note</dt><dd>TOFF=0 completely disables all driver transistors (motor can free-wheel). </dd>
+<dd>
+For StealthChop operation, TOFF is required to enable motor but not used for chopping. </dd>
+<dd>
+TOFF=1 requires TBL ≥ 2. </dd>
+<dd>
+SpreadCycle mode (recommended) provides superior microstepping quality with default settings.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 8: SpreadCycle and Classic Chopper </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6909f9bb7fc6c45f162b3b36713308cb" name="a6909f9bb7fc6c45f162b3b36713308cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6909f9bb7fc6c45f162b3b36713308cb">&#9670;&#160;</a></span>ChopperConfig()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6909f9bb7fc6c45f162b3b36713308cb">&#9670;&#160;</a></span>ChopperConfig() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -168,27 +204,139 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Initializes with recommended default values for spreadCycle mode. All members use default member initializers, so constructor is empty. </p>
+<p>Initializes with recommended default values for SpreadCycle mode:</p><ul>
+<li>mode: SPREAD_CYCLE (recommended)</li>
+<li>toff: 5 (typical for 16-30kHz chopper frequency)</li>
+<li>tbl: 2 (36 clocks, typical)</li>
+<li>hstrt: 4 (effective hysteresis = 4)</li>
+<li>hend: 0 (effective end = -3)</li>
+<li>mres: 4 (16 microsteps)</li>
+<li>intpol: true (enable interpolation) </li>
+</ul>
+
+</div>
+</div>
+<a id="a832f9a4e679073b86edf195045167594" name="a832f9a4e679073b86edf195045167594"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a832f9a4e679073b86edf195045167594">&#9670;&#160;</a></span>ChopperConfig() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tmc5160::ChopperConfig::ChopperConfig </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>off_time</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>blank_time</em><span class="paramdefsep"> = </span><span class="paramdefval">2</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>hysteresis_start</em><span class="paramdefsep"> = </span><span class="paramdefval">4</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>hysteresis_end</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>microstep_res</em><span class="paramdefsep"> = </span><span class="paramdefval">4</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Helper constructor for SpreadCycle mode. </p>
+<p>Creates a SpreadCycle configuration with typical settings.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">off_time</td><td>Off time setting (0=disabled, 1-15, 5=typical) </td></tr>
+    <tr><td class="paramname">blank_time</td><td>Blank time (ChopperBlankTime enum or 0-3, TBL_36CLK=typical) </td></tr>
+    <tr><td class="paramname">hysteresis_start</td><td>Hysteresis start (0-7, 4=typical) </td></tr>
+    <tr><td class="paramname">hysteresis_end</td><td>Hysteresis end (0-15 encoded, 0=typical) </td></tr>
+    <tr><td class="paramname">microstep_res</td><td>Microstep resolution (MicrostepResolution enum or 0-8, MRES_16=typical) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a130a9d1560ad0c8c98df613cb44bfdff" name="a130a9d1560ad0c8c98df613cb44bfdff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a130a9d1560ad0c8c98df613cb44bfdff">&#9670;&#160;</a></span>ChopperConfig() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tmc5160::ChopperConfig::ChopperConfig </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>off_time</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>fast_decay_time</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>sine_offset</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>blank_time</em><span class="paramdefsep"> = </span><span class="paramdefval">2</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>disable_comparator</em><span class="paramdefsep"> = </span><span class="paramdefval">false</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>microstep_res</em><span class="paramdefsep"> = </span><span class="paramdefval">4</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Helper constructor for Classic mode. </p>
+<p>Creates a Classic constant off-time chopper configuration.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">off_time</td><td>Off time setting (0=disabled, 1-15, 5=typical) </td></tr>
+    <tr><td class="paramname">fast_decay_time</td><td>Fast decay time (0-15, similar to off_time) </td></tr>
+    <tr><td class="paramname">sine_offset</td><td>Sine wave offset (0-15 encoded, 4-6=typical positive offset) </td></tr>
+    <tr><td class="paramname">blank_time</td><td>Blank time (ChopperBlankTime enum or 0-3, TBL_36CLK=typical) </td></tr>
+    <tr><td class="paramname">disable_comparator</td><td>Disable fast decay comparator (false=enable, true=time only) </td></tr>
+    <tr><td class="paramname">microstep_res</td><td>Microstep resolution (MicrostepResolution enum or 0-8, MRES_16=typical) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a158635657fb63ea801c9214da8a8d6be" name="a158635657fb63ea801c9214da8a8d6be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a158635657fb63ea801c9214da8a8d6be">&#9670;&#160;</a></span>chm</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool tmc5160::ChopperConfig::chm {false}</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Chopper mode (false=spreadCycle, true=constant off time) </p>
-
-</div>
-</div>
 <a id="a1bc83007c1ed384e619fd780bb9b1b81" name="a1bc83007c1ed384e619fd780bb9b1b81"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1bc83007c1ed384e619fd780bb9b1b81">&#9670;&#160;</a></span>dedge</h2>
 
@@ -202,6 +350,90 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Enable double edge step pulses. </p>
+<p>Enables step impulse at each step edge (both rising and falling).</p>
+<ul>
+<li>false: Normal step pulses (single edge)</li>
+<li>true: Double edge step pulses</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Typically not needed for most applications. Enable double edge step pulses (typically false) </dd></dl>
+
+</div>
+</div>
+<a id="a424e4b68a470923d36314faddd41242a" name="a424e4b68a470923d36314faddd41242a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a424e4b68a470923d36314faddd41242a">&#9670;&#160;</a></span>disfdcc</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tmc5160::ChopperConfig::disfdcc {false}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Disable fast decay comparator (Classic mode only) </p>
+<p>Controls whether current comparator can terminate fast decay cycle.</p>
+<ul>
+<li>false: Enable comparator termination (fast decay ends when current reaches higher negative value)</li>
+<li>true: End fast decay by time only (fixed duration)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Only used in Classic mode (chm=1). </dd>
+<dd>
+In SpreadCycle mode, this field is not used. Disable fast decay comparator (Classic mode only) </dd></dl>
+
+</div>
+</div>
+<a id="a98a90c4983bc0594f340af4aff2fbfd6" name="a98a90c4983bc0594f340af4aff2fbfd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98a90c4983bc0594f340af4aff2fbfd6">&#9670;&#160;</a></span>diss2g</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tmc5160::ChopperConfig::diss2g {false}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Short to GND protection disable. </p>
+<p>Controls whether short to GND protection is enabled.</p>
+<ul>
+<li>false: Short to GND protection is ON (recommended)</li>
+<li>true: Short to GND protection is DISABLED (use with caution)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Protection is configured via SHORT_CONF register (s2g_level). </dd>
+<dd>
+This bit only disables the protection feature entirely. </dd>
+<dd>
+Bit 30 in CHOPCONF register. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Disabling protection can lead to driver damage in case of faults. Short to GND protection disable (false=protection ON, true=protection OFF) </dd></dl>
+
+</div>
+</div>
+<a id="a5787ba0b47ff5915259a3af948b226ef" name="a5787ba0b47ff5915259a3af948b226ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5787ba0b47ff5915259a3af948b226ef">&#9670;&#160;</a></span>diss2vs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tmc5160::ChopperConfig::diss2vs {false}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Short to supply protection disable. </p>
+<p>Controls whether short to VS (supply) protection is enabled.</p>
+<ul>
+<li>false: Short to VS protection is ON (recommended)</li>
+<li>true: Short to VS protection is DISABLED (use with caution)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Protection is configured via SHORT_CONF register (s2vs_level). </dd>
+<dd>
+This bit only disables the protection feature entirely. </dd>
+<dd>
+Bit 31 in CHOPCONF register. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Disabling protection can lead to driver damage in case of faults. Short to supply protection disable (false=protection ON, true=protection OFF) </dd></dl>
 
 </div>
 </div>
@@ -217,7 +449,20 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Hysteresis low value (0 to 15) </p>
+<p>Hysteresis end value (SpreadCycle mode) or Sine wave offset (Classic mode) </p>
+<p><b>SpreadCycle mode (chm=0)</b>: Hysteresis end value after decrements.</p><ul>
+<li>Encoded: 0-2 = negative (-3 to -1), 3 = zero, 4-15 = positive (1 to 12)</li>
+<li>Effective hysteresis = HSTRT + HEND (with encoding)</li>
+<li>Typical: 0 (effective end = -3, start = HSTRT+1-3 = HSTRT-2)</li>
+</ul>
+<p><b>Classic mode (chm=1)</b>: Sine wave offset for zero crossing correction.</p><ul>
+<li>Encoded: 0-2 = negative (-3 to -1), 3 = zero, 4-15 = positive (1 to 12)</li>
+<li>Positive offset corrects for zero crossing error (typically required)</li>
+<li>Typical: 4-6 (positive offset 1-3) for smoothest operation</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Sum HSTRT+HEND must be ≤16 for SpreadCycle (at CS ≤ 30). </dd>
+<dd>
+HSTRT=0 and HEND=0 disables hysteresis (not recommended). Hysteresis end (SpreadCycle) or offset (Classic), encoded 0-15 </dd></dl>
 
 </div>
 </div>
@@ -233,7 +478,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Hysteresis start value (0 to 7) </p>
+<p>Hysteresis start value (SpreadCycle mode only) </p>
+<p>Adds to hysteresis end value to create effective hysteresis start. Forces minimum current ripple into motor coils for best microstepping results.</p>
+<p>Range: 0-7 (adds 1-8 to HEND)</p><ul>
+<li>Lower values: Less current ripple (may reduce microstep accuracy)</li>
+<li>Higher values: More current ripple (may increase chopper noise)</li>
+<li>Typical: 4 (effective hysteresis = 4 when HEND=0)</li>
+</ul>
+<p>Effective hysteresis = HSTRT + HEND (with encoding)</p>
+<dl class="section note"><dt>Note</dt><dd>Only used in SpreadCycle mode (chm=0). </dd>
+<dd>
+In Classic mode, this field controls fast decay time (TFD) instead. </dd>
+<dd>
+Too low: Reduced microstep accuracy, humming/vibration at medium velocities. </dd>
+<dd>
+Too high: Reduced chopper frequency, increased noise, no benefit. </dd>
+<dd>
+Start from low setting (HSTRT=0, HEND=0) and increase until motor runs smoothly. Hysteresis start (0-7, adds 1-8 to HEND, 4=typical) </dd></dl>
 
 </div>
 </div>
@@ -250,6 +511,37 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Enable interpolation to 256 microsteps. </p>
+<p>Extrapolates MRES setting to 256 microsteps for smoother motion.</p>
+<ul>
+<li>true (recommended): Enable interpolation (smoother motion)</li>
+<li>false: Use native MRES resolution only</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Interpolation works regardless of MRES setting. </dd>
+<dd>
+Recommended for best microstepping quality. Enable interpolation to 256 microsteps (recommended) </dd></dl>
+
+</div>
+</div>
+<a id="ac2cf5748245e11d9c50bcdd746c1f17e" name="ac2cf5748245e11d9c50bcdd746c1f17e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2cf5748245e11d9c50bcdd746c1f17e">&#9670;&#160;</a></span>mode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacetmc5160.html#a44162616b47e69b39fd84f959c9c12bb">ChopperMode</a> tmc5160::ChopperConfig::mode {<a class="el" href="namespacetmc5160.html#a44162616b47e69b39fd84f959c9c12bbab028c799dc15f660cdcd57aa004bb290">ChopperMode::SPREAD_CYCLE</a>}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Chopper mode selection. </p>
+<ul>
+<li>SPREAD_CYCLE (recommended): Patented high-performance algorithm with superior microstepping quality. Automatically determines optimum fast-decay phase length. Provides best results with default settings.</li>
+<li>CLASSIC: Constant off-time chopper mode. Alternative algorithm, requires more tuning.</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>SpreadCycle cycles: on → slow decay → fast decay → slow decay </dd>
+<dd>
+Classic cycles: on → fast decay → slow decay Chopper mode (SPREAD_CYCLE recommended) </dd></dl>
 
 </div>
 </div>
@@ -265,7 +557,16 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Microstep resolution (0=256, 1=128, ..., 8=fullstep) </p>
+<p>Microstep resolution. </p>
+<p>Defines number of microsteps per full step. Higher resolution provides smoother motion but may reduce maximum velocity.</p>
+<p>Can be specified as:</p><ul>
+<li>uint8_t (0-8): Raw register value (0=256, 1=128, ..., 8=fullstep)</li>
+<li>MicrostepResolution enum: More intuitive (recommended)</li>
+</ul>
+<p>Typical: MRES_16 (16 microsteps) for balanced performance.</p>
+<dl class="section note"><dt>Note</dt><dd>Interpolation can be enabled to extrapolate to 256 microsteps regardless of MRES. </dd>
+<dd>
+Higher resolution = smoother motion but lower max velocity. Microstep resolution (0-8 or MicrostepResolution enum, 4=16 microsteps) </dd></dl>
 
 </div>
 </div>
@@ -281,7 +582,43 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Comparator blank time (0 to 3) </p>
+<p>Comparator blank time. </p>
+<p>Masks comparator input to block spikes from parasitic capacitances during switching. Typically 1-2 microseconds. Longer blank time provides more protection but may limit frequency.</p>
+<p>Can be specified as:</p><ul>
+<li>uint8_t (0-3): Raw register value</li>
+<li>ChopperBlankTime enum: More intuitive (recommended)</li>
+</ul>
+<p>Recommended: TBL_36CLK (~3.0µs @ 12MHz) for most applications.</p>
+<dl class="section note"><dt>Note</dt><dd>For highly capacitive loads (filter networks), use TBL_36CLK or TBL_54CLK. </dd>
+<dd>
+Lower blank time allows lower StealthChop current limit. Blank time (0-3 or ChopperBlankTime enum, 2=typical) </dd></dl>
+
+</div>
+</div>
+<a id="aff8cd887e9200f801c9999038dde46e2" name="aff8cd887e9200f801c9999038dde46e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff8cd887e9200f801c9999038dde46e2">&#9670;&#160;</a></span>tfd</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t tmc5160::ChopperConfig::tfd {0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fast decay time (Classic mode only) </p>
+<p>Sets fixed fast decay time following each on phase in Classic mode. Should be long enough to follow falling slope but not cause excess ripple.</p>
+<p>Range: 0-15 (uses hstrt_tfd bits + tfd_3 bit)</p><ul>
+<li>0: Slow decay only</li>
+<li>1-15: Fast decay time duration</li>
+<li>Typical: Similar to slow decay time (TOFF) setting</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Only used in Classic mode (chm=1). </dd>
+<dd>
+In SpreadCycle mode, this field is controlled by hstrt instead. </dd>
+<dd>
+Tune using oscilloscope or motor smoothness at different velocities. Fast decay time (Classic mode only, 0-15, 0=slow decay only) </dd></dl>
 
 </div>
 </div>
@@ -297,7 +634,94 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Off time setting (0 to 15). 0 = Driver disabled. </p>
+<p>Off time (slow decay time) setting. </p>
+<p>Sets the slow decay time and limits maximum chopper frequency. Higher values increase slow decay time and reduce chopper frequency.</p>
+<p>Range: 0-15</p><ul>
+<li>0: Chopper off (driver disabled, motor can free-wheel)</li>
+<li>1: Minimum off time (requires TBL ≥ 2)</li>
+<li>2-15: Off time setting (typical: 3-5 for 16-30kHz chopper frequency)</li>
+</ul>
+<p>Calculation for target chopper frequency: t_OFF = (1 / f_chopper) * (slow_decay_percent / 100) * (1 / 2) TOFF = (t_OFF * f_CLK - 12) / 32</p>
+<p>Example (25kHz target, 50% slow decay, 12MHz clock): t_OFF = (1/25000) * 0.5 * 0.5 = 10µs TOFF = (10µs * 12MHz - 12) / 32 ≈ 3.0 → use 3</p>
+<dl class="section note"><dt>Note</dt><dd>For StealthChop operation, any setting is OK (not used for chopping). </dd>
+<dd>
+Higher motor velocities may benefit from TOFF=2 or 3 with short TBL=1 or 2. Off time setting (0=disabled, 1-15=off time, 5=typical) </dd></dl>
+
+</div>
+</div>
+<a id="a873868ab02acac279fe319614c1be503" name="a873868ab02acac279fe319614c1be503"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a873868ab02acac279fe319614c1be503">&#9670;&#160;</a></span>tpfd</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t tmc5160::ChopperConfig::tpfd {0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Passive fast decay time. </p>
+<p>Adds passive fast decay time after bridge polarity change. Helps reduce mid-range resonances.</p>
+<p>Range: 0-15</p><ul>
+<li>0: Disabled</li>
+<li>1-15: Fast decay time in multiples of 128 clocks (~10µs per unit @ 12MHz)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Starting from 0, increase value if motor suffers from mid-range resonances. Passive fast decay time (0=disabled, 1-15=time in 128 clock units) </dd></dl>
+
+</div>
+</div>
+<a id="a970bee4c92b346ca3cb896cd73c09e8a" name="a970bee4c92b346ca3cb896cd73c09e8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a970bee4c92b346ca3cb896cd73c09e8a">&#9670;&#160;</a></span>vhighchm</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tmc5160::ChopperConfig::vhighchm {false}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>High velocity chopper mode. </p>
+<p>Enables switching to chm=1 (Classic mode) and fd=0 when VHIGH is exceeded. This way, a higher velocity can be achieved.</p>
+<ul>
+<li>false: Normal chopper mode operation</li>
+<li>true: Switch to Classic mode (chm=1) with fd=0 at high velocity</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Can be combined with <code>vhighfs</code> for maximum velocity. </dd>
+<dd>
+If set, the TOFF setting automatically becomes doubled during high velocity operation in order to avoid doubling of the chopper frequency. </dd>
+<dd>
+Automatically set to true when DcStep is configured. </dd>
+<dd>
+Bit 19 in CHOPCONF register. High velocity chopper mode (false=normal, true=Classic mode at high velocity) </dd></dl>
+
+</div>
+</div>
+<a id="a20259beea225a63a7f7fdb224c7eaf88" name="a20259beea225a63a7f7fdb224c7eaf88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20259beea225a63a7f7fdb224c7eaf88">&#9670;&#160;</a></span>vhighfs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tmc5160::ChopperConfig::vhighfs {false}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>High velocity fullstep selection. </p>
+<p>Enables switching to fullstep when VHIGH is exceeded. Switching takes place only at 45° position. The fullstep target current uses the current value from the microstep table at the 45° position.</p>
+<ul>
+<li>false: Normal microstepping operation</li>
+<li>true: Switch to fullstep at high velocity (VHIGH threshold)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Can be combined with <code>vhighchm</code> for maximum velocity. </dd>
+<dd>
+Automatically set to true when DcStep is configured. </dd>
+<dd>
+Bit 18 in CHOPCONF register. High velocity fullstep selection (false=normal, true=fullstep at high velocity) </dd></dl>
 
 </div>
 </div>
@@ -313,7 +737,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Resistor voltage sensitivity (false=Low, true=High) </p>
+<p>Resistor voltage sensitivity (deprecated) </p>
+<dl class="section note"><dt>Note</dt><dd>Bit 17 (vsense) is reserved per datasheet and ignored. </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated</a></b></dt><dd>This field has no effect and is kept for backward compatibility only. </dd></dl>
+<p>Voltage sensitivity (deprecated, ignored by hardware) </p>
 
 </div>
 </div>

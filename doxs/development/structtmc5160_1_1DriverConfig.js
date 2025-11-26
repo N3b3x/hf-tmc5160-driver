@@ -8,6 +8,6 @@ var structtmc5160_1_1DriverConfig =
     [ "mechanical", "structtmc5160_1_1DriverConfig.html#a5e14f75f71dc37d750d7c71dc66be6e5", null ],
     [ "motor_spec", "structtmc5160_1_1DriverConfig.html#ae93c05de46be364ef45d141c728f63b5", null ],
     [ "power_stage", "structtmc5160_1_1DriverConfig.html#a3edc65103b058fe76845f08ac016f37a", null ],
-    [ "ramp_params", "structtmc5160_1_1DriverConfig.html#a5f0745d41d45c17c1671fa5af561ed38", null ],
+    [ "ramp_config", "structtmc5160_1_1DriverConfig.html#a6d035ce60594adb071eea20054dddf95", null ],
     [ "stealthchop", "structtmc5160_1_1DriverConfig.html#ac69a4e75a27fd28dc1ee97d7f134e67b", null ]
 ];

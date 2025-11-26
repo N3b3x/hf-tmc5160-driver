@@ -8,25 +8,31 @@
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="68,206,100,187,139,168,161,161,163,166,141,173,103,191,71,211"/>
 <area shape="rect" id="Node000007" href="$encoder__comprehensive__test_8cpp.html#a4a7a005e64bc36445451aaa71589810c" title=" " alt="" coords="148,183,331,209"/>
 <area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="92,213,134,207,135,213,93,218"/>
-<area shape="rect" id="Node000010" href="$encoder__comprehensive__test_8cpp.html#a94bc2799c4b3cfdd41dc058e3d7c535e" title=" " alt="" coords="140,233,339,258"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="93,224,127,228,126,234,92,229"/>
-<area shape="rect" id="Node000011" href="$encoder__comprehensive__test_8cpp.html#acac19df35f0375adabdec9b20f2e45a4" title=" " alt="" coords="157,283,322,323"/>
-<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="73,232,141,267,162,275,160,280,139,272,70,237"/>
-<area shape="rect" id="Node000012" href="$encoder__comprehensive__test_8cpp.html#a76b85489050cc8941b086f0f7c8dceb7" title=" " alt="" coords="150,347,329,373"/>
-<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="59,233,90,282,114,309,142,332,155,340,152,344,138,337,110,313,86,285,54,236"/>
-<area shape="rect" id="Node000013" href="$encoder__comprehensive__test_8cpp.html#aee105fad1f3169ed7d839101d4d97199" title=" " alt="" coords="159,397,320,422"/>
-<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="56,234,66,265,83,305,108,348,142,383,149,388,146,393,138,387,103,351,78,308,61,266,51,235"/>
+<area shape="rect" id="Node000013" href="$encoder__comprehensive__test_8cpp.html#a94bc2799c4b3cfdd41dc058e3d7c535e" title=" " alt="" coords="140,233,339,258"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="93,224,127,228,126,234,92,229"/>
+<area shape="rect" id="Node000014" href="$encoder__comprehensive__test_8cpp.html#acac19df35f0375adabdec9b20f2e45a4" title=" " alt="" coords="157,283,322,323"/>
+<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="73,232,141,267,162,275,160,280,139,272,70,237"/>
+<area shape="rect" id="Node000015" href="$encoder__comprehensive__test_8cpp.html#a76b85489050cc8941b086f0f7c8dceb7" title=" " alt="" coords="150,347,329,373"/>
+<area shape="poly" id="edge17_Node000001_Node000015" title=" " alt="" coords="59,233,90,282,114,309,142,332,155,340,152,344,138,337,110,313,86,285,54,236"/>
+<area shape="rect" id="Node000016" href="$encoder__comprehensive__test_8cpp.html#aee105fad1f3169ed7d839101d4d97199" title=" " alt="" coords="159,397,320,422"/>
+<area shape="poly" id="edge19_Node000001_Node000016" title=" " alt="" coords="56,234,66,265,83,305,108,348,142,383,149,388,146,393,138,387,103,351,78,308,61,266,51,235"/>
 <area shape="rect" id="Node000004" href="$TestFramework_8h.html#a57a48f91a141d98e45f82937581e1a97" title="Automatically initialize GPIO14 test indicator if not already done." alt="" coords="387,106,575,131"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="309,95,373,103,373,108,309,100"/>
-<area shape="rect" id="Node000005" href="$TestFramework_8h.html#a3967179ac699a5b02ef9787b549409fe" title="Initialize the test progression indicator on GPIO14." alt="" coords="635,99,773,139"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="575,116,621,116,621,121,575,121"/>
+<area shape="rect" id="Node000005" href="$TestFramework_8h.html#a3967179ac699a5b02ef9787b549409fe" title="Initialize the test progression indicator on GPIO14." alt="" coords="655,99,793,139"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="575,116,641,116,641,121,575,121"/>
 <area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="316,135,372,129,373,134,316,140"/>
 <area shape="rect" id="Node000008" href="$encoder__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="411,290,551,315"/>
 <area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="305,206,340,218,401,248,452,280,449,285,398,253,338,222,303,211"/>
-<area shape="rect" id="Node000009" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="623,283,785,323"/>
-<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="551,300,609,300,609,305,551,305"/>
-<area shape="poly" id="edge11_Node000010_Node000008" title=" " alt="" coords="294,255,414,284,412,289,293,261"/>
-<area shape="poly" id="edge13_Node000011_Node000008" title=" " alt="" coords="322,300,397,300,397,305,322,305"/>
-<area shape="poly" id="edge15_Node000012_Node000008" title=" " alt="" coords="293,345,412,316,414,321,294,350"/>
-<area shape="poly" id="edge17_Node000013_Node000008" title=" " alt="" coords="303,394,338,383,398,353,449,321,452,325,401,357,340,388,305,399"/>
+<area shape="rect" id="Node000009" href="$namespacetmc5160__test__config.html#a8d4169028f909fa4c3bcaf35a1130f19" title="Helper function to populate DriverConfig from 17HS4401S direct drive motor configuration." alt="" coords="623,166,825,221"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="504,288,622,230,636,224,638,228,624,234,507,292"/>
+<area shape="rect" id="Node000010" href="$namespacetmc5160__test__config.html#ad066428e88b18d0b8a60d3cbb3866a72" title="Helper function to populate DriverConfig from 17HS4401S gearbox motor configuration." alt="" coords="623,245,825,299"/>
+<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="551,291,608,284,609,289,551,297"/>
+<area shape="rect" id="Node000011" href="$namespacetmc5160__test__config.html#a3b6d57d96a6198cd1018a9e5c55c0c6b" title="Helper function to populate DriverConfig from Applied Motion 5034 motor configuration." alt="" coords="623,323,825,378"/>
+<area shape="poly" id="edge11_Node000008_Node000011" title=" " alt="" coords="546,313,610,325,609,331,545,318"/>
+<area shape="rect" id="Node000012" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="643,403,805,443"/>
+<area shape="poly" id="edge12_Node000008_Node000012" title=" " alt="" coords="501,313,554,350,624,388,641,395,639,400,621,393,552,354,498,318"/>
+<area shape="poly" id="edge14_Node000013_Node000008" title=" " alt="" coords="294,255,414,284,412,289,293,261"/>
+<area shape="poly" id="edge16_Node000014_Node000008" title=" " alt="" coords="322,300,397,300,397,305,322,305"/>
+<area shape="poly" id="edge18_Node000015_Node000008" title=" " alt="" coords="293,345,412,316,414,321,294,350"/>
+<area shape="poly" id="edge20_Node000016_Node000008" title=" " alt="" coords="303,394,338,383,398,353,449,321,452,325,401,357,340,388,305,399"/>
 </map>

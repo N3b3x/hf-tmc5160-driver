@@ -126,9 +126,12 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a4b1fcff28ad17bb9ef4248ebb82b1175"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a876fe13d509625ebe70323484847a2d4" id="r_a876fe13d509625ebe70323484847a2d4"><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="#a96cb8146d76f5dc9776061f0b0a406bb">clr_once</a>: 1&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="separator:a876fe13d509625ebe70323484847a2d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9486b5597b097d8236e4f6cac3bbcff7" id="r_a9486b5597b097d8236e4f6cac3bbcff7"><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="#aeced4fd6e0049835308b4695ac6e7c64">sensitivity</a>: 2&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a9486b5597b097d8236e4f6cac3bbcff7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bits 7..6: N channel event sensitivity (pos_edge=bit6, neg_edge=bit7)  <a href="#aeced4fd6e0049835308b4695ac6e7c64">More...</a><br /></td></tr>
-<tr class="separator:a9486b5597b097d8236e4f6cac3bbcff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a5857b8ecccee68c412f2dfdd464e4d" id="r_a1a5857b8ecccee68c412f2dfdd464e4d"><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="#a1ee2647130d85489cd93624db7e409fb">pos_edge</a>: 1&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a1a5857b8ecccee68c412f2dfdd464e4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit 6: N channel event sensitivity (positive edge)  <a href="#a1ee2647130d85489cd93624db7e409fb">More...</a><br /></td></tr>
+<tr class="separator:a1a5857b8ecccee68c412f2dfdd464e4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98f1c08a6550e9b80248dd89e12f19d5" id="r_a98f1c08a6550e9b80248dd89e12f19d5"><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="#a82205cb5a0b511d61c4fccbed94fc34a">neg_edge</a>: 1&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a98f1c08a6550e9b80248dd89e12f19d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit 7: N channel event sensitivity (negative edge)  <a href="#a82205cb5a0b511d61c4fccbed94fc34a">More...</a><br /></td></tr>
+<tr class="separator:a98f1c08a6550e9b80248dd89e12f19d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b38cf7ef9b70080b1de3ab2c42d88a1" id="r_a1b38cf7ef9b70080b1de3ab2c42d88a1"><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="#ab63f1eac02cb952898f19d382c683edf">clr_enc_x</a>: 1&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="memdesc:a1b38cf7ef9b70080b1de3ab2c42d88a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit 8: Clear encoder counter X_ENC upon N-event.  <a href="#ab63f1eac02cb952898f19d382c683edf">More...</a><br /></td></tr>
 <tr class="separator:a1b38cf7ef9b70080b1de3ab2c42d88a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -276,6 +279,22 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a82205cb5a0b511d61c4fccbed94fc34a" name="a82205cb5a0b511d61c4fccbed94fc34a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82205cb5a0b511d61c4fccbed94fc34a">&#9670;&#160;</a></span>neg_edge</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t tmc5160::ENCMODE_Register::neg_edge</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Bit 7: N channel event sensitivity (negative edge) </p>
+
+</div>
+</div>
 <a id="a21966749c3363fe950feeb7c553e19ca" name="a21966749c3363fe950feeb7c553e19ca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a21966749c3363fe950feeb7c553e19ca">&#9670;&#160;</a></span>pol_A</h2>
 
@@ -324,6 +343,22 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a1ee2647130d85489cd93624db7e409fb" name="a1ee2647130d85489cd93624db7e409fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ee2647130d85489cd93624db7e409fb">&#9670;&#160;</a></span>pos_edge</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t tmc5160::ENCMODE_Register::pos_edge</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Bit 6: N channel event sensitivity (positive edge) </p>
+
+</div>
+</div>
 <a id="a52b1c63757139008b60eaadfa7a4e9ba" name="a52b1c63757139008b60eaadfa7a4e9ba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a52b1c63757139008b60eaadfa7a4e9ba">&#9670;&#160;</a></span>reserved</h2>
 
@@ -337,22 +372,6 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Reserved bits (11..31) </p>
-
-</div>
-</div>
-<a id="aeced4fd6e0049835308b4695ac6e7c64" name="aeced4fd6e0049835308b4695ac6e7c64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeced4fd6e0049835308b4695ac6e7c64">&#9670;&#160;</a></span>sensitivity</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t tmc5160::ENCMODE_Register::sensitivity</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Bits 7..6: N channel event sensitivity (pos_edge=bit6, neg_edge=bit7) </p>
 
 </div>
 </div>

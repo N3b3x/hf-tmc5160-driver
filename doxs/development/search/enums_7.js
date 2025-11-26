@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pwmfreewheel_0',['PWMFreewheel',['../namespacetmc5160.html#afd8e06e7eda04c891d35f72236085722',1,'tmc5160']]]
+  ['overtempprotection_0',['OverTempProtection',['../namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bd',1,'tmc5160']]]
 ];
