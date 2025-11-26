@@ -1,6 +1,6 @@
 /**
- * @file merged_comprehensive_test.cpp
- * @brief Comprehensive merged test suite for TMC5160 (single motor)
+ * @file internal_ramp_comprehensive_test.cpp
+ * @brief Comprehensive internal ramp test suite for TMC5160 (single motor)
  *
  * This file contains comprehensive testing for TMC5160 driver covering:
  * - Core initialization and basic setup
@@ -21,6 +21,7 @@
  * - Motor: 17HS4401S-PG518 (gearbox)
  * - Board: TMC5160 Evaluation Kit
  * - Platform: Test Rig (with encoder and reference switches)
+ * - Communication Mode: SPI Internal Ramp (SPI_MODE=HIGH, SD_MODE=LOW)
  *
  * @note Reference switches are configured but do NOT stop the motor unless
  *       directly testing that feature (test_reference_switch_configuration).
@@ -37,7 +38,7 @@
 #include "driver/gpio.h"
 #include <memory>
 
-static const char* TAG = "Merged_Test";
+static const char* TAG = "InternalRamp_Test";
 static TestResults g_test_results;
 
 //=============================================================================
@@ -1491,7 +1492,7 @@ bool test_overtemperature_protection() noexcept {
 
 extern "C" void app_main(void) {
   ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
-  ESP_LOGI(TAG, "║              ESP32 TMC5160 MERGED COMPREHENSIVE TEST SUITE                      ║");
+  ESP_LOGI(TAG, "║         ESP32 TMC5160 INTERNAL RAMP COMPREHENSIVE TEST SUITE                  ║");
   ESP_LOGI(TAG, "║                         HardFOC TMC5160 Driver Tests                           ║");
   ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
   
@@ -1500,6 +1501,7 @@ extern "C" void app_main(void) {
   ESP_LOGI(TAG, "  Motor: 17HS4401S-PG518 (gearbox)");
   ESP_LOGI(TAG, "  Board: TMC5160 Evaluation Kit");
   ESP_LOGI(TAG, "  Platform: Test Rig (with AS5047U encoder and reference switches)");
+  ESP_LOGI(TAG, "  Communication Mode: SPI Internal Ramp (SPI_MODE=HIGH, SD_MODE=LOW)");
   ESP_LOGI(TAG, "");
   ESP_LOGI(TAG, "Note: Reference switches are configured but do NOT stop the motor");
   ESP_LOGI(TAG, "      unless directly testing that feature (test_reference_switch_configuration).");
@@ -1508,7 +1510,7 @@ extern "C" void app_main(void) {
   vTaskDelay(pdMS_TO_TICKS(1000));
   
   // Report test section configuration
-  print_test_section_status(TAG, "Merged Comprehensive");
+  print_test_section_status(TAG, "Internal Ramp Comprehensive");
   
   //=============================================================================
   // CORE TESTS
@@ -1810,7 +1812,7 @@ extern "C" void app_main(void) {
   ESP_LOGI(TAG, "║                          TEST SUMMARY                                         ║");
   ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
   
-  print_test_summary(g_test_results, "Merged Comprehensive", TAG);
+  print_test_summary(g_test_results, "Internal Ramp Comprehensive", TAG);
   
   ESP_LOGI(TAG, "");
   ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
