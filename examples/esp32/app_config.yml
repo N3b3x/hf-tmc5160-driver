@@ -10,34 +10,16 @@
 version: "1.0"
 metadata:
   project: "ESP32 TMC5160 Driver Examples"
-  default_app: "core_comprehensive_test"
+  default_app: "merged_comprehensive_test"
   target: "esp32c6"
   idf_versions: ["release/v5.5", "release/v5.4"]
   build_types: [["Debug", "Release"], ["Debug"]]
 
 apps:
   # Comprehensive Test Suites (Single Motor)
-  core_comprehensive_test:
-    description: "Comprehensive core initialization and basic setup testing suite (single motor)"
-    source_file: "core_comprehensive_test.cpp"
-    category: "testing"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: true
-    featured: true
-
-  ramp_control_comprehensive_test:
-    description: "Comprehensive ramp control testing suite - ramp modes, position control, speed control, unit conversions (single motor)"
-    source_file: "ramp_control_comprehensive_test.cpp"
-    category: "testing"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: true
-    featured: true
-
-  motor_control_comprehensive_test:
-    description: "Comprehensive motor control testing suite - enable/disable, current control, chopper, stealthChop, CoolStep, DCStep, LUT, motor setup (single motor)"
-    source_file: "motor_control_comprehensive_test.cpp"
+  merged_comprehensive_test:
+    description: "Merged comprehensive testing suite - combines core, motor control, ramp control, diagnostics, and protection tests into a single wholesome test suite (single motor, with encoder and reference switches)"
+    source_file: "merged_comprehensive_test.cpp"
     category: "testing"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]
@@ -47,24 +29,6 @@ apps:
   encoder_comprehensive_test:
     description: "Comprehensive encoder testing suite - encoder configuration, resolution, position reading, deviation detection (single motor)"
     source_file: "encoder_comprehensive_test.cpp"
-    category: "testing"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: true
-    featured: true
-
-  diagnostics_comprehensive_test:
-    description: "Comprehensive diagnostics testing suite - driver status, StallGuard2, lost steps, phase currents, PWM scale, microstep diagnostics, GPIO, factory/OTP config, sensorless homing (single motor)"
-    source_file: "diagnostics_comprehensive_test.cpp"
-    category: "testing"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: true
-    featured: true
-
-  protection_comprehensive_test:
-    description: "Comprehensive protection testing suite - short circuit and overtemperature protection (single motor)"
-    source_file: "protection_comprehensive_test.cpp"
     category: "testing"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]
