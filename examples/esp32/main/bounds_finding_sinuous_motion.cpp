@@ -15,7 +15,7 @@
  *
  * MOTOR SELECTION:
  * Motor selection is done via a static constexpr variable at the top of this file.
- * See esp32_tmc5160_bus_config.hpp for detailed motor specifications and selection guide.
+ * See esp32_tmc5160_test_config.hpp for detailed motor specifications and selection guide.
  *
  * Hardware Requirements:
  * - ESP32 development board
@@ -26,7 +26,7 @@
  * - UART debug port for command interface (typically UART_NUM_0 for USB serial)
  * - Power supply: 12-36V DC (ensure adequate current capacity for selected motor)
  *
- * Pin Configuration (uses default dev board pins from esp32_tmc5160_bus_config.hpp):
+ * Pin Configuration (uses default dev board pins from esp32_tmc5160_test_config.hpp):
  * - SPI: MOSI=6, MISO=2, SCLK=5, CS=18
  * - Control: EN=11, CLK=10, DIAG0=23, DIAG1=15
  * - UART: Uses default UART_NUM_0 (USB serial port)
@@ -58,12 +58,12 @@
 #include "../../../inc/tmc5160.hpp"
 #include "esp32_tmc5160_bus.hpp"
 
-#include "esp32_tmc5160_bus_config.hpp"
+#include "esp32_tmc5160_test_config.hpp"
 
 //=============================================================================
 // CONFIGURATION SELECTION - Change these to select motor, board, and platform
 //=============================================================================
-// See esp32_tmc5160_bus_config.hpp for detailed motor, board, and platform specifications.
+// See esp32_tmc5160_test_config.hpp for detailed motor, board, and platform specifications.
 // Change the values below to select different configurations:
 
 // Motor selection (compile-time constant)

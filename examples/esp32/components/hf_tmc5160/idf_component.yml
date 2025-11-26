@@ -120,7 +120,6 @@ files:
 #     - tmc5160_comm_interface.hpp: Communication interface abstraction (SPI/UART)
 #     - tmc5160_registers.hpp: Register definitions and bitfield structures
 #     - tmc5160_types.hpp: Type definitions and enumerations
-#     - tmc5160_config.hpp: Configuration structures
 #
 #  2. Subsystem Classes
 #     - RampControl: Positioning, velocity, and hold modes

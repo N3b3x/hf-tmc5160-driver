@@ -404,12 +404,12 @@ Chip communication and motion control mode configuration. Represents the combina
 
 Main driver configuration structure containing all parameters for initializing the TMC5160 driver.
 
-**Location**: [`inc/tmc5160_config.hpp`](../inc/tmc5160_config.hpp)
+**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
 
 **Key Features**:
 - **Automatic Current Calculation**: IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated from `motor_spec` parameters during initialization
 - **User-Friendly Parameters**: All configuration uses physical parameters (voltage, current, time) rather than raw register values
-- **Compile-Time Configuration**: For ESP32 examples, use helper functions from `esp32_tmc5160_bus_config.hpp`
+- **Compile-Time Configuration**: For ESP32 examples, use helper functions from `esp32_tmc5160_test_config.hpp`
 
 | Field | Type | Description |
 |-------|------|-------------|

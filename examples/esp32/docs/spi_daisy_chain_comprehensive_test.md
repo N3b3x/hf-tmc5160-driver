@@ -90,7 +90,7 @@ CS   ──────── CSN ──────────── CSN ─�
 
 ## Pin Configuration
 
-Default pin configuration (from `esp32_tmc5160_bus_config.hpp`, shared by all chips):
+Default pin configuration (from `esp32_tmc5160_test_config.hpp`, shared by all chips):
 
 - **SPI**: MOSI=6, MISO=2, SCLK=5, CS=18 (shared)
 - **Control**: EN=11 (can be shared or separate per chip)

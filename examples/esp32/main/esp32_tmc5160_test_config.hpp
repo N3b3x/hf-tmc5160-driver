@@ -1,5 +1,5 @@
 /**
- * @file esp32_tmc5160_bus_config.hpp
+ * @file esp32_tmc5160_test_config.hpp
  * @brief ESP32 GPIO pin configuration and compile-time configuration for TMC5160 driver
  *
  * This file defines compile-time configuration for TMC5160 driver initialization:
@@ -65,8 +65,8 @@
  * @date 2025
  */
 
-#ifndef ESP32_TMC5160_BUS_CONFIG_HPP
-#define ESP32_TMC5160_BUS_CONFIG_HPP
+#ifndef ESP32_TMC5160_TEST_CONFIG_HPP
+#define ESP32_TMC5160_TEST_CONFIG_HPP
 
 #include "driver/gpio.h"
 #include "../../../inc/tmc5160_comm_interface.hpp"
@@ -241,9 +241,10 @@ namespace MotorConfig_17HS4401S {
     // Physical Motor Specs
     constexpr uint16_t RATED_CURRENT_MA = 1680;  // 1.68A
     constexpr float GEAR_RATIO = 5.18f;
-    constexpr float MOTOR_STEP_ANGLE = 1.8f;
     constexpr uint16_t MOTOR_FULL_STEPS = 200;
     constexpr uint16_t OUTPUT_FULL_STEPS = static_cast<uint16_t>(MOTOR_FULL_STEPS * GEAR_RATIO); // ~1036
+    constexpr uint16_t RATED_VOLTAGE_MV = 12000; // Typical for NEMA 17
+    constexpr uint32_t HOLDING_TORQUE_MNM = 400; // 40Ncm = 400mNm (Motor)
 
     // Driver Configuration
     // NOTE: Board has 0.05 Ohm Sense Resistors (1W, low-inductance type required).
@@ -264,12 +265,14 @@ namespace MotorConfig_17HS4401S {
     // - IRUN ≥ 8 is minimum for StealthChop automatic tuning
     // - IRUN 16-31 recommended for best microstep performance
     // - Current is slightly above motor rating but acceptable for testing
-    constexpr uint16_t GLOBAL_SCALER = 160;       // Fine-tunes current range (0=256=full scale)
-    constexpr uint8_t IRUN = 20;                 // ~1.88A RMS, ~2.66A Peak (improved StealthChop)
-    constexpr uint8_t IHOLD = 10;                // ~0.94A RMS, ~1.33A Peak (50% of Run)
+    //
+    // Target currents (Tuned for specific application requirements)
+    // Rated is 1.68A, but we drive slightly harder (1.88A) for better StealthChop calibration
+    constexpr uint16_t TARGET_RUN_CURRENT_MA = 1880; 
+    constexpr uint16_t TARGET_HOLD_CURRENT_MA = 940;
     
     // Microstepping for Maximum Smoothness
-    constexpr uint8_t MRES = 0;                  // 0 = 256 microsteps (Highest Resolution)
+    constexpr tmc5160::MicrostepResolution MRES = tmc5160::MicrostepResolution::MRES_256; // Highest Resolution
     constexpr bool INTERPOLATION = true;         // Interpolation (always on for smoothness)
     
     // Chopper Configuration (SpreadCycle default for NEMA 17)
@@ -289,6 +292,18 @@ namespace MotorConfig_17HS4401S {
     // BSC072N08NS5 has Qg(tot) ~6nC, Qgd (Miller) ~2nC - use <10nC category
     constexpr float MOSFET_MILLER_CHARGE_NC = 6.0f;  // Miller charge in nC (<10nC for BSC072N08NS5)
     constexpr uint32_t BBM_TIME_NS = 100;            // Break-before-make time in nanoseconds (~100ns for fast MOSFETs)
+
+    // Default Ramp Profile (Tuned for NEMA 17 with gearbox)
+    constexpr float RAMP_VSTART = 1.0f;
+    constexpr float RAMP_VSTOP = 10.0f;
+    constexpr float RAMP_VMAX = 10000.0f;  // Higher max speed for NEMA 17
+    constexpr float RAMP_AMAX = 1000.0f;   // Higher acceleration
+    constexpr float RAMP_DMAX = 1000.0f;
+    constexpr float RAMP_A1 = 500.0f;
+    constexpr float RAMP_D1 = 500.0f;
+    constexpr float RAMP_V1 = 0.0f;
+    constexpr float RAMP_TPOWERDOWN_MS = 100.0f;
+    constexpr float RAMP_TZEROWAIT_MS = 0.0f;
 }
 
 /**
@@ -311,19 +326,21 @@ namespace MotorConfig_17HS4401S_Direct {
     // Physical Motor Specs
     constexpr uint16_t RATED_CURRENT_MA = 1680;  // 1.68A
     constexpr float GEAR_RATIO = 1.0f;            // Direct drive (no gearbox)
-    constexpr float MOTOR_STEP_ANGLE = 1.8f;
     constexpr uint16_t MOTOR_FULL_STEPS = 200;
     constexpr uint16_t OUTPUT_FULL_STEPS = MOTOR_FULL_STEPS; // Same as motor (no gearbox)
+    constexpr uint16_t RATED_VOLTAGE_MV = 12000; // Typical for NEMA 17
+    constexpr uint32_t HOLDING_TORQUE_MNM = 400; // 40Ncm = 400mNm
 
     // Driver Configuration
     // NOTE: Board has 0.05 Ohm Sense Resistors (1W, low-inductance type required).
     // Same current settings as geared version since motor is identical
-    constexpr uint16_t GLOBAL_SCALER = 160;       // Fine-tunes current range (0=256=full scale)
-    constexpr uint8_t IRUN = 20;                 // ~1.88A RMS, ~2.66A Peak
-    constexpr uint8_t IHOLD = 10;                // ~0.94A RMS, ~1.33A Peak (50% of Run)
+    
+    // Target currents (Same as geared version)
+    constexpr uint16_t TARGET_RUN_CURRENT_MA = 1880; 
+    constexpr uint16_t TARGET_HOLD_CURRENT_MA = 940;
     
     // Microstepping for Maximum Smoothness
-    constexpr uint8_t MRES = 0;                  // 0 = 256 microsteps (Highest Resolution)
+    constexpr tmc5160::MicrostepResolution MRES = tmc5160::MicrostepResolution::MRES_256; // Highest Resolution
     constexpr bool INTERPOLATION = true;         // Interpolation (always on for smoothness)
     
     // Chopper Configuration (SpreadCycle default for NEMA 17)
@@ -342,6 +359,18 @@ namespace MotorConfig_17HS4401S_Direct {
     // BSC072N08NS5 has Qg(tot) ~6nC, Qgd (Miller) ~2nC - use <10nC category
     constexpr float MOSFET_MILLER_CHARGE_NC = 6.0f;  // Miller charge in nC (<10nC for BSC072N08NS5)
     constexpr uint32_t BBM_TIME_NS = 100;            // Break-before-make time in nanoseconds (~100ns for fast MOSFETs)
+
+    // Default Ramp Profile (Tuned for NEMA 17 direct drive)
+    constexpr float RAMP_VSTART = 1.0f;
+    constexpr float RAMP_VSTOP = 10.0f;
+    constexpr float RAMP_VMAX = 10000.0f;  // Higher max speed for NEMA 17
+    constexpr float RAMP_AMAX = 1000.0f;   // Higher acceleration
+    constexpr float RAMP_DMAX = 1000.0f;
+    constexpr float RAMP_A1 = 500.0f;
+    constexpr float RAMP_D1 = 500.0f;
+    constexpr float RAMP_V1 = 0.0f;
+    constexpr float RAMP_TPOWERDOWN_MS = 100.0f;
+    constexpr float RAMP_TZEROWAIT_MS = 0.0f;
 }
 
 /**
@@ -369,11 +398,12 @@ namespace MotorConfig_AppliedMotion_5034_369 {
     // Physical Motor Specs
     constexpr uint16_t RATED_CURRENT_MA = 4170;  // 4.17A RMS (bipolar series)
     constexpr float GEAR_RATIO = 1.0f;            // Direct drive (no gearbox)
-    constexpr float MOTOR_STEP_ANGLE = 1.8f;
     constexpr uint16_t MOTOR_FULL_STEPS = 200;
     constexpr uint16_t OUTPUT_FULL_STEPS = MOTOR_FULL_STEPS; // Same as motor (no gearbox)
     constexpr float RESISTANCE_OHMS = 0.84f;      // Bipolar series resistance
     constexpr float INDUCTANCE_MH = 10.4f;        // Bipolar series inductance
+    constexpr uint16_t RATED_VOLTAGE_MV = 12000;  // Rated voltage
+    constexpr uint32_t HOLDING_TORQUE_MNM = 4500; // 4.5Nm = 4500mNm
 
     // Driver Configuration
     // NOTE: Board has 0.05 Ohm Sense Resistors (1W, low-inductance type required).
@@ -393,12 +423,14 @@ namespace MotorConfig_AppliedMotion_5034_369 {
     // IRUN=28: I_RMS = 1.0 * 0.90625 * 6.5 * 0.707 = ~4.17A RMS (exact match)
     // 
     // Using IRUN=28 for exact rated current, or IRUN=31 for maximum available
-    constexpr uint16_t GLOBAL_SCALER = 256;       // Full scale for maximum current capacity
-    constexpr uint8_t IRUN = 28;                 // ~4.17A RMS (100% rated), ~5.9A Peak
-    constexpr uint8_t IHOLD = 14;                // ~2.15A RMS (~51.5% of Run), ~3.04A Peak
+    // Target currents
+    // Rated: 4.17A. Board max with 0.05R is ~4.6A.
+    // We use rated current.
+    constexpr uint16_t TARGET_RUN_CURRENT_MA = 4170; // 100% rated
+    constexpr uint16_t TARGET_HOLD_CURRENT_MA = 2150; // ~50%
     
     // Microstepping for Maximum Smoothness
-    constexpr uint8_t MRES = 0;                  // 0 = 256 microsteps (Highest Resolution)
+    constexpr tmc5160::MicrostepResolution MRES = tmc5160::MicrostepResolution::MRES_256; // Highest Resolution
     constexpr bool INTERPOLATION = true;         // Interpolation (always on for smoothness)
     
     // Chopper Configuration (SpreadCycle for NEMA 34)
@@ -420,6 +452,19 @@ namespace MotorConfig_AppliedMotion_5034_369 {
     constexpr uint8_t DRV_STRENGTH = 0;          // Weakest setting for low Qg MOSFETs (<10nC)
     constexpr uint8_t BBM_TIME = 0;              // 0 = ~100ns (Sufficient for fast MOSFETs)
     constexpr uint8_t BBM_CLKS = 0;              // 0 = Off
+
+    // Default Ramp Profile (Tuned for NEMA 34)
+    // Lower acceleration due to higher rotor inertia
+    constexpr float RAMP_VSTART = 1.0f;
+    constexpr float RAMP_VSTOP = 10.0f;
+    constexpr float RAMP_VMAX = 5000.0f;  // Lower max speed for NEMA 34
+    constexpr float RAMP_AMAX = 500.0f;   // Lower acceleration
+    constexpr float RAMP_DMAX = 500.0f;
+    constexpr float RAMP_A1 = 250.0f;
+    constexpr float RAMP_D1 = 250.0f;
+    constexpr float RAMP_V1 = 0.0f;
+    constexpr float RAMP_TPOWERDOWN_MS = 100.0f;
+    constexpr float RAMP_TZEROWAIT_MS = 0.0f;
 }
 
 /**
@@ -669,11 +714,8 @@ inline void ConfigureDriverFromMotor_17HS4401S_Gearbox(tmc5160::DriverConfig& cf
     // Motor physical specifications
     cfg.motor_spec.steps_per_rev = Motor::MOTOR_FULL_STEPS;
     cfg.motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
-    cfg.motor_spec.rated_voltage_mv = 12000;  // Typical for NEMA 17
-    
-    // Desired current settings (0 = use rated_current_ma and auto-calculate hold)
-    cfg.motor_spec.run_current_ma = 0;   // Use rated_current_ma
-    cfg.motor_spec.hold_current_ma = 0;  // Auto-calculate as 30% of run
+    cfg.motor_spec.run_current_ma = Motor::TARGET_RUN_CURRENT_MA;
+    cfg.motor_spec.hold_current_ma = Motor::TARGET_HOLD_CURRENT_MA;
     
     // Motor-specific chopper configuration
     cfg.chopper.mode = tmc5160::ChopperMode::SPREAD_CYCLE;
@@ -681,7 +723,7 @@ inline void ConfigureDriverFromMotor_17HS4401S_Gearbox(tmc5160::DriverConfig& cf
     cfg.chopper.tbl = Motor::TBL;
     cfg.chopper.hstrt = Motor::HSTRT;
     cfg.chopper.hend = Motor::HEND;
-    cfg.chopper.mres = Motor::MRES;
+    cfg.chopper.mres = static_cast<uint8_t>(Motor::MRES);
     cfg.chopper.intpol = Motor::INTERPOLATION;
     cfg.chopper.tpfd = 0;
     
@@ -708,16 +750,16 @@ inline void ConfigureDriverFromMotor_17HS4401S_Gearbox(tmc5160::DriverConfig& cf
     // Ramp configuration defaults
     cfg.ramp_config.velocity_unit = tmc5160::Unit::Steps;
     cfg.ramp_config.acceleration_unit = tmc5160::Unit::Steps;
-    cfg.ramp_config.vstart = 1.0f;
-    cfg.ramp_config.vstop = 1.0f;
-    cfg.ramp_config.vmax = 10000.0f;
-    cfg.ramp_config.amax = 1000.0f;
-    cfg.ramp_config.dmax = 1000.0f;
-    cfg.ramp_config.v1 = 1000.0f;
-    cfg.ramp_config.a1 = 500.0f;
-    cfg.ramp_config.d1 = 500.0f;
-    cfg.ramp_config.tpowerdown_ms = 10.0f;
-    cfg.ramp_config.tzerowait_ms = 0.0f;
+    cfg.ramp_config.vstart = Motor::RAMP_VSTART;
+    cfg.ramp_config.vstop = Motor::RAMP_VSTOP;
+    cfg.ramp_config.vmax = Motor::RAMP_VMAX;
+    cfg.ramp_config.amax = Motor::RAMP_AMAX;
+    cfg.ramp_config.dmax = Motor::RAMP_DMAX;
+    cfg.ramp_config.v1 = Motor::RAMP_V1;
+    cfg.ramp_config.a1 = Motor::RAMP_A1;
+    cfg.ramp_config.d1 = Motor::RAMP_D1;
+    cfg.ramp_config.tpowerdown_ms = Motor::RAMP_TPOWERDOWN_MS;
+    cfg.ramp_config.tzerowait_ms = Motor::RAMP_TZEROWAIT_MS;
 }
 
 /**
@@ -734,16 +776,15 @@ inline void ConfigureDriverFromMotor_17HS4401S_Direct(tmc5160::DriverConfig& cfg
     // ===== MOTOR CONFIGURATION =====
     cfg.motor_spec.steps_per_rev = Motor::MOTOR_FULL_STEPS;
     cfg.motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
-    cfg.motor_spec.rated_voltage_mv = 12000;
-    cfg.motor_spec.run_current_ma = 0;
-    cfg.motor_spec.hold_current_ma = 0;
+    cfg.motor_spec.run_current_ma = Motor::TARGET_RUN_CURRENT_MA;
+    cfg.motor_spec.hold_current_ma = Motor::TARGET_HOLD_CURRENT_MA;
     
     cfg.chopper.mode = tmc5160::ChopperMode::SPREAD_CYCLE;
     cfg.chopper.toff = Motor::TOFF;
     cfg.chopper.tbl = Motor::TBL;
     cfg.chopper.hstrt = Motor::HSTRT;
     cfg.chopper.hend = Motor::HEND;
-    cfg.chopper.mres = Motor::MRES;
+    cfg.chopper.mres = static_cast<uint8_t>(Motor::MRES);
     cfg.chopper.intpol = Motor::INTERPOLATION;
     cfg.chopper.tpfd = 0;
     
@@ -794,18 +835,18 @@ inline void ConfigureDriverFromMotor_AppliedMotion_5034(tmc5160::DriverConfig& c
     // ===== MOTOR CONFIGURATION =====
     cfg.motor_spec.steps_per_rev = Motor::MOTOR_FULL_STEPS;
     cfg.motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
-    cfg.motor_spec.rated_voltage_mv = 12000;
+    cfg.motor_spec.holding_torque_mnm = Motor::HOLDING_TORQUE_MNM;
     cfg.motor_spec.winding_resistance_mohm = static_cast<uint32_t>(Motor::RESISTANCE_OHMS * 1000.0f);
     cfg.motor_spec.winding_inductance_uh = static_cast<uint32_t>(Motor::INDUCTANCE_MH * 1000.0f);
-    cfg.motor_spec.run_current_ma = 0;
-    cfg.motor_spec.hold_current_ma = 0;
+    cfg.motor_spec.run_current_ma = Motor::TARGET_RUN_CURRENT_MA;
+    cfg.motor_spec.hold_current_ma = Motor::TARGET_HOLD_CURRENT_MA;
     
     cfg.chopper.mode = tmc5160::ChopperMode::SPREAD_CYCLE;
     cfg.chopper.toff = Motor::TOFF;
     cfg.chopper.tbl = Motor::TBL;
     cfg.chopper.hstrt = Motor::HSTRT;
     cfg.chopper.hend = Motor::HEND;
-    cfg.chopper.mres = Motor::MRES;
+    cfg.chopper.mres = static_cast<uint8_t>(Motor::MRES);
     cfg.chopper.intpol = Motor::INTERPOLATION;
     cfg.chopper.tpfd = 0;
     
@@ -969,5 +1010,5 @@ inline bool GetEncoderInvertDirection() noexcept {
 
 } // namespace tmc5160_test_config
 
-#endif // ESP32_TMC5160_BUS_CONFIG_HPP
+#endif // ESP32_TMC5160_TEST_CONFIG_HPP
 

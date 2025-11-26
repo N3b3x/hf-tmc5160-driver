@@ -35,7 +35,7 @@
 
 #include "../../../inc/tmc5160.hpp"
 #include "esp32_tmc5160_bus.hpp"
-#include "esp32_tmc5160_bus_config.hpp"
+#include "esp32_tmc5160_test_config.hpp"
 #include "TestFramework.h"
 #include <memory>
 #include <vector>

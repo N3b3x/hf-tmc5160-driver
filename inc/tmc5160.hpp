@@ -26,7 +26,6 @@
 #include <type_traits>
 
 #include "tmc5160_comm_interface.hpp"
-#include "tmc5160_config.hpp"
 #include "tmc5160_registers.hpp"
 #include "tmc5160_types.hpp"
 

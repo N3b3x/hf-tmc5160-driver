@@ -33,7 +33,7 @@ This example is ideal for:
 
 ## Pin Configuration
 
-Default pin configuration (from `esp32_tmc5160_bus_config.hpp`):
+Default pin configuration (from `esp32_tmc5160_test_config.hpp`):
 
 - **SPI**: MOSI=6, MISO=2, SCLK=5, CS=18
 - **Control**: EN=11
@@ -245,7 +245,7 @@ if (current_time - last_diag_time >= 500) {
 
 - [Motor Configuration Guide](motor_configuration.md) - Motor selection and specifications
 - [Bounds Finding Example](bounds_finding_sinuous_motion.md) - More advanced motion control
-- [Ramp Control Test](ramp_control_comprehensive_test.md) - Detailed ramp control testing
+- [Internal Ramp Comprehensive Test](internal_ramp_comprehensive_test.md) - Comprehensive ramp control and positioning testing
 
 ## Example Output
 

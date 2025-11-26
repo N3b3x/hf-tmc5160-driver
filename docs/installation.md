@@ -38,7 +38,6 @@ inc/
   ├── tmc5160_comm_interface.hpp
   ├── tmc5160_registers.hpp
   ├── tmc5160_types.hpp
-  └── tmc5160_config.hpp
 ```
 
 The driver is header-only (template-based), so no separate source files are needed.

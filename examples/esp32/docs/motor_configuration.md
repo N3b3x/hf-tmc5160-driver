@@ -154,7 +154,7 @@ if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_
 
 ## Motor Configuration Namespaces
 
-Each motor has its own configuration namespace in `esp32_tmc5160_bus_config.hpp`:
+Each motor has its own configuration namespace in `esp32_tmc5160_test_config.hpp`:
 
 - `MotorConfig_17HS4401S` - Geared version
 - `MotorConfig_17HS4401S_Direct` - Direct drive version
@@ -219,7 +219,7 @@ These namespaces contain:
 
 ## See Also
 
-- [esp32_tmc5160_bus_config.hpp](../../main/esp32_tmc5160_bus_config.hpp) - Full configuration definitions
+- [esp32_tmc5160_test_config.hpp](../../main/esp32_tmc5160_test_config.hpp) - Full configuration definitions
 - [Sinusoidal Example](sinusoidal.md) - Example using motor selection
 - [Bounds Finding Example](bounds_finding_sinuous_motion.md) - Example using motor selection
 

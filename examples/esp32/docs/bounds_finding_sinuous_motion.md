@@ -61,7 +61,7 @@ Real-time parameter adjustment via serial commands:
 
 ## Pin Configuration
 
-Default pin configuration (from `esp32_tmc5160_bus_config.hpp`):
+Default pin configuration (from `esp32_tmc5160_test_config.hpp`):
 
 - **SPI**: MOSI=6, MISO=2, SCLK=5, CS=18
 - **Control**: EN=11
@@ -474,8 +474,7 @@ calculated_amax_ = calculated_vmax_ / (leg_time_s / 4.0f);
 
 - [Motor Configuration Guide](motor_configuration.md) - Motor selection
 - [Sinusoidal Example](sinusoidal.md) - Simpler motion example
-- [Diagnostics Test](diagnostics_comprehensive_test.md) - StallGuard2 testing
-- [Ramp Control Test](ramp_control_comprehensive_test.md) - Positioning mode testing
+- [Internal Ramp Comprehensive Test](internal_ramp_comprehensive_test.md) - Comprehensive StallGuard2, ramp control, and positioning testing
 
 ## Example Output
 

@@ -15,7 +15,7 @@ This guide covers all configuration options available for the TMC5160 driver.
 
 ### ESP32 Configuration Hierarchy (Recommended for Examples)
 
-For ESP32 examples, configurations are organized into three layers defined at compile time in `esp32_tmc5160_bus_config.hpp`:
+For ESP32 examples, configurations are organized into three layers defined at compile time in `esp32_tmc5160_test_config.hpp`:
 
 **1. Board Configuration** (`BoardConfig_*` namespaces):
 - **Board-specific**: Hardware parameters that stay the same for the same driver board
@@ -72,10 +72,10 @@ The driver uses a `DriverConfig` structure for initialization. **Current setting
 
 #### Recommended Approach: Using Helper Functions (ESP32 Examples)
 
-For ESP32 examples, use the helper functions from `esp32_tmc5160_bus_config.hpp`:
+For ESP32 examples, use the helper functions from `esp32_tmc5160_test_config.hpp`:
 
 ```cpp
-#include "esp32_tmc5160_bus_config.hpp"
+#include "esp32_tmc5160_test_config.hpp"
 
 // Select motor, board, and platform at compile time
 static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 

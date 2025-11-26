@@ -19,7 +19,6 @@
 
 #include "tmc5160.hpp"
 #include "tmc5160_comm_interface.hpp"
-#include "tmc5160_config.hpp"
 
 namespace tmc5160 {
 
