@@ -1,7 +1,5 @@
 <map id="Esp32SPI::SetPinMapping" name="Esp32SPI::SetPinMapping">
-<area shape="rect" id="Node000001" title="Set pin mapping for a TMC5160 control pin." alt="" coords="240,31,427,56"/>
-<area shape="rect" id="Node000002" href="$gpio__pin__config__example_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="55,5,142,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="226,34,142,25,143,20,227,29"/>
-<area shape="rect" id="Node000003" href="$classEsp32SPI.html#a79ca348b392e0771bce3cf0c476b8845" title="Apply pin configuration structure (handles compound pins automatically)" alt="" coords="5,55,192,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="227,57,193,60,192,55,226,52"/>
+<area shape="rect" id="Node000001" title="Set pin mapping for a TMC5160 control pin." alt="" coords="240,5,427,31"/>
+<area shape="rect" id="Node000002" href="$classEsp32SPI.html#a79ca348b392e0771bce3cf0c476b8845" title="Apply pin configuration structure (handles compound pins automatically)" alt="" coords="5,5,192,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,21,192,21,192,15,227,15"/>
 </map>

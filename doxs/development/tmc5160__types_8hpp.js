@@ -15,6 +15,7 @@ var tmc5160__types_8hpp =
     [ "tmc5160::Diag0Config", "structtmc5160_1_1Diag0Config.html", "structtmc5160_1_1Diag0Config" ],
     [ "tmc5160::Diag1Config", "structtmc5160_1_1Diag1Config.html", "structtmc5160_1_1Diag1Config" ],
     [ "tmc5160::GlobalConfig", "structtmc5160_1_1GlobalConfig.html", "structtmc5160_1_1GlobalConfig" ],
+    [ "tmc5160::DriverConfig", "structtmc5160_1_1DriverConfig.html", "structtmc5160_1_1DriverConfig" ],
     [ "ChipCommMode", "tmc5160__types_8hpp.html#a2e3d563a97d0296b1d7c74bd530c6573", [
       [ "SPI_INTERNAL_RAMP", "tmc5160__types_8hpp.html#a2e3d563a97d0296b1d7c74bd530c6573ade9b62ad581f590543b7355a2958077e", null ],
       [ "SPI_EXTERNAL_STEPDIR", "tmc5160__types_8hpp.html#a2e3d563a97d0296b1d7c74bd530c6573ab967b9681d8b42559306c86608a5601b", null ],
@@ -158,5 +159,9 @@ var tmc5160__types_8hpp =
       [ "Deg", "tmc5160__types_8hpp.html#a7d037d1d81aa1918aada0e039be49e26ab70808dc1e3f9e2c06c9ba840cc7f44c", null ],
       [ "Mm", "tmc5160__types_8hpp.html#a7d037d1d81aa1918aada0e039be49e26a07f07b623b4a00b57dc150ff2e59cb92", null ],
       [ "RPM", "tmc5160__types_8hpp.html#a7d037d1d81aa1918aada0e039be49e26afe2284eb32d4b09d29fd34217324b19a", null ]
-    ] ]
+    ] ],
+    [ "DEFAULT_F_CLK", "tmc5160__types_8hpp.html#a84f52f479e065a6a0fb3abbddea12813", null ],
+    [ "MAX_F_CLK", "tmc5160__types_8hpp.html#ac88522ac32b3f0c1534834d1def6e2a6", null ],
+    [ "MIN_F_CLK", "tmc5160__types_8hpp.html#a575cb444797b07a3999560686b58ee44", null ],
+    [ "USTEP_COUNT", "tmc5160__types_8hpp.html#ac5061f1a2a8687cc56812dd04fe2526c", null ]
 ];

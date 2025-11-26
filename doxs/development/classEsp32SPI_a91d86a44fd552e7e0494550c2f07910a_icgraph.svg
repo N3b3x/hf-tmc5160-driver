@@ -38,7 +38,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="gpio__pin__config__example_8cpp.html#abce06be17fc37d675118a678a8100a36" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="sinusoidal_8cpp.html#abce06be17fc37d675118a678a8100a36" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="65,-19 0,-19 0,0 65,0 65,-19"/>
 <text text-anchor="middle" x="32.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">app_main</text>
 </a>

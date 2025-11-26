@@ -6,7 +6,6 @@ var topics =
     [ "Communication Interfaces", "group__TMC5160__CommInterface.html", null ],
     [ "GPIO Control Interface", "group__TMC5160__GPIOControl.html", null ],
     [ "Type Definitions", "group__TMC5160__CommTypes.html", null ],
-    [ "Configuration Structures", "group__TMC5160__Config.html", null ],
     [ "Daisy-Chain Management", "group__TMC5160__DaisyChain.html", "group__TMC5160__DaisyChain" ],
     [ "Motor Current Calculation", "group__TMC5160__MotorCalc.html", null ],
     [ "Multi-Node Management", "group__TMC5160__MultiNode.html", "group__TMC5160__MultiNode" ],
