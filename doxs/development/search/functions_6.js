@@ -22,7 +22,7 @@ var searchData=
   ['getdwelltimes_19',['GetDwellTimes',['../classFatigueTestMotion.html#a1d8da15caed8d14757161e6a93c02378',1,'FatigueTestMotion']]],
   ['getencoderconfig_20',['GetEncoderConfig',['../structtmc5160_1_1TMC5160_1_1Encoder.html#a7624a3d2e37f02ce2f82dadaa4687008',1,'tmc5160::TMC5160::Encoder::GetEncoderConfig()'],['../namespacetmc5160__test__config.html#ad8bac97c333882ab834132f4daff0860',1,'tmc5160_test_config::GetEncoderConfig() noexcept']]],
   ['getencoderinvertdirection_21',['GetEncoderInvertDirection',['../namespacetmc5160__test__config.html#a9b35a091c0e7adc4d9d7b9e387f5f9f8',1,'tmc5160_test_config']]],
-  ['getencoderpulsesperrev_22',['GetEncoderPulsesPerRev',['../namespacetmc5160__test__config.html#a939425fb50697bb0a749f642198c9151',1,'tmc5160_test_config']]],
+  ['getencoderpulsesperrev_22',['GetEncoderPulsesPerRev',['../namespacetmc5160__test__config.html#ac089e81104ed3907cd6b12c82d9d2367',1,'tmc5160_test_config']]],
   ['getestimatedfrequency_23',['GetEstimatedFrequency',['../classFatigueTestMotion.html#a19ead8c0f95f9a3ef88c084438437d77',1,'FatigueTestMotion']]],
   ['getframe_24',['GetFrame',['../structtmc5160_1_1SpiCommand.html#a7a494940da08740590602ebd1d05f0bd',1,'tmc5160::SpiCommand::GetFrame()'],['../structtmc5160_1_1UartFrame.html#a15d26ea4233a976d6b8b5a7bc0c3fbfd',1,'tmc5160::UartFrame::GetFrame()']]],
   ['getfrequency_25',['GetFrequency',['../classFatigueTestMotion.html#abbbaba6ecf52385510a88ab272065a1a',1,'FatigueTestMotion']]],

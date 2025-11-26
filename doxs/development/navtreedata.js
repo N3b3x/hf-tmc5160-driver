@@ -91,7 +91,7 @@ var NAVTREEINDEX =
 "classtmc5160_1_1SpiCommInterface.html#ab05ee9d4730a81797159444cc8ce3f81",
 "esp32__tmc5160__bus__config_8hpp.html#a5ec830634dcd59ee9a4a11bbcf3b00ed",
 "motor__control__comprehensive__test_8cpp.html#a2600323d32e9fbcfbfda121e6f3c6fe3",
-"namespacetmc5160__test__config.html#aa1ba1c965c14b79db34cf8ff81bf0d59",
+"namespacetmc5160__test__config.html#aa7bdadb434ba27b0d062c2882f3b9e3b",
 "structTestTaskContext.html#aa72faa223fd0ff992772b12458f62ec8",
 "structtmc5160_1_1MechanicalSystem.html#ad3428b94827098f6f759d60a87d78d71",
 "structtmc5160_1_1TMC5160PinConfig.html#a22066a961beb2ab377996d9bdac2e6af",
