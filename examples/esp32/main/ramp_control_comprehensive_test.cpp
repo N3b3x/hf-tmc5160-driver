@@ -213,7 +213,7 @@ bool test_position_control() noexcept {
   handle->driver->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
   
   // Test setting target position
-  if (!handle->driver->rampControl.SetTargetPosition(1000)) {
+  if (!handle->driver->rampControl.SetTargetPosition(1000.0f, tmc5160::Unit::Steps)) {
     ESP_LOGE(TAG, "Failed to set target position");
     return false;
   }
@@ -223,7 +223,7 @@ bool test_position_control() noexcept {
   ESP_LOGI(TAG, "Current position: %ld", current);
   
   // Test setting current position
-  handle->driver->rampControl.SetCurrentPosition(0);
+  handle->driver->rampControl.SetCurrentPosition(0.0f, tmc5160::Unit::Steps);
   current = handle->driver->rampControl.GetCurrentPosition();
   if (current != 0) {
     ESP_LOGW(TAG, "SetCurrentPosition may not have taken effect immediately");
@@ -365,13 +365,13 @@ bool test_unit_conversions() noexcept {
   bool success = true;
   
   // Test setting target position in millimeters
-  if (!handle->driver->rampControl.SetTargetPositionMm(10.0F, STEPS_PER_REV, LEAD_SCREW_PITCH_MM)) {
+  if (!handle->driver->rampControl.SetTargetPosition(10.0F, tmc5160::Unit::Mm)) {
     ESP_LOGE(TAG, "Failed to set target position in mm");
     success = false;
   }
   
   // Test setting max speed in RPM
-  if (!handle->driver->rampControl.SetMaxSpeedRpm(60.0F, STEPS_PER_REV)) {
+  if (!handle->driver->rampControl.SetMaxSpeed(60.0F, tmc5160::Unit::RPM)) {
     ESP_LOGE(TAG, "Failed to set max speed in RPM");
     success = false;
   }
