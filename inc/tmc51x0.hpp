@@ -110,7 +110,7 @@ public:
    * etc.) Only used for SPI daisy-chaining. Default: 0 (single chip)
    * @param uart_node_address UART node address (0-254). Only used for UART multi-node addressing.
    *                          Default: 0 (single node or first node).
-   *                          For sequential programming via TMC5160MultiNode, this is set to 0
+   *                          For sequential programming via TMC51x0MultiNode, this is set to 0
    *                          initially and updated automatically after ProgramSequentially().
    *                          For devices already programmed, specify the known address here.
    *
@@ -122,7 +122,7 @@ public:
    *         if external clock signal is missing for more than ~32 internal clock cycles
    *       - External clock range: 10-16 MHz recommended, up to 18 MHz with 50% duty cycle
    */
-  explicit TMC5160(CommType& comm, uint8_t daisy_chain_position = 0, uint8_t uart_node_address = 0) noexcept
+  explicit TMC51x0(CommType& comm, uint8_t daisy_chain_position = 0, uint8_t uart_node_address = 0) noexcept
       : comm_(comm), daisy_chain_position_(daisy_chain_position),
         uart_node_address_(uart_node_address & 0xFF) {}
 
@@ -1896,7 +1896,7 @@ protected:
 
 private:
   CommType& comm_;                                    ///< Communication interface reference
-  uint32_t f_clk_{ClockFreq::DEFAULT_F_CLK};          ///< TMC5160 clock frequency in Hz
+  uint32_t f_clk_{ClockFreq::DEFAULT_F_CLK};          ///< TMC51x0 clock frequency in Hz
   uint8_t daisy_chain_position_;                      ///< Position in daisy chain (0 = first chip/single chip)
   uint8_t uart_node_address_;                         ///< UART node address (0-254) for multi-node addressing
   uint8_t send_delay_{0};                             ///< UART send delay (0-15) stored locally from SLAVECONF register

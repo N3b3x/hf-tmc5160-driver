@@ -99,13 +99,13 @@ public:
         miso_pin_(static_cast<gpio_num_t>(pin_config.spi_miso)),
         sclk_pin_(static_cast<gpio_num_t>(pin_config.spi_sclk)),
         cs_pin_(static_cast<gpio_num_t>(pin_config.spi_cs)),
-        en_pin_(static_cast<gpio_num_t>(pin_config.tmc5160_pins.en_pin)),
-        dir_pin_(static_cast<gpio_num_t>(pin_config.tmc5160_pins.dir_pin != -1
-                                             ? pin_config.tmc5160_pins.dir_pin
-                                             : pin_config.tmc5160_pins.ref_right_pin)),
-        step_pin_(static_cast<gpio_num_t>(pin_config.tmc5160_pins.step_pin != -1
-                                              ? pin_config.tmc5160_pins.step_pin
-                                              : pin_config.tmc5160_pins.ref_left_pin)),
+        en_pin_(static_cast<gpio_num_t>(pin_config.tmc51x0_pins.en_pin)),
+        dir_pin_(static_cast<gpio_num_t>(pin_config.tmc51x0_pins.dir_pin != -1
+                                             ? pin_config.tmc51x0_pins.dir_pin
+                                             : pin_config.tmc51x0_pins.ref_right_pin)),
+        step_pin_(static_cast<gpio_num_t>(pin_config.tmc51x0_pins.step_pin != -1
+                                              ? pin_config.tmc51x0_pins.step_pin
+                                              : pin_config.tmc51x0_pins.ref_left_pin)),
         clock_speed_hz_(clock_speed_hz), device_handle_(nullptr), initialized_(false) {
     // Initialize pin mapping array (all pins unmapped by default, use -1)
     constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
@@ -114,7 +114,7 @@ public:
     }
 
     // Apply pin configuration (handles compound pins automatically)
-    ApplyPinConfig(pin_config.tmc5160_pins);
+    ApplyPinConfig(pin_config.tmc51x0_pins);
   }
 
 private:

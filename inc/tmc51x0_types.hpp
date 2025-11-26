@@ -1534,19 +1534,6 @@ struct StallGuardTuningResult {
    */
   StallGuardTuningResult() = default;
 };
-   *
-   * @param sensitivity StallGuard2 sensitivity level (enum)
-   * @param enable_filt Enable filter for smoother readings
-   * @param min_vel Minimum velocity for StallGuard2 operation
-   * @param max_vel Maximum velocity for StallGuard2 operation (0 = no limit)
-   * @param vel_unit Unit for velocity thresholds
-   * @param stop_on_stall Stop motor when stall detected
-   */
-  StallGuardConfig(StallGuardSensitivity sensitivity, bool enable_filt = false, float min_vel = 0.0F,
-                   float max_vel = 0.0F, Unit vel_unit = Unit::Steps, bool stop_on_stall = false)
-      : threshold(static_cast<int8_t>(sensitivity)), enable_filter(enable_filt), min_velocity(min_vel),
-        max_velocity(max_vel), velocity_unit(vel_unit), stop_on_stall(stop_on_stall) {}
-};
 
 //===============================================================================================================
 //===============================================================================================================

@@ -411,7 +411,7 @@ extern "C" void app_main() {
 
   // Verify chip is in internal ramp mode (SPI_MODE=HIGH, SD_MODE=LOW)
   // If mode pins are configured, verify they're set correctly
-  if (pin_config.tmc5160_pins.spi_mode_pin != -1 && pin_config.tmc5160_pins.sd_mode_pin != -1) {
+  if (pin_config.tmc51x0_pins.spi_mode_pin != -1 && pin_config.tmc51x0_pins.sd_mode_pin != -1) {
     tmc51x0::ChipCommMode current_mode;
     if (driver.communication.GetOperatingMode(current_mode)) {
       if (current_mode != tmc51x0::ChipCommMode::SPI_INTERNAL_RAMP) {

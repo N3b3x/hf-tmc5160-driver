@@ -147,16 +147,16 @@ inline tmc51x0::Esp32SpiPinConfig GetDefaultPinConfig() noexcept {
   config.spi_cs = static_cast<int>(SPI_CS);
   
   // TMC51x0 control pins
-  config.tmc5160_pins.en_pin = static_cast<int>(DRV_EN);
-  config.tmc5160_pins.clk_pin = static_cast<int>(CLK);
-  config.tmc5160_pins.diag0_pin = static_cast<int>(DIAG0);
-  config.tmc5160_pins.diag1_pin = static_cast<int>(DIAG1);
-  config.tmc5160_pins.dir_pin = static_cast<int>(DIR);
-  config.tmc5160_pins.step_pin = static_cast<int>(STEP);
+  config.tmc51x0_pins.en_pin = static_cast<int>(DRV_EN);
+  config.tmc51x0_pins.clk_pin = static_cast<int>(CLK);
+  config.tmc51x0_pins.diag0_pin = static_cast<int>(DIAG0);
+  config.tmc51x0_pins.diag1_pin = static_cast<int>(DIAG1);
+  config.tmc51x0_pins.dir_pin = static_cast<int>(DIR);
+  config.tmc51x0_pins.step_pin = static_cast<int>(STEP);
   
   // Mode configuration pins (if available as control pins)
-  config.tmc5160_pins.spi_mode_pin = static_cast<int>(SPI_MODE_PIN);
-  config.tmc5160_pins.sd_mode_pin = static_cast<int>(SD_MODE_PIN);
+  config.tmc51x0_pins.spi_mode_pin = static_cast<int>(SPI_MODE_PIN);
+  config.tmc51x0_pins.sd_mode_pin = static_cast<int>(SD_MODE_PIN);
   
   return config;
 }

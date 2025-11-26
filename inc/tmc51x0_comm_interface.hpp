@@ -397,7 +397,7 @@ struct PinActiveLevels {
  * @note Use -1 (or GPIO_NUM_NC equivalent) for pins that are not connected.
  * @note The ApplyPinConfig() method automatically handles compound pin mapping.
  */
-struct TMC5160PinConfig {
+struct TMC51x0PinConfig {
   // Basic control pins
   int en_pin{-1};   ///< EN pin (DRV_ENN, pin 28) - Required
   int dir_pin{-1};  ///< DIR pin (REFR_DIR, pin 18) - Optional, same as ref_right_pin
@@ -435,7 +435,7 @@ struct TMC5160PinConfig {
   /**
    * @brief Default constructor - all pins unmapped (-1)
    */
-  TMC5160PinConfig() = default;
+  TMC51x0PinConfig() = default;
 
   /**
    * @brief Constructor with basic pins
@@ -443,13 +443,13 @@ struct TMC5160PinConfig {
    * @param dir DIR pin (optional, -1 if not used)
    * @param step STEP pin (optional, -1 if not used)
    */
-  TMC5160PinConfig(int en, int dir = -1, int step = -1) noexcept : en_pin(en), dir_pin(dir), step_pin(step) {}
+  TMC51x0PinConfig(int en, int dir = -1, int step = -1) noexcept : en_pin(en), dir_pin(dir), step_pin(step) {}
 };
 
 /**
  * @brief Complete ESP32 SPI bus and TMC5160 pin configuration structure
  *
- * This structure extends TMC5160PinConfig to include SPI bus pins, providing
+ * This structure extends TMC51x0PinConfig to include SPI bus pins, providing
  * a single configuration structure for all GPIO pins used by the ESP32 SPI
  * communication interface.
  *
@@ -466,8 +466,8 @@ struct Esp32SpiPinConfig {
   int spi_sclk{-1}; ///< SPI clock pin (SCLK)
   int spi_cs{-1};   ///< SPI chip select pin (CS)
 
-  // TMC5160 control pins (from TMC5160PinConfig)
-  TMC5160PinConfig tmc5160_pins; ///< TMC5160 control pin configuration
+  // TMC51x0 control pins (from TMC51x0PinConfig)
+  TMC51x0PinConfig tmc51x0_pins; ///< TMC51x0 control pin configuration
 
   /**
    * @brief Default constructor - all pins unmapped (-1)
@@ -485,7 +485,7 @@ struct Esp32SpiPinConfig {
    * @param step TMC5160 STEP pin (optional, -1 if not used)
    */
   Esp32SpiPinConfig(int mosi, int miso, int sclk, int cs, int en, int dir = -1, int step = -1) noexcept
-      : spi_mosi(mosi), spi_miso(miso), spi_sclk(sclk), spi_cs(cs), tmc5160_pins(en, dir, step) {}
+      : spi_mosi(mosi), spi_miso(miso), spi_sclk(sclk), spi_cs(cs), tmc51x0_pins(en, dir, step) {}
 
   /**
    * @brief Constructor with SPI pins and full TMC5160 pin config
@@ -495,8 +495,8 @@ struct Esp32SpiPinConfig {
    * @param cs SPI chip select pin
    * @param tmc_pins TMC5160 pin configuration structure
    */
-  Esp32SpiPinConfig(int mosi, int miso, int sclk, int cs, const TMC5160PinConfig& tmc_pins) noexcept
-      : spi_mosi(mosi), spi_miso(miso), spi_sclk(sclk), spi_cs(cs), tmc5160_pins(tmc_pins) {}
+  Esp32SpiPinConfig(int mosi, int miso, int sclk, int cs, const TMC51x0PinConfig& tmc_pins) noexcept
+      : spi_mosi(mosi), spi_miso(miso), spi_sclk(sclk), spi_cs(cs), tmc51x0_pins(tmc_pins) {}
 };
 
 /**
@@ -1240,7 +1240,7 @@ public:
    * @param format printf-style format string
    * @param ... Variable arguments for format string
    */
-#ifndef TMC5160_DISABLE_DEBUG_LOGGING
+#ifndef TMC51X0_DISABLE_DEBUG_LOGGING
   void LogDebug(int level, const char* tag, const char* format, ...) noexcept {
     va_list args{};  // va_start will properly initialize this
     va_start(args, format);
@@ -1553,7 +1553,7 @@ public:
     cmd.GetFrame(tx_buf.data());
     // Rest is padding (zeros) - already initialized to 0
 
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+    TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
                       "AutoDetectChainLength: Probing up to %u devices, transfer_bytes=%zu, "
                       "cmd_pattern=%02X %02X %02X %02X %02X",
                       max_devices, transfer_bytes, cmd_bytes[0], cmd_bytes[1], cmd_bytes[2], cmd_bytes[3],
@@ -1561,7 +1561,7 @@ public:
 
     // Perform SPI transfer
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI", "AutoDetectChainLength: SPI transfer failed");
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI", "AutoDetectChainLength: SPI transfer failed");
       return 0;
     }
 
@@ -1593,7 +1593,7 @@ public:
         if (exact_match) {
           // Found our exact command pattern! This confirms it looped back after n devices
           detected_length = n;
-          TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
+          TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI",
                             "AutoDetectChainLength: Found EXACT command pattern match at offset "
                             "%zu (expected for n=%u), chain length = %u",
                             loopback_offset, n, detected_length);
@@ -1604,9 +1604,9 @@ public:
 
     // If exact match failed, log debug info to help diagnose
     if (detected_length == 0) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "AutoDetectChainLength: Exact command pattern not found in received data");
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                         "AutoDetectChainLength: Expected pattern: %02X %02X %02X %02X %02X", cmd_bytes[0], cmd_bytes[1],
                         cmd_bytes[2], cmd_bytes[3], cmd_bytes[4]);
 
@@ -1614,7 +1614,7 @@ public:
       for (uint8_t n = 1; n <= 3 && n <= max_devices; ++n) {
         size_t loopback_offset = static_cast<size_t>(n) * 5;
         if (loopback_offset + 4 < rx_buf.size()) {
-          TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
+          TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                             "AutoDetectChainLength: At offset %zu (n=%u): %02X %02X %02X %02X %02X", loopback_offset, n,
                             rx_buf[loopback_offset], rx_buf[loopback_offset + 1], rx_buf[loopback_offset + 2],
                             rx_buf[loopback_offset + 3], rx_buf[loopback_offset + 4]);
@@ -1625,14 +1625,14 @@ public:
     // If we detected a length, set it (but don't overwrite user-specified value yet)
     // The caller will handle verification and update
     if (detected_length > 0) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI", "AutoDetectChainLength: Detected chain length = %u",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI", "AutoDetectChainLength: Detected chain length = %u",
                         detected_length);
       // Only update if not user-specified, or if user-specified value matches
       if (user_specified_chain_length_ == 0 || user_specified_chain_length_ == detected_length) {
         total_chain_length_ = detected_length;
       }
     } else {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "AutoDetectChainLength: Command pattern not found, assuming single chip");
       // Don't reset total_chain_length_ if it was already set (e.g., to 1 for single-chip mode)
       // Only reset if it was 0 and user hasn't specified a length
@@ -1722,10 +1722,10 @@ public:
   bool ReadRegister(uint8_t address, uint32_t& value, uint8_t daisy_chain_position = 0) noexcept {
     // Log function call with arguments (level 3 = DEBUG, only shows at DEBUG log level)
     if (daisy_chain_position > 0) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI", "ReadRegister(0x%02X, daisy_chain=%u)", address,
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI", "ReadRegister(0x%02X, daisy_chain=%u)", address,
                         daisy_chain_position);
     } else {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI", "ReadRegister(0x%02X)", address);
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI", "ReadRegister(0x%02X)", address);
     }
 
     // CRITICAL: Chain length MUST be known for correct response extraction
@@ -1741,7 +1741,7 @@ public:
     // If daisy_chain_position > 0, total_chain_length_ must be > 0 (detected or set)
     // If daisy_chain_position == 0, total_chain_length_ should be 1 (single chip)
     if (daisy_chain_position > 0 && total_chain_length_ == 0) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "ReadRegister: Chain length unknown for daisy_chain_position=%u. "
                         "Cannot proceed without chain length.",
                         daisy_chain_position);
@@ -1759,7 +1759,7 @@ public:
 
     // Validate: k must be < n (device position must be less than total chain length)
     if (k >= n) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "ReadRegister: Invalid daisy_chain_position=%u for chain length=%u. "
                         "Position must be < chain length.",
                         k, n);
@@ -1776,7 +1776,7 @@ public:
 
     // Validate transfer size meets receiving requirement
     if (transfer_bytes < receiving_bytes) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "ReadRegister: Transfer size %zu bytes < receiving requirement %zu bytes. "
                         "Response extraction may fail.",
                         transfer_bytes, receiving_bytes);
@@ -1785,7 +1785,7 @@ public:
 
     // Validate response offset is within buffer bounds
     if (response_byte_offset + 4 >= transfer_bytes) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "ReadRegister: Response offset %zu + 4 >= transfer size %zu. "
                         "Cannot read full 5-byte response.",
                         response_byte_offset, transfer_bytes);
@@ -1811,7 +1811,7 @@ public:
 
     // Log [TX1]/RX1 after first transfer
     // Show "=0x00000000" for reads to align with Write format (read command has no data, all zeros)
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
+    TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                       "Read 0x%02X=0x00000000: [TX1] %02X %02X %02X %02X %02X / RX1 %02X %02X %02X %02X %02X", address,
                       tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4], rx_buf[response_byte_offset],
                       (response_byte_offset + 1 < rx_buf.size()) ? rx_buf[response_byte_offset + 1] : 0,
@@ -1843,7 +1843,7 @@ public:
     // Actually: align "TX2" label with "[TX1]" label, then bytes naturally align
     // "Read 0xXX=0x00000000: [TX1] " = 31, bytes at 31
     // "Read 0xXX=0x00000000:      TX2 " = 31 (25 + 6), bytes at 31 ✓
-    TMC5160_LOG_DEBUG(
+    TMC51X0_LOG_DEBUG(
         *static_cast<Derived*>(this), 3, "SPI",
         "Read 0x%02X:             TX2 %02X %02X %02X %02X %02X / [RX2] %02X %02X %02X %02X %02X (STATUS=0x%02X)",
         address, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4], rx_buf[response_byte_offset],
@@ -1855,7 +1855,7 @@ public:
 
     // Log status bit breakdown with arrow pointing to STATUS byte
     // Calculate position: "Read 0xXX:            TX2 XX XX XX XX XX / [RX2] " = ~60 chars, then STATUS byte at ~68
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
+    TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                       "                                                   └─> %s", status_bits.c_str());
 
     // Extract response data based on daisy-chain position
@@ -1869,7 +1869,7 @@ public:
     // For daisy-chaining, this is at the calculated offset
     // (status was already extracted above for logging)
     if (response_byte_offset >= rx_buf.size()) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "Read register 0x%02X: Response offset %zu exceeds buffer size %zu", address,
                         response_byte_offset, rx_buf.size());
       return false;
@@ -1891,12 +1891,12 @@ public:
                  status.StopLeft() ? "STOP_L " : "", status.StopRight() ? "STOP_R " : "");
       }
 
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI", "Read 0x%02X: STATUS=0x%02X ERROR=%s%s", address,
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI", "Read 0x%02X: STATUS=0x%02X ERROR=%s%s", address,
                         status.value, error_flags, info_flags);
     } else {
       // Log response bytes (first 8 or all if less)
       size_t log_rx_bytes = (rx_buf.size() < 8) ? rx_buf.size() : 8;
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                         "Read register 0x%02X: RX[0..%zu] %02X %02X %02X %02X %02X %02X %02X %02X "
                         "| SPI_STATUS=0x%02X [%s%s%s%s%s%s%s%s]",
                         address, log_rx_bytes - 1, rx_buf[0], (log_rx_bytes > 1) ? rx_buf[1] : 0,
@@ -1913,7 +1913,7 @@ public:
     // Byte (response_byte_offset+0) contains SPI_STATUS (bits 39-32)
     // Bytes (response_byte_offset+1) to (response_byte_offset+4) contain data (bits 31-0)
     if (response_byte_offset + 4 >= rx_buf.size()) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "Read register 0x%02X: Data offset %zu+4 exceeds buffer size %zu", address,
                         response_byte_offset, rx_buf.size());
       return false;
@@ -1969,10 +1969,10 @@ public:
   bool WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept {
     // Log function call with arguments (level 3 = DEBUG, only shows at DEBUG log level)
     if (daisy_chain_position > 0) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI", "WriteRegister(0x%02X=0x%08X, daisy_chain=%u)", address,
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI", "WriteRegister(0x%02X=0x%08X, daisy_chain=%u)", address,
                         value, daisy_chain_position);
     } else {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI", "WriteRegister(0x%02X=0x%08X)", address, value);
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI", "WriteRegister(0x%02X=0x%08X)", address, value);
     }
 
     // CRITICAL: Chain length MUST be known for correct response extraction
@@ -1988,7 +1988,7 @@ public:
     // If daisy_chain_position > 0, total_chain_length_ must be > 0 (detected or set)
     // If daisy_chain_position == 0, total_chain_length_ should be 1 (single chip)
     if (daisy_chain_position > 0 && total_chain_length_ == 0) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "WriteRegister: Chain length unknown for daisy_chain_position=%u. "
                         "Cannot proceed without chain length.",
                         daisy_chain_position);
@@ -2007,7 +2007,7 @@ public:
 
     // Validate: k must be < n (device position must be less than total chain length)
     if (k >= n) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "WriteRegister: Invalid daisy_chain_position=%u for chain length=%u. "
                         "Position must be < chain length.",
                         k, n);
@@ -2024,7 +2024,7 @@ public:
 
     // Validate transfer size meets receiving requirement
     if (transfer_bytes < receiving_bytes) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "WriteRegister: Transfer size %zu bytes < receiving requirement %zu bytes. "
                         "Response extraction may fail.",
                         transfer_bytes, receiving_bytes);
@@ -2033,7 +2033,7 @@ public:
 
     // Validate response offset is within buffer bounds
     if (response_byte_offset + 4 >= transfer_bytes) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "WriteRegister: Response offset %zu + 4 >= transfer size %zu. "
                         "Cannot read full 5-byte response.",
                         response_byte_offset, transfer_bytes);
@@ -2058,7 +2058,7 @@ public:
     }
 
     // Log [TX1]/RX1 after first transfer
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
+    TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                       "Write 0x%02X=0x%08X: [TX1] %02X %02X %02X %02X %02X / RX1 %02X %02X %02X %02X %02X", address,
                       value, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4], rx_buf[response_byte_offset],
                       (response_byte_offset + 1 < rx_buf.size()) ? rx_buf[response_byte_offset + 1] : 0,
@@ -2073,7 +2073,7 @@ public:
     // - If total_chain_length_ == 0: Use simplified approach, response at k*5 bytes (end of
     // transfer)
     if (response_byte_offset >= rx_buf.size()) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "Write register 0x%02X: Response offset %zu exceeds buffer size %zu", address,
                         response_byte_offset, rx_buf.size());
       return false;
@@ -2098,12 +2098,12 @@ public:
                  status1.StopLeft() ? "STOP_L " : "", status1.StopRight() ? "STOP_R " : "");
       }
 
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI", "Write 0x%02X (TX1): STATUS=0x%02X ERROR=%s%s", address,
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI", "Write 0x%02X (TX1): STATUS=0x%02X ERROR=%s%s", address,
                         status1.value, error_flags, info_flags);
     } else {
       // Log response bytes (first 8 or all if less)
       size_t log_rx1_bytes = (rx_buf.size() < 8) ? rx_buf.size() : 8;
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                         "Write register 0x%02X (TX1): RX[0..%zu] %02X %02X %02X %02X %02X %02X %02X %02X | "
                         "SPI_STATUS=0x%02X [%s%s%s%s%s%s%s%s]",
                         address, log_rx1_bytes - 1, rx_buf[0], (log_rx1_bytes > 1) ? rx_buf[1] : 0,
@@ -2145,7 +2145,7 @@ public:
     // Actually simpler: align "TX2" label with "[TX1]" label, then bytes naturally align
     // "Write 0xXX=0xXXXXXXXX: [TX1] " = 31, bytes at 31
     // "Write 0xXX:            TX2 " = 31 (13 + 18), bytes at 31 ✓
-    TMC5160_LOG_DEBUG(
+    TMC51X0_LOG_DEBUG(
         *static_cast<Derived*>(this), 3, "SPI",
         "Write 0x%02X:             TX2 %02X %02X %02X %02X %02X / [RX2] %02X %02X %02X %02X %02X (STATUS=0x%02X)",
         address, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4], rx_buf[response_byte_offset],
@@ -2156,12 +2156,12 @@ public:
         rx_buf[response_byte_offset]);
 
     // Log status bit breakdown with arrow pointing to STATUS byte
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
+    TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                       "                                                   └─> %s", status2_bits.c_str());
 
     // Validate response offset (status2 was already extracted above for logging)
     if (response_byte_offset >= rx_buf.size()) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "Write register 0x%02X (TX2): Response offset %zu exceeds buffer size %zu", address,
                         response_byte_offset, rx_buf.size());
       return false;
@@ -2183,12 +2183,12 @@ public:
                  status2.StopLeft() ? "STOP_L " : "", status2.StopRight() ? "STOP_R " : "");
       }
 
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI", "Write 0x%02X (TX2): STATUS=0x%02X ERROR=%s%s", address,
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI", "Write 0x%02X (TX2): STATUS=0x%02X ERROR=%s%s", address,
                         status2.value, error_flags, info_flags);
     } else {
       // Log response bytes (first 8 or all if less)
       size_t log_rx2_bytes = (rx_buf.size() < 8) ? rx_buf.size() : 8;
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                         "Write register 0x%02X (TX2): RX[0..%zu] %02X %02X %02X %02X %02X %02X %02X %02X | "
                         "SPI_STATUS=0x%02X [%s%s%s%s%s%s%s%s]",
                         address, log_rx2_bytes - 1, rx_buf[0], (log_rx2_bytes > 1) ? rx_buf[1] : 0,
@@ -2211,12 +2211,12 @@ public:
                                 static_cast<uint32_t>(rx_buf[response_byte_offset + 4]);
 
       if (returned_value != value) {
-        TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+        TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                           "WriteRegister(0x%02X): Write verification failed - wrote 0x%08X, got back 0x%08X", address,
                           value, returned_value);
         // Don't fail the write operation, but log the mismatch for debugging
       } else {
-        TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
+        TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
                           "WriteRegister(0x%02X): Write verification passed - wrote 0x%08X, got back 0x%08X", address,
                           value, returned_value);
       }
@@ -2284,7 +2284,7 @@ private:
       uint8_t detected_length = AutoDetectChainLength(8); // Probe up to 8 devices
       if (detected_length == 0) {
         // Detection failed - cannot proceed without chain length
-        TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+        TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                           "%s: Auto-detection failed, but daisy_chain_position=%u > 0. "
                           "Chain length is required for correct response extraction. Operation failed.",
                           context, daisy_chain_position);
@@ -2305,7 +2305,7 @@ private:
       // User specified a chain length, verify it matches detected length
       uint8_t detected_length = AutoDetectChainLength(8);
       if (detected_length > 0 && detected_length != user_specified_chain_length_) {
-        TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+        TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                           "%s: DAISY CHAIN LENGTH MISMATCH! "
                           "User specified: %u, Auto-detected: %u. "
                           "Response extraction will be incorrect. "
@@ -2318,7 +2318,7 @@ private:
       } else if (detected_length > 0) {
         // Match confirmed
         chain_length_verified_ = true;
-        TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI", "%s: Chain length verified: %u devices", context,
+        TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 2, "SPI", "%s: Chain length verified: %u devices", context,
                           detected_length);
       }
     } else if (!chain_length_verified_ && total_chain_length_ > 0) {
@@ -2332,7 +2332,7 @@ private:
         // Multi-chip mode - verify chain length
         uint8_t detected_length = AutoDetectChainLength(8);
         if (detected_length > 0 && detected_length != total_chain_length_) {
-          TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
+          TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                             "%s: DAISY CHAIN LENGTH MISMATCH! "
                             "Specified: %u, Auto-detected: %u. "
                             "Updating to detected length.",
@@ -2543,7 +2543,7 @@ public:
     read_request.GetFrame(tx_buf.data());
     size_t tx_size = read_request.GetSize(); // 4 bytes
 
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "UART",
+    TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "UART",
                       "Read register 0x%02X (NodeAddr=0x%02X): TX %02X %02X %02X %02X", address, node_addr, tx_buf[0],
                       tx_buf[1], tx_buf[2], tx_buf[3]);
 
@@ -2560,19 +2560,19 @@ public:
     // Parse read reply using UartFrame structure
     UartFrame read_reply = UartFrame::ReadReply(rx_buf.data());
 
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "UART",
+    TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "UART",
                       "Read register 0x%02X: RX %02X %02X %02X %02X %02X %02X %02X %02X", address, rx_buf[0], rx_buf[1],
                       rx_buf[2], rx_buf[3], rx_buf[4], rx_buf[5], rx_buf[6], rx_buf[7]);
 
     // Verify CRC8 and frame validity
     if (!read_reply.VerifyCrc()) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "UART", "Read register 0x%02X: CRC8 verification failed",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "UART", "Read register 0x%02X: CRC8 verification failed",
                         address);
       return false;
     }
 
     if (!read_reply.IsValid()) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "UART", "Read register 0x%02X: Invalid frame structure",
+      TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "UART", "Read register 0x%02X: Invalid frame structure",
                         address);
       return false;
     }
@@ -2600,7 +2600,7 @@ public:
     write_frame.GetFrame(tx_buf.data());
     size_t tx_size = write_frame.GetSize(); // 8 bytes
 
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "UART",
+    TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "UART",
                       "Write register 0x%02X = 0x%08X (NodeAddr=0x%02X): TX %02X %02X %02X %02X "
                       "%02X %02X %02X %02X",
                       address, value, node_addr, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4], tx_buf[5],

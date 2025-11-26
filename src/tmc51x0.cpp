@@ -2929,12 +2929,25 @@ bool TMC51x0<CommType>::Homing::CacheCurrentSettings() noexcept {
   
   uint32_t amax_val = 0;
   if (driver_.comm_.ReadRegister(Registers::AMAX, amax_val)) {
-    cache_.cached_acceleration = driver_.accelFromInternal(static_cast<int32_t>(amax_val));
+    // Convert from internal units (Hz) to steps/s²
+    // Internal: accel = (2^24) / (256 * accel_internal)
+    // Reverse: accel_internal = (2^24) / (256 * accel)
+    // So: accel = (2^24) / (256 * accel_internal)
+    if (amax_val > 0) {
+      cache_.cached_acceleration = static_cast<float>(16777216.0 / (256.0 * static_cast<double>(amax_val)));
+    } else {
+      cache_.cached_acceleration = 0.0f;
+    }
   }
   
   uint32_t dmax_val = 0;
   if (driver_.comm_.ReadRegister(Registers::DMAX, dmax_val)) {
-    cache_.cached_deceleration = driver_.accelFromInternal(static_cast<int32_t>(dmax_val));
+    // Convert from internal units (Hz) to steps/s²
+    if (dmax_val > 0) {
+      cache_.cached_deceleration = static_cast<float>(16777216.0 / (256.0 * static_cast<double>(dmax_val)));
+    } else {
+      cache_.cached_deceleration = 0.0f;
+    }
   }
   
   uint32_t vstart_val = 0;
@@ -3806,7 +3819,7 @@ bool TestVelocityWithSGT(TMC51x0<CommType>& driver, float velocity_steps, int8_t
   if (!driver.diagnostics.ConfigureStallGuard(sg_config)) {
     return false;
   }
-  driver.comm_.DelayMs(10);
+  driver.GetComm().DelayMs(10);
 
   // Set velocity
   if (!driver.rampControl.SetMaxSpeed(velocity_steps, Unit::Steps)) {
@@ -3820,7 +3833,7 @@ bool TestVelocityWithSGT(TMC51x0<CommType>& driver, float velocity_steps, int8_t
         std::abs(current_speed - velocity_steps) < 50.0f) {
       break;
     }
-    driver.comm_.DelayMs(10);
+    driver.GetComm().DelayMs(10);
   }
 
   // Sample SG_RESULT
@@ -3838,7 +3851,7 @@ bool TestVelocityWithSGT(TMC51x0<CommType>& driver, float velocity_steps, int8_t
       sg_sum += sg_val;
       sg_count++;
     }
-    driver.comm_.DelayMs(5);
+    driver.GetComm().DelayMs(5);
   }
 
   if (stall_detected) {
@@ -4343,9 +4356,9 @@ void TMC51x0<CommType>::Printer::PrintChopconf() noexcept {
   
   TMC51X0_LOG_DEBUG(driver_.comm_, 2, "Printer", "CHOPCONF Register: 0x%08X", chopconf.value);
   PrintRegisterField("toff", chopconf.bits.toff, "%u");
-  PrintRegisterField("hstrt", chopconf.bits.hstrt, "%u");
-  PrintRegisterField("hend", chopconf.bits.hend, "%u");
-  PrintRegisterField("fd3", chopconf.bits.fd3, "%u");
+  PrintRegisterField("hstrt_tfd", chopconf.bits.hstrt_tfd, "%u");
+  PrintRegisterField("hend_offset", chopconf.bits.hend_offset, "%u");
+  PrintRegisterField("tfd_3", chopconf.bits.tfd_3, "%u");
   PrintRegisterField("disfdcc", chopconf.bits.disfdcc, "%u");
   PrintRegisterField("chm", chopconf.bits.chm, "%u");
   PrintRegisterField("tbl", chopconf.bits.tbl, "%u");
@@ -4353,8 +4366,8 @@ void TMC51x0<CommType>::Printer::PrintChopconf() noexcept {
   PrintRegisterField("vhighchm", chopconf.bits.vhighchm, "%u");
   PrintRegisterField("tpfd", chopconf.bits.tpfd, "%u");
   PrintRegisterField("mres", chopconf.bits.mres, "%u");
-  PrintRegisterField("interpolate", chopconf.bits.interpolate, "%u");
-  PrintRegisterField("double_edge", chopconf.bits.double_edge, "%u");
+  PrintRegisterField("intpol", chopconf.bits.intpol, "%u");
+  PrintRegisterField("dedge", chopconf.bits.dedge, "%u");
   PrintRegisterField("diss2g", chopconf.bits.diss2g, "%u");
   PrintRegisterField("diss2vs", chopconf.bits.diss2vs, "%u");
 }
@@ -4371,11 +4384,11 @@ void TMC51x0<CommType>::Printer::PrintPwmconf() noexcept {
   pwmconf.value = value;
   
   TMC51X0_LOG_DEBUG(driver_.comm_, 2, "Printer", "PWMCONF Register: 0x%08X", pwmconf.value);
-  PrintRegisterField("pwm_ampl", pwmconf.bits.pwm_ampl, "%u");
+  PrintRegisterField("pwm_ofs", pwmconf.bits.pwm_ofs, "%u");
   PrintRegisterField("pwm_grad", pwmconf.bits.pwm_grad, "%u");
   PrintRegisterField("pwm_freq", pwmconf.bits.pwm_freq, "%u");
   PrintRegisterField("pwm_autoscale", pwmconf.bits.pwm_autoscale, "%u");
-  PrintRegisterField("pwm_symmetric", pwmconf.bits.pwm_symmetric, "%u");
+  PrintRegisterField("pwm_autograd", pwmconf.bits.pwm_autograd, "%u");
   PrintRegisterField("freewheel", pwmconf.bits.freewheel, "%u");
 }
 
@@ -4392,7 +4405,7 @@ void TMC51x0<CommType>::Printer::PrintPwmScale() noexcept {
   
   TMC51X0_LOG_DEBUG(driver_.comm_, 2, "Printer", "PWM_SCALE Register: 0x%08X", pwm_scale.value);
   PrintRegisterField("pwm_scale_sum", pwm_scale.bits.pwm_scale_sum, "%u");
-  PrintRegisterField("pwm_scale_autoscale", pwm_scale.bits.pwm_scale_autoscale, "%u");
+  PrintRegisterField("pwm_scale_auto", pwm_scale.bits.pwm_scale_auto, "%d");
 }
 
 template <typename CommType>
@@ -4424,7 +4437,7 @@ void TMC51x0<CommType>::Printer::PrintSwMode() noexcept {
 template <typename CommType>
 void TMC51x0<CommType>::Printer::PrintIoin() noexcept {
   uint32_t value = 0;
-  if (!driver_.comm_.ReadRegister(Registers::IOIN, value)) {
+  if (!driver_.comm_.ReadRegister(Registers::IO_INPUT_OUTPUT, value)) {
     TMC51X0_LOG_DEBUG(driver_.comm_, 0, "Printer", "Error reading IOIN");
     return;
   }
@@ -4434,11 +4447,11 @@ void TMC51x0<CommType>::Printer::PrintIoin() noexcept {
   
   TMC51X0_LOG_DEBUG(driver_.comm_, 2, "Printer", "IOIN Register: 0x%08X", ioin.value);
   PrintRegisterField("refl_step", ioin.bits.refl_step, "%u");
-  PrintRegisterField("refr_step", ioin.bits.refr_step, "%u");
+  PrintRegisterField("refr_dir", ioin.bits.refr_dir, "%u");
   PrintRegisterField("encb_dcen_cfg4", ioin.bits.encb_dcen_cfg4, "%u");
   PrintRegisterField("enca_dcin_cfg5", ioin.bits.enca_dcin_cfg5, "%u");
-  PrintRegisterField("drv_enn_cfg6", ioin.bits.drv_enn_cfg6, "%u");
-  PrintRegisterField("enc_n_dco_cfg7", ioin.bits.enc_n_dco_cfg7, "%u");
+  PrintRegisterField("drv_enn", ioin.bits.drv_enn, "%u");
+  PrintRegisterField("enc_n_dco_cfg6", ioin.bits.enc_n_dco_cfg6, "%u");
   PrintRegisterField("sd_mode", ioin.bits.sd_mode, "%u");
   PrintRegisterField("swcomp_in", ioin.bits.swcomp_in, "%u");
   PrintRegisterField("version", ioin.bits.version, "0x%02X");

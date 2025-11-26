@@ -1161,7 +1161,7 @@ bool test_reference_switch_configuration() noexcept {
   ESP_LOGI(TAG, "Testing PerformSwitchHoming API (expect timeout)...");
   int32_t final_pos = 0;
   // Use short timeout for test
-  bool result = handle->driver->diagnostics.PerformSwitchHoming(true, 
+  bool result = handle->driver->homing.PerformSwitchHoming(true, 
                                                                 Test::Motion::HOMING_SEARCH_SPEED, 
                                                                 Test::Motion::HOMING_SWITCH_SPEED, 
                                                                 final_pos, true, 100);
