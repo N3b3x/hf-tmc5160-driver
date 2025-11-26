@@ -20,7 +20,7 @@ var esp32__tmc5160__bus__config_8hpp =
     [ "GetDefaultPinConfig", "esp32__tmc5160__bus__config_8hpp.html#aa0c20662463e4685d1011a24ff3a576e", null ],
     [ "GetEncoderConfig", "esp32__tmc5160__bus__config_8hpp.html#ad8bac97c333882ab834132f4daff0860", null ],
     [ "GetEncoderInvertDirection", "esp32__tmc5160__bus__config_8hpp.html#a9b35a091c0e7adc4d9d7b9e387f5f9f8", null ],
-    [ "GetEncoderPulsesPerRev", "esp32__tmc5160__bus__config_8hpp.html#a939425fb50697bb0a749f642198c9151", null ],
+    [ "GetEncoderPulsesPerRev", "esp32__tmc5160__bus__config_8hpp.html#ac089e81104ed3907cd6b12c82d9d2367", null ],
     [ "GetReferenceSwitchConfig", "esp32__tmc5160__bus__config_8hpp.html#aa1ba1c965c14b79db34cf8ff81bf0d59", null ],
     [ "BBM_CLKS", "esp32__tmc5160__bus__config_8hpp.html#a7560924a75cb428d13944cd2c60fedd4", null ],
     [ "BBM_TIME", "esp32__tmc5160__bus__config_8hpp.html#aac1ce27502a6276c498bb93595ca90d3", null ],

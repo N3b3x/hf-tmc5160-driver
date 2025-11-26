@@ -408,7 +408,7 @@ bool test_open_load() noexcept {
   // Move motor at low velocity (minimum 4× microstep resolution = 1024 steps)
   ESP_LOGI(TAG, "Moving motor for open load detection test");
   handle->driver->rampControl.SetMaxSpeed(500.0f, tmc5160::Unit::Steps);
-  handle->driver->rampControl.SetTargetPosition(1024);  // 4× microstep resolution
+  handle->driver->rampControl.SetTargetPosition(1024.0f, tmc5160::Unit::Steps);  // 4× microstep resolution
   
   // Check for open load during motion
   bool open_load_detected = false;

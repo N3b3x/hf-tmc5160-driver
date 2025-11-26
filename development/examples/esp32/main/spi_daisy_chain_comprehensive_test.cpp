@@ -247,7 +247,7 @@ bool test_multi_motor_coordination() noexcept {
   // Configure ramp control for each motor
   for (size_t i = 0; i < handle->drivers.size(); ++i) {
     handle->drivers[i]->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    handle->drivers[i]->rampControl.SetTargetPosition(1000 * (i + 1));
+    handle->drivers[i]->rampControl.SetTargetPosition(static_cast<float>(1000 * (i + 1)), tmc5160::Unit::Steps);
     handle->drivers[i]->rampControl.SetMaxSpeed(1000.0F);
     handle->drivers[i]->rampControl.SetAcceleration(500.0F);
   }

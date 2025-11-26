@@ -109,7 +109,7 @@ var namespacetmc5160__test__config =
     [ "GetDefaultPinConfig", "namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e", null ],
     [ "GetEncoderConfig", "namespacetmc5160__test__config.html#ad8bac97c333882ab834132f4daff0860", null ],
     [ "GetEncoderInvertDirection", "namespacetmc5160__test__config.html#a9b35a091c0e7adc4d9d7b9e387f5f9f8", null ],
-    [ "GetEncoderPulsesPerRev", "namespacetmc5160__test__config.html#a939425fb50697bb0a749f642198c9151", null ],
+    [ "GetEncoderPulsesPerRev", "namespacetmc5160__test__config.html#ac089e81104ed3907cd6b12c82d9d2367", null ],
     [ "GetReferenceSwitchConfig", "namespacetmc5160__test__config.html#aa1ba1c965c14b79db34cf8ff81bf0d59", null ],
     [ "CLK", "namespacetmc5160__test__config.html#af6235a4b8050a0d25ece7fc562d8ea8e", null ],
     [ "DIAG0", "namespacetmc5160__test__config.html#a69b7a4d671da170403ae255cb5fc9ba6", null ],

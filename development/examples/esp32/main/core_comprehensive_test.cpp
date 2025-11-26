@@ -412,7 +412,7 @@ bool test_ramp_parameter_settings() noexcept {
   
   // Test setting target position
   constexpr int32_t TEST_TARGET = 10000;
-  handle->driver->rampControl.SetTargetPosition(TEST_TARGET);
+  handle->driver->rampControl.SetTargetPosition(static_cast<float>(TEST_TARGET), tmc5160::Unit::Steps);
   
   int32_t current_pos = handle->driver->rampControl.GetCurrentPosition();
   ESP_LOGI(TAG, "Target position set to %ld, current position: %ld", TEST_TARGET, current_pos);

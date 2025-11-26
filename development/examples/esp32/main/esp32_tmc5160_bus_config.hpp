@@ -944,7 +944,7 @@ inline tmc5160::EncoderConfig GetEncoderConfig() noexcept {
  * @return Encoder pulses per revolution
  */
 template<PlatformType platform_type>
-inline uint16_t GetEncoderPulsesPerRev() noexcept {
+constexpr uint16_t GetEncoderPulsesPerRev() noexcept {
     if constexpr (platform_type == PlatformType::PLATFORM_TEST_RIG) {
         return PlatformConfig_TestRig::Encoder::PULSES_PER_REV;
     }
