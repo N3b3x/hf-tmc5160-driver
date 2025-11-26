@@ -126,7 +126,7 @@ public:
     // Start by moving forward (positive direction)
     moving_forward_ = true;
     target_position_ = center_position_ + travel_distance_;
-    driver_->rampControl.SetTargetPosition(target_position_);
+    driver_->rampControl.SetTargetPosition(static_cast<float>(target_position_), tmc5160::Unit::Steps);
     
     initialized_ = true;
     cycles_completed_ = 0;
@@ -157,13 +157,13 @@ public:
         // Just finished moving forward, now move backward
         moving_forward_ = false;
         target_position_ = center_position_ - travel_distance_;
-        driver_->rampControl.SetTargetPosition(target_position_);
+        driver_->rampControl.SetTargetPosition(static_cast<float>(target_position_), tmc5160::Unit::Steps);
         ESP_LOGI(TAG, "Reached forward end, reversing to position %ld", target_position_);
       } else {
         // Just finished moving backward, now move forward
         moving_forward_ = true;
         target_position_ = center_position_ + travel_distance_;
-        driver_->rampControl.SetTargetPosition(target_position_);
+        driver_->rampControl.SetTargetPosition(static_cast<float>(target_position_), tmc5160::Unit::Steps);
         cycles_completed_++;
         ESP_LOGI(TAG, "Reached backward end, reversing to position %ld (cycle %lu complete)", 
                  target_position_, cycles_completed_);
