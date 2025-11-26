@@ -571,7 +571,8 @@ union ENCMODE_Register {
     uint32_t clr_cont : 1;        ///< Bit 4: Always latch or latch and clear X_ENC upon an N event
     uint32_t clr_once : 1;        ///< Bit 5: Latch or latch and clear X_ENC on the next N event following
                                   ///< the write access
-    uint32_t sensitivity : 2;     ///< Bits 7..6: N channel event sensitivity (pos_edge=bit6, neg_edge=bit7)
+    uint32_t pos_edge : 1;        ///< Bit 6: N channel event sensitivity (positive edge)
+    uint32_t neg_edge : 1;        ///< Bit 7: N channel event sensitivity (negative edge)
     uint32_t clr_enc_x : 1;       ///< Bit 8: Clear encoder counter X_ENC upon N-event
     uint32_t latch_x_act : 1;     ///< Bit 9: Also latch XACTUAL position together with X_ENC
     uint32_t enc_sel_decimal : 1; ///< Bit 10: Encoder prescaler divisor (0=binary, 1=decimal)

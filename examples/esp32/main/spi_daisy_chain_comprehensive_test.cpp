@@ -44,6 +44,21 @@ static const char* TAG = "SPI_DaisyChain_Test";
 static TestResults g_test_results;
 
 //=============================================================================
+// CONFIGURATION SELECTION - Change these to select motor, board, and platform
+//=============================================================================
+// Motor selection (compile-time constant)
+static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
+    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+
+// Board selection (compile-time constant)
+static constexpr tmc5160_test_config::BoardType SELECTED_BOARD = 
+    tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL;
+
+// Platform selection (compile-time constant)
+static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM = 
+    tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
+
+//=============================================================================
 // TEST SECTION CONFIGURATION
 //=============================================================================
 static constexpr bool ENABLE_DAISY_CHAIN_SETUP_TESTS = true;
@@ -127,17 +142,25 @@ bool test_daisy_chain_setup() noexcept {
     return false;
   }
   
-  // Configure and initialize each driver
+  // Configure and initialize each driver using helper functions
   tmc5160::DriverConfig cfg{};
-  cfg.motor.irun = TEST_IRUN;
-  cfg.motor.ihold = TEST_IHOLD;
-  cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
-  cfg.chopper.toff = TEST_TOFF;
+  
+  // Configure motor
+  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
+  }
+  
+  // Apply board configuration
+  tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
+  
+  // Apply platform configuration
+  tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
+  
   cfg.chopper.mres = TEST_MRES;
-  cfg.chopper.intpol = true;
-  // Power stage: low Qg MOSFET (<10nC), 200ns BBM time
-  cfg.power_stage.mosfet_miller_charge_nc = 6.0f;
-  cfg.power_stage.bbm_time_ns = 200;
   
   for (size_t i = 0; i < handle->drivers.size(); ++i) {
     if (!handle->drivers[i]->Initialize(cfg)) {
@@ -197,15 +220,22 @@ bool test_multi_motor_coordination() noexcept {
   
   // Initialize all drivers
   tmc5160::DriverConfig cfg{};
-  cfg.motor.irun = TEST_IRUN;
-  cfg.motor.ihold = TEST_IHOLD;
-  cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
-  cfg.chopper.toff = TEST_TOFF;
+  // Configure motor
+  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
+  }
+  
+  // Apply board configuration
+  tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
+  
+  // Apply platform configuration
+  tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
+  
   cfg.chopper.mres = TEST_MRES;
-  cfg.chopper.intpol = true;
-  // Power stage: low Qg MOSFET (<10nC), 200ns BBM time
-  cfg.power_stage.mosfet_miller_charge_nc = 6.0f;
-  cfg.power_stage.bbm_time_ns = 200;
   
   for (auto& driver : handle->drivers) {
     if (!driver->Initialize(cfg)) {

@@ -520,23 +520,10 @@ bool TMC5160<CommType>::Initialize(const DriverConfig& config) noexcept {
     return false;
   }
 
-  // Configure chopper
-  CHOPCONF_Register chopconf{};
-  chopconf.bits.toff = constrain<decltype(config.chopper.toff)>(config.chopper.toff, 0U, 15U);
-  chopconf.bits.hstrt_tfd = constrain<decltype(config.chopper.hstrt)>(config.chopper.hstrt, 0U, 7U);
-  chopconf.bits.hend_offset = constrain<decltype(config.chopper.hend)>(config.chopper.hend, 0U, 15U);
-  chopconf.bits.tbl = constrain<decltype(config.chopper.tbl)>(config.chopper.tbl, 0U, 3U);
-  // Note: Bit 17 (vsense) is reserved per datasheet, ignoring config.chopper.vsense
-  chopconf.bits.mres = constrain<decltype(config.chopper.mres)>(config.chopper.mres, 0U, 8U);
-  chopconf.bits.intpol = config.chopper.intpol ? 1 : 0;
-  chopconf.bits.dedge = config.chopper.dedge ? 1 : 0;
-  chopconf.bits.chm = config.chopper.chm ? 1 : 0;
-  if (!this->comm_.WriteRegister(Registers::CHOPCONF, chopconf.value, this->GetCommAddress())) {
+  // Configure chopper using ConfigureChopper method (handles mode-specific fields)
+  if (!motorControl.ConfigureChopper(config.chopper)) {
     return false;
   }
-  
-  // Update stored microsteps
-  current_microsteps_ = 256U >> chopconf.bits.mres;
 
   // Configure stealthChop
   PWMCONF_Register pwmconf{};
@@ -559,7 +546,14 @@ bool TMC5160<CommType>::Initialize(const DriverConfig& config) noexcept {
   }
 
   // Configure global settings (GCONF)
+  // Read-Modify-Write to preserve reserved bits (bits 18-31)
+  uint32_t gconf_value = 0;
+  if (!this->comm_.ReadRegister(Registers::GCONF, gconf_value, this->GetCommAddress())) {
+    return false;
+  }
   GCONF_Register gconf{};
+  gconf.value = gconf_value;
+  
   gconf.bits.recalibrate = config.global_config.recalibrate ? 1 : 0;
   gconf.bits.faststandstill = config.global_config.faststandstill ? 1 : 0;
   gconf.bits.en_pwm_mode = config.global_config.en_pwm_mode ? 1 : 0;
@@ -580,31 +574,90 @@ bool TMC5160<CommType>::Initialize(const DriverConfig& config) noexcept {
   gconf.bits.stop_enable = config.global_config.stop_enable ? 1 : 0;
   gconf.bits.direct_mode = config.global_config.direct_mode ? 1 : 0;
   gconf.bits.test_mode = config.global_config.test_mode ? 1 : 0;
+  // Reserved bits (18-31) are preserved from read value
+  
   if (!this->comm_.WriteRegister(Registers::GCONF, gconf.value, this->GetCommAddress())) {
     return false;
   }
 
-  // Set ramp parameters
-  if (!rampControl.SetPowerDownDelay(config.ramp_params.tpowerdown)) {
-    return false;
-  }
-  if (!rampControl.SetZeroWaitTime(config.ramp_params.tzerowait)) {
-    return false;
-  }
-  if (config.ramp_params.a1 > 0.0F) {
-    if (!rampControl.SetFirstAcceleration(config.ramp_params.a1)) {
+  // Configure ramp generator parameters
+  // Set timing parameters first (convert from milliseconds to register values)
+  // TPOWERDOWN: time_ms = tpowerdown * 2^18 / fCLK * 1000
+  // Rearranged: tpowerdown = time_ms * fCLK / (2^18 * 1000)
+  if (config.ramp_config.tpowerdown_ms >= 0.0f) {
+    float tpowerdown_reg = (config.ramp_config.tpowerdown_ms * static_cast<float>(f_clk_)) / (262144.0f * 1000.0f);
+    uint8_t tpowerdown = constrain<uint8_t>(static_cast<uint8_t>(std::round(tpowerdown_reg)), 0U, 255U);
+    if (!rampControl.SetPowerDownDelay(tpowerdown)) {
       return false;
     }
   }
-
-  // Set default ramp speeds
-  if (!rampControl.SetRampSpeeds(0.0F, 0.1F, 0.0F, Unit::Steps)) {
+  
+  // TZEROWAIT: time_ms = tzerowait * 2^18 / fCLK * 1000
+  // Rearranged: tzerowait = time_ms * fCLK / (2^18 * 1000)
+  if (config.ramp_config.tzerowait_ms >= 0.0f) {
+    float tzerowait_reg = (config.ramp_config.tzerowait_ms * static_cast<float>(f_clk_)) / (262144.0f * 1000.0f);
+    uint16_t tzerowait = constrain<uint16_t>(static_cast<uint16_t>(std::round(tzerowait_reg)), 0U, 65535U);
+    if (!rampControl.SetZeroWaitTime(tzerowait)) {
+      return false;
+    }
+  }
+  
+  // Get unit specifications for proper conversion
+  Unit velocity_unit = config.ramp_config.velocity_unit;
+  Unit acceleration_unit = config.ramp_config.acceleration_unit;
+  
+  // Set velocity parameters (VSTART, VSTOP, V1) using specified unit
+  // Use configured values or defaults: VSTART=0, VSTOP=10, V1=0 (disabled)
+  float vstart = config.ramp_config.vstart;
+  float vstop = config.ramp_config.vstop;
+  float v1 = config.ramp_config.v1;
+  
+  // Ensure VSTOP >= VSTART (datasheet requirement)
+  // Convert to steps for comparison if needed
+  if (vstop < vstart && vstart > 0.0f) {
+    vstop = vstart; // Use VSTART if VSTOP is less
+  } else if (vstop == 0.0f && vstart == 0.0f) {
+    vstop = 10.0f; // Default minimum VSTOP
+  }
+  
+  if (!rampControl.SetRampSpeeds(vstart, vstop, v1, velocity_unit)) {
     return false;
   }
-
-  // Set default D1 (must not be 0 in positioning mode)
-  if (!this->comm_.WriteRegister(Registers::D_1, 100, this->GetCommAddress())) {
-    return false;
+  
+  // Set maximum velocity if configured (VMAX) using specified unit
+  if (config.ramp_config.vmax > 0.0f) {
+    if (!rampControl.SetMaxSpeed(config.ramp_config.vmax, velocity_unit)) {
+      return false;
+    }
+  }
+  
+  // Set acceleration parameters using specified unit
+  // AMAX and DMAX (used above V1)
+  if (config.ramp_config.amax > 0.0f) {
+    float dmax = (config.ramp_config.dmax > 0.0f) ? config.ramp_config.dmax : config.ramp_config.amax;
+    if (!rampControl.SetAccelerations(config.ramp_config.amax, dmax, acceleration_unit)) {
+      return false;
+    }
+  }
+  
+  // A1 (first acceleration, used between VSTART and V1) using specified unit
+  if (config.ramp_config.a1 > 0.0f) {
+    if (!rampControl.SetFirstAcceleration(config.ramp_config.a1, acceleration_unit)) {
+      return false;
+    }
+  }
+  
+  // D1 (first deceleration, used between VSTOP and V1, must not be 0 in positioning mode) using specified unit
+  if (config.ramp_config.d1 > 0.0f) {
+    if (!rampControl.SetFinalDeceleration(config.ramp_config.d1, acceleration_unit)) {
+      return false;
+    }
+  } else {
+    // Set default D1 if not configured (required for positioning mode)
+    // Use default in steps/s² (100 steps/s²)
+    if (!rampControl.SetFinalDeceleration(100.0f, Unit::Steps)) {
+      return false;
+    }
   }
 
   initialized_ = true;
@@ -623,13 +676,14 @@ int32_t TMC5160<CommType>::speedToInternal(float speed_hz) const noexcept {
   // Datasheet formula: v[Hz] = v[5160] * (f_CLK[Hz]/2 / 2^23)
   // Rearranged: v[5160] = v[Hz] * 2^24 / f_CLK
   // Where v[Hz] is in μsteps/s (microsteps per second)
-  // Input speed_hz is in steps/s, so we multiply by microstep count (256) to convert to μsteps/s
-  // Final: v[5160] = (speed_hz * 256) * 2^24 / f_CLK
+  // Input speed_hz is in steps/s, so we multiply by microstep count (USC) to convert to μsteps/s
+  // Final: v[5160] = (speed_hz * USC) * 2^24 / f_CLK
+  // Note: USC (microstep count) is tracked in current_microsteps_ and can vary (256, 128, 64, etc.)
   if (speed_hz == 0.0F) {
     return 0;
   }
   float internal = (speed_hz * static_cast<float>(1UL << 24)) / static_cast<float>(f_clk_);
-  internal *= static_cast<float>(Microsteps::USTEP_COUNT);
+  internal *= static_cast<float>(current_microsteps_);
   return static_cast<int32_t>(internal);
 }
 
@@ -637,13 +691,14 @@ template <typename CommType>
 float TMC5160<CommType>::speedFromInternal(int32_t speed_internal) const noexcept {
   // Datasheet formula: v[Hz] = v[5160] * (f_CLK[Hz]/2 / 2^23)
   // Where v[Hz] is in μsteps/s (microsteps per second)
-  // Output is in steps/s, so we divide by microstep count (256) to convert from μsteps/s
-  // Final: v[steps/s] = (v[5160] * f_CLK / 2^24) / 256
+  // Output is in steps/s, so we divide by microstep count (USC) to convert from μsteps/s
+  // Final: v[steps/s] = (v[5160] * f_CLK / 2^24) / USC
+  // Note: USC (microstep count) is tracked in current_microsteps_ and can vary (256, 128, 64, etc.)
   if (speed_internal == 0) {
     return 0.0F;
   }
   float speed_hz = static_cast<float>(speed_internal) * static_cast<float>(f_clk_) / static_cast<float>(1UL << 24);
-  speed_hz /= static_cast<float>(Microsteps::USTEP_COUNT);
+  speed_hz /= static_cast<float>(current_microsteps_);
   return speed_hz;
 }
 
@@ -652,29 +707,31 @@ int32_t TMC5160<CommType>::accelToInternal(float accel_hz) const noexcept {
   // Datasheet formula: a[Hz/s] = a[5160] * f_CLK[Hz]^2 / (512*256) / 2^24
   // Rearranged: a[5160] = a[Hz/s] * (512*256) * 2^24 / f_CLK^2
   // Where a[Hz/s] is in μsteps/s² (microsteps per second squared)
-  // Input accel_hz is in steps/s², so we multiply by microstep count (256) to convert to μsteps/s²
-  // Final: a[5160] = (accel_hz * 256) * (512*256) * 2^24 / f_CLK^2
+  // Input accel_hz is in steps/s², so we multiply by microstep count (USC) to convert to μsteps/s²
+  // Final: a[5160] = (accel_hz * USC) * (512*256) * 2^24 / f_CLK^2
+  // Note: USC (microstep count) is tracked in current_microsteps_ and can vary (256, 128, 64, etc.)
+  // Note: The 256 in (512*256) is a fixed constant from the datasheet formula, not the microstep count
   if (accel_hz == 0.0F) {
     return 0;
   }
   float internal = accel_hz * 512.0F * 256.0F * static_cast<float>(1UL << 24) /
                    (static_cast<float>(f_clk_) * static_cast<float>(f_clk_));
-  internal *= static_cast<float>(Microsteps::USTEP_COUNT);
+  internal *= static_cast<float>(current_microsteps_);
   return static_cast<int32_t>(internal);
 }
 
 template <typename CommType>
 int32_t TMC5160<CommType>::thresholdSpeedToTstep(float speed_hz) const noexcept {
   // Datasheet formula: TSTEP = f_CLK / f256STEP = f_CLK / (fSTEP*256/USC)
-  // Where fSTEP is in μsteps/s, USC is microstep count (normally 256)
-  // For USC=256: TSTEP = f_CLK / fSTEP
-  // Input speed_hz is in steps/s, so fSTEP = speed_hz * 256 (convert to μsteps/s)
-  // Final: TSTEP = f_CLK / (speed_hz * 256)
+  // Where fSTEP is in μsteps/s, USC is microstep count (can vary: 256, 128, 64, etc.)
+  // Input speed_hz is in steps/s, so fSTEP = speed_hz * USC (convert to μsteps/s)
+  // Final: TSTEP = f_CLK / (speed_hz * USC)
+  // Note: USC (microstep count) is tracked in current_microsteps_ and can vary
   // TSTEP is 20-bit unsigned (max value 0xFFFFF = 1048575)
   if (speed_hz == 0.0F) {
     return 0;
   }
-  float tstep = static_cast<float>(f_clk_) / (speed_hz * 256.0F);
+  float tstep = static_cast<float>(f_clk_) / (speed_hz * static_cast<float>(current_microsteps_));
   tstep = std::max(0.0F, std::min(1048575.0F, tstep));
   return static_cast<int32_t>(tstep);
 }
@@ -687,7 +744,26 @@ bool TMC5160<CommType>::RampControl::SetRampMode(RampMode mode) noexcept {
                           (mode == RampMode::VELOCITY_POS) ? "VELOCITY_POS" :
                           (mode == RampMode::VELOCITY_NEG) ? "VELOCITY_NEG" : "HOLD";
   TMC5160_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetRampMode(%s)", mode_name);
-  return driver_.comm_.WriteRegister(Registers::RAMPMODE, mode_value, driver_.GetCommAddress());
+  
+  // Read-Modify-Write to preserve reserved bits (bits 2-31)
+  uint32_t rampmode_value = 0;
+  if (!driver_.comm_.ReadRegister(Registers::RAMPMODE, rampmode_value, driver_.GetCommAddress())) {
+    return false;
+  }
+  // Clear mode bits (0-1) and set new mode, preserve reserved bits (2-31)
+  rampmode_value = (rampmode_value & 0xFFFFFFFCU) | (mode_value & 0x03U);
+  return driver_.comm_.WriteRegister(Registers::RAMPMODE, rampmode_value, driver_.GetCommAddress());
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::RampControl::GetRampMode(RampMode& mode) noexcept {
+  uint32_t rampmode_value = 0;
+  if (!driver_.comm_.ReadRegister(Registers::RAMPMODE, rampmode_value, driver_.GetCommAddress())) {
+    return false;
+  }
+  uint8_t mode_bits = static_cast<uint8_t>(rampmode_value & 0x03U);
+  mode = static_cast<RampMode>(mode_bits);
+  return true;
 }
 
 template <typename CommType>
@@ -759,12 +835,14 @@ bool TMC5160<CommType>::RampControl::SetMaxSpeed(float value, Unit unit) noexcep
   }
   // If in velocity mode, update direction
   uint32_t rampmode = 0;
-  if (driver_.comm_.ReadRegister(Registers::RAMPMODE, rampmode)) {
-    if (rampmode == static_cast<uint8_t>(RampMode::VELOCITY_POS) ||
-        rampmode == static_cast<uint8_t>(RampMode::VELOCITY_NEG)) {
+  if (driver_.comm_.ReadRegister(Registers::RAMPMODE, rampmode, driver_.GetCommAddress())) {
+    if ((rampmode & 0x03U) == static_cast<uint8_t>(RampMode::VELOCITY_POS) ||
+        (rampmode & 0x03U) == static_cast<uint8_t>(RampMode::VELOCITY_NEG)) {
       uint8_t new_mode =
           (steps_per_sec < 0.0F) ? static_cast<uint8_t>(RampMode::VELOCITY_NEG) : static_cast<uint8_t>(RampMode::VELOCITY_POS);
-      driver_.comm_.WriteRegister(Registers::RAMPMODE, new_mode, driver_.GetCommAddress());
+      // Read-Modify-Write to preserve reserved bits (bits 2-31)
+      rampmode = (rampmode & 0xFFFFFFFCU) | (new_mode & 0x03U);
+      driver_.comm_.WriteRegister(Registers::RAMPMODE, rampmode, driver_.GetCommAddress());
     }
   }
   return true;
@@ -880,19 +958,158 @@ bool TMC5160<CommType>::RampControl::ConfigureReferenceSwitch(const ReferenceSwi
   SW_MODE_Register sw_mode{};
   sw_mode.value = sw_mode_val;
 
-  sw_mode.bits.stop_l_enable = config.stop_left_enable ? 1 : 0;
-  sw_mode.bits.stop_r_enable = config.stop_right_enable ? 1 : 0;
-  sw_mode.bits.pol_stop_l = config.pol_stop_left ? 1 : 0;
-  sw_mode.bits.pol_stop_r = config.pol_stop_right ? 1 : 0;
+  // Use stop enable flags (independent of active level)
+  // Allows enabling/disabling motor stop in real-time while keeping polarity configured
+  sw_mode.bits.stop_l_enable = config.left_switch_stop_enable ? 1 : 0;
+  sw_mode.bits.stop_r_enable = config.right_switch_stop_enable ? 1 : 0;
+  
+  // Compute polarity from active level (ACTIVE_LOW = inverted polarity = true, ACTIVE_HIGH = normal = false)
+  sw_mode.bits.pol_stop_l = (config.left_switch_active == ReferenceSwitchActiveLevel::ACTIVE_LOW) ? 1 : 0;
+  sw_mode.bits.pol_stop_r = (config.right_switch_active == ReferenceSwitchActiveLevel::ACTIVE_LOW) ? 1 : 0;
+  
   sw_mode.bits.swap_lr = config.swap_left_right ? 1 : 0;
-  sw_mode.bits.latch_l_active = config.latch_left_active ? 1 : 0;
-  sw_mode.bits.latch_l_inactive = config.latch_left_inactive ? 1 : 0;
-  sw_mode.bits.latch_r_active = config.latch_right_active ? 1 : 0;
-  sw_mode.bits.latch_r_inactive = config.latch_right_inactive ? 1 : 0;
+  
+  // Compute latching flags from enum
+  sw_mode.bits.latch_l_active = (config.latch_left == ReferenceLatchMode::ACTIVE_EDGE || 
+                                  config.latch_left == ReferenceLatchMode::BOTH_EDGES) ? 1 : 0;
+  sw_mode.bits.latch_l_inactive = (config.latch_left == ReferenceLatchMode::INACTIVE_EDGE || 
+                                    config.latch_left == ReferenceLatchMode::BOTH_EDGES) ? 1 : 0;
+  sw_mode.bits.latch_r_active = (config.latch_right == ReferenceLatchMode::ACTIVE_EDGE || 
+                                  config.latch_right == ReferenceLatchMode::BOTH_EDGES) ? 1 : 0;
+  sw_mode.bits.latch_r_inactive = (config.latch_right == ReferenceLatchMode::INACTIVE_EDGE || 
+                                    config.latch_right == ReferenceLatchMode::BOTH_EDGES) ? 1 : 0;
+  
   sw_mode.bits.en_latch_encoder = config.en_latch_encoder ? 1 : 0;
-  sw_mode.bits.en_softstop = config.en_softstop ? 1 : 0;
+  sw_mode.bits.en_softstop = (config.stop_mode == ReferenceStopMode::SOFT_STOP) ? 1 : 0;
   
   return driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value, driver_.GetCommAddress());
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::RampControl::GetReferenceSwitchConfig(ReferenceSwitchConfig& config) noexcept {
+  uint32_t sw_mode_val = 0;
+  if (!driver_.comm_.ReadRegister(Registers::SW_MODE, sw_mode_val)) {
+    return false;
+  }
+  SW_MODE_Register sw_mode{};
+  sw_mode.value = sw_mode_val;
+
+  // Read stop enable flags
+  config.left_switch_stop_enable = (sw_mode.bits.stop_l_enable != 0);
+  config.right_switch_stop_enable = (sw_mode.bits.stop_r_enable != 0);
+
+  // Read polarity and convert to active level
+  config.left_switch_active = (sw_mode.bits.pol_stop_l != 0) ? 
+    ReferenceSwitchActiveLevel::ACTIVE_LOW : ReferenceSwitchActiveLevel::ACTIVE_HIGH;
+  config.right_switch_active = (sw_mode.bits.pol_stop_r != 0) ? 
+    ReferenceSwitchActiveLevel::ACTIVE_LOW : ReferenceSwitchActiveLevel::ACTIVE_HIGH;
+
+  // Read swap
+  config.swap_left_right = (sw_mode.bits.swap_lr != 0);
+
+  // Read latching modes
+  bool latch_l_active = (sw_mode.bits.latch_l_active != 0);
+  bool latch_l_inactive = (sw_mode.bits.latch_l_inactive != 0);
+  if (latch_l_active && latch_l_inactive) {
+    config.latch_left = ReferenceLatchMode::BOTH_EDGES;
+  } else if (latch_l_active) {
+    config.latch_left = ReferenceLatchMode::ACTIVE_EDGE;
+  } else if (latch_l_inactive) {
+    config.latch_left = ReferenceLatchMode::INACTIVE_EDGE;
+  } else {
+    config.latch_left = ReferenceLatchMode::DISABLED;
+  }
+
+  bool latch_r_active = (sw_mode.bits.latch_r_active != 0);
+  bool latch_r_inactive = (sw_mode.bits.latch_r_inactive != 0);
+  if (latch_r_active && latch_r_inactive) {
+    config.latch_right = ReferenceLatchMode::BOTH_EDGES;
+  } else if (latch_r_active) {
+    config.latch_right = ReferenceLatchMode::ACTIVE_EDGE;
+  } else if (latch_r_inactive) {
+    config.latch_right = ReferenceLatchMode::INACTIVE_EDGE;
+  } else {
+    config.latch_right = ReferenceLatchMode::DISABLED;
+  }
+
+  // Read encoder latching
+  config.en_latch_encoder = (sw_mode.bits.en_latch_encoder != 0);
+
+  // Read stop mode
+  config.stop_mode = (sw_mode.bits.en_softstop != 0) ? 
+    ReferenceStopMode::SOFT_STOP : ReferenceStopMode::HARD_STOP;
+
+  return true;
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::RampControl::SetLeftSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept {
+  ReferenceSwitchConfig config{};
+  if (!GetReferenceSwitchConfig(config)) {
+    return false;
+  }
+  config.left_switch_active = active_level;
+  return ConfigureReferenceSwitch(config);
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::RampControl::SetRightSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept {
+  ReferenceSwitchConfig config{};
+  if (!GetReferenceSwitchConfig(config)) {
+    return false;
+  }
+  config.right_switch_active = active_level;
+  return ConfigureReferenceSwitch(config);
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::RampControl::SetLeftSwitchStopEnable(bool enable) noexcept {
+  ReferenceSwitchConfig config{};
+  if (!GetReferenceSwitchConfig(config)) {
+    return false;
+  }
+  config.left_switch_stop_enable = enable;
+  return ConfigureReferenceSwitch(config);
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::RampControl::SetRightSwitchStopEnable(bool enable) noexcept {
+  ReferenceSwitchConfig config{};
+  if (!GetReferenceSwitchConfig(config)) {
+    return false;
+  }
+  config.right_switch_stop_enable = enable;
+  return ConfigureReferenceSwitch(config);
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::RampControl::SetLeftSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept {
+  ReferenceSwitchConfig config{};
+  if (!GetReferenceSwitchConfig(config)) {
+    return false;
+  }
+  config.latch_left = latch_mode;
+  return ConfigureReferenceSwitch(config);
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::RampControl::SetRightSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept {
+  ReferenceSwitchConfig config{};
+  if (!GetReferenceSwitchConfig(config)) {
+    return false;
+  }
+  config.latch_right = latch_mode;
+  return ConfigureReferenceSwitch(config);
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::RampControl::SetStopMode(ReferenceStopMode stop_mode) noexcept {
+  ReferenceSwitchConfig config{};
+  if (!GetReferenceSwitchConfig(config)) {
+    return false;
+  }
+  config.stop_mode = stop_mode;
+  return ConfigureReferenceSwitch(config);
 }
 
 template <typename CommType>
@@ -1023,7 +1240,7 @@ bool TMC5160<CommType>::MotorControl::SetCurrent(uint8_t irun, uint8_t ihold) no
 
 template <typename CommType>
 bool TMC5160<CommType>::MotorControl::ConfigureChopper(const ChopperConfig& config) noexcept {
-  // Read-Modify-Write to preserve fields not in ChopperConfig (like diss2g, diss2vs)
+  // Read-Modify-Write to preserve any fields not explicitly set in ChopperConfig
   uint32_t chopconf_val = 0;
   if (!driver_.comm_.ReadRegister(Registers::CHOPCONF, chopconf_val)) {
     return false;
@@ -1031,16 +1248,47 @@ bool TMC5160<CommType>::MotorControl::ConfigureChopper(const ChopperConfig& conf
   CHOPCONF_Register chopconf{};
   chopconf.value = chopconf_val;
 
+  // Common fields
   chopconf.bits.toff = constrain<decltype(config.toff)>(config.toff, 0U, 15U);
-  chopconf.bits.hstrt_tfd = constrain<decltype(config.hstrt)>(config.hstrt, 0U, 7U);
-  chopconf.bits.hend_offset = constrain<decltype(config.hend)>(config.hend, 0U, 15U);
   chopconf.bits.tbl = constrain<decltype(config.tbl)>(config.tbl, 0U, 3U);
-  // Note: Bit 17 (vsense) is reserved per datasheet, ignoring config.vsense
+  chopconf.bits.tpfd = constrain<decltype(config.tpfd)>(config.tpfd, 0U, 15U);
   chopconf.bits.mres = constrain<decltype(config.mres)>(config.mres, 0U, 8U);
   chopconf.bits.intpol = config.intpol ? 1 : 0;
   chopconf.bits.dedge = config.dedge ? 1 : 0;
-  chopconf.bits.chm = config.chm ? 1 : 0;
-  return driver_.comm_.WriteRegister(Registers::CHOPCONF, chopconf.value, driver_.GetCommAddress());
+  chopconf.bits.vhighfs = config.vhighfs ? 1 : 0;
+  chopconf.bits.vhighchm = config.vhighchm ? 1 : 0;
+  chopconf.bits.diss2g = config.diss2g ? 1 : 0;
+  chopconf.bits.diss2vs = config.diss2vs ? 1 : 0;
+  // Note: Bit 17 (vsense) is reserved per datasheet, ignoring config.vsense
+  
+  // Mode-specific fields
+  bool is_classic_mode = (config.mode == ChopperMode::CLASSIC);
+  chopconf.bits.chm = is_classic_mode ? 1 : 0;
+  
+  if (is_classic_mode) {
+    // Classic mode: hstrt_tfd = TFD[2:0], hend_offset = OFFSET, tfd_3 = TFD[3], disfdcc
+    uint8_t tfd_constrained = constrain<decltype(config.tfd)>(config.tfd, 0U, 15U);
+    chopconf.bits.hstrt_tfd = tfd_constrained & 0x07;  // Bits 2:0
+    chopconf.bits.tfd_3 = (tfd_constrained >> 3) & 0x01;  // Bit 3
+    chopconf.bits.hend_offset = constrain<decltype(config.hend)>(config.hend, 0U, 15U);  // OFFSET
+    chopconf.bits.disfdcc = config.disfdcc ? 1 : 0;
+  } else {
+    // SpreadCycle mode: hstrt_tfd = HSTRT, hend_offset = HEND
+    chopconf.bits.hstrt_tfd = constrain<decltype(config.hstrt)>(config.hstrt, 0U, 7U);
+    chopconf.bits.hend_offset = constrain<decltype(config.hend)>(config.hend, 0U, 15U);
+    chopconf.bits.tfd_3 = 0;  // Reserved in SpreadCycle mode
+    chopconf.bits.disfdcc = 0;  // Not used in SpreadCycle mode
+  }
+  
+  bool success = driver_.comm_.WriteRegister(Registers::CHOPCONF, chopconf.value, driver_.GetCommAddress());
+  
+  // Update stored microsteps
+  if (success) {
+    uint8_t mres = constrain<uint8_t>(config.mres, 0U, 8U);
+    driver_.current_microsteps_ = 256U >> mres;
+  }
+  
+  return success;
 }
 
 template <typename CommType>
@@ -1104,29 +1352,84 @@ bool TMC5160<CommType>::MotorControl::ConfigureCoolStep(const CoolStepConfig& co
   COOLCONF_Register coolconf{};
   coolconf.value = coolconf_value;
   
-  // Update CoolStep fields
-  coolconf.bits.semin = constrain<decltype(config.semin)>(config.semin, 0U, 15U);
-  // Bit 4 is reserved, preserve or set to 0? Assuming preserve if reading, but explicit 0 is safe
-  coolconf.bits.seup = constrain<decltype(config.seup)>(config.seup, 0U, 3U);
-  coolconf.bits.semax = constrain<decltype(config.semax)>(config.semax, 0U, 15U);
-  coolconf.bits.sedn = constrain<decltype(config.sedn)>(config.sedn, 0U, 3U);
-  coolconf.bits.seimin = config.seimin ? 1 : 0;
-  // Preserve SGT (bits 22..16) and SFILT (bit 24) unless explicitly managed
-  // But wait, this method is specifically for CoolStep configuration.
-  // It should PROBABLY generally respect existing SGT/SFILT if they were set by StallGuard config.
-  // The previous implementation zeroed them out.
+  // Preserve SGT (StallGuard2 threshold) - it's configured separately via StallGuardConfig
+  // Only update CoolStep-specific fields
   
-  coolconf.bits.sfilt = config.sfilt ? 1 : 0;
+  // Calculate SEMIN and SEMAX from user-friendly thresholds
+  uint8_t semin = 0;
+  uint8_t semax = 0;
   
-  return driver_.comm_.WriteRegister(Registers::COOLCONF, coolconf.value, driver_.GetCommAddress());
+  if (config.lower_threshold_sg > 0) {
+    // Convert SG threshold to SEMIN: threshold = SEMIN * 32
+    // SEMIN = threshold / 32, clamped to 0-15
+    semin = static_cast<uint8_t>(config.lower_threshold_sg / 32U);
+    semin = constrain<decltype(semin)>(semin, 0U, 15U);
+    
+    // Calculate SEMAX from upper threshold
+    if (config.upper_threshold_sg > 0) {
+      // Upper threshold = (SEMIN + SEMAX + 1) * 32
+      // SEMAX = (upper_threshold / 32) - SEMIN - 1
+      uint16_t upper_semin_equiv = static_cast<uint16_t>(config.upper_threshold_sg / 32U);
+      if (upper_semin_equiv > semin) {
+        semax = static_cast<uint8_t>(upper_semin_equiv - semin - 1U);
+        semax = constrain<decltype(semax)>(semax, 0U, 15U);
+      } else {
+        // Upper threshold must be higher than lower threshold
+        // If invalid, set semax to 0 (will use minimum hysteresis)
+        semax = 0;
+      }
+    } else {
+      // If upper threshold not specified, use default hysteresis
+      // Default: semax = 5 (provides reasonable hysteresis gap)
+      semax = 5;
+    }
+  }
+  // If lower_threshold_sg = 0, semin = 0 (CoolStep disabled)
+  
+  // Update CoolStep register fields
+  coolconf.bits.semin = semin;  // 0 = CoolStep disabled
+  coolconf.bits.semax = semax;
+  
+  // Convert increment step enum to register value
+  coolconf.bits.seup = static_cast<uint8_t>(config.increment_step);
+  
+  // Convert decrement speed enum to register value
+  coolconf.bits.sedn = static_cast<uint8_t>(config.decrement_speed);
+  
+  // Convert minimum current enum to register value
+  coolconf.bits.seimin = (config.min_current == CoolStepMinCurrent::QUARTER_IRUN) ? 1 : 0;
+  
+  // Update filter enable
+  coolconf.bits.sfilt = config.enable_filter ? 1 : 0;
+  
+  // Write COOLCONF register
+  bool success = driver_.comm_.WriteRegister(Registers::COOLCONF, coolconf.value, driver_.GetCommAddress());
+  
+  // Configure velocity thresholds if provided
+  if (success && config.min_velocity > 0.0F) {
+    float steps_per_sec = driver_.convertSpeedToSteps(config.min_velocity, config.velocity_unit);
+    int32_t tcoolthrs = driver_.thresholdSpeedToTstep(steps_per_sec);
+    tcoolthrs = std::min(tcoolthrs, static_cast<decltype(tcoolthrs)>(0xFFFFF)); // 20 bits
+    success &= driver_.comm_.WriteRegister(Registers::TCOOLTHRS, static_cast<uint32_t>(tcoolthrs));
+  }
+  
+  if (success && config.max_velocity > 0.0F) {
+    float steps_per_sec = driver_.convertSpeedToSteps(config.max_velocity, config.velocity_unit);
+    int32_t thigh = driver_.thresholdSpeedToTstep(steps_per_sec);
+    thigh = std::min(thigh, static_cast<decltype(thigh)>(0xFFFFF)); // 20 bits
+    success &= driver_.comm_.WriteRegister(Registers::THIGH, static_cast<uint32_t>(thigh));
+  }
+  
+  return success;
 }
 
 template <typename CommType>
 bool TMC5160<CommType>::MotorControl::ConfigureDcStep(const DcStepConfig& config) noexcept {
-  // Convert velocity threshold to internal format
+  // Convert velocity threshold to internal format with unit support
   int32_t vdc_min = 0;
-  if (config.vdc_min > 0.0F) {
-    vdc_min = driver_.speedToInternal(config.vdc_min);
+  if (config.min_velocity > 0.0F) {
+    float steps_per_sec = driver_.convertSpeedToSteps(config.min_velocity, config.velocity_unit);
+    vdc_min = driver_.speedToInternal(steps_per_sec);
     // VDCMIN is 23-bit register (0...2^22), but only bits 22..8 are used for comparison
     // Lower 8 bits (7..0) are ignored/unused by the hardware comparator.
     // We mask the value to 0x7FFF00 to explicitly zero out the unused bits,
@@ -1140,19 +1443,112 @@ bool TMC5160<CommType>::MotorControl::ConfigureDcStep(const DcStepConfig& config
     return false;
   }
   
-  // Configure DCCTRL register if dc_time or dc_sg are set
-  if (config.dc_time > 0 || config.dc_sg > 0) {
-    DCCTRL_Register dcctrl{};
-    dcctrl.bits.dc_time = constrain<decltype(config.dc_time)>(config.dc_time, 0U, 1023U);
-    dcctrl.bits.dc_sg = constrain<decltype(config.dc_sg)>(config.dc_sg, 0U, 255U);
-    success &= driver_.comm_.WriteRegister(Registers::DCCTRL, dcctrl.value, driver_.GetCommAddress());
+  // Calculate DC_TIME from PWM on-time (microseconds) or auto-calculate from blank time
+  uint16_t dc_time = 0;
+  
+  if (config.pwm_on_time_us > 0.0F) {
+    // Convert microseconds to clock cycles: cycles = (time_us * f_clk) / 1e6
+    float clock_cycles = (config.pwm_on_time_us * static_cast<float>(driver_.f_clk_)) / 1000000.0F;
+    dc_time = static_cast<uint16_t>(std::round(clock_cycles));
+    dc_time = constrain<decltype(dc_time)>(dc_time, 0U, 1023U);
+  } else {
+    // Auto-calculate from blank time (TBL) if not specified
+    // Read current CHOPCONF to get TBL value
+    uint32_t chopconf_value = 0;
+    if (driver_.comm_.ReadRegister(Registers::CHOPCONF, chopconf_value)) {
+      CHOPCONF_Register chopconf{};
+      chopconf.value = chopconf_value;
+      
+      // TBL values: 0=16 clocks, 1=24 clocks, 2=36 clocks, 3=54 clocks
+      uint8_t tbl_clocks[] = {16, 24, 36, 54};
+      uint8_t tbl_index = constrain<uint8_t>(chopconf.bits.tbl, 0U, 3U);
+      uint8_t blank_time_clocks = tbl_clocks[tbl_index];
+      
+      // DC_TIME should be set slightly above blank time
+      // Datasheet: Lower limit = TBL + n (where n = 1-100 for typical motor)
+      // Use n = 20 as a reasonable default (provides margin without being too conservative)
+      dc_time = blank_time_clocks + 20;
+      dc_time = constrain<decltype(dc_time)>(dc_time, 0U, 1023U);
+    } else {
+      // If can't read CHOPCONF, use conservative default (36 clocks + 20 = 56)
+      dc_time = 56;
+    }
   }
+  
+  // Calculate DC_SG from DC_TIME based on sensitivity
+  uint8_t dc_sg = 0;
+  if (config.stall_sensitivity != DcStepStallSensitivity::DISABLED && dc_time > 0) {
+    // DC_SG should be set slightly higher than DC_TIME/16
+    // Different sensitivity levels use different multipliers
+    float dc_sg_float = 0.0F;
+    switch (config.stall_sensitivity) {
+      case DcStepStallSensitivity::LOW:
+        dc_sg_float = static_cast<float>(dc_time) / 20.0F;  // Less sensitive
+        break;
+      case DcStepStallSensitivity::MODERATE:
+        dc_sg_float = static_cast<float>(dc_time) / 16.0F;  // Recommended (datasheet default)
+        break;
+      case DcStepStallSensitivity::HIGH:
+        dc_sg_float = static_cast<float>(dc_time) / 12.0F;  // More sensitive
+        break;
+      default:
+        dc_sg_float = 0.0F;
+        break;
+    }
+    dc_sg = static_cast<uint8_t>(std::round(dc_sg_float));
+    // Ensure minimum value of 1 if sensitivity is enabled
+    if (dc_sg == 0 && config.stall_sensitivity != DcStepStallSensitivity::DISABLED) {
+      dc_sg = 1;
+    }
+    dc_sg = constrain<decltype(dc_sg)>(dc_sg, 0U, 255U);
+  }
+  
+  // Configure DCCTRL register
+  DCCTRL_Register dcctrl{};
+  dcctrl.bits.dc_time = dc_time;
+  dcctrl.bits.dc_sg = dc_sg;
+  success &= driver_.comm_.WriteRegister(Registers::DCCTRL, dcctrl.value, driver_.GetCommAddress());
+  
+  // Configure stop on stall if requested
+  if (success && config.stop_on_stall && config.stall_sensitivity != DcStepStallSensitivity::DISABLED) {
+    // Read current SW_MODE register
+    uint32_t sw_mode_value = 0;
+    if (driver_.comm_.ReadRegister(Registers::SW_MODE, sw_mode_value)) {
+      SW_MODE_Register sw_mode{};
+      sw_mode.value = sw_mode_value;
+      sw_mode.bits.sg_stop = 1;  // Enable stop on stall
+      success &= driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value, driver_.GetCommAddress());
+    }
+  }
+  
+  // Ensure CHOPCONF.vhighfs and CHOPCONF.vhighchm are set for DcStep
+  // These flags switch to fullstepping when VDCMIN is exceeded
+  // Note: These can also be set via ChopperConfig.vhighfs and ChopperConfig.vhighchm
+  if (success && config.min_velocity > 0.0F) {
+    uint32_t chopconf_value = 0;
+    if (driver_.comm_.ReadRegister(Registers::CHOPCONF, chopconf_value)) {
+      CHOPCONF_Register chopconf{};
+      chopconf.value = chopconf_value;
+      chopconf.bits.vhighfs = 1;   // Enable fullstepping at high velocity
+      chopconf.bits.vhighchm = 1;  // Enable chopper mode switching at high velocity
+      success &= driver_.comm_.WriteRegister(Registers::CHOPCONF, chopconf.value, driver_.GetCommAddress());
+    }
+  }
+  
   return success;
 }
 
 template <typename CommType>
 bool TMC5160<CommType>::MotorControl::ConfigureGlobalConfig(const GlobalConfig& config) noexcept {
+  // Read-Modify-Write to preserve reserved bits (bits 18-31)
+  uint32_t gconf_value = 0;
+  if (!driver_.comm_.ReadRegister(Registers::GCONF, gconf_value)) {
+    return false;
+  }
   GCONF_Register gconf{};
+  gconf.value = gconf_value;
+  
+  // Update only the configurable bits, preserving reserved bits
   gconf.bits.recalibrate = config.recalibrate ? 1 : 0;
   gconf.bits.faststandstill = config.faststandstill ? 1 : 0;
   gconf.bits.en_pwm_mode = config.en_pwm_mode ? 1 : 0;
@@ -1171,6 +1567,8 @@ bool TMC5160<CommType>::MotorControl::ConfigureGlobalConfig(const GlobalConfig& 
   gconf.bits.stop_enable = config.stop_enable ? 1 : 0;
   gconf.bits.direct_mode = config.direct_mode ? 1 : 0;
   gconf.bits.test_mode = config.test_mode ? 1 : 0;
+  // Reserved bits (18-31) are preserved from read value
+  
   return driver_.comm_.WriteRegister(Registers::GCONF, gconf.value, driver_.GetCommAddress());
 }
 
@@ -1225,14 +1623,36 @@ bool TMC5160<CommType>::MotorControl::GetChopperConfig(ChopperConfig& config) no
   CHOPCONF_Register chopconf{};
   chopconf.value = value;
   
+  // Common fields
   config.toff = static_cast<uint8_t>(chopconf.bits.toff);
-  config.hstrt = static_cast<uint8_t>(chopconf.bits.hstrt_tfd);
-  config.hend = static_cast<uint8_t>(chopconf.bits.hend_offset);
   config.tbl = static_cast<uint8_t>(chopconf.bits.tbl);
+  config.tpfd = static_cast<uint8_t>(chopconf.bits.tpfd);
   config.mres = static_cast<uint8_t>(chopconf.bits.mres);
   config.intpol = chopconf.bits.intpol != 0;
   config.dedge = chopconf.bits.dedge != 0;
-  config.chm = chopconf.bits.chm != 0;
+  config.vhighfs = chopconf.bits.vhighfs != 0;
+  config.vhighchm = chopconf.bits.vhighchm != 0;
+  config.diss2g = chopconf.bits.diss2g != 0;
+  config.diss2vs = chopconf.bits.diss2vs != 0;
+  
+  // Mode-specific fields
+  bool is_classic_mode = (chopconf.bits.chm != 0);
+  config.mode = is_classic_mode ? ChopperMode::CLASSIC : ChopperMode::SPREAD_CYCLE;
+  
+  if (is_classic_mode) {
+    // Classic mode: reconstruct TFD from hstrt_tfd and tfd_3
+    config.tfd = static_cast<uint8_t>(chopconf.bits.hstrt_tfd | (chopconf.bits.tfd_3 << 3));
+    config.hend = static_cast<uint8_t>(chopconf.bits.hend_offset);  // OFFSET
+    config.disfdcc = chopconf.bits.disfdcc != 0;
+    config.hstrt = 0;  // Not used in Classic mode
+  } else {
+    // SpreadCycle mode
+    config.hstrt = static_cast<uint8_t>(chopconf.bits.hstrt_tfd);
+    config.hend = static_cast<uint8_t>(chopconf.bits.hend_offset);
+    config.tfd = 0;  // Not used in SpreadCycle mode
+    config.disfdcc = false;  // Not used in SpreadCycle mode
+  }
+  
   return true;
 }
 
@@ -1402,18 +1822,145 @@ bool TMC5160<CommType>::MotorControl::SetupMotorFromSpec(const MotorSpec& motor_
 // Encoder implementation
 template <typename CommType>
 bool TMC5160<CommType>::Encoder::Configure(const EncoderConfig& config) noexcept {
+  // Read-Modify-Write to preserve reserved bits (bits 11-31)
+  uint32_t encmode_value = 0;
+  if (!driver_.comm_.ReadRegister(Registers::ENCMODE, encmode_value)) {
+    return false;
+  }
   ENCMODE_Register encmode{};
-  encmode.bits.pol_A = config.pol_a ? 1 : 0;
-  encmode.bits.pol_B = config.pol_b ? 1 : 0;
-  encmode.bits.pol_N = config.pol_n ? 1 : 0;
-  encmode.bits.ignore_AB = config.ignore_ab ? 1 : 0;
-  encmode.bits.clr_cont = config.clr_cont ? 1 : 0;
-  encmode.bits.clr_once = config.clr_once ? 1 : 0;
-  encmode.bits.sensitivity = constrain<decltype(config.sensitivity)>(config.sensitivity, 0U, 3U);
-  encmode.bits.clr_enc_x = config.clr_enc_x ? 1 : 0;
-  encmode.bits.latch_x_act = config.latch_x_act ? 1 : 0;
-  encmode.bits.enc_sel_decimal = config.enc_sel_decimal ? 1 : 0;
+  encmode.value = encmode_value;
+  
+  // N channel active level (shares ReferenceSwitchActiveLevel enum)
+  encmode.bits.pol_N = (config.n_channel_active == ReferenceSwitchActiveLevel::ACTIVE_HIGH) ? 1 : 0;
+  
+  // A/B polarity requirements for N channel validation
+  encmode.bits.pol_A = config.require_a_high ? 1 : 0;
+  encmode.bits.pol_B = config.require_b_high ? 1 : 0;
+  encmode.bits.ignore_AB = config.ignore_ab_polarity ? 1 : 0;
+  
+  // Clear mode (clr_cont and clr_once are mutually exclusive)
+  encmode.bits.clr_cont = (config.clear_mode == EncoderClearMode::CONTINUOUS) ? 1 : 0;
+  encmode.bits.clr_once = (config.clear_mode == EncoderClearMode::ONCE) ? 1 : 0;
+  
+  // N channel sensitivity (edge/level detection)
+  // Register uses pos_edge (bit 6) and neg_edge (bit 7) as separate bits
+  switch (config.n_sensitivity) {
+    case EncoderNSensitivity::ACTIVE_LEVEL:
+      encmode.bits.pos_edge = 0;
+      encmode.bits.neg_edge = 0;
+      break;
+    case EncoderNSensitivity::RISING_EDGE:
+      encmode.bits.pos_edge = 1;
+      encmode.bits.neg_edge = 0;
+      break;
+    case EncoderNSensitivity::FALLING_EDGE:
+      encmode.bits.pos_edge = 0;
+      encmode.bits.neg_edge = 1;
+      break;
+    case EncoderNSensitivity::BOTH_EDGES:
+      encmode.bits.pos_edge = 1;
+      encmode.bits.neg_edge = 1;
+      break;
+  }
+  
+  // Additional encoder features
+  encmode.bits.clr_enc_x = config.clear_enc_x_on_event ? 1 : 0;
+  encmode.bits.latch_x_act = config.latch_xactual_with_enc ? 1 : 0;
+  
+  // Prescaler mode
+  encmode.bits.enc_sel_decimal = (config.prescaler_mode == EncoderPrescalerMode::DECIMAL) ? 1 : 0;
+  // Reserved bits (11-31) are preserved from read value
+  
   return driver_.comm_.WriteRegister(Registers::ENCMODE, encmode.value, driver_.GetCommAddress());
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::Encoder::GetEncoderConfig(EncoderConfig& config) noexcept {
+  uint32_t encmode_val = 0;
+  if (!driver_.comm_.ReadRegister(Registers::ENCMODE, encmode_val)) {
+    return false;
+  }
+  ENCMODE_Register encmode{};
+  encmode.value = encmode_val;
+
+  // Read N channel active level
+  config.n_channel_active = (encmode.bits.pol_N != 0) ? 
+    ReferenceSwitchActiveLevel::ACTIVE_HIGH : ReferenceSwitchActiveLevel::ACTIVE_LOW;
+
+  // Read A/B polarity requirements
+  config.require_a_high = (encmode.bits.pol_A != 0);
+  config.require_b_high = (encmode.bits.pol_B != 0);
+  config.ignore_ab_polarity = (encmode.bits.ignore_AB != 0);
+
+  // Read clear mode (clr_cont and clr_once are mutually exclusive)
+  if (encmode.bits.clr_cont != 0) {
+    config.clear_mode = EncoderClearMode::CONTINUOUS;
+  } else if (encmode.bits.clr_once != 0) {
+    config.clear_mode = EncoderClearMode::ONCE;
+  } else {
+    config.clear_mode = EncoderClearMode::DISABLED;
+  }
+
+  // Read N channel sensitivity (pos_edge=bit6, neg_edge=bit7)
+  if (encmode.bits.pos_edge == 0 && encmode.bits.neg_edge == 0) {
+    config.n_sensitivity = EncoderNSensitivity::ACTIVE_LEVEL;
+  } else if (encmode.bits.pos_edge == 1 && encmode.bits.neg_edge == 0) {
+    config.n_sensitivity = EncoderNSensitivity::RISING_EDGE;
+  } else if (encmode.bits.pos_edge == 0 && encmode.bits.neg_edge == 1) {
+    config.n_sensitivity = EncoderNSensitivity::FALLING_EDGE;
+  } else {  // pos_edge == 1 && neg_edge == 1
+    config.n_sensitivity = EncoderNSensitivity::BOTH_EDGES;
+  }
+
+  // Read additional features
+  config.clear_enc_x_on_event = (encmode.bits.clr_enc_x != 0);
+  config.latch_xactual_with_enc = (encmode.bits.latch_x_act != 0);
+
+  // Read prescaler mode
+  config.prescaler_mode = (encmode.bits.enc_sel_decimal != 0) ? 
+    EncoderPrescalerMode::DECIMAL : EncoderPrescalerMode::BINARY;
+
+  return true;
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::Encoder::SetNChannelActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept {
+  EncoderConfig config{};
+  if (!GetEncoderConfig(config)) {
+    return false;
+  }
+  config.n_channel_active = active_level;
+  return Configure(config);
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::Encoder::SetNChannelSensitivity(EncoderNSensitivity sensitivity) noexcept {
+  EncoderConfig config{};
+  if (!GetEncoderConfig(config)) {
+    return false;
+  }
+  config.n_sensitivity = sensitivity;
+  return Configure(config);
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::Encoder::SetClearMode(EncoderClearMode clear_mode) noexcept {
+  EncoderConfig config{};
+  if (!GetEncoderConfig(config)) {
+    return false;
+  }
+  config.clear_mode = clear_mode;
+  return Configure(config);
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::Encoder::SetPrescalerMode(EncoderPrescalerMode prescaler_mode) noexcept {
+  EncoderConfig config{};
+  if (!GetEncoderConfig(config)) {
+    return false;
+  }
+  config.prescaler_mode = prescaler_mode;
+  return Configure(config);
 }
 
 template <typename CommType>
@@ -1428,11 +1975,12 @@ int32_t TMC5160<CommType>::Encoder::GetPosition() noexcept {
 template <typename CommType>
 bool TMC5160<CommType>::Encoder::SetResolution(int32_t motor_steps, int32_t enc_resolution, bool inverted) noexcept {
   // Calculate factor: (motor_steps * microsteps) / enc_resolution
-  float factor = static_cast<float>(motor_steps * Microsteps::USTEP_COUNT) / static_cast<float>(enc_resolution);
+  // Use current microstep setting (may vary: 256, 128, 64, etc.)
+  float factor = static_cast<float>(motor_steps * driver_.current_microsteps_) / static_cast<float>(enc_resolution);
 
   // Check if binary prescaler gives exact match
   auto enc_const_binary = static_cast<int32_t>(factor * 65536.0F);
-  if (enc_const_binary * enc_resolution == motor_steps * Microsteps::USTEP_COUNT * 65536) {
+  if (enc_const_binary * enc_resolution == motor_steps * driver_.current_microsteps_ * 65536) {
     // Use binary mode
     uint32_t encmode_value = 0;
     if (!driver_.comm_.ReadRegister(Registers::ENCMODE, encmode_value)) {
@@ -1468,14 +2016,15 @@ bool TMC5160<CommType>::Encoder::SetResolution(int32_t motor_steps, int32_t enc_
     }
   int32_t enc_const_decimal = (integer_part * 65536) + decimal_part;
     bool exact_match =
-      ((static_cast<int32_t>(factor * 10000.0F) * enc_resolution) == (motor_steps * Microsteps::USTEP_COUNT * 10000));
+      ((static_cast<int32_t>(factor * 10000.0F) * enc_resolution) == (motor_steps * driver_.current_microsteps_ * 10000));
   driver_.comm_.WriteRegister(Registers::ENC_CONST, static_cast<uint32_t>(enc_const_decimal));
     return exact_match;
 }
 
 template <typename CommType>
 bool TMC5160<CommType>::Encoder::SetAllowedDeviation(int32_t steps) noexcept {
-  int32_t deviation = steps * Microsteps::USTEP_COUNT;
+  // Convert steps to microsteps using current microstep setting
+  int32_t deviation = steps * driver_.current_microsteps_;
   deviation = std::min(deviation, static_cast<int32_t>(0xFFFFF)); // 20 bits
   return driver_.comm_.WriteRegister(Registers::ENC_DEVIATION, static_cast<uint32_t>(deviation));
 }
@@ -1569,12 +2118,24 @@ bool TMC5160<CommType>::Diagnostics::GetGlobalStatus(bool& reset, bool& drv_err,
 template <typename CommType>
 uint16_t TMC5160<CommType>::Diagnostics::GetStallGuard() noexcept {
   uint32_t drv_status_value = 0;
-  if (!driver_.comm_.ReadRegister(Registers::DRV_STATUS, drv_status_value)) {
+  if (!driver_.comm_.ReadRegister(Registers::DRV_STATUS, drv_status_value, driver_.GetCommAddress())) {
     return 0;
   }
   DRV_STATUS_Register drv_status{};
   drv_status.value = drv_status_value;
   return static_cast<uint16_t>(drv_status.bits.sg_result);
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::Diagnostics::GetStallGuardResult(uint16_t& sg_result) noexcept {
+  uint32_t drv_status_value = 0;
+  if (!driver_.comm_.ReadRegister(Registers::DRV_STATUS, drv_status_value, driver_.GetCommAddress())) {
+    return false;
+  }
+  DRV_STATUS_Register drv_status{};
+  drv_status.value = drv_status_value;
+  sg_result = static_cast<uint16_t>(drv_status.bits.sg_result);
+  return true;
 }
 
 template <typename CommType>
@@ -1587,15 +2148,45 @@ bool TMC5160<CommType>::Diagnostics::ConfigureStallGuard(const StallGuardConfig&
   coolconf.value = coolconf_value;
   
   // SGT is signed 7-bit (-64 to +63), constrain and mask to 7 bits (bits 22..16)
-  auto sgt_signed = static_cast<int8_t>(constrain<int8_t>(config.sgt, -64, 63));
+  auto sgt_signed = static_cast<int8_t>(constrain<int8_t>(config.threshold, -64, 63));
   coolconf.bits.sgt = static_cast<int32_t>(sgt_signed) & 0x7F;
   
-  coolconf.bits.sfilt = config.sfilt ? 1 : 0;
+  // Update filter enable
+  coolconf.bits.sfilt = config.enable_filter ? 1 : 0;
   
   // Preserve CoolStep fields (semin, seup, semax, sedn, seimin)
   // They are already in coolconf.value from ReadRegister
   
-  return driver_.comm_.WriteRegister(Registers::COOLCONF, coolconf.value, driver_.GetCommAddress());
+  // Write COOLCONF register
+  bool success = driver_.comm_.WriteRegister(Registers::COOLCONF, coolconf.value, driver_.GetCommAddress());
+  
+  // Configure velocity thresholds if provided
+  if (success && config.min_velocity > 0.0F) {
+    float steps_per_sec = driver_.convertSpeedToSteps(config.min_velocity, config.velocity_unit);
+    int32_t tcoolthrs = driver_.thresholdSpeedToTstep(steps_per_sec);
+    tcoolthrs = std::min(tcoolthrs, static_cast<decltype(tcoolthrs)>(0xFFFFF)); // 20 bits
+    success &= driver_.comm_.WriteRegister(Registers::TCOOLTHRS, static_cast<uint32_t>(tcoolthrs));
+  }
+  
+  if (success && config.max_velocity > 0.0F) {
+    float steps_per_sec = driver_.convertSpeedToSteps(config.max_velocity, config.velocity_unit);
+    int32_t thigh = driver_.thresholdSpeedToTstep(steps_per_sec);
+    thigh = std::min(thigh, static_cast<decltype(thigh)>(0xFFFFF)); // 20 bits
+    success &= driver_.comm_.WriteRegister(Registers::THIGH, static_cast<uint32_t>(thigh));
+  }
+  
+  // Configure stop on stall if requested
+  if (success && config.stop_on_stall) {
+    uint32_t sw_mode_value = 0;
+    if (driver_.comm_.ReadRegister(Registers::SW_MODE, sw_mode_value)) {
+      SW_MODE_Register sw_mode{};
+      sw_mode.value = sw_mode_value;
+      sw_mode.bits.sg_stop = 1;  // Enable stop on stall
+      success &= driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value, driver_.GetCommAddress());
+    }
+  }
+  
+  return success;
 }
 
 template <typename CommType>
@@ -1634,6 +2225,41 @@ bool TMC5160<CommType>::Diagnostics::GetDriverStatusRegister(uint32_t& status) n
 }
 
 template <typename CommType>
+bool TMC5160<CommType>::Diagnostics::IsOpenLoadA() noexcept {
+  uint32_t drv_status_value = 0;
+  if (!driver_.comm_.ReadRegister(Registers::DRV_STATUS, drv_status_value, driver_.GetCommAddress())) {
+    return false;
+  }
+  DRV_STATUS_Register drv_status{};
+  drv_status.value = drv_status_value;
+  return drv_status.bits.ola != 0;
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::Diagnostics::IsOpenLoadB() noexcept {
+  uint32_t drv_status_value = 0;
+  if (!driver_.comm_.ReadRegister(Registers::DRV_STATUS, drv_status_value, driver_.GetCommAddress())) {
+    return false;
+  }
+  DRV_STATUS_Register drv_status{};
+  drv_status.value = drv_status_value;
+  return drv_status.bits.olb != 0;
+}
+
+template <typename CommType>
+bool TMC5160<CommType>::Diagnostics::CheckOpenLoad(bool& phase_a, bool& phase_b) noexcept {
+  uint32_t drv_status_value = 0;
+  if (!driver_.comm_.ReadRegister(Registers::DRV_STATUS, drv_status_value, driver_.GetCommAddress())) {
+    return false;
+  }
+  DRV_STATUS_Register drv_status{};
+  drv_status.value = drv_status_value;
+  phase_a = drv_status.bits.ola != 0;
+  phase_b = drv_status.bits.olb != 0;
+  return true;
+}
+
+template <typename CommType>
 bool TMC5160<CommType>::Diagnostics::GetRampStatusRegister(uint32_t& status) noexcept {
   return driver_.comm_.ReadRegister(Registers::RAMP_STAT, status, driver_.GetCommAddress());
 }
@@ -1652,8 +2278,8 @@ bool TMC5160<CommType>::Diagnostics::PerformSensorlessHoming(bool direction, int
                                                              int32_t& final_position, uint32_t timeout_ms) noexcept {
   // Configure StallGuard2 for homing
   StallGuardConfig sg_config{};
-  sg_config.sgt = stall_threshold;
-  sg_config.sfilt = true; // Enable filter for stable readings
+  sg_config.threshold = stall_threshold;
+  sg_config.enable_filter = true; // Enable filter for stable readings
   if (!ConfigureStallGuard(sg_config)) {
     return false;
   }
@@ -1747,9 +2373,13 @@ bool TMC5160<CommType>::Diagnostics::PerformSensorlessHoming(bool direction, int
 template <typename CommType>
 bool TMC5160<CommType>::Diagnostics::PerformSwitchHoming(bool direction, float search_speed, float switch_speed,
                                                          int32_t& final_position, bool use_left_switch, uint32_t timeout_ms) noexcept {
-  // 1. Activate position latching and motor stop upon switch event
+  // Complete homing procedure per datasheet section 12.4:
+  // Step 1: Make sure switch is not pressed (move away from switch)
+  // This is user responsibility - we assume switch is not pressed at start
+  
+  // Step 2: Activate position latching and motor stop upon switch event
   SW_MODE_Register sw_mode{};
-  // Read current SW_MODE to preserve other settings (like softstop)
+  // Read current SW_MODE to preserve other settings (like sg_stop)
   uint32_t sw_mode_val = 0;
   if (!driver_.comm_.ReadRegister(Registers::SW_MODE, sw_mode_val)) {
     return false;
@@ -1757,35 +2387,46 @@ bool TMC5160<CommType>::Diagnostics::PerformSwitchHoming(bool direction, float s
   sw_mode.value = sw_mode_val;
   
   // Configure latching and stop enable based on switch choice
+  // Note: This assumes switch is already configured via ConfigureReferenceSwitch
+  // We're just enabling latching and stop for the homing procedure
   if (use_left_switch) {
-    sw_mode.bits.latch_l_active = true;
-    sw_mode.bits.stop_l_enable = true;
+    sw_mode.bits.latch_l_active = true;  // Latch on active edge for homing
+    sw_mode.bits.stop_l_enable = true;   // Enable stop on left switch
   } else {
-    sw_mode.bits.latch_r_active = true;
-    sw_mode.bits.stop_r_enable = true;
+    sw_mode.bits.latch_r_active = true;  // Latch on active edge for homing
+    sw_mode.bits.stop_r_enable = true;   // Enable stop on right switch
   }
-  // Use hard stop for precise homing (soft stop can overshoot) - datasheet recommends hard stop for StallGuard,
-  // but for switches hard stop ensures we don't crash if switch is a hard limit.
-  // However, datasheet 12.4 says "Or motor can be softly decelerated...".
-  // Let's assume hard stop for safety during homing search.
+  // Use hard stop for precise homing (per datasheet 12.4 recommendation)
+  // Hard stop ensures motor stops exactly at switch position (no overshoot)
   sw_mode.bits.en_softstop = false; 
   
   if (!driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value)) {
     return false;
   }
 
-  // 2. Start motion ramp into direction of switch
+  // Step 3: Start motion ramp into direction of switch
+  // Move to a more negative position for left switch, more positive for right switch
   RampMode mode = direction ? RampMode::VELOCITY_POS : RampMode::VELOCITY_NEG;
   if (!driver_.rampControl.SetRampMode(mode)) {
     return false;
   }
+  
+  // Set acceleration before speed (required for velocity mode)
+  float acceleration = std::max(search_speed * 10.0f, 50000.0f);  // At least 50k steps/s²
+  if (!driver_.rampControl.SetAcceleration(acceleration)) {
+    return false;
+  }
+  if (!driver_.rampControl.SetDeceleration(acceleration)) {
+    return false;
+  }
+  
   if (!driver_.rampControl.SetMaxSpeed(search_speed)) {
     return false;
   }
 
-  // 3. Wait for switch hit (motor stops automatically)
+  // Step 3 (continued): Wait for switch hit (motor stops automatically)
   bool switch_hit = false;
-  uint32_t loops = timeout_ms * 100;
+  uint32_t loops = timeout_ms * 100;  // 10ms per loop
   for (uint32_t i = 0; i < loops; i++) {
     uint32_t ramp_stat = 0;
     if (driver_.comm_.ReadRegister(Registers::RAMP_STAT, ramp_stat)) {
@@ -1804,32 +2445,115 @@ bool TMC5160<CommType>::Diagnostics::PerformSwitchHoming(bool direction, float s
         break;
       }
     }
-    // driver_.comm_.DelayUs(100);
+    // Small delay for polling (10ms)
+    driver_.comm_.DelayMs(10);
   }
 
-  // 4. Stop motor command (VMAX=0) to ensure it stays stopped
+  // Ensure motor is stopped
   driver_.rampControl.Stop();
 
-  if (switch_hit) {
-    // 5. Read latched position
-    // "Latching of... XACTUAL to XLATCH upon a switch event gives a precise snapshot"
-    // However, datasheet 12.4 "Implementing a homing procedure" step 5 says:
-    // "Switch to hold mode... calculate difference between latched and actual... or when using hard stop XACTUAL stops exactly at home position"
-    // Since we used hard stop, XACTUAL should be valid.
-    // Let's read XLATCH just in case user wants it, but we return current XACTUAL as "final position".
-    // Actually, let's just return the current position where it stopped.
-    final_position = driver_.rampControl.GetCurrentPosition();
+  if (!switch_hit) {
+    // Timeout - disable stop function and return
+    if (use_left_switch) {
+      sw_mode.bits.stop_l_enable = false;
+    } else {
+      sw_mode.bits.stop_r_enable = false;
+    }
+    driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value);
+    return false;
   }
 
-  // Disable stop function to allow moving away
+  // Step 4: Wait until motor is in standstill (poll VACTUAL or check vzero/standstill flag)
+  // Per datasheet: "Wait until the motor is in standstill again by polling the actual velocity
+  // VACTUAL or checking vzero or the standstill flag"
+  uint32_t standstill_loops = 0;
+  const uint32_t max_standstill_loops = 1000;  // 10 seconds max wait
+  bool in_standstill = false;
+  
+  while (standstill_loops < max_standstill_loops) {
+    uint32_t ramp_stat = 0;
+    if (driver_.comm_.ReadRegister(Registers::RAMP_STAT, ramp_stat)) {
+      RAMP_STAT_Register status{};
+      status.value = ramp_stat;
+      
+      // Check vzero flag (velocity reached zero)
+      if (status.bits.vzero) {
+        // Also verify VACTUAL is near zero
+        float vactual = driver_.rampControl.GetCurrentSpeed();
+        if (std::abs(vactual) < 1.0f) {  // Less than 1 step/s
+          in_standstill = true;
+          break;
+        }
+      }
+    }
+    standstill_loops++;
+    // Small delay for polling (10ms)
+    driver_.comm_.DelayMs(10);
+  }
+  
+  if (!in_standstill) {
+    // Motor didn't reach standstill - disable stop and return error
+    if (use_left_switch) {
+      sw_mode.bits.stop_l_enable = false;
+    } else {
+      sw_mode.bits.stop_r_enable = false;
+    }
+    driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value);
+    return false;
+  }
+
+  // Step 5: Switch to hold mode and calculate difference between latched and actual position
+  // Per datasheet: "Switch the ramp generator to hold mode and calculate the difference
+  // between the latched position and the actual position. For StallGuard based homing or
+  // when using hard stop, XACTUAL stops exactly at the home position, so there is no difference (0)."
+  
+  // Switch to hold mode
+  if (!driver_.rampControl.SetRampMode(RampMode::HOLD)) {
+    return false;
+  }
+  
+  // Read latched position (XLATCH) - captured at switch hit
+  int32_t latched_position = driver_.rampControl.GetLatchedPosition();
+  
+  // Read actual position (XACTUAL) - current motor position
+  int32_t actual_position = driver_.rampControl.GetCurrentPosition();
+  
+  // Calculate difference
+  // With hard stop, XACTUAL stops exactly at switch position, so XLATCH ≈ XACTUAL
+  // The difference represents any offset between latched and actual position
+  int32_t position_difference = latched_position - actual_position;
+  
+  // Step 6: Write the calculated difference into the actual position register
+  // Per datasheet: "Write the calculated difference into the actual position register.
+  // Now, homing is finished. A move to position 0 will bring back the motor exactly to the switching point."
+  //
+  // To make the switch position = home (0):
+  // - Current: XACTUAL = switch_position, XLATCH = switch_position (captured)
+  // - Goal: When motor is at switch, XACTUAL = 0
+  // - Solution: Set XACTUAL = XACTUAL - latched_position
+  //   This makes: new_XACTUAL = switch_position - switch_position = 0
+  //   And latched position becomes: XLATCH - (switch_position - switch_position) = 0
+  //
+  // With hard stop, difference should be ~0, so this is effectively setting XACTUAL = 0
+  int32_t new_position = actual_position - latched_position;
+  if (!driver_.rampControl.SetCurrentPosition(new_position)) {
+    return false;
+  }
+  
+  // Return final position (should be 0 after homing, representing home position)
+  final_position = driver_.rampControl.GetCurrentPosition();
+
+  // Disable stop function to allow moving away from switch
   if (use_left_switch) {
     sw_mode.bits.stop_l_enable = false;
+    sw_mode.bits.latch_l_active = false;
   } else {
     sw_mode.bits.stop_r_enable = false;
+    sw_mode.bits.latch_r_active = false;
   }
   driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value);
 
-  return switch_hit;
+  return true;
 }
 
 // Communication implementation
@@ -2195,8 +2919,8 @@ bool TMC5160<CommType>::Diagnostics::TuneStallGuard(float target_velocity, int8_
   while (current_sgt <= max_sgt) {
     // Update SGT
     StallGuardConfig sg_config{};
-    sg_config.sgt = current_sgt;
-    sg_config.sfilt = false; // Disable filter during tuning
+    sg_config.threshold = current_sgt;
+    sg_config.enable_filter = false; // Disable filter during tuning
     if (!ConfigureStallGuard(sg_config)) {
       driver_.rampControl.Stop();
       return false;

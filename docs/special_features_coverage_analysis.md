@@ -354,7 +354,7 @@ struct DriverConfig {
     ChopperConfig chopper;                  // 9 parameters
     StealthChopConfig stealthchop;         // 7 parameters
     GlobalConfig global_config;             // 18 parameters
-    RampParameters ramp_params;            // 3 parameters
+    RampConfig ramp_config;                // 10 parameters (velocities, accelerations, timing)
     uint32_t f_clk;                        // 1 parameter
 };
 ```

@@ -38,12 +38,22 @@
 #include <cmath>
 
 //=============================================================================
-// MOTOR SELECTION - Change this to select which motor configuration to use
+// CONFIGURATION SELECTION - Change these to select motor, board, and platform
 //=============================================================================
-// See esp32_tmc5160_bus_config.hpp for detailed motor specifications.
-// Change the value below to select a different motor:
+// See esp32_tmc5160_bus_config.hpp for detailed motor, board, and platform specifications.
+// Change the values below to select different configurations:
+
+// Motor selection (compile-time constant)
 static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
     tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+
+// Board selection (compile-time constant)
+static constexpr tmc5160_test_config::BoardType SELECTED_BOARD = 
+    tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL;
+
+// Platform selection (compile-time constant)
+static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM = 
+    tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
 
 static const char* TAG = "Sinusoidal";
 
@@ -225,81 +235,39 @@ extern "C" void app_main() {
     ESP_LOGI(TAG, "Selected Motor: Applied Motion 5034-369 NEMA 34 (high torque, 4.17A)");
   }
   
-  // Configure driver - use conditional compilation for namespace selection
+  // Configure driver using helper functions
   tmc5160::DriverConfig cfg{};
   
   // Motor configuration constants (extracted for use later in code)
   uint16_t output_full_steps = 0;
   float gear_ratio = 1.0f;
   
+  // Configure motor
   if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
     namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
-    cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
-    cfg.motor.irun = Motor::IRUN;
-    cfg.motor.ihold = Motor::IHOLD;
-    cfg.chopper.toff = Motor::TOFF;
-    cfg.chopper.mres = Motor::MRES;
-    cfg.chopper.intpol = Motor::INTERPOLATION;
-    cfg.chopper.hend = Motor::HEND;
-    cfg.chopper.hstrt = Motor::HSTRT;
-    cfg.chopper.tbl = Motor::TBL;
-    cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
-    cfg.stealthchop.pwm_grad = 0;
-    cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
-    cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
-    cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
-    cfg.power_stage.mosfet_miller_charge_nc = Motor::MOSFET_MILLER_CHARGE_NC;
-    cfg.power_stage.bbm_time_ns = Motor::BBM_TIME_NS;
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
     output_full_steps = Motor::OUTPUT_FULL_STEPS;
     gear_ratio = Motor::GEAR_RATIO;
   } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
     namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S_Direct;
-    cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
-    cfg.motor.irun = Motor::IRUN;
-    cfg.motor.ihold = Motor::IHOLD;
-    cfg.chopper.toff = Motor::TOFF;
-    cfg.chopper.mres = Motor::MRES;
-    cfg.chopper.intpol = Motor::INTERPOLATION;
-    cfg.chopper.hend = Motor::HEND;
-    cfg.chopper.hstrt = Motor::HSTRT;
-    cfg.chopper.tbl = Motor::TBL;
-    cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
-    cfg.stealthchop.pwm_grad = 0;
-    cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
-    cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
-    cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
-    cfg.power_stage.mosfet_miller_charge_nc = Motor::MOSFET_MILLER_CHARGE_NC;
-    cfg.power_stage.bbm_time_ns = Motor::BBM_TIME_NS;
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
     output_full_steps = Motor::OUTPUT_FULL_STEPS;
     gear_ratio = Motor::GEAR_RATIO;
   } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
     namespace Motor = tmc5160_test_config::MotorConfig_AppliedMotion_5034_369;
-    cfg.motor.global_scaler = Motor::GLOBAL_SCALER;
-    cfg.motor.irun = Motor::IRUN;
-    cfg.motor.ihold = Motor::IHOLD;
-    cfg.chopper.toff = Motor::TOFF;
-    cfg.chopper.mres = Motor::MRES;
-    cfg.chopper.intpol = Motor::INTERPOLATION;
-    cfg.chopper.hend = Motor::HEND;
-    cfg.chopper.hstrt = Motor::HSTRT;
-    cfg.chopper.tbl = Motor::TBL;
-    cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
-    cfg.stealthchop.pwm_grad = 0;
-    cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
-    cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
-    cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
-    cfg.power_stage.mosfet_miller_charge_nc = Motor::MOSFET_MILLER_CHARGE_NC;
-    cfg.power_stage.bbm_time_ns = Motor::BBM_TIME_NS;
+    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
     output_full_steps = Motor::OUTPUT_FULL_STEPS;
     gear_ratio = Motor::GEAR_RATIO;
   }
   
+  // Apply board configuration
+  tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
+  
+  // Apply platform configuration
+  tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
+  
   // Enable StealthChop
   cfg.global_config.en_pwm_mode = true; // Enable StealthChop
-
-  // Short protection (user-friendly voltage thresholds)
-  cfg.power_stage.s2vs_voltage_mv = 625;  // 625mV = S2VS_LEVEL=6 (recommended)
-  cfg.power_stage.s2g_voltage_mv = 500;  // ~500mV = S2G_LEVEL=4 (higher sensitivity)
 
   // Initialize driver
   if (!driver.Initialize(cfg)) {
@@ -317,8 +285,9 @@ extern "C" void app_main() {
       ESP_LOGI(TAG, "Startup verification passed");
   }
 
-  ESP_LOGI(TAG, "Motor settings: irun=%u, ihold=%u, microsteps=256, global_scaler=%u",
-           cfg.motor.irun, cfg.motor.ihold, cfg.motor.global_scaler);
+  ESP_LOGI(TAG, "Motor specifications: rated_current=%u mA, sense_resistor=%u mOhm, supply_voltage=%u mV",
+           cfg.motor_spec.rated_current_ma, cfg.motor_spec.sense_resistor_mohm, cfg.motor_spec.supply_voltage_mv);
+  ESP_LOGI(TAG, "Note: IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated from motor specifications");
   
   // CLK16 (CLK pin) configuration note:
   // The CLK pin (pin 12) should be TIED TO GND in hardware when using internal clock
@@ -392,10 +361,9 @@ extern "C" void app_main() {
   // This is just for diagnostics - it won't stop the motor
   // NOTE: StallGuard2 ONLY works in SpreadCycle mode! In StealthChop, SG_RESULT is invalid/zero.
   tmc5160::StallGuardConfig sg_cfg{};
-  sg_cfg.sgt = 63;        // Maximum threshold (least sensitive) - won't trigger
-  sg_cfg.semin = 0;       // Disable CoolStep (semin=0 means CoolStep off)
-  sg_cfg.semax = 0;       // No hysteresis
-  sg_cfg.sfilt = false;   // No filter
+  sg_cfg.threshold = 63;        // Maximum threshold (least sensitive) - won't trigger
+  sg_cfg.enable_filter = false; // No filter (faster response)
+  // Note: semin/semax are CoolStep parameters, configure separately if needed
   if (driver.diagnostics.ConfigureStallGuard(sg_cfg)) {
     ESP_LOGI(TAG, "✓ StallGuard2 configured for diagnostics only (sgt=63, least sensitive)");
     ESP_LOGI(TAG, "  Note: StallGuard2 is DISABLED and will NOT stop the motor");
@@ -409,9 +377,13 @@ extern "C" void app_main() {
   // Disable reference switches if not using them (prevents motion blocking)
   // If you have reference switches connected, configure them instead
   tmc5160::ReferenceSwitchConfig ref_cfg{};
-  ref_cfg.stop_left_enable = false;   // Disable left reference switch
-  ref_cfg.stop_right_enable = false;  // Disable right reference switch
-  ref_cfg.en_softstop = false;        // Disable soft stop
+  // Configure switches but disable motor stop (allows reading switch state without stopping)
+  ref_cfg.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+  ref_cfg.right_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+  ref_cfg.left_switch_stop_enable = false;   // Don't stop motor
+  ref_cfg.right_switch_stop_enable = false;  // Don't stop motor
+  ref_cfg.latch_left = tmc5160::ReferenceLatchMode::DISABLED;   // No latching
+  ref_cfg.latch_right = tmc5160::ReferenceLatchMode::DISABLED;  // No latching
   if (!driver.rampControl.ConfigureReferenceSwitch(ref_cfg)) {
     ESP_LOGW(TAG, "Failed to configure reference switches (may not be critical)");
   } else {
@@ -569,8 +541,8 @@ extern "C" void app_main() {
           ESP_LOGW(TAG, "⚠️ StealthChop is enabled but NOT YET CALIBRATED (pwm_scale_auto=%d)", pwm_scale_auto_signed);
           ESP_LOGI(TAG, "   Calibration will occur automatically:");
           ESP_LOGI(TAG, "   AT#1: Wait 130ms+ at standstill with CS=IRUN for PWM_OFS_AUTO");
-          ESP_LOGI(TAG, "         (Current: IRUN=%d, IHOLD=%d - motor will use IRUN during motion)", 
-                   cfg.motor.irun, cfg.motor.ihold);
+          ESP_LOGI(TAG, "         (Motor rated current: %u mA - IRUN/IHOLD calculated automatically)", 
+                   cfg.motor_spec.rated_current_ma);
           ESP_LOGI(TAG, "   AT#2: Move motor at 60-300 RPM for PWM_GRAD_AUTO (~400 fullsteps)");
           ESP_LOGI(TAG, "   Motor may not move until calibration completes - this is normal");
           ESP_LOGI(TAG, "   Keeping StealthChop enabled - calibration will happen during operation");
@@ -587,21 +559,18 @@ extern "C" void app_main() {
   // NOTE: IHOLD_IRUN and GLOBAL_SCALER are WRITE-ONLY registers per datasheet!
   // We cannot read them back, so we display the configured values instead.
   ESP_LOGI(TAG, "=== Motor Current Diagnostic ===");
-  ESP_LOGI(TAG, "Configured IRUN = %d (0-31, higher = more current)", cfg.motor.irun);
-  ESP_LOGI(TAG, "Configured IHOLD = %d (0-31, higher = more hold current)", cfg.motor.ihold);
-  ESP_LOGI(TAG, "Configured GLOBAL_SCALER = %u (32-256, higher = more current capacity)", cfg.motor.global_scaler);
+  ESP_LOGI(TAG, "Motor specifications:");
+  ESP_LOGI(TAG, "  Rated current: %u mA", cfg.motor_spec.rated_current_ma);
+  ESP_LOGI(TAG, "  Sense resistor: %u mOhm", cfg.motor_spec.sense_resistor_mohm);
+  ESP_LOGI(TAG, "  Supply voltage: %u mV", cfg.motor_spec.supply_voltage_mv);
+  ESP_LOGI(TAG, "Note: IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated during initialization");
   ESP_LOGI(TAG, "Note: IHOLD_IRUN and GLOBAL_SCALER are write-only registers - cannot verify by reading");
   
-  // If current is too low, motor might not have enough torque
-  if (cfg.motor.irun < 20) {
-    ESP_LOGW(TAG, "⚠️ Motor current (IRUN=%d) may be too low for reliable motion", cfg.motor.irun);
-    ESP_LOGW(TAG, "   Consider increasing IRUN to 25-31 for better torque");
+  // Check if motor specs are adequate
+  if (cfg.motor_spec.rated_current_ma < 1000) {
+    ESP_LOGW(TAG, "⚠️ Motor rated current (%u mA) may be low - ensure adequate torque");
   } else {
-    ESP_LOGI(TAG, "✓ Motor current appears adequate (IRUN=%d)", cfg.motor.irun);
-  }
-  
-  if (cfg.motor.global_scaler < 128) {
-    ESP_LOGW(TAG, "⚠️ GLOBAL_SCALER is low (%u) - consider increasing to 160+ for better performance", cfg.motor.global_scaler);
+    ESP_LOGI(TAG, "✓ Motor rated current appears adequate (%u mA)", cfg.motor_spec.rated_current_ma);
   }
   
   // Comprehensive DIAG pin diagnostic function

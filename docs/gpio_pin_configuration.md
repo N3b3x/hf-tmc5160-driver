@@ -354,10 +354,10 @@ spi.GpioRead(tmc5160::TMC5160CtrlPin::REFR_DIR, right_ref);
 
 // Configure reference switches in driver
 tmc5160::ReferenceSwitchConfig ref_cfg{};
-ref_cfg.stop_left_enable = true;
-ref_cfg.stop_right_enable = true;
-ref_cfg.pol_stop_left = false;  // Active LOW
-ref_cfg.pol_stop_right = false; // Active LOW
+ref_cfg.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+ref_cfg.right_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+ref_cfg.latch_left = tmc5160::ReferenceLatchMode::DISABLED;
+ref_cfg.latch_right = tmc5160::ReferenceLatchMode::DISABLED;
 driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
 ```
 

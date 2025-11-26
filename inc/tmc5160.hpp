@@ -273,6 +273,13 @@ public:
     bool SetRampMode(RampMode mode) noexcept;
 
     /**
+     * @brief Get current ramp mode
+     * @param mode Reference to store the current ramp mode
+     * @return true if read successfully, false otherwise
+     */
+    bool GetRampMode(RampMode& mode) noexcept;
+
+    /**
      * @brief Set target position
      * @param value Target position value
      * @param unit Unit of the value (default: Steps)
@@ -381,6 +388,80 @@ public:
      * @return true if configured successfully, false otherwise
      */
     bool ConfigureReferenceSwitch(const ReferenceSwitchConfig& config) noexcept;
+
+    /**
+     * @brief Get current reference switch configuration
+     * @param config Reference to store current configuration
+     * @return true if read successfully, false otherwise
+     */
+    bool GetReferenceSwitchConfig(ReferenceSwitchConfig& config) noexcept;
+
+    /**
+     * @brief Set left switch active level (determines polarity)
+     * @param active_level Active level (ACTIVE_LOW or ACTIVE_HIGH)
+     * @return true if configured successfully, false otherwise
+     *
+     * Updates only the active level, preserving other settings.
+     * Allows real-time polarity changes while keeping stop enable and latching configured.
+     */
+    bool SetLeftSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept;
+
+    /**
+     * @brief Set right switch active level (determines polarity)
+     * @param active_level Active level (ACTIVE_LOW or ACTIVE_HIGH)
+     * @return true if configured successfully, false otherwise
+     *
+     * Updates only the active level, preserving other settings.
+     * Allows real-time polarity changes while keeping stop enable and latching configured.
+     */
+    bool SetRightSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept;
+
+    /**
+     * @brief Enable or disable motor stop on left switch
+     * @param enable true to enable stop, false to disable
+     * @return true if configured successfully, false otherwise
+     *
+     * Updates only stop enable, preserving other settings.
+     * Allows real-time enable/disable of motor stop while keeping polarity and latching configured.
+     */
+    bool SetLeftSwitchStopEnable(bool enable) noexcept;
+
+    /**
+     * @brief Enable or disable motor stop on right switch
+     * @param enable true to enable stop, false to disable
+     * @return true if configured successfully, false otherwise
+     *
+     * Updates only stop enable, preserving other settings.
+     * Allows real-time enable/disable of motor stop while keeping polarity and latching configured.
+     */
+    bool SetRightSwitchStopEnable(bool enable) noexcept;
+
+    /**
+     * @brief Set left switch latching mode
+     * @param latch_mode Latching mode (DISABLED, ACTIVE_EDGE, INACTIVE_EDGE, BOTH_EDGES)
+     * @return true if configured successfully, false otherwise
+     *
+     * Updates only latching mode, preserving other settings.
+     */
+    bool SetLeftSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept;
+
+    /**
+     * @brief Set right switch latching mode
+     * @param latch_mode Latching mode (DISABLED, ACTIVE_EDGE, INACTIVE_EDGE, BOTH_EDGES)
+     * @return true if configured successfully, false otherwise
+     *
+     * Updates only latching mode, preserving other settings.
+     */
+    bool SetRightSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept;
+
+    /**
+     * @brief Set stop mode (hard or soft stop)
+     * @param stop_mode Stop mode (HARD_STOP or SOFT_STOP)
+     * @return true if configured successfully, false otherwise
+     *
+     * Updates only stop mode, preserving other settings.
+     */
+    bool SetStopMode(ReferenceStopMode stop_mode) noexcept;
 
     /**
      * @brief Get latched position
@@ -709,6 +790,50 @@ public:
     bool Configure(const EncoderConfig& config) noexcept;
 
     /**
+     * @brief Get current encoder configuration
+     * @param config Reference to store current configuration
+     * @return true if read successfully, false otherwise
+     */
+    bool GetEncoderConfig(EncoderConfig& config) noexcept;
+
+    /**
+     * @brief Set N channel active level (determines polarity)
+     * @param active_level Active level (ACTIVE_LOW or ACTIVE_HIGH)
+     * @return true if configured successfully, false otherwise
+     *
+     * Updates only the active level, preserving other settings.
+     * Shares ReferenceSwitchActiveLevel enum with reference switches.
+     */
+    bool SetNChannelActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept;
+
+    /**
+     * @brief Set N channel sensitivity (edge/level detection)
+     * @param sensitivity Sensitivity mode (ACTIVE_LEVEL, RISING_EDGE, FALLING_EDGE, BOTH_EDGES)
+     * @return true if configured successfully, false otherwise
+     *
+     * Updates only sensitivity, preserving other settings.
+     */
+    bool SetNChannelSensitivity(EncoderNSensitivity sensitivity) noexcept;
+
+    /**
+     * @brief Set encoder clear mode
+     * @param clear_mode Clear mode (DISABLED, ONCE, CONTINUOUS)
+     * @return true if configured successfully, false otherwise
+     *
+     * Updates only clear mode, preserving other settings.
+     */
+    bool SetClearMode(EncoderClearMode clear_mode) noexcept;
+
+    /**
+     * @brief Set encoder prescaler mode
+     * @param prescaler_mode Prescaler mode (BINARY or DECIMAL)
+     * @return true if configured successfully, false otherwise
+     *
+     * Updates only prescaler mode, preserving other settings.
+     */
+    bool SetPrescalerMode(EncoderPrescalerMode prescaler_mode) noexcept;
+
+    /**
      * @brief Get encoder position
      * @return Encoder position in steps, or 0 on error
      */
@@ -790,6 +915,13 @@ public:
     uint16_t GetStallGuard() noexcept;
 
     /**
+     * @brief Get StallGuard2 result from DRV_STATUS register
+     * @param sg_result Reference to store StallGuard2 value (0-1023)
+     * @return true if read successfully, false otherwise
+     */
+    bool GetStallGuardResult(uint16_t& sg_result) noexcept;
+
+    /**
      * @brief Configure StallGuard2
      * @param config StallGuard configuration structure
      * @return true if configured successfully, false otherwise
@@ -821,6 +953,65 @@ public:
      * @return true if read successfully, false otherwise
      */
     bool GetDriverStatusRegister(uint32_t& status) noexcept;
+
+    /**
+     * @brief Check if open load is detected on phase A
+     * @return true if open load detected on phase A, false otherwise or on error
+     *
+     * Open load detection indicates an interrupted cable or connector issue.
+     *
+     * @note Requirements for reliable detection:
+     * - Must operate in SpreadCycle mode (StealthChop disabled)
+     * - Motor must be moving (minimum 4× microstep resolution in single direction)
+     * - Use low or nominal motor velocity
+     * - Cannot be detected in standstill (coils may have zero current)
+     *
+     * @warning Open load flags are informative only and do not cause driver action.
+     * Also triggered by undervoltage, high velocity, short circuit, or overtemperature conditions.
+     *
+     * @see Datasheet section 11.3: Open Load Diagnostics
+     */
+    bool IsOpenLoadA() noexcept;
+
+    /**
+     * @brief Check if open load is detected on phase B
+     * @return true if open load detected on phase B, false otherwise or on error
+     *
+     * Open load detection indicates an interrupted cable or connector issue.
+     *
+     * @note Requirements for reliable detection:
+     * - Must operate in SpreadCycle mode (StealthChop disabled)
+     * - Motor must be moving (minimum 4× microstep resolution in single direction)
+     * - Use low or nominal motor velocity
+     * - Cannot be detected in standstill (coils may have zero current)
+     *
+     * @warning Open load flags are informative only and do not cause driver action.
+     * Also triggered by undervoltage, high velocity, short circuit, or overtemperature conditions.
+     *
+     * @see Datasheet section 11.3: Open Load Diagnostics
+     */
+    bool IsOpenLoadB() noexcept;
+
+    /**
+     * @brief Check if open load is detected on either phase
+     * @param phase_a Reference to store phase A status (true if open load detected)
+     * @param phase_b Reference to store phase B status (true if open load detected)
+     * @return true if read successfully, false otherwise
+     *
+     * Convenience method to check both phases at once.
+     *
+     * @note Requirements for reliable detection:
+     * - Must operate in SpreadCycle mode (StealthChop disabled)
+     * - Motor must be moving (minimum 4× microstep resolution in single direction)
+     * - Use low or nominal motor velocity
+     * - Cannot be detected in standstill (coils may have zero current)
+     *
+     * @warning Open load flags are informative only and do not cause driver action.
+     * Also triggered by undervoltage, high velocity, short circuit, or overtemperature conditions.
+     *
+     * @see Datasheet section 11.3: Open Load Diagnostics
+     */
+    bool CheckOpenLoad(bool& phase_a, bool& phase_b) noexcept;
 
     /**
      * @brief Get ramp status register value
@@ -856,16 +1047,28 @@ public:
      * @brief Perform homing using a reference switch (Section 12.4)
      * @param direction Direction to search (true = positive, false = negative)
      * @param search_speed Speed for homing search in steps/s
-     * @param switch_speed Speed for slow approach to switch in steps/s
-     * @param final_position Reference to store final position after homing
+     * @param switch_speed Speed for slow approach to switch in steps/s (unused, reserved for future two-phase approach)
+     * @param final_position Reference to store final position after homing (will be 0 after successful homing)
      * @param use_left_switch true to use REFL, false to use REFR
      * @param timeout_ms Maximum time to wait for switch in milliseconds (default: 10000ms)
-     * @return true if switch hit and motor stopped, false if timeout or error
+     * @return true if switch hit and homing completed successfully, false if timeout or error
      *
-     * Implements homing procedure from datasheet section 12.4:
-     * 1. Moves towards switch at search_speed
-     * 2. Stops on switch hit (hard stop)
-     * 3. Updates final_position with latched position
+     * Implements complete homing procedure from datasheet section 12.4:
+     * 1. Ensure switch is not pressed (user responsibility - move away before calling)
+     * 2. Activate position latching and motor stop upon switch event
+     * 3. Start motion ramp into direction of switch
+     * 4. Wait for standstill after switch hit (poll VACTUAL/vzero)
+     * 5. Switch to hold mode and calculate position difference
+     * 6. Write difference to actual position register (sets home position to 0)
+     *
+     * After successful homing:
+     * - Motor position is set to 0 (home position)
+     * - Moving to position 0 will return motor to the switching point
+     * - Stop function is disabled to allow moving away from switch
+     *
+     * @note Uses hard stop for precise homing (no overshoot)
+     * @note Ensure switch is not pressed before calling (move away first)
+     * @note After homing, configure switches for normal operation if needed
      */
     bool PerformSwitchHoming(bool direction, float search_speed, float switch_speed,
                              int32_t& final_position, bool use_left_switch, uint32_t timeout_ms = 10000) noexcept;

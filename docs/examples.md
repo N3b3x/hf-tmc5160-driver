@@ -181,10 +181,9 @@ int main() {
     
     // Configure StallGuard2
     tmc5160::StallGuardConfig sg_cfg{};
-    sg_cfg.sgt = 0;      // Threshold (tune for your motor)
-    sg_cfg.semin = 0;    // Minimum SG value
-    sg_cfg.semax = 0;    // Hysteresis
-    sg_cfg.sfilt = false; // Filter disabled
+    sg_cfg.threshold = 0;      // Threshold (tune for your motor)
+    sg_cfg.enable_filter = false; // Filter disabled
+    // Note: semin/semax are CoolStep parameters, configure separately if needed
     driver.diagnostics.ConfigureStallGuard(sg_cfg);
     
     driver.rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS);

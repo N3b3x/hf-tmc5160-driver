@@ -81,8 +81,16 @@ Ramp control and motion planning subsystem.
 | `Stop()` | `bool Stop() noexcept` | `true` on success | Stop motor immediately |
 | `SetTargetPositionMm()` | `bool SetTargetPositionMm(float position_mm, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept` | `true` on success | Set target position in millimeters |
 | `SetMaxSpeedRpm()` | `bool SetMaxSpeedRpm(float rpm, uint16_t steps_per_rev) noexcept` | `true` on success | Set maximum speed in RPM |
-| `ConfigureReferenceSwitch()` | `bool ConfigureReferenceSwitch(const ReferenceSwitchConfig& config) noexcept` | `true` on success | Configure reference switches/endstops |
-| `GetLatchedPosition()` | `int32_t GetLatchedPosition() noexcept` | Latched position (0 on error) | Get position latched on switch event |
+| `ConfigureReferenceSwitch()` | `bool ConfigureReferenceSwitch(const ReferenceSwitchConfig& config) noexcept` | `true` on success | Configure reference switches/endstops (full configuration) |
+| `GetReferenceSwitchConfig()` | `bool GetReferenceSwitchConfig(ReferenceSwitchConfig& config) noexcept` | `true` on success | Read current reference switch configuration |
+| `SetLeftSwitchActiveLevel()` | `bool SetLeftSwitchActiveLevel(ReferenceSwitchActiveLevel) noexcept` | `true` on success | Set left switch active level (real-time update) |
+| `SetRightSwitchActiveLevel()` | `bool SetRightSwitchActiveLevel(ReferenceSwitchActiveLevel) noexcept` | `true` on success | Set right switch active level (real-time update) |
+| `SetLeftSwitchStopEnable()` | `bool SetLeftSwitchStopEnable(bool enable) noexcept` | `true` on success | Enable/disable motor stop on left switch (real-time) |
+| `SetRightSwitchStopEnable()` | `bool SetRightSwitchStopEnable(bool enable) noexcept` | `true` on success | Enable/disable motor stop on right switch (real-time) |
+| `SetLeftSwitchLatchMode()` | `bool SetLeftSwitchLatchMode(ReferenceLatchMode) noexcept` | `true` on success | Set left switch latching mode (real-time update) |
+| `SetRightSwitchLatchMode()` | `bool SetRightSwitchLatchMode(ReferenceLatchMode) noexcept` | `true` on success | Set right switch latching mode (real-time update) |
+| `SetStopMode()` | `bool SetStopMode(ReferenceStopMode) noexcept` | `true` on success | Set stop mode (hard/soft) (real-time update) |
+| `GetLatchedPosition()` | `float GetLatchedPosition(Unit unit) noexcept` | Latched position (0 on error) | Get position latched on switch event |
 | `SetComparePosition()` | `bool SetComparePosition(int32_t position) noexcept` | `true` on success | Set position comparison register (X_COMPARE) |
 | `SetPowerDownDelay()` | `bool SetPowerDownDelay(uint8_t tpowerdown) noexcept` | `true` on success | Set power down delay (0-255) |
 | `SetZeroWaitTime()` | `bool SetZeroWaitTime(uint16_t tzerowait) noexcept` | `true` on success | Set zero wait time after ramping down (0-65535) |
@@ -125,6 +133,11 @@ Encoder integration and closed-loop control subsystem.
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
 | `Configure()` | `bool Configure(const EncoderConfig& config) noexcept` | `true` on success | Configure encoder settings (polarity, filtering, etc.) |
+| `GetEncoderConfig()` | `bool GetEncoderConfig(EncoderConfig& config) noexcept` | `true` on success | Read current encoder configuration |
+| `SetNChannelActiveLevel()` | `bool SetNChannelActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept` | `true` on success | Set N channel active level (real-time) |
+| `SetNChannelSensitivity()` | `bool SetNChannelSensitivity(EncoderNSensitivity sensitivity) noexcept` | `true` on success | Set N channel sensitivity (real-time) |
+| `SetClearMode()` | `bool SetClearMode(EncoderClearMode clear_mode) noexcept` | `true` on success | Set encoder clear mode (real-time) |
+| `SetPrescalerMode()` | `bool SetPrescalerMode(EncoderPrescalerMode prescaler_mode) noexcept` | `true` on success | Set encoder prescaler mode (real-time) |
 | `GetPosition()` | `int32_t GetPosition() noexcept` | Encoder position (0 on error) | Get encoder position |
 | `SetResolution()` | `bool SetResolution(int32_t motor_steps, int32_t enc_resolution, bool inverted = false) noexcept` | `true` on success | Set encoder resolution (motor steps per encoder resolution) |
 | `SetAllowedDeviation()` | `bool SetAllowedDeviation(int32_t deviation) noexcept` | `true` on success | Set allowed encoder deviation threshold |
@@ -146,6 +159,9 @@ Driver status monitoring and diagnostics subsystem.
 | `GetStallGuard()` | `uint16_t GetStallGuard() noexcept` | StallGuard value (0-1023) | Get StallGuard2 value |
 | `ConfigureStallGuard()` | `bool ConfigureStallGuard(const StallGuardConfig& config) noexcept` | `true` on success | Configure StallGuard2 settings |
 | `GetDriverStatusRegister()` | `bool GetDriverStatusRegister(uint32_t& status) noexcept` | `true` on success | Read DRV_STATUS register |
+| `IsOpenLoadA()` | `bool IsOpenLoadA() noexcept` | `true` if open load on phase A | Check for open load on phase A (requires SpreadCycle mode and motion) |
+| `IsOpenLoadB()` | `bool IsOpenLoadB() noexcept` | `true` if open load on phase B | Check for open load on phase B (requires SpreadCycle mode and motion) |
+| `CheckOpenLoad()` | `bool CheckOpenLoad(bool& phase_a, bool& phase_b) noexcept` | `true` on success | Check both phases for open load simultaneously |
 | `GetRampStatusRegister()` | `bool GetRampStatusRegister(uint32_t& status) noexcept` | `true` on success | Read RAMP_STAT register |
 | `GetLostSteps()` | `uint32_t GetLostSteps() noexcept` | Lost steps count (0 on error) | Get lost steps counter (dcStep mode only) |
 | `PerformSensorlessHoming()` | `bool PerformSensorlessHoming(bool direction, int8_t stall_threshold, float search_speed, int32_t& final_position) noexcept` | `true` on success | Perform sensorless homing using StallGuard2 |
@@ -159,6 +175,64 @@ Driver status monitoring and diagnostics subsystem.
 | `ReadOtpConfig()` | `bool ReadOtpConfig(uint8_t& otp_fclktrim, bool& otp_s2_level, bool& otp_bbm, bool& otp_tbl) noexcept` | `true` on success | Read OTP configuration memory (OTP_READ register) |
 | `GetUartTransmissionCount()` | `uint8_t GetUartTransmissionCount() noexcept` | Transmission count (0 on error) | Get UART transmission counter (IFCNT register) |
 | `ReadOffsetCalibration()` | `bool ReadOffsetCalibration(uint8_t& phase_a, uint8_t& phase_b) noexcept` | `true` on success | Read offset calibration results (OFFSET_READ register) |
+
+### Open Load Diagnostics
+
+The TMC5160 can detect open load conditions (interrupted cables, loose connectors) by checking if it can reach the desired motor coil current. This is useful for system debugging and detecting wiring issues.
+
+**Requirements for Reliable Detection:**
+
+1. **SpreadCycle Mode**: Open load detection only works reliably in SpreadCycle mode. StealthChop mode must be disabled (`en_pwm_mode = 0` in GCONF).
+
+2. **Motor Motion**: The motor must be moving with a minimum of 4× the selected microstep resolution in a single direction. Detection cannot occur in standstill (coils may have zero current).
+
+3. **Velocity**: Use low or nominal motor velocity for best results. High velocity settings may cause false triggers.
+
+4. **Informative Only**: Open load flags (`ola`, `olb`) are informative and do not cause any driver action. They may also be triggered by:
+   - Undervoltage conditions
+   - High motor velocity settings
+   - Short circuit conditions
+   - Overtemperature conditions
+
+**Usage Example:**
+
+```cpp
+// Ensure SpreadCycle mode is enabled (StealthChop disabled)
+tmc5160::GlobalConfig gconf{};
+driver.motorControl.GetGlobalConfig(gconf);
+if (gconf.en_pwm_mode) {
+  gconf.en_pwm_mode = false;  // Disable StealthChop
+  driver.motorControl.ConfigureGlobalConfig(gconf);
+}
+
+// Move motor at low/nominal velocity (minimum 4× microstep resolution)
+driver.rampControl.SetMaxSpeed(1000.0f, tmc5160::Unit::Steps);  // Low velocity
+driver.rampControl.SetTargetPosition(1024);  // At least 4× microstep resolution (256)
+
+// Wait for motion to start
+while (!driver.rampControl.IsTargetReached()) {
+  // Check for open load during motion
+  bool phase_a_open = driver.diagnostics.IsOpenLoadA();
+  bool phase_b_open = driver.diagnostics.IsOpenLoadB();
+  
+  if (phase_a_open || phase_b_open) {
+    ESP_LOGW(TAG, "Open load detected: Phase A=%d, Phase B=%d", 
+             phase_a_open, phase_b_open);
+    // Check wiring, connectors, and motor connections
+  }
+  
+  vTaskDelay(pdMS_TO_TICKS(10));
+}
+
+// Or check both phases at once
+bool phase_a, phase_b;
+if (driver.diagnostics.CheckOpenLoad(phase_a, phase_b)) {
+  if (phase_a) ESP_LOGW(TAG, "Phase A open load detected");
+  if (phase_b) ESP_LOGW(TAG, "Phase B open load detected");
+}
+```
+
+**See Also**: Datasheet section 11.3: Open Load Diagnostics
 
 ## Communication Subsystem
 
@@ -328,87 +402,241 @@ Chip communication and motion control mode configuration. Represents the combina
 
 ### DriverConfig
 
-Main driver configuration structure.
+Main driver configuration structure containing all parameters for initializing the TMC5160 driver.
 
 **Location**: [`inc/tmc5160_config.hpp`](../inc/tmc5160_config.hpp)
 
+**Key Features**:
+- **Automatic Current Calculation**: IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated from `motor_spec` parameters during initialization
+- **User-Friendly Parameters**: All configuration uses physical parameters (voltage, current, time) rather than raw register values
+- **Compile-Time Configuration**: For ESP32 examples, use helper functions from `esp32_tmc5160_bus_config.hpp`
+
 | Field | Type | Description |
 |-------|------|-------------|
-| `motor` | `MotorConfig` | Motor current and scaler settings |
-| `chopper` | `ChopperConfig` | Chopper timing and microstep settings |
+| `motor_spec` | `MotorSpec` | Motor specifications (physical parameters for automatic current calculation) |
+| `mechanical` | `MechanicalSystem` | Mechanical system configuration (gearing, leadscrew, etc.) for unit conversions |
+| `power_stage` | `PowerStageParameters` | Power stage configuration (MOSFET parameters, BBM time, sense filter, over-temperature protection, short protection) |
+| `chopper` | `ChopperConfig` | Chopper timing and microstep settings (SpreadCycle or Classic mode) |
 | `stealthchop` | `StealthChopConfig` | StealthChop PWM configuration |
-| `power_stage` | `PowerStageParameters` | Power stage configuration including MOSFET parameters, BBM time, sense filter, over-temperature protection, and short protection (voltage thresholds) |
 | `global_config` | `GlobalConfig` | Global configuration (GCONF register) |
-| `ramp_params` | `RampParameters` | Ramp parameters (TPOWERDOWN, TZEROWAIT, A1) |
+| `ramp_config` | `RampConfig` | Ramp generator configuration (velocities, accelerations, timing with unit support) |
 | `direction` | `MotorDirection` | Motor direction (NORMAL or INVERTED) |
 | `f_clk` | `uint32_t` | Clock frequency in Hz (default: 12000000) |
 
+**Important Notes**:
+- **DO NOT** manually set IRUN, IHOLD, or GLOBAL_SCALER - these are calculated automatically from `motor_spec`
+- **REQUIRED** for automatic calculation: `motor_spec.sense_resistor_mohm` and `motor_spec.supply_voltage_mv` must be non-zero
+- Current settings are calculated during `Initialize()` and stored internally (not in `motor_spec`)
+- See [`configuration.md`](../docs/configuration.md) for detailed configuration guide
+
 ### ChopperConfig
 
-Chopper configuration structure.
+User-friendly configuration for SpreadCycle and Classic chopper modes.
 
 **Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
 
+SpreadCycle is a cycle-by-cycle current control providing superior microstepping quality. Classic mode is an alternative constant off-time chopper algorithm.
+
 | Field | Type | Range | Description |
 |-------|------|-------|-------------|
-| `toff` | `uint8_t` | 0-15 | Chopper off time |
-| `hstrt` | `uint8_t` | 0-7 | Chopper hysteresis start |
-| `hend` | `uint8_t` | 0-15 | Chopper hysteresis end |
-| `tbl` | `uint8_t` | 0-3 | Blanking time |
-| `vsense` | `bool` | - | Voltage sense mode |
-| `mres` | `uint8_t` | 0-8 | Microstep resolution |
-| `intpol` | `bool` | - | Interpolation enable |
-| `dedge` | `bool` | - | Double edge step |
+| `mode` | `ChopperMode` | - | Chopper mode (SPREAD_CYCLE recommended, CLASSIC alternative) |
+| `toff` | `uint8_t` | 0-15 | Off time setting (0=disabled, 1-15=off time, 5=typical) |
+| `tbl` | `uint8_t` | 0-3 | Blank time (ChopperBlankTime enum or 0-3, 2=typical) |
+| `hstrt` | `uint8_t` | 0-7 | Hysteresis start (SpreadCycle only, 0-7, 4=typical) |
+| `hend` | `uint8_t` | 0-15 | Hysteresis end (SpreadCycle) or offset (Classic), encoded |
+| `tfd` | `uint8_t` | 0-15 | Fast decay time (Classic only, 0=slow decay only) |
+| `disfdcc` | `bool` | - | Disable fast decay comparator (Classic only) |
+| `tpfd` | `uint8_t` | 0-15 | Passive fast decay time (0=disabled, helps reduce resonances) |
+| `mres` | `uint8_t` | 0-8 | Microstep resolution (MicrostepResolution enum or 0-8, 4=16 microsteps) |
+| `intpol` | `bool` | - | Enable interpolation to 256 microsteps (recommended) |
+| `dedge` | `bool` | - | Enable double edge step pulses (typically false) |
+| `vhighfs` | `bool` | - | High velocity fullstep selection (false=normal, true=fullstep at high velocity) |
+| `vhighchm` | `bool` | - | High velocity chopper mode (false=normal, true=Classic mode at high velocity) |
+| `diss2g` | `bool` | - | Short to GND protection disable (false=protection ON, true=protection OFF) |
+| `diss2vs` | `bool` | - | Short to supply protection disable (false=protection ON, true=protection OFF) |
+| `vsense` | `bool` | - | Voltage sensitivity (deprecated, ignored by hardware) |
+
+**Enums**:
+
+- **`ChopperMode`**: 
+  - `SPREAD_CYCLE` - Patented high-performance algorithm (recommended)
+  - `CLASSIC` - Constant off-time chopper mode (alternative)
+
+- **`ChopperBlankTime`**: Comparator blank time
+  - `TBL_16CLK` - 16 clock cycles (~1.33µs @ 12MHz)
+  - `TBL_24CLK` - 24 clock cycles (~2.0µs @ 12MHz)
+  - `TBL_36CLK` - 36 clock cycles (~3.0µs @ 12MHz, typical)
+  - `TBL_54CLK` - 54 clock cycles (~4.5µs @ 12MHz, for high capacitive loads)
+
+- **`MicrostepResolution`**: Microstep resolution
+  - `MRES_256` - 256 microsteps per full step (highest resolution)
+  - `MRES_128` - 128 microsteps per full step
+  - `MRES_64` - 64 microsteps per full step
+  - `MRES_32` - 32 microsteps per full step
+  - `MRES_16` - 16 microsteps per full step (typical)
+  - `MRES_8` - 8 microsteps per full step
+  - `MRES_4` - 4 microsteps per full step
+  - `MRES_2` - 2 microsteps per full step
+  - `FULLSTEP` - Full step (no microstepping)
+
+**Usage Notes**: 
+- **SpreadCycle** (recommended): Superior microstepping quality, automatically determines optimum fast-decay phase.
+- **Classic mode**: Alternative algorithm, requires more tuning (TFD, OFFSET).
+- **Chopper frequency**: Most motors work optimally in 16-30kHz range.
+- **TOFF calculation**: Based on target chopper frequency and slow decay percentage.
+- **Hysteresis**: Start from low setting (HSTRT=0, HEND=0) and increase until motor runs smoothly.
+
+**See Also**: 
+- [Advanced Configuration Guide](../docs/special_features_advanced_configuration.md#spreadcycle-and-classic-chopper) for detailed tuning guide and examples
 
 ### StealthChopConfig
 
-StealthChop PWM configuration structure.
+User-friendly configuration for StealthChop2 voltage PWM mode operation.
 
 **Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
 
+StealthChop provides extremely quiet, noiseless operation for stepper motors, making it ideal for indoor or home use applications. StealthChop2 features automatic tuning that adapts operating parameters to the motor automatically.
+
 | Field | Type | Range | Description |
 |-------|------|-------|-------------|
-| `pwm_ofs` | `uint8_t` | 0-255 | PWM offset |
-| `pwm_grad` | `uint8_t` | 0-255 | PWM gradient |
-| `pwm_freq` | `uint8_t` | 0-3 | PWM frequency |
-| `pwm_autoscale` | `bool` | - | Auto-scale PWM amplitude |
-| `pwm_autograd` | `bool` | - | Auto-scale PWM gradient |
-| `pwm_reg` | `uint8_t` | 0-15 | PWM register |
-| `pwm_lim` | `uint8_t` | 0-15 | PWM limit |
+| `pwm_ofs` | `uint8_t` | 0-255 | PWM amplitude offset (0=disable scaling, 30=typical) |
+| `pwm_grad` | `uint8_t` | 0-255 | PWM amplitude gradient (velocity compensation, 0=auto) |
+| `pwm_freq` | `uint8_t` | 0-3 | PWM frequency selection (see StealthChopPwmFreq enum) |
+| `pwm_autoscale` | `bool` | - | Enable automatic current scaling (recommended: true) |
+| `pwm_autograd` | `bool` | - | Enable automatic gradient adaptation (recommended: true) |
+| `pwm_reg` | `uint8_t` | 1-15 | Regulation loop coefficient (1=slow, 15=fast, 4=balanced) |
+| `pwm_lim` | `uint8_t` | 0-15 | PWM amplitude limit for mode switching (12=default) |
+| `freewheel` | `PWMFreewheel` | - | Freewheeling mode when I_HOLD=0 |
+
+**Enums**:
+
+- **`StealthChopPwmFreq`**: PWM frequency selection
+  - `PWM_FREQ_0` - ~23.4kHz @ 12MHz clock
+  - `PWM_FREQ_1` - ~35.1kHz @ 12MHz clock (recommended)
+  - `PWM_FREQ_2` - ~46.9kHz @ 12MHz clock
+  - `PWM_FREQ_3` - ~58.5kHz @ 12MHz clock
+
+- **`StealthChopRegulationSpeed`**: Regulation speed (PWM amplitude change per half wave)
+  - `VERY_SLOW` (1) - 0.5 increments (slowest, most stable)
+  - `SLOW` (2) - 1 increment
+  - `MODERATE` (4) - 2 increments (default, balanced)
+  - `FAST` (8) - 4 increments
+  - `VERY_FAST` (15) - 7.5 increments (fastest, may be less stable)
+
+- **`StealthChopJerkReduction`**: Mode switching jerk reduction
+  - `MAXIMUM` (8) - Maximum jerk reduction (smoothest switching)
+  - `HIGH` (10) - High jerk reduction
+  - `MODERATE` (12) - Moderate jerk reduction (default, balanced)
+  - `LOW` (14) - Low jerk reduction
+  - `MINIMUM` (15) - Minimum jerk reduction (fastest switching, may cause spikes)
+
+**Automatic Tuning Requirements**:
+- **AT#1**: Motor in standstill with nominal run current (≤130ms)
+- **AT#2**: Motor moving at medium velocity (60-300 RPM typical, 8+ fullsteps)
+
+**Important Notes**: 
+- StealthChop requires motor to be at standstill when first enabled
+- Keep motor stopped for at least 128 chopper periods after enabling
+- StealthChop and StallGuard2 are mutually exclusive
+- Lower current limit applies: IRUN ≥ 8 and current must exceed I_LOWER_LIMIT
+- Open load detection should be performed in SpreadCycle before enabling StealthChop
+- Motor stall during StealthChop can cause overcurrent - tune low-side overcurrent detection
+
+**See Also**: 
+- [Advanced Configuration Guide - StealthChop](../docs/special_features_advanced_configuration.md#stealthchop-voltage-pwm-mode) for detailed tuning guide and examples
+- `GetPwmAuto()` method to read automatic tuning results (PWM_OFS_AUTO, PWM_GRAD_AUTO)
+- `GetPwmScale()` method to monitor PWM_SCALE_SUM and PWM_SCALE_AUTO
+- `SetModeChangeSpeeds()` method to configure TPWMTHRS (StealthChop velocity threshold)
 
 ### EncoderConfig
 
-Encoder configuration structure.
+Encoder configuration structure with intuitive enum-based API.
 
 **Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `pol_a` | `bool` | Encoder A polarity |
-| `pol_b` | `bool` | Encoder B polarity |
-| `pol_n` | `bool` | Encoder N polarity |
-| `ignore_ab` | `bool` | Ignore A/B signals |
-| `clr_cont` | `bool` | Clear continuously |
-| `clr_once` | `bool` | Clear once |
-| `sensitivity` | `uint8_t` | Sensitivity (0-3) |
-| `clr_enc_x` | `bool` | Clear encoder on XACTUAL |
-| `latch_x_act` | `bool` | Latch XACTUAL |
+| `n_channel_active` | `ReferenceSwitchActiveLevel` | N channel active level (ACTIVE_LOW or ACTIVE_HIGH) |
+| `require_a_high` | `bool` | Require A channel HIGH for N event validation (pol_A) |
+| `require_b_high` | `bool` | Require B channel HIGH for N event validation (pol_B) |
+| `ignore_ab_polarity` | `bool` | Ignore A and B polarity for N channel event (ignore_AB) |
+| `n_sensitivity` | `EncoderNSensitivity` | N channel event sensitivity (ACTIVE_LEVEL, RISING_EDGE, FALLING_EDGE, BOTH_EDGES) |
+| `clear_mode` | `EncoderClearMode` | Clear mode (DISABLED, ONCE, CONTINUOUS) |
+| `clear_enc_x_on_event` | `bool` | Clear encoder counter X_ENC upon N-event (clr_enc_x) |
+| `latch_xactual_with_enc` | `bool` | Also latch XACTUAL position together with X_ENC (latch_x_act) |
+| `prescaler_mode` | `EncoderPrescalerMode` | Encoder prescaler divisor mode (BINARY or DECIMAL) |
+
+**Enums:**
+
+- **`EncoderNSensitivity`**: `ACTIVE_LEVEL`, `RISING_EDGE`, `FALLING_EDGE`, `BOTH_EDGES`
+- **`EncoderClearMode`**: `DISABLED`, `ONCE`, `CONTINUOUS`
+- **`EncoderPrescalerMode`**: `BINARY`, `DECIMAL`
+
+**Note**: All fields must be explicitly set. Register values are calculated automatically by the `Configure()` method.
+
+#### Encoder Configuration Usage
+
+```cpp
+// Initial configuration
+tmc5160::EncoderConfig enc_cfg{};
+enc_cfg.n_channel_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_HIGH;
+enc_cfg.n_sensitivity = tmc5160::EncoderNSensitivity::RISING_EDGE;
+enc_cfg.ignore_ab_polarity = true;
+enc_cfg.clear_mode = tmc5160::EncoderClearMode::ONCE;
+enc_cfg.prescaler_mode = tmc5160::EncoderPrescalerMode::BINARY;
+driver.encoder.Configure(enc_cfg);
+
+// Real-time configuration updates
+driver.encoder.SetNChannelSensitivity(tmc5160::EncoderNSensitivity::BOTH_EDGES);
+driver.encoder.SetClearMode(tmc5160::EncoderClearMode::CONTINUOUS);
+
+// Set encoder resolution (automatically calculates ENC_CONST)
+driver.encoder.SetResolution(200, 1000, false);  // 200 motor steps, 1000 encoder pulses
+
+// Monitor encoder deviation
+if (driver.encoder.IsDeviationDetected()) {
+    // Handle step loss
+    driver.encoder.ClearDeviationFlag();
+}
+```
 
 ### StallGuardConfig
 
-StallGuard2 configuration structure.
+User-friendly configuration for StallGuard2 load measurement and stall detection.
 
 **Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
 
+StallGuard2 provides accurate measurement of motor load and can detect stalls. It's used for sensorless homing, CoolStep load-adaptive current reduction, and diagnostics.
+
 | Field | Type | Range | Description |
 |-------|------|-------|-------------|
-| `semin` | `uint8_t` | 0-15 | Minimum StallGuard value |
-| `semax` | `uint8_t` | 0-15 | Maximum StallGuard value |
-| `seup` | `uint8_t` | 0-3 | StallGuard up step |
-| `sedn` | `uint8_t` | 0-3 | StallGuard down step |
-| `seimin` | `bool` | - | Minimum current |
-| `sfilt` | `bool` | - | StallGuard filter |
-| `sgt` | `int8_t` | -64 to 63 | StallGuard threshold |
+| `threshold` | `int8_t` | -64 to +63 | StallGuard2 threshold value (0 = starting value, works with most motors) |
+| `enable_filter` | `bool` | - | Enable StallGuard2 filter (reduces measurement rate 4x, smoother readings) |
+| `min_velocity` | `float` | - | Lower velocity threshold for StallGuard2 operation (0 = no lower limit) |
+| `max_velocity` | `float` | - | Upper velocity threshold for StallGuard2 operation (0 = no upper limit) |
+| `velocity_unit` | `Unit` | - | Unit for velocity thresholds (Steps, Rad, Deg, Mm, RPM) |
+| `stop_on_stall` | `bool` | - | Stop motor when stall detected (requires threshold tuned correctly) |
+
+**Enums**:
+
+- **`StallGuardSensitivity`**: 
+  - `VERY_HIGH` (SGT = -32) - Very high sensitivity, detects stalls very easily
+  - `HIGH` (SGT = -16) - High sensitivity, detects stalls easily
+  - `MODERATE` (SGT = 0) - Moderate sensitivity, starting value (recommended)
+  - `LOW` (SGT = 16) - Low sensitivity, requires more torque to detect stall
+  - `VERY_LOW` (SGT = 32) - Very low sensitivity, requires significant torque
+
+**Usage Notes**: 
+- **Prerequisites**: StallGuard2 requires SpreadCycle mode (`en_pwm_mode=0`). StealthChop must be disabled.
+- **Threshold Tuning**: Adjust `threshold` until SG_RESULT is between 0-100 at maximum load before stall.
+- **Velocity Range**: Set `min_velocity` and `max_velocity` to match your typical operating speed range.
+- **Filter**: Enable for smoother readings (CoolStep), disable for faster response (sensorless homing).
+- **Stop on Stall**: Requires `min_velocity` to be set (TCOOLTHRS must be configured).
+
+**See Also**: 
+- [Advanced Configuration Guide](../docs/special_features_advanced_configuration.md#stallguard2-load-measurement) for detailed tuning guide and examples
+- `GetStallGuard()` method to read SG_RESULT value
+- `EnableStopOnStall()` method for real-time control
 
 ### PowerStageParameters (Short Protection Fields)
 
@@ -467,50 +695,208 @@ Mechanical system configuration for unit conversions.
 
 ### CoolStepConfig
 
-CoolStep current reduction configuration.
+User-friendly configuration for CoolStep automatic current reduction feature.
 
 **Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+
+CoolStep automatically reduces motor current when load is low, saving energy and reducing heat. It uses StallGuard2 to measure motor load and adjusts current accordingly.
+
+**User-Friendly Fields** (recommended):
 
 | Field | Type | Range | Description |
 |-------|------|-------|-------------|
-| `semin` | `uint8_t` | 0-15 | Minimum StallGuard2 value for CoolStep |
-| `semax` | `uint8_t` | 0-15 | StallGuard2 hysteresis value |
-| `seup` | `uint8_t` | 0-3 | Current increment step width |
-| `sedn` | `uint8_t` | 0-3 | Current decrement step speed |
-| `seimin` | `bool` | - | Minimum current for smart current control |
-| `sfilt` | `bool` | - | Enable StallGuard2 filter |
+| `lower_threshold_sg` | `uint16_t` | 0-1023 | Lower SG threshold for current increase (0 = use `semin`) |
+| `upper_threshold_sg` | `uint16_t` | 0-1023 | Upper SG threshold for current decrease (0 = use `semax`) |
+| `increment_step` | `CoolStepIncrementStep` | - | Current increment step width (enum) |
+| `decrement_speed` | `CoolStepDecrementSpeed` | - | Current decrement speed (enum) |
+| `min_current` | `CoolStepMinCurrent` | - | Minimum current percentage (enum) |
+| `enable_filter` | `bool` | - | Enable StallGuard2 filter (reduces measurement rate 4x) |
+| `min_velocity` | `float` | - | Lower velocity threshold for CoolStep activation |
+| `max_velocity` | `float` | - | Upper velocity threshold for CoolStep activation |
+| `velocity_unit` | `Unit` | - | Unit for velocity thresholds |
+
+**Note**: Register values (`SEMIN`, `SEMAX`) are automatically calculated from `lower_threshold_sg` and `upper_threshold_sg` internally. You only need to specify the actual SG threshold values.
+
+**Enums**:
+
+- **`CoolStepIncrementStep`**: 
+  - `STEP_1` - Increment by 1 step per measurement (slowest, smoothest)
+  - `STEP_2` - Increment by 2 steps per measurement (recommended default)
+  - `STEP_4` - Increment by 4 steps per measurement (fast response)
+  - `STEP_8` - Increment by 8 steps per measurement (fastest, may oscillate)
+
+- **`CoolStepDecrementSpeed`**: 
+  - `EVERY_32` - Decrement every 32 measurements (slowest reduction, most stable)
+  - `EVERY_8` - Decrement every 8 measurements (recommended default)
+  - `EVERY_2` - Decrement every 2 measurements (fast reduction)
+  - `EVERY_1` - Decrement every measurement (fastest, may oscillate)
+
+- **`CoolStepMinCurrent`**: 
+  - `HALF_IRUN` - Minimum current is 50% of IRUN (conservative, recommended)
+  - `QUARTER_IRUN` - Minimum current is 25% of IRUN (aggressive, maximum savings)
+
+**Threshold Conversion** (automatic):
+- SG thresholds (0-1023) are automatically converted to register values internally:
+  - `lower_threshold_sg / 32 = SEMIN` (register value 0-15)
+  - `upper_threshold_sg / 32 - SEMIN - 1 = SEMAX` (register value 0-15)
+- Example: `lower_threshold_sg = 64` → SEMIN = 2, `upper_threshold_sg = 256` → SEMAX = 5
+- If `upper_threshold_sg` is not specified (0), a default hysteresis is used (SEMAX = 5)
+
+**Usage Notes**: 
+- **Prerequisites**: CoolStep requires SpreadCycle mode (`en_pwm_mode=0`). StealthChop must be disabled.
+- **StallGuard2**: CoolStep uses StallGuard2 to measure load. Tune StallGuard2 threshold (`sgt`) first.
+- **Velocity Range**: Set `min_velocity` and `max_velocity` to match your typical operating speed range.
+- **Disabling**: Set `lower_threshold_sg = 0` to disable CoolStep.
+
+**See Also**: 
+- [Advanced Configuration Guide](../docs/special_features_advanced_configuration.md#coolstep-current-reduction) for detailed tuning guide and examples
+- `GetStallGuard()` method to monitor SG_RESULT for threshold tuning
 
 ### ReferenceSwitchConfig
 
-Reference switch/endstop configuration.
+Reference switch/endstop configuration for homing and limit detection.
 
 **Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
 
+**Enumerations**:
+
+- `ReferenceSwitchActiveLevel`:
+  - `ACTIVE_LOW` - Switch is active when signal is LOW (GND, typically pull-up resistor)
+                       - Common for normally-closed switches and failsafe configurations
+                       - Recommended for safety-critical applications (broken wire = HIGH = safe)
+                       - Sets inverted polarity (pol_stop = 1)
+  - `ACTIVE_HIGH` - Switch is active when signal is HIGH (VCC, typically pull-down resistor)
+                        - Common for normally-open switches and photo interrupters
+                        - Sets normal polarity (pol_stop = 0)
+  
+  **Note**: Active level must always be specified (ACTIVE_LOW or ACTIVE_HIGH).
+            Use `stop_enable` to control whether the switch stops the motor.
+            This allows configuring polarity while enabling/disabling stop functionality in real-time.
+
+- `ReferenceStopMode`:
+  - `HARD_STOP` - Abrupt stop (immediate, no deceleration, precise for homing)
+  - `SOFT_STOP` - Soft stop using deceleration ramp (smooth, prevents mechanical shock)
+
+- `ReferenceLatchMode`:
+  - `DISABLED` - No position latching
+  - `ACTIVE_EDGE` - Latch position on active edge (switch becomes active) - most common for homing
+  - `INACTIVE_EDGE` - Latch position on inactive edge (switch becomes inactive)
+  - `BOTH_EDGES` - Latch position on both active and inactive edges
+
+**Configuration Fields**:
+
 | Field | Type | Description |
 |-------|------|-------------|
-| `stop_left_enable` | `bool` | Enable automatic motor stop on left switch |
-| `stop_right_enable` | `bool` | Enable automatic motor stop on right switch |
-| `pol_stop_left` | `bool` | Left switch polarity (true=inverted/low active) |
-| `pol_stop_right` | `bool` | Right switch polarity (true=inverted/low active) |
-| `swap_left_right` | `bool` | Swap left and right switch inputs |
-| `latch_left_active` | `bool` | Latch position on active edge of left switch |
-| `latch_left_inactive` | `bool` | Latch position on inactive edge of left switch |
-| `latch_right_active` | `bool` | Latch position on active edge of right switch |
-| `latch_right_inactive` | `bool` | Latch position on inactive edge of right switch |
-| `en_latch_encoder` | `bool` | Latch encoder position on switch event |
-| `en_softstop` | `bool` | Enable soft stop using deceleration ramp |
+| `left_switch_active` | `ReferenceSwitchActiveLevel` | Left switch active level (REFL) - must be ACTIVE_LOW or ACTIVE_HIGH (determines polarity) |
+| `right_switch_active` | `ReferenceSwitchActiveLevel` | Right switch active level (REFR) - must be ACTIVE_LOW or ACTIVE_HIGH (determines polarity) |
+| `left_switch_stop_enable` | `bool` | Enable motor stop on left switch (independent of active level)<br/>true = stop motor when active<br/>false = don't stop (but can still latch/read switch state) |
+| `right_switch_stop_enable` | `bool` | Enable motor stop on right switch (independent of active level)<br/>true = stop motor when active<br/>false = don't stop (but can still latch/read switch state) |
+| `stop_mode` | `ReferenceStopMode` | Stop mode (hard or soft) - only applies if stop is enabled |
+| `swap_left_right` | `bool` | Swap left and right switch inputs (useful for reversed wiring) |
+| `latch_left` | `ReferenceLatchMode` | Left switch latching mode (must be explicitly set) |
+| `latch_right` | `ReferenceLatchMode` | Right switch latching mode (must be explicitly set) |
+| `en_latch_encoder` | `bool` | Latch encoder position on switch event (for encoder N-channel as third switch) |
+
+**Important Notes**: 
+- **Active level must always be specified**: `left_switch_active` and `right_switch_active` must be `ACTIVE_LOW` or `ACTIVE_HIGH` (never disabled)
+- **Polarity is determined by active level**: ACTIVE_LOW = inverted polarity (pol_stop = 1), ACTIVE_HIGH = normal polarity (pol_stop = 0)
+- **Stop enable is independent**: `stop_enable` controls whether the motor stops (allows real-time enable/disable while keeping polarity configured)
+- **Use case**: Configure active level once, then enable/disable motor stop in real-time. Switch state can still be read even when stop is disabled
+- All register values (polarity, latching flags, soft stop) are computed inline when writing to the SW_MODE register
+
+**Note**: All configuration fields must be explicitly set. There are no computed fields or auto-configuration methods.
+
+**Usage Example**:
+
+```cpp
+// Configure switches manually - all fields must be explicitly set
+tmc5160::ReferenceSwitchConfig config{};
+config.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;   // Active LOW (determines polarity)
+config.left_switch_stop_enable = true;                                         // Enable motor stop
+config.right_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_HIGH; // Active HIGH (determines polarity)
+config.right_switch_stop_enable = false;                                       // Don't stop motor (but can still latch/read)
+config.stop_mode = tmc5160::ReferenceStopMode::SOFT_STOP;
+config.latch_left = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;   // Latch on active edge
+config.latch_right = tmc5160::ReferenceLatchMode::BOTH_EDGES;   // Latch on both edges
+driver.rampControl.ConfigureReferenceSwitch(config);
+
+// Example: Switch configured but doesn't stop motor (only latches/reads position)
+// Useful for reading switch state without stopping motor
+tmc5160::ReferenceSwitchConfig config_latch_only{};
+config_latch_only.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;  // Must specify active level
+config_latch_only.left_switch_stop_enable = false;  // Don't stop motor (but polarity is configured for reading)
+config_latch_only.latch_left = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;  // But latch position
+config_latch_only.latch_right = tmc5160::ReferenceLatchMode::DISABLED;  // No latching on right
+driver.rampControl.ConfigureReferenceSwitch(config_latch_only);
+
+// Example: Real-time updates using convenience methods
+// Initial configuration
+tmc5160::ReferenceSwitchConfig config{};
+config.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+config.left_switch_stop_enable = true;
+config.latch_left = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;
+driver.rampControl.ConfigureReferenceSwitch(config);
+
+// Later: Real-time updates using convenience methods (preserves other settings)
+driver.rampControl.SetLeftSwitchStopEnable(false);  // Disable stop without changing polarity
+driver.rampControl.SetLeftSwitchLatchMode(tmc5160::ReferenceLatchMode::BOTH_EDGES);  // Change latch mode
+driver.rampControl.SetStopMode(tmc5160::ReferenceStopMode::HARD_STOP);  // Change stop mode
+driver.rampControl.SetLeftSwitchActiveLevel(tmc5160::ReferenceSwitchActiveLevel::ACTIVE_HIGH);  // Change polarity
+
+// Read current configuration
+tmc5160::ReferenceSwitchConfig current_config{};
+if (driver.rampControl.GetReferenceSwitchConfig(current_config)) {
+  // Use current_config for inspection or modification
+}
+
+// For homing (hard stop, precise)
+tmc5160::ReferenceSwitchConfig homing_config{};
+homing_config.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+homing_config.left_switch_stop_enable = true;  // Enable stop for homing
+homing_config.latch_left = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;  // Latch on active edge
+homing_config.stop_mode = tmc5160::ReferenceStopMode::HARD_STOP;  // Hard stop for precise homing
+driver.rampControl.ConfigureReferenceSwitch(homing_config);
+```
 
 ### DcStepConfig
 
-dcStep automatic commutation configuration.
+User-friendly configuration for DcStep automatic commutation mode.
 
 **Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
 
+DcStep allows the motor to run near its load limit without losing steps by automatically reducing velocity when overloaded. The motor operates in fullstep mode at the target velocity or at reduced velocity if overloaded.
+
 | Field | Type | Description |
 |-------|------|-------------|
-| `vdc_min` | `float` | Velocity threshold for enabling dcStep in steps/s (0.0f = disabled) |
-| `dc_time` | `uint8_t` | dcStep time window (0-255) |
-| `dc_sg` | `uint8_t` | dcStep StallGuard threshold (0-255) |
+| `min_velocity` | `float` | Minimum velocity threshold for DcStep activation (0 = disabled) |
+| `velocity_unit` | `Unit` | Unit for velocity threshold (Steps, Rad, Deg, Mm, RPM) |
+| `pwm_on_time_us` | `float` | PWM on-time limit in microseconds (0 = auto-calculate from blank time) |
+| `stall_sensitivity` | `DcStepStallSensitivity` | Stall detection sensitivity (enum) |
+| `stop_on_stall` | `bool` | Stop motor when stall detected (requires stall_sensitivity != DISABLED) |
+
+**Enums**:
+
+- **`DcStepStallSensitivity`**: 
+  - `DISABLED` - Stall detection disabled (dc_sg = 0)
+  - `LOW` - Low sensitivity - fewer false positives (dc_sg ≈ dc_time / 20)
+  - `MODERATE` - Moderate sensitivity - balanced (dc_sg ≈ dc_time / 16, recommended)
+  - `HIGH` - High sensitivity - detects stalls earlier (dc_sg ≈ dc_time / 12)
+
+**Parameter Conversion** (automatic):
+- PWM on-time (clock cycles) = `(pwm_on_time_us * f_clk) / 1e6` → DC_TIME register (0-1023)
+- If `pwm_on_time_us = 0`: Auto-calculated from blank time (TBL) + 20 clock cycles
+- DC_SG register (0-255) automatically calculated from DC_TIME based on `stall_sensitivity`
+
+**Usage Notes**: 
+- **Prerequisites**: DcStep requires SD_MODE=1 (external step/dir) or can be enabled via VDCMIN threshold.
+- **CHOPCONF Settings**: `vhighfs` and `vhighchm` are automatically set to 1 for DcStep.
+- **TOFF Setting**: Should be >2, preferably 8-15 for DcStep operation.
+- **Velocity Range**: Set `min_velocity` to match your typical operating speed range.
+- **PWM On-Time**: Should be slightly above blank time (TBL). Auto-calculation recommended.
+
+**See Also**: 
+- [Advanced Configuration Guide](../docs/special_features_advanced_configuration.md#dcstep-automatic-commutation) for detailed tuning guide and examples
+- `GetLostSteps()` method to monitor step loss in DcStep mode
 
 ### GlobalConfig
 
@@ -539,17 +925,53 @@ Global configuration (GCONF register) structure.
 | `direct_mode` | `bool` | Direct motor coil control via XTARGET |
 | `test_mode` | `bool` | Analog test output on ENCN_DCO (not for normal use) |
 
-### RampParameters
+### RampConfig
 
-Additional ramp parameters structure.
+Ramp generator configuration structure for two-phase acceleration and deceleration.
 
 **Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `tpowerdown` | `uint8_t` | Power down delay (0-255) |
-| `tzerowait` | `uint16_t` | Zero wait time after ramping down (0-65535) |
-| `a1` | `float` | First acceleration phase A1 (steps/s², 0.0f = use AMAX) |
+**Unit Specifications** (critical for proper conversion):
+
+| Field | Type | Default | Description |
+|-------|------|--------|-------------|
+| `velocity_unit` | `Unit` | `Steps` | Unit for all velocity parameters (vstart, vstop, vmax, v1). Supported: Steps, Rad, Deg, Mm, RPM |
+| `acceleration_unit` | `Unit` | `Steps` | Unit for all acceleration parameters (amax, a1, dmax, d1). Supported: Steps, Rad, Deg, Mm (RPM not applicable) |
+
+**Velocity Parameters** (unit specified by `velocity_unit` field):
+
+| Field | Type | Default | Description |
+|-------|------|--------|-------------|
+| `vstart` | `float` | 0.0 | Start velocity (can be 0 if not used) |
+| `vstop` | `float` | 10.0 | Stop velocity (must be >= VSTART, minimum 1 recommended) |
+| `vmax` | `float` | 0.0 | Maximum velocity (must be set before motion) |
+| `v1` | `float` | 0.0 | Transition velocity (switches between A1/AMAX and D1/DMAX, 0 = disabled) |
+
+**Acceleration Parameters** (unit specified by `acceleration_unit` field):
+
+| Field | Type | Default | Description |
+|-------|------|--------|-------------|
+| `amax` | `float` | 0.0 | Maximum acceleration (used above V1, must be set before motion) |
+| `a1` | `float` | 0.0 | First acceleration (used between VSTART and V1, 0 = use AMAX) |
+| `dmax` | `float` | 0.0 | Maximum deceleration (used above V1, 0 = uses AMAX value) |
+| `d1` | `float` | 100.0 | First deceleration (used between VSTOP and V1, must not be 0 in positioning mode) |
+
+**Timing Parameters** (in milliseconds):
+
+| Field | Type | Default | Description |
+|-------|------|--------|-------------|
+| `tpowerdown_ms` | `float` | 437.0 | Power down delay in milliseconds (0-5600ms at 12MHz, automatically converted to register value, ~0.44s at 12MHz) |
+| `tzerowait_ms` | `float` | 0.0 | Zero wait time in milliseconds (0-2000ms at 12MHz, automatically converted to register value). Prevents excessive jerk when changing direction. |
+
+**Notes**:
+- **CRITICAL**: `velocity_unit` and `acceleration_unit` fields specify the unit system for all velocity and acceleration values
+- All velocity parameters (vstart, vstop, vmax, v1) use the unit specified by `velocity_unit`
+- All acceleration parameters (amax, a1, dmax, d1) use the unit specified by `acceleration_unit`
+- Parameters set to 0.0 will use driver defaults or be auto-calculated where applicable
+- VSTOP must be >= VSTART to ensure successful motion termination
+- D1 must not be 0 in positioning mode (defaults to 100 steps/s² if not set)
+- Unit conversion requires `MotorSpec` and `MechanicalSystem` configuration for non-Step units
+- See datasheet section 12 for detailed ramp generator operation
 
 ## Unit Conversion Functions
 

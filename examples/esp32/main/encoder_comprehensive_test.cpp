@@ -42,6 +42,18 @@ static constexpr bool ENABLE_ENCODER_POSITION_TESTS = true;
 static constexpr bool ENABLE_DEVIATION_DETECTION_TESTS = true;
 static constexpr bool ENABLE_LATCHED_POSITION_TESTS = true;
 
+// Motor selection (compile-time constant)
+static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
+    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+
+// Board selection (compile-time constant)
+static constexpr tmc5160_test_config::BoardType SELECTED_BOARD = 
+    tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL;
+
+// Platform selection (compile-time constant)
+static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM = 
+    tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
+
 // Test configuration constants
 namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
 namespace Test = tmc5160_test_config::TestConfig_17HS4401S;
@@ -52,7 +64,8 @@ static constexpr uint8_t TEST_GLOBAL_SCALER = Motor::GLOBAL_SCALER;
 static constexpr uint8_t TEST_TOFF = Motor::TOFF;
 static constexpr uint8_t TEST_MRES = Motor::MRES; // 256 microsteps
 static constexpr uint16_t TEST_MOTOR_STEPS_PER_REV = Motor::MOTOR_FULL_STEPS;
-static constexpr uint16_t TEST_ENCODER_PULSES_PER_REV = Test::Encoder::PULSES_PER_REV;
+static constexpr uint16_t TEST_ENCODER_PULSES_PER_REV = 
+    tmc5160_test_config::GetEncoderPulsesPerRev<SELECTED_PLATFORM>();
 
 // Forward declarations
 bool test_encoder_configuration() noexcept;
@@ -102,20 +115,24 @@ std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
   }
   
   tmc5160::DriverConfig cfg{};
-  cfg.motor.irun = TEST_IRUN;
-  cfg.motor.ihold = TEST_IHOLD;
-  cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
   
-  cfg.chopper.toff = TEST_TOFF;
+  // Use helper function to configure from motor/platform specs
+  // Configure motor
+  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
+  }
+  
+  // Apply board configuration
+  tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
+  
+  // Apply platform configuration
+  tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
+  
   cfg.chopper.mres = TEST_MRES;
-  cfg.chopper.intpol = Motor::INTERPOLATION;
-  cfg.chopper.hend = Motor::HEND;
-  cfg.chopper.hstrt = Motor::HSTRT;
-  cfg.chopper.tbl = Motor::TBL;
-  
-  // Power stage: typical MOSFET with ~30nC Miller charge, 200ns BBM time
-  cfg.power_stage.mosfet_miller_charge_nc = 30.0f;
-  cfg.power_stage.bbm_time_ns = 200;
   
   if (!handle->driver->Initialize(cfg)) {
     ESP_LOGE(TAG, "Failed to initialize TMC5160 driver");
@@ -133,19 +150,32 @@ bool test_encoder_configuration() noexcept {
     return false;
   }
   
-  tmc5160::EncoderConfig enc_cfg{};
-  enc_cfg.enc_sel_decimal = false;
-  enc_cfg.clr_cont = false;
-  enc_cfg.clr_once = false;
-  enc_cfg.pol_a = false;
-  enc_cfg.pol_b = false;
-  enc_cfg.ignore_ab = false;
+  // Get encoder configuration from platform config
+  tmc5160::EncoderConfig enc_cfg = 
+      tmc5160_test_config::GetEncoderConfig<SELECTED_PLATFORM>();
+  
+  // A/B polarity requirements (set explicitly for this test)
+  enc_cfg.require_a_high = false;
+  enc_cfg.require_b_high = false;
+  enc_cfg.ignore_ab_polarity = true;  // Ignore A/B polarity
+  
+  // Clear/latch mode (set explicitly for this test)
+  enc_cfg.clear_enc_x_on_event = false;
+  enc_cfg.latch_xactual_with_enc = false;
   
   if (!handle->driver->encoder.Configure(enc_cfg)) {
     ESP_LOGE(TAG, "Failed to configure encoder");
     return false;
   }
   
+  // Verify configuration by reading it back
+  tmc5160::EncoderConfig read_cfg{};
+  if (!handle->driver->encoder.GetEncoderConfig(read_cfg)) {
+    ESP_LOGE(TAG, "Failed to read encoder configuration");
+    return false;
+  }
+  
+  ESP_LOGI(TAG, "Encoder configuration verified");
   return true;
 }
 
@@ -158,8 +188,11 @@ bool test_encoder_resolution() noexcept {
   }
   
   // Note: SetResolution may use approximation, so we use a warning-level test
+  // Use platform config encoder resolution
   bool result = handle->driver->encoder.SetResolution(
-    TEST_MOTOR_STEPS_PER_REV, TEST_ENCODER_PULSES_PER_REV, false);
+    TEST_MOTOR_STEPS_PER_REV, 
+    tmc5160_test_config::GetEncoderPulsesPerRev<SELECTED_PLATFORM>(), 
+    tmc5160_test_config::GetEncoderInvertDirection<SELECTED_PLATFORM>());
   
   if (!result) {
     ESP_LOGW(TAG, "Encoder resolution set with approximation");

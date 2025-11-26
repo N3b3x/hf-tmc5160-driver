@@ -56,8 +56,8 @@ Sensorless homing uses the StallGuard2 feature to detect when the motor stalls. 
 bool homeMotor() {
     // Configure StallGuard2 for homing
     tmc5160::StallGuardConfig sg_config{};
-    sg_config.sgt = -10;        // Stall threshold (tune for your motor)
-    sg_config.sfilt = true;     // Enable filter for stability
+    sg_config.threshold = -10;        // Stall threshold (tune for your motor)
+    sg_config.enable_filter = true;     // Enable filter for stability
     
     if (!driver.diagnostics.ConfigureStallGuard(sg_config)) {
         return false;
@@ -142,8 +142,8 @@ public:
     bool home() {
         // 1. Configure StallGuard2
         tmc5160::StallGuardConfig sg_config{};
-        sg_config.sgt = stall_threshold_;
-        sg_config.sfilt = true;  // Filter for stability
+        sg_config.threshold = stall_threshold_;
+        sg_config.enable_filter = true;  // Filter for stability
         
         if (!driver_.diagnostics.ConfigureStallGuard(sg_config)) {
             return false;
@@ -264,8 +264,8 @@ For more control, you can implement manual stall detection:
 bool homeManual() {
     // Configure StallGuard2
     tmc5160::StallGuardConfig sg_config{};
-    sg_config.sgt = -10;
-    sg_config.sfilt = true;
+    sg_config.threshold = -10;
+    sg_config.enable_filter = true;
     driver.diagnostics.ConfigureStallGuard(sg_config);
     
     // Start movement

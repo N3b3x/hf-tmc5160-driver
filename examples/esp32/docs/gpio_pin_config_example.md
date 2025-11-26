@@ -126,12 +126,12 @@ Reference switches (endstops) can be configured for homing:
 
 ```cpp
 tmc5160::ReferenceSwitchConfig ref_cfg{};
-ref_cfg.stop_left_enable = true;
-ref_cfg.stop_right_enable = true;
-ref_cfg.polarity_left = false;  // Active LOW
-ref_cfg.polarity_right = false; // Active LOW
-ref_cfg.latch_left = true;
-ref_cfg.latch_right = true;
+ref_cfg.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+ref_cfg.right_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+ref_cfg.latch_left = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;
+ref_cfg.latch_right = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;
+ref_cfg.latch_left = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;
+ref_cfg.latch_right = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;
 
 driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
 ```
@@ -215,12 +215,12 @@ pin_config.tmc5160_pins.diag1_pin = 21;
 Modify reference switch configuration:
 
 ```cpp
-ref_cfg.stop_left_enable = true;
-ref_cfg.stop_right_enable = true;
-ref_cfg.polarity_left = true;   // Active HIGH
-ref_cfg.polarity_right = true;  // Active HIGH
-ref_cfg.latch_left = false;     // Non-latching
-ref_cfg.latch_right = false;    // Non-latching
+ref_cfg.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_HIGH;
+ref_cfg.right_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_HIGH;
+ref_cfg.latch_left = tmc5160::ReferenceLatchMode::DISABLED;  // Non-latching
+ref_cfg.latch_right = tmc5160::ReferenceLatchMode::DISABLED; // Non-latching
+ref_cfg.latch_left = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;
+ref_cfg.latch_right = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;
 ```
 
 ### Encoder Setup

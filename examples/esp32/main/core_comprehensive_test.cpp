@@ -45,6 +45,21 @@ static constexpr bool ENABLE_MOTOR_PARAMETER_TESTS = true;
 static constexpr bool ENABLE_RAMP_PARAMETER_TESTS = true;
 static constexpr bool ENABLE_GLOBAL_CONFIG_TESTS = true;
 
+//=============================================================================
+// CONFIGURATION SELECTION - Change these to select motor, board, and platform
+//=============================================================================
+// Motor selection (compile-time constant)
+static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
+    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+
+// Board selection (compile-time constant)
+static constexpr tmc5160_test_config::BoardType SELECTED_BOARD = 
+    tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL;
+
+// Platform selection (compile-time constant)
+static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM = 
+    tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
+
 // Test configuration constants
 namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
 namespace Test = tmc5160_test_config::TestConfig_17HS4401S;
@@ -187,26 +202,26 @@ bool test_driver_initialization() noexcept {
     return false;
   }
   
-  // Configure driver
+  // Configure driver using helper functions
   tmc5160::DriverConfig cfg{};
-  cfg.motor.irun = TEST_IRUN;
-  cfg.motor.ihold = TEST_IHOLD;
-  cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
-  cfg.chopper.toff = TEST_TOFF;
-  cfg.chopper.mres = TEST_MRES;
-  cfg.chopper.intpol = Motor::INTERPOLATION;
-  cfg.chopper.hend = Motor::HEND;
-  cfg.chopper.hstrt = Motor::HSTRT;
-  cfg.chopper.tbl = Motor::TBL;
   
-  cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
-  cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
-  cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
-  cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
-
-  // Power stage: typical MOSFET with ~30nC Miller charge, 200ns BBM time
-  cfg.power_stage.mosfet_miller_charge_nc = 30.0f;
-  cfg.power_stage.bbm_time_ns = 200;
+  // Configure motor
+  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
+  }
+  
+  // Apply board configuration
+  tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
+  
+  // Apply platform configuration
+  tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
+  
+  // Override with test-specific values if needed
+  cfg.chopper.mres = TEST_MRES;
   
   // Initialize driver
   if (!handle->driver->Initialize(cfg)) {
@@ -234,10 +249,15 @@ bool test_register_read_write() noexcept {
   
   // Initialize driver
   tmc5160::DriverConfig cfg{};
-  cfg.motor.irun = TEST_IRUN;
-  cfg.motor.ihold = TEST_IHOLD;
-  cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
-  cfg.chopper.toff = TEST_TOFF;
+  // Use helper function (current settings calculated automatically)
+  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
+  }
+  
   cfg.chopper.mres = TEST_MRES;
   
   if (!handle->driver->Initialize(cfg)) {
@@ -280,17 +300,18 @@ bool test_motor_parameter_settings() noexcept {
     return false;
   }
   
-  // Initialize driver
+  // Initialize driver using helper functions
   tmc5160::DriverConfig cfg{};
-  cfg.motor.irun = TEST_IRUN;
-  cfg.motor.ihold = TEST_IHOLD;
-  cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
-  cfg.chopper.toff = TEST_TOFF;
+  
+  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
+  }
+  
   cfg.chopper.mres = TEST_MRES;
-  cfg.chopper.intpol = Motor::INTERPOLATION;
-  cfg.chopper.hend = Motor::HEND;
-  cfg.chopper.hstrt = Motor::HSTRT;
-  cfg.chopper.tbl = Motor::TBL;
   
   if (!handle->driver->Initialize(cfg)) {
     ESP_LOGE(TAG, "Failed to initialize TMC5160 driver");
@@ -353,10 +374,15 @@ bool test_ramp_parameter_settings() noexcept {
   
   // Initialize driver
   tmc5160::DriverConfig cfg{};
-  cfg.motor.irun = TEST_IRUN;
-  cfg.motor.ihold = TEST_IHOLD;
-  cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
-  cfg.chopper.toff = TEST_TOFF;
+  // Use helper function (current settings calculated automatically)
+  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
+  }
+  
   cfg.chopper.mres = TEST_MRES;
   
   if (!handle->driver->Initialize(cfg)) {
@@ -406,8 +432,21 @@ bool test_global_configuration() noexcept {
   
   // Initialize driver
   tmc5160::DriverConfig cfg{};
-  cfg.motor.irun = TEST_IRUN;
-  cfg.motor.ihold = TEST_IHOLD;
+  // Use helper function (current settings calculated automatically)
+  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
+  }
+  
+  // Apply board configuration
+  tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
+  
+  // Apply platform configuration
+  tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
+  
   if (!handle->driver->Initialize(cfg)) {
     ESP_LOGE(TAG, "Failed to initialize TMC5160 driver");
     return false;
