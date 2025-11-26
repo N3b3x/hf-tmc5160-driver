@@ -113,7 +113,7 @@
  * @param address Register address
  * @return String containing register name and description, or nullptr if not found
  */
-inline const char* GetRegisterDef(uint8_t address) {
+static const char* GetRegisterDef(uint8_t address) {
   switch (address) {
     #define X(addr, name, access, category, desc) \
       case addr: return #name ": " desc;
