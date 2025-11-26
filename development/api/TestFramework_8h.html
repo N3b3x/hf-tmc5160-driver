@@ -117,7 +117,7 @@ Include dependency graph for TestFramework.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="TestFramework_8h__dep__incl.svg" width="1819" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="TestFramework_8h__dep__incl.svg" width="747" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="TestFramework_8h_source.html">Go to the source code of this file.</a></p>
@@ -273,7 +273,7 @@ Variables</h2></td></tr>
 <div class="line">    <span class="keywordtype">bool</span> result = test_func();                                                                     \</div>
 <div class="line">    uint64_t end_time = esp_timer_get_time();                                                      \</div>
 <div class="line">    uint64_t execution_time = end_time - start_time;                                               \</div>
-<div class="line">    <a class="code hl_variable" href="core__comprehensive__test_8cpp.html#aaff89257c54366921eebb8ec1348b1fd">g_test_results</a>.<a class="code hl_function" href="structTestResults.html#a257eba3a9005a5c19c68ae27774948f7">add_result</a>(result, execution_time);                                             \</div>
+<div class="line">    <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#aaff89257c54366921eebb8ec1348b1fd">g_test_results</a>.<a class="code hl_function" href="structTestResults.html#a257eba3a9005a5c19c68ae27774948f7">add_result</a>(result, execution_time);                                             \</div>
 <div class="line">    if (result) {                                                                                  \</div>
 <div class="line">      ESP_LOGI(<a class="code hl_variable" href="bounds__finding__sinuous__motion_8cpp.html#a5a85b9c772bbeb480b209a3e6ea92b4c">TAG</a>, <span class="stringliteral">&quot;[SUCCESS] PASSED: &quot;</span> #test_func <span class="stringliteral">&quot; (%.2f ms)&quot;</span>, execution_time / 1000.0);        \</div>
 <div class="line">    } <span class="keywordflow">else</span> {                                                                                       \</div>
@@ -281,7 +281,7 @@ Variables</h2></td></tr>
 <div class="line">    }                                                                                              \</div>
 <div class="line">    vTaskDelay(pdMS_TO_TICKS(100));                                                                \</div>
 <div class="line">  } <span class="keywordflow">while</span> (0)</div>
-<div class="ttc" id="acore__comprehensive__test_8cpp_html_aaff89257c54366921eebb8ec1348b1fd"><div class="ttname"><a href="core__comprehensive__test_8cpp.html#aaff89257c54366921eebb8ec1348b1fd">g_test_results</a></div><div class="ttdeci">static TestResults g_test_results</div><div class="ttdef"><b>Definition</b> core_comprehensive_test.cpp:35</div></div>
+<div class="ttc" id="ainternal__ramp__comprehensive__test_8cpp_html_aaff89257c54366921eebb8ec1348b1fd"><div class="ttname"><a href="internal__ramp__comprehensive__test_8cpp.html#aaff89257c54366921eebb8ec1348b1fd">g_test_results</a></div><div class="ttdeci">static TestResults g_test_results</div><div class="ttdef"><b>Definition</b> internal_ramp_comprehensive_test.cpp:42</div></div>
 <div class="ttc" id="astructTestResults_html_a257eba3a9005a5c19c68ae27774948f7"><div class="ttname"><a href="structTestResults.html#a257eba3a9005a5c19c68ae27774948f7">TestResults::add_result</a></div><div class="ttdeci">void add_result(bool passed, uint64_t execution_time) noexcept</div><div class="ttdoc">Add test result and update statistics.</div><div class="ttdef"><b>Definition</b> TestFramework.h:169</div></div>
 </div><!-- fragment -->
 <p>Standardized test execution macro with timing and result tracking. </p>

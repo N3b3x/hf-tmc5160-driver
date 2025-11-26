@@ -102,7 +102,7 @@ $(function(){initNavTree('structtmc5160_1_1DriverConfig.html',''); initResizable
 <p>Driver initialization configuration structure.  
  <a href="#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="tmc5160__config_8hpp_source.html">tmc5160_config.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="tmc5160__types_8hpp_source.html">tmc5160_types.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for tmc5160::DriverConfig:</div>
 <div class="dyncontent">
@@ -117,9 +117,15 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:ae93c05de46be364ef45d141c728f63b5" id="r_ae93c05de46be364ef45d141c728f63b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc5160_1_1MotorSpec.html">MotorSpec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae93c05de46be364ef45d141c728f63b5">motor_spec</a></td></tr>
+<tr class="memdesc:ae93c05de46be364ef45d141c728f63b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor specifications (physical parameters for automatic current calculation)  <br /></td></tr>
+<tr class="separator:ae93c05de46be364ef45d141c728f63b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3edc65103b058fe76845f08ac016f37a" id="r_a3edc65103b058fe76845f08ac016f37a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc5160_1_1PowerStageParameters.html">PowerStageParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3edc65103b058fe76845f08ac016f37a">power_stage</a></td></tr>
 <tr class="memdesc:a3edc65103b058fe76845f08ac016f37a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power stage configuration (includes short protection)  <br /></td></tr>
 <tr class="separator:a3edc65103b058fe76845f08ac016f37a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e14f75f71dc37d750d7c71dc66be6e5" id="r_a5e14f75f71dc37d750d7c71dc66be6e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc5160_1_1MechanicalSystem.html">MechanicalSystem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5e14f75f71dc37d750d7c71dc66be6e5">mechanical</a></td></tr>
+<tr class="memdesc:a5e14f75f71dc37d750d7c71dc66be6e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mechanical system configuration (gearing, leadscrew, etc.) for unit conversions.  <br /></td></tr>
+<tr class="separator:a5e14f75f71dc37d750d7c71dc66be6e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3a66be3129a6ac3c1d7c275dc7a1e8b" id="r_af3a66be3129a6ac3c1d7c275dc7a1e8b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#a6e7804f8a437f39b4ba4b7cd6b3da1a4">MotorDirection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3a66be3129a6ac3c1d7c275dc7a1e8b">direction</a> {<a class="el" href="namespacetmc5160.html#a6e7804f8a437f39b4ba4b7cd6b3da1a4a1e23852820b9154316c7c06e2b7ba051">MotorDirection::NORMAL</a>}</td></tr>
 <tr class="memdesc:af3a66be3129a6ac3c1d7c275dc7a1e8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor direction (normal or inverse)  <br /></td></tr>
 <tr class="separator:af3a66be3129a6ac3c1d7c275dc7a1e8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -138,17 +144,11 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a6ff22b49e6285012045e824f9cd1300b" id="r_a6ff22b49e6285012045e824f9cd1300b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ff22b49e6285012045e824f9cd1300b">f_clk</a></td></tr>
 <tr class="memdesc:a6ff22b49e6285012045e824f9cd1300b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> clock frequency in Hz (default: 12 MHz)  <br /></td></tr>
 <tr class="separator:a6ff22b49e6285012045e824f9cd1300b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae93c05de46be364ef45d141c728f63b5" id="r_ae93c05de46be364ef45d141c728f63b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc5160_1_1MotorSpec.html">MotorSpec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae93c05de46be364ef45d141c728f63b5">motor_spec</a></td></tr>
-<tr class="memdesc:ae93c05de46be364ef45d141c728f63b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor specifications (physical parameters for automatic current calculation)  <br /></td></tr>
-<tr class="separator:ae93c05de46be364ef45d141c728f63b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e14f75f71dc37d750d7c71dc66be6e5" id="r_a5e14f75f71dc37d750d7c71dc66be6e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc5160_1_1MechanicalSystem.html">MechanicalSystem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5e14f75f71dc37d750d7c71dc66be6e5">mechanical</a></td></tr>
-<tr class="memdesc:a5e14f75f71dc37d750d7c71dc66be6e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mechanical system configuration (gearing, leadscrew, etc.) for unit conversions.  <br /></td></tr>
-<tr class="separator:a5e14f75f71dc37d750d7c71dc66be6e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Driver initialization configuration structure. </p>
 <p>Complete configuration structure for initializing the <a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> driver. Contains all necessary parameters for power stage, motor, and driver operation.</p>
-<h2><a class="anchor" id="autotoc_md10"></a>
+<h2><a class="anchor" id="autotoc_md18"></a>
 Automatic Current Calculation</h2>
 <p><b>IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated</b> from <code>motor_spec</code> parameters during <code>Initialize()</code>. These values are stored internally and NOT in <code>motor_spec</code>.</p>
 <p><b>Required Parameters</b> for automatic calculation:</p><ul>
@@ -163,9 +163,9 @@ Automatic Current Calculation</h2>
 <li><code>motor_spec.scaler_adjustment_percent</code>, <code>irun_adjustment_percent</code>, <code>ihold_adjustment_percent</code> (for fine-tuning)</li>
 </ul>
 <p><b>DO NOT</b> manually set IRUN, IHOLD, or GLOBAL_SCALER - they are calculated automatically.</p>
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md19"></a>
 ESP32 Platform Configuration</h2>
-<p>For ESP32 examples, use helper functions from <code><a class="el" href="esp32__tmc5160__bus__config_8hpp.html" title="ESP32 GPIO pin configuration and compile-time configuration for TMC5160 driver.">esp32_tmc5160_bus_config.hpp</a></code>:</p><ul>
+<p>For ESP32 examples, use helper functions from <code><a class="el" href="esp32__tmc5160__test__config_8hpp.html" title="ESP32 GPIO pin configuration and compile-time configuration for TMC5160 driver.">esp32_tmc5160_test_config.hpp</a></code>:</p><ul>
 <li><code>ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg)</code></li>
 <li><code>ConfigureDriverFromMotor_17HS4401S_Direct(cfg)</code></li>
 <li><code>ConfigureDriverFromMotor_AppliedMotion_5034(cfg)</code></li>
@@ -347,7 +347,7 @@ ESP32 Platform Configuration</h2>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="tmc5160__config_8hpp_source.html">tmc5160_config.hpp</a></li>
+<li><a class="el" href="tmc5160__types_8hpp_source.html">tmc5160_types.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

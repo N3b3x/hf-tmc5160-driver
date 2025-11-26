@@ -94,7 +94,8 @@ $(function(){initNavTree('tmc5160__types_8hpp.html',''); initResizable(); });
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">tmc5160_types.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -111,7 +112,7 @@ Include dependency graph for tmc5160_types.hpp:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc5160__types_8hpp__dep__incl.svg" width="3390" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tmc5160__types_8hpp__dep__incl.svg" width="1831" height="198"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="tmc5160__types_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -163,10 +164,19 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc5160_1_1GlobalConfig.html">tmc5160::GlobalConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Global configuration (GCONF) structure.  <a href="structtmc5160_1_1GlobalConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc5160_1_1DriverConfig.html">tmc5160::DriverConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Driver initialization configuration structure.  <a href="structtmc5160_1_1DriverConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacetmc5160" id="r_namespacetmc5160"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc5160.html">tmc5160</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacetmc5160_1_1ClockFreq" id="r_namespacetmc5160_1_1ClockFreq"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc5160_1_1ClockFreq.html">tmc5160::ClockFreq</a></td></tr>
+<tr class="memdesc:namespacetmc5160_1_1ClockFreq"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtmc5160_1_1TMC5160.html" title="Main class representing a TMC5160 stepper motor driver.">TMC5160</a> clock frequency constants. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacetmc5160_1_1Microsteps" id="r_namespacetmc5160_1_1Microsteps"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc5160_1_1Microsteps.html">tmc5160::Microsteps</a></td></tr>
+<tr class="memdesc:namespacetmc5160_1_1Microsteps"><td class="mdescLeft">&#160;</td><td class="mdescRight">Microstep constants. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
@@ -359,6 +369,21 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a3aec783c996f5aa4b0903200b060fdfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder prescaler mode enumeration.  <a href="namespacetmc5160.html#a3aec783c996f5aa4b0903200b060fdfd">More...</a><br /></td></tr>
 <tr class="separator:a3aec783c996f5aa4b0903200b060fdfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a84f52f479e065a6a0fb3abbddea12813" id="r_a84f52f479e065a6a0fb3abbddea12813"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc5160_1_1ClockFreq.html#a84f52f479e065a6a0fb3abbddea12813">tmc5160::ClockFreq::DEFAULT_F_CLK</a> = 12000000U</td></tr>
+<tr class="memdesc:a84f52f479e065a6a0fb3abbddea12813"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typical internal clock frequency in Hz (12 MHz)  <br /></td></tr>
+<tr class="separator:a84f52f479e065a6a0fb3abbddea12813"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a575cb444797b07a3999560686b58ee44" id="r_a575cb444797b07a3999560686b58ee44"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc5160_1_1ClockFreq.html#a575cb444797b07a3999560686b58ee44">tmc5160::ClockFreq::MIN_F_CLK</a> = 8000000U</td></tr>
+<tr class="memdesc:a575cb444797b07a3999560686b58ee44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum clock frequency in Hz.  <br /></td></tr>
+<tr class="separator:a575cb444797b07a3999560686b58ee44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac88522ac32b3f0c1534834d1def6e2a6" id="r_ac88522ac32b3f0c1534834d1def6e2a6"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc5160_1_1ClockFreq.html#ac88522ac32b3f0c1534834d1def6e2a6">tmc5160::ClockFreq::MAX_F_CLK</a> = 16000000U</td></tr>
+<tr class="memdesc:ac88522ac32b3f0c1534834d1def6e2a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum clock frequency in Hz.  <br /></td></tr>
+<tr class="separator:ac88522ac32b3f0c1534834d1def6e2a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5061f1a2a8687cc56812dd04fe2526c" id="r_ac5061f1a2a8687cc56812dd04fe2526c"><td class="memItemLeft" align="right" valign="top">constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc5160_1_1Microsteps.html#ac5061f1a2a8687cc56812dd04fe2526c">tmc5160::Microsteps::USTEP_COUNT</a> = 256U</td></tr>
+<tr class="memdesc:ac5061f1a2a8687cc56812dd04fe2526c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of microsteps per full step.  <br /></td></tr>
+<tr class="separator:ac5061f1a2a8687cc56812dd04fe2526c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Type definitions and enumerations for TMC5160 stepper motor driver. </p>

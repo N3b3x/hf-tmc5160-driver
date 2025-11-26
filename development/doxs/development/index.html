@@ -185,9 +185,9 @@ Single Motor Setup</h2>
 <div class="line">driver.rampControl.SetAcceleration(500.0f);</div>
 <div class="line">driver.motorControl.Enable();</div>
 <div class="ttc" id="aclasstmc5160_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:1370</div></div>
-<div class="ttc" id="aclasstmc5160_1_1TMC5160_html"><div class="ttname"><a href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a></div><div class="ttdoc">Main class representing a TMC5160 stepper motor driver.</div><div class="ttdef"><b>Definition</b> tmc5160.hpp:101</div></div>
+<div class="ttc" id="aclasstmc5160_1_1TMC5160_html"><div class="ttname"><a href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a></div><div class="ttdoc">Main class representing a TMC5160 stepper motor driver.</div><div class="ttdef"><b>Definition</b> tmc5160.hpp:100</div></div>
 <div class="ttc" id="anamespacetmc5160_html_ac039fd52ff49abd3359ab16891f4afc2a1e66935e3ab51cc2128e078cfd49d845"><div class="ttname"><a href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a1e66935e3ab51cc2128e078cfd49d845">tmc5160::RampMode::POSITIONING</a></div><div class="ttdeci">@ POSITIONING</div><div class="ttdoc">Positioning mode using all A, D and V parameters.</div></div>
-<div class="ttc" id="astructtmc5160_1_1DriverConfig_html"><div class="ttname"><a href="structtmc5160_1_1DriverConfig.html">tmc5160::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc5160_config.hpp:72</div></div>
+<div class="ttc" id="astructtmc5160_1_1DriverConfig_html"><div class="ttname"><a href="structtmc5160_1_1DriverConfig.html">tmc5160::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc5160_types.hpp:2140</div></div>
 <div class="ttc" id="atmc5160_8hpp_html"><div class="ttname"><a href="tmc5160_8hpp.html">tmc5160.hpp</a></div><div class="ttdoc">Main TMC5160 stepper motor driver interface and subsystem classes.</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md32"></a>
 Multi-Motor Daisy Chain Setup</h2>
@@ -215,7 +215,7 @@ Multi-Motor Daisy Chain Setup</h2>
 <div class="line">x_axis.rampControl.SetTargetPosition(1000);</div>
 <div class="line">y_axis.rampControl.SetMaxSpeed(500.0f);</div>
 <div class="line">z_axis.motorControl.Enable();</div>
-<div class="ttc" id="aclasstmc5160_1_1TMC5160DaisyChain_html"><div class="ttname"><a href="classtmc5160_1_1TMC5160DaisyChain.html">tmc5160::TMC5160DaisyChain</a></div><div class="ttdoc">High-level manager for multiple TMC5160 drivers in a daisy-chain configuration.</div><div class="ttdef"><b>Definition</b> tmc5160_daisy_chain.hpp:115</div></div>
+<div class="ttc" id="aclasstmc5160_1_1TMC5160DaisyChain_html"><div class="ttname"><a href="classtmc5160_1_1TMC5160DaisyChain.html">tmc5160::TMC5160DaisyChain</a></div><div class="ttdoc">High-level manager for multiple TMC5160 drivers in a daisy-chain configuration.</div><div class="ttdef"><b>Definition</b> tmc5160_daisy_chain.hpp:114</div></div>
 <div class="ttc" id="atmc5160__daisy__chain_8hpp_html"><div class="ttname"><a href="tmc5160__daisy__chain_8hpp.html">tmc5160_daisy_chain.hpp</a></div><div class="ttdoc">High-level daisy-chain manager for multiple TMC5160 drivers.</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md33"></a>
 Using Physical Units</h2>
@@ -223,21 +223,21 @@ Using Physical Units</h2>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="tmc5160__units_8hpp.html">inc/tmc5160_units.hpp</a>&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Motor: 200 steps/rev, Lead screw: 2mm pitch</span></div>
-<div class="line"><span class="keyword">constexpr</span> uint16_t <a class="code hl_variable" href="core__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a> = 200;</div>
-<div class="line"><span class="keyword">constexpr</span> <span class="keywordtype">float</span> <a class="code hl_variable" href="ramp__control__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370">LEAD_SCREW_PITCH_MM</a> = 2.0f;</div>
+<div class="line"><span class="keyword">constexpr</span> uint16_t <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a> = 200;</div>
+<div class="line"><span class="keyword">constexpr</span> <span class="keywordtype">float</span> <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370">LEAD_SCREW_PITCH_MM</a> = 2.0f;</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Move 10mm using convenience method</span></div>
-<div class="line">driver.rampControl.SetTargetPositionMm(10.0f, <a class="code hl_variable" href="core__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a>, <a class="code hl_variable" href="ramp__control__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370">LEAD_SCREW_PITCH_MM</a>);</div>
+<div class="line">driver.rampControl.SetTargetPositionMm(10.0f, <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a>, <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370">LEAD_SCREW_PITCH_MM</a>);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Set speed in RPM</span></div>
-<div class="line">driver.rampControl.SetMaxSpeedRpm(100.0f, <a class="code hl_variable" href="core__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a>);</div>
+<div class="line">driver.rampControl.SetMaxSpeedRpm(100.0f, <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a>);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Or use conversion functions directly</span></div>
-<div class="line">int32_t steps = <a class="code hl_function" href="namespacetmc5160.html#affbfa04d45ce3729d6becb2551d3376e">tmc5160::MmToSteps</a>(10.0f, <a class="code hl_variable" href="core__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a>, <a class="code hl_variable" href="ramp__control__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370">LEAD_SCREW_PITCH_MM</a>);</div>
+<div class="line">int32_t steps = <a class="code hl_function" href="namespacetmc5160.html#affbfa04d45ce3729d6becb2551d3376e">tmc5160::MmToSteps</a>(10.0f, <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a>, <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370">LEAD_SCREW_PITCH_MM</a>);</div>
 <div class="line">driver.rampControl.SetTargetPosition(steps);</div>
-<div class="ttc" id="acore__comprehensive__test_8cpp_html_a63557ac710415c650bc9dd19d2a91eba"><div class="ttname"><a href="core__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a></div><div class="ttdeci">static constexpr float STEPS_PER_REV</div><div class="ttdef"><b>Definition</b> core_comprehensive_test.cpp:75</div></div>
+<div class="ttc" id="ainternal__ramp__comprehensive__test_8cpp_html_a2f7680fdd51cb1381f016a751a6b3370"><div class="ttname"><a href="internal__ramp__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370">LEAD_SCREW_PITCH_MM</a></div><div class="ttdeci">static constexpr float LEAD_SCREW_PITCH_MM</div><div class="ttdef"><b>Definition</b> internal_ramp_comprehensive_test.cpp:69</div></div>
+<div class="ttc" id="ainternal__ramp__comprehensive__test_8cpp_html_a63557ac710415c650bc9dd19d2a91eba"><div class="ttname"><a href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a></div><div class="ttdeci">static constexpr float STEPS_PER_REV</div><div class="ttdef"><b>Definition</b> internal_ramp_comprehensive_test.cpp:68</div></div>
 <div class="ttc" id="anamespacetmc5160_html_affbfa04d45ce3729d6becb2551d3376e"><div class="ttname"><a href="namespacetmc5160.html#affbfa04d45ce3729d6becb2551d3376e">tmc5160::MmToSteps</a></div><div class="ttdeci">constexpr int32_t MmToSteps(float mm, float steps_per_rev, float lead_screw_pitch_mm) noexcept</div><div class="ttdoc">Convert millimeters to steps.</div><div class="ttdef"><b>Definition</b> tmc5160_units.hpp:44</div></div>
-<div class="ttc" id="aramp__control__comprehensive__test_8cpp_html_a2f7680fdd51cb1381f016a751a6b3370"><div class="ttname"><a href="ramp__control__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370">LEAD_SCREW_PITCH_MM</a></div><div class="ttdeci">static constexpr float LEAD_SCREW_PITCH_MM</div><div class="ttdef"><b>Definition</b> ramp_control_comprehensive_test.cpp:85</div></div>
 <div class="ttc" id="atmc5160__units_8hpp_html"><div class="ttname"><a href="tmc5160__units_8hpp.html">tmc5160_units.hpp</a></div><div class="ttdoc">Unit conversion functions for TMC5160 driver.</div></div>
 </div><!-- fragment --><p>For detailed setup, see Installation and Quick Start Guide.</p>
 <h1><a class="anchor" id="autotoc_md34"></a>
@@ -336,14 +336,14 @@ Advanced Features</h2>
 </ul>
 </li>
 <li><b>Advanced Features</b>:<ul>
-<li><code><a class="el" href="encoder__comprehensive__test_8cpp.html" title="Comprehensive Encoder testing suite for TMC5160 (single motor)">encoder_comprehensive_test.cpp</a></code> - Encoder integration and closed-loop control</li>
-<li><code><a class="el" href="diagnostics__comprehensive__test_8cpp.html" title="Comprehensive Diagnostics testing suite for TMC5160 (single motor)">diagnostics_comprehensive_test.cpp</a></code> - Comprehensive diagnostics and status monitoring</li>
-<li><code><a class="el" href="protection__comprehensive__test_8cpp.html" title="Comprehensive Protection testing suite for TMC5160 (single motor)">protection_comprehensive_test.cpp</a></code> - Protection system configuration and monitoring</li>
+<li><code>encoder_comprehensive_test.cpp</code> - Encoder integration and closed-loop control</li>
+<li><code>diagnostics_comprehensive_test.cpp</code> - Comprehensive diagnostics and status monitoring</li>
+<li><code>protection_comprehensive_test.cpp</code> - Protection system configuration and monitoring</li>
 </ul>
 </li>
 <li><b>Motor Control</b>:<ul>
-<li><code><a class="el" href="motor__control__comprehensive__test_8cpp.html" title="Comprehensive Motor Control testing suite for TMC5160 (single motor)">motor_control_comprehensive_test.cpp</a></code> - Advanced motor control features</li>
-<li><code><a class="el" href="ramp__control__comprehensive__test_8cpp.html" title="Comprehensive Ramp Control testing suite for TMC5160 (single motor)">ramp_control_comprehensive_test.cpp</a></code> - Ramp control and motion profiles</li>
+<li><code>motor_control_comprehensive_test.cpp</code> - Advanced motor control features</li>
+<li><code>ramp_control_comprehensive_test.cpp</code> - Ramp control and motion profiles</li>
 <li><code><a class="el" href="bounds__finding__sinuous__motion_8cpp.html" title="Fatigue testing platform: Sensorless bounds finding and sinusoidal motion with UART command interface...">bounds_finding_sinuous_motion.cpp</a></code> - Advanced motion control with bounds finding</li>
 </ul>
 </li>

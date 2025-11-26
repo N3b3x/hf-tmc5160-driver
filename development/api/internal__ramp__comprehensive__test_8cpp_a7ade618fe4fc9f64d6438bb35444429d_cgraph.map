@@ -1,0 +1,15 @@
+<map id="test_stallguard" name="test_stallguard">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,177,124,203"/>
+<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="172,177,312,203"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,187,158,187,158,193,124,193"/>
+<area shape="rect" id="Node000003" href="$namespacetmc5160__test__config.html#a8d4169028f909fa4c3bcaf35a1130f19" title="Helper function to populate DriverConfig from 17HS4401S direct drive motor configuration." alt="" coords="360,5,563,60"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="251,175,294,125,325,95,358,69,366,64,369,69,362,74,328,99,298,129,255,179"/>
+<area shape="rect" id="Node000004" href="$namespacetmc5160__test__config.html#ad066428e88b18d0b8a60d3cbb3866a72" title="Helper function to populate DriverConfig from 17HS4401S gearbox motor configuration." alt="" coords="360,84,563,139"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="278,175,371,141,372,146,280,180"/>
+<area shape="rect" id="Node000005" href="$namespacetmc5160__test__config.html#a3b6d57d96a6198cd1018a9e5c55c0c6b" title="Helper function to populate DriverConfig from Applied Motion 5034 motor configuration." alt="" coords="360,163,563,217"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="312,187,346,187,346,193,312,193"/>
+<area shape="rect" id="Node000006" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="380,242,543,282"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="282,200,388,235,386,240,281,205"/>
+<area shape="rect" id="Node000007" href="$internal__ramp__comprehensive__test_8cpp.html#a31cfb3926eb0c837bde126c1120fb3b9" title="Verify mode pins match expected communication mode." alt="" coords="393,307,530,332"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="256,201,299,246,329,271,361,292,380,300,378,305,359,296,325,275,295,250,252,205"/>
+</map>

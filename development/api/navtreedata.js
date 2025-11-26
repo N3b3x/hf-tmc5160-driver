@@ -54,7 +54,7 @@ var NAVTREE =
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
-        [ "All", "namespacemembers.html", null ],
+        [ "All", "namespacemembers.html", "namespacemembers_dup" ],
         [ "Functions", "namespacemembers_func.html", null ],
         [ "Variables", "namespacemembers_vars.html", null ],
         [ "Enumerations", "namespacemembers_enum.html", null ]
@@ -74,7 +74,7 @@ var NAVTREE =
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
-        [ "All", "globals.html", "globals_dup" ],
+        [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
         [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
@@ -89,15 +89,15 @@ var NAVTREEINDEX =
 [
 "TestFramework_8h.html",
 "classtmc5160_1_1SpiCommInterface.html#ab05ee9d4730a81797159444cc8ce3f81",
-"esp32__tmc5160__bus__config_8hpp.html#a5ec830634dcd59ee9a4a11bbcf3b00ed",
-"motor__control__comprehensive__test_8cpp.html#a2600323d32e9fbcfbfda121e6f3c6fe3",
-"namespacetmc5160__test__config.html#aa7bdadb434ba27b0d062c2882f3b9e3b",
-"structTestTaskContext.html#aa72faa223fd0ff992772b12458f62ec8",
-"structtmc5160_1_1MechanicalSystem.html#ad3428b94827098f6f759d60a87d78d71",
-"structtmc5160_1_1TMC5160PinConfig.html#a22066a961beb2ab377996d9bdac2e6af",
-"tmc5160__registers_8hpp.html#a4eaf32584629b8ef44ee951e7ebf4916a297f5ea19073f4b51715b029f48d5d52",
-"uniontmc5160_1_1DCCTRL__Register.html#a94645963534f872ea5f1ef097ae6788b",
-"uniontmc5160_1_1OFFSET__READ__Register.html#a5c01d462fee797e369d5a97edd9da4ed"
+"esp32__tmc5160__test__config_8hpp.html#ac5fdeee3d0fec452ae27c470250ce644",
+"internal__ramp__comprehensive__test_8cpp.html#aee105fad1f3169ed7d839101d4d97199",
+"namespacetmc5160__test__config.html#ad8bac97c333882ab834132f4daff0860",
+"structtmc5160_1_1ChopperConfig.html#a873868ab02acac279fe319614c1be503",
+"structtmc5160_1_1MotorSpec.html#ad7fa9d4639389ad181fface0f73af7ed",
+"structtmc5160_1_1TMC5160PinConfig.html#ade528730fa53e22e7841c6f599cac246",
+"tmc5160__types_8hpp.html#a3aec783c996f5aa4b0903200b060fdfd",
+"uniontmc5160_1_1DRV__STATUS__Register.html#a306cc8629c359cad062f47b187e083f8",
+"uniontmc5160_1_1OTP__READ__Register.html#a974fe47f88a7adfad880e15cd1f2d9b7"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

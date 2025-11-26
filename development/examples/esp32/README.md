@@ -30,7 +30,7 @@ These examples are configured by default for a specific **Trinamic TMC5160 Dev/E
 ## 🚀 Getting Started
 
 1.  **Setup Hardware:** Connect your ESP32 and TMC5160 according to the [Hardware Setup Guide](docs/dev_board_setup.md).
-2.  **Configure:** Check `main/esp32_tmc5160_bus_config.hpp` if you need to change pin assignments.
+2.  **Configure:** Check `main/esp32_tmc5160_test_config.hpp` if you need to change pin assignments.
 3.  **Build & Flash:**
     ```bash
     idf.py set-target esp32s3  # Or esp32, esp32c3, etc.

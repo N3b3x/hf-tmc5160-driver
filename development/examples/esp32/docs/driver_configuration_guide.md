@@ -7,7 +7,7 @@ The TMC5160 driver library uses a **compile-time configuration** approach with t
 2. **MotorConfig**: Motor-specific parameters (same motor = same config)
 3. **PlatformConfig**: Platform/application-specific parameters (reference switches, encoder, mechanical system)
 
-All configurations are defined in `esp32_tmc5160_bus_config.hpp` and automatically converted to driver register values during initialization.
+All configurations are defined in `esp32_tmc5160_test_config.hpp` and automatically converted to driver register values during initialization.
 
 ## Configuration Hierarchy
 
@@ -21,7 +21,7 @@ All configurations are defined in `esp32_tmc5160_bus_config.hpp` and automatical
 - Power stage MOSFET characteristics (Miller charge, BBM time)
 - Short protection defaults
 
-**Location**: `BoardConfig` namespace in `esp32_tmc5160_bus_config.hpp`
+**Location**: `BoardConfig` namespace in `esp32_tmc5160_test_config.hpp`
 
 ### 2. MotorConfig (Motor-Specific)
 
@@ -32,7 +32,7 @@ All configurations are defined in `esp32_tmc5160_bus_config.hpp` and automatical
 - StealthChop settings (PWM frequency, offset, autoscale)
 - Motor-specific gear ratio (if motor has integrated gearbox)
 
-**Location**: `MotorConfig_*` namespaces in `esp32_tmc5160_bus_config.hpp`
+**Location**: `MotorConfig_*` namespaces in `esp32_tmc5160_test_config.hpp`
 
 ### 3. PlatformConfig (Platform/Application-Specific)
 
@@ -43,7 +43,7 @@ All configurations are defined in `esp32_tmc5160_bus_config.hpp` and automatical
 - Mechanical system type (DirectDrive, LeadScrew, BeltDrive, Gearbox)
 - Lead screw pitch, belt parameters (if applicable)
 
-**Location**: `PlatformConfig` namespace in `esp32_tmc5160_bus_config.hpp`
+**Location**: `PlatformConfig` namespace in `esp32_tmc5160_test_config.hpp`
 
 ## Key Concepts
 
@@ -86,7 +86,7 @@ The driver **automatically calculates** IRUN, IHOLD, and GLOBAL_SCALER from moto
 ## Usage Example
 
 ```cpp
-#include "esp32_tmc5160_bus_config.hpp"
+#include "esp32_tmc5160_test_config.hpp"
 
 // Select motor, board, and platform at compile time
 static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 

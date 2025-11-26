@@ -7,7 +7,7 @@ var searchData=
   ['velocity_5freached_4',['velocity_reached',['../uniontmc5160_1_1RAMP__STAT__Register.html#a09edbfa5a5460b304b37f4e9235ae760',1,'tmc5160::RAMP_STAT_Register']]],
   ['velocity_5funit_5',['velocity_unit',['../structtmc5160_1_1StallGuardConfig.html#a75da0c8a6396a74a1cb0535edaa5c9de',1,'tmc5160::StallGuardConfig::velocity_unit'],['../structtmc5160_1_1RampConfig.html#accbf1750ec0fe42c4f2b5b2877560338',1,'tmc5160::RampConfig::velocity_unit'],['../structtmc5160_1_1CoolStepConfig.html#a297f03c3474fabc72cc93d53a6b5f14c',1,'tmc5160::CoolStepConfig::velocity_unit'],['../structtmc5160_1_1DcStepConfig.html#a3b5216e0b4a38eacd5b53f9d183b9d0b',1,'tmc5160::DcStepConfig::velocity_unit']]],
   ['velocityreached_6',['VelocityReached',['../structtmc5160_1_1SpiStatus.html#a4093d3b1f5e2428473fadc029faf7423',1,'tmc5160::SpiStatus']]],
-  ['verify_5fmode_5fpins_7',['verify_mode_pins',['../core__comprehensive__test_8cpp.html#a31cfb3926eb0c837bde126c1120fb3b9',1,'core_comprehensive_test.cpp']]],
+  ['verify_5fmode_5fpins_7',['verify_mode_pins',['../internal__ramp__comprehensive__test_8cpp.html#a31cfb3926eb0c837bde126c1120fb3b9',1,'internal_ramp_comprehensive_test.cpp']]],
   ['verifycrc_8',['VerifyCrc',['../structtmc5160_1_1UartFrame.html#a45e2ddbd74129ee2f4b3f158339552d1',1,'tmc5160::UartFrame']]],
   ['verifysetup_9',['VerifySetup',['../structtmc5160_1_1TMC5160_1_1Diagnostics.html#a5180d6e984236cbc1bcb44c6a76b6052',1,'tmc5160::TMC5160::Diagnostics']]],
   ['version_10',['version',['../uniontmc5160_1_1IOIN__Register.html#a5b1e42b3b58b7df5f3eb8db1ce6c6c31',1,'tmc5160::IOIN_Register::version'],['../structtmc5160_1_1InputStatus.html#a8a4e69e5116a59d3d11d46dae84fe875',1,'tmc5160::InputStatus::version']]],

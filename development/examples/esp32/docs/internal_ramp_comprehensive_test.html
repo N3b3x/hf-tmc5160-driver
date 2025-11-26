@@ -1,0 +1,1256 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  <style id="jtd-nav-activation">
+  
+
+    
+    .site-nav > ul.nav-list:first-child > li:not(:nth-child(7)) > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:not(:first-child) a,
+    .site-nav li.external a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:first-child > li:nth-child(7) > a {
+      font-weight: 600;
+      text-decoration: none;
+    }.site-nav > ul.nav-list:first-child > li:nth-child(7) > button svg {
+      transform: rotate(-90deg);
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(7) > ul.nav-list {
+      display: block;
+    }
+  </style>
+
+  
+
+  
+    <script src="/hf-tmc5160-driver/development/assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="/hf-tmc5160-driver/development/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Internal Ramp Comprehensive Test | HardFOC TMC5160 Driver - development</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Internal Ramp Comprehensive Test" />
+<meta name="author" content="N3b3x" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Hardware-Agnostic TMC5160 Stepper Motor Controller Driver with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
+<meta property="og:description" content="Hardware-Agnostic TMC5160 Stepper Motor Controller Driver with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
+<link rel="canonical" href="https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_comprehensive_test.html" />
+<meta property="og:url" content="https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_comprehensive_test.html" />
+<meta property="og:site_name" content="HardFOC TMC5160 Driver - development" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Internal Ramp Comprehensive Test" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Hardware-Agnostic TMC5160 Stepper Motor Controller Driver with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support","headline":"Internal Ramp Comprehensive Test","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_comprehensive_test.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- =============================================================================
+     Custom Head Content for HardFOC Driver Documentation
+     =============================================================================
+     This file is included in the <head> section of every page.
+     It loads custom CSS and JavaScript for enhanced functionality.
+     ============================================================================= -->
+
+<!-- Custom CSS for enhanced styling and fixes -->
+<link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/custom.css">
+
+<!-- Custom JavaScript for interactive features -->
+<script src="/hf-tmc5160-driver/development/assets/js/custom.js" defer></script>
+
+
+
+</head>
+
+<body>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    <div class="side-bar">
+  <div class="site-header" role="banner">
+    <a href="/hf-tmc5160-driver/development/" class="site-title lh-tight">
+  HardFOC TMC5160 Driver - development
+
+</a>
+    <button id="menu-button" class="site-button btn-reset" aria-label="Toggle menu" aria-pressed="false">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Main" id="site-nav" class="site-nav">
+  
+  
+    <ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in HardFOC TMC5160 Driver category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC5160 Driver</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/dev_board_setup/" class="nav-list-link">🛠️ Dev Board Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/bounds_finding_sinuous_motion.html" class="nav-list-link">Bounds Finding &amp; Sinusoidal Motion Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_communication_interface.html" class="nav-list-link">Communication Interface</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/driver_configuration_guide.html" class="nav-list-link">Driver Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/" class="nav-list-link">ESP32 Examples and Tests Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/gpio_pin_configuration.html" class="nav-list-link">GPIO Pin Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_comprehensive_test.html" class="nav-list-link">Internal Ramp Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html" class="nav-list-link">Motor Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/spi_daisy_chain_comprehensive_test.html" class="nav-list-link">SPI Daisy Chain Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/sinusoidal.html" class="nav-list-link">Sinusoidal Motion Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/" class="nav-list-link">TMC5160 Driver - ESP32 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_coverage_analysis.html" class="nav-list-link">TMC5160 Feature Coverage Analysis Report</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_register_access.html" class="nav-list-link">TMC5160 Register Access and Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/uart_multi_node_comprehensive_test.html" class="nav-list-link">UART Multi-Node Comprehensive Test</a></li></ul>
+  
+</nav>
+
+
+
+
+  
+  
+    <footer class="site-footer">
+      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+    </footer>
+  
+</div>
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header">
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search HardFOC TMC5160 Driver - development" aria-label="Search HardFOC TMC5160 Driver - development" autocomplete="off">
+    <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+    <nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    
+      <li class="aux-nav-list-item">
+        <a href="/hf-tmc5160-driver/development/api/index.html" class="site-button"
+          
+        >
+          📖 API Reference
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver" class="site-button"
+          
+        >
+          📚 GitHub Repository
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/issues" class="site-button"
+          
+        >
+          🐛 Report Issues
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/stargazers" class="site-button"
+          
+        >
+          ⭐ Star on GitHub
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+
+  
+</div>
+
+    <div class="main-content-wrap">
+      
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <h1 id="internal-ramp-comprehensive-test">
+  
+  
+    <a href="#internal-ramp-comprehensive-test" class="anchor-heading" aria-labelledby="internal-ramp-comprehensive-test"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Internal Ramp Comprehensive Test
+  
+  
+</h1>
+    
+<h2 id="overview">
+  
+  
+    <a href="#overview" class="anchor-heading" aria-labelledby="overview"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Overview
+  
+  
+</h2>
+    
+
+<p>The <code class="language-plaintext highlighter-rouge">internal_ramp_comprehensive_test.cpp</code> provides comprehensive testing for TMC5160 driver covering all major features in a single wholesome test suite. This merged test combines core initialization, motor control, ramp control, diagnostics, and protection features into one integrated test suite designed for SPI internal ramp mode operation.</p>
+<h2 id="purpose">
+  
+  
+    <a href="#purpose" class="anchor-heading" aria-labelledby="purpose"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Purpose
+  
+  
+</h2>
+    
+
+<p>This test suite is ideal for:</p>
+<ul>
+  <li>Comprehensive validation of all TMC5160 driver features</li>
+  <li>Testing complete motor control workflows</li>
+  <li>Validating feature interactions and compatibility</li>
+  <li>End-to-end testing of motor control systems</li>
+  <li>Production validation and quality assurance</li>
+</ul>
+<h2 id="test-structure">
+  
+  
+    <a href="#test-structure" class="anchor-heading" aria-labelledby="test-structure"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Test Structure
+  
+  
+</h2>
+    
+
+<p>The test suite is organized into five main categories:</p>
+<h3 id="1-core-tests">
+  
+  
+    <a href="#1-core-tests" class="anchor-heading" aria-labelledby="1-core-tests"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 1. Core Tests
+  
+  
+</h3>
+    
+<ul>
+  <li>Driver initialization and basic setup</li>
+  <li>Register read/write operations</li>
+  <li>Motor parameter configuration</li>
+  <li>Ramp parameter setup</li>
+  <li>Global configuration settings</li>
+</ul>
+<h3 id="2-motor-control-tests">
+  
+  
+    <a href="#2-motor-control-tests" class="anchor-heading" aria-labelledby="2-motor-control-tests"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 2. Motor Control Tests
+  
+  
+</h3>
+    
+<ul>
+  <li>Enable/disable functionality</li>
+  <li>Current control (IRUN, IHOLD)</li>
+  <li>Chopper configuration (SpreadCycle)</li>
+  <li>StealthChop configuration and automatic tuning</li>
+  <li>Mode change speeds (PWM, CoolStep, high-speed thresholds)</li>
+  <li>Global scaler</li>
+  <li>Freewheeling modes</li>
+  <li>CoolStep configuration</li>
+  <li>DCStep configuration</li>
+  <li>Microstep lookup table (LUT)</li>
+  <li>Motor setup from specifications</li>
+</ul>
+<h3 id="3-ramp-control-tests">
+  
+  
+    <a href="#3-ramp-control-tests" class="anchor-heading" aria-labelledby="3-ramp-control-tests"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 3. Ramp Control Tests
+  
+  
+</h3>
+    
+<ul>
+  <li>All ramp modes (POSITIONING, VELOCITY_POS, VELOCITY_NEG, HOLD)</li>
+  <li>Position control (target, current, relative moves)</li>
+  <li>Speed control (max speed, acceleration, deceleration)</li>
+  <li>Ramp speeds (start, stop, transition)</li>
+  <li>Power-down delay and zero wait time</li>
+  <li>First acceleration phase</li>
+  <li>Reference switch/endstop configuration</li>
+  <li>Unit conversions (mm, RPM, degrees)</li>
+</ul>
+<h3 id="4-diagnostics-tests">
+  
+  
+    <a href="#4-diagnostics-tests" class="anchor-heading" aria-labelledby="4-diagnostics-tests"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 4. Diagnostics Tests
+  
+  
+</h3>
+    
+<ul>
+  <li>Driver status monitoring</li>
+  <li>StallGuard2 configuration and reading</li>
+  <li>Lost steps detection</li>
+  <li>Phase currents</li>
+  <li>PWM scale</li>
+  <li>Microstep counter and current</li>
+  <li>Time between microsteps</li>
+  <li>GPIO pin reading</li>
+  <li>Factory and OTP configuration</li>
+  <li>UART transmission count</li>
+  <li>Offset calibration</li>
+  <li>Sensorless homing</li>
+  <li>Open load detection</li>
+</ul>
+<h3 id="5-protection-tests">
+  
+  
+    <a href="#5-protection-tests" class="anchor-heading" aria-labelledby="5-protection-tests"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 5. Protection Tests
+  
+  
+</h3>
+    
+<ul>
+  <li>Short circuit protection configuration</li>
+  <li>Overtemperature protection monitoring</li>
+</ul>
+<h2 id="hardware-requirements">
+  
+  
+    <a href="#hardware-requirements" class="anchor-heading" aria-labelledby="hardware-requirements"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Hardware Requirements
+  
+  
+</h2>
+    
+
+<ul>
+  <li>ESP32 development board (ESP32, ESP32-C3, ESP32-C6, etc.)</li>
+  <li>TMC5160 stepper motor driver board (Evaluation Kit recommended)</li>
+  <li>17HS4401S-PG518 geared stepper motor (5.18:1 gearbox) or compatible</li>
+  <li>AS5047U encoder (optional, for encoder feedback)</li>
+  <li>Two reference switches (endstops) - configured but do NOT stop motor unless testing that feature</li>
+  <li>SPI connection between ESP32 and TMC5160</li>
+  <li>Power supply: 12-36V DC (ensure adequate current capacity)</li>
+  <li><strong>Chip must be in SPI_INTERNAL_RAMP mode</strong> (SPI_MODE=HIGH, SD_MODE=LOW)</li>
+</ul>
+<h2 id="pin-configuration">
+  
+  
+    <a href="#pin-configuration" class="anchor-heading" aria-labelledby="pin-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Pin Configuration
+  
+  
+</h2>
+    
+
+<p>Default pin configuration (from <code class="language-plaintext highlighter-rouge">esp32_tmc5160_test_config.hpp</code>):</p>
+
+<ul>
+  <li><strong>SPI</strong>: MOSI=6, MISO=2, SCLK=5, CS=18</li>
+  <li><strong>Control</strong>: EN=11</li>
+  <li><strong>Clock</strong>: CLK=10 (tied to GND for internal clock)</li>
+  <li><strong>Diagnostics</strong>: DIAG0=23, DIAG1=15</li>
+  <li><strong>SPI Clock</strong>: 500 kHz (from config)</li>
+  <li><strong>Reference Switches</strong>: Configured via platform config (left/right endstops)</li>
+  <li><strong>Encoder</strong>: AS5047U configured via platform config</li>
+</ul>
+<h2 id="motor-selection">
+  
+  
+    <a href="#motor-selection" class="anchor-heading" aria-labelledby="motor-selection"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Motor Selection
+  
+  
+</h2>
+    
+
+<p>Uses <code class="language-plaintext highlighter-rouge">MotorConfig_17HS4401S</code> (gearbox) by default. Motor selection can be modified at the top of the file:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="k">static</span> <span class="k">constexpr</span> <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">MotorType</span> <span class="n">SELECTED_MOTOR</span> <span class="o">=</span> 
+    <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_17HS4401S_GEARBOX</span><span class="p">;</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p>Available options:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">MOTOR_17HS4401S_GEARBOX</code> (default): 17HS4401S with 5.18:1 planetary gearbox</li>
+  <li><code class="language-plaintext highlighter-rouge">MOTOR_17HS4401S_DIRECT</code>: 17HS4401S direct drive (no gearbox)</li>
+  <li><code class="language-plaintext highlighter-rouge">MOTOR_APPLIED_MOTION_5034</code>: Applied Motion 5034-369 NEMA 34 (high torque)</li>
+</ul>
+
+<p>See <a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html">Motor Configuration Guide</a> for detailed specifications.</p>
+<h2 id="platform-configuration">
+  
+  
+    <a href="#platform-configuration" class="anchor-heading" aria-labelledby="platform-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Platform Configuration
+  
+  
+</h2>
+    
+
+<p>The test uses <code class="language-plaintext highlighter-rouge">PLATFORM_TEST_RIG</code> configuration which includes:</p>
+<ul>
+  <li>Reference switches (endstops) with proper configuration</li>
+  <li>AS5047U encoder support</li>
+  <li>Mechanical system configuration (gearbox)</li>
+</ul>
+
+<p><strong>Important Note</strong>: Reference switches are configured but do NOT stop the motor during normal tests. They only stop the motor when explicitly testing the reference switch feature (<code class="language-plaintext highlighter-rouge">test_reference_switch_configuration</code>). This prevents unintended stops during comprehensive testing.</p>
+<h2 id="test-configuration">
+  
+  
+    <a href="#test-configuration" class="anchor-heading" aria-labelledby="test-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Test Configuration
+  
+  
+</h2>
+    
+
+<p>Tests can be enabled/disabled via compile-time constants at the top of the file:</p>
+<h3 id="core-tests">
+  
+  
+    <a href="#core-tests" class="anchor-heading" aria-labelledby="core-tests"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Core Tests
+  
+  
+</h3>
+    
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_INITIALIZATION_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_REGISTER_ACCESS_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_MOTOR_PARAMETER_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_RAMP_PARAMETER_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_GLOBAL_CONFIG_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="motor-control-tests">
+  
+  
+    <a href="#motor-control-tests" class="anchor-heading" aria-labelledby="motor-control-tests"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Motor Control Tests
+  
+  
+</h3>
+    
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_ENABLE_DISABLE_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_CURRENT_CONTROL_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_CHOPPER_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_STEALTHCHOP_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_MODE_CHANGE_SPEED_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_GLOBAL_SCALER_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_FREEWHEELING_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_COOLSTEP_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_DCSTEP_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_LUT_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_MOTOR_SETUP_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="ramp-control-tests">
+  
+  
+    <a href="#ramp-control-tests" class="anchor-heading" aria-labelledby="ramp-control-tests"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Ramp Control Tests
+  
+  
+</h3>
+    
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_RAMP_MODE_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_POSITION_CONTROL_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_SPEED_CONTROL_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_RAMP_PARAMETER_TESTS_RAMP</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_REFERENCE_SWITCH_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_UNIT_CONVERSION_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="diagnostics-tests">
+  
+  
+    <a href="#diagnostics-tests" class="anchor-heading" aria-labelledby="diagnostics-tests"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Diagnostics Tests
+  
+  
+</h3>
+    
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_DRIVER_STATUS_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_STALLGUARD_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_LOST_STEPS_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_PHASE_CURRENT_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_PWM_SCALE_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_MICROSTEP_DIAGNOSTICS_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_GPIO_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_FACTORY_OTP_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_UART_COUNT_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_OFFSET_CALIBRATION_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_SENSORLESS_HOMING_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_OPEN_LOAD_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="protection-tests">
+  
+  
+    <a href="#protection-tests" class="anchor-heading" aria-labelledby="protection-tests"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Protection Tests
+  
+  
+</h3>
+    
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_SHORT_CIRCUIT_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_OVERTEMPERATURE_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="encoder-tests">
+  
+  
+    <a href="#encoder-tests" class="anchor-heading" aria-labelledby="encoder-tests"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Encoder Tests
+  
+  
+</h3>
+    
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_ENCODER_CONFIG_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_ENCODER_RESOLUTION_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_ENCODER_POSITION_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_DEVIATION_DETECTION_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_LATCHED_POSITION_TESTS</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="test-execution">
+  
+  
+    <a href="#test-execution" class="anchor-heading" aria-labelledby="test-execution"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Test Execution
+  
+  
+</h2>
+    
+<h3 id="running-tests">
+  
+  
+    <a href="#running-tests" class="anchor-heading" aria-labelledby="running-tests"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Running Tests
+  
+  
+</h3>
+    
+
+<ol>
+  <li><strong>Build the test</strong>: <code class="language-plaintext highlighter-rouge">idf.py build</code></li>
+  <li><strong>Flash to ESP32</strong>: <code class="language-plaintext highlighter-rouge">idf.py flash</code></li>
+  <li><strong>Monitor output</strong>: <code class="language-plaintext highlighter-rouge">idf.py monitor</code></li>
+</ol>
+<h3 id="test-output-format">
+  
+  
+    <a href="#test-output-format" class="anchor-heading" aria-labelledby="test-output-format"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Test Output Format
+  
+  
+</h3>
+    
+
+<p>Tests use a structured output format with verbose logging:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="rouge-code"><pre>I (1234) InternalRamp_Test: ╔══════════════════════════════════════════════════════════════════════════════╗
+I (1235) InternalRamp_Test: ║         ESP32 TMC5160 INTERNAL RAMP COMPREHENSIVE TEST SUITE                  ║
+I (1236) InternalRamp_Test: ║                         HardFOC TMC5160 Driver Tests                           ║
+I (1237) InternalRamp_Test: ╚══════════════════════════════════════════════════════════════════════════════╝
+I (1238) InternalRamp_Test: 
+I (1239) InternalRamp_Test: Configuration:
+I (1240) InternalRamp_Test:   Motor: 17HS4401S-PG518 (gearbox)
+I (1241) InternalRamp_Test:   Board: TMC5160 Evaluation Kit
+I (1242) InternalRamp_Test:   Platform: Test Rig (with AS5047U encoder and reference switches)
+I (1243) InternalRamp_Test:   Communication Mode: SPI Internal Ramp (SPI_MODE=HIGH, SD_MODE=LOW)
+I (1244) InternalRamp_Test: 
+I (1245) InternalRamp_Test: [SUCCESS] PASSED: driver_initialization (123.45 ms)
+I (1246) InternalRamp_Test: [SUCCESS] PASSED: register_read_write (45.67 ms)
+...
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="test-results-summary">
+  
+  
+    <a href="#test-results-summary" class="anchor-heading" aria-labelledby="test-results-summary"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Test Results Summary
+  
+  
+</h3>
+    
+
+<p>At the end of execution, a comprehensive summary is displayed:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre>╔══════════════════════════════════════════════════════════════════════════════╗
+║                          TEST SUMMARY                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Total Tests: 45                                                               ║
+║ Passed: 43                                                                   ║
+║ Failed: 2                                                                    ║
+║ Success: 95.56%                                                               ║
+║ Total Time: 1234.56 ms                                                       ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p>The test also includes a feature compatibility section at the end:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></td><td class="rouge-code"><pre>╔══════════════════════════════════════════════════════════════════════════════╗
+║                    FEATURE COMPATIBILITY NOTES                                 ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Features that can be used together:
+  • StealthChop + CoolStep: Compatible, CoolStep adjusts current based on StallGuard
+  • StealthChop + DCStep: Compatible, DCStep activates at higher speeds
+  • SpreadCycle + CoolStep: Compatible, standard combination
+  • SpreadCycle + DCStep: Compatible, DCStep for high-speed operation
+  • StallGuard2 + Sensorless Homing: Compatible, StallGuard2 enables sensorless homing
+  • Reference Switches + Encoder: Compatible, both can be used for position feedback
+  • Microstep LUT + Interpolation: Compatible, LUT customizes microstep waveform
+
+Features that are mutually exclusive:
+  • StealthChop vs SpreadCycle: Only one chopper mode active at a time
+  • CoolStep vs DCStep: Both adjust current, but for different speed ranges
+    (Can be configured with non-overlapping velocity thresholds)
+
+Feature interactions:
+  • Mode Change Speeds: Control transitions between StealthChop and SpreadCycle
+  • Global Scaler: Affects all current-based features (CoolStep, DCStep, etc.)
+  • Freewheeling: Only active in StealthChop mode
+  • Open Load Detection: Requires SpreadCycle mode (StealthChop disabled)
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="key-test-features">
+  
+  
+    <a href="#key-test-features" class="anchor-heading" aria-labelledby="key-test-features"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Key Test Features
+  
+  
+</h2>
+    
+<h3 id="core-initialization">
+  
+  
+    <a href="#core-initialization" class="anchor-heading" aria-labelledby="core-initialization"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Core Initialization
+  
+  
+</h3>
+    
+<ul>
+  <li>Driver initialization with full configuration</li>
+  <li>Register access verification</li>
+  <li>Motor parameter validation</li>
+  <li>Ramp parameter setup</li>
+  <li>Global configuration testing</li>
+</ul>
+<h3 id="motor-control">
+  
+  
+    <a href="#motor-control" class="anchor-heading" aria-labelledby="motor-control"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Motor Control
+  
+  
+</h3>
+    
+<ul>
+  <li>Enable/disable with state verification</li>
+  <li>Current control (IRUN, IHOLD) with calculation verification</li>
+  <li>Chopper configuration (SpreadCycle mode)</li>
+  <li>StealthChop with automatic tuning sequence (AT#1 and AT#2)</li>
+  <li>Mode change speeds for smooth transitions</li>
+  <li>Global scaler for current range adjustment</li>
+  <li>Freewheeling modes</li>
+  <li>CoolStep load-adaptive current reduction</li>
+  <li>DCStep for high-speed operation</li>
+  <li>Microstep lookup table customization</li>
+  <li>Motor setup from specifications</li>
+</ul>
+<h3 id="ramp-control">
+  
+  
+    <a href="#ramp-control" class="anchor-heading" aria-labelledby="ramp-control"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Ramp Control
+  
+  
+</h3>
+    
+<ul>
+  <li>All ramp modes (POSITIONING, VELOCITY_POS, VELOCITY_NEG, HOLD)</li>
+  <li>Position control with target and current position</li>
+  <li>Speed control with acceleration/deceleration</li>
+  <li>Ramp speed parameters (VSTART, VSTOP, V1)</li>
+  <li>Power-down delay and zero wait time</li>
+  <li>First acceleration phase</li>
+  <li>Reference switch configuration (with stop enable only when testing)</li>
+  <li>Unit conversions (mm, RPM, steps)</li>
+</ul>
+<h3 id="diagnostics">
+  
+  
+    <a href="#diagnostics" class="anchor-heading" aria-labelledby="diagnostics"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Diagnostics
+  
+  
+</h3>
+    
+<ul>
+  <li>Driver status monitoring</li>
+  <li>StallGuard2 configuration and reading (requires SpreadCycle)</li>
+  <li>Lost steps detection</li>
+  <li>Phase current reading</li>
+  <li>PWM scale monitoring (StealthChop calibration)</li>
+  <li>Microstep diagnostics (counter, current, timing)</li>
+  <li>GPIO pin reading</li>
+  <li>Factory/OTP configuration reading</li>
+  <li>UART transmission count</li>
+  <li>Offset calibration</li>
+  <li>Sensorless homing (requires SpreadCycle and StallGuard2)</li>
+  <li>Open load detection (requires SpreadCycle)</li>
+</ul>
+<h3 id="protection">
+  
+  
+    <a href="#protection" class="anchor-heading" aria-labelledby="protection"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Protection
+  
+  
+</h3>
+    
+<ul>
+  <li>Short circuit protection configuration (S2VS, S2G)</li>
+  <li>Overtemperature protection monitoring (OTPW, OT)</li>
+</ul>
+<h3 id="encoder-features">
+  
+  
+    <a href="#encoder-features" class="anchor-heading" aria-labelledby="encoder-features"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Encoder Features
+  
+  
+</h3>
+    
+<ul>
+  <li><strong>Configuration</strong>: setup, enable/disable, clearing options</li>
+  <li><strong>Resolution</strong>: setting and verifying pulses per revolution</li>
+  <li><strong>Position</strong>: reading current position, accuracy verification</li>
+  <li><strong>Deviation</strong>: configuring thresholds, detecting deviations between motor and encoder</li>
+  <li><strong>Latching</strong>: position latching on events</li>
+</ul>
+<h2 id="important-notes">
+  
+  
+    <a href="#important-notes" class="anchor-heading" aria-labelledby="important-notes"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Important Notes
+  
+  
+</h2>
+    
+<h3 id="reference-switches">
+  
+  
+    <a href="#reference-switches" class="anchor-heading" aria-labelledby="reference-switches"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Reference Switches
+  
+  
+</h3>
+    
+
+<p><strong>Reference switches are configured but do NOT stop the motor during normal tests.</strong> This prevents unintended stops during comprehensive testing. The switches only stop the motor when explicitly testing the reference switch feature (<code class="language-plaintext highlighter-rouge">test_reference_switch_configuration</code>).</p>
+<h3 id="stealthchop-vs-spreadcycle">
+  
+  
+    <a href="#stealthchop-vs-spreadcycle" class="anchor-heading" aria-labelledby="stealthchop-vs-spreadcycle"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> StealthChop vs SpreadCycle
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>StealthChop</strong>: Silent operation, requires automatic tuning (AT sequence)</li>
+  <li><strong>SpreadCycle</strong>: Required for StallGuard2, CoolStep, and open load detection</li>
+  <li>Mode change speeds control automatic transitions between modes</li>
+</ul>
+<h3 id="stallguard2-requirements">
+  
+  
+    <a href="#stallguard2-requirements" class="anchor-heading" aria-labelledby="stallguard2-requirements"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> StallGuard2 Requirements
+  
+  
+</h3>
+    
+
+<p>StallGuard2 requires:</p>
+<ul>
+  <li><strong>SpreadCycle mode</strong> (StealthChop disabled)</li>
+  <li>Motor movement (minimum velocity threshold)</li>
+  <li>Proper threshold (SGT) tuning</li>
+</ul>
+<h3 id="feature-compatibility">
+  
+  
+    <a href="#feature-compatibility" class="anchor-heading" aria-labelledby="feature-compatibility"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Feature Compatibility
+  
+  
+</h3>
+    
+
+<p>The test suite includes comprehensive feature compatibility notes at the end, documenting:</p>
+<ul>
+  <li>Features that work together</li>
+  <li>Mutually exclusive features</li>
+  <li>Feature interactions and dependencies</li>
+</ul>
+<h2 id="expected-behavior">
+  
+  
+    <a href="#expected-behavior" class="anchor-heading" aria-labelledby="expected-behavior"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Expected Behavior
+  
+  
+</h2>
+    
+<h3 id="test-execution-flow">
+  
+  
+    <a href="#test-execution-flow" class="anchor-heading" aria-labelledby="test-execution-flow"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Test Execution Flow
+  
+  
+</h3>
+    
+
+<ol>
+  <li><strong>Initialization</strong>: Driver and SPI interface setup with mode pin verification</li>
+  <li><strong>Core Tests</strong>: Basic initialization and configuration validation</li>
+  <li><strong>Motor Control Tests</strong>: All motor control features tested sequentially</li>
+  <li><strong>Ramp Control Tests</strong>: Ramp generator features validated</li>
+  <li><strong>Diagnostics Tests</strong>: Diagnostic features tested (some require mode switching)</li>
+  <li><strong>Protection Tests</strong>: Protection features configured and monitored</li>
+  <li><strong>Encoder Tests</strong>: Encoder configuration, resolution, position, deviation, and latching validated</li>
+  <li><strong>Summary</strong>: Comprehensive test results and feature compatibility notes</li>
+</ol>
+<h3 id="typical-test-duration">
+  
+  
+    <a href="#typical-test-duration" class="anchor-heading" aria-labelledby="typical-test-duration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Typical Test Duration
+  
+  
+</h3>
+    
+
+<ul>
+  <li>Full test suite: ~30-60 seconds (depending on enabled tests)</li>
+  <li>Individual test categories: ~5-10 seconds each</li>
+  <li>StealthChop AT sequence: ~2 seconds (includes standstill and motion phases)</li>
+</ul>
+<h2 id="troubleshooting">
+  
+  
+    <a href="#troubleshooting" class="anchor-heading" aria-labelledby="troubleshooting"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Troubleshooting
+  
+  
+</h2>
+    
+<h3 id="common-issues">
+  
+  
+    <a href="#common-issues" class="anchor-heading" aria-labelledby="common-issues"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Common Issues
+  
+  
+</h3>
+    
+<h4 id="tests-failing">
+  
+  
+    <a href="#tests-failing" class="anchor-heading" aria-labelledby="tests-failing"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Tests Failing
+  
+  
+</h4>
+    
+<p><strong>Symptoms</strong>: Tests report failures</p>
+
+<p><strong>Solutions</strong>:</p>
+<ol>
+  <li>Check hardware connections (SPI, power, motor)</li>
+  <li>Verify power supply (12-36V, adequate current)</li>
+  <li>Check SPI communication (verify CS pin)</li>
+  <li>Verify motor is connected and not mechanically bound</li>
+  <li>Check chip communication mode (SPI_INTERNAL_RAMP)</li>
+  <li>Verify motor configuration matches hardware</li>
+</ol>
+<h4 id="stealthchop-not-calibrating">
+  
+  
+    <a href="#stealthchop-not-calibrating" class="anchor-heading" aria-labelledby="stealthchop-not-calibrating"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> StealthChop Not Calibrating
+  
+  
+</h4>
+    
+<p><strong>Symptoms</strong>: PWM_SCALE_AUTO remains 0</p>
+
+<p><strong>Solutions</strong>:</p>
+<ol>
+  <li>Ensure IRUN ≥ 8 (minimum for StealthChop)</li>
+  <li>Wait for standstill calibration (130ms+ for AT#1)</li>
+  <li>Move motor for motion calibration (AT#2 requires motion)</li>
+  <li>Check motor current is adequate</li>
+  <li>Verify StealthChop is enabled (GCONF.en_pwm_mode = 1)</li>
+</ol>
+<h4 id="stallguard2-not-working">
+  
+  
+    <a href="#stallguard2-not-working" class="anchor-heading" aria-labelledby="stallguard2-not-working"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> StallGuard2 Not Working
+  
+  
+</h4>
+    
+<p><strong>Symptoms</strong>: SG_RESULT always 0 or doesn’t change</p>
+
+<p><strong>Solutions</strong>:</p>
+<ol>
+  <li><strong>Verify SpreadCycle mode</strong>: StealthChop must be disabled</li>
+  <li>Check TCOOLTHRS threshold (must be below motor velocity)</li>
+  <li>Verify SGT threshold is appropriate for your motor/load</li>
+  <li>Check motor is actually moving</li>
+  <li>Verify StallGuard2 is enabled in GCONF</li>
+</ol>
+<h4 id="reference-switches-stopping-motor-unexpectedly">
+  
+  
+    <a href="#reference-switches-stopping-motor-unexpectedly" class="anchor-heading" aria-labelledby="reference-switches-stopping-motor-unexpectedly"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Reference Switches Stopping Motor Unexpectedly
+  
+  
+</h4>
+    
+<p><strong>Symptoms</strong>: Motor stops during tests (not in reference switch test)</p>
+
+<p><strong>Solutions</strong>:</p>
+<ol>
+  <li>This should not happen - switches are configured with stop disabled</li>
+  <li>Check if <code class="language-plaintext highlighter-rouge">test_reference_switch_configuration</code> is running</li>
+  <li>Verify switch wiring (may have noise or false triggers)</li>
+  <li>Check switch polarity configuration</li>
+</ol>
+<h4 id="open-load-detection-not-working">
+  
+  
+    <a href="#open-load-detection-not-working" class="anchor-heading" aria-labelledby="open-load-detection-not-working"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Open Load Detection Not Working
+  
+  
+</h4>
+    
+<p><strong>Symptoms</strong>: Open load not detected</p>
+
+<p><strong>Solutions</strong>:</p>
+<ol>
+  <li>Verify SpreadCycle mode (StealthChop disabled)</li>
+  <li>Motor must be moving (minimum 4× microstep resolution)</li>
+  <li>Check motor wiring for actual open load condition</li>
+  <li>Verify open load detection is enabled</li>
+</ol>
+<h2 id="customization">
+  
+  
+    <a href="#customization" class="anchor-heading" aria-labelledby="customization"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Customization
+  
+  
+</h2>
+    
+<h3 id="enablingdisabling-test-categories">
+  
+  
+    <a href="#enablingdisabling-test-categories" class="anchor-heading" aria-labelledby="enablingdisabling-test-categories"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Enabling/Disabling Test Categories
+  
+  
+</h3>
+    
+
+<p>Modify test enable flags at the top of the file:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">ENABLE_STEALTHCHOP_TESTS</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>  <span class="c1">// Disable StealthChop tests</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="modifying-test-parameters">
+  
+  
+    <a href="#modifying-test-parameters" class="anchor-heading" aria-labelledby="modifying-test-parameters"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Modifying Test Parameters
+  
+  
+</h3>
+    
+
+<p>Change test values in the configuration section:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="k">static</span> <span class="k">constexpr</span> <span class="kt">uint8_t</span> <span class="n">TEST_IRUN</span> <span class="o">=</span> <span class="mi">25</span><span class="p">;</span>  <span class="c1">// Change test IRUN value</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">float</span> <span class="n">TEST_MAX_SPEED</span> <span class="o">=</span> <span class="n">STEPS_PER_REV</span> <span class="o">*</span> <span class="mf">2.0</span><span class="n">f</span><span class="p">;</span>  <span class="c1">// Change test speed</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="adding-custom-tests">
+  
+  
+    <a href="#adding-custom-tests" class="anchor-heading" aria-labelledby="adding-custom-tests"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Adding Custom Tests
+  
+  
+</h3>
+    
+
+<p>Add new test functions following the existing pattern:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="rouge-code"><pre><span class="kt">bool</span> <span class="nf">test_custom_feature</span><span class="p">()</span> <span class="k">noexcept</span> <span class="p">{</span>
+  <span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s">"Testing custom feature..."</span><span class="p">);</span>
+  
+  <span class="k">auto</span> <span class="n">handle</span> <span class="o">=</span> <span class="n">create_test_driver</span><span class="p">();</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">handle</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// Test code here</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">condition</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s">"✓ Custom feature test passed"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">ESP_LOGE</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s">"✗ Custom feature test failed"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p>Then add to the appropriate test section in <code class="language-plaintext highlighter-rouge">app_main()</code>.</p>
+<h2 id="related-documentation">
+  
+  
+    <a href="#related-documentation" class="anchor-heading" aria-labelledby="related-documentation"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Related Documentation
+  
+  
+</h2>
+    
+
+<ul>
+  <li><a href="encoder_comprehensive_test.md">Encoder Comprehensive Test</a> - Encoder-specific testing (separate test suite)</li>
+  <li><a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html">Motor Configuration Guide</a> - Motor selection and configuration</li>
+  <li><a href="/hf-tmc5160-driver/development/examples/esp32/docs/driver_configuration_guide.html">Driver Configuration Guide</a> - Driver setup details</li>
+  <li><a href="/hf-tmc5160-driver/development/docs/dev_board_setup/">Dev Board Setup</a> - Hardware setup instructions</li>
+</ul>
+<h2 id="test-coverage">
+  
+  
+    <a href="#test-coverage" class="anchor-heading" aria-labelledby="test-coverage"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Test Coverage
+  
+  
+</h2>
+    
+
+<p>This comprehensive test suite covers:</p>
+
+<ul>
+  <li>✅ Core initialization and configuration</li>
+  <li>✅ Register access (read/write)</li>
+  <li>✅ Motor control (enable/disable, current, chopper)</li>
+  <li>✅ StealthChop and automatic tuning</li>
+  <li>✅ SpreadCycle mode</li>
+  <li>✅ CoolStep and DCStep</li>
+  <li>✅ All ramp modes</li>
+  <li>✅ Position and speed control</li>
+  <li>✅ Reference switches</li>
+  <li>✅ Diagnostics (StallGuard2, lost steps, phase currents)</li>
+  <li>✅ Sensorless homing</li>
+  <li>✅ Open load detection</li>
+  <li>✅ Protection features</li>
+  <li>✅ Encoder configuration and operation</li>
+  <li>✅ Feature compatibility validation</li>
+</ul>
+
+<p>The test suite provides thorough validation of all TMC5160 driver features in a single integrated test, making it ideal for production validation and comprehensive system testing.</p>
+
+          
+
+          
+            
+          
+        </main>
+        
+
+  <hr>
+  <footer>
+    
+
+    <!-- =============================================================================
+     Custom Footer Content for HardFOC Driver Documentation
+     =============================================================================
+     This footer is displayed at the bottom of every page.
+     ============================================================================= -->
+
+<footer class="site-footer">
+  <div class="site-footer-credits">
+    <p>Built with ❤️ using <a href="https://just-the-docs.github.io/just-the-docs/">Just the Docs</a></p>
+    <p>
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development/blob/main/LICENSE">GPL v3 License</a> • 
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development">View on GitHub</a>
+    </p>
+  </div>
+</footer>
+
+
+
+    
+  </footer>
+
+
+      </div>
+    </div>
+    
+      
+<button id="search-button" class="search-button btn-reset" aria-label="Focus on search">
+  <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+</button>
+
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+</body>
+</html>
+

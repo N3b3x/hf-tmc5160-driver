@@ -30,7 +30,7 @@
 
 #include "../../../inc/tmc5160.hpp"
 #include "esp32_tmc5160_bus.hpp"
-#include "esp32_tmc5160_bus_config.hpp"
+#include "esp32_tmc5160_test_config.hpp"
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"

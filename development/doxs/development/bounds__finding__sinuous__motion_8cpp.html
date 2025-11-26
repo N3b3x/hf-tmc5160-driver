@@ -105,7 +105,7 @@ $(function(){initNavTree('bounds__finding__sinuous__motion_8cpp.html',''); initR
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="tmc5160_8hpp_source.html">../../../inc/tmc5160.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="esp32__tmc5160__bus_8hpp_source.html">esp32_tmc5160_bus.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="esp32__tmc5160__bus__config_8hpp_source.html">esp32_tmc5160_bus_config.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp32__tmc5160__test__config_8hpp_source.html">esp32_tmc5160_test_config.hpp</a>&quot;</code><br />
 <code>#include &quot;esp_log.h&quot;</code><br />
 <code>#include &quot;esp_timer.h&quot;</code><br />
 <code>#include &quot;driver/uart.h&quot;</code><br />
@@ -121,7 +121,7 @@ $(function(){initNavTree('bounds__finding__sinuous__motion_8cpp.html',''); initR
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for bounds_finding_sinuous_motion.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp__incl.svg" width="2571" height="506"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="bounds__finding__sinuous__motion_8cpp__incl.svg" width="2720" height="520"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -211,7 +211,7 @@ Variables</h2></td></tr>
 </li>
 <li>UART command interface for real-time parameter adjustment</li>
 </ol>
-<p>MOTOR SELECTION: Motor selection is done via a static constexpr variable at the top of this file. See <a class="el" href="esp32__tmc5160__bus__config_8hpp.html" title="ESP32 GPIO pin configuration and compile-time configuration for TMC5160 driver.">esp32_tmc5160_bus_config.hpp</a> for detailed motor specifications and selection guide.</p>
+<p>MOTOR SELECTION: Motor selection is done via a static constexpr variable at the top of this file. See <a class="el" href="esp32__tmc5160__test__config_8hpp.html" title="ESP32 GPIO pin configuration and compile-time configuration for TMC5160 driver.">esp32_tmc5160_test_config.hpp</a> for detailed motor specifications and selection guide.</p>
 <p>Hardware Requirements:</p><ul>
 <li>ESP32 development board</li>
 <li>TMC5160 stepper motor driver</li>
@@ -221,7 +221,7 @@ Variables</h2></td></tr>
 <li>UART debug port for command interface (typically UART_NUM_0 for USB serial)</li>
 <li>Power supply: 12-36V DC (ensure adequate current capacity for selected motor)</li>
 </ul>
-<p>Pin Configuration (uses default dev board pins from <a class="el" href="esp32__tmc5160__bus__config_8hpp.html" title="ESP32 GPIO pin configuration and compile-time configuration for TMC5160 driver.">esp32_tmc5160_bus_config.hpp</a>):</p><ul>
+<p>Pin Configuration (uses default dev board pins from <a class="el" href="esp32__tmc5160__test__config_8hpp.html" title="ESP32 GPIO pin configuration and compile-time configuration for TMC5160 driver.">esp32_tmc5160_test_config.hpp</a>):</p><ul>
 <li>SPI: MOSI=6, MISO=2, SCLK=5, CS=18</li>
 <li>Control: EN=11, CLK=10, DIAG0=23, DIAG1=15</li>
 <li>UART: Uses default UART_NUM_0 (USB serial port)</li>

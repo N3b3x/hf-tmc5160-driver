@@ -1,0 +1,15 @@
+<map id="test_enable_disable" name="test_enable_disable">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,177,157,203"/>
+<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="205,177,345,203"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,187,191,187,191,193,158,193"/>
+<area shape="rect" id="Node000003" href="$namespacetmc5160__test__config.html#a8d4169028f909fa4c3bcaf35a1130f19" title="Helper function to populate DriverConfig from 17HS4401S direct drive motor configuration." alt="" coords="393,5,596,60"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="284,175,327,125,358,95,392,69,400,64,403,69,395,74,361,99,331,129,288,179"/>
+<area shape="rect" id="Node000004" href="$namespacetmc5160__test__config.html#ad066428e88b18d0b8a60d3cbb3866a72" title="Helper function to populate DriverConfig from 17HS4401S gearbox motor configuration." alt="" coords="393,84,596,139"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="311,175,404,141,406,146,313,180"/>
+<area shape="rect" id="Node000005" href="$namespacetmc5160__test__config.html#a3b6d57d96a6198cd1018a9e5c55c0c6b" title="Helper function to populate DriverConfig from Applied Motion 5034 motor configuration." alt="" coords="393,163,596,217"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="346,187,380,187,380,193,346,193"/>
+<area shape="rect" id="Node000006" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="413,242,576,282"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="316,200,421,235,419,240,314,205"/>
+<area shape="rect" id="Node000007" href="$internal__ramp__comprehensive__test_8cpp.html#a31cfb3926eb0c837bde126c1120fb3b9" title="Verify mode pins match expected communication mode." alt="" coords="426,307,563,332"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="289,201,332,246,362,271,395,292,414,300,411,305,392,296,359,275,329,250,285,205"/>
+</map>

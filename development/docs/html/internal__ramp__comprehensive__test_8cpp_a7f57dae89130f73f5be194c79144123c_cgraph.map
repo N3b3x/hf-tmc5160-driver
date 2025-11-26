@@ -1,0 +1,15 @@
+<map id="test_uart_transmission_count" name="test_uart_transmission_count">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,170,176,210"/>
+<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="224,177,364,203"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,187,210,187,210,193,177,193"/>
+<area shape="rect" id="Node000003" href="$namespacetmc5160__test__config.html#a8d4169028f909fa4c3bcaf35a1130f19" title="Helper function to populate DriverConfig from 17HS4401S direct drive motor configuration." alt="" coords="412,5,615,60"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="303,175,346,125,377,95,410,69,418,64,421,69,414,74,380,99,350,129,307,179"/>
+<area shape="rect" id="Node000004" href="$namespacetmc5160__test__config.html#ad066428e88b18d0b8a60d3cbb3866a72" title="Helper function to populate DriverConfig from 17HS4401S gearbox motor configuration." alt="" coords="412,84,615,139"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="330,175,423,141,424,146,332,180"/>
+<area shape="rect" id="Node000005" href="$namespacetmc5160__test__config.html#a3b6d57d96a6198cd1018a9e5c55c0c6b" title="Helper function to populate DriverConfig from Applied Motion 5034 motor configuration." alt="" coords="412,163,615,217"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="364,187,398,187,398,193,364,193"/>
+<area shape="rect" id="Node000006" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="432,242,595,282"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="334,200,440,235,438,240,333,205"/>
+<area shape="rect" id="Node000007" href="$internal__ramp__comprehensive__test_8cpp.html#a31cfb3926eb0c837bde126c1120fb3b9" title="Verify mode pins match expected communication mode." alt="" coords="445,307,582,332"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="308,201,351,246,381,271,413,292,432,300,430,305,411,296,377,275,347,250,304,205"/>
+</map>
