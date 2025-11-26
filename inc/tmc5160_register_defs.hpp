@@ -33,6 +33,8 @@
 #ifndef TMC5160_REGISTER_DEFS_HPP
 #define TMC5160_REGISTER_DEFS_HPP
 
+#include <cstdint>
+
 //--------------------------------------
 //  TMC5160 Register List
 //--------------------------------------
@@ -111,6 +113,14 @@
  * @param address Register address
  * @return String containing register name and description, or nullptr if not found
  */
-const char* GetRegisterDef(uint8_t address);
+inline const char* GetRegisterDef(uint8_t address) {
+  switch (address) {
+    #define X(addr, name, access, category, desc) \
+      case addr: return #name ": " desc;
+    REGISTER_LIST(X)
+    #undef X
+    default: return nullptr;
+  }
+}
 
 #endif // TMC5160_REGISTER_DEFS_HPP
