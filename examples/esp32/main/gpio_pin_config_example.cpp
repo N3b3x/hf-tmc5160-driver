@@ -209,7 +209,7 @@ extern "C" void app_main() {
 
   // Configure ramp control
   driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-  driver.rampControl.SetTargetPosition(1000);
+  driver.rampControl.SetTargetPosition(1000.0f, tmc5160::Unit::Steps);
   driver.rampControl.SetMaxSpeed(1000.0F);
   driver.rampControl.SetAcceleration(500.0F);
 

@@ -2536,7 +2536,7 @@ bool TMC5160<CommType>::Diagnostics::PerformSwitchHoming(bool direction, float s
   //
   // With hard stop, difference should be ~0, so this is effectively setting XACTUAL = 0
   int32_t new_position = actual_position - latched_position;
-  if (!driver_.rampControl.SetCurrentPosition(new_position)) {
+  if (!driver_.rampControl.SetCurrentPosition(static_cast<float>(new_position), Unit::Steps, false)) {
     return false;
   }
   
