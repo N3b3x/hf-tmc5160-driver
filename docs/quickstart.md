@@ -17,6 +17,27 @@ This guide will get you up and running with the TMC5160 driver in just a few ste
 - [Hardware wired](hardware_setup.md)
 - Communication interface implemented (see [Platform Integration](platform_integration.md))
 
+## Class Structure Overview
+
+The TMC5160 driver uses a **subsystem-based architecture** that organizes functionality into logical groups:
+
+```cpp
+tmc5160::TMC5160<MySPI> driver(spi);
+
+// Organized subsystems for intuitive access
+driver.rampControl      // Motion planning, positioning, velocity control
+driver.motorControl     // Current control, chopper modes, stealthChop
+driver.encoder          // Encoder integration, closed-loop control
+driver.diagnostics      // Status monitoring, StallGuard2, diagnostics
+driver.tuning           // Automatic parameter optimization (SGT tuning) ⭐
+driver.homing           // Sensorless and switch-based homing
+driver.protection       // Safety systems, short circuit protection
+driver.communication    // Multi-chip communication setup
+driver.printer          // Debug register printing
+```
+
+Each subsystem provides focused methods for a specific aspect of motor control, making it easy to discover and use features.
+
 ## Minimal Example
 
 Here's a complete working example:
@@ -63,25 +84,33 @@ int main() {
     
     // 4. Initialize driver
     tmc5160::DriverConfig cfg{};
-    cfg.motor.irun = 20;   // Run current (0-31)
-    cfg.motor.ihold = 10;  // Hold current (0-31)
+    cfg.motor_spec.rated_current_ma = 2000;  // 2A rated current
+    cfg.motor_spec.sense_resistor_mohm = 50;  // 0.05Ω sense resistor
+    cfg.motor_spec.supply_voltage_mv = 24000; // 24V supply
+    // IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated - DO NOT set manually
     
     if (!driver.Initialize(cfg)) {
         // Handle initialization failure
         return -1;
     }
     
-    // 5. Configure ramp control
+    // 5. Configure ramp control (RampControl subsystem)
     driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
     driver.rampControl.SetTargetPosition(1000);  // 1000 steps
     driver.rampControl.SetMaxSpeed(1000.0f);     // 1000 steps/s
-    driver.rampControl.SetAcceleration(500.0f);  // 500 steps/s²
+    driver.rampControl.SetAcceleration(500.0f);   // 500 steps/s²
     
-    // 6. Enable motor
+    // 6. Enable motor (MotorControl subsystem)
     driver.motorControl.Enable();
     
     // 7. Wait for target reached
     while (!driver.rampControl.IsTargetReached()) {
+        // Optional: Monitor status (Diagnostics subsystem)
+        tmc5160::DriverStatus status = driver.diagnostics.GetStatus();
+        if (status != tmc5160::DriverStatus::OK) {
+            // Handle error condition
+            break;
+        }
         // Wait for motion to complete
     }
     
@@ -108,12 +137,14 @@ The driver takes a reference to your communication interface.
 
 ```cpp
 tmc5160::DriverConfig cfg{};
-cfg.motor.irun = 20;
-cfg.motor.ihold = 10;
+cfg.motor_spec.rated_current_ma = 2000;  // 2A rated current
+cfg.motor_spec.sense_resistor_mohm = 50;  // 0.05Ω sense resistor
+cfg.motor_spec.supply_voltage_mv = 24000; // 24V supply
+// IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated - DO NOT set manually
 driver.Initialize(cfg);
 ```
 
-Configure motor currents and other settings, then initialize the driver.
+Configure motor specifications and other settings, then initialize the driver. The driver automatically calculates IRUN, IHOLD, and GLOBAL_SCALER from your motor specifications.
 
 ### Step 4: Configure Ramp Control
 
@@ -141,6 +172,62 @@ When running this example, the motor should:
 2. Accelerate to 1000 steps/s
 3. Decelerate and stop at the target position
 
+## Exploring Subsystems
+
+Once you have basic motion working, explore the other subsystems:
+
+### Diagnostics & Monitoring
+```cpp
+// Check driver status
+tmc5160::DriverStatus status = driver.diagnostics.GetStatus();
+
+// Read StallGuard2 value (load measurement)
+uint16_t sg_value;
+driver.diagnostics.GetStallGuard(sg_value);
+
+// Verify setup
+driver.diagnostics.VerifySetup();
+```
+
+### Automatic Tuning ⭐
+```cpp
+// Automatically find optimal StallGuard2 threshold
+tmc5160::StallGuardTuningResult result;
+driver.tuning.TuneStallGuard(
+    target_velocity, result,  // Your target operating velocity
+    -10, 63,                  // SGT search range
+    3000.0f,                  // Acceleration
+    min_velocity, max_velocity // Velocity range to test
+);
+
+// Use the optimal SGT value
+tmc5160::StallGuardConfig sg_config;
+sg_config.threshold = result.optimal_sgt;
+driver.diagnostics.ConfigureStallGuard(sg_config);
+```
+
+### Sensorless Homing
+```cpp
+// Home without endstops using StallGuard2
+int32_t final_position;
+driver.homing.PerformSensorlessHoming(
+    true,           // Direction (true = positive)
+    search_speed,   // Search speed
+    final_position  // Final position after homing
+);
+```
+
+### Encoder Integration
+```cpp
+// Configure encoder for closed-loop control
+tmc5160::EncoderConfig enc_cfg{};
+enc_cfg.resolution = 4096;  // Encoder resolution
+driver.encoder.ConfigureEncoder(enc_cfg);
+
+// Enable step loss detection
+driver.encoder.EnableDeviationDetection(100);  // 100 step threshold
+```
+
 ## Troubleshooting
 
 If you encounter issues:
@@ -160,7 +247,7 @@ MySPI spi;
 spi.Initialize();
 
 // Option 1: Use TMC5160DaisyChain helper class (recommended)
-tmc5160::TMC5160DaisyChain<MySPI, 5> chain(spi, 3, 12'000'000);
+tmc5160::TMC5160DaisyChain<MySPI, 5> chain(spi, 3);
 // Auto-detects chain length and configures properly
 chain.InitializeAll(cfg);
 
@@ -177,9 +264,9 @@ if (chain_length > 0) {
 }
 
 // Create multiple drivers with different daisy-chain positions
-tmc5160::TMC5160<MySPI> driver1(spi, 12'000'000, 0); // Position 0 (first chip)
-tmc5160::TMC5160<MySPI> driver2(spi, 12'000'000, 1); // Position 1 (second chip)
-tmc5160::TMC5160<MySPI> driver3(spi, 12'000'000, 2); // Position 2 (third chip)
+tmc5160::TMC5160<MySPI> driver1(spi, 0); // Position 0 (first chip)
+tmc5160::TMC5160<MySPI> driver2(spi, 1); // Position 1 (second chip)
+tmc5160::TMC5160<MySPI> driver3(spi, 2); // Position 2 (third chip)
 
 // Each driver automatically uses its own position
 driver1.Initialize(cfg); // Accesses chip 0

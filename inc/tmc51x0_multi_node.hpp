@@ -1,33 +1,33 @@
 /**
- * @file tmc5160_multi_node.hpp
- * @brief High-level multi-node manager for multiple TMC5160 drivers on UART
+ * @file tmc51x0_multi_node.hpp
+ * @brief High-level multi-node manager for multiple TMC51x0 drivers on UART (TMC5130 & TMC5160)
  *
- * This file provides a TMC5160MultiNode class that manages multiple TMC5160 drivers
+ * This file provides a TMC51x0MultiNode class that manages multiple TMC51x0 drivers
  * on a single UART bus using sequential addressing with NAI/NAO pins. It handles
  * proper device creation, sequential programming, and supports dynamic addition/removal
- * of devices.
+ * of devices. Supports both TMC5130 and TMC5160 chips.
  *
- * @defgroup TMC5160_MultiNode Multi-Node Management
+ * @defgroup TMC51X0_MultiNode Multi-Node Management
  * @brief High-level UART multi-node management
  */
 
-#ifndef TMC5160_MULTI_NODE_HPP
-#define TMC5160_MULTI_NODE_HPP
+#ifndef TMC51X0_MULTI_NODE_HPP
+#define TMC51X0_MULTI_NODE_HPP
 
 #include <array>
 #include <cstdint>
 #include <optional>
 
-#include "tmc5160.hpp"
-#include "tmc5160_comm_interface.hpp"
+#include "tmc51x0.hpp"
+#include "tmc51x0_comm_interface.hpp"
 
-namespace tmc5160 {
+namespace tmc51x0 {
 
 /**
- * @brief High-level manager for multiple TMC5160 drivers in a UART multi-node configuration
- * @ingroup TMC5160_MultiNode
+ * @brief High-level manager for multiple TMC51x0 drivers in a UART multi-node configuration
+ * @ingroup TMC51X0_MultiNode
  *
- * This class manages multiple TMC5160 drivers on a single UART bus using sequential
+ * This class manages multiple TMC51x0 drivers on a single UART bus using sequential
  * addressing with NAI/NAO pins. It supports a fixed number of onboard devices (known
  * at construction) and allows dynamic addition/removal of extra devices up to a maximum
  * capacity.
@@ -41,8 +41,8 @@ namespace tmc5160 {
  *
  * ## Architecture
  *
- * - **One UartCommInterface**: Shared by all TMC5160 instances on the UART bus
- * - **Multiple TMC5160 Instances**: One per device, each with its own programmed node address
+ * - **One UartCommInterface**: Shared by all TMC51x0 instances on the UART bus
+ * - **Multiple TMC51x0 Instances**: One per device, each with its own programmed node address
  * - **Sequential Addressing**: Uses NAI/NAO pins for sequential programming per datasheet
  *
  * ## Important: Sequential Addressing (Per Datasheet)
@@ -68,7 +68,7 @@ namespace tmc5160 {
  *
  * @code
  * // Create multi-node manager with 3 onboard devices
- * tmc5160::TMC5160MultiNode<MyUART, 5> nodes(uartComm, 3, 12'000'000);
+ * tmc5160::TMC51x0MultiNode<MyUART, 5> nodes(uartComm, 3, 12'000'000);
  *
  * // Program all devices sequentially (required at startup)
  * nodes.ProgramSequentially();
@@ -94,7 +94,7 @@ namespace tmc5160 {
  *
  * // Create multi-node manager with 3 onboard devices, capacity for 5 total
  * // Onboard devices are created with initial address 0 (will be programmed)
- * tmc5160::TMC5160MultiNode<MyUART, 5> nodes(uartComm, 3, 12'000'000);
+ * tmc5160::TMC51x0MultiNode<MyUART, 5> nodes(uartComm, 3, 12'000'000);
  *
  * // Program all devices sequentially (required at startup)
  * // This programs devices to addresses 254, 253, 252 per datasheet procedure
@@ -103,7 +103,7 @@ namespace tmc5160 {
  * }
  *
  * // Initialize onboard devices
- * tmc5160::DriverConfig cfg{};
+ * tmc51x0::DriverConfig cfg{};
  * cfg.motor.irun = 20;
  * cfg.motor.ihold = 10;
  * nodes.InitializeAll(cfg);
@@ -134,7 +134,7 @@ namespace tmc5160 {
  * @tparam MaxDevices Maximum total capacity (onboard + extra devices, default: 8)
  */
 template <typename CommType, size_t MaxDevices = 8>
-class TMC5160MultiNode {
+class TMC51x0MultiNode {
 public:
   /**
    * @brief Construct a multi-node manager
@@ -147,7 +147,7 @@ public:
    * @note After construction, call ProgramSequentially() to program all devices
    *       to addresses (254, 253, 252, ...) per datasheet procedure.
    */
-  explicit TMC5160MultiNode(CommType& comm, uint8_t num_onboard_devices,
+  explicit TMC51x0MultiNode(CommType& comm, uint8_t num_onboard_devices,
                             uint32_t f_clk = ClockFreq::DEFAULT_F_CLK) noexcept
       : comm_(comm), num_onboard_devices_(num_onboard_devices), num_active_devices_(num_onboard_devices),
         f_clk_(f_clk) {
@@ -161,7 +161,7 @@ public:
     // Initial node address is 0 (will be programmed via ProgramSequentially())
     // The actual programmed addresses will be 254, 253, 252, ... per datasheet
     for (uint8_t i = 0; i < num_onboard_devices_; ++i) {
-      drivers_[i] = std::make_optional<TMC5160<CommType>>(comm_, f_clk_, 0, 0);
+      drivers_[i] = std::make_optional<TMC51x0<CommType>>(comm_, f_clk_, 0, 0);
     }
 
     // Initialize extra device slots as empty
@@ -263,7 +263,7 @@ public:
       // Program device to target address
       // The device is currently accessible at address 0 (after previous chip's NAO went LOW)
       // or address 0 for the first chip (NAI=GND)
-      if (!drivers_[i]->uartConfig.ConfigureSlave(target_address, send_delay)) {
+      if (!drivers_[i]->uartConfig.ConfigureUartNodeAddress(target_address, send_delay)) {
         return false; // Failed to program device
       }
 
@@ -299,7 +299,7 @@ public:
     // Calculate target address: 254 - index (per datasheet)
     uint8_t target_address = 254 - index;
 
-    if (!drivers_[index]->uartConfig.ConfigureSlave(target_address, send_delay)) {
+    if (!drivers_[index]->uartConfig.ConfigureUartNodeAddress(target_address, send_delay)) {
       return false;
     }
 
@@ -343,7 +343,7 @@ public:
 
     // Create device instance with initial address 0
     // The actual address will be programmed via ProgramSequentially() or ProgramDevice()
-    drivers_[index] = std::make_optional<TMC5160<CommType>>(comm_, f_clk_, 0, 0);
+    drivers_[index] = std::make_optional<TMC51x0<CommType>>(comm_, f_clk_, 0, 0);
     num_active_devices_++;
 
     return true;
@@ -405,7 +405,7 @@ public:
    *       Use IsDeviceActive() to verify device exists before access.
    * @note The device's actual programmed address is (254 - index) per datasheet.
    */
-  [[nodiscard]] TMC5160<CommType>& operator[](uint8_t index) noexcept {
+  [[nodiscard]] TMC51x0<CommType>& operator[](uint8_t index) noexcept {
     return drivers_[index].value();
   }
 
@@ -414,7 +414,7 @@ public:
    * @param index Logical device index (0 = first device, 1 = second, etc.)
    * @return Const reference to TMC5160 driver instance
    */
-  [[nodiscard]] const TMC5160<CommType>& operator[](uint8_t index) const noexcept {
+  [[nodiscard]] const TMC51x0<CommType>& operator[](uint8_t index) const noexcept {
     return drivers_[index].value();
   }
 
@@ -440,10 +440,10 @@ private:
   uint8_t num_onboard_devices_; ///< Number of onboard devices (fixed)
   uint8_t num_active_devices_;  ///< Total number of active devices (onboard + extra)
   uint32_t f_clk_;              ///< TMC5160 clock frequency
-  std::array<std::optional<TMC5160<CommType>>, MaxDevices>
+  std::array<std::optional<TMC51x0<CommType>>, MaxDevices>
       drivers_; ///< TMC5160 driver instances (optional for dynamic devices)
 };
 
-} // namespace tmc5160
+} // namespace tmc51x0
 
-#endif // TMC5160_MULTI_NODE_HPP
+#endif // TMC51X0_MULTI_NODE_HPP

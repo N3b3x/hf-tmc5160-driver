@@ -1,8 +1,8 @@
 /**
- * @file esp32_tmc5160_test_config.hpp
- * @brief ESP32 GPIO pin configuration and compile-time configuration for TMC5160 driver
+ * @file esp32_tmc51x0_test_config.hpp
+ * @brief ESP32 GPIO pin configuration and compile-time configuration for TMC51x0 driver (TMC5130 & TMC51x0)
  *
- * This file defines compile-time configuration for TMC5160 driver initialization:
+ * This file defines compile-time configuration for TMC51x0 driver initialization:
  * - **BoardConfig**: Board-specific hardware parameters (sense resistor, supply voltage, MOSFETs)
  * - **MotorConfig**: Motor-specific configurations (physical specs, chopper, StealthChop)
  * - **PlatformConfig**: Platform/application-specific configuration (reference switches, encoder, mechanical system)
@@ -29,49 +29,80 @@
  *
  * ## Usage
  *
+ * ### Unified Test Rig Selection (Recommended)
+ *
  * ```cpp
- * // Select motor, board, and platform at compile time
- * static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
- *     tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
- * static constexpr tmc5160_test_config::BoardType SELECTED_BOARD = 
- *     tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL;
- * static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM = 
- *     tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
+ * // Select test rig at compile time - automatically selects motor, board, and platform
+ * static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
+ *     tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER;
  *
- * // 1. Configure motor
- * tmc5160::DriverConfig cfg{};
- * tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+ * // 1. Configure driver from test rig (automatically configures motor, board, and platform)
+ * tmc51x0::DriverConfig cfg{};
+ * tmc51x0_test_config::ConfigureDriverFromTestRig<SELECTED_TEST_RIG>(cfg);
  *
- * // 2. Apply board config
- * tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
- *
- * // 3. Apply platform config
- * tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
- *
- * // 4. Initialize driver
+ * // 2. Initialize driver
  * driver.Initialize(cfg);
  *
- * // 5. Configure platform-specific features after initialization
- * auto ref_cfg = tmc5160_test_config::GetReferenceSwitchConfig<SELECTED_PLATFORM>();
+ * // 3. Configure platform-specific features after initialization
+ * auto ref_cfg = tmc51x0_test_config::GetTestRigReferenceSwitchConfig<SELECTED_TEST_RIG>();
  * driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
  *
- * auto enc_cfg = tmc5160_test_config::GetEncoderConfig<SELECTED_PLATFORM>();
+ * auto enc_cfg = tmc51x0_test_config::GetTestRigEncoderConfig<SELECTED_TEST_RIG>();
  * driver.encoder.Configure(enc_cfg);
  * ```
  *
+ * ### Manual Selection (Advanced)
+ *
+ * For advanced use cases, you can still manually select motor, board, and platform:
+ *
+ * ```cpp
+ * static constexpr tmc51x0_test_config::MotorType SELECTED_MOTOR = 
+ *     tmc51x0_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+ * static constexpr tmc51x0_test_config::BoardType SELECTED_BOARD = 
+ *     tmc51x0_test_config::BoardType::BOARD_TMC51x0_EVAL;
+ * static constexpr tmc51x0_test_config::PlatformType SELECTED_PLATFORM = 
+ *     tmc51x0_test_config::PlatformType::PLATFORM_CORE_DRIVER_TEST_RIG;
+ *
+ * tmc51x0::DriverConfig cfg{};
+ * tmc51x0_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+ * tmc51x0_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
+ * tmc51x0_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
+ * driver.Initialize(cfg);
+ * ```
+ *
  * This file also provides GPIO pin assignments and a complete Esp32SpiPinConfig structure.
+ *
+ * ## Test Rig Configuration
+ *
+ * The project uses two test rigs, each with a specific motor, board, and platform configuration:
+ *
+ * 1. **Core Driver Test Rig** (`TEST_RIG_CORE_DRIVER`):
+ *    - Motor: 17HS4401S motor with gearbox (default) or direct drive
+ *    - Board: TMC51x0 Evaluation Kit (BOARD_TMC51x0_EVAL)
+ *    - Platform: Core Driver Test Rig (PLATFORM_CORE_DRIVER_TEST_RIG)
+ *    - Features: Reference switches, encoder (AS5047U), gearbox or direct drive
+ *    - Used for: Most comprehensive tests, core driver functionality
+ *    - Examples: internal_ramp_comprehensive_test, spi_daisy_chain_comprehensive_test, stallguard_tuning
+ *
+ * 2. **Fatigue Test Rig** (`TEST_RIG_FATIGUE`):
+ *    - Motor: Applied Motion 5034-369 motor (MOTOR_APPLIED_MOTION_5034)
+ *    - Board: TMC51x0 Evaluation Kit (BOARD_TMC51x0_EVAL)
+ *    - Platform: Fatigue Test Rig (PLATFORM_FATIGUE_TEST_RIG)
+ *    - Features: Reference switches, encoder (AS5047U), direct drive (NEMA 34)
+ *    - Used for: Bounds finding and sinusoidal motion testing
+ *    - Examples: bounds_finding_sinuous_motion, internal_ramp_sinusoidal
  *
  * @author Nebiyu Tadesse
  * @date 2025
  */
 
-#ifndef ESP32_TMC5160_TEST_CONFIG_HPP
-#define ESP32_TMC5160_TEST_CONFIG_HPP
+#ifndef ESP32_TMC51x0_TEST_CONFIG_HPP
+#define ESP32_TMC51X0_TEST_CONFIG_HPP
 
 #include "driver/gpio.h"
-#include "../../../inc/tmc5160_comm_interface.hpp"
+#include "tmc51x0_comm_interface.hpp"
 
-namespace tmc5160_test_config {
+namespace tmc51x0_test_config {
 
 // SPI bus pins
 constexpr gpio_num_t SPI_SCK = GPIO_NUM_5;   ///< SPI clock pin
@@ -79,7 +110,7 @@ constexpr gpio_num_t SPI_MOSI = GPIO_NUM_6;  ///< SPI MOSI (master out, slave in
 constexpr gpio_num_t SPI_MISO = GPIO_NUM_2;  ///< SPI MISO (master in, slave out)
 constexpr gpio_num_t SPI_CS = GPIO_NUM_18;   ///< SPI chip select pin
 
-// TMC5160 control pins
+// TMC51x0 control pins
 constexpr gpio_num_t DRV_EN = GPIO_NUM_11;   ///< Driver enable pin (DRV_ENN)
 constexpr gpio_num_t CLK = GPIO_NUM_10;      ///< Clock input pin (CLK, pin 12)
 
@@ -102,12 +133,12 @@ constexpr spi_host_device_t SPI_HOST = SPI2_HOST; ///< SPI host device
 /**
  * @brief Complete pin configuration for all tests
  *
- * This structure includes both SPI pins and TMC5160 control pins,
+ * This structure includes both SPI pins and TMC51x0 control pins,
  * allowing all GPIO assignments to be managed in one place.
  * Use this with the Esp32SPI constructor that takes Esp32SpiPinConfig.
  */
-inline tmc5160::Esp32SpiPinConfig GetDefaultPinConfig() noexcept {
-  tmc5160::Esp32SpiPinConfig config{};
+inline tmc51x0::Esp32SpiPinConfig GetDefaultPinConfig() noexcept {
+  tmc51x0::Esp32SpiPinConfig config{};
   
   // SPI pins
   config.spi_mosi = static_cast<int>(SPI_MOSI);
@@ -115,7 +146,7 @@ inline tmc5160::Esp32SpiPinConfig GetDefaultPinConfig() noexcept {
   config.spi_sclk = static_cast<int>(SPI_SCK);
   config.spi_cs = static_cast<int>(SPI_CS);
   
-  // TMC5160 control pins
+  // TMC51x0 control pins
   config.tmc5160_pins.en_pin = static_cast<int>(DRV_EN);
   config.tmc5160_pins.clk_pin = static_cast<int>(CLK);
   config.tmc5160_pins.diag0_pin = static_cast<int>(DIAG0);
@@ -171,17 +202,17 @@ inline tmc5160::Esp32SpiPinConfig GetDefaultPinConfig() noexcept {
  * USAGE:
  * In your example file, declare a static constexpr variable at global scope:
  * 
- *     static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
- *         tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+ *     static constexpr tmc51x0_test_config::MotorType SELECTED_MOTOR = 
+ *         tmc51x0_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
  * 
  * Then use conditional compilation or if constexpr to select the motor namespace:
  * 
  *     if constexpr (SELECTED_MOTOR == MotorType::MOTOR_17HS4401S_GEARBOX) {
- *         namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+ *         namespace Motor = tmc51x0_test_config::MotorConfig_17HS4401S;
  *     } else if constexpr (SELECTED_MOTOR == MotorType::MOTOR_17HS4401S_DIRECT) {
- *         namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S_Direct;
+ *         namespace Motor = tmc51x0_test_config::MotorConfig_17HS4401S_Direct;
  *     } else if constexpr (SELECTED_MOTOR == MotorType::MOTOR_APPLIED_MOTION_5034) {
- *         namespace Motor = tmc5160_test_config::MotorConfig_AppliedMotion_5034_369;
+ *         namespace Motor = tmc51x0_test_config::MotorConfig_AppliedMotion_5034_369;
  *     }
  */
 /**
@@ -203,8 +234,8 @@ enum class MotorType {
  * supply voltage, MOSFET characteristics, etc.
  */
 enum class BoardType {
-    BOARD_TMC5160_EVAL,           ///< TMC5160 Evaluation Kit (0.05Ω sense, 24V, BSC072N08NS5 MOSFETs)
-    BOARD_TMC5160_BOB,            ///< TMC5160 Break-Out Board (0.11Ω sense, 24V, typical MOSFETs)
+    BOARD_TMC51x0_EVAL,           ///< TMC51x0 Evaluation Kit (0.05Ω sense, 24V, BSC072N08NS5 MOSFETs)
+    BOARD_TMC51x0_BOB,            ///< TMC51x0 Break-Out Board (0.11Ω sense, 24V, typical MOSFETs)
 };
 
 /**
@@ -213,12 +244,44 @@ enum class BoardType {
  * Selects which platform configuration to use at compile time.
  * Platform configuration includes reference switches, encoder,
  * mechanical system type, etc.
+ * 
+ * @note For test rigs, use TestRigType instead - it automatically selects the platform.
+ * This enum is kept for backward compatibility and future non-test-rig platforms.
  */
 enum class PlatformType {
-    PLATFORM_TEST_RIG,            ///< Test rig platform (reference switches, encoder, gearbox)
+    PLATFORM_CORE_DRIVER_TEST_RIG,  ///< Core driver test rig (gearbox motor, reference switches, encoder)
+    PLATFORM_FATIGUE_TEST_RIG,      ///< Fatigue test rig (Applied Motion motor, reference switches, encoder)
     // Add more platform types here as needed:
     // PLATFORM_3D_PRINTER,       ///< 3D printer platform configuration
     // PLATFORM_CNC_ROUTER,       ///< CNC router platform configuration
+};
+
+/**
+ * @brief Test rig type enumeration
+ * 
+ * Selects which complete test rig configuration to use at compile time.
+ * Each test rig automatically selects the appropriate motor, board, and platform.
+ * This simplifies configuration by grouping related hardware together.
+ * 
+ * TEST RIG CONFIGURATIONS:
+ * 
+ * 1. TEST_RIG_CORE_DRIVER:
+ *    - Motor: 17HS4401S with gearbox (MOTOR_17HS4401S_GEARBOX) or direct drive (MOTOR_17HS4401S_DIRECT)
+ *    - Board: TMC51x0 Evaluation Kit (BOARD_TMC51x0_EVAL)
+ *    - Platform: Core Driver Test Rig (PLATFORM_CORE_DRIVER_TEST_RIG)
+ *    - Features: Reference switches, encoder (AS5047U), gearbox or direct drive
+ *    - Used for: Comprehensive tests, core driver functionality
+ * 
+ * 2. TEST_RIG_FATIGUE:
+ *    - Motor: Applied Motion 5034-369 (MOTOR_APPLIED_MOTION_5034)
+ *    - Board: TMC51x0 Evaluation Kit (BOARD_TMC51x0_EVAL)
+ *    - Platform: Fatigue Test Rig (PLATFORM_FATIGUE_TEST_RIG)
+ *    - Features: Reference switches, encoder (AS5047U), direct drive (NEMA 34)
+ *    - Used for: Bounds finding, sinusoidal motion, fatigue testing
+ */
+enum class TestRigType {
+    TEST_RIG_CORE_DRIVER,  ///< Core driver test rig (17HS4401S motor, TMC51x0 EVAL board, reference switches, encoder)
+    TEST_RIG_FATIGUE,      ///< Fatigue test rig (Applied Motion 5034-369 motor, TMC51x0 EVAL board, reference switches, encoder)
 };
 
 /**
@@ -239,12 +302,13 @@ enum class PlatformType {
  */
 namespace MotorConfig_17HS4401S {
     // Physical Motor Specs
-    constexpr uint16_t RATED_CURRENT_MA = 1680;  // 1.68A
+    constexpr uint16_t RATED_CURRENT_MA = 1700;  // 1.7A (17HS4401 motor specification)
+    constexpr float RESISTANCE_OHMS = 1.5f;      // 1.5 Ω per phase (17HS4401 motor specification)
+    constexpr float INDUCTANCE_MH = 3.2f;         // 3.2 mH per phase (17HS4401 motor specification)
     constexpr float GEAR_RATIO = 5.18f;
     constexpr uint16_t MOTOR_FULL_STEPS = 200;
     constexpr uint16_t OUTPUT_FULL_STEPS = static_cast<uint16_t>(MOTOR_FULL_STEPS * GEAR_RATIO); // ~1036
-    constexpr uint16_t RATED_VOLTAGE_MV = 12000; // Typical for NEMA 17
-    constexpr uint32_t HOLDING_TORQUE_MNM = 400; // 40Ncm = 400mNm (Motor)
+    constexpr uint32_t SUPPLY_VOLTAGE_MV = 24000; // 24V (motor-specific supply voltage)
 
     // Driver Configuration
     // NOTE: Board has 0.05 Ohm Sense Resistors (1W, low-inductance type required).
@@ -272,7 +336,7 @@ namespace MotorConfig_17HS4401S {
     constexpr uint16_t TARGET_HOLD_CURRENT_MA = 940;
     
     // Microstepping for Maximum Smoothness
-    constexpr tmc5160::MicrostepResolution MRES = tmc5160::MicrostepResolution::MRES_256; // Highest Resolution
+    constexpr tmc51x0::MicrostepResolution MRES = tmc51x0::MicrostepResolution::MRES_256; // Highest Resolution
     constexpr bool INTERPOLATION = true;         // Interpolation (always on for smoothness)
     
     // Chopper Configuration (SpreadCycle default for NEMA 17)
@@ -304,6 +368,17 @@ namespace MotorConfig_17HS4401S {
     constexpr float RAMP_V1 = 0.0f;
     constexpr float RAMP_TPOWERDOWN_MS = 100.0f;
     constexpr float RAMP_TZEROWAIT_MS = 0.0f;
+    
+    // Motor power down delay (IHOLDDELAY)
+    // Total delay time for smooth motor power down after standstill
+    // Typical range: 200-500ms for smooth transition without jerk
+    constexpr float IHOLDDELAY_MS = 300.0f;  // 300ms total delay for smooth power down
+    
+    // StealthChop velocity threshold (TPWMTHRS)
+    // Velocity below which StealthChop is active, above which SpreadCycle is used
+    // Set to 0 to disable StealthChop (always use SpreadCycle)
+    // Typical range: 500-1000 steps/s for NEMA 17 motors
+    constexpr float STEALTH_VELOCITY_THRESHOLD = 800.0f;  // 800 steps/s threshold
 }
 
 /**
@@ -324,12 +399,13 @@ namespace MotorConfig_17HS4401S {
  */
 namespace MotorConfig_17HS4401S_Direct {
     // Physical Motor Specs
-    constexpr uint16_t RATED_CURRENT_MA = 1680;  // 1.68A
+    constexpr uint16_t RATED_CURRENT_MA = 1700;  // 1.7A (17HS4401 motor specification)
+    constexpr float RESISTANCE_OHMS = 1.5f;      // 1.5 Ω per phase (17HS4401 motor specification)
+    constexpr float INDUCTANCE_MH = 3.2f;         // 3.2 mH per phase (17HS4401 motor specification)
     constexpr float GEAR_RATIO = 1.0f;            // Direct drive (no gearbox)
     constexpr uint16_t MOTOR_FULL_STEPS = 200;
     constexpr uint16_t OUTPUT_FULL_STEPS = MOTOR_FULL_STEPS; // Same as motor (no gearbox)
-    constexpr uint16_t RATED_VOLTAGE_MV = 12000; // Typical for NEMA 17
-    constexpr uint32_t HOLDING_TORQUE_MNM = 400; // 40Ncm = 400mNm
+    constexpr uint32_t SUPPLY_VOLTAGE_MV = 24000; // 24V (motor-specific supply voltage)
 
     // Driver Configuration
     // NOTE: Board has 0.05 Ohm Sense Resistors (1W, low-inductance type required).
@@ -340,7 +416,7 @@ namespace MotorConfig_17HS4401S_Direct {
     constexpr uint16_t TARGET_HOLD_CURRENT_MA = 940;
     
     // Microstepping for Maximum Smoothness
-    constexpr tmc5160::MicrostepResolution MRES = tmc5160::MicrostepResolution::MRES_256; // Highest Resolution
+    constexpr tmc51x0::MicrostepResolution MRES = tmc51x0::MicrostepResolution::MRES_256; // Highest Resolution
     constexpr bool INTERPOLATION = true;         // Interpolation (always on for smoothness)
     
     // Chopper Configuration (SpreadCycle default for NEMA 17)
@@ -371,6 +447,17 @@ namespace MotorConfig_17HS4401S_Direct {
     constexpr float RAMP_V1 = 0.0f;
     constexpr float RAMP_TPOWERDOWN_MS = 100.0f;
     constexpr float RAMP_TZEROWAIT_MS = 0.0f;
+    
+    // Motor power down delay (IHOLDDELAY)
+    // Total delay time for smooth motor power down after standstill
+    // Typical range: 200-500ms for smooth transition without jerk
+    constexpr float IHOLDDELAY_MS = 300.0f;  // 300ms total delay for smooth power down
+    
+    // StealthChop velocity threshold (TPWMTHRS)
+    // Velocity below which StealthChop is active, above which SpreadCycle is used
+    // Set to 0 to disable StealthChop (always use SpreadCycle)
+    // Typical range: 500-1000 steps/s for NEMA 17 motors
+    constexpr float STEALTH_VELOCITY_THRESHOLD = 800.0f;  // 800 steps/s threshold
 }
 
 /**
@@ -402,8 +489,7 @@ namespace MotorConfig_AppliedMotion_5034_369 {
     constexpr uint16_t OUTPUT_FULL_STEPS = MOTOR_FULL_STEPS; // Same as motor (no gearbox)
     constexpr float RESISTANCE_OHMS = 0.84f;      // Bipolar series resistance
     constexpr float INDUCTANCE_MH = 10.4f;        // Bipolar series inductance
-    constexpr uint16_t RATED_VOLTAGE_MV = 12000;  // Rated voltage
-    constexpr uint32_t HOLDING_TORQUE_MNM = 4500; // 4.5Nm = 4500mNm
+    constexpr uint32_t SUPPLY_VOLTAGE_MV = 24000; // 24V (motor-specific supply voltage)
 
     // Driver Configuration
     // NOTE: Board has 0.05 Ohm Sense Resistors (1W, low-inductance type required).
@@ -430,7 +516,7 @@ namespace MotorConfig_AppliedMotion_5034_369 {
     constexpr uint16_t TARGET_HOLD_CURRENT_MA = 2150; // ~50%
     
     // Microstepping for Maximum Smoothness
-    constexpr tmc5160::MicrostepResolution MRES = tmc5160::MicrostepResolution::MRES_256; // Highest Resolution
+    constexpr tmc51x0::MicrostepResolution MRES = tmc51x0::MicrostepResolution::MRES_256; // Highest Resolution
     constexpr bool INTERPOLATION = true;         // Interpolation (always on for smoothness)
     
     // Chopper Configuration (SpreadCycle for NEMA 34)
@@ -465,6 +551,18 @@ namespace MotorConfig_AppliedMotion_5034_369 {
     constexpr float RAMP_V1 = 0.0f;
     constexpr float RAMP_TPOWERDOWN_MS = 100.0f;
     constexpr float RAMP_TZEROWAIT_MS = 0.0f;
+    
+    // Motor power down delay (IHOLDDELAY)
+    // Total delay time for smooth motor power down after standstill
+    // Higher values for high-torque motors to prevent mechanical shock
+    // Typical range: 300-500ms for NEMA 34 motors
+    constexpr float IHOLDDELAY_MS = 400.0f;  // 400ms total delay for smooth power down
+    
+    // StealthChop velocity threshold (TPWMTHRS)
+    // Velocity below which StealthChop is active, above which SpreadCycle is used
+    // Set to 0 to disable StealthChop (always use SpreadCycle)
+    // Typical range: 500-1000 steps/s for NEMA 34 motors
+    constexpr float STEALTH_VELOCITY_THRESHOLD = 600.0f;  // 600 steps/s threshold (lower for larger motor)
 }
 
 /**
@@ -512,25 +610,26 @@ namespace TestConfig_17HS4401S {
 }
 
 /**
- * @brief Board hardware configuration for TMC5160 Evaluation Kit
+ * @brief Board hardware configuration for TMC51x0 Evaluation Kit
  * 
- * Defines board-specific hardware parameters for the TMC5160 Evaluation Kit.
+ * Defines board-specific hardware parameters for the TMC51x0 Evaluation Kit.
  * These values are used for automatic current calculation and power stage configuration.
  * 
- * **Board-specific**: These parameters depend on the TMC5160 EVAL kit hardware:
+ * **Board-specific**: These parameters depend on the TMC51x0 EVAL kit hardware:
  * - Sense resistor value (0.05Ω / 50 mOhm)
- * - Supply voltage (24V typical)
  * - Clock frequency (12 MHz internal clock)
  * - MOSFET characteristics (BSC072N08NS5: Miller charge ~6nC, BBM time ~100ns)
  * - Short protection defaults
  * 
+ * **Note**: Supply voltage is motor-specific and should be set from MotorConfig, not BoardConfig.
+ * The board can handle 12-36V, but the actual voltage depends on the motor being driven.
+ * 
  * These values stay the same regardless of which motor is connected or what platform it's used on.
  */
-namespace BoardConfig_TMC5160_EVAL {
+namespace BoardConfig_TMC51x0_EVAL {
     // Driver board hardware configuration
     constexpr uint32_t SENSE_RESISTOR_MOHM = 50;      ///< Sense resistor value in milliohms (0.05Ω)
-    constexpr uint32_t SUPPLY_VOLTAGE_MV = 24000;     ///< Motor supply voltage in millivolts (24V)
-    constexpr uint32_t CLOCK_FREQUENCY_HZ = 12000000; ///< TMC5160 clock frequency in Hz (12 MHz internal clock)
+    constexpr uint32_t CLOCK_FREQUENCY_HZ = 0; ///< TMC51x0 clock frequency in Hz (0 = use internal 12 MHz oscillator, CLK pin tied to GND)
     
     // Power stage MOSFET characteristics (BSC072N08NS5)
     constexpr float MOSFET_MILLER_CHARGE_NC = 6.0f;   ///< MOSFET Miller charge in nC (<10nC for BSC072N08NS5)
@@ -542,14 +641,13 @@ namespace BoardConfig_TMC5160_EVAL {
 }
 
 /**
- * @brief Board hardware configuration for TMC5160 Break-Out Board (BOB)
+ * @brief Board hardware configuration for TMC51x0 Break-Out Board (BOB)
  * 
- * Defines board-specific hardware parameters for the TMC5160 Break-Out Board.
+ * Defines board-specific hardware parameters for the TMC51x0 Break-Out Board.
  * These values are used for automatic current calculation and power stage configuration.
  * 
- * **Board-specific**: These parameters depend on the TMC5160 BOB hardware:
+ * **Board-specific**: These parameters depend on the TMC51x0 BOB hardware:
  * - Sense resistor value (0.11Ω / 110 mOhm - typical for BOB)
- * - Supply voltage (24V typical)
  * - Clock frequency (12 MHz internal clock)
  * - MOSFET characteristics (typical MOSFETs: Miller charge ~30nC, BBM time ~200ns)
  * - Short protection defaults
@@ -557,13 +655,15 @@ namespace BoardConfig_TMC5160_EVAL {
  * **Note**: BOB boards may vary. Adjust these values based on your specific BOB hardware.
  * Common BOB configurations use 0.11Ω sense resistors and standard MOSFETs.
  * 
+ * **Note**: Supply voltage is motor-specific and should be set from MotorConfig, not BoardConfig.
+ * The board can handle 12-36V, but the actual voltage depends on the motor being driven.
+ * 
  * These values stay the same regardless of which motor is connected or what platform it's used on.
  */
-namespace BoardConfig_TMC5160_BOB {
+namespace BoardConfig_TMC51x0_BOB {
     // Driver board hardware configuration
     constexpr uint32_t SENSE_RESISTOR_MOHM = 110;     ///< Sense resistor value in milliohms (0.11Ω - typical for BOB)
-    constexpr uint32_t SUPPLY_VOLTAGE_MV = 24000;     ///< Motor supply voltage in millivolts (24V)
-    constexpr uint32_t CLOCK_FREQUENCY_HZ = 12000000; ///< TMC5160 clock frequency in Hz (12 MHz internal clock)
+    constexpr uint32_t CLOCK_FREQUENCY_HZ = 0; ///< TMC51x0 clock frequency in Hz (0 = use internal 12 MHz oscillator, CLK pin tied to GND)
     
     // Power stage MOSFET characteristics (typical BOB MOSFETs)
     constexpr float MOSFET_MILLER_CHARGE_NC = 30.0f;  ///< MOSFET Miller charge in nC (~30nC for typical BOB MOSFETs)
@@ -576,36 +676,39 @@ namespace BoardConfig_TMC5160_BOB {
 
 
 /**
- * @brief Platform configuration for test rig
+ * @brief Platform configuration for Core Driver Test Rig
  * 
- * Defines platform/application-specific configuration for a test rig setup.
- * This includes reference switches, encoder, and mechanical system configuration.
+ * Defines platform/application-specific configuration for the core driver test rig.
+ * This test rig uses the 17HS4401S motor (gearbox or direct drive) and includes:
+ * - Reference switches (endstops) for homing and limit detection
+ * - Encoder (AS5047U) for position feedback
+ * - Mechanical system configuration (gearbox or direct drive)
  * 
  * **Platform-specific**: These parameters depend on the application/platform:
  * - Reference switches (endstops) configuration
  * - Encoder configuration
  * - Mechanical system (gearing, leadscrew, belt drive)
  * 
- * These values can vary between different platforms/applications even with the same motor.
+ * Used by: internal_ramp_comprehensive_test, spi_daisy_chain_comprehensive_test, stallguard_tuning
  */
-namespace PlatformConfig_TestRig {
+namespace PlatformConfig_CoreDriverTestRig {
     // Reference switch configuration
     namespace ReferenceSwitches {
         // Assuming Normally Open (NO) switches connecting to GND (Standard 3D printer style)
         // Pin states: HIGH when open (pullup), LOW when triggered (closed).
-        // TMC5160 Polarity: ACTIVE_LOW = trigger on GND, ACTIVE_HIGH = trigger on VCC.
-        constexpr tmc5160::ReferenceSwitchActiveLevel LEFT_ACTIVE_LEVEL = 
-            tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;   ///< Left switch active level (ACTIVE_LOW for GND-triggered)
-        constexpr tmc5160::ReferenceSwitchActiveLevel RIGHT_ACTIVE_LEVEL = 
-            tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;  ///< Right switch active level (ACTIVE_LOW for GND-triggered)
+        // TMC51x0 Polarity: ACTIVE_LOW = trigger on GND, ACTIVE_HIGH = trigger on VCC.
+        constexpr tmc51x0::ReferenceSwitchActiveLevel LEFT_ACTIVE_LEVEL = 
+            tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;   ///< Left switch active level (ACTIVE_LOW for GND-triggered)
+        constexpr tmc51x0::ReferenceSwitchActiveLevel RIGHT_ACTIVE_LEVEL = 
+            tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;  ///< Right switch active level (ACTIVE_LOW for GND-triggered)
         constexpr bool LEFT_STOP_ENABLE = true;               ///< Enable motor stop on left switch
         constexpr bool RIGHT_STOP_ENABLE = true;              ///< Enable motor stop on right switch
-        constexpr tmc5160::ReferenceLatchMode LEFT_LATCH_MODE = 
-            tmc5160::ReferenceLatchMode::ACTIVE_EDGE;         ///< Left switch latch mode (ACTIVE_EDGE for homing)
-        constexpr tmc5160::ReferenceLatchMode RIGHT_LATCH_MODE = 
-            tmc5160::ReferenceLatchMode::ACTIVE_EDGE;          ///< Right switch latch mode (ACTIVE_EDGE for homing)
-        constexpr tmc5160::ReferenceStopMode STOP_MODE = 
-            tmc5160::ReferenceStopMode::SOFT_STOP;             ///< Stop mode (SOFT_STOP for controlled deceleration)
+        constexpr tmc51x0::ReferenceLatchMode LEFT_LATCH_MODE = 
+            tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;         ///< Left switch latch mode (ACTIVE_EDGE for homing)
+        constexpr tmc51x0::ReferenceLatchMode RIGHT_LATCH_MODE = 
+            tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;          ///< Right switch latch mode (ACTIVE_EDGE for homing)
+        constexpr tmc51x0::ReferenceStopMode STOP_MODE = 
+            tmc51x0::ReferenceStopMode::SOFT_STOP;             ///< Stop mode (SOFT_STOP for controlled deceleration)
     }
     
     // Encoder configuration (AS5047U example)
@@ -615,15 +718,20 @@ namespace PlatformConfig_TestRig {
         // SPI Resolution: 14-bit = 16384 positions
         constexpr uint16_t PULSES_PER_REV = 4096;             ///< Encoder pulses per revolution (ABI mode)
         constexpr uint16_t COUNTS_PER_REV = 16384;            ///< Encoder counts per revolution (edges)
-        constexpr tmc5160::ReferenceSwitchActiveLevel N_CHANNEL_ACTIVE = 
-            tmc5160::ReferenceSwitchActiveLevel::ACTIVE_HIGH; ///< N channel active level
-        constexpr tmc5160::EncoderNSensitivity N_SENSITIVITY = 
-            tmc5160::EncoderNSensitivity::RISING_EDGE;        ///< N channel sensitivity (RISING_EDGE typical)
-        constexpr tmc5160::EncoderClearMode CLEAR_MODE = 
-            tmc5160::EncoderClearMode::DISABLED;               ///< Encoder clear mode (DISABLED = no clearing)
-        constexpr tmc5160::EncoderPrescalerMode PRESCALER_MODE = 
-            tmc5160::EncoderPrescalerMode::BINARY;            ///< Prescaler mode (BINARY typical)
+        constexpr tmc51x0::ReferenceSwitchActiveLevel N_CHANNEL_ACTIVE = 
+            tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_HIGH; ///< N channel active level
+        constexpr tmc51x0::EncoderNSensitivity N_SENSITIVITY = 
+            tmc51x0::EncoderNSensitivity::RISING_EDGE;        ///< N channel sensitivity (RISING_EDGE typical)
+        constexpr tmc51x0::EncoderClearMode CLEAR_MODE = 
+            tmc51x0::EncoderClearMode::DISABLED;               ///< Encoder clear mode (DISABLED = no clearing)
+        constexpr tmc51x0::EncoderPrescalerMode PRESCALER_MODE = 
+            tmc51x0::EncoderPrescalerMode::BINARY;            ///< Prescaler mode (BINARY typical)
         constexpr bool INVERT_DIRECTION = false;               ///< Invert encoder direction (false = match motor)
+        
+        // Encoder deviation detection
+        // Maximum allowed deviation between motor position and encoder position in full steps
+        // Typical range: 10-50 steps for normal operation, 1-10 steps for tight control
+        constexpr int32_t ALLOWED_DEVIATION_STEPS = 25;        ///< Allowed encoder deviation in steps (0 = disabled)
     }
     
     // Mechanical system configuration
@@ -631,8 +739,78 @@ namespace PlatformConfig_TestRig {
         // Note: Gear ratio is typically motor-specific, but can be platform-specific if motor
         // is used with different gearboxes on different platforms. For now, gear ratio is
         // specified in MotorConfig, but can be overridden here if needed.
-        constexpr tmc5160::MechanicalSystemType SYSTEM_TYPE = 
-            tmc5160::MechanicalSystemType::Gearbox;            ///< Mechanical system type (Gearbox, DirectDrive, LeadScrew, BeltDrive)
+        constexpr tmc51x0::MechanicalSystemType SYSTEM_TYPE = 
+            tmc51x0::MechanicalSystemType::Gearbox;            ///< Mechanical system type (Gearbox, DirectDrive, LeadScrew, BeltDrive)
+        constexpr float LEAD_SCREW_PITCH_MM = 0.0f;           ///< Lead screw pitch in mm (0 = not used)
+        constexpr uint16_t BELT_PULLEY_TEETH = 0;             ///< Number of teeth on motor pulley (0 = not used)
+        constexpr float BELT_PITCH_MM = 0.0f;                 ///< Belt pitch in mm (0 = not used)
+    }
+}
+
+/**
+ * @brief Platform configuration for Fatigue Test Rig
+ * 
+ * Defines platform/application-specific configuration for the fatigue test rig.
+ * This test rig uses the Applied Motion 5034-369 motor (direct drive) and includes:
+ * - Reference switches (endstops) for homing and limit detection
+ * - Encoder (AS5047U) for position feedback
+ * - Mechanical system configuration (direct drive)
+ * 
+ * **Platform-specific**: These parameters depend on the application/platform:
+ * - Reference switches (endstops) configuration
+ * - Encoder configuration
+ * - Mechanical system (gearing, leadscrew, belt drive)
+ * 
+ * Used by: bounds_finding_sinuous_motion, internal_ramp_sinusoidal
+ */
+namespace PlatformConfig_FatigueTestRig {
+    // Reference switch configuration
+    namespace ReferenceSwitches {
+        // Assuming Normally Open (NO) switches connecting to GND (Standard 3D printer style)
+        // Pin states: HIGH when open (pullup), LOW when triggered (closed).
+        // TMC51x0 Polarity: ACTIVE_LOW = trigger on GND, ACTIVE_HIGH = trigger on VCC.
+        constexpr tmc51x0::ReferenceSwitchActiveLevel LEFT_ACTIVE_LEVEL = 
+            tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;   ///< Left switch active level (ACTIVE_LOW for GND-triggered)
+        constexpr tmc51x0::ReferenceSwitchActiveLevel RIGHT_ACTIVE_LEVEL = 
+            tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;  ///< Right switch active level (ACTIVE_LOW for GND-triggered)
+        constexpr bool LEFT_STOP_ENABLE = true;               ///< Enable motor stop on left switch
+        constexpr bool RIGHT_STOP_ENABLE = true;              ///< Enable motor stop on right switch
+        constexpr tmc51x0::ReferenceLatchMode LEFT_LATCH_MODE = 
+            tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;         ///< Left switch latch mode (ACTIVE_EDGE for homing)
+        constexpr tmc51x0::ReferenceLatchMode RIGHT_LATCH_MODE = 
+            tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;          ///< Right switch latch mode (ACTIVE_EDGE for homing)
+        constexpr tmc51x0::ReferenceStopMode STOP_MODE = 
+            tmc51x0::ReferenceStopMode::SOFT_STOP;             ///< Stop mode (SOFT_STOP for controlled deceleration)
+    }
+    
+    // Encoder configuration (AS5047U example)
+    namespace Encoder {
+        // AS5047U Specs:
+        // ABI Resolution: Default 4096 ppr (pulses per rev) = 16384 counts per rev (edges)
+        // SPI Resolution: 14-bit = 16384 positions
+        constexpr uint16_t PULSES_PER_REV = 4096;             ///< Encoder pulses per revolution (ABI mode)
+        constexpr uint16_t COUNTS_PER_REV = 16384;            ///< Encoder counts per revolution (edges)
+        constexpr tmc51x0::ReferenceSwitchActiveLevel N_CHANNEL_ACTIVE = 
+            tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_HIGH; ///< N channel active level
+        constexpr tmc51x0::EncoderNSensitivity N_SENSITIVITY = 
+            tmc51x0::EncoderNSensitivity::RISING_EDGE;        ///< N channel sensitivity (RISING_EDGE typical)
+        constexpr tmc51x0::EncoderClearMode CLEAR_MODE = 
+            tmc51x0::EncoderClearMode::DISABLED;               ///< Encoder clear mode (DISABLED = no clearing)
+        constexpr tmc51x0::EncoderPrescalerMode PRESCALER_MODE = 
+            tmc51x0::EncoderPrescalerMode::BINARY;            ///< Prescaler mode (BINARY typical)
+        constexpr bool INVERT_DIRECTION = false;               ///< Invert encoder direction (false = match motor)
+        
+        // Encoder deviation detection
+        // Maximum allowed deviation between motor position and encoder position in full steps
+        // Typical range: 10-50 steps for normal operation, 1-10 steps for tight control
+        constexpr int32_t ALLOWED_DEVIATION_STEPS = 25;        ///< Allowed encoder deviation in steps (0 = disabled)
+    }
+    
+    // Mechanical system configuration
+    namespace Mechanical {
+        // Fatigue test rig uses direct drive (no gearbox)
+        constexpr tmc51x0::MechanicalSystemType SYSTEM_TYPE = 
+            tmc51x0::MechanicalSystemType::DirectDrive;       ///< Mechanical system type (DirectDrive for Applied Motion motor)
         constexpr float LEAD_SCREW_PITCH_MM = 0.0f;           ///< Lead screw pitch in mm (0 = not used)
         constexpr uint16_t BELT_PULLEY_TEETH = 0;             ///< Number of teeth on motor pulley (0 = not used)
         constexpr float BELT_PITCH_MM = 0.0f;                 ///< Belt pitch in mm (0 = not used)
@@ -656,46 +834,46 @@ namespace PlatformConfig_TestRig {
  * - Clock frequency
  */
 template<BoardType board_type>
-inline void ApplyBoardConfig(tmc5160::DriverConfig& cfg) noexcept {
-    if constexpr (board_type == BoardType::BOARD_TMC5160_EVAL) {
-        namespace Board = BoardConfig_TMC5160_EVAL;
+inline void ApplyBoardConfig(tmc51x0::DriverConfig& cfg) noexcept {
+    if constexpr (board_type == BoardType::BOARD_TMC51x0_EVAL) {
+        namespace Board = BoardConfig_TMC51x0_EVAL;
         
         // Driver hardware configuration (required for automatic current calculation)
+        // Note: supply_voltage_mv is motor-specific and should be set from MotorConfig, not BoardConfig
         cfg.motor_spec.sense_resistor_mohm = Board::SENSE_RESISTOR_MOHM;
-        cfg.motor_spec.supply_voltage_mv = Board::SUPPLY_VOLTAGE_MV;
         
         // Power stage configuration (from board config)
         cfg.power_stage.mosfet_miller_charge_nc = Board::MOSFET_MILLER_CHARGE_NC;
         cfg.power_stage.bbm_time_ns = Board::BBM_TIME_NS;
-        cfg.power_stage.sense_filter = tmc5160::SenseFilterTime::T100ns;
-        cfg.power_stage.over_temp_protection = tmc5160::OverTempProtection::Temp150C;
+        cfg.power_stage.sense_filter = tmc51x0::SenseFilterTime::T100ns;
+        cfg.power_stage.over_temp_protection = tmc51x0::OverTempProtection::Temp150C;
         cfg.power_stage.s2vs_voltage_mv = Board::S2VS_VOLTAGE_MV;
         cfg.power_stage.s2g_voltage_mv = Board::S2G_VOLTAGE_MV;
         cfg.power_stage.shortfilter = 1;
         cfg.power_stage.short_detection_delay_us_x10 = 0;
         
         // Clock frequency (from board config)
-        cfg.f_clk = Board::CLOCK_FREQUENCY_HZ;
+        cfg.external_clk_config.frequency_hz = Board::CLOCK_FREQUENCY_HZ;
     }
-    else if constexpr (board_type == BoardType::BOARD_TMC5160_BOB) {
-        namespace Board = BoardConfig_TMC5160_BOB;
+    else if constexpr (board_type == BoardType::BOARD_TMC51x0_BOB) {
+        namespace Board = BoardConfig_TMC51x0_BOB;
         
         // Driver hardware configuration (required for automatic current calculation)
+        // Note: supply_voltage_mv is motor-specific and should be set from MotorConfig, not BoardConfig
         cfg.motor_spec.sense_resistor_mohm = Board::SENSE_RESISTOR_MOHM;
-        cfg.motor_spec.supply_voltage_mv = Board::SUPPLY_VOLTAGE_MV;
         
         // Power stage configuration (from board config)
         cfg.power_stage.mosfet_miller_charge_nc = Board::MOSFET_MILLER_CHARGE_NC;
         cfg.power_stage.bbm_time_ns = Board::BBM_TIME_NS;
-        cfg.power_stage.sense_filter = tmc5160::SenseFilterTime::T100ns;
-        cfg.power_stage.over_temp_protection = tmc5160::OverTempProtection::Temp150C;
+        cfg.power_stage.sense_filter = tmc51x0::SenseFilterTime::T100ns;
+        cfg.power_stage.over_temp_protection = tmc51x0::OverTempProtection::Temp150C;
         cfg.power_stage.s2vs_voltage_mv = Board::S2VS_VOLTAGE_MV;
         cfg.power_stage.s2g_voltage_mv = Board::S2G_VOLTAGE_MV;
         cfg.power_stage.shortfilter = 1;
         cfg.power_stage.short_detection_delay_us_x10 = 0;
         
         // Clock frequency (from board config)
-        cfg.f_clk = Board::CLOCK_FREQUENCY_HZ;
+        cfg.external_clk_config.frequency_hz = Board::CLOCK_FREQUENCY_HZ;
     }
 }
 
@@ -707,23 +885,27 @@ inline void ApplyBoardConfig(tmc5160::DriverConfig& cfg) noexcept {
  * 
  * @param[out] cfg DriverConfig structure to populate
  */
-inline void ConfigureDriverFromMotor_17HS4401S_Gearbox(tmc5160::DriverConfig& cfg) noexcept {
+inline void ConfigureDriverFromMotor_17HS4401S_Gearbox(tmc51x0::DriverConfig& cfg) noexcept {
     namespace Motor = MotorConfig_17HS4401S;
     
     // ===== MOTOR CONFIGURATION =====
     // Motor physical specifications
     cfg.motor_spec.steps_per_rev = Motor::MOTOR_FULL_STEPS;
     cfg.motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
+    cfg.motor_spec.supply_voltage_mv = Motor::SUPPLY_VOLTAGE_MV; // Motor-specific supply voltage
+    cfg.motor_spec.winding_resistance_mohm = static_cast<uint32_t>(Motor::RESISTANCE_OHMS * 1000.0f);
+    cfg.motor_spec.winding_inductance_uh = static_cast<uint32_t>(Motor::INDUCTANCE_MH * 1000.0f);
     cfg.motor_spec.run_current_ma = Motor::TARGET_RUN_CURRENT_MA;
     cfg.motor_spec.hold_current_ma = Motor::TARGET_HOLD_CURRENT_MA;
+    cfg.motor_spec.iholddelay_ms = Motor::IHOLDDELAY_MS;
     
     // Motor-specific chopper configuration
-    cfg.chopper.mode = tmc5160::ChopperMode::SPREAD_CYCLE;
+    cfg.chopper.mode = tmc51x0::ChopperMode::SPREAD_CYCLE;
     cfg.chopper.toff = Motor::TOFF;
     cfg.chopper.tbl = Motor::TBL;
     cfg.chopper.hstrt = Motor::HSTRT;
     cfg.chopper.hend = Motor::HEND;
-    cfg.chopper.mres = static_cast<uint8_t>(Motor::MRES);
+    cfg.chopper.mres = Motor::MRES;
     cfg.chopper.intpol = Motor::INTERPOLATION;
     cfg.chopper.tpfd = 0;
     
@@ -733,8 +915,10 @@ inline void ConfigureDriverFromMotor_17HS4401S_Gearbox(tmc5160::DriverConfig& cf
     cfg.stealthchop.pwm_grad = 0;
     cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
     cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
-    cfg.stealthchop.pwm_reg = static_cast<uint8_t>(tmc5160::StealthChopRegulationSpeed::MODERATE);
-    cfg.stealthchop.pwm_lim = static_cast<uint8_t>(tmc5160::StealthChopJerkReduction::LOW);
+    cfg.stealthchop.pwm_reg = static_cast<uint8_t>(tmc51x0::StealthChopRegulationSpeed::MODERATE);
+    cfg.stealthchop.pwm_lim = static_cast<uint8_t>(tmc51x0::StealthChopJerkReduction::LOW);
+    cfg.stealthchop.velocity_threshold = Motor::STEALTH_VELOCITY_THRESHOLD;
+    cfg.stealthchop.velocity_threshold_unit = tmc51x0::Unit::Steps;
     
     // ===== MECHANICAL SYSTEM (Motor-specific gear ratio) =====
     // Note: System type and other mechanical parameters are set via ApplyPlatformConfig()
@@ -742,14 +926,14 @@ inline void ConfigureDriverFromMotor_17HS4401S_Gearbox(tmc5160::DriverConfig& cf
     
     // ===== GLOBAL CONFIGURATION DEFAULTS =====
     cfg.global_config.recalibrate = false;
-    cfg.global_config.faststandstill = false;
-    cfg.global_config.en_pwm_mode = true;
-    cfg.global_config.multistep_filt = true;
-    cfg.direction = tmc5160::MotorDirection::NORMAL; // Set direction in DriverConfig, shaft will be set during Initialize()
+    cfg.global_config.en_short_standstill_timeout = false;
+    cfg.global_config.en_stealthchop_mode = true;
+    cfg.global_config.en_stealthchop_step_filter = true;
+    cfg.direction = tmc51x0::MotorDirection::NORMAL; // Set direction in DriverConfig, shaft will be set during Initialize()
     
     // Ramp configuration defaults
-    cfg.ramp_config.velocity_unit = tmc5160::Unit::Steps;
-    cfg.ramp_config.acceleration_unit = tmc5160::Unit::Steps;
+    cfg.ramp_config.velocity_unit = tmc51x0::Unit::Steps;
+    cfg.ramp_config.acceleration_unit = tmc51x0::Unit::Steps;
     cfg.ramp_config.vstart = Motor::RAMP_VSTART;
     cfg.ramp_config.vstop = Motor::RAMP_VSTOP;
     cfg.ramp_config.vmax = Motor::RAMP_VMAX;
@@ -770,21 +954,25 @@ inline void ConfigureDriverFromMotor_17HS4401S_Gearbox(tmc5160::DriverConfig& cf
  * 
  * @param[out] cfg DriverConfig structure to populate
  */
-inline void ConfigureDriverFromMotor_17HS4401S_Direct(tmc5160::DriverConfig& cfg) noexcept {
+inline void ConfigureDriverFromMotor_17HS4401S_Direct(tmc51x0::DriverConfig& cfg) noexcept {
     namespace Motor = MotorConfig_17HS4401S_Direct;
     
     // ===== MOTOR CONFIGURATION =====
     cfg.motor_spec.steps_per_rev = Motor::MOTOR_FULL_STEPS;
     cfg.motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
+    cfg.motor_spec.supply_voltage_mv = Motor::SUPPLY_VOLTAGE_MV; // Motor-specific supply voltage
+    cfg.motor_spec.winding_resistance_mohm = static_cast<uint32_t>(Motor::RESISTANCE_OHMS * 1000.0f);
+    cfg.motor_spec.winding_inductance_uh = static_cast<uint32_t>(Motor::INDUCTANCE_MH * 1000.0f);
     cfg.motor_spec.run_current_ma = Motor::TARGET_RUN_CURRENT_MA;
     cfg.motor_spec.hold_current_ma = Motor::TARGET_HOLD_CURRENT_MA;
+    cfg.motor_spec.iholddelay_ms = Motor::IHOLDDELAY_MS;
     
-    cfg.chopper.mode = tmc5160::ChopperMode::SPREAD_CYCLE;
+    cfg.chopper.mode = tmc51x0::ChopperMode::SPREAD_CYCLE;
     cfg.chopper.toff = Motor::TOFF;
     cfg.chopper.tbl = Motor::TBL;
     cfg.chopper.hstrt = Motor::HSTRT;
     cfg.chopper.hend = Motor::HEND;
-    cfg.chopper.mres = static_cast<uint8_t>(Motor::MRES);
+    cfg.chopper.mres = Motor::MRES;
     cfg.chopper.intpol = Motor::INTERPOLATION;
     cfg.chopper.tpfd = 0;
     
@@ -793,32 +981,34 @@ inline void ConfigureDriverFromMotor_17HS4401S_Direct(tmc5160::DriverConfig& cfg
     cfg.stealthchop.pwm_grad = 0;
     cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
     cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
-    cfg.stealthchop.pwm_reg = static_cast<uint8_t>(tmc5160::StealthChopRegulationSpeed::MODERATE);
-    cfg.stealthchop.pwm_lim = static_cast<uint8_t>(tmc5160::StealthChopJerkReduction::LOW);
+    cfg.stealthchop.pwm_reg = static_cast<uint8_t>(tmc51x0::StealthChopRegulationSpeed::MODERATE);
+    cfg.stealthchop.pwm_lim = static_cast<uint8_t>(tmc51x0::StealthChopJerkReduction::LOW);
+    cfg.stealthchop.velocity_threshold = Motor::STEALTH_VELOCITY_THRESHOLD;
+    cfg.stealthchop.velocity_threshold_unit = tmc51x0::Unit::Steps;
     
     // ===== MECHANICAL SYSTEM (Motor-specific gear ratio) =====
     cfg.mechanical.gear_ratio = Motor::GEAR_RATIO;
     
     // ===== GLOBAL CONFIGURATION DEFAULTS =====
     cfg.global_config.recalibrate = false;
-    cfg.global_config.faststandstill = false;
-    cfg.global_config.en_pwm_mode = true;
-    cfg.global_config.multistep_filt = true;
-    cfg.direction = tmc5160::MotorDirection::NORMAL; // Set direction in DriverConfig, shaft will be set during Initialize()
+    cfg.global_config.en_short_standstill_timeout = false;
+    cfg.global_config.en_stealthchop_mode = true;
+    cfg.global_config.en_stealthchop_step_filter = true;
+    cfg.direction = tmc51x0::MotorDirection::NORMAL; // Set direction in DriverConfig, shaft will be set during Initialize()
     
     // ===== RAMP CONFIGURATION DEFAULTS =====
-    cfg.ramp_config.velocity_unit = tmc5160::Unit::Steps;
-    cfg.ramp_config.acceleration_unit = tmc5160::Unit::Steps;
-    cfg.ramp_config.vstart = 1.0f;
-    cfg.ramp_config.vstop = 1.0f;
-    cfg.ramp_config.vmax = 10000.0f;
-    cfg.ramp_config.amax = 1000.0f;
-    cfg.ramp_config.dmax = 1000.0f;
-    cfg.ramp_config.v1 = 1000.0f;
-    cfg.ramp_config.a1 = 500.0f;
-    cfg.ramp_config.d1 = 500.0f;
-    cfg.ramp_config.tpowerdown_ms = 10.0f;
-    cfg.ramp_config.tzerowait_ms = 0.0f;
+    cfg.ramp_config.velocity_unit = tmc51x0::Unit::Steps;
+    cfg.ramp_config.acceleration_unit = tmc51x0::Unit::Steps;
+    cfg.ramp_config.vstart = Motor::RAMP_VSTART;
+    cfg.ramp_config.vstop = Motor::RAMP_VSTOP;
+    cfg.ramp_config.vmax = Motor::RAMP_VMAX;
+    cfg.ramp_config.amax = Motor::RAMP_AMAX;
+    cfg.ramp_config.dmax = Motor::RAMP_DMAX;
+    cfg.ramp_config.v1 = Motor::RAMP_V1;
+    cfg.ramp_config.a1 = Motor::RAMP_A1;
+    cfg.ramp_config.d1 = Motor::RAMP_D1;
+    cfg.ramp_config.tpowerdown_ms = Motor::RAMP_TPOWERDOWN_MS;
+    cfg.ramp_config.tzerowait_ms = Motor::RAMP_TZEROWAIT_MS;
 }
 
 /**
@@ -829,24 +1019,25 @@ inline void ConfigureDriverFromMotor_17HS4401S_Direct(tmc5160::DriverConfig& cfg
  * 
  * @param[out] cfg DriverConfig structure to populate
  */
-inline void ConfigureDriverFromMotor_AppliedMotion_5034(tmc5160::DriverConfig& cfg) noexcept {
+inline void ConfigureDriverFromMotor_AppliedMotion_5034(tmc51x0::DriverConfig& cfg) noexcept {
     namespace Motor = MotorConfig_AppliedMotion_5034_369;
     
     // ===== MOTOR CONFIGURATION =====
     cfg.motor_spec.steps_per_rev = Motor::MOTOR_FULL_STEPS;
     cfg.motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
-    cfg.motor_spec.holding_torque_mnm = Motor::HOLDING_TORQUE_MNM;
+    cfg.motor_spec.supply_voltage_mv = Motor::SUPPLY_VOLTAGE_MV; // Motor-specific supply voltage
     cfg.motor_spec.winding_resistance_mohm = static_cast<uint32_t>(Motor::RESISTANCE_OHMS * 1000.0f);
     cfg.motor_spec.winding_inductance_uh = static_cast<uint32_t>(Motor::INDUCTANCE_MH * 1000.0f);
     cfg.motor_spec.run_current_ma = Motor::TARGET_RUN_CURRENT_MA;
     cfg.motor_spec.hold_current_ma = Motor::TARGET_HOLD_CURRENT_MA;
+    cfg.motor_spec.iholddelay_ms = Motor::IHOLDDELAY_MS;
     
-    cfg.chopper.mode = tmc5160::ChopperMode::SPREAD_CYCLE;
+    cfg.chopper.mode = tmc51x0::ChopperMode::SPREAD_CYCLE;
     cfg.chopper.toff = Motor::TOFF;
     cfg.chopper.tbl = Motor::TBL;
     cfg.chopper.hstrt = Motor::HSTRT;
     cfg.chopper.hend = Motor::HEND;
-    cfg.chopper.mres = static_cast<uint8_t>(Motor::MRES);
+    cfg.chopper.mres = Motor::MRES;
     cfg.chopper.intpol = Motor::INTERPOLATION;
     cfg.chopper.tpfd = 0;
     
@@ -855,32 +1046,34 @@ inline void ConfigureDriverFromMotor_AppliedMotion_5034(tmc5160::DriverConfig& c
     cfg.stealthchop.pwm_grad = 0;
     cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
     cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
-    cfg.stealthchop.pwm_reg = static_cast<uint8_t>(tmc5160::StealthChopRegulationSpeed::MODERATE);
-    cfg.stealthchop.pwm_lim = static_cast<uint8_t>(tmc5160::StealthChopJerkReduction::LOW);
+    cfg.stealthchop.pwm_reg = static_cast<uint8_t>(tmc51x0::StealthChopRegulationSpeed::MODERATE);
+    cfg.stealthchop.pwm_lim = static_cast<uint8_t>(tmc51x0::StealthChopJerkReduction::LOW);
+    cfg.stealthchop.velocity_threshold = Motor::STEALTH_VELOCITY_THRESHOLD;
+    cfg.stealthchop.velocity_threshold_unit = tmc51x0::Unit::Steps;
     
     // ===== MECHANICAL SYSTEM (Motor-specific gear ratio) =====
     cfg.mechanical.gear_ratio = Motor::GEAR_RATIO;
     
     // ===== GLOBAL CONFIGURATION DEFAULTS =====
     cfg.global_config.recalibrate = false;
-    cfg.global_config.faststandstill = false;
-    cfg.global_config.en_pwm_mode = true;
-    cfg.global_config.multistep_filt = true;
-    cfg.direction = tmc5160::MotorDirection::NORMAL; // Set direction in DriverConfig, shaft will be set during Initialize()
+    cfg.global_config.en_short_standstill_timeout = false;
+    cfg.global_config.en_stealthchop_mode = true;
+    cfg.global_config.en_stealthchop_step_filter = true;
+    cfg.direction = tmc51x0::MotorDirection::NORMAL; // Set direction in DriverConfig, shaft will be set during Initialize()
     
     // ===== RAMP CONFIGURATION DEFAULTS =====
-    cfg.ramp_config.velocity_unit = tmc5160::Unit::Steps;
-    cfg.ramp_config.acceleration_unit = tmc5160::Unit::Steps;
-    cfg.ramp_config.vstart = 1.0f;
-    cfg.ramp_config.vstop = 1.0f;
-    cfg.ramp_config.vmax = 10000.0f;
-    cfg.ramp_config.amax = 1000.0f;
-    cfg.ramp_config.dmax = 1000.0f;
-    cfg.ramp_config.v1 = 1000.0f;
-    cfg.ramp_config.a1 = 500.0f;
-    cfg.ramp_config.d1 = 500.0f;
-    cfg.ramp_config.tpowerdown_ms = 10.0f;
-    cfg.ramp_config.tzerowait_ms = 0.0f;
+    cfg.ramp_config.velocity_unit = tmc51x0::Unit::Steps;
+    cfg.ramp_config.acceleration_unit = tmc51x0::Unit::Steps;
+    cfg.ramp_config.vstart = Motor::RAMP_VSTART;
+    cfg.ramp_config.vstop = Motor::RAMP_VSTOP;
+    cfg.ramp_config.vmax = Motor::RAMP_VMAX;
+    cfg.ramp_config.amax = Motor::RAMP_AMAX;
+    cfg.ramp_config.dmax = Motor::RAMP_DMAX;
+    cfg.ramp_config.v1 = Motor::RAMP_V1;
+    cfg.ramp_config.a1 = Motor::RAMP_A1;
+    cfg.ramp_config.d1 = Motor::RAMP_D1;
+    cfg.ramp_config.tpowerdown_ms = Motor::RAMP_TPOWERDOWN_MS;
+    cfg.ramp_config.tzerowait_ms = Motor::RAMP_TZEROWAIT_MS;
 }
 
 /**
@@ -899,9 +1092,18 @@ inline void ConfigureDriverFromMotor_AppliedMotion_5034(tmc5160::DriverConfig& c
  * Reference switches and encoder are configured separately via driver methods after initialization.
  */
 template<PlatformType platform_type>
-inline void ApplyPlatformConfig(tmc5160::DriverConfig& cfg) noexcept {
-    if constexpr (platform_type == PlatformType::PLATFORM_TEST_RIG) {
-        namespace Platform = PlatformConfig_TestRig;
+inline void ApplyPlatformConfig(tmc51x0::DriverConfig& cfg) noexcept {
+    if constexpr (platform_type == PlatformType::PLATFORM_CORE_DRIVER_TEST_RIG) {
+        namespace Platform = PlatformConfig_CoreDriverTestRig;
+        
+        // Mechanical system configuration
+        cfg.mechanical.system_type = Platform::Mechanical::SYSTEM_TYPE;
+        cfg.mechanical.lead_screw_pitch_mm = Platform::Mechanical::LEAD_SCREW_PITCH_MM;
+        cfg.mechanical.belt_pulley_teeth = Platform::Mechanical::BELT_PULLEY_TEETH;
+        cfg.mechanical.belt_pitch_mm = Platform::Mechanical::BELT_PITCH_MM;
+    }
+    else if constexpr (platform_type == PlatformType::PLATFORM_FATIGUE_TEST_RIG) {
+        namespace Platform = PlatformConfig_FatigueTestRig;
         
         // Mechanical system configuration
         cfg.mechanical.system_type = Platform::Mechanical::SYSTEM_TYPE;
@@ -926,11 +1128,21 @@ inline void ApplyPlatformConfig(tmc5160::DriverConfig& cfg) noexcept {
  * @return ReferenceSwitchConfig structure configured from selected platform
  */
 template<PlatformType platform_type>
-inline tmc5160::ReferenceSwitchConfig GetReferenceSwitchConfig() noexcept {
-    tmc5160::ReferenceSwitchConfig ref_cfg{};
+inline tmc51x0::ReferenceSwitchConfig GetReferenceSwitchConfig() noexcept {
+    tmc51x0::ReferenceSwitchConfig ref_cfg{};
     
-    if constexpr (platform_type == PlatformType::PLATFORM_TEST_RIG) {
-        namespace Platform = PlatformConfig_TestRig;
+    if constexpr (platform_type == PlatformType::PLATFORM_CORE_DRIVER_TEST_RIG) {
+        namespace Platform = PlatformConfig_CoreDriverTestRig;
+        ref_cfg.left_switch_active = Platform::ReferenceSwitches::LEFT_ACTIVE_LEVEL;
+        ref_cfg.right_switch_active = Platform::ReferenceSwitches::RIGHT_ACTIVE_LEVEL;
+        ref_cfg.left_switch_stop_enable = Platform::ReferenceSwitches::LEFT_STOP_ENABLE;
+        ref_cfg.right_switch_stop_enable = Platform::ReferenceSwitches::RIGHT_STOP_ENABLE;
+        ref_cfg.latch_left = Platform::ReferenceSwitches::LEFT_LATCH_MODE;
+        ref_cfg.latch_right = Platform::ReferenceSwitches::RIGHT_LATCH_MODE;
+        ref_cfg.stop_mode = Platform::ReferenceSwitches::STOP_MODE;
+    }
+    else if constexpr (platform_type == PlatformType::PLATFORM_FATIGUE_TEST_RIG) {
+        namespace Platform = PlatformConfig_FatigueTestRig;
         ref_cfg.left_switch_active = Platform::ReferenceSwitches::LEFT_ACTIVE_LEVEL;
         ref_cfg.right_switch_active = Platform::ReferenceSwitches::RIGHT_ACTIVE_LEVEL;
         ref_cfg.left_switch_stop_enable = Platform::ReferenceSwitches::LEFT_STOP_ENABLE;
@@ -958,15 +1170,24 @@ inline tmc5160::ReferenceSwitchConfig GetReferenceSwitchConfig() noexcept {
  * @return EncoderConfig structure configured from selected platform
  */
 template<PlatformType platform_type>
-inline tmc5160::EncoderConfig GetEncoderConfig() noexcept {
-    tmc5160::EncoderConfig enc_cfg{};
+inline tmc51x0::EncoderConfig GetEncoderConfig() noexcept {
+    tmc51x0::EncoderConfig enc_cfg{};
     
-    if constexpr (platform_type == PlatformType::PLATFORM_TEST_RIG) {
-        namespace Platform = PlatformConfig_TestRig;
+    if constexpr (platform_type == PlatformType::PLATFORM_CORE_DRIVER_TEST_RIG) {
+        namespace Platform = PlatformConfig_CoreDriverTestRig;
         enc_cfg.n_channel_active = Platform::Encoder::N_CHANNEL_ACTIVE;
         enc_cfg.n_sensitivity = Platform::Encoder::N_SENSITIVITY;
         enc_cfg.clear_mode = Platform::Encoder::CLEAR_MODE;
         enc_cfg.prescaler_mode = Platform::Encoder::PRESCALER_MODE;
+        enc_cfg.allowed_deviation_steps = Platform::Encoder::ALLOWED_DEVIATION_STEPS;
+    }
+    else if constexpr (platform_type == PlatformType::PLATFORM_FATIGUE_TEST_RIG) {
+        namespace Platform = PlatformConfig_FatigueTestRig;
+        enc_cfg.n_channel_active = Platform::Encoder::N_CHANNEL_ACTIVE;
+        enc_cfg.n_sensitivity = Platform::Encoder::N_SENSITIVITY;
+        enc_cfg.clear_mode = Platform::Encoder::CLEAR_MODE;
+        enc_cfg.prescaler_mode = Platform::Encoder::PRESCALER_MODE;
+        enc_cfg.allowed_deviation_steps = Platform::Encoder::ALLOWED_DEVIATION_STEPS;
     }
     // Add more platform types here:
     // else if constexpr (platform_type == PlatformType::PLATFORM_3D_PRINTER) {
@@ -986,8 +1207,11 @@ inline tmc5160::EncoderConfig GetEncoderConfig() noexcept {
  */
 template<PlatformType platform_type>
 constexpr uint16_t GetEncoderPulsesPerRev() noexcept {
-    if constexpr (platform_type == PlatformType::PLATFORM_TEST_RIG) {
-        return PlatformConfig_TestRig::Encoder::PULSES_PER_REV;
+    if constexpr (platform_type == PlatformType::PLATFORM_CORE_DRIVER_TEST_RIG) {
+        return PlatformConfig_CoreDriverTestRig::Encoder::PULSES_PER_REV;
+    }
+    else if constexpr (platform_type == PlatformType::PLATFORM_FATIGUE_TEST_RIG) {
+        return PlatformConfig_FatigueTestRig::Encoder::PULSES_PER_REV;
     }
     // Add more platform types here
     return 0;
@@ -1001,14 +1225,193 @@ constexpr uint16_t GetEncoderPulsesPerRev() noexcept {
  */
 template<PlatformType platform_type>
 inline bool GetEncoderInvertDirection() noexcept {
-    if constexpr (platform_type == PlatformType::PLATFORM_TEST_RIG) {
-        return PlatformConfig_TestRig::Encoder::INVERT_DIRECTION;
+    if constexpr (platform_type == PlatformType::PLATFORM_CORE_DRIVER_TEST_RIG) {
+        return PlatformConfig_CoreDriverTestRig::Encoder::INVERT_DIRECTION;
+    }
+    else if constexpr (platform_type == PlatformType::PLATFORM_FATIGUE_TEST_RIG) {
+        return PlatformConfig_FatigueTestRig::Encoder::INVERT_DIRECTION;
     }
     // Add more platform types here
     return false;
 }
 
-} // namespace tmc5160_test_config
+/**
+ * @brief Get motor type for a given test rig
+ * 
+ * @param[in] test_rig Test rig type
+ * @return Motor type for the test rig
+ */
+template<TestRigType test_rig>
+constexpr MotorType GetTestRigMotorType() noexcept {
+    if constexpr (test_rig == TestRigType::TEST_RIG_CORE_DRIVER) {
+        return MotorType::MOTOR_17HS4401S_GEARBOX; // Default to gearbox, can be overridden
+    }
+    else if constexpr (test_rig == TestRigType::TEST_RIG_FATIGUE) {
+        return MotorType::MOTOR_APPLIED_MOTION_5034;
+    }
+    return MotorType::MOTOR_17HS4401S_GEARBOX; // Default fallback
+}
 
-#endif // ESP32_TMC5160_TEST_CONFIG_HPP
+/**
+ * @brief Get board type for a given test rig
+ * 
+ * @param[in] test_rig Test rig type
+ * @return Board type for the test rig
+ */
+template<TestRigType test_rig>
+constexpr BoardType GetTestRigBoardType() noexcept {
+    if constexpr (test_rig == TestRigType::TEST_RIG_CORE_DRIVER) {
+        return BoardType::BOARD_TMC51x0_EVAL;
+    }
+    else if constexpr (test_rig == TestRigType::TEST_RIG_FATIGUE) {
+        return BoardType::BOARD_TMC51x0_EVAL;
+    }
+    return BoardType::BOARD_TMC51x0_EVAL; // Default fallback
+}
+
+/**
+ * @brief Get platform type for a given test rig
+ * 
+ * @param[in] test_rig Test rig type
+ * @return Platform type for the test rig
+ */
+template<TestRigType test_rig>
+constexpr PlatformType GetTestRigPlatformType() noexcept {
+    if constexpr (test_rig == TestRigType::TEST_RIG_CORE_DRIVER) {
+        return PlatformType::PLATFORM_CORE_DRIVER_TEST_RIG;
+    }
+    else if constexpr (test_rig == TestRigType::TEST_RIG_FATIGUE) {
+        return PlatformType::PLATFORM_FATIGUE_TEST_RIG;
+    }
+    return PlatformType::PLATFORM_CORE_DRIVER_TEST_RIG; // Default fallback
+}
+
+// Static storage for reference switch and encoder configs (used by DriverConfig pointers)
+// These are stored per test rig type to ensure they persist for the lifetime of DriverConfig
+namespace {
+}
+
+/**
+ * @brief Configure driver from test rig selection
+ * 
+ * This is a convenience function that automatically configures motor, board, platform,
+ * reference switches, and encoder based on the test rig selection.
+ * For Core Driver rig, defaults to gearbox motor.
+ * 
+ * @param[out] cfg DriverConfig structure to populate
+ * @param[in] test_rig Test rig type (compile-time constant)
+ * @param[in] use_direct_drive For Core Driver rig only: true = direct drive motor, false = gearbox motor (default)
+ */
+template<TestRigType test_rig>
+inline void ConfigureDriverFromTestRig(tmc51x0::DriverConfig& cfg, bool use_direct_drive = false) noexcept {
+    // Configure motor based on test rig
+    if constexpr (test_rig == TestRigType::TEST_RIG_CORE_DRIVER) {
+        if (use_direct_drive) {
+            ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
+        } else {
+            ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+        }
+        
+        // Configure reference switches and encoder for Core Driver Test Rig
+        constexpr auto platform_type = GetTestRigPlatformType<test_rig>();
+        cfg.reference_switch_config = GetReferenceSwitchConfig<platform_type>();
+        cfg.encoder_config = GetEncoderConfig<platform_type>();
+        cfg.encoder_config.pulses_per_rev = GetEncoderPulsesPerRev<platform_type>();
+        cfg.encoder_config.invert_direction = GetEncoderInvertDirection<platform_type>();
+        // allowed_deviation_steps is already set in GetEncoderConfig()
+    }
+    else if constexpr (test_rig == TestRigType::TEST_RIG_FATIGUE) {
+        ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
+        
+        // Configure reference switches and encoder for Fatigue Test Rig
+        constexpr auto platform_type = GetTestRigPlatformType<test_rig>();
+        cfg.reference_switch_config = GetReferenceSwitchConfig<platform_type>();
+        cfg.encoder_config = GetEncoderConfig<platform_type>();
+        cfg.encoder_config.pulses_per_rev = GetEncoderPulsesPerRev<platform_type>();
+        cfg.encoder_config.invert_direction = GetEncoderInvertDirection<platform_type>();
+        // allowed_deviation_steps is already set in GetEncoderConfig()
+    }
+    
+    // Apply board configuration
+    ApplyBoardConfig<GetTestRigBoardType<test_rig>()>(cfg);
+    
+    // Apply platform configuration
+    ApplyPlatformConfig<GetTestRigPlatformType<test_rig>()>(cfg);
+}
+
+/**
+ * @brief Get reference switch configuration for a test rig
+ * 
+ * Convenience function that automatically selects the platform and returns reference switch config.
+ * 
+ * @param[in] test_rig Test rig type (compile-time constant)
+ * @return ReferenceSwitchConfig structure configured from selected test rig
+ */
+template<TestRigType test_rig>
+inline tmc51x0::ReferenceSwitchConfig GetTestRigReferenceSwitchConfig() noexcept {
+    return GetReferenceSwitchConfig<GetTestRigPlatformType<test_rig>()>();
+}
+
+/**
+ * @brief Get encoder configuration for a test rig
+ * 
+ * Convenience function that automatically selects the platform and returns encoder config.
+ * 
+ * @param[in] test_rig Test rig type (compile-time constant)
+ * @return EncoderConfig structure configured from selected test rig
+ */
+template<TestRigType test_rig>
+inline tmc51x0::EncoderConfig GetTestRigEncoderConfig() noexcept {
+    return GetEncoderConfig<GetTestRigPlatformType<test_rig>()>();
+}
+
+/**
+ * @brief Get encoder pulses per revolution for a test rig
+ * 
+ * @param[in] test_rig Test rig type (compile-time constant)
+ * @return Encoder pulses per revolution
+ */
+template<TestRigType test_rig>
+constexpr uint16_t GetTestRigEncoderPulsesPerRev() noexcept {
+    return GetEncoderPulsesPerRev<GetTestRigPlatformType<test_rig>()>();
+}
+
+/**
+ * @brief Get encoder invert direction flag for a test rig
+ * 
+ * @param[in] test_rig Test rig type (compile-time constant)
+ * @return true if encoder direction should be inverted
+ */
+template<TestRigType test_rig>
+inline bool GetTestRigEncoderInvertDirection() noexcept {
+    return GetEncoderInvertDirection<GetTestRigPlatformType<test_rig>()>();
+}
+
+/**
+ * @brief Get motor output full steps per revolution for a test rig
+ * 
+ * Returns the number of full steps per revolution at the output shaft
+ * (accounting for gearbox if present).
+ * 
+ * @param[in] test_rig Test rig type (compile-time constant)
+ * @return Output full steps per revolution
+ */
+template<TestRigType test_rig>
+constexpr uint16_t GetTestRigMotorOutputFullSteps() noexcept {
+    constexpr auto motor_type = GetTestRigMotorType<test_rig>();
+    if constexpr (motor_type == MotorType::MOTOR_17HS4401S_GEARBOX) {
+        return MotorConfig_17HS4401S::OUTPUT_FULL_STEPS;
+    }
+    else if constexpr (motor_type == MotorType::MOTOR_17HS4401S_DIRECT) {
+        return MotorConfig_17HS4401S_Direct::OUTPUT_FULL_STEPS;
+    }
+    else if constexpr (motor_type == MotorType::MOTOR_APPLIED_MOTION_5034) {
+        return MotorConfig_AppliedMotion_5034_369::OUTPUT_FULL_STEPS;
+    }
+    return 200; // Default fallback
+}
+
+} // namespace tmc51x0_test_config
+
+#endif // ESP32_TMC51x0_TEST_CONFIG_HPP
 

@@ -35,7 +35,6 @@ The `SetupMotorFromSpec()` function takes high-level motor parameters (rated cur
 tmc5160::MotorSpec motor_spec{};
 motor_spec.steps_per_rev = 200;        // 1.8° stepper motor
 motor_spec.rated_current_ma = 1500;     // 1.5A rated current
-motor_spec.rated_voltage_mv = 12000;    // 12V rated voltage
 
 // Setup motor automatically
 if (!driver.motorControl.SetupMotorFromSpec(motor_spec)) {
@@ -66,8 +65,9 @@ driver.motorControl.SetupMotorFromSpec(motor_spec, &mech_system);
 ```cpp
 struct MotorSpec {
     uint16_t steps_per_rev;      // Steps per revolution (typically 200 for 1.8°)
-    uint16_t rated_current_ma;   // Rated current in milliamps
-    uint16_t rated_voltage_mv;   // Rated voltage in millivolts
+    uint16_t rated_current_ma;   // Rated current in milliamps (RMS)
+    uint32_t sense_resistor_mohm; // Sense resistor value in milliohms (e.g., 50 for 0.05Ω)
+    uint32_t supply_voltage_mv;   // Motor supply voltage in millivolts (e.g., 24000 for 24V)
 };
 ```
 
@@ -77,11 +77,17 @@ struct MotorSpec {
 struct MotorSpec {
     // ... required parameters ...
     
-    uint32_t winding_resistance_mohm;  // Winding resistance (0 = not specified)
-    uint32_t winding_inductance_uh;     // Winding inductance (0 = not specified)
-    uint32_t holding_torque_mnm;       // Holding torque (0 = not specified)
+    uint32_t winding_resistance_mohm;  // Winding resistance in milliohms (required for StealthChop)
+    uint32_t winding_inductance_uh;    // Winding inductance in microhenries (0 = not specified)
+    uint16_t run_current_ma;          // Desired run current (0 = use rated_current_ma)
+    uint16_t hold_current_ma;          // Desired hold current (0 = auto-calculate as 30% of run)
+    float scaler_adjustment_percent;   // Fine-tuning for GLOBAL_SCALER calculation (-50.0 to +50.0)
+    float irun_adjustment_percent;     // Fine-tuning for IRUN calculation (-50.0 to +50.0)
+    float ihold_adjustment_percent;    // Fine-tuning for IHOLD calculation (-50.0 to +50.0)
 };
 ```
+
+**Note**: The recommended approach is to use `DriverConfig` with `motor_spec` and call `Initialize()`, which automatically calculates IRUN, IHOLD, and GLOBAL_SCALER. `SetupMotorFromSpec()` is a legacy method that may use approximations.
 
 ## How It Works
 
@@ -112,7 +118,6 @@ void setupNema17Motor() {
     tmc5160::MotorSpec nema17{};
     nema17.steps_per_rev = 200;           // 1.8° per step
     nema17.rated_current_ma = 1500;       // 1.5A rated
-    nema17.rated_voltage_mv = 12000;       // 12V rated
     nema17.winding_resistance_mohm = 3200; // 3.2Ω per phase
     nema17.winding_inductance_uh = 2800;  // 2.8mH per phase
     
@@ -133,8 +138,8 @@ void setupNema17Motor() {
     
     // Configure motion parameters
     driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    driver.rampControl.SetMaxSpeedRpm(100.0f, nema17.steps_per_rev);
-    driver.rampControl.SetAcceleration(500.0f);
+    driver.rampControl.SetMaxSpeed(100.0f, tmc5160::Unit::Rpm, nema17.steps_per_rev);
+    driver.rampControl.SetAcceleration(500.0f, tmc5160::Unit::RpmPerSecond, nema17.steps_per_rev);
     
     // Enable motor
     driver.motorControl.Enable();

@@ -47,19 +47,21 @@ constexpr float LEAD_SCREW_PITCH_MM = 2.0f;
 int32_t steps = tmc5160::MmToSteps(10.0f, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
 driver.rampControl.SetTargetPosition(steps);
 
-// Or use the convenience function
-driver.rampControl.SetTargetPositionMm(10.0f, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
+// Or use SetTargetPosition with Unit parameter (requires mechanical system in DriverConfig)
+driver.rampControl.SetTargetPosition(10.0f, tmc5160::Unit::Mm);
 
 // Get current position in mm
-int32_t current_steps = driver.rampControl.GetCurrentPosition();
-float current_mm = tmc5160::StepsToMm(current_steps, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
+float current_mm = 0.0f;
+if (driver.rampControl.GetCurrentPosition(current_mm, tmc5160::Unit::Mm, STEPS_PER_REV, LEAD_SCREW_PITCH_MM)) {
+    // Use current_mm
+}
 ```
 
 ### Speed in RPM
 
 ```cpp
-// Set maximum speed to 100 RPM
-driver.rampControl.SetMaxSpeedRpm(100.0f, STEPS_PER_REV);
+// Set maximum speed to 100 RPM (requires motor_spec.steps_per_rev in DriverConfig)
+driver.rampControl.SetMaxSpeed(100.0f, tmc5160::Unit::Rpm);
 
 // Or convert manually
 float steps_per_sec = tmc5160::RpmToStepsPerSec(100.0f, STEPS_PER_REV);
@@ -117,31 +119,31 @@ constexpr uint16_t STEPS_PER_REV = 200;      // 1.8° stepper
 constexpr float LEAD_SCREW_PITCH_MM = 2.0f;  // 2mm pitch lead screw
 
 void setupMotor() {
-    // Initialize driver
+    // Initialize driver with mechanical system configuration
     tmc5160::DriverConfig cfg{};
+    cfg.motor_spec.steps_per_rev = STEPS_PER_REV;
+    cfg.mechanical.system_type = tmc5160::MechanicalSystemType::LeadScrew;
+    cfg.mechanical.lead_screw_pitch_mm = LEAD_SCREW_PITCH_MM;
     driver.Initialize(cfg);
     
-    // Set speeds in RPM
-    driver.rampControl.SetMaxSpeedRpm(100.0f, STEPS_PER_REV);
+    // Set speeds in RPM (uses mechanical system from DriverConfig)
+    driver.rampControl.SetMaxSpeed(100.0f, tmc5160::Unit::Rpm);
     
-    // Set acceleration in mm/s²
-    float accel_mm_per_sec2 = 50.0f;
-    float accel_steps_per_sec2 = tmc5160::AccelerationMmToSteps(
-        accel_mm_per_sec2, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
-    driver.rampControl.SetAcceleration(accel_steps_per_sec2);
+    // Set acceleration in mm/s² (uses mechanical system from DriverConfig)
+    driver.rampControl.SetAcceleration(50.0f, tmc5160::Unit::MmPerSecondSquared);
 }
 
 void moveToPosition(float target_mm) {
-    // Move to position in millimeters
-    driver.rampControl.SetTargetPositionMm(
-        target_mm, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
+    // Move to position in millimeters (uses mechanical system from DriverConfig)
+    driver.rampControl.SetTargetPosition(target_mm, tmc5160::Unit::Mm);
     
     // Wait for completion
     while (!driver.rampControl.IsTargetReached()) {
-        // Monitor position in mm
-        int32_t steps = driver.rampControl.GetCurrentPosition();
-        float mm = tmc5160::StepsToMm(steps, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
-        printf("Current position: %.2f mm\n", mm);
+        // Monitor position in mm (uses mechanical system from DriverConfig)
+        float mm = 0.0f;
+        if (driver.rampControl.GetCurrentPosition(mm, tmc5160::Unit::Mm)) {
+            printf("Current position: %.2f mm\n", mm);
+        }
     }
 }
 ```

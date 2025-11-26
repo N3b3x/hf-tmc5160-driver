@@ -155,7 +155,6 @@ cfg.motor_spec.sense_resistor_mohm = 50;  // 0.05Ω (REQUIRED for calculation)
 cfg.motor_spec.supply_voltage_mv = 24000;  // 24V (REQUIRED for calculation)
 
 // Optional motor specifications:
-cfg.motor_spec.rated_voltage_mv = 12000;  // Motor rated voltage
 cfg.motor_spec.winding_resistance_mohm = 3000;  // Winding resistance (for StealthChop validation)
 cfg.motor_spec.winding_inductance_uh = 2800;  // Winding inductance
 
@@ -168,8 +167,14 @@ cfg.motor_spec.scaler_adjustment_percent = 0.0f;  // Adjust GLOBAL_SCALER by per
 cfg.motor_spec.irun_adjustment_percent = 0.0f;    // Adjust IRUN by percentage
 cfg.motor_spec.ihold_adjustment_percent = 0.0f;   // Adjust IHOLD by percentage
 
+// Clock configuration (f_clk is automatically calculated from external_clk_config)
+cfg.external_clk_config.frequency_hz = 0;  // 0 = use internal 12 MHz clock (CLK pin tied to GND)
+// Or for external clock:
+// cfg.external_clk_config.frequency_hz = 12000000;  // 12 MHz external clock
+
 // Note: IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated during initialization
 // DO NOT set them manually - they are calculated from motor_spec parameters
+// Note: f_clk is automatically calculated from external_clk_config during initialization
 
 // Chopper configuration (SpreadCycle mode - recommended)
 cfg.chopper.mode = tmc5160::ChopperMode::SPREAD_CYCLE;  // SpreadCycle mode (recommended)
@@ -178,7 +183,7 @@ cfg.chopper.tbl = static_cast<uint8_t>(tmc5160::ChopperBlankTime::TBL_36CLK);  /
 cfg.chopper.hstrt = 4;             // Hysteresis start (0-7, 4=typical)
 cfg.chopper.hend = 0;              // Hysteresis end (0-15 encoded, 0=typical)
 cfg.chopper.tpfd = 0;              // Passive fast decay (0=disabled, increase if resonances)
-cfg.chopper.mres = static_cast<uint8_t>(tmc5160::MicrostepResolution::MRES_16);  // 16 microsteps (typical)
+cfg.chopper.mres = tmc5160::MicrostepResolution::MRES_256;  // 256 microsteps (typical)
 cfg.chopper.intpol = true;         // Enable interpolation to 256 microsteps (recommended)
 cfg.chopper.dedge = false;         // Double edge step pulses (typically false)
 
@@ -212,8 +217,8 @@ cfg.direction = tmc5160::MotorDirection::NORMAL;
 
 // Global configuration (GCONF register)
 cfg.global_config.en_pwm_mode = true;  // Enable stealthChop
-cfg.global_config.multistep_filt = true; // Enable step filtering
-cfg.global_config.shaft = false;  // Normal direction
+cfg.global_config.en_stealthchop_step_filter = true; // Enable step input filtering for StealthChop optimization
+cfg.global_config.invert_direction = false;  // Normal direction
 
 // Ramp generator configuration
 // Specify units for velocity and acceleration parameters (critical for proper conversion)
@@ -235,8 +240,10 @@ cfg.ramp_config.d1 = 100.0f;        // First deceleration (unit specified by acc
 cfg.ramp_config.tpowerdown_ms = 437.0f;  // Power down delay in milliseconds (~0.44s at 12MHz, range: 0-5600ms)
 cfg.ramp_config.tzerowait_ms = 0.0f;     // Zero wait time in milliseconds (no delay, range: 0-2000ms)
 
-// Clock frequency
-cfg.f_clk = 12000000;  // 12 MHz (default)
+// Clock configuration (f_clk is automatically calculated from external_clk_config)
+cfg.external_clk_config.frequency_hz = 0;  // 0 = use internal 12 MHz clock (default)
+// Or for external clock:
+// cfg.external_clk_config.frequency_hz = 12000000;  // 12 MHz external clock
 
 driver.Initialize(cfg);
 ```
@@ -255,6 +262,12 @@ driver.rampControl.SetMaxSpeed(1000.0f, tmc5160::Unit::Steps);      // steps/s
 driver.rampControl.SetAcceleration(500.0f, tmc5160::Unit::Steps);   // steps/s²
 driver.rampControl.SetRampSpeeds(0.0f, 10.0f, 0.0f, tmc5160::Unit::Steps); // start, stop, transition
 
+// Get current position and speed (unit-aware API)
+float position = 0.0f;
+float speed = 0.0f;
+driver.rampControl.GetCurrentPosition(position, tmc5160::Unit::Steps);
+driver.rampControl.GetCurrentSpeed(speed, tmc5160::Unit::Steps);
+
 // Or use physical units (requires mechanical system configuration)
 driver.rampControl.SetMaxSpeed(100.0f, tmc5160::Unit::RPM);         // 100 RPM
 driver.rampControl.SetAcceleration(50.0f, tmc5160::Unit::Deg);     // 50 deg/s²
@@ -269,7 +282,7 @@ driver.motorControl.SetCurrent(20, 10);  // irun, ihold
 // Configure chopper
 tmc5160::ChopperConfig chop_cfg{};
 chop_cfg.toff = 5;
-chop_cfg.mres = 4;  // 16 microsteps
+chop_cfg.mres = tmc5160::MicrostepResolution::MRES_256;  // 256 microsteps
 driver.motorControl.ConfigureChopper(chop_cfg);
 
 // Configure StealthChop (automatic tuning mode - recommended)
@@ -286,11 +299,16 @@ driver.motorControl.ConfigureStealthChop(stealth_cfg);
 // IMPORTANT: Motor must be at standstill when StealthChop is first enabled
 // Keep motor stopped for at least 128 chopper periods after enabling
 
-// Set mode change speeds (velocity thresholds)
+// Set mode change speeds (velocity thresholds, unit-aware)
 driver.motorControl.SetModeChangeSpeeds(100.0f, 500.0f, 2000.0f, tmc5160::Unit::Steps);
 // pwm_thrs: StealthChop threshold (below this: StealthChop, above: SpreadCycle)
 // cool_thrs: CoolStep threshold (below this: CoolStep disabled)
 // high_thrs: High-speed mode threshold
+
+// Or set individual thresholds:
+driver.motorControl.SetStealthChopVelocityThreshold(100.0f, tmc5160::Unit::Steps);
+driver.motorControl.SetCoolStepThreshold(500.0f, tmc5160::Unit::Steps);
+driver.motorControl.SetHighSpeedThreshold(2000.0f, tmc5160::Unit::Steps);
 ```
 
 ### Encoder Configuration
@@ -444,7 +462,9 @@ driver.motorControl.ConfigureDcStep(dcstep);
 | `motor_spec.scaler_adjustment_percent` | 0.0 | Percentage adjustment for GLOBAL_SCALER (-50.0 to +50.0) |
 | `motor_spec.irun_adjustment_percent` | 0.0 | Percentage adjustment for IRUN (-50.0 to +50.0) |
 | `motor_spec.ihold_adjustment_percent` | 0.0 | Percentage adjustment for IHOLD (-50.0 to +50.0) |
+| `external_clk_config.frequency_hz` | 0 | Clock frequency (0 = internal 12 MHz, >0 = external clock frequency) |
 | **Note** | | IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated during initialization |
+| **Note** | | f_clk is automatically calculated from external_clk_config during initialization |
 | `chopper.toff` | 5 | Off time |
 | `chopper.mres` | 4 | 16 microsteps |
 | `stealthchop.pwm_autoscale` | true | Auto-scaling enabled |
@@ -460,7 +480,8 @@ driver.motorControl.ConfigureDcStep(dcstep);
 | `ramp_config.d1` | 100.0 | First deceleration (unit specified by acceleration_unit, must not be 0) |
 | `ramp_config.tpowerdown_ms` | 437.0 | Power down delay in milliseconds (~0.44s at 12MHz, range: 0-5600ms) |
 | `ramp_config.tzerowait_ms` | 0.0 | Zero wait time in milliseconds (no delay, range: 0-2000ms) |
-| `f_clk` | 12000000 | Clock frequency (12 MHz) |
+| `external_clk_config.frequency_hz` | 0 | Clock frequency (0 = internal 12 MHz, >0 = external clock frequency) |
+| **Note** | | f_clk is automatically calculated from external_clk_config during Initialize() |
 
 ## Power Stage Parameter Conversion
 
@@ -516,36 +537,32 @@ tmc5160::DriverConfig cfg{};
 cfg.motor_spec.rated_current_ma = 1680;
 cfg.motor_spec.sense_resistor_mohm = 50;
 cfg.motor_spec.supply_voltage_mv = 24000;
-cfg.motor_spec.global_scaler = 0;  // Auto-calculate
-cfg.motor_spec.irun = 0;           // Auto-calculate
-cfg.motor_spec.ihold = 0;          // Auto-calculate
+// IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated - DO NOT set manually
 cfg.chopper.toff = 5;
-cfg.chopper.mres = 4;  // 16 microsteps
+cfg.chopper.mres = tmc5160::MicrostepResolution::MRES_256;  // 256 microsteps
 cfg.stealthchop.pwm_autoscale = true;
 cfg.stealthchop.pwm_autograd = true;
 driver.Initialize(cfg);
 
 // Enable stealthChop
-driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f);
+driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f, tmc5160::Unit::Steps);
 ```
 
 ### For High Torque (spreadCycle)
 
 ```cpp
 tmc5160::DriverConfig cfg{};
-cfg.motor_spec.user.rated_current_ma = 2000;
-cfg.motor_spec.user.sense_resistor_mohm = 50;
-cfg.motor_spec.user.supply_voltage_mv = 24000;
-cfg.motor_spec.global_scaler = 0;  // Auto-calculate
-cfg.motor_spec.irun = 0;           // Auto-calculate
-cfg.motor_spec.ihold = 0;          // Auto-calculate
+cfg.motor_spec.rated_current_ma = 2000;
+cfg.motor_spec.sense_resistor_mohm = 50;
+cfg.motor_spec.supply_voltage_mv = 24000;
+// IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated - DO NOT set manually
 cfg.chopper.toff = 5;
-cfg.chopper.mres = 3;  // 32 microsteps
+cfg.chopper.mres = tmc5160::MicrostepResolution::MRES_256;  // 256 microsteps
 cfg.chopper.mode = tmc5160::ChopperMode::SPREAD_CYCLE;  // SpreadCycle mode (recommended)
 driver.Initialize(cfg);
 
 // Disable stealthChop (use spreadCycle)
-driver.motorControl.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f);
+driver.motorControl.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc5160::Unit::Steps);
 ```
 
 ### For Closed-Loop Control (with Encoder)
@@ -555,17 +572,19 @@ tmc5160::DriverConfig cfg{};
 cfg.motor_spec.rated_current_ma = 1680;
 cfg.motor_spec.sense_resistor_mohm = 50;
 cfg.motor_spec.supply_voltage_mv = 24000;
-cfg.motor_spec.global_scaler = 0;  // Auto-calculate
-cfg.motor_spec.irun = 0;           // Auto-calculate
-cfg.motor_spec.ihold = 0;          // Auto-calculate
+// IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated - DO NOT set manually
 driver.Initialize(cfg);
 
 // Configure encoder
 tmc5160::EncoderConfig enc_cfg{};
-enc_cfg.enc_sel_decimal = false; // Binary mode
+enc_cfg.prescaler_mode = tmc5160::EncoderPrescalerMode::BINARY; // Binary mode
 driver.encoder.Configure(enc_cfg);
 driver.encoder.SetResolution(200, 1000, false);
 driver.encoder.SetAllowedDeviation(10);
+
+// Get encoder position
+int32_t enc_position = 0;
+driver.encoder.GetPosition(enc_position);
 ```
 
 ## Next Steps

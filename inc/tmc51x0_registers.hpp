@@ -1,35 +1,36 @@
 /**
- * @file tmc5160_registers.hpp
- * @brief Register definitions and bitfield structures for TMC5160 stepper motor
- * driver
+ * @file tmc51x0_registers.hpp
+ * @brief Register definitions and bitfield structures for TMC51x0 stepper motor
+ * driver (TMC5130 & TMC5160)
  *
  * This file contains all register addresses, bit field definitions, and
- * register structures for the TMC5160 stepper motor driver IC. All register
- * definitions are based on the TMC5160 datasheet and cross-referenced with
- * archived driver implementations.
+ * register structures for the TMC51x0 stepper motor driver IC. All register
+ * definitions are based on the TMC51x0 datasheet and cross-referenced with
+ * archived driver implementations. Supports both TMC5130 and TMC5160 chips.
  *
- * @defgroup TMC5160_Registers Register Definitions
+ * @defgroup TMC51X0_Registers Register Definitions
  * @brief Register addresses and bitfield structures
  */
 
-#ifndef TMC5160_REGISTERS_HPP
-#define TMC5160_REGISTERS_HPP
+#ifndef TMC51X0_REGISTERS_HPP
+#define TMC51X0_REGISTERS_HPP
 
+#include "tmc51x0_register_defs.hpp"
 #include <cstdint>
-#include "tmc5160_register_defs.hpp"
 
-namespace tmc5160 {
+namespace tmc51x0 {
 
 /**
- * @brief TMC5160 register addresses
+ * @brief TMC51x0 register addresses
  *
- * All register addresses for the TMC5160 stepper motor driver.
+ * All register addresses for the TMC51x0 stepper motor driver.
  * Registers are organized by functional category.
- * 
+ *
  * @note These constants are now generated from the REGISTER_LIST X-MACRO
  *       to ensure consistency and allow compile-time checks.
  */
 namespace Registers {
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage) - Intentional: X-macro pattern for register definitions
 #define X(addr, name, access, category, desc) constexpr uint8_t name = addr;
 REGISTER_LIST(X)
 #undef X
@@ -942,6 +943,6 @@ union PWM_AUTO_Register {
   } bits;
 };
 
-} // namespace tmc5160
+} // namespace tmc51x0
 
-#endif // TMC5160_REGISTERS_HPP
+#endif // TMC51X0_REGISTERS_HPP

@@ -773,6 +773,61 @@ sg_config.stop_on_stall = false;  // CoolStep handles current, not stopping
 driver.diagnostics.ConfigureStallGuard(sg_config);
 ```
 
+### Automatic Tuning with Comprehensive Velocity Range Analysis
+
+The library provides an advanced automatic tuning function that prioritizes target velocity and provides comprehensive velocity range analysis:
+
+```cpp
+// Comprehensive tuning with velocity range analysis
+tmc5160::StallGuardTuningResult result;
+float target_velocity = 30000.0f;  // Most important - optimal SGT determined here
+float min_velocity = 10000.0f;    // Used to determine SGT range
+float max_velocity = 50000.0f;    // Used to determine SGT range
+
+bool success = driver.tuning.TuneStallGuard(
+    target_velocity, result,  // Target velocity (priority) and result struct
+    -10, 63,                  // SGT search range
+    3000.0f,                  // Acceleration
+    min_velocity, max_velocity, // Velocity range to test
+    tmc5160::Unit::Steps
+);
+
+if (success) {
+    // Use optimal SGT at target velocity
+    tmc5160::StallGuardConfig sg_config;
+    sg_config.threshold = result.optimal_sgt;
+    sg_config.min_velocity = result.min_velocity_success ? min_velocity : result.actual_min_velocity;
+    sg_config.max_velocity = result.max_velocity_success ? max_velocity : result.actual_max_velocity;
+    driver.diagnostics.ConfigureStallGuard(sg_config);
+    
+    ESP_LOGI(TAG, "Optimal SGT: %d (SG_RESULT=%u at target)", 
+             result.optimal_sgt, result.target_velocity_sg_result);
+    
+    if (!result.min_velocity_success) {
+        ESP_LOGW(TAG, "Requested min velocity %.2f not achievable. Use %.2f instead.",
+                 min_velocity, result.actual_min_velocity);
+    }
+    
+    if (!result.max_velocity_success) {
+        ESP_LOGW(TAG, "Requested max velocity %.2f not achievable. Use %.2f instead.",
+                 max_velocity, result.actual_max_velocity);
+    }
+}
+```
+
+**Key Features**:
+- **Target Velocity Priority**: Optimal SGT is determined at target velocity (most important parameter)
+- **Velocity Range Analysis**: Tests min/max velocities to determine usable SGT range
+- **Automatic Fallback**: If requested velocities don't work, finds actual achievable velocities
+- **Comprehensive Results**: Returns detailed information about SGT values and velocity compatibility
+
+**Result Structure (`StallGuardTuningResult`)**:
+- `optimal_sgt`: Best SGT value at target velocity (primary result)
+- `tuning_success`: Whether optimal SGT was found
+- `min_velocity_success` / `max_velocity_success`: Whether requested velocities work
+- `actual_min_velocity` / `actual_max_velocity`: Actual velocities that work (if requested ones don't)
+- `target_velocity_sg_result` / `min_velocity_sg_result` / `max_velocity_sg_result`: SG_RESULT values at each velocity
+
 ### Tuning Guide
 
 #### Step 1: Initial Setup
@@ -781,7 +836,22 @@ driver.diagnostics.ConfigureStallGuard(sg_config);
 2. **Set Velocity Thresholds**: Set `min_velocity` to match your typical operating speed
 3. **Start with Default**: Set `threshold = 0` (starting value)
 
-#### Step 2: Interactive Tuning
+#### Step 2: Automatic Tuning (Recommended)
+
+Use the comprehensive automatic tuning function for best results:
+
+```cpp
+tmc5160::StallGuardTuningResult result;
+bool success = driver.tuning.TuneStallGuard(
+    target_velocity, result,  // Your target operating velocity
+    -10, 63,                  // SGT search range
+    3000.0f,                  // Acceleration
+    min_velocity, max_velocity, // Your velocity range
+    tmc5160::Unit::Steps
+);
+```
+
+#### Step 3: Interactive Tuning (Manual Alternative)
 
 ```cpp
 // Operate motor at normal velocity and monitor SG_RESULT
@@ -819,12 +889,16 @@ driver.diagnostics.ConfigureStallGuard(sg_config);
 
 ### Best Practices
 
-1. **Tune First**: Always tune StallGuard2 before using CoolStep
-2. **Test Under Load**: Test under actual operating conditions
-3. **Monitor SG_RESULT**: Use `GetStallGuard()` to understand your motor's load profile
-4. **Match Velocity Range**: Set velocity thresholds to your typical operating speeds
-5. **Use Filter Appropriately**: Enable for CoolStep, disable for sensorless homing
-6. **Verify SpreadCycle**: Always ensure SpreadCycle is enabled before configuring
+1. **Use Automatic Tuning**: Use `TuneStallGuard()` with `StallGuardTuningResult` for comprehensive analysis
+2. **Prioritize Target Velocity**: Set target velocity to your most common operating speed - this gets the best SGT value
+3. **Specify Velocity Range**: Provide min/max velocities to determine the usable SGT range
+4. **Check Results**: Always check `actual_min_velocity` and `actual_max_velocity` if requested velocities don't work
+5. **Tune First**: Always tune StallGuard2 before using CoolStep
+6. **Test Under Load**: Test under actual operating conditions
+7. **Monitor SG_RESULT**: Use `GetStallGuard()` to understand your motor's load profile
+8. **Match Velocity Range**: Set velocity thresholds to your typical operating speeds
+9. **Use Filter Appropriately**: Enable for CoolStep, disable for sensorless homing
+10. **Verify SpreadCycle**: Always ensure SpreadCycle is enabled before configuring
 
 ### Troubleshooting
 
@@ -1463,7 +1537,7 @@ TOFF = (t_OFF * f_CLK - 12) / 32
 - `MRES_128`: 128 microsteps
 - `MRES_64`: 64 microsteps
 - `MRES_32`: 32 microsteps
-- `MRES_16`: 16 microsteps (typical, balanced)
+- `MRES_256`: 256 microsteps (typical, balanced)
 - `MRES_8`: 8 microsteps
 - `MRES_4`: 4 microsteps
 - `MRES_2`: 2 microsteps
@@ -1498,8 +1572,8 @@ void configureSpreadCycle() {
     // Passive fast decay (disabled)
     chopper.tpfd = 0;
     
-    // Microstep resolution (16 microsteps)
-    chopper.mres = static_cast<uint8_t>(tmc5160::MicrostepResolution::MRES_16);
+    // Microstep resolution (256 microsteps)
+    chopper.mres = tmc5160::MicrostepResolution::MRES_256;
     
     // Enable interpolation (recommended)
     chopper.intpol = true;
@@ -1517,7 +1591,7 @@ tmc5160::ChopperConfig chopper(5);  // toff=5, other defaults
 driver.motorControl.ConfigureChopper(chopper);
 
 // Or with custom values
-tmc5160::ChopperConfig chopper(5, 2, 4, 0, 4);  // toff, tbl, hstrt, hend, mres
+tmc5160::ChopperConfig chopper(5, 2, 4, 0, tmc5160::MicrostepResolution::MRES_256);  // toff, tbl, hstrt, hend, mres
 driver.motorControl.ConfigureChopper(chopper);
 ```
 
@@ -1532,7 +1606,7 @@ chopper.tfd = 5;              // Fast decay time (similar to toff)
 chopper.hend = 4;             // Sine wave offset (positive offset for zero crossing)
 chopper.disfdcc = false;      // Enable comparator termination
 chopper.tbl = static_cast<uint8_t>(tmc5160::ChopperBlankTime::TBL_36CLK);
-chopper.mres = static_cast<uint8_t>(tmc5160::MicrostepResolution::MRES_16);
+chopper.mres = static_cast<uint8_t>(tmc5160::MicrostepResolution::MRES_256);
 chopper.intpol = true;
 driver.motorControl.ConfigureChopper(chopper);
 
@@ -1551,7 +1625,7 @@ chopper.toff = 2;              // Shorter off time (higher frequency)
 chopper.tbl = static_cast<uint8_t>(tmc5160::ChopperBlankTime::TBL_24CLK);  // Shorter blank time
 chopper.hstrt = 4;
 chopper.hend = 0;
-chopper.mres = static_cast<uint8_t>(tmc5160::MicrostepResolution::MRES_16);
+chopper.mres = static_cast<uint8_t>(tmc5160::MicrostepResolution::MRES_256);
 chopper.intpol = true;
 driver.motorControl.ConfigureChopper(chopper);
 ```
@@ -1674,17 +1748,20 @@ Freewheeling controls motor behavior when `ihold=0` (no hold current).
 
 ```cpp
 void configureFreewheeling() {
-    // Normal operation (coast when ihold=0)
-    driver.motorControl.SetFreewheelingMode(tmc5160::PWMFreewheel::NORMAL);
+    // Configure freewheeling via StealthChopConfig
+    tmc5160::StealthChopConfig stealth{};
+    stealth.freewheel = tmc5160::PWMFreewheel::NORMAL;  // Normal operation (coast when ihold=0)
+    driver.motorControl.ConfigureStealthChop(stealth);
     
-    // Freewheeling enabled (low resistance)
-    driver.motorControl.SetFreewheelingMode(tmc5160::PWMFreewheel::ENABLED);
+    // Or change freewheeling mode at runtime
+    stealth.freewheel = tmc5160::PWMFreewheel::ENABLED;  // Freewheeling enabled (low resistance)
+    driver.motorControl.ConfigureStealthChop(stealth);
     
-    // Coil shorted using low-side drivers
-    driver.motorControl.SetFreewheelingMode(tmc5160::PWMFreewheel::SHORT_LS);
+    stealth.freewheel = tmc5160::PWMFreewheel::SHORT_LS;  // Coil shorted using low-side drivers
+    driver.motorControl.ConfigureStealthChop(stealth);
     
-    // Coil shorted using high-side drivers
-    driver.motorControl.SetFreewheelingMode(tmc5160::PWMFreewheel::SHORT_HS);
+    stealth.freewheel = tmc5160::PWMFreewheel::SHORT_HS;  // Coil shorted using high-side drivers
+    driver.motorControl.ConfigureStealthChop(stealth);
 }
 ```
 

@@ -29,7 +29,7 @@ This guide helps you diagnose and resolve common issues when using the TMC5160 d
 **Solutions:**
 1. Verify `driver.motorControl.Enable()` is called
 2. Check enable pin wiring and active level configuration
-3. Increase motor current: `cfg.motor.irun = 20` (minimum 16 recommended)
+3. Increase motor current: Set `cfg.motor_spec.rated_current_ma` to appropriate value (e.g., 2000 for 2A). IRUN is automatically calculated.
 4. Verify chopper is enabled: `cfg.chopper.toff > 0`
 
 ### Error: "Communication timeout"
@@ -64,7 +64,7 @@ This guide helps you diagnose and resolve common issues when using the TMC5160 d
 - [ ] Verify power supply voltage is correct (3.3V for VDD, 8-60V for motor)
 - [ ] Check all connections are secure
 - [ ] Verify SPI CS line is correct and active low
-- [ ] Check UART slave address matches configuration
+- [ ] Check UART node address matches configuration
 - [ ] Use oscilloscope/logic analyzer to verify bus activity
 - [ ] Verify motor supply is connected (driver needs motor supply even if motor not connected)
 
@@ -182,8 +182,7 @@ if (status != DriverStatus::OK) {
 
 ### Q: What is the recommended motor current setting?
 
-**A:** For best performance, set `irun` between 16 and 31 (50% to 100% of global scaler). Set `ihold` to about 70% of
-`irun` or lower.
+**A:** Set `motor_spec.rated_current_ma` to your motor's rated current (e.g., 2000 for 2A). The driver automatically calculates IRUN and IHOLD. IRUN will be between 16-31 for optimal performance, and IHOLD will be set to approximately 30% of run current (or as specified in `motor_spec.hold_current_ma`).
 
 ### Q: How do I choose between stealthChop and spreadCycle?
 
@@ -193,9 +192,10 @@ change speeds to switch automatically.
 ### Q: What microstep resolution should I use?
 
 **A:** Common values:
-- `mres = 4`: 16 microsteps (good balance)
-- `mres = 3`: 32 microsteps (smoother, lower torque)
-- `mres = 8`: Full step (maximum torque)
+- `mres = MRES_16`: 16 microsteps (good balance)
+- `mres = MRES_32`: 32 microsteps (smoother, lower torque)
+- `mres = MRES_256` : 256 microsteps (smoothest motion, lowest torque)
+- `mres = FULLSTEP`: Full step (maximum torque)
 
 ### Q: How do I tune StallGuard2?
 

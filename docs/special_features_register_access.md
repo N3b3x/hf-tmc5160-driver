@@ -86,7 +86,7 @@ The TMC5160 registers are divided into functional groups. Each register has spec
 | `0x36` | `XLATCH` | **R** | Position latched on switch/stall event. |
 
 **Usage Recommendations:**
-- **Homing**: Use `driver.diagnostics.PerformSensorlessHoming()` or `PerformSwitchHoming()`.
+- **Homing**: Use `driver.homing.PerformSensorlessHoming()` or `driver.homing.PerformSwitchHoming()`.
 - **Endstops**: Configure with `driver.rampControl.ConfigureReferenceSwitch()`. Use `ReadInputStatus` to verify wiring logic (NO/NC).
 
 ### 1.5 Encoder Registers (0x38...0x3C)
@@ -152,7 +152,7 @@ if (!driver.diagnostics.VerifySetup()) {
 ### 2.4 Sensorless Homing
 1. Configure `StallGuard` (`COOLCONF`) with `SGT` (Threshold).
 2. Set `TCOOLTHRS` low enough to cover homing speed.
-3. Call `driver.diagnostics.PerformSensorlessHoming()`.
+3. Call `driver.homing.PerformSensorlessHoming()` (uses existing SGT threshold from motor config).
    - This internally sets `SW_MODE.sg_stop = 1`.
    - Moves motor until stall detected.
    - Stops and returns position.

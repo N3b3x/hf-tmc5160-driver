@@ -220,6 +220,6 @@ These namespaces contain:
 ## See Also
 
 - [esp32_tmc5160_test_config.hpp](../../main/esp32_tmc5160_test_config.hpp) - Full configuration definitions
-- [Sinusoidal Example](sinusoidal.md) - Example using motor selection
+- [Internal Ramp Sinusoidal Example](internal_ramp_sinusoidal.md) - Example using motor selection
 - [Bounds Finding Example](bounds_finding_sinuous_motion.md) - Example using motor selection
 

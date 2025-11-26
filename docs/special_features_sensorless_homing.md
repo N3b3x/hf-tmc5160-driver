@@ -54,7 +54,8 @@ Sensorless homing uses the StallGuard2 feature to detect when the motor stalls. 
 #include "tmc5160.hpp"
 
 bool homeMotor() {
-    // Configure StallGuard2 for homing
+    // Configure StallGuard2 for homing (SGT threshold should be set once per motor)
+    // This should be done during Initialize() or via ConfigureStallGuard() before homing
     tmc5160::StallGuardConfig sg_config{};
     sg_config.threshold = -10;        // Stall threshold (tune for your motor)
     sg_config.enable_filter = true;     // Enable filter for stability
@@ -64,12 +65,13 @@ bool homeMotor() {
     }
     
     // Perform homing in negative direction
+    // Note: Uses existing SGT threshold from motor configuration
+    // Automatically caches and restores settings (StealthChop, SW_MODE, ramp settings)
     int32_t home_position = 0;
     float search_speed = 500.0f;  // steps/s
     
-    if (!driver.diagnostics.PerformSensorlessHoming(
+    if (!driver.homing.PerformSensorlessHoming(
             false,  // false = negative direction
-            -10,    // stall threshold
             search_speed,
             home_position)) {
         return false;
@@ -82,6 +84,20 @@ bool homeMotor() {
     return true;
 }
 ```
+
+## Homing Methods
+
+Homing methods are now in the `homing` subsystem and automatically cache/restore settings:
+
+- **`driver.homing.PerformSensorlessHoming()`**: Uses existing StallGuard configuration (SGT threshold from motor config)
+- **`driver.homing.PerformSwitchHoming()`**: Uses reference switches for homing
+
+Both methods automatically:
+- Cache current settings (StealthChop, SW_MODE, ramp settings)
+- Disable StealthChop if enabled (StallGuard requires SpreadCycle)
+- Restore cached settings after homing completes
+
+**Note**: StealthChop is automatically disabled during sensorless homing (StallGuard requires SpreadCycle mode) and restored afterward.
 
 ## StallGuard2 Configuration
 
@@ -150,13 +166,13 @@ public:
         }
         
         // 2. Enable StallGuard stop in SW_MODE
-        // (PerformSensorlessHoming does this automatically)
+        // (PerformSensorlessHoming automatically caches and restores settings)
         
         // 3. Home in negative direction
         int32_t home_pos = 0;
         float search_speed = 500.0f;  // steps/s
         
-        if (!driver_.diagnostics.PerformSensorlessHoming(
+        if (!driver_.homing.PerformSensorlessHoming(
                 false,  // negative direction
                 stall_threshold_,
                 search_speed,

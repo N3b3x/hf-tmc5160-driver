@@ -1,22 +1,22 @@
 /**
- * @file tmc5160_units.hpp
- * @brief Unit conversion functions for TMC5160 driver
+ * @file tmc51x0_units.hpp
+ * @brief Unit conversion functions for TMC51x0 driver (TMC5130 & TMC5160)
  *
  * This file provides free functions for converting between physical units
  * (millimeters, degrees, RPM) and internal driver units (steps, steps/s).
- * All functions are in the tmc5160 namespace and follow PascalCase naming.
+ * All functions are in the tmc51x0 namespace and follow PascalCase naming.
  *
- * @defgroup TMC5160_Units Unit Conversions
+ * @defgroup TMC51X0_Units Unit Conversions
  * @brief Functions for converting between physical and driver units
  */
 
-#ifndef TMC5160_UNITS_HPP
-#define TMC5160_UNITS_HPP
+#ifndef TMC51X0_UNITS_HPP
+#define TMC51X0_UNITS_HPP
 
 #include <cmath>
 #include <cstdint>
 
-namespace tmc5160 {
+namespace tmc51x0 {
 
 /**
  * @brief Convert steps to millimeters
@@ -166,8 +166,8 @@ constexpr int32_t BeltTeethToSteps(uint32_t teeth, float steps_per_rev, uint16_t
   if (belt_pulley_teeth == 0 || steps_per_rev == 0.0F) {
     return 0;
   }
-  return static_cast<int32_t>(std::round((static_cast<float>(teeth) / static_cast<float>(belt_pulley_teeth)) *
-                                         steps_per_rev));
+  return static_cast<int32_t>(
+      std::round((static_cast<float>(teeth) / static_cast<float>(belt_pulley_teeth)) * steps_per_rev));
 }
 
 /**
@@ -184,6 +184,6 @@ constexpr float StepsToBeltTeeth(int32_t steps, float steps_per_rev, uint16_t be
   return (static_cast<float>(steps) / steps_per_rev) * static_cast<float>(belt_pulley_teeth);
 }
 
-} // namespace tmc5160
+} // namespace tmc51x0
 
-#endif // TMC5160_UNITS_HPP
+#endif // TMC51X0_UNITS_HPP

@@ -25,15 +25,17 @@ tmc5160::TMC5160 driver(spi);
 int main() {
     // Initialize driver
     tmc5160::DriverConfig cfg{};
-    cfg.motor.irun = 20;
-    cfg.motor.ihold = 10;
+    // Motor current is automatically calculated from motor_spec
+    cfg.motor_spec.rated_current_ma = 1500;
+    cfg.motor_spec.sense_resistor_mohm = 50;  // Required for calculation
+    cfg.motor_spec.supply_voltage_mv = 24000;  // Required for calculation
     driver.Initialize(cfg);
     
     // Configure positioning mode
     driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(1000);  // Move 1000 steps
-    driver.rampControl.SetMaxSpeed(1000.0f);     // 1000 steps/s
-    driver.rampControl.SetAcceleration(500.0f);   // 500 steps/s²
+    driver.rampControl.SetTargetPosition(1000.0f, tmc5160::Unit::Steps);  // Move 1000 steps
+    driver.rampControl.SetMaxSpeed(1000.0f, tmc5160::Unit::Steps);     // 1000 steps/s
+    driver.rampControl.SetAcceleration(500.0f, tmc5160::Unit::Steps);   // 500 steps/s²
     
     // Enable motor
     driver.motorControl.Enable();
@@ -67,13 +69,16 @@ tmc5160::TMC5160 driver(spi);
 
 int main() {
     tmc5160::DriverConfig cfg{};
-    cfg.motor.irun = 20;
+    // Motor current is automatically calculated from motor_spec
+    cfg.motor_spec.rated_current_ma = 1500;
+    cfg.motor_spec.sense_resistor_mohm = 50;
+    cfg.motor_spec.supply_voltage_mv = 24000;
     driver.Initialize(cfg);
     
     // Set velocity mode
     driver.rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS);
-    driver.rampControl.SetMaxSpeed(500.0f);  // 500 steps/s forward
-    driver.rampControl.SetAcceleration(200.0f);
+    driver.rampControl.SetMaxSpeed(500.0f, tmc5160::Unit::Steps);  // 500 steps/s forward
+    driver.rampControl.SetAcceleration(200.0f, tmc5160::Unit::Steps);
     
     driver.motorControl.Enable();
     
@@ -96,9 +101,11 @@ tmc5160::TMC5160 driver(spi);
 
 int main() {
     tmc5160::DriverConfig cfg{};
-    cfg.motor.irun = 20;
-    cfg.motor.ihold = 10;
-    cfg.chopper.mres = 4;  // 16 microsteps for smooth operation
+    // Motor current is automatically calculated from motor_spec
+    cfg.motor_spec.rated_current_ma = 1500;
+    cfg.motor_spec.sense_resistor_mohm = 50;
+    cfg.motor_spec.supply_voltage_mv = 24000;
+    cfg.chopper.mres = tmc5160::MicrostepResolution::MRES_256;  // 256 microsteps for smooth operation
     cfg.stealthchop.pwm_autoscale = true;
     cfg.stealthchop.pwm_autograd = true;
     driver.Initialize(cfg);
@@ -106,11 +113,11 @@ int main() {
     // Configure stealthChop thresholds
     // Below 100 steps/s: stealthChop mode (silent)
     // Above 100 steps/s: spreadCycle mode (more torque)
-    driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f);
+    driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f, tmc5160::Unit::Steps);
     
     driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(1000);
-    driver.rampControl.SetMaxSpeed(50.0f);  // Low speed = stealthChop
+    driver.rampControl.SetTargetPosition(1000.0f, tmc5160::Unit::Steps);
+    driver.rampControl.SetMaxSpeed(50.0f, tmc5160::Unit::Steps);  // Low speed = stealthChop
     
     driver.motorControl.Enable();
     
@@ -134,12 +141,15 @@ tmc5160::TMC5160 driver(spi);
 
 int main() {
     tmc5160::DriverConfig cfg{};
-    cfg.motor.irun = 20;
+    // Motor current is automatically calculated from motor_spec
+    cfg.motor_spec.rated_current_ma = 1500;
+    cfg.motor_spec.sense_resistor_mohm = 50;
+    cfg.motor_spec.supply_voltage_mv = 24000;
     driver.Initialize(cfg);
     
     // Configure encoder
     tmc5160::EncoderConfig enc_cfg{};
-    enc_cfg.enc_sel_decimal = false; // Binary mode
+    enc_cfg.prescaler_mode = tmc5160::EncoderPrescalerMode::BINARY; // Binary mode
     driver.encoder.Configure(enc_cfg);
     
     // Set encoder resolution: 200 steps/rev motor, 1000 pulses/rev encoder
@@ -148,8 +158,8 @@ int main() {
     
     // Move to position
     driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(1000);
-    driver.rampControl.SetMaxSpeed(1000.0f);
+    driver.rampControl.SetTargetPosition(1000.0f, tmc5160::Unit::Steps);
+    driver.rampControl.SetMaxSpeed(1000.0f, tmc5160::Unit::Steps);
     driver.motorControl.Enable();
     
     // Monitor encoder deviation
@@ -176,7 +186,10 @@ tmc5160::TMC5160 driver(spi);
 
 int main() {
     tmc5160::DriverConfig cfg{};
-    cfg.motor.irun = 20;
+    // Motor current is automatically calculated from motor_spec
+    cfg.motor_spec.rated_current_ma = 1500;
+    cfg.motor_spec.sense_resistor_mohm = 50;
+    cfg.motor_spec.supply_voltage_mv = 24000;
     driver.Initialize(cfg);
     
     // Configure StallGuard2
@@ -187,16 +200,18 @@ int main() {
     driver.diagnostics.ConfigureStallGuard(sg_cfg);
     
     driver.rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS);
-    driver.rampControl.SetMaxSpeed(500.0f);
+    driver.rampControl.SetMaxSpeed(500.0f, tmc5160::Unit::Steps);
     driver.motorControl.Enable();
     
     // Monitor StallGuard value
     while (true) {
-        uint16_t sg_value = driver.diagnostics.GetStallGuard();
-        if (sg_value < 100) {  // Threshold depends on motor
-            // Stall detected - stop motor
-            driver.rampControl.Stop();
-            break;
+        uint16_t sg_value = 0;
+        if (driver.diagnostics.GetStallGuard(sg_value)) {
+            if (sg_value < 100) {  // Threshold depends on motor
+                // Stall detected - stop motor
+                driver.rampControl.Stop();
+                break;
+            }
         }
     }
     
@@ -243,9 +258,11 @@ tmc5160::TMC5160 driver(spi);
 
 // Initialize driver
 tmc5160::DriverConfig cfg{};
-cfg.motor.irun = 20;
-cfg.motor.ihold = 10;
-cfg.chopper.mres = 5; // 32 microsteps
+// Motor current is automatically calculated from motor_spec
+cfg.motor_spec.rated_current_ma = 1500;
+cfg.motor_spec.sense_resistor_mohm = 50;
+cfg.motor_spec.supply_voltage_mv = 24000;
+cfg.chopper.mres = tmc5160::MicrostepResolution::MRES_256; // 256 microsteps
 driver.Initialize(cfg);
 
 // Create fatigue test motion controller

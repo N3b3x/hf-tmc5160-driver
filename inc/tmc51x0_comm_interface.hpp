@@ -1,38 +1,38 @@
 /**
- * @file tmc5160_comm_interface.hpp
- * @brief Communication interfaces for TMC5160 stepper motor driver using SPI
+ * @file tmc51x0_comm_interface.hpp
+ * @brief Communication interfaces for TMC51x0 stepper motor driver (TMC5130 & TMC5160) using SPI
  * and UART
  *
- * This file provides comprehensive communication interfaces for the TMC5160
+ * This file provides comprehensive communication interfaces for the TMC51x0
  * motor driver, supporting both SPI and UART protocols with register read/write
  * operations. It includes GPIO control interfaces and board-agnostic pin
- * management for different hardware implementations.
+ * management for different hardware implementations. Supports both TMC5130 and TMC5160 chips.
  *
  * ## Compile-Time Configuration
  *
- * **TMC5160_DISABLE_DEBUG_LOGGING**: Define this macro to completely disable
- * all debug logging throughout the TMC5160 library. This removes all logging
+ * **TMC51X0_DISABLE_DEBUG_LOGGING**: Define this macro to completely disable
+ * all debug logging throughout the TMC51x0 library. This removes all logging
  * code from the binary at compile time, saving code size and improving
  * performance.
  *
  * Example usage:
  * ```cpp
- * #define TMC5160_DISABLE_DEBUG_LOGGING
- * #include "tmc5160_comm_interface.hpp"
+ * #define TMC51X0_DISABLE_DEBUG_LOGGING
+ * #include "tmc51x0_comm_interface.hpp"
  * ```
  *
- * @defgroup TMC5160_CommInterface Communication Interfaces
+ * @defgroup TMC51X0_CommInterface Communication Interfaces
  * @brief Core communication interface classes and protocols
  *
- * @defgroup TMC5160_GPIOControl GPIO Control Interface
+ * @defgroup TMC51X0_GPIOControl GPIO Control Interface
  * @brief GPIO pin control and signal management
  *
- * @defgroup TMC5160_CommTypes Type Definitions
+ * @defgroup TMC51X0_CommTypes Type Definitions
  * @brief Enums and type definitions for communication interfaces
  *
  * ## SPI Protocol
  *
- * TMC5160 uses 40-bit SPI datagrams per datasheet section 4.1:
+ * TMC51x0 uses 40-bit SPI datagrams per datasheet section 4.1:
  * - Datagram structure: 8-bit address + 32-bit data = 40 bits (5 bytes)
  * - Bit positions: bit 39 (MSB, transmitted first) ... bit 0 (LSB, transmitted last)
  * - Bit 39: W (WRITE_notREAD bit) - 0 for read, 1 for write
@@ -65,7 +65,7 @@
  *
  * ## UART Protocol
  *
- * TMC5160 uses UART single wire interface per datasheet section 5.1.
+ * TMC51x0 uses UART single wire interface per datasheet section 5.1.
  * Each byte is transmitted LSB...MSB, highest byte transmitted first.
  *
  * Write Access Datagram (64 bits = 8 bytes total):
@@ -105,38 +105,38 @@
  * - Multi-node systems: Set SENDDELAY to min. 2 for all nodes
  */
 
-#ifndef TMC5160_COMM_INTERFACE_HPP
-#define TMC5160_COMM_INTERFACE_HPP
+#ifndef TMC51X0_COMM_INTERFACE_HPP
+#define TMC51X0_COMM_INTERFACE_HPP
 
 #include <algorithm>
 #include <array>
 #include <cstdarg>
 #include <cstdint>
 #include <cstdio>
-#include <cstdlib>
-#include <cstring>
 #include <string>
 #include <vector>
 
-namespace tmc5160 {
+namespace tmc51x0 {
 
 /**
- * @brief Compile-time debug logging control for TMC5160 library
+ * @brief Compile-time debug logging control for TMC51x0 library
  *
- * Define TMC5160_DISABLE_DEBUG_LOGGING before including this header to
+ * Define TMC51X0_DISABLE_DEBUG_LOGGING before including this header to
  * completely disable all debug logging. When disabled, all logDebug() calls are
  * optimized out at compile time, including argument evaluation.
  */
-#ifndef TMC5160_DISABLE_DEBUG_LOGGING
+#ifndef TMC51X0_DISABLE_DEBUG_LOGGING
 // Debug logging enabled - use actual function call
-#define TMC5160_LOG_DEBUG(comm_obj, level, tag, ...) (comm_obj).LogDebug(level, tag, __VA_ARGS__)
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage) - Intentional: compile-time logging control
+#define TMC51X0_LOG_DEBUG(comm_obj, level, tag, ...) (comm_obj).LogDebug(level, tag, __VA_ARGS__)
 #else
 // Debug logging disabled - optimize out completely (arguments not evaluated)
-#define TMC5160_LOG_DEBUG(comm_obj, level, tag, ...) ((void)0)
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage) - Intentional: compile-time logging control
+#define TMC51X0_LOG_DEBUG(comm_obj, level, tag, ...) ((void)0)
 #endif
 
 /**
- * @brief Supported physical communication modes for TMC5160
+ * @brief Supported physical communication modes for TMC51x0
  */
 enum class CommMode : uint8_t {
   SPI, ///< SPI (Serial Peripheral Interface) mode - 4-wire synchronous
@@ -146,7 +146,7 @@ enum class CommMode : uint8_t {
 };
 
 /**
- * @brief TMC5160 control pin identifiers with board-agnostic naming
+ * @brief TMC51x0 control pin identifiers with board-agnostic naming
  *
  * These pin identifiers abstract the physical pin assignments to provide
  * a consistent interface regardless of board implementation.
@@ -171,7 +171,7 @@ enum class CommMode : uint8_t {
  * @note Some pins have multiple functions depending on mode. See datasheet
  *       section 2.2 for complete pin function descriptions.
  */
-enum class TMC5160CtrlPin : uint8_t {
+enum class TMC51x0CtrlPin : uint8_t {
   // Basic control pins (always available)
   EN,   ///< Enable pin (DRV_ENN, pin 28) - Active HIGH disables power stage
   DIR,  ///< Direction pin (REFR_DIR, pin 18) - DIR input when SD_MODE=1, Right reference when SD_MODE=0
@@ -223,8 +223,8 @@ enum class GpioSignal : uint8_t {
  * @brief Pin active level configuration structure
  *
  * This structure defines the physical GPIO level (HIGH or LOW) that corresponds
- * to the ACTIVE state for each TMC5160 control pin. Default values are based
- * on the TMC5160 datasheet specifications.
+ * to the ACTIVE state for each TMC51x0 control pin. Default values are based
+ * on the TMC51x0 datasheet specifications.
  *
  * Users can create an instance of this struct, modify specific pin active levels
  * if their board has inverters, NOT gates, or other logic that changes pin
@@ -233,7 +233,7 @@ enum class GpioSignal : uint8_t {
  * Example usage:
  * @code
  * // Use defaults (datasheet-compliant)
- * tmc5160::PinActiveLevels active_levels; // Uses all defaults
+ * tmc51x0::PinActiveLevels active_levels; // Uses all defaults
  *
  * // Override for custom board with inverter on EN pin
  * tmc5160::PinActiveLevels active_levels;
@@ -244,87 +244,137 @@ enum class GpioSignal : uint8_t {
  * @endcode
  */
 struct PinActiveLevels {
-  // Basic control pins (per TMC5160 datasheet)
-  bool en{false};      ///< EN pin (DRV_ENN, pin 28): LOW=enable (active LOW)
-  bool dir{true};      ///< DIR pin (REFR_DIR, pin 18): HIGH=active (active HIGH)
-  bool step{true};     ///< STEP pin (REFL_STEP, pin 17): HIGH=active (active HIGH)
+  // Basic control pins (per TMC51x0 datasheet)
+  bool en{false};  ///< EN pin (DRV_ENN, pin 28): LOW=enable (active LOW)
+  bool dir{true};  ///< DIR pin (REFR_DIR, pin 18): HIGH=active (active HIGH)
+  bool step{true}; ///< STEP pin (REFL_STEP, pin 17): HIGH=active (active HIGH)
 
   // Reference switch pins (when SD_MODE=0)
   bool ref_left{false};  ///< REFL_STEP (pin 17): LOW=active (typically active LOW)
   bool ref_right{false}; ///< REFR_DIR (pin 18): LOW=active (typically active LOW)
 
-  // Diagnostic pins (read-only outputs from TMC5160 - not typically configured)
-  bool diag0{true};  ///< DIAG0 (pin 26): Read-only output (default HIGH, but not used for control)
-  bool diag1{true};  ///< DIAG1 (pin 27): Read-only output (default HIGH, but not used for control)
+  // Diagnostic pins (read-only outputs from TMC51x0 - not typically configured)
+  bool diag0{true}; ///< DIAG0 (pin 26): Read-only output (default HIGH, but not used for control)
+  bool diag1{true}; ///< DIAG1 (pin 27): Read-only output (default HIGH, but not used for control)
 
   // Encoder pins (when SD_MODE=0, read-only inputs)
-  bool enca{true};  ///< ENCA (pin 24): Read-only input (default HIGH, but not used for control)
-  bool encb{true};  ///< ENCB (pin 23): Read-only input (default HIGH, but not used for control)
-  bool encn{true};  ///< ENCN (pin 25): Read-only input (default HIGH, but not used for control)
+  bool enca{true}; ///< ENCA (pin 24): Read-only input (default HIGH, but not used for control)
+  bool encb{true}; ///< ENCB (pin 23): Read-only input (default HIGH, but not used for control)
+  bool encn{true}; ///< ENCN (pin 25): Read-only input (default HIGH, but not used for control)
 
   // DC Step pins (when SD_MODE=1, SPI_MODE=1)
-  bool dcen{true};  ///< DCEN (pin 23): HIGH=active (active HIGH)
-  bool dcin{true};  ///< DCIN (pin 24): HIGH=active (active HIGH)
-  bool dco{true};   ///< DCO (pin 25): Read-only output (default HIGH, but not used for control)
+  bool dcen{true}; ///< DCEN (pin 23): HIGH=active (active HIGH)
+  bool dcin{true}; ///< DCIN (pin 24): HIGH=active (active HIGH)
+  bool dco{true};  ///< DCO (pin 25): Read-only output (default HIGH, but not used for control)
 
   // Clock pin
   bool clk{true}; ///< CLK (pin 12): HIGH=active (active HIGH, if used as output)
 
   // Mode configuration pins (if available as control pins)
-  bool spi_mode{true};  ///< SPI_MODE (pin 22): HIGH=SPI mode (active HIGH)
-  bool sd_mode{true};   ///< SD_MODE (pin 21): HIGH=External Step/Dir (active HIGH)
+  bool spi_mode{true}; ///< SPI_MODE (pin 22): HIGH=SPI mode (active HIGH)
+  bool sd_mode{true};  ///< SD_MODE (pin 21): HIGH=External Step/Dir (active HIGH)
 
   /**
    * @brief Get active level for a specific pin
-   * @param pin The TMC5160 control pin
+   * @param pin The TMC51x0 control pin
    * @return The active level (true=HIGH, false=LOW) for the pin
    */
-  [[nodiscard]] bool GetActiveLevel(TMC5160CtrlPin pin) const noexcept {
+  [[nodiscard]] bool GetActiveLevel(TMC51x0CtrlPin pin) const noexcept {
     switch (pin) {
-      case TMC5160CtrlPin::EN:        return en;
-      case TMC5160CtrlPin::DIR:       return dir;
-      case TMC5160CtrlPin::STEP:      return step;
-      case TMC5160CtrlPin::REFL_STEP: return ref_left;
-      case TMC5160CtrlPin::REFR_DIR:  return ref_right;
-      case TMC5160CtrlPin::DIAG0:     return diag0;
-      case TMC5160CtrlPin::DIAG1:     return diag1;
-      case TMC5160CtrlPin::ENCA:      return enca;
-      case TMC5160CtrlPin::ENCB:      return encb;
-      case TMC5160CtrlPin::ENCN:      return encn;
-      case TMC5160CtrlPin::DCEN:      return dcen;
-      case TMC5160CtrlPin::DCIN:      return dcin;
-      case TMC5160CtrlPin::DCO:       return dco;
-      case TMC5160CtrlPin::CLK:       return clk;
-      case TMC5160CtrlPin::SPI_MODE:  return spi_mode;
-      case TMC5160CtrlPin::SD_MODE:   return sd_mode;
-      default:                        return true; // Default to HIGH
+    case TMC51x0CtrlPin::EN:
+      return en;
+    case TMC51x0CtrlPin::DIR:
+      return dir;
+    case TMC51x0CtrlPin::STEP:
+      return step;
+    case TMC51x0CtrlPin::REFL_STEP:
+      return ref_left;
+    case TMC51x0CtrlPin::REFR_DIR:
+      return ref_right;
+    case TMC51x0CtrlPin::DIAG0:
+      return diag0;
+    case TMC51x0CtrlPin::DIAG1:
+      return diag1;
+    case TMC51x0CtrlPin::ENCA:
+      return enca;
+    case TMC51x0CtrlPin::ENCB:
+      return encb;
+    case TMC51x0CtrlPin::ENCN:
+      return encn;
+    case TMC51x0CtrlPin::DCEN:
+      return dcen;
+    case TMC51x0CtrlPin::DCIN:
+      return dcin;
+    case TMC51x0CtrlPin::DCO:
+      return dco;
+    case TMC51x0CtrlPin::CLK:
+      return clk;
+    case TMC51x0CtrlPin::SPI_MODE:
+      return spi_mode;
+    case TMC51x0CtrlPin::SD_MODE:
+      return sd_mode;
+    default:
+      return true; // Default to HIGH
     }
   }
 
   /**
    * @brief Set active level for a specific pin
-   * @param pin The TMC5160 control pin
+   * @param pin The TMC51x0 control pin
    * @param active_level The active level (true=HIGH, false=LOW)
    */
-  void SetActiveLevel(TMC5160CtrlPin pin, bool active_level) noexcept {
+  void SetActiveLevel(TMC51x0CtrlPin pin, bool active_level) noexcept {
     switch (pin) {
-      case TMC5160CtrlPin::EN:        en = active_level; break;
-      case TMC5160CtrlPin::DIR:       dir = active_level; break;
-      case TMC5160CtrlPin::STEP:      step = active_level; break;
-      case TMC5160CtrlPin::REFL_STEP: ref_left = active_level; break;
-      case TMC5160CtrlPin::REFR_DIR:  ref_right = active_level; break;
-      case TMC5160CtrlPin::DIAG0:     diag0 = active_level; break;
-      case TMC5160CtrlPin::DIAG1:     diag1 = active_level; break;
-      case TMC5160CtrlPin::ENCA:      enca = active_level; break;
-      case TMC5160CtrlPin::ENCB:      encb = active_level; break;
-      case TMC5160CtrlPin::ENCN:      encn = active_level; break;
-      case TMC5160CtrlPin::DCEN:      dcen = active_level; break;
-      case TMC5160CtrlPin::DCIN:      dcin = active_level; break;
-      case TMC5160CtrlPin::DCO:       dco = active_level; break;
-      case TMC5160CtrlPin::CLK:       clk = active_level; break;
-      case TMC5160CtrlPin::SPI_MODE:  spi_mode = active_level; break;
-      case TMC5160CtrlPin::SD_MODE:   sd_mode = active_level; break;
-      default:                        break;
+    case TMC51x0CtrlPin::EN:
+      en = active_level;
+      break;
+    case TMC51x0CtrlPin::DIR:
+      dir = active_level;
+      break;
+    case TMC51x0CtrlPin::STEP:
+      step = active_level;
+      break;
+    case TMC51x0CtrlPin::REFL_STEP:
+      ref_left = active_level;
+      break;
+    case TMC51x0CtrlPin::REFR_DIR:
+      ref_right = active_level;
+      break;
+    case TMC51x0CtrlPin::DIAG0:
+      diag0 = active_level;
+      break;
+    case TMC51x0CtrlPin::DIAG1:
+      diag1 = active_level;
+      break;
+    case TMC51x0CtrlPin::ENCA:
+      enca = active_level;
+      break;
+    case TMC51x0CtrlPin::ENCB:
+      encb = active_level;
+      break;
+    case TMC51x0CtrlPin::ENCN:
+      encn = active_level;
+      break;
+    case TMC51x0CtrlPin::DCEN:
+      dcen = active_level;
+      break;
+    case TMC51x0CtrlPin::DCIN:
+      dcin = active_level;
+      break;
+    case TMC51x0CtrlPin::DCO:
+      dco = active_level;
+      break;
+    case TMC51x0CtrlPin::CLK:
+      clk = active_level;
+      break;
+    case TMC51x0CtrlPin::SPI_MODE:
+      spi_mode = active_level;
+      break;
+    case TMC51x0CtrlPin::SD_MODE:
+      sd_mode = active_level;
+      break;
+    default:
+      break;
     }
   }
 };
@@ -379,7 +429,8 @@ struct TMC5160PinConfig {
   // Only configure these if you have connected SPI_MODE (pin 22) and SD_MODE (pin 21)
   // to GPIO outputs for dynamic mode control. Changing these requires a chip reset.
   int spi_mode_pin{-1}; ///< SPI_MODE pin (pin 22) - Optional, typically hardwired. HIGH=SPI, LOW=UART
-  int sd_mode_pin{-1};  ///< SD_MODE pin (pin 21) - Optional, typically hardwired. HIGH=External step/dir, LOW=Internal ramp
+  int sd_mode_pin{
+      -1}; ///< SD_MODE pin (pin 21) - Optional, typically hardwired. HIGH=External step/dir, LOW=Internal ramp
 
   /**
    * @brief Default constructor - all pins unmapped (-1)
@@ -410,10 +461,10 @@ struct TMC5160PinConfig {
  */
 struct Esp32SpiPinConfig {
   // SPI bus pins (required for SPI communication)
-  int spi_mosi{-1};  ///< SPI MOSI pin (Master Out, Slave In)
-  int spi_miso{-1};  ///< SPI MISO pin (Master In, Slave Out)
-  int spi_sclk{-1};  ///< SPI clock pin (SCLK)
-  int spi_cs{-1};    ///< SPI chip select pin (CS)
+  int spi_mosi{-1}; ///< SPI MOSI pin (Master Out, Slave In)
+  int spi_miso{-1}; ///< SPI MISO pin (Master In, Slave Out)
+  int spi_sclk{-1}; ///< SPI clock pin (SCLK)
+  int spi_cs{-1};   ///< SPI chip select pin (CS)
 
   // TMC5160 control pins (from TMC5160PinConfig)
   TMC5160PinConfig tmc5160_pins; ///< TMC5160 control pin configuration
@@ -472,7 +523,7 @@ struct SpiStatus {
   /**
    * @brief Check if any error flags are set
    * @return true if driver_error is set (reset_flag is informational, not an error)
-   * 
+   *
    * Note: Reset flag indicates the chip was reset (normal on power-up) and is cleared when read.
    * Only driver_error indicates an actual error condition.
    */
@@ -551,21 +602,15 @@ struct SpiStatus {
   [[nodiscard]] std::string FormatStatusBits() const noexcept {
     char buf[128];
     snprintf(buf, sizeof(buf), "RST:%d STST:%d VEL:%d POS:%d STOP_L:%d STOP_R:%d SG2:%d DRV_ERR:%d",
-             ResetFlag() ? 1 : 0,
-             Standstill() ? 1 : 0,
-             VelocityReached() ? 1 : 0,
-             PositionReached() ? 1 : 0,
-             StopLeft() ? 1 : 0,
-             StopRight() ? 1 : 0,
-             StallGuard2() ? 1 : 0,
-             DriverError() ? 1 : 0);
+             ResetFlag() ? 1 : 0, Standstill() ? 1 : 0, VelocityReached() ? 1 : 0, PositionReached() ? 1 : 0,
+             StopLeft() ? 1 : 0, StopRight() ? 1 : 0, StallGuard2() ? 1 : 0, DriverError() ? 1 : 0);
     return std::string(buf);
   }
 
   /**
    * @brief Format status flags as human-readable string
    * @return String describing active flags (for debug logging)
-   * 
+   *
    * Note: Reset flag is informational (normal on power-up), not an error
    */
   [[nodiscard]] const char* ToString() const noexcept {
@@ -708,11 +753,11 @@ struct SpiResponse {
  */
 static constexpr uint8_t calculateCrc8(const uint8_t* data, size_t length) noexcept {
   uint8_t crc = 0; // Initial value is zero per datasheet
-  
+
   // Process each byte LSB to MSB
   for (size_t i = 0; i < length; ++i) {
     uint8_t currentByte = data[i];
-    
+
     // Process each bit LSB to MSB (j=0 is LSB, j=7 is MSB)
     for (uint8_t j = 0; j < 8; ++j) {
       // Check: (CRC >> 7) XOR (currentByte & 0x01)
@@ -725,7 +770,7 @@ static constexpr uint8_t calculateCrc8(const uint8_t* data, size_t length) noexc
       currentByte = currentByte >> 1; // Shift to next bit (LSB to MSB)
     }
   }
-  
+
   return crc;
 }
 
@@ -758,7 +803,7 @@ struct UartFrame {
    */
   union Frame {
     uint8_t bytes[8]; ///< Frame as 8 bytes (maximum size)
-    
+
     // Write Access Structure (8 bytes)
     struct {
       uint8_t sync_reserved; ///< Byte 0: Sync (0x05)
@@ -767,7 +812,7 @@ struct UartFrame {
       uint8_t data_bytes[4]; ///< Bytes 3-6: 32-bit data (MSB-first)
       uint8_t crc;           ///< Byte 7: CRC8 checksum
     } write_fields;
-    
+
     // Read Request Structure (4 bytes)
     struct {
       uint8_t sync_reserved; ///< Byte 0: Sync (0x05)
@@ -775,7 +820,7 @@ struct UartFrame {
       uint8_t rw_address;    ///< Byte 2: RW bit (0) + 7-bit register address
       uint8_t crc;           ///< Byte 3: CRC8 checksum
     } read_request_fields;
-    
+
     // Read Reply Structure (8 bytes)
     struct {
       uint8_t sync_reserved; ///< Byte 0: Sync (0x05)
@@ -784,7 +829,7 @@ struct UartFrame {
       uint8_t data_bytes[4]; ///< Bytes 3-6: 32-bit data (MSB-first)
       uint8_t crc;           ///< Byte 7: CRC8 checksum
     } read_reply_fields;
-    
+
   } frame;
 
   UartFrameType type; ///< Frame type
@@ -1006,7 +1051,7 @@ class CommInterface {
 public:
   /**
    * @brief Construct communication interface
-   * 
+   *
    * Note: Pin active level configuration is handled by the derived class.
    * The base class only deals with abstract signals (ACTIVE/INACTIVE).
    */
@@ -1056,44 +1101,43 @@ public:
 
   /**
    * @brief Set GPIO pin signal state (output control)
-   * @param pin The TMC5160 control pin to control
+   * @param pin The TMC51x0 control pin to control
    * @param signal The desired signal state (ACTIVE or INACTIVE)
    * @return true if the GPIO was set successfully, false otherwise
    */
-  bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) noexcept {
+  bool GpioSet(TMC51x0CtrlPin pin, GpioSignal signal) noexcept {
     return static_cast<Derived*>(this)->GpioSet(pin, signal);
   }
 
   /**
    * @brief Read GPIO pin signal state (input state)
-   * @param pin The TMC5160 control pin to read
+   * @param pin The TMC51x0 control pin to read
    * @param signal Reference to store the current signal state
    * @return true if the GPIO was read successfully, false otherwise
    */
-  bool GpioRead(TMC5160CtrlPin pin, GpioSignal& signal) noexcept {
+  bool GpioRead(TMC51x0CtrlPin pin, GpioSignal& signal) noexcept {
     return static_cast<Derived*>(this)->GpioRead(pin, signal);
   }
 
   /**
    * @brief Set GPIO pin to active state (convenience method)
-   * @param pin The TMC5160 control pin to set active
+   * @param pin The TMC51x0 control pin to set active
    * @return true if the GPIO was set successfully, false otherwise
    */
-  bool GpioSetActive(TMC5160CtrlPin pin) noexcept {
+  bool GpioSetActive(TMC51x0CtrlPin pin) noexcept {
     return GpioSet(pin, GpioSignal::ACTIVE);
   }
 
   /**
    * @brief Set GPIO pin to inactive state (convenience method)
-   * @param pin The TMC5160 control pin to set inactive
+   * @param pin The TMC51x0 control pin to set inactive
    * @return true if the GPIO was set successfully, false otherwise
    */
-  bool GpioSetInactive(TMC5160CtrlPin pin) noexcept {
+  bool GpioSetInactive(TMC51x0CtrlPin pin) noexcept {
     return GpioSet(pin, GpioSignal::INACTIVE);
   }
 
 protected:
-
   /**
    * @brief Debug logging function for detailed debugging information
    * @param level Log level (0=Error, 1=Warning, 2=Info, 3=Debug, 4=Verbose)
@@ -1122,21 +1166,73 @@ public:
     static_cast<Derived*>(this)->DelayUs(us);
   }
 
+  /**
+   * @brief Set external clock frequency on CLK pin (optional)
+   * @param frequency_hz Desired clock frequency in Hz (0 = use internal clock, >0 = external clock frequency)
+   * @return true if clock was configured successfully, false if not supported or failed
+   *
+   * This method is optional - derived classes can implement it if they support
+   * providing an external clock signal on the CLK pin. If not implemented, this
+   * method will return false, indicating that the internal oscillator should be used.
+   *
+   * **Clock Mode Selection:**
+   *
+   * - **Internal Clock**:
+   *   - Pass `frequency_hz = 0` to explicitly use internal clock
+   *   - CLK pin should be set to GND (low) to enable internal oscillator
+   *   - Internal oscillator provides ~12MHz clock
+   *   - Return true if CLK pin was successfully set to GND, false if not supported
+   *   - f_clk in DriverConfig should still be set correctly (typically 12000000 Hz)
+   *   - The driver uses f_clk for timing calculations regardless of clock source
+   *
+   * - **External Clock**:
+   *   - Pass `frequency_hz > 0` to use external clock at specified frequency
+   *   - CLK pin should receive clock signal from external source
+   *   - Return true if clock signal was successfully provided on CLK pin
+   *   - f_clk in DriverConfig must match the actual external clock frequency
+   *   - Typical frequencies: 12MHz (default) or 24MHz (for higher performance)
+   *
+   * **Important:**
+   * - The f_clk value in DriverConfig is used for all timing calculations (IHOLDDELAY, TPOWERDOWN, TZEROWAIT, etc.)
+   * - f_clk must be set correctly regardless of whether using internal or external clock
+   * - For internal clock, f_clk is typically 12000000 Hz (12 MHz)
+   * - For external clock, f_clk must match the actual frequency provided
+   * - Passing `frequency_hz = 0` allows users with external clock capability to switch back to internal clock
+   *
+   * **Implementation Guidelines:**
+   * - If your system doesn't support clock control, return false (driver will assume internal clock)
+   * - If your system supports clock control:
+   *   - When `frequency_hz = 0`: Set CLK pin to GND (low) and return true
+   *   - When `frequency_hz > 0`: Provide clock signal at specified frequency and return true
+   *   - Return false only if the operation failed (e.g., invalid frequency, hardware error)
+   *
+   * @note This is called automatically during Initialize() with the f_clk value from DriverConfig.
+   * @note If not implemented (returns false), the driver assumes internal clock (CLK pin tied to GND).
+   * @note The internal clock has a fail-over circuit that protects against loss of external clock signal.
+   * @note Per datasheet: "Tie to GND using short wire for internal clock or supply external clock."
+   */
+  bool SetClkFreq(uint32_t frequency_hz) noexcept {
+    // Default implementation returns false (not supported / using internal clock)
+    // Derived classes can override this if they support external clock generation
+    // When frequency_hz = 0, this means "use internal clock" (set CLK pin to GND)
+    (void)frequency_hz; // Suppress unused parameter warning
+    return false;
+  }
+
 protected:
   /**
    * @brief Protected destructor
    */
   ~CommInterface() = default;
 
-  // Prevent copying
-  CommInterface(const CommInterface&) = delete;
-  CommInterface& operator=(const CommInterface&) = delete;
-
   // Allow moving
   CommInterface(CommInterface&&) = default;
   CommInterface& operator=(CommInterface&&) = default;
 
 public:
+  // Prevent copying
+  CommInterface(const CommInterface&) = delete;
+  CommInterface& operator=(const CommInterface&) = delete;
   /**
    * @brief Public debug logging wrapper for external classes
    * @param level Log level (0=Error, 1=Warning, 2=Info, 3=Debug, 4=Verbose)
@@ -1146,27 +1242,20 @@ public:
    */
 #ifndef TMC5160_DISABLE_DEBUG_LOGGING
   void LogDebug(int level, const char* tag, const char* format, ...) noexcept {
-    va_list args;
+    va_list args{};  // va_start will properly initialize this
     va_start(args, format);
 
-    // Check if format string already ends with newline
-    size_t format_len = strlen(format);
-    const char* final_format = format;
-    char* modified_format = nullptr;
-
-    if (format_len == 0 || format[format_len - 1] != '\n') {
-      // Allocate buffer for format + "\n"
-      modified_format = new char[format_len + 2];
-      strcpy(modified_format, format);
-      strcat(modified_format, "\n");
-      final_format = modified_format;
+    // Modern C++ string handling - no manual memory management
+    std::string format_str(format);
+    
+    // Ensure format string ends with newline
+    if (format_str.empty() || format_str.back() != '\n') {
+      format_str += '\n';
     }
 
-    DebugLog(level, tag, final_format, args);
-
-    if (modified_format) {
-      delete[] modified_format;
-    }
+    // Pass modified format string and va_list to DebugLog
+    // DebugLog will handle the actual formatting (e.g., via esp_log_writev)
+    DebugLog(level, tag, format_str.c_str(), args);
 
     va_end(args);
   }
@@ -1333,8 +1422,8 @@ public:
  *     - Device 0 latches cmd_0 ✓
  *     - Device 1 latches cmd_1 ✓
  *     - Device 2 latches cmd_2 ✓
- * - Read response from chip k: Send 40·(n-k) dummy bits total (40·(n-k-1) padding + 40 command, or just 40 command if k=n-1)
- *   Response appears at offset (n-k-1)*5 bytes (reverse order: last device first)
+ * - Read response from chip k: Send 40·(n-k) dummy bits total (40·(n-k-1) padding + 40 command, or just 40 command if
+ * k=n-1) Response appears at offset (n-k-1)*5 bytes (reverse order: last device first)
  *   **CRITICAL**: Responses come back in REVERSE order - device n-1 response first, then n-2, ...,
  * device 0 last
  *
@@ -1371,7 +1460,7 @@ class SpiCommInterface : public CommInterface<Derived> {
 public:
   /**
    * @brief Construct SPI communication interface
-   * 
+   *
    * Note: Pin active level configuration is handled by the derived class.
    * The base class only deals with abstract signals (ACTIVE/INACTIVE).
    */
@@ -1604,7 +1693,7 @@ public:
    *   - Total transfer size: 40·(n-k) bits = (n-k)*5 bytes (datasheet formula)
    *   - Response appears at offset (n-k-1)*5 bytes (reverse order: last device first)
    *   - This requires knowing total chain length n
- *
+   *
    * **Transfer Size Calculation:**
    * - For simultaneous send/receive, use max((k+1)*5, (n-k)*5) bytes
    *   - Sending requirement: (k+1)*5 bytes to shift command to device k
@@ -1633,11 +1722,10 @@ public:
   bool ReadRegister(uint8_t address, uint32_t& value, uint8_t daisy_chain_position = 0) noexcept {
     // Log function call with arguments (level 3 = DEBUG, only shows at DEBUG log level)
     if (daisy_chain_position > 0) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
-                        "ReadRegister(0x%02X, daisy_chain=%u)", address, daisy_chain_position);
+      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI", "ReadRegister(0x%02X, daisy_chain=%u)", address,
+                        daisy_chain_position);
     } else {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
-                        "ReadRegister(0x%02X)", address);
+      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI", "ReadRegister(0x%02X)", address);
     }
 
     // CRITICAL: Chain length MUST be known for correct response extraction
@@ -1679,8 +1767,8 @@ public:
     }
 
     // Calculate transfer size: max of sending and receiving requirements
-    size_t sending_bytes = static_cast<size_t>(k + 1) * 5;       // Command must reach device k
-    size_t receiving_bytes = static_cast<size_t>(n - k) * 5;    // Response extraction (datasheet formula)
+    size_t sending_bytes = static_cast<size_t>(k + 1) * 5;   // Command must reach device k
+    size_t receiving_bytes = static_cast<size_t>(n - k) * 5; // Response extraction (datasheet formula)
     size_t transfer_bytes = std::max(sending_bytes, receiving_bytes);
 
     // Response offset: (n-k-1)*5 bytes (based on reverse order of devices)
@@ -1720,14 +1808,12 @@ public:
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
       return false;
     }
-    
+
     // Log [TX1]/RX1 after first transfer
     // Show "=0x00000000" for reads to align with Write format (read command has no data, all zeros)
     TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
-                      "Read 0x%02X=0x00000000: [TX1] %02X %02X %02X %02X %02X / RX1 %02X %02X %02X %02X %02X",
-                      address,
-                      tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4],
-                      rx_buf[response_byte_offset],
+                      "Read 0x%02X=0x00000000: [TX1] %02X %02X %02X %02X %02X / RX1 %02X %02X %02X %02X %02X", address,
+                      tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4], rx_buf[response_byte_offset],
                       (response_byte_offset + 1 < rx_buf.size()) ? rx_buf[response_byte_offset + 1] : 0,
                       (response_byte_offset + 2 < rx_buf.size()) ? rx_buf[response_byte_offset + 2] : 0,
                       (response_byte_offset + 3 < rx_buf.size()) ? rx_buf[response_byte_offset + 3] : 0,
@@ -1746,33 +1832,31 @@ public:
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
       return false;
     }
-    
+
     // Log TX2/[RX2] after second transfer (RX2 contains the actual read data)
     // Align TX2 line with TX1 line by padding address field
     SpiStatus status = SpiStatus::FromByte(rx_buf[response_byte_offset]);
     std::string status_bits = status.FormatStatusBits();
-    
+
     // Align TX2 bytes with TX1 bytes: "Read 0xXX=0x00000000: " (25) + "[TX1] " (6) = 31 chars to first byte
     // For TX2: "Read 0xXX=0x00000000: " (25) + "      " (6 spaces) + "TX2 " (4) = 35, but bytes should be at 31
     // Actually: align "TX2" label with "[TX1]" label, then bytes naturally align
     // "Read 0xXX=0x00000000: [TX1] " = 31, bytes at 31
     // "Read 0xXX=0x00000000:      TX2 " = 31 (25 + 6), bytes at 31 ✓
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
-                      "Read 0x%02X:             TX2 %02X %02X %02X %02X %02X / [RX2] %02X %02X %02X %02X %02X (STATUS=0x%02X)",
-                      address,
-                      tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4],
-                      rx_buf[response_byte_offset],
-                      (response_byte_offset + 1 < rx_buf.size()) ? rx_buf[response_byte_offset + 1] : 0,
-                      (response_byte_offset + 2 < rx_buf.size()) ? rx_buf[response_byte_offset + 2] : 0,
-                      (response_byte_offset + 3 < rx_buf.size()) ? rx_buf[response_byte_offset + 3] : 0,
-                      (response_byte_offset + 4 < rx_buf.size()) ? rx_buf[response_byte_offset + 4] : 0,
-                      rx_buf[response_byte_offset]);
-    
+    TMC5160_LOG_DEBUG(
+        *static_cast<Derived*>(this), 3, "SPI",
+        "Read 0x%02X:             TX2 %02X %02X %02X %02X %02X / [RX2] %02X %02X %02X %02X %02X (STATUS=0x%02X)",
+        address, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4], rx_buf[response_byte_offset],
+        (response_byte_offset + 1 < rx_buf.size()) ? rx_buf[response_byte_offset + 1] : 0,
+        (response_byte_offset + 2 < rx_buf.size()) ? rx_buf[response_byte_offset + 2] : 0,
+        (response_byte_offset + 3 < rx_buf.size()) ? rx_buf[response_byte_offset + 3] : 0,
+        (response_byte_offset + 4 < rx_buf.size()) ? rx_buf[response_byte_offset + 4] : 0,
+        rx_buf[response_byte_offset]);
+
     // Log status bit breakdown with arrow pointing to STATUS byte
     // Calculate position: "Read 0xXX:            TX2 XX XX XX XX XX / [RX2] " = ~60 chars, then STATUS byte at ~68
     TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
-                      "                                                   └─> %s",
-                      status_bits.c_str());
+                      "                                                   └─> %s", status_bits.c_str());
 
     // Extract response data based on daisy-chain position
     // IMPORTANT: Responses come back in REVERSE order (last device first, first device last)
@@ -1796,23 +1880,19 @@ public:
     if (status.HasError()) {
       // Build error flags string (only actual errors)
       const char* error_flags = "DRV_ERR";
-      
+
       // Build informational flags string (reset + status flags)
       char info_flags[64] = "";
-      if (status.ResetFlag() || status.StallGuard2() || status.Standstill() || status.VelocityReached() || 
+      if (status.ResetFlag() || status.StallGuard2() || status.Standstill() || status.VelocityReached() ||
           status.PositionReached() || status.StopLeft() || status.StopRight()) {
-        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s%s]",
-                 status.ResetFlag() ? "RST " : "",
-                 status.StallGuard2() ? "SG2 " : "",
-                 status.Standstill() ? "STST " : "",
-                 status.VelocityReached() ? "VEL " : "",
-                 status.PositionReached() ? "POS " : "",
-                 status.StopLeft() ? "STOP_L " : "",
-                 status.StopRight() ? "STOP_R " : "");
+        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s%s]", status.ResetFlag() ? "RST " : "",
+                 status.StallGuard2() ? "SG2 " : "", status.Standstill() ? "STST " : "",
+                 status.VelocityReached() ? "VEL " : "", status.PositionReached() ? "POS " : "",
+                 status.StopLeft() ? "STOP_L " : "", status.StopRight() ? "STOP_R " : "");
       }
-      
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
-                        "Read 0x%02X: STATUS=0x%02X ERROR=%s%s", address, status.value, error_flags, info_flags);
+
+      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI", "Read 0x%02X: STATUS=0x%02X ERROR=%s%s", address,
+                        status.value, error_flags, info_flags);
     } else {
       // Log response bytes (first 8 or all if less)
       size_t log_rx_bytes = (rx_buf.size() < 8) ? rx_buf.size() : 8;
@@ -1838,7 +1918,7 @@ public:
                         response_byte_offset, rx_buf.size());
       return false;
     }
-    
+
     // Extract 32-bit value from RX2 (bytes response_byte_offset+1 to response_byte_offset+4)
     value = (static_cast<uint32_t>(rx_buf[response_byte_offset + 1]) << 24) |
             (static_cast<uint32_t>(rx_buf[response_byte_offset + 2]) << 16) |
@@ -1889,11 +1969,10 @@ public:
   bool WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept {
     // Log function call with arguments (level 3 = DEBUG, only shows at DEBUG log level)
     if (daisy_chain_position > 0) {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
-                        "WriteRegister(0x%02X=0x%08X, daisy_chain=%u)", address, value, daisy_chain_position);
+      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI", "WriteRegister(0x%02X=0x%08X, daisy_chain=%u)", address,
+                        value, daisy_chain_position);
     } else {
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
-                        "WriteRegister(0x%02X=0x%08X)", address, value);
+      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI", "WriteRegister(0x%02X=0x%08X)", address, value);
     }
 
     // CRITICAL: Chain length MUST be known for correct response extraction
@@ -1936,8 +2015,8 @@ public:
     }
 
     // Calculate transfer size: max of sending and receiving requirements
-    size_t sending_bytes = static_cast<size_t>(k + 1) * 5;       // Command must reach device k
-    size_t receiving_bytes = static_cast<size_t>(n - k) * 5;     // Response extraction (datasheet formula)
+    size_t sending_bytes = static_cast<size_t>(k + 1) * 5;   // Command must reach device k
+    size_t receiving_bytes = static_cast<size_t>(n - k) * 5; // Response extraction (datasheet formula)
     size_t transfer_bytes = std::max(sending_bytes, receiving_bytes);
 
     // Response offset: (n-k-1)*5 bytes (based on reverse order of devices)
@@ -1977,13 +2056,11 @@ public:
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
       return false;
     }
-    
+
     // Log [TX1]/RX1 after first transfer
     TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
-                      "Write 0x%02X=0x%08X: [TX1] %02X %02X %02X %02X %02X / RX1 %02X %02X %02X %02X %02X",
-                      address, value,
-                      tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4],
-                      rx_buf[response_byte_offset],
+                      "Write 0x%02X=0x%08X: [TX1] %02X %02X %02X %02X %02X / RX1 %02X %02X %02X %02X %02X", address,
+                      value, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4], rx_buf[response_byte_offset],
                       (response_byte_offset + 1 < rx_buf.size()) ? rx_buf[response_byte_offset + 1] : 0,
                       (response_byte_offset + 2 < rx_buf.size()) ? rx_buf[response_byte_offset + 2] : 0,
                       (response_byte_offset + 3 < rx_buf.size()) ? rx_buf[response_byte_offset + 3] : 0,
@@ -2010,23 +2087,19 @@ public:
     if (status1.HasError()) {
       // Build error flags string (only actual errors)
       const char* error_flags = "DRV_ERR";
-      
+
       // Build informational flags string (reset + status flags)
       char info_flags[64] = "";
-      if (status1.ResetFlag() || status1.StallGuard2() || status1.Standstill() || status1.VelocityReached() || 
+      if (status1.ResetFlag() || status1.StallGuard2() || status1.Standstill() || status1.VelocityReached() ||
           status1.PositionReached() || status1.StopLeft() || status1.StopRight()) {
-        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s%s]",
-                 status1.ResetFlag() ? "RST " : "",
-                 status1.StallGuard2() ? "SG2 " : "",
-                 status1.Standstill() ? "STST " : "",
-                 status1.VelocityReached() ? "VEL " : "",
-                 status1.PositionReached() ? "POS " : "",
-                 status1.StopLeft() ? "STOP_L " : "",
-                 status1.StopRight() ? "STOP_R " : "");
+        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s%s]", status1.ResetFlag() ? "RST " : "",
+                 status1.StallGuard2() ? "SG2 " : "", status1.Standstill() ? "STST " : "",
+                 status1.VelocityReached() ? "VEL " : "", status1.PositionReached() ? "POS " : "",
+                 status1.StopLeft() ? "STOP_L " : "", status1.StopRight() ? "STOP_R " : "");
       }
-      
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
-                        "Write 0x%02X (TX1): STATUS=0x%02X ERROR=%s%s", address, status1.value, error_flags, info_flags);
+
+      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI", "Write 0x%02X (TX1): STATUS=0x%02X ERROR=%s%s", address,
+                        status1.value, error_flags, info_flags);
     } else {
       // Log response bytes (first 8 or all if less)
       size_t log_rx1_bytes = (rx_buf.size() < 8) ? rx_buf.size() : 8;
@@ -2059,12 +2132,12 @@ public:
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
       return false;
     }
-    
+
     // Log TX2/[RX2] after second transfer (RX2 contains the write confirmation)
     // Align TX2 line with TX1 line by padding address field
     SpiStatus status2 = SpiStatus::FromByte(rx_buf[response_byte_offset]);
     std::string status2_bits = status2.FormatStatusBits();
-    
+
     // Align TX2 bytes with TX1 bytes: "Write 0xXX=0xXXXXXXXX: " (25) + "[TX1] " (6) = 31 chars to first byte
     // For TX2: "Write 0xXX: " (13) + padding to reach 31 = 18 spaces needed
     // But we want "TX2 " to align with "[TX1] ", so: "Write 0xXX: " (13) + 6 spaces + "TX2 " (4) = 23
@@ -2072,21 +2145,19 @@ public:
     // Actually simpler: align "TX2" label with "[TX1]" label, then bytes naturally align
     // "Write 0xXX=0xXXXXXXXX: [TX1] " = 31, bytes at 31
     // "Write 0xXX:            TX2 " = 31 (13 + 18), bytes at 31 ✓
-    TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
-                      "Write 0x%02X:             TX2 %02X %02X %02X %02X %02X / [RX2] %02X %02X %02X %02X %02X (STATUS=0x%02X)",
-                      address,
-                      tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4],
-                      rx_buf[response_byte_offset],
-                      (response_byte_offset + 1 < rx_buf.size()) ? rx_buf[response_byte_offset + 1] : 0,
-                      (response_byte_offset + 2 < rx_buf.size()) ? rx_buf[response_byte_offset + 2] : 0,
-                      (response_byte_offset + 3 < rx_buf.size()) ? rx_buf[response_byte_offset + 3] : 0,
-                      (response_byte_offset + 4 < rx_buf.size()) ? rx_buf[response_byte_offset + 4] : 0,
-                      rx_buf[response_byte_offset]);
-    
+    TMC5160_LOG_DEBUG(
+        *static_cast<Derived*>(this), 3, "SPI",
+        "Write 0x%02X:             TX2 %02X %02X %02X %02X %02X / [RX2] %02X %02X %02X %02X %02X (STATUS=0x%02X)",
+        address, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4], rx_buf[response_byte_offset],
+        (response_byte_offset + 1 < rx_buf.size()) ? rx_buf[response_byte_offset + 1] : 0,
+        (response_byte_offset + 2 < rx_buf.size()) ? rx_buf[response_byte_offset + 2] : 0,
+        (response_byte_offset + 3 < rx_buf.size()) ? rx_buf[response_byte_offset + 3] : 0,
+        (response_byte_offset + 4 < rx_buf.size()) ? rx_buf[response_byte_offset + 4] : 0,
+        rx_buf[response_byte_offset]);
+
     // Log status bit breakdown with arrow pointing to STATUS byte
     TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
-                      "                                                   └─> %s",
-                      status2_bits.c_str());
+                      "                                                   └─> %s", status2_bits.c_str());
 
     // Validate response offset (status2 was already extracted above for logging)
     if (response_byte_offset >= rx_buf.size()) {
@@ -2101,23 +2172,19 @@ public:
     if (status2.HasError()) {
       // Build error flags string (only actual errors)
       const char* error_flags = "DRV_ERR";
-      
+
       // Build informational flags string (reset + status flags)
       char info_flags[64] = "";
-      if (status2.ResetFlag() || status2.StallGuard2() || status2.Standstill() || status2.VelocityReached() || 
+      if (status2.ResetFlag() || status2.StallGuard2() || status2.Standstill() || status2.VelocityReached() ||
           status2.PositionReached() || status2.StopLeft() || status2.StopRight()) {
-        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s%s]",
-                 status2.ResetFlag() ? "RST " : "",
-                 status2.StallGuard2() ? "SG2 " : "",
-                 status2.Standstill() ? "STST " : "",
-                 status2.VelocityReached() ? "VEL " : "",
-                 status2.PositionReached() ? "POS " : "",
-                 status2.StopLeft() ? "STOP_L " : "",
-                 status2.StopRight() ? "STOP_R " : "");
+        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s%s]", status2.ResetFlag() ? "RST " : "",
+                 status2.StallGuard2() ? "SG2 " : "", status2.Standstill() ? "STST " : "",
+                 status2.VelocityReached() ? "VEL " : "", status2.PositionReached() ? "POS " : "",
+                 status2.StopLeft() ? "STOP_L " : "", status2.StopRight() ? "STOP_R " : "");
       }
-      
-      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
-                        "Write 0x%02X (TX2): STATUS=0x%02X ERROR=%s%s", address, status2.value, error_flags, info_flags);
+
+      TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI", "Write 0x%02X (TX2): STATUS=0x%02X ERROR=%s%s", address,
+                        status2.value, error_flags, info_flags);
     } else {
       // Log response bytes (first 8 or all if less)
       size_t log_rx2_bytes = (rx_buf.size() < 8) ? rx_buf.size() : 8;
@@ -2139,19 +2206,19 @@ public:
     // Verify that the returned data matches what we wrote
     if (response_byte_offset + 4 < rx_buf.size()) {
       uint32_t returned_value = (static_cast<uint32_t>(rx_buf[response_byte_offset + 1]) << 24) |
-                                 (static_cast<uint32_t>(rx_buf[response_byte_offset + 2]) << 16) |
-                                 (static_cast<uint32_t>(rx_buf[response_byte_offset + 3]) << 8) |
-                                 static_cast<uint32_t>(rx_buf[response_byte_offset + 4]);
-      
+                                (static_cast<uint32_t>(rx_buf[response_byte_offset + 2]) << 16) |
+                                (static_cast<uint32_t>(rx_buf[response_byte_offset + 3]) << 8) |
+                                static_cast<uint32_t>(rx_buf[response_byte_offset + 4]);
+
       if (returned_value != value) {
         TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
-                          "WriteRegister(0x%02X): Write verification failed - wrote 0x%08X, got back 0x%08X",
-                          address, value, returned_value);
+                          "WriteRegister(0x%02X): Write verification failed - wrote 0x%08X, got back 0x%08X", address,
+                          value, returned_value);
         // Don't fail the write operation, but log the mismatch for debugging
       } else {
         TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI",
-                          "WriteRegister(0x%02X): Write verification passed - wrote 0x%08X, got back 0x%08X",
-                          address, value, returned_value);
+                          "WriteRegister(0x%02X): Write verification passed - wrote 0x%08X, got back 0x%08X", address,
+                          value, returned_value);
       }
     }
 
@@ -2185,13 +2252,14 @@ protected:
    */
   ~SpiCommInterface() = default;
 
-  // Prevent copying
-  SpiCommInterface(const SpiCommInterface&) = delete;
-  SpiCommInterface& operator=(const SpiCommInterface&) = delete;
-
   // Allow moving
   SpiCommInterface(SpiCommInterface&&) = default;
   SpiCommInterface& operator=(SpiCommInterface&&) = default;
+
+public:
+  // Prevent copying
+  SpiCommInterface(const SpiCommInterface&) = delete;
+  SpiCommInterface& operator=(const SpiCommInterface&) = delete;
 
 private:
   /**
@@ -2228,7 +2296,7 @@ private:
     // But if it's set, ensure it's at least 1
     if (daisy_chain_position == 0 && total_chain_length_ == 0) {
       // Single chip mode - this is valid
-      total_chain_length_ = 1; // Set to 1 for single chip (n=1, k=0)
+      total_chain_length_ = 1;       // Set to 1 for single chip (n=1, k=0)
       chain_length_verified_ = true; // Single-chip mode doesn't need verification
     }
 
@@ -2476,8 +2544,8 @@ public:
     size_t tx_size = read_request.GetSize(); // 4 bytes
 
     TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "UART",
-                      "Read register 0x%02X (NodeAddr=0x%02X): TX %02X %02X %02X %02X",
-                      address, node_addr, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3]);
+                      "Read register 0x%02X (NodeAddr=0x%02X): TX %02X %02X %02X %02X", address, node_addr, tx_buf[0],
+                      tx_buf[1], tx_buf[2], tx_buf[3]);
 
     if (!UartSend(tx_buf.data(), tx_size)) {
       return false;
@@ -2493,8 +2561,8 @@ public:
     UartFrame read_reply = UartFrame::ReadReply(rx_buf.data());
 
     TMC5160_LOG_DEBUG(*static_cast<Derived*>(this), 3, "UART",
-                      "Read register 0x%02X: RX %02X %02X %02X %02X %02X %02X %02X %02X", address, rx_buf[0],
-                      rx_buf[1], rx_buf[2], rx_buf[3], rx_buf[4], rx_buf[5], rx_buf[6], rx_buf[7]);
+                      "Read register 0x%02X: RX %02X %02X %02X %02X %02X %02X %02X %02X", address, rx_buf[0], rx_buf[1],
+                      rx_buf[2], rx_buf[3], rx_buf[4], rx_buf[5], rx_buf[6], rx_buf[7]);
 
     // Verify CRC8 and frame validity
     if (!read_reply.VerifyCrc()) {
@@ -2544,7 +2612,7 @@ public:
 
     // Write does NOT have a reply packet from the device (only updates internal counter).
     // We return true if send was successful.
-    // Note: Some single-wire implementations receive their own TX (echo). 
+    // Note: Some single-wire implementations receive their own TX (echo).
     // If so, the derived class or HAL should handle flushing the echo.
     // This interface assumes UartSend handles the transmission.
 
@@ -2557,15 +2625,16 @@ protected:
    */
   ~UartCommInterface() = default;
 
-  // Prevent copying
-  UartCommInterface(const UartCommInterface&) = delete;
-  UartCommInterface& operator=(const UartCommInterface&) = delete;
-
   // Allow moving
   UartCommInterface(UartCommInterface&&) = default;
   UartCommInterface& operator=(UartCommInterface&&) = default;
+
+public:
+  // Prevent copying
+  UartCommInterface(const UartCommInterface&) = delete;
+  UartCommInterface& operator=(const UartCommInterface&) = delete;
 };
 
-} // namespace tmc5160
+} // namespace tmc51x0
 
-#endif // TMC5160_COMM_INTERFACE_HPP
+#endif // TMC51X0_COMM_INTERFACE_HPP

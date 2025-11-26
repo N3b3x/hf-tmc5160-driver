@@ -1,20 +1,20 @@
 /**
- * @file sinusoidal.cpp
- * @brief Sinusoidal motion pattern example for TMC5160 stepper motor driver
+ * @file internal_ramp_sinusoidal.cpp
+ * @brief Sinusoidal motion pattern example for TMC51x0 stepper motor driver
  *
- * This example demonstrates sinusoidal motion control using the TMC5160's
+ * This example demonstrates sinusoidal motion control using the TMC51x0's
  * internal ramp generator. The motor velocity varies in a sinusoidal pattern
  * using velocity mode control.
  *
  * MOTOR SELECTION:
  * Motor selection is done via a static constexpr variable at the top of this file.
- * See esp32_tmc5160_bus_config.hpp for detailed motor specifications and selection guide.
+ * See esp32_tmc51x0_bus_config.hpp for detailed motor specifications and selection guide.
  *
  * Hardware Requirements:
  * - ESP32 development board
- * - TMC5160 stepper motor driver
- * - Stepper motor connected to TMC5160 (see motor selection above)
- * - SPI connection between ESP32 and TMC5160
+ * - TMC51x0 stepper motor driver
+ * - Stepper motor connected to TMC51x0 (see motor selection above)
+ * - SPI connection between ESP32 and TMC51x0
  * - Chip must be in SPI_INTERNAL_RAMP mode (SPI_MODE=HIGH, SD_MODE=LOW)
  * - Power supply: 12-36V DC (ensure adequate current capacity for selected motor)
  *
@@ -28,9 +28,9 @@
  * @date 2025
  */
 
-#include "../../../inc/tmc5160.hpp"
-#include "esp32_tmc5160_bus.hpp"
-#include "esp32_tmc5160_test_config.hpp"
+#include "tmc51x0.hpp"
+#include "test_config/esp32_tmc51x0_bus.hpp"
+#include "test_config/esp32_tmc51x0_test_config.hpp"
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
@@ -40,33 +40,33 @@
 //=============================================================================
 // CONFIGURATION SELECTION - Change these to select motor, board, and platform
 //=============================================================================
-// See esp32_tmc5160_bus_config.hpp for detailed motor, board, and platform specifications.
+// See esp32_tmc51x0_test_config.hpp for detailed motor, board, and platform specifications.
 // Change the values below to select different configurations:
+//
+// TEST RIG CONFIGURATION:
+// This example is configured for the FATIGUE TEST RIG which uses:
+// - Applied Motion 5034-369 motor (direct drive, NEMA 34)
+// - Used for sinusoidal motion testing
+//
+// For the CORE DRIVER TEST RIG (gearbox motor), change to MOTOR_17HS4401S_GEARBOX
 
-// Motor selection (compile-time constant)
-static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
-    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
-
-// Board selection (compile-time constant)
-static constexpr tmc5160_test_config::BoardType SELECTED_BOARD = 
-    tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL;
-
-// Platform selection (compile-time constant)
-static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM = 
-    tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
+// Test rig selection (compile-time constant) - automatically selects motor, board, and platform
+// FATIGUE TEST RIG: Uses Applied Motion 5034-369 motor, TMC51x0 EVAL board, reference switches, encoder
+static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
+    tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE;
 
 static const char* TAG = "Sinusoidal";
 
 /**
  * @brief Back-and-forth motion controller using positioning mode
  *
- * Simple back-and-forth motion using TMC5160's positioning mode.
+ * Simple back-and-forth motion using TMC51x0's positioning mode.
  * Sets target position to one end, waits until reached, then sets target to other end.
  * Repeats continuously.
  */
 class BackAndForthMotion {
 private:
-  tmc5160::TMC5160<Esp32SPI>* driver_;
+  tmc51x0::TMC51x0<Esp32SPI>* driver_;
   float max_velocity_;        // Maximum velocity in steps/s
   float acceleration_;        // Acceleration in steps/s²
   int32_t travel_distance_;  // Distance to travel in each direction (in microsteps)
@@ -78,7 +78,7 @@ private:
   int max_cycles_;            // Maximum cycles (-1 for infinite)
 
 public:
-  BackAndForthMotion(tmc5160::TMC5160<Esp32SPI>* driver)
+  BackAndForthMotion(tmc51x0::TMC51x0<Esp32SPI>* driver)
       : driver_(driver), max_velocity_(10000.0f), acceleration_(50000.0f),
         travel_distance_(100000), center_position_(0), target_position_(0),
         moving_forward_(true), initialized_(false), cycles_completed_(0), max_cycles_(-1) {}
@@ -118,15 +118,19 @@ public:
     driver_->rampControl.SetMaxSpeed(max_velocity_);
     
     // Set to positioning mode
-    driver_->rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+    driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
     
     // Get current position as center
-    center_position_ = driver_->rampControl.GetCurrentPosition();
+    float center_pos = 0.0f;
+    if (!driver_->rampControl.GetCurrentPosition(center_pos, tmc51x0::Unit::Steps)) {
+      center_pos = 0.0f; // Default to 0 if read fails
+    }
+    center_position_ = static_cast<int32_t>(center_pos);
     
     // Start by moving forward (positive direction)
     moving_forward_ = true;
     target_position_ = center_position_ + travel_distance_;
-    driver_->rampControl.SetTargetPosition(static_cast<float>(target_position_), tmc5160::Unit::Steps);
+    driver_->rampControl.SetTargetPosition(static_cast<float>(target_position_), tmc51x0::Unit::Steps);
     
     initialized_ = true;
     cycles_completed_ = 0;
@@ -157,13 +161,13 @@ public:
         // Just finished moving forward, now move backward
         moving_forward_ = false;
         target_position_ = center_position_ - travel_distance_;
-        driver_->rampControl.SetTargetPosition(static_cast<float>(target_position_), tmc5160::Unit::Steps);
+        driver_->rampControl.SetTargetPosition(static_cast<float>(target_position_), tmc51x0::Unit::Steps);
         ESP_LOGI(TAG, "Reached forward end, reversing to position %ld", target_position_);
       } else {
         // Just finished moving backward, now move forward
         moving_forward_ = true;
         target_position_ = center_position_ + travel_distance_;
-        driver_->rampControl.SetTargetPosition(static_cast<float>(target_position_), tmc5160::Unit::Steps);
+        driver_->rampControl.SetTargetPosition(static_cast<float>(target_position_), tmc51x0::Unit::Steps);
         cycles_completed_++;
         ESP_LOGI(TAG, "Reached backward end, reversing to position %ld (cycle %lu complete)", 
                  target_position_, cycles_completed_);
@@ -184,7 +188,7 @@ public:
    * @brief Stop back-and-forth motion
    */
   void Stop() {
-    driver_->rampControl.SetRampMode(tmc5160::RampMode::HOLD);
+    driver_->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
     driver_->rampControl.SetMaxSpeed(0.0);
     initialized_ = false;
     ESP_LOGI(TAG, "Back-and-forth motion stopped after %lu cycles", cycles_completed_);
@@ -199,22 +203,22 @@ public:
 };
 
 extern "C" void app_main() {
-  ESP_LOGI(TAG, "TMC5160 Back-and-Forth Motion Example for NEMA 44mm Motors");
+  ESP_LOGI(TAG, "TMC51x0 Back-and-Forth Motion Example for NEMA 44mm Motors");
   ESP_LOGI(TAG, "Using internal ramp generator with positioning control");
 
   // Get standard pin configuration
-  auto pin_config = tmc5160_test_config::GetDefaultPinConfig();
+  auto pin_config = tmc51x0_test_config::GetDefaultPinConfig();
 
   // Create SPI communication interface with pin configuration
   // Check if EN pin needs to be inverted (some boards have inverters on EN pin)
-  // Default: EN is active LOW (LOW = enable, HIGH = disable) per TMC5160 datasheet
+  // Default: EN is active LOW (LOW = enable, HIGH = disable) per TMC51x0 datasheet
   // If your board has an inverter, set en = true in PinActiveLevels
-  tmc5160::PinActiveLevels active_levels; // Uses defaults: en=false (LOW=enable)
+  tmc51x0::PinActiveLevels active_levels; // Uses defaults: en=false (LOW=enable)
   
   // Uncomment the line below if your board has an inverter on the EN pin:
   // active_levels.en = true; // EN pin has inverter, so ACTIVE = HIGH to enable
   
-  Esp32SPI spi(tmc5160_test_config::SPI_HOST, pin_config, 1000000, active_levels); // 1 MHz SPI clock (reduced for stability)
+  Esp32SPI spi(tmc51x0_test_config::SPI_HOST, pin_config, 1000000, active_levels); // 1 MHz SPI clock (reduced for stability)
 
   // Initialize SPI interface
   if (!spi.Initialize()) {
@@ -222,56 +226,40 @@ extern "C" void app_main() {
     return;
   }
 
-  // Create TMC5160 driver instance
-  tmc5160::TMC5160<Esp32SPI> driver(spi);
+  // Create TMC51x0 driver instance
+  tmc51x0::TMC51x0<Esp32SPI> driver(spi);
 
-  // Select motor configuration based on compile-time selection
-  // Note: Namespace aliases must be declared at namespace scope, so we use conditional compilation
-  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
-    ESP_LOGI(TAG, "Selected Motor: 17HS4401S with 5.18:1 gearbox");
-  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
-    ESP_LOGI(TAG, "Selected Motor: 17HS4401S direct drive (no gearbox)");
-  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
-    ESP_LOGI(TAG, "Selected Motor: Applied Motion 5034-369 NEMA 34 (high torque, 4.17A)");
-  }
+  // Configure driver from unified test rig selection
+  tmc51x0::DriverConfig cfg{};
+  tmc51x0_test_config::ConfigureDriverFromTestRig<SELECTED_TEST_RIG>(cfg);
   
-  // Configure driver using helper functions
-  tmc5160::DriverConfig cfg{};
-  
-  // Motor configuration constants (extracted for use later in code)
+  // Get motor configuration for later use (output steps calculation)
   uint16_t output_full_steps = 0;
   float gear_ratio = 1.0f;
-  
-  // Configure motor
-  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
-    namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
-    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+  constexpr auto motor_type = tmc51x0_test_config::GetTestRigMotorType<SELECTED_TEST_RIG>();
+  if constexpr (motor_type == tmc51x0_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    namespace Motor = tmc51x0_test_config::MotorConfig_17HS4401S;
     output_full_steps = Motor::OUTPUT_FULL_STEPS;
     gear_ratio = Motor::GEAR_RATIO;
-  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
-    namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S_Direct;
-    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
+    ESP_LOGI(TAG, "Test Rig: Core Driver (17HS4401S with 5.18:1 gearbox)");
+  } else if constexpr (motor_type == tmc51x0_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    namespace Motor = tmc51x0_test_config::MotorConfig_17HS4401S_Direct;
     output_full_steps = Motor::OUTPUT_FULL_STEPS;
     gear_ratio = Motor::GEAR_RATIO;
-  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
-    namespace Motor = tmc5160_test_config::MotorConfig_AppliedMotion_5034_369;
-    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
+    ESP_LOGI(TAG, "Test Rig: Core Driver (17HS4401S direct drive)");
+  } else if constexpr (motor_type == tmc51x0_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    namespace Motor = tmc51x0_test_config::MotorConfig_AppliedMotion_5034_369;
     output_full_steps = Motor::OUTPUT_FULL_STEPS;
     gear_ratio = Motor::GEAR_RATIO;
+    ESP_LOGI(TAG, "Test Rig: Fatigue (Applied Motion 5034-369 NEMA 34)");
   }
   
-  // Apply board configuration
-  tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
-  
-  // Apply platform configuration
-  tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
-  
   // Enable StealthChop
-  cfg.global_config.en_pwm_mode = true; // Enable StealthChop
+  cfg.global_config.en_stealthchop_mode = true; // Enable StealthChop
 
   // Initialize driver
   if (!driver.Initialize(cfg)) {
-    ESP_LOGE(TAG, "Failed to initialize TMC5160 driver");
+    ESP_LOGE(TAG, "Failed to initialize TMC51x0 driver");
     return;
   }
 
@@ -300,48 +288,36 @@ extern "C" void app_main() {
   // StallGuard2 should NOT stop the motor - it's only for diagnostics/homing
   // We need to disable it in multiple places to ensure it can't interfere
   
-  // 1. Disable StallGuard2 stop in SW_MODE (this is the main stop mechanism)
-  uint32_t sw_mode_value = 0;
-  if (driver.GetComm().ReadRegister(tmc5160::Registers::SW_MODE, sw_mode_value)) {
-    tmc5160::SW_MODE_Register sw_mode{};
-    sw_mode.value = sw_mode_value;
-    bool changed = false;
-    if (sw_mode.bits.sg_stop) {
-      ESP_LOGW(TAG, "StallGuard2 stop is ENABLED - disabling for sinusoidal motion");
-      sw_mode.bits.sg_stop = 0;
+  // 1. Disable StallGuard2 stop and soft stop (not needed for continuous motion)
+  bool changed = false;
+  if (driver.diagnostics.IsStopOnStallEnabled()) {
+    ESP_LOGW(TAG, "StallGuard2 stop is ENABLED - disabling for sinusoidal motion");
+    if (driver.diagnostics.EnableStopOnStall(false)) {
       changed = true;
     }
-    // Also ensure soft stop is disabled (not needed for continuous motion)
-    if (sw_mode.bits.en_softstop) {
-      ESP_LOGW(TAG, "Soft stop is ENABLED - disabling for continuous sinusoidal motion");
-      sw_mode.bits.en_softstop = 0;
+  }
+  if (driver.diagnostics.IsSoftStopEnabled()) {
+    ESP_LOGW(TAG, "Soft stop is ENABLED - disabling for continuous sinusoidal motion");
+    if (driver.diagnostics.SetSoftStop(false)) {
       changed = true;
     }
-    if (changed) {
-      driver.GetComm().WriteRegister(tmc5160::Registers::SW_MODE, sw_mode.value);
-      // Verify it was written
-      uint32_t verify_value = 0;
-      if (driver.GetComm().ReadRegister(tmc5160::Registers::SW_MODE, verify_value)) {
-        tmc5160::SW_MODE_Register verify{};
-        verify.value = verify_value;
-        if (verify.bits.sg_stop == 0 && verify.bits.en_softstop == 0) {
-          ESP_LOGI(TAG, "✓ StallGuard2 stop and soft stop confirmed DISABLED in SW_MODE");
-        } else {
-          ESP_LOGE(TAG, "✗ Failed to disable StallGuard2 stop! sg_stop=%d, en_softstop=%d",
-                   verify.bits.sg_stop ? 1 : 0, verify.bits.en_softstop ? 1 : 0);
-        }
-      }
+  }
+  if (changed) {
+    // Verify it was written
+    if (!driver.diagnostics.IsStopOnStallEnabled() && !driver.diagnostics.IsSoftStopEnabled()) {
+      ESP_LOGI(TAG, "✓ StallGuard2 stop and soft stop confirmed DISABLED");
     } else {
-      ESP_LOGI(TAG, "✓ StallGuard2 stop already disabled (correct for sinusoidal motion)");
+      ESP_LOGE(TAG, "✗ Failed to disable StallGuard2 stop or soft stop!");
     }
+  } else {
+    ESP_LOGI(TAG, "✓ StallGuard2 stop and soft stop already disabled (correct for sinusoidal motion)");
   }
   
   // 2. Set TCOOLTHRS to 0 to disable StallGuard2 at all speeds
   // TCOOLTHRS = velocity threshold below which StallGuard2 is disabled
   // Enabled if TSTEP < TCOOLTHRS (Velocity > Threshold)
   // To disable, we want Threshold to be infinite (TCOOLTHRS = 0)
-  uint32_t tcoolthrs = 0; // 0 = infinite velocity threshold = disabled everywhere
-  if (driver.GetComm().WriteRegister(tmc5160::Registers::TCOOLTHRS, tcoolthrs)) {
+  if (driver.diagnostics.SetTcoolthrs(0.0f, tmc51x0::Unit::Steps)) {
     ESP_LOGI(TAG, "✓ TCOOLTHRS set to 0 - StallGuard2 disabled at all speeds");
   } else {
     ESP_LOGE(TAG, "✗ Failed to set TCOOLTHRS");
@@ -350,9 +326,9 @@ extern "C" void app_main() {
   // 3. Set THIGH to maximum to ensure StallGuard2 doesn't interfere
   // THIGH = velocity threshold for chopper mode switching
   // Setting high ensures StallGuard2 doesn't affect operation
-  uint32_t thigh = 0xFFFFF; // Maximum value
-  if (driver.GetComm().WriteRegister(tmc5160::Registers::THIGH, thigh)) {
-    ESP_LOGI(TAG, "✓ THIGH set to maximum (0x%05X) - ensures StallGuard2 doesn't interfere", thigh);
+  constexpr float MAX_THIGH_STEPS = 1048575.0f; // 0xFFFFF maximum value
+  if (driver.motorControl.SetHighSpeedThreshold(MAX_THIGH_STEPS, tmc51x0::Unit::Steps)) {
+    ESP_LOGI(TAG, "✓ THIGH set to maximum (0x%05X) - ensures StallGuard2 doesn't interfere", 0xFFFFF);
   } else {
     ESP_LOGW(TAG, "Failed to set THIGH (may not be critical)");
   }
@@ -360,14 +336,14 @@ extern "C" void app_main() {
   // 4. Configure StallGuard2 threshold to be least sensitive (even though it's disabled)
   // This is just for diagnostics - it won't stop the motor
   // NOTE: StallGuard2 ONLY works in SpreadCycle mode! In StealthChop, SG_RESULT is invalid/zero.
-  tmc5160::StallGuardConfig sg_cfg{};
+  tmc51x0::StallGuardConfig sg_cfg{};
   sg_cfg.threshold = 63;        // Maximum threshold (least sensitive) - won't trigger
   sg_cfg.enable_filter = false; // No filter (faster response)
   // Note: semin/semax are CoolStep parameters, configure separately if needed
   if (driver.diagnostics.ConfigureStallGuard(sg_cfg)) {
     ESP_LOGI(TAG, "✓ StallGuard2 configured for diagnostics only (sgt=63, least sensitive)");
     ESP_LOGI(TAG, "  Note: StallGuard2 is DISABLED and will NOT stop the motor");
-    if (cfg.global_config.en_pwm_mode) {
+    if (cfg.global_config.en_stealthchop_mode) {
       ESP_LOGW(TAG, "  Note: StealthChop is enabled, so StallGuard2 values will be invalid (usually 0)");
     }
   } else {
@@ -376,30 +352,30 @@ extern "C" void app_main() {
   
   // Disable reference switches if not using them (prevents motion blocking)
   // If you have reference switches connected, configure them instead
-  tmc5160::ReferenceSwitchConfig ref_cfg{};
+  tmc51x0::ReferenceSwitchConfig ref_cfg{};
   // Configure switches but disable motor stop (allows reading switch state without stopping)
-  ref_cfg.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
-  ref_cfg.right_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+  ref_cfg.left_switch_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+  ref_cfg.right_switch_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;
   ref_cfg.left_switch_stop_enable = false;   // Don't stop motor
   ref_cfg.right_switch_stop_enable = false;  // Don't stop motor
-  ref_cfg.latch_left = tmc5160::ReferenceLatchMode::DISABLED;   // No latching
-  ref_cfg.latch_right = tmc5160::ReferenceLatchMode::DISABLED;  // No latching
+  ref_cfg.latch_left = tmc51x0::ReferenceLatchMode::DISABLED;   // No latching
+  ref_cfg.latch_right = tmc51x0::ReferenceLatchMode::DISABLED;  // No latching
   if (!driver.rampControl.ConfigureReferenceSwitch(ref_cfg)) {
     ESP_LOGW(TAG, "Failed to configure reference switches (may not be critical)");
   } else {
     ESP_LOGI(TAG, "Reference switches disabled (not using endstops)");
     
     // Verify SW_MODE register was written correctly
-    uint32_t sw_mode_value = 0;
-    if (driver.GetComm().ReadRegister(tmc5160::Registers::SW_MODE, sw_mode_value)) {
-      tmc5160::SW_MODE_Register sw_mode{};
-      sw_mode.value = sw_mode_value;
+    // Verify reference switch configuration
+    bool left_active = false, right_active = false;
+    bool left_enabled = false, right_enabled = false;
+    if (driver.rampControl.GetReferenceSwitchStatus(left_active, right_active, left_enabled, right_enabled)) {
       ESP_LOGI(TAG, "SW_MODE verification: stop_l_enable=%d, stop_r_enable=%d, en_softstop=%d",
-               sw_mode.bits.stop_l_enable ? 1 : 0,
-               sw_mode.bits.stop_r_enable ? 1 : 0,
-               sw_mode.bits.en_softstop ? 1 : 0);
+               left_enabled ? 1 : 0,
+               right_enabled ? 1 : 0,
+               driver.diagnostics.IsSoftStopEnabled() ? 1 : 0);
       
-      if (sw_mode.bits.stop_l_enable || sw_mode.bits.stop_r_enable) {
+      if (left_enabled || right_enabled) {
         ESP_LOGE(TAG, "ERROR: Reference switches still enabled in SW_MODE!");
         ESP_LOGE(TAG, "Motion will be blocked. Re-configuring...");
         // Try again
@@ -411,24 +387,24 @@ extern "C" void app_main() {
   }
   
   // Check physical pin states (if pins are mapped)
-  tmc5160::GpioSignal ref_left_signal, ref_right_signal;
-  bool ref_left_read = driver.GetComm().GpioRead(tmc5160::TMC5160CtrlPin::REFL_STEP, ref_left_signal);
-  bool ref_right_read = driver.GetComm().GpioRead(tmc5160::TMC5160CtrlPin::REFR_DIR, ref_right_signal);
+  tmc51x0::GpioSignal ref_left_signal, ref_right_signal;
+  bool ref_left_read = driver.GetComm().GpioRead(tmc51x0::TMC51x0CtrlPin::REFL_STEP, ref_left_signal);
+  bool ref_right_read = driver.GetComm().GpioRead(tmc51x0::TMC51x0CtrlPin::REFR_DIR, ref_right_signal);
   
   if (ref_left_read) {
     ESP_LOGI(TAG, "REFL_STEP (left ref) pin state: %s",
-             ref_left_signal == tmc5160::GpioSignal::ACTIVE ? "HIGH" : "LOW");
+             ref_left_signal == tmc51x0::GpioSignal::ACTIVE ? "HIGH" : "LOW");
   }
   if (ref_right_read) {
     ESP_LOGI(TAG, "REFR_DIR (right ref) pin state: %s",
-             ref_right_signal == tmc5160::GpioSignal::ACTIVE ? "HIGH" : "LOW");
+             ref_right_signal == tmc51x0::GpioSignal::ACTIVE ? "HIGH" : "LOW");
   }
   
-  if (ref_left_read && ref_left_signal == tmc5160::GpioSignal::ACTIVE) {
+  if (ref_left_read && ref_left_signal == tmc51x0::GpioSignal::ACTIVE) {
     ESP_LOGW(TAG, "WARNING: REFL_STEP pin is HIGH - if this is a switch, it may be active");
     ESP_LOGW(TAG, "  If not using switches, ensure pin is pulled LOW or left floating");
   }
-  if (ref_right_read && ref_right_signal == tmc5160::GpioSignal::ACTIVE) {
+  if (ref_right_read && ref_right_signal == tmc51x0::GpioSignal::ACTIVE) {
     ESP_LOGW(TAG, "WARNING: REFR_DIR pin is HIGH - if this is a switch, it may be active");
     ESP_LOGW(TAG, "  If not using switches, ensure pin is pulled LOW or left floating");
   }
@@ -436,13 +412,13 @@ extern "C" void app_main() {
   // Verify chip is in internal ramp mode (SPI_MODE=HIGH, SD_MODE=LOW)
   // If mode pins are configured, verify they're set correctly
   if (pin_config.tmc5160_pins.spi_mode_pin != -1 && pin_config.tmc5160_pins.sd_mode_pin != -1) {
-    tmc5160::ChipCommMode current_mode;
-    if (driver.GetChipCommMode(current_mode)) {
-      if (current_mode != tmc5160::ChipCommMode::SPI_INTERNAL_RAMP) {
+    tmc51x0::ChipCommMode current_mode;
+    if (driver.communication.GetOperatingMode(current_mode)) {
+      if (current_mode != tmc51x0::ChipCommMode::SPI_INTERNAL_RAMP) {
         ESP_LOGW(TAG, "Chip is not in SPI_INTERNAL_RAMP mode (current: %d)", static_cast<int>(current_mode));
         ESP_LOGW(TAG, "Setting to SPI_INTERNAL_RAMP mode...");
-        if (driver.SetChipCommMode(tmc5160::ChipCommMode::SPI_INTERNAL_RAMP)) {
-          ESP_LOGW(TAG, "Mode changed - chip reset required! Power cycle the TMC5160 now.");
+        if (driver.communication.SetOperatingMode(tmc51x0::ChipCommMode::SPI_INTERNAL_RAMP)) {
+          ESP_LOGW(TAG, "Mode changed - chip reset required! Power cycle the TMC51x0 now.");
           ESP_LOGW(TAG, "After reset, restart this program.");
           return;
         }
@@ -463,21 +439,20 @@ extern "C" void app_main() {
   ESP_LOGI(TAG, "Motor enabled");
   
   // Diagnostic: Check EN pin state to verify enable logic
-  tmc5160::GpioSignal en_signal;
-  if (spi.GpioRead(tmc5160::TMC5160CtrlPin::EN, en_signal)) {
+  tmc51x0::GpioSignal en_signal;
+  if (spi.GpioRead(tmc51x0::TMC51x0CtrlPin::EN, en_signal)) {
     ESP_LOGI(TAG, "EN pin state after Enable(): %s", 
-             en_signal == tmc5160::GpioSignal::ACTIVE ? "ACTIVE" : "INACTIVE");
-    ESP_LOGI(TAG, "  Note: TMC5160 DRV_ENN is active LOW (LOW=enable, HIGH=disable)");
+             en_signal == tmc51x0::GpioSignal::ACTIVE ? "ACTIVE" : "INACTIVE");
+    ESP_LOGI(TAG, "  Note: TMC51x0 DRV_ENN is active LOW (LOW=enable, HIGH=disable)");
     ESP_LOGI(TAG, "  If motor doesn't move, check if your board has an inverter on EN pin");
     ESP_LOGI(TAG, "  If so, configure: active_levels.en = true in PinActiveLevels");
   }
   
   // Check for Charge Pump Undervoltage immediately after enabling
-  uint32_t gstat_val = 0;
-  if (driver.GetComm().ReadRegister(tmc5160::Registers::GSTAT, gstat_val)) {
-    tmc5160::GSTAT_Register gstat{};
-    gstat.value = gstat_val;
-    if (gstat.bits.uv_cp) {
+  // Check for critical hardware errors
+  bool reset = false, drv_err = false, uv_cp = false;
+  if (driver.diagnostics.GetGlobalStatus(reset, drv_err, uv_cp)) {
+    if (uv_cp) {
       ESP_LOGE(TAG, "CRITICAL HARDWARE ERROR: Charge Pump Undervoltage (uv_cp=1) detected immediately!");
       ESP_LOGE(TAG, "  This usually means VSA/VS voltage is too low or the charge pump capacitor is missing/bad.");
       ESP_LOGE(TAG, "  The motor DRIVER STAGE IS DISABLED by the chip protection.");
@@ -485,75 +460,17 @@ extern "C" void app_main() {
     }
   }
   
-  // Verify motor is enabled by checking CHOPCONF register
-  uint32_t chopconf_value = 0;
-  if (driver.GetComm().ReadRegister(tmc5160::Registers::CHOPCONF, chopconf_value)) {
-    tmc5160::CHOPCONF_Register chopconf{};
-    chopconf.value = chopconf_value;
-    if (chopconf.bits.toff == 0) {
-      ESP_LOGE(TAG, "Motor driver not enabled! CHOPCONF.toff=0 (driver disabled)");
-      ESP_LOGE(TAG, "Check EN pin connection and Enable() call");
-      return;
-    } else {
-      ESP_LOGI(TAG, "Motor driver verified enabled (CHOPCONF.toff=%u)", chopconf.bits.toff);
-    }
+  // Verify motor is enabled
+  if (!driver.motorControl.IsEnabled()) {
+    ESP_LOGE(TAG, "Motor driver not enabled! Check EN pin connection and Enable() call");
+    return;
+  } else {
+    ESP_LOGI(TAG, "Motor driver verified enabled");
   }
   
   // CRITICAL: Check StealthChop status - if enabled but not calibrated, motor won't move!
-  uint32_t gconf_value = 0;
-  if (driver.GetComm().ReadRegister(tmc5160::Registers::GCONF, gconf_value)) {
-    tmc5160::GCONF_Register gconf{};
-    gconf.value = gconf_value;
-    
-    ESP_LOGI(TAG, "=== StealthChop Diagnostic ===");
-    ESP_LOGI(TAG, "GCONF.en_pwm_mode = %d (1=enabled, 0=disabled/SpreadCycle)", gconf.bits.en_pwm_mode ? 1 : 0);
-    
-    if (gconf.bits.en_pwm_mode) {
-      ESP_LOGW(TAG, "⚠️ StealthChop is ENABLED - checking calibration...");
-      
-      // Read PWM_SCALE to check if StealthChop is actually working
-      uint32_t pwm_scale_value = 0;
-      if (driver.GetComm().ReadRegister(tmc5160::Registers::PWM_SCALE, pwm_scale_value)) {
-        tmc5160::PWM_SCALE_Register pwm_scale{};
-        pwm_scale.value = pwm_scale_value;
-        
-        ESP_LOGI(TAG, "PWM_SCALE: pwm_scale_sum=%d, pwm_scale_auto=%d", 
-                 pwm_scale.bits.pwm_scale_sum, pwm_scale.bits.pwm_scale_auto);
-        
-        // Also check PWM_AUTO for calibration status
-        uint32_t pwm_auto_value = 0;
-        bool has_pwm_auto = driver.GetComm().ReadRegister(tmc5160::Registers::PWM_AUTO, pwm_auto_value);
-        if (has_pwm_auto) {
-          tmc5160::PWM_AUTO_Register pwm_auto{};
-          pwm_auto.value = pwm_auto_value;
-          ESP_LOGI(TAG, "PWM_AUTO: pwm_ofs_auto=%d, pwm_grad_auto=%d", 
-                   pwm_auto.bits.pwm_ofs_auto, pwm_auto.bits.pwm_grad_auto);
-        }
-        
-        // If pwm_scale_auto is 0, StealthChop is not calibrated!
-        // pwm_scale_auto is a 9-bit signed value, so 0 or very small values indicate no calibration
-        int16_t pwm_scale_auto_signed = static_cast<int16_t>(pwm_scale.bits.pwm_scale_auto);
-        if (pwm_scale_auto_signed & 0x100) { // Sign extend 9-bit to 16-bit
-          pwm_scale_auto_signed |= 0xFE00;
-        }
-        
-        if (pwm_scale_auto_signed == 0 || (pwm_scale_auto_signed > -10 && pwm_scale_auto_signed < 10)) {
-          ESP_LOGW(TAG, "⚠️ StealthChop is enabled but NOT YET CALIBRATED (pwm_scale_auto=%d)", pwm_scale_auto_signed);
-          ESP_LOGI(TAG, "   Calibration will occur automatically:");
-          ESP_LOGI(TAG, "   AT#1: Wait 130ms+ at standstill with CS=IRUN for PWM_OFS_AUTO");
-          ESP_LOGI(TAG, "         (Motor rated current: %u mA - IRUN/IHOLD calculated automatically)", 
-                   cfg.motor_spec.rated_current_ma);
-          ESP_LOGI(TAG, "   AT#2: Move motor at 60-300 RPM for PWM_GRAD_AUTO (~400 fullsteps)");
-          ESP_LOGI(TAG, "   Motor may not move until calibration completes - this is normal");
-          ESP_LOGI(TAG, "   Keeping StealthChop enabled - calibration will happen during operation");
-        } else {
-          ESP_LOGI(TAG, "✓ StealthChop appears calibrated (pwm_scale_auto=%d)", pwm_scale_auto_signed);
-        }
-      }
-    } else {
-      ESP_LOGI(TAG, "✓ StealthChop is DISABLED - using SpreadCycle mode");
-    }
-  }
+  // This was already checked above, but we can verify again if needed
+  // (StealthChop check is done in the earlier section)
   
   // Check motor current settings
   // NOTE: IHOLD_IRUN and GLOBAL_SCALER are WRITE-ONLY registers per datasheet!
@@ -578,57 +495,74 @@ extern "C" void app_main() {
     ESP_LOGI(TAG, "=== DIAG Pin Diagnostic ===");
     
     // Read DIAG pin states
-    tmc5160::GpioSignal diag0_signal, diag1_signal;
-    bool diag0_read = driver.GetComm().GpioRead(tmc5160::TMC5160CtrlPin::DIAG0, diag0_signal);
-    bool diag1_read = driver.GetComm().GpioRead(tmc5160::TMC5160CtrlPin::DIAG1, diag1_signal);
+    tmc51x0::GpioSignal diag0_signal, diag1_signal;
+    bool diag0_read = driver.GetComm().GpioRead(tmc51x0::TMC51x0CtrlPin::DIAG0, diag0_signal);
+    bool diag1_read = driver.GetComm().GpioRead(tmc51x0::TMC51x0CtrlPin::DIAG1, diag1_signal);
     
     if (diag0_read) {
       ESP_LOGI(TAG, "DIAG0 pin state: %s", 
-               diag0_signal == tmc5160::GpioSignal::ACTIVE ? "HIGH" : "LOW");
+               diag0_signal == tmc51x0::GpioSignal::ACTIVE ? "HIGH" : "LOW");
     } else {
       ESP_LOGW(TAG, "DIAG0 pin not configured or read failed");
     }
     
     if (diag1_read) {
       ESP_LOGI(TAG, "DIAG1 pin state: %s", 
-               diag1_signal == tmc5160::GpioSignal::ACTIVE ? "HIGH" : "LOW");
+               diag1_signal == tmc51x0::GpioSignal::ACTIVE ? "HIGH" : "LOW");
     } else {
       ESP_LOGW(TAG, "DIAG1 pin not configured or read failed");
     }
     
     // Read GCONF to see which diagnostic features are enabled
-    uint32_t gconf_value = 0;
-    if (driver.GetComm().ReadRegister(tmc5160::Registers::GCONF, gconf_value)) {
-      tmc5160::GCONF_Register gconf{};
-      gconf.value = gconf_value;
+      // Get diagnostic configuration
+      tmc51x0::Diag0Config diag0_config{};
+      tmc51x0::Diag1Config diag1_config{};
+      bool has_diag0 = driver.motorControl.GetDiag0Config(diag0_config);
+      bool has_diag1 = driver.motorControl.GetDiag1Config(diag1_config);
       
-      ESP_LOGI(TAG, "GCONF diagnostic settings:");
-      ESP_LOGI(TAG, "  diag0_error=%d, diag0_otpw=%d, diag0_stall_step=%d",
-               gconf.bits.diag0_error ? 1 : 0,
-               gconf.bits.diag0_otpw ? 1 : 0,
-               gconf.bits.diag0_stall_step ? 1 : 0);
-      ESP_LOGI(TAG, "  diag1_stall_dir=%d, diag1_index=%d, diag1_onstate=%d, diag1_steps_skipped=%d",
-               gconf.bits.diag1_stall_dir ? 1 : 0,
-               gconf.bits.diag1_index ? 1 : 0,
-               gconf.bits.diag1_onstate ? 1 : 0,
-               gconf.bits.diag1_steps_skipped ? 1 : 0);
-      ESP_LOGI(TAG, "  diag0_pushpull=%d, diag1_pushpull=%d",
-               gconf.bits.diag0_int_pushpull ? 1 : 0,
-               gconf.bits.diag1_poscomp_pushpull ? 1 : 0);
-      
-      // Read GSTAT for reset and driver errors
-      tmc5160::GSTAT_Register gstat{};
-      gstat.value = 0;
-      bool gstat_read = false;
-      uint32_t gstat_value = 0;
-      if (driver.GetComm().ReadRegister(tmc5160::Registers::GSTAT, gstat_value)) {
-        gstat.value = gstat_value;
-        gstat_read = true;
+      if (has_diag0 || has_diag1) {
+        ESP_LOGI(TAG, "Diagnostic settings:");
+        if (has_diag0) {
+          ESP_LOGI(TAG, "  diag0_error=%d, diag0_otpw=%d, diag0_stall_step=%d",
+                   diag0_config.error ? 1 : 0,
+                   diag0_config.otpw ? 1 : 0,
+                   diag0_config.stall_step ? 1 : 0);
+          ESP_LOGI(TAG, "  diag0_pushpull=%d", diag0_config.pushpull ? 1 : 0);
+        }
+        if (has_diag1) {
+          ESP_LOGI(TAG, "  diag1_stall_dir=%d, diag1_index=%d, diag1_onstate=%d, diag1_steps_skipped=%d",
+                   diag1_config.stall_dir ? 1 : 0,
+                   diag1_config.index ? 1 : 0,
+                   diag1_config.onstate ? 1 : 0,
+                   diag1_config.steps_skipped ? 1 : 0);
+          ESP_LOGI(TAG, "  diag1_pushpull=%d", diag1_config.pushpull ? 1 : 0);
+        }
         
-        ESP_LOGI(TAG, "GSTAT: reset=%d, drv_err=%d, uv_cp=%d",
-                 gstat.bits.reset ? 1 : 0,
-                 gstat.bits.drv_err ? 1 : 0,
-                 gstat.bits.uv_cp ? 1 : 0);
+        // Read GCONF to check diagnostic pin configuration
+        uint32_t gconf_value = 0;
+        bool gconf_read = driver.GetComm().ReadRegister(tmc51x0::Registers::GCONF, gconf_value);
+        tmc51x0::GCONF_Register gconf{};
+        if (gconf_read) {
+          gconf.value = gconf_value;
+        } else {
+          // If GCONF read fails, initialize to safe defaults
+          gconf.value = 0;
+        }
+        
+        // Read GSTAT for reset and driver errors
+        bool reset = false, drv_err = false, uv_cp = false;
+        bool gstat_read = driver.diagnostics.GetGlobalStatus(reset, drv_err, uv_cp);
+        tmc51x0::GSTAT_Register gstat{};
+        uint32_t gstat_value = 0;
+        if (driver.GetComm().ReadRegister(tmc51x0::Registers::GSTAT, gstat_value)) {
+          gstat.value = gstat_value;
+        }
+        
+        if (gstat_read) {
+          ESP_LOGI(TAG, "GSTAT: reset=%d, drv_err=%d, uv_cp=%d",
+                   reset ? 1 : 0,
+                   drv_err ? 1 : 0,
+                   uv_cp ? 1 : 0);
         
         // DIAG0 always shows reset status (active low during reset)
         if (gstat.bits.reset) {
@@ -645,11 +579,11 @@ extern "C" void app_main() {
       }
       
       // Read DRV_STATUS for detailed error information
-      tmc5160::DRV_STATUS_Register drv_status{};
+      tmc51x0::DRV_STATUS_Register drv_status{};
       drv_status.value = 0;
       bool drv_status_read = false;
       uint32_t drv_status_value = 0;
-      if (driver.GetComm().ReadRegister(tmc5160::Registers::DRV_STATUS, drv_status_value)) {
+      if (driver.diagnostics.GetDriverStatusRegister(drv_status_value)) {
         drv_status.value = drv_status_value;
         drv_status_read = true;
         
@@ -666,8 +600,8 @@ extern "C" void app_main() {
                  drv_status.bits.sg_result);
         
         // Check for wiring issues / stall
-        // Note: SG_RESULT is generally invalid in StealthChop mode on TMC5160!
-        // Only report wiring issues if in SpreadCycle (en_pwm_mode=0)
+        // Note: SG_RESULT is generally invalid in StealthChop mode on TMC51x0!
+        // Only report wiring issues if in SpreadCycle (en_stealthchop_mode=0)
         if (drv_status.bits.sg_result == 0) {
           if (!gconf.bits.en_pwm_mode) {
             ESP_LOGE(TAG, "  ⚠️ WIRING ISSUE: SG=0 with no load suggests:");
@@ -694,10 +628,10 @@ extern "C" void app_main() {
       }
       
       // Read RAMP_STAT for stall and position information
-      tmc5160::RAMP_STAT_Register ramp_stat{};
+      tmc51x0::RAMP_STAT_Register ramp_stat{};
       ramp_stat.value = 0;
       uint32_t ramp_stat_value = 0;
-      if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat_value)) {
+      if (driver.diagnostics.GetRampStatusRegister(ramp_stat_value)) {
         ramp_stat.value = ramp_stat_value;
         
         ESP_LOGI(TAG, "RAMP_STAT: status_sg=%d (stall guard active)",
@@ -714,7 +648,7 @@ extern "C" void app_main() {
       // Summary
       ESP_LOGI(TAG, "=== DIAG Pin Summary ===");
       if (diag0_read) {
-        bool diag0_active = (diag0_signal == tmc5160::GpioSignal::ACTIVE);
+        bool diag0_active = (diag0_signal == tmc51x0::GpioSignal::ACTIVE);
         bool diag0_expected_low = false;
         
         if (gstat_read) {
@@ -739,7 +673,7 @@ extern "C" void app_main() {
       }
       
       if (diag1_read) {
-        bool diag1_active = (diag1_signal == tmc5160::GpioSignal::ACTIVE);
+        bool diag1_active = (diag1_signal == tmc51x0::GpioSignal::ACTIVE);
         ESP_LOGI(TAG, "DIAG1: %s", diag1_active ? "HIGH" : "LOW");
         if (!diag1_active && (gconf.bits.diag1_stall_dir || gconf.bits.diag1_index || 
                               gconf.bits.diag1_onstate)) {
@@ -754,8 +688,8 @@ extern "C" void app_main() {
   
   // Read RAMP_STAT to check for any flags preventing motion
   uint32_t ramp_stat = 0;
-  if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat)) {
-    tmc5160::RAMP_STAT_Register status{};
+  if (driver.diagnostics.GetRampStatusRegister(ramp_stat)) {
+    tmc51x0::RAMP_STAT_Register status{};
     status.value = ramp_stat;
     ESP_LOGI(TAG, "RAMP_STAT: vzero=%d, velocity_reached=%d, position_reached=%d, stop_l=%d, stop_r=%d",
              status.bits.vzero ? 1 : 0,
@@ -764,24 +698,23 @@ extern "C" void app_main() {
              status.bits.status_stop_l ? 1 : 0,
              status.bits.status_stop_r ? 1 : 0);
     
-    // Check SW_MODE to see if stops are actually enabled
-    uint32_t sw_mode_check = 0;
+    // Check if stops are actually enabled
+    bool left_active = false, right_active = false;
+    bool left_enabled = false, right_enabled = false;
     bool stops_enabled = false;
-    if (driver.GetComm().ReadRegister(tmc5160::Registers::SW_MODE, sw_mode_check)) {
-      tmc5160::SW_MODE_Register sw_mode{};
-      sw_mode.value = sw_mode_check;
-      stops_enabled = sw_mode.bits.stop_l_enable || sw_mode.bits.stop_r_enable;
+    if (driver.rampControl.GetReferenceSwitchStatus(left_active, right_active, left_enabled, right_enabled)) {
+      stops_enabled = left_enabled || right_enabled;
     }
     
-    if (status.bits.status_stop_l || status.bits.status_stop_r) {
+    if (left_active || right_active) {
       if (stops_enabled) {
         ESP_LOGE(TAG, "ERROR: Reference switch active AND enabled! stop_l=%d, stop_r=%d", 
-                 status.bits.status_stop_l ? 1 : 0, status.bits.status_stop_r ? 1 : 0);
+                 left_active ? 1 : 0, right_active ? 1 : 0);
         ESP_LOGE(TAG, "This WILL prevent motion in internal ramp mode!");
         ESP_LOGE(TAG, "Solution: Disable reference switches via ConfigureReferenceSwitch()");
       } else {
         ESP_LOGW(TAG, "Reference switch pins are active (stop_l=%d, stop_r=%d) but stops are DISABLED",
-                 status.bits.status_stop_l ? 1 : 0, status.bits.status_stop_r ? 1 : 0);
+                 left_active ? 1 : 0, right_active ? 1 : 0);
         ESP_LOGI(TAG, "Motion should still work since stop_l_enable=0 and stop_r_enable=0 in SW_MODE");
         ESP_LOGI(TAG, "The status bits just reflect pin state - they don't block motion when disabled");
       }
@@ -790,7 +723,10 @@ extern "C" void app_main() {
   
   // Read VACTUAL to see if motor is trying to move
   // Use GetCurrentSpeed() which properly converts from internal units to steps/s
-  float actual_velocity = driver.rampControl.GetCurrentSpeed();
+  float actual_velocity = 0.0f;
+  if (!driver.rampControl.GetCurrentSpeed(actual_velocity, tmc51x0::Unit::Steps)) {
+    ESP_LOGW(TAG, "Failed to get current speed");
+  }
   ESP_LOGI(TAG, "VACTUAL (actual velocity): %.1f steps/s", actual_velocity);
   if (actual_velocity != 0.0f) {
     ESP_LOGI(TAG, "  ✓ Motor IS moving at %.1f steps/s", actual_velocity);
@@ -847,33 +783,40 @@ extern "C" void app_main() {
       last_diag_time = current_time;
       
       // Read actual velocity
-      float actual_velocity = driver.rampControl.GetCurrentSpeed();
-      int32_t actual_position = driver.rampControl.GetCurrentPosition();
+      float actual_velocity = 0.0f;
+      if (!driver.rampControl.GetCurrentSpeed(actual_velocity, tmc51x0::Unit::Steps)) {
+        ESP_LOGW(TAG, "Failed to get current speed");
+      }
+      float actual_pos_float = 0.0f;
+      if (!driver.rampControl.GetCurrentPosition(actual_pos_float, tmc51x0::Unit::Steps)) {
+        ESP_LOGW(TAG, "Failed to get current position");
+      }
+      int32_t actual_position = static_cast<int32_t>(actual_pos_float);
       
       // Read ramp status
       uint32_t ramp_stat = 0;
-      bool has_ramp_stat = driver.GetComm().ReadRegister(tmc5160::Registers::RAMP_STAT, ramp_stat);
+      bool has_ramp_stat = driver.diagnostics.GetRampStatusRegister(ramp_stat);
       
       // Read DRV_STATUS for stall detection
       uint32_t drv_status_value = 0;
-      bool has_drv_status = driver.GetComm().ReadRegister(tmc5160::Registers::DRV_STATUS, drv_status_value);
-      tmc5160::DRV_STATUS_Register drv_status{};
+      bool has_drv_status = driver.GetComm().ReadRegister(tmc51x0::Registers::DRV_STATUS, drv_status_value);
+      tmc51x0::DRV_STATUS_Register drv_status{};
       if (has_drv_status) {
         drv_status.value = drv_status_value;
       }
       
       // Read GSTAT for charge pump status
       uint32_t gstat_value = 0;
-      bool has_gstat = driver.GetComm().ReadRegister(tmc5160::Registers::GSTAT, gstat_value);
-      tmc5160::GSTAT_Register gstat{};
+      bool has_gstat = driver.GetComm().ReadRegister(tmc51x0::Registers::GSTAT, gstat_value);
+      tmc51x0::GSTAT_Register gstat{};
       if (has_gstat) {
         gstat.value = gstat_value;
       }
       
       // Read GCONF to check StealthChop mode (needed for StallGuard2 interpretation)
       uint32_t gconf_value = 0;
-      bool has_gconf = driver.GetComm().ReadRegister(tmc5160::Registers::GCONF, gconf_value);
-      tmc5160::GCONF_Register gconf{};
+      bool has_gconf = driver.GetComm().ReadRegister(tmc51x0::Registers::GCONF, gconf_value);
+      tmc51x0::GCONF_Register gconf{};
       if (has_gconf) {
         gconf.value = gconf_value;
       }
@@ -885,7 +828,9 @@ extern "C" void app_main() {
       // Read RAMPMODE to verify we're in positioning mode
       uint32_t rampmode_value = 0;
       bool in_positioning_mode = false;
-      if (driver.GetComm().ReadRegister(tmc5160::Registers::RAMPMODE, rampmode_value)) {
+      tmc51x0::RampMode rampmode_enum = tmc51x0::RampMode::POSITIONING;
+      if (driver.rampControl.GetRampMode(rampmode_enum)) {
+        uint32_t rampmode_value = static_cast<uint32_t>(rampmode_enum);
         in_positioning_mode = (rampmode_value == 0); // POSITIONING mode
         const char* mode_str = (rampmode_value == 0) ? "POSITIONING" :
                               (rampmode_value == 1) ? "VELOCITY_POS" :
@@ -899,7 +844,9 @@ extern "C" void app_main() {
       
       // Read target position
       uint32_t xtarget_value = 0;
-      if (driver.GetComm().ReadRegister(tmc5160::Registers::XTARGET, xtarget_value)) {
+      float target_pos_float = 0.0f;
+      if (driver.rampControl.GetTargetPosition(target_pos_float, tmc51x0::Unit::Steps) && target_pos_float != 0.0f) {
+        uint32_t xtarget_value = static_cast<uint32_t>(target_pos_float);
         int32_t target_pos = static_cast<int32_t>(xtarget_value);
         ESP_LOGI(TAG, "  XTARGET (target position): %ld", target_pos);
         ESP_LOGI(TAG, "  XACTUAL (current position): %d", actual_position);
@@ -967,7 +914,7 @@ extern "C" void app_main() {
       }
       
       if (has_ramp_stat) {
-        tmc5160::RAMP_STAT_Register status{};
+        tmc51x0::RAMP_STAT_Register status{};
         status.value = ramp_stat;
         ESP_LOGI(TAG, "  Ramp status: vzero=%d, velocity_reached=%d, position_reached=%d, stop_l=%d, stop_r=%d, status_sg=%d",
                  status.bits.vzero ? 1 : 0,
@@ -1038,7 +985,7 @@ extern "C" void app_main() {
         if (has_gstat && gstat.bits.uv_cp) {
           ESP_LOGE(TAG, "  Root cause: Charge pump undervoltage!");
         } else if (has_ramp_stat) {
-          tmc5160::RAMP_STAT_Register status{};
+          tmc51x0::RAMP_STAT_Register status{};
           status.value = ramp_stat;
           if (status.bits.status_sg) {
             ESP_LOGW(TAG, "  StallGuard2 active (status_sg=1), but motor will NOT stop (SG2 stop disabled)");
@@ -1048,11 +995,9 @@ extern "C" void app_main() {
       }
       
       // Check if motor is still enabled
-      uint32_t chopconf_check = 0;
-      if (driver.GetComm().ReadRegister(tmc5160::Registers::CHOPCONF, chopconf_check)) {
-        tmc5160::CHOPCONF_Register chopconf{};
-        chopconf.value = chopconf_check;
-        if (chopconf.bits.toff == 0) {
+      tmc51x0::ChopperConfig chopconf_check{};
+      if (driver.motorControl.GetChopperConfig(chopconf_check)) {
+        if (chopconf_check.toff == 0) {
           ESP_LOGW(TAG, "WARNING: Motor driver disabled! Re-enabling...");
           driver.motorControl.Enable();
         }

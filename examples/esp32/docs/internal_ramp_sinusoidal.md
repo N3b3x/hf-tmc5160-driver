@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `sinusoidal.cpp` example demonstrates simple back-and-forth motion using the TMC5160's internal ramp generator in positioning mode. The motor moves between two positions repeatedly, creating a continuous oscillating motion pattern.
+The `internal_ramp_sinusoidal.cpp` example demonstrates simple back-and-forth motion using the TMC5160's internal ramp generator in positioning mode. The motor moves between two positions repeatedly, creating a continuous oscillating motion pattern.
 
 ## Purpose
 

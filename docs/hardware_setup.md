@@ -100,7 +100,7 @@ SD_MODE  (pin 21) ──────> GND  (LOW)
 **Software Control (Advanced):**
 - If SPI_MODE and SD_MODE pins are connected to GPIO outputs (instead of hardwired), they can be controlled via software
 - Use `TMC5160PinConfig` to configure `spi_mode_pin` and `sd_mode_pin` if available
-- Use `driver.SetChipCommMode()` to change modes programmatically
+- Use `driver.communication.SetOperatingMode()` to change modes programmatically
 - **⚠️ CRITICAL**: Changing mode pins requires a chip reset (power cycle or reset pin) to take effect
 - The mode pins are read at startup, so changes won't be effective until the chip is reset
 
@@ -142,7 +142,7 @@ SD_MODE  (pin 21) ──────> GND  (LOW)
 
 - **Baud Rate**: Typically 500000 bps (configurable)
 - **Data Format**: 8 data bits, 1 stop bit, no parity
-- **Slave Address**: 0-127 (7-bit address)
+- **Node Address**: 0-254 (8-bit address)
 
 ## Physical Layout Recommendations
 

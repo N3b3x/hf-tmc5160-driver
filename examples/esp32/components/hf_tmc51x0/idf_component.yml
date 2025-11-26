@@ -1,21 +1,21 @@
 ###############################################################################
-#  TMC5160 Driver – ESP-IDF Component Manager Manifest
+#  TMC51x0 Driver – ESP-IDF Component Manager Manifest
 #
-#  This manifest file describes the TMC5160 driver component for the ESP-IDF
-#  Component Manager. The TMC5160 is a hardware-agnostic stepper motor driver
+#  This manifest file describes the TMC51x0 driver component for the ESP-IDF
+#  Component Manager. The TMC51x0 is a hardware-agnostic stepper motor driver
 #  IC that supports advanced features like stealthChop, spreadCycle, StallGuard2,
-#  and encoder support.
+#  and encoder support. Supports both TMC5130 and TMC5160 chips.
 #
 #  For more information about the ESP-IDF Component Manager manifest format,
 #  see: https://docs.espressif.com/projects/idf-component-manager/en/latest/reference/manifest_file.html
 ###############################################################################
 
 # ─── Component Metadata ───────────────────────────────────────────────────────
-name: hf-tmc5160-driver
+name: hf-tmc51x0-driver
 version: "1.0.0"
 description: |
-  TMC5160 Hardware-Agnostic Stepper Motor Driver - comprehensive driver library for the
-  TMC5160 stepper motor control IC. Features stealthChop for silent operation,
+  TMC51x0 Hardware-Agnostic Stepper Motor Driver - comprehensive driver library for the
+  TMC5130 and TMC5160 stepper motor control ICs. Features stealthChop for silent operation,
   spreadCycle for high torque, StallGuard2 for stall detection, encoder support
   for closed-loop control, and comprehensive protection systems. Designed for
   embedded systems with full ESP32 family support and modern ESP-IDF v5.0+ integration.
@@ -33,6 +33,8 @@ maintainers:
 
 # ─── Component Classification ────────────────────────────────────────────────
 tags:
+  - "tmc51x0"          # TMC51x0 motor driver (TMC5130 & TMC5160)
+  - "tmc5130"          # TMC5130 motor driver
   - "tmc5160"          # TMC5160 motor driver
   - "motor-control"    # Motor control systems
   - "stepper"          # Stepper motor control
@@ -113,13 +115,13 @@ files:
 ###############################################################################
 #  Component Architecture Overview
 #
-#  The TMC5160 Driver consists of several layers:
+#  The TMC51x0 Driver consists of several layers:
 #
 #  1. Core Driver Classes (inc/)
-#     - tmc5160.hpp: Main driver class with hardware-agnostic interface
-#     - tmc5160_comm_interface.hpp: Communication interface abstraction (SPI/UART)
-#     - tmc5160_registers.hpp: Register definitions and bitfield structures
-#     - tmc5160_types.hpp: Type definitions and enumerations
+#     - tmc51x0.hpp: Main driver class with hardware-agnostic interface
+#     - tmc51x0_comm_interface.hpp: Communication interface abstraction (SPI/UART)
+#     - tmc51x0_registers.hpp: Register definitions and bitfield structures
+#     - tmc51x0_types.hpp: Type definitions and enumerations
 #
 #  2. Subsystem Classes
 #     - RampControl: Positioning, velocity, and hold modes
@@ -130,19 +132,19 @@ files:
 #
 #  Usage Example:
 #  ```cpp
-#  #include "tmc5160.hpp"
+#  #include "tmc51x0.hpp"
 #
 #  // Create driver instance
 #  MySPI spi;
-#  tmc5160::TMC5160 driver(spi);
+#  tmc51x0::TMC51x0 driver(spi);
 #
 #  // Initialize driver
-#  tmc5160::DriverConfig cfg{};
+#  tmc51x0::DriverConfig cfg{};
 #  cfg.motor.irun = 20;
 #  driver.Initialize(cfg);
 #
 #  // Configure and start motor
-#  driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+#  driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
 #  driver.rampControl.SetTargetPosition(1000);
 #  driver.motorControl.Enable();
 #  ```

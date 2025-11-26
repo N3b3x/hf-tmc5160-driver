@@ -1,32 +1,33 @@
 /**
- * @file tmc5160_daisy_chain.hpp
- * @brief High-level daisy-chain manager for multiple TMC5160 drivers
+ * @file tmc51x0_daisy_chain.hpp
+ * @brief High-level daisy-chain manager for multiple TMC51x0 drivers (TMC5130 & TMC5160)
  *
- * This file provides a TMC5160DaisyChain class that manages multiple TMC5160 drivers
+ * This file provides a TMC51x0DaisyChain class that manages multiple TMC51x0 drivers
  * on a single SPI bus using daisy-chaining. It handles proper device creation,
  * chain length configuration, and supports dynamic addition/removal of devices.
+ * Supports both TMC5130 and TMC5160 chips.
  *
- * @defgroup TMC5160_DaisyChain Daisy-Chain Management
+ * @defgroup TMC51X0_DaisyChain Daisy-Chain Management
  * @brief High-level daisy-chain management
  */
 
-#ifndef TMC5160_DAISY_CHAIN_HPP
-#define TMC5160_DAISY_CHAIN_HPP
+#ifndef TMC51X0_DAISY_CHAIN_HPP
+#define TMC51X0_DAISY_CHAIN_HPP
 
 #include <array>
 #include <cstdint>
 #include <optional>
 
-#include "tmc5160.hpp"
-#include "tmc5160_comm_interface.hpp"
+#include "tmc51x0.hpp"
+#include "tmc51x0_comm_interface.hpp"
 
-namespace tmc5160 {
+namespace tmc51x0 {
 
 /**
- * @brief High-level manager for multiple TMC5160 drivers in a daisy-chain configuration
- * @ingroup TMC5160_DaisyChain
+ * @brief High-level manager for multiple TMC51x0 drivers in a daisy-chain configuration
+ * @ingroup TMC51X0_DaisyChain
  *
- * This class manages multiple TMC5160 drivers on a single SPI bus using daisy-chaining.
+ * This class manages multiple TMC51x0 drivers on a single SPI bus using daisy-chaining.
  * It supports a fixed number of onboard devices (known at construction) and allows
  * dynamic addition/removal of extra devices up to a maximum capacity.
  *
@@ -39,8 +40,8 @@ namespace tmc5160 {
  *
  * ## Architecture
  *
- * - **One SpiCommInterface**: Shared by all TMC5160 instances in the chain
- * - **Multiple TMC5160 Instances**: One per device, each with its own position (0, 1, 2, ...)
+ * - **One SpiCommInterface**: Shared by all TMC51x0 instances in the chain
+ * - **Multiple TMC51x0 Instances**: One per device, each with its own position (0, 1, 2, ...)
  * - **Total Chain Length**: Automatically updated when devices are added/removed
  *
  * ## Important: Sequential Positioning
@@ -57,7 +58,7 @@ namespace tmc5160 {
  *
  * @code
  * // Create daisy-chain with 3 onboard devices
- * tmc5160::TMC5160DaisyChain<MySPI, 5> chain(spiComm, 3, 12'000'000);
+ * tmc51x0::TMC51x0DaisyChain<MySPI, 5> chain(spiComm, 3, 12'000'000);
  *
  * // Create user-friendly aliases for device indices
  * auto& x_axis = chain[0];  // Position 0 = X-axis motor
@@ -74,16 +75,16 @@ namespace tmc5160 {
  *
  * @code
  * // Create SPI communication interface (shared by all devices)
- * class MySPI : public tmc5160::SpiCommInterface<MySPI> { ... };
+ * class MySPI : public tmc51x0::SpiCommInterface<MySPI> { ... };
  * MySPI spiComm;
  * spiComm.Initialize();
  *
  * // Create daisy-chain manager with 3 onboard devices, capacity for 5 total
  * // Onboard devices are created at positions 0, 1, 2 (sequential)
- * tmc5160::TMC5160DaisyChain<MySPI, 5> chain(spiComm, 3, 12'000'000);
+ * tmc51x0::TMC51x0DaisyChain<MySPI, 5> chain(spiComm, 3, 12'000'000);
  *
  * // Initialize onboard devices
- * tmc5160::DriverConfig cfg{};
+ * tmc51x0::DriverConfig cfg{};
  * cfg.motor.irun = 20;
  * cfg.motor.ihold = 10;
  * chain.InitializeAll(cfg);
@@ -111,18 +112,18 @@ namespace tmc5160 {
  * @tparam MaxDevices Maximum total capacity (onboard + extra devices, default: 8)
  */
 template <typename CommType, size_t MaxDevices = 8>
-class TMC5160DaisyChain {
+class TMC51x0DaisyChain {
 public:
   /**
    * @brief Construct a daisy-chain manager
    * @param comm Reference to SPI communication interface (shared by all devices)
    * @param num_onboard_devices Number of onboard devices (fixed, created at construction)
-   * @param f_clk TMC5160 clock frequency in Hz (default: 12 MHz)
+   * @param f_clk TMC51x0 clock frequency in Hz (default: 12 MHz)
    *
    * @note Onboard devices are created immediately and cannot be removed.
    *       Extra devices can be added/removed at runtime up to MaxDevices total.
    */
-  explicit TMC5160DaisyChain(CommType& comm, uint8_t num_onboard_devices,
+  explicit TMC51x0DaisyChain(CommType& comm, uint8_t num_onboard_devices,
                              uint32_t f_clk = ClockFreq::DEFAULT_F_CLK) noexcept
       : comm_(comm), num_onboard_devices_(num_onboard_devices), num_active_devices_(num_onboard_devices),
         f_clk_(f_clk) {
@@ -132,10 +133,10 @@ public:
       num_active_devices_ = 1;
     }
 
-    // Create onboard TMC5160 instances, one per device
+    // Create onboard TMC51x0 instances, one per device
     // Each device has its position (0, 1, 2, ...) set in constructor
     for (uint8_t i = 0; i < num_onboard_devices_; ++i) {
-      drivers_[i] = std::make_optional<TMC5160<CommType>>(comm_, f_clk_, i);
+      drivers_[i] = std::make_optional<TMC51x0<CommType>>(comm_, f_clk_, i);
     }
 
     // Initialize extra device slots as empty
@@ -220,7 +221,7 @@ public:
     }
 
     // Create device instance at specified position
-    drivers_[position] = std::make_optional<TMC5160<CommType>>(comm_, f_clk_, position);
+    drivers_[position] = std::make_optional<TMC51x0<CommType>>(comm_, f_clk_, position);
     num_active_devices_++;
 
     // Update chain length on SpiCommInterface
@@ -288,16 +289,16 @@ public:
    *       No bounds checking is performed for performance reasons.
    *       Use IsDeviceActive() to verify device exists before access.
    */
-  [[nodiscard]] TMC5160<CommType>& operator[](uint8_t index) noexcept {
+  [[nodiscard]] TMC51x0<CommType>& operator[](uint8_t index) noexcept {
     return drivers_[index].value();
   }
 
   /**
-   * @brief Const access to individual TMC5160 driver by index
+   * @brief Const access to individual TMC51x0 driver by index
    * @param index Device index (0 = first device, 1 = second, etc.)
-   * @return Const reference to TMC5160 driver instance
+   * @return Const reference to TMC51x0 driver instance
    */
-  [[nodiscard]] const TMC5160<CommType>& operator[](uint8_t index) const noexcept {
+  [[nodiscard]] const TMC51x0<CommType>& operator[](uint8_t index) const noexcept {
     return drivers_[index].value();
   }
 
@@ -343,9 +344,9 @@ private:
   CommType& comm_;              ///< Shared SPI communication interface
   uint8_t num_onboard_devices_; ///< Number of onboard devices (fixed)
   uint8_t num_active_devices_;  ///< Total number of active devices (onboard + extra)
-  uint32_t f_clk_;              ///< TMC5160 clock frequency
-  std::array<std::optional<TMC5160<CommType>>, MaxDevices>
-      drivers_; ///< TMC5160 driver instances (optional for dynamic devices)
+  uint32_t f_clk_;              ///< TMC51x0 clock frequency
+  std::array<std::optional<TMC51x0<CommType>>, MaxDevices>
+      drivers_; ///< TMC51x0 driver instances (optional for dynamic devices)
 };
 
 } // namespace tmc5160

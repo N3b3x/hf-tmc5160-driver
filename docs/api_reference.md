@@ -25,62 +25,92 @@ Main driver class for interfacing with the TMC5160 stepper motor controller.
 
 **Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
 
+### Class Architecture
+
+The `TMC5160` class uses a **subsystem-based architecture** that organizes functionality into logical groups. This design makes it easy to discover and use features:
+
+```cpp
+tmc5160::TMC5160<CommType> driver(comm_interface);
+
+// Subsystems provide organized access to functionality
+driver.rampControl      // Motion planning, positioning, velocity control
+driver.motorControl     // Current control, chopper modes, stealthChop
+driver.encoder          // Encoder integration, closed-loop control
+driver.diagnostics      // Status monitoring, StallGuard2, diagnostics
+driver.tuning           // Automatic parameter optimization (SGT tuning)
+driver.homing           // Sensorless and switch-based homing
+driver.protection       // Safety systems, short circuit protection
+driver.communication    // Multi-chip communication setup
+driver.printer          // Debug register printing
+```
+
 ### Constructor
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `TMC5160()` | `TMC5160(CommType& comm, uint32_t f_clk = 12000000, uint8_t daisy_chain_position = 0, uint8_t uart_node_address = 0)` | Construct driver instance. For SPI: use `daisy_chain_position` (0 = first chip). For UART: use `uart_node_address` (0-254). |
+| `TMC5160()` | `TMC5160(CommType& comm, uint8_t daisy_chain_position = 0, uint8_t uart_node_address = 0)` | Construct driver instance. For SPI: use `daisy_chain_position` (0 = first chip). For UART: use `uart_node_address` (0-254). Clock frequency (f_clk) is determined automatically during `Initialize()` from `DriverConfig::external_clk_config`. |
 
 ### Core Methods
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
 | `GetComm()` | `CommType& GetComm() noexcept` | Reference to comm interface | Get communication interface reference |
-| `SetDaisyChainPosition()` | `void SetDaisyChainPosition(uint8_t position) noexcept` | void | Set daisy-chain position for SPI (0 = first chip) |
-| `GetDaisyChainPosition()` | `uint8_t GetDaisyChainPosition() const noexcept` | Position (0-255) | Get current daisy-chain position for SPI |
-| `SetUartNodeAddress()` | `void SetUartNodeAddress(uint8_t address) noexcept` | void | Set UART node address (0-254) for UART multi-node |
-| `GetUartNodeAddress()` | `uint8_t GetUartNodeAddress() const noexcept` | Address (0-254) | Get current UART node address |
-| `SetChipCommMode()` | `bool SetChipCommMode(ChipCommMode mode) noexcept` | `true` on success | Set chip communication mode via SPI_MODE and SD_MODE pins (if available as GPIO) |
-| `GetChipCommMode()` | `bool GetChipCommMode(ChipCommMode& mode) const noexcept` | `true` on success | Get current chip communication mode from SPI_MODE and SD_MODE pins |
+| `Initialize()` | `bool Initialize(const DriverConfig& config = DriverConfig()) noexcept` | `true` on success | Initialize driver with configuration |
+| `Reset()` | `bool Reset() noexcept` | `true` on success | Perform software reset |
+| `IsInitialized()` | `bool IsInitialized() const noexcept` | `true` if initialized | Check initialization status |
 
 **Note**: Per datasheet procedure, devices are programmed backwards from address 254 (254, 253, 252, ...). Logical device indices (0, 1, 2, ...) map to physical addresses (254, 253, 252, ...). Use `TMC5160MultiNode` class for managing multiple devices.
 
 **⚠️ Chip Communication Mode Control:**
-- `SetChipCommMode()` and `GetChipCommMode()` control SPI_MODE (pin 22) and SD_MODE (pin 21) pins
+- `communication.SetOperatingMode()` and `communication.GetOperatingMode()` control SPI_MODE (pin 22) and SD_MODE (pin 21) pins
 - These pins are **typically hardwired** and read at startup
 - Only use these methods if SPI_MODE and SD_MODE are connected to GPIO outputs
 - Configure pins in `TMC5160PinConfig` (spi_mode_pin, sd_mode_pin) before use
 - **CRITICAL**: Mode changes require a chip reset (power cycle or reset pin) to take effect
 - The mode pins are read at startup, so changes won't be effective until reset
 
-| `Initialize()` | `bool Initialize(const DriverConfig& config = DriverConfig()) noexcept` | `true` on success | Initialize driver with configuration |
-| `Reset()` | `bool Reset() noexcept` | `true` on success | Perform software reset |
-| `IsInitialized()` | `bool IsInitialized() const noexcept` | `true` if initialized | Check initialization status |
+## Subsystems
+
+The TMC5160 class organizes functionality into intuitive subsystems. Each subsystem provides a focused set of methods for a specific aspect of motor control.
+
+---
 
 ## RampControl Subsystem
 
-Ramp control and motion planning subsystem.
+Ramp control and motion planning subsystem for precise motor positioning and velocity control.
 
 **Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+
+**Access**: `driver.rampControl`
+
+**Purpose**: Controls motor motion including positioning, velocity control, hold modes, and reference switch configuration. All methods support physical unit conversions (Steps, Mm, Deg, RPM).
+
+**Key Features**:
+- **Ramp Modes**: Positioning, velocity (positive/negative), and hold modes
+- **Unit-Aware API**: Work with physical units (mm, degrees, RPM) instead of raw steps
+- **Advanced Motion Profiles**: Multi-phase acceleration (A1, AMAX, D1) for smooth motion
+- **Reference Switches**: Configurable endstops with latching and stop-on-switch modes
+- **Position Control**: Set target positions, read current position, check target reached
+- **Velocity Control**: Set maximum speeds, read current velocity, check velocity reached
 
 ### Methods
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
 | `SetRampMode()` | `bool SetRampMode(RampMode mode) noexcept` | `true` on success | Set ramp mode (POSITIONING, VELOCITY_POS, VELOCITY_NEG, HOLD) |
-| `SetTargetPosition()` | `bool SetTargetPosition(int32_t position) noexcept` | `true` on success | Set target position for positioning mode |
-| `GetCurrentPosition()` | `int32_t GetCurrentPosition() noexcept` | Position in steps (0 on error) | Get current motor position |
-| `SetCurrentPosition()` | `bool SetCurrentPosition(int32_t position, bool update_encoder = false) noexcept` | `true` on success | Set current position (optionally update encoder) |
-| `SetMaxSpeed()` | `bool SetMaxSpeed(float speed) noexcept` | `true` on success | Set maximum velocity (steps/s) |
-| `SetAcceleration()` | `bool SetAcceleration(float acceleration) noexcept` | `true` on success | Set acceleration/deceleration (steps/s²) |
-| `SetAccelerations()` | `bool SetAccelerations(float acceleration, float deceleration) noexcept` | `true` on success | Set acceleration and deceleration separately |
-| `SetRampSpeeds()` | `bool SetRampSpeeds(float start_speed, float stop_speed, float transition_speed) noexcept` | `true` on success | Set ramp start, stop, and transition speeds |
-| `GetCurrentSpeed()` | `float GetCurrentSpeed() noexcept` | Speed in steps/s (0.0f on error) | Get current motor velocity |
+| `SetTargetPosition()` | `bool SetTargetPosition(float value, Unit unit = Unit::Steps) noexcept` | `true` on success | Set target position for positioning mode (unit-aware) |
+| `GetCurrentPosition()` | `bool GetCurrentPosition(float& position, Unit unit = Unit::Steps) noexcept` | `true` on success | Get current motor position (unit-aware) |
+| `GetTargetPosition()` | `bool GetTargetPosition(float& position, Unit unit = Unit::Steps) noexcept` | `true` on success | Get target position (unit-aware) |
+| `SetCurrentPosition()` | `bool SetCurrentPosition(float value, Unit unit = Unit::Steps, bool update_encoder = false) noexcept` | `true` on success | Set current position (unit-aware, optionally update encoder) |
+| `SetMaxSpeed()` | `bool SetMaxSpeed(float value, Unit unit = Unit::Steps) noexcept` | `true` on success | Set maximum velocity (unit-aware) |
+| `SetAcceleration()` | `bool SetAcceleration(float value, Unit unit = Unit::Steps) noexcept` | `true` on success | Set acceleration/deceleration (unit-aware) |
+| `SetAccelerations()` | `bool SetAccelerations(float accel_val, float decel_val, Unit unit = Unit::Steps) noexcept` | `true` on success | Set acceleration and deceleration separately (unit-aware) |
+| `SetDeceleration()` | `bool SetDeceleration(float value, Unit unit = Unit::Steps) noexcept` | `true` on success | Set deceleration only (DMAX register, unit-aware) |
+| `SetRampSpeeds()` | `bool SetRampSpeeds(float start_speed, float stop_speed, float transition_speed, Unit unit = Unit::Steps) noexcept` | `true` on success | Set ramp start, stop, and transition speeds (unit-aware) |
+| `GetCurrentSpeed()` | `bool GetCurrentSpeed(float& speed, Unit unit = Unit::Steps) noexcept` | `true` on success | Get current motor velocity (unit-aware) |
 | `IsTargetReached()` | `bool IsTargetReached() noexcept` | `true` if reached | Check if target position reached |
 | `IsTargetVelocityReached()` | `bool IsTargetVelocityReached() noexcept` | `true` if reached | Check if target velocity reached |
 | `Stop()` | `bool Stop() noexcept` | `true` on success | Stop motor immediately |
-| `SetTargetPositionMm()` | `bool SetTargetPositionMm(float position_mm, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept` | `true` on success | Set target position in millimeters |
-| `SetMaxSpeedRpm()` | `bool SetMaxSpeedRpm(float rpm, uint16_t steps_per_rev) noexcept` | `true` on success | Set maximum speed in RPM |
 | `ConfigureReferenceSwitch()` | `bool ConfigureReferenceSwitch(const ReferenceSwitchConfig& config) noexcept` | `true` on success | Configure reference switches/endstops (full configuration) |
 | `GetReferenceSwitchConfig()` | `bool GetReferenceSwitchConfig(ReferenceSwitchConfig& config) noexcept` | `true` on success | Read current reference switch configuration |
 | `SetLeftSwitchActiveLevel()` | `bool SetLeftSwitchActiveLevel(ReferenceSwitchActiveLevel) noexcept` | `true` on success | Set left switch active level (real-time update) |
@@ -90,17 +120,33 @@ Ramp control and motion planning subsystem.
 | `SetLeftSwitchLatchMode()` | `bool SetLeftSwitchLatchMode(ReferenceLatchMode) noexcept` | `true` on success | Set left switch latching mode (real-time update) |
 | `SetRightSwitchLatchMode()` | `bool SetRightSwitchLatchMode(ReferenceLatchMode) noexcept` | `true` on success | Set right switch latching mode (real-time update) |
 | `SetStopMode()` | `bool SetStopMode(ReferenceStopMode) noexcept` | `true` on success | Set stop mode (hard/soft) (real-time update) |
-| `GetLatchedPosition()` | `float GetLatchedPosition(Unit unit) noexcept` | Latched position (0 on error) | Get position latched on switch event |
-| `SetComparePosition()` | `bool SetComparePosition(int32_t position) noexcept` | `true` on success | Set position comparison register (X_COMPARE) |
-| `SetPowerDownDelay()` | `bool SetPowerDownDelay(uint8_t tpowerdown) noexcept` | `true` on success | Set power down delay (0-255) |
-| `SetZeroWaitTime()` | `bool SetZeroWaitTime(uint16_t tzerowait) noexcept` | `true` on success | Set zero wait time after ramping down (0-65535) |
-| `SetFirstAcceleration()` | `bool SetFirstAcceleration(float a1) noexcept` | `true` on success | Set first acceleration phase A1 (steps/s², 0.0f = use AMAX) |
+| `GetLatchedPosition()` | `bool GetLatchedPosition(float& position, Unit unit = Unit::Steps) noexcept` | `true` on success | Get position latched on switch event (unit-aware) |
+| `SetXCompare()` | `bool SetXCompare(float position, Unit unit = Unit::Steps) noexcept` | `true` on success | Set position comparison register (X_COMPARE, unit-aware) |
+| `GetXCompare()` | `bool GetXCompare(float& position, Unit unit = Unit::Steps) const noexcept` | `true` on success | Get X_COMPARE register value from local storage (unit-aware) |
+| `SetPowerDownDelay()` | `bool SetPowerDownDelay(uint8_t tpowerdown) noexcept` | `true` on success | Set power down delay (raw register value 0-255) |
+| `SetPowerDownDelayMs()` | `bool SetPowerDownDelayMs(float delay_ms) noexcept` | `true` on success | Set power down delay in milliseconds (automatically converted) |
+| `SetZeroWaitTime()` | `bool SetZeroWaitTime(uint16_t tzerowait) noexcept` | `true` on success | Set zero wait time after ramping down (raw register value 0-65535) |
+| `SetZeroWaitTimeMs()` | `bool SetZeroWaitTimeMs(float delay_ms) noexcept` | `true` on success | Set zero wait time in milliseconds (automatically converted) |
+| `SetFirstAcceleration()` | `bool SetFirstAcceleration(float a1, Unit unit = Unit::Steps) noexcept` | `true` on success | Set first acceleration phase A1 (unit-aware, 0.0f = use AMAX) |
+| `SetFinalDeceleration()` | `bool SetFinalDeceleration(float d1, Unit unit = Unit::Steps) noexcept` | `true` on success | Set final deceleration phase D1 (unit-aware, must not be 0 in positioning mode) |
+| `ConfigureRamp()` | `bool ConfigureRamp(const RampConfig& config) noexcept` | `true` on success | Configure ramp generator from RampConfig structure |
 
 ## MotorControl Subsystem
 
-Motor control and configuration subsystem.
+Motor control and configuration subsystem for current control, chopper modes, and stealthChop operation.
 
 **Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+
+**Access**: `driver.motorControl`
+
+**Purpose**: Manages motor current settings, chopper configuration, stealthChop/sreadCycle modes, and motor enable/disable. Automatically calculates IRUN, IHOLD, and GLOBAL_SCALER from motor physical specifications.
+
+**Key Features**:
+- **Automatic Current Calculation**: Calculates IRUN, IHOLD, GLOBAL_SCALER from motor specs
+- **Chopper Modes**: spreadCycle (high torque) and stealthChop (silent operation)
+- **Mode Switching**: Automatic switching between modes based on velocity thresholds
+- **Freewheeling**: Automatic freewheeling when motor is stopped
+- **Microstep Configuration**: Configurable microstep resolution (1-256)
 
 ### Methods
 
@@ -111,9 +157,12 @@ Motor control and configuration subsystem.
 | `SetCurrent()` | `bool SetCurrent(uint8_t irun, uint8_t ihold) noexcept` | `true` on success | Set run current (0-31) and hold current (0-31) |
 | `ConfigureChopper()` | `bool ConfigureChopper(const ChopperConfig& config) noexcept` | `true` on success | Configure chopper settings (toff, hstrt, hend, tbl, mres, etc.) |
 | `ConfigureStealthChop()` | `bool ConfigureStealthChop(const StealthChopConfig& config) noexcept` | `true` on success | Configure stealthChop PWM mode |
-| `SetModeChangeSpeeds()` | `bool SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs) noexcept` | `true` on success | Set velocity thresholds for mode switching |
+| `SetModeChangeSpeeds()` | `bool SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs, Unit unit = Unit::Steps) noexcept` | `true` on success | Set velocity thresholds for mode switching (unit-aware) |
+| `SetStealthChopVelocityThreshold()` | `bool SetStealthChopVelocityThreshold(float value, Unit unit = Unit::Steps) noexcept` | `true` on success | Set StealthChop velocity threshold (TPWMTHRS, unit-aware) |
+| `SetCoolStepThreshold()` | `bool SetCoolStepThreshold(float value, Unit unit = Unit::Steps) noexcept` | `true` on success | Set CoolStep velocity threshold (TCOOLTHRS, unit-aware) |
+| `SetHighSpeedThreshold()` | `bool SetHighSpeedThreshold(float value, Unit unit = Unit::Steps) noexcept` | `true` on success | Set High-Speed velocity threshold (THIGH, unit-aware) |
 | `SetGlobalScaler()` | `bool SetGlobalScaler(uint16_t scaler) noexcept` | `true` on success | Set global current scaler (32-256) |
-| `SetFreewheelingMode()` | `bool SetFreewheelingMode(PWMFreewheel mode) noexcept` | `true` on success | Set freewheeling mode (NORMAL, ENABLED, SHORT_LS, SHORT_HS) |
+| `SetIholdDelayMs()` | `bool SetIholdDelayMs(float total_delay_ms) noexcept` | `true` on success | Set motor power down delay (IHOLDDELAY) in milliseconds (automatically calculated) |
 | `ConfigureCoolStep()` | `bool ConfigureCoolStep(const CoolStepConfig& config) noexcept` | `true` on success | Configure CoolStep current reduction |
 | `ConfigureDcStep()` | `bool ConfigureDcStep(const DcStepConfig& config) noexcept` | `true` on success | Configure dcStep automatic commutation |
 | `SetMicrostepLookupTable()` | `bool SetMicrostepLookupTable(uint8_t index, uint32_t value) noexcept` | `true` on success | Set microstep lookup table entry (0-7) |
@@ -124,9 +173,20 @@ Motor control and configuration subsystem.
 
 ## Encoder Subsystem
 
-Encoder integration and closed-loop control subsystem.
+Encoder integration and closed-loop control subsystem for position verification and step loss detection.
 
 **Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+
+**Access**: `driver.encoder`
+
+**Purpose**: Provides encoder integration for closed-loop control, position verification, and step loss detection. Supports various encoder types (AB, ABZ, SPI) with configurable resolution and deviation detection.
+
+**Key Features**:
+- **Closed-Loop Control**: Encoder feedback for position verification
+- **Deviation Detection**: Monitor and detect position deviation (step loss)
+- **Automatic Compensation**: Optional automatic position correction
+- **Flexible Configuration**: Supports various encoder types and resolutions
+- **N-Channel Support**: Configurable N-channel (index) handling
 
 ### Methods
 
@@ -138,12 +198,12 @@ Encoder integration and closed-loop control subsystem.
 | `SetNChannelSensitivity()` | `bool SetNChannelSensitivity(EncoderNSensitivity sensitivity) noexcept` | `true` on success | Set N channel sensitivity (real-time) |
 | `SetClearMode()` | `bool SetClearMode(EncoderClearMode clear_mode) noexcept` | `true` on success | Set encoder clear mode (real-time) |
 | `SetPrescalerMode()` | `bool SetPrescalerMode(EncoderPrescalerMode prescaler_mode) noexcept` | `true` on success | Set encoder prescaler mode (real-time) |
-| `GetPosition()` | `int32_t GetPosition() noexcept` | Encoder position (0 on error) | Get encoder position |
+| `GetPosition()` | `bool GetPosition(int32_t& position) noexcept` | `true` on success | Get encoder position in steps |
 | `SetResolution()` | `bool SetResolution(int32_t motor_steps, int32_t enc_resolution, bool inverted = false) noexcept` | `true` on success | Set encoder resolution (motor steps per encoder resolution) |
-| `SetAllowedDeviation()` | `bool SetAllowedDeviation(int32_t deviation) noexcept` | `true` on success | Set allowed encoder deviation threshold |
+| `SetAllowedDeviation()` | `bool SetAllowedDeviation(int32_t steps) noexcept` | `true` on success | Set allowed encoder deviation threshold in steps |
 | `IsDeviationDetected()` | `bool IsDeviationDetected() noexcept` | `true` if deviation detected | Check if encoder deviation detected |
 | `ClearDeviationFlag()` | `bool ClearDeviationFlag() noexcept` | `true` on success | Clear encoder deviation flag |
-| `GetLatchedPosition()` | `int32_t GetLatchedPosition() noexcept` | Encoder latched position (0 on error) | Get encoder position latched on N event |
+| `GetLatchedPosition()` | `bool GetLatchedPosition(int32_t& position) noexcept` | `true` on success | Get encoder position latched on N event |
 
 ## Diagnostics Subsystem
 
@@ -156,25 +216,125 @@ Driver status monitoring and diagnostics subsystem.
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
 | `GetStatus()` | `DriverStatus GetStatus() noexcept` | DriverStatus enum | Get driver status (OK, CP_UV, S2VSA, etc.) |
-| `GetStallGuard()` | `uint16_t GetStallGuard() noexcept` | StallGuard value (0-1023) | Get StallGuard2 value |
+| `GetGlobalStatus()` | `bool GetGlobalStatus(bool& reset, bool& drv_err, bool& uv_cp) noexcept` | `true` on success | Get global status flags (GSTAT) |
+| `GetStallGuard()` | `bool GetStallGuard(uint16_t& value) noexcept` | `true` on success | Get StallGuard2 value (0-1023) |
+| `GetStallGuardResult()` | `bool GetStallGuardResult(uint16_t& sg_result) noexcept` | `true` on success | Get StallGuard2 result from DRV_STATUS register |
 | `ConfigureStallGuard()` | `bool ConfigureStallGuard(const StallGuardConfig& config) noexcept` | `true` on success | Configure StallGuard2 settings |
+| `EnableStopOnStall()` | `bool EnableStopOnStall(bool enable) noexcept` | `true` on success | Enable/disable stop on stall |
+| `IsStopOnStallEnabled()` | `bool IsStopOnStallEnabled() noexcept` | `true` if enabled | Check if stop on stall is enabled |
+| `SetSoftStop()` | `bool SetSoftStop(bool enable) noexcept` | `true` on success | Enable/disable soft stop |
+| `IsSoftStopEnabled()` | `bool IsSoftStopEnabled() noexcept` | `true` if enabled | Check if soft stop is enabled |
+| `ClearStallFlag()` | `bool ClearStallFlag() noexcept` | `true` on success | Clear stall event flag |
+| `IsStallDetected()` | `bool IsStallDetected() noexcept` | `true` if detected | Check if stall was detected |
 | `GetDriverStatusRegister()` | `bool GetDriverStatusRegister(uint32_t& status) noexcept` | `true` on success | Read DRV_STATUS register |
 | `IsOpenLoadA()` | `bool IsOpenLoadA() noexcept` | `true` if open load on phase A | Check for open load on phase A (requires SpreadCycle mode and motion) |
 | `IsOpenLoadB()` | `bool IsOpenLoadB() noexcept` | `true` if open load on phase B | Check for open load on phase B (requires SpreadCycle mode and motion) |
 | `CheckOpenLoad()` | `bool CheckOpenLoad(bool& phase_a, bool& phase_b) noexcept` | `true` on success | Check both phases for open load simultaneously |
 | `GetRampStatusRegister()` | `bool GetRampStatusRegister(uint32_t& status) noexcept` | `true` on success | Read RAMP_STAT register |
-| `GetLostSteps()` | `uint32_t GetLostSteps() noexcept` | Lost steps count (0 on error) | Get lost steps counter (dcStep mode only) |
-| `PerformSensorlessHoming()` | `bool PerformSensorlessHoming(bool direction, int8_t stall_threshold, float search_speed, int32_t& final_position) noexcept` | `true` on success | Perform sensorless homing using StallGuard2 |
-| `GetTimeBetweenMicrosteps()` | `uint32_t GetTimeBetweenMicrosteps() noexcept` | Time in clock cycles (0 on error) | Get actual time between microsteps (TSTEP register) |
-| `GetMicrostepCounter()` | `uint16_t GetMicrostepCounter() noexcept` | Position in table (0-1023, 0 on error) | Get actual position in microstep table (MSCNT register) |
+| `ClearRampStatus()` | `bool ClearRampStatus(uint32_t bits_to_clear) noexcept` | `true` on success | Clear specific bits in RAMP_STAT register |
+| `GetLostSteps()` | `bool GetLostSteps(uint32_t& steps) noexcept` | `true` on success | Get lost steps counter (dcStep mode only) |
+| `GetChipVersion()` | `uint8_t GetChipVersion() const noexcept` | Chip version (0x11 = TMC5130, 0x30 = TMC5160) | Get detected chip version |
+
+## Tuning Subsystem ⭐
+
+Automatic parameter tuning for optimal driver performance.
+
+**Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+
+**Access**: `driver.tuning`
+
+**Purpose**: Provides intelligent automatic tuning of driver parameters, particularly StallGuard2 threshold (SGT) optimization. The tuning algorithm prioritizes target velocity and provides comprehensive velocity range analysis.
+
+**Key Features**:
+- **Automatic SGT Tuning**: Intelligent StallGuard2 threshold optimization
+- **Velocity Range Analysis**: Tests min/max velocities to determine usable SGT range
+- **Target Velocity Priority**: Optimizes SGT primarily for your most important operating speed
+- **Comprehensive Results**: Returns detailed tuning results including actual achievable velocities
+- **Fallback Detection**: If requested velocities don't work, finds what velocities DO work
+
+| Method | Signature | Return | Description |
+|--------|-----------|--------|-------------|
+| `TuneStallGuard()` | `bool TuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = -10, int8_t max_sgt = 63, float acceleration = 3000.0F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::Steps) noexcept` | `true` on success | Automatically tune StallGuard threshold (SGT) with comprehensive velocity range analysis |
+| `TuneStallGuard()` (legacy) | `bool TuneStallGuard(float target_velocity, int8_t& final_sgt, int8_t min_sgt = -10, int8_t max_sgt = 63, float acceleration = 3000.0F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::Steps) noexcept` | `true` on success | Legacy overload - use StallGuardTuningResult version for comprehensive results |
+
+**Usage Example**:
+```cpp
+tmc5160::StallGuardTuningResult result;
+bool success = driver.tuning.TuneStallGuard(
+    target_velocity, result,  // Target velocity (priority) and result struct
+    -10, 63,                  // SGT search range
+    3000.0f,                  // Acceleration
+    min_velocity, max_velocity, // Velocity range to test
+    tmc5160::Unit::Steps
+);
+
+if (success) {
+    // Use optimal SGT
+    tmc5160::StallGuardConfig sg_config;
+    sg_config.threshold = result.optimal_sgt;
+    driver.diagnostics.ConfigureStallGuard(sg_config);
+    
+    // Check velocity compatibility
+    if (!result.min_velocity_success) {
+        // Use actual_min_velocity instead
+    }
+}
+```
+
+## Homing Subsystem
+
+Homing methods with automatic settings caching for endstop-free and switch-based homing.
+
+**Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+
+**Access**: `driver.homing`
+
+**Purpose**: Provides both sensorless (StallGuard2-based) and switch-based homing operations. Automatically caches and restores driver settings modified during homing, ensuring your configuration is preserved.
+
+**Key Features**:
+- **Sensorless Homing**: Endstop-free homing using StallGuard2 stall detection
+- **Switch-Based Homing**: Homing using reference switches/endstops
+- **Automatic Settings Caching**: Preserves and restores driver settings during homing
+- **Configurable Search Speed**: Adjustable homing speed and switch approach speed
+- **Timeout Protection**: Configurable timeout to prevent infinite searches
+
+| Method | Signature | Returns | Description |
+|--------|-----------|---------|-------------|
+| `PerformSensorlessHoming()` | `bool PerformSensorlessHoming(bool direction, float search_speed, int32_t& final_position, uint32_t timeout_ms = 10000) noexcept` | `true` on success | Perform sensorless homing using StallGuard2 (uses existing SGT threshold from motor config) |
+| `PerformSwitchHoming()` | `bool PerformSwitchHoming(bool direction, float search_speed, float switch_speed, int32_t& final_position, bool use_left_switch, uint32_t timeout_ms = 10000) noexcept` | `true` on success | Perform homing using a reference switch |
+
+### Printer Subsystem
+
+Register printing methods for debugging.
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `PrintGconf()` | `void PrintGconf() noexcept` | Print GCONF register |
+| `PrintGstat()` | `void PrintGstat() noexcept` | Print GSTAT register (read and clear) |
+| `PrintRampStat()` | `void PrintRampStat() noexcept` | Print RAMP_STAT register |
+| `PrintDrvStatus()` | `void PrintDrvStatus() noexcept` | Print DRV_STATUS register |
+| `PrintChopconf()` | `void PrintChopconf() noexcept` | Print CHOPCONF register |
+| `PrintPwmconf()` | `void PrintPwmconf() noexcept` | Print PWMCONF register |
+| `PrintPwmScale()` | `void PrintPwmScale() noexcept` | Print PWM_SCALE register |
+| `PrintSwMode()` | `void PrintSwMode() noexcept` | Print SW_MODE register |
+| `PrintIoin()` | `void PrintIoin() noexcept` | Print IOIN register |
+| `PrintAll()` | `void PrintAll() noexcept` | Print all common registers |
+| `GetTimeBetweenMicrosteps()` | `bool GetTimeBetweenMicrosteps(uint32_t& time) noexcept` | `true` on success | Get actual time between microsteps in clock cycles (TSTEP register) |
+| `GetMicrostepCounter()` | `bool GetMicrostepCounter(uint16_t& counter) noexcept` | `true` on success | Get actual position in microstep table (0-1023, MSCNT register) |
 | `GetMicrostepCurrent()` | `bool GetMicrostepCurrent(int16_t& phase_a, int16_t& phase_b) noexcept` | `true` on success | Get actual microstep current for both phases (MSCURACT register) |
 | `GetPwmScale()` | `bool GetPwmScale(uint8_t& pwm_scale_sum, int16_t& pwm_scale_auto) noexcept` | `true` on success | Get stealthChop PWM scale results (PWM_SCALE register) |
 | `GetPwmAuto()` | `bool GetPwmAuto(uint8_t& pwm_ofs_auto, uint8_t& pwm_grad_auto) noexcept` | `true` on success | Get automatically determined PWM values (PWM_AUTO register) |
-| `ReadGpioPins()` | `bool ReadGpioPins(uint32_t& io_pins) noexcept` | `true` on success | Read GPIO input pin states (IO_INPUT_OUTPUT register) |
+| `ReadInputStatus()` | `bool ReadInputStatus(InputStatus& input_status) noexcept` | `true` on success | Read GPIO input pins (parsed structure) |
+| `ReadIcVersion()` | `bool ReadIcVersion(uint8_t& version) noexcept` | `true` on success | Read IC version from IOIN register |
+| `ReadGpioPins()` | `bool ReadGpioPins(uint32_t& io_pins) noexcept` | `true` on success | Read GPIO input pin states (raw register value) |
 | `ReadFactoryConfig()` | `bool ReadFactoryConfig(uint8_t& fclktrim) noexcept` | `true` on success | Read factory configuration/clock trim (FACTORY_CONF register) |
+| `SetSdoCfg0Polarity()` | `bool SetSdoCfg0Polarity(bool polarity) noexcept` | `true` on success | Set SDO_CFG0 pin polarity (UART/Single Wire mode) |
 | `ReadOtpConfig()` | `bool ReadOtpConfig(uint8_t& otp_fclktrim, bool& otp_s2_level, bool& otp_bbm, bool& otp_tbl) noexcept` | `true` on success | Read OTP configuration memory (OTP_READ register) |
 | `GetUartTransmissionCount()` | `uint8_t GetUartTransmissionCount() noexcept` | Transmission count (0 on error) | Get UART transmission counter (IFCNT register) |
 | `ReadOffsetCalibration()` | `bool ReadOffsetCalibration(uint8_t& phase_a, uint8_t& phase_b) noexcept` | `true` on success | Read offset calibration results (OFFSET_READ register) |
+| `VerifySetup()` | `bool VerifySetup() noexcept` | `true` on success | Run comprehensive startup verification |
+| `SetTcoolthrs()` | `bool SetTcoolthrs(float threshold, Unit unit = Unit::Steps) noexcept` | `true` on success | Set TCOOLTHRS register directly (unit-aware) |
+| `GetTcoolthrs()` | `bool GetTcoolthrs(float& threshold, Unit unit = Unit::Steps) const noexcept` | `true` on success | Get TCOOLTHRS register value from local storage (unit-aware) |
 
 ### Open Load Diagnostics
 
@@ -236,17 +396,34 @@ if (driver.diagnostics.CheckOpenLoad(phase_a, phase_b)) {
 
 ## Communication Subsystem
 
-UART slave addressing and multi-chip communication configuration.
+Communication and multi-chip configuration subsystem for SPI daisy chaining and UART multi-node addressing.
 
 **Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+
+**Access**: `driver.communication`
+
+**Purpose**: Manages multi-chip communication setup including SPI daisy chain configuration and UART node addressing. Essential for controlling multiple TMC5160 drivers on a single bus.
+
+**Key Features**:
+- **SPI Daisy Chaining**: Configure position and chain length for SPI multi-chip setups
+- **UART Multi-Node**: Configure node addresses for UART multi-device setups
+- **Automatic Chain Detection**: Helper methods for detecting chain length
+- **Mode Control**: Control SPI_MODE and SD_MODE pins (if GPIO-controlled)
+- **Clock Configuration**: External clock frequency configuration
 
 ### Methods
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `ConfigureSlaveAddress()` | `bool ConfigureSlaveAddress(uint8_t slave_address, uint8_t send_delay = 0) noexcept` | `true` on success | Configure UART slave address and send delay (deprecated, use `uartConfig.ConfigureSlave()` instead) |
-| `GetSlaveAddress()` | `uint8_t GetSlaveAddress() noexcept` | Slave address (0-127) or 0xFF on error | Get current slave address from SLAVECONF register |
-| `GetSendDelay()` | `uint8_t GetSendDelay() noexcept` | Send delay (0-15) or 0xFF on error | Get current send delay from SLAVECONF register |
+| `SetClkFreq()` | `bool SetClkFreq(uint32_t frequency_hz) noexcept` | `true` on success | Set clock frequency on CLK pin (0 = internal clock, >0 = external clock frequency) - low-level method |
+| `SetClkFreq()` | `bool SetClkFreq(const ExternalClockConfig& config) noexcept` | `true` on success | Set clock frequency from ExternalClockConfig (high-level method, updates driver configuration) |
+| `ConfigureUartNodeAddress()` | `bool ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay = 0) noexcept` | `true` on success | Configure UART node address and send delay (writes SLAVECONF register, also updates software state) |
+| `SetUartNodeAddress()` | `void SetUartNodeAddress(uint8_t address) noexcept` | void | Set UART node address (0-254) - software only, does not write to hardware |
+| `GetUartNodeAddress()` | `uint8_t GetUartNodeAddress() const noexcept` | Address (0-254) | Get current UART node address |
+| `SetOperatingMode()` | `bool SetOperatingMode(ChipCommMode mode) noexcept` | `true` on success | Set chip operating mode via SPI_MODE and SD_MODE pins (controls both communication interface and motion control method) |
+| `GetOperatingMode()` | `bool GetOperatingMode(ChipCommMode& mode) const noexcept` | `true` on success | Get current chip operating mode from SPI_MODE and SD_MODE pins |
+| `SetDaisyChainPosition()` | `void SetDaisyChainPosition(uint8_t position) noexcept` | void | Set daisy-chain position for SPI (0 = first chip, 1 = second, etc.) |
+| `GetDaisyChainPosition()` | `uint8_t GetDaisyChainPosition() const noexcept` | Position (0-255) | Get current daisy-chain position for SPI |
 
 ## UartConfig Subsystem
 
@@ -258,7 +435,7 @@ UART configuration subsystem for multi-node addressing.
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `ConfigureSlave()` | `bool ConfigureSlave(uint8_t slave_address, uint8_t send_delay) noexcept` | `true` on success | Configure SLAVECONF register with node address (0-127) and send delay. Updates the driver's `uart_node_address_`. Per datasheet, devices are typically programmed backwards from 254. |
+| `ConfigureUartNodeAddress()` | `bool ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay) noexcept` | `true` on success | Configure SLAVECONF register with UART node address (0-254) and send delay (for sequential programming). Updates the driver's `uart_node_address_`. Per datasheet, devices are typically programmed backwards from 254. |
 
 ## Protection Subsystem
 
@@ -301,10 +478,7 @@ Methods available through `GetComm()` for direct communication interface access.
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `SetDaisyChainPosition()` | `void SetDaisyChainPosition(uint8_t position) noexcept` | void | Set daisy-chain position for this TMC5160 instance |
-| `GetDaisyChainPosition()` | `uint8_t GetDaisyChainPosition() const noexcept` | Position (0-255) | Get current daisy-chain position |
-
-**Note**: Each `TMC5160` instance tracks its own daisy-chain position. This position is automatically passed to `ReadRegister()` and `WriteRegister()` methods in the communication interface.
+**Note**: Each `TMC5160` instance tracks its own daisy-chain position (SPI) or UART node address. These values are automatically passed to `ReadRegister()` and `WriteRegister()` methods in the communication interface via `GetCommAddress()`.
 
 ## SpiCommInterface Methods (SPI Only)
 
@@ -370,10 +544,11 @@ Chip communication and motion control mode configuration. Represents the combina
 | `SPI_INTERNAL_RAMP` | SPI interface with internal ramp generator (motion controller) | HIGH | LOW |
 | `SPI_EXTERNAL_STEPDIR` | SPI interface with external step/dir inputs | HIGH | HIGH |
 | `UART_INTERNAL_RAMP` | UART interface with internal ramp generator (motion controller) | LOW | LOW |
+| `STANDALONE_EXTERNAL_STEPDIR` | Standalone Step/Dir mode (no SPI/UART, CFG pins configure driver) | LOW | HIGH |
 
 **⚠️ WARNING**: 
 - These pins are **typically hardwired** and read at startup
-- Only use `SetChipCommMode()` if SPI_MODE and SD_MODE are connected to GPIO outputs
+- Only use `communication.SetOperatingMode()` if SPI_MODE and SD_MODE are connected to GPIO outputs
 - Mode changes require a chip reset (power cycle or reset pin) to take effect
 - The mode pins are read at startup, so changes won't be effective until reset
 
@@ -421,12 +596,21 @@ Main driver configuration structure containing all parameters for initializing t
 | `global_config` | `GlobalConfig` | Global configuration (GCONF register) |
 | `ramp_config` | `RampConfig` | Ramp generator configuration (velocities, accelerations, timing with unit support) |
 | `direction` | `MotorDirection` | Motor direction (NORMAL or INVERTED) |
-| `f_clk` | `uint32_t` | Clock frequency in Hz (default: 12000000) |
+| `external_clk_config` | `ExternalClockConfig` | External clock configuration (0 = use internal 12 MHz, >0 = external clock frequency) |
+| `stallguard` | `StallGuardConfig` | StallGuard2 configuration (defaults: threshold=0, disabled) |
+| `coolstep` | `CoolStepConfig` | CoolStep configuration (defaults: lower_threshold_sg=0, disabled) |
+| `dcstep` | `DcStepConfig` | DcStep configuration (defaults: min_velocity=0, disabled) |
+| `reference_switch_config` | `ReferenceSwitchConfig` | Reference switch configuration (defaults: stop disabled, latching disabled) |
+| `encoder_config` | `EncoderConfig` | Encoder configuration (includes pulses per rev, invert direction, deviation) |
+| `uart_config` | `UartConfig` | UART communication configuration (node address, send delay, only used in UART mode) |
 
 **Important Notes**:
 - **DO NOT** manually set IRUN, IHOLD, or GLOBAL_SCALER - these are calculated automatically from `motor_spec`
 - **REQUIRED** for automatic calculation: `motor_spec.sense_resistor_mohm` and `motor_spec.supply_voltage_mv` must be non-zero
 - Current settings are calculated during `Initialize()` and stored internally (not in `motor_spec`)
+- **Clock frequency (f_clk)**: Automatically calculated from `external_clk_config.frequency_hz` during `Initialize()`
+  - If `external_clk_config.frequency_hz = 0`: Uses internal oscillator (~12 MHz, CLK pin tied to GND)
+  - If `external_clk_config.frequency_hz > 0`: Uses external clock at specified frequency (CLK pin receives clock signal)
 - See [`configuration.md`](../docs/configuration.md) for detailed configuration guide
 
 ### ChopperConfig
@@ -454,7 +638,6 @@ SpreadCycle is a cycle-by-cycle current control providing superior microstepping
 | `vhighchm` | `bool` | - | High velocity chopper mode (false=normal, true=Classic mode at high velocity) |
 | `diss2g` | `bool` | - | Short to GND protection disable (false=protection ON, true=protection OFF) |
 | `diss2vs` | `bool` | - | Short to supply protection disable (false=protection ON, true=protection OFF) |
-| `vsense` | `bool` | - | Voltage sensitivity (deprecated, ignored by hardware) |
 
 **Enums**:
 
@@ -635,8 +818,35 @@ StallGuard2 provides accurate measurement of motor load and can detect stalls. I
 
 **See Also**: 
 - [Advanced Configuration Guide](../docs/special_features_advanced_configuration.md#stallguard2-load-measurement) for detailed tuning guide and examples
+- `TuneStallGuard()` with `StallGuardTuningResult` for comprehensive automatic tuning
 - `GetStallGuard()` method to read SG_RESULT value
 - `EnableStopOnStall()` method for real-time control
+
+### StallGuardTuningResult
+
+Comprehensive result structure from automatic SGT tuning with velocity range analysis.
+
+**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `optimal_sgt` | `int8_t` | Optimal SGT value found at target velocity (primary result) |
+| `tuning_success` | `bool` | True if optimal SGT was found at target velocity |
+| `min_velocity_sgt` | `int8_t` | SGT that works at min velocity (if verified) |
+| `min_velocity_success` | `bool` | True if requested min velocity works with optimal SGT |
+| `max_velocity_sgt` | `int8_t` | SGT that works at max velocity (if verified) |
+| `max_velocity_success` | `bool` | True if requested max velocity works with optimal SGT |
+| `actual_min_velocity` | `float` | Actual min velocity that works (if requested min doesn't) |
+| `actual_max_velocity` | `float` | Actual max velocity that works (if requested max doesn't) |
+| `target_velocity_sg_result` | `uint16_t` | SG_RESULT value at target velocity with optimal SGT |
+| `min_velocity_sg_result` | `uint16_t` | SG_RESULT value at min velocity (if verified) |
+| `max_velocity_sg_result` | `uint16_t` | SG_RESULT value at max velocity (if verified) |
+
+**Usage Notes**:
+- Target velocity is the most important parameter - optimal SGT is determined here first
+- Min and max velocities are used to determine the range of SGT values that work
+- If requested velocities aren't achievable, `actual_min_velocity` and `actual_max_velocity` contain the velocities that DO work
+- All velocity values are in the same unit as the tuning request
 
 ### PowerStageParameters (Short Protection Fields)
 
@@ -674,10 +884,8 @@ Motor specification structure for high-level setup.
 |-------|------|-------------|
 | `steps_per_rev` | `uint16_t` | Steps per revolution (typically 200 for 1.8° motors) |
 | `rated_current_ma` | `uint16_t` | Rated motor current in milliamps |
-| `rated_voltage_mv` | `uint16_t` | Rated motor voltage in millivolts |
 | `winding_resistance_mohm` | `uint32_t` | Winding resistance in milliohms (optional, 0 = not specified) |
 | `winding_inductance_uh` | `uint32_t` | Winding inductance in microhenries (optional, 0 = not specified) |
-| `holding_torque_mnm` | `uint32_t` | Holding torque in milliNewton-meters (optional, 0 = not specified) |
 
 ### MechanicalSystem
 
@@ -907,23 +1115,52 @@ Global configuration (GCONF register) structure.
 | Field | Type | Description |
 |-------|------|-------------|
 | `recalibrate` | `bool` | Zero crossing recalibration during driver disable |
-| `faststandstill` | `bool` | Standstill detection timeout (true=2^18 clocks, false=2^20 clocks) |
-| `en_pwm_mode` | `bool` | Enable StealthChop voltage PWM mode |
-| `multistep_filt` | `bool` | Enable step input filtering for StealthChop optimization |
-| `shaft` | `bool` | Inverse motor direction |
-| `diag0_error` | `bool` | Enable DIAG0 on driver errors (SD_MODE=1 only) |
-| `diag0_otpw` | `bool` | Enable DIAG0 on overtemperature prewarning (SD_MODE=1 only) |
-| `diag0_stall_step` | `bool` | DIAG0 on stall/STEP output |
-| `diag1_stall_dir` | `bool` | DIAG1 on stall/DIR output |
-| `diag1_index` | `bool` | Enable DIAG1 on index position (SD_MODE=1 only) |
-| `diag1_onstate` | `bool` | Enable DIAG1 when chopper is on (SD_MODE=1 only) |
-| `diag1_steps_skipped` | `bool` | Enable DIAG1 on skipped steps in dcStep mode (SD_MODE=1 only) |
-| `diag0_int_pushpull` | `bool` | DIAG0 push-pull output mode |
-| `diag1_poscomp_pushpull` | `bool` | DIAG1 push-pull output mode |
-| `small_hysteresis` | `bool` | Small hysteresis for step frequency comparison |
-| `stop_enable` | `bool` | Emergency stop enable (ENCA_DCIN stops sequencer) |
+| `en_short_standstill_timeout` | `bool` | Enable shorter timeout for standstill detection (true=2^18 clocks, false=2^20 clocks) |
+| `en_stealthchop_mode` | `bool` | Enable StealthChop voltage PWM mode |
+| `en_stealthchop_step_filter` | `bool` | Enable step input filtering for StealthChop optimization with external step source |
+| `invert_direction` | `bool` | Invert motor direction (false=normal, true=inverse) |
+| `diag0` | `Diag0Config` | DIAG0 pin configuration structure (see Diag0Config below) |
+| `diag1` | `Diag1Config` | DIAG1 pin configuration structure (see Diag1Config below) |
+| `en_small_step_frequency_hysteresis` | `bool` | Enable smaller hysteresis for step frequency comparison (true=1/32, false=1/16) |
+| `enca_dcin_sequencer_stop` | `bool` | Enable ENCA_DCIN pin as sequencer stop input (stops ramp generator) |
 | `direct_mode` | `bool` | Direct motor coil control via XTARGET |
-| `test_mode` | `bool` | Analog test output on ENCN_DCO (not for normal use) |
+
+### Diag0Config
+
+DIAG0 pin configuration structure. Nested within `GlobalConfig` as `diag0` field.
+
+**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+
+**Note**: DIAG0 pin behavior depends on SD_MODE setting:
+- **SD_MODE=1** (External step/dir): Diagnostic outputs (error, otpw, stall)
+- **SD_MODE=0** (Internal ramp): Can be used as STEP output
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `error` | `bool` | Bit 5: Enable DIAG0 on driver errors (OT, S2G, UV_CP) - SD_MODE=1 only |
+| `otpw` | `bool` | Bit 6: Enable DIAG0 on overtemperature prewarning - SD_MODE=1 only |
+| `stall_step` | `bool` | Bit 7: (SD_MODE=1) DIAG0 on stall, (SD_MODE=0) DIAG0 as STEP output (half frequency, dual edge) |
+| `pushpull` | `bool` | Bit 12: Output mode (false=open collector active low, true=push pull active high) |
+
+### Diag1Config
+
+DIAG1 pin configuration structure. Nested within `GlobalConfig` as `diag1` field.
+
+**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+
+**Note**: DIAG1 pin behavior depends on SD_MODE setting:
+- **SD_MODE=1** (External step/dir): Diagnostic outputs (stall, index, onstate, steps_skipped)
+- **SD_MODE=0** (Internal ramp): Can be used as DIR output or position compare signal
+
+**Warning**: `steps_skipped` should not be enabled with other DIAG1 options (mutually exclusive).
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `stall_dir` | `bool` | Bit 8: (SD_MODE=1) DIAG1 on stall, (SD_MODE=0) DIAG1 as DIR output |
+| `index` | `bool` | Bit 9: Enable DIAG1 on index position (microstep LUT position 0) - SD_MODE=1 only |
+| `onstate` | `bool` | Bit 10: Enable DIAG1 when chopper is on (second half of fullstep) - SD_MODE=1 only |
+| `steps_skipped` | `bool` | Bit 11: Enable output toggle when steps skipped in dcStep mode - SD_MODE=1 only |
+| `pushpull` | `bool` | Bit 13: Output mode (false=open collector active low, true=push pull active high) |
 
 ### RampConfig
 
@@ -1040,27 +1277,32 @@ The TMC5160 driver provides comprehensive coverage of all chipset features. This
 All GCONF register bits are now accessible through the `GlobalConfig` structure:
 
 - `recalibrate` - Zero crossing recalibration
-- `faststandstill` - Standstill detection timeout
-- `multistep_filt` - Step input filtering
-- `diag0_error` - DIAG0 on driver errors
-- `diag0_otpw` - DIAG0 on overtemperature prewarning
-- `diag0_stall_step` - DIAG0 on stall/STEP output
-- `diag1_stall_dir` - DIAG1 on stall/DIR output
-- `diag1_index` - DIAG1 on index position
-- `diag1_onstate` - DIAG1 when chopper on
-- `diag1_steps_skipped` - DIAG1 on skipped steps
-- `diag0_int_pushpull` - DIAG0 push-pull output
-- `diag1_poscomp_pushpull` - DIAG1 push-pull output
-- `small_hysteresis` - Small hysteresis for step frequency
-- `stop_enable` - Emergency stop enable
+- `en_short_standstill_timeout` - Shorter timeout for standstill detection
+- `en_stealthchop_mode` - Enable StealthChop voltage PWM mode
+- `en_stealthchop_step_filter` - Step input filtering for StealthChop optimization
+- `invert_direction` - Invert motor direction
+- `diag0` - DIAG0 pin configuration (nested `Diag0Config` struct)
+  - `diag0.error` - DIAG0 on driver errors
+  - `diag0.otpw` - DIAG0 on overtemperature prewarning
+  - `diag0.stall_step` - DIAG0 on stall/STEP output
+  - `diag0.pushpull` - DIAG0 push-pull output mode
+- `diag1` - DIAG1 pin configuration (nested `Diag1Config` struct)
+  - `diag1.stall_dir` - DIAG1 on stall/DIR output
+  - `diag1.index` - DIAG1 on index position
+  - `diag1.onstate` - DIAG1 when chopper on
+  - `diag1.steps_skipped` - DIAG1 on skipped steps
+  - `diag1.pushpull` - DIAG1 push-pull output mode
+- `en_small_step_frequency_hysteresis` - Smaller hysteresis for step frequency comparison
+- `enca_dcin_sequencer_stop` - Enable ENCA_DCIN pin as sequencer stop input
 - `direct_mode` - Direct motor coil control
-- `test_mode` - Test mode
 
 **Usage:**
 ```cpp
 tmc5160::GlobalConfig gconf{};
-gconf.faststandstill = true;
-gconf.diag0_error = true;
+gconf.en_short_standstill_timeout = true;
+gconf.diag0.error = true;           // Access nested struct fields
+gconf.diag0.pushpull = true;        // Enable push-pull output mode
+gconf.diag1.stall_dir = true;      // Configure DIAG1
 driver.motorControl.ConfigureGlobalConfig(gconf);
 ```
 
@@ -1129,7 +1371,7 @@ High-level manager for multiple TMC5160 drivers in a SPI daisy-chain configurati
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `TMC5160DaisyChain()` | `TMC5160DaisyChain(CommType& comm, uint8_t num_onboard_devices, uint32_t f_clk = 12000000)` | Create daisy-chain manager with specified number of onboard devices |
+| `TMC5160DaisyChain()` | `TMC5160DaisyChain(CommType& comm, uint8_t num_onboard_devices, uint32_t f_clk = 12000000)` | Create daisy-chain manager with specified number of onboard devices. **Note**: `f_clk` parameter is optional (defaults to 12 MHz) but the actual clock frequency used is determined from `DriverConfig::external_clk_config` during `Initialize()`. |
 
 #### Methods
 
@@ -1144,7 +1386,12 @@ High-level manager for multiple TMC5160 drivers in a SPI daisy-chain configurati
 
 **Usage:**
 ```cpp
-tmc5160::TMC5160DaisyChain<MySPI, 5> chain(spiComm, 3, 12'000'000);
+tmc5160::TMC5160DaisyChain<MySPI, 5> chain(spiComm, 3); // f_clk is optional
+tmc5160::DriverConfig cfg{};
+cfg.motor_spec.rated_current_ma = 2000;
+cfg.motor_spec.sense_resistor_mohm = 50;
+cfg.motor_spec.supply_voltage_mv = 24000;
+cfg.external_clk_config.frequency_hz = 0; // 0 = use internal 12 MHz clock
 chain.InitializeAll(cfg);
 auto& motor_x = chain[0];
 motor_x.rampControl.SetTargetPosition(1000);
@@ -1160,7 +1407,7 @@ High-level manager for multiple TMC5160 drivers in a UART multi-node configurati
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `TMC5160MultiNode()` | `TMC5160MultiNode(CommType& comm, uint8_t num_onboard_devices, uint32_t f_clk = 12000000)` | Create multi-node manager with specified number of onboard devices |
+| `TMC5160MultiNode()` | `TMC5160MultiNode(CommType& comm, uint8_t num_onboard_devices, uint32_t f_clk = 12000000)` | Create multi-node manager with specified number of onboard devices. **Note**: `f_clk` parameter is optional (defaults to 12 MHz) but the actual clock frequency used is determined from `DriverConfig::external_clk_config` during `Initialize()`. |
 
 #### Methods
 

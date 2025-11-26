@@ -1,12 +1,13 @@
 /**
- * @file esp32_tmc5160_bus.hpp
- * @brief ESP32-specific communication interfaces for TMC5160 using SPI and UART
+ * @file esp32_tmc51x0_bus.hpp
+ * @brief ESP32-specific communication interfaces for TMC51x0 using SPI and UART (TMC5130 & TMC51x0)
  *
- * This file provides ESP32-specific implementations of the TMC5160
+ * This file provides ESP32-specific implementations of the TMC51x0
  * communication interfaces using ESP-IDF SPI and UART drivers.
+ * Supports both TMC5130 and TMC51x0 chips.
  *
  * Pin Configuration Support:
- * - Supports all TMC5160 control pins (EN, DIR, STEP, REFL_STEP, REFR_DIR, DIAG0, DIAG1, ENCA, ENCB, ENCN, CLK)
+ * - Supports all TMC51x0 control pins (EN, DIR, STEP, REFL_STEP, REFR_DIR, DIAG0, DIAG1, ENCA, ENCB, ENCN, CLK)
  * - Supports user-defined GPIO pins for custom board configurations
  * - Diagnostic pins (DIAG0, DIAG1) can be read via GpioRead()
  * - Reference switch pins (REFL_STEP, REFR_DIR) can be read/written depending on mode
@@ -20,7 +21,7 @@
 
 #pragma once
 
-#include "../../../inc/tmc5160_comm_interface.hpp"
+#include "tmc51x0_comm_interface.hpp"
 #include "driver/gpio.h"
 #include "driver/ledc.h"
 #include "driver/spi_master.h"
@@ -33,12 +34,12 @@
 #include <cstdint>
 #include <cstring>
 
-static const char* BUS_TAG = "TMC5160_Bus";
+static const char* BUS_TAG = "TMC51x0_Bus";
 
 /**
- * @brief ESP32 SPI implementation of TMC5160 communication interface
+ * @brief ESP32 SPI implementation of TMC51x0 communication interface
  *
- * This class provides SPI communication for the TMC5160 using ESP-IDF SPI
+ * This class provides SPI communication for the TMC51x0 using ESP-IDF SPI
  * driver with full GPIO pin support.
  *
  * Pin Configuration Example (ESP32-C6):
@@ -54,21 +55,21 @@ static const char* BUS_TAG = "TMC5160_Bus";
  *              4000000);      // 4 MHz SPI clock
  *
  * // Configure additional pins
- * spi.SetPinMapping(tmc5160::TMC5160CtrlPin::DIAG0, GPIO_NUM_XX); // DIAG0 pin
- * spi.SetPinMapping(tmc5160::TMC5160CtrlPin::DIAG1, GPIO_NUM_XX); // DIAG1 pin
- * spi.SetPinMapping(tmc5160::TMC5160CtrlPin::CLK, GPIO_NUM_10);   // CLK pin (GPIO10)
+ * spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::DIAG0, GPIO_NUM_XX); // DIAG0 pin
+ * spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::DIAG1, GPIO_NUM_XX); // DIAG1 pin
+ * spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::CLK, GPIO_NUM_10);   // CLK pin (GPIO10)
  * ```
  */
-class Esp32SPI : public tmc5160::SpiCommInterface<Esp32SPI> {
+class Esp32SPI : public tmc51x0::SpiCommInterface<Esp32SPI> {
 public:
   /**
    * @brief Construct ESP32 SPI communication interface with complete pin configuration
    * @param host SPI host device (e.g., SPI2_HOST)
-   * @param pin_config Complete pin configuration including SPI pins and TMC5160 control pins
+   * @param pin_config Complete pin configuration including SPI pins and TMC51x0 control pins
    * @param clock_speed_hz SPI clock speed in Hz (max 4 MHz recommended)
    * @param active_levels Pin active level configuration (optional, uses datasheet defaults if not provided)
    *
-   * This is the recommended constructor as it allows all GPIO pins (SPI + TMC5160 control)
+   * This is the recommended constructor as it allows all GPIO pins (SPI + TMC51x0 control)
    * to be configured in a single structure, making it easier to manage pin assignments.
    *
    * @note Compound pins are automatically handled - if you specify dir_pin, ref_right_pin
@@ -84,14 +85,14 @@ public:
    * Esp32SPI spi(SPI2_HOST, pin_config);
    *
    * // Override for custom board
-   * tmc5160::PinActiveLevels levels;
+   * tmc51x0::PinActiveLevels levels;
    * levels.en = true; // Board has inverter on EN pin
    * Esp32SPI spi(SPI2_HOST, pin_config, 4000000, levels);
    * @endcode
    */
-  Esp32SPI(spi_host_device_t host, const tmc5160::Esp32SpiPinConfig& pin_config,
+  Esp32SPI(spi_host_device_t host, const tmc51x0::Esp32SpiPinConfig& pin_config,
            uint32_t clock_speed_hz = 4000000,
-           const tmc5160::PinActiveLevels& active_levels = tmc5160::PinActiveLevels{}) noexcept
+           const tmc51x0::PinActiveLevels& active_levels = tmc51x0::PinActiveLevels{}) noexcept
       : SpiCommInterface(), // Active level management handled in this derived class
         active_levels_(active_levels), // Store the struct directly
         host_(host), mosi_pin_(static_cast<gpio_num_t>(pin_config.spi_mosi)),
@@ -121,31 +122,31 @@ private:
    * @brief Pin active level configuration storage
    *
    * Stores the PinActiveLevels struct which defines the physical GPIO level
-   * (HIGH or LOW) that corresponds to the ACTIVE state for each TMC5160 control pin.
+   * (HIGH or LOW) that corresponds to the ACTIVE state for each TMC51x0 control pin.
    * This struct is initialized from the constructor parameter (or defaults).
    */
-  tmc5160::PinActiveLevels active_levels_;
+  tmc51x0::PinActiveLevels active_levels_;
 
   /**
    * @brief Convert signal state to physical GPIO level
-   * @param pin The TMC5160 control pin
+   * @param pin The TMC51x0 control pin
    * @param signal The signal state (ACTIVE or INACTIVE)
    * @return Physical GPIO level (true=HIGH, false=LOW)
    */
-  [[nodiscard]] bool SignalToGpioLevel(tmc5160::TMC5160CtrlPin pin, tmc5160::GpioSignal signal) const noexcept {
+  [[nodiscard]] bool SignalToGpioLevel(tmc51x0::TMC51x0CtrlPin pin, tmc51x0::GpioSignal signal) const noexcept {
     bool active_level = active_levels_.GetActiveLevel(pin);
-    return (signal == tmc5160::GpioSignal::ACTIVE) ? active_level : !active_level;
+    return (signal == tmc51x0::GpioSignal::ACTIVE) ? active_level : !active_level;
   }
 
   /**
    * @brief Convert physical GPIO level to signal state
-   * @param pin The TMC5160 control pin
+   * @param pin The TMC51x0 control pin
    * @param gpio_level Physical GPIO level (true=HIGH, false=LOW)
    * @return Signal state (ACTIVE or INACTIVE)
    */
-  [[nodiscard]] tmc5160::GpioSignal GpioLevelToSignal(tmc5160::TMC5160CtrlPin pin, bool gpio_level) const noexcept {
+  [[nodiscard]] tmc51x0::GpioSignal GpioLevelToSignal(tmc51x0::TMC51x0CtrlPin pin, bool gpio_level) const noexcept {
     bool active_level = active_levels_.GetActiveLevel(pin);
-    return (gpio_level == active_level) ? tmc5160::GpioSignal::ACTIVE : tmc5160::GpioSignal::INACTIVE;
+    return (gpio_level == active_level) ? tmc51x0::GpioSignal::ACTIVE : tmc51x0::GpioSignal::INACTIVE;
   }
 
 public:
@@ -158,12 +159,12 @@ public:
    * 
    * Example:
    * @code
-   * tmc5160::PinActiveLevels levels;
+   * tmc51x0::PinActiveLevels levels;
    * levels.en = true; // Override EN pin active level
    * spi.ConfigureActiveLevels(levels);
    * @endcode
    */
-  void ConfigureActiveLevels(const tmc5160::PinActiveLevels& active_levels) noexcept {
+  void ConfigureActiveLevels(const tmc51x0::PinActiveLevels& active_levels) noexcept {
     active_levels_ = active_levels; // Simply copy the struct
   }
 
@@ -171,18 +172,18 @@ public:
    * @brief Get current active level configuration
    * @return PinActiveLevels struct with current active level settings
    */
-  [[nodiscard]] const tmc5160::PinActiveLevels& GetActiveLevels() const noexcept {
+  [[nodiscard]] const tmc51x0::PinActiveLevels& GetActiveLevels() const noexcept {
     return active_levels_; // Return reference to stored struct
   }
 
   /**
-   * @brief Construct ESP32 SPI communication interface with separate SPI pins and TMC5160 pin config
+   * @brief Construct ESP32 SPI communication interface with separate SPI pins and TMC51x0 pin config
    * @param host SPI host device (e.g., SPI2_HOST)
    * @param mosi_pin MOSI GPIO pin
    * @param miso_pin MISO GPIO pin
    * @param sclk_pin SCLK GPIO pin
    * @param cs_pin CS GPIO pin
-   * @param pin_config TMC5160 pin configuration structure (handles compound pins automatically)
+   * @param pin_config TMC51x0 pin configuration structure (handles compound pins automatically)
    * @param clock_speed_hz SPI clock speed in Hz (max 4 MHz recommended)
    * @param active_levels Pin active level configuration (optional, uses datasheet defaults if not provided)
    *
@@ -194,8 +195,8 @@ public:
    *       constructor with Esp32SpiPinConfig for a more unified configuration.
    */
   Esp32SPI(spi_host_device_t host, gpio_num_t mosi_pin, gpio_num_t miso_pin, gpio_num_t sclk_pin, gpio_num_t cs_pin,
-           const tmc5160::TMC5160PinConfig& pin_config, uint32_t clock_speed_hz = 4000000,
-           const tmc5160::PinActiveLevels& active_levels = tmc5160::PinActiveLevels{}) noexcept
+           const tmc51x0::TMC51x0PinConfig& pin_config, uint32_t clock_speed_hz = 4000000,
+           const tmc51x0::PinActiveLevels& active_levels = tmc51x0::PinActiveLevels{}) noexcept
       : SpiCommInterface(), // Active level management handled in this derived class
         active_levels_(active_levels), // Store the struct directly
         host_(host), mosi_pin_(mosi_pin), miso_pin_(miso_pin), sclk_pin_(sclk_pin), cs_pin_(cs_pin),
@@ -230,12 +231,12 @@ public:
    * @note For SPI mode with internal ramp generator (SD_MODE=0), DIR and STEP pins
    *       are not used. Pass -1 if not connected.
    * @note EN pin (DRV_ENN) is active LOW to enable the power stage by default.
-   * @deprecated Use constructor with TMC5160PinConfig struct for better pin management
+   * @deprecated Use constructor with TMC51x0PinConfig struct for better pin management
    */
   Esp32SPI(spi_host_device_t host, gpio_num_t mosi_pin, gpio_num_t miso_pin, gpio_num_t sclk_pin, gpio_num_t cs_pin,
            gpio_num_t en_pin, gpio_num_t dir_pin = static_cast<gpio_num_t>(-1),
            gpio_num_t step_pin = static_cast<gpio_num_t>(-1), uint32_t clock_speed_hz = 4000000,
-           const tmc5160::PinActiveLevels& active_levels = tmc5160::PinActiveLevels{}) noexcept
+           const tmc51x0::PinActiveLevels& active_levels = tmc51x0::PinActiveLevels{}) noexcept
       : SpiCommInterface(), // Active level management handled in this derived class
         active_levels_(active_levels), // Store the struct directly
         host_(host), mosi_pin_(mosi_pin), miso_pin_(miso_pin), sclk_pin_(sclk_pin), cs_pin_(cs_pin), en_pin_(en_pin),
@@ -248,14 +249,14 @@ public:
     }
 
     // Set default pin mappings
-    pin_mapping_[static_cast<size_t>(tmc5160::TMC5160CtrlPin::EN)] = en_pin;
+    pin_mapping_[static_cast<size_t>(tmc51x0::TMC51x0CtrlPin::EN)] = en_pin;
     if (dir_pin != UNMAPPED_PIN) {
-      pin_mapping_[static_cast<size_t>(tmc5160::TMC5160CtrlPin::DIR)] = dir_pin;
-      pin_mapping_[static_cast<size_t>(tmc5160::TMC5160CtrlPin::REFR_DIR)] = dir_pin; // Same physical pin
+      pin_mapping_[static_cast<size_t>(tmc51x0::TMC51x0CtrlPin::DIR)] = dir_pin;
+      pin_mapping_[static_cast<size_t>(tmc51x0::TMC51x0CtrlPin::REFR_DIR)] = dir_pin; // Same physical pin
     }
     if (step_pin != UNMAPPED_PIN) {
-      pin_mapping_[static_cast<size_t>(tmc5160::TMC5160CtrlPin::STEP)] = step_pin;
-      pin_mapping_[static_cast<size_t>(tmc5160::TMC5160CtrlPin::REFL_STEP)] = step_pin; // Same physical pin
+      pin_mapping_[static_cast<size_t>(tmc51x0::TMC51x0CtrlPin::STEP)] = step_pin;
+      pin_mapping_[static_cast<size_t>(tmc51x0::TMC51x0CtrlPin::REFL_STEP)] = step_pin; // Same physical pin
     }
   }
 
@@ -280,12 +281,12 @@ public:
    *
    * You can override individual mappings using SetPinMapping() if needed.
    */
-  bool ApplyPinConfig(const tmc5160::TMC5160PinConfig& pin_config) noexcept {
+  bool ApplyPinConfig(const tmc51x0::TMC51x0PinConfig& pin_config) noexcept {
     constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
 
     // Basic control pins
     if (pin_config.en_pin != -1) {
-      SetPinMapping(tmc5160::TMC5160CtrlPin::EN, static_cast<gpio_num_t>(pin_config.en_pin));
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::EN, static_cast<gpio_num_t>(pin_config.en_pin));
     }
 
     // DIR/REFR_DIR compound pin (pin 18)
@@ -296,8 +297,8 @@ public:
       dir_gpio = static_cast<gpio_num_t>(pin_config.ref_right_pin);
     }
     if (dir_gpio != UNMAPPED_PIN) {
-      SetPinMapping(tmc5160::TMC5160CtrlPin::DIR, dir_gpio);
-      SetPinMapping(tmc5160::TMC5160CtrlPin::REFR_DIR, dir_gpio); // Same physical pin
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::DIR, dir_gpio);
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::REFR_DIR, dir_gpio); // Same physical pin
     }
 
     // STEP/REFL_STEP compound pin (pin 17)
@@ -308,16 +309,16 @@ public:
       step_gpio = static_cast<gpio_num_t>(pin_config.ref_left_pin);
     }
     if (step_gpio != UNMAPPED_PIN) {
-      SetPinMapping(tmc5160::TMC5160CtrlPin::STEP, step_gpio);
-      SetPinMapping(tmc5160::TMC5160CtrlPin::REFL_STEP, step_gpio); // Same physical pin
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::STEP, step_gpio);
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::REFL_STEP, step_gpio); // Same physical pin
     }
 
     // Diagnostic pins
     if (pin_config.diag0_pin != -1) {
-      SetPinMapping(tmc5160::TMC5160CtrlPin::DIAG0, static_cast<gpio_num_t>(pin_config.diag0_pin));
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::DIAG0, static_cast<gpio_num_t>(pin_config.diag0_pin));
     }
     if (pin_config.diag1_pin != -1) {
-      SetPinMapping(tmc5160::TMC5160CtrlPin::DIAG1, static_cast<gpio_num_t>(pin_config.diag1_pin));
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::DIAG1, static_cast<gpio_num_t>(pin_config.diag1_pin));
     }
 
     // ENCA/DCIN compound pin (pin 24)
@@ -328,8 +329,8 @@ public:
       enca_gpio = static_cast<gpio_num_t>(pin_config.dc_in_pin);
     }
     if (enca_gpio != UNMAPPED_PIN) {
-      SetPinMapping(tmc5160::TMC5160CtrlPin::ENCA, enca_gpio);
-      SetPinMapping(tmc5160::TMC5160CtrlPin::DCIN, enca_gpio); // Same physical pin
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::ENCA, enca_gpio);
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::DCIN, enca_gpio); // Same physical pin
     }
 
     // ENCB/DCEN compound pin (pin 23)
@@ -340,8 +341,8 @@ public:
       encb_gpio = static_cast<gpio_num_t>(pin_config.dc_en_pin);
     }
     if (encb_gpio != UNMAPPED_PIN) {
-      SetPinMapping(tmc5160::TMC5160CtrlPin::ENCB, encb_gpio);
-      SetPinMapping(tmc5160::TMC5160CtrlPin::DCEN, encb_gpio); // Same physical pin
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::ENCB, encb_gpio);
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::DCEN, encb_gpio); // Same physical pin
     }
 
     // ENCN/DCO compound pin (pin 25)
@@ -352,30 +353,30 @@ public:
       encn_gpio = static_cast<gpio_num_t>(pin_config.dc_out_pin);
     }
     if (encn_gpio != UNMAPPED_PIN) {
-      SetPinMapping(tmc5160::TMC5160CtrlPin::ENCN, encn_gpio);
-      SetPinMapping(tmc5160::TMC5160CtrlPin::DCO, encn_gpio); // Same physical pin
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::ENCN, encn_gpio);
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::DCO, encn_gpio); // Same physical pin
     }
 
     // Clock pin
     if (pin_config.clk_pin != -1) {
-      SetPinMapping(tmc5160::TMC5160CtrlPin::CLK, static_cast<gpio_num_t>(pin_config.clk_pin));
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::CLK, static_cast<gpio_num_t>(pin_config.clk_pin));
     }
 
     // Mode configuration pins (if available as control pins)
     // ⚠️ WARNING: These are typically hardwired. Only configure if connected to GPIO.
     if (pin_config.spi_mode_pin != -1) {
-      SetPinMapping(tmc5160::TMC5160CtrlPin::SPI_MODE, static_cast<gpio_num_t>(pin_config.spi_mode_pin));
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::SPI_MODE, static_cast<gpio_num_t>(pin_config.spi_mode_pin));
     }
     if (pin_config.sd_mode_pin != -1) {
-      SetPinMapping(tmc5160::TMC5160CtrlPin::SD_MODE, static_cast<gpio_num_t>(pin_config.sd_mode_pin));
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::SD_MODE, static_cast<gpio_num_t>(pin_config.sd_mode_pin));
     }
 
     return true;
   }
 
   /**
-   * @brief Set pin mapping for a TMC5160 control pin
-   * @param pin TMC5160 control pin identifier
+   * @brief Set pin mapping for a TMC51x0 control pin
+   * @param pin TMC51x0 control pin identifier
    * @param gpio_pin ESP32 GPIO pin number (or -1 to disable/unmap)
    * @return true if pin mapping was set successfully
    *
@@ -383,12 +384,12 @@ public:
    *
    * Example:
    * ```cpp
-   * spi.SetPinMapping(tmc5160::TMC5160CtrlPin::DIAG0, GPIO_NUM_XX);
-   * spi.SetPinMapping(tmc5160::TMC5160CtrlPin::DIAG1, GPIO_NUM_XX);
-   * spi.SetPinMapping(tmc5160::TMC5160CtrlPin::CLK, GPIO_NUM_10);
+   * spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::DIAG0, GPIO_NUM_XX);
+   * spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::DIAG1, GPIO_NUM_XX);
+   * spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::CLK, GPIO_NUM_10);
    * ```
    */
-  bool SetPinMapping(tmc5160::TMC5160CtrlPin pin, gpio_num_t gpio_pin) noexcept {
+  bool SetPinMapping(tmc51x0::TMC51x0CtrlPin pin, gpio_num_t gpio_pin) noexcept {
     size_t index = static_cast<size_t>(pin);
     if (index >= sizeof(pin_mapping_) / sizeof(pin_mapping_[0])) {
       return false;
@@ -399,38 +400,38 @@ public:
     // Configure GPIO direction based on pin type
     if (gpio_pin != UNMAPPED_PIN) {
       // Diagnostic pins are outputs (read-only from MCU perspective)
-      if (pin == tmc5160::TMC5160CtrlPin::DIAG0 || pin == tmc5160::TMC5160CtrlPin::DIAG1) {
-        gpio_set_direction(gpio_pin, GPIO_MODE_INPUT);  // MCU reads TMC5160 output
+      if (pin == tmc51x0::TMC51x0CtrlPin::DIAG0 || pin == tmc51x0::TMC51x0CtrlPin::DIAG1) {
+        gpio_set_direction(gpio_pin, GPIO_MODE_INPUT);  // MCU reads TMC51x0 output
         gpio_set_pull_mode(gpio_pin, GPIO_PULLUP_ONLY); // Diagnostic pins have pullups
       }
       // Encoder pins are inputs (when SD_MODE=0)
-      else if (pin == tmc5160::TMC5160CtrlPin::ENCA || pin == tmc5160::TMC5160CtrlPin::ENCB ||
-               pin == tmc5160::TMC5160CtrlPin::ENCN) {
+      else if (pin == tmc51x0::TMC51x0CtrlPin::ENCA || pin == tmc51x0::TMC51x0CtrlPin::ENCB ||
+               pin == tmc51x0::TMC51x0CtrlPin::ENCN) {
         gpio_set_direction(gpio_pin, GPIO_MODE_INPUT);
         gpio_set_pull_mode(gpio_pin, GPIO_PULLUP_ONLY);
       }
       // DC Step pins (when SD_MODE=1, SPI_MODE=1)
-      else if (pin == tmc5160::TMC5160CtrlPin::DCEN || pin == tmc5160::TMC5160CtrlPin::DCIN) {
-        gpio_set_direction(gpio_pin, GPIO_MODE_OUTPUT); // DCEN and DCIN are inputs to TMC5160
-      } else if (pin == tmc5160::TMC5160CtrlPin::DCO) {
-        gpio_set_direction(gpio_pin, GPIO_MODE_INPUT); // DCO is output from TMC5160
+      else if (pin == tmc51x0::TMC51x0CtrlPin::DCEN || pin == tmc51x0::TMC51x0CtrlPin::DCIN) {
+        gpio_set_direction(gpio_pin, GPIO_MODE_OUTPUT); // DCEN and DCIN are inputs to TMC51x0
+      } else if (pin == tmc51x0::TMC51x0CtrlPin::DCO) {
+        gpio_set_direction(gpio_pin, GPIO_MODE_INPUT); // DCO is output from TMC51x0
         gpio_set_pull_mode(gpio_pin, GPIO_PULLUP_ONLY);
       }
       // Reference switch pins can be inputs (when used as reference switches, SD_MODE=0)
-      else if (pin == tmc5160::TMC5160CtrlPin::REFL_STEP || pin == tmc5160::TMC5160CtrlPin::REFR_DIR) {
+      else if (pin == tmc51x0::TMC51x0CtrlPin::REFL_STEP || pin == tmc51x0::TMC51x0CtrlPin::REFR_DIR) {
         gpio_set_direction(gpio_pin, GPIO_MODE_INPUT);
         gpio_set_pull_mode(gpio_pin, GPIO_PULLUP_ONLY); // Typically active LOW
         active_levels_.SetActiveLevel(pin, false);      // Active LOW for reference switches
       }
       // CLK pin can be output (for external clock) or input (for reading clock state)
-      else if (pin == tmc5160::TMC5160CtrlPin::CLK) {
+      else if (pin == tmc51x0::TMC51x0CtrlPin::CLK) {
         // Default to input, user can configure as output if needed for PWM clock
         gpio_set_direction(gpio_pin, GPIO_MODE_INPUT);
       }
       // Mode configuration pins (SPI_MODE, SD_MODE) - INPUT by default (read-only)
       // These pins are typically hardwired on dev boards. Only set as OUTPUT if user
-      // explicitly calls SetChipCommMode() or GpioSet() to control them.
-      else if (pin == tmc5160::TMC5160CtrlPin::SPI_MODE || pin == tmc5160::TMC5160CtrlPin::SD_MODE) {
+      // explicitly calls communication.SetOperatingMode() or GpioSet() to control them.
+      else if (pin == tmc51x0::TMC51x0CtrlPin::SPI_MODE || pin == tmc51x0::TMC51x0CtrlPin::SD_MODE) {
         gpio_set_direction(gpio_pin, GPIO_MODE_INPUT); // Input to read chip mode (hardwired on dev boards)
         gpio_set_pull_mode(gpio_pin, GPIO_PULLUP_ONLY); // Pullup for stable reading
       }
@@ -443,11 +444,11 @@ public:
   }
 
   /**
-   * @brief Get pin mapping for a TMC5160 control pin
-   * @param pin TMC5160 control pin identifier
+   * @brief Get pin mapping for a TMC51x0 control pin
+   * @param pin TMC51x0 control pin identifier
    * @return ESP32 GPIO pin number, or -1 if not mapped
    */
-  [[nodiscard]] gpio_num_t GetPinMapping(tmc5160::TMC5160CtrlPin pin) const noexcept {
+  [[nodiscard]] gpio_num_t GetPinMapping(tmc51x0::TMC51x0CtrlPin pin) const noexcept {
     size_t index = static_cast<size_t>(pin);
     constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
     if (index >= sizeof(pin_mapping_) / sizeof(pin_mapping_[0])) {
@@ -470,17 +471,17 @@ public:
     if (en_pin_ != UNMAPPED_PIN) {
       gpio_set_direction(en_pin_, GPIO_MODE_OUTPUT);
       // Disable by default using signal abstraction (EN is active LOW, so INACTIVE = HIGH = disabled)
-      GpioSet(tmc5160::TMC5160CtrlPin::EN, tmc5160::GpioSignal::INACTIVE);
+      GpioSet(tmc51x0::TMC51x0CtrlPin::EN, tmc51x0::GpioSignal::INACTIVE);
     }
     if (dir_pin_ != UNMAPPED_PIN) {
       gpio_set_direction(dir_pin_, GPIO_MODE_OUTPUT);
       // Set DIR to inactive by default using signal abstraction
-      GpioSet(tmc5160::TMC5160CtrlPin::DIR, tmc5160::GpioSignal::INACTIVE);
+      GpioSet(tmc51x0::TMC51x0CtrlPin::DIR, tmc51x0::GpioSignal::INACTIVE);
     }
     if (step_pin_ != UNMAPPED_PIN) {
       gpio_set_direction(step_pin_, GPIO_MODE_OUTPUT);
       // Set STEP to inactive by default using signal abstraction
-      GpioSet(tmc5160::TMC5160CtrlPin::STEP, tmc5160::GpioSignal::INACTIVE);
+      GpioSet(tmc51x0::TMC51x0CtrlPin::STEP, tmc51x0::GpioSignal::INACTIVE);
     }
 
     // Configure SPI bus
@@ -502,7 +503,7 @@ public:
     // Configure SPI device (Mode 3: CPOL=1, CPHA=1)
     spi_device_interface_config_t dev_config = {};
     dev_config.clock_speed_hz = clock_speed_hz_;
-    dev_config.mode = 3; // SPI Mode 3 for TMC5160
+    dev_config.mode = 3; // SPI Mode 3 for TMC51x0
     dev_config.spics_io_num = cs_pin_;
     dev_config.queue_size = 1;
     dev_config.cs_ena_pretrans = 2;
@@ -524,8 +525,8 @@ public:
    * @brief Get communication mode (always SPI for this interface)
    * @return CommMode::SPI
    */
-  tmc5160::CommMode GetMode() const noexcept {
-    return tmc5160::CommMode::SPI;
+  tmc51x0::CommMode GetMode() const noexcept {
+    return tmc51x0::CommMode::SPI;
   }
 
   /**
@@ -576,27 +577,27 @@ public:
 
   /**
    * @brief Set GPIO pin state
-   * @param pin The TMC5160 control pin to control
+   * @param pin The TMC51x0 control pin to control
    * @param signal The desired signal state (ACTIVE or INACTIVE)
    * @return true if the GPIO was set successfully, false otherwise
    *
-   * Supports all TMC5160 control pins: EN, DIR, STEP, REFL_STEP, REFR_DIR,
+   * Supports all TMC51x0 control pins: EN, DIR, STEP, REFL_STEP, REFR_DIR,
    * ENCA, ENCB, ENCN, DCEN, DCIN, DCO, CLK.
    *
    * @note Diagnostic pins (DIAG0, DIAG1) and DCO are read-only and cannot be set.
    * @note Encoder pins (ENCA, ENCB, ENCN) are read-only when used as encoder inputs.
    * @note Pin must be mapped using SetPinMapping() before use.
    */
-  bool GpioSet(tmc5160::TMC5160CtrlPin pin, tmc5160::GpioSignal signal) noexcept {
-    // Diagnostic pins and DCO are read-only (outputs from TMC5160)
-    if (pin == tmc5160::TMC5160CtrlPin::DIAG0 || pin == tmc5160::TMC5160CtrlPin::DIAG1 ||
-        pin == tmc5160::TMC5160CtrlPin::DCO) {
-      ESP_LOGW(BUS_TAG, "Pin is read-only (output from TMC5160)");
+  bool GpioSet(tmc51x0::TMC51x0CtrlPin pin, tmc51x0::GpioSignal signal) noexcept {
+    // Diagnostic pins and DCO are read-only (outputs from TMC51x0)
+    if (pin == tmc51x0::TMC51x0CtrlPin::DIAG0 || pin == tmc51x0::TMC51x0CtrlPin::DIAG1 ||
+        pin == tmc51x0::TMC51x0CtrlPin::DCO) {
+      ESP_LOGW(BUS_TAG, "Pin is read-only (output from TMC51x0)");
       return false;
     }
     // Encoder pins are read-only when used as encoder inputs (SD_MODE=0)
-    if (pin == tmc5160::TMC5160CtrlPin::ENCA || pin == tmc5160::TMC5160CtrlPin::ENCB ||
-        pin == tmc5160::TMC5160CtrlPin::ENCN) {
+    if (pin == tmc51x0::TMC51x0CtrlPin::ENCA || pin == tmc51x0::TMC51x0CtrlPin::ENCB ||
+        pin == tmc51x0::TMC51x0CtrlPin::ENCN) {
       ESP_LOGW(BUS_TAG, "Encoder pins are read-only (use DCEN/DCIN for DC Step mode)");
       return false;
     }
@@ -610,7 +611,7 @@ public:
 
     // If user is trying to set SPI_MODE or SD_MODE pins, configure them as OUTPUT
     // (they default to INPUT for read-only mode on hardwired dev boards)
-    if (pin == tmc5160::TMC5160CtrlPin::SPI_MODE || pin == tmc5160::TMC5160CtrlPin::SD_MODE) {
+    if (pin == tmc51x0::TMC51x0CtrlPin::SPI_MODE || pin == tmc51x0::TMC51x0CtrlPin::SD_MODE) {
       gpio_set_direction(gpio_pin, GPIO_MODE_OUTPUT);
     }
 
@@ -621,7 +622,7 @@ public:
 
   /**
    * @brief Read GPIO pin state
-   * @param pin The TMC5160 control pin to read
+   * @param pin The TMC51x0 control pin to read
    * @param signal Reference to store the current signal state
    * @return true if the GPIO was read successfully, false otherwise
    *
@@ -630,7 +631,7 @@ public:
    *
    * @note Pin must be mapped using SetPinMapping() before use.
    */
-  bool GpioRead(tmc5160::TMC5160CtrlPin pin, tmc5160::GpioSignal& signal) noexcept {
+  bool GpioRead(tmc51x0::TMC51x0CtrlPin pin, tmc51x0::GpioSignal& signal) noexcept {
     gpio_num_t gpio_pin = GetPinMapping(pin);
     constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
     if (gpio_pin == UNMAPPED_PIN) {
@@ -681,6 +682,49 @@ public:
     esp_rom_delay_us(us);
   }
 
+  /**
+   * @brief Set external clock frequency on CLK pin
+   * @param frequency_hz Desired clock frequency in Hz (0 = use internal clock, set CLK pin to GND)
+   * @return true if clock was configured successfully, false if not supported or failed
+   *
+   * **Internal Clock Mode (frequency_hz = 0):**
+   * - Sets CLK pin to OUTPUT mode and drives it LOW (GND)
+   * - Enables the internal 12 MHz oscillator
+   * - Returns true if CLK pin was successfully configured
+   * - Returns false if CLK pin is not mapped
+   *
+   * **External Clock Mode (frequency_hz > 0):**
+   * - Currently not implemented (would require PWM generation)
+   * - Returns false to indicate external clock must be provided by external hardware
+   * - User should provide external clock signal on CLK pin
+   *
+   * @note CLK pin must be mapped using SetPinMapping() before calling this function.
+   * @note For internal clock, the driver will use 12 MHz for all timing calculations.
+   * @note For external clock, the actual frequency must match the frequency_hz parameter.
+   */
+  bool SetClkFreq(uint32_t frequency_hz) noexcept {
+    gpio_num_t clk_pin = GetPinMapping(tmc51x0::TMC51x0CtrlPin::CLK);
+    constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
+    
+    if (clk_pin == UNMAPPED_PIN) {
+      ESP_LOGW(BUS_TAG, "CLK pin not mapped, cannot configure clock");
+      return false;
+    }
+
+    if (frequency_hz == 0) {
+      // Internal clock mode: Set CLK pin to GND (LOW)
+      gpio_set_direction(clk_pin, GPIO_MODE_OUTPUT);
+      gpio_set_level(clk_pin, 0); // Drive LOW (GND) for internal oscillator
+      ESP_LOGI(BUS_TAG, "CLK pin set to GND (internal 12 MHz oscillator enabled)");
+      return true;
+    } else {
+      // External clock mode: Not implemented via PWM
+      // User must provide external clock signal on CLK pin
+      ESP_LOGW(BUS_TAG, "External clock generation not implemented. Provide external clock signal on CLK pin (frequency: %u Hz)", frequency_hz);
+      return false;
+    }
+  }
+
 private:
   spi_host_device_t host_;
   gpio_num_t mosi_pin_;
@@ -695,9 +739,9 @@ private:
   bool initialized_;
 
   /**
-   * @brief Pin mapping array: maps TMC5160CtrlPin enum to ESP32 GPIO numbers
+   * @brief Pin mapping array: maps TMC51x0CtrlPin enum to ESP32 GPIO numbers
    *
-   * Array indices correspond to TMC5160CtrlPin enum values.
+   * Array indices correspond to TMC51x0CtrlPin enum values.
    * -1 indicates the pin is not mapped.
    */
   gpio_num_t pin_mapping_[16]{}; // Updated to support all pin types (16 pins: EN through SD_MODE)
