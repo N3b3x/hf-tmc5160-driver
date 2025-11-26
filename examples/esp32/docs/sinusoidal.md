@@ -245,7 +245,7 @@ if (current_time - last_diag_time >= 500) {
 
 - [Motor Configuration Guide](motor_configuration.md) - Motor selection and specifications
 - [Bounds Finding Example](bounds_finding_sinuous_motion.md) - More advanced motion control
-- [Ramp Control Test](ramp_control_comprehensive_test.md) - Detailed ramp control testing
+- [Internal Ramp Comprehensive Test](internal_ramp_comprehensive_test.md) - Comprehensive ramp control and positioning testing
 
 ## Example Output
 

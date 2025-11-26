@@ -267,5 +267,5 @@ I (1239) Encoder_Test: [PASS] Position Reading: Position read successfully
 ## Related Documentation
 
 - [GPIO Pin Configuration Example](gpio_pin_config_example.md) - Encoder pin setup
-- [Core Test](core_comprehensive_test.md) - Basic encoder testing
+- [Internal Ramp Comprehensive Test](internal_ramp_comprehensive_test.md) - Comprehensive test suite (encoder tests are separate)
 

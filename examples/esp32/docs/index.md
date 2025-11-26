@@ -36,12 +36,8 @@ Thorough validation of driver features:
 
 ### Single Motor Tests
 
-- **[Core Comprehensive Test](core_comprehensive_test.md)** - Driver initialization, register access, and basic setup
-- **[Motor Control Comprehensive Test](motor_control_comprehensive_test.md)** - Enable/disable, current control, chopper, StealthChop
-- **[Ramp Control Comprehensive Test](ramp_control_comprehensive_test.md)** - All ramp modes, position control, speed control
-- **[Diagnostics Comprehensive Test](diagnostics_comprehensive_test.md)** - Driver status, StallGuard2, lost steps, phase currents
-- **[Encoder Comprehensive Test](encoder_comprehensive_test.md)** - Encoder configuration, position reading, deviation detection
-- **[Protection Comprehensive Test](protection_comprehensive_test.md)** - Short circuit and overtemperature protection
+- **[Internal Ramp Comprehensive Test](internal_ramp_comprehensive_test.md)** - **Main comprehensive test suite** - Combines core, motor control, ramp control, diagnostics, and protection tests into a single wholesome test suite for SPI internal ramp mode (with encoder and reference switches)
+- **[Encoder Comprehensive Test](encoder_comprehensive_test.md)** - Encoder configuration, position reading, deviation detection (separate test suite)
 
 ### Multi-Motor Tests
 

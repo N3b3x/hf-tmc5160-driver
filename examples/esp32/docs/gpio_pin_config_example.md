@@ -267,6 +267,5 @@ enc_cfg.invert_direction = true;  // If encoder direction is reversed
 ## Related Documentation
 
 - [Pin Configuration Struct Example](pin_config_struct_example.md) - Using pin config struct
-- [Core Test](core_comprehensive_test.md) - Basic GPIO testing
-- [Diagnostics Test](diagnostics_comprehensive_test.md) - Diagnostic pin testing
+- [Internal Ramp Comprehensive Test](internal_ramp_comprehensive_test.md) - Comprehensive GPIO and diagnostic testing
 

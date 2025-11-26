@@ -246,5 +246,5 @@ pin_config.tmc5160_pins.ref_right_pin = -1;  // Right endstop not used
 
 - [GPIO Pin Configuration Example](gpio_pin_config_example.md) - Individual pin configuration
 - [esp32_tmc5160_bus_config.hpp](../../main/esp32_tmc5160_bus_config.hpp) - Standard pin configuration
-- [Core Test](core_comprehensive_test.md) - Pin configuration testing
+- [Internal Ramp Comprehensive Test](internal_ramp_comprehensive_test.md) - Comprehensive pin configuration and testing
 
