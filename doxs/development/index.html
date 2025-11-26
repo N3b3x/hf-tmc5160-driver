@@ -18,6 +18,9 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -96,7 +99,7 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a><b>C++17 hardware-agnostic driver for Trinamic TMC5160 stepper motor controller with advanced features</b></p>
 <p><a href="https://en.cppreference.com/w/cpp/17.html"><img src="https://img.shields.io/badge/C%2B%2B-17-blue.svg" alt="C++" style="pointer-events: none;" class="inline"/></a> <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/N3b3x/hf-tmc5160-driver/actions/workflows/esp32-examples-build-ci.yml"><img src="https://github.com/N3b3x/hf-tmc5160-driver/actions/workflows/esp32-examples-build-ci.yml/badge.svg?branch=main" alt="CI" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/N3b3x/hf-tmc5160-driver/tree/main/docs"><img src="https://img.shields.io/badge/docs-GitHub%20Pages-blue" alt="Docs" class="inline"/></a></p>
-<h1><a class="anchor" id="autotoc_md23"></a>
+<h1><a class="anchor" id="autotoc_md27"></a>
 📚 Table of Contents</h1>
 <ol type="1">
 <li>Overview</li>
@@ -109,100 +112,203 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 <li>Contributing</li>
 <li>License</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md24"></a>
+<h1><a class="anchor" id="autotoc_md28"></a>
 📦 Overview</h1>
 <blockquote class="doxtable">
 <p>&zwj;<b>📖 📚🌐 Complete Documentation</b> - Interactive guides, examples, and step-by-step tutorials </p>
 </blockquote>
-<p><b>HF-TMC5160</b> is a portable C++17 driver for the <b>Trinamic TMC5160</b> stepper motor controller IC. The TMC5160 is a sophisticated stepper motor driver supporting advanced features including stealthChop for silent operation, spreadCycle for high torque, StallGuard2 for stall detection, and encoder support for closed-loop control.</p>
-<p>This driver provides <b>complete feature coverage</b> of all 47 TMC5160 registers with 72+ public API methods organized into intuitive subsystems. It supports <b>multi-chip communication</b> via SPI daisy chaining and UART multi-node addressing, <b>physical unit conversions</b> (mm, degrees, RPM), <b>sensorless homing</b>, and many other advanced features not found in other TMC5160 drivers. The driver provides hardware-agnostic communication interfaces, allowing it to run on any platform (ESP32, STM32, etc.) with SPI or UART.</p>
-<p>The driver exposes the full register interface, providing access to all 47 TMC5160 registers through an intuitive C++ API. It supports ramp control (positioning, velocity, hold modes), motor current configuration, chopper settings, stealthChop PWM mode, encoder integration, comprehensive protection systems, and advanced multi-chip communication.</p>
-<h1><a class="anchor" id="autotoc_md25"></a>
+<p><b>HF-TMC5160</b> is a comprehensive, production-ready C++17 driver for the <b>Trinamic TMC5160</b> stepper motor controller IC. The TMC5160 is a sophisticated stepper motor driver supporting advanced features including stealthChop for silent operation, spreadCycle for high torque, StallGuard2 for stall detection, and encoder support for closed-loop control.</p>
+<p>This driver provides <b>complete feature coverage</b> of all 47 TMC5160 registers with <b>100+ public API methods</b> organized into intuitive, well-structured subsystems. It supports <b>multi-chip communication</b> via SPI daisy chaining and UART multi-node addressing, <b>physical unit conversions</b> (mm, degrees, RPM, belt teeth), <b>automatic parameter tuning</b>, <b>sensorless homing</b>, and many other advanced features not found in other TMC5160 drivers.</p>
+<h2><a class="anchor" id="autotoc_md29"></a>
+Architecture &amp; Design</h2>
+<p>The driver is built with a <b>subsystem-based architecture</b> that organizes functionality into logical groups, making it easy to find and use the features you need:</p>
+<div class="fragment"><div class="line">tmc5160::TMC5160&lt;MySPI&gt; driver(spi);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Organized subsystems for intuitive access</span></div>
+<div class="line">driver.rampControl      <span class="comment">// Motion planning and positioning</span></div>
+<div class="line">driver.motorControl     <span class="comment">// Current control and chopper modes</span></div>
+<div class="line">driver.encoder          <span class="comment">// Encoder integration and closed-loop control</span></div>
+<div class="line">driver.diagnostics      <span class="comment">// Status monitoring and StallGuard2 reading</span></div>
+<div class="line">driver.tuning           <span class="comment">// Automatic parameter optimization</span></div>
+<div class="line">driver.homing           <span class="comment">// Sensorless and switch-based homing</span></div>
+<div class="line">driver.protection       <span class="comment">// Safety and protection systems</span></div>
+<div class="line">driver.communication    <span class="comment">// Multi-chip communication setup</span></div>
+<div class="line">driver.printer          <span class="comment">// Debug register printing</span></div>
+</div><!-- fragment --><p>The driver uses <b>CRTP (Curiously Recurring Template Pattern)</b> for hardware-agnostic communication interfaces, allowing it to run on any platform (ESP32, STM32, Arduino, Raspberry Pi, etc.) with SPI or UART. This design provides <b>zero runtime overhead</b> while maintaining complete platform independence.</p>
+<h2><a class="anchor" id="autotoc_md30"></a>
+Key Capabilities</h2>
+<ul>
+<li><b>Complete Register Coverage</b>: All 47 TMC5160 registers (0x00-0x73) accessible through type-safe C++ API</li>
+<li><b>Multi-Chip Support</b>: SPI daisy chaining and UART multi-node addressing for controlling multiple motors</li>
+<li><b>Unit Conversions</b>: Work with physical units (mm, degrees, RPM) instead of raw steps</li>
+<li><b>Automatic Tuning</b>: Intelligent StallGuard2 threshold optimization with velocity range analysis</li>
+<li><b>Sensorless Homing</b>: Endstop-free homing using StallGuard2 stall detection</li>
+<li><b>Dual Chip Support</b>: Automatically detects and supports both TMC5130 and TMC5160 chips</li>
+<li><b>Modern C++17</b>: Type-safe API with RAII principles and compile-time optimizations</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md31"></a>
 ✨ Features</h1>
-<h2><a class="anchor" id="autotoc_md26"></a>
-Core Motor Control</h2>
+<h2><a class="anchor" id="autotoc_md32"></a>
+🎯 Core Motor Control</h2>
+<h3><a class="anchor" id="autotoc_md33"></a>
+RampControl Subsystem</h3>
 <ul>
-<li>✅ <b>Ramp Control</b>: Positioning, velocity, and hold modes with configurable acceleration profiles</li>
-<li>✅ <b>Current Control</b>: Configurable run and hold currents with global scaler</li>
-<li>✅ <b>Chopper Modes</b>: spreadCycle and stealthChop operation modes</li>
-<li>✅ <b>StealthChop</b>: Silent operation with automatic PWM amplitude scaling</li>
-<li>✅ <b>StallGuard2</b>: Stall detection and prevention with configurable thresholds</li>
-<li>✅ <b>Encoder Support</b>: Closed-loop control with encoder feedback and deviation detection</li>
-<li>✅ <b>Protection Systems</b>: Short circuit, overtemperature, and overvoltage protection</li>
+<li>✅ <b>Positioning Mode</b>: Precise position control with configurable acceleration profiles</li>
+<li>✅ <b>Velocity Mode</b>: Continuous motion in positive or negative direction</li>
+<li>✅ <b>Hold Mode</b>: Maintain position with configurable hold current</li>
+<li>✅ <b>Advanced Ramp Profiles</b>: Multi-phase acceleration (A1, AMAX, D1) for smooth motion</li>
+<li>✅ <b>Reference Switches</b>: Configurable endstops with latching and stop-on-switch modes</li>
+<li>✅ <b>Unit-Aware API</b>: Set positions, speeds, and accelerations in steps, mm, degrees, or RPM</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md27"></a>
-Multi-Chip Communication</h2>
+<h3><a class="anchor" id="autotoc_md34"></a>
+MotorControl Subsystem</h3>
 <ul>
-<li>✅ <b>SPI Daisy Chaining</b>: Connect multiple TMC5160 chips on a single SPI bus with automatic chain length detection</li>
-<li>✅ <b>TMC5160DaisyChain Class</b>: High-level manager for multiple drivers with dynamic device management</li>
-<li>✅ <b>UART Multi-Node</b>: Support for up to 255 devices on a single UART bus with slave addressing</li>
+<li>✅ <b>Current Control</b>: Automatic calculation from motor specifications (rated current, sense resistor)</li>
+<li>✅ <b>Run/Hold Currents</b>: Independent run and hold current settings with global scaler</li>
+<li>✅ <b>Chopper Modes</b>:<ul>
+<li><b>spreadCycle</b>: High torque mode with configurable chopper settings</li>
+<li><b>stealthChop</b>: Silent operation with automatic PWM amplitude scaling</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md28"></a>
-Advanced Features</h2>
+</li>
+<li>✅ <b>Mode Switching</b>: Automatic switching between stealthChop and spreadCycle based on velocity</li>
+<li>✅ <b>Freewheeling</b>: Automatic freewheeling when motor is stopped</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md35"></a>
+🔍 Diagnostics &amp; Tuning</h2>
+<h3><a class="anchor" id="autotoc_md36"></a>
+Diagnostics Subsystem</h3>
 <ul>
-<li>✅ <b>Unit Conversions</b>: Physical unit support (millimeters, degrees, RPM, belt teeth) with convenience methods</li>
-<li>✅ <b>Sensorless Homing</b>: StallGuard2-based sensorless homing for endstop-free operation</li>
+<li>✅ <b>Status Monitoring</b>: Comprehensive driver status (overtemperature, short circuit, etc.)</li>
+<li>✅ <b>StallGuard2 Reading</b>: Real-time load measurement (0-1023) for diagnostics</li>
+<li>✅ <b>Open Load Detection</b>: Detect interrupted cables or connector issues</li>
+<li>✅ <b>Lost Steps Counter</b>: Monitor step loss during operation</li>
+<li>✅ <b>Register Access</b>: Direct read/write access to all 47 registers</li>
+<li>✅ <b>Setup Verification</b>: Comprehensive startup verification and diagnostics</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md37"></a>
+Tuning Subsystem ⭐ NEW</h3>
+<ul>
+<li>✅ <b>Automatic SGT Tuning</b>: Intelligent StallGuard2 threshold optimization</li>
+<li>✅ <b>Velocity Range Analysis</b>: Finds optimal SGT for target velocity with min/max range testing</li>
+<li>✅ <b>Comprehensive Results</b>: Returns detailed tuning results including actual achievable velocities</li>
+<li>✅ <b>Target Velocity Priority</b>: Optimizes SGT primarily for your most important operating speed</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md38"></a>
+🏠 Homing &amp; Positioning</h2>
+<h3><a class="anchor" id="autotoc_md39"></a>
+Homing Subsystem</h3>
+<ul>
+<li>✅ <b>Sensorless Homing</b>: Endstop-free homing using StallGuard2 stall detection</li>
+<li>✅ <b>Switch-Based Homing</b>: Homing using reference switches/endstops</li>
+<li>✅ <b>Automatic Settings Caching</b>: Preserves and restores driver settings during homing</li>
+<li>✅ <b>Configurable Search Speed</b>: Adjustable homing speed and switch approach speed</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md40"></a>
+🔄 Encoder Integration</h2>
+<h3><a class="anchor" id="autotoc_md41"></a>
+Encoder Subsystem</h3>
+<ul>
+<li>✅ <b>Closed-Loop Control</b>: Encoder feedback for position verification</li>
+<li>✅ <b>Deviation Detection</b>: Monitor and detect position deviation (step loss)</li>
+<li>✅ <b>Automatic Compensation</b>: Optional automatic position correction</li>
+<li>✅ <b>Encoder Configuration</b>: Flexible encoder setup (AB, ABZ, SPI, etc.)</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md42"></a>
+🛡️ Protection Systems</h2>
+<h3><a class="anchor" id="autotoc_md43"></a>
+Protection Subsystem</h3>
+<ul>
+<li>✅ <b>Short Circuit Protection</b>: Configurable voltage thresholds and timing</li>
+<li>✅ <b>Overtemperature Protection</b>: Automatic shutdown on overtemperature</li>
+<li>✅ <b>Overvoltage Protection</b>: Undervoltage charge pump monitoring</li>
+<li>✅ <b>Driver Status</b>: Real-time monitoring of all protection flags</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md44"></a>
+🔗 Multi-Chip Communication</h2>
+<h3><a class="anchor" id="autotoc_md45"></a>
+Communication Subsystem</h3>
+<ul>
+<li>✅ <b>SPI Daisy Chaining</b>: Connect multiple TMC5160 chips on a single SPI bus<ul>
+<li>Automatic chain length detection</li>
+<li>Position-based addressing (0, 1, 2, ...)</li>
+<li><code>TMC5160DaisyChain</code> helper class for easy management</li>
+</ul>
+</li>
+<li>✅ <b>UART Multi-Node</b>: Support for up to 255 devices on a single UART bus<ul>
+<li>Slave addressing (0-254)</li>
+<li>Sequential programming support</li>
+<li><code>TMC5160MultiNode</code> helper class for multi-device management</li>
+</ul>
+</li>
+<li>✅ <b>Automatic Detection</b>: Chip version detection (TMC5130 vs TMC5160)</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md46"></a>
+⚙️ Advanced Features</h2>
+<ul>
 <li>✅ <b>CoolStep</b>: Automatic current reduction when load is low for power efficiency</li>
 <li>✅ <b>dcStep</b>: Automatic commutation for DC motor-like operation</li>
 <li>✅ <b>Microstep Lookup Tables</b>: Custom microstep interpolation for optimized motion profiles</li>
-<li>✅ <b>Lost Steps Detection</b>: Monitor and detect step loss during operation</li>
+<li>✅ <b>Unit Conversions</b>: Physical unit support (millimeters, degrees, RPM, belt teeth)<ul>
+<li>Lead screw systems (mm pitch)</li>
+<li>Belt drive systems (belt pitch, pulley teeth)</li>
+<li>Direct drive and gearbox systems</li>
+</ul>
+</li>
 <li>✅ <b>OTP Programming</b>: One-time programmable memory read/write support</li>
 <li>✅ <b>Factory Configuration</b>: Read factory calibration and configuration data</li>
+<li>✅ <b>Motor Setup from Specs</b>: High-level configuration from physical motor parameters</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md29"></a>
-Platform &amp; Architecture</h2>
+<h2><a class="anchor" id="autotoc_md47"></a>
+🏗️ Platform &amp; Architecture</h2>
 <ul>
-<li>✅ <b>Hardware Agnostic</b>: SPI or UART interface for platform independence</li>
-<li>✅ <b>Modern C++17</b>: Type-safe API with RAII principles</li>
-<li>✅ <b>Zero Overhead</b>: CRTP-based design for compile-time polymorphism</li>
-<li>✅ <b>Complete Register Coverage</b>: All 47 registers (0x00-0x73) with 72+ public API methods</li>
+<li>✅ <b>Hardware Agnostic</b>: SPI or UART interface for complete platform independence</li>
+<li>✅ <b>CRTP Design</b>: Zero-overhead compile-time polymorphism</li>
+<li>✅ <b>Template-Based</b>: Type-safe API with compile-time optimizations</li>
+<li>✅ <b>Modern C++17</b>: RAII principles, constexpr functions, type safety</li>
+<li>✅ <b>Complete Register Coverage</b>: All 47 registers (0x00-0x73) with 100+ public API methods</li>
+<li>✅ <b>Subsystem Organization</b>: Logical grouping of functionality for easy discovery</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md30"></a>
+<h1><a class="anchor" id="autotoc_md48"></a>
 🚀 Quick Start</h1>
-<h2><a class="anchor" id="autotoc_md31"></a>
+<h2><a class="anchor" id="autotoc_md49"></a>
 Single Motor Setup</h2>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="tmc5160_8hpp.html">inc/tmc5160.hpp</a>&quot;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;inc/tmc5160.hpp&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 1. Implement the communication interface (see platform_integration.md)</span></div>
-<div class="line"><span class="keyword">class </span>MySPI : <span class="keyword">public</span> <a class="code hl_class" href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a>&lt;MySPI&gt; {</div>
+<div class="line"><span class="keyword">class </span>MySPI : <span class="keyword">public</span> tmc5160::SpiCommInterface&lt;MySPI&gt; {</div>
 <div class="line">    <span class="comment">// ... implement required methods</span></div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 2. Create driver instance</span></div>
 <div class="line">MySPI spi;</div>
-<div class="line"><a class="code hl_class" href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a> driver(spi);</div>
+<div class="line">tmc5160::TMC5160 driver(spi);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 3. Initialize driver</span></div>
-<div class="line"><a class="code hl_struct" href="structtmc5160_1_1DriverConfig.html">tmc5160::DriverConfig</a> cfg{};</div>
+<div class="line">tmc5160::DriverConfig cfg{};</div>
 <div class="line">cfg.motor.irun = 20;  <span class="comment">// Run current (0-31)</span></div>
 <div class="line">cfg.motor.ihold = 10; <span class="comment">// Hold current (0-31)</span></div>
 <div class="line">driver.Initialize(cfg);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 4. Configure and start motor</span></div>
-<div class="line">driver.rampControl.SetRampMode(<a class="code hl_enumvalue" href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a1e66935e3ab51cc2128e078cfd49d845">tmc5160::RampMode::POSITIONING</a>);</div>
+<div class="line">driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);</div>
 <div class="line">driver.rampControl.SetTargetPosition(1000);</div>
 <div class="line">driver.rampControl.SetMaxSpeed(1000.0f);</div>
 <div class="line">driver.rampControl.SetAcceleration(500.0f);</div>
 <div class="line">driver.motorControl.Enable();</div>
-<div class="ttc" id="aclasstmc5160_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc5160_1_1SpiCommInterface.html">tmc5160::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc5160_comm_interface.hpp:1370</div></div>
-<div class="ttc" id="aclasstmc5160_1_1TMC5160_html"><div class="ttname"><a href="classtmc5160_1_1TMC5160.html">tmc5160::TMC5160</a></div><div class="ttdoc">Main class representing a TMC5160 stepper motor driver.</div><div class="ttdef"><b>Definition</b> tmc5160.hpp:100</div></div>
-<div class="ttc" id="anamespacetmc5160_html_ac039fd52ff49abd3359ab16891f4afc2a1e66935e3ab51cc2128e078cfd49d845"><div class="ttname"><a href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2a1e66935e3ab51cc2128e078cfd49d845">tmc5160::RampMode::POSITIONING</a></div><div class="ttdeci">@ POSITIONING</div><div class="ttdoc">Positioning mode using all A, D and V parameters.</div></div>
-<div class="ttc" id="astructtmc5160_1_1DriverConfig_html"><div class="ttname"><a href="structtmc5160_1_1DriverConfig.html">tmc5160::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc5160_types.hpp:2140</div></div>
-<div class="ttc" id="atmc5160_8hpp_html"><div class="ttname"><a href="tmc5160_8hpp.html">tmc5160.hpp</a></div><div class="ttdoc">Main TMC5160 stepper motor driver interface and subsystem classes.</div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md32"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md50"></a>
 Multi-Motor Daisy Chain Setup</h2>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="tmc5160_8hpp.html">inc/tmc5160.hpp</a>&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="tmc5160__daisy__chain_8hpp.html">inc/tmc5160_daisy_chain.hpp</a>&quot;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;inc/tmc5160.hpp&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;inc/tmc5160_daisy_chain.hpp&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 1. Create SPI communication interface (shared by all devices)</span></div>
 <div class="line">MySPI spi;</div>
 <div class="line">spi.Initialize();</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 2. Create daisy-chain manager with 3 onboard devices</span></div>
-<div class="line"><a class="code hl_class" href="classtmc5160_1_1TMC5160DaisyChain.html">tmc5160::TMC5160DaisyChain&lt;MySPI, 5&gt;</a> chain(spi, 3, 12&#39;000&#39;000);</div>
+<div class="line">tmc5160::TMC5160DaisyChain&lt;MySPI, 5&gt; chain(spi, 3, 12&#39;000&#39;000);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 3. Initialize all devices</span></div>
-<div class="line"><a class="code hl_struct" href="structtmc5160_1_1DriverConfig.html">tmc5160::DriverConfig</a> cfg{};</div>
+<div class="line">tmc5160::DriverConfig cfg{};</div>
 <div class="line">cfg.motor.irun = 20;</div>
 <div class="line">cfg.motor.ihold = 10;</div>
 <div class="line">chain.InitializeAll(cfg);</div>
@@ -215,12 +321,10 @@ Multi-Motor Daisy Chain Setup</h2>
 <div class="line">x_axis.rampControl.SetTargetPosition(1000);</div>
 <div class="line">y_axis.rampControl.SetMaxSpeed(500.0f);</div>
 <div class="line">z_axis.motorControl.Enable();</div>
-<div class="ttc" id="aclasstmc5160_1_1TMC5160DaisyChain_html"><div class="ttname"><a href="classtmc5160_1_1TMC5160DaisyChain.html">tmc5160::TMC5160DaisyChain</a></div><div class="ttdoc">High-level manager for multiple TMC5160 drivers in a daisy-chain configuration.</div><div class="ttdef"><b>Definition</b> tmc5160_daisy_chain.hpp:114</div></div>
-<div class="ttc" id="atmc5160__daisy__chain_8hpp_html"><div class="ttname"><a href="tmc5160__daisy__chain_8hpp.html">tmc5160_daisy_chain.hpp</a></div><div class="ttdoc">High-level daisy-chain manager for multiple TMC5160 drivers.</div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md33"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md51"></a>
 Using Physical Units</h2>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="tmc5160_8hpp.html">inc/tmc5160.hpp</a>&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="tmc5160__units_8hpp.html">inc/tmc5160_units.hpp</a>&quot;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;inc/tmc5160.hpp&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;inc/tmc5160_units.hpp&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Motor: 200 steps/rev, Lead screw: 2mm pitch</span></div>
 <div class="line"><span class="keyword">constexpr</span> uint16_t <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a> = 200;</div>
@@ -233,70 +337,182 @@ Using Physical Units</h2>
 <div class="line">driver.rampControl.SetMaxSpeedRpm(100.0f, <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a>);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Or use conversion functions directly</span></div>
-<div class="line">int32_t steps = <a class="code hl_function" href="namespacetmc5160.html#affbfa04d45ce3729d6becb2551d3376e">tmc5160::MmToSteps</a>(10.0f, <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a>, <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370">LEAD_SCREW_PITCH_MM</a>);</div>
+<div class="line">int32_t steps = tmc5160::MmToSteps(10.0f, <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a>, <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370">LEAD_SCREW_PITCH_MM</a>);</div>
 <div class="line">driver.rampControl.SetTargetPosition(steps);</div>
-<div class="ttc" id="ainternal__ramp__comprehensive__test_8cpp_html_a2f7680fdd51cb1381f016a751a6b3370"><div class="ttname"><a href="internal__ramp__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370">LEAD_SCREW_PITCH_MM</a></div><div class="ttdeci">static constexpr float LEAD_SCREW_PITCH_MM</div><div class="ttdef"><b>Definition</b> internal_ramp_comprehensive_test.cpp:69</div></div>
-<div class="ttc" id="ainternal__ramp__comprehensive__test_8cpp_html_a63557ac710415c650bc9dd19d2a91eba"><div class="ttname"><a href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a></div><div class="ttdeci">static constexpr float STEPS_PER_REV</div><div class="ttdef"><b>Definition</b> internal_ramp_comprehensive_test.cpp:68</div></div>
-<div class="ttc" id="anamespacetmc5160_html_affbfa04d45ce3729d6becb2551d3376e"><div class="ttname"><a href="namespacetmc5160.html#affbfa04d45ce3729d6becb2551d3376e">tmc5160::MmToSteps</a></div><div class="ttdeci">constexpr int32_t MmToSteps(float mm, float steps_per_rev, float lead_screw_pitch_mm) noexcept</div><div class="ttdoc">Convert millimeters to steps.</div><div class="ttdef"><b>Definition</b> tmc5160_units.hpp:44</div></div>
-<div class="ttc" id="atmc5160__units_8hpp_html"><div class="ttname"><a href="tmc5160__units_8hpp.html">tmc5160_units.hpp</a></div><div class="ttdoc">Unit conversion functions for TMC5160 driver.</div></div>
+<div class="ttc" id="ainternal__ramp__comprehensive__test_8cpp_html_a2f7680fdd51cb1381f016a751a6b3370"><div class="ttname"><a href="internal__ramp__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370">LEAD_SCREW_PITCH_MM</a></div><div class="ttdeci">static constexpr float LEAD_SCREW_PITCH_MM</div><div class="ttdef"><b>Definition</b> internal_ramp_comprehensive_test.cpp:62</div></div>
+<div class="ttc" id="ainternal__ramp__comprehensive__test_8cpp_html_a63557ac710415c650bc9dd19d2a91eba"><div class="ttname"><a href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a></div><div class="ttdeci">static constexpr float STEPS_PER_REV</div><div class="ttdef"><b>Definition</b> internal_ramp_comprehensive_test.cpp:61</div></div>
 </div><!-- fragment --><p>For detailed setup, see Installation and Quick Start Guide.</p>
-<h1><a class="anchor" id="autotoc_md34"></a>
+<h1><a class="anchor" id="autotoc_md52"></a>
 🔧 Installation</h1>
 <ol type="1">
 <li><b>Clone or copy</b> the driver files into your project</li>
 <li><b>Implement the communication interface</b> for your platform (see Platform Integration)</li>
-<li><b>Include the header</b> in your code: <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="tmc5160_8hpp.html">inc/tmc5160.hpp</a>&quot;</span></div>
+<li><b>Include the header</b> in your code: <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;inc/tmc5160.hpp&quot;</span></div>
 </div><!-- fragment --></li>
 <li>Compile with a <b>C++17</b> or newer compiler</li>
 </ol>
 <p>For detailed installation instructions, see docs/installation.md.</p>
-<h1><a class="anchor" id="autotoc_md35"></a>
+<h1><a class="anchor" id="autotoc_md53"></a>
 📖 API Reference</h1>
-<h2><a class="anchor" id="autotoc_md36"></a>
-Core Methods</h2>
+<h2><a class="anchor" id="autotoc_md54"></a>
+Class Structure &amp; Subsystems</h2>
+<p>The <code>TMC5160</code> class is organized into intuitive subsystems for easy access to functionality:</p>
+<div class="fragment"><div class="line">tmc5160::TMC5160&lt;CommType&gt; driver(comm_interface);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Motion Control</span></div>
+<div class="line">driver.rampControl.SetRampMode(RampMode::POSITIONING);</div>
+<div class="line">driver.rampControl.SetTargetPosition(1000, Unit::Steps);</div>
+<div class="line">driver.rampControl.SetMaxSpeed(1000.0f, Unit::Steps);</div>
+<div class="line">driver.rampControl.SetAcceleration(500.0f, Unit::Steps);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Motor Control</span></div>
+<div class="line">driver.motorControl.Enable();</div>
+<div class="line">driver.motorControl.SetCurrent(20, 10);  <span class="comment">// IRUN, IHOLD</span></div>
+<div class="line">driver.motorControl.SetStealthChopEnabled(<span class="keyword">true</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Diagnostics &amp; Monitoring</span></div>
+<div class="line">DriverStatus status = driver.diagnostics.GetStatus();</div>
+<div class="line">uint16_t sg_value;</div>
+<div class="line">driver.diagnostics.GetStallGuard(sg_value);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Automatic Tuning ⭐</span></div>
+<div class="line">StallGuardTuningResult result;</div>
+<div class="line">driver.tuning.TuneStallGuard(target_velocity, result, min_sgt, max_sgt, </div>
+<div class="line">                              acceleration, min_velocity, max_velocity);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Homing</span></div>
+<div class="line">int32_t final_position;</div>
+<div class="line">driver.homing.PerformSensorlessHoming(<span class="keyword">true</span>, search_speed, final_position);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Encoder Integration</span></div>
+<div class="line">driver.encoder.ConfigureEncoder(encoder_config);</div>
+<div class="line">driver.encoder.EnableDeviationDetection(100);  <span class="comment">// 100 step threshold</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Protection</span></div>
+<div class="line">driver.protection.ConfigureShortProtection(short_config);</div>
+<div class="line"><span class="keywordtype">bool</span> ot = driver.diagnostics.GetStatus() == DriverStatus::OT;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md55"></a>
+Key Methods by Subsystem</h2>
+<h3><a class="anchor" id="autotoc_md56"></a>
+RampControl Subsystem</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Method   </th><th class="markdownTableHeadNone">Description    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>Initialize()</code>   </td><td class="markdownTableBodyNone">Initialize the driver with configuration    </td></tr>
+<td class="markdownTableBodyNone"><code>SetRampMode()</code>   </td><td class="markdownTableBodyNone">Set mode: POSITIONING, VELOCITY_POS, VELOCITY_NEG, HOLD    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>rampControl.SetRampMode()</code>   </td><td class="markdownTableBodyNone">Set ramp mode (positioning, velocity, hold)    </td></tr>
+<td class="markdownTableBodyNone"><code>SetTargetPosition()</code>   </td><td class="markdownTableBodyNone">Set target position (unit-aware: Steps, Mm, Deg, RPM)    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>rampControl.SetTargetPosition()</code>   </td><td class="markdownTableBodyNone">Set target position for positioning mode    </td></tr>
+<td class="markdownTableBodyNone"><code>SetMaxSpeed()</code>   </td><td class="markdownTableBodyNone">Set maximum velocity (unit-aware)    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>rampControl.SetMaxSpeed()</code>   </td><td class="markdownTableBodyNone">Set maximum velocity    </td></tr>
+<td class="markdownTableBodyNone"><code>SetAcceleration()</code>   </td><td class="markdownTableBodyNone">Set acceleration/deceleration (unit-aware)    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>rampControl.SetAcceleration()</code>   </td><td class="markdownTableBodyNone">Set acceleration/deceleration    </td></tr>
+<td class="markdownTableBodyNone"><code>IsTargetReached()</code>   </td><td class="markdownTableBodyNone">Check if position target reached    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>motorControl.Enable()</code>   </td><td class="markdownTableBodyNone">Enable the motor driver    </td></tr>
+<td class="markdownTableBodyNone"><code>Stop()</code>   </td><td class="markdownTableBodyNone">Stop motor immediately    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>motorControl.Disable()</code>   </td><td class="markdownTableBodyNone">Disable the motor driver    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>motorControl.SetCurrent()</code>   </td><td class="markdownTableBodyNone">Set run and hold currents    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>diagnostics.GetStatus()</code>   </td><td class="markdownTableBodyNone">Get driver status and error conditions   </td></tr>
+<td class="markdownTableBodyNone"><code>ConfigureReferenceSwitch()</code>   </td><td class="markdownTableBodyNone">Configure endstops/reference switches   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md37"></a>
-Multi-Chip Methods</h2>
+<h3><a class="anchor" id="autotoc_md57"></a>
+MotorControl Subsystem</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Method   </th><th class="markdownTableHeadNone">Description    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>SetDaisyChainPosition()</code>   </td><td class="markdownTableBodyNone">Set position in SPI daisy chain    </td></tr>
+<td class="markdownTableBodyNone"><code>Enable()</code> / <code>Disable()</code>   </td><td class="markdownTableBodyNone">Enable/disable motor driver    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>SetDaisyChainLength()</code>   </td><td class="markdownTableBodyNone">Configure total chain length for optimal response extraction    </td></tr>
+<td class="markdownTableBodyNone"><code>SetCurrent()</code>   </td><td class="markdownTableBodyNone">Set run and hold currents    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>TMC5160DaisyChain</code>   </td><td class="markdownTableBodyNone">High-level manager for multiple drivers on shared SPI bus   </td></tr>
+<td class="markdownTableBodyNone"><code>SetStealthChopEnabled()</code>   </td><td class="markdownTableBodyNone">Enable/disable silent stealthChop mode    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>SetModeChangeSpeeds()</code>   </td><td class="markdownTableBodyNone">Configure velocity thresholds for mode switching   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md38"></a>
-Unit Conversion Methods</h2>
+<h3><a class="anchor" id="autotoc_md58"></a>
+Diagnostics Subsystem</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Method   </th><th class="markdownTableHeadNone">Description    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>rampControl.SetTargetPositionMm()</code>   </td><td class="markdownTableBodyNone">Set target position in millimeters    </td></tr>
+<td class="markdownTableBodyNone"><code>GetStatus()</code>   </td><td class="markdownTableBodyNone">Get comprehensive driver status    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>rampControl.SetMaxSpeedRpm()</code>   </td><td class="markdownTableBodyNone">Set maximum speed in RPM    </td></tr>
+<td class="markdownTableBodyNone"><code>GetStallGuard()</code>   </td><td class="markdownTableBodyNone">Read StallGuard2 value (0-1023)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>ConfigureStallGuard()</code>   </td><td class="markdownTableBodyNone">Configure StallGuard2 settings    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>IsOpenLoadA()</code> / <code>IsOpenLoadB()</code>   </td><td class="markdownTableBodyNone">Check for open load conditions    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>VerifySetup()</code>   </td><td class="markdownTableBodyNone">Run comprehensive startup verification   </td></tr>
+</table>
+<h3><a class="anchor" id="autotoc_md59"></a>
+Tuning Subsystem ⭐ NEW</h3>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Method   </th><th class="markdownTableHeadNone">Description    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>TuneStallGuard()</code>   </td><td class="markdownTableBodyNone">Automatic SGT tuning with comprehensive velocity range analysis   </td></tr>
+</table>
+<p>| Returns <code>StallGuardTuningResult</code> with optimal SGT, velocity compatibility, and actual achievable velocities |</p>
+<h3><a class="anchor" id="autotoc_md60"></a>
+Homing Subsystem</h3>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Method   </th><th class="markdownTableHeadNone">Description    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>PerformSensorlessHoming()</code>   </td><td class="markdownTableBodyNone">Sensorless homing using StallGuard2    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>PerformSwitchHoming()</code>   </td><td class="markdownTableBodyNone">Homing using reference switches   </td></tr>
+</table>
+<h3><a class="anchor" id="autotoc_md61"></a>
+Encoder Subsystem</h3>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Method   </th><th class="markdownTableHeadNone">Description    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>ConfigureEncoder()</code>   </td><td class="markdownTableBodyNone">Configure encoder settings    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>EnableDeviationDetection()</code>   </td><td class="markdownTableBodyNone">Enable step loss detection    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>GetDeviation()</code>   </td><td class="markdownTableBodyNone">Read position deviation   </td></tr>
+</table>
+<h3><a class="anchor" id="autotoc_md62"></a>
+Protection Subsystem</h3>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Method   </th><th class="markdownTableHeadNone">Description    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>ConfigureShortProtection()</code>   </td><td class="markdownTableBodyNone">Configure short circuit protection    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>ConfigureOvertemperature()</code>   </td><td class="markdownTableBodyNone">Configure overtemperature protection   </td></tr>
+</table>
+<h3><a class="anchor" id="autotoc_md63"></a>
+Communication Subsystem</h3>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Method   </th><th class="markdownTableHeadNone">Description    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>SetDaisyChainPosition()</code>   </td><td class="markdownTableBodyNone">Set SPI daisy chain position    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>SetDaisyChainLength()</code>   </td><td class="markdownTableBodyNone">Configure SPI chain length    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>ConfigureUartNodeAddress()</code>   </td><td class="markdownTableBodyNone">Configure UART node address   </td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md64"></a>
+Multi-Chip Support</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Class/Method   </th><th class="markdownTableHeadNone">Description    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>TMC5160DaisyChain&lt;CommType, MaxDevices&gt;</code>   </td><td class="markdownTableBodyNone">High-level manager for SPI daisy chaining    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>TMC5160MultiNode&lt;CommType&gt;</code>   </td><td class="markdownTableBodyNone">High-level manager for UART multi-node addressing    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>chain[0]</code>, <code>chain[1]</code>, ...   </td><td class="markdownTableBodyNone">Access individual drivers in chain   </td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md65"></a>
+Unit Conversion Helpers</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Function   </th><th class="markdownTableHeadNone">Description    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>MmToSteps()</code> / <code>StepsToMm()</code>   </td><td class="markdownTableBodyNone">Convert between millimeters and steps    </td></tr>
 <tr class="markdownTableRowEven">
@@ -304,58 +520,53 @@ Unit Conversion Methods</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>DegreesToSteps()</code> / <code>StepsToDegrees()</code>   </td><td class="markdownTableBodyNone">Convert between degrees and steps   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md39"></a>
-Advanced Features</h2>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Method   </th><th class="markdownTableHeadNone">Description    </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>PerformSensorlessHoming()</code>   </td><td class="markdownTableBodyNone">Sensorless homing using StallGuard2    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>ConfigureCoolStep()</code>   </td><td class="markdownTableBodyNone">Configure automatic current reduction    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>ConfigureDcStep()</code>   </td><td class="markdownTableBodyNone">Configure dcStep automatic commutation    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>SetMicrostepLookupTable()</code>   </td><td class="markdownTableBodyNone">Configure custom microstep interpolation    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>GetLostSteps()</code>   </td><td class="markdownTableBodyNone">Read lost steps counter    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>ReadOtpConfig()</code>   </td><td class="markdownTableBodyNone">Read OTP memory    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>ReadFactoryConfig()</code>   </td><td class="markdownTableBodyNone">Read factory calibration data   </td></tr>
-</table>
-<p>For complete API documentation, see docs/api_reference.md.</p>
-<h1><a class="anchor" id="autotoc_md40"></a>
+<p>For complete API documentation with all methods and parameters, see docs/api_reference.md.</p>
+<h1><a class="anchor" id="autotoc_md66"></a>
 📊 Examples</h1>
-<p>Comprehensive ESP32 examples are available in the <a href="examples/esp32/">examples/esp32</a> directory, including:</p>
+<p>Comprehensive ESP32 examples are available in the <a href="examples/esp32/">examples/esp32</a> directory, demonstrating all major features:</p>
+<h2><a class="anchor" id="autotoc_md67"></a>
+Core Functionality</h2>
 <ul>
-<li><b>Core Functionality</b>: Basic motor control, ramp modes, current configuration</li>
-<li><b>Multi-Chip Communication</b>:<ul>
-<li><code><a class="el" href="spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC5160 (MULTI-MOTOR)">spi_daisy_chain_comprehensive_test.cpp</a></code> - SPI daisy chaining with multiple motors</li>
-<li><code><a class="el" href="uart__multi__node__comprehensive__test_8cpp.html" title="Comprehensive UART Multi-Node testing suite for TMC5160 (MULTI-MOTOR)">uart_multi_node_comprehensive_test.cpp</a></code> - UART multi-node addressing</li>
+<li><b>Basic Motor Control</b>: Simple positioning and velocity control</li>
+<li><b>Ramp Control</b>: Advanced motion profiles with multi-phase acceleration</li>
+<li><b>Motor Configuration</b>: Current control, chopper modes, stealthChop</li>
 </ul>
-</li>
-<li><b>Advanced Features</b>:<ul>
-<li><code>encoder_comprehensive_test.cpp</code> - Encoder integration and closed-loop control</li>
-<li><code>diagnostics_comprehensive_test.cpp</code> - Comprehensive diagnostics and status monitoring</li>
-<li><code>protection_comprehensive_test.cpp</code> - Protection system configuration and monitoring</li>
+<h2><a class="anchor" id="autotoc_md68"></a>
+Multi-Chip Communication</h2>
+<ul>
+<li>**<code><a class="el" href="spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI-MOTOR)">spi_daisy_chain_comprehensive_test.cpp</a></code>**: SPI daisy chaining with automatic chain detection</li>
+<li>**<code><a class="el" href="uart__multi__node__comprehensive__test_8cpp.html" title="Comprehensive UART Multi-Node testing suite for TMC51x0 (MULTI-MOTOR)">uart_multi_node_comprehensive_test.cpp</a></code>**: UART multi-node addressing with sequential programming</li>
 </ul>
-</li>
-<li><b>Motor Control</b>:<ul>
-<li><code>motor_control_comprehensive_test.cpp</code> - Advanced motor control features</li>
-<li><code>ramp_control_comprehensive_test.cpp</code> - Ramp control and motion profiles</li>
-<li><code><a class="el" href="bounds__finding__sinuous__motion_8cpp.html" title="Fatigue testing platform: Sensorless bounds finding and sinusoidal motion with UART command interface...">bounds_finding_sinuous_motion.cpp</a></code> - Advanced motion control with bounds finding</li>
+<h2><a class="anchor" id="autotoc_md69"></a>
+Advanced Features</h2>
+<ul>
+<li>**<code><a class="el" href="stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool.">stallguard_tuning.cpp</a></code>**: Automatic StallGuard2 threshold tuning with velocity range analysis ⭐</li>
+<li>**<code>encoder_comprehensive_test.cpp</code>**: Encoder integration and closed-loop control with deviation detection</li>
+<li>**<code>diagnostics_comprehensive_test.cpp</code>**: Comprehensive diagnostics, status monitoring, and StallGuard2 reading</li>
+<li>**<code>protection_comprehensive_test.cpp</code>**: Protection system configuration and monitoring</li>
+<li>**<code><a class="el" href="internal__ramp__sinusoidal_8cpp.html" title="Sinusoidal motion pattern example for TMC51x0 stepper motor driver.">internal_ramp_sinusoidal.cpp</a></code>**: Sinusoidal motion profiles using internal ramp generator</li>
 </ul>
-</li>
+<h2><a class="anchor" id="autotoc_md70"></a>
+Motor Control &amp; Motion</h2>
+<ul>
+<li>**<code>motor_control_comprehensive_test.cpp</code>**: Advanced motor control features (CoolStep, dcStep, freewheeling)</li>
+<li>**<code>ramp_control_comprehensive_test.cpp</code>**: Ramp control modes and motion profiles</li>
+<li>**<code><a class="el" href="bounds__finding__sinuous__motion_8cpp.html" title="Fatigue testing platform: Sensorless bounds finding and sinusoidal motion with UART command interface...">bounds_finding_sinuous_motion.cpp</a></code>**: Advanced motion control with automatic bounds finding</li>
 </ul>
-<p>Detailed example walkthroughs are available in docs/examples.md.</p>
-<h1><a class="anchor" id="autotoc_md41"></a>
+<h2><a class="anchor" id="autotoc_md71"></a>
+Specialized Applications</h2>
+<ul>
+<li>**<code><a class="el" href="internal__ramp__comprehensive__test_8cpp.html" title="Comprehensive internal ramp test suite for TMC51x0 (single motor)">internal_ramp_comprehensive_test.cpp</a></code>**: Internal ramp generator comprehensive testing</li>
+<li>**<code><a class="el" href="stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool.">stallguard_tuning.cpp</a></code>**: Automatic SGT tuning for optimal stall detection</li>
+</ul>
+<p>All examples include detailed documentation and are ready to compile and run. See docs/examples.md for detailed walkthroughs.</p>
+<h1><a class="anchor" id="autotoc_md72"></a>
 📚 Documentation</h1>
 <p>For complete documentation, see the docs directory.</p>
-<h1><a class="anchor" id="autotoc_md42"></a>
+<h1><a class="anchor" id="autotoc_md73"></a>
 🤝 Contributing</h1>
 <p>Pull requests and suggestions are welcome! Please follow the existing code style and include tests for new features.</p>
-<h1><a class="anchor" id="autotoc_md43"></a>
+<h1><a class="anchor" id="autotoc_md74"></a>
 📄 License</h1>
 <p>This project is licensed under the <b>GNU General Public License v3.0</b>. See the [LICENSE](LICENSE) file for details. </p>
 </div></div><!-- PageDoc -->

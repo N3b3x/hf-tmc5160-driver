@@ -1,6 +1,6 @@
 var classBackAndForthMotion =
 [
-    [ "BackAndForthMotion", "classBackAndForthMotion.html#af56497fe9983d624184d9531188daee9", null ],
+    [ "BackAndForthMotion", "classBackAndForthMotion.html#a733388ec15f23b81e941c70681675b80", null ],
     [ "Config", "classBackAndForthMotion.html#aeb03477ad8ae99e527c39ee417e4eabf", null ],
     [ "GetCyclesCompleted", "classBackAndForthMotion.html#a72c57c6aa126bce3e05923edc65203a1", null ],
     [ "Start", "classBackAndForthMotion.html#a6ababa55b07f6a7ccbe591b597f64ea3", null ],
@@ -9,7 +9,7 @@ var classBackAndForthMotion =
     [ "acceleration_", "classBackAndForthMotion.html#a065e5c1a07ef00a4cd57627a922a95a4", null ],
     [ "center_position_", "classBackAndForthMotion.html#a98edacf045e13afd2ee95503e5e38ac9", null ],
     [ "cycles_completed_", "classBackAndForthMotion.html#a7d8a369fe04b51daff3695274fbe4676", null ],
-    [ "driver_", "classBackAndForthMotion.html#a2138725d6b7df2047b7e375e024b66db", null ],
+    [ "driver_", "classBackAndForthMotion.html#aa7ba24ae1a089e9956ee518bc35e6e3d", null ],
     [ "initialized_", "classBackAndForthMotion.html#a0cd6de390a140c43aeb99c4b098fe9b7", null ],
     [ "max_cycles_", "classBackAndForthMotion.html#a3edc669c83a62d2e6d3c7624324b3b8b", null ],
     [ "max_velocity_", "classBackAndForthMotion.html#a7a6b63cd911c5dad540a7863567963bf", null ],

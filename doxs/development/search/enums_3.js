@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['dcstepstallsensitivity_0',['DcStepStallSensitivity',['../namespacetmc5160.html#a587d5c069188523bc1a1fe01e9b077ba',1,'tmc5160']]],
-  ['driverstatus_1',['DriverStatus',['../namespacetmc5160.html#aabe2f8a8b4cb7d6533ac67eb7980dc01',1,'tmc5160']]]
+  ['dcstepstallsensitivity_0',['DcStepStallSensitivity',['../namespacetmc51x0.html#a4abe4fa0f128137c19f7da4f9b58a816',1,'tmc51x0']]],
+  ['driverstatus_1',['DriverStatus',['../namespacetmc51x0.html#afdc019b38a68bc8a317ade8ff4fafa0b',1,'tmc51x0']]]
 ];

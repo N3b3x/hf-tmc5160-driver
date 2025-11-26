@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['offset_5fread_5fregister_0',['OFFSET_READ_Register',['../uniontmc5160_1_1OFFSET__READ__Register.html',1,'tmc5160']]],
-  ['otp_5fprog_5fregister_1',['OTP_PROG_Register',['../uniontmc5160_1_1OTP__PROG__Register.html',1,'tmc5160']]],
-  ['otp_5fread_5fregister_2',['OTP_READ_Register',['../uniontmc5160_1_1OTP__READ__Register.html',1,'tmc5160']]]
+  ['mechanicalsystem_0',['MechanicalSystem',['../structtmc51x0_1_1MechanicalSystem.html',1,'tmc51x0']]],
+  ['motorcontrol_1',['MotorControl',['../structtmc51x0_1_1TMC51x0_1_1MotorControl.html',1,'tmc51x0::TMC51x0']]],
+  ['motorspec_2',['MotorSpec',['../structtmc51x0_1_1MotorSpec.html',1,'tmc51x0']]],
+  ['mscuract_5fregister_3',['MSCURACT_Register',['../uniontmc51x0_1_1MSCURACT__Register.html',1,'tmc51x0']]],
+  ['mslutsel_5fregister_4',['MSLUTSEL_Register',['../uniontmc51x0_1_1MSLUTSEL__Register.html',1,'tmc51x0']]]
 ];

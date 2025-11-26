@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['uart_5fnode_5faddress_5f_0',['uart_node_address_',['../classtmc5160_1_1TMC5160.html#a83c39af0450e98ad8b162eacae4d98f4',1,'tmc5160::TMC5160']]],
-  ['uart_5fport_5f_1',['uart_port_',['../classUartCommandParser.html#a735f947de7f601f4be951aa649e180c9',1,'UartCommandParser']]],
-  ['upper_5fthreshold_5fsg_2',['upper_threshold_sg',['../structtmc5160_1_1CoolStepConfig.html#ad58ae1cbf76e5c0f8b1f04ee15de005a',1,'tmc5160::CoolStepConfig']]],
-  ['user_5fspecified_5fchain_5flength_5f_3',['user_specified_chain_length_',['../classtmc5160_1_1SpiCommInterface.html#ac2231a4f01abd77a0957c8832693b9c1',1,'tmc5160::SpiCommInterface']]],
-  ['ustep_5fcount_4',['USTEP_COUNT',['../namespacetmc5160_1_1Microsteps.html#ac5061f1a2a8687cc56812dd04fe2526c',1,'tmc5160::Microsteps']]],
-  ['uv_5fcp_5',['uv_cp',['../uniontmc5160_1_1GSTAT__Register.html#af69976ac380c49a90aafd7af7a5c539f',1,'tmc5160::GSTAT_Register']]]
+  ['uart_5fconfig_0',['uart_config',['../structtmc51x0_1_1DriverConfig.html#a2f7263160e64b155119717707047e129',1,'tmc51x0::DriverConfig']]],
+  ['uart_5fnode_5faddress_5f_1',['uart_node_address_',['../classtmc51x0_1_1TMC51x0.html#a8721a41e6bf4342a8b82a3e09fb21fc2',1,'tmc51x0::TMC51x0']]],
+  ['uart_5fport_5f_2',['uart_port_',['../classUartCommandParser.html#a735f947de7f601f4be951aa649e180c9',1,'UartCommandParser']]],
+  ['upper_5fthreshold_5fsg_3',['upper_threshold_sg',['../structtmc51x0_1_1CoolStepConfig.html#a0b53d3498fdc44d5658e0097cc04a1ef',1,'tmc51x0::CoolStepConfig']]],
+  ['user_5fspecified_5fchain_5flength_5f_4',['user_specified_chain_length_',['../classtmc51x0_1_1SpiCommInterface.html#ae51148b7e5a26f3318ee15d88ae5621d',1,'tmc51x0::SpiCommInterface']]],
+  ['uv_5fcp_5',['uv_cp',['../uniontmc51x0_1_1GSTAT__Register.html#a4e1e55cfd02a01cc02ee94c3f6a1ef62',1,'tmc51x0::GSTAT_Register']]]
 ];

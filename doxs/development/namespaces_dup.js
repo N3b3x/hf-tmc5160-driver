@@ -1,5 +1,5 @@
 var namespaces_dup =
 [
-    [ "tmc5160", "namespacetmc5160.html", "namespacetmc5160" ],
-    [ "tmc5160_test_config", "namespacetmc5160__test__config.html", "namespacetmc5160__test__config" ]
+    [ "tmc51x0", "namespacetmc51x0.html", "namespacetmc51x0" ],
+    [ "tmc51x0_test_config", "namespacetmc51x0__test__config.html", "namespacetmc51x0__test__config" ]
 ];

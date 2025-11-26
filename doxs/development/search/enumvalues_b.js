@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['no_5fedge_0',['NO_EDGE',['../namespacetmc5160.html#a4eaf32584629b8ef44ee951e7ebf4916a38a74ee0f8764437c5fce05a7b4964e1',1,'tmc5160']]],
-  ['normal_1',['NORMAL',['../namespacetmc5160.html#afd8e06e7eda04c891d35f72236085722a1e23852820b9154316c7c06e2b7ba051',1,'tmc5160::NORMAL'],['../namespacetmc5160.html#a6e7804f8a437f39b4ba4b7cd6b3da1a4a1e23852820b9154316c7c06e2b7ba051',1,'tmc5160::NORMAL']]]
+  ['no_5fedge_0',['NO_EDGE',['../namespacetmc51x0.html#a72806fd22f0c0112600ad9056aa3be97a38a74ee0f8764437c5fce05a7b4964e1',1,'tmc51x0']]],
+  ['normal_1',['NORMAL',['../namespacetmc51x0.html#ae988d381e96f02ccf88517740b83e5f1a1e23852820b9154316c7c06e2b7ba051',1,'tmc51x0::NORMAL'],['../namespacetmc51x0.html#a6a87b8eb4c1843e07007d7162048bf4da1e23852820b9154316c7c06e2b7ba051',1,'tmc51x0::NORMAL']]]
 ];

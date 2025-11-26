@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classEsp32SPI.html#a31c4d53a51a04f8b7d8fab4f5cfca4ca" target="_top" xlink:title="Set GPIO pin state.">
+<g id="a_Node000002"><a xlink:href="classEsp32SPI.html#adcc0044c32d595f822c8f671bdb9edb0" target="_top" xlink:title="Set GPIO pin state.">
 <polygon fill="white" stroke="#666666" points="250,-42.5 145,-42.5 145,-23.5 250,-23.5 250,-42.5"/>
 <text text-anchor="middle" x="197.5" y="-30.5" font-family="Helvetica,sans-Serif" font-size="10.00">Esp32SPI::GpioSet</text>
 </a>
@@ -38,7 +38,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classEsp32SPI.html#ac1efd880f523f135eaaa31bdb6377116" target="_top" xlink:title="Get pin mapping for a TMC5160 control pin.">
+<g id="a_Node000003"><a xlink:href="classEsp32SPI.html#a80cfec36b3cd69c2c7b6c38df0a64e72" target="_top" xlink:title="Get pin mapping for a TMC51x0 control pin.">
 <polygon fill="white" stroke="#666666" points="434.5,-61.5 293.5,-61.5 293.5,-42.5 434.5,-42.5 434.5,-61.5"/>
 <text text-anchor="middle" x="364" y="-49.5" font-family="Helvetica,sans-Serif" font-size="10.00">Esp32SPI::GetPinMapping</text>
 </a>
@@ -56,7 +56,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classEsp32SPI.html#a12d86506446246fe1cc612d7b108aac6" target="_top" xlink:title="Convert signal state to physical GPIO level.">
+<g id="a_Node000004"><a xlink:href="classEsp32SPI.html#a842da8d3bf354432cfbe134a148ed1ee" target="_top" xlink:title="Convert signal state to physical GPIO level.">
 <polygon fill="white" stroke="#666666" points="442,-24.5 286,-24.5 286,-5.5 442,-5.5 442,-24.5"/>
 <text text-anchor="middle" x="364" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">Esp32SPI::SignalToGpioLevel</text>
 </a>
@@ -74,9 +74,9 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="structtmc5160_1_1PinActiveLevels.html#a313ecef17f2a5420625bb98495d2242c" target="_top" xlink:title="Get active level for a specific pin.">
+<g id="a_Node000005"><a xlink:href="structtmc51x0_1_1PinActiveLevels.html#a68fd62c73fac36a16577e9fa25b952dd" target="_top" xlink:title="Get active level for a specific pin.">
 <polygon fill="white" stroke="#666666" points="621,-30 478,-30 478,0 621,0 621,-30"/>
-<text text-anchor="start" x="486" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::PinActiveLevels</text>
+<text text-anchor="start" x="486" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::PinActiveLevels</text>
 <text text-anchor="middle" x="549.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::GetActiveLevel</text>
 </a>
 </g>

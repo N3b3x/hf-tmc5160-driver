@@ -1,0 +1,15 @@
+<map id="esp32_tmc51x0_bus.hpp" name="esp32_tmc51x0_bus.hpp">
+<area shape="rect" id="Node000001" title="ESP32&#45;specific communication interfaces for TMC51x0 using SPI and UART (TMC5130 &amp; TMC51x0)" alt="" coords="589,5,772,31"/>
+<area shape="rect" id="Node000002" href="$bounds__finding__sinuous__motion_8cpp.html" title="Fatigue testing platform: Sensorless bounds finding and sinusoidal motion with UART command interface..." alt="" coords="5,79,183,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="576,33,397,54,194,81,183,83,182,78,194,76,396,48,575,28"/>
+<area shape="rect" id="Node000003" href="$internal__ramp__comprehensive__test_8cpp.html" title="Comprehensive internal ramp test suite for TMC51x0 (single motor)" alt="" coords="207,79,427,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="615,36,404,81,403,76,614,31"/>
+<area shape="rect" id="Node000004" href="$internal__ramp__sinusoidal_8cpp.html" title="Sinusoidal motion pattern example for TMC51x0 stepper motor driver." alt="" coords="451,86,665,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="653,40,578,88,575,84,650,36"/>
+<area shape="rect" id="Node000005" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="689,79,921,119"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="712,36,776,76,773,81,709,41"/>
+<area shape="rect" id="Node000006" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool." alt="" coords="945,86,1107,111"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="745,31,976,83,975,89,744,36"/>
+<area shape="rect" id="Node000007" href="$uart__multi__node__comprehensive__test_8cpp.html" title="Comprehensive UART Multi&#45;Node testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="1131,79,1366,119"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="780,30,1120,76,1132,78,1131,83,1119,81,779,35"/>
+</map>

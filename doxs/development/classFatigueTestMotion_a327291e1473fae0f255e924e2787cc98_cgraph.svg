@@ -21,9 +21,9 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="namespacetmc5160.html#a17db4658c61b62396b32c1a022e54d75" target="_top" xlink:title="Convert steps to degrees.">
+<g id="a_Node000002"><a xlink:href="namespacetmc51x0.html#aa654a36849533f2f559d3e113176bf35" target="_top" xlink:title="Convert steps to degrees.">
 <polygon fill="white" stroke="#666666" points="290,-24.5 147,-24.5 147,-5.5 290,-5.5 290,-24.5"/>
-<text text-anchor="middle" x="218.5" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::StepsToDegrees</text>
+<text text-anchor="middle" x="218.5" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::StepsToDegrees</text>
 </a>
 </g>
 </g>

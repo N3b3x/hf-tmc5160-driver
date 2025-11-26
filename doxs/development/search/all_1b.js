@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['📖_20api_20reference_0',['📖 API Reference',['../index.html#autotoc_md35',1,'']]]
+  ['🎯_20core_20motor_20control_0',['🎯 Core Motor Control',['../index.html#autotoc_md32',1,'']]]
 ];

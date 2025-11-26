@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['ihold_5firun_5fregister_0',['IHOLD_IRUN_Register',['../uniontmc5160_1_1IHOLD__IRUN__Register.html',1,'tmc5160']]],
-  ['inputstatus_1',['InputStatus',['../structtmc5160_1_1InputStatus.html',1,'tmc5160']]],
-  ['ioin_5fregister_2',['IOIN_Register',['../uniontmc5160_1_1IOIN__Register.html',1,'tmc5160']]]
+  ['homing_0',['Homing',['../structtmc51x0_1_1TMC51x0_1_1Homing.html',1,'tmc51x0::TMC51x0']]],
+  ['homingsettingscache_1',['HomingSettingsCache',['../structtmc51x0_1_1HomingSettingsCache.html',1,'tmc51x0']]]
 ];

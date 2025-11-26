@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['rampmode_0',['RampMode',['../namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2',1,'tmc5160']]],
-  ['referencelatchmode_1',['ReferenceLatchMode',['../namespacetmc5160.html#a2ee7193a78dd507e5c413884ce8c33ac',1,'tmc5160']]],
-  ['referencestopmode_2',['ReferenceStopMode',['../namespacetmc5160.html#a444e9027bfb76a7d96817b586554b915',1,'tmc5160']]],
-  ['referenceswitchactivelevel_3',['ReferenceSwitchActiveLevel',['../namespacetmc5160.html#a7c9082ecbde4d00926dee0abf53be002',1,'tmc5160']]]
+  ['rampmode_0',['RampMode',['../namespacetmc51x0.html#a9296c8b77977c4b405a85597699ada76',1,'tmc51x0']]],
+  ['referencelatchmode_1',['ReferenceLatchMode',['../namespacetmc51x0.html#a27074bd299d4daedf7fa42542a072679',1,'tmc51x0']]],
+  ['referencestopmode_2',['ReferenceStopMode',['../namespacetmc51x0.html#a26f6dfac177caad1ec044ec801218843',1,'tmc51x0']]],
+  ['referenceswitchactivelevel_3',['ReferenceSwitchActiveLevel',['../namespacetmc51x0.html#a8cb45f50ef60b0895ae7c456412b9f57',1,'tmc51x0']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['node_20management_0',['Multi-Node Management',['../group__TMC5160__MultiNode.html',1,'']]]
+  ['node_20management_0',['Multi-Node Management',['../group__TMC51X0__MultiNode.html',1,'']]]
 ];

@@ -1,17 +1,11 @@
 <map id="test_stealthchop_configuration" name="test_stealthchop_configuration">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,153,228,179"/>
-<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a5252c49abf7d7f7cbc2b181ea72a39b7" title="Helper to calculate current register value (0&#45;31) from mA." alt="" coords="276,128,461,153"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="228,152,262,149,262,154,228,157"/>
-<area shape="rect" id="Node000003" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="299,177,439,203"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="228,174,285,179,285,185,228,179"/>
-<area shape="rect" id="Node000004" href="$namespacetmc5160__test__config.html#a8d4169028f909fa4c3bcaf35a1130f19" title="Helper function to populate DriverConfig from 17HS4401S direct drive motor configuration." alt="" coords="509,5,712,60"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="438,175,460,163,477,141,483,118,490,94,507,70,512,66,515,70,511,73,495,96,488,119,482,143,463,167,440,180"/>
-<area shape="rect" id="Node000005" href="$namespacetmc5160__test__config.html#ad066428e88b18d0b8a60d3cbb3866a72" title="Helper function to populate DriverConfig from 17HS4401S gearbox motor configuration." alt="" coords="509,84,712,139"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="418,175,461,162,523,141,524,146,462,167,419,180"/>
-<area shape="rect" id="Node000006" href="$namespacetmc5160__test__config.html#a3b6d57d96a6198cd1018a9e5c55c0c6b" title="Helper function to populate DriverConfig from Applied Motion 5034 motor configuration." alt="" coords="509,163,712,217"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="439,187,495,187,495,193,439,193"/>
-<area shape="rect" id="Node000007" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="529,242,692,282"/>
-<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="413,200,530,235,529,241,411,205"/>
-<area shape="rect" id="Node000008" href="$internal__ramp__comprehensive__test_8cpp.html#a31cfb3926eb0c837bde126c1120fb3b9" title="Verify mode pins match expected communication mode." alt="" coords="542,307,679,332"/>
-<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="385,201,438,245,473,270,510,292,531,300,529,305,508,296,470,275,434,250,382,205"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,228,56"/>
+<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a5252c49abf7d7f7cbc2b181ea72a39b7" title="Helper to calculate current register value (0&#45;31) from mA." alt="" coords="276,5,461,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="228,29,262,26,262,31,228,35"/>
+<area shape="rect" id="Node000003" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="299,55,439,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="228,51,285,57,285,62,228,57"/>
+<area shape="rect" id="Node000004" href="$namespacetmc51x0__test__config.html#acfa741fd46ae4ba5ed006fb0361cf188" title="Complete pin configuration for all tests." alt="" coords="509,18,672,58"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="438,55,495,48,496,53,439,61"/>
+<area shape="rect" id="Node000005" href="$internal__ramp__comprehensive__test_8cpp.html#a266d3b939b723d24f9230b6b22b3b8a9" title="Verify mode pins match expected communication mode." alt="" coords="522,83,659,108"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="439,73,509,82,508,88,438,79"/>
 </map>
