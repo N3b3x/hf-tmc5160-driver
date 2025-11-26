@@ -1,11 +1,12 @@
 var structtmc5160_1_1StallGuardConfig =
 [
     [ "StallGuardConfig", "structtmc5160_1_1StallGuardConfig.html#ac2d2cad3ce48f42c1a6c1c9fc00b9e66", null ],
-    [ "sedn", "structtmc5160_1_1StallGuardConfig.html#a2d0e6b2074d524b3d4a4b1b3e1446ab8", null ],
-    [ "seimin", "structtmc5160_1_1StallGuardConfig.html#a049d54d4d71572c063707b67f9d32b1a", null ],
-    [ "semax", "structtmc5160_1_1StallGuardConfig.html#ac3e83c3ca13a91032a8f7cf8b399221d", null ],
-    [ "semin", "structtmc5160_1_1StallGuardConfig.html#a20b7d71d6f726a3fd14946617bf05613", null ],
-    [ "seup", "structtmc5160_1_1StallGuardConfig.html#aa28f47f696fea7ba412e76c3aa77a79f", null ],
-    [ "sfilt", "structtmc5160_1_1StallGuardConfig.html#a6e8623aa674d7726e1028875221f1fe4", null ],
-    [ "sgt", "structtmc5160_1_1StallGuardConfig.html#a84da82c3e0775de30668b0ea065b6de0", null ]
+    [ "StallGuardConfig", "structtmc5160_1_1StallGuardConfig.html#a60bb49eec9879f6e75f731012ec5f073", null ],
+    [ "StallGuardConfig", "structtmc5160_1_1StallGuardConfig.html#ad2323ad46e3e08a168cd8552f3b82066", null ],
+    [ "enable_filter", "structtmc5160_1_1StallGuardConfig.html#a843715a0e6912fdee8f2f3f8765e6889", null ],
+    [ "max_velocity", "structtmc5160_1_1StallGuardConfig.html#abcd51702b143168196914856985f1bf6", null ],
+    [ "min_velocity", "structtmc5160_1_1StallGuardConfig.html#a55d0c8d864c08a6372e055e9005a61c6", null ],
+    [ "stop_on_stall", "structtmc5160_1_1StallGuardConfig.html#a0074214e5f8f39a7dc5837cbed80724d", null ],
+    [ "threshold", "structtmc5160_1_1StallGuardConfig.html#a99ef4802019ad3e40d14e02f1f2706e6", null ],
+    [ "velocity_unit", "structtmc5160_1_1StallGuardConfig.html#a75da0c8a6396a74a1cb0535edaa5c9de", null ]
 ];

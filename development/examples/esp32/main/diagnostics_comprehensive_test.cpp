@@ -15,6 +15,7 @@
  * - UART transmission count
  * - Offset calibration reading
  * - Sensorless homing
+ * - Open load detection
  *
  * Hardware Requirements:
  * - ESP32 development board
@@ -40,6 +41,21 @@ static const char* TAG = "Diagnostics_Test";
 static TestResults g_test_results;
 
 //=============================================================================
+// CONFIGURATION SELECTION - Change these to select motor, board, and platform
+//=============================================================================
+// Motor selection (compile-time constant)
+static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
+    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+
+// Board selection (compile-time constant)
+static constexpr tmc5160_test_config::BoardType SELECTED_BOARD = 
+    tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL;
+
+// Platform selection (compile-time constant)
+static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM = 
+    tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
+
+//=============================================================================
 // TEST SECTION CONFIGURATION
 //=============================================================================
 static constexpr bool ENABLE_DRIVER_STATUS_TESTS = true;
@@ -53,6 +69,7 @@ static constexpr bool ENABLE_FACTORY_OTP_TESTS = true;
 static constexpr bool ENABLE_UART_COUNT_TESTS = true;
 static constexpr bool ENABLE_OFFSET_CALIBRATION_TESTS = true;
 static constexpr bool ENABLE_SENSORLESS_HOMING_TESTS = true;
+static constexpr bool ENABLE_OPEN_LOAD_TESTS = true;
 
 // Test configuration constants
 namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
@@ -76,6 +93,7 @@ bool test_factory_otp_config() noexcept;
 bool test_uart_transmission_count() noexcept;
 bool test_offset_calibration() noexcept;
 bool test_sensorless_homing() noexcept;
+bool test_open_load() noexcept;
 
 // Helper functions
 struct TestDriverHandle {
@@ -118,20 +136,25 @@ std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
   }
   
   tmc5160::DriverConfig cfg{};
-  cfg.motor.irun = TEST_IRUN;
-  cfg.motor.ihold = TEST_IHOLD;
-  cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
   
-  cfg.chopper.toff = TEST_TOFF;
+  // Use helper function to configure from motor/platform specs
+  // Configure motor
+  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
+  }
+  
+  // Apply board configuration
+  tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
+  
+  // Apply platform configuration
+  tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
+  
+  // Override with test-specific values if needed
   cfg.chopper.mres = TEST_MRES;
-  cfg.chopper.intpol = Motor::INTERPOLATION;
-  cfg.chopper.hend = Motor::HEND;
-  cfg.chopper.hstrt = Motor::HSTRT;
-  cfg.chopper.tbl = Motor::TBL;
-  
-  // Power stage: typical MOSFET with ~30nC Miller charge, 200ns BBM time
-  cfg.power_stage.mosfet_miller_charge_nc = 30.0f;
-  cfg.power_stage.bbm_time_ns = 200;
   
   if (!handle->driver->Initialize(cfg)) {
     ESP_LOGE(TAG, "Failed to initialize TMC5160 driver");
@@ -165,10 +188,9 @@ bool test_stallguard() noexcept {
   
   // Use default test configuration for StallGuard
   tmc5160::StallGuardConfig sg_cfg{};
-  sg_cfg.sgt = Test::StallGuard::SGT_HOMING;
-  sg_cfg.sfilt = Test::StallGuard::FILTER_ENABLED;
-  sg_cfg.semin = Test::StallGuard::SEMIN;
-  sg_cfg.semax = Test::StallGuard::SEMAX;
+  sg_cfg.threshold = Test::StallGuard::SGT_HOMING;
+  sg_cfg.enable_filter = Test::StallGuard::FILTER_ENABLED;
+  // Note: semin/semax are CoolStep parameters, not StallGuard2 parameters
   
   if (!handle->driver->diagnostics.ConfigureStallGuard(sg_cfg)) {
     ESP_LOGE(TAG, "Failed to configure StallGuard");
@@ -176,7 +198,7 @@ bool test_stallguard() noexcept {
   }
   
   uint16_t sg_value = handle->driver->diagnostics.GetStallGuard();
-  ESP_LOGI(TAG, "StallGuard Value: %u (SGT=%d)", sg_value, sg_cfg.sgt);
+  ESP_LOGI(TAG, "StallGuard Value: %u (threshold=%d)", sg_value, sg_cfg.threshold);
   
   return true;
 }
@@ -342,10 +364,9 @@ bool test_sensorless_homing() noexcept {
   
   // Configure StallGuard2 for homing using default test config
   tmc5160::StallGuardConfig sg_config{};
-  sg_config.sgt = Test::StallGuard::SGT_HOMING;
-  sg_config.sfilt = Test::StallGuard::FILTER_ENABLED;
-  sg_config.semin = Test::StallGuard::SEMIN;
-  sg_config.semax = Test::StallGuard::SEMAX;
+  sg_config.threshold = Test::StallGuard::SGT_HOMING;
+  sg_config.enable_filter = Test::StallGuard::FILTER_ENABLED;
+  // Note: semin/semax are CoolStep parameters, not StallGuard2 parameters
   
   if (!handle->driver->diagnostics.ConfigureStallGuard(sg_config)) {
     ESP_LOGE(TAG, "Failed to configure StallGuard2 for homing");
@@ -354,7 +375,81 @@ bool test_sensorless_homing() noexcept {
   
   // Note: PerformSensorlessHoming requires motor movement and may not complete
   // in a test environment, so we just verify the configuration
-  ESP_LOGI(TAG, "StallGuard2 configured for sensorless homing (SGT=%d)", sg_config.sgt);
+  ESP_LOGI(TAG, "StallGuard2 configured for sensorless homing (threshold=%d)", sg_config.threshold);
+  
+  return true;
+}
+
+bool test_open_load() noexcept {
+  ESP_LOGI(TAG, "Testing open load detection...");
+  
+  auto handle = create_test_driver();
+  if (!handle) {
+    return false;
+  }
+  
+  // Ensure SpreadCycle mode (StealthChop disabled) for open load detection
+  tmc5160::GlobalConfig gconf{};
+  if (!handle->driver->motorControl.GetGlobalConfig(gconf)) {
+    ESP_LOGE(TAG, "Failed to get global config");
+    return false;
+  }
+  
+  if (gconf.en_pwm_mode) {
+    ESP_LOGI(TAG, "Disabling StealthChop for open load detection test");
+    gconf.en_pwm_mode = false;
+    if (!handle->driver->motorControl.ConfigureGlobalConfig(gconf)) {
+      ESP_LOGE(TAG, "Failed to disable StealthChop");
+      return false;
+    }
+    vTaskDelay(pdMS_TO_TICKS(100));
+  }
+  
+  // Move motor at low velocity (minimum 4× microstep resolution = 1024 steps)
+  ESP_LOGI(TAG, "Moving motor for open load detection test");
+  handle->driver->rampControl.SetMaxSpeed(500.0f, tmc5160::Unit::Steps);
+  handle->driver->rampControl.SetTargetPosition(1024);  // 4× microstep resolution
+  
+  // Check for open load during motion
+  bool open_load_detected = false;
+  uint32_t check_count = 0;
+  while (!handle->driver->rampControl.IsTargetReached() && check_count < 50) {
+    bool phase_a = handle->driver->diagnostics.IsOpenLoadA();
+    bool phase_b = handle->driver->diagnostics.IsOpenLoadB();
+    
+    if (phase_a || phase_b) {
+      ESP_LOGW(TAG, "Open load detected: Phase A=%d, Phase B=%d", phase_a, phase_b);
+      open_load_detected = true;
+    }
+    
+    check_count++;
+    vTaskDelay(pdMS_TO_TICKS(20));
+  }
+  
+  // Wait for motion to complete
+  while (!handle->driver->rampControl.IsTargetReached()) {
+    vTaskDelay(pdMS_TO_TICKS(10));
+  }
+  
+  // Check both phases at once
+  bool phase_a_final, phase_b_final;
+  if (handle->driver->diagnostics.CheckOpenLoad(phase_a_final, phase_b_final)) {
+    ESP_LOGI(TAG, "Final open load check: Phase A=%d, Phase B=%d", 
+             phase_a_final, phase_b_final);
+    if (phase_a_final || phase_b_final) {
+      ESP_LOGW(TAG, "⚠️ Open load flags are set (check wiring if unexpected)");
+      ESP_LOGW(TAG, "Note: Flags may also indicate undervoltage, high velocity, or other conditions");
+    } else {
+      ESP_LOGI(TAG, "✓ No open load detected");
+    }
+  } else {
+    ESP_LOGE(TAG, "Failed to check open load status");
+    return false;
+  }
+  
+  if (!open_load_detected && !phase_a_final && !phase_b_final) {
+    ESP_LOGI(TAG, "✓ Open load detection test passed (no open load detected)");
+  }
   
   return true;
 }
@@ -443,6 +538,13 @@ extern "C" void app_main(void) {
     ENABLE_SENSORLESS_HOMING_TESTS, "SENSORLESS HOMING TESTS", 5,
     ESP_LOGI(TAG, "Running sensorless homing tests...");
     RUN_TEST_IN_TASK("sensorless_homing", test_sensorless_homing, 8192, 1);
+    flip_test_progress_indicator();
+  );
+  
+  RUN_TEST_SECTION_IF_ENABLED_WITH_PATTERN(
+    ENABLE_OPEN_LOAD_TESTS, "OPEN LOAD DETECTION TESTS", 5,
+    ESP_LOGI(TAG, "Running open load detection tests...");
+    RUN_TEST_IN_TASK("open_load", test_open_load, 8192, 1);
     flip_test_progress_indicator();
   );
   

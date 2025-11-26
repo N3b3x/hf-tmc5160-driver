@@ -109,29 +109,38 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afe186986cb49797f040e4337363c8865" id="r_afe186986cb49797f040e4337363c8865"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe186986cb49797f040e4337363c8865">StealthChopConfig</a> ()=default</td></tr>
 <tr class="memdesc:afe186986cb49797f040e4337363c8865"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:afe186986cb49797f040e4337363c8865"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1502aec3d5eca75e887690bfb39391ca" id="r_a1502aec3d5eca75e887690bfb39391ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1502aec3d5eca75e887690bfb39391ca">StealthChopConfig</a> (uint8_t pwm_frequency, uint8_t pwm_offset=30, uint8_t pwm_gradient=0, uint8_t regulation_speed=4, uint8_t jerk_reduction=12)</td></tr>
+<tr class="memdesc:a1502aec3d5eca75e887690bfb39391ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper constructor for automatic tuning mode.  <br /></td></tr>
+<tr class="separator:a1502aec3d5eca75e887690bfb39391ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0057de2e134c9666a72217d04a298b24" id="r_a0057de2e134c9666a72217d04a298b24"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0057de2e134c9666a72217d04a298b24">StealthChopConfig</a> (<a class="el" href="namespacetmc5160.html#a54cee59d08c9c45abede2726f8fc1dac">StealthChopPwmFreq</a> pwm_frequency, <a class="el" href="namespacetmc5160.html#ae27e0401e84b11039e2df9f708a96337">StealthChopRegulationSpeed</a> regulation_speed=<a class="el" href="namespacetmc5160.html#ae27e0401e84b11039e2df9f708a96337a5137485eff3ff278d233d993c8539599">StealthChopRegulationSpeed::MODERATE</a>, <a class="el" href="namespacetmc5160.html#a9a573006493faa30433407b3a8de8a1e">StealthChopJerkReduction</a> jerk_reduction=<a class="el" href="namespacetmc5160.html#a9a573006493faa30433407b3a8de8a1ea5137485eff3ff278d233d993c8539599">StealthChopJerkReduction::MODERATE</a>, uint8_t pwm_offset=30, uint8_t pwm_gradient=0)</td></tr>
+<tr class="memdesc:a0057de2e134c9666a72217d04a298b24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper constructor using enums (most intuitive)  <br /></td></tr>
+<tr class="separator:a0057de2e134c9666a72217d04a298b24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada67299de11e14481acc212ea15b58f8" id="r_ada67299de11e14481acc212ea15b58f8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada67299de11e14481acc212ea15b58f8">StealthChopConfig</a> (uint8_t pwm_frequency, uint8_t pwm_offset, uint8_t pwm_gradient)</td></tr>
+<tr class="memdesc:ada67299de11e14481acc212ea15b58f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper constructor for manual mode.  <br /></td></tr>
+<tr class="separator:ada67299de11e14481acc212ea15b58f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a8212b87ac5da31bdcc8b2bde64b412a6" id="r_a8212b87ac5da31bdcc8b2bde64b412a6"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8212b87ac5da31bdcc8b2bde64b412a6">pwm_ofs</a> {30}</td></tr>
-<tr class="memdesc:a8212b87ac5da31bdcc8b2bde64b412a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">PWM amplitude offset (0-255)  <br /></td></tr>
+<tr class="memdesc:a8212b87ac5da31bdcc8b2bde64b412a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">PWM amplitude offset.  <br /></td></tr>
 <tr class="separator:a8212b87ac5da31bdcc8b2bde64b412a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cf180be86dcfb7be601080521f42d3e" id="r_a1cf180be86dcfb7be601080521f42d3e"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1cf180be86dcfb7be601080521f42d3e">pwm_grad</a> {0}</td></tr>
-<tr class="memdesc:a1cf180be86dcfb7be601080521f42d3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">PWM amplitude gradient (0-255)  <br /></td></tr>
+<tr class="memdesc:a1cf180be86dcfb7be601080521f42d3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">PWM amplitude gradient.  <br /></td></tr>
 <tr class="separator:a1cf180be86dcfb7be601080521f42d3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad01d6030bf31c2f4b29629b251cb27ef" id="r_ad01d6030bf31c2f4b29629b251cb27ef"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad01d6030bf31c2f4b29629b251cb27ef">pwm_freq</a> {1}</td></tr>
-<tr class="memdesc:ad01d6030bf31c2f4b29629b251cb27ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">PWM frequency selection (0-3)  <br /></td></tr>
+<tr class="memdesc:ad01d6030bf31c2f4b29629b251cb27ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">PWM frequency selection.  <br /></td></tr>
 <tr class="separator:ad01d6030bf31c2f4b29629b251cb27ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4baa735be57547bb2208c72d9e36c63" id="r_af4baa735be57547bb2208c72d9e36c63"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4baa735be57547bb2208c72d9e36c63">pwm_autoscale</a> {true}</td></tr>
-<tr class="memdesc:af4baa735be57547bb2208c72d9e36c63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable PWM automatic amplitude scaling.  <br /></td></tr>
+<tr class="memdesc:af4baa735be57547bb2208c72d9e36c63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable automatic current scaling.  <br /></td></tr>
 <tr class="separator:af4baa735be57547bb2208c72d9e36c63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3daacede8f269aec469929eaf204a46" id="r_ac3daacede8f269aec469929eaf204a46"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3daacede8f269aec469929eaf204a46">pwm_autograd</a> {true}</td></tr>
-<tr class="memdesc:ac3daacede8f269aec469929eaf204a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable PWM automatic gradient adaptation.  <br /></td></tr>
+<tr class="memdesc:ac3daacede8f269aec469929eaf204a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable automatic gradient adaptation.  <br /></td></tr>
 <tr class="separator:ac3daacede8f269aec469929eaf204a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b8a4b0a03f8110929f55f3ad588bd59" id="r_a3b8a4b0a03f8110929f55f3ad588bd59"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b8a4b0a03f8110929f55f3ad588bd59">pwm_reg</a> {4}</td></tr>
-<tr class="memdesc:a3b8a4b0a03f8110929f55f3ad588bd59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Regulation loop gradient (0-15)  <br /></td></tr>
+<tr class="memdesc:a3b8a4b0a03f8110929f55f3ad588bd59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Regulation speed.  <br /></td></tr>
 <tr class="separator:a3b8a4b0a03f8110929f55f3ad588bd59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8abe2f49f6dbd90092dcd721fdd9d69f" id="r_a8abe2f49f6dbd90092dcd721fdd9d69f"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8abe2f49f6dbd90092dcd721fdd9d69f">pwm_lim</a> {12}</td></tr>
-<tr class="memdesc:a8abe2f49f6dbd90092dcd721fdd9d69f"><td class="mdescLeft">&#160;</td><td class="mdescRight">PWM automatic scale amplitude limit (0-15)  <br /></td></tr>
+<tr class="memdesc:a8abe2f49f6dbd90092dcd721fdd9d69f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mode switching jerk reduction.  <br /></td></tr>
 <tr class="separator:a8abe2f49f6dbd90092dcd721fdd9d69f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e6b1d5107d3cbb3d5f5b564a440de22" id="r_a0e6b1d5107d3cbb3d5f5b564a440de22"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#afd8e06e7eda04c891d35f72236085722">PWMFreewheel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e6b1d5107d3cbb3d5f5b564a440de22">freewheel</a> {<a class="el" href="namespacetmc5160.html#afd8e06e7eda04c891d35f72236085722a1e23852820b9154316c7c06e2b7ba051">PWMFreewheel::NORMAL</a>}</td></tr>
 <tr class="memdesc:a0e6b1d5107d3cbb3d5f5b564a440de22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Freewheeling mode when I_HOLD=0.  <br /></td></tr>
@@ -139,10 +148,26 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>StealthChop configuration structure. </p>
-<p>Configuration parameters for stealthChop PWM mode operation. </p>
+<p>User-friendly configuration for StealthChop2 voltage PWM mode operation. StealthChop provides extremely quiet, noiseless operation for stepper motors, making it ideal for indoor or home use applications.</p>
+<p>StealthChop2 features automatic tuning (AT) that adapts operating parameters to the motor automatically. Two tuning phases are required:</p><ul>
+<li>AT#1: Motor in standstill with nominal run current (≤130ms)</li>
+<li>AT#2: Motor moving at medium velocity (60-300 RPM typical, 8+ fullsteps)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>StealthChop requires motor to be at standstill when first enabled. </dd>
+<dd>
+Keep motor stopped for at least 128 chopper periods after enabling StealthChop. </dd>
+<dd>
+StealthChop and StallGuard2 are mutually exclusive (StallGuard2 requires SpreadCycle). </dd>
+<dd>
+Lower current limit applies: IRUN ≥ 8 and current must exceed I_LOWER_LIMIT. </dd>
+<dd>
+Open load detection should be performed in SpreadCycle before enabling StealthChop. </dd>
+<dd>
+Motor stall during StealthChop can cause overcurrent - tune low-side overcurrent detection.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 7: StealthChop™ </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="afe186986cb49797f040e4337363c8865" name="afe186986cb49797f040e4337363c8865"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe186986cb49797f040e4337363c8865">&#9670;&#160;</a></span>StealthChopConfig()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afe186986cb49797f040e4337363c8865">&#9670;&#160;</a></span>StealthChopConfig() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -165,7 +190,175 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Initializes with recommended default values. All members use default member initializers, so constructor is empty. </p>
+<p>Initializes with recommended default values for automatic tuning mode:</p><ul>
+<li>pwm_ofs: 30 (typical starting value, normal mode)</li>
+<li>pwm_grad: 0 (let automatic tuning determine)</li>
+<li>pwm_freq: 1 (~35kHz @ 12MHz, recommended)</li>
+<li>pwm_autoscale: true (automatic current scaling)</li>
+<li>pwm_autograd: true (automatic gradient adaptation)</li>
+<li>pwm_reg: 4 (balanced regulation, 2 increments per half wave)</li>
+<li>pwm_lim: 12 (balanced jerk reduction)</li>
+<li>freewheel: NORMAL (normal operation) </li>
+</ul>
+
+</div>
+</div>
+<a id="a1502aec3d5eca75e887690bfb39391ca" name="a1502aec3d5eca75e887690bfb39391ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1502aec3d5eca75e887690bfb39391ca">&#9670;&#160;</a></span>StealthChopConfig() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tmc5160::StealthChopConfig::StealthChopConfig </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>pwm_frequency</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>pwm_offset</em><span class="paramdefsep"> = </span><span class="paramdefval">30</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>pwm_gradient</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>regulation_speed</em><span class="paramdefsep"> = </span><span class="paramdefval">4</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>jerk_reduction</em><span class="paramdefsep"> = </span><span class="paramdefval">12</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Helper constructor for automatic tuning mode. </p>
+<p>Creates a StealthChop configuration optimized for automatic tuning.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pwm_frequency</td><td>PWM frequency (StealthChopPwmFreq enum or 0-3) </td></tr>
+    <tr><td class="paramname">pwm_offset</td><td>Initial PWM offset (0=special mode, 1-255=normal, 30=typical) </td></tr>
+    <tr><td class="paramname">pwm_gradient</td><td>Initial PWM gradient (0-255, 0=auto) </td></tr>
+    <tr><td class="paramname">regulation_speed</td><td>Regulation speed (StealthChopRegulationSpeed enum or 1-15, 4=balanced) </td></tr>
+    <tr><td class="paramname">jerk_reduction</td><td>Jerk reduction (StealthChopJerkReduction enum or 0-15, 12=balanced) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0057de2e134c9666a72217d04a298b24" name="a0057de2e134c9666a72217d04a298b24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0057de2e134c9666a72217d04a298b24">&#9670;&#160;</a></span>StealthChopConfig() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tmc5160::StealthChopConfig::StealthChopConfig </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a54cee59d08c9c45abede2726f8fc1dac">StealthChopPwmFreq</a></td>          <td class="paramname"><span class="paramname"><em>pwm_frequency</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#ae27e0401e84b11039e2df9f708a96337">StealthChopRegulationSpeed</a></td>          <td class="paramname"><span class="paramname"><em>regulation_speed</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#ae27e0401e84b11039e2df9f708a96337a5137485eff3ff278d233d993c8539599">StealthChopRegulationSpeed::MODERATE</a></span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a9a573006493faa30433407b3a8de8a1e">StealthChopJerkReduction</a></td>          <td class="paramname"><span class="paramname"><em>jerk_reduction</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a9a573006493faa30433407b3a8de8a1ea5137485eff3ff278d233d993c8539599">StealthChopJerkReduction::MODERATE</a></span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>pwm_offset</em><span class="paramdefsep"> = </span><span class="paramdefval">30</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>pwm_gradient</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Helper constructor using enums (most intuitive) </p>
+<p>Creates a StealthChop configuration using intuitive enums.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pwm_frequency</td><td>PWM frequency enum </td></tr>
+    <tr><td class="paramname">regulation_speed</td><td>Regulation speed enum </td></tr>
+    <tr><td class="paramname">jerk_reduction</td><td>Jerk reduction enum </td></tr>
+    <tr><td class="paramname">pwm_offset</td><td>Initial PWM offset (0=special mode, 1-255=normal, 30=typical) </td></tr>
+    <tr><td class="paramname">pwm_gradient</td><td>Initial PWM gradient (0-255, 0=auto) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ada67299de11e14481acc212ea15b58f8" name="ada67299de11e14481acc212ea15b58f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada67299de11e14481acc212ea15b58f8">&#9670;&#160;</a></span>StealthChopConfig() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tmc5160::StealthChopConfig::StealthChopConfig </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>pwm_frequency</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>pwm_offset</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>pwm_gradient</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Helper constructor for manual mode. </p>
+<p>Creates a StealthChop configuration for manual (non-automatic) mode. Requires well-known motor and operating conditions.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pwm_frequency</td><td>PWM frequency (StealthChopPwmFreq enum or 0-3) </td></tr>
+    <tr><td class="paramname">pwm_offset</td><td>PWM offset (calculated: 374 * R_COIL * I_COIL / V_M) </td></tr>
+    <tr><td class="paramname">pwm_gradient</td><td>PWM gradient (calculated from back EMF constant) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -183,6 +376,18 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Freewheeling mode when I_HOLD=0. </p>
+<p>Standstill option when motor current setting is zero. Only available with StealthChop enabled.</p>
+<p>Options:</p><ul>
+<li>NORMAL: Normal operation (coast when ihold=0)</li>
+<li>ENABLED: Freewheeling (low resistance, easy to move)</li>
+<li>SHORT_LS: Coil short via low-side drivers (passive brake)</li>
+<li>SHORT_HS: Coil short via high-side drivers (passive brake)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Freewheeling makes motor easy to move. </dd>
+<dd>
+Coil short options realize passive braking (energy efficient). </dd>
+<dd>
+Enabled after TPOWERDOWN and IHOLDDELAY delay. Freewheeling mode when I_HOLD=0 </dd></dl>
 
 </div>
 </div>
@@ -198,7 +403,22 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Enable PWM automatic gradient adaptation. </p>
+<p>Enable automatic gradient adaptation. </p>
+<p>Enables automatic tuning of PWM_GRAD_AUTO during AT#2 phase.</p>
+<ul>
+<li>true (recommended): Automatic gradient tuning<ul>
+<li>Driver optimizes PWM_GRAD_AUTO during AT#2</li>
+<li>Adapts to motor characteristics automatically</li>
+</ul>
+</li>
+<li>false: Use PWM_GRAD from register<ul>
+<li>Use pre-determined PWM_GRAD value</li>
+<li>Reduces amplitude jitter</li>
+<li>Requires manual tuning</li>
+</ul>
+</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Set to false if you have pre-determined PWM_GRAD and want to reduce jitter. Enable automatic gradient adaptation (recommended) </dd></dl>
 
 </div>
 </div>
@@ -214,7 +434,26 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Enable PWM automatic amplitude scaling. </p>
+<p>Enable automatic current scaling. </p>
+<p>Enables automatic current regulation using current measurement feedback.</p>
+<ul>
+<li>true (recommended): Automatic scaling with current regulator<ul>
+<li>Adapts to motor heating, supply voltage changes</li>
+<li>Responds to motor stall and load changes</li>
+<li>Requires current measurement (sense resistors)</li>
+</ul>
+</li>
+<li>false: Feed-forward velocity-controlled mode<ul>
+<li>Very stable amplitude</li>
+<li>Does not react to supply voltage changes or motor stall</li>
+<li>Does not require current measurement</li>
+<li>Only for well-known motor and operating conditions</li>
+</ul>
+</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Recommended: Use automatic mode (true) unless current regulation is not satisfying. </dd>
+<dd>
+Non-automatic mode requires careful programming and well-known conditions. Enable automatic current scaling (recommended) </dd></dl>
 
 </div>
 </div>
@@ -230,7 +469,18 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>PWM frequency selection (0-3) </p>
+<p>PWM frequency selection. </p>
+<p>Chopper frequency selection for StealthChop operation. Lower frequencies reduce current ripple but may limit high-velocity performance. Higher frequencies improve high-velocity performance but increase power dissipation.</p>
+<p>Can be specified as:</p><ul>
+<li>uint8_t (0-3): Raw register value</li>
+<li>StealthChopPwmFreq enum: More intuitive (recommended)</li>
+</ul>
+<p>Recommended: PWM_FREQ_1 (~35kHz @ 12MHz clock) for most applications Use lowest setting giving good results.</p>
+<dl class="section note"><dt>Note</dt><dd>Actual frequency depends on clock frequency (f_CLK). </dd>
+<dd>
+Lower blank time (TBL) allows lower current limit. </dd>
+<dd>
+During AT#1, driver may reduce frequency if current cannot be reached. PWM frequency (0-3 or StealthChopPwmFreq enum, 1=recommended) </dd></dl>
 
 </div>
 </div>
@@ -246,7 +496,15 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>PWM amplitude gradient (0-255) </p>
+<p>PWM amplitude gradient. </p>
+<p>Velocity-dependent factor to compensate for back EMF. Used as initialization value for automatic tuning (PWM_GRAD_AUTO).</p>
+<p>Range: 0-255</p><ul>
+<li>Typical: 0 (default) - let automatic tuning determine</li>
+</ul>
+<p>Calculation (for manual mode, pwm_autoscale=0): PWM_GRAD = C_BEMF * 2π * f_CLK * 1.46 / (V_M * MSPR)</p>
+<dl class="section note"><dt>Note</dt><dd>With automatic tuning (pwm_autograd=1), this is used as initial value. </dd>
+<dd>
+After AT#2, actual value is stored in PWM_GRAD_AUTO (read via GetPwmAuto()). PWM amplitude gradient (0-255, velocity compensation) </dd></dl>
 
 </div>
 </div>
@@ -262,7 +520,22 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>PWM automatic scale amplitude limit (0-15) </p>
+<p>Mode switching jerk reduction. </p>
+<p>Controls current jerk reduction when switching from SpreadCycle to StealthChop. Limits PWM_SCALE_AUTO when switching back from SpreadCycle to StealthChop.</p>
+<p>Can be specified as:</p><ul>
+<li>uint8_t (0-15): Raw register value (upper 4 bits of 8-bit amplitude limit)<ul>
+<li>Lower values: Lower current jerk (smoother switching)</li>
+<li>Higher values: Higher current jerk (faster switching)</li>
+<li>Default: 12 (recommended, balanced)</li>
+</ul>
+</li>
+<li>StealthChopJerkReduction enum: More intuitive (recommended)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Reduce value if experiencing current spikes during mode switching. </dd>
+<dd>
+Only affects switching from SpreadCycle to StealthChop. </dd>
+<dd>
+Does not limit PWM_GRAD or PWM_GRAD_AUTO offset. Jerk reduction (0-15 or StealthChopJerkReduction enum, 12=balanced) </dd></dl>
 
 </div>
 </div>
@@ -278,7 +551,19 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>PWM amplitude offset (0-255) </p>
+<p>PWM amplitude offset. </p>
+<p>Initial value for PWM amplitude (offset) for velocity-based scaling. Used as initialization value for automatic tuning (PWM_OFS_AUTO).</p>
+<p>Range: 0-255</p><ul>
+<li>0: Special mode - Disables scaling down motor current below lower measurement threshold. Prevents motor going out of regulation but also prevents power down below regulation limit. Use only when power supply voltage can vary up and down by factor of 2 or more.</li>
+<li>1-255: Normal mode - Allows automatic scaling to low PWM duty cycles even below regulation threshold. Enables low standstill current settings based on IHOLD_IRUN register.</li>
+<li>Typical: 30 (default) for most motors</li>
+</ul>
+<p>Calculation (for manual mode, pwm_autoscale=0): PWM_OFS = 374 * R_COIL * I_COIL / V_M</p>
+<dl class="section note"><dt>Note</dt><dd>With automatic tuning (pwm_autoscale=1), this is used as initial value. </dd>
+<dd>
+After AT#1, actual value is stored in PWM_OFS_AUTO (read via GetPwmAuto()). </dd>
+<dd>
+PWM_OFS = 0 should only be used under certain conditions (see above). PWM amplitude offset (0=special mode, 1-255=normal, 30=typical) </dd></dl>
 
 </div>
 </div>
@@ -294,7 +579,25 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Regulation loop gradient (0-15) </p>
+<p>Regulation speed. </p>
+<p>Controls how fast the PWM amplitude regulation loop adapts to changes. Specifies maximum PWM amplitude change per half wave when using automatic scaling.</p>
+<p>Can be specified as:</p><ul>
+<li>uint8_t (1-15): Raw register value<ul>
+<li>1: 0.5 increments per half wave (slowest, most stable)</li>
+<li>2: 1 increment per half wave</li>
+<li>4: 2 increments per half wave (default, balanced)</li>
+<li>8: 4 increments per half wave</li>
+<li>15: 7.5 increments per half wave (fastest, may be less stable)</li>
+</ul>
+</li>
+<li>StealthChopRegulationSpeed enum: More intuitive (recommended)</li>
+</ul>
+<p>Lower values: Stable, soft regulation (slower response) Higher values: Faster adaptation (may be less stable)</p>
+<dl class="section note"><dt>Note</dt><dd>Should be as small as possible for stability, but large enough for quick reaction. </dd>
+<dd>
+Higher acceleration during AT#2 requires higher regulation speed. </dd>
+<dd>
+Optimize for fastest required acceleration/deceleration ramp. Regulation speed (1-15 or StealthChopRegulationSpeed enum, 4=balanced) </dd></dl>
 
 </div>
 </div>

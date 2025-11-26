@@ -30,10 +30,19 @@
 static const char* TAG = "SGT_Tuning";
 
 //=============================================================================
-// MOTOR SELECTION
+// CONFIGURATION SELECTION - Change these to select motor, board, and platform
 //=============================================================================
+// Motor selection (compile-time constant)
 static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
     tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+
+// Board selection (compile-time constant)
+static constexpr tmc5160_test_config::BoardType SELECTED_BOARD = 
+    tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL;
+
+// Platform selection (compile-time constant)
+static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM = 
+    tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
 
 // Tuning Parameters
 static constexpr float TUNING_VELOCITY_STEPS_S = 30000.0f; // Target velocity for tuning
@@ -55,26 +64,23 @@ extern "C" void app_main(void) {
   tmc5160::TMC5160<Esp32SPI> driver(spi);
   tmc5160::DriverConfig driver_config;
 
-  // Configure based on selected motor
+  // Configure motor
   if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
-    namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
-    driver_config.motor_spec.irun = Motor::IRUN;
-    driver_config.motor_spec.ihold = Motor::IHOLD;
-    driver_config.motor_spec.global_scaler = Motor::GLOBAL_SCALER;
-    driver_config.chopper.toff = Motor::TOFF;
-    driver_config.chopper.hend = Motor::HEND;
-    driver_config.chopper.hstrt = Motor::HSTRT;
-    driver_config.chopper.mres = Motor::MRES;
-    
-    // Set physical specs for unit conversions
-    driver_config.motor_spec.steps_per_rev = Motor::MOTOR_FULL_STEPS;
-    driver_config.motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
-    driver_config.mechanical.gear_ratio = Motor::GEAR_RATIO;
-    
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(driver_config);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(driver_config);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(driver_config);
   } else {
     ESP_LOGE(TAG, "Unsupported motor type selected for this example");
     return;
   }
+  
+  // Apply board configuration
+  tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(driver_config);
+  
+  // Apply platform configuration
+  tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(driver_config);
 
   if (!driver.Initialize(driver_config)) {
     ESP_LOGE(TAG, "Failed to initialize driver");
@@ -126,8 +132,8 @@ extern "C" void app_main(void) {
     // Test run with found SGT
     ESP_LOGI(TAG, "Verifying with test run...");
     tmc5160::StallGuardConfig sg_config;
-    sg_config.sgt = optimal_sgt;
-    sg_config.sfilt = true; // Enable filter for verification/operation (reduces noise)
+    sg_config.threshold = optimal_sgt;
+    sg_config.enable_filter = true; // Enable filter for verification/operation (reduces noise)
     driver.diagnostics.ConfigureStallGuard(sg_config);
     
     // Set explicit acceleration and deceleration (same value for both)

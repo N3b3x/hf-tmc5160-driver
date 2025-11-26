@@ -1,5 +1,23 @@
 var namespacetmc5160__test__config =
 [
+    [ "BoardConfig_TMC5160_BOB", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__BOB.html", [
+      [ "BBM_TIME_NS", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__BOB.html#a72c45e353983bee5db5999ef62b40480", null ],
+      [ "CLOCK_FREQUENCY_HZ", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__BOB.html#af440fcd8d1776688db1cf014426130c3", null ],
+      [ "MOSFET_MILLER_CHARGE_NC", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__BOB.html#a78c3b1f8e325ec2a6c2b7ce566776213", null ],
+      [ "S2G_VOLTAGE_MV", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__BOB.html#a9202841e6acd11e6dcb01b5a329914be", null ],
+      [ "S2VS_VOLTAGE_MV", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__BOB.html#a3ed1536c79507d75e650266e9dc5094c", null ],
+      [ "SENSE_RESISTOR_MOHM", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__BOB.html#aae3d4b0bd68f6746de473e269b806659", null ],
+      [ "SUPPLY_VOLTAGE_MV", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__BOB.html#a8e1f3d0ae8a69ee8d0c5dd0e36463e6a", null ]
+    ] ],
+    [ "BoardConfig_TMC5160_EVAL", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__EVAL.html", [
+      [ "BBM_TIME_NS", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__EVAL.html#a6a2c2a11b0c932cff7bc61f037ecc584", null ],
+      [ "CLOCK_FREQUENCY_HZ", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__EVAL.html#ac6f7e30a69c176b44d07e48a25df1043", null ],
+      [ "MOSFET_MILLER_CHARGE_NC", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__EVAL.html#a15b743984643207a721ef063fd2d9034", null ],
+      [ "S2G_VOLTAGE_MV", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__EVAL.html#a896135ee3c3150d088e53951da20861f", null ],
+      [ "S2VS_VOLTAGE_MV", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__EVAL.html#a3ec641ab43f3db40152ed00007e04ae1", null ],
+      [ "SENSE_RESISTOR_MOHM", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__EVAL.html#a1e902fc07b42bc4bff33c357f84d6ae3", null ],
+      [ "SUPPLY_VOLTAGE_MV", "namespacetmc5160__test__config_1_1BoardConfig__TMC5160__EVAL.html#a356f530f5b553cc934acee9ad374ea7d", null ]
+    ] ],
     [ "MotorConfig_17HS4401S", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html", [
       [ "BBM_TIME_NS", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#affa877e41c216581eca2955f14381577", null ],
       [ "GEAR_RATIO", "namespacetmc5160__test__config_1_1MotorConfig__17HS4401S.html#a264560cc51bab1eef38fd5b5b00ffc44", null ],
@@ -69,13 +87,30 @@ var namespacetmc5160__test__config =
       [ "TBL", "namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a5ec830634dcd59ee9a4a11bbcf3b00ed", null ],
       [ "TOFF", "namespacetmc5160__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a20cfccd16f58350f0e9ade872e93a98a", null ]
     ] ],
+    [ "PlatformConfig_TestRig", "namespacetmc5160__test__config_1_1PlatformConfig__TestRig.html", "namespacetmc5160__test__config_1_1PlatformConfig__TestRig" ],
     [ "TestConfig_17HS4401S", "namespacetmc5160__test__config_1_1TestConfig__17HS4401S.html", "namespacetmc5160__test__config_1_1TestConfig__17HS4401S" ],
+    [ "BoardType", "namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67", [
+      [ "BOARD_TMC5160_EVAL", "namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67a460a09206e1dd3e0cd050257d6e45177", null ],
+      [ "BOARD_TMC5160_BOB", "namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67ad7b28c094830b24a8c954e00e1ead749", null ]
+    ] ],
     [ "MotorType", "namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4f", [
       [ "MOTOR_17HS4401S_GEARBOX", "namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fa750ecf224ef9e7f6264bb40d22ab1d70", null ],
       [ "MOTOR_17HS4401S_DIRECT", "namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fa1bcf0ba0168d20ca9f29059ad06b9de5", null ],
       [ "MOTOR_APPLIED_MOTION_5034", "namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fae4cb3819f3cd4bdea9818e6d575df989", null ]
     ] ],
+    [ "PlatformType", "namespacetmc5160__test__config.html#a48f04184f8380da9c5ca32947c0da5ec", [
+      [ "PLATFORM_TEST_RIG", "namespacetmc5160__test__config.html#a48f04184f8380da9c5ca32947c0da5eca147fbec22e42f866983ce6cd76549179", null ]
+    ] ],
+    [ "ApplyBoardConfig", "namespacetmc5160__test__config.html#aa7bdadb434ba27b0d062c2882f3b9e3b", null ],
+    [ "ApplyPlatformConfig", "namespacetmc5160__test__config.html#a24e7662551b4b9f2324bafcb6f01f597", null ],
+    [ "ConfigureDriverFromMotor_17HS4401S_Direct", "namespacetmc5160__test__config.html#a8d4169028f909fa4c3bcaf35a1130f19", null ],
+    [ "ConfigureDriverFromMotor_17HS4401S_Gearbox", "namespacetmc5160__test__config.html#ad066428e88b18d0b8a60d3cbb3866a72", null ],
+    [ "ConfigureDriverFromMotor_AppliedMotion_5034", "namespacetmc5160__test__config.html#a3b6d57d96a6198cd1018a9e5c55c0c6b", null ],
     [ "GetDefaultPinConfig", "namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e", null ],
+    [ "GetEncoderConfig", "namespacetmc5160__test__config.html#ad8bac97c333882ab834132f4daff0860", null ],
+    [ "GetEncoderInvertDirection", "namespacetmc5160__test__config.html#a9b35a091c0e7adc4d9d7b9e387f5f9f8", null ],
+    [ "GetEncoderPulsesPerRev", "namespacetmc5160__test__config.html#a939425fb50697bb0a749f642198c9151", null ],
+    [ "GetReferenceSwitchConfig", "namespacetmc5160__test__config.html#aa1ba1c965c14b79db34cf8ff81bf0d59", null ],
     [ "CLK", "namespacetmc5160__test__config.html#af6235a4b8050a0d25ece7fc562d8ea8e", null ],
     [ "DIAG0", "namespacetmc5160__test__config.html#a69b7a4d671da170403ae255cb5fc9ba6", null ],
     [ "DIAG1", "namespacetmc5160__test__config.html#adf8b28ef0fd49330a53546b4b2c92795", null ],

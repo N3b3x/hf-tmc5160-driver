@@ -121,7 +121,7 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a7b3dc95e5f4ffde22fc69054720d685a" id="r_a7b3dc95e5f4ffde22fc69054720d685a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#a665a38f92e0b840fcadd8f86abfe7cab">SenseFilterTime</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b3dc95e5f4ffde22fc69054720d685a">sense_filter</a> {<a class="el" href="namespacetmc5160.html#a665a38f92e0b840fcadd8f86abfe7cabaf310699f12f6333dad760e06c005c67d">SenseFilterTime::T100ns</a>}</td></tr>
 <tr class="memdesc:a7b3dc95e5f4ffde22fc69054720d685a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sense amplifier filter time constant.  <br /></td></tr>
 <tr class="separator:a7b3dc95e5f4ffde22fc69054720d685a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc" id="r_a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bd">OverTempProtection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc">over_temp_protection</a> {<a class="el" href="namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bda8292f4c72596c343cc85cfd818469fe0">OverTempProtection::Level0</a>}</td></tr>
+<tr class="memitem:a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc" id="r_a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bd">OverTempProtection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc">over_temp_protection</a> {<a class="el" href="namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bdabee7dc0255faec605fa199c37a7c3fb0">OverTempProtection::Temp150C</a>}</td></tr>
 <tr class="memdesc:a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Over-temperature protection level for bridge disable.  <br /></td></tr>
 <tr class="separator:a5a54ab8b8ca8abfb7fdbd95e8aa4d7bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04ea3cd6616fbb48cd4c549d37f45943" id="r_a04ea3cd6616fbb48cd4c549d37f45943"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04ea3cd6616fbb48cd4c549d37f45943">s2vs_voltage_mv</a> {0}</td></tr>
@@ -169,7 +169,7 @@ Public Attributes</h2></td></tr>
 <li>MOSFET Miller charge: 10nC (typical for small MOSFETs)</li>
 <li>BBM time: 100ns (typical minimum)</li>
 <li>Sense filter: 100ns (reset default)</li>
-<li>Over-temperature protection: Level0 (150°C)</li>
+<li>Over-temperature protection: Temp150C (150°C)</li>
 <li>Short protection: s2vs_voltage_mv=0 (auto=625mV), s2g_voltage_mv=0 (auto=625mV), shortfilter=1, short_detection_delay_us_x10=0 (auto=0.85µs)</li>
 </ul>
 <dl class="section note"><dt>Note</dt><dd>Short detection retries 3 times before switching off motor continuously (ESD protection). </dd>
@@ -255,7 +255,7 @@ Short protection cannot protect against all possible short events - short circui
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bd">OverTempProtection</a> tmc5160::PowerStageParameters::over_temp_protection {<a class="el" href="namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bda8292f4c72596c343cc85cfd818469fe0">OverTempProtection::Level0</a>}</td>
+          <td class="memname"><a class="el" href="namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bd">OverTempProtection</a> tmc5160::PowerStageParameters::over_temp_protection {<a class="el" href="namespacetmc5160.html#afa2b6ac1cefcef55fa696acd746a69bdabee7dc0255faec605fa199c37a7c3fb0">OverTempProtection::Temp150C</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">

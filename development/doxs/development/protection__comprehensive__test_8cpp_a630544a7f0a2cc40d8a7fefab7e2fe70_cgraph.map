@@ -8,16 +8,22 @@
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="92,144,131,144,131,149,92,149"/>
 <area shape="rect" id="Node000007" href="$protection__comprehensive__test_8cpp.html#af31e0aecf0e69b0d3284ef827320b550" title=" " alt="" coords="140,184,304,224"/>
 <area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="89,157,149,177,147,182,87,162"/>
-<area shape="rect" id="Node000010" href="$protection__comprehensive__test_8cpp.html#a313007ba63d9511b529cc6c7c5cd26e6" title=" " alt="" coords="155,248,289,288"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="62,158,95,195,142,234,151,240,149,244,138,238,92,199,58,162"/>
-<area shape="rect" id="Node000004" href="$TestFramework_8h.html#a57a48f91a141d98e45f82937581e1a97" title="Automatically initialize GPIO14 test indicator if not already done." alt="" coords="352,117,540,142"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="292,99,362,112,361,117,291,104"/>
-<area shape="rect" id="Node000005" href="$TestFramework_8h.html#a3967179ac699a5b02ef9787b549409fe" title="Initialize the test progression indicator on GPIO14." alt="" coords="600,109,739,149"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="540,127,586,127,586,132,540,132"/>
-<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="299,138,338,135,339,140,299,143"/>
-<area shape="rect" id="Node000008" href="$protection__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="376,209,516,234"/>
-<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="305,208,363,212,362,218,304,213"/>
-<area shape="rect" id="Node000009" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="588,201,751,241"/>
-<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="517,219,574,219,574,224,517,224"/>
-<area shape="poly" id="edge11_Node000010_Node000008" title=" " alt="" coords="289,251,370,234,371,239,290,257"/>
+<area shape="rect" id="Node000013" href="$protection__comprehensive__test_8cpp.html#a313007ba63d9511b529cc6c7c5cd26e6" title=" " alt="" coords="155,248,289,288"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="62,158,95,195,142,234,151,240,149,244,138,238,92,199,58,162"/>
+<area shape="rect" id="Node000004" href="$TestFramework_8h.html#a57a48f91a141d98e45f82937581e1a97" title="Automatically initialize GPIO14 test indicator if not already done." alt="" coords="352,81,540,106"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="292,88,339,89,338,94,291,93"/>
+<area shape="rect" id="Node000005" href="$TestFramework_8h.html#a3967179ac699a5b02ef9787b549409fe" title="Initialize the test progression indicator on GPIO14." alt="" coords="620,73,759,113"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="540,91,606,91,606,96,540,96"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="276,131,378,107,380,112,277,136"/>
+<area shape="rect" id="Node000008" href="$protection__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="376,242,516,267"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="305,220,376,236,375,241,304,225"/>
+<area shape="rect" id="Node000009" href="$namespacetmc5160__test__config.html#a8d4169028f909fa4c3bcaf35a1130f19" title="Helper function to populate DriverConfig from 17HS4401S direct drive motor configuration." alt="" coords="588,142,791,197"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="482,239,597,199,599,204,484,244"/>
+<area shape="rect" id="Node000010" href="$namespacetmc5160__test__config.html#ad066428e88b18d0b8a60d3cbb3866a72" title="Helper function to populate DriverConfig from 17HS4401S gearbox motor configuration." alt="" coords="588,221,791,275"/>
+<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="516,250,574,248,574,254,516,255"/>
+<area shape="rect" id="Node000011" href="$namespacetmc5160__test__config.html#a3b6d57d96a6198cd1018a9e5c55c0c6b" title="Helper function to populate DriverConfig from Applied Motion 5034 motor configuration." alt="" coords="588,299,791,354"/>
+<area shape="poly" id="edge11_Node000008_Node000011" title=" " alt="" coords="491,265,584,293,583,298,489,270"/>
+<area shape="rect" id="Node000012" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="608,379,771,419"/>
+<area shape="poly" id="edge12_Node000008_Node000012" title=" " alt="" coords="462,266,515,313,551,340,589,364,603,371,601,376,587,369,548,345,512,317,458,270"/>
+<area shape="poly" id="edge14_Node000013_Node000008" title=" " alt="" coords="290,261,362,257,362,262,290,267"/>
 </map>

@@ -118,6 +118,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7094de806ef17e9ffc4a5e427189469d" id="r_a7094de806ef17e9ffc4a5e427189469d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7094de806ef17e9ffc4a5e427189469d">SetRampMode</a> (<a class="el" href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2">RampMode</a> mode) noexcept</td></tr>
 <tr class="memdesc:a7094de806ef17e9ffc4a5e427189469d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the ramp mode.  <br /></td></tr>
 <tr class="separator:a7094de806ef17e9ffc4a5e427189469d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1974eebc36f6e919b7fdf5fa0e0d748f" id="r_a1974eebc36f6e919b7fdf5fa0e0d748f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1974eebc36f6e919b7fdf5fa0e0d748f">GetRampMode</a> (<a class="el" href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2">RampMode</a> &amp;mode) noexcept</td></tr>
+<tr class="memdesc:a1974eebc36f6e919b7fdf5fa0e0d748f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current ramp mode.  <br /></td></tr>
+<tr class="separator:a1974eebc36f6e919b7fdf5fa0e0d748f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad641e198e0154270a5a106fe86c9e30b" id="r_ad641e198e0154270a5a106fe86c9e30b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad641e198e0154270a5a106fe86c9e30b">SetTargetPosition</a> (float value, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
 <tr class="memdesc:ad641e198e0154270a5a106fe86c9e30b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set target position.  <br /></td></tr>
 <tr class="separator:ad641e198e0154270a5a106fe86c9e30b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,6 +163,30 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab91562b2c47e36e543da897833e2b73f" id="r_ab91562b2c47e36e543da897833e2b73f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab91562b2c47e36e543da897833e2b73f">ConfigureReferenceSwitch</a> (const <a class="el" href="structtmc5160_1_1ReferenceSwitchConfig.html">ReferenceSwitchConfig</a> &amp;config) noexcept</td></tr>
 <tr class="memdesc:ab91562b2c47e36e543da897833e2b73f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure reference switches/endstops.  <br /></td></tr>
 <tr class="separator:ab91562b2c47e36e543da897833e2b73f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a687d379e76e2f4611120e19422f6db11" id="r_a687d379e76e2f4611120e19422f6db11"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a687d379e76e2f4611120e19422f6db11">GetReferenceSwitchConfig</a> (<a class="el" href="structtmc5160_1_1ReferenceSwitchConfig.html">ReferenceSwitchConfig</a> &amp;config) noexcept</td></tr>
+<tr class="memdesc:a687d379e76e2f4611120e19422f6db11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current reference switch configuration.  <br /></td></tr>
+<tr class="separator:a687d379e76e2f4611120e19422f6db11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8a8066220158b23fc94923890a4d862" id="r_ab8a8066220158b23fc94923890a4d862"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab8a8066220158b23fc94923890a4d862">SetLeftSwitchActiveLevel</a> (<a class="el" href="namespacetmc5160.html#a7c9082ecbde4d00926dee0abf53be002">ReferenceSwitchActiveLevel</a> active_level) noexcept</td></tr>
+<tr class="memdesc:ab8a8066220158b23fc94923890a4d862"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set left switch active level (determines polarity)  <br /></td></tr>
+<tr class="separator:ab8a8066220158b23fc94923890a4d862"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93ed60aa61cfaa00f0f850b85e2ff5f3" id="r_a93ed60aa61cfaa00f0f850b85e2ff5f3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a93ed60aa61cfaa00f0f850b85e2ff5f3">SetRightSwitchActiveLevel</a> (<a class="el" href="namespacetmc5160.html#a7c9082ecbde4d00926dee0abf53be002">ReferenceSwitchActiveLevel</a> active_level) noexcept</td></tr>
+<tr class="memdesc:a93ed60aa61cfaa00f0f850b85e2ff5f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set right switch active level (determines polarity)  <br /></td></tr>
+<tr class="separator:a93ed60aa61cfaa00f0f850b85e2ff5f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0dd00af8d208f65fc3ff80ec28e5193" id="r_ad0dd00af8d208f65fc3ff80ec28e5193"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad0dd00af8d208f65fc3ff80ec28e5193">SetLeftSwitchStopEnable</a> (bool enable) noexcept</td></tr>
+<tr class="memdesc:ad0dd00af8d208f65fc3ff80ec28e5193"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable or disable motor stop on left switch.  <br /></td></tr>
+<tr class="separator:ad0dd00af8d208f65fc3ff80ec28e5193"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96e0fa02bd77b299f2d9fe58dd136abf" id="r_a96e0fa02bd77b299f2d9fe58dd136abf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96e0fa02bd77b299f2d9fe58dd136abf">SetRightSwitchStopEnable</a> (bool enable) noexcept</td></tr>
+<tr class="memdesc:a96e0fa02bd77b299f2d9fe58dd136abf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable or disable motor stop on right switch.  <br /></td></tr>
+<tr class="separator:a96e0fa02bd77b299f2d9fe58dd136abf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80f488baaaae97afd321194fd8fcbbb9" id="r_a80f488baaaae97afd321194fd8fcbbb9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80f488baaaae97afd321194fd8fcbbb9">SetLeftSwitchLatchMode</a> (<a class="el" href="namespacetmc5160.html#a2ee7193a78dd507e5c413884ce8c33ac">ReferenceLatchMode</a> latch_mode) noexcept</td></tr>
+<tr class="memdesc:a80f488baaaae97afd321194fd8fcbbb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set left switch latching mode.  <br /></td></tr>
+<tr class="separator:a80f488baaaae97afd321194fd8fcbbb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2577d79998b36b16030b71044309194" id="r_af2577d79998b36b16030b71044309194"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af2577d79998b36b16030b71044309194">SetRightSwitchLatchMode</a> (<a class="el" href="namespacetmc5160.html#a2ee7193a78dd507e5c413884ce8c33ac">ReferenceLatchMode</a> latch_mode) noexcept</td></tr>
+<tr class="memdesc:af2577d79998b36b16030b71044309194"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set right switch latching mode.  <br /></td></tr>
+<tr class="separator:af2577d79998b36b16030b71044309194"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afed36bf74fbf64ed7dfdad53fa2c3c57" id="r_afed36bf74fbf64ed7dfdad53fa2c3c57"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afed36bf74fbf64ed7dfdad53fa2c3c57">SetStopMode</a> (<a class="el" href="namespacetmc5160.html#a444e9027bfb76a7d96817b586554b915">ReferenceStopMode</a> stop_mode) noexcept</td></tr>
+<tr class="memdesc:afed36bf74fbf64ed7dfdad53fa2c3c57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set stop mode (hard or soft stop)  <br /></td></tr>
+<tr class="separator:afed36bf74fbf64ed7dfdad53fa2c3c57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a1298e2a4ad8ed23ea6a995ae86cd72" id="r_a7a1298e2a4ad8ed23ea6a995ae86cd72"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7a1298e2a4ad8ed23ea6a995ae86cd72">GetLatchedPosition</a> (<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
 <tr class="memdesc:a7a1298e2a4ad8ed23ea6a995ae86cd72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get latched position.  <br /></td></tr>
 <tr class="separator:a7a1298e2a4ad8ed23ea6a995ae86cd72"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -375,6 +402,78 @@ template&lt;typename CommType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Latched position in specified unit, or 0 on error</dd></dl>
 <p>Reads the position that was latched on the last reference switch event. </p>
+
+</div>
+</div>
+<a id="a1974eebc36f6e919b7fdf5fa0e0d748f" name="a1974eebc36f6e919b7fdf5fa0e0d748f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1974eebc36f6e919b7fdf5fa0e0d748f">&#9670;&#160;</a></span>GetRampMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::RampControl::GetRampMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#ac039fd52ff49abd3359ab16891f4afc2">RampMode</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>mode</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get current ramp mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>Reference to store the current ramp mode </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if read successfully, false otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a687d379e76e2f4611120e19422f6db11" name="a687d379e76e2f4611120e19422f6db11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a687d379e76e2f4611120e19422f6db11">&#9670;&#160;</a></span>GetReferenceSwitchConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::RampControl::GetReferenceSwitchConfig </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structtmc5160_1_1ReferenceSwitchConfig.html">ReferenceSwitchConfig</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>config</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get current reference switch configuration. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">config</td><td>Reference to store current configuration </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if read successfully, false otherwise </dd></dl>
 
 </div>
 </div>
@@ -808,6 +907,117 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
+<a id="ab8a8066220158b23fc94923890a4d862" name="ab8a8066220158b23fc94923890a4d862"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8a8066220158b23fc94923890a4d862">&#9670;&#160;</a></span>SetLeftSwitchActiveLevel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::RampControl::SetLeftSwitchActiveLevel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7c9082ecbde4d00926dee0abf53be002">ReferenceSwitchActiveLevel</a></td>          <td class="paramname"><span class="paramname"><em>active_level</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set left switch active level (determines polarity) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">active_level</td><td>Active level (ACTIVE_LOW or ACTIVE_HIGH) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise</dd></dl>
+<p>Updates only the active level, preserving other settings. Allows real-time polarity changes while keeping stop enable and latching configured. </p>
+
+</div>
+</div>
+<a id="a80f488baaaae97afd321194fd8fcbbb9" name="a80f488baaaae97afd321194fd8fcbbb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80f488baaaae97afd321194fd8fcbbb9">&#9670;&#160;</a></span>SetLeftSwitchLatchMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::RampControl::SetLeftSwitchLatchMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a2ee7193a78dd507e5c413884ce8c33ac">ReferenceLatchMode</a></td>          <td class="paramname"><span class="paramname"><em>latch_mode</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set left switch latching mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">latch_mode</td><td>Latching mode (DISABLED, ACTIVE_EDGE, INACTIVE_EDGE, BOTH_EDGES) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise</dd></dl>
+<p>Updates only latching mode, preserving other settings. </p>
+
+</div>
+</div>
+<a id="ad0dd00af8d208f65fc3ff80ec28e5193" name="ad0dd00af8d208f65fc3ff80ec28e5193"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0dd00af8d208f65fc3ff80ec28e5193">&#9670;&#160;</a></span>SetLeftSwitchStopEnable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::RampControl::SetLeftSwitchStopEnable </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>enable</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enable or disable motor stop on left switch. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable</td><td>true to enable stop, false to disable </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise</dd></dl>
+<p>Updates only stop enable, preserving other settings. Allows real-time enable/disable of motor stop while keeping polarity and latching configured. </p>
+
+</div>
+</div>
 <a id="a9d15fed7b04fcfabf7d462fac532303c" name="a9d15fed7b04fcfabf7d462fac532303c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9d15fed7b04fcfabf7d462fac532303c">&#9670;&#160;</a></span>SetMaxSpeed()</h2>
 
@@ -972,6 +1182,154 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a93ed60aa61cfaa00f0f850b85e2ff5f3" name="a93ed60aa61cfaa00f0f850b85e2ff5f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93ed60aa61cfaa00f0f850b85e2ff5f3">&#9670;&#160;</a></span>SetRightSwitchActiveLevel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::RampControl::SetRightSwitchActiveLevel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7c9082ecbde4d00926dee0abf53be002">ReferenceSwitchActiveLevel</a></td>          <td class="paramname"><span class="paramname"><em>active_level</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set right switch active level (determines polarity) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">active_level</td><td>Active level (ACTIVE_LOW or ACTIVE_HIGH) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise</dd></dl>
+<p>Updates only the active level, preserving other settings. Allows real-time polarity changes while keeping stop enable and latching configured. </p>
+
+</div>
+</div>
+<a id="af2577d79998b36b16030b71044309194" name="af2577d79998b36b16030b71044309194"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2577d79998b36b16030b71044309194">&#9670;&#160;</a></span>SetRightSwitchLatchMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::RampControl::SetRightSwitchLatchMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a2ee7193a78dd507e5c413884ce8c33ac">ReferenceLatchMode</a></td>          <td class="paramname"><span class="paramname"><em>latch_mode</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set right switch latching mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">latch_mode</td><td>Latching mode (DISABLED, ACTIVE_EDGE, INACTIVE_EDGE, BOTH_EDGES) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise</dd></dl>
+<p>Updates only latching mode, preserving other settings. </p>
+
+</div>
+</div>
+<a id="a96e0fa02bd77b299f2d9fe58dd136abf" name="a96e0fa02bd77b299f2d9fe58dd136abf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96e0fa02bd77b299f2d9fe58dd136abf">&#9670;&#160;</a></span>SetRightSwitchStopEnable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::RampControl::SetRightSwitchStopEnable </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>enable</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enable or disable motor stop on right switch. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable</td><td>true to enable stop, false to disable </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise</dd></dl>
+<p>Updates only stop enable, preserving other settings. Allows real-time enable/disable of motor stop while keeping polarity and latching configured. </p>
+
+</div>
+</div>
+<a id="afed36bf74fbf64ed7dfdad53fa2c3c57" name="afed36bf74fbf64ed7dfdad53fa2c3c57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afed36bf74fbf64ed7dfdad53fa2c3c57">&#9670;&#160;</a></span>SetStopMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::RampControl::SetStopMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a444e9027bfb76a7d96817b586554b915">ReferenceStopMode</a></td>          <td class="paramname"><span class="paramname"><em>stop_mode</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set stop mode (hard or soft stop) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stop_mode</td><td>Stop mode (HARD_STOP or SOFT_STOP) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise</dd></dl>
+<p>Updates only stop mode, preserving other settings. </p>
 
 </div>
 </div>

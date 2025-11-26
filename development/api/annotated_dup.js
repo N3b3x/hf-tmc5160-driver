@@ -36,7 +36,7 @@ var annotated_dup =
       [ "PWM_SCALE_Register", "uniontmc5160_1_1PWM__SCALE__Register.html", "uniontmc5160_1_1PWM__SCALE__Register" ],
       [ "PWMCONF_Register", "uniontmc5160_1_1PWMCONF__Register.html", "uniontmc5160_1_1PWMCONF__Register" ],
       [ "RAMP_STAT_Register", "uniontmc5160_1_1RAMP__STAT__Register.html", "uniontmc5160_1_1RAMP__STAT__Register" ],
-      [ "RampParameters", "structtmc5160_1_1RampParameters.html", "structtmc5160_1_1RampParameters" ],
+      [ "RampConfig", "structtmc5160_1_1RampConfig.html", "structtmc5160_1_1RampConfig" ],
       [ "ReferenceSwitchConfig", "structtmc5160_1_1ReferenceSwitchConfig.html", "structtmc5160_1_1ReferenceSwitchConfig" ],
       [ "SHORT_CONF_Register", "uniontmc5160_1_1SHORT__CONF__Register.html", "uniontmc5160_1_1SHORT__CONF__Register" ],
       [ "SLAVECONF_Register", "uniontmc5160_1_1SLAVECONF__Register.html", "uniontmc5160_1_1SLAVECONF__Register" ],

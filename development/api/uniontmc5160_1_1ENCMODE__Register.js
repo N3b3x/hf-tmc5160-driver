@@ -7,10 +7,11 @@ var uniontmc5160_1_1ENCMODE__Register =
     [ "enc_sel_decimal", "uniontmc5160_1_1ENCMODE__Register.html#a4d9979d06907c64d0607cde808e6dbc1", null ],
     [ "ignore_AB", "uniontmc5160_1_1ENCMODE__Register.html#a2f13fd5e5e2f611517dcd7c6f12d6288", null ],
     [ "latch_x_act", "uniontmc5160_1_1ENCMODE__Register.html#a47123d2c0dcb197f03961ad1574b93bd", null ],
+    [ "neg_edge", "uniontmc5160_1_1ENCMODE__Register.html#a82205cb5a0b511d61c4fccbed94fc34a", null ],
     [ "pol_A", "uniontmc5160_1_1ENCMODE__Register.html#a21966749c3363fe950feeb7c553e19ca", null ],
     [ "pol_B", "uniontmc5160_1_1ENCMODE__Register.html#ac3a177221f1740bf4bda716b40b1caea", null ],
     [ "pol_N", "uniontmc5160_1_1ENCMODE__Register.html#a0080536a11ce01683f9d4750f21c4a0a", null ],
+    [ "pos_edge", "uniontmc5160_1_1ENCMODE__Register.html#a1ee2647130d85489cd93624db7e409fb", null ],
     [ "reserved", "uniontmc5160_1_1ENCMODE__Register.html#a52b1c63757139008b60eaadfa7a4e9ba", null ],
-    [ "sensitivity", "uniontmc5160_1_1ENCMODE__Register.html#aeced4fd6e0049835308b4695ac6e7c64", null ],
     [ "value", "uniontmc5160_1_1ENCMODE__Register.html#a8e1d5dcd5b8e98c0a975cd112f6bcc07", null ]
 ];

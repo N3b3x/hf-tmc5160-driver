@@ -1,5 +1,5 @@
 <map id="esp32_tmc5160_bus_config.hpp" name="esp32_tmc5160_bus_config.hpp">
-<area shape="rect" id="Node000001" title="ESP32 GPIO pin configuration for TMC5160 driver tests." alt="" coords="933,5,1162,31"/>
+<area shape="rect" id="Node000001" title="ESP32 GPIO pin configuration and compile&#45;time configuration for TMC5160 driver." alt="" coords="933,5,1162,31"/>
 <area shape="rect" id="Node000002" href="$bounds__finding__sinuous__motion_8cpp.html" title="Fatigue testing platform: Sensorless bounds finding and sinusoidal motion with UART command interface..." alt="" coords="5,79,183,119"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="919,26,590,44,393,60,196,81,183,83,183,78,195,76,392,55,590,39,919,21"/>
 <area shape="rect" id="Node000003" href="$core__comprehensive__test_8cpp.html" title="Comprehensive Core initialization and basic setup testing suite for TMC5160 (single motor)" alt="" coords="207,79,365,119"/>

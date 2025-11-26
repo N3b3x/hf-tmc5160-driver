@@ -1,14 +1,65 @@
 /**
  * @file esp32_tmc5160_bus_config.hpp
- * @brief ESP32 GPIO pin configuration for TMC5160 driver tests
+ * @brief ESP32 GPIO pin configuration and compile-time configuration for TMC5160 driver
  *
- * This file defines the standard GPIO pin assignments used across all
- * TMC5160 comprehensive test suites. All tests should use these pin
- * definitions for consistency.
+ * This file defines compile-time configuration for TMC5160 driver initialization:
+ * - **BoardConfig**: Board-specific hardware parameters (sense resistor, supply voltage, MOSFETs)
+ * - **MotorConfig**: Motor-specific configurations (physical specs, chopper, StealthChop)
+ * - **PlatformConfig**: Platform/application-specific configuration (reference switches, encoder, mechanical system)
  *
- * This file provides both individual pin constants and a complete
- * Esp32SpiPinConfig structure that can be used directly with the
- * Esp32SPI constructor.
+ * ## Configuration Hierarchy
+ *
+ * 1. **BoardConfig**: Hardware parameters that stay the same for the same driver board
+ *    - Sense resistor value (0.05Ω typical)
+ *    - Supply voltage (24V typical)
+ *    - Clock frequency (12 MHz)
+ *    - MOSFET characteristics
+ *    - Short protection defaults
+ *
+ * 2. **MotorConfig**: Motor-specific parameters that depend on the motor being used
+ *    - Motor physical specs (steps/rev, rated current, resistance, inductance)
+ *    - Chopper settings (TOFF, TBL, HSTRT, HEND)
+ *    - StealthChop settings (PWM frequency, offset, autoscale)
+ *    - Current settings (calculated automatically from motor specs)
+ *
+ * 3. **PlatformConfig**: Application/platform-specific parameters
+ *    - Reference switches (endstops) configuration
+ *    - Encoder configuration
+ *    - Mechanical system (gearing, leadscrew, belt drive)
+ *
+ * ## Usage
+ *
+ * ```cpp
+ * // Select motor, board, and platform at compile time
+ * static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
+ *     tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+ * static constexpr tmc5160_test_config::BoardType SELECTED_BOARD = 
+ *     tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL;
+ * static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM = 
+ *     tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
+ *
+ * // 1. Configure motor
+ * tmc5160::DriverConfig cfg{};
+ * tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+ *
+ * // 2. Apply board config
+ * tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
+ *
+ * // 3. Apply platform config
+ * tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
+ *
+ * // 4. Initialize driver
+ * driver.Initialize(cfg);
+ *
+ * // 5. Configure platform-specific features after initialization
+ * auto ref_cfg = tmc5160_test_config::GetReferenceSwitchConfig<SELECTED_PLATFORM>();
+ * driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
+ *
+ * auto enc_cfg = tmc5160_test_config::GetEncoderConfig<SELECTED_PLATFORM>();
+ * driver.encoder.Configure(enc_cfg);
+ * ```
+ *
+ * This file also provides GPIO pin assignments and a complete Esp32SpiPinConfig structure.
  *
  * @author Nebiyu Tadesse
  * @date 2025
@@ -133,10 +184,41 @@ inline tmc5160::Esp32SpiPinConfig GetDefaultPinConfig() noexcept {
  *         namespace Motor = tmc5160_test_config::MotorConfig_AppliedMotion_5034_369;
  *     }
  */
+/**
+ * @brief Motor type enumeration
+ * 
+ * Selects which motor configuration to use at compile time.
+ */
 enum class MotorType {
     MOTOR_17HS4401S_GEARBOX,      ///< 17HS4401S with 5.18:1 planetary gearbox
     MOTOR_17HS4401S_DIRECT,       ///< 17HS4401S direct drive (no gearbox)
     MOTOR_APPLIED_MOTION_5034     ///< Applied Motion 5034-369 NEMA 34 (high torque)
+};
+
+/**
+ * @brief Board type enumeration
+ * 
+ * Selects which board configuration to use at compile time.
+ * Board configuration includes hardware parameters like sense resistor,
+ * supply voltage, MOSFET characteristics, etc.
+ */
+enum class BoardType {
+    BOARD_TMC5160_EVAL,           ///< TMC5160 Evaluation Kit (0.05Ω sense, 24V, BSC072N08NS5 MOSFETs)
+    BOARD_TMC5160_BOB,            ///< TMC5160 Break-Out Board (0.11Ω sense, 24V, typical MOSFETs)
+};
+
+/**
+ * @brief Platform type enumeration
+ * 
+ * Selects which platform configuration to use at compile time.
+ * Platform configuration includes reference switches, encoder,
+ * mechanical system type, etc.
+ */
+enum class PlatformType {
+    PLATFORM_TEST_RIG,            ///< Test rig platform (reference switches, encoder, gearbox)
+    // Add more platform types here as needed:
+    // PLATFORM_3D_PRINTER,       ///< 3D printer platform configuration
+    // PLATFORM_CNC_ROUTER,       ///< CNC router platform configuration
 };
 
 /**
@@ -345,6 +427,9 @@ namespace MotorConfig_AppliedMotion_5034_369 {
  * 
  * Contains tuned parameters for various test scenarios.
  * These are "best guess" defaults for a typical setup with the 17HS4401S motor.
+ * 
+ * @note Reference switches and encoder configuration have been moved to PlatformConfig_TestRig.
+ * Use PlatformConfig_TestRig::ReferenceSwitches and PlatformConfig_TestRig::Encoder instead.
  */
 namespace TestConfig_17HS4401S {
     
@@ -363,31 +448,6 @@ namespace TestConfig_17HS4401S {
         constexpr uint8_t SEMAX = 5;
     }
 
-    // --- Reference Switch Configuration ---
-    namespace Switches {
-        // Assuming Normally Open (NO) switches connecting to GND (Standard 3D printer style)
-        // Pin states: HIGH when open (pullup), LOW when triggered (closed).
-        // TMC5160 Polarity: 0=Active Low, 1=Active High.
-        // If switch closes to GND, it pulls pin LOW.
-        constexpr bool POLARITY_LEFT = false;   // Active Low (trigger on GND)
-        constexpr bool POLARITY_RIGHT = false;  // Active Low (trigger on GND)
-        constexpr bool LATCH_LEFT = true;       // Latch position on trigger
-        constexpr bool LATCH_RIGHT = true;      // Latch position on trigger
-        constexpr bool SWAP_INPUTS = false;     // Don't swap left/right inputs
-    }
-
-    // --- Encoder Configuration (AS5047U) ---
-    namespace Encoder {
-        // AS5047U Specs:
-        // ABI Resolution: Default 4096 ppr (pulses per rev) = 16384 counts per rev (edges)
-        // SPI Resolution: 14-bit = 16384 positions
-        constexpr uint16_t PULSES_PER_REV = 4096; 
-        constexpr uint16_t COUNTS_PER_REV = 16384;
-        
-        // Configuration
-        constexpr bool INVERT_DIR = false; // Match encoder direction to motor?
-    }
-
     // --- Motion Profiles ---
     namespace Motion {
         // Homing Speeds (Steps/s)
@@ -404,6 +464,507 @@ namespace TestConfig_17HS4401S {
         constexpr float FATIGUE_AMPLITUDE_DEG = 60.0f;
         constexpr uint32_t DWELL_MS = 2000;
     }
+}
+
+/**
+ * @brief Board hardware configuration for TMC5160 Evaluation Kit
+ * 
+ * Defines board-specific hardware parameters for the TMC5160 Evaluation Kit.
+ * These values are used for automatic current calculation and power stage configuration.
+ * 
+ * **Board-specific**: These parameters depend on the TMC5160 EVAL kit hardware:
+ * - Sense resistor value (0.05Ω / 50 mOhm)
+ * - Supply voltage (24V typical)
+ * - Clock frequency (12 MHz internal clock)
+ * - MOSFET characteristics (BSC072N08NS5: Miller charge ~6nC, BBM time ~100ns)
+ * - Short protection defaults
+ * 
+ * These values stay the same regardless of which motor is connected or what platform it's used on.
+ */
+namespace BoardConfig_TMC5160_EVAL {
+    // Driver board hardware configuration
+    constexpr uint32_t SENSE_RESISTOR_MOHM = 50;      ///< Sense resistor value in milliohms (0.05Ω)
+    constexpr uint32_t SUPPLY_VOLTAGE_MV = 24000;     ///< Motor supply voltage in millivolts (24V)
+    constexpr uint32_t CLOCK_FREQUENCY_HZ = 12000000; ///< TMC5160 clock frequency in Hz (12 MHz internal clock)
+    
+    // Power stage MOSFET characteristics (BSC072N08NS5)
+    constexpr float MOSFET_MILLER_CHARGE_NC = 6.0f;   ///< MOSFET Miller charge in nC (<10nC for BSC072N08NS5)
+    constexpr uint32_t BBM_TIME_NS = 100;             ///< Break-before-make time in nanoseconds (~100ns for fast MOSFETs)
+    
+    // Short protection defaults (can be overridden per motor if needed)
+    constexpr uint16_t S2VS_VOLTAGE_MV = 625;         ///< Short to VS voltage threshold in mV (0 = auto = 625mV)
+    constexpr uint16_t S2G_VOLTAGE_MV = 625;          ///< Short to GND voltage threshold in mV (0 = auto = 625mV)
+}
+
+/**
+ * @brief Board hardware configuration for TMC5160 Break-Out Board (BOB)
+ * 
+ * Defines board-specific hardware parameters for the TMC5160 Break-Out Board.
+ * These values are used for automatic current calculation and power stage configuration.
+ * 
+ * **Board-specific**: These parameters depend on the TMC5160 BOB hardware:
+ * - Sense resistor value (0.11Ω / 110 mOhm - typical for BOB)
+ * - Supply voltage (24V typical)
+ * - Clock frequency (12 MHz internal clock)
+ * - MOSFET characteristics (typical MOSFETs: Miller charge ~30nC, BBM time ~200ns)
+ * - Short protection defaults
+ * 
+ * **Note**: BOB boards may vary. Adjust these values based on your specific BOB hardware.
+ * Common BOB configurations use 0.11Ω sense resistors and standard MOSFETs.
+ * 
+ * These values stay the same regardless of which motor is connected or what platform it's used on.
+ */
+namespace BoardConfig_TMC5160_BOB {
+    // Driver board hardware configuration
+    constexpr uint32_t SENSE_RESISTOR_MOHM = 110;     ///< Sense resistor value in milliohms (0.11Ω - typical for BOB)
+    constexpr uint32_t SUPPLY_VOLTAGE_MV = 24000;     ///< Motor supply voltage in millivolts (24V)
+    constexpr uint32_t CLOCK_FREQUENCY_HZ = 12000000; ///< TMC5160 clock frequency in Hz (12 MHz internal clock)
+    
+    // Power stage MOSFET characteristics (typical BOB MOSFETs)
+    constexpr float MOSFET_MILLER_CHARGE_NC = 30.0f;  ///< MOSFET Miller charge in nC (~30nC for typical BOB MOSFETs)
+    constexpr uint32_t BBM_TIME_NS = 200;             ///< Break-before-make time in nanoseconds (~200ns for typical MOSFETs)
+    
+    // Short protection defaults (can be overridden per motor if needed)
+    constexpr uint16_t S2VS_VOLTAGE_MV = 625;         ///< Short to VS voltage threshold in mV (0 = auto = 625mV)
+    constexpr uint16_t S2G_VOLTAGE_MV = 625;          ///< Short to GND voltage threshold in mV (0 = auto = 625mV)
+}
+
+
+/**
+ * @brief Platform configuration for test rig
+ * 
+ * Defines platform/application-specific configuration for a test rig setup.
+ * This includes reference switches, encoder, and mechanical system configuration.
+ * 
+ * **Platform-specific**: These parameters depend on the application/platform:
+ * - Reference switches (endstops) configuration
+ * - Encoder configuration
+ * - Mechanical system (gearing, leadscrew, belt drive)
+ * 
+ * These values can vary between different platforms/applications even with the same motor.
+ */
+namespace PlatformConfig_TestRig {
+    // Reference switch configuration
+    namespace ReferenceSwitches {
+        // Assuming Normally Open (NO) switches connecting to GND (Standard 3D printer style)
+        // Pin states: HIGH when open (pullup), LOW when triggered (closed).
+        // TMC5160 Polarity: ACTIVE_LOW = trigger on GND, ACTIVE_HIGH = trigger on VCC.
+        constexpr tmc5160::ReferenceSwitchActiveLevel LEFT_ACTIVE_LEVEL = 
+            tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;   ///< Left switch active level (ACTIVE_LOW for GND-triggered)
+        constexpr tmc5160::ReferenceSwitchActiveLevel RIGHT_ACTIVE_LEVEL = 
+            tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;  ///< Right switch active level (ACTIVE_LOW for GND-triggered)
+        constexpr bool LEFT_STOP_ENABLE = true;               ///< Enable motor stop on left switch
+        constexpr bool RIGHT_STOP_ENABLE = true;              ///< Enable motor stop on right switch
+        constexpr tmc5160::ReferenceLatchMode LEFT_LATCH_MODE = 
+            tmc5160::ReferenceLatchMode::ACTIVE_EDGE;         ///< Left switch latch mode (ACTIVE_EDGE for homing)
+        constexpr tmc5160::ReferenceLatchMode RIGHT_LATCH_MODE = 
+            tmc5160::ReferenceLatchMode::ACTIVE_EDGE;          ///< Right switch latch mode (ACTIVE_EDGE for homing)
+        constexpr tmc5160::ReferenceStopMode STOP_MODE = 
+            tmc5160::ReferenceStopMode::SOFT_STOP;             ///< Stop mode (SOFT_STOP for controlled deceleration)
+    }
+    
+    // Encoder configuration (AS5047U example)
+    namespace Encoder {
+        // AS5047U Specs:
+        // ABI Resolution: Default 4096 ppr (pulses per rev) = 16384 counts per rev (edges)
+        // SPI Resolution: 14-bit = 16384 positions
+        constexpr uint16_t PULSES_PER_REV = 4096;             ///< Encoder pulses per revolution (ABI mode)
+        constexpr uint16_t COUNTS_PER_REV = 16384;            ///< Encoder counts per revolution (edges)
+        constexpr tmc5160::ReferenceSwitchActiveLevel N_CHANNEL_ACTIVE = 
+            tmc5160::ReferenceSwitchActiveLevel::ACTIVE_HIGH; ///< N channel active level
+        constexpr tmc5160::EncoderNSensitivity N_SENSITIVITY = 
+            tmc5160::EncoderNSensitivity::RISING_EDGE;        ///< N channel sensitivity (RISING_EDGE typical)
+        constexpr tmc5160::EncoderClearMode CLEAR_MODE = 
+            tmc5160::EncoderClearMode::DISABLED;               ///< Encoder clear mode (DISABLED = no clearing)
+        constexpr tmc5160::EncoderPrescalerMode PRESCALER_MODE = 
+            tmc5160::EncoderPrescalerMode::BINARY;            ///< Prescaler mode (BINARY typical)
+        constexpr bool INVERT_DIRECTION = false;               ///< Invert encoder direction (false = match motor)
+    }
+    
+    // Mechanical system configuration
+    namespace Mechanical {
+        // Note: Gear ratio is typically motor-specific, but can be platform-specific if motor
+        // is used with different gearboxes on different platforms. For now, gear ratio is
+        // specified in MotorConfig, but can be overridden here if needed.
+        constexpr tmc5160::MechanicalSystemType SYSTEM_TYPE = 
+            tmc5160::MechanicalSystemType::Gearbox;            ///< Mechanical system type (Gearbox, DirectDrive, LeadScrew, BeltDrive)
+        constexpr float LEAD_SCREW_PITCH_MM = 0.0f;           ///< Lead screw pitch in mm (0 = not used)
+        constexpr uint16_t BELT_PULLEY_TEETH = 0;             ///< Number of teeth on motor pulley (0 = not used)
+        constexpr float BELT_PITCH_MM = 0.0f;                 ///< Belt pitch in mm (0 = not used)
+    }
+}
+
+
+/**
+ * @brief Helper function to apply board configuration to DriverConfig
+ * 
+ * Applies board-specific configuration (sense resistor, supply voltage, MOSFETs, etc.)
+ * to an already-configured DriverConfig. This should be called after motor configuration.
+ * 
+ * @param[in,out] cfg DriverConfig structure (must be configured with motor settings first)
+ * @param[in] board_type Board type to use (compile-time constant)
+ * 
+ * @note This function configures:
+ * - Sense resistor and supply voltage (for current calculation)
+ * - Power stage MOSFET characteristics
+ * - Short protection defaults
+ * - Clock frequency
+ */
+template<BoardType board_type>
+inline void ApplyBoardConfig(tmc5160::DriverConfig& cfg) noexcept {
+    if constexpr (board_type == BoardType::BOARD_TMC5160_EVAL) {
+        namespace Board = BoardConfig_TMC5160_EVAL;
+        
+        // Driver hardware configuration (required for automatic current calculation)
+        cfg.motor_spec.sense_resistor_mohm = Board::SENSE_RESISTOR_MOHM;
+        cfg.motor_spec.supply_voltage_mv = Board::SUPPLY_VOLTAGE_MV;
+        
+        // Power stage configuration (from board config)
+        cfg.power_stage.mosfet_miller_charge_nc = Board::MOSFET_MILLER_CHARGE_NC;
+        cfg.power_stage.bbm_time_ns = Board::BBM_TIME_NS;
+        cfg.power_stage.sense_filter = tmc5160::SenseFilterTime::T100ns;
+        cfg.power_stage.over_temp_protection = tmc5160::OverTempProtection::Temp150C;
+        cfg.power_stage.s2vs_voltage_mv = Board::S2VS_VOLTAGE_MV;
+        cfg.power_stage.s2g_voltage_mv = Board::S2G_VOLTAGE_MV;
+        cfg.power_stage.shortfilter = 1;
+        cfg.power_stage.short_detection_delay_us_x10 = 0;
+        
+        // Clock frequency (from board config)
+        cfg.f_clk = Board::CLOCK_FREQUENCY_HZ;
+    }
+    else if constexpr (board_type == BoardType::BOARD_TMC5160_BOB) {
+        namespace Board = BoardConfig_TMC5160_BOB;
+        
+        // Driver hardware configuration (required for automatic current calculation)
+        cfg.motor_spec.sense_resistor_mohm = Board::SENSE_RESISTOR_MOHM;
+        cfg.motor_spec.supply_voltage_mv = Board::SUPPLY_VOLTAGE_MV;
+        
+        // Power stage configuration (from board config)
+        cfg.power_stage.mosfet_miller_charge_nc = Board::MOSFET_MILLER_CHARGE_NC;
+        cfg.power_stage.bbm_time_ns = Board::BBM_TIME_NS;
+        cfg.power_stage.sense_filter = tmc5160::SenseFilterTime::T100ns;
+        cfg.power_stage.over_temp_protection = tmc5160::OverTempProtection::Temp150C;
+        cfg.power_stage.s2vs_voltage_mv = Board::S2VS_VOLTAGE_MV;
+        cfg.power_stage.s2g_voltage_mv = Board::S2G_VOLTAGE_MV;
+        cfg.power_stage.shortfilter = 1;
+        cfg.power_stage.short_detection_delay_us_x10 = 0;
+        
+        // Clock frequency (from board config)
+        cfg.f_clk = Board::CLOCK_FREQUENCY_HZ;
+    }
+}
+
+/**
+ * @brief Helper function to populate DriverConfig from 17HS4401S gearbox motor configuration
+ * 
+ * Configures motor-specific parameters only. Board and platform configuration
+ * should be applied separately via ApplyBoardConfig() and ApplyPlatformConfig().
+ * 
+ * @param[out] cfg DriverConfig structure to populate
+ */
+inline void ConfigureDriverFromMotor_17HS4401S_Gearbox(tmc5160::DriverConfig& cfg) noexcept {
+    namespace Motor = MotorConfig_17HS4401S;
+    
+    // ===== MOTOR CONFIGURATION =====
+    // Motor physical specifications
+    cfg.motor_spec.steps_per_rev = Motor::MOTOR_FULL_STEPS;
+    cfg.motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
+    cfg.motor_spec.rated_voltage_mv = 12000;  // Typical for NEMA 17
+    
+    // Desired current settings (0 = use rated_current_ma and auto-calculate hold)
+    cfg.motor_spec.run_current_ma = 0;   // Use rated_current_ma
+    cfg.motor_spec.hold_current_ma = 0;  // Auto-calculate as 30% of run
+    
+    // Motor-specific chopper configuration
+    cfg.chopper.mode = tmc5160::ChopperMode::SPREAD_CYCLE;
+    cfg.chopper.toff = Motor::TOFF;
+    cfg.chopper.tbl = Motor::TBL;
+    cfg.chopper.hstrt = Motor::HSTRT;
+    cfg.chopper.hend = Motor::HEND;
+    cfg.chopper.mres = Motor::MRES;
+    cfg.chopper.intpol = Motor::INTERPOLATION;
+    cfg.chopper.tpfd = 0;
+    
+    // Motor-specific StealthChop configuration
+    cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
+    cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+    cfg.stealthchop.pwm_grad = 0;
+    cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+    cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+    cfg.stealthchop.pwm_reg = static_cast<uint8_t>(tmc5160::StealthChopRegulationSpeed::MODERATE);
+    cfg.stealthchop.pwm_lim = static_cast<uint8_t>(tmc5160::StealthChopJerkReduction::LOW);
+    
+    // ===== MECHANICAL SYSTEM (Motor-specific gear ratio) =====
+    // Note: System type and other mechanical parameters are set via ApplyPlatformConfig()
+    cfg.mechanical.gear_ratio = Motor::GEAR_RATIO;
+    
+    // ===== GLOBAL CONFIGURATION DEFAULTS =====
+    cfg.global_config.recalibrate = false;
+    cfg.global_config.faststandstill = false;
+    cfg.global_config.en_pwm_mode = true;
+    cfg.global_config.multistep_filt = true;
+    cfg.direction = tmc5160::MotorDirection::NORMAL; // Set direction in DriverConfig, shaft will be set during Initialize()
+    
+    // Ramp configuration defaults
+    cfg.ramp_config.velocity_unit = tmc5160::Unit::Steps;
+    cfg.ramp_config.acceleration_unit = tmc5160::Unit::Steps;
+    cfg.ramp_config.vstart = 1.0f;
+    cfg.ramp_config.vstop = 1.0f;
+    cfg.ramp_config.vmax = 10000.0f;
+    cfg.ramp_config.amax = 1000.0f;
+    cfg.ramp_config.dmax = 1000.0f;
+    cfg.ramp_config.v1 = 1000.0f;
+    cfg.ramp_config.a1 = 500.0f;
+    cfg.ramp_config.d1 = 500.0f;
+    cfg.ramp_config.tpowerdown_ms = 10.0f;
+    cfg.ramp_config.tzerowait_ms = 0.0f;
+}
+
+/**
+ * @brief Helper function to populate DriverConfig from 17HS4401S direct drive motor configuration
+ * 
+ * Configures motor-specific parameters only. Board and platform configuration
+ * should be applied separately via ApplyBoardConfig() and ApplyPlatformConfig().
+ * 
+ * @param[out] cfg DriverConfig structure to populate
+ */
+inline void ConfigureDriverFromMotor_17HS4401S_Direct(tmc5160::DriverConfig& cfg) noexcept {
+    namespace Motor = MotorConfig_17HS4401S_Direct;
+    
+    // ===== MOTOR CONFIGURATION =====
+    cfg.motor_spec.steps_per_rev = Motor::MOTOR_FULL_STEPS;
+    cfg.motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
+    cfg.motor_spec.rated_voltage_mv = 12000;
+    cfg.motor_spec.run_current_ma = 0;
+    cfg.motor_spec.hold_current_ma = 0;
+    
+    cfg.chopper.mode = tmc5160::ChopperMode::SPREAD_CYCLE;
+    cfg.chopper.toff = Motor::TOFF;
+    cfg.chopper.tbl = Motor::TBL;
+    cfg.chopper.hstrt = Motor::HSTRT;
+    cfg.chopper.hend = Motor::HEND;
+    cfg.chopper.mres = Motor::MRES;
+    cfg.chopper.intpol = Motor::INTERPOLATION;
+    cfg.chopper.tpfd = 0;
+    
+    cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
+    cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+    cfg.stealthchop.pwm_grad = 0;
+    cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+    cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+    cfg.stealthchop.pwm_reg = static_cast<uint8_t>(tmc5160::StealthChopRegulationSpeed::MODERATE);
+    cfg.stealthchop.pwm_lim = static_cast<uint8_t>(tmc5160::StealthChopJerkReduction::LOW);
+    
+    // ===== MECHANICAL SYSTEM (Motor-specific gear ratio) =====
+    cfg.mechanical.gear_ratio = Motor::GEAR_RATIO;
+    
+    // ===== GLOBAL CONFIGURATION DEFAULTS =====
+    cfg.global_config.recalibrate = false;
+    cfg.global_config.faststandstill = false;
+    cfg.global_config.en_pwm_mode = true;
+    cfg.global_config.multistep_filt = true;
+    cfg.direction = tmc5160::MotorDirection::NORMAL; // Set direction in DriverConfig, shaft will be set during Initialize()
+    
+    // ===== RAMP CONFIGURATION DEFAULTS =====
+    cfg.ramp_config.velocity_unit = tmc5160::Unit::Steps;
+    cfg.ramp_config.acceleration_unit = tmc5160::Unit::Steps;
+    cfg.ramp_config.vstart = 1.0f;
+    cfg.ramp_config.vstop = 1.0f;
+    cfg.ramp_config.vmax = 10000.0f;
+    cfg.ramp_config.amax = 1000.0f;
+    cfg.ramp_config.dmax = 1000.0f;
+    cfg.ramp_config.v1 = 1000.0f;
+    cfg.ramp_config.a1 = 500.0f;
+    cfg.ramp_config.d1 = 500.0f;
+    cfg.ramp_config.tpowerdown_ms = 10.0f;
+    cfg.ramp_config.tzerowait_ms = 0.0f;
+}
+
+/**
+ * @brief Helper function to populate DriverConfig from Applied Motion 5034 motor configuration
+ * 
+ * Configures motor-specific parameters only. Board and platform configuration
+ * should be applied separately via ApplyBoardConfig() and ApplyPlatformConfig().
+ * 
+ * @param[out] cfg DriverConfig structure to populate
+ */
+inline void ConfigureDriverFromMotor_AppliedMotion_5034(tmc5160::DriverConfig& cfg) noexcept {
+    namespace Motor = MotorConfig_AppliedMotion_5034_369;
+    
+    // ===== MOTOR CONFIGURATION =====
+    cfg.motor_spec.steps_per_rev = Motor::MOTOR_FULL_STEPS;
+    cfg.motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
+    cfg.motor_spec.rated_voltage_mv = 12000;
+    cfg.motor_spec.winding_resistance_mohm = static_cast<uint32_t>(Motor::RESISTANCE_OHMS * 1000.0f);
+    cfg.motor_spec.winding_inductance_uh = static_cast<uint32_t>(Motor::INDUCTANCE_MH * 1000.0f);
+    cfg.motor_spec.run_current_ma = 0;
+    cfg.motor_spec.hold_current_ma = 0;
+    
+    cfg.chopper.mode = tmc5160::ChopperMode::SPREAD_CYCLE;
+    cfg.chopper.toff = Motor::TOFF;
+    cfg.chopper.tbl = Motor::TBL;
+    cfg.chopper.hstrt = Motor::HSTRT;
+    cfg.chopper.hend = Motor::HEND;
+    cfg.chopper.mres = Motor::MRES;
+    cfg.chopper.intpol = Motor::INTERPOLATION;
+    cfg.chopper.tpfd = 0;
+    
+    cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
+    cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
+    cfg.stealthchop.pwm_grad = 0;
+    cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
+    cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
+    cfg.stealthchop.pwm_reg = static_cast<uint8_t>(tmc5160::StealthChopRegulationSpeed::MODERATE);
+    cfg.stealthchop.pwm_lim = static_cast<uint8_t>(tmc5160::StealthChopJerkReduction::LOW);
+    
+    // ===== MECHANICAL SYSTEM (Motor-specific gear ratio) =====
+    cfg.mechanical.gear_ratio = Motor::GEAR_RATIO;
+    
+    // ===== GLOBAL CONFIGURATION DEFAULTS =====
+    cfg.global_config.recalibrate = false;
+    cfg.global_config.faststandstill = false;
+    cfg.global_config.en_pwm_mode = true;
+    cfg.global_config.multistep_filt = true;
+    cfg.direction = tmc5160::MotorDirection::NORMAL; // Set direction in DriverConfig, shaft will be set during Initialize()
+    
+    // ===== RAMP CONFIGURATION DEFAULTS =====
+    cfg.ramp_config.velocity_unit = tmc5160::Unit::Steps;
+    cfg.ramp_config.acceleration_unit = tmc5160::Unit::Steps;
+    cfg.ramp_config.vstart = 1.0f;
+    cfg.ramp_config.vstop = 1.0f;
+    cfg.ramp_config.vmax = 10000.0f;
+    cfg.ramp_config.amax = 1000.0f;
+    cfg.ramp_config.dmax = 1000.0f;
+    cfg.ramp_config.v1 = 1000.0f;
+    cfg.ramp_config.a1 = 500.0f;
+    cfg.ramp_config.d1 = 500.0f;
+    cfg.ramp_config.tpowerdown_ms = 10.0f;
+    cfg.ramp_config.tzerowait_ms = 0.0f;
+}
+
+/**
+ * @brief Helper function to apply platform configuration to DriverConfig
+ * 
+ * Applies platform-specific configuration (mechanical system) to an already-configured DriverConfig.
+ * This should be called after motor configuration.
+ * 
+ * @param[in,out] cfg DriverConfig structure (must be configured with motor settings first)
+ * @param[in] platform_type Platform type to use (compile-time constant)
+ * 
+ * @note This function configures:
+ * - Mechanical system (system type, lead screw pitch, belt parameters)
+ * 
+ * @note Gear ratio is set from motor config (motor-specific).
+ * Reference switches and encoder are configured separately via driver methods after initialization.
+ */
+template<PlatformType platform_type>
+inline void ApplyPlatformConfig(tmc5160::DriverConfig& cfg) noexcept {
+    if constexpr (platform_type == PlatformType::PLATFORM_TEST_RIG) {
+        namespace Platform = PlatformConfig_TestRig;
+        
+        // Mechanical system configuration
+        cfg.mechanical.system_type = Platform::Mechanical::SYSTEM_TYPE;
+        cfg.mechanical.lead_screw_pitch_mm = Platform::Mechanical::LEAD_SCREW_PITCH_MM;
+        cfg.mechanical.belt_pulley_teeth = Platform::Mechanical::BELT_PULLEY_TEETH;
+        cfg.mechanical.belt_pitch_mm = Platform::Mechanical::BELT_PITCH_MM;
+    }
+    // Add more platform types here:
+    // else if constexpr (platform_type == PlatformType::PLATFORM_3D_PRINTER) {
+    //     namespace Platform = PlatformConfig_3DPrinter;
+    //     // ... configure from Platform namespace
+    // }
+}
+
+/**
+ * @brief Helper function to configure reference switches from platform config
+ * 
+ * Creates a ReferenceSwitchConfig structure from platform configuration.
+ * This can be used after driver initialization to configure reference switches.
+ * 
+ * @param[in] platform_type Platform type to use (compile-time constant)
+ * @return ReferenceSwitchConfig structure configured from selected platform
+ */
+template<PlatformType platform_type>
+inline tmc5160::ReferenceSwitchConfig GetReferenceSwitchConfig() noexcept {
+    tmc5160::ReferenceSwitchConfig ref_cfg{};
+    
+    if constexpr (platform_type == PlatformType::PLATFORM_TEST_RIG) {
+        namespace Platform = PlatformConfig_TestRig;
+        ref_cfg.left_switch_active = Platform::ReferenceSwitches::LEFT_ACTIVE_LEVEL;
+        ref_cfg.right_switch_active = Platform::ReferenceSwitches::RIGHT_ACTIVE_LEVEL;
+        ref_cfg.left_switch_stop_enable = Platform::ReferenceSwitches::LEFT_STOP_ENABLE;
+        ref_cfg.right_switch_stop_enable = Platform::ReferenceSwitches::RIGHT_STOP_ENABLE;
+        ref_cfg.latch_left = Platform::ReferenceSwitches::LEFT_LATCH_MODE;
+        ref_cfg.latch_right = Platform::ReferenceSwitches::RIGHT_LATCH_MODE;
+        ref_cfg.stop_mode = Platform::ReferenceSwitches::STOP_MODE;
+    }
+    // Add more platform types here:
+    // else if constexpr (platform_type == PlatformType::PLATFORM_3D_PRINTER) {
+    //     namespace Platform = PlatformConfig_3DPrinter;
+    //     // ... configure from Platform namespace
+    // }
+    
+    return ref_cfg;
+}
+
+/**
+ * @brief Helper function to configure encoder from platform config
+ * 
+ * Creates an EncoderConfig structure from platform configuration.
+ * This can be used after driver initialization to configure encoder.
+ * 
+ * @param[in] platform_type Platform type to use (compile-time constant)
+ * @return EncoderConfig structure configured from selected platform
+ */
+template<PlatformType platform_type>
+inline tmc5160::EncoderConfig GetEncoderConfig() noexcept {
+    tmc5160::EncoderConfig enc_cfg{};
+    
+    if constexpr (platform_type == PlatformType::PLATFORM_TEST_RIG) {
+        namespace Platform = PlatformConfig_TestRig;
+        enc_cfg.n_channel_active = Platform::Encoder::N_CHANNEL_ACTIVE;
+        enc_cfg.n_sensitivity = Platform::Encoder::N_SENSITIVITY;
+        enc_cfg.clear_mode = Platform::Encoder::CLEAR_MODE;
+        enc_cfg.prescaler_mode = Platform::Encoder::PRESCALER_MODE;
+    }
+    // Add more platform types here:
+    // else if constexpr (platform_type == PlatformType::PLATFORM_3D_PRINTER) {
+    //     namespace Platform = PlatformConfig_3DPrinter;
+    //     // ... configure from Platform namespace
+    // }
+    
+    // Note: resolution is set separately via SetResolution() method
+    return enc_cfg;
+}
+
+/**
+ * @brief Helper function to get encoder pulses per revolution from platform config
+ * 
+ * @param[in] platform_type Platform type to use (compile-time constant)
+ * @return Encoder pulses per revolution
+ */
+template<PlatformType platform_type>
+inline uint16_t GetEncoderPulsesPerRev() noexcept {
+    if constexpr (platform_type == PlatformType::PLATFORM_TEST_RIG) {
+        return PlatformConfig_TestRig::Encoder::PULSES_PER_REV;
+    }
+    // Add more platform types here
+    return 0;
+}
+
+/**
+ * @brief Helper function to get encoder invert direction flag from platform config
+ * 
+ * @param[in] platform_type Platform type to use (compile-time constant)
+ * @return true if encoder direction should be inverted
+ */
+template<PlatformType platform_type>
+inline bool GetEncoderInvertDirection() noexcept {
+    if constexpr (platform_type == PlatformType::PLATFORM_TEST_RIG) {
+        return PlatformConfig_TestRig::Encoder::INVERT_DIRECTION;
+    }
+    // Add more platform types here
+    return false;
 }
 
 } // namespace tmc5160_test_config

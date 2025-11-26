@@ -75,7 +75,7 @@
 <!-- Node32 -->
 <g id="Node000032" class="node">
 <title>Node32</title>
-<g id="a_Node000032"><a xlink:href="esp32__tmc5160__bus__config_8hpp.html" target="_top" xlink:title="ESP32 GPIO pin configuration for TMC5160 driver tests.">
+<g id="a_Node000032"><a xlink:href="esp32__tmc5160__bus__config_8hpp.html" target="_top" xlink:title="ESP32 GPIO pin configuration and compile&#45;time configuration for TMC5160 driver.">
 <polygon fill="white" stroke="#666666" points="1325,-305 1153,-305 1153,-286 1325,-286 1325,-305"/>
 <text text-anchor="middle" x="1239" y="-293" font-family="Helvetica,sans-Serif" font-size="10.00">esp32_tmc5160_bus_config.hpp</text>
 </a>

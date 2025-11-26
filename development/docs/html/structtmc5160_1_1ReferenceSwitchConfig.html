@@ -112,43 +112,46 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a4996def2b850bd02c2e1bf73d8feaf28" id="r_a4996def2b850bd02c2e1bf73d8feaf28"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4996def2b850bd02c2e1bf73d8feaf28">stop_left_enable</a> {false}</td></tr>
-<tr class="memdesc:a4996def2b850bd02c2e1bf73d8feaf28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable automatic motor stop on left switch.  <br /></td></tr>
-<tr class="separator:a4996def2b850bd02c2e1bf73d8feaf28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83c504b4413aba9e88bbd26b02d1311a" id="r_a83c504b4413aba9e88bbd26b02d1311a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83c504b4413aba9e88bbd26b02d1311a">stop_right_enable</a> {false}</td></tr>
-<tr class="memdesc:a83c504b4413aba9e88bbd26b02d1311a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable automatic motor stop on right switch.  <br /></td></tr>
-<tr class="separator:a83c504b4413aba9e88bbd26b02d1311a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c129e02dac1830ceab18653a9ff186f" id="r_a5c129e02dac1830ceab18653a9ff186f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5c129e02dac1830ceab18653a9ff186f">pol_stop_left</a> {false}</td></tr>
-<tr class="memdesc:a5c129e02dac1830ceab18653a9ff186f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Left switch polarity (true=inverted/low active)  <br /></td></tr>
-<tr class="separator:a5c129e02dac1830ceab18653a9ff186f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a414048bd0f740408182a6c17b45b1760" id="r_a414048bd0f740408182a6c17b45b1760"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a414048bd0f740408182a6c17b45b1760">pol_stop_right</a> {false}</td></tr>
-<tr class="memdesc:a414048bd0f740408182a6c17b45b1760"><td class="mdescLeft">&#160;</td><td class="mdescRight">Right switch polarity (true=inverted/low active)  <br /></td></tr>
-<tr class="separator:a414048bd0f740408182a6c17b45b1760"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a721bbf9f8403ddc7bf54763ce32e7c42" id="r_a721bbf9f8403ddc7bf54763ce32e7c42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#a7c9082ecbde4d00926dee0abf53be002">ReferenceSwitchActiveLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a721bbf9f8403ddc7bf54763ce32e7c42">left_switch_active</a> {<a class="el" href="namespacetmc5160.html#a7c9082ecbde4d00926dee0abf53be002ae434209643a0d01f383a46eece525679">ReferenceSwitchActiveLevel::ACTIVE_LOW</a>}</td></tr>
+<tr class="memdesc:a721bbf9f8403ddc7bf54763ce32e7c42"><td class="mdescLeft">&#160;</td><td class="mdescRight">ACTIVE_LOW = active when LOW (inverted polarity), ACTIVE_HIGH = active when HIGH (normal polarity)  <br /></td></tr>
+<tr class="separator:a721bbf9f8403ddc7bf54763ce32e7c42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe56bc26524726e1ba45e16454d7b35e" id="r_afe56bc26524726e1ba45e16454d7b35e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#a7c9082ecbde4d00926dee0abf53be002">ReferenceSwitchActiveLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe56bc26524726e1ba45e16454d7b35e">right_switch_active</a> {<a class="el" href="namespacetmc5160.html#a7c9082ecbde4d00926dee0abf53be002ae434209643a0d01f383a46eece525679">ReferenceSwitchActiveLevel::ACTIVE_LOW</a>}</td></tr>
+<tr class="memdesc:afe56bc26524726e1ba45e16454d7b35e"><td class="mdescLeft">&#160;</td><td class="mdescRight">ACTIVE_LOW = active when LOW (inverted polarity), ACTIVE_HIGH = active when HIGH (normal polarity)  <br /></td></tr>
+<tr class="separator:afe56bc26524726e1ba45e16454d7b35e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6e598ae9c0d5cae1348dee6cfdf7503" id="r_ad6e598ae9c0d5cae1348dee6cfdf7503"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6e598ae9c0d5cae1348dee6cfdf7503">left_switch_stop_enable</a> {false}</td></tr>
+<tr class="memdesc:ad6e598ae9c0d5cae1348dee6cfdf7503"><td class="mdescLeft">&#160;</td><td class="mdescRight">true = stop motor when switch is active, false = don't stop (but can still latch/read switch state)  <br /></td></tr>
+<tr class="separator:ad6e598ae9c0d5cae1348dee6cfdf7503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c83af379075706359416bdd5e4e3fc2" id="r_a0c83af379075706359416bdd5e4e3fc2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c83af379075706359416bdd5e4e3fc2">right_switch_stop_enable</a> {false}</td></tr>
+<tr class="memdesc:a0c83af379075706359416bdd5e4e3fc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">true = stop motor when switch is active, false = don't stop (but can still latch/read switch state)  <br /></td></tr>
+<tr class="separator:a0c83af379075706359416bdd5e4e3fc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab512893674f410c03c060814ec011cfe" id="r_ab512893674f410c03c060814ec011cfe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#a444e9027bfb76a7d96817b586554b915">ReferenceStopMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab512893674f410c03c060814ec011cfe">stop_mode</a> {<a class="el" href="namespacetmc5160.html#a444e9027bfb76a7d96817b586554b915abfd64c1daf3144226575a385378e55c1">ReferenceStopMode::SOFT_STOP</a>}</td></tr>
+<tr class="memdesc:ab512893674f410c03c060814ec011cfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop mode (hard or soft) - only applies if stop is enabled.  <br /></td></tr>
+<tr class="separator:ab512893674f410c03c060814ec011cfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ed7659f2a628dfd9f52b5c277a0ada5" id="r_a3ed7659f2a628dfd9f52b5c277a0ada5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ed7659f2a628dfd9f52b5c277a0ada5">swap_left_right</a> {false}</td></tr>
-<tr class="memdesc:a3ed7659f2a628dfd9f52b5c277a0ada5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swap left and right switch inputs.  <br /></td></tr>
+<tr class="memdesc:a3ed7659f2a628dfd9f52b5c277a0ada5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swap left and right switch inputs (useful for reversed wiring)  <br /></td></tr>
 <tr class="separator:a3ed7659f2a628dfd9f52b5c277a0ada5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a4a5ac19912d749ddd6bdcf67bf7214" id="r_a1a4a5ac19912d749ddd6bdcf67bf7214"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1a4a5ac19912d749ddd6bdcf67bf7214">latch_left_active</a> {false}</td></tr>
-<tr class="memdesc:a1a4a5ac19912d749ddd6bdcf67bf7214"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latch position on active edge of left switch.  <br /></td></tr>
-<tr class="separator:a1a4a5ac19912d749ddd6bdcf67bf7214"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34aef7a485b704e9523874199f7ae974" id="r_a34aef7a485b704e9523874199f7ae974"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34aef7a485b704e9523874199f7ae974">latch_left_inactive</a> {false}</td></tr>
-<tr class="memdesc:a34aef7a485b704e9523874199f7ae974"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latch position on inactive edge of left switch.  <br /></td></tr>
-<tr class="separator:a34aef7a485b704e9523874199f7ae974"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2123a13b460e4f9cc141586c00ce8cdf" id="r_a2123a13b460e4f9cc141586c00ce8cdf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2123a13b460e4f9cc141586c00ce8cdf">latch_right_active</a> {false}</td></tr>
-<tr class="memdesc:a2123a13b460e4f9cc141586c00ce8cdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latch position on active edge of right switch.  <br /></td></tr>
-<tr class="separator:a2123a13b460e4f9cc141586c00ce8cdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae19e2acd4f86e0c05b7c87d94c2cd386" id="r_ae19e2acd4f86e0c05b7c87d94c2cd386"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae19e2acd4f86e0c05b7c87d94c2cd386">latch_right_inactive</a> {false}</td></tr>
-<tr class="memdesc:ae19e2acd4f86e0c05b7c87d94c2cd386"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latch position on inactive edge of right switch.  <br /></td></tr>
-<tr class="separator:ae19e2acd4f86e0c05b7c87d94c2cd386"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af75cf92ab7f9cf0b6a37fa1df9859387" id="r_af75cf92ab7f9cf0b6a37fa1df9859387"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#a2ee7193a78dd507e5c413884ce8c33ac">ReferenceLatchMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af75cf92ab7f9cf0b6a37fa1df9859387">latch_left</a> {<a class="el" href="namespacetmc5160.html#a2ee7193a78dd507e5c413884ce8c33aca055c1a591abb0e8cd86dc969727bcc0b">ReferenceLatchMode::DISABLED</a>}</td></tr>
+<tr class="memdesc:af75cf92ab7f9cf0b6a37fa1df9859387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Left switch latching mode (must be explicitly set)  <br /></td></tr>
+<tr class="separator:af75cf92ab7f9cf0b6a37fa1df9859387"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bc076c01b84406aefd919d43f34d7e5" id="r_a7bc076c01b84406aefd919d43f34d7e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#a2ee7193a78dd507e5c413884ce8c33ac">ReferenceLatchMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7bc076c01b84406aefd919d43f34d7e5">latch_right</a> {<a class="el" href="namespacetmc5160.html#a2ee7193a78dd507e5c413884ce8c33aca055c1a591abb0e8cd86dc969727bcc0b">ReferenceLatchMode::DISABLED</a>}</td></tr>
+<tr class="memdesc:a7bc076c01b84406aefd919d43f34d7e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Right switch latching mode (must be explicitly set)  <br /></td></tr>
+<tr class="separator:a7bc076c01b84406aefd919d43f34d7e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add0a50030b2fffaafdf9df7d5461ec55" id="r_add0a50030b2fffaafdf9df7d5461ec55"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#add0a50030b2fffaafdf9df7d5461ec55">en_latch_encoder</a> {false}</td></tr>
-<tr class="memdesc:add0a50030b2fffaafdf9df7d5461ec55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latch encoder position on switch event.  <br /></td></tr>
+<tr class="memdesc:add0a50030b2fffaafdf9df7d5461ec55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latch encoder position on switch event (for encoder N-channel as third switch)  <br /></td></tr>
 <tr class="separator:add0a50030b2fffaafdf9df7d5461ec55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2a0cb32f8ec89e8a6480bcf245334ff" id="r_ae2a0cb32f8ec89e8a6480bcf245334ff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2a0cb32f8ec89e8a6480bcf245334ff">en_softstop</a> {true}</td></tr>
-<tr class="memdesc:ae2a0cb32f8ec89e8a6480bcf245334ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable soft stop using deceleration ramp.  <br /></td></tr>
-<tr class="separator:ae2a0cb32f8ec89e8a6480bcf245334ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Reference switch configuration structure. </p>
-<p>Configuration parameters for reference switches/endstops. </p>
+<p>Configuration parameters for reference switches/endstops used for homing and limit detection. Supports both mechanical switches and encoder N-channel as a third switch option.</p>
+<dl class="section note"><dt>Note</dt><dd>For reliable homing, follow the complete procedure:<ol type="1">
+<li>Move away from switch (ensure switch is not pressed)</li>
+<li>Configure switches with appropriate active level and stop mode</li>
+<li>Start motion toward switch</li>
+<li>Wait for standstill after switch hit</li>
+<li>Calculate position offset and set home position</li>
+</ol>
+</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 12.4: Reference Switches </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2fe9e4e03427fee227897bf161e13603" name="a2fe9e4e03427fee227897bf161e13603"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2fe9e4e03427fee227897bf161e13603">&#9670;&#160;</a></span>ReferenceSwitchConfig()</h2>
@@ -174,7 +177,12 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Initializes with default values (switches disabled). All members use default member initializers, so constructor is empty. </p>
+<p>Initializes with safe defaults:</p><ul>
+<li>Active level: ACTIVE_LOW (failsafe)</li>
+<li>Stop enable: false (motor doesn't stop)</li>
+<li>Latching: DISABLED (no latching)</li>
+<li>Stop mode: SOFT_STOP </li>
+</ul>
 
 </div>
 </div>
@@ -191,151 +199,123 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Latch encoder position on switch event. </p>
+<p>Latch encoder position on switch event (for encoder N-channel as third switch) </p>
 
 </div>
 </div>
-<a id="ae2a0cb32f8ec89e8a6480bcf245334ff" name="ae2a0cb32f8ec89e8a6480bcf245334ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2a0cb32f8ec89e8a6480bcf245334ff">&#9670;&#160;</a></span>en_softstop</h2>
+<a id="af75cf92ab7f9cf0b6a37fa1df9859387" name="af75cf92ab7f9cf0b6a37fa1df9859387"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af75cf92ab7f9cf0b6a37fa1df9859387">&#9670;&#160;</a></span>latch_left</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool tmc5160::ReferenceSwitchConfig::en_softstop {true}</td>
+          <td class="memname"><a class="el" href="namespacetmc5160.html#a2ee7193a78dd507e5c413884ce8c33ac">ReferenceLatchMode</a> tmc5160::ReferenceSwitchConfig::latch_left {<a class="el" href="namespacetmc5160.html#a2ee7193a78dd507e5c413884ce8c33aca055c1a591abb0e8cd86dc969727bcc0b">ReferenceLatchMode::DISABLED</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Enable soft stop using deceleration ramp. </p>
+<p>Left switch latching mode (must be explicitly set) </p>
 
 </div>
 </div>
-<a id="a1a4a5ac19912d749ddd6bdcf67bf7214" name="a1a4a5ac19912d749ddd6bdcf67bf7214"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a4a5ac19912d749ddd6bdcf67bf7214">&#9670;&#160;</a></span>latch_left_active</h2>
+<a id="a7bc076c01b84406aefd919d43f34d7e5" name="a7bc076c01b84406aefd919d43f34d7e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bc076c01b84406aefd919d43f34d7e5">&#9670;&#160;</a></span>latch_right</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool tmc5160::ReferenceSwitchConfig::latch_left_active {false}</td>
+          <td class="memname"><a class="el" href="namespacetmc5160.html#a2ee7193a78dd507e5c413884ce8c33ac">ReferenceLatchMode</a> tmc5160::ReferenceSwitchConfig::latch_right {<a class="el" href="namespacetmc5160.html#a2ee7193a78dd507e5c413884ce8c33aca055c1a591abb0e8cd86dc969727bcc0b">ReferenceLatchMode::DISABLED</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Latch position on active edge of left switch. </p>
+<p>Right switch latching mode (must be explicitly set) </p>
 
 </div>
 </div>
-<a id="a34aef7a485b704e9523874199f7ae974" name="a34aef7a485b704e9523874199f7ae974"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34aef7a485b704e9523874199f7ae974">&#9670;&#160;</a></span>latch_left_inactive</h2>
+<a id="a721bbf9f8403ddc7bf54763ce32e7c42" name="a721bbf9f8403ddc7bf54763ce32e7c42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a721bbf9f8403ddc7bf54763ce32e7c42">&#9670;&#160;</a></span>left_switch_active</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool tmc5160::ReferenceSwitchConfig::latch_left_inactive {false}</td>
+          <td class="memname"><a class="el" href="namespacetmc5160.html#a7c9082ecbde4d00926dee0abf53be002">ReferenceSwitchActiveLevel</a> tmc5160::ReferenceSwitchConfig::left_switch_active {<a class="el" href="namespacetmc5160.html#a7c9082ecbde4d00926dee0abf53be002ae434209643a0d01f383a46eece525679">ReferenceSwitchActiveLevel::ACTIVE_LOW</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Latch position on inactive edge of left switch. </p>
+<p>ACTIVE_LOW = active when LOW (inverted polarity), ACTIVE_HIGH = active when HIGH (normal polarity) </p>
+<p>Left switch active level (REFL) </p>
 
 </div>
 </div>
-<a id="a2123a13b460e4f9cc141586c00ce8cdf" name="a2123a13b460e4f9cc141586c00ce8cdf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2123a13b460e4f9cc141586c00ce8cdf">&#9670;&#160;</a></span>latch_right_active</h2>
+<a id="ad6e598ae9c0d5cae1348dee6cfdf7503" name="ad6e598ae9c0d5cae1348dee6cfdf7503"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6e598ae9c0d5cae1348dee6cfdf7503">&#9670;&#160;</a></span>left_switch_stop_enable</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool tmc5160::ReferenceSwitchConfig::latch_right_active {false}</td>
+          <td class="memname">bool tmc5160::ReferenceSwitchConfig::left_switch_stop_enable {false}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Latch position on active edge of right switch. </p>
+<p>true = stop motor when switch is active, false = don't stop (but can still latch/read switch state) </p>
+<p>Enable automatic motor stop on left switch (independent of active level) </p>
 
 </div>
 </div>
-<a id="ae19e2acd4f86e0c05b7c87d94c2cd386" name="ae19e2acd4f86e0c05b7c87d94c2cd386"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae19e2acd4f86e0c05b7c87d94c2cd386">&#9670;&#160;</a></span>latch_right_inactive</h2>
+<a id="afe56bc26524726e1ba45e16454d7b35e" name="afe56bc26524726e1ba45e16454d7b35e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe56bc26524726e1ba45e16454d7b35e">&#9670;&#160;</a></span>right_switch_active</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool tmc5160::ReferenceSwitchConfig::latch_right_inactive {false}</td>
+          <td class="memname"><a class="el" href="namespacetmc5160.html#a7c9082ecbde4d00926dee0abf53be002">ReferenceSwitchActiveLevel</a> tmc5160::ReferenceSwitchConfig::right_switch_active {<a class="el" href="namespacetmc5160.html#a7c9082ecbde4d00926dee0abf53be002ae434209643a0d01f383a46eece525679">ReferenceSwitchActiveLevel::ACTIVE_LOW</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Latch position on inactive edge of right switch. </p>
+<p>ACTIVE_LOW = active when LOW (inverted polarity), ACTIVE_HIGH = active when HIGH (normal polarity) </p>
+<p>Right switch active level (REFR) </p>
 
 </div>
 </div>
-<a id="a5c129e02dac1830ceab18653a9ff186f" name="a5c129e02dac1830ceab18653a9ff186f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c129e02dac1830ceab18653a9ff186f">&#9670;&#160;</a></span>pol_stop_left</h2>
+<a id="a0c83af379075706359416bdd5e4e3fc2" name="a0c83af379075706359416bdd5e4e3fc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c83af379075706359416bdd5e4e3fc2">&#9670;&#160;</a></span>right_switch_stop_enable</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool tmc5160::ReferenceSwitchConfig::pol_stop_left {false}</td>
+          <td class="memname">bool tmc5160::ReferenceSwitchConfig::right_switch_stop_enable {false}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Left switch polarity (true=inverted/low active) </p>
+<p>true = stop motor when switch is active, false = don't stop (but can still latch/read switch state) </p>
+<p>Enable automatic motor stop on right switch (independent of active level) </p>
 
 </div>
 </div>
-<a id="a414048bd0f740408182a6c17b45b1760" name="a414048bd0f740408182a6c17b45b1760"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a414048bd0f740408182a6c17b45b1760">&#9670;&#160;</a></span>pol_stop_right</h2>
+<a id="ab512893674f410c03c060814ec011cfe" name="ab512893674f410c03c060814ec011cfe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab512893674f410c03c060814ec011cfe">&#9670;&#160;</a></span>stop_mode</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool tmc5160::ReferenceSwitchConfig::pol_stop_right {false}</td>
+          <td class="memname"><a class="el" href="namespacetmc5160.html#a444e9027bfb76a7d96817b586554b915">ReferenceStopMode</a> tmc5160::ReferenceSwitchConfig::stop_mode {<a class="el" href="namespacetmc5160.html#a444e9027bfb76a7d96817b586554b915abfd64c1daf3144226575a385378e55c1">ReferenceStopMode::SOFT_STOP</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Right switch polarity (true=inverted/low active) </p>
-
-</div>
-</div>
-<a id="a4996def2b850bd02c2e1bf73d8feaf28" name="a4996def2b850bd02c2e1bf73d8feaf28"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4996def2b850bd02c2e1bf73d8feaf28">&#9670;&#160;</a></span>stop_left_enable</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool tmc5160::ReferenceSwitchConfig::stop_left_enable {false}</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Enable automatic motor stop on left switch. </p>
-
-</div>
-</div>
-<a id="a83c504b4413aba9e88bbd26b02d1311a" name="a83c504b4413aba9e88bbd26b02d1311a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a83c504b4413aba9e88bbd26b02d1311a">&#9670;&#160;</a></span>stop_right_enable</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool tmc5160::ReferenceSwitchConfig::stop_right_enable {false}</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Enable automatic motor stop on right switch. </p>
+<p>Stop mode (hard or soft) - only applies if stop is enabled. </p>
 
 </div>
 </div>
@@ -351,7 +331,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Swap left and right switch inputs. </p>
+<p>Swap left and right switch inputs (useful for reversed wiring) </p>
 
 </div>
 </div>

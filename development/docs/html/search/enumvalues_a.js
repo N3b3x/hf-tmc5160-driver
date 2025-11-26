@@ -1,9 +1,20 @@
 var searchData=
 [
-  ['mm_0',['Mm',['../namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26a07f07b623b4a00b57dc150ff2e59cb92',1,'tmc5160']]],
-  ['motor_5f17hs4401s_5fdirect_1',['MOTOR_17HS4401S_DIRECT',['../namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fa1bcf0ba0168d20ca9f29059ad06b9de5',1,'tmc5160_test_config']]],
-  ['motor_5f17hs4401s_5fgearbox_2',['MOTOR_17HS4401S_GEARBOX',['../namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fa750ecf224ef9e7f6264bb40d22ab1d70',1,'tmc5160_test_config']]],
-  ['motor_5fapplied_5fmotion_5f5034_3',['MOTOR_APPLIED_MOTION_5034',['../namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fae4cb3819f3cd4bdea9818e6d575df989',1,'tmc5160_test_config']]],
-  ['moving_5fto_5fmax_4',['MOVING_TO_MAX',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a824f3e9ffe184b2fb3d359586a21d64c',1,'FatigueTestMotion']]],
-  ['moving_5fto_5fmin_5',['MOVING_TO_MIN',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a75cf681c056abe3e006c783e2ec24ac6',1,'FatigueTestMotion']]]
+  ['maximum_0',['MAXIMUM',['../namespacetmc5160.html#a9a573006493faa30433407b3a8de8a1ea115f17a28532bbd6f0f5ec83ed20692a',1,'tmc5160']]],
+  ['minimum_1',['MINIMUM',['../namespacetmc5160.html#a9a573006493faa30433407b3a8de8a1eacf0ee111afe9889278a772d631dfa150',1,'tmc5160']]],
+  ['mm_2',['Mm',['../namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26a07f07b623b4a00b57dc150ff2e59cb92',1,'tmc5160']]],
+  ['moderate_3',['MODERATE',['../namespacetmc5160.html#ae27e0401e84b11039e2df9f708a96337a5137485eff3ff278d233d993c8539599',1,'tmc5160::MODERATE'],['../namespacetmc5160.html#a9a573006493faa30433407b3a8de8a1ea5137485eff3ff278d233d993c8539599',1,'tmc5160::MODERATE'],['../namespacetmc5160.html#ab770990e772993b9d3609dd71d335d75a5137485eff3ff278d233d993c8539599',1,'tmc5160::MODERATE'],['../namespacetmc5160.html#a587d5c069188523bc1a1fe01e9b077baa5137485eff3ff278d233d993c8539599',1,'tmc5160::MODERATE']]],
+  ['motor_5f17hs4401s_5fdirect_4',['MOTOR_17HS4401S_DIRECT',['../namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fa1bcf0ba0168d20ca9f29059ad06b9de5',1,'tmc5160_test_config']]],
+  ['motor_5f17hs4401s_5fgearbox_5',['MOTOR_17HS4401S_GEARBOX',['../namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fa750ecf224ef9e7f6264bb40d22ab1d70',1,'tmc5160_test_config']]],
+  ['motor_5fapplied_5fmotion_5f5034_6',['MOTOR_APPLIED_MOTION_5034',['../namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fae4cb3819f3cd4bdea9818e6d575df989',1,'tmc5160_test_config']]],
+  ['moving_5fto_5fmax_7',['MOVING_TO_MAX',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a824f3e9ffe184b2fb3d359586a21d64c',1,'FatigueTestMotion']]],
+  ['moving_5fto_5fmin_8',['MOVING_TO_MIN',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a75cf681c056abe3e006c783e2ec24ac6',1,'FatigueTestMotion']]],
+  ['mres_5f128_9',['MRES_128',['../namespacetmc5160.html#af0ef331324205d3ed8cbb3b036d18d31ab227ff1ca50d147d685877a0c73041c6',1,'tmc5160']]],
+  ['mres_5f16_10',['MRES_16',['../namespacetmc5160.html#af0ef331324205d3ed8cbb3b036d18d31a782d5ebca14ac091682de02b0c9543fd',1,'tmc5160']]],
+  ['mres_5f2_11',['MRES_2',['../namespacetmc5160.html#af0ef331324205d3ed8cbb3b036d18d31ab8fce733d17943c78fc278ebff4573a8',1,'tmc5160']]],
+  ['mres_5f256_12',['MRES_256',['../namespacetmc5160.html#af0ef331324205d3ed8cbb3b036d18d31af6a5e029c66401ac3bb0d52f2f29353e',1,'tmc5160']]],
+  ['mres_5f32_13',['MRES_32',['../namespacetmc5160.html#af0ef331324205d3ed8cbb3b036d18d31a99fd8a14194ff4938a4fc517f9749cf1',1,'tmc5160']]],
+  ['mres_5f4_14',['MRES_4',['../namespacetmc5160.html#af0ef331324205d3ed8cbb3b036d18d31a8a54bb0f4f69caee2448f5de30c5b6a5',1,'tmc5160']]],
+  ['mres_5f64_15',['MRES_64',['../namespacetmc5160.html#af0ef331324205d3ed8cbb3b036d18d31a8fb86b8c54f4203fae7e604e7e377d5b',1,'tmc5160']]],
+  ['mres_5f8_16',['MRES_8',['../namespacetmc5160.html#af0ef331324205d3ed8cbb3b036d18d31acd0ef50f31291f01e6ad2f0572d56b88',1,'tmc5160']]]
 ];

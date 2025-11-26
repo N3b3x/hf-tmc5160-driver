@@ -33,6 +33,21 @@
 
 static const char* TAG = "GpioPinConfig";
 
+//=============================================================================
+// CONFIGURATION SELECTION - Change these to select motor, board, and platform
+//=============================================================================
+// Motor selection (compile-time constant)
+static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
+    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+
+// Board selection (compile-time constant)
+static constexpr tmc5160_test_config::BoardType SELECTED_BOARD = 
+    tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL;
+
+// Platform selection (compile-time constant)
+static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM = 
+    tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
+
 extern "C" void app_main() {
   ESP_LOGI(TAG, "TMC5160 GPIO Pin Configuration Example");
   ESP_LOGI(TAG, "ESP32-C6 Pin Configuration:");
@@ -88,14 +103,26 @@ extern "C" void app_main() {
   // Create TMC5160 driver instance
   tmc5160::TMC5160<Esp32SPI> driver(spi);
 
-  // Configure driver
+  // Configure driver using helper functions
   tmc5160::DriverConfig cfg{};
-  cfg.motor.irun = 20;
-  cfg.motor.ihold = 10;
-  cfg.motor.global_scaler = 160; // Recommended >128 per datasheet
-  cfg.chopper.toff = 5;
+  
+  // Configure motor
+  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
+  }
+  
+  // Apply board configuration
+  tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
+  
+  // Apply platform configuration
+  tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
+  
+  // Override microstep resolution if needed
   cfg.chopper.mres = 4; // 16 microsteps
-  cfg.chopper.intpol = true;
 
   // Initialize driver
   if (!driver.Initialize(cfg)) {

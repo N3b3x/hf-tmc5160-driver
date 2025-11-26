@@ -40,6 +40,21 @@ static const char* TAG = "MotorControl_Test";
 static TestResults g_test_results;
 
 //=============================================================================
+// CONFIGURATION SELECTION - Change these to select motor, board, and platform
+//=============================================================================
+// Motor selection (compile-time constant)
+static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
+    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+
+// Board selection (compile-time constant)
+static constexpr tmc5160_test_config::BoardType SELECTED_BOARD = 
+    tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL;
+
+// Platform selection (compile-time constant)
+static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM = 
+    tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
+
+//=============================================================================
 // TEST SECTION CONFIGURATION
 //=============================================================================
 static constexpr bool ENABLE_ENABLE_DISABLE_TESTS = true;
@@ -121,25 +136,24 @@ std::unique_ptr<TestDriverHandle> create_test_driver() noexcept {
   }
   
   tmc5160::DriverConfig cfg{};
-  cfg.motor.irun = TEST_IRUN;
-  cfg.motor.ihold = TEST_IHOLD;
-  cfg.motor.global_scaler = TEST_GLOBAL_SCALER;
   
-  cfg.chopper.toff = TEST_TOFF;
+  // Configure motor
+  if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
+  } else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
+  }
+  
+  // Apply board configuration
+  tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
+  
+  // Apply platform configuration
+  tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
+  
+  // Override with test-specific values if needed
   cfg.chopper.mres = TEST_MRES;
-  cfg.chopper.intpol = Motor::INTERPOLATION;
-  cfg.chopper.hend = Motor::HEND;
-  cfg.chopper.hstrt = Motor::HSTRT;
-  cfg.chopper.tbl = Motor::TBL;
-  
-  cfg.stealthchop.pwm_ofs = Motor::STEALTH_OFS;
-  cfg.stealthchop.pwm_autoscale = Motor::STEALTH_AUTOSCALE;
-  cfg.stealthchop.pwm_autograd = Motor::STEALTH_AUTOGRAD;
-  cfg.stealthchop.pwm_freq = Motor::STEALTH_FREQ;
-
-  // Power stage: typical MOSFET with ~30nC Miller charge, 200ns BBM time
-  cfg.power_stage.mosfet_miller_charge_nc = 30.0f;
-  cfg.power_stage.bbm_time_ns = 200;
   
   if (!handle->driver->Initialize(cfg)) {
     ESP_LOGE(TAG, "Failed to initialize TMC5160 driver");
@@ -212,7 +226,7 @@ bool test_chopper_configuration() noexcept {
   chop_cfg.mres = TEST_MRES;
   chop_cfg.intpol = Motor::INTERPOLATION;
   chop_cfg.dedge = false;
-  chop_cfg.chm = false;
+  chop_cfg.mode = tmc5160::ChopperMode::SPREAD_CYCLE;
   
   if (!handle->driver->motorControl.ConfigureChopper(chop_cfg)) {
     ESP_LOGE(TAG, "Failed to configure chopper");
@@ -364,13 +378,27 @@ bool test_coolstep_configuration() noexcept {
     return false;
   }
   
+  // Configure CoolStep with user-friendly API
   tmc5160::CoolStepConfig cool_cfg{};
-  cool_cfg.semin = 1;
-  cool_cfg.seup = 0;
-  cool_cfg.semax = 0;
-  cool_cfg.sedn = 0;
-  cool_cfg.seimin = false;
-  cool_cfg.sfilt = false;
+  
+  // Set thresholds using actual SG values (more intuitive than raw 0-15)
+  cool_cfg.lower_threshold_sg = 64;   // SEMIN*32 = 2*32 (when SG < 64, increase current)
+  cool_cfg.upper_threshold_sg = 256;  // (SEMIN+SEMAX+1)*32 = (2+5+1)*32 (when SG >= 256, decrease current)
+  
+  // Configure step sizes using enums
+  cool_cfg.increment_step = tmc5160::CoolStepIncrementStep::STEP_2;  // Moderate response speed
+  cool_cfg.decrement_speed = tmc5160::CoolStepDecrementSpeed::EVERY_8;  // Stable reduction
+  
+  // Minimum current: 50% of IRUN
+  cool_cfg.min_current = tmc5160::CoolStepMinCurrent::HALF_IRUN;
+  
+  // Disable filter for high time resolution
+  cool_cfg.enable_filter = false;
+  
+  // Set velocity thresholds (CoolStep only active between these speeds)
+  cool_cfg.min_velocity = 500.0f;   // Enable CoolStep above 500 steps/s
+  cool_cfg.max_velocity = 5000.0f;   // Disable CoolStep above 5000 steps/s
+  cool_cfg.velocity_unit = tmc5160::Unit::Steps;
   
   if (!handle->driver->motorControl.ConfigureCoolStep(cool_cfg)) {
     ESP_LOGE(TAG, "Failed to configure CoolStep");
@@ -388,10 +416,21 @@ bool test_dcstep_configuration() noexcept {
     return false;
   }
   
+  // Configure DcStep with user-friendly API
   tmc5160::DcStepConfig dc_cfg{};
-  dc_cfg.dc_time = 0;
-  dc_cfg.dc_sg = 0;
-  dc_cfg.vdc_min = 0.0F; // 0.0F = disabled
+  
+  // Set minimum velocity threshold (with unit support)
+  dc_cfg.min_velocity = 1000.0f;   // Enable DcStep above 1000 steps/s
+  dc_cfg.velocity_unit = tmc5160::Unit::Steps;
+  
+  // Auto-calculate PWM on-time from blank time (recommended)
+  dc_cfg.pwm_on_time_us = 0.0f;  // 0 = auto-calculate
+  
+  // Moderate stall detection sensitivity (recommended)
+  dc_cfg.stall_sensitivity = tmc5160::DcStepStallSensitivity::MODERATE;
+  
+  // Don't stop on stall (continue operation)
+  dc_cfg.stop_on_stall = false;
   
   if (!handle->driver->motorControl.ConfigureDcStep(dc_cfg)) {
     ESP_LOGE(TAG, "Failed to configure DCStep");

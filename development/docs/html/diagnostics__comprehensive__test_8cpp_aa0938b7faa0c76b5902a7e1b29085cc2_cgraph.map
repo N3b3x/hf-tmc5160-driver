@@ -1,7 +1,13 @@
 <map id="test_gpio_pins" name="test_gpio_pins">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,121,38"/>
-<area shape="rect" id="Node000002" href="$diagnostics__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="169,13,309,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,23,156,23,156,28,121,28"/>
-<area shape="rect" id="Node000003" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="357,5,520,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="309,23,344,23,344,28,309,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,139,121,164"/>
+<area shape="rect" id="Node000002" href="$diagnostics__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="169,139,309,164"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,149,156,149,156,154,121,154"/>
+<area shape="rect" id="Node000003" href="$namespacetmc5160__test__config.html#a8d4169028f909fa4c3bcaf35a1130f19" title="Helper function to populate DriverConfig from 17HS4401S direct drive motor configuration." alt="" coords="357,5,560,60"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="255,136,300,104,356,69,367,63,370,68,359,74,303,108,258,141"/>
+<area shape="rect" id="Node000004" href="$namespacetmc5160__test__config.html#ad066428e88b18d0b8a60d3cbb3866a72" title="Helper function to populate DriverConfig from 17HS4401S gearbox motor configuration." alt="" coords="357,84,560,139"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="309,136,344,130,345,135,310,141"/>
+<area shape="rect" id="Node000005" href="$namespacetmc5160__test__config.html#a3b6d57d96a6198cd1018a9e5c55c0c6b" title="Helper function to populate DriverConfig from Applied Motion 5034 motor configuration." alt="" coords="357,163,560,217"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="310,161,345,167,344,172,309,166"/>
+<area shape="rect" id="Node000006" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="377,242,540,282"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="258,162,302,193,359,226,378,235,375,240,356,231,299,198,255,166"/>
 </map>

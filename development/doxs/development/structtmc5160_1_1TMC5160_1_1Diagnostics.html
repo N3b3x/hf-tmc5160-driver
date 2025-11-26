@@ -123,6 +123,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4233fd68c4b3c8912978cd474b2dd0e9" id="r_a4233fd68c4b3c8912978cd474b2dd0e9"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4233fd68c4b3c8912978cd474b2dd0e9">GetStallGuard</a> () noexcept</td></tr>
 <tr class="memdesc:a4233fd68c4b3c8912978cd474b2dd0e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get StallGuard2 value.  <br /></td></tr>
 <tr class="separator:a4233fd68c4b3c8912978cd474b2dd0e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad83693ca03c966d9ed70171ecce7610d" id="r_ad83693ca03c966d9ed70171ecce7610d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad83693ca03c966d9ed70171ecce7610d">GetStallGuardResult</a> (uint16_t &amp;sg_result) noexcept</td></tr>
+<tr class="memdesc:ad83693ca03c966d9ed70171ecce7610d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get StallGuard2 result from DRV_STATUS register.  <br /></td></tr>
+<tr class="separator:ad83693ca03c966d9ed70171ecce7610d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c35948381a62374b6a5b2494dd33dfb" id="r_a8c35948381a62374b6a5b2494dd33dfb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c35948381a62374b6a5b2494dd33dfb">ConfigureStallGuard</a> (const <a class="el" href="structtmc5160_1_1StallGuardConfig.html">StallGuardConfig</a> &amp;config) noexcept</td></tr>
 <tr class="memdesc:a8c35948381a62374b6a5b2494dd33dfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure StallGuard2.  <br /></td></tr>
 <tr class="separator:a8c35948381a62374b6a5b2494dd33dfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -138,6 +141,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adef74af33774678290eade6ea2a968ab" id="r_adef74af33774678290eade6ea2a968ab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adef74af33774678290eade6ea2a968ab">GetDriverStatusRegister</a> (uint32_t &amp;status) noexcept</td></tr>
 <tr class="memdesc:adef74af33774678290eade6ea2a968ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get driver status register value.  <br /></td></tr>
 <tr class="separator:adef74af33774678290eade6ea2a968ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec342a9b301b1c9acd8a31a204582555" id="r_aec342a9b301b1c9acd8a31a204582555"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aec342a9b301b1c9acd8a31a204582555">IsOpenLoadA</a> () noexcept</td></tr>
+<tr class="memdesc:aec342a9b301b1c9acd8a31a204582555"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if open load is detected on phase A.  <br /></td></tr>
+<tr class="separator:aec342a9b301b1c9acd8a31a204582555"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63447d6bf3298045a80470ac35c47096" id="r_a63447d6bf3298045a80470ac35c47096"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a63447d6bf3298045a80470ac35c47096">IsOpenLoadB</a> () noexcept</td></tr>
+<tr class="memdesc:a63447d6bf3298045a80470ac35c47096"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if open load is detected on phase B.  <br /></td></tr>
+<tr class="separator:a63447d6bf3298045a80470ac35c47096"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a999aedbecb99cdb4790d30d980ff838f" id="r_a999aedbecb99cdb4790d30d980ff838f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a999aedbecb99cdb4790d30d980ff838f">CheckOpenLoad</a> (bool &amp;phase_a, bool &amp;phase_b) noexcept</td></tr>
+<tr class="memdesc:a999aedbecb99cdb4790d30d980ff838f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if open load is detected on either phase.  <br /></td></tr>
+<tr class="separator:a999aedbecb99cdb4790d30d980ff838f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc4c3ad53d860a37087cf5648f187b44" id="r_adc4c3ad53d860a37087cf5648f187b44"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adc4c3ad53d860a37087cf5648f187b44">GetRampStatusRegister</a> (uint32_t &amp;status) noexcept</td></tr>
 <tr class="memdesc:adc4c3ad53d860a37087cf5648f187b44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get ramp status register value.  <br /></td></tr>
 <tr class="separator:adc4c3ad53d860a37087cf5648f187b44"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -243,6 +255,57 @@ template&lt;typename CommType &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a999aedbecb99cdb4790d30d980ff838f" name="a999aedbecb99cdb4790d30d980ff838f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a999aedbecb99cdb4790d30d980ff838f">&#9670;&#160;</a></span>CheckOpenLoad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Diagnostics::CheckOpenLoad </td>
+          <td>(</td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>phase_a</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>phase_b</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if open load is detected on either phase. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">phase_a</td><td>Reference to store phase A status (true if open load detected) </td></tr>
+    <tr><td class="paramname">phase_b</td><td>Reference to store phase B status (true if open load detected) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if read successfully, false otherwise</dd></dl>
+<p>Convenience method to check both phases at once.</p>
+<dl class="section note"><dt>Note</dt><dd>Requirements for reliable detection:<ul>
+<li>Must operate in SpreadCycle mode (StealthChop disabled)</li>
+<li>Motor must be moving (minimum 4× microstep resolution in single direction)</li>
+<li>Use low or nominal motor velocity</li>
+<li>Cannot be detected in standstill (coils may have zero current)</li>
+</ul>
+</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Open load flags are informative only and do not cause driver action. Also triggered by undervoltage, high velocity, short circuit, or overtemperature conditions.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 11.3: Open Load <a class="el" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html" title="Diagnostics subsystem.">Diagnostics</a> </dd></dl>
+
+</div>
+</div>
 <a id="af73b1aec6eb47cc3890e60782a5420ba" name="af73b1aec6eb47cc3890e60782a5420ba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af73b1aec6eb47cc3890e60782a5420ba">&#9670;&#160;</a></span>ClearStallFlag()</h2>
 
@@ -682,6 +745,42 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
+<a id="ad83693ca03c966d9ed70171ecce7610d" name="ad83693ca03c966d9ed70171ecce7610d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad83693ca03c966d9ed70171ecce7610d">&#9670;&#160;</a></span>GetStallGuardResult()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Diagnostics::GetStallGuardResult </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t &amp;</td>          <td class="paramname"><span class="paramname"><em>sg_result</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get StallGuard2 result from DRV_STATUS register. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sg_result</td><td>Reference to store StallGuard2 value (0-1023) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if read successfully, false otherwise </dd></dl>
+
+</div>
+</div>
 <a id="aeb75e99c3181b491be9334cfdf4f806f" name="aeb75e99c3181b491be9334cfdf4f806f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeb75e99c3181b491be9334cfdf4f806f">&#9670;&#160;</a></span>GetStatus()</h2>
 
@@ -771,6 +870,86 @@ template&lt;typename CommType &gt; </div>
 <p>Get UART transmission counter. </p>
 <dl class="section return"><dt>Returns</dt><dd>UART transmission counter value, or 0 on error</dd></dl>
 <p>Returns the number of UART transmissions since last read. </p>
+
+</div>
+</div>
+<a id="aec342a9b301b1c9acd8a31a204582555" name="aec342a9b301b1c9acd8a31a204582555"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec342a9b301b1c9acd8a31a204582555">&#9670;&#160;</a></span>IsOpenLoadA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Diagnostics::IsOpenLoadA </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if open load is detected on phase A. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if open load detected on phase A, false otherwise or on error</dd></dl>
+<p>Open load detection indicates an interrupted cable or connector issue.</p>
+<dl class="section note"><dt>Note</dt><dd>Requirements for reliable detection:<ul>
+<li>Must operate in SpreadCycle mode (StealthChop disabled)</li>
+<li>Motor must be moving (minimum 4× microstep resolution in single direction)</li>
+<li>Use low or nominal motor velocity</li>
+<li>Cannot be detected in standstill (coils may have zero current)</li>
+</ul>
+</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Open load flags are informative only and do not cause driver action. Also triggered by undervoltage, high velocity, short circuit, or overtemperature conditions.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 11.3: Open Load <a class="el" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html" title="Diagnostics subsystem.">Diagnostics</a> </dd></dl>
+
+</div>
+</div>
+<a id="a63447d6bf3298045a80470ac35c47096" name="a63447d6bf3298045a80470ac35c47096"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63447d6bf3298045a80470ac35c47096">&#9670;&#160;</a></span>IsOpenLoadB()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC5160::Diagnostics::IsOpenLoadB </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if open load is detected on phase B. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if open load detected on phase B, false otherwise or on error</dd></dl>
+<p>Open load detection indicates an interrupted cable or connector issue.</p>
+<dl class="section note"><dt>Note</dt><dd>Requirements for reliable detection:<ul>
+<li>Must operate in SpreadCycle mode (StealthChop disabled)</li>
+<li>Motor must be moving (minimum 4× microstep resolution in single direction)</li>
+<li>Use low or nominal motor velocity</li>
+<li>Cannot be detected in standstill (coils may have zero current)</li>
+</ul>
+</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Open load flags are informative only and do not cause driver action. Also triggered by undervoltage, high velocity, short circuit, or overtemperature conditions.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 11.3: Open Load <a class="el" href="structtmc5160_1_1TMC5160_1_1Diagnostics.html" title="Diagnostics subsystem.">Diagnostics</a> </dd></dl>
 
 </div>
 </div>
@@ -918,19 +1097,32 @@ template&lt;typename CommType &gt; </div>
   <table class="params">
     <tr><td class="paramname">direction</td><td>Direction to search (true = positive, false = negative) </td></tr>
     <tr><td class="paramname">search_speed</td><td>Speed for homing search in steps/s </td></tr>
-    <tr><td class="paramname">switch_speed</td><td>Speed for slow approach to switch in steps/s </td></tr>
-    <tr><td class="paramname">final_position</td><td>Reference to store final position after homing </td></tr>
+    <tr><td class="paramname">switch_speed</td><td>Speed for slow approach to switch in steps/s (unused, reserved for future two-phase approach) </td></tr>
+    <tr><td class="paramname">final_position</td><td>Reference to store final position after homing (will be 0 after successful homing) </td></tr>
     <tr><td class="paramname">use_left_switch</td><td>true to use REFL, false to use REFR </td></tr>
     <tr><td class="paramname">timeout_ms</td><td>Maximum time to wait for switch in milliseconds (default: 10000ms) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if switch hit and motor stopped, false if timeout or error</dd></dl>
-<p>Implements homing procedure from datasheet section 12.4:</p><ol type="1">
-<li>Moves towards switch at search_speed</li>
-<li>Stops on switch hit (hard stop)</li>
-<li>Updates final_position with latched position </li>
+<dl class="section return"><dt>Returns</dt><dd>true if switch hit and homing completed successfully, false if timeout or error</dd></dl>
+<p>Implements complete homing procedure from datasheet section 12.4:</p><ol type="1">
+<li>Ensure switch is not pressed (user responsibility - move away before calling)</li>
+<li>Activate position latching and motor stop upon switch event</li>
+<li>Start motion ramp into direction of switch</li>
+<li>Wait for standstill after switch hit (poll VACTUAL/vzero)</li>
+<li>Switch to hold mode and calculate position difference</li>
+<li>Write difference to actual position register (sets home position to 0)</li>
 </ol>
+<p>After successful homing:</p><ul>
+<li>Motor position is set to 0 (home position)</li>
+<li>Moving to position 0 will return motor to the switching point</li>
+<li>Stop function is disabled to allow moving away from switch</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Uses hard stop for precise homing (no overshoot) </dd>
+<dd>
+Ensure switch is not pressed before calling (move away first) </dd>
+<dd>
+After homing, configure switches for normal operation if needed </dd></dl>
 
 </div>
 </div>

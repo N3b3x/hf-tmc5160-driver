@@ -8,32 +8,38 @@
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="60,230,94,199,139,168,153,162,156,166,141,173,97,204,64,234"/>
 <area shape="rect" id="Node000007" href="$ramp__control__comprehensive__test_8cpp.html#ae8324f4478508efe6117929833d3d4c8" title=" " alt="" coords="146,183,305,209"/>
 <area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="91,231,165,210,167,215,93,236"/>
-<area shape="rect" id="Node000010" href="$ramp__control__comprehensive__test_8cpp.html#a1d9b1bffb30dd547a3ce93f8fa5ccc89" title=" " alt="" coords="156,233,295,258"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="92,243,142,243,142,248,92,248"/>
-<area shape="rect" id="Node000011" href="$ramp__control__comprehensive__test_8cpp.html#a968d09e9b8b112e5ff4b56c190c1f179" title=" " alt="" coords="140,282,311,307"/>
-<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="93,255,167,276,165,281,91,260"/>
-<area shape="rect" id="Node000012" href="$ramp__control__comprehensive__test_8cpp.html#aeee27dc8cea5ae970e534b7cba17ce8e" title=" " alt="" coords="143,332,308,372"/>
-<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="65,256,98,286,141,316,155,324,153,329,139,321,95,290,61,260"/>
-<area shape="rect" id="Node000013" href="$ramp__control__comprehensive__test_8cpp.html#aa96e4a6a4062dcae4e3f3579bd5cfba3" title=" " alt="" coords="153,397,298,422"/>
-<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="57,257,87,317,111,352,142,382,153,389,150,393,138,386,107,356,82,320,52,259"/>
-<area shape="rect" id="Node000014" href="$ramp__control__comprehensive__test_8cpp.html#abf571a46a047286529687282395f173d" title=" " alt="" coords="143,446,307,471"/>
-<area shape="poly" id="edge18_Node000001_Node000014" title=" " alt="" coords="55,257,64,292,80,339,106,389,122,411,142,431,150,437,147,442,138,435,118,415,101,392,75,341,58,294,50,259"/>
-<area shape="rect" id="Node000004" href="$TestFramework_8h.html#a57a48f91a141d98e45f82937581e1a97" title="Automatically initialize GPIO14 test indicator if not already done." alt="" coords="370,106,558,131"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="295,95,357,103,356,108,295,100"/>
-<area shape="rect" id="Node000005" href="$TestFramework_8h.html#a3967179ac699a5b02ef9787b549409fe" title="Initialize the test progression indicator on GPIO14." alt="" coords="629,99,768,139"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="558,116,615,116,615,121,558,121"/>
-<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="302,135,356,129,357,134,303,140"/>
-<area shape="rect" id="Node000008" href="$ramp__control__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="394,311,534,337"/>
-<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="282,206,312,218,383,259,439,301,436,305,380,263,310,222,280,211"/>
-<area shape="rect" id="Node000009" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="617,304,780,344"/>
-<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="534,321,604,321,604,327,534,327"/>
-<area shape="poly" id="edge11_Node000010_Node000008" title=" " alt="" coords="274,256,311,267,417,304,416,309,310,272,273,261"/>
-<area shape="poly" id="edge13_Node000011_Node000008" title=" " alt="" coords="312,303,381,311,380,316,311,308"/>
-<area shape="poly" id="edge15_Node000012_Node000008" title=" " alt="" coords="308,340,380,331,381,336,309,345"/>
-<area shape="poly" id="edge17_Node000013_Node000008" title=" " alt="" coords="271,394,310,381,419,339,421,344,312,387,272,399"/>
-<area shape="poly" id="edge19_Node000014_Node000008" title=" " alt="" coords="278,443,309,431,380,388,436,344,440,348,383,392,312,436,280,448"/>
-<area shape="rect" id="Node000015" href="$namespacetmc5160.html#affbfa04d45ce3729d6becb2551d3376e" title="Convert millimeters to steps." alt="" coords="383,421,545,446"/>
-<area shape="poly" id="edge20_Node000014_Node000015" title=" " alt="" coords="308,447,368,441,369,446,308,453"/>
-<area shape="rect" id="Node000016" href="$namespacetmc5160.html#a3b57c5f7f1d5a42e8a64151813c2aa74" title="Convert RPM to steps per second." alt="" coords="359,470,569,495"/>
-<area shape="poly" id="edge21_Node000014_Node000016" title=" " alt="" coords="308,464,345,468,345,473,308,470"/>
+<area shape="rect" id="Node000013" href="$ramp__control__comprehensive__test_8cpp.html#a1d9b1bffb30dd547a3ce93f8fa5ccc89" title=" " alt="" coords="156,233,295,258"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="92,243,142,243,142,248,92,248"/>
+<area shape="rect" id="Node000014" href="$ramp__control__comprehensive__test_8cpp.html#a968d09e9b8b112e5ff4b56c190c1f179" title=" " alt="" coords="140,282,311,307"/>
+<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="93,255,167,276,165,281,91,260"/>
+<area shape="rect" id="Node000015" href="$ramp__control__comprehensive__test_8cpp.html#aeee27dc8cea5ae970e534b7cba17ce8e" title=" " alt="" coords="143,332,308,372"/>
+<area shape="poly" id="edge17_Node000001_Node000015" title=" " alt="" coords="65,256,98,286,141,316,155,324,153,329,139,321,95,290,61,260"/>
+<area shape="rect" id="Node000016" href="$ramp__control__comprehensive__test_8cpp.html#aa96e4a6a4062dcae4e3f3579bd5cfba3" title=" " alt="" coords="153,397,298,422"/>
+<area shape="poly" id="edge19_Node000001_Node000016" title=" " alt="" coords="57,257,87,317,111,352,142,382,153,389,150,393,138,386,107,356,82,320,52,259"/>
+<area shape="rect" id="Node000017" href="$ramp__control__comprehensive__test_8cpp.html#abf571a46a047286529687282395f173d" title=" " alt="" coords="143,446,307,471"/>
+<area shape="poly" id="edge21_Node000001_Node000017" title=" " alt="" coords="55,257,64,292,80,339,106,389,122,411,142,431,150,437,147,442,138,435,118,415,101,392,75,341,58,294,50,259"/>
+<area shape="rect" id="Node000004" href="$TestFramework_8h.html#a57a48f91a141d98e45f82937581e1a97" title="Automatically initialize GPIO14 test indicator if not already done." alt="" coords="370,95,558,121"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="295,92,357,97,356,102,295,97"/>
+<area shape="rect" id="Node000005" href="$TestFramework_8h.html#a3967179ac699a5b02ef9787b549409fe" title="Initialize the test progression indicator on GPIO14." alt="" coords="649,88,788,128"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="558,105,636,105,636,111,558,111"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="302,132,372,120,372,125,303,137"/>
+<area shape="rect" id="Node000008" href="$ramp__control__comprehensive__test_8cpp.html#a12a1e9488c1c4af4e9d79e2f8e390c5f" title=" " alt="" coords="394,321,534,346"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="283,206,312,218,349,239,384,263,441,309,437,313,381,268,346,243,310,222,281,211"/>
+<area shape="rect" id="Node000009" href="$namespacetmc5160__test__config.html#a8d4169028f909fa4c3bcaf35a1130f19" title="Helper function to populate DriverConfig from 17HS4401S direct drive motor configuration." alt="" coords="617,169,820,223"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="481,318,539,278,616,232,628,227,630,232,619,237,542,282,484,323"/>
+<area shape="rect" id="Node000010" href="$namespacetmc5160__test__config.html#ad066428e88b18d0b8a60d3cbb3866a72" title="Helper function to populate DriverConfig from 17HS4401S gearbox motor configuration." alt="" coords="617,247,820,302"/>
+<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="519,318,603,299,604,304,521,323"/>
+<area shape="rect" id="Node000011" href="$namespacetmc5160__test__config.html#a3b6d57d96a6198cd1018a9e5c55c0c6b" title="Helper function to populate DriverConfig from Applied Motion 5034 motor configuration." alt="" coords="617,326,820,381"/>
+<area shape="poly" id="edge11_Node000008_Node000011" title=" " alt="" coords="534,336,603,342,603,347,534,341"/>
+<area shape="rect" id="Node000012" href="$namespacetmc5160__test__config.html#aa0c20662463e4685d1011a24ff3a576e" title="Complete pin configuration for all tests." alt="" coords="637,405,800,445"/>
+<area shape="poly" id="edge12_Node000008_Node000012" title=" " alt="" coords="498,344,618,389,643,398,641,403,616,395,496,349"/>
+<area shape="poly" id="edge14_Node000013_Node000008" title=" " alt="" coords="276,256,312,267,424,313,422,317,310,272,274,261"/>
+<area shape="poly" id="edge16_Node000014_Node000008" title=" " alt="" coords="305,305,381,317,380,323,304,310"/>
+<area shape="poly" id="edge18_Node000015_Node000008" title=" " alt="" coords="308,343,380,337,381,342,309,348"/>
+<area shape="poly" id="edge20_Node000016_Node000008" title=" " alt="" coords="269,394,310,381,412,348,413,353,311,387,271,399"/>
+<area shape="poly" id="edge22_Node000017_Node000008" title=" " alt="" coords="276,443,310,431,378,392,434,352,437,357,381,396,312,436,278,448"/>
+<area shape="rect" id="Node000018" href="$namespacetmc5160.html#affbfa04d45ce3729d6becb2551d3376e" title="Convert millimeters to steps." alt="" coords="383,421,545,446"/>
+<area shape="poly" id="edge23_Node000017_Node000018" title=" " alt="" coords="308,447,368,441,369,446,308,453"/>
+<area shape="rect" id="Node000019" href="$namespacetmc5160.html#a3b57c5f7f1d5a42e8a64151813c2aa74" title="Convert RPM to steps per second." alt="" coords="359,470,569,495"/>
+<area shape="poly" id="edge24_Node000017_Node000019" title=" " alt="" coords="308,464,345,468,345,473,308,470"/>
 </map>

@@ -99,7 +99,7 @@ $(function(){initNavTree('structtmc5160_1_1DcStepConfig.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 
-<p>dcStep configuration structure  
+<p>DcStep configuration structure.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="tmc5160__types_8hpp_source.html">tmc5160_types.hpp</a>&gt;</code></p>
@@ -109,25 +109,42 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab6ff3d3c4b63c418626abf991f1db1bd" id="r_ab6ff3d3c4b63c418626abf991f1db1bd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6ff3d3c4b63c418626abf991f1db1bd">DcStepConfig</a> ()=default</td></tr>
 <tr class="memdesc:ab6ff3d3c4b63c418626abf991f1db1bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:ab6ff3d3c4b63c418626abf991f1db1bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a618a44a68ef420ff8dada10b876b73f6" id="r_a618a44a68ef420ff8dada10b876b73f6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a618a44a68ef420ff8dada10b876b73f6">DcStepConfig</a> (float min_vel, <a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> vel_unit=<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>, float pwm_time_us=0.0F, <a class="el" href="namespacetmc5160.html#a587d5c069188523bc1a1fe01e9b077ba">DcStepStallSensitivity</a> sensitivity=<a class="el" href="namespacetmc5160.html#a587d5c069188523bc1a1fe01e9b077baa5137485eff3ff278d233d993c8539599">DcStepStallSensitivity::MODERATE</a>)</td></tr>
+<tr class="memdesc:a618a44a68ef420ff8dada10b876b73f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper constructor for quick setup.  <br /></td></tr>
+<tr class="separator:a618a44a68ef420ff8dada10b876b73f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a5557fc72383d2878037a8fabfe945280" id="r_a5557fc72383d2878037a8fabfe945280"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5557fc72383d2878037a8fabfe945280">vdc_min</a> {0.0F}</td></tr>
-<tr class="memdesc:a5557fc72383d2878037a8fabfe945280"><td class="mdescLeft">&#160;</td><td class="mdescRight">Velocity threshold for enabling dcStep in steps/s (0.0F = disabled)  <br /></td></tr>
-<tr class="separator:a5557fc72383d2878037a8fabfe945280"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59a9a429430b0f69bb34fb00415084bf" id="r_a59a9a429430b0f69bb34fb00415084bf"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59a9a429430b0f69bb34fb00415084bf">dc_time</a> {0}</td></tr>
-<tr class="memdesc:a59a9a429430b0f69bb34fb00415084bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Upper PWM on time limit for commutation (0-1023)  <br /></td></tr>
-<tr class="separator:a59a9a429430b0f69bb34fb00415084bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc471ad6987ea3ed6a90059363ca2e7d" id="r_afc471ad6987ea3ed6a90059363ca2e7d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc471ad6987ea3ed6a90059363ca2e7d">dc_sg</a> {0}</td></tr>
-<tr class="memdesc:afc471ad6987ea3ed6a90059363ca2e7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max PWM on time for step loss detection (0-255)  <br /></td></tr>
-<tr class="separator:afc471ad6987ea3ed6a90059363ca2e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a789061e3e7f3d5407d70e8873beaa591" id="r_a789061e3e7f3d5407d70e8873beaa591"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a789061e3e7f3d5407d70e8873beaa591">min_velocity</a> {0.0F}</td></tr>
+<tr class="memdesc:a789061e3e7f3d5407d70e8873beaa591"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum velocity threshold for DcStep activation.  <br /></td></tr>
+<tr class="separator:a789061e3e7f3d5407d70e8873beaa591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b5216e0b4a38eacd5b53f9d183b9d0b" id="r_a3b5216e0b4a38eacd5b53f9d183b9d0b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b5216e0b4a38eacd5b53f9d183b9d0b">velocity_unit</a> {<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td></tr>
+<tr class="memdesc:a3b5216e0b4a38eacd5b53f9d183b9d0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unit for velocity threshold.  <br /></td></tr>
+<tr class="separator:a3b5216e0b4a38eacd5b53f9d183b9d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb6531bc646aa8026295f7999a126565" id="r_afb6531bc646aa8026295f7999a126565"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb6531bc646aa8026295f7999a126565">pwm_on_time_us</a> {0.0F}</td></tr>
+<tr class="memdesc:afb6531bc646aa8026295f7999a126565"><td class="mdescLeft">&#160;</td><td class="mdescRight">PWM on-time limit for commutation (user-friendly)  <br /></td></tr>
+<tr class="separator:afb6531bc646aa8026295f7999a126565"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c3a936b7b45d7011723435c9bc88567" id="r_a6c3a936b7b45d7011723435c9bc88567"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc5160.html#a587d5c069188523bc1a1fe01e9b077ba">DcStepStallSensitivity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c3a936b7b45d7011723435c9bc88567">stall_sensitivity</a> {<a class="el" href="namespacetmc5160.html#a587d5c069188523bc1a1fe01e9b077baa5137485eff3ff278d233d993c8539599">DcStepStallSensitivity::MODERATE</a>}</td></tr>
+<tr class="memdesc:a6c3a936b7b45d7011723435c9bc88567"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stall detection sensitivity.  <br /></td></tr>
+<tr class="separator:a6c3a936b7b45d7011723435c9bc88567"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61a0b3c97c675de2786380e37945dae0" id="r_a61a0b3c97c675de2786380e37945dae0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a61a0b3c97c675de2786380e37945dae0">stop_on_stall</a> {false}</td></tr>
+<tr class="memdesc:a61a0b3c97c675de2786380e37945dae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable stop on stall.  <br /></td></tr>
+<tr class="separator:a61a0b3c97c675de2786380e37945dae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>dcStep configuration structure </p>
-<p>Configuration parameters for dcStep automatic commutation mode. </p>
+<div class="textblock"><p>DcStep configuration structure. </p>
+<p>User-friendly configuration for DcStep automatic commutation mode. DcStep allows the motor to run near its load limit without losing steps by automatically reducing velocity when overloaded. The motor operates in fullstep mode at the target velocity or at reduced velocity if overloaded.</p>
+<dl class="section note"><dt>Note</dt><dd>DcStep requires SD_MODE=1 (external step/dir mode) or can be enabled via VDCMIN threshold. </dd>
+<dd>
+DcStep automatically sets chopper to constant TOFF mode with slow decay only. </dd>
+<dd>
+CHOPCONF.vhighfs and CHOPCONF.vhighchm must be set to 1 for DcStep (handled automatically). </dd>
+<dd>
+CHOPCONF.TOFF should be &gt;2, preferably 8-15 for DcStep operation.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 17: DcStep </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab6ff3d3c4b63c418626abf991f1db1bd" name="ab6ff3d3c4b63c418626abf991f1db1bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6ff3d3c4b63c418626abf991f1db1bd">&#9670;&#160;</a></span>DcStepConfig()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6ff3d3c4b63c418626abf991f1db1bd">&#9670;&#160;</a></span>DcStepConfig() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -150,56 +167,163 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Initializes with dcStep disabled. All members use default member initializers, so constructor is empty. </p>
+<p>Initializes with DcStep disabled (min_velocity = 0). All fields use default member initializers. </p>
+
+</div>
+</div>
+<a id="a618a44a68ef420ff8dada10b876b73f6" name="a618a44a68ef420ff8dada10b876b73f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a618a44a68ef420ff8dada10b876b73f6">&#9670;&#160;</a></span>DcStepConfig() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tmc5160::DcStepConfig::DcStepConfig </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>min_vel</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a></td>          <td class="paramname"><span class="paramname"><em>vel_unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>pwm_time_us</em><span class="paramdefsep"> = </span><span class="paramdefval">0.0F</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc5160.html#a587d5c069188523bc1a1fe01e9b077ba">DcStepStallSensitivity</a></td>          <td class="paramname"><span class="paramname"><em>sensitivity</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc5160.html#a587d5c069188523bc1a1fe01e9b077baa5137485eff3ff278d233d993c8539599">DcStepStallSensitivity::MODERATE</a></span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Helper constructor for quick setup. </p>
+<p>Creates a DcStep configuration with typical settings:</p><ul>
+<li>Moderate stall sensitivity</li>
+<li>Auto-calculated PWM on-time</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">min_vel</td><td>Minimum velocity for DcStep activation </td></tr>
+    <tr><td class="paramname">vel_unit</td><td>Unit for velocity threshold </td></tr>
+    <tr><td class="paramname">pwm_time_us</td><td>PWM on-time limit in microseconds (0 = auto-calculate) </td></tr>
+    <tr><td class="paramname">sensitivity</td><td>Stall detection sensitivity </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="afc471ad6987ea3ed6a90059363ca2e7d" name="afc471ad6987ea3ed6a90059363ca2e7d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc471ad6987ea3ed6a90059363ca2e7d">&#9670;&#160;</a></span>dc_sg</h2>
+<a id="a789061e3e7f3d5407d70e8873beaa591" name="a789061e3e7f3d5407d70e8873beaa591"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a789061e3e7f3d5407d70e8873beaa591">&#9670;&#160;</a></span>min_velocity</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t tmc5160::DcStepConfig::dc_sg {0}</td>
+          <td class="memname">float tmc5160::DcStepConfig::min_velocity {0.0F}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Max PWM on time for step loss detection (0-255) </p>
+<p>Minimum velocity threshold for DcStep activation. </p>
+<p>Below this velocity, motor operates in normal microstep mode. In DcStep operation, motor operates at minimum this velocity even when blocked.</p>
+<p>Set to the lowest operating velocity where DcStep gives reliable detection.</p>
+<dl class="section note"><dt>Note</dt><dd>Unit is specified by velocity_unit field. </dd>
+<dd>
+Set to 0.0 to disable DcStep. Minimum velocity for DcStep (0 = disabled) </dd></dl>
 
 </div>
 </div>
-<a id="a59a9a429430b0f69bb34fb00415084bf" name="a59a9a429430b0f69bb34fb00415084bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59a9a429430b0f69bb34fb00415084bf">&#9670;&#160;</a></span>dc_time</h2>
+<a id="afb6531bc646aa8026295f7999a126565" name="afb6531bc646aa8026295f7999a126565"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb6531bc646aa8026295f7999a126565">&#9670;&#160;</a></span>pwm_on_time_us</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint16_t tmc5160::DcStepConfig::dc_time {0}</td>
+          <td class="memname">float tmc5160::DcStepConfig::pwm_on_time_us {0.0F}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Upper PWM on time limit for commutation (0-1023) </p>
+<p>PWM on-time limit for commutation (user-friendly) </p>
+<p>Controls the reference pulse width for DcStep load measurement. Must be optimized for robust operation with maximum motor torque.</p>
+<p>Higher value = higher torque and higher velocity capability Lower value = operation down to lower velocity (as set by min_velocity)</p>
+<p>Should be set slightly above effective blank time (TBL from CHOPCONF). Lower limit: TBL clock cycles + n (where n = 1-100 for typical motor)</p>
+<p>Range: 0.1-85.3µs (for 12MHz clock) or 0.1-42.7µs (for 24MHz clock)</p>
+<dl class="section note"><dt>Note</dt><dd>Automatically converted to DC_TIME register value (0-1023 clock cycles). </dd>
+<dd>
+If 0, DcStep uses default value based on blank time. PWM on-time limit in microseconds (0 = auto-calculate) </dd></dl>
 
 </div>
 </div>
-<a id="a5557fc72383d2878037a8fabfe945280" name="a5557fc72383d2878037a8fabfe945280"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5557fc72383d2878037a8fabfe945280">&#9670;&#160;</a></span>vdc_min</h2>
+<a id="a6c3a936b7b45d7011723435c9bc88567" name="a6c3a936b7b45d7011723435c9bc88567"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c3a936b7b45d7011723435c9bc88567">&#9670;&#160;</a></span>stall_sensitivity</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float tmc5160::DcStepConfig::vdc_min {0.0F}</td>
+          <td class="memname"><a class="el" href="namespacetmc5160.html#a587d5c069188523bc1a1fe01e9b077ba">DcStepStallSensitivity</a> tmc5160::DcStepConfig::stall_sensitivity {<a class="el" href="namespacetmc5160.html#a587d5c069188523bc1a1fe01e9b077baa5137485eff3ff278d233d993c8539599">DcStepStallSensitivity::MODERATE</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Velocity threshold for enabling dcStep in steps/s (0.0F = disabled) </p>
+<p>Stall detection sensitivity. </p>
+<p>Controls stall detection threshold in DcStep mode. Higher sensitivity detects stalls earlier but may trigger false positives.</p>
+<dl class="section note"><dt>Note</dt><dd>Automatically calculated from pwm_on_time_us if MODERATE/HIGH/LOW selected. </dd>
+<dd>
+Set to DISABLED to disable stall detection. Stall detection sensitivity </dd></dl>
+
+</div>
+</div>
+<a id="a61a0b3c97c675de2786380e37945dae0" name="a61a0b3c97c675de2786380e37945dae0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61a0b3c97c675de2786380e37945dae0">&#9670;&#160;</a></span>stop_on_stall</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tmc5160::DcStepConfig::stop_on_stall {false}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable stop on stall. </p>
+<p>If true, motor stops (VACTUAL = 0) when stall is detected. Motor remains stopped until RAMP_STAT.event_stop_sg flag is read.</p>
+<dl class="section note"><dt>Note</dt><dd>Requires stall_sensitivity != DISABLED. </dd>
+<dd>
+Requires StallGuard2 to be configured (TCOOLTHRS set). Stop motor when stall detected </dd></dl>
+
+</div>
+</div>
+<a id="a3b5216e0b4a38eacd5b53f9d183b9d0b" name="a3b5216e0b4a38eacd5b53f9d183b9d0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b5216e0b4a38eacd5b53f9d183b9d0b">&#9670;&#160;</a></span>velocity_unit</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26">Unit</a> tmc5160::DcStepConfig::velocity_unit {<a class="el" href="namespacetmc5160.html#a7d037d1d81aa1918aada0e039be49e26af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Unit for velocity threshold. </p>
+<p>Specifies the unit used for min_velocity field. Unit for velocity threshold </p>
 
 </div>
 </div>

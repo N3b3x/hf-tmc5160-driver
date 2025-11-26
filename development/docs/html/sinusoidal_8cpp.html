@@ -130,13 +130,17 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a9358c3a0a9cb0c8d1dadda705d99d31e" id="r_a9358c3a0a9cb0c8d1dadda705d99d31e"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4f">tmc5160_test_config::MotorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9358c3a0a9cb0c8d1dadda705d99d31e">SELECTED_MOTOR</a></td></tr>
 <tr class="separator:a9358c3a0a9cb0c8d1dadda705d99d31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a209e6e5bff02ee86c0334a3d8efe2678" id="r_a209e6e5bff02ee86c0334a3d8efe2678"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67">tmc5160_test_config::BoardType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a209e6e5bff02ee86c0334a3d8efe2678">SELECTED_BOARD</a></td></tr>
+<tr class="separator:a209e6e5bff02ee86c0334a3d8efe2678"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3372565a080149b5c954cc0413c4b9a1" id="r_a3372565a080149b5c954cc0413c4b9a1"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc5160__test__config.html#a48f04184f8380da9c5ca32947c0da5ec">tmc5160_test_config::PlatformType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3372565a080149b5c954cc0413c4b9a1">SELECTED_PLATFORM</a></td></tr>
+<tr class="separator:a3372565a080149b5c954cc0413c4b9a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a85b9c772bbeb480b209a3e6ea92b4c" id="r_a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a85b9c772bbeb480b209a3e6ea92b4c">TAG</a> = &quot;Sinusoidal&quot;</td></tr>
 <tr class="separator:a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Sinusoidal motion pattern example for TMC5160 stepper motor driver. </p>
 <p>This example demonstrates sinusoidal motion control using the TMC5160's internal ramp generator. The motor velocity varies in a sinusoidal pattern using velocity mode control.</p>
-<p>MOTOR SELECTION: Motor selection is done via a static constexpr variable at the top of this file. See <a class="el" href="esp32__tmc5160__bus__config_8hpp.html" title="ESP32 GPIO pin configuration for TMC5160 driver tests.">esp32_tmc5160_bus_config.hpp</a> for detailed motor specifications and selection guide.</p>
+<p>MOTOR SELECTION: Motor selection is done via a static constexpr variable at the top of this file. See <a class="el" href="esp32__tmc5160__bus__config_8hpp.html" title="ESP32 GPIO pin configuration and compile-time configuration for TMC5160 driver.">esp32_tmc5160_bus_config.hpp</a> for detailed motor specifications and selection guide.</p>
 <p>Hardware Requirements:</p><ul>
 <li>ESP32 development board</li>
 <li>TMC5160 stepper motor driver</li>
@@ -171,12 +175,37 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="sinusoidal_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="1068" height="566"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="sinusoidal_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="1068" height="803"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a209e6e5bff02ee86c0334a3d8efe2678" name="a209e6e5bff02ee86c0334a3d8efe2678"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a209e6e5bff02ee86c0334a3d8efe2678">&#9670;&#160;</a></span>SELECTED_BOARD</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67">tmc5160_test_config::BoardType</a> SELECTED_BOARD</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= </div>
+<div class="line">    <a class="code hl_enumvalue" href="namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67a460a09206e1dd3e0cd050257d6e45177">tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL</a></div>
+<div class="ttc" id="anamespacetmc5160__test__config_html_acdf2cd7f479bf56d446e0b23c35f1e67a460a09206e1dd3e0cd050257d6e45177"><div class="ttname"><a href="namespacetmc5160__test__config.html#acdf2cd7f479bf56d446e0b23c35f1e67a460a09206e1dd3e0cd050257d6e45177">tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL</a></div><div class="ttdeci">@ BOARD_TMC5160_EVAL</div><div class="ttdoc">TMC5160 Evaluation Kit (0.05Ω sense, 24V, BSC072N08NS5 MOSFETs)</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a9358c3a0a9cb0c8d1dadda705d99d31e" name="a9358c3a0a9cb0c8d1dadda705d99d31e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9358c3a0a9cb0c8d1dadda705d99d31e">&#9670;&#160;</a></span>SELECTED_MOTOR</h2>
 
@@ -199,6 +228,31 @@ Here is the call graph for this function:</div>
 <b>Initial value:</b><div class="fragment"><div class="line">= </div>
 <div class="line">    <a class="code hl_enumvalue" href="namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fa750ecf224ef9e7f6264bb40d22ab1d70">tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX</a></div>
 <div class="ttc" id="anamespacetmc5160__test__config_html_a3165d26db7a8ad8512c448ec601add4fa750ecf224ef9e7f6264bb40d22ab1d70"><div class="ttname"><a href="namespacetmc5160__test__config.html#a3165d26db7a8ad8512c448ec601add4fa750ecf224ef9e7f6264bb40d22ab1d70">tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX</a></div><div class="ttdeci">@ MOTOR_17HS4401S_GEARBOX</div><div class="ttdoc">17HS4401S with 5.18:1 planetary gearbox</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a3372565a080149b5c954cc0413c4b9a1" name="a3372565a080149b5c954cc0413c4b9a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3372565a080149b5c954cc0413c4b9a1">&#9670;&#160;</a></span>SELECTED_PLATFORM</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="namespacetmc5160__test__config.html#a48f04184f8380da9c5ca32947c0da5ec">tmc5160_test_config::PlatformType</a> SELECTED_PLATFORM</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= </div>
+<div class="line">    <a class="code hl_enumvalue" href="namespacetmc5160__test__config.html#a48f04184f8380da9c5ca32947c0da5eca147fbec22e42f866983ce6cd76549179">tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG</a></div>
+<div class="ttc" id="anamespacetmc5160__test__config_html_a48f04184f8380da9c5ca32947c0da5eca147fbec22e42f866983ce6cd76549179"><div class="ttname"><a href="namespacetmc5160__test__config.html#a48f04184f8380da9c5ca32947c0da5eca147fbec22e42f866983ce6cd76549179">tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG</a></div><div class="ttdeci">@ PLATFORM_TEST_RIG</div><div class="ttdoc">Test rig platform (reference switches, encoder, gearbox)</div></div>
 </div><!-- fragment -->
 </div>
 </div>
