@@ -1,19 +1,24 @@
 /**
  * @file stallguard_tuning.cpp
- * @brief Automatic StallGuard2 Tuning Tool
+ * @brief Automatic StallGuard2 Tuning Tool with Safe Current Margin
  *
  * This tool automatically tunes the StallGuard2 Threshold (SGT) for a specific
- * motor and velocity configuration. It implements the tuning algorithm described
- * in the datasheet and research papers:
+ * motor and velocity configuration using the comprehensive AutoTuneStallGuard function.
+ * It implements the tuning algorithm following Trinamic application note AN-002 guidelines:
  * 
- * 1. Moves the motor at a constant velocity
- * 2. Monitors the SG_RESULT (StallGuard value)
- * 3. Adjusts SGT until a stable non-zero SG_RESULT is obtained
+ * 1. Saves current motor settings (current, CoolStep, etc.)
+ * 2. Applies safe current margin for safer tuning and improved sensitivity
+ * 3. Disables interfering features (CoolStep, filter, stop-on-stall)
+ * 4. Moves the motor at a constant velocity
+ * 5. Monitors the SG_RESULT (StallGuard value) across SGT range
+ * 6. Adjusts SGT until a stable non-zero SG_RESULT in ideal range (100-500) is obtained
+ * 7. Validates at min/max velocities
+ * 8. Restores all saved settings (except optimal SGT)
  * 
  * USAGE:
  * 1. Ensure the motor is free to move (no load or minimal load).
  * 2. Run this tool.
- * 3. The tool will output the found optimal SGT value.
+ * 3. The tool will output the found optimal SGT value and velocity range analysis.
  * 4. Use this SGT value in your application.
  *
  * @author Nebiyu Tadesse
@@ -92,19 +97,25 @@ extern "C" void app_main(void) {
   // 1000 steps/s threshold for activation ensures StallGuard is active at 40k steps/s
   driver.motorControl.SetModeChangeSpeeds(100.0f, 1000.0f, 0.0f); // PWM_THRS, COOL_THRS, HIGH_THRS
 
-  ESP_LOGI(TAG, "Starting Auto-Tuning Sequence...");
+  ESP_LOGI(TAG, "Starting Comprehensive Auto-Tuning Sequence...");
   ESP_LOGI(TAG, "Target Velocity: %.2f steps/s", TUNING_VELOCITY_STEPS_S);
   ESP_LOGI(TAG, "Acceleration: %.2f steps/s²", TUNING_ACCELERATION_STEPS_S2);
+  ESP_LOGI(TAG, "Using AutoTuneStallGuard with safe current margin handling");
   
-  // Use comprehensive tuning with result struct
+  // Use comprehensive automatic tuning with safe current margin
   tmc51x0::StallGuardTuningResult result;
-  // TuneStallGuard: target_vel (most important), result, min_sgt, max_sgt, accel, min_vel, max_vel, unit
+  // AutoTuneStallGuard: target_vel (most important), result, min_sgt, max_sgt, accel, min_vel, max_vel, unit, safe_current_margin_mA
   // For this example, we'll test a velocity range to demonstrate the feature
   float min_vel = TUNING_VELOCITY_STEPS_S * 0.3f;  // 30% of target
   float max_vel = TUNING_VELOCITY_STEPS_S * 1.5f;  // 150% of target
-  bool success = driver.tuning.TuneStallGuard(TUNING_VELOCITY_STEPS_S, result, -10, 63, 
-                                                  TUNING_ACCELERATION_STEPS_S2, min_vel, max_vel, 
-                                                  tmc51x0::Unit::Steps);
+  // Safe current margin: reduce current by specified amount for safer tuning and improved StallGuard sensitivity
+  // This helps avoid excessive torque during stall tests and makes StallGuard more responsive to load changes
+  // Recommended: 15-25% of motor's rated current (e.g., 300mA for a 2A motor = 15% margin)
+  // Set to 0 to disable current margin (use nominal current)
+  uint16_t safe_current_margin_mA = 300; // Adjust based on your motor's rated current
+  bool success = driver.tuning.AutoTuneStallGuard(TUNING_VELOCITY_STEPS_S, result, 0, 63, 
+                                                     TUNING_ACCELERATION_STEPS_S2, min_vel, max_vel, 
+                                                     tmc51x0::Unit::Steps, safe_current_margin_mA);
 
   if (success) {
     ESP_LOGI(TAG, "==========================================");
