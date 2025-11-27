@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "🔌 Hardware Setup"
-description: "Hardware wiring and connection guide for the TMC5160"
+description: "Hardware wiring and connection guide for the TMC51x0 (TMC5130 & TMC5160)"
 nav_order: 3
 parent: "📚 Documentation"
 permalink: /docs/hardware_setup/
@@ -9,14 +9,14 @@ permalink: /docs/hardware_setup/
 
 # Hardware Setup
 
-This guide covers the physical connections and hardware requirements for the TMC5160 stepper motor driver chip.
+This guide covers the physical connections and hardware requirements for the TMC51x0 stepper motor (TMC5130 & TMC5160) driver chip.
 
 ## Pin Connections
 
 ### SPI Interface Connections
 
 ```
-MCU              TMC5160
+MCU              TMC51x0
 ─────────────────────────
 3.3V      ────── VDD
 GND       ────── GND
@@ -32,7 +32,7 @@ STEP      ────── STEP (for step/dir mode)
 ### UART Interface Connections
 
 ```
-MCU              TMC5160
+MCU              TMC51x0
 ─────────────────────────
 3.3V      ────── VDD
 GND       ────── GND
@@ -44,7 +44,7 @@ TX_EN     ────── UART_TXEN (optional, for transceiver)
 ### Motor Connections
 
 ```
-TMC5160          Stepper Motor
+TMC51x0          Stepper Motor
 ──────────────────────────────
 1B        ────── Motor Coil B+
 1A        ────── Motor Coil B-
@@ -99,7 +99,7 @@ SD_MODE  (pin 21) ──────> GND  (LOW)
 
 **Software Control (Advanced):**
 - If SPI_MODE and SD_MODE pins are connected to GPIO outputs (instead of hardwired), they can be controlled via software
-- Use `TMC5160PinConfig` to configure `spi_mode_pin` and `sd_mode_pin` if available
+- Use `TMC51x0PinConfig` to configure `spi_mode_pin` and `sd_mode_pin` if available
 - Use `driver.communication.SetOperatingMode()` to change modes programmatically
 - **⚠️ CRITICAL**: Changing mode pins requires a chip reset (power cycle or reset pin) to take effect
 - The mode pins are read at startup, so changes won't be effective until the chip is reset

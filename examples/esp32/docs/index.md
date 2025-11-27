@@ -4,7 +4,7 @@ This directory contains comprehensive documentation for all ESP32 examples and t
 
 ## Overview
 
-The ESP32 examples demonstrate practical applications of the TMC5160 driver, while the comprehensive test suites provide thorough validation of all driver features. All examples and tests support multiple motor configurations selected at compile-time.
+The ESP32 examples demonstrate practical applications of the TMC51x0 driver (TMC5130 & TMC5160), while the comprehensive test suites provide thorough validation of all driver features. All examples and tests support multiple motor configurations selected at compile-time.
 
 ## Motor Configuration
 

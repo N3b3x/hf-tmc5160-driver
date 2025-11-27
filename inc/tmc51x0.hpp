@@ -40,7 +40,7 @@ namespace tmc51x0 {
  *
  * ## Key Features
  *
- * The TMC5160 class supports a wide range of stepper motor control features:
+ * The TMC51x0 class supports a wide range of stepper motor control features:
  *
  * - **Ramp Modes**: Positioning, velocity, and hold modes
  * - **Current Control**: Configurable run and hold currents
@@ -145,7 +145,7 @@ public:
   }
 
   /**
-   * @brief Initialize the TMC5160 driver with configuration
+   * @brief Initialize the TMC51x0 driver with configuration
    * @param config Driver configuration structure
    * @return true if initialization succeeded, false otherwise
    *
@@ -1060,7 +1060,7 @@ public:
      * - Only use this method if SPI_MODE and SD_MODE pins are connected to GPIO outputs
      * - Changing the mode requires a chip reset (power cycle) to take effect
      * - The mode pins are read at startup, so changes won't be effective until reset
-     * - Ensure pins are configured in TMC5160PinConfig (spi_mode_pin and sd_mode_pin)
+     * - Ensure pins are configured in TMC51x0PinConfig (spi_mode_pin and sd_mode_pin)
      *
      * @note After calling this method, you must reset the chip for the new mode to take effect.
      *       The driver does not automatically reset the chip - you must handle this externally.

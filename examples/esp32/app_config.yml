@@ -1,4 +1,4 @@
-# ESP32 TMC5160 Driver - Apps Configuration
+# ESP32 TMC51x0 Driver - Apps Configuration
 # This file centralizes all app definitions, their source files, and metadata
 # Used by build scripts, flash scripts, CI workflows, and CMake
 #
@@ -9,7 +9,7 @@
 
 version: "1.0"
 metadata:
-  project: "ESP32 TMC5160 Driver Examples"
+  project: "ESP32 TMC51x0 Driver Examples (TMC5130 & TMC5160)"
   default_app: "internal_ramp_comprehensive_test"
   target: "esp32c6"
   idf_versions: ["release/v5.5", "release/v5.4"]
@@ -89,7 +89,7 @@ build_config:
       defines: ["NDEBUG"]
 
   build_directory_pattern: "build-app-{app_type}-type-{build_type}-target-{target}-idf-{idf_version}"
-  project_name_pattern: "esp32_tmc5160_{app_type}_app"
+  project_name_pattern: "esp32_tmc51x0_{app_type}_app"
 
 ci_config:
   timeout_minutes: 30

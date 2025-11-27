@@ -2,7 +2,7 @@
 
 ## Overview
 
-The TMC5160 driver supports comprehensive GPIO pin configuration for all TMC5160 control pins. Pin functions depend on the mode configuration (SPI_MODE, SD_MODE) as described in the TMC5160 datasheet section 2.2.
+The TMC51x0 driver (TMC5130 & TMC5160) supports comprehensive GPIO pin configuration for all TMC51x0 control pins. Pin functions depend on the mode configuration (SPI_MODE, SD_MODE) as described in the TMC51x0 datasheet section 2.2.
 
 ## Supported Control Pins
 
@@ -79,16 +79,16 @@ Based on your ESP32-C6 pinout:
 - CS_TMC: GPIO18
 - DIAG0, DIAG1: (configure based on your board)
 
-### Method 1: Using TMC5160PinConfig Struct (Recommended)
+### Method 1: Using TMC51x0PinConfig Struct (Recommended)
 
-The `TMC5160PinConfig` struct simplifies pin configuration and automatically handles compound pins:
+The `TMC51x0PinConfig` struct simplifies pin configuration and automatically handles compound pins:
 
 ```cpp
 #include "esp32_tmc5160_bus.hpp"
-#include "../../../inc/tmc5160.hpp"
+#include "../../../inc/tmc51x0.hpp"
 
 // Create pin configuration struct
-tmc5160::TMC5160PinConfig pin_config{};
+tmc51x0::TMC51x0PinConfig pin_config{};
 pin_config.en_pin = GPIO_NUM_11;    // EN pin (required)
 pin_config.diag0_pin = GPIO_NUM_20; // DIAG0 pin
 pin_config.diag1_pin = GPIO_NUM_21; // DIAG1 pin
@@ -128,9 +128,9 @@ Esp32SPI spi(SPI2_HOST,
              4000000);                            // 4 MHz SPI clock
 
 // Configure additional pins
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::DIAG0, GPIO_NUM_XX); // Replace XX with your GPIO
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::DIAG1, GPIO_NUM_XX); // Replace XX with your GPIO
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::CLK, GPIO_NUM_10);   // CLK pin
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::DIAG0, GPIO_NUM_XX); // Replace XX with your GPIO
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::DIAG1, GPIO_NUM_XX); // Replace XX with your GPIO
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::CLK, GPIO_NUM_10);   // CLK pin
 ```
 
 ### Method 3: Override Individual Pins (Custom Routing)
@@ -139,17 +139,17 @@ If you need to reroute a compound pin to a different GPIO:
 
 ```cpp
 // After applying pin config, override individual pins if needed
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::DCIN, GPIO_NUM_7); // Reroute DCIN to GPIO7 (different from ENCA)
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::DCIN, GPIO_NUM_7); // Reroute DCIN to GPIO7 (different from ENCA)
 ```
 
 ## API Reference
 
-### TMC5160PinConfig Struct
+### TMC51x0PinConfig Struct
 
 Pin configuration structure that handles all GPIO pin assignments:
 
 ```cpp
-struct TMC5160PinConfig {
+struct TMC51x0PinConfig {
   // Basic control pins
   int en_pin{-1};   // EN pin (required)
   int dir_pin{-1};  // DIR pin (same as ref_right_pin)
@@ -177,8 +177,8 @@ struct TMC5160PinConfig {
   int clk_pin{-1}; // Clock input
 
   // Constructors
-  TMC5160PinConfig(); // Default: all pins unmapped
-  TMC5160PinConfig(int en, int dir = -1, int step = -1); // Helper for basic pins
+  TMC51x0PinConfig(); // Default: all pins unmapped
+  TMC51x0PinConfig(int en, int dir = -1, int step = -1); // Helper for basic pins
 };
 ```
 
@@ -192,10 +192,10 @@ struct TMC5160PinConfig {
 **Usage:**
 ```cpp
 // Simple configuration
-tmc5160::TMC5160PinConfig config(GPIO_NUM_11, GPIO_NUM_4, GPIO_NUM_5);
+tmc51x0::TMC51x0PinConfig config(GPIO_NUM_11, GPIO_NUM_4, GPIO_NUM_5);
 
 // Full configuration
-tmc5160::TMC5160PinConfig config{};
+tmc51x0::TMC51x0PinConfig config{};
 config.en_pin = GPIO_NUM_11;
 config.step_pin = GPIO_NUM_4;  // Automatically maps ref_left_pin
 config.enc_a_pin = GPIO_NUM_8; // Automatically maps dc_in_pin
@@ -205,7 +205,7 @@ config.enc_a_pin = GPIO_NUM_8; // Automatically maps dc_in_pin
 Apply a pin configuration structure (automatically handles compound pins):
 
 ```cpp
-bool ApplyPinConfig(const TMC5160PinConfig& pin_config);
+bool ApplyPinConfig(const TMC51x0PinConfig& pin_config);
 ```
 
 **Parameters:**
@@ -222,11 +222,11 @@ bool ApplyPinConfig(const TMC5160PinConfig& pin_config);
 Configure a TMC5160 control pin to an ESP32 GPIO pin (or override compound pin mappings).
 
 ```cpp
-bool SetPinMapping(tmc5160::TMC5160CtrlPin pin, gpio_num_t gpio_pin);
+bool SetPinMapping(tmc51x0::TMC51x0CtrlPin pin, gpio_num_t gpio_pin);
 ```
 
 **Parameters:**
-- `pin`: TMC5160 control pin identifier (e.g., `TMC5160CtrlPin::DIAG0`)
+- `pin`: TMC5160 control pin identifier (e.g., `TMC51x0CtrlPin::DIAG0`)
 - `gpio_pin`: ESP32 GPIO pin number, or `-1` to disable/unmap
 
 **Returns:** `true` if pin mapping was set successfully
@@ -243,7 +243,7 @@ bool SetPinMapping(tmc5160::TMC5160CtrlPin pin, gpio_num_t gpio_pin);
 Query the GPIO pin mapping for a TMC5160 control pin.
 
 ```cpp
-gpio_num_t GetPinMapping(tmc5160::TMC5160CtrlPin pin) const;
+gpio_num_t GetPinMapping(tmc51x0::TMC51x0CtrlPin pin) const;
 ```
 
 **Parameters:**
@@ -255,7 +255,7 @@ gpio_num_t GetPinMapping(tmc5160::TMC5160CtrlPin pin) const;
 Set a GPIO pin to active or inactive state.
 
 ```cpp
-bool GpioSet(tmc5160::TMC5160CtrlPin pin, tmc5160::GpioSignal signal);
+bool GpioSet(tmc51x0::TMC51x0CtrlPin pin, tmc51x0::GpioSignal signal);
 ```
 
 **Parameters:**
@@ -273,7 +273,7 @@ bool GpioSet(tmc5160::TMC5160CtrlPin pin, tmc5160::GpioSignal signal);
 Read the current state of a GPIO pin.
 
 ```cpp
-bool GpioRead(tmc5160::TMC5160CtrlPin pin, tmc5160::GpioSignal& signal);
+bool GpioRead(tmc51x0::TMC51x0CtrlPin pin, tmc51x0::GpioSignal& signal);
 ```
 
 **Parameters:**
@@ -292,11 +292,11 @@ The active level for each pin can be configured to match your hardware:
 
 ```cpp
 // EN pin is active HIGH to disable (inverted logic for DRV_ENN)
-spi.SetPinActiveLevel(tmc5160::TMC5160CtrlPin::EN, true);
+spi.SetPinActiveLevel(tmc51x0::TMC51x0CtrlPin::EN, true);
 
 // Reference switches are typically active LOW
-spi.SetPinActiveLevel(tmc5160::TMC5160CtrlPin::REFL_STEP, false);
-spi.SetPinActiveLevel(tmc5160::TMC5160CtrlPin::REFR_DIR, false);
+spi.SetPinActiveLevel(tmc51x0::TMC51x0CtrlPin::REFL_STEP, false);
+spi.SetPinActiveLevel(tmc51x0::TMC51x0CtrlPin::REFR_DIR, false);
 ```
 
 ## CLK Pin Configuration
@@ -305,11 +305,11 @@ The CLK pin (GPIO10 on your ESP32-C6) can be used for external clock input:
 
 ```cpp
 // Configure CLK pin
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::CLK, GPIO_NUM_10);
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::CLK, GPIO_NUM_10);
 
 // Read CLK pin state
-tmc5160::GpioSignal clk_signal;
-if (spi.GpioRead(tmc5160::TMC5160CtrlPin::CLK, clk_signal)) {
+tmc51x0::GpioSignal clk_signal;
+if (spi.GpioRead(tmc51x0::TMC51x0CtrlPin::CLK, clk_signal)) {
     // Process clock signal
 }
 ```
@@ -327,10 +327,10 @@ These pins are read-only and can be monitored continuously:
 
 ```cpp
 // Monitor diagnostic pins
-tmc5160::GpioSignal diag0, diag1;
+tmc51x0::GpioSignal diag0, diag1;
 while (true) {
-    if (spi.GpioRead(tmc5160::TMC5160CtrlPin::DIAG0, diag0)) {
-        if (diag0 == tmc5160::GpioSignal::ACTIVE) {
+    if (spi.GpioRead(tmc51x0::TMC51x0CtrlPin::DIAG0, diag0)) {
+        if (diag0 == tmc51x0::GpioSignal::ACTIVE) {
             // Handle DIAG0 event
         }
     }
@@ -344,20 +344,20 @@ Reference switch pins (REFL_STEP, REFR_DIR) are used for endstop detection when 
 
 ```cpp
 // Configure reference switch pins
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::REFL_STEP, GPIO_NUM_4);
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::REFR_DIR, GPIO_NUM_7);
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::REFL_STEP, GPIO_NUM_4);
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::REFR_DIR, GPIO_NUM_7);
 
 // Read reference switch states
-tmc5160::GpioSignal left_ref, right_ref;
-spi.GpioRead(tmc5160::TMC5160CtrlPin::REFL_STEP, left_ref);
-spi.GpioRead(tmc5160::TMC5160CtrlPin::REFR_DIR, right_ref);
+tmc51x0::GpioSignal left_ref, right_ref;
+spi.GpioRead(tmc51x0::TMC51x0CtrlPin::REFL_STEP, left_ref);
+spi.GpioRead(tmc51x0::TMC51x0CtrlPin::REFR_DIR, right_ref);
 
 // Configure reference switches in driver
-tmc5160::ReferenceSwitchConfig ref_cfg{};
-ref_cfg.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
-ref_cfg.right_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
-ref_cfg.latch_left = tmc5160::ReferenceLatchMode::DISABLED;
-ref_cfg.latch_right = tmc5160::ReferenceLatchMode::DISABLED;
+tmc51x0::ReferenceSwitchConfig ref_cfg{};
+ref_cfg.left_switch_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+ref_cfg.right_switch_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+ref_cfg.latch_left = tmc51x0::ReferenceLatchMode::DISABLED;
+ref_cfg.latch_right = tmc51x0::ReferenceLatchMode::DISABLED;
 driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
 ```
 
@@ -367,13 +367,13 @@ Encoder pins are used for closed-loop control when using the internal ramp gener
 
 ```cpp
 // Configure encoder pins (when SD_MODE=0)
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::ENCA, GPIO_NUM_8);
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::ENCB, GPIO_NUM_9);
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::ENCN, GPIO_NUM_10);
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::ENCA, GPIO_NUM_8);
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::ENCB, GPIO_NUM_9);
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::ENCN, GPIO_NUM_10);
 
 // Configure encoder in driver
-tmc5160::EncoderConfig enc_cfg{};
-enc_cfg.prescaler_mode = tmc5160::EncoderPrescalerMode::BINARY;
+tmc51x0::EncoderConfig enc_cfg{};
+enc_cfg.prescaler_mode = tmc51x0::EncoderPrescalerMode::BINARY;
 driver.encoder.Configure(enc_cfg);
 driver.encoder.SetResolution(200, 1000, false);
 ```
@@ -387,18 +387,18 @@ DC Step pins are used for DC Step control when using external step/dir mode (SD_
 ```cpp
 // Configure DC Step pins (when SD_MODE=1, SPI_MODE=1)
 // Note: These are the same physical pins as encoder pins
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::DCIN, GPIO_NUM_8);  // DC Step gating input
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::DCEN, GPIO_NUM_9);  // DC Step enable input
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::DCO, GPIO_NUM_10); // DC Step ready output
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::DCIN, GPIO_NUM_8);  // DC Step gating input
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::DCEN, GPIO_NUM_9);  // DC Step enable input
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::DCO, GPIO_NUM_10); // DC Step ready output
 
 // Control DC Step enable
-spi.GpioSet(tmc5160::TMC5160CtrlPin::DCEN, tmc5160::GpioSignal::ACTIVE); // Enable DC Step
-spi.GpioSet(tmc5160::TMC5160CtrlPin::DCIN, tmc5160::GpioSignal::ACTIVE); // Gate DC Step
+spi.GpioSet(tmc51x0::TMC51x0CtrlPin::DCEN, tmc51x0::GpioSignal::ACTIVE); // Enable DC Step
+spi.GpioSet(tmc51x0::TMC51x0CtrlPin::DCIN, tmc51x0::GpioSignal::ACTIVE); // Gate DC Step
 
 // Read DC Step ready output
-tmc5160::GpioSignal dco_ready;
-if (spi.GpioRead(tmc5160::TMC5160CtrlPin::DCO, dco_ready)) {
-    if (dco_ready == tmc5160::GpioSignal::ACTIVE) {
+tmc51x0::GpioSignal dco_ready;
+if (spi.GpioRead(tmc51x0::TMC51x0CtrlPin::DCO, dco_ready)) {
+    if (dco_ready == tmc51x0::GpioSignal::ACTIVE) {
         // DC Step is ready
     }
 }
@@ -418,7 +418,7 @@ For single wire UART communication, use only DIAG1_SWP (SWP - positive):
 
 ```cpp
 // Configure for single wire UART mode
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::DIAG1, GPIO_NUM_TX); // UART TX/RX (SWP)
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::DIAG1, GPIO_NUM_TX); // UART TX/RX (SWP)
 // DIAG0 not needed for single wire mode
 ```
 
@@ -427,8 +427,8 @@ For RS485 differential bus communication, use both DIAG1_SWP (SWP) and DIAG0_SWN
 
 ```cpp
 // Configure for RS485 differential bus
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::DIAG1, GPIO_NUM_A); // RS485 A (SWP - positive)
-spi.SetPinMapping(tmc5160::TMC5160CtrlPin::DIAG0, GPIO_NUM_B); // RS485 B (SWN - negative)
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::DIAG1, GPIO_NUM_A); // RS485 A (SWP - positive)
+spi.SetPinMapping(tmc51x0::TMC51x0CtrlPin::DIAG0, GPIO_NUM_B); // RS485 B (SWN - negative)
 ```
 
 **Note:** In UART mode, the UART communication interface (`UartCommInterface`) handles the actual UART protocol. The GPIO pin mapping is for hardware connection reference only. The UART driver manages the communication pins automatically.
@@ -449,10 +449,10 @@ If SPI_MODE (pin 22) and SD_MODE (pin 21) are connected to GPIO outputs instead 
 
 ```cpp
 #include "esp32_tmc5160_bus.hpp"
-#include "../../../inc/tmc5160.hpp"
+#include "../../../inc/tmc51x0.hpp"
 
 // Configure pin config with mode pins
-tmc5160::TMC5160PinConfig pin_config{};
+tmc51x0::TMC51x0PinConfig pin_config{};
 pin_config.en_pin = GPIO_NUM_11;
 pin_config.spi_mode_pin = GPIO_NUM_22;  // SPI_MODE pin (if available as GPIO)
 pin_config.sd_mode_pin = GPIO_NUM_21;   // SD_MODE pin (if available as GPIO)
@@ -470,14 +470,14 @@ Esp32SPI spi(SPI2_HOST,
 spi.Initialize();
 
 // Create driver
-tmc5160::TMC5160<Esp32SPI> driver(spi);
+tmc51x0::TMC51x0<Esp32SPI> driver(spi);
 ```
 
 ### Changing Communication Mode
 
 ```cpp
 // Set mode to SPI + Internal Ramp Generator
-if (driver.communication.SetOperatingMode(tmc5160::ChipCommMode::SPI_INTERNAL_RAMP)) {
+if (driver.communication.SetOperatingMode(tmc51x0::ChipCommMode::SPI_INTERNAL_RAMP)) {
   ESP_LOGI(TAG, "Mode set to SPI + Internal Ramp");
   // ⚠️ CRITICAL: Must reset chip for mode change to take effect
   // The mode pins are read at startup, so changes require a reset
@@ -485,7 +485,7 @@ if (driver.communication.SetOperatingMode(tmc5160::ChipCommMode::SPI_INTERNAL_RA
 }
 
 // Read current mode
-tmc5160::ChipCommMode current_mode;
+tmc51x0::ChipCommMode current_mode;
 if (driver.communication.GetOperatingMode(current_mode)) {
   ESP_LOGI(TAG, "Current mode: %d", static_cast<int>(current_mode));
 }
@@ -497,7 +497,7 @@ if (driver.communication.GetOperatingMode(current_mode)) {
 - Mode pins are **read at startup** - changes require a chip reset to take effect
 - You must reset the chip (power cycle or reset pin) after changing mode pins
 - The driver does **NOT** automatically reset the chip - you must handle this externally
-- Ensure pins are configured as outputs in `TMC5160PinConfig` before use
+- Ensure pins are configured as outputs in `TMC51x0PinConfig` before use
 - These pins are typically hardwired - only use software control if connected to GPIO
 
 ### Mode Pin States

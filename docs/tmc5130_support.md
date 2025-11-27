@@ -42,7 +42,7 @@ No special configuration needed - the driver handles differences automatically:
 
 ```cpp
 // Initialize driver (automatically detects chip version)
-tmc5160::DriverConfig cfg;
+tmc51x0::DriverConfig cfg;
 // ... configure cfg ...
 
 if (!driver.Initialize(cfg)) {

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "💡 Examples"
-description: "Complete example walkthroughs for the TMC5160 driver"
+description: "Complete example walkthroughs for the TMC51x0 driver (TMC5130 & TMC5160)"
 nav_order: 7
 parent: "📚 Documentation"
 permalink: /docs/examples/
@@ -9,22 +9,22 @@ permalink: /docs/examples/
 
 # Examples
 
-This guide provides complete, working examples demonstrating various use cases for the TMC5160 driver.
+This guide provides complete, working examples demonstrating various use cases for the TMC51x0 driver (TMC5130 & TMC5160).
 
 ## Example 1: Basic Positioning Mode
 
 This example shows basic stepper motor control in positioning mode.
 
 ```cpp
-#include "inc/tmc5160.hpp"
+#include "inc/tmc51x0.hpp"
 
 // Assume MySPI is implemented (see platform_integration.md)
 MySPI spi(true, true, true); // EN, DIR, STEP active high
-tmc5160::TMC5160 driver(spi);
+tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)(spi);
 
 int main() {
     // Initialize driver
-    tmc5160::DriverConfig cfg{};
+    tmc51x0::DriverConfig cfg{};
     // Motor current is automatically calculated from motor_spec
     cfg.motor_spec.rated_current_ma = 1500;
     cfg.motor_spec.sense_resistor_mohm = 50;  // Required for calculation
@@ -32,10 +32,10 @@ int main() {
     driver.Initialize(cfg);
     
     // Configure positioning mode
-    driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(1000.0f, tmc5160::Unit::Steps);  // Move 1000 steps
-    driver.rampControl.SetMaxSpeed(1000.0f, tmc5160::Unit::Steps);     // 1000 steps/s
-    driver.rampControl.SetAcceleration(500.0f, tmc5160::Unit::Steps);   // 500 steps/s²
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+    driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);  // Move 1000 steps
+    driver.rampControl.SetMaxSpeed(1000.0f, tmc51x0::Unit::Steps);     // 1000 steps/s
+    driver.rampControl.SetAcceleration(500.0f, tmc51x0::Unit::Steps);   // 500 steps/s²
     
     // Enable motor
     driver.motorControl.Enable();
@@ -62,13 +62,13 @@ int main() {
 This example demonstrates velocity mode operation.
 
 ```cpp
-#include "inc/tmc5160.hpp"
+#include "inc/tmc51x0.hpp"
 
 MySPI spi(true, true, true);
-tmc5160::TMC5160 driver(spi);
+tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)(spi);
 
 int main() {
-    tmc5160::DriverConfig cfg{};
+    tmc51x0::DriverConfig cfg{};
     // Motor current is automatically calculated from motor_spec
     cfg.motor_spec.rated_current_ma = 1500;
     cfg.motor_spec.sense_resistor_mohm = 50;
@@ -76,9 +76,9 @@ int main() {
     driver.Initialize(cfg);
     
     // Set velocity mode
-    driver.rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS);
-    driver.rampControl.SetMaxSpeed(500.0f, tmc5160::Unit::Steps);  // 500 steps/s forward
-    driver.rampControl.SetAcceleration(200.0f, tmc5160::Unit::Steps);
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
+    driver.rampControl.SetMaxSpeed(500.0f, tmc51x0::Unit::Steps);  // 500 steps/s forward
+    driver.rampControl.SetAcceleration(200.0f, tmc51x0::Unit::Steps);
     
     driver.motorControl.Enable();
     
@@ -94,18 +94,18 @@ int main() {
 This example configures the driver for silent operation using stealthChop.
 
 ```cpp
-#include "inc/tmc5160.hpp"
+#include "inc/tmc51x0.hpp"
 
 MySPI spi(true, true, true);
-tmc5160::TMC5160 driver(spi);
+tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)(spi);
 
 int main() {
-    tmc5160::DriverConfig cfg{};
+    tmc51x0::DriverConfig cfg{};
     // Motor current is automatically calculated from motor_spec
     cfg.motor_spec.rated_current_ma = 1500;
     cfg.motor_spec.sense_resistor_mohm = 50;
     cfg.motor_spec.supply_voltage_mv = 24000;
-    cfg.chopper.mres = tmc5160::MicrostepResolution::MRES_256;  // 256 microsteps for smooth operation
+    cfg.chopper.mres = tmc51x0::MicrostepResolution::MRES_256;  // 256 microsteps for smooth operation
     cfg.stealthchop.pwm_autoscale = true;
     cfg.stealthchop.pwm_autograd = true;
     driver.Initialize(cfg);
@@ -113,11 +113,11 @@ int main() {
     // Configure stealthChop thresholds
     // Below 100 steps/s: stealthChop mode (silent)
     // Above 100 steps/s: spreadCycle mode (more torque)
-    driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f, tmc5160::Unit::Steps);
+    driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f, tmc51x0::Unit::Steps);
     
-    driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(1000.0f, tmc5160::Unit::Steps);
-    driver.rampControl.SetMaxSpeed(50.0f, tmc5160::Unit::Steps);  // Low speed = stealthChop
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+    driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);
+    driver.rampControl.SetMaxSpeed(50.0f, tmc51x0::Unit::Steps);  // Low speed = stealthChop
     
     driver.motorControl.Enable();
     
@@ -134,13 +134,13 @@ int main() {
 This example demonstrates encoder-based closed-loop control.
 
 ```cpp
-#include "inc/tmc5160.hpp"
+#include "inc/tmc51x0.hpp"
 
 MySPI spi(true, true, true);
-tmc5160::TMC5160 driver(spi);
+tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)(spi);
 
 int main() {
-    tmc5160::DriverConfig cfg{};
+    tmc51x0::DriverConfig cfg{};
     // Motor current is automatically calculated from motor_spec
     cfg.motor_spec.rated_current_ma = 1500;
     cfg.motor_spec.sense_resistor_mohm = 50;
@@ -148,8 +148,8 @@ int main() {
     driver.Initialize(cfg);
     
     // Configure encoder
-    tmc5160::EncoderConfig enc_cfg{};
-    enc_cfg.prescaler_mode = tmc5160::EncoderPrescalerMode::BINARY; // Binary mode
+    tmc51x0::EncoderConfig enc_cfg{};
+    enc_cfg.prescaler_mode = tmc51x0::EncoderPrescalerMode::BINARY; // Binary mode
     driver.encoder.Configure(enc_cfg);
     
     // Set encoder resolution: 200 steps/rev motor, 1000 pulses/rev encoder
@@ -157,9 +157,9 @@ int main() {
     driver.encoder.SetAllowedDeviation(10); // 10 steps tolerance
     
     // Move to position
-    driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(1000.0f, tmc5160::Unit::Steps);
-    driver.rampControl.SetMaxSpeed(1000.0f, tmc5160::Unit::Steps);
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+    driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);
+    driver.rampControl.SetMaxSpeed(1000.0f, tmc51x0::Unit::Steps);
     driver.motorControl.Enable();
     
     // Monitor encoder deviation
@@ -179,13 +179,13 @@ int main() {
 This example shows how to use StallGuard2 for stall detection.
 
 ```cpp
-#include "inc/tmc5160.hpp"
+#include "inc/tmc51x0.hpp"
 
 MySPI spi(true, true, true);
-tmc5160::TMC5160 driver(spi);
+tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)(spi);
 
 int main() {
-    tmc5160::DriverConfig cfg{};
+    tmc51x0::DriverConfig cfg{};
     // Motor current is automatically calculated from motor_spec
     cfg.motor_spec.rated_current_ma = 1500;
     cfg.motor_spec.sense_resistor_mohm = 50;
@@ -193,14 +193,14 @@ int main() {
     driver.Initialize(cfg);
     
     // Configure StallGuard2
-    tmc5160::StallGuardConfig sg_cfg{};
+    tmc51x0::StallGuardConfig sg_cfg{};
     sg_cfg.threshold = 0;      // Threshold (tune for your motor)
     sg_cfg.enable_filter = false; // Filter disabled
     // Note: semin/semax are CoolStep parameters, configure separately if needed
     driver.diagnostics.ConfigureStallGuard(sg_cfg);
     
-    driver.rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS);
-    driver.rampControl.SetMaxSpeed(500.0f, tmc5160::Unit::Steps);
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
+    driver.rampControl.SetMaxSpeed(500.0f, tmc51x0::Unit::Steps);
     driver.motorControl.Enable();
     
     // Monitor StallGuard value
@@ -248,21 +248,21 @@ This example is designed for **cable/strain relief fatigue testing** and demonst
 ### Basic Usage
 
 ```cpp
-#include "inc/tmc5160.hpp"
+#include "inc/tmc51x0.hpp"
 #include "esp32_tmc5160_bus.hpp"
 
 // Create driver instance
 Esp32SPI spi(SPI2_HOST, GPIO_NUM_23, GPIO_NUM_19, GPIO_NUM_18, GPIO_NUM_5,
              GPIO_NUM_2, GPIO_NUM_4, GPIO_NUM_15, 4000000);
-tmc5160::TMC5160 driver(spi);
+tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)(spi);
 
 // Initialize driver
-tmc5160::DriverConfig cfg{};
+tmc51x0::DriverConfig cfg{};
 // Motor current is automatically calculated from motor_spec
 cfg.motor_spec.rated_current_ma = 1500;
 cfg.motor_spec.sense_resistor_mohm = 50;
 cfg.motor_spec.supply_voltage_mv = 24000;
-cfg.chopper.mres = tmc5160::MicrostepResolution::MRES_256; // 256 microsteps
+cfg.chopper.mres = tmc51x0::MicrostepResolution::MRES_256; // 256 microsteps
 driver.Initialize(cfg);
 
 // Create fatigue test motion controller

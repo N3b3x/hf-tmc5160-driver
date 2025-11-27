@@ -349,6 +349,6 @@ private:
       drivers_; ///< TMC51x0 driver instances (optional for dynamic devices)
 };
 
-} // namespace tmc5160
+} // namespace tmc51x0
 
 #endif // TMC5160_DAISY_CHAIN_HPP

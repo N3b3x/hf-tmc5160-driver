@@ -1,16 +1,16 @@
 ---
 layout: default
 title: "📚 Documentation"
-description: "Complete documentation for the HardFOC TMC5160 Driver"
+description: "Complete documentation for the HardFOC TMC51x0 Driver (TMC5130 & TMC5160)"
 nav_order: 2
-parent: "HardFOC TMC5160 Driver"
+parent: "HardFOC TMC51x0 Driver (TMC5130 & TMC5160)"
 permalink: /docs/
 has_children: true
 ---
 
-# HF-TMC5160 Documentation
+# HF-TMC51x0 Documentation (TMC5130 & TMC5160)
 
-Welcome! This directory contains step-by-step guides for installing, building, and using the **HF-TMC5160** library.
+Welcome! This directory contains step-by-step guides for installing, building, and using the **HF-TMC51x0** library, which supports both TMC5130 and TMC5160 chips.
 
 ## 📚 Documentation Structure
 
@@ -51,7 +51,7 @@ Welcome! This directory contains step-by-step guides for installing, building, a
 
 ## 🚀 Quick Start Path
 
-**New to TMC5160?** Follow this recommended path:
+**New to TMC51x0?** Follow this recommended path:
 
 1. Start with **[Installation](installation.md)** to prepare your environment
 2. Follow **[Hardware Setup](hardware_setup.md)** to wire your hardware

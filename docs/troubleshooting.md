@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "🐛 Troubleshooting"
-description: "Common issues and solutions for the TMC5160 driver"
+description: "Common issues and solutions for the TMC51x0 driver (TMC5130 & TMC5160)"
 nav_order: 8
 parent: "📚 Documentation"
 permalink: /docs/troubleshooting/
@@ -9,7 +9,7 @@ permalink: /docs/troubleshooting/
 
 # Troubleshooting
 
-This guide helps you diagnose and resolve common issues when using the TMC5160 driver.
+This guide helps you diagnose and resolve common issues when using the TMC51x0 driver (TMC5130 & TMC5160).
 
 ## Common Error Messages
 
@@ -105,7 +105,7 @@ This guide helps you diagnose and resolve common issues when using the TMC5160 d
 **Solution:**
 - Ensure you've implemented all required communication interface methods
 - Check method signatures match the interface definition exactly
-- Verify template parameter is correct: `TMC5160<MySPI>`
+- Verify template parameter is correct: `TMC51x0<MySPI>`
 
 **Error: "Undefined reference"**
 
@@ -148,7 +148,7 @@ This guide helps you diagnose and resolve common issues when using the TMC5160 d
 // Debug logging is enabled by default
 // To disable (reduce code size):
 #define TMC5160_DISABLE_DEBUG_LOGGING
-#include "inc/tmc5160.hpp"
+#include "inc/tmc51x0.hpp"
 ```
 
 ### Use a Logic Analyzer

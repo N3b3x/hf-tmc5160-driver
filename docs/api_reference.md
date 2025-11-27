@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "📖 API Reference"
-description: "Complete API documentation for the TMC5160 driver"
+description: "Complete API documentation for the TMC51x0 driver (TMC5130 & TMC51x0)"
 nav_order: 6
 parent: "📚 Documentation"
 permalink: /docs/api_reference/
@@ -9,28 +9,28 @@ permalink: /docs/api_reference/
 
 # API Reference
 
-Complete reference documentation for all public methods and types in the TMC5160 driver.
+Complete reference documentation for all public methods and types in the TMC51x0 driver (TMC5130 & TMC51x0).
 
 ## Source Code
 
-- **Main Header**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
-- **Communication Interface**: [`inc/tmc5160_comm_interface.hpp`](../inc/tmc5160_comm_interface.hpp)
-- **Registers**: [`inc/tmc5160_registers.hpp`](../inc/tmc5160_registers.hpp)
-- **Types**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
-- **Unit Conversions**: [`inc/tmc5160_units.hpp`](../inc/tmc5160_units.hpp)
+- **Main Header**: [`inc/tmc51x0.hpp`](../inc/tmc51x0.hpp)
+- **Communication Interface**: [`inc/tmc51x0_comm_interface.hpp`](../inc/tmc51x0_comm_interface.hpp)
+- **Registers**: [`inc/tmc51x0_registers.hpp`](../inc/tmc51x0_registers.hpp)
+- **Types**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
+- **Unit Conversions**: [`inc/tmc51x0_units.hpp`](../inc/tmc51x0_units.hpp)
 
-## TMC5160 Class
+## TMC51x0 Class
 
-Main driver class for interfacing with the TMC5160 stepper motor controller.
+Main driver class for interfacing with the TMC51x0 stepper motor controllers (TMC5130 & TMC51x0).
 
-**Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+**Location**: [`inc/tmc51x0.hpp`](../inc/tmc51x0.hpp)
 
 ### Class Architecture
 
-The `TMC5160` class uses a **subsystem-based architecture** that organizes functionality into logical groups. This design makes it easy to discover and use features:
+The `TMC51x0` class uses a **subsystem-based architecture** that organizes functionality into logical groups. This design makes it easy to discover and use features:
 
 ```cpp
-tmc5160::TMC5160<CommType> driver(comm_interface);
+tmc51x0::TMC51x0<CommType> driver(comm_interface);
 
 // Subsystems provide organized access to functionality
 driver.rampControl      // Motion planning, positioning, velocity control
@@ -48,7 +48,7 @@ driver.printer          // Debug register printing
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `TMC5160()` | `TMC5160(CommType& comm, uint8_t daisy_chain_position = 0, uint8_t uart_node_address = 0)` | Construct driver instance. For SPI: use `daisy_chain_position` (0 = first chip). For UART: use `uart_node_address` (0-254). Clock frequency (f_clk) is determined automatically during `Initialize()` from `DriverConfig::external_clk_config`. |
+| `TMC51x0()` | `TMC51x0(CommType& comm, uint8_t daisy_chain_position = 0, uint8_t uart_node_address = 0)` | Construct driver instance. For SPI: use `daisy_chain_position` (0 = first chip). For UART: use `uart_node_address` (0-254). Clock frequency (f_clk) is determined automatically during `Initialize()` from `DriverConfig::external_clk_config`. |
 
 ### Core Methods
 
@@ -59,19 +59,19 @@ driver.printer          // Debug register printing
 | `Reset()` | `bool Reset() noexcept` | `true` on success | Perform software reset |
 | `IsInitialized()` | `bool IsInitialized() const noexcept` | `true` if initialized | Check initialization status |
 
-**Note**: Per datasheet procedure, devices are programmed backwards from address 254 (254, 253, 252, ...). Logical device indices (0, 1, 2, ...) map to physical addresses (254, 253, 252, ...). Use `TMC5160MultiNode` class for managing multiple devices.
+**Note**: Per datasheet procedure, devices are programmed backwards from address 254 (254, 253, 252, ...). Logical device indices (0, 1, 2, ...) map to physical addresses (254, 253, 252, ...). Use `TMC51x0MultiNode` class for managing multiple devices.
 
 **⚠️ Chip Communication Mode Control:**
 - `communication.SetOperatingMode()` and `communication.GetOperatingMode()` control SPI_MODE (pin 22) and SD_MODE (pin 21) pins
 - These pins are **typically hardwired** and read at startup
 - Only use these methods if SPI_MODE and SD_MODE are connected to GPIO outputs
-- Configure pins in `TMC5160PinConfig` (spi_mode_pin, sd_mode_pin) before use
+- Configure pins in `TMC51x0PinConfig` (spi_mode_pin, sd_mode_pin) before use
 - **CRITICAL**: Mode changes require a chip reset (power cycle or reset pin) to take effect
 - The mode pins are read at startup, so changes won't be effective until reset
 
 ## Subsystems
 
-The TMC5160 class organizes functionality into intuitive subsystems. Each subsystem provides a focused set of methods for a specific aspect of motor control.
+The TMC51x0 class organizes functionality into intuitive subsystems. Each subsystem provides a focused set of methods for a specific aspect of motor control.
 
 ---
 
@@ -79,7 +79,7 @@ The TMC5160 class organizes functionality into intuitive subsystems. Each subsys
 
 Ramp control and motion planning subsystem for precise motor positioning and velocity control.
 
-**Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+**Location**: [`inc/tmc51x0.hpp`](../inc/tmc51x0.hpp)
 
 **Access**: `driver.rampControl`
 
@@ -135,7 +135,7 @@ Ramp control and motion planning subsystem for precise motor positioning and vel
 
 Motor control and configuration subsystem for current control, chopper modes, and stealthChop operation.
 
-**Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+**Location**: [`inc/tmc51x0.hpp`](../inc/tmc51x0.hpp)
 
 **Access**: `driver.motorControl`
 
@@ -175,7 +175,7 @@ Motor control and configuration subsystem for current control, chopper modes, an
 
 Encoder integration and closed-loop control subsystem for position verification and step loss detection.
 
-**Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+**Location**: [`inc/tmc51x0.hpp`](../inc/tmc51x0.hpp)
 
 **Access**: `driver.encoder`
 
@@ -209,7 +209,7 @@ Encoder integration and closed-loop control subsystem for position verification 
 
 Driver status monitoring and diagnostics subsystem.
 
-**Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+**Location**: [`inc/tmc51x0.hpp`](../inc/tmc51x0.hpp)
 
 ### Methods
 
@@ -233,13 +233,13 @@ Driver status monitoring and diagnostics subsystem.
 | `GetRampStatusRegister()` | `bool GetRampStatusRegister(uint32_t& status) noexcept` | `true` on success | Read RAMP_STAT register |
 | `ClearRampStatus()` | `bool ClearRampStatus(uint32_t bits_to_clear) noexcept` | `true` on success | Clear specific bits in RAMP_STAT register |
 | `GetLostSteps()` | `bool GetLostSteps(uint32_t& steps) noexcept` | `true` on success | Get lost steps counter (dcStep mode only) |
-| `GetChipVersion()` | `uint8_t GetChipVersion() const noexcept` | Chip version (0x11 = TMC5130, 0x30 = TMC5160) | Get detected chip version |
+| `GetChipVersion()` | `uint8_t GetChipVersion() const noexcept` | Chip version (0x11 = TMC5130, 0x30 = TMC51x0) | Get detected chip version |
 
 ## Tuning Subsystem ⭐
 
 Automatic parameter tuning for optimal driver performance.
 
-**Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+**Location**: [`inc/tmc51x0.hpp`](../inc/tmc51x0.hpp)
 
 **Access**: `driver.tuning`
 
@@ -259,18 +259,18 @@ Automatic parameter tuning for optimal driver performance.
 
 **Usage Example**:
 ```cpp
-tmc5160::StallGuardTuningResult result;
+tmc51x0::StallGuardTuningResult result;
 bool success = driver.tuning.TuneStallGuard(
     target_velocity, result,  // Target velocity (priority) and result struct
     -10, 63,                  // SGT search range
     3000.0f,                  // Acceleration
     min_velocity, max_velocity, // Velocity range to test
-    tmc5160::Unit::Steps
+    tmc51x0::Unit::Steps
 );
 
 if (success) {
     // Use optimal SGT
-    tmc5160::StallGuardConfig sg_config;
+    tmc51x0::StallGuardConfig sg_config;
     sg_config.threshold = result.optimal_sgt;
     driver.diagnostics.ConfigureStallGuard(sg_config);
     
@@ -285,7 +285,7 @@ if (success) {
 
 Homing methods with automatic settings caching for endstop-free and switch-based homing.
 
-**Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+**Location**: [`inc/tmc51x0.hpp`](../inc/tmc51x0.hpp)
 
 **Access**: `driver.homing`
 
@@ -338,7 +338,7 @@ Register printing methods for debugging.
 
 ### Open Load Diagnostics
 
-The TMC5160 can detect open load conditions (interrupted cables, loose connectors) by checking if it can reach the desired motor coil current. This is useful for system debugging and detecting wiring issues.
+The TMC51x0 can detect open load conditions (interrupted cables, loose connectors) by checking if it can reach the desired motor coil current. This is useful for system debugging and detecting wiring issues.
 
 **Requirements for Reliable Detection:**
 
@@ -358,7 +358,7 @@ The TMC5160 can detect open load conditions (interrupted cables, loose connector
 
 ```cpp
 // Ensure SpreadCycle mode is enabled (StealthChop disabled)
-tmc5160::GlobalConfig gconf{};
+tmc51x0::GlobalConfig gconf{};
 driver.motorControl.GetGlobalConfig(gconf);
 if (gconf.en_pwm_mode) {
   gconf.en_pwm_mode = false;  // Disable StealthChop
@@ -366,7 +366,7 @@ if (gconf.en_pwm_mode) {
 }
 
 // Move motor at low/nominal velocity (minimum 4× microstep resolution)
-driver.rampControl.SetMaxSpeed(1000.0f, tmc5160::Unit::Steps);  // Low velocity
+driver.rampControl.SetMaxSpeed(1000.0f, tmc51x0::Unit::Steps);  // Low velocity
 driver.rampControl.SetTargetPosition(1024);  // At least 4× microstep resolution (256)
 
 // Wait for motion to start
@@ -398,11 +398,11 @@ if (driver.diagnostics.CheckOpenLoad(phase_a, phase_b)) {
 
 Communication and multi-chip configuration subsystem for SPI daisy chaining and UART multi-node addressing.
 
-**Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+**Location**: [`inc/tmc51x0.hpp`](../inc/tmc51x0.hpp)
 
 **Access**: `driver.communication`
 
-**Purpose**: Manages multi-chip communication setup including SPI daisy chain configuration and UART node addressing. Essential for controlling multiple TMC5160 drivers on a single bus.
+**Purpose**: Manages multi-chip communication setup including SPI daisy chain configuration and UART node addressing. Essential for controlling multiple TMC51x0 drivers on a single bus.
 
 **Key Features**:
 - **SPI Daisy Chaining**: Configure position and chain length for SPI multi-chip setups
@@ -429,7 +429,7 @@ Communication and multi-chip configuration subsystem for SPI daisy chaining and 
 
 UART configuration subsystem for multi-node addressing.
 
-**Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+**Location**: [`inc/tmc51x0.hpp`](../inc/tmc51x0.hpp)
 
 ### Methods
 
@@ -441,7 +441,7 @@ UART configuration subsystem for multi-node addressing.
 
 Protection and safety features subsystem.
 
-**Location**: [`inc/tmc5160.hpp`](../inc/tmc5160.hpp)
+**Location**: [`inc/tmc51x0.hpp`](../inc/tmc51x0.hpp)
 
 ### Methods
 
@@ -454,7 +454,7 @@ Protection and safety features subsystem.
 
 Methods available through `GetComm()` for direct communication interface access.
 
-**Location**: [`inc/tmc5160_comm_interface.hpp`](../inc/tmc5160_comm_interface.hpp)
+**Location**: [`inc/tmc51x0_comm_interface.hpp`](../inc/tmc51x0_comm_interface.hpp)
 
 ### Methods
 
@@ -463,22 +463,22 @@ Methods available through `GetComm()` for direct communication interface access.
 | `GetMode()` | `CommMode GetMode() const noexcept` | CommMode enum | Get communication mode (SPI or UART) |
 | `ReadRegister()` | `bool ReadRegister(uint8_t address, uint32_t& value, uint8_t daisy_chain_position = 0) noexcept` | `true` on success | Read 32-bit register. For SPI: daisy-chain position. For UART: node address. |
 | `WriteRegister()` | `bool WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept` | `true` on success | Write 32-bit register. For SPI: daisy-chain position. For UART: node address. |
-| `GpioSet()` | `bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) noexcept` | `true` on success | Set GPIO pin state |
-| `GpioRead()` | `bool GpioRead(TMC5160CtrlPin pin, GpioSignal& signal) noexcept` | `true` on success | Read GPIO pin state |
-| `GpioSetActive()` | `bool GpioSetActive(TMC5160CtrlPin pin) noexcept` | `true` on success | Set GPIO pin to active state |
-| `GpioSetInactive()` | `bool GpioSetInactive(TMC5160CtrlPin pin) noexcept` | `true` on success | Set GPIO pin to inactive state |
-| `SignalToGpioLevel()` | `bool SignalToGpioLevel(TMC5160CtrlPin pin, GpioSignal signal) const noexcept` | GPIO level | Convert signal to physical GPIO level |
-| `GpioLevelToSignal()` | `GpioSignal GpioLevelToSignal(TMC5160CtrlPin pin, bool gpio_level) const noexcept` | GpioSignal enum | Convert GPIO level to signal |
-| `SetPinActiveLevel()` | `bool SetPinActiveLevel(TMC5160CtrlPin pin, bool active_level) noexcept` | `true` on success | Configure pin active level |
+| `GpioSet()` | `bool GpioSet(TMC51x0CtrlPin pin, GpioSignal signal) noexcept` | `true` on success | Set GPIO pin state |
+| `GpioRead()` | `bool GpioRead(TMC51x0CtrlPin pin, GpioSignal& signal) noexcept` | `true` on success | Read GPIO pin state |
+| `GpioSetActive()` | `bool GpioSetActive(TMC51x0CtrlPin pin) noexcept` | `true` on success | Set GPIO pin to active state |
+| `GpioSetInactive()` | `bool GpioSetInactive(TMC51x0CtrlPin pin) noexcept` | `true` on success | Set GPIO pin to inactive state |
+| `SignalToGpioLevel()` | `bool SignalToGpioLevel(TMC51x0CtrlPin pin, GpioSignal signal) const noexcept` | GPIO level | Convert signal to physical GPIO level |
+| `GpioLevelToSignal()` | `GpioSignal GpioLevelToSignal(TMC51x0CtrlPin pin, bool gpio_level) const noexcept` | GpioSignal enum | Convert GPIO level to signal |
+| `SetPinActiveLevel()` | `bool SetPinActiveLevel(TMC51x0CtrlPin pin, bool active_level) noexcept` | `true` on success | Configure pin active level |
 | `DelayMs()` | `void DelayMs(uint32_t ms) noexcept` | void | Delay milliseconds |
 | `DelayUs()` | `void DelayUs(uint32_t us) noexcept` | void | Delay microseconds |
 | `LogDebug()` | `void LogDebug(int level, const char* tag, const char* format, ...) noexcept` | void | Debug logging |
 
-## TMC5160 Class Methods
+## TMC51x0 Class Methods
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-**Note**: Each `TMC5160` instance tracks its own daisy-chain position (SPI) or UART node address. These values are automatically passed to `ReadRegister()` and `WriteRegister()` methods in the communication interface via `GetCommAddress()`.
+**Note**: Each `TMC51x0` instance tracks its own daisy-chain position (SPI) or UART node address. These values are automatically passed to `ReadRegister()` and `WriteRegister()` methods in the communication interface via `GetCommAddress()`.
 
 ## SpiCommInterface Methods (SPI Only)
 
@@ -492,9 +492,9 @@ Methods available through `GetComm()` for direct communication interface access.
 | `SetNaiPin()` | `bool SetNaiPin(bool active) noexcept` | `true` on success | Set NAI pin state for UART sequential addressing (UART only) |
 | `GetNaoPin()` | `bool GetNaoPin(bool& active) noexcept` | `true` on success | Read NAO pin state for UART sequential addressing (UART only) |
 
-**Note**: `UartCommInterface` no longer stores node addresses. Multiple `TMC5160` instances share one `UartCommInterface` on the same UART bus. Each `TMC5160` instance stores its own `uart_node_address_` and passes it to `ReadRegister()`/`WriteRegister()` automatically.
+**Note**: `UartCommInterface` no longer stores node addresses. Multiple `TMC51x0` instances share one `UartCommInterface` on the same UART bus. Each `TMC51x0` instance stores its own `uart_node_address_` and passes it to `ReadRegister()`/`WriteRegister()` automatically.
 
-**UART Addressing**: Per datasheet procedure (Figure 5.1), devices are programmed backwards from address 254 (254, 253, 252, ...). Logical device indices (0, 1, 2, ...) used in software correspond to physical addresses (254, 253, 252, ...) programmed into chips. Use `TMC5160MultiNode` class for managing multiple devices with sequential programming.
+**UART Addressing**: Per datasheet procedure (Figure 5.1), devices are programmed backwards from address 254 (254, 253, 252, ...). Logical device indices (0, 1, 2, ...) used in software correspond to physical addresses (254, 253, 252, ...) programmed into chips. Use `TMC51x0MultiNode` class for managing multiple devices with sequential programming.
 
 ## Enums
 
@@ -507,7 +507,7 @@ Methods available through `GetComm()` for direct communication interface access.
 | `VELOCITY_NEG` | Velocity mode - negative direction |
 | `HOLD` | Hold mode - maintain current position |
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 ### DriverStatus
 
@@ -524,7 +524,7 @@ Methods available through `GetComm()` for direct communication interface access.
 | `S2GA` | Short to ground phase A |
 | `S2GB` | Short to ground phase B |
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 ### CommMode
 
@@ -533,7 +533,7 @@ Methods available through `GetComm()` for direct communication interface access.
 | `SPI` | SPI communication mode |
 | `UART` | UART communication mode |
 
-**Location**: [`inc/tmc5160_comm_interface.hpp`](../inc/tmc5160_comm_interface.hpp)
+**Location**: [`inc/tmc51x0_comm_interface.hpp`](../inc/tmc51x0_comm_interface.hpp)
 
 ### ChipCommMode
 
@@ -552,9 +552,9 @@ Chip communication and motion control mode configuration. Represents the combina
 - Mode changes require a chip reset (power cycle or reset pin) to take effect
 - The mode pins are read at startup, so changes won't be effective until reset
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
-### TMC5160CtrlPin
+### TMC51x0CtrlPin
 
 | Value | Description |
 |-------|-------------|
@@ -562,7 +562,7 @@ Chip communication and motion control mode configuration. Represents the combina
 | `DIR` | Direction pin |
 | `STEP` | Step pin |
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 ### GpioSignal
 
@@ -571,15 +571,15 @@ Chip communication and motion control mode configuration. Represents the combina
 | `ACTIVE` | Active signal state |
 | `INACTIVE` | Inactive signal state |
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 ## Configuration Structures
 
 ### DriverConfig
 
-Main driver configuration structure containing all parameters for initializing the TMC5160 driver.
+Main driver configuration structure containing all parameters for initializing the TMC51x0 driver.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 **Key Features**:
 - **Automatic Current Calculation**: IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated from `motor_spec` parameters during initialization
@@ -617,7 +617,7 @@ Main driver configuration structure containing all parameters for initializing t
 
 User-friendly configuration for SpreadCycle and Classic chopper modes.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 SpreadCycle is a cycle-by-cycle current control providing superior microstepping quality. Classic mode is an alternative constant off-time chopper algorithm.
 
@@ -676,7 +676,7 @@ SpreadCycle is a cycle-by-cycle current control providing superior microstepping
 
 User-friendly configuration for StealthChop2 voltage PWM mode operation.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 StealthChop provides extremely quiet, noiseless operation for stepper motors, making it ideal for indoor or home use applications. StealthChop2 features automatic tuning that adapts operating parameters to the motor automatically.
 
@@ -735,7 +735,7 @@ StealthChop provides extremely quiet, noiseless operation for stepper motors, ma
 
 Encoder configuration structure with intuitive enum-based API.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -761,17 +761,17 @@ Encoder configuration structure with intuitive enum-based API.
 
 ```cpp
 // Initial configuration
-tmc5160::EncoderConfig enc_cfg{};
-enc_cfg.n_channel_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_HIGH;
-enc_cfg.n_sensitivity = tmc5160::EncoderNSensitivity::RISING_EDGE;
+tmc51x0::EncoderConfig enc_cfg{};
+enc_cfg.n_channel_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_HIGH;
+enc_cfg.n_sensitivity = tmc51x0::EncoderNSensitivity::RISING_EDGE;
 enc_cfg.ignore_ab_polarity = true;
-enc_cfg.clear_mode = tmc5160::EncoderClearMode::ONCE;
-enc_cfg.prescaler_mode = tmc5160::EncoderPrescalerMode::BINARY;
+enc_cfg.clear_mode = tmc51x0::EncoderClearMode::ONCE;
+enc_cfg.prescaler_mode = tmc51x0::EncoderPrescalerMode::BINARY;
 driver.encoder.Configure(enc_cfg);
 
 // Real-time configuration updates
-driver.encoder.SetNChannelSensitivity(tmc5160::EncoderNSensitivity::BOTH_EDGES);
-driver.encoder.SetClearMode(tmc5160::EncoderClearMode::CONTINUOUS);
+driver.encoder.SetNChannelSensitivity(tmc51x0::EncoderNSensitivity::BOTH_EDGES);
+driver.encoder.SetClearMode(tmc51x0::EncoderClearMode::CONTINUOUS);
 
 // Set encoder resolution (automatically calculates ENC_CONST)
 driver.encoder.SetResolution(200, 1000, false);  // 200 motor steps, 1000 encoder pulses
@@ -787,7 +787,7 @@ if (driver.encoder.IsDeviationDetected()) {
 
 User-friendly configuration for StallGuard2 load measurement and stall detection.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 StallGuard2 provides accurate measurement of motor load and can detect stalls. It's used for sensorless homing, CoolStep load-adaptive current reduction, and diagnostics.
 
@@ -826,7 +826,7 @@ StallGuard2 provides accurate measurement of motor load and can detect stalls. I
 
 Comprehensive result structure from automatic SGT tuning with velocity range analysis.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -852,7 +852,7 @@ Comprehensive result structure from automatic SGT tuning with velocity range ana
 
 Short circuit protection is configured through the `PowerStageParameters` structure using user-friendly voltage thresholds and timing values. The driver automatically converts these to register values based on datasheet specifications.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 | Field | Type | Range | Description |
 |-------|------|-------|-------------|
@@ -878,7 +878,7 @@ The driver automatically converts voltage thresholds to register levels using in
 
 Motor specification structure for high-level setup.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -891,7 +891,7 @@ Motor specification structure for high-level setup.
 
 Mechanical system configuration for unit conversions.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -905,7 +905,7 @@ Mechanical system configuration for unit conversions.
 
 User-friendly configuration for CoolStep automatic current reduction feature.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 CoolStep automatically reduces motor current when load is low, saving energy and reducing heat. It uses StallGuard2 to measure motor load and adjusts current accordingly.
 
@@ -964,7 +964,7 @@ CoolStep automatically reduces motor current when load is low, saving energy and
 
 Reference switch/endstop configuration for homing and limit detection.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 **Enumerations**:
 
@@ -1018,51 +1018,51 @@ Reference switch/endstop configuration for homing and limit detection.
 
 ```cpp
 // Configure switches manually - all fields must be explicitly set
-tmc5160::ReferenceSwitchConfig config{};
-config.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;   // Active LOW (determines polarity)
+tmc51x0::ReferenceSwitchConfig config{};
+config.left_switch_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;   // Active LOW (determines polarity)
 config.left_switch_stop_enable = true;                                         // Enable motor stop
-config.right_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_HIGH; // Active HIGH (determines polarity)
+config.right_switch_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_HIGH; // Active HIGH (determines polarity)
 config.right_switch_stop_enable = false;                                       // Don't stop motor (but can still latch/read)
-config.stop_mode = tmc5160::ReferenceStopMode::SOFT_STOP;
-config.latch_left = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;   // Latch on active edge
-config.latch_right = tmc5160::ReferenceLatchMode::BOTH_EDGES;   // Latch on both edges
+config.stop_mode = tmc51x0::ReferenceStopMode::SOFT_STOP;
+config.latch_left = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;   // Latch on active edge
+config.latch_right = tmc51x0::ReferenceLatchMode::BOTH_EDGES;   // Latch on both edges
 driver.rampControl.ConfigureReferenceSwitch(config);
 
 // Example: Switch configured but doesn't stop motor (only latches/reads position)
 // Useful for reading switch state without stopping motor
-tmc5160::ReferenceSwitchConfig config_latch_only{};
-config_latch_only.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;  // Must specify active level
+tmc51x0::ReferenceSwitchConfig config_latch_only{};
+config_latch_only.left_switch_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;  // Must specify active level
 config_latch_only.left_switch_stop_enable = false;  // Don't stop motor (but polarity is configured for reading)
-config_latch_only.latch_left = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;  // But latch position
-config_latch_only.latch_right = tmc5160::ReferenceLatchMode::DISABLED;  // No latching on right
+config_latch_only.latch_left = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;  // But latch position
+config_latch_only.latch_right = tmc51x0::ReferenceLatchMode::DISABLED;  // No latching on right
 driver.rampControl.ConfigureReferenceSwitch(config_latch_only);
 
 // Example: Real-time updates using convenience methods
 // Initial configuration
-tmc5160::ReferenceSwitchConfig config{};
-config.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+tmc51x0::ReferenceSwitchConfig config{};
+config.left_switch_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;
 config.left_switch_stop_enable = true;
-config.latch_left = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;
+config.latch_left = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;
 driver.rampControl.ConfigureReferenceSwitch(config);
 
 // Later: Real-time updates using convenience methods (preserves other settings)
 driver.rampControl.SetLeftSwitchStopEnable(false);  // Disable stop without changing polarity
-driver.rampControl.SetLeftSwitchLatchMode(tmc5160::ReferenceLatchMode::BOTH_EDGES);  // Change latch mode
-driver.rampControl.SetStopMode(tmc5160::ReferenceStopMode::HARD_STOP);  // Change stop mode
-driver.rampControl.SetLeftSwitchActiveLevel(tmc5160::ReferenceSwitchActiveLevel::ACTIVE_HIGH);  // Change polarity
+driver.rampControl.SetLeftSwitchLatchMode(tmc51x0::ReferenceLatchMode::BOTH_EDGES);  // Change latch mode
+driver.rampControl.SetStopMode(tmc51x0::ReferenceStopMode::HARD_STOP);  // Change stop mode
+driver.rampControl.SetLeftSwitchActiveLevel(tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_HIGH);  // Change polarity
 
 // Read current configuration
-tmc5160::ReferenceSwitchConfig current_config{};
+tmc51x0::ReferenceSwitchConfig current_config{};
 if (driver.rampControl.GetReferenceSwitchConfig(current_config)) {
   // Use current_config for inspection or modification
 }
 
 // For homing (hard stop, precise)
-tmc5160::ReferenceSwitchConfig homing_config{};
-homing_config.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+tmc51x0::ReferenceSwitchConfig homing_config{};
+homing_config.left_switch_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;
 homing_config.left_switch_stop_enable = true;  // Enable stop for homing
-homing_config.latch_left = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;  // Latch on active edge
-homing_config.stop_mode = tmc5160::ReferenceStopMode::HARD_STOP;  // Hard stop for precise homing
+homing_config.latch_left = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;  // Latch on active edge
+homing_config.stop_mode = tmc51x0::ReferenceStopMode::HARD_STOP;  // Hard stop for precise homing
 driver.rampControl.ConfigureReferenceSwitch(homing_config);
 ```
 
@@ -1070,7 +1070,7 @@ driver.rampControl.ConfigureReferenceSwitch(homing_config);
 
 User-friendly configuration for DcStep automatic commutation mode.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 DcStep allows the motor to run near its load limit without losing steps by automatically reducing velocity when overloaded. The motor operates in fullstep mode at the target velocity or at reduced velocity if overloaded.
 
@@ -1110,7 +1110,7 @@ DcStep allows the motor to run near its load limit without losing steps by autom
 
 Global configuration (GCONF register) structure.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -1129,7 +1129,7 @@ Global configuration (GCONF register) structure.
 
 DIAG0 pin configuration structure. Nested within `GlobalConfig` as `diag0` field.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 **Note**: DIAG0 pin behavior depends on SD_MODE setting:
 - **SD_MODE=1** (External step/dir): Diagnostic outputs (error, otpw, stall)
@@ -1146,7 +1146,7 @@ DIAG0 pin configuration structure. Nested within `GlobalConfig` as `diag0` field
 
 DIAG1 pin configuration structure. Nested within `GlobalConfig` as `diag1` field.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 **Note**: DIAG1 pin behavior depends on SD_MODE setting:
 - **SD_MODE=1** (External step/dir): Diagnostic outputs (stall, index, onstate, steps_skipped)
@@ -1166,7 +1166,7 @@ DIAG1 pin configuration structure. Nested within `GlobalConfig` as `diag1` field
 
 Ramp generator configuration structure for two-phase acceleration and deceleration.
 
-**Location**: [`inc/tmc5160_types.hpp`](../inc/tmc5160_types.hpp)
+**Location**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
 
 **Unit Specifications** (critical for proper conversion):
 
@@ -1214,7 +1214,7 @@ Ramp generator configuration structure for two-phase acceleration and decelerati
 
 Free functions for converting between physical units and driver steps.
 
-**Location**: [`inc/tmc5160_units.hpp`](../inc/tmc5160_units.hpp)
+**Location**: [`inc/tmc51x0_units.hpp`](../inc/tmc51x0_units.hpp)
 
 ### Position Conversions
 
@@ -1245,7 +1245,7 @@ Free functions for converting between physical units and driver steps.
 
 ## Feature Implementation Summary
 
-The TMC5160 driver provides comprehensive coverage of all chipset features. This section summarizes the implementation status and available features.
+The TMC51x0 driver provides comprehensive coverage of all chipset features. This section summarizes the implementation status and available features.
 
 ### Core Functionality: 100% ✅
 
@@ -1298,7 +1298,7 @@ All GCONF register bits are now accessible through the `GlobalConfig` structure:
 
 **Usage:**
 ```cpp
-tmc5160::GlobalConfig gconf{};
+tmc51x0::GlobalConfig gconf{};
 gconf.en_short_standstill_timeout = true;
 gconf.diag0.error = true;           // Access nested struct fields
 gconf.diag0.pushpull = true;        // Enable push-pull output mode
@@ -1339,7 +1339,7 @@ Both are accessible through the `PowerStageParameters` structure in `DriverConfi
 
 **Usage:**
 ```cpp
-tmc5160::DcStepConfig dc_config{};
+tmc51x0::DcStepConfig dc_config{};
 dc_config.dc_time = 100;
 dc_config.dc_sg = 50;
 driver.motorControl.ConfigureDcStep(dc_config);
@@ -1361,23 +1361,23 @@ if (!driver.rampControl.SetTargetPosition(1000)) {
 
 ## Helper Classes
 
-### TMC5160DaisyChain
+### TMC51x0DaisyChain
 
-High-level manager for multiple TMC5160 drivers in a SPI daisy-chain configuration.
+High-level manager for multiple TMC51x0 drivers in a SPI daisy-chain configuration.
 
-**Location**: [`inc/tmc5160_daisy_chain.hpp`](../inc/tmc5160_daisy_chain.hpp)
+**Location**: [`inc/tmc51x0_daisy_chain.hpp`](../inc/tmc51x0_daisy_chain.hpp)
 
 #### Constructor
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `TMC5160DaisyChain()` | `TMC5160DaisyChain(CommType& comm, uint8_t num_onboard_devices, uint32_t f_clk = 12000000)` | Create daisy-chain manager with specified number of onboard devices. **Note**: `f_clk` parameter is optional (defaults to 12 MHz) but the actual clock frequency used is determined from `DriverConfig::external_clk_config` during `Initialize()`. |
+| `TMC51x0DaisyChain()` | `TMC51x0DaisyChain(CommType& comm, uint8_t num_onboard_devices, uint32_t f_clk = 12000000)` | Create daisy-chain manager with specified number of onboard devices. **Note**: `f_clk` parameter is optional (defaults to 12 MHz) but the actual clock frequency used is determined from `DriverConfig::external_clk_config` during `Initialize()`. |
 
 #### Methods
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `operator[]` | `TMC5160<CommType>& operator[](size_t index)` | Reference to driver | Access driver at specified position (0-based) |
+| `operator[]` | `TMC51x0<CommType>& operator[](size_t index)` | Reference to driver | Access driver at specified position (0-based) |
 | `InitializeAll()` | `bool InitializeAll(const DriverConfig& config) noexcept` | `true` on success | Initialize all onboard devices with same config |
 | `AddDevice()` | `bool AddDevice(size_t position) noexcept` | `true` on success | Add extra device at specified position |
 | `RemoveDevice()` | `bool RemoveDevice(size_t position) noexcept` | `true` on success | Remove extra device at specified position |
@@ -1386,8 +1386,8 @@ High-level manager for multiple TMC5160 drivers in a SPI daisy-chain configurati
 
 **Usage:**
 ```cpp
-tmc5160::TMC5160DaisyChain<MySPI, 5> chain(spiComm, 3); // f_clk is optional
-tmc5160::DriverConfig cfg{};
+tmc51x0::TMC51x0DaisyChain<MySPI, 5> chain(spiComm, 3); // f_clk is optional
+tmc51x0::DriverConfig cfg{};
 cfg.motor_spec.rated_current_ma = 2000;
 cfg.motor_spec.sense_resistor_mohm = 50;
 cfg.motor_spec.supply_voltage_mv = 24000;
@@ -1397,23 +1397,23 @@ auto& motor_x = chain[0];
 motor_x.rampControl.SetTargetPosition(1000);
 ```
 
-### TMC5160MultiNode
+### TMC51x0MultiNode
 
-High-level manager for multiple TMC5160 drivers in a UART multi-node configuration.
+High-level manager for multiple TMC51x0 drivers in a UART multi-node configuration.
 
-**Location**: [`inc/tmc5160_multi_node.hpp`](../inc/tmc5160_multi_node.hpp)
+**Location**: [`inc/tmc51x0_multi_node.hpp`](../inc/tmc51x0_multi_node.hpp)
 
 #### Constructor
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `TMC5160MultiNode()` | `TMC5160MultiNode(CommType& comm, uint8_t num_onboard_devices, uint32_t f_clk = 12000000)` | Create multi-node manager with specified number of onboard devices. **Note**: `f_clk` parameter is optional (defaults to 12 MHz) but the actual clock frequency used is determined from `DriverConfig::external_clk_config` during `Initialize()`. |
+| `TMC51x0MultiNode()` | `TMC51x0MultiNode(CommType& comm, uint8_t num_onboard_devices, uint32_t f_clk = 12000000)` | Create multi-node manager with specified number of onboard devices. **Note**: `f_clk` parameter is optional (defaults to 12 MHz) but the actual clock frequency used is determined from `DriverConfig::external_clk_config` during `Initialize()`. |
 
 #### Methods
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `operator[]` | `TMC5160<CommType>& operator[](size_t index)` | Reference to driver | Access driver at specified logical index (0-based) |
+| `operator[]` | `TMC51x0<CommType>& operator[](size_t index)` | Reference to driver | Access driver at specified logical index (0-based) |
 | `ProgramSequentially()` | `bool ProgramSequentially() noexcept` | `true` on success | Program all devices sequentially using NAI/NAO pins (required at startup) |
 | `ProgramDevice()` | `bool ProgramDevice(size_t index) noexcept` | `true` on success | Program single device at specified index (must be accessible at address 0) |
 | `InitializeAll()` | `bool InitializeAll(const DriverConfig& config) noexcept` | `true` on success | Initialize all onboard devices with same config |
@@ -1424,7 +1424,7 @@ High-level manager for multiple TMC5160 drivers in a UART multi-node configurati
 
 **Usage:**
 ```cpp
-tmc5160::TMC5160MultiNode<MyUART, 5> nodes(uartComm, 3, 12'000'000);
+tmc51x0::TMC51x0MultiNode<MyUART, 5> nodes(uartComm, 3, 12'000'000);
 nodes.ProgramSequentially(); // Required at startup
 nodes.InitializeAll(cfg);
 auto& motor_x = nodes[0];

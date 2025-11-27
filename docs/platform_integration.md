@@ -9,11 +9,11 @@ permalink: /docs/platform_integration/
 
 # Platform Integration Guide
 
-This guide explains how to implement the hardware abstraction interface for the TMC5160 driver on your platform.
+This guide explains how to implement the hardware abstraction interface for the TMC51x0 driver (TMC5130 & TMC5160) on your platform.
 
 ## Understanding CRTP (Curiously Recurring Template Pattern)
 
-The TMC5160 driver uses **CRTP** (Curiously Recurring Template Pattern) for hardware abstraction. This design choice
+The TMC51x0 driver (TMC5130 & TMC5160) uses **CRTP** (Curiously Recurring Template Pattern) for hardware abstraction. This design choice
 provides several critical benefits for embedded systems:
 
 ### Why CRTP Instead of Virtual Functions?
@@ -40,9 +40,9 @@ provides several critical benefits for embedded systems:
 ```cpp
 #include "driver/spi_master.h"
 #include "driver/gpio.h"
-#include "inc/tmc5160.hpp"
+#include "inc/tmc51x0.hpp"
 
-class Esp32SPI : public tmc5160::SpiCommInterface<Esp32SPI> {
+class Esp32SPI : public tmc51x0::SpiCommInterface<Esp32SPI> {
 private:
     spi_device_handle_t spi_device_;
     gpio_num_t cs_pin_;
@@ -83,16 +83,16 @@ public:
         return ret == ESP_OK;
     }
 
-    bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) noexcept {
+    bool GpioSet(TMC51x0CtrlPin pin, GpioSignal signal) noexcept {
         gpio_num_t gpio_pin;
         switch (pin) {
-            case TMC5160CtrlPin::EN:
+            case TMC51x0CtrlPin::EN:
                 gpio_pin = en_pin_;
                 break;
-            case TMC5160CtrlPin::DIR:
+            case TMC51x0CtrlPin::DIR:
                 gpio_pin = dir_pin_;
                 break;
-            case TMC5160CtrlPin::STEP:
+            case TMC51x0CtrlPin::STEP:
                 gpio_pin = step_pin_;
                 break;
             default:
@@ -104,7 +104,7 @@ public:
         return true;
     }
 
-    bool GpioRead(TMC5160CtrlPin pin, GpioSignal& signal) noexcept {
+    bool GpioRead(TMC51x0CtrlPin pin, GpioSignal& signal) noexcept {
         // TMC5160 doesn't have input pins for reading, but implement for completeness
         return false;
     }
@@ -135,9 +135,9 @@ public:
 
 ```cpp
 #include "stm32f4xx_hal.h"
-#include "inc/tmc5160.hpp"
+#include "inc/tmc51x0.hpp"
 
-class STM32SPI : public tmc5160::SpiCommInterface<STM32SPI> {
+class STM32SPI : public tmc51x0::SpiCommInterface<STM32SPI> {
 private:
     SPI_HandleTypeDef* hspi_;
     GPIO_TypeDef* cs_port_;
@@ -164,11 +164,11 @@ public:
         return status == HAL_OK;
     }
 
-    bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) noexcept {
+    bool GpioSet(TMC51x0CtrlPin pin, GpioSignal signal) noexcept {
         GPIO_TypeDef* port;
         uint16_t gpio_pin;
         switch (pin) {
-            case TMC5160CtrlPin::EN:
+            case TMC51x0CtrlPin::EN:
                 port = en_port_;
                 gpio_pin = en_pin_;
                 break;
@@ -181,7 +181,7 @@ public:
         return true;
     }
 
-    bool GpioRead(TMC5160CtrlPin pin, GpioSignal& signal) noexcept {
+    bool GpioRead(TMC51x0CtrlPin pin, GpioSignal& signal) noexcept {
         return false;
     }
 
@@ -209,9 +209,9 @@ public:
 
 ```cpp
 #include "driver/uart.h"
-#include "inc/tmc5160.hpp"
+#include "inc/tmc51x0.hpp"
 
-class Esp32UART : public tmc5160::UartCommInterface<Esp32UART> {
+class Esp32UART : public tmc51x0::UartCommInterface<Esp32UART> {
 private:
     uart_port_t uart_num_;
     gpio_num_t tx_pin_;
@@ -254,11 +254,11 @@ public:
         return bytes_read == length;
     }
 
-    bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) noexcept {
+    bool GpioSet(TMC51x0CtrlPin pin, GpioSignal signal) noexcept {
         return true; // UART mode doesn't use GPIO pins
     }
 
-    bool GpioRead(TMC5160CtrlPin pin, GpioSignal& signal) noexcept {
+    bool GpioRead(TMC51x0CtrlPin pin, GpioSignal& signal) noexcept {
         return false;
     }
 

@@ -1,10 +1,10 @@
-# TMC5160 Register Access and Configuration Guide
+# TMC51x0 Register Access and Configuration Guide
 
-This guide provides a comprehensive overview of the TMC5160 registers, their access permissions, and recommended configuration strategies. It is based on the verified driver implementation and the TMC5160 datasheet.
+This guide provides a comprehensive overview of the TMC51x0 (TMC5130 & TMC5160) registers, their access permissions, and recommended configuration strategies. It is based on the verified driver implementation and the TMC51x0 datasheet.
 
 ## 1. Register Map and Access Types
 
-The TMC5160 registers are divided into functional groups. Each register has specific access permissions:
+The TMC51x0 registers are divided into functional groups. Each register has specific access permissions:
 - **RW**: Read and Write
 - **R**: Read-Only
 - **W**: Write-Only

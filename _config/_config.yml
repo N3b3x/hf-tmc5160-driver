@@ -8,9 +8,9 @@
 # -----------------------------------------------------------------------------
 # Site Identity
 # -----------------------------------------------------------------------------
-title: "HardFOC TMC5160 Driver"
+title: "HardFOC TMC51x0 Driver (TMC5130 & TMC5160)"
 description: >
-  Hardware-Agnostic TMC5160 Stepper Motor Controller Driver with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support
+  Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 & TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support
 
 baseurl: "/hf-tmc5160-driver"
 url: "https://n3b3x.github.io"
@@ -208,9 +208,9 @@ include:
 # Enhanced SEO settings for better search engine visibility
 seo:
   type: "SoftwareApplication"
-  name: "HardFOC TMC5160 Driver"
+  name: "HardFOC TMC51x0 Driver (TMC5130 & TMC5160)"
   description: >
-    Hardware-Agnostic TMC5160 Stepper Motor Controller Driver with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support
+    Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 & TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support
   url: "https://n3b3x.github.io/hf-tmc5160-driver"
   twitter:
     card: "summary_large_image"
@@ -223,7 +223,7 @@ seo:
 # Social Media Links
 # -----------------------------------------------------------------------------
 social:
-  name: "HardFOC TMC5160 Driver"
+  name: "HardFOC TMC51x0 Driver (TMC5130 & TMC5160)"
   links:
     - "https://github.com/n3b3x/hf-tmc5160-driver"
     - "https://github.com/n3b3x"

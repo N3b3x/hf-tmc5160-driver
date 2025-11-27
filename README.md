@@ -1,13 +1,13 @@
 ---
 layout: default
-title: "HardFOC TMC5160 Driver"
-description: "C++17 hardware-agnostic driver for Trinamic TMC5160 stepper motor controller with advanced features"
+title: "HardFOC TMC51x0 Driver (TMC5130 & TMC5160)"
+description: "C++17 hardware-agnostic driver for Trinamic TMC51x0 stepper motor controllers (TMC5130 & TMC5160) with advanced features"
 nav_order: 1
 permalink: /
 ---
 
-# HF-TMC5160 Driver
-**C++17 hardware-agnostic driver for Trinamic TMC5160 stepper motor controller with advanced features**
+# HF-TMC51x0 Driver (TMC5130 & TMC5160)
+**C++17 hardware-agnostic driver for Trinamic TMC51x0 stepper motor controllers (TMC5130 & TMC5160) with advanced features**
 
 [![C++](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.cppreference.com/w/cpp/17.html)
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -30,14 +30,14 @@ permalink: /
 > **📖 [📚🌐 Complete Documentation](docs/index.md)** -
 > Interactive guides, examples, and step-by-step tutorials
 
-**HF-TMC5160** is a comprehensive, production-ready C++17 driver for the **Trinamic TMC5160** stepper motor controller IC. 
-The TMC5160 is a sophisticated stepper motor driver supporting advanced features including stealthChop for silent operation, 
+**HF-TMC51x0** is a comprehensive, production-ready C++17 driver for the **Trinamic TMC51x0** stepper motor controller ICs (TMC5130 & TMC5160). 
+The TMC51x0 family includes sophisticated stepper motor drivers supporting advanced features including stealthChop for silent operation, 
 spreadCycle for high torque, StallGuard2 for stall detection, and encoder support for closed-loop control. 
 
-This driver provides **complete feature coverage** of all 47 TMC5160 registers with **100+ public API methods** organized into 
+This driver provides **complete feature coverage** of all 47 TMC51x0 registers with **100+ public API methods** organized into 
 intuitive, well-structured subsystems. It supports **multi-chip communication** via SPI daisy chaining and UART multi-node 
 addressing, **physical unit conversions** (mm, degrees, RPM, belt teeth), **automatic parameter tuning**, **sensorless homing**, 
-and many other advanced features not found in other TMC5160 drivers.
+and many other advanced features not found in other TMC51x0 drivers. The driver **automatically detects** and supports both TMC5130 and TMC5160 chips.
 
 ### Architecture & Design
 
@@ -45,7 +45,7 @@ The driver is built with a **subsystem-based architecture** that organizes funct
 to find and use the features you need:
 
 ```cpp
-tmc5160::TMC5160<MySPI> driver(spi);
+tmc51x0::TMC51x0<MySPI> driver(spi);
 
 // Organized subsystems for intuitive access
 driver.rampControl      // Motion planning and positioning
@@ -65,7 +65,7 @@ overhead** while maintaining complete platform independence.
 
 ### Key Capabilities
 
-- **Complete Register Coverage**: All 47 TMC5160 registers (0x00-0x73) accessible through type-safe C++ API
+- **Complete Register Coverage**: All 47 TMC51x0 registers (0x00-0x73) accessible through type-safe C++ API
 - **Multi-Chip Support**: SPI daisy chaining and UART multi-node addressing for controlling multiple motors
 - **Unit Conversions**: Work with physical units (mm, degrees, RPM) instead of raw steps
 - **Automatic Tuning**: Intelligent StallGuard2 threshold optimization with velocity range analysis
@@ -137,14 +137,14 @@ overhead** while maintaining complete platform independence.
 ### 🔗 Multi-Chip Communication
 
 #### Communication Subsystem
-- ✅ **SPI Daisy Chaining**: Connect multiple TMC5160 chips on a single SPI bus
+- ✅ **SPI Daisy Chaining**: Connect multiple TMC51x0 chips on a single SPI bus
   - Automatic chain length detection
   - Position-based addressing (0, 1, 2, ...)
-  - `TMC5160DaisyChain` helper class for easy management
+  - `TMC51x0DaisyChain` helper class for easy management
 - ✅ **UART Multi-Node**: Support for up to 255 devices on a single UART bus
   - Slave addressing (0-254)
   - Sequential programming support
-  - `TMC5160MultiNode` helper class for multi-device management
+  - `TMC51x0MultiNode` helper class for multi-device management
 - ✅ **Automatic Detection**: Chip version detection (TMC5130 vs TMC5160)
 
 ### ⚙️ Advanced Features
@@ -174,25 +174,25 @@ overhead** while maintaining complete platform independence.
 ### Single Motor Setup
 
 ```cpp
-#include "inc/tmc5160.hpp"
+#include "inc/tmc51x0.hpp"
 
 // 1. Implement the communication interface (see platform_integration.md)
-class MySPI : public tmc5160::SpiCommInterface<MySPI> {
+class MySPI : public tmc51x0::SpiCommInterface<MySPI> {
     // ... implement required methods
 };
 
 // 2. Create driver instance
 MySPI spi;
-tmc5160::TMC5160 driver(spi);
+tmc51x0::TMC51x0 driver(spi);
 
 // 3. Initialize driver
-tmc5160::DriverConfig cfg{};
+tmc51x0::DriverConfig cfg{};
 cfg.motor.irun = 20;  // Run current (0-31)
 cfg.motor.ihold = 10; // Hold current (0-31)
 driver.Initialize(cfg);
 
 // 4. Configure and start motor
-driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
 driver.rampControl.SetTargetPosition(1000);
 driver.rampControl.SetMaxSpeed(1000.0f);
 driver.rampControl.SetAcceleration(500.0f);
@@ -202,18 +202,18 @@ driver.motorControl.Enable();
 ### Multi-Motor Daisy Chain Setup
 
 ```cpp
-#include "inc/tmc5160.hpp"
-#include "inc/tmc5160_daisy_chain.hpp"
+#include "inc/tmc51x0.hpp"
+#include "inc/tmc51x0_daisy_chain.hpp"
 
 // 1. Create SPI communication interface (shared by all devices)
 MySPI spi;
 spi.Initialize();
 
 // 2. Create daisy-chain manager with 3 onboard devices
-tmc5160::TMC5160DaisyChain<MySPI, 5> chain(spi, 3, 12'000'000);
+tmc51x0::TMC51x0DaisyChain<MySPI, 5> chain(spi, 3, 12'000'000);
 
 // 3. Initialize all devices
-tmc5160::DriverConfig cfg{};
+tmc51x0::DriverConfig cfg{};
 cfg.motor.irun = 20;
 cfg.motor.ihold = 10;
 chain.InitializeAll(cfg);
@@ -231,8 +231,8 @@ z_axis.motorControl.Enable();
 ### Using Physical Units
 
 ```cpp
-#include "inc/tmc5160.hpp"
-#include "inc/tmc5160_units.hpp"
+#include "inc/tmc51x0.hpp"
+#include "inc/tmc51x0_units.hpp"
 
 // Motor: 200 steps/rev, Lead screw: 2mm pitch
 constexpr uint16_t STEPS_PER_REV = 200;
@@ -245,7 +245,7 @@ driver.rampControl.SetTargetPositionMm(10.0f, STEPS_PER_REV, LEAD_SCREW_PITCH_MM
 driver.rampControl.SetMaxSpeedRpm(100.0f, STEPS_PER_REV);
 
 // Or use conversion functions directly
-int32_t steps = tmc5160::MmToSteps(10.0f, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
+int32_t steps = tmc51x0::MmToSteps(10.0f, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
 driver.rampControl.SetTargetPosition(steps);
 ```
 
@@ -257,7 +257,7 @@ For detailed setup, see [Installation](docs/installation.md) and [Quick Start Gu
 2. **Implement the communication interface** for your platform (see [Platform Integration](docs/platform_integration.md))
 3. **Include the header** in your code:
    ```cpp
-   #include "inc/tmc5160.hpp"
+   #include "inc/tmc51x0.hpp"
    ```
 4. Compile with a **C++17** or newer compiler
 
@@ -267,10 +267,10 @@ For detailed installation instructions, see [docs/installation.md](docs/installa
 
 ### Class Structure & Subsystems
 
-The `TMC5160` class is organized into intuitive subsystems for easy access to functionality:
+The `TMC51x0` class is organized into intuitive subsystems for easy access to functionality:
 
 ```cpp
-tmc5160::TMC5160<CommType> driver(comm_interface);
+tmc51x0::TMC51x0<CommType> driver(comm_interface);
 
 // Motion Control
 driver.rampControl.SetRampMode(RampMode::POSITIONING);
@@ -372,8 +372,8 @@ bool ot = driver.diagnostics.GetStatus() == DriverStatus::OT;
 
 | Class/Method | Description |
 |--------------|-------------|
-| `TMC5160DaisyChain<CommType, MaxDevices>` | High-level manager for SPI daisy chaining |
-| `TMC5160MultiNode<CommType>` | High-level manager for UART multi-node addressing |
+| `TMC51x0DaisyChain<CommType, MaxDevices>` | High-level manager for SPI daisy chaining |
+| `TMC51x0MultiNode<CommType>` | High-level manager for UART multi-node addressing |
 | `chain[0]`, `chain[1]`, ... | Access individual drivers in chain |
 
 ### Unit Conversion Helpers

@@ -29,10 +29,10 @@ The `SetupMotorFromSpec()` function takes high-level motor parameters (rated cur
 ### Simple Setup
 
 ```cpp
-#include "tmc5160.hpp"
+#include "tmc51x0.hpp"
 
 // Define motor specifications
-tmc5160::MotorSpec motor_spec{};
+tmc51x0::MotorSpec motor_spec{};
 motor_spec.steps_per_rev = 200;        // 1.8° stepper motor
 motor_spec.rated_current_ma = 1500;     // 1.5A rated current
 
@@ -50,8 +50,8 @@ driver.motorControl.Enable();
 
 ```cpp
 // Define mechanical system
-tmc5160::MechanicalSystem mech_system{};
-mech_system.system_type = tmc5160::MechanicalSystemType::LeadScrew;
+tmc51x0::MechanicalSystem mech_system{};
+mech_system.system_type = tmc51x0::MechanicalSystemType::LeadScrew;
 mech_system.lead_screw_pitch_mm = 2.0f;  // 2mm pitch
 
 // Setup with mechanical system info
@@ -111,23 +111,23 @@ The `SetupMotorFromSpec()` function:
 ## Complete Example
 
 ```cpp
-#include "tmc5160.hpp"
+#include "tmc51x0.hpp"
 
 void setupNema17Motor() {
     // NEMA 17 motor specifications
-    tmc5160::MotorSpec nema17{};
+    tmc51x0::MotorSpec nema17{};
     nema17.steps_per_rev = 200;           // 1.8° per step
     nema17.rated_current_ma = 1500;       // 1.5A rated
     nema17.winding_resistance_mohm = 3200; // 3.2Ω per phase
     nema17.winding_inductance_uh = 2800;  // 2.8mH per phase
     
     // Lead screw mechanical system
-    tmc5160::MechanicalSystem lead_screw{};
-    lead_screw.system_type = tmc5160::MechanicalSystemType::LeadScrew;
+    tmc51x0::MechanicalSystem lead_screw{};
+    lead_screw.system_type = tmc51x0::MechanicalSystemType::LeadScrew;
     lead_screw.lead_screw_pitch_mm = 2.0f;
     
     // Initialize driver
-    tmc5160::DriverConfig cfg{};
+    tmc51x0::DriverConfig cfg{};
     driver.Initialize(cfg);
     
     // Setup motor from specifications
@@ -137,9 +137,9 @@ void setupNema17Motor() {
     }
     
     // Configure motion parameters
-    driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
-    driver.rampControl.SetMaxSpeed(100.0f, tmc5160::Unit::Rpm, nema17.steps_per_rev);
-    driver.rampControl.SetAcceleration(500.0f, tmc5160::Unit::RpmPerSecond, nema17.steps_per_rev);
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+    driver.rampControl.SetMaxSpeed(100.0f, tmc51x0::Unit::Rpm, nema17.steps_per_rev);
+    driver.rampControl.SetAcceleration(500.0f, tmc51x0::Unit::RpmPerSecond, nema17.steps_per_rev);
     
     // Enable motor
     driver.motorControl.Enable();
@@ -155,7 +155,7 @@ If you need precise control, you can still set current manually:
 driver.motorControl.SetCurrent(20, 10);
 
 // Or use MotorCurrentConfig for physical units
-tmc5160::MotorCurrentConfig current_cfg{};
+tmc51x0::MotorCurrentConfig current_cfg{};
 current_cfg.run_current_ma = 1200;      // 1.2A run current
 current_cfg.hold_current_ma = 400;      // 400mA hold current
 current_cfg.hold_current_delay_ms = 10;  // 10ms delay before reducing current
@@ -169,24 +169,24 @@ current_cfg.hold_current_delay_ms = 10;  // 10ms delay before reducing current
 ### Direct Drive
 
 ```cpp
-tmc5160::MechanicalSystem direct{};
-direct.system_type = tmc5160::MechanicalSystemType::DirectDrive;
+tmc51x0::MechanicalSystem direct{};
+direct.system_type = tmc51x0::MechanicalSystemType::DirectDrive;
 // No additional parameters needed
 ```
 
 ### Lead Screw
 
 ```cpp
-tmc5160::MechanicalSystem lead_screw{};
-lead_screw.system_type = tmc5160::MechanicalSystemType::LeadScrew;
+tmc51x0::MechanicalSystem lead_screw{};
+lead_screw.system_type = tmc51x0::MechanicalSystemType::LeadScrew;
 lead_screw.lead_screw_pitch_mm = 2.0f;  // 2mm pitch
 ```
 
 ### Belt Drive
 
 ```cpp
-tmc5160::MechanicalSystem belt{};
-belt.system_type = tmc5160::MechanicalSystemType::BeltDrive;
+tmc51x0::MechanicalSystem belt{};
+belt.system_type = tmc51x0::MechanicalSystemType::BeltDrive;
 belt.belt_pulley_teeth = 20;            // 20-tooth motor pulley
 belt.belt_pitch_mm = 2.0f;              // 2mm belt pitch (GT2)
 ```
@@ -194,8 +194,8 @@ belt.belt_pitch_mm = 2.0f;              // 2mm belt pitch (GT2)
 ### Gearbox
 
 ```cpp
-tmc5160::MechanicalSystem gearbox{};
-gearbox.system_type = tmc5160::MechanicalSystemType::Gearbox;
+tmc51x0::MechanicalSystem gearbox{};
+gearbox.system_type = tmc51x0::MechanicalSystemType::Gearbox;
 gearbox.gear_ratio = 10.0f;  // 10:1 reduction (output/input)
 ```
 

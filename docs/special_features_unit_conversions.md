@@ -9,11 +9,11 @@ permalink: /docs/special_features_unit_conversions/
 
 # Unit Conversions
 
-The TMC5160 driver works internally with steps, but most applications need to work with physical units like millimeters, degrees, or RPM. This guide shows how to use the unit conversion functions to work with intuitive units.
+The TMC51x0 driver (TMC5130 & TMC5160) works internally with steps, but most applications need to work with physical units like millimeters, degrees, or RPM. This guide shows how to use the unit conversion functions to work with intuitive units.
 
 ## Overview
 
-The driver provides free functions in the `tmc5160` namespace for converting between:
+The driver provides free functions in the `tmc51x0` namespace for converting between:
 - **Physical units**: millimeters, degrees, RPM, mm/s, mm/s²
 - **Driver units**: steps, steps/s, steps/s²
 
@@ -33,7 +33,7 @@ All conversion functions require knowledge of your motor's steps per revolution 
 ### Including the Header
 
 ```cpp
-#include "tmc5160_units.hpp"
+#include "tmc51x0_units.hpp"
 ```
 
 ### Lead Screw Example
@@ -44,15 +44,15 @@ constexpr uint16_t STEPS_PER_REV = 200;
 constexpr float LEAD_SCREW_PITCH_MM = 2.0f;
 
 // Move 10mm
-int32_t steps = tmc5160::MmToSteps(10.0f, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
+int32_t steps = tmc51x0::MmToSteps(10.0f, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
 driver.rampControl.SetTargetPosition(steps);
 
 // Or use SetTargetPosition with Unit parameter (requires mechanical system in DriverConfig)
-driver.rampControl.SetTargetPosition(10.0f, tmc5160::Unit::Mm);
+driver.rampControl.SetTargetPosition(10.0f, tmc51x0::Unit::Mm);
 
 // Get current position in mm
 float current_mm = 0.0f;
-if (driver.rampControl.GetCurrentPosition(current_mm, tmc5160::Unit::Mm, STEPS_PER_REV, LEAD_SCREW_PITCH_MM)) {
+if (driver.rampControl.GetCurrentPosition(current_mm, tmc51x0::Unit::Mm, STEPS_PER_REV, LEAD_SCREW_PITCH_MM)) {
     // Use current_mm
 }
 ```
@@ -61,10 +61,10 @@ if (driver.rampControl.GetCurrentPosition(current_mm, tmc5160::Unit::Mm, STEPS_P
 
 ```cpp
 // Set maximum speed to 100 RPM (requires motor_spec.steps_per_rev in DriverConfig)
-driver.rampControl.SetMaxSpeed(100.0f, tmc5160::Unit::Rpm);
+driver.rampControl.SetMaxSpeed(100.0f, tmc51x0::Unit::Rpm);
 
 // Or convert manually
-float steps_per_sec = tmc5160::RpmToStepsPerSec(100.0f, STEPS_PER_REV);
+float steps_per_sec = tmc51x0::RpmToStepsPerSec(100.0f, STEPS_PER_REV);
 driver.rampControl.SetMaxSpeed(steps_per_sec);
 ```
 
@@ -75,7 +75,7 @@ driver.rampControl.SetMaxSpeed(steps_per_sec);
 constexpr uint16_t PULLEY_TEETH = 20;
 
 // Move 100 belt teeth
-int32_t steps = tmc5160::BeltTeethToSteps(100, STEPS_PER_REV, PULLEY_TEETH);
+int32_t steps = tmc51x0::BeltTeethToSteps(100, STEPS_PER_REV, PULLEY_TEETH);
 driver.rampControl.SetTargetPosition(steps);
 ```
 
@@ -111,8 +111,8 @@ driver.rampControl.SetTargetPosition(steps);
 ## Complete Example
 
 ```cpp
-#include "tmc5160.hpp"
-#include "tmc5160_units.hpp"
+#include "tmc51x0.hpp"
+#include "tmc51x0_units.hpp"
 
 // Motor and mechanical system parameters
 constexpr uint16_t STEPS_PER_REV = 200;      // 1.8° stepper
@@ -120,28 +120,28 @@ constexpr float LEAD_SCREW_PITCH_MM = 2.0f;  // 2mm pitch lead screw
 
 void setupMotor() {
     // Initialize driver with mechanical system configuration
-    tmc5160::DriverConfig cfg{};
+    tmc51x0::DriverConfig cfg{};
     cfg.motor_spec.steps_per_rev = STEPS_PER_REV;
-    cfg.mechanical.system_type = tmc5160::MechanicalSystemType::LeadScrew;
+    cfg.mechanical.system_type = tmc51x0::MechanicalSystemType::LeadScrew;
     cfg.mechanical.lead_screw_pitch_mm = LEAD_SCREW_PITCH_MM;
     driver.Initialize(cfg);
     
     // Set speeds in RPM (uses mechanical system from DriverConfig)
-    driver.rampControl.SetMaxSpeed(100.0f, tmc5160::Unit::Rpm);
+    driver.rampControl.SetMaxSpeed(100.0f, tmc51x0::Unit::Rpm);
     
     // Set acceleration in mm/s² (uses mechanical system from DriverConfig)
-    driver.rampControl.SetAcceleration(50.0f, tmc5160::Unit::MmPerSecondSquared);
+    driver.rampControl.SetAcceleration(50.0f, tmc51x0::Unit::MmPerSecondSquared);
 }
 
 void moveToPosition(float target_mm) {
     // Move to position in millimeters (uses mechanical system from DriverConfig)
-    driver.rampControl.SetTargetPosition(target_mm, tmc5160::Unit::Mm);
+    driver.rampControl.SetTargetPosition(target_mm, tmc51x0::Unit::Mm);
     
     // Wait for completion
     while (!driver.rampControl.IsTargetReached()) {
         // Monitor position in mm (uses mechanical system from DriverConfig)
         float mm = 0.0f;
-        if (driver.rampControl.GetCurrentPosition(mm, tmc5160::Unit::Mm)) {
+        if (driver.rampControl.GetCurrentPosition(mm, tmc51x0::Unit::Mm)) {
             printf("Current position: %.2f mm\n", mm);
         }
     }

@@ -9,7 +9,7 @@ permalink: /docs/special_features_multi_chip/
 
 # Multi-Chip Communication
 
-The TMC5160 driver supports multiple chips on a single communication bus through two methods:
+The TMC51x0 driver (TMC5130 & TMC5160) supports multiple chips on a single communication bus through two methods:
 
 1. **SPI Daisy Chaining**: Multiple TMC5160 chips can be connected on a single SPI bus using chip select (CSN) pins or extended SPI transfers.
 2. **UART Multi-Node Addressing**: Up to 255 TMC5160 chips can be addressed on a single UART bus using node addresses and NAI/NAO pin daisy chaining.
@@ -23,7 +23,7 @@ When multiple TMC5160 chips are used in a system, each chip must be individually
 
 ## Architecture Overview
 
-The TMC5160 driver architecture supports multiple chips on a single communication bus. The key architectural principle is:
+The TMC51x0 driver (TMC5130 & TMC5160) architecture supports multiple chips on a single communication bus. The key architectural principle is:
 
 > **Daisy-chain position is a property of the `TMC5160` driver instance, not the communication interface.**
 
@@ -94,7 +94,7 @@ SD_MODE  (pin 21) ──────> GND  (LOW)
 
 **Software Control (Advanced):**
 - If SPI_MODE and SD_MODE pins are connected to GPIO outputs, they can be controlled via software
-- Configure pins in `TMC5160PinConfig` (spi_mode_pin, sd_mode_pin) and use `driver.communication.SetOperatingMode()`
+- Configure pins in `TMC51x0PinConfig` (spi_mode_pin, sd_mode_pin) and use `driver.communication.SetOperatingMode()`
 - **⚠️ CRITICAL**: Mode changes require a chip reset to take effect (pins are read at startup)
 
 ### Hardware Setup
@@ -158,12 +158,12 @@ spi.SetDaisyChainLength(3); // 3 devices in chain
 
 // Create multiple TMC5160 instances, each with its own daisy-chain position
 // Position 0 = first chip, Position 1 = second chip, etc.
-tmc5160::TMC5160 driver1(spi, 0); // First chip (position 0)
-tmc5160::TMC5160 driver2(spi, 1); // Second chip (position 1)
-tmc5160::TMC5160 driver3(spi, 2); // Third chip (position 2)
+tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)1(spi, 0); // First chip (position 0)
+tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)2(spi, 1); // Second chip (position 1)
+tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)3(spi, 2); // Third chip (position 2)
 
 // Configure each driver
-tmc5160::DriverConfig cfg{};
+tmc51x0::DriverConfig cfg{};
 cfg.motor_spec.rated_current_ma = 2000;
 cfg.motor_spec.sense_resistor_mohm = 50;
 cfg.motor_spec.supply_voltage_mv = 24000;
@@ -192,7 +192,7 @@ driver3.GetComm().ReadRegister(0x00, value3); // Reads from chip 2
 
 ```cpp
 // Create driver with default position (0)
-tmc5160::TMC5160 driver(spi);
+tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)(spi);
 
 // Change position at runtime if needed
 driver.communication.SetDaisyChainPosition(2); // Now addresses chip at position 2
@@ -251,16 +251,16 @@ For a chip at position k in a chain of n devices:
 
 **Note**: Transfer size uses max((k+1)*5, (n-k)*5) to ensure both sending and receiving requirements are met. For k < n/2, receiving requirement dominates. For k >= n/2, sending requirement dominates. Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex response extraction.
 
-### Using TMC5160DaisyChain for Multiple Devices
+### Using TMC51x0DaisyChain for Multiple Devices
 
-For managing multiple devices efficiently, use the `TMC5160DaisyChain` class:
+For managing multiple devices efficiently, use the `TMC51x0DaisyChain` class:
 
 ```cpp
 // Create daisy-chain manager with 3 onboard devices
-tmc5160::TMC5160DaisyChain<MySPI, 5> chain(spiComm, 3);
+tmc51x0::TMC51x0DaisyChain<MySPI, 5> chain(spiComm, 3);
 
 // Initialize all devices
-tmc5160::DriverConfig cfg{};
+tmc51x0::DriverConfig cfg{};
 chain.InitializeAll(cfg);
 
 // Create user-friendly aliases for device indices
@@ -279,7 +279,7 @@ if (chain.AddDevice(3)) {
 }
 ```
 
-**Note:** The `TMC5160DaisyChain` class automatically handles proper chain length
+**Note:** The `TMC51x0DaisyChain` class automatically handles proper chain length
 configuration and sequential positioning. Individual `TMC5160` instances can also
 be created manually, but users must ensure positions match the physical chain order.
 
@@ -413,7 +413,7 @@ MCU GND        |
 
 ### Addressing Schemes
 
-The TMC5160 supports two addressing schemes for UART daisy chaining:
+The TMC51x0 supports two addressing schemes for UART daisy chaining:
 
 #### Scheme 1: Simple Addressing (1-2 Nodes)
 
@@ -488,9 +488,9 @@ For manual programming without the manager class:
 MyUART uart_comm(/* ... */);
 
 // Create TMC5160 instances (initial address 0, will be programmed)
-tmc5160::TMC5160 driver0(uart_comm, 0, 0); // Logical index 0, daisy_pos=0, uart_addr=0
-tmc5160::TMC5160 driver1(uart_comm, 0, 0); // Logical index 1, daisy_pos=0, uart_addr=0
-tmc5160::TMC5160 driver2(uart_comm, 0, 0); // Logical index 2, daisy_pos=0, uart_addr=0
+tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)0(uart_comm, 0, 0); // Logical index 0, daisy_pos=0, uart_addr=0
+tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)1(uart_comm, 0, 0); // Logical index 1, daisy_pos=0, uart_addr=0
+tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)2(uart_comm, 0, 0); // Logical index 2, daisy_pos=0, uart_addr=0
 
 // Program devices sequentially per datasheet (backwards from 254)
 // First chip: accessible at address 0, program to address 254
@@ -516,7 +516,7 @@ uint8_t addr = driver0.communication.GetUartNodeAddress(); // Returns 254
 Override `SetNaiPin()` and `GetNaoPin()` in your UART interface:
 
 ```cpp
-class MyUART : public tmc5160::UartCommInterface<MyUART> {
+class MyUART : public tmc51x0::UartCommInterface<MyUART> {
 private:
   gpio_num_t nai_pin_;
   gpio_num_t nao_pin_;
@@ -537,19 +537,19 @@ public:
 };
 ```
 
-#### Using TMC5160MultiNode Manager Class (Recommended)
+#### Using TMC51x0MultiNode Manager Class (Recommended)
 
-The easiest way to manage multiple UART nodes is using the `TMC5160MultiNode` class:
+The easiest way to manage multiple UART nodes is using the `TMC51x0MultiNode` class:
 
 ```cpp
-#include "tmc5160_multi_node.hpp"
+#include "tmc51x0_multi_node.hpp"
 
 // Create shared UART communication interface
 MyUART uart_comm(/* ... constructor args ... */);
   
 // Create multi-node manager with 3 onboard devices, capacity for 5 total
 // Onboard devices are created with initial address 0 (will be programmed)
-tmc5160::TMC5160MultiNode<MyUART, 5> nodes(uart_comm, 3);
+tmc51x0::TMC51x0MultiNode<MyUART, 5> nodes(uart_comm, 3);
 
 // Program all devices sequentially (required at startup)
 // This programs devices to addresses 254, 253, 252 per datasheet procedure
@@ -562,7 +562,7 @@ if (!nodes.ProgramSequentially()) {
 }
 
 // Initialize all devices
-tmc5160::DriverConfig cfg{};
+tmc51x0::DriverConfig cfg{};
 cfg.motor_spec.rated_current_ma = 2000;
 cfg.motor_spec.sense_resistor_mohm = 50;
 cfg.motor_spec.supply_voltage_mv = 24000;
@@ -590,12 +590,12 @@ uint8_t z_addr = z_axis.communication.GetUartNodeAddress(); // Returns 252
 For manual control without the manager class:
 
 ```cpp
-#include "tmc5160.hpp"
+#include "tmc51x0.hpp"
 
 void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
   // Create TMC5160 instances (initial address 0, will be programmed)
   // All instances share the same UartCommInterface
-  std::vector<tmc5160::TMC5160<MyUART>> drivers;
+  std::vector<tmc51x0::TMC51x0<MyUART>> drivers;
   for (uint8_t i = 0; i < num_chips; i++) {
     drivers.emplace_back(uart, 0, 0); // daisy_pos=0, initial uart_addr=0
   }
@@ -699,7 +699,7 @@ void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
 | `communication.GetUartNodeAddress()` | Get current UART node address |
 | `uartConfig.ConfigureUartNodeAddress(address, send_delay)` | Configure SLAVECONF register with UART node address |
 
-### TMC5160MultiNode Manager Class
+### TMC51x0MultiNode Manager Class
 
 | Method | Description |
 |--------|-------------|
@@ -707,7 +707,7 @@ void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
 | `ProgramDevice(index, send_delay = 2)` | Program a single device at logical index to address (254 - index) |
 | `AddDevice(index)` | Add an extra device at specified logical index |
 | `RemoveDevice(index)` | Remove an extra device at specified logical index |
-| `operator[](index)` | Access individual TMC5160 driver by logical index (0, 1, 2, ...). Actual programmed addresses are (254, 253, 252, ...). |
+| `operator[](index)` | Access individual TMC51x0 driver (TMC5130 & TMC5160) by logical index (0, 1, 2, ...). Actual programmed addresses are (254, 253, 252, ...). |
 | `InitializeAll(config)` | Initialize all active devices with same configuration |
 
 ## Best Practices
@@ -716,7 +716,7 @@ void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
    - All chips share the same CSN (tied together) - handled automatically by SPI hardware
    - Ensure CSN timing requirements are met (minimum 2*tclk + 10ns)
    - CSN control is handled in your `SpiTransfer()` implementation
-   - Use `TMC5160DaisyChain` class for managing multiple devices efficiently
+   - Use `TMC51x0DaisyChain` class for managing multiple devices efficiently
    - **CRITICAL**: Chain length **MUST be known** - it is automatically detected on first access if not manually set
    - If detection fails, operations return false (chain length is required)
    - Optionally call `SetDaisyChainLength()` to manually specify length (will be verified)
@@ -732,7 +732,7 @@ void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
    - **Shared Interface**: Multiple `TMC5160` instances share one `UartCommInterface` on the same UART bus
    - **Node Address Storage**: Each `TMC5160` instance stores its own `uart_node_address_` (like `daisy_chain_position_` for SPI)
    - **Send Delay**: Set `send_delay` >= 2 when multiple nodes are present (via `uartConfig.ConfigureUartNodeAddress()`)
-   - **Sequential Programming**: Program addresses backwards from 254 (254, 253, 252, ...) per datasheet procedure (use `TMC5160MultiNode::ProgramSequentially()`)
+   - **Sequential Programming**: Program addresses backwards from 254 (254, 253, 252, ...) per datasheet procedure (use `TMC51x0MultiNode::ProgramSequentially()`)
    - **Logical vs Physical**: Devices accessed via logical indices (0, 1, 2, ...) but programmed with physical addresses (254, 253, 252, ...)
    - **NAO Control**: After programming each chip, its NAO automatically goes LOW to enable the next chip
    - **Verification**: Always verify addresses after programming

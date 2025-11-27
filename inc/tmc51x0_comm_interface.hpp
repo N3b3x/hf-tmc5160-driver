@@ -380,9 +380,9 @@ struct PinActiveLevels {
 };
 
 /**
- * @brief TMC5160 GPIO pin configuration structure
+ * @brief TMC51x0 GPIO pin configuration structure
  *
- * This structure allows configuring all TMC5160 control pins in a single place.
+ * This structure allows configuring all TMC51x0 control pins in a single place.
  * Compound pins (pins that share the same physical GPIO) are automatically
  * handled - you only need to specify the GPIO once, and both logical pins
  * will be mapped to it.
@@ -407,7 +407,7 @@ struct TMC51x0PinConfig {
   int ref_left_pin{-1};  ///< Left reference switch (REFL_STEP, pin 17) - Same as step_pin
   int ref_right_pin{-1}; ///< Right reference switch (REFR_DIR, pin 18) - Same as dir_pin
 
-  // Diagnostic pins (read-only outputs from TMC5160)
+  // Diagnostic pins (read-only outputs from TMC51x0)
   int diag0_pin{-1}; ///< DIAG0 pin (DIAG0_SWN, pin 26) - Optional
   int diag1_pin{-1}; ///< DIAG1 pin (DIAG1_SWP, pin 27) - Optional
 
@@ -447,7 +447,7 @@ struct TMC51x0PinConfig {
 };
 
 /**
- * @brief Complete ESP32 SPI bus and TMC5160 pin configuration structure
+ * @brief Complete ESP32 SPI bus and TMC51x0 pin configuration structure
  *
  * This structure extends TMC51x0PinConfig to include SPI bus pins, providing
  * a single configuration structure for all GPIO pins used by the ESP32 SPI
@@ -457,7 +457,7 @@ struct TMC51x0PinConfig {
  * easier to manage and configure the hardware setup.
  *
  * @note SPI pins are required for SPI communication.
- * @note TMC5160 control pins are optional and depend on the operating mode.
+ * @note TMC51x0 control pins are optional and depend on the operating mode.
  */
 struct Esp32SpiPinConfig {
   // SPI bus pins (required for SPI communication)
@@ -475,7 +475,7 @@ struct Esp32SpiPinConfig {
   Esp32SpiPinConfig() = default;
 
   /**
-   * @brief Constructor with SPI pins and basic TMC5160 pins
+   * @brief Constructor with SPI pins and basic TMC51x0 pins
    * @param mosi SPI MOSI pin
    * @param miso SPI MISO pin
    * @param sclk SPI clock pin
@@ -1436,7 +1436,7 @@ public:
  * parameter
  * - SetDaisyChainLength() must be called to enable optimal response extraction using datasheet
  * formula
- * - For higher-level multi-driver management, use TMC5160DaisyChain class that manages multiple
+ * - For higher-level multi-driver management, use TMC51x0DaisyChain class that manages multiple
  *   TMC5160 instances on a single SPI bus and automatically configures chain length
  *
  * Example usage:
@@ -1472,7 +1472,7 @@ public:
    *                     Set to 0 to disable daisy-chain mode (single chip, default)
    * @note This is CRITICAL for proper response extraction using the datasheet formula 40·(n-k)
    * @note This should be set once during initialization, before any register access
-   * @note For optimal efficiency with TMC5160DaisyChain, set this to match the chain length
+   * @note For optimal efficiency with TMC51x0DaisyChain, set this to match the chain length
    * @note If set to a non-zero value, it will be verified against auto-detected length on first
    * access. If mismatch is detected, ReadRegister/WriteRegister will return false.
    * @note If set to 0 and daisy_chain_position > 0, chain length will be auto-detected on first

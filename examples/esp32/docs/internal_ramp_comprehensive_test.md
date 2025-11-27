@@ -2,12 +2,12 @@
 
 ## Overview
 
-The `internal_ramp_comprehensive_test.cpp` provides comprehensive testing for TMC5160 driver covering all major features in a single wholesome test suite. This merged test combines core initialization, motor control, ramp control, diagnostics, and protection features into one integrated test suite designed for SPI internal ramp mode operation.
+The `internal_ramp_comprehensive_test.cpp` provides comprehensive testing for TMC51x0 driver (TMC5130 & TMC5160) covering all major features in a single wholesome test suite. This merged test combines core initialization, motor control, ramp control, diagnostics, and protection features into one integrated test suite designed for SPI internal ramp mode operation.
 
 ## Purpose
 
 This test suite is ideal for:
-- Comprehensive validation of all TMC5160 driver features
+- Comprehensive validation of all TMC51x0 driver (TMC5130 & TMC5160) features
 - Testing complete motor control workflows
 - Validating feature interactions and compatibility
 - End-to-end testing of motor control systems
@@ -198,7 +198,7 @@ Tests use a structured output format with verbose logging:
 ```
 I (1234) InternalRamp_Test: ╔══════════════════════════════════════════════════════════════════════════════╗
 I (1235) InternalRamp_Test: ║         ESP32 TMC5160 INTERNAL RAMP COMPREHENSIVE TEST SUITE                  ║
-I (1236) InternalRamp_Test: ║                         HardFOC TMC5160 Driver Tests                           ║
+I (1236) InternalRamp_Test: ║                         HardFOC TMC51x0 Driver (TMC5130 & TMC5160) Tests                           ║
 I (1237) InternalRamp_Test: ╚══════════════════════════════════════════════════════════════════════════════╝
 I (1238) InternalRamp_Test: 
 I (1239) InternalRamp_Test: Configuration:
@@ -483,4 +483,4 @@ This comprehensive test suite covers:
 - ✅ Encoder configuration and operation
 - ✅ Feature compatibility validation
 
-The test suite provides thorough validation of all TMC5160 driver features in a single integrated test, making it ideal for production validation and comprehensive system testing.
+The test suite provides thorough validation of all TMC51x0 driver (TMC5130 & TMC5160) features in a single integrated test, making it ideal for production validation and comprehensive system testing.

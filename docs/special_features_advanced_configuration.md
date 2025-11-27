@@ -9,11 +9,11 @@ permalink: /docs/special_features_advanced_configuration/
 
 # Advanced Configuration
 
-This guide covers advanced TMC5160 features including CoolStep current reduction, dcStep automatic commutation, freewheeling modes, reference switches, and microstep lookup tables.
+This guide covers advanced TMC51x0 (TMC5130 & TMC5160) features including CoolStep current reduction, dcStep automatic commutation, freewheeling modes, reference switches, and microstep lookup tables.
 
 ## Overview
 
-The TMC5160 provides several advanced features for optimizing motor performance:
+The TMC51x0 (TMC5130 & TMC5160) provides several advanced features for optimizing motor performance:
 
 - **CoolStep**: Automatically reduces current when load is low
 - **dcStep**: Automatic commutation for DC motor-like operation
@@ -162,14 +162,14 @@ CoolStep thresholds are configured using register values (`semin` and `semax`) t
 #### Basic Configuration
 
 ```cpp
-#include "tmc5160.hpp"
+#include "tmc51x0.hpp"
 
 void configureCoolStep() {
     // IMPORTANT: CoolStep requires SpreadCycle mode
     driver.motorControl.SetStealthChopEnabled(false);
     
     // Configure CoolStep with user-friendly API
-    tmc5160::CoolStepConfig coolstep{};
+    tmc51x0::CoolStepConfig coolstep{};
     
     // Set thresholds using actual SG values (0-1023)
     // Automatically converted to register values internally
@@ -177,11 +177,11 @@ void configureCoolStep() {
     coolstep.upper_threshold_sg = 256;  // Decrease current when SG >= 256
     
     // Moderate response speeds
-    coolstep.increment_step = tmc5160::CoolStepIncrementStep::STEP_2;
-    coolstep.decrement_speed = tmc5160::CoolStepDecrementSpeed::EVERY_8;
+    coolstep.increment_step = tmc51x0::CoolStepIncrementStep::STEP_2;
+    coolstep.decrement_speed = tmc51x0::CoolStepDecrementSpeed::EVERY_8;
     
     // Conservative minimum current
-    coolstep.min_current = tmc5160::CoolStepMinCurrent::HALF_IRUN;
+    coolstep.min_current = tmc51x0::CoolStepMinCurrent::HALF_IRUN;
     
     // Enable filter for smoother operation
     coolstep.enable_filter = true;
@@ -189,7 +189,7 @@ void configureCoolStep() {
     // Set velocity thresholds (CoolStep active between these speeds)
     coolstep.min_velocity = 500.0f;   // Enable above 500 steps/s
     coolstep.max_velocity = 5000.0f;  // Disable above 5000 steps/s
-    coolstep.velocity_unit = tmc5160::Unit::Steps;
+    coolstep.velocity_unit = tmc51x0::Unit::Steps;
     
     // Configure CoolStep (automatically sets velocity thresholds)
     driver.motorControl.ConfigureCoolStep(coolstep);
@@ -200,9 +200,9 @@ void configureCoolStep() {
 
 ```cpp
 // Quick setup with common defaults
-tmc5160::CoolStepConfig coolstep(64, 256, 500.0f, 5000.0f, tmc5160::Unit::Steps);
-coolstep.increment_step = tmc5160::CoolStepIncrementStep::STEP_2;
-coolstep.decrement_speed = tmc5160::CoolStepDecrementSpeed::EVERY_8;
+tmc51x0::CoolStepConfig coolstep(64, 256, 500.0f, 5000.0f, tmc51x0::Unit::Steps);
+coolstep.increment_step = tmc51x0::CoolStepIncrementStep::STEP_2;
+coolstep.decrement_speed = tmc51x0::CoolStepDecrementSpeed::EVERY_8;
 driver.motorControl.ConfigureCoolStep(coolstep);
 ```
 
@@ -210,16 +210,16 @@ driver.motorControl.ConfigureCoolStep(coolstep);
 
 ```cpp
 // Maximum energy savings configuration
-tmc5160::CoolStepConfig coolstep{};
+tmc51x0::CoolStepConfig coolstep{};
 coolstep.lower_threshold_sg = 96;   // Higher threshold = more aggressive reduction
 coolstep.upper_threshold_sg = 320;  // Wider gap for stability (automatically calculates SEMAX)
-coolstep.increment_step = tmc5160::CoolStepIncrementStep::STEP_4;  // Fast increase
-coolstep.decrement_speed = tmc5160::CoolStepDecrementSpeed::EVERY_32;  // Slow decrease
-coolstep.min_current = tmc5160::CoolStepMinCurrent::QUARTER_IRUN;  // 25% minimum
+coolstep.increment_step = tmc51x0::CoolStepIncrementStep::STEP_4;  // Fast increase
+coolstep.decrement_speed = tmc51x0::CoolStepDecrementSpeed::EVERY_32;  // Slow decrease
+coolstep.min_current = tmc51x0::CoolStepMinCurrent::QUARTER_IRUN;  // 25% minimum
 coolstep.enable_filter = true;
 coolstep.min_velocity = 1000.0f;
 coolstep.max_velocity = 10000.0f;
-coolstep.velocity_unit = tmc5160::Unit::Steps;
+coolstep.velocity_unit = tmc51x0::Unit::Steps;
 driver.motorControl.ConfigureCoolStep(coolstep);
 ```
 
@@ -227,16 +227,16 @@ driver.motorControl.ConfigureCoolStep(coolstep);
 
 ```cpp
 // For rapidly varying loads
-tmc5160::CoolStepConfig coolstep{};
+tmc51x0::CoolStepConfig coolstep{};
 coolstep.lower_threshold_sg = 48;   // Lower threshold = faster response
 coolstep.upper_threshold_sg = 192;  // Smaller gap = faster adjustment (automatically calculates SEMAX)
-coolstep.increment_step = tmc5160::CoolStepIncrementStep::STEP_8;  // Very fast increase
-coolstep.decrement_speed = tmc5160::CoolStepDecrementSpeed::EVERY_2;  // Fast decrease
-coolstep.min_current = tmc5160::CoolStepMinCurrent::HALF_IRUN;
+coolstep.increment_step = tmc51x0::CoolStepIncrementStep::STEP_8;  // Very fast increase
+coolstep.decrement_speed = tmc51x0::CoolStepDecrementSpeed::EVERY_2;  // Fast decrease
+coolstep.min_current = tmc51x0::CoolStepMinCurrent::HALF_IRUN;
 coolstep.enable_filter = false;  // Disable filter for fastest response
 coolstep.min_velocity = 200.0f;
 coolstep.max_velocity = 8000.0f;
-coolstep.velocity_unit = tmc5160::Unit::Steps;
+coolstep.velocity_unit = tmc51x0::Unit::Steps;
 driver.motorControl.ConfigureCoolStep(coolstep);
 ```
 
@@ -248,7 +248,7 @@ Before configuring CoolStep, tune StallGuard2 threshold for your motor:
 
 ```cpp
 // Configure StallGuard2
-tmc5160::StallGuardConfig sg_config{};
+tmc51x0::StallGuardConfig sg_config{};
 sg_config.threshold = 0;  // Start with 0, adjust based on your motor
 sg_config.enable_filter = true;  // Enable filter for stable readings
 driver.diagnostics.ConfigureStallGuard(sg_config);
@@ -446,21 +446,21 @@ DcStep is an automatic commutation mode that allows the motor to run near its lo
 #### Basic Configuration
 
 ```cpp
-#include "tmc5160.hpp"
+#include "tmc51x0.hpp"
 
 void configureDcStep() {
     // Configure DcStep with user-friendly API
-    tmc5160::DcStepConfig dcstep{};
+    tmc51x0::DcStepConfig dcstep{};
     
     // Set minimum velocity threshold (with unit support)
     dcstep.min_velocity = 1000.0f;   // Enable DcStep above 1000 steps/s
-    dcstep.velocity_unit = tmc5160::Unit::Steps;
+    dcstep.velocity_unit = tmc51x0::Unit::Steps;
     
     // Auto-calculate PWM on-time from blank time (recommended)
     dcstep.pwm_on_time_us = 0.0f;  // 0 = auto-calculate
     
     // Moderate stall detection sensitivity (recommended)
-    dcstep.stall_sensitivity = tmc5160::DcStepStallSensitivity::MODERATE;
+    dcstep.stall_sensitivity = tmc51x0::DcStepStallSensitivity::MODERATE;
     
     // Don't stop on stall (continue operation)
     dcstep.stop_on_stall = false;
@@ -477,7 +477,7 @@ void configureDcStep() {
 
 ```cpp
 // Quick setup with common defaults
-tmc5160::DcStepConfig dcstep(1000.0f, tmc5160::Unit::Steps);
+tmc51x0::DcStepConfig dcstep(1000.0f, tmc51x0::Unit::Steps);
 // Auto-calculates PWM on-time, uses MODERATE sensitivity
 driver.motorControl.ConfigureDcStep(dcstep);
 ```
@@ -486,11 +486,11 @@ driver.motorControl.ConfigureDcStep(dcstep);
 
 ```cpp
 // For applications requiring specific PWM on-time
-tmc5160::DcStepConfig dcstep{};
+tmc51x0::DcStepConfig dcstep{};
 dcstep.min_velocity = 500.0f;
-dcstep.velocity_unit = tmc5160::Unit::Steps;
+dcstep.velocity_unit = tmc51x0::Unit::Steps;
 dcstep.pwm_on_time_us = 3.0f;  // 3µs PWM on-time (for 12MHz clock = 36 clock cycles)
-dcstep.stall_sensitivity = tmc5160::DcStepStallSensitivity::HIGH;  // High sensitivity
+dcstep.stall_sensitivity = tmc51x0::DcStepStallSensitivity::HIGH;  // High sensitivity
 dcstep.stop_on_stall = true;  // Stop motor on stall
 driver.motorControl.ConfigureDcStep(dcstep);
 ```
@@ -499,11 +499,11 @@ driver.motorControl.ConfigureDcStep(dcstep);
 
 ```cpp
 // Maximum torque capability
-tmc5160::DcStepConfig dcstep{};
+tmc51x0::DcStepConfig dcstep{};
 dcstep.min_velocity = 2000.0f;  // Higher threshold = more torque headroom
-dcstep.velocity_unit = tmc5160::Unit::Steps;
+dcstep.velocity_unit = tmc51x0::Unit::Steps;
 dcstep.pwm_on_time_us = 5.0f;  // Higher PWM on-time = higher torque capability
-dcstep.stall_sensitivity = tmc5160::DcStepStallSensitivity::LOW;  // Fewer false positives
+dcstep.stall_sensitivity = tmc51x0::DcStepStallSensitivity::LOW;  // Fewer false positives
 dcstep.stop_on_stall = false;
 driver.motorControl.ConfigureDcStep(dcstep);
 ```
@@ -512,11 +512,11 @@ driver.motorControl.ConfigureDcStep(dcstep);
 
 ```cpp
 // Operation down to low velocities
-tmc5160::DcStepConfig dcstep{};
+tmc51x0::DcStepConfig dcstep{};
 dcstep.min_velocity = 200.0f;  // Lower threshold = operation at lower velocities
-dcstep.velocity_unit = tmc5160::Unit::Steps;
+dcstep.velocity_unit = tmc51x0::Unit::Steps;
 dcstep.pwm_on_time_us = 1.5f;  // Lower PWM on-time = operation at lower velocities
-dcstep.stall_sensitivity = tmc5160::DcStepStallSensitivity::MODERATE;
+dcstep.stall_sensitivity = tmc51x0::DcStepStallSensitivity::MODERATE;
 dcstep.stop_on_stall = true;  // Stop on stall for safety
 driver.motorControl.ConfigureDcStep(dcstep);
 ```
@@ -555,7 +555,7 @@ dcstep.pwm_on_time_us = 3.5f;  // Slightly above blank time
 
 ```cpp
 // Start with MODERATE sensitivity
-dcstep.stall_sensitivity = tmc5160::DcStepStallSensitivity::MODERATE;
+dcstep.stall_sensitivity = tmc51x0::DcStepStallSensitivity::MODERATE;
 
 // Adjust based on results:
 // - False positives: Use LOW sensitivity
@@ -702,14 +702,14 @@ StallGuard2 provides accurate measurement of motor load and can detect stalls. I
 #### Basic Configuration
 
 ```cpp
-#include "tmc5160.hpp"
+#include "tmc51x0.hpp"
 
 void configureStallGuard() {
     // IMPORTANT: Enable SpreadCycle mode first
     driver.motorControl.SetStealthChopEnabled(false);
     
     // Configure StallGuard2 with user-friendly API
-    tmc5160::StallGuardConfig sg_config{};
+    tmc51x0::StallGuardConfig sg_config{};
     
     // Set threshold (starting value, works with most motors)
     sg_config.threshold = 0;
@@ -720,7 +720,7 @@ void configureStallGuard() {
     // Set velocity thresholds
     sg_config.min_velocity = 500.0f;   // Enable above 500 steps/s
     sg_config.max_velocity = 5000.0f;  // Disable above 5000 steps/s
-    sg_config.velocity_unit = tmc5160::Unit::Steps;
+    sg_config.velocity_unit = tmc51x0::Unit::Steps;
     
     // Don't stop on stall (for diagnostics/monitoring)
     sg_config.stop_on_stall = false;
@@ -734,12 +734,12 @@ void configureStallGuard() {
 
 ```cpp
 // Use sensitivity enum for convenience
-tmc5160::StallGuardConfig sg_config(
-    tmc5160::StallGuardSensitivity::MODERATE,  // Threshold = 0
+tmc51x0::StallGuardConfig sg_config(
+    tmc51x0::StallGuardSensitivity::MODERATE,  // Threshold = 0
     true,   // Enable filter
     500.0f, // Min velocity
     5000.0f, // Max velocity
-    tmc5160::Unit::Steps,
+    tmc51x0::Unit::Steps,
     false   // Don't stop on stall
 );
 driver.diagnostics.ConfigureStallGuard(sg_config);
@@ -749,12 +749,12 @@ driver.diagnostics.ConfigureStallGuard(sg_config);
 
 ```cpp
 // Configuration optimized for sensorless homing
-tmc5160::StallGuardConfig sg_config{};
+tmc51x0::StallGuardConfig sg_config{};
 sg_config.threshold = -10;  // More sensitive for stall detection
 sg_config.enable_filter = false;  // Disable filter for faster response
 sg_config.min_velocity = 1000.0f;  // Match search speed
 sg_config.max_velocity = 0.0f;  // No upper limit
-sg_config.velocity_unit = tmc5160::Unit::Steps;
+sg_config.velocity_unit = tmc51x0::Unit::Steps;
 sg_config.stop_on_stall = true;  // Stop motor on stall
 driver.diagnostics.ConfigureStallGuard(sg_config);
 ```
@@ -763,12 +763,12 @@ driver.diagnostics.ConfigureStallGuard(sg_config);
 
 ```cpp
 // Configuration optimized for CoolStep
-tmc5160::StallGuardConfig sg_config{};
+tmc51x0::StallGuardConfig sg_config{};
 sg_config.threshold = 0;  // Moderate sensitivity
 sg_config.enable_filter = true;  // Enable filter for smoother readings
 sg_config.min_velocity = 500.0f;  // Match CoolStep min_velocity
 sg_config.max_velocity = 5000.0f;  // Match CoolStep max_velocity
-sg_config.velocity_unit = tmc5160::Unit::Steps;
+sg_config.velocity_unit = tmc51x0::Unit::Steps;
 sg_config.stop_on_stall = false;  // CoolStep handles current, not stopping
 driver.diagnostics.ConfigureStallGuard(sg_config);
 ```
@@ -779,7 +779,7 @@ The library provides an advanced automatic tuning function that prioritizes targ
 
 ```cpp
 // Comprehensive tuning with velocity range analysis
-tmc5160::StallGuardTuningResult result;
+tmc51x0::StallGuardTuningResult result;
 float target_velocity = 30000.0f;  // Most important - optimal SGT determined here
 float min_velocity = 10000.0f;    // Used to determine SGT range
 float max_velocity = 50000.0f;    // Used to determine SGT range
@@ -789,12 +789,12 @@ bool success = driver.tuning.TuneStallGuard(
     -10, 63,                  // SGT search range
     3000.0f,                  // Acceleration
     min_velocity, max_velocity, // Velocity range to test
-    tmc5160::Unit::Steps
+    tmc51x0::Unit::Steps
 );
 
 if (success) {
     // Use optimal SGT at target velocity
-    tmc5160::StallGuardConfig sg_config;
+    tmc51x0::StallGuardConfig sg_config;
     sg_config.threshold = result.optimal_sgt;
     sg_config.min_velocity = result.min_velocity_success ? min_velocity : result.actual_min_velocity;
     sg_config.max_velocity = result.max_velocity_success ? max_velocity : result.actual_max_velocity;
@@ -841,13 +841,13 @@ if (success) {
 Use the comprehensive automatic tuning function for best results:
 
 ```cpp
-tmc5160::StallGuardTuningResult result;
+tmc51x0::StallGuardTuningResult result;
 bool success = driver.tuning.TuneStallGuard(
     target_velocity, result,  // Your target operating velocity
     -10, 63,                  // SGT search range
     3000.0f,                  // Acceleration
     min_velocity, max_velocity, // Your velocity range
-    tmc5160::Unit::Steps
+    tmc51x0::Unit::Steps
 );
 ```
 
@@ -1154,14 +1154,14 @@ Motor target current for automatic tuning must be 225mA or more.
 #### Basic Configuration (Automatic Tuning)
 
 ```cpp
-#include "tmc5160.hpp"
+#include "tmc51x0.hpp"
 
 void configureStealthChop() {
     // Configure StealthChop with automatic tuning using intuitive enums
-    tmc5160::StealthChopConfig stealth{};
+    tmc51x0::StealthChopConfig stealth{};
     
     // Use recommended PWM frequency (~35kHz @ 12MHz)
-    stealth.pwm_freq = static_cast<uint8_t>(tmc5160::StealthChopPwmFreq::PWM_FREQ_1);
+    stealth.pwm_freq = static_cast<uint8_t>(tmc51x0::StealthChopPwmFreq::PWM_FREQ_1);
     
     // Initial values (will be optimized by automatic tuning)
     stealth.pwm_ofs = 30;  // Typical starting value (normal mode)
@@ -1172,13 +1172,13 @@ void configureStealthChop() {
     stealth.pwm_autograd = true;
     
     // Balanced regulation speed (2 increments per half wave)
-    stealth.pwm_reg = static_cast<uint8_t>(tmc5160::StealthChopRegulationSpeed::MODERATE);
+    stealth.pwm_reg = static_cast<uint8_t>(tmc51x0::StealthChopRegulationSpeed::MODERATE);
     
     // Balanced jerk reduction
-    stealth.pwm_lim = static_cast<uint8_t>(tmc5160::StealthChopJerkReduction::MODERATE);
+    stealth.pwm_lim = static_cast<uint8_t>(tmc51x0::StealthChopJerkReduction::MODERATE);
     
     // Normal freewheeling
-    stealth.freewheel = tmc5160::PWMFreewheel::NORMAL;
+    stealth.freewheel = tmc51x0::PWMFreewheel::NORMAL;
     
     // Configure StealthChop
     driver.motorControl.ConfigureStealthChop(stealth);
@@ -1189,7 +1189,7 @@ void configureStealthChop() {
     // Set velocity threshold for StealthChop (TPWMTHRS)
     // Below this velocity: StealthChop (silent)
     // Above this velocity: SpreadCycle (more torque)
-    driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f, tmc5160::Unit::Steps);
+    driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f, tmc51x0::Unit::Steps);
 }
 ```
 
@@ -1197,15 +1197,15 @@ void configureStealthChop() {
 
 ```cpp
 // Most intuitive: Using enums for all parameters
-tmc5160::StealthChopConfig stealth(
-    tmc5160::StealthChopPwmFreq::PWM_FREQ_1,           // PWM frequency
-    tmc5160::StealthChopRegulationSpeed::MODERATE,      // Regulation speed
-    tmc5160::StealthChopJerkReduction::MODERATE        // Jerk reduction
+tmc51x0::StealthChopConfig stealth(
+    tmc51x0::StealthChopPwmFreq::PWM_FREQ_1,           // PWM frequency
+    tmc51x0::StealthChopRegulationSpeed::MODERATE,      // Regulation speed
+    tmc51x0::StealthChopJerkReduction::MODERATE        // Jerk reduction
 );
 driver.motorControl.ConfigureStealthChop(stealth);
 
 // Or with custom initial values (using raw values)
-tmc5160::StealthChopConfig stealth(1, 30, 0, 4, 12);  // freq, ofs, grad, reg, lim
+tmc51x0::StealthChopConfig stealth(1, 30, 0, 4, 12);  // freq, ofs, grad, reg, lim
 driver.motorControl.ConfigureStealthChop(stealth);
 ```
 
@@ -1213,17 +1213,17 @@ driver.motorControl.ConfigureStealthChop(stealth);
 
 ```cpp
 // For applications requiring fast regulation response
-tmc5160::StealthChopConfig stealth{};
-stealth.pwm_freq = static_cast<uint8_t>(tmc5160::StealthChopPwmFreq::PWM_FREQ_1);
-stealth.pwm_reg = static_cast<uint8_t>(tmc5160::StealthChopRegulationSpeed::FAST);  // Fast response
-stealth.pwm_lim = static_cast<uint8_t>(tmc5160::StealthChopJerkReduction::LOW);     // Allow faster switching
+tmc51x0::StealthChopConfig stealth{};
+stealth.pwm_freq = static_cast<uint8_t>(tmc51x0::StealthChopPwmFreq::PWM_FREQ_1);
+stealth.pwm_reg = static_cast<uint8_t>(tmc51x0::StealthChopRegulationSpeed::FAST);  // Fast response
+stealth.pwm_lim = static_cast<uint8_t>(tmc51x0::StealthChopJerkReduction::LOW);     // Allow faster switching
 stealth.pwm_autoscale = true;
 stealth.pwm_autograd = true;
 driver.motorControl.ConfigureStealthChop(stealth);
 
 // For applications requiring very smooth switching
-stealth.pwm_reg = static_cast<uint8_t>(tmc5160::StealthChopRegulationSpeed::SLOW);  // Very stable
-stealth.pwm_lim = static_cast<uint8_t>(tmc5160::StealthChopJerkReduction::MAXIMUM); // Smoothest switching
+stealth.pwm_reg = static_cast<uint8_t>(tmc51x0::StealthChopRegulationSpeed::SLOW);  // Very stable
+stealth.pwm_lim = static_cast<uint8_t>(tmc51x0::StealthChopJerkReduction::MAXIMUM); // Smoothest switching
 driver.motorControl.ConfigureStealthChop(stealth);
 ```
 
@@ -1231,7 +1231,7 @@ driver.motorControl.ConfigureStealthChop(stealth);
 
 ```cpp
 // For well-known motor and operating conditions only
-tmc5160::StealthChopConfig stealth{};
+tmc51x0::StealthChopConfig stealth{};
 stealth.pwm_freq = 1;
 
 // Calculate PWM_OFS: 374 * R_COIL * I_COIL / V_M
@@ -1254,7 +1254,7 @@ driver.motorControl.ConfigureStealthChop(stealth);
 
 ```cpp
 // Configure StealthChop with automatic tuning enabled
-tmc5160::StealthChopConfig stealth{};
+tmc51x0::StealthChopConfig stealth{};
 stealth.pwm_freq = 1;
 stealth.pwm_autoscale = true;
 stealth.pwm_autograd = true;
@@ -1286,8 +1286,8 @@ if (driver.motorControl.GetPwmAuto(pwm_ofs_auto, pwm_grad_auto)) {
 ```cpp
 // Move motor at medium velocity (60-300 RPM typical)
 // Include constant velocity ramp segment
-driver.rampControl.SetMaxSpeed(1000.0f, tmc5160::Unit::Steps);
-driver.rampControl.SetAccelerations(500.0f, 500.0f, tmc5160::Unit::Steps);
+driver.rampControl.SetMaxSpeed(1000.0f, tmc51x0::Unit::Steps);
+driver.rampControl.SetAccelerations(500.0f, 500.0f, tmc51x0::Unit::Steps);
 driver.rampControl.SetTargetPosition(10000);
 
 // Monitor PWM_SCALE_AUTO during motion
@@ -1314,14 +1314,14 @@ For applications requiring high velocity motion, combine StealthChop (low speed)
 
 ```cpp
 // Configure StealthChop for low-speed silent operation
-tmc5160::StealthChopConfig stealth{};
+tmc51x0::StealthChopConfig stealth{};
 stealth.pwm_freq = 1;
 driver.motorControl.ConfigureStealthChop(stealth);
 
 // Set velocity threshold (TPWMTHRS)
 // Below threshold: StealthChop (silent)
 // Above threshold: SpreadCycle (more torque)
-driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f, tmc5160::Unit::Steps);
+driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f, tmc51x0::Unit::Steps);
 
 // Use low transfer velocity to avoid jerk at switching point
 // Typical: 1 to a few 10 RPM
@@ -1550,20 +1550,20 @@ TOFF = (t_OFF * f_CLK - 12) / 32
 #### Basic SpreadCycle Configuration
 
 ```cpp
-#include "tmc5160.hpp"
+#include "tmc51x0.hpp"
 
 void configureSpreadCycle() {
     // Configure SpreadCycle with typical settings
-    tmc5160::ChopperConfig chopper{};
+    tmc51x0::ChopperConfig chopper{};
     
     // SpreadCycle mode (recommended)
-    chopper.mode = tmc5160::ChopperMode::SPREAD_CYCLE;
+    chopper.mode = tmc51x0::ChopperMode::SPREAD_CYCLE;
     
     // Off time for ~25kHz chopper frequency (typical)
     chopper.toff = 5;
     
     // Blank time (36 clocks, typical)
-    chopper.tbl = static_cast<uint8_t>(tmc5160::ChopperBlankTime::TBL_36CLK);
+    chopper.tbl = static_cast<uint8_t>(tmc51x0::ChopperBlankTime::TBL_36CLK);
     
     // Hysteresis (effective = 4)
     chopper.hstrt = 4;  // Typical
@@ -1573,7 +1573,7 @@ void configureSpreadCycle() {
     chopper.tpfd = 0;
     
     // Microstep resolution (256 microsteps)
-    chopper.mres = tmc5160::MicrostepResolution::MRES_256;
+    chopper.mres = tmc51x0::MicrostepResolution::MRES_256;
     
     // Enable interpolation (recommended)
     chopper.intpol = true;
@@ -1587,11 +1587,11 @@ void configureSpreadCycle() {
 
 ```cpp
 // SpreadCycle mode with typical settings
-tmc5160::ChopperConfig chopper(5);  // toff=5, other defaults
+tmc51x0::ChopperConfig chopper(5);  // toff=5, other defaults
 driver.motorControl.ConfigureChopper(chopper);
 
 // Or with custom values
-tmc5160::ChopperConfig chopper(5, 2, 4, 0, tmc5160::MicrostepResolution::MRES_256);  // toff, tbl, hstrt, hend, mres
+tmc51x0::ChopperConfig chopper(5, 2, 4, 0, tmc51x0::MicrostepResolution::MRES_256);  // toff, tbl, hstrt, hend, mres
 driver.motorControl.ConfigureChopper(chopper);
 ```
 
@@ -1599,19 +1599,19 @@ driver.motorControl.ConfigureChopper(chopper);
 
 ```cpp
 // Classic constant off-time chopper
-tmc5160::ChopperConfig chopper{};
-chopper.mode = tmc5160::ChopperMode::CLASSIC;
+tmc51x0::ChopperConfig chopper{};
+chopper.mode = tmc51x0::ChopperMode::CLASSIC;
 chopper.toff = 5;              // Slow decay time
 chopper.tfd = 5;              // Fast decay time (similar to toff)
 chopper.hend = 4;             // Sine wave offset (positive offset for zero crossing)
 chopper.disfdcc = false;      // Enable comparator termination
-chopper.tbl = static_cast<uint8_t>(tmc5160::ChopperBlankTime::TBL_36CLK);
-chopper.mres = static_cast<uint8_t>(tmc5160::MicrostepResolution::MRES_256);
+chopper.tbl = static_cast<uint8_t>(tmc51x0::ChopperBlankTime::TBL_36CLK);
+chopper.mres = static_cast<uint8_t>(tmc51x0::MicrostepResolution::MRES_256);
 chopper.intpol = true;
 driver.motorControl.ConfigureChopper(chopper);
 
 // Or use helper constructor
-tmc5160::ChopperConfig chopper(5, 5, 4);  // toff, tfd, offset
+tmc51x0::ChopperConfig chopper(5, 5, 4);  // toff, tfd, offset
 driver.motorControl.ConfigureChopper(chopper);
 ```
 
@@ -1619,13 +1619,13 @@ driver.motorControl.ConfigureChopper(chopper);
 
 ```cpp
 // Optimized for high velocities
-tmc5160::ChopperConfig chopper{};
-chopper.mode = tmc5160::ChopperMode::SPREAD_CYCLE;
+tmc51x0::ChopperConfig chopper{};
+chopper.mode = tmc51x0::ChopperMode::SPREAD_CYCLE;
 chopper.toff = 2;              // Shorter off time (higher frequency)
-chopper.tbl = static_cast<uint8_t>(tmc5160::ChopperBlankTime::TBL_24CLK);  // Shorter blank time
+chopper.tbl = static_cast<uint8_t>(tmc51x0::ChopperBlankTime::TBL_24CLK);  // Shorter blank time
 chopper.hstrt = 4;
 chopper.hend = 0;
-chopper.mres = static_cast<uint8_t>(tmc5160::MicrostepResolution::MRES_256);
+chopper.mres = static_cast<uint8_t>(tmc51x0::MicrostepResolution::MRES_256);
 chopper.intpol = true;
 driver.motorControl.ConfigureChopper(chopper);
 ```
@@ -1659,7 +1659,7 @@ for (uint8_t hstrt = 0; hstrt <= 7; hstrt++) {
     
     // Test motor smoothness at low velocity
     // Move motor and check for smooth operation
-    driver.rampControl.SetMaxSpeed(100.0f, tmc5160::Unit::Steps);
+    driver.rampControl.SetMaxSpeed(100.0f, tmc51x0::Unit::Steps);
     driver.rampControl.SetTargetPosition(1000);
     // ... wait for motion and check smoothness ...
     // If smooth, this is the optimal setting
@@ -1676,7 +1676,7 @@ for (uint8_t tpfd = 1; tpfd <= 15; tpfd++) {
     driver.motorControl.ConfigureChopper(chopper);
     
     // Test for resonances at mid-range velocities
-    driver.rampControl.SetMaxSpeed(500.0f, tmc5160::Unit::Steps);
+    driver.rampControl.SetMaxSpeed(500.0f, tmc51x0::Unit::Steps);
     driver.rampControl.SetTargetPosition(5000);
     // ... wait for motion and check for resonances ...
     // If resonances reduced, this is the optimal setting
@@ -1749,18 +1749,18 @@ Freewheeling controls motor behavior when `ihold=0` (no hold current).
 ```cpp
 void configureFreewheeling() {
     // Configure freewheeling via StealthChopConfig
-    tmc5160::StealthChopConfig stealth{};
-    stealth.freewheel = tmc5160::PWMFreewheel::NORMAL;  // Normal operation (coast when ihold=0)
+    tmc51x0::StealthChopConfig stealth{};
+    stealth.freewheel = tmc51x0::PWMFreewheel::NORMAL;  // Normal operation (coast when ihold=0)
     driver.motorControl.ConfigureStealthChop(stealth);
     
     // Or change freewheeling mode at runtime
-    stealth.freewheel = tmc5160::PWMFreewheel::ENABLED;  // Freewheeling enabled (low resistance)
+    stealth.freewheel = tmc51x0::PWMFreewheel::ENABLED;  // Freewheeling enabled (low resistance)
     driver.motorControl.ConfigureStealthChop(stealth);
     
-    stealth.freewheel = tmc5160::PWMFreewheel::SHORT_LS;  // Coil shorted using low-side drivers
+    stealth.freewheel = tmc51x0::PWMFreewheel::SHORT_LS;  // Coil shorted using low-side drivers
     driver.motorControl.ConfigureStealthChop(stealth);
     
-    stealth.freewheel = tmc5160::PWMFreewheel::SHORT_HS;  // Coil shorted using high-side drivers
+    stealth.freewheel = tmc51x0::PWMFreewheel::SHORT_HS;  // Coil shorted using high-side drivers
     driver.motorControl.ConfigureStealthChop(stealth);
 }
 ```
@@ -1779,16 +1779,16 @@ Reference switches provide hardware endstops for homing and limit detection.
 
 ```cpp
 void configureEndstops() {
-    tmc5160::ReferenceSwitchConfig ref_switch{};
+    tmc51x0::ReferenceSwitchConfig ref_switch{};
     
     // Configure switches with enum-based API
-    ref_switch.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_HIGH;
-    ref_switch.right_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_HIGH;
-    ref_switch.latch_left = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;
-    ref_switch.latch_right = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;
-    ref_switch.stop_mode = tmc5160::ReferenceStopMode::SOFT_STOP;
-    ref_switch.latch_left = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;
-    ref_switch.latch_right = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;
+    ref_switch.left_switch_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_HIGH;
+    ref_switch.right_switch_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_HIGH;
+    ref_switch.latch_left = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;
+    ref_switch.latch_right = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;
+    ref_switch.stop_mode = tmc51x0::ReferenceStopMode::SOFT_STOP;
+    ref_switch.latch_left = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;
+    ref_switch.latch_right = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;
     
     driver.rampControl.ConfigureReferenceSwitch(ref_switch);
 }
@@ -1799,7 +1799,7 @@ void configureEndstops() {
 ```cpp
 void homeToEndstop() {
     // Move toward endstop
-    driver.rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_NEG);
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_NEG);
     driver.rampControl.SetMaxSpeed(500.0f);
     driver.motorControl.Enable();
     
@@ -1817,7 +1817,7 @@ Custom microstep lookup tables allow fine-tuning of microstep interpolation for 
 
 ### Default Lookup Table
 
-The TMC5160 uses a default sinusoidal lookup table. For most applications, this is sufficient.
+The TMC51x0 (TMC5130 & TMC5160) uses a default sinusoidal lookup table. For most applications, this is sufficient.
 
 ### Custom Lookup Table
 
@@ -1893,28 +1893,28 @@ void checkStepLoss() {
 ## Complete Advanced Setup Example
 
 ```cpp
-#include "tmc5160.hpp"
+#include "tmc51x0.hpp"
 
 void setupAdvancedMotor() {
     // Basic initialization
-    tmc5160::DriverConfig cfg{};
+    tmc51x0::DriverConfig cfg{};
     driver.Initialize(cfg);
     
     // Configure CoolStep
-    tmc5160::CoolStepConfig coolstep{};
+    tmc51x0::CoolStepConfig coolstep{};
     coolstep.lower_threshold_sg = 64;   // Automatically converts to SEMIN=2
     coolstep.upper_threshold_sg = 256;  // Automatically converts to SEMAX=5
-    coolstep.increment_step = tmc5160::CoolStepIncrementStep::STEP_2;
-    coolstep.decrement_speed = tmc5160::CoolStepDecrementSpeed::EVERY_2;
+    coolstep.increment_step = tmc51x0::CoolStepIncrementStep::STEP_2;
+    coolstep.decrement_speed = tmc51x0::CoolStepDecrementSpeed::EVERY_2;
     driver.motorControl.ConfigureCoolStep(coolstep);
     
     // Configure reference switches
-    tmc5160::ReferenceSwitchConfig ref_switch{};
-    ref_switch.left_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
-    ref_switch.right_switch_active = tmc5160::ReferenceSwitchActiveLevel::ACTIVE_LOW;
-    ref_switch.stop_mode = tmc5160::ReferenceStopMode::SOFT_STOP;
-    ref_switch.latch_left = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;
-    ref_switch.latch_right = tmc5160::ReferenceLatchMode::ACTIVE_EDGE;
+    tmc51x0::ReferenceSwitchConfig ref_switch{};
+    ref_switch.left_switch_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+    ref_switch.right_switch_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;
+    ref_switch.stop_mode = tmc51x0::ReferenceStopMode::SOFT_STOP;
+    ref_switch.latch_left = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;
+    ref_switch.latch_right = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;
     driver.rampControl.ConfigureReferenceSwitch(ref_switch);
     
     // Set mode change speeds

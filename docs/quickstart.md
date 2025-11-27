@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "⚡ Quick Start"
-description: "Get up and running with the TMC5160 driver in minutes"
+description: "Get up and running with the TMC51x0 driver (TMC5130 & TMC5160) in minutes"
 nav_order: 2
 parent: "📚 Documentation"
 permalink: /docs/quickstart/
@@ -9,7 +9,7 @@ permalink: /docs/quickstart/
 
 # Quick Start
 
-This guide will get you up and running with the TMC5160 driver in just a few steps.
+This guide will get you up and running with the TMC51x0 driver (TMC5130 & TMC5160) in just a few steps.
 
 ## Prerequisites
 
@@ -19,10 +19,10 @@ This guide will get you up and running with the TMC5160 driver in just a few ste
 
 ## Class Structure Overview
 
-The TMC5160 driver uses a **subsystem-based architecture** that organizes functionality into logical groups:
+The TMC51x0 driver uses a **subsystem-based architecture** that organizes functionality into logical groups:
 
 ```cpp
-tmc5160::TMC5160<MySPI> driver(spi);
+tmc51x0::TMC51x0<MySPI> driver(spi);
 
 // Organized subsystems for intuitive access
 driver.rampControl      // Motion planning, positioning, velocity control
@@ -43,10 +43,10 @@ Each subsystem provides focused methods for a specific aspect of motor control, 
 Here's a complete working example:
 
 ```cpp
-#include "inc/tmc5160.hpp"
+#include "inc/tmc51x0.hpp"
 
 // 1. Implement your communication interface (see platform_integration.md)
-class MySPI : public tmc5160::SpiCommInterface<MySPI> {
+class MySPI : public tmc51x0::SpiCommInterface<MySPI> {
 public:
     CommMode GetMode() const noexcept { return CommMode::SPI; }
     bool SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) {
@@ -55,11 +55,11 @@ public:
         // For daisy-chaining, ensure CSN stays low during entire transfer
         return true;
     }
-    bool GpioSet(TMC5160CtrlPin pin, GpioSignal signal) {
+    bool GpioSet(TMC51x0CtrlPin pin, GpioSignal signal) {
         // Your GPIO set implementation
         return true;
     }
-    bool GpioRead(TMC5160CtrlPin pin, GpioSignal& signal) {
+    bool GpioRead(TMC51x0CtrlPin pin, GpioSignal& signal) {
         // Your GPIO read implementation
         return true;
     }
@@ -80,10 +80,10 @@ int main() {
     spi.Initialize(); // Initialize your SPI hardware
     
     // 3. Create driver instance
-    tmc5160::TMC5160<MySPI> driver(spi);
+    tmc51x0::TMC51x0<MySPI> driver(spi);
     
     // 4. Initialize driver
-    tmc5160::DriverConfig cfg{};
+    tmc51x0::DriverConfig cfg{};
     cfg.motor_spec.rated_current_ma = 2000;  // 2A rated current
     cfg.motor_spec.sense_resistor_mohm = 50;  // 0.05Ω sense resistor
     cfg.motor_spec.supply_voltage_mv = 24000; // 24V supply
@@ -95,7 +95,7 @@ int main() {
     }
     
     // 5. Configure ramp control (RampControl subsystem)
-    driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
     driver.rampControl.SetTargetPosition(1000);  // 1000 steps
     driver.rampControl.SetMaxSpeed(1000.0f);     // 1000 steps/s
     driver.rampControl.SetAcceleration(500.0f);   // 500 steps/s²
@@ -106,8 +106,8 @@ int main() {
     // 7. Wait for target reached
     while (!driver.rampControl.IsTargetReached()) {
         // Optional: Monitor status (Diagnostics subsystem)
-        tmc5160::DriverStatus status = driver.diagnostics.GetStatus();
-        if (status != tmc5160::DriverStatus::OK) {
+        tmc51x0::DriverStatus status = driver.diagnostics.GetStatus();
+        if (status != tmc51x0::DriverStatus::OK) {
             // Handle error condition
             break;
         }
@@ -128,7 +128,7 @@ You must implement either `SpiCommInterface` or `UartCommInterface` for your pla
 ### Step 2: Create Driver Instance
 
 ```cpp
-tmc5160::TMC5160 driver(spi);
+tmc51x0::TMC51x0 driver(spi);
 ```
 
 The driver takes a reference to your communication interface.
@@ -136,7 +136,7 @@ The driver takes a reference to your communication interface.
 ### Step 3: Initialize Driver
 
 ```cpp
-tmc5160::DriverConfig cfg{};
+tmc51x0::DriverConfig cfg{};
 cfg.motor_spec.rated_current_ma = 2000;  // 2A rated current
 cfg.motor_spec.sense_resistor_mohm = 50;  // 0.05Ω sense resistor
 cfg.motor_spec.supply_voltage_mv = 24000; // 24V supply
@@ -149,7 +149,7 @@ Configure motor specifications and other settings, then initialize the driver. T
 ### Step 4: Configure Ramp Control
 
 ```cpp
-driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
 driver.rampControl.SetTargetPosition(1000);
 driver.rampControl.SetMaxSpeed(1000.0f);
 driver.rampControl.SetAcceleration(500.0f);
@@ -179,7 +179,7 @@ Once you have basic motion working, explore the other subsystems:
 ### Diagnostics & Monitoring
 ```cpp
 // Check driver status
-tmc5160::DriverStatus status = driver.diagnostics.GetStatus();
+tmc51x0::DriverStatus status = driver.diagnostics.GetStatus();
 
 // Read StallGuard2 value (load measurement)
 uint16_t sg_value;
@@ -192,7 +192,7 @@ driver.diagnostics.VerifySetup();
 ### Automatic Tuning ⭐
 ```cpp
 // Automatically find optimal StallGuard2 threshold
-tmc5160::StallGuardTuningResult result;
+tmc51x0::StallGuardTuningResult result;
 driver.tuning.TuneStallGuard(
     target_velocity, result,  // Your target operating velocity
     -10, 63,                  // SGT search range
@@ -201,7 +201,7 @@ driver.tuning.TuneStallGuard(
 );
 
 // Use the optimal SGT value
-tmc5160::StallGuardConfig sg_config;
+tmc51x0::StallGuardConfig sg_config;
 sg_config.threshold = result.optimal_sgt;
 driver.diagnostics.ConfigureStallGuard(sg_config);
 ```
@@ -220,7 +220,7 @@ driver.homing.PerformSensorlessHoming(
 ### Encoder Integration
 ```cpp
 // Configure encoder for closed-loop control
-tmc5160::EncoderConfig enc_cfg{};
+tmc51x0::EncoderConfig enc_cfg{};
 enc_cfg.resolution = 4096;  // Encoder resolution
 driver.encoder.ConfigureEncoder(enc_cfg);
 
@@ -239,15 +239,15 @@ If you encounter issues:
 
 ## Multi-Chip Daisy-Chaining
 
-For multiple TMC5160 drivers on a single SPI bus:
+For multiple TMC51x0 drivers on a single SPI bus:
 
 ```cpp
 // Create one SPI interface (shared by all chips)
 MySPI spi;
 spi.Initialize();
 
-// Option 1: Use TMC5160DaisyChain helper class (recommended)
-tmc5160::TMC5160DaisyChain<MySPI, 5> chain(spi, 3);
+// Option 1: Use TMC51x0DaisyChain helper class (recommended)
+tmc51x0::TMC51x0DaisyChain<MySPI, 5> chain(spi, 3);
 // Auto-detects chain length and configures properly
 chain.InitializeAll(cfg);
 
@@ -264,9 +264,9 @@ if (chain_length > 0) {
 }
 
 // Create multiple drivers with different daisy-chain positions
-tmc5160::TMC5160<MySPI> driver1(spi, 0); // Position 0 (first chip)
-tmc5160::TMC5160<MySPI> driver2(spi, 1); // Position 1 (second chip)
-tmc5160::TMC5160<MySPI> driver3(spi, 2); // Position 2 (third chip)
+tmc51x0::TMC51x0<MySPI> driver1(spi, 0); // Position 0 (first chip)
+tmc51x0::TMC51x0<MySPI> driver2(spi, 1); // Position 1 (second chip)
+tmc51x0::TMC51x0<MySPI> driver3(spi, 2); // Position 2 (third chip)
 
 // Each driver automatically uses its own position
 driver1.Initialize(cfg); // Accesses chip 0

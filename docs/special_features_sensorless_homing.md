@@ -9,7 +9,7 @@ permalink: /docs/special_features_sensorless_homing/
 
 # Sensorless Homing
 
-The TMC5160 supports sensorless homing using StallGuard2 stall detection. This allows you to home the motor without physical endstop switches by detecting when the motor stalls against a mechanical stop.
+The TMC51x0 (TMC5130 & TMC5160) supports sensorless homing using StallGuard2 stall detection. This allows you to home the motor without physical endstop switches by detecting when the motor stalls against a mechanical stop.
 
 ## Overview
 
@@ -51,12 +51,12 @@ Sensorless homing uses the StallGuard2 feature to detect when the motor stalls. 
 ### Simple Homing Sequence
 
 ```cpp
-#include "tmc5160.hpp"
+#include "tmc51x0.hpp"
 
 bool homeMotor() {
     // Configure StallGuard2 for homing (SGT threshold should be set once per motor)
     // This should be done during Initialize() or via ConfigureStallGuard() before homing
-    tmc5160::StallGuardConfig sg_config{};
+    tmc51x0::StallGuardConfig sg_config{};
     sg_config.threshold = -10;        // Stall threshold (tune for your motor)
     sg_config.enable_filter = true;     // Enable filter for stability
     
@@ -117,7 +117,7 @@ The `sgt` parameter controls stall sensitivity:
 ```cpp
 void tuneStallThreshold() {
     // Move motor slowly
-    driver.rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_POS);
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
     driver.rampControl.SetMaxSpeed(100.0f);  // Slow speed
     driver.motorControl.Enable();
     
@@ -144,20 +144,20 @@ void tuneStallThreshold() {
 ## Complete Homing Example
 
 ```cpp
-#include "tmc5160.hpp"
+#include "tmc51x0.hpp"
 
 class MotorController {
 private:
-    tmc5160::TMC5160<Esp32SPI> &driver_;
+    tmc51x0::TMC51x0<Esp32SPI> &driver_;
     int8_t stall_threshold_;
     
 public:
-    MotorController(tmc5160::TMC5160<Esp32SPI> &driver) 
+    MotorController(tmc51x0::TMC51x0<Esp32SPI> &driver) 
         : driver_(driver), stall_threshold_(-10) {}
     
     bool home() {
         // 1. Configure StallGuard2
-        tmc5160::StallGuardConfig sg_config{};
+        tmc51x0::StallGuardConfig sg_config{};
         sg_config.threshold = stall_threshold_;
         sg_config.enable_filter = true;  // Filter for stability
         
@@ -188,7 +188,7 @@ public:
     
     bool moveToHome() {
         // Move to home position (0)
-        driver_.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);
+        driver_.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
         driver_.rampControl.SetTargetPosition(0);
         driver_.motorControl.Enable();
         
@@ -279,13 +279,13 @@ For more control, you can implement manual stall detection:
 ```cpp
 bool homeManual() {
     // Configure StallGuard2
-    tmc5160::StallGuardConfig sg_config{};
+    tmc51x0::StallGuardConfig sg_config{};
     sg_config.threshold = -10;
     sg_config.enable_filter = true;
     driver.diagnostics.ConfigureStallGuard(sg_config);
     
     // Start movement
-    driver.rampControl.SetRampMode(tmc5160::RampMode::VELOCITY_NEG);
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_NEG);
     driver.rampControl.SetMaxSpeed(500.0f);
     driver.motorControl.Enable();
     

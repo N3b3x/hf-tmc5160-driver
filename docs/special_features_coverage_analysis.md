@@ -1,8 +1,8 @@
-# TMC5160 Feature Coverage Analysis Report
+# TMC51x0 Feature Coverage Analysis Report
 
 ## Executive Summary
 
-This document provides a comprehensive analysis of the current TMC5160 driver implementation compared to archived drivers and the chip's datasheet specifications. The analysis confirms that the current implementation provides **complete feature coverage** and that all archived drivers are subsets of the current implementation.
+This document provides a comprehensive analysis of the current TMC51x0 driver (TMC5130 & TMC5160) implementation compared to archived drivers and the chip's datasheet specifications. The analysis confirms that the current implementation provides **complete feature coverage** and that all archived drivers are subsets of the current implementation.
 
 **Key Findings:**
 - ✅ **47 registers** defined (covering all 0x00-0x73 addressable registers)
@@ -399,7 +399,7 @@ struct DriverConfig {
 **Features:**
 - `SpiCommInterface<Derived>` - Full SPI support with daisy-chaining
 - `UartCommInterface<Derived>` - Full UART support with multi-node
-- `TMC5160DaisyChain` class - High-level daisy-chain management
+- `TMC51x0DaisyChain` class - High-level daisy-chain management
 - Automatic chain length configuration for proper response extraction
 - `AutoDetectChainLength()` - Auto-detect chain length by command loopback
 - Sequential positioning enforcement
@@ -580,5 +580,5 @@ The analysis confirms that:
 
 4. ✅ **No gaps identified** - Implementation is complete and production-ready
 
-The current TMC5160 driver implementation represents a **complete, modern, and feature-rich** solution that supersedes all archived drivers while maintaining compatibility with their basic functionality.
+The current TMC51x0 driver (TMC5130 & TMC5160) implementation represents a **complete, modern, and feature-rich** solution that supersedes all archived drivers while maintaining compatibility with their basic functionality.
 

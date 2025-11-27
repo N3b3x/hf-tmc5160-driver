@@ -2576,6 +2576,6 @@ struct HomingSettingsCache {
     bool is_valid = false;  // True if cache has been populated
 };
 
-} // namespace tmc5160
+} // namespace tmc51x0
 
 #endif // TMC51X0_TYPES_HPP

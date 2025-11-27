@@ -1,5 +1,5 @@
 # =============================================================================
-# TMC5160 Driver Examples - Main Component CMakeLists.txt
+# TMC51x0 Driver Examples - Main Component CMakeLists.txt (TMC5130 & TMC5160)
 # =============================================================================
 # This CMakeLists.txt is designed to work with the build_app.sh script
 # which handles app type validation and source file discovery.

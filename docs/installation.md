@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "🛠️ Installation"
-description: "Installation and build instructions for the TMC5160 driver"
+description: "Installation and build instructions for the TMC51x0 driver (TMC5130 & TMC5160)"
 nav_order: 1
 parent: "📚 Documentation"
 permalink: /docs/installation/
@@ -9,7 +9,7 @@ permalink: /docs/installation/
 
 # Installation
 
-This guide covers how to obtain, build, and verify the TMC5160 driver library.
+This guide covers how to obtain, build, and verify the TMC51x0 driver (TMC5130 & TMC5160) library.
 
 ## Prerequisites
 
@@ -34,10 +34,10 @@ Copy the following files into your project:
 
 ```
 inc/
-  ├── tmc5160.hpp
-  ├── tmc5160_comm_interface.hpp
-  ├── tmc5160_registers.hpp
-  ├── tmc5160_types.hpp
+  ├── tmc51x0.hpp
+  ├── tmc51x0_comm_interface.hpp
+  ├── tmc51x0_registers.hpp
+  ├── tmc51x0_types.hpp
 ```
 
 The driver is header-only (template-based), so no separate source files are needed.
@@ -50,7 +50,7 @@ For ESP32 projects, add the driver as a component:
 
 1. Copy the driver to your `components/` directory:
    ```bash
-   cp -r hf-tmc5160-driver components/hf_tmc5160
+   cp -r hf-tmc5160-driver components/hf_tmc51x0
    ```
 
 2. Include in your `CMakeLists.txt`:
@@ -63,14 +63,14 @@ For ESP32 projects, add the driver as a component:
 
 3. Use in your code:
    ```cpp
-   #include "tmc5160.hpp"
+   #include "tmc51x0.hpp"
    ```
 
 ### Using CMake
 
 ```cmake
 add_subdirectory(hf-tmc5160-driver)
-target_link_libraries(your_target PRIVATE hf_tmc5160)
+target_link_libraries(your_target PRIVATE hf_tmc51x0)
 ```
 
 ### Header-Only Usage
@@ -78,7 +78,7 @@ target_link_libraries(your_target PRIVATE hf_tmc5160)
 Since the driver is header-only, you can simply include it:
 
 ```cpp
-#include "inc/tmc5160.hpp"
+#include "inc/tmc51x0.hpp"
 ```
 
 Make sure your compiler has C++17 support enabled.
@@ -89,7 +89,7 @@ To verify the installation:
 
 1. Include the header in a test file:
    ```cpp
-   #include "inc/tmc5160.hpp"
+   #include "inc/tmc51x0.hpp"
    ```
 
 2. Compile a simple test:
