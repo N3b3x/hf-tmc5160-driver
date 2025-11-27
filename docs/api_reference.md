@@ -102,12 +102,12 @@ Ramp control and motion planning subsystem for precise motor positioning and vel
 | `GetCurrentPosition()` | `bool GetCurrentPosition(float& position, Unit unit = Unit::Steps) noexcept` | `true` on success | Get current motor position (unit-aware) |
 | `GetTargetPosition()` | `bool GetTargetPosition(float& position, Unit unit = Unit::Steps) noexcept` | `true` on success | Get target position (unit-aware) |
 | `SetCurrentPosition()` | `bool SetCurrentPosition(float value, Unit unit = Unit::Steps, bool update_encoder = false) noexcept` | `true` on success | Set current position (unit-aware, optionally update encoder) |
-| `SetMaxSpeed()` | `bool SetMaxSpeed(float value, Unit unit = Unit::Steps) noexcept` | `true` on success | Set maximum velocity (unit-aware) |
-| `SetAcceleration()` | `bool SetAcceleration(float value, Unit unit = Unit::Steps) noexcept` | `true` on success | Set acceleration/deceleration (unit-aware) |
-| `SetAccelerations()` | `bool SetAccelerations(float accel_val, float decel_val, Unit unit = Unit::Steps) noexcept` | `true` on success | Set acceleration and deceleration separately (unit-aware) |
-| `SetDeceleration()` | `bool SetDeceleration(float value, Unit unit = Unit::Steps) noexcept` | `true` on success | Set deceleration only (DMAX register, unit-aware) |
-| `SetRampSpeeds()` | `bool SetRampSpeeds(float start_speed, float stop_speed, float transition_speed, Unit unit = Unit::Steps) noexcept` | `true` on success | Set ramp start, stop, and transition speeds (unit-aware) |
-| `GetCurrentSpeed()` | `bool GetCurrentSpeed(float& speed, Unit unit = Unit::Steps) noexcept` | `true` on success | Get current motor velocity (unit-aware) |
+| `SetMaxSpeed()` | `bool SetMaxSpeed(float value, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set maximum velocity (unit-aware, default: revolutions per second) |
+| `SetAcceleration()` | `bool SetAcceleration(float value, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set acceleration/deceleration (unit-aware, default: revolutions per second²) |
+| `SetAccelerations()` | `bool SetAccelerations(float accel_val, float decel_val, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set acceleration and deceleration separately (unit-aware, default: revolutions per second²) |
+| `SetDeceleration()` | `bool SetDeceleration(float value, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set deceleration only (DMAX register, unit-aware, default: revolutions per second²) |
+| `SetRampSpeeds()` | `bool SetRampSpeeds(float start_speed, float stop_speed, float transition_speed, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set ramp start, stop, and transition speeds (unit-aware, default: revolutions per second) |
+| `GetCurrentSpeed()` | `bool GetCurrentSpeed(float& speed, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Get current motor velocity (unit-aware, default: revolutions per second) |
 | `IsTargetReached()` | `bool IsTargetReached() noexcept` | `true` if reached | Check if target position reached |
 | `IsTargetVelocityReached()` | `bool IsTargetVelocityReached() noexcept` | `true` if reached | Check if target velocity reached |
 | `Stop()` | `bool Stop() noexcept` | `true` on success | Stop motor immediately |
@@ -127,8 +127,8 @@ Ramp control and motion planning subsystem for precise motor positioning and vel
 | `SetPowerDownDelayMs()` | `bool SetPowerDownDelayMs(float delay_ms) noexcept` | `true` on success | Set power down delay in milliseconds (automatically converted) |
 | `SetZeroWaitTime()` | `bool SetZeroWaitTime(uint16_t tzerowait) noexcept` | `true` on success | Set zero wait time after ramping down (raw register value 0-65535) |
 | `SetZeroWaitTimeMs()` | `bool SetZeroWaitTimeMs(float delay_ms) noexcept` | `true` on success | Set zero wait time in milliseconds (automatically converted) |
-| `SetFirstAcceleration()` | `bool SetFirstAcceleration(float a1, Unit unit = Unit::Steps) noexcept` | `true` on success | Set first acceleration phase A1 (unit-aware, 0.0f = use AMAX) |
-| `SetFinalDeceleration()` | `bool SetFinalDeceleration(float d1, Unit unit = Unit::Steps) noexcept` | `true` on success | Set final deceleration phase D1 (unit-aware, must not be 0 in positioning mode) |
+| `SetFirstAcceleration()` | `bool SetFirstAcceleration(float a1, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set first acceleration phase A1 (unit-aware, default: revolutions per second², 0.0f = use AMAX) |
+| `SetFinalDeceleration()` | `bool SetFinalDeceleration(float d1, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set final deceleration phase D1 (unit-aware, default: revolutions per second², must not be 0 in positioning mode) |
 | `ConfigureRamp()` | `bool ConfigureRamp(const RampConfig& config) noexcept` | `true` on success | Configure ramp generator from RampConfig structure |
 
 ## MotorControl Subsystem
@@ -157,10 +157,10 @@ Motor control and configuration subsystem for current control, chopper modes, an
 | `SetCurrent()` | `bool SetCurrent(uint8_t irun, uint8_t ihold) noexcept` | `true` on success | Set run current (0-31) and hold current (0-31) |
 | `ConfigureChopper()` | `bool ConfigureChopper(const ChopperConfig& config) noexcept` | `true` on success | Configure chopper settings (toff, hstrt, hend, tbl, mres, etc.) |
 | `ConfigureStealthChop()` | `bool ConfigureStealthChop(const StealthChopConfig& config) noexcept` | `true` on success | Configure stealthChop PWM mode |
-| `SetModeChangeSpeeds()` | `bool SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs, Unit unit = Unit::Steps) noexcept` | `true` on success | Set velocity thresholds for mode switching (unit-aware) |
-| `SetStealthChopVelocityThreshold()` | `bool SetStealthChopVelocityThreshold(float value, Unit unit = Unit::Steps) noexcept` | `true` on success | Set StealthChop velocity threshold (TPWMTHRS, unit-aware) |
-| `SetCoolStepThreshold()` | `bool SetCoolStepThreshold(float value, Unit unit = Unit::Steps) noexcept` | `true` on success | Set CoolStep velocity threshold (TCOOLTHRS, unit-aware) |
-| `SetHighSpeedThreshold()` | `bool SetHighSpeedThreshold(float value, Unit unit = Unit::Steps) noexcept` | `true` on success | Set High-Speed velocity threshold (THIGH, unit-aware) |
+| `SetModeChangeSpeeds()` | `bool SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set velocity thresholds for mode switching (unit-aware, default: revolutions per second) |
+| `SetStealthChopVelocityThreshold()` | `bool SetStealthChopVelocityThreshold(float value, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set StealthChop velocity threshold (TPWMTHRS, unit-aware, default: revolutions per second) |
+| `SetCoolStepThreshold()` | `bool SetCoolStepThreshold(float value, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set CoolStep velocity threshold (TCOOLTHRS, unit-aware, default: revolutions per second) |
+| `SetHighSpeedThreshold()` | `bool SetHighSpeedThreshold(float value, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set High-Speed velocity threshold (THIGH, unit-aware, default: revolutions per second) |
 | `SetGlobalScaler()` | `bool SetGlobalScaler(uint16_t scaler) noexcept` | `true` on success | Set global current scaler (32-256) |
 | `SetIholdDelayMs()` | `bool SetIholdDelayMs(float total_delay_ms) noexcept` | `true` on success | Set motor power down delay (IHOLDDELAY) in milliseconds (automatically calculated) |
 | `ConfigureCoolStep()` | `bool ConfigureCoolStep(const CoolStepConfig& config) noexcept` | `true` on success | Configure CoolStep current reduction |
@@ -254,18 +254,30 @@ Automatic parameter tuning for optimal driver performance.
 
 | Method | Signature | Return | Description |
 |--------|-----------|--------|-------------|
-| `TuneStallGuard()` | `bool TuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = -10, int8_t max_sgt = 63, float acceleration = 3000.0F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::Steps) noexcept` | `true` on success | Automatically tune StallGuard threshold (SGT) with comprehensive velocity range analysis |
-| `TuneStallGuard()` (legacy) | `bool TuneStallGuard(float target_velocity, int8_t& final_sgt, int8_t min_sgt = -10, int8_t max_sgt = 63, float acceleration = 3000.0F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::Steps) noexcept` | `true` on success | Legacy overload - use StallGuardTuningResult version for comprehensive results |
+| `TuneStallGuard()` | `bool TuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = -10, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec) noexcept` | `true` on success | Automatically tune StallGuard threshold (SGT) with comprehensive velocity range analysis (default: revolutions per second) |
+| `TuneStallGuard()` (legacy) | `bool TuneStallGuard(float target_velocity, int8_t& final_sgt, int8_t min_sgt = -10, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec) noexcept` | `true` on success | Legacy overload - use StallGuardTuningResult version for comprehensive results |
+| `AutoTuneStallGuard()` | `bool AutoTuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = 0, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, uint16_t safe_current_margin_mA = 0) noexcept` | `true` on success | Comprehensive automatic StallGuard tuning with safe current margin handling (recommended) |
 
 **Usage Example**:
 ```cpp
 tmc51x0::StallGuardTuningResult result;
+// Using AutoTuneStallGuard (recommended) with safe current margin
+bool success = driver.tuning.AutoTuneStallGuard(
+    0.6f, result,              // Target velocity: 0.6 rev/s (~36 RPM)
+    0, 63,                     // SGT search range
+    0.06f,                     // Acceleration: 0.06 rev/s²
+    0.18f, 0.9f,               // Velocity range: 0.18-0.9 rev/s (30%-150% of target)
+    tmc51x0::Unit::RevPerSec,  // Unit (default, can be omitted)
+    300                        // Safe current margin: 300mA
+);
+
+// Or using TuneStallGuard (simpler, no current margin)
 bool success = driver.tuning.TuneStallGuard(
-    target_velocity, result,  // Target velocity (priority) and result struct
-    -10, 63,                  // SGT search range
-    3000.0f,                  // Acceleration
-    min_velocity, max_velocity, // Velocity range to test
-    tmc51x0::Unit::Steps
+    0.6f, result,              // Target velocity: 0.6 rev/s
+    0, 63,                     // SGT search range
+    0.06f,                     // Acceleration: 0.06 rev/s²
+    0.18f, 0.9f                // Velocity range to test
+    // Unit::RevPerSec is default, can be omitted
 );
 
 if (success) {
@@ -333,8 +345,8 @@ Register printing methods for debugging.
 | `GetUartTransmissionCount()` | `uint8_t GetUartTransmissionCount() noexcept` | Transmission count (0 on error) | Get UART transmission counter (IFCNT register) |
 | `ReadOffsetCalibration()` | `bool ReadOffsetCalibration(uint8_t& phase_a, uint8_t& phase_b) noexcept` | `true` on success | Read offset calibration results (OFFSET_READ register) |
 | `VerifySetup()` | `bool VerifySetup() noexcept` | `true` on success | Run comprehensive startup verification |
-| `SetTcoolthrs()` | `bool SetTcoolthrs(float threshold, Unit unit = Unit::Steps) noexcept` | `true` on success | Set TCOOLTHRS register directly (unit-aware) |
-| `GetTcoolthrs()` | `bool GetTcoolthrs(float& threshold, Unit unit = Unit::Steps) const noexcept` | `true` on success | Get TCOOLTHRS register value from local storage (unit-aware) |
+| `SetTcoolthrs()` | `bool SetTcoolthrs(float threshold, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set TCOOLTHRS register directly (unit-aware, default: revolutions per second) |
+| `GetTcoolthrs()` | `bool GetTcoolthrs(float& threshold, Unit unit = Unit::RevPerSec) const noexcept` | `true` on success | Get TCOOLTHRS register value from local storage (unit-aware, default: revolutions per second) |
 
 ### Open Load Diagnostics
 
@@ -366,7 +378,7 @@ if (gconf.en_pwm_mode) {
 }
 
 // Move motor at low/nominal velocity (minimum 4× microstep resolution)
-driver.rampControl.SetMaxSpeed(1000.0f, tmc51x0::Unit::Steps);  // Low velocity
+driver.rampControl.SetMaxSpeed(0.02f);  // 0.02 rev/s (~1.2 RPM) - Unit::RevPerSec is default
 driver.rampControl.SetTargetPosition(1024);  // At least 4× microstep resolution (256)
 
 // Wait for motion to start
@@ -1206,7 +1218,7 @@ Ramp generator configuration structure for two-phase acceleration and decelerati
 - All acceleration parameters (amax, a1, dmax, d1) use the unit specified by `acceleration_unit`
 - Parameters set to 0.0 will use driver defaults or be auto-calculated where applicable
 - VSTOP must be >= VSTART to ensure successful motion termination
-- D1 must not be 0 in positioning mode (defaults to 100 steps/s² if not set)
+- D1 must not be 0 in positioning mode (defaults to 0.002 rev/s² if not set, equivalent to ~100 steps/s² for typical motor)
 - Unit conversion requires `MotorSpec` and `MechanicalSystem` configuration for non-Step units
 - See datasheet section 12 for detailed ramp generator operation
 

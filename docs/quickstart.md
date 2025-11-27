@@ -97,8 +97,9 @@ int main() {
     // 5. Configure ramp control (RampControl subsystem)
     driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
     driver.rampControl.SetTargetPosition(1000);  // 1000 steps
-    driver.rampControl.SetMaxSpeed(1000.0f);     // 1000 steps/s
-    driver.rampControl.SetAcceleration(500.0f);   // 500 steps/s²
+    // Velocity functions default to revolutions per second (RevPerSec)
+    driver.rampControl.SetMaxSpeed(0.02f);       // 0.02 rev/s (~1.2 RPM) - Unit::RevPerSec is default
+    driver.rampControl.SetAcceleration(0.01f);    // 0.01 rev/s² - Unit::RevPerSec is default
     
     // 6. Enable motor (MotorControl subsystem)
     driver.motorControl.Enable();
@@ -151,11 +152,12 @@ Configure motor specifications and other settings, then initialize the driver. T
 ```cpp
 driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
 driver.rampControl.SetTargetPosition(1000);
-driver.rampControl.SetMaxSpeed(1000.0f);
-driver.rampControl.SetAcceleration(500.0f);
+// Velocity functions default to revolutions per second (RevPerSec)
+driver.rampControl.SetMaxSpeed(0.02f);       // 0.02 rev/s (~1.2 RPM)
+driver.rampControl.SetAcceleration(0.01f);  // 0.01 rev/s²
 ```
 
-Set the ramp mode, target position, maximum speed, and acceleration.
+Set the ramp mode, target position, maximum speed, and acceleration. Note that velocity-related functions now default to `Unit::RevPerSec` (revolutions per second), making it easier to work with intuitive units.
 
 ### Step 5: Enable Motor
 
@@ -169,7 +171,7 @@ Enable the motor driver to start motion.
 
 When running this example, the motor should:
 1. Move to position 1000 steps
-2. Accelerate to 1000 steps/s
+2. Accelerate to 0.02 rev/s (~1.2 RPM)
 3. Decelerate and stop at the target position
 
 ## Exploring Subsystems
@@ -193,11 +195,14 @@ driver.diagnostics.VerifySetup();
 ```cpp
 // Automatically find optimal StallGuard2 threshold
 tmc51x0::StallGuardTuningResult result;
-driver.tuning.TuneStallGuard(
-    target_velocity, result,  // Your target operating velocity
-    -10, 63,                  // SGT search range
-    3000.0f,                  // Acceleration
-    min_velocity, max_velocity // Velocity range to test
+// Using AutoTuneStallGuard (recommended) - includes safe current margin
+driver.tuning.AutoTuneStallGuard(
+    0.6f, result,              // Target velocity: 0.6 rev/s (~36 RPM)
+    0, 63,                     // SGT search range
+    0.06f,                     // Acceleration: 0.06 rev/s² (Unit::RevPerSec is default)
+    0.18f, 0.9f,               // Velocity range: 0.18-0.9 rev/s (30%-150% of target)
+    tmc51x0::Unit::RevPerSec,  // Unit (default, can be omitted)
+    300                        // Safe current margin: 300mA
 );
 
 // Use the optimal SGT value

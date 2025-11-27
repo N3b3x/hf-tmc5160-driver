@@ -222,12 +222,15 @@ cfg.global_config.invert_direction = false;  // Normal direction
 
 // Ramp generator configuration
 // Specify units for velocity and acceleration parameters (critical for proper conversion)
-cfg.ramp_config.velocity_unit = tmc51x0::Unit::Steps;      // All velocities in steps/s
-cfg.ramp_config.acceleration_unit = tmc51x0::Unit::Steps;   // All accelerations in steps/s²
+// Recommended: Use RevPerSec for velocities (default for velocity-related functions)
+cfg.ramp_config.velocity_unit = tmc51x0::Unit::RevPerSec;      // All velocities in rev/s (recommended)
+cfg.ramp_config.acceleration_unit = tmc51x0::Unit::RevPerSec;   // All accelerations in rev/s² (recommended)
 
-// Or use physical units (requires mechanical system configuration):
+// Or use other physical units (requires mechanical system configuration):
 // cfg.ramp_config.velocity_unit = tmc51x0::Unit::RPM;      // Velocities in RPM
+// cfg.ramp_config.velocity_unit = tmc51x0::Unit::Deg;     // Velocities in deg/s
 // cfg.ramp_config.acceleration_unit = tmc51x0::Unit::Deg;  // Accelerations in deg/s²
+// cfg.ramp_config.velocity_unit = tmc51x0::Unit::Steps;    // Velocities in steps/s (legacy)
 
 cfg.ramp_config.vstart = 0.0f;      // Start velocity (unit specified by velocity_unit, 0 = can be zero)
 cfg.ramp_config.vstop = 10.0f;     // Stop velocity (unit specified by velocity_unit, must be >= VSTART)
@@ -258,19 +261,21 @@ driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
 
 // Set motion parameters (unit-aware API)
 driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);
-driver.rampControl.SetMaxSpeed(1000.0f, tmc51x0::Unit::Steps);      // steps/s
-driver.rampControl.SetAcceleration(500.0f, tmc51x0::Unit::Steps);   // steps/s²
-driver.rampControl.SetRampSpeeds(0.0f, 10.0f, 0.0f, tmc51x0::Unit::Steps); // start, stop, transition
+// Velocity functions default to revolutions per second (RevPerSec)
+driver.rampControl.SetMaxSpeed(0.02f);      // 0.02 rev/s (~1.2 RPM) - Unit::RevPerSec is default
+driver.rampControl.SetAcceleration(0.01f);   // 0.01 rev/s² - Unit::RevPerSec is default
+driver.rampControl.SetRampSpeeds(0.0f, 0.0002f, 0.0f); // start, stop, transition (Unit::RevPerSec is default)
 
 // Get current position and speed (unit-aware API)
 float position = 0.0f;
 float speed = 0.0f;
 driver.rampControl.GetCurrentPosition(position, tmc51x0::Unit::Steps);
-driver.rampControl.GetCurrentSpeed(speed, tmc51x0::Unit::Steps);
+driver.rampControl.GetCurrentSpeed(speed);  // Returns in rev/s (Unit::RevPerSec is default)
 
-// Or use physical units (requires mechanical system configuration)
-driver.rampControl.SetMaxSpeed(100.0f, tmc51x0::Unit::RPM);         // 100 RPM
-driver.rampControl.SetAcceleration(50.0f, tmc51x0::Unit::Deg);     // 50 deg/s²
+// Or use other physical units (requires mechanical system configuration)
+driver.rampControl.SetMaxSpeed(1.2f, tmc51x0::Unit::RPM);         // 1.2 RPM
+driver.rampControl.SetMaxSpeed(72.0f, tmc51x0::Unit::Deg);       // 72 deg/s = 0.2 rev/s
+driver.rampControl.SetAcceleration(360.0f, tmc51x0::Unit::Deg);   // 360 deg/s² = 1 rev/s²
 ```
 
 ### Motor Control Configuration
@@ -300,15 +305,16 @@ driver.motorControl.ConfigureStealthChop(stealth_cfg);
 // Keep motor stopped for at least 128 chopper periods after enabling
 
 // Set mode change speeds (velocity thresholds, unit-aware)
-driver.motorControl.SetModeChangeSpeeds(100.0f, 500.0f, 2000.0f, tmc51x0::Unit::Steps);
+// Default unit is now RevPerSec (revolutions per second)
+driver.motorControl.SetModeChangeSpeeds(0.002f, 0.01f, 0.04f);  // Unit::RevPerSec is default
 // pwm_thrs: StealthChop threshold (below this: StealthChop, above: SpreadCycle)
 // cool_thrs: CoolStep threshold (below this: CoolStep disabled)
 // high_thrs: High-speed mode threshold
 
-// Or set individual thresholds:
-driver.motorControl.SetStealthChopVelocityThreshold(100.0f, tmc51x0::Unit::Steps);
-driver.motorControl.SetCoolStepThreshold(500.0f, tmc51x0::Unit::Steps);
-driver.motorControl.SetHighSpeedThreshold(2000.0f, tmc51x0::Unit::Steps);
+// Or set individual thresholds (Unit::RevPerSec is default):
+driver.motorControl.SetStealthChopVelocityThreshold(0.002f);  // 0.002 rev/s (~0.12 RPM)
+driver.motorControl.SetCoolStepThreshold(0.01f);              // 0.01 rev/s (~0.6 RPM)
+driver.motorControl.SetHighSpeedThreshold(0.04f);              // 0.04 rev/s (~2.4 RPM)
 ```
 
 ### Encoder Configuration
@@ -358,9 +364,9 @@ sg_cfg.threshold = 0;  // Starting value, works with most motors
 sg_cfg.enable_filter = true;
 
 // Set velocity thresholds (StallGuard2 only active between these speeds)
-sg_cfg.min_velocity = 500.0f;   // Enable StallGuard2 above 500 steps/s
-sg_cfg.max_velocity = 5000.0f;  // Disable StallGuard2 above 5000 steps/s (0 = no limit)
-sg_cfg.velocity_unit = tmc51x0::Unit::Steps;
+sg_cfg.min_velocity = 0.01f;    // Enable StallGuard2 above 0.01 rev/s (~0.6 RPM)
+sg_cfg.max_velocity = 0.1f;     // Disable StallGuard2 above 0.1 rev/s (~6 RPM) (0 = no limit)
+sg_cfg.velocity_unit = tmc51x0::Unit::RevPerSec;  // Recommended default
 
 // Stop motor when stall detected (for sensorless homing)
 sg_cfg.stop_on_stall = true;
@@ -404,9 +410,9 @@ coolstep.min_current = tmc51x0::CoolStepMinCurrent::HALF_IRUN;
 coolstep.enable_filter = true;
 
 // Set velocity thresholds (CoolStep only active between these speeds)
-coolstep.min_velocity = 500.0f;   // Enable CoolStep above 500 steps/s
-coolstep.max_velocity = 5000.0f;  // Disable CoolStep above 5000 steps/s
-coolstep.velocity_unit = tmc51x0::Unit::Steps;
+coolstep.min_velocity = 0.01f;    // Enable CoolStep above 0.01 rev/s (~0.6 RPM)
+coolstep.max_velocity = 0.1f;     // Disable CoolStep above 0.1 rev/s (~6 RPM)
+coolstep.velocity_unit = tmc51x0::Unit::RevPerSec;  // Recommended default
 
 // Configure CoolStep (automatically sets velocity thresholds)
 driver.motorControl.ConfigureCoolStep(coolstep);
@@ -425,8 +431,8 @@ DcStep allows the motor to run near its load limit without losing steps by autom
 tmc51x0::DcStepConfig dcstep{};
 
 // Set minimum velocity threshold (with unit support)
-dcstep.min_velocity = 1000.0f;   // Enable DcStep above 1000 steps/s
-dcstep.velocity_unit = tmc51x0::Unit::Steps;
+dcstep.min_velocity = 0.02f;      // Enable DcStep above 0.02 rev/s (~1.2 RPM)
+dcstep.velocity_unit = tmc51x0::Unit::RevPerSec;  // Recommended default
 
 // Auto-calculate PWM on-time from blank time (recommended)
 dcstep.pwm_on_time_us = 0.0f;  // 0 = auto-calculate
@@ -545,7 +551,7 @@ cfg.stealthchop.pwm_autograd = true;
 driver.Initialize(cfg);
 
 // Enable stealthChop
-driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f, tmc51x0::Unit::Steps);
+driver.motorControl.SetModeChangeSpeeds(0.002f, 0.0f, 0.0f);  // Unit::RevPerSec is default
 ```
 
 ### For High Torque (spreadCycle)

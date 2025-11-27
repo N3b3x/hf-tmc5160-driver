@@ -34,8 +34,9 @@ int main() {
     // Configure positioning mode
     driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
     driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);  // Move 1000 steps
-    driver.rampControl.SetMaxSpeed(1000.0f, tmc51x0::Unit::Steps);     // 1000 steps/s
-    driver.rampControl.SetAcceleration(500.0f, tmc51x0::Unit::Steps);   // 500 steps/s²
+    // Velocity defaults to revolutions per second - 0.02 rev/s ≈ 1.2 RPM for typical motor
+    driver.rampControl.SetMaxSpeed(0.02f);     // Unit::RevPerSec is default
+    driver.rampControl.SetAcceleration(0.01f); // Unit::RevPerSec is default for acceleration too
     
     // Enable motor
     driver.motorControl.Enable();
@@ -77,12 +78,13 @@ int main() {
     
     // Set velocity mode
     driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
-    driver.rampControl.SetMaxSpeed(500.0f, tmc51x0::Unit::Steps);  // 500 steps/s forward
-    driver.rampControl.SetAcceleration(200.0f, tmc51x0::Unit::Steps);
+    // Using revolutions per second (default) - 0.01 rev/s ≈ 0.6 RPM for typical motor
+    driver.rampControl.SetMaxSpeed(0.01f);  // Unit::RevPerSec is default
+    driver.rampControl.SetAcceleration(0.005f);  // Unit::RevPerSec is default
     
     driver.motorControl.Enable();
     
-    // Motor runs continuously at 500 steps/s
+    // Motor runs continuously at 0.01 rev/s
     // To stop, call driver.rampControl.Stop()
     
     return 0;
@@ -111,13 +113,13 @@ int main() {
     driver.Initialize(cfg);
     
     // Configure stealthChop thresholds
-    // Below 100 steps/s: stealthChop mode (silent)
-    // Above 100 steps/s: spreadCycle mode (more torque)
-    driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f, tmc51x0::Unit::Steps);
+    // Below 0.002 rev/s (~0.12 RPM): stealthChop mode (silent)
+    // Above 0.002 rev/s: spreadCycle mode (more torque)
+    driver.motorControl.SetModeChangeSpeeds(0.002f, 0.0f, 0.0f);  // Unit::RevPerSec is default
     
     driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
     driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);
-    driver.rampControl.SetMaxSpeed(50.0f, tmc51x0::Unit::Steps);  // Low speed = stealthChop
+    driver.rampControl.SetMaxSpeed(0.001f);  // Low speed = stealthChop (Unit::RevPerSec is default)
     
     driver.motorControl.Enable();
     
@@ -159,7 +161,7 @@ int main() {
     // Move to position
     driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
     driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);
-    driver.rampControl.SetMaxSpeed(1000.0f, tmc51x0::Unit::Steps);
+    driver.rampControl.SetMaxSpeed(0.02f);  // Unit::RevPerSec is default
     driver.motorControl.Enable();
     
     // Monitor encoder deviation
@@ -200,7 +202,7 @@ int main() {
     driver.diagnostics.ConfigureStallGuard(sg_cfg);
     
     driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
-    driver.rampControl.SetMaxSpeed(500.0f, tmc51x0::Unit::Steps);
+    driver.rampControl.SetMaxSpeed(0.01f);  // Unit::RevPerSec is default
     driver.motorControl.Enable();
     
     // Monitor StallGuard value
@@ -521,7 +523,7 @@ idf.py build -DAPP_TYPE=bounds_finding_sinuous_motion
   - Base steps: 200 for 1.8° motors, 400 for 0.9° motors
   - With microsteps: multiply by microstep factor (e.g., 200 × 32 = 6400)
 - **Stall Threshold**: Tune `sgt` parameter for your motor and mechanical system
-- **Search Speed**: Adjust based on your application (typically 200-1000 steps/s)
+- **Search Speed**: Adjust based on your application (typically 0.004-0.02 rev/s, ~0.24-1.2 RPM for typical motors)
 - **Global vs Local Bounds**: 
   - Global bounds are hardware limits (found during initialization)
   - Local bounds define oscillation range (clipped to global bounds automatically)
