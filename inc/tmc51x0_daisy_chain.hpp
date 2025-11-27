@@ -281,9 +281,9 @@ public:
   }
 
   /**
-   * @brief Access individual TMC5160 driver by index
+   * @brief Access individual TMC51x0 driver by index
    * @param index Device index (0 = first device, 1 = second, etc.)
-   * @return Reference to TMC5160 driver instance
+   * @return Reference to TMC51x0 driver instance
    *
    * @note Index must be in range [0, num_active_devices-1] and device must be active.
    *       No bounds checking is performed for performance reasons.
@@ -351,4 +351,4 @@ private:
 
 } // namespace tmc51x0
 
-#endif // TMC5160_DAISY_CHAIN_HPP
+#endif // TMC51X0_DAISY_CHAIN_HPP
