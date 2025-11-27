@@ -42,9 +42,9 @@ static const char* TAG = "SGT_Tuning";
 static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
     tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER;
 
-// Tuning Parameters
-static constexpr float TUNING_VELOCITY_STEPS_S = 30000.0f; // Target velocity for tuning
-static constexpr float TUNING_ACCELERATION_STEPS_S2 = 3000.0f; // Acceleration/deceleration (realistic for stepper motors)
+// Tuning Parameters (using revolutions per second for user-friendly units)
+static constexpr float TUNING_VELOCITY_REV_S = 0.6f; // Target velocity: 0.6 rev/s (~36 RPM)
+static constexpr float TUNING_ACCELERATION_REV_S2 = 0.06f; // Acceleration: 0.06 rev/s² (realistic for stepper motors)
 
 extern "C" void app_main(void) {
   ESP_LOGI(TAG, "Starting StallGuard2 Tuning Tool...");
@@ -94,28 +94,29 @@ extern "C" void app_main(void) {
   
   // Set velocity thresholds for StallGuard
   // TCOOLTHRS needs to be set such that StallGuard is active at tuning velocity
-  // 1000 steps/s threshold for activation ensures StallGuard is active at 40k steps/s
-  driver.motorControl.SetModeChangeSpeeds(100.0f, 1000.0f, 0.0f); // PWM_THRS, COOL_THRS, HIGH_THRS
+  // Using RevPerSec units (default) - 0.02 rev/s (1.2 RPM) threshold ensures StallGuard is active
+  driver.motorControl.SetModeChangeSpeeds(0.002f, 0.02f, 0.0f, tmc51x0::Unit::RevPerSec); // PWM_THRS, COOL_THRS, HIGH_THRS
 
   ESP_LOGI(TAG, "Starting Comprehensive Auto-Tuning Sequence...");
-  ESP_LOGI(TAG, "Target Velocity: %.2f steps/s", TUNING_VELOCITY_STEPS_S);
-  ESP_LOGI(TAG, "Acceleration: %.2f steps/s²", TUNING_ACCELERATION_STEPS_S2);
+  ESP_LOGI(TAG, "Target Velocity: %.2f rev/s (%.1f RPM)", TUNING_VELOCITY_REV_S, TUNING_VELOCITY_REV_S * 60.0f);
+  ESP_LOGI(TAG, "Acceleration: %.3f rev/s²", TUNING_ACCELERATION_REV_S2);
   ESP_LOGI(TAG, "Using AutoTuneStallGuard with safe current margin handling");
   
   // Use comprehensive automatic tuning with safe current margin
   tmc51x0::StallGuardTuningResult result;
   // AutoTuneStallGuard: target_vel (most important), result, min_sgt, max_sgt, accel, min_vel, max_vel, unit, safe_current_margin_mA
   // For this example, we'll test a velocity range to demonstrate the feature
-  float min_vel = TUNING_VELOCITY_STEPS_S * 0.3f;  // 30% of target
-  float max_vel = TUNING_VELOCITY_STEPS_S * 1.5f;  // 150% of target
+  float min_vel = TUNING_VELOCITY_REV_S * 0.3f;  // 30% of target
+  float max_vel = TUNING_VELOCITY_REV_S * 1.5f;  // 150% of target
   // Safe current margin: reduce current by specified amount for safer tuning and improved StallGuard sensitivity
   // This helps avoid excessive torque during stall tests and makes StallGuard more responsive to load changes
   // Recommended: 15-25% of motor's rated current (e.g., 300mA for a 2A motor = 15% margin)
   // Set to 0 to disable current margin (use nominal current)
   uint16_t safe_current_margin_mA = 300; // Adjust based on your motor's rated current
-  bool success = driver.tuning.AutoTuneStallGuard(TUNING_VELOCITY_STEPS_S, result, 0, 63, 
-                                                     TUNING_ACCELERATION_STEPS_S2, min_vel, max_vel, 
-                                                     tmc51x0::Unit::Steps, safe_current_margin_mA);
+  // Note: Unit::RevPerSec is now the default, so we can omit it, but showing it explicitly for clarity
+  bool success = driver.tuning.AutoTuneStallGuard(TUNING_VELOCITY_REV_S, result, 0, 63, 
+                                                     TUNING_ACCELERATION_REV_S2, min_vel, max_vel, 
+                                                     tmc51x0::Unit::RevPerSec, safe_current_margin_mA);
 
   if (success) {
     ESP_LOGI(TAG, "==========================================");
@@ -124,24 +125,24 @@ extern "C" void app_main(void) {
     ESP_LOGI(TAG, "SG_RESULT at target velocity: %u", result.target_velocity_sg_result);
     
     if (result.min_velocity_success) {
-      ESP_LOGI(TAG, "Min velocity (%.2f steps/s): Works with SGT %d (SG_RESULT=%u)", 
-               min_vel, result.min_velocity_sgt, result.min_velocity_sg_result);
+      ESP_LOGI(TAG, "Min velocity (%.3f rev/s, %.1f RPM): Works with SGT %d (SG_RESULT=%u)", 
+               min_vel, min_vel * 60.0f, result.min_velocity_sgt, result.min_velocity_sg_result);
     } else {
-      ESP_LOGW(TAG, "Min velocity (%.2f steps/s): Does NOT work with optimal SGT", min_vel);
+      ESP_LOGW(TAG, "Min velocity (%.3f rev/s, %.1f RPM): Does NOT work with optimal SGT", min_vel, min_vel * 60.0f);
       if (result.actual_min_velocity > 0.0f) {
-        ESP_LOGI(TAG, "  -> Actual working min velocity: %.2f steps/s (SG_RESULT=%u)", 
-                 result.actual_min_velocity, result.min_velocity_sg_result);
+        ESP_LOGI(TAG, "  -> Actual working min velocity: %.3f rev/s (%.1f RPM) (SG_RESULT=%u)", 
+                 result.actual_min_velocity, result.actual_min_velocity * 60.0f, result.min_velocity_sg_result);
       }
     }
     
     if (result.max_velocity_success) {
-      ESP_LOGI(TAG, "Max velocity (%.2f steps/s): Works with SGT %d (SG_RESULT=%u)", 
-               max_vel, result.max_velocity_sgt, result.max_velocity_sg_result);
+      ESP_LOGI(TAG, "Max velocity (%.3f rev/s, %.1f RPM): Works with SGT %d (SG_RESULT=%u)", 
+               max_vel, max_vel * 60.0f, result.max_velocity_sgt, result.max_velocity_sg_result);
     } else {
-      ESP_LOGW(TAG, "Max velocity (%.2f steps/s): Does NOT work with optimal SGT", max_vel);
+      ESP_LOGW(TAG, "Max velocity (%.3f rev/s, %.1f RPM): Does NOT work with optimal SGT", max_vel, max_vel * 60.0f);
       if (result.actual_max_velocity > 0.0f) {
-        ESP_LOGI(TAG, "  -> Actual working max velocity: %.2f steps/s (SG_RESULT=%u)", 
-                 result.actual_max_velocity, result.max_velocity_sg_result);
+        ESP_LOGI(TAG, "  -> Actual working max velocity: %.3f rev/s (%.1f RPM) (SG_RESULT=%u)", 
+                 result.actual_max_velocity, result.actual_max_velocity * 60.0f, result.max_velocity_sg_result);
       }
     }
     ESP_LOGI(TAG, "==========================================");
@@ -154,10 +155,11 @@ extern "C" void app_main(void) {
     driver.diagnostics.ConfigureStallGuard(sg_config);
     
     // Set explicit acceleration and deceleration (same value for both)
-    driver.rampControl.SetAccelerations(TUNING_ACCELERATION_STEPS_S2, TUNING_ACCELERATION_STEPS_S2, tmc51x0::Unit::Steps);
+    // Unit::RevPerSec is now the default, but showing it explicitly for clarity
+    driver.rampControl.SetAccelerations(TUNING_ACCELERATION_REV_S2, TUNING_ACCELERATION_REV_S2, tmc51x0::Unit::RevPerSec);
     
     driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
-    driver.rampControl.SetMaxSpeed(TUNING_VELOCITY_STEPS_S, tmc51x0::Unit::Steps);
+    driver.rampControl.SetMaxSpeed(TUNING_VELOCITY_REV_S, tmc51x0::Unit::RevPerSec);
     
     // Monitor for a few seconds, but stop early if motor stalls
     ESP_LOGI(TAG, "Monitoring SG_RESULT (will stop if motor stalls)...");
@@ -169,25 +171,25 @@ extern "C" void app_main(void) {
           sg_val = 0;
         }
         float current_speed = 0.0f;
-        if (!driver.rampControl.GetCurrentSpeed(current_speed, tmc51x0::Unit::Steps)) {
+        if (!driver.rampControl.GetCurrentSpeed(current_speed, tmc51x0::Unit::RevPerSec)) {
           current_speed = 0.0f;
         }
-        ESP_LOGI(TAG, "SG_RESULT: %u, VACTUAL: %.1f steps/s", sg_val, current_speed);
+        ESP_LOGI(TAG, "SG_RESULT: %u, VACTUAL: %.3f rev/s (%.1f RPM)", sg_val, current_speed, current_speed * 60.0f);
         
         // Ignore low-speed stalls (resonance area)
-        // Only trigger stop if speed is significant (> 5000 steps/s) AND SG=0
-        if (sg_val == 0 && std::abs(current_speed) > 5000.0f) {
-            ESP_LOGW(TAG, "Stall detected (SG=0) at V=%.1f! Stopping motor...", current_speed);
+        // Only trigger stop if speed is significant (> 0.1 rev/s ≈ 6 RPM) AND SG=0
+        if (sg_val == 0 && std::abs(current_speed) > 0.1f) {
+            ESP_LOGW(TAG, "Stall detected (SG=0) at V=%.3f rev/s (%.1f RPM)! Stopping motor...", current_speed, current_speed * 60.0f);
             stall_detected = true;
             driver.rampControl.Stop();
             // Wait for stop
             for(int j=0; j<50; j++) {
                 vTaskDelay(pdMS_TO_TICKS(100));
                 float speed = 0.0f;
-                if (!driver.rampControl.GetCurrentSpeed(speed, tmc51x0::Unit::Steps)) {
+                if (!driver.rampControl.GetCurrentSpeed(speed, tmc51x0::Unit::RevPerSec)) {
                   speed = 0.0f;
                 }
-                if (std::abs(speed) < 10.0f) break;
+                if (std::abs(speed) < 0.01f) break; // ~0.6 RPM threshold
             }
             break;
         }

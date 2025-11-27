@@ -115,14 +115,16 @@ enum class MotorType : uint8_t {
  * Rad: Radians (per second for velocity, per second^2 for accel)
  * Deg: Degrees (per second for velocity, per second^2 for accel)
  * Mm: Millimeters (linear only)
- * Rpm : Revolutions per Minute (Velocity only, typically)
+ * RPM: Revolutions per Minute (Velocity only, typically)
+ * RevPerSec: Revolutions per Second (recommended default for velocity)
  */
 enum class Unit : uint8_t {
-  Steps, ///< Microsteps (driver native)
-  Rad,   ///< Radians (per second for velocity, per second^2 for accel)
-  Deg,   ///< Degrees (per second for velocity, per second^2 for accel)
-  Mm,    ///< Millimeters (linear only)
-  RPM    ///< Revolutions per Minute (Velocity only, typically)
+  Steps,     ///< Microsteps (driver native)
+  Rad,       ///< Radians (per second for velocity, per second^2 for accel)
+  Deg,       ///< Degrees (per second for velocity, per second^2 for accel)
+  Mm,        ///< Millimeters (linear only)
+  RPM,       ///< Revolutions per Minute (Velocity only, typically)
+  RevPerSec  ///< Revolutions per Second (recommended default for velocity)
 };
 
 /**
@@ -1389,7 +1391,7 @@ struct StallGuardConfig {
    * @param stop_on_stall Stop motor when stall detected
    */
   StallGuardConfig(int8_t sgt_threshold, bool enable_filt = false, float min_vel = 0.0F, float max_vel = 0.0F,
-                   Unit vel_unit = Unit::Steps, bool stop_on_stall = false)
+                   Unit vel_unit = Unit::RevPerSec, bool stop_on_stall = false)
       : threshold(sgt_threshold), enable_filter(enable_filt), min_velocity(min_vel), max_velocity(max_vel),
         velocity_unit(vel_unit), stop_on_stall(stop_on_stall) {}
 
@@ -1812,7 +1814,7 @@ struct CoolStepConfig {
    * @param max_vel Maximum velocity for CoolStep activation
    * @param vel_unit Unit for velocity thresholds
    */
-  CoolStepConfig(uint16_t lower_sg, uint16_t upper_sg, float min_vel, float max_vel, Unit vel_unit = Unit::Steps)
+  CoolStepConfig(uint16_t lower_sg, uint16_t upper_sg, float min_vel, float max_vel, Unit vel_unit = Unit::RevPerSec)
       : lower_threshold_sg(lower_sg), upper_threshold_sg(upper_sg), min_velocity(min_vel), max_velocity(max_vel),
         velocity_unit(vel_unit) {}
 };
@@ -1933,7 +1935,7 @@ struct DcStepConfig {
    * @param pwm_time_us PWM on-time limit in microseconds (0 = auto-calculate)
    * @param sensitivity Stall detection sensitivity
    */
-  DcStepConfig(float min_vel, Unit vel_unit = Unit::Steps, float pwm_time_us = 0.0F,
+  DcStepConfig(float min_vel, Unit vel_unit = Unit::RevPerSec, float pwm_time_us = 0.0F,
                DcStepStallSensitivity sensitivity = DcStepStallSensitivity::MODERATE)
       : min_velocity(min_vel), velocity_unit(vel_unit), pwm_on_time_us(pwm_time_us), stall_sensitivity(sensitivity) {}
 };

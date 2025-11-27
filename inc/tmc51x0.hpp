@@ -336,7 +336,7 @@ public:
      * @param unit Unit of the value (default: Steps)
      * @return true if set successfully, false otherwise
      */
-    bool SetMaxSpeed(float value, Unit unit = Unit::Steps) noexcept;
+    bool SetMaxSpeed(float value, Unit unit = Unit::RevPerSec) noexcept;
 
     /**
      * @brief Set acceleration and deceleration
@@ -344,7 +344,7 @@ public:
      * @param unit Unit of the value (default: Steps)
      * @return true if set successfully, false otherwise
      */
-    bool SetAcceleration(float value, Unit unit = Unit::Steps) noexcept;
+    bool SetAcceleration(float value, Unit unit = Unit::RevPerSec) noexcept;
 
     /**
      * @brief Set acceleration and deceleration separately
@@ -353,7 +353,7 @@ public:
      * @param unit Unit of the values (default: Steps)
      * @return true if set successfully, false otherwise
      */
-    bool SetAccelerations(float accel_val, float decel_val, Unit unit = Unit::Steps) noexcept;
+    bool SetAccelerations(float accel_val, float decel_val, Unit unit = Unit::RevPerSec) noexcept;
 
     /**
      * @brief Set deceleration only (DMAX register)
@@ -363,7 +363,7 @@ public:
      *
      * Sets only the deceleration rate (DMAX register) without affecting acceleration (AMAX).
      */
-    bool SetDeceleration(float value, Unit unit = Unit::Steps) noexcept;
+    bool SetDeceleration(float value, Unit unit = Unit::RevPerSec) noexcept;
 
     /**
      * @brief Set ramp speeds
@@ -373,7 +373,7 @@ public:
      * @param unit Unit of the speed values (default: Steps)
      * @return true if set successfully, false otherwise
      */
-    bool SetRampSpeeds(float start_speed, float stop_speed, float transition_speed, Unit unit = Unit::Steps) noexcept;
+    bool SetRampSpeeds(float start_speed, float stop_speed, float transition_speed, Unit unit = Unit::RevPerSec) noexcept;
 
     /**
      * @brief Get current speed
@@ -381,7 +381,7 @@ public:
      * @param unit Unit to return the speed in (default: Steps)
      * @return true if read successfully, false otherwise
      */
-    bool GetCurrentSpeed(float& speed, Unit unit = Unit::Steps) noexcept;
+    bool GetCurrentSpeed(float& speed, Unit unit = Unit::RevPerSec) noexcept;
 
     /**
      * @brief Check if target position is reached
@@ -580,7 +580,7 @@ public:
      *
      * Sets the first acceleration phase. If 0.0f, AMAX is used for this phase.
      */
-    bool SetFirstAcceleration(float a1, Unit unit = Unit::Steps) noexcept;
+    bool SetFirstAcceleration(float a1, Unit unit = Unit::RevPerSec) noexcept;
 
     /**
      * @brief Set final deceleration phase
@@ -593,7 +593,7 @@ public:
      * If set to 0, the driver might behave unexpectedly in positioning mode.
      * A safe minimum (e.g., 100) is recommended if unsure.
      */
-    bool SetFinalDeceleration(float d1, Unit unit = Unit::Steps) noexcept;
+    bool SetFinalDeceleration(float d1, Unit unit = Unit::RevPerSec) noexcept;
 
   private:
     TMC51x0& driver_; ///< Reference to parent driver instance
@@ -679,12 +679,13 @@ public:
 
     /**
      * @brief Set mode change speeds
-     * @param pwm_thrs Speed threshold for stealthChop (steps/s)
-     * @param cool_thrs Speed threshold for coolStep (steps/s)
-     * @param high_thrs Speed threshold for high-speed mode (steps/s)
+     * @param pwm_thrs Speed threshold for stealthChop
+     * @param cool_thrs Speed threshold for coolStep
+     * @param high_thrs Speed threshold for high-speed mode
+     * @param unit Unit of the speed values (default: RevPerSec)
      * @return true if set successfully, false otherwise
      */
-    bool SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs) noexcept;
+    bool SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs, Unit unit = Unit::RevPerSec) noexcept;
 
     /**
      * @brief Set CoolStep velocity threshold (TCOOLTHRS)
@@ -692,7 +693,7 @@ public:
      * @param unit Unit of the value (default: Steps)
      * @return true if set successfully, false otherwise
      */
-    bool SetCoolStepThreshold(float value, Unit unit = Unit::Steps) noexcept;
+    bool SetCoolStepThreshold(float value, Unit unit = Unit::RevPerSec) noexcept;
 
     /**
      * @brief Set High-Speed velocity threshold (THIGH)
@@ -700,7 +701,7 @@ public:
      * @param unit Unit of the value (default: Steps)
      * @return true if set successfully, false otherwise
      */
-    bool SetHighSpeedThreshold(float value, Unit unit = Unit::Steps) noexcept;
+    bool SetHighSpeedThreshold(float value, Unit unit = Unit::RevPerSec) noexcept;
 
     /**
      * @brief Set StealthChop velocity threshold (TPWMTHRS)
@@ -716,7 +717,7 @@ public:
      *
      * @note This is automatically configured during Initialize() if velocity_threshold is set in StealthChopConfig.
      */
-    bool SetStealthChopVelocityThreshold(float value, Unit unit = Unit::Steps) noexcept;
+    bool SetStealthChopVelocityThreshold(float value, Unit unit = Unit::RevPerSec) noexcept;
 
     /**
      * @brief Set global current scaler
@@ -1402,7 +1403,7 @@ public:
      *
      * @note For high-level configuration, use ConfigureStallGuard() instead.
      */
-    bool SetTcoolthrs(float threshold, Unit unit = Unit::Steps) noexcept;
+    bool SetTcoolthrs(float threshold, Unit unit = Unit::RevPerSec) noexcept;
 
     /**
      * @brief Get TCOOLTHRS register value (from local storage)
@@ -1413,7 +1414,7 @@ public:
      * Returns the locally tracked value of TCOOLTHRS register.
      * This register is write-only, so we track it locally.
      */
-    bool GetTcoolthrs(float& threshold, Unit unit = Unit::Steps) const noexcept;
+    bool GetTcoolthrs(float& threshold, Unit unit = Unit::RevPerSec) const noexcept;
 
     /**
      * @brief Get lost steps counter
@@ -1625,8 +1626,8 @@ public:
      *       in the result struct contain the velocities that DO work with the optimal SGT
      */
     bool TuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = -10,
-                        int8_t max_sgt = 63, float acceleration = 3000.0F, float min_velocity = 0.0F,
-                        float max_velocity = 0.0F, Unit velocity_unit = Unit::Steps) noexcept;
+                        int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F,
+                        float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec) noexcept;
 
     /**
      * @brief Legacy overload: Automatically tune StallGuard threshold (SGT)
@@ -1647,8 +1648,8 @@ public:
      */
     [[deprecated("Use TuneStallGuard with StallGuardTuningResult for comprehensive results")]]
     bool TuneStallGuard(float target_velocity, int8_t& final_sgt, int8_t min_sgt = -10, int8_t max_sgt = 63,
-                        float acceleration = 3000.0F, float min_velocity = 0.0F, float max_velocity = 0.0F,
-                        Unit velocity_unit = Unit::Steps) noexcept;
+                        float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F,
+                        Unit velocity_unit = Unit::RevPerSec) noexcept;
 
     /**
      * @brief Comprehensive automatic StallGuard tuning with safe current margin and optional encoder verification
@@ -1704,8 +1705,8 @@ public:
      * @see TuneStallGuard() for a simpler version without current margin handling
      */
     bool AutoTuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = 0,
-                            int8_t max_sgt = 63, float acceleration = 3000.0F, float min_velocity = 0.0F,
-                            float max_velocity = 0.0F, Unit velocity_unit = Unit::Steps,
+                            int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F,
+                            float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec,
                             uint16_t safe_current_margin_mA = 0) noexcept;
 
   private:

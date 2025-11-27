@@ -138,6 +138,9 @@ float TMC51x0<CommType>::convertSpeedToSteps(float value, Unit unit) const noexc
   case Unit::RPM:
     // RPM * steps_per_rev / 60
     return (value * effective_steps_per_rev) / 60.0f;
+  case Unit::RevPerSec:
+    // rev/s * steps_per_rev
+    return value * effective_steps_per_rev;
   case Unit::Rad:
     // rad/s * steps_per_rev / (2*PI)
     return (value * effective_steps_per_rev) / (2.0f * 3.14159265359f);
@@ -189,6 +192,8 @@ float TMC51x0<CommType>::convertPositionToSteps(float value, Unit unit) const no
     return value;
   case Unit::RPM: // Treated as Revolutions
     return value * effective_steps_per_rev;
+  case Unit::RevPerSec: // Treated as Revolutions
+    return value * effective_steps_per_rev;
   case Unit::Rad:
     return (value * effective_steps_per_rev) / (2.0f * 3.14159265359f);
   case Unit::Deg:
@@ -221,6 +226,8 @@ float TMC51x0<CommType>::convertStepsToUnit(int32_t steps, Unit unit) const noex
   case Unit::Steps:
     return val;
   case Unit::RPM: // Revolutions
+    return val / effective_steps_per_rev;
+  case Unit::RevPerSec: // Revolutions
     return val / effective_steps_per_rev;
   case Unit::Rad:
     return (val / effective_steps_per_rev) * (2.0f * 3.14159265359f);
@@ -255,6 +262,8 @@ float TMC51x0<CommType>::convertSpeedToUnit(float steps_per_sec, Unit unit) cons
     return steps_per_sec;
   case Unit::RPM:
     return (steps_per_sec / effective_steps_per_rev) * 60.0f;
+  case Unit::RevPerSec:
+    return steps_per_sec / effective_steps_per_rev;
   case Unit::Rad:
     return (steps_per_sec / effective_steps_per_rev) * (2.0f * 3.14159265359f);
   case Unit::Deg:
@@ -1673,10 +1682,13 @@ bool TMC51x0<CommType>::MotorControl::ConfigureMotorCurrent(const MotorSpec& mot
 }
 
 template <typename CommType>
-bool TMC51x0<CommType>::MotorControl::SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs) noexcept {
-  int32_t tpwmthrs = driver_.thresholdSpeedToTstep(pwm_thrs);
-  int32_t tcoolthrs = driver_.thresholdSpeedToTstep(cool_thrs);
-  int32_t thigh = driver_.thresholdSpeedToTstep(high_thrs);
+bool TMC51x0<CommType>::MotorControl::SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs, Unit unit) noexcept {
+  float pwm_steps = driver_.convertSpeedToSteps(pwm_thrs, unit);
+  float cool_steps = driver_.convertSpeedToSteps(cool_thrs, unit);
+  float high_steps = driver_.convertSpeedToSteps(high_thrs, unit);
+  int32_t tpwmthrs = driver_.thresholdSpeedToTstep(pwm_steps);
+  int32_t tcoolthrs = driver_.thresholdSpeedToTstep(cool_steps);
+  int32_t thigh = driver_.thresholdSpeedToTstep(high_steps);
   tpwmthrs = std::min(tpwmthrs, static_cast<decltype(tpwmthrs)>(0xFFFFF)); // 20 bits
   tcoolthrs = std::min(tcoolthrs, static_cast<decltype(tcoolthrs)>(0xFFFFF));
   thigh = std::min(thigh, static_cast<decltype(thigh)>(0xFFFFF));
