@@ -1650,6 +1650,64 @@ public:
                         float acceleration = 3000.0F, float min_velocity = 0.0F, float max_velocity = 0.0F,
                         Unit velocity_unit = Unit::Steps) noexcept;
 
+    /**
+     * @brief Comprehensive automatic StallGuard tuning with safe current margin and optional encoder verification
+     * @param target_velocity Target velocity for tuning (most important - optimal SGT is determined here)
+     * @param result Reference to store comprehensive tuning results
+     * @param min_sgt Minimum SGT to try (default: 0, negative values may cause false stalls)
+     * @param max_sgt Maximum SGT to try (default: 63)
+     * @param acceleration Acceleration/deceleration (default: 3000.0f steps/s^2)
+     * @param min_velocity Minimum velocity to verify tuning at (0 = disabled)
+     * @param max_velocity Maximum velocity to verify tuning at (0 = disabled)
+     * @param velocity_unit Unit for velocity and acceleration parameters (default: Steps)
+     * @param safe_current_margin_mA Safe current margin in milliamps (0 = no margin, use nominal current)
+     * @return true if tuning succeeded at target velocity, false if failed
+     *
+     * This is an enhanced version of TuneStallGuard that implements comprehensive automatic tuning
+     * following Trinamic application note AN-002 guidelines and industry best practices:
+     *
+     * **Key Features:**
+     * - **Safe Current Margin**: Reduces motor current by specified margin (in mA) for safer tuning
+     *   and improved StallGuard sensitivity. Current is automatically restored after tuning.
+     * - **Comprehensive Preparation**: Disables interfering features (CoolStep, StallGuard filter,
+     *   stop-on-stall) during tuning, then restores them afterward.
+     * - **Systematic SGT Scanning**: Searches for optimal SGT value that provides SG_RESULT in
+     *   the ideal range (100-500) at no-load, ensuring reliable stall detection.
+     * - **Velocity Range Validation**: Tests optimal SGT at min/max velocities to determine
+     *   actual operating range.
+     * - **Optional Encoder Verification**: If encoder is available, can verify stall detection
+     *   accuracy (requires external implementation).
+     *
+     * **Tuning Process:**
+     * 1. Save current motor settings (IRUN, IHOLD, GLOBAL_SCALER, CoolStep config)
+     * 2. Apply safe current margin if specified (reduces current for safer tuning)
+     * 3. Disable CoolStep (SGMIN=0) to prevent current modulation during tuning
+     * 4. Disable StallGuard filter (SFILT=0) for immediate response during calibration
+     * 5. Disable stop-on-stall to allow manual observation during tuning
+     * 6. Find optimal SGT at target velocity (primary goal)
+     * 7. Verify optimal SGT works at min/max velocities (if specified)
+     * 8. Restore all saved settings
+     *
+     * **Current Margin Calculation:**
+     * The function calculates the new current by subtracting safe_current_margin_mA from the
+     * current motor current. It uses the driver's current calculation functions to determine
+     * the appropriate IRUN and GLOBAL_SCALER values. The current is constrained to ensure
+     * the motor can still move (minimum IRUN=8 for StealthChop compatibility).
+     *
+     * @note Target velocity is the most important parameter - optimal SGT is determined here first
+     * @note If safe_current_margin_mA is 0, the motor current is not changed
+     * @note Current margin is applied by recalculating IRUN/GLOBAL_SCALER from the reduced current
+     * @note All settings (current, CoolStep, filter) are automatically restored after tuning
+     * @note This function takes several seconds to complete (typically 5-30 seconds depending on SGT range)
+     * @note For best results, ensure the motor is unloaded during tuning
+     *
+     * @see TuneStallGuard() for a simpler version without current margin handling
+     */
+    bool AutoTuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = 0,
+                            int8_t max_sgt = 63, float acceleration = 3000.0F, float min_velocity = 0.0F,
+                            float max_velocity = 0.0F, Unit velocity_unit = Unit::Steps,
+                            uint16_t safe_current_margin_mA = 0) noexcept;
+
   private:
     TMC51x0& driver_; ///< Reference to parent driver instance
   } tuning{*this};

@@ -4203,6 +4203,274 @@ bool TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, int8_t& fi
   return success;
 }
 
+// AutoTuneStallGuard implementation
+template <typename CommType>
+bool TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity, StallGuardTuningResult& result,
+                                                     int8_t min_sgt, int8_t max_sgt, float acceleration,
+                                                     float min_velocity, float max_velocity, Unit velocity_unit,
+                                                     uint16_t safe_current_margin_mA) noexcept {
+  // Initialize result
+  result = StallGuardTuningResult{};
+
+  TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                    "Starting comprehensive StallGuard tuning with current margin=%u mA",
+                    safe_current_margin_mA);
+
+  // ========================================================================
+  // STEP 1: Save current motor settings
+  // ========================================================================
+  struct SavedSettings {
+    uint8_t saved_irun{0};
+    uint8_t saved_ihold{0};
+    uint16_t saved_global_scaler{0};
+    CoolStepConfig saved_coolstep{};
+    StallGuardConfig saved_stallguard{};
+    bool settings_saved{false};
+  } saved;
+
+  // Read current IRUN and IHOLD
+  uint32_t ihold_irun_val = 0;
+  if (driver_.comm_.ReadRegister(Registers::IHOLD_IRUN, ihold_irun_val, driver_.GetCommAddress())) {
+    IHOLD_IRUN_Register iholdrun{};
+    iholdrun.value = ihold_irun_val;
+    saved.saved_irun = iholdrun.bits.irun;
+    saved.saved_ihold = iholdrun.bits.ihold;
+  } else {
+    // Fallback: use calculated values if available
+    saved.saved_irun = driver_.calculated_irun_;
+    saved.saved_ihold = driver_.calculated_ihold_;
+    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                      "Could not read IHOLD_IRUN, using calculated values: IRUN=%u, IHOLD=%u",
+                      saved.saved_irun, saved.saved_ihold);
+  }
+
+  // Read current GLOBAL_SCALER (TMC5160 only)
+  if (driver_.chip_version_ != ChipVersion::TMC5130) {
+    uint32_t global_scaler_val = 0;
+    if (driver_.comm_.ReadRegister(Registers::GLOBAL_SCALER, global_scaler_val, driver_.GetCommAddress())) {
+      saved.saved_global_scaler = static_cast<uint16_t>(global_scaler_val & 0xFF);
+      if (saved.saved_global_scaler == 0) {
+        saved.saved_global_scaler = 256; // 0 means 256
+      }
+    } else {
+      saved.saved_global_scaler = driver_.calculated_global_scaler_;
+      TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                        "Could not read GLOBAL_SCALER, using calculated value: %u",
+                        saved.saved_global_scaler);
+    }
+  }
+
+  // Save current CoolStep config
+  saved.saved_coolstep = driver_.driver_config_.coolstep;
+
+  // Save current StallGuard config
+  saved.saved_stallguard = driver_.driver_config_.stallguard;
+
+  saved.settings_saved = true;
+  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "AutoTuneStallGuard",
+                    "Saved settings: IRUN=%u, IHOLD=%u, GLOBAL_SCALER=%u",
+                    saved.saved_irun, saved.saved_ihold, saved.saved_global_scaler);
+
+  // ========================================================================
+  // STEP 2: Apply safe current margin if specified
+  // ========================================================================
+  bool current_was_reduced = false;
+  if (safe_current_margin_mA > 0) {
+    // Calculate current RMS from saved settings
+    // I_RMS = (GLOBAL_SCALER/256) * ((IRUN+1)/32) * (VFS/RSENSE) * (1/√2)
+    constexpr float VFS = 0.325F;
+    constexpr float SQRT2 = 1.41421356237F;
+    float rsense_ohm = static_cast<float>(driver_.motor_spec_.sense_resistor_mohm) / 1000.0F;
+
+    if (rsense_ohm > 0.0F && driver_.motor_spec_.sense_resistor_mohm > 0) {
+      float current_rms_a = (static_cast<float>(saved.saved_global_scaler) / 256.0F) *
+                            (static_cast<float>(saved.saved_irun + 1) / 32.0F) * (VFS / rsense_ohm) / SQRT2;
+      uint16_t current_rms_ma = static_cast<uint16_t>(current_rms_a * 1000.0F);
+
+      // Calculate new current with margin
+      uint16_t new_current_ma = (current_rms_ma > safe_current_margin_mA) ?
+                                 (current_rms_ma - safe_current_margin_mA) : 0;
+
+      // Ensure minimum current (at least 100mA or 20% of original, whichever is higher)
+      uint16_t min_current_ma = std::max(static_cast<uint16_t>(100U),
+                                          static_cast<uint16_t>(current_rms_ma * 0.2F));
+      if (new_current_ma < min_current_ma) {
+        new_current_ma = min_current_ma;
+        TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                          "Current margin would reduce current too low, using minimum: %u mA",
+                          new_current_ma);
+      }
+
+      if (new_current_ma > 0 && new_current_ma < current_rms_ma) {
+        // Calculate new IRUN and GLOBAL_SCALER from reduced current
+        uint8_t new_irun = 0;
+        uint8_t new_ihold = 0;
+        uint16_t new_scaler = 0;
+
+        // Calculate hold current proportionally from original hold current
+        // First calculate original hold current RMS
+        float original_hold_rms_a = (static_cast<float>(saved.saved_global_scaler) / 256.0F) *
+                                    (static_cast<float>(saved.saved_ihold + 1) / 32.0F) * (VFS / rsense_ohm) / SQRT2;
+        uint16_t original_hold_ma = static_cast<uint16_t>(original_hold_rms_a * 1000.0F);
+        
+        // Scale hold current proportionally to run current reduction
+        float current_ratio = static_cast<float>(new_current_ma) / static_cast<float>(current_rms_ma);
+        uint16_t new_hold_current_ma = static_cast<uint16_t>(static_cast<float>(original_hold_ma) * current_ratio);
+
+        if (CalculateMotorCurrent(driver_.motor_spec_, driver_.motor_spec_.sense_resistor_mohm,
+                                   driver_.motor_spec_.supply_voltage_mv, new_current_ma, new_hold_current_ma,
+                                   new_irun, new_ihold, new_scaler)) {
+          // Ensure minimum IRUN=8 for StealthChop compatibility
+          if (new_irun < 8) {
+            new_irun = 8;
+            // Recalculate scaler for IRUN=8
+            float run_current_a = static_cast<float>(new_current_ma) / 1000.0F;
+            float scaler_float = (run_current_a * 256.0F * 32.0F) / (9.0F * (VFS / rsense_ohm) / SQRT2);
+            new_scaler = static_cast<uint16_t>(std::round(scaler_float));
+            new_scaler = std::max<uint16_t>(new_scaler, 32U);
+            new_scaler = std::min<uint16_t>(new_scaler, 256U);
+          }
+
+          // Apply new current settings
+          if (driver_.chip_version_ != ChipVersion::TMC5130) {
+            if (!driver_.motorControl.SetGlobalScaler(new_scaler)) {
+              TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+                                "Failed to set GLOBAL_SCALER for current margin");
+              // Continue anyway - might still work
+            }
+          }
+
+          if (!driver_.motorControl.SetCurrent(new_irun, new_ihold)) {
+            TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+                              "Failed to set current for current margin");
+            // Continue anyway - might still work
+          } else {
+            current_was_reduced = true;
+            TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                              "Reduced current: %u mA -> %u mA (IRUN: %u->%u, SCALER: %u->%u)",
+                              current_rms_ma, new_current_ma, saved.saved_irun, new_irun,
+                              saved.saved_global_scaler, new_scaler);
+          }
+        } else {
+          TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                            "Could not calculate new current settings, using original current");
+        }
+      }
+    } else {
+      TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                        "Cannot apply current margin: sense resistor not configured");
+    }
+  }
+
+  // ========================================================================
+  // STEP 3: Disable CoolStep (SGMIN=0)
+  // ========================================================================
+  CoolStepConfig coolstep_disabled{};
+  coolstep_disabled.lower_threshold_sg = 0; // Disable CoolStep
+  coolstep_disabled.enable_filter = false;   // Disable filter during tuning
+  if (!driver_.motorControl.ConfigureCoolStep(coolstep_disabled)) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+                      "Failed to disable CoolStep");
+    // Continue anyway
+  } else {
+    TMC51X0_LOG_DEBUG(driver_.comm_, 2, "AutoTuneStallGuard", "CoolStep disabled for tuning");
+  }
+
+  // ========================================================================
+  // STEP 4: Explicitly disable StallGuard filter (SFILT=0) for tuning
+  // ========================================================================
+  // Configure StallGuard with filter disabled (TuneStallGuard will also do this, but
+  // we do it here to ensure it's set before any tuning operations)
+  StallGuardConfig sg_config_no_filter{};
+  sg_config_no_filter.threshold = 0; // Temporary, will be set during tuning
+  sg_config_no_filter.enable_filter = false; // Disable filter for immediate response
+  if (!driver_.diagnostics.ConfigureStallGuard(sg_config_no_filter)) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                      "Failed to configure StallGuard filter (non-critical)");
+    // Continue anyway - TuneStallGuard will set it
+  }
+
+  // ========================================================================
+  // STEP 5: Disable stop-on-stall and clear stall flags
+  // ========================================================================
+  if (!driver_.diagnostics.EnableStopOnStall(false)) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+                      "Failed to disable stop-on-stall");
+    // Continue anyway
+  }
+  driver_.diagnostics.ClearStallFlag();
+  driver_.comm_.DelayMs(10);
+
+  // ========================================================================
+  // STEP 6: Perform comprehensive SGT tuning using existing function
+  // ========================================================================
+  // Adjust min_sgt to start at 0 if negative (to avoid false stalls)
+  int8_t adjusted_min_sgt = (min_sgt < 0) ? 0 : min_sgt;
+  if (adjusted_min_sgt != min_sgt) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                      "Adjusted min_sgt from %d to %d (avoiding false stalls)", min_sgt, adjusted_min_sgt);
+  }
+
+  bool tuning_success = TuneStallGuard(target_velocity, result, adjusted_min_sgt, max_sgt,
+                                       acceleration, min_velocity, max_velocity, velocity_unit);
+
+  // ========================================================================
+  // STEP 7: Restore all saved settings
+  // ========================================================================
+  bool restore_success = true;
+
+  // Restore motor current if it was reduced
+  if (current_was_reduced && saved.settings_saved) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, 2, "AutoTuneStallGuard",
+                      "Restoring motor current: IRUN=%u, IHOLD=%u, GLOBAL_SCALER=%u",
+                      saved.saved_irun, saved.saved_ihold, saved.saved_global_scaler);
+
+    if (driver_.chip_version_ != ChipVersion::TMC5130) {
+      if (!driver_.motorControl.SetGlobalScaler(saved.saved_global_scaler)) {
+        TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+                          "Failed to restore GLOBAL_SCALER");
+        restore_success = false;
+      }
+    }
+
+    if (!driver_.motorControl.SetCurrent(saved.saved_irun, saved.saved_ihold)) {
+      TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+                        "Failed to restore motor current");
+      restore_success = false;
+    } else {
+      TMC51X0_LOG_DEBUG(driver_.comm_, 2, "AutoTuneStallGuard",
+                        "Motor current restored successfully");
+    }
+  }
+
+  // Restore CoolStep configuration
+  if (saved.settings_saved) {
+    if (!driver_.motorControl.ConfigureCoolStep(saved.saved_coolstep)) {
+      TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                        "Failed to restore CoolStep configuration (non-critical)");
+      // Non-critical, continue
+    } else {
+      TMC51X0_LOG_DEBUG(driver_.comm_, 2, "AutoTuneStallGuard",
+                        "CoolStep configuration restored");
+    }
+  }
+
+  // Note: StallGuard configuration (SGT) is intentionally NOT restored
+  // because the optimal SGT found during tuning should remain active.
+  // The user can configure it explicitly if needed.
+
+  if (!restore_success) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+                      "Warning: Some settings could not be restored");
+  }
+
+  TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                    "Tuning complete. Success=%d, Optimal SGT=%d",
+                    tuning_success, result.optimal_sgt);
+
+  return tuning_success;
+}
+
 // UartConfig implementation
 template <typename CommType>
 bool TMC51x0<CommType>::UartConfig::ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay) noexcept {
