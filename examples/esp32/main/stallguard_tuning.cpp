@@ -43,8 +43,8 @@ static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG =
     tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE;
 
 // Tuning Parameters (using RPM for user-friendly units)
-static constexpr float TUNING_VELOCITY_RPM = 30.0f; // Target velocity: 0.6 RPM
-static constexpr float TUNING_ACCELERATION_REV_S2 = 5.0f; // Acceleration: 0.01 rev/s² (slower for testing)
+static constexpr float TUNING_VELOCITY_RPM = 200.0f; // Target velocity: 0.6 RPM
+static constexpr float TUNING_ACCELERATION_REV_S2 = 50.0f; // Acceleration: 0.01 rev/s² (slower for testing)
 
 // Unit definitions
 static constexpr tmc51x0::Unit VELOCITY_UNIT = tmc51x0::Unit::RPM;
