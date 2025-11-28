@@ -43,12 +43,12 @@ static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG =
     tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE;
 
 // Tuning Parameters (using RPM for user-friendly units)
-static constexpr float TUNING_VELOCITY_RPM = 1.2f; // Target velocity: 0.6 RPM
-static constexpr float TUNING_ACCELERATION_REV_S2 = 0.5f; // Acceleration: 0.01 rev/s² (slower for testing)
+static constexpr float TUNING_VELOCITY_RPM = 30.0f; // Target velocity: 0.6 RPM
+static constexpr float TUNING_ACCELERATION_REV_S2 = 5.0f; // Acceleration: 0.01 rev/s² (slower for testing)
 
 // Unit definitions
 static constexpr tmc51x0::Unit VELOCITY_UNIT = tmc51x0::Unit::RPM;
-static constexpr tmc51x0::Unit ACCELERATION_UNIT = tmc51x0::Unit::RPM;
+static constexpr tmc51x0::Unit ACCELERATION_UNIT = tmc51x0::Unit::RevPerSec;  // Acceleration must be in rev/s², not RPM
 
 extern "C" void app_main(void) {
   ESP_LOGI(TAG, "Starting StallGuard2 Tuning Tool...");
@@ -105,6 +105,8 @@ extern "C" void app_main(void) {
   ESP_LOGI(TAG, "Target Velocity: %.2f RPM", TUNING_VELOCITY_RPM);
   ESP_LOGI(TAG, "Acceleration: %.3f rev/s²", TUNING_ACCELERATION_REV_S2);
   ESP_LOGI(TAG, "Using AutoTuneStallGuard with safe current margin handling");
+  ESP_LOGI(TAG, "NOTE: At %.2f RPM, one full revolution should take %.1f seconds", 
+           TUNING_VELOCITY_RPM, 60.0f / TUNING_VELOCITY_RPM);
   
   // Use comprehensive automatic tuning with safe current margin
   tmc51x0::StallGuardTuningResult result;
@@ -163,7 +165,20 @@ extern "C" void app_main(void) {
     driver.rampControl.SetAccelerations(TUNING_ACCELERATION_REV_S2, TUNING_ACCELERATION_REV_S2, ACCELERATION_UNIT);
     
     driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
+    
+    // Debug: Log the actual speed being set
+    float test_speed = 0.0f;
+    if (driver.rampControl.GetCurrentSpeed(test_speed, VELOCITY_UNIT)) {
+      ESP_LOGI(TAG, "Current speed before SetMaxSpeed: %.2f RPM", test_speed);
+    }
+    
     driver.rampControl.SetMaxSpeed(TUNING_VELOCITY_RPM, VELOCITY_UNIT);
+    
+    // Debug: Verify the speed was set correctly
+    vTaskDelay(pdMS_TO_TICKS(100)); // Wait for motor to start
+    if (driver.rampControl.GetCurrentSpeed(test_speed, VELOCITY_UNIT)) {
+      ESP_LOGI(TAG, "Current speed after SetMaxSpeed: %.2f RPM (expected: %.2f RPM)", test_speed, TUNING_VELOCITY_RPM);
+    }
     
     // Monitor for a few seconds, but stop early if motor stalls
     ESP_LOGI(TAG, "Monitoring SG_RESULT (will stop if motor stalls)...");

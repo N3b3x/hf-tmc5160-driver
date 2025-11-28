@@ -128,9 +128,10 @@ float TMC51x0<CommType>::convertSpeedToSteps(float value, Unit unit) const noexc
   if (value == 0.0f)
     return 0.0f;
 
-  // Calculate effective steps per revolution (full steps * microsteps * gear ratio)
+  // Calculate effective steps per revolution (full steps * gear ratio)
+  // Note: We do NOT include microsteps here - speedToInternal will convert to μsteps/sec
   float effective_steps_per_rev = static_cast<float>(motor_spec_.steps_per_rev) *
-                                  static_cast<float>(current_microsteps_) * mechanical_system_.gear_ratio;
+                                  mechanical_system_.gear_ratio;
 
   switch (unit) {
   case Unit::Steps:
