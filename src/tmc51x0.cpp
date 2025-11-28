@@ -263,9 +263,10 @@ template <typename CommType>
 float TMC51x0<CommType>::convertSpeedToUnit(float steps_per_sec, Unit unit) const noexcept {
   // Logic similar to steps->unit but scaling for time if needed
   // Steps/s -> RPM: (Steps/s / Steps/rev) * 60
+  // Note: Input is in full steps/sec (from speedFromInternal), so we do NOT include microsteps here
 
   float effective_steps_per_rev = static_cast<float>(motor_spec_.steps_per_rev) *
-                                  static_cast<float>(current_microsteps_) * mechanical_system_.gear_ratio;
+                                  mechanical_system_.gear_ratio;
 
   if (effective_steps_per_rev == 0.0f)
     return 0.0f;
