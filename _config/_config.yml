@@ -161,7 +161,7 @@ just_the_docs:
       url: "https://github.com/n3b3x/hf-tmc5160-driver/issues"
 
   # Custom head content (loads custom CSS/JS)
-  head_custom: head_custom.html
+  head_custom: _config/_includes/head_custom.html
 
   # Custom CSS and JS files
   custom_css:
