@@ -46,6 +46,10 @@ static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG =
 static constexpr float TUNING_VELOCITY_RPM = 1.2f; // Target velocity: 0.6 RPM
 static constexpr float TUNING_ACCELERATION_REV_S2 = 0.5f; // Acceleration: 0.01 rev/s² (slower for testing)
 
+// Unit definitions
+static constexpr tmc51x0::Unit VELOCITY_UNIT = tmc51x0::Unit::RPM;
+static constexpr tmc51x0::Unit ACCELERATION_UNIT = tmc51x0::Unit::RPM;
+
 extern "C" void app_main(void) {
   ESP_LOGI(TAG, "Starting StallGuard2 Tuning Tool...");
 
@@ -95,7 +99,7 @@ extern "C" void app_main(void) {
   // Set velocity thresholds for StallGuard
   // TCOOLTHRS needs to be set such that StallGuard is active at tuning velocity
   // Using RPM units - 1.2 RPM threshold ensures StallGuard is active
-  driver.motorControl.SetModeChangeSpeeds(0.12f, 1.2f, 0.0f, tmc51x0::Unit::RPM); // PWM_THRS, COOL_THRS, HIGH_THRS
+  driver.motorControl.SetModeChangeSpeeds(0.12f, 1.2f, 0.0f, VELOCITY_UNIT); // PWM_THRS, COOL_THRS, HIGH_THRS
 
   ESP_LOGI(TAG, "Starting Comprehensive Auto-Tuning Sequence...");
   ESP_LOGI(TAG, "Target Velocity: %.2f RPM", TUNING_VELOCITY_RPM);
@@ -116,7 +120,7 @@ extern "C" void app_main(void) {
   // Using RPM units for velocity parameters, RevPerSec for acceleration (RPM is not valid for acceleration)
   bool success = driver.tuning.AutoTuneStallGuard(TUNING_VELOCITY_RPM, result, 0, 63, 
                                                      TUNING_ACCELERATION_REV_S2, min_vel, max_vel, 
-                                                     tmc51x0::Unit::RPM, tmc51x0::Unit::RevPerSec, safe_current_margin_mA);
+                                                     VELOCITY_UNIT, ACCELERATION_UNIT, safe_current_margin_mA);
 
   if (success) {
     ESP_LOGI(TAG, "==========================================");
@@ -156,10 +160,10 @@ extern "C" void app_main(void) {
     
     // Set explicit acceleration and deceleration (same value for both)
     // Acceleration is in rev/s² (not RPM/s, as RPM/s is not a standard unit)
-    driver.rampControl.SetAccelerations(TUNING_ACCELERATION_REV_S2, TUNING_ACCELERATION_REV_S2, tmc51x0::Unit::RevPerSec);
+    driver.rampControl.SetAccelerations(TUNING_ACCELERATION_REV_S2, TUNING_ACCELERATION_REV_S2, ACCELERATION_UNIT);
     
     driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
-    driver.rampControl.SetMaxSpeed(TUNING_VELOCITY_RPM, tmc51x0::Unit::RPM);
+    driver.rampControl.SetMaxSpeed(TUNING_VELOCITY_RPM, VELOCITY_UNIT);
     
     // Monitor for a few seconds, but stop early if motor stalls
     ESP_LOGI(TAG, "Monitoring SG_RESULT (will stop if motor stalls)...");
@@ -171,7 +175,7 @@ extern "C" void app_main(void) {
           sg_val = 0;
         }
         float current_speed = 0.0f;
-        if (!driver.rampControl.GetCurrentSpeed(current_speed, tmc51x0::Unit::RPM)) {
+        if (!driver.rampControl.GetCurrentSpeed(current_speed, VELOCITY_UNIT)) {
           current_speed = 0.0f;
         }
         ESP_LOGI(TAG, "SG_RESULT: %u, VACTUAL: %.2f RPM", sg_val, current_speed);
@@ -186,7 +190,7 @@ extern "C" void app_main(void) {
             for(int j=0; j<50; j++) {
                 vTaskDelay(pdMS_TO_TICKS(100));
                 float speed = 0.0f;
-                if (!driver.rampControl.GetCurrentSpeed(speed, tmc51x0::Unit::RPM)) {
+                if (!driver.rampControl.GetCurrentSpeed(speed, VELOCITY_UNIT)) {
                   speed = 0.0f;
                 }
                 if (std::abs(speed) < 0.6f) break; // ~0.6 RPM threshold

@@ -84,7 +84,7 @@ search:
   previews: 5               # Number of search result previews
   preview_words_before: 10  # Words before match in preview
   preview_words_after: 15   # Words after match in preview
-  tokenizer_separator: /[\s/]+/  # Token separator regex
+  tokenizer_separator: "/[\\s/]+/"  # Token separator regex
   rel_url: true             # Use relative URLs
   button: true              # Show search button
 
