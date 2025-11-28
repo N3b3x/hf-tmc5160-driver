@@ -83,7 +83,7 @@ overhead** while maintaining complete platform independence.
 - ✅ **Hold Mode**: Maintain position with configurable hold current
 - ✅ **Advanced Ramp Profiles**: Multi-phase acceleration (A1, AMAX, D1) for smooth motion
 - ✅ **Reference Switches**: Configurable endstops with latching and stop-on-switch modes
-- ✅ **Unit-Aware API**: Set positions, speeds, and accelerations in steps, mm, degrees, or RPM
+- ✅ **Unit-Aware API**: Set positions, speeds, and accelerations in steps, mm, degrees, RPM, or revolutions per second (RevPerSec - default for velocities)
 
 #### MotorControl Subsystem
 - ✅ **Current Control**: Automatic calculation from motor specifications (rated current, sense resistor)
@@ -275,8 +275,9 @@ tmc51x0::TMC51x0<CommType> driver(comm_interface);
 // Motion Control
 driver.rampControl.SetRampMode(RampMode::POSITIONING);
 driver.rampControl.SetTargetPosition(1000, Unit::Steps);
-driver.rampControl.SetMaxSpeed(1000.0f, Unit::Steps);
-driver.rampControl.SetAcceleration(500.0f, Unit::Steps);
+// Velocity functions default to revolutions per second (RevPerSec) - much more intuitive!
+driver.rampControl.SetMaxSpeed(0.02f);       // 0.02 rev/s (~1.2 RPM) - Unit::RevPerSec is default
+driver.rampControl.SetAcceleration(0.01f);    // 0.01 rev/s² - Unit::RevPerSec is default
 
 // Motor Control
 driver.motorControl.Enable();
@@ -290,6 +291,10 @@ driver.diagnostics.GetStallGuard(sg_value);
 
 // Automatic Tuning ⭐
 StallGuardTuningResult result;
+driver.tuning.AutoTuneStallGuard(target_velocity, result, min_sgt, max_sgt,
+                                  acceleration, min_velocity, max_velocity,
+                                  tmc51x0::Unit::RevPerSec, safe_current_margin_mA);
+// Or simpler version:
 driver.tuning.TuneStallGuard(target_velocity, result, min_sgt, max_sgt, 
                               acceleration, min_velocity, max_velocity);
 
@@ -339,6 +344,7 @@ bool ot = driver.diagnostics.GetStatus() == DriverStatus::OT;
 #### Tuning Subsystem ⭐ NEW
 | Method | Description |
 |--------|-------------|
+| `AutoTuneStallGuard()` | Comprehensive automatic SGT tuning with safe current margin (recommended) |
 | `TuneStallGuard()` | Automatic SGT tuning with comprehensive velocity range analysis |
 | Returns `StallGuardTuningResult` with optimal SGT, velocity compatibility, and actual achievable velocities |
 
@@ -382,6 +388,7 @@ bool ot = driver.diagnostics.GetStatus() == DriverStatus::OT;
 |----------|-------------|
 | `MmToSteps()` / `StepsToMm()` | Convert between millimeters and steps |
 | `RpmToStepsPerSec()` / `StepsPerSecToRpm()` | Convert between RPM and steps/s |
+| **Default Units**: Velocity functions default to `Unit::RevPerSec` (revolutions per second) for user-friendly operation |
 | `DegreesToSteps()` / `StepsToDegrees()` | Convert between degrees and steps |
 
 For complete API documentation with all methods and parameters, see [docs/api_reference.md](docs/api_reference.md).

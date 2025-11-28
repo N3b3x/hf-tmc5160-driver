@@ -148,11 +148,11 @@ CoolStep thresholds are configured using register values (`semin` and `semax`) t
 
 **`min_velocity`**: CoolStep disabled below this speed
 - Set to match the lowest speed where StallGuard2 gives stable readings
-- Typical: 200-1000 steps/s depending on motor
+- Typical: 0.004-0.02 rev/s (~0.24-1.2 RPM) depending on motor
 
 **`max_velocity`**: CoolStep disabled above this speed
 - Set to match the highest speed where StallGuard2 is reliable
-- Typical: 5000-20000 steps/s depending on motor
+- Typical: 0.1-0.4 rev/s (~6-24 RPM) depending on motor
 - Set equal to `min_velocity` to disable CoolStep during acceleration/deceleration
 
 **Best Practice**: Set thresholds to match your typical constant-velocity operating range.
@@ -187,9 +187,9 @@ void configureCoolStep() {
     coolstep.enable_filter = true;
     
     // Set velocity thresholds (CoolStep active between these speeds)
-    coolstep.min_velocity = 500.0f;   // Enable above 500 steps/s
-    coolstep.max_velocity = 5000.0f;  // Disable above 5000 steps/s
-    coolstep.velocity_unit = tmc51x0::Unit::Steps;
+    coolstep.min_velocity = 0.01f;    // Enable above 0.01 rev/s (~0.6 RPM)
+    coolstep.max_velocity = 0.1f;     // Disable above 0.1 rev/s (~6 RPM)
+    coolstep.velocity_unit = tmc51x0::Unit::RevPerSec;  // Recommended default
     
     // Configure CoolStep (automatically sets velocity thresholds)
     driver.motorControl.ConfigureCoolStep(coolstep);
@@ -200,7 +200,7 @@ void configureCoolStep() {
 
 ```cpp
 // Quick setup with common defaults
-tmc51x0::CoolStepConfig coolstep(64, 256, 500.0f, 5000.0f, tmc51x0::Unit::Steps);
+tmc51x0::CoolStepConfig coolstep(64, 256, 0.01f, 0.1f, tmc51x0::Unit::RevPerSec);
 coolstep.increment_step = tmc51x0::CoolStepIncrementStep::STEP_2;
 coolstep.decrement_speed = tmc51x0::CoolStepDecrementSpeed::EVERY_8;
 driver.motorControl.ConfigureCoolStep(coolstep);
@@ -219,7 +219,7 @@ coolstep.min_current = tmc51x0::CoolStepMinCurrent::QUARTER_IRUN;  // 25% minimu
 coolstep.enable_filter = true;
 coolstep.min_velocity = 1000.0f;
 coolstep.max_velocity = 10000.0f;
-coolstep.velocity_unit = tmc51x0::Unit::Steps;
+coolstep.velocity_unit = tmc51x0::Unit::RevPerSec;
 driver.motorControl.ConfigureCoolStep(coolstep);
 ```
 
@@ -236,7 +236,7 @@ coolstep.min_current = tmc51x0::CoolStepMinCurrent::HALF_IRUN;
 coolstep.enable_filter = false;  // Disable filter for fastest response
 coolstep.min_velocity = 200.0f;
 coolstep.max_velocity = 8000.0f;
-coolstep.velocity_unit = tmc51x0::Unit::Steps;
+coolstep.velocity_unit = tmc51x0::Unit::RevPerSec;
 driver.motorControl.ConfigureCoolStep(coolstep);
 ```
 
@@ -398,7 +398,7 @@ DcStep is an automatic commutation mode that allows the motor to run near its lo
 
 **Setting**: Set to the lowest operating velocity where DcStep gives reliable detection.
 
-**Typical Range**: 200-2000 steps/s depending on motor and application.
+**Typical Range**: 0.004-0.04 rev/s (~0.24-2.4 RPM) depending on motor and application.
 
 #### PWM On-Time (`pwm_on_time_us`)
 
@@ -453,8 +453,8 @@ void configureDcStep() {
     tmc51x0::DcStepConfig dcstep{};
     
     // Set minimum velocity threshold (with unit support)
-    dcstep.min_velocity = 1000.0f;   // Enable DcStep above 1000 steps/s
-    dcstep.velocity_unit = tmc51x0::Unit::Steps;
+    dcstep.min_velocity = 0.02f;      // Enable DcStep above 0.02 rev/s (~1.2 RPM)
+    dcstep.velocity_unit = tmc51x0::Unit::RevPerSec;  // Recommended default
     
     // Auto-calculate PWM on-time from blank time (recommended)
     dcstep.pwm_on_time_us = 0.0f;  // 0 = auto-calculate
@@ -477,7 +477,7 @@ void configureDcStep() {
 
 ```cpp
 // Quick setup with common defaults
-tmc51x0::DcStepConfig dcstep(1000.0f, tmc51x0::Unit::Steps);
+tmc51x0::DcStepConfig dcstep(0.02f, tmc51x0::Unit::RevPerSec);
 // Auto-calculates PWM on-time, uses MODERATE sensitivity
 driver.motorControl.ConfigureDcStep(dcstep);
 ```
@@ -488,7 +488,7 @@ driver.motorControl.ConfigureDcStep(dcstep);
 // For applications requiring specific PWM on-time
 tmc51x0::DcStepConfig dcstep{};
 dcstep.min_velocity = 500.0f;
-dcstep.velocity_unit = tmc51x0::Unit::Steps;
+dcstep.velocity_unit = tmc51x0::Unit::RevPerSec;
 dcstep.pwm_on_time_us = 3.0f;  // 3µs PWM on-time (for 12MHz clock = 36 clock cycles)
 dcstep.stall_sensitivity = tmc51x0::DcStepStallSensitivity::HIGH;  // High sensitivity
 dcstep.stop_on_stall = true;  // Stop motor on stall
@@ -501,7 +501,7 @@ driver.motorControl.ConfigureDcStep(dcstep);
 // Maximum torque capability
 tmc51x0::DcStepConfig dcstep{};
 dcstep.min_velocity = 2000.0f;  // Higher threshold = more torque headroom
-dcstep.velocity_unit = tmc51x0::Unit::Steps;
+dcstep.velocity_unit = tmc51x0::Unit::RevPerSec;
 dcstep.pwm_on_time_us = 5.0f;  // Higher PWM on-time = higher torque capability
 dcstep.stall_sensitivity = tmc51x0::DcStepStallSensitivity::LOW;  // Fewer false positives
 dcstep.stop_on_stall = false;
@@ -514,7 +514,7 @@ driver.motorControl.ConfigureDcStep(dcstep);
 // Operation down to low velocities
 tmc51x0::DcStepConfig dcstep{};
 dcstep.min_velocity = 200.0f;  // Lower threshold = operation at lower velocities
-dcstep.velocity_unit = tmc51x0::Unit::Steps;
+dcstep.velocity_unit = tmc51x0::Unit::RevPerSec;
 dcstep.pwm_on_time_us = 1.5f;  // Lower PWM on-time = operation at lower velocities
 dcstep.stall_sensitivity = tmc51x0::DcStepStallSensitivity::MODERATE;
 dcstep.stop_on_stall = true;  // Stop on stall for safety
@@ -530,7 +530,7 @@ Set `min_velocity` to match your typical operating speed range:
 ```cpp
 // Monitor actual motor velocity during operation
 // Set threshold to lowest speed where DcStep should be active
-dcstep.min_velocity = 500.0f;  // Example: Enable DcStep above 500 steps/s
+dcstep.min_velocity = 0.01f;  // Example: Enable DcStep above 0.01 rev/s (~0.6 RPM)
 ```
 
 #### Step 2: Configure PWM On-Time
@@ -718,9 +718,9 @@ void configureStallGuard() {
     sg_config.enable_filter = true;
     
     // Set velocity thresholds
-    sg_config.min_velocity = 500.0f;   // Enable above 500 steps/s
-    sg_config.max_velocity = 5000.0f;  // Disable above 5000 steps/s
-    sg_config.velocity_unit = tmc51x0::Unit::Steps;
+    sg_config.min_velocity = 0.01f;    // Enable above 0.01 rev/s (~0.6 RPM)
+    sg_config.max_velocity = 0.1f;     // Disable above 0.1 rev/s (~6 RPM)
+    sg_config.velocity_unit = tmc51x0::Unit::RevPerSec;  // Recommended default
     
     // Don't stop on stall (for diagnostics/monitoring)
     sg_config.stop_on_stall = false;
@@ -739,7 +739,7 @@ tmc51x0::StallGuardConfig sg_config(
     true,   // Enable filter
     500.0f, // Min velocity
     5000.0f, // Max velocity
-    tmc51x0::Unit::Steps,
+    tmc51x0::Unit::RevPerSec,
     false   // Don't stop on stall
 );
 driver.diagnostics.ConfigureStallGuard(sg_config);
@@ -754,7 +754,7 @@ sg_config.threshold = -10;  // More sensitive for stall detection
 sg_config.enable_filter = false;  // Disable filter for faster response
 sg_config.min_velocity = 1000.0f;  // Match search speed
 sg_config.max_velocity = 0.0f;  // No upper limit
-sg_config.velocity_unit = tmc51x0::Unit::Steps;
+sg_config.velocity_unit = tmc51x0::Unit::RevPerSec;
 sg_config.stop_on_stall = true;  // Stop motor on stall
 driver.diagnostics.ConfigureStallGuard(sg_config);
 ```
@@ -768,7 +768,7 @@ sg_config.threshold = 0;  // Moderate sensitivity
 sg_config.enable_filter = true;  // Enable filter for smoother readings
 sg_config.min_velocity = 500.0f;  // Match CoolStep min_velocity
 sg_config.max_velocity = 5000.0f;  // Match CoolStep max_velocity
-sg_config.velocity_unit = tmc51x0::Unit::Steps;
+sg_config.velocity_unit = tmc51x0::Unit::RevPerSec;
 sg_config.stop_on_stall = false;  // CoolStep handles current, not stopping
 driver.diagnostics.ConfigureStallGuard(sg_config);
 ```
@@ -780,16 +780,20 @@ The library provides an advanced automatic tuning function that prioritizes targ
 ```cpp
 // Comprehensive tuning with velocity range analysis
 tmc51x0::StallGuardTuningResult result;
-float target_velocity = 30000.0f;  // Most important - optimal SGT determined here
-float min_velocity = 10000.0f;    // Used to determine SGT range
-float max_velocity = 50000.0f;    // Used to determine SGT range
+float target_velocity = 0.6f;      // Most important - optimal SGT determined here (0.6 rev/s ≈ 36 RPM)
+float min_velocity = 0.18f;         // Used to determine SGT range (30% of target)
+float max_velocity = 0.9f;          // Used to determine SGT range (150% of target)
 
-bool success = driver.tuning.TuneStallGuard(
-    target_velocity, result,  // Target velocity (priority) and result struct
-    -10, 63,                  // SGT search range
-    3000.0f,                  // Acceleration
-    min_velocity, max_velocity, // Velocity range to test
-    tmc51x0::Unit::Steps
+// Using AutoTuneStallGuard (recommended) with safe current margin
+// Note: Separate unit parameters for velocity and acceleration
+bool success = driver.tuning.AutoTuneStallGuard(
+    target_velocity, result,               // Target velocity: e.g., 0.6 rev/s (~36 RPM)
+    0, 63,                                 // SGT search range
+    0.06f,                                 // Acceleration: 0.06 rev/s²
+    min_velocity, max_velocity,            // Velocity range: e.g., 0.18-0.9 rev/s
+    tmc51x0::Unit::RevPerSec,              // Velocity unit (default, can be omitted)
+    tmc51x0::Unit::RevPerSec,              // Acceleration unit (default, can be omitted)
+    300                                    // Safe current margin: 300mA
 );
 
 if (success) {
@@ -842,12 +846,15 @@ Use the comprehensive automatic tuning function for best results:
 
 ```cpp
 tmc51x0::StallGuardTuningResult result;
-bool success = driver.tuning.TuneStallGuard(
-    target_velocity, result,  // Your target operating velocity
-    -10, 63,                  // SGT search range
-    3000.0f,                  // Acceleration
-    min_velocity, max_velocity, // Your velocity range
-    tmc51x0::Unit::Steps
+// Using AutoTuneStallGuard (recommended) - includes safe current margin handling
+// Note: Separate unit parameters for velocity and acceleration
+bool success = driver.tuning.AutoTuneStallGuard(
+    target_velocity, result,               // Your target operating velocity: e.g., 0.6 rev/s
+    0, 63,                                 // SGT search range
+    0.06f,                                 // Acceleration: 0.06 rev/s²
+    min_velocity, max_velocity, // Your velocity range: e.g., 0.18-0.9 rev/s
+    tmc51x0::Unit::RevPerSec,  // Unit (default, can be omitted)
+    300                        // Safe current margin: 300mA
 );
 ```
 
@@ -1189,7 +1196,7 @@ void configureStealthChop() {
     // Set velocity threshold for StealthChop (TPWMTHRS)
     // Below this velocity: StealthChop (silent)
     // Above this velocity: SpreadCycle (more torque)
-    driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f, tmc51x0::Unit::Steps);
+    driver.motorControl.SetModeChangeSpeeds(0.002f, 0.0f, 0.0f);  // Unit::RevPerSec is default
 }
 ```
 
@@ -1286,8 +1293,8 @@ if (driver.motorControl.GetPwmAuto(pwm_ofs_auto, pwm_grad_auto)) {
 ```cpp
 // Move motor at medium velocity (60-300 RPM typical)
 // Include constant velocity ramp segment
-driver.rampControl.SetMaxSpeed(1000.0f, tmc51x0::Unit::Steps);
-driver.rampControl.SetAccelerations(500.0f, 500.0f, tmc51x0::Unit::Steps);
+driver.rampControl.SetMaxSpeed(0.02f);  // Unit::RevPerSec is default
+driver.rampControl.SetAccelerations(0.01f, 0.01f);  // Unit::RevPerSec is default
 driver.rampControl.SetTargetPosition(10000);
 
 // Monitor PWM_SCALE_AUTO during motion
@@ -1659,7 +1666,7 @@ for (uint8_t hstrt = 0; hstrt <= 7; hstrt++) {
     
     // Test motor smoothness at low velocity
     // Move motor and check for smooth operation
-    driver.rampControl.SetMaxSpeed(100.0f, tmc51x0::Unit::Steps);
+    driver.rampControl.SetMaxSpeed(0.002f);  // Unit::RevPerSec is default
     driver.rampControl.SetTargetPosition(1000);
     // ... wait for motion and check smoothness ...
     // If smooth, this is the optimal setting
@@ -1676,7 +1683,7 @@ for (uint8_t tpfd = 1; tpfd <= 15; tpfd++) {
     driver.motorControl.ConfigureChopper(chopper);
     
     // Test for resonances at mid-range velocities
-    driver.rampControl.SetMaxSpeed(500.0f, tmc51x0::Unit::Steps);
+    driver.rampControl.SetMaxSpeed(0.01f);  // Unit::RevPerSec is default
     driver.rampControl.SetTargetPosition(5000);
     // ... wait for motion and check for resonances ...
     // If resonances reduced, this is the optimal setting

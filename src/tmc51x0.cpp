@@ -138,6 +138,9 @@ float TMC51x0<CommType>::convertSpeedToSteps(float value, Unit unit) const noexc
   case Unit::RPM:
     // RPM * steps_per_rev / 60
     return (value * effective_steps_per_rev) / 60.0f;
+  case Unit::RevPerSec:
+    // rev/s * steps_per_rev
+    return value * effective_steps_per_rev;
   case Unit::Rad:
     // rad/s * steps_per_rev / (2*PI)
     return (value * effective_steps_per_rev) / (2.0f * 3.14159265359f);
@@ -163,6 +166,18 @@ float TMC51x0<CommType>::convertSpeedToSteps(float value, Unit unit) const noexc
 
 template <typename CommType>
 float TMC51x0<CommType>::convertAccelerationToSteps(float value, Unit unit) const noexcept {
+  if (value == 0.0f)
+    return 0.0f;
+
+  // RPM is not a valid acceleration unit (it's velocity only)
+  // If RPM is passed, treat it as RevPerSec and log a warning
+  if (unit == Unit::RPM) {
+    TMC51X0_LOG_DEBUG(comm_, 0, "convertAccelerationToSteps",
+                      "WARNING: RPM is not a valid acceleration unit. Converting as if RevPerSec (may be incorrect).");
+    // Fall through to treat as RevPerSec (backward compatibility, but log warning)
+    unit = Unit::RevPerSec;
+  }
+
   // Acceleration conversions are same as velocity (per second squared)
   return convertSpeedToSteps(value, unit);
 }
@@ -188,6 +203,8 @@ float TMC51x0<CommType>::convertPositionToSteps(float value, Unit unit) const no
   case Unit::Steps:
     return value;
   case Unit::RPM: // Treated as Revolutions
+    return value * effective_steps_per_rev;
+  case Unit::RevPerSec: // Treated as Revolutions
     return value * effective_steps_per_rev;
   case Unit::Rad:
     return (value * effective_steps_per_rev) / (2.0f * 3.14159265359f);
@@ -222,6 +239,8 @@ float TMC51x0<CommType>::convertStepsToUnit(int32_t steps, Unit unit) const noex
     return val;
   case Unit::RPM: // Revolutions
     return val / effective_steps_per_rev;
+  case Unit::RevPerSec: // Revolutions
+    return val / effective_steps_per_rev;
   case Unit::Rad:
     return (val / effective_steps_per_rev) * (2.0f * 3.14159265359f);
   case Unit::Deg:
@@ -255,6 +274,8 @@ float TMC51x0<CommType>::convertSpeedToUnit(float steps_per_sec, Unit unit) cons
     return steps_per_sec;
   case Unit::RPM:
     return (steps_per_sec / effective_steps_per_rev) * 60.0f;
+  case Unit::RevPerSec:
+    return steps_per_sec / effective_steps_per_rev;
   case Unit::Rad:
     return (steps_per_sec / effective_steps_per_rev) * (2.0f * 3.14159265359f);
   case Unit::Deg:
@@ -370,6 +391,7 @@ bool TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept {
   if (!this->comm_.WriteRegister(Registers::SHORT_CONF, short_conf.value, this->GetCommAddress())) {
     return false;
   }
+  this->write_only_regs_.short_conf = short_conf.value;
 
   // Configure chopper
   if (!motorControl.ConfigureChopper(config.chopper)) {
@@ -828,7 +850,11 @@ bool TMC51x0<CommType>::RampControl::SetDeceleration(float value, Unit unit) noe
   TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetDeceleration(decel=%.2f steps/s²)", decel_steps);
   int32_t decel_internal = driver_.accelToInternal(std::abs(decel_steps));
   decel_internal = std::min(decel_internal, static_cast<decltype(decel_internal)>(0xFFFF)); // DMAX is 16 bits
-  return driver_.comm_.WriteRegister(Registers::DMAX, static_cast<uint32_t>(decel_internal));
+  bool success = driver_.comm_.WriteRegister(Registers::DMAX, static_cast<uint32_t>(decel_internal));
+  if (success) {
+    driver_.write_only_regs_.dmax = static_cast<uint32_t>(decel_internal);
+  }
+  return success;
 }
 
 template <typename CommType>
@@ -909,7 +935,13 @@ template <typename CommType>
 bool TMC51x0<CommType>::RampControl::Stop() noexcept {
   bool success = true;
   success &= driver_.comm_.WriteRegister(Registers::VSTART, 0, driver_.GetCommAddress());
+  if (success) {
+    driver_.write_only_regs_.vstart = 0;
+  }
   success &= driver_.comm_.WriteRegister(Registers::VMAX, 0, driver_.GetCommAddress());
+  if (success) {
+    driver_.write_only_regs_.vmax = 0;
+  }
   return success;
 }
 
@@ -1100,7 +1132,12 @@ bool TMC51x0<CommType>::RampControl::GetLatchedPosition(float& position, Unit un
 template <typename CommType>
 bool TMC51x0<CommType>::RampControl::SetComparePosition(float value, Unit unit) noexcept {
   float steps = driver_.convertPositionToSteps(value, unit);
-  return driver_.comm_.WriteRegister(Registers::X_COMPARE, static_cast<uint32_t>(static_cast<int32_t>(steps)));
+  int32_t x_compare = static_cast<int32_t>(steps);
+  bool success = driver_.comm_.WriteRegister(Registers::X_COMPARE, static_cast<uint32_t>(x_compare));
+  if (success) {
+    driver_.write_only_regs_.x_compare = static_cast<uint32_t>(x_compare);
+  }
+  return success;
 }
 
 template <typename CommType>
@@ -1258,7 +1295,11 @@ bool TMC51x0<CommType>::RampControl::SetFinalDeceleration(float d1, Unit unit) n
   if (d1_internal == 0 && d1_steps != 0.0F) {
     d1_internal = 1;
   }
-  return driver_.comm_.WriteRegister(Registers::D_1, static_cast<uint32_t>(d1_internal));
+  bool success = driver_.comm_.WriteRegister(Registers::D_1, static_cast<uint32_t>(d1_internal));
+  if (success) {
+    driver_.write_only_regs_.d_1 = static_cast<uint32_t>(d1_internal);
+  }
+  return success;
 }
 
 // MotorControl implementation
@@ -1269,6 +1310,24 @@ bool TMC51x0<CommType>::MotorControl::Enable() noexcept {
   // Enable via EN pin GPIO (EN is active LOW to enable, so set to ACTIVE/LOW to enable power stage)
   // This must be done first to enable the power stage
   driver_.comm_.GpioSet(TMC51x0CtrlPin::EN, GpioSignal::ACTIVE);
+
+  // Verify enable status by reading IOIN register (shows actual pin state as seen by TMC5160)
+  uint32_t io_pins = 0;
+  if (driver_.comm_.ReadRegister(Registers::IOIN, io_pins, driver_.GetCommAddress())) {
+    IOIN_Register ioin{};
+    ioin.value = io_pins;
+    bool drv_enn_high = (ioin.bits.drv_enn != 0);
+    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "MotorControl::Enable", 
+                      "IOIN Register: DRV_ENN=%s (Active LOW, %s)",
+                      drv_enn_high ? "HIGH" : "LOW",
+                      drv_enn_high ? "DISABLED" : "ENABLED");
+    if (drv_enn_high) {
+      TMC51X0_LOG_DEBUG(driver_.comm_, 0, "MotorControl::Enable", 
+                        "WARNING: DRV_ENN is HIGH after enable attempt. Driver power stage is DISABLED.");
+    }
+  } else {
+    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "MotorControl::Enable", "Failed to read IOIN register to verify DRV_ENN status");
+  }
 
   // Enable via CHOPCONF register (set toff > 0)
   uint32_t chopconf_value = 0;
@@ -1308,24 +1367,25 @@ bool TMC51x0<CommType>::MotorControl::Disable() noexcept {
 template <typename CommType>
 bool TMC51x0<CommType>::MotorControl::SetCurrent(uint8_t irun, uint8_t ihold) noexcept {
   TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "MotorControl::SetCurrent(irun=%u, ihold=%u)", irun, ihold);
-  // Read-Modify-Write to preserve iholddelay
-  uint32_t ihold_irun_val = 0;
-  if (!driver_.comm_.ReadRegister(Registers::IHOLD_IRUN, ihold_irun_val)) {
-    // Fallback to write-only if read fails (or first write), with default delay
-    IHOLD_IRUN_Register iholdrun{};
-    iholdrun.bits.irun = constrain<decltype(irun)>(irun, 0U, 31U);
-    iholdrun.bits.ihold = constrain<decltype(ihold)>(ihold, 0U, 31U);
-    iholdrun.bits.iholddelay = 7;
-    return driver_.comm_.WriteRegister(Registers::IHOLD_IRUN, iholdrun.value, driver_.GetCommAddress());
-  }
-
+  
+  // Use cached value from write_only_regs_ to preserve iholddelay (IHOLD_IRUN is write-only)
   IHOLD_IRUN_Register iholdrun{};
-  iholdrun.value = ihold_irun_val;
+  iholdrun.value = driver_.write_only_regs_.ihold_irun;
+  
+  // Update IRUN and IHOLD, preserve iholddelay
   iholdrun.bits.irun = constrain<decltype(irun)>(irun, 0U, 31U);
   iholdrun.bits.ihold = constrain<decltype(ihold)>(ihold, 0U, 31U);
-  // iholddelay preserved from read value
+  // iholddelay preserved from cached value
 
-  return driver_.comm_.WriteRegister(Registers::IHOLD_IRUN, iholdrun.value, driver_.GetCommAddress());
+  // Update cached values
+  driver_.calculated_irun_ = iholdrun.bits.irun;
+  driver_.calculated_ihold_ = iholdrun.bits.ihold;
+
+  bool success = driver_.comm_.WriteRegister(Registers::IHOLD_IRUN, iholdrun.value, driver_.GetCommAddress());
+  if (success) {
+    driver_.write_only_regs_.ihold_irun = iholdrun.value;
+  }
+  return success;
 }
 
 template <typename CommType>
@@ -1490,8 +1550,8 @@ bool TMC51x0<CommType>::MotorControl::ConfigurePowerStage(const PowerStageParame
   // Add roughly 30% of reserve to cover production stray.
   if (bbm_ns <= 200) {
     // Use BBMTIME (0-24, corresponds to 100ns to ~375ns)
-    // Add 30% headroom as recommended by datasheet
-    float bbm_ns_with_headroom = static_cast<float>(bbm_ns) * 1.3f;
+    // Add 30% headroom as recommended by datasheet (let user specify headroom percentage)
+    float bbm_ns_with_headroom = static_cast<float>(bbm_ns) * 1.0f;
     // Calculate BBMTIME: BBMTIME = 32 - (100 * 32 / time_ns)
     float bbm_time_float = 32.0f - (100.0f * 32.0f / bbm_ns_with_headroom);
     bbm_time_reg = static_cast<uint8_t>(std::round(bbm_time_float));
@@ -1607,6 +1667,9 @@ bool TMC51x0<CommType>::MotorControl::ConfigureMotorCurrent(const MotorSpec& mot
     if (!driver_.comm_.WriteRegister(Registers::GLOBAL_SCALER, calc_scaler, driver_.GetCommAddress())) {
       return false;
     }
+    // Update cache after successful write
+    driver_.write_only_regs_.global_scaler = calc_scaler;
+    driver_.calculated_global_scaler_ = calc_scaler;
   } else {
     // TMC5130: Skip GLOBAL_SCALER, use calculated IRUN directly
     TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "TMC5130: Skipping GLOBAL_SCALER (not supported)");
@@ -1673,17 +1736,29 @@ bool TMC51x0<CommType>::MotorControl::ConfigureMotorCurrent(const MotorSpec& mot
 }
 
 template <typename CommType>
-bool TMC51x0<CommType>::MotorControl::SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs) noexcept {
-  int32_t tpwmthrs = driver_.thresholdSpeedToTstep(pwm_thrs);
-  int32_t tcoolthrs = driver_.thresholdSpeedToTstep(cool_thrs);
-  int32_t thigh = driver_.thresholdSpeedToTstep(high_thrs);
+bool TMC51x0<CommType>::MotorControl::SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs, Unit unit) noexcept {
+  float pwm_steps = driver_.convertSpeedToSteps(pwm_thrs, unit);
+  float cool_steps = driver_.convertSpeedToSteps(cool_thrs, unit);
+  float high_steps = driver_.convertSpeedToSteps(high_thrs, unit);
+  int32_t tpwmthrs = driver_.thresholdSpeedToTstep(pwm_steps);
+  int32_t tcoolthrs = driver_.thresholdSpeedToTstep(cool_steps);
+  int32_t thigh = driver_.thresholdSpeedToTstep(high_steps);
   tpwmthrs = std::min(tpwmthrs, static_cast<decltype(tpwmthrs)>(0xFFFFF)); // 20 bits
   tcoolthrs = std::min(tcoolthrs, static_cast<decltype(tcoolthrs)>(0xFFFFF));
   thigh = std::min(thigh, static_cast<decltype(thigh)>(0xFFFFF));
   bool success = true;
   success &= driver_.comm_.WriteRegister(Registers::TPWMTHRS, static_cast<uint32_t>(tpwmthrs));
+  if (success) {
+    driver_.write_only_regs_.tpwmthrs = static_cast<uint32_t>(tpwmthrs);
+  }
   success &= driver_.comm_.WriteRegister(Registers::TCOOLTHRS, static_cast<uint32_t>(tcoolthrs));
+  if (success) {
+    driver_.write_only_regs_.tcoolthrs = static_cast<uint32_t>(tcoolthrs);
+  }
   success &= driver_.comm_.WriteRegister(Registers::THIGH, static_cast<uint32_t>(thigh));
+  if (success) {
+    driver_.write_only_regs_.thigh = static_cast<uint32_t>(thigh);
+  }
   return success;
 }
 
@@ -1692,7 +1767,11 @@ bool TMC51x0<CommType>::MotorControl::SetCoolStepThreshold(float value, Unit uni
   float steps_per_sec = driver_.convertSpeedToSteps(value, unit);
   int32_t tcoolthrs = driver_.thresholdSpeedToTstep(steps_per_sec);
   tcoolthrs = std::min(tcoolthrs, static_cast<decltype(tcoolthrs)>(0xFFFFF));
-  return driver_.comm_.WriteRegister(Registers::TCOOLTHRS, static_cast<uint32_t>(tcoolthrs));
+  bool success = driver_.comm_.WriteRegister(Registers::TCOOLTHRS, static_cast<uint32_t>(tcoolthrs));
+  if (success) {
+    driver_.write_only_regs_.tcoolthrs = static_cast<uint32_t>(tcoolthrs);
+  }
+  return success;
 }
 
 template <typename CommType>
@@ -1700,19 +1779,28 @@ bool TMC51x0<CommType>::MotorControl::SetHighSpeedThreshold(float value, Unit un
   float steps_per_sec = driver_.convertSpeedToSteps(value, unit);
   int32_t thigh = driver_.thresholdSpeedToTstep(steps_per_sec);
   thigh = std::min(thigh, static_cast<decltype(thigh)>(0xFFFFF));
-  return driver_.comm_.WriteRegister(Registers::THIGH, static_cast<uint32_t>(thigh));
+  bool success = driver_.comm_.WriteRegister(Registers::THIGH, static_cast<uint32_t>(thigh));
+  if (success) {
+    driver_.write_only_regs_.thigh = static_cast<uint32_t>(thigh);
+  }
+  return success;
 }
 
 template <typename CommType>
 bool TMC51x0<CommType>::MotorControl::SetStealthChopVelocityThreshold(float value, Unit unit) noexcept {
-  if (value <= 0.0F) {
+  uint32_t tpwmthrs_value = 0;
+  if (value > 0.0F) {
     // Setting to 0 disables the threshold (StealthChop always used if enabled)
-    return driver_.comm_.WriteRegister(Registers::TPWMTHRS, 0, driver_.GetCommAddress());
+    float steps_per_sec = driver_.convertSpeedToSteps(value, unit);
+    int32_t tpwmthrs = driver_.thresholdSpeedToTstep(steps_per_sec);
+    tpwmthrs = std::min(tpwmthrs, static_cast<decltype(tpwmthrs)>(0xFFFFF)); // TPWMTHRS is 20 bits
+    tpwmthrs_value = static_cast<uint32_t>(tpwmthrs);
   }
-  float steps_per_sec = driver_.convertSpeedToSteps(value, unit);
-  int32_t tpwmthrs = driver_.thresholdSpeedToTstep(steps_per_sec);
-  tpwmthrs = std::min(tpwmthrs, static_cast<decltype(tpwmthrs)>(0xFFFFF)); // TPWMTHRS is 20 bits
-  return driver_.comm_.WriteRegister(Registers::TPWMTHRS, static_cast<uint32_t>(tpwmthrs), driver_.GetCommAddress());
+  bool success = driver_.comm_.WriteRegister(Registers::TPWMTHRS, tpwmthrs_value, driver_.GetCommAddress());
+  if (success) {
+    driver_.write_only_regs_.tpwmthrs = tpwmthrs_value;
+  }
+  return success;
 }
 
 template <typename CommType>
@@ -1723,7 +1811,12 @@ bool TMC51x0<CommType>::MotorControl::SetGlobalScaler(uint16_t scaler) noexcept 
     return true; // Return success but don't write
   }
   scaler = constrain<decltype(scaler)>(scaler, 32U, 256U);
-  return driver_.comm_.WriteRegister(Registers::GLOBAL_SCALER, scaler, driver_.GetCommAddress());
+  bool success = driver_.comm_.WriteRegister(Registers::GLOBAL_SCALER, scaler, driver_.GetCommAddress());
+  if (success) {
+    driver_.write_only_regs_.global_scaler = scaler;
+    driver_.calculated_global_scaler_ = scaler;
+  }
+  return success;
 }
 
 template <typename CommType>
@@ -1731,12 +1824,9 @@ bool TMC51x0<CommType>::MotorControl::ConfigureCoolStep(const CoolStepConfig& co
   // Update driver config
   driver_.driver_config_.coolstep = config;
 
-  uint32_t coolconf_value = 0;
-  if (!driver_.comm_.ReadRegister(Registers::COOLCONF, coolconf_value)) {
-    return false;
-  }
+  // Use cached value as COOLCONF is write-only
   COOLCONF_Register coolconf{};
-  coolconf.value = coolconf_value;
+  coolconf.value = driver_.write_only_regs_.coolconf;
 
   // Preserve SGT (StallGuard2 threshold) - it's configured separately via StallGuardConfig
   // Only update CoolStep-specific fields
@@ -2201,27 +2291,21 @@ bool TMC51x0<CommType>::MotorControl::SetCoilCurrents(int16_t coil_a, int16_t co
 
 template <typename CommType>
 bool TMC51x0<CommType>::MotorControl::SetIholdDelayMs(float total_delay_ms) noexcept {
+  // Use cached value from write_only_regs_ (IHOLD_IRUN is write-only)
+  IHOLD_IRUN_Register iholdrun{};
+  iholdrun.value = driver_.write_only_regs_.ihold_irun;
+
   if (total_delay_ms <= 0.0f) {
     // Setting to 0 or negative = instant power down (IHOLDDELAY = 0)
-    // Read-Modify-Write to preserve IRUN and IHOLD
-    uint32_t ihold_irun_val = 0;
-    if (!driver_.comm_.ReadRegister(Registers::IHOLD_IRUN, ihold_irun_val, driver_.GetCommAddress())) {
-      return false;
-    }
-    IHOLD_IRUN_Register iholdrun{};
-    iholdrun.value = ihold_irun_val;
     iholdrun.bits.iholddelay = 0;
-    return driver_.comm_.WriteRegister(Registers::IHOLD_IRUN, iholdrun.value, driver_.GetCommAddress());
+    bool success = driver_.comm_.WriteRegister(Registers::IHOLD_IRUN, iholdrun.value, driver_.GetCommAddress());
+    if (success) {
+      driver_.write_only_regs_.ihold_irun = iholdrun.value;
+    }
+    return success;
   }
 
-  // Read current IRUN and IHOLD to calculate current reduction steps
-  uint32_t ihold_irun_val = 0;
-  if (!driver_.comm_.ReadRegister(Registers::IHOLD_IRUN, ihold_irun_val, driver_.GetCommAddress())) {
-    return false;
-  }
-  IHOLD_IRUN_Register iholdrun{};
-  iholdrun.value = ihold_irun_val;
-
+  // Use cached IRUN and IHOLD to calculate current reduction steps
   uint8_t current_irun = iholdrun.bits.irun;
   uint8_t current_ihold = iholdrun.bits.ihold;
 
@@ -2231,7 +2315,11 @@ bool TMC51x0<CommType>::MotorControl::SetIholdDelayMs(float total_delay_ms) noex
   if (current_steps == 0) {
     // IRUN == IHOLD, no current reduction steps, delay is always 0
     iholdrun.bits.iholddelay = 0;
-    return driver_.comm_.WriteRegister(Registers::IHOLD_IRUN, iholdrun.value, driver_.GetCommAddress());
+    bool success = driver_.comm_.WriteRegister(Registers::IHOLD_IRUN, iholdrun.value, driver_.GetCommAddress());
+    if (success) {
+      driver_.write_only_regs_.ihold_irun = iholdrun.value;
+    }
+    return success;
   }
 
   // Calculate per-step delay from total delay
@@ -2244,7 +2332,11 @@ bool TMC51x0<CommType>::MotorControl::SetIholdDelayMs(float total_delay_ms) noex
 
   // Update register
   iholdrun.bits.iholddelay = iholddelay_value;
-  return driver_.comm_.WriteRegister(Registers::IHOLD_IRUN, iholdrun.value, driver_.GetCommAddress());
+  bool success = driver_.comm_.WriteRegister(Registers::IHOLD_IRUN, iholdrun.value, driver_.GetCommAddress());
+  if (success) {
+    driver_.write_only_regs_.ihold_irun = iholdrun.value;
+  }
+  return success;
 }
 
 template <typename CommType>
@@ -2689,12 +2781,9 @@ bool TMC51x0<CommType>::Diagnostics::ConfigureStallGuard(const StallGuardConfig&
   // Update driver config
   driver_.driver_config_.stallguard = config;
 
-  uint32_t coolconf_value = 0;
-  if (!driver_.comm_.ReadRegister(Registers::COOLCONF, coolconf_value)) {
-    return false;
-  }
+  // Use cached value as COOLCONF is write-only
   COOLCONF_Register coolconf{};
-  coolconf.value = coolconf_value;
+  coolconf.value = driver_.write_only_regs_.coolconf;
 
   // SGT is signed 7-bit (-64 to +63), constrain and mask to 7 bits (bits 22..16)
   auto sgt_signed = static_cast<int8_t>(constrain<int8_t>(config.threshold, -64, 63));
@@ -2708,6 +2797,9 @@ bool TMC51x0<CommType>::Diagnostics::ConfigureStallGuard(const StallGuardConfig&
 
   // Write COOLCONF register
   bool success = driver_.comm_.WriteRegister(Registers::COOLCONF, coolconf.value, driver_.GetCommAddress());
+  if (success) {
+    driver_.write_only_regs_.coolconf = coolconf.value;
+  }
 
   // Configure velocity thresholds if provided
   if (success && config.min_velocity > 0.0F) {
@@ -2715,6 +2807,9 @@ bool TMC51x0<CommType>::Diagnostics::ConfigureStallGuard(const StallGuardConfig&
     int32_t tcoolthrs = driver_.thresholdSpeedToTstep(steps_per_sec);
     tcoolthrs = std::min(tcoolthrs, static_cast<decltype(tcoolthrs)>(0xFFFFF)); // 20 bits
     success &= driver_.comm_.WriteRegister(Registers::TCOOLTHRS, static_cast<uint32_t>(tcoolthrs));
+    if (success) {
+      driver_.write_only_regs_.tcoolthrs = static_cast<uint32_t>(tcoolthrs);
+    }
   }
 
   if (success && config.max_velocity > 0.0F) {
@@ -2722,6 +2817,9 @@ bool TMC51x0<CommType>::Diagnostics::ConfigureStallGuard(const StallGuardConfig&
     int32_t thigh = driver_.thresholdSpeedToTstep(steps_per_sec);
     thigh = std::min(thigh, static_cast<decltype(thigh)>(0xFFFFF)); // 20 bits
     success &= driver_.comm_.WriteRegister(Registers::THIGH, static_cast<uint32_t>(thigh));
+    if (success) {
+      driver_.write_only_regs_.thigh = static_cast<uint32_t>(thigh);
+    }
   }
 
   // Configure stop on stall if requested
@@ -2921,43 +3019,40 @@ bool TMC51x0<CommType>::Homing::CacheCurrentSettings() noexcept {
     cache_.cached_ramp_mode = static_cast<RampMode>(ramp_mode_val);
   }
   
-  // Read VMAX, AMAX, DMAX, VSTART, VSTOP from registers
-  uint32_t vmax_val = 0;
-  if (driver_.comm_.ReadRegister(Registers::VMAX, vmax_val)) {
-    cache_.cached_max_speed = driver_.speedFromInternal(static_cast<int32_t>(vmax_val));
+  // Use cached values as VMAX, AMAX, DMAX, VSTART, VSTOP are write-only registers
+  if (driver_.write_only_regs_.vmax > 0) {
+    cache_.cached_max_speed = driver_.speedFromInternal(static_cast<int32_t>(driver_.write_only_regs_.vmax));
+  } else {
+    cache_.cached_max_speed = 0.0f;
   }
   
-  uint32_t amax_val = 0;
-  if (driver_.comm_.ReadRegister(Registers::AMAX, amax_val)) {
+  if (driver_.write_only_regs_.amax > 0) {
     // Convert from internal units (Hz) to steps/s²
     // Internal: accel = (2^24) / (256 * accel_internal)
     // Reverse: accel_internal = (2^24) / (256 * accel)
     // So: accel = (2^24) / (256 * accel_internal)
-    if (amax_val > 0) {
-      cache_.cached_acceleration = static_cast<float>(16777216.0 / (256.0 * static_cast<double>(amax_val)));
-    } else {
-      cache_.cached_acceleration = 0.0f;
-    }
+    cache_.cached_acceleration = static_cast<float>(16777216.0 / (256.0 * static_cast<double>(driver_.write_only_regs_.amax)));
+  } else {
+    cache_.cached_acceleration = 0.0f;
   }
   
-  uint32_t dmax_val = 0;
-  if (driver_.comm_.ReadRegister(Registers::DMAX, dmax_val)) {
+  if (driver_.write_only_regs_.dmax > 0) {
     // Convert from internal units (Hz) to steps/s²
-    if (dmax_val > 0) {
-      cache_.cached_deceleration = static_cast<float>(16777216.0 / (256.0 * static_cast<double>(dmax_val)));
-    } else {
-      cache_.cached_deceleration = 0.0f;
-    }
+    cache_.cached_deceleration = static_cast<float>(16777216.0 / (256.0 * static_cast<double>(driver_.write_only_regs_.dmax)));
+  } else {
+    cache_.cached_deceleration = 0.0f;
   }
   
-  uint32_t vstart_val = 0;
-  if (driver_.comm_.ReadRegister(Registers::VSTART, vstart_val)) {
-    cache_.cached_vstart = driver_.speedFromInternal(static_cast<int32_t>(vstart_val));
+  if (driver_.write_only_regs_.vstart > 0) {
+    cache_.cached_vstart = driver_.speedFromInternal(static_cast<int32_t>(driver_.write_only_regs_.vstart));
+  } else {
+    cache_.cached_vstart = 0.0f;
   }
   
-  uint32_t vstop_val = 0;
-  if (driver_.comm_.ReadRegister(Registers::VSTOP, vstop_val)) {
-    cache_.cached_vstop = driver_.speedFromInternal(static_cast<int32_t>(vstop_val));
+  if (driver_.write_only_regs_.vstop > 0) {
+    cache_.cached_vstop = driver_.speedFromInternal(static_cast<int32_t>(driver_.write_only_regs_.vstop));
+  } else {
+    cache_.cached_vstop = 0.0f;
   }
   
   cache_.ramp_settings_were_modified = false; // Will be set if we modify them
@@ -3403,7 +3498,11 @@ bool TMC51x0<CommType>::Protection::SetShortProtectionLevels(uint8_t s2vs_level,
   short_conf.bits.s2g_level = constrain<decltype(s2g_level)>(s2g_level, 2U, 15U);
   short_conf.bits.shortfilter = constrain<uint8_t>(shortfilter, 0U, 3U);
   short_conf.bits.shortdelay = constrain<uint8_t>(shortdelay, 0U, 1U);
-  return driver_.comm_.WriteRegister(Registers::SHORT_CONF, short_conf.value, driver_.GetCommAddress());
+  bool success = driver_.comm_.WriteRegister(Registers::SHORT_CONF, short_conf.value, driver_.GetCommAddress());
+  if (success) {
+    driver_.write_only_regs_.short_conf = short_conf.value;
+  }
+  return success;
 }
 
 // Diagnostics read-only register implementations
@@ -3521,7 +3620,7 @@ bool TMC51x0<CommType>::Diagnostics::ReadIcVersion(uint8_t& version) noexcept {
 
 template <typename CommType>
 bool TMC51x0<CommType>::Diagnostics::ReadGpioPins(uint32_t& io_pins) noexcept {
-  return driver_.comm_.ReadRegister(Registers::IO_INPUT_OUTPUT, io_pins, driver_.GetCommAddress());
+  return driver_.comm_.ReadRegister(Registers::IOIN, io_pins, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -3717,7 +3816,7 @@ bool TMC51x0<CommType>::Diagnostics::SetSdoCfg0Polarity(bool polarity) noexcept 
   // Writing only affects the output configuration latch.
 
   uint32_t value = polarity ? 1 : 0;
-  return driver_.comm_.WriteRegister(Registers::IO_INPUT_OUTPUT, value, driver_.GetCommAddress());
+  return driver_.comm_.WriteRegister(Registers::OUTPUT, value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -3902,7 +4001,7 @@ template <typename CommType>
 bool TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, StallGuardTuningResult& result,
                                                     int8_t min_sgt, int8_t max_sgt, float acceleration,
                                                     float min_velocity, float max_velocity,
-                                                    Unit velocity_unit) noexcept {
+                                                    Unit velocity_unit, Unit acceleration_unit) noexcept {
   // Initialize result
   result = StallGuardTuningResult{};
 
@@ -3910,7 +4009,7 @@ bool TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, StallGuard
   float target_v_steps = driver_.convertSpeedToSteps(target_velocity, velocity_unit);
   float min_v_steps = driver_.convertSpeedToSteps(min_velocity, velocity_unit);
   float max_v_steps = driver_.convertSpeedToSteps(max_velocity, velocity_unit);
-  float accel_steps = driver_.convertAccelerationToSteps(acceleration, velocity_unit);
+  float accel_steps = driver_.convertAccelerationToSteps(acceleration, acceleration_unit);
 
   TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
                     "Starting comprehensive SGT tuning. Target=%.2f, Min=%.2f, Max=%.2f steps/s",
@@ -4190,17 +4289,271 @@ bool TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, StallGuard
 template <typename CommType>
 bool TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, int8_t& final_sgt, int8_t min_sgt,
                                                     int8_t max_sgt, float acceleration, float min_velocity,
-                                                    float max_velocity, Unit velocity_unit) noexcept {
+                                                    float max_velocity, Unit velocity_unit, Unit acceleration_unit) noexcept {
   // Call the new comprehensive function and extract just the optimal SGT
   StallGuardTuningResult result;
   bool success = TuneStallGuard(target_velocity, result, min_sgt, max_sgt, acceleration,
-                                  min_velocity, max_velocity, velocity_unit);
+                                  min_velocity, max_velocity, velocity_unit, acceleration_unit);
   
   if (success) {
     final_sgt = result.optimal_sgt;
   }
   
   return success;
+}
+
+// AutoTuneStallGuard implementation
+template <typename CommType>
+bool TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity, StallGuardTuningResult& result,
+                                                     int8_t min_sgt, int8_t max_sgt, float acceleration,
+                                                     float min_velocity, float max_velocity, Unit velocity_unit,
+                                                     Unit acceleration_unit, uint16_t safe_current_margin_mA) noexcept {
+  // Initialize result
+  result = StallGuardTuningResult{};
+
+  TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                    "Starting comprehensive StallGuard tuning with current margin=%u mA",
+                    safe_current_margin_mA);
+
+  // ========================================================================
+  // STEP 1: Save current motor settings
+  // ========================================================================
+  struct SavedSettings {
+    uint8_t saved_irun{0};
+    uint8_t saved_ihold{0};
+    uint16_t saved_global_scaler{0};
+    CoolStepConfig saved_coolstep{};
+    StallGuardConfig saved_stallguard{};
+    bool settings_saved{false};
+  } saved;
+
+  // Use cached values directly as IHOLD_IRUN is write-only
+  saved.saved_irun = driver_.calculated_irun_;
+  saved.saved_ihold = driver_.calculated_ihold_;
+  TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                    "Using cached IHOLD_IRUN: IRUN=%u, IHOLD=%u",
+                    saved.saved_irun, saved.saved_ihold);
+
+  // Use cached value as GLOBAL_SCALER is write-only (TMC5160 only)
+  if (driver_.chip_version_ != ChipVersion::TMC5130) {
+    saved.saved_global_scaler = driver_.calculated_global_scaler_;
+    if (saved.saved_global_scaler == 0) {
+      saved.saved_global_scaler = 256; // 0 means 256
+    }
+    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                      "Using cached GLOBAL_SCALER: %u",
+                      saved.saved_global_scaler);
+  }
+
+  // Save current CoolStep config
+  saved.saved_coolstep = driver_.driver_config_.coolstep;
+
+  // Save current StallGuard config
+  saved.saved_stallguard = driver_.driver_config_.stallguard;
+
+  saved.settings_saved = true;
+  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "AutoTuneStallGuard",
+                    "Saved settings: IRUN=%u, IHOLD=%u, GLOBAL_SCALER=%u",
+                    saved.saved_irun, saved.saved_ihold, saved.saved_global_scaler);
+
+  // ========================================================================
+  // STEP 2: Apply safe current margin if specified
+  // ========================================================================
+  bool current_was_reduced = false;
+  if (safe_current_margin_mA > 0) {
+    // Calculate current RMS from saved settings
+    // I_RMS = (GLOBAL_SCALER/256) * ((IRUN+1)/32) * (VFS/RSENSE) * (1/√2)
+    constexpr float VFS = 0.325F;
+    constexpr float SQRT2 = 1.41421356237F;
+    float rsense_ohm = static_cast<float>(driver_.motor_spec_.sense_resistor_mohm) / 1000.0F;
+
+    if (rsense_ohm > 0.0F && driver_.motor_spec_.sense_resistor_mohm > 0) {
+      float current_rms_a = (static_cast<float>(saved.saved_global_scaler) / 256.0F) *
+                            (static_cast<float>(saved.saved_irun + 1) / 32.0F) * (VFS / rsense_ohm) / SQRT2;
+      uint16_t current_rms_ma = static_cast<uint16_t>(current_rms_a * 1000.0F);
+
+      // Calculate new current with margin
+      uint16_t new_current_ma = (current_rms_ma > safe_current_margin_mA) ?
+                                 (current_rms_ma - safe_current_margin_mA) : 0;
+
+      // Ensure minimum current (at least 100mA or 20% of original, whichever is higher)
+      uint16_t min_current_ma = std::max(static_cast<uint16_t>(100U),
+                                          static_cast<uint16_t>(current_rms_ma * 0.2F));
+      if (new_current_ma < min_current_ma) {
+        new_current_ma = min_current_ma;
+        TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                          "Current margin would reduce current too low, using minimum: %u mA",
+                          new_current_ma);
+      }
+
+      if (new_current_ma > 0 && new_current_ma < current_rms_ma) {
+        // Calculate new IRUN and GLOBAL_SCALER from reduced current
+        uint8_t new_irun = 0;
+        uint8_t new_ihold = 0;
+        uint16_t new_scaler = 0;
+
+        // Calculate hold current proportionally from original hold current
+        // First calculate original hold current RMS
+        float original_hold_rms_a = (static_cast<float>(saved.saved_global_scaler) / 256.0F) *
+                                    (static_cast<float>(saved.saved_ihold + 1) / 32.0F) * (VFS / rsense_ohm) / SQRT2;
+        uint16_t original_hold_ma = static_cast<uint16_t>(original_hold_rms_a * 1000.0F);
+        
+        // Scale hold current proportionally to run current reduction
+        float current_ratio = static_cast<float>(new_current_ma) / static_cast<float>(current_rms_ma);
+        uint16_t new_hold_current_ma = static_cast<uint16_t>(static_cast<float>(original_hold_ma) * current_ratio);
+
+        if (CalculateMotorCurrent(driver_.motor_spec_, driver_.motor_spec_.sense_resistor_mohm,
+                                   driver_.motor_spec_.supply_voltage_mv, new_current_ma, new_hold_current_ma,
+                                   new_irun, new_ihold, new_scaler)) {
+          // Ensure minimum IRUN=8 for StealthChop compatibility
+          if (new_irun < 8) {
+            new_irun = 8;
+            // Recalculate scaler for IRUN=8
+            float run_current_a = static_cast<float>(new_current_ma) / 1000.0F;
+            float scaler_float = (run_current_a * 256.0F * 32.0F) / (9.0F * (VFS / rsense_ohm) / SQRT2);
+            new_scaler = static_cast<uint16_t>(std::round(scaler_float));
+            new_scaler = std::max<uint16_t>(new_scaler, 32U);
+            new_scaler = std::min<uint16_t>(new_scaler, 256U);
+          }
+
+          // Apply new current settings
+          if (driver_.chip_version_ != ChipVersion::TMC5130) {
+            if (!driver_.motorControl.SetGlobalScaler(new_scaler)) {
+              TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+                                "Failed to set GLOBAL_SCALER for current margin");
+              // Continue anyway - might still work
+            }
+          }
+
+          if (!driver_.motorControl.SetCurrent(new_irun, new_ihold)) {
+            TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+                              "Failed to set current for current margin");
+            // Continue anyway - might still work
+          } else {
+            current_was_reduced = true;
+            TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                              "Reduced current: %u mA -> %u mA (IRUN: %u->%u, SCALER: %u->%u)",
+                              current_rms_ma, new_current_ma, saved.saved_irun, new_irun,
+                              saved.saved_global_scaler, new_scaler);
+          }
+        } else {
+          TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                            "Could not calculate new current settings, using original current");
+        }
+      }
+    } else {
+      TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                        "Cannot apply current margin: sense resistor not configured");
+    }
+  }
+
+  // ========================================================================
+  // STEP 3: Disable CoolStep (SGMIN=0)
+  // ========================================================================
+  CoolStepConfig coolstep_disabled{};
+  coolstep_disabled.lower_threshold_sg = 0; // Disable CoolStep
+  coolstep_disabled.enable_filter = false;   // Disable filter during tuning
+  if (!driver_.motorControl.ConfigureCoolStep(coolstep_disabled)) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+                      "Failed to disable CoolStep");
+    // Continue anyway
+  } else {
+    TMC51X0_LOG_DEBUG(driver_.comm_, 2, "AutoTuneStallGuard", "CoolStep disabled for tuning");
+  }
+
+  // ========================================================================
+  // STEP 4: Explicitly disable StallGuard filter (SFILT=0) for tuning
+  // ========================================================================
+  // Configure StallGuard with filter disabled (TuneStallGuard will also do this, but
+  // we do it here to ensure it's set before any tuning operations)
+  StallGuardConfig sg_config_no_filter{};
+  sg_config_no_filter.threshold = 0; // Temporary, will be set during tuning
+  sg_config_no_filter.enable_filter = false; // Disable filter for immediate response
+  if (!driver_.diagnostics.ConfigureStallGuard(sg_config_no_filter)) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                      "Failed to configure StallGuard filter (non-critical)");
+    // Continue anyway - TuneStallGuard will set it
+  }
+
+  // ========================================================================
+  // STEP 5: Disable stop-on-stall and clear stall flags
+  // ========================================================================
+  if (!driver_.diagnostics.EnableStopOnStall(false)) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+                      "Failed to disable stop-on-stall");
+    // Continue anyway
+  }
+  driver_.diagnostics.ClearStallFlag();
+  driver_.comm_.DelayMs(10);
+
+  // ========================================================================
+  // STEP 6: Perform comprehensive SGT tuning using existing function
+  // ========================================================================
+  // Adjust min_sgt to start at 0 if negative (to avoid false stalls)
+  int8_t adjusted_min_sgt = (min_sgt < 0) ? 0 : min_sgt;
+  if (adjusted_min_sgt != min_sgt) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                      "Adjusted min_sgt from %d to %d (avoiding false stalls)", min_sgt, adjusted_min_sgt);
+  }
+
+  bool tuning_success = TuneStallGuard(target_velocity, result, adjusted_min_sgt, max_sgt,
+                                       acceleration, min_velocity, max_velocity, velocity_unit, acceleration_unit);
+
+  // ========================================================================
+  // STEP 7: Restore all saved settings
+  // ========================================================================
+  bool restore_success = true;
+
+  // Restore motor current if it was reduced
+  if (current_was_reduced && saved.settings_saved) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, 2, "AutoTuneStallGuard",
+                      "Restoring motor current: IRUN=%u, IHOLD=%u, GLOBAL_SCALER=%u",
+                      saved.saved_irun, saved.saved_ihold, saved.saved_global_scaler);
+
+    if (driver_.chip_version_ != ChipVersion::TMC5130) {
+      if (!driver_.motorControl.SetGlobalScaler(saved.saved_global_scaler)) {
+        TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+                          "Failed to restore GLOBAL_SCALER");
+        restore_success = false;
+      }
+    }
+
+    if (!driver_.motorControl.SetCurrent(saved.saved_irun, saved.saved_ihold)) {
+      TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+                        "Failed to restore motor current");
+      restore_success = false;
+    } else {
+      TMC51X0_LOG_DEBUG(driver_.comm_, 2, "AutoTuneStallGuard",
+                        "Motor current restored successfully");
+    }
+  }
+
+  // Restore CoolStep configuration
+  if (saved.settings_saved) {
+    if (!driver_.motorControl.ConfigureCoolStep(saved.saved_coolstep)) {
+      TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                        "Failed to restore CoolStep configuration (non-critical)");
+      // Non-critical, continue
+    } else {
+      TMC51X0_LOG_DEBUG(driver_.comm_, 2, "AutoTuneStallGuard",
+                        "CoolStep configuration restored");
+    }
+  }
+
+  // Note: StallGuard configuration (SGT) is intentionally NOT restored
+  // because the optimal SGT found during tuning should remain active.
+  // The user can configure it explicitly if needed.
+
+  if (!restore_success) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+                      "Warning: Some settings could not be restored");
+  }
+
+  TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+                    "Tuning complete. Success=%d, Optimal SGT=%d",
+                    tuning_success, result.optimal_sgt);
+
+  return tuning_success;
 }
 
 // UartConfig implementation
@@ -4220,6 +4573,7 @@ bool TMC51x0<CommType>::UartConfig::ConfigureUartNodeAddress(uint8_t node_addres
 
   // Only update the driver's node address and send delay after successful programming
   if (success) {
+    driver_->write_only_regs_.slaveconf = slaveconf.value;
     driver_->uart_node_address_ = node_address & 0xFF;                           // Address range is 0-254
     driver_->send_delay_ = constrain<decltype(send_delay)>(send_delay, 0U, 15U); // Store send delay locally
   }
@@ -4374,14 +4728,9 @@ void TMC51x0<CommType>::Printer::PrintChopconf() noexcept {
 
 template <typename CommType>
 void TMC51x0<CommType>::Printer::PrintPwmconf() noexcept {
-  uint32_t value = 0;
-  if (!driver_.comm_.ReadRegister(Registers::PWMCONF, value)) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "Printer", "Error reading PWMCONF");
-    return;
-  }
-  
+  // Use cached value as PWMCONF is write-only
   PWMCONF_Register pwmconf{};
-  pwmconf.value = value;
+  pwmconf.value = driver_.write_only_regs_.pwmconf;
   
   TMC51X0_LOG_DEBUG(driver_.comm_, 2, "Printer", "PWMCONF Register: 0x%08X", pwmconf.value);
   PrintRegisterField("pwm_ofs", pwmconf.bits.pwm_ofs, "%u");
@@ -4437,7 +4786,7 @@ void TMC51x0<CommType>::Printer::PrintSwMode() noexcept {
 template <typename CommType>
 void TMC51x0<CommType>::Printer::PrintIoin() noexcept {
   uint32_t value = 0;
-  if (!driver_.comm_.ReadRegister(Registers::IO_INPUT_OUTPUT, value)) {
+  if (!driver_.comm_.ReadRegister(Registers::IOIN, value)) {
     TMC51X0_LOG_DEBUG(driver_.comm_, 0, "Printer", "Error reading IOIN");
     return;
   }

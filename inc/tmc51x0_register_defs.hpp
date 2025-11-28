@@ -43,11 +43,12 @@
   X(0x01, GSTAT, RWC, STATUS, "Global status flags (clear on read)")                                                   \
   X(0x02, IFCNT, R, STATUS, "UART transmission counter")                                                               \
   X(0x03, SLAVECONF, W, CONFIG, "UART slave configuration (write-only per datasheet)")                                 \
-  X(0x04, IO_INPUT_OUTPUT, RW, IO, "Read input / write output pins")                                                   \
+  X(0x04, IOIN, R, IO, "Read state of all input pins and version")                                                    \
+  X(0x04, OUTPUT, W, IO, "Set SDO_CFG0 polarity / NAO output (write-only)")                                            \
   X(0x05, X_COMPARE, W, MOTION, "Position comparison register (write-only)")                                           \
-  X(0x06, OTP_PROG, W, OTP, "OTP programming register")                                                                \
+  X(0x06, OTP_PROG, RW, OTP, "OTP programming register; write to program, read to refresh OTP_READ")                  \
   X(0x07, OTP_READ, R, OTP, "OTP read register")                                                                       \
-  X(0x08, FACTORY_CONF, RW, STATUS, "Factory configuration (clock trim, can override OTP)")                            \
+  X(0x08, FACTORY_CONF, RW, CONFIG, "Factory configuration (clock trim, can override OTP)")                            \
   X(0x09, SHORT_CONF, W, PROTECTION, "Short detector configuration (write-only)")                                      \
   X(0x0A, DRV_CONF, W, CONFIG, "Driver configuration (write-only)")                                                    \
   X(0x0B, GLOBAL_SCALER, W, CURRENT, "Global scaling of motor current (write-only)")                                   \
@@ -80,7 +81,7 @@
   X(0x36, XLATCH, R, STATUS, "Ramp generator latch position upon switch event")                                        \
   /* Encoder registers */                                                                                              \
   X(0x38, ENCMODE, RW, ENCODER, "Encoder configuration and use of N channel")                                          \
-  X(0x39, X_ENC, RW, STATUS, "Actual encoder position")                                                                \
+  X(0x39, X_ENC, RW, ENCODER, "Actual encoder position")                                                                \
   X(0x3A, ENC_CONST, W, ENCODER, "Accumulation constant (write-only)")                                                 \
   X(0x3B, ENC_STATUS, RWC, STATUS, "Encoder status information")                                                       \
   X(0x3C, ENC_LATCH, R, STATUS, "Encoder position latched on N event")                                                 \

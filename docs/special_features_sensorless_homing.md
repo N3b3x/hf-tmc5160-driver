@@ -68,7 +68,7 @@ bool homeMotor() {
     // Note: Uses existing SGT threshold from motor configuration
     // Automatically caches and restores settings (StealthChop, SW_MODE, ramp settings)
     int32_t home_position = 0;
-    float search_speed = 500.0f;  // steps/s
+    float search_speed = 0.01f;  // 0.01 rev/s (~0.6 RPM) - Unit::RevPerSec is default
     
     if (!driver.homing.PerformSensorlessHoming(
             false,  // false = negative direction
@@ -170,7 +170,7 @@ public:
         
         // 3. Home in negative direction
         int32_t home_pos = 0;
-        float search_speed = 500.0f;  // steps/s
+        float search_speed = 0.01f;  // 0.01 rev/s (~0.6 RPM) - Unit::RevPerSec is default
         
         if (!driver_.homing.PerformSensorlessHoming(
                 false,  // negative direction
@@ -211,7 +211,7 @@ public:
 driver.motorControl.Enable();
 
 // Set appropriate speed (not too fast)
-driver.rampControl.SetMaxSpeed(500.0f);  // steps/s
+driver.rampControl.SetMaxSpeed(0.01f);  // 0.01 rev/s (~0.6 RPM) - Unit::RevPerSec is default
 
 // Set acceleration
 driver.rampControl.SetAcceleration(1000.0f);

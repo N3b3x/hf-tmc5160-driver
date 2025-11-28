@@ -206,7 +206,8 @@ union SLAVECONF_Register {
 };
 
 /**
- * @brief Input/output pin register (IO_INPUT_OUTPUT)
+ * @brief Input pin register (IOIN) - Read-only at address 0x04
+ * @brief Output pin register (OUTPUT) - Write-only at address 0x04
  *
  * Read input pins or write output pins configuration.
  */
