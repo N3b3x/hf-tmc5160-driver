@@ -1,3 +1,4 @@
+---
 # =============================================================================
 # Standardized Jekyll Configuration for HardFOC Driver Documentation
 # =============================================================================
@@ -8,9 +9,11 @@
 # -----------------------------------------------------------------------------
 # Site Identity
 # -----------------------------------------------------------------------------
-title: "HardFOC TMC51x0 Driver (TMC5130 & TMC5160)"
+title: "HardFOC TMC51x0 Driver (TMC5130 and TMC5160)"
 description: >
-  Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 & TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support
+  Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver
+  (TMC5130 and TMC5160) with advanced features including stealthChop,
+  spreadCycle, StallGuard2, and encoder support
 
 baseurl: "/hf-tmc5160-driver"
 url: "https://n3b3x.github.io"
@@ -210,7 +213,9 @@ seo:
   type: "SoftwareApplication"
   name: "HardFOC TMC51x0 Driver (TMC5130 & TMC5160)"
   description: >
-    Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 & TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support
+    Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver
+    (TMC5130 and TMC5160) with advanced features including stealthChop,
+    spreadCycle, StallGuard2, and encoder support
   url: "https://n3b3x.github.io/hf-tmc5160-driver"
   twitter:
     card: "summary_large_image"
@@ -250,4 +255,3 @@ compress_html:
 #   features:
 #     - "Feature 1"
 #     - "Feature 2"
-
