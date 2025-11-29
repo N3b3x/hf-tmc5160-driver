@@ -1,6 +1,6 @@
 # Communication Interface
 
-The TMC5160 driver provides a flexible and robust communication interface layer that supports both **SPI** (Serial Peripheral Interface) and **UART** (Single Wire Interface) protocols. This abstraction allows the core driver logic to remain platform-agnostic while ensuring strict compliance with the TMC5160 datasheet specifications.
+The TMC51x0 driver (TMC5130 & TMC5160) provides a flexible and robust communication interface layer that supports both **SPI** (Serial Peripheral Interface) and **UART** (Single Wire Interface) protocols. This abstraction allows the core driver logic to remain platform-agnostic while ensuring strict compliance with the TMC51x0 datasheet specifications.
 
 ## Overview
 
@@ -18,7 +18,7 @@ The communication layer is implemented using a **CRTP (Curiously Recurring Templ
 
 ## SPI Interface
 
-The SPI interface is the standard high-speed communication method for the TMC5160. It uses a **40-bit (5-byte)** datagram format.
+The SPI interface is the standard high-speed communication method for the TMC51x0 (TMC5130 & TMC5160). It uses a **40-bit (5-byte)** datagram format.
 
 ### Datagram Structure
 
@@ -45,7 +45,7 @@ Communication is always performed in 40-bit blocks. The MSB is transmitted first
 
 *   **Write Access**:
     1.  Master sends: `[ 1 | Address ] + [ 32-bit Value ]` (40 bits total).
-    2.  TMC5160 responds: `[ SPI_STATUS ] + [ Previous Data ]`.
+    2.  TMC51x0 responds: `[ SPI_STATUS ] + [ Previous Data ]`.
     3.  Status flags (e.g., Driver Error, Reset) are returned in the first byte.
 
 *   **Read Access (Pipelined)**:
@@ -144,7 +144,7 @@ The UART interface uses the standard CRC8-ATM polynomial:
 
 ```cpp
 // 1. Define your specific Communication Interface
-class MySPI : public tmc5160::SpiCommInterface<MySPI> {
+class MySPI : public tmc51x0::SpiCommInterface<MySPI> {
 public:
     // Implement required low-level transfer
     bool SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) {
@@ -155,10 +155,10 @@ public:
 
 // 2. Instantiate Interface and Driver
 MySPI spi_interface;
-tmc5160::TMC5160<MySPI> motor_driver(spi_interface);
+tmc51x0::TMC51x0<MySPI> motor_driver(spi_interface);
 
 // 3. Initialize
-tmc5160::DriverConfig config;
+tmc51x0::DriverConfig config;
 motor_driver.Initialize(config);
 
 // 4. Move Motor

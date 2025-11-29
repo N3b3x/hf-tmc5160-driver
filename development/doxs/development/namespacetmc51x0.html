@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HF-TMC5160 Driver: tmc51x0 Namespace Reference</title>
+<title>HF-TMC51x0 Driver (TMC5130 &amp; TMC5160): tmc51x0 Namespace Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">HF-TMC5160 Driver<span id="projectnumber">&#160;0.1.0-dev</span>
+   <div id="projectname">HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)<span id="projectnumber">&#160;0.1.0-dev</span>
    </div>
-   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC5160</div>
+   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC51x0 (TMC5130 &amp; TMC5160)</div>
   </td>
  </tr>
  </tbody>
@@ -165,7 +165,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder configuration structure.  <a href="structtmc51x0_1_1EncoderConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1Esp32SpiPinConfig.html">Esp32SpiPinConfig</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Complete ESP32 SPI bus and TMC5160 pin configuration structure.  <a href="structtmc51x0_1_1Esp32SpiPinConfig.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Complete ESP32 SPI bus and <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> pin configuration structure.  <a href="structtmc51x0_1_1Esp32SpiPinConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1ExternalClockConfig.html">ExternalClockConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">External clock configuration structure.  <a href="structtmc51x0_1_1ExternalClockConfig.html#details">More...</a><br /></td></tr>
@@ -189,7 +189,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input pin status structure.  <a href="structtmc51x0_1_1InputStatus.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniontmc51x0_1_1IOIN__Register.html">IOIN_Register</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input/output pin register (IO_INPUT_OUTPUT)  <a href="uniontmc51x0_1_1IOIN__Register.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input pin register (IOIN) - Read-only at address 0x04.  <a href="uniontmc51x0_1_1IOIN__Register.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1MechanicalSystem.html">MechanicalSystem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mechanical system configuration structure.  <a href="structtmc51x0_1_1MechanicalSystem.html#details">More...</a><br /></td></tr>
@@ -276,7 +276,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">High-level manager for multiple <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> drivers in a UART multi-node configuration.  <a href="classtmc51x0_1_1TMC51x0MultiNode.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0PinConfig.html">TMC51x0PinConfig</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">TMC5160 GPIO pin configuration structure.  <a href="structtmc51x0_1_1TMC51x0PinConfig.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> GPIO pin configuration structure.  <a href="structtmc51x0_1_1TMC51x0PinConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1UartCommInterface.html">UartCommInterface</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CRTP-based UART implementation of TMC5160CommInterface.  <a href="classtmc51x0_1_1UartCommInterface.html#details">More...</a><br /></td></tr>
@@ -381,6 +381,7 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#a68e41191c288365e02cfca672681f686a07f07b623b4a00b57dc150ff2e59cb92">Mm</a>
 , <br />
 &#160;&#160;<a class="el" href="#a68e41191c288365e02cfca672681f686afe2284eb32d4b09d29fd34217324b19a">RPM</a>
+, <a class="el" href="#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">RevPerSec</a>
 <br />
  }</td></tr>
 <tr class="memdesc:a68e41191c288365e02cfca672681f686"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unit enumeration.  <a href="#a68e41191c288365e02cfca672681f686">More...</a><br /></td></tr>
@@ -1805,7 +1806,7 @@ Higher acceleration during AT#2 requires higher regulation speed. </dd></dl>
 </div><div class="memdoc">
 
 <p>Unit enumeration. </p>
-<p>Defines the unit of measurement for position, velocity, and acceleration. Steps: Microsteps (driver native) Rad: Radians (per second for velocity, per second^2 for accel) Deg: Degrees (per second for velocity, per second^2 for accel) Mm: Millimeters (linear only) Rpm : Revolutions per Minute (Velocity only, typically) </p>
+<p>Defines the unit of measurement for position, velocity, and acceleration. Steps: Microsteps (driver native) Rad: Radians (per second for velocity, per second^2 for accel) Deg: Degrees (per second for velocity, per second^2 for accel) Mm: Millimeters (linear only) RPM: Revolutions per Minute (Velocity only, typically) RevPerSec: Revolutions per Second (recommended default for velocity) </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" name="a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427"></a>Steps&#160;</td><td class="fielddoc"><p>Microsteps (driver native) </p>
 </td></tr>
@@ -1816,6 +1817,8 @@ Higher acceleration during AT#2 requires higher regulation speed. </dd></dl>
 <tr><td class="fieldname"><a id="a68e41191c288365e02cfca672681f686a07f07b623b4a00b57dc150ff2e59cb92" name="a68e41191c288365e02cfca672681f686a07f07b623b4a00b57dc150ff2e59cb92"></a>Mm&#160;</td><td class="fielddoc"><p>Millimeters (linear only) </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a68e41191c288365e02cfca672681f686afe2284eb32d4b09d29fd34217324b19a" name="a68e41191c288365e02cfca672681f686afe2284eb32d4b09d29fd34217324b19a"></a>RPM&#160;</td><td class="fielddoc"><p>Revolutions per Minute (Velocity only, typically) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8" name="a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8"></a>RevPerSec&#160;</td><td class="fielddoc"><p>Revolutions per Second (recommended default for velocity) </p>
 </td></tr>
 </table>
 
@@ -2120,6 +2123,11 @@ Here is the caller graph for this function:</div>
 For best precision, IRUN will be constrained to 16-31 range </dd>
 <dd>
 For automatic tuning compatibility, IRUN will be at least 8 </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ac742f74b3a0ad095b8db62d07300c8c9_icgraph.svg" width="535" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -2320,6 +2328,11 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Lower current limit in milliamps, or 0 if calculation not possible</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Based on datasheet equation: I_Lower_Limit = t_BLANK * f_PWM * V_M / R_COIL Where t_BLANK depends on TBL setting </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ad149efd95c065a993dbdc5372239927c_icgraph.svg" width="507" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

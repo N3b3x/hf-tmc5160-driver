@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HF-TMC5160 Driver: tmc51x0::TMC51x0&lt; CommType &gt;::Communication Struct Reference</title>
+<title>HF-TMC51x0 Driver (TMC5130 &amp; TMC5160): tmc51x0::TMC51x0&lt; CommType &gt;::Communication Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">HF-TMC5160 Driver<span id="projectnumber">&#160;0.1.0-dev</span>
+   <div id="projectname">HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)<span id="projectnumber">&#160;0.1.0-dev</span>
    </div>
-   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC5160</div>
+   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC51x0 (TMC5130 &amp; TMC5160)</div>
   </td>
  </tr>
  </tbody>
@@ -378,7 +378,7 @@ template&lt;typename CommType &gt; </div>
 <li><b>Internal Clock</b>: Set <code>frequency_hz = 0</code> to use internal oscillator (CLK pin tied to GND).</li>
 <li><b>External Clock</b>: Set <code>frequency_hz &gt; 0</code> to provide external clock signal (e.g., 12000000 for 12MHz).</li>
 </ul>
-<dl class="section note"><dt>Note</dt><dd>This is automatically called during <a class="el" href="classtmc51x0_1_1TMC51x0.html#a8933c4a4a8e5ea0212ba900160efe42f" title="Initialize the TMC5160 driver with configuration.">Initialize()</a> with the value from <a class="el" href="structtmc51x0_1_1DriverConfig.html" title="Driver initialization configuration structure.">DriverConfig</a>. </dd>
+<dl class="section note"><dt>Note</dt><dd>This is automatically called during <a class="el" href="classtmc51x0_1_1TMC51x0.html#a8933c4a4a8e5ea0212ba900160efe42f" title="Initialize the TMC51x0 driver with configuration.">Initialize()</a> with the value from <a class="el" href="structtmc51x0_1_1DriverConfig.html" title="Driver initialization configuration structure.">DriverConfig</a>. </dd>
 <dd>
 If <a class="el" href="#a20adbc0586406e8abe0cbed88bfbdd0f" title="Set clock frequency on CLK pin.">SetClkFreq()</a> is not supported (returns false), CLK pin should be tied to GND for internal oscillator. </dd>
 <dd>
@@ -508,7 +508,7 @@ template&lt;typename CommType &gt; </div>
 <li>Only use this method if SPI_MODE and SD_MODE pins are connected to GPIO outputs</li>
 <li>Changing the mode requires a chip reset (power cycle) to take effect</li>
 <li>The mode pins are read at startup, so changes won't be effective until reset</li>
-<li>Ensure pins are configured in TMC5160PinConfig (spi_mode_pin and sd_mode_pin)</li>
+<li>Ensure pins are configured in <a class="el" href="structtmc51x0_1_1TMC51x0PinConfig.html" title="TMC51x0 GPIO pin configuration structure.">TMC51x0PinConfig</a> (spi_mode_pin and sd_mode_pin)</li>
 </ul>
 <dl class="section note"><dt>Note</dt><dd>After calling this method, you must reset the chip for the new mode to take effect. The driver does not automatically reset the chip - you must handle this externally.</dd>
 <dd>

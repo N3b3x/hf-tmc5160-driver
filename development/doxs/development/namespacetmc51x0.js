@@ -269,7 +269,8 @@ var namespacetmc51x0 =
       [ "Rad", "namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a1d9a8ab863064e5b54a8a7641160cf3f", null ],
       [ "Deg", "namespacetmc51x0.html#a68e41191c288365e02cfca672681f686ab70808dc1e3f9e2c06c9ba840cc7f44c", null ],
       [ "Mm", "namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a07f07b623b4a00b57dc150ff2e59cb92", null ],
-      [ "RPM", "namespacetmc51x0.html#a68e41191c288365e02cfca672681f686afe2284eb32d4b09d29fd34217324b19a", null ]
+      [ "RPM", "namespacetmc51x0.html#a68e41191c288365e02cfca672681f686afe2284eb32d4b09d29fd34217324b19a", null ],
+      [ "RevPerSec", "namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8", null ]
     ] ],
     [ "AccelerationMmToSteps", "namespacetmc51x0.html#a3f204b4fd9a469ebee34ac202c50b34c", null ],
     [ "AccelerationStepsToMm", "namespacetmc51x0.html#a6130e47dc2cc1742ab24368efc69424c", null ],

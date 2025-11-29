@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HF-TMC5160 Driver: esp32_tmc51x0_bus.hpp Source File</title>
+<title>HF-TMC51x0 Driver (TMC5130 &amp; TMC5160): esp32_tmc51x0_bus.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">HF-TMC5160 Driver<span id="projectnumber">&#160;0.1.0-dev</span>
+   <div id="projectname">HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)<span id="projectnumber">&#160;0.1.0-dev</span>
    </div>
-   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC5160</div>
+   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC51x0 (TMC5130 &amp; TMC5160)</div>
   </td>
  </tr>
  </tbody>
@@ -702,12 +702,12 @@ $(function(){initNavTree('esp32__tmc51x0__bus_8hpp_source.html',''); initResizab
 <div class="ttc" id="anamespacetmc51x0_html_a564533944e9fa3223c5db30f0f4106ebafcea8677932f698f06799f81e024d7ab"><div class="ttname"><a href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106ebafcea8677932f698f06799f81e024d7ab">tmc51x0::TMC51x0CtrlPin::CLK</a></div><div class="ttdeci">@ CLK</div><div class="ttdoc">Clock input (CLK, pin 12) - External clock input (tie to GND for internal clock)</div></div>
 <div class="ttc" id="anamespacetmc51x0_html_af3d18824bf231d968c6c33bd1aaeae5f"><div class="ttname"><a href="namespacetmc51x0.html#af3d18824bf231d968c6c33bd1aaeae5f">tmc51x0::CommMode</a></div><div class="ttdeci">CommMode</div><div class="ttdoc">Supported physical communication modes for TMC51x0.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:141</div></div>
 <div class="ttc" id="anamespacetmc51x0_html_af3d18824bf231d968c6c33bd1aaeae5fa33dc5312b091968f5a120c2484d40df8"><div class="ttname"><a href="namespacetmc51x0.html#af3d18824bf231d968c6c33bd1aaeae5fa33dc5312b091968f5a120c2484d40df8">tmc51x0::CommMode::SPI</a></div><div class="ttdeci">@ SPI</div></div>
-<div class="ttc" id="astructtmc51x0_1_1Esp32SpiPinConfig_html"><div class="ttname"><a href="structtmc51x0_1_1Esp32SpiPinConfig.html">tmc51x0::Esp32SpiPinConfig</a></div><div class="ttdoc">Complete ESP32 SPI bus and TMC5160 pin configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:462</div></div>
+<div class="ttc" id="astructtmc51x0_1_1Esp32SpiPinConfig_html"><div class="ttname"><a href="structtmc51x0_1_1Esp32SpiPinConfig.html">tmc51x0::Esp32SpiPinConfig</a></div><div class="ttdoc">Complete ESP32 SPI bus and TMC51x0 pin configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:462</div></div>
 <div class="ttc" id="astructtmc51x0_1_1Esp32SpiPinConfig_html_a5220a148db020ccbda84dff2d9eb9e9d"><div class="ttname"><a href="structtmc51x0_1_1Esp32SpiPinConfig.html#a5220a148db020ccbda84dff2d9eb9e9d">tmc51x0::Esp32SpiPinConfig::tmc51x0_pins</a></div><div class="ttdeci">TMC51x0PinConfig tmc51x0_pins</div><div class="ttdoc">TMC51x0 control pin configuration.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:470</div></div>
 <div class="ttc" id="astructtmc51x0_1_1PinActiveLevels_html"><div class="ttname"><a href="structtmc51x0_1_1PinActiveLevels.html">tmc51x0::PinActiveLevels</a></div><div class="ttdoc">Pin active level configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:246</div></div>
 <div class="ttc" id="astructtmc51x0_1_1PinActiveLevels_html_a68fd62c73fac36a16577e9fa25b952dd"><div class="ttname"><a href="structtmc51x0_1_1PinActiveLevels.html#a68fd62c73fac36a16577e9fa25b952dd">tmc51x0::PinActiveLevels::GetActiveLevel</a></div><div class="ttdeci">bool GetActiveLevel(TMC51x0CtrlPin pin) const noexcept</div><div class="ttdoc">Get active level for a specific pin.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:282</div></div>
 <div class="ttc" id="astructtmc51x0_1_1PinActiveLevels_html_a9de46a18195c09760eec484cbe31447a"><div class="ttname"><a href="structtmc51x0_1_1PinActiveLevels.html#a9de46a18195c09760eec484cbe31447a">tmc51x0::PinActiveLevels::SetActiveLevel</a></div><div class="ttdeci">void SetActiveLevel(TMC51x0CtrlPin pin, bool active_level) noexcept</div><div class="ttdoc">Set active level for a specific pin.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:326</div></div>
-<div class="ttc" id="astructtmc51x0_1_1TMC51x0PinConfig_html"><div class="ttname"><a href="structtmc51x0_1_1TMC51x0PinConfig.html">tmc51x0::TMC51x0PinConfig</a></div><div class="ttdoc">TMC5160 GPIO pin configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:400</div></div>
+<div class="ttc" id="astructtmc51x0_1_1TMC51x0PinConfig_html"><div class="ttname"><a href="structtmc51x0_1_1TMC51x0PinConfig.html">tmc51x0::TMC51x0PinConfig</a></div><div class="ttdoc">TMC51x0 GPIO pin configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:400</div></div>
 <div class="ttc" id="astructtmc51x0_1_1TMC51x0PinConfig_html_a01bb137f37a8d2daaa513584dbbb192f"><div class="ttname"><a href="structtmc51x0_1_1TMC51x0PinConfig.html#a01bb137f37a8d2daaa513584dbbb192f">tmc51x0::TMC51x0PinConfig::dc_out_pin</a></div><div class="ttdeci">int dc_out_pin</div><div class="ttdoc">DC Step ready output (ENCN_DCO_CFG6, pin 25) - Same as enc_n_pin.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:422</div></div>
 <div class="ttc" id="astructtmc51x0_1_1TMC51x0PinConfig_html_a09aa46977a1133b9960b1d1b202bb435"><div class="ttname"><a href="structtmc51x0_1_1TMC51x0PinConfig.html#a09aa46977a1133b9960b1d1b202bb435">tmc51x0::TMC51x0PinConfig::clk_pin</a></div><div class="ttdeci">int clk_pin</div><div class="ttdoc">Clock input (CLK, pin 12) - Optional.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:425</div></div>
 <div class="ttc" id="astructtmc51x0_1_1TMC51x0PinConfig_html_a0e3dc4a6e5cf42ec1a1b16f2d56ad7b5"><div class="ttname"><a href="structtmc51x0_1_1TMC51x0PinConfig.html#a0e3dc4a6e5cf42ec1a1b16f2d56ad7b5">tmc51x0::TMC51x0PinConfig::enc_b_pin</a></div><div class="ttdeci">int enc_b_pin</div><div class="ttdoc">Encoder B (ENCB_DCEN_CFG4, pin 23) - Same as dc_en_pin.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:416</div></div>

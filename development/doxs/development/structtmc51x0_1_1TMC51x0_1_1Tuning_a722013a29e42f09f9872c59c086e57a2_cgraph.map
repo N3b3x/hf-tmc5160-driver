@@ -1,0 +1,10 @@
+<map id="tmc51x0::TMC51x0::Tuning::TuneStallGuard" name="tmc51x0::TMC51x0::Tuning::TuneStallGuard">
+<area shape="rect" id="Node000001" title="Automatically tune StallGuard threshold (SGT) with comprehensive velocity range analysis." alt="" coords="5,23,204,63"/>
+<area shape="rect" id="Node000002" href="$tmc51x0_8cpp.html#a13bc96a1c20a549d52e531f1642f7509" title=" " alt="" coords="252,5,447,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,30,238,27,239,32,204,36"/>
+<area shape="rect" id="Node000003" href="$tmc51x0_8cpp.html#afdceff5e2e5ab9351a3af9a68566920d" title=" " alt="" coords="495,31,651,56"/>
+<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="204,41,481,41,481,46,204,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="447,26,481,30,481,36,447,32"/>
+<area shape="rect" id="Node000004" href="$classtmc51x0_1_1TMC51x0.html#a2aca219d7b860bc5a35738a28900a151" title="Get the communication interface used by this TMC51x0 instance." alt="" coords="699,31,921,56"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="651,41,685,41,685,46,651,46"/>
+</map>

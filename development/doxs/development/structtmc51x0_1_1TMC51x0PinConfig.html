@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HF-TMC5160 Driver: tmc51x0::TMC51x0PinConfig Struct Reference</title>
+<title>HF-TMC51x0 Driver (TMC5130 &amp; TMC5160): tmc51x0::TMC51x0PinConfig Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">HF-TMC5160 Driver<span id="projectnumber">&#160;0.1.0-dev</span>
+   <div id="projectname">HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)<span id="projectnumber">&#160;0.1.0-dev</span>
    </div>
-   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC5160</div>
+   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC51x0 (TMC5130 &amp; TMC5160)</div>
   </td>
  </tr>
  </tbody>
@@ -102,7 +102,7 @@ $(function(){initNavTree('structtmc51x0_1_1TMC51x0PinConfig.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 
-<p>TMC5160 GPIO pin configuration structure.  
+<p><a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> GPIO pin configuration structure.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="tmc51x0__comm__interface_8hpp_source.html">tmc51x0_comm_interface.hpp</a>&gt;</code></p>
@@ -168,8 +168,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ac71ad999dbcfa3984b3c1a6fd89af127"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>TMC5160 GPIO pin configuration structure. </p>
-<p>This structure allows configuring all TMC5160 control pins in a single place. Compound pins (pins that share the same physical GPIO) are automatically handled - you only need to specify the GPIO once, and both logical pins will be mapped to it.</p>
+<div class="textblock"><p><a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> GPIO pin configuration structure. </p>
+<p>This structure allows configuring all <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> control pins in a single place. Compound pins (pins that share the same physical GPIO) are automatically handled - you only need to specify the GPIO once, and both logical pins will be mapped to it.</p>
 <p>Compound pin relationships (same physical pin):</p><ul>
 <li>Pin 17: REFL_STEP (SD_MODE=0) or STEP (SD_MODE=1) - specify via step_pin or ref_left_pin</li>
 <li>Pin 18: REFR_DIR (SD_MODE=0) or DIR (SD_MODE=1) - specify via dir_pin or ref_right_pin</li>

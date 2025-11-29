@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HF-TMC5160 Driver: HF-TMC5160 Driver</title>
+<title>HF-TMC51x0 Driver (TMC5130 &amp; TMC5160): HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">HF-TMC5160 Driver<span id="projectnumber">&#160;0.1.0-dev</span>
+   <div id="projectname">HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)<span id="projectnumber">&#160;0.1.0-dev</span>
    </div>
-   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC5160</div>
+   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC51x0 (TMC5130 &amp; TMC5160)</div>
   </td>
  </tr>
  </tbody>
@@ -94,10 +94,10 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">HF-TMC5160 Driver </div></div>
+  <div class="headertitle"><div class="title">HF-TMC51x0 Driver (TMC5130 &amp; TMC5160) </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_README"></a><b>C++17 hardware-agnostic driver for Trinamic TMC5160 stepper motor controller with advanced features</b></p>
+<div class="textblock"><p><a class="anchor" id="md_README"></a><b>C++17 hardware-agnostic driver for Trinamic TMC51x0 stepper motor controllers (TMC5130 &amp; TMC5160) with advanced features</b></p>
 <p><a href="https://en.cppreference.com/w/cpp/17.html"><img src="https://img.shields.io/badge/C%2B%2B-17-blue.svg" alt="C++" style="pointer-events: none;" class="inline"/></a> <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/N3b3x/hf-tmc5160-driver/actions/workflows/esp32-examples-build-ci.yml"><img src="https://github.com/N3b3x/hf-tmc5160-driver/actions/workflows/esp32-examples-build-ci.yml/badge.svg?branch=main" alt="CI" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/N3b3x/hf-tmc5160-driver/tree/main/docs"><img src="https://img.shields.io/badge/docs-GitHub%20Pages-blue" alt="Docs" class="inline"/></a></p>
 <h1><a class="anchor" id="autotoc_md27"></a>
 📚 Table of Contents</h1>
@@ -117,12 +117,12 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 <blockquote class="doxtable">
 <p>&zwj;<b>📖 📚🌐 Complete Documentation</b> - Interactive guides, examples, and step-by-step tutorials </p>
 </blockquote>
-<p><b>HF-TMC5160</b> is a comprehensive, production-ready C++17 driver for the <b>Trinamic TMC5160</b> stepper motor controller IC. The TMC5160 is a sophisticated stepper motor driver supporting advanced features including stealthChop for silent operation, spreadCycle for high torque, StallGuard2 for stall detection, and encoder support for closed-loop control.</p>
-<p>This driver provides <b>complete feature coverage</b> of all 47 TMC5160 registers with <b>100+ public API methods</b> organized into intuitive, well-structured subsystems. It supports <b>multi-chip communication</b> via SPI daisy chaining and UART multi-node addressing, <b>physical unit conversions</b> (mm, degrees, RPM, belt teeth), <b>automatic parameter tuning</b>, <b>sensorless homing</b>, and many other advanced features not found in other TMC5160 drivers.</p>
+<p><b>HF-TMC51x0</b> is a comprehensive, production-ready C++17 driver for the <b>Trinamic TMC51x0</b> stepper motor controller ICs (TMC5130 &amp; TMC5160). The TMC51x0 family includes sophisticated stepper motor drivers supporting advanced features including stealthChop for silent operation, spreadCycle for high torque, StallGuard2 for stall detection, and encoder support for closed-loop control.</p>
+<p>This driver provides <b>complete feature coverage</b> of all 47 TMC51x0 registers with <b>100+ public API methods</b> organized into intuitive, well-structured subsystems. It supports <b>multi-chip communication</b> via SPI daisy chaining and UART multi-node addressing, <b>physical unit conversions</b> (mm, degrees, RPM, belt teeth), <b>automatic parameter tuning</b>, <b>sensorless homing</b>, and many other advanced features not found in other TMC51x0 drivers. The driver <b>automatically detects</b> and supports both TMC5130 and TMC5160 chips.</p>
 <h2><a class="anchor" id="autotoc_md29"></a>
 Architecture &amp; Design</h2>
 <p>The driver is built with a <b>subsystem-based architecture</b> that organizes functionality into logical groups, making it easy to find and use the features you need:</p>
-<div class="fragment"><div class="line">tmc5160::TMC5160&lt;MySPI&gt; driver(spi);</div>
+<div class="fragment"><div class="line"><a class="code hl_class" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0&lt;MySPI&gt;</a> driver(spi);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Organized subsystems for intuitive access</span></div>
 <div class="line">driver.rampControl      <span class="comment">// Motion planning and positioning</span></div>
@@ -134,11 +134,12 @@ Architecture &amp; Design</h2>
 <div class="line">driver.protection       <span class="comment">// Safety and protection systems</span></div>
 <div class="line">driver.communication    <span class="comment">// Multi-chip communication setup</span></div>
 <div class="line">driver.printer          <span class="comment">// Debug register printing</span></div>
+<div class="ttc" id="aclasstmc51x0_1_1TMC51x0_html"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a></div><div class="ttdoc">Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)</div><div class="ttdef"><b>Definition</b> tmc51x0.hpp:98</div></div>
 </div><!-- fragment --><p>The driver uses <b>CRTP (Curiously Recurring Template Pattern)</b> for hardware-agnostic communication interfaces, allowing it to run on any platform (ESP32, STM32, Arduino, Raspberry Pi, etc.) with SPI or UART. This design provides <b>zero runtime overhead</b> while maintaining complete platform independence.</p>
 <h2><a class="anchor" id="autotoc_md30"></a>
 Key Capabilities</h2>
 <ul>
-<li><b>Complete Register Coverage</b>: All 47 TMC5160 registers (0x00-0x73) accessible through type-safe C++ API</li>
+<li><b>Complete Register Coverage</b>: All 47 TMC51x0 registers (0x00-0x73) accessible through type-safe C++ API</li>
 <li><b>Multi-Chip Support</b>: SPI daisy chaining and UART multi-node addressing for controlling multiple motors</li>
 <li><b>Unit Conversions</b>: Work with physical units (mm, degrees, RPM) instead of raw steps</li>
 <li><b>Automatic Tuning</b>: Intelligent StallGuard2 threshold optimization with velocity range analysis</li>
@@ -158,7 +159,7 @@ RampControl Subsystem</h3>
 <li>✅ <b>Hold Mode</b>: Maintain position with configurable hold current</li>
 <li>✅ <b>Advanced Ramp Profiles</b>: Multi-phase acceleration (A1, AMAX, D1) for smooth motion</li>
 <li>✅ <b>Reference Switches</b>: Configurable endstops with latching and stop-on-switch modes</li>
-<li>✅ <b>Unit-Aware API</b>: Set positions, speeds, and accelerations in steps, mm, degrees, or RPM</li>
+<li>✅ <b>Unit-Aware API</b>: Set positions, speeds, and accelerations in steps, mm, degrees, RPM, or revolutions per second (RevPerSec - default for velocities)</li>
 </ul>
 <h3><a class="anchor" id="autotoc_md34"></a>
 MotorControl Subsystem</h3>
@@ -228,16 +229,16 @@ Protection Subsystem</h3>
 <h3><a class="anchor" id="autotoc_md45"></a>
 Communication Subsystem</h3>
 <ul>
-<li>✅ <b>SPI Daisy Chaining</b>: Connect multiple TMC5160 chips on a single SPI bus<ul>
+<li>✅ <b>SPI Daisy Chaining</b>: Connect multiple TMC51x0 chips on a single SPI bus<ul>
 <li>Automatic chain length detection</li>
 <li>Position-based addressing (0, 1, 2, ...)</li>
-<li><code>TMC5160DaisyChain</code> helper class for easy management</li>
+<li><code>TMC51x0DaisyChain</code> helper class for easy management</li>
 </ul>
 </li>
 <li>✅ <b>UART Multi-Node</b>: Support for up to 255 devices on a single UART bus<ul>
 <li>Slave addressing (0-254)</li>
 <li>Sequential programming support</li>
-<li><code>TMC5160MultiNode</code> helper class for multi-device management</li>
+<li><code>TMC51x0MultiNode</code> helper class for multi-device management</li>
 </ul>
 </li>
 <li>✅ <b>Automatic Detection</b>: Chip version detection (TMC5130 vs TMC5160)</li>
@@ -272,43 +273,47 @@ Communication Subsystem</h3>
 🚀 Quick Start</h1>
 <h2><a class="anchor" id="autotoc_md49"></a>
 Single Motor Setup</h2>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;inc/tmc5160.hpp&quot;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="tmc51x0_8hpp.html">inc/tmc51x0.hpp</a>&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 1. Implement the communication interface (see platform_integration.md)</span></div>
-<div class="line"><span class="keyword">class </span>MySPI : <span class="keyword">public</span> tmc5160::SpiCommInterface&lt;MySPI&gt; {</div>
+<div class="line"><span class="keyword">class </span>MySPI : <span class="keyword">public</span> <a class="code hl_class" href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a>&lt;MySPI&gt; {</div>
 <div class="line">    <span class="comment">// ... implement required methods</span></div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 2. Create driver instance</span></div>
 <div class="line">MySPI spi;</div>
-<div class="line">tmc5160::TMC5160 driver(spi);</div>
+<div class="line"><a class="code hl_class" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a> driver(spi);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 3. Initialize driver</span></div>
-<div class="line">tmc5160::DriverConfig cfg{};</div>
+<div class="line"><a class="code hl_struct" href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a> cfg{};</div>
 <div class="line">cfg.motor.irun = 20;  <span class="comment">// Run current (0-31)</span></div>
 <div class="line">cfg.motor.ihold = 10; <span class="comment">// Hold current (0-31)</span></div>
 <div class="line">driver.Initialize(cfg);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 4. Configure and start motor</span></div>
-<div class="line">driver.rampControl.SetRampMode(tmc5160::RampMode::POSITIONING);</div>
+<div class="line">driver.rampControl.SetRampMode(<a class="code hl_enumvalue" href="namespacetmc51x0.html#a9296c8b77977c4b405a85597699ada76a1e66935e3ab51cc2128e078cfd49d845">tmc51x0::RampMode::POSITIONING</a>);</div>
 <div class="line">driver.rampControl.SetTargetPosition(1000);</div>
 <div class="line">driver.rampControl.SetMaxSpeed(1000.0f);</div>
 <div class="line">driver.rampControl.SetAcceleration(500.0f);</div>
 <div class="line">driver.motorControl.Enable();</div>
+<div class="ttc" id="aclasstmc51x0_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:1459</div></div>
+<div class="ttc" id="anamespacetmc51x0_html_a9296c8b77977c4b405a85597699ada76a1e66935e3ab51cc2128e078cfd49d845"><div class="ttname"><a href="namespacetmc51x0.html#a9296c8b77977c4b405a85597699ada76a1e66935e3ab51cc2128e078cfd49d845">tmc51x0::RampMode::POSITIONING</a></div><div class="ttdeci">@ POSITIONING</div><div class="ttdoc">Positioning mode using all A, D and V parameters.</div></div>
+<div class="ttc" id="astructtmc51x0_1_1DriverConfig_html"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2510</div></div>
+<div class="ttc" id="atmc51x0_8hpp_html"><div class="ttname"><a href="tmc51x0_8hpp.html">tmc51x0.hpp</a></div><div class="ttdoc">Main TMC51x0 stepper motor driver interface and subsystem classes (TMC5130 &amp; TMC5160)</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md50"></a>
 Multi-Motor Daisy Chain Setup</h2>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;inc/tmc5160.hpp&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;inc/tmc5160_daisy_chain.hpp&quot;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="tmc51x0_8hpp.html">inc/tmc51x0.hpp</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="tmc51x0__daisy__chain_8hpp.html">inc/tmc51x0_daisy_chain.hpp</a>&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 1. Create SPI communication interface (shared by all devices)</span></div>
 <div class="line">MySPI spi;</div>
 <div class="line">spi.Initialize();</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 2. Create daisy-chain manager with 3 onboard devices</span></div>
-<div class="line">tmc5160::TMC5160DaisyChain&lt;MySPI, 5&gt; chain(spi, 3, 12&#39;000&#39;000);</div>
+<div class="line"><a class="code hl_class" href="classtmc51x0_1_1TMC51x0DaisyChain.html">tmc51x0::TMC51x0DaisyChain&lt;MySPI, 5&gt;</a> chain(spi, 3, 12&#39;000&#39;000);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 3. Initialize all devices</span></div>
-<div class="line">tmc5160::DriverConfig cfg{};</div>
+<div class="line"><a class="code hl_struct" href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a> cfg{};</div>
 <div class="line">cfg.motor.irun = 20;</div>
 <div class="line">cfg.motor.ihold = 10;</div>
 <div class="line">chain.InitializeAll(cfg);</div>
@@ -321,10 +326,12 @@ Multi-Motor Daisy Chain Setup</h2>
 <div class="line">x_axis.rampControl.SetTargetPosition(1000);</div>
 <div class="line">y_axis.rampControl.SetMaxSpeed(500.0f);</div>
 <div class="line">z_axis.motorControl.Enable();</div>
+<div class="ttc" id="aclasstmc51x0_1_1TMC51x0DaisyChain_html"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0DaisyChain.html">tmc51x0::TMC51x0DaisyChain</a></div><div class="ttdoc">High-level manager for multiple TMC51x0 drivers in a daisy-chain configuration.</div><div class="ttdef"><b>Definition</b> tmc51x0_daisy_chain.hpp:115</div></div>
+<div class="ttc" id="atmc51x0__daisy__chain_8hpp_html"><div class="ttname"><a href="tmc51x0__daisy__chain_8hpp.html">tmc51x0_daisy_chain.hpp</a></div><div class="ttdoc">High-level daisy-chain manager for multiple TMC51x0 drivers (TMC5130 &amp; TMC5160)</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md51"></a>
 Using Physical Units</h2>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;inc/tmc5160.hpp&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;inc/tmc5160_units.hpp&quot;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="tmc51x0_8hpp.html">inc/tmc51x0.hpp</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="tmc51x0__units_8hpp.html">inc/tmc51x0_units.hpp</a>&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Motor: 200 steps/rev, Lead screw: 2mm pitch</span></div>
 <div class="line"><span class="keyword">constexpr</span> uint16_t <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a> = 200;</div>
@@ -337,17 +344,19 @@ Using Physical Units</h2>
 <div class="line">driver.rampControl.SetMaxSpeedRpm(100.0f, <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a>);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Or use conversion functions directly</span></div>
-<div class="line">int32_t steps = tmc5160::MmToSteps(10.0f, <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a>, <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370">LEAD_SCREW_PITCH_MM</a>);</div>
+<div class="line">int32_t steps = <a class="code hl_function" href="namespacetmc51x0.html#a67bdb4d4ee51eb6afb6483731177af81">tmc51x0::MmToSteps</a>(10.0f, <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a>, <a class="code hl_variable" href="internal__ramp__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370">LEAD_SCREW_PITCH_MM</a>);</div>
 <div class="line">driver.rampControl.SetTargetPosition(steps);</div>
 <div class="ttc" id="ainternal__ramp__comprehensive__test_8cpp_html_a2f7680fdd51cb1381f016a751a6b3370"><div class="ttname"><a href="internal__ramp__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370">LEAD_SCREW_PITCH_MM</a></div><div class="ttdeci">static constexpr float LEAD_SCREW_PITCH_MM</div><div class="ttdef"><b>Definition</b> internal_ramp_comprehensive_test.cpp:62</div></div>
 <div class="ttc" id="ainternal__ramp__comprehensive__test_8cpp_html_a63557ac710415c650bc9dd19d2a91eba"><div class="ttname"><a href="internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba">STEPS_PER_REV</a></div><div class="ttdeci">static constexpr float STEPS_PER_REV</div><div class="ttdef"><b>Definition</b> internal_ramp_comprehensive_test.cpp:61</div></div>
+<div class="ttc" id="anamespacetmc51x0_html_a67bdb4d4ee51eb6afb6483731177af81"><div class="ttname"><a href="namespacetmc51x0.html#a67bdb4d4ee51eb6afb6483731177af81">tmc51x0::MmToSteps</a></div><div class="ttdeci">constexpr int32_t MmToSteps(float mm, float steps_per_rev, float lead_screw_pitch_mm) noexcept</div><div class="ttdoc">Convert millimeters to steps.</div><div class="ttdef"><b>Definition</b> tmc51x0_units.hpp:44</div></div>
+<div class="ttc" id="atmc51x0__units_8hpp_html"><div class="ttname"><a href="tmc51x0__units_8hpp.html">tmc51x0_units.hpp</a></div><div class="ttdoc">Unit conversion functions for TMC51x0 driver (TMC5130 &amp; TMC5160)</div></div>
 </div><!-- fragment --><p>For detailed setup, see Installation and Quick Start Guide.</p>
 <h1><a class="anchor" id="autotoc_md52"></a>
 🔧 Installation</h1>
 <ol type="1">
 <li><b>Clone or copy</b> the driver files into your project</li>
 <li><b>Implement the communication interface</b> for your platform (see Platform Integration)</li>
-<li><b>Include the header</b> in your code: <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;inc/tmc5160.hpp&quot;</span></div>
+<li><b>Include the header</b> in your code: <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="tmc51x0_8hpp.html">inc/tmc51x0.hpp</a>&quot;</span></div>
 </div><!-- fragment --></li>
 <li>Compile with a <b>C++17</b> or newer compiler</li>
 </ol>
@@ -356,14 +365,15 @@ Using Physical Units</h2>
 📖 API Reference</h1>
 <h2><a class="anchor" id="autotoc_md54"></a>
 Class Structure &amp; Subsystems</h2>
-<p>The <code>TMC5160</code> class is organized into intuitive subsystems for easy access to functionality:</p>
-<div class="fragment"><div class="line">tmc5160::TMC5160&lt;CommType&gt; driver(comm_interface);</div>
+<p>The <code>TMC51x0</code> class is organized into intuitive subsystems for easy access to functionality:</p>
+<div class="fragment"><div class="line"><a class="code hl_class" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0&lt;CommType&gt;</a> driver(comm_interface);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Motion Control</span></div>
 <div class="line">driver.rampControl.SetRampMode(RampMode::POSITIONING);</div>
 <div class="line">driver.rampControl.SetTargetPosition(1000, Unit::Steps);</div>
-<div class="line">driver.rampControl.SetMaxSpeed(1000.0f, Unit::Steps);</div>
-<div class="line">driver.rampControl.SetAcceleration(500.0f, Unit::Steps);</div>
+<div class="line"><span class="comment">// Velocity functions default to revolutions per second (RevPerSec) - much more intuitive!</span></div>
+<div class="line">driver.rampControl.SetMaxSpeed(0.02f);       <span class="comment">// 0.02 rev/s (~1.2 RPM) - Unit::RevPerSec is default</span></div>
+<div class="line">driver.rampControl.SetAcceleration(0.01f);    <span class="comment">// 0.01 rev/s² - Unit::RevPerSec is default</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Motor Control</span></div>
 <div class="line">driver.motorControl.Enable();</div>
@@ -377,6 +387,10 @@ Class Structure &amp; Subsystems</h2>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Automatic Tuning ⭐</span></div>
 <div class="line">StallGuardTuningResult result;</div>
+<div class="line">driver.tuning.AutoTuneStallGuard(target_velocity, result, min_sgt, max_sgt,</div>
+<div class="line">                                  acceleration, min_velocity, max_velocity,</div>
+<div class="line">                                  <a class="code hl_enumvalue" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">tmc51x0::Unit::RevPerSec</a>, safe_current_margin_mA);</div>
+<div class="line"><span class="comment">// Or simpler version:</span></div>
 <div class="line">driver.tuning.TuneStallGuard(target_velocity, result, min_sgt, max_sgt, </div>
 <div class="line">                              acceleration, min_velocity, max_velocity);</div>
 <div class="line"> </div>
@@ -391,6 +405,7 @@ Class Structure &amp; Subsystems</h2>
 <div class="line"><span class="comment">// Protection</span></div>
 <div class="line">driver.protection.ConfigureShortProtection(short_config);</div>
 <div class="line"><span class="keywordtype">bool</span> ot = driver.diagnostics.GetStatus() == DriverStatus::OT;</div>
+<div class="ttc" id="anamespacetmc51x0_html_a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8"><div class="ttname"><a href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">tmc51x0::Unit::RevPerSec</a></div><div class="ttdeci">@ RevPerSec</div><div class="ttdoc">Revolutions per Second (recommended default for velocity)</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md55"></a>
 Key Methods by Subsystem</h2>
 <h3><a class="anchor" id="autotoc_md56"></a>
@@ -449,6 +464,8 @@ Tuning Subsystem ⭐ NEW</h3>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Method   </th><th class="markdownTableHeadNone">Description    </th></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>AutoTuneStallGuard()</code>   </td><td class="markdownTableBodyNone">Comprehensive automatic SGT tuning with safe current margin (recommended)    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>TuneStallGuard()</code>   </td><td class="markdownTableBodyNone">Automatic SGT tuning with comprehensive velocity range analysis   </td></tr>
 </table>
 <p>| Returns <code>StallGuardTuningResult</code> with optimal SGT, velocity compatibility, and actual achievable velocities |</p>
@@ -502,9 +519,9 @@ Multi-Chip Support</h2>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Class/Method   </th><th class="markdownTableHeadNone">Description    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>TMC5160DaisyChain&lt;CommType, MaxDevices&gt;</code>   </td><td class="markdownTableBodyNone">High-level manager for SPI daisy chaining    </td></tr>
+<td class="markdownTableBodyNone"><code>TMC51x0DaisyChain&lt;CommType, MaxDevices&gt;</code>   </td><td class="markdownTableBodyNone">High-level manager for SPI daisy chaining    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>TMC5160MultiNode&lt;CommType&gt;</code>   </td><td class="markdownTableBodyNone">High-level manager for UART multi-node addressing    </td></tr>
+<td class="markdownTableBodyNone"><code>TMC51x0MultiNode&lt;CommType&gt;</code>   </td><td class="markdownTableBodyNone">High-level manager for UART multi-node addressing    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>chain[0]</code>, <code>chain[1]</code>, ...   </td><td class="markdownTableBodyNone">Access individual drivers in chain   </td></tr>
 </table>
@@ -516,10 +533,9 @@ Unit Conversion Helpers</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>MmToSteps()</code> / <code>StepsToMm()</code>   </td><td class="markdownTableBodyNone">Convert between millimeters and steps    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>RpmToStepsPerSec()</code> / <code>StepsPerSecToRpm()</code>   </td><td class="markdownTableBodyNone">Convert between RPM and steps/s    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>DegreesToSteps()</code> / <code>StepsToDegrees()</code>   </td><td class="markdownTableBodyNone">Convert between degrees and steps   </td></tr>
+<td class="markdownTableBodyNone"><code>RpmToStepsPerSec()</code> / <code>StepsPerSecToRpm()</code>   </td><td class="markdownTableBodyNone">Convert between RPM and steps/s   </td></tr>
 </table>
+<p>| <b>Default Units</b>: Velocity functions default to <code>Unit::RevPerSec</code> (revolutions per second) for user-friendly operation | | <code>DegreesToSteps()</code> / <code>StepsToDegrees()</code> | Convert between degrees and steps |</p>
 <p>For complete API documentation with all methods and parameters, see docs/api_reference.md.</p>
 <h1><a class="anchor" id="autotoc_md66"></a>
 📊 Examples</h1>
@@ -540,7 +556,7 @@ Multi-Chip Communication</h2>
 <h2><a class="anchor" id="autotoc_md69"></a>
 Advanced Features</h2>
 <ul>
-<li>**<code><a class="el" href="stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool.">stallguard_tuning.cpp</a></code>**: Automatic StallGuard2 threshold tuning with velocity range analysis ⭐</li>
+<li>**<code><a class="el" href="stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Safe Current Margin.">stallguard_tuning.cpp</a></code>**: Automatic StallGuard2 threshold tuning with velocity range analysis ⭐</li>
 <li>**<code>encoder_comprehensive_test.cpp</code>**: Encoder integration and closed-loop control with deviation detection</li>
 <li>**<code>diagnostics_comprehensive_test.cpp</code>**: Comprehensive diagnostics, status monitoring, and StallGuard2 reading</li>
 <li>**<code>protection_comprehensive_test.cpp</code>**: Protection system configuration and monitoring</li>
@@ -557,7 +573,7 @@ Motor Control &amp; Motion</h2>
 Specialized Applications</h2>
 <ul>
 <li>**<code><a class="el" href="internal__ramp__comprehensive__test_8cpp.html" title="Comprehensive internal ramp test suite for TMC51x0 (single motor)">internal_ramp_comprehensive_test.cpp</a></code>**: Internal ramp generator comprehensive testing</li>
-<li>**<code><a class="el" href="stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool.">stallguard_tuning.cpp</a></code>**: Automatic SGT tuning for optimal stall detection</li>
+<li>**<code><a class="el" href="stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Safe Current Margin.">stallguard_tuning.cpp</a></code>**: Automatic SGT tuning for optimal stall detection</li>
 </ul>
 <p>All examples include detailed documentation and are ready to compile and run. See docs/examples.md for detailed walkthroughs.</p>
 <h1><a class="anchor" id="autotoc_md72"></a>

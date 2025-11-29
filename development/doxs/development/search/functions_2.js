@@ -46,7 +46,7 @@ var searchData=
   ['convertspeedtosteps_43',['convertSpeedToSteps',['../classtmc51x0_1_1TMC51x0.html#a4dcd596cf00912074625ecce0677ea9f',1,'tmc51x0::TMC51x0']]],
   ['convertspeedtounit_44',['convertSpeedToUnit',['../classtmc51x0_1_1TMC51x0.html#ab637f6447b6a19c2c770ca77b619243d',1,'tmc51x0::TMC51x0']]],
   ['convertstepstounit_45',['convertStepsToUnit',['../classtmc51x0_1_1TMC51x0.html#a2e04a4bdbcaf9d543f9f2c6de416df3c',1,'tmc51x0::TMC51x0']]],
-  ['coolstepconfig_46',['CoolStepConfig',['../structtmc51x0_1_1CoolStepConfig.html#aa5707df38a35d547e6e1e0ab8bc83dff',1,'tmc51x0::CoolStepConfig::CoolStepConfig()=default'],['../structtmc51x0_1_1CoolStepConfig.html#a625ca3dca36b82a0023af9dcfb60240b',1,'tmc51x0::CoolStepConfig::CoolStepConfig(uint16_t lower_sg, uint16_t upper_sg, float min_vel, float max_vel, Unit vel_unit=Unit::Steps)']]],
+  ['coolstepconfig_46',['CoolStepConfig',['../structtmc51x0_1_1CoolStepConfig.html#aa5707df38a35d547e6e1e0ab8bc83dff',1,'tmc51x0::CoolStepConfig::CoolStepConfig()=default'],['../structtmc51x0_1_1CoolStepConfig.html#a4a96ad4b185150bd05ced37dbd5f559f',1,'tmc51x0::CoolStepConfig::CoolStepConfig(uint16_t lower_sg, uint16_t upper_sg, float min_vel, float max_vel, Unit vel_unit=Unit::RevPerSec)']]],
   ['create_5fdaisy_5fchain_5fdrivers_47',['create_daisy_chain_drivers',['../spi__daisy__chain__comprehensive__test_8cpp.html#ae1c358956ec587c7bd3a5105761b86a0',1,'spi_daisy_chain_comprehensive_test.cpp']]],
   ['create_5ftest_5fdriver_48',['create_test_driver',['../internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9',1,'internal_ramp_comprehensive_test.cpp']]]
 ];

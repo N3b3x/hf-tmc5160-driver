@@ -15,7 +15,7 @@ var searchData=
   ['hend_12',['hend',['../structtmc51x0_1_1ChopperConfig.html#a4fa0f7bcdd271f442e9a3d704b5aa561',1,'tmc51x0::ChopperConfig']]],
   ['hend_13',['HEND',['../namespacetmc51x0__test__config_1_1MotorConfig__17HS4401S.html#acfd96b12ec6976acc04048f420dfff28',1,'tmc51x0_test_config::MotorConfig_17HS4401S::HEND'],['../namespacetmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#a854678ed754a3bbcd52a6d907a42cc49',1,'tmc51x0_test_config::MotorConfig_17HS4401S_Direct::HEND'],['../namespacetmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#afc9c39dcd37437c7815452df38fe0444',1,'tmc51x0_test_config::MotorConfig_AppliedMotion_5034_369::HEND']]],
   ['hend_5foffset_14',['hend_offset',['../uniontmc51x0_1_1CHOPCONF__Register.html#ae8c119b6a849df392f997b02ef1fb57a',1,'tmc51x0::CHOPCONF_Register']]],
-  ['hf_20tmc5160_20driver_15',['HF-TMC5160 Driver',['../index.html',1,'']]],
+  ['hf_20tmc51x0_20driver_20tmc5130_20tmc5160_15',['HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)',['../index.html',1,'']]],
   ['hierarchy_16',['Configuration Hierarchy',['../esp32__tmc51x0__test__config_8hpp.html#autotoc_md21',1,'']]],
   ['high_17',['HIGH',['../namespacetmc51x0.html#a52bd7474fc03fcfde3c7249fea7ea055ab89de3b4b81c4facfac906edf29aec8c',1,'tmc51x0::HIGH'],['../namespacetmc51x0.html#aca6b71c611ab7e217b0d3ce4208821d9ab89de3b4b81c4facfac906edf29aec8c',1,'tmc51x0::HIGH'],['../namespacetmc51x0.html#a4abe4fa0f128137c19f7da4f9b58a816ab89de3b4b81c4facfac906edf29aec8c',1,'tmc51x0::HIGH']]],
   ['hold_18',['HOLD',['../namespacetmc51x0.html#a9296c8b77977c4b405a85597699ada76a0c6d9dfb485b43c6fba87439f9f73ac4',1,'tmc51x0']]],

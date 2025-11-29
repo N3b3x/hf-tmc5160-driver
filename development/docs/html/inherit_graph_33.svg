@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="uniontmc51x0_1_1IOIN__Register.html" target="_top" xlink:title="Input/output pin register (IO_INPUT_OUTPUT)">
+<g id="a_Node000000"><a xlink:href="uniontmc51x0_1_1IOIN__Register.html" target="_top" xlink:title="Input pin register (IOIN) &#45; Read&#45;only at address 0x04.">
 <polygon fill="white" stroke="#666666" points="132,-19 0,-19 0,0 132,0 132,-19"/>
 <text text-anchor="middle" x="66" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::IOIN_Register</text>
 </a>

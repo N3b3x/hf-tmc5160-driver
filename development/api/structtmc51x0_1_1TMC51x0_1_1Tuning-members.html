@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HF-TMC5160 Driver: Member List</title>
+<title>HF-TMC51x0 Driver (TMC5130 &amp; TMC5160): Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">HF-TMC5160 Driver<span id="projectnumber">&#160;0.1.0-dev</span>
+   <div id="projectname">HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)<span id="projectnumber">&#160;0.1.0-dev</span>
    </div>
-   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC5160</div>
+   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC51x0 (TMC5130 &amp; TMC5160)</div>
   </td>
  </tr>
  </tbody>
@@ -100,10 +100,11 @@ $(function(){initNavTree('structtmc51x0_1_1TMC51x0_1_1Tuning.html',''); initResi
 
 <p>This is the complete list of members for <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html">tmc51x0::TMC51x0&lt; CommType &gt;::Tuning</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html#a8c366093a8ad4549b92fd7a0bb40e995">driver_</a></td><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html">tmc51x0::TMC51x0&lt; CommType &gt;::Tuning</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html#acf7ef1b2a9edc1e444be58f47323da6f">TuneStallGuard</a>(float target_velocity, StallGuardTuningResult &amp;result, int8_t min_sgt=-10, int8_t max_sgt=63, float acceleration=3000.0F, float min_velocity=0.0F, float max_velocity=0.0F, Unit velocity_unit=Unit::Steps) noexcept</td><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html">tmc51x0::TMC51x0&lt; CommType &gt;::Tuning</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html#acfb74a9f75c53e80beb3fcf8585e0d26">TuneStallGuard</a>(float target_velocity, int8_t &amp;final_sgt, int8_t min_sgt=-10, int8_t max_sgt=63, float acceleration=3000.0F, float min_velocity=0.0F, float max_velocity=0.0F, Unit velocity_unit=Unit::Steps) noexcept</td><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html">tmc51x0::TMC51x0&lt; CommType &gt;::Tuning</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html#a904d378242b3120a7f8649871766ef56">Tuning</a>(TMC51x0 &amp;driver) noexcept</td><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html">tmc51x0::TMC51x0&lt; CommType &gt;::Tuning</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html#a95f7660b2b19e503e949086b8b491169">AutoTuneStallGuard</a>(float target_velocity, StallGuardTuningResult &amp;result, int8_t min_sgt=0, int8_t max_sgt=63, float acceleration=0.06F, float min_velocity=0.0F, float max_velocity=0.0F, Unit velocity_unit=Unit::RevPerSec, Unit acceleration_unit=Unit::RevPerSec, uint16_t safe_current_margin_mA=0) noexcept</td><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html">tmc51x0::TMC51x0&lt; CommType &gt;::Tuning</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html#a8c366093a8ad4549b92fd7a0bb40e995">driver_</a></td><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html">tmc51x0::TMC51x0&lt; CommType &gt;::Tuning</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html#a722013a29e42f09f9872c59c086e57a2">TuneStallGuard</a>(float target_velocity, StallGuardTuningResult &amp;result, int8_t min_sgt=-10, int8_t max_sgt=63, float acceleration=0.06F, float min_velocity=0.0F, float max_velocity=0.0F, Unit velocity_unit=Unit::RevPerSec, Unit acceleration_unit=Unit::RevPerSec) noexcept</td><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html">tmc51x0::TMC51x0&lt; CommType &gt;::Tuning</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html#a88b059f602cea6cf26d6049c45480b41">TuneStallGuard</a>(float target_velocity, int8_t &amp;final_sgt, int8_t min_sgt=-10, int8_t max_sgt=63, float acceleration=0.06F, float min_velocity=0.0F, float max_velocity=0.0F, Unit velocity_unit=Unit::RevPerSec, Unit acceleration_unit=Unit::RevPerSec) noexcept</td><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html">tmc51x0::TMC51x0&lt; CommType &gt;::Tuning</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html#a904d378242b3120a7f8649871766ef56">Tuning</a>(TMC51x0 &amp;driver) noexcept</td><td class="entry"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html">tmc51x0::TMC51x0&lt; CommType &gt;::Tuning</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

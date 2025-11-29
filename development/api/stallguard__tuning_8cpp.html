@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HF-TMC5160 Driver: stallguard_tuning.cpp File Reference</title>
+<title>HF-TMC51x0 Driver (TMC5130 &amp; TMC5160): stallguard_tuning.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">HF-TMC5160 Driver<span id="projectnumber">&#160;0.1.0-dev</span>
+   <div id="projectname">HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)<span id="projectnumber">&#160;0.1.0-dev</span>
    </div>
-   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC5160</div>
+   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC51x0 (TMC5130 &amp; TMC5160)</div>
   </td>
  </tr>
  </tbody>
@@ -101,7 +101,7 @@ $(function(){initNavTree('stallguard__tuning_8cpp.html',''); initResizable(); })
 </div><!--header-->
 <div class="contents">
 
-<p>Automatic StallGuard2 Tuning Tool.  
+<p>Automatic StallGuard2 Tuning Tool with Safe Current Margin.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="tmc51x0_8hpp_source.html">../../../inc/tmc51x0.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="esp32__tmc51x0__bus_8hpp_source.html">test_config/esp32_tmc51x0_bus.hpp</a>&quot;</code><br />
@@ -126,23 +126,32 @@ Variables</h2></td></tr>
 <tr class="separator:a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f1e89f6e3a0be599511d4a8cc389305" id="r_a3f1e89f6e3a0be599511d4a8cc389305"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f1e89f6e3a0be599511d4a8cc389305">SELECTED_TEST_RIG</a></td></tr>
 <tr class="separator:a3f1e89f6e3a0be599511d4a8cc389305"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9eaf78eca047053635539fdbca07e052" id="r_a9eaf78eca047053635539fdbca07e052"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9eaf78eca047053635539fdbca07e052">TUNING_VELOCITY_STEPS_S</a> = 30000.0f</td></tr>
-<tr class="separator:a9eaf78eca047053635539fdbca07e052"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab090ef55ae75a724d398f0c416dabdf5" id="r_ab090ef55ae75a724d398f0c416dabdf5"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab090ef55ae75a724d398f0c416dabdf5">TUNING_ACCELERATION_STEPS_S2</a> = 3000.0f</td></tr>
-<tr class="separator:ab090ef55ae75a724d398f0c416dabdf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a078d8fc2f12b544d737b7d4803cb2fb6" id="r_a078d8fc2f12b544d737b7d4803cb2fb6"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a078d8fc2f12b544d737b7d4803cb2fb6">TUNING_VELOCITY_RPM</a> = 200.0f</td></tr>
+<tr class="separator:a078d8fc2f12b544d737b7d4803cb2fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa03d0e782bfa562f59b9fa3ea5b9b522" id="r_aa03d0e782bfa562f59b9fa3ea5b9b522"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa03d0e782bfa562f59b9fa3ea5b9b522">TUNING_ACCELERATION_REV_S2</a> = 50.0f</td></tr>
+<tr class="separator:aa03d0e782bfa562f59b9fa3ea5b9b522"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f27f6311af00a818d56bb99e8d315fb" id="r_a6f27f6311af00a818d56bb99e8d315fb"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">tmc51x0::Unit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f27f6311af00a818d56bb99e8d315fb">VELOCITY_UNIT</a> = <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686afe2284eb32d4b09d29fd34217324b19a">tmc51x0::Unit::RPM</a></td></tr>
+<tr class="separator:a6f27f6311af00a818d56bb99e8d315fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a721de94fd658d839797d4b54d72aebd9" id="r_a721de94fd658d839797d4b54d72aebd9"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">tmc51x0::Unit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a721de94fd658d839797d4b54d72aebd9">ACCELERATION_UNIT</a> = <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">tmc51x0::Unit::RevPerSec</a></td></tr>
+<tr class="separator:a721de94fd658d839797d4b54d72aebd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Automatic StallGuard2 Tuning Tool. </p>
-<p>This tool automatically tunes the StallGuard2 Threshold (SGT) for a specific motor and velocity configuration. It implements the tuning algorithm described in the datasheet and research papers:</p>
+<div class="textblock"><p>Automatic StallGuard2 Tuning Tool with Safe Current Margin. </p>
+<p>This tool automatically tunes the StallGuard2 Threshold (SGT) for a specific motor and velocity configuration using the comprehensive AutoTuneStallGuard function. It implements the tuning algorithm following Trinamic application note AN-002 guidelines:</p>
 <ol type="1">
+<li>Saves current motor settings (current, CoolStep, etc.)</li>
+<li>Applies safe current margin for safer tuning and improved sensitivity</li>
+<li>Disables interfering features (CoolStep, filter, stop-on-stall)</li>
 <li>Moves the motor at a constant velocity</li>
-<li>Monitors the SG_RESULT (StallGuard value)</li>
-<li>Adjusts SGT until a stable non-zero SG_RESULT is obtained</li>
+<li>Monitors the SG_RESULT (StallGuard value) across SGT range</li>
+<li>Adjusts SGT until a stable non-zero SG_RESULT in ideal range (100-500) is obtained</li>
+<li>Validates at min/max velocities</li>
+<li>Restores all saved settings (except optimal SGT)</li>
 </ol>
 <p>USAGE:</p><ol type="1">
 <li>Ensure the motor is free to move (no load or minimal load).</li>
 <li>Run this tool.</li>
-<li>The tool will output the found optimal SGT value.</li>
+<li>The tool will output the found optimal SGT value and velocity range analysis.</li>
 <li>Use this SGT value in your application.</li>
 </ol>
 <dl class="section author"><dt>Author</dt><dd>Nebiyu Tadesse </dd></dl>
@@ -171,6 +180,28 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a721de94fd658d839797d4b54d72aebd9" name="a721de94fd658d839797d4b54d72aebd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a721de94fd658d839797d4b54d72aebd9">&#9670;&#160;</a></span>ACCELERATION_UNIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">tmc51x0::Unit</a> ACCELERATION_UNIT = <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">tmc51x0::Unit::RevPerSec</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a3f1e89f6e3a0be599511d4a8cc389305" name="a3f1e89f6e3a0be599511d4a8cc389305"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3f1e89f6e3a0be599511d4a8cc389305">&#9670;&#160;</a></span>SELECTED_TEST_RIG</h2>
 
@@ -191,8 +222,8 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= </div>
-<div class="line">    <a class="code hl_enumvalue" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0a81d3a109e3d88b343cd45c32f41dd824">tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER</a></div>
-<div class="ttc" id="anamespacetmc51x0__test__config_html_abbe03fa70b2e9f4f6cc025761f518df0a81d3a109e3d88b343cd45c32f41dd824"><div class="ttname"><a href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0a81d3a109e3d88b343cd45c32f41dd824">tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER</a></div><div class="ttdeci">@ TEST_RIG_CORE_DRIVER</div><div class="ttdoc">Core driver test rig (17HS4401S motor, TMC51x0 EVAL board, reference switches, encoder)</div></div>
+<div class="line">    <a class="code hl_enumvalue" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0af1a83fc037447a7b142f4aa8220d8d15">tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE</a></div>
+<div class="ttc" id="anamespacetmc51x0__test__config_html_abbe03fa70b2e9f4f6cc025761f518df0af1a83fc037447a7b142f4aa8220d8d15"><div class="ttname"><a href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0af1a83fc037447a7b142f4aa8220d8d15">tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE</a></div><div class="ttdeci">@ TEST_RIG_FATIGUE</div><div class="ttdoc">Fatigue test rig (Applied Motion 5034-369 motor, TMC51x0 EVAL board, reference switches,...</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -218,8 +249,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="ab090ef55ae75a724d398f0c416dabdf5" name="ab090ef55ae75a724d398f0c416dabdf5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab090ef55ae75a724d398f0c416dabdf5">&#9670;&#160;</a></span>TUNING_ACCELERATION_STEPS_S2</h2>
+<a id="aa03d0e782bfa562f59b9fa3ea5b9b522" name="aa03d0e782bfa562f59b9fa3ea5b9b522"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa03d0e782bfa562f59b9fa3ea5b9b522">&#9670;&#160;</a></span>TUNING_ACCELERATION_REV_S2</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -228,7 +259,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr float TUNING_ACCELERATION_STEPS_S2 = 3000.0f</td>
+          <td class="memname">constexpr float TUNING_ACCELERATION_REV_S2 = 50.0f</td>
         </tr>
       </table>
   </td>
@@ -240,8 +271,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a9eaf78eca047053635539fdbca07e052" name="a9eaf78eca047053635539fdbca07e052"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9eaf78eca047053635539fdbca07e052">&#9670;&#160;</a></span>TUNING_VELOCITY_STEPS_S</h2>
+<a id="a078d8fc2f12b544d737b7d4803cb2fb6" name="a078d8fc2f12b544d737b7d4803cb2fb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a078d8fc2f12b544d737b7d4803cb2fb6">&#9670;&#160;</a></span>TUNING_VELOCITY_RPM</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -250,7 +281,29 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr float TUNING_VELOCITY_STEPS_S = 30000.0f</td>
+          <td class="memname">constexpr float TUNING_VELOCITY_RPM = 200.0f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6f27f6311af00a818d56bb99e8d315fb" name="a6f27f6311af00a818d56bb99e8d315fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f27f6311af00a818d56bb99e8d315fb">&#9670;&#160;</a></span>VELOCITY_UNIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">tmc51x0::Unit</a> VELOCITY_UNIT = <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686afe2284eb32d4b09d29fd34217324b19a">tmc51x0::Unit::RPM</a></td>
         </tr>
       </table>
   </td>

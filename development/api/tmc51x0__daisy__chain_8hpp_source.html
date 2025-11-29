@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HF-TMC5160 Driver: tmc51x0_daisy_chain.hpp Source File</title>
+<title>HF-TMC51x0 Driver (TMC5130 &amp; TMC5160): tmc51x0_daisy_chain.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">HF-TMC5160 Driver<span id="projectnumber">&#160;0.1.0-dev</span>
+   <div id="projectname">HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)<span id="projectnumber">&#160;0.1.0-dev</span>
    </div>
-   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC5160</div>
+   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC51x0 (TMC5130 &amp; TMC5160)</div>
   </td>
  </tr>
  </tbody>
@@ -293,9 +293,9 @@ $(function(){initNavTree('tmc51x0__daisy__chain_8hpp_source.html',''); initResiz
 <div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>};</div>
 </div>
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>} <span class="comment">// namespace tmc5160</span></div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>} <span class="comment">// namespace tmc51x0</span></div>
 <div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span> </div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span><span class="preprocessor">#endif </span><span class="comment">// TMC5160_DAISY_CHAIN_HPP</span></div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span><span class="preprocessor">#endif </span><span class="comment">// TMC51X0_DAISY_CHAIN_HPP</span></div>
 <div class="ttc" id="aclasstmc51x0_1_1TMC51x0DaisyChain_html"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0DaisyChain.html">tmc51x0::TMC51x0DaisyChain</a></div><div class="ttdoc">High-level manager for multiple TMC51x0 drivers in a daisy-chain configuration.</div><div class="ttdef"><b>Definition</b> tmc51x0_daisy_chain.hpp:115</div></div>
 <div class="ttc" id="aclasstmc51x0_1_1TMC51x0DaisyChain_html_a02f1798c76bd4e881839ec1b43a3fe96"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0DaisyChain.html#a02f1798c76bd4e881839ec1b43a3fe96">tmc51x0::TMC51x0DaisyChain::drivers_</a></div><div class="ttdeci">std::array&lt; std::optional&lt; TMC51x0&lt; CommType &gt; &gt;, MaxDevices &gt; drivers_</div><div class="ttdoc">TMC51x0 driver instances (optional for dynamic devices)</div><div class="ttdef"><b>Definition</b> tmc51x0_daisy_chain.hpp:349</div></div>
 <div class="ttc" id="aclasstmc51x0_1_1TMC51x0DaisyChain_html_a0d1f8b12c48969b39b6a44df892ee97d"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0DaisyChain.html#a0d1f8b12c48969b39b6a44df892ee97d">tmc51x0::TMC51x0DaisyChain::InitializeAll</a></div><div class="ttdeci">bool InitializeAll(const DriverConfig &amp;config=DriverConfig()) noexcept</div><div class="ttdoc">Initialize all active devices with the same configuration.</div><div class="ttdef"><b>Definition</b> tmc51x0_daisy_chain.hpp:310</div></div>
@@ -307,7 +307,7 @@ $(function(){initNavTree('tmc51x0__daisy__chain_8hpp_source.html',''); initResiz
 <div class="ttc" id="aclasstmc51x0_1_1TMC51x0DaisyChain_html_a732e05be4b39662331d4298bf985531b"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0DaisyChain.html#a732e05be4b39662331d4298bf985531b">tmc51x0::TMC51x0DaisyChain::operator[]</a></div><div class="ttdeci">const TMC51x0&lt; CommType &gt; &amp; operator[](uint8_t index) const noexcept</div><div class="ttdoc">Const access to individual TMC51x0 driver by index.</div><div class="ttdef"><b>Definition</b> tmc51x0_daisy_chain.hpp:301</div></div>
 <div class="ttc" id="aclasstmc51x0_1_1TMC51x0DaisyChain_html_a8c191a67455c31f81eb7b1bb543340cf"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0DaisyChain.html#a8c191a67455c31f81eb7b1bb543340cf">tmc51x0::TMC51x0DaisyChain::TMC51x0DaisyChain</a></div><div class="ttdeci">TMC51x0DaisyChain(CommType &amp;comm, uint8_t num_onboard_devices, uint32_t f_clk=ClockFreq::DEFAULT_F_CLK) noexcept</div><div class="ttdoc">Construct a daisy-chain manager.</div><div class="ttdef"><b>Definition</b> tmc51x0_daisy_chain.hpp:126</div></div>
 <div class="ttc" id="aclasstmc51x0_1_1TMC51x0DaisyChain_html_a8c80373bad4dde5975538bd25731ce41"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0DaisyChain.html#a8c80373bad4dde5975538bd25731ce41">tmc51x0::TMC51x0DaisyChain::f_clk_</a></div><div class="ttdeci">uint32_t f_clk_</div><div class="ttdoc">TMC51x0 clock frequency.</div><div class="ttdef"><b>Definition</b> tmc51x0_daisy_chain.hpp:347</div></div>
-<div class="ttc" id="aclasstmc51x0_1_1TMC51x0DaisyChain_html_a9675f16c4b03aae40f97980bc00568d6"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0DaisyChain.html#a9675f16c4b03aae40f97980bc00568d6">tmc51x0::TMC51x0DaisyChain::operator[]</a></div><div class="ttdeci">TMC51x0&lt; CommType &gt; &amp; operator[](uint8_t index) noexcept</div><div class="ttdoc">Access individual TMC5160 driver by index.</div><div class="ttdef"><b>Definition</b> tmc51x0_daisy_chain.hpp:292</div></div>
+<div class="ttc" id="aclasstmc51x0_1_1TMC51x0DaisyChain_html_a9675f16c4b03aae40f97980bc00568d6"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0DaisyChain.html#a9675f16c4b03aae40f97980bc00568d6">tmc51x0::TMC51x0DaisyChain::operator[]</a></div><div class="ttdeci">TMC51x0&lt; CommType &gt; &amp; operator[](uint8_t index) noexcept</div><div class="ttdoc">Access individual TMC51x0 driver by index.</div><div class="ttdef"><b>Definition</b> tmc51x0_daisy_chain.hpp:292</div></div>
 <div class="ttc" id="aclasstmc51x0_1_1TMC51x0DaisyChain_html_a97395b52232f1ac9681d032a899408cc"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0DaisyChain.html#a97395b52232f1ac9681d032a899408cc">tmc51x0::TMC51x0DaisyChain::comm_</a></div><div class="ttdeci">CommType &amp; comm_</div><div class="ttdoc">Shared SPI communication interface.</div><div class="ttdef"><b>Definition</b> tmc51x0_daisy_chain.hpp:344</div></div>
 <div class="ttc" id="aclasstmc51x0_1_1TMC51x0DaisyChain_html_aa8ffc7dcb60b300066fe83d9aab9b01b"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0DaisyChain.html#aa8ffc7dcb60b300066fe83d9aab9b01b">tmc51x0::TMC51x0DaisyChain::IsDeviceActive</a></div><div class="ttdeci">bool IsDeviceActive(uint8_t index) const noexcept</div><div class="ttdoc">Check if a device slot is active (has a device instance)</div><div class="ttdef"><b>Definition</b> tmc51x0_daisy_chain.hpp:181</div></div>
 <div class="ttc" id="aclasstmc51x0_1_1TMC51x0DaisyChain_html_ac8db22cce0b6a8c0d263ff07868be446"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0DaisyChain.html#ac8db22cce0b6a8c0d263ff07868be446">tmc51x0::TMC51x0DaisyChain::GetNumOnboardDevices</a></div><div class="ttdeci">uint8_t GetNumOnboardDevices() const noexcept</div><div class="ttdoc">Get the number of onboard devices (fixed at construction)</div><div class="ttdef"><b>Definition</b> tmc51x0_daisy_chain.hpp:156</div></div>
@@ -316,7 +316,7 @@ $(function(){initNavTree('tmc51x0__daisy__chain_8hpp_source.html',''); initResiz
 <div class="ttc" id="aclasstmc51x0_1_1TMC51x0_html"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a></div><div class="ttdoc">Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)</div><div class="ttdef"><b>Definition</b> tmc51x0.hpp:98</div></div>
 <div class="ttc" id="anamespacetmc51x0_1_1ClockFreq_html_af020190f0c72ab945f4ac22350e6fa4a"><div class="ttname"><a href="namespacetmc51x0_1_1ClockFreq.html#af020190f0c72ab945f4ac22350e6fa4a">tmc51x0::ClockFreq::DEFAULT_F_CLK</a></div><div class="ttdeci">constexpr uint32_t DEFAULT_F_CLK</div><div class="ttdoc">Typical internal clock frequency in Hz (12 MHz)</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:24</div></div>
 <div class="ttc" id="anamespacetmc51x0_html"><div class="ttname"><a href="namespacetmc51x0.html">tmc51x0</a></div><div class="ttdef"><b>Definition</b> tmc51x0_register_defs.cpp:4</div></div>
-<div class="ttc" id="astructtmc51x0_1_1DriverConfig_html"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2508</div></div>
+<div class="ttc" id="astructtmc51x0_1_1DriverConfig_html"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2510</div></div>
 <div class="ttc" id="atmc51x0_8hpp_html"><div class="ttname"><a href="tmc51x0_8hpp.html">tmc51x0.hpp</a></div><div class="ttdoc">Main TMC51x0 stepper motor driver interface and subsystem classes (TMC5130 &amp; TMC5160)</div></div>
 <div class="ttc" id="atmc51x0__comm__interface_8hpp_html"><div class="ttname"><a href="tmc51x0__comm__interface_8hpp.html">tmc51x0_comm_interface.hpp</a></div><div class="ttdoc">Communication interfaces for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160) using SPI and UART.</div></div>
 </div><!-- fragment --></div><!-- contents -->

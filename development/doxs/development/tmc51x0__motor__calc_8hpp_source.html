@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HF-TMC5160 Driver: tmc51x0_motor_calc.hpp Source File</title>
+<title>HF-TMC51x0 Driver (TMC5130 &amp; TMC5160): tmc51x0_motor_calc.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">HF-TMC5160 Driver<span id="projectnumber">&#160;0.1.0-dev</span>
+   <div id="projectname">HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)<span id="projectnumber">&#160;0.1.0-dev</span>
    </div>
-   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC5160</div>
+   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC51x0 (TMC5130 &amp; TMC5160)</div>
   </td>
  </tr>
  </tbody>
@@ -386,8 +386,8 @@ $(function(){initNavTree('tmc51x0__motor__calc_8hpp_source.html',''); initResiza
 <div class="ttc" id="anamespacetmc51x0_html_a735799ad1db46015a3121adbf1cec9ac"><div class="ttname"><a href="namespacetmc51x0.html#a735799ad1db46015a3121adbf1cec9ac">tmc51x0::CalculateS2VSLevel</a></div><div class="ttdeci">uint8_t CalculateS2VSLevel(uint16_t voltage_mv) noexcept</div><div class="ttdoc">Calculate S2VS_LEVEL register value from voltage threshold.</div><div class="ttdef"><b>Definition</b> tmc51x0_motor_calc.hpp:253</div></div>
 <div class="ttc" id="anamespacetmc51x0_html_ac742f74b3a0ad095b8db62d07300c8c9"><div class="ttname"><a href="namespacetmc51x0.html#ac742f74b3a0ad095b8db62d07300c8c9">tmc51x0::CalculateMotorCurrent</a></div><div class="ttdeci">bool CalculateMotorCurrent(const MotorSpec &amp;motor_spec, uint32_t sense_resistor_mohm, uint32_t supply_voltage_mv, uint16_t run_current_ma, uint16_t hold_current_ma, uint8_t &amp;irun, uint8_t &amp;ihold, uint16_t &amp;global_scaler) noexcept</div><div class="ttdoc">Calculate motor current settings from physical parameters.</div><div class="ttdef"><b>Definition</b> tmc51x0_motor_calc.hpp:55</div></div>
 <div class="ttc" id="anamespacetmc51x0_html_ad149efd95c065a993dbdc5372239927c"><div class="ttname"><a href="namespacetmc51x0.html#ad149efd95c065a993dbdc5372239927c">tmc51x0::CalculateStealthChopLowerLimit</a></div><div class="ttdeci">uint16_t CalculateStealthChopLowerLimit(const MotorSpec &amp;motor_spec, uint32_t supply_voltage_mv, uint8_t tbl, uint8_t pwm_freq, uint32_t f_clk=12000000U) noexcept</div><div class="ttdoc">Calculate StealthChop lower current limit.</div><div class="ttdef"><b>Definition</b> tmc51x0_motor_calc.hpp:179</div></div>
-<div class="ttc" id="astructtmc51x0_1_1MotorSpec_html"><div class="ttname"><a href="structtmc51x0_1_1MotorSpec.html">tmc51x0::MotorSpec</a></div><div class="ttdoc">Motor specification structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:225</div></div>
-<div class="ttc" id="astructtmc51x0_1_1MotorSpec_html_a9e082d5fcee32fc3caf35cc155599cb9"><div class="ttname"><a href="structtmc51x0_1_1MotorSpec.html#a9e082d5fcee32fc3caf35cc155599cb9">tmc51x0::MotorSpec::winding_resistance_mohm</a></div><div class="ttdeci">uint32_t winding_resistance_mohm</div><div class="ttdoc">Winding resistance in milliohms (required for StealthChop lower limit calc)</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:235</div></div>
+<div class="ttc" id="astructtmc51x0_1_1MotorSpec_html"><div class="ttname"><a href="structtmc51x0_1_1MotorSpec.html">tmc51x0::MotorSpec</a></div><div class="ttdoc">Motor specification structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:227</div></div>
+<div class="ttc" id="astructtmc51x0_1_1MotorSpec_html_a9e082d5fcee32fc3caf35cc155599cb9"><div class="ttname"><a href="structtmc51x0_1_1MotorSpec.html#a9e082d5fcee32fc3caf35cc155599cb9">tmc51x0::MotorSpec::winding_resistance_mohm</a></div><div class="ttdeci">uint32_t winding_resistance_mohm</div><div class="ttdoc">Winding resistance in milliohms (required for StealthChop lower limit calc)</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:237</div></div>
 <div class="ttc" id="atmc51x0__types_8hpp_html"><div class="ttname"><a href="tmc51x0__types_8hpp.html">tmc51x0_types.hpp</a></div><div class="ttdoc">Type definitions and enumerations for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

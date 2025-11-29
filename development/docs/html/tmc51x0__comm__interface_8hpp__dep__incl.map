@@ -18,7 +18,7 @@
 <area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="806,113,970,171,968,176,804,119"/>
 <area shape="rect" id="Node000006" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="5,167,237,207"/>
 <area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="678,116,643,121,446,146,250,169,238,171,237,166,249,164,446,140,642,116,678,111"/>
-<area shape="rect" id="Node000007" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool." alt="" coords="261,174,424,199"/>
+<area shape="rect" id="Node000007" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Safe Current Margin." alt="" coords="261,174,424,199"/>
 <area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="692,117,399,177,398,171,690,112"/>
 <area shape="rect" id="Node000008" href="$uart__multi__node__comprehensive__test_8cpp.html" title="Comprehensive UART Multi&#45;Node testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="1132,167,1367,207"/>
 <area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="839,111,1143,164,1142,169,838,116"/>

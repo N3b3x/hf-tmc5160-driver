@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HF-TMC5160 Driver: tmc51x0::Esp32SpiPinConfig Struct Reference</title>
+<title>HF-TMC51x0 Driver (TMC5130 &amp; TMC5160): tmc51x0::Esp32SpiPinConfig Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">HF-TMC5160 Driver<span id="projectnumber">&#160;0.1.0-dev</span>
+   <div id="projectname">HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)<span id="projectnumber">&#160;0.1.0-dev</span>
    </div>
-   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC5160</div>
+   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC51x0 (TMC5130 &amp; TMC5160)</div>
   </td>
  </tr>
  </tbody>
@@ -102,7 +102,7 @@ $(function(){initNavTree('structtmc51x0_1_1Esp32SpiPinConfig.html',''); initResi
 </div><!--header-->
 <div class="contents">
 
-<p>Complete ESP32 SPI bus and TMC5160 pin configuration structure.  
+<p>Complete ESP32 SPI bus and <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> pin configuration structure.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="tmc51x0__comm__interface_8hpp_source.html">tmc51x0_comm_interface.hpp</a>&gt;</code></p>
@@ -118,7 +118,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a3c56b6668d8de648137c09037b59d3b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor - all pins unmapped (-1)  <br /></td></tr>
 <tr class="separator:a3c56b6668d8de648137c09037b59d3b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff1dba03526ccf0e81e14bc1020bf868" id="r_aff1dba03526ccf0e81e14bc1020bf868"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff1dba03526ccf0e81e14bc1020bf868">Esp32SpiPinConfig</a> (int mosi, int miso, int sclk, int cs, int en, int dir=-1, int step=-1) noexcept</td></tr>
-<tr class="memdesc:aff1dba03526ccf0e81e14bc1020bf868"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with SPI pins and basic TMC5160 pins.  <br /></td></tr>
+<tr class="memdesc:aff1dba03526ccf0e81e14bc1020bf868"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with SPI pins and basic <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> pins.  <br /></td></tr>
 <tr class="separator:aff1dba03526ccf0e81e14bc1020bf868"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa24a2543e446ecc892f5f708bbd9a892" id="r_aa24a2543e446ecc892f5f708bbd9a892"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa24a2543e446ecc892f5f708bbd9a892">Esp32SpiPinConfig</a> (int mosi, int miso, int sclk, int cs, const <a class="el" href="structtmc51x0_1_1TMC51x0PinConfig.html">TMC51x0PinConfig</a> &amp;tmc_pins) noexcept</td></tr>
 <tr class="memdesc:aa24a2543e446ecc892f5f708bbd9a892"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with SPI pins and full TMC5160 pin config.  <br /></td></tr>
@@ -143,12 +143,12 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a5220a148db020ccbda84dff2d9eb9e9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Complete ESP32 SPI bus and TMC5160 pin configuration structure. </p>
-<p>This structure extends <a class="el" href="structtmc51x0_1_1TMC51x0PinConfig.html" title="TMC5160 GPIO pin configuration structure.">TMC51x0PinConfig</a> to include SPI bus pins, providing a single configuration structure for all GPIO pins used by the ESP32 SPI communication interface.</p>
+<div class="textblock"><p>Complete ESP32 SPI bus and <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> pin configuration structure. </p>
+<p>This structure extends <a class="el" href="structtmc51x0_1_1TMC51x0PinConfig.html" title="TMC51x0 GPIO pin configuration structure.">TMC51x0PinConfig</a> to include SPI bus pins, providing a single configuration structure for all GPIO pins used by the ESP32 SPI communication interface.</p>
 <p>This allows users to define all pin assignments in one place, making it easier to manage and configure the hardware setup.</p>
 <dl class="section note"><dt>Note</dt><dd>SPI pins are required for SPI communication. </dd>
 <dd>
-TMC5160 control pins are optional and depend on the operating mode. </dd></dl>
+<a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> control pins are optional and depend on the operating mode. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3c56b6668d8de648137c09037b59d3b3" name="a3c56b6668d8de648137c09037b59d3b3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c56b6668d8de648137c09037b59d3b3">&#9670;&#160;</a></span>Esp32SpiPinConfig() <span class="overload">[1/3]</span></h2>
@@ -229,7 +229,7 @@ TMC5160 control pins are optional and depend on the operating mode. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Constructor with SPI pins and basic TMC5160 pins. </p>
+<p>Constructor with SPI pins and basic <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> pins. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mosi</td><td>SPI MOSI pin </td></tr>

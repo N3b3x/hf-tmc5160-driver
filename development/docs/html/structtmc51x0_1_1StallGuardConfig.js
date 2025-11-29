@@ -1,7 +1,7 @@
 var structtmc51x0_1_1StallGuardConfig =
 [
     [ "StallGuardConfig", "structtmc51x0_1_1StallGuardConfig.html#a10500c8e5aef6b13c70296567ada83c0", null ],
-    [ "StallGuardConfig", "structtmc51x0_1_1StallGuardConfig.html#a345be6743f29870b4e8bcfa05aeee83f", null ],
+    [ "StallGuardConfig", "structtmc51x0_1_1StallGuardConfig.html#ae09e7a1c6feb7969b250c20c259939ab", null ],
     [ "StallGuardConfig", "structtmc51x0_1_1StallGuardConfig.html#a13110fe410be3518a891e75d80966878", null ],
     [ "enable_filter", "structtmc51x0_1_1StallGuardConfig.html#a93b77b130485f8c436052a0ccd1175de", null ],
     [ "max_velocity", "structtmc51x0_1_1StallGuardConfig.html#adfd04dc88691b6f5e1577d1f97e8165a", null ],

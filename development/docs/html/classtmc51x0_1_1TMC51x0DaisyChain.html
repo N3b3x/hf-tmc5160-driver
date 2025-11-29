@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HF-TMC5160 Driver: tmc51x0::TMC51x0DaisyChain&lt; CommType, MaxDevices &gt; Class Template Reference</title>
+<title>HF-TMC51x0 Driver (TMC5130 &amp; TMC5160): tmc51x0::TMC51x0DaisyChain&lt; CommType, MaxDevices &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">HF-TMC5160 Driver<span id="projectnumber">&#160;0.1.0-dev</span>
+   <div id="projectname">HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)<span id="projectnumber">&#160;0.1.0-dev</span>
    </div>
-   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC5160</div>
+   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC51x0 (TMC5130 &amp; TMC5160)</div>
   </td>
  </tr>
  </tbody>
@@ -132,7 +132,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ae66deb48f07196d7d1c2edbbf2a02f37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove an extra device at the specified position.  <br /></td></tr>
 <tr class="separator:ae66deb48f07196d7d1c2edbbf2a02f37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9675f16c4b03aae40f97980bc00568d6" id="r_a9675f16c4b03aae40f97980bc00568d6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9675f16c4b03aae40f97980bc00568d6">operator[]</a> (uint8_t index) noexcept</td></tr>
-<tr class="memdesc:a9675f16c4b03aae40f97980bc00568d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access individual TMC5160 driver by index.  <br /></td></tr>
+<tr class="memdesc:a9675f16c4b03aae40f97980bc00568d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access individual <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> driver by index.  <br /></td></tr>
 <tr class="separator:a9675f16c4b03aae40f97980bc00568d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a732e05be4b39662331d4298bf985531b" id="r_a732e05be4b39662331d4298bf985531b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a732e05be4b39662331d4298bf985531b">operator[]</a> (uint8_t index) const noexcept</td></tr>
 <tr class="memdesc:a732e05be4b39662331d4298bf985531b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Const access to individual <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> driver by index.  <br /></td></tr>
@@ -241,7 +241,7 @@ Usage Example</h2>
 <div class="line"><span class="comment">// Remove extra device when done</span></div>
 <div class="line">chain.RemoveDevice(3);</div>
 <div class="ttc" id="aclasstmc51x0_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:1459</div></div>
-<div class="ttc" id="astructtmc51x0_1_1DriverConfig_html"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2508</div></div>
+<div class="ttc" id="astructtmc51x0_1_1DriverConfig_html"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2510</div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">CommType</td><td>The communication interface type (must be SpiCommInterface&lt;CommType&gt;) </td></tr>
@@ -577,14 +577,14 @@ template&lt;typename CommType , size_t MaxDevices = 8&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Access individual TMC5160 driver by index. </p>
+<p>Access individual <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> driver by index. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">index</td><td>Device index (0 = first device, 1 = second, etc.) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Reference to TMC5160 driver instance</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> driver instance</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Index must be in range [0, num_active_devices-1] and device must be active. No bounds checking is performed for performance reasons. Use <a class="el" href="#aa8ffc7dcb60b300066fe83d9aab9b01b" title="Check if a device slot is active (has a device instance)">IsDeviceActive()</a> to verify device exists before access. </dd></dl>
 
 </div>

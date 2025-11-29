@@ -9,5 +9,6 @@ var searchData=
   ['applyboardconfig_6',['ApplyBoardConfig',['../namespacetmc51x0__test__config.html#ab181530d17380b1f284e0c6b9223f7ea',1,'tmc51x0_test_config']]],
   ['applypinconfig_7',['ApplyPinConfig',['../classEsp32SPI.html#a9a80686bdcd3cc21f7756bf64d81e124',1,'Esp32SPI']]],
   ['applyplatformconfig_8',['ApplyPlatformConfig',['../namespacetmc51x0__test__config.html#a90b2bc1714b42e67ff0125a86807d8cb',1,'tmc51x0_test_config']]],
-  ['autodetectchainlength_9',['AutoDetectChainLength',['../classtmc51x0_1_1SpiCommInterface.html#a919ad17ed88687fa30ac45f60f405a4b',1,'tmc51x0::SpiCommInterface']]]
+  ['autodetectchainlength_9',['AutoDetectChainLength',['../classtmc51x0_1_1SpiCommInterface.html#a919ad17ed88687fa30ac45f60f405a4b',1,'tmc51x0::SpiCommInterface']]],
+  ['autotunestallguard_10',['AutoTuneStallGuard',['../structtmc51x0_1_1TMC51x0_1_1Tuning.html#a95f7660b2b19e503e949086b8b491169',1,'tmc51x0::TMC51x0::Tuning']]]
 ];

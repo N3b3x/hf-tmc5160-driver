@@ -1,7 +1,5 @@
 <map id="constrain" name="constrain">
-<area shape="rect" id="Node000001" title=" " alt="" coords="295,45,377,70"/>
-<area shape="rect" id="Node000002" href="$structtmc51x0_1_1TMC51x0_1_1MotorControl.html#abff02e065c119a906a2d59e7cffa4b4d" title="Configure chopper settings." alt="" coords="5,5,247,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="280,52,247,46,247,41,281,46"/>
-<area shape="rect" id="Node000003" href="$structtmc51x0_1_1TMC51x0_1_1Diagnostics.html#a41cae72d2181fa95bf28c828543d7024" title="Check if open load is detected on phase B." alt="" coords="15,69,237,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="281,68,238,75,237,70,280,63"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="276,13,359,38"/>
+<area shape="rect" id="Node000002" href="$structtmc51x0_1_1TMC51x0_1_1Diagnostics.html#ab2e88b2e2999dc0a4874f89d9d2e43d2" title="Get TCOOLTHRS register value (from local storage)" alt="" coords="5,5,228,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="262,28,228,28,228,23,262,23"/>
 </map>

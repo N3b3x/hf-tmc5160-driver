@@ -14,7 +14,7 @@
 <area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="757,184,595,235,593,230,755,179"/>
 <area shape="rect" id="Node000007" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="689,225,921,265"/>
 <area shape="poly" id="edge7_Node000004_Node000007" title=" " alt="" coords="807,191,807,225,802,225,802,191"/>
-<area shape="rect" id="Node000008" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool." alt="" coords="945,233,1107,258"/>
+<area shape="rect" id="Node000008" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Safe Current Margin." alt="" coords="945,233,1107,258"/>
 <area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="851,179,995,230,993,235,849,184"/>
 <area shape="rect" id="Node000009" href="$tmc51x0__daisy__chain_8hpp.html" title="High&#45;level daisy&#45;chain manager for multiple TMC51x0 drivers (TMC5130 &amp; TMC5160)" alt="" coords="1132,233,1323,258"/>
 <area shape="poly" id="edge10_Node000004_Node000009" title=" " alt="" coords="872,176,1166,230,1165,235,871,181"/>

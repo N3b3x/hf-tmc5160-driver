@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HF-TMC5160 Driver: tmc51x0::TMC51x0&lt; CommType &gt;::MotorControl Struct Reference</title>
+<title>HF-TMC51x0 Driver (TMC5130 &amp; TMC5160): tmc51x0::TMC51x0&lt; CommType &gt;::MotorControl Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">HF-TMC5160 Driver<span id="projectnumber">&#160;0.1.0-dev</span>
+   <div id="projectname">HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)<span id="projectnumber">&#160;0.1.0-dev</span>
    </div>
-   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC5160</div>
+   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC51x0 (TMC5130 &amp; TMC5160)</div>
   </td>
  </tr>
  </tbody>
@@ -138,18 +138,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af6754294670e0e085fe1dfded4f003c5" id="r_af6754294670e0e085fe1dfded4f003c5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6754294670e0e085fe1dfded4f003c5">ConfigureMotorCurrent</a> (const <a class="el" href="structtmc51x0_1_1MotorSpec.html">MotorSpec</a> &amp;motor_spec) noexcept</td></tr>
 <tr class="memdesc:af6754294670e0e085fe1dfded4f003c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure motor current from motor specifications.  <br /></td></tr>
 <tr class="separator:af6754294670e0e085fe1dfded4f003c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a8f5d40c92472a36b936a1f0c6aed97" id="r_a8a8f5d40c92472a36b936a1f0c6aed97"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a8f5d40c92472a36b936a1f0c6aed97">SetModeChangeSpeeds</a> (float pwm_thrs, float cool_thrs, float high_thrs) noexcept</td></tr>
-<tr class="memdesc:a8a8f5d40c92472a36b936a1f0c6aed97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set mode change speeds.  <br /></td></tr>
-<tr class="separator:a8a8f5d40c92472a36b936a1f0c6aed97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a677c13188846fcd019d206b5cc16b4ed" id="r_a677c13188846fcd019d206b5cc16b4ed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a677c13188846fcd019d206b5cc16b4ed">SetCoolStepThreshold</a> (float value, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
-<tr class="memdesc:a677c13188846fcd019d206b5cc16b4ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set CoolStep velocity threshold (TCOOLTHRS)  <br /></td></tr>
-<tr class="separator:a677c13188846fcd019d206b5cc16b4ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a638c3a64a86134d8c68a6fb906c64cb0" id="r_a638c3a64a86134d8c68a6fb906c64cb0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a638c3a64a86134d8c68a6fb906c64cb0">SetHighSpeedThreshold</a> (float value, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
-<tr class="memdesc:a638c3a64a86134d8c68a6fb906c64cb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set High-Speed velocity threshold (THIGH)  <br /></td></tr>
-<tr class="separator:a638c3a64a86134d8c68a6fb906c64cb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae28d7fd33c5ca13ccda03157250518c6" id="r_ae28d7fd33c5ca13ccda03157250518c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae28d7fd33c5ca13ccda03157250518c6">SetStealthChopVelocityThreshold</a> (float value, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
-<tr class="memdesc:ae28d7fd33c5ca13ccda03157250518c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set StealthChop velocity threshold (TPWMTHRS)  <br /></td></tr>
-<tr class="separator:ae28d7fd33c5ca13ccda03157250518c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96517ec783303925b2b1b53e30d658c8" id="r_a96517ec783303925b2b1b53e30d658c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96517ec783303925b2b1b53e30d658c8">SetModeChangeSpeeds</a> (float pwm_thrs, float cool_thrs, float high_thrs, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>) noexcept</td></tr>
+<tr class="memdesc:a96517ec783303925b2b1b53e30d658c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set mode change speeds.  <br /></td></tr>
+<tr class="separator:a96517ec783303925b2b1b53e30d658c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46cc0d151419bab1722642f565d06442" id="r_a46cc0d151419bab1722642f565d06442"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a46cc0d151419bab1722642f565d06442">SetCoolStepThreshold</a> (float value, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>) noexcept</td></tr>
+<tr class="memdesc:a46cc0d151419bab1722642f565d06442"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set CoolStep velocity threshold (TCOOLTHRS)  <br /></td></tr>
+<tr class="separator:a46cc0d151419bab1722642f565d06442"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aef8c3773928c22fc36dd73cecb7fd7" id="r_a3aef8c3773928c22fc36dd73cecb7fd7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3aef8c3773928c22fc36dd73cecb7fd7">SetHighSpeedThreshold</a> (float value, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>) noexcept</td></tr>
+<tr class="memdesc:a3aef8c3773928c22fc36dd73cecb7fd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set High-Speed velocity threshold (THIGH)  <br /></td></tr>
+<tr class="separator:a3aef8c3773928c22fc36dd73cecb7fd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7349914b6c917e20714c28db0cdd3019" id="r_a7349914b6c917e20714c28db0cdd3019"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7349914b6c917e20714c28db0cdd3019">SetStealthChopVelocityThreshold</a> (float value, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>) noexcept</td></tr>
+<tr class="memdesc:a7349914b6c917e20714c28db0cdd3019"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set StealthChop velocity threshold (TPWMTHRS)  <br /></td></tr>
+<tr class="separator:a7349914b6c917e20714c28db0cdd3019"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa64212819908910ff61a6ed7e5a0de05" id="r_aa64212819908910ff61a6ed7e5a0de05"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa64212819908910ff61a6ed7e5a0de05">SetGlobalScaler</a> (uint16_t scaler) noexcept</td></tr>
 <tr class="memdesc:aa64212819908910ff61a6ed7e5a0de05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set global current scaler.  <br /></td></tr>
 <tr class="separator:aa64212819908910ff61a6ed7e5a0de05"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,11 +291,6 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc51x0_1_1TMC51x0_1_1MotorControl_abff02e065c119a906a2d59e7cffa4b4d_cgraph.svg" width="383" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -441,6 +436,11 @@ template&lt;typename CommType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if configured successfully, false otherwise</dd></dl>
 <p>Automatically calculates and sets IRUN, IHOLD, and GLOBAL_SCALER from motor specifications. Also sets IHOLDDELAY if configured in motor_spec. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc51x0_1_1TMC51x0_1_1MotorControl_af6754294670e0e085fe1dfded4f003c5_cgraph.svg" width="535" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -866,8 +866,8 @@ Values are automatically constrained to valid 9-bit signed range (-256 to +255).
 
 </div>
 </div>
-<a id="a677c13188846fcd019d206b5cc16b4ed" name="a677c13188846fcd019d206b5cc16b4ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a677c13188846fcd019d206b5cc16b4ed">&#9670;&#160;</a></span>SetCoolStepThreshold()</h2>
+<a id="a46cc0d151419bab1722642f565d06442" name="a46cc0d151419bab1722642f565d06442"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46cc0d151419bab1722642f565d06442">&#9670;&#160;</a></span>SetCoolStepThreshold()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -885,7 +885,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1059,8 +1059,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="a638c3a64a86134d8c68a6fb906c64cb0" name="a638c3a64a86134d8c68a6fb906c64cb0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a638c3a64a86134d8c68a6fb906c64cb0">&#9670;&#160;</a></span>SetHighSpeedThreshold()</h2>
+<a id="a3aef8c3773928c22fc36dd73cecb7fd7" name="a3aef8c3773928c22fc36dd73cecb7fd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3aef8c3773928c22fc36dd73cecb7fd7">&#9670;&#160;</a></span>SetHighSpeedThreshold()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1078,7 +1078,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1294,8 +1294,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="a8a8f5d40c92472a36b936a1f0c6aed97" name="a8a8f5d40c92472a36b936a1f0c6aed97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a8f5d40c92472a36b936a1f0c6aed97">&#9670;&#160;</a></span>SetModeChangeSpeeds()</h2>
+<a id="a96517ec783303925b2b1b53e30d658c8" name="a96517ec783303925b2b1b53e30d658c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96517ec783303925b2b1b53e30d658c8">&#9670;&#160;</a></span>SetModeChangeSpeeds()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1318,7 +1318,12 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>high_thrs</em></span>&#160;)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>high_thrs</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1331,9 +1336,10 @@ template&lt;typename CommType &gt; </div>
 <p>Set mode change speeds. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pwm_thrs</td><td>Speed threshold for stealthChop (steps/s) </td></tr>
-    <tr><td class="paramname">cool_thrs</td><td>Speed threshold for coolStep (steps/s) </td></tr>
-    <tr><td class="paramname">high_thrs</td><td>Speed threshold for high-speed mode (steps/s) </td></tr>
+    <tr><td class="paramname">pwm_thrs</td><td>Speed threshold for stealthChop </td></tr>
+    <tr><td class="paramname">cool_thrs</td><td>Speed threshold for coolStep </td></tr>
+    <tr><td class="paramname">high_thrs</td><td>Speed threshold for high-speed mode </td></tr>
+    <tr><td class="paramname">unit</td><td>Unit of the speed values (default: RevPerSec) </td></tr>
   </table>
   </dd>
 </dl>
@@ -1377,8 +1383,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="ae28d7fd33c5ca13ccda03157250518c6" name="ae28d7fd33c5ca13ccda03157250518c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae28d7fd33c5ca13ccda03157250518c6">&#9670;&#160;</a></span>SetStealthChopVelocityThreshold()</h2>
+<a id="a7349914b6c917e20714c28db0cdd3019" name="a7349914b6c917e20714c28db0cdd3019"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7349914b6c917e20714c28db0cdd3019">&#9670;&#160;</a></span>SetStealthChopVelocityThreshold()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1396,7 +1402,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1417,7 +1423,7 @@ template&lt;typename CommType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise</dd></dl>
 <p>Sets the velocity threshold for switching between StealthChop and SpreadCycle modes. Below this threshold, StealthChop is used (quiet operation). Above this threshold, SpreadCycle is used (higher torque, more noise).</p>
 <p>Setting to 0.0 disables the threshold (StealthChop always used if enabled).</p>
-<dl class="section note"><dt>Note</dt><dd>This is automatically configured during <a class="el" href="classtmc51x0_1_1TMC51x0.html#a8933c4a4a8e5ea0212ba900160efe42f" title="Initialize the TMC5160 driver with configuration.">Initialize()</a> if velocity_threshold is set in <a class="el" href="structtmc51x0_1_1StealthChopConfig.html" title="StealthChop configuration structure.">StealthChopConfig</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This is automatically configured during <a class="el" href="classtmc51x0_1_1TMC51x0.html#a8933c4a4a8e5ea0212ba900160efe42f" title="Initialize the TMC51x0 driver with configuration.">Initialize()</a> if velocity_threshold is set in <a class="el" href="structtmc51x0_1_1StealthChopConfig.html" title="StealthChop configuration structure.">StealthChopConfig</a>. </dd></dl>
 
 </div>
 </div>

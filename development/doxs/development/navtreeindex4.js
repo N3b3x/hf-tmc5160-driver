@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"namespacetmc51x0.html#aaa19c98f87ff911ca28183768e39f607a5137485eff3ff278d233d993c8539599":[12,0,0,88,2],
 "namespacetmc51x0.html#aaa19c98f87ff911ca28183768e39f607ad3f84081b6b3a6c3f66b20414b6a7238":[12,0,0,88,4],
 "namespacetmc51x0.html#aaa19c98f87ff911ca28183768e39f607adca6e617f6fb54033deb311e7e7c93cc":[12,0,0,88,3],
 "namespacetmc51x0.html#ab0c004bd8dcf257419def5c59d0081d0":[12,0,0,106],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#a5c0670db4724231836773e7a08522040":[12,0,1,7,0,2],
 "namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#a68d4041614dd034d568417b49b2b12e8":[12,0,1,7,0,7],
 "namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#a72c9625d0dbd5aa4d0ca787f266c8255":[12,0,1,7,0,6],
-"namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#a8aedb78ebe4b48e0ebc09104f9c714dc":[12,0,1,7,0,0],
-"namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#aba3ccf2fa494eb1881e39f021a08f277":[12,0,1,7,0,3]
+"namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#a8aedb78ebe4b48e0ebc09104f9c714dc":[12,0,1,7,0,0]
 };

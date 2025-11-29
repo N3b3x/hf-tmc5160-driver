@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['tmc5160_20driver_0',['HF-TMC5160 Driver',['../index.html',1,'']]]
+  ['tmc5130_20tmc5160_0',['HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)',['../index.html',1,'']]],
+  ['tmc5160_1',['HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)',['../index.html',1,'']]],
+  ['tmc51x0_20driver_20tmc5130_20tmc5160_2',['HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)',['../index.html',1,'']]]
 ];

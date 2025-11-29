@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structtmc51x0_1_1TMC51x0PinConfig.html" target="_top" xlink:title="TMC5160 GPIO pin configuration structure.">
+<g id="a_Node000000"><a xlink:href="structtmc51x0_1_1TMC51x0PinConfig.html" target="_top" xlink:title="TMC51x0 GPIO pin configuration structure.">
 <polygon fill="white" stroke="#666666" points="157,-19 0,-19 0,0 157,0 157,-19"/>
 <text text-anchor="middle" x="78.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::TMC51x0PinConfig</text>
 </a>

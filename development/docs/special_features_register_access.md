@@ -1,10 +1,10 @@
-# TMC5160 Register Access and Configuration Guide
+# TMC51x0 Register Access and Configuration Guide
 
-This guide provides a comprehensive overview of the TMC5160 registers, their access permissions, and recommended configuration strategies. It is based on the verified driver implementation and the TMC5160 datasheet.
+This guide provides a comprehensive overview of the TMC51x0 (TMC5130 & TMC5160) registers, their access permissions, and recommended configuration strategies. It is based on the verified driver implementation and the TMC51x0 datasheet.
 
 ## 1. Register Map and Access Types
 
-The TMC5160 registers are divided into functional groups. Each register has specific access permissions:
+The TMC51x0 registers are divided into functional groups. Each register has specific access permissions:
 - **RW**: Read and Write
 - **R**: Read-Only
 - **W**: Write-Only
@@ -48,7 +48,7 @@ The TMC5160 registers are divided into functional groups. Each register has spec
 
 **Usage Recommendations:**
 - **`IHOLD_IRUN`**: Use `driver.motorControl.SetCurrent(irun, ihold)`. Typical `irun=16-31`, `ihold=0-16`.
-- **Thresholds**: Use `driver.motorControl.SetModeChangeSpeeds()` to set `TPWMTHRS`, `TCOOLTHRS`, and `THIGH` in steps/s.
+- **Thresholds**: Use `driver.motorControl.SetModeChangeSpeeds()` to set `TPWMTHRS`, `TCOOLTHRS`, and `THIGH` (default unit: revolutions per second).
     - `TPWMTHRS`: Set typical cruising speed limit for silent operation.
     - `TCOOLTHRS`: Set above startup speed to enable StallGuard only when moving stably.
 
@@ -140,7 +140,7 @@ if (!driver.diagnostics.VerifySetup()) {
 
 ### 2.2 Silent Operation (StealthChop)
 1. Set `GCONF.en_pwm_mode = 1`.
-2. Set `TPWMTHRS` to a high value (e.g. 5000 steps/s).
+2. Set `TPWMTHRS` to a high value (e.g. 0.1 rev/s ~6 RPM, using `SetStealthChopVelocityThreshold()`).
 3. **Crucial**: Allow motor to stand still for >130ms after enabling to allow `PWM_OFS_AUTO` calibration.
 4. Monitor `PWM_SCALE` to confirm regulation is active.
 

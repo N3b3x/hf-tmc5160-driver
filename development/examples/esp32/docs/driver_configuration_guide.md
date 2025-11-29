@@ -2,7 +2,7 @@
 
 ## Overview
 
-The TMC5160 driver library uses a **compile-time configuration** approach with three distinct configuration layers:
+The TMC51x0 driver (TMC5130 & TMC5160) library uses a **compile-time configuration** approach with three distinct configuration layers:
 1. **BoardConfig**: Board-specific hardware parameters (same board = same config)
 2. **MotorConfig**: Motor-specific parameters (same motor = same config)
 3. **PlatformConfig**: Platform/application-specific parameters (reference switches, encoder, mechanical system)
@@ -13,7 +13,7 @@ All configurations are defined in `esp32_tmc5160_test_config.hpp` and automatica
 
 ### 1. BoardConfig (Board-Specific Hardware)
 
-**Board-specific**: These parameters depend on the TMC5160 driver board hardware and stay the same regardless of which motor is connected or what platform it's used on.
+**Board-specific**: These parameters depend on the TMC51x0 driver (TMC5130 & TMC5160) board hardware and stay the same regardless of which motor is connected or what platform it's used on.
 
 - Sense resistor value (e.g., 50 mOhm for 0.05Ω)
 - Supply voltage (e.g., 24000 mV for 24V)
@@ -97,7 +97,7 @@ static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM =
     tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
 
 // 1. Configure motor
-tmc5160::DriverConfig cfg{};
+tmc51x0::DriverConfig cfg{};
 
 if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
     tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
@@ -204,7 +204,7 @@ driver.encoder.SetResolution(
    ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
    ApplyBoardConfig<SELECTED_BOARD>(cfg);
    ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
-   cfg.chopper.mres = tmc5160::MicrostepResolution::MRES_16;  // Override microstep resolution
+   cfg.chopper.mres = tmc51x0::MicrostepResolution::MRES_16;  // Override microstep resolution
    ```
 
 7. **Adding New Boards/Platforms**: To add a new board or platform:

@@ -17,7 +17,7 @@ This test suite is ideal for:
 
 **MULTI-MOTOR HARDWARE REQUIRED**
 
-This test suite requires **multiple TMC5160 drivers** connected in a SPI daisy chain. **DO NOT run these tests on a single-motor setup.**
+This test suite requires **multiple TMC51x0 driver (TMC5130 & TMC5160)s** connected in a SPI daisy chain. **DO NOT run these tests on a single-motor setup.**
 
 ## Test Categories
 
@@ -195,16 +195,16 @@ Esp32SPI spi(SPI_HOST, pin_config, clock_speed);
 spi.SetDaisyChainLength(2); // 2 devices in chain
 
 // Create driver instances for each position
-auto driver0 = std::make_unique<TMC5160<Esp32SPI>>(spi, clock_speed, 0); // Position 0
-auto driver1 = std::make_unique<TMC5160<Esp32SPI>>(spi, clock_speed, 1); // Position 1
+auto driver0 = std::make_unique<TMC51x0<Esp32SPI>>(spi, clock_speed, 0); // Position 0
+auto driver1 = std::make_unique<TMC51x0<Esp32SPI>>(spi, clock_speed, 1); // Position 1
 ```
 
-### Using TMC5160DaisyChain Helper
+### Using TMC51x0DaisyChain Helper
 
-The library provides `TMC5160DaisyChain` helper class:
+The library provides `TMC51x0DaisyChain` helper class:
 
 ```cpp
-TMC5160DaisyChain<Esp32SPI> chain(spi, clock_speed, chain_length);
+TMC51x0DaisyChain<Esp32SPI> chain(spi, clock_speed, chain_length);
 
 // Access drivers by position
 chain.GetDriver(0)->rampControl.SetTargetPosition(1000);

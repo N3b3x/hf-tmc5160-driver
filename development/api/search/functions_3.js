@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['dcstepconfig_0',['DcStepConfig',['../structtmc51x0_1_1DcStepConfig.html#a8652e0061b18724a5b6b2f271cffd5d2',1,'tmc51x0::DcStepConfig::DcStepConfig()=default'],['../structtmc51x0_1_1DcStepConfig.html#ab517d2ba824643d4ec55dd7e9159d8e7',1,'tmc51x0::DcStepConfig::DcStepConfig(float min_vel, Unit vel_unit=Unit::Steps, float pwm_time_us=0.0F, DcStepStallSensitivity sensitivity=DcStepStallSensitivity::MODERATE)']]],
+  ['dcstepconfig_0',['DcStepConfig',['../structtmc51x0_1_1DcStepConfig.html#a8652e0061b18724a5b6b2f271cffd5d2',1,'tmc51x0::DcStepConfig::DcStepConfig()=default'],['../structtmc51x0_1_1DcStepConfig.html#aa18d6237df4f46dd3536290c84288d66',1,'tmc51x0::DcStepConfig::DcStepConfig(float min_vel, Unit vel_unit=Unit::RevPerSec, float pwm_time_us=0.0F, DcStepStallSensitivity sensitivity=DcStepStallSensitivity::MODERATE)']]],
   ['debuglog_1',['DebugLog',['../classtmc51x0_1_1CommInterface.html#a355930e895c58e954cefb5ebc073d8cd',1,'tmc51x0::CommInterface::DebugLog()'],['../classEsp32SPI.html#a10a000397aaf658a2ca2c907b96a2cea',1,'Esp32SPI::DebugLog()']]],
   ['degreestosteps_2',['DegreesToSteps',['../namespacetmc51x0.html#aeb46c0090617c6181b568bdaf4415ae3',1,'tmc51x0']]],
   ['deinitialize_3',['Deinitialize',['../classEsp32SPI.html#adfd033d198f8b5393443939b523a08d5',1,'Esp32SPI']]],

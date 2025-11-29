@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "HF-TMC5160 Driver", "index.html", [
+  [ "HF-TMC51x0 Driver (TMC5130 & TMC5160)", "index.html", [
     [ "📚 Table of Contents", "index.html#autotoc_md27", null ],
     [ "📦 Overview", "index.html#autotoc_md28", [
       [ "Architecture & Design", "index.html#autotoc_md29", null ],
@@ -127,14 +127,14 @@ var NAVTREEINDEX =
 "classtmc51x0_1_1SpiCommInterface.html#a9f40aef4e53519c6e73fa58a3ff15cef",
 "esp32__tmc51x0__test__config_8hpp.html#a9c295753349facf95386a659871c8059",
 "internal__ramp__comprehensive__test_8cpp.html#a3f1e89f6e3a0be599511d4a8cc389305",
-"namespacetmc51x0.html#aaa19c98f87ff911ca28183768e39f607ad3f84081b6b3a6c3f66b20414b6a7238",
-"namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#ae14a4105feee32e5a1cc248f9beb47e0",
-"structtmc51x0_1_1EncoderConfig.html#a8ac85b3a91f867fd10bcc84b78f137a7",
-"structtmc51x0_1_1ReferenceSwitchConfig.html#aa7bc962e13ef81e3b1de5e0dcac5efd6",
-"structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a16f021533385f752741f613082b7b27c",
-"tmc51x0__types_8hpp.html#a0279a9b8b855afe30f3d2f8fb8297d21ab5df3d530fe63d11b4f120792e5cbe83",
-"uniontmc51x0_1_1DRV__CONF__Register.html#a03201aa9132422c8cd8a502e19fe82c4",
-"uniontmc51x0_1_1OTP__PROG__Register.html#a3d4fc5720abdd3b3813f1abfc14fa74d"
+"namespacetmc51x0.html#aaa19c98f87ff911ca28183768e39f607a5137485eff3ff278d233d993c8539599",
+"namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#aba3ccf2fa494eb1881e39f021a08f277",
+"structtmc51x0_1_1EncoderConfig.html#a78cf54995158a3964b8ec45d6a969355",
+"structtmc51x0_1_1ReferenceSwitchConfig.html#a7e72e9e0367fc6812d2b20dbdcf9c925",
+"structtmc51x0_1_1TMC51x0_1_1Homing.html#acdf2f21f2e467e482be3a33f109390d7",
+"tmc51x0__registers_8hpp_source.html",
+"uniontmc51x0_1_1DCCTRL__Register.html#abf417a03bb97538ad8c1aedf93d79936",
+"uniontmc51x0_1_1OFFSET__READ__Register.html#aa82c19106d4d89d843e745254a229e14"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

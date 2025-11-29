@@ -17,7 +17,7 @@ This test suite is ideal for:
 
 **MULTI-MOTOR HARDWARE REQUIRED**
 
-This test suite requires **multiple TMC5160 drivers** connected in a UART network. **DO NOT run these tests on a single-motor setup.**
+This test suite requires **multiple TMC51x0 driver (TMC5130 & TMC5160)s** connected in a UART network. **DO NOT run these tests on a single-motor setup.**
 
 ## Test Categories
 
@@ -206,7 +206,7 @@ For initial configuration, use sequential programming:
 Esp32UART uart(UART_NUM_1, tx_pin, rx_pin, baud_rate);
 
 // Create multi-node helper
-TMC5160MultiNode<Esp32UART> multi_node(uart, node_count);
+TMC51x0MultiNode<Esp32UART> multi_node(uart, node_count);
 
 // Access nodes by address
 multi_node.GetNode(0)->rampControl.SetTargetPosition(1000);

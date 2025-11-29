@@ -1,7 +1,7 @@
 var structtmc51x0_1_1CoolStepConfig =
 [
     [ "CoolStepConfig", "structtmc51x0_1_1CoolStepConfig.html#aa5707df38a35d547e6e1e0ab8bc83dff", null ],
-    [ "CoolStepConfig", "structtmc51x0_1_1CoolStepConfig.html#a625ca3dca36b82a0023af9dcfb60240b", null ],
+    [ "CoolStepConfig", "structtmc51x0_1_1CoolStepConfig.html#a4a96ad4b185150bd05ced37dbd5f559f", null ],
     [ "decrement_speed", "structtmc51x0_1_1CoolStepConfig.html#aa8758174e091f41f4dc479952736fa59", null ],
     [ "enable_filter", "structtmc51x0_1_1CoolStepConfig.html#a19428c47d309184b4a77a31b3af714dd", null ],
     [ "increment_step", "structtmc51x0_1_1CoolStepConfig.html#a4e51d9788bce3d7010141328edef4539", null ],

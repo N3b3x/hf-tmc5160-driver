@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Automatic StallGuard2 Tuning Tool.">
+<g id="a_Node000001"><a xlink:title="Automatic StallGuard2 Tuning Tool with Safe Current Margin.">
 <polygon fill="#999999" stroke="#666666" points="1275.5,-371 1153.5,-371 1153.5,-352 1275.5,-352 1275.5,-371"/>
 <text text-anchor="middle" x="1214.5" y="-359" font-family="Helvetica,sans-Serif" font-size="10.00">stallguard_tuning.cpp</text>
 </a>
