@@ -26,7 +26,7 @@
 <area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="92,607,199,607,199,612,92,612"/>
 <area shape="rect" id="Node000014" href="$classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44" title="Initialize the SPI interface." alt="" coords="195,70,340,95"/>
 <area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="48,597,53,500,67,353,79,275,94,204,113,146,125,123,138,106,158,92,180,83,182,88,160,96,142,110,130,126,118,148,99,206,84,276,72,353,58,501,53,597"/>
-<area shape="rect" id="Node000019" href="$classtmc51x0_1_1TMC51x0.html#a8933c4a4a8e5ea0212ba900160efe42f" title="Initialize the TMC5160 driver with configuration." alt="" coords="161,711,373,737"/>
+<area shape="rect" id="Node000019" href="$classtmc51x0_1_1TMC51x0.html#a8933c4a4a8e5ea0212ba900160efe42f" title="Initialize the TMC51x0 driver with configuration." alt="" coords="161,711,373,737"/>
 <area shape="poly" id="edge19_Node000001_Node000019" title=" " alt="" coords="61,620,93,659,116,679,141,696,159,704,157,709,139,701,113,684,90,662,57,624"/>
 <area shape="rect" id="Node000020" href="$bounds__finding__sinuous__motion_8cpp.html#aa7704c2c8716e80dc20804e4c7fb8fd4" title="Motion control task &#45; handles bounds finding and sinusoidal motion." alt="" coords="190,185,345,210"/>
 <area shape="poly" id="edge20_Node000001_Node000020" title=" " alt="" coords="49,596,57,520,74,407,101,295,118,251,138,221,156,208,175,200,177,205,158,213,142,225,123,253,106,296,79,408,62,520,54,597"/>

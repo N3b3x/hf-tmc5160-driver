@@ -170,7 +170,8 @@ var tmc51x0__types_8hpp =
       [ "Rad", "tmc51x0__types_8hpp.html#a68e41191c288365e02cfca672681f686a1d9a8ab863064e5b54a8a7641160cf3f", null ],
       [ "Deg", "tmc51x0__types_8hpp.html#a68e41191c288365e02cfca672681f686ab70808dc1e3f9e2c06c9ba840cc7f44c", null ],
       [ "Mm", "tmc51x0__types_8hpp.html#a68e41191c288365e02cfca672681f686a07f07b623b4a00b57dc150ff2e59cb92", null ],
-      [ "RPM", "tmc51x0__types_8hpp.html#a68e41191c288365e02cfca672681f686afe2284eb32d4b09d29fd34217324b19a", null ]
+      [ "RPM", "tmc51x0__types_8hpp.html#a68e41191c288365e02cfca672681f686afe2284eb32d4b09d29fd34217324b19a", null ],
+      [ "RevPerSec", "tmc51x0__types_8hpp.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8", null ]
     ] ],
     [ "DEFAULT_F_CLK", "tmc51x0__types_8hpp.html#af020190f0c72ab945f4ac22350e6fa4a", null ],
     [ "MAX_F_CLK", "tmc51x0__types_8hpp.html#a3646764e23b0e26677311b320cb8d530", null ],

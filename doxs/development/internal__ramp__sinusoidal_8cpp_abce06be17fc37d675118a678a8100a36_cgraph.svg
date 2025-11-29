@@ -112,7 +112,7 @@
 <!-- Node12 -->
 <g id="Node000012" class="node">
 <title>Node12</title>
-<g id="a_Node000012"><a xlink:href="classtmc51x0_1_1TMC51x0.html#a8933c4a4a8e5ea0212ba900160efe42f" target="_top" xlink:title="Initialize the TMC5160 driver with configuration.">
+<g id="a_Node000012"><a xlink:href="classtmc51x0_1_1TMC51x0.html#a8933c4a4a8e5ea0212ba900160efe42f" target="_top" xlink:title="Initialize the TMC51x0 driver with configuration.">
 <polygon fill="white" stroke="#666666" points="264,-110.5 105,-110.5 105,-91.5 264,-91.5 264,-110.5"/>
 <text text-anchor="middle" x="184.5" y="-98.5" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::TMC51x0::Initialize</text>
 </a>

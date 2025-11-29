@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HF-TMC5160 Driver: tmc51x0::StallGuardConfig Struct Reference</title>
+<title>HF-TMC51x0 Driver (TMC5130 &amp; TMC5160): tmc51x0::StallGuardConfig Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">HF-TMC5160 Driver<span id="projectnumber">&#160;0.1.0-dev</span>
+   <div id="projectname">HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)<span id="projectnumber">&#160;0.1.0-dev</span>
    </div>
-   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC5160</div>
+   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC51x0 (TMC5130 &amp; TMC5160)</div>
   </td>
  </tr>
  </tbody>
@@ -112,9 +112,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a10500c8e5aef6b13c70296567ada83c0" id="r_a10500c8e5aef6b13c70296567ada83c0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a10500c8e5aef6b13c70296567ada83c0">StallGuardConfig</a> ()=default</td></tr>
 <tr class="memdesc:a10500c8e5aef6b13c70296567ada83c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:a10500c8e5aef6b13c70296567ada83c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a345be6743f29870b4e8bcfa05aeee83f" id="r_a345be6743f29870b4e8bcfa05aeee83f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a345be6743f29870b4e8bcfa05aeee83f">StallGuardConfig</a> (int8_t sgt_threshold, bool enable_filt=false, float min_vel=0.0F, float max_vel=0.0F, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> vel_unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>, bool <a class="el" href="#aba87bb601eb2191f8c820b18cde63ad5">stop_on_stall</a>=false)</td></tr>
-<tr class="memdesc:a345be6743f29870b4e8bcfa05aeee83f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper constructor for quick setup.  <br /></td></tr>
-<tr class="separator:a345be6743f29870b4e8bcfa05aeee83f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae09e7a1c6feb7969b250c20c259939ab" id="r_ae09e7a1c6feb7969b250c20c259939ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae09e7a1c6feb7969b250c20c259939ab">StallGuardConfig</a> (int8_t sgt_threshold, bool enable_filt=false, float min_vel=0.0F, float max_vel=0.0F, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> vel_unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>, bool <a class="el" href="#aba87bb601eb2191f8c820b18cde63ad5">stop_on_stall</a>=false)</td></tr>
+<tr class="memdesc:ae09e7a1c6feb7969b250c20c259939ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper constructor for quick setup.  <br /></td></tr>
+<tr class="separator:ae09e7a1c6feb7969b250c20c259939ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13110fe410be3518a891e75d80966878" id="r_a13110fe410be3518a891e75d80966878"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13110fe410be3518a891e75d80966878">StallGuardConfig</a> (<a class="el" href="namespacetmc51x0.html#aca6b71c611ab7e217b0d3ce4208821d9">StallGuardSensitivity</a> sensitivity, bool enable_filt=false, float min_vel=0.0F, float max_vel=0.0F, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> vel_unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>, bool <a class="el" href="#aba87bb601eb2191f8c820b18cde63ad5">stop_on_stall</a>=false)</td></tr>
 <tr class="memdesc:a13110fe410be3518a891e75d80966878"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper constructor using sensitivity enum.  <br /></td></tr>
 <tr class="separator:a13110fe410be3518a891e75d80966878"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,8 +182,8 @@ SGT threshold should be tuned for your specific motor and operating conditions.<
 
 </div>
 </div>
-<a id="a345be6743f29870b4e8bcfa05aeee83f" name="a345be6743f29870b4e8bcfa05aeee83f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a345be6743f29870b4e8bcfa05aeee83f">&#9670;&#160;</a></span>StallGuardConfig() <span class="overload">[2/3]</span></h2>
+<a id="ae09e7a1c6feb7969b250c20c259939ab" name="ae09e7a1c6feb7969b250c20c259939ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae09e7a1c6feb7969b250c20c259939ab">&#9670;&#160;</a></span>StallGuardConfig() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -214,7 +214,7 @@ SGT threshold should be tuned for your specific motor and operating conditions.<
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>vel_unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span>, </span></td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>vel_unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a></span>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>

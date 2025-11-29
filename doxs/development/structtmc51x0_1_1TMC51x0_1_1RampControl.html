@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HF-TMC5160 Driver: tmc51x0::TMC51x0&lt; CommType &gt;::RampControl Struct Reference</title>
+<title>HF-TMC51x0 Driver (TMC5130 &amp; TMC5160): tmc51x0::TMC51x0&lt; CommType &gt;::RampControl Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">HF-TMC5160 Driver<span id="projectnumber">&#160;0.1.0-dev</span>
+   <div id="projectname">HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)<span id="projectnumber">&#160;0.1.0-dev</span>
    </div>
-   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC5160</div>
+   <div id="projectbrief">Hardware Agnostic C++ Driver for the TMC51x0 (TMC5130 &amp; TMC5160)</div>
   </td>
  </tr>
  </tbody>
@@ -154,24 +154,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae3349e2d173b95e1b1eb4256f02057c4" id="r_ae3349e2d173b95e1b1eb4256f02057c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3349e2d173b95e1b1eb4256f02057c4">SetCurrentPosition</a> (float value, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>, bool update_encoder=false) noexcept</td></tr>
 <tr class="memdesc:ae3349e2d173b95e1b1eb4256f02057c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set current position.  <br /></td></tr>
 <tr class="separator:ae3349e2d173b95e1b1eb4256f02057c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b0ff388db5a4851bb7d6c557733261b" id="r_a3b0ff388db5a4851bb7d6c557733261b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b0ff388db5a4851bb7d6c557733261b">SetMaxSpeed</a> (float value, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
-<tr class="memdesc:a3b0ff388db5a4851bb7d6c557733261b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set maximum speed.  <br /></td></tr>
-<tr class="separator:a3b0ff388db5a4851bb7d6c557733261b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dfe2bc8a7c61935feea697bee95bddf" id="r_a1dfe2bc8a7c61935feea697bee95bddf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1dfe2bc8a7c61935feea697bee95bddf">SetAcceleration</a> (float value, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
-<tr class="memdesc:a1dfe2bc8a7c61935feea697bee95bddf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set acceleration and deceleration.  <br /></td></tr>
-<tr class="separator:a1dfe2bc8a7c61935feea697bee95bddf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77fc1165eff9dda86805b2120f6bb897" id="r_a77fc1165eff9dda86805b2120f6bb897"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77fc1165eff9dda86805b2120f6bb897">SetAccelerations</a> (float accel_val, float decel_val, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
-<tr class="memdesc:a77fc1165eff9dda86805b2120f6bb897"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set acceleration and deceleration separately.  <br /></td></tr>
-<tr class="separator:a77fc1165eff9dda86805b2120f6bb897"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91015a96ddba4b7ce8063f363f6ee040" id="r_a91015a96ddba4b7ce8063f363f6ee040"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91015a96ddba4b7ce8063f363f6ee040">SetDeceleration</a> (float value, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
-<tr class="memdesc:a91015a96ddba4b7ce8063f363f6ee040"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set deceleration only (DMAX register)  <br /></td></tr>
-<tr class="separator:a91015a96ddba4b7ce8063f363f6ee040"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32f733df0bba85e9db62c22ad2d0e9af" id="r_a32f733df0bba85e9db62c22ad2d0e9af"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a32f733df0bba85e9db62c22ad2d0e9af">SetRampSpeeds</a> (float start_speed, float stop_speed, float transition_speed, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
-<tr class="memdesc:a32f733df0bba85e9db62c22ad2d0e9af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set ramp speeds.  <br /></td></tr>
-<tr class="separator:a32f733df0bba85e9db62c22ad2d0e9af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae91a3ad25bc82e8287237e366d37d8f" id="r_aae91a3ad25bc82e8287237e366d37d8f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae91a3ad25bc82e8287237e366d37d8f">GetCurrentSpeed</a> (float &amp;speed, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
-<tr class="memdesc:aae91a3ad25bc82e8287237e366d37d8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current speed.  <br /></td></tr>
-<tr class="separator:aae91a3ad25bc82e8287237e366d37d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dd6552421936ab3061bbffacb436266" id="r_a6dd6552421936ab3061bbffacb436266"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6dd6552421936ab3061bbffacb436266">SetMaxSpeed</a> (float value, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>) noexcept</td></tr>
+<tr class="memdesc:a6dd6552421936ab3061bbffacb436266"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set maximum speed.  <br /></td></tr>
+<tr class="separator:a6dd6552421936ab3061bbffacb436266"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e8fc817e0a7c645c95d6c70c44b6d56" id="r_a7e8fc817e0a7c645c95d6c70c44b6d56"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7e8fc817e0a7c645c95d6c70c44b6d56">SetAcceleration</a> (float value, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>) noexcept</td></tr>
+<tr class="memdesc:a7e8fc817e0a7c645c95d6c70c44b6d56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set acceleration and deceleration.  <br /></td></tr>
+<tr class="separator:a7e8fc817e0a7c645c95d6c70c44b6d56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b9dc10ecd5960d880b706461765a82d" id="r_a5b9dc10ecd5960d880b706461765a82d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b9dc10ecd5960d880b706461765a82d">SetAccelerations</a> (float accel_val, float decel_val, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>) noexcept</td></tr>
+<tr class="memdesc:a5b9dc10ecd5960d880b706461765a82d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set acceleration and deceleration separately.  <br /></td></tr>
+<tr class="separator:a5b9dc10ecd5960d880b706461765a82d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1152495dc260f04a2283570dd05e63c7" id="r_a1152495dc260f04a2283570dd05e63c7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1152495dc260f04a2283570dd05e63c7">SetDeceleration</a> (float value, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>) noexcept</td></tr>
+<tr class="memdesc:a1152495dc260f04a2283570dd05e63c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set deceleration only (DMAX register)  <br /></td></tr>
+<tr class="separator:a1152495dc260f04a2283570dd05e63c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a200ee195aa552a83479321be164af3f7" id="r_a200ee195aa552a83479321be164af3f7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a200ee195aa552a83479321be164af3f7">SetRampSpeeds</a> (float start_speed, float stop_speed, float transition_speed, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>) noexcept</td></tr>
+<tr class="memdesc:a200ee195aa552a83479321be164af3f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set ramp speeds.  <br /></td></tr>
+<tr class="separator:a200ee195aa552a83479321be164af3f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaacb5283c97a91fbc5dd897df457886" id="r_acaacb5283c97a91fbc5dd897df457886"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acaacb5283c97a91fbc5dd897df457886">GetCurrentSpeed</a> (float &amp;speed, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>) noexcept</td></tr>
+<tr class="memdesc:acaacb5283c97a91fbc5dd897df457886"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current speed.  <br /></td></tr>
+<tr class="separator:acaacb5283c97a91fbc5dd897df457886"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a2bd3e0b1088831e3db049a02e0a095" id="r_a4a2bd3e0b1088831e3db049a02e0a095"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a2bd3e0b1088831e3db049a02e0a095">IsTargetReached</a> () noexcept</td></tr>
 <tr class="memdesc:a4a2bd3e0b1088831e3db049a02e0a095"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if target position is reached.  <br /></td></tr>
 <tr class="separator:a4a2bd3e0b1088831e3db049a02e0a095"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -229,12 +229,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6ce841ebd4ad09c320a10489f148d0ab" id="r_a6ce841ebd4ad09c320a10489f148d0ab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ce841ebd4ad09c320a10489f148d0ab">ConfigureRamp</a> (const <a class="el" href="structtmc51x0_1_1RampConfig.html">RampConfig</a> &amp;config) noexcept</td></tr>
 <tr class="memdesc:a6ce841ebd4ad09c320a10489f148d0ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure ramp generator from <a class="el" href="structtmc51x0_1_1RampConfig.html" title="Ramp configuration structure.">RampConfig</a> structure.  <br /></td></tr>
 <tr class="separator:a6ce841ebd4ad09c320a10489f148d0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa5fcc9c8d76ed4a0980f59d4417b98e" id="r_afa5fcc9c8d76ed4a0980f59d4417b98e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa5fcc9c8d76ed4a0980f59d4417b98e">SetFirstAcceleration</a> (float a1, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
-<tr class="memdesc:afa5fcc9c8d76ed4a0980f59d4417b98e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set first acceleration phase.  <br /></td></tr>
-<tr class="separator:afa5fcc9c8d76ed4a0980f59d4417b98e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56a5391a0f7824f0ffbd592e158ca943" id="r_a56a5391a0f7824f0ffbd592e158ca943"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a56a5391a0f7824f0ffbd592e158ca943">SetFinalDeceleration</a> (float d1, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
-<tr class="memdesc:a56a5391a0f7824f0ffbd592e158ca943"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set final deceleration phase.  <br /></td></tr>
-<tr class="separator:a56a5391a0f7824f0ffbd592e158ca943"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e81684cf39b97e4af5730826427af88" id="r_a5e81684cf39b97e4af5730826427af88"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5e81684cf39b97e4af5730826427af88">SetFirstAcceleration</a> (float a1, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>) noexcept</td></tr>
+<tr class="memdesc:a5e81684cf39b97e4af5730826427af88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set first acceleration phase.  <br /></td></tr>
+<tr class="separator:a5e81684cf39b97e4af5730826427af88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa9f89cac490adabae55f3b852128e56" id="r_afa9f89cac490adabae55f3b852128e56"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa9f89cac490adabae55f3b852128e56">SetFinalDeceleration</a> (float d1, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>) noexcept</td></tr>
+<tr class="memdesc:afa9f89cac490adabae55f3b852128e56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set final deceleration phase.  <br /></td></tr>
+<tr class="separator:afa9f89cac490adabae55f3b852128e56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -404,8 +404,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="aae91a3ad25bc82e8287237e366d37d8f" name="aae91a3ad25bc82e8287237e366d37d8f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae91a3ad25bc82e8287237e366d37d8f">&#9670;&#160;</a></span>GetCurrentSpeed()</h2>
+<a id="acaacb5283c97a91fbc5dd897df457886" name="acaacb5283c97a91fbc5dd897df457886"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acaacb5283c97a91fbc5dd897df457886">&#9670;&#160;</a></span>GetCurrentSpeed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -423,7 +423,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -845,8 +845,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="a1dfe2bc8a7c61935feea697bee95bddf" name="a1dfe2bc8a7c61935feea697bee95bddf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1dfe2bc8a7c61935feea697bee95bddf">&#9670;&#160;</a></span>SetAcceleration()</h2>
+<a id="a7e8fc817e0a7c645c95d6c70c44b6d56" name="a7e8fc817e0a7c645c95d6c70c44b6d56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e8fc817e0a7c645c95d6c70c44b6d56">&#9670;&#160;</a></span>SetAcceleration()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -864,7 +864,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -886,8 +886,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="a77fc1165eff9dda86805b2120f6bb897" name="a77fc1165eff9dda86805b2120f6bb897"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77fc1165eff9dda86805b2120f6bb897">&#9670;&#160;</a></span>SetAccelerations()</h2>
+<a id="a5b9dc10ecd5960d880b706461765a82d" name="a5b9dc10ecd5960d880b706461765a82d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b9dc10ecd5960d880b706461765a82d">&#9670;&#160;</a></span>SetAccelerations()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -910,7 +910,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1053,8 +1053,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="a91015a96ddba4b7ce8063f363f6ee040" name="a91015a96ddba4b7ce8063f363f6ee040"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a91015a96ddba4b7ce8063f363f6ee040">&#9670;&#160;</a></span>SetDeceleration()</h2>
+<a id="a1152495dc260f04a2283570dd05e63c7" name="a1152495dc260f04a2283570dd05e63c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1152495dc260f04a2283570dd05e63c7">&#9670;&#160;</a></span>SetDeceleration()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1072,7 +1072,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1095,8 +1095,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="a56a5391a0f7824f0ffbd592e158ca943" name="a56a5391a0f7824f0ffbd592e158ca943"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56a5391a0f7824f0ffbd592e158ca943">&#9670;&#160;</a></span>SetFinalDeceleration()</h2>
+<a id="afa9f89cac490adabae55f3b852128e56" name="afa9f89cac490adabae55f3b852128e56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa9f89cac490adabae55f3b852128e56">&#9670;&#160;</a></span>SetFinalDeceleration()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1114,7 +1114,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1137,8 +1137,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="afa5fcc9c8d76ed4a0980f59d4417b98e" name="afa5fcc9c8d76ed4a0980f59d4417b98e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa5fcc9c8d76ed4a0980f59d4417b98e">&#9670;&#160;</a></span>SetFirstAcceleration()</h2>
+<a id="a5e81684cf39b97e4af5730826427af88" name="a5e81684cf39b97e4af5730826427af88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e81684cf39b97e4af5730826427af88">&#9670;&#160;</a></span>SetFirstAcceleration()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1156,7 +1156,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1290,8 +1290,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="a3b0ff388db5a4851bb7d6c557733261b" name="a3b0ff388db5a4851bb7d6c557733261b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b0ff388db5a4851bb7d6c557733261b">&#9670;&#160;</a></span>SetMaxSpeed()</h2>
+<a id="a6dd6552421936ab3061bbffacb436266" name="a6dd6552421936ab3061bbffacb436266"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6dd6552421936ab3061bbffacb436266">&#9670;&#160;</a></span>SetMaxSpeed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1309,7 +1309,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1446,8 +1446,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="a32f733df0bba85e9db62c22ad2d0e9af" name="a32f733df0bba85e9db62c22ad2d0e9af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32f733df0bba85e9db62c22ad2d0e9af">&#9670;&#160;</a></span>SetRampSpeeds()</h2>
+<a id="a200ee195aa552a83479321be164af3f7" name="a200ee195aa552a83479321be164af3f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a200ee195aa552a83479321be164af3f7">&#9670;&#160;</a></span>SetRampSpeeds()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1475,7 +1475,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>

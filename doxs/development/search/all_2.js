@@ -116,7 +116,7 @@ var searchData=
   ['coolconf_113',['coolconf',['../structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a2f89f521fb80373a595cba737d4fe7f4',1,'tmc51x0::TMC51x0::WriteOnlyRegisters']]],
   ['coolconf_5fregister_114',['COOLCONF_Register',['../uniontmc51x0_1_1COOLCONF__Register.html',1,'tmc51x0']]],
   ['coolstep_115',['coolstep',['../structtmc51x0_1_1DriverConfig.html#a39ccc3dd689738238bb021084a17ddd0',1,'tmc51x0::DriverConfig']]],
-  ['coolstepconfig_116',['CoolStepConfig',['../structtmc51x0_1_1CoolStepConfig.html',1,'tmc51x0::CoolStepConfig'],['../structtmc51x0_1_1CoolStepConfig.html#aa5707df38a35d547e6e1e0ab8bc83dff',1,'tmc51x0::CoolStepConfig::CoolStepConfig()=default'],['../structtmc51x0_1_1CoolStepConfig.html#a625ca3dca36b82a0023af9dcfb60240b',1,'tmc51x0::CoolStepConfig::CoolStepConfig(uint16_t lower_sg, uint16_t upper_sg, float min_vel, float max_vel, Unit vel_unit=Unit::Steps)']]],
+  ['coolstepconfig_116',['CoolStepConfig',['../structtmc51x0_1_1CoolStepConfig.html',1,'tmc51x0::CoolStepConfig'],['../structtmc51x0_1_1CoolStepConfig.html#aa5707df38a35d547e6e1e0ab8bc83dff',1,'tmc51x0::CoolStepConfig::CoolStepConfig()=default'],['../structtmc51x0_1_1CoolStepConfig.html#a4a96ad4b185150bd05ced37dbd5f559f',1,'tmc51x0::CoolStepConfig::CoolStepConfig(uint16_t lower_sg, uint16_t upper_sg, float min_vel, float max_vel, Unit vel_unit=Unit::RevPerSec)']]],
   ['coolstepdecrementspeed_117',['CoolStepDecrementSpeed',['../namespacetmc51x0.html#a871c301c3ba553b1aa04199d9774259e',1,'tmc51x0']]],
   ['coolstepincrementstep_118',['CoolStepIncrementStep',['../namespacetmc51x0.html#ab2a43e8180158d19354f36faa7008b00',1,'tmc51x0']]],
   ['coolstepmincurrent_119',['CoolStepMinCurrent',['../namespacetmc51x0.html#a0279a9b8b855afe30f3d2f8fb8297d21',1,'tmc51x0']]],

@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Initialize the TMC5160 driver with configuration.">
+<g id="a_Node000001"><a xlink:title="Initialize the TMC51x0 driver with configuration.">
 <polygon fill="#999999" stroke="#666666" points="260,-37 101,-37 101,-18 260,-18 260,-37"/>
 <text text-anchor="middle" x="180.5" y="-25" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::TMC51x0::Initialize</text>
 </a>

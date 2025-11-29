@@ -4,7 +4,7 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,68,163,47,164,52,93,73"/>
 <area shape="rect" id="Node000003" href="$classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44" title="Initialize the SPI interface." alt="" coords="173,70,319,95"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="92,80,159,80,159,85,92,85"/>
-<area shape="rect" id="Node000008" href="$classtmc51x0_1_1TMC51x0.html#a8933c4a4a8e5ea0212ba900160efe42f" title="Initialize the TMC5160 driver with configuration." alt="" coords="140,119,352,145"/>
+<area shape="rect" id="Node000008" href="$classtmc51x0_1_1TMC51x0.html#a8933c4a4a8e5ea0212ba900160efe42f" title="Initialize the TMC51x0 driver with configuration." alt="" coords="140,119,352,145"/>
 <area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="93,92,141,104,178,113,177,119,139,109,91,97"/>
 <area shape="rect" id="Node000004" href="$classEsp32SPI.html#adcc0044c32d595f822c8f671bdb9edb0" title="Set GPIO pin state." alt="" coords="400,70,540,95"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="319,80,386,80,386,85,319,85"/>

@@ -44,9 +44,9 @@ var searchData=
   ['tpowerdown_5fms_41',['tpowerdown_ms',['../structtmc51x0_1_1RampConfig.html#a3fe522d973da20eb818d221cb066455f',1,'tmc51x0::RampConfig']]],
   ['tpwmthrs_42',['tpwmthrs',['../structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a5109d280436253173ffc894f8ba02a2e',1,'tmc51x0::TMC51x0::WriteOnlyRegisters']]],
   ['travel_5fdistance_5f_43',['travel_distance_',['../classBackAndForthMotion.html#a0167826069df1c5a58aa930034d937d2',1,'BackAndForthMotion']]],
-  ['tuning_5facceleration_5fsteps_5fs2_44',['TUNING_ACCELERATION_STEPS_S2',['../stallguard__tuning_8cpp.html#ab090ef55ae75a724d398f0c416dabdf5',1,'stallguard_tuning.cpp']]],
+  ['tuning_5facceleration_5frev_5fs2_44',['TUNING_ACCELERATION_REV_S2',['../stallguard__tuning_8cpp.html#aa03d0e782bfa562f59b9fa3ea5b9b522',1,'stallguard_tuning.cpp']]],
   ['tuning_5fsuccess_45',['tuning_success',['../structtmc51x0_1_1StallGuardTuningResult.html#ab6300c69af5aaf1347aafde6ed3f747b',1,'tmc51x0::StallGuardTuningResult']]],
-  ['tuning_5fvelocity_5fsteps_5fs_46',['TUNING_VELOCITY_STEPS_S',['../stallguard__tuning_8cpp.html#a9eaf78eca047053635539fdbca07e052',1,'stallguard_tuning.cpp']]],
+  ['tuning_5fvelocity_5frpm_46',['TUNING_VELOCITY_RPM',['../stallguard__tuning_8cpp.html#a078d8fc2f12b544d737b7d4803cb2fb6',1,'stallguard_tuning.cpp']]],
   ['type_47',['type',['../structtmc51x0_1_1UartFrame.html#aadde2c6a4d49bc937bb481eeef093788',1,'tmc51x0::UartFrame']]],
   ['tzerowait_48',['tzerowait',['../structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#af4d8cde4ecfd261ab68bc055d78d8161',1,'tmc51x0::TMC51x0::WriteOnlyRegisters']]],
   ['tzerowait_5fms_49',['tzerowait_ms',['../structtmc51x0_1_1RampConfig.html#a3858a3478dc2f51484d28a3d6d35e226',1,'tmc51x0::RampConfig']]]
