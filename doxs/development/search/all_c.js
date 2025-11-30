@@ -5,7 +5,7 @@ var searchData=
   ['n_5fevent_2',['n_event',['../uniontmc51x0_1_1ENC__STATUS__Register.html#ae2408e51aeee2f4be9c51a678e5988b0',1,'tmc51x0::ENC_STATUS_Register']]],
   ['n_5fsensitivity_3',['n_sensitivity',['../structtmc51x0_1_1EncoderConfig.html#aaa92bc1a9d59ef83f231b72d24296bad',1,'tmc51x0::EncoderConfig']]],
   ['n_5fsensitivity_4',['N_SENSITIVITY',['../namespacetmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1Encoder.html#ac90062636916b223b8f120c296ffc0ee',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::Encoder::N_SENSITIVITY'],['../namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#af7f767051436d993bc22e5236723805a',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::Encoder::N_SENSITIVITY']]],
-  ['native_5fhandle_5',['native_handle',['../classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f',1,'Esp32TmcMutex']]],
+  ['native_5fhandle_5',['native_handle',['../classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f',1,'Esp32TmcMutex::native_handle() const noexcept'],['../classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f',1,'Esp32TmcMutex::native_handle() const noexcept']]],
   ['neg_5fedge_6',['neg_edge',['../uniontmc51x0_1_1ENCMODE__Register.html#a3a2426164568f62f5694c61594e886f2',1,'tmc51x0::ENCMODE_Register']]],
   ['new_7',['NEW',['../index.html#autotoc_md37',1,'Tuning Subsystem ⭐ NEW'],['../index.html#autotoc_md59',1,'Tuning Subsystem ⭐ NEW']]],
   ['no_5fedge_8',['NO_EDGE',['../namespacetmc51x0.html#a72806fd22f0c0112600ad9056aa3be97a38a74ee0f8764437c5fce05a7b4964e1',1,'tmc51x0']]],

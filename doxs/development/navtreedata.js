@@ -124,17 +124,18 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "TestFramework_8h.html",
-"classtmc51x0_1_1SpiCommInterface.html#a9f40aef4e53519c6e73fa58a3ff15cef",
-"esp32__tmc51x0__test__config_8hpp.html#a9c295753349facf95386a659871c8059",
-"internal__ramp__comprehensive__test_8cpp.html#a3f1e89f6e3a0be599511d4a8cc389305",
-"namespacetmc51x0.html#aaa19c98f87ff911ca28183768e39f607a5137485eff3ff278d233d993c8539599",
-"namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#aba3ccf2fa494eb1881e39f021a08f277",
-"structtmc51x0_1_1EncoderConfig.html#a78cf54995158a3964b8ec45d6a969355",
-"structtmc51x0_1_1ReferenceSwitchConfig.html#a7e72e9e0367fc6812d2b20dbdcf9c925",
-"structtmc51x0_1_1TMC51x0_1_1Homing.html#acdf2f21f2e467e482be3a33f109390d7",
-"tmc51x0__registers_8hpp_source.html",
-"uniontmc51x0_1_1DCCTRL__Register.html#abf417a03bb97538ad8c1aedf93d79936",
-"uniontmc51x0_1_1OFFSET__READ__Register.html#aa82c19106d4d89d843e745254a229e14"
+"classtmc51x0_1_1CommInterface.html#a4f8d7c8e8be69b4a09db37175368ba57",
+"esp32__tmc51x0__test__config_8hpp.html#a5d15615079fb9bc0486ceb969164ee62",
+"group__TMC51X0__Registers.html",
+"namespacetmc51x0.html#a43a3659df2d2d9c81f83cfc72daad756a12135d9b0d6cf0300c25c0e544a466cc",
+"namespacetmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#a6415f7a9b76039fa684b612a2efcd5f9",
+"structtmc51x0_1_1DcStepConfig.html#a89e86ba28dfb9d8cc64e978c27a578d5",
+"structtmc51x0_1_1PinActiveLevels.html#a549e28cd1fc2751d22c5eeca4bd6d0b2",
+"structtmc51x0_1_1TMC51x0PinConfig.html#ac71ad999dbcfa3984b3c1a6fd89af127",
+"structtmc51x0_1_1UartFrame.html#ac7e4f8b7c21607bcd9f5172b45735485",
+"uart__multi__node__comprehensive__test_8cpp.html#ab441e82e7badc80a7d32e15d5f9d3dbf",
+"uniontmc51x0_1_1IHOLD__IRUN__Register.html",
+"uniontmc51x0_1_1SW__MODE__Register.html#a09f93fa8475404fcd80fba7adfd21d93"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

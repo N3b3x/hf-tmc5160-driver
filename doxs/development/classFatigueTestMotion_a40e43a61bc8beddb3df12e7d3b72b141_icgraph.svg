@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="bounds__finding__sinuous__motion_8cpp.html#aa7704c2c8716e80dc20804e4c7fb8fd4" target="_top" xlink:title="Motion control task &#45; handles bounds finding and sinusoidal motion.">
+<g id="a_Node000002"><a xlink:href="fatigue__test__encoder_8cpp.html#aa7704c2c8716e80dc20804e4c7fb8fd4" target="_top" xlink:title="Motion control task &#45; handles bounds finding and sinusoidal motion.">
 <polygon fill="white" stroke="#666666" points="217,-24.5 101,-24.5 101,-5.5 217,-5.5 217,-24.5"/>
 <text text-anchor="middle" x="159" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">motion_control_task</text>
 </a>
@@ -39,7 +39,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="fatigue__test__encoder_8cpp.html#abce06be17fc37d675118a678a8100a36" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="65,-24.5 0,-24.5 0,-5.5 65,-5.5 65,-24.5"/>
 <text text-anchor="middle" x="32.5" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">app_main</text>
 </a>

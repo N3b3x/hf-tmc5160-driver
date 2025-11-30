@@ -21,9 +21,8 @@ var searchData=
   ['both_5fedges_18',['BOTH_EDGES',['../namespacetmc51x0.html#a72806fd22f0c0112600ad9056aa3be97a03495d0b1362f1d841b59007e2887c7f',1,'tmc51x0::BOTH_EDGES'],['../namespacetmc51x0.html#a27074bd299d4daedf7fa42542a072679a03495d0b1362f1d841b59007e2887c7f',1,'tmc51x0::BOTH_EDGES'],['../namespacetmc51x0.html#a0bb937f055abebd74c4f74fb03bb5696a03495d0b1362f1d841b59007e2887c7f',1,'tmc51x0::BOTH_EDGES']]],
   ['bounded_19',['bounded',['../structFatigueTestMotion_1_1Status.html#ad1ec5392653fb35af955c6c1dc48ccda',1,'FatigueTestMotion::Status']]],
   ['bounded_5f_20',['bounded_',['../classFatigueTestMotion.html#acb215754df9eed5dedc67d60de52758c',1,'FatigueTestMotion']]],
-  ['bounds_5ffinding_5fsinuous_5fmotion_2ecpp_21',['bounds_finding_sinuous_motion.cpp',['../bounds__finding__sinuous__motion_8cpp.html',1,'']]],
-  ['bounds_5fsearch_5fspeed_22',['BOUNDS_SEARCH_SPEED',['../namespacetmc51x0__test__config_1_1TestConfig__17HS4401S_1_1Motion.html#a25244197aa4a2c652a7d1ba6dacd8f3c',1,'tmc51x0_test_config::TestConfig_17HS4401S::Motion']]],
-  ['bus_5ftag_23',['BUS_TAG',['../esp32__tmc51x0__bus_8hpp.html#a73a911be261c628a3ee57cedbafb89a1',1,'esp32_tmc51x0_bus.hpp']]],
-  ['by_20subsystem_24',['Key Methods by Subsystem',['../index.html#autotoc_md55',1,'']]],
-  ['bytes_25',['bytes',['../uniontmc51x0_1_1SpiCommand_1_1Frame.html#a50b3f151a5e22e862bfc7d6b62d78611',1,'tmc51x0::SpiCommand::Frame::bytes'],['../uniontmc51x0_1_1UartFrame_1_1Frame.html#a529ef99d1f3750e785fc0f730f7264b3',1,'tmc51x0::UartFrame::Frame::bytes']]]
+  ['bounds_5fsearch_5fspeed_21',['BOUNDS_SEARCH_SPEED',['../namespacetmc51x0__test__config_1_1TestConfig__17HS4401S_1_1Motion.html#a25244197aa4a2c652a7d1ba6dacd8f3c',1,'tmc51x0_test_config::TestConfig_17HS4401S::Motion']]],
+  ['bus_5ftag_22',['BUS_TAG',['../esp32__tmc51x0__bus_8hpp.html#a73a911be261c628a3ee57cedbafb89a1',1,'esp32_tmc51x0_bus.hpp']]],
+  ['by_20subsystem_23',['Key Methods by Subsystem',['../index.html#autotoc_md55',1,'']]],
+  ['bytes_24',['bytes',['../uniontmc51x0_1_1SpiCommand_1_1Frame.html#a50b3f151a5e22e862bfc7d6b62d78611',1,'tmc51x0::SpiCommand::Frame::bytes'],['../uniontmc51x0_1_1UartFrame_1_1Frame.html#a529ef99d1f3750e785fc0f730f7264b3',1,'tmc51x0::UartFrame::Frame::bytes']]]
 ];

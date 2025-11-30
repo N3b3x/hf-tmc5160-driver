@@ -20,6 +20,6 @@ var searchData=
   ['local_5fmax_5fbound_5f_17',['local_max_bound_',['../classFatigueTestMotion.html#a2aaf6bf3cf4026a7f62f0a3947fbfc03',1,'FatigueTestMotion']]],
   ['local_5fmin_5fbound_5f_18',['local_min_bound_',['../classFatigueTestMotion.html#a905d65f7afc6bb7ad992e5296437ceb7',1,'FatigueTestMotion']]],
   ['locked_5f_19',['locked_',['../classTmcMutexGuard.html#a57ef84d5629c9f4ad53660b8a9747e7d',1,'TmcMutexGuard']]],
-  ['long_5fname_20',['long_name',['../structCommandArg.html#a0a484202a6f9ef4350cd979750154e15',1,'CommandArg']]],
+  ['long_5fname_20',['long_name',['../structCommandArg.html#accb413b2fd05bcf1229bba83feb865b1',1,'CommandArg']]],
   ['lower_5fthreshold_5fsg_21',['lower_threshold_sg',['../structtmc51x0_1_1CoolStepConfig.html#a80039da9cefd52f8190a94bb6bd1e710',1,'tmc51x0::CoolStepConfig']]]
 ];

@@ -24,5 +24,5 @@ var searchData=
   ['step_5f8_21',['STEP_8',['../namespacetmc51x0.html#ab2a43e8180158d19354f36faa7008b00a4c4bc44c692169e8833b2a174c51aed7',1,'tmc51x0']]],
   ['stepper_22',['STEPPER',['../namespacetmc51x0.html#a43a3659df2d2d9c81f83cfc72daad756a12135d9b0d6cf0300c25c0e544a466cc',1,'tmc51x0']]],
   ['steps_23',['Steps',['../namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427',1,'tmc51x0']]],
-  ['stopped_24',['STOPPED',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a',1,'FatigueTestMotion']]]
+  ['stopped_24',['STOPPED',['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a',1,'FatigueTestMotion::STOPPED'],['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a',1,'FatigueTestMotion::STOPPED'],['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a',1,'FatigueTestMotion::STOPPED'],['../classFatigueTestMotion.html#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a',1,'FatigueTestMotion::STOPPED']]]
 ];
