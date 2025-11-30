@@ -62,13 +62,15 @@ void UI::init(QueueHandle_t ui_queue, Settings* settings, uint32_t* inactivity_t
     s_lastActivityTick = inactivity_ticks_ptr;
 
     // Initialize e-ink display
+    // 2.9" ThinkInk FeatherWing: 296x128 pixels
+    // For vertical orientation, we use width=128, height=296 and rotate
     g_display = new Adafruit_IL0373(
         EINK_CS_PIN,
         EINK_DC_PIN,
         EINK_RESET_PIN,
         EINK_BUSY_PIN,
-        296,   // width
-        128    // height
+        128,   // width (for vertical)
+        296    // height (for vertical)
     );
 
     if (!g_display->begin()) {
@@ -77,10 +79,12 @@ void UI::init(QueueHandle_t ui_queue, Settings* settings, uint32_t* inactivity_t
         return;
     }
 
-    ESP_LOGI(TAG_UI, "E-ink display initialized");
+    ESP_LOGI(TAG_UI, "E-ink display initialized (2.9\" ThinkInk, vertical)");
 
-    // Set rotation based on settings
-    g_display->setRotation(s_settings->orientation_flipped ? 2 : 0);
+    // Set rotation for vertical display
+    // Rotation 1 = 90° clockwise (portrait mode)
+    // Rotation 3 = 90° counter-clockwise (portrait mode, flipped)
+    g_display->setRotation(s_settings->orientation_flipped ? 3 : 1);
 
     // Initial screen draw
     draw_main_screen();
@@ -270,67 +274,85 @@ static void draw_main_screen()
 
     clear_screen();
 
-    // --- Title ---
-    set_title_style();
-    g_display->setCursor(10, 20);
-    g_display->print("Fatigue Tester");
-
-    // --- Settings Header (Top Bar) ---
-    set_header_style();
-    uint16_t y = 45;
+    // For vertical 2.9" display (128x296 in portrait, rotated)
+    // Display is 128 pixels tall, 296 pixels wide
+    // We'll use portrait orientation (rotated 90°)
     
-    // Build header string with bounds method indicator
+    // --- Title (Top, centered) ---
+    set_title_style();
+    g_display->setCursor(50, 5);
+    g_display->print("Fatigue");
+    g_display->setCursor(45, 25);
+    g_display->print("Tester");
+
+    // --- Settings Info (Compact, vertical layout) ---
+    set_header_style();
+    uint16_t y = 50;
+    
+    // Build compact info strings
     String bounds_str = s_settings->bounds_method_stallguard ? "SG" : "ENC";
-    String header = 
-        "Cycles: " + String(s_settings->cycle_amount) +
-        " | Time: " + String(s_settings->time_per_cycle) + "s" +
-        " | Dwell: " + String(s_settings->dwell_time) + "s" +
-        " | " + bounds_str;
+    
+    g_display->setCursor(5, y);
+    g_display->print("Cycles:");
+    g_display->setCursor(60, y);
+    g_display->print(s_settings->cycle_amount);
+    y += 15;
 
-    g_display->setCursor(4, y);
-    g_display->print(header);
+    g_display->setCursor(5, y);
+    g_display->print("Time:");
+    g_display->setCursor(60, y);
+    g_display->print(s_settings->time_per_cycle);
+    g_display->print("s");
+    y += 15;
 
-    // --- UI Controls ---
-    y = 75;
+    g_display->setCursor(5, y);
+    g_display->print("Dwell:");
+    g_display->setCursor(60, y);
+    g_display->print(s_settings->dwell_time);
+    g_display->print("s");
+    y += 15;
 
+    g_display->setCursor(5, y);
+    g_display->print("Method:");
+    g_display->setCursor(60, y);
+    g_display->print(bounds_str);
+    y += 20;
+
+    // --- State and Controls (Center area) ---
     if (s_state == UiState::RUNNING) {
-        // RUNNING STATE — show PAUSE / STOP
         set_button_style(false);
-        g_display->setCursor(10, y);
+        g_display->setCursor(5, y);
         g_display->print("[RUNNING]");
-        y += 22;
-
-        set_button_style(true); 
-        g_display->setCursor(15, y);
-        g_display->print("PAUSE (SEL)");
-
+        y += 20;
+        set_button_style(true);
+        g_display->setCursor(5, y);
+        g_display->print("PAUSE");
+        g_display->setCursor(60, y);
+        g_display->print("(SEL)");
     } else if (s_state == UiState::PAUSED) {
         set_button_style(false);
-        g_display->setCursor(10, y);
+        g_display->setCursor(5, y);
         g_display->print("[PAUSED]");
-        y += 22;
-
+        y += 20;
         set_button_style(true);
-        g_display->setCursor(10, y);
-        g_display->print("RESUME (UP)");
-
+        g_display->setCursor(5, y);
+        g_display->print("RESUME");
+        g_display->setCursor(60, y);
+        g_display->print("(UP)");
     } else {
-        // IDLE / MAIN
         set_button_style(false);
-        g_display->setCursor(10, y);
-        g_display->print("Start: UP button");
-        y += 22;
-
-        g_display->setCursor(10, y);
-        g_display->print("Settings: SEL");
+        g_display->setCursor(5, y);
+        g_display->print("START");
+        g_display->setCursor(60, y);
+        g_display->print("(UP)");
+        y += 18;
+        g_display->setCursor(5, y);
+        g_display->print("SET");
+        g_display->setCursor(60, y);
+        g_display->print("(SEL)");
     }
 
-    // STOP (bottom small)
-    set_button_style(false);
-    g_display->setCursor(10, 122);
-    g_display->print("Stop: DOWN");
-
-    // Footer line will show cycle #
+    // Footer with cycle info
     update_status_footer();
 
     g_display->display(true);
@@ -346,42 +368,52 @@ static void draw_settings_screen()
     clear_screen();
 
     set_title_style();
-    g_display->setCursor(40, 20);
+    g_display->setCursor(40, 5);
     g_display->print("Settings");
 
     set_header_style();
 
-    uint16_t y = 50;
+    uint16_t y = 35;
 
     g_display->setCursor(5, y);
-    g_display->print("Cycle Amount: ");
+    g_display->print("Cycles:");
+    g_display->setCursor(70, y);
     g_display->print(s_settings->cycle_amount);
-    y += 18;
+    y += 16;
 
     g_display->setCursor(5, y);
-    g_display->print("Time/Cycle: ");
+    g_display->print("Time/Cycle:");
+    g_display->setCursor(70, y);
     g_display->print(s_settings->time_per_cycle);
     g_display->print("s");
-    y += 18;
+    y += 16;
 
     g_display->setCursor(5, y);
-    g_display->print("Dwell Time: ");
+    g_display->print("Dwell:");
+    g_display->setCursor(70, y);
     g_display->print(s_settings->dwell_time);
     g_display->print("s");
-    y += 18;
+    y += 16;
 
     g_display->setCursor(5, y);
-    g_display->print("Bounds Method: ");
-    g_display->print(s_settings->bounds_method_stallguard ? "StallGuard" : "Encoder");
-    y += 18;
+    g_display->print("Method:");
+    g_display->setCursor(70, y);
+    g_display->print(s_settings->bounds_method_stallguard ? "SG" : "ENC");
+    y += 16;
 
     g_display->setCursor(5, y);
-    g_display->print("Flip Orient: ");
+    g_display->print("Flip:");
+    g_display->setCursor(70, y);
     g_display->print(s_settings->orientation_flipped ? "ON" : "OFF");
+    y += 25;
 
-    // Controls help bottom
-    g_display->setCursor(5, 118);
-    g_display->print("[SEL] Save  [DOWN] Back");
+    // Controls help (compact for vertical)
+    set_header_style();
+    g_display->setCursor(5, y);
+    g_display->print("[SEL] Save");
+    y += 15;
+    g_display->setCursor(5, y);
+    g_display->print("[DOWN] Back");
 
     g_display->display(true);
 }
@@ -396,14 +428,16 @@ static void draw_confirm_stop()
     clear_screen();
 
     set_title_style();
-    g_display->setCursor(20, 20);
-    g_display->print("Stop Test?");
+    g_display->setCursor(30, 30);
+    g_display->print("Stop");
+    g_display->setCursor(25, 50);
+    g_display->print("Test?");
 
     set_header_style();
-    g_display->setCursor(20, 70);
-    g_display->print("DOWN = Confirm STOP");
-    g_display->setCursor(20, 92);
-    g_display->print("Any other = Cancel");
+    g_display->setCursor(10, 90);
+    g_display->print("DOWN = Confirm");
+    g_display->setCursor(10, 110);
+    g_display->print("Other = Cancel");
 
     g_display->display(true);
 }
@@ -416,21 +450,23 @@ static void draw_error_screen()
     }
 
     clear_screen();
-    g_display->fillRect(0, 0, 296, 128, EPD_WHITE);
+    g_display->fillRect(0, 0, 128, 296, EPD_WHITE);
 
     set_title_style();
-    g_display->setCursor(40, 20);
+    g_display->setCursor(30, 30);
     g_display->setTextColor(EPD_RED);
     g_display->print("ERROR");
 
     set_header_style();
     g_display->setTextColor(EPD_BLACK);
-    g_display->setCursor(30, 60);
-    g_display->print("Error Code: ");
+    g_display->setCursor(20, 70);
+    g_display->print("Code: ");
     g_display->print(s_errorCode);
 
-    g_display->setCursor(10, 90);
-    g_display->print("Press any button...");
+    g_display->setCursor(10, 100);
+    g_display->print("Press any");
+    g_display->setCursor(10, 115);
+    g_display->print("button...");
 
     g_display->display(true);
 
@@ -440,15 +476,15 @@ static void draw_error_screen()
         vTaskDelay(pdMS_TO_TICKS(2000)); // 2 second delay for e-ink
         
         if (i % 2 == 0) {
-            // Flash red bar at top
-            g_display->fillRect(0, 0, 296, 20, EPD_RED);
+            // Flash red bar at top (vertical display)
+            g_display->fillRect(0, 0, 128, 25, EPD_RED);
         } else {
-            g_display->fillRect(0, 0, 296, 20, EPD_WHITE);
+            g_display->fillRect(0, 0, 128, 25, EPD_WHITE);
         }
         
         // Use partial update if available, otherwise full refresh
         #ifdef EPD_SUPPORTS_PARTIAL
-        g_display->displayPartial(0, 296, 0, 20);
+        g_display->displayPartial(0, 128, 0, 25);
         #else
         g_display->display(true);
         #endif
@@ -457,21 +493,23 @@ static void draw_error_screen()
     // Redraw static error screen so user sees persistent state
     vTaskDelay(pdMS_TO_TICKS(500));
     clear_screen();
-    g_display->fillRect(0, 0, 296, 128, EPD_WHITE);
+    g_display->fillRect(0, 0, 128, 296, EPD_WHITE);
 
     set_title_style();
-    g_display->setCursor(40, 20);
+    g_display->setCursor(30, 30);
     g_display->setTextColor(EPD_RED);
     g_display->print("ERROR");
 
     set_header_style();
     g_display->setTextColor(EPD_BLACK);
-    g_display->setCursor(30, 60);
-    g_display->print("Error Code: ");
+    g_display->setCursor(20, 70);
+    g_display->print("Code: ");
     g_display->print(s_errorCode);
 
-    g_display->setCursor(10, 90);
-    g_display->print("Press any button...");
+    g_display->setCursor(10, 100);
+    g_display->print("Press any");
+    g_display->setCursor(10, 115);
+    g_display->print("button...");
 
     g_display->display(true);
 }
@@ -486,20 +524,20 @@ static void draw_complete_screen()
     clear_screen();
 
     set_title_style();
-    g_display->setCursor(10, 20);
-    g_display->print("Test Complete!");
+    g_display->setCursor(15, 30);
+    g_display->print("Complete!");
 
     set_header_style();
-    g_display->setCursor(10, 60);
-    g_display->print("Final Cycle #: ");
+    g_display->setCursor(10, 70);
+    g_display->print("Cycles: ");
     g_display->print(s_currentCycle);
-
-    g_display->setCursor(10, 90);
-    g_display->print("Target: ");
+    g_display->print("/");
     g_display->print(s_settings->cycle_amount);
 
-    g_display->setCursor(10, 110);
-    g_display->print("Press any button");
+    g_display->setCursor(10, 100);
+    g_display->print("Press any");
+    g_display->setCursor(10, 115);
+    g_display->print("button");
 
     g_display->display(true);
 }
@@ -510,12 +548,13 @@ static void update_status_footer()
 
     set_header_style();
     
-    // Clear old footer area
+    // Clear old footer area (bottom of vertical display)
+    // Display is 128 tall, so footer is at bottom
     g_display->fillRect(0, 110, 296, 18, EPD_WHITE);
 
-    g_display->setCursor(5, 122);
+    g_display->setCursor(5, 115);
     if (s_state == UiState::RUNNING || s_state == UiState::PAUSED) {
-        g_display->print("Cycle #: ");
+        g_display->print("Cycle: ");
         g_display->print(s_currentCycle);
         if (s_settings->cycle_amount > 0) {
             g_display->print("/");

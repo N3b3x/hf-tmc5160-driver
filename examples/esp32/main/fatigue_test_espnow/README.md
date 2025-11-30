@@ -12,11 +12,13 @@ The system consists of two ESP32 devices:
    - Supports deep sleep wake from buttons
    - Inactivity timeout for power saving
 
-2. **Test Unit** (`test_unit/`): Fatigue tester that receives commands
+2. **Test Unit** (`test_unit/`): Unified fatigue tester with dual communication
    - Receives commands from UI board via ESP-NOW
-   - Performs bounds finding (StallGuard2 or encoder-based)
+   - Accepts direct commands via UART (for debugging/development)
+   - Performs bounds finding using selectable method (StallGuard2 or encoder-based)
    - Runs sinusoidal fatigue test motion
    - Sends status updates back to UI board
+   - **Unified Implementation**: Combines `fatigue_test_encoder.cpp` and `fatigue_test_stallguard.cpp` with proper C++ abstractions
 
 ## Directory Structure
 
@@ -31,8 +33,12 @@ fatigue_test_espnow/
 │   ├── espnow_protocol.hpp/cpp  # ESP-NOW protocol implementation
 │   └── ui.hpp/cpp               # UI state machine (e-ink display)
 └── test_unit/                    # Fatigue tester code
-    ├── main.cpp                 # Main application
-    └── espnow_receiver.hpp/cpp  # ESP-NOW receiver implementation
+    ├── main.cpp                 # Main application (unified implementation)
+    ├── espnow_receiver.hpp/cpp  # ESP-NOW receiver implementation
+    ├── bounds_finder.hpp        # Abstract bounds finder interface
+    ├── bounds_finder_stallguard.cpp  # StallGuard2 implementation
+    ├── bounds_finder_encoder.cpp     # Encoder-based implementation
+    └── fatigue_motion.hpp       # Unified motion controller interface
 ```
 
 ## ESP-NOW Protocol
@@ -106,12 +112,23 @@ cd examples/esp32
 
 ### Test Unit
 
+The unified test unit is built from `fatigue_test_espnow_unit.cpp` in the main directory:
+
 ```bash
 cd examples/esp32
 ./scripts/build_app.sh fatigue_test_espnow_unit Release
 ```
 
-Note: You'll need to add these app types to your build system.
+**Note**: The main application file (`fatigue_test_espnow_unit.cpp`) includes the full implementation combining:
+- Bounds finding from both `fatigue_test_encoder.cpp` and `fatigue_test_stallguard.cpp`
+- UART command interface (same commands as standalone examples)
+- ESP-NOW communication with UI board
+- Unified `FatigueTestMotion` class
+
+The implementation uses proper C++ abstractions:
+- `IBoundsFinder` interface for bounds detection strategies
+- Factory functions for creating bounds finders
+- Unified motion controller extracted from existing implementations
 
 ## Usage
 
@@ -134,12 +151,14 @@ Note: You'll need to add these app types to your build system.
 - Settings stored in NVS
 
 ### Test Unit
-- ESP-NOW command reception
-- Bounds finding (StallGuard2 or encoder-based)
+- **Dual Communication**: ESP-NOW (wireless) + UART (direct serial)
+- **Dual Bounds Detection**: Selectable StallGuard2 or encoder-based
+- **Unified Motion Controller**: Extracted from `fatigue_test_encoder.cpp` and `fatigue_test_stallguard.cpp`
 - Sinusoidal fatigue test motion
 - Cycle counting
 - Status updates sent to UI board
 - Error handling and reporting
+- **Proper C++ Abstractions**: Interface-based design for extensibility
 
 ## Protocol Details
 
@@ -167,24 +186,53 @@ Note: You'll need to add these app types to your build system.
 
 ### E-ink Display
 
-The UI code includes stubs for e-ink display integration. To integrate with Adafruit ThinkInk:
+The UI code includes **full, production-ready** e-ink display integration for the **2.9" ThinkInk FeatherWing**:
 
-1. Include Adafruit libraries in `ui.cpp`
-2. Implement drawing functions:
-   - `draw_main_screen()`
-   - `draw_settings_screen()`
-   - `draw_error_screen()`
-   - `draw_complete_screen()`
-   - `update_status_footer()`
+- **Vertical Orientation**: Optimized for portrait mode (128x296 pixels)
+- **All Drawing Functions Implemented**:
+  - `draw_main_screen()`: Main UI with settings summary and controls
+  - `draw_settings_screen()`: Settings display with all parameters
+  - `draw_error_screen()`: Error display with slow blinking (e-ink optimized)
+  - `draw_complete_screen()`: Test completion screen
+  - `update_status_footer()`: Dynamic footer with cycle progress
+
+- **E-ink Optimizations**:
+  - Slow refresh rates (2+ seconds for blinking)
+  - Partial update support (when available)
+  - Proper rotation handling (portrait mode)
+  - Compact layout for vertical display
+
+The display is initialized with proper dimensions and rotation in `UI::init()`.
 
 ### Bounds Finding
 
-The test unit includes simplified bounds finding. For full implementation:
+The unified test unit includes **full implementations** of both bounds finding methods:
 
-- **Encoder-based**: See `fatigue_test_encoder.cpp` for complete encoder-based bounds finding
-- **StallGuard2**: See `fatigue_test_stallguard.cpp` for complete StallGuard2-based bounds finding
+- **Encoder-based** (`bounds_finder_encoder.cpp`): Complete implementation extracted from `fatigue_test_encoder.cpp`
+  - Monitors encoder position changes
+  - Detects stalls when encoder stops moving while motor is commanded to move
+  - Handles false stall detection with movement thresholds
 
-The current implementation uses simplified bounds finding. You can replace the `find_bounds_encoder()` and `find_bounds_stallguard()` functions with the full implementations from the respective example files.
+- **StallGuard2** (`bounds_finder_stallguard.cpp`): Complete implementation extracted from `fatigue_test_stallguard.cpp`
+  - Uses TMC51x0 StallGuard2 sensorless detection
+  - Configures SGT threshold for homing
+  - Handles false stall detection with movement thresholds
+
+Both implementations follow the `IBoundsFinder` interface, allowing easy switching between methods. The method is selected via the `bounds_method_stallguard` setting in the UI.
+
+### UART Command Interface
+
+The test unit supports the same UART commands as the standalone fatigue test examples:
+
+- `-f <freq>` / `--freq <freq>`: Set frequency in Hz
+- `-d <min> <max>` / `--dwell <min> <max>`: Set dwell times in ms
+- `-b <min> <max>` / `--bounds <min> <max>`: Set angle bounds in degrees
+- `-c <count>` / `--cycles <count>`: Set target cycle count (0 = infinite)
+- `-a <action>` / `--action <action>`: start, stop, or reset
+- `-s` / `--status`: Show current status
+- `-h` / `--help`: Show help message
+
+This allows direct control and debugging via serial terminal while ESP-NOW handles remote control.
 
 ## Troubleshooting
 
@@ -194,10 +242,39 @@ The current implementation uses simplified bounds finding. You can replace the `
 4. **Display not updating**: Implement e-ink drawing functions
 5. **Bounds finding fails**: Check motor and encoder connections
 
+## Implementation Details
+
+### Unified Architecture
+
+The test unit implementation (`fatigue_test_espnow_unit.cpp`) combines:
+
+1. **Bounds Finding Abstraction**:
+   - `IBoundsFinder` interface defines the contract
+   - `StallGuardBoundsFinder` and `EncoderBoundsFinder` implement the interface
+   - Factory functions create instances: `CreateStallGuardBoundsFinder()`, `CreateEncoderBoundsFinder()`
+
+2. **Motion Controller**:
+   - Unified `FatigueTestMotion` class extracted from existing implementations
+   - Supports both sinusoidal and ramp-based motion
+   - Thread-safe with RAII mutex guards
+   - Cycle counting with center-crossing detection
+
+3. **Command Interface**:
+   - `UartCommandParser` handles UART commands
+   - ESP-NOW commands processed via `EspNowReceiver`
+   - Both interfaces update the same `FatigueTestMotion` instance
+
+### File Organization
+
+- **Main Application**: `fatigue_test_espnow_unit.cpp` (in `main/` directory)
+- **Bounds Finders**: `test_unit/bounds_finder_*.cpp` (implementations)
+- **Motion Controller**: Extracted inline or in separate header
+- **UI Board**: Complete implementation in `ui_board/` directory
+
 ## Future Enhancements
 
-- Full e-ink display integration
-- Settings editing UI
-- Real-time parameter adjustment
-- Data logging
-- Multiple test unit support
+- Settings editing UI (nested menu with value editing)
+- Real-time parameter adjustment via ESP-NOW
+- Data logging to SD card or flash
+- Multiple test unit support (broadcast commands)
+- Web interface for configuration
