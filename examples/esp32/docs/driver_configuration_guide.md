@@ -7,7 +7,7 @@ The TMC51x0 driver (TMC5130 & TMC5160) library uses a **compile-time configurati
 2. **MotorConfig**: Motor-specific parameters (same motor = same config)
 3. **PlatformConfig**: Platform/application-specific parameters (reference switches, encoder, mechanical system)
 
-All configurations are defined in `esp32_tmc5160_test_config.hpp` and automatically converted to driver register values during initialization.
+All configurations are defined in `esp32_tmc51x0_test_config.hpp` and automatically converted to driver register values during initialization.
 
 ## Configuration Hierarchy
 
@@ -21,7 +21,7 @@ All configurations are defined in `esp32_tmc5160_test_config.hpp` and automatica
 - Power stage MOSFET characteristics (Miller charge, BBM time)
 - Short protection defaults
 
-**Location**: `BoardConfig` namespace in `esp32_tmc5160_test_config.hpp`
+**Location**: `BoardConfig` namespace in `esp32_tmc51x0_test_config.hpp`
 
 ### 2. MotorConfig (Motor-Specific)
 
@@ -32,7 +32,7 @@ All configurations are defined in `esp32_tmc5160_test_config.hpp` and automatica
 - StealthChop settings (PWM frequency, offset, autoscale)
 - Motor-specific gear ratio (if motor has integrated gearbox)
 
-**Location**: `MotorConfig_*` namespaces in `esp32_tmc5160_test_config.hpp`
+**Location**: `MotorConfig_*` namespaces in `esp32_tmc51x0_test_config.hpp`
 
 ### 3. PlatformConfig (Platform/Application-Specific)
 
@@ -43,7 +43,7 @@ All configurations are defined in `esp32_tmc5160_test_config.hpp` and automatica
 - Mechanical system type (DirectDrive, LeadScrew, BeltDrive, Gearbox)
 - Lead screw pitch, belt parameters (if applicable)
 
-**Location**: `PlatformConfig` namespace in `esp32_tmc5160_test_config.hpp`
+**Location**: `PlatformConfig` namespace in `esp32_tmc51x0_test_config.hpp`
 
 ## Key Concepts
 
@@ -86,32 +86,41 @@ The driver **automatically calculates** IRUN, IHOLD, and GLOBAL_SCALER from moto
 ## Usage Example
 
 ```cpp
-#include "esp32_tmc5160_test_config.hpp"
+#include "esp32_tmc51x0_test_config.hpp"
 
-// Select motor, board, and platform at compile time
-static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
-    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
-static constexpr tmc5160_test_config::BoardType SELECTED_BOARD = 
-    tmc5160_test_config::BoardType::BOARD_TMC5160_EVAL;  // or BOARD_TMC5160_BOB
-static constexpr tmc5160_test_config::PlatformType SELECTED_PLATFORM = 
-    tmc5160_test_config::PlatformType::PLATFORM_TEST_RIG;
+// Recommended: Use test rig selection (automatically configures motor, board, and platform)
+static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
+    tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER;
+
+// Configure driver from test rig
+tmc51x0::DriverConfig cfg{};
+tmc51x0_test_config::ConfigureDriverFromTestRig<SELECTED_TEST_RIG>(cfg);
+driver.Initialize(cfg);
+
+// Alternative: Manual selection (for advanced use cases)
+static constexpr tmc51x0_test_config::MotorType SELECTED_MOTOR = 
+    tmc51x0_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+static constexpr tmc51x0_test_config::BoardType SELECTED_BOARD = 
+    tmc51x0_test_config::BoardType::BOARD_TMC51x0_EVAL;
+static constexpr tmc51x0_test_config::PlatformType SELECTED_PLATFORM = 
+    tmc51x0_test_config::PlatformType::PLATFORM_CORE_DRIVER_TEST_RIG;
 
 // 1. Configure motor
 tmc51x0::DriverConfig cfg{};
 
-if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
-    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
-} else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
-    tmc5160_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
-} else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
-    tmc5160_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
+if constexpr (SELECTED_MOTOR == tmc51x0_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    tmc51x0_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+} else if constexpr (SELECTED_MOTOR == tmc51x0_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    tmc51x0_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
+} else if constexpr (SELECTED_MOTOR == tmc51x0_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    tmc51x0_test_config::ConfigureDriverFromMotor_AppliedMotion_5034_369(cfg);
 }
 
 // 2. Apply board configuration (sense resistor, supply voltage, MOSFETs, etc.)
-tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
+tmc51x0_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
 
 // 3. Apply platform configuration (mechanical system type, etc.)
-tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
+tmc51x0_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
 
 // 4. Initialize driver (current settings calculated automatically)
 driver.Initialize(cfg);

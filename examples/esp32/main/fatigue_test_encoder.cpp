@@ -1,9 +1,11 @@
 /**
- * @file bounds_finding_sinuous_motion.cpp
- * @brief Fatigue testing platform: Sensorless bounds finding and sinusoidal motion with UART command interface
+ * @file fatigue_test_encoder.cpp
+ * @brief Fatigue testing platform: Back-and-forth motion between bounds using encoder position monitoring
  *
  * This example is designed for cable/strain relief fatigue testing platforms:
- * 1. Finding motor bounds using sensorless homing (both directions)
+ * 1. Finding motor bounds using encoder position monitoring (both directions)
+ *    - Detects stalls when encoder position doesn't change while motor is trying to move
+ *    - More reliable than StallGuard2 for systems with encoders
  * 2. Setting global bounds (hardware limits) and local bounds (oscillation range)
  * 3. Performing pure sinusoidal back-and-forth motion between local bounds with:
  *    - Configurable angle amplitude and frequency
@@ -21,6 +23,7 @@
  * - ESP32 development board
  * - TMC51x0 stepper motor driver
  * - Stepper motor connected to TMC51x0 (see motor selection above)
+ * - Encoder connected to TMC51x0 (required for stall detection)
  * - SPI connection between ESP32 and TMC51x0
  * - Mechanical stops at both ends for bounds finding (optional - handles unbounded)
  * - UART debug port for command interface (typically UART_NUM_0 for USB serial)
@@ -90,7 +93,7 @@ static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG =
 #include <string>
 #include <vector>
 
-static const char* TAG = "FatigueTest";
+static const char* TAG = "FatigueTestEncoder";
 
 //=============================================================================
 // RAII Mutex Classes
@@ -1449,77 +1452,37 @@ extern "C" void app_main() {
 
   ESP_LOGI(TAG, "Driver initialized successfully");
 
-  // CRITICAL: StallGuard2 ONLY works in SpreadCycle mode (en_stealthchop_mode=0)!
-  // Explicitly enable SpreadCycle mode for sensorless homing
-  tmc51x0::GlobalConfig gconf_read;
-  if (!driver.motorControl.GetGlobalConfig(gconf_read)) {
-    ESP_LOGE(TAG, "Failed to read GCONF register");
+  // Configure encoder for bounds finding
+  // Encoder is required for this example - it's used to detect stalls by monitoring position changes
+  ESP_LOGI(TAG, "Configuring encoder for bounds finding...");
+  
+  // Get encoder configuration from platform config
+  tmc51x0::EncoderConfig enc_cfg = 
+      tmc51x0_test_config::GetTestRigEncoderConfig<SELECTED_TEST_RIG>();
+  
+  if (!driver.encoder.Configure(enc_cfg)) {
+    ESP_LOGE(TAG, "Failed to configure encoder");
     return;
   }
   
-  // Always ensure SpreadCycle is enabled (en_stealthchop_mode = 0)
-  if (gconf_read.en_stealthchop_mode) {
-    ESP_LOGW(TAG, "StealthChop is enabled - switching to SpreadCycle mode for StallGuard2");
-    if (!driver.motorControl.SetStealthChopEnabled(false)) {
-      ESP_LOGE(TAG, "Failed to enable SpreadCycle mode");
-      return;
-    }
-    vTaskDelay(pdMS_TO_TICKS(100)); // Small delay for mode switch
-  } else {
-    ESP_LOGI(TAG, "Already in SpreadCycle mode - verifying for StallGuard2");
+  // Set encoder resolution
+  bool enc_res_ok = driver.encoder.SetResolution(
+      tmc51x0_test_config::GetTestRigEncoderPulsesPerRev<SELECTED_TEST_RIG>(),
+      tmc51x0_test_config::GetTestRigEncoderInvertDirection<SELECTED_TEST_RIG>());
+  
+  if (!enc_res_ok) {
+    ESP_LOGW(TAG, "Encoder resolution set with approximation");
   }
   
-  // Verify SpreadCycle is enabled
-  if (driver.motorControl.GetGlobalConfig(gconf_read)) {
-    if (!gconf_read.en_stealthchop_mode) {
-      ESP_LOGI(TAG, "✓ SpreadCycle mode confirmed enabled (en_stealthchop_mode=0) - StallGuard2 ready");
-    } else {
-      ESP_LOGE(TAG, "✗ CRITICAL: SpreadCycle mode NOT enabled!");
-      return;
-    }
-  } else {
-    ESP_LOGW(TAG, "Could not verify SpreadCycle mode - proceeding anyway");
-  }
-
-  // CRITICAL: Set TCOOLTHRS and THIGH BEFORE configuring StallGuard2
-  // TCOOLTHRS = velocity threshold below which StallGuard2 is disabled
-  // For homing, we want StallGuard2 active at search speed, so set appropriately
-  // Setting to a low value ensures StallGuard2 is active at search speeds
-  if (driver.motorControl.SetCoolStepThreshold(1000.0f, tmc51x0::Unit::Steps)) {
-    ESP_LOGI(TAG, "✓ TCOOLTHRS set to 1000 - StallGuard2 active at search speeds");
-  } else {
-    ESP_LOGE(TAG, "✗ Failed to set TCOOLTHRS");
-  }
+  ESP_LOGI(TAG, "✓ Encoder configured successfully");
   
-  // THIGH = velocity threshold for chopper mode switching (set high to avoid interference)
-  if (driver.motorControl.SetHighSpeedThreshold(1048575.0f, tmc51x0::Unit::Steps)) { // 0xFFFFF
-    ESP_LOGI(TAG, "✓ THIGH set to maximum (0xFFFFF)");
-  } else {
-    ESP_LOGW(TAG, "Failed to set THIGH (may not be critical)");
-  }
-
-  // Configure StallGuard2 for bounds finding using test defaults
-  // NOTE: SGT threshold tuning guide:
-  //   - Lower values (-64 to 0) = More sensitive (stops easier, more false positives)
-  //   - Higher values (0 to +63) = Less sensitive (needs more force to stop, fewer false positives)
-  //   - For free-rotating motors with no mechanical stops, use higher values (0 to +20)
-  //   - For motors with mechanical stops, use lower values (-20 to 0)
-  //   - If getting false stalls (SG_RESULT=0 during normal motion), INCREASE SGT value
-  tmc51x0::StallGuardConfig sg_config{};
-  sg_config.threshold = Test::StallGuard::SGT_HOMING; 
-  sg_config.enable_filter = Test::StallGuard::FILTER_ENABLED;
-  // Note: semin/semax are CoolStep parameters, configure separately if needed
-
-  ESP_LOGI(TAG, "Configuring StallGuard2: threshold=%d (lower=more sensitive, higher=less sensitive)", 
-           static_cast<int>(sg_config.threshold));
-  if (sg_config.threshold < 0) {
-    ESP_LOGW(TAG, "  Note: Threshold is negative (sensitive) - may cause false stalls on free-rotating motors");
-    ESP_LOGW(TAG, "  Consider increasing threshold to 0 or +10 if experiencing false stalls");
-  }
-  if (!driver.diagnostics.ConfigureStallGuard(sg_config)) {
-    ESP_LOGE(TAG, "Failed to configure StallGuard2");
+  // Verify encoder is working by reading position
+  int32_t enc_pos_test = 0;
+  if (!driver.encoder.GetPosition(enc_pos_test)) {
+    ESP_LOGE(TAG, "Failed to read encoder position - encoder may not be connected!");
     return;
   }
+  ESP_LOGI(TAG, "Encoder position read successfully: %ld", enc_pos_test);
 
   // Enable motor
   if (!driver.motorControl.Enable()) {
@@ -1528,10 +1491,6 @@ extern "C" void app_main() {
   }
 
   ESP_LOGI(TAG, "Motor enabled");
-  
-  // Ensure clean state before homing - clear any existing stall flags
-  driver.diagnostics.ClearStallFlag();
-  ESP_LOGI(TAG, "Cleared any existing stall flags");
 
   // Configure motor parameters for unit conversions
   // Steps per output revolution = Motor Full Steps * Gear Ratio * Microsteps
@@ -1539,10 +1498,10 @@ extern "C" void app_main() {
   float steps_per_rev = static_cast<float>(output_full_steps) * 256.0f; 
   
   // ============================================================
-  // STEP 1: Find global bounds using positioning mode with StallGuard2 stop
+  // STEP 1: Find global bounds using positioning mode with encoder-based stall detection
   // ============================================================
   ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
-  ESP_LOGI(TAG, "║                    STEP 1: Finding Global Bounds                            ║");
+  ESP_LOGI(TAG, "║                    STEP 1: Finding Global Bounds (Encoder-Based)            ║");
   ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
 
   // Calculate 360 degrees in steps (one full output revolution)
@@ -1632,83 +1591,17 @@ extern "C" void app_main() {
     }
   }
   
-  // Enable StallGuard2 stop for automatic stall detection in positioning mode
-  // IMPORTANT: Must preserve reference switch disable settings from above
-  // Per datasheet SW_MODE register (0x34):
-  //   Bit 10 (sg_stop): 1 = Enable stop by StallGuard2
-  //   Bit 11 (en_softstop): 0 = Hard stop (REQUIRED for StallGuard2)
-  //   Datasheet: "Attention: Do not use soft stop in combination with StallGuard2"
-  // Note: Reference switches are already disabled via ConfigureReferenceSwitch above
-  if (!driver.diagnostics.EnableStopOnStall(true)) {
-    ESP_LOGE(TAG, "Failed to enable StallGuard2 stop");
+  // Encoder-based stall detection doesn't require StallGuard2 configuration
+  // We'll monitor encoder position changes to detect when motor is stuck
+  ESP_LOGI(TAG, "Using encoder-based stall detection (no StallGuard2 required)");
+  
+  // Read initial encoder position for baseline
+  int32_t enc_pos_baseline = 0;
+  if (!driver.encoder.GetPosition(enc_pos_baseline)) {
+    ESP_LOGE(TAG, "Failed to read initial encoder position");
     return;
   }
-  
-  // Verify SW_MODE was written correctly per datasheet requirements
-  // Ensure hard stop mode (required for StallGuard2)
-  if (!driver.rampControl.SetStopMode(tmc51x0::ReferenceStopMode::HARD_STOP)) {
-    ESP_LOGE(TAG, "Failed to set hard stop mode");
-  }
-  
-  // Verify configuration
-  tmc51x0::ReferenceSwitchConfig verify_ref_cfg{};
-  if (driver.rampControl.GetReferenceSwitchConfig(verify_ref_cfg)) {
-    ESP_LOGI(TAG, "SW_MODE register verification:");
-    ESP_LOGI(TAG, "  stop_l_enable: %d, stop_r_enable: %d", 
-             verify_ref_cfg.left_switch_stop_enable ? 1 : 0, 
-             verify_ref_cfg.right_switch_stop_enable ? 1 : 0);
-    ESP_LOGI(TAG, "  stop_mode: %s (HARD_STOP required for StallGuard2)", 
-             (verify_ref_cfg.stop_mode == tmc51x0::ReferenceStopMode::SOFT_STOP) ? "SOFT_STOP" : "HARD_STOP");
-    
-    if (verify_ref_cfg.stop_mode == tmc51x0::ReferenceStopMode::SOFT_STOP) {
-      ESP_LOGE(TAG, "✗ CRITICAL: Soft stop is enabled! Datasheet says 'Do not use soft stop in combination with StallGuard2'!");
-      ESP_LOGE(TAG, "  This will cause incorrect behavior. Fixing...");
-      driver.rampControl.SetStopMode(tmc51x0::ReferenceStopMode::HARD_STOP);
-    } else {
-      ESP_LOGI(TAG, "✓ Hard stop enabled (correct for StallGuard2)");
-    }
-    
-    if (verify_ref_cfg.left_switch_stop_enable || verify_ref_cfg.right_switch_stop_enable) {
-      ESP_LOGE(TAG, "✗ Reference switches are still enabled! This will block motion!");
-    } else {
-      ESP_LOGI(TAG, "✓ Reference switches disabled (stop_l_enable=0, stop_r_enable=0)");
-    }
-  } else {
-    ESP_LOGW(TAG, "Failed to verify SW_MODE register");
-  }
-  
-  // Verify sg_stop is enabled (via EnableStopOnStall)
-  ESP_LOGI(TAG, "✓ StallGuard2 stop enabled (sg_stop=1)");
-  
-  // Clear any existing stall flags and verify they're cleared
-  if (!driver.diagnostics.ClearStallFlag()) {
-    ESP_LOGE(TAG, "Failed to clear stall flags");
-    return;
-  }
-  
-  // Verify stall flag is cleared
-  vTaskDelay(pdMS_TO_TICKS(50)); // Small delay for register write
-  if (driver.diagnostics.IsStallDetected()) {
-    ESP_LOGW(TAG, "Warning: Stall flag still set after clear attempt");
-  }
-  
-  // Read initial SG_RESULT for baseline diagnostics
-  uint16_t sg_result_baseline = 0;
-  if (driver.diagnostics.GetStallGuardResult(sg_result_baseline)) {
-    ESP_LOGI(TAG, "Initial SG_RESULT baseline: %d (at standstill)", sg_result_baseline);
-  } else {
-    if (!driver.diagnostics.GetStallGuard(sg_result_baseline)) {
-      sg_result_baseline = 0; // Fallback if read fails
-    }
-    ESP_LOGI(TAG, "Initial SG_RESULT baseline: %d (at standstill)", sg_result_baseline);
-  }
-  if (sg_result_baseline == 0) {
-    ESP_LOGE(TAG, "⚠️ CRITICAL: SG_RESULT=0 at standstill indicates:");
-    ESP_LOGE(TAG, "  1. Motor wiring may be incorrect (phases swapped)");
-    ESP_LOGE(TAG, "  2. Motor current too high (try reducing IRUN)");
-    ESP_LOGE(TAG, "  3. StallGuard2 threshold needs adjustment (SGT too sensitive)");
-    ESP_LOGE(TAG, "  Current SGT=%d - consider increasing to 0 or +10", Test::StallGuard::SGT_HOMING);
-  }
+  ESP_LOGI(TAG, "Initial encoder position baseline: %ld", enc_pos_baseline);
   
   // Configure positioning mode parameters
   // CRITICAL: Ensure motor is stopped before changing RAMPMODE
@@ -1878,7 +1771,7 @@ extern "C" void app_main() {
     }
   }
   
-  // Wait for motion to complete (either target reached or stall detected)
+  // Wait for motion to complete (either target reached or stall detected via encoder)
   bool max_stall_detected = false;
   bool max_reached_360 = false;
   uint32_t max_start_time = esp_timer_get_time() / 1000;
@@ -1893,8 +1786,12 @@ extern "C" void app_main() {
   uint32_t last_position_check_time = max_start_time;
   constexpr int32_t MIN_MOVEMENT_FOR_VALID_STALL = 5000; // Must move at least 5000 steps (~7°) before stall is valid
   constexpr int32_t MIN_MOVEMENT_FOR_STALL_CHECK = 2000; // Don't even check for stalls until motor moves this much
-  uint32_t last_sg_result_time = max_start_time;
-  uint16_t last_sg_result = sg_result_baseline;
+  
+  // Encoder-based stall detection variables
+  int32_t last_encoder_position = enc_pos_baseline;
+  uint32_t last_encoder_change_time = max_start_time;
+  constexpr uint32_t ENCODER_STALL_TIMEOUT_MS = 300; // If encoder doesn't change for 300ms while motor is trying to move, it's a stall
+  constexpr int32_t ENCODER_MIN_CHANGE_THRESHOLD = 5; // Minimum encoder position change to consider movement (in encoder counts)
   bool motion_started = false;
   
   while (true) {
@@ -1905,13 +1802,6 @@ extern "C" void app_main() {
       break;
     }
     
-    // Check if target reached (no stall, reached 360°)
-    if (driver.rampControl.IsTargetReached()) {
-      max_reached_360 = true;
-      ESP_LOGI(TAG, "Reached +360° target - no stall detected");
-      break;
-    }
-    
     // Check current position to verify motor is actually moving
     float current_pos_float = 0.0f;
     if (!driver.rampControl.GetCurrentPosition(current_pos_float, tmc51x0::Unit::Steps)) {
@@ -1919,6 +1809,26 @@ extern "C" void app_main() {
     }
     int32_t current_pos = static_cast<int32_t>(current_pos_float);
     int32_t position_delta = current_pos - start_position;
+    
+    // CRITICAL SAFETY CHECK: Never rotate more than 360° from start position
+    // This prevents excessive rotation that could damage cables or mechanical systems
+    if (position_delta > steps_per_360_deg) {
+      ESP_LOGE(TAG, "⚠️ SAFETY LIMIT: Motor rotated %.2f° (exceeds 360° limit) - STOPPING IMMEDIATELY!",
+               tmc51x0::StepsToDegrees(position_delta, steps_per_rev));
+      ESP_LOGE(TAG, "  Position delta: %ld steps (limit: %ld steps)", position_delta, steps_per_360_deg);
+      driver.rampControl.Stop();
+      vTaskDelay(pdMS_TO_TICKS(200));
+      max_reached_360 = true; // Treat as reached 360° to use default bounds
+      ESP_LOGI(TAG, "Using -175° to +175° bounds (safety limit reached)");
+      break;
+    }
+    
+    // Check if target reached (no stall, reached 360°)
+    if (driver.rampControl.IsTargetReached()) {
+      max_reached_360 = true;
+      ESP_LOGI(TAG, "Reached +360° target - no stall detected");
+      break;
+    }
     uint32_t current_time = esp_timer_get_time() / 1000;
     float vactual = 0.0f;
     if (!driver.rampControl.GetCurrentSpeed(vactual, tmc51x0::Unit::Steps)) {
@@ -1931,132 +1841,84 @@ extern "C" void app_main() {
       ESP_LOGI(TAG, "Motion started: position=%ld, speed=%.1f steps/s", current_pos, vactual);
     }
     
-    // Check for stall stop event unconditionally
-    // We must check this even if movement is small, because a stall might have stopped us immediately
-    bool stall_event = driver.diagnostics.IsStallDetected();
+    // Encoder-based stall detection: Check if encoder position is changing
+    int32_t current_encoder_position = 0;
+    bool encoder_read_ok = driver.encoder.GetPosition(current_encoder_position);
     
-    // ALSO check SG_RESULT directly as fallback (sg_stop might not always set event_stop_sg flag)
-    // If SG_RESULT=0 and motor is moving, it's a stall condition
-    uint16_t sg_result_check = 0;
-    bool sg_result_stall = false;
-    if (driver.diagnostics.GetStallGuardResult(sg_result_check)) {
-      // SG_RESULT=0 means maximum load/stall, and motor should be moving for it to be valid
-      if (sg_result_check == 0 && std::abs(vactual) > 1000.0f) {
-        sg_result_stall = true;
-        ESP_LOGW(TAG, "⚠️ SG_RESULT=0 detected (stall condition) at V=%.1f steps/s, but event_stop_sg flag not set!", vactual);
-      }
-    }
-    
-    // If stall event detected OR SG_RESULT=0, verify it's a real stall
-    if (stall_event || sg_result_stall) {
-      // Read DRV_STATUS to get SG_RESULT for diagnostics
-      uint32_t drv_status_val = 0;
-      uint16_t sg_result = 0;
-      bool motor_moving = false;
-      if (driver.diagnostics.GetStallGuardResult(sg_result)) {
-        // Check if motor is moving by checking velocity
-        motor_moving = (std::abs(vactual) > 100.0f);
-      }
+    if (encoder_read_ok) {
+      int32_t encoder_change = std::abs(current_encoder_position - last_encoder_position);
       
-      // If detected via SG_RESULT=0 (not flag), manually stop the motor
-      if (sg_result_stall && !stall_event) {
-        ESP_LOGW(TAG, "⚠️ Stall detected via SG_RESULT=0 (event_stop_sg flag not set) - sg_stop may not be working!");
-        ESP_LOGW(TAG, "  Position=%ld, VACTUAL=%.1f steps/s, SG_RESULT=%d", current_pos, vactual, sg_result);
-        ESP_LOGW(TAG, "  Manually stopping motor due to SG_RESULT=0...");
-        // Manually stop the motor since sg_stop didn't work
-        driver.rampControl.Stop();
-        vTaskDelay(pdMS_TO_TICKS(200)); // Wait for stop to take effect
-        // Re-read velocity to confirm stop
-        if (!driver.rampControl.GetCurrentSpeed(vactual, tmc51x0::Unit::Steps)) {
-          vactual = 0.0f;
-        }
-        ESP_LOGI(TAG, "  After manual stop: VACTUAL=%.1f steps/s", vactual);
-      }
-      
-      // Check if motor is actually moving (not already stopped)
-      if (std::abs(vactual) < 10.0f && motor_moving) {
-        ESP_LOGW(TAG, "Stall event but motor appears stopped (VACTUAL=%.1f) - may be false stall", vactual);
-      }
-      
-      // Check if motor has moved enough to consider stall valid
-      if (position_delta < MIN_MOVEMENT_FOR_VALID_STALL) {
-        ESP_LOGW(TAG, "⚠️ Stall event detected but motor hasn't moved enough (%ld steps < %d) - IGNORING FALSE STALL", 
-                 position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
-        ESP_LOGW(TAG, "  Diagnostics: SG_RESULT=%d (baseline=%d), VACTUAL=%.1f steps/s, position=%ld", 
-                 sg_result, sg_result_baseline, vactual, current_pos);
-        ESP_LOGW(TAG, "  SGT threshold=%d (lower=more sensitive) - consider increasing if false stalls persist", 
-                 Test::StallGuard::SGT_HOMING);
-        ESP_LOGW(TAG, "  Clearing stall flag and continuing search...");
-        
-        // Clear the stall event flag and continue
-        if (!driver.diagnostics.ClearStallFlag()) {
-          ESP_LOGE(TAG, "Failed to clear stall flag!");
-        }
-        
-        // CRITICAL: Stall events can force RAMPMODE to HOLD - ensure it's back to POSITIONING
-        tmc51x0::RampMode rampmode_check = tmc51x0::RampMode::HOLD;
-        if (driver.rampControl.GetRampMode(rampmode_check)) {
-          if (rampmode_check != tmc51x0::RampMode::POSITIONING) {
-            ESP_LOGW(TAG, "  Stall event forced RAMPMODE to HOLD - resetting to POSITIONING...");
-            driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-            vTaskDelay(pdMS_TO_TICKS(50));
+      // Check if encoder position has changed significantly
+      if (encoder_change >= ENCODER_MIN_CHANGE_THRESHOLD) {
+        // Encoder is moving - reset stall timer
+        last_encoder_change_time = current_time;
+        last_encoder_position = current_encoder_position;
+      } else {
+        // Encoder position hasn't changed - check if motor is trying to move
+        // Only consider it a stall if motor is commanded to move (VACTUAL > threshold)
+        if (std::abs(vactual) > 500.0f && motion_started) {
+          // Motor is trying to move but encoder isn't changing
+          uint32_t time_since_encoder_change = current_time - last_encoder_change_time;
+          
+          if (time_since_encoder_change >= ENCODER_STALL_TIMEOUT_MS) {
+            // Encoder hasn't changed for ENCODER_STALL_TIMEOUT_MS while motor is trying to move
+            // This indicates a stall condition
+            
+            // Check if motor has moved enough to consider stall valid
+            if (position_delta < MIN_MOVEMENT_FOR_VALID_STALL) {
+              ESP_LOGW(TAG, "⚠️ Encoder stall detected but motor hasn't moved enough (%ld steps < %d) - IGNORING FALSE STALL", 
+                       position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
+              ESP_LOGW(TAG, "  Encoder position: %ld (no change for %lu ms), VACTUAL=%.1f steps/s", 
+                       current_encoder_position, time_since_encoder_change, vactual);
+              ESP_LOGW(TAG, "  Resetting encoder stall timer and continuing search...");
+              
+              // Reset encoder stall timer and continue
+              last_encoder_change_time = current_time;
+              continue;
+            }
+            
+            // Motor has moved enough - this is likely a real stall
+            max_stall_detected = true;
+            ESP_LOGI(TAG, "✓ Encoder-based stall detected during maximum bound search!");
+            ESP_LOGI(TAG, "  Motor position moved: %ld steps from start (threshold: %d)", 
+                     position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
+            ESP_LOGI(TAG, "  Encoder position: %ld (no change for %lu ms)", 
+                     current_encoder_position, time_since_encoder_change);
+            ESP_LOGI(TAG, "  VACTUAL=%.1f steps/s, elapsed=%lu ms", vactual, elapsed);
+            
+            // Stop the motor
+            driver.rampControl.Stop();
+            vTaskDelay(pdMS_TO_TICKS(200)); // Wait for stop to take effect
+            break;
           }
-        }
-        
-        // Verify stall flag cleared
-        vTaskDelay(pdMS_TO_TICKS(50));
-        uint32_t ramp_stat_after = 0;
-        if (driver.diagnostics.GetRampStatusRegister(ramp_stat_after)) {
-          tmc51x0::RAMP_STAT_Register after{};
-          after.value = ramp_stat_after;
-          if (after.bits.event_stop_sg) {
-            ESP_LOGE(TAG, "CRITICAL: Stall flag still set after clear - possible race condition!");
-          } else {
-            ESP_LOGI(TAG, "✓ Stall flag cleared successfully");
-          }
-        }
-        
-        continue; // Continue searching, don't break
-      }
-      
-      // Motor has moved enough - this is likely a real stall
-      max_stall_detected = true;
-      ESP_LOGI(TAG, "✓ Stall detected during maximum bound search!");
-      ESP_LOGI(TAG, "  Position moved: %ld steps from start (threshold: %d)", 
-               position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
-      ESP_LOGI(TAG, "  SG_RESULT=%d (baseline=%d, lower=more load, 0=highest load)", 
-               sg_result, sg_result_baseline);
-      ESP_LOGI(TAG, "  VACTUAL=%.1f steps/s, elapsed=%lu ms", vactual, elapsed);
-      break;
-    }
-    
-    // Monitor SG_RESULT periodically for diagnostics
-    if (current_time - last_sg_result_time >= 200) {
-      uint16_t current_sg = 0;
-      if (driver.diagnostics.GetStallGuardResult(current_sg)) {
-        if (current_sg != last_sg_result) {
-          ESP_LOGI(TAG, "  SG_RESULT changed: %d -> %d (position=%ld, speed=%.1f)", 
-                   last_sg_result, current_sg, current_pos, vactual);
-          last_sg_result = current_sg;
+        } else {
+          // Motor is not trying to move (or hasn't started yet) - reset encoder stall timer
+          last_encoder_change_time = current_time;
         }
       }
-      last_sg_result_time = current_time;
+    } else {
+      ESP_LOGW(TAG, "Failed to read encoder position - continuing with motor position only");
     }
     
     // Log position progress periodically (every 500ms)
     if (current_time - last_position_check_time >= 500) {
       int32_t position_change = current_pos - last_position;
-      ESP_LOGI(TAG, "  Progress: position=%ld (+%ld from start, +%ld since last), speed=%.1f steps/s, elapsed=%lu ms",
-               current_pos, position_delta, position_change, vactual, elapsed);
+      int32_t encoder_change = encoder_read_ok ? (current_encoder_position - last_encoder_position) : 0;
+      ESP_LOGI(TAG, "  Progress: position=%ld (+%ld from start, +%ld since last), encoder=%ld (+%ld), speed=%.1f steps/s, elapsed=%lu ms",
+               current_pos, position_delta, position_change, 
+               encoder_read_ok ? current_encoder_position : 0, encoder_change, vactual, elapsed);
       
       // Check if motor is stuck (position not changing but should be moving)
       if (motion_started && std::abs(position_change) < 50 && std::abs(vactual) < 100.0f && elapsed > 1000) {
-        ESP_LOGW(TAG, "  ⚠️ Motor appears stuck: position change=%ld steps, speed=%.1f steps/s", 
-                 position_change, vactual);
+        ESP_LOGW(TAG, "  ⚠️ Motor appears stuck: position change=%ld steps, encoder change=%ld, speed=%.1f steps/s", 
+                 position_change, encoder_change, vactual);
       }
       
       last_position_check_time = current_time;
       last_position = current_pos;
+      if (encoder_read_ok) {
+        last_encoder_position = current_encoder_position;
+      }
     }
     
     vTaskDelay(pdMS_TO_TICKS(10)); // Poll every 10ms
@@ -2094,17 +1956,20 @@ extern "C" void app_main() {
   }
   
   // ============================================================
-  // Find minimum bound: Command to -360° and detect stall
+  // Find minimum bound: Command to -360° and detect stall via encoder
   // ============================================================
   ESP_LOGI(TAG, "Finding minimum bound: Commanding to -360° (%ld steps)...", -steps_per_360_deg);
   
-  // Clear stall flag before starting
-  // Clear any existing stall flags before starting
-  driver.diagnostics.ClearStallFlag();
+  // Read encoder position before starting minimum bound search
+  int32_t min_enc_pos_baseline = 0;
+  if (!driver.encoder.GetPosition(min_enc_pos_baseline)) {
+    ESP_LOGW(TAG, "Failed to read encoder position before minimum search - using motor position only");
+    min_enc_pos_baseline = enc_pos_baseline; // Fallback to previous baseline
+  }
   
   driver.rampControl.SetTargetPosition(static_cast<float>(-steps_per_360_deg), tmc51x0::Unit::Steps);
   
-  // Wait for motion to complete (either target reached or stall detected)
+  // Wait for motion to complete (either target reached or stall detected via encoder)
   bool min_stall_detected = false;
   bool min_reached_360 = false;
   uint32_t min_start_time = esp_timer_get_time() / 1000;
@@ -2115,8 +1980,10 @@ extern "C" void app_main() {
   int32_t min_start_position = static_cast<int32_t>(min_start_pos_float);
   int32_t min_last_position = min_start_position;
   uint32_t min_last_position_check_time = min_start_time;
-  uint32_t min_last_sg_result_time = min_start_time;
-  uint16_t min_last_sg_result = sg_result_baseline;
+  
+  // Encoder-based stall detection variables for minimum bound search
+  int32_t min_last_encoder_position = min_enc_pos_baseline;
+  uint32_t min_last_encoder_change_time = min_start_time;
   bool min_motion_started = false;
   
   while (true) {
@@ -2127,13 +1994,6 @@ extern "C" void app_main() {
       break;
     }
     
-    // Check if target reached (no stall, reached -360°)
-    if (driver.rampControl.IsTargetReached()) {
-      min_reached_360 = true;
-      ESP_LOGI(TAG, "Reached -360° target - no stall detected");
-      break;
-    }
-    
     // Check current position to verify motor is actually moving
     float current_pos_float = 0.0f;
     if (!driver.rampControl.GetCurrentPosition(current_pos_float, tmc51x0::Unit::Steps)) {
@@ -2141,6 +2001,26 @@ extern "C" void app_main() {
     }
     int32_t current_pos = static_cast<int32_t>(current_pos_float);
     int32_t position_delta = std::abs(current_pos - min_start_position);
+    
+    // CRITICAL SAFETY CHECK: Never rotate more than 360° from start position
+    // This prevents excessive rotation that could damage cables or mechanical systems
+    if (position_delta > steps_per_360_deg) {
+      ESP_LOGE(TAG, "⚠️ SAFETY LIMIT: Motor rotated %.2f° (exceeds 360° limit) - STOPPING IMMEDIATELY!",
+               tmc51x0::StepsToDegrees(position_delta, steps_per_rev));
+      ESP_LOGE(TAG, "  Position delta: %ld steps (limit: %ld steps)", position_delta, steps_per_360_deg);
+      driver.rampControl.Stop();
+      vTaskDelay(pdMS_TO_TICKS(200));
+      min_reached_360 = true; // Treat as reached 360° to use default bounds
+      ESP_LOGI(TAG, "Using -175° to +175° bounds (safety limit reached)");
+      break;
+    }
+    
+    // Check if target reached (no stall, reached -360°)
+    if (driver.rampControl.IsTargetReached()) {
+      min_reached_360 = true;
+      ESP_LOGI(TAG, "Reached -360° target - no stall detected");
+      break;
+    }
     uint32_t current_time = esp_timer_get_time() / 1000;
     float vactual = 0.0f;
     if (!driver.rampControl.GetCurrentSpeed(vactual, tmc51x0::Unit::Steps)) {
@@ -2153,104 +2033,84 @@ extern "C" void app_main() {
       ESP_LOGI(TAG, "Motion started: position=%ld, speed=%.1f steps/s", current_pos, vactual);
     }
     
-    // Check for stall stop event unconditionally
-    bool stall_event = driver.diagnostics.IsStallDetected();
+    // Encoder-based stall detection: Check if encoder position is changing
+    int32_t current_encoder_position = 0;
+    bool encoder_read_ok = driver.encoder.GetPosition(current_encoder_position);
     
-    // If stall event detected, verify it's a real stall
-    if (stall_event) {
-      // Read SG_RESULT for diagnostics
-      uint16_t sg_result = 0;
-      bool motor_moving = false;
-      if (driver.diagnostics.GetStallGuardResult(sg_result)) {
-        // Check if motor is moving by checking velocity
-        motor_moving = (std::abs(vactual) > 100.0f);
-      }
+    if (encoder_read_ok) {
+      int32_t encoder_change = std::abs(current_encoder_position - min_last_encoder_position);
       
-      // Check if motor is actually moving
-      if (std::abs(vactual) < 10.0f && motor_moving) {
-        ESP_LOGW(TAG, "Stall event but motor appears stopped (VACTUAL=%.1f) - may be false stall", vactual);
-      }
-      
-      // Check if motor has moved enough to consider stall valid
-      if (position_delta < MIN_MOVEMENT_FOR_VALID_STALL) {
-        ESP_LOGW(TAG, "⚠️ Stall event detected but motor hasn't moved enough (%ld steps < %d) - IGNORING FALSE STALL", 
-                 position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
-        ESP_LOGW(TAG, "  Diagnostics: SG_RESULT=%d (baseline=%d), VACTUAL=%.1f steps/s, position=%ld", 
-                 sg_result, sg_result_baseline, vactual, current_pos);
-        ESP_LOGW(TAG, "  SGT threshold=%d (lower=more sensitive) - consider increasing if false stalls persist", 
-                 Test::StallGuard::SGT_HOMING);
-        ESP_LOGW(TAG, "  Clearing stall flag and continuing search...");
-        
-        // Clear the stall event flag and continue
-        constexpr uint32_t CLEAR_STALL_BIT = 0x01; // event_stop_sg bit
-        if (!driver.diagnostics.ClearRampStatus(CLEAR_STALL_BIT)) {
-          ESP_LOGE(TAG, "Failed to clear stall flag!");
-        }
-        
-        // CRITICAL: Stall events can force RAMPMODE to HOLD - ensure it's back to POSITIONING
-        tmc51x0::RampMode rampmode_check = tmc51x0::RampMode::HOLD;
-        if (driver.rampControl.GetRampMode(rampmode_check)) {
-          if (rampmode_check != tmc51x0::RampMode::POSITIONING) {
-            ESP_LOGW(TAG, "  Stall event forced RAMPMODE to HOLD - resetting to POSITIONING...");
-            driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-            vTaskDelay(pdMS_TO_TICKS(50));
+      // Check if encoder position has changed significantly
+      if (encoder_change >= ENCODER_MIN_CHANGE_THRESHOLD) {
+        // Encoder is moving - reset stall timer
+        min_last_encoder_change_time = current_time;
+        min_last_encoder_position = current_encoder_position;
+      } else {
+        // Encoder position hasn't changed - check if motor is trying to move
+        // Only consider it a stall if motor is commanded to move (VACTUAL > threshold)
+        if (std::abs(vactual) > 500.0f && min_motion_started) {
+          // Motor is trying to move but encoder isn't changing
+          uint32_t time_since_encoder_change = current_time - min_last_encoder_change_time;
+          
+          if (time_since_encoder_change >= ENCODER_STALL_TIMEOUT_MS) {
+            // Encoder hasn't changed for ENCODER_STALL_TIMEOUT_MS while motor is trying to move
+            // This indicates a stall condition
+            
+            // Check if motor has moved enough to consider stall valid
+            if (position_delta < MIN_MOVEMENT_FOR_VALID_STALL) {
+              ESP_LOGW(TAG, "⚠️ Encoder stall detected but motor hasn't moved enough (%ld steps < %d) - IGNORING FALSE STALL", 
+                       position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
+              ESP_LOGW(TAG, "  Encoder position: %ld (no change for %lu ms), VACTUAL=%.1f steps/s", 
+                       current_encoder_position, time_since_encoder_change, vactual);
+              ESP_LOGW(TAG, "  Resetting encoder stall timer and continuing search...");
+              
+              // Reset encoder stall timer and continue
+              min_last_encoder_change_time = current_time;
+              continue;
+            }
+            
+            // Motor has moved enough - this is likely a real stall
+            min_stall_detected = true;
+            ESP_LOGI(TAG, "✓ Encoder-based stall detected during minimum bound search!");
+            ESP_LOGI(TAG, "  Motor position moved: %ld steps from start (threshold: %d)", 
+                     position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
+            ESP_LOGI(TAG, "  Encoder position: %ld (no change for %lu ms)", 
+                     current_encoder_position, time_since_encoder_change);
+            ESP_LOGI(TAG, "  VACTUAL=%.1f steps/s, elapsed=%lu ms", vactual, elapsed);
+            
+            // Stop the motor
+            driver.rampControl.Stop();
+            vTaskDelay(pdMS_TO_TICKS(200)); // Wait for stop to take effect
+            break;
           }
-        }
-        
-        // Verify stall flag cleared
-        vTaskDelay(pdMS_TO_TICKS(50));
-        uint32_t ramp_stat_after = 0;
-        if (driver.diagnostics.GetRampStatusRegister(ramp_stat_after)) {
-          tmc51x0::RAMP_STAT_Register after{};
-          after.value = ramp_stat_after;
-          if (after.bits.event_stop_sg) {
-            ESP_LOGE(TAG, "CRITICAL: Stall flag still set after clear - possible race condition!");
-          } else {
-            ESP_LOGI(TAG, "✓ Stall flag cleared successfully");
-          }
-        }
-        
-        continue;
-      }
-      
-      // Motor has moved enough - this is likely a real stall
-      min_stall_detected = true;
-      ESP_LOGI(TAG, "✓ Stall detected during minimum bound search!");
-      ESP_LOGI(TAG, "  Position moved: %ld steps from start (threshold: %d)", 
-               position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
-      ESP_LOGI(TAG, "  SG_RESULT=%d (baseline=%d, lower=more load, 0=highest load)", 
-               sg_result, sg_result_baseline);
-      ESP_LOGI(TAG, "  VACTUAL=%.1f steps/s, elapsed=%lu ms", vactual, elapsed);
-      break;
-    }
-    
-    // Monitor SG_RESULT periodically
-    if (current_time - min_last_sg_result_time >= 200) {
-      uint16_t current_sg = 0;
-      if (driver.diagnostics.GetStallGuardResult(current_sg)) {
-        if (current_sg != min_last_sg_result) {
-          ESP_LOGI(TAG, "  SG_RESULT changed: %d -> %d (position=%ld, speed=%.1f)", 
-                   min_last_sg_result, current_sg, current_pos, vactual);
-          min_last_sg_result = current_sg;
+        } else {
+          // Motor is not trying to move (or hasn't started yet) - reset encoder stall timer
+          min_last_encoder_change_time = current_time;
         }
       }
-      min_last_sg_result_time = current_time;
+    } else {
+      ESP_LOGW(TAG, "Failed to read encoder position - continuing with motor position only");
     }
     
     // Log position progress periodically (every 500ms)
     if (current_time - min_last_position_check_time >= 500) {
       int32_t position_change = current_pos - min_last_position;
-      ESP_LOGI(TAG, "  Progress: position=%ld (%ld from start, %ld since last), speed=%.1f steps/s, elapsed=%lu ms",
-               current_pos, current_pos - min_start_position, position_change, vactual, elapsed);
+      int32_t encoder_change = encoder_read_ok ? (current_encoder_position - min_last_encoder_position) : 0;
+      ESP_LOGI(TAG, "  Progress: position=%ld (%ld from start, %ld since last), encoder=%ld (+%ld), speed=%.1f steps/s, elapsed=%lu ms",
+               current_pos, current_pos - min_start_position, position_change,
+               encoder_read_ok ? current_encoder_position : 0, encoder_change, vactual, elapsed);
       
       // Check if motor is stuck
       if (min_motion_started && std::abs(position_change) < 50 && std::abs(vactual) < 100.0f && elapsed > 1000) {
-        ESP_LOGW(TAG, "  ⚠️ Motor appears stuck: position change=%ld steps, speed=%.1f steps/s", 
-                 position_change, vactual);
+        ESP_LOGW(TAG, "  ⚠️ Motor appears stuck: position change=%ld steps, encoder change=%ld, speed=%.1f steps/s", 
+                 position_change, encoder_change, vactual);
       }
       
       min_last_position_check_time = current_time;
       min_last_position = current_pos;
+      if (encoder_read_ok) {
+        min_last_encoder_position = current_encoder_position;
+      }
     }
     
     vTaskDelay(pdMS_TO_TICKS(10)); // Poll every 10ms
@@ -2290,10 +2150,8 @@ extern "C" void app_main() {
   // Handle results and set up bounds
   // ============================================================
   
-  // Disable StallGuard2 stop for normal operation
-  if (driver.diagnostics.EnableStopOnStall(false)) {
-    ESP_LOGI(TAG, "✓ StallGuard2 stop disabled for normal operation");
-  }
+  // Encoder-based detection doesn't require disabling anything
+  ESP_LOGI(TAG, "✓ Encoder-based stall detection complete - ready for normal operation");
   
   bool stall_detected_min = min_stall_detected;
   bool stall_detected_max = max_stall_detected;

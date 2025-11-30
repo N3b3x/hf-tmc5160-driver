@@ -1,8 +1,12 @@
-# Bounds Finding & Sinusoidal Motion Example
+# Fatigue Testing: Back-and-Forth Motion Between Bounds
 
 ## Overview
 
-The `bounds_finding_sinuous_motion.cpp` example is a comprehensive fatigue testing platform that combines sensorless bounds finding with precise sinusoidal motion control. It's designed for cable/strain relief fatigue testing and other applications requiring controlled oscillatory motion.
+These examples provide comprehensive fatigue testing platforms that perform back-and-forth oscillatory motion between detected bounds. They're designed for cable/strain relief fatigue testing and other applications requiring controlled repetitive motion.
+
+**Two variants available:**
+- `fatigue_test_stallguard.cpp` - Uses StallGuard2 for sensorless bounds detection and stall detection
+- `fatigue_test_encoder.cpp` - Uses encoder position monitoring for bounds detection (more reliable when encoder is available)
 
 ## Purpose
 
@@ -17,10 +21,11 @@ This example is ideal for:
 
 ### 1. Smart Bounds Finding
 
-- **Sensorless Homing**: Uses StallGuard2 to detect mechanical stops
+- **Sensorless Homing**: Uses StallGuard2 (stallguard variant) or encoder position monitoring (encoder variant) to detect mechanical stops
+- **360° Safety Limit**: **CRITICAL SAFETY FEATURE** - Motor will never rotate more than 360° from start position during bounds finding, preventing cable damage or mechanical system overload
 - **Unbounded Detection**: Automatically detects if motor can rotate 360° without stalling
-- **Default Range**: If unbounded, defaults to 5-355 degree range
-- **SpreadCycle Mode**: Automatically switches to SpreadCycle for StallGuard2, then back to StealthChop
+- **Default Range**: If unbounded, defaults to -175° to +175° range
+- **SpreadCycle Mode**: Automatically switches to SpreadCycle for StallGuard2 (stallguard variant only), then back to StealthChop
 
 ### 2. Frequency-Tuned Motion
 
@@ -61,7 +66,7 @@ Real-time parameter adjustment via serial commands:
 
 ## Pin Configuration
 
-Default pin configuration (from `esp32_tmc5160_test_config.hpp`):
+Default pin configuration (from `esp32_tmc51x0_test_config.hpp`):
 
 - **SPI**: MOSI=6, MISO=2, SCLK=5, CS=18
 - **Control**: EN=11
@@ -70,26 +75,40 @@ Default pin configuration (from `esp32_tmc5160_test_config.hpp`):
 - **UART**: Uses default UART_NUM_0 (USB serial port)
 - **SPI Clock**: 500 kHz (from config) or 1 MHz (sinusoidal example uses 1 MHz)
 
-## Motor Selection
+## Test Rig Selection
 
-Motor selection is done via a `static constexpr` variable at the top of the file:
+Test rig selection is done via a `static constexpr` variable at the top of the file:
 
 ```cpp
-static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
-    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
+    tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE;
 ```
 
-See [Motor Configuration Guide](motor_configuration.md) for options and specifications.
+Available test rigs:
+- **TEST_RIG_FATIGUE** (default for these examples): Applied Motion 5034-369 NEMA 34 motor, TMC51x0 EVAL board, reference switches, encoder
+- **TEST_RIG_CORE_DRIVER**: 17HS4401S motor (geared or direct), TMC51x0 EVAL board, reference switches, encoder
+
+The test rig selection automatically configures motor, board, and platform settings. See [Motor Configuration Guide](motor_configuration.md) for detailed specifications.
 
 ## How It Works
 
 ### Phase 1: Bounds Finding
 
-1. **SpreadCycle Switch**: Temporarily switches to SpreadCycle mode for StallGuard2
-2. **Negative Direction Search**: Moves negative up to 1.1 revolutions, checking for stall
-3. **Positive Direction Search**: Moves positive up to 1.1 revolutions, checking for stall
-4. **Unbounded Detection**: If no stall detected in either direction, assumes unbounded
-5. **StealthChop Restore**: Switches back to StealthChop for normal operation
+1. **Position Reset**: Resets motor position to 0 for accurate tracking
+2. **Maximum Bound Search** (positive direction):
+   - Commands motor to +360° position
+   - **360° Safety Limit**: Monitors position continuously - if rotation exceeds 360° from start, immediately stops and uses default bounds
+   - Detects stall via StallGuard2 (stallguard variant) or encoder position monitoring (encoder variant)
+   - If stall detected: backs off 5° and records maximum bound
+   - If 360° reached without stall: marks as unbounded
+3. **Minimum Bound Search** (negative direction):
+   - Commands motor to -360° position
+   - **360° Safety Limit**: Same safety check as maximum bound search
+   - Detects stall via StallGuard2 (stallguard variant) or encoder position monitoring (encoder variant)
+   - If stall detected: backs off 5° and records minimum bound
+   - If -360° reached without stall: marks as unbounded
+4. **Unbounded Detection**: If no stall detected in either direction at 360° limits, assumes unbounded and uses -175° to +175° default bounds
+5. **StealthChop Restore**: Switches back to StealthChop for normal operation (stallguard variant only)
 
 ### Phase 2: Bounds Setup
 
@@ -100,9 +119,9 @@ See [Motor Configuration Guide](motor_configuration.md) for options and specific
 - Configures local bounds (default: 90% of global)
 
 **If Unbounded**:
-- Assumes 0-360 degree range
-- Sets global bounds as 0-360 degrees
-- Sets local bounds as 5-355 degrees (relative to center at 180°)
+- No mechanical stops detected at ±360° limits
+- Sets global bounds as -175° to +175° (relative to center at 0°)
+- Sets local bounds within global bounds (default: 90% of global range)
 
 ### Phase 3: Motion Control
 
@@ -366,10 +385,12 @@ Calculate:
 
 **Solutions**:
 1. Check if motor can actually rotate 360° (may be truly unbounded)
-2. Verify StallGuard2 is working (check SG_RESULT values)
-3. Ensure SpreadCycle mode is active during homing
-4. Check motor current is adequate for stall detection
-5. Verify mechanical stops are present and functional
+2. **StallGuard2 variant**: Verify StallGuard2 is working (check SG_RESULT values)
+3. **StallGuard2 variant**: Ensure SpreadCycle mode is active during homing
+4. **Encoder variant**: Verify encoder is connected and reading position correctly
+5. Check motor current is adequate for stall detection
+6. Verify mechanical stops are present and functional
+7. **Safety Limit Reached**: If you see "SAFETY LIMIT: Motor rotated X° (exceeds 360° limit)", the motor exceeded the safety limit - check for position tracking issues or mechanical problems
 
 ### Frequency Too High
 

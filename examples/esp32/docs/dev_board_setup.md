@@ -27,7 +27,7 @@ This document details the specific hardware configuration used for the TMC5160 d
 
 ## 🔌 Pin Configuration
 
-The software is configured to use the following GPIO mapping by default (defined in `examples/esp32/main/esp32_tmc5160_test_config.hpp`).
+The software is configured to use the following GPIO mapping by default (defined in `examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp`).
 
 ### SPI Interface
 | Signal | ESP32 Pin | TMC5160 Pin | Description |

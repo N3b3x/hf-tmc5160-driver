@@ -114,38 +114,57 @@ I_Peak ≈ 2.66A Peak
 
 ## How to Select a Motor
 
-### Motor Selection Method
+### Test Rig Selection Method (Recommended)
 
-Motor selection is done via a `static constexpr` variable at the top of your example/test file:
+Most examples use a unified test rig selection system that automatically configures motor, board, and platform:
 
 ```cpp
-static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
-    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+// Select test rig at compile time - automatically selects motor, board, and platform
+static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
+    tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER;
+
+// Configure driver from test rig (automatically configures motor, board, and platform)
+tmc51x0::DriverConfig cfg{};
+tmc51x0_test_config::ConfigureDriverFromTestRig<SELECTED_TEST_RIG>(cfg);
+driver.Initialize(cfg);
+```
+
+Available test rigs:
+- **TEST_RIG_CORE_DRIVER**: 17HS4401S motor (geared or direct), TMC51x0 EVAL board, reference switches, encoder
+- **TEST_RIG_FATIGUE**: Applied Motion 5034-369 NEMA 34 motor, TMC51x0 EVAL board, reference switches, encoder
+
+### Manual Motor Selection Method (Legacy/Advanced)
+
+For advanced use cases, you can still manually select motor configuration:
+
+```cpp
+static constexpr tmc51x0_test_config::MotorType SELECTED_MOTOR = 
+    tmc51x0_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
 ```
 
 Change to your desired motor:
 
 ```cpp
 // For direct drive 17HS4401S:
-static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
-    tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT;
+static constexpr tmc51x0_test_config::MotorType SELECTED_MOTOR = 
+    tmc51x0_test_config::MotorType::MOTOR_17HS4401S_DIRECT;
 
 // For Applied Motion 5034-369:
-static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
-    tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034;
+static constexpr tmc51x0_test_config::MotorType SELECTED_MOTOR = 
+    tmc51x0_test_config::MotorType::MOTOR_APPLIED_MOTION_5034;
 ```
 
 Then use `if constexpr` blocks to select the motor configuration namespace:
 
 ```cpp
-if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
-    namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S;
+if constexpr (SELECTED_MOTOR == tmc51x0_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
+    namespace Motor = tmc51x0_test_config::MotorConfig_17HS4401S;
     // Use Motor::IRUN, Motor::IHOLD, etc.
-} else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
-    namespace Motor = tmc5160_test_config::MotorConfig_17HS4401S_Direct;
+} else if constexpr (SELECTED_MOTOR == tmc51x0_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
+    namespace Motor = tmc51x0_test_config::MotorConfig_17HS4401S_Direct;
     // Use Motor::IRUN, Motor::IHOLD, etc.
-} else if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
-    namespace Motor = tmc5160_test_config::MotorConfig_AppliedMotion_5034_369;
+} else if constexpr (SELECTED_MOTOR == tmc51x0_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
+    namespace Motor = tmc51x0_test_config::MotorConfig_AppliedMotion_5034_369;
     // Use Motor::IRUN, Motor::IHOLD, etc.
 }
 ```
@@ -154,7 +173,7 @@ if constexpr (SELECTED_MOTOR == tmc5160_test_config::MotorType::MOTOR_17HS4401S_
 
 ## Motor Configuration Namespaces
 
-Each motor has its own configuration namespace in `esp32_tmc5160_test_config.hpp`:
+Each motor has its own configuration namespace in `esp32_tmc51x0_test_config.hpp`:
 
 - `MotorConfig_17HS4401S` - Geared version
 - `MotorConfig_17HS4401S_Direct` - Direct drive version
@@ -166,6 +185,24 @@ These namespaces contain:
 - Chopper configuration (TOFF, HEND, HSTRT, TBL)
 - StealthChop settings
 - Power stage configuration
+
+## Test Rig Configuration
+
+The project uses two test rigs, each with a specific motor, board, and platform configuration:
+
+1. **Core Driver Test Rig** (`TEST_RIG_CORE_DRIVER`):
+   - Motor: 17HS4401S motor with gearbox (default) or direct drive
+   - Board: TMC51x0 Evaluation Kit (BOARD_TMC51x0_EVAL)
+   - Platform: Core Driver Test Rig (PLATFORM_CORE_DRIVER_TEST_RIG)
+   - Features: Reference switches, encoder (AS5047U), gearbox or direct drive
+   - Used for: Most comprehensive tests, core driver functionality
+
+2. **Fatigue Test Rig** (`TEST_RIG_FATIGUE`):
+   - Motor: Applied Motion 5034-369 motor (MOTOR_APPLIED_MOTION_5034)
+   - Board: TMC51x0 Evaluation Kit (BOARD_TMC51x0_EVAL)
+   - Platform: Fatigue Test Rig (PLATFORM_FATIGUE_TEST_RIG)
+   - Features: Reference switches, encoder (AS5047U), direct drive (NEMA 34)
+   - Used for: Bounds finding and sinusoidal motion testing
 
 ---
 
@@ -219,7 +256,7 @@ These namespaces contain:
 
 ## See Also
 
-- [esp32_tmc5160_test_config.hpp](../../main/esp32_tmc5160_test_config.hpp) - Full configuration definitions
+- [esp32_tmc51x0_test_config.hpp](../../main/test_config/esp32_tmc51x0_test_config.hpp) - Full configuration definitions
 - [Internal Ramp Sinusoidal Example](internal_ramp_sinusoidal.md) - Example using motor selection
-- [Bounds Finding Example](bounds_finding_sinuous_motion.md) - Example using motor selection
+- [Fatigue Testing Examples](fatigue_test.md) - Examples using test rig selection for back-and-forth motion with safety limits
 

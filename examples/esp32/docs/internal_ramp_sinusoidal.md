@@ -33,7 +33,7 @@ This example is ideal for:
 
 ## Pin Configuration
 
-Default pin configuration (from `esp32_tmc5160_test_config.hpp`):
+Default pin configuration (from `esp32_tmc51x0_test_config.hpp`):
 
 - **SPI**: MOSI=6, MISO=2, SCLK=5, CS=18
 - **Control**: EN=11
@@ -43,11 +43,11 @@ Default pin configuration (from `esp32_tmc5160_test_config.hpp`):
 
 ## Motor Selection
 
-Motor selection is done via a `static constexpr` variable at the top of the file:
+Motor selection is done via a `static constexpr` variable at the top of the file. This example uses the legacy motor selection method:
 
 ```cpp
-static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
-    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+static constexpr tmc51x0_test_config::MotorType SELECTED_MOTOR = 
+    tmc51x0_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
 ```
 
 Available options:
@@ -55,7 +55,7 @@ Available options:
 - `MOTOR_17HS4401S_DIRECT` - 17HS4401S direct drive
 - `MOTOR_APPLIED_MOTION_5034` - Applied Motion 5034-369 NEMA 34
 
-See [Motor Configuration Guide](motor_configuration.md) for detailed specifications.
+**Note**: Newer examples use test rig selection (`SELECTED_TEST_RIG`) which automatically configures motor, board, and platform. See [Motor Configuration Guide](motor_configuration.md) for detailed specifications and test rig selection.
 
 ## How It Works
 
@@ -244,7 +244,7 @@ if (current_time - last_diag_time >= 500) {
 ## Related Documentation
 
 - [Motor Configuration Guide](motor_configuration.md) - Motor selection and specifications
-- [Bounds Finding Example](bounds_finding_sinuous_motion.md) - More advanced motion control
+- [Fatigue Testing Examples](fatigue_test.md) - Back-and-forth oscillatory motion for fatigue testing
 - [Internal Ramp Comprehensive Test](internal_ramp_comprehensive_test.md) - Comprehensive ramp control and positioning testing
 
 ## Example Output
