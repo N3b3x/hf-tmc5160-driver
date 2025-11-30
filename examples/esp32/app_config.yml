@@ -85,7 +85,7 @@ apps:
   # ESP-NOW Fatigue Test System
   fatigue_test_espnow_unit:
     description: "Unified fatigue test unit with ESP-NOW and UART support, dual bounds detection (StallGuard2/Encoder)"
-    source_file: "fatigue_test_espnow_unit.cpp"
+    source_file: "fatigue_test_espnow/test_unit/main.cpp"
     category: "motor_control"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]

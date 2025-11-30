@@ -4,7 +4,7 @@
  */
 
 #include "bounds_finder.hpp"
-#include "../test_config/esp32_tmc51x0_test_config.hpp"
+#include "test_config/esp32_tmc51x0_test_config.hpp"
 #include <memory>
 #include "esp_log.h"
 #include "esp_timer.h"
@@ -12,6 +12,7 @@
 #include "freertos/task.h"
 #include <algorithm>
 #include <cmath>
+#include <cstdlib>
 
 static const char* TAG = "BoundsFinderENC";
 
@@ -58,10 +59,12 @@ public:
         driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Steps);
 
         // Configure positioning mode
+        // steps_per_rev parameter is full steps, need to account for microsteps (256)
         float search_speed = Test::Motion::BOUNDS_SEARCH_SPEED;
-        int32_t steps_per_360_deg = static_cast<int32_t>(steps_per_rev * 256.0f);
+        float steps_per_rev_with_microsteps = static_cast<float>(steps_per_rev) * 256.0f;
+        int32_t steps_per_360_deg = static_cast<int32_t>(steps_per_rev_with_microsteps);
         float offset_deg = 5.0f;
-        int32_t offset_steps = tmc51x0::DegreesToSteps(offset_deg, steps_per_rev * 256.0f);
+        int32_t offset_steps = static_cast<int32_t>(tmc51x0::DegreesToSteps(offset_deg, steps_per_rev_with_microsteps));
 
         driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
         driver.rampControl.SetMaxSpeed(search_speed);
@@ -93,7 +96,8 @@ public:
 
         if (reached_360) {
             float bounds_deg = 175.0f;
-            int32_t bounds_steps = tmc51x0::DegreesToSteps(bounds_deg, steps_per_rev * 256.0f);
+            float steps_per_rev_with_microsteps = static_cast<float>(steps_per_rev) * 256.0f;
+            int32_t bounds_steps = static_cast<int32_t>(tmc51x0::DegreesToSteps(bounds_deg, steps_per_rev_with_microsteps));
             return BoundsResult(true, -bounds_steps, bounds_steps, false);
         } else if (max_stall && min_stall) {
             int32_t center = (min_pos + max_pos) / 2;
@@ -137,7 +141,7 @@ private:
             float pos_float = 0.0f;
             driver.rampControl.GetCurrentPosition(pos_float, tmc51x0::Unit::Steps);
             int32_t pos = static_cast<int32_t>(pos_float);
-            int32_t delta = std::abs(pos - start_pos);
+            int32_t delta = (pos > start_pos) ? (pos - start_pos) : (start_pos - pos);
 
             if (driver.rampControl.IsTargetReached()) {
                 return 0; // No stall
@@ -153,7 +157,8 @@ private:
             // Encoder-based stall detection
             int32_t enc_pos = 0;
             if (driver.encoder.GetPosition(enc_pos)) {
-                int32_t enc_change = std::abs(enc_pos - last_enc_pos);
+                int32_t enc_diff = enc_pos - last_enc_pos;
+                int32_t enc_change = (enc_diff > 0) ? enc_diff : -enc_diff;
                 uint32_t current_time = esp_timer_get_time() / 1000;
 
                 if (enc_change >= ENCODER_MIN_CHANGE) {

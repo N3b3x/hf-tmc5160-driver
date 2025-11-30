@@ -17,6 +17,8 @@
 
 #include "../espnow_protocol.hpp"
 #include "espnow_receiver.hpp"
+#include "bounds_finder.hpp"
+#include <memory>
 
 #include "esp_log.h"
 #include "esp_timer.h"
@@ -27,6 +29,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstring>
+#include <cstdlib>
 
 static const char* TAG = "FatigueTestUnit";
 
@@ -201,32 +204,47 @@ public:
         double elapsed_s = elapsed_us / 1000000.0;
         
         float freq, amp;
-        int32_t home;
+        int32_t home, local_min, local_max;
+        uint32_t target_cycles_val;
         {
             TmcMutexGuard guard(mutex_);
             freq = frequency_hz_;
             amp = amplitude_;
             home = home_position_;
+            local_min = local_min_bound_;
+            local_max = local_max_bound_;
+            target_cycles_val = target_cycles_;
         }
         
         double angle = 2.0 * M_PI * freq * elapsed_s;
         double sin_value = sin(angle);
         int32_t target = home + static_cast<int32_t>(amp * sin_value);
         
-        driver_->rampControl.SetTargetPosition(static_cast<float>(target), tmc51x0::Unit::Steps);
+        // Clamp to local bounds
+        if (target < local_min) target = local_min;
+        if (target > local_max) target = local_max;
         
-        // Cycle counting (simplified)
+        driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+        driver_->rampControl.SetTargetPosition(static_cast<float>(target), tmc51x0::Unit::Steps);
+        driver_->rampControl.SetMaxSpeed(1000.0f);
+        driver_->rampControl.SetAcceleration(2000.0f);
+        driver_->rampControl.SetDeceleration(2000.0f);
+        
+        // Cycle counting (simplified - count center crossings)
         static int32_t last_target_relative = 0;
         int32_t target_relative = target - home;
         bool currently_negative = (target_relative < 0);
         bool last_was_negative = (last_target_relative < 0);
         
-        if (last_was_negative != currently_negative && abs(target_relative) < 30) {
+        int32_t abs_target = (target_relative > 0) ? target_relative : -target_relative;
+        int32_t abs_last = (last_target_relative > 0) ? last_target_relative : -last_target_relative;
+        if (last_was_negative != currently_negative && abs_target < 30 && abs_last < 30) {
             TmcMutexGuard guard(mutex_);
             current_cycles_++;
-            if (target_cycles_ > 0 && current_cycles_ >= target_cycles_) {
+            if (target_cycles_val > 0 && current_cycles_ >= target_cycles_val) {
                 cycle_complete_ = true;
                 running_ = false;
+                driver_->rampControl.Stop();
             }
         }
         last_target_relative = target_relative;
@@ -379,31 +397,6 @@ static void status_update_task(void* arg)
     }
 }
 
-// Bounds finding (simplified - see fatigue_test_encoder.cpp for full implementation)
-static bool find_bounds_encoder(tmc51x0::TMC51x0<Esp32SPI>& driver, 
-                                 int32_t& min_bound, int32_t& max_bound,
-                                 uint16_t steps_per_rev)
-{
-    ESP_LOGI(TAG, "Finding bounds using encoder-based detection...");
-    // Simplified bounds finding - see fatigue_test_encoder.cpp for full implementation
-    // This would move motor in both directions and detect stalls via encoder
-    min_bound = -10000;
-    max_bound = 10000;
-    return true;
-}
-
-static bool find_bounds_stallguard(tmc51x0::TMC51x0<Esp32SPI>& driver,
-                                   int32_t& min_bound, int32_t& max_bound,
-                                   uint16_t steps_per_rev)
-{
-    ESP_LOGI(TAG, "Finding bounds using StallGuard2 detection...");
-    // Simplified bounds finding - see fatigue_test_stallguard.cpp for full implementation
-    // This would use StallGuard2 to detect stalls
-    min_bound = -10000;
-    max_bound = 10000;
-    return true;
-}
-
 extern "C" void app_main()
 {
     ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
@@ -467,37 +460,50 @@ extern "C" void app_main()
 
     ESP_LOGI(TAG, "Motor enabled");
 
-    // Calculate steps per revolution
-    float steps_per_rev = static_cast<float>(output_full_steps) * 256.0f;
+    // Calculate steps per revolution (with microsteps)
+    float steps_per_rev_with_microsteps = static_cast<float>(output_full_steps) * 256.0f;
+    uint16_t full_steps_per_rev = output_full_steps; // Full steps without microsteps
 
     // Create motion controller
     FatigueTestMotion motion(&driver);
-    motion.ConfigureMotor(static_cast<uint16_t>(steps_per_rev));
+    motion.ConfigureMotor(static_cast<uint16_t>(steps_per_rev_with_microsteps));
     g_motion = &motion;
 
     // Wait for config from UI board before finding bounds
     ESP_LOGI(TAG, "Waiting for configuration from UI board...");
     vTaskDelay(pdMS_TO_TICKS(2000)); // Give UI board time to send config
 
-    // Find bounds based on configured method
-    int32_t min_bound = 0, max_bound = 0;
+    // Find bounds using abstracted bounds finder
+    ESP_LOGI(TAG, "Finding bounds using %s method...", g_use_stallguard ? "StallGuard2" : "Encoder");
+    
+    std::unique_ptr<FatigueTest::IBoundsFinder> bounds_finder;
     if (g_use_stallguard) {
-        g_bounds_found = find_bounds_stallguard(driver, min_bound, max_bound, 
-                                                static_cast<uint16_t>(steps_per_rev));
+        bounds_finder = FatigueTest::CreateStallGuardBoundsFinder();
     } else {
-        g_bounds_found = find_bounds_encoder(driver, min_bound, max_bound,
-                                             static_cast<uint16_t>(steps_per_rev));
+        bounds_finder = FatigueTest::CreateEncoderBoundsFinder();
     }
 
-    if (g_bounds_found) {
-        motion.SetGlobalBounds(min_bound, max_bound);
-        // Set default local bounds
-        motion.SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
-        ESP_LOGI(TAG, "Bounds found: min=%d, max=%d steps", min_bound, max_bound);
+    if (bounds_finder) {
+        // FindBounds expects full steps per rev (without microsteps)
+        auto result = bounds_finder->FindBounds(driver, full_steps_per_rev);
+        if (result.success) {
+            motion.SetGlobalBounds(result.min_bound, result.max_bound);
+            motion.SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
+            g_bounds_found = true;
+            ESP_LOGI(TAG, "Bounds found using %s: min=%d, max=%d steps (bounded=%d)", 
+                     bounds_finder->GetMethodName(), result.min_bound, result.max_bound, 
+                     result.bounded ? 1 : 0);
+        } else {
+            ESP_LOGW(TAG, "Bounds finding failed, using default bounds");
+            motion.SetGlobalBounds(-10000, 10000);
+            motion.SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
+            g_bounds_found = false;
+        }
     } else {
-        ESP_LOGW(TAG, "Bounds finding failed, using default bounds");
+        ESP_LOGE(TAG, "Failed to create bounds finder");
         motion.SetGlobalBounds(-10000, 10000);
         motion.SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
+        g_bounds_found = false;
     }
 
     // Create tasks
