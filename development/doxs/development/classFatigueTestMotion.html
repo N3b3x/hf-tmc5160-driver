@@ -125,7 +125,76 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a373fb38818685e8852c2e238a8643f8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89e5503be3a66cf75f6340fd2b8ee9ee" id="r_a89e5503be3a66cf75f6340fd2b8ee9ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89e5503be3a66cf75f6340fd2b8ee9ee">~FatigueTestMotion</a> () noexcept=default</td></tr>
 <tr class="separator:a89e5503be3a66cf75f6340fd2b8ee9ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c9f125fc81bde1deddf504df1820f5f" id="r_a1c9f125fc81bde1deddf504df1820f5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1c9f125fc81bde1deddf504df1820f5f">ConfigureMotor</a> (uint16_t steps_per_rev, <a class="el" href="bounds__finding__sinuous__motion_8cpp.html#a70ab36d1d4920fdd314279845af152c5">AngleUnit</a> unit=<a class="el" href="bounds__finding__sinuous__motion_8cpp.html#a70ab36d1d4920fdd314279845af152c5afee20551b6d06fd83aa56a486e557307">AngleUnit::DEGREES</a>) noexcept</td></tr>
+<tr class="memitem:a1c9f125fc81bde1deddf504df1820f5f" id="r_a1c9f125fc81bde1deddf504df1820f5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1c9f125fc81bde1deddf504df1820f5f">ConfigureMotor</a> (uint16_t steps_per_rev, <a class="el" href="fatigue__test__stallguard_8cpp.html#a70ab36d1d4920fdd314279845af152c5">AngleUnit</a> unit=<a class="el" href="fatigue__test__encoder_8cpp.html#a70ab36d1d4920fdd314279845af152c5afee20551b6d06fd83aa56a486e557307">AngleUnit::DEGREES</a>) noexcept</td></tr>
+<tr class="memdesc:a1c9f125fc81bde1deddf504df1820f5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure motor parameters for unit conversions.  <br /></td></tr>
+<tr class="separator:a1c9f125fc81bde1deddf504df1820f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca79b6a071eb4a956ac949b3404cfe1f" id="r_aca79b6a071eb4a956ac949b3404cfe1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca79b6a071eb4a956ac949b3404cfe1f">SetGlobalBounds</a> (int32_t min_bound, int32_t max_bound) noexcept</td></tr>
+<tr class="memdesc:aca79b6a071eb4a956ac949b3404cfe1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set global bounds (hardware limits found during initialization)  <br /></td></tr>
+<tr class="separator:aca79b6a071eb4a956ac949b3404cfe1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c7b84687216a3310300c80174ca2afc" id="r_a7c7b84687216a3310300c80174ca2afc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7c7b84687216a3310300c80174ca2afc">GetGlobalBoundsDegrees</a> (float &amp;min_degrees, float &amp;max_degrees) const noexcept</td></tr>
+<tr class="memdesc:a7c7b84687216a3310300c80174ca2afc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get global bounds in degrees (for command interface)  <br /></td></tr>
+<tr class="separator:a7c7b84687216a3310300c80174ca2afc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb23779dc0dce69aea1c61d5ce17c7bf" id="r_acb23779dc0dce69aea1c61d5ce17c7bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb23779dc0dce69aea1c61d5ce17c7bf">SetUnbounded</a> (int32_t current_position, int32_t default_range_steps=10000) noexcept</td></tr>
+<tr class="memdesc:acb23779dc0dce69aea1c61d5ce17c7bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set unbounded mode (no mechanical stops found) Uses current position as home and sets reasonable default global bounds.  <br /></td></tr>
+<tr class="separator:acb23779dc0dce69aea1c61d5ce17c7bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d228e53872d7dd297ff2ebd834c12f1" id="r_a5d228e53872d7dd297ff2ebd834c12f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d228e53872d7dd297ff2ebd834c12f1">SetLocalBoundsFromCenterDegrees</a> (float min_degrees_from_center, float max_degrees_from_center) noexcept</td></tr>
+<tr class="memdesc:a5d228e53872d7dd297ff2ebd834c12f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set local bounds in degrees from center (thread-safe)  <br /></td></tr>
+<tr class="separator:a5d228e53872d7dd297ff2ebd834c12f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a266568d4787b4d607e6106d5e76922c0" id="r_a266568d4787b4d607e6106d5e76922c0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a266568d4787b4d607e6106d5e76922c0">SetFrequency</a> (float frequency_hz) noexcept</td></tr>
+<tr class="memdesc:a266568d4787b4d607e6106d5e76922c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set frequency (thread-safe, can be changed in real-time)  <br /></td></tr>
+<tr class="separator:a266568d4787b4d607e6106d5e76922c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbbaba6ecf52385510a88ab272065a1a" id="r_abbbaba6ecf52385510a88ab272065a1a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abbbaba6ecf52385510a88ab272065a1a">GetFrequency</a> () const noexcept</td></tr>
+<tr class="memdesc:abbbaba6ecf52385510a88ab272065a1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get frequency (thread-safe)  <br /></td></tr>
+<tr class="separator:abbbaba6ecf52385510a88ab272065a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff0fb00f39c558bed824dfb79cad5a2a" id="r_aff0fb00f39c558bed824dfb79cad5a2a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff0fb00f39c558bed824dfb79cad5a2a">SetDwellTimes</a> (uint32_t dwell_at_min_ms, uint32_t dwell_at_max_ms) noexcept</td></tr>
+<tr class="memdesc:aff0fb00f39c558bed824dfb79cad5a2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set dwell times (thread-safe, can be changed in real-time)  <br /></td></tr>
+<tr class="separator:aff0fb00f39c558bed824dfb79cad5a2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d8da15caed8d14757161e6a93c02378" id="r_a1d8da15caed8d14757161e6a93c02378"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d8da15caed8d14757161e6a93c02378">GetDwellTimes</a> (uint32_t &amp;dwell_at_min_ms, uint32_t &amp;dwell_at_max_ms) const noexcept</td></tr>
+<tr class="memdesc:a1d8da15caed8d14757161e6a93c02378"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get dwell times (thread-safe)  <br /></td></tr>
+<tr class="separator:a1d8da15caed8d14757161e6a93c02378"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f155b2c8b97f4d94c1284a31d5031bd" id="r_a2f155b2c8b97f4d94c1284a31d5031bd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f155b2c8b97f4d94c1284a31d5031bd">SetTargetCycles</a> (uint32_t cycles) noexcept</td></tr>
+<tr class="memdesc:a2f155b2c8b97f4d94c1284a31d5031bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set target cycle count (thread-safe)  <br /></td></tr>
+<tr class="separator:a2f155b2c8b97f4d94c1284a31d5031bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cebd24e21ac7817e63e9ecec40b4135" id="r_a5cebd24e21ac7817e63e9ecec40b4135"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5cebd24e21ac7817e63e9ecec40b4135">GetCurrentCycles</a> () const noexcept</td></tr>
+<tr class="memdesc:a5cebd24e21ac7817e63e9ecec40b4135"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current cycle count (thread-safe)  <br /></td></tr>
+<tr class="separator:a5cebd24e21ac7817e63e9ecec40b4135"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26b46774d398c3c61e07ca39882c1f48" id="r_a26b46774d398c3c61e07ca39882c1f48"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a26b46774d398c3c61e07ca39882c1f48">GetTargetCycles</a> () const noexcept</td></tr>
+<tr class="memdesc:a26b46774d398c3c61e07ca39882c1f48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get target cycle count (thread-safe)  <br /></td></tr>
+<tr class="separator:a26b46774d398c3c61e07ca39882c1f48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d07d8e0acf0bbd5867da9e14f8ce7f2" id="r_a3d07d8e0acf0bbd5867da9e14f8ce7f2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d07d8e0acf0bbd5867da9e14f8ce7f2">IsCycleComplete</a> () const noexcept</td></tr>
+<tr class="memdesc:a3d07d8e0acf0bbd5867da9e14f8ce7f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if cycle count reached (thread-safe)  <br /></td></tr>
+<tr class="separator:a3d07d8e0acf0bbd5867da9e14f8ce7f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86de353c719ceba5e708513e94c7c002" id="r_a86de353c719ceba5e708513e94c7c002"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a86de353c719ceba5e708513e94c7c002">ResetCycles</a> () noexcept</td></tr>
+<tr class="memdesc:a86de353c719ceba5e708513e94c7c002"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset cycle count (thread-safe)  <br /></td></tr>
+<tr class="separator:a86de353c719ceba5e708513e94c7c002"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4422e931c971c28c9b1f74ae90cbcf29" id="r_a4422e931c971c28c9b1f74ae90cbcf29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4422e931c971c28c9b1f74ae90cbcf29">GetLocalBoundsFromCenterDegrees</a> (float &amp;min_degrees, float &amp;max_degrees) const noexcept</td></tr>
+<tr class="memdesc:a4422e931c971c28c9b1f74ae90cbcf29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get local bounds in degrees from center (thread-safe)  <br /></td></tr>
+<tr class="separator:a4422e931c971c28c9b1f74ae90cbcf29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75bd49a56a86c97665e846a2eaf7f010" id="r_a75bd49a56a86c97665e846a2eaf7f010"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75bd49a56a86c97665e846a2eaf7f010">IsBounded</a> () const noexcept</td></tr>
+<tr class="memdesc:a75bd49a56a86c97665e846a2eaf7f010"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if system is bounded (thread-safe)  <br /></td></tr>
+<tr class="separator:a75bd49a56a86c97665e846a2eaf7f010"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedf901d32a07a14e2eba330abf2988e9" id="r_aedf901d32a07a14e2eba330abf2988e9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aedf901d32a07a14e2eba330abf2988e9">Start</a> () noexcept</td></tr>
+<tr class="memdesc:aedf901d32a07a14e2eba330abf2988e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start sinuous motion (thread-safe)  <br /></td></tr>
+<tr class="separator:aedf901d32a07a14e2eba330abf2988e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b73c95ad6dfe1deaa3dc5a3b271bd2e" id="r_a1b73c95ad6dfe1deaa3dc5a3b271bd2e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1b73c95ad6dfe1deaa3dc5a3b271bd2e">Stop</a> () noexcept</td></tr>
+<tr class="memdesc:a1b73c95ad6dfe1deaa3dc5a3b271bd2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop sinuous motion (thread-safe)  <br /></td></tr>
+<tr class="separator:a1b73c95ad6dfe1deaa3dc5a3b271bd2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23d9f8430ce81b0f5b1376209bf9b0e6" id="r_a23d9f8430ce81b0f5b1376209bf9b0e6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a23d9f8430ce81b0f5b1376209bf9b0e6">IsRunning</a> () const noexcept</td></tr>
+<tr class="memdesc:a23d9f8430ce81b0f5b1376209bf9b0e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if motion is running (thread-safe)  <br /></td></tr>
+<tr class="separator:a23d9f8430ce81b0f5b1376209bf9b0e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40e43a61bc8beddb3df12e7d3b72b141" id="r_a40e43a61bc8beddb3df12e7d3b72b141"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a40e43a61bc8beddb3df12e7d3b72b141">Update</a> () noexcept</td></tr>
+<tr class="memdesc:a40e43a61bc8beddb3df12e7d3b72b141"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update motion (call this in main loop, thread-safe)  <br /></td></tr>
+<tr class="separator:a40e43a61bc8beddb3df12e7d3b72b141"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a327291e1473fae0f255e924e2787cc98" id="r_a327291e1473fae0f255e924e2787cc98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFatigueTestMotion_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a327291e1473fae0f255e924e2787cc98">GetStatus</a> () const noexcept</td></tr>
+<tr class="separator:a327291e1473fae0f255e924e2787cc98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19ead8c0f95f9a3ef88c084438437d77" id="r_a19ead8c0f95f9a3ef88c084438437d77"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a19ead8c0f95f9a3ef88c084438437d77">GetEstimatedFrequency</a> () const noexcept</td></tr>
+<tr class="memdesc:a19ead8c0f95f9a3ef88c084438437d77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get estimated actual frequency (thread-safe)  <br /></td></tr>
+<tr class="separator:a19ead8c0f95f9a3ef88c084438437d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a373fb38818685e8852c2e238a8643f8a" id="r_a373fb38818685e8852c2e238a8643f8a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a373fb38818685e8852c2e238a8643f8a">FatigueTestMotion</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; *driver) noexcept</td></tr>
+<tr class="separator:a373fb38818685e8852c2e238a8643f8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89e5503be3a66cf75f6340fd2b8ee9ee" id="r_a89e5503be3a66cf75f6340fd2b8ee9ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89e5503be3a66cf75f6340fd2b8ee9ee">~FatigueTestMotion</a> () noexcept=default</td></tr>
+<tr class="separator:a89e5503be3a66cf75f6340fd2b8ee9ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c9f125fc81bde1deddf504df1820f5f" id="r_a1c9f125fc81bde1deddf504df1820f5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1c9f125fc81bde1deddf504df1820f5f">ConfigureMotor</a> (uint16_t steps_per_rev, <a class="el" href="fatigue__test__stallguard_8cpp.html#a70ab36d1d4920fdd314279845af152c5">AngleUnit</a> unit=<a class="el" href="fatigue__test__encoder_8cpp.html#a70ab36d1d4920fdd314279845af152c5afee20551b6d06fd83aa56a486e557307">AngleUnit::DEGREES</a>) noexcept</td></tr>
 <tr class="memdesc:a1c9f125fc81bde1deddf504df1820f5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure motor parameters for unit conversions.  <br /></td></tr>
 <tr class="separator:a1c9f125fc81bde1deddf504df1820f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca79b6a071eb4a956ac949b3404cfe1f" id="r_aca79b6a071eb4a956ac949b3404cfe1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca79b6a071eb4a956ac949b3404cfe1f">SetGlobalBounds</a> (int32_t min_bound, int32_t max_bound) noexcept</td></tr>
@@ -200,6 +269,28 @@ Private Types</h2></td></tr>
 , <a class="el" href="#ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857">DWELL_AT_MAX</a>
 , <br />
 &#160;&#160;<a class="el" href="#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a">STOPPED</a>
+, <a class="el" href="#ae22ab1035e138c237927f4a508d78136a75cf681c056abe3e006c783e2ec24ac6">MOVING_TO_MIN</a>
+, <a class="el" href="#ae22ab1035e138c237927f4a508d78136a824f3e9ffe184b2fb3d359586a21d64c">MOVING_TO_MAX</a>
+, <a class="el" href="#ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803">DWELL_AT_MIN</a>
+, <br />
+&#160;&#160;<a class="el" href="#ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857">DWELL_AT_MAX</a>
+, <a class="el" href="#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a">STOPPED</a>
+<br />
+ }</td></tr>
+<tr class="separator:ae22ab1035e138c237927f4a508d78136"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae22ab1035e138c237927f4a508d78136" id="r_ae22ab1035e138c237927f4a508d78136"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae22ab1035e138c237927f4a508d78136">MotionState</a> { <br />
+&#160;&#160;<a class="el" href="#ae22ab1035e138c237927f4a508d78136a75cf681c056abe3e006c783e2ec24ac6">MOVING_TO_MIN</a>
+, <a class="el" href="#ae22ab1035e138c237927f4a508d78136a824f3e9ffe184b2fb3d359586a21d64c">MOVING_TO_MAX</a>
+, <a class="el" href="#ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803">DWELL_AT_MIN</a>
+, <a class="el" href="#ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857">DWELL_AT_MAX</a>
+, <br />
+&#160;&#160;<a class="el" href="#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a">STOPPED</a>
+, <a class="el" href="#ae22ab1035e138c237927f4a508d78136a75cf681c056abe3e006c783e2ec24ac6">MOVING_TO_MIN</a>
+, <a class="el" href="#ae22ab1035e138c237927f4a508d78136a824f3e9ffe184b2fb3d359586a21d64c">MOVING_TO_MAX</a>
+, <a class="el" href="#ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803">DWELL_AT_MIN</a>
+, <br />
+&#160;&#160;<a class="el" href="#ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857">DWELL_AT_MAX</a>
+, <a class="el" href="#ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a">STOPPED</a>
 <br />
  }</td></tr>
 <tr class="separator:ae22ab1035e138c237927f4a508d78136"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,11 +306,20 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a00b20bc353584e6851ec34eb34c95205" id="r_a00b20bc353584e6851ec34eb34c95205"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00b20bc353584e6851ec34eb34c95205">UpdateSinuousMotion</a> () noexcept</td></tr>
 <tr class="memdesc:a00b20bc353584e6851ec34eb34c95205"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update sinuous motion target position.  <br /></td></tr>
 <tr class="separator:a00b20bc353584e6851ec34eb34c95205"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8e6c53b8ceac2943e4ea919b745782f" id="r_af8e6c53b8ceac2943e4ea919b745782f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af8e6c53b8ceac2943e4ea919b745782f">RecalculateTrajectory</a> () noexcept</td></tr>
+<tr class="memdesc:af8e6c53b8ceac2943e4ea919b745782f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate trajectory parameters based on frequency, bounds, and dwell.  <br /></td></tr>
+<tr class="separator:af8e6c53b8ceac2943e4ea919b745782f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd810bcf984589fb9b837d8fd5a2a1c5" id="r_afd810bcf984589fb9b837d8fd5a2a1c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd810bcf984589fb9b837d8fd5a2a1c5">ClipLocalBoundsToGlobal</a> () noexcept</td></tr>
+<tr class="memdesc:afd810bcf984589fb9b837d8fd5a2a1c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clip local bounds to global bounds.  <br /></td></tr>
+<tr class="separator:afd810bcf984589fb9b837d8fd5a2a1c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00b20bc353584e6851ec34eb34c95205" id="r_a00b20bc353584e6851ec34eb34c95205"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00b20bc353584e6851ec34eb34c95205">UpdateSinuousMotion</a> () noexcept</td></tr>
+<tr class="memdesc:a00b20bc353584e6851ec34eb34c95205"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update sinuous motion target position.  <br /></td></tr>
+<tr class="separator:a00b20bc353584e6851ec34eb34c95205"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a3017e608be9368a2b53a0ad0ce60b4a5" id="r_a3017e608be9368a2b53a0ad0ce60b4a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3017e608be9368a2b53a0ad0ce60b4a5">driver_</a></td></tr>
-<tr class="separator:a3017e608be9368a2b53a0ad0ce60b4a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c1e82766eb4aa9b9b420a8844b5a94c" id="r_a3c1e82766eb4aa9b9b420a8844b5a94c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c1e82766eb4aa9b9b420a8844b5a94c">driver_</a></td></tr>
+<tr class="separator:a3c1e82766eb4aa9b9b420a8844b5a94c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab572d4c3c0fbf067dee9fd3f5a3fa3cf" id="r_ab572d4c3c0fbf067dee9fd3f5a3fa3cf"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab572d4c3c0fbf067dee9fd3f5a3fa3cf">global_min_bound_</a></td></tr>
 <tr class="separator:ab572d4c3c0fbf067dee9fd3f5a3fa3cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c83a374f84082740ba06e9d34cd72d6" id="r_a8c83a374f84082740ba06e9d34cd72d6"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c83a374f84082740ba06e9d34cd72d6">global_max_bound_</a></td></tr>
@@ -244,7 +344,7 @@ Private Attributes</h2></td></tr>
 <tr class="separator:acb215754df9eed5dedc67d60de52758c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af11a9fedb0cfe23ac1f5884803f1fffc" id="r_af11a9fedb0cfe23ac1f5884803f1fffc"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af11a9fedb0cfe23ac1f5884803f1fffc">steps_per_rev_</a></td></tr>
 <tr class="separator:af11a9fedb0cfe23ac1f5884803f1fffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3532cc21841d56a71d8683375167167" id="r_ad3532cc21841d56a71d8683375167167"><td class="memItemLeft" align="right" valign="top"><a class="el" href="bounds__finding__sinuous__motion_8cpp.html#a70ab36d1d4920fdd314279845af152c5">AngleUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3532cc21841d56a71d8683375167167">angle_unit_</a></td></tr>
+<tr class="memitem:ad3532cc21841d56a71d8683375167167" id="r_ad3532cc21841d56a71d8683375167167"><td class="memItemLeft" align="right" valign="top"><a class="el" href="fatigue__test__stallguard_8cpp.html#a70ab36d1d4920fdd314279845af152c5">AngleUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3532cc21841d56a71d8683375167167">angle_unit_</a></td></tr>
 <tr class="separator:ad3532cc21841d56a71d8683375167167"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a362f847562751ac3beb6d0c1ebdafdad" id="r_a362f847562751ac3beb6d0c1ebdafdad"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a362f847562751ac3beb6d0c1ebdafdad">dwell_at_min_ms_</a></td></tr>
 <tr class="separator:a362f847562751ac3beb6d0c1ebdafdad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -282,7 +382,7 @@ Private Attributes</h2></td></tr>
 <p>Provides pure sinusoidal back-and-forth motion between bounds for fatigue testing. Supports global bounds (hardware limits) and local bounds (oscillation range). </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="ae22ab1035e138c237927f4a508d78136" name="ae22ab1035e138c237927f4a508d78136"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae22ab1035e138c237927f4a508d78136">&#9670;&#160;</a></span>MotionState</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae22ab1035e138c237927f4a508d78136">&#9670;&#160;</a></span>MotionState <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -306,13 +406,52 @@ Private Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803" name="ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803"></a>DWELL_AT_MIN&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857" name="ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857"></a>DWELL_AT_MAX&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a" name="ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a"></a>STOPPED&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a75cf681c056abe3e006c783e2ec24ac6" name="ae22ab1035e138c237927f4a508d78136a75cf681c056abe3e006c783e2ec24ac6"></a>MOVING_TO_MIN&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a824f3e9ffe184b2fb3d359586a21d64c" name="ae22ab1035e138c237927f4a508d78136a824f3e9ffe184b2fb3d359586a21d64c"></a>MOVING_TO_MAX&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803" name="ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803"></a>DWELL_AT_MIN&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857" name="ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857"></a>DWELL_AT_MAX&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a" name="ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a"></a>STOPPED&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="ae22ab1035e138c237927f4a508d78136" name="ae22ab1035e138c237927f4a508d78136"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae22ab1035e138c237927f4a508d78136">&#9670;&#160;</a></span>MotionState <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#ae22ab1035e138c237927f4a508d78136">FatigueTestMotion::MotionState</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a75cf681c056abe3e006c783e2ec24ac6" name="ae22ab1035e138c237927f4a508d78136a75cf681c056abe3e006c783e2ec24ac6"></a>MOVING_TO_MIN&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a824f3e9ffe184b2fb3d359586a21d64c" name="ae22ab1035e138c237927f4a508d78136a824f3e9ffe184b2fb3d359586a21d64c"></a>MOVING_TO_MAX&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803" name="ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803"></a>DWELL_AT_MIN&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857" name="ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857"></a>DWELL_AT_MAX&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a" name="ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a"></a>STOPPED&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a75cf681c056abe3e006c783e2ec24ac6" name="ae22ab1035e138c237927f4a508d78136a75cf681c056abe3e006c783e2ec24ac6"></a>MOVING_TO_MIN&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a824f3e9ffe184b2fb3d359586a21d64c" name="ae22ab1035e138c237927f4a508d78136a824f3e9ffe184b2fb3d359586a21d64c"></a>MOVING_TO_MAX&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803" name="ae22ab1035e138c237927f4a508d78136a28282646e87f9988796639131f654803"></a>DWELL_AT_MIN&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857" name="ae22ab1035e138c237927f4a508d78136a1107e2d7fa21a6efd3cdd3c476df2857"></a>DWELL_AT_MAX&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a" name="ae22ab1035e138c237927f4a508d78136a09d4d696b4e935115b9313e3c412509a"></a>STOPPED&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a373fb38818685e8852c2e238a8643f8a" name="a373fb38818685e8852c2e238a8643f8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a373fb38818685e8852c2e238a8643f8a">&#9670;&#160;</a></span>FatigueTestMotion()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a373fb38818685e8852c2e238a8643f8a">&#9670;&#160;</a></span>FatigueTestMotion() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -337,7 +476,57 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <a id="a89e5503be3a66cf75f6340fd2b8ee9ee" name="a89e5503be3a66cf75f6340fd2b8ee9ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89e5503be3a66cf75f6340fd2b8ee9ee">&#9670;&#160;</a></span>~FatigueTestMotion()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a89e5503be3a66cf75f6340fd2b8ee9ee">&#9670;&#160;</a></span>~FatigueTestMotion() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">FatigueTestMotion::~FatigueTestMotion </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a373fb38818685e8852c2e238a8643f8a" name="a373fb38818685e8852c2e238a8643f8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a373fb38818685e8852c2e238a8643f8a">&#9670;&#160;</a></span>FatigueTestMotion() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">FatigueTestMotion::FatigueTestMotion </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; *</td>          <td class="paramname"><span class="paramname"><em>driver</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a89e5503be3a66cf75f6340fd2b8ee9ee" name="a89e5503be3a66cf75f6340fd2b8ee9ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89e5503be3a66cf75f6340fd2b8ee9ee">&#9670;&#160;</a></span>~FatigueTestMotion() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -363,7 +552,7 @@ Private Attributes</h2></td></tr>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="afd810bcf984589fb9b837d8fd5a2a1c5" name="afd810bcf984589fb9b837d8fd5a2a1c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd810bcf984589fb9b837d8fd5a2a1c5">&#9670;&#160;</a></span>ClipLocalBoundsToGlobal()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afd810bcf984589fb9b837d8fd5a2a1c5">&#9670;&#160;</a></span>ClipLocalBoundsToGlobal() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -399,8 +588,40 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="afd810bcf984589fb9b837d8fd5a2a1c5" name="afd810bcf984589fb9b837d8fd5a2a1c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd810bcf984589fb9b837d8fd5a2a1c5">&#9670;&#160;</a></span>ClipLocalBoundsToGlobal() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FatigueTestMotion::ClipLocalBoundsToGlobal </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clip local bounds to global bounds. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_afd810bcf984589fb9b837d8fd5a2a1c5_cgraph.svg" width="435" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a1c9f125fc81bde1deddf504df1820f5f" name="a1c9f125fc81bde1deddf504df1820f5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c9f125fc81bde1deddf504df1820f5f">&#9670;&#160;</a></span>ConfigureMotor()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c9f125fc81bde1deddf504df1820f5f">&#9670;&#160;</a></span>ConfigureMotor() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -416,7 +637,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="bounds__finding__sinuous__motion_8cpp.html#a70ab36d1d4920fdd314279845af152c5">AngleUnit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="bounds__finding__sinuous__motion_8cpp.html#a70ab36d1d4920fdd314279845af152c5afee20551b6d06fd83aa56a486e557307">AngleUnit::DEGREES</a></span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="fatigue__test__stallguard_8cpp.html#a70ab36d1d4920fdd314279845af152c5">AngleUnit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="fatigue__test__encoder_8cpp.html#a70ab36d1d4920fdd314279845af152c5afee20551b6d06fd83aa56a486e557307">AngleUnit::DEGREES</a></span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -442,8 +663,73 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a1c9f125fc81bde1deddf504df1820f5f" name="a1c9f125fc81bde1deddf504df1820f5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c9f125fc81bde1deddf504df1820f5f">&#9670;&#160;</a></span>ConfigureMotor() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FatigueTestMotion::ConfigureMotor </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>steps_per_rev</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="fatigue__test__stallguard_8cpp.html#a70ab36d1d4920fdd314279845af152c5">AngleUnit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="fatigue__test__encoder_8cpp.html#a70ab36d1d4920fdd314279845af152c5afee20551b6d06fd83aa56a486e557307">AngleUnit::DEGREES</a></span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Configure motor parameters for unit conversions. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">steps_per_rev</td><td>Steps per revolution (e.g., 200 for 1.8° motor) </td></tr>
+    <tr><td class="paramname">unit</td><td>Preferred angle unit (degrees or radians) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a5cebd24e21ac7817e63e9ecec40b4135" name="a5cebd24e21ac7817e63e9ecec40b4135"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5cebd24e21ac7817e63e9ecec40b4135">&#9670;&#160;</a></span>GetCurrentCycles()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cebd24e21ac7817e63e9ecec40b4135">&#9670;&#160;</a></span>GetCurrentCycles() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t FatigueTestMotion::GetCurrentCycles </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get current cycle count (thread-safe) </p>
+
+</div>
+</div>
+<a id="a5cebd24e21ac7817e63e9ecec40b4135" name="a5cebd24e21ac7817e63e9ecec40b4135"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cebd24e21ac7817e63e9ecec40b4135">&#9670;&#160;</a></span>GetCurrentCycles() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -470,7 +756,38 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="a1d8da15caed8d14757161e6a93c02378" name="a1d8da15caed8d14757161e6a93c02378"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d8da15caed8d14757161e6a93c02378">&#9670;&#160;</a></span>GetDwellTimes()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d8da15caed8d14757161e6a93c02378">&#9670;&#160;</a></span>GetDwellTimes() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FatigueTestMotion::GetDwellTimes </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t &amp;</td>          <td class="paramname"><span class="paramname"><em>dwell_at_min_ms</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t &amp;</td>          <td class="paramname"><span class="paramname"><em>dwell_at_max_ms</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get dwell times (thread-safe) </p>
+
+</div>
+</div>
+<a id="a1d8da15caed8d14757161e6a93c02378" name="a1d8da15caed8d14757161e6a93c02378"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d8da15caed8d14757161e6a93c02378">&#9670;&#160;</a></span>GetDwellTimes() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -501,7 +818,34 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="a19ead8c0f95f9a3ef88c084438437d77" name="a19ead8c0f95f9a3ef88c084438437d77"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19ead8c0f95f9a3ef88c084438437d77">&#9670;&#160;</a></span>GetEstimatedFrequency()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a19ead8c0f95f9a3ef88c084438437d77">&#9670;&#160;</a></span>GetEstimatedFrequency() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float FatigueTestMotion::GetEstimatedFrequency </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get estimated actual frequency (thread-safe) </p>
+
+</div>
+</div>
+<a id="a19ead8c0f95f9a3ef88c084438437d77" name="a19ead8c0f95f9a3ef88c084438437d77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19ead8c0f95f9a3ef88c084438437d77">&#9670;&#160;</a></span>GetEstimatedFrequency() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -528,7 +872,34 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="abbbaba6ecf52385510a88ab272065a1a" name="abbbaba6ecf52385510a88ab272065a1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abbbaba6ecf52385510a88ab272065a1a">&#9670;&#160;</a></span>GetFrequency()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abbbaba6ecf52385510a88ab272065a1a">&#9670;&#160;</a></span>GetFrequency() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float FatigueTestMotion::GetFrequency </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get frequency (thread-safe) </p>
+
+</div>
+</div>
+<a id="abbbaba6ecf52385510a88ab272065a1a" name="abbbaba6ecf52385510a88ab272065a1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbbaba6ecf52385510a88ab272065a1a">&#9670;&#160;</a></span>GetFrequency() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -555,7 +926,7 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="a7c7b84687216a3310300c80174ca2afc" name="a7c7b84687216a3310300c80174ca2afc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c7b84687216a3310300c80174ca2afc">&#9670;&#160;</a></span>GetGlobalBoundsDegrees()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c7b84687216a3310300c80174ca2afc">&#9670;&#160;</a></span>GetGlobalBoundsDegrees() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -595,8 +966,80 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a7c7b84687216a3310300c80174ca2afc" name="a7c7b84687216a3310300c80174ca2afc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c7b84687216a3310300c80174ca2afc">&#9670;&#160;</a></span>GetGlobalBoundsDegrees() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FatigueTestMotion::GetGlobalBoundsDegrees </td>
+          <td>(</td>
+          <td class="paramtype">float &amp;</td>          <td class="paramname"><span class="paramname"><em>min_degrees</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;</td>          <td class="paramname"><span class="paramname"><em>max_degrees</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get global bounds in degrees (for command interface) </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_a7c7b84687216a3310300c80174ca2afc_cgraph.svg" width="439" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a4422e931c971c28c9b1f74ae90cbcf29" name="a4422e931c971c28c9b1f74ae90cbcf29"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4422e931c971c28c9b1f74ae90cbcf29">&#9670;&#160;</a></span>GetLocalBoundsFromCenterDegrees()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4422e931c971c28c9b1f74ae90cbcf29">&#9670;&#160;</a></span>GetLocalBoundsFromCenterDegrees() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FatigueTestMotion::GetLocalBoundsFromCenterDegrees </td>
+          <td>(</td>
+          <td class="paramtype">float &amp;</td>          <td class="paramname"><span class="paramname"><em>min_degrees</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;</td>          <td class="paramname"><span class="paramname"><em>max_degrees</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get local bounds in degrees from center (thread-safe) </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_a4422e931c971c28c9b1f74ae90cbcf29_cgraph.svg" width="507" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a4422e931c971c28c9b1f74ae90cbcf29" name="a4422e931c971c28c9b1f74ae90cbcf29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4422e931c971c28c9b1f74ae90cbcf29">&#9670;&#160;</a></span>GetLocalBoundsFromCenterDegrees() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -632,7 +1075,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="a327291e1473fae0f255e924e2787cc98" name="a327291e1473fae0f255e924e2787cc98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a327291e1473fae0f255e924e2787cc98">&#9670;&#160;</a></span>GetStatus()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a327291e1473fae0f255e924e2787cc98">&#9670;&#160;</a></span>GetStatus() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -666,8 +1109,65 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a327291e1473fae0f255e924e2787cc98" name="a327291e1473fae0f255e924e2787cc98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a327291e1473fae0f255e924e2787cc98">&#9670;&#160;</a></span>GetStatus() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFatigueTestMotion_1_1Status.html">Status</a> FatigueTestMotion::GetStatus </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_a327291e1473fae0f255e924e2787cc98_cgraph.svg" width="398" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a26b46774d398c3c61e07ca39882c1f48" name="a26b46774d398c3c61e07ca39882c1f48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26b46774d398c3c61e07ca39882c1f48">&#9670;&#160;</a></span>GetTargetCycles()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a26b46774d398c3c61e07ca39882c1f48">&#9670;&#160;</a></span>GetTargetCycles() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t FatigueTestMotion::GetTargetCycles </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get target cycle count (thread-safe) </p>
+
+</div>
+</div>
+<a id="a26b46774d398c3c61e07ca39882c1f48" name="a26b46774d398c3c61e07ca39882c1f48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26b46774d398c3c61e07ca39882c1f48">&#9670;&#160;</a></span>GetTargetCycles() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -694,7 +1194,34 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="a75bd49a56a86c97665e846a2eaf7f010" name="a75bd49a56a86c97665e846a2eaf7f010"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75bd49a56a86c97665e846a2eaf7f010">&#9670;&#160;</a></span>IsBounded()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a75bd49a56a86c97665e846a2eaf7f010">&#9670;&#160;</a></span>IsBounded() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FatigueTestMotion::IsBounded </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if system is bounded (thread-safe) </p>
+
+</div>
+</div>
+<a id="a75bd49a56a86c97665e846a2eaf7f010" name="a75bd49a56a86c97665e846a2eaf7f010"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75bd49a56a86c97665e846a2eaf7f010">&#9670;&#160;</a></span>IsBounded() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -721,7 +1248,34 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="a3d07d8e0acf0bbd5867da9e14f8ce7f2" name="a3d07d8e0acf0bbd5867da9e14f8ce7f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d07d8e0acf0bbd5867da9e14f8ce7f2">&#9670;&#160;</a></span>IsCycleComplete()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d07d8e0acf0bbd5867da9e14f8ce7f2">&#9670;&#160;</a></span>IsCycleComplete() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FatigueTestMotion::IsCycleComplete </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if cycle count reached (thread-safe) </p>
+
+</div>
+</div>
+<a id="a3d07d8e0acf0bbd5867da9e14f8ce7f2" name="a3d07d8e0acf0bbd5867da9e14f8ce7f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d07d8e0acf0bbd5867da9e14f8ce7f2">&#9670;&#160;</a></span>IsCycleComplete() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -748,7 +1302,34 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="a23d9f8430ce81b0f5b1376209bf9b0e6" name="a23d9f8430ce81b0f5b1376209bf9b0e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23d9f8430ce81b0f5b1376209bf9b0e6">&#9670;&#160;</a></span>IsRunning()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a23d9f8430ce81b0f5b1376209bf9b0e6">&#9670;&#160;</a></span>IsRunning() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FatigueTestMotion::IsRunning </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if motion is running (thread-safe) </p>
+
+</div>
+</div>
+<a id="a23d9f8430ce81b0f5b1376209bf9b0e6" name="a23d9f8430ce81b0f5b1376209bf9b0e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23d9f8430ce81b0f5b1376209bf9b0e6">&#9670;&#160;</a></span>IsRunning() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -775,7 +1356,7 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="af8e6c53b8ceac2943e4ea919b745782f" name="af8e6c53b8ceac2943e4ea919b745782f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8e6c53b8ceac2943e4ea919b745782f">&#9670;&#160;</a></span>RecalculateTrajectory()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af8e6c53b8ceac2943e4ea919b745782f">&#9670;&#160;</a></span>RecalculateTrajectory() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -806,8 +1387,62 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="af8e6c53b8ceac2943e4ea919b745782f" name="af8e6c53b8ceac2943e4ea919b745782f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8e6c53b8ceac2943e4ea919b745782f">&#9670;&#160;</a></span>RecalculateTrajectory() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FatigueTestMotion::RecalculateTrajectory </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Recalculate trajectory parameters based on frequency, bounds, and dwell. </p>
+
+</div>
+</div>
 <a id="a86de353c719ceba5e708513e94c7c002" name="a86de353c719ceba5e708513e94c7c002"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86de353c719ceba5e708513e94c7c002">&#9670;&#160;</a></span>ResetCycles()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a86de353c719ceba5e708513e94c7c002">&#9670;&#160;</a></span>ResetCycles() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FatigueTestMotion::ResetCycles </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reset cycle count (thread-safe) </p>
+
+</div>
+</div>
+<a id="a86de353c719ceba5e708513e94c7c002" name="a86de353c719ceba5e708513e94c7c002"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86de353c719ceba5e708513e94c7c002">&#9670;&#160;</a></span>ResetCycles() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -834,7 +1469,7 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="aff0fb00f39c558bed824dfb79cad5a2a" name="aff0fb00f39c558bed824dfb79cad5a2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff0fb00f39c558bed824dfb79cad5a2a">&#9670;&#160;</a></span>SetDwellTimes()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aff0fb00f39c558bed824dfb79cad5a2a">&#9670;&#160;</a></span>SetDwellTimes() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -874,8 +1509,44 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="aff0fb00f39c558bed824dfb79cad5a2a" name="aff0fb00f39c558bed824dfb79cad5a2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff0fb00f39c558bed824dfb79cad5a2a">&#9670;&#160;</a></span>SetDwellTimes() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FatigueTestMotion::SetDwellTimes </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>dwell_at_min_ms</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>dwell_at_max_ms</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set dwell times (thread-safe, can be changed in real-time) </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_aff0fb00f39c558bed824dfb79cad5a2a_cgraph.svg" width="370" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a266568d4787b4d607e6106d5e76922c0" name="a266568d4787b4d607e6106d5e76922c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a266568d4787b4d607e6106d5e76922c0">&#9670;&#160;</a></span>SetFrequency()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a266568d4787b4d607e6106d5e76922c0">&#9670;&#160;</a></span>SetFrequency() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -911,8 +1582,40 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a266568d4787b4d607e6106d5e76922c0" name="a266568d4787b4d607e6106d5e76922c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a266568d4787b4d607e6106d5e76922c0">&#9670;&#160;</a></span>SetFrequency() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FatigueTestMotion::SetFrequency </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>frequency_hz</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set frequency (thread-safe, can be changed in real-time) </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_a266568d4787b4d607e6106d5e76922c0_cgraph.svg" width="370" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="aca79b6a071eb4a956ac949b3404cfe1f" name="aca79b6a071eb4a956ac949b3404cfe1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca79b6a071eb4a956ac949b3404cfe1f">&#9670;&#160;</a></span>SetGlobalBounds()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aca79b6a071eb4a956ac949b3404cfe1f">&#9670;&#160;</a></span>SetGlobalBounds() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -959,8 +1662,51 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="aca79b6a071eb4a956ac949b3404cfe1f" name="aca79b6a071eb4a956ac949b3404cfe1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca79b6a071eb4a956ac949b3404cfe1f">&#9670;&#160;</a></span>SetGlobalBounds() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FatigueTestMotion::SetGlobalBounds </td>
+          <td>(</td>
+          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>min_bound</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>max_bound</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set global bounds (hardware limits found during initialization) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">min_bound</td><td>Global minimum position in steps </td></tr>
+    <tr><td class="paramname">max_bound</td><td>Global maximum position in steps </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_aca79b6a071eb4a956ac949b3404cfe1f_cgraph.svg" width="631" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a5d228e53872d7dd297ff2ebd834c12f1" name="a5d228e53872d7dd297ff2ebd834c12f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d228e53872d7dd297ff2ebd834c12f1">&#9670;&#160;</a></span>SetLocalBoundsFromCenterDegrees()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d228e53872d7dd297ff2ebd834c12f1">&#9670;&#160;</a></span>SetLocalBoundsFromCenterDegrees() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1007,8 +1753,51 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a5d228e53872d7dd297ff2ebd834c12f1" name="a5d228e53872d7dd297ff2ebd834c12f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d228e53872d7dd297ff2ebd834c12f1">&#9670;&#160;</a></span>SetLocalBoundsFromCenterDegrees() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FatigueTestMotion::SetLocalBoundsFromCenterDegrees </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>min_degrees_from_center</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>max_degrees_from_center</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set local bounds in degrees from center (thread-safe) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">min_degrees_from_center</td><td>Minimum angle from center (negative) </td></tr>
+    <tr><td class="paramname">max_degrees_from_center</td><td>Maximum angle from center (positive) </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_a5d228e53872d7dd297ff2ebd834c12f1_cgraph.svg" width="504" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a2f155b2c8b97f4d94c1284a31d5031bd" name="a2f155b2c8b97f4d94c1284a31d5031bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f155b2c8b97f4d94c1284a31d5031bd">&#9670;&#160;</a></span>SetTargetCycles()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f155b2c8b97f4d94c1284a31d5031bd">&#9670;&#160;</a></span>SetTargetCycles() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1039,8 +1828,35 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a2f155b2c8b97f4d94c1284a31d5031bd" name="a2f155b2c8b97f4d94c1284a31d5031bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f155b2c8b97f4d94c1284a31d5031bd">&#9670;&#160;</a></span>SetTargetCycles() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FatigueTestMotion::SetTargetCycles </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>cycles</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set target cycle count (thread-safe) </p>
+
+</div>
+</div>
 <a id="acb23779dc0dce69aea1c61d5ce17c7bf" name="acb23779dc0dce69aea1c61d5ce17c7bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb23779dc0dce69aea1c61d5ce17c7bf">&#9670;&#160;</a></span>SetUnbounded()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acb23779dc0dce69aea1c61d5ce17c7bf">&#9670;&#160;</a></span>SetUnbounded() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1080,8 +1896,76 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="acb23779dc0dce69aea1c61d5ce17c7bf" name="acb23779dc0dce69aea1c61d5ce17c7bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb23779dc0dce69aea1c61d5ce17c7bf">&#9670;&#160;</a></span>SetUnbounded() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FatigueTestMotion::SetUnbounded </td>
+          <td>(</td>
+          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>current_position</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>default_range_steps</em><span class="paramdefsep"> = </span><span class="paramdefval">10000</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set unbounded mode (no mechanical stops found) Uses current position as home and sets reasonable default global bounds. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_acb23779dc0dce69aea1c61d5ce17c7bf_cgraph.svg" width="398" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="aedf901d32a07a14e2eba330abf2988e9" name="aedf901d32a07a14e2eba330abf2988e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedf901d32a07a14e2eba330abf2988e9">&#9670;&#160;</a></span>Start()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aedf901d32a07a14e2eba330abf2988e9">&#9670;&#160;</a></span>Start() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FatigueTestMotion::Start </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Start sinuous motion (thread-safe) </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_aedf901d32a07a14e2eba330abf2988e9_cgraph.svg" width="370" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aedf901d32a07a14e2eba330abf2988e9" name="aedf901d32a07a14e2eba330abf2988e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedf901d32a07a14e2eba330abf2988e9">&#9670;&#160;</a></span>Start() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1113,7 +1997,34 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="a1b73c95ad6dfe1deaa3dc5a3b271bd2e" name="a1b73c95ad6dfe1deaa3dc5a3b271bd2e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b73c95ad6dfe1deaa3dc5a3b271bd2e">&#9670;&#160;</a></span>Stop()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b73c95ad6dfe1deaa3dc5a3b271bd2e">&#9670;&#160;</a></span>Stop() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FatigueTestMotion::Stop </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stop sinuous motion (thread-safe) </p>
+
+</div>
+</div>
+<a id="a1b73c95ad6dfe1deaa3dc5a3b271bd2e" name="a1b73c95ad6dfe1deaa3dc5a3b271bd2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b73c95ad6dfe1deaa3dc5a3b271bd2e">&#9670;&#160;</a></span>Stop() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1140,7 +2051,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="a40e43a61bc8beddb3df12e7d3b72b141" name="a40e43a61bc8beddb3df12e7d3b72b141"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40e43a61bc8beddb3df12e7d3b72b141">&#9670;&#160;</a></span>Update()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a40e43a61bc8beddb3df12e7d3b72b141">&#9670;&#160;</a></span>Update() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1176,8 +2087,40 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a40e43a61bc8beddb3df12e7d3b72b141" name="a40e43a61bc8beddb3df12e7d3b72b141"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40e43a61bc8beddb3df12e7d3b72b141">&#9670;&#160;</a></span>Update() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FatigueTestMotion::Update </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Update motion (call this in main loop, thread-safe) </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_a40e43a61bc8beddb3df12e7d3b72b141_cgraph.svg" width="624" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a00b20bc353584e6851ec34eb34c95205" name="a00b20bc353584e6851ec34eb34c95205"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a00b20bc353584e6851ec34eb34c95205">&#9670;&#160;</a></span>UpdateSinuousMotion()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a00b20bc353584e6851ec34eb34c95205">&#9670;&#160;</a></span>UpdateSinuousMotion() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1205,6 +2148,33 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTestMotion_a00b20bc353584e6851ec34eb34c95205_icgraph.svg" width="710" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="a00b20bc353584e6851ec34eb34c95205" name="a00b20bc353584e6851ec34eb34c95205"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00b20bc353584e6851ec34eb34c95205">&#9670;&#160;</a></span>UpdateSinuousMotion() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FatigueTestMotion::UpdateSinuousMotion </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Update sinuous motion target position. </p>
 
 </div>
 </div>
@@ -1241,7 +2211,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="bounds__finding__sinuous__motion_8cpp.html#a70ab36d1d4920fdd314279845af152c5">AngleUnit</a> FatigueTestMotion::angle_unit_</td>
+          <td class="memname"><a class="el" href="fatigue__test__stallguard_8cpp.html#a70ab36d1d4920fdd314279845af152c5">AngleUnit</a> FatigueTestMotion::angle_unit_</td>
         </tr>
       </table>
   </td>
@@ -1385,8 +2355,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a3017e608be9368a2b53a0ad0ce60b4a5" name="a3017e608be9368a2b53a0ad0ce60b4a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3017e608be9368a2b53a0ad0ce60b4a5">&#9670;&#160;</a></span>driver_</h2>
+<a id="a3c1e82766eb4aa9b9b420a8844b5a94c" name="a3c1e82766eb4aa9b9b420a8844b5a94c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c1e82766eb4aa9b9b420a8844b5a94c">&#9670;&#160;</a></span>driver_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1395,7 +2365,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt;<a class="el" href="classEsp32SPI.html">Esp32SPI</a>&gt;* FatigueTestMotion::driver_</td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; * FatigueTestMotion::driver_</td>
         </tr>
       </table>
   </td>
@@ -1847,8 +2817,9 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="bounds__finding__sinuous__motion_8cpp.html">bounds_finding_sinuous_motion.cpp</a></li>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="fatigue__test__encoder_8cpp.html">fatigue_test_encoder.cpp</a></li>
+<li><a class="el" href="fatigue__test__stallguard_8cpp.html">fatigue_test_stallguard.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

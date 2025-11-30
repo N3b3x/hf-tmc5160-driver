@@ -6,13 +6,12 @@ This directory contains comprehensive documentation for all ESP32 examples and t
 
 The ESP32 examples demonstrate practical applications of the TMC51x0 driver (TMC5130 & TMC5160), while the comprehensive test suites provide thorough validation of all driver features. All examples and tests support multiple motor configurations selected at compile-time.
 
-## Motor Configuration
+## Test Rig Configuration
 
-All examples and tests support three motor configurations:
+All examples and tests use a unified test rig selection system that automatically configures motor, board, and platform settings:
 
-- **MOTOR_17HS4401S_GEARBOX** (default): 17HS4401S with 5.18:1 planetary gearbox
-- **MOTOR_17HS4401S_DIRECT**: 17HS4401S direct drive (no gearbox)
-- **MOTOR_APPLIED_MOTION_5034**: Applied Motion 5034-369 NEMA 34 (high torque)
+- **TEST_RIG_CORE_DRIVER** (default for most examples): 17HS4401S motor (geared or direct drive), TMC51x0 EVAL board, reference switches, encoder
+- **TEST_RIG_FATIGUE** (default for fatigue testing examples): Applied Motion 5034-369 NEMA 34 motor, TMC51x0 EVAL board, reference switches, encoder
 
 See [Motor Configuration Guide](motor_configuration.md) for detailed specifications and selection instructions.
 
@@ -23,7 +22,7 @@ Practical applications demonstrating real-world usage:
 ### Motion Control Examples
 
 - **[Internal Ramp Sinusoidal Motion](internal_ramp_sinusoidal.md)** - Simple back-and-forth motion using positioning mode
-- **[Bounds Finding & Sinusoidal Motion](bounds_finding_sinuous_motion.md)** - Fatigue testing platform with sensorless bounds finding and UART command interface
+- **[Fatigue Testing](fatigue_test.md)** - Back-and-forth oscillatory motion between bounds (StallGuard2 or encoder-based detection)
 
 ### Configuration Examples
 
@@ -46,11 +45,11 @@ Thorough validation of driver features:
 
 ## Quick Start
 
-1. **Select Your Motor**: Edit the `SELECTED_MOTOR` constant at the top of your example/test file
-2. **Configure Pins**: Modify pin assignments in `esp32_tmc5160_test_config.hpp` if needed
-3. **Build**: Use ESP-IDF build system (`idf.py build`)
-4. **Flash**: Flash to your ESP32 board (`idf.py flash`)
-5. **Monitor**: View output via serial monitor (`idf.py monitor`)
+1. **Select Your Test Rig**: Edit the `SELECTED_TEST_RIG` constant at the top of your example/test file (or use `SELECTED_MOTOR` for older examples)
+2. **Configure Pins**: Modify pin assignments in `esp32_tmc51x0_test_config.hpp` if needed
+3. **Build**: Use the build script (`./scripts/build_app.sh <app_name> Debug`) or ESP-IDF build system (`idf.py build`)
+4. **Flash**: Flash to your ESP32 board using the flash script (`./scripts/flash_app.sh flash <app_name> Debug`) or `idf.py flash`
+5. **Monitor**: View output via serial monitor (`idf.py monitor` or the flash script with `monitor` option)
 
 ## Hardware Requirements
 
@@ -65,12 +64,12 @@ Thorough validation of driver features:
 
 All examples and tests use shared configuration files:
 
-- `esp32_tmc5160_test_config.hpp` - Pin assignments, motor configurations, and test defaults
+- `esp32_tmc51x0_test_config.hpp` - Pin assignments, test rig configurations, and test defaults
   - Default SPI pins: MOSI=6, MISO=2, SCLK=5, CS=18
   - Default control pins: EN=11, CLK=10, DIAG0=23, DIAG1=15
   - Default SPI clock: 500 kHz (some examples override this)
-  - Motor configurations: 17HS4401S (geared/direct), Applied Motion 5034-369
-- `esp32_tmc5160_bus.hpp` - ESP32-specific communication interface implementations
+  - Test rig configurations: TEST_RIG_CORE_DRIVER (17HS4401S), TEST_RIG_FATIGUE (Applied Motion 5034-369)
+- `esp32_tmc51x0_bus.hpp` - ESP32-specific communication interface implementations
 
 ## Documentation Structure
 

@@ -1,7 +1,8 @@
 var dir_7751913d9073a449937b5bcfd50bf3a6 =
 [
     [ "test_config", "dir_e3ce3dae7ef92f91e56ef83ca58a791e.html", "dir_e3ce3dae7ef92f91e56ef83ca58a791e" ],
-    [ "bounds_finding_sinuous_motion.cpp", "bounds__finding__sinuous__motion_8cpp.html", "bounds__finding__sinuous__motion_8cpp" ],
+    [ "fatigue_test_encoder.cpp", "fatigue__test__encoder_8cpp.html", "fatigue__test__encoder_8cpp" ],
+    [ "fatigue_test_stallguard.cpp", "fatigue__test__stallguard_8cpp.html", "fatigue__test__stallguard_8cpp" ],
     [ "internal_ramp_comprehensive_test.cpp", "internal__ramp__comprehensive__test_8cpp.html", "internal__ramp__comprehensive__test_8cpp" ],
     [ "internal_ramp_sinusoidal.cpp", "internal__ramp__sinusoidal_8cpp.html", "internal__ramp__sinusoidal_8cpp" ],
     [ "spi_daisy_chain_comprehensive_test.cpp", "spi__daisy__chain__comprehensive__test_8cpp.html", "spi__daisy__chain__comprehensive__test_8cpp" ],

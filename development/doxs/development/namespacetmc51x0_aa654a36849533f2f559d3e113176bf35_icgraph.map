@@ -1,6 +1,6 @@
 <map id="tmc51x0::StepsToDegrees" name="tmc51x0::StepsToDegrees">
 <area shape="rect" id="Node000001" title="Convert steps to degrees." alt="" coords="748,186,939,211"/>
-<area shape="rect" id="Node000002" href="$bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,206,92,231"/>
+<area shape="rect" id="Node000002" href="$fatigue__test__encoder_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,206,92,231"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="828,175,808,140,779,100,743,61,699,32,663,18,632,10,603,8,576,10,517,21,443,32,354,36,283,37,251,42,217,50,181,66,142,89,111,116,87,149,57,207,52,205,82,146,107,112,138,85,179,61,216,45,250,36,283,32,354,31,442,27,516,15,575,5,603,3,632,5,665,13,701,27,746,57,783,96,812,137,832,172"/>
 <area shape="rect" id="Node000003" href="$classFatigueTestMotion.html#afd810bcf984589fb9b837d8fd5a2a1c5" title="Clip local bounds to global bounds." alt="" coords="479,41,664,81"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="815,179,763,141,699,102,652,84,654,79,701,98,766,136,818,175"/>

@@ -116,7 +116,7 @@ Include dependency graph for esp32_tmc51x0_test_config.hpp:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="esp32__tmc51x0__test__config_8hpp__dep__incl.svg" width="1114" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="esp32__tmc51x0__test__config_8hpp__dep__incl.svg" width="1344" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="esp32__tmc51x0__test__config_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -726,7 +726,7 @@ Usage</h2>
 <h3><a class="anchor" id="autotoc_md23"></a>
 Unified Test Rig Selection (Recommended)</h3>
 <div class="fragment"><div class="line"><span class="comment">// Select test rig at compile time - automatically selects motor, board, and platform</span></div>
-<div class="line"><span class="keyword">static</span> <span class="keyword">constexpr</span> <a class="code hl_enumeration" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a> <a class="code hl_variable" href="bounds__finding__sinuous__motion_8cpp.html#a3f1e89f6e3a0be599511d4a8cc389305">SELECTED_TEST_RIG</a> = </div>
+<div class="line"><span class="keyword">static</span> <span class="keyword">constexpr</span> <a class="code hl_enumeration" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a> <a class="code hl_variable" href="fatigue__test__encoder_8cpp.html#a3f1e89f6e3a0be599511d4a8cc389305">SELECTED_TEST_RIG</a> = </div>
 <div class="line">    <a class="code hl_enumvalue" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0a81d3a109e3d88b343cd45c32f41dd824">tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER</a>;</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 1. Configure driver from test rig (automatically configures motor, board, and platform)</span></div>
@@ -742,7 +742,7 @@ Unified Test Rig Selection (Recommended)</h3>
 <div class="line"> </div>
 <div class="line"><span class="keyword">auto</span> enc_cfg = tmc51x0_test_config::GetTestRigEncoderConfig&lt;SELECTED_TEST_RIG&gt;();</div>
 <div class="line">driver.encoder.Configure(enc_cfg);</div>
-<div class="ttc" id="abounds__finding__sinuous__motion_8cpp_html_a3f1e89f6e3a0be599511d4a8cc389305"><div class="ttname"><a href="bounds__finding__sinuous__motion_8cpp.html#a3f1e89f6e3a0be599511d4a8cc389305">SELECTED_TEST_RIG</a></div><div class="ttdeci">static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG</div><div class="ttdef"><b>Definition</b> bounds_finding_sinuous_motion.cpp:77</div></div>
+<div class="ttc" id="afatigue__test__encoder_8cpp_html_a3f1e89f6e3a0be599511d4a8cc389305"><div class="ttname"><a href="fatigue__test__encoder_8cpp.html#a3f1e89f6e3a0be599511d4a8cc389305">SELECTED_TEST_RIG</a></div><div class="ttdeci">static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG</div><div class="ttdef"><b>Definition</b> fatigue_test_encoder.cpp:80</div></div>
 <div class="ttc" id="anamespacetmc51x0__test__config_html_abbe03fa70b2e9f4f6cc025761f518df0"><div class="ttname"><a href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a></div><div class="ttdeci">TestRigType</div><div class="ttdoc">Test rig type enumeration.</div><div class="ttdef"><b>Definition</b> esp32_tmc51x0_test_config.hpp:282</div></div>
 <div class="ttc" id="anamespacetmc51x0__test__config_html_abbe03fa70b2e9f4f6cc025761f518df0a81d3a109e3d88b343cd45c32f41dd824"><div class="ttname"><a href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0a81d3a109e3d88b343cd45c32f41dd824">tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER</a></div><div class="ttdeci">@ TEST_RIG_CORE_DRIVER</div><div class="ttdoc">Core driver test rig (17HS4401S motor, TMC51x0 EVAL board, reference switches, encoder)</div></div>
 <div class="ttc" id="astructtmc51x0_1_1DriverConfig_html"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2510</div></div>
@@ -788,7 +788,7 @@ Test Rig Configuration</h2>
 <li>Platform: Fatigue Test Rig (PLATFORM_FATIGUE_TEST_RIG)</li>
 <li>Features: Reference switches, encoder (AS5047U), direct drive (NEMA 34)</li>
 <li>Used for: Bounds finding and sinusoidal motion testing</li>
-<li>Examples: bounds_finding_sinuous_motion, internal_ramp_sinusoidal</li>
+<li>Examples: fatigue_test_stallguard, fatigue_test_encoder, internal_ramp_sinusoidal</li>
 </ul>
 </li>
 </ol>

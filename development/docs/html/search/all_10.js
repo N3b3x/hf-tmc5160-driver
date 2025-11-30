@@ -1,7 +1,7 @@
 var searchData=
 [
   ['rad_0',['Rad',['../namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a1d9a8ab863064e5b54a8a7641160cf3f',1,'tmc51x0']]],
-  ['radians_1',['RADIANS',['../bounds__finding__sinuous__motion_8cpp.html#a70ab36d1d4920fdd314279845af152c5aea3c82298fac1c706a4076b4aff53015',1,'bounds_finding_sinuous_motion.cpp']]],
+  ['radians_1',['RADIANS',['../fatigue__test__encoder_8cpp.html#a70ab36d1d4920fdd314279845af152c5aea3c82298fac1c706a4076b4aff53015',1,'RADIANS:&#160;fatigue_test_encoder.cpp'],['../fatigue__test__stallguard_8cpp.html#a70ab36d1d4920fdd314279845af152c5aea3c82298fac1c706a4076b4aff53015',1,'RADIANS:&#160;fatigue_test_stallguard.cpp'],['../fatigue__test__encoder_8cpp.html#a70ab36d1d4920fdd314279845af152c5aea3c82298fac1c706a4076b4aff53015',1,'RADIANS:&#160;fatigue_test_encoder.cpp'],['../fatigue__test__stallguard_8cpp.html#a70ab36d1d4920fdd314279845af152c5aea3c82298fac1c706a4076b4aff53015',1,'RADIANS:&#160;fatigue_test_stallguard.cpp']]],
   ['ramp_5fa1_2',['RAMP_A1',['../namespacetmc51x0__test__config_1_1MotorConfig__17HS4401S.html#a1b921cbad2145a6b685da8b937e37e5e',1,'tmc51x0_test_config::MotorConfig_17HS4401S::RAMP_A1'],['../namespacetmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#a5b80b244f7fb115ab407ad8e2d7dc94f',1,'tmc51x0_test_config::MotorConfig_17HS4401S_Direct::RAMP_A1'],['../namespacetmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a0e8a3c193f0703dd60a4993e7d611ce7',1,'tmc51x0_test_config::MotorConfig_AppliedMotion_5034_369::RAMP_A1']]],
   ['ramp_5famax_3',['RAMP_AMAX',['../namespacetmc51x0__test__config_1_1MotorConfig__17HS4401S.html#a9d28be9c8ebd9c42fe9ae4b5b9988cf0',1,'tmc51x0_test_config::MotorConfig_17HS4401S::RAMP_AMAX'],['../namespacetmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#ace34e4c52b2978a18f0a31d1ff4f8bc2',1,'tmc51x0_test_config::MotorConfig_17HS4401S_Direct::RAMP_AMAX'],['../namespacetmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a8d01a902dd883313d8aab9ad3d9e3470',1,'tmc51x0_test_config::MotorConfig_AppliedMotion_5034_369::RAMP_AMAX']]],
   ['ramp_5fconfig_4',['ramp_config',['../structtmc51x0_1_1DriverConfig.html#a09d6d126e8caeba0da3fe5a3fc347fab',1,'tmc51x0::DriverConfig']]],
@@ -35,7 +35,7 @@ var searchData=
   ['readregister_32',['ReadRegister',['../classtmc51x0_1_1CommInterface.html#a254c935ef459aed86a980785b090f761',1,'tmc51x0::CommInterface::ReadRegister()'],['../classtmc51x0_1_1SpiCommInterface.html#a70f84a191253f39676943c1cea1ed7cb',1,'tmc51x0::SpiCommInterface::ReadRegister()'],['../classtmc51x0_1_1UartCommInterface.html#af52f5c54246e92d1d34d006d9b148bd6',1,'tmc51x0::UartCommInterface::ReadRegister()']]],
   ['readreply_33',['ReadReply',['../structtmc51x0_1_1UartFrame.html#a2db72a1ba9681ae39c1b466d374fe680',1,'tmc51x0::UartFrame::ReadReply()'],['../namespacetmc51x0.html#a1326aa19da2a0db21e9ad25f701fcb14a0613aa8c12237f8c13aa3e590fac811b',1,'tmc51x0::ReadReply']]],
   ['readrequest_34',['ReadRequest',['../structtmc51x0_1_1UartFrame.html#acd70a40cddbb48e78f85cce3a2ddb5ff',1,'tmc51x0::UartFrame::ReadRequest()'],['../namespacetmc51x0.html#a1326aa19da2a0db21e9ad25f701fcb14ad749f894b7e5ae7433808c7250399cc1',1,'tmc51x0::ReadRequest']]],
-  ['recalculatetrajectory_35',['RecalculateTrajectory',['../classFatigueTestMotion.html#af8e6c53b8ceac2943e4ea919b745782f',1,'FatigueTestMotion']]],
+  ['recalculatetrajectory_35',['RecalculateTrajectory',['../classFatigueTestMotion.html#af8e6c53b8ceac2943e4ea919b745782f',1,'FatigueTestMotion::RecalculateTrajectory() noexcept'],['../classFatigueTestMotion.html#af8e6c53b8ceac2943e4ea919b745782f',1,'FatigueTestMotion::RecalculateTrajectory() noexcept']]],
   ['recalibrate_36',['recalibrate',['../uniontmc51x0_1_1GCONF__Register.html#ad21b53335a50986cf120d9c4b2a71475',1,'tmc51x0::GCONF_Register::recalibrate'],['../structtmc51x0_1_1GlobalConfig.html#ac053c3e75a76d85141c2e6009a6bf208',1,'tmc51x0::GlobalConfig::recalibrate']]],
   ['recommended_37',['Unified Test Rig Selection (Recommended)',['../esp32__tmc51x0__test__config_8hpp.html#autotoc_md23',1,'']]],
   ['ref_5fleft_38',['ref_left',['../structtmc51x0_1_1PinActiveLevels.html#a7da873fc212fdb118efb387863967b31',1,'tmc51x0::PinActiveLevels']]],
@@ -55,7 +55,7 @@ var searchData=
   ['reg_5faddr_52',['reg_addr',['../uniontmc51x0_1_1UartFrame_1_1Frame.html#a03bcaf93ded602d2a7ca2d6f7c78f5e0',1,'tmc51x0::UartFrame::Frame']]],
   ['register_20definitions_53',['Register Definitions',['../group__TMC51X0__Registers.html',1,'']]],
   ['register_5flist_54',['REGISTER_LIST',['../tmc51x0__register__defs_8hpp.html#a551b7a02a3fa068ff7ddd37031c83036',1,'tmc51x0_register_defs.hpp']]],
-  ['registercommand_55',['RegisterCommand',['../classUartCommandParser.html#a01f3f8de980d57367929b29a4cc22655',1,'UartCommandParser']]],
+  ['registercommand_55',['RegisterCommand',['../classUartCommandParser.html#a01f3f8de980d57367929b29a4cc22655',1,'UartCommandParser::RegisterCommand(const CommandArg &amp;arg, CommandHandler handler) noexcept'],['../classUartCommandParser.html#a01f3f8de980d57367929b29a4cc22655',1,'UartCommandParser::RegisterCommand(const CommandArg &amp;arg, CommandHandler handler) noexcept']]],
   ['removedevice_56',['RemoveDevice',['../classtmc51x0_1_1TMC51x0DaisyChain.html#ae66deb48f07196d7d1c2edbbf2a02f37',1,'tmc51x0::TMC51x0DaisyChain::RemoveDevice()'],['../classtmc51x0_1_1TMC51x0MultiNode.html#afaaa4962e3b7ffd34891601af129a6ee',1,'tmc51x0::TMC51x0MultiNode::RemoveDevice()']]],
   ['require_5fa_5fhigh_57',['require_a_high',['../structtmc51x0_1_1EncoderConfig.html#a495a034aeab05cbb46ed622c6e34fac3',1,'tmc51x0::EncoderConfig']]],
   ['require_5fb_5fhigh_58',['require_b_high',['../structtmc51x0_1_1EncoderConfig.html#a8ac85b3a91f867fd10bcc84b78f137a7',1,'tmc51x0::EncoderConfig']]],
@@ -68,7 +68,7 @@ var searchData=
   ['reserved5_65',['reserved5',['../uniontmc51x0_1_1COOLCONF__Register.html#ac839669051dbafa5e2b4d9e3bfe7b880',1,'tmc51x0::COOLCONF_Register']]],
   ['reset_66',['reset',['../uniontmc51x0_1_1GSTAT__Register.html#a9854fc334986b764c7f1854ef13a53ff',1,'tmc51x0::GSTAT_Register']]],
   ['reset_67',['Reset',['../classtmc51x0_1_1TMC51x0.html#aaade4f9075d43158dcc5e060599625f1',1,'tmc51x0::TMC51x0']]],
-  ['resetcycles_68',['ResetCycles',['../classFatigueTestMotion.html#a86de353c719ceba5e708513e94c7c002',1,'FatigueTestMotion']]],
+  ['resetcycles_68',['ResetCycles',['../classFatigueTestMotion.html#a86de353c719ceba5e708513e94c7c002',1,'FatigueTestMotion::ResetCycles() noexcept'],['../classFatigueTestMotion.html#a86de353c719ceba5e708513e94c7c002',1,'FatigueTestMotion::ResetCycles() noexcept']]],
   ['resetflag_69',['ResetFlag',['../structtmc51x0_1_1SpiStatus.html#ab66e0c76dca0c201e220bddf3d9ffa09',1,'tmc51x0::SpiStatus']]],
   ['resistance_5fohms_70',['RESISTANCE_OHMS',['../namespacetmc51x0__test__config_1_1MotorConfig__17HS4401S.html#ac94d236eb4866f6ba0c6baa9445b74f4',1,'tmc51x0_test_config::MotorConfig_17HS4401S::RESISTANCE_OHMS'],['../namespacetmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#ac66bcdaa9f2ccb7e9a0d38aa1706e88b',1,'tmc51x0_test_config::MotorConfig_17HS4401S_Direct::RESISTANCE_OHMS'],['../namespacetmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a0c655bbfeff0597128932976fc4fd8c9',1,'tmc51x0_test_config::MotorConfig_AppliedMotion_5034_369::RESISTANCE_OHMS']]],
   ['restorecachedsettings_71',['RestoreCachedSettings',['../structtmc51x0_1_1TMC51x0_1_1Homing.html#a0d3ed90edf45de58897381e55706a918',1,'tmc51x0::TMC51x0::Homing']]],
@@ -96,6 +96,6 @@ var searchData=
   ['running_93',['running',['../structFatigueTestMotion_1_1Status.html#afe9b127894d5c34e0e7036b2be6be908',1,'FatigueTestMotion::Status']]],
   ['running_5f_94',['running_',['../classFatigueTestMotion.html#a3607e5eeb857dda0a98966573b97368d',1,'FatigueTestMotion']]],
   ['rw_5faddress_95',['rw_address',['../uniontmc51x0_1_1UartFrame_1_1Frame.html#adb1b98bdb6be2e4a358c47c54791c911',1,'tmc51x0::UartFrame::Frame']]],
-  ['rx_5fbuf_5fsize_96',['RX_BUF_SIZE',['../classUartCommandParser.html#a8c85b7234bca147407b09bdedab478dd',1,'UartCommandParser']]],
-  ['rx_5fbuffer_5f_97',['rx_buffer_',['../classUartCommandParser.html#a64ce7b221fe1feea9af1a9b9681df668',1,'UartCommandParser']]]
+  ['rx_5fbuf_5fsize_96',['RX_BUF_SIZE',['../classUartCommandParser.html#acd6ce99799a13e266e0c29eacbbcb6bc',1,'UartCommandParser']]],
+  ['rx_5fbuffer_5f_97',['rx_buffer_',['../classUartCommandParser.html#a16e9f384a670301fc856fe5e686279fb',1,'UartCommandParser']]]
 ];

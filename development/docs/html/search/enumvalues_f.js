@@ -1,7 +1,7 @@
 var searchData=
 [
   ['rad_0',['Rad',['../namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a1d9a8ab863064e5b54a8a7641160cf3f',1,'tmc51x0']]],
-  ['radians_1',['RADIANS',['../bounds__finding__sinuous__motion_8cpp.html#a70ab36d1d4920fdd314279845af152c5aea3c82298fac1c706a4076b4aff53015',1,'bounds_finding_sinuous_motion.cpp']]],
+  ['radians_1',['RADIANS',['../fatigue__test__encoder_8cpp.html#a70ab36d1d4920fdd314279845af152c5aea3c82298fac1c706a4076b4aff53015',1,'RADIANS:&#160;fatigue_test_encoder.cpp'],['../fatigue__test__stallguard_8cpp.html#a70ab36d1d4920fdd314279845af152c5aea3c82298fac1c706a4076b4aff53015',1,'RADIANS:&#160;fatigue_test_stallguard.cpp'],['../fatigue__test__encoder_8cpp.html#a70ab36d1d4920fdd314279845af152c5aea3c82298fac1c706a4076b4aff53015',1,'RADIANS:&#160;fatigue_test_encoder.cpp'],['../fatigue__test__stallguard_8cpp.html#a70ab36d1d4920fdd314279845af152c5aea3c82298fac1c706a4076b4aff53015',1,'RADIANS:&#160;fatigue_test_stallguard.cpp']]],
   ['readreply_2',['ReadReply',['../namespacetmc51x0.html#a1326aa19da2a0db21e9ad25f701fcb14a0613aa8c12237f8c13aa3e590fac811b',1,'tmc51x0']]],
   ['readrequest_3',['ReadRequest',['../namespacetmc51x0.html#a1326aa19da2a0db21e9ad25f701fcb14ad749f894b7e5ae7433808c7250399cc1',1,'tmc51x0']]],
   ['refl_5fstep_4',['REFL_STEP',['../namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eba4a12e55d1f7a734e479eb5fd2f87f4a0',1,'tmc51x0']]],

@@ -24,7 +24,7 @@ var searchData=
   ['local_5fmin_5fbound_5f_21',['local_min_bound_',['../classFatigueTestMotion.html#a905d65f7afc6bb7ad992e5296437ceb7',1,'FatigueTestMotion']]],
   ['locked_5f_22',['locked_',['../classTmcMutexGuard.html#a57ef84d5629c9f4ad53660b8a9747e7d',1,'TmcMutexGuard']]],
   ['logdebug_23',['LogDebug',['../classtmc51x0_1_1CommInterface.html#aa5358fda94e214d25d2800a5564416b3',1,'tmc51x0::CommInterface']]],
-  ['long_5fname_24',['long_name',['../structCommandArg.html#a0a484202a6f9ef4350cd979750154e15',1,'CommandArg']]],
+  ['long_5fname_24',['long_name',['../structCommandArg.html#accb413b2fd05bcf1229bba83feb865b1',1,'CommandArg']]],
   ['low_25',['LOW',['../namespacetmc51x0.html#a52bd7474fc03fcfde3c7249fea7ea055a41bc94cbd8eebea13ce0491b2ac11b88',1,'tmc51x0::LOW'],['../namespacetmc51x0.html#aca6b71c611ab7e217b0d3ce4208821d9a41bc94cbd8eebea13ce0491b2ac11b88',1,'tmc51x0::LOW'],['../namespacetmc51x0.html#a4abe4fa0f128137c19f7da4f9b58a816a41bc94cbd8eebea13ce0491b2ac11b88',1,'tmc51x0::LOW']]],
   ['lower_5fthreshold_5fsg_26',['lower_threshold_sg',['../structtmc51x0_1_1CoolStepConfig.html#a80039da9cefd52f8190a94bb6bd1e710',1,'tmc51x0::CoolStepConfig']]]
 ];

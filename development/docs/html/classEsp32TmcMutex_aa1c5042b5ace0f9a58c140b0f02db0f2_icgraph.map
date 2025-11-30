@@ -10,9 +10,9 @@
 <area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="628,85,526,85,526,80,628,80"/>
 <area shape="rect" id="Node000008" href="$classTmcMutexGuard.html#ab7846844360a06130bb8138d2c8c63c0" title="Unlock mutex (automatically called on destruction)" alt="" coords="343,127,561,167"/>
 <area shape="poly" id="edge8_Node000003_Node000008" title=" " alt="" coords="663,101,541,129,540,124,662,96"/>
-<area shape="rect" id="Node000005" href="$bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,42,92,67"/>
+<area shape="rect" id="Node000005" href="$fatigue__test__encoder_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,42,92,67"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="131,43,93,50,92,45,130,38"/>
-<area shape="rect" id="Node000007" href="$bounds__finding__sinuous__motion_8cpp.html#aa7704c2c8716e80dc20804e4c7fb8fd4" title="Motion control task &#45; handles bounds finding and sinusoidal motion." alt="" coords="140,70,295,95"/>
+<area shape="rect" id="Node000007" href="$fatigue__test__encoder_8cpp.html#aa7704c2c8716e80dc20804e4c7fb8fd4" title="Motion control task &#45; handles bounds finding and sinusoidal motion." alt="" coords="140,70,295,95"/>
 <area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="364,85,295,85,295,80,364,80"/>
 <area shape="poly" id="edge7_Node000007_Node000005" title=" " alt="" coords="127,70,92,64,93,59,128,65"/>
 </map>

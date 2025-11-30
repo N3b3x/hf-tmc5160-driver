@@ -1,0 +1,13 @@
+<map id="uart_command_task" name="uart_command_task">
+<area shape="rect" id="Node000001" title="UART command processing task." alt="" coords="5,77,160,102"/>
+<area shape="rect" id="Node000002" href="$classUartCommandParser.html#aa9c8b4a43f0bb19ee715e9f61f86870c" title="Read and process commands from UART." alt="" coords="208,69,383,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,87,194,87,194,92,160,92"/>
+<area shape="rect" id="Node000003" href="$classUartCommandParser.html#a2c3351f22cef1fd524cb5c02f349e9b9" title="Process a command line." alt="" coords="431,69,596,109"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="383,87,417,87,417,92,383,92"/>
+<area shape="rect" id="Node000004" href="$classUartCommandParser.html#a39f6e678ffc3965cbce920bb025b0906" title="Find command handler for given argument." alt="" coords="644,5,809,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="580,67,646,47,647,52,582,72"/>
+<area shape="rect" id="Node000005" href="$classUartCommandParser.html#a7e0070e2b7b7de1ac43ac7eeab83310a" title="Print help message." alt="" coords="644,69,809,109"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="596,87,630,87,630,92,596,92"/>
+<area shape="rect" id="Node000006" href="$classUartCommandParser.html#a252be09aa840308655722421fafb1641" title="Parse command line into tokens." alt="" coords="644,133,809,173"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="582,107,647,127,646,132,580,112"/>
+</map>

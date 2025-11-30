@@ -31,7 +31,7 @@ var searchData=
   ['clr_5fenc_5fx_28',['clr_enc_x',['../uniontmc51x0_1_1ENCMODE__Register.html#adcd290d47648af951e431e4f15808173',1,'tmc51x0::ENCMODE_Register']]],
   ['clr_5fonce_29',['clr_once',['../uniontmc51x0_1_1ENCMODE__Register.html#afcbbfdb9055eda3e7989432dbf8a0754',1,'tmc51x0::ENCMODE_Register']]],
   ['comm_5f_30',['comm_',['../classtmc51x0_1_1TMC51x0.html#ab075afd9b080790f5e9d609429b595fe',1,'tmc51x0::TMC51x0::comm_'],['../classtmc51x0_1_1TMC51x0DaisyChain.html#a97395b52232f1ac9681d032a899408cc',1,'tmc51x0::TMC51x0DaisyChain::comm_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#a722dbd59518b9bf745c509aeb88c36cc',1,'tmc51x0::TMC51x0MultiNode::comm_']]],
-  ['commands_5f_31',['commands_',['../classUartCommandParser.html#a7f8b2a296f12d784d2f8826ef22d631d',1,'UartCommandParser']]],
+  ['commands_5f_31',['commands_',['../classUartCommandParser.html#a58ed1c7ff62ec2aa00d9b9b5b8cd3873',1,'UartCommandParser']]],
   ['completion_5fsemaphore_32',['completion_semaphore',['../structTestTaskContext.html#ab82bee11b198be2f2b4d6c908573ddb6',1,'TestTaskContext']]],
   ['coolconf_33',['coolconf',['../structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a2f89f521fb80373a595cba737d4fe7f4',1,'tmc51x0::TMC51x0::WriteOnlyRegisters']]],
   ['coolstep_34',['coolstep',['../structtmc51x0_1_1DriverConfig.html#a39ccc3dd689738238bb021084a17ddd0',1,'tmc51x0::DriverConfig']]],

@@ -90,7 +90,7 @@
  *    - Platform: Fatigue Test Rig (PLATFORM_FATIGUE_TEST_RIG)
  *    - Features: Reference switches, encoder (AS5047U), direct drive (NEMA 34)
  *    - Used for: Bounds finding and sinusoidal motion testing
- *    - Examples: bounds_finding_sinuous_motion, internal_ramp_sinusoidal
+ *    - Examples: fatigue_test_stallguard, fatigue_test_encoder, internal_ramp_sinusoidal
  *
  * @author Nebiyu Tadesse
  * @date 2025
@@ -761,7 +761,7 @@ namespace PlatformConfig_CoreDriverTestRig {
  * - Encoder configuration
  * - Mechanical system (gearing, leadscrew, belt drive)
  * 
- * Used by: bounds_finding_sinuous_motion, internal_ramp_sinusoidal
+ * Used by: fatigue_test_stallguard, fatigue_test_encoder, internal_ramp_sinusoidal
  */
 namespace PlatformConfig_FatigueTestRig {
     // Reference switch configuration

@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="Set GPIO pin state." alt="" coords="333,31,473,56"/>
 <area shape="rect" id="Node000002" href="$classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44" title="Initialize the SPI interface." alt="" coords="140,31,285,56"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="319,46,285,46,285,41,319,41"/>
-<area shape="rect" id="Node000003" href="$bounds__finding__sinuous__motion_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,5,92,31"/>
+<area shape="rect" id="Node000003" href="$fatigue__test__encoder_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,5,92,31"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,33,92,27,93,22,127,27"/>
 <area shape="rect" id="Node000004" href="$stallguard__tuning_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,55,92,80"/>
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="127,59,93,64,92,58,126,53"/>

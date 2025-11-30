@@ -79,7 +79,7 @@ The test suite is organized into five main categories:
 
 ## Pin Configuration
 
-Default pin configuration (from `esp32_tmc5160_test_config.hpp`):
+Default pin configuration (from `esp32_tmc51x0_test_config.hpp`):
 
 - **SPI**: MOSI=6, MISO=2, SCLK=5, CS=18
 - **Control**: EN=11
@@ -94,8 +94,8 @@ Default pin configuration (from `esp32_tmc5160_test_config.hpp`):
 Uses `MotorConfig_17HS4401S` (gearbox) by default. Motor selection can be modified at the top of the file:
 
 ```cpp
-static constexpr tmc5160_test_config::MotorType SELECTED_MOTOR = 
-    tmc5160_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+static constexpr tmc51x0_test_config::MotorType SELECTED_MOTOR = 
+    tmc51x0_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
 ```
 
 Available options:
