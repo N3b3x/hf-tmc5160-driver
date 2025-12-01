@@ -1,5 +1,12 @@
 var annotated_dup =
 [
+    [ "FatigueTest", "namespaceFatigueTest.html", [
+      [ "BoundsResult", "structFatigueTest_1_1BoundsResult.html", "structFatigueTest_1_1BoundsResult" ],
+      [ "EncoderBoundsFinder", "classFatigueTest_1_1EncoderBoundsFinder.html", "classFatigueTest_1_1EncoderBoundsFinder" ],
+      [ "FatigueTestMotion", "classFatigueTest_1_1FatigueTestMotion.html", "classFatigueTest_1_1FatigueTestMotion" ],
+      [ "IBoundsFinder", "classFatigueTest_1_1IBoundsFinder.html", "classFatigueTest_1_1IBoundsFinder" ],
+      [ "StallGuardBoundsFinder", "classFatigueTest_1_1StallGuardBoundsFinder.html", "classFatigueTest_1_1StallGuardBoundsFinder" ]
+    ] ],
     [ "tmc51x0", "namespacetmc51x0.html", [
       [ "CHOPCONF_Register", "uniontmc51x0_1_1CHOPCONF__Register.html", "uniontmc51x0_1_1CHOPCONF__Register" ],
       [ "ChopperConfig", "structtmc51x0_1_1ChopperConfig.html", "structtmc51x0_1_1ChopperConfig" ],
@@ -59,14 +66,25 @@ var annotated_dup =
       [ "UartFrame", "structtmc51x0_1_1UartFrame.html", "structtmc51x0_1_1UartFrame" ]
     ] ],
     [ "BackAndForthMotion", "classBackAndForthMotion.html", "classBackAndForthMotion" ],
+    [ "ButtonEvent", "structButtonEvent.html", "structButtonEvent" ],
     [ "CommandArg", "structCommandArg.html", "structCommandArg" ],
     [ "CommandEntry", "structCommandEntry.html", "structCommandEntry" ],
+    [ "ConfigAckPayload", "structConfigAckPayload.html", "structConfigAckPayload" ],
+    [ "ConfigPayload", "structConfigPayload.html", "structConfigPayload" ],
+    [ "ErrorPayload", "structErrorPayload.html", "structErrorPayload" ],
     [ "Esp32SPI", "classEsp32SPI.html", "classEsp32SPI" ],
     [ "Esp32TmcMutex", "classEsp32TmcMutex.html", "classEsp32TmcMutex" ],
+    [ "EspNowHeader", "structEspNowHeader.html", "structEspNowHeader" ],
+    [ "EspNowPacket", "structEspNowPacket.html", "structEspNowPacket" ],
     [ "FatigueTestMotion", "classFatigueTestMotion.html", "classFatigueTestMotion" ],
+    [ "ProtoEvent", "structProtoEvent.html", "structProtoEvent" ],
+    [ "RawMsg", "structRawMsg.html", "structRawMsg" ],
+    [ "Settings", "structSettings.html", "structSettings" ],
+    [ "StatusPayload", "structStatusPayload.html", "structStatusPayload" ],
     [ "TestDriverHandle", "structTestDriverHandle.html", "structTestDriverHandle" ],
     [ "TestResults", "structTestResults.html", "structTestResults" ],
     [ "TestTaskContext", "structTestTaskContext.html", "structTestTaskContext" ],
     [ "TmcMutexGuard", "classTmcMutexGuard.html", "classTmcMutexGuard" ],
-    [ "UartCommandParser", "classUartCommandParser.html", "classUartCommandParser" ]
+    [ "UartCommandParser", "classUartCommandParser.html", "classUartCommandParser" ],
+    [ "UiEvent", "structUiEvent.html", "structUiEvent" ]
 ];

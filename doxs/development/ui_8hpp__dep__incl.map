@@ -1,0 +1,7 @@
+<map id="ui.hpp" name="ui.hpp">
+<area shape="rect" id="Node000001" title="UI state machine for e&#45;ink display." alt="" coords="63,5,126,31"/>
+<area shape="rect" id="Node000002" href="$ui__board_2main_8cpp.html" title="Main application for UI board (remote controller with e&#45;ink display)" alt="" coords="5,79,88,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,44,57,80,52,77,77,41"/>
+<area shape="rect" id="Node000003" href="$ui_8cpp.html" title="UI implementation with Adafruit 2.9&quot; ThinkInk E&#45;Ink display." alt="" coords="112,79,173,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="112,41,137,77,133,80,108,44"/>
+</map>

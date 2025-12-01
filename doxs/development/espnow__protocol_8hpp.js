@@ -1,0 +1,57 @@
+var espnow__protocol_8hpp =
+[
+    [ "EspNowHeader", "structEspNowHeader.html", "structEspNowHeader" ],
+    [ "EspNowPacket", "structEspNowPacket.html", "structEspNowPacket" ],
+    [ "ConfigPayload", "structConfigPayload.html", "structConfigPayload" ],
+    [ "ConfigAckPayload", "structConfigAckPayload.html", "structConfigAckPayload" ],
+    [ "StatusPayload", "structStatusPayload.html", "structStatusPayload" ],
+    [ "ErrorPayload", "structErrorPayload.html", "structErrorPayload" ],
+    [ "Settings", "structSettings.html", "structSettings" ],
+    [ "ProtoEvent", "structProtoEvent.html", "structProtoEvent" ],
+    [ "MsgType", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2", [
+      [ "CONFIG_REQUEST", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a0b670c8c72d6656f8b6b7eef1e0f3927", null ],
+      [ "CONFIG_RESPONSE", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a689e774c07d429c54d29280de778b5eb", null ],
+      [ "CONFIG_SET", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a5a0fcce86a75eb684b5798e7b6205f77", null ],
+      [ "CONFIG_ACK", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a4cea151589809d9ffd1c1c97511085b4", null ],
+      [ "START", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2ab078ffd28db767c502ac367053f6e0ac", null ],
+      [ "START_ACK", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a62726fd8f06c4fae09958877d06db577", null ],
+      [ "PAUSE", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a291554596c183e837f0a6bec3767c891", null ],
+      [ "PAUSE_ACK", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a30a75a8c0b3abebabcca1501635684ed", null ],
+      [ "RESUME", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2abac2aec3ee8d7d495123dbe5ca2fdac9", null ],
+      [ "RESUME_ACK", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a39c910a71df7dcd2e3e224be6858d8e0", null ],
+      [ "STOP", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a615a46af313786fc4e349f34118be111", null ],
+      [ "STOP_ACK", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a83e36857e89fcac3c91a510b5ac5fb70", null ],
+      [ "STATUS_UPDATE", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2ac9f38cbcb08e48079a1aada9bed6bd23", null ],
+      [ "ERROR", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2abb1ca97ec761fc37101737ba0aa2e7c5", null ],
+      [ "TEST_COMPLETE", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a5aa303ccc0c43027d0a70c7fcf8e9a71", null ]
+    ] ],
+    [ "ProtoEventType", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5ae", [
+      [ "CONFIG_REQUEST", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea0b670c8c72d6656f8b6b7eef1e0f3927", null ],
+      [ "CONFIG_SET", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea5a0fcce86a75eb684b5798e7b6205f77", null ],
+      [ "START", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aeab078ffd28db767c502ac367053f6e0ac", null ],
+      [ "PAUSE", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea291554596c183e837f0a6bec3767c891", null ],
+      [ "RESUME", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aeabac2aec3ee8d7d495123dbe5ca2fdac9", null ],
+      [ "STOP", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea615a46af313786fc4e349f34118be111", null ],
+      [ "CONFIG_UPDATED", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea2e7d5569e99e4559e87fb0e75776a692", null ],
+      [ "CONFIG_APPLY_OK", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea20d492729f5b3c36c9f977a9d8d2f5dc", null ],
+      [ "CONFIG_APPLY_FAIL", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea7b7487ca2c9d201c9a01c01c1de8519f", null ],
+      [ "STARTED", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea17130e6c806885e23770df1519b18eb7", null ],
+      [ "PAUSED", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea99b2439e63f73ad515f7ab2447a80673", null ],
+      [ "RESUMED", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aeacb842fd609bb013fa97c3b7eef11b685", null ],
+      [ "STOPPED", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea09d4d696b4e935115b9313e3c412509a", null ],
+      [ "STATUS", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea5f241c8c8f985b3c51e05d39cf030f4c", null ],
+      [ "ERROR_EVENT", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea15f30429404e0a7a88fbd69a793da285", null ],
+      [ "TEST_COMPLETED", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aead71a637068b9cea4296244f419a40c34", null ]
+    ] ],
+    [ "TestState", "espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7", [
+      [ "IDLE", "espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7aa5daf7f2ebbba4975d61dab1c40188c7", null ],
+      [ "RUNNING", "espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7a43491564ebcfd38568918efbd6e840fd", null ],
+      [ "PAUSED", "espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7a99b2439e63f73ad515f7ab2447a80673", null ],
+      [ "COMPLETED", "espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7a8f7afecbc8fbc4cd0f50a57d1172482e", null ],
+      [ "ERROR", "espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7abb1ca97ec761fc37101737ba0aa2e7c5", null ]
+    ] ],
+    [ "crc16_ccitt", "espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740", null ],
+    [ "ESPNOW_MAX_PAYLOAD", "espnow__protocol_8hpp.html#a4608441df3e488ee211a1ae34a0d5159", null ],
+    [ "ESPNOW_SYNC_BYTE", "espnow__protocol_8hpp.html#aa7c5e0728b0dcea06f43dbd07863d579", null ],
+    [ "WIFI_CHANNEL", "espnow__protocol_8hpp.html#a98ebb7458d234a38d7ae44ddebd93366", null ]
+];

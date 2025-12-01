@@ -1,0 +1,50 @@
+<map id="ui.cpp" name="ui.cpp">
+<area shape="rect" id="Node000001" title="UI implementation with Adafruit 2.9&quot; ThinkInk E&#45;Ink display." alt="" coords="698,5,759,31"/>
+<area shape="rect" id="Node000002" href="$ui_8hpp.html" title="UI state machine for e&#45;ink display." alt="" coords="265,79,328,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="698,26,549,46,342,81,341,76,548,41,697,20"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="871,225,955,251"/>
+<area shape="poly" id="edge25_Node000001_Node000010" title=" " alt="" coords="733,31,740,65,756,103,785,138,818,169,882,216,879,220,815,173,781,142,752,105,735,66,727,32"/>
+<area shape="rect" id="Node000013" href="$ui__board_2espnow__protocol_8hpp.html" title="ESP&#45;NOW protocol API for UI board." alt="" coords="353,79,513,104"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="698,29,494,78,493,73,697,24"/>
+<area shape="rect" id="Node000014" href="$settings_8hpp.html" title="Settings storage for UI board." alt="" coords="588,79,691,104"/>
+<area shape="poly" id="edge20_Node000001_Node000014" title=" " alt="" coords="716,33,666,72,663,68,713,29"/>
+<area shape="rect" id="Node000015" href="$config_8hpp.html" title="Configuration for UI board (remote controller)" alt="" coords="405,152,495,177"/>
+<area shape="poly" id="edge22_Node000001_Node000015" title=" " alt="" coords="699,31,641,52,577,81,523,114,477,146,474,141,520,109,574,76,639,47,697,26"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="766,79,865,104"/>
+<area shape="poly" id="edge26_Node000001_Node000016" title=" " alt="" coords="744,29,792,68,789,72,741,33"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="889,79,1009,104"/>
+<area shape="poly" id="edge27_Node000001_Node000017" title=" " alt="" coords="761,27,901,72,899,77,759,32"/>
+<area shape="rect" id="Node000018" title=" " alt="" coords="1033,79,1176,104"/>
+<area shape="poly" id="edge28_Node000001_Node000018" title=" " alt="" coords="760,22,1031,73,1030,79,759,28"/>
+<area shape="rect" id="Node000019" title=" " alt="" coords="1200,79,1255,104"/>
+<area shape="poly" id="edge29_Node000001_Node000019" title=" " alt="" coords="760,19,938,37,1060,53,1187,76,1186,81,1059,59,937,42,759,24"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,225,156,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="266,99,197,116,161,132,128,154,105,182,91,213,86,211,101,180,124,150,158,127,196,111,264,94"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="309,225,439,251"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="305,103,364,212,359,215,301,106"/>
+<area shape="rect" id="Node000005" href="$espnow__protocol_8hpp.html" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="519,152,691,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="329,98,341,101,539,147,538,152,340,107,328,104"/>
+<area shape="rect" id="Node000011" href="$button_8hpp.html" title="Button handling for UI board." alt="" coords="187,152,279,177"/>
+<area shape="poly" id="edge12_Node000002_Node000011" title=" " alt="" coords="288,106,254,144,250,140,284,103"/>
+<area shape="poly" id="edge7_Node000005_Node000003" title=" " alt="" coords="521,180,170,227,169,222,520,175"/>
+<area shape="poly" id="edge8_Node000005_Node000004" title=" " alt="" coords="568,180,425,224,423,219,567,175"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="463,225,530,251"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="589,180,527,220,524,215,586,175"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="554,225,621,251"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="604,178,596,213,591,212,599,177"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="645,225,735,251"/>
+<area shape="poly" id="edge9_Node000005_Node000008" title=" " alt="" coords="620,175,667,214,664,219,617,179"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="760,225,847,251"/>
+<area shape="poly" id="edge10_Node000005_Node000009" title=" " alt="" coords="637,175,759,218,757,223,636,180"/>
+<area shape="poly" id="edge11_Node000005_Node000010" title=" " alt="" coords="655,175,858,221,856,226,654,180"/>
+<area shape="poly" id="edge13_Node000011_Node000003" title=" " alt="" coords="209,180,119,222,117,217,207,175"/>
+<area shape="poly" id="edge14_Node000011_Node000004" title=" " alt="" coords="257,175,340,217,338,221,254,180"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="181,225,285,251"/>
+<area shape="poly" id="edge15_Node000011_Node000012" title=" " alt="" coords="235,178,235,212,230,212,230,178"/>
+<area shape="poly" id="edge18_Node000013_Node000003" title=" " alt="" coords="366,107,258,129,209,141,175,154,134,184,101,216,97,213,130,180,173,150,208,136,257,123,365,101"/>
+<area shape="poly" id="edge19_Node000013_Node000004" title=" " alt="" coords="425,106,410,127,395,153,385,183,380,212,374,211,380,182,390,151,405,124,421,103"/>
+<area shape="poly" id="edge17_Node000013_Node000005" title=" " alt="" coords="461,102,565,144,563,149,459,106"/>
+<area shape="poly" id="edge21_Node000014_Node000005" title=" " alt="" coords="636,106,619,141,614,138,631,103"/>
+<area shape="poly" id="edge23_Node000015_Node000006" title=" " alt="" coords="460,176,484,212,479,215,455,179"/>
+<area shape="poly" id="edge24_Node000015_Node000012" title=" " alt="" coords="416,180,282,224,280,218,414,175"/>
+</map>

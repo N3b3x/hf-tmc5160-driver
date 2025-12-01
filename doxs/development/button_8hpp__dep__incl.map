@@ -1,0 +1,12 @@
+<map id="button.hpp" name="button.hpp">
+<area shape="rect" id="Node000001" title="Button handling for UI board." alt="" coords="87,5,179,31"/>
+<area shape="rect" id="Node000002" href="$button_8cpp.html" title="Button handling implementation." alt="" coords="5,79,96,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,42,66,80,62,76,108,38"/>
+<area shape="rect" id="Node000003" href="$ui__board_2main_8cpp.html" title="Main application for UI board (remote controller with e&#45;ink display)" alt="" coords="92,152,175,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="136,45,136,152,131,152,131,45"/>
+<area shape="rect" id="Node000004" href="$ui_8hpp.html" title="UI state machine for e&#45;ink display." alt="" coords="171,79,234,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="156,39,193,77,190,80,152,43"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="184,116,146,154,143,150,180,112"/>
+<area shape="rect" id="Node000005" href="$ui_8cpp.html" title="UI implementation with Adafruit 2.9&quot; ThinkInk E&#45;Ink display." alt="" coords="199,152,260,177"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="214,116,228,151,223,153,209,118"/>
+</map>

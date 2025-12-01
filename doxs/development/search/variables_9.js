@@ -1,25 +1,8 @@
 var searchData=
 [
-  ['last_5ftarget_5frelative_5f_0',['last_target_relative_',['../classFatigueTestMotion.html#a87f39d655399f886e6285d17615200e0',1,'FatigueTestMotion']]],
-  ['last_5fwas_5fnegative_5f_1',['last_was_negative_',['../classFatigueTestMotion.html#af2fb6acf6e6cb04d91971a622828dbb8',1,'FatigueTestMotion']]],
-  ['latch_5fl_5factive_2',['latch_l_active',['../uniontmc51x0_1_1SW__MODE__Register.html#a05bc5fd27b61aa70817e4c718f64f602',1,'tmc51x0::SW_MODE_Register']]],
-  ['latch_5fl_5finactive_3',['latch_l_inactive',['../uniontmc51x0_1_1SW__MODE__Register.html#a81cd3d005c7605705e30cfbd35ddf22b',1,'tmc51x0::SW_MODE_Register']]],
-  ['latch_5fleft_4',['latch_left',['../structtmc51x0_1_1ReferenceSwitchConfig.html#a6bd1d60dba548343a406d60e2c663773',1,'tmc51x0::ReferenceSwitchConfig']]],
-  ['latch_5fr_5factive_5',['latch_r_active',['../uniontmc51x0_1_1SW__MODE__Register.html#af40aa59c827bcc1e50fa75b25837cd8c',1,'tmc51x0::SW_MODE_Register']]],
-  ['latch_5fr_5finactive_6',['latch_r_inactive',['../uniontmc51x0_1_1SW__MODE__Register.html#a3e7634d91fd2f18a83311676b9f12064',1,'tmc51x0::SW_MODE_Register']]],
-  ['latch_5fright_7',['latch_right',['../structtmc51x0_1_1ReferenceSwitchConfig.html#a5b2d4006250632802d119bb4231448d4',1,'tmc51x0::ReferenceSwitchConfig']]],
-  ['latch_5fx_5fact_8',['latch_x_act',['../uniontmc51x0_1_1ENCMODE__Register.html#a09155edd976c2140f4a5aab48adde77b',1,'tmc51x0::ENCMODE_Register']]],
-  ['latch_5fxactual_5fwith_5fenc_9',['latch_xactual_with_enc',['../structtmc51x0_1_1EncoderConfig.html#ae995c01d2b1f049c1053a8afd510eca2',1,'tmc51x0::EncoderConfig']]],
-  ['lead_5fscrew_5fpitch_5fmm_10',['lead_screw_pitch_mm',['../structtmc51x0_1_1MechanicalSystem.html#af49c179cc84abdc1ded8b9a0189295dc',1,'tmc51x0::MechanicalSystem']]],
-  ['lead_5fscrew_5fpitch_5fmm_11',['LEAD_SCREW_PITCH_MM',['../internal__ramp__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370',1,'LEAD_SCREW_PITCH_MM:&#160;internal_ramp_comprehensive_test.cpp'],['../namespacetmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1Mechanical.html#a1efce425d64d8aaf5067f257aa00a382',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::Mechanical::LEAD_SCREW_PITCH_MM'],['../namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Mechanical.html#af8a244c34fabeaffca145dddcb54558b',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::Mechanical::LEAD_SCREW_PITCH_MM']]],
-  ['left_5factive_5flevel_12',['LEFT_ACTIVE_LEVEL',['../namespacetmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1ReferenceSwitches.html#a1e3d76e526f349c73e46bfd9166f0e12',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::ReferenceSwitches::LEFT_ACTIVE_LEVEL'],['../namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1ReferenceSwitches.html#ac589f4d734e5c62fcadb418db0ec43e5',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::ReferenceSwitches::LEFT_ACTIVE_LEVEL']]],
-  ['left_5flatch_5fmode_13',['LEFT_LATCH_MODE',['../namespacetmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1ReferenceSwitches.html#a5d15615079fb9bc0486ceb969164ee62',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::ReferenceSwitches::LEFT_LATCH_MODE'],['../namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1ReferenceSwitches.html#a991a0aa0c11d113d36f21b87c3394081',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::ReferenceSwitches::LEFT_LATCH_MODE']]],
-  ['left_5fstop_5fenable_14',['LEFT_STOP_ENABLE',['../namespacetmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1ReferenceSwitches.html#a3b6ca7e7e4b687d88ce51e9eefd48078',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::ReferenceSwitches::LEFT_STOP_ENABLE'],['../namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1ReferenceSwitches.html#a1e20032f55519937571d8a9072876c91',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::ReferenceSwitches::LEFT_STOP_ENABLE']]],
-  ['left_5fswitch_5factive_15',['left_switch_active',['../structtmc51x0_1_1ReferenceSwitchConfig.html#aa7bc962e13ef81e3b1de5e0dcac5efd6',1,'tmc51x0::ReferenceSwitchConfig']]],
-  ['left_5fswitch_5fstop_5fenable_16',['left_switch_stop_enable',['../structtmc51x0_1_1ReferenceSwitchConfig.html#afdde1105641a0337dfc5b92eef186d6f',1,'tmc51x0::ReferenceSwitchConfig']]],
-  ['local_5fmax_5fbound_5f_17',['local_max_bound_',['../classFatigueTestMotion.html#a2aaf6bf3cf4026a7f62f0a3947fbfc03',1,'FatigueTestMotion']]],
-  ['local_5fmin_5fbound_5f_18',['local_min_bound_',['../classFatigueTestMotion.html#a905d65f7afc6bb7ad992e5296437ceb7',1,'FatigueTestMotion']]],
-  ['locked_5f_19',['locked_',['../classTmcMutexGuard.html#a57ef84d5629c9f4ad53660b8a9747e7d',1,'TmcMutexGuard']]],
-  ['long_5fname_20',['long_name',['../structCommandArg.html#accb413b2fd05bcf1229bba83feb865b1',1,'CommandArg']]],
-  ['lower_5fthreshold_5fsg_21',['lower_threshold_sg',['../structtmc51x0_1_1CoolStepConfig.html#a80039da9cefd52f8190a94bb6bd1e710',1,'tmc51x0::CoolStepConfig']]]
+  ['key_5fbounds_0',['KEY_BOUNDS',['../namespaceanonymous__namespace_02settings_8cpp_03.html#aff9b5a410eeeac3936943223fff7b017',1,'anonymous_namespace{settings.cpp}']]],
+  ['key_5fcycles_1',['KEY_CYCLES',['../namespaceanonymous__namespace_02settings_8cpp_03.html#a184c754a5977aa3ce9cfc473b90ac809',1,'anonymous_namespace{settings.cpp}']]],
+  ['key_5fdwell_2',['KEY_DWELL',['../namespaceanonymous__namespace_02settings_8cpp_03.html#a8b94602849a9732d44143bc92c520ee1',1,'anonymous_namespace{settings.cpp}']]],
+  ['key_5forient_3',['KEY_ORIENT',['../namespaceanonymous__namespace_02settings_8cpp_03.html#a82354010fab26a52ada8cfab01988457',1,'anonymous_namespace{settings.cpp}']]],
+  ['key_5ftper_4',['KEY_TPER',['../namespaceanonymous__namespace_02settings_8cpp_03.html#af60a53794ee22e98016f3adb38ca9d8f',1,'anonymous_namespace{settings.cpp}']]]
 ];
