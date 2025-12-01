@@ -97,27 +97,28 @@ void UI::init(QueueHandle_t ui_queue, Settings* settings, uint32_t* inactivity_t
     ESP_LOGI(TAG_UI, "SPI bus initialized: SCK=%d, MOSI=%d, MISO=%d", 
              SPI_SCK_PIN, SPI_MOSI_PIN, SPI_MISO_PIN);
 
-    // Initialize e-ink display
-    // 2.9" ThinkInk FeatherWing: 296x128 pixels (horizontal)
-    // For vertical orientation, we use width=128, height=296
+    // Initialize e-ink display for vertical/portrait (phone-like) orientation
+    // 2.9" ThinkInk FeatherWing: Native 296x128 pixels (horizontal)
+    // For phone-like vertical appearance: 128x296 pixels (portrait)
     // The display will use the SPI bus initialized above
     g_display = new Adafruit_IL0373(
         EINK_CS_PIN,
         EINK_DC_PIN,
         EINK_RESET_PIN,
         EINK_BUSY_PIN,
-        296,   // width (horizontal)
-        128    // height (horizontal)
+        296,   // width (native horizontal)
+        128    // height (native horizontal)
     );
 
     g_display->begin();
-    ESP_LOGI(TAG_UI, "E-ink display initialized (2.9\" ThinkInk, 296x128 horizontal)");
+    ESP_LOGI(TAG_UI, "E-ink display initialized (2.9\" ThinkInk, native 296x128)");
 
-    // Set rotation for vertical display
-    // Rotation 1 = 90° clockwise (portrait mode, 128x296)
-    // Rotation 3 = 90° counter-clockwise (portrait mode, flipped)
+    // Set rotation for vertical/portrait phone-like appearance
+    // Rotation 1 = 90° clockwise (portrait mode, 128x296 - phone-like)
+    // Rotation 3 = 90° counter-clockwise (portrait mode flipped, 128x296)
     g_display->setRotation(s_settings->orientation_flipped ? 3 : 1);
-    ESP_LOGI(TAG_UI, "Display rotated to portrait: %dx%d", DISPLAY_WIDTH, DISPLAY_HEIGHT);
+    ESP_LOGI(TAG_UI, "Display rotated to portrait/phone mode: %dx%d (width x height)", 
+             DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
     // Initial screen draw
     draw_main_screen();
@@ -437,81 +438,106 @@ static void draw_main_screen()
 
     clear_screen();
 
-    // Title (Top, centered)
+    // Phone-like vertical layout: Title at top, content in middle, status at bottom
+    
+    // Title (Top, centered) - Phone header style
     set_title_style();
-    g_display->setCursor(20, 5);
+    g_display->setCursor(25, 8);
     g_display->print("Fatigue");
-    g_display->setCursor(15, 25);
+    g_display->setCursor(20, 28);
     g_display->print("Tester");
 
-    // Settings Info (Compact, vertical layout)
+    // Divider line
+    g_display->drawLine(0, 50, DISPLAY_WIDTH, 50, EPD_BLACK);
+
+    // Settings Info (Compact, vertical layout - phone content area)
     set_header_style();
-    uint16_t y = 50;
+    uint16_t y = 60;
     
     // Build compact info strings
-    const char* bounds_str = s_settings->bounds_method_stallguard ? "SG" : "ENC";
+    const char* bounds_str = s_settings->bounds_method_stallguard ? "StallGuard" : "Encoder";
     
+    // Left-aligned labels, right-aligned values (phone-style)
     g_display->setCursor(5, y);
     g_display->print("Cycles:");
-    g_display->setCursor(60, y);
-    g_display->print(s_settings->cycle_amount);
-    y += 15;
+    char cycles_str[16];
+    snprintf(cycles_str, sizeof(cycles_str), "%lu", s_settings->cycle_amount);
+    int16_t x1, y1;
+    uint16_t w, h;
+    g_display->getTextBounds(cycles_str, 0, 0, &x1, &y1, &w, &h);
+    g_display->setCursor(DISPLAY_WIDTH - w - 5, y);
+    g_display->print(cycles_str);
+    y += 18;
 
     g_display->setCursor(5, y);
-    g_display->print("Time:");
-    g_display->setCursor(60, y);
-    g_display->print(s_settings->time_per_cycle);
-    g_display->print("s");
-    y += 15;
+    g_display->print("Time/Cycle:");
+    char time_str[16];
+    snprintf(time_str, sizeof(time_str), "%lus", s_settings->time_per_cycle);
+    g_display->getTextBounds(time_str, 0, 0, &x1, &y1, &w, &h);
+    g_display->setCursor(DISPLAY_WIDTH - w - 5, y);
+    g_display->print(time_str);
+    y += 18;
 
     g_display->setCursor(5, y);
     g_display->print("Dwell:");
-    g_display->setCursor(60, y);
-    g_display->print(s_settings->dwell_time);
-    g_display->print("s");
-    y += 15;
+    char dwell_str[16];
+    snprintf(dwell_str, sizeof(dwell_str), "%lus", s_settings->dwell_time);
+    g_display->getTextBounds(dwell_str, 0, 0, &x1, &y1, &w, &h);
+    g_display->setCursor(DISPLAY_WIDTH - w - 5, y);
+    g_display->print(dwell_str);
+    y += 18;
 
     g_display->setCursor(5, y);
     g_display->print("Method:");
-    g_display->setCursor(60, y);
+    g_display->getTextBounds(bounds_str, 0, 0, &x1, &y1, &w, &h);
+    g_display->setCursor(DISPLAY_WIDTH - w - 5, y);
     g_display->print(bounds_str);
-    y += 25;
+    y += 30;
 
-    // State and Controls (Center area)
+    // Divider line before controls
+    g_display->drawLine(0, y, DISPLAY_WIDTH, y, EPD_BLACK);
+    y += 10;
+
+    // State and Controls (Center area - phone action buttons)
     if (s_state == UiState::RUNNING) {
         set_normal_style();
-        g_display->setCursor(5, y);
+        g_display->setCursor(35, y);
         g_display->print("[RUNNING]");
-        y += 20;
-        set_selected_style();
-        g_display->setCursor(5, y);
+        y += 25;
+        // Large button-style action
+        g_display->fillRect(15, y - 5, DISPLAY_WIDTH - 30, 25, EPD_RED);
+        set_normal_style();
+        g_display->setTextColor(EPD_WHITE);
+        g_display->setCursor(40, y + 5);
         g_display->print("PAUSE");
-        g_display->setCursor(60, y);
-        g_display->print("(SEL)");
+        g_display->setTextColor(EPD_BLACK);
     } else if (s_state == UiState::PAUSED) {
         set_normal_style();
-        g_display->setCursor(5, y);
+        g_display->setCursor(35, y);
         g_display->print("[PAUSED]");
-        y += 20;
-        set_selected_style();
-        g_display->setCursor(5, y);
-        g_display->print("RESUME");
-        g_display->setCursor(60, y);
-        g_display->print("(UP)");
-    } else {
+        y += 25;
+        // Large button-style action
+        g_display->fillRect(15, y - 5, DISPLAY_WIDTH - 30, 25, EPD_RED);
         set_normal_style();
-        g_display->setCursor(5, y);
+        g_display->setTextColor(EPD_WHITE);
+        g_display->setCursor(35, y + 5);
+        g_display->print("RESUME");
+        g_display->setTextColor(EPD_BLACK);
+    } else {
+        // Two button-style actions (phone-like)
+        g_display->fillRect(15, y - 5, DISPLAY_WIDTH - 30, 22, EPD_BLACK);
+        set_normal_style();
+        g_display->setTextColor(EPD_WHITE);
+        g_display->setCursor(40, y + 3);
         g_display->print("START");
-        g_display->setCursor(60, y);
-        g_display->print("(UP)");
-        y += 18;
-        g_display->setCursor(5, y);
-        g_display->print("SET");
-        g_display->setCursor(60, y);
-        g_display->print("(SEL)");
+        g_display->setTextColor(EPD_BLACK);
+        y += 28;
+        g_display->drawRect(15, y - 5, DISPLAY_WIDTH - 30, 22, EPD_BLACK);
+        g_display->setCursor(42, y + 3);
+        g_display->print("SETTINGS");
     }
 
-    // Footer with cycle info
+    // Footer with cycle info (phone status bar style)
     update_status_footer();
 
     g_display->display(true);
@@ -526,32 +552,38 @@ static void draw_settings_menu()
 
     clear_screen();
 
+    // Phone-like header
     set_title_style();
-    g_display->setCursor(25, 5);
+    g_display->setCursor(30, 8);
     g_display->print("Settings");
+    
+    // Divider
+    g_display->drawLine(0, 35, DISPLAY_WIDTH, 35, EPD_BLACK);
 
     set_header_style();
-    uint16_t y = 40;
+    uint16_t y = 45;
 
-    // Draw menu items
+    // Draw menu items (phone list style)
     draw_menu_item("Cycles", "", y, s_settingsMenuIndex == 0);
-    y += 20;
+    y += 24;
     draw_menu_item("Time/Cycle", "", y, s_settingsMenuIndex == 1);
-    y += 20;
+    y += 24;
     draw_menu_item("Dwell", "", y, s_settingsMenuIndex == 2);
-    y += 20;
+    y += 24;
     draw_menu_item("Method", "", y, s_settingsMenuIndex == 3);
-    y += 20;
+    y += 24;
     draw_menu_item("Orientation", "", y, s_settingsMenuIndex == 4);
 
-    // Help text at bottom
-    y = DISPLAY_HEIGHT - 30;
+    // Help text at bottom (phone footer style)
+    y = DISPLAY_HEIGHT - 35;
+    g_display->drawLine(0, y - 5, DISPLAY_WIDTH, y - 5, EPD_BLACK);
     set_normal_style();
-    g_display->setCursor(5, y);
+    g_display->setTextSize(1);
+    g_display->setCursor(8, y);
     g_display->print("UP/DOWN: Navigate");
     y += 12;
-    g_display->setCursor(5, y);
-    g_display->print("SEL: Edit  BACK: Exit");
+    g_display->setCursor(8, y);
+    g_display->print("SEL: Edit");
 
     g_display->display(true);
 }
@@ -560,9 +592,10 @@ static void draw_menu_item(const char* label, const char* value, int y, bool sel
 {
     if (!g_display) return;
     
+    // Phone-like list item with selection highlight
     if (selected) {
-        // Draw selection indicator (red background or border)
-        g_display->fillRect(0, y - 2, DISPLAY_WIDTH, 16, EPD_RED);
+        // Draw selection indicator (red background - phone highlight style)
+        g_display->fillRect(0, y - 4, DISPLAY_WIDTH, 22, EPD_RED);
         set_normal_style();
         g_display->setTextColor(EPD_WHITE);
     } else {
@@ -570,37 +603,44 @@ static void draw_menu_item(const char* label, const char* value, int y, bool sel
         g_display->setTextColor(EPD_BLACK);
     }
     
-    g_display->setCursor(5, y);
+    // Label on left
+    g_display->setCursor(8, y);
     g_display->print(label);
     
-    if (value && strlen(value) > 0) {
-        g_display->setCursor(70, y);
-        g_display->print(value);
+    // Value on right (phone-style right-aligned)
+    char value_str[32] = {0};
+    switch (s_settingsMenuIndex) {
+        case 0:
+            snprintf(value_str, sizeof(value_str), "%lu", s_settings->cycle_amount);
+            break;
+        case 1:
+            snprintf(value_str, sizeof(value_str), "%lus", s_settings->time_per_cycle);
+            break;
+        case 2:
+            snprintf(value_str, sizeof(value_str), "%lus", s_settings->dwell_time);
+            break;
+        case 3:
+            snprintf(value_str, sizeof(value_str), "%s", 
+                     s_settings->bounds_method_stallguard ? "StallGuard" : "Encoder");
+            break;
+        case 4:
+            snprintf(value_str, sizeof(value_str), "%s", 
+                     s_settings->orientation_flipped ? "Flipped" : "Normal");
+            break;
     }
     
-    // Show current value for selected item
+    // Right-align value (phone-style)
+    int16_t x1, y1;
+    uint16_t w, h;
+    g_display->getTextBounds(value_str, 0, 0, &x1, &y1, &w, &h);
+    g_display->setCursor(DISPLAY_WIDTH - w - 8, y);
+    g_display->print(value_str);
+    
+    // Show arrow indicator for selected item (phone-style)
     if (selected) {
         g_display->setTextColor(EPD_WHITE);
-        g_display->setCursor(70, y);
-        switch (s_settingsMenuIndex) {
-            case 0:
-                g_display->print(s_settings->cycle_amount);
-                break;
-            case 1:
-                g_display->print(s_settings->time_per_cycle);
-                g_display->print("s");
-                break;
-            case 2:
-                g_display->print(s_settings->dwell_time);
-                g_display->print("s");
-                break;
-            case 3:
-                g_display->print(s_settings->bounds_method_stallguard ? "SG" : "ENC");
-                break;
-            case 4:
-                g_display->print(s_settings->orientation_flipped ? "Flip" : "Norm");
-                break;
-        }
+        g_display->setCursor(DISPLAY_WIDTH - 12, y);
+        g_display->print(">");
     }
 }
 
@@ -613,6 +653,7 @@ static void draw_settings_edit()
 
     clear_screen();
 
+    // Phone-like edit screen with large value display
     set_title_style();
     const char* label = "";
     switch (s_state) {
@@ -636,48 +677,56 @@ static void draw_settings_edit()
             break;
     }
     
-    g_display->setCursor(20, 5);
+    // Header
+    g_display->setCursor(25, 8);
     g_display->print(label);
+    g_display->drawLine(0, 35, DISPLAY_WIDTH, 35, EPD_BLACK);
 
-    set_header_style();
-    uint16_t y = 50;
-
-    // Show current value (large)
+    // Large value display (phone number pad style)
+    uint16_t y = 80;
     set_title_style();
+    g_display->setTextSize(3);
     g_display->setTextColor(EPD_BLACK);
-    g_display->setCursor(30, y);
     
+    // Center the value
+    char value_str[32] = {0};
     if (s_state == UiState::SETTINGS_EDIT_METHOD) {
-        g_display->print(s_editValue == 0 ? "StallGuard" : "Encoder");
+        snprintf(value_str, sizeof(value_str), "%s", s_editValue == 0 ? "StallGuard" : "Encoder");
     } else if (s_state == UiState::SETTINGS_EDIT_ORIENT) {
-        g_display->print(s_editValue == 0 ? "Normal" : "Flipped");
+        snprintf(value_str, sizeof(value_str), "%s", s_editValue == 0 ? "Normal" : "Flipped");
     } else {
-        g_display->print(s_editValue);
+        snprintf(value_str, sizeof(value_str), "%lu", s_editValue);
         if (s_state == UiState::SETTINGS_EDIT_TIME || s_state == UiState::SETTINGS_EDIT_DWELL) {
-            g_display->print(" s");
+            strcat(value_str, " s");
         }
     }
+    
+    int16_t x1, y1;
+    uint16_t w, h;
+    g_display->getTextBounds(value_str, 0, 0, &x1, &y1, &w, &h);
+    g_display->setCursor((DISPLAY_WIDTH - w) / 2, y);
+    g_display->print(value_str);
 
-    y += 40;
-
-    // Show range
+    // Range info (smaller, below value)
+    y += 35;
     set_normal_style();
-    g_display->setCursor(10, y);
+    g_display->setTextSize(1);
+    g_display->setCursor(20, y);
     g_display->print("Range: ");
     g_display->print(s_editMin);
     g_display->print(" - ");
     g_display->print(s_editMax);
 
-    // Help text at bottom
-    y = DISPLAY_HEIGHT - 40;
+    // Help text at bottom (phone button style)
+    y = DISPLAY_HEIGHT - 50;
+    g_display->drawLine(0, y - 5, DISPLAY_WIDTH, y - 5, EPD_BLACK);
     set_normal_style();
-    g_display->setCursor(5, y);
-    g_display->print("UP: Increase");
-    y += 12;
-    g_display->setCursor(5, y);
-    g_display->print("DOWN: Decrease");
-    y += 12;
-    g_display->setCursor(5, y);
+    g_display->setCursor(15, y);
+    g_display->print("UP: +");
+    g_display->setCursor(60, y);
+    g_display->print("DOWN: -");
+    y += 15;
+    g_display->setCursor(35, y);
     g_display->print("SEL: Save");
 
     g_display->display(true);
@@ -692,17 +741,29 @@ static void draw_confirm_stop()
 
     clear_screen();
 
+    // Phone-like confirmation dialog
     set_title_style();
-    g_display->setCursor(30, 50);
+    g_display->setCursor(40, 100);
     g_display->print("Stop");
-    g_display->setCursor(25, 70);
+    g_display->setCursor(35, 125);
     g_display->print("Test?");
 
+    // Button-style actions at bottom
+    uint16_t y = DISPLAY_HEIGHT - 60;
+    g_display->drawLine(0, y, DISPLAY_WIDTH, y, EPD_BLACK);
+    
     set_header_style();
-    g_display->setCursor(10, 120);
-    g_display->print("DOWN = Confirm");
-    g_display->setCursor(10, 135);
-    g_display->print("Other = Cancel");
+    // Cancel button (left)
+    g_display->drawRect(5, y + 10, 55, 30, EPD_BLACK);
+    g_display->setCursor(18, y + 22);
+    g_display->print("Cancel");
+    
+    // Confirm button (right, red)
+    g_display->fillRect(68, y + 10, 55, 30, EPD_RED);
+    g_display->setTextColor(EPD_WHITE);
+    g_display->setCursor(80, y + 22);
+    g_display->print("Stop");
+    g_display->setTextColor(EPD_BLACK);
 
     g_display->display(true);
 }
@@ -717,21 +778,26 @@ static void draw_error_screen()
     clear_screen();
     g_display->fillRect(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, EPD_WHITE);
 
+    // Phone-like error dialog
     set_title_style();
-    g_display->setCursor(30, 50);
+    g_display->setCursor(35, 100);
     g_display->setTextColor(EPD_RED);
     g_display->print("ERROR");
 
     set_header_style();
     g_display->setTextColor(EPD_BLACK);
-    g_display->setCursor(20, 90);
+    g_display->setCursor(25, 135);
     g_display->print("Code: ");
     g_display->print(s_errorCode);
 
-    g_display->setCursor(10, 130);
-    g_display->print("Press any");
-    g_display->setCursor(10, 145);
-    g_display->print("button...");
+    // Button at bottom
+    uint16_t y = DISPLAY_HEIGHT - 50;
+    g_display->drawLine(0, y, DISPLAY_WIDTH, y, EPD_BLACK);
+    g_display->fillRect(30, y + 10, DISPLAY_WIDTH - 60, 30, EPD_BLACK);
+    g_display->setTextColor(EPD_WHITE);
+    g_display->setCursor(45, y + 22);
+    g_display->print("OK");
+    g_display->setTextColor(EPD_BLACK);
 
     g_display->display(true);
 }
@@ -745,21 +811,29 @@ static void draw_complete_screen()
 
     clear_screen();
 
+    // Phone-like completion screen
     set_title_style();
-    g_display->setCursor(15, 50);
+    g_display->setCursor(20, 100);
     g_display->print("Complete!");
 
     set_header_style();
-    g_display->setCursor(10, 90);
+    char cycles_str[32];
+    snprintf(cycles_str, sizeof(cycles_str), "%lu/%lu", s_currentCycle, s_settings->cycle_amount);
+    int16_t x1, y1;
+    uint16_t w, h;
+    g_display->getTextBounds(cycles_str, 0, 0, &x1, &y1, &w, &h);
+    g_display->setCursor((DISPLAY_WIDTH - w) / 2, 135);
     g_display->print("Cycles: ");
-    g_display->print(s_currentCycle);
-    g_display->print("/");
-    g_display->print(s_settings->cycle_amount);
+    g_display->print(cycles_str);
 
-    g_display->setCursor(10, 130);
-    g_display->print("Press any");
-    g_display->setCursor(10, 145);
-    g_display->print("button");
+    // Button at bottom
+    uint16_t y = DISPLAY_HEIGHT - 50;
+    g_display->drawLine(0, y, DISPLAY_WIDTH, y, EPD_BLACK);
+    g_display->fillRect(30, y + 10, DISPLAY_WIDTH - 60, 30, EPD_BLACK);
+    g_display->setTextColor(EPD_WHITE);
+    g_display->setCursor(50, y + 22);
+    g_display->print("OK");
+    g_display->setTextColor(EPD_BLACK);
 
     g_display->display(true);
 }
@@ -770,22 +844,31 @@ static void update_status_footer()
 
     set_header_style();
     
-    // Clear old footer area (bottom of vertical display)
-    g_display->fillRect(0, DISPLAY_HEIGHT - 20, DISPLAY_WIDTH, 20, EPD_WHITE);
-
-    g_display->setCursor(5, DISPLAY_HEIGHT - 15);
+    // Phone status bar style footer (bottom of vertical display)
+    g_display->fillRect(0, DISPLAY_HEIGHT - 22, DISPLAY_WIDTH, 22, EPD_BLACK);
+    g_display->setTextColor(EPD_WHITE);
+    
+    // Center the status text
+    char status_str[32] = {0};
     if (s_state == UiState::RUNNING || s_state == UiState::PAUSED) {
-        g_display->print("Cycle: ");
-        g_display->print(s_currentCycle);
+        snprintf(status_str, sizeof(status_str), "Cycle: %lu", s_currentCycle);
         if (s_settings->cycle_amount > 0) {
-            g_display->print("/");
-            g_display->print(s_settings->cycle_amount);
+            char temp[32];
+            snprintf(temp, sizeof(temp), "/%lu", s_settings->cycle_amount);
+            strcat(status_str, temp);
         }
     } else if (s_state == UiState::MAIN) {
-        g_display->print("Ready");
+        strcpy(status_str, "Ready");
     } else {
-        g_display->print("--");
+        strcpy(status_str, "--");
     }
+    
+    int16_t x1, y1;
+    uint16_t w, h;
+    g_display->getTextBounds(status_str, 0, 0, &x1, &y1, &w, &h);
+    g_display->setCursor((DISPLAY_WIDTH - w) / 2, DISPLAY_HEIGHT - 12);
+    g_display->print(status_str);
+    g_display->setTextColor(EPD_BLACK);
 
     // Note: For e-ink, we avoid partial updates unless necessary
     // Full refresh is acceptable for footer updates
