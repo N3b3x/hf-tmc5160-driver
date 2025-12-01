@@ -57,8 +57,11 @@
 
 #include "../../../inc/tmc51x0.hpp"
 #include "test_config/esp32_tmc51x0_bus.hpp"
-
 #include "test_config/esp32_tmc51x0_test_config.hpp"
+
+// Include bounds finder from ESP-NOW test unit (shared implementation)
+#include "fatigue_test_espnow/test_unit/bounds_finder.hpp"
+#include <memory>
 
 //=============================================================================
 // CONFIGURATION SELECTION - Unified Test Rig Selection

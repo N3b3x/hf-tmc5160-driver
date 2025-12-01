@@ -65,6 +65,14 @@ set(MAIN_INCLUDE_DIRS
     "${SRC_BASE_PATH}"                     # Driver implementation headers
 )
 
+# Add Adafruit component include paths for ESP-NOW UI board
+if(APP_TYPE STREQUAL "fatigue_test_espnow_ui")
+    list(APPEND MAIN_INCLUDE_DIRS
+        "${CMAKE_CURRENT_SOURCE_DIR}/../components/Adafruit_GFX"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../components/Adafruit_EPD"
+    )
+endif()
+
 # =============================================================================
 # Component Dependencies
 # =============================================================================
@@ -74,14 +82,47 @@ set(MAIN_REQUIRES
     esp_timer           # ESP-IDF timer functionality
     freertos            # FreeRTOS for threading and synchronization
     hf_tmc51x0          # TMC51x0 driver component (TMC5130 & TMC5160)
+    esp_wifi            # ESP-IDF WiFi (required for ESP-NOW)
+    nvs_flash           # NVS flash storage (for settings persistence)
 )
+
+# Add Adafruit components for ESP-NOW UI board
+if(APP_TYPE STREQUAL "fatigue_test_espnow_ui")
+    list(APPEND MAIN_REQUIRES
+        Adafruit_GFX          # Adafruit GFX graphics library
+        Adafruit_EPD          # Adafruit EPD e-ink display library
+        Adafruit_BusIO_ESPIDF # Adafruit BusIO ESP-IDF native implementation (SPI-only)
+    )
+endif()
 
 # =============================================================================
 # Component Registration
 # =============================================================================
 # Register the main component with ESP-IDF build system
+# For ESP-NOW apps, we need to include additional source files
+set(COMPONENT_SRCS "${APP_SOURCE_FILE}")
+
+# Add ESP-NOW test unit additional sources if building that app
+if(APP_TYPE STREQUAL "fatigue_test_espnow_unit")
+    list(APPEND COMPONENT_SRCS
+        "fatigue_test_espnow/test_unit/bounds_finder_stallguard.cpp"
+        "fatigue_test_espnow/test_unit/bounds_finder_encoder.cpp"
+        "fatigue_test_espnow/test_unit/espnow_receiver.cpp"
+    )
+endif()
+
+# Add ESP-NOW UI board additional sources if building that app
+if(APP_TYPE STREQUAL "fatigue_test_espnow_ui")
+    list(APPEND COMPONENT_SRCS
+        "fatigue_test_espnow/ui_board/button.cpp"
+        "fatigue_test_espnow/ui_board/settings.cpp"
+        "fatigue_test_espnow/ui_board/espnow_protocol.cpp"
+        "fatigue_test_espnow/ui_board/ui.cpp"
+    )
+endif()
+
 idf_component_register(
-    SRCS "${APP_SOURCE_FILE}"              # Source file (determined by build_app.sh)
+    SRCS ${COMPONENT_SRCS}                 # Source files (main + additional for ESP-NOW apps)
     INCLUDE_DIRS ${MAIN_INCLUDE_DIRS}      # Include directories defined above
     REQUIRES ${MAIN_REQUIRES}              # Component dependencies defined above
 )
