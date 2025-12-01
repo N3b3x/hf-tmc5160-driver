@@ -1,0 +1,19 @@
+<map id="settings.hpp" name="settings.hpp">
+<area shape="rect" id="Node000001" title="Settings storage for UI board." alt="" coords="375,5,478,31"/>
+<area shape="rect" id="Node000002" href="$espnow__protocol_8hpp.html" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="341,79,513,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="429,31,429,65,424,65,424,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,72,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="352,107,231,127,86,154,85,149,230,121,351,101"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="96,152,163,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="378,107,177,154,175,149,377,101"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="187,152,338,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="401,106,303,149,301,144,399,102"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="362,152,491,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="429,104,429,138,424,138,424,104"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="516,152,607,177"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="450,102,528,143,526,148,447,106"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="631,152,718,177"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="467,101,622,146,621,151,466,107"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="742,152,826,177"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="487,101,729,149,728,154,486,107"/>
+</map>

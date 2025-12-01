@@ -110,7 +110,7 @@ var NAVTREE =
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
-        [ "All", "globals.html", null ],
+        [ "All", "globals.html", "globals_dup" ],
         [ "Functions", "globals_func.html", null ],
         [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
@@ -124,18 +124,20 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "TestFramework_8h.html",
-"classtmc51x0_1_1CommInterface.html#a4f8d7c8e8be69b4a09db37175368ba57",
-"esp32__tmc51x0__test__config_8hpp.html#a5d15615079fb9bc0486ceb969164ee62",
-"group__TMC51X0__Registers.html",
-"namespacetmc51x0.html#a43a3659df2d2d9c81f83cfc72daad756a12135d9b0d6cf0300c25c0e544a466cc",
-"namespacetmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#a6415f7a9b76039fa684b612a2efcd5f9",
-"structtmc51x0_1_1DcStepConfig.html#a89e86ba28dfb9d8cc64e978c27a578d5",
-"structtmc51x0_1_1PinActiveLevels.html#a549e28cd1fc2751d22c5eeca4bd6d0b2",
-"structtmc51x0_1_1TMC51x0PinConfig.html#ac71ad999dbcfa3984b3c1a6fd89af127",
-"structtmc51x0_1_1UartFrame.html#ac7e4f8b7c21607bcd9f5172b45735485",
-"uart__multi__node__comprehensive__test_8cpp.html#ab441e82e7badc80a7d32e15d5f9d3dbf",
-"uniontmc51x0_1_1IHOLD__IRUN__Register.html",
-"uniontmc51x0_1_1SW__MODE__Register.html#a09f93fa8475404fcd80fba7adfd21d93"
+"classFatigueTest_1_1FatigueTestMotion.html#a1b73c95ad6dfe1deaa3dc5a3b271bd2e",
+"classtmc51x0_1_1TMC51x0.html",
+"esp32__tmc51x0__test__config_8hpp.html#a98f29ab00a49ffe948a306dadccb7d64",
+"functions_n.html",
+"namespaceEspNowReceiver.html#a7b5448c32668c4ce8c8b2e825fe523ee",
+"namespacetmc51x0__test__config.html",
+"spi__daisy__chain__comprehensive__test_8cpp.html#aaff89257c54366921eebb8ec1348b1fd",
+"structtmc51x0_1_1DriverConfig.html#a09d6d126e8caeba0da3fe5a3fc347fab",
+"structtmc51x0_1_1PowerStageParameters.html#ab9f24bc80f563d225df451921e57a1aa",
+"structtmc51x0_1_1TMC51x0_1_1Diagnostics.html#a6f1e0f7795a15fe4eb07bc20ef81bf77",
+"tmc51x0__comm__interface_8hpp.html#a564533944e9fa3223c5db30f0f4106eba096538213f7a62873f3e7f37801559de",
+"ui_8cpp.html#affcbe5be37a7925684c11648bf9b16bc",
+"uniontmc51x0_1_1GCONF__Register.html#a87b8146e7bfe7306942a38ec893068b8",
+"uniontmc51x0_1_1SHORT__CONF__Register.html#a7b1db32acfae2d382af3cff8493a61df"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

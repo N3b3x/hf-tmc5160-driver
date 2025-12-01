@@ -1,0 +1,11 @@
+<map id="config.hpp" name="config.hpp">
+<area shape="rect" id="Node000001" title="Configuration for UI board (remote controller)" alt="" coords="227,5,317,31"/>
+<area shape="rect" id="Node000002" href="$button_8cpp.html" title="Button handling implementation." alt="" coords="5,79,96,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,37,87,81,86,76,223,32"/>
+<area shape="rect" id="Node000003" href="$espnow__protocol_8cpp.html" title="ESP&#45;NOW protocol implementation for UI board." alt="" coords="121,79,279,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="252,43,214,80,210,77,248,39"/>
+<area shape="rect" id="Node000004" href="$ui__board_2main_8cpp.html" title="Main application for UI board (remote controller with e&#45;ink display)" alt="" coords="304,79,387,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="296,38,335,77,332,80,292,42"/>
+<area shape="rect" id="Node000005" href="$ui_8cpp.html" title="UI implementation with Adafruit 2.9&quot; ThinkInk E&#45;Ink display." alt="" coords="411,79,472,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="313,34,415,76,413,81,311,38"/>
+</map>

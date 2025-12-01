@@ -1,0 +1,9 @@
+<map id="draw_error_screen" name="draw_error_screen">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,148,80"/>
+<area shape="rect" id="Node000002" href="$ui_8cpp.html#a32c298519216b1383a988fa054dc3793" title=" " alt="" coords="211,5,315,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,52,200,32,201,37,126,57"/>
+<area shape="rect" id="Node000003" href="$ui_8cpp.html#a9c4d8725eda0d50aef46d2a3258e38b0" title=" " alt="" coords="196,55,329,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="148,65,182,65,182,70,148,70"/>
+<area shape="rect" id="Node000004" href="$ui_8cpp.html#a8810b673aec1cec4975a539a70b45163" title=" " alt="" coords="205,104,320,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="126,77,201,98,200,103,125,83"/>
+</map>

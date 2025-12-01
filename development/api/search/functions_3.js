@@ -10,6 +10,11 @@ var searchData=
   ['diag1config_7',['Diag1Config',['../structtmc51x0_1_1Diag1Config.html#a7e59095e6260632c8bdd77cedf9e48aa',1,'tmc51x0::Diag1Config']]],
   ['diagnostics_8',['Diagnostics',['../structtmc51x0_1_1TMC51x0_1_1Diagnostics.html#a45b3bf4c06538f4b8d47982144ff620e',1,'tmc51x0::TMC51x0::Diagnostics']]],
   ['disable_9',['Disable',['../structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a1738446f1de66b711afb6584aa8b6364',1,'tmc51x0::TMC51x0::MotorControl']]],
-  ['driverconfig_10',['DriverConfig',['../structtmc51x0_1_1DriverConfig.html#a85eb308c8f8f57cd95bf495d3eb4c751',1,'tmc51x0::DriverConfig']]],
-  ['drivererror_11',['DriverError',['../structtmc51x0_1_1SpiStatus.html#aa01f0baca6f2b42f5c71f98df60edd1a',1,'tmc51x0::SpiStatus']]]
+  ['draw_5fcomplete_5fscreen_10',['draw_complete_screen',['../ui_8cpp.html#aa71e2da1c80051d22621540c12009474',1,'ui.cpp']]],
+  ['draw_5fconfirm_5fstop_11',['draw_confirm_stop',['../ui_8cpp.html#ad858075202937771337f4535e15d9454',1,'ui.cpp']]],
+  ['draw_5ferror_5fscreen_12',['draw_error_screen',['../ui_8cpp.html#affcbe5be37a7925684c11648bf9b16bc',1,'ui.cpp']]],
+  ['draw_5fmain_5fscreen_13',['draw_main_screen',['../ui_8cpp.html#a4be20a3d7faccbb1c6d931858839299b',1,'ui.cpp']]],
+  ['draw_5fsettings_5fscreen_14',['draw_settings_screen',['../ui_8cpp.html#a47ab0e6cea2b79b68ea5c5b7207da1b8',1,'ui.cpp']]],
+  ['driverconfig_15',['DriverConfig',['../structtmc51x0_1_1DriverConfig.html#a85eb308c8f8f57cd95bf495d3eb4c751',1,'tmc51x0::DriverConfig']]],
+  ['drivererror_16',['DriverError',['../structtmc51x0_1_1SpiStatus.html#aa01f0baca6f2b42f5c71f98df60edd1a',1,'tmc51x0::SpiStatus']]]
 ];

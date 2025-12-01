@@ -1,0 +1,29 @@
+<map id="espnow_protocol.hpp" name="espnow_protocol.hpp">
+<area shape="rect" id="Node000001" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="391,5,551,31"/>
+<area shape="rect" id="Node000002" href="$ui__board_2espnow__protocol_8hpp.html" title="ESP&#45;NOW protocol API for UI board." alt="" coords="105,79,265,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="413,37,232,81,230,76,412,31"/>
+<area shape="rect" id="Node000006" href="$espnow__receiver_8cpp.html" title="ESP&#45;NOW receiver implementation for test unit." alt="" coords="519,152,677,177"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="491,40,544,102,589,150,585,154,540,106,487,43"/>
+<area shape="rect" id="Node000007" href="$espnow__receiver_8hpp.html" title="ESP&#45;NOW receiver for test unit." alt="" coords="555,79,713,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="511,34,608,76,606,81,509,39"/>
+<area shape="rect" id="Node000008" href="$test__unit_2main_8cpp.html" title="Fatigue test unit with ESP&#45;NOW communication." alt="" coords="707,152,790,177"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="566,28,661,48,701,61,728,77,740,94,748,115,752,151,746,152,742,116,736,97,724,81,699,66,660,53,565,34"/>
+<area shape="rect" id="Node000009" href="$settings_8hpp.html" title="Settings storage for UI board." alt="" coords="376,79,479,104"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="459,44,437,80,432,77,455,41"/>
+<area shape="rect" id="Node000011" href="$ui_8hpp.html" title="UI state machine for e&#45;ink display." alt="" coords="289,79,352,104"/>
+<area shape="poly" id="edge14_Node000001_Node000011" title=" " alt="" coords="436,39,346,81,344,76,434,34"/>
+<area shape="rect" id="Node000003" href="$espnow__protocol_8cpp.html" title="ESP&#45;NOW protocol implementation for UI board." alt="" coords="5,152,164,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="159,114,103,154,99,150,156,110"/>
+<area shape="rect" id="Node000004" href="$ui__board_2main_8cpp.html" title="Main application for UI board (remote controller with e&#45;ink display)" alt="" coords="189,152,271,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="202,114,225,150,220,153,197,117"/>
+<area shape="rect" id="Node000005" href="$ui_8cpp.html" title="UI implementation with Adafruit 2.9&quot; ThinkInk E&#45;Ink display." alt="" coords="295,152,357,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="221,108,304,149,302,154,218,112"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="624,117,606,153,601,151,620,115"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="665,109,731,150,729,154,662,113"/>
+<area shape="poly" id="edge11_Node000009_Node000004" title=" " alt="" coords="384,111,263,154,261,149,382,106"/>
+<area shape="poly" id="edge13_Node000009_Node000005" title=" " alt="" coords="401,114,344,154,341,150,398,110"/>
+<area shape="rect" id="Node000010" href="$settings_8cpp.html" title="Settings storage implementation." alt="" coords="381,152,482,177"/>
+<area shape="poly" id="edge12_Node000009_Node000010" title=" " alt="" coords="431,118,433,152,428,152,426,118"/>
+<area shape="poly" id="edge15_Node000011_Node000004" title=" " alt="" coords="297,115,246,154,243,150,294,110"/>
+<area shape="poly" id="edge16_Node000011_Node000005" title=" " alt="" coords="325,118,328,152,322,152,320,118"/>
+</map>

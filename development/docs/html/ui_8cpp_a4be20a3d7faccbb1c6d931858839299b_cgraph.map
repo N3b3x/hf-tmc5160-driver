@@ -1,0 +1,14 @@
+<map id="draw_main_screen" name="draw_main_screen">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,105,149,131"/>
+<area shape="rect" id="Node000002" href="$ui_8cpp.html#a32c298519216b1383a988fa054dc3793" title=" " alt="" coords="225,5,329,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,103,139,72,196,40,213,33,215,38,198,44,142,76,97,107"/>
+<area shape="rect" id="Node000003" href="$ui_8cpp.html#aa1653537ccf75c5123545def8f472b79" title=" " alt="" coords="212,55,343,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="128,103,213,81,214,86,129,108"/>
+<area shape="rect" id="Node000004" href="$ui_8cpp.html#a9c4d8725eda0d50aef46d2a3258e38b0" title=" " alt="" coords="405,156,539,181"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="150,119,248,127,358,141,407,150,406,156,357,146,248,133,149,125"/>
+<area shape="rect" id="Node000005" href="$ui_8cpp.html#a8810b673aec1cec4975a539a70b45163" title=" " alt="" coords="220,156,335,181"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="129,128,214,150,213,155,128,133"/>
+<area shape="rect" id="Node000006" href="$ui_8cpp.html#a90fd0a28f8f326515c368d588d558967" title=" " alt="" coords="197,205,357,231"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="97,129,142,159,198,190,218,198,216,203,196,195,139,163,94,133"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="327,203,407,182,408,187,329,208"/>
+</map>

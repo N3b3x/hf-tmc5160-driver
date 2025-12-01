@@ -1,0 +1,26 @@
+<map id="settings.cpp" name="settings.cpp">
+<area shape="rect" id="Node000001" title="Settings storage implementation." alt="" coords="692,5,793,31"/>
+<area shape="rect" id="Node000002" href="$settings_8hpp.html" title="Settings storage for UI board." alt="" coords="542,79,645,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="720,33,631,75,629,70,718,28"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="742,225,826,251"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="740,32,729,64,727,84,728,103,748,163,773,212,768,215,743,165,723,105,721,84,724,63,735,30"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="738,79,833,104"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="752,30,774,66,769,68,747,32"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="857,79,914,104"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="767,28,851,70,849,75,764,33"/>
+<area shape="rect" id="Node000003" href="$espnow__protocol_8hpp.html" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="407,152,579,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="579,106,522,146,519,142,576,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,225,72,251"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="407,179,261,198,86,228,85,223,260,193,407,173"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="96,225,163,251"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="426,180,177,228,176,223,425,175"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="187,225,338,251"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="457,180,314,224,312,219,455,175"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="362,225,491,251"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="484,179,449,217,445,213,480,176"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="516,225,607,251"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="506,176,543,213,539,217,503,180"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="631,225,718,251"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="523,175,633,218,631,223,521,180"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="541,175,729,221,728,226,539,180"/>
+</map>

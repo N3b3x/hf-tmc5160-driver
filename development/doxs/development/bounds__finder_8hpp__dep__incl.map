@@ -1,0 +1,11 @@
+<map id="bounds_finder.hpp" name="bounds_finder.hpp">
+<area shape="rect" id="Node000001" title="Abstract interface for bounds finding strategies." alt="" coords="379,5,519,31"/>
+<area shape="rect" id="Node000002" href="$bounds__finder__encoder_8cpp.html" title="Encoder&#45;based bounds finder implementation." alt="" coords="5,79,204,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="381,36,161,81,160,76,380,31"/>
+<area shape="rect" id="Node000003" href="$bounds__finder__stallguard_8cpp.html" title="StallGuard2&#45;based bounds finder implementation." alt="" coords="228,79,440,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="420,40,354,81,351,76,417,35"/>
+<area shape="rect" id="Node000004" href="$fatigue__test__stallguard_8cpp.html" title="Fatigue testing platform: Back&#45;and&#45;forth motion between bounds using StallGuard2 sensorless detection..." alt="" coords="464,79,663,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="480,35,546,76,543,81,477,40"/>
+<area shape="rect" id="Node000005" href="$test__unit_2main_8cpp.html" title="Fatigue test unit with ESP&#45;NOW communication." alt="" coords="686,79,769,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="507,31,687,77,685,82,506,37"/>
+</map>

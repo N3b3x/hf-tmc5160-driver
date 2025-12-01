@@ -1,0 +1,9 @@
+<map id="draw_confirm_stop" name="draw_confirm_stop">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,151,80"/>
+<area shape="rect" id="Node000002" href="$ui_8cpp.html#a32c298519216b1383a988fa054dc3793" title=" " alt="" coords="213,5,317,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,52,202,32,204,37,128,57"/>
+<area shape="rect" id="Node000003" href="$ui_8cpp.html#a9c4d8725eda0d50aef46d2a3258e38b0" title=" " alt="" coords="199,55,332,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,65,185,65,185,70,151,70"/>
+<area shape="rect" id="Node000004" href="$ui_8cpp.html#a8810b673aec1cec4975a539a70b45163" title=" " alt="" coords="208,104,323,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="128,77,204,98,202,103,126,83"/>
+</map>

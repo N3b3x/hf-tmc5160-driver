@@ -138,8 +138,8 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><p>Short detector configuration register (SHORT_CONF) </p>
 <p>Configuration for short circuit detection sensitivity and filtering.</p>
 <p>Bit assignments per datasheet:</p><ul>
-<li>Bits 3..0: S2VS_LEVEL - Short to VS detector level for lowside FETs Checks for voltage drop in LS MOSFET and sense resistor. 4 (highest sensitivity) ... 15 (lowest sensitivity) Hint: Settings from 1 to 3 will trigger during normal operation due to voltage drop on sense resistor. (Reset Default: OTP 6 or 12)</li>
-<li>Bits 11..8: S2G_LEVEL - Short to GND detector level for highside FETs Checks for voltage drop on high side MOSFET 2 (highest sensitivity) ... 15 (lowest sensitivity) Attention: Settings below 6 not recommended at &gt;52V operation – false detection might result (Reset Default: OTP 6 or 12)</li>
+<li>Bits 3..0: S2VS_LEVEL - Short to VS detector level for lowside FETs Checks for voltage drop in LS MOSFET and sense resistor. 4 (highest sensitivity) ... 15 (lowest sensitivity) Hint: <a class="el" href="structSettings.html">Settings</a> from 1 to 3 will trigger during normal operation due to voltage drop on sense resistor. (Reset Default: OTP 6 or 12)</li>
+<li>Bits 11..8: S2G_LEVEL - Short to GND detector level for highside FETs Checks for voltage drop on high side MOSFET 2 (highest sensitivity) ... 15 (lowest sensitivity) Attention: <a class="el" href="structSettings.html">Settings</a> below 6 not recommended at &gt;52V operation – false detection might result (Reset Default: OTP 6 or 12)</li>
 <li>Bits 17..16: SHORTFILTER - Spike filtering bandwidth for short detection 0 (lowest, 100ns), 1 (1μs), 2 (2μs), 3 (3μs) Hint: A good PCB layout will allow using setting 0. Increase value, if erroneous short detection occurs. (Reset Default = %01)</li>
 <li>Bit 18: shortdelay - Short detection delay 0=750ns: normal, 1=1500ns: high The short detection delay shall cover the bridge switching time. 0 will work for most applications. (Reset Default = 0) </li>
 </ul>

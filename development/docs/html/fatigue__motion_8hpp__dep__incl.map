@@ -1,0 +1,8 @@
+<map id="fatigue_motion.hpp" name="fatigue_motion.hpp">
+<area shape="rect" id="Node000001" title="Unified fatigue test motion controller." alt="" coords="89,5,238,31"/>
+<area shape="rect" id="Node000002" href="$fatigue__motion__impl_8hpp.html" title="Full implementation of FatigueTestMotion class." alt="" coords="5,79,191,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,43,111,80,107,77,141,39"/>
+<area shape="rect" id="Node000003" href="$test__unit_2main_8cpp.html" title="Fatigue test unit with ESP&#45;NOW communication." alt="" coords="122,152,205,177"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="185,40,197,58,206,78,207,100,200,121,177,153,173,150,195,118,202,99,201,79,192,60,181,43"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="120,113,155,150,151,154,116,116"/>
+</map>

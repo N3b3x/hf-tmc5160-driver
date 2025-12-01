@@ -1,0 +1,846 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  <style id="jtd-nav-activation">
+  
+
+    
+    .site-nav > ul.nav-list:first-child > li:not(:nth-child(5)) > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:not(:first-child) a,
+    .site-nav li.external a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:first-child > li:nth-child(5) > a {
+      font-weight: 600;
+      text-decoration: none;
+    }.site-nav > ul.nav-list:first-child > li:nth-child(5) > button svg {
+      transform: rotate(-90deg);
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(5) > ul.nav-list {
+      display: block;
+    }
+  </style>
+
+  
+
+  
+    <script src="/hf-tmc5160-driver/development/assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="/hf-tmc5160-driver/development/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Fatigue Test with ESP-NOW Communication | HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Fatigue Test with ESP-NOW Communication" />
+<meta name="author" content="N3b3x" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
+<meta property="og:description" content="Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
+<link rel="canonical" href="https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/" />
+<meta property="og:url" content="https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/" />
+<meta property="og:site_name" content="HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Fatigue Test with ESP-NOW Communication" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support","headline":"Fatigue Test with ESP-NOW Communication","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- =============================================================================
+     Custom Head Content for HardFOC Driver Documentation
+     =============================================================================
+     This file is included in the <head> section of every page.
+     It loads custom CSS and JavaScript for enhanced functionality.
+     ============================================================================= -->
+
+<!-- Custom CSS for enhanced styling and fixes -->
+<link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/custom.css">
+
+<!-- Custom JavaScript for interactive features -->
+<script src="/hf-tmc5160-driver/development/assets/js/custom.js" defer></script>
+
+
+
+</head>
+
+<body>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    <div class="side-bar">
+  <div class="site-header" role="banner">
+    <a href="/hf-tmc5160-driver/development/" class="site-title lh-tight">
+  HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development
+
+</a>
+    <button id="menu-button" class="site-button btn-reset" aria-label="Toggle menu" aria-pressed="false">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Main" id="site-nav" class="site-nav">
+  
+  
+    <ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in HardFOC TMC51x0 Driver (TMC5130 & TMC5160) category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC51x0 Driver (TMC5130 & TMC5160)</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/dev_board_setup/" class="nav-list-link">🛠️ Dev Board Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/tmc5130_support/" class="nav-list-link">🔧 TMC5130 Support</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_communication_interface.html" class="nav-list-link">Communication Interface</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/driver_configuration_guide.html" class="nav-list-link">Driver Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/" class="nav-list-link">ESP32 Examples and Tests Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/" class="nav-list-link">Fatigue Test with ESP-NOW Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/fatigue_test.html" class="nav-list-link">Fatigue Testing: Back-and-Forth Motion Between Bounds</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/gpio_pin_configuration.html" class="nav-list-link">GPIO Pin Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_comprehensive_test.html" class="nav-list-link">Internal Ramp Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html" class="nav-list-link">Motor Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/spi_daisy_chain_comprehensive_test.html" class="nav-list-link">SPI Daisy Chain Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_sinusoidal.html" class="nav-list-link">Sinusoidal Motion Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/" class="nav-list-link">TMC5160 Driver - ESP32 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_register_access.html" class="nav-list-link">TMC51x0 Register Access and Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/uart_multi_node_comprehensive_test.html" class="nav-list-link">UART Multi-Node Comprehensive Test</a></li></ul>
+  
+</nav>
+
+
+
+
+  
+  
+    <footer class="site-footer">
+      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+    </footer>
+  
+</div>
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header">
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" aria-label="Search HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" autocomplete="off">
+    <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+    <nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    
+      <li class="aux-nav-list-item">
+        <a href="/hf-tmc5160-driver/development/api/index.html" class="site-button"
+          
+        >
+          📖 API Reference
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver" class="site-button"
+          
+        >
+          📚 GitHub Repository
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/issues" class="site-button"
+          
+        >
+          🐛 Report Issues
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/stargazers" class="site-button"
+          
+        >
+          ⭐ Star on GitHub
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+
+  
+</div>
+
+    <div class="main-content-wrap">
+      
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <h1 id="fatigue-test-with-esp-now-communication">
+  
+  
+    <a href="#fatigue-test-with-esp-now-communication" class="anchor-heading" aria-labelledby="fatigue-test-with-esp-now-communication"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Fatigue Test with ESP-NOW Communication
+  
+  
+</h1>
+    
+
+<p>This directory contains a complete fatigue testing system with wireless remote control via ESP-NOW.</p>
+<h2 id="overview">
+  
+  
+    <a href="#overview" class="anchor-heading" aria-labelledby="overview"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Overview
+  
+  
+</h2>
+    
+
+<p>The system consists of two ESP32 devices:</p>
+
+<ol>
+  <li><strong>UI Board</strong> (<code class="language-plaintext highlighter-rouge">ui_board/</code>): Remote controller with e-ink display and buttons
+    <ul>
+      <li>Sends commands to test unit via ESP-NOW</li>
+      <li>Displays status and settings on e-ink display</li>
+      <li>Supports deep sleep wake from buttons</li>
+      <li>Inactivity timeout for power saving</li>
+    </ul>
+  </li>
+  <li><strong>Test Unit</strong> (<code class="language-plaintext highlighter-rouge">test_unit/</code>): Unified fatigue tester with dual communication
+    <ul>
+      <li>Receives commands from UI board via ESP-NOW</li>
+      <li>Accepts direct commands via UART (for debugging/development)</li>
+      <li>Performs bounds finding using selectable method (StallGuard2 or encoder-based)</li>
+      <li>Runs sinusoidal fatigue test motion</li>
+      <li>Sends status updates back to UI board</li>
+      <li><strong>Unified Implementation</strong>: Combines <code class="language-plaintext highlighter-rouge">fatigue_test_encoder.cpp</code> and <code class="language-plaintext highlighter-rouge">fatigue_test_stallguard.cpp</code> with proper C++ abstractions</li>
+    </ul>
+  </li>
+</ol>
+<h2 id="directory-structure">
+  
+  
+    <a href="#directory-structure" class="anchor-heading" aria-labelledby="directory-structure"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Directory Structure
+  
+  
+</h2>
+    
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre>fatigue_test_espnow/
+├── espnow_protocol.hpp          # Shared ESP-NOW protocol definitions
+├── ui_board/                     # Remote controller code
+│   ├── main.cpp                 # Main application
+│   ├── config.hpp               # GPIO and configuration
+│   ├── button.hpp/cpp           # Button handling
+│   ├── settings.hpp/cpp         # Settings storage (NVS)
+│   ├── espnow_protocol.hpp/cpp  # ESP-NOW protocol implementation
+│   └── ui.hpp/cpp               # UI state machine (e-ink display)
+└── test_unit/                    # Fatigue tester code
+    ├── main.cpp                 # Main application (unified implementation)
+    ├── espnow_receiver.hpp/cpp  # ESP-NOW receiver implementation
+    ├── bounds_finder.hpp        # Abstract bounds finder interface
+    ├── bounds_finder_stallguard.cpp  # StallGuard2 implementation
+    ├── bounds_finder_encoder.cpp     # Encoder-based implementation
+    └── fatigue_motion.hpp       # Unified motion controller interface
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="esp-now-protocol">
+  
+  
+    <a href="#esp-now-protocol" class="anchor-heading" aria-labelledby="esp-now-protocol"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ESP-NOW Protocol
+  
+  
+</h2>
+    
+
+<p>The protocol uses a sync byte (0xAA) and CRC16-CCITT for error detection.</p>
+<h3 id="message-types">
+  
+  
+    <a href="#message-types" class="anchor-heading" aria-labelledby="message-types"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Message Types
+  
+  
+</h3>
+    
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">CONFIG_REQUEST</code> / <code class="language-plaintext highlighter-rouge">CONFIG_RESPONSE</code>: Request/send current settings</li>
+  <li><code class="language-plaintext highlighter-rouge">CONFIG_SET</code> / <code class="language-plaintext highlighter-rouge">CONFIG_ACK</code>: Set new configuration</li>
+  <li><code class="language-plaintext highlighter-rouge">START</code> / <code class="language-plaintext highlighter-rouge">START_ACK</code>: Start fatigue test</li>
+  <li><code class="language-plaintext highlighter-rouge">PAUSE</code> / <code class="language-plaintext highlighter-rouge">PAUSE_ACK</code>: Pause test</li>
+  <li><code class="language-plaintext highlighter-rouge">RESUME</code> / <code class="language-plaintext highlighter-rouge">RESUME_ACK</code>: Resume test</li>
+  <li><code class="language-plaintext highlighter-rouge">STOP</code> / <code class="language-plaintext highlighter-rouge">STOP_ACK</code>: Stop test</li>
+  <li><code class="language-plaintext highlighter-rouge">STATUS_UPDATE</code>: Periodic status updates (cycle count, state)</li>
+  <li><code class="language-plaintext highlighter-rouge">ERROR</code>: Error notification</li>
+  <li><code class="language-plaintext highlighter-rouge">TEST_COMPLETE</code>: Test completion notification</li>
+</ul>
+<h3 id="settings-structure">
+  
+  
+    <a href="#settings-structure" class="anchor-heading" aria-labelledby="settings-structure"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Settings Structure
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="nc">Settings</span> <span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">cycle_amount</span><span class="p">;</span>        <span class="c1">// Target number of cycles</span>
+    <span class="kt">uint32_t</span> <span class="n">time_per_cycle</span><span class="p">;</span>      <span class="c1">// Time per cycle in seconds</span>
+    <span class="kt">uint32_t</span> <span class="n">dwell_time</span><span class="p">;</span>          <span class="c1">// Dwell time at bounds in seconds</span>
+    <span class="kt">bool</span> <span class="n">orientation_flipped</span><span class="p">;</span>      <span class="c1">// Display orientation</span>
+    <span class="kt">bool</span> <span class="n">bounds_method_stallguard</span><span class="p">;</span> <span class="c1">// true = StallGuard2, false = encoder</span>
+<span class="p">};</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="configuration">
+  
+  
+    <a href="#configuration" class="anchor-heading" aria-labelledby="configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configuration
+  
+  
+</h2>
+    
+<h3 id="ui-board-configuration">
+  
+  
+    <a href="#ui-board-configuration" class="anchor-heading" aria-labelledby="ui-board-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> UI Board Configuration
+  
+  
+</h3>
+    
+
+<p>Edit <code class="language-plaintext highlighter-rouge">ui_board/config.hpp</code>:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="c1">// Button GPIOs (must be RTC-capable for deep sleep wake)</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="n">gpio_num_t</span> <span class="n">BTN_UP_GPIO</span>     <span class="o">=</span> <span class="n">GPIO_NUM_4</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="n">gpio_num_t</span> <span class="n">BTN_SELECT_GPIO</span> <span class="o">=</span> <span class="n">GPIO_NUM_5</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="n">gpio_num_t</span> <span class="n">BTN_DOWN_GPIO</span>   <span class="o">=</span> <span class="n">GPIO_NUM_6</span><span class="p">;</span>
+
+<span class="c1">// E-ink display pins (adjust for your hardware)</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">EINK_DC_PIN</span>   <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">EINK_RESET_PIN</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">EINK_CS_PIN</span>    <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">EINK_BUSY_PIN</span>  <span class="o">=</span> <span class="mi">12</span><span class="p">;</span>
+
+<span class="c1">// Test unit MAC address (set to your test unit's MAC)</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kt">uint8_t</span> <span class="n">TEST_UNIT_MAC</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mh">0x24</span><span class="p">,</span> <span class="mh">0x6F</span><span class="p">,</span> <span class="mh">0x28</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x01</span> <span class="p">};</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="test-unit-configuration">
+  
+  
+    <a href="#test-unit-configuration" class="anchor-heading" aria-labelledby="test-unit-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Test Unit Configuration
+  
+  
+</h3>
+    
+
+<p>The test unit uses the same test rig configuration as other fatigue test examples. Edit <code class="language-plaintext highlighter-rouge">test_unit/main.cpp</code>:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c1">// Test rig selection</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">TestRigType</span> <span class="n">SELECTED_TEST_RIG</span> <span class="o">=</span> 
+    <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">TestRigType</span><span class="o">::</span><span class="n">TEST_RIG_FATIGUE</span><span class="p">;</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="building">
+  
+  
+    <a href="#building" class="anchor-heading" aria-labelledby="building"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Building
+  
+  
+</h2>
+    
+<h3 id="ui-board">
+  
+  
+    <a href="#ui-board" class="anchor-heading" aria-labelledby="ui-board"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> UI Board
+  
+  
+</h3>
+    
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">cd </span>examples/esp32
+./scripts/build_app.sh fatigue_test_espnow_ui Release
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="test-unit">
+  
+  
+    <a href="#test-unit" class="anchor-heading" aria-labelledby="test-unit"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Test Unit
+  
+  
+</h3>
+    
+
+<p>The unified test unit is built from <code class="language-plaintext highlighter-rouge">fatigue_test_espnow_unit.cpp</code> in the main directory:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">cd </span>examples/esp32
+./scripts/build_app.sh fatigue_test_espnow_unit Release
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Note</strong>: The main application file (<code class="language-plaintext highlighter-rouge">fatigue_test_espnow_unit.cpp</code>) includes the full implementation combining:</p>
+<ul>
+  <li>Bounds finding from both <code class="language-plaintext highlighter-rouge">fatigue_test_encoder.cpp</code> and <code class="language-plaintext highlighter-rouge">fatigue_test_stallguard.cpp</code></li>
+  <li>UART command interface (same commands as standalone examples)</li>
+  <li>ESP-NOW communication with UI board</li>
+  <li>Unified <code class="language-plaintext highlighter-rouge">FatigueTestMotion</code> class</li>
+</ul>
+
+<p>The implementation uses proper C++ abstractions:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">IBoundsFinder</code> interface for bounds detection strategies</li>
+  <li>Factory functions for creating bounds finders</li>
+  <li>Unified motion controller extracted from existing implementations</li>
+</ul>
+<h2 id="usage">
+  
+  
+    <a href="#usage" class="anchor-heading" aria-labelledby="usage"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Usage
+  
+  
+</h2>
+    
+
+<ol>
+  <li><strong>Flash both devices</strong> with their respective firmware</li>
+  <li><strong>Configure MAC addresses</strong>: Set the test unit’s MAC in <code class="language-plaintext highlighter-rouge">ui_board/config.hpp</code></li>
+  <li><strong>Power on test unit first</strong>, then UI board</li>
+  <li><strong>UI board will request config</strong> from test unit on startup</li>
+  <li><strong>Use buttons</strong> on UI board to:
+    <ul>
+      <li>UP: Start test</li>
+      <li>SELECT: Settings menu / Pause/Resume</li>
+      <li>DOWN: Stop test (with confirmation)</li>
+    </ul>
+  </li>
+</ol>
+<h2 id="features">
+  
+  
+    <a href="#features" class="anchor-heading" aria-labelledby="features"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Features
+  
+  
+</h2>
+    
+<h3 id="ui-board-1">
+  
+  
+    <a href="#ui-board-1" class="anchor-heading" aria-labelledby="ui-board-1"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> UI Board
+  
+  
+</h3>
+    
+<ul>
+  <li>E-ink display for status and settings</li>
+  <li>Three-button navigation</li>
+  <li>Deep sleep with button wake</li>
+  <li>Inactivity timeout (60 seconds default)</li>
+  <li>Settings stored in NVS</li>
+</ul>
+<h3 id="test-unit-1">
+  
+  
+    <a href="#test-unit-1" class="anchor-heading" aria-labelledby="test-unit-1"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Test Unit
+  
+  
+</h3>
+    
+<ul>
+  <li><strong>Dual Communication</strong>: ESP-NOW (wireless) + UART (direct serial)</li>
+  <li><strong>Dual Bounds Detection</strong>: Selectable StallGuard2 or encoder-based</li>
+  <li><strong>Unified Motion Controller</strong>: Extracted from <code class="language-plaintext highlighter-rouge">fatigue_test_encoder.cpp</code> and <code class="language-plaintext highlighter-rouge">fatigue_test_stallguard.cpp</code></li>
+  <li>Sinusoidal fatigue test motion</li>
+  <li>Cycle counting</li>
+  <li>Status updates sent to UI board</li>
+  <li>Error handling and reporting</li>
+  <li><strong>Proper C++ Abstractions</strong>: Interface-based design for extensibility</li>
+</ul>
+<h2 id="protocol-details">
+  
+  
+    <a href="#protocol-details" class="anchor-heading" aria-labelledby="protocol-details"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Protocol Details
+  
+  
+</h2>
+    
+<h3 id="packet-format">
+  
+  
+    <a href="#packet-format" class="anchor-heading" aria-labelledby="packet-format"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Packet Format
+  
+  
+</h3>
+    
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>[Sync Byte: 0xAA][Type][ID][Length][Payload...][CRC16]
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<ul>
+  <li>Sync Byte: Always 0xAA</li>
+  <li>Type: Message type (MsgType enum)</li>
+  <li>ID: Sequence ID (increments)</li>
+  <li>Length: Payload length (0-48 bytes)</li>
+  <li>Payload: Message-specific data</li>
+  <li>CRC16: CRC16-CCITT over header + payload</li>
+</ul>
+<h3 id="error-codes">
+  
+  
+    <a href="#error-codes" class="anchor-heading" aria-labelledby="error-codes"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Error Codes
+  
+  
+</h3>
+    
+
+<ul>
+  <li>0: Success</li>
+  <li>1: Bounds not found</li>
+  <li>2: Start failed</li>
+  <li>3: Configuration error</li>
+</ul>
+<h2 id="integration-notes">
+  
+  
+    <a href="#integration-notes" class="anchor-heading" aria-labelledby="integration-notes"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Integration Notes
+  
+  
+</h2>
+    
+<h3 id="e-ink-display">
+  
+  
+    <a href="#e-ink-display" class="anchor-heading" aria-labelledby="e-ink-display"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> E-ink Display
+  
+  
+</h3>
+    
+
+<p>The UI code includes <strong>full, production-ready</strong> e-ink display integration for the <strong>2.9” ThinkInk FeatherWing</strong>:</p>
+
+<ul>
+  <li><strong>Vertical Orientation</strong>: Optimized for portrait mode (128x296 pixels)</li>
+  <li><strong>All Drawing Functions Implemented</strong>:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">draw_main_screen()</code>: Main UI with settings summary and controls</li>
+      <li><code class="language-plaintext highlighter-rouge">draw_settings_screen()</code>: Settings display with all parameters</li>
+      <li><code class="language-plaintext highlighter-rouge">draw_error_screen()</code>: Error display with slow blinking (e-ink optimized)</li>
+      <li><code class="language-plaintext highlighter-rouge">draw_complete_screen()</code>: Test completion screen</li>
+      <li><code class="language-plaintext highlighter-rouge">update_status_footer()</code>: Dynamic footer with cycle progress</li>
+    </ul>
+  </li>
+  <li><strong>E-ink Optimizations</strong>:
+    <ul>
+      <li>Slow refresh rates (2+ seconds for blinking)</li>
+      <li>Partial update support (when available)</li>
+      <li>Proper rotation handling (portrait mode)</li>
+      <li>Compact layout for vertical display</li>
+    </ul>
+  </li>
+</ul>
+
+<p>The display is initialized with proper dimensions and rotation in <code class="language-plaintext highlighter-rouge">UI::init()</code>.</p>
+<h3 id="bounds-finding">
+  
+  
+    <a href="#bounds-finding" class="anchor-heading" aria-labelledby="bounds-finding"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Bounds Finding
+  
+  
+</h3>
+    
+
+<p>The unified test unit includes <strong>full implementations</strong> of both bounds finding methods:</p>
+
+<ul>
+  <li><strong>Encoder-based</strong> (<code class="language-plaintext highlighter-rouge">bounds_finder_encoder.cpp</code>): Complete implementation extracted from <code class="language-plaintext highlighter-rouge">fatigue_test_encoder.cpp</code>
+    <ul>
+      <li>Monitors encoder position changes</li>
+      <li>Detects stalls when encoder stops moving while motor is commanded to move</li>
+      <li>Handles false stall detection with movement thresholds</li>
+    </ul>
+  </li>
+  <li><strong>StallGuard2</strong> (<code class="language-plaintext highlighter-rouge">bounds_finder_stallguard.cpp</code>): Complete implementation extracted from <code class="language-plaintext highlighter-rouge">fatigue_test_stallguard.cpp</code>
+    <ul>
+      <li>Uses TMC51x0 StallGuard2 sensorless detection</li>
+      <li>Configures SGT threshold for homing</li>
+      <li>Handles false stall detection with movement thresholds</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Both implementations follow the <code class="language-plaintext highlighter-rouge">IBoundsFinder</code> interface, allowing easy switching between methods. The method is selected via the <code class="language-plaintext highlighter-rouge">bounds_method_stallguard</code> setting in the UI.</p>
+<h3 id="uart-command-interface">
+  
+  
+    <a href="#uart-command-interface" class="anchor-heading" aria-labelledby="uart-command-interface"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> UART Command Interface
+  
+  
+</h3>
+    
+
+<p>The test unit supports the same UART commands as the standalone fatigue test examples:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">-f &lt;freq&gt;</code> / <code class="language-plaintext highlighter-rouge">--freq &lt;freq&gt;</code>: Set frequency in Hz</li>
+  <li><code class="language-plaintext highlighter-rouge">-d &lt;min&gt; &lt;max&gt;</code> / <code class="language-plaintext highlighter-rouge">--dwell &lt;min&gt; &lt;max&gt;</code>: Set dwell times in ms</li>
+  <li><code class="language-plaintext highlighter-rouge">-b &lt;min&gt; &lt;max&gt;</code> / <code class="language-plaintext highlighter-rouge">--bounds &lt;min&gt; &lt;max&gt;</code>: Set angle bounds in degrees</li>
+  <li><code class="language-plaintext highlighter-rouge">-c &lt;count&gt;</code> / <code class="language-plaintext highlighter-rouge">--cycles &lt;count&gt;</code>: Set target cycle count (0 = infinite)</li>
+  <li><code class="language-plaintext highlighter-rouge">-a &lt;action&gt;</code> / <code class="language-plaintext highlighter-rouge">--action &lt;action&gt;</code>: start, stop, or reset</li>
+  <li><code class="language-plaintext highlighter-rouge">-s</code> / <code class="language-plaintext highlighter-rouge">--status</code>: Show current status</li>
+  <li><code class="language-plaintext highlighter-rouge">-h</code> / <code class="language-plaintext highlighter-rouge">--help</code>: Show help message</li>
+</ul>
+
+<p>This allows direct control and debugging via serial terminal while ESP-NOW handles remote control.</p>
+<h2 id="troubleshooting">
+  
+  
+    <a href="#troubleshooting" class="anchor-heading" aria-labelledby="troubleshooting"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Troubleshooting
+  
+  
+</h2>
+    
+
+<ol>
+  <li><strong>No communication</strong>: Check MAC addresses are correct</li>
+  <li><strong>CRC errors</strong>: Check WiFi channel matches (default: channel 1)</li>
+  <li><strong>Buttons not working</strong>: Verify GPIO pins and RTC capability</li>
+  <li><strong>Display not updating</strong>: Implement e-ink drawing functions</li>
+  <li><strong>Bounds finding fails</strong>: Check motor and encoder connections</li>
+</ol>
+<h2 id="implementation-details">
+  
+  
+    <a href="#implementation-details" class="anchor-heading" aria-labelledby="implementation-details"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Implementation Details
+  
+  
+</h2>
+    
+<h3 id="unified-architecture">
+  
+  
+    <a href="#unified-architecture" class="anchor-heading" aria-labelledby="unified-architecture"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Unified Architecture
+  
+  
+</h3>
+    
+
+<p>The test unit implementation (<code class="language-plaintext highlighter-rouge">fatigue_test_espnow_unit.cpp</code>) combines:</p>
+
+<ol>
+  <li><strong>Bounds Finding Abstraction</strong>:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">IBoundsFinder</code> interface defines the contract</li>
+      <li><code class="language-plaintext highlighter-rouge">StallGuardBoundsFinder</code> and <code class="language-plaintext highlighter-rouge">EncoderBoundsFinder</code> implement the interface</li>
+      <li>Factory functions create instances: <code class="language-plaintext highlighter-rouge">CreateStallGuardBoundsFinder()</code>, <code class="language-plaintext highlighter-rouge">CreateEncoderBoundsFinder()</code></li>
+    </ul>
+  </li>
+  <li><strong>Motion Controller</strong>:
+    <ul>
+      <li>Unified <code class="language-plaintext highlighter-rouge">FatigueTestMotion</code> class extracted from existing implementations</li>
+      <li>Supports both sinusoidal and ramp-based motion</li>
+      <li>Thread-safe with RAII mutex guards</li>
+      <li>Cycle counting with center-crossing detection</li>
+    </ul>
+  </li>
+  <li><strong>Command Interface</strong>:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">UartCommandParser</code> handles UART commands</li>
+      <li>ESP-NOW commands processed via <code class="language-plaintext highlighter-rouge">EspNowReceiver</code></li>
+      <li>Both interfaces update the same <code class="language-plaintext highlighter-rouge">FatigueTestMotion</code> instance</li>
+    </ul>
+  </li>
+</ol>
+<h3 id="file-organization">
+  
+  
+    <a href="#file-organization" class="anchor-heading" aria-labelledby="file-organization"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> File Organization
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>Main Application</strong>: <code class="language-plaintext highlighter-rouge">fatigue_test_espnow_unit.cpp</code> (in <code class="language-plaintext highlighter-rouge">main/</code> directory)</li>
+  <li><strong>Bounds Finders</strong>: <code class="language-plaintext highlighter-rouge">test_unit/bounds_finder_*.cpp</code> (implementations)</li>
+  <li><strong>Motion Controller</strong>: Extracted inline or in separate header</li>
+  <li><strong>UI Board</strong>: Complete implementation in <code class="language-plaintext highlighter-rouge">ui_board/</code> directory</li>
+</ul>
+<h2 id="future-enhancements">
+  
+  
+    <a href="#future-enhancements" class="anchor-heading" aria-labelledby="future-enhancements"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Future Enhancements
+  
+  
+</h2>
+    
+
+<ul>
+  <li>Settings editing UI (nested menu with value editing)</li>
+  <li>Real-time parameter adjustment via ESP-NOW</li>
+  <li>Data logging to SD card or flash</li>
+  <li>Multiple test unit support (broadcast commands)</li>
+  <li>Web interface for configuration</li>
+</ul>
+
+          
+
+          
+            
+          
+        </main>
+        
+
+  <hr>
+  <footer>
+    
+
+    <!-- =============================================================================
+     Custom Footer Content for HardFOC Driver Documentation
+     =============================================================================
+     This footer is displayed at the bottom of every page.
+     ============================================================================= -->
+
+<footer class="site-footer">
+  <div class="site-footer-credits">
+    <p>Built with ❤️ using <a href="https://just-the-docs.github.io/just-the-docs/">Just the Docs</a></p>
+    <p>
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development/blob/main/LICENSE">GPL v3 License</a> • 
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development">View on GitHub</a>
+    </p>
+  </div>
+</footer>
+
+
+
+    
+  </footer>
+
+
+      </div>
+    </div>
+    
+      
+<button id="search-button" class="search-button btn-reset" aria-label="Focus on search">
+  <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+</button>
+
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+</body>
+</html>
+

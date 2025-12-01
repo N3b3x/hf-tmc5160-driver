@@ -1,0 +1,25 @@
+var ui_8cpp =
+[
+    [ "clear_screen", "ui_8cpp.html#a32c298519216b1383a988fa054dc3793", null ],
+    [ "draw_complete_screen", "ui_8cpp.html#aa71e2da1c80051d22621540c12009474", null ],
+    [ "draw_confirm_stop", "ui_8cpp.html#ad858075202937771337f4535e15d9454", null ],
+    [ "draw_error_screen", "ui_8cpp.html#affcbe5be37a7925684c11648bf9b16bc", null ],
+    [ "draw_main_screen", "ui_8cpp.html#a4be20a3d7faccbb1c6d931858839299b", null ],
+    [ "draw_settings_screen", "ui_8cpp.html#a47ab0e6cea2b79b68ea5c5b7207da1b8", null ],
+    [ "handle_button", "ui_8cpp.html#a1e18915fb61b5d382fe8b18239124d82", null ],
+    [ "handle_proto", "ui_8cpp.html#a2305a20b6ebc395d5e4b54035dbf1d0a", null ],
+    [ "set_button_style", "ui_8cpp.html#aa1653537ccf75c5123545def8f472b79", null ],
+    [ "set_header_style", "ui_8cpp.html#a9c4d8725eda0d50aef46d2a3258e38b0", null ],
+    [ "set_title_style", "ui_8cpp.html#a8810b673aec1cec4975a539a70b45163", null ],
+    [ "touch_activity", "ui_8cpp.html#ad8c85e0d93197d7f51513514b81f4ede", null ],
+    [ "update_status_footer", "ui_8cpp.html#a90fd0a28f8f326515c368d588d558967", null ],
+    [ "g_display", "ui_8cpp.html#abee7335970c3d576d1793f7641efb5fb", null ],
+    [ "s_currentCycle", "ui_8cpp.html#ad89a251e58ce403b5871b54891be3d30", null ],
+    [ "s_errorBlink", "ui_8cpp.html#a3832b80730a7255eed8e6495abe3aab2", null ],
+    [ "s_errorCode", "ui_8cpp.html#a80b4ffe2ff8f2042382d6b5cb0a4e82d", null ],
+    [ "s_lastActivityTick", "ui_8cpp.html#a7471a387de1b63d56e0ad5faff8a5af8", null ],
+    [ "s_settings", "ui_8cpp.html#af0e5dc1680a40fc793e09f75867483f5", null ],
+    [ "s_state", "ui_8cpp.html#aa5b2d702e2528d1c92385444040a460d", null ],
+    [ "s_uiQueue", "ui_8cpp.html#ac931f04c76e99022410d50521bc0fd13", null ],
+    [ "TAG_UI", "ui_8cpp.html#a79974c2b641adb413dc5a153d685c823", null ]
+];

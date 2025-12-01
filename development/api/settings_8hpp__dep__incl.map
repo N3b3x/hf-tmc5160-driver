@@ -1,0 +1,9 @@
+<map id="settings.hpp" name="settings.hpp">
+<area shape="rect" id="Node000001" title="Settings storage for UI board." alt="" coords="111,5,214,31"/>
+<area shape="rect" id="Node000002" href="$ui__board_2main_8cpp.html" title="Main application for UI board (remote controller with e&#45;ink display)" alt="" coords="5,79,88,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,40,67,81,64,76,131,35"/>
+<area shape="rect" id="Node000003" href="$settings_8cpp.html" title="Settings storage implementation." alt="" coords="112,79,213,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="165,44,165,79,160,79,160,44"/>
+<area shape="rect" id="Node000004" href="$ui_8cpp.html" title="UI implementation with Adafruit 2.9&quot; ThinkInk E&#45;Ink display." alt="" coords="237,79,299,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="193,36,252,76,249,81,190,41"/>
+</map>

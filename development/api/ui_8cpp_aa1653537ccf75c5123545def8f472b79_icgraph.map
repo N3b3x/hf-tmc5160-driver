@@ -1,0 +1,17 @@
+<map id="set_button_style" name="set_button_style">
+<area shape="rect" id="Node000001" title=" " alt="" coords="615,55,745,80"/>
+<area shape="rect" id="Node000002" href="$ui_8cpp.html#a4be20a3d7faccbb1c6d931858839299b" title=" " alt="" coords="423,55,567,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="601,70,567,70,567,65,601,65"/>
+<area shape="rect" id="Node000003" href="$ui_8cpp.html#a1e18915fb61b5d382fe8b18239124d82" title=" " alt="" coords="260,5,375,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="434,53,363,33,365,28,436,48"/>
+<area shape="rect" id="Node000006" href="$ui_8cpp.html#a2305a20b6ebc395d5e4b54035dbf1d0a" title=" " alt="" coords="264,55,371,80"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="409,70,371,70,371,65,409,65"/>
+<area shape="rect" id="Node000007" href="$namespaceUI.html#a7398d69b6b84d4cd8309a7607ec4d0bf" title=" " alt="" coords="143,104,209,129"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="422,85,375,94,209,116,209,111,374,89,421,80"/>
+<area shape="rect" id="Node000004" href="$namespaceUI.html#a0b7d4bd69e8c3a932139260abddb5e6e" title=" " alt="" coords="140,55,212,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="268,38,213,57,212,52,267,33"/>
+<area shape="rect" id="Node000005" href="$ui__board_2main_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,80,92,105"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="127,80,93,87,92,82,126,75"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="250,70,212,70,212,65,250,65"/>
+<area shape="poly" id="edge8_Node000007_Node000005" title=" " alt="" coords="129,111,92,103,93,98,130,105"/>
+</map>

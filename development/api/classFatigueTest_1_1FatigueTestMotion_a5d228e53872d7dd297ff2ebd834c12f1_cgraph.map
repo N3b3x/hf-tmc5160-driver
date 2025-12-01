@@ -1,0 +1,7 @@
+<map id="FatigueTest::FatigueTestMotion::SetLocalBoundsFromCenterDegrees" name="FatigueTest::FatigueTestMotion::SetLocalBoundsFromCenterDegrees">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,16,260,71"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0.html#aeb46c0090617c6181b568bdaf4415ae3" title="Convert degrees to steps." alt="" coords="308,5,499,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="260,29,294,26,294,31,260,34"/>
+<area shape="rect" id="Node000003" href="$namespacetmc51x0.html#aa654a36849533f2f559d3e113176bf35" title="Convert steps to degrees." alt="" coords="308,55,499,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="260,52,294,55,294,60,260,57"/>
+</map>

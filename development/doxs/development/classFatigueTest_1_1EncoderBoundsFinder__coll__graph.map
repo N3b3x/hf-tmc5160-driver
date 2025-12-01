@@ -1,0 +1,5 @@
+<map id="FatigueTest::EncoderBoundsFinder" name="FatigueTest::EncoderBoundsFinder">
+<area shape="rect" id="Node000001" title="Encoder&#45;based bounds finder." alt="" coords="5,79,208,119"/>
+<area shape="rect" id="Node000002" href="$classFatigueTest_1_1IBoundsFinder.html" title="Abstract bounds finder interface." alt="" coords="9,5,204,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,44,109,79,104,79,104,44"/>
+</map>

@@ -133,6 +133,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:accf4c4610524c92923c4c3656e49bfdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if mutex is currently locked by this guard.  <br /></td></tr>
 <tr class="separator:accf4c4610524c92923c4c3656e49bfdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1994255895c3bdf499584a5fcff5dc4c" id="r_a1994255895c3bdf499584a5fcff5dc4c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1994255895c3bdf499584a5fcff5dc4c">TmcMutexGuard</a> (<a class="el" href="classEsp32TmcMutex.html">Esp32TmcMutex</a> &amp;mutex) noexcept</td></tr>
+<tr class="separator:a1994255895c3bdf499584a5fcff5dc4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7846844360a06130bb8138d2c8c63c0" id="r_ab7846844360a06130bb8138d2c8c63c0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7846844360a06130bb8138d2c8c63c0">~TmcMutexGuard</a> () noexcept</td></tr>
+<tr class="separator:ab7846844360a06130bb8138d2c8c63c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6d5dcf4642c6732aea23ea2489caaaf" id="r_af6d5dcf4642c6732aea23ea2489caaaf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6d5dcf4642c6732aea23ea2489caaaf">unlock</a> () noexcept</td></tr>
+<tr class="separator:af6d5dcf4642c6732aea23ea2489caaaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accf4c4610524c92923c4c3656e49bfdf" id="r_accf4c4610524c92923c4c3656e49bfdf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#accf4c4610524c92923c4c3656e49bfdf">is_locked</a> () const noexcept</td></tr>
+<tr class="separator:accf4c4610524c92923c4c3656e49bfdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1994255895c3bdf499584a5fcff5dc4c" id="r_a1994255895c3bdf499584a5fcff5dc4c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1994255895c3bdf499584a5fcff5dc4c">TmcMutexGuard</a> (<a class="el" href="classEsp32TmcMutex.html">Esp32TmcMutex</a> &amp;mutex) noexcept</td></tr>
 <tr class="memdesc:a1994255895c3bdf499584a5fcff5dc4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock mutex (blocks until acquired)  <br /></td></tr>
 <tr class="separator:a1994255895c3bdf499584a5fcff5dc4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7846844360a06130bb8138d2c8c63c0" id="r_ab7846844360a06130bb8138d2c8c63c0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7846844360a06130bb8138d2c8c63c0">~TmcMutexGuard</a> () noexcept</td></tr>
@@ -165,7 +173,7 @@ Private Attributes</h2></td></tr>
 <p>Automatically locks mutex on construction and unlocks on destruction. Provides exception-safe mutex locking following RAII principles. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1994255895c3bdf499584a5fcff5dc4c" name="a1994255895c3bdf499584a5fcff5dc4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1994255895c3bdf499584a5fcff5dc4c">&#9670;&#160;</a></span>TmcMutexGuard() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1994255895c3bdf499584a5fcff5dc4c">&#9670;&#160;</a></span>TmcMutexGuard() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -203,7 +211,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="ab7846844360a06130bb8138d2c8c63c0" name="ab7846844360a06130bb8138d2c8c63c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7846844360a06130bb8138d2c8c63c0">&#9670;&#160;</a></span>~TmcMutexGuard() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7846844360a06130bb8138d2c8c63c0">&#9670;&#160;</a></span>~TmcMutexGuard() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -235,7 +243,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="a9a5d32c55145c04eef1f79c509ac12b9" name="a9a5d32c55145c04eef1f79c509ac12b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a5d32c55145c04eef1f79c509ac12b9">&#9670;&#160;</a></span>TmcMutexGuard() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a5d32c55145c04eef1f79c509ac12b9">&#9670;&#160;</a></span>TmcMutexGuard() <span class="overload">[2/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -260,7 +268,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="a99aacc69a15c0bc90d48361c0102ab6b" name="a99aacc69a15c0bc90d48361c0102ab6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99aacc69a15c0bc90d48361c0102ab6b">&#9670;&#160;</a></span>TmcMutexGuard() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a99aacc69a15c0bc90d48361c0102ab6b">&#9670;&#160;</a></span>TmcMutexGuard() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -285,7 +293,67 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="a1994255895c3bdf499584a5fcff5dc4c" name="a1994255895c3bdf499584a5fcff5dc4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1994255895c3bdf499584a5fcff5dc4c">&#9670;&#160;</a></span>TmcMutexGuard() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1994255895c3bdf499584a5fcff5dc4c">&#9670;&#160;</a></span>TmcMutexGuard() <span class="overload">[4/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TmcMutexGuard::TmcMutexGuard </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classEsp32TmcMutex.html">Esp32TmcMutex</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>mutex</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classTmcMutexGuard_a1994255895c3bdf499584a5fcff5dc4c_cgraph.svg" width="494" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ab7846844360a06130bb8138d2c8c63c0" name="ab7846844360a06130bb8138d2c8c63c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7846844360a06130bb8138d2c8c63c0">&#9670;&#160;</a></span>~TmcMutexGuard() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TmcMutexGuard::~TmcMutexGuard </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classTmcMutexGuard_ab7846844360a06130bb8138d2c8c63c0_cgraph.svg" width="695" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a1994255895c3bdf499584a5fcff5dc4c" name="a1994255895c3bdf499584a5fcff5dc4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1994255895c3bdf499584a5fcff5dc4c">&#9670;&#160;</a></span>TmcMutexGuard() <span class="overload">[5/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -323,7 +391,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="ab7846844360a06130bb8138d2c8c63c0" name="ab7846844360a06130bb8138d2c8c63c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7846844360a06130bb8138d2c8c63c0">&#9670;&#160;</a></span>~TmcMutexGuard() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7846844360a06130bb8138d2c8c63c0">&#9670;&#160;</a></span>~TmcMutexGuard() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -355,7 +423,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="a9a5d32c55145c04eef1f79c509ac12b9" name="a9a5d32c55145c04eef1f79c509ac12b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a5d32c55145c04eef1f79c509ac12b9">&#9670;&#160;</a></span>TmcMutexGuard() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a5d32c55145c04eef1f79c509ac12b9">&#9670;&#160;</a></span>TmcMutexGuard() <span class="overload">[6/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -380,7 +448,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="a99aacc69a15c0bc90d48361c0102ab6b" name="a99aacc69a15c0bc90d48361c0102ab6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99aacc69a15c0bc90d48361c0102ab6b">&#9670;&#160;</a></span>TmcMutexGuard() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a99aacc69a15c0bc90d48361c0102ab6b">&#9670;&#160;</a></span>TmcMutexGuard() <span class="overload">[7/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -406,7 +474,7 @@ Here is the call graph for this function:</div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="accf4c4610524c92923c4c3656e49bfdf" name="accf4c4610524c92923c4c3656e49bfdf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#accf4c4610524c92923c4c3656e49bfdf">&#9670;&#160;</a></span>is_locked() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#accf4c4610524c92923c4c3656e49bfdf">&#9670;&#160;</a></span>is_locked() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -433,7 +501,32 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="accf4c4610524c92923c4c3656e49bfdf" name="accf4c4610524c92923c4c3656e49bfdf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#accf4c4610524c92923c4c3656e49bfdf">&#9670;&#160;</a></span>is_locked() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#accf4c4610524c92923c4c3656e49bfdf">&#9670;&#160;</a></span>is_locked() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TmcMutexGuard::is_locked </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="accf4c4610524c92923c4c3656e49bfdf" name="accf4c4610524c92923c4c3656e49bfdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accf4c4610524c92923c4c3656e49bfdf">&#9670;&#160;</a></span>is_locked() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -560,7 +653,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="af6d5dcf4642c6732aea23ea2489caaaf" name="af6d5dcf4642c6732aea23ea2489caaaf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6d5dcf4642c6732aea23ea2489caaaf">&#9670;&#160;</a></span>unlock() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af6d5dcf4642c6732aea23ea2489caaaf">&#9670;&#160;</a></span>unlock() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -591,13 +684,43 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classTmcMutexGuard_af6d5dcf4642c6732aea23ea2489caaaf_icgraph.svg" width="796" height="172"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classTmcMutexGuard_af6d5dcf4642c6732aea23ea2489caaaf_icgraph.svg" width="1052" height="312"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
 <a id="af6d5dcf4642c6732aea23ea2489caaaf" name="af6d5dcf4642c6732aea23ea2489caaaf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6d5dcf4642c6732aea23ea2489caaaf">&#9670;&#160;</a></span>unlock() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af6d5dcf4642c6732aea23ea2489caaaf">&#9670;&#160;</a></span>unlock() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TmcMutexGuard::unlock </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classTmcMutexGuard_af6d5dcf4642c6732aea23ea2489caaaf_cgraph.svg" width="428" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="af6d5dcf4642c6732aea23ea2489caaaf" name="af6d5dcf4642c6732aea23ea2489caaaf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6d5dcf4642c6732aea23ea2489caaaf">&#9670;&#160;</a></span>unlock() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -675,6 +798,7 @@ Here is the call graph for this function:</div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="fatigue__test__encoder_8cpp.html">fatigue_test_encoder.cpp</a></li>
+<li><a class="el" href="test__unit_2main_8cpp.html">test_unit/main.cpp</a></li>
 <li><a class="el" href="fatigue__test__stallguard_8cpp.html">fatigue_test_stallguard.cpp</a></li>
 </ul>
 </div><!-- contents -->

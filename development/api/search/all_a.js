@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['last_5ftarget_5frelative_5f_0',['last_target_relative_',['../classFatigueTestMotion.html#a87f39d655399f886e6285d17615200e0',1,'FatigueTestMotion']]],
-  ['last_5fwas_5fnegative_5f_1',['last_was_negative_',['../classFatigueTestMotion.html#af2fb6acf6e6cb04d91971a622828dbb8',1,'FatigueTestMotion']]],
+  ['last_5ftarget_5frelative_5f_0',['last_target_relative_',['../classFatigueTestMotion.html#a87f39d655399f886e6285d17615200e0',1,'FatigueTestMotion::last_target_relative_'],['../classFatigueTest_1_1FatigueTestMotion.html#a5eeeaa335785482bfce16ccee0964d75',1,'FatigueTest::FatigueTestMotion::last_target_relative_']]],
+  ['last_5fwas_5fnegative_5f_1',['last_was_negative_',['../classFatigueTestMotion.html#af2fb6acf6e6cb04d91971a622828dbb8',1,'FatigueTestMotion::last_was_negative_'],['../classFatigueTest_1_1FatigueTestMotion.html#ae4f7c0421710aa1403e482358e32a851',1,'FatigueTest::FatigueTestMotion::last_was_negative_']]],
   ['latch_5fl_5factive_2',['latch_l_active',['../uniontmc51x0_1_1SW__MODE__Register.html#a05bc5fd27b61aa70817e4c718f64f602',1,'tmc51x0::SW_MODE_Register']]],
   ['latch_5fl_5finactive_3',['latch_l_inactive',['../uniontmc51x0_1_1SW__MODE__Register.html#a81cd3d005c7605705e30cfbd35ddf22b',1,'tmc51x0::SW_MODE_Register']]],
   ['latch_5fleft_4',['latch_left',['../structtmc51x0_1_1ReferenceSwitchConfig.html#a6bd1d60dba548343a406d60e2c663773',1,'tmc51x0::ReferenceSwitchConfig']]],
@@ -18,13 +18,14 @@ var searchData=
   ['left_5fstop_5fenable_15',['LEFT_STOP_ENABLE',['../namespacetmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1ReferenceSwitches.html#a3b6ca7e7e4b687d88ce51e9eefd48078',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::ReferenceSwitches::LEFT_STOP_ENABLE'],['../namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1ReferenceSwitches.html#a1e20032f55519937571d8a9072876c91',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::ReferenceSwitches::LEFT_STOP_ENABLE']]],
   ['left_5fswitch_5factive_16',['left_switch_active',['../structtmc51x0_1_1ReferenceSwitchConfig.html#aa7bc962e13ef81e3b1de5e0dcac5efd6',1,'tmc51x0::ReferenceSwitchConfig']]],
   ['left_5fswitch_5fstop_5fenable_17',['left_switch_stop_enable',['../structtmc51x0_1_1ReferenceSwitchConfig.html#afdde1105641a0337dfc5b92eef186d6f',1,'tmc51x0::ReferenceSwitchConfig']]],
-  ['license_18',['📄 License',['../index.html#autotoc_md74',1,'']]],
-  ['list_19',['Deprecated List',['../deprecated.html',1,'']]],
-  ['local_5fmax_5fbound_5f_20',['local_max_bound_',['../classFatigueTestMotion.html#a2aaf6bf3cf4026a7f62f0a3947fbfc03',1,'FatigueTestMotion']]],
-  ['local_5fmin_5fbound_5f_21',['local_min_bound_',['../classFatigueTestMotion.html#a905d65f7afc6bb7ad992e5296437ceb7',1,'FatigueTestMotion']]],
-  ['locked_5f_22',['locked_',['../classTmcMutexGuard.html#a57ef84d5629c9f4ad53660b8a9747e7d',1,'TmcMutexGuard']]],
-  ['logdebug_23',['LogDebug',['../classtmc51x0_1_1CommInterface.html#aa5358fda94e214d25d2800a5564416b3',1,'tmc51x0::CommInterface']]],
-  ['long_5fname_24',['long_name',['../structCommandArg.html#accb413b2fd05bcf1229bba83feb865b1',1,'CommandArg']]],
-  ['low_25',['LOW',['../namespacetmc51x0.html#a52bd7474fc03fcfde3c7249fea7ea055a41bc94cbd8eebea13ce0491b2ac11b88',1,'tmc51x0::LOW'],['../namespacetmc51x0.html#aca6b71c611ab7e217b0d3ce4208821d9a41bc94cbd8eebea13ce0491b2ac11b88',1,'tmc51x0::LOW'],['../namespacetmc51x0.html#a4abe4fa0f128137c19f7da4f9b58a816a41bc94cbd8eebea13ce0491b2ac11b88',1,'tmc51x0::LOW']]],
-  ['lower_5fthreshold_5fsg_26',['lower_threshold_sg',['../structtmc51x0_1_1CoolStepConfig.html#a80039da9cefd52f8190a94bb6bd1e710',1,'tmc51x0::CoolStepConfig']]]
+  ['len_18',['len',['../structEspNowHeader.html#a70df20eda5255df03118bc4af98ea9eb',1,'EspNowHeader::len'],['../structRawMsg.html#ae259799b0779c226f9bfe3bf667d09ae',1,'RawMsg::len']]],
+  ['license_19',['📄 License',['../index.html#autotoc_md74',1,'']]],
+  ['list_20',['Deprecated List',['../deprecated.html',1,'']]],
+  ['local_5fmax_5fbound_5f_21',['local_max_bound_',['../classFatigueTestMotion.html#a2aaf6bf3cf4026a7f62f0a3947fbfc03',1,'FatigueTestMotion::local_max_bound_'],['../classFatigueTest_1_1FatigueTestMotion.html#a7c85f43f76c779d3a2910a2513377264',1,'FatigueTest::FatigueTestMotion::local_max_bound_']]],
+  ['local_5fmin_5fbound_5f_22',['local_min_bound_',['../classFatigueTestMotion.html#a905d65f7afc6bb7ad992e5296437ceb7',1,'FatigueTestMotion::local_min_bound_'],['../classFatigueTest_1_1FatigueTestMotion.html#aaa922946cc09d820d19eddbe41d16085',1,'FatigueTest::FatigueTestMotion::local_min_bound_']]],
+  ['locked_5f_23',['locked_',['../classTmcMutexGuard.html#a57ef84d5629c9f4ad53660b8a9747e7d',1,'TmcMutexGuard']]],
+  ['logdebug_24',['LogDebug',['../classtmc51x0_1_1CommInterface.html#aa5358fda94e214d25d2800a5564416b3',1,'tmc51x0::CommInterface']]],
+  ['long_5fname_25',['long_name',['../structCommandArg.html#accb413b2fd05bcf1229bba83feb865b1',1,'CommandArg']]],
+  ['low_26',['LOW',['../namespacetmc51x0.html#a52bd7474fc03fcfde3c7249fea7ea055a41bc94cbd8eebea13ce0491b2ac11b88',1,'tmc51x0::LOW'],['../namespacetmc51x0.html#aca6b71c611ab7e217b0d3ce4208821d9a41bc94cbd8eebea13ce0491b2ac11b88',1,'tmc51x0::LOW'],['../namespacetmc51x0.html#a4abe4fa0f128137c19f7da4f9b58a816a41bc94cbd8eebea13ce0491b2ac11b88',1,'tmc51x0::LOW']]],
+  ['lower_5fthreshold_5fsg_27',['lower_threshold_sg',['../structtmc51x0_1_1CoolStepConfig.html#a80039da9cefd52f8190a94bb6bd1e710',1,'tmc51x0::CoolStepConfig']]]
 ];
