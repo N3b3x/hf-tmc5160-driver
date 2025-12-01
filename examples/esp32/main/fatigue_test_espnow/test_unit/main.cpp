@@ -22,6 +22,7 @@
 
 #include "esp_log.h"
 #include "esp_timer.h"
+#include "driver/uart.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
@@ -30,6 +31,8 @@
 #include <cmath>
 #include <cstring>
 #include <cstdlib>
+#include <string>
+#include <vector>
 
 static const char* TAG = "FatigueTestUnit";
 
@@ -221,6 +224,305 @@ static void status_update_task(void* arg)
     }
 }
 
+//=============================================================================
+// UART Command Parser
+//=============================================================================
+
+/**
+ * @brief Command argument structure for modular command parsing
+ */
+struct CommandArg {
+    const char* short_name;    // e.g., "-f"
+    const char* long_name;     // e.g., "--freq"
+    const char* description;   // Help text
+    int min_args;              // Minimum number of arguments required
+    int max_args;              // Maximum number of arguments (0 = unlimited)
+};
+
+/**
+ * @brief Command handler function type
+ */
+typedef bool (*CommandHandler)(const std::vector<std::string>& args, FatigueTest::FatigueTestMotion& motion) noexcept;
+
+/**
+ * @brief Command registry entry
+ */
+struct CommandEntry {
+    CommandArg arg;
+    CommandHandler handler;
+};
+
+/**
+ * @brief Modular UART command parser with Linux-like argument structure
+ */
+class UartCommandParser {
+private:
+    uart_port_t uart_port_;
+    std::vector<CommandEntry> commands_;
+    char rx_buffer_[256];
+    static constexpr size_t RX_BUF_SIZE = 256;
+
+    /**
+     * @brief Parse command line into tokens
+     */
+    std::vector<std::string> Tokenize(const char* line) noexcept {
+        std::vector<std::string> tokens;
+        std::string current;
+        bool in_quotes = false;
+
+        for (const char* p = line; *p != '\0'; ++p) {
+            if (*p == '"') {
+                in_quotes = !in_quotes;
+            } else if (isspace(*p) && !in_quotes) {
+                if (!current.empty()) {
+                    tokens.push_back(current);
+                    current.clear();
+                }
+            } else {
+                current += *p;
+            }
+        }
+
+        if (!current.empty()) {
+            tokens.push_back(current);
+        }
+
+        return tokens;
+    }
+
+    /**
+     * @brief Find command handler for given argument
+     */
+    CommandEntry* FindCommand(const std::string& arg) noexcept {
+        for (auto& entry : commands_) {
+            if (arg == entry.arg.short_name || arg == entry.arg.long_name) {
+                return &entry;
+            }
+        }
+        return nullptr;
+    }
+
+public:
+    UartCommandParser(uart_port_t uart_port) : uart_port_(uart_port) {
+        // Configure UART
+        uart_config_t uart_config = {};
+        uart_config.baud_rate = 115200;
+        uart_config.data_bits = UART_DATA_8_BITS;
+        uart_config.parity = UART_PARITY_DISABLE;
+        uart_config.stop_bits = UART_STOP_BITS_1;
+        uart_config.flow_ctrl = UART_HW_FLOWCTRL_DISABLE;
+        uart_config.source_clk = UART_SCLK_DEFAULT;
+
+        uart_driver_install(uart_port_, RX_BUF_SIZE * 2, 0, 0, NULL, 0);
+        uart_param_config(uart_port_, &uart_config);
+        uart_set_pin(uart_port_, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
+    }
+
+    /**
+     * @brief Register a command handler
+     */
+    void RegisterCommand(const CommandArg& arg, CommandHandler handler) noexcept {
+        commands_.push_back({arg, handler});
+    }
+
+    /**
+     * @brief Process a command line
+     */
+    bool ProcessCommand(const char* line, FatigueTest::FatigueTestMotion& motion) noexcept {
+        if (!line || strlen(line) == 0) {
+            return false;
+        }
+
+        std::vector<std::string> tokens = Tokenize(line);
+        if (tokens.empty()) {
+            return false;
+        }
+
+        // Special handling for help command
+        if (tokens[0] == "-h" || tokens[0] == "--help") {
+            PrintHelp();
+            return true;
+        }
+
+        // Find command
+        CommandEntry* entry = FindCommand(tokens[0]);
+        if (!entry) {
+            ESP_LOGW(TAG, "Unknown command: %s", tokens[0].c_str());
+            return false;
+        }
+
+        // Check argument count
+        int arg_count = tokens.size() - 1;
+        if (arg_count < entry->arg.min_args) {
+            ESP_LOGE(TAG, "Command %s requires at least %d arguments, got %d", 
+                     tokens[0].c_str(), entry->arg.min_args, arg_count);
+            return false;
+        }
+        if (entry->arg.max_args > 0 && arg_count > entry->arg.max_args) {
+            ESP_LOGE(TAG, "Command %s accepts at most %d arguments, got %d", 
+                     tokens[0].c_str(), entry->arg.max_args, arg_count);
+            return false;
+        }
+
+        // Extract arguments
+        std::vector<std::string> args(tokens.begin() + 1, tokens.end());
+
+        // Call handler
+        return entry->handler(args, motion);
+    }
+
+    /**
+     * @brief Read and process commands from UART
+     */
+    void ProcessUartCommands(FatigueTest::FatigueTestMotion& motion) noexcept {
+        int len = uart_read_bytes(uart_port_, (uint8_t*)rx_buffer_, RX_BUF_SIZE - 1, pdMS_TO_TICKS(100));
+        if (len > 0) {
+            rx_buffer_[len] = '\0';
+            
+            // Remove trailing newline/carriage return
+            while (len > 0 && (rx_buffer_[len - 1] == '\n' || rx_buffer_[len - 1] == '\r')) {
+                rx_buffer_[len - 1] = '\0';
+                len--;
+            }
+
+            if (len > 0) {
+                ProcessCommand(rx_buffer_, motion);
+            }
+        }
+    }
+
+    /**
+     * @brief Print help message
+     */
+    void PrintHelp() noexcept {
+        ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
+        ESP_LOGI(TAG, "║                         UART COMMAND INTERFACE                             ║");
+        ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
+        ESP_LOGI(TAG, "Commands:");
+        for (const auto& entry : commands_) {
+            ESP_LOGI(TAG, "  %s, %s : %s", entry.arg.short_name, entry.arg.long_name, entry.arg.description);
+        }
+        ESP_LOGI(TAG, "");
+    }
+};
+
+// Command handlers
+static bool HandleFrequency(const std::vector<std::string>& args, FatigueTest::FatigueTestMotion& motion) noexcept {
+    if (args.empty()) {
+        ESP_LOGE(TAG, "Frequency command requires a value");
+        return false;
+    }
+    float freq = std::strtof(args[0].c_str(), nullptr);
+    return motion.SetFrequency(freq);
+}
+
+static bool HandleDwell(const std::vector<std::string>& args, FatigueTest::FatigueTestMotion& motion) noexcept {
+    if (args.size() < 2) {
+        ESP_LOGE(TAG, "Dwell command requires at least 2 arguments (min_ms, max_ms)");
+        return false;
+    }
+    if (args.size() > 2) {
+        ESP_LOGW(TAG, "Extra arguments ignored. Dwell command takes exactly 2 arguments (min_ms, max_ms)");
+    }
+    uint32_t min_ms = std::strtoul(args[0].c_str(), nullptr, 10);
+    uint32_t max_ms = std::strtoul(args[1].c_str(), nullptr, 10);
+    return motion.SetDwellTimes(min_ms, max_ms);
+}
+
+static bool HandleBounds(const std::vector<std::string>& args, FatigueTest::FatigueTestMotion& motion) noexcept {
+    if (args.size() < 2) {
+        ESP_LOGE(TAG, "Bounds command requires 2 arguments (min_degrees, max_degrees)");
+        return false;
+    }
+    float min_deg = std::strtof(args[0].c_str(), nullptr);
+    float max_deg = std::strtof(args[1].c_str(), nullptr);
+    return motion.SetLocalBoundsFromCenterDegrees(min_deg, max_deg);
+}
+
+static bool HandleCycles(const std::vector<std::string>& args, FatigueTest::FatigueTestMotion& motion) noexcept {
+    if (args.empty()) {
+        ESP_LOGE(TAG, "Cycles command requires a value");
+        return false;
+    }
+    uint32_t cycles = std::strtoul(args[0].c_str(), nullptr, 10);
+    bool result = motion.SetTargetCycles(cycles);
+    if (result) {
+        // Also update settings for ESP-NOW
+        g_settings.cycle_amount = cycles;
+    }
+    return result;
+}
+
+static bool HandleAction(const std::vector<std::string>& args, FatigueTest::FatigueTestMotion& motion) noexcept {
+    if (args.empty()) {
+        ESP_LOGE(TAG, "Action command requires an action (start/stop/reset)");
+        return false;
+    }
+    
+    const std::string& action = args[0];
+    if (action == "start") {
+        if (!g_bounds_found) {
+            ESP_LOGE(TAG, "Cannot start: bounds not found");
+            return false;
+        }
+        bool result = motion.Start();
+        if (result) {
+            EspNowReceiver::send_start_ack();
+            EspNowReceiver::send_status_update(motion.GetCurrentCycles(), TestState::RUNNING);
+        }
+        return result;
+    } else if (action == "stop") {
+        motion.Stop();
+        EspNowReceiver::send_stop_ack();
+        EspNowReceiver::send_status_update(motion.GetCurrentCycles(), TestState::IDLE);
+        return true;
+    } else if (action == "reset") {
+        motion.ResetCycles();
+        return true;
+    } else {
+        ESP_LOGE(TAG, "Unknown action: %s (use: start, stop, or reset)", action.c_str());
+        return false;
+    }
+}
+
+static bool HandleStatus(const std::vector<std::string>& args, FatigueTest::FatigueTestMotion& motion) noexcept {
+    (void)args; // Unused
+    FatigueTest::FatigueTestMotion::Status status = motion.GetStatus();
+    
+    ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
+    ESP_LOGI(TAG, "║                            MOTION STATUS                                      ║");
+    ESP_LOGI(TAG, "╠══════════════════════════════════════════════════════════════════════════════╣");
+    ESP_LOGI(TAG, "  Running: %s", status.running ? "YES" : "NO");
+    ESP_LOGI(TAG, "  Bounded: %s", status.bounded ? "YES" : "NO");
+    ESP_LOGI(TAG, "  Frequency: %.2f Hz (Estimated: %.2f Hz)", status.frequency_hz, motion.GetEstimatedFrequency());
+    ESP_LOGI(TAG, "  Local Bounds: %.2f° to %.2f° from center", 
+             status.min_degrees_from_center, status.max_degrees_from_center);
+    ESP_LOGI(TAG, "  Global Bounds: %.2f° to %.2f° from center", 
+             status.global_min_degrees, status.global_max_degrees);
+    ESP_LOGI(TAG, "  Cycles: %lu / %lu %s", status.current_cycles, 
+             status.target_cycles == 0 ? 0xFFFFFFFF : status.target_cycles,
+             status.target_cycles == 0 ? "(infinite)" : "");
+    ESP_LOGI(TAG, "  Dwell Times: min=%lu ms, max=%lu ms",
+             status.dwell_min_ms, status.dwell_max_ms);
+    ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
+    return true;
+}
+
+// UART Command Task
+static void uart_command_task(void* arg)
+{
+    UartCommandParser* parser = static_cast<UartCommandParser*>(arg);
+    
+    ESP_LOGI(TAG, "UART command task started");
+    
+    while (true) {
+        if (g_motion) {
+            parser->ProcessUartCommands(*g_motion);
+        }
+        vTaskDelay(pdMS_TO_TICKS(50)); // Check for commands every 50ms
+    }
+}
+
 extern "C" void app_main()
 {
     ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
@@ -330,12 +632,32 @@ extern "C" void app_main()
         g_bounds_found = false;
     }
 
+    // Initialize UART command parser
+    ESP_LOGI(TAG, "║              Initializing UART Command Interface                     ║");
+    ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
+    
+    UartCommandParser parser(UART_NUM_0);
+    
+    // Register all commands
+    parser.RegisterCommand({"-f", "--freq", "Set frequency in Hz", 1, 1}, HandleFrequency);
+    parser.RegisterCommand({"-d", "--dwell", "Set dwell times in ms (min, max)", 2, 2}, HandleDwell);
+    parser.RegisterCommand({"-b", "--bounds", "Set angle bounds from center in degrees (min, max)", 2, 2}, HandleBounds);
+    parser.RegisterCommand({"-c", "--cycles", "Set target cycle count (0 = infinite)", 1, 1}, HandleCycles);
+    parser.RegisterCommand({"-a", "--action", "Action: start, stop, or reset", 1, 1}, HandleAction);
+    parser.RegisterCommand({"-s", "--status", "Show current status", 0, 0}, HandleStatus);
+    
+    ESP_LOGI(TAG, "UART command interface ready on UART_NUM_0 (USB serial)");
+    parser.PrintHelp();
+
     // Create tasks
     xTaskCreate(espnow_command_task, "espnow_cmd", 4096, nullptr, 5, nullptr);
     xTaskCreate(motion_control_task, "motion_ctrl", 8192, nullptr, 5, nullptr);
     xTaskCreate(status_update_task, "status_upd", 4096, nullptr, 3, nullptr);
-
-    ESP_LOGI(TAG, "System ready - waiting for commands from UI board");
+    xTaskCreate(uart_command_task, "uart_cmd", 4096, &parser, 3, nullptr);
+    
+    ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
+    ESP_LOGI(TAG, "║                    System Ready - Use UART or ESP-NOW Commands                ║");
+    ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
 
     // Main loop
     while (true) {
