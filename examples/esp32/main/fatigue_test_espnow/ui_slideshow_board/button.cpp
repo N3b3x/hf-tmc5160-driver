@@ -1,6 +1,6 @@
 /**
  * @file button.cpp
- * @brief Button handling implementation
+ * @brief Button handling implementation for slideshow
  */
 
 #include "button.hpp"
@@ -8,21 +8,21 @@
 #include "esp_sleep.h"
 #include "esp_log.h"
 
-static const char* TAG_BTN = "Buttons";
+static const char* TAG_BTN = "SlideshowButtons";
 
 static QueueHandle_t s_btnQueue = nullptr;
 
 static void IRAM_ATTR gpio_isr_handler(void* arg)
 {
-    ButtonId realId = *(ButtonId*)arg;
+    SlideshowButtonId realId = *(SlideshowButtonId*)arg;
 
-    ButtonEvent ev{ realId };
+    SlideshowButtonEvent ev{ realId, true };  // Press event
     BaseType_t hpw = pdFALSE;
     xQueueSendFromISR(s_btnQueue, &ev, &hpw);
     if (hpw == pdTRUE) portYIELD_FROM_ISR();
 }
 
-bool Buttons::init(QueueHandle_t evt_queue)
+bool SlideshowButtons::init(QueueHandle_t evt_queue)
 {
     s_btnQueue = evt_queue;
 
@@ -32,44 +32,34 @@ bool Buttons::init(QueueHandle_t evt_queue)
     io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
     io_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
 
-    // Configure all buttons (legacy + new)
+    // Configure each button
     io_conf.pin_bit_mask = (1ULL << BTN_UP_GPIO) |
                            (1ULL << BTN_SELECT_GPIO) |
-                           (1ULL << BTN_DOWN_GPIO) |
-                           (1ULL << BTN_BACK_GPIO) |
-                           (1ULL << BTN_CONFIRM_GPIO);
+                           (1ULL << BTN_DOWN_GPIO);
     ESP_ERROR_CHECK(gpio_config(&io_conf));
 
     ESP_ERROR_CHECK(gpio_install_isr_service(0));
 
-    // Legacy buttons (for e-ink slideshow)
-    static ButtonId upId   = ButtonId::UP;
-    static ButtonId selId  = ButtonId::SELECT;
-    static ButtonId downId = ButtonId::DOWN;
-    
-    // New buttons (for OLED menu)
-    static ButtonId backId = ButtonId::BACK;
-    static ButtonId confirmId = ButtonId::CONFIRM;
+    static SlideshowButtonId upId   = SlideshowButtonId::UP;
+    static SlideshowButtonId selId  = SlideshowButtonId::SELECT;
+    static SlideshowButtonId downId = SlideshowButtonId::DOWN;
 
     ESP_ERROR_CHECK(gpio_isr_handler_add(BTN_UP_GPIO, gpio_isr_handler, &upId));
     ESP_ERROR_CHECK(gpio_isr_handler_add(BTN_SELECT_GPIO, gpio_isr_handler, &selId));
     ESP_ERROR_CHECK(gpio_isr_handler_add(BTN_DOWN_GPIO, gpio_isr_handler, &downId));
-    ESP_ERROR_CHECK(gpio_isr_handler_add(BTN_BACK_GPIO, gpio_isr_handler, &backId));
-    ESP_ERROR_CHECK(gpio_isr_handler_add(BTN_CONFIRM_GPIO, gpio_isr_handler, &confirmId));
 
-    ESP_LOGI(TAG_BTN, "Buttons initialized");
+    ESP_LOGI(TAG_BTN, "Slideshow buttons initialized");
     return true;
 }
 
-void Buttons::configure_wakeup()
+void SlideshowButtons::configure_wakeup()
 {
     // All buttons as EXT1 wake sources (any low)
     uint64_t mask = (1ULL << BTN_UP_GPIO) |
                     (1ULL << BTN_SELECT_GPIO) |
-                    (1ULL << BTN_DOWN_GPIO) |
-                    (1ULL << BTN_BACK_GPIO) |
-                    (1ULL << BTN_CONFIRM_GPIO);
+                    (1ULL << BTN_DOWN_GPIO);
 
     esp_sleep_enable_ext1_wakeup(mask, ESP_EXT1_WAKEUP_ALL_LOW);
     // NOTE: these GPIOs must be RTC-capable; adjust pins if necessary.
 }
+

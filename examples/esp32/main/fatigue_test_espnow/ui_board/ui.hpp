@@ -13,7 +13,12 @@
 // UI states
 enum class UiState {
     MAIN,
-    SETTINGS,
+    SETTINGS_MENU,          // Settings menu list
+    SETTINGS_EDIT_CYCLES,    // Editing cycle amount
+    SETTINGS_EDIT_TIME,      // Editing time per cycle
+    SETTINGS_EDIT_DWELL,     // Editing dwell time
+    SETTINGS_EDIT_METHOD,    // Editing bounds method
+    SETTINGS_EDIT_ORIENT,   // Editing orientation
     CONFIRM_STOP,
     ERROR_SCREEN,
     RUNNING,

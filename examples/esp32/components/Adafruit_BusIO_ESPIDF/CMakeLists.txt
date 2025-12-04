@@ -4,11 +4,11 @@
 cmake_minimum_required(VERSION 3.5)
 
 idf_component_register(
-    SRCS "SPI.cpp"
+    SRCS "Adafruit_I2CDevice.cpp" "SPI.cpp"
          "Adafruit_SPIDevice.cpp"
          "Wire.cpp"
          "arduino_compat.cpp"
     INCLUDE_DIRS "."
-    REQUIRES driver esp_driver_spi esp_driver_gpio freertos esp_timer
+    REQUIRES driver esp_driver_spi esp_driver_i2c esp_driver_gpio freertos esp_timer
 )
 

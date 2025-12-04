@@ -70,6 +70,18 @@ if(APP_TYPE STREQUAL "fatigue_test_espnow_ui")
     list(APPEND MAIN_INCLUDE_DIRS
         "${CMAKE_CURRENT_SOURCE_DIR}/../components/Adafruit_GFX"
         "${CMAKE_CURRENT_SOURCE_DIR}/../components/Adafruit_EPD"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../components/Adafruit_SH1106_ESPIDF"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../components/EC11_Encoder/inc"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../components/Adafruit_BusIO_ESPIDF"
+    )
+endif()
+
+# Add Adafruit component include paths for slideshow app
+if(APP_TYPE STREQUAL "fatigue_test_espnow_slideshow")
+    list(APPEND MAIN_INCLUDE_DIRS
+        "${CMAKE_CURRENT_SOURCE_DIR}/../components/Adafruit_GFX"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../components/Adafruit_EPD"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../components/Adafruit_BusIO_ESPIDF"
     )
 endif()
 
@@ -77,21 +89,39 @@ endif()
 # Component Dependencies
 # =============================================================================
 # Define required ESP-IDF components for the main application
-set(MAIN_REQUIRES
-    driver              # ESP-IDF driver framework (GPIO, I2C, SPI, UART)
-    esp_timer           # ESP-IDF timer functionality
-    freertos            # FreeRTOS for threading and synchronization
-    hf_tmc51x0          # TMC51x0 driver component (TMC5130 & TMC5160)
-    esp_wifi            # ESP-IDF WiFi (required for ESP-NOW)
-    nvs_flash           # NVS flash storage (for settings persistence)
-)
+# Slideshow app has different requirements, so handle it separately
+if(APP_TYPE STREQUAL "fatigue_test_espnow_slideshow")
+    # Slideshow app requirements (no WiFi, NVS, TMC driver needed)
+    set(MAIN_REQUIRES
+        driver
+        esp_timer
+        freertos
+        Adafruit_GFX
+        Adafruit_EPD
+        Adafruit_BusIO_ESPIDF
+        fatfs
+        esp_driver_sdspi
+    )
+else()
+    # Default requirements for other apps
+    set(MAIN_REQUIRES
+        driver
+        esp_timer
+        freertos
+        hf_tmc51x0
+        esp_wifi
+        nvs_flash
+    )
+endif()
 
 # Add Adafruit components for ESP-NOW UI board
 if(APP_TYPE STREQUAL "fatigue_test_espnow_ui")
     list(APPEND MAIN_REQUIRES
         Adafruit_GFX          # Adafruit GFX graphics library
-        Adafruit_EPD          # Adafruit EPD e-ink display library
-        Adafruit_BusIO_ESPIDF # Adafruit BusIO ESP-IDF native implementation (SPI-only)
+        Adafruit_EPD          # Adafruit EPD e-ink display library (for slideshow app)
+        Adafruit_BusIO_ESPIDF # Adafruit BusIO ESP-IDF native implementation (I2C + SPI)
+        Adafruit_SH1106_ESPIDF # SH1106 OLED driver for ESP-IDF
+        EC11_Encoder          # EC11 rotary encoder driver
     )
 endif()
 
@@ -117,8 +147,25 @@ if(APP_TYPE STREQUAL "fatigue_test_espnow_ui")
         "fatigue_test_espnow/ui_board/button.cpp"
         "fatigue_test_espnow/ui_board/settings.cpp"
         "fatigue_test_espnow/ui_board/espnow_protocol.cpp"
-        "fatigue_test_espnow/ui_board/ui.cpp"
+        "fatigue_test_espnow/ui_board/ui_oled.cpp"      # OLED-based UI (replaces e-ink UI)
+        "fatigue_test_espnow/ui_board/oled_menu.cpp"   # Menu system for OLED
+        # "fatigue_test_espnow/ui_board/ui.cpp"        # E-ink UI (kept for slideshow app)
     )
+endif()
+
+# Add slideshow app additional sources
+if(APP_TYPE STREQUAL "fatigue_test_espnow_slideshow")
+    list(APPEND COMPONENT_SRCS
+        "fatigue_test_espnow/ui_slideshow_board/button.cpp"
+        "fatigue_test_espnow/ui_slideshow_board/sd_card.cpp"
+        "fatigue_test_espnow/ui_slideshow_board/image_loader.cpp"
+        "fatigue_test_espnow/ui_slideshow_board/slideshow.cpp"
+    )
+endif()
+
+# Debug: Print MAIN_REQUIRES for slideshow app
+if(APP_TYPE STREQUAL "fatigue_test_espnow_slideshow")
+    message(STATUS "Slideshow MAIN_REQUIRES: ${MAIN_REQUIRES}")
 endif()
 
 idf_component_register(
