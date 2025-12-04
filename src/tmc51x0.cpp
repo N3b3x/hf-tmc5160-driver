@@ -725,6 +725,21 @@ bool TMC51x0<CommType>::RampControl::SetTargetPosition(float value, Unit unit) n
   return SetTargetPosition(static_cast<int32_t>(steps)); // Calls private helper
 }
 
+template <typename CommType>
+bool TMC51x0<CommType>::RampControl::MoveRelative(float offset, Unit unit) noexcept {
+  // Get current position in the requested unit
+  float current_pos = 0.0f;
+  if (!GetCurrentPosition(current_pos, unit)) {
+    return false;
+  }
+  
+  // Calculate new target position (current + offset)
+  float target_pos = current_pos + offset;
+  
+  // Set target position (driver handles unit conversion internally)
+  return SetTargetPosition(target_pos, unit);
+}
+
 // Private helper implementation
 template <typename CommType>
 bool TMC51x0<CommType>::RampControl::SetTargetPosition(int32_t position) noexcept {

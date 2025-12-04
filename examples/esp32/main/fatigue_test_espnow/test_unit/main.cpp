@@ -524,6 +524,8 @@ class UartCommandParser {
 private:
     uart_port_t uart_port_;
     char rx_buffer_[256];
+    char line_buffer_[256];
+    size_t line_buffer_pos_;
     static constexpr size_t RX_BUF_SIZE = 256;
 
     /**
@@ -602,7 +604,13 @@ private:
     }
 
 public:
-    UartCommandParser(uart_port_t uart_port) : uart_port_(uart_port) {
+    UartCommandParser(uart_port_t uart_port) : uart_port_(uart_port), line_buffer_pos_(0) {
+        line_buffer_[0] = '\0';
+        
+        // On ESP32C6, UART_NUM_0 is typically used by the console
+        // Try to install the driver - if it's already installed, we'll get ESP_ERR_INVALID_STATE
+        ESP_LOGI(TAG, "Configuring UART driver on port %d", uart_port_);
+        
         // Configure UART
         uart_config_t uart_config = {};
         uart_config.baud_rate = 115200;
@@ -612,9 +620,42 @@ public:
         uart_config.flow_ctrl = UART_HW_FLOWCTRL_DISABLE;
         uart_config.source_clk = UART_SCLK_DEFAULT;
 
-        uart_driver_install(uart_port_, RX_BUF_SIZE * 2, 0, 0, NULL, 0);
-        uart_param_config(uart_port_, &uart_config);
-        uart_set_pin(uart_port_, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
+        // Try to install UART driver with RX buffer
+        // If driver is already installed (by console), we'll get ESP_ERR_INVALID_STATE
+        esp_err_t ret = uart_driver_install(uart_port_, RX_BUF_SIZE * 2, 0, 0, NULL, 0);
+        if (ret == ESP_ERR_INVALID_STATE) {
+            // Driver already installed (likely by console) - that's fine, we can use it
+            ESP_LOGI(TAG, "UART port %d already has driver installed (using existing)", uart_port_);
+        } else if (ret != ESP_OK) {
+            ESP_LOGE(TAG, "Failed to install UART driver: %s", esp_err_to_name(ret));
+            return;
+        } else {
+            ESP_LOGI(TAG, "UART driver installed on port %d", uart_port_);
+        }
+        
+        // Configure UART parameters (safe to call even if driver was already installed)
+        ret = uart_param_config(uart_port_, &uart_config);
+        if (ret != ESP_OK) {
+            ESP_LOGE(TAG, "Failed to configure UART parameters: %s", esp_err_to_name(ret));
+            return;
+        }
+        
+        // For USB serial (UART_NUM_0), pins are typically handled by USB driver
+        ret = uart_set_pin(uart_port_, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
+        if (ret != ESP_OK) {
+            ESP_LOGE(TAG, "Failed to set UART pins: %s", esp_err_to_name(ret));
+            return;
+        }
+        
+        // Verify we can read from the UART
+        size_t test_available = 0;
+        ret = uart_get_buffered_data_len(uart_port_, &test_available);
+        if (ret == ESP_OK) {
+            ESP_LOGI(TAG, "UART port %d ready, initial buffered data: %zu bytes", 
+                     uart_port_, test_available);
+        } else {
+            ESP_LOGE(TAG, "UART port %d not accessible: %s", uart_port_, esp_err_to_name(ret));
+        }
     }
 
     /**
@@ -661,22 +702,67 @@ public:
     }
 
     /**
-     * @brief Read and process commands from UART
+     * @brief Read and process commands from UART (line-by-line)
      */
     void ProcessUartCommands(FatigueTest::FatigueTestMotion& motion) noexcept {
-        int len = uart_read_bytes(uart_port_, (uint8_t*)rx_buffer_, RX_BUF_SIZE - 1, pdMS_TO_TICKS(100));
+        // Check available bytes first
+        size_t available = 0;
+        esp_err_t ret = uart_get_buffered_data_len(uart_port_, &available);
+        if (ret != ESP_OK) {
+            // Log error only occasionally to avoid spam
+            static uint32_t error_count = 0;
+            if (error_count++ % 100 == 0) {
+                ESP_LOGE(TAG, "Failed to get UART buffered data length: %s (count=%lu)", 
+                        esp_err_to_name(ret), error_count);
+            }
+            return;
+        }
+        
+        // Log when data becomes available (for debugging)
+        static size_t last_available = 0;
+        if (available > 0 && available != last_available) {
+            ESP_LOGI(TAG, "UART has %zu bytes available (was %zu)", available, last_available);
+        }
+        last_available = available;
+        
+        // Read available bytes from UART (non-blocking)
+        // Use a small timeout to ensure we get complete data
+        int len = uart_read_bytes(uart_port_, (uint8_t*)rx_buffer_, RX_BUF_SIZE - 1, 
+                                  available > 0 ? pdMS_TO_TICKS(10) : 0);
         if (len > 0) {
             rx_buffer_[len] = '\0';
+            ESP_LOGI(TAG, "UART read %d bytes: '%.*s'", len, len, rx_buffer_);
             
-            // Remove trailing newline/carriage return
-            while (len > 0 && (rx_buffer_[len - 1] == '\n' || rx_buffer_[len - 1] == '\r')) {
-                rx_buffer_[len - 1] = '\0';
-                len--;
+            // Process each character, accumulating into line buffer until newline
+            for (int i = 0; i < len; i++) {
+                char c = rx_buffer_[i];
+                
+                // Handle newline/carriage return - process the complete line
+                if (c == '\n' || c == '\r') {
+                    if (line_buffer_pos_ > 0) {
+                        line_buffer_[line_buffer_pos_] = '\0';
+                        ESP_LOGI(TAG, "Received UART command: '%s'", line_buffer_);
+                        ProcessCommand(line_buffer_, motion);
+                        line_buffer_pos_ = 0;
+                        line_buffer_[0] = '\0';
+                    }
+                    // Skip multiple consecutive newlines
+                    continue;
+                }
+                
+                // Add character to line buffer (ignore if buffer is full)
+                if (line_buffer_pos_ < (RX_BUF_SIZE - 1)) {
+                    line_buffer_[line_buffer_pos_++] = c;
+                } else {
+                    // Buffer overflow - reset and log error
+                    ESP_LOGW(TAG, "UART command line too long, resetting buffer");
+                    line_buffer_pos_ = 0;
+                    line_buffer_[0] = '\0';
+                }
             }
-
-            if (len > 0) {
-                ProcessCommand(rx_buffer_, motion);
-            }
+        } else if (available > 0 && len == 0) {
+            // Data is available but read returned 0 - this shouldn't happen
+            ESP_LOGW(TAG, "UART has %zu bytes available but read returned 0", available);
         }
     }
 
@@ -1086,8 +1172,15 @@ static void uart_command_task(void* arg)
             last_log_time_us = current_time_us;
         }
         
-        if (g_motion) {
+        if (g_motion && parser) {
             parser->ProcessUartCommands(*g_motion);
+        } else {
+            if (!g_motion) {
+                ESP_LOGW(TAG, "[%s] g_motion is null, skipping UART command processing", task_name);
+            }
+            if (!parser) {
+                ESP_LOGE(TAG, "[%s] parser is null!", task_name);
+            }
         }
         vTaskDelay(pdMS_TO_TICKS(50)); // Check for commands every 50ms
     }
@@ -1180,24 +1273,24 @@ extern "C" void app_main()
     }
 
     if (bounds_finder) {
-        // FindBounds expects full steps per rev (without microsteps)
+        // FindBounds expects full steps per rev (used only for logging, driver handles conversions)
         auto result = bounds_finder->FindBounds(driver, full_steps_per_rev);
         if (result.success) {
-            motion.SetGlobalBounds(result.min_bound, result.max_bound);
+            motion.SetGlobalBounds(result.min_bound, result.max_bound);  // Already in degrees
             motion.SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
             g_bounds_found = true;
-            ESP_LOGI(TAG, "Bounds found using %s: min=%d, max=%d steps (bounded=%d)", 
+            ESP_LOGI(TAG, "Bounds found using %s: min=%.2f°, max=%.2f° (bounded=%d)", 
                      bounds_finder->GetMethodName(), result.min_bound, result.max_bound, 
                      result.bounded ? 1 : 0);
         } else {
             ESP_LOGW(TAG, "Bounds finding failed, using default bounds");
-            motion.SetGlobalBounds(-10000, 10000);
+            motion.SetGlobalBounds(-175.0f, 175.0f);  // Default bounds in degrees
             motion.SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
             g_bounds_found = false;
         }
     } else {
         ESP_LOGE(TAG, "Failed to create bounds finder");
-        motion.SetGlobalBounds(-10000, 10000);
+        motion.SetGlobalBounds(-175.0f, 175.0f);  // Default bounds in degrees
         motion.SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
         g_bounds_found = false;
     }

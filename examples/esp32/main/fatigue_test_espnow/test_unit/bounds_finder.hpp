@@ -18,15 +18,18 @@ namespace FatigueTest {
 
 /**
  * @brief Bounds finding result
+ * 
+ * All bounds are stored in degrees relative to the current zero/home position.
+ * The driver handles all step conversions internally.
  */
 struct BoundsResult {
     bool success;
-    int32_t min_bound;  // Minimum bound in steps
-    int32_t max_bound;  // Maximum bound in steps
-    bool bounded;       // Whether mechanical stops were found
+    float min_bound;  // Minimum bound in degrees
+    float max_bound;  // Maximum bound in degrees
+    bool bounded;     // Whether mechanical stops were found
     
-    BoundsResult() : success(false), min_bound(0), max_bound(0), bounded(false) {}
-    BoundsResult(bool s, int32_t min, int32_t max, bool b) 
+    BoundsResult() : success(false), min_bound(0.0f), max_bound(0.0f), bounded(false) {}
+    BoundsResult(bool s, float min, float max, bool b) 
         : success(s), min_bound(min), max_bound(max), bounded(b) {}
 };
 
@@ -40,8 +43,8 @@ public:
     /**
      * @brief Find motor bounds in both directions
      * @param driver TMC51x0 driver instance
-     * @param steps_per_rev Steps per revolution for unit conversion
-     * @return BoundsResult with found bounds
+     * @param steps_per_rev Steps per revolution (used only for logging, driver handles conversions)
+     * @return BoundsResult with found bounds in degrees
      */
     virtual BoundsResult FindBounds(
         tmc51x0::TMC51x0<Esp32SPI>& driver,

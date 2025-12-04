@@ -52,105 +52,115 @@ public:
             return BoundsResult(false, 0, 0, false);
         }
 
-        // Reset position
+        // Establish home/zero position at current location
+        // IMPORTANT: After this point, we use ABSOLUTE positioning (SetTargetPosition)
+        // Before establishing home, we would use RELATIVE positioning (MoveRelative)
+        // This allows us to work with absolute positions even when true mechanical home is unknown
         driver.rampControl.Stop();
         driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
         vTaskDelay(pdMS_TO_TICKS(100));
-        driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Steps);
+        driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
 
-        // Configure positioning mode
-        // steps_per_rev parameter is full steps, need to account for microsteps (256)
-        float search_speed = Test::Motion::BOUNDS_SEARCH_SPEED;
-        float steps_per_rev_with_microsteps = static_cast<float>(steps_per_rev) * 256.0f;
-        int32_t steps_per_360_deg = static_cast<int32_t>(steps_per_rev_with_microsteps);
-        float offset_deg = 5.0f;
-        int32_t offset_steps = static_cast<int32_t>(tmc51x0::DegreesToSteps(offset_deg, steps_per_rev_with_microsteps));
+        // Configure positioning mode - use degrees for all position operations
+        constexpr float TARGET_ANGLE_DEG = 360.0f; // One full revolution
+        constexpr float OFFSET_ANGLE_DEG = 5.0f;   // Back off angle in degrees
+
+        // BOUNDS_SEARCH_SPEED is in RPM - use directly, driver handles all conversions
+        float search_speed_rpm = Test::Motion::BOUNDS_SEARCH_SPEED_RPM;
+        // Acceleration: use reasonable value in rev/s² (typically 2x the velocity in rev/s)
+        float search_velocity_rev_s = search_speed_rpm / 60.0f;
+        float search_accel_rev_s2 = search_velocity_rev_s * 2.0f; // 2x velocity for acceleration
 
         driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-        driver.rampControl.SetMaxSpeed(search_speed);
-        driver.rampControl.SetAcceleration(search_speed * 2.0f);
-        driver.rampControl.SetDeceleration(search_speed * 2.0f);
-        driver.rampControl.SetRampSpeeds(1000.0f, 100.0f, 0.0f);
+        driver.rampControl.SetMaxSpeed(search_speed_rpm, tmc51x0::Unit::RPM);
+        driver.rampControl.SetAcceleration(search_accel_rev_s2, tmc51x0::Unit::RevPerSec);
+        driver.rampControl.SetDeceleration(search_accel_rev_s2, tmc51x0::Unit::RevPerSec);
+        driver.rampControl.SetRampSpeeds(1000.0f, 100.0f, 0.0f, tmc51x0::Unit::Steps);
         vTaskDelay(pdMS_TO_TICKS(100));
 
-        // Find maximum bound
+        // Find maximum bound (in degrees)
         ESP_LOGI(TAG, "Finding maximum bound...");
-        int32_t max_pos = FindBound(driver, steps_per_360_deg, search_speed, offset_steps, enc_baseline, true);
-        if (max_pos == 0 && !driver.rampControl.IsTargetReached()) {
+        float max_pos_deg = FindBound(driver, TARGET_ANGLE_DEG, search_speed_rpm, OFFSET_ANGLE_DEG, enc_baseline, true);
+        if (max_pos_deg == 0.0f && !driver.rampControl.IsTargetReached()) {
             ESP_LOGW(TAG, "Max bound search failed or timeout");
         }
 
-        // Find minimum bound
+        // Find minimum bound (in degrees)
         ESP_LOGI(TAG, "Finding minimum bound...");
         int32_t min_enc_baseline = 0;
         driver.encoder.GetPosition(min_enc_baseline);
-        int32_t min_pos = FindBound(driver, -steps_per_360_deg, search_speed, offset_steps, min_enc_baseline, false);
-        if (min_pos == 0 && !driver.rampControl.IsTargetReached()) {
+        float min_pos_deg = FindBound(driver, -TARGET_ANGLE_DEG, search_speed_rpm, OFFSET_ANGLE_DEG, min_enc_baseline, false);
+        if (min_pos_deg == 0.0f && !driver.rampControl.IsTargetReached()) {
             ESP_LOGW(TAG, "Min bound search failed or timeout");
         }
 
-        // Process results
-        bool max_stall = (max_pos != 0);
-        bool min_stall = (min_pos != 0);
+        // Process results - convert degrees to steps for BoundsResult
+        bool max_stall = (max_pos_deg != 0.0f);
+        bool min_stall = (min_pos_deg != 0.0f);
         bool reached_360 = (!max_stall && !min_stall);
 
         if (reached_360) {
-            float bounds_deg = 175.0f;
-            float steps_per_rev_with_microsteps = static_cast<float>(steps_per_rev) * 256.0f;
-            int32_t bounds_steps = static_cast<int32_t>(tmc51x0::DegreesToSteps(bounds_deg, steps_per_rev_with_microsteps));
-            return BoundsResult(true, -bounds_steps, bounds_steps, false);
+            // No stalls - use default bounds (in degrees)
+            constexpr float bounds_deg = 175.0f;
+            return BoundsResult(true, -bounds_deg, bounds_deg, false);
         } else if (max_stall && min_stall) {
-            int32_t center = (min_pos + max_pos) / 2;
-            MoveToPosition(driver, center, search_speed);
-            driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Steps);
-            return BoundsResult(true, min_pos - center, max_pos - center, true);
+            // Both stalls detected - move to center (in degrees)
+            float center_deg = (min_pos_deg + max_pos_deg) / 2.0f;
+            MoveToPosition(driver, center_deg, search_speed_rpm);
+            driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
+            
+            // Return bounds relative to center (in degrees)
+            float min_bound_deg = min_pos_deg - center_deg;
+            float max_bound_deg = max_pos_deg - center_deg;
+            return BoundsResult(true, min_bound_deg, max_bound_deg, true);
         } else {
-            return BoundsResult(true, min_pos, max_pos, (max_stall && min_stall));
+            // Partial bounds - return degrees directly
+            return BoundsResult(true, min_pos_deg, max_pos_deg, (max_stall && min_stall));
         }
     }
 
 private:
-    int32_t FindBound(
+    float FindBound(
         tmc51x0::TMC51x0<Esp32SPI>& driver,
-        int32_t target_steps,
-        float search_speed,
-        int32_t offset_steps,
+        float target_angle_deg,
+        float search_speed_rpm,
+        float offset_angle_deg,
         int32_t enc_baseline,
         bool is_max
     ) {
         namespace Test = tmc51x0_test_config::TestConfig_17HS4401S;
-        constexpr int32_t MIN_MOVEMENT = 5000;
+        constexpr float MIN_MOVEMENT_DEG = 1.0f; // Minimum movement in degrees to avoid false stalls
         constexpr uint32_t ENCODER_STALL_TIMEOUT_MS = 300;
         constexpr int32_t ENCODER_MIN_CHANGE = 5;
         uint32_t timeout_ms = Test::Motion::HOMING_TIMEOUT_MS;
 
-        float start_pos_float = 0.0f;
-        driver.rampControl.GetCurrentPosition(start_pos_float, tmc51x0::Unit::Steps);
-        int32_t start_pos = static_cast<int32_t>(start_pos_float);
+        float start_pos_deg = 0.0f;
+        driver.rampControl.GetCurrentPosition(start_pos_deg, tmc51x0::Unit::Deg);
         uint32_t start_time = esp_timer_get_time() / 1000;
         bool motion_started = false;
         int32_t last_enc_pos = enc_baseline;
         uint32_t last_enc_change_time = start_time;
 
-        driver.rampControl.SetTargetPosition(static_cast<float>(target_steps), tmc51x0::Unit::Steps);
+        // Use ABSOLUTE positioning - home was established at bounds finding start
+        // target_angle_deg is relative to the established home (0.0°)
+        driver.rampControl.SetTargetPosition(target_angle_deg, tmc51x0::Unit::Deg);
 
         while (true) {
             uint32_t elapsed = (esp_timer_get_time() / 1000) - start_time;
             if (elapsed > timeout_ms) break;
 
-            float pos_float = 0.0f;
-            driver.rampControl.GetCurrentPosition(pos_float, tmc51x0::Unit::Steps);
-            int32_t pos = static_cast<int32_t>(pos_float);
-            int32_t delta = (pos > start_pos) ? (pos - start_pos) : (start_pos - pos);
+            float pos_deg = 0.0f;
+            driver.rampControl.GetCurrentPosition(pos_deg, tmc51x0::Unit::Deg);
+            float delta_deg = fabsf(pos_deg - start_pos_deg);
 
             if (driver.rampControl.IsTargetReached()) {
-                return 0; // No stall
+                return 0.0f; // No stall
             }
 
             float vactual = 0.0f;
-            driver.rampControl.GetCurrentSpeed(vactual, tmc51x0::Unit::Steps);
+            driver.rampControl.GetCurrentSpeed(vactual, tmc51x0::Unit::Deg);
 
-            if (!motion_started && delta > 100) {
+            if (!motion_started && delta_deg > 0.5f) { // ~0.5 degrees movement threshold
                 motion_started = true;
             }
 
@@ -164,10 +174,10 @@ private:
                 if (enc_change >= ENCODER_MIN_CHANGE) {
                     last_enc_change_time = current_time;
                     last_enc_pos = enc_pos;
-                } else if (std::abs(vactual) > 500.0f && motion_started) {
+                } else if (fabsf(vactual) > 1.0f && motion_started) { // ~1 deg/s velocity threshold
                     uint32_t time_since_change = current_time - last_enc_change_time;
                     if (time_since_change >= ENCODER_STALL_TIMEOUT_MS) {
-                        if (delta < MIN_MOVEMENT) {
+                        if (delta_deg < MIN_MOVEMENT_DEG) {
                             ESP_LOGW(TAG, "False encoder stall, continuing...");
                             last_enc_change_time = current_time;
                             continue;
@@ -177,22 +187,24 @@ private:
                         driver.rampControl.Stop();
                         vTaskDelay(pdMS_TO_TICKS(200));
 
-                        // Back off
-                        float stall_pos_float = 0.0f;
-                        driver.rampControl.GetCurrentPosition(stall_pos_float, tmc51x0::Unit::Steps);
-                        int32_t stall_pos = static_cast<int32_t>(stall_pos_float);
-                        int32_t backoff_target = is_max ? (stall_pos - offset_steps) : (stall_pos + offset_steps);
+                        // Back off relative to current position (in degrees)
+                        // Use RELATIVE positioning here - we don't know exact position after stall,
+                        // and relative movement is safer and more intuitive for backoff operations
+                        float backoff_offset_deg = is_max ? -offset_angle_deg : offset_angle_deg;
 
+                        // Back off at half speed (in RPM)
+                        float backoff_speed_rpm = search_speed_rpm / 2.0f;
+                        
                         driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-                        driver.rampControl.SetTargetPosition(static_cast<float>(backoff_target), tmc51x0::Unit::Steps);
-                        driver.rampControl.SetMaxSpeed(search_speed / 2.0f);
+                        driver.rampControl.MoveRelative(backoff_offset_deg, tmc51x0::Unit::Deg);
+                        driver.rampControl.SetMaxSpeed(backoff_speed_rpm, tmc51x0::Unit::RPM);
                         while (!driver.rampControl.IsTargetReached()) {
                             vTaskDelay(pdMS_TO_TICKS(100));
                         }
 
-                        float final_pos_float = 0.0f;
-                        driver.rampControl.GetCurrentPosition(final_pos_float, tmc51x0::Unit::Steps);
-                        return static_cast<int32_t>(final_pos_float);
+                        float final_pos_deg = 0.0f;
+                        driver.rampControl.GetCurrentPosition(final_pos_deg, tmc51x0::Unit::Deg);
+                        return final_pos_deg;
                     }
                 } else {
                     last_enc_change_time = current_time;
@@ -202,15 +214,22 @@ private:
             vTaskDelay(pdMS_TO_TICKS(10));
         }
 
-        return 0;
+        return 0.0f;
     }
 
-    void MoveToPosition(tmc51x0::TMC51x0<Esp32SPI>& driver, int32_t target, float speed) {
+    void MoveToPosition(tmc51x0::TMC51x0<Esp32SPI>& driver, float target_deg, float speed_rpm) {
+        // Speed is already in RPM, calculate acceleration in rev/s²
+        // Driver handles microstep conversion internally
+        float speed_rev_s = speed_rpm / 60.0f;
+        float accel_rev_s2 = speed_rev_s * 2.0f; // 2x velocity for acceleration
+        
+        // Use ABSOLUTE positioning - home was established before calling this function
+        // target_deg is relative to the established home (0.0°)
         driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-        driver.rampControl.SetTargetPosition(static_cast<float>(target), tmc51x0::Unit::Steps);
-        driver.rampControl.SetMaxSpeed(speed);
-        driver.rampControl.SetAcceleration(speed * 2.0f);
-        driver.rampControl.SetDeceleration(speed * 2.0f);
+        driver.rampControl.SetTargetPosition(target_deg, tmc51x0::Unit::Deg);
+        driver.rampControl.SetMaxSpeed(speed_rpm, tmc51x0::Unit::RPM);
+        driver.rampControl.SetAcceleration(accel_rev_s2, tmc51x0::Unit::RevPerSec);
+        driver.rampControl.SetDeceleration(accel_rev_s2, tmc51x0::Unit::RevPerSec);
         while (!driver.rampControl.IsTargetReached()) {
             vTaskDelay(pdMS_TO_TICKS(100));
         }

@@ -298,18 +298,40 @@ public:
     bool GetXCompare(float& position, Unit unit = Unit::Steps) const noexcept;
 
     /**
-     * @brief Set target position
-     * @param value Target position value
+     * @brief Set target position (absolute)
+     * @param value Target position value (absolute position from current zero/home)
      * @param unit Unit of the value (default: Steps)
      * @return true if set successfully, false otherwise
+     * 
+     * Sets an absolute target position. The position is relative to the current zero/home position
+     * set via SetCurrentPosition(). If home is unknown, call SetCurrentPosition(0.0f) at the
+     * current physical position to establish a reference point.
      */
     bool SetTargetPosition(float value, Unit unit = Unit::Steps) noexcept;
+
+    /**
+     * @brief Move relative to current position
+     * @param offset Relative movement offset (positive = forward, negative = backward)
+     * @param unit Unit of the offset value (default: Steps)
+     * @return true if set successfully, false otherwise
+     * 
+     * Moves relative to the current position. Automatically calculates the new target position
+     * by adding the offset to the current position. No need to manually calculate steps.
+     * 
+     * Example:
+     *   MoveRelative(90.0f, Unit::Deg);  // Move 90 degrees from current position
+     *   MoveRelative(-45.0f, Unit::Deg);  // Move 45 degrees backward
+     */
+    bool MoveRelative(float offset, Unit unit = Unit::Steps) noexcept;
 
     /**
      * @brief Get current position
      * @param position Reference to store the current position
      * @param unit Unit to return the position in (default: Steps)
      * @return true if read successfully, false otherwise
+     * 
+     * Returns the current position relative to the zero/home position set via SetCurrentPosition().
+     * If home is unknown, call SetCurrentPosition(0.0f) at the current physical position first.
      */
     bool GetCurrentPosition(float& position, Unit unit = Unit::Steps) noexcept;
 

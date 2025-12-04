@@ -49,9 +49,9 @@ public:
 
     // Configuration
     void ConfigureMotor(uint16_t steps_per_rev, AngleUnit unit = AngleUnit::DEGREES) noexcept;
-    void SetGlobalBounds(int32_t min_bound, int32_t max_bound) noexcept;
+    void SetGlobalBounds(float min_bound_degrees, float max_bound_degrees) noexcept;
     void GetGlobalBoundsDegrees(float& min_degrees, float& max_degrees) const noexcept;
-    void SetUnbounded(int32_t current_position, int32_t default_range_steps = 10000) noexcept;
+    void SetUnbounded(float current_position_degrees, float default_range_degrees = 175.0f) noexcept;
     
     // Local bounds and motion parameters
     bool SetLocalBoundsFromCenterDegrees(float min_degrees_from_center, float max_degrees_from_center) noexcept;
@@ -82,12 +82,12 @@ public:
 private:
     tmc51x0::TMC51x0<Esp32SPI>* driver_;
     
-    // Bounds
-    int32_t global_min_bound_;
-    int32_t global_max_bound_;
-    int32_t local_min_bound_;
-    int32_t local_max_bound_;
-    int32_t home_position_;
+    // Bounds (all in degrees)
+    float global_min_bound_;
+    float global_max_bound_;
+    float local_min_bound_;
+    float local_max_bound_;
+    float home_position_;
     bool bounded_;
     
     // Motion parameters
@@ -105,7 +105,7 @@ private:
     bool cycle_complete_;
     bool last_was_negative_;
     bool cycle_started_;
-    int32_t last_target_relative_;
+    float last_target_relative_;
     
     // State machine
     enum class MotionState { MOVING_TO_MIN, MOVING_TO_MAX, DWELL_AT_MIN, DWELL_AT_MAX, STOPPED };
