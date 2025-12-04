@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['settingsstore_0',['SettingsStore',['../namespaceSettingsStore.html',1,'']]]
+  ['fatiguetest_0',['FatigueTest',['../namespaceFatigueTest.html',1,'']]]
 ];

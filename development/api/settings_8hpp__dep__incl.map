@@ -1,9 +1,19 @@
 <map id="settings.hpp" name="settings.hpp">
-<area shape="rect" id="Node000001" title="Settings storage for UI board." alt="" coords="111,5,214,31"/>
-<area shape="rect" id="Node000002" href="$ui__board_2main_8cpp.html" title="Main application for UI board (remote controller with e&#45;ink display)" alt="" coords="5,79,88,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,40,67,81,64,76,131,35"/>
-<area shape="rect" id="Node000003" href="$settings_8cpp.html" title="Settings storage implementation." alt="" coords="112,79,213,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="165,44,165,79,160,79,160,44"/>
-<area shape="rect" id="Node000004" href="$ui_8cpp.html" title="UI implementation with Adafruit 2.9&quot; ThinkInk E&#45;Ink display." alt="" coords="237,79,299,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="193,36,252,76,249,81,190,41"/>
+<area shape="rect" id="Node000001" title="Settings storage for UI board." alt="" coords="151,5,254,31"/>
+<area shape="rect" id="Node000002" href="$ui__board_2main_8cpp.html" title="Main application for UI board (remote controller with e&#45;ink display)" alt="" coords="7,225,89,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,29,82,46,55,61,33,80,16,103,9,125,10,148,16,177,27,203,41,224,37,227,22,205,11,178,4,149,4,124,11,101,29,77,52,57,80,42,137,24"/>
+<area shape="rect" id="Node000003" href="$oled__menu_8hpp.html" title="Non&#45;blocking menu system for OLED display with rotary encoder." alt="" coords="43,79,165,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="177,41,122,81,119,76,174,36"/>
+<area shape="rect" id="Node000005" href="$ui__oled_8hpp.html" title="UI implementation for OLED display with rotary encoder." alt="" coords="171,152,269,177"/>
+<area shape="poly" id="edge9_Node000001_Node000005" title=" " alt="" coords="208,44,221,151,216,152,203,45"/>
+<area shape="rect" id="Node000007" href="$settings_8cpp.html" title="Settings storage implementation." alt="" coords="240,79,341,104"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="229,37,278,76,275,81,226,41"/>
+<area shape="rect" id="Node000008" href="$ui_8cpp.html" title="UI implementation with Adafruit 2.9&quot; ThinkInk E&#45;Ink tricolor display." alt="" coords="365,79,427,104"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="247,33,366,76,364,81,245,38"/>
+<area shape="rect" id="Node000004" href="$oled__menu_8cpp.html" title="OLED menu system implementation." alt="" coords="26,152,147,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="100,118,92,153,87,151,95,117"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="136,109,202,149,200,154,133,113"/>
+<area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="181,185,77,228,75,223,179,180"/>
+<area shape="rect" id="Node000006" href="$ui__oled_8cpp.html" title="OLED&#45;based UI implementation with rotary encoder navigation." alt="" coords="172,225,268,251"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="223,191,223,225,217,225,217,191"/>
 </map>

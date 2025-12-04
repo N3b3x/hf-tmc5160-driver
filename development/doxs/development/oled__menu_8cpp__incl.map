@@ -1,0 +1,41 @@
+<map id="oled_menu.cpp" name="oled_menu.cpp">
+<area shape="rect" id="Node000001" title="OLED menu system implementation." alt="" coords="867,5,989,31"/>
+<area shape="rect" id="Node000002" href="$oled__menu_8hpp.html" title="Non&#45;blocking menu system for OLED display with rotary encoder." alt="" coords="327,79,449,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="867,30,463,83,462,78,867,25"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="812,328,879,353"/>
+<area shape="poly" id="edge21_Node000001_Node000005" title=" " alt="" coords="928,31,854,315,849,314,922,30"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="909,328,993,353"/>
+<area shape="poly" id="edge20_Node000001_Node000010" title=" " alt="" coords="931,31,952,314,946,314,926,31"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="991,79,1052,104"/>
+<area shape="poly" id="edge22_Node000001_Node000017" title=" " alt="" coords="945,29,997,68,994,72,941,33"/>
+<area shape="rect" id="Node000003" href="$espnow__protocol_8hpp.html" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="422,255,594,280"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="328,103,280,121,259,135,242,154,235,167,232,180,234,192,242,205,267,222,308,236,409,254,408,260,306,241,265,227,238,208,229,194,227,180,230,165,238,150,256,131,278,116,326,98"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="711,328,777,353"/>
+<area shape="poly" id="edge18_Node000002_Node000004" title=" " alt="" coords="450,89,548,90,662,98,716,106,765,117,804,131,830,150,842,171,845,194,841,218,831,242,801,286,769,320,765,317,796,282,826,239,836,217,840,194,837,173,826,154,801,136,763,122,715,111,661,103,548,96,450,94"/>
+<area shape="rect" id="Node000011" href="$settings_8hpp.html" title="Settings storage for UI board." alt="" coords="251,167,354,192"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="378,106,326,159,322,155,375,102"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="378,152,566,207"/>
+<area shape="poly" id="edge12_Node000002_Node000012" title=" " alt="" coords="401,102,439,140,435,144,397,106"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="590,159,815,199"/>
+<area shape="poly" id="edge13_Node000002_Node000013" title=" " alt="" coords="431,102,621,153,619,158,430,107"/>
+<area shape="rect" id="Node000014" href="$ui__board_2button_8hpp.html" title="Button handling for UI board." alt="" coords="121,255,213,280"/>
+<area shape="poly" id="edge14_Node000002_Node000014" title=" " alt="" coords="327,106,274,124,249,137,226,154,208,174,194,197,176,243,171,241,189,195,204,171,222,150,246,133,272,119,326,101"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="54,167,125,192"/>
+<area shape="poly" id="edge19_Node000002_Node000016" title=" " alt="" coords="327,107,240,126,145,155,124,163,122,158,143,149,238,121,326,101"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="547,277,698,323,697,328,545,283"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="563,277,799,327,798,332,562,283"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="134,328,285,353"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="461,283,272,327,270,322,459,277"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="309,328,438,353"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="488,282,409,324,406,319,485,278"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="463,328,553,353"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="511,280,511,314,505,314,505,280"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="578,328,665,353"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="528,278,593,318,590,323,525,282"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="587,277,891,325,895,326,894,331,890,331,586,283"/>
+<area shape="poly" id="edge11_Node000011_Node000003" title=" " alt="" coords="331,190,469,247,467,252,329,195"/>
+<area shape="poly" id="edge15_Node000014_Node000006" title=" " alt="" coords="176,279,198,315,193,318,171,282"/>
+<area shape="poly" id="edge16_Node000014_Node000007" title=" " alt="" coords="201,277,328,321,326,326,199,283"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="5,328,109,353"/>
+<area shape="poly" id="edge17_Node000014_Node000015" title=" " alt="" coords="151,282,88,323,85,318,148,278"/>
+</map>

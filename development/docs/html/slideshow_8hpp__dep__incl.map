@@ -1,0 +1,7 @@
+<map id="slideshow.hpp" name="slideshow.hpp">
+<area shape="rect" id="Node000001" title="Main slideshow logic and state machine." alt="" coords="51,5,165,31"/>
+<area shape="rect" id="Node000002" href="$ui__slideshow__board_2main_8cpp.html" title="E&#45;Ink Slideshow Application." alt="" coords="5,79,88,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,43,59,80,55,77,87,40"/>
+<area shape="rect" id="Node000003" href="$slideshow_8cpp.html" title="Slideshow implementation." alt="" coords="113,79,226,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="129,40,161,77,157,80,125,43"/>
+</map>

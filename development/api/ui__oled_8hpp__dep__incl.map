@@ -1,0 +1,7 @@
+<map id="ui_oled.hpp" name="ui_oled.hpp">
+<area shape="rect" id="Node000001" title="UI implementation for OLED display with rotary encoder." alt="" coords="54,5,151,31"/>
+<area shape="rect" id="Node000002" href="$ui__board_2main_8cpp.html" title="Main application for UI board (remote controller with e&#45;ink display)" alt="" coords="5,79,88,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,43,58,80,54,77,83,40"/>
+<area shape="rect" id="Node000003" href="$ui__oled_8cpp.html" title="OLED&#45;based UI implementation with rotary encoder navigation." alt="" coords="112,79,208,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="123,40,153,77,149,80,118,43"/>
+</map>

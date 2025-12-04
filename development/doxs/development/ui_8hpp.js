@@ -8,7 +8,12 @@ var ui_8hpp =
     ] ],
     [ "UiState", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9", [
       [ "MAIN", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9a186495f7da296bf880df3a22a492b378", null ],
-      [ "SETTINGS", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9aed6f7aca7887a927b9ed3d62aa347a86", null ],
+      [ "SETTINGS_MENU", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9a1e8650358b792aa7982a1c95b0821d82", null ],
+      [ "SETTINGS_EDIT_CYCLES", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9a7a3b1cf547f8693b0f03b31b46d9b133", null ],
+      [ "SETTINGS_EDIT_TIME", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9aa3df01dc21a06955bc63c4f4ecef0bd4", null ],
+      [ "SETTINGS_EDIT_DWELL", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9ada7513be1a9e72f9aa1b2226f335d000", null ],
+      [ "SETTINGS_EDIT_METHOD", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9a0a91ea21767c9d79314ddc55d6aa3af0", null ],
+      [ "SETTINGS_EDIT_ORIENT", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9a5fe3bc17e13afaaab67d4e7dddc625a4", null ],
       [ "CONFIRM_STOP", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9af87a8e13b0dcca7b3fd39ceb63498bbd", null ],
       [ "ERROR_SCREEN", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9adced1aad9c5ca399712c43acaac444a0", null ],
       [ "RUNNING", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9a43491564ebcfd38568918efbd6e840fd", null ],

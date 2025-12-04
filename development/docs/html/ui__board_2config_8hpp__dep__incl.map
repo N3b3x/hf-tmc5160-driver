@@ -1,0 +1,16 @@
+<map id="config.hpp" name="config.hpp">
+<area shape="rect" id="Node000001" title="Configuration for UI board (remote controller)" alt="" coords="273,5,362,31"/>
+<area shape="rect" id="Node000002" href="$ui__board_2button_8cpp.html" title="Button handling implementation." alt="" coords="5,79,96,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="262,37,95,81,93,76,260,32"/>
+<area shape="rect" id="Node000003" href="$espnow__protocol_8cpp.html" title="ESP&#45;NOW protocol implementation for UI board." alt="" coords="121,79,279,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="288,40,221,81,218,76,285,35"/>
+<area shape="rect" id="Node000004" href="$ui__board_2main_8cpp.html" title="Main application for UI board (remote controller with e&#45;ink display)" alt="" coords="305,152,388,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="325,44,347,151,342,152,320,45"/>
+<area shape="rect" id="Node000005" href="$ui_8cpp.html" title="UI implementation with Adafruit 2.9&quot; ThinkInk E&#45;Ink tricolor display." alt="" coords="355,79,416,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="340,39,376,77,372,80,336,42"/>
+<area shape="rect" id="Node000006" href="$ui__oled_8hpp.html" title="UI implementation for OLED display with rotary encoder." alt="" coords="441,79,538,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="358,33,462,76,460,81,356,38"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="456,112,371,154,369,149,453,108"/>
+<area shape="rect" id="Node000007" href="$ui__oled_8cpp.html" title="OLED&#45;based UI implementation with rotary encoder navigation." alt="" coords="441,152,537,177"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="492,118,492,152,487,152,487,118"/>
+</map>

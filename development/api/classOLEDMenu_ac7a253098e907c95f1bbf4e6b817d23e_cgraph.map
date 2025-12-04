@@ -1,0 +1,13 @@
+<map id="OLEDMenu::handleButton" name="OLEDMenu::handleButton">
+<area shape="rect" id="Node000001" title="Process button event." alt="" coords="5,80,193,105"/>
+<area shape="rect" id="Node000002" href="$classOLEDMenu.html#ae0154261fe6d975514ca17ca982c909e" title=" " alt="" coords="241,5,445,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="132,77,241,39,270,31,271,37,242,45,134,82"/>
+<area shape="rect" id="Node000003" href="$classOLEDMenu.html#a5b4497438be5d1f79a77337b480504bd" title=" " alt="" coords="261,55,426,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="193,80,247,75,247,80,194,86"/>
+<area shape="rect" id="Node000005" href="$classOLEDMenu.html#a9b2c9a0d71316ed9748ee856d5b01d8a" title=" " alt="" coords="262,104,425,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="194,99,248,105,248,110,193,105"/>
+<area shape="rect" id="Node000006" href="$classOLEDMenu.html#a6ae458f0db504178114ffac30de8cbaf" title=" " alt="" coords="259,153,427,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="137,103,242,138,276,147,274,153,241,143,135,108"/>
+<area shape="rect" id="Node000004" href="$classOLEDMenu.html#a559064c9b5ef239ad82d0b8ba91c4703" title=" " alt="" coords="493,55,685,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="426,65,480,65,480,70,426,70"/>
+</map>

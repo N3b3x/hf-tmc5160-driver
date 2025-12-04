@@ -10,9 +10,11 @@
 #include "driver/gpio.h"
 
 enum class ButtonId {
-    UP,
-    SELECT,
-    DOWN
+    UP,        // Legacy: for e-ink slideshow
+    SELECT,    // Legacy: for e-ink slideshow
+    DOWN,      // Legacy: for e-ink slideshow
+    BACK,      // NEW: Navigate back
+    CONFIRM    // NEW: Critical action confirmation
 };
 
 struct ButtonEvent {

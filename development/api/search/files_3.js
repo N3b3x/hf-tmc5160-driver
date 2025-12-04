@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['fatigue_5fmotion_2ehpp_0',['fatigue_motion.hpp',['../fatigue__motion_8hpp.html',1,'']]],
-  ['fatigue_5fmotion_5fimpl_2ehpp_1',['fatigue_motion_impl.hpp',['../fatigue__motion__impl_8hpp.html',1,'']]],
-  ['fatigue_5ftest_5fencoder_2ecpp_2',['fatigue_test_encoder.cpp',['../fatigue__test__encoder_8cpp.html',1,'']]],
-  ['fatigue_5ftest_5fstallguard_2ecpp_3',['fatigue_test_stallguard.cpp',['../fatigue__test__stallguard_8cpp.html',1,'']]]
+  ['image_5floader_2ecpp_0',['image_loader.cpp',['../image__loader_8cpp.html',1,'']]],
+  ['image_5floader_2ehpp_1',['image_loader.hpp',['../image__loader_8hpp.html',1,'']]],
+  ['internal_5framp_5fcomprehensive_5ftest_2ecpp_2',['internal_ramp_comprehensive_test.cpp',['../internal__ramp__comprehensive__test_8cpp.html',1,'']]],
+  ['internal_5framp_5fsinusoidal_2ecpp_3',['internal_ramp_sinusoidal.cpp',['../internal__ramp__sinusoidal_8cpp.html',1,'']]]
 ];

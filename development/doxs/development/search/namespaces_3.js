@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['fatiguetest_0',['FatigueTest',['../namespaceFatigueTest.html',1,'']]]
+  ['espnowproto_0',['EspNowProto',['../namespaceEspNowProto.html',1,'']]],
+  ['espnowreceiver_1',['EspNowReceiver',['../namespaceEspNowReceiver.html',1,'']]]
 ];

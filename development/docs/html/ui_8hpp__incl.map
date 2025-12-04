@@ -6,7 +6,7 @@
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="325,30,367,138,362,140,320,32"/>
 <area shape="rect" id="Node000004" href="$espnow__protocol_8hpp.html" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="468,79,640,104"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="350,26,503,72,502,77,349,31"/>
-<area shape="rect" id="Node000010" href="$button_8hpp.html" title="Button handling for UI board." alt="" coords="201,79,293,104"/>
+<area shape="rect" id="Node000010" href="$ui__board_2button_8hpp.html" title="Button handling for UI board." alt="" coords="201,79,293,104"/>
 <area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="308,33,270,71,266,67,304,29"/>
 <area shape="poly" id="edge6_Node000004_Node000002" title=" " alt="" coords="478,107,170,153,169,147,478,101"/>
 <area shape="poly" id="edge7_Node000004_Node000003" title=" " alt="" coords="526,107,417,149,415,144,524,102"/>

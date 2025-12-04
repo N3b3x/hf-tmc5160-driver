@@ -1,31 +1,33 @@
 <map id="espnow_protocol.cpp" name="espnow_protocol.cpp">
-<area shape="rect" id="Node000001" title="ESP&#45;NOW protocol implementation for UI board." alt="" coords="197,5,355,31"/>
-<area shape="rect" id="Node000002" href="$ui__board_2espnow__protocol_8hpp.html" title="ESP&#45;NOW protocol API for UI board." alt="" coords="255,79,415,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="288,29,319,67,315,70,284,33"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="96,225,163,251"/>
-<area shape="poly" id="edge15_Node000001_Node000005" title=" " alt="" coords="272,32,245,80,222,131,211,153,194,179,157,218,153,214,190,176,207,150,217,128,240,77,267,30"/>
-<area shape="rect" id="Node000011" href="$config_8hpp.html" title="Configuration for UI board (remote controller)" alt="" coords="83,79,173,104"/>
-<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="253,33,166,75,163,70,251,28"/>
-<area shape="rect" id="Node000013" title=" " alt="" coords="439,79,551,104"/>
-<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="312,28,447,72,445,77,310,33"/>
-<area shape="rect" id="Node000003" href="$espnow__protocol_8hpp.html" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="314,152,486,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="347,103,382,140,378,144,343,106"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="187,225,338,251"/>
-<area shape="poly" id="edge10_Node000002_Node000006" title=" " alt="" coords="330,106,304,153,276,213,271,211,299,151,325,103"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="697,225,826,251"/>
-<area shape="poly" id="edge11_Node000002_Node000007" title=" " alt="" coords="369,102,715,218,714,223,368,107"/>
+<area shape="rect" id="Node000001" title="ESP&#45;NOW protocol implementation for UI board." alt="" coords="339,5,498,31"/>
+<area shape="rect" id="Node000002" href="$ui__board_2espnow__protocol_8hpp.html" title="ESP&#45;NOW protocol API for UI board." alt="" coords="401,79,561,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="431,29,464,66,460,70,427,33"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="125,225,192,251"/>
+<area shape="poly" id="edge16_Node000001_Node000005" title=" " alt="" coords="415,32,373,114,350,156,334,179,311,192,279,205,206,227,205,222,277,200,309,188,330,175,345,153,368,112,411,30"/>
+<area shape="rect" id="Node000011" href="$ui__board_2config_8hpp.html" title="Configuration for UI board (remote controller)" alt="" coords="127,79,217,104"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="380,33,226,77,224,72,378,28"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="585,79,697,104"/>
+<area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="455,28,593,72,592,77,454,33"/>
+<area shape="rect" id="Node000003" href="$espnow__protocol_8hpp.html" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="395,152,567,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="484,104,484,138,479,138,479,104"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="551,225,702,251"/>
+<area shape="poly" id="edge10_Node000002_Node000006" title=" " alt="" coords="509,102,545,122,581,150,603,181,619,211,615,214,599,184,577,154,542,126,507,107"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="726,225,855,251"/>
+<area shape="poly" id="edge11_Node000002_Node000007" title=" " alt="" coords="507,102,755,217,753,222,505,107"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="5,225,72,251"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="334,180,86,228,85,223,333,175"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="357,180,177,227,176,222,356,175"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="379,180,298,221,296,217,377,175"/>
-<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="459,175,690,220,689,225,458,180"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="363,225,453,251"/>
-<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="404,177,408,212,403,212,399,178"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="478,225,565,251"/>
-<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="421,175,491,216,489,221,418,180"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="589,225,673,251"/>
-<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="438,175,581,219,580,224,436,180"/>
-<area shape="poly" id="edge13_Node000011_Node000004" title=" " alt="" coords="113,106,88,127,66,153,53,183,45,212,40,211,48,181,62,151,85,123,109,102"/>
-<area shape="rect" id="Node000012" title=" " alt="" coords="76,152,180,177"/>
-<area shape="poly" id="edge14_Node000011_Node000012" title=" " alt="" coords="131,104,131,138,125,138,125,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="411,180,86,232,86,226,410,175"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="426,180,206,228,205,222,425,175"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="506,175,592,217,590,222,504,180"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="532,175,728,220,727,225,530,180"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="436,225,527,251"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="484,178,484,212,479,212,479,178"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="217,225,303,251"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="447,180,309,224,308,219,445,175"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="327,225,411,251"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="465,180,401,220,398,215,462,175"/>
+<area shape="poly" id="edge13_Node000011_Node000004" title=" " alt="" coords="128,101,77,119,54,133,36,153,30,167,28,182,32,212,27,213,23,182,25,166,31,151,51,129,75,114,126,96"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="45,152,149,177"/>
+<area shape="poly" id="edge14_Node000011_Node000012" title=" " alt="" coords="162,106,121,144,118,141,158,102"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="173,152,320,177"/>
+<area shape="poly" id="edge15_Node000011_Node000013" title=" " alt="" coords="186,102,226,141,223,144,182,106"/>
 </map>

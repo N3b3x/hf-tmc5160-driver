@@ -1,0 +1,14 @@
+<map id="handleButton" name="handleButton">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,115,80"/>
+<area shape="rect" id="Node000002" href="$slideshow_8cpp.html#a1a245eaccca7670574f39b72bb061fe5" title=" " alt="" coords="163,55,321,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,65,149,65,149,70,115,70"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="212,56,206,46,209,37,221,30,242,28,267,32,277,40,274,44,265,36,242,33,223,35,213,40,211,46,216,53"/>
+<area shape="rect" id="Node000003" href="$namespaceImageLoader.html#af2a2d5120645b9901a4efed70a56791b" title="Load and display BMP image on e&#45;ink display." alt="" coords="369,55,616,80"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="321,65,355,65,355,70,321,70"/>
+<area shape="rect" id="Node000004" href="$namespaceSDCard.html#a7f224a0a494f7b7be109c923eacce5fb" title="Get file size." alt="" coords="695,5,845,31"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="564,52,684,31,685,36,565,57"/>
+<area shape="rect" id="Node000005" href="$namespaceSDCard.html#a594de90c48b7543baa9511107abef64c" title="Read file from SD card." alt="" coords="705,55,835,80"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="616,65,691,65,691,70,616,70"/>
+<area shape="rect" id="Node000006" href="$namespaceImageLoader.html#a194fbc480b0bb719dd01229c28516493" title="Convert RGB pixel to e&#45;ink color." alt="" coords="664,104,876,129"/>
+<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="565,77,685,99,684,104,564,83"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="UI_OLED::init" name="UI_OLED::init">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,112,80"/>
+<area shape="rect" id="Node000002" href="$classOLEDMenu.html#a50e7e972ca0c4592d48508bc17d281df" title="Initialize menu system." alt="" coords="163,5,301,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,52,173,32,174,37,105,57"/>
+<area shape="rect" id="Node000003" href="$ui__oled_8cpp.html#a4be20a3d7faccbb1c6d931858839299b" title=" " alt="" coords="160,55,304,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="112,65,146,65,146,70,112,70"/>
+<area shape="rect" id="Node000004" href="$ui__oled_8cpp.html#ad8c85e0d93197d7f51513514b81f4ede" title=" " alt="" coords="175,104,289,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="105,77,174,98,173,103,103,83"/>
+</map>

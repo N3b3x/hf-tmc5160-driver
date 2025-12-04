@@ -1,0 +1,22 @@
+<map id="button.hpp" name="button.hpp">
+<area shape="rect" id="Node000001" title="Button handling for UI board." alt="" coords="186,5,278,31"/>
+<area shape="rect" id="Node000002" href="$ui__board_2button_8cpp.html" title="Button handling implementation." alt="" coords="5,79,96,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="191,38,81,81,79,76,189,33"/>
+<area shape="rect" id="Node000003" href="$ui__board_2main_8cpp.html" title="Main application for UI board (remote controller with e&#45;ink display)" alt="" coords="152,225,235,251"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="199,40,177,58,161,80,152,105,150,127,161,177,172,203,186,224,182,227,168,205,156,178,145,127,146,104,156,77,174,54,196,36"/>
+<area shape="rect" id="Node000004" href="$oled__menu_8hpp.html" title="Non&#45;blocking menu system for OLED display with rotary encoder." alt="" coords="171,79,293,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="235,44,235,79,229,79,229,44"/>
+<area shape="rect" id="Node000006" href="$ui__oled_8hpp.html" title="UI implementation for OLED display with rotary encoder." alt="" coords="317,152,414,177"/>
+<area shape="poly" id="edge11_Node000001_Node000006" title=" " alt="" coords="261,37,307,77,339,116,361,150,356,153,334,119,303,81,258,41"/>
+<area shape="rect" id="Node000008" href="$ui_8hpp.html" title="UI state machine for e&#45;ink display." alt="" coords="369,79,431,104"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="273,34,374,76,371,81,270,38"/>
+<area shape="rect" id="Node000005" href="$oled__menu_8cpp.html" title="OLED menu system implementation." alt="" coords="171,152,293,177"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="235,118,235,152,229,152,229,118"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="267,108,345,149,342,154,264,113"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="326,185,222,228,220,223,324,180"/>
+<area shape="rect" id="Node000007" href="$ui__oled_8cpp.html" title="OLED&#45;based UI implementation with rotary encoder navigation." alt="" coords="317,225,413,251"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="368,191,368,225,363,225,363,191"/>
+<area shape="poly" id="edge10_Node000008_Node000006" title=" " alt="" coords="391,118,373,153,369,151,386,115"/>
+<area shape="rect" id="Node000009" href="$ui_8cpp.html" title="UI implementation with Adafruit 2.9&quot; ThinkInk E&#45;Ink tricolor display." alt="" coords="439,152,500,177"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="423,112,460,150,456,154,419,116"/>
+</map>

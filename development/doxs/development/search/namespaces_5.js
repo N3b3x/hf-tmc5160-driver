@@ -1,26 +1,4 @@
 var searchData=
 [
-  ['tmc51x0_0',['tmc51x0',['../namespacetmc51x0.html',1,'']]],
-  ['tmc51x0_3a_3achipversion_1',['ChipVersion',['../namespacetmc51x0_1_1ChipVersion.html',1,'tmc51x0']]],
-  ['tmc51x0_3a_3aclockfreq_2',['ClockFreq',['../namespacetmc51x0_1_1ClockFreq.html',1,'tmc51x0']]],
-  ['tmc51x0_3a_3amotorcalcconstants_3',['MotorCalcConstants',['../namespacetmc51x0_1_1MotorCalcConstants.html',1,'tmc51x0']]],
-  ['tmc51x0_3a_3aregisters_4',['Registers',['../namespacetmc51x0_1_1Registers.html',1,'tmc51x0']]],
-  ['tmc51x0_5ftest_5fconfig_5',['tmc51x0_test_config',['../namespacetmc51x0__test__config.html',1,'']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3aanonymous_5fnamespace_7besp32_5ftmc51x0_5ftest_5fconfig_2ehpp_7d_6',['anonymous_namespace{esp32_tmc51x0_test_config.hpp}',['../namespacetmc51x0__test__config_1_1anonymous__namespace_02esp32__tmc51x0__test__config_8hpp_03.html',1,'tmc51x0_test_config']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3aboardconfig_5ftmc51x0_5fbob_7',['BoardConfig_TMC51x0_BOB',['../namespacetmc51x0__test__config_1_1BoardConfig__TMC51x0__BOB.html',1,'tmc51x0_test_config']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3aboardconfig_5ftmc51x0_5feval_8',['BoardConfig_TMC51x0_EVAL',['../namespacetmc51x0__test__config_1_1BoardConfig__TMC51x0__EVAL.html',1,'tmc51x0_test_config']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3amotorconfig_5f17hs4401s_9',['MotorConfig_17HS4401S',['../namespacetmc51x0__test__config_1_1MotorConfig__17HS4401S.html',1,'tmc51x0_test_config']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3amotorconfig_5f17hs4401s_5fdirect_10',['MotorConfig_17HS4401S_Direct',['../namespacetmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html',1,'tmc51x0_test_config']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3amotorconfig_5fappliedmotion_5f5034_5f369_11',['MotorConfig_AppliedMotion_5034_369',['../namespacetmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html',1,'tmc51x0_test_config']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3aplatformconfig_5fcoredrivertestrig_12',['PlatformConfig_CoreDriverTestRig',['../namespacetmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig.html',1,'tmc51x0_test_config']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3aplatformconfig_5fcoredrivertestrig_3a_3aencoder_13',['Encoder',['../namespacetmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1Encoder.html',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3aplatformconfig_5fcoredrivertestrig_3a_3amechanical_14',['Mechanical',['../namespacetmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1Mechanical.html',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3aplatformconfig_5fcoredrivertestrig_3a_3areferenceswitches_15',['ReferenceSwitches',['../namespacetmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1ReferenceSwitches.html',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3aplatformconfig_5ffatiguetestrig_16',['PlatformConfig_FatigueTestRig',['../namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig.html',1,'tmc51x0_test_config']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3aplatformconfig_5ffatiguetestrig_3a_3aencoder_17',['Encoder',['../namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3aplatformconfig_5ffatiguetestrig_3a_3amechanical_18',['Mechanical',['../namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Mechanical.html',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3aplatformconfig_5ffatiguetestrig_3a_3areferenceswitches_19',['ReferenceSwitches',['../namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1ReferenceSwitches.html',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3atestconfig_5f17hs4401s_20',['TestConfig_17HS4401S',['../namespacetmc51x0__test__config_1_1TestConfig__17HS4401S.html',1,'tmc51x0_test_config']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3atestconfig_5f17hs4401s_3a_3amotion_21',['Motion',['../namespacetmc51x0__test__config_1_1TestConfig__17HS4401S_1_1Motion.html',1,'tmc51x0_test_config::TestConfig_17HS4401S']]],
-  ['tmc51x0_5ftest_5fconfig_3a_3atestconfig_5f17hs4401s_3a_3astallguard_22',['StallGuard',['../namespacetmc51x0__test__config_1_1TestConfig__17HS4401S_1_1StallGuard.html',1,'tmc51x0_test_config::TestConfig_17HS4401S']]]
+  ['imageloader_0',['ImageLoader',['../namespaceImageLoader.html',1,'']]]
 ];

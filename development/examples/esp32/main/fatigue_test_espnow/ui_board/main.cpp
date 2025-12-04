@@ -14,7 +14,7 @@
 #include "espnow_protocol.hpp"
 #include "button.hpp"
 #include "settings.hpp"
-#include "ui.hpp"
+#include "ui_oled.hpp"  // OLED-based UI (replaces e-ink ui.hpp)
 
 static const char* TAG_MAIN = "Main";
 
@@ -50,9 +50,9 @@ extern "C" void app_main(void)
     // Configure deep sleep wake from buttons
     Buttons::configure_wakeup();
 
-    // Initialize UI
+    // Initialize OLED-based UI (replaces e-ink display)
     g_lastActivityTick = xTaskGetTickCount();
-    UI::init(g_uiQueue, &settings, &g_lastActivityTick);
+    UI_OLED::init(g_uiQueue, &settings, &g_lastActivityTick);
 
     // Request config from test unit at startup
     EspNowProto::send_config_request();
@@ -60,7 +60,7 @@ extern "C" void app_main(void)
     // Launch tasks
     xTaskCreate(button_task, "button_task", 4096, nullptr, 6, nullptr);
     xTaskCreate(proto_task,  "proto_task",  4096, nullptr, 5, nullptr);
-    xTaskCreate(UI::task,    "ui_task",     6144, nullptr, 4, nullptr);
+    xTaskCreate(UI_OLED::task, "ui_task",   8192, nullptr, 4, nullptr);  // Increased stack for OLED UI
     xTaskCreate(power_task,  "power_task",  4096, nullptr, 3, nullptr);
 }
 

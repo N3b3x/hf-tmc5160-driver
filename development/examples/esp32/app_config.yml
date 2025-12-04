@@ -93,13 +93,22 @@ apps:
     featured: true
 
   fatigue_test_espnow_ui:
-    description: "Remote controller with e-ink display for fatigue test unit (ESP-NOW communication)"
+    description: "Remote controller with OLED display and rotary encoder for fatigue test unit (ESP-NOW communication)"
     source_file: "fatigue_test_espnow/ui_board/main.cpp"
     category: "motor_control"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]
     ci_enabled: false
     featured: true
+
+  fatigue_test_espnow_slideshow:
+    description: "E-ink slideshow application - displays images from SD card on 2.9\" ThinkInk display"
+    source_file: "fatigue_test_espnow/ui_slideshow_board/main.cpp"
+    category: "display"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: false
+    featured: false
 
 build_config:
   build_types:

@@ -1,0 +1,16 @@
+<map id="HandleStop" name="HandleStop">
+<area shape="rect" id="Node000001" title="Handle STOP command." alt="" coords="5,84,103,109"/>
+<area shape="rect" id="Node000002" href="$namespaceCommandOutput.html#a2bed37b24a202a9189a9810ca7bd2ec2" title=" " alt="" coords="151,5,374,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="72,82,107,60,150,40,173,32,175,37,152,44,110,65,75,86"/>
+<area shape="rect" id="Node000003" href="$namespaceCommandOutput.html#a7530059a95b958a7d66c5b0613dcbb67" title=" " alt="" coords="151,55,375,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="103,87,158,79,159,85,103,93"/>
+<area shape="rect" id="Node000004" href="$namespaceEspNowReceiver.html#ad20a4032cfbaf4698d2a894139c339ae" title=" " alt="" coords="177,105,348,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="103,101,164,109,163,114,103,106"/>
+<area shape="rect" id="Node000007" href="$namespaceEspNowReceiver.html#a5f9e63a444d010ed79c649b6a2467277" title=" " alt="" coords="177,169,348,209"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="74,107,109,131,152,154,170,162,168,167,150,159,106,135,71,112"/>
+<area shape="rect" id="Node000005" href="$espnow__receiver_8cpp.html#a56b1fa458feb934b57be89468e71627f" title=" " alt="" coords="423,144,565,169"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="349,134,409,142,409,148,348,139"/>
+<area shape="rect" id="Node000006" href="$espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" title=" " alt="" coords="613,144,705,169"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="566,154,600,154,600,159,566,159"/>
+<area shape="poly" id="edge7_Node000007_Node000005" title=" " alt="" coords="348,174,409,166,409,171,349,179"/>
+</map>

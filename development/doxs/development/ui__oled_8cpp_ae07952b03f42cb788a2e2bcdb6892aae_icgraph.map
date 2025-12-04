@@ -1,0 +1,10 @@
+<map id="draw_paused_screen" name="draw_paused_screen">
+<area shape="rect" id="Node000001" title=" " alt="" coords="457,31,616,56"/>
+<area shape="rect" id="Node000002" href="$ui__oled_8cpp.html#a2305a20b6ebc395d5e4b54035dbf1d0a" title=" " alt="" coords="303,5,409,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="444,33,409,28,410,23,444,28"/>
+<area shape="rect" id="Node000003" href="$namespaceUI__OLED.html#aea7f6983e038b29ef67094c88c849c58" title=" " alt="" coords="140,31,255,56"/>
+<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="444,46,255,46,255,41,444,41"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="289,31,255,37,254,32,288,26"/>
+<area shape="rect" id="Node000004" href="$ui__board_2main_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,31,92,56"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="126,46,92,46,92,41,126,41"/>
+</map>

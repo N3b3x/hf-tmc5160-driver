@@ -1,0 +1,7 @@
+<map id="drawLoadingScreen" name="drawLoadingScreen">
+<area shape="rect" id="Node000001" title=" " alt="" coords="304,5,453,31"/>
+<area shape="rect" id="Node000002" href="$namespaceSlideshow.html#a45633e5942031badddda9f04ab9174c0" title="Initialize slideshow system." alt="" coords="140,5,256,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="290,21,256,21,256,15,290,15"/>
+<area shape="rect" id="Node000003" href="$ui__slideshow__board_2main_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,5,92,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,21,92,21,92,15,126,15"/>
+</map>

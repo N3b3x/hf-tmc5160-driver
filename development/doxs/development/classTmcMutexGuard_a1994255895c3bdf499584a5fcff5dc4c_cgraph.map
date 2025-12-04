@@ -1,5 +1,5 @@
 <map id="TmcMutexGuard::TmcMutexGuard" name="TmcMutexGuard::TmcMutexGuard">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,252,60"/>
+<area shape="rect" id="Node000001" title="Lock mutex (blocks until acquired)" alt="" coords="5,35,252,60"/>
 <area shape="rect" id="Node000002" href="$classEsp32TmcMutex.html#aa1c5042b5ace0f9a58c140b0f02db0f2" title="Check if mutex is valid." alt="" coords="300,5,488,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="243,32,286,27,287,33,244,37"/>
 <area shape="rect" id="Node000003" href="$classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f" title="Get native mutex handle." alt="" coords="305,55,483,95"/>

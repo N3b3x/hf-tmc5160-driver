@@ -1,0 +1,20 @@
+<map id="button.cpp" name="button.cpp">
+<area shape="rect" id="Node000001" title="Button handling implementation for slideshow." alt="" coords="399,5,490,31"/>
+<area shape="rect" id="Node000002" href="$ui__slideshow__board_2button_8hpp.html" title="Button handling for slideshow board." alt="" coords="212,79,304,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="416,33,302,76,300,71,414,28"/>
+<area shape="rect" id="Node000006" href="$ui__slideshow__board_2config_8hpp.html" title="Configuration for E&#45;Ink Slideshow Board." alt="" coords="341,79,431,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="437,33,406,70,402,67,433,29"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="455,79,554,104"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="457,29,488,66,484,70,453,33"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="579,79,663,104"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="474,28,580,71,578,76,472,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,156,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="230,106,123,149,121,144,229,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="180,152,309,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="258,105,252,139,247,138,253,104"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="334,152,438,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="280,102,354,143,352,147,277,106"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="389,104,389,138,383,138,383,104"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="462,152,529,177"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="405,102,467,142,464,147,402,106"/>
+</map>

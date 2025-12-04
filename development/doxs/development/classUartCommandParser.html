@@ -125,6 +125,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7e0070e2b7b7de1ac43ac7eeab83310a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdef7bdf482397b93c5bdb48e6f6f294" id="r_afdef7bdf482397b93c5bdb48e6f6f294"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afdef7bdf482397b93c5bdb48e6f6f294">UartCommandParser</a> (uart_port_t uart_port)</td></tr>
 <tr class="separator:afdef7bdf482397b93c5bdb48e6f6f294"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b7090fe7118485c639dce94074b6e68" id="r_a2b7090fe7118485c639dce94074b6e68"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b7090fe7118485c639dce94074b6e68">ProcessCommand</a> (const char *line, <a class="el" href="classFatigueTest_1_1FatigueTestMotion.html">FatigueTest::FatigueTestMotion</a> &amp;motion) noexcept</td></tr>
+<tr class="memdesc:a2b7090fe7118485c639dce94074b6e68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process a command line.  <br /></td></tr>
+<tr class="separator:a2b7090fe7118485c639dce94074b6e68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a867cccdf009c2a69f1edf9a02f50c984" id="r_a867cccdf009c2a69f1edf9a02f50c984"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a867cccdf009c2a69f1edf9a02f50c984">ProcessUartCommands</a> (<a class="el" href="classFatigueTest_1_1FatigueTestMotion.html">FatigueTest::FatigueTestMotion</a> &amp;motion) noexcept</td></tr>
+<tr class="memdesc:a867cccdf009c2a69f1edf9a02f50c984"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read and process commands from UART.  <br /></td></tr>
+<tr class="separator:a867cccdf009c2a69f1edf9a02f50c984"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdef7bdf482397b93c5bdb48e6f6f294" id="r_afdef7bdf482397b93c5bdb48e6f6f294"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afdef7bdf482397b93c5bdb48e6f6f294">UartCommandParser</a> (uart_port_t uart_port)</td></tr>
+<tr class="separator:afdef7bdf482397b93c5bdb48e6f6f294"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01f3f8de980d57367929b29a4cc22655" id="r_a01f3f8de980d57367929b29a4cc22655"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a01f3f8de980d57367929b29a4cc22655">RegisterCommand</a> (const <a class="el" href="structCommandArg.html">CommandArg</a> &amp;arg, <a class="el" href="fatigue__test__stallguard_8cpp.html#ac536514426d26b8983323b7b7dcbb376">CommandHandler</a> handler) noexcept</td></tr>
 <tr class="memdesc:a01f3f8de980d57367929b29a4cc22655"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a command handler.  <br /></td></tr>
 <tr class="separator:a01f3f8de980d57367929b29a4cc22655"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,6 +157,15 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a252be09aa840308655722421fafb1641" id="r_a252be09aa840308655722421fafb1641"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a252be09aa840308655722421fafb1641">Tokenize</a> (const char *line) noexcept</td></tr>
 <tr class="memdesc:a252be09aa840308655722421fafb1641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse command line into tokens.  <br /></td></tr>
 <tr class="separator:a252be09aa840308655722421fafb1641"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b1cc802df8531601b19af3dd97b9f52" id="r_a1b1cc802df8531601b19af3dd97b9f52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="test__unit_2main_8cpp.html#a21e038f5b8958e203d28bc4f18472352">CommandType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1b1cc802df8531601b19af3dd97b9f52">ParseCommandType</a> (const std::string &amp;token) noexcept</td></tr>
+<tr class="memdesc:a1b1cc802df8531601b19af3dd97b9f52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse command type from token.  <br /></td></tr>
+<tr class="separator:a1b1cc802df8531601b19af3dd97b9f52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0e959fc2d336b5fbfb2dfafb901b167" id="r_ab0e959fc2d336b5fbfb2dfafb901b167"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0e959fc2d336b5fbfb2dfafb901b167">ParseCommand</a> (const std::vector&lt; std::string &gt; &amp;tokens, <a class="el" href="structParsedCommand.html">ParsedCommand</a> &amp;cmd) noexcept</td></tr>
+<tr class="memdesc:ab0e959fc2d336b5fbfb2dfafb901b167"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse command line into <a class="el" href="structParsedCommand.html" title="Parsed command structure.">ParsedCommand</a> structure.  <br /></td></tr>
+<tr class="separator:ab0e959fc2d336b5fbfb2dfafb901b167"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a252be09aa840308655722421fafb1641" id="r_a252be09aa840308655722421fafb1641"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a252be09aa840308655722421fafb1641">Tokenize</a> (const char *line) noexcept</td></tr>
+<tr class="memdesc:a252be09aa840308655722421fafb1641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse command line into tokens.  <br /></td></tr>
+<tr class="separator:a252be09aa840308655722421fafb1641"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39f6e678ffc3965cbce920bb025b0906" id="r_a39f6e678ffc3965cbce920bb025b0906"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structCommandEntry.html">CommandEntry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a39f6e678ffc3965cbce920bb025b0906">FindCommand</a> (const std::string &amp;arg) noexcept</td></tr>
 <tr class="memdesc:a39f6e678ffc3965cbce920bb025b0906"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find command handler for given argument.  <br /></td></tr>
 <tr class="separator:a39f6e678ffc3965cbce920bb025b0906"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,9 +186,10 @@ Static Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Modular UART command parser with Linux-like argument structure. </p>
+<p>Redesigned UART command parser with word-based commands. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="afdef7bdf482397b93c5bdb48e6f6f294" name="afdef7bdf482397b93c5bdb48e6f6f294"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afdef7bdf482397b93c5bdb48e6f6f294">&#9670;&#160;</a></span>UartCommandParser() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afdef7bdf482397b93c5bdb48e6f6f294">&#9670;&#160;</a></span>UartCommandParser() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,7 +214,32 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <a id="afdef7bdf482397b93c5bdb48e6f6f294" name="afdef7bdf482397b93c5bdb48e6f6f294"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afdef7bdf482397b93c5bdb48e6f6f294">&#9670;&#160;</a></span>UartCommandParser() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afdef7bdf482397b93c5bdb48e6f6f294">&#9670;&#160;</a></span>UartCommandParser() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">UartCommandParser::UartCommandParser </td>
+          <td>(</td>
+          <td class="paramtype">uart_port_t</td>          <td class="paramname"><span class="paramname"><em>uart_port</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afdef7bdf482397b93c5bdb48e6f6f294" name="afdef7bdf482397b93c5bdb48e6f6f294"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdef7bdf482397b93c5bdb48e6f6f294">&#9670;&#160;</a></span>UartCommandParser() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -248,7 +291,7 @@ Static Private Attributes</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a39f6e678ffc3965cbce920bb025b0906_icgraph.svg" width="950" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a39f6e678ffc3965cbce920bb025b0906_icgraph.svg" width="950" height="132"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -280,6 +323,79 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="ab0e959fc2d336b5fbfb2dfafb901b167" name="ab0e959fc2d336b5fbfb2dfafb901b167"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0e959fc2d336b5fbfb2dfafb901b167">&#9670;&#160;</a></span>ParseCommand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool UartCommandParser::ParseCommand </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>tokens</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structParsedCommand.html">ParsedCommand</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>cmd</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parse command line into <a class="el" href="structParsedCommand.html" title="Parsed command structure.">ParsedCommand</a> structure. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_ab0e959fc2d336b5fbfb2dfafb901b167_cgraph.svg" width="658" height="200"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_ab0e959fc2d336b5fbfb2dfafb901b167_icgraph.svg" width="390" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a1b1cc802df8531601b19af3dd97b9f52" name="a1b1cc802df8531601b19af3dd97b9f52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b1cc802df8531601b19af3dd97b9f52">&#9670;&#160;</a></span>ParseCommandType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="test__unit_2main_8cpp.html#a21e038f5b8958e203d28bc4f18472352">CommandType</a> UartCommandParser::ParseCommandType </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>token</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parse command type from token. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a1b1cc802df8531601b19af3dd97b9f52_icgraph.svg" width="603" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a7e0070e2b7b7de1ac43ac7eeab83310a" name="a7e0070e2b7b7de1ac43ac7eeab83310a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7e0070e2b7b7de1ac43ac7eeab83310a">&#9670;&#160;</a></span>PrintHelp() <span class="overload">[1/2]</span></h2>
 
@@ -307,7 +423,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a7e0070e2b7b7de1ac43ac7eeab83310a_icgraph.svg" width="950" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a7e0070e2b7b7de1ac43ac7eeab83310a_icgraph.svg" width="950" height="132"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -339,8 +455,44 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a2b7090fe7118485c639dce94074b6e68" name="a2b7090fe7118485c639dce94074b6e68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b7090fe7118485c639dce94074b6e68">&#9670;&#160;</a></span>ProcessCommand() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool UartCommandParser::ProcessCommand </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>line</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classFatigueTest_1_1FatigueTestMotion.html">FatigueTest::FatigueTestMotion</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>motion</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Process a command line. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a2b7090fe7118485c639dce94074b6e68_cgraph.svg" width="1048" height="690"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a2c3351f22cef1fd524cb5c02f349e9b9" name="a2c3351f22cef1fd524cb5c02f349e9b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c3351f22cef1fd524cb5c02f349e9b9">&#9670;&#160;</a></span>ProcessCommand() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c3351f22cef1fd524cb5c02f349e9b9">&#9670;&#160;</a></span>ProcessCommand() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -375,13 +527,13 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a2c3351f22cef1fd524cb5c02f349e9b9_icgraph.svg" width="736" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a2c3351f22cef1fd524cb5c02f349e9b9_icgraph.svg" width="736" height="132"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
 <a id="a2c3351f22cef1fd524cb5c02f349e9b9" name="a2c3351f22cef1fd524cb5c02f349e9b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c3351f22cef1fd524cb5c02f349e9b9">&#9670;&#160;</a></span>ProcessCommand() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c3351f22cef1fd524cb5c02f349e9b9">&#9670;&#160;</a></span>ProcessCommand() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -416,8 +568,40 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a867cccdf009c2a69f1edf9a02f50c984" name="a867cccdf009c2a69f1edf9a02f50c984"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a867cccdf009c2a69f1edf9a02f50c984">&#9670;&#160;</a></span>ProcessUartCommands() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void UartCommandParser::ProcessUartCommands </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classFatigueTest_1_1FatigueTestMotion.html">FatigueTest::FatigueTestMotion</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>motion</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Read and process commands from UART. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a867cccdf009c2a69f1edf9a02f50c984_cgraph.svg" width="612" height="179"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="aa9c8b4a43f0bb19ee715e9f61f86870c" name="aa9c8b4a43f0bb19ee715e9f61f86870c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9c8b4a43f0bb19ee715e9f61f86870c">&#9670;&#160;</a></span>ProcessUartCommands() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9c8b4a43f0bb19ee715e9f61f86870c">&#9670;&#160;</a></span>ProcessUartCommands() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -448,13 +632,13 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_aa9c8b4a43f0bb19ee715e9f61f86870c_icgraph.svg" width="523" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_aa9c8b4a43f0bb19ee715e9f61f86870c_icgraph.svg" width="523" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
 <a id="aa9c8b4a43f0bb19ee715e9f61f86870c" name="aa9c8b4a43f0bb19ee715e9f61f86870c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9c8b4a43f0bb19ee715e9f61f86870c">&#9670;&#160;</a></span>ProcessUartCommands() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9c8b4a43f0bb19ee715e9f61f86870c">&#9670;&#160;</a></span>ProcessUartCommands() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -553,7 +737,7 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="a252be09aa840308655722421fafb1641" name="a252be09aa840308655722421fafb1641"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a252be09aa840308655722421fafb1641">&#9670;&#160;</a></span>Tokenize() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a252be09aa840308655722421fafb1641">&#9670;&#160;</a></span>Tokenize() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -579,13 +763,40 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a252be09aa840308655722421fafb1641_icgraph.svg" width="950" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a252be09aa840308655722421fafb1641_icgraph.svg" width="950" height="164"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
 <a id="a252be09aa840308655722421fafb1641" name="a252be09aa840308655722421fafb1641"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a252be09aa840308655722421fafb1641">&#9670;&#160;</a></span>Tokenize() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a252be09aa840308655722421fafb1641">&#9670;&#160;</a></span>Tokenize() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::string &gt; UartCommandParser::Tokenize </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>line</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parse command line into tokens. </p>
+
+</div>
+</div>
+<a id="a252be09aa840308655722421fafb1641" name="a252be09aa840308655722421fafb1641"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a252be09aa840308655722421fafb1641">&#9670;&#160;</a></span>Tokenize() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -702,6 +913,7 @@ Here is the caller graph for this function:</div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="fatigue__test__encoder_8cpp.html">fatigue_test_encoder.cpp</a></li>
+<li><a class="el" href="test__unit_2main_8cpp.html">test_unit/main.cpp</a></li>
 <li><a class="el" href="fatigue__test__stallguard_8cpp.html">fatigue_test_stallguard.cpp</a></li>
 </ul>
 </div><!-- contents -->

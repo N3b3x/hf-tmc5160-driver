@@ -1,29 +1,41 @@
 <map id="espnow_protocol.hpp" name="espnow_protocol.hpp">
-<area shape="rect" id="Node000001" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="391,5,551,31"/>
-<area shape="rect" id="Node000002" href="$ui__board_2espnow__protocol_8hpp.html" title="ESP&#45;NOW protocol API for UI board." alt="" coords="105,79,265,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="413,37,232,81,230,76,412,31"/>
-<area shape="rect" id="Node000006" href="$espnow__receiver_8cpp.html" title="ESP&#45;NOW receiver implementation for test unit." alt="" coords="519,152,677,177"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="491,40,544,102,589,150,585,154,540,106,487,43"/>
-<area shape="rect" id="Node000007" href="$espnow__receiver_8hpp.html" title="ESP&#45;NOW receiver for test unit." alt="" coords="555,79,713,104"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="511,34,608,76,606,81,509,39"/>
-<area shape="rect" id="Node000008" href="$test__unit_2main_8cpp.html" title="Fatigue test unit with ESP&#45;NOW communication." alt="" coords="707,152,790,177"/>
-<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="566,28,661,48,701,61,728,77,740,94,748,115,752,151,746,152,742,116,736,97,724,81,699,66,660,53,565,34"/>
-<area shape="rect" id="Node000009" href="$settings_8hpp.html" title="Settings storage for UI board." alt="" coords="376,79,479,104"/>
-<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="459,44,437,80,432,77,455,41"/>
-<area shape="rect" id="Node000011" href="$ui_8hpp.html" title="UI state machine for e&#45;ink display." alt="" coords="289,79,352,104"/>
-<area shape="poly" id="edge14_Node000001_Node000011" title=" " alt="" coords="436,39,346,81,344,76,434,34"/>
+<area shape="rect" id="Node000001" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="506,5,666,31"/>
+<area shape="rect" id="Node000002" href="$ui__board_2espnow__protocol_8hpp.html" title="ESP&#45;NOW protocol API for UI board." alt="" coords="165,79,325,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="519,36,300,81,299,76,517,31"/>
+<area shape="rect" id="Node000008" href="$espnow__receiver_8cpp.html" title="ESP&#45;NOW receiver implementation for test unit." alt="" coords="800,152,959,177"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="623,34,857,150,855,154,620,39"/>
+<area shape="rect" id="Node000009" href="$espnow__receiver_8hpp.html" title="ESP&#45;NOW receiver for test unit." alt="" coords="800,79,959,104"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="647,31,832,76,831,81,646,36"/>
+<area shape="rect" id="Node000010" href="$test__unit_2main_8cpp.html" title="Fatigue test unit with ESP&#45;NOW communication." alt="" coords="983,152,1066,177"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="680,22,845,40,921,56,950,65,973,76,992,93,1006,114,1023,151,1019,153,1001,116,988,97,970,81,948,70,919,61,845,46,679,28"/>
+<area shape="rect" id="Node000011" href="$oled__menu_8hpp.html" title="Non&#45;blocking menu system for OLED display with rotary encoder." alt="" coords="426,152,549,177"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="561,41,542,59,524,80,504,119,493,152,488,151,499,116,520,77,538,56,558,37"/>
+<area shape="rect" id="Node000013" href="$settings_8hpp.html" title="Settings storage for UI board." alt="" coords="535,79,637,104"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="589,44,589,79,583,79,583,44"/>
+<area shape="rect" id="Node000015" href="$ui_8hpp.html" title="UI state machine for e&#45;ink display." alt="" coords="349,79,412,104"/>
+<area shape="poly" id="edge22_Node000001_Node000015" title=" " alt="" coords="541,38,413,82,411,77,539,33"/>
 <area shape="rect" id="Node000003" href="$espnow__protocol_8cpp.html" title="ESP&#45;NOW protocol implementation for UI board." alt="" coords="5,152,164,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="159,114,103,154,99,150,156,110"/>
-<area shape="rect" id="Node000004" href="$ui__board_2main_8cpp.html" title="Main application for UI board (remote controller with e&#45;ink display)" alt="" coords="189,152,271,177"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="202,114,225,150,220,153,197,117"/>
-<area shape="rect" id="Node000005" href="$ui_8cpp.html" title="UI implementation with Adafruit 2.9&quot; ThinkInk E&#45;Ink display." alt="" coords="295,152,357,177"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="221,108,304,149,302,154,218,112"/>
-<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="624,117,606,153,601,151,620,115"/>
-<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="665,109,731,150,729,154,662,113"/>
-<area shape="poly" id="edge11_Node000009_Node000004" title=" " alt="" coords="384,111,263,154,261,149,382,106"/>
-<area shape="poly" id="edge13_Node000009_Node000005" title=" " alt="" coords="401,114,344,154,341,150,398,110"/>
-<area shape="rect" id="Node000010" href="$settings_8cpp.html" title="Settings storage implementation." alt="" coords="381,152,482,177"/>
-<area shape="poly" id="edge12_Node000009_Node000010" title=" " alt="" coords="431,118,433,152,428,152,426,118"/>
-<area shape="poly" id="edge15_Node000011_Node000004" title=" " alt="" coords="297,115,246,154,243,150,294,110"/>
-<area shape="poly" id="edge16_Node000011_Node000005" title=" " alt="" coords="325,118,328,152,322,152,320,118"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="208,112,112,154,110,149,206,107"/>
+<area shape="rect" id="Node000004" href="$ui__board_2main_8cpp.html" title="Main application for UI board (remote controller with e&#45;ink display)" alt="" coords="211,299,294,324"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="248,118,255,298,250,298,243,118"/>
+<area shape="rect" id="Node000005" href="$ui_8cpp.html" title="UI implementation with Adafruit 2.9&quot; ThinkInk E&#45;Ink tricolor display." alt="" coords="341,152,402,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="278,108,352,149,349,154,276,113"/>
+<area shape="rect" id="Node000006" href="$ui__oled_8hpp.html" title="UI implementation for OLED display with rotary encoder." alt="" coords="280,225,377,251"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="261,115,324,224,320,226,256,118"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="308,262,267,300,263,296,305,258"/>
+<area shape="rect" id="Node000007" href="$ui__oled_8cpp.html" title="OLED&#45;based UI implementation with rotary encoder navigation." alt="" coords="318,299,414,324"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="343,262,362,297,358,300,339,264"/>
+<area shape="poly" id="edge10_Node000009_Node000008" title=" " alt="" coords="882,118,882,152,877,152,877,118"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="916,108,1002,149,1000,154,914,112"/>
+<area shape="poly" id="edge15_Node000011_Node000006" title=" " alt="" coords="451,185,356,228,354,223,449,180"/>
+<area shape="rect" id="Node000012" href="$oled__menu_8cpp.html" title="OLED menu system implementation." alt="" coords="427,225,548,251"/>
+<area shape="poly" id="edge14_Node000011_Node000012" title=" " alt="" coords="490,191,490,225,485,225,485,191"/>
+<area shape="poly" id="edge17_Node000013_Node000004" title=" " alt="" coords="592,117,594,148,592,184,582,221,561,252,531,278,503,292,474,299,445,300,382,296,346,296,306,301,295,304,294,298,306,296,346,291,382,290,445,294,473,293,501,287,529,273,557,249,577,219,586,183,589,148,587,118"/>
+<area shape="poly" id="edge20_Node000013_Node000005" title=" " alt="" coords="540,111,403,156,401,151,538,106"/>
+<area shape="poly" id="edge21_Node000013_Node000006" title=" " alt="" coords="651,102,692,114,727,130,739,141,746,152,747,165,738,180,597,202,378,233,377,227,596,197,735,175,741,164,741,154,735,144,724,135,690,119,650,108"/>
+<area shape="poly" id="edge18_Node000013_Node000011" title=" " alt="" coords="561,114,505,154,502,150,558,110"/>
+<area shape="rect" id="Node000014" href="$settings_8cpp.html" title="Settings storage implementation." alt="" coords="623,152,725,177"/>
+<area shape="poly" id="edge19_Node000013_Node000014" title=" " alt="" coords="612,110,661,150,658,154,609,115"/>
+<area shape="poly" id="edge23_Node000015_Node000005" title=" " alt="" coords="380,118,375,152,370,152,375,117"/>
+<area shape="poly" id="edge24_Node000015_Node000006" title=" " alt="" coords="358,115,343,133,331,153,327,172,325,192,329,225,324,226,320,192,321,171,326,151,338,129,354,112"/>
 </map>

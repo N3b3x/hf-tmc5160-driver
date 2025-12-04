@@ -1,0 +1,8 @@
+<map id="SlideshowButtons::configure_wakeup" name="SlideshowButtons::configure_wakeup">
+<area shape="rect" id="Node000001" title=" " alt="" coords="311,5,517,45"/>
+<area shape="rect" id="Node000002" href="$ui__slideshow__board_2main_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,13,92,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="296,28,92,28,92,23,296,23"/>
+<area shape="rect" id="Node000003" href="$namespaceSlideshow.html#a4c294272658931da87dde404a52a0a52" title="Main slideshow task." alt="" coords="140,38,263,63"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="297,42,263,46,262,41,296,37"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="126,41,92,35,93,30,127,36"/>
+</map>

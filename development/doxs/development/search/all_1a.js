@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['⭐_20new_0',['⭐ NEW',['../index.html#autotoc_md37',1,'Tuning Subsystem ⭐ NEW'],['../index.html#autotoc_md59',1,'Tuning Subsystem ⭐ NEW']]]
+  ['✨_20features_0',['✨ Features',['../index.html#autotoc_md31',1,'']]]
 ];

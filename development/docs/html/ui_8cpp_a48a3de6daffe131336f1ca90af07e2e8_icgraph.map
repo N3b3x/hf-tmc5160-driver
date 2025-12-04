@@ -1,0 +1,9 @@
+<map id="draw_menu_item" name="draw_menu_item">
+<area shape="rect" id="Node000001" title=" " alt="" coords="493,5,628,31"/>
+<area shape="rect" id="Node000002" href="$ui_8cpp.html#ae017559aa66d2b58e26dae763ddf9095" title=" " alt="" coords="288,5,445,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="479,21,445,21,445,15,479,15"/>
+<area shape="rect" id="Node000003" href="$ui_8cpp.html#a1e18915fb61b5d382fe8b18239124d82" title=" " alt="" coords="125,5,240,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="274,21,240,21,240,15,274,15"/>
+<area shape="rect" id="Node000004" href="$namespaceUI.html#a0b7d4bd69e8c3a932139260abddb5e6e" title=" " alt="" coords="5,5,77,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="112,21,78,21,78,15,112,15"/>
+</map>

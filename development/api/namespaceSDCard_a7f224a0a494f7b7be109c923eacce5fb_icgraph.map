@@ -1,0 +1,18 @@
+<map id="SDCard::getFileSize" name="SDCard::getFileSize">
+<area shape="rect" id="Node000001" title="Get file size." alt="" coords="969,56,1119,81"/>
+<area shape="rect" id="Node000002" href="$namespaceImageLoader.html#af2a2d5120645b9901a4efed70a56791b" title="Load and display BMP image on e&#45;ink display." alt="" coords="675,56,921,81"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="955,71,922,71,922,66,955,66"/>
+<area shape="rect" id="Node000003" href="$slideshow_8cpp.html#a1a245eaccca7670574f39b72bb061fe5" title=" " alt="" coords="468,56,627,81"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="661,71,627,71,627,66,661,66"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="579,46,570,38,547,35,528,37,518,41,516,47,522,54,517,57,511,48,514,38,527,32,547,29,572,33,583,42"/>
+<area shape="rect" id="Node000004" href="$slideshow_8cpp.html#a686e9f4344e310e2aa9587a56ca25b7e" title=" " alt="" coords="311,5,420,31"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="487,55,411,33,413,28,489,50"/>
+<area shape="rect" id="Node000005" href="$namespaceSlideshow.html#a4c294272658931da87dde404a52a0a52" title="Main slideshow task." alt="" coords="140,56,263,81"/>
+<area shape="poly" id="edge9_Node000003_Node000005" title=" " alt="" coords="454,71,263,71,263,66,454,66"/>
+<area shape="rect" id="Node000007" href="$namespaceSlideshow.html#a45633e5942031badddda9f04ab9174c0" title="Initialize slideshow system." alt="" coords="143,105,259,131"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="455,84,260,112,259,107,454,79"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="311,37,244,58,243,53,309,32"/>
+<area shape="rect" id="Node000006" href="$ui__slideshow__board_2main_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,81,92,107"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="127,84,93,90,92,84,126,78"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="130,109,92,103,93,98,130,104"/>
+</map>

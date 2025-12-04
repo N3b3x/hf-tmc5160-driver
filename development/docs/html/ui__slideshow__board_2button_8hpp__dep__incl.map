@@ -1,0 +1,9 @@
+<map id="button.hpp" name="button.hpp">
+<area shape="rect" id="Node000001" title="Button handling for slideshow board." alt="" coords="115,5,207,31"/>
+<area shape="rect" id="Node000002" href="$ui__slideshow__board_2button_8cpp.html" title="Button handling implementation for slideshow." alt="" coords="5,79,96,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,40,70,81,67,76,131,36"/>
+<area shape="rect" id="Node000003" href="$ui__slideshow__board_2main_8cpp.html" title="E&#45;Ink Slideshow Application." alt="" coords="120,79,203,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,44,164,79,159,79,159,44"/>
+<area shape="rect" id="Node000004" href="$slideshow_8cpp.html" title="Slideshow implementation." alt="" coords="227,79,341,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="194,35,265,76,263,81,191,40"/>
+</map>

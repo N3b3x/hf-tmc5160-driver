@@ -1,0 +1,8 @@
+<map id="OLEDMenu" name="OLEDMenu">
+<area shape="rect" id="Node000001" title="Menu system class." alt="" coords="45,220,139,245"/>
+<area shape="rect" id="Node000002" href="$structSettings.html" title=" " alt="" coords="5,12,80,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="40,51,35,119,40,157,52,194,61,207,73,217,70,221,57,211,47,197,34,159,30,119,35,51"/>
+<area shape="rect" id="Node000003" href="$structMenuItem.html" title="Menu item structure." alt="" coords="104,12,192,38"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="148,52,138,118,116,197,103,220,98,218,111,195,133,117,143,51"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="177,5,192,3,205,5,215,13,219,25,213,39,199,46,182,46,164,40,165,35,183,41,198,41,209,36,213,25,211,16,203,10,191,8,177,10"/>
+</map>
