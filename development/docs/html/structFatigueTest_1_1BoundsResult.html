@@ -111,22 +111,23 @@ $(function(){initNavTree('structFatigueTest_1_1BoundsResult.html',''); initResiz
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab2cb8ca144cf1ad751e7b884e16f3600" id="r_ab2cb8ca144cf1ad751e7b884e16f3600"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab2cb8ca144cf1ad751e7b884e16f3600">BoundsResult</a> ()</td></tr>
 <tr class="separator:ab2cb8ca144cf1ad751e7b884e16f3600"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a480a95f94b7fd6cc6e88aa861459865a" id="r_a480a95f94b7fd6cc6e88aa861459865a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a480a95f94b7fd6cc6e88aa861459865a">BoundsResult</a> (bool s, int32_t min, int32_t max, bool b)</td></tr>
-<tr class="separator:a480a95f94b7fd6cc6e88aa861459865a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ac88929bc03fb52d79b05d172a88af5" id="r_a4ac88929bc03fb52d79b05d172a88af5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ac88929bc03fb52d79b05d172a88af5">BoundsResult</a> (bool s, float min, float max, bool b)</td></tr>
+<tr class="separator:a4ac88929bc03fb52d79b05d172a88af5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:af997fc170fe75d79292f77040d4c7c8a" id="r_af997fc170fe75d79292f77040d4c7c8a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af997fc170fe75d79292f77040d4c7c8a">success</a></td></tr>
 <tr class="separator:af997fc170fe75d79292f77040d4c7c8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c2953fa3958a4107e3d194cde4e0d38" id="r_a2c2953fa3958a4107e3d194cde4e0d38"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c2953fa3958a4107e3d194cde4e0d38">min_bound</a></td></tr>
-<tr class="separator:a2c2953fa3958a4107e3d194cde4e0d38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2af9e97f75604456a80580f781e6e4c6" id="r_a2af9e97f75604456a80580f781e6e4c6"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2af9e97f75604456a80580f781e6e4c6">max_bound</a></td></tr>
-<tr class="separator:a2af9e97f75604456a80580f781e6e4c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb1c4b39901d8bf113e5294b452a861b" id="r_abb1c4b39901d8bf113e5294b452a861b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abb1c4b39901d8bf113e5294b452a861b">min_bound</a></td></tr>
+<tr class="separator:abb1c4b39901d8bf113e5294b452a861b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5071837f5a74ca9301bc616469ef864f" id="r_a5071837f5a74ca9301bc616469ef864f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5071837f5a74ca9301bc616469ef864f">max_bound</a></td></tr>
+<tr class="separator:a5071837f5a74ca9301bc616469ef864f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0b852a61b9e2dc7eeaf71ce5d220f74" id="r_ab0b852a61b9e2dc7eeaf71ce5d220f74"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0b852a61b9e2dc7eeaf71ce5d220f74">bounded</a></td></tr>
 <tr class="separator:ab0b852a61b9e2dc7eeaf71ce5d220f74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Bounds finding result. </p>
+<p>All bounds are stored in degrees relative to the current zero/home position. The driver handles all step conversions internally. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab2cb8ca144cf1ad751e7b884e16f3600" name="ab2cb8ca144cf1ad751e7b884e16f3600"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab2cb8ca144cf1ad751e7b884e16f3600">&#9670;&#160;</a></span>BoundsResult() <span class="overload">[1/2]</span></h2>
@@ -153,8 +154,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a480a95f94b7fd6cc6e88aa861459865a" name="a480a95f94b7fd6cc6e88aa861459865a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a480a95f94b7fd6cc6e88aa861459865a">&#9670;&#160;</a></span>BoundsResult() <span class="overload">[2/2]</span></h2>
+<a id="a4ac88929bc03fb52d79b05d172a88af5" name="a4ac88929bc03fb52d79b05d172a88af5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ac88929bc03fb52d79b05d172a88af5">&#9670;&#160;</a></span>BoundsResult() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -170,12 +171,12 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>min</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>min</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>max</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>max</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -207,28 +208,28 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a2af9e97f75604456a80580f781e6e4c6" name="a2af9e97f75604456a80580f781e6e4c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2af9e97f75604456a80580f781e6e4c6">&#9670;&#160;</a></span>max_bound</h2>
+<a id="a5071837f5a74ca9301bc616469ef864f" name="a5071837f5a74ca9301bc616469ef864f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5071837f5a74ca9301bc616469ef864f">&#9670;&#160;</a></span>max_bound</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t FatigueTest::BoundsResult::max_bound</td>
+          <td class="memname">float FatigueTest::BoundsResult::max_bound</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a2c2953fa3958a4107e3d194cde4e0d38" name="a2c2953fa3958a4107e3d194cde4e0d38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c2953fa3958a4107e3d194cde4e0d38">&#9670;&#160;</a></span>min_bound</h2>
+<a id="abb1c4b39901d8bf113e5294b452a861b" name="abb1c4b39901d8bf113e5294b452a861b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb1c4b39901d8bf113e5294b452a861b">&#9670;&#160;</a></span>min_bound</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t FatigueTest::BoundsResult::min_bound</td>
+          <td class="memname">float FatigueTest::BoundsResult::min_bound</td>
         </tr>
       </table>
 </div><div class="memdoc">

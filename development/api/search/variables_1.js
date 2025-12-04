@@ -16,7 +16,7 @@ var searchData=
   ['bounded_5f_13',['bounded_',['../classFatigueTestMotion.html#acb215754df9eed5dedc67d60de52758c',1,'FatigueTestMotion::bounded_'],['../classFatigueTest_1_1FatigueTestMotion.html#a1d7c8fba458eda621d78128301ba948c',1,'FatigueTest::FatigueTestMotion::bounded_']]],
   ['bounds_5fmethod_14',['bounds_method',['../structConfigPayload.html#a6573df1b45ec87ff790523e1d1686e11',1,'ConfigPayload']]],
   ['bounds_5fmethod_5fstallguard_15',['bounds_method_stallguard',['../structSettings.html#a2211264fc4bbc05efcdc64548c3e325c',1,'Settings']]],
-  ['bounds_5fsearch_5fspeed_16',['BOUNDS_SEARCH_SPEED',['../namespacetmc51x0__test__config_1_1TestConfig__17HS4401S_1_1Motion.html#a25244197aa4a2c652a7d1ba6dacd8f3c',1,'tmc51x0_test_config::TestConfig_17HS4401S::Motion']]],
+  ['bounds_5fsearch_5fspeed_5frpm_16',['BOUNDS_SEARCH_SPEED_RPM',['../namespacetmc51x0__test__config_1_1TestConfig__17HS4401S_1_1Motion.html#af0270fff289726819dbcfdd47c814ed8',1,'tmc51x0_test_config::TestConfig_17HS4401S::Motion']]],
   ['box_5fwidth_17',['BOX_WIDTH',['../namespaceCommandOutput.html#a26cca625bfbb1df43ca6f8b4579dc39a',1,'CommandOutput']]],
   ['btn_18',['btn',['../structUiEvent.html#a2c421c7cf21cc74b5b3ca2b5c001a435',1,'UiEvent']]],
   ['btn_5fback_5fgpio_19',['BTN_BACK_GPIO',['../ui__board_2config_8hpp.html#a022345793ba142e5c22a02caa25b7ba7',1,'config.hpp']]],

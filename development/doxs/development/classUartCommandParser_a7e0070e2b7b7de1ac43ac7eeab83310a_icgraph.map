@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="Print help message." alt="" coords="779,37,944,77"/>
 <area shape="rect" id="Node000002" href="$classUartCommandParser.html#a2c3351f22cef1fd524cb5c02f349e9b9" title="Process a command line." alt="" coords="565,37,731,77"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="765,60,731,60,731,55,765,55"/>
-<area shape="rect" id="Node000003" href="$classUartCommandParser.html#a867cccdf009c2a69f1edf9a02f50c984" title="Read and process commands from UART." alt="" coords="343,5,517,45"/>
+<area shape="rect" id="Node000003" href="$classUartCommandParser.html#a867cccdf009c2a69f1edf9a02f50c984" title="Read and process commands from UART (line&#45;by&#45;line)" alt="" coords="343,5,517,45"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="552,46,517,41,518,36,552,41"/>
 <area shape="rect" id="Node000004" href="$classUartCommandParser.html#aa9c8b4a43f0bb19ee715e9f61f86870c" title="Read and process commands from UART." alt="" coords="343,69,517,109"/>
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="552,74,518,79,517,74,552,69"/>

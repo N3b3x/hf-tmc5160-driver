@@ -593,13 +593,13 @@ namespace TestConfig_17HS4401S {
 
     // --- Motion Profiles ---
     namespace Motion {
-        // Homing Speeds (Steps/s)
+        // Homing Speeds (RPM) - driver handles microstep conversion internally
         // Needs to be fast enough for back-EMF sensing (Sensorless)
-        constexpr float HOMING_SEARCH_SPEED = 20000.0f; // ~30-40 RPM output (at 256 usteps, 5.18 gear)
-        constexpr float HOMING_SWITCH_SPEED = 2000.0f;  // Slower for precision
+        constexpr float HOMING_SEARCH_SPEED_RPM = 30.0f; // RPM output (driver converts based on current microsteps)
+        constexpr float HOMING_SWITCH_SPEED_RPM = 3.0f;  // Slower for precision (RPM)
         
-        // Bounds Finding Test
-        constexpr float BOUNDS_SEARCH_SPEED = 20000.0f;
+        // Bounds Finding Test (RPM) - driver handles microstep conversion internally
+        constexpr float BOUNDS_SEARCH_SPEED_RPM = 30.0f; // RPM (driver converts based on current microsteps)
         constexpr uint32_t HOMING_TIMEOUT_MS = 30000;
         
         // Fatigue Test Defaults

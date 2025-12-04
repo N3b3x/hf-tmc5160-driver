@@ -59,7 +59,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classUartCommandParser.html#a867cccdf009c2a69f1edf9a02f50c984" target="_top" xlink:title="Read and process commands from UART.">
+<g id="a_Node000004"><a xlink:href="classUartCommandParser.html#a867cccdf009c2a69f1edf9a02f50c984" target="_top" xlink:title="Read and process commands from UART (line&#45;by&#45;line)">
 <polygon fill="white" stroke="#666666" points="384,-90.5 253,-90.5 253,-60.5 384,-60.5 384,-90.5"/>
 <text text-anchor="start" x="261" y="-78.5" font-family="Helvetica,sans-Serif" font-size="10.00">UartCommandParser::</text>
 <text text-anchor="middle" x="318.5" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00">ProcessUartCommands</text>

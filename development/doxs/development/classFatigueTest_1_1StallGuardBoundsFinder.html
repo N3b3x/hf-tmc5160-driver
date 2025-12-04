@@ -129,16 +129,16 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a5a6c38831ab94bd7a4d3f0906427302e" id="r_a5a6c38831ab94bd7a4d3f0906427302e"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a6c38831ab94bd7a4d3f0906427302e">FindBound</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &amp;driver, int32_t target_steps, float search_speed, int32_t offset_steps, bool is_max)</td></tr>
-<tr class="separator:a5a6c38831ab94bd7a4d3f0906427302e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3f35c7db5b116bdf3f2f3cc396a3640" id="r_ac3f35c7db5b116bdf3f2f3cc396a3640"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3f35c7db5b116bdf3f2f3cc396a3640">MoveToPosition</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &amp;driver, int32_t target, float speed)</td></tr>
-<tr class="separator:ac3f35c7db5b116bdf3f2f3cc396a3640"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a618baa37e8c04806ac32be4021ae92bd" id="r_a618baa37e8c04806ac32be4021ae92bd"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a618baa37e8c04806ac32be4021ae92bd">FindBound</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &amp;driver, float target_angle_deg, float search_speed_rpm, float offset_angle_deg, bool is_max)</td></tr>
+<tr class="separator:a618baa37e8c04806ac32be4021ae92bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4c37e1bf90e981b68b9f883b4c9d215" id="r_ac4c37e1bf90e981b68b9f883b4c9d215"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac4c37e1bf90e981b68b9f883b4c9d215">MoveToPosition</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &amp;driver, float target_deg, float speed_rpm)</td></tr>
+<tr class="separator:ac4c37e1bf90e981b68b9f883b4c9d215"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>StallGuard2-based bounds finder. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5a6c38831ab94bd7a4d3f0906427302e" name="a5a6c38831ab94bd7a4d3f0906427302e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a6c38831ab94bd7a4d3f0906427302e">&#9670;&#160;</a></span>FindBound()</h2>
+<a id="a618baa37e8c04806ac32be4021ae92bd" name="a618baa37e8c04806ac32be4021ae92bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a618baa37e8c04806ac32be4021ae92bd">&#9670;&#160;</a></span>FindBound()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -147,24 +147,24 @@ Private Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t FatigueTest::StallGuardBoundsFinder::FindBound </td>
+          <td class="memname">float FatigueTest::StallGuardBoundsFinder::FindBound </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>driver</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>target_steps</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>target_angle_deg</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>search_speed</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>search_speed_rpm</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>offset_steps</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>offset_angle_deg</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -181,7 +181,7 @@ Private Member Functions</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1StallGuardBoundsFinder_a5a6c38831ab94bd7a4d3f0906427302e_icgraph.svg" width="496" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1StallGuardBoundsFinder_a618baa37e8c04806ac32be4021ae92bd_icgraph.svg" width="496" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -217,17 +217,17 @@ Here is the caller graph for this function:</div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">driver</td><td>TMC51x0 driver instance </td></tr>
-    <tr><td class="paramname">steps_per_rev</td><td>Steps per revolution for unit conversion </td></tr>
+    <tr><td class="paramname">steps_per_rev</td><td>Steps per revolution (used only for logging, driver handles conversions) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structFatigueTest_1_1BoundsResult.html" title="Bounds finding result.">BoundsResult</a> with found bounds </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structFatigueTest_1_1BoundsResult.html" title="Bounds finding result.">BoundsResult</a> with found bounds in degrees </dd></dl>
 
 <p>Implements <a class="el" href="classFatigueTest_1_1IBoundsFinder.html#a7eaececffe3a222df4b132380c2508e1">FatigueTest::IBoundsFinder</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1StallGuardBoundsFinder_a706fa529b28d1d9b5c8c336934fd694c_cgraph.svg" width="496" height="166"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1StallGuardBoundsFinder_a706fa529b28d1d9b5c8c336934fd694c_cgraph.svg" width="496" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -261,8 +261,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="ac3f35c7db5b116bdf3f2f3cc396a3640" name="ac3f35c7db5b116bdf3f2f3cc396a3640"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3f35c7db5b116bdf3f2f3cc396a3640">&#9670;&#160;</a></span>MoveToPosition()</h2>
+<a id="ac4c37e1bf90e981b68b9f883b4c9d215" name="ac4c37e1bf90e981b68b9f883b4c9d215"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4c37e1bf90e981b68b9f883b4c9d215">&#9670;&#160;</a></span>MoveToPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -278,12 +278,12 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>target</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>target_deg</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>speed</em></span>&#160;)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>speed_rpm</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -295,7 +295,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1StallGuardBoundsFinder_ac3f35c7db5b116bdf3f2f3cc396a3640_icgraph.svg" width="496" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1StallGuardBoundsFinder_ac4c37e1bf90e981b68b9f883b4c9d215_icgraph.svg" width="496" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

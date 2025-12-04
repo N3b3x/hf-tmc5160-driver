@@ -128,12 +128,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1989a6da8680e5c7709979769e99c806"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c9f125fc81bde1deddf504df1820f5f" id="r_a1c9f125fc81bde1deddf504df1820f5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1c9f125fc81bde1deddf504df1820f5f">ConfigureMotor</a> (uint16_t steps_per_rev, <a class="el" href="namespaceFatigueTest.html#a48eb0e8a2a7aba7fca309c9c65aed80b">AngleUnit</a> unit=<a class="el" href="namespaceFatigueTest.html#a48eb0e8a2a7aba7fca309c9c65aed80bafee20551b6d06fd83aa56a486e557307">AngleUnit::DEGREES</a>) noexcept</td></tr>
 <tr class="separator:a1c9f125fc81bde1deddf504df1820f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca79b6a071eb4a956ac949b3404cfe1f" id="r_aca79b6a071eb4a956ac949b3404cfe1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca79b6a071eb4a956ac949b3404cfe1f">SetGlobalBounds</a> (int32_t min_bound, int32_t max_bound) noexcept</td></tr>
-<tr class="separator:aca79b6a071eb4a956ac949b3404cfe1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b9084bbe2f4ab2e113cfeb349c97627" id="r_a7b9084bbe2f4ab2e113cfeb349c97627"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b9084bbe2f4ab2e113cfeb349c97627">SetGlobalBounds</a> (float min_bound_degrees, float max_bound_degrees) noexcept</td></tr>
+<tr class="separator:a7b9084bbe2f4ab2e113cfeb349c97627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c7b84687216a3310300c80174ca2afc" id="r_a7c7b84687216a3310300c80174ca2afc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7c7b84687216a3310300c80174ca2afc">GetGlobalBoundsDegrees</a> (float &amp;min_degrees, float &amp;max_degrees) const noexcept</td></tr>
 <tr class="separator:a7c7b84687216a3310300c80174ca2afc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb23779dc0dce69aea1c61d5ce17c7bf" id="r_acb23779dc0dce69aea1c61d5ce17c7bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb23779dc0dce69aea1c61d5ce17c7bf">SetUnbounded</a> (int32_t current_position, int32_t default_range_steps=10000) noexcept</td></tr>
-<tr class="separator:acb23779dc0dce69aea1c61d5ce17c7bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a720fe6e2345fb91b35f7dd2d57b79a7e" id="r_a720fe6e2345fb91b35f7dd2d57b79a7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a720fe6e2345fb91b35f7dd2d57b79a7e">SetUnbounded</a> (float current_position_degrees, float default_range_degrees=175.0f) noexcept</td></tr>
+<tr class="separator:a720fe6e2345fb91b35f7dd2d57b79a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d228e53872d7dd297ff2ebd834c12f1" id="r_a5d228e53872d7dd297ff2ebd834c12f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d228e53872d7dd297ff2ebd834c12f1">SetLocalBoundsFromCenterDegrees</a> (float min_degrees_from_center, float max_degrees_from_center) noexcept</td></tr>
 <tr class="separator:a5d228e53872d7dd297ff2ebd834c12f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4422e931c971c28c9b1f74ae90cbcf29" id="r_a4422e931c971c28c9b1f74ae90cbcf29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4422e931c971c28c9b1f74ae90cbcf29">GetLocalBoundsFromCenterDegrees</a> (float &amp;min_degrees, float &amp;max_degrees) const noexcept</td></tr>
@@ -197,16 +197,16 @@ Private Member Functions</h2></td></tr>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a36860be9edf21b8e11fbae7a16a2342c" id="r_a36860be9edf21b8e11fbae7a16a2342c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a36860be9edf21b8e11fbae7a16a2342c">driver_</a></td></tr>
 <tr class="separator:a36860be9edf21b8e11fbae7a16a2342c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11586c170bdf22e98076e11c8c43998e" id="r_a11586c170bdf22e98076e11c8c43998e"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a11586c170bdf22e98076e11c8c43998e">global_min_bound_</a></td></tr>
-<tr class="separator:a11586c170bdf22e98076e11c8c43998e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad03adc7a1413ef7f6ad71e74b450aba9" id="r_ad03adc7a1413ef7f6ad71e74b450aba9"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad03adc7a1413ef7f6ad71e74b450aba9">global_max_bound_</a></td></tr>
-<tr class="separator:ad03adc7a1413ef7f6ad71e74b450aba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa922946cc09d820d19eddbe41d16085" id="r_aaa922946cc09d820d19eddbe41d16085"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa922946cc09d820d19eddbe41d16085">local_min_bound_</a></td></tr>
-<tr class="separator:aaa922946cc09d820d19eddbe41d16085"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c85f43f76c779d3a2910a2513377264" id="r_a7c85f43f76c779d3a2910a2513377264"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7c85f43f76c779d3a2910a2513377264">local_max_bound_</a></td></tr>
-<tr class="separator:a7c85f43f76c779d3a2910a2513377264"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3120401d8a12fdec0761a7f665742447" id="r_a3120401d8a12fdec0761a7f665742447"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3120401d8a12fdec0761a7f665742447">home_position_</a></td></tr>
-<tr class="separator:a3120401d8a12fdec0761a7f665742447"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac482210f5530f2d1248685923677ad84" id="r_ac482210f5530f2d1248685923677ad84"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac482210f5530f2d1248685923677ad84">global_min_bound_</a></td></tr>
+<tr class="separator:ac482210f5530f2d1248685923677ad84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedd25166b971545bf110571ccaef613e" id="r_aedd25166b971545bf110571ccaef613e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aedd25166b971545bf110571ccaef613e">global_max_bound_</a></td></tr>
+<tr class="separator:aedd25166b971545bf110571ccaef613e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3ee77a1e8df8b48dae1061cdda20734" id="r_aa3ee77a1e8df8b48dae1061cdda20734"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa3ee77a1e8df8b48dae1061cdda20734">local_min_bound_</a></td></tr>
+<tr class="separator:aa3ee77a1e8df8b48dae1061cdda20734"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21bd758a9f7bcaac8e16bda8134fc7ec" id="r_a21bd758a9f7bcaac8e16bda8134fc7ec"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a21bd758a9f7bcaac8e16bda8134fc7ec">local_max_bound_</a></td></tr>
+<tr class="separator:a21bd758a9f7bcaac8e16bda8134fc7ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafd0c94972a866557e48dfd8e98538f9" id="r_aafd0c94972a866557e48dfd8e98538f9"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aafd0c94972a866557e48dfd8e98538f9">home_position_</a></td></tr>
+<tr class="separator:aafd0c94972a866557e48dfd8e98538f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d7c8fba458eda621d78128301ba948c" id="r_a1d7c8fba458eda621d78128301ba948c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d7c8fba458eda621d78128301ba948c">bounded_</a></td></tr>
 <tr class="separator:a1d7c8fba458eda621d78128301ba948c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99991c6d4aa3435bbd594bade961c532" id="r_a99991c6d4aa3435bbd594bade961c532"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99991c6d4aa3435bbd594bade961c532">amplitude_</a></td></tr>
@@ -233,8 +233,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:ae4f7c0421710aa1403e482358e32a851"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5223dbd8065b81c074303b2b6725eb46" id="r_a5223dbd8065b81c074303b2b6725eb46"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5223dbd8065b81c074303b2b6725eb46">cycle_started_</a></td></tr>
 <tr class="separator:a5223dbd8065b81c074303b2b6725eb46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5eeeaa335785482bfce16ccee0964d75" id="r_a5eeeaa335785482bfce16ccee0964d75"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5eeeaa335785482bfce16ccee0964d75">last_target_relative_</a></td></tr>
-<tr class="separator:a5eeeaa335785482bfce16ccee0964d75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31c9cf08227d5de31dff9e847eb3b4f7" id="r_a31c9cf08227d5de31dff9e847eb3b4f7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31c9cf08227d5de31dff9e847eb3b4f7">last_target_relative_</a></td></tr>
+<tr class="separator:a31c9cf08227d5de31dff9e847eb3b4f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f1292d3524f8b2cf6ae90551b44abc6" id="r_a2f1292d3524f8b2cf6ae90551b44abc6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#aa98f7b24e1fee2f702e7f4914ee05fba">MotionState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f1292d3524f8b2cf6ae90551b44abc6">state_</a></td></tr>
 <tr class="separator:a2f1292d3524f8b2cf6ae90551b44abc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6ba07aac64c89673a7ab7525a9fc012" id="r_aa6ba07aac64c89673a7ab7525a9fc012"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6ba07aac64c89673a7ab7525a9fc012">dwell_start_time_ms_</a></td></tr>
@@ -361,11 +361,6 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_afd810bcf984589fb9b837d8fd5a2a1c5_cgraph.svg" width="488" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -538,11 +533,6 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a7c7b84687216a3310300c80174ca2afc_cgraph.svg" width="492" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -572,11 +562,6 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a4422e931c971c28c9b1f74ae90cbcf29_cgraph.svg" width="506" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -602,11 +587,6 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_aa21a0ad5beb06b24d87d0b2755339d4a_cgraph.svg" width="426" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -743,6 +723,11 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 <div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_af8e6c53b8ceac2943e4ea919b745782f_cgraph.svg" width="464" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_af8e6c53b8ceac2943e4ea919b745782f_icgraph.svg" width="811" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
@@ -839,8 +824,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="aca79b6a071eb4a956ac949b3404cfe1f" name="aca79b6a071eb4a956ac949b3404cfe1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca79b6a071eb4a956ac949b3404cfe1f">&#9670;&#160;</a></span>SetGlobalBounds()</h2>
+<a id="a7b9084bbe2f4ab2e113cfeb349c97627" name="a7b9084bbe2f4ab2e113cfeb349c97627"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b9084bbe2f4ab2e113cfeb349c97627">&#9670;&#160;</a></span>SetGlobalBounds()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -851,12 +836,12 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">void FatigueTestMotion::SetGlobalBounds </td>
           <td>(</td>
-          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>min_bound</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>min_bound_degrees</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>max_bound</em></span>&#160;)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>max_bound_degrees</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -868,12 +853,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_aca79b6a071eb4a956ac949b3404cfe1f_cgraph.svg" width="672" height="122"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a7b9084bbe2f4ab2e113cfeb349c97627_cgraph.svg" width="663" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_aca79b6a071eb4a956ac949b3404cfe1f_icgraph.svg" width="332" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a7b9084bbe2f4ab2e113cfeb349c97627_icgraph.svg" width="332" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -904,11 +889,6 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a5d228e53872d7dd297ff2ebd834c12f1_cgraph.svg" width="504" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -947,8 +927,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="acb23779dc0dce69aea1c61d5ce17c7bf" name="acb23779dc0dce69aea1c61d5ce17c7bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb23779dc0dce69aea1c61d5ce17c7bf">&#9670;&#160;</a></span>SetUnbounded()</h2>
+<a id="a720fe6e2345fb91b35f7dd2d57b79a7e" name="a720fe6e2345fb91b35f7dd2d57b79a7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a720fe6e2345fb91b35f7dd2d57b79a7e">&#9670;&#160;</a></span>SetUnbounded()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -959,12 +939,12 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">void FatigueTestMotion::SetUnbounded </td>
           <td>(</td>
-          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>current_position</em>, </span></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>current_position_degrees</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>default_range_steps</em><span class="paramdefsep"> = </span><span class="paramdefval">10000</span></span>&#160;)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>default_range_degrees</em><span class="paramdefsep"> = </span><span class="paramdefval">175.0f</span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -973,11 +953,6 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_acb23779dc0dce69aea1c61d5ce17c7bf_cgraph.svg" width="426" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -1006,7 +981,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_aedf901d32a07a14e2eba330abf2988e9_cgraph.svg" width="450" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_aedf901d32a07a14e2eba330abf2988e9_cgraph.svg" width="688" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1425,8 +1400,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="ad03adc7a1413ef7f6ad71e74b450aba9" name="ad03adc7a1413ef7f6ad71e74b450aba9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad03adc7a1413ef7f6ad71e74b450aba9">&#9670;&#160;</a></span>global_max_bound_</h2>
+<a id="aedd25166b971545bf110571ccaef613e" name="aedd25166b971545bf110571ccaef613e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedd25166b971545bf110571ccaef613e">&#9670;&#160;</a></span>global_max_bound_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1435,7 +1410,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t FatigueTest::FatigueTestMotion::global_max_bound_</td>
+          <td class="memname">float FatigueTest::FatigueTestMotion::global_max_bound_</td>
         </tr>
       </table>
   </td>
@@ -1447,8 +1422,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a11586c170bdf22e98076e11c8c43998e" name="a11586c170bdf22e98076e11c8c43998e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11586c170bdf22e98076e11c8c43998e">&#9670;&#160;</a></span>global_min_bound_</h2>
+<a id="ac482210f5530f2d1248685923677ad84" name="ac482210f5530f2d1248685923677ad84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac482210f5530f2d1248685923677ad84">&#9670;&#160;</a></span>global_min_bound_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1457,7 +1432,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t FatigueTest::FatigueTestMotion::global_min_bound_</td>
+          <td class="memname">float FatigueTest::FatigueTestMotion::global_min_bound_</td>
         </tr>
       </table>
   </td>
@@ -1469,8 +1444,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a3120401d8a12fdec0761a7f665742447" name="a3120401d8a12fdec0761a7f665742447"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3120401d8a12fdec0761a7f665742447">&#9670;&#160;</a></span>home_position_</h2>
+<a id="aafd0c94972a866557e48dfd8e98538f9" name="aafd0c94972a866557e48dfd8e98538f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafd0c94972a866557e48dfd8e98538f9">&#9670;&#160;</a></span>home_position_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1479,7 +1454,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t FatigueTest::FatigueTestMotion::home_position_</td>
+          <td class="memname">float FatigueTest::FatigueTestMotion::home_position_</td>
         </tr>
       </table>
   </td>
@@ -1491,8 +1466,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a5eeeaa335785482bfce16ccee0964d75" name="a5eeeaa335785482bfce16ccee0964d75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5eeeaa335785482bfce16ccee0964d75">&#9670;&#160;</a></span>last_target_relative_</h2>
+<a id="a31c9cf08227d5de31dff9e847eb3b4f7" name="a31c9cf08227d5de31dff9e847eb3b4f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31c9cf08227d5de31dff9e847eb3b4f7">&#9670;&#160;</a></span>last_target_relative_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1501,7 +1476,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t FatigueTest::FatigueTestMotion::last_target_relative_</td>
+          <td class="memname">float FatigueTest::FatigueTestMotion::last_target_relative_</td>
         </tr>
       </table>
   </td>
@@ -1535,8 +1510,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a7c85f43f76c779d3a2910a2513377264" name="a7c85f43f76c779d3a2910a2513377264"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c85f43f76c779d3a2910a2513377264">&#9670;&#160;</a></span>local_max_bound_</h2>
+<a id="a21bd758a9f7bcaac8e16bda8134fc7ec" name="a21bd758a9f7bcaac8e16bda8134fc7ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21bd758a9f7bcaac8e16bda8134fc7ec">&#9670;&#160;</a></span>local_max_bound_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1545,7 +1520,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t FatigueTest::FatigueTestMotion::local_max_bound_</td>
+          <td class="memname">float FatigueTest::FatigueTestMotion::local_max_bound_</td>
         </tr>
       </table>
   </td>
@@ -1557,8 +1532,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="aaa922946cc09d820d19eddbe41d16085" name="aaa922946cc09d820d19eddbe41d16085"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa922946cc09d820d19eddbe41d16085">&#9670;&#160;</a></span>local_min_bound_</h2>
+<a id="aa3ee77a1e8df8b48dae1061cdda20734" name="aa3ee77a1e8df8b48dae1061cdda20734"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3ee77a1e8df8b48dae1061cdda20734">&#9670;&#160;</a></span>local_min_bound_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1567,7 +1542,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t FatigueTest::FatigueTestMotion::local_min_bound_</td>
+          <td class="memname">float FatigueTest::FatigueTestMotion::local_min_bound_</td>
         </tr>
       </table>
   </td>

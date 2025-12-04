@@ -2,7 +2,7 @@ var searchData=
 [
   ['master_5faddr_0',['master_addr',['../uniontmc51x0_1_1UartFrame_1_1Frame.html#aa2cfd61f5603747ba44e0fa46ec24ed5',1,'tmc51x0::UartFrame::Frame']]],
   ['max_5fargs_1',['max_args',['../structCommandArg.html#aa7726c0a444fc46123ecde7f73827865',1,'CommandArg::max_args'],['../structOptionParser_1_1OptionDef.html#a77c41a6f29cf960d9fac5cfa2c27873d',1,'OptionParser::OptionDef::max_args']]],
-  ['max_5fbound_2',['max_bound',['../structFatigueTest_1_1BoundsResult.html#a2af9e97f75604456a80580f781e6e4c6',1,'FatigueTest::BoundsResult']]],
+  ['max_5fbound_2',['max_bound',['../structFatigueTest_1_1BoundsResult.html#a5071837f5a74ca9301bc616469ef864f',1,'FatigueTest::BoundsResult']]],
   ['max_5fcycles_5f_3',['max_cycles_',['../classBackAndForthMotion.html#a3edc669c83a62d2e6d3c7624324b3b8b',1,'BackAndForthMotion']]],
   ['max_5fdegrees_5ffrom_5fcenter_4',['max_degrees_from_center',['../structFatigueTestMotion_1_1Status.html#ac55c8f48583a25935b517753c6131c31',1,'FatigueTestMotion::Status::max_degrees_from_center'],['../structFatigueTest_1_1FatigueTestMotion_1_1Status.html#a80eaf7dd4311d097d96947fb491761b9',1,'FatigueTest::FatigueTestMotion::Status::max_degrees_from_center']]],
   ['max_5ff_5fclk_5',['MAX_F_CLK',['../namespacetmc51x0_1_1ClockFreq.html#a3646764e23b0e26677311b320cb8d530',1,'tmc51x0::ClockFreq']]],
@@ -17,7 +17,7 @@ var searchData=
   ['method_5fitem_5f_14',['method_item_',['../classOLEDMenu.html#a815e1a8e6b274fc894d655c29d66d291',1,'OLEDMenu']]],
   ['microsteps_15',['MICROSTEPS',['../internal__ramp__comprehensive__test_8cpp.html#ac0fcb659b270b34d64fb809691ccb95b',1,'internal_ramp_comprehensive_test.cpp']]],
   ['min_5fargs_16',['min_args',['../structCommandArg.html#a2d70d75b31312d5ab4ab41edf76b2a2d',1,'CommandArg::min_args'],['../structOptionParser_1_1OptionDef.html#aa1868e2b5b8492174286a69e5b92af6d',1,'OptionParser::OptionDef::min_args']]],
-  ['min_5fbound_17',['min_bound',['../structFatigueTest_1_1BoundsResult.html#a2c2953fa3958a4107e3d194cde4e0d38',1,'FatigueTest::BoundsResult']]],
+  ['min_5fbound_17',['min_bound',['../structFatigueTest_1_1BoundsResult.html#abb1c4b39901d8bf113e5294b452a861b',1,'FatigueTest::BoundsResult']]],
   ['min_5fcurrent_18',['min_current',['../structtmc51x0_1_1CoolStepConfig.html#a454132bfd7c6b7705cc79ab49fa4a014',1,'tmc51x0::CoolStepConfig']]],
   ['min_5fdegrees_5ffrom_5fcenter_19',['min_degrees_from_center',['../structFatigueTestMotion_1_1Status.html#aba2b63a16cd655976ad23d92d98b4c6f',1,'FatigueTestMotion::Status::min_degrees_from_center'],['../structFatigueTest_1_1FatigueTestMotion_1_1Status.html#aa6ca30f0b554dd7948aedc7cade9cd41',1,'FatigueTest::FatigueTestMotion::Status::min_degrees_from_center']]],
   ['min_5ff_5fclk_20',['MIN_F_CLK',['../namespacetmc51x0_1_1ClockFreq.html#a19ecaea87d80c60b18513b3c8364dde4',1,'tmc51x0::ClockFreq']]],

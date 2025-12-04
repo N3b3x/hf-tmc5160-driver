@@ -143,8 +143,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ac3a87878b3ad446135fb36d7d16d7ef0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get X_COMPARE register value (from local storage)  <br /></td></tr>
 <tr class="separator:ac3a87878b3ad446135fb36d7d16d7ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a982bc8446338528aa085ed69c4840732" id="r_a982bc8446338528aa085ed69c4840732"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a982bc8446338528aa085ed69c4840732">SetTargetPosition</a> (float value, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
-<tr class="memdesc:a982bc8446338528aa085ed69c4840732"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set target position.  <br /></td></tr>
+<tr class="memdesc:a982bc8446338528aa085ed69c4840732"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set target position (absolute)  <br /></td></tr>
 <tr class="separator:a982bc8446338528aa085ed69c4840732"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad702208002418dc2c47851553c79e959" id="r_ad702208002418dc2c47851553c79e959"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad702208002418dc2c47851553c79e959">MoveRelative</a> (float offset, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
+<tr class="memdesc:ad702208002418dc2c47851553c79e959"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move relative to current position.  <br /></td></tr>
+<tr class="separator:ad702208002418dc2c47851553c79e959"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8de42434ec2a92ea90e6702cb1478f7" id="r_ad8de42434ec2a92ea90e6702cb1478f7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8de42434ec2a92ea90e6702cb1478f7">GetCurrentPosition</a> (float &amp;position, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>) noexcept</td></tr>
 <tr class="memdesc:ad8de42434ec2a92ea90e6702cb1478f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current position.  <br /></td></tr>
 <tr class="separator:ad8de42434ec2a92ea90e6702cb1478f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -400,7 +403,8 @@ template&lt;typename CommType &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if read successfully, false otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if read successfully, false otherwise</dd></dl>
+<p>Returns the current position relative to the zero/home position set via <a class="el" href="#ae3349e2d173b95e1b1eb4256f02057c4" title="Set current position.">SetCurrentPosition()</a>. If home is unknown, call SetCurrentPosition(0.0f) at the current physical position first. </p>
 
 </div>
 </div>
@@ -842,6 +846,49 @@ template&lt;typename CommType &gt; </div>
 
 <p>Check if velocity target has been reached. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if velocity reached, false otherwise or on error </dd></dl>
+
+</div>
+</div>
+<a id="ad702208002418dc2c47851553c79e959" name="ad702208002418dc2c47851553c79e959"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad702208002418dc2c47851553c79e959">&#9670;&#160;</a></span>MoveRelative()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TMC51x0::RampControl::MoveRelative </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>offset</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a></span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Move relative to current position. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">offset</td><td>Relative movement offset (positive = forward, negative = backward) </td></tr>
+    <tr><td class="paramname">unit</td><td>Unit of the offset value (default: Steps) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise</dd></dl>
+<p>Moves relative to the current position. Automatically calculates the new target position by adding the offset to the current position. No need to manually calculate steps.</p>
+<p>Example: MoveRelative(90.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686ab70808dc1e3f9e2c06c9ba840cc7f44c" title="Degrees (per second for velocity, per second^2 for accel)">Unit::Deg</a>); // Move 90 degrees from current position MoveRelative(-45.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686ab70808dc1e3f9e2c06c9ba840cc7f44c" title="Degrees (per second for velocity, per second^2 for accel)">Unit::Deg</a>); // Move 45 degrees backward </p>
 
 </div>
 </div>
@@ -1676,15 +1723,16 @@ template&lt;typename CommType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Set target position. </p>
+<p>Set target position (absolute) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">value</td><td>Target position value </td></tr>
+    <tr><td class="paramname">value</td><td>Target position value (absolute position from current zero/home) </td></tr>
     <tr><td class="paramname">unit</td><td>Unit of the value (default: Steps) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if set successfully, false otherwise</dd></dl>
+<p>Sets an absolute target position. The position is relative to the current zero/home position set via <a class="el" href="#ae3349e2d173b95e1b1eb4256f02057c4" title="Set current position.">SetCurrentPosition()</a>. If home is unknown, call SetCurrentPosition(0.0f) at the current physical position to establish a reference point. </p>
 
 </div>
 </div>
