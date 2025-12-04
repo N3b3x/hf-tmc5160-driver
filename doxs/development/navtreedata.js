@@ -125,20 +125,20 @@ var NAVTREEINDEX =
 [
 "TestFramework_8h.html",
 "classFatigueTest_1_1FatigueTestMotion.html#a26b46774d398c3c61e07ca39882c1f48",
-"classtmc51x0_1_1SpiCommInterface.html",
+"classtmc51x0_1_1CommInterface.html#af7d2c54c605957f53994b984dcd5e1b4",
 "esp32__tmc51x0__test__config_8hpp.html#a7c13d9354888e4b27c1604872401799e",
-"functions_func_d.html",
-"internal__ramp__comprehensive__test_8cpp.html#ac0fcb659b270b34d64fb809691ccb95b",
-"namespacetmc51x0.html#a84ea1648f7a9d02773c685cf16f64c77a13d992d671957e9a2b3e936ca0cf14a4",
-"namespacetmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#afd0c7b8d41e3b9d3fe16bf964bd7b143",
-"structImageLoader_1_1BMPHeader.html#a67caf80f89735b18e32133f758f78749",
-"structtmc51x0_1_1Esp32SpiPinConfig.html",
-"structtmc51x0_1_1SpiCommand.html#a3dffe69573652e9fb6fbd260f0ca4f07",
-"structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a5e6d0821b2e44e448bbd495962eb7960",
-"tmc51x0__motor__calc_8hpp.html#a2e6968ff0ef7ea91a3cfd74286cd84a8",
-"ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9a43491564ebcfd38568918efbd6e840fd",
-"uniontmc51x0_1_1DRV__STATUS__Register.html#a70ccc809bb5e477b72227b2439ecc628",
-"uniontmc51x0_1_1OTP__READ__Register.html#ae4691d3798cfdd83788969ce6f634932"
+"functions_func_b.html",
+"internal__ramp__comprehensive__test_8cpp.html#abf50153a25393e591674fa4265d68e83",
+"namespacetmc51x0.html#a774504ccaf07160eba05e41574b8bb8f",
+"namespacetmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#afc745731044c76ba6236565b84da755a",
+"structImageLoader_1_1BMPHeader.html#a5a5e0bc56596256195e8972fa2c69b4b",
+"structtmc51x0_1_1EncoderConfig.html#ae995c01d2b1f049c1053a8afd510eca2",
+"structtmc51x0_1_1SpiCommand.html#a16d3d70f8dbf604b547d7f4df667f548",
+"structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a46cc0d151419bab1722642f565d06442",
+"tmc51x0__daisy__chain_8hpp_source.html",
+"ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9a186495f7da296bf880df3a22a492b378",
+"uniontmc51x0_1_1DRV__STATUS__Register.html#a6f7521669355ed7b8c8d4cf802aa9e83",
+"uniontmc51x0_1_1OTP__READ__Register.html#ac965eb8e3447ed9b655a8fa2fb2c75ec"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

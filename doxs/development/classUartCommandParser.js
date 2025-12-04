@@ -21,6 +21,8 @@ var classUartCommandParser =
     [ "Tokenize", "classUartCommandParser.html#a252be09aa840308655722421fafb1641", null ],
     [ "Tokenize", "classUartCommandParser.html#a252be09aa840308655722421fafb1641", null ],
     [ "commands_", "classUartCommandParser.html#a58ed1c7ff62ec2aa00d9b9b5b8cd3873", null ],
+    [ "line_buffer_", "classUartCommandParser.html#a7c47be0b9c8271421cd4901f6aa637e6", null ],
+    [ "line_buffer_pos_", "classUartCommandParser.html#a610837f77beb8786cb72350ae33d7c4c", null ],
     [ "RX_BUF_SIZE", "classUartCommandParser.html#acd6ce99799a13e266e0c29eacbbcb6bc", null ],
     [ "rx_buffer_", "classUartCommandParser.html#a16e9f384a670301fc856fe5e686279fb", null ],
     [ "uart_port_", "classUartCommandParser.html#a735f947de7f601f4be951aa649e180c9", null ]

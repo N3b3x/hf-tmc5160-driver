@@ -17,6 +17,7 @@ var group__TMC51X0__Subsystems =
       [ "IsTargetReached", "structtmc51x0_1_1TMC51x0_1_1RampControl.html#a4a2bd3e0b1088831e3db049a02e0a095", null ],
       [ "IsTargetVelocityReached", "structtmc51x0_1_1TMC51x0_1_1RampControl.html#a29e95fedcbe4d3d7839be6e73495bad5", null ],
       [ "IsVelocityReached", "structtmc51x0_1_1TMC51x0_1_1RampControl.html#accf5a0b0b37b7c175c6188debebc9f32", null ],
+      [ "MoveRelative", "structtmc51x0_1_1TMC51x0_1_1RampControl.html#ad702208002418dc2c47851553c79e959", null ],
       [ "SetAcceleration", "structtmc51x0_1_1TMC51x0_1_1RampControl.html#a7e8fc817e0a7c645c95d6c70c44b6d56", null ],
       [ "SetAccelerations", "structtmc51x0_1_1TMC51x0_1_1RampControl.html#a5b9dc10ecd5960d880b706461765a82d", null ],
       [ "SetComparePosition", "structtmc51x0_1_1TMC51x0_1_1RampControl.html#a84d22a7b1a50122e3ef7db390cb08357", null ],
