@@ -51,7 +51,11 @@ Adafruit_SH1106::~Adafruit_SH1106() {
 }
 
 bool Adafruit_SH1106::begin(uint8_t i2caddr, bool reset) {
-    i2caddr = i2caddr;
+    // Check if I2C address changed and recreate device if needed
+    bool address_changed = (i2c_dev != nullptr && this->i2caddr != i2caddr);
+    
+    // Update member variable with the provided address
+    this->i2caddr = i2caddr;
     
     // Allocate display buffer (128x64 = 1024 bytes, but SH1106 uses 128x64 = 8 pages * 128 bytes)
     if (!buffer) {
@@ -63,8 +67,12 @@ bool Adafruit_SH1106::begin(uint8_t i2caddr, bool reset) {
         memset(buffer, 0, (WIDTH * HEIGHT) / 8);
     }
     
-    // Create I2C device
-    if (!i2c_dev) {
+    // Create or recreate I2C device if needed or address changed
+    if (!i2c_dev || address_changed) {
+        if (i2c_dev) {
+            delete i2c_dev;
+            i2c_dev = nullptr;
+        }
         i2c_dev = new Adafruit_I2CDevice(i2caddr);
         if (!i2c_dev) {
             ESP_LOGE(TAG_SH1106, "Failed to create I2C device");
@@ -96,7 +104,7 @@ bool Adafruit_SH1106::begin(uint8_t i2caddr, bool reset) {
     }
     
     ESP_LOGI(TAG_SH1106, "SH1106 initialized: %dx%d, I2C addr=0x%02X", 
-             WIDTH, HEIGHT, i2caddr);
+             WIDTH, HEIGHT, this->i2caddr);
     return true;
 }
 

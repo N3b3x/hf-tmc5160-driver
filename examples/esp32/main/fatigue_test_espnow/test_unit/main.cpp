@@ -1096,7 +1096,7 @@ static void uart_command_task(void* arg)
 extern "C" void app_main()
 {
     ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
-    ESP_LOGI(TAG, "║         Fatigue Test Unit with ESP-NOW Communication                          ║");
+    ESP_LOGI(TAG, "║         Fatigue Test Unit with ESP-NOW Communication                         ║");
     ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
 
     // Initialize ESP-NOW receiver
@@ -1203,10 +1203,13 @@ extern "C" void app_main()
     }
 
     // Initialize UART command parser
-    ESP_LOGI(TAG, "║              Initializing UART Command Interface                     ║");
+    ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
+    ESP_LOGI(TAG, "║              Initializing UART Command Interface                             ║");
     ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
     
-    UartCommandParser parser(UART_NUM_0);
+    // Use static storage duration to ensure parser lives for the entire program lifetime
+    // The parser is used by uart_command_task which runs indefinitely
+    static UartCommandParser parser(UART_NUM_0);
     
     // Commands are now automatically routed based on word-based command names
     // Supported commands: set, start, stop, reset, status, help

@@ -55,8 +55,6 @@ bool OLEDMenu::update() {
     }
     last_button = current_button;
     
-    return needs_refresh_;
-    
     // Refresh display if needed
     if (needs_refresh_) {
         if (editing_value_) {
