@@ -1,0 +1,9 @@
+<map id="OLEDMenu::handleEncoderRotation" name="OLEDMenu::handleEncoderRotation">
+<area shape="rect" id="Node000001" title="Process encoder rotation." alt="" coords="5,55,257,80"/>
+<area shape="rect" id="Node000002" href="$classOLEDMenu.html#ac51758404b4f84bb988a5f7386d12fc6" title=" " alt="" coords="314,5,491,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="201,52,318,31,319,36,202,57"/>
+<area shape="rect" id="Node000003" href="$classOLEDMenu.html#a8933eca3c698ffff2df0d2f44805f740" title=" " alt="" coords="305,55,500,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="258,65,292,65,292,70,258,70"/>
+<area shape="rect" id="Node000004" href="$classOLEDMenu.html#ad0634484d24f960a2aafd0a4ff14f59b" title=" " alt="" coords="315,104,491,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="202,77,319,99,318,104,201,83"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="draw_settings_edit" name="draw_settings_edit">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,151,80"/>
+<area shape="rect" id="Node000002" href="$ui_8cpp.html#a32c298519216b1383a988fa054dc3793" title=" " alt="" coords="214,5,318,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,52,203,32,204,37,128,57"/>
+<area shape="rect" id="Node000003" href="$ui_8cpp.html#a0175558f4842e326030a9822e847a698" title=" " alt="" coords="199,55,333,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,65,185,65,185,70,151,70"/>
+<area shape="rect" id="Node000004" href="$ui_8cpp.html#a8810b673aec1cec4975a539a70b45163" title=" " alt="" coords="209,104,323,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="128,77,204,98,203,103,126,83"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="button.hpp" name="button.hpp">
+<area shape="rect" id="Node000001" title="Button handling for slideshow board." alt="" coords="199,5,291,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,156,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,33,121,76,119,71,217,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="180,79,309,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="247,31,247,65,242,65,242,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="334,79,438,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="269,28,352,70,350,75,266,33"/>
+</map>

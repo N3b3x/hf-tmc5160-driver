@@ -15,5 +15,6 @@ var searchData=
   ['amplitude_5f_12',['amplitude_',['../classFatigueTestMotion.html#a5e1422dc0e09efc8facd3768d8813158',1,'FatigueTestMotion::amplitude_'],['../classFatigueTest_1_1FatigueTestMotion.html#a99991c6d4aa3435bbd594bade961c532',1,'FatigueTest::FatigueTestMotion::amplitude_']]],
   ['angle_5funit_5f_13',['angle_unit_',['../classFatigueTestMotion.html#ad3532cc21841d56a71d8683375167167',1,'FatigueTestMotion::angle_unit_'],['../classFatigueTest_1_1FatigueTestMotion.html#aa91b0add34c56a1ddda50e5ed8e3ab4c',1,'FatigueTest::FatigueTestMotion::angle_unit_']]],
   ['arg_14',['arg',['../structCommandEntry.html#a0c9f0f99c2006d914dde9150272d6deb',1,'CommandEntry']]],
-  ['at_5fcycle_15',['at_cycle',['../structErrorPayload.html#a301d38c548ae1cf4c503824ed0b18306',1,'ErrorPayload::at_cycle'],['../structProtoEvent.html#ac2c3f3a1beec65aa1bf3b38149cc5604',1,'ProtoEvent::at_cycle']]]
+  ['at_5fcycle_15',['at_cycle',['../structErrorPayload.html#a301d38c548ae1cf4c503824ed0b18306',1,'ErrorPayload::at_cycle'],['../structProtoEvent.html#ac2c3f3a1beec65aa1bf3b38149cc5604',1,'ProtoEvent::at_cycle']]],
+  ['auto_5fadvance_5fdelay_5fsec_16',['AUTO_ADVANCE_DELAY_SEC',['../ui__slideshow__board_2config_8hpp.html#ae8874a5175647e8c8e77e9dd89807794',1,'config.hpp']]]
 ];

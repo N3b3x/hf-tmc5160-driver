@@ -1,10 +1,7 @@
 <map id="touch_activity" name="touch_activity">
-<area shape="rect" id="Node000001" title=" " alt="" coords="260,31,375,56"/>
-<area shape="rect" id="Node000002" href="$namespaceUI.html#a7398d69b6b84d4cd8309a7607ec4d0bf" title=" " alt="" coords="143,5,209,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="246,33,208,26,209,21,247,28"/>
-<area shape="rect" id="Node000004" href="$namespaceUI.html#a0b7d4bd69e8c3a932139260abddb5e6e" title=" " alt="" coords="140,55,212,80"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="247,58,213,64,212,59,246,53"/>
-<area shape="rect" id="Node000003" href="$ui__board_2main_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,31,92,56"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="130,30,93,37,92,32,129,24"/>
-<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="126,61,92,54,93,49,127,55"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="125,31,240,56"/>
+<area shape="rect" id="Node000002" href="$namespaceUI.html#a7398d69b6b84d4cd8309a7607ec4d0bf" title=" " alt="" coords="9,5,74,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,33,74,26,75,21,113,28"/>
+<area shape="rect" id="Node000003" href="$namespaceUI.html#a0b7d4bd69e8c3a932139260abddb5e6e" title=" " alt="" coords="5,55,77,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="112,58,78,64,77,59,112,53"/>
 </map>

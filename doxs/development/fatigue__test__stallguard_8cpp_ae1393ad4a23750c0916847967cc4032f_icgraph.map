@@ -1,5 +1,7 @@
 <map id="HandleStatus" name="HandleStatus">
-<area shape="rect" id="Node000001" title=" " alt="" coords="140,5,249,31"/>
-<area shape="rect" id="Node000002" href="$fatigue__test__stallguard_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,5,92,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,21,92,21,92,15,126,15"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="219,35,328,60"/>
+<area shape="rect" id="Node000002" href="$fatigue__test__stallguard_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="45,5,131,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,39,131,27,132,22,205,34"/>
+<area shape="rect" id="Node000003" href="$classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68" title="Process a command line." alt="" coords="5,55,171,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="205,60,171,65,170,60,205,55"/>
 </map>

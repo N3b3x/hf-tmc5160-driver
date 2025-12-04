@@ -101,12 +101,12 @@ $(function(){initNavTree('ui_8cpp.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="namespaceUI.html">UI</a> implementation with Adafruit 2.9" ThinkInk E-Ink display.  
+<p><a class="el" href="namespaceUI.html">UI</a> implementation with Adafruit 2.9" ThinkInk E-Ink tricolor display.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="ui_8hpp_source.html">ui.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ui__board_2espnow__protocol_8hpp_source.html">espnow_protocol.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="settings_8hpp_source.html">settings.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="config_8hpp_source.html">config.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ui__board_2config_8hpp_source.html">config.hpp</a>&quot;</code><br />
 <code>#include &quot;esp_log.h&quot;</code><br />
 <code>#include &quot;esp_timer.h&quot;</code><br />
 <code>#include &quot;Adafruit_GFX.h&quot;</code><br />
@@ -115,15 +115,17 @@ $(function(){initNavTree('ui_8cpp.html',''); initResizable(); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ui.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp__incl.svg" width="1260" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp__incl.svg" width="1232" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a4be20a3d7faccbb1c6d931858839299b" id="r_a4be20a3d7faccbb1c6d931858839299b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4be20a3d7faccbb1c6d931858839299b">draw_main_screen</a> ()</td></tr>
 <tr class="separator:a4be20a3d7faccbb1c6d931858839299b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47ab0e6cea2b79b68ea5c5b7207da1b8" id="r_a47ab0e6cea2b79b68ea5c5b7207da1b8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47ab0e6cea2b79b68ea5c5b7207da1b8">draw_settings_screen</a> ()</td></tr>
-<tr class="separator:a47ab0e6cea2b79b68ea5c5b7207da1b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae017559aa66d2b58e26dae763ddf9095" id="r_ae017559aa66d2b58e26dae763ddf9095"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae017559aa66d2b58e26dae763ddf9095">draw_settings_menu</a> ()</td></tr>
+<tr class="separator:ae017559aa66d2b58e26dae763ddf9095"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49a7a89161a22675434e00b56ffbc3c9" id="r_a49a7a89161a22675434e00b56ffbc3c9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a49a7a89161a22675434e00b56ffbc3c9">draw_settings_edit</a> ()</td></tr>
+<tr class="separator:a49a7a89161a22675434e00b56ffbc3c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad858075202937771337f4535e15d9454" id="r_ad858075202937771337f4535e15d9454"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad858075202937771337f4535e15d9454">draw_confirm_stop</a> ()</td></tr>
 <tr class="separator:ad858075202937771337f4535e15d9454"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affcbe5be37a7925684c11648bf9b16bc" id="r_affcbe5be37a7925684c11648bf9b16bc"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#affcbe5be37a7925684c11648bf9b16bc">draw_error_screen</a> ()</td></tr>
@@ -136,10 +138,16 @@ Functions</h2></td></tr>
 <tr class="separator:a8810b673aec1cec4975a539a70b45163"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c4d8725eda0d50aef46d2a3258e38b0" id="r_a9c4d8725eda0d50aef46d2a3258e38b0"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9c4d8725eda0d50aef46d2a3258e38b0">set_header_style</a> ()</td></tr>
 <tr class="separator:a9c4d8725eda0d50aef46d2a3258e38b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1653537ccf75c5123545def8f472b79" id="r_aa1653537ccf75c5123545def8f472b79"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa1653537ccf75c5123545def8f472b79">set_button_style</a> (bool selected=false)</td></tr>
-<tr class="separator:aa1653537ccf75c5123545def8f472b79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0175558f4842e326030a9822e847a698" id="r_a0175558f4842e326030a9822e847a698"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0175558f4842e326030a9822e847a698">set_normal_style</a> ()</td></tr>
+<tr class="separator:a0175558f4842e326030a9822e847a698"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaadd4b4f41faf9402319a0bd7a9b4278" id="r_aaadd4b4f41faf9402319a0bd7a9b4278"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaadd4b4f41faf9402319a0bd7a9b4278">set_selected_style</a> ()</td></tr>
+<tr class="separator:aaadd4b4f41faf9402319a0bd7a9b4278"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32c298519216b1383a988fa054dc3793" id="r_a32c298519216b1383a988fa054dc3793"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a32c298519216b1383a988fa054dc3793">clear_screen</a> ()</td></tr>
 <tr class="separator:a32c298519216b1383a988fa054dc3793"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48a3de6daffe131336f1ca90af07e2e8" id="r_a48a3de6daffe131336f1ca90af07e2e8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a48a3de6daffe131336f1ca90af07e2e8">draw_menu_item</a> (const char *label, const char *value, int y, bool selected)</td></tr>
+<tr class="separator:a48a3de6daffe131336f1ca90af07e2e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af745885c2ef7697126280d68b5f3c2af" id="r_af745885c2ef7697126280d68b5f3c2af"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af745885c2ef7697126280d68b5f3c2af">draw_edit_value</a> (const char *label, uint32_t value, int y, bool selected)</td></tr>
+<tr class="separator:af745885c2ef7697126280d68b5f3c2af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8c85e0d93197d7f51513514b81f4ede" id="r_ad8c85e0d93197d7f51513514b81f4ede"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8c85e0d93197d7f51513514b81f4ede">touch_activity</a> ()</td></tr>
 <tr class="separator:ad8c85e0d93197d7f51513514b81f4ede"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e18915fb61b5d382fe8b18239124d82" id="r_a1e18915fb61b5d382fe8b18239124d82"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e18915fb61b5d382fe8b18239124d82">handle_button</a> (const <a class="el" href="structButtonEvent.html">ButtonEvent</a> &amp;be)</td></tr>
@@ -153,6 +161,10 @@ Variables</h2></td></tr>
 <tr class="separator:a79974c2b641adb413dc5a153d685c823"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abee7335970c3d576d1793f7641efb5fb" id="r_abee7335970c3d576d1793f7641efb5fb"><td class="memItemLeft" align="right" valign="top">static Adafruit_IL0373 *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abee7335970c3d576d1793f7641efb5fb">g_display</a> = nullptr</td></tr>
 <tr class="separator:abee7335970c3d576d1793f7641efb5fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a074bcaeb43945a4f6676effd495c7a26" id="r_a074bcaeb43945a4f6676effd495c7a26"><td class="memItemLeft" align="right" valign="top">static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a074bcaeb43945a4f6676effd495c7a26">DISPLAY_WIDTH</a> = 128</td></tr>
+<tr class="separator:a074bcaeb43945a4f6676effd495c7a26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f3bef71d1ab924a7833eeebaacef98b" id="r_a1f3bef71d1ab924a7833eeebaacef98b"><td class="memItemLeft" align="right" valign="top">static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f3bef71d1ab924a7833eeebaacef98b">DISPLAY_HEIGHT</a> = 296</td></tr>
+<tr class="separator:a1f3bef71d1ab924a7833eeebaacef98b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac931f04c76e99022410d50521bc0fd13" id="r_ac931f04c76e99022410d50521bc0fd13"><td class="memItemLeft" align="right" valign="top">static QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac931f04c76e99022410d50521bc0fd13">s_uiQueue</a> = nullptr</td></tr>
 <tr class="separator:ac931f04c76e99022410d50521bc0fd13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0e5dc1680a40fc793e09f75867483f5" id="r_af0e5dc1680a40fc793e09f75867483f5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSettings.html">Settings</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0e5dc1680a40fc793e09f75867483f5">s_settings</a> = nullptr</td></tr>
@@ -167,9 +179,28 @@ Variables</h2></td></tr>
 <tr class="separator:a3832b80730a7255eed8e6495abe3aab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80b4ffe2ff8f2042382d6b5cb0a4e82d" id="r_a80b4ffe2ff8f2042382d6b5cb0a4e82d"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80b4ffe2ff8f2042382d6b5cb0a4e82d">s_errorCode</a> = 0</td></tr>
 <tr class="separator:a80b4ffe2ff8f2042382d6b5cb0a4e82d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61ffa18cfb81ea4077aac3a3e9601590" id="r_a61ffa18cfb81ea4077aac3a3e9601590"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a61ffa18cfb81ea4077aac3a3e9601590">s_settingsMenuIndex</a> = 0</td></tr>
+<tr class="separator:a61ffa18cfb81ea4077aac3a3e9601590"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a733ecdf7bddbd56d2b46432da5bf3d6b" id="r_a733ecdf7bddbd56d2b46432da5bf3d6b"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a733ecdf7bddbd56d2b46432da5bf3d6b">SETTINGS_MENU_COUNT</a> = 5</td></tr>
+<tr class="separator:a733ecdf7bddbd56d2b46432da5bf3d6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2c4a84c3c110c040065365a89b7ac47" id="r_ab2c4a84c3c110c040065365a89b7ac47"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab2c4a84c3c110c040065365a89b7ac47">s_editValue</a> = 0</td></tr>
+<tr class="separator:ab2c4a84c3c110c040065365a89b7ac47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affb14deb620a1f1b672110c2d8138be8" id="r_affb14deb620a1f1b672110c2d8138be8"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#affb14deb620a1f1b672110c2d8138be8">s_editMin</a> = 0</td></tr>
+<tr class="separator:affb14deb620a1f1b672110c2d8138be8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02d468531723ba25d060d2469677cfd1" id="r_a02d468531723ba25d060d2469677cfd1"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02d468531723ba25d060d2469677cfd1">s_editMax</a> = 0</td></tr>
+<tr class="separator:a02d468531723ba25d060d2469677cfd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a458d61797b32fdcbff193d19d3856511" id="r_a458d61797b32fdcbff193d19d3856511"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a458d61797b32fdcbff193d19d3856511">s_editStep</a> = 1</td></tr>
+<tr class="separator:a458d61797b32fdcbff193d19d3856511"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="namespaceUI.html">UI</a> implementation with Adafruit 2.9" ThinkInk E-Ink display. </p>
+<div class="textblock"><p><a class="el" href="namespaceUI.html">UI</a> implementation with Adafruit 2.9" ThinkInk E-Ink tricolor display. </p>
+<p>Display: 2.9" ThinkInk FeatherWing (296x128 pixels horizontal) Orientation: Vertical (128x296 pixels when rotated) <a class="el" href="namespaceButtons.html">Buttons</a>: UP (top), SELECT (middle), DOWN (bottom)</p>
+<p>Features:</p><ul>
+<li>Full menu navigation system</li>
+<li><a class="el" href="structSettings.html">Settings</a> editing with value adjustment</li>
+<li>Proper e-ink tricolor support (black, white, red)</li>
+<li>Optimized refresh rates for e-ink </li>
+</ul>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a32c298519216b1383a988fa054dc3793" name="a32c298519216b1383a988fa054dc3793"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a32c298519216b1383a988fa054dc3793">&#9670;&#160;</a></span>clear_screen()</h2>
@@ -196,7 +227,7 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a32c298519216b1383a988fa054dc3793_icgraph.svg" width="752" height="234"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a32c298519216b1383a988fa054dc3793_icgraph.svg" width="618" height="283"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -231,7 +262,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_aa71e2da1c80051d22621540c12009474_icgraph.svg" width="592" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_aa71e2da1c80051d22621540c12009474_icgraph.svg" width="458" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -266,8 +297,47 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_ad858075202937771337f4535e15d9454_icgraph.svg" width="574" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_ad858075202937771337f4535e15d9454_icgraph.svg" width="439" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="af745885c2ef7697126280d68b5f3c2af" name="af745885c2ef7697126280d68b5f3c2af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af745885c2ef7697126280d68b5f3c2af">&#9670;&#160;</a></span>draw_edit_value()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void draw_edit_value </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>label</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>value</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>y</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>selected</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -301,7 +371,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_affcbe5be37a7925684c11648bf9b16bc_icgraph.svg" width="563" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_affcbe5be37a7925684c11648bf9b16bc_icgraph.svg" width="428" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -336,13 +406,13 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a4be20a3d7faccbb1c6d931858839299b_icgraph.svg" width="572" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a4be20a3d7faccbb1c6d931858839299b_icgraph.svg" width="438" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a47ab0e6cea2b79b68ea5c5b7207da1b8" name="a47ab0e6cea2b79b68ea5c5b7207da1b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47ab0e6cea2b79b68ea5c5b7207da1b8">&#9670;&#160;</a></span>draw_settings_screen()</h2>
+<a id="a48a3de6daffe131336f1ca90af07e2e8" name="a48a3de6daffe131336f1ca90af07e2e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48a3de6daffe131336f1ca90af07e2e8">&#9670;&#160;</a></span>draw_menu_item()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -351,7 +421,56 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void draw_settings_screen </td>
+          <td class="memname">static void draw_menu_item </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>label</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>value</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>y</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>selected</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a48a3de6daffe131336f1ca90af07e2e8_cgraph.svg" width="328" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a48a3de6daffe131336f1ca90af07e2e8_icgraph.svg" width="634" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a49a7a89161a22675434e00b56ffbc3c9" name="a49a7a89161a22675434e00b56ffbc3c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49a7a89161a22675434e00b56ffbc3c9">&#9670;&#160;</a></span>draw_settings_edit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void draw_settings_edit </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -366,12 +485,47 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a47ab0e6cea2b79b68ea5c5b7207da1b8_cgraph.svg" width="355" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a49a7a89161a22675434e00b56ffbc3c9_cgraph.svg" width="339" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a47ab0e6cea2b79b68ea5c5b7207da1b8_icgraph.svg" width="591" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a49a7a89161a22675434e00b56ffbc3c9_icgraph.svg" width="439" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ae017559aa66d2b58e26dae763ddf9095" name="ae017559aa66d2b58e26dae763ddf9095"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae017559aa66d2b58e26dae763ddf9095">&#9670;&#160;</a></span>draw_settings_menu()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void draw_settings_menu </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_ae017559aa66d2b58e26dae763ddf9095_cgraph.svg" width="534" height="236"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_ae017559aa66d2b58e26dae763ddf9095_icgraph.svg" width="451" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -401,12 +555,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a1e18915fb61b5d382fe8b18239124d82_cgraph.svg" width="783" height="468"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a1e18915fb61b5d382fe8b18239124d82_cgraph.svg" width="784" height="611"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a1e18915fb61b5d382fe8b18239124d82_icgraph.svg" width="380" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a1e18915fb61b5d382fe8b18239124d82_icgraph.svg" width="246" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -441,37 +595,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a2305a20b6ebc395d5e4b54035dbf1d0a_icgraph.svg" width="372" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="aa1653537ccf75c5123545def8f472b79" name="aa1653537ccf75c5123545def8f472b79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1653537ccf75c5123545def8f472b79">&#9670;&#160;</a></span>set_button_style()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void set_button_style </td>
-          <td>(</td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>selected</em><span class="paramdefsep"> = </span><span class="paramdefval">false</span></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_aa1653537ccf75c5123545def8f472b79_icgraph.svg" width="751" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a2305a20b6ebc395d5e4b54035dbf1d0a_icgraph.svg" width="238" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -501,8 +625,63 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a9c4d8725eda0d50aef46d2a3258e38b0_icgraph.svg" width="992" height="290"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a9c4d8725eda0d50aef46d2a3258e38b0_icgraph.svg" width="855" height="290"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="a0175558f4842e326030a9822e847a698" name="a0175558f4842e326030a9822e847a698"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0175558f4842e326030a9822e847a698">&#9670;&#160;</a></span>set_normal_style()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void set_normal_style </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a0175558f4842e326030a9822e847a698_icgraph.svg" width="827" height="199"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aaadd4b4f41faf9402319a0bd7a9b4278" name="aaadd4b4f41faf9402319a0bd7a9b4278"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaadd4b4f41faf9402319a0bd7a9b4278">&#9670;&#160;</a></span>set_selected_style()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void set_selected_style </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -531,7 +710,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a8810b673aec1cec4975a539a70b45163_icgraph.svg" width="763" height="234"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a8810b673aec1cec4975a539a70b45163_icgraph.svg" width="628" height="283"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -561,7 +740,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_ad8c85e0d93197d7f51513514b81f4ede_icgraph.svg" width="380" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_ad8c85e0d93197d7f51513514b81f4ede_icgraph.svg" width="246" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -596,12 +775,56 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a90fd0a28f8f326515c368d588d558967_icgraph.svg" width="780" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui_8cpp_a90fd0a28f8f326515c368d588d558967_icgraph.svg" width="646" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a1f3bef71d1ab924a7833eeebaacef98b" name="a1f3bef71d1ab924a7833eeebaacef98b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f3bef71d1ab924a7833eeebaacef98b">&#9670;&#160;</a></span>DISPLAY_HEIGHT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint16_t DISPLAY_HEIGHT = 296</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a074bcaeb43945a4f6676effd495c7a26" name="a074bcaeb43945a4f6676effd495c7a26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a074bcaeb43945a4f6676effd495c7a26">&#9670;&#160;</a></span>DISPLAY_WIDTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint16_t DISPLAY_WIDTH = 128</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="abee7335970c3d576d1793f7641efb5fb" name="abee7335970c3d576d1793f7641efb5fb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abee7335970c3d576d1793f7641efb5fb">&#9670;&#160;</a></span>g_display</h2>
 
@@ -635,6 +858,94 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">uint32_t s_currentCycle = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a02d468531723ba25d060d2469677cfd1" name="a02d468531723ba25d060d2469677cfd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02d468531723ba25d060d2469677cfd1">&#9670;&#160;</a></span>s_editMax</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t s_editMax = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="affb14deb620a1f1b672110c2d8138be8" name="affb14deb620a1f1b672110c2d8138be8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affb14deb620a1f1b672110c2d8138be8">&#9670;&#160;</a></span>s_editMin</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t s_editMin = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a458d61797b32fdcbff193d19d3856511" name="a458d61797b32fdcbff193d19d3856511"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a458d61797b32fdcbff193d19d3856511">&#9670;&#160;</a></span>s_editStep</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t s_editStep = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab2c4a84c3c110c040065365a89b7ac47" name="ab2c4a84c3c110c040065365a89b7ac47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2c4a84c3c110c040065365a89b7ac47">&#9670;&#160;</a></span>s_editValue</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t s_editValue = 0</td>
         </tr>
       </table>
   </td>
@@ -734,6 +1045,28 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a61ffa18cfb81ea4077aac3a3e9601590" name="a61ffa18cfb81ea4077aac3a3e9601590"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61ffa18cfb81ea4077aac3a3e9601590">&#9670;&#160;</a></span>s_settingsMenuIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int s_settingsMenuIndex = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aa5b2d702e2528d1c92385444040a460d" name="aa5b2d702e2528d1c92385444040a460d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa5b2d702e2528d1c92385444040a460d">&#9670;&#160;</a></span>s_state</h2>
 
@@ -772,6 +1105,28 @@ Here is the caller graph for this function:</div>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a733ecdf7bddbd56d2b46432da5bf3d6b" name="a733ecdf7bddbd56d2b46432da5bf3d6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a733ecdf7bddbd56d2b46432da5bf3d6b">&#9670;&#160;</a></span>SETTINGS_MENU_COUNT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int SETTINGS_MENU_COUNT = 5</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

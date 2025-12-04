@@ -1,0 +1,9 @@
+<map id="ImageLoader::loadAndDisplayBMP" name="ImageLoader::loadAndDisplayBMP">
+<area shape="rect" id="Node000001" title="Load and display BMP image on e&#45;ink display." alt="" coords="5,55,252,80"/>
+<area shape="rect" id="Node000002" href="$namespaceSDCard.html#a7f224a0a494f7b7be109c923eacce5fb" title="Get file size." alt="" coords="331,5,481,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,52,320,31,321,36,201,57"/>
+<area shape="rect" id="Node000003" href="$namespaceSDCard.html#a594de90c48b7543baa9511107abef64c" title="Read file from SD card." alt="" coords="341,55,471,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="252,65,327,65,327,70,252,70"/>
+<area shape="rect" id="Node000004" href="$namespaceImageLoader.html#a194fbc480b0bb719dd01229c28516493" title="Convert RGB pixel to e&#45;ink color." alt="" coords="300,104,512,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="201,77,321,99,320,104,200,83"/>
+</map>

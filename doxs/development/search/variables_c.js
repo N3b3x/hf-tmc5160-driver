@@ -5,10 +5,12 @@ var searchData=
   ['n_5fevent_2',['n_event',['../uniontmc51x0_1_1ENC__STATUS__Register.html#ae2408e51aeee2f4be9c51a678e5988b0',1,'tmc51x0::ENC_STATUS_Register']]],
   ['n_5fsensitivity_3',['n_sensitivity',['../structtmc51x0_1_1EncoderConfig.html#aaa92bc1a9d59ef83f231b72d24296bad',1,'tmc51x0::EncoderConfig']]],
   ['n_5fsensitivity_4',['N_SENSITIVITY',['../namespacetmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1Encoder.html#ac90062636916b223b8f120c296ffc0ee',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::Encoder::N_SENSITIVITY'],['../namespacetmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#af7f767051436d993bc22e5236723805a',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::Encoder::N_SENSITIVITY']]],
-  ['neg_5fedge_5',['neg_edge',['../uniontmc51x0_1_1ENCMODE__Register.html#a3a2426164568f62f5694c61594e886f2',1,'tmc51x0::ENCMODE_Register']]],
-  ['node_5faddr_6',['node_addr',['../uniontmc51x0_1_1UartFrame_1_1Frame.html#a33d27f1f0203472b2a5befa0922eef25',1,'tmc51x0::UartFrame::Frame']]],
-  ['node_5faddress_7',['node_address',['../structtmc51x0_1_1UartConfig.html#a3c10e16e32097acaa8734e207e1226aa',1,'tmc51x0::UartConfig']]],
-  ['num_5factive_5fdevices_5f_8',['num_active_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a589a348bfced31beaf1ad6ff39bca58e',1,'tmc51x0::TMC51x0DaisyChain::num_active_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#a58c0f7968d95a448504292f5043536dd',1,'tmc51x0::TMC51x0MultiNode::num_active_devices_']]],
-  ['num_5fonboard_5fdevices_5f_9',['num_onboard_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a4fd8aa10deac6ac8e55e397a34e6fe94',1,'tmc51x0::TMC51x0DaisyChain::num_onboard_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#afd8d19c9724c0f933cdaa38f66d5e0c0',1,'tmc51x0::TMC51x0MultiNode::num_onboard_devices_']]],
-  ['nvs_5fnamespace_10',['NVS_NAMESPACE',['../namespaceanonymous__namespace_02settings_8cpp_03.html#ac404bd8fc90a64de408a60472f580891',1,'anonymous_namespace{settings.cpp}']]]
+  ['needs_5frefresh_5f_5',['needs_refresh_',['../classOLEDMenu.html#afe58b654ac6605724d5d7300c8a4bcd8',1,'OLEDMenu']]],
+  ['neg_5fedge_6',['neg_edge',['../uniontmc51x0_1_1ENCMODE__Register.html#a3a2426164568f62f5694c61594e886f2',1,'tmc51x0::ENCMODE_Register']]],
+  ['node_5faddr_7',['node_addr',['../uniontmc51x0_1_1UartFrame_1_1Frame.html#a33d27f1f0203472b2a5befa0922eef25',1,'tmc51x0::UartFrame::Frame']]],
+  ['node_5faddress_8',['node_address',['../structtmc51x0_1_1UartConfig.html#a3c10e16e32097acaa8734e207e1226aa',1,'tmc51x0::UartConfig']]],
+  ['num_5factive_5fdevices_5f_9',['num_active_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a589a348bfced31beaf1ad6ff39bca58e',1,'tmc51x0::TMC51x0DaisyChain::num_active_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#a58c0f7968d95a448504292f5043536dd',1,'tmc51x0::TMC51x0MultiNode::num_active_devices_']]],
+  ['num_5fimage_5fextensions_10',['NUM_IMAGE_EXTENSIONS',['../ui__slideshow__board_2config_8hpp.html#af264cb284cfebc6e2975523e4626d863',1,'config.hpp']]],
+  ['num_5fonboard_5fdevices_5f_11',['num_onboard_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a4fd8aa10deac6ac8e55e397a34e6fe94',1,'tmc51x0::TMC51x0DaisyChain::num_onboard_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#afd8d19c9724c0f933cdaa38f66d5e0c0',1,'tmc51x0::TMC51x0MultiNode::num_onboard_devices_']]],
+  ['nvs_5fnamespace_12',['NVS_NAMESPACE',['../namespaceanonymous__namespace_02settings_8cpp_03.html#ac404bd8fc90a64de408a60472f580891',1,'anonymous_namespace{settings.cpp}']]]
 ];

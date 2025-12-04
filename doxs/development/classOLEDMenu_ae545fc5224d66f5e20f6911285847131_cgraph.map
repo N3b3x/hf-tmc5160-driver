@@ -1,0 +1,23 @@
+<map id="OLEDMenu::update" name="OLEDMenu::update">
+<area shape="rect" id="Node000001" title="Update menu (call from main loop)" alt="" coords="5,153,152,179"/>
+<area shape="rect" id="Node000002" href="$classOLEDMenu.html#a0affbbc435e3cbab7d35fc97ff8c1e61" title="Process encoder button." alt="" coords="206,55,446,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,151,199,114,278,83,280,88,201,119,112,156"/>
+<area shape="rect" id="Node000006" href="$classOLEDMenu.html#a230b9700fb516c528921866a88290888" title="Process encoder rotation." alt="" coords="200,128,452,153"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="152,156,188,152,189,157,152,161"/>
+<area shape="rect" id="Node000010" href="$classOLEDMenu.html#afa804bdf41e7de87688810b82069e8dc" title=" " alt="" coords="237,177,415,203"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="152,170,223,177,223,183,152,176"/>
+<area shape="rect" id="Node000011" href="$classOLEDMenu.html#a14e4efabf3a7df73884905396754a4c2" title=" " alt="" coords="224,227,428,252"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="108,176,151,195,201,213,233,221,232,226,199,218,149,200,106,181"/>
+<area shape="rect" id="Node000003" href="$classOLEDMenu.html#a5b4497438be5d1f79a77337b480504bd" title=" " alt="" coords="515,5,680,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="396,52,513,31,514,36,397,57"/>
+<area shape="rect" id="Node000005" href="$classOLEDMenu.html#a6ae458f0db504178114ffac30de8cbaf" title=" " alt="" coords="513,55,681,80"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="446,65,500,65,500,70,446,70"/>
+<area shape="rect" id="Node000004" href="$classOLEDMenu.html#a559064c9b5ef239ad82d0b8ba91c4703" title=" " alt="" coords="743,5,935,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="680,15,729,15,729,21,680,21"/>
+<area shape="rect" id="Node000007" href="$classOLEDMenu.html#ac51758404b4f84bb988a5f7386d12fc6" title=" " alt="" coords="509,104,686,129"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="452,127,495,123,496,128,452,132"/>
+<area shape="rect" id="Node000008" href="$classOLEDMenu.html#a8933eca3c698ffff2df0d2f44805f740" title=" " alt="" coords="500,153,695,179"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="452,150,487,153,486,158,452,155"/>
+<area shape="rect" id="Node000009" href="$classOLEDMenu.html#ad0634484d24f960a2aafd0a4ff14f59b" title=" " alt="" coords="509,203,685,228"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="408,151,453,164,477,176,501,189,523,196,522,201,499,194,475,181,451,168,407,156"/>
+</map>

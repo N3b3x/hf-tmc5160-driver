@@ -7,6 +7,9 @@ var annotated_dup =
       [ "IBoundsFinder", "classFatigueTest_1_1IBoundsFinder.html", "classFatigueTest_1_1IBoundsFinder" ],
       [ "StallGuardBoundsFinder", "classFatigueTest_1_1StallGuardBoundsFinder.html", "classFatigueTest_1_1StallGuardBoundsFinder" ]
     ] ],
+    [ "ImageLoader", "namespaceImageLoader.html", [
+      [ "BMPHeader", "structImageLoader_1_1BMPHeader.html", "structImageLoader_1_1BMPHeader" ]
+    ] ],
     [ "tmc51x0", "namespacetmc51x0.html", [
       [ "CHOPCONF_Register", "uniontmc51x0_1_1CHOPCONF__Register.html", "uniontmc51x0_1_1CHOPCONF__Register" ],
       [ "ChopperConfig", "structtmc51x0_1_1ChopperConfig.html", "structtmc51x0_1_1ChopperConfig" ],
@@ -77,9 +80,14 @@ var annotated_dup =
     [ "EspNowHeader", "structEspNowHeader.html", "structEspNowHeader" ],
     [ "EspNowPacket", "structEspNowPacket.html", "structEspNowPacket" ],
     [ "FatigueTestMotion", "classFatigueTestMotion.html", "classFatigueTestMotion" ],
+    [ "MenuItem", "structMenuItem.html", "structMenuItem" ],
+    [ "OLEDMenu", "classOLEDMenu.html", "classOLEDMenu" ],
+    [ "OptionParser", "classOptionParser.html", "classOptionParser" ],
+    [ "ParsedCommand", "structParsedCommand.html", "structParsedCommand" ],
     [ "ProtoEvent", "structProtoEvent.html", "structProtoEvent" ],
     [ "RawMsg", "structRawMsg.html", "structRawMsg" ],
     [ "Settings", "structSettings.html", "structSettings" ],
+    [ "SlideshowButtonEvent", "structSlideshowButtonEvent.html", "structSlideshowButtonEvent" ],
     [ "StatusPayload", "structStatusPayload.html", "structStatusPayload" ],
     [ "TestDriverHandle", "structTestDriverHandle.html", "structTestDriverHandle" ],
     [ "TestResults", "structTestResults.html", "structTestResults" ],

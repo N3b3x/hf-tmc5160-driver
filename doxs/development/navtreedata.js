@@ -112,7 +112,7 @@ var NAVTREE =
       [ "File Members", "globals.html", [
         [ "All", "globals.html", "globals_dup" ],
         [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", null ],
+        [ "Variables", "globals_vars.html", "globals_vars" ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
         [ "Macros", "globals_defs.html", null ]
@@ -124,20 +124,21 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "TestFramework_8h.html",
-"classFatigueTest_1_1FatigueTestMotion.html#a1b73c95ad6dfe1deaa3dc5a3b271bd2e",
-"classtmc51x0_1_1TMC51x0.html",
-"esp32__tmc51x0__test__config_8hpp.html#a98f29ab00a49ffe948a306dadccb7d64",
-"functions_n.html",
-"namespaceEspNowReceiver.html#a7b5448c32668c4ce8c8b2e825fe523ee",
-"namespacetmc51x0__test__config.html",
-"spi__daisy__chain__comprehensive__test_8cpp.html#aaff89257c54366921eebb8ec1348b1fd",
-"structtmc51x0_1_1DriverConfig.html#a09d6d126e8caeba0da3fe5a3fc347fab",
-"structtmc51x0_1_1PowerStageParameters.html#ab9f24bc80f563d225df451921e57a1aa",
-"structtmc51x0_1_1TMC51x0_1_1Diagnostics.html#a6f1e0f7795a15fe4eb07bc20ef81bf77",
-"tmc51x0__comm__interface_8hpp.html#a564533944e9fa3223c5db30f0f4106eba096538213f7a62873f3e7f37801559de",
-"ui_8cpp.html#affcbe5be37a7925684c11648bf9b16bc",
-"uniontmc51x0_1_1GCONF__Register.html#a87b8146e7bfe7306942a38ec893068b8",
-"uniontmc51x0_1_1SHORT__CONF__Register.html#a7b1db32acfae2d382af3cff8493a61df"
+"classFatigueTest_1_1FatigueTestMotion.html#a26b46774d398c3c61e07ca39882c1f48",
+"classtmc51x0_1_1SpiCommInterface.html",
+"esp32__tmc51x0__test__config_8hpp.html#a7c13d9354888e4b27c1604872401799e",
+"functions_func_d.html",
+"internal__ramp__comprehensive__test_8cpp.html#ac0fcb659b270b34d64fb809691ccb95b",
+"namespacetmc51x0.html#a84ea1648f7a9d02773c685cf16f64c77a13d992d671957e9a2b3e936ca0cf14a4",
+"namespacetmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#afd0c7b8d41e3b9d3fe16bf964bd7b143",
+"structImageLoader_1_1BMPHeader.html#a67caf80f89735b18e32133f758f78749",
+"structtmc51x0_1_1Esp32SpiPinConfig.html",
+"structtmc51x0_1_1SpiCommand.html#a3dffe69573652e9fb6fbd260f0ca4f07",
+"structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a5e6d0821b2e44e448bbd495962eb7960",
+"tmc51x0__motor__calc_8hpp.html#a2e6968ff0ef7ea91a3cfd74286cd84a8",
+"ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9a43491564ebcfd38568918efbd6e840fd",
+"uniontmc51x0_1_1DRV__STATUS__Register.html#a70ccc809bb5e477b72227b2439ecc628",
+"uniontmc51x0_1_1OTP__READ__Register.html#ae4691d3798cfdd83788969ce6f634932"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
