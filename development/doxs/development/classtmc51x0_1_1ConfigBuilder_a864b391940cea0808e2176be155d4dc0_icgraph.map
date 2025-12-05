@@ -1,0 +1,13 @@
+<map id="tmc51x0::ConfigBuilder::WithDirectDrive" name="tmc51x0::ConfigBuilder::WithDirectDrive">
+<area shape="rect" id="Node000001" title="Configure direct drive system." alt="" coords="583,77,757,117"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0__test__config.html#a90b2bc1714b42e67ff0125a86807d8cb" title="Helper function to apply platform configuration to DriverConfig." alt="" coords="351,5,515,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="590,76,499,48,501,43,591,71"/>
+<area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#a49ded5960fcb104b760570b2dc47fbf0" title="Helper function to populate DriverConfig from 17HS4401S direct drive motor configuration." alt="" coords="332,70,535,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="569,100,535,100,535,95,569,95"/>
+<area shape="rect" id="Node000005" href="$namespacetmc51x0__test__config.html#a2aeab6056b5a5959c89cafb58d037747" title="Helper function to populate DriverConfig from Applied Motion 5034 motor configuration." alt="" coords="332,150,535,205"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="598,124,516,152,514,147,596,119"/>
+<area shape="rect" id="Node000004" href="$structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__CORE__DRIVER_01_4.html#ad9b0f8061cc5336afdc5168c9ab0e82e" title="Configure driver from this test rig&#39;s configuration." alt="" coords="39,60,250,129"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="318,99,250,98,250,93,318,94"/>
+<area shape="rect" id="Node000006" href="$structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4.html#aaf937e4da815d24f4d922d8ee1187e86" title="Configure driver from this test rig&#39;s configuration." alt="" coords="5,154,284,209"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="318,182,284,182,284,177,318,176"/>
+</map>

@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['homing_0',['Homing',['../structtmc51x0_1_1TMC51x0_1_1Homing.html',1,'tmc51x0::TMC51x0']]],
-  ['homingsettingscache_1',['HomingSettingsCache',['../structtmc51x0_1_1HomingSettingsCache.html',1,'tmc51x0']]]
+  ['gconf_5fregister_0',['GCONF_Register',['../uniontmc51x0_1_1GCONF__Register.html',1,'tmc51x0']]],
+  ['globalconfig_1',['GlobalConfig',['../structtmc51x0_1_1GlobalConfig.html',1,'tmc51x0']]],
+  ['gstat_5fregister_2',['GSTAT_Register',['../uniontmc51x0_1_1GSTAT__Register.html',1,'tmc51x0']]]
 ];

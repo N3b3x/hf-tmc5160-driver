@@ -1205,8 +1205,9 @@ extern "C" void app_main()
     
     // Create SPI communication interface
     Esp32SPI spi(tmc51x0_test_config::SPI_HOST, pin_config, 1000000, active_levels);
-    if (!spi.Initialize()) {
-        ESP_LOGE(TAG, "Failed to initialize SPI interface");
+    auto spi_init_result = spi.Initialize();
+    if (!spi_init_result) {
+        ESP_LOGE(TAG, "Failed to initialize SPI interface (ErrorCode: %d)", static_cast<int>(spi_init_result.Error()));
         return;
     }
 
@@ -1221,8 +1222,9 @@ extern "C" void app_main()
     constexpr uint16_t output_full_steps = 
         tmc51x0_test_config::GetTestRigMotorOutputFullSteps<SELECTED_TEST_RIG>();
     
-    if (!driver.Initialize(cfg)) {
-        ESP_LOGE(TAG, "Failed to initialize TMC51x0 driver");
+    auto driver_init_result = driver.Initialize(cfg);
+    if (!driver_init_result) {
+        ESP_LOGE(TAG, "Failed to initialize TMC51x0 driver (ErrorCode: %d)", static_cast<int>(driver_init_result.Error()));
         return;
     }
 
@@ -1232,8 +1234,9 @@ extern "C" void app_main()
     tmc51x0::EncoderConfig enc_cfg = 
         tmc51x0_test_config::GetTestRigEncoderConfig<SELECTED_TEST_RIG>();
     
-    if (!driver.encoder.Configure(enc_cfg)) {
-        ESP_LOGE(TAG, "Failed to configure encoder");
+    auto encoder_cfg_result = driver.encoder.Configure(enc_cfg);
+    if (!encoder_cfg_result) {
+        ESP_LOGE(TAG, "Failed to configure encoder (ErrorCode: %d)", static_cast<int>(encoder_cfg_result.Error()));
         return;
     }
 
@@ -1242,8 +1245,9 @@ extern "C" void app_main()
         tmc51x0_test_config::GetTestRigEncoderInvertDirection<SELECTED_TEST_RIG>());
 
     // Enable motor
-    if (!driver.motorControl.Enable()) {
-        ESP_LOGE(TAG, "Failed to enable motor");
+    auto enable_result = driver.motorControl.Enable();
+    if (!enable_result) {
+        ESP_LOGE(TAG, "Failed to enable motor (ErrorCode: %d)", static_cast<int>(enable_result.Error()));
         return;
     }
 
@@ -1267,9 +1271,9 @@ extern "C" void app_main()
     
     std::unique_ptr<FatigueTest::IBoundsFinder> bounds_finder;
     if (g_use_stallguard) {
-        bounds_finder = FatigueTest::CreateStallGuardBoundsFinder();
+        bounds_finder = FatigueTest::CreateStallGuardBoundsFinder<SELECTED_TEST_RIG>();
     } else {
-        bounds_finder = FatigueTest::CreateEncoderBoundsFinder();
+        bounds_finder = FatigueTest::CreateEncoderBoundsFinder<SELECTED_TEST_RIG>();
     }
 
     if (bounds_finder) {

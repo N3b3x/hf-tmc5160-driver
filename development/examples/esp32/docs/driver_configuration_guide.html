@@ -265,14 +265,15 @@
 </h2>
     
 
-<p>The TMC51x0 driver (TMC5130 &amp; TMC5160) library uses a <strong>compile-time configuration</strong> approach with three distinct configuration layers:</p>
+<p>The TMC51x0 driver (TMC5130 &amp; TMC5160) library uses a <strong>compile-time configuration</strong> approach with struct-based configuration using <code class="language-plaintext highlighter-rouge">static constexpr</code> members for zero runtime overhead. The configuration system has four distinct layers:</p>
 <ol>
-  <li><strong>BoardConfig</strong>: Board-specific hardware parameters (same board = same config)</li>
-  <li><strong>MotorConfig</strong>: Motor-specific parameters (same motor = same config)</li>
+  <li><strong>MotorConfig</strong>: Motor-specific parameters (physical specs, chopper, StealthChop)</li>
+  <li><strong>BoardConfig</strong>: Board-specific hardware parameters (sense resistor, MOSFETs, clock)</li>
   <li><strong>PlatformConfig</strong>: Platform/application-specific parameters (reference switches, encoder, mechanical system)</li>
+  <li><strong>TestConfig</strong>: Test-specific parameters (StallGuard, motion profiles)</li>
 </ol>
 
-<p>All configurations are defined in <code class="language-plaintext highlighter-rouge">esp32_tmc51x0_test_config.hpp</code> and automatically converted to driver register values during initialization.</p>
+<p>All configurations are defined as structs in <code class="language-plaintext highlighter-rouge">esp32_tmc51x0_test_config.hpp</code> and automatically converted to driver register values during initialization.</p>
 <h2 id="configuration-hierarchy">
   
   
@@ -300,7 +301,7 @@
   <li>Short protection defaults</li>
 </ul>
 
-<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">BoardConfig</code> namespace in <code class="language-plaintext highlighter-rouge">esp32_tmc51x0_test_config.hpp</code></p>
+<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">BoardConfig_*</code> structs in <code class="language-plaintext highlighter-rouge">esp32_tmc51x0_test_config.hpp</code></p>
 <h3 id="2-motorconfig-motor-specific">
   
   
@@ -319,7 +320,7 @@
   <li>Motor-specific gear ratio (if motor has integrated gearbox)</li>
 </ul>
 
-<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">MotorConfig_*</code> namespaces in <code class="language-plaintext highlighter-rouge">esp32_tmc51x0_test_config.hpp</code></p>
+<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">MotorConfig_*</code> structs in <code class="language-plaintext highlighter-rouge">esp32_tmc51x0_test_config.hpp</code></p>
 <h3 id="3-platformconfig-platformapplication-specific">
   
   
@@ -338,7 +339,7 @@
   <li>Lead screw pitch, belt parameters (if applicable)</li>
 </ul>
 
-<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">PlatformConfig</code> namespace in <code class="language-plaintext highlighter-rouge">esp32_tmc51x0_test_config.hpp</code></p>
+<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">PlatformConfig_*</code> structs in <code class="language-plaintext highlighter-rouge">esp32_tmc51x0_test_config.hpp</code></p>
 <h2 id="key-concepts">
   
   

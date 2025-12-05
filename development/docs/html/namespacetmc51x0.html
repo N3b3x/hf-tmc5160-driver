@@ -97,6 +97,7 @@ $(function(){initNavTree('namespacetmc51x0.html',''); initResizable(); });
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">tmc51x0 Namespace Reference</div></div>
@@ -119,6 +120,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1AccelerationValue.html">AccelerationValue</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Self-describing acceleration value with explicit unit.  <a href="structtmc51x0_1_1AccelerationValue.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniontmc51x0_1_1CHOPCONF__Register.html">CHOPCONF_Register</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chopper and driver configuration register (CHOPCONF)  <a href="uniontmc51x0_1_1CHOPCONF__Register.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,6 +131,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html">CommInterface</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CRTP-based communication interface for register read/write operations.  <a href="classtmc51x0_1_1CommInterface.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1ConfigBuilder.html">ConfigBuilder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fluent configuration builder for <a class="el" href="structtmc51x0_1_1DriverConfig.html" title="Driver initialization configuration structure.">DriverConfig</a>.  <a href="classtmc51x0_1_1ConfigBuilder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniontmc51x0_1_1COOLCONF__Register.html">COOLCONF_Register</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">coolStep smart current control and stallGuard2 configuration register (COOLCONF)  <a href="uniontmc51x0_1_1COOLCONF__Register.html#details">More...</a><br /></td></tr>
@@ -163,9 +170,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1EncoderConfig.html">EncoderConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder configuration structure.  <a href="structtmc51x0_1_1EncoderConfig.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1Esp32SpiPinConfig.html">Esp32SpiPinConfig</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Complete ESP32 SPI bus and <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> pin configuration structure.  <a href="structtmc51x0_1_1Esp32SpiPinConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1ExternalClockConfig.html">ExternalClockConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">External clock configuration structure.  <a href="structtmc51x0_1_1ExternalClockConfig.html#details">More...</a><br /></td></tr>
@@ -236,6 +240,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1ReferenceSwitchConfig.html">ReferenceSwitchConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference switch configuration structure.  <a href="structtmc51x0_1_1ReferenceSwitchConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1Result.html">Result</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtmc51x0_1_1Result.html" title="Result type for operations that return a value.">Result</a> type for operations that return a value.  <a href="classtmc51x0_1_1Result.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html">Result&lt; void &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtmc51x0_1_1Result.html" title="Result type for operations that return a value.">Result</a> type for operations that don't return a value.  <a href="classtmc51x0_1_1Result_3_01void_01_4.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniontmc51x0_1_1SHORT__CONF__Register.html">SHORT_CONF_Register</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short detector configuration register (SHORT_CONF)  <a href="uniontmc51x0_1_1SHORT__CONF__Register.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -258,7 +268,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">StallGuard2 configuration structure.  <a href="structtmc51x0_1_1StallGuardConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1StallGuardTuningResult.html">StallGuardTuningResult</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Result structure for StallGuard2 threshold (SGT) tuning.  <a href="structtmc51x0_1_1StallGuardTuningResult.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtmc51x0_1_1Result.html" title="Result type for operations that return a value.">Result</a> structure for StallGuard2 threshold (SGT) tuning.  <a href="structtmc51x0_1_1StallGuardTuningResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1StealthChopConfig.html">StealthChopConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">StealthChop configuration structure.  <a href="structtmc51x0_1_1StealthChopConfig.html#details">More...</a><br /></td></tr>
@@ -287,6 +297,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1UartFrame.html">UartFrame</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">TMC5160 UART command/response frame structure with built-in CRC8.  <a href="structtmc51x0_1_1UartFrame.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1VelocityValue.html">VelocityValue</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Self-describing velocity value with explicit unit.  <a href="structtmc51x0_1_1VelocityValue.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a29f23dd48483983409679925db836440" id="r_a29f23dd48483983409679925db836440"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29f23dd48483983409679925db836440">ResultVoid</a> = <a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt;void&gt;</td></tr>
+<tr class="separator:a29f23dd48483983409679925db836440"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -351,6 +369,25 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a72806fd22f0c0112600ad9056aa3be97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder N channel sensitivity enumeration values.  <a href="#a72806fd22f0c0112600ad9056aa3be97">More...</a><br /></td></tr>
 <tr class="separator:a72806fd22f0c0112600ad9056aa3be97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a530ddae090151490fa12a61b9b9b57b3" id="r_a530ddae090151490fa12a61b9b9b57b3"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> : uint8_t { <br />
+&#160;&#160;<a class="el" href="#a530ddae090151490fa12a61b9b9b57b3ae0aa021e21dddbd6d8cecec71e9cf564">OK</a> = 0
+, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3a02de9649e258d1dd94056e676061e969">NOT_INITIALIZED</a>
+, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3ac08f3c03ad9600e78bee4d966579f629">COMM_ERROR</a>
+, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3ad8f24f388e990b9ccf8905b7993b99ae">INVALID_VALUE</a>
+, <br />
+&#160;&#160;<a class="el" href="#a530ddae090151490fa12a61b9b9b57b3a5e6a8de74c8f7d4b04d91a3dc3bf7659">INVALID_STATE</a>
+, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3a070a0fb40f6c308ab544b227660aadff">TIMEOUT</a>
+, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3a89fe56ed105248667fe799031276ab23">HARDWARE_ERROR</a>
+, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3a01fa42acfb9d4827860c37424640bc05">SHORT_CIRCUIT</a>
+, <br />
+&#160;&#160;<a class="el" href="#a530ddae090151490fa12a61b9b9b57b3af3fc34e9855cc32fa80bd1603a1da530">OPEN_LOAD</a>
+, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3ad403fd986888b047f1defd55483f87ba">OVERTEMP_WARNING</a>
+, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3ae401b6cd40690075883d21464da174e2">OVERTEMP_SHUTDOWN</a>
+, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3a40aa75f8e8cfdf7b660c5620e953229f">UNSUPPORTED</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:a530ddae090151490fa12a61b9b9b57b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error codes for TMC51x0 operations.  <a href="#a530ddae090151490fa12a61b9b9b57b3">More...</a><br /></td></tr>
+<tr class="separator:a530ddae090151490fa12a61b9b9b57b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac801995f570807ad863a40346b5b7294" id="r_ac801995f570807ad863a40346b5b7294"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac801995f570807ad863a40346b5b7294">ChipCommMode</a> : uint8_t { <a class="el" href="#ac801995f570807ad863a40346b5b7294ade9b62ad581f590543b7355a2958077e">SPI_INTERNAL_RAMP</a>
 , <a class="el" href="#ac801995f570807ad863a40346b5b7294ab967b9681d8b42559306c86608a5601b">SPI_EXTERNAL_STEPDIR</a> = 1
 , <a class="el" href="#ac801995f570807ad863a40346b5b7294aee770912474919e17ca4da2f54c9cd6b">UART_INTERNAL_RAMP</a>
@@ -578,6 +615,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a3da6e7a7011465219730793db49358e0" id="r_a3da6e7a7011465219730793db49358e0"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3da6e7a7011465219730793db49358e0">CalculateShortDelay</a> (uint8_t delay_us_x10) noexcept</td></tr>
 <tr class="memdesc:a3da6e7a7011465219730793db49358e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate shortdelay register bit from detection delay time.  <br /></td></tr>
 <tr class="separator:a3da6e7a7011465219730793db49358e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03326fea54f838942f2a8b4e1d1ed01f" id="r_a03326fea54f838942f2a8b4e1d1ed01f"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a03326fea54f838942f2a8b4e1d1ed01f">ErrorMessage</a> (<a class="el" href="#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> code)</td></tr>
+<tr class="memdesc:a03326fea54f838942f2a8b4e1d1ed01f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get human-readable error message.  <br /></td></tr>
+<tr class="separator:a03326fea54f838942f2a8b4e1d1ed01f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14a9cbf63a5eb7e330795cacdf8fadc3" id="r_a14a9cbf63a5eb7e330795cacdf8fadc3"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14a9cbf63a5eb7e330795cacdf8fadc3">StepsToMm</a> (int32_t steps, float steps_per_rev, float lead_screw_pitch_mm) noexcept</td></tr>
 <tr class="memdesc:a14a9cbf63a5eb7e330795cacdf8fadc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert steps to millimeters.  <br /></td></tr>
 <tr class="separator:a14a9cbf63a5eb7e330795cacdf8fadc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -615,6 +655,21 @@ Functions</h2></td></tr>
 <tr class="memdesc:a774504ccaf07160eba05e41574b8bb8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert steps to belt drive distance (teeth)  <br /></td></tr>
 <tr class="separator:a774504ccaf07160eba05e41574b8bb8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a29f23dd48483983409679925db836440" name="a29f23dd48483983409679925db836440"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29f23dd48483983409679925db836440">&#9670;&#160;</a></span>ResultVoid</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#a29f23dd48483983409679925db836440">tmc51x0::ResultVoid</a> = <a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt;void&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="ac801995f570807ad863a40346b5b7294" name="ac801995f570807ad863a40346b5b7294"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac801995f570807ad863a40346b5b7294">&#9670;&#160;</a></span>ChipCommMode</h2>
@@ -1079,6 +1134,56 @@ For highly capacitive loads (e.g., filter networks), TBL_36CLK or TBL_54CLK may 
 <tr><td class="fieldname"><a id="a72806fd22f0c0112600ad9056aa3be97a297f5ea19073f4b51715b029f48d5d52" name="a72806fd22f0c0112600ad9056aa3be97a297f5ea19073f4b51715b029f48d5d52"></a>FALLING_EDGE&#160;</td><td class="fielddoc"><p>N channel active when the N event is de-activated. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a72806fd22f0c0112600ad9056aa3be97a03495d0b1362f1d841b59007e2887c7f" name="a72806fd22f0c0112600ad9056aa3be97a03495d0b1362f1d841b59007e2887c7f"></a>BOTH_EDGES&#160;</td><td class="fielddoc"><p>N channel active on N event activation and de-activation. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a530ddae090151490fa12a61b9b9b57b3" name="a530ddae090151490fa12a61b9b9b57b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a530ddae090151490fa12a61b9b9b57b3">&#9670;&#160;</a></span>ErrorCode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3">tmc51x0::ErrorCode</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Error codes for <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> operations. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a530ddae090151490fa12a61b9b9b57b3ae0aa021e21dddbd6d8cecec71e9cf564" name="a530ddae090151490fa12a61b9b9b57b3ae0aa021e21dddbd6d8cecec71e9cf564"></a>OK&#160;</td><td class="fielddoc"><p>Operation succeeded. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a530ddae090151490fa12a61b9b9b57b3a02de9649e258d1dd94056e676061e969" name="a530ddae090151490fa12a61b9b9b57b3a02de9649e258d1dd94056e676061e969"></a>NOT_INITIALIZED&#160;</td><td class="fielddoc"><p>Driver not initialized. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a530ddae090151490fa12a61b9b9b57b3ac08f3c03ad9600e78bee4d966579f629" name="a530ddae090151490fa12a61b9b9b57b3ac08f3c03ad9600e78bee4d966579f629"></a>COMM_ERROR&#160;</td><td class="fielddoc"><p>Communication interface error (SPI/UART) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a530ddae090151490fa12a61b9b9b57b3ad8f24f388e990b9ccf8905b7993b99ae" name="a530ddae090151490fa12a61b9b9b57b3ad8f24f388e990b9ccf8905b7993b99ae"></a>INVALID_VALUE&#160;</td><td class="fielddoc"><p>Invalid parameter value. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a530ddae090151490fa12a61b9b9b57b3a5e6a8de74c8f7d4b04d91a3dc3bf7659" name="a530ddae090151490fa12a61b9b9b57b3a5e6a8de74c8f7d4b04d91a3dc3bf7659"></a>INVALID_STATE&#160;</td><td class="fielddoc"><p>Operation not valid in current state. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a530ddae090151490fa12a61b9b9b57b3a070a0fb40f6c308ab544b227660aadff" name="a530ddae090151490fa12a61b9b9b57b3a070a0fb40f6c308ab544b227660aadff"></a>TIMEOUT&#160;</td><td class="fielddoc"><p>Operation timed out. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a530ddae090151490fa12a61b9b9b57b3a89fe56ed105248667fe799031276ab23" name="a530ddae090151490fa12a61b9b9b57b3a89fe56ed105248667fe799031276ab23"></a>HARDWARE_ERROR&#160;</td><td class="fielddoc"><p>Hardware fault detected. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a530ddae090151490fa12a61b9b9b57b3a01fa42acfb9d4827860c37424640bc05" name="a530ddae090151490fa12a61b9b9b57b3a01fa42acfb9d4827860c37424640bc05"></a>SHORT_CIRCUIT&#160;</td><td class="fielddoc"><p>Short circuit detected. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a530ddae090151490fa12a61b9b9b57b3af3fc34e9855cc32fa80bd1603a1da530" name="a530ddae090151490fa12a61b9b9b57b3af3fc34e9855cc32fa80bd1603a1da530"></a>OPEN_LOAD&#160;</td><td class="fielddoc"><p>Open load detected. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a530ddae090151490fa12a61b9b9b57b3ad403fd986888b047f1defd55483f87ba" name="a530ddae090151490fa12a61b9b9b57b3ad403fd986888b047f1defd55483f87ba"></a>OVERTEMP_WARNING&#160;</td><td class="fielddoc"><p>Overtemperature warning threshold. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a530ddae090151490fa12a61b9b9b57b3ae401b6cd40690075883d21464da174e2" name="a530ddae090151490fa12a61b9b9b57b3ae401b6cd40690075883d21464da174e2"></a>OVERTEMP_SHUTDOWN&#160;</td><td class="fielddoc"><p>Overtemperature shutdown. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a530ddae090151490fa12a61b9b9b57b3a40aa75f8e8cfdf7b660c5620e953229f" name="a530ddae090151490fa12a61b9b9b57b3a40aa75f8e8cfdf7b660c5620e953229f"></a>UNSUPPORTED&#160;</td><td class="fielddoc"><p>Feature not supported by this chip variant. </p>
 </td></tr>
 </table>
 
@@ -2328,6 +2433,11 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Lower current limit in milliamps, or 0 if calculation not possible</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Based on datasheet equation: I_Lower_Limit = t_BLANK * f_PWM * V_M / R_COIL Where t_BLANK depends on TBL setting </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ad149efd95c065a993dbdc5372239927c_icgraph.svg" width="482" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -2370,7 +2480,46 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_aeb46c0090617c6181b568bdaf4415ae3_icgraph.svg" width="1090" height="136"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_aeb46c0090617c6181b568bdaf4415ae3_icgraph.svg" width="1050" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a03326fea54f838942f2a8b4e1d1ed01f" name="a03326fea54f838942f2a8b4e1d1ed01f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03326fea54f838942f2a8b4e1d1ed01f">&#9670;&#160;</a></span>ErrorMessage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * tmc51x0::ErrorMessage </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a></td>          <td class="paramname"><span class="paramname"><em>code</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get human-readable error message. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">code</td><td>Error code </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error message string </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a03326fea54f838942f2a8b4e1d1ed01f_icgraph.svg" width="460" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2696,11 +2845,6 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Angle in degrees </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_aa654a36849533f2f559d3e113176bf35_icgraph.svg" width="944" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

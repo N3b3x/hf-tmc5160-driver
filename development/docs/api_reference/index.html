@@ -388,14 +388,14 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">Initialize()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool Initialize(const DriverConfig&amp; config = DriverConfig()) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; Initialize(const DriverConfig&amp; config = DriverConfig()) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Initialize driver with configuration</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">Reset()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool Reset() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; Reset() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Perform software reset</td>
     </tr>
     <tr>
@@ -475,200 +475,200 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetRampMode()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetRampMode(RampMode mode) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetRampMode(RampMode mode) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set ramp mode (POSITIONING, VELOCITY_POS, VELOCITY_NEG, HOLD)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetTargetPosition()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetTargetPosition(float value, Unit unit = Unit::Steps) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set target position for positioning mode (unit-aware)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetTargetPosition(float value, Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
+      <td>Set target position for positioning mode (unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetCurrentPosition()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetCurrentPosition(float&amp; position, Unit unit = Unit::Steps) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Get current motor position (unit-aware)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;float&gt; GetCurrentPosition(Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;float&gt;</code> containing the value or error</td>
+      <td>Get current motor position (unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetTargetPosition()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetTargetPosition(float&amp; position, Unit unit = Unit::Steps) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Get target position (unit-aware)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;float&gt; GetTargetPosition(Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;float&gt;</code> containing the value or error</td>
+      <td>Get target position (unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetCurrentPosition()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetCurrentPosition(float value, Unit unit = Unit::Steps, bool update_encoder = false) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set current position (unit-aware, optionally update encoder)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetCurrentPosition(float value, Unit unit, bool update_encoder = false) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
+      <td>Set current position (unit-aware, unit parameter required, optionally update encoder)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetMaxSpeed()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetMaxSpeed(float value, Unit unit = Unit::RevPerSec) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set maximum velocity (unit-aware, default: revolutions per second)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetMaxSpeed(float value, Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
+      <td>Set maximum velocity (unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetAcceleration()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetAcceleration(float value, Unit unit = Unit::RevPerSec) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set acceleration/deceleration (unit-aware, default: revolutions per second²)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetAcceleration(float value, Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
+      <td>Set acceleration/deceleration (unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetAccelerations()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetAccelerations(float accel_val, float decel_val, Unit unit = Unit::RevPerSec) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set acceleration and deceleration separately (unit-aware, default: revolutions per second²)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetAccelerations(float accel_val, float decel_val, Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
+      <td>Set acceleration and deceleration separately (unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetDeceleration()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetDeceleration(float value, Unit unit = Unit::RevPerSec) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set deceleration only (DMAX register, unit-aware, default: revolutions per second²)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetDeceleration(float value, Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
+      <td>Set deceleration only (DMAX register, unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetRampSpeeds()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetRampSpeeds(float start_speed, float stop_speed, float transition_speed, Unit unit = Unit::RevPerSec) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set ramp start, stop, and transition speeds (unit-aware, default: revolutions per second)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetRampSpeeds(float start_speed, float stop_speed, float transition_speed, Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
+      <td>Set ramp start, stop, and transition speeds (unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetCurrentSpeed()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetCurrentSpeed(float&amp; speed, Unit unit = Unit::RevPerSec) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Get current motor velocity (unit-aware, default: revolutions per second)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;float&gt; GetCurrentSpeed(Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;float&gt;</code> containing the value or error</td>
+      <td>Get current motor velocity (unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">IsTargetReached()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool IsTargetReached() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> if reached</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt; IsTargetReached() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt;</code> containing true if target position reached, false otherwise</td>
       <td>Check if target position reached</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">IsTargetVelocityReached()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool IsTargetVelocityReached() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> if reached</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt; IsTargetVelocityReached() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt;</code> containing true if target velocity reached, false otherwise</td>
       <td>Check if target velocity reached</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">Stop()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool Stop() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; Stop() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Stop motor immediately</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ConfigureReferenceSwitch()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ConfigureReferenceSwitch(const ReferenceSwitchConfig&amp; config) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ConfigureReferenceSwitch(const ReferenceSwitchConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Configure reference switches/endstops (full configuration)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetReferenceSwitchConfig()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetReferenceSwitchConfig(ReferenceSwitchConfig&amp; config) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;ReferenceSwitchConfig&gt; GetReferenceSwitchConfig() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;ReferenceSwitchConfig&gt;</code> containing the value or error</td>
       <td>Read current reference switch configuration</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetLeftSwitchActiveLevel()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetLeftSwitchActiveLevel(ReferenceSwitchActiveLevel) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetLeftSwitchActiveLevel(ReferenceSwitchActiveLevel) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set left switch active level (real-time update)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetRightSwitchActiveLevel()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetRightSwitchActiveLevel(ReferenceSwitchActiveLevel) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetRightSwitchActiveLevel(ReferenceSwitchActiveLevel) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set right switch active level (real-time update)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetLeftSwitchStopEnable()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetLeftSwitchStopEnable(bool enable) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetLeftSwitchStopEnable(bool enable) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Enable/disable motor stop on left switch (real-time)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetRightSwitchStopEnable()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetRightSwitchStopEnable(bool enable) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetRightSwitchStopEnable(bool enable) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Enable/disable motor stop on right switch (real-time)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetLeftSwitchLatchMode()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetLeftSwitchLatchMode(ReferenceLatchMode) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetLeftSwitchLatchMode(ReferenceLatchMode) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set left switch latching mode (real-time update)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetRightSwitchLatchMode()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetRightSwitchLatchMode(ReferenceLatchMode) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetRightSwitchLatchMode(ReferenceLatchMode) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set right switch latching mode (real-time update)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetStopMode()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetStopMode(ReferenceStopMode) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetStopMode(ReferenceStopMode) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set stop mode (hard/soft) (real-time update)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetLatchedPosition()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetLatchedPosition(float&amp; position, Unit unit = Unit::Steps) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Get position latched on switch event (unit-aware)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;float&gt; GetLatchedPosition(Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;float&gt;</code> containing the value or error</td>
+      <td>Get position latched on switch event (unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetXCompare()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetXCompare(float position, Unit unit = Unit::Steps) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set position comparison register (X_COMPARE, unit-aware)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetXCompare(float position, Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
+      <td>Set position comparison register (X_COMPARE, unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetXCompare()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetXCompare(float&amp; position, Unit unit = Unit::Steps) const noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Get X_COMPARE register value from local storage (unit-aware)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;float&gt; GetXCompare(Unit unit) const noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;float&gt;</code> containing the value or error</td>
+      <td>Get X_COMPARE register value from local storage (unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetPowerDownDelay()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetPowerDownDelay(uint8_t tpowerdown) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetPowerDownDelay(uint8_t tpowerdown) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set power down delay (raw register value 0-255)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetPowerDownDelayMs()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetPowerDownDelayMs(float delay_ms) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetPowerDownDelayMs(float delay_ms) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set power down delay in milliseconds (automatically converted)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetZeroWaitTime()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetZeroWaitTime(uint16_t tzerowait) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetZeroWaitTime(uint16_t tzerowait) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set zero wait time after ramping down (raw register value 0-65535)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetZeroWaitTimeMs()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetZeroWaitTimeMs(float delay_ms) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetZeroWaitTimeMs(float delay_ms) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set zero wait time in milliseconds (automatically converted)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetFirstAcceleration()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetFirstAcceleration(float a1, Unit unit = Unit::RevPerSec) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set first acceleration phase A1 (unit-aware, default: revolutions per second², 0.0f = use AMAX)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetFirstAcceleration(float a1, Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
+      <td>Set first acceleration phase A1 (unit-aware, unit parameter required, 0.0f = use AMAX)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetFinalDeceleration()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetFinalDeceleration(float d1, Unit unit = Unit::RevPerSec) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set final deceleration phase D1 (unit-aware, default: revolutions per second², must not be 0 in positioning mode)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetFinalDeceleration(float d1, Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
+      <td>Set final deceleration phase D1 (unit-aware, unit parameter required, must not be 0 in positioning mode)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ConfigureRamp()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ConfigureRamp(const RampConfig&amp; config) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ConfigureRamp(const RampConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Configure ramp generator from RampConfig structure</td>
     </tr>
   </tbody>
@@ -719,110 +719,110 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">Enable()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool Enable() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; Enable() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Enable motor driver</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">Disable()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool Disable() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; Disable() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Disable motor driver</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetCurrent()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetCurrent(uint8_t irun, uint8_t ihold) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetCurrent(uint8_t irun, uint8_t ihold) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set run current (0-31) and hold current (0-31)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ConfigureChopper()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ConfigureChopper(const ChopperConfig&amp; config) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ConfigureChopper(const ChopperConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Configure chopper settings (toff, hstrt, hend, tbl, mres, etc.)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ConfigureStealthChop()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ConfigureStealthChop(const StealthChopConfig&amp; config) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ConfigureStealthChop(const StealthChopConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Configure stealthChop PWM mode</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetModeChangeSpeeds()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs, Unit unit = Unit::RevPerSec) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set velocity thresholds for mode switching (unit-aware, default: revolutions per second)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs, Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
+      <td>Set velocity thresholds for mode switching (unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetStealthChopVelocityThreshold()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetStealthChopVelocityThreshold(float value, Unit unit = Unit::RevPerSec) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set StealthChop velocity threshold (TPWMTHRS, unit-aware, default: revolutions per second)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetStealthChopVelocityThreshold(float value, Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
+      <td>Set StealthChop velocity threshold (TPWMTHRS, unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetCoolStepThreshold()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetCoolStepThreshold(float value, Unit unit = Unit::RevPerSec) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set CoolStep velocity threshold (TCOOLTHRS, unit-aware, default: revolutions per second)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetCoolStepThreshold(float value, Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
+      <td>Set CoolStep velocity threshold (TCOOLTHRS, unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetHighSpeedThreshold()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetHighSpeedThreshold(float value, Unit unit = Unit::RevPerSec) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set High-Speed velocity threshold (THIGH, unit-aware, default: revolutions per second)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetHighSpeedThreshold(float value, Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
+      <td>Set High-Speed velocity threshold (THIGH, unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetGlobalScaler()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetGlobalScaler(uint16_t scaler) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetGlobalScaler(uint16_t scaler) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set global current scaler (32-256)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetIholdDelayMs()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetIholdDelayMs(float total_delay_ms) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetIholdDelayMs(float total_delay_ms) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set motor power down delay (IHOLDDELAY) in milliseconds (automatically calculated)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ConfigureCoolStep()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ConfigureCoolStep(const CoolStepConfig&amp; config) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ConfigureCoolStep(const CoolStepConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Configure CoolStep current reduction</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ConfigureDcStep()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ConfigureDcStep(const DcStepConfig&amp; config) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ConfigureDcStep(const DcStepConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Configure dcStep automatic commutation</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetMicrostepLookupTable()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetMicrostepLookupTable(uint8_t index, uint32_t value) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetMicrostepLookupTable(uint8_t index, uint32_t value) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set microstep lookup table entry (0-7)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetMicrostepLookupTableSegmentation()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetMicrostepLookupTableSegmentation(uint8_t width_sel_0, uint8_t width_sel_1, uint8_t width_sel_2, uint8_t width_sel_3, uint8_t lut_seg_start1, uint8_t lut_seg_start2, uint8_t lut_seg_start3) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetMicrostepLookupTableSegmentation(uint8_t width_sel_0, uint8_t width_sel_1, uint8_t width_sel_2, uint8_t width_sel_3, uint8_t lut_seg_start1, uint8_t lut_seg_start2, uint8_t lut_seg_start3) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set microstep lookup table segmentation</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetMicrostepLookupTableStart()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetMicrostepLookupTableStart(uint16_t start_current) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetMicrostepLookupTableStart(uint16_t start_current) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set microstep lookup table start current</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetupMotorFromSpec()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetupMotorFromSpec(const MotorSpec&amp; motor_spec, const MechanicalSystem* mechanical_system = nullptr) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetupMotorFromSpec(const MotorSpec&amp; motor_spec, const MechanicalSystem* mechanical_system = nullptr) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Setup motor from high-level specifications</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ConfigureGlobalConfig()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ConfigureGlobalConfig(const GlobalConfig&amp; config) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ConfigureGlobalConfig(const GlobalConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Configure global configuration (GCONF register)</td>
     </tr>
   </tbody>
@@ -873,74 +873,74 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">Configure()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool Configure(const EncoderConfig&amp; config) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; Configure(const EncoderConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Configure encoder settings (polarity, filtering, etc.)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetEncoderConfig()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetEncoderConfig(EncoderConfig&amp; config) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;EncoderConfig&gt; GetEncoderConfig() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;EncoderConfig&gt;</code> containing the value or error</td>
       <td>Read current encoder configuration</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetNChannelActiveLevel()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetNChannelActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetNChannelActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set N channel active level (real-time)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetNChannelSensitivity()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetNChannelSensitivity(EncoderNSensitivity sensitivity) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetNChannelSensitivity(EncoderNSensitivity sensitivity) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set N channel sensitivity (real-time)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetClearMode()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetClearMode(EncoderClearMode clear_mode) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetClearMode(EncoderClearMode clear_mode) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set encoder clear mode (real-time)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetPrescalerMode()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetPrescalerMode(EncoderPrescalerMode prescaler_mode) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetPrescalerMode(EncoderPrescalerMode prescaler_mode) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set encoder prescaler mode (real-time)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetPosition()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetPosition(int32_t&amp; position) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;int32_t&gt; GetPosition() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;int32_t&gt;</code> containing the value or error</td>
       <td>Get encoder position in steps</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetResolution()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetResolution(int32_t motor_steps, int32_t enc_resolution, bool inverted = false) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetResolution(int32_t motor_steps, int32_t enc_resolution, bool inverted = false) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set encoder resolution (motor steps per encoder resolution)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetAllowedDeviation()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetAllowedDeviation(int32_t steps) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetAllowedDeviation(int32_t steps) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set allowed encoder deviation threshold in steps</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">IsDeviationDetected()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool IsDeviationDetected() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> if deviation detected</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt; IsDeviationDetected() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt;</code> containing true if deviation detected, false otherwise</td>
       <td>Check if encoder deviation detected</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ClearDeviationFlag()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ClearDeviationFlag() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ClearDeviationFlag() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Clear encoder deviation flag</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetLatchedPosition()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetLatchedPosition(int32_t&amp; position) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;int32_t&gt; GetLatchedPosition() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;int32_t&gt;</code> containing the value or error</td>
       <td>Get encoder position latched on N event</td>
     </tr>
   </tbody>
@@ -984,104 +984,104 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetGlobalStatus()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetGlobalStatus(bool&amp; reset, bool&amp; drv_err, bool&amp; uv_cp) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt; GetGlobalStatus(bool&amp; drv_err, bool&amp; uv_cp) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt;</code> containing true if read successfully, false otherwise</td>
       <td>Get global status flags (GSTAT)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetStallGuard()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetStallGuard(uint16_t&amp; value) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint16_t&gt; GetStallGuard() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint16_t&gt;</code> containing the value or error</td>
       <td>Get StallGuard2 value (0-1023)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetStallGuardResult()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetStallGuardResult(uint16_t&amp; sg_result) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint16_t&gt; GetStallGuardResult() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint16_t&gt;</code> containing the value or error</td>
       <td>Get StallGuard2 result from DRV_STATUS register</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ConfigureStallGuard()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ConfigureStallGuard(const StallGuardConfig&amp; config) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ConfigureStallGuard(const StallGuardConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Configure StallGuard2 settings</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">EnableStopOnStall()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool EnableStopOnStall(bool enable) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; EnableStopOnStall(bool enable) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Enable/disable stop on stall</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">IsStopOnStallEnabled()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool IsStopOnStallEnabled() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> if enabled</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt; IsStopOnStallEnabled() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt;</code> containing true if stop on stall is enabled, false otherwise</td>
       <td>Check if stop on stall is enabled</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetSoftStop()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetSoftStop(bool enable) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetSoftStop(bool enable) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Enable/disable soft stop</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">IsSoftStopEnabled()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool IsSoftStopEnabled() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> if enabled</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt; IsSoftStopEnabled() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt;</code> containing true if soft stop is enabled, false otherwise</td>
       <td>Check if soft stop is enabled</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ClearStallFlag()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ClearStallFlag() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ClearStallFlag() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Clear stall event flag</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">IsStallDetected()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool IsStallDetected() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> if detected</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt; IsStallDetected() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt;</code> containing true if stall event detected, false otherwise</td>
       <td>Check if stall was detected</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetDriverStatusRegister()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetDriverStatusRegister(uint32_t&amp; status) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint32_t&gt; GetDriverStatusRegister() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint32_t&gt;</code> containing the value or error</td>
       <td>Read DRV_STATUS register</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">IsOpenLoadA()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool IsOpenLoadA() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> if open load on phase A</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt; IsOpenLoadA() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt;</code> containing true if open load detected on phase A, false otherwise</td>
       <td>Check for open load on phase A (requires SpreadCycle mode and motion)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">IsOpenLoadB()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool IsOpenLoadB() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> if open load on phase B</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt; IsOpenLoadB() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt;</code> containing true if open load detected on phase B, false otherwise</td>
       <td>Check for open load on phase B (requires SpreadCycle mode and motion)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">CheckOpenLoad()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool CheckOpenLoad(bool&amp; phase_a, bool&amp; phase_b) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt; CheckOpenLoad(bool&amp; phase_a, bool&amp; phase_b) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt;</code> containing true if read successfully, false otherwise</td>
       <td>Check both phases for open load simultaneously</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetRampStatusRegister()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetRampStatusRegister(uint32_t&amp; status) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint32_t&gt; GetRampStatusRegister() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint32_t&gt;</code> containing the value or error</td>
       <td>Read RAMP_STAT register</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ClearRampStatus()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ClearRampStatus(uint32_t bits_to_clear) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ClearRampStatus(uint32_t bits_to_clear) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Clear specific bits in RAMP_STAT register</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetLostSteps()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetLostSteps(uint32_t&amp; steps) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint32_t&gt; GetLostSteps() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint32_t&gt;</code> containing the value or error</td>
       <td>Get lost steps counter (dcStep mode only)</td>
     </tr>
     <tr>
@@ -1130,20 +1130,20 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">TuneStallGuard()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool TuneStallGuard(float target_velocity, StallGuardTuningResult&amp; result, int8_t min_sgt = -10, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; TuneStallGuard(float target_velocity, StallGuardTuningResult&amp; result, int8_t min_sgt = -10, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Automatically tune StallGuard threshold (SGT) with comprehensive velocity range analysis. Separate unit parameters for velocity and acceleration (RPM not valid for acceleration)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">TuneStallGuard()</code> (legacy)</td>
-      <td><code class="language-plaintext highlighter-rouge">bool TuneStallGuard(float target_velocity, int8_t&amp; final_sgt, int8_t min_sgt = -10, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; TuneStallGuard(float target_velocity, int8_t&amp; final_sgt, int8_t min_sgt = -10, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Legacy overload - use StallGuardTuningResult version for comprehensive results. Separate unit parameters for velocity and acceleration (RPM not valid for acceleration)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">AutoTuneStallGuard()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool AutoTuneStallGuard(float target_velocity, StallGuardTuningResult&amp; result, int8_t min_sgt = 0, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec, uint16_t safe_current_margin_mA = 0) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; AutoTuneStallGuard(float target_velocity, StallGuardTuningResult&amp; result, int8_t min_sgt = 0, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec, uint16_t safe_current_margin_mA = 0) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Comprehensive automatic StallGuard tuning with safe current margin handling (recommended). Separate unit parameters for velocity and acceleration (RPM not valid for acceleration)</td>
     </tr>
   </tbody>
@@ -1199,7 +1199,7 @@
 </pre></td><td class="rouge-code"><pre><span class="n">tmc51x0</span><span class="o">::</span><span class="n">StallGuardTuningResult</span> <span class="n">result</span><span class="p">;</span>
 <span class="c1">// Using AutoTuneStallGuard (recommended) with safe current margin</span>
 <span class="c1">// Note: Separate unit parameters for velocity and acceleration</span>
-<span class="kt">bool</span> <span class="n">success</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">tuning</span><span class="p">.</span><span class="n">AutoTuneStallGuard</span><span class="p">(</span>
+<span class="k">auto</span> <span class="n">result_tune</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">tuning</span><span class="p">.</span><span class="n">AutoTuneStallGuard</span><span class="p">(</span>
     <span class="mf">0.6</span><span class="n">f</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span>                          <span class="c1">// Target velocity: 0.6 rev/s (~36 RPM)</span>
     <span class="mi">0</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span>                                 <span class="c1">// SGT search range</span>
     <span class="mf">0.06</span><span class="n">f</span><span class="p">,</span>                                 <span class="c1">// Acceleration: 0.06 rev/s²</span>
@@ -1210,7 +1210,7 @@
 <span class="p">);</span>
 
 <span class="c1">// Example with RPM for velocity, RevPerSec for acceleration (RPM not valid for acceleration)</span>
-<span class="kt">bool</span> <span class="n">success</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">tuning</span><span class="p">.</span><span class="n">AutoTuneStallGuard</span><span class="p">(</span>
+<span class="k">auto</span> <span class="n">result_tune2</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">tuning</span><span class="p">.</span><span class="n">AutoTuneStallGuard</span><span class="p">(</span>
     <span class="mf">36.0</span><span class="n">f</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span>                         <span class="c1">// Target velocity: 36 RPM</span>
     <span class="mi">0</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span>                                 <span class="c1">// SGT search range</span>
     <span class="mf">0.06</span><span class="n">f</span><span class="p">,</span>                                 <span class="c1">// Acceleration: 0.06 rev/s² (must use RevPerSec)</span>
@@ -1221,7 +1221,7 @@
 <span class="p">);</span>
 
 <span class="c1">// Or using TuneStallGuard (simpler, no current margin)</span>
-<span class="kt">bool</span> <span class="n">success</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">tuning</span><span class="p">.</span><span class="n">TuneStallGuard</span><span class="p">(</span>
+<span class="k">auto</span> <span class="n">result_tune3</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">tuning</span><span class="p">.</span><span class="n">TuneStallGuard</span><span class="p">(</span>
     <span class="mf">0.6</span><span class="n">f</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span>                          <span class="c1">// Target velocity: 0.6 rev/s</span>
     <span class="mi">0</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span>                                 <span class="c1">// SGT search range</span>
     <span class="mf">0.06</span><span class="n">f</span><span class="p">,</span>                                 <span class="c1">// Acceleration: 0.06 rev/s²</span>
@@ -1231,7 +1231,7 @@
     <span class="c1">// Unit::RevPerSec is default, can be omitted</span>
 <span class="p">);</span>
 
-<span class="k">if</span> <span class="p">(</span><span class="n">success</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">result_tune</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// Use optimal SGT</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">StallGuardConfig</span> <span class="n">sg_config</span><span class="p">;</span>
     <span class="n">sg_config</span><span class="p">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">optimal_sgt</span><span class="p">;</span>
@@ -1281,14 +1281,14 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">PerformSensorlessHoming()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool PerformSensorlessHoming(bool direction, float search_speed, int32_t&amp; final_position, uint32_t timeout_ms = 10000) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; PerformSensorlessHoming(bool direction, float search_speed, int32_t&amp; final_position, uint32_t timeout_ms = 10000) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Perform sensorless homing using StallGuard2 (uses existing SGT threshold from motor config)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">PerformSwitchHoming()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool PerformSwitchHoming(bool direction, float search_speed, float switch_speed, int32_t&amp; final_position, bool use_left_switch, uint32_t timeout_ms = 10000) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; PerformSwitchHoming(bool direction, float search_speed, float switch_speed, int32_t&amp; final_position, bool use_left_switch, uint32_t timeout_ms = 10000) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Perform homing using a reference switch</td>
     </tr>
   </tbody>
@@ -1376,99 +1376,99 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetTimeBetweenMicrosteps()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetTimeBetweenMicrosteps(uint32_t&amp; time) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint32_t&gt; GetTimeBetweenMicrosteps() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint32_t&gt;</code> containing the value or error</td>
       <td>Get actual time between microsteps in clock cycles (TSTEP register)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetMicrostepCounter()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetMicrostepCounter(uint16_t&amp; counter) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint16_t&gt; GetMicrostepCounter() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint16_t&gt;</code> containing the value or error</td>
       <td>Get actual position in microstep table (0-1023, MSCNT register)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetMicrostepCurrent()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetMicrostepCurrent(int16_t&amp; phase_a, int16_t&amp; phase_b) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;int16_t&gt; GetMicrostepCurrent(int16_t&amp; phase_b) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;int16_t&gt;</code> containing the value or error</td>
       <td>Get actual microstep current for both phases (MSCURACT register)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetPwmScale()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetPwmScale(uint8_t&amp; pwm_scale_sum, int16_t&amp; pwm_scale_auto) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint8_t&gt; GetPwmScale(int16_t&amp; pwm_scale_auto) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint8_t&gt;</code> containing the value or error</td>
       <td>Get stealthChop PWM scale results (PWM_SCALE register)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetPwmAuto()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetPwmAuto(uint8_t&amp; pwm_ofs_auto, uint8_t&amp; pwm_grad_auto) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint8_t&gt; GetPwmAuto(uint8_t&amp; pwm_grad_auto) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint8_t&gt;</code> containing the value or error</td>
       <td>Get automatically determined PWM values (PWM_AUTO register)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ReadInputStatus()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ReadInputStatus(InputStatus&amp; input_status) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;InputStatus&gt; ReadInputStatus() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;InputStatus&gt;</code> containing the value or error</td>
       <td>Read GPIO input pins (parsed structure)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ReadIcVersion()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ReadIcVersion(uint8_t&amp; version) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint8_t&gt; ReadIcVersion() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint8_t&gt;</code> containing the value or error</td>
       <td>Read IC version from IOIN register</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ReadGpioPins()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ReadGpioPins(uint32_t&amp; io_pins) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint32_t&gt; ReadGpioPins() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint32_t&gt;</code> containing the value or error</td>
       <td>Read GPIO input pin states (raw register value)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ReadFactoryConfig()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ReadFactoryConfig(uint8_t&amp; fclktrim) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint8_t&gt; ReadFactoryConfig() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint8_t&gt;</code> containing the value or error</td>
       <td>Read factory configuration/clock trim (FACTORY_CONF register)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetSdoCfg0Polarity()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetSdoCfg0Polarity(bool polarity) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetSdoCfg0Polarity(bool polarity) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set SDO_CFG0 pin polarity (UART/Single Wire mode)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ReadOtpConfig()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ReadOtpConfig(uint8_t&amp; otp_fclktrim, bool&amp; otp_s2_level, bool&amp; otp_bbm, bool&amp; otp_tbl) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint8_t&gt; ReadOtpConfig(bool&amp; otp_s2_level, bool&amp; otp_bbm, bool&amp; otp_tbl) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint8_t&gt;</code> containing the value or error</td>
       <td>Read OTP configuration memory (OTP_READ register)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetUartTransmissionCount()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">uint8_t GetUartTransmissionCount() noexcept</code></td>
-      <td>Transmission count (0 on error)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint8_t&gt; GetUartTransmissionCount() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint8_t&gt;</code> containing the value or error</td>
       <td>Get UART transmission counter (IFCNT register)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ReadOffsetCalibration()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ReadOffsetCalibration(uint8_t&amp; phase_a, uint8_t&amp; phase_b) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint8_t&gt; ReadOffsetCalibration(uint8_t&amp; phase_b) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint8_t&gt;</code> containing the value or error</td>
       <td>Read offset calibration results (OFFSET_READ register)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">VerifySetup()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool VerifySetup() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; VerifySetup() noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Run comprehensive startup verification</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetTcoolthrs()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetTcoolthrs(float threshold, Unit unit = Unit::RevPerSec) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Set TCOOLTHRS register directly (unit-aware, default: revolutions per second)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetTcoolthrs(float threshold, Unit unit) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
+      <td>Set TCOOLTHRS register directly (unit-aware, unit parameter required)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetTcoolthrs()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetTcoolthrs(float&amp; threshold, Unit unit = Unit::RevPerSec) const noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
-      <td>Get TCOOLTHRS register value from local storage (unit-aware, default: revolutions per second)</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;float&gt; GetTcoolthrs(Unit unit) const noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;float&gt;</code> containing the value or error</td>
+      <td>Get TCOOLTHRS register value from local storage (unit-aware, unit parameter required)</td>
     </tr>
   </tbody>
 </table></div>
@@ -1541,6 +1541,16 @@
 31
 32
 33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
 </pre></td><td class="rouge-code"><pre><span class="c1">// Ensure SpreadCycle mode is enabled (StealthChop disabled)</span>
 <span class="n">tmc51x0</span><span class="o">::</span><span class="n">GlobalConfig</span> <span class="n">gconf</span><span class="p">{};</span>
 <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">GetGlobalConfig</span><span class="p">(</span><span class="n">gconf</span><span class="p">);</span>
@@ -1554,10 +1564,20 @@
 <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1024</span><span class="p">);</span>  <span class="c1">// At least 4× microstep resolution (256)</span>
 
 <span class="c1">// Wait for motion to start</span>
-<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">())</span> <span class="p">{</span>
+<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">auto</span> <span class="n">reached</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">();</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">reached</span> <span class="o">&amp;&amp;</span> <span class="n">reached</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="p">{</span>
+    <span class="k">break</span><span class="p">;</span> <span class="c1">// Target reached</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">reached</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Handle error</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span>
   <span class="c1">// Check for open load during motion</span>
-  <span class="kt">bool</span> <span class="n">phase_a_open</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">IsOpenLoadA</span><span class="p">();</span>
-  <span class="kt">bool</span> <span class="n">phase_b_open</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">IsOpenLoadB</span><span class="p">();</span>
+  <span class="k">auto</span> <span class="n">open_a</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">IsOpenLoadA</span><span class="p">();</span>
+  <span class="k">auto</span> <span class="n">open_b</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">IsOpenLoadB</span><span class="p">();</span>
+  <span class="kt">bool</span> <span class="n">phase_a_open</span> <span class="o">=</span> <span class="n">open_a</span> <span class="o">&amp;&amp;</span> <span class="n">open_a</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span>
+  <span class="kt">bool</span> <span class="n">phase_b_open</span> <span class="o">=</span> <span class="n">open_b</span> <span class="o">&amp;&amp;</span> <span class="n">open_b</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span>
   
   <span class="k">if</span> <span class="p">(</span><span class="n">phase_a_open</span> <span class="o">||</span> <span class="n">phase_b_open</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">ESP_LOGW</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s">"Open load detected: Phase A=%d, Phase B=%d"</span><span class="p">,</span> 
@@ -1623,20 +1643,20 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetClkFreq()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetClkFreq(uint32_t frequency_hz) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetClkFreq(uint32_t frequency_hz) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set clock frequency on CLK pin (0 = internal clock, &gt;0 = external clock frequency) - low-level method</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetClkFreq()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetClkFreq(const ExternalClockConfig&amp; config) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetClkFreq(const ExternalClockConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set clock frequency from ExternalClockConfig (high-level method, updates driver configuration)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ConfigureUartNodeAddress()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay = 0) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay = 0) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Configure UART node address and send delay (writes SLAVECONF register, also updates software state)</td>
     </tr>
     <tr>
@@ -1653,14 +1673,14 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetOperatingMode()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetOperatingMode(ChipCommMode mode) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetOperatingMode(ChipCommMode mode) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set chip operating mode via SPI_MODE and SD_MODE pins (controls both communication interface and motion control method)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GetOperatingMode()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GetOperatingMode(ChipCommMode&amp; mode) const noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;ChipCommMode&gt; GetOperatingMode() const noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;ChipCommMode&gt;</code> containing the value or error</td>
       <td>Get current chip operating mode from SPI_MODE and SD_MODE pins</td>
     </tr>
     <tr>
@@ -1710,8 +1730,8 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ConfigureUartNodeAddress()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Configure SLAVECONF register with UART node address (0-254) and send delay (for sequential programming). Updates the driver’s <code class="language-plaintext highlighter-rouge">uart_node_address_</code>. Per datasheet, devices are typically programmed backwards from 254.</td>
     </tr>
   </tbody>
@@ -1749,14 +1769,14 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ConfigureShortProtection()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ConfigureShortProtection(const PowerStageParameters&amp; config) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ConfigureShortProtection(const PowerStageParameters&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Configure short circuit protection using user-friendly voltage thresholds</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetShortProtectionLevels()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter, uint8_t shortdelay) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter, uint8_t shortdelay) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set short protection levels directly (low-level API, register values)</td>
     </tr>
   </tbody>
@@ -1800,38 +1820,38 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ReadRegister()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ReadRegister(uint8_t address, uint32_t&amp; value, uint8_t daisy_chain_position = 0) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint32_t&gt; ReadRegister(uint8_t address, uint8_t daisy_chain_position = 0) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;uint32_t&gt;</code> containing the value or error</td>
       <td>Read 32-bit register. For SPI: daisy-chain position. For UART: node address.</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">WriteRegister()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Write 32-bit register. For SPI: daisy-chain position. For UART: node address.</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GpioSet()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GpioSet(TMC51x0CtrlPin pin, GpioSignal signal) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; GpioSet(TMC51x0CtrlPin pin, GpioSignal signal) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set GPIO pin state</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GpioRead()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GpioRead(TMC51x0CtrlPin pin, GpioSignal&amp; signal) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;GpioSignal&gt; GpioRead(TMC51x0CtrlPin pin) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;GpioSignal&gt;</code> containing the value or error</td>
       <td>Read GPIO pin state</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GpioSetActive()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GpioSetActive(TMC51x0CtrlPin pin) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; GpioSetActive(TMC51x0CtrlPin pin) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set GPIO pin to active state</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">GpioSetInactive()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool GpioSetInactive(TMC51x0CtrlPin pin) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; GpioSetInactive(TMC51x0CtrlPin pin) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Set GPIO pin to inactive state</td>
     </tr>
     <tr>
@@ -1848,8 +1868,8 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">SetPinActiveLevel()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool SetPinActiveLevel(TMC51x0CtrlPin pin, bool active_level) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetPinActiveLevel(TMC51x0CtrlPin pin, bool active_level) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Configure pin active level</td>
     </tr>
     <tr>
@@ -1925,8 +1945,8 @@
 </table></div>
 
 <p><strong>Note</strong>: <code class="language-plaintext highlighter-rouge">SetDaisyChainLength()</code> is critical for proper response extraction using the datasheet formula <code class="language-plaintext highlighter-rouge">40·(n-k+1)</code>. The chain length represents the total number of devices in the daisy chain, not individual device positions.
-| <code class="language-plaintext highlighter-rouge">SetNaiPin()</code> | <code class="language-plaintext highlighter-rouge">bool SetNaiPin(bool active) noexcept</code> | <code class="language-plaintext highlighter-rouge">true</code> on success | Set NAI pin state for UART sequential addressing (UART only) |
-| <code class="language-plaintext highlighter-rouge">GetNaoPin()</code> | <code class="language-plaintext highlighter-rouge">bool GetNaoPin(bool&amp; active) noexcept</code> | <code class="language-plaintext highlighter-rouge">true</code> on success | Read NAO pin state for UART sequential addressing (UART only) |</p>
+| <code class="language-plaintext highlighter-rouge">SetNaiPin()</code> | <code class="language-plaintext highlighter-rouge">Result&lt;void&gt; SetNaiPin(bool active) noexcept</code> | <code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error | Set NAI pin state for UART sequential addressing (UART only) |
+| <code class="language-plaintext highlighter-rouge">GetNaoPin()</code> | <code class="language-plaintext highlighter-rouge">Result&lt;bool&gt; GetNaoPin() noexcept</code> | <code class="language-plaintext highlighter-rouge">Result&lt;bool&gt;</code> containing true if NAO is active, false otherwise | Read NAO pin state for UART sequential addressing (UART only) |</p>
 
 <p><strong>Note</strong>: <code class="language-plaintext highlighter-rouge">UartCommInterface</code> no longer stores node addresses. Multiple <code class="language-plaintext highlighter-rouge">TMC51x0</code> instances share one <code class="language-plaintext highlighter-rouge">UartCommInterface</code> on the same UART bus. Each <code class="language-plaintext highlighter-rouge">TMC51x0</code> instance stores its own <code class="language-plaintext highlighter-rouge">uart_node_address_</code> and passes it to <code class="language-plaintext highlighter-rouge">ReadRegister()</code>/<code class="language-plaintext highlighter-rouge">WriteRegister()</code> automatically.</p>
 
@@ -4195,19 +4215,380 @@
 </h2>
     
 
-<p>The driver uses boolean return values for error handling:</p>
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">true</code> indicates success</li>
-  <li><code class="language-plaintext highlighter-rouge">false</code> indicates failure</li>
-</ul>
+<p>The driver uses <code class="language-plaintext highlighter-rouge">Result&lt;T&gt;</code> return types for explicit error handling, providing rich error information instead of simple boolean returns. This makes error handling explicit and helps prevent silent failures.</p>
+<h3 id="result-types">
+  
+  
+    <a href="#result-types" class="anchor-heading" aria-labelledby="result-types"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Result<T> Types</T>
+  
+  
+</h3>
+    
 
-<p>Always check return values:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> for operations that don’t return a value (e.g., <code class="language-plaintext highlighter-rouge">Initialize()</code>, <code class="language-plaintext highlighter-rouge">Enable()</code>)</li>
+  <li><code class="language-plaintext highlighter-rouge">Result&lt;bool&gt;</code> for boolean queries (e.g., <code class="language-plaintext highlighter-rouge">IsTargetReached()</code>)</li>
+  <li><code class="language-plaintext highlighter-rouge">Result&lt;T&gt;</code> for operations that return a value (e.g., <code class="language-plaintext highlighter-rouge">GetCurrentPosition()</code> returns <code class="language-plaintext highlighter-rouge">Result&lt;float&gt;</code>)</li>
+</ul>
+<h3 id="basic-error-handling-patterns">
+  
+  
+    <a href="#basic-error-handling-patterns" class="anchor-heading" aria-labelledby="basic-error-handling-patterns"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Basic Error Handling Patterns
+  
+  
+</h3>
+    
+<h4 id="pattern-1-early-return-recommended">
+  
+  
+    <a href="#pattern-1-early-return-recommended" class="anchor-heading" aria-labelledby="pattern-1-early-return-recommended"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Pattern 1: Early Return (Recommended)
+  
+  
+</h4>
+    
+
+<p>The most common pattern for critical operations - return immediately on error:</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
-</pre></td><td class="rouge-code"><pre><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span> <span class="p">{</span>
-    <span class="c1">// Handle error</span>
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="rouge-code"><pre><span class="c1">// Void operations</span>
+<span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">// or handle error appropriately</span>
+<span class="p">}</span>
+
+<span class="c1">// Value operations</span>
+<span class="k">auto</span> <span class="n">position</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">GetCurrentPosition</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">position</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error reading position: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">position</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">float</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">position</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span> <span class="c1">// Safe to use - we know it succeeded</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h4 id="pattern-2-boolean-queries">
+  
+  
+    <a href="#pattern-2-boolean-queries" class="anchor-heading" aria-labelledby="pattern-2-boolean-queries"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Pattern 2: Boolean Queries
+  
+  
+</h4>
+    
+
+<p>For methods returning <code class="language-plaintext highlighter-rouge">Result&lt;bool&gt;</code>, check both the result and the value:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="k">auto</span> <span class="n">reached</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">reached</span> <span class="o">&amp;&amp;</span> <span class="n">reached</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="p">{</span>
+    <span class="c1">// Target reached successfully</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Target position reached</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">reached</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Error occurred while checking</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error checking target: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">reached</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">// Successfully checked, but target not reached yet</span>
+    <span class="c1">// Continue waiting</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h4 id="pattern-3-error-logging-with-continue">
+  
+  
+    <a href="#pattern-3-error-logging-with-continue" class="anchor-heading" aria-labelledby="pattern-3-error-logging-with-continue"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Pattern 3: Error Logging with Continue
+  
+  
+</h4>
+    
+
+<p>For non-critical operations where you want to log but continue:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="k">auto</span> <span class="n">speed_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">100.0</span><span class="n">f</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">speed_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Warning: Failed to set speed: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">speed_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="c1">// Continue with default or retry</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h4 id="pattern-4-using-valueor-for-defaults">
+  
+  
+    <a href="#pattern-4-using-valueor-for-defaults" class="anchor-heading" aria-labelledby="pattern-4-using-valueor-for-defaults"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Pattern 4: Using ValueOr() for Defaults
+  
+  
+</h4>
+    
+
+<p>For operations where a default value is acceptable:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="k">auto</span> <span class="n">position</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">GetCurrentPosition</span><span class="p">();</span>
+<span class="kt">float</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">position</span><span class="p">.</span><span class="n">ValueOr</span><span class="p">(</span><span class="mf">0.0</span><span class="n">f</span><span class="p">);</span> <span class="c1">// Use 0.0 if error occurred</span>
+<span class="c1">// Note: This doesn't distinguish between actual 0.0 and error</span>
+<span class="c1">// For production code, prefer explicit error checking</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="complete-example-initialization-with-full-error-handling">
+  
+  
+    <a href="#complete-example-initialization-with-full-error-handling" class="anchor-heading" aria-labelledby="complete-example-initialization-with-full-error-handling"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Complete Example: Initialization with Full Error Handling
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+</pre></td><td class="rouge-code"><pre><span class="c1">// Initialize driver</span>
+<span class="n">tmc51x0</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">supply_voltage_mv</span> <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span>
+
+<span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error code: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">init_result</span><span class="p">.</span><span class="n">Error</span><span class="p">()));</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Configure ramp mode</span>
+<span class="k">auto</span> <span class="n">mode_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">POSITIONING</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">mode_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting ramp mode: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">mode_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Set target position</span>
+<span class="k">auto</span> <span class="n">pos_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pos_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting target position: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pos_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Enable motor</span>
+<span class="k">auto</span> <span class="n">enable_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">enable_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error enabling motor: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">enable_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Wait for target with error checking</span>
+<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">auto</span> <span class="n">reached</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">reached</span> <span class="o">&amp;&amp;</span> <span class="n">reached</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Target reached</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">reached</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error checking target: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">reached</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// Target not reached yet, continue waiting</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">comm</span><span class="p">.</span><span class="n">DelayMs</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="error-codes">
+  
+  
+    <a href="#error-codes" class="anchor-heading" aria-labelledby="error-codes"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Error Codes
+  
+  
+</h3>
+    
+
+<p>The <code class="language-plaintext highlighter-rouge">Result&lt;T&gt;</code> type includes an <code class="language-plaintext highlighter-rouge">Error()</code> method that returns an <code class="language-plaintext highlighter-rouge">ErrorCode</code> enum:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span> <span class="n">code</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">Error</span><span class="p">();</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">NOT_INITIALIZED</span><span class="p">:</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Driver not initialized</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">COMM_ERROR</span><span class="p">:</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Communication error - check wiring</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">INVALID_VALUE</span><span class="p">:</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Invalid parameter value</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="c1">// ... handle other error codes</span>
+        <span class="nl">default:</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Unknown error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="best-practices">
+  
+  
+    <a href="#best-practices" class="anchor-heading" aria-labelledby="best-practices"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Best Practices
+  
+  
+</h3>
+    
+
+<ol>
+  <li><strong>Always check return values</strong>: Never ignore <code class="language-plaintext highlighter-rouge">Result&lt;T&gt;</code> return values</li>
+  <li><strong>Use early return</strong>: For critical operations, return immediately on error</li>
+  <li><strong>Log errors</strong>: Always log error messages for debugging</li>
+  <li><strong>Check boolean results properly</strong>: For <code class="language-plaintext highlighter-rouge">Result&lt;bool&gt;</code>, check both the result and the value</li>
+  <li><strong>Handle errors appropriately</strong>: Don’t just log and continue - decide if the error is recoverable</li>
+  <li><strong>Use descriptive variable names</strong>: <code class="language-plaintext highlighter-rouge">init_result</code>, <code class="language-plaintext highlighter-rouge">pos_result</code>, etc. make code more readable</li>
+</ol>
+<h3 id="common-error-handling-mistakes">
+  
+  
+    <a href="#common-error-handling-mistakes" class="anchor-heading" aria-labelledby="common-error-handling-mistakes"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Common Error Handling Mistakes
+  
+  
+</h3>
+    
+
+<p><strong>❌ Don’t do this:</strong></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>  <span class="c1">// Error ignored!</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>  <span class="c1">// Error ignored!</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>✅ Do this:</strong></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">auto</span> <span class="n">pos_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pos_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pos_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>❌ Don’t do this:</strong></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="k">auto</span> <span class="n">reached</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">reached</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="p">{</span>  <span class="c1">// Crashes if reached is an error!</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>✅ Do this:</strong></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="k">auto</span> <span class="n">reached</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">reached</span> <span class="o">&amp;&amp;</span> <span class="n">reached</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="p">{</span>  <span class="c1">// Check result first!</span>
+    <span class="c1">// ...</span>
 <span class="p">}</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h2 id="helper-classes">
@@ -4282,20 +4663,20 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">InitializeAll()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool InitializeAll(const DriverConfig&amp; config) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; InitializeAll(const DriverConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Initialize all onboard devices with same config</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">AddDevice()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool AddDevice(size_t position) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; AddDevice(size_t position) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Add extra device at specified position</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">RemoveDevice()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool RemoveDevice(size_t position) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; RemoveDevice(size_t position) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Remove extra device at specified position</td>
     </tr>
     <tr>
@@ -4323,15 +4704,35 @@
 7
 8
 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
 </pre></td><td class="rouge-code"><pre><span class="n">tmc51x0</span><span class="o">::</span><span class="n">TMC51x0DaisyChain</span><span class="o">&lt;</span><span class="n">MySPI</span><span class="p">,</span> <span class="mi">5</span><span class="o">&gt;</span> <span class="n">chain</span><span class="p">(</span><span class="n">spiComm</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">// f_clk is optional</span>
 <span class="n">tmc51x0</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">;</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">supply_voltage_mv</span> <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">external_clk_config</span><span class="p">.</span><span class="n">frequency_hz</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 0 = use internal 12 MHz clock</span>
-<span class="n">chain</span><span class="p">.</span><span class="n">InitializeAll</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+
+<span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">chain</span><span class="p">.</span><span class="n">InitializeAll</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Chain initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
 <span class="k">auto</span><span class="o">&amp;</span> <span class="n">motor_x</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-<span class="n">motor_x</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">pos_result</span> <span class="o">=</span> <span class="n">motor_x</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pos_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting target position: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pos_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h3 id="tmc51x0multinode">
   
@@ -4397,32 +4798,32 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ProgramSequentially()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ProgramSequentially() noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ProgramSequentially(uint8_t send_delay = 2) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Program all devices sequentially using NAI/NAO pins (required at startup)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">ProgramDevice()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool ProgramDevice(size_t index) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; ProgramDevice(uint8_t index, uint8_t send_delay = 2) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Program single device at specified index (must be accessible at address 0)</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">InitializeAll()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool InitializeAll(const DriverConfig&amp; config) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; InitializeAll(const DriverConfig&amp; config) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Initialize all onboard devices with same config</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">AddDevice()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool AddDevice(size_t index) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; AddDevice(uint8_t index) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Add extra device at specified logical index</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">RemoveDevice()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">bool RemoveDevice(size_t index) noexcept</code></td>
-      <td><code class="language-plaintext highlighter-rouge">true</code> on success</td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; RemoveDevice(uint8_t index) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
       <td>Remove extra device at specified logical index</td>
     </tr>
     <tr>

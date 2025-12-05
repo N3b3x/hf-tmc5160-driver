@@ -1,6 +1,8 @@
 var internal__ramp__comprehensive__test_8cpp =
 [
     [ "TestDriverHandle", "structTestDriverHandle.html", "structTestDriverHandle" ],
+    [ "Motor", "internal__ramp__comprehensive__test_8cpp.html#a0259a0535fd8188598a4b031acf97da1", null ],
+    [ "Test", "internal__ramp__comprehensive__test_8cpp.html#a0ea89ab5952324cdb1b34241238a6c22", null ],
     [ "app_main", "internal__ramp__comprehensive__test_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70", null ],
     [ "CalculateCurrentRegister", "internal__ramp__comprehensive__test_8cpp.html#a5252c49abf7d7f7cbc2b181ea72a39b7", null ],
     [ "create_test_driver", "internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9", null ],
@@ -93,9 +95,9 @@ var internal__ramp__comprehensive__test_8cpp =
     [ "SELECTED_TEST_RIG", "internal__ramp__comprehensive__test_8cpp.html#a3f1e89f6e3a0be599511d4a8cc389305", null ],
     [ "STEPS_PER_REV", "internal__ramp__comprehensive__test_8cpp.html#a63557ac710415c650bc9dd19d2a91eba", null ],
     [ "TAG", "internal__ramp__comprehensive__test_8cpp.html#a5a85b9c772bbeb480b209a3e6ea92b4c", null ],
-    [ "TEST_ACCELERATION", "internal__ramp__comprehensive__test_8cpp.html#a66044a83a16364900a1e4ea4e2a33b64", null ],
-    [ "TEST_DECELERATION", "internal__ramp__comprehensive__test_8cpp.html#a0c99465b0fea99d743ad558c61a8062d", null ],
-    [ "TEST_MAX_SPEED", "internal__ramp__comprehensive__test_8cpp.html#ad3d0fed63baf4ab7c3d37b83168859e8", null ],
+    [ "TEST_ACCELERATION_REV_S2", "internal__ramp__comprehensive__test_8cpp.html#a6c66dbed0857e4ad6dfacbe0a5ba9a4d", null ],
+    [ "TEST_DECELERATION_REV_S2", "internal__ramp__comprehensive__test_8cpp.html#aa39cb7dac44544a766d2671dcdcb328b", null ],
+    [ "TEST_MAX_SPEED_RPM", "internal__ramp__comprehensive__test_8cpp.html#a446585c10b2f93aa1cfbc4784f4280e5", null ],
     [ "TEST_MRES", "internal__ramp__comprehensive__test_8cpp.html#ab4ac48c833f5c615fa07b1f87dacd8a5", null ],
     [ "TEST_TOFF", "internal__ramp__comprehensive__test_8cpp.html#a41fcf4530de550ff6f72008fcded08cc", null ]
 ];

@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classBackAndForthMotion.html#aeb03477ad8ae99e527c39ee417e4eabf" target="_top" xlink:title="Configure back&#45;and&#45;forth motion parameters.">
+<g id="a_Node000002"><a xlink:href="classBackAndForthMotion.html#aa090f6cf784e52cd82d0456426e301b5" target="_top" xlink:title="Configure back&#45;and&#45;forth motion parameters.">
 <polygon fill="white" stroke="#666666" points="243.5,-320 125.5,-320 125.5,-290 243.5,-290 243.5,-320"/>
 <text text-anchor="start" x="133.5" y="-308" font-family="Helvetica,sans-Serif" font-size="10.00">BackAndForthMotion</text>
 <text text-anchor="middle" x="184.5" y="-297" font-family="Helvetica,sans-Serif" font-size="10.00">::Config</text>
@@ -57,7 +57,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="namespacetmc51x0__test__config.html#acfa741fd46ae4ba5ed006fb0361cf188" target="_top" xlink:title="Complete pin configuration for all tests.">
+<g id="a_Node000004"><a xlink:href="namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" target="_top" xlink:title="Complete pin configuration for all tests.">
 <polygon fill="white" stroke="#666666" points="245.5,-234 123.5,-234 123.5,-204 245.5,-204 245.5,-234"/>
 <text text-anchor="start" x="131.5" y="-222" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0_test_config</text>
 <text text-anchor="middle" x="184.5" y="-211" font-family="Helvetica,sans-Serif" font-size="10.00">::GetDefaultPinConfig</text>
@@ -76,7 +76,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="classEsp32SPI.html#ab188cf37c0b6939a7b3b876f4c91f2a1" target="_top" xlink:title="Read GPIO pin state.">
+<g id="a_Node000005"><a xlink:href="classEsp32SPI.html#af6da72550da3f66fb49561b48e8cc3f0" target="_top" xlink:title="Read GPIO pin state.">
 <polygon fill="white" stroke="#666666" points="420,-185.5 306,-185.5 306,-166.5 420,-166.5 420,-185.5"/>
 <text text-anchor="middle" x="363" y="-173.5" font-family="Helvetica,sans-Serif" font-size="10.00">Esp32SPI::GpioRead</text>
 </a>
@@ -94,7 +94,7 @@
 <!-- Node9 -->
 <g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_Node000009"><a xlink:href="classEsp32SPI.html#a87a448d5847f2fbe665871517a27cf44" target="_top" xlink:title="Initialize the SPI interface.">
+<g id="a_Node000009"><a xlink:href="classEsp32SPI.html#a85d11c001a36b137e4d29ced49983d20" target="_top" xlink:title="Initialize the SPI interface.">
 <polygon fill="white" stroke="#666666" points="239,-147.5 130,-147.5 130,-128.5 239,-128.5 239,-147.5"/>
 <text text-anchor="middle" x="184.5" y="-135.5" font-family="Helvetica,sans-Serif" font-size="10.00">Esp32SPI::Initialize</text>
 </a>
@@ -112,7 +112,7 @@
 <!-- Node12 -->
 <g id="Node000012" class="node">
 <title>Node12</title>
-<g id="a_Node000012"><a xlink:href="classtmc51x0_1_1TMC51x0.html#a8933c4a4a8e5ea0212ba900160efe42f" target="_top" xlink:title="Initialize the TMC51x0 driver with configuration.">
+<g id="a_Node000012"><a xlink:href="classtmc51x0_1_1TMC51x0.html#a78a4a5e4773f1848809ed711ab20c707" target="_top" xlink:title="Initialize the TMC51x0 driver with configuration.">
 <polygon fill="white" stroke="#666666" points="264,-110.5 105,-110.5 105,-91.5 264,-91.5 264,-110.5"/>
 <text text-anchor="middle" x="184.5" y="-98.5" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::TMC51x0::Initialize</text>
 </a>
@@ -223,7 +223,7 @@
 <!-- Node10 -->
 <g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_Node000010"><a xlink:href="classEsp32SPI.html#adcc0044c32d595f822c8f671bdb9edb0" target="_top" xlink:title="Set GPIO pin state.">
+<g id="a_Node000010"><a xlink:href="classEsp32SPI.html#a434e1cfd74165d1e6fac1a940d1d513a" target="_top" xlink:title="Set GPIO pin state.">
 <polygon fill="white" stroke="#666666" points="415.5,-147.5 310.5,-147.5 310.5,-128.5 415.5,-128.5 415.5,-147.5"/>
 <text text-anchor="middle" x="363" y="-135.5" font-family="Helvetica,sans-Serif" font-size="10.00">Esp32SPI::GpioSet</text>
 </a>

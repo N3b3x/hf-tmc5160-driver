@@ -1,0 +1,13 @@
+<map id="tmc51x0::UartCommInterface::WriteRegister" name="tmc51x0::UartCommInterface::WriteRegister">
+<area shape="rect" id="Node000001" title="Write a 32&#45;bit register via UART." alt="" coords="5,104,221,144"/>
+<area shape="rect" id="Node000002" href="$structtmc51x0_1_1UartFrame.html#aa5551cacdaecb3388c4989f4486ddb85" title="Get the frame as raw bytes." alt="" coords="299,5,455,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,101,268,62,306,48,308,53,270,66,166,106"/>
+<area shape="rect" id="Node000003" href="$structtmc51x0_1_1UartFrame.html#a78342fc3a803c20d02e2a2cb9895d3a6" title="Get frame size in bytes based on type." alt="" coords="533,35,689,75"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="221,106,519,65,520,70,222,112"/>
+<area shape="rect" id="Node000004" href="$classtmc51x0_1_1UartCommInterface.html#a7084122cac7ff8ad41c380ed38e011fc" title="Send raw bytes via UART." alt="" coords="269,144,485,184"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="222,138,256,143,255,148,221,143"/>
+<area shape="rect" id="Node000005" href="$structtmc51x0_1_1UartFrame.html#a2b2e2b7ac79064bf664f54f9c4c8a8bd" title="Construct a write access frame (8 bytes)" alt="" coords="299,208,455,248"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="155,142,270,194,292,201,290,206,268,198,153,147"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="456,32,520,41,519,46,455,38"/>
+<area shape="poly" id="edge5_Node000004_Node000004" title=" " alt="" coords="334,144,331,134,338,125,354,119,377,117,404,120,419,127,417,132,403,125,377,123,355,125,342,129,337,135,339,143"/>
+</map>

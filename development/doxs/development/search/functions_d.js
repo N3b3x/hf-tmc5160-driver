@@ -3,8 +3,8 @@ var searchData=
   ['parsecommand_0',['ParseCommand',['../classUartCommandParser.html#ab0e959fc2d336b5fbfb2dfafb901b167',1,'UartCommandParser']]],
   ['parsecommandtype_1',['ParseCommandType',['../classUartCommandParser.html#a1b1cc802df8531601b19af3dd97b9f52',1,'UartCommandParser']]],
   ['parseoptions_2',['ParseOptions',['../classOptionParser.html#a0fcac6b340ed22755f610e139cd760f7',1,'OptionParser']]],
-  ['performsensorlesshoming_3',['PerformSensorlessHoming',['../structtmc51x0_1_1TMC51x0_1_1Homing.html#a087bb6f89c5641de854be98c56c29005',1,'tmc51x0::TMC51x0::Homing']]],
-  ['performswitchhoming_4',['PerformSwitchHoming',['../structtmc51x0_1_1TMC51x0_1_1Homing.html#a55c7f0aea8ec0f276dc33cc80040f52b',1,'tmc51x0::TMC51x0::Homing']]],
+  ['performsensorlesshoming_3',['PerformSensorlessHoming',['../structtmc51x0_1_1TMC51x0_1_1Homing.html#a55a9144ba4cab9cb572c54598c96f7e0',1,'tmc51x0::TMC51x0::Homing']]],
+  ['performswitchhoming_4',['PerformSwitchHoming',['../structtmc51x0_1_1TMC51x0_1_1Homing.html#a648a3687beecd36cefe9080e9603bb89',1,'tmc51x0::TMC51x0::Homing']]],
   ['positionreached_5',['PositionReached',['../structtmc51x0_1_1SpiStatus.html#a21b664e82df5831eede7110b31bae438',1,'tmc51x0::SpiStatus']]],
   ['power_5ftask_6',['power_task',['../ui__board_2main_8cpp.html#a27d299a960f1b3a42754248d9b6b9fcf',1,'main.cpp']]],
   ['powerstageparameters_7',['PowerStageParameters',['../structtmc51x0_1_1PowerStageParameters.html#ab24468ba0e21a5f6523c1d2299544a71',1,'tmc51x0::PowerStageParameters']]],
@@ -37,8 +37,8 @@ var searchData=
   ['printwarning_34',['PrintWarning',['../namespaceCommandOutput.html#a7530059a95b958a7d66c5b0613dcbb67',1,'CommandOutput']]],
   ['processcommand_35',['ProcessCommand',['../classUartCommandParser.html#a2c3351f22cef1fd524cb5c02f349e9b9',1,'UartCommandParser::ProcessCommand(const char *line, FatigueTestMotion &amp;motion) noexcept'],['../classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68',1,'UartCommandParser::ProcessCommand(const char *line, FatigueTest::FatigueTestMotion &amp;motion) noexcept'],['../classUartCommandParser.html#a2c3351f22cef1fd524cb5c02f349e9b9',1,'UartCommandParser::ProcessCommand(const char *line, FatigueTestMotion &amp;motion) noexcept']]],
   ['processuartcommands_36',['ProcessUartCommands',['../classUartCommandParser.html#aa9c8b4a43f0bb19ee715e9f61f86870c',1,'UartCommandParser::ProcessUartCommands(FatigueTestMotion &amp;motion) noexcept'],['../classUartCommandParser.html#a867cccdf009c2a69f1edf9a02f50c984',1,'UartCommandParser::ProcessUartCommands(FatigueTest::FatigueTestMotion &amp;motion) noexcept'],['../classUartCommandParser.html#aa9c8b4a43f0bb19ee715e9f61f86870c',1,'UartCommandParser::ProcessUartCommands(FatigueTestMotion &amp;motion) noexcept']]],
-  ['programdevice_37',['ProgramDevice',['../classtmc51x0_1_1TMC51x0MultiNode.html#a42c382bfb225329a2669a44f6b5e54ba',1,'tmc51x0::TMC51x0MultiNode']]],
-  ['programsequentially_38',['ProgramSequentially',['../classtmc51x0_1_1TMC51x0MultiNode.html#a458ac49568b779e0c75014710c655694',1,'tmc51x0::TMC51x0MultiNode']]],
+  ['programdevice_37',['ProgramDevice',['../classtmc51x0_1_1TMC51x0MultiNode.html#ac3198576e0c6cec08b6cd3423c42d8ca',1,'tmc51x0::TMC51x0MultiNode']]],
+  ['programsequentially_38',['ProgramSequentially',['../classtmc51x0_1_1TMC51x0MultiNode.html#a0cc41546d2a1b390c68692b1c70580a2',1,'tmc51x0::TMC51x0MultiNode']]],
   ['protection_39',['Protection',['../structtmc51x0_1_1TMC51x0_1_1Protection.html#aaa2f4e0f9890960bd52e2ec629ace560',1,'tmc51x0::TMC51x0::Protection']]],
   ['proto_5ftask_40',['proto_task',['../ui__board_2main_8cpp.html#ae35ef6a738531fb1443610ef077c8881',1,'main.cpp']]]
 ];

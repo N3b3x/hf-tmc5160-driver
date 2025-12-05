@@ -79,6 +79,7 @@ var namespaces_dup =
       [ "configure_wakeup", "namespaceSlideshowButtons.html#a4c2374870f188d8f8ba7cac3155b41d7", null ],
       [ "init", "namespaceSlideshowButtons.html#aeb37efec0211e33e19d38d47573b627f", null ]
     ] ],
+    [ "std", "namespacestd.html", "namespacestd" ],
     [ "tmc51x0", "namespacetmc51x0.html", "namespacetmc51x0" ],
     [ "tmc51x0_test_config", "namespacetmc51x0__test__config.html", "namespacetmc51x0__test__config" ],
     [ "UI", "namespaceUI.html", [

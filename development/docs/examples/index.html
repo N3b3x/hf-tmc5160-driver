@@ -315,6 +315,31 @@
 30
 31
 32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
 </pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"inc/tmc51x0.hpp"</span><span class="cp">
 </span>
 <span class="c1">// Assume MySPI is implemented (see platform_integration.md)</span>
@@ -328,20 +353,45 @@
     <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">;</span>
     <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>  <span class="c1">// Required for calculation</span>
     <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">supply_voltage_mv</span> <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span>  <span class="c1">// Required for calculation</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     
     <span class="c1">// Configure positioning mode</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">POSITIONING</span><span class="p">);</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mf">1000.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Steps</span><span class="p">);</span>  <span class="c1">// Move 1000 steps</span>
+    <span class="k">auto</span> <span class="n">mode_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">POSITIONING</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">mode_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting ramp mode: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">mode_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">auto</span> <span class="n">pos_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mf">1000.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Steps</span><span class="p">);</span>  <span class="c1">// Move 1000 steps</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pos_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting target position: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pos_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     <span class="c1">// Velocity defaults to revolutions per second - 0.02 rev/s ≈ 1.2 RPM for typical motor</span>
     <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">0.02</span><span class="n">f</span><span class="p">);</span>     <span class="c1">// Unit::RevPerSec is default</span>
     <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetAcceleration</span><span class="p">(</span><span class="mf">0.01</span><span class="n">f</span><span class="p">);</span> <span class="c1">// Unit::RevPerSec is default for acceleration too</span>
     
     <span class="c1">// Enable motor</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+    <span class="k">auto</span> <span class="n">enable_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">enable_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error enabling motor: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">enable_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     
     <span class="c1">// Wait for target reached</span>
-    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">())</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">reached</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">reached</span> <span class="o">&amp;&amp;</span> <span class="n">reached</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span> <span class="c1">// Target reached</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">reached</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Error checking target: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">reached</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
         <span class="c1">// Motion in progress</span>
     <span class="p">}</span>
     
@@ -401,6 +451,18 @@
 24
 25
 26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
 </pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"inc/tmc51x0.hpp"</span><span class="cp">
 </span>
 <span class="n">MySPI</span> <span class="nf">spi</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
@@ -412,15 +474,27 @@
     <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">;</span>
     <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
     <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">supply_voltage_mv</span> <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     
     <span class="c1">// Set velocity mode</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">VELOCITY_POS</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">mode_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">VELOCITY_POS</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">mode_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting ramp mode: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">mode_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     <span class="c1">// Using revolutions per second (default) - 0.01 rev/s ≈ 0.6 RPM for typical motor</span>
     <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">0.01</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Unit::RevPerSec is default</span>
     <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetAcceleration</span><span class="p">(</span><span class="mf">0.005</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Unit::RevPerSec is default</span>
     
-    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+    <span class="k">auto</span> <span class="n">enable_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">enable_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error enabling motor: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">enable_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     
     <span class="c1">// Motor runs continuously at 0.01 rev/s</span>
     <span class="c1">// To stop, call driver.rampControl.Stop()</span>
@@ -472,6 +546,31 @@
 31
 32
 33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
 </pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"inc/tmc51x0.hpp"</span><span class="cp">
 </span>
 <span class="n">MySPI</span> <span class="nf">spi</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
@@ -486,20 +585,45 @@
     <span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">mres</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">MicrostepResolution</span><span class="o">::</span><span class="n">MRES_256</span><span class="p">;</span>  <span class="c1">// 256 microsteps for smooth operation</span>
     <span class="n">cfg</span><span class="p">.</span><span class="n">stealthchop</span><span class="p">.</span><span class="n">pwm_autoscale</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
     <span class="n">cfg</span><span class="p">.</span><span class="n">stealthchop</span><span class="p">.</span><span class="n">pwm_autograd</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     
     <span class="c1">// Configure stealthChop thresholds</span>
     <span class="c1">// Below 0.002 rev/s (~0.12 RPM): stealthChop mode (silent)</span>
     <span class="c1">// Above 0.002 rev/s: spreadCycle mode (more torque)</span>
     <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetModeChangeSpeeds</span><span class="p">(</span><span class="mf">0.002</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Unit::RevPerSec is default</span>
     
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">POSITIONING</span><span class="p">);</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mf">1000.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Steps</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">mode_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">POSITIONING</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">mode_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting ramp mode: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">mode_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">auto</span> <span class="n">pos_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mf">1000.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Steps</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pos_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting target position: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pos_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">0.001</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Low speed = stealthChop (Unit::RevPerSec is default)</span>
     
-    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+    <span class="k">auto</span> <span class="n">enable_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">enable_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error enabling motor: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">enable_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     
-    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">())</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">reached</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">reached</span> <span class="o">&amp;&amp;</span> <span class="n">reached</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span> <span class="c1">// Target reached</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">reached</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Error checking target: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">reached</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
         <span class="c1">// Silent operation</span>
     <span class="p">}</span>
     
@@ -555,6 +679,37 @@
 36
 37
 38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
 </pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"inc/tmc51x0.hpp"</span><span class="cp">
 </span>
 <span class="n">MySPI</span> <span class="nf">spi</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
@@ -566,26 +721,57 @@
     <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">;</span>
     <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
     <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">supply_voltage_mv</span> <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     
     <span class="c1">// Configure encoder</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">EncoderConfig</span> <span class="n">enc_cfg</span><span class="p">{};</span>
     <span class="n">enc_cfg</span><span class="p">.</span><span class="n">prescaler_mode</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">EncoderPrescalerMode</span><span class="o">::</span><span class="n">BINARY</span><span class="p">;</span> <span class="c1">// Binary mode</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">Configure</span><span class="p">(</span><span class="n">enc_cfg</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">enc_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">Configure</span><span class="p">(</span><span class="n">enc_cfg</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">enc_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error configuring encoder: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">enc_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     
     <span class="c1">// Set encoder resolution: 200 steps/rev motor, 1000 pulses/rev encoder</span>
     <span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">SetResolution</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
     <span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">SetAllowedDeviation</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span> <span class="c1">// 10 steps tolerance</span>
     
     <span class="c1">// Move to position</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">POSITIONING</span><span class="p">);</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mf">1000.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Steps</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">mode_result2</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">POSITIONING</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">mode_result2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting ramp mode: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">mode_result2</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">auto</span> <span class="n">pos_result2</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mf">1000.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Steps</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pos_result2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting target position: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pos_result2</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">0.02</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Unit::RevPerSec is default</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+    <span class="k">auto</span> <span class="n">enable_result2</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">enable_result2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error enabling motor: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">enable_result2</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     
     <span class="c1">// Monitor encoder deviation</span>
-    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">())</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">IsDeviationDetected</span><span class="p">())</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">reached2</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">reached2</span> <span class="o">&amp;&amp;</span> <span class="n">reached2</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span> <span class="c1">// Target reached</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">reached2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Error checking target: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">reached2</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+        <span class="k">auto</span> <span class="n">dev_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">IsDeviationDetected</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">dev_result</span> <span class="o">&amp;&amp;</span> <span class="n">dev_result</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="p">{</span>
             <span class="c1">// Step loss detected - take corrective action</span>
             <span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">ClearDeviationFlag</span><span class="p">();</span>
         <span class="p">}</span>
@@ -643,6 +829,26 @@
 36
 37
 38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
 </pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"inc/tmc51x0.hpp"</span><span class="cp">
 </span>
 <span class="n">MySPI</span> <span class="nf">spi</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
@@ -654,28 +860,48 @@
     <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">;</span>
     <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
     <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">supply_voltage_mv</span> <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">init_result2</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result2</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     
     <span class="c1">// Configure StallGuard2</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">StallGuardConfig</span> <span class="n">sg_cfg</span><span class="p">{};</span>
     <span class="n">sg_cfg</span><span class="p">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>      <span class="c1">// Threshold (tune for your motor)</span>
     <span class="n">sg_cfg</span><span class="p">.</span><span class="n">enable_filter</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// Filter disabled</span>
     <span class="c1">// Note: semin/semax are CoolStep parameters, configure separately if needed</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">ConfigureStallGuard</span><span class="p">(</span><span class="n">sg_cfg</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">sg_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">ConfigureStallGuard</span><span class="p">(</span><span class="n">sg_cfg</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">sg_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error configuring StallGuard: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">sg_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">VELOCITY_POS</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">mode_result3</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">VELOCITY_POS</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">mode_result3</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting ramp mode: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">mode_result3</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">0.01</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Unit::RevPerSec is default</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+    <span class="k">auto</span> <span class="n">enable_result3</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">enable_result3</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error enabling motor: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">enable_result3</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
     
     <span class="c1">// Monitor StallGuard value</span>
     <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kt">uint16_t</span> <span class="n">sg_value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">GetStallGuard</span><span class="p">(</span><span class="n">sg_value</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">sg_result2</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">GetStallGuard</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">sg_result2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kt">uint16_t</span> <span class="n">sg_value</span> <span class="o">=</span> <span class="n">sg_result2</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">sg_value</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// Threshold depends on motor</span>
                 <span class="c1">// Stall detected - stop motor</span>
                 <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">Stop</span><span class="p">();</span>
                 <span class="k">break</span><span class="p">;</span>
             <span class="p">}</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Error reading StallGuard: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">sg_result2</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+            <span class="k">break</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">}</span>
     
@@ -806,6 +1032,10 @@
 66
 67
 68
+69
+70
+71
+72
 </pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"inc/tmc51x0.hpp"</span><span class="cp">
 #include</span> <span class="cpf">"esp32_tmc5160_bus.hpp"</span><span class="cp">
 </span>
@@ -821,7 +1051,11 @@
 <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">supply_voltage_mv</span> <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">mres</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">MicrostepResolution</span><span class="o">::</span><span class="n">MRES_256</span><span class="p">;</span> <span class="c1">// 256 microsteps</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">init_result4</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result4</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result4</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
 
 <span class="c1">// Create fatigue test motion controller</span>
 <span class="n">FatigueTestMotion</span> <span class="n">motion</span><span class="p">(</span><span class="o">&amp;</span><span class="n">driver</span><span class="p">);</span>

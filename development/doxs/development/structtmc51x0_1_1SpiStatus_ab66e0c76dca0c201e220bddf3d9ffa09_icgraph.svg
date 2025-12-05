@@ -40,7 +40,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classtmc51x0_1_1SpiCommInterface.html#a70f84a191253f39676943c1cea1ed7cb" target="_top" xlink:title="Read a 32&#45;bit register via SPI.">
+<g id="a_Node000003"><a xlink:href="classtmc51x0_1_1SpiCommInterface.html#af73aaff6b24f03a85379528680513c75" target="_top" xlink:title="Read a 32&#45;bit register via SPI.">
 <polygon fill="white" stroke="#666666" points="156,-149 0,-149 0,-119 156,-119 156,-149"/>
 <text text-anchor="start" x="8" y="-137" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::SpiCommInterface</text>
 <text text-anchor="middle" x="78" y="-126" font-family="Helvetica,sans-Serif" font-size="10.00">::ReadRegister</text>
@@ -59,7 +59,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classtmc51x0_1_1SpiCommInterface.html#a6fb339bcea2e78cdc00b962f347952c6" target="_top" xlink:title="Write a 32&#45;bit register via SPI.">
+<g id="a_Node000004"><a xlink:href="classtmc51x0_1_1SpiCommInterface.html#a5002dc4e4bd5c2ba5e350cda8c6ee142" target="_top" xlink:title="Write a 32&#45;bit register via SPI.">
 <polygon fill="white" stroke="#666666" points="156,-92 0,-92 0,-62 156,-62 156,-92"/>
 <text text-anchor="start" x="8" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::SpiCommInterface</text>
 <text text-anchor="middle" x="78" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">::WriteRegister</text>

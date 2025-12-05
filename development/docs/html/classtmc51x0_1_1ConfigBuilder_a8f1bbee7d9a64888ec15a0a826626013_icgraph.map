@@ -1,0 +1,9 @@
+<map id="tmc51x0::ConfigBuilder::WithGearbox" name="tmc51x0::ConfigBuilder::WithGearbox">
+<area shape="rect" id="Node000001" title="Configure gearbox system." alt="" coords="515,41,689,81"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0__test__config.html#a90b2bc1714b42e67ff0125a86807d8cb" title="Helper function to apply platform configuration to DriverConfig." alt="" coords="283,5,447,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="500,49,447,40,448,35,501,43"/>
+<area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#a04e6467cc9c09e86f765728ce4874d55" title="Helper function to populate DriverConfig from 17HS4401S gearbox motor configuration." alt="" coords="264,70,467,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="501,79,467,85,467,79,500,74"/>
+<area shape="rect" id="Node000004" href="$structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__CORE__DRIVER_01_4.html#ad9b0f8061cc5336afdc5168c9ab0e82e" title="Configure driver from this test rig&#39;s configuration." alt="" coords="5,63,216,132"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="250,100,216,100,216,95,250,95"/>
+</map>

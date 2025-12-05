@@ -1,8 +1,22 @@
 var searchData=
 [
-  ['uartcommandparser_0',['UartCommandParser',['../classUartCommandParser.html',1,'']]],
-  ['uartcomminterface_1',['UartCommInterface',['../classtmc51x0_1_1UartCommInterface.html',1,'tmc51x0']]],
-  ['uartconfig_2',['UartConfig',['../structtmc51x0_1_1TMC51x0_1_1UartConfig.html',1,'tmc51x0::TMC51x0&lt; CommType &gt;::UartConfig'],['../structtmc51x0_1_1UartConfig.html',1,'tmc51x0::UartConfig']]],
-  ['uartframe_3',['UartFrame',['../structtmc51x0_1_1UartFrame.html',1,'tmc51x0']]],
-  ['uievent_4',['UiEvent',['../structUiEvent.html',1,'']]]
+  ['testconfig_5f17hs4401s_0',['TestConfig_17HS4401S',['../structtmc51x0__test__config_1_1TestConfig__17HS4401S.html',1,'tmc51x0_test_config']]],
+  ['testconfig_5fappliedmotion_5f5034_1',['TestConfig_AppliedMotion_5034',['../structtmc51x0__test__config_1_1TestConfig__AppliedMotion__5034.html',1,'tmc51x0_test_config']]],
+  ['testconfigaccessor_2',['TestConfigAccessor',['../structtmc51x0__test__config_1_1TestConfigAccessor.html',1,'tmc51x0_test_config']]],
+  ['testdriverhandle_3',['TestDriverHandle',['../structTestDriverHandle.html',1,'']]],
+  ['testresults_4',['TestResults',['../structTestResults.html',1,'']]],
+  ['testrigconfig_5',['TestRigConfig',['../structtmc51x0__test__config_1_1TestRigConfig.html',1,'tmc51x0_test_config']]],
+  ['testrigconfig_3c_20testrigtype_3a_3atest_5frig_5fcore_5fdriver_20_3e_6',['TestRigConfig&lt; TestRigType::TEST_RIG_CORE_DRIVER &gt;',['../structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__CORE__DRIVER_01_4.html',1,'tmc51x0_test_config']]],
+  ['testrigconfig_3c_20testrigtype_3a_3atest_5frig_5ffatigue_20_3e_7',['TestRigConfig&lt; TestRigType::TEST_RIG_FATIGUE &gt;',['../structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4.html',1,'tmc51x0_test_config']]],
+  ['testtaskcontext_8',['TestTaskContext',['../structTestTaskContext.html',1,'']]],
+  ['tmc51x0_9',['TMC51x0',['../classtmc51x0_1_1TMC51x0.html',1,'tmc51x0']]],
+  ['tmc51x0_3c_20esp32spi_20_3e_10',['TMC51x0&lt; Esp32SPI &gt;',['../classtmc51x0_1_1TMC51x0.html',1,'tmc51x0']]],
+  ['tmc51x0daisychain_11',['TMC51x0DaisyChain',['../classtmc51x0_1_1TMC51x0DaisyChain.html',1,'tmc51x0']]],
+  ['tmc51x0multinode_12',['TMC51x0MultiNode',['../classtmc51x0_1_1TMC51x0MultiNode.html',1,'tmc51x0']]],
+  ['tmc51x0pinconfig_13',['TMC51x0PinConfig',['../structtmc51x0_1_1TMC51x0PinConfig.html',1,'tmc51x0']]],
+  ['tmcmutexguard_14',['TmcMutexGuard',['../classTmcMutexGuard.html',1,'']]],
+  ['tuning_15',['Tuning',['../structtmc51x0_1_1TMC51x0_1_1Tuning.html',1,'tmc51x0::TMC51x0']]],
+  ['tuple_5felement_3c_200_2c_20tmc51x0_3a_3aresult_3c_20t_20_3e_20_3e_16',['tuple_element&lt; 0, tmc51x0::Result&lt; T &gt; &gt;',['../structstd_1_1tuple__element_3_010_00_01tmc51x0_1_1Result_3_01T_01_4_01_4.html',1,'std']]],
+  ['tuple_5felement_3c_201_2c_20tmc51x0_3a_3aresult_3c_20t_20_3e_20_3e_17',['tuple_element&lt; 1, tmc51x0::Result&lt; T &gt; &gt;',['../structstd_1_1tuple__element_3_011_00_01tmc51x0_1_1Result_3_01T_01_4_01_4.html',1,'std']]],
+  ['tuple_5fsize_3c_20tmc51x0_3a_3aresult_3c_20t_20_3e_20_3e_18',['tuple_size&lt; tmc51x0::Result&lt; T &gt; &gt;',['../structstd_1_1tuple__size_3_01tmc51x0_1_1Result_3_01T_01_4_01_4.html',1,'std']]]
 ];

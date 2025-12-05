@@ -67,11 +67,11 @@ static const char* TAG = "Sinusoidal";
 class BackAndForthMotion {
 private:
   tmc51x0::TMC51x0<Esp32SPI>* driver_;
-  float max_velocity_;        // Maximum velocity in steps/s
-  float acceleration_;        // Acceleration in steps/s²
-  int32_t travel_distance_;  // Distance to travel in each direction (in microsteps)
-  int32_t center_position_;   // Center position (starting point)
-  int32_t target_position_;   // Current target position
+  float max_velocity_rpm_;        // Maximum velocity in RPM
+  float acceleration_rev_s2_;        // Acceleration in rev/s²
+  float travel_distance_deg_;  // Distance to travel in each direction (in degrees)
+  float center_position_deg_;   // Center position (starting point) in degrees
+  float target_position_deg_;   // Current target position in degrees
   bool moving_forward_;        // Direction flag (true = forward, false = backward)
   bool initialized_;
   uint32_t cycles_completed_; // Number of complete back-and-forth cycles
@@ -79,21 +79,22 @@ private:
 
 public:
   BackAndForthMotion(tmc51x0::TMC51x0<Esp32SPI>* driver)
-      : driver_(driver), max_velocity_(10000.0f), acceleration_(50000.0f),
-        travel_distance_(100000), center_position_(0), target_position_(0),
-        moving_forward_(true), initialized_(false), cycles_completed_(0), max_cycles_(-1) {}
+      : driver_(driver), max_velocity_rpm_(30.0f), acceleration_rev_s2_(1.0f),
+        travel_distance_deg_(180.0f), center_position_deg_(0.0f), target_position_deg_(0.0f),
+        moving_forward_(true), initialized_(false), 
+        cycles_completed_(0), max_cycles_(-1) {}
 
   /**
    * @brief Configure back-and-forth motion parameters
-   * @param max_vel Maximum velocity in steps/s
-   * @param accel Acceleration in steps/s²
-   * @param travel_dist Distance to travel in each direction (in microsteps)
+   * @param max_vel_rpm Maximum velocity in RPM
+   * @param accel_rev_s2 Acceleration in rev/s²
+   * @param travel_dist_deg Distance to travel in each direction (in degrees)
    * @param max_cycles Maximum number of back-and-forth cycles (-1 for infinite)
    */
-  void Config(float max_vel, float accel, int32_t travel_dist, int max_cycles = -1) {
-    max_velocity_ = max_vel;
-    acceleration_ = accel;
-    travel_distance_ = travel_dist;
+  void Config(float max_vel_rpm, float accel_rev_s2, float travel_dist_deg, int max_cycles = -1) {
+    max_velocity_rpm_ = max_vel_rpm;
+    acceleration_rev_s2_ = accel_rev_s2;
+    travel_distance_deg_ = travel_dist_deg;
     max_cycles_ = max_cycles;
     initialized_ = false;
     cycles_completed_ = 0;
@@ -108,40 +109,47 @@ public:
     }
 
     // Set acceleration and deceleration
-    driver_->rampControl.SetAcceleration(acceleration_);
-    driver_->rampControl.SetDeceleration(acceleration_);
+    driver_->rampControl.SetAcceleration(acceleration_rev_s2_, tmc51x0::Unit::RevPerSec);
+    driver_->rampControl.SetDeceleration(acceleration_rev_s2_, tmc51x0::Unit::RevPerSec);
     
-    // Set start/stop velocities
-    driver_->rampControl.SetRampSpeeds(1000.0f, 100.0f, 0.0f);
+    // Set start/stop velocities in RPM
+    // VSTART: 1000 steps/s ≈ 30 RPM for 200 steps/rev motor (driver handles conversion)
+    // VSTOP: 100 steps/s ≈ 3 RPM for 200 steps/rev motor
+    float vstart_rpm = 30.0f;  // Start velocity in RPM
+    float vstop_rpm = 3.0f;    // Stop velocity in RPM
+    driver_->rampControl.SetRampSpeeds(vstart_rpm, vstop_rpm, 0.0f, tmc51x0::Unit::RPM);
     
     // Set maximum velocity
-    driver_->rampControl.SetMaxSpeed(max_velocity_);
+    driver_->rampControl.SetMaxSpeed(max_velocity_rpm_, tmc51x0::Unit::RPM);
     
     // Set to positioning mode
     driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
     
     // Get current position as center
-    float center_pos = 0.0f;
-    if (!driver_->rampControl.GetCurrentPosition(center_pos, tmc51x0::Unit::Steps)) {
-      center_pos = 0.0f; // Default to 0 if read fails
+    auto center_pos_result = driver_->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+    float center_pos_deg = 0.0f;
+    if (!center_pos_result) {
+      ESP_LOGW(TAG, "⚠ Failed to read center position (ErrorCode: %d), using 0", static_cast<int>(center_pos_result.Error()));
+      center_pos_deg = 0.0f; // Default to 0 if read fails
+    } else {
+      center_pos_deg = center_pos_result.Value();
     }
-    center_position_ = static_cast<int32_t>(center_pos);
+    center_position_deg_ = center_pos_deg;
     
     // Start by moving forward (positive direction)
     moving_forward_ = true;
-    target_position_ = center_position_ + travel_distance_;
-    driver_->rampControl.SetTargetPosition(static_cast<float>(target_position_), tmc51x0::Unit::Steps);
+    target_position_deg_ = center_position_deg_ + travel_distance_deg_;
+    driver_->rampControl.SetTargetPosition(target_position_deg_, tmc51x0::Unit::Deg);
     
     initialized_ = true;
     cycles_completed_ = 0;
     
     ESP_LOGI(TAG, "Back-and-forth motion started:");
-    ESP_LOGI(TAG, "  Max velocity: %.1f steps/s", max_velocity_);
-    ESP_LOGI(TAG, "  Acceleration: %.1f steps/s²", acceleration_);
-    ESP_LOGI(TAG, "  Travel distance: %ld microsteps (%.2f mm per direction)", 
-             travel_distance_, travel_distance_ / 51200.0f); // Assuming 200 steps/rev, 256 microsteps
-    ESP_LOGI(TAG, "  Center position: %ld", center_position_);
-    ESP_LOGI(TAG, "  Target position: %ld", target_position_);
+    ESP_LOGI(TAG, "  Max velocity: %.1f RPM", max_velocity_rpm_);
+    ESP_LOGI(TAG, "  Acceleration: %.2f rev/s²", acceleration_rev_s2_);
+    ESP_LOGI(TAG, "  Travel distance: %.2f degrees per direction", travel_distance_deg_);
+    ESP_LOGI(TAG, "  Center position: %.2f degrees", center_position_deg_);
+    ESP_LOGI(TAG, "  Target position: %.2f degrees", target_position_deg_);
   }
 
   /**
@@ -160,17 +168,17 @@ public:
       if (moving_forward_) {
         // Just finished moving forward, now move backward
         moving_forward_ = false;
-        target_position_ = center_position_ - travel_distance_;
-        driver_->rampControl.SetTargetPosition(static_cast<float>(target_position_), tmc51x0::Unit::Steps);
-        ESP_LOGI(TAG, "Reached forward end, reversing to position %ld", target_position_);
+        target_position_deg_ = center_position_deg_ - travel_distance_deg_;
+        driver_->rampControl.SetTargetPosition(target_position_deg_, tmc51x0::Unit::Deg);
+        ESP_LOGI(TAG, "Reached forward end, reversing to position %.2f degrees", target_position_deg_);
       } else {
         // Just finished moving backward, now move forward
         moving_forward_ = true;
-        target_position_ = center_position_ + travel_distance_;
-        driver_->rampControl.SetTargetPosition(static_cast<float>(target_position_), tmc51x0::Unit::Steps);
+        target_position_deg_ = center_position_deg_ + travel_distance_deg_;
+        driver_->rampControl.SetTargetPosition(target_position_deg_, tmc51x0::Unit::Deg);
         cycles_completed_++;
-        ESP_LOGI(TAG, "Reached backward end, reversing to position %ld (cycle %lu complete)", 
-                 target_position_, cycles_completed_);
+        ESP_LOGI(TAG, "Reached backward end, reversing to position %.2f degrees (cycle %lu complete)", 
+                 target_position_deg_, cycles_completed_);
         
         // Check if we've completed the requested number of cycles
         if (max_cycles_ > 0 && cycles_completed_ >= static_cast<uint32_t>(max_cycles_)) {
@@ -189,7 +197,7 @@ public:
    */
   void Stop() {
     driver_->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
-    driver_->rampControl.SetMaxSpeed(0.0);
+    driver_->rampControl.SetMaxSpeed(0.0f, tmc51x0::Unit::RPM);
     initialized_ = false;
     ESP_LOGI(TAG, "Back-and-forth motion stopped after %lu cycles", cycles_completed_);
   }
@@ -221,8 +229,9 @@ extern "C" void app_main() {
   Esp32SPI spi(tmc51x0_test_config::SPI_HOST, pin_config, 1000000, active_levels); // 1 MHz SPI clock (reduced for stability)
 
   // Initialize SPI interface
-  if (!spi.Initialize()) {
-    ESP_LOGE(TAG, "Failed to initialize SPI interface");
+  auto spi_init_result = spi.Initialize();
+  if (!spi_init_result) {
+    ESP_LOGE(TAG, "Failed to initialize SPI interface (ErrorCode: %d)", static_cast<int>(spi_init_result.Error()));
     return;
   }
 
@@ -238,17 +247,17 @@ extern "C" void app_main() {
   float gear_ratio = 1.0f;
   constexpr auto motor_type = tmc51x0_test_config::GetTestRigMotorType<SELECTED_TEST_RIG>();
   if constexpr (motor_type == tmc51x0_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
-    namespace Motor = tmc51x0_test_config::MotorConfig_17HS4401S;
+    using Motor = tmc51x0_test_config::MotorConfig_17HS4401S;
     output_full_steps = Motor::OUTPUT_FULL_STEPS;
     gear_ratio = Motor::GEAR_RATIO;
     ESP_LOGI(TAG, "Test Rig: Core Driver (17HS4401S with 5.18:1 gearbox)");
   } else if constexpr (motor_type == tmc51x0_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
-    namespace Motor = tmc51x0_test_config::MotorConfig_17HS4401S_Direct;
+    using Motor = tmc51x0_test_config::MotorConfig_17HS4401S_Direct;
     output_full_steps = Motor::OUTPUT_FULL_STEPS;
     gear_ratio = Motor::GEAR_RATIO;
     ESP_LOGI(TAG, "Test Rig: Core Driver (17HS4401S direct drive)");
   } else if constexpr (motor_type == tmc51x0_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
-    namespace Motor = tmc51x0_test_config::MotorConfig_AppliedMotion_5034_369;
+    using Motor = tmc51x0_test_config::MotorConfig_AppliedMotion_5034_369;
     output_full_steps = Motor::OUTPUT_FULL_STEPS;
     gear_ratio = Motor::GEAR_RATIO;
     ESP_LOGI(TAG, "Test Rig: Fatigue (Applied Motion 5034-369 NEMA 34)");
@@ -317,8 +326,8 @@ extern "C" void app_main() {
   // TCOOLTHRS = velocity threshold below which StallGuard2 is disabled
   // Enabled if TSTEP < TCOOLTHRS (Velocity > Threshold)
   // To disable, we want Threshold to be infinite (TCOOLTHRS = 0)
-  if (driver.diagnostics.SetTcoolthrs(0.0f, tmc51x0::Unit::Steps)) {
-    ESP_LOGI(TAG, "✓ TCOOLTHRS set to 0 - StallGuard2 disabled at all speeds");
+  if (driver.diagnostics.SetTcoolthrs(0.0f, tmc51x0::Unit::RPM)) {
+    ESP_LOGI(TAG, "✓ TCOOLTHRS set to 0 RPM - StallGuard2 disabled at all speeds");
   } else {
     ESP_LOGE(TAG, "✗ Failed to set TCOOLTHRS");
   }
@@ -326,9 +335,10 @@ extern "C" void app_main() {
   // 3. Set THIGH to maximum to ensure StallGuard2 doesn't interfere
   // THIGH = velocity threshold for chopper mode switching
   // Setting high ensures StallGuard2 doesn't affect operation
-  constexpr float MAX_THIGH_STEPS = 1048575.0f; // 0xFFFFF maximum value
-  if (driver.motorControl.SetHighSpeedThreshold(MAX_THIGH_STEPS, tmc51x0::Unit::Steps)) {
-    ESP_LOGI(TAG, "✓ THIGH set to maximum (0x%05X) - ensures StallGuard2 doesn't interfere", 0xFFFFF);
+  // Maximum value corresponds to very high RPM (driver handles conversion)
+  constexpr float MAX_THIGH_RPM = 10000.0f; // Very high RPM threshold
+  if (driver.motorControl.SetHighSpeedThreshold(MAX_THIGH_RPM, tmc51x0::Unit::RPM)) {
+    ESP_LOGI(TAG, "✓ THIGH set to maximum (%.0f RPM) - ensures StallGuard2 doesn't interfere", MAX_THIGH_RPM);
   } else {
     ESP_LOGW(TAG, "Failed to set THIGH (may not be critical)");
   }
@@ -367,9 +377,10 @@ extern "C" void app_main() {
     
     // Verify SW_MODE register was written correctly
     // Verify reference switch configuration
-    bool left_active = false, right_active = false;
+    bool right_active = false;
     bool left_enabled = false, right_enabled = false;
-    if (driver.rampControl.GetReferenceSwitchStatus(left_active, right_active, left_enabled, right_enabled)) {
+    auto ref_switch_result = driver.rampControl.GetReferenceSwitchStatus(right_active, left_enabled, right_enabled);
+    if (ref_switch_result.IsOk()) {
       ESP_LOGI(TAG, "SW_MODE verification: stop_l_enable=%d, stop_r_enable=%d, en_softstop=%d",
                left_enabled ? 1 : 0,
                right_enabled ? 1 : 0,
@@ -387,14 +398,16 @@ extern "C" void app_main() {
   }
   
   // Check physical pin states (if pins are mapped)
-  tmc51x0::GpioSignal ref_left_signal, ref_right_signal;
-  bool ref_left_read = driver.GetComm().GpioRead(tmc51x0::TMC51x0CtrlPin::REFL_STEP, ref_left_signal);
-  bool ref_right_read = driver.GetComm().GpioRead(tmc51x0::TMC51x0CtrlPin::REFR_DIR, ref_right_signal);
-  
+  auto ref_left_result = driver.GetComm().GpioRead(tmc51x0::TMC51x0CtrlPin::REFL_STEP);
+  bool ref_left_read = ref_left_result.IsOk();
+  tmc51x0::GpioSignal ref_left_signal = ref_left_read ? ref_left_result.Value() : tmc51x0::GpioSignal::INACTIVE;
   if (ref_left_read) {
     ESP_LOGI(TAG, "REFL_STEP (left ref) pin state: %s",
              ref_left_signal == tmc51x0::GpioSignal::ACTIVE ? "HIGH" : "LOW");
   }
+  auto ref_right_result = driver.GetComm().GpioRead(tmc51x0::TMC51x0CtrlPin::REFR_DIR);
+  bool ref_right_read = ref_right_result.IsOk();
+  tmc51x0::GpioSignal ref_right_signal = ref_right_read ? ref_right_result.Value() : tmc51x0::GpioSignal::INACTIVE;
   if (ref_right_read) {
     ESP_LOGI(TAG, "REFR_DIR (right ref) pin state: %s",
              ref_right_signal == tmc51x0::GpioSignal::ACTIVE ? "HIGH" : "LOW");
@@ -412,8 +425,9 @@ extern "C" void app_main() {
   // Verify chip is in internal ramp mode (SPI_MODE=HIGH, SD_MODE=LOW)
   // If mode pins are configured, verify they're set correctly
   if (pin_config.tmc51x0_pins.spi_mode_pin != -1 && pin_config.tmc51x0_pins.sd_mode_pin != -1) {
-    tmc51x0::ChipCommMode current_mode;
-    if (driver.communication.GetOperatingMode(current_mode)) {
+    auto mode_result = driver.communication.GetOperatingMode();
+    if (mode_result.IsOk()) {
+      tmc51x0::ChipCommMode current_mode = mode_result.Value();
       if (current_mode != tmc51x0::ChipCommMode::SPI_INTERNAL_RAMP) {
         ESP_LOGW(TAG, "Chip is not in SPI_INTERNAL_RAMP mode (current: %d)", static_cast<int>(current_mode));
         ESP_LOGW(TAG, "Setting to SPI_INTERNAL_RAMP mode...");
@@ -439,8 +453,9 @@ extern "C" void app_main() {
   ESP_LOGI(TAG, "Motor enabled");
   
   // Diagnostic: Check EN pin state to verify enable logic
-  tmc51x0::GpioSignal en_signal;
-  if (spi.GpioRead(tmc51x0::TMC51x0CtrlPin::EN, en_signal)) {
+  auto en_result = spi.GpioRead(tmc51x0::TMC51x0CtrlPin::EN);
+  if (en_result.IsOk()) {
+    tmc51x0::GpioSignal en_signal = en_result.Value();
     ESP_LOGI(TAG, "EN pin state after Enable(): %s", 
              en_signal == tmc51x0::GpioSignal::ACTIVE ? "ACTIVE" : "INACTIVE");
     ESP_LOGI(TAG, "  Note: TMC51x0 DRV_ENN is active LOW (LOW=enable, HIGH=disable)");
@@ -450,8 +465,10 @@ extern "C" void app_main() {
   
   // Check for Charge Pump Undervoltage immediately after enabling
   // Check for critical hardware errors
-  bool reset = false, drv_err = false, uv_cp = false;
-  if (driver.diagnostics.GetGlobalStatus(reset, drv_err, uv_cp)) {
+  bool drv_err = false, uv_cp = false;
+  auto global_status_result = driver.diagnostics.GetGlobalStatus(drv_err, uv_cp);
+  if (global_status_result.IsOk()) {
+    bool reset = global_status_result.Value();
     if (uv_cp) {
       ESP_LOGE(TAG, "CRITICAL HARDWARE ERROR: Charge Pump Undervoltage (uv_cp=1) detected immediately!");
       ESP_LOGE(TAG, "  This usually means VSA/VS voltage is too low or the charge pump capacitor is missing/bad.");
@@ -495,10 +512,9 @@ extern "C" void app_main() {
     ESP_LOGI(TAG, "=== DIAG Pin Diagnostic ===");
     
     // Read DIAG pin states
-    tmc51x0::GpioSignal diag0_signal, diag1_signal;
-    bool diag0_read = driver.GetComm().GpioRead(tmc51x0::TMC51x0CtrlPin::DIAG0, diag0_signal);
-    bool diag1_read = driver.GetComm().GpioRead(tmc51x0::TMC51x0CtrlPin::DIAG1, diag1_signal);
-    
+    auto diag0_result = driver.GetComm().GpioRead(tmc51x0::TMC51x0CtrlPin::DIAG0);
+    bool diag0_read = diag0_result.IsOk();
+    tmc51x0::GpioSignal diag0_signal = diag0_read ? diag0_result.Value() : tmc51x0::GpioSignal::INACTIVE;
     if (diag0_read) {
       ESP_LOGI(TAG, "DIAG0 pin state: %s", 
                diag0_signal == tmc51x0::GpioSignal::ACTIVE ? "HIGH" : "LOW");
@@ -506,6 +522,9 @@ extern "C" void app_main() {
       ESP_LOGW(TAG, "DIAG0 pin not configured or read failed");
     }
     
+    auto diag1_result = driver.GetComm().GpioRead(tmc51x0::TMC51x0CtrlPin::DIAG1);
+    bool diag1_read = diag1_result.IsOk();
+    tmc51x0::GpioSignal diag1_signal = diag1_read ? diag1_result.Value() : tmc51x0::GpioSignal::INACTIVE;
     if (diag1_read) {
       ESP_LOGI(TAG, "DIAG1 pin state: %s", 
                diag1_signal == tmc51x0::GpioSignal::ACTIVE ? "HIGH" : "LOW");
@@ -515,10 +534,12 @@ extern "C" void app_main() {
     
     // Read GCONF to see which diagnostic features are enabled
       // Get diagnostic configuration
-      tmc51x0::Diag0Config diag0_config{};
-      tmc51x0::Diag1Config diag1_config{};
-      bool has_diag0 = driver.motorControl.GetDiag0Config(diag0_config);
-      bool has_diag1 = driver.motorControl.GetDiag1Config(diag1_config);
+      auto diag0_config_result = driver.motorControl.GetDiag0Config();
+      auto diag1_config_result = driver.motorControl.GetDiag1Config();
+      bool has_diag0 = diag0_config_result.IsOk();
+      bool has_diag1 = diag1_config_result.IsOk();
+      tmc51x0::Diag0Config diag0_config = has_diag0 ? diag0_config_result.Value() : tmc51x0::Diag0Config{};
+      tmc51x0::Diag1Config diag1_config = has_diag1 ? diag1_config_result.Value() : tmc51x0::Diag1Config{};
       
       if (has_diag0 || has_diag1) {
         ESP_LOGI(TAG, "Diagnostic settings:");
@@ -539,8 +560,9 @@ extern "C" void app_main() {
         }
         
         // Read GCONF to check diagnostic pin configuration
-        uint32_t gconf_value = 0;
-        bool gconf_read = driver.GetComm().ReadRegister(tmc51x0::Registers::GCONF, gconf_value);
+        auto gconf_result = driver.GetComm().ReadRegister(tmc51x0::Registers::GCONF, driver.communication.GetDaisyChainPosition());
+        bool gconf_read = gconf_result.IsOk();
+        uint32_t gconf_value = gconf_read ? gconf_result.Value() : 0;
         tmc51x0::GCONF_Register gconf{};
         if (gconf_read) {
           gconf.value = gconf_value;
@@ -550,11 +572,15 @@ extern "C" void app_main() {
         }
         
         // Read GSTAT for reset and driver errors
-        bool reset = false, drv_err = false, uv_cp = false;
-        bool gstat_read = driver.diagnostics.GetGlobalStatus(reset, drv_err, uv_cp);
+        bool drv_err = false, uv_cp = false;
+        auto gstat_result = driver.diagnostics.GetGlobalStatus(drv_err, uv_cp);
+        bool gstat_read = gstat_result.IsOk();
+        bool reset = gstat_read ? gstat_result.Value() : false;
         tmc51x0::GSTAT_Register gstat{};
         uint32_t gstat_value = 0;
-        if (driver.GetComm().ReadRegister(tmc51x0::Registers::GSTAT, gstat_value)) {
+        auto gstat_read_result = driver.GetComm().ReadRegister(tmc51x0::Registers::GSTAT, driver.communication.GetDaisyChainPosition());
+        if (gstat_read_result.IsOk()) {
+          gstat_value = gstat_read_result.Value();
           gstat.value = gstat_value;
         }
         
@@ -582,8 +608,9 @@ extern "C" void app_main() {
       tmc51x0::DRV_STATUS_Register drv_status{};
       drv_status.value = 0;
       bool drv_status_read = false;
-      uint32_t drv_status_value = 0;
-      if (driver.diagnostics.GetDriverStatusRegister(drv_status_value)) {
+      auto drv_status_result = driver.diagnostics.GetDriverStatusRegister();
+      if (drv_status_result) {
+        uint32_t drv_status_value = drv_status_result.Value();
         drv_status.value = drv_status_value;
         drv_status_read = true;
         
@@ -630,9 +657,9 @@ extern "C" void app_main() {
       // Read RAMP_STAT for stall and position information
       tmc51x0::RAMP_STAT_Register ramp_stat{};
       ramp_stat.value = 0;
-      uint32_t ramp_stat_value = 0;
-      if (driver.diagnostics.GetRampStatusRegister(ramp_stat_value)) {
-        ramp_stat.value = ramp_stat_value;
+      auto ramp_stat_result = driver.diagnostics.GetRampStatusRegister();
+      if (ramp_stat_result.IsOk()) {
+        ramp_stat.value = ramp_stat_result.Value();
         
         ESP_LOGI(TAG, "RAMP_STAT: status_sg=%d (stall guard active)",
                  ramp_stat.bits.status_sg ? 1 : 0);
@@ -688,7 +715,9 @@ extern "C" void app_main() {
   
   // Read RAMP_STAT to check for any flags preventing motion
   uint32_t ramp_stat = 0;
-  if (driver.diagnostics.GetRampStatusRegister(ramp_stat)) {
+  auto ramp_stat_result = driver.diagnostics.GetRampStatusRegister();
+  if (ramp_stat_result.IsOk()) {
+    ramp_stat = ramp_stat_result.Value();
     tmc51x0::RAMP_STAT_Register status{};
     status.value = ramp_stat;
     ESP_LOGI(TAG, "RAMP_STAT: vzero=%d, velocity_reached=%d, position_reached=%d, stop_l=%d, stop_r=%d",
@@ -699,10 +728,13 @@ extern "C" void app_main() {
              status.bits.status_stop_r ? 1 : 0);
     
     // Check if stops are actually enabled
-    bool left_active = false, right_active = false;
+    bool right_active = false;
     bool left_enabled = false, right_enabled = false;
     bool stops_enabled = false;
-    if (driver.rampControl.GetReferenceSwitchStatus(left_active, right_active, left_enabled, right_enabled)) {
+    bool left_active = false;
+    auto ref_switch_result = driver.rampControl.GetReferenceSwitchStatus(right_active, left_enabled, right_enabled);
+    if (ref_switch_result.IsOk()) {
+      left_active = ref_switch_result.Value();
       stops_enabled = left_enabled || right_enabled;
     }
     
@@ -722,47 +754,48 @@ extern "C" void app_main() {
   }
   
   // Read VACTUAL to see if motor is trying to move
-  // Use GetCurrentSpeed() which properly converts from internal units to steps/s
-  float actual_velocity = 0.0f;
-  if (!driver.rampControl.GetCurrentSpeed(actual_velocity, tmc51x0::Unit::Steps)) {
+  auto velocity_result = driver.rampControl.GetCurrentSpeed(tmc51x0::Unit::RPM);
+  float actual_velocity_rpm = 0.0f;
+  if (!velocity_result) {
+    ESP_LOGW(TAG, "⚠ Failed to read current speed (ErrorCode: %d), using 0", static_cast<int>(velocity_result.Error()));
     ESP_LOGW(TAG, "Failed to get current speed");
+  } else {
+    actual_velocity_rpm = velocity_result.Value();
   }
-  ESP_LOGI(TAG, "VACTUAL (actual velocity): %.1f steps/s", actual_velocity);
-  if (actual_velocity != 0.0f) {
-    ESP_LOGI(TAG, "  ✓ Motor IS moving at %.1f steps/s", actual_velocity);
+  ESP_LOGI(TAG, "VACTUAL (actual velocity): %.1f RPM", actual_velocity_rpm);
+  if (actual_velocity_rpm != 0.0f) {
+    ESP_LOGI(TAG, "  ✓ Motor IS moving at %.1f RPM", actual_velocity_rpm);
   } else {
     ESP_LOGW(TAG, "  ✗ Motor is NOT moving (VACTUAL=0)");
   }
 
   // Create back-and-forth motion controller
+  // Driver handles all unit conversions internally based on motor configuration
   BackAndForthMotion motion(&driver);
 
   // Configure back-and-forth motion for NEMA 44mm motor with gearbox
-  // For 200 steps/rev with 256 microsteps = 51,200 microsteps per motor revolution
-  // With 5.18 gearbox = ~265,216 microsteps per output revolution
+  // Calculate motion parameters in physical units
+  // Travel distance: 1 full output revolution = 360 degrees
+  float travel_distance_deg = 360.0f;
   
-  // Calculate motion parameters
-  // Travel distance: ~2 full output revolutions = 2 * 265,216 = ~530,432 microsteps
-  // Or use a more reasonable distance like 1 output revolution = ~265,216 microsteps
-  float output_steps_per_rev = static_cast<float>(output_full_steps) * 256.0f;
-  int32_t travel_distance = static_cast<int32_t>(output_steps_per_rev * 1.0f); // 1 full output revolution each direction
-  
-  // Max velocity: ~0.5 RPS output = ~132,608 steps/s
-  float max_velocity = output_steps_per_rev * 0.5f;
+  // Max velocity: 0.5 RPS = 30 RPM
+  float max_velocity_rpm = 30.0f;
   
   // Acceleration: reach max velocity in ~0.2 seconds
-  float acceleration = max_velocity * 5.0f; // 5x max_velocity for 0.2s ramp time
-  if (acceleration < 50000.0f) acceleration = 50000.0f; // Minimum acceleration
+  // max_velocity_rpm = 30 RPM = 0.5 rev/s
+  // acceleration = 0.5 rev/s / 0.2s = 2.5 rev/s²
+  float acceleration_rev_s2 = max_velocity_rpm / 60.0f / 0.2f; // Convert RPM to rev/s, then divide by time
+  if (acceleration_rev_s2 < 1.0f) acceleration_rev_s2 = 1.0f; // Minimum acceleration
   
   int max_cycles = -1; // Infinite cycles
   
-  motion.Config(max_velocity, acceleration, travel_distance, max_cycles);
+  motion.Config(max_velocity_rpm, acceleration_rev_s2, travel_distance_deg, max_cycles);
 
   ESP_LOGI(TAG, "Starting back-and-forth motion for NEMA 44mm motor:");
-  ESP_LOGI(TAG, "  Max velocity: %.1f steps/s (%.2f RPS output)", max_velocity, 0.5f);
-  ESP_LOGI(TAG, "  Acceleration: %.1f steps/s²", acceleration);
-  ESP_LOGI(TAG, "  Travel distance: %ld microsteps (%.2f output revolutions per direction)", 
-           travel_distance, travel_distance / output_steps_per_rev);
+  ESP_LOGI(TAG, "  Max velocity: %.1f RPM (%.2f rev/s)", max_velocity_rpm, max_velocity_rpm / 60.0f);
+  ESP_LOGI(TAG, "  Acceleration: %.2f rev/s²", acceleration_rev_s2);
+  ESP_LOGI(TAG, "  Travel distance: %.2f degrees (%.2f output revolutions per direction)", 
+           travel_distance_deg, travel_distance_deg / 360.0f);
   ESP_LOGI(TAG, "  Max cycles: %d", max_cycles > 0 ? max_cycles : -1);
   ESP_LOGI(TAG, "  Using internal ramp generator with positioning mode");
 
@@ -783,23 +816,33 @@ extern "C" void app_main() {
       last_diag_time = current_time;
       
       // Read actual velocity
-      float actual_velocity = 0.0f;
-      if (!driver.rampControl.GetCurrentSpeed(actual_velocity, tmc51x0::Unit::Steps)) {
-        ESP_LOGW(TAG, "Failed to get current speed");
+      auto speed_result = driver.rampControl.GetCurrentSpeed(tmc51x0::Unit::RPM);
+      float actual_velocity_rpm = 0.0f;
+      if (!speed_result) {
+        ESP_LOGW(TAG, "⚠ Failed to get current speed (ErrorCode: %d)", static_cast<int>(speed_result.Error()));
+      } else {
+        actual_velocity_rpm = speed_result.Value();
       }
-      float actual_pos_float = 0.0f;
-      if (!driver.rampControl.GetCurrentPosition(actual_pos_float, tmc51x0::Unit::Steps)) {
-        ESP_LOGW(TAG, "Failed to get current position");
+      
+      auto pos_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+      float actual_pos_deg = 0.0f;
+      if (!pos_result) {
+        ESP_LOGW(TAG, "⚠ Failed to get current position (ErrorCode: %d)", static_cast<int>(pos_result.Error()));
+        actual_pos_deg = 0.0f;
+      } else {
+        actual_pos_deg = pos_result.Value();
       }
-      int32_t actual_position = static_cast<int32_t>(actual_pos_float);
       
       // Read ramp status
-      uint32_t ramp_stat = 0;
-      bool has_ramp_stat = driver.diagnostics.GetRampStatusRegister(ramp_stat);
+      auto ramp_stat_result = driver.diagnostics.GetRampStatusRegister();
+      bool has_ramp_stat = ramp_stat_result.IsOk();
+      uint32_t ramp_stat = has_ramp_stat ? ramp_stat_result.Value() : 0;
       
       // Read DRV_STATUS for stall detection
       uint32_t drv_status_value = 0;
-      bool has_drv_status = driver.GetComm().ReadRegister(tmc51x0::Registers::DRV_STATUS, drv_status_value);
+      auto drv_status_result = driver.GetComm().ReadRegister(tmc51x0::Registers::DRV_STATUS, driver.communication.GetDaisyChainPosition());
+      bool has_drv_status = drv_status_result.IsOk();
+      drv_status_value = has_drv_status ? drv_status_result.Value() : 0;
       tmc51x0::DRV_STATUS_Register drv_status{};
       if (has_drv_status) {
         drv_status.value = drv_status_value;
@@ -807,7 +850,9 @@ extern "C" void app_main() {
       
       // Read GSTAT for charge pump status
       uint32_t gstat_value = 0;
-      bool has_gstat = driver.GetComm().ReadRegister(tmc51x0::Registers::GSTAT, gstat_value);
+      auto gstat_result = driver.GetComm().ReadRegister(tmc51x0::Registers::GSTAT, driver.communication.GetDaisyChainPosition());
+      bool has_gstat = gstat_result.IsOk();
+      gstat_value = has_gstat ? gstat_result.Value() : 0;
       tmc51x0::GSTAT_Register gstat{};
       if (has_gstat) {
         gstat.value = gstat_value;
@@ -815,7 +860,9 @@ extern "C" void app_main() {
       
       // Read GCONF to check StealthChop mode (needed for StallGuard2 interpretation)
       uint32_t gconf_value = 0;
-      bool has_gconf = driver.GetComm().ReadRegister(tmc51x0::Registers::GCONF, gconf_value);
+      auto gconf_result = driver.GetComm().ReadRegister(tmc51x0::Registers::GCONF, driver.communication.GetDaisyChainPosition());
+      bool has_gconf = gconf_result.IsOk();
+      gconf_value = has_gconf ? gconf_result.Value() : 0;
       tmc51x0::GCONF_Register gconf{};
       if (has_gconf) {
         gconf.value = gconf_value;
@@ -828,8 +875,9 @@ extern "C" void app_main() {
       // Read RAMPMODE to verify we're in positioning mode
       uint32_t rampmode_value = 0;
       bool in_positioning_mode = false;
-      tmc51x0::RampMode rampmode_enum = tmc51x0::RampMode::POSITIONING;
-      if (driver.rampControl.GetRampMode(rampmode_enum)) {
+      auto rampmode_result = driver.rampControl.GetRampMode();
+      if (rampmode_result.IsOk()) {
+        tmc51x0::RampMode rampmode_enum = rampmode_result.Value();
         uint32_t rampmode_value = static_cast<uint32_t>(rampmode_enum);
         in_positioning_mode = (rampmode_value == 0); // POSITIONING mode
         const char* mode_str = (rampmode_value == 0) ? "POSITIONING" :
@@ -843,55 +891,52 @@ extern "C" void app_main() {
       }
       
       // Read target position
-      uint32_t xtarget_value = 0;
-      float target_pos_float = 0.0f;
-      if (driver.rampControl.GetTargetPosition(target_pos_float, tmc51x0::Unit::Steps) && target_pos_float != 0.0f) {
-        uint32_t xtarget_value = static_cast<uint32_t>(target_pos_float);
-        int32_t target_pos = static_cast<int32_t>(xtarget_value);
-        ESP_LOGI(TAG, "  XTARGET (target position): %ld", target_pos);
-        ESP_LOGI(TAG, "  XACTUAL (current position): %d", actual_position);
-        int32_t distance_to_target = target_pos - actual_position;
-        ESP_LOGI(TAG, "  Distance to target: %ld microsteps", distance_to_target);
+      auto target_pos_result = driver.rampControl.GetTargetPosition(tmc51x0::Unit::Deg);
+      if (target_pos_result.IsOk()) {
+        float target_pos_deg = target_pos_result.Value();
+        if (target_pos_deg != 0.0f) {
+          ESP_LOGI(TAG, "  XTARGET (target position): %.2f degrees", target_pos_deg);
+          ESP_LOGI(TAG, "  XACTUAL (current position): %.2f degrees", actual_pos_deg);
+          float distance_to_target_deg = target_pos_deg - actual_pos_deg;
+          ESP_LOGI(TAG, "  Distance to target: %.2f degrees", distance_to_target_deg);
+        }
       }
       
       // Calculate position change since last diagnostic
-      static int32_t last_position = 0;
+      static float last_position_deg = 0.0f;
       static uint32_t last_diag_time_pos = 0;
-      int32_t position_delta = actual_position - last_position;
+      float position_delta_deg = actual_pos_deg - last_position_deg;
       uint32_t time_delta = current_time - last_diag_time_pos;
-      float position_change_rate = (time_delta > 0) ? (position_delta * 1000.0f / time_delta) : 0.0f;
-      last_position = actual_position;
+      float position_change_rate_deg_per_s = (time_delta > 0) ? (position_delta_deg * 1000.0f / time_delta) : 0.0f;
+      last_position_deg = actual_pos_deg;
       last_diag_time_pos = current_time;
       
       // Calculate output shaft movement (assuming gearbox ratio)
-      // Motor is configured with 256 microsteps (MRES=0) and 200 steps/rev
-      // So: 200 steps/rev * 256 microsteps = 51,200 microsteps per motor revolution
-      // Position delta is in microsteps, so divide by microsteps per rev to get motor revolutions
-      constexpr float MICROSTEPS_PER_MOTOR_REV = 200.0f * 256.0f; // 51,200 microsteps/rev
-      float motor_revolutions = position_delta / MICROSTEPS_PER_MOTOR_REV;
+      // Position delta is in degrees, so convert to revolutions
+      float output_revolutions = position_delta_deg / 360.0f;
       
       // NOTE: Adjust this ratio based on your actual gearbox!
-      // Example: If gearbox is 5.18:1, then output_revolutions = motor_revolutions / 5.18
+      // Example: If gearbox is 5.18:1, then motor_revolutions = output_revolutions * 5.18
       // For the 17HS4401S-PG518 motor, the gearbox ratio is 5.18:1
       // Set to 1.0 for direct drive (no gearbox) or to match your actual gearbox ratio
-      float output_revolutions = motor_revolutions / gear_ratio;
+      float motor_revolutions = output_revolutions * gear_ratio;
       
-      ESP_LOGI(TAG, "Diagnostics: VACTUAL=%.1f steps/s, XACTUAL=%d", actual_velocity, actual_position);
-      ESP_LOGI(TAG, "  Position change: %d microsteps in %d ms = %.1f steps/s (calculated)", 
-               position_delta, time_delta, position_change_rate);
-      ESP_LOGI(TAG, "  Motor: %.3f rev (%.1f deg) in %.1f seconds", 
-               motor_revolutions, motor_revolutions * 360.0f, time_delta / 1000.0f);
-      ESP_LOGI(TAG, "  Output: %.3f rev (%.1f deg) [gearbox=%.2f:1]", 
-               output_revolutions, output_revolutions * 360.0f, gear_ratio);
+      ESP_LOGI(TAG, "Diagnostics: VACTUAL=%.1f RPM, XACTUAL=%.2f degrees", actual_velocity_rpm, actual_pos_deg);
+      ESP_LOGI(TAG, "  Position change: %.2f degrees in %d ms = %.2f deg/s (calculated)", 
+               position_delta_deg, time_delta, position_change_rate_deg_per_s);
+      ESP_LOGI(TAG, "  Output: %.3f rev (%.1f deg) in %.1f seconds [gearbox=%.2f:1]", 
+               output_revolutions, position_delta_deg, time_delta / 1000.0f, gear_ratio);
+      ESP_LOGI(TAG, "  Motor: %.3f rev (%.1f deg) [estimated from gearbox ratio]", 
+               motor_revolutions, motor_revolutions * 360.0f);
       
       // Calculate output speed
       float output_rpm = (output_revolutions * 60.0f) / (time_delta / 1000.0f);
-      float output_deg_per_sec = output_revolutions * 360.0f / (time_delta / 1000.0f);
+      float output_deg_per_sec = position_delta_deg / (time_delta / 1000.0f);
       
       // Check if motion is visible
-      if (std::abs(output_revolutions) < 0.01f && time_delta > 500 && std::abs(position_delta) > 1000) {
+      if (std::abs(output_revolutions) < 0.01f && time_delta > 500 && std::abs(position_delta_deg) > 1.0f) {
         ESP_LOGW(TAG, "  ⚠️ Output shaft movement is very small (%.4f rev = %.2f deg) despite large motor movement", 
-                 output_revolutions, output_revolutions * 360.0f);
+                 output_revolutions, position_delta_deg);
         ESP_LOGW(TAG, "  Output speed: %.2f RPM, %.2f deg/s", output_rpm, output_deg_per_sec);
         ESP_LOGW(TAG, "  This suggests a HIGH gearbox ratio - motor moves many steps but output moves little");
         ESP_LOGW(TAG, "  Update gear_ratio in code to match your actual gearbox");
@@ -904,13 +949,13 @@ extern "C" void app_main() {
       }
       
       // Check if motor is actually moving
-      if (std::abs(actual_velocity) > 1.0f && std::abs(position_delta) < 10 && time_delta > 500) {
-        ESP_LOGW(TAG, "  ⚠️ WARNING: VACTUAL shows motion (%.1f steps/s) but position barely changed (%d steps)",
-                 actual_velocity, position_delta);
+      if (std::abs(actual_velocity_rpm) > 0.1f && std::abs(position_delta_deg) < 1.0f && time_delta > 500) {
+        ESP_LOGW(TAG, "  ⚠️ WARNING: VACTUAL shows motion (%.1f RPM) but position barely changed (%.2f degrees)",
+                 actual_velocity_rpm, position_delta_deg);
         ESP_LOGW(TAG, "  This suggests motor is slipping or gearbox ratio is very high");
-      } else if (std::abs(position_delta) > 100) {
-        ESP_LOGI(TAG, "  ✓ Motor IS moving: position changed by %d steps in %d ms",
-                 position_delta, time_delta);
+      } else if (std::abs(position_delta_deg) > 1.0f) {
+        ESP_LOGI(TAG, "  ✓ Motor IS moving: position changed by %.2f degrees in %d ms",
+                 position_delta_deg, time_delta);
       }
       
       if (has_ramp_stat) {
@@ -931,7 +976,7 @@ extern "C" void app_main() {
           ESP_LOGI(TAG, "  If motor is actually stalling, consider: increase current (irun), reduce speed");
         }
         
-        if (status.bits.vzero && std::abs(actual_velocity) < 1.0f) {
+        if (status.bits.vzero && std::abs(actual_velocity_rpm) < 0.1f) {
           ESP_LOGW(TAG, "  WARNING: VACTUAL is zero - motor may not be starting");
           ESP_LOGW(TAG, "  Check: VSTART may be too low, or motor current too low");
         }
@@ -980,8 +1025,8 @@ extern "C" void app_main() {
       }
       
       // Check if motor stopped unexpectedly
-      if (std::abs(actual_velocity) < 1.0f && std::abs(position_delta) < 5) {
-        ESP_LOGW(TAG, "  ⚠️ Motor appears stopped (VACTUAL=%.1f, position_delta=%d)", actual_velocity, position_delta);
+      if (std::abs(actual_velocity_rpm) < 0.1f && std::abs(position_delta_deg) < 1.0f) {
+        ESP_LOGW(TAG, "  ⚠️ Motor appears stopped (VACTUAL=%.1f RPM, position_delta=%.2f degrees)", actual_velocity_rpm, position_delta_deg);
         if (has_gstat && gstat.bits.uv_cp) {
           ESP_LOGE(TAG, "  Root cause: Charge pump undervoltage!");
         } else if (has_ramp_stat) {
@@ -995,8 +1040,9 @@ extern "C" void app_main() {
       }
       
       // Check if motor is still enabled
-      tmc51x0::ChopperConfig chopconf_check{};
-      if (driver.motorControl.GetChopperConfig(chopconf_check)) {
+      auto chopper_result = driver.motorControl.GetChopperConfig();
+      if (chopper_result.IsOk()) {
+        tmc51x0::ChopperConfig chopconf_check = chopper_result.Value();
         if (chopconf_check.toff == 0) {
           ESP_LOGW(TAG, "WARNING: Motor driver disabled! Re-enabling...");
           driver.motorControl.Enable();

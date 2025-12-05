@@ -136,15 +136,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a01ff6cf0641b5634715d666872770e1e" id="r_a01ff6cf0641b5634715d666872770e1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc51x0.html#af3d18824bf231d968c6c33bd1aaeae5f">CommMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a01ff6cf0641b5634715d666872770e1e">GetMode</a> () const noexcept</td></tr>
 <tr class="memdesc:a01ff6cf0641b5634715d666872770e1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get communication mode (always SPI for this interface)  <br /></td></tr>
 <tr class="separator:a01ff6cf0641b5634715d666872770e1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86c5faa8a8e88884c16a3a2b1b2512e7" id="r_a86c5faa8a8e88884c16a3a2b1b2512e7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a86c5faa8a8e88884c16a3a2b1b2512e7">SpiTransfer</a> (const uint8_t *tx, uint8_t *rx, size_t length) noexcept</td></tr>
-<tr class="memdesc:a86c5faa8a8e88884c16a3a2b1b2512e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Low-level SPI transfer for register read/write.  <br /></td></tr>
-<tr class="separator:a86c5faa8a8e88884c16a3a2b1b2512e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70f84a191253f39676943c1cea1ed7cb" id="r_a70f84a191253f39676943c1cea1ed7cb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70f84a191253f39676943c1cea1ed7cb">ReadRegister</a> (uint8_t address, uint32_t &amp;value, uint8_t daisy_chain_position=0) noexcept</td></tr>
-<tr class="memdesc:a70f84a191253f39676943c1cea1ed7cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a 32-bit register via SPI.  <br /></td></tr>
-<tr class="separator:a70f84a191253f39676943c1cea1ed7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fb339bcea2e78cdc00b962f347952c6" id="r_a6fb339bcea2e78cdc00b962f347952c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6fb339bcea2e78cdc00b962f347952c6">WriteRegister</a> (uint8_t address, uint32_t value, uint8_t daisy_chain_position=0) noexcept</td></tr>
-<tr class="memdesc:a6fb339bcea2e78cdc00b962f347952c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a 32-bit register via SPI.  <br /></td></tr>
-<tr class="separator:a6fb339bcea2e78cdc00b962f347952c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20861cc797a4153c02d34cebf66af7d7" id="r_a20861cc797a4153c02d34cebf66af7d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20861cc797a4153c02d34cebf66af7d7">SpiTransfer</a> (const uint8_t *tx, uint8_t *rx, size_t length) noexcept</td></tr>
+<tr class="memdesc:a20861cc797a4153c02d34cebf66af7d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Low-level SPI transfer for register read/write.  <br /></td></tr>
+<tr class="separator:a20861cc797a4153c02d34cebf66af7d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af73aaff6b24f03a85379528680513c75" id="r_af73aaff6b24f03a85379528680513c75"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af73aaff6b24f03a85379528680513c75">ReadRegister</a> (uint8_t address, uint8_t daisy_chain_position=0) noexcept</td></tr>
+<tr class="memdesc:af73aaff6b24f03a85379528680513c75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a 32-bit register via SPI.  <br /></td></tr>
+<tr class="separator:af73aaff6b24f03a85379528680513c75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5002dc4e4bd5c2ba5e350cda8c6ee142" id="r_a5002dc4e4bd5c2ba5e350cda8c6ee142"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5002dc4e4bd5c2ba5e350cda8c6ee142">WriteRegister</a> (uint8_t address, uint32_t value, uint8_t daisy_chain_position=0) noexcept</td></tr>
+<tr class="memdesc:a5002dc4e4bd5c2ba5e350cda8c6ee142"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a 32-bit register via SPI.  <br /></td></tr>
+<tr class="separator:a5002dc4e4bd5c2ba5e350cda8c6ee142"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fe95a21c9ea9ff96e9e4b581b475403" id="r_a7fe95a21c9ea9ff96e9e4b581b475403"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7fe95a21c9ea9ff96e9e4b581b475403">SpiCommInterface</a> (const <a class="el" href="classtmc51x0_1_1SpiCommInterface.html">SpiCommInterface</a> &amp;)=delete</td></tr>
 <tr class="separator:a7fe95a21c9ea9ff96e9e4b581b475403"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad010c2e71bf0fea7a9c4a81638a6a51e" id="r_ad010c2e71bf0fea7a9c4a81638a6a51e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1SpiCommInterface.html">SpiCommInterface</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad010c2e71bf0fea7a9c4a81638a6a51e">operator=</a> (const <a class="el" href="classtmc51x0_1_1SpiCommInterface.html">SpiCommInterface</a> &amp;)=delete</td></tr>
@@ -156,33 +156,33 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac43b4089ca441ddb3771c3395c2d2743 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_ac43b4089ca441ddb3771c3395c2d2743"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc51x0.html#af3d18824bf231d968c6c33bd1aaeae5f">CommMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#ac43b4089ca441ddb3771c3395c2d2743">GetMode</a> () const noexcept</td></tr>
 <tr class="memdesc:ac43b4089ca441ddb3771c3395c2d2743 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the underlying communication mode used by this interface.  <br /></td></tr>
 <tr class="separator:ac43b4089ca441ddb3771c3395c2d2743 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a254c935ef459aed86a980785b090f761 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_a254c935ef459aed86a980785b090f761"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#a254c935ef459aed86a980785b090f761">ReadRegister</a> (uint8_t address, uint32_t &amp;value, uint8_t daisy_chain_position=0) noexcept</td></tr>
-<tr class="memdesc:a254c935ef459aed86a980785b090f761 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a 32-bit register from the TMC5160.  <br /></td></tr>
-<tr class="separator:a254c935ef459aed86a980785b090f761 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7d2c54c605957f53994b984dcd5e1b4 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_af7d2c54c605957f53994b984dcd5e1b4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#af7d2c54c605957f53994b984dcd5e1b4">WriteRegister</a> (uint8_t address, uint32_t value, uint8_t daisy_chain_position=0) noexcept</td></tr>
-<tr class="memdesc:af7d2c54c605957f53994b984dcd5e1b4 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a 32-bit register to the TMC5160.  <br /></td></tr>
-<tr class="separator:af7d2c54c605957f53994b984dcd5e1b4 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12902425a6bab863031858b3526ab667 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_a12902425a6bab863031858b3526ab667"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#a12902425a6bab863031858b3526ab667">GpioSet</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin, <a class="el" href="namespacetmc51x0.html#a066cfe7d73f5a7f546c6d7215c0b4577">GpioSignal</a> signal) noexcept</td></tr>
-<tr class="memdesc:a12902425a6bab863031858b3526ab667 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GPIO pin signal state (output control)  <br /></td></tr>
-<tr class="separator:a12902425a6bab863031858b3526ab667 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7cdf03220af69a59d51e8d245494a87 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_ad7cdf03220af69a59d51e8d245494a87"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#ad7cdf03220af69a59d51e8d245494a87">GpioRead</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin, <a class="el" href="namespacetmc51x0.html#a066cfe7d73f5a7f546c6d7215c0b4577">GpioSignal</a> &amp;signal) noexcept</td></tr>
-<tr class="memdesc:ad7cdf03220af69a59d51e8d245494a87 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read GPIO pin signal state (input state)  <br /></td></tr>
-<tr class="separator:ad7cdf03220af69a59d51e8d245494a87 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ec8aa64f5f944ce15b44019787bfe81 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_a8ec8aa64f5f944ce15b44019787bfe81"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#a8ec8aa64f5f944ce15b44019787bfe81">GpioSetActive</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin) noexcept</td></tr>
-<tr class="memdesc:a8ec8aa64f5f944ce15b44019787bfe81 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GPIO pin to active state (convenience method)  <br /></td></tr>
-<tr class="separator:a8ec8aa64f5f944ce15b44019787bfe81 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae72105adf55f177262eb66e39fa63f25 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_ae72105adf55f177262eb66e39fa63f25"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#ae72105adf55f177262eb66e39fa63f25">GpioSetInactive</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin) noexcept</td></tr>
-<tr class="memdesc:ae72105adf55f177262eb66e39fa63f25 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GPIO pin to inactive state (convenience method)  <br /></td></tr>
-<tr class="separator:ae72105adf55f177262eb66e39fa63f25 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ad7ff22bfd2e0259405c840f0d93427 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_a1ad7ff22bfd2e0259405c840f0d93427"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#a1ad7ff22bfd2e0259405c840f0d93427">ReadRegister</a> (uint8_t address, uint8_t daisy_chain_position=0) noexcept</td></tr>
+<tr class="memdesc:a1ad7ff22bfd2e0259405c840f0d93427 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a 32-bit register from the TMC5160.  <br /></td></tr>
+<tr class="separator:a1ad7ff22bfd2e0259405c840f0d93427 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe44583c7551eaf4044eac8ed39d5fd8 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_abe44583c7551eaf4044eac8ed39d5fd8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#abe44583c7551eaf4044eac8ed39d5fd8">WriteRegister</a> (uint8_t address, uint32_t value, uint8_t daisy_chain_position=0) noexcept</td></tr>
+<tr class="memdesc:abe44583c7551eaf4044eac8ed39d5fd8 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a 32-bit register to the TMC5160.  <br /></td></tr>
+<tr class="separator:abe44583c7551eaf4044eac8ed39d5fd8 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad16d15399e9208eabb772d6e518a5e98 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_ad16d15399e9208eabb772d6e518a5e98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#ad16d15399e9208eabb772d6e518a5e98">GpioSet</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin, <a class="el" href="namespacetmc51x0.html#a066cfe7d73f5a7f546c6d7215c0b4577">GpioSignal</a> signal) noexcept</td></tr>
+<tr class="memdesc:ad16d15399e9208eabb772d6e518a5e98 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GPIO pin signal state (output control)  <br /></td></tr>
+<tr class="separator:ad16d15399e9208eabb772d6e518a5e98 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a127e4c671836992f0bed63d86609e996 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_a127e4c671836992f0bed63d86609e996"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="namespacetmc51x0.html#a066cfe7d73f5a7f546c6d7215c0b4577">GpioSignal</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#a127e4c671836992f0bed63d86609e996">GpioRead</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin) noexcept</td></tr>
+<tr class="memdesc:a127e4c671836992f0bed63d86609e996 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read GPIO pin signal state (input state)  <br /></td></tr>
+<tr class="separator:a127e4c671836992f0bed63d86609e996 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe522498b22d4925f4df9e5988808c42 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_afe522498b22d4925f4df9e5988808c42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#afe522498b22d4925f4df9e5988808c42">GpioSetActive</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin) noexcept</td></tr>
+<tr class="memdesc:afe522498b22d4925f4df9e5988808c42 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GPIO pin to active state (convenience method)  <br /></td></tr>
+<tr class="separator:afe522498b22d4925f4df9e5988808c42 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd4d35dd88a88c284676d7f66d64e1c9 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_afd4d35dd88a88c284676d7f66d64e1c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#afd4d35dd88a88c284676d7f66d64e1c9">GpioSetInactive</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin) noexcept</td></tr>
+<tr class="memdesc:afd4d35dd88a88c284676d7f66d64e1c9 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GPIO pin to inactive state (convenience method)  <br /></td></tr>
+<tr class="separator:afd4d35dd88a88c284676d7f66d64e1c9 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae20e456634dc99586a02612061370ed2 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_ae20e456634dc99586a02612061370ed2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#ae20e456634dc99586a02612061370ed2">DelayMs</a> (uint32_t ms) noexcept</td></tr>
 <tr class="memdesc:ae20e456634dc99586a02612061370ed2 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delay execution for specified milliseconds.  <br /></td></tr>
 <tr class="separator:ae20e456634dc99586a02612061370ed2 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3a5e93e4f03f7dce22dbe476f42e6ae inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_ae3a5e93e4f03f7dce22dbe476f42e6ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#ae3a5e93e4f03f7dce22dbe476f42e6ae">DelayUs</a> (uint32_t us) noexcept</td></tr>
 <tr class="memdesc:ae3a5e93e4f03f7dce22dbe476f42e6ae inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delay execution for specified microseconds.  <br /></td></tr>
 <tr class="separator:ae3a5e93e4f03f7dce22dbe476f42e6ae inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65bd3a4126258dcbb02be286cfda6f9a inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_a65bd3a4126258dcbb02be286cfda6f9a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#a65bd3a4126258dcbb02be286cfda6f9a">SetClkFreq</a> (uint32_t frequency_hz) noexcept</td></tr>
-<tr class="memdesc:a65bd3a4126258dcbb02be286cfda6f9a inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set external clock frequency on CLK pin (optional)  <br /></td></tr>
-<tr class="separator:a65bd3a4126258dcbb02be286cfda6f9a inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac066818679e165ce389c9d8b263f73ff inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_ac066818679e165ce389c9d8b263f73ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#ac066818679e165ce389c9d8b263f73ff">SetClkFreq</a> (uint32_t frequency_hz) noexcept</td></tr>
+<tr class="memdesc:ac066818679e165ce389c9d8b263f73ff inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set external clock frequency on CLK pin (optional)  <br /></td></tr>
+<tr class="separator:ac066818679e165ce389c9d8b263f73ff inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f8d7c8e8be69b4a09db37175368ba57 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_a4f8d7c8e8be69b4a09db37175368ba57"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#a4f8d7c8e8be69b4a09db37175368ba57">CommInterface</a> (const <a class="el" href="classtmc51x0_1_1CommInterface.html">CommInterface</a> &amp;)=delete</td></tr>
 <tr class="separator:a4f8d7c8e8be69b4a09db37175368ba57 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa7569f6ef52dc8295f9d2dd5a1473a0 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_aaa7569f6ef52dc8295f9d2dd5a1473a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1CommInterface.html">CommInterface</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#aaa7569f6ef52dc8295f9d2dd5a1473a0">operator=</a> (const <a class="el" href="classtmc51x0_1_1CommInterface.html">CommInterface</a> &amp;)=delete</td></tr>
@@ -224,9 +224,9 @@ Protected Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a9f40aef4e53519c6e73fa58a3ff15cef" id="r_a9f40aef4e53519c6e73fa58a3ff15cef"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f40aef4e53519c6e73fa58a3ff15cef">EnsureChainLengthKnown</a> (uint8_t daisy_chain_position, const char *context) noexcept</td></tr>
-<tr class="memdesc:a9f40aef4e53519c6e73fa58a3ff15cef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ensure chain length is known and verified for daisy-chain operations.  <br /></td></tr>
-<tr class="separator:a9f40aef4e53519c6e73fa58a3ff15cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a122d2bbdce31e341f9288b4c12b8d6a1" id="r_a122d2bbdce31e341f9288b4c12b8d6a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a122d2bbdce31e341f9288b4c12b8d6a1">EnsureChainLengthKnown</a> (uint8_t daisy_chain_position, const char *context) noexcept</td></tr>
+<tr class="memdesc:a122d2bbdce31e341f9288b4c12b8d6a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ensure chain length is known and verified for daisy-chain operations.  <br /></td></tr>
+<tr class="separator:a122d2bbdce31e341f9288b4c12b8d6a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename Derived&gt;<br />
@@ -339,7 +339,7 @@ Daisy-Chaining Support</h2>
 <li>For single chip (<code>daisy_chain_position == 0</code>), chain length defaults to 1</li>
 </ul>
 <p><b>Auto-Detection on First Access:</b></p><ul>
-<li>If <code>daisy_chain_position &gt; 0</code> and chain length is unknown, it is automatically detected on the first <a class="el" href="#a70f84a191253f39676943c1cea1ed7cb" title="Read a 32-bit register via SPI.">ReadRegister()</a> or <a class="el" href="#a6fb339bcea2e78cdc00b962f347952c6" title="Write a 32-bit register via SPI.">WriteRegister()</a> call</li>
+<li>If <code>daisy_chain_position &gt; 0</code> and chain length is unknown, it is automatically detected on the first <a class="el" href="#af73aaff6b24f03a85379528680513c75" title="Read a 32-bit register via SPI.">ReadRegister()</a> or <a class="el" href="#a5002dc4e4bd5c2ba5e350cda8c6ee142" title="Write a 32-bit register via SPI.">WriteRegister()</a> call</li>
 <li>Detection uses <code><a class="el" href="#a919ad17ed88687fa30ac45f60f405a4b" title="Auto-detect the daisy chain length by sending a unique command that loops back.">AutoDetectChainLength()</a></code> which sends a unique command that loops back</li>
 <li>The detected length is stored and used for all subsequent operations</li>
 <li>If detection fails, operation returns false</li>
@@ -391,9 +391,9 @@ Daisy-Chaining Support</h2>
 </ul>
 <p>Architecture:</p><ul>
 <li>Each <a class="el" href="classtmc51x0_1_1SpiCommInterface.html" title="CRTP-based SPI implementation of TMC5160CommInterface.">SpiCommInterface</a> instance supports ONE SPI bus (shared by multiple TMC5160 drivers)</li>
-<li>For daisy-chaining: Each TMC5160 instance tracks its own position and passes it to <a class="el" href="#a70f84a191253f39676943c1cea1ed7cb" title="Read a 32-bit register via SPI.">ReadRegister()</a>/WriteRegister()</li>
+<li>For daisy-chaining: Each TMC5160 instance tracks its own position and passes it to <a class="el" href="#af73aaff6b24f03a85379528680513c75" title="Read a 32-bit register via SPI.">ReadRegister()</a>/WriteRegister()</li>
 <li>For multi-CS setups: Create separate <a class="el" href="classtmc51x0_1_1SpiCommInterface.html" title="CRTP-based SPI implementation of TMC5160CommInterface.">SpiCommInterface</a> instances (one per chip)</li>
-<li><a class="el" href="#a70f84a191253f39676943c1cea1ed7cb" title="Read a 32-bit register via SPI.">ReadRegister()</a> and <a class="el" href="#a6fb339bcea2e78cdc00b962f347952c6" title="Write a 32-bit register via SPI.">WriteRegister()</a> automatically handle daisy-chaining based on position parameter</li>
+<li><a class="el" href="#af73aaff6b24f03a85379528680513c75" title="Read a 32-bit register via SPI.">ReadRegister()</a> and <a class="el" href="#a5002dc4e4bd5c2ba5e350cda8c6ee142" title="Write a 32-bit register via SPI.">WriteRegister()</a> automatically handle daisy-chaining based on position parameter</li>
 <li><a class="el" href="#a1e2023ed47dfa6b82309faf963b1cce9" title="Set the total number of devices in the daisy chain.">SetDaisyChainLength()</a> must be called to enable optimal response extraction using datasheet formula</li>
 <li>For higher-level multi-driver management, use <a class="el" href="classtmc51x0_1_1TMC51x0DaisyChain.html" title="High-level manager for multiple TMC51x0 drivers in a daisy-chain configuration.">TMC51x0DaisyChain</a> class that manages multiple TMC5160 instances on a single SPI bus and automatically configures chain length</li>
 </ul>
@@ -407,7 +407,7 @@ Daisy-Chaining Support</h2>
 <div class="line">  <span class="keywordtype">void</span> delayMs(...) { ... }</div>
 <div class="line">  <span class="keywordtype">void</span> delayUs(...) { ... }</div>
 <div class="line">};</div>
-<div class="ttc" id="anamespacetmc51x0_html_af3d18824bf231d968c6c33bd1aaeae5f"><div class="ttname"><a href="namespacetmc51x0.html#af3d18824bf231d968c6c33bd1aaeae5f">tmc51x0::CommMode</a></div><div class="ttdeci">CommMode</div><div class="ttdoc">Supported physical communication modes for TMC51x0.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:141</div></div>
+<div class="ttc" id="anamespacetmc51x0_html_af3d18824bf231d968c6c33bd1aaeae5f"><div class="ttname"><a href="namespacetmc51x0.html#af3d18824bf231d968c6c33bd1aaeae5f">tmc51x0::CommMode</a></div><div class="ttdeci">CommMode</div><div class="ttdoc">Supported physical communication modes for TMC51x0.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:143</div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Derived</td><td>The derived class type (CRTP pattern) </td></tr>
@@ -590,8 +590,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a9f40aef4e53519c6e73fa58a3ff15cef" name="a9f40aef4e53519c6e73fa58a3ff15cef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f40aef4e53519c6e73fa58a3ff15cef">&#9670;&#160;</a></span>EnsureChainLengthKnown()</h2>
+<a id="a122d2bbdce31e341f9288b4c12b8d6a1" name="a122d2bbdce31e341f9288b4c12b8d6a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a122d2bbdce31e341f9288b4c12b8d6a1">&#9670;&#160;</a></span>EnsureChainLengthKnown()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -602,7 +602,7 @@ template&lt;typename Derived &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a>&lt; Derived &gt;::EnsureChainLengthKnown </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a>&lt; Derived &gt;::EnsureChainLengthKnown </td>
           <td>(</td>
           <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>daisy_chain_position</em>, </span></td>
         </tr>
@@ -627,7 +627,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if chain length is known/verified, false if detection failed when required</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
 <p>This function handles:</p><ul>
 <li>Auto-detection if daisy_chain_position &gt; 0 and chain length is unknown</li>
 <li>Setting chain length to 1 for single chip mode (daisy_chain_position == 0)</li>
@@ -638,12 +638,12 @@ template&lt;typename Derived &gt; </div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1SpiCommInterface_a9f40aef4e53519c6e73fa58a3ff15cef_cgraph.svg" width="731" height="203"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1SpiCommInterface_a122d2bbdce31e341f9288b4c12b8d6a1_cgraph.svg" width="731" height="203"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1SpiCommInterface_a9f40aef4e53519c6e73fa58a3ff15cef_icgraph.svg" width="475" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1SpiCommInterface_a122d2bbdce31e341f9288b4c12b8d6a1_icgraph.svg" width="475" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -762,8 +762,8 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a id="a70f84a191253f39676943c1cea1ed7cb" name="a70f84a191253f39676943c1cea1ed7cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70f84a191253f39676943c1cea1ed7cb">&#9670;&#160;</a></span>ReadRegister()</h2>
+<a id="af73aaff6b24f03a85379528680513c75" name="af73aaff6b24f03a85379528680513c75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af73aaff6b24f03a85379528680513c75">&#9670;&#160;</a></span>ReadRegister()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -774,14 +774,9 @@ template&lt;typename Derived &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a>&lt; Derived &gt;::ReadRegister </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; uint32_t &gt; <a class="el" href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a>&lt; Derived &gt;::ReadRegister </td>
           <td>(</td>
           <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>address</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -805,7 +800,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if read succeeded, false otherwise</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Result&lt;uint32_t&gt; containing the value or error</dd></dl>
 <p>This method handles both single-chip and daisy-chain modes:</p><ul>
 <li>Single chip (daisy_chain_position = 0): Standard 40-bit SPI transaction (5 bytes)</li>
 <li>Daisy-chain (daisy_chain_position &gt; 0): Sends command with padding to shift it to the target device position in the chain</li>
@@ -850,12 +845,12 @@ template&lt;typename Derived &gt; </div>
 <li>If mismatch is detected, an error is logged and the detected length is used</li>
 <li>If detection fails, operation returns false (chain length is required)</li>
 </ul>
-<p><b>Architecture Note:</b> This <a class="el" href="classtmc51x0_1_1SpiCommInterface.html" title="CRTP-based SPI implementation of TMC5160CommInterface.">SpiCommInterface</a> instance can be shared by multiple TMC5160 drivers on the same SPI bus. Each TMC5160 instance has its own daisy_chain_position_ and passes it as a parameter when calling <a class="el" href="#a70f84a191253f39676943c1cea1ed7cb" title="Read a 32-bit register via SPI.">ReadRegister()</a> or <a class="el" href="#a6fb339bcea2e78cdc00b962f347952c6" title="Write a 32-bit register via SPI.">WriteRegister()</a>.</p>
+<p><b>Architecture Note:</b> This <a class="el" href="classtmc51x0_1_1SpiCommInterface.html" title="CRTP-based SPI implementation of TMC5160CommInterface.">SpiCommInterface</a> instance can be shared by multiple TMC5160 drivers on the same SPI bus. Each TMC5160 instance has its own daisy_chain_position_ and passes it as a parameter when calling <a class="el" href="#af73aaff6b24f03a85379528680513c75" title="Read a 32-bit register via SPI.">ReadRegister()</a> or <a class="el" href="#a5002dc4e4bd5c2ba5e350cda8c6ee142" title="Write a 32-bit register via SPI.">WriteRegister()</a>.</p>
 <p>CSN is handled automatically by the SPI hardware or derived class implementation. For daisy-chaining, all chips share the same CSN (tied together). </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1SpiCommInterface_a70f84a191253f39676943c1cea1ed7cb_cgraph.svg" width="987" height="891"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1SpiCommInterface_af73aaff6b24f03a85379528680513c75_cgraph.svg" width="987" height="891"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -904,8 +899,8 @@ If set to 0 and daisy_chain_position &gt; 0, chain length will be auto-detected 
 
 </div>
 </div>
-<a id="a86c5faa8a8e88884c16a3a2b1b2512e7" name="a86c5faa8a8e88884c16a3a2b1b2512e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86c5faa8a8e88884c16a3a2b1b2512e7">&#9670;&#160;</a></span>SpiTransfer()</h2>
+<a id="a20861cc797a4153c02d34cebf66af7d7" name="a20861cc797a4153c02d34cebf66af7d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20861cc797a4153c02d34cebf66af7d7">&#9670;&#160;</a></span>SpiTransfer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -916,7 +911,7 @@ template&lt;typename Derived &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a>&lt; Derived &gt;::SpiTransfer </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a>&lt; Derived &gt;::SpiTransfer </td>
           <td>(</td>
           <td class="paramtype">const uint8_t *</td>          <td class="paramname"><span class="paramname"><em>tx</em>, </span></td>
         </tr>
@@ -947,22 +942,22 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the SPI transfer completed successfully </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1SpiCommInterface_a86c5faa8a8e88884c16a3a2b1b2512e7_cgraph.svg" width="219" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1SpiCommInterface_a20861cc797a4153c02d34cebf66af7d7_cgraph.svg" width="219" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1SpiCommInterface_a86c5faa8a8e88884c16a3a2b1b2512e7_icgraph.svg" width="987" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1SpiCommInterface_a20861cc797a4153c02d34cebf66af7d7_icgraph.svg" width="987" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a6fb339bcea2e78cdc00b962f347952c6" name="a6fb339bcea2e78cdc00b962f347952c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6fb339bcea2e78cdc00b962f347952c6">&#9670;&#160;</a></span>WriteRegister()</h2>
+<a id="a5002dc4e4bd5c2ba5e350cda8c6ee142" name="a5002dc4e4bd5c2ba5e350cda8c6ee142"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5002dc4e4bd5c2ba5e350cda8c6ee142">&#9670;&#160;</a></span>WriteRegister()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -973,7 +968,7 @@ template&lt;typename Derived &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a>&lt; Derived &gt;::WriteRegister </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a>&lt; Derived &gt;::WriteRegister </td>
           <td>(</td>
           <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>address</em>, </span></td>
         </tr>
@@ -1004,12 +999,12 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if write succeeded, false otherwise</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
 <p>This method handles both single-chip and daisy-chain modes:</p><ul>
 <li>Single chip (daisy_chain_position = 0): Standard 40-bit SPI transaction (5 bytes)</li>
 <li>Daisy-chain (daisy_chain_position &gt; 0): Sends command with padding to shift it to the target device position in the chain</li>
 </ul>
-<p><b>Daisy-Chain Transfer Logic:</b> Same as <a class="el" href="#a70f84a191253f39676943c1cea1ed7cb" title="Read a 32-bit register via SPI.">ReadRegister()</a> - see <a class="el" href="#a70f84a191253f39676943c1cea1ed7cb" title="Read a 32-bit register via SPI.">ReadRegister()</a> documentation for detailed explanation.</p>
+<p><b>Daisy-Chain Transfer Logic:</b> Same as <a class="el" href="#af73aaff6b24f03a85379528680513c75" title="Read a 32-bit register via SPI.">ReadRegister()</a> - see <a class="el" href="#af73aaff6b24f03a85379528680513c75" title="Read a 32-bit register via SPI.">ReadRegister()</a> documentation for detailed explanation.</p>
 <p><b>Key Points:</b></p><ul>
 <li>Chain length MUST be known (auto-detected if not set)</li>
 <li>Sending: (k+1)*5 bytes to address device k</li>
@@ -1017,13 +1012,13 @@ template&lt;typename Derived &gt; </div>
 <li>Transfer size: max((k+1)*5, (n-k)*5) bytes</li>
 <li>Extra bytes beyond (k+1)*5 are padding (zeros) for full-duplex behavior</li>
 </ul>
-<p><b>Auto-Detection and Verification:</b> Same as <a class="el" href="#a70f84a191253f39676943c1cea1ed7cb" title="Read a 32-bit register via SPI.">ReadRegister()</a> - chain length is auto-detected on first access if needed, and user-specified length is verified against detected length. If detection fails, operation returns false.</p>
-<p><b>Architecture Note:</b> This <a class="el" href="classtmc51x0_1_1SpiCommInterface.html" title="CRTP-based SPI implementation of TMC5160CommInterface.">SpiCommInterface</a> instance can be shared by multiple TMC5160 drivers on the same SPI bus. Each TMC5160 instance has its own daisy_chain_position_ and passes it as a parameter when calling <a class="el" href="#a70f84a191253f39676943c1cea1ed7cb" title="Read a 32-bit register via SPI.">ReadRegister()</a> or <a class="el" href="#a6fb339bcea2e78cdc00b962f347952c6" title="Write a 32-bit register via SPI.">WriteRegister()</a>.</p>
+<p><b>Auto-Detection and Verification:</b> Same as <a class="el" href="#af73aaff6b24f03a85379528680513c75" title="Read a 32-bit register via SPI.">ReadRegister()</a> - chain length is auto-detected on first access if needed, and user-specified length is verified against detected length. If detection fails, operation returns false.</p>
+<p><b>Architecture Note:</b> This <a class="el" href="classtmc51x0_1_1SpiCommInterface.html" title="CRTP-based SPI implementation of TMC5160CommInterface.">SpiCommInterface</a> instance can be shared by multiple TMC5160 drivers on the same SPI bus. Each TMC5160 instance has its own daisy_chain_position_ and passes it as a parameter when calling <a class="el" href="#af73aaff6b24f03a85379528680513c75" title="Read a 32-bit register via SPI.">ReadRegister()</a> or <a class="el" href="#a5002dc4e4bd5c2ba5e350cda8c6ee142" title="Write a 32-bit register via SPI.">WriteRegister()</a>.</p>
 <p>CSN is handled automatically by the SPI hardware or derived class implementation. For daisy-chaining, all chips share the same CSN (tied together). </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1SpiCommInterface_a6fb339bcea2e78cdc00b962f347952c6_cgraph.svg" width="987" height="952"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1SpiCommInterface_a5002dc4e4bd5c2ba5e350cda8c6ee142_cgraph.svg" width="987" height="952"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

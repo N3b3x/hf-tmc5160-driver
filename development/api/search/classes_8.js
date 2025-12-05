@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['mechanicalsystem_0',['MechanicalSystem',['../structtmc51x0_1_1MechanicalSystem.html',1,'tmc51x0']]],
-  ['menuitem_1',['MenuItem',['../structMenuItem.html',1,'']]],
-  ['motorcontrol_2',['MotorControl',['../structtmc51x0_1_1TMC51x0_1_1MotorControl.html',1,'tmc51x0::TMC51x0']]],
-  ['motorspec_3',['MotorSpec',['../structtmc51x0_1_1MotorSpec.html',1,'tmc51x0']]],
-  ['mscuract_5fregister_4',['MSCURACT_Register',['../uniontmc51x0_1_1MSCURACT__Register.html',1,'tmc51x0']]],
-  ['mslutsel_5fregister_5',['MSLUTSEL_Register',['../uniontmc51x0_1_1MSLUTSEL__Register.html',1,'tmc51x0']]]
+  ['iboundsfinder_0',['IBoundsFinder',['../classFatigueTest_1_1IBoundsFinder.html',1,'FatigueTest']]],
+  ['ihold_5firun_5fregister_1',['IHOLD_IRUN_Register',['../uniontmc51x0_1_1IHOLD__IRUN__Register.html',1,'tmc51x0']]],
+  ['inputstatus_2',['InputStatus',['../structtmc51x0_1_1InputStatus.html',1,'tmc51x0']]],
+  ['ioin_5fregister_3',['IOIN_Register',['../uniontmc51x0_1_1IOIN__Register.html',1,'tmc51x0']]]
 ];

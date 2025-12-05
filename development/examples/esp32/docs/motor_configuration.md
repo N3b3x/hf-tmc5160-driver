@@ -116,75 +116,69 @@ I_Peak ≈ 2.66A Peak
 
 ### Test Rig Selection Method (Recommended)
 
-Most examples use a unified test rig selection system that automatically configures motor, board, and platform:
+Most examples use the `TestRigConfig` template which provides unified access to all configurations:
 
 ```cpp
 // Select test rig at compile time - automatically selects motor, board, and platform
 static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
     tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER;
 
-// Configure driver from test rig (automatically configures motor, board, and platform)
+// Configure driver from test rig (automatically configures everything)
 tmc51x0::DriverConfig cfg{};
+tmc51x0_test_config::TestRigConfig<SELECTED_TEST_RIG>::ConfigureDriver(cfg);
+// Or use convenience function:
 tmc51x0_test_config::ConfigureDriverFromTestRig<SELECTED_TEST_RIG>(cfg);
 driver.Initialize(cfg);
+
+// Access configuration values
+using Config = tmc51x0_test_config::TestRigConfig<SELECTED_TEST_RIG>;
+float speed = Config::Test::Motion::BOUNDS_SEARCH_SPEED_RPM;
+uint16_t steps = Config::GetMotorOutputFullSteps();
 ```
 
 Available test rigs:
 - **TEST_RIG_CORE_DRIVER**: 17HS4401S motor (geared or direct), TMC51x0 EVAL board, reference switches, encoder
 - **TEST_RIG_FATIGUE**: Applied Motion 5034-369 NEMA 34 motor, TMC51x0 EVAL board, reference switches, encoder
 
-### Manual Motor Selection Method (Legacy/Advanced)
+### Direct Struct Access
 
-For advanced use cases, you can still manually select motor configuration:
+You can also access motor configuration structs directly:
 
 ```cpp
-static constexpr tmc51x0_test_config::MotorType SELECTED_MOTOR = 
-    tmc51x0_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+// Access motor config values directly
+uint16_t steps = MotorConfig_17HS4401S::OUTPUT_FULL_STEPS;
+float gear_ratio = MotorConfig_17HS4401S::GEAR_RATIO;
+uint16_t current = MotorConfig_17HS4401S::TARGET_RUN_CURRENT_MA;
 ```
 
-Change to your desired motor:
+### Manual Motor Selection Method (Advanced)
+
+For advanced use cases, you can manually configure:
 
 ```cpp
-// For direct drive 17HS4401S:
-static constexpr tmc51x0_test_config::MotorType SELECTED_MOTOR = 
-    tmc51x0_test_config::MotorType::MOTOR_17HS4401S_DIRECT;
-
-// For Applied Motion 5034-369:
-static constexpr tmc51x0_test_config::MotorType SELECTED_MOTOR = 
-    tmc51x0_test_config::MotorType::MOTOR_APPLIED_MOTION_5034;
-```
-
-Then use `if constexpr` blocks to select the motor configuration namespace:
-
-```cpp
-if constexpr (SELECTED_MOTOR == tmc51x0_test_config::MotorType::MOTOR_17HS4401S_GEARBOX) {
-    namespace Motor = tmc51x0_test_config::MotorConfig_17HS4401S;
-    // Use Motor::IRUN, Motor::IHOLD, etc.
-} else if constexpr (SELECTED_MOTOR == tmc51x0_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
-    namespace Motor = tmc51x0_test_config::MotorConfig_17HS4401S_Direct;
-    // Use Motor::IRUN, Motor::IHOLD, etc.
-} else if constexpr (SELECTED_MOTOR == tmc51x0_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
-    namespace Motor = tmc51x0_test_config::MotorConfig_AppliedMotion_5034_369;
-    // Use Motor::IRUN, Motor::IHOLD, etc.
-}
+tmc51x0::DriverConfig cfg{};
+tmc51x0_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
+tmc51x0_test_config::ApplyBoardConfig<tmc51x0_test_config::BoardType::BOARD_TMC51x0_EVAL>(cfg);
+tmc51x0_test_config::ApplyPlatformConfig<tmc51x0_test_config::PlatformType::PLATFORM_CORE_DRIVER_TEST_RIG>(cfg);
+driver.Initialize(cfg);
 ```
 
 ---
 
-## Motor Configuration Namespaces
+## Motor Configuration Structs
 
-Each motor has its own configuration namespace in `esp32_tmc51x0_test_config.hpp`:
+Each motor has its own configuration struct in `esp32_tmc51x0_test_config.hpp`:
 
-- `MotorConfig_17HS4401S` - Geared version
-- `MotorConfig_17HS4401S_Direct` - Direct drive version
+- `MotorConfig_17HS4401S` - Geared version (struct with static constexpr members)
+- `MotorConfig_17HS4401S_Direct` - Direct drive version (struct with static constexpr members)
 - `MotorConfig_AppliedMotion_5034_369` - Applied Motion NEMA 34
 
-These namespaces contain:
+These structs contain `static constexpr` members for:
 - Physical motor specifications
-- Driver current settings (IRUN, IHOLD, GLOBAL_SCALER)
+- Target current settings (automatically calculated to IRUN, IHOLD, GLOBAL_SCALER)
 - Chopper configuration (TOFF, HEND, HSTRT, TBL)
 - StealthChop settings
-- Power stage configuration
+- Ramp profile defaults
 
 ## Test Rig Configuration
 

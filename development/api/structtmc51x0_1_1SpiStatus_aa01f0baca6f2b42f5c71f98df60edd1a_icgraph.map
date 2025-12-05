@@ -2,9 +2,9 @@
 <area shape="rect" id="Node000001" title="Get driver error flag (bit 1)" alt="" coords="457,99,605,139"/>
 <area shape="rect" id="Node000002" href="$structtmc51x0_1_1SpiStatus.html#a074ce9431f7b5c30ef7b83e1818dfd3b" title="Format status bits as compact string (bit names and values)" alt="" coords="261,127,409,167"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="444,134,410,139,409,133,443,129"/>
-<area shape="rect" id="Node000003" href="$classtmc51x0_1_1SpiCommInterface.html#a70f84a191253f39676943c1cea1ed7cb" title="Read a 32&#45;bit register via SPI." alt="" coords="5,69,213,109"/>
+<area shape="rect" id="Node000003" href="$classtmc51x0_1_1SpiCommInterface.html#af73aaff6b24f03a85379528680513c75" title="Read a 32&#45;bit register via SPI." alt="" coords="5,69,213,109"/>
 <area shape="poly" id="edge8_Node000001_Node000003" title=" " alt="" coords="443,115,213,99,214,94,444,110"/>
-<area shape="rect" id="Node000004" href="$classtmc51x0_1_1SpiCommInterface.html#a6fb339bcea2e78cdc00b962f347952c6" title="Write a 32&#45;bit register via SPI." alt="" coords="5,133,213,173"/>
+<area shape="rect" id="Node000004" href="$classtmc51x0_1_1SpiCommInterface.html#a5002dc4e4bd5c2ba5e350cda8c6ee142" title="Write a 32&#45;bit register via SPI." alt="" coords="5,133,213,173"/>
 <area shape="poly" id="edge9_Node000001_Node000004" title=" " alt="" coords="489,148,451,167,410,181,353,189,295,190,239,184,189,176,190,171,240,179,295,184,352,184,409,176,449,162,486,143"/>
 <area shape="rect" id="Node000005" href="$structtmc51x0_1_1SpiStatus.html#aad5ded7d89400550078e2115489aec50" title="Check if any error flags are set." alt="" coords="261,12,409,52"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="472,95,381,55,383,50,474,91"/>

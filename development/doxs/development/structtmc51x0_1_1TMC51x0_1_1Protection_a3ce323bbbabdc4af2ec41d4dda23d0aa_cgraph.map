@@ -1,0 +1,9 @@
+<map id="tmc51x0::TMC51x0::Protection::ConfigureShortProtection" name="tmc51x0::TMC51x0::Protection::ConfigureShortProtection">
+<area shape="rect" id="Node000001" title="Configure short protection levels." alt="" coords="5,47,228,87"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0.html#a2e6968ff0ef7ea91a3cfd74286cd84a8" title="Calculate S2G_LEVEL register value from voltage threshold." alt="" coords="281,5,491,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="226,45,302,30,303,36,227,50"/>
+<area shape="rect" id="Node000003" href="$namespacetmc51x0.html#a735799ad1db46015a3121adbf1cec9ac" title="Calculate S2VS_LEVEL register value from voltage threshold." alt="" coords="278,55,494,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="228,65,264,65,264,70,228,70"/>
+<area shape="rect" id="Node000004" href="$namespacetmc51x0.html#a3da6e7a7011465219730793db49358e0" title="Calculate shortdelay register bit from detection delay time." alt="" coords="276,104,496,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="227,85,303,99,302,104,226,90"/>
+</map>

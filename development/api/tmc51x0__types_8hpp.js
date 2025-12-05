@@ -8,6 +8,8 @@ var tmc51x0__types_8hpp =
     [ "tmc51x0::StealthChopConfig", "structtmc51x0_1_1StealthChopConfig.html", "structtmc51x0_1_1StealthChopConfig" ],
     [ "tmc51x0::StallGuardConfig", "structtmc51x0_1_1StallGuardConfig.html", "structtmc51x0_1_1StallGuardConfig" ],
     [ "tmc51x0::StallGuardTuningResult", "structtmc51x0_1_1StallGuardTuningResult.html", "structtmc51x0_1_1StallGuardTuningResult" ],
+    [ "tmc51x0::VelocityValue", "structtmc51x0_1_1VelocityValue.html", "structtmc51x0_1_1VelocityValue" ],
+    [ "tmc51x0::AccelerationValue", "structtmc51x0_1_1AccelerationValue.html", "structtmc51x0_1_1AccelerationValue" ],
     [ "tmc51x0::RampConfig", "structtmc51x0_1_1RampConfig.html", "structtmc51x0_1_1RampConfig" ],
     [ "tmc51x0::CoolStepConfig", "structtmc51x0_1_1CoolStepConfig.html", "structtmc51x0_1_1CoolStepConfig" ],
     [ "tmc51x0::DcStepConfig", "structtmc51x0_1_1DcStepConfig.html", "structtmc51x0_1_1DcStepConfig" ],

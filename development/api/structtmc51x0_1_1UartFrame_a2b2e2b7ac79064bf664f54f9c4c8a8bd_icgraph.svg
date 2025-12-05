@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classtmc51x0_1_1UartCommInterface.html#a07fc8787ed9723f7cecea1a5c138afbf" target="_top" xlink:title="Write a 32&#45;bit register via UART.">
+<g id="a_Node000002"><a xlink:href="classtmc51x0_1_1UartCommInterface.html#aac90ee8b81f46514c749a20c8c496711" target="_top" xlink:title="Write a 32&#45;bit register via UART.">
 <polygon fill="white" stroke="#666666" points="162,-30 0,-30 0,0 162,0 162,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::UartCommInterface</text>
 <text text-anchor="middle" x="81" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::WriteRegister</text>

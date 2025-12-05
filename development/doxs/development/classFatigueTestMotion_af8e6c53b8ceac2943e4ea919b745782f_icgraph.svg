@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Recalculate trajectory parameters based on frequency, bounds, and dwell.">
+<g id="a_Node000001"><a xlink:title="Recalculate trajectory parameters based on frequency, bounds, and dwell All calculations in degrees,...">
 <polygon fill="#999999" stroke="#666666" points="450,-102 328,-102 328,-72 450,-72 450,-102"/>
 <text text-anchor="start" x="336" y="-90" font-family="Helvetica,sans-Serif" font-size="10.00">FatigueTestMotion::</text>
 <text text-anchor="middle" x="389" y="-79" font-family="Helvetica,sans-Serif" font-size="10.00">RecalculateTrajectory</text>

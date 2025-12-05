@@ -430,6 +430,14 @@
 41
 42
 43
+44
+45
+46
+47
+48
+49
+50
+51
 </pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"esp32_tmc5160_test_config.hpp"</span><span class="cp">
 </span>
 <span class="c1">// Select motor, board, and platform at compile time</span>
@@ -458,12 +466,20 @@
 <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">ApplyPlatformConfig</span><span class="o">&lt;</span><span class="n">SELECTED_PLATFORM</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
 
 <span class="c1">// 4. Initialize driver (current settings calculated automatically)</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">// or handle error appropriately</span>
+<span class="p">}</span>
 
 <span class="c1">// 5. Configure platform-specific features after initialization</span>
 <span class="c1">// Reference switches</span>
 <span class="k">auto</span> <span class="n">ref_cfg</span> <span class="o">=</span> <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">GetReferenceSwitchConfig</span><span class="o">&lt;</span><span class="n">SELECTED_PLATFORM</span><span class="o">&gt;</span><span class="p">();</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">ConfigureReferenceSwitch</span><span class="p">(</span><span class="n">ref_cfg</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">ref_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">ConfigureReferenceSwitch</span><span class="p">(</span><span class="n">ref_cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ref_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error configuring reference switch: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ref_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
 
 <span class="c1">// Encoder</span>
 <span class="k">auto</span> <span class="n">enc_cfg</span> <span class="o">=</span> <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">GetEncoderConfig</span><span class="o">&lt;</span><span class="n">SELECTED_PLATFORM</span><span class="o">&gt;</span><span class="p">();</span>
@@ -611,6 +627,10 @@
 114
 115
 116
+117
+118
+119
+120
 </pre></td><td class="rouge-code"><pre><span class="n">tmc51x0</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
 
 <span class="c1">// Power stage configuration (user-friendly physical parameters)</span>
@@ -726,7 +746,11 @@
 <span class="c1">// Or for external clock:</span>
 <span class="c1">// cfg.external_clk_config.frequency_hz = 12000000;  // 12 MHz external clock</span>
 
-<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">// or handle error appropriately</span>
+<span class="p">}</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h2 id="configuration-methods">
   
@@ -765,26 +789,104 @@
 18
 19
 20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
 </pre></td><td class="rouge-code"><pre><span class="c1">// Set ramp mode</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">POSITIONING</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">mode_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">POSITIONING</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">mode_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting ramp mode: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">mode_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">// or handle error appropriately</span>
+<span class="p">}</span>
 
 <span class="c1">// Set motion parameters (unit-aware API)</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mf">1000.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Steps</span><span class="p">);</span>
-<span class="c1">// Velocity functions default to revolutions per second (RevPerSec)</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">0.02</span><span class="n">f</span><span class="p">);</span>      <span class="c1">// 0.02 rev/s (~1.2 RPM) - Unit::RevPerSec is default</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetAcceleration</span><span class="p">(</span><span class="mf">0.01</span><span class="n">f</span><span class="p">);</span>   <span class="c1">// 0.01 rev/s² - Unit::RevPerSec is default</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampSpeeds</span><span class="p">(</span><span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0002</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">);</span> <span class="c1">// start, stop, transition (Unit::RevPerSec is default)</span>
+<span class="k">auto</span> <span class="n">pos_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mf">1000.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Steps</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pos_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting target position: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pos_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">auto</span> <span class="n">speed_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">1.2</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">);</span>      <span class="c1">// 1.2 RPM</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">speed_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting max speed: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">speed_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">auto</span> <span class="n">accel_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetAcceleration</span><span class="p">(</span><span class="mf">0.01</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">);</span>   <span class="c1">// 0.01 rev/s²</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">accel_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting acceleration: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">accel_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">auto</span> <span class="n">ramp_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampSpeeds</span><span class="p">(</span><span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.012</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">);</span> <span class="c1">// start, stop, transition in RPM</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ramp_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting ramp speeds: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ramp_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
 
 <span class="c1">// Get current position and speed (unit-aware API)</span>
-<span class="kt">float</span> <span class="n">position</span> <span class="o">=</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">;</span>
-<span class="kt">float</span> <span class="n">speed</span> <span class="o">=</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">;</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">GetCurrentPosition</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Steps</span><span class="p">);</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">GetCurrentSpeed</span><span class="p">(</span><span class="n">speed</span><span class="p">);</span>  <span class="c1">// Returns in rev/s (Unit::RevPerSec is default)</span>
+<span class="k">auto</span> <span class="n">pos_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">GetCurrentPosition</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Steps</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">pos_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">float</span> <span class="n">position</span> <span class="o">=</span> <span class="n">pos_result</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span>
+    <span class="c1">// Use position</span>
+<span class="p">}</span>
+
+<span class="k">auto</span> <span class="n">speed_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">GetCurrentSpeed</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">);</span>  <span class="c1">// Returns in RPM</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">speed_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">float</span> <span class="n">speed</span> <span class="o">=</span> <span class="n">speed_result</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span>
+    <span class="c1">// Use speed</span>
+<span class="p">}</span>
 
 <span class="c1">// Or use other physical units (requires mechanical system configuration)</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">1.2</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">);</span>         <span class="c1">// 1.2 RPM</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">72.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Deg</span><span class="p">);</span>       <span class="c1">// 72 deg/s = 0.2 rev/s</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetAcceleration</span><span class="p">(</span><span class="mf">360.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Deg</span><span class="p">);</span>   <span class="c1">// 360 deg/s² = 1 rev/s²</span>
+<span class="k">auto</span> <span class="n">rpm_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">1.2</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">);</span>         <span class="c1">// 1.2 RPM</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">rpm_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting max speed: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">rpm_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">auto</span> <span class="n">deg_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">72.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Deg</span><span class="p">);</span>       <span class="c1">// 72 deg/s = 0.2 rev/s</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">deg_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting max speed: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">deg_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">auto</span> <span class="n">accel_deg_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetAcceleration</span><span class="p">(</span><span class="mf">360.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Deg</span><span class="p">);</span>   <span class="c1">// 360 deg/s² = 1 rev/s²</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">accel_deg_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting acceleration: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">accel_deg_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h3 id="motor-control-configuration">
   
@@ -853,13 +955,13 @@
 <span class="c1">// Keep motor stopped for at least 128 chopper periods after enabling</span>
 
 <span class="c1">// Set mode change speeds (velocity thresholds, unit-aware)</span>
-<span class="c1">// Default unit is now RevPerSec (revolutions per second)</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetModeChangeSpeeds</span><span class="p">(</span><span class="mf">0.002</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.01</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.04</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Unit::RevPerSec is default</span>
+<span class="c1">// Specify units explicitly (recommended: RPM for velocity)</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetModeChangeSpeeds</span><span class="p">(</span><span class="mf">0.12</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.6</span><span class="n">f</span><span class="p">,</span> <span class="mf">2.4</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">);</span>  <span class="c1">// pwm_thrs, cool_thrs, high_thrs in RPM</span>
 <span class="c1">// pwm_thrs: StealthChop threshold (below this: StealthChop, above: SpreadCycle)</span>
 <span class="c1">// cool_thrs: CoolStep threshold (below this: CoolStep disabled)</span>
 <span class="c1">// high_thrs: High-speed mode threshold</span>
 
-<span class="c1">// Or set individual thresholds (Unit::RevPerSec is default):</span>
+<span class="c1">// Or set individual thresholds (specify unit explicitly):</span>
 <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetStealthChopVelocityThreshold</span><span class="p">(</span><span class="mf">0.002</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// 0.002 rev/s (~0.12 RPM)</span>
 <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetCoolStepThreshold</span><span class="p">(</span><span class="mf">0.01</span><span class="n">f</span><span class="p">);</span>              <span class="c1">// 0.01 rev/s (~0.6 RPM)</span>
 <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetHighSpeedThreshold</span><span class="p">(</span><span class="mf">0.04</span><span class="n">f</span><span class="p">);</span>              <span class="c1">// 0.04 rev/s (~2.4 RPM)</span>
@@ -1412,6 +1514,14 @@
 11
 12
 13
+14
+15
+16
+17
+18
+19
+20
+21
 </pre></td><td class="rouge-code"><pre><span class="n">tmc51x0</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">1680</span><span class="p">;</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
@@ -1421,10 +1531,18 @@
 <span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">mres</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">MicrostepResolution</span><span class="o">::</span><span class="n">MRES_256</span><span class="p">;</span>  <span class="c1">// 256 microsteps</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">stealthchop</span><span class="p">.</span><span class="n">pwm_autoscale</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">stealthchop</span><span class="p">.</span><span class="n">pwm_autograd</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">// or handle error appropriately</span>
+<span class="p">}</span>
 
 <span class="c1">// Enable stealthChop</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetModeChangeSpeeds</span><span class="p">(</span><span class="mf">0.002</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Unit::RevPerSec is default</span>
+<span class="k">auto</span> <span class="n">speed_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetModeChangeSpeeds</span><span class="p">(</span><span class="mf">0.12</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">);</span>  <span class="c1">// pwm_thrs in RPM</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">speed_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting mode change speeds: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">speed_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h3 id="for-high-torque-spreadcycle">
   
@@ -1447,6 +1565,14 @@
 10
 11
 12
+13
+14
+15
+16
+17
+18
+19
+20
 </pre></td><td class="rouge-code"><pre><span class="n">tmc51x0</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">;</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
@@ -1455,10 +1581,18 @@
 <span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">toff</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">mres</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">MicrostepResolution</span><span class="o">::</span><span class="n">MRES_256</span><span class="p">;</span>  <span class="c1">// 256 microsteps</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ChopperMode</span><span class="o">::</span><span class="n">SPREAD_CYCLE</span><span class="p">;</span>  <span class="c1">// SpreadCycle mode (recommended)</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">// or handle error appropriately</span>
+<span class="p">}</span>
 
 <span class="c1">// Disable stealthChop (use spreadCycle)</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetModeChangeSpeeds</span><span class="p">(</span><span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Steps</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">speed_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetModeChangeSpeeds</span><span class="p">(</span><span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Steps</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">speed_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting mode change speeds: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">speed_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h3 id="for-closed-loop-control-with-encoder">
   
@@ -1486,23 +1620,65 @@
 15
 16
 17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
 </pre></td><td class="rouge-code"><pre><span class="n">tmc51x0</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">1680</span><span class="p">;</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
 <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">supply_voltage_mv</span> <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span>
 <span class="c1">// IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated - DO NOT set manually</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">// or handle error appropriately</span>
+<span class="p">}</span>
 
 <span class="c1">// Configure encoder</span>
 <span class="n">tmc51x0</span><span class="o">::</span><span class="n">EncoderConfig</span> <span class="n">enc_cfg</span><span class="p">{};</span>
 <span class="n">enc_cfg</span><span class="p">.</span><span class="n">prescaler_mode</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">EncoderPrescalerMode</span><span class="o">::</span><span class="n">BINARY</span><span class="p">;</span> <span class="c1">// Binary mode</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">Configure</span><span class="p">(</span><span class="n">enc_cfg</span><span class="p">);</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">SetResolution</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">SetAllowedDeviation</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">enc_config_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">Configure</span><span class="p">(</span><span class="n">enc_cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">enc_config_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error configuring encoder: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">enc_config_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">auto</span> <span class="n">res_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">SetResolution</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">res_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting encoder resolution: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">res_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">auto</span> <span class="n">dev_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">SetAllowedDeviation</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">dev_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting allowed deviation: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">dev_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
 
 <span class="c1">// Get encoder position</span>
-<span class="kt">int32_t</span> <span class="n">enc_position</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">GetPosition</span><span class="p">(</span><span class="n">enc_position</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">enc_pos_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">GetPosition</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">enc_pos_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int32_t</span> <span class="n">enc_position</span> <span class="o">=</span> <span class="n">enc_pos_result</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span>
+    <span class="c1">// Use encoder position</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error reading encoder position: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">enc_pos_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+<span class="p">}</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h2 id="next-steps">
   

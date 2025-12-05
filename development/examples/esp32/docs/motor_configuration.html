@@ -436,67 +436,7 @@ I_Peak ≈ 2.66A Peak
 </h3>
     
 
-<p>Most examples use a unified test rig selection system that automatically configures motor, board, and platform:</p>
-
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-</pre></td><td class="rouge-code"><pre><span class="c1">// Select test rig at compile time - automatically selects motor, board, and platform</span>
-<span class="k">static</span> <span class="k">constexpr</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">TestRigType</span> <span class="n">SELECTED_TEST_RIG</span> <span class="o">=</span> 
-    <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">TestRigType</span><span class="o">::</span><span class="n">TEST_RIG_CORE_DRIVER</span><span class="p">;</span>
-
-<span class="c1">// Configure driver from test rig (automatically configures motor, board, and platform)</span>
-<span class="n">tmc51x0</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
-<span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">ConfigureDriverFromTestRig</span><span class="o">&lt;</span><span class="n">SELECTED_TEST_RIG</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
-</pre></td></tr></tbody></table></div></code></pre></div></div>
-
-<p>Available test rigs:</p>
-<ul>
-  <li><strong>TEST_RIG_CORE_DRIVER</strong>: 17HS4401S motor (geared or direct), TMC51x0 EVAL board, reference switches, encoder</li>
-  <li><strong>TEST_RIG_FATIGUE</strong>: Applied Motion 5034-369 NEMA 34 motor, TMC51x0 EVAL board, reference switches, encoder</li>
-</ul>
-<h3 id="manual-motor-selection-method-legacyadvanced">
-  
-  
-    <a href="#manual-motor-selection-method-legacyadvanced" class="anchor-heading" aria-labelledby="manual-motor-selection-method-legacyadvanced"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Manual Motor Selection Method (Legacy/Advanced)
-  
-  
-</h3>
-    
-
-<p>For advanced use cases, you can still manually select motor configuration:</p>
-
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-</pre></td><td class="rouge-code"><pre><span class="k">static</span> <span class="k">constexpr</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span> <span class="n">SELECTED_MOTOR</span> <span class="o">=</span> 
-    <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_17HS4401S_GEARBOX</span><span class="p">;</span>
-</pre></td></tr></tbody></table></div></code></pre></div></div>
-
-<p>Change to your desired motor:</p>
-
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-</pre></td><td class="rouge-code"><pre><span class="c1">// For direct drive 17HS4401S:</span>
-<span class="k">static</span> <span class="k">constexpr</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span> <span class="n">SELECTED_MOTOR</span> <span class="o">=</span> 
-    <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_17HS4401S_DIRECT</span><span class="p">;</span>
-
-<span class="c1">// For Applied Motion 5034-369:</span>
-<span class="k">static</span> <span class="k">constexpr</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span> <span class="n">SELECTED_MOTOR</span> <span class="o">=</span> 
-    <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_APPLIED_MOTION_5034</span><span class="p">;</span>
-</pre></td></tr></tbody></table></div></code></pre></div></div>
-
-<p>Then use <code class="language-plaintext highlighter-rouge">if constexpr</code> blocks to select the motor configuration namespace:</p>
+<p>Most examples use the <code class="language-plaintext highlighter-rouge">TestRigConfig</code> template which provides unified access to all configurations:</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -508,41 +448,99 @@ I_Peak ≈ 2.66A Peak
 8
 9
 10
-</pre></td><td class="rouge-code"><pre><span class="k">if</span> <span class="nf">constexpr</span> <span class="p">(</span><span class="n">SELECTED_MOTOR</span> <span class="o">==</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_17HS4401S_GEARBOX</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">namespace</span> <span class="n">Motor</span> <span class="o">=</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorConfig_17HS4401S</span><span class="p">;</span>
-    <span class="c1">// Use Motor::IRUN, Motor::IHOLD, etc.</span>
-<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="k">constexpr</span> <span class="p">(</span><span class="n">SELECTED_MOTOR</span> <span class="o">==</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_17HS4401S_DIRECT</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">namespace</span> <span class="n">Motor</span> <span class="o">=</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorConfig_17HS4401S_Direct</span><span class="p">;</span>
-    <span class="c1">// Use Motor::IRUN, Motor::IHOLD, etc.</span>
-<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="k">constexpr</span> <span class="p">(</span><span class="n">SELECTED_MOTOR</span> <span class="o">==</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_APPLIED_MOTION_5034</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">namespace</span> <span class="n">Motor</span> <span class="o">=</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorConfig_AppliedMotion_5034_369</span><span class="p">;</span>
-    <span class="c1">// Use Motor::IRUN, Motor::IHOLD, etc.</span>
-<span class="p">}</span>
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="c1">// Select test rig at compile time - automatically selects motor, board, and platform</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">TestRigType</span> <span class="n">SELECTED_TEST_RIG</span> <span class="o">=</span> 
+    <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">TestRigType</span><span class="o">::</span><span class="n">TEST_RIG_CORE_DRIVER</span><span class="p">;</span>
+
+<span class="c1">// Configure driver from test rig (automatically configures everything)</span>
+<span class="n">tmc51x0</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
+<span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">TestRigConfig</span><span class="o">&lt;</span><span class="n">SELECTED_TEST_RIG</span><span class="o">&gt;::</span><span class="n">ConfigureDriver</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="c1">// Or use convenience function:</span>
+<span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">ConfigureDriverFromTestRig</span><span class="o">&lt;</span><span class="n">SELECTED_TEST_RIG</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+
+<span class="c1">// Access configuration values</span>
+<span class="k">using</span> <span class="n">Config</span> <span class="o">=</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">TestRigConfig</span><span class="o">&lt;</span><span class="n">SELECTED_TEST_RIG</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">speed</span> <span class="o">=</span> <span class="n">Config</span><span class="o">::</span><span class="n">Test</span><span class="o">::</span><span class="n">Motion</span><span class="o">::</span><span class="n">BOUNDS_SEARCH_SPEED_RPM</span><span class="p">;</span>
+<span class="kt">uint16_t</span> <span class="n">steps</span> <span class="o">=</span> <span class="n">Config</span><span class="o">::</span><span class="n">GetMotorOutputFullSteps</span><span class="p">();</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p>Available test rigs:</p>
+<ul>
+  <li><strong>TEST_RIG_CORE_DRIVER</strong>: 17HS4401S motor (geared or direct), TMC51x0 EVAL board, reference switches, encoder</li>
+  <li><strong>TEST_RIG_FATIGUE</strong>: Applied Motion 5034-369 NEMA 34 motor, TMC51x0 EVAL board, reference switches, encoder</li>
+</ul>
+<h3 id="direct-struct-access">
+  
+  
+    <a href="#direct-struct-access" class="anchor-heading" aria-labelledby="direct-struct-access"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Direct Struct Access
+  
+  
+</h3>
+    
+
+<p>You can also access motor configuration structs directly:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="c1">// Access motor config values directly</span>
+<span class="kt">uint16_t</span> <span class="n">steps</span> <span class="o">=</span> <span class="n">MotorConfig_17HS4401S</span><span class="o">::</span><span class="n">OUTPUT_FULL_STEPS</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">gear_ratio</span> <span class="o">=</span> <span class="n">MotorConfig_17HS4401S</span><span class="o">::</span><span class="n">GEAR_RATIO</span><span class="p">;</span>
+<span class="kt">uint16_t</span> <span class="n">current</span> <span class="o">=</span> <span class="n">MotorConfig_17HS4401S</span><span class="o">::</span><span class="n">TARGET_RUN_CURRENT_MA</span><span class="p">;</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="manual-motor-selection-method-advanced">
+  
+  
+    <a href="#manual-motor-selection-method-advanced" class="anchor-heading" aria-labelledby="manual-motor-selection-method-advanced"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Manual Motor Selection Method (Advanced)
+  
+  
+</h3>
+    
+
+<p>For advanced use cases, you can manually configure:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">tmc51x0</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
+<span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">ConfigureDriverFromMotor_17HS4401S_Gearbox</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">ApplyBoardConfig</span><span class="o">&lt;</span><span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">BoardType</span><span class="o">::</span><span class="n">BOARD_TMC51x0_EVAL</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">ApplyPlatformConfig</span><span class="o">&lt;</span><span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">PlatformType</span><span class="o">::</span><span class="n">PLATFORM_CORE_DRIVER_TEST_RIG</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div><hr />
-<h2 id="motor-configuration-namespaces">
+<h2 id="motor-configuration-structs">
   
   
-    <a href="#motor-configuration-namespaces" class="anchor-heading" aria-labelledby="motor-configuration-namespaces"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Motor Configuration Namespaces
+    <a href="#motor-configuration-structs" class="anchor-heading" aria-labelledby="motor-configuration-structs"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Motor Configuration Structs
   
   
 </h2>
     
 
-<p>Each motor has its own configuration namespace in <code class="language-plaintext highlighter-rouge">esp32_tmc51x0_test_config.hpp</code>:</p>
+<p>Each motor has its own configuration struct in <code class="language-plaintext highlighter-rouge">esp32_tmc51x0_test_config.hpp</code>:</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">MotorConfig_17HS4401S</code> - Geared version</li>
-  <li><code class="language-plaintext highlighter-rouge">MotorConfig_17HS4401S_Direct</code> - Direct drive version</li>
+  <li><code class="language-plaintext highlighter-rouge">MotorConfig_17HS4401S</code> - Geared version (struct with static constexpr members)</li>
+  <li><code class="language-plaintext highlighter-rouge">MotorConfig_17HS4401S_Direct</code> - Direct drive version (struct with static constexpr members)</li>
   <li><code class="language-plaintext highlighter-rouge">MotorConfig_AppliedMotion_5034_369</code> - Applied Motion NEMA 34</li>
 </ul>
 
-<p>These namespaces contain:</p>
+<p>These structs contain <code class="language-plaintext highlighter-rouge">static constexpr</code> members for:</p>
 <ul>
   <li>Physical motor specifications</li>
-  <li>Driver current settings (IRUN, IHOLD, GLOBAL_SCALER)</li>
+  <li>Target current settings (automatically calculated to IRUN, IHOLD, GLOBAL_SCALER)</li>
   <li>Chopper configuration (TOFF, HEND, HSTRT, TBL)</li>
   <li>StealthChop settings</li>
-  <li>Power stage configuration</li>
+  <li>Ramp profile defaults</li>
 </ul>
 <h2 id="test-rig-configuration">
   

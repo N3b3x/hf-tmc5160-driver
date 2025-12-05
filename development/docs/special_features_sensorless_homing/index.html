@@ -503,6 +503,17 @@
 18
 19
 20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
 </pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">tuneStallThreshold</span><span class="p">()</span> <span class="p">{</span>
     <span class="c1">// Move motor slowly</span>
     <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">VELOCITY_POS</span><span class="p">);</span>
@@ -510,11 +521,22 @@
     <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
     
     <span class="c1">// Monitor StallGuard value</span>
-    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">())</span> <span class="p">{</span>
-        <span class="kt">uint16_t</span> <span class="n">sg_value</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">GetStallGuard</span><span class="p">();</span>
-        <span class="n">printf</span><span class="p">(</span><span class="s">"StallGuard: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">sg_value</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">reached</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">reached</span> <span class="o">&amp;&amp;</span> <span class="n">reached</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span> <span class="c1">// Target reached</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">reached</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Error checking target: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">reached</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
         
-        <span class="c1">// When motor hits stop, SG value will drop significantly</span>
+        <span class="k">auto</span> <span class="n">sg_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">GetStallGuard</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">sg_result</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kt">uint16_t</span> <span class="n">sg_value</span> <span class="o">=</span> <span class="n">sg_result</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"StallGuard: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">sg_value</span><span class="p">);</span>
+            
+            <span class="c1">// When motor hits stop, SG value will drop significantly</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">sg_value</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// Threshold depends on your motor</span>
             <span class="n">printf</span><span class="p">(</span><span class="s">"Stall detected!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
             <span class="k">break</span><span class="p">;</span>
@@ -598,6 +620,14 @@
 54
 55
 56
+57
+58
+59
+60
+61
+62
+63
+64
 </pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"tmc51x0.hpp"</span><span class="cp">
 </span>
 <span class="k">class</span> <span class="nc">MotorController</span> <span class="p">{</span>
@@ -647,7 +677,15 @@
         <span class="n">driver_</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
         
         <span class="c1">// Wait for completion</span>
-        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">driver_</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">reached</span> <span class="o">=</span> <span class="n">driver_</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">reached</span> <span class="o">&amp;&amp;</span> <span class="n">reached</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="p">{</span>
+                <span class="k">break</span><span class="p">;</span> <span class="c1">// Target reached</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">reached</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// Handle error</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
             <span class="c1">// Could add timeout here</span>
         <span class="p">}</span>
         
@@ -724,13 +762,29 @@
 10
 11
 12
+13
+14
+15
+16
+17
+18
+19
+20
 </pre></td><td class="rouge-code"><pre><span class="c1">// After homing completes:</span>
 <span class="c1">// 1. Set current position to zero</span>
 <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetCurrentPosition</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 
 <span class="c1">// 2. Move away from stop slightly (optional)</span>
 <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>  <span class="c1">// Move 100 steps away</span>
-<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">())</span> <span class="p">{</span>
+<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">auto</span> <span class="n">reached3</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">reached3</span> <span class="o">&amp;&amp;</span> <span class="n">reached3</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">break</span><span class="p">;</span> <span class="c1">// Target reached</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">reached3</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Handle error</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
     <span class="c1">// Wait</span>
 <span class="p">}</span>
 

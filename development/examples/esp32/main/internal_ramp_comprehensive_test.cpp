@@ -50,8 +50,8 @@ static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG =
     tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER;
 
 // Test configuration constants
-namespace Motor = tmc51x0_test_config::MotorConfig_17HS4401S;
-namespace Test = tmc51x0_test_config::TestConfig_17HS4401S;
+using Motor = tmc51x0_test_config::MotorConfig_17HS4401S;
+using Test = tmc51x0_test_config::TestConfig_17HS4401S;
 
 static constexpr uint8_t TEST_TOFF = Motor::TOFF;
 static constexpr tmc51x0::MicrostepResolution TEST_MRES = Motor::MRES; // 256 microsteps
@@ -61,9 +61,10 @@ static constexpr float MICROSTEPS = 256.0f;
 static constexpr float STEPS_PER_REV = static_cast<float>(Motor::OUTPUT_FULL_STEPS) * MICROSTEPS;
 static constexpr float LEAD_SCREW_PITCH_MM = 2.0F; // Lead screw pitch (adjust for your setup)
 
-static constexpr float TEST_MAX_SPEED = STEPS_PER_REV * 1.0f; // 1 rev/s
-static constexpr float TEST_ACCELERATION = TEST_MAX_SPEED * 2.0f; // 0.5s to full speed
-static constexpr float TEST_DECELERATION = TEST_MAX_SPEED * 2.0f;
+// Test constants in physical units
+static constexpr float TEST_MAX_SPEED_RPM = 60.0f; // 1 rev/s = 60 RPM
+static constexpr float TEST_ACCELERATION_REV_S2 = 120.0f; // 2 rev/s² (reach 60 RPM in 0.5s)
+static constexpr float TEST_DECELERATION_REV_S2 = 120.0f; // 2 rev/s²
 
 //=============================================================================
 // TEST SECTION CONFIGURATION
@@ -268,11 +269,13 @@ bool verify_mode_pins(const Esp32SPI& spi, const tmc51x0::TMC51x0<Esp32SPI>& dri
   }
   
   // Read mode pins
-  tmc51x0::ChipCommMode actual_mode;
-  if (!driver.communication.GetOperatingMode(actual_mode)) {
-    ESP_LOGW(TAG, "Failed to read mode pins for verification");
+  auto mode_result = driver.communication.GetOperatingMode();
+  if (!mode_result) {
+    ESP_LOGW(TAG, "⚠ Failed to read mode pins for verification (ErrorCode: %d)", static_cast<int>(mode_result.Error()));
+    ESP_LOGW(TAG, "   Check: Mode pin connections and communication interface");
     return false;
   }
+  tmc51x0::ChipCommMode actual_mode = mode_result.Value();
   
   // Verify mode matches expected communication interface
   bool mode_valid = false;
@@ -332,7 +335,7 @@ std::unique_ptr<TestDriverHandle> create_test_driver(bool enable_ref_switch_stop
   auto handle = std::make_unique<TestDriverHandle>();
   
   // Get complete pin configuration from test config
-  tmc51x0::Esp32SpiPinConfig pin_config = tmc51x0_test_config::GetDefaultPinConfig();
+  Esp32SpiPinConfig pin_config = tmc51x0_test_config::GetDefaultPinConfig();
   
   // Create SPI communication interface
   handle->spi = std::make_unique<Esp32SPI>(
@@ -341,10 +344,13 @@ std::unique_ptr<TestDriverHandle> create_test_driver(bool enable_ref_switch_stop
     tmc51x0_test_config::SPI_CLOCK_SPEED_HZ);
   
   // Initialize SPI interface
-  if (!handle->spi->Initialize()) {
-    ESP_LOGE(TAG, "Failed to initialize SPI interface");
+  auto spi_init_result = handle->spi->Initialize();
+  if (!spi_init_result) {
+    ESP_LOGE(TAG, "❌ Failed to initialize SPI interface (ErrorCode: %d)", static_cast<int>(spi_init_result.Error()));
+    ESP_LOGE(TAG, "   Check: SPI pin configuration, clock speed, and hardware connections");
     return nullptr;
   }
+  ESP_LOGI(TAG, "✓ SPI interface initialized successfully");
   
   // Explicitly set chain length to 1 for single-chip mode
   handle->spi->SetDaisyChainLength(1);
@@ -424,20 +430,23 @@ bool test_register_read_write() noexcept {
   }
   
   // Test reading global status (GSTAT register)
-  bool reset = false, drv_err = false, uv_cp = false;
-  if (!handle->driver->diagnostics.GetGlobalStatus(reset, drv_err, uv_cp)) {
-    ESP_LOGE(TAG, "Failed to read global status");
+  bool drv_err = false, uv_cp = false;
+  auto status_result = handle->driver->diagnostics.GetGlobalStatus(drv_err, uv_cp);
+  if (!status_result) {
+    ESP_LOGE(TAG, "❌ Failed to read global status (ErrorCode: %d)", static_cast<int>(status_result.Error()));
+    ESP_LOGE(TAG, "   Check: SPI communication and chip power");
     return false;
   }
-  ESP_LOGI(TAG, "Global status: reset=%d, drv_err=%d, uv_cp=%d", reset ? 1 : 0, drv_err ? 1 : 0, uv_cp ? 1 : 0);
+  bool reset = status_result.Value();
+  ESP_LOGI(TAG, "✓ Global status read: reset=%d, drv_err=%d, uv_cp=%d", reset ? 1 : 0, drv_err ? 1 : 0, uv_cp ? 1 : 0);
   
-  // Test writing X_COMPARE register (write-only per datasheet)
-  constexpr float TEST_X_COMPARE = 12345.0f;
-  if (!handle->driver->rampControl.SetXCompare(TEST_X_COMPARE, tmc51x0::Unit::Steps)) {
+  // Test writing X_COMPARE register in degrees (write-only per datasheet)
+  constexpr float TEST_X_COMPARE_DEG = 22.2f; // ~12345 steps for 200 steps/rev motor
+  if (!handle->driver->rampControl.SetXCompare(TEST_X_COMPARE_DEG, tmc51x0::Unit::Deg)) {
     ESP_LOGE(TAG, "Failed to write X_COMPARE register");
     return false;
   }
-  ESP_LOGI(TAG, "X_COMPARE register written: %.0f (write-only register, verified via write response)", TEST_X_COMPARE);
+  ESP_LOGI(TAG, "X_COMPARE register written: %.2f degrees (write-only register, verified via write response)", TEST_X_COMPARE_DEG);
   
   ESP_LOGI(TAG, "✓ Register read/write test passed");
   return true;
@@ -453,11 +462,13 @@ bool test_motor_parameter_settings() noexcept {
   }
   
   // Verify chopper settings
-  tmc51x0::ChopperConfig chopconf_config{};
-  if (!handle->driver->motorControl.GetChopperConfig(chopconf_config)) {
-    ESP_LOGE(TAG, "Failed to read CHOPCONF register");
+  auto chopconf_result = handle->driver->motorControl.GetChopperConfig();
+  if (!chopconf_result) {
+    ESP_LOGE(TAG, "❌ Failed to read CHOPCONF register (ErrorCode: %d)", static_cast<int>(chopconf_result.Error()));
+    ESP_LOGE(TAG, "   Check: SPI communication");
     return false;
   }
+  tmc51x0::ChopperConfig chopconf_config = chopconf_result.Value();
   
   // Convert to register structure for bit access
   tmc51x0::CHOPCONF_Register chopconf{};
@@ -504,33 +515,34 @@ bool test_ramp_parameter_settings() noexcept {
     return false;
   }
   
-  // Set ramp parameters
-  if (!handle->driver->rampControl.SetMaxSpeed(TEST_MAX_SPEED)) {
+  // Set ramp parameters in physical units
+  if (!handle->driver->rampControl.SetMaxSpeed(TEST_MAX_SPEED_RPM, tmc51x0::Unit::RPM)) {
     ESP_LOGE(TAG, "Failed to set max speed");
     return false;
   }
-  if (!handle->driver->rampControl.SetAcceleration(TEST_ACCELERATION)) {
+  if (!handle->driver->rampControl.SetAcceleration(TEST_ACCELERATION_REV_S2, tmc51x0::Unit::RevPerSec)) {
     ESP_LOGE(TAG, "Failed to set acceleration");
     return false;
   }
-  if (!handle->driver->rampControl.SetDeceleration(TEST_DECELERATION)) {
+  if (!handle->driver->rampControl.SetDeceleration(TEST_DECELERATION_REV_S2, tmc51x0::Unit::RevPerSec)) {
     ESP_LOGE(TAG, "Failed to set deceleration");
     return false;
   }
   
-  ESP_LOGI(TAG, "Ramp parameters set: VMAX=%.1f steps/s, AMAX=%.1f steps/s², DMAX=%.1f steps/s² (write-only registers, verified via write response)",
-           TEST_MAX_SPEED, TEST_ACCELERATION, TEST_DECELERATION);
+  ESP_LOGI(TAG, "Ramp parameters set: VMAX=%.1f RPM, AMAX=%.1f rev/s², DMAX=%.1f rev/s² (write-only registers, verified via write response)",
+           TEST_MAX_SPEED_RPM, TEST_ACCELERATION_REV_S2, TEST_DECELERATION_REV_S2);
   
-  // Test setting target position
-  constexpr int32_t TEST_TARGET = 10000;
-  handle->driver->rampControl.SetTargetPosition(static_cast<float>(TEST_TARGET), tmc51x0::Unit::Steps);
+  // Test setting target position in degrees
+  constexpr float TEST_TARGET_DEG = 18.0f; // ~10000 steps for 200 steps/rev motor
+  handle->driver->rampControl.SetTargetPosition(TEST_TARGET_DEG, tmc51x0::Unit::Deg);
   
-  float current_pos = 0.0f;
-  if (!handle->driver->rampControl.GetCurrentPosition(current_pos, tmc51x0::Unit::Steps)) {
-    ESP_LOGE(TAG, "Failed to get current position");
+  auto pos_result = handle->driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+  if (!pos_result) {
+    ESP_LOGE(TAG, "❌ Failed to get current position (ErrorCode: %d)", static_cast<int>(pos_result.Error()));
     return false;
   }
-  ESP_LOGI(TAG, "Target position set to %ld, current position: %.0f", TEST_TARGET, current_pos);
+  float current_pos = pos_result.Value();
+  ESP_LOGI(TAG, "✓ Target position set to %.2f degrees, current position: %.2f degrees", TEST_TARGET_DEG, current_pos);
   
   ESP_LOGI(TAG, "✓ Ramp parameter settings test passed");
   return true;
@@ -554,11 +566,13 @@ bool test_global_configuration() noexcept {
   handle->driver->motorControl.ConfigureGlobalConfig(gconf);
   
   // Read back and verify
-  uint32_t gconf_value = 0;
-  if (!handle->driver->GetComm().ReadRegister(tmc51x0::Registers::GCONF, gconf_value)) {
-    ESP_LOGE(TAG, "Failed to read GCONF register");
+  auto gconf_result = handle->driver->GetComm().ReadRegister(tmc51x0::Registers::GCONF, handle->driver->communication.GetDaisyChainPosition());
+  if (!gconf_result) {
+    ESP_LOGE(TAG, "❌ Failed to read GCONF register (ErrorCode: %d)", static_cast<int>(gconf_result.Error()));
+    ESP_LOGE(TAG, "   Check: SPI communication");
     return false;
   }
+  uint32_t gconf_value = gconf_result.Value();
   
   tmc51x0::GCONF_Register gconf_reg{};
   gconf_reg.value = gconf_value;
@@ -600,17 +614,21 @@ bool test_enable_disable() noexcept {
   }
   
   // Test enable
-  if (!handle->driver->motorControl.Enable()) {
-    ESP_LOGE(TAG, "Failed to enable motor");
+  auto enable_result = handle->driver->motorControl.Enable();
+  if (!enable_result) {
+    ESP_LOGE(TAG, "❌ Failed to enable motor (ErrorCode: %d)", static_cast<int>(enable_result.Error()));
+    ESP_LOGE(TAG, "   Check: Enable pin connection and power supply");
     return false;
   }
-  ESP_LOGI(TAG, "✓ Motor enabled");
+  ESP_LOGI(TAG, "✓ Motor enabled successfully");
   
   vTaskDelay(pdMS_TO_TICKS(100));
   
   // Test disable
-  if (!handle->driver->motorControl.Disable()) {
-    ESP_LOGE(TAG, "Failed to disable motor");
+  auto disable_result = handle->driver->motorControl.Disable();
+  if (!disable_result) {
+    ESP_LOGE(TAG, "❌ Failed to disable motor (ErrorCode: %d)", static_cast<int>(disable_result.Error()));
+    ESP_LOGE(TAG, "   Check: Enable pin connection");
     return false;
   }
   ESP_LOGI(TAG, "✓ Motor disabled");
@@ -722,10 +740,13 @@ bool test_stealthchop_configuration() noexcept {
   float at2_speed = 1.5f * STEPS_PER_REV;
   ESP_LOGI(TAG, "Demonstrating AT#2: Moving at medium velocity (%.2f steps/s)...", at2_speed);
   
-  // Configure ramp for motion
+  // Configure ramp for motion in physical units
   handle->driver->rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
-  handle->driver->rampControl.SetMaxSpeed(at2_speed); 
-  handle->driver->rampControl.SetAcceleration(at2_speed * 2.0f); // Reach speed in 0.5s
+  // Convert at2_speed from steps/s to RPM (assuming 200 steps/rev motor)
+  float at2_speed_rpm = (at2_speed / 200.0f) * 60.0f; // Convert steps/s to RPM
+  handle->driver->rampControl.SetMaxSpeed(at2_speed_rpm, tmc51x0::Unit::RPM); 
+  float at2_accel_rev_s2 = (at2_speed * 2.0f / 200.0f); // Convert steps/s² to rev/s²
+  handle->driver->rampControl.SetAcceleration(at2_accel_rev_s2, tmc51x0::Unit::RevPerSec); // Reach speed in 0.5s
 
   // Let it run for a bit to allow AT#2 tuning (requires ~8 fullsteps per change of +/-1)
   vTaskDelay(pdMS_TO_TICKS(1500)); // 1.5 second run
@@ -733,9 +754,13 @@ bool test_stealthchop_configuration() noexcept {
   ESP_LOGI(TAG, "AT#2 Motion Complete.");
 
   // Read back auto-tuned values (optional check)
-  uint8_t pwm_ofs_auto = 0, pwm_grad_auto = 0;
-  if (handle->driver->diagnostics.GetPwmAuto(pwm_ofs_auto, pwm_grad_auto)) {
-    ESP_LOGI(TAG, "Auto-Tuned Values: PWM_OFS_AUTO=%d, PWM_GRAD_AUTO=%d", pwm_ofs_auto, pwm_grad_auto);
+  uint8_t pwm_grad_auto = 0;
+  auto pwm_result = handle->driver->diagnostics.GetPwmAuto(pwm_grad_auto);
+  if (pwm_result) {
+    uint8_t pwm_ofs_auto = pwm_result.Value();
+    ESP_LOGI(TAG, "✓ Auto-Tuned Values: PWM_OFS_AUTO=%d, PWM_GRAD_AUTO=%d", pwm_ofs_auto, pwm_grad_auto);
+  } else {
+    ESP_LOGW(TAG, "⚠ Could not read auto-tuned values (ErrorCode: %d)", static_cast<int>(pwm_result.Error()));
   }
 
   // Stop and Disable
@@ -755,17 +780,17 @@ bool test_mode_change_speeds() noexcept {
     return false;
   }
   
-  // Use reasonable speeds for 256 microsteps (fractions of 1 output revolution per second)
-  float low = STEPS_PER_REV * 0.2f;
-  float med = STEPS_PER_REV * 0.5f;
-  float high = STEPS_PER_REV * 1.0f;
+  // Use physical units for mode change speeds
+  float low_rpm = 12.0f;  // 0.2 rev/s = 12 RPM
+  float med_rpm = 30.0f; // 0.5 rev/s = 30 RPM
+  float high_rpm = 60.0f; // 1.0 rev/s = 60 RPM
 
-  if (!handle->driver->motorControl.SetModeChangeSpeeds(low, med, high)) {
+  if (!handle->driver->motorControl.SetModeChangeSpeeds(low_rpm, med_rpm, high_rpm, tmc51x0::Unit::RPM)) {
     ESP_LOGE(TAG, "Failed to set mode change speeds");
     return false;
   }
   
-  ESP_LOGI(TAG, "✓ Mode change speeds test passed (low=%.1f, med=%.1f, high=%.1f steps/s)", low, med, high);
+  ESP_LOGI(TAG, "✓ Mode change speeds test passed (low=%.1f RPM, med=%.1f RPM, high=%.1f RPM)", low_rpm, med_rpm, high_rpm);
   return true;
 }
 
@@ -847,10 +872,10 @@ bool test_coolstep_configuration() noexcept {
   // Disable filter for high time resolution
   cool_cfg.enable_filter = false;
   
-  // Set velocity thresholds (CoolStep only active between these speeds)
-  cool_cfg.min_velocity = 500.0f;   // Enable CoolStep above 500 steps/s
-  cool_cfg.max_velocity = 5000.0f;   // Disable CoolStep above 5000 steps/s
-  cool_cfg.velocity_unit = tmc51x0::Unit::Steps;
+  // Set velocity thresholds in RPM (CoolStep only active between these speeds)
+  cool_cfg.min_velocity = 15.0f;   // Enable CoolStep above 15 RPM (~500 steps/s for 200 steps/rev)
+  cool_cfg.max_velocity = 150.0f;   // Disable CoolStep above 150 RPM (~5000 steps/s for 200 steps/rev)
+  cool_cfg.velocity_unit = tmc51x0::Unit::RPM;
   
   if (!handle->driver->motorControl.ConfigureCoolStep(cool_cfg)) {
     ESP_LOGE(TAG, "Failed to configure CoolStep");
@@ -872,9 +897,9 @@ bool test_dcstep_configuration() noexcept {
   // Configure DcStep with user-friendly API
   tmc51x0::DcStepConfig dc_cfg{};
   
-  // Set minimum velocity threshold (with unit support)
-  dc_cfg.min_velocity = 1000.0f;   // Enable DcStep above 1000 steps/s
-  dc_cfg.velocity_unit = tmc51x0::Unit::Steps;
+  // Set minimum velocity threshold in RPM
+  dc_cfg.min_velocity = 30.0f;   // Enable DcStep above 30 RPM (~1000 steps/s for 200 steps/rev)
+  dc_cfg.velocity_unit = tmc51x0::Unit::RPM;
   
   // Auto-calculate PWM on-time from blank time (recommended)
   dc_cfg.pwm_on_time_us = 0.0f;  // 0 = auto-calculate
@@ -939,8 +964,8 @@ bool test_motor_setup_from_spec() noexcept {
   motor_spec.rated_current_ma = Motor::RATED_CURRENT_MA;
   
   // Note: SetupMotorFromSpec may use approximation, so we use a warning-level test
-  bool result = handle->driver->motorControl.SetupMotorFromSpec(motor_spec);
-  if (!result) {
+  auto result = handle->driver->motorControl.SetupMotorFromSpec(motor_spec);
+  if (result.IsErr()) {
     ESP_LOGW(TAG, "Motor setup from spec may have used approximation");
   }
   
@@ -1014,26 +1039,33 @@ bool test_position_control() noexcept {
   
   handle->driver->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
   
-  // Test setting target position
-  if (!handle->driver->rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps)) {
+  // Test setting target position in degrees
+  if (!handle->driver->rampControl.SetTargetPosition(1.8f, tmc51x0::Unit::Deg)) { // ~1000 steps for 200 steps/rev
     ESP_LOGE(TAG, "Failed to set target position");
     return false;
   }
   
-  // Test getting current position
-  float current = 0.0f;
-  if (!handle->driver->rampControl.GetCurrentPosition(current, tmc51x0::Unit::Steps)) {
-    ESP_LOGE(TAG, "Failed to get current position");
+  // Test getting current position in degrees
+  auto current_result = handle->driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+  if (!current_result) {
+    ESP_LOGE(TAG, "❌ Failed to get current position (ErrorCode: %d)", static_cast<int>(current_result.Error()));
     return false;
   }
-  ESP_LOGI(TAG, "Current position: %.0f", current);
+  float current = current_result.Value();
+  ESP_LOGI(TAG, "✓ Current position: %.2f degrees", current);
   
-  // Test setting current position
-  handle->driver->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Steps);
-  if (!handle->driver->rampControl.GetCurrentPosition(current, tmc51x0::Unit::Steps)) {
-    ESP_LOGE(TAG, "Failed to get current position after set");
+  // Test setting current position in degrees
+  auto set_pos_result = handle->driver->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
+  if (!set_pos_result) {
+    ESP_LOGE(TAG, "❌ Failed to set current position (ErrorCode: %d)", static_cast<int>(set_pos_result.Error()));
     return false;
   }
+  auto verify_pos_result = handle->driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+  if (!verify_pos_result) {
+    ESP_LOGE(TAG, "❌ Failed to get current position after set (ErrorCode: %d)", static_cast<int>(verify_pos_result.Error()));
+    return false;
+  }
+  current = verify_pos_result.Value();
   if (current != 0.0f) {
     ESP_LOGW(TAG, "SetCurrentPosition may not have taken effect immediately");
   }
@@ -1052,39 +1084,40 @@ bool test_speed_control() noexcept {
   
   bool success = true;
   
-  // Test setting max speed (appropriate for NEMA 44mm 2A motor)
-  // Use 2 revolutions per second (output shaft)
-  float max_speed = STEPS_PER_REV * 2.0f;
-  if (!handle->driver->rampControl.SetMaxSpeed(max_speed)) {
+  // Test setting max speed in RPM (appropriate for NEMA 44mm 2A motor)
+  // Use 2 revolutions per second (output shaft) = 120 RPM
+  float max_speed_rpm = 120.0f;
+  if (!handle->driver->rampControl.SetMaxSpeed(max_speed_rpm, tmc51x0::Unit::RPM)) {
     ESP_LOGE(TAG, "Failed to set max speed");
     success = false;
   }
   
-  // Test setting acceleration (appropriate for NEMA 44mm 2A motor)
-  // Reach max speed in 0.5s
-  float accel = max_speed * 2.0f;
-  if (!handle->driver->rampControl.SetAcceleration(accel)) {
+  // Test setting acceleration in rev/s² (appropriate for NEMA 44mm 2A motor)
+  // Reach max speed in 0.5s = 240 rev/s²
+  float accel_rev_s2 = 240.0f;
+  if (!handle->driver->rampControl.SetAcceleration(accel_rev_s2, tmc51x0::Unit::RevPerSec)) {
     ESP_LOGE(TAG, "Failed to set acceleration");
     success = false;
   }
   
   // Test setting accelerations (both) - higher decel for faster stopping
-  if (!handle->driver->rampControl.SetAcceleration(accel)) {
+  if (!handle->driver->rampControl.SetAcceleration(accel_rev_s2, tmc51x0::Unit::RevPerSec)) {
     ESP_LOGE(TAG, "Failed to set acceleration");
     success = false;
   }
-  if (!handle->driver->rampControl.SetDeceleration(accel * 1.5f)) {
+  if (!handle->driver->rampControl.SetDeceleration(accel_rev_s2 * 1.5f, tmc51x0::Unit::RevPerSec)) {
     ESP_LOGE(TAG, "Failed to set deceleration");
     success = false;
   }
   
-  // Test getting current speed
-  float speed = 0.0f;
-  if (!handle->driver->rampControl.GetCurrentSpeed(speed, tmc51x0::Unit::Steps)) {
-    ESP_LOGE(TAG, "Failed to get current speed");
+  // Test getting current speed in RPM
+  auto speed_result = handle->driver->rampControl.GetCurrentSpeed(tmc51x0::Unit::RPM);
+  if (!speed_result) {
+    ESP_LOGE(TAG, "❌ Failed to get current speed (ErrorCode: %d)", static_cast<int>(speed_result.Error()));
     return false;
   }
-  ESP_LOGI(TAG, "Current speed: %.2f steps/s", speed);
+  float speed_rpm = speed_result.Value();
+  ESP_LOGI(TAG, "Current speed: %.2f RPM", speed_rpm);
   
   if (success) {
     ESP_LOGI(TAG, "✓ Speed control test passed");
@@ -1103,11 +1136,12 @@ bool test_ramp_parameters() noexcept {
   
   bool success = true;
   
-  float vstart = STEPS_PER_REV * 0.01f; // 0.01 RPS start
-  float vstop = STEPS_PER_REV * 0.005f; // 0.005 RPS stop
+  // Use physical units for ramp speeds
+  float vstart_rpm = 0.6f; // 0.01 rev/s = 0.6 RPM
+  float vstop_rpm = 0.3f; // 0.005 rev/s = 0.3 RPM
   
-  // Test ramp speeds
-  if (!handle->driver->rampControl.SetRampSpeeds(vstart, vstop, 0.0f)) {
+  // Test ramp speeds in RPM
+  if (!handle->driver->rampControl.SetRampSpeeds(vstart_rpm, vstop_rpm, 0.0f, tmc51x0::Unit::RPM)) {
     ESP_LOGE(TAG, "Failed to set ramp speeds");
     success = false;
   }
@@ -1124,8 +1158,9 @@ bool test_ramp_parameters() noexcept {
     success = false;
   }
   
-  // Test first acceleration
-  if (!handle->driver->rampControl.SetFirstAcceleration(vstart * 5.0f)) {
+  // Test first acceleration in rev/s²
+  float first_accel_rev_s2 = (vstart_rpm / 60.0f) * 5.0f; // Convert RPM to rev/s, then multiply by 5
+  if (!handle->driver->rampControl.SetFirstAcceleration(first_accel_rev_s2, tmc51x0::Unit::RevPerSec)) {
     ESP_LOGE(TAG, "Failed to set first acceleration");
     success = false;
   }
@@ -1161,12 +1196,12 @@ bool test_reference_switch_configuration() noexcept {
   ESP_LOGI(TAG, "Testing PerformSwitchHoming API (expect timeout)...");
   int32_t final_pos = 0;
   // Use short timeout for test
-  bool result = handle->driver->homing.PerformSwitchHoming(true, 
-                                                                Test::Motion::HOMING_SEARCH_SPEED, 
-                                                                Test::Motion::HOMING_SWITCH_SPEED, 
+  auto result = handle->driver->homing.PerformSwitchHoming(true, 
+                                                                Test::Motion::HOMING_SEARCH_SPEED_RPM, 
+                                                                Test::Motion::HOMING_SWITCH_SPEED_RPM, 
                                                                 final_pos, true, 100);
   
-  if (!result) {
+  if (result.IsErr()) {
     ESP_LOGI(TAG, "Homing timed out as expected (no physical switch)");
   } else {
     ESP_LOGW(TAG, "Homing reported success unexpectedly (switch noise?)");
@@ -1254,12 +1289,14 @@ bool test_stallguard() noexcept {
     return false;
   }
   
-  uint16_t sg_value = 0;
-  if (!handle->driver->diagnostics.GetStallGuard(sg_value)) {
-    ESP_LOGE(TAG, "Failed to get StallGuard value");
+  auto sg_result = handle->driver->diagnostics.GetStallGuard();
+  if (!sg_result) {
+    ESP_LOGE(TAG, "❌ Failed to get StallGuard value (ErrorCode: %d)", static_cast<int>(sg_result.Error()));
+    ESP_LOGE(TAG, "   Check: SPI communication and StallGuard configuration");
     return false;
   }
-  ESP_LOGI(TAG, "StallGuard Value: %u (threshold=%d)", sg_value, sg_cfg.threshold);
+  uint16_t sg_value = sg_result.Value();
+  ESP_LOGI(TAG, "✓ StallGuard Value: %u (threshold=%d)", sg_value, sg_cfg.threshold);
   
   ESP_LOGI(TAG, "✓ StallGuard2 test passed");
   return true;
@@ -1273,11 +1310,12 @@ bool test_lost_steps() noexcept {
     return false;
   }
   
-  uint32_t lost_steps = 0;
-  if (!handle->driver->diagnostics.GetLostSteps(lost_steps)) {
-    ESP_LOGE(TAG, "Failed to get lost steps");
+  auto lost_steps_result = handle->driver->diagnostics.GetLostSteps();
+  if (lost_steps_result.IsErr()) {
+    ESP_LOGE(TAG, "Failed to get lost steps (ErrorCode: %d)", static_cast<int>(lost_steps_result.Error()));
     return false;
   }
+  uint32_t lost_steps = lost_steps_result.Value();
   ESP_LOGI(TAG, "Lost Steps: %lu", lost_steps);
   
   ESP_LOGI(TAG, "✓ Lost steps detection test passed");
@@ -1292,11 +1330,13 @@ bool test_phase_currents() noexcept {
     return false;
   }
   
-  int16_t phase_a = 0, phase_b = 0;
-  if (!handle->driver->diagnostics.GetMicrostepCurrent(phase_a, phase_b)) {
-    ESP_LOGE(TAG, "Failed to get microstep currents");
+  int16_t phase_b = 0;
+  auto phase_a_result = handle->driver->diagnostics.GetMicrostepCurrent(phase_b);
+  if (phase_a_result.IsErr()) {
+    ESP_LOGE(TAG, "Failed to get microstep currents (ErrorCode: %d)", static_cast<int>(phase_a_result.Error()));
     return false;
   }
+  int16_t phase_a = phase_a_result.Value();
   
   ESP_LOGI(TAG, "Phase A: %d, Phase B: %d", phase_a, phase_b);
   
@@ -1312,12 +1352,13 @@ bool test_pwm_scale() noexcept {
     return false;
   }
   
-  uint8_t pwm_scale_sum = 0;
   int16_t pwm_scale_auto = 0;
-  if (!handle->driver->diagnostics.GetPwmScale(pwm_scale_sum, pwm_scale_auto)) {
-    ESP_LOGE(TAG, "Failed to get PWM scale");
+  auto pwm_scale_result = handle->driver->diagnostics.GetPwmScale(pwm_scale_auto);
+  if (pwm_scale_result.IsErr()) {
+    ESP_LOGE(TAG, "Failed to get PWM scale (ErrorCode: %d)", static_cast<int>(pwm_scale_result.Error()));
     return false;
   }
+  uint8_t pwm_scale_sum = pwm_scale_result.Value();
   
   ESP_LOGI(TAG, "PWM Scale Sum: %u, Auto: %d", pwm_scale_sum, pwm_scale_auto);
   
@@ -1333,23 +1374,28 @@ bool test_microstep_diagnostics() noexcept {
     return false;
   }
   
-  uint32_t time_between = 0;
-  if (!handle->driver->diagnostics.GetTimeBetweenMicrosteps(time_between)) {
-    ESP_LOGE(TAG, "Failed to get time between microsteps");
+  auto time_between_result = handle->driver->diagnostics.GetTimeBetweenMicrosteps();
+  if (time_between_result.IsErr()) {
+    ESP_LOGE(TAG, "Failed to get time between microsteps (ErrorCode: %d)", static_cast<int>(time_between_result.Error()));
     return false;
   }
+  uint32_t time_between = time_between_result.Value();
   ESP_LOGI(TAG, "Time Between Microsteps: %lu", time_between);
   
-  uint16_t mscnt = 0;
-  if (!handle->driver->diagnostics.GetMicrostepCounter(mscnt)) {
-    ESP_LOGE(TAG, "Failed to get microstep counter");
+  auto mscnt_result = handle->driver->diagnostics.GetMicrostepCounter();
+  if (mscnt_result.IsErr()) {
+    ESP_LOGE(TAG, "Failed to get microstep counter (ErrorCode: %d)", static_cast<int>(mscnt_result.Error()));
     return false;
   }
+  uint16_t mscnt = mscnt_result.Value();
   ESP_LOGI(TAG, "Microstep Counter: %u", mscnt);
   
-  int16_t ms_current_a = 0, ms_current_b = 0;
-  handle->driver->diagnostics.GetMicrostepCurrent(ms_current_a, ms_current_b);
-  ESP_LOGI(TAG, "Microstep Current A: %d, B: %d", ms_current_a, ms_current_b);
+  int16_t ms_current_b = 0;
+  auto ms_current_a_result = handle->driver->diagnostics.GetMicrostepCurrent(ms_current_b);
+  if (ms_current_a_result.IsOk()) {
+    int16_t ms_current_a = ms_current_a_result.Value();
+    ESP_LOGI(TAG, "Microstep Current A: %d, B: %d", ms_current_a, ms_current_b);
+  }
   
   ESP_LOGI(TAG, "✓ Microstep diagnostics test passed");
   return true;
@@ -1363,11 +1409,12 @@ bool test_gpio_pins() noexcept {
     return false;
   }
   
-  uint32_t gpio_pins = 0;
-  if (!handle->driver->diagnostics.ReadGpioPins(gpio_pins)) {
-    ESP_LOGW(TAG, "Failed to read GPIO pins (may not be mapped)");
+  auto gpio_pins_result = handle->driver->diagnostics.ReadGpioPins();
+  if (gpio_pins_result.IsErr()) {
+    ESP_LOGW(TAG, "Failed to read GPIO pins (may not be mapped) (ErrorCode: %d)", static_cast<int>(gpio_pins_result.Error()));
     return true; // Not a failure if pins aren't mapped
   }
+  uint32_t gpio_pins = gpio_pins_result.Value();
   
   ESP_LOGI(TAG, "GPIO Pins: 0x%08lX", gpio_pins);
   
@@ -1383,15 +1430,21 @@ bool test_factory_otp_config() noexcept {
     return false;
   }
   
-  uint8_t factory_cfg = 0;
-  if (!handle->driver->diagnostics.ReadFactoryConfig(factory_cfg)) {
-    ESP_LOGW(TAG, "Failed to read factory config");
+  auto factory_cfg_result = handle->driver->diagnostics.ReadFactoryConfig();
+  if (factory_cfg_result.IsErr()) {
+    ESP_LOGW(TAG, "Failed to read factory config (ErrorCode: %d)", static_cast<int>(factory_cfg_result.Error()));
+  } else {
+    uint8_t factory_cfg = factory_cfg_result.Value();
+    (void)factory_cfg; // Suppress unused warning if not used
   }
   
-  uint8_t otp_fclktrim = 0;
   bool otp_s2_level = false, otp_bbm = false, otp_tbl = false;
-  if (!handle->driver->diagnostics.ReadOtpConfig(otp_fclktrim, otp_s2_level, otp_bbm, otp_tbl)) {
-    ESP_LOGW(TAG, "Failed to read OTP config");
+  auto otp_result = handle->driver->diagnostics.ReadOtpConfig(otp_s2_level, otp_bbm, otp_tbl);
+  uint8_t otp_fclktrim = 0;
+  if (otp_result.IsErr()) {
+    ESP_LOGW(TAG, "Failed to read OTP config (ErrorCode: %d)", static_cast<int>(otp_result.Error()));
+  } else {
+    otp_fclktrim = otp_result.Value();
   }
   
   ESP_LOGI(TAG, "OTP: FCLKTRIM=%u, S2=%s, BBM=%s, TBL=%s", 
@@ -1410,7 +1463,8 @@ bool test_uart_transmission_count() noexcept {
     return false;
   }
   
-  uint8_t uart_count = handle->driver->diagnostics.GetUartTransmissionCount();
+  auto uart_count_result = handle->driver->diagnostics.GetUartTransmissionCount();
+  uint8_t uart_count = uart_count_result.IsOk() ? uart_count_result.Value() : 0;
   ESP_LOGI(TAG, "UART Transmission Count: %u", uart_count);
   
   ESP_LOGI(TAG, "✓ UART transmission count test passed");
@@ -1425,9 +1479,13 @@ bool test_offset_calibration() noexcept {
     return false;
   }
   
-  uint8_t offset_a = 0, offset_b = 0;
-  if (!handle->driver->diagnostics.ReadOffsetCalibration(offset_a, offset_b)) {
-    ESP_LOGW(TAG, "Failed to read offset calibration");
+  uint8_t offset_b = 0;
+  auto offset_a_result = handle->driver->diagnostics.ReadOffsetCalibration(offset_b);
+  uint8_t offset_a = 0;
+  if (offset_a_result.IsErr()) {
+    ESP_LOGW(TAG, "Failed to read offset calibration (ErrorCode: %d)", static_cast<int>(offset_a_result.Error()));
+  } else {
+    offset_a = offset_a_result.Value();
   }
   
   ESP_LOGI(TAG, "Offset A: %u, Offset B: %u", offset_a, offset_b);
@@ -1472,11 +1530,12 @@ bool test_open_load() noexcept {
   }
   
   // Ensure SpreadCycle mode (StealthChop disabled) for open load detection
-  tmc51x0::GlobalConfig gconf{};
-  if (!handle->driver->motorControl.GetGlobalConfig(gconf)) {
-    ESP_LOGE(TAG, "Failed to get global config");
+  auto gconf_result = handle->driver->motorControl.GetGlobalConfig();
+  if (gconf_result.IsErr()) {
+    ESP_LOGE(TAG, "Failed to get global config (ErrorCode: %d)", static_cast<int>(gconf_result.Error()));
     return false;
   }
+  tmc51x0::GlobalConfig gconf = gconf_result.Value();
   
   if (gconf.en_stealthchop_mode) {
     ESP_LOGI(TAG, "Disabling StealthChop for open load detection test");
@@ -1488,17 +1547,23 @@ bool test_open_load() noexcept {
     vTaskDelay(pdMS_TO_TICKS(100));
   }
   
-  // Move motor at low velocity (minimum 4× microstep resolution = 1024 steps)
+  // Move motor at low velocity in physical units
   ESP_LOGI(TAG, "Moving motor for open load detection test");
-  handle->driver->rampControl.SetMaxSpeed(500.0f, tmc51x0::Unit::Steps);
-  handle->driver->rampControl.SetTargetPosition(1024.0f, tmc51x0::Unit::Steps);  // 4× microstep resolution
+  handle->driver->rampControl.SetMaxSpeed(15.0f, tmc51x0::Unit::RPM); // ~500 steps/s for 200 steps/rev
+  handle->driver->rampControl.SetTargetPosition(1.8f, tmc51x0::Unit::Deg);  // ~1024 steps (4× microstep resolution) for 200 steps/rev
   
   // Check for open load during motion
   bool open_load_detected = false;
   uint32_t check_count = 0;
-  while (!handle->driver->rampControl.IsTargetReached() && check_count < 50) {
-    bool phase_a = handle->driver->diagnostics.IsOpenLoadA();
-    bool phase_b = handle->driver->diagnostics.IsOpenLoadB();
+    auto target_reached_result = handle->driver->rampControl.IsTargetReached();
+    bool target_reached = target_reached_result.IsOk() ? target_reached_result.Value() : false;
+    while (!target_reached && check_count < 50) {
+      target_reached_result = handle->driver->rampControl.IsTargetReached();
+      target_reached = target_reached_result.IsOk() ? target_reached_result.Value() : false;
+    auto phase_a_result = handle->driver->diagnostics.IsOpenLoadA();
+    auto phase_b_result = handle->driver->diagnostics.IsOpenLoadB();
+    bool phase_a = phase_a_result.IsOk() ? phase_a_result.Value() : false;
+    bool phase_b = phase_b_result.IsOk() ? phase_b_result.Value() : false;
     
     if (phase_a || phase_b) {
       ESP_LOGW(TAG, "Open load detected: Phase A=%d, Phase B=%d", phase_a, phase_b);
@@ -1613,11 +1678,12 @@ bool test_encoder_configuration() noexcept {
   }
   
   // Verify configuration by reading it back
-  tmc51x0::EncoderConfig read_cfg{};
-  if (!handle->driver->encoder.GetEncoderConfig(read_cfg)) {
-    ESP_LOGE(TAG, "Failed to read encoder configuration");
+  auto read_cfg_result = handle->driver->encoder.GetEncoderConfig();
+  if (read_cfg_result.IsErr()) {
+    ESP_LOGE(TAG, "Failed to read encoder configuration (ErrorCode: %d)", static_cast<int>(read_cfg_result.Error()));
     return false;
   }
+  tmc51x0::EncoderConfig read_cfg = read_cfg_result.Value();
   
   ESP_LOGI(TAG, "✓ Encoder configuration verified");
   return true;
@@ -1633,12 +1699,12 @@ bool test_encoder_resolution() noexcept {
   
   // Note: SetResolution may use approximation, so we use a warning-level test
   // Use platform config encoder resolution
-  bool result = handle->driver->encoder.SetResolution(
+  auto result = handle->driver->encoder.SetResolution(
     Motor::MOTOR_FULL_STEPS, // Use Motor namespace constant 
     tmc51x0_test_config::GetTestRigEncoderPulsesPerRev<SELECTED_TEST_RIG>(), 
     tmc51x0_test_config::GetTestRigEncoderInvertDirection<SELECTED_TEST_RIG>());
   
-  if (!result) {
+  if (result.IsErr()) {
     ESP_LOGW(TAG, "Encoder resolution set with approximation");
   }
   
@@ -1654,11 +1720,12 @@ bool test_encoder_position_reading() noexcept {
     return false;
   }
   
-  int32_t enc_pos = 0;
-  if (!handle->driver->encoder.GetPosition(enc_pos)) {
-    ESP_LOGE(TAG, "Failed to get encoder position");
+  auto enc_pos_result = handle->driver->encoder.GetPosition();
+  if (enc_pos_result.IsErr()) {
+    ESP_LOGE(TAG, "Failed to get encoder position (ErrorCode: %d)", static_cast<int>(enc_pos_result.Error()));
     return false;
   }
+  int32_t enc_pos = enc_pos_result.Value();
   ESP_LOGI(TAG, "Encoder position: %ld", enc_pos);
   
   ESP_LOGI(TAG, "✓ Encoder position reading test passed");
@@ -1674,13 +1741,19 @@ bool test_deviation_detection() noexcept {
   }
   
   // Set allowed deviation
-  if (!handle->driver->encoder.SetAllowedDeviation(10)) {
-    ESP_LOGE(TAG, "Failed to set allowed deviation");
+  auto set_dev_result = handle->driver->encoder.SetAllowedDeviation(10);
+  if (set_dev_result.IsErr()) {
+    ESP_LOGE(TAG, "Failed to set allowed deviation (ErrorCode: %d)", static_cast<int>(set_dev_result.Error()));
     return false;
   }
   
   // Check for deviation
-  bool dev_detected = handle->driver->encoder.IsDeviationDetected();
+  auto deviation_result = handle->driver->encoder.IsDeviationDetected();
+  if (deviation_result.IsErr()) {
+    ESP_LOGE(TAG, "Failed to check deviation (ErrorCode: %d)", static_cast<int>(deviation_result.Error()));
+    return false;
+  }
+  bool dev_detected = deviation_result.Value();
   ESP_LOGI(TAG, "Deviation Detected: %s", dev_detected ? "true" : "false");
   
   // Clear deviation flag
@@ -1702,7 +1775,13 @@ bool test_latched_position() noexcept {
   }
   
   int32_t latched = 0;
-  if (!handle->driver->encoder.GetLatchedPosition(latched)) {
+  auto latched_result = handle->driver->encoder.GetLatchedPosition();
+  if (latched_result.IsErr()) {
+    ESP_LOGE(TAG, "Failed to get latched position (ErrorCode: %d)", static_cast<int>(latched_result.Error()));
+    return false;
+  }
+  latched = latched_result.Value();
+  if (latched_result.IsErr()) {
     ESP_LOGE(TAG, "Failed to get latched position");
     return false;
   }

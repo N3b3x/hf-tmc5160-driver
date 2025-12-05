@@ -57,8 +57,9 @@ extern "C" void app_main(void) {
   auto pin_config = tmc51x0_test_config::GetDefaultPinConfig();
   Esp32SPI spi(tmc51x0_test_config::SPI_HOST, pin_config, tmc51x0_test_config::SPI_CLOCK_SPEED_HZ);
 
-  if (!spi.Initialize()) {
-    ESP_LOGE(TAG, "Failed to initialize SPI bus");
+  auto spi_init_result = spi.Initialize();
+  if (!spi_init_result) {
+    ESP_LOGE(TAG, "Failed to initialize SPI bus (ErrorCode: %d)", static_cast<int>(spi_init_result.Error()));
     return;
   }
 
@@ -120,11 +121,17 @@ extern "C" void app_main(void) {
   // Set to 0 to disable current margin (use nominal current)
   uint16_t safe_current_margin_mA = 100; // Adjust based on your motor's rated current
   // Using RPM units for velocity parameters, RevPerSec for acceleration (RPM is not valid for acceleration)
-  bool success = driver.tuning.AutoTuneStallGuard(TUNING_VELOCITY_RPM, result, 0, 63, 
+  ESP_LOGI(TAG, "Starting AutoTuneStallGuard...");
+  ESP_LOGI(TAG, "  Target velocity: %.2f %s", TUNING_VELOCITY_RPM, (VELOCITY_UNIT == tmc51x0::Unit::RPM) ? "RPM" : "units");
+  ESP_LOGI(TAG, "  Acceleration: %.2f rev/s²", TUNING_ACCELERATION_REV_S2);
+  ESP_LOGI(TAG, "  Velocity range: %.2f - %.2f %s", min_vel, max_vel, (VELOCITY_UNIT == tmc51x0::Unit::RPM) ? "RPM" : "units");
+  ESP_LOGI(TAG, "  Safe current margin: %u mA", safe_current_margin_mA);
+  
+  auto tune_result = driver.tuning.AutoTuneStallGuard(TUNING_VELOCITY_RPM, result, 0, 63, 
                                                      TUNING_ACCELERATION_REV_S2, min_vel, max_vel, 
                                                      VELOCITY_UNIT, ACCELERATION_UNIT, safe_current_margin_mA);
 
-  if (success) {
+  if (tune_result) {
     ESP_LOGI(TAG, "==========================================");
     ESP_LOGI(TAG, "TUNING SUCCESSFUL");
     ESP_LOGI(TAG, "Optimal SGT (at target velocity): %d", result.optimal_sgt);
@@ -167,17 +174,27 @@ extern "C" void app_main(void) {
     driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
     
     // Debug: Log the actual speed being set
-    float test_speed = 0.0f;
-    if (driver.rampControl.GetCurrentSpeed(test_speed, VELOCITY_UNIT)) {
-      ESP_LOGI(TAG, "Current speed before SetMaxSpeed: %.2f RPM", test_speed);
+    auto test_speed_result_before = driver.rampControl.GetCurrentSpeed(VELOCITY_UNIT);
+    if (test_speed_result_before) {
+      float test_speed = test_speed_result_before.Value();
+      ESP_LOGI(TAG, "✓ Current speed before SetMaxSpeed: %.2f RPM", test_speed);
+    } else {
+      ESP_LOGW(TAG, "⚠ Could not read speed before SetMaxSpeed (ErrorCode: %d)", static_cast<int>(test_speed_result_before.Error()));
     }
     
-    driver.rampControl.SetMaxSpeed(TUNING_VELOCITY_RPM, VELOCITY_UNIT);
+    auto set_speed_result = driver.rampControl.SetMaxSpeed(TUNING_VELOCITY_RPM, VELOCITY_UNIT);
+    if (!set_speed_result) {
+      ESP_LOGE(TAG, "❌ Failed to set max speed (ErrorCode: %d)", static_cast<int>(set_speed_result.Error()));
+    }
     
     // Debug: Verify the speed was set correctly
     vTaskDelay(pdMS_TO_TICKS(100)); // Wait for motor to start
-    if (driver.rampControl.GetCurrentSpeed(test_speed, VELOCITY_UNIT)) {
-      ESP_LOGI(TAG, "Current speed after SetMaxSpeed: %.2f RPM (expected: %.2f RPM)", test_speed, TUNING_VELOCITY_RPM);
+    auto test_speed_result_after = driver.rampControl.GetCurrentSpeed(VELOCITY_UNIT);
+    if (test_speed_result_after) {
+      float test_speed = test_speed_result_after.Value();
+      ESP_LOGI(TAG, "✓ Current speed after SetMaxSpeed: %.2f RPM (expected: %.2f RPM)", test_speed, TUNING_VELOCITY_RPM);
+    } else {
+      ESP_LOGW(TAG, "⚠ Could not read speed after SetMaxSpeed (ErrorCode: %d)", static_cast<int>(test_speed_result_after.Error()));
     }
     
     // Monitor for a few seconds, but stop early if motor stalls
@@ -185,28 +202,44 @@ extern "C" void app_main(void) {
     bool stall_detected = false;
     for(int i=0; i<50; i++) { // Run longer (5s)
         vTaskDelay(pdMS_TO_TICKS(100));
+        // Read StallGuard value
+        auto sg_result = driver.diagnostics.GetStallGuard();
         uint16_t sg_val = 0;
-        if (!driver.diagnostics.GetStallGuard(sg_val)) {
+        if (!sg_result) {
+          ESP_LOGW(TAG, "⚠ Failed to read StallGuard (ErrorCode: %d), using 0", static_cast<int>(sg_result.Error()));
           sg_val = 0;
+        } else {
+          sg_val = sg_result.Value();
         }
+        
+        // Read current speed
+        auto speed_result = driver.rampControl.GetCurrentSpeed(VELOCITY_UNIT);
         float current_speed = 0.0f;
-        if (!driver.rampControl.GetCurrentSpeed(current_speed, VELOCITY_UNIT)) {
+        if (!speed_result) {
+          ESP_LOGW(TAG, "⚠ Failed to read current speed (ErrorCode: %d), using 0", static_cast<int>(speed_result.Error()));
           current_speed = 0.0f;
+        } else {
+          current_speed = speed_result.Value();
         }
+        
         ESP_LOGI(TAG, "SG_RESULT: %u, VACTUAL: %.2f RPM", sg_val, current_speed);
         
         // Ignore low-speed stalls (resonance area)
         // Only trigger stop if speed is significant (> 6 RPM) AND SG=0
         if (sg_val == 0 && std::abs(current_speed) > 6.0f) {
-            ESP_LOGW(TAG, "Stall detected (SG=0) at V=%.2f RPM! Stopping motor...", current_speed);
+            ESP_LOGW(TAG, "⚠️ Stall detected (SG=0) at V=%.2f RPM! Stopping motor...", current_speed);
             stall_detected = true;
-            driver.rampControl.Stop();
+            auto stop_result = driver.rampControl.Stop();
+            if (!stop_result) {
+              ESP_LOGE(TAG, "❌ Failed to stop motor (ErrorCode: %d)", static_cast<int>(stop_result.Error()));
+            }
             // Wait for stop
             for(int j=0; j<50; j++) {
                 vTaskDelay(pdMS_TO_TICKS(100));
+                auto verify_speed_result = driver.rampControl.GetCurrentSpeed(VELOCITY_UNIT);
                 float speed = 0.0f;
-                if (!driver.rampControl.GetCurrentSpeed(speed, VELOCITY_UNIT)) {
-                  speed = 0.0f;
+                if (verify_speed_result) {
+                  speed = verify_speed_result.Value();
                 }
                 if (std::abs(speed) < 0.6f) break; // ~0.6 RPM threshold
             }
@@ -221,7 +254,13 @@ extern "C" void app_main(void) {
     }
     
   } else {
-    ESP_LOGE(TAG, "Tuning Failed. Could not find stable SGT.");
+    ESP_LOGE(TAG, "❌ Tuning Failed. Could not find stable SGT.");
+    ESP_LOGE(TAG, "   ErrorCode: %d", static_cast<int>(tune_result.Error()));
+    ESP_LOGE(TAG, "   Possible causes:");
+    ESP_LOGE(TAG, "     - Motor not connected or not powered");
+    ESP_LOGE(TAG, "     - Velocity range too narrow or invalid");
+    ESP_LOGE(TAG, "     - Acceleration too high for motor");
+    ESP_LOGE(TAG, "     - SGT range (0-63) may need adjustment");
   }
 
   ESP_LOGI(TAG, "Done. Reset to restart.");

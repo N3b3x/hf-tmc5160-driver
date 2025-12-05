@@ -1,0 +1,11 @@
+<map id="FatigueTestMotion::SetGlobalBounds" name="FatigueTestMotion::SetGlobalBounds">
+<area shape="rect" id="Node000001" title="Set global bounds (hardware limits found during initialization) &#45; in degrees." alt="" coords="5,35,153,75"/>
+<area shape="rect" id="Node000002" href="$classFatigueTestMotion.html#afd810bcf984589fb9b837d8fd5a2a1c5" title="Clip local bounds to global bounds." alt="" coords="201,5,387,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,42,187,37,188,42,154,47"/>
+<area shape="rect" id="Node000003" href="$classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf" title="Manually unlock mutex (called automatically in destructor)" alt="" coords="203,70,385,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="154,62,190,66,190,72,153,67"/>
+<area shape="rect" id="Node000004" href="$classEsp32TmcMutex.html#aa1c5042b5ace0f9a58c140b0f02db0f2" title="Check if mutex is valid." alt="" coords="435,41,623,66"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="385,69,421,64,421,69,385,74"/>
+<area shape="rect" id="Node000005" href="$classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f" title="Get native mutex handle." alt="" coords="439,91,618,131"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="385,91,426,96,425,101,385,96"/>
+</map>

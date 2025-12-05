@@ -2,7 +2,6 @@ var tmc51x0__comm__interface_8hpp =
 [
     [ "tmc51x0::PinActiveLevels", "structtmc51x0_1_1PinActiveLevels.html", "structtmc51x0_1_1PinActiveLevels" ],
     [ "tmc51x0::TMC51x0PinConfig", "structtmc51x0_1_1TMC51x0PinConfig.html", "structtmc51x0_1_1TMC51x0PinConfig" ],
-    [ "tmc51x0::Esp32SpiPinConfig", "structtmc51x0_1_1Esp32SpiPinConfig.html", "structtmc51x0_1_1Esp32SpiPinConfig" ],
     [ "tmc51x0::SpiStatus", "structtmc51x0_1_1SpiStatus.html", "structtmc51x0_1_1SpiStatus" ],
     [ "tmc51x0::SpiCommand", "structtmc51x0_1_1SpiCommand.html", "structtmc51x0_1_1SpiCommand" ],
     [ "tmc51x0::SpiCommand::Frame", "uniontmc51x0_1_1SpiCommand_1_1Frame.html", "uniontmc51x0_1_1SpiCommand_1_1Frame" ],

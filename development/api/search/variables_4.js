@@ -91,12 +91,13 @@ var searchData=
   ['encoder_5ftrb_5fpin_88',['ENCODER_TRB_PIN',['../ui__board_2config_8hpp.html#aebdebd4d6534754f25d297802e4b6984',1,'config.hpp']]],
   ['err_5fcode_89',['err_code',['../structConfigAckPayload.html#afbed2016a961e5b140f4d55daa790166',1,'ConfigAckPayload::err_code'],['../structStatusPayload.html#af5b68a03b072eb668e569946fc1b3fe9',1,'StatusPayload::err_code'],['../structErrorPayload.html#ab802e7f736d7cb44a03b55ba0a13c824',1,'ErrorPayload::err_code'],['../structProtoEvent.html#a0315209b00c6276f0691c78e132da9a5',1,'ProtoEvent::err_code']]],
   ['error_90',['error',['../structtmc51x0_1_1Diag0Config.html#a605fab7f176be27b2bcaf81c9c78e47e',1,'tmc51x0::Diag0Config::error'],['../structProtoEvent.html#a94cd92515637aef485cbc9e283c1e43e',1,'ProtoEvent::error']]],
-  ['espnow_5fmax_5fpayload_91',['ESPNOW_MAX_PAYLOAD',['../espnow__protocol_8hpp.html#a4608441df3e488ee211a1ae34a0d5159',1,'espnow_protocol.hpp']]],
-  ['espnow_5fsync_5fbyte_92',['ESPNOW_SYNC_BYTE',['../espnow__protocol_8hpp.html#aa7c5e0728b0dcea06f43dbd07863d579',1,'espnow_protocol.hpp']]],
-  ['estimated_5ffrequency_5fhz_5f_93',['estimated_frequency_hz_',['../classFatigueTestMotion.html#a2fe846983e6761a3ca123c4eaad8e730',1,'FatigueTestMotion::estimated_frequency_hz_'],['../classFatigueTest_1_1FatigueTestMotion.html#ad0b7d76a3032bd47b9c6f3eb46bf0299',1,'FatigueTest::FatigueTestMotion::estimated_frequency_hz_']]],
-  ['event_5fpos_5freached_94',['event_pos_reached',['../uniontmc51x0_1_1RAMP__STAT__Register.html#a9e51de9cfd4f9297581bd262f5bb0109',1,'tmc51x0::RAMP_STAT_Register']]],
-  ['event_5fstop_5fl_95',['event_stop_l',['../uniontmc51x0_1_1RAMP__STAT__Register.html#a9bae457ec007da344d4e55cc77159866',1,'tmc51x0::RAMP_STAT_Register']]],
-  ['event_5fstop_5fr_96',['event_stop_r',['../uniontmc51x0_1_1RAMP__STAT__Register.html#a9e8a0c15414880054eee053cb5cff3f5',1,'tmc51x0::RAMP_STAT_Register']]],
-  ['event_5fstop_5fsg_97',['event_stop_sg',['../uniontmc51x0_1_1RAMP__STAT__Register.html#a78b190eb00f8709fb94ac1ff103c0f0f',1,'tmc51x0::RAMP_STAT_Register']]],
-  ['external_5fclk_5fconfig_98',['external_clk_config',['../structtmc51x0_1_1DriverConfig.html#a24653db24abcfd9670e8714dfe5d3aa9',1,'tmc51x0::DriverConfig']]]
+  ['error_5f_91',['error_',['../classtmc51x0_1_1Result.html#aafd6a20318368386272035e85800874d',1,'tmc51x0::Result::error_'],['../classtmc51x0_1_1Result_3_01void_01_4.html#a9ecd72cc69cb493259d8e7c5f261f62d',1,'tmc51x0::Result&lt; void &gt;::error_']]],
+  ['espnow_5fmax_5fpayload_92',['ESPNOW_MAX_PAYLOAD',['../espnow__protocol_8hpp.html#a4608441df3e488ee211a1ae34a0d5159',1,'espnow_protocol.hpp']]],
+  ['espnow_5fsync_5fbyte_93',['ESPNOW_SYNC_BYTE',['../espnow__protocol_8hpp.html#aa7c5e0728b0dcea06f43dbd07863d579',1,'espnow_protocol.hpp']]],
+  ['estimated_5ffrequency_5fhz_5f_94',['estimated_frequency_hz_',['../classFatigueTestMotion.html#a2fe846983e6761a3ca123c4eaad8e730',1,'FatigueTestMotion::estimated_frequency_hz_'],['../classFatigueTest_1_1FatigueTestMotion.html#ad0b7d76a3032bd47b9c6f3eb46bf0299',1,'FatigueTest::FatigueTestMotion::estimated_frequency_hz_']]],
+  ['event_5fpos_5freached_95',['event_pos_reached',['../uniontmc51x0_1_1RAMP__STAT__Register.html#a9e51de9cfd4f9297581bd262f5bb0109',1,'tmc51x0::RAMP_STAT_Register']]],
+  ['event_5fstop_5fl_96',['event_stop_l',['../uniontmc51x0_1_1RAMP__STAT__Register.html#a9bae457ec007da344d4e55cc77159866',1,'tmc51x0::RAMP_STAT_Register']]],
+  ['event_5fstop_5fr_97',['event_stop_r',['../uniontmc51x0_1_1RAMP__STAT__Register.html#a9e8a0c15414880054eee053cb5cff3f5',1,'tmc51x0::RAMP_STAT_Register']]],
+  ['event_5fstop_5fsg_98',['event_stop_sg',['../uniontmc51x0_1_1RAMP__STAT__Register.html#a78b190eb00f8709fb94ac1ff103c0f0f',1,'tmc51x0::RAMP_STAT_Register']]],
+  ['external_5fclk_5fconfig_99',['external_clk_config',['../structtmc51x0_1_1DriverConfig.html#a24653db24abcfd9670e8714dfe5d3aa9',1,'tmc51x0::DriverConfig']]]
 ];

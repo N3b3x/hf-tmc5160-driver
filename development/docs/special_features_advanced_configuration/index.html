@@ -2677,9 +2677,9 @@ Motor with R_COIL = 5Ω, V_M = 24V, TBL=1 (24 clocks), PWM_FREQ=0 (2/1024 fCLK):
 </pre></td><td class="rouge-code"><pre><span class="c1">// Motor should be at standstill with nominal run current (IRUN)</span>
 <span class="c1">// AT#1 automatically completes during standstill period</span>
 <span class="c1">// Read automatic tuning results</span>
-<span class="kt">uint8_t</span> <span class="n">pwm_ofs_auto</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kt">uint8_t</span> <span class="n">pwm_grad_auto</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="k">if</span> <span class="p">(</span><span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">GetPwmAuto</span><span class="p">(</span><span class="n">pwm_ofs_auto</span><span class="p">,</span> <span class="n">pwm_grad_auto</span><span class="p">))</span> <span class="p">{</span>
+<span class="k">auto</span> <span class="n">pwm_auto_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">GetPwmAuto</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">pwm_auto_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">uint8_t</span> <span class="n">pwm_ofs_auto</span> <span class="o">=</span> <span class="n">pwm_auto_result</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span>
     <span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s">"AT#1 complete: PWM_OFS_AUTO = %u"</span><span class="p">,</span> <span class="n">pwm_ofs_auto</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
@@ -2714,26 +2714,74 @@ Motor with R_COIL = 5Ω, V_M = 24V, TBL=1 (24 clocks), PWM_FREQ=0 (2/1024 fCLK):
 20
 21
 22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
 </pre></td><td class="rouge-code"><pre><span class="c1">// Move motor at medium velocity (60-300 RPM typical)</span>
 <span class="c1">// Include constant velocity ramp segment</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">0.02</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Unit::RevPerSec is default</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetAccelerations</span><span class="p">(</span><span class="mf">0.01</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.01</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Unit::RevPerSec is default</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">10000</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">speed_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">0.02</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Unit::RevPerSec is default</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">speed_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting max speed: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">speed_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">auto</span> <span class="n">accel_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetAccelerations</span><span class="p">(</span><span class="mf">0.01</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.01</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Unit::RevPerSec is default</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">accel_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting accelerations: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">accel_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">auto</span> <span class="n">pos_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">10000</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pos_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting target position: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pos_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
 
 <span class="c1">// Monitor PWM_SCALE_AUTO during motion</span>
-<span class="kt">uint8_t</span> <span class="n">pwm_scale_sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kt">int16_t</span> <span class="n">pwm_scale_auto</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">())</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">GetPwmScale</span><span class="p">(</span><span class="n">pwm_scale_sum</span><span class="p">,</span> <span class="n">pwm_scale_auto</span><span class="p">))</span> <span class="p">{</span>
+<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">auto</span> <span class="n">reached</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">reached</span> <span class="o">&amp;&amp;</span> <span class="n">reached</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">break</span><span class="p">;</span> <span class="c1">// Target reached</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">reached</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ESP_LOGE</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s">"Error checking target: %s"</span><span class="p">,</span> <span class="n">reached</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">auto</span> <span class="n">pwm_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">GetPwmScale</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pwm_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">uint8_t</span> <span class="n">pwm_scale_sum</span> <span class="o">=</span> <span class="n">pwm_result</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span>
+        <span class="c1">// Note: GetPwmScale returns pwm_scale_sum, pwm_scale_auto is available via diagnostics</span>
         <span class="c1">// PWM_SCALE_AUTO should approach 0 during constant velocity phase</span>
-        <span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s">"PWM_SCALE_AUTO = %d (should approach 0)"</span><span class="p">,</span> <span class="n">pwm_scale_auto</span><span class="p">);</span>
+        <span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s">"PWM_SCALE_SUM = %d"</span><span class="p">,</span> <span class="n">pwm_scale_sum</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="n">driver</span><span class="p">.</span><span class="n">comm</span><span class="p">.</span><span class="n">DelayMs</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="c1">// Read final automatic tuning results</span>
-<span class="k">if</span> <span class="p">(</span><span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">GetPwmAuto</span><span class="p">(</span><span class="n">pwm_ofs_auto</span><span class="p">,</span> <span class="n">pwm_grad_auto</span><span class="p">))</span> <span class="p">{</span>
-    <span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s">"AT#2 complete: PWM_GRAD_AUTO = %u"</span><span class="p">,</span> <span class="n">pwm_grad_auto</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">pwm_auto_result2</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">GetPwmAuto</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">pwm_auto_result2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">uint8_t</span> <span class="n">pwm_ofs_auto</span> <span class="o">=</span> <span class="n">pwm_auto_result2</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span>
+    <span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s">"AT#2 complete: PWM_OFS_AUTO = %u"</span><span class="p">,</span> <span class="n">pwm_ofs_auto</span><span class="p">);</span>
     <span class="c1">// Store values for faster tuning in future (optional)</span>
 <span class="p">}</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
@@ -3379,6 +3427,14 @@ TOFF = (t_OFF * f_CLK - 12) / 32
 15
 16
 17
+18
+19
+20
+21
+22
+23
+24
+25
 </pre></td><td class="rouge-code"><pre><span class="c1">// Start from low setting</span>
 <span class="n">chopper</span><span class="p">.</span><span class="n">hstrt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="n">chopper</span><span class="p">.</span><span class="n">hend</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -3390,8 +3446,16 @@ TOFF = (t_OFF * f_CLK - 12) / 32
     
     <span class="c1">// Test motor smoothness at low velocity</span>
     <span class="c1">// Move motor and check for smooth operation</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">0.002</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Unit::RevPerSec is default</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">speed_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">0.002</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Unit::RevPerSec is default</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">speed_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting max speed: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">speed_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">continue</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">auto</span> <span class="n">pos_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pos_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting target position: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pos_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">continue</span><span class="p">;</span>
+    <span class="p">}</span>
     <span class="c1">// ... wait for motion and check smoothness ...</span>
     <span class="c1">// If smooth, this is the optimal setting</span>
     <span class="c1">// break;</span>
@@ -3418,14 +3482,30 @@ TOFF = (t_OFF * f_CLK - 12) / 32
 10
 11
 12
+13
+14
+15
+16
+17
+18
+19
+20
 </pre></td><td class="rouge-code"><pre><span class="c1">// If motor suffers from mid-range resonances</span>
 <span class="k">for</span> <span class="p">(</span><span class="kt">uint8_t</span> <span class="n">tpfd</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">tpfd</span> <span class="o">&lt;=</span> <span class="mi">15</span><span class="p">;</span> <span class="n">tpfd</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">chopper</span><span class="p">.</span><span class="n">tpfd</span> <span class="o">=</span> <span class="n">tpfd</span><span class="p">;</span>
     <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">ConfigureChopper</span><span class="p">(</span><span class="n">chopper</span><span class="p">);</span>
     
     <span class="c1">// Test for resonances at mid-range velocities</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">0.01</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Unit::RevPerSec is default</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">speed_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">0.01</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// Unit::RevPerSec is default</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">speed_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting max speed: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">speed_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">continue</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">auto</span> <span class="n">pos_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pos_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting target position: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pos_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">continue</span><span class="p">;</span>
+    <span class="p">}</span>
     <span class="c1">// ... wait for motion and check for resonances ...</span>
     <span class="c1">// If resonances reduced, this is the optimal setting</span>
     <span class="c1">// break;</span>
@@ -3658,17 +3738,61 @@ TOFF = (t_OFF * f_CLK - 12) / 32
 10
 11
 12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
 </pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">homeToEndstop</span><span class="p">()</span> <span class="p">{</span>
     <span class="c1">// Move toward endstop</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">VELOCITY_NEG</span><span class="p">);</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">500.0</span><span class="n">f</span><span class="p">);</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+    <span class="k">auto</span> <span class="n">mode_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">VELOCITY_NEG</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">mode_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting ramp mode: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">mode_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">auto</span> <span class="n">speed_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">500.0</span><span class="n">f</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">speed_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting max speed: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">speed_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">auto</span> <span class="n">enable_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">enable_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error enabling motor: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">enable_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
     
     <span class="c1">// Wait for endstop (check RAMP_STAT register)</span>
     <span class="c1">// Or use GetLatchedPosition() after switch triggers</span>
     
-    <span class="kt">int32_t</span> <span class="n">latched_pos</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">GetLatchedPosition</span><span class="p">();</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetCurrentPosition</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>  <span class="c1">// Set as home</span>
+    <span class="k">auto</span> <span class="n">latched_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">GetLatchedPosition</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">latched_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int32_t</span> <span class="n">latched_pos</span> <span class="o">=</span> <span class="n">latched_result</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span>
+        <span class="k">auto</span> <span class="n">set_pos_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetCurrentPosition</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>  <span class="c1">// Set as home</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">set_pos_result</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting current position: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">set_pos_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error reading latched position: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">latched_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h2 id="microstep-lookup-tables">
@@ -3876,12 +4000,36 @@ TOFF = (t_OFF * f_CLK - 12) / 32
 32
 33
 34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
 </pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"tmc51x0.hpp"</span><span class="cp">
 </span>
 <span class="kt">void</span> <span class="nf">setupAdvancedMotor</span><span class="p">()</span> <span class="p">{</span>
     <span class="c1">// Basic initialization</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span><span class="p">;</span> <span class="c1">// or handle error appropriately</span>
+    <span class="p">}</span>
     
     <span class="c1">// Configure CoolStep</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">CoolStepConfig</span> <span class="n">coolstep</span><span class="p">{};</span>
@@ -3889,7 +4037,11 @@ TOFF = (t_OFF * f_CLK - 12) / 32
     <span class="n">coolstep</span><span class="p">.</span><span class="n">upper_threshold_sg</span> <span class="o">=</span> <span class="mi">256</span><span class="p">;</span>  <span class="c1">// Automatically converts to SEMAX=5</span>
     <span class="n">coolstep</span><span class="p">.</span><span class="n">increment_step</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">CoolStepIncrementStep</span><span class="o">::</span><span class="n">STEP_2</span><span class="p">;</span>
     <span class="n">coolstep</span><span class="p">.</span><span class="n">decrement_speed</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">CoolStepDecrementSpeed</span><span class="o">::</span><span class="n">EVERY_2</span><span class="p">;</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">ConfigureCoolStep</span><span class="p">(</span><span class="n">coolstep</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">coolstep_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">ConfigureCoolStep</span><span class="p">(</span><span class="n">coolstep</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">coolstep_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error configuring CoolStep: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">coolstep_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
     
     <span class="c1">// Configure reference switches</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ReferenceSwitchConfig</span> <span class="n">ref_switch</span><span class="p">{};</span>
@@ -3898,17 +4050,29 @@ TOFF = (t_OFF * f_CLK - 12) / 32
     <span class="n">ref_switch</span><span class="p">.</span><span class="n">stop_mode</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ReferenceStopMode</span><span class="o">::</span><span class="n">SOFT_STOP</span><span class="p">;</span>
     <span class="n">ref_switch</span><span class="p">.</span><span class="n">latch_left</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ReferenceLatchMode</span><span class="o">::</span><span class="n">ACTIVE_EDGE</span><span class="p">;</span>
     <span class="n">ref_switch</span><span class="p">.</span><span class="n">latch_right</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ReferenceLatchMode</span><span class="o">::</span><span class="n">ACTIVE_EDGE</span><span class="p">;</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">ConfigureReferenceSwitch</span><span class="p">(</span><span class="n">ref_switch</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">ref_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">ConfigureReferenceSwitch</span><span class="p">(</span><span class="n">ref_switch</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ref_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error configuring reference switch: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ref_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
     
     <span class="c1">// Set mode change speeds</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetModeChangeSpeeds</span><span class="p">(</span>
+    <span class="k">auto</span> <span class="n">speed_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetModeChangeSpeeds</span><span class="p">(</span>
         <span class="mf">1000.0</span><span class="n">f</span><span class="p">,</span>  <span class="c1">// stealthChop threshold</span>
         <span class="mf">500.0</span><span class="n">f</span><span class="p">,</span>   <span class="c1">// CoolStep threshold</span>
         <span class="mf">5000.0</span><span class="n">f</span>   <span class="c1">// High-speed threshold</span>
     <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">speed_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting mode change speeds: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">speed_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
     
     <span class="c1">// Enable motor</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+    <span class="k">auto</span> <span class="n">enable_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">enable_result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Error enabling motor: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">enable_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h2 id="troubleshooting-4">

@@ -423,6 +423,342 @@
   <li><strong>Noise but no movement</strong>: Verify motor supply voltage, check motor connections, verify current settings</li>
   <li><strong>Loses steps</strong>: Increase motor current, reduce acceleration, check mechanical load</li>
 </ul>
+<h2 id="result-error-handling">
+  
+  
+    <a href="#result-error-handling" class="anchor-heading" aria-labelledby="result-error-handling"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Result<T> Error Handling</T>
+  
+  
+</h2>
+    
+
+<p>The driver uses <code class="language-plaintext highlighter-rouge">Result&lt;T&gt;</code> return types for explicit error handling. Understanding how to properly handle these errors is crucial for debugging.</p>
+<h3 id="understanding-error-codes">
+  
+  
+    <a href="#understanding-error-codes" class="anchor-heading" aria-labelledby="understanding-error-codes"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Understanding Error Codes
+  
+  
+</h3>
+    
+
+<p>All <code class="language-plaintext highlighter-rouge">Result&lt;T&gt;</code> objects contain an <code class="language-plaintext highlighter-rouge">ErrorCode</code> that indicates what went wrong:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+</pre></td><td class="rouge-code"><pre><span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span> <span class="n">code</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">Error</span><span class="p">();</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">NOT_INITIALIZED</span><span class="p">:</span>
+            <span class="c1">// Driver not initialized before operation</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">COMM_ERROR</span><span class="p">:</span>
+            <span class="c1">// Communication interface error (SPI/UART)</span>
+            <span class="c1">// Check wiring, clock frequency, CS pin</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">INVALID_VALUE</span><span class="p">:</span>
+            <span class="c1">// Invalid parameter value</span>
+            <span class="c1">// Check configuration parameters</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">INVALID_STATE</span><span class="p">:</span>
+            <span class="c1">// Operation not valid in current state</span>
+            <span class="c1">// Check driver initialization status</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">TIMEOUT</span><span class="p">:</span>
+            <span class="c1">// Operation timed out</span>
+            <span class="c1">// Check communication, increase timeout</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">HARDWARE_ERROR</span><span class="p">:</span>
+            <span class="c1">// Hardware fault detected</span>
+            <span class="c1">// Check power supply, connections</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">SHORT_CIRCUIT</span><span class="p">:</span>
+            <span class="c1">// Short circuit detected</span>
+            <span class="c1">// Check motor wiring, power stage</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">OPEN_LOAD</span><span class="p">:</span>
+            <span class="c1">// Open load detected</span>
+            <span class="c1">// Check motor connections</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">OVERTEMP_WARNING</span><span class="p">:</span>
+            <span class="c1">// Overtemperature warning</span>
+            <span class="c1">// Reduce current, improve cooling</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">OVERTEMP_SHUTDOWN</span><span class="p">:</span>
+            <span class="c1">// Overtemperature shutdown</span>
+            <span class="c1">// Wait for cooling, reduce current</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">UNSUPPORTED</span><span class="p">:</span>
+            <span class="c1">// Feature not supported by chip variant</span>
+            <span class="c1">// Check chip type (TMC5130 vs TMC5160)</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="nl">default:</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Unknown error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="common-error-handling-mistakes">
+  
+  
+    <a href="#common-error-handling-mistakes" class="anchor-heading" aria-labelledby="common-error-handling-mistakes"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Common Error Handling Mistakes
+  
+  
+</h3>
+    
+<h4 id="mistake-1-ignoring-return-values">
+  
+  
+    <a href="#mistake-1-ignoring-return-values" class="anchor-heading" aria-labelledby="mistake-1-ignoring-return-values"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Mistake 1: Ignoring Return Values
+  
+  
+</h4>
+    
+
+<p><strong>❌ Wrong:</strong></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>  <span class="c1">// Error ignored!</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>  <span class="c1">// Error ignored!</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>✅ Correct:</strong></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">auto</span> <span class="n">pos_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pos_result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error setting position: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pos_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h4 id="mistake-2-incorrect-boolean-result-handling">
+  
+  
+    <a href="#mistake-2-incorrect-boolean-result-handling" class="anchor-heading" aria-labelledby="mistake-2-incorrect-boolean-result-handling"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Mistake 2: Incorrect Boolean Result Handling
+  
+  
+</h4>
+    
+
+<p><strong>❌ Wrong:</strong></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="k">auto</span> <span class="n">reached</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">reached</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="p">{</span>  <span class="c1">// Crashes if reached is an error!</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>✅ Correct:</strong></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="k">auto</span> <span class="n">reached</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">reached</span> <span class="o">&amp;&amp;</span> <span class="n">reached</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="p">{</span>  <span class="c1">// Check result first!</span>
+    <span class="c1">// Target reached</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">reached</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Error occurred</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">reached</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h4 id="mistake-3-not-checking-before-using-value">
+  
+  
+    <a href="#mistake-3-not-checking-before-using-value" class="anchor-heading" aria-labelledby="mistake-3-not-checking-before-using-value"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Mistake 3: Not Checking Before Using Value
+  
+  
+</h4>
+    
+
+<p><strong>❌ Wrong:</strong></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="k">auto</span> <span class="n">position</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">GetCurrentPosition</span><span class="p">();</span>
+<span class="kt">float</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">position</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span>  <span class="c1">// Crashes if position is an error!</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>✅ Correct:</strong></p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="k">auto</span> <span class="n">position</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">GetCurrentPosition</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">position</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">float</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">position</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span>  <span class="c1">// Safe to use</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">position</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="debugging-with-error-messages">
+  
+  
+    <a href="#debugging-with-error-messages" class="anchor-heading" aria-labelledby="debugging-with-error-messages"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Debugging with Error Messages
+  
+  
+</h3>
+    
+
+<p>Always log error messages for debugging:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Log both error code and message</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization failed:</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"  Error code: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">Error</span><span class="p">()));</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"  Error message: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+    
+    <span class="c1">// Additional debugging based on error type</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">Error</span><span class="p">()</span> <span class="o">==</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">COMM_ERROR</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"  Check SPI/UART wiring and configuration</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"  Verify clock frequency is correct</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"  Check CS pin configuration</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="error-recovery-strategies">
+  
+  
+    <a href="#error-recovery-strategies" class="anchor-heading" aria-labelledby="error-recovery-strategies"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Error Recovery Strategies
+  
+  
+</h3>
+    
+
+<p>Different errors require different recovery strategies:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="rouge-code"><pre><span class="c1">// Retry strategy for communication errors</span>
+<span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">result</span> <span class="o">&amp;&amp;</span> <span class="n">result</span><span class="p">.</span><span class="n">Error</span><span class="p">()</span> <span class="o">==</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span><span class="o">::</span><span class="n">COMM_ERROR</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Retry initialization</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">comm</span><span class="p">.</span><span class="n">DelayMs</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Retry failed: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Recovery for overtemperature</span>
+<span class="k">auto</span> <span class="n">status</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">diagnostics</span><span class="p">.</span><span class="n">GetStatus</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">DriverStatus</span><span class="o">::</span><span class="n">OVERTEMP</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Reduce current and wait</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">SetCurrent</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>  <span class="c1">// Lower current</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">comm</span><span class="p">.</span><span class="n">DelayMs</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>  <span class="c1">// Wait for cooling</span>
+    <span class="c1">// Retry operation</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
 <h2 id="software-issues">
   
   

@@ -14,6 +14,10 @@
 #define SPI_MODE2 2
 #define SPI_MODE3 3
 
+// ESP-IDF uses per-device clock speeds configured when adding device to bus
+// Transactions are supported via beginTransaction()/endTransaction()
+#define SPI_HAS_TRANSACTION 1
+
 // SPISettings structure
 struct SPISettings {
     uint32_t clock;
@@ -42,13 +46,21 @@ public:
                  sck_pin_(GPIO_NUM_NC), mosi_pin_(GPIO_NUM_NC), miso_pin_(GPIO_NUM_NC),
                  spi_host_(SPI2_HOST) {}
     
+    // Default begin() for compatibility with Adafruit libraries
+    // Uses default SPI pins (VSPI on ESP32: SCK=18, MOSI=23, MISO=19)
     void begin() {
-        // Default SPI pins for ESP32 (can be overridden)
-        // WARNING: These defaults may not match your hardware!
-        // Always call begin(sck, mosi, miso) with your actual pin numbers.
-        begin(GPIO_NUM_18, GPIO_NUM_19, GPIO_NUM_23, GPIO_NUM_NC);
+        #ifdef CONFIG_IDF_TARGET_ESP32
+        begin(GPIO_NUM_18, GPIO_NUM_23, GPIO_NUM_19, GPIO_NUM_NC);
+        #elif defined(CONFIG_IDF_TARGET_ESP32S2) || defined(CONFIG_IDF_TARGET_ESP32S3)
+        begin(GPIO_NUM_36, GPIO_NUM_35, GPIO_NUM_37, GPIO_NUM_NC);
+        #elif defined(CONFIG_IDF_TARGET_ESP32C3) || defined(CONFIG_IDF_TARGET_ESP32C6)
+        begin(GPIO_NUM_6, GPIO_NUM_7, GPIO_NUM_10, GPIO_NUM_NC);
+        #else
+        // Fallback - user must call begin() with pins
+        #endif
     }
     
+    // begin() with pins - preferred method for explicit configuration
     void begin(gpio_num_t sck, gpio_num_t mosi, gpio_num_t miso, gpio_num_t cs = GPIO_NUM_NC) {
         sck_pin_ = sck;
         mosi_pin_ = mosi;

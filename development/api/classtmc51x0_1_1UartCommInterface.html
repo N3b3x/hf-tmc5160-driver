@@ -125,24 +125,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a85cd946c8040ba0186cb8401d0be93f6" id="r_a85cd946c8040ba0186cb8401d0be93f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc51x0.html#af3d18824bf231d968c6c33bd1aaeae5f">CommMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85cd946c8040ba0186cb8401d0be93f6">GetMode</a> () const noexcept</td></tr>
 <tr class="memdesc:a85cd946c8040ba0186cb8401d0be93f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get communication mode (always UART for this interface)  <br /></td></tr>
 <tr class="separator:a85cd946c8040ba0186cb8401d0be93f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30ac8ea2c43ca4bae5306d7c1e2cc53a" id="r_a30ac8ea2c43ca4bae5306d7c1e2cc53a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a30ac8ea2c43ca4bae5306d7c1e2cc53a">SetNaiPin</a> (bool active) noexcept</td></tr>
-<tr class="memdesc:a30ac8ea2c43ca4bae5306d7c1e2cc53a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set NAI (Next Address Input) pin state for daisy chaining.  <br /></td></tr>
-<tr class="separator:a30ac8ea2c43ca4bae5306d7c1e2cc53a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c7678559c4f4b946c61f6a64ccd36a2" id="r_a0c7678559c4f4b946c61f6a64ccd36a2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c7678559c4f4b946c61f6a64ccd36a2">GetNaoPin</a> (bool &amp;active) noexcept</td></tr>
-<tr class="memdesc:a0c7678559c4f4b946c61f6a64ccd36a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read NAO (Next Address Output) pin state.  <br /></td></tr>
-<tr class="separator:a0c7678559c4f4b946c61f6a64ccd36a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72b9e55db0b043b7672435612cac7b75" id="r_a72b9e55db0b043b7672435612cac7b75"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72b9e55db0b043b7672435612cac7b75">UartSend</a> (const uint8_t *data, size_t length) noexcept</td></tr>
-<tr class="memdesc:a72b9e55db0b043b7672435612cac7b75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send raw bytes via UART.  <br /></td></tr>
-<tr class="separator:a72b9e55db0b043b7672435612cac7b75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad882f4204d8e89fea5f212c8f1e1ac57" id="r_ad882f4204d8e89fea5f212c8f1e1ac57"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad882f4204d8e89fea5f212c8f1e1ac57">UartReceive</a> (uint8_t *data, size_t length) noexcept</td></tr>
-<tr class="memdesc:ad882f4204d8e89fea5f212c8f1e1ac57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive raw bytes via UART.  <br /></td></tr>
-<tr class="separator:ad882f4204d8e89fea5f212c8f1e1ac57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af52f5c54246e92d1d34d006d9b148bd6" id="r_af52f5c54246e92d1d34d006d9b148bd6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af52f5c54246e92d1d34d006d9b148bd6">ReadRegister</a> (uint8_t address, uint32_t &amp;value, uint8_t node_address=0) noexcept</td></tr>
-<tr class="memdesc:af52f5c54246e92d1d34d006d9b148bd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a 32-bit register via UART.  <br /></td></tr>
-<tr class="separator:af52f5c54246e92d1d34d006d9b148bd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07fc8787ed9723f7cecea1a5c138afbf" id="r_a07fc8787ed9723f7cecea1a5c138afbf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a07fc8787ed9723f7cecea1a5c138afbf">WriteRegister</a> (uint8_t address, uint32_t value, uint8_t node_address=0) noexcept</td></tr>
-<tr class="memdesc:a07fc8787ed9723f7cecea1a5c138afbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a 32-bit register via UART.  <br /></td></tr>
-<tr class="separator:a07fc8787ed9723f7cecea1a5c138afbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5aee6763b745455db1792ec89915496" id="r_ae5aee6763b745455db1792ec89915496"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae5aee6763b745455db1792ec89915496">SetNaiPin</a> (bool active) noexcept</td></tr>
+<tr class="memdesc:ae5aee6763b745455db1792ec89915496"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set NAI (Next Address Input) pin state for daisy chaining.  <br /></td></tr>
+<tr class="separator:ae5aee6763b745455db1792ec89915496"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cc70167d8b0e4972bd09ccc3d1a10f6" id="r_a1cc70167d8b0e4972bd09ccc3d1a10f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1cc70167d8b0e4972bd09ccc3d1a10f6">GetNaoPin</a> () noexcept</td></tr>
+<tr class="memdesc:a1cc70167d8b0e4972bd09ccc3d1a10f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read NAO (Next Address Output) pin state.  <br /></td></tr>
+<tr class="separator:a1cc70167d8b0e4972bd09ccc3d1a10f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7084122cac7ff8ad41c380ed38e011fc" id="r_a7084122cac7ff8ad41c380ed38e011fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7084122cac7ff8ad41c380ed38e011fc">UartSend</a> (const uint8_t *data, size_t length) noexcept</td></tr>
+<tr class="memdesc:a7084122cac7ff8ad41c380ed38e011fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send raw bytes via UART.  <br /></td></tr>
+<tr class="separator:a7084122cac7ff8ad41c380ed38e011fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad95f280a1c529b779266fda04de76a28" id="r_ad95f280a1c529b779266fda04de76a28"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad95f280a1c529b779266fda04de76a28">UartReceive</a> (uint8_t *data, size_t length) noexcept</td></tr>
+<tr class="memdesc:ad95f280a1c529b779266fda04de76a28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive raw bytes via UART.  <br /></td></tr>
+<tr class="separator:ad95f280a1c529b779266fda04de76a28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75ef73ccada9223c31fa3ffc8d141f7f" id="r_a75ef73ccada9223c31fa3ffc8d141f7f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75ef73ccada9223c31fa3ffc8d141f7f">ReadRegister</a> (uint8_t address, uint8_t node_address=0) noexcept</td></tr>
+<tr class="memdesc:a75ef73ccada9223c31fa3ffc8d141f7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a 32-bit register via UART.  <br /></td></tr>
+<tr class="separator:a75ef73ccada9223c31fa3ffc8d141f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac90ee8b81f46514c749a20c8c496711" id="r_aac90ee8b81f46514c749a20c8c496711"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac90ee8b81f46514c749a20c8c496711">WriteRegister</a> (uint8_t address, uint32_t value, uint8_t node_address=0) noexcept</td></tr>
+<tr class="memdesc:aac90ee8b81f46514c749a20c8c496711"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a 32-bit register via UART.  <br /></td></tr>
+<tr class="separator:aac90ee8b81f46514c749a20c8c496711"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a74587fe52ffde9abe930165e3c989a" id="r_a4a74587fe52ffde9abe930165e3c989a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a74587fe52ffde9abe930165e3c989a">UartCommInterface</a> (const <a class="el" href="classtmc51x0_1_1UartCommInterface.html">UartCommInterface</a> &amp;)=delete</td></tr>
 <tr class="separator:a4a74587fe52ffde9abe930165e3c989a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8370d089b508bca70d61f754d3996340" id="r_a8370d089b508bca70d61f754d3996340"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1UartCommInterface.html">UartCommInterface</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8370d089b508bca70d61f754d3996340">operator=</a> (const <a class="el" href="classtmc51x0_1_1UartCommInterface.html">UartCommInterface</a> &amp;)=delete</td></tr>
@@ -154,33 +154,33 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac43b4089ca441ddb3771c3395c2d2743 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_ac43b4089ca441ddb3771c3395c2d2743"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc51x0.html#af3d18824bf231d968c6c33bd1aaeae5f">CommMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#ac43b4089ca441ddb3771c3395c2d2743">GetMode</a> () const noexcept</td></tr>
 <tr class="memdesc:ac43b4089ca441ddb3771c3395c2d2743 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the underlying communication mode used by this interface.  <br /></td></tr>
 <tr class="separator:ac43b4089ca441ddb3771c3395c2d2743 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a254c935ef459aed86a980785b090f761 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_a254c935ef459aed86a980785b090f761"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#a254c935ef459aed86a980785b090f761">ReadRegister</a> (uint8_t address, uint32_t &amp;value, uint8_t daisy_chain_position=0) noexcept</td></tr>
-<tr class="memdesc:a254c935ef459aed86a980785b090f761 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a 32-bit register from the TMC5160.  <br /></td></tr>
-<tr class="separator:a254c935ef459aed86a980785b090f761 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7d2c54c605957f53994b984dcd5e1b4 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_af7d2c54c605957f53994b984dcd5e1b4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#af7d2c54c605957f53994b984dcd5e1b4">WriteRegister</a> (uint8_t address, uint32_t value, uint8_t daisy_chain_position=0) noexcept</td></tr>
-<tr class="memdesc:af7d2c54c605957f53994b984dcd5e1b4 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a 32-bit register to the TMC5160.  <br /></td></tr>
-<tr class="separator:af7d2c54c605957f53994b984dcd5e1b4 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12902425a6bab863031858b3526ab667 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_a12902425a6bab863031858b3526ab667"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#a12902425a6bab863031858b3526ab667">GpioSet</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin, <a class="el" href="namespacetmc51x0.html#a066cfe7d73f5a7f546c6d7215c0b4577">GpioSignal</a> signal) noexcept</td></tr>
-<tr class="memdesc:a12902425a6bab863031858b3526ab667 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GPIO pin signal state (output control)  <br /></td></tr>
-<tr class="separator:a12902425a6bab863031858b3526ab667 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7cdf03220af69a59d51e8d245494a87 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_ad7cdf03220af69a59d51e8d245494a87"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#ad7cdf03220af69a59d51e8d245494a87">GpioRead</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin, <a class="el" href="namespacetmc51x0.html#a066cfe7d73f5a7f546c6d7215c0b4577">GpioSignal</a> &amp;signal) noexcept</td></tr>
-<tr class="memdesc:ad7cdf03220af69a59d51e8d245494a87 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read GPIO pin signal state (input state)  <br /></td></tr>
-<tr class="separator:ad7cdf03220af69a59d51e8d245494a87 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ec8aa64f5f944ce15b44019787bfe81 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_a8ec8aa64f5f944ce15b44019787bfe81"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#a8ec8aa64f5f944ce15b44019787bfe81">GpioSetActive</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin) noexcept</td></tr>
-<tr class="memdesc:a8ec8aa64f5f944ce15b44019787bfe81 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GPIO pin to active state (convenience method)  <br /></td></tr>
-<tr class="separator:a8ec8aa64f5f944ce15b44019787bfe81 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae72105adf55f177262eb66e39fa63f25 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_ae72105adf55f177262eb66e39fa63f25"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#ae72105adf55f177262eb66e39fa63f25">GpioSetInactive</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin) noexcept</td></tr>
-<tr class="memdesc:ae72105adf55f177262eb66e39fa63f25 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GPIO pin to inactive state (convenience method)  <br /></td></tr>
-<tr class="separator:ae72105adf55f177262eb66e39fa63f25 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ad7ff22bfd2e0259405c840f0d93427 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_a1ad7ff22bfd2e0259405c840f0d93427"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#a1ad7ff22bfd2e0259405c840f0d93427">ReadRegister</a> (uint8_t address, uint8_t daisy_chain_position=0) noexcept</td></tr>
+<tr class="memdesc:a1ad7ff22bfd2e0259405c840f0d93427 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a 32-bit register from the TMC5160.  <br /></td></tr>
+<tr class="separator:a1ad7ff22bfd2e0259405c840f0d93427 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe44583c7551eaf4044eac8ed39d5fd8 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_abe44583c7551eaf4044eac8ed39d5fd8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#abe44583c7551eaf4044eac8ed39d5fd8">WriteRegister</a> (uint8_t address, uint32_t value, uint8_t daisy_chain_position=0) noexcept</td></tr>
+<tr class="memdesc:abe44583c7551eaf4044eac8ed39d5fd8 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a 32-bit register to the TMC5160.  <br /></td></tr>
+<tr class="separator:abe44583c7551eaf4044eac8ed39d5fd8 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad16d15399e9208eabb772d6e518a5e98 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_ad16d15399e9208eabb772d6e518a5e98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#ad16d15399e9208eabb772d6e518a5e98">GpioSet</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin, <a class="el" href="namespacetmc51x0.html#a066cfe7d73f5a7f546c6d7215c0b4577">GpioSignal</a> signal) noexcept</td></tr>
+<tr class="memdesc:ad16d15399e9208eabb772d6e518a5e98 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GPIO pin signal state (output control)  <br /></td></tr>
+<tr class="separator:ad16d15399e9208eabb772d6e518a5e98 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a127e4c671836992f0bed63d86609e996 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_a127e4c671836992f0bed63d86609e996"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="namespacetmc51x0.html#a066cfe7d73f5a7f546c6d7215c0b4577">GpioSignal</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#a127e4c671836992f0bed63d86609e996">GpioRead</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin) noexcept</td></tr>
+<tr class="memdesc:a127e4c671836992f0bed63d86609e996 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read GPIO pin signal state (input state)  <br /></td></tr>
+<tr class="separator:a127e4c671836992f0bed63d86609e996 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe522498b22d4925f4df9e5988808c42 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_afe522498b22d4925f4df9e5988808c42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#afe522498b22d4925f4df9e5988808c42">GpioSetActive</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin) noexcept</td></tr>
+<tr class="memdesc:afe522498b22d4925f4df9e5988808c42 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GPIO pin to active state (convenience method)  <br /></td></tr>
+<tr class="separator:afe522498b22d4925f4df9e5988808c42 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd4d35dd88a88c284676d7f66d64e1c9 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_afd4d35dd88a88c284676d7f66d64e1c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#afd4d35dd88a88c284676d7f66d64e1c9">GpioSetInactive</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin) noexcept</td></tr>
+<tr class="memdesc:afd4d35dd88a88c284676d7f66d64e1c9 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GPIO pin to inactive state (convenience method)  <br /></td></tr>
+<tr class="separator:afd4d35dd88a88c284676d7f66d64e1c9 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae20e456634dc99586a02612061370ed2 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_ae20e456634dc99586a02612061370ed2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#ae20e456634dc99586a02612061370ed2">DelayMs</a> (uint32_t ms) noexcept</td></tr>
 <tr class="memdesc:ae20e456634dc99586a02612061370ed2 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delay execution for specified milliseconds.  <br /></td></tr>
 <tr class="separator:ae20e456634dc99586a02612061370ed2 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3a5e93e4f03f7dce22dbe476f42e6ae inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_ae3a5e93e4f03f7dce22dbe476f42e6ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#ae3a5e93e4f03f7dce22dbe476f42e6ae">DelayUs</a> (uint32_t us) noexcept</td></tr>
 <tr class="memdesc:ae3a5e93e4f03f7dce22dbe476f42e6ae inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delay execution for specified microseconds.  <br /></td></tr>
 <tr class="separator:ae3a5e93e4f03f7dce22dbe476f42e6ae inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65bd3a4126258dcbb02be286cfda6f9a inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_a65bd3a4126258dcbb02be286cfda6f9a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#a65bd3a4126258dcbb02be286cfda6f9a">SetClkFreq</a> (uint32_t frequency_hz) noexcept</td></tr>
-<tr class="memdesc:a65bd3a4126258dcbb02be286cfda6f9a inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set external clock frequency on CLK pin (optional)  <br /></td></tr>
-<tr class="separator:a65bd3a4126258dcbb02be286cfda6f9a inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac066818679e165ce389c9d8b263f73ff inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_ac066818679e165ce389c9d8b263f73ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#ac066818679e165ce389c9d8b263f73ff">SetClkFreq</a> (uint32_t frequency_hz) noexcept</td></tr>
+<tr class="memdesc:ac066818679e165ce389c9d8b263f73ff inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set external clock frequency on CLK pin (optional)  <br /></td></tr>
+<tr class="separator:ac066818679e165ce389c9d8b263f73ff inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f8d7c8e8be69b4a09db37175368ba57 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_a4f8d7c8e8be69b4a09db37175368ba57"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#a4f8d7c8e8be69b4a09db37175368ba57">CommInterface</a> (const <a class="el" href="classtmc51x0_1_1CommInterface.html">CommInterface</a> &amp;)=delete</td></tr>
 <tr class="separator:a4f8d7c8e8be69b4a09db37175368ba57 inherit pub_methods_classtmc51x0_1_1CommInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa7569f6ef52dc8295f9d2dd5a1473a0 inherit pub_methods_classtmc51x0_1_1CommInterface" id="r_aaa7569f6ef52dc8295f9d2dd5a1473a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1CommInterface.html">CommInterface</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1CommInterface.html#aaa7569f6ef52dc8295f9d2dd5a1473a0">operator=</a> (const <a class="el" href="classtmc51x0_1_1CommInterface.html">CommInterface</a> &amp;)=delete</td></tr>
@@ -293,7 +293,7 @@ UART Daisy Chaining</h2>
 <div class="line">  <span class="keywordtype">void</span> delayMs(...) { ... }</div>
 <div class="line">  <span class="keywordtype">void</span> delayUs(...) { ... }</div>
 <div class="line">};</div>
-<div class="ttc" id="anamespacetmc51x0_html_af3d18824bf231d968c6c33bd1aaeae5f"><div class="ttname"><a href="namespacetmc51x0.html#af3d18824bf231d968c6c33bd1aaeae5f">tmc51x0::CommMode</a></div><div class="ttdeci">CommMode</div><div class="ttdoc">Supported physical communication modes for TMC51x0.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:141</div></div>
+<div class="ttc" id="anamespacetmc51x0_html_af3d18824bf231d968c6c33bd1aaeae5f"><div class="ttname"><a href="namespacetmc51x0.html#af3d18824bf231d968c6c33bd1aaeae5f">tmc51x0::CommMode</a></div><div class="ttdeci">CommMode</div><div class="ttdoc">Supported physical communication modes for TMC51x0.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:143</div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Derived</td><td>The derived class type (CRTP pattern) </td></tr>
@@ -335,7 +335,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Multiple TMC5160 instances can share one <a class="el" href="classtmc51x0_1_1UartCommInterface.html" title="CRTP-based UART implementation of TMC5160CommInterface.">UartCommInterface</a> on the same UART bus. The node address is passed per transaction via <a class="el" href="#af52f5c54246e92d1d34d006d9b148bd6" title="Read a 32-bit register via UART.">ReadRegister()</a> and <a class="el" href="#a07fc8787ed9723f7cecea1a5c138afbf" title="Write a 32-bit register via UART.">WriteRegister()</a> methods. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Multiple TMC5160 instances can share one <a class="el" href="classtmc51x0_1_1UartCommInterface.html" title="CRTP-based UART implementation of TMC5160CommInterface.">UartCommInterface</a> on the same UART bus. The node address is passed per transaction via <a class="el" href="#a75ef73ccada9223c31fa3ffc8d141f7f" title="Read a 32-bit register via UART.">ReadRegister()</a> and <a class="el" href="#aac90ee8b81f46514c749a20c8c496711" title="Write a 32-bit register via UART.">WriteRegister()</a> methods. </dd></dl>
 
 </div>
 </div>
@@ -453,8 +453,8 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a id="a0c7678559c4f4b946c61f6a64ccd36a2" name="a0c7678559c4f4b946c61f6a64ccd36a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c7678559c4f4b946c61f6a64ccd36a2">&#9670;&#160;</a></span>GetNaoPin()</h2>
+<a id="a1cc70167d8b0e4972bd09ccc3d1a10f6" name="a1cc70167d8b0e4972bd09ccc3d1a10f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cc70167d8b0e4972bd09ccc3d1a10f6">&#9670;&#160;</a></span>GetNaoPin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -465,9 +465,9 @@ template&lt;typename Derived &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classtmc51x0_1_1UartCommInterface.html">tmc51x0::UartCommInterface</a>&lt; Derived &gt;::GetNaoPin </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; bool &gt; <a class="el" href="classtmc51x0_1_1UartCommInterface.html">tmc51x0::UartCommInterface</a>&lt; Derived &gt;::GetNaoPin </td>
           <td>(</td>
-          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>active</em></span></td><td>)</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -485,7 +485,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if NAO was read successfully</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Result&lt;bool&gt; containing true if NAO is active, false otherwise</dd></dl>
 <p>NAO is the output from one TMC5160 that connects to the next TMC5160's NAI input in a daisy chain.</p><ul>
 <li>NAO is the SDO_CFG0 pin (pin 16) in UART mode</li>
 <li>After programming a chip to its target address, NAO must be LOW to enable the next chip in the chain</li>
@@ -497,12 +497,12 @@ template&lt;typename Derived &gt; </div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_a0c7678559c4f4b946c61f6a64ccd36a2_cgraph.svg" width="227" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_a1cc70167d8b0e4972bd09ccc3d1a10f6_cgraph.svg" width="227" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_a0c7678559c4f4b946c61f6a64ccd36a2_icgraph.svg" width="227" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_a1cc70167d8b0e4972bd09ccc3d1a10f6_icgraph.svg" width="227" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -561,8 +561,8 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a id="af52f5c54246e92d1d34d006d9b148bd6" name="af52f5c54246e92d1d34d006d9b148bd6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af52f5c54246e92d1d34d006d9b148bd6">&#9670;&#160;</a></span>ReadRegister()</h2>
+<a id="a75ef73ccada9223c31fa3ffc8d141f7f" name="a75ef73ccada9223c31fa3ffc8d141f7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75ef73ccada9223c31fa3ffc8d141f7f">&#9670;&#160;</a></span>ReadRegister()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -573,14 +573,9 @@ template&lt;typename Derived &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classtmc51x0_1_1UartCommInterface.html">tmc51x0::UartCommInterface</a>&lt; Derived &gt;::ReadRegister </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; uint32_t &gt; <a class="el" href="classtmc51x0_1_1UartCommInterface.html">tmc51x0::UartCommInterface</a>&lt; Derived &gt;::ReadRegister </td>
           <td>(</td>
           <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>address</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -604,17 +599,17 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if read succeeded, false otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Result&lt;uint32_t&gt; containing the value or error </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_af52f5c54246e92d1d34d006d9b148bd6_cgraph.svg" width="918" height="584"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_a75ef73ccada9223c31fa3ffc8d141f7f_cgraph.svg" width="918" height="584"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a30ac8ea2c43ca4bae5306d7c1e2cc53a" name="a30ac8ea2c43ca4bae5306d7c1e2cc53a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30ac8ea2c43ca4bae5306d7c1e2cc53a">&#9670;&#160;</a></span>SetNaiPin()</h2>
+<a id="ae5aee6763b745455db1792ec89915496" name="ae5aee6763b745455db1792ec89915496"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5aee6763b745455db1792ec89915496">&#9670;&#160;</a></span>SetNaiPin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -625,7 +620,7 @@ template&lt;typename Derived &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classtmc51x0_1_1UartCommInterface.html">tmc51x0::UartCommInterface</a>&lt; Derived &gt;::SetNaiPin </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1UartCommInterface.html">tmc51x0::UartCommInterface</a>&lt; Derived &gt;::SetNaiPin </td>
           <td>(</td>
           <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>active</em></span></td><td>)</td>
           <td></td>
@@ -645,7 +640,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if NAI was set successfully</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
 <p>For UART daisy chaining, NAI controls the addressing sequence.</p><ul>
 <li>NAI is the SDI_CFG1 pin (pin 15) in UART mode</li>
 <li>When NAI is active (high), the slave address increments by one</li>
@@ -657,18 +652,18 @@ template&lt;typename Derived &gt; </div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_a30ac8ea2c43ca4bae5306d7c1e2cc53a_cgraph.svg" width="227" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_ae5aee6763b745455db1792ec89915496_cgraph.svg" width="227" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_a30ac8ea2c43ca4bae5306d7c1e2cc53a_icgraph.svg" width="227" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_ae5aee6763b745455db1792ec89915496_icgraph.svg" width="227" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="ad882f4204d8e89fea5f212c8f1e1ac57" name="ad882f4204d8e89fea5f212c8f1e1ac57"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad882f4204d8e89fea5f212c8f1e1ac57">&#9670;&#160;</a></span>UartReceive()</h2>
+<a id="ad95f280a1c529b779266fda04de76a28" name="ad95f280a1c529b779266fda04de76a28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad95f280a1c529b779266fda04de76a28">&#9670;&#160;</a></span>UartReceive()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -679,7 +674,7 @@ template&lt;typename Derived &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classtmc51x0_1_1UartCommInterface.html">tmc51x0::UartCommInterface</a>&lt; Derived &gt;::UartReceive </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1UartCommInterface.html">tmc51x0::UartCommInterface</a>&lt; Derived &gt;::UartReceive </td>
           <td>(</td>
           <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>data</em>, </span></td>
         </tr>
@@ -704,22 +699,22 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if reception succeeded </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_ad882f4204d8e89fea5f212c8f1e1ac57_cgraph.svg" width="227" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_ad95f280a1c529b779266fda04de76a28_cgraph.svg" width="227" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_ad882f4204d8e89fea5f212c8f1e1ac57_icgraph.svg" width="491" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_ad95f280a1c529b779266fda04de76a28_icgraph.svg" width="491" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a72b9e55db0b043b7672435612cac7b75" name="a72b9e55db0b043b7672435612cac7b75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72b9e55db0b043b7672435612cac7b75">&#9670;&#160;</a></span>UartSend()</h2>
+<a id="a7084122cac7ff8ad41c380ed38e011fc" name="a7084122cac7ff8ad41c380ed38e011fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7084122cac7ff8ad41c380ed38e011fc">&#9670;&#160;</a></span>UartSend()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -730,7 +725,7 @@ template&lt;typename Derived &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classtmc51x0_1_1UartCommInterface.html">tmc51x0::UartCommInterface</a>&lt; Derived &gt;::UartSend </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1UartCommInterface.html">tmc51x0::UartCommInterface</a>&lt; Derived &gt;::UartSend </td>
           <td>(</td>
           <td class="paramtype">const uint8_t *</td>          <td class="paramname"><span class="paramname"><em>data</em>, </span></td>
         </tr>
@@ -755,22 +750,22 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if transmission succeeded </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_a72b9e55db0b043b7672435612cac7b75_cgraph.svg" width="227" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_a7084122cac7ff8ad41c380ed38e011fc_cgraph.svg" width="227" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_a72b9e55db0b043b7672435612cac7b75_icgraph.svg" width="491" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_a7084122cac7ff8ad41c380ed38e011fc_icgraph.svg" width="491" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a07fc8787ed9723f7cecea1a5c138afbf" name="a07fc8787ed9723f7cecea1a5c138afbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07fc8787ed9723f7cecea1a5c138afbf">&#9670;&#160;</a></span>WriteRegister()</h2>
+<a id="aac90ee8b81f46514c749a20c8c496711" name="aac90ee8b81f46514c749a20c8c496711"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac90ee8b81f46514c749a20c8c496711">&#9670;&#160;</a></span>WriteRegister()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -781,7 +776,7 @@ template&lt;typename Derived &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classtmc51x0_1_1UartCommInterface.html">tmc51x0::UartCommInterface</a>&lt; Derived &gt;::WriteRegister </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1UartCommInterface.html">tmc51x0::UartCommInterface</a>&lt; Derived &gt;::WriteRegister </td>
           <td>(</td>
           <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>address</em>, </span></td>
         </tr>
@@ -812,11 +807,11 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if write succeeded, false otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_a07fc8787ed9723f7cecea1a5c138afbf_cgraph.svg" width="695" height="254"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1UartCommInterface_aac90ee8b81f46514c749a20c8c496711_cgraph.svg" width="695" height="254"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

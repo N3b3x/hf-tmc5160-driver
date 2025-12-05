@@ -2,8 +2,13 @@
  * @file Adafruit_I2CDevice.h
  * @brief ESP-IDF native I2C device wrapper for Adafruit libraries
  * 
- * Provides Adafruit_I2CDevice interface using ESP-IDF I2C master driver.
+ * Provides Adafruit_I2CDevice interface using ESP-IDF v5.5 I2C master driver.
  * Compatible with Adafruit GFX and OLED libraries.
+ * 
+ * Fully compatible with ESP-IDF v5.5 and ESP32-C6.
+ * 
+ * @note TMC5160 does NOT support I2C - this is for other I2C devices (e.g., OLED displays).
+ *       TMC5160 only supports SPI and UART communication interfaces.
  */
 
 #pragma once
@@ -13,9 +18,18 @@
 #include "driver/i2c_master.h"
 #include "driver/gpio.h"
 #include "esp_err.h"
+#include "soc/soc_caps.h"
 
 /**
  * @brief I2C device wrapper compatible with Adafruit libraries
+ * 
+ * This class provides a complete I2C implementation for ESP-IDF v5.5 on ESP32-C6.
+ * It supports:
+ * - Multiple I2C buses (I2C_NUM_0, I2C_NUM_1)
+ * - Configurable pins and frequencies
+ * - Automatic bus initialization and sharing
+ * - Device detection
+ * - Read/write operations with proper error handling
  */
 class Adafruit_I2CDevice {
 public:
@@ -133,6 +147,14 @@ public:
     }
     
     /**
+     * @brief Set I2C port number (must be called before begin())
+     * @param port I2C port number (I2C_NUM_0 or I2C_NUM_1)
+     */
+    void setPort(i2c_port_num_t port) {
+        i2c_port_ = port;
+    }
+    
+    /**
      * @brief Set default I2C pins for all devices (static)
      * @param sda Default SDA GPIO pin
      * @param scl Default SCL GPIO pin
@@ -149,11 +171,20 @@ public:
     static void setDefaultFrequency(uint32_t freq) {
         s_default_freq = freq;
     }
+    
+    /**
+     * @brief Set default I2C port for all devices (static)
+     * @param port Default I2C port number
+     */
+    static void setDefaultPort(i2c_port_num_t port) {
+        s_default_port = port;
+    }
 
 private:
     static gpio_num_t s_default_sda;
     static gpio_num_t s_default_scl;
     static uint32_t s_default_freq;
+    static i2c_port_num_t s_default_port;
     uint8_t addr_;                              // 7-bit I2C address
     i2c_master_bus_handle_t bus_handle_;        // I2C bus handle
     i2c_master_dev_handle_t device_handle_;     // I2C device handle
@@ -161,7 +192,12 @@ private:
     gpio_num_t sda_pin_;                        // SDA GPIO pin
     gpio_num_t scl_pin_;                        // SCL GPIO pin
     uint32_t i2c_freq_;                         // I2C frequency
+    i2c_port_num_t i2c_port_;                   // I2C port number
     
     // Initialize I2C bus if not already initialized
     bool initBus();
+    
+    // Get default pins based on chip type
+    static gpio_num_t getDefaultSda();
+    static gpio_num_t getDefaultScl();
 };

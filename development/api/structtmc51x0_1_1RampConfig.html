@@ -106,6 +106,11 @@ $(function(){initNavTree('structtmc51x0_1_1RampConfig.html',''); initResizable()
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="tmc51x0__types_8hpp_source.html">tmc51x0_types.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for tmc51x0::RampConfig:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc51x0_1_1RampConfig__coll__graph.svg" width="414" height="168"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -115,33 +120,30 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a5b0e111b2b511b232300e24f97420385" id="r_a5b0e111b2b511b232300e24f97420385"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b0e111b2b511b232300e24f97420385">velocity_unit</a> {<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td></tr>
-<tr class="memdesc:a5b0e111b2b511b232300e24f97420385"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unit for all velocity parameters (vstart, vstop, vmax, v1)  <br /></td></tr>
-<tr class="separator:a5b0e111b2b511b232300e24f97420385"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdfda4c4fd699cca5e0420cf95aadec0" id="r_afdfda4c4fd699cca5e0420cf95aadec0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afdfda4c4fd699cca5e0420cf95aadec0">acceleration_unit</a> {<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td></tr>
-<tr class="memdesc:afdfda4c4fd699cca5e0420cf95aadec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unit for all acceleration parameters (amax, a1, dmax, d1)  <br /></td></tr>
-<tr class="separator:afdfda4c4fd699cca5e0420cf95aadec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab43ff0b5bd9d07fba30139162bd379b" id="r_aab43ff0b5bd9d07fba30139162bd379b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab43ff0b5bd9d07fba30139162bd379b">vstart</a> {0.0F}</td></tr>
-<tr class="memdesc:aab43ff0b5bd9d07fba30139162bd379b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start velocity (unit specified by velocity_unit, 0 = can be set to zero if not used)  <br /></td></tr>
-<tr class="separator:aab43ff0b5bd9d07fba30139162bd379b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48f57db857f1e08b274d86723a2c9630" id="r_a48f57db857f1e08b274d86723a2c9630"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a48f57db857f1e08b274d86723a2c9630">vstop</a> {10.0F}</td></tr>
-<tr class="memdesc:a48f57db857f1e08b274d86723a2c9630"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop velocity (unit specified by velocity_unit, must be &gt;= VSTART, minimum 1 recommended)  <br /></td></tr>
-<tr class="separator:a48f57db857f1e08b274d86723a2c9630"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a185c2e94e7fc70a141bd7f4961e67fc9" id="r_a185c2e94e7fc70a141bd7f4961e67fc9"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a185c2e94e7fc70a141bd7f4961e67fc9">vmax</a></td></tr>
-<tr class="memdesc:a185c2e94e7fc70a141bd7f4961e67fc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum velocity (unit specified by velocity_unit, 0 = must be set via SetMaxSpeed() before motion)  <br /></td></tr>
-<tr class="separator:a185c2e94e7fc70a141bd7f4961e67fc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a391eb938d1a9c9bb74a296192e9e77a8" id="r_a391eb938d1a9c9bb74a296192e9e77a8"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a391eb938d1a9c9bb74a296192e9e77a8">v1</a> {0.0F}</td></tr>
-<tr class="separator:a391eb938d1a9c9bb74a296192e9e77a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bfbd7cfb88afb45a8d96ad3a2403d9e" id="r_a6bfbd7cfb88afb45a8d96ad3a2403d9e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6bfbd7cfb88afb45a8d96ad3a2403d9e">amax</a> {0.0F}</td></tr>
-<tr class="separator:a6bfbd7cfb88afb45a8d96ad3a2403d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27bceed2605fee1657b54e17b50e069d" id="r_a27bceed2605fee1657b54e17b50e069d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a27bceed2605fee1657b54e17b50e069d">a1</a></td></tr>
-<tr class="memdesc:a27bceed2605fee1657b54e17b50e069d"><td class="mdescLeft">&#160;</td><td class="mdescRight">First acceleration (unit specified by acceleration_unit, used between VSTART and V1, 0 = use AMAX)  <br /></td></tr>
-<tr class="separator:a27bceed2605fee1657b54e17b50e069d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02fbaff4acaa581b3d83c942eca17945" id="r_a02fbaff4acaa581b3d83c942eca17945"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02fbaff4acaa581b3d83c942eca17945">dmax</a> {0.0F}</td></tr>
-<tr class="memdesc:a02fbaff4acaa581b3d83c942eca17945"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum deceleration (unit specified by acceleration_unit, used above V1, 0 = uses AMAX value)  <br /></td></tr>
-<tr class="separator:a02fbaff4acaa581b3d83c942eca17945"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41f23dbdb3ae57bbe962d2f89a4fb56a" id="r_a41f23dbdb3ae57bbe962d2f89a4fb56a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41f23dbdb3ae57bbe962d2f89a4fb56a">d1</a> {100.0F}</td></tr>
-<tr class="separator:a41f23dbdb3ae57bbe962d2f89a4fb56a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17c2f6ab8c73ddd320554e8af75117ad" id="r_a17c2f6ab8c73ddd320554e8af75117ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc51x0_1_1VelocityValue.html">VelocityValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17c2f6ab8c73ddd320554e8af75117ad">vstart</a> {0.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td></tr>
+<tr class="memdesc:a17c2f6ab8c73ddd320554e8af75117ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start velocity (0 = can be set to zero if not used)  <br /></td></tr>
+<tr class="separator:a17c2f6ab8c73ddd320554e8af75117ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a827a60b313aed0097564cf981d43aa36" id="r_a827a60b313aed0097564cf981d43aa36"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc51x0_1_1VelocityValue.html">VelocityValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a827a60b313aed0097564cf981d43aa36">vstop</a> {10.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td></tr>
+<tr class="memdesc:a827a60b313aed0097564cf981d43aa36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop velocity (must be &gt;= VSTART, minimum 1 recommended)  <br /></td></tr>
+<tr class="separator:a827a60b313aed0097564cf981d43aa36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2835d00378985a43e5966dba179f6ec" id="r_aa2835d00378985a43e5966dba179f6ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc51x0_1_1VelocityValue.html">VelocityValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2835d00378985a43e5966dba179f6ec">vmax</a> {0.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td></tr>
+<tr class="memdesc:aa2835d00378985a43e5966dba179f6ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum velocity (0 = must be set via SetMaxSpeed() before motion)  <br /></td></tr>
+<tr class="separator:aa2835d00378985a43e5966dba179f6ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80eee6276deecdcbe65d0721d5e46cd9" id="r_a80eee6276deecdcbe65d0721d5e46cd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc51x0_1_1VelocityValue.html">VelocityValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80eee6276deecdcbe65d0721d5e46cd9">v1</a> {0.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td></tr>
+<tr class="memdesc:a80eee6276deecdcbe65d0721d5e46cd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transition velocity (switches between A1/AMAX and D1/DMAX, 0 = disabled)  <br /></td></tr>
+<tr class="separator:a80eee6276deecdcbe65d0721d5e46cd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6294a2203d1d284e3dad33933b62664f" id="r_a6294a2203d1d284e3dad33933b62664f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc51x0_1_1AccelerationValue.html">AccelerationValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6294a2203d1d284e3dad33933b62664f">amax</a> {0.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td></tr>
+<tr class="memdesc:a6294a2203d1d284e3dad33933b62664f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum acceleration (used above V1, 0 = must be set via SetAcceleration() before motion)  <br /></td></tr>
+<tr class="separator:a6294a2203d1d284e3dad33933b62664f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e281bc4a4d0c23d1a2e8c4cc7edd107" id="r_a3e281bc4a4d0c23d1a2e8c4cc7edd107"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc51x0_1_1AccelerationValue.html">AccelerationValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3e281bc4a4d0c23d1a2e8c4cc7edd107">a1</a> {0.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td></tr>
+<tr class="memdesc:a3e281bc4a4d0c23d1a2e8c4cc7edd107"><td class="mdescLeft">&#160;</td><td class="mdescRight">First acceleration (used between VSTART and V1, 0 = use AMAX)  <br /></td></tr>
+<tr class="separator:a3e281bc4a4d0c23d1a2e8c4cc7edd107"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a325f8143075d6249a6b30d4abab2e443" id="r_a325f8143075d6249a6b30d4abab2e443"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc51x0_1_1AccelerationValue.html">AccelerationValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a325f8143075d6249a6b30d4abab2e443">dmax</a> {0.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td></tr>
+<tr class="memdesc:a325f8143075d6249a6b30d4abab2e443"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum deceleration (used above V1, 0 = uses AMAX value)  <br /></td></tr>
+<tr class="separator:a325f8143075d6249a6b30d4abab2e443"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9ff8627d5a9c9129503d6446bc4c6ad" id="r_af9ff8627d5a9c9129503d6446bc4c6ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc51x0_1_1AccelerationValue.html">AccelerationValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9ff8627d5a9c9129503d6446bc4c6ad">d1</a> {100.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td></tr>
+<tr class="memdesc:af9ff8627d5a9c9129503d6446bc4c6ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">First deceleration (used between VSTOP and V1, must not be 0 in positioning mode)  <br /></td></tr>
+<tr class="separator:af9ff8627d5a9c9129503d6446bc4c6ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fe522d973da20eb818d221cb066455f" id="r_a3fe522d973da20eb818d221cb066455f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3fe522d973da20eb818d221cb066455f">tpowerdown_ms</a> {437.0F}</td></tr>
 <tr class="separator:a3fe522d973da20eb818d221cb066455f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3858a3478dc2f51484d28a3d6d35e226" id="r_a3858a3478dc2f51484d28a3d6d35e226"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3858a3478dc2f51484d28a3d6d35e226">tzerowait_ms</a></td></tr>
@@ -151,7 +153,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Ramp configuration structure. </p>
 <p>Configuration parameters for the <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> ramp generator. The ramp generator provides two-phase acceleration and deceleration with programmable start/stop velocities and transition speed (V1) for optimal motor torque utilization.</p>
-<dl class="section note"><dt>Note</dt><dd>All velocity and acceleration parameters support unit-aware conversion (Steps, Rad, Deg, Mm, RPM). </dd>
+<dl class="section note"><dt>Note</dt><dd>All velocity and acceleration parameters now use self-describing types (<a class="el" href="structtmc51x0_1_1VelocityValue.html" title="Self-describing velocity value with explicit unit.">VelocityValue</a>, <a class="el" href="structtmc51x0_1_1AccelerationValue.html" title="Self-describing acceleration value with explicit unit.">AccelerationValue</a>) that explicitly carry their units, eliminating ambiguity. </dd>
 <dd>
 Parameters set to 0.0 will use driver defaults or be auto-calculated where applicable. </dd>
 <dd>
@@ -185,16 +187,14 @@ D1 must not be 0 in positioning mode (defaults to 100 if not set).</dd></dl>
 
 <p>Default constructor. </p>
 <p>Initializes with recommended default values:</p><ul>
-<li>velocity_unit: Steps (driver native units)</li>
-<li>acceleration_unit: Steps (driver native units)</li>
-<li>VSTART: 0 (can be zero if not used)</li>
-<li>VSTOP: 10 (minimum recommended, ensures successful motion termination)</li>
-<li>VMAX: 0 (must be set before motion)</li>
-<li>V1: 0 (disabled, uses single acceleration/deceleration)</li>
-<li>AMAX: 0 (must be set before motion)</li>
-<li>A1: 0 (uses AMAX)</li>
-<li>DMAX: 0 (uses AMAX value)</li>
-<li>D1: 100 (required for positioning mode)</li>
+<li>VSTART: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (can be zero if not used)</li>
+<li>VSTOP: {10, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (minimum recommended, ensures successful motion termination)</li>
+<li>VMAX: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (must be set before motion)</li>
+<li>V1: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (disabled, uses single acceleration/deceleration)</li>
+<li>AMAX: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (must be set before motion)</li>
+<li>A1: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (uses AMAX)</li>
+<li>DMAX: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (uses AMAX value)</li>
+<li>D1: {100, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (required for positioning mode)</li>
 <li>TPOWERDOWN: 437ms (~0.44s at 12MHz, equivalent to register value 20)</li>
 <li>TZEROWAIT: 0ms (no delay) </li>
 </ul>
@@ -202,88 +202,67 @@ D1 must not be 0 in positioning mode (defaults to 100 if not set).</dd></dl>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a27bceed2605fee1657b54e17b50e069d" name="a27bceed2605fee1657b54e17b50e069d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27bceed2605fee1657b54e17b50e069d">&#9670;&#160;</a></span>a1</h2>
+<a id="a3e281bc4a4d0c23d1a2e8c4cc7edd107" name="a3e281bc4a4d0c23d1a2e8c4cc7edd107"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e281bc4a4d0c23d1a2e8c4cc7edd107">&#9670;&#160;</a></span>a1</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float tmc51x0::RampConfig::a1</td>
+          <td class="memname"><a class="el" href="structtmc51x0_1_1AccelerationValue.html">AccelerationValue</a> tmc51x0::RampConfig::a1 {0.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">{</div>
-<div class="line">      0.0F}</div>
-</div><!-- fragment -->
-<p>First acceleration (unit specified by acceleration_unit, used between VSTART and V1, 0 = use AMAX) </p>
+
+<p>First acceleration (used between VSTART and V1, 0 = use AMAX) </p>
 
 </div>
 </div>
-<a id="afdfda4c4fd699cca5e0420cf95aadec0" name="afdfda4c4fd699cca5e0420cf95aadec0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afdfda4c4fd699cca5e0420cf95aadec0">&#9670;&#160;</a></span>acceleration_unit</h2>
+<a id="a6294a2203d1d284e3dad33933b62664f" name="a6294a2203d1d284e3dad33933b62664f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6294a2203d1d284e3dad33933b62664f">&#9670;&#160;</a></span>amax</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> tmc51x0::RampConfig::acceleration_unit {<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td>
+          <td class="memname"><a class="el" href="structtmc51x0_1_1AccelerationValue.html">AccelerationValue</a> tmc51x0::RampConfig::amax {0.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Unit for all acceleration parameters (amax, a1, dmax, d1) </p>
-<p>Specifies the unit system used for acceleration/deceleration values in this configuration. Critical for proper conversion during initialization.</p>
-<p>Supported units: Steps, Rad, Deg, Mm (RPM not applicable for acceleration)</p>
-<dl class="section note"><dt>Note</dt><dd>Default: <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a> (driver native units) </dd>
-<dd>
-All acceleration parameters (amax, a1, dmax, d1) use this unit </dd></dl>
+<p>Maximum acceleration (used above V1, 0 = must be set via SetAcceleration() before motion) </p>
 
 </div>
 </div>
-<a id="a6bfbd7cfb88afb45a8d96ad3a2403d9e" name="a6bfbd7cfb88afb45a8d96ad3a2403d9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6bfbd7cfb88afb45a8d96ad3a2403d9e">&#9670;&#160;</a></span>amax</h2>
+<a id="af9ff8627d5a9c9129503d6446bc4c6ad" name="af9ff8627d5a9c9129503d6446bc4c6ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9ff8627d5a9c9129503d6446bc4c6ad">&#9670;&#160;</a></span>d1</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float tmc51x0::RampConfig::amax {0.0F}</td>
+          <td class="memname"><a class="el" href="structtmc51x0_1_1AccelerationValue.html">AccelerationValue</a> tmc51x0::RampConfig::d1 {100.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Maximum acceleration (unit specified by acceleration_unit, used above V1, 0 = must be set via SetAcceleration() before motion) </p>
+
+<p>First deceleration (used between VSTOP and V1, must not be 0 in positioning mode) </p>
 
 </div>
 </div>
-<a id="a41f23dbdb3ae57bbe962d2f89a4fb56a" name="a41f23dbdb3ae57bbe962d2f89a4fb56a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41f23dbdb3ae57bbe962d2f89a4fb56a">&#9670;&#160;</a></span>d1</h2>
+<a id="a325f8143075d6249a6b30d4abab2e443" name="a325f8143075d6249a6b30d4abab2e443"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a325f8143075d6249a6b30d4abab2e443">&#9670;&#160;</a></span>dmax</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float tmc51x0::RampConfig::d1 {100.0F}</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>First deceleration (unit specified by acceleration_unit, used between VSTOP and V1, must not be 0 in positioning mode) </p>
-
-</div>
-</div>
-<a id="a02fbaff4acaa581b3d83c942eca17945" name="a02fbaff4acaa581b3d83c942eca17945"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a02fbaff4acaa581b3d83c942eca17945">&#9670;&#160;</a></span>dmax</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float tmc51x0::RampConfig::dmax {0.0F}</td>
+          <td class="memname"><a class="el" href="structtmc51x0_1_1AccelerationValue.html">AccelerationValue</a> tmc51x0::RampConfig::dmax {0.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Maximum deceleration (unit specified by acceleration_unit, used above V1, 0 = uses AMAX value) </p>
+<p>Maximum deceleration (used above V1, 0 = uses AMAX value) </p>
 
 </div>
 </div>
@@ -358,89 +337,67 @@ Default: 0.0 (no waiting, instant continuation) Velocity-zero wait time in milli
 
 </div>
 </div>
-<a id="a391eb938d1a9c9bb74a296192e9e77a8" name="a391eb938d1a9c9bb74a296192e9e77a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a391eb938d1a9c9bb74a296192e9e77a8">&#9670;&#160;</a></span>v1</h2>
+<a id="a80eee6276deecdcbe65d0721d5e46cd9" name="a80eee6276deecdcbe65d0721d5e46cd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80eee6276deecdcbe65d0721d5e46cd9">&#9670;&#160;</a></span>v1</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float tmc51x0::RampConfig::v1 {0.0F}</td>
+          <td class="memname"><a class="el" href="structtmc51x0_1_1VelocityValue.html">VelocityValue</a> tmc51x0::RampConfig::v1 {0.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transition velocity (unit specified by velocity_unit, switches between A1/AMAX and D1/DMAX, 0 = disabled) </p>
+
+<p>Transition velocity (switches between A1/AMAX and D1/DMAX, 0 = disabled) </p>
 
 </div>
 </div>
-<a id="a5b0e111b2b511b232300e24f97420385" name="a5b0e111b2b511b232300e24f97420385"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b0e111b2b511b232300e24f97420385">&#9670;&#160;</a></span>velocity_unit</h2>
+<a id="aa2835d00378985a43e5966dba179f6ec" name="aa2835d00378985a43e5966dba179f6ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2835d00378985a43e5966dba179f6ec">&#9670;&#160;</a></span>vmax</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> tmc51x0::RampConfig::velocity_unit {<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td>
+          <td class="memname"><a class="el" href="structtmc51x0_1_1VelocityValue.html">VelocityValue</a> tmc51x0::RampConfig::vmax {0.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Unit for all velocity parameters (vstart, vstop, vmax, v1) </p>
-<p>Specifies the unit system used for velocity values in this configuration. Critical for proper conversion during initialization.</p>
-<p>Supported units: Steps, Rad, Deg, Mm, RPM</p>
-<dl class="section note"><dt>Note</dt><dd>Default: <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a> (driver native units) </dd>
-<dd>
-All velocity parameters (vstart, vstop, vmax, v1) use this unit </dd></dl>
+<p>Maximum velocity (0 = must be set via SetMaxSpeed() before motion) </p>
 
 </div>
 </div>
-<a id="a185c2e94e7fc70a141bd7f4961e67fc9" name="a185c2e94e7fc70a141bd7f4961e67fc9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a185c2e94e7fc70a141bd7f4961e67fc9">&#9670;&#160;</a></span>vmax</h2>
+<a id="a17c2f6ab8c73ddd320554e8af75117ad" name="a17c2f6ab8c73ddd320554e8af75117ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17c2f6ab8c73ddd320554e8af75117ad">&#9670;&#160;</a></span>vstart</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float tmc51x0::RampConfig::vmax</td>
+          <td class="memname"><a class="el" href="structtmc51x0_1_1VelocityValue.html">VelocityValue</a> tmc51x0::RampConfig::vstart {0.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">{</div>
-<div class="line">      0.0F}</div>
-</div><!-- fragment -->
-<p>Maximum velocity (unit specified by velocity_unit, 0 = must be set via SetMaxSpeed() before motion) </p>
+
+<p>Start velocity (0 = can be set to zero if not used) </p>
 
 </div>
 </div>
-<a id="aab43ff0b5bd9d07fba30139162bd379b" name="aab43ff0b5bd9d07fba30139162bd379b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab43ff0b5bd9d07fba30139162bd379b">&#9670;&#160;</a></span>vstart</h2>
+<a id="a827a60b313aed0097564cf981d43aa36" name="a827a60b313aed0097564cf981d43aa36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a827a60b313aed0097564cf981d43aa36">&#9670;&#160;</a></span>vstop</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float tmc51x0::RampConfig::vstart {0.0F}</td>
+          <td class="memname"><a class="el" href="structtmc51x0_1_1VelocityValue.html">VelocityValue</a> tmc51x0::RampConfig::vstop {10.0f, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427">Unit::Steps</a>}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Start velocity (unit specified by velocity_unit, 0 = can be set to zero if not used) </p>
-
-</div>
-</div>
-<a id="a48f57db857f1e08b274d86723a2c9630" name="a48f57db857f1e08b274d86723a2c9630"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48f57db857f1e08b274d86723a2c9630">&#9670;&#160;</a></span>vstop</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float tmc51x0::RampConfig::vstop {10.0F}</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Stop velocity (unit specified by velocity_unit, must be &gt;= VSTART, minimum 1 recommended) </p>
+<p>Stop velocity (must be &gt;= VSTART, minimum 1 recommended) </p>
 
 </div>
 </div>

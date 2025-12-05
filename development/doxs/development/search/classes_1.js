@@ -1,14 +1,9 @@
 var searchData=
 [
-  ['chopconf_5fregister_0',['CHOPCONF_Register',['../uniontmc51x0_1_1CHOPCONF__Register.html',1,'tmc51x0']]],
-  ['chopperconfig_1',['ChopperConfig',['../structtmc51x0_1_1ChopperConfig.html',1,'tmc51x0']]],
-  ['commandarg_2',['CommandArg',['../structCommandArg.html',1,'']]],
-  ['commandentry_3',['CommandEntry',['../structCommandEntry.html',1,'']]],
-  ['comminterface_4',['CommInterface',['../classtmc51x0_1_1CommInterface.html',1,'tmc51x0']]],
-  ['comminterface_3c_20esp32spi_20_3e_5',['CommInterface&lt; Esp32SPI &gt;',['../classtmc51x0_1_1CommInterface.html',1,'tmc51x0']]],
-  ['communication_6',['Communication',['../structtmc51x0_1_1TMC51x0_1_1Communication.html',1,'tmc51x0::TMC51x0']]],
-  ['configackpayload_7',['ConfigAckPayload',['../structConfigAckPayload.html',1,'']]],
-  ['configpayload_8',['ConfigPayload',['../structConfigPayload.html',1,'']]],
-  ['coolconf_5fregister_9',['COOLCONF_Register',['../uniontmc51x0_1_1COOLCONF__Register.html',1,'tmc51x0']]],
-  ['coolstepconfig_10',['CoolStepConfig',['../structtmc51x0_1_1CoolStepConfig.html',1,'tmc51x0']]]
+  ['backandforthmotion_0',['BackAndForthMotion',['../classBackAndForthMotion.html',1,'']]],
+  ['bmpheader_1',['BMPHeader',['../structImageLoader_1_1BMPHeader.html',1,'ImageLoader']]],
+  ['boardconfig_5ftmc51x0_5fbob_2',['BoardConfig_TMC51x0_BOB',['../structtmc51x0__test__config_1_1BoardConfig__TMC51x0__BOB.html',1,'tmc51x0_test_config']]],
+  ['boardconfig_5ftmc51x0_5feval_3',['BoardConfig_TMC51x0_EVAL',['../structtmc51x0__test__config_1_1BoardConfig__TMC51x0__EVAL.html',1,'tmc51x0_test_config']]],
+  ['boundsresult_4',['BoundsResult',['../structFatigueTest_1_1BoundsResult.html',1,'FatigueTest']]],
+  ['buttonevent_5',['ButtonEvent',['../structButtonEvent.html',1,'']]]
 ];

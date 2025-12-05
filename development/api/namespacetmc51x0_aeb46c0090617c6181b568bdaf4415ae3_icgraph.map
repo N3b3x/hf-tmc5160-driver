@@ -1,16 +1,11 @@
 <map id="tmc51x0::DegreesToSteps" name="tmc51x0::DegreesToSteps">
-<area shape="rect" id="Node000001" title="Convert degrees to steps." alt="" coords="893,33,1084,59"/>
-<area shape="rect" id="Node000002" href="$fatigue__test__encoder_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="411,5,498,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="929,32,845,17,748,10,652,9,498,17,498,12,651,4,748,5,846,11,930,27"/>
-<area shape="rect" id="Node000003" href="$classFatigueTest_1_1FatigueTestMotion.html#af8e6c53b8ceac2943e4ea919b745782f" title=" " alt="" coords="611,90,825,130"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="921,65,804,93,803,87,920,59"/>
-<area shape="rect" id="Node000007" href="$classFatigueTestMotion.html#a5d228e53872d7dd297ff2ebd834c12f1" title="Set local bounds in degrees from center (thread&#45;safe)" alt="" coords="591,26,845,66"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="880,49,846,49,846,43,880,43"/>
-<area shape="rect" id="Node000004" href="$classFatigueTest_1_1FatigueTestMotion.html#aedf901d32a07a14e2eba330abf2988e9" title=" " alt="" coords="367,90,543,130"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="597,113,543,113,543,107,597,107"/>
-<area shape="rect" id="Node000005" href="$test__unit_2main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" title=" " alt="" coords="140,97,319,123"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="353,113,319,113,319,107,353,107"/>
-<area shape="rect" id="Node000006" href="$test__unit_2main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,97,92,123"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="126,113,92,113,92,107,126,107"/>
-<area shape="poly" id="edge7_Node000007_Node000002" title=" " alt="" coords="577,34,498,25,499,20,577,28"/>
+<area shape="rect" id="Node000001" title="Convert degrees to steps." alt="" coords="853,13,1044,38"/>
+<area shape="rect" id="Node000002" href="$classFatigueTest_1_1FatigueTestMotion.html#af8e6c53b8ceac2943e4ea919b745782f" title=" " alt="" coords="591,5,805,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="840,28,805,28,805,23,840,23"/>
+<area shape="rect" id="Node000003" href="$classFatigueTest_1_1FatigueTestMotion.html#aedf901d32a07a14e2eba330abf2988e9" title=" " alt="" coords="367,5,543,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="577,28,543,28,543,23,577,23"/>
+<area shape="rect" id="Node000004" href="$test__unit_2main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" title=" " alt="" coords="140,13,319,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="353,28,319,28,319,23,353,23"/>
+<area shape="rect" id="Node000005" href="$test__unit_2main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,13,92,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="126,28,92,28,92,23,126,23"/>
 </map>

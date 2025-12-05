@@ -56,7 +56,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="namespacetmc51x0__test__config.html#acfa741fd46ae4ba5ed006fb0361cf188" target="_top" xlink:title="Complete pin configuration for all tests.">
+<g id="a_Node000004"><a xlink:href="namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" target="_top" xlink:title="Complete pin configuration for all tests.">
 <polygon fill="white" stroke="#666666" points="447,-67.5 325,-67.5 325,-37.5 447,-37.5 447,-67.5"/>
 <text text-anchor="start" x="333" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0_test_config</text>
 <text text-anchor="middle" x="386" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">::GetDefaultPinConfig</text>

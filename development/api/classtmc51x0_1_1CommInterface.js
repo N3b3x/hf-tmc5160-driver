@@ -8,14 +8,14 @@ var classtmc51x0_1_1CommInterface =
     [ "DelayMs", "classtmc51x0_1_1CommInterface.html#ae20e456634dc99586a02612061370ed2", null ],
     [ "DelayUs", "classtmc51x0_1_1CommInterface.html#ae3a5e93e4f03f7dce22dbe476f42e6ae", null ],
     [ "GetMode", "classtmc51x0_1_1CommInterface.html#ac43b4089ca441ddb3771c3395c2d2743", null ],
-    [ "GpioRead", "classtmc51x0_1_1CommInterface.html#ad7cdf03220af69a59d51e8d245494a87", null ],
-    [ "GpioSet", "classtmc51x0_1_1CommInterface.html#a12902425a6bab863031858b3526ab667", null ],
-    [ "GpioSetActive", "classtmc51x0_1_1CommInterface.html#a8ec8aa64f5f944ce15b44019787bfe81", null ],
-    [ "GpioSetInactive", "classtmc51x0_1_1CommInterface.html#ae72105adf55f177262eb66e39fa63f25", null ],
+    [ "GpioRead", "classtmc51x0_1_1CommInterface.html#a127e4c671836992f0bed63d86609e996", null ],
+    [ "GpioSet", "classtmc51x0_1_1CommInterface.html#ad16d15399e9208eabb772d6e518a5e98", null ],
+    [ "GpioSetActive", "classtmc51x0_1_1CommInterface.html#afe522498b22d4925f4df9e5988808c42", null ],
+    [ "GpioSetInactive", "classtmc51x0_1_1CommInterface.html#afd4d35dd88a88c284676d7f66d64e1c9", null ],
     [ "LogDebug", "classtmc51x0_1_1CommInterface.html#aa5358fda94e214d25d2800a5564416b3", null ],
     [ "operator=", "classtmc51x0_1_1CommInterface.html#ab5a248d6096af8a926505e55b08cfadd", null ],
     [ "operator=", "classtmc51x0_1_1CommInterface.html#aaa7569f6ef52dc8295f9d2dd5a1473a0", null ],
-    [ "ReadRegister", "classtmc51x0_1_1CommInterface.html#a254c935ef459aed86a980785b090f761", null ],
-    [ "SetClkFreq", "classtmc51x0_1_1CommInterface.html#a65bd3a4126258dcbb02be286cfda6f9a", null ],
-    [ "WriteRegister", "classtmc51x0_1_1CommInterface.html#af7d2c54c605957f53994b984dcd5e1b4", null ]
+    [ "ReadRegister", "classtmc51x0_1_1CommInterface.html#a1ad7ff22bfd2e0259405c840f0d93427", null ],
+    [ "SetClkFreq", "classtmc51x0_1_1CommInterface.html#ac066818679e165ce389c9d8b263f73ff", null ],
+    [ "WriteRegister", "classtmc51x0_1_1CommInterface.html#abe44583c7551eaf4044eac8ed39d5fd8", null ]
 ];

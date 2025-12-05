@@ -1,5 +1,5 @@
 <map id="tmc51x0_test_config::ConfigureDriverFromMotor_17HS4401S_Direct" name="tmc51x0_test_config::ConfigureDriverFromMotor_17HS4401S_Direct">
-<area shape="rect" id="Node000001" title="Helper function to populate DriverConfig from 17HS4401S direct drive motor configuration." alt="" coords="265,5,468,60"/>
-<area shape="rect" id="Node000002" href="$namespacetmc51x0__test__config.html#a01546734dfbb01aa89c186b7bdf20bab" title="Configure driver from test rig selection." alt="" coords="5,13,217,53"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="251,35,218,35,218,30,251,30"/>
+<area shape="rect" id="Node000001" title="Helper function to populate DriverConfig from 17HS4401S direct drive motor configuration." alt="" coords="264,13,467,67"/>
+<area shape="rect" id="Node000002" href="$structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__CORE__DRIVER_01_4.html#ad9b0f8061cc5336afdc5168c9ab0e82e" title="Configure driver from this test rig&#39;s configuration." alt="" coords="5,5,216,75"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,43,216,43,216,37,250,37"/>
 </map>

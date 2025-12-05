@@ -1,0 +1,13 @@
+<map id="Esp32SPI::EnsureInitialized" name="Esp32SPI::EnsureInitialized">
+<area shape="rect" id="Node000001" title="Ensure SPI interface is initialized, initializing if necessary." alt="" coords="5,31,203,56"/>
+<area shape="rect" id="Node000002" href="$classEsp32SPI.html#a85d11c001a36b137e4d29ced49983d20" title="Initialize the SPI interface." alt="" coords="251,31,396,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,41,237,41,237,46,203,46"/>
+<area shape="rect" id="Node000003" href="$classEsp32SPI.html#a434e1cfd74165d1e6fac1a940d1d513a" title="Set GPIO pin state." alt="" coords="444,31,584,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="396,41,430,41,430,46,396,46"/>
+<area shape="rect" id="Node000004" href="$classEsp32SPI.html#a80cfec36b3cd69c2c7b6c38df0a64e72" title="Get pin mapping for a TMC51x0 control pin." alt="" coords="642,5,830,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="584,33,628,28,629,33,584,38"/>
+<area shape="rect" id="Node000005" href="$classEsp32SPI.html#a842da8d3bf354432cfbe134a148ed1ee" title="Convert signal state to physical GPIO level." alt="" coords="632,55,840,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="584,48,619,52,618,57,584,54"/>
+<area shape="rect" id="Node000006" href="$structtmc51x0_1_1PinActiveLevels.html#a68fd62c73fac36a16577e9fa25b952dd" title="Get active level for a specific pin." alt="" coords="888,47,1079,87"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="840,65,874,65,874,70,840,70"/>
+</map>

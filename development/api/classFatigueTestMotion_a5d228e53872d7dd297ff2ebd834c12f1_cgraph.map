@@ -1,9 +1,5 @@
 <map id="FatigueTestMotion::SetLocalBoundsFromCenterDegrees" name="FatigueTestMotion::SetLocalBoundsFromCenterDegrees">
-<area shape="rect" id="Node000001" title="Set local bounds in degrees from center (thread&#45;safe)" alt="" coords="5,55,260,95"/>
-<area shape="rect" id="Node000002" href="$namespacetmc51x0.html#aeb46c0090617c6181b568bdaf4415ae3" title="Convert degrees to steps." alt="" coords="308,5,499,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,53,329,31,330,36,228,58"/>
-<area shape="rect" id="Node000003" href="$classFatigueTestMotion.html#af8e6c53b8ceac2943e4ea919b745782f" title="Recalculate trajectory parameters based on frequency, bounds, and dwell." alt="" coords="322,55,485,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="260,73,308,73,308,78,260,78"/>
-<area shape="rect" id="Node000004" href="$namespacetmc51x0.html#aa654a36849533f2f559d3e113176bf35" title="Convert steps to degrees." alt="" coords="308,120,499,145"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="228,93,330,115,329,120,227,98"/>
+<area shape="rect" id="Node000001" title="Set local bounds in degrees from center (thread&#45;safe)" alt="" coords="5,5,260,45"/>
+<area shape="rect" id="Node000002" href="$classFatigueTestMotion.html#af8e6c53b8ceac2943e4ea919b745782f" title="Recalculate trajectory parameters based on frequency, bounds, and dwell All calculations in degrees,..." alt="" coords="308,5,471,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="260,23,294,23,294,28,260,28"/>
 </map>

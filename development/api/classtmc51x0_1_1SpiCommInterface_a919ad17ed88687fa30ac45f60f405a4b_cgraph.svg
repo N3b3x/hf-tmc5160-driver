@@ -59,7 +59,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classtmc51x0_1_1SpiCommInterface.html#a86c5faa8a8e88884c16a3a2b1b2512e7" target="_top" xlink:title="Low&#45;level SPI transfer for register read/write.">
+<g id="a_Node000004"><a xlink:href="classtmc51x0_1_1SpiCommInterface.html#a20861cc797a4153c02d34cebf66af7d7" target="_top" xlink:title="Low&#45;level SPI transfer for register read/write.">
 <polygon fill="white" stroke="#666666" points="348,-30 192,-30 192,0 348,0 348,-30"/>
 <text text-anchor="start" x="200" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::SpiCommInterface</text>
 <text text-anchor="middle" x="270" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::SpiTransfer</text>
