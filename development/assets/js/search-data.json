@@ -1,7 +1,7 @@
 {"0": {
     "doc": "HardFOC TMC51x0 Driver (TMC5130 & TMC5160)",
     "title": "HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)",
-    "content": "C++17 hardware-agnostic driver for Trinamic TMC51x0 stepper motor controllers (TMC5130 &amp; TMC5160) with advanced features . ",
+    "content": "(Work In Progress) C++17 hardware-agnostic driver for Trinamic TMC51x0 stepper motor controllers (TMC5130 &amp; TMC5160) with advanced features . ",
     "url": "/hf-tmc5160-driver/development/#hf-tmc51x0-driver-tmc5130--tmc5160",
     
     "relUrl": "/#hf-tmc51x0-driver-tmc5130--tmc5160"
