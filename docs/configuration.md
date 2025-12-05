@@ -583,7 +583,7 @@ The driver selects DRVSTRENGTH based on MOSFET Miller charge:
 - **DRVSTRENGTH=2**: Medium (for medium MOSFETs ~30nC)
 - **DRVSTRENGTH=3**: Strong (for large MOSFETs >50nC)
 
-See [`inc/tmc51x0_motor_calc.hpp`](../inc/tmc51x0_motor_calc.hpp) for conversion function implementations.
+See [`inc/features/tmc51x0_motor_calc.hpp`](../inc/features/tmc51x0_motor_calc.hpp) for conversion function implementations.
 
 ## Recommended Settings
 

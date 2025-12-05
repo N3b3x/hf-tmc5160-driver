@@ -15,9 +15,9 @@ Complete reference documentation for all public methods and types in the TMC51x0
 
 - **Main Header**: [`inc/tmc51x0.hpp`](../inc/tmc51x0.hpp)
 - **Communication Interface**: [`inc/tmc51x0_comm_interface.hpp`](../inc/tmc51x0_comm_interface.hpp)
-- **Registers**: [`inc/tmc51x0_registers.hpp`](../inc/tmc51x0_registers.hpp)
+- **Registers**: [`inc/registers/tmc51x0_registers.hpp`](../inc/registers/tmc51x0_registers.hpp)
 - **Types**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
-- **Unit Conversions**: [`inc/tmc51x0_units.hpp`](../inc/tmc51x0_units.hpp)
+- **Unit Conversions**: [`inc/features/tmc51x0_units.hpp`](../inc/features/tmc51x0_units.hpp)
 
 ## TMC51x0 Class
 
@@ -1251,7 +1251,7 @@ Ramp generator configuration structure for two-phase acceleration and decelerati
 
 Free functions for converting between physical units and driver steps.
 
-**Location**: [`inc/tmc51x0_units.hpp`](../inc/tmc51x0_units.hpp)
+**Location**: [`inc/features/tmc51x0_units.hpp`](../inc/features/tmc51x0_units.hpp)
 
 ### Position Conversions
 
@@ -1590,7 +1590,7 @@ if (reached && reached.Value()) {  // Check result first!
 
 High-level manager for multiple TMC51x0 drivers in a SPI daisy-chain configuration.
 
-**Location**: [`inc/tmc51x0_daisy_chain.hpp`](../inc/tmc51x0_daisy_chain.hpp)
+**Location**: [`inc/features/tmc51x0_daisy_chain.hpp`](../inc/features/tmc51x0_daisy_chain.hpp)
 
 #### Constructor
 
@@ -1636,7 +1636,7 @@ if (!pos_result) {
 
 High-level manager for multiple TMC51x0 drivers in a UART multi-node configuration.
 
-**Location**: [`inc/tmc51x0_multi_node.hpp`](../inc/tmc51x0_multi_node.hpp)
+**Location**: [`inc/features/tmc51x0_multi_node.hpp`](../inc/features/tmc51x0_multi_node.hpp)
 
 #### Constructor
 
