@@ -111,60 +111,60 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a529ef99d1f3750e785fc0f730f7264b3" id="r_a529ef99d1f3750e785fc0f730f7264b3"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a529ef99d1f3750e785fc0f730f7264b3">bytes</a> [8]</td></tr>
 <tr class="memdesc:a529ef99d1f3750e785fc0f730f7264b3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="uniontmc51x0_1_1UartFrame_1_1Frame.html" title="Union for accessing UART frames in different ways.">Frame</a> as 8 bytes (maximum size)  <br /></td></tr>
 <tr class="separator:a529ef99d1f3750e785fc0f730f7264b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af96317e8a0551d318d3a6cb0da471f65" id="r_af96317e8a0551d318d3a6cb0da471f65"><td class="memItemLeft" >struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memitem:a2b153c130eb5ae78d8fc7fd5e8066072" id="r_a2b153c130eb5ae78d8fc7fd5e8066072"><td class="memItemLeft" >struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d00ba29b85232a8d572b8f9be5f2ccb" id="r_a1d00ba29b85232a8d572b8f9be5f2ccb"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a8a7f5edd1c95597b8887aa12353d2ab7">sync_reserved</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a1d00ba29b85232a8d572b8f9be5f2ccb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 0: Sync (0x05)  <a href="#a8a7f5edd1c95597b8887aa12353d2ab7">More...</a><br /></td></tr>
-<tr class="separator:a1d00ba29b85232a8d572b8f9be5f2ccb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa76bc8886ef1555b24f3250cc8482391" id="r_aa76bc8886ef1555b24f3250cc8482391"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a33d27f1f0203472b2a5befa0922eef25">node_addr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:aa76bc8886ef1555b24f3250cc8482391"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 1: Node Address.  <a href="#a33d27f1f0203472b2a5befa0922eef25">More...</a><br /></td></tr>
-<tr class="separator:aa76bc8886ef1555b24f3250cc8482391"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a674736d8d37dcd16b5c3f6b694fccbb4" id="r_a674736d8d37dcd16b5c3f6b694fccbb4"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#adb1b98bdb6be2e4a358c47c54791c911">rw_address</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a674736d8d37dcd16b5c3f6b694fccbb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 2: RW bit (1) + 7-bit register address.  <a href="#adb1b98bdb6be2e4a358c47c54791c911">More...</a><br /></td></tr>
-<tr class="separator:a674736d8d37dcd16b5c3f6b694fccbb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9237e3bc7207e0fa8cee29b62afd9ba2" id="r_a9237e3bc7207e0fa8cee29b62afd9ba2"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a0a2bffd63c33f4fbc53a092282ff7304">data_bytes</a> [4]&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a9237e3bc7207e0fa8cee29b62afd9ba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bytes 3-6: 32-bit data (MSB-first)  <a href="#a0a2bffd63c33f4fbc53a092282ff7304">More...</a><br /></td></tr>
-<tr class="separator:a9237e3bc7207e0fa8cee29b62afd9ba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af31ef2d15e865de95d8f4fbde5b6d6c7" id="r_af31ef2d15e865de95d8f4fbde5b6d6c7"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#af79e26f0f5284ea8b7b26e1c774d34d6">crc</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:af31ef2d15e865de95d8f4fbde5b6d6c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 7: CRC8 checksum.  <a href="#af79e26f0f5284ea8b7b26e1c774d34d6">More...</a><br /></td></tr>
-<tr class="separator:af31ef2d15e865de95d8f4fbde5b6d6c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af96317e8a0551d318d3a6cb0da471f65" id="r_af96317e8a0551d318d3a6cb0da471f65"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af96317e8a0551d318d3a6cb0da471f65">write_fields</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:af96317e8a0551d318d3a6cb0da471f65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72f67b7cb3745dbd5b7356699784c375" id="r_a72f67b7cb3745dbd5b7356699784c375"><td class="memItemLeft" >struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memitem:aa6ebc22383336d18d20b58de15df81ae" id="r_aa6ebc22383336d18d20b58de15df81ae"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a8a7f5edd1c95597b8887aa12353d2ab7">sync_reserved</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:aa6ebc22383336d18d20b58de15df81ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 0: Sync (0x05)  <a href="#a8a7f5edd1c95597b8887aa12353d2ab7">More...</a><br /></td></tr>
+<tr class="separator:aa6ebc22383336d18d20b58de15df81ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade6e88716d18df51d1410db71dea7fd1" id="r_ade6e88716d18df51d1410db71dea7fd1"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a33d27f1f0203472b2a5befa0922eef25">node_addr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:ade6e88716d18df51d1410db71dea7fd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 1: Node Address.  <a href="#a33d27f1f0203472b2a5befa0922eef25">More...</a><br /></td></tr>
+<tr class="separator:ade6e88716d18df51d1410db71dea7fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ba028f01296769ac0603e372dfb721b" id="r_a4ba028f01296769ac0603e372dfb721b"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#adb1b98bdb6be2e4a358c47c54791c911">rw_address</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a4ba028f01296769ac0603e372dfb721b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 2: RW bit (1) + 7-bit register address.  <a href="#adb1b98bdb6be2e4a358c47c54791c911">More...</a><br /></td></tr>
+<tr class="separator:a4ba028f01296769ac0603e372dfb721b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2024b4f8e05d0313cc59a681dda383f" id="r_ac2024b4f8e05d0313cc59a681dda383f"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a0a2bffd63c33f4fbc53a092282ff7304">data_bytes</a> [4]&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:ac2024b4f8e05d0313cc59a681dda383f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bytes 3-6: 32-bit data (MSB-first)  <a href="#a0a2bffd63c33f4fbc53a092282ff7304">More...</a><br /></td></tr>
+<tr class="separator:ac2024b4f8e05d0313cc59a681dda383f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d9818b61c15a98916a59998c606cf09" id="r_a8d9818b61c15a98916a59998c606cf09"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#af79e26f0f5284ea8b7b26e1c774d34d6">crc</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a8d9818b61c15a98916a59998c606cf09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 7: CRC8 checksum.  <a href="#af79e26f0f5284ea8b7b26e1c774d34d6">More...</a><br /></td></tr>
+<tr class="separator:a8d9818b61c15a98916a59998c606cf09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b153c130eb5ae78d8fc7fd5e8066072" id="r_a2b153c130eb5ae78d8fc7fd5e8066072"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b153c130eb5ae78d8fc7fd5e8066072">write_fields</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a2b153c130eb5ae78d8fc7fd5e8066072"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4acd9563b580d80fad9c9b0a595ae96" id="r_af4acd9563b580d80fad9c9b0a595ae96"><td class="memItemLeft" >struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefb2ed64cd4cece4da5f61512494af19" id="r_aefb2ed64cd4cece4da5f61512494af19"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a8a7f5edd1c95597b8887aa12353d2ab7">sync_reserved</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:aefb2ed64cd4cece4da5f61512494af19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 0: Sync (0x05)  <a href="#a8a7f5edd1c95597b8887aa12353d2ab7">More...</a><br /></td></tr>
-<tr class="separator:aefb2ed64cd4cece4da5f61512494af19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6dce1bced66cfe2f376fbc94b939072b" id="r_a6dce1bced66cfe2f376fbc94b939072b"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a33d27f1f0203472b2a5befa0922eef25">node_addr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a6dce1bced66cfe2f376fbc94b939072b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 1: Node Address.  <a href="#a33d27f1f0203472b2a5befa0922eef25">More...</a><br /></td></tr>
-<tr class="separator:a6dce1bced66cfe2f376fbc94b939072b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c96d4857026db73b2147915dbe434aa" id="r_a7c96d4857026db73b2147915dbe434aa"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#adb1b98bdb6be2e4a358c47c54791c911">rw_address</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a7c96d4857026db73b2147915dbe434aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 2: RW bit (0) + 7-bit register address.  <a href="#adb1b98bdb6be2e4a358c47c54791c911">More...</a><br /></td></tr>
-<tr class="separator:a7c96d4857026db73b2147915dbe434aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b32ca028ff2c9ef15f3b9fa75eefb80" id="r_a4b32ca028ff2c9ef15f3b9fa75eefb80"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#af79e26f0f5284ea8b7b26e1c774d34d6">crc</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a4b32ca028ff2c9ef15f3b9fa75eefb80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 3: CRC8 checksum.  <a href="#af79e26f0f5284ea8b7b26e1c774d34d6">More...</a><br /></td></tr>
-<tr class="separator:a4b32ca028ff2c9ef15f3b9fa75eefb80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72f67b7cb3745dbd5b7356699784c375" id="r_a72f67b7cb3745dbd5b7356699784c375"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72f67b7cb3745dbd5b7356699784c375">read_request_fields</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:a72f67b7cb3745dbd5b7356699784c375"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16ae8fd075a5265c1eeb4e52fc7809bc" id="r_a16ae8fd075a5265c1eeb4e52fc7809bc"><td class="memItemLeft" >struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memitem:a9524fb34732a2fcb7dc507090ec5980b" id="r_a9524fb34732a2fcb7dc507090ec5980b"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a8a7f5edd1c95597b8887aa12353d2ab7">sync_reserved</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a9524fb34732a2fcb7dc507090ec5980b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 0: Sync (0x05)  <a href="#a8a7f5edd1c95597b8887aa12353d2ab7">More...</a><br /></td></tr>
+<tr class="separator:a9524fb34732a2fcb7dc507090ec5980b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0da301dcee000a59a7e04744b2517a41" id="r_a0da301dcee000a59a7e04744b2517a41"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a33d27f1f0203472b2a5befa0922eef25">node_addr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a0da301dcee000a59a7e04744b2517a41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 1: Node Address.  <a href="#a33d27f1f0203472b2a5befa0922eef25">More...</a><br /></td></tr>
+<tr class="separator:a0da301dcee000a59a7e04744b2517a41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab71a552bbb5c8f38866d78aa74da2171" id="r_ab71a552bbb5c8f38866d78aa74da2171"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#adb1b98bdb6be2e4a358c47c54791c911">rw_address</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:ab71a552bbb5c8f38866d78aa74da2171"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 2: RW bit (0) + 7-bit register address.  <a href="#adb1b98bdb6be2e4a358c47c54791c911">More...</a><br /></td></tr>
+<tr class="separator:ab71a552bbb5c8f38866d78aa74da2171"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6025352104f8e24407e0e50f14e52973" id="r_a6025352104f8e24407e0e50f14e52973"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#af79e26f0f5284ea8b7b26e1c774d34d6">crc</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a6025352104f8e24407e0e50f14e52973"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 3: CRC8 checksum.  <a href="#af79e26f0f5284ea8b7b26e1c774d34d6">More...</a><br /></td></tr>
+<tr class="separator:a6025352104f8e24407e0e50f14e52973"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4acd9563b580d80fad9c9b0a595ae96" id="r_af4acd9563b580d80fad9c9b0a595ae96"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4acd9563b580d80fad9c9b0a595ae96">read_request_fields</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:af4acd9563b580d80fad9c9b0a595ae96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15266b25cf6b3ef299eed253a7d115fb" id="r_a15266b25cf6b3ef299eed253a7d115fb"><td class="memItemLeft" >struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3397a8b497aedbadd8ff44b8f2f80723" id="r_a3397a8b497aedbadd8ff44b8f2f80723"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a8a7f5edd1c95597b8887aa12353d2ab7">sync_reserved</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a3397a8b497aedbadd8ff44b8f2f80723"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 0: Sync (0x05)  <a href="#a8a7f5edd1c95597b8887aa12353d2ab7">More...</a><br /></td></tr>
-<tr class="separator:a3397a8b497aedbadd8ff44b8f2f80723"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a667dac3256e92290c3cdae993f0e95b7" id="r_a667dac3256e92290c3cdae993f0e95b7"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#aa2cfd61f5603747ba44e0fa46ec24ed5">master_addr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a667dac3256e92290c3cdae993f0e95b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 1: Master Address (0xFF)  <a href="#aa2cfd61f5603747ba44e0fa46ec24ed5">More...</a><br /></td></tr>
-<tr class="separator:a667dac3256e92290c3cdae993f0e95b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6871722dd9c5222c02b25bf630fe9c9" id="r_af6871722dd9c5222c02b25bf630fe9c9"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a03bcaf93ded602d2a7ca2d6f7c78f5e0">reg_addr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:af6871722dd9c5222c02b25bf630fe9c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 2: Register Address (0x00)  <a href="#a03bcaf93ded602d2a7ca2d6f7c78f5e0">More...</a><br /></td></tr>
-<tr class="separator:af6871722dd9c5222c02b25bf630fe9c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13463685cc3f0780090bf21f6f63b8f3" id="r_a13463685cc3f0780090bf21f6f63b8f3"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a0a2bffd63c33f4fbc53a092282ff7304">data_bytes</a> [4]&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a13463685cc3f0780090bf21f6f63b8f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bytes 3-6: 32-bit data (MSB-first)  <a href="#a0a2bffd63c33f4fbc53a092282ff7304">More...</a><br /></td></tr>
-<tr class="separator:a13463685cc3f0780090bf21f6f63b8f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a435ad79a9b409249b2f24853547afc" id="r_a7a435ad79a9b409249b2f24853547afc"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#af79e26f0f5284ea8b7b26e1c774d34d6">crc</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a7a435ad79a9b409249b2f24853547afc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 7: CRC8 checksum.  <a href="#af79e26f0f5284ea8b7b26e1c774d34d6">More...</a><br /></td></tr>
-<tr class="separator:a7a435ad79a9b409249b2f24853547afc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16ae8fd075a5265c1eeb4e52fc7809bc" id="r_a16ae8fd075a5265c1eeb4e52fc7809bc"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a16ae8fd075a5265c1eeb4e52fc7809bc">read_reply_fields</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:a16ae8fd075a5265c1eeb4e52fc7809bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af39a62d3c689fb6bf7b26ffefcbce7e5" id="r_af39a62d3c689fb6bf7b26ffefcbce7e5"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a8a7f5edd1c95597b8887aa12353d2ab7">sync_reserved</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:af39a62d3c689fb6bf7b26ffefcbce7e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 0: Sync (0x05)  <a href="#a8a7f5edd1c95597b8887aa12353d2ab7">More...</a><br /></td></tr>
+<tr class="separator:af39a62d3c689fb6bf7b26ffefcbce7e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac505c4d7061e6a2cd87cf246677c5ca7" id="r_ac505c4d7061e6a2cd87cf246677c5ca7"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#aa2cfd61f5603747ba44e0fa46ec24ed5">master_addr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:ac505c4d7061e6a2cd87cf246677c5ca7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 1: Master Address (0xFF)  <a href="#aa2cfd61f5603747ba44e0fa46ec24ed5">More...</a><br /></td></tr>
+<tr class="separator:ac505c4d7061e6a2cd87cf246677c5ca7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d71aa4dc384f941494cde22efd13272" id="r_a2d71aa4dc384f941494cde22efd13272"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a03bcaf93ded602d2a7ca2d6f7c78f5e0">reg_addr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a2d71aa4dc384f941494cde22efd13272"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 2: Register Address (0x00)  <a href="#a03bcaf93ded602d2a7ca2d6f7c78f5e0">More...</a><br /></td></tr>
+<tr class="separator:a2d71aa4dc384f941494cde22efd13272"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ef22f6248cf6d27ae778f0df52e707a" id="r_a4ef22f6248cf6d27ae778f0df52e707a"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a0a2bffd63c33f4fbc53a092282ff7304">data_bytes</a> [4]&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a4ef22f6248cf6d27ae778f0df52e707a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bytes 3-6: 32-bit data (MSB-first)  <a href="#a0a2bffd63c33f4fbc53a092282ff7304">More...</a><br /></td></tr>
+<tr class="separator:a4ef22f6248cf6d27ae778f0df52e707a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af23cb233442f06af8ae8a6647b1d9d5b" id="r_af23cb233442f06af8ae8a6647b1d9d5b"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#af79e26f0f5284ea8b7b26e1c774d34d6">crc</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:af23cb233442f06af8ae8a6647b1d9d5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte 7: CRC8 checksum.  <a href="#af79e26f0f5284ea8b7b26e1c774d34d6">More...</a><br /></td></tr>
+<tr class="separator:af23cb233442f06af8ae8a6647b1d9d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15266b25cf6b3ef299eed253a7d115fb" id="r_a15266b25cf6b3ef299eed253a7d115fb"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15266b25cf6b3ef299eed253a7d115fb">read_reply_fields</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a15266b25cf6b3ef299eed253a7d115fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Union for accessing UART frames in different ways. </p>
@@ -250,8 +250,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a16ae8fd075a5265c1eeb4e52fc7809bc" name="a16ae8fd075a5265c1eeb4e52fc7809bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16ae8fd075a5265c1eeb4e52fc7809bc">&#9670;&#160;</a></span>[struct]</h2>
+<a id="a15266b25cf6b3ef299eed253a7d115fb" name="a15266b25cf6b3ef299eed253a7d115fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15266b25cf6b3ef299eed253a7d115fb">&#9670;&#160;</a></span>[struct]</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -264,8 +264,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a72f67b7cb3745dbd5b7356699784c375" name="a72f67b7cb3745dbd5b7356699784c375"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72f67b7cb3745dbd5b7356699784c375">&#9670;&#160;</a></span>[struct]</h2>
+<a id="af4acd9563b580d80fad9c9b0a595ae96" name="af4acd9563b580d80fad9c9b0a595ae96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4acd9563b580d80fad9c9b0a595ae96">&#9670;&#160;</a></span>[struct]</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -327,8 +327,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="af96317e8a0551d318d3a6cb0da471f65" name="af96317e8a0551d318d3a6cb0da471f65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af96317e8a0551d318d3a6cb0da471f65">&#9670;&#160;</a></span>[struct]</h2>
+<a id="a2b153c130eb5ae78d8fc7fd5e8066072" name="a2b153c130eb5ae78d8fc7fd5e8066072"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b153c130eb5ae78d8fc7fd5e8066072">&#9670;&#160;</a></span>[struct]</h2>
 
 <div class="memitem">
 <div class="memproto">

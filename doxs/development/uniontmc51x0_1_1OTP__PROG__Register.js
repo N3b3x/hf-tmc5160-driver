@@ -1,6 +1,6 @@
 var uniontmc51x0_1_1OTP__PROG__Register =
 [
-    [ "bits", "uniontmc51x0_1_1OTP__PROG__Register.html#a918746f084266656d655bd97fb4f9d24", null ],
+    [ "bits", "uniontmc51x0_1_1OTP__PROG__Register.html#aa88cf488f167ea0f5ec1cd4e53c8ca1a", null ],
     [ "otpbit", "uniontmc51x0_1_1OTP__PROG__Register.html#a94f75c4d6002417a0f91b27fac4212c9", null ],
     [ "otpbyte", "uniontmc51x0_1_1OTP__PROG__Register.html#ac6e8979447e2434da3e1046bc6a697e2", null ],
     [ "otpmagic", "uniontmc51x0_1_1OTP__PROG__Register.html#a4d18032c01766c32e32fe91f94b87cd5", null ],

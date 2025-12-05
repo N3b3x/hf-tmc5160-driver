@@ -177,10 +177,10 @@
 <!-- Node9 -->
 <g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_Node000009"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#ae3c5e2f70400a51fb7efad8829bd8ba8" target="_top" xlink:title="Set hold current with user&#45;friendly units.">
+<g id="a_Node000009"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#a3a1e4201a3e535eb36cd6c6debc25890" target="_top" xlink:title="Set hold current value.">
 <polygon fill="white" stroke="#666666" points="534.5,-462 403.5,-462 403.5,-432 534.5,-432 534.5,-462"/>
 <text text-anchor="start" x="411.5" y="-450" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::ConfigBuilder</text>
-<text text-anchor="middle" x="469" y="-439" font-family="Helvetica,sans-Serif" font-size="10.00">::WithHoldCurrent</text>
+<text text-anchor="middle" x="469" y="-439" font-family="Helvetica,sans-Serif" font-size="10.00">::WithHoldCurrentMa</text>
 </a>
 </g>
 </g>
@@ -272,10 +272,10 @@
 <!-- Node14 -->
 <g id="Node000014" class="node">
 <title>Node14</title>
-<g id="a_Node000014"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#a01eaf1530e9c6850a27d5bbced56d1b1" target="_top" xlink:title="Configure motor specifications with user&#45;friendly units.">
+<g id="a_Node000014"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#a5b99fb555b3565d387bc1f5e4792578c" target="_top" xlink:title="Configure motor specifications.">
 <polygon fill="white" stroke="#666666" points="534.5,-222 403.5,-222 403.5,-192 534.5,-192 534.5,-222"/>
 <text text-anchor="start" x="411.5" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::ConfigBuilder</text>
-<text text-anchor="middle" x="469" y="-199" font-family="Helvetica,sans-Serif" font-size="10.00">::WithMotor</text>
+<text text-anchor="middle" x="469" y="-199" font-family="Helvetica,sans-Serif" font-size="10.00">::WithMotorMa</text>
 </a>
 </g>
 </g>
@@ -329,10 +329,10 @@
 <!-- Node17 -->
 <g id="Node000017" class="node">
 <title>Node17</title>
-<g id="a_Node000017"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#a9fdc143bb2cbf06a93f3d25f6ea9936e" target="_top" xlink:title="Set run current with user&#45;friendly units.">
+<g id="a_Node000017"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#abf0a33651a724a8517a99f78f12dbb9c" target="_top" xlink:title="Set run current value.">
 <polygon fill="white" stroke="#666666" points="534.5,-78 403.5,-78 403.5,-48 534.5,-48 534.5,-78"/>
 <text text-anchor="start" x="411.5" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::ConfigBuilder</text>
-<text text-anchor="middle" x="469" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">::WithRunCurrent</text>
+<text text-anchor="middle" x="469" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">::WithRunCurrentMa</text>
 </a>
 </g>
 </g>
@@ -500,10 +500,10 @@
 <!-- Node26 -->
 <g id="Node000026" class="node">
 <title>Node26</title>
-<g id="a_Node000026"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#aa478c5032b159c827226b46da2948e51" target="_top" xlink:title="Set supply voltage with user&#45;friendly units.">
+<g id="a_Node000026"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#aed8119b0d75c07b3d4e0e491b4f34482" target="_top" xlink:title="Set supply voltage value.">
 <polygon fill="white" stroke="#666666" points="534.5,-894 403.5,-894 403.5,-864 534.5,-864 534.5,-894"/>
 <text text-anchor="start" x="411.5" y="-882" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::ConfigBuilder</text>
-<text text-anchor="middle" x="469" y="-871" font-family="Helvetica,sans-Serif" font-size="10.00">::WithSupplyVoltage</text>
+<text text-anchor="middle" x="469" y="-871" font-family="Helvetica,sans-Serif" font-size="10.00">::WithSupplyVoltageMv</text>
 </a>
 </g>
 </g>
@@ -519,10 +519,10 @@
 <!-- Node27 -->
 <g id="Node000027" class="node">
 <title>Node27</title>
-<g id="a_Node000027"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#a2c333f94116c662ca6deafc9805b63ba" target="_top" xlink:title="Set winding inductance with user&#45;friendly units.">
-<polygon fill="white" stroke="#666666" points="538,-846 400,-846 400,-816 538,-816 538,-846"/>
-<text text-anchor="start" x="408" y="-834" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::ConfigBuilder</text>
-<text text-anchor="middle" x="469" y="-823" font-family="Helvetica,sans-Serif" font-size="10.00">::WithWindingInductance</text>
+<g id="a_Node000027"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#a369820f97c2ef4a9c9e72d97ce7955f5" target="_top" xlink:title="Set winding inductance value.">
+<polygon fill="white" stroke="#666666" points="545.5,-846 392.5,-846 392.5,-816 545.5,-816 545.5,-846"/>
+<text text-anchor="start" x="400.5" y="-834" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::ConfigBuilder</text>
+<text text-anchor="middle" x="469" y="-823" font-family="Helvetica,sans-Serif" font-size="10.00">::WithWindingInductanceMh</text>
 </a>
 </g>
 </g>
@@ -530,18 +530,18 @@
 <g id="edge26_Node000002_Node000027" class="edge">
 <title>Node2&#45;&gt;Node27</title>
 <g id="a_edge26_Node000002_Node000027"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M335.65,-653.7C339.45,-656.43 342.96,-659.51 346,-663 389.38,-712.7 335.99,-759.72 382,-807 384.7,-809.77 387.69,-812.23 390.89,-814.42"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="389.38,-817.59 399.79,-819.57 392.89,-811.53 389.38,-817.59"/>
+<path fill="none" stroke="#63b8ff" d="M335.65,-653.7C339.45,-656.43 342.96,-659.51 346,-663 389.38,-712.7 335.99,-759.72 382,-807 382.94,-807.97 383.92,-808.9 384.93,-809.79"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="383.13,-812.81 393.24,-815.95 387.29,-807.19 383.13,-812.81"/>
 </a>
 </g>
 </g>
 <!-- Node28 -->
 <g id="Node000028" class="node">
 <title>Node28</title>
-<g id="a_Node000028"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#a20ba7669989e1a8cc0c891193324f3c7" target="_top" xlink:title="Set winding resistance with user&#45;friendly units.">
-<polygon fill="white" stroke="#666666" points="538,-798 400,-798 400,-768 538,-768 538,-798"/>
-<text text-anchor="start" x="408" y="-786" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::ConfigBuilder</text>
-<text text-anchor="middle" x="469" y="-775" font-family="Helvetica,sans-Serif" font-size="10.00">::WithWindingResistance</text>
+<g id="a_Node000028"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#ac243cdcc3bf8c19238f620634f9749cf" target="_top" xlink:title="Set winding resistance value.">
+<polygon fill="white" stroke="#666666" points="553.5,-798 384.5,-798 384.5,-768 553.5,-768 553.5,-798"/>
+<text text-anchor="start" x="392.5" y="-786" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::ConfigBuilder</text>
+<text text-anchor="middle" x="469" y="-775" font-family="Helvetica,sans-Serif" font-size="10.00">::WithWindingResistanceMohm</text>
 </a>
 </g>
 </g>
@@ -549,8 +549,8 @@
 <g id="edge27_Node000002_Node000028" class="edge">
 <title>Node2&#45;&gt;Node28</title>
 <g id="a_edge27_Node000002_Node000028"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M334.5,-653.63C338.67,-656.38 342.57,-659.49 346,-663 377.87,-695.57 348.41,-728.2 382,-759 384.79,-761.56 387.83,-763.85 391.05,-765.9"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="389.49,-769.03 399.94,-770.77 392.86,-762.9 389.49,-769.03"/>
+<path fill="none" stroke="#63b8ff" d="M334.5,-653.63C338.67,-656.38 342.57,-659.49 346,-663 377.87,-695.57 348.41,-728.2 382,-759 383.3,-760.19 384.65,-761.32 386.04,-762.39"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="384.22,-765.39 394.5,-767.96 388.07,-759.54 384.22,-765.39"/>
 </a>
 </g>
 </g>

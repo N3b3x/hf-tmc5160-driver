@@ -1,6 +1,6 @@
 var uniontmc51x0_1_1IHOLD__IRUN__Register =
 [
-    [ "bits", "uniontmc51x0_1_1IHOLD__IRUN__Register.html#a0f4535d3a4ab84840207c2a9b88bd278", null ],
+    [ "bits", "uniontmc51x0_1_1IHOLD__IRUN__Register.html#ae8ae3037c1a8e6e288b0f4fc5b2396fc", null ],
     [ "ihold", "uniontmc51x0_1_1IHOLD__IRUN__Register.html#a73a7ee7c88046fc58b014b68b4dc98ad", null ],
     [ "iholddelay", "uniontmc51x0_1_1IHOLD__IRUN__Register.html#acd2e30dcd56a9dd15a6445c65eb48f22", null ],
     [ "irun", "uniontmc51x0_1_1IHOLD__IRUN__Register.html#a871673b7240cc6acf9f1bb572f931a95", null ],

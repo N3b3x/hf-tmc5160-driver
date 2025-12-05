@@ -176,8 +176,20 @@ var tmc51x0__types_8hpp =
       [ "RevPerSec", "tmc51x0__types_8hpp.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8", null ]
     ] ],
     [ "DEFAULT_F_CLK", "tmc51x0__types_8hpp.html#af020190f0c72ab945f4ac22350e6fa4a", null ],
+    [ "DEGREES_PER_REV", "tmc51x0__types_8hpp.html#acb6742f022495d32d5335c6b5b67a97a", null ],
+    [ "ENC_BINARY_MULTIPLIER", "tmc51x0__types_8hpp.html#afee6b0ffb118e92cfc104f5fbddb532d", null ],
+    [ "ENC_DECIMAL_MULTIPLIER", "tmc51x0__types_8hpp.html#a70c707a89f5e0d52aff71334a36837ba", null ],
+    [ "IRUN_CALC_DIVISOR", "tmc51x0__types_8hpp.html#afa6378ce049fe60d1aa901ec1da62fec", null ],
     [ "MAX_F_CLK", "tmc51x0__types_8hpp.html#a3646764e23b0e26677311b320cb8d530", null ],
     [ "MIN_F_CLK", "tmc51x0__types_8hpp.html#a19ecaea87d80c60b18513b3c8364dde4", null ],
+    [ "MS_PER_SEC", "tmc51x0__types_8hpp.html#aa68083d7c3f8c3df13b047f0076ccf80", null ],
+    [ "NS_PER_SEC", "tmc51x0__types_8hpp.html#aea8cc1e5b0cd6c2eacb7612521e2f461", null ],
+    [ "PI", "tmc51x0__types_8hpp.html#a0ff92ff0ce1a04a8e74a707251a24e62", null ],
+    [ "TARGET_HOLD_CURRENT_RATIO", "tmc51x0__types_8hpp.html#a7d57385f9735b3343ce5396709352c90", null ],
+    [ "TARGET_RUN_CURRENT_RATIO", "tmc51x0__types_8hpp.html#a0ee5fa8819b611cdde475b3382743146", null ],
     [ "TMC5130", "tmc51x0__types_8hpp.html#a5f3f2fc1e4d4a86a2d6ae8b752add859", null ],
-    [ "TMC5160", "tmc51x0__types_8hpp.html#a59657011cede04bf230887b9d1bf42b9", null ]
+    [ "TMC5160", "tmc51x0__types_8hpp.html#a59657011cede04bf230887b9d1bf42b9", null ],
+    [ "TPOWERDOWN_DIVISOR", "tmc51x0__types_8hpp.html#a06d385c4c12f99f0817d3628d9510d2f", null ],
+    [ "TWO_PI", "tmc51x0__types_8hpp.html#a19282ec1a9cb329c29ff8a991def602d", null ],
+    [ "US_PER_SEC", "tmc51x0__types_8hpp.html#aec0fc50a9a829d404645482a7e641a35", null ]
 ];
