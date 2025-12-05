@@ -1,0 +1,5 @@
+<map id="tmc51x0::ConfigBuilder::WithLeadScrew" name="tmc51x0::ConfigBuilder::WithLeadScrew">
+<area shape="rect" id="Node000001" title="Configure lead screw system." alt="" coords="217,5,392,45"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0__test__config.html#a90b2bc1714b42e67ff0125a86807d8cb" title="Helper function to apply platform configuration to DriverConfig." alt="" coords="5,5,169,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,28,170,28,170,23,204,23"/>
+</map>

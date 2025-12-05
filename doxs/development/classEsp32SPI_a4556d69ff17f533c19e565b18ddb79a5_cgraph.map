@@ -1,0 +1,5 @@
+<map id="Esp32SPI::SetClkFreq" name="Esp32SPI::SetClkFreq">
+<area shape="rect" id="Node000001" title="Set external clock frequency on CLK pin." alt="" coords="5,5,164,31"/>
+<area shape="rect" id="Node000002" href="$classEsp32SPI.html#a80cfec36b3cd69c2c7b6c38df0a64e72" title="Get pin mapping for a TMC51x0 control pin." alt="" coords="212,5,400,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,15,199,15,199,21,164,21"/>
+</map>

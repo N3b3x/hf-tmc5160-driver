@@ -1,7 +1,7 @@
 <map id="tmc51x0::SpiStatus::FromByte" name="tmc51x0::SpiStatus::FromByte">
 <area shape="rect" id="Node000001" title="Extract SPI_STATUS from response byte." alt="" coords="261,37,409,77"/>
-<area shape="rect" id="Node000002" href="$classtmc51x0_1_1SpiCommInterface.html#a70f84a191253f39676943c1cea1ed7cb" title="Read a 32&#45;bit register via SPI." alt="" coords="5,5,213,45"/>
+<area shape="rect" id="Node000002" href="$classtmc51x0_1_1SpiCommInterface.html#af73aaff6b24f03a85379528680513c75" title="Read a 32&#45;bit register via SPI." alt="" coords="5,5,213,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,48,213,43,214,37,248,42"/>
-<area shape="rect" id="Node000003" href="$classtmc51x0_1_1SpiCommInterface.html#a6fb339bcea2e78cdc00b962f347952c6" title="Write a 32&#45;bit register via SPI." alt="" coords="5,69,213,109"/>
+<area shape="rect" id="Node000003" href="$classtmc51x0_1_1SpiCommInterface.html#a5002dc4e4bd5c2ba5e350cda8c6ee142" title="Write a 32&#45;bit register via SPI." alt="" coords="5,69,213,109"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="248,72,214,77,213,72,247,67"/>
 </map>

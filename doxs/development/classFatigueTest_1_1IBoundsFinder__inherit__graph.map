@@ -1,7 +1,7 @@
 <map id="FatigueTest::IBoundsFinder" name="FatigueTest::IBoundsFinder">
-<area shape="rect" id="Node000001" title="Abstract bounds finder interface." alt="" coords="127,5,321,31"/>
-<area shape="rect" id="Node000002" href="$classFatigueTest_1_1EncoderBoundsFinder.html" title="Encoder&#45;based bounds finder." alt="" coords="5,79,208,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="197,40,136,81,134,76,194,36"/>
-<area shape="rect" id="Node000003" href="$classFatigueTest_1_1StallGuardBoundsFinder.html" title="StallGuard2&#45;based bounds finder." alt="" coords="232,79,451,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="254,36,314,76,312,81,251,40"/>
+<area shape="rect" id="Node000001" title="Abstract bounds finder interface." alt="" coords="5,45,200,70"/>
+<area shape="rect" id="Node000002" href="$classFatigueTest_1_1EncoderBoundsFinderImpl.html" title="Encoder&#45;based bounds finder." alt="" coords="256,5,459,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="213,41,256,35,256,41,214,46"/>
+<area shape="rect" id="Node000003" href="$classFatigueTest_1_1StallGuardBoundsFinderImpl.html" title="StallGuard2&#45;based bounds finder." alt="" coords="248,69,467,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="214,69,248,73,248,78,213,74"/>
 </map>

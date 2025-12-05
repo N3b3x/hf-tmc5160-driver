@@ -2,18 +2,25 @@ var annotated_dup =
 [
     [ "FatigueTest", "namespaceFatigueTest.html", [
       [ "BoundsResult", "structFatigueTest_1_1BoundsResult.html", "structFatigueTest_1_1BoundsResult" ],
-      [ "EncoderBoundsFinder", "classFatigueTest_1_1EncoderBoundsFinder.html", "classFatigueTest_1_1EncoderBoundsFinder" ],
+      [ "EncoderBoundsFinderImpl", "classFatigueTest_1_1EncoderBoundsFinderImpl.html", "classFatigueTest_1_1EncoderBoundsFinderImpl" ],
       [ "FatigueTestMotion", "classFatigueTest_1_1FatigueTestMotion.html", "classFatigueTest_1_1FatigueTestMotion" ],
       [ "IBoundsFinder", "classFatigueTest_1_1IBoundsFinder.html", "classFatigueTest_1_1IBoundsFinder" ],
-      [ "StallGuardBoundsFinder", "classFatigueTest_1_1StallGuardBoundsFinder.html", "classFatigueTest_1_1StallGuardBoundsFinder" ]
+      [ "StallGuardBoundsFinderImpl", "classFatigueTest_1_1StallGuardBoundsFinderImpl.html", "classFatigueTest_1_1StallGuardBoundsFinderImpl" ]
     ] ],
     [ "ImageLoader", "namespaceImageLoader.html", [
       [ "BMPHeader", "structImageLoader_1_1BMPHeader.html", "structImageLoader_1_1BMPHeader" ]
     ] ],
+    [ "std", "namespacestd.html", [
+      [ "tuple_element< 0, tmc51x0::Result< T > >", "structstd_1_1tuple__element_3_010_00_01tmc51x0_1_1Result_3_01T_01_4_01_4.html", "structstd_1_1tuple__element_3_010_00_01tmc51x0_1_1Result_3_01T_01_4_01_4" ],
+      [ "tuple_element< 1, tmc51x0::Result< T > >", "structstd_1_1tuple__element_3_011_00_01tmc51x0_1_1Result_3_01T_01_4_01_4.html", "structstd_1_1tuple__element_3_011_00_01tmc51x0_1_1Result_3_01T_01_4_01_4" ],
+      [ "tuple_size< tmc51x0::Result< T > >", "structstd_1_1tuple__size_3_01tmc51x0_1_1Result_3_01T_01_4_01_4.html", null ]
+    ] ],
     [ "tmc51x0", "namespacetmc51x0.html", [
+      [ "AccelerationValue", "structtmc51x0_1_1AccelerationValue.html", "structtmc51x0_1_1AccelerationValue" ],
       [ "CHOPCONF_Register", "uniontmc51x0_1_1CHOPCONF__Register.html", "uniontmc51x0_1_1CHOPCONF__Register" ],
       [ "ChopperConfig", "structtmc51x0_1_1ChopperConfig.html", "structtmc51x0_1_1ChopperConfig" ],
       [ "CommInterface", "classtmc51x0_1_1CommInterface.html", "classtmc51x0_1_1CommInterface" ],
+      [ "ConfigBuilder", "classtmc51x0_1_1ConfigBuilder.html", "classtmc51x0_1_1ConfigBuilder" ],
       [ "COOLCONF_Register", "uniontmc51x0_1_1COOLCONF__Register.html", "uniontmc51x0_1_1COOLCONF__Register" ],
       [ "CoolStepConfig", "structtmc51x0_1_1CoolStepConfig.html", "structtmc51x0_1_1CoolStepConfig" ],
       [ "DCCTRL_Register", "uniontmc51x0_1_1DCCTRL__Register.html", "uniontmc51x0_1_1DCCTRL__Register" ],
@@ -26,7 +33,6 @@ var annotated_dup =
       [ "ENC_STATUS_Register", "uniontmc51x0_1_1ENC__STATUS__Register.html", "uniontmc51x0_1_1ENC__STATUS__Register" ],
       [ "ENCMODE_Register", "uniontmc51x0_1_1ENCMODE__Register.html", "uniontmc51x0_1_1ENCMODE__Register" ],
       [ "EncoderConfig", "structtmc51x0_1_1EncoderConfig.html", "structtmc51x0_1_1EncoderConfig" ],
-      [ "Esp32SpiPinConfig", "structtmc51x0_1_1Esp32SpiPinConfig.html", "structtmc51x0_1_1Esp32SpiPinConfig" ],
       [ "ExternalClockConfig", "structtmc51x0_1_1ExternalClockConfig.html", "structtmc51x0_1_1ExternalClockConfig" ],
       [ "GCONF_Register", "uniontmc51x0_1_1GCONF__Register.html", "uniontmc51x0_1_1GCONF__Register" ],
       [ "GlobalConfig", "structtmc51x0_1_1GlobalConfig.html", "structtmc51x0_1_1GlobalConfig" ],
@@ -50,6 +56,8 @@ var annotated_dup =
       [ "RAMP_STAT_Register", "uniontmc51x0_1_1RAMP__STAT__Register.html", "uniontmc51x0_1_1RAMP__STAT__Register" ],
       [ "RampConfig", "structtmc51x0_1_1RampConfig.html", "structtmc51x0_1_1RampConfig" ],
       [ "ReferenceSwitchConfig", "structtmc51x0_1_1ReferenceSwitchConfig.html", "structtmc51x0_1_1ReferenceSwitchConfig" ],
+      [ "Result", "classtmc51x0_1_1Result.html", "classtmc51x0_1_1Result" ],
+      [ "Result< void >", "classtmc51x0_1_1Result_3_01void_01_4.html", "classtmc51x0_1_1Result_3_01void_01_4" ],
       [ "SHORT_CONF_Register", "uniontmc51x0_1_1SHORT__CONF__Register.html", "uniontmc51x0_1_1SHORT__CONF__Register" ],
       [ "SLAVECONF_Register", "uniontmc51x0_1_1SLAVECONF__Register.html", "uniontmc51x0_1_1SLAVECONF__Register" ],
       [ "SpiCommand", "structtmc51x0_1_1SpiCommand.html", "structtmc51x0_1_1SpiCommand" ],
@@ -66,7 +74,23 @@ var annotated_dup =
       [ "TMC51x0PinConfig", "structtmc51x0_1_1TMC51x0PinConfig.html", "structtmc51x0_1_1TMC51x0PinConfig" ],
       [ "UartCommInterface", "classtmc51x0_1_1UartCommInterface.html", "classtmc51x0_1_1UartCommInterface" ],
       [ "UartConfig", "structtmc51x0_1_1UartConfig.html", "structtmc51x0_1_1UartConfig" ],
-      [ "UartFrame", "structtmc51x0_1_1UartFrame.html", "structtmc51x0_1_1UartFrame" ]
+      [ "UartFrame", "structtmc51x0_1_1UartFrame.html", "structtmc51x0_1_1UartFrame" ],
+      [ "VelocityValue", "structtmc51x0_1_1VelocityValue.html", "structtmc51x0_1_1VelocityValue" ]
+    ] ],
+    [ "tmc51x0_test_config", "namespacetmc51x0__test__config.html", [
+      [ "BoardConfig_TMC51x0_BOB", "structtmc51x0__test__config_1_1BoardConfig__TMC51x0__BOB.html", "structtmc51x0__test__config_1_1BoardConfig__TMC51x0__BOB" ],
+      [ "BoardConfig_TMC51x0_EVAL", "structtmc51x0__test__config_1_1BoardConfig__TMC51x0__EVAL.html", "structtmc51x0__test__config_1_1BoardConfig__TMC51x0__EVAL" ],
+      [ "MotorConfig_17HS4401S", "structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html", "structtmc51x0__test__config_1_1MotorConfig__17HS4401S" ],
+      [ "MotorConfig_17HS4401S_Direct", "structtmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html", "structtmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct" ],
+      [ "MotorConfig_AppliedMotion_5034_369", "structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html", "structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369" ],
+      [ "PlatformConfig_CoreDriverTestRig", "structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig.html", "structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig" ],
+      [ "PlatformConfig_FatigueTestRig", "structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig.html", "structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig" ],
+      [ "TestConfig_17HS4401S", "structtmc51x0__test__config_1_1TestConfig__17HS4401S.html", "structtmc51x0__test__config_1_1TestConfig__17HS4401S" ],
+      [ "TestConfig_AppliedMotion_5034", "structtmc51x0__test__config_1_1TestConfig__AppliedMotion__5034.html", "structtmc51x0__test__config_1_1TestConfig__AppliedMotion__5034" ],
+      [ "TestConfigAccessor", "structtmc51x0__test__config_1_1TestConfigAccessor.html", "structtmc51x0__test__config_1_1TestConfigAccessor" ],
+      [ "TestRigConfig", "structtmc51x0__test__config_1_1TestRigConfig.html", null ],
+      [ "TestRigConfig< TestRigType::TEST_RIG_CORE_DRIVER >", "structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__CORE__DRIVER_01_4.html", "structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__CORE__DRIVER_01_4" ],
+      [ "TestRigConfig< TestRigType::TEST_RIG_FATIGUE >", "structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4.html", "structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4" ]
     ] ],
     [ "BackAndForthMotion", "classBackAndForthMotion.html", "classBackAndForthMotion" ],
     [ "ButtonEvent", "structButtonEvent.html", "structButtonEvent" ],
@@ -76,6 +100,7 @@ var annotated_dup =
     [ "ConfigPayload", "structConfigPayload.html", "structConfigPayload" ],
     [ "ErrorPayload", "structErrorPayload.html", "structErrorPayload" ],
     [ "Esp32SPI", "classEsp32SPI.html", "classEsp32SPI" ],
+    [ "Esp32SpiPinConfig", "structEsp32SpiPinConfig.html", "structEsp32SpiPinConfig" ],
     [ "Esp32TmcMutex", "classEsp32TmcMutex.html", "classEsp32TmcMutex" ],
     [ "EspNowHeader", "structEspNowHeader.html", "structEspNowHeader" ],
     [ "EspNowPacket", "structEspNowPacket.html", "structEspNowPacket" ],

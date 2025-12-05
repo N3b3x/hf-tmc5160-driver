@@ -1,0 +1,5 @@
+<map id="tmc51x0::TMC51x0DaisyChain::RemoveDevice" name="tmc51x0::TMC51x0DaisyChain::RemoveDevice">
+<area shape="rect" id="Node000001" title="Remove an extra device at the specified position." alt="" coords="5,5,228,45"/>
+<area shape="rect" id="Node000002" href="$classtmc51x0_1_1TMC51x0DaisyChain.html#a27fde0b867d5e1943903e93ace73f905" title="Update the chain length on SpiCommInterface." alt="" coords="276,5,499,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="228,23,262,23,262,28,228,28"/>
+</map>

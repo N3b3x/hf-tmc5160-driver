@@ -1,0 +1,5 @@
+<map id="tmc51x0::Result::IsOk" name="tmc51x0::Result::IsOk">
+<area shape="rect" id="Node000001" title="Check if result is OK." alt="" coords="240,5,405,31"/>
+<area shape="rect" id="Node000002" href="$classtmc51x0_1_1Result.html#ad34f2a5feab7ba4dfa79b29128059a3b" title="Get the result value or a default." alt="" coords="5,5,192,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="226,21,192,21,192,15,226,15"/>
+</map>

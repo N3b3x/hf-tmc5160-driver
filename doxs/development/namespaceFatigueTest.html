@@ -107,8 +107,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFatigueTest_1_1BoundsResult.html">BoundsResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bounds finding result.  <a href="structFatigueTest_1_1BoundsResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFatigueTest_1_1EncoderBoundsFinder.html">EncoderBoundsFinder</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder-based bounds finder.  <a href="classFatigueTest_1_1EncoderBoundsFinder.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFatigueTest_1_1EncoderBoundsFinderImpl.html">EncoderBoundsFinderImpl</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder-based bounds finder.  <a href="classFatigueTest_1_1EncoderBoundsFinderImpl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFatigueTest_1_1FatigueTestMotion.html">FatigueTestMotion</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unified fatigue test motion controller.  <a href="classFatigueTest_1_1FatigueTestMotion.html#details">More...</a><br /></td></tr>
@@ -116,8 +116,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFatigueTest_1_1IBoundsFinder.html">IBoundsFinder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract bounds finder interface.  <a href="classFatigueTest_1_1IBoundsFinder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFatigueTest_1_1StallGuardBoundsFinder.html">StallGuardBoundsFinder</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">StallGuard2-based bounds finder.  <a href="classFatigueTest_1_1StallGuardBoundsFinder.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFatigueTest_1_1StallGuardBoundsFinderImpl.html">StallGuardBoundsFinderImpl</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">StallGuard2-based bounds finder.  <a href="classFatigueTest_1_1StallGuardBoundsFinderImpl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
@@ -129,10 +129,20 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1252b83e2dcb58df97e193cc3f0b20e2" id="r_a1252b83e2dcb58df97e193cc3f0b20e2"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classFatigueTest_1_1IBoundsFinder.html">IBoundsFinder</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1252b83e2dcb58df97e193cc3f0b20e2">CreateStallGuardBoundsFinder</a> ()</td></tr>
-<tr class="separator:a1252b83e2dcb58df97e193cc3f0b20e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a335f7727ef88c6ae3d8652b42713261b" id="r_a335f7727ef88c6ae3d8652b42713261b"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classFatigueTest_1_1IBoundsFinder.html">IBoundsFinder</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a335f7727ef88c6ae3d8652b42713261b">CreateEncoderBoundsFinder</a> ()</td></tr>
-<tr class="separator:a335f7727ef88c6ae3d8652b42713261b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d8ab629a3ab916c02c6194211a61458" id="r_a9d8ab629a3ab916c02c6194211a61458"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a> test_rig&gt; </td></tr>
+<tr class="memitem:a9d8ab629a3ab916c02c6194211a61458"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classFatigueTest_1_1IBoundsFinder.html">IBoundsFinder</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9d8ab629a3ab916c02c6194211a61458">CreateStallGuardBoundsFinder</a> ()</td></tr>
+<tr class="separator:a9d8ab629a3ab916c02c6194211a61458"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43cecf18594defbcb305f0738cfc9ce9" id="r_a43cecf18594defbcb305f0738cfc9ce9"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a> test_rig&gt; </td></tr>
+<tr class="memitem:a43cecf18594defbcb305f0738cfc9ce9"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classFatigueTest_1_1IBoundsFinder.html">IBoundsFinder</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a43cecf18594defbcb305f0738cfc9ce9">CreateEncoderBoundsFinder</a> ()</td></tr>
+<tr class="separator:a43cecf18594defbcb305f0738cfc9ce9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9da06f32206e21c621895400f500092" id="r_ad9da06f32206e21c621895400f500092"><td class="memItemLeft" align="right" valign="top">template std::unique_ptr&lt; <a class="el" href="classFatigueTest_1_1IBoundsFinder.html">IBoundsFinder</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9da06f32206e21c621895400f500092">CreateEncoderBoundsFinder&lt; tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER &gt;</a> ()</td></tr>
+<tr class="separator:ad9da06f32206e21c621895400f500092"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa90be94c2b9a9b2a555688f65e80b894" id="r_aa90be94c2b9a9b2a555688f65e80b894"><td class="memItemLeft" align="right" valign="top">template std::unique_ptr&lt; <a class="el" href="classFatigueTest_1_1IBoundsFinder.html">IBoundsFinder</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa90be94c2b9a9b2a555688f65e80b894">CreateEncoderBoundsFinder&lt; tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE &gt;</a> ()</td></tr>
+<tr class="separator:aa90be94c2b9a9b2a555688f65e80b894"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a687d72be708d0e2e6d5eeeddc3f868eb" id="r_a687d72be708d0e2e6d5eeeddc3f868eb"><td class="memItemLeft" align="right" valign="top">template std::unique_ptr&lt; <a class="el" href="classFatigueTest_1_1IBoundsFinder.html">IBoundsFinder</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a687d72be708d0e2e6d5eeeddc3f868eb">CreateStallGuardBoundsFinder&lt; tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER &gt;</a> ()</td></tr>
+<tr class="separator:a687d72be708d0e2e6d5eeeddc3f868eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65de0d3cbe9f2a8486615ba8e81ab0cc" id="r_a65de0d3cbe9f2a8486615ba8e81ab0cc"><td class="memItemLeft" align="right" valign="top">template std::unique_ptr&lt; <a class="el" href="classFatigueTest_1_1IBoundsFinder.html">IBoundsFinder</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65de0d3cbe9f2a8486615ba8e81ab0cc">CreateStallGuardBoundsFinder&lt; tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE &gt;</a> ()</td></tr>
+<tr class="separator:a65de0d3cbe9f2a8486615ba8e81ab0cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a48eb0e8a2a7aba7fca309c9c65aed80b" name="a48eb0e8a2a7aba7fca309c9c65aed80b"></a>
@@ -162,11 +172,13 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a335f7727ef88c6ae3d8652b42713261b" name="a335f7727ef88c6ae3d8652b42713261b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a335f7727ef88c6ae3d8652b42713261b">&#9670;&#160;</a></span>CreateEncoderBoundsFinder()</h2>
+<a id="a43cecf18594defbcb305f0738cfc9ce9" name="a43cecf18594defbcb305f0738cfc9ce9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43cecf18594defbcb305f0738cfc9ce9">&#9670;&#160;</a></span>CreateEncoderBoundsFinder()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a> test_rig&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::unique_ptr&lt; <a class="el" href="classFatigueTest_1_1IBoundsFinder.html">IBoundsFinder</a> &gt; FatigueTest::CreateEncoderBoundsFinder </td>
@@ -176,19 +188,50 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceFatigueTest_a335f7727ef88c6ae3d8652b42713261b_icgraph.svg" width="344" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
-<a id="a1252b83e2dcb58df97e193cc3f0b20e2" name="a1252b83e2dcb58df97e193cc3f0b20e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1252b83e2dcb58df97e193cc3f0b20e2">&#9670;&#160;</a></span>CreateStallGuardBoundsFinder()</h2>
+<a id="ad9da06f32206e21c621895400f500092" name="ad9da06f32206e21c621895400f500092"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9da06f32206e21c621895400f500092">&#9670;&#160;</a></span>CreateEncoderBoundsFinder&lt; tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::unique_ptr&lt; <a class="el" href="classFatigueTest_1_1IBoundsFinder.html">IBoundsFinder</a> &gt; <a class="el" href="#a43cecf18594defbcb305f0738cfc9ce9">FatigueTest::CreateEncoderBoundsFinder</a>&lt; <a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0a81d3a109e3d88b343cd45c32f41dd824">tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER</a> &gt; </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa90be94c2b9a9b2a555688f65e80b894" name="aa90be94c2b9a9b2a555688f65e80b894"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa90be94c2b9a9b2a555688f65e80b894">&#9670;&#160;</a></span>CreateEncoderBoundsFinder&lt; tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE &gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::unique_ptr&lt; <a class="el" href="classFatigueTest_1_1IBoundsFinder.html">IBoundsFinder</a> &gt; <a class="el" href="#a43cecf18594defbcb305f0738cfc9ce9">FatigueTest::CreateEncoderBoundsFinder</a>&lt; <a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0af1a83fc037447a7b142f4aa8220d8d15">tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE</a> &gt; </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9d8ab629a3ab916c02c6194211a61458" name="a9d8ab629a3ab916c02c6194211a61458"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d8ab629a3ab916c02c6194211a61458">&#9670;&#160;</a></span>CreateStallGuardBoundsFinder()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a> test_rig&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::unique_ptr&lt; <a class="el" href="classFatigueTest_1_1IBoundsFinder.html">IBoundsFinder</a> &gt; FatigueTest::CreateStallGuardBoundsFinder </td>
@@ -198,11 +241,40 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceFatigueTest_a1252b83e2dcb58df97e193cc3f0b20e2_icgraph.svg" width="320" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+
 </div>
+</div>
+<a id="a687d72be708d0e2e6d5eeeddc3f868eb" name="a687d72be708d0e2e6d5eeeddc3f868eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a687d72be708d0e2e6d5eeeddc3f868eb">&#9670;&#160;</a></span>CreateStallGuardBoundsFinder&lt; tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER &gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::unique_ptr&lt; <a class="el" href="classFatigueTest_1_1IBoundsFinder.html">IBoundsFinder</a> &gt; <a class="el" href="#a9d8ab629a3ab916c02c6194211a61458">FatigueTest::CreateStallGuardBoundsFinder</a>&lt; <a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0a81d3a109e3d88b343cd45c32f41dd824">tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER</a> &gt; </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a65de0d3cbe9f2a8486615ba8e81ab0cc" name="a65de0d3cbe9f2a8486615ba8e81ab0cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65de0d3cbe9f2a8486615ba8e81ab0cc">&#9670;&#160;</a></span>CreateStallGuardBoundsFinder&lt; tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE &gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::unique_ptr&lt; <a class="el" href="classFatigueTest_1_1IBoundsFinder.html">IBoundsFinder</a> &gt; <a class="el" href="#a9d8ab629a3ab916c02c6194211a61458">FatigueTest::CreateStallGuardBoundsFinder</a>&lt; <a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0af1a83fc037447a7b142f4aa8220d8d15">tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE</a> &gt; </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classEsp32SPI.html#ab188cf37c0b6939a7b3b876f4c91f2a1" target="_top" xlink:title="Read GPIO pin state.">
+<g id="a_Node000002"><a xlink:href="classEsp32SPI.html#af6da72550da3f66fb49561b48e8cc3f0" target="_top" xlink:title="Read GPIO pin state.">
 <polygon fill="white" stroke="#666666" points="215,-19 101,-19 101,0 215,0 215,-19"/>
 <text text-anchor="middle" x="158" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Esp32SPI::GpioRead</text>
 </a>

@@ -1,0 +1,14 @@
+<map id="tmc51x0::ConfigBuilder::WithRecalibration" name="tmc51x0::ConfigBuilder::WithRecalibration">
+<area shape="rect" id="Node000001" title="Enable/disable recalibration." alt="" coords="583,91,757,131"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0__test__config.html#a49ded5960fcb104b760570b2dc47fbf0" title="Helper function to populate DriverConfig from 17HS4401S direct drive motor configuration." alt="" coords="332,5,535,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="595,89,515,63,517,58,597,84"/>
+<area shape="rect" id="Node000004" href="$namespacetmc51x0__test__config.html#a04e6467cc9c09e86f765728ce4874d55" title="Helper function to populate DriverConfig from 17HS4401S gearbox motor configuration." alt="" coords="332,84,535,139"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="569,114,535,114,535,109,569,109"/>
+<area shape="rect" id="Node000005" href="$namespacetmc51x0__test__config.html#a2aeab6056b5a5959c89cafb58d037747" title="Helper function to populate DriverConfig from Applied Motion 5034 motor configuration." alt="" coords="332,163,535,217"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="597,138,517,165,515,160,595,133"/>
+<area shape="rect" id="Node000003" href="$structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__CORE__DRIVER_01_4.html#ad9b0f8061cc5336afdc5168c9ab0e82e" title="Configure driver from this test rig&#39;s configuration." alt="" coords="39,34,250,103"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="319,50,251,58,250,53,318,44"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="318,97,250,87,251,82,319,92"/>
+<area shape="rect" id="Node000006" href="$structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4.html#aaf937e4da815d24f4d922d8ee1187e86" title="Configure driver from this test rig&#39;s configuration." alt="" coords="5,163,284,217"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="318,193,284,193,284,187,318,187"/>
+</map>

@@ -1,8 +1,8 @@
 <map id="tmc51x0::TMC51x0DaisyChain::UpdateChainLength" name="tmc51x0::TMC51x0DaisyChain::UpdateChainLength">
 <area shape="rect" id="Node000001" title="Update the chain length on SpiCommInterface." alt="" coords="276,69,499,109"/>
-<area shape="rect" id="Node000002" href="$classtmc51x0_1_1TMC51x0DaisyChain.html#a33a582aabc4c86c4c882652b23a5bcca" title="Add an extra device at the specified position." alt="" coords="5,5,228,45"/>
+<area shape="rect" id="Node000002" href="$classtmc51x0_1_1TMC51x0DaisyChain.html#a85d96d19797cb382951f272201eb3244" title="Add an extra device at the specified position." alt="" coords="5,5,228,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="288,69,201,48,202,43,289,63"/>
-<area shape="rect" id="Node000003" href="$classtmc51x0_1_1TMC51x0DaisyChain.html#ae66deb48f07196d7d1c2edbbf2a02f37" title="Remove an extra device at the specified position." alt="" coords="5,69,228,109"/>
+<area shape="rect" id="Node000003" href="$classtmc51x0_1_1TMC51x0DaisyChain.html#a1806b526d1c3fa5eba2d7bd66498c947" title="Remove an extra device at the specified position." alt="" coords="5,69,228,109"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="262,92,228,92,228,87,262,87"/>
 <area shape="rect" id="Node000004" href="$classtmc51x0_1_1TMC51x0DaisyChain.html#a8c191a67455c31f81eb7b1bb543340cf" title="Construct a daisy&#45;chain manager." alt="" coords="5,133,228,173"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="289,115,202,136,201,131,288,110"/>

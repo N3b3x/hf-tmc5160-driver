@@ -16,6 +16,7 @@ var searchData=
   ['test_5fcompleted_13',['TEST_COMPLETED',['../espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aead71a637068b9cea4296244f419a40c34',1,'espnow_protocol.hpp']]],
   ['test_5frig_5fcore_5fdriver_14',['TEST_RIG_CORE_DRIVER',['../namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0a81d3a109e3d88b343cd45c32f41dd824',1,'tmc51x0_test_config']]],
   ['test_5frig_5ffatigue_15',['TEST_RIG_FATIGUE',['../namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0af1a83fc037447a7b142f4aa8220d8d15',1,'tmc51x0_test_config']]],
-  ['timer_5finactivity_16',['TIMER_INACTIVITY',['../ui_8hpp.html#a386728e8488118ee18403f4ac010df51ad1f03ed311be02bf66b84f1f0c34c5ea',1,'ui.hpp']]],
-  ['toggle_17',['TOGGLE',['../oled__menu_8hpp.html#a0014b68cdf9686458deff56691368317a1252c45651289c0b553a30d27bb5ae9b',1,'oled_menu.hpp']]]
+  ['timeout_16',['TIMEOUT',['../namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3a070a0fb40f6c308ab544b227660aadff',1,'tmc51x0']]],
+  ['timer_5finactivity_17',['TIMER_INACTIVITY',['../ui_8hpp.html#a386728e8488118ee18403f4ac010df51ad1f03ed311be02bf66b84f1f0c34c5ea',1,'ui.hpp']]],
+  ['toggle_18',['TOGGLE',['../oled__menu_8hpp.html#a0014b68cdf9686458deff56691368317a1252c45651289c0b553a30d27bb5ae9b',1,'oled_menu.hpp']]]
 ];

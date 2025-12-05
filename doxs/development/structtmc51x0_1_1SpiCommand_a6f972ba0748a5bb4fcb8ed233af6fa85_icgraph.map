@@ -2,11 +2,11 @@
 <area shape="rect" id="Node000001" title="Construct a read command." alt="" coords="773,49,948,89"/>
 <area shape="rect" id="Node000002" href="$classtmc51x0_1_1SpiCommInterface.html#a919ad17ed88687fa30ac45f60f405a4b" title="Auto&#45;detect the daisy chain length by sending a unique command that loops back." alt="" coords="517,49,725,89"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="760,72,726,72,726,67,760,67"/>
-<area shape="rect" id="Node000004" href="$classtmc51x0_1_1SpiCommInterface.html#a70f84a191253f39676943c1cea1ed7cb" title="Read a 32&#45;bit register via SPI." alt="" coords="5,5,213,45"/>
+<area shape="rect" id="Node000004" href="$classtmc51x0_1_1SpiCommInterface.html#af73aaff6b24f03a85379528680513c75" title="Read a 32&#45;bit register via SPI." alt="" coords="5,5,213,45"/>
 <area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="774,49,725,40,587,27,448,22,213,23,213,18,448,16,587,22,726,35,775,44"/>
-<area shape="rect" id="Node000005" href="$classtmc51x0_1_1SpiCommInterface.html#a6fb339bcea2e78cdc00b962f347952c6" title="Write a 32&#45;bit register via SPI." alt="" coords="5,81,213,121"/>
+<area shape="rect" id="Node000005" href="$classtmc51x0_1_1SpiCommInterface.html#a5002dc4e4bd5c2ba5e350cda8c6ee142" title="Write a 32&#45;bit register via SPI." alt="" coords="5,81,213,121"/>
 <area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="776,95,726,104,587,115,448,118,320,116,214,111,214,106,320,111,448,113,587,110,725,99,775,90"/>
-<area shape="rect" id="Node000003" href="$classtmc51x0_1_1SpiCommInterface.html#a9f40aef4e53519c6e73fa58a3ff15cef" title="Ensure chain length is known and verified for daisy&#45;chain operations." alt="" coords="261,49,469,89"/>
+<area shape="rect" id="Node000003" href="$classtmc51x0_1_1SpiCommInterface.html#a122d2bbdce31e341f9288b4c12b8d6a1" title="Ensure chain length is known and verified for daisy&#45;chain operations." alt="" coords="261,49,469,89"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="504,72,469,72,469,67,504,67"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="247,52,213,46,214,41,248,47"/>
 <area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="248,87,214,91,213,86,248,81"/>

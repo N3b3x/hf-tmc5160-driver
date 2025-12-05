@@ -1,5 +1,5 @@
 <map id="tmc51x0_test_config::ConfigureDriverFromMotor_AppliedMotion_5034" name="tmc51x0_test_config::ConfigureDriverFromMotor_AppliedMotion_5034">
-<area shape="rect" id="Node000001" title="Helper function to populate DriverConfig from Applied Motion 5034 motor configuration." alt="" coords="265,5,468,60"/>
-<area shape="rect" id="Node000002" href="$namespacetmc51x0__test__config.html#a01546734dfbb01aa89c186b7bdf20bab" title="Configure driver from test rig selection." alt="" coords="5,13,217,53"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="251,35,218,35,218,30,251,30"/>
+<area shape="rect" id="Node000001" title="Helper function to populate DriverConfig from Applied Motion 5034 motor configuration." alt="" coords="332,5,535,60"/>
+<area shape="rect" id="Node000002" href="$structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4.html#aaf937e4da815d24f4d922d8ee1187e86" title="Configure driver from this test rig&#39;s configuration." alt="" coords="5,5,284,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="318,35,284,35,284,30,318,30"/>
 </map>
