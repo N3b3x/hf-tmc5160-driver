@@ -2,12 +2,13 @@
 
 ## Overview
 
-The TMC51x0 driver (TMC5130 & TMC5160) library uses a **compile-time configuration** approach with three distinct configuration layers:
-1. **BoardConfig**: Board-specific hardware parameters (same board = same config)
-2. **MotorConfig**: Motor-specific parameters (same motor = same config)
+The TMC51x0 driver (TMC5130 & TMC5160) library uses a **compile-time configuration** approach with struct-based configuration using `static constexpr` members for zero runtime overhead. The configuration system has four distinct layers:
+1. **MotorConfig**: Motor-specific parameters (physical specs, chopper, StealthChop)
+2. **BoardConfig**: Board-specific hardware parameters (sense resistor, MOSFETs, clock)
 3. **PlatformConfig**: Platform/application-specific parameters (reference switches, encoder, mechanical system)
+4. **TestConfig**: Test-specific parameters (StallGuard, motion profiles)
 
-All configurations are defined in `esp32_tmc51x0_test_config.hpp` and automatically converted to driver register values during initialization.
+All configurations are defined as structs in `esp32_tmc51x0_test_config.hpp` and automatically converted to driver register values during initialization.
 
 ## Configuration Hierarchy
 
@@ -21,7 +22,7 @@ All configurations are defined in `esp32_tmc51x0_test_config.hpp` and automatica
 - Power stage MOSFET characteristics (Miller charge, BBM time)
 - Short protection defaults
 
-**Location**: `BoardConfig` namespace in `esp32_tmc51x0_test_config.hpp`
+**Location**: `BoardConfig_*` structs in `esp32_tmc51x0_test_config.hpp`
 
 ### 2. MotorConfig (Motor-Specific)
 
@@ -32,7 +33,7 @@ All configurations are defined in `esp32_tmc51x0_test_config.hpp` and automatica
 - StealthChop settings (PWM frequency, offset, autoscale)
 - Motor-specific gear ratio (if motor has integrated gearbox)
 
-**Location**: `MotorConfig_*` namespaces in `esp32_tmc51x0_test_config.hpp`
+**Location**: `MotorConfig_*` structs in `esp32_tmc51x0_test_config.hpp`
 
 ### 3. PlatformConfig (Platform/Application-Specific)
 
@@ -43,7 +44,7 @@ All configurations are defined in `esp32_tmc51x0_test_config.hpp` and automatica
 - Mechanical system type (DirectDrive, LeadScrew, BeltDrive, Gearbox)
 - Lead screw pitch, belt parameters (if applicable)
 
-**Location**: `PlatformConfig` namespace in `esp32_tmc51x0_test_config.hpp`
+**Location**: `PlatformConfig_*` structs in `esp32_tmc51x0_test_config.hpp`
 
 ## Key Concepts
 

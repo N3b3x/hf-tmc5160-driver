@@ -37,6 +37,60 @@
 static const char* BUS_TAG = "TMC51x0_Bus";
 
 /**
+ * @brief Complete ESP32 SPI bus and TMC51x0 pin configuration structure
+ *
+ * This structure extends TMC51x0PinConfig to include SPI bus pins, providing
+ * a single configuration structure for all GPIO pins used by the ESP32 SPI
+ * communication interface.
+ *
+ * This allows users to define all pin assignments in one place, making it
+ * easier to manage and configure the hardware setup.
+ *
+ * @note SPI pins are required for SPI communication.
+ * @note TMC51x0 control pins are optional and depend on the operating mode.
+ * @note This is ESP32-specific and should not be in the core driver interface.
+ */
+struct Esp32SpiPinConfig {
+  // SPI bus pins (required for SPI communication)
+  int spi_mosi{-1}; ///< SPI MOSI pin (Master Out, Slave In)
+  int spi_miso{-1}; ///< SPI MISO pin (Master In, Slave Out)
+  int spi_sclk{-1}; ///< SPI clock pin (SCLK)
+  int spi_cs{-1};   ///< SPI chip select pin (CS)
+
+  // TMC51x0 control pins (from TMC51x0PinConfig)
+  tmc51x0::TMC51x0PinConfig tmc51x0_pins; ///< TMC51x0 control pin configuration
+
+  /**
+   * @brief Default constructor - all pins unmapped (-1)
+   */
+  Esp32SpiPinConfig() = default;
+
+  /**
+   * @brief Constructor with SPI pins and basic TMC51x0 pins
+   * @param mosi SPI MOSI pin
+   * @param miso SPI MISO pin
+   * @param sclk SPI clock pin
+   * @param cs SPI chip select pin
+   * @param en TMC5160 EN pin (required)
+   * @param dir TMC5160 DIR pin (optional, -1 if not used)
+   * @param step TMC5160 STEP pin (optional, -1 if not used)
+   */
+  Esp32SpiPinConfig(int mosi, int miso, int sclk, int cs, int en, int dir = -1, int step = -1) noexcept
+      : spi_mosi(mosi), spi_miso(miso), spi_sclk(sclk), spi_cs(cs), tmc51x0_pins(en, dir, step) {}
+
+  /**
+   * @brief Constructor with SPI pins and full TMC5160 pin config
+   * @param mosi SPI MOSI pin
+   * @param miso SPI MISO pin
+   * @param sclk SPI clock pin
+   * @param cs SPI chip select pin
+   * @param tmc_pins TMC5160 pin configuration structure
+   */
+  Esp32SpiPinConfig(int mosi, int miso, int sclk, int cs, const tmc51x0::TMC51x0PinConfig& tmc_pins) noexcept
+      : spi_mosi(mosi), spi_miso(miso), spi_sclk(sclk), spi_cs(cs), tmc51x0_pins(tmc_pins) {}
+};
+
+/**
  * @brief ESP32 SPI implementation of TMC51x0 communication interface
  *
  * This class provides SPI communication for the TMC51x0 using ESP-IDF SPI
@@ -90,7 +144,7 @@ public:
    * Esp32SPI spi(SPI2_HOST, pin_config, 4000000, levels);
    * @endcode
    */
-  Esp32SPI(spi_host_device_t host, const tmc51x0::Esp32SpiPinConfig& pin_config,
+  Esp32SPI(spi_host_device_t host, const Esp32SpiPinConfig& pin_config,
            uint32_t clock_speed_hz = 4000000,
            const tmc51x0::PinActiveLevels& active_levels = tmc51x0::PinActiveLevels{}) noexcept
       : SpiCommInterface(), // Active level management handled in this derived class
@@ -459,11 +513,11 @@ public:
 
   /**
    * @brief Initialize the SPI interface
-   * @return true if successful, false otherwise
+   * @return Result<void> indicating success or error code
    */
-  bool Initialize() noexcept {
+  tmc51x0::Result<void> Initialize() noexcept {
     if (initialized_) {
-      return true;
+      return tmc51x0::Result<void>();
     }
 
     // Configure GPIO pins that are mapped
@@ -471,17 +525,29 @@ public:
     if (en_pin_ != UNMAPPED_PIN) {
       gpio_set_direction(en_pin_, GPIO_MODE_OUTPUT);
       // Disable by default using signal abstraction (EN is active LOW, so INACTIVE = HIGH = disabled)
-      GpioSet(tmc51x0::TMC51x0CtrlPin::EN, tmc51x0::GpioSignal::INACTIVE);
+      auto en_result = GpioSet(tmc51x0::TMC51x0CtrlPin::EN, tmc51x0::GpioSignal::INACTIVE);
+      if (!en_result.IsOk()) {
+        ESP_LOGW(BUS_TAG, "Failed to set EN pin during initialization (non-critical)");
+        // Continue anyway - this is not critical for initialization
+      }
     }
     if (dir_pin_ != UNMAPPED_PIN) {
       gpio_set_direction(dir_pin_, GPIO_MODE_OUTPUT);
       // Set DIR to inactive by default using signal abstraction
-      GpioSet(tmc51x0::TMC51x0CtrlPin::DIR, tmc51x0::GpioSignal::INACTIVE);
+      auto dir_result = GpioSet(tmc51x0::TMC51x0CtrlPin::DIR, tmc51x0::GpioSignal::INACTIVE);
+      if (!dir_result.IsOk()) {
+        ESP_LOGW(BUS_TAG, "Failed to set DIR pin during initialization (non-critical)");
+        // Continue anyway - this is not critical for initialization
+      }
     }
     if (step_pin_ != UNMAPPED_PIN) {
       gpio_set_direction(step_pin_, GPIO_MODE_OUTPUT);
       // Set STEP to inactive by default using signal abstraction
-      GpioSet(tmc51x0::TMC51x0CtrlPin::STEP, tmc51x0::GpioSignal::INACTIVE);
+      auto step_result = GpioSet(tmc51x0::TMC51x0CtrlPin::STEP, tmc51x0::GpioSignal::INACTIVE);
+      if (!step_result.IsOk()) {
+        ESP_LOGW(BUS_TAG, "Failed to set STEP pin during initialization (non-critical)");
+        // Continue anyway - this is not critical for initialization
+      }
     }
 
     // Configure SPI bus
@@ -497,7 +563,7 @@ public:
     esp_err_t ret = spi_bus_initialize(host_, &bus_config, SPI_DMA_CH_AUTO);
     if (ret != ESP_OK) {
       ESP_LOGE(BUS_TAG, "Failed to initialize SPI bus: %s", esp_err_to_name(ret));
-      return false;
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::COMM_ERROR);
     }
 
     // Configure SPI device (Mode 3: CPOL=1, CPHA=1)
@@ -513,12 +579,12 @@ public:
     if (ret != ESP_OK) {
       ESP_LOGE(BUS_TAG, "Failed to add SPI device: %s", esp_err_to_name(ret));
       spi_bus_free(host_);
-      return false;
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::COMM_ERROR);
     }
 
     initialized_ = true;
     ESP_LOGI(BUS_TAG, "SPI interface initialized successfully");
-    return true;
+    return tmc51x0::Result<void>();
   }
 
   /**
@@ -530,22 +596,47 @@ public:
   }
 
   /**
-   * @brief Deinitialize the SPI interface
+   * @brief Ensure SPI interface is initialized, initializing if necessary
+   * @return true if initialized (or successfully initialized), false if initialization failed
+   * 
+   * This is a convenience method that checks initialization status and calls
+   * Initialize() if needed. Useful for lazy initialization patterns.
    */
-  bool Deinitialize() noexcept {
-    if (!initialized_) {
+  bool EnsureInitialized() noexcept {
+    if (initialized_) {
       return true;
+    }
+    auto result = Initialize();
+    return result.IsOk();
+  }
+
+  /**
+   * @brief Deinitialize the SPI interface
+   * @return Result<void> indicating success or error code
+   */
+  tmc51x0::Result<void> Deinitialize() noexcept {
+    if (!initialized_) {
+      return tmc51x0::Result<void>();
     }
 
     if (device_handle_) {
-      spi_bus_remove_device(device_handle_);
+      esp_err_t ret = spi_bus_remove_device(device_handle_);
+      if (ret != ESP_OK) {
+        ESP_LOGE(BUS_TAG, "Failed to remove SPI device: %s", esp_err_to_name(ret));
+        return tmc51x0::Result<void>(tmc51x0::ErrorCode::COMM_ERROR);
+      }
       device_handle_ = nullptr;
     }
 
-    spi_bus_free(host_);
+    esp_err_t ret = spi_bus_free(host_);
+    if (ret != ESP_OK) {
+      ESP_LOGE(BUS_TAG, "Failed to free SPI bus: %s", esp_err_to_name(ret));
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::COMM_ERROR);
+    }
+
     initialized_ = false;
     ESP_LOGI(BUS_TAG, "SPI interface deinitialized");
-    return true;
+    return tmc51x0::Result<void>();
   }
 
   /**
@@ -555,10 +646,10 @@ public:
    * @param length Number of bytes to transfer
    * @return true if successful, false otherwise
    */
-  bool SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) noexcept {
+  tmc51x0::Result<void> SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) noexcept {
     if (!initialized_ || !device_handle_) {
       ESP_LOGE(BUS_TAG, "SPI interface not initialized");
-      return false;
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::COMM_ERROR);
     }
 
     spi_transaction_t trans = {};
@@ -569,10 +660,10 @@ public:
     esp_err_t ret = spi_device_transmit(device_handle_, &trans);
     if (ret != ESP_OK) {
       ESP_LOGE(BUS_TAG, "SPI transfer failed: %s", esp_err_to_name(ret));
-      return false;
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::COMM_ERROR);
     }
 
-    return true;
+    return tmc51x0::Result<void>();
   }
 
   /**
@@ -588,25 +679,25 @@ public:
    * @note Encoder pins (ENCA, ENCB, ENCN) are read-only when used as encoder inputs.
    * @note Pin must be mapped using SetPinMapping() before use.
    */
-  bool GpioSet(tmc51x0::TMC51x0CtrlPin pin, tmc51x0::GpioSignal signal) noexcept {
+  tmc51x0::Result<void> GpioSet(tmc51x0::TMC51x0CtrlPin pin, tmc51x0::GpioSignal signal) noexcept {
     // Diagnostic pins and DCO are read-only (outputs from TMC51x0)
     if (pin == tmc51x0::TMC51x0CtrlPin::DIAG0 || pin == tmc51x0::TMC51x0CtrlPin::DIAG1 ||
         pin == tmc51x0::TMC51x0CtrlPin::DCO) {
       ESP_LOGW(BUS_TAG, "Pin is read-only (output from TMC51x0)");
-      return false;
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::INVALID_VALUE);
     }
     // Encoder pins are read-only when used as encoder inputs (SD_MODE=0)
     if (pin == tmc51x0::TMC51x0CtrlPin::ENCA || pin == tmc51x0::TMC51x0CtrlPin::ENCB ||
         pin == tmc51x0::TMC51x0CtrlPin::ENCN) {
       ESP_LOGW(BUS_TAG, "Encoder pins are read-only (use DCEN/DCIN for DC Step mode)");
-      return false;
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::INVALID_VALUE);
     }
 
     gpio_num_t gpio_pin = GetPinMapping(pin);
     constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
     if (gpio_pin == UNMAPPED_PIN) {
       ESP_LOGW(BUS_TAG, "Pin not mapped: %d", static_cast<int>(pin));
-      return false;
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::INVALID_VALUE);
     }
 
     // If user is trying to set SPI_MODE or SD_MODE pins, configure them as OUTPUT
@@ -617,30 +708,30 @@ public:
 
     bool level = SignalToGpioLevel(pin, signal);
     gpio_set_level(gpio_pin, level ? 1 : 0);
-    return true;
+    return tmc51x0::Result<void>();
   }
 
   /**
    * @brief Read GPIO pin state
    * @param pin The TMC51x0 control pin to read
-   * @param signal Reference to store the current signal state
-   * @return true if the GPIO was read successfully, false otherwise
+   * @return Result<GpioSignal> containing the signal state, or error code
    *
    * Supports reading diagnostic pins (DIAG0, DIAG1), reference switch pins
    * (REFL_STEP, REFR_DIR), encoder pins (ENCA, ENCB, ENCN), and CLK pin.
    *
    * @note Pin must be mapped using SetPinMapping() before use.
    */
-  bool GpioRead(tmc51x0::TMC51x0CtrlPin pin, tmc51x0::GpioSignal& signal) noexcept {
+  tmc51x0::Result<tmc51x0::GpioSignal> GpioRead(tmc51x0::TMC51x0CtrlPin pin) noexcept {
     gpio_num_t gpio_pin = GetPinMapping(pin);
     constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
     if (gpio_pin == UNMAPPED_PIN) {
-    return false;
+      ESP_LOGW(BUS_TAG, "Pin not mapped: %d", static_cast<int>(pin));
+      return tmc51x0::Result<tmc51x0::GpioSignal>(tmc51x0::ErrorCode::INVALID_VALUE);
     }
 
     int level = gpio_get_level(gpio_pin);
-    signal = GpioLevelToSignal(pin, level != 0);
-    return true;
+    tmc51x0::GpioSignal signal = GpioLevelToSignal(pin, level != 0);
+    return tmc51x0::Result<tmc51x0::GpioSignal>(signal);
   }
 
   /**
@@ -702,13 +793,13 @@ public:
    * @note For internal clock, the driver will use 12 MHz for all timing calculations.
    * @note For external clock, the actual frequency must match the frequency_hz parameter.
    */
-  bool SetClkFreq(uint32_t frequency_hz) noexcept {
+  tmc51x0::Result<void> SetClkFreq(uint32_t frequency_hz) noexcept {
     gpio_num_t clk_pin = GetPinMapping(tmc51x0::TMC51x0CtrlPin::CLK);
     constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
     
     if (clk_pin == UNMAPPED_PIN) {
       ESP_LOGW(BUS_TAG, "CLK pin not mapped, cannot configure clock");
-      return false;
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::INVALID_VALUE);
     }
 
     if (frequency_hz == 0) {
@@ -716,12 +807,12 @@ public:
       gpio_set_direction(clk_pin, GPIO_MODE_OUTPUT);
       gpio_set_level(clk_pin, 0); // Drive LOW (GND) for internal oscillator
       ESP_LOGI(BUS_TAG, "CLK pin set to GND (internal 12 MHz oscillator enabled)");
-      return true;
+      return tmc51x0::Result<void>();
     } else {
       // External clock mode: Not implemented via PWM
       // User must provide external clock signal on CLK pin
       ESP_LOGW(BUS_TAG, "External clock generation not implemented. Provide external clock signal on CLK pin (frequency: %u Hz)", frequency_hz);
-      return false;
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::UNSUPPORTED);
     }
   }
 

@@ -238,17 +238,15 @@ bool FatigueTestMotion::Start() noexcept {
         driver_->rampControl.SetMaxSpeed(vmax_rpm, tmc51x0::Unit::RPM);
         driver_->rampControl.SetAcceleration(amax_rev_s2, tmc51x0::Unit::RevPerSec);
         driver_->rampControl.SetDeceleration(amax_rev_s2, tmc51x0::Unit::RevPerSec);
-        driver_->rampControl.SetRampSpeeds(1000.0f, 100.0f, 0.0f, tmc51x0::Unit::Steps);
+        driver_->rampControl.SetRampSpeeds(30.0f, 3.0f, 0.0f, tmc51x0::Unit::RPM); // ~1000/100 steps/s for 200 steps/rev
 
         running_ = true;
         start_time_us_ = esp_timer_get_time();
         sinusoidal_mode_ = true; // Use sinusoidal mode
         
         // Determine initial state based on current position
-        float current_pos_deg = 0.0f;
-        if (!driver_->rampControl.GetCurrentPosition(current_pos_deg, tmc51x0::Unit::Deg)) {
-            current_pos_deg = 0.0f;
-        }
+        auto current_pos_result = driver_->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+        float current_pos_deg = current_pos_result.IsOk() ? current_pos_result.Value() : 0.0f;
         float min_pos_deg = local_min_bound_;
         float max_pos_deg = local_max_bound_;
         
@@ -398,10 +396,8 @@ void FatigueTestMotion::UpdateSinuousMotion() noexcept {
     float target_deg = home + static_cast<float>(amp * sin_value);
 
     // Get current position relative to center for cycle counting
-    float current_pos_deg = 0.0f;
-    if (!driver_->rampControl.GetCurrentPosition(current_pos_deg, tmc51x0::Unit::Deg)) {
-        current_pos_deg = 0.0f;
-    }
+    auto current_pos_result = driver_->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+    float current_pos_deg = current_pos_result.IsOk() ? current_pos_result.Value() : 0.0f;
     float target_relative = target_deg - home;
 
     // Cycle counting: one cycle = center → extreme → center

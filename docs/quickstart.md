@@ -49,19 +49,21 @@ Here's a complete working example:
 class MySPI : public tmc51x0::SpiCommInterface<MySPI> {
 public:
     CommMode GetMode() const noexcept { return CommMode::SPI; }
-    bool SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) {
+    Result<void> SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) {
         // Your SPI transfer implementation
         // CSN control is handled here (hardware SPI peripheral typically handles it automatically)
         // For daisy-chaining, ensure CSN stays low during entire transfer
-        return true;
+        return Result<void>();
     }
-    bool GpioSet(TMC51x0CtrlPin pin, GpioSignal signal) {
+    Result<void> GpioSet(TMC51x0CtrlPin pin, GpioSignal signal) {
         // Your GPIO set implementation
-        return true;
+        return Result<void>();
     }
-    bool GpioRead(TMC51x0CtrlPin pin, GpioSignal& signal) {
+    Result<GpioSignal> GpioRead(TMC51x0CtrlPin pin) {
         // Your GPIO read implementation
-        return true;
+        GpioSignal signal = GpioSignal::INACTIVE;
+        // Read pin state and set signal
+        return Result<GpioSignal>(signal);
     }
     void DebugLog(int level, const char* tag, const char* format, va_list args) {
         // Your logging implementation (optional)
@@ -89,23 +91,46 @@ int main() {
     cfg.motor_spec.supply_voltage_mv = 24000; // 24V supply
     // IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated - DO NOT set manually
     
-    if (!driver.Initialize(cfg)) {
+    auto init_result = driver.Initialize(cfg);
+    if (!init_result) {
         // Handle initialization failure
+        printf("Initialization error: %s\n", init_result.ErrorMessage());
         return -1;
     }
     
     // 5. Configure ramp control (RampControl subsystem)
-    driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(1000);  // 1000 steps
+    auto mode_result = driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+    if (!mode_result) {
+        printf("Error setting ramp mode: %s\n", mode_result.ErrorMessage());
+        return -1;
+    }
+    
+    auto pos_result = driver.rampControl.SetTargetPosition(1000);  // 1000 steps
+    if (!pos_result) {
+        printf("Error setting target position: %s\n", pos_result.ErrorMessage());
+        return -1;
+    }
     // Velocity functions default to revolutions per second (RevPerSec)
     driver.rampControl.SetMaxSpeed(0.02f);       // 0.02 rev/s (~1.2 RPM) - Unit::RevPerSec is default
     driver.rampControl.SetAcceleration(0.01f);    // 0.01 rev/s² - Unit::RevPerSec is default
     
     // 6. Enable motor (MotorControl subsystem)
-    driver.motorControl.Enable();
+    auto enable_result = driver.motorControl.Enable();
+    if (!enable_result) {
+        printf("Error enabling motor: %s\n", enable_result.ErrorMessage());
+        return -1;
+    }
     
     // 7. Wait for target reached
-    while (!driver.rampControl.IsTargetReached()) {
+    while (true) {
+        auto reached = driver.rampControl.IsTargetReached();
+        if (reached && reached.Value()) {
+            break; // Target reached
+        }
+        if (!reached) {
+            printf("Error checking target: %s\n", reached.ErrorMessage());
+            break;
+        }
         // Optional: Monitor status (Diagnostics subsystem)
         tmc51x0::DriverStatus status = driver.diagnostics.GetStatus();
         if (status != tmc51x0::DriverStatus::OK) {
@@ -142,7 +167,11 @@ cfg.motor_spec.rated_current_ma = 2000;  // 2A rated current
 cfg.motor_spec.sense_resistor_mohm = 50;  // 0.05Ω sense resistor
 cfg.motor_spec.supply_voltage_mv = 24000; // 24V supply
 // IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated - DO NOT set manually
-driver.Initialize(cfg);
+auto result = driver.Initialize(cfg);
+if (!result) {
+    printf("Initialization error: %s\n", result.ErrorMessage());
+    return -1;
+}
 ```
 
 Configure motor specifications and other settings, then initialize the driver. The driver automatically calculates IRUN, IHOLD, and GLOBAL_SCALER from your motor specifications.
@@ -184,11 +213,17 @@ Once you have basic motion working, explore the other subsystems:
 tmc51x0::DriverStatus status = driver.diagnostics.GetStatus();
 
 // Read StallGuard2 value (load measurement)
-uint16_t sg_value;
-driver.diagnostics.GetStallGuard(sg_value);
+auto sg_result = driver.diagnostics.GetStallGuard();
+if (sg_result) {
+    uint16_t sg_value = sg_result.Value();
+    printf("StallGuard value: %u\n", sg_value);
+}
 
 // Verify setup
-driver.diagnostics.VerifySetup();
+auto verify_result = driver.diagnostics.VerifySetup();
+if (!verify_result) {
+    printf("Setup verification error: %s\n", verify_result.ErrorMessage());
+}
 ```
 
 ### Automatic Tuning ⭐
@@ -197,7 +232,7 @@ driver.diagnostics.VerifySetup();
 tmc51x0::StallGuardTuningResult result;
 // Using AutoTuneStallGuard (recommended) - includes safe current margin
 // Note: Separate unit parameters for velocity and acceleration
-driver.tuning.AutoTuneStallGuard(
+auto tune_result = driver.tuning.AutoTuneStallGuard(
     0.6f, result,                          // Target velocity: 0.6 rev/s (~36 RPM)
     0, 63,                                 // SGT search range
     0.06f,                                 // Acceleration: 0.06 rev/s²
@@ -207,21 +242,29 @@ driver.tuning.AutoTuneStallGuard(
     300                        // Safe current margin: 300mA
 );
 
-// Use the optimal SGT value
-tmc51x0::StallGuardConfig sg_config;
-sg_config.threshold = result.optimal_sgt;
-driver.diagnostics.ConfigureStallGuard(sg_config);
+if (tune_result) {
+    // Use the optimal SGT value
+    tmc51x0::StallGuardConfig sg_config;
+    sg_config.threshold = result.optimal_sgt;
+    driver.diagnostics.ConfigureStallGuard(sg_config);
+} else {
+    printf("Tuning error: %s\n", tune_result.ErrorMessage());
+}
 ```
 
 ### Sensorless Homing
 ```cpp
 // Home without endstops using StallGuard2
 int32_t final_position;
-driver.homing.PerformSensorlessHoming(
+auto homing_result = driver.homing.PerformSensorlessHoming(
     true,           // Direction (true = positive)
     search_speed,   // Search speed
-    final_position  // Final position after homing
+    final_position, // Final position after homing
+    10000           // Timeout in milliseconds
 );
+if (!homing_result) {
+    printf("Homing error: %s\n", homing_result.ErrorMessage());
+}
 ```
 
 ### Encoder Integration
@@ -256,7 +299,11 @@ spi.Initialize();
 // Option 1: Use TMC51x0DaisyChain helper class (recommended)
 tmc51x0::TMC51x0DaisyChain<MySPI, 5> chain(spi, 3);
 // Auto-detects chain length and configures properly
-chain.InitializeAll(cfg);
+auto chain_result = chain.InitializeAll(cfg);
+if (!chain_result) {
+    printf("Chain initialization error: %s\n", chain_result.ErrorMessage());
+    return -1;
+}
 
 // Access individual drivers
 auto& driver1 = chain[0]; // Position 0 (first chip)
@@ -276,9 +323,13 @@ tmc51x0::TMC51x0<MySPI> driver2(spi, 1); // Position 1 (second chip)
 tmc51x0::TMC51x0<MySPI> driver3(spi, 2); // Position 2 (third chip)
 
 // Each driver automatically uses its own position
-driver1.Initialize(cfg); // Accesses chip 0
-driver2.Initialize(cfg); // Accesses chip 1
-driver3.Initialize(cfg); // Accesses chip 2
+auto result1 = driver1.Initialize(cfg); // Accesses chip 0
+auto result2 = driver2.Initialize(cfg); // Accesses chip 1
+auto result3 = driver3.Initialize(cfg); // Accesses chip 2
+if (!result1 || !result2 || !result3) {
+    printf("Driver initialization error\n");
+    return -1;
+}
 ```
 
 See [Multi-Chip Communication](special_features_multi_chip.md) for detailed information.

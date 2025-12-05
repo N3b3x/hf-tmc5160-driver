@@ -116,6 +116,8 @@
 #include <string>
 #include <vector>
 
+#include "tmc51x0_result.hpp"
+
 namespace tmc51x0 {
 
 /**
@@ -239,9 +241,12 @@ enum class GpioSignal : uint8_t {
  * tmc5160::PinActiveLevels active_levels;
  * active_levels.en = true; // EN pin has inverter, so ACTIVE = HIGH
  *
- * // Pass to constructor
- * Esp32SPI spi(SPI2_HOST, pin_config, 4000000, active_levels);
+ * // Pass to constructor (ESP32-specific example - see esp32_tmc51x0_bus.hpp)
+ * // Esp32SPI spi(SPI2_HOST, pin_config, 4000000, active_levels);
  * @endcode
+ * 
+ * @note Platform-specific pin configuration structures (like Esp32SpiPinConfig) are
+ *       defined in platform-specific implementation files, not in this core interface.
  */
 struct PinActiveLevels {
   // Basic control pins (per TMC51x0 datasheet)
@@ -444,59 +449,6 @@ struct TMC51x0PinConfig {
    * @param step STEP pin (optional, -1 if not used)
    */
   TMC51x0PinConfig(int en, int dir = -1, int step = -1) noexcept : en_pin(en), dir_pin(dir), step_pin(step) {}
-};
-
-/**
- * @brief Complete ESP32 SPI bus and TMC51x0 pin configuration structure
- *
- * This structure extends TMC51x0PinConfig to include SPI bus pins, providing
- * a single configuration structure for all GPIO pins used by the ESP32 SPI
- * communication interface.
- *
- * This allows users to define all pin assignments in one place, making it
- * easier to manage and configure the hardware setup.
- *
- * @note SPI pins are required for SPI communication.
- * @note TMC51x0 control pins are optional and depend on the operating mode.
- */
-struct Esp32SpiPinConfig {
-  // SPI bus pins (required for SPI communication)
-  int spi_mosi{-1}; ///< SPI MOSI pin (Master Out, Slave In)
-  int spi_miso{-1}; ///< SPI MISO pin (Master In, Slave Out)
-  int spi_sclk{-1}; ///< SPI clock pin (SCLK)
-  int spi_cs{-1};   ///< SPI chip select pin (CS)
-
-  // TMC51x0 control pins (from TMC51x0PinConfig)
-  TMC51x0PinConfig tmc51x0_pins; ///< TMC51x0 control pin configuration
-
-  /**
-   * @brief Default constructor - all pins unmapped (-1)
-   */
-  Esp32SpiPinConfig() = default;
-
-  /**
-   * @brief Constructor with SPI pins and basic TMC51x0 pins
-   * @param mosi SPI MOSI pin
-   * @param miso SPI MISO pin
-   * @param sclk SPI clock pin
-   * @param cs SPI chip select pin
-   * @param en TMC5160 EN pin (required)
-   * @param dir TMC5160 DIR pin (optional, -1 if not used)
-   * @param step TMC5160 STEP pin (optional, -1 if not used)
-   */
-  Esp32SpiPinConfig(int mosi, int miso, int sclk, int cs, int en, int dir = -1, int step = -1) noexcept
-      : spi_mosi(mosi), spi_miso(miso), spi_sclk(sclk), spi_cs(cs), tmc51x0_pins(en, dir, step) {}
-
-  /**
-   * @brief Constructor with SPI pins and full TMC5160 pin config
-   * @param mosi SPI MOSI pin
-   * @param miso SPI MISO pin
-   * @param sclk SPI clock pin
-   * @param cs SPI chip select pin
-   * @param tmc_pins TMC5160 pin configuration structure
-   */
-  Esp32SpiPinConfig(int mosi, int miso, int sclk, int cs, const TMC51x0PinConfig& tmc_pins) noexcept
-      : spi_mosi(mosi), spi_miso(miso), spi_sclk(sclk), spi_cs(cs), tmc51x0_pins(tmc_pins) {}
 };
 
 /**
@@ -1068,18 +1020,18 @@ public:
   /**
    * @brief Read a 32-bit register from the TMC5160
    * @param address Register address (0x00-0x73)
-   * @param value Reference to store the read value
    * @param daisy_chain_position Position in daisy chain (0 = first chip/single chip, default: 0)
    *                             Only used for SPI daisy-chaining. Ignored for UART.
-   * @return true if read succeeded, false otherwise
+   * @return Result<uint32_t> containing the register value, or error code
    *
    * Each CommInterface instance can be shared by multiple TMC5160 drivers on the same bus.
    * For daisy-chaining, the daisy_chain_position parameter specifies which chip in the
    * chain to address. For multi-chip setups with separate CSN pins, use separate
    * CommInterface instances or set daisy_chain_position to 0.
    */
-  bool ReadRegister(uint8_t address, uint32_t& value, uint8_t daisy_chain_position = 0) noexcept {
-    return static_cast<Derived*>(this)->ReadRegister(address, value, daisy_chain_position);
+  Result<uint32_t> ReadRegister(uint8_t address, uint8_t daisy_chain_position = 0) noexcept {
+    uint32_t value = 0;
+    return static_cast<Derived*>(this)->ReadRegister(address, daisy_chain_position);
   }
 
   /**
@@ -1088,52 +1040,51 @@ public:
    * @param value 32-bit value to write
    * @param daisy_chain_position Position in daisy chain (0 = first chip/single chip, default: 0)
    *                             Only used for SPI daisy-chaining. Ignored for UART.
-   * @return true if write succeeded, false otherwise
+   * @return Result<void> indicating success or error code
    *
    * Each CommInterface instance can be shared by multiple TMC5160 drivers on the same bus.
    * For daisy-chaining, the daisy_chain_position parameter specifies which chip in the
    * chain to address. For multi-chip setups with separate CSN pins, use separate
    * CommInterface instances or set daisy_chain_position to 0.
    */
-  bool WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept {
-    return static_cast<Derived*>(this)->WriteRegister(address, value, daisy_chain_position);
+  Result<void> WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept {
+    return static_cast<Derived*>(this)->WriteRegister(address, daisy_chain_position);
   }
 
   /**
    * @brief Set GPIO pin signal state (output control)
    * @param pin The TMC51x0 control pin to control
    * @param signal The desired signal state (ACTIVE or INACTIVE)
-   * @return true if the GPIO was set successfully, false otherwise
+   * @return Result<void> indicating success or error code
    */
-  bool GpioSet(TMC51x0CtrlPin pin, GpioSignal signal) noexcept {
+  Result<void> GpioSet(TMC51x0CtrlPin pin, GpioSignal signal) noexcept {
     return static_cast<Derived*>(this)->GpioSet(pin, signal);
   }
 
   /**
    * @brief Read GPIO pin signal state (input state)
    * @param pin The TMC51x0 control pin to read
-   * @param signal Reference to store the current signal state
-   * @return true if the GPIO was read successfully, false otherwise
+   * @return Result<GpioSignal> containing the signal state, or error code
    */
-  bool GpioRead(TMC51x0CtrlPin pin, GpioSignal& signal) noexcept {
-    return static_cast<Derived*>(this)->GpioRead(pin, signal);
+  Result<GpioSignal> GpioRead(TMC51x0CtrlPin pin) noexcept {
+    return static_cast<Derived*>(this)->GpioRead(pin);
   }
 
   /**
    * @brief Set GPIO pin to active state (convenience method)
    * @param pin The TMC51x0 control pin to set active
-   * @return true if the GPIO was set successfully, false otherwise
+   * @return Result<void> indicating success or error code
    */
-  bool GpioSetActive(TMC51x0CtrlPin pin) noexcept {
+  Result<void> GpioSetActive(TMC51x0CtrlPin pin) noexcept {
     return GpioSet(pin, GpioSignal::ACTIVE);
   }
 
   /**
    * @brief Set GPIO pin to inactive state (convenience method)
    * @param pin The TMC51x0 control pin to set inactive
-   * @return true if the GPIO was set successfully, false otherwise
+   * @return Result<void> indicating success or error code
    */
-  bool GpioSetInactive(TMC51x0CtrlPin pin) noexcept {
+  Result<void> GpioSetInactive(TMC51x0CtrlPin pin) noexcept {
     return GpioSet(pin, GpioSignal::INACTIVE);
   }
 
@@ -1169,7 +1120,7 @@ public:
   /**
    * @brief Set external clock frequency on CLK pin (optional)
    * @param frequency_hz Desired clock frequency in Hz (0 = use internal clock, >0 = external clock frequency)
-   * @return true if clock was configured successfully, false if not supported or failed
+   * @return Result<void> indicating success or error
    *
    * This method is optional - derived classes can implement it if they support
    * providing an external clock signal on the CLK pin. If not implemented, this
@@ -1200,23 +1151,23 @@ public:
    * - Passing `frequency_hz = 0` allows users with external clock capability to switch back to internal clock
    *
    * **Implementation Guidelines:**
-   * - If your system doesn't support clock control, return false (driver will assume internal clock)
+   * - If your system doesn't support clock control, return ErrorCode::UNSUPPORTED (driver will assume internal clock)
    * - If your system supports clock control:
-   *   - When `frequency_hz = 0`: Set CLK pin to GND (low) and return true
-   *   - When `frequency_hz > 0`: Provide clock signal at specified frequency and return true
-   *   - Return false only if the operation failed (e.g., invalid frequency, hardware error)
+   *   - When `frequency_hz = 0`: Set CLK pin to GND (low) and return Result<void>()
+   *   - When `frequency_hz > 0`: Provide clock signal at specified frequency and return Result<void>()
+   *   - Return error only if the operation failed (e.g., invalid frequency, hardware error)
    *
    * @note This is called automatically during Initialize() with the f_clk value from DriverConfig.
-   * @note If not implemented (returns false), the driver assumes internal clock (CLK pin tied to GND).
+   * @note If not implemented (returns UNSUPPORTED), the driver assumes internal clock (CLK pin tied to GND).
    * @note The internal clock has a fail-over circuit that protects against loss of external clock signal.
    * @note Per datasheet: "Tie to GND using short wire for internal clock or supply external clock."
    */
-  bool SetClkFreq(uint32_t frequency_hz) noexcept {
-    // Default implementation returns false (not supported / using internal clock)
+  Result<void> SetClkFreq(uint32_t frequency_hz) noexcept {
+    // Default implementation returns UNSUPPORTED (not supported / using internal clock)
     // Derived classes can override this if they support external clock generation
     // When frequency_hz = 0, this means "use internal clock" (set CLK pin to GND)
     (void)frequency_hz; // Suppress unused parameter warning
-    return false;
+    return Result<void>(ErrorCode::UNSUPPORTED);
   }
 
 protected:
@@ -1657,9 +1608,9 @@ public:
    * @param tx Buffer containing bytes to transmit
    * @param rx Buffer to receive bytes from device
    * @param length Number of bytes to transfer
-   * @return true if the SPI transfer completed successfully
+   * @return Result<void> indicating success or error
    */
-  bool SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) noexcept {
+  Result<void> SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) noexcept {
     return static_cast<Derived*>(this)->SpiTransfer(tx, rx, length);
   }
 
@@ -1669,7 +1620,7 @@ public:
    * @param value Reference to store the read value
    * @param daisy_chain_position Position in daisy chain (0 = first chip/single chip, default: 0)
    *                             Specifies which chip in the chain to address
-   * @return true if read succeeded, false otherwise
+   * @return Result<uint32_t> containing the value or error
    *
    * This method handles both single-chip and daisy-chain modes:
    * - Single chip (daisy_chain_position = 0): Standard 40-bit SPI transaction (5 bytes)
@@ -1719,7 +1670,8 @@ public:
    * CSN is handled automatically by the SPI hardware or derived class implementation.
    * For daisy-chaining, all chips share the same CSN (tied together).
    */
-  bool ReadRegister(uint8_t address, uint32_t& value, uint8_t daisy_chain_position = 0) noexcept {
+  Result<uint32_t> ReadRegister(uint8_t address, uint8_t daisy_chain_position = 0) noexcept {
+    uint32_t value = 0;
     // Log function call with arguments (level 3 = DEBUG, only shows at DEBUG log level)
     if (daisy_chain_position > 0) {
       TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI", "ReadRegister(0x%02X, daisy_chain=%u)", address,
@@ -1731,7 +1683,7 @@ public:
     // CRITICAL: Chain length MUST be known for correct response extraction
     // Ensure chain length is known and verified (auto-detects if needed)
     if (!EnsureChainLengthKnown(daisy_chain_position, "ReadRegister")) {
-      return false;
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
     // Build command using SpiCommand structure (union-based frame)
@@ -1745,7 +1697,7 @@ public:
                         "ReadRegister: Chain length unknown for daisy_chain_position=%u. "
                         "Cannot proceed without chain length.",
                         daisy_chain_position);
-      return false;
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
     // Calculate transfer size and response offset using datasheet formula
@@ -1763,7 +1715,7 @@ public:
                         "ReadRegister: Invalid daisy_chain_position=%u for chain length=%u. "
                         "Position must be < chain length.",
                         k, n);
-      return false;
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
     // Calculate transfer size: max of sending and receiving requirements
@@ -1780,7 +1732,7 @@ public:
                         "ReadRegister: Transfer size %zu bytes < receiving requirement %zu bytes. "
                         "Response extraction may fail.",
                         transfer_bytes, receiving_bytes);
-      return false;
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
     // Validate response offset is within buffer bounds
@@ -1789,7 +1741,7 @@ public:
                         "ReadRegister: Response offset %zu + 4 >= transfer size %zu. "
                         "Cannot read full 5-byte response.",
                         response_byte_offset, transfer_bytes);
-      return false;
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
     std::vector<uint8_t> tx_buf(transfer_bytes, 0);
@@ -1806,7 +1758,7 @@ public:
 
     // First transaction: Send read command (TX1), receive status (RX1)
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
-      return false;
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
     // Log [TX1]/RX1 after first transfer
@@ -1830,7 +1782,7 @@ public:
     // Per datasheet: Read data is transferred back with the subsequent access
     // Use same transfer size for daisy-chaining consistency
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
-      return false;
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
     // Log TX2/[RX2] after second transfer (RX2 contains the actual read data)
@@ -1872,7 +1824,7 @@ public:
       TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "Read register 0x%02X: Response offset %zu exceeds buffer size %zu", address,
                         response_byte_offset, rx_buf.size());
-      return false;
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
     // Log SPI_STATUS with detailed flag information
@@ -1916,7 +1868,7 @@ public:
       TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "Read register 0x%02X: Data offset %zu+4 exceeds buffer size %zu", address,
                         response_byte_offset, rx_buf.size());
-      return false;
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
     // Extract 32-bit value from RX2 (bytes response_byte_offset+1 to response_byte_offset+4)
@@ -1925,9 +1877,12 @@ public:
             (static_cast<uint32_t>(rx_buf[response_byte_offset + 3]) << 8) |
             static_cast<uint32_t>(rx_buf[response_byte_offset + 4]);
 
-    // Return false if critical errors detected (but still extract value)
+    // Return error if critical errors detected (but still extract value)
     // Note: Reset flag is informational (normal on power-up), not an error
-    return !status.DriverError();
+    if (status.DriverError()) {
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
+    }
+    return Result<uint32_t>(value);
   }
 
   /**
@@ -1936,7 +1891,7 @@ public:
    * @param value 32-bit value to write
    * @param daisy_chain_position Position in daisy chain (0 = first chip/single chip, default: 0)
    *                             Specifies which chip in the chain to address
-   * @return true if write succeeded, false otherwise
+   * @return Result<void> indicating success or error
    *
    * This method handles both single-chip and daisy-chain modes:
    * - Single chip (daisy_chain_position = 0): Standard 40-bit SPI transaction (5 bytes)
@@ -1966,7 +1921,7 @@ public:
    * CSN is handled automatically by the SPI hardware or derived class implementation.
    * For daisy-chaining, all chips share the same CSN (tied together).
    */
-  bool WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept {
+  Result<void> WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept {
     // Log function call with arguments (level 3 = DEBUG, only shows at DEBUG log level)
     if (daisy_chain_position > 0) {
       TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "SPI", "WriteRegister(0x%02X=0x%08X, daisy_chain=%u)", address,
@@ -1978,7 +1933,7 @@ public:
     // CRITICAL: Chain length MUST be known for correct response extraction
     // Ensure chain length is known and verified (auto-detects if needed)
     if (!EnsureChainLengthKnown(daisy_chain_position, "WriteRegister")) {
-      return false;
+      return Result<void>(ErrorCode::COMM_ERROR);
     }
 
     // Build command using SpiCommand structure (union-based frame)
@@ -1992,7 +1947,7 @@ public:
                         "WriteRegister: Chain length unknown for daisy_chain_position=%u. "
                         "Cannot proceed without chain length.",
                         daisy_chain_position);
-      return false;
+      return Result<void>(ErrorCode::COMM_ERROR);
     }
 
     // Calculate transfer size and response offset using datasheet formula
@@ -2011,7 +1966,7 @@ public:
                         "WriteRegister: Invalid daisy_chain_position=%u for chain length=%u. "
                         "Position must be < chain length.",
                         k, n);
-      return false;
+      return Result<void>(ErrorCode::COMM_ERROR);
     }
 
     // Calculate transfer size: max of sending and receiving requirements
@@ -2028,7 +1983,7 @@ public:
                         "WriteRegister: Transfer size %zu bytes < receiving requirement %zu bytes. "
                         "Response extraction may fail.",
                         transfer_bytes, receiving_bytes);
-      return false;
+      return Result<void>(ErrorCode::COMM_ERROR);
     }
 
     // Validate response offset is within buffer bounds
@@ -2037,7 +1992,7 @@ public:
                         "WriteRegister: Response offset %zu + 4 >= transfer size %zu. "
                         "Cannot read full 5-byte response.",
                         response_byte_offset, transfer_bytes);
-      return false;
+      return Result<void>(ErrorCode::COMM_ERROR);
     }
 
     std::vector<uint8_t> tx_buf(transfer_bytes, 0);
@@ -2054,7 +2009,7 @@ public:
 
     // First transaction: Send write command (TX1), receive status (RX1)
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
-      return false;
+      return Result<void>(ErrorCode::COMM_ERROR);
     }
 
     // Log [TX1]/RX1 after first transfer
@@ -2076,7 +2031,7 @@ public:
       TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "Write register 0x%02X: Response offset %zu exceeds buffer size %zu", address,
                         response_byte_offset, rx_buf.size());
-      return false;
+      return Result<void>(ErrorCode::COMM_ERROR);
     }
 
     // Extract SPI_STATUS from first transaction response
@@ -2130,7 +2085,7 @@ public:
     // Padding (zeros) after byte 4 will shift this command to the target device
 
     if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
-      return false;
+      return Result<void>(ErrorCode::COMM_ERROR);
     }
 
     // Log TX2/[RX2] after second transfer (RX2 contains the write confirmation)
@@ -2164,7 +2119,7 @@ public:
       TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "SPI",
                         "Write register 0x%02X (TX2): Response offset %zu exceeds buffer size %zu", address,
                         response_byte_offset, rx_buf.size());
-      return false;
+      return Result<void>(ErrorCode::COMM_ERROR);
     }
 
     // Note: RESET (bit 0) is informational (normal on power-up), only DRV_ERR (bit 1) is an error
@@ -2225,10 +2180,10 @@ public:
     // Check for critical errors in the final status (status2 is the latched status after write)
     // Note: Reset flag is informational (normal on power-up), not an error
     if (status2.DriverError()) {
-      return false;
+      return Result<void>(ErrorCode::COMM_ERROR);
     }
 
-    return true;
+    return Result<void>();
   }
 
 protected:
@@ -2266,7 +2221,7 @@ private:
    * @brief Ensure chain length is known and verified for daisy-chain operations
    * @param daisy_chain_position Position in daisy chain (0 = first chip/single chip)
    * @param context Context string for logging (e.g., "ReadRegister", "WriteRegister")
-   * @return true if chain length is known/verified, false if detection failed when required
+   * @return Result<void> indicating success or error
    *
    * This function handles:
    * - Auto-detection if daisy_chain_position > 0 and chain length is unknown
@@ -2278,7 +2233,7 @@ private:
    *       This allows compiler optimization while maintaining code clarity and
    *       avoiding duplication between ReadRegister and WriteRegister.
    */
-  bool EnsureChainLengthKnown(uint8_t daisy_chain_position, const char* context) noexcept {
+  Result<void> EnsureChainLengthKnown(uint8_t daisy_chain_position, const char* context) noexcept {
     // Auto-detect chain length on first access if needed
     if (daisy_chain_position > 0 && total_chain_length_ == 0) {
       uint8_t detected_length = AutoDetectChainLength(8); // Probe up to 8 devices
@@ -2288,7 +2243,7 @@ private:
                           "%s: Auto-detection failed, but daisy_chain_position=%u > 0. "
                           "Chain length is required for correct response extraction. Operation failed.",
                           context, daisy_chain_position);
-        return false;
+        return Result<void>(ErrorCode::COMM_ERROR);
       }
     }
 
@@ -2343,7 +2298,7 @@ private:
       }
     }
 
-    return true;
+    return Result<void>();
   }
 };
 
@@ -2467,7 +2422,7 @@ public:
   /**
    * @brief Set NAI (Next Address Input) pin state for daisy chaining
    * @param active true to set NAI active (high), false to set inactive (low)
-   * @return true if NAI was set successfully
+   * @return Result<void> indicating success or error
    *
    * For UART daisy chaining, NAI controls the addressing sequence.
    * - NAI is the SDI_CFG1 pin (pin 15) in UART mode
@@ -2480,14 +2435,14 @@ public:
    *
    * @note In UART mode, SD_MODE=0 and SPI_MODE=0 must be set
    */
-  bool SetNaiPin(bool active) noexcept {
+  Result<void> SetNaiPin(bool active) noexcept {
     return static_cast<Derived*>(this)->SetNaiPin(active);
   }
 
   /**
    * @brief Read NAO (Next Address Output) pin state
    * @param active Reference to store NAO pin state
-   * @return true if NAO was read successfully
+   * @return Result<bool> containing true if NAO is active, false otherwise
    *
    * NAO is the output from one TMC5160 that connects to the next
    * TMC5160's NAI input in a daisy chain.
@@ -2502,7 +2457,8 @@ public:
    *
    * @note In UART mode, SD_MODE=0 and SPI_MODE=0 must be set
    */
-  bool GetNaoPin(bool& active) noexcept {
+  Result<bool> GetNaoPin() noexcept {
+    bool active = false;
     return static_cast<Derived*>(this)->GetNaoPin(active);
   }
 
@@ -2510,9 +2466,9 @@ public:
    * @brief Send raw bytes via UART
    * @param data Pointer to data bytes to send
    * @param length Number of bytes to send
-   * @return true if transmission succeeded
+   * @return Result<void> indicating success or error
    */
-  bool UartSend(const uint8_t* data, size_t length) noexcept {
+  Result<void> UartSend(const uint8_t* data, size_t length) noexcept {
     return static_cast<Derived*>(this)->UartSend(data, length);
   }
 
@@ -2520,9 +2476,9 @@ public:
    * @brief Receive raw bytes via UART
    * @param data Pointer to buffer to store received bytes
    * @param length Number of bytes to receive
-   * @return true if reception succeeded
+   * @return Result<void> indicating success or error
    */
-  bool UartReceive(uint8_t* data, size_t length) noexcept {
+  Result<void> UartReceive(uint8_t* data, size_t length) noexcept {
     return static_cast<Derived*>(this)->UartReceive(data, length);
   }
 
@@ -2531,9 +2487,10 @@ public:
    * @param address Register address (0x00-0x73)
    * @param value Reference to store the read value
    * @param node_address UART node address (0-127) for multi-node addressing
-   * @return true if read succeeded, false otherwise
+   * @return Result<uint32_t> containing the value or error
    */
-  bool ReadRegister(uint8_t address, uint32_t& value, uint8_t node_address = 0) noexcept {
+  Result<uint32_t> ReadRegister(uint8_t address, uint8_t node_address = 0) noexcept {
+    uint32_t value = 0;
     // Build read request frame (4 bytes)
     uint8_t node_addr = node_address & 0x7F;
     UartFrame read_request = UartFrame::ReadRequest(node_addr, address);
@@ -2548,13 +2505,13 @@ public:
                       tx_buf[1], tx_buf[2], tx_buf[3]);
 
     if (!UartSend(tx_buf.data(), tx_size)) {
-      return false;
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
     // Receive read reply (8 bytes)
     std::array<uint8_t, 8> rx_buf{};
     if (!UartReceive(rx_buf.data(), 8)) {
-      return false;
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
     // Parse read reply using UartFrame structure
@@ -2568,19 +2525,19 @@ public:
     if (!read_reply.VerifyCrc()) {
       TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "UART", "Read register 0x%02X: CRC8 verification failed",
                         address);
-      return false;
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
     if (!read_reply.IsValid()) {
       TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 1, "UART", "Read register 0x%02X: Invalid frame structure",
                         address);
-      return false;
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
     // Extract 32-bit value
     value = read_reply.GetValue();
 
-    return true;
+    return Result<uint32_t>(value);
   }
 
   /**
@@ -2588,9 +2545,9 @@ public:
    * @param address Register address (0x00-0x73)
    * @param value 32-bit value to write
    * @param node_address UART node address (0-127) for multi-node addressing
-   * @return true if write succeeded, false otherwise
+   * @return Result<void> indicating success or error
    */
-  bool WriteRegister(uint8_t address, uint32_t value, uint8_t node_address = 0) noexcept {
+  Result<void> WriteRegister(uint8_t address, uint32_t value, uint8_t node_address = 0) noexcept {
     // Build write access frame (8 bytes)
     uint8_t node_addr = node_address & 0x7F;
     UartFrame write_frame = UartFrame::Write(node_addr, address, value);
@@ -2603,11 +2560,11 @@ public:
     TMC51X0_LOG_DEBUG(*static_cast<Derived*>(this), 3, "UART",
                       "Write register 0x%02X = 0x%08X (NodeAddr=0x%02X): TX %02X %02X %02X %02X "
                       "%02X %02X %02X %02X",
-                      address, value, node_addr, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4], tx_buf[5],
+                      address, node_addr, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3], tx_buf[4], tx_buf[5],
                       tx_buf[6], tx_buf[7]);
 
     if (!UartSend(tx_buf.data(), tx_size)) {
-      return false;
+      return Result<void>(ErrorCode::COMM_ERROR);
     }
 
     // Write does NOT have a reply packet from the device (only updates internal counter).
@@ -2616,7 +2573,7 @@ public:
     // If so, the derived class or HAL should handle flushing the echo.
     // This interface assumes UartSend handles the transmission.
 
-    return true;
+    return Result<void>();
   }
 
 protected:

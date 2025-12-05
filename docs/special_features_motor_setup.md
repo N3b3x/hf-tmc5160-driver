@@ -37,13 +37,18 @@ motor_spec.steps_per_rev = 200;        // 1.8° stepper motor
 motor_spec.rated_current_ma = 1500;     // 1.5A rated current
 
 // Setup motor automatically
-if (!driver.motorControl.SetupMotorFromSpec(motor_spec)) {
-    // Handle error
+auto setup_result = driver.motorControl.SetupMotorFromSpec(motor_spec);
+if (!setup_result) {
+    printf("Error setting up motor: %s\n", setup_result.ErrorMessage());
     return;
 }
 
 // Motor is now configured and ready to use!
-driver.motorControl.Enable();
+auto enable_result = driver.motorControl.Enable();
+if (!enable_result) {
+    printf("Error enabling motor: %s\n", enable_result.ErrorMessage());
+    return;
+}
 ```
 
 ### With Mechanical System
@@ -128,11 +133,16 @@ void setupNema17Motor() {
     
     // Initialize driver
     tmc51x0::DriverConfig cfg{};
-    driver.Initialize(cfg);
+    auto init_result = driver.Initialize(cfg);
+    if (!init_result) {
+        printf("Initialization error: %s\n", init_result.ErrorMessage());
+        return;
+    }
     
     // Setup motor from specifications
-    if (!driver.motorControl.SetupMotorFromSpec(nema17, &lead_screw)) {
-        printf("Failed to setup motor\n");
+    auto setup_result2 = driver.motorControl.SetupMotorFromSpec(nema17, &lead_screw);
+    if (!setup_result2) {
+        printf("Failed to setup motor: %s\n", setup_result2.ErrorMessage());
         return;
     }
     

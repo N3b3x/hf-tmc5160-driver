@@ -180,7 +180,7 @@ public:
    */
   [[nodiscard]] bool IsDeviceActive(uint8_t index) const noexcept {
     if (index >= MaxDevices) {
-      return false;
+      return Result<void>(ErrorCode::INVALID_STATE);
     }
     return drivers_[index].has_value();
   }
@@ -188,7 +188,7 @@ public:
   /**
    * @brief Add an extra device at the specified position
    * @param position Position in daisy chain (must be >= num_onboard_devices)
-   * @return true if device was added successfully, false otherwise
+   * @return Result<void> indicating success or error
    *
    * @note Position must be >= num_onboard_devices (cannot add before onboard devices)
    * @note Position must be < MaxDevices
@@ -201,22 +201,22 @@ public:
    *          Positions MUST be sequential. Users can create aliases in their code
    *          for better readability, but the library uses numeric indices.
    */
-  bool AddDevice(uint8_t position) noexcept {
+  Result<void> AddDevice(uint8_t position) noexcept {
     // Validate position
     if (position < num_onboard_devices_ || position >= MaxDevices) {
-      return false;
+      return Result<void>(ErrorCode::INVALID_VALUE);
     }
 
     // Check if slot is already occupied
     if (drivers_[position].has_value()) {
-      return false;
+      return Result<void>(ErrorCode::INVALID_STATE);
     }
 
     // Enforce sequential positioning: cannot skip positions
     // All positions before this one (starting from num_onboard_devices) must be filled
     for (uint8_t i = num_onboard_devices_; i < position; ++i) {
       if (!drivers_[i].has_value()) {
-        return false; // Cannot skip positions in daisy chain
+        return Result<void>(ErrorCode::INVALID_STATE); // Cannot skip positions in daisy chain
       }
     }
 
@@ -227,13 +227,13 @@ public:
     // Update chain length on SpiCommInterface
     UpdateChainLength();
 
-    return true;
+    return Result<void>();
   }
 
   /**
    * @brief Remove an extra device at the specified position
    * @param position Position in daisy chain
-   * @return true if device was removed successfully, false otherwise
+   * @return Result<void> indicating success or error
    *
    * @note Cannot remove onboard devices (position < num_onboard_devices)
    * @note Device slot must be active (have a device)
@@ -246,27 +246,27 @@ public:
    *          Removing a device in the middle would create a gap, which is
    *          not physically possible in a daisy chain.
    */
-  bool RemoveDevice(uint8_t position) noexcept {
+  Result<void> RemoveDevice(uint8_t position) noexcept {
     // Cannot remove onboard devices
     if (position < num_onboard_devices_) {
-      return false;
+      return Result<void>(ErrorCode::INVALID_VALUE);
     }
 
     // Validate position
     if (position >= MaxDevices) {
-      return false;
+      return Result<void>(ErrorCode::INVALID_VALUE);
     }
 
     // Check if slot is actually active
     if (!drivers_[position].has_value()) {
-      return false;
+      return Result<void>(ErrorCode::INVALID_STATE);
     }
 
     // Enforce sequential removal: can only remove from the end
     // Check if there are any devices after this position
     for (size_t i = position + 1; i < MaxDevices; ++i) {
       if (drivers_[i].has_value()) {
-        return false; // Cannot remove device in the middle of the chain
+        return Result<void>(ErrorCode::INVALID_STATE); // Cannot remove device in the middle of the chain
       }
     }
 
@@ -277,7 +277,7 @@ public:
     // Update chain length on SpiCommInterface
     UpdateChainLength();
 
-    return true;
+    return Result<void>();
   }
 
   /**
@@ -305,18 +305,18 @@ public:
   /**
    * @brief Initialize all active devices with the same configuration
    * @param config Driver configuration (applied to all active devices)
-   * @return true if all devices initialized successfully, false otherwise
+   * @return Result<void> indicating success or first error encountered
    */
-  bool InitializeAll(const DriverConfig& config = DriverConfig()) noexcept {
-    bool all_success = true;
+  Result<void> InitializeAll(const DriverConfig& config = DriverConfig()) noexcept {
     for (size_t i = 0; i < MaxDevices; ++i) {
       if (drivers_[i].has_value()) {
-        if (!drivers_[i]->Initialize(config)) {
-          all_success = false;
+        auto result = drivers_[i]->Initialize(config);
+        if (!result) {
+          return result; // Return first error
         }
       }
     }
-    return all_success;
+    return Result<void>();
   }
 
 private:

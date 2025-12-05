@@ -26,6 +26,7 @@
 #include "tmc51x0_comm_interface.hpp"
 #include "tmc51x0_registers.hpp"
 #include "tmc51x0_types.hpp"
+#include "tmc51x0_result.hpp"
 
 namespace tmc51x0 {
 
@@ -147,7 +148,7 @@ public:
   /**
    * @brief Initialize the TMC51x0 driver with configuration
    * @param config Driver configuration structure
-   * @return true if initialization succeeded, false otherwise
+   * @return Result<void> indicating success or specific error
    *
    * This method performs the complete initialization sequence:
    * 1. Clear reset and error flags
@@ -162,8 +163,15 @@ public:
    * The configuration is stored internally as a snapshot of initialization state.
    * This snapshot represents what was configured during Initialize(), not runtime state.
    * Runtime changes (e.g., SetCurrent(), SetMaxSpeed()) do not update this snapshot.
+   * 
+   * @code
+   * auto result = driver.Initialize(config);
+   * if (!result) {  // Bool operator
+   *     printf("Error: %s\n", result.ErrorMessage());
+   * }
+   * @endcode
    */
-  bool Initialize(const DriverConfig& config = DriverConfig()) noexcept;
+  Result<void> Initialize(const DriverConfig& config = DriverConfig()) noexcept;
 
   /**
    * @brief Get current driver configuration
@@ -235,34 +243,33 @@ public:
     /**
      * @brief Set the ramp mode
      * @param mode Ramp mode (POSITIONING, VELOCITY_POS, VELOCITY_NEG, HOLD)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetRampMode(RampMode mode) noexcept;
+    Result<void> SetRampMode(RampMode mode) noexcept;
 
     /**
      * @brief Get current ramp mode
-     * @param mode Reference to store the current ramp mode
-     * @return true if read successfully, false otherwise
+     * @return Result<RampMode> containing the current ramp mode or error
      */
-    bool GetRampMode(RampMode& mode) noexcept;
+    Result<RampMode> GetRampMode() noexcept;
 
     /**
      * @brief Check if position target has been reached
-     * @return true if position reached, false otherwise or on error
+     * @return Result<bool> containing true if position reached, false otherwise
      */
-    bool IsPositionReached() noexcept;
+    Result<bool> IsPositionReached() noexcept;
 
     /**
      * @brief Check if velocity target has been reached
-     * @return true if velocity reached, false otherwise or on error
+     * @return Result<bool> containing true if velocity reached, false otherwise
      */
-    bool IsVelocityReached() noexcept;
+    Result<bool> IsVelocityReached() noexcept;
 
     /**
      * @brief Check if motor is in standstill
-     * @return true if motor is in standstill, false otherwise or on error
+     * @return Result<bool> containing true if motor is in standstill, false otherwise
      */
-    bool IsStandstill() noexcept;
+    Result<bool> IsStandstill() noexcept;
 
     /**
      * @brief Get reference switch status
@@ -270,50 +277,50 @@ public:
      * @param right_active Reference to store right switch active status
      * @param left_enabled Reference to store left switch enabled status
      * @param right_enabled Reference to store right switch enabled status
-     * @return true if read successfully, false otherwise
+     * @return Result<bool> containing true if read successfully, false otherwise
      */
-    bool GetReferenceSwitchStatus(bool& left_active, bool& right_active, bool& left_enabled,
+    Result<bool> GetReferenceSwitchStatus(bool& right_active, bool& left_enabled,
                                   bool& right_enabled) noexcept;
 
     /**
      * @brief Set X_COMPARE register
      * @param position Position value to compare against
      * @param unit Unit of the position value (default: Steps)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Sets the position comparison register. When XACTUAL equals X_COMPARE,
      * the pos_reached flag is set in RAMP_STAT.
      */
-    bool SetXCompare(float position, Unit unit = Unit::Steps) noexcept;
+    Result<void> SetXCompare(float position, Unit unit) noexcept;
 
     /**
      * @brief Get X_COMPARE register value (from local storage)
      * @param position Reference to store the position value
      * @param unit Unit to return the position in (default: Steps)
-     * @return true if value is available, false otherwise
+     * @return Result<float> containing the value or error
      *
      * Returns the locally tracked value of X_COMPARE register.
      * This register is write-only, so we track it locally.
      */
-    bool GetXCompare(float& position, Unit unit = Unit::Steps) const noexcept;
+    Result<float> GetXCompare(Unit unit) const noexcept;
 
     /**
      * @brief Set target position (absolute)
      * @param value Target position value (absolute position from current zero/home)
      * @param unit Unit of the value (default: Steps)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      * 
      * Sets an absolute target position. The position is relative to the current zero/home position
      * set via SetCurrentPosition(). If home is unknown, call SetCurrentPosition(0.0f) at the
      * current physical position to establish a reference point.
      */
-    bool SetTargetPosition(float value, Unit unit = Unit::Steps) noexcept;
+    Result<void> SetTargetPosition(float value, Unit unit) noexcept;
 
     /**
      * @brief Move relative to current position
      * @param offset Relative movement offset (positive = forward, negative = backward)
      * @param unit Unit of the offset value (default: Steps)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      * 
      * Moves relative to the current position. Automatically calculates the new target position
      * by adding the offset to the current position. No need to manually calculate steps.
@@ -322,70 +329,68 @@ public:
      *   MoveRelative(90.0f, Unit::Deg);  // Move 90 degrees from current position
      *   MoveRelative(-45.0f, Unit::Deg);  // Move 45 degrees backward
      */
-    bool MoveRelative(float offset, Unit unit = Unit::Steps) noexcept;
+    Result<void> MoveRelative(float offset, Unit unit) noexcept;
 
     /**
      * @brief Get current position
-     * @param position Reference to store the current position
      * @param unit Unit to return the position in (default: Steps)
-     * @return true if read successfully, false otherwise
+     * @return Result<float> containing the current position or error
      * 
      * Returns the current position relative to the zero/home position set via SetCurrentPosition().
      * If home is unknown, call SetCurrentPosition(0.0f) at the current physical position first.
      */
-    bool GetCurrentPosition(float& position, Unit unit = Unit::Steps) noexcept;
+    Result<float> GetCurrentPosition(Unit unit) noexcept;
 
     /**
      * @brief Get target position
-     * @param position Reference to store the target position
      * @param unit Unit to return the position in (default: Steps)
-     * @return true if read successfully, false otherwise
+     * @return Result<float> containing the target position or error
      */
-    bool GetTargetPosition(float& position, Unit unit = Unit::Steps) noexcept;
+    Result<float> GetTargetPosition(Unit unit) noexcept;
 
     /**
      * @brief Set current position
      * @param value Position value
      * @param unit Unit of the value (default: Steps)
      * @param update_encoder If true, also update encoder position
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetCurrentPosition(float value, Unit unit = Unit::Steps, bool update_encoder = false) noexcept;
+    Result<void> SetCurrentPosition(float value, Unit unit, bool update_encoder = false) noexcept;
 
     /**
      * @brief Set maximum speed
      * @param value Maximum speed value
      * @param unit Unit of the value (default: Steps)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetMaxSpeed(float value, Unit unit = Unit::RevPerSec) noexcept;
+    Result<void> SetMaxSpeed(float value, Unit unit) noexcept;
 
     /**
      * @brief Set acceleration and deceleration
      * @param value Acceleration value
      * @param unit Unit of the value (default: Steps)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetAcceleration(float value, Unit unit = Unit::RevPerSec) noexcept;
+    Result<void> SetAcceleration(float value, Unit unit) noexcept;
 
     /**
      * @brief Set acceleration and deceleration separately
      * @param accel_val Acceleration value
      * @param decel_val Deceleration value
      * @param unit Unit of the values (default: Steps)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetAccelerations(float accel_val, float decel_val, Unit unit = Unit::RevPerSec) noexcept;
+    Result<void> SetAccelerations(float accel_val, float decel_val, Unit unit) noexcept;
 
     /**
      * @brief Set deceleration only (DMAX register)
      * @param value Deceleration value
      * @param unit Unit of the value (default: Steps)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Sets only the deceleration rate (DMAX register) without affecting acceleration (AMAX).
      */
-    bool SetDeceleration(float value, Unit unit = Unit::RevPerSec) noexcept;
+    Result<void> SetDeceleration(float value, Unit unit) noexcept;
 
     /**
      * @brief Set ramp speeds
@@ -393,155 +398,154 @@ public:
      * @param stop_speed Stop speed value
      * @param transition_speed Transition speed value
      * @param unit Unit of the speed values (default: Steps)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetRampSpeeds(float start_speed, float stop_speed, float transition_speed, Unit unit = Unit::RevPerSec) noexcept;
+    Result<void> SetRampSpeeds(float start_speed, float stop_speed, float transition_speed, Unit unit) noexcept;
 
     /**
      * @brief Get current speed
      * @param speed Reference to store the current speed
      * @param unit Unit to return the speed in (default: Steps)
-     * @return true if read successfully, false otherwise
+     * @return Result<float> containing the value or error
      */
-    bool GetCurrentSpeed(float& speed, Unit unit = Unit::RevPerSec) noexcept;
+    Result<float> GetCurrentSpeed(Unit unit) noexcept;
 
     /**
      * @brief Check if target position is reached
-     * @return true if target position reached, false otherwise
+     * @return Result<bool> containing true if target position reached, false otherwise
      */
-    bool IsTargetReached() noexcept;
+    Result<bool> IsTargetReached() noexcept;
 
     /**
      * @brief Check if target velocity is reached
-     * @return true if target velocity reached, false otherwise
+     * @return Result<bool> containing true if target velocity reached, false otherwise
      */
-    bool IsTargetVelocityReached() noexcept;
+    Result<bool> IsTargetVelocityReached() noexcept;
 
     /**
      * @brief Stop the motor
-     * @return true if stop command sent successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Stops the motor by setting VSTART and VMAX to 0.
      */
-    bool Stop() noexcept;
+    Result<void> Stop() noexcept;
 
     /**
      * @brief Configure reference switches/endstops
      * @param config Reference switch configuration structure
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool ConfigureReferenceSwitch(const ReferenceSwitchConfig& config) noexcept;
+    Result<void> ConfigureReferenceSwitch(const ReferenceSwitchConfig& config) noexcept;
 
     /**
      * @brief Get current reference switch configuration
-     * @param config Reference to store current configuration
-     * @return true if read successfully, false otherwise
+     * @return Result<ReferenceSwitchConfig> containing the configuration or error
      */
-    bool GetReferenceSwitchConfig(ReferenceSwitchConfig& config) noexcept;
+    Result<ReferenceSwitchConfig> GetReferenceSwitchConfig() noexcept;
 
     /**
      * @brief Set left switch active level (determines polarity)
      * @param active_level Active level (ACTIVE_LOW or ACTIVE_HIGH)
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Updates only the active level, preserving other settings.
      * Allows real-time polarity changes while keeping stop enable and latching configured.
      */
-    bool SetLeftSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept;
+    Result<void> SetLeftSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept;
 
     /**
      * @brief Set right switch active level (determines polarity)
      * @param active_level Active level (ACTIVE_LOW or ACTIVE_HIGH)
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Updates only the active level, preserving other settings.
      * Allows real-time polarity changes while keeping stop enable and latching configured.
      */
-    bool SetRightSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept;
+    Result<void> SetRightSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept;
 
     /**
      * @brief Enable or disable motor stop on left switch
      * @param enable true to enable stop, false to disable
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Updates only stop enable, preserving other settings.
      * Allows real-time enable/disable of motor stop while keeping polarity and latching configured.
      */
-    bool SetLeftSwitchStopEnable(bool enable) noexcept;
+    Result<void> SetLeftSwitchStopEnable(bool enable) noexcept;
 
     /**
      * @brief Enable or disable motor stop on right switch
      * @param enable true to enable stop, false to disable
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Updates only stop enable, preserving other settings.
      * Allows real-time enable/disable of motor stop while keeping polarity and latching configured.
      */
-    bool SetRightSwitchStopEnable(bool enable) noexcept;
+    Result<void> SetRightSwitchStopEnable(bool enable) noexcept;
 
     /**
      * @brief Set left switch latching mode
      * @param latch_mode Latching mode (DISABLED, ACTIVE_EDGE, INACTIVE_EDGE, BOTH_EDGES)
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Updates only latching mode, preserving other settings.
      */
-    bool SetLeftSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept;
+    Result<void> SetLeftSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept;
 
     /**
      * @brief Set right switch latching mode
      * @param latch_mode Latching mode (DISABLED, ACTIVE_EDGE, INACTIVE_EDGE, BOTH_EDGES)
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Updates only latching mode, preserving other settings.
      */
-    bool SetRightSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept;
+    Result<void> SetRightSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept;
 
     /**
      * @brief Set stop mode (hard or soft stop)
      * @param stop_mode Stop mode (HARD_STOP or SOFT_STOP)
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Updates only stop mode, preserving other settings.
      */
-    bool SetStopMode(ReferenceStopMode stop_mode) noexcept;
+    Result<void> SetStopMode(ReferenceStopMode stop_mode) noexcept;
 
     /**
      * @brief Get latched position
      * @param position Reference to store the latched position
      * @param unit Unit to return the position in (default: Steps)
-     * @return true if read successfully, false otherwise
+     * @return Result<float> containing the value or error
      *
      * Reads the position that was latched on the last reference switch event.
      */
-    bool GetLatchedPosition(float& position, Unit unit = Unit::Steps) noexcept;
+    Result<float> GetLatchedPosition(Unit unit) noexcept;
 
     /**
      * @brief Set position comparison register
      * @param value Position value for comparison
      * @param unit Unit of the value (default: Steps)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * When XACTUAL equals X_COMPARE, the position pulse output becomes high.
      */
-    bool SetComparePosition(float value, Unit unit = Unit::Steps) noexcept;
+    Result<void> SetComparePosition(float value, Unit unit) noexcept;
 
     /**
      * @brief Set power down delay (raw register value)
      * @param tpowerdown Power down delay (0-255, time range ~0 to 5.6 seconds)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Sets the delay before power down when motor enters standstill.
      * Minimum setting of 2 is required to allow automatic tuning of stealthChop PWM_OFFS_AUTO.
      *
      * @note For user-friendly API, use SetPowerDownDelayMs() instead.
      */
-    bool SetPowerDownDelay(uint8_t tpowerdown) noexcept;
+    Result<void> SetPowerDownDelay(uint8_t tpowerdown) noexcept;
 
     /**
      * @brief Set power down delay in milliseconds
      * @param delay_ms Power down delay in milliseconds (0.0 = instant, automatically converted to register value 0-255)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Sets the delay before power down when motor enters standstill.
      * The delay is automatically converted from milliseconds to register value based on f_clk.
@@ -551,25 +555,25 @@ public:
      * @note Minimum setting of 2 register units is required to allow automatic tuning of stealthChop PWM_OFFS_AUTO.
      * @note At 12 MHz: 1 register unit ≈ 21.85 ms, range ≈ 0-5.6 seconds
      */
-    bool SetPowerDownDelayMs(float delay_ms) noexcept;
+    Result<void> SetPowerDownDelayMs(float delay_ms) noexcept;
 
     /**
      * @brief Set zero wait time (raw register value)
      * @param tzerowait Waiting time after ramping down to zero velocity in clock cycles (0-65535)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Sets the waiting time after ramping down to zero velocity before next
      * movement or direction inversion can start.
      *
      * @note For user-friendly API, use SetZeroWaitTimeMs() instead.
      */
-    bool SetZeroWaitTime(uint16_t tzerowait) noexcept;
+    Result<void> SetZeroWaitTime(uint16_t tzerowait) noexcept;
 
     /**
      * @brief Set zero wait time in milliseconds
      * @param delay_ms Velocity-zero wait time in milliseconds (0.0 = no waiting, automatically converted to register
      * value 0-65535)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Sets the waiting time after ramping down to zero velocity before next
      * movement or direction inversion can start.
@@ -582,47 +586,47 @@ public:
      * @note Has no effect in external Step/Dir mode (SD_MODE=1).
      * @note At 12 MHz: 1 register unit ≈ 21.85 ms, maximum ≈ 1430 seconds (~23.8 minutes)
      */
-    bool SetZeroWaitTimeMs(float delay_ms) noexcept;
+    Result<void> SetZeroWaitTimeMs(float delay_ms) noexcept;
 
     /**
      * @brief Configure ramp generator from RampConfig structure
      * @param config Ramp configuration structure with all ramp parameters
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Configures all ramp parameters including velocities, accelerations, and timing
      * using the unit specifications from the config.
      */
-    bool ConfigureRamp(const RampConfig& config) noexcept;
+    Result<void> ConfigureRamp(const RampConfig& config) noexcept;
 
     /**
      * @brief Set first acceleration phase
      * @param a1 First acceleration value
      * @param unit Unit of the value (default: Steps)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Sets the first acceleration phase. If 0.0f, AMAX is used for this phase.
      */
-    bool SetFirstAcceleration(float a1, Unit unit = Unit::RevPerSec) noexcept;
+    Result<void> SetFirstAcceleration(float a1, Unit unit) noexcept;
 
     /**
      * @brief Set final deceleration phase
      * @param d1 Deceleration value
      * @param unit Unit of the value (default: Steps)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Sets the final deceleration phase (D1).
      * Attention: Do not set 0 in positioning mode (datasheet 6.3.1).
      * If set to 0, the driver might behave unexpectedly in positioning mode.
      * A safe minimum (e.g., 100) is recommended if unsure.
      */
-    bool SetFinalDeceleration(float d1, Unit unit = Unit::RevPerSec) noexcept;
+    Result<void> SetFinalDeceleration(float d1, Unit unit) noexcept;
 
   private:
     TMC51x0& driver_; ///< Reference to parent driver instance
 
     // Internal helper methods (used by unit-aware public methods)
-    bool SetTargetPosition(int32_t position) noexcept;
-    bool SetCurrentPosition(int32_t position, bool update_encoder = false) noexcept;
+    Result<void> SetTargetPosition(int32_t position) noexcept;
+    Result<void> SetCurrentPosition(int32_t position, bool update_encoder = false) noexcept;
   } rampControl{*this};
 
   //================================================================================
@@ -647,57 +651,57 @@ public:
 
     /**
      * @brief Enable the motor driver
-     * @return true if enabled successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool Enable() noexcept;
+    Result<void> Enable() noexcept;
 
     /**
      * @brief Disable the motor driver
-     * @return true if disabled successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool Disable() noexcept;
+    Result<void> Disable() noexcept;
 
     /**
      * @brief Set motor run and hold current
      * @param irun Run current (0-31, where 31 = 100% of global scaler)
      * @param ihold Hold current (0-31, where 31 = 100% of global scaler)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetCurrent(uint8_t irun, uint8_t ihold) noexcept;
+    Result<void> SetCurrent(uint8_t irun, uint8_t ihold) noexcept;
 
     /**
      * @brief Configure chopper settings
      * @param config Chopper configuration structure
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool ConfigureChopper(const ChopperConfig& config) noexcept;
+    Result<void> ConfigureChopper(const ChopperConfig& config) noexcept;
 
     /**
      * @brief Configure stealthChop settings
      * @param config StealthChop configuration structure
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool ConfigureStealthChop(const StealthChopConfig& config) noexcept;
+    Result<void> ConfigureStealthChop(const StealthChopConfig& config) noexcept;
 
     /**
      * @brief Configure power stage parameters (DRV_CONF register)
      * @param config Power stage parameters structure
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Configures MOSFET driver strength, break-before-make time, over-temperature protection,
      * and sense filter based on user-friendly physical parameters.
      */
-    bool ConfigurePowerStage(const PowerStageParameters& config) noexcept;
+    Result<void> ConfigurePowerStage(const PowerStageParameters& config) noexcept;
 
     /**
      * @brief Configure motor current from motor specifications
      * @param motor_spec Motor specifications including current, sense resistor, supply voltage
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Automatically calculates and sets IRUN, IHOLD, and GLOBAL_SCALER from motor specifications.
      * Also sets IHOLDDELAY if configured in motor_spec.
      */
-    bool ConfigureMotorCurrent(const MotorSpec& motor_spec) noexcept;
+    Result<void> ConfigureMotorCurrent(const MotorSpec& motor_spec) noexcept;
 
     /**
      * @brief Set mode change speeds
@@ -705,31 +709,31 @@ public:
      * @param cool_thrs Speed threshold for coolStep
      * @param high_thrs Speed threshold for high-speed mode
      * @param unit Unit of the speed values (default: RevPerSec)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs, Unit unit = Unit::RevPerSec) noexcept;
+    Result<void> SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs, Unit unit) noexcept;
 
     /**
      * @brief Set CoolStep velocity threshold (TCOOLTHRS)
      * @param value Velocity threshold value
      * @param unit Unit of the value (default: Steps)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetCoolStepThreshold(float value, Unit unit = Unit::RevPerSec) noexcept;
+    Result<void> SetCoolStepThreshold(float value, Unit unit) noexcept;
 
     /**
      * @brief Set High-Speed velocity threshold (THIGH)
      * @param value Velocity threshold value
      * @param unit Unit of the value (default: Steps)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetHighSpeedThreshold(float value, Unit unit = Unit::RevPerSec) noexcept;
+    Result<void> SetHighSpeedThreshold(float value, Unit unit) noexcept;
 
     /**
      * @brief Set StealthChop velocity threshold (TPWMTHRS)
      * @param value Velocity threshold value
      * @param unit Unit of the value (default: Steps)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Sets the velocity threshold for switching between StealthChop and SpreadCycle modes.
      * Below this threshold, StealthChop is used (quiet operation).
@@ -739,43 +743,43 @@ public:
      *
      * @note This is automatically configured during Initialize() if velocity_threshold is set in StealthChopConfig.
      */
-    bool SetStealthChopVelocityThreshold(float value, Unit unit = Unit::RevPerSec) noexcept;
+    Result<void> SetStealthChopVelocityThreshold(float value, Unit unit) noexcept;
 
     /**
      * @brief Set global current scaler
      * @param scaler Global scaler value (32-256)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetGlobalScaler(uint16_t scaler) noexcept;
+    Result<void> SetGlobalScaler(uint16_t scaler) noexcept;
 
     /**
      * @brief Get global configuration
      * @param config Reference to store current GlobalConfig
-     * @return true if read successfully, false otherwise
+     * @return Result<GlobalConfig> containing the value or error
      */
-    bool GetGlobalConfig(GlobalConfig& config) noexcept;
+    Result<GlobalConfig> GetGlobalConfig() noexcept;
 
     /**
      * @brief Configure CoolStep current reduction
      * @param config CoolStep configuration structure
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool ConfigureCoolStep(const CoolStepConfig& config) noexcept;
+    Result<void> ConfigureCoolStep(const CoolStepConfig& config) noexcept;
 
     /**
      * @brief Configure dcStep automatic commutation
      * @param config dcStep configuration structure
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool ConfigureDcStep(const DcStepConfig& config) noexcept;
+    Result<void> ConfigureDcStep(const DcStepConfig& config) noexcept;
 
     /**
      * @brief Set microstep lookup table entry
      * @param index Lookup table index (0-7)
      * @param value Lookup table value (32-bit)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetMicrostepLookupTable(uint8_t index, uint32_t value) noexcept;
+    Result<void> SetMicrostepLookupTable(uint8_t index, uint32_t value) noexcept;
 
     /**
      * @brief Set microstep lookup table segmentation
@@ -786,117 +790,117 @@ public:
      * @param lut_seg_start1 Start position for segment 1 (0-255)
      * @param lut_seg_start2 Start position for segment 2 (0-255)
      * @param lut_seg_start3 Start position for segment 3 (0-255)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetMicrostepLookupTableSegmentation(uint8_t width_sel_0, uint8_t width_sel_1, uint8_t width_sel_2,
+    Result<void> SetMicrostepLookupTableSegmentation(uint8_t width_sel_0, uint8_t width_sel_1, uint8_t width_sel_2,
                                              uint8_t width_sel_3, uint8_t lut_seg_start1, uint8_t lut_seg_start2,
                                              uint8_t lut_seg_start3) noexcept;
 
     /**
      * @brief Set microstep lookup table start current
      * @param start_current Start current value (0-255)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetMicrostepLookupTableStart(uint16_t start_current) noexcept;
+    Result<void> SetMicrostepLookupTableStart(uint16_t start_current) noexcept;
 
     /**
      * @brief Setup motor from high-level specifications
      * @param motor_spec Motor specification structure
      * @param mechanical_system Optional mechanical system configuration
-     * @return true if setup successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Automatically calculates and sets motor current, chopper configuration,
      * and other parameters based on motor specifications.
      */
-    bool SetupMotorFromSpec(const MotorSpec& motor_spec, const MechanicalSystem* mechanical_system = nullptr) noexcept;
+    Result<void> SetupMotorFromSpec(const MotorSpec& motor_spec, const MechanicalSystem* mechanical_system = nullptr) noexcept;
 
     /**
      * @brief Configure global configuration (GCONF register)
      * @param config Global configuration structure
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool ConfigureGlobalConfig(const GlobalConfig& config) noexcept;
+    Result<void> ConfigureGlobalConfig(const GlobalConfig& config) noexcept;
 
     /**
      * @brief Enable/Disable StealthChop (PWM mode)
      * @param enabled true to enable StealthChop, false for SpreadCycle
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetStealthChopEnabled(bool enabled) noexcept;
+    Result<void> SetStealthChopEnabled(bool enabled) noexcept;
 
     /**
      * @brief Get chopper configuration
      * @param config Reference to store current ChopperConfig
-     * @return true if read successfully, false otherwise
+     * @return Result<ChopperConfig> containing the value or error
      */
-    bool GetChopperConfig(ChopperConfig& config) noexcept;
+    Result<ChopperConfig> GetChopperConfig() noexcept;
 
     /**
      * @brief Check if motor driver is enabled
-     * @return true if motor is enabled (toff > 0), false if disabled or on error
+     * @return Result<bool> containing true if motor is enabled (toff > 0), false otherwise
      */
-    bool IsEnabled() noexcept;
+    Result<bool> IsEnabled() noexcept;
 
     /**
      * @brief Check if StealthChop is enabled
-     * @return true if StealthChop is enabled, false if SpreadCycle or on error
+     * @return Result<bool> containing true if StealthChop is enabled, false otherwise
      */
-    bool IsStealthChopEnabled() noexcept;
+    Result<bool> IsStealthChopEnabled() noexcept;
 
     /**
      * @brief Check if StealthChop is calibrated and working
-     * @return true if StealthChop is calibrated (pwm_scale_auto != 0), false otherwise or on error
+     * @return Result<bool> containing true if StealthChop is calibrated (pwm_scale_auto != 0), false otherwise
      *
      * StealthChop requires calibration to work properly. If not calibrated,
      * the motor may not move or may have poor performance.
      */
-    bool IsStealthChopCalibrated() noexcept;
+    Result<bool> IsStealthChopCalibrated() noexcept;
 
     /**
      * @brief Get DIAG0 pin configuration
      * @param config Reference to store current Diag0Config
-     * @return true if read successfully, false otherwise
+     * @return Result<Diag0Config> containing the value or error
      *
      * Reads DIAG0 configuration from GCONF register using read-modify-write pattern.
      */
-    bool GetDiag0Config(Diag0Config& config) noexcept;
+    Result<Diag0Config> GetDiag0Config() noexcept;
 
     /**
      * @brief Set DIAG0 pin configuration
      * @param config Diag0Config structure with DIAG0 settings
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Writes DIAG0 configuration to GCONF register using read-modify-write pattern.
      * Preserves all other GCONF bits.
      */
-    bool SetDiag0Config(const Diag0Config& config) noexcept;
+    Result<void> SetDiag0Config(const Diag0Config& config) noexcept;
 
     /**
      * @brief Get DIAG1 pin configuration
      * @param config Reference to store current Diag1Config
-     * @return true if read successfully, false otherwise
+     * @return Result<Diag1Config> containing the value or error
      *
      * Reads DIAG1 configuration from GCONF register using read-modify-write pattern.
      */
-    bool GetDiag1Config(Diag1Config& config) noexcept;
+    Result<Diag1Config> GetDiag1Config() noexcept;
 
     /**
      * @brief Set DIAG1 pin configuration
      * @param config Diag1Config structure with DIAG1 settings
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Writes DIAG1 configuration to GCONF register using read-modify-write pattern.
      * Preserves all other GCONF bits.
      *
      * @note steps_skipped should not be enabled with other DIAG1 options (mutually exclusive).
      */
-    bool SetDiag1Config(const Diag1Config& config) noexcept;
+    Result<void> SetDiag1Config(const Diag1Config& config) noexcept;
 
     /**
      * @brief Set coil currents for direct mode operation
      * @param coil_a Coil A current target (signed, range ±248 recommended for safe operation)
      * @param coil_b Coil B current target (signed, range ±248 recommended for safe operation)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Sets coil current targets directly via XTARGET register when direct_mode is enabled.
      * In direct mode, XTARGET controls coil currents instead of position:
@@ -912,13 +916,13 @@ public:
      * @note Values are automatically constrained to valid 9-bit signed range (-256 to +255).
      * @warning This method overwrites XTARGET register. Do not use with normal position control.
      */
-    bool SetCoilCurrents(int16_t coil_a, int16_t coil_b) noexcept;
+    Result<void> SetCoilCurrents(int16_t coil_a, int16_t coil_b) noexcept;
 
     /**
      * @brief Set motor power down delay (IHOLDDELAY) in milliseconds
      * @param total_delay_ms Total motor power down delay time in milliseconds (0.0 = instant, automatically calculated
      * to register value 0-15)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Sets the total delay time for motor power down after motion as soon as
      * standstill is detected (stst=1) and TPOWERDOWN has expired.
@@ -935,7 +939,7 @@ public:
      * @note The actual delay may differ slightly from the desired value due to register quantization.
      * @note This reads the current IRUN and IHOLD values from the driver to calculate the delay.
      */
-    bool SetIholdDelayMs(float total_delay_ms) noexcept;
+    Result<void> SetIholdDelayMs(float total_delay_ms) noexcept;
 
   private:
     TMC51x0& driver_; ///< Reference to parent driver instance
@@ -963,7 +967,7 @@ public:
     /**
      * @brief Set clock frequency on CLK pin
      * @param frequency_hz Clock frequency in Hz (0 = use internal clock, >0 = external clock frequency)
-     * @return true if clock was configured successfully, false if not supported or failed
+     * @return Result<void> indicating success or error
      *
      * This method calls the communication interface's SetClkFreq() method to configure
      * the hardware clock pin. It does NOT update the driver's internal f_clk_ value.
@@ -976,14 +980,14 @@ public:
      *       Use the overloaded version with ExternalClockConfig to also update driver configuration.
      * @note If not supported (returns false), CLK pin should be tied to GND for internal oscillator.
      */
-    bool SetClkFreq(uint32_t frequency_hz) noexcept {
+    Result<void> SetClkFreq(uint32_t frequency_hz) noexcept {
       return driver_.comm_.SetClkFreq(frequency_hz);
     }
 
     /**
      * @brief Set clock frequency from ExternalClockConfig (high-level method)
      * @param config External clock configuration structure
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Configures the clock source (internal or external) and sets f_clk_ for timing calculations.
      * If config.frequency_hz = 0, uses internal 12 MHz clock.
@@ -1003,13 +1007,13 @@ public:
      * @note f_clk is used for all timing calculations regardless of clock source.
      * @note Typical frequencies: 12MHz (default internal) or 24MHz (for higher performance external).
      */
-    bool SetClkFreq(const ExternalClockConfig& config) noexcept;
+    Result<void> SetClkFreq(const ExternalClockConfig& config) noexcept;
 
     /**
      * @brief Configure UART node address and send delay (writes SLAVECONF register)
      * @param node_address UART node address (0-254), same as slave address in SLAVECONF
      * @param send_delay Number of bit times before replying to register read (0-15), stored locally
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Writes the SLAVECONF register to configure the chip's UART node address and send delay.
      * Also updates the local software representation (uart_node_address_ and send_delay_).
@@ -1017,7 +1021,7 @@ public:
      * @note This writes to hardware. For sequential programming, use `uartConfig.ConfigureUartNodeAddress()` instead.
      * @note Send delay is stored locally since SLAVECONF register is write-only.
      */
-    bool ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay = 0) noexcept;
+    Result<void> ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay = 0) noexcept;
 
     /**
      * @brief Set the daisy-chain position for this TMC51x0 instance
@@ -1072,7 +1076,7 @@ public:
      * @brief Set the chip operating mode via SPI_MODE and SD_MODE pins
      * @param mode Operating mode (SPI_INTERNAL_RAMP, SPI_EXTERNAL_STEPDIR, UART_INTERNAL_RAMP,
      * STANDALONE_EXTERNAL_STEPDIR)
-     * @return true if mode was set successfully, false if pins are not configured
+     * @return Result<void> indicating success or error
      *
      * This method controls the SPI_MODE (pin 22) and SD_MODE (pin 21) pins if they
      * are connected to GPIO outputs. These pins determine both the communication interface
@@ -1095,12 +1099,12 @@ public:
      * - STANDALONE_EXTERNAL_STEPDIR: SPI_MODE=LOW, SD_MODE=HIGH (Standalone + external step/dir, CFG pins configure
      * driver)
      */
-    bool SetOperatingMode(ChipCommMode mode) noexcept;
+    Result<void> SetOperatingMode(ChipCommMode mode) noexcept;
 
     /**
      * @brief Get the current chip operating mode from SPI_MODE and SD_MODE pins
      * @param mode Reference to store the current mode
-     * @return true if mode was read successfully, false if pins are not configured
+     * @return Result<ChipCommMode> containing the value or error
      *
      * This method reads the current state of SPI_MODE (pin 22) and SD_MODE (pin 21) pins
      * if they are connected to GPIO inputs/outputs.
@@ -1108,7 +1112,7 @@ public:
      * @note This reads the current pin state, which may not reflect the actual chip mode
      *       if the chip hasn't been reset since the pins were changed.
      */
-    bool GetOperatingMode(ChipCommMode& mode) const noexcept;
+    Result<ChipCommMode> GetOperatingMode() const noexcept;
 
   private:
     TMC51x0& driver_; ///< Reference to parent driver instance
@@ -1136,97 +1140,97 @@ public:
     /**
      * @brief Configure encoder settings
      * @param config Encoder configuration structure
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool Configure(const EncoderConfig& config) noexcept;
+    Result<void> Configure(const EncoderConfig& config) noexcept;
 
     /**
      * @brief Get current encoder configuration
      * @param config Reference to store current configuration
-     * @return true if read successfully, false otherwise
+     * @return Result<EncoderConfig> containing the value or error
      */
-    bool GetEncoderConfig(EncoderConfig& config) noexcept;
+    Result<EncoderConfig> GetEncoderConfig() noexcept;
 
     /**
      * @brief Set N channel active level (determines polarity)
      * @param active_level Active level (ACTIVE_LOW or ACTIVE_HIGH)
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Updates only the active level, preserving other settings.
      * Shares ReferenceSwitchActiveLevel enum with reference switches.
      */
-    bool SetNChannelActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept;
+    Result<void> SetNChannelActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept;
 
     /**
      * @brief Set N channel sensitivity (edge/level detection)
      * @param sensitivity Sensitivity mode (ACTIVE_LEVEL, RISING_EDGE, FALLING_EDGE, BOTH_EDGES)
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Updates only sensitivity, preserving other settings.
      */
-    bool SetNChannelSensitivity(EncoderNSensitivity sensitivity) noexcept;
+    Result<void> SetNChannelSensitivity(EncoderNSensitivity sensitivity) noexcept;
 
     /**
      * @brief Set encoder clear mode
      * @param clear_mode Clear mode (DISABLED, ONCE, CONTINUOUS)
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Updates only clear mode, preserving other settings.
      */
-    bool SetClearMode(EncoderClearMode clear_mode) noexcept;
+    Result<void> SetClearMode(EncoderClearMode clear_mode) noexcept;
 
     /**
      * @brief Set encoder prescaler mode
      * @param prescaler_mode Prescaler mode (BINARY or DECIMAL)
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Updates only prescaler mode, preserving other settings.
      */
-    bool SetPrescalerMode(EncoderPrescalerMode prescaler_mode) noexcept;
+    Result<void> SetPrescalerMode(EncoderPrescalerMode prescaler_mode) noexcept;
 
     /**
      * @brief Get encoder position
      * @param position Reference to store encoder position in steps
-     * @return true if read successfully, false otherwise
+     * @return Result<int32_t> containing the value or error
      */
-    bool GetPosition(int32_t& position) noexcept;
+    Result<int32_t> GetPosition() noexcept;
 
     /**
      * @brief Set encoder resolution
      * @param motor_steps Number of steps per turn for the motor
      * @param enc_resolution Actual encoder resolution (pulses per turn)
      * @param inverted Whether encoder and motor rotations are inverted
-     * @return true if exact match found, false if approximation used
+     * @return Result<void> indicating success or error
      */
-    bool SetResolution(int32_t motor_steps, int32_t enc_resolution, bool inverted = false) noexcept;
+    Result<void> SetResolution(int32_t motor_steps, int32_t enc_resolution, bool inverted = false) noexcept;
 
     /**
      * @brief Set encoder allowed deviation
      * @param steps Maximum number of steps deviation before warning
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetAllowedDeviation(int32_t steps) noexcept;
+    Result<void> SetAllowedDeviation(int32_t steps) noexcept;
 
     /**
      * @brief Check if encoder deviation detected
-     * @return true if deviation detected, false otherwise
+     * @return Result<bool> containing true if deviation detected, false otherwise
      */
-    bool IsDeviationDetected() noexcept;
+    Result<bool> IsDeviationDetected() noexcept;
 
     /**
      * @brief Clear encoder deviation flag
-     * @return true if cleared successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool ClearDeviationFlag() noexcept;
+    Result<void> ClearDeviationFlag() noexcept;
 
     /**
      * @brief Get encoder latched position
      * @param position Reference to store encoder position latched on N event
-     * @return true if read successfully, false otherwise
+     * @return Result<int32_t> containing the value or error
      *
      * Reads the encoder position that was latched on the last N channel event.
      */
-    bool GetLatchedPosition(int32_t& position) noexcept;
+    Result<int32_t> GetLatchedPosition() noexcept;
 
   private:
     TMC51x0& driver_; ///< Reference to parent driver instance
@@ -1263,79 +1267,79 @@ public:
      * @param reset Reference to store reset flag
      * @param drv_err Reference to store driver error flag
      * @param uv_cp Reference to store undervoltage charge pump flag
-     * @return true if read successfully, false otherwise
+     * @return Result<bool> containing true if read successfully, false otherwise
      */
-    bool GetGlobalStatus(bool& reset, bool& drv_err, bool& uv_cp) noexcept;
+    Result<bool> GetGlobalStatus(bool& drv_err, bool& uv_cp) noexcept;
 
     /**
      * @brief Get StallGuard2 value
      * @param value Reference to store StallGuard2 value (0-1023)
-     * @return true if read successfully, false otherwise
+     * @return Result<uint16_t> containing the value or error
      */
-    bool GetStallGuard(uint16_t& value) noexcept;
+    Result<uint16_t> GetStallGuard() noexcept;
 
     /**
      * @brief Get StallGuard2 result from DRV_STATUS register
      * @param sg_result Reference to store StallGuard2 value (0-1023)
-     * @return true if read successfully, false otherwise
+     * @return Result<uint16_t> containing the value or error
      */
-    bool GetStallGuardResult(uint16_t& sg_result) noexcept;
+    Result<uint16_t> GetStallGuardResult() noexcept;
 
     /**
      * @brief Configure StallGuard2
      * @param config StallGuard configuration structure
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool ConfigureStallGuard(const StallGuardConfig& config) noexcept;
+    Result<void> ConfigureStallGuard(const StallGuardConfig& config) noexcept;
 
     /**
      * @brief Enable/Disable stop on stall (sg_stop in SW_MODE)
      * @param enable true to enable stop on stall, false to disable
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool EnableStopOnStall(bool enable) noexcept;
+    Result<void> EnableStopOnStall(bool enable) noexcept;
 
     /**
      * @brief Check if stop on stall is enabled
-     * @return true if stop on stall is enabled, false otherwise or on error
+     * @return Result<bool> containing true if stop on stall is enabled, false otherwise
      */
-    bool IsStopOnStallEnabled() noexcept;
+    Result<bool> IsStopOnStallEnabled() noexcept;
 
     /**
      * @brief Enable/Disable soft stop (en_softstop in SW_MODE)
      * @param enable true to enable soft stop, false to disable
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetSoftStop(bool enable) noexcept;
+    Result<void> SetSoftStop(bool enable) noexcept;
 
     /**
      * @brief Check if soft stop is enabled
-     * @return true if soft stop is enabled, false otherwise or on error
+     * @return Result<bool> containing true if soft stop is enabled, false otherwise
      */
-    bool IsSoftStopEnabled() noexcept;
+    Result<bool> IsSoftStopEnabled() noexcept;
 
     /**
      * @brief Clear stall event flag (event_stop_sg in RAMP_STAT)
-     * @return true if cleared successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool ClearStallFlag() noexcept;
+    Result<void> ClearStallFlag() noexcept;
 
     /**
      * @brief Check if stall was detected (event_stop_sg in RAMP_STAT)
-     * @return true if stall event detected, false otherwise
+     * @return Result<bool> containing true if stall event detected, false otherwise
      */
-    bool IsStallDetected() noexcept;
+    Result<bool> IsStallDetected() noexcept;
 
     /**
      * @brief Get driver status register value
      * @param status Reference to store the DRV_STATUS register value
-     * @return true if read successfully, false otherwise
+     * @return Result<uint32_t> containing the value or error
      */
-    bool GetDriverStatusRegister(uint32_t& status) noexcept;
+    Result<uint32_t> GetDriverStatusRegister() noexcept;
 
     /**
      * @brief Check if open load is detected on phase A
-     * @return true if open load detected on phase A, false otherwise or on error
+     * @return Result<bool> containing true if open load detected on phase A, false otherwise
      *
      * Open load detection indicates an interrupted cable or connector issue.
      *
@@ -1350,11 +1354,11 @@ public:
      *
      * @see Datasheet section 11.3: Open Load Diagnostics
      */
-    bool IsOpenLoadA() noexcept;
+    Result<bool> IsOpenLoadA() noexcept;
 
     /**
      * @brief Check if open load is detected on phase B
-     * @return true if open load detected on phase B, false otherwise or on error
+     * @return Result<bool> containing true if open load detected on phase B, false otherwise
      *
      * Open load detection indicates an interrupted cable or connector issue.
      *
@@ -1369,13 +1373,13 @@ public:
      *
      * @see Datasheet section 11.3: Open Load Diagnostics
      */
-    bool IsOpenLoadB() noexcept;
+    Result<bool> IsOpenLoadB() noexcept;
 
     /**
      * @brief Check if open load is detected on either phase
      * @param phase_a Reference to store phase A status (true if open load detected)
      * @param phase_b Reference to store phase B status (true if open load detected)
-     * @return true if read successfully, false otherwise
+     * @return Result<bool> containing true if read successfully, false otherwise
      *
      * Convenience method to check both phases at once.
      *
@@ -1390,19 +1394,19 @@ public:
      *
      * @see Datasheet section 11.3: Open Load Diagnostics
      */
-    bool CheckOpenLoad(bool& phase_a, bool& phase_b) noexcept;
+    Result<bool> CheckOpenLoad(bool& phase_a, bool& phase_b) noexcept;
 
     /**
      * @brief Get ramp status register value
      * @param status Reference to store the RAMP_STAT register value
-     * @return true if read successfully, false otherwise
+     * @return Result<uint32_t> containing the value or error
      */
-    bool GetRampStatusRegister(uint32_t& status) noexcept;
+    Result<uint32_t> GetRampStatusRegister() noexcept;
 
     /**
      * @brief Clear specific bits in RAMP_STAT register
      * @param bits_to_clear Bits to clear (write 1 to clear corresponding bit)
-     * @return true if cleared successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * RAMP_STAT is a read-write-clear register. Writing 1 to a bit clears it.
      * Common bits to clear:
@@ -1412,12 +1416,12 @@ public:
      * - event_pos_reached (bit 3): Position reached flag
      * - velocity_reached (bit 4): Velocity reached flag
      */
-    bool ClearRampStatus(uint32_t bits_to_clear) noexcept;
+    Result<void> ClearRampStatus(uint32_t bits_to_clear) noexcept;
 
     /**
      * @brief Set TCOOLTHRS register directly
      * @param threshold Velocity threshold in steps/s (0 = disable, max = 0xFFFFF)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Sets the lower threshold velocity for CoolStep and StallGuard2.
      * When TSTEP < TCOOLTHRS (velocity > threshold), CoolStep and StallGuard2 are enabled.
@@ -1425,118 +1429,118 @@ public:
      *
      * @note For high-level configuration, use ConfigureStallGuard() instead.
      */
-    bool SetTcoolthrs(float threshold, Unit unit = Unit::RevPerSec) noexcept;
+    Result<void> SetTcoolthrs(float threshold, Unit unit) noexcept;
 
     /**
      * @brief Get TCOOLTHRS register value (from local storage)
      * @param threshold Reference to store the threshold value
      * @param unit Unit to return the threshold in (default: Steps)
-     * @return true if value is available, false otherwise
+     * @return Result<float> containing the value or error
      *
      * Returns the locally tracked value of TCOOLTHRS register.
      * This register is write-only, so we track it locally.
      */
-    bool GetTcoolthrs(float& threshold, Unit unit = Unit::RevPerSec) const noexcept;
+    Result<float> GetTcoolthrs(Unit unit) const noexcept;
 
     /**
      * @brief Get lost steps counter
      * @param steps Reference to store the number of lost steps
-     * @return true if read successfully, false otherwise
+     * @return Result<uint32_t> containing the value or error
      *
      * Only valid when dcStep mode is enabled (SD_MODE = 1).
      */
-    bool GetLostSteps(uint32_t& steps) noexcept;
+    Result<uint32_t> GetLostSteps() noexcept;
 
     /**
      * @brief Get actual time between microsteps
      * @param time Reference to store time between microsteps in clock cycles
-     * @return true if read successfully, false otherwise
+     * @return Result<uint32_t> containing the value or error
      *
      * Read-only register showing actual time between microsteps.
      */
-    bool GetTimeBetweenMicrosteps(uint32_t& time) noexcept;
+    Result<uint32_t> GetTimeBetweenMicrosteps() noexcept;
 
     /**
      * @brief Get microstep counter
      * @param counter Reference to store actual position in microstep table (0-1023)
-     * @return true if read successfully, false otherwise
+     * @return Result<uint16_t> containing the value or error
      *
      * Read-only register showing actual position in the microstep table.
      */
-    bool GetMicrostepCounter(uint16_t& counter) noexcept;
+    Result<uint16_t> GetMicrostepCounter() noexcept;
 
     /**
      * @brief Get microstep current
      * @param phase_a Reference to store phase A current (signed, -256 to 255)
      * @param phase_b Reference to store phase B current (signed, -256 to 255)
-     * @return true if read successfully, false otherwise
+     * @return Result<int16_t> containing the value or error
      *
      * Read-only register showing actual microstep current for both phases.
      * Values are signed 9-bit as read from MSLUT (not scaled by current).
      */
-    bool GetMicrostepCurrent(int16_t& phase_a, int16_t& phase_b) noexcept;
+    Result<int16_t> GetMicrostepCurrent(int16_t& phase_b) noexcept;
 
     /**
      * @brief Get PWM scale results
      * @param pwm_scale_sum Reference to store actual PWM duty cycle (0-255)
      * @param pwm_scale_auto Reference to store automatic regulation result (signed -255...+255)
-     * @return true if read successfully, false otherwise
+     * @return Result<uint8_t> containing the value or error
      *
      * Read-only register showing stealthChop PWM scale results.
      */
-    bool GetPwmScale(uint8_t& pwm_scale_sum, int16_t& pwm_scale_auto) noexcept;
+    Result<uint8_t> GetPwmScale(int16_t& pwm_scale_auto) noexcept;
 
     /**
      * @brief Get automatically determined PWM values
      * @param pwm_ofs_auto Reference to store auto-determined offset (0-255)
      * @param pwm_grad_auto Reference to store auto-determined gradient (0-255)
-     * @return true if read successfully, false otherwise
+     * @return Result<uint8_t> containing the value or error
      *
      * Read-only register showing automatically determined PWM configuration values.
      */
-    bool GetPwmAuto(uint8_t& pwm_ofs_auto, uint8_t& pwm_grad_auto) noexcept;
+    Result<uint8_t> GetPwmAuto(uint8_t& pwm_grad_auto) noexcept;
 
     /**
      * @brief Read GPIO input pins
      * @param input_status Reference to store parsed input pin states
-     * @return true if read successfully, false otherwise
+     * @return Result<InputStatus> containing the value or error
      *
      * Reads the state of all GPIO input pins and the IC version from register 0x04 (IOIN).
      */
-    bool ReadInputStatus(InputStatus& input_status) noexcept;
+    Result<InputStatus> ReadInputStatus() noexcept;
 
     /**
      * @brief Read IC version
      * @param version Reference to store the 8-bit IC version
-     * @return true if read successfully, false otherwise
+     * @return Result<uint8_t> containing the value or error
      *
      * Reads the VERSION field from IOIN register (0x04).
      * Expected values: 0x11 for TMC5130, 0x30 for TMC5160.
      */
-    bool ReadIcVersion(uint8_t& version) noexcept;
+    Result<uint8_t> ReadIcVersion() noexcept;
 
     /**
      * @brief Read GPIO input pins (raw)
      * @param io_pins Reference to store raw IO pin register value
-     * @return true if read successfully, false otherwise
+     * @return Result<uint32_t> containing the value or error
      *
      * Reads the raw state of all GPIO input pins (register 0x04).
      */
-    bool ReadGpioPins(uint32_t& io_pins) noexcept;
+    Result<uint32_t> ReadGpioPins() noexcept;
 
     /**
      * @brief Read factory configuration
      * @param fclktrim Reference to store FCLKTRIM value (0-31)
-     * @return true if read successfully, false otherwise
+     * @return Result<uint8_t> containing the value or error
      *
      * Reads the factory configuration/clock trim value.
      */
-    bool ReadFactoryConfig(uint8_t& fclktrim) noexcept;
+    Result<uint8_t> ReadFactoryConfig() noexcept;
 
     /**
      * @brief Set SDO_CFG0 pin polarity (UART/Single Wire mode)
      * @param polarity Output pin polarity (false=normal/active high, true=inverted/active low)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Sets the polarity of the SDO_CFG0 pin when used as Next Address Output (NAO)
      * in single-wire UART chain mode.
@@ -1544,7 +1548,7 @@ public:
      * @note This affects the OUTPUT register (0x04), bit 0.
      *       The reset value is 1 (active low/inverted) for use as NAO.
      */
-    bool SetSdoCfg0Polarity(bool polarity) noexcept;
+    Result<void> SetSdoCfg0Polarity(bool polarity) noexcept;
 
     /**
      * @brief Read OTP configuration
@@ -1552,11 +1556,11 @@ public:
      * @param otp_s2_level Reference to store OTP S2 level (0-1)
      * @param otp_bbm Reference to store OTP BBM (0-1)
      * @param otp_tbl Reference to store OTP TBL (0-1)
-     * @return true if read successfully, false otherwise
+     * @return Result<uint8_t> containing the value or error
      *
      * Reads the one-time programmable configuration memory.
      */
-    bool ReadOtpConfig(uint8_t& otp_fclktrim, bool& otp_s2_level, bool& otp_bbm, bool& otp_tbl) noexcept;
+    Result<uint8_t> ReadOtpConfig(bool& otp_s2_level, bool& otp_bbm, bool& otp_tbl) noexcept;
 
     /**
      * @brief Get UART transmission counter
@@ -1564,17 +1568,17 @@ public:
      *
      * Returns the number of UART transmissions since last read.
      */
-    uint8_t GetUartTransmissionCount() noexcept;
+    Result<uint8_t> GetUartTransmissionCount() noexcept;
 
     /**
      * @brief Read offset calibration results
      * @param phase_a Reference to store phase A offset (0-255)
      * @param phase_b Reference to store phase B offset (0-255)
-     * @return true if read successfully, false otherwise
+     * @return Result<uint8_t> containing the value or error
      *
      * Reads the results from offset calibration procedure.
      */
-    bool ReadOffsetCalibration(uint8_t& phase_a, uint8_t& phase_b) noexcept;
+    Result<uint8_t> ReadOffsetCalibration(uint8_t& phase_b) noexcept;
 
     /**
      * @brief Run comprehensive startup verification
@@ -1585,9 +1589,9 @@ public:
      * - Critical register checks
      *
      * Logs all findings using the system logger.
-     * @return true if basic verification passed (IC found), false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool VerifySetup() noexcept;
+    Result<void> VerifySetup() noexcept;
 
     /**
      * @brief Get detected chip version
@@ -1630,7 +1634,7 @@ public:
      * @param max_velocity Maximum velocity to verify tuning at (0 = disabled, used to determine SGT range)
      * @param velocity_unit Unit for velocity parameters (default: RevPerSec)
      * @param acceleration_unit Unit for acceleration parameter (default: RevPerSec, RPM is not valid)
-     * @return true if tuning succeeded at target velocity, false if failed
+     * @return Result<void> indicating success or error
      *
      * Implements a comprehensive automatic tuning algorithm that prioritizes target velocity:
      * 1. Finds optimal SGT at target_velocity (primary goal - most important)
@@ -1648,7 +1652,7 @@ public:
      * @note If min/max velocities are not possible, actual_min_velocity and actual_max_velocity
      *       in the result struct contain the velocities that DO work with the optimal SGT
      */
-    bool TuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = -10,
+    Result<void> TuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = -10,
                         int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F,
                         float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec,
                         Unit acceleration_unit = Unit::RevPerSec) noexcept;
@@ -1664,7 +1668,7 @@ public:
      * @param max_velocity Maximum velocity to verify tuning at (0 = disabled)
      * @param velocity_unit Unit for velocity parameters (default: RevPerSec)
      * @param acceleration_unit Unit for acceleration parameter (default: RevPerSec, RPM is not valid)
-     * @return true if tuning succeeded, false if failed (e.g., stall never cleared)
+     * @return Result<void> indicating success or error
      *
      * @deprecated Use the overload that returns StallGuardTuningResult for comprehensive results
      *
@@ -1672,7 +1676,7 @@ public:
      * For better results and velocity range analysis, use the StallGuardTuningResult version.
      */
     [[deprecated("Use TuneStallGuard with StallGuardTuningResult for comprehensive results")]]
-    bool TuneStallGuard(float target_velocity, int8_t& final_sgt, int8_t min_sgt = -10, int8_t max_sgt = 63,
+    Result<void> TuneStallGuard(float target_velocity, int8_t& final_sgt, int8_t min_sgt = -10, int8_t max_sgt = 63,
                         float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F,
                         Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec) noexcept;
 
@@ -1688,7 +1692,7 @@ public:
      * @param velocity_unit Unit for velocity parameters (default: RevPerSec)
      * @param acceleration_unit Unit for acceleration parameter (default: RevPerSec, RPM is not valid)
      * @param safe_current_margin_mA Safe current margin in milliamps (0 = no margin, use nominal current)
-     * @return true if tuning succeeded at target velocity, false if failed
+     * @return Result<void> indicating success or error
      *
      * This is an enhanced version of TuneStallGuard that implements comprehensive automatic tuning
      * following Trinamic application note AN-002 guidelines and industry best practices:
@@ -1730,7 +1734,7 @@ public:
      *
      * @see TuneStallGuard() for a simpler version without current margin handling
      */
-    bool AutoTuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = 0,
+    Result<void> AutoTuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = 0,
                             int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F,
                             float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec,
                             Unit acceleration_unit = Unit::RevPerSec, uint16_t safe_current_margin_mA = 0) noexcept;
@@ -1765,7 +1769,7 @@ public:
      * @param search_speed Search speed in steps/s
      * @param final_position Reference to store final position after homing
      * @param timeout_ms Maximum time to wait in milliseconds (default: 10000)
-     * @return true if homing completed successfully, false otherwise
+     * @return Result<void> indicating success or error
      * 
      * This is a blocking function that automatically:
      * - Caches current settings (StealthChop, SW_MODE, ramp settings)
@@ -1777,7 +1781,7 @@ public:
      * @note StallGuard threshold (SGT) should be configured via Initialize() or ConfigureStallGuard()
      *       before calling this method. The method uses the existing SGT configuration.
      */
-    bool PerformSensorlessHoming(bool direction, float search_speed,
+    Result<void> PerformSensorlessHoming(bool direction, float search_speed,
                                  int32_t& final_position, uint32_t timeout_ms = 10000) noexcept;
     
     /**
@@ -1788,14 +1792,14 @@ public:
      * @param final_position Reference to store final position after homing
      * @param use_left_switch true to use REFL, false to use REFR
      * @param timeout_ms Maximum time to wait in milliseconds (default: 10000)
-     * @return true if homing completed successfully, false otherwise
+     * @return Result<void> indicating success or error
      * 
      * This is a blocking function that automatically:
      * - Caches current settings (SW_MODE, ramp settings)
      * - Configures switches and performs homing
      * - Restores cached settings after homing completes
      */
-    bool PerformSwitchHoming(bool direction, float search_speed, float switch_speed,
+    Result<void> PerformSwitchHoming(bool direction, float search_speed, float switch_speed,
                              int32_t& final_position, bool use_left_switch,
                              uint32_t timeout_ms = 10000) noexcept;
     
@@ -1803,9 +1807,9 @@ public:
     TMC51x0& driver_;
     HomingSettingsCache cache_{};
     
-    bool CacheCurrentSettings() noexcept;
-    bool RestoreCachedSettings() noexcept;
-    bool EnsureSpreadCycleForStallGuard() noexcept;  // Disable StealthChop if needed
+    Result<void> CacheCurrentSettings() noexcept;
+    Result<void> RestoreCachedSettings() noexcept;
+    Result<void> EnsureSpreadCycleForStallGuard() noexcept;  // Disable StealthChop if needed
   } homing{*this};
 
   //================================================================================
@@ -1903,7 +1907,7 @@ public:
      * @brief Configure UART node address and send delay (for sequential programming)
      * @param node_address UART node address (0-254)
      * @param send_delay Number of bit times before replying (0-15)
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      *
      * Writes to SLAVECONF register using address 0 (for sequential programming via NAI/NAO pins).
      * This is used during sequential programming when devices are accessible at address 0.
@@ -1911,7 +1915,7 @@ public:
      * @note For normal operation, use `communication.ConfigureUartNodeAddress()` instead.
      * @note Per datasheet, devices are typically programmed backwards from address 254 (254, 253, 252, ...).
      */
-    bool ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay) noexcept;
+    Result<void> ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay) noexcept;
   } uartConfig{this};
 
   /**
@@ -1931,9 +1935,9 @@ public:
     /**
      * @brief Configure short protection levels
      * @param config Power stage parameters structure (contains short protection fields)
-     * @return true if configured successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool ConfigureShortProtection(const PowerStageParameters& config) noexcept;
+    Result<void> ConfigureShortProtection(const PowerStageParameters& config) noexcept;
 
     /**
      * @brief Set short protection levels
@@ -1941,9 +1945,9 @@ public:
      * @param s2g_level Short to GND detector sensitivity (2-15)
      * @param shortfilter Spike filtering bandwidth (0-3)
      * @param shortdelay Short detection delay (0-1)
-     * @return true if set successfully, false otherwise
+     * @return Result<void> indicating success or error
      */
-    bool SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter,
+    Result<void> SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter,
                                   uint8_t shortdelay) noexcept;
 
   private:
@@ -1965,11 +1969,11 @@ protected:
 
   /**
    * @brief Reset the TMC51x0 driver
-   * @return true if reset succeeded, false otherwise
+   * @return Result<void> indicating success or error
    *
    * Performs a software reset by writing to the GSTAT register.
    */
-  bool Reset() noexcept;
+  Result<void> Reset() noexcept;
 
   /**
    * @brief Check if the driver is initialized

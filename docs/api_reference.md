@@ -55,8 +55,8 @@ driver.printer          // Debug register printing
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
 | `GetComm()` | `CommType& GetComm() noexcept` | Reference to comm interface | Get communication interface reference |
-| `Initialize()` | `bool Initialize(const DriverConfig& config = DriverConfig()) noexcept` | `true` on success | Initialize driver with configuration |
-| `Reset()` | `bool Reset() noexcept` | `true` on success | Perform software reset |
+| `Initialize()` | `Result<void> Initialize(const DriverConfig& config = DriverConfig()) noexcept` | `Result<void>` indicating success or error | Initialize driver with configuration |
+| `Reset()` | `Result<void> Reset() noexcept` | `Result<void>` indicating success or error | Perform software reset |
 | `IsInitialized()` | `bool IsInitialized() const noexcept` | `true` if initialized | Check initialization status |
 
 **Note**: Per datasheet procedure, devices are programmed backwards from address 254 (254, 253, 252, ...). Logical device indices (0, 1, 2, ...) map to physical addresses (254, 253, 252, ...). Use `TMC51x0MultiNode` class for managing multiple devices.
@@ -97,39 +97,39 @@ Ramp control and motion planning subsystem for precise motor positioning and vel
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `SetRampMode()` | `bool SetRampMode(RampMode mode) noexcept` | `true` on success | Set ramp mode (POSITIONING, VELOCITY_POS, VELOCITY_NEG, HOLD) |
-| `SetTargetPosition()` | `bool SetTargetPosition(float value, Unit unit = Unit::Steps) noexcept` | `true` on success | Set target position for positioning mode (unit-aware) |
-| `GetCurrentPosition()` | `bool GetCurrentPosition(float& position, Unit unit = Unit::Steps) noexcept` | `true` on success | Get current motor position (unit-aware) |
-| `GetTargetPosition()` | `bool GetTargetPosition(float& position, Unit unit = Unit::Steps) noexcept` | `true` on success | Get target position (unit-aware) |
-| `SetCurrentPosition()` | `bool SetCurrentPosition(float value, Unit unit = Unit::Steps, bool update_encoder = false) noexcept` | `true` on success | Set current position (unit-aware, optionally update encoder) |
-| `SetMaxSpeed()` | `bool SetMaxSpeed(float value, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set maximum velocity (unit-aware, default: revolutions per second) |
-| `SetAcceleration()` | `bool SetAcceleration(float value, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set acceleration/deceleration (unit-aware, default: revolutions per second²) |
-| `SetAccelerations()` | `bool SetAccelerations(float accel_val, float decel_val, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set acceleration and deceleration separately (unit-aware, default: revolutions per second²) |
-| `SetDeceleration()` | `bool SetDeceleration(float value, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set deceleration only (DMAX register, unit-aware, default: revolutions per second²) |
-| `SetRampSpeeds()` | `bool SetRampSpeeds(float start_speed, float stop_speed, float transition_speed, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set ramp start, stop, and transition speeds (unit-aware, default: revolutions per second) |
-| `GetCurrentSpeed()` | `bool GetCurrentSpeed(float& speed, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Get current motor velocity (unit-aware, default: revolutions per second) |
-| `IsTargetReached()` | `bool IsTargetReached() noexcept` | `true` if reached | Check if target position reached |
-| `IsTargetVelocityReached()` | `bool IsTargetVelocityReached() noexcept` | `true` if reached | Check if target velocity reached |
-| `Stop()` | `bool Stop() noexcept` | `true` on success | Stop motor immediately |
-| `ConfigureReferenceSwitch()` | `bool ConfigureReferenceSwitch(const ReferenceSwitchConfig& config) noexcept` | `true` on success | Configure reference switches/endstops (full configuration) |
-| `GetReferenceSwitchConfig()` | `bool GetReferenceSwitchConfig(ReferenceSwitchConfig& config) noexcept` | `true` on success | Read current reference switch configuration |
-| `SetLeftSwitchActiveLevel()` | `bool SetLeftSwitchActiveLevel(ReferenceSwitchActiveLevel) noexcept` | `true` on success | Set left switch active level (real-time update) |
-| `SetRightSwitchActiveLevel()` | `bool SetRightSwitchActiveLevel(ReferenceSwitchActiveLevel) noexcept` | `true` on success | Set right switch active level (real-time update) |
-| `SetLeftSwitchStopEnable()` | `bool SetLeftSwitchStopEnable(bool enable) noexcept` | `true` on success | Enable/disable motor stop on left switch (real-time) |
-| `SetRightSwitchStopEnable()` | `bool SetRightSwitchStopEnable(bool enable) noexcept` | `true` on success | Enable/disable motor stop on right switch (real-time) |
-| `SetLeftSwitchLatchMode()` | `bool SetLeftSwitchLatchMode(ReferenceLatchMode) noexcept` | `true` on success | Set left switch latching mode (real-time update) |
-| `SetRightSwitchLatchMode()` | `bool SetRightSwitchLatchMode(ReferenceLatchMode) noexcept` | `true` on success | Set right switch latching mode (real-time update) |
-| `SetStopMode()` | `bool SetStopMode(ReferenceStopMode) noexcept` | `true` on success | Set stop mode (hard/soft) (real-time update) |
-| `GetLatchedPosition()` | `bool GetLatchedPosition(float& position, Unit unit = Unit::Steps) noexcept` | `true` on success | Get position latched on switch event (unit-aware) |
-| `SetXCompare()` | `bool SetXCompare(float position, Unit unit = Unit::Steps) noexcept` | `true` on success | Set position comparison register (X_COMPARE, unit-aware) |
-| `GetXCompare()` | `bool GetXCompare(float& position, Unit unit = Unit::Steps) const noexcept` | `true` on success | Get X_COMPARE register value from local storage (unit-aware) |
-| `SetPowerDownDelay()` | `bool SetPowerDownDelay(uint8_t tpowerdown) noexcept` | `true` on success | Set power down delay (raw register value 0-255) |
-| `SetPowerDownDelayMs()` | `bool SetPowerDownDelayMs(float delay_ms) noexcept` | `true` on success | Set power down delay in milliseconds (automatically converted) |
-| `SetZeroWaitTime()` | `bool SetZeroWaitTime(uint16_t tzerowait) noexcept` | `true` on success | Set zero wait time after ramping down (raw register value 0-65535) |
-| `SetZeroWaitTimeMs()` | `bool SetZeroWaitTimeMs(float delay_ms) noexcept` | `true` on success | Set zero wait time in milliseconds (automatically converted) |
-| `SetFirstAcceleration()` | `bool SetFirstAcceleration(float a1, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set first acceleration phase A1 (unit-aware, default: revolutions per second², 0.0f = use AMAX) |
-| `SetFinalDeceleration()` | `bool SetFinalDeceleration(float d1, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set final deceleration phase D1 (unit-aware, default: revolutions per second², must not be 0 in positioning mode) |
-| `ConfigureRamp()` | `bool ConfigureRamp(const RampConfig& config) noexcept` | `true` on success | Configure ramp generator from RampConfig structure |
+| `SetRampMode()` | `Result<void> SetRampMode(RampMode mode) noexcept` | `Result<void>` indicating success or error | Set ramp mode (POSITIONING, VELOCITY_POS, VELOCITY_NEG, HOLD) |
+| `SetTargetPosition()` | `Result<void> SetTargetPosition(float value, Unit unit) noexcept` | `Result<void>` indicating success or error | Set target position for positioning mode (unit-aware, unit parameter required) |
+| `GetCurrentPosition()` | `Result<float> GetCurrentPosition(Unit unit) noexcept` | `Result<float>` containing the value or error | Get current motor position (unit-aware, unit parameter required) |
+| `GetTargetPosition()` | `Result<float> GetTargetPosition(Unit unit) noexcept` | `Result<float>` containing the value or error | Get target position (unit-aware, unit parameter required) |
+| `SetCurrentPosition()` | `Result<void> SetCurrentPosition(float value, Unit unit, bool update_encoder = false) noexcept` | `Result<void>` indicating success or error | Set current position (unit-aware, unit parameter required, optionally update encoder) |
+| `SetMaxSpeed()` | `Result<void> SetMaxSpeed(float value, Unit unit) noexcept` | `Result<void>` indicating success or error | Set maximum velocity (unit-aware, unit parameter required) |
+| `SetAcceleration()` | `Result<void> SetAcceleration(float value, Unit unit) noexcept` | `Result<void>` indicating success or error | Set acceleration/deceleration (unit-aware, unit parameter required) |
+| `SetAccelerations()` | `Result<void> SetAccelerations(float accel_val, float decel_val, Unit unit) noexcept` | `Result<void>` indicating success or error | Set acceleration and deceleration separately (unit-aware, unit parameter required) |
+| `SetDeceleration()` | `Result<void> SetDeceleration(float value, Unit unit) noexcept` | `Result<void>` indicating success or error | Set deceleration only (DMAX register, unit-aware, unit parameter required) |
+| `SetRampSpeeds()` | `Result<void> SetRampSpeeds(float start_speed, float stop_speed, float transition_speed, Unit unit) noexcept` | `Result<void>` indicating success or error | Set ramp start, stop, and transition speeds (unit-aware, unit parameter required) |
+| `GetCurrentSpeed()` | `Result<float> GetCurrentSpeed(Unit unit) noexcept` | `Result<float>` containing the value or error | Get current motor velocity (unit-aware, unit parameter required) |
+| `IsTargetReached()` | `Result<bool> IsTargetReached() noexcept` | `Result<bool>` containing true if target position reached, false otherwise | Check if target position reached |
+| `IsTargetVelocityReached()` | `Result<bool> IsTargetVelocityReached() noexcept` | `Result<bool>` containing true if target velocity reached, false otherwise | Check if target velocity reached |
+| `Stop()` | `Result<void> Stop() noexcept` | `Result<void>` indicating success or error | Stop motor immediately |
+| `ConfigureReferenceSwitch()` | `Result<void> ConfigureReferenceSwitch(const ReferenceSwitchConfig& config) noexcept` | `Result<void>` indicating success or error | Configure reference switches/endstops (full configuration) |
+| `GetReferenceSwitchConfig()` | `Result<ReferenceSwitchConfig> GetReferenceSwitchConfig() noexcept` | `Result<ReferenceSwitchConfig>` containing the value or error | Read current reference switch configuration |
+| `SetLeftSwitchActiveLevel()` | `Result<void> SetLeftSwitchActiveLevel(ReferenceSwitchActiveLevel) noexcept` | `Result<void>` indicating success or error | Set left switch active level (real-time update) |
+| `SetRightSwitchActiveLevel()` | `Result<void> SetRightSwitchActiveLevel(ReferenceSwitchActiveLevel) noexcept` | `Result<void>` indicating success or error | Set right switch active level (real-time update) |
+| `SetLeftSwitchStopEnable()` | `Result<void> SetLeftSwitchStopEnable(bool enable) noexcept` | `Result<void>` indicating success or error | Enable/disable motor stop on left switch (real-time) |
+| `SetRightSwitchStopEnable()` | `Result<void> SetRightSwitchStopEnable(bool enable) noexcept` | `Result<void>` indicating success or error | Enable/disable motor stop on right switch (real-time) |
+| `SetLeftSwitchLatchMode()` | `Result<void> SetLeftSwitchLatchMode(ReferenceLatchMode) noexcept` | `Result<void>` indicating success or error | Set left switch latching mode (real-time update) |
+| `SetRightSwitchLatchMode()` | `Result<void> SetRightSwitchLatchMode(ReferenceLatchMode) noexcept` | `Result<void>` indicating success or error | Set right switch latching mode (real-time update) |
+| `SetStopMode()` | `Result<void> SetStopMode(ReferenceStopMode) noexcept` | `Result<void>` indicating success or error | Set stop mode (hard/soft) (real-time update) |
+| `GetLatchedPosition()` | `Result<float> GetLatchedPosition(Unit unit) noexcept` | `Result<float>` containing the value or error | Get position latched on switch event (unit-aware, unit parameter required) |
+| `SetXCompare()` | `Result<void> SetXCompare(float position, Unit unit) noexcept` | `Result<void>` indicating success or error | Set position comparison register (X_COMPARE, unit-aware, unit parameter required) |
+| `GetXCompare()` | `Result<float> GetXCompare(Unit unit) const noexcept` | `Result<float>` containing the value or error | Get X_COMPARE register value from local storage (unit-aware, unit parameter required) |
+| `SetPowerDownDelay()` | `Result<void> SetPowerDownDelay(uint8_t tpowerdown) noexcept` | `Result<void>` indicating success or error | Set power down delay (raw register value 0-255) |
+| `SetPowerDownDelayMs()` | `Result<void> SetPowerDownDelayMs(float delay_ms) noexcept` | `Result<void>` indicating success or error | Set power down delay in milliseconds (automatically converted) |
+| `SetZeroWaitTime()` | `Result<void> SetZeroWaitTime(uint16_t tzerowait) noexcept` | `Result<void>` indicating success or error | Set zero wait time after ramping down (raw register value 0-65535) |
+| `SetZeroWaitTimeMs()` | `Result<void> SetZeroWaitTimeMs(float delay_ms) noexcept` | `Result<void>` indicating success or error | Set zero wait time in milliseconds (automatically converted) |
+| `SetFirstAcceleration()` | `Result<void> SetFirstAcceleration(float a1, Unit unit) noexcept` | `Result<void>` indicating success or error | Set first acceleration phase A1 (unit-aware, unit parameter required, 0.0f = use AMAX) |
+| `SetFinalDeceleration()` | `Result<void> SetFinalDeceleration(float d1, Unit unit) noexcept` | `Result<void>` indicating success or error | Set final deceleration phase D1 (unit-aware, unit parameter required, must not be 0 in positioning mode) |
+| `ConfigureRamp()` | `Result<void> ConfigureRamp(const RampConfig& config) noexcept` | `Result<void>` indicating success or error | Configure ramp generator from RampConfig structure |
 
 ## MotorControl Subsystem
 
@@ -152,24 +152,24 @@ Motor control and configuration subsystem for current control, chopper modes, an
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `Enable()` | `bool Enable() noexcept` | `true` on success | Enable motor driver |
-| `Disable()` | `bool Disable() noexcept` | `true` on success | Disable motor driver |
-| `SetCurrent()` | `bool SetCurrent(uint8_t irun, uint8_t ihold) noexcept` | `true` on success | Set run current (0-31) and hold current (0-31) |
-| `ConfigureChopper()` | `bool ConfigureChopper(const ChopperConfig& config) noexcept` | `true` on success | Configure chopper settings (toff, hstrt, hend, tbl, mres, etc.) |
-| `ConfigureStealthChop()` | `bool ConfigureStealthChop(const StealthChopConfig& config) noexcept` | `true` on success | Configure stealthChop PWM mode |
-| `SetModeChangeSpeeds()` | `bool SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set velocity thresholds for mode switching (unit-aware, default: revolutions per second) |
-| `SetStealthChopVelocityThreshold()` | `bool SetStealthChopVelocityThreshold(float value, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set StealthChop velocity threshold (TPWMTHRS, unit-aware, default: revolutions per second) |
-| `SetCoolStepThreshold()` | `bool SetCoolStepThreshold(float value, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set CoolStep velocity threshold (TCOOLTHRS, unit-aware, default: revolutions per second) |
-| `SetHighSpeedThreshold()` | `bool SetHighSpeedThreshold(float value, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set High-Speed velocity threshold (THIGH, unit-aware, default: revolutions per second) |
-| `SetGlobalScaler()` | `bool SetGlobalScaler(uint16_t scaler) noexcept` | `true` on success | Set global current scaler (32-256) |
-| `SetIholdDelayMs()` | `bool SetIholdDelayMs(float total_delay_ms) noexcept` | `true` on success | Set motor power down delay (IHOLDDELAY) in milliseconds (automatically calculated) |
-| `ConfigureCoolStep()` | `bool ConfigureCoolStep(const CoolStepConfig& config) noexcept` | `true` on success | Configure CoolStep current reduction |
-| `ConfigureDcStep()` | `bool ConfigureDcStep(const DcStepConfig& config) noexcept` | `true` on success | Configure dcStep automatic commutation |
-| `SetMicrostepLookupTable()` | `bool SetMicrostepLookupTable(uint8_t index, uint32_t value) noexcept` | `true` on success | Set microstep lookup table entry (0-7) |
-| `SetMicrostepLookupTableSegmentation()` | `bool SetMicrostepLookupTableSegmentation(uint8_t width_sel_0, uint8_t width_sel_1, uint8_t width_sel_2, uint8_t width_sel_3, uint8_t lut_seg_start1, uint8_t lut_seg_start2, uint8_t lut_seg_start3) noexcept` | `true` on success | Set microstep lookup table segmentation |
-| `SetMicrostepLookupTableStart()` | `bool SetMicrostepLookupTableStart(uint16_t start_current) noexcept` | `true` on success | Set microstep lookup table start current |
-| `SetupMotorFromSpec()` | `bool SetupMotorFromSpec(const MotorSpec& motor_spec, const MechanicalSystem* mechanical_system = nullptr) noexcept` | `true` on success | Setup motor from high-level specifications |
-| `ConfigureGlobalConfig()` | `bool ConfigureGlobalConfig(const GlobalConfig& config) noexcept` | `true` on success | Configure global configuration (GCONF register) |
+| `Enable()` | `Result<void> Enable() noexcept` | `Result<void>` indicating success or error | Enable motor driver |
+| `Disable()` | `Result<void> Disable() noexcept` | `Result<void>` indicating success or error | Disable motor driver |
+| `SetCurrent()` | `Result<void> SetCurrent(uint8_t irun, uint8_t ihold) noexcept` | `Result<void>` indicating success or error | Set run current (0-31) and hold current (0-31) |
+| `ConfigureChopper()` | `Result<void> ConfigureChopper(const ChopperConfig& config) noexcept` | `Result<void>` indicating success or error | Configure chopper settings (toff, hstrt, hend, tbl, mres, etc.) |
+| `ConfigureStealthChop()` | `Result<void> ConfigureStealthChop(const StealthChopConfig& config) noexcept` | `Result<void>` indicating success or error | Configure stealthChop PWM mode |
+| `SetModeChangeSpeeds()` | `Result<void> SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs, Unit unit) noexcept` | `Result<void>` indicating success or error | Set velocity thresholds for mode switching (unit-aware, unit parameter required) |
+| `SetStealthChopVelocityThreshold()` | `Result<void> SetStealthChopVelocityThreshold(float value, Unit unit) noexcept` | `Result<void>` indicating success or error | Set StealthChop velocity threshold (TPWMTHRS, unit-aware, unit parameter required) |
+| `SetCoolStepThreshold()` | `Result<void> SetCoolStepThreshold(float value, Unit unit) noexcept` | `Result<void>` indicating success or error | Set CoolStep velocity threshold (TCOOLTHRS, unit-aware, unit parameter required) |
+| `SetHighSpeedThreshold()` | `Result<void> SetHighSpeedThreshold(float value, Unit unit) noexcept` | `Result<void>` indicating success or error | Set High-Speed velocity threshold (THIGH, unit-aware, unit parameter required) |
+| `SetGlobalScaler()` | `Result<void> SetGlobalScaler(uint16_t scaler) noexcept` | `Result<void>` indicating success or error | Set global current scaler (32-256) |
+| `SetIholdDelayMs()` | `Result<void> SetIholdDelayMs(float total_delay_ms) noexcept` | `Result<void>` indicating success or error | Set motor power down delay (IHOLDDELAY) in milliseconds (automatically calculated) |
+| `ConfigureCoolStep()` | `Result<void> ConfigureCoolStep(const CoolStepConfig& config) noexcept` | `Result<void>` indicating success or error | Configure CoolStep current reduction |
+| `ConfigureDcStep()` | `Result<void> ConfigureDcStep(const DcStepConfig& config) noexcept` | `Result<void>` indicating success or error | Configure dcStep automatic commutation |
+| `SetMicrostepLookupTable()` | `Result<void> SetMicrostepLookupTable(uint8_t index, uint32_t value) noexcept` | `Result<void>` indicating success or error | Set microstep lookup table entry (0-7) |
+| `SetMicrostepLookupTableSegmentation()` | `Result<void> SetMicrostepLookupTableSegmentation(uint8_t width_sel_0, uint8_t width_sel_1, uint8_t width_sel_2, uint8_t width_sel_3, uint8_t lut_seg_start1, uint8_t lut_seg_start2, uint8_t lut_seg_start3) noexcept` | `Result<void>` indicating success or error | Set microstep lookup table segmentation |
+| `SetMicrostepLookupTableStart()` | `Result<void> SetMicrostepLookupTableStart(uint16_t start_current) noexcept` | `Result<void>` indicating success or error | Set microstep lookup table start current |
+| `SetupMotorFromSpec()` | `Result<void> SetupMotorFromSpec(const MotorSpec& motor_spec, const MechanicalSystem* mechanical_system = nullptr) noexcept` | `Result<void>` indicating success or error | Setup motor from high-level specifications |
+| `ConfigureGlobalConfig()` | `Result<void> ConfigureGlobalConfig(const GlobalConfig& config) noexcept` | `Result<void>` indicating success or error | Configure global configuration (GCONF register) |
 
 ## Encoder Subsystem
 
@@ -192,18 +192,18 @@ Encoder integration and closed-loop control subsystem for position verification 
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `Configure()` | `bool Configure(const EncoderConfig& config) noexcept` | `true` on success | Configure encoder settings (polarity, filtering, etc.) |
-| `GetEncoderConfig()` | `bool GetEncoderConfig(EncoderConfig& config) noexcept` | `true` on success | Read current encoder configuration |
-| `SetNChannelActiveLevel()` | `bool SetNChannelActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept` | `true` on success | Set N channel active level (real-time) |
-| `SetNChannelSensitivity()` | `bool SetNChannelSensitivity(EncoderNSensitivity sensitivity) noexcept` | `true` on success | Set N channel sensitivity (real-time) |
-| `SetClearMode()` | `bool SetClearMode(EncoderClearMode clear_mode) noexcept` | `true` on success | Set encoder clear mode (real-time) |
-| `SetPrescalerMode()` | `bool SetPrescalerMode(EncoderPrescalerMode prescaler_mode) noexcept` | `true` on success | Set encoder prescaler mode (real-time) |
-| `GetPosition()` | `bool GetPosition(int32_t& position) noexcept` | `true` on success | Get encoder position in steps |
-| `SetResolution()` | `bool SetResolution(int32_t motor_steps, int32_t enc_resolution, bool inverted = false) noexcept` | `true` on success | Set encoder resolution (motor steps per encoder resolution) |
-| `SetAllowedDeviation()` | `bool SetAllowedDeviation(int32_t steps) noexcept` | `true` on success | Set allowed encoder deviation threshold in steps |
-| `IsDeviationDetected()` | `bool IsDeviationDetected() noexcept` | `true` if deviation detected | Check if encoder deviation detected |
-| `ClearDeviationFlag()` | `bool ClearDeviationFlag() noexcept` | `true` on success | Clear encoder deviation flag |
-| `GetLatchedPosition()` | `bool GetLatchedPosition(int32_t& position) noexcept` | `true` on success | Get encoder position latched on N event |
+| `Configure()` | `Result<void> Configure(const EncoderConfig& config) noexcept` | `Result<void>` indicating success or error | Configure encoder settings (polarity, filtering, etc.) |
+| `GetEncoderConfig()` | `Result<EncoderConfig> GetEncoderConfig() noexcept` | `Result<EncoderConfig>` containing the value or error | Read current encoder configuration |
+| `SetNChannelActiveLevel()` | `Result<void> SetNChannelActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept` | `Result<void>` indicating success or error | Set N channel active level (real-time) |
+| `SetNChannelSensitivity()` | `Result<void> SetNChannelSensitivity(EncoderNSensitivity sensitivity) noexcept` | `Result<void>` indicating success or error | Set N channel sensitivity (real-time) |
+| `SetClearMode()` | `Result<void> SetClearMode(EncoderClearMode clear_mode) noexcept` | `Result<void>` indicating success or error | Set encoder clear mode (real-time) |
+| `SetPrescalerMode()` | `Result<void> SetPrescalerMode(EncoderPrescalerMode prescaler_mode) noexcept` | `Result<void>` indicating success or error | Set encoder prescaler mode (real-time) |
+| `GetPosition()` | `Result<int32_t> GetPosition() noexcept` | `Result<int32_t>` containing the value or error | Get encoder position in steps |
+| `SetResolution()` | `Result<void> SetResolution(int32_t motor_steps, int32_t enc_resolution, bool inverted = false) noexcept` | `Result<void>` indicating success or error | Set encoder resolution (motor steps per encoder resolution) |
+| `SetAllowedDeviation()` | `Result<void> SetAllowedDeviation(int32_t steps) noexcept` | `Result<void>` indicating success or error | Set allowed encoder deviation threshold in steps |
+| `IsDeviationDetected()` | `Result<bool> IsDeviationDetected() noexcept` | `Result<bool>` containing true if deviation detected, false otherwise | Check if encoder deviation detected |
+| `ClearDeviationFlag()` | `Result<void> ClearDeviationFlag() noexcept` | `Result<void>` indicating success or error | Clear encoder deviation flag |
+| `GetLatchedPosition()` | `Result<int32_t> GetLatchedPosition() noexcept` | `Result<int32_t>` containing the value or error | Get encoder position latched on N event |
 
 ## Diagnostics Subsystem
 
@@ -216,23 +216,23 @@ Driver status monitoring and diagnostics subsystem.
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
 | `GetStatus()` | `DriverStatus GetStatus() noexcept` | DriverStatus enum | Get driver status (OK, CP_UV, S2VSA, etc.) |
-| `GetGlobalStatus()` | `bool GetGlobalStatus(bool& reset, bool& drv_err, bool& uv_cp) noexcept` | `true` on success | Get global status flags (GSTAT) |
-| `GetStallGuard()` | `bool GetStallGuard(uint16_t& value) noexcept` | `true` on success | Get StallGuard2 value (0-1023) |
-| `GetStallGuardResult()` | `bool GetStallGuardResult(uint16_t& sg_result) noexcept` | `true` on success | Get StallGuard2 result from DRV_STATUS register |
-| `ConfigureStallGuard()` | `bool ConfigureStallGuard(const StallGuardConfig& config) noexcept` | `true` on success | Configure StallGuard2 settings |
-| `EnableStopOnStall()` | `bool EnableStopOnStall(bool enable) noexcept` | `true` on success | Enable/disable stop on stall |
-| `IsStopOnStallEnabled()` | `bool IsStopOnStallEnabled() noexcept` | `true` if enabled | Check if stop on stall is enabled |
-| `SetSoftStop()` | `bool SetSoftStop(bool enable) noexcept` | `true` on success | Enable/disable soft stop |
-| `IsSoftStopEnabled()` | `bool IsSoftStopEnabled() noexcept` | `true` if enabled | Check if soft stop is enabled |
-| `ClearStallFlag()` | `bool ClearStallFlag() noexcept` | `true` on success | Clear stall event flag |
-| `IsStallDetected()` | `bool IsStallDetected() noexcept` | `true` if detected | Check if stall was detected |
-| `GetDriverStatusRegister()` | `bool GetDriverStatusRegister(uint32_t& status) noexcept` | `true` on success | Read DRV_STATUS register |
-| `IsOpenLoadA()` | `bool IsOpenLoadA() noexcept` | `true` if open load on phase A | Check for open load on phase A (requires SpreadCycle mode and motion) |
-| `IsOpenLoadB()` | `bool IsOpenLoadB() noexcept` | `true` if open load on phase B | Check for open load on phase B (requires SpreadCycle mode and motion) |
-| `CheckOpenLoad()` | `bool CheckOpenLoad(bool& phase_a, bool& phase_b) noexcept` | `true` on success | Check both phases for open load simultaneously |
-| `GetRampStatusRegister()` | `bool GetRampStatusRegister(uint32_t& status) noexcept` | `true` on success | Read RAMP_STAT register |
-| `ClearRampStatus()` | `bool ClearRampStatus(uint32_t bits_to_clear) noexcept` | `true` on success | Clear specific bits in RAMP_STAT register |
-| `GetLostSteps()` | `bool GetLostSteps(uint32_t& steps) noexcept` | `true` on success | Get lost steps counter (dcStep mode only) |
+| `GetGlobalStatus()` | `Result<bool> GetGlobalStatus(bool& drv_err, bool& uv_cp) noexcept` | `Result<bool>` containing true if read successfully, false otherwise | Get global status flags (GSTAT) |
+| `GetStallGuard()` | `Result<uint16_t> GetStallGuard() noexcept` | `Result<uint16_t>` containing the value or error | Get StallGuard2 value (0-1023) |
+| `GetStallGuardResult()` | `Result<uint16_t> GetStallGuardResult() noexcept` | `Result<uint16_t>` containing the value or error | Get StallGuard2 result from DRV_STATUS register |
+| `ConfigureStallGuard()` | `Result<void> ConfigureStallGuard(const StallGuardConfig& config) noexcept` | `Result<void>` indicating success or error | Configure StallGuard2 settings |
+| `EnableStopOnStall()` | `Result<void> EnableStopOnStall(bool enable) noexcept` | `Result<void>` indicating success or error | Enable/disable stop on stall |
+| `IsStopOnStallEnabled()` | `Result<bool> IsStopOnStallEnabled() noexcept` | `Result<bool>` containing true if stop on stall is enabled, false otherwise | Check if stop on stall is enabled |
+| `SetSoftStop()` | `Result<void> SetSoftStop(bool enable) noexcept` | `Result<void>` indicating success or error | Enable/disable soft stop |
+| `IsSoftStopEnabled()` | `Result<bool> IsSoftStopEnabled() noexcept` | `Result<bool>` containing true if soft stop is enabled, false otherwise | Check if soft stop is enabled |
+| `ClearStallFlag()` | `Result<void> ClearStallFlag() noexcept` | `Result<void>` indicating success or error | Clear stall event flag |
+| `IsStallDetected()` | `Result<bool> IsStallDetected() noexcept` | `Result<bool>` containing true if stall event detected, false otherwise | Check if stall was detected |
+| `GetDriverStatusRegister()` | `Result<uint32_t> GetDriverStatusRegister() noexcept` | `Result<uint32_t>` containing the value or error | Read DRV_STATUS register |
+| `IsOpenLoadA()` | `Result<bool> IsOpenLoadA() noexcept` | `Result<bool>` containing true if open load detected on phase A, false otherwise | Check for open load on phase A (requires SpreadCycle mode and motion) |
+| `IsOpenLoadB()` | `Result<bool> IsOpenLoadB() noexcept` | `Result<bool>` containing true if open load detected on phase B, false otherwise | Check for open load on phase B (requires SpreadCycle mode and motion) |
+| `CheckOpenLoad()` | `Result<bool> CheckOpenLoad(bool& phase_a, bool& phase_b) noexcept` | `Result<bool>` containing true if read successfully, false otherwise | Check both phases for open load simultaneously |
+| `GetRampStatusRegister()` | `Result<uint32_t> GetRampStatusRegister() noexcept` | `Result<uint32_t>` containing the value or error | Read RAMP_STAT register |
+| `ClearRampStatus()` | `Result<void> ClearRampStatus(uint32_t bits_to_clear) noexcept` | `Result<void>` indicating success or error | Clear specific bits in RAMP_STAT register |
+| `GetLostSteps()` | `Result<uint32_t> GetLostSteps() noexcept` | `Result<uint32_t>` containing the value or error | Get lost steps counter (dcStep mode only) |
 | `GetChipVersion()` | `uint8_t GetChipVersion() const noexcept` | Chip version (0x11 = TMC5130, 0x30 = TMC51x0) | Get detected chip version |
 
 ## Tuning Subsystem ⭐
@@ -254,16 +254,16 @@ Automatic parameter tuning for optimal driver performance.
 
 | Method | Signature | Return | Description |
 |--------|-----------|--------|-------------|
-| `TuneStallGuard()` | `bool TuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = -10, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec) noexcept` | `true` on success | Automatically tune StallGuard threshold (SGT) with comprehensive velocity range analysis. Separate unit parameters for velocity and acceleration (RPM not valid for acceleration) |
-| `TuneStallGuard()` (legacy) | `bool TuneStallGuard(float target_velocity, int8_t& final_sgt, int8_t min_sgt = -10, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec) noexcept` | `true` on success | Legacy overload - use StallGuardTuningResult version for comprehensive results. Separate unit parameters for velocity and acceleration (RPM not valid for acceleration) |
-| `AutoTuneStallGuard()` | `bool AutoTuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = 0, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec, uint16_t safe_current_margin_mA = 0) noexcept` | `true` on success | Comprehensive automatic StallGuard tuning with safe current margin handling (recommended). Separate unit parameters for velocity and acceleration (RPM not valid for acceleration) |
+| `TuneStallGuard()` | `Result<void> TuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = -10, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec) noexcept` | `Result<void>` indicating success or error | Automatically tune StallGuard threshold (SGT) with comprehensive velocity range analysis. Separate unit parameters for velocity and acceleration (RPM not valid for acceleration) |
+| `TuneStallGuard()` (legacy) | `Result<void> TuneStallGuard(float target_velocity, int8_t& final_sgt, int8_t min_sgt = -10, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec) noexcept` | `Result<void>` indicating success or error | Legacy overload - use StallGuardTuningResult version for comprehensive results. Separate unit parameters for velocity and acceleration (RPM not valid for acceleration) |
+| `AutoTuneStallGuard()` | `Result<void> AutoTuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = 0, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec, uint16_t safe_current_margin_mA = 0) noexcept` | `Result<void>` indicating success or error | Comprehensive automatic StallGuard tuning with safe current margin handling (recommended). Separate unit parameters for velocity and acceleration (RPM not valid for acceleration) |
 
 **Usage Example**:
 ```cpp
 tmc51x0::StallGuardTuningResult result;
 // Using AutoTuneStallGuard (recommended) with safe current margin
 // Note: Separate unit parameters for velocity and acceleration
-bool success = driver.tuning.AutoTuneStallGuard(
+auto result_tune = driver.tuning.AutoTuneStallGuard(
     0.6f, result,                          // Target velocity: 0.6 rev/s (~36 RPM)
     0, 63,                                 // SGT search range
     0.06f,                                 // Acceleration: 0.06 rev/s²
@@ -274,7 +274,7 @@ bool success = driver.tuning.AutoTuneStallGuard(
 );
 
 // Example with RPM for velocity, RevPerSec for acceleration (RPM not valid for acceleration)
-bool success = driver.tuning.AutoTuneStallGuard(
+auto result_tune2 = driver.tuning.AutoTuneStallGuard(
     36.0f, result,                         // Target velocity: 36 RPM
     0, 63,                                 // SGT search range
     0.06f,                                 // Acceleration: 0.06 rev/s² (must use RevPerSec)
@@ -285,7 +285,7 @@ bool success = driver.tuning.AutoTuneStallGuard(
 );
 
 // Or using TuneStallGuard (simpler, no current margin)
-bool success = driver.tuning.TuneStallGuard(
+auto result_tune3 = driver.tuning.TuneStallGuard(
     0.6f, result,                          // Target velocity: 0.6 rev/s
     0, 63,                                 // SGT search range
     0.06f,                                 // Acceleration: 0.06 rev/s²
@@ -295,7 +295,7 @@ bool success = driver.tuning.TuneStallGuard(
     // Unit::RevPerSec is default, can be omitted
 );
 
-if (success) {
+if (result_tune) {
     // Use optimal SGT
     tmc51x0::StallGuardConfig sg_config;
     sg_config.threshold = result.optimal_sgt;
@@ -327,8 +327,8 @@ Homing methods with automatic settings caching for endstop-free and switch-based
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `PerformSensorlessHoming()` | `bool PerformSensorlessHoming(bool direction, float search_speed, int32_t& final_position, uint32_t timeout_ms = 10000) noexcept` | `true` on success | Perform sensorless homing using StallGuard2 (uses existing SGT threshold from motor config) |
-| `PerformSwitchHoming()` | `bool PerformSwitchHoming(bool direction, float search_speed, float switch_speed, int32_t& final_position, bool use_left_switch, uint32_t timeout_ms = 10000) noexcept` | `true` on success | Perform homing using a reference switch |
+| `PerformSensorlessHoming()` | `Result<void> PerformSensorlessHoming(bool direction, float search_speed, int32_t& final_position, uint32_t timeout_ms = 10000) noexcept` | `Result<void>` indicating success or error | Perform sensorless homing using StallGuard2 (uses existing SGT threshold from motor config) |
+| `PerformSwitchHoming()` | `Result<void> PerformSwitchHoming(bool direction, float search_speed, float switch_speed, int32_t& final_position, bool use_left_switch, uint32_t timeout_ms = 10000) noexcept` | `Result<void>` indicating success or error | Perform homing using a reference switch |
 
 ### Printer Subsystem
 
@@ -346,22 +346,22 @@ Register printing methods for debugging.
 | `PrintSwMode()` | `void PrintSwMode() noexcept` | Print SW_MODE register |
 | `PrintIoin()` | `void PrintIoin() noexcept` | Print IOIN register |
 | `PrintAll()` | `void PrintAll() noexcept` | Print all common registers |
-| `GetTimeBetweenMicrosteps()` | `bool GetTimeBetweenMicrosteps(uint32_t& time) noexcept` | `true` on success | Get actual time between microsteps in clock cycles (TSTEP register) |
-| `GetMicrostepCounter()` | `bool GetMicrostepCounter(uint16_t& counter) noexcept` | `true` on success | Get actual position in microstep table (0-1023, MSCNT register) |
-| `GetMicrostepCurrent()` | `bool GetMicrostepCurrent(int16_t& phase_a, int16_t& phase_b) noexcept` | `true` on success | Get actual microstep current for both phases (MSCURACT register) |
-| `GetPwmScale()` | `bool GetPwmScale(uint8_t& pwm_scale_sum, int16_t& pwm_scale_auto) noexcept` | `true` on success | Get stealthChop PWM scale results (PWM_SCALE register) |
-| `GetPwmAuto()` | `bool GetPwmAuto(uint8_t& pwm_ofs_auto, uint8_t& pwm_grad_auto) noexcept` | `true` on success | Get automatically determined PWM values (PWM_AUTO register) |
-| `ReadInputStatus()` | `bool ReadInputStatus(InputStatus& input_status) noexcept` | `true` on success | Read GPIO input pins (parsed structure) |
-| `ReadIcVersion()` | `bool ReadIcVersion(uint8_t& version) noexcept` | `true` on success | Read IC version from IOIN register |
-| `ReadGpioPins()` | `bool ReadGpioPins(uint32_t& io_pins) noexcept` | `true` on success | Read GPIO input pin states (raw register value) |
-| `ReadFactoryConfig()` | `bool ReadFactoryConfig(uint8_t& fclktrim) noexcept` | `true` on success | Read factory configuration/clock trim (FACTORY_CONF register) |
-| `SetSdoCfg0Polarity()` | `bool SetSdoCfg0Polarity(bool polarity) noexcept` | `true` on success | Set SDO_CFG0 pin polarity (UART/Single Wire mode) |
-| `ReadOtpConfig()` | `bool ReadOtpConfig(uint8_t& otp_fclktrim, bool& otp_s2_level, bool& otp_bbm, bool& otp_tbl) noexcept` | `true` on success | Read OTP configuration memory (OTP_READ register) |
-| `GetUartTransmissionCount()` | `uint8_t GetUartTransmissionCount() noexcept` | Transmission count (0 on error) | Get UART transmission counter (IFCNT register) |
-| `ReadOffsetCalibration()` | `bool ReadOffsetCalibration(uint8_t& phase_a, uint8_t& phase_b) noexcept` | `true` on success | Read offset calibration results (OFFSET_READ register) |
-| `VerifySetup()` | `bool VerifySetup() noexcept` | `true` on success | Run comprehensive startup verification |
-| `SetTcoolthrs()` | `bool SetTcoolthrs(float threshold, Unit unit = Unit::RevPerSec) noexcept` | `true` on success | Set TCOOLTHRS register directly (unit-aware, default: revolutions per second) |
-| `GetTcoolthrs()` | `bool GetTcoolthrs(float& threshold, Unit unit = Unit::RevPerSec) const noexcept` | `true` on success | Get TCOOLTHRS register value from local storage (unit-aware, default: revolutions per second) |
+| `GetTimeBetweenMicrosteps()` | `Result<uint32_t> GetTimeBetweenMicrosteps() noexcept` | `Result<uint32_t>` containing the value or error | Get actual time between microsteps in clock cycles (TSTEP register) |
+| `GetMicrostepCounter()` | `Result<uint16_t> GetMicrostepCounter() noexcept` | `Result<uint16_t>` containing the value or error | Get actual position in microstep table (0-1023, MSCNT register) |
+| `GetMicrostepCurrent()` | `Result<int16_t> GetMicrostepCurrent(int16_t& phase_b) noexcept` | `Result<int16_t>` containing the value or error | Get actual microstep current for both phases (MSCURACT register) |
+| `GetPwmScale()` | `Result<uint8_t> GetPwmScale(int16_t& pwm_scale_auto) noexcept` | `Result<uint8_t>` containing the value or error | Get stealthChop PWM scale results (PWM_SCALE register) |
+| `GetPwmAuto()` | `Result<uint8_t> GetPwmAuto(uint8_t& pwm_grad_auto) noexcept` | `Result<uint8_t>` containing the value or error | Get automatically determined PWM values (PWM_AUTO register) |
+| `ReadInputStatus()` | `Result<InputStatus> ReadInputStatus() noexcept` | `Result<InputStatus>` containing the value or error | Read GPIO input pins (parsed structure) |
+| `ReadIcVersion()` | `Result<uint8_t> ReadIcVersion() noexcept` | `Result<uint8_t>` containing the value or error | Read IC version from IOIN register |
+| `ReadGpioPins()` | `Result<uint32_t> ReadGpioPins() noexcept` | `Result<uint32_t>` containing the value or error | Read GPIO input pin states (raw register value) |
+| `ReadFactoryConfig()` | `Result<uint8_t> ReadFactoryConfig() noexcept` | `Result<uint8_t>` containing the value or error | Read factory configuration/clock trim (FACTORY_CONF register) |
+| `SetSdoCfg0Polarity()` | `Result<void> SetSdoCfg0Polarity(bool polarity) noexcept` | `Result<void>` indicating success or error | Set SDO_CFG0 pin polarity (UART/Single Wire mode) |
+| `ReadOtpConfig()` | `Result<uint8_t> ReadOtpConfig(bool& otp_s2_level, bool& otp_bbm, bool& otp_tbl) noexcept` | `Result<uint8_t>` containing the value or error | Read OTP configuration memory (OTP_READ register) |
+| `GetUartTransmissionCount()` | `Result<uint8_t> GetUartTransmissionCount() noexcept` | `Result<uint8_t>` containing the value or error | Get UART transmission counter (IFCNT register) |
+| `ReadOffsetCalibration()` | `Result<uint8_t> ReadOffsetCalibration(uint8_t& phase_b) noexcept` | `Result<uint8_t>` containing the value or error | Read offset calibration results (OFFSET_READ register) |
+| `VerifySetup()` | `Result<void> VerifySetup() noexcept` | `Result<void>` indicating success or error | Run comprehensive startup verification |
+| `SetTcoolthrs()` | `Result<void> SetTcoolthrs(float threshold, Unit unit) noexcept` | `Result<void>` indicating success or error | Set TCOOLTHRS register directly (unit-aware, unit parameter required) |
+| `GetTcoolthrs()` | `Result<float> GetTcoolthrs(Unit unit) const noexcept` | `Result<float>` containing the value or error | Get TCOOLTHRS register value from local storage (unit-aware, unit parameter required) |
 
 ### Open Load Diagnostics
 
@@ -397,10 +397,20 @@ driver.rampControl.SetMaxSpeed(0.02f);  // 0.02 rev/s (~1.2 RPM) - Unit::RevPerS
 driver.rampControl.SetTargetPosition(1024);  // At least 4× microstep resolution (256)
 
 // Wait for motion to start
-while (!driver.rampControl.IsTargetReached()) {
+while (true) {
+  auto reached = driver.rampControl.IsTargetReached();
+  if (reached && reached.Value()) {
+    break; // Target reached
+  }
+  if (!reached) {
+    // Handle error
+    break;
+  }
   // Check for open load during motion
-  bool phase_a_open = driver.diagnostics.IsOpenLoadA();
-  bool phase_b_open = driver.diagnostics.IsOpenLoadB();
+  auto open_a = driver.diagnostics.IsOpenLoadA();
+  auto open_b = driver.diagnostics.IsOpenLoadB();
+  bool phase_a_open = open_a && open_a.Value();
+  bool phase_b_open = open_b && open_b.Value();
   
   if (phase_a_open || phase_b_open) {
     ESP_LOGW(TAG, "Open load detected: Phase A=%d, Phase B=%d", 
@@ -442,13 +452,13 @@ Communication and multi-chip configuration subsystem for SPI daisy chaining and 
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `SetClkFreq()` | `bool SetClkFreq(uint32_t frequency_hz) noexcept` | `true` on success | Set clock frequency on CLK pin (0 = internal clock, >0 = external clock frequency) - low-level method |
-| `SetClkFreq()` | `bool SetClkFreq(const ExternalClockConfig& config) noexcept` | `true` on success | Set clock frequency from ExternalClockConfig (high-level method, updates driver configuration) |
-| `ConfigureUartNodeAddress()` | `bool ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay = 0) noexcept` | `true` on success | Configure UART node address and send delay (writes SLAVECONF register, also updates software state) |
+| `SetClkFreq()` | `Result<void> SetClkFreq(uint32_t frequency_hz) noexcept` | `Result<void>` indicating success or error | Set clock frequency on CLK pin (0 = internal clock, >0 = external clock frequency) - low-level method |
+| `SetClkFreq()` | `Result<void> SetClkFreq(const ExternalClockConfig& config) noexcept` | `Result<void>` indicating success or error | Set clock frequency from ExternalClockConfig (high-level method, updates driver configuration) |
+| `ConfigureUartNodeAddress()` | `Result<void> ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay = 0) noexcept` | `Result<void>` indicating success or error | Configure UART node address and send delay (writes SLAVECONF register, also updates software state) |
 | `SetUartNodeAddress()` | `void SetUartNodeAddress(uint8_t address) noexcept` | void | Set UART node address (0-254) - software only, does not write to hardware |
 | `GetUartNodeAddress()` | `uint8_t GetUartNodeAddress() const noexcept` | Address (0-254) | Get current UART node address |
-| `SetOperatingMode()` | `bool SetOperatingMode(ChipCommMode mode) noexcept` | `true` on success | Set chip operating mode via SPI_MODE and SD_MODE pins (controls both communication interface and motion control method) |
-| `GetOperatingMode()` | `bool GetOperatingMode(ChipCommMode& mode) const noexcept` | `true` on success | Get current chip operating mode from SPI_MODE and SD_MODE pins |
+| `SetOperatingMode()` | `Result<void> SetOperatingMode(ChipCommMode mode) noexcept` | `Result<void>` indicating success or error | Set chip operating mode via SPI_MODE and SD_MODE pins (controls both communication interface and motion control method) |
+| `GetOperatingMode()` | `Result<ChipCommMode> GetOperatingMode() const noexcept` | `Result<ChipCommMode>` containing the value or error | Get current chip operating mode from SPI_MODE and SD_MODE pins |
 | `SetDaisyChainPosition()` | `void SetDaisyChainPosition(uint8_t position) noexcept` | void | Set daisy-chain position for SPI (0 = first chip, 1 = second, etc.) |
 | `GetDaisyChainPosition()` | `uint8_t GetDaisyChainPosition() const noexcept` | Position (0-255) | Get current daisy-chain position for SPI |
 
@@ -462,7 +472,7 @@ UART configuration subsystem for multi-node addressing.
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `ConfigureUartNodeAddress()` | `bool ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay) noexcept` | `true` on success | Configure SLAVECONF register with UART node address (0-254) and send delay (for sequential programming). Updates the driver's `uart_node_address_`. Per datasheet, devices are typically programmed backwards from 254. |
+| `ConfigureUartNodeAddress()` | `Result<void> ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay) noexcept` | `Result<void>` indicating success or error | Configure SLAVECONF register with UART node address (0-254) and send delay (for sequential programming). Updates the driver's `uart_node_address_`. Per datasheet, devices are typically programmed backwards from 254. |
 
 ## Protection Subsystem
 
@@ -474,8 +484,8 @@ Protection and safety features subsystem.
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `ConfigureShortProtection()` | `bool ConfigureShortProtection(const PowerStageParameters& config) noexcept` | `true` on success | Configure short circuit protection using user-friendly voltage thresholds |
-| `SetShortProtectionLevels()` | `bool SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter, uint8_t shortdelay) noexcept` | `true` on success | Set short protection levels directly (low-level API, register values) |
+| `ConfigureShortProtection()` | `Result<void> ConfigureShortProtection(const PowerStageParameters& config) noexcept` | `Result<void>` indicating success or error | Configure short circuit protection using user-friendly voltage thresholds |
+| `SetShortProtectionLevels()` | `Result<void> SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter, uint8_t shortdelay) noexcept` | `Result<void>` indicating success or error | Set short protection levels directly (low-level API, register values) |
 
 ## Communication Interface Methods
 
@@ -488,15 +498,15 @@ Methods available through `GetComm()` for direct communication interface access.
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
 | `GetMode()` | `CommMode GetMode() const noexcept` | CommMode enum | Get communication mode (SPI or UART) |
-| `ReadRegister()` | `bool ReadRegister(uint8_t address, uint32_t& value, uint8_t daisy_chain_position = 0) noexcept` | `true` on success | Read 32-bit register. For SPI: daisy-chain position. For UART: node address. |
-| `WriteRegister()` | `bool WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept` | `true` on success | Write 32-bit register. For SPI: daisy-chain position. For UART: node address. |
-| `GpioSet()` | `bool GpioSet(TMC51x0CtrlPin pin, GpioSignal signal) noexcept` | `true` on success | Set GPIO pin state |
-| `GpioRead()` | `bool GpioRead(TMC51x0CtrlPin pin, GpioSignal& signal) noexcept` | `true` on success | Read GPIO pin state |
-| `GpioSetActive()` | `bool GpioSetActive(TMC51x0CtrlPin pin) noexcept` | `true` on success | Set GPIO pin to active state |
-| `GpioSetInactive()` | `bool GpioSetInactive(TMC51x0CtrlPin pin) noexcept` | `true` on success | Set GPIO pin to inactive state |
+| `ReadRegister()` | `Result<uint32_t> ReadRegister(uint8_t address, uint8_t daisy_chain_position = 0) noexcept` | `Result<uint32_t>` containing the value or error | Read 32-bit register. For SPI: daisy-chain position. For UART: node address. |
+| `WriteRegister()` | `Result<void> WriteRegister(uint8_t address, uint32_t value, uint8_t daisy_chain_position = 0) noexcept` | `Result<void>` indicating success or error | Write 32-bit register. For SPI: daisy-chain position. For UART: node address. |
+| `GpioSet()` | `Result<void> GpioSet(TMC51x0CtrlPin pin, GpioSignal signal) noexcept` | `Result<void>` indicating success or error | Set GPIO pin state |
+| `GpioRead()` | `Result<GpioSignal> GpioRead(TMC51x0CtrlPin pin) noexcept` | `Result<GpioSignal>` containing the value or error | Read GPIO pin state |
+| `GpioSetActive()` | `Result<void> GpioSetActive(TMC51x0CtrlPin pin) noexcept` | `Result<void>` indicating success or error | Set GPIO pin to active state |
+| `GpioSetInactive()` | `Result<void> GpioSetInactive(TMC51x0CtrlPin pin) noexcept` | `Result<void>` indicating success or error | Set GPIO pin to inactive state |
 | `SignalToGpioLevel()` | `bool SignalToGpioLevel(TMC51x0CtrlPin pin, GpioSignal signal) const noexcept` | GPIO level | Convert signal to physical GPIO level |
 | `GpioLevelToSignal()` | `GpioSignal GpioLevelToSignal(TMC51x0CtrlPin pin, bool gpio_level) const noexcept` | GpioSignal enum | Convert GPIO level to signal |
-| `SetPinActiveLevel()` | `bool SetPinActiveLevel(TMC51x0CtrlPin pin, bool active_level) noexcept` | `true` on success | Configure pin active level |
+| `SetPinActiveLevel()` | `Result<void> SetPinActiveLevel(TMC51x0CtrlPin pin, bool active_level) noexcept` | `Result<void>` indicating success or error | Configure pin active level |
 | `DelayMs()` | `void DelayMs(uint32_t ms) noexcept` | void | Delay milliseconds |
 | `DelayUs()` | `void DelayUs(uint32_t us) noexcept` | void | Delay microseconds |
 | `LogDebug()` | `void LogDebug(int level, const char* tag, const char* format, ...) noexcept` | void | Debug logging |
@@ -516,8 +526,8 @@ Methods available through `GetComm()` for direct communication interface access.
 | `AutoDetectChainLength()` | `uint8_t AutoDetectChainLength(uint8_t max_devices = 8) noexcept` | Detected length (0-255) | Auto-detect daisy chain length by sending command that loops back |
 
 **Note**: `SetDaisyChainLength()` is critical for proper response extraction using the datasheet formula `40·(n-k+1)`. The chain length represents the total number of devices in the daisy chain, not individual device positions.
-| `SetNaiPin()` | `bool SetNaiPin(bool active) noexcept` | `true` on success | Set NAI pin state for UART sequential addressing (UART only) |
-| `GetNaoPin()` | `bool GetNaoPin(bool& active) noexcept` | `true` on success | Read NAO pin state for UART sequential addressing (UART only) |
+| `SetNaiPin()` | `Result<void> SetNaiPin(bool active) noexcept` | `Result<void>` indicating success or error | Set NAI pin state for UART sequential addressing (UART only) |
+| `GetNaoPin()` | `Result<bool> GetNaoPin() noexcept` | `Result<bool>` containing true if NAO is active, false otherwise | Read NAO pin state for UART sequential addressing (UART only) |
 
 **Note**: `UartCommInterface` no longer stores node addresses. Multiple `TMC51x0` instances share one `UartCommInterface` on the same UART bus. Each `TMC51x0` instance stores its own `uart_node_address_` and passes it to `ReadRegister()`/`WriteRegister()` automatically.
 
@@ -1374,15 +1384,203 @@ driver.motorControl.ConfigureDcStep(dc_config);
 
 ## Error Handling
 
-The driver uses boolean return values for error handling:
-- `true` indicates success
-- `false` indicates failure
+The driver uses `Result<T>` return types for explicit error handling, providing rich error information instead of simple boolean returns. This makes error handling explicit and helps prevent silent failures.
 
-Always check return values:
+### Result<T> Types
+
+- `Result<void>` for operations that don't return a value (e.g., `Initialize()`, `Enable()`)
+- `Result<bool>` for boolean queries (e.g., `IsTargetReached()`)
+- `Result<T>` for operations that return a value (e.g., `GetCurrentPosition()` returns `Result<float>`)
+
+### Basic Error Handling Patterns
+
+#### Pattern 1: Early Return (Recommended)
+
+The most common pattern for critical operations - return immediately on error:
 
 ```cpp
-if (!driver.rampControl.SetTargetPosition(1000)) {
-    // Handle error
+// Void operations
+auto init_result = driver.Initialize(cfg);
+if (!init_result) {
+    printf("Initialization error: %s\n", init_result.ErrorMessage());
+    return -1; // or handle error appropriately
+}
+
+// Value operations
+auto position = driver.rampControl.GetCurrentPosition();
+if (!position) {
+    printf("Error reading position: %s\n", position.ErrorMessage());
+    return -1;
+}
+float pos = position.Value(); // Safe to use - we know it succeeded
+```
+
+#### Pattern 2: Boolean Queries
+
+For methods returning `Result<bool>`, check both the result and the value:
+
+```cpp
+auto reached = driver.rampControl.IsTargetReached();
+if (reached && reached.Value()) {
+    // Target reached successfully
+    printf("Target position reached\n");
+} else if (!reached) {
+    // Error occurred while checking
+    printf("Error checking target: %s\n", reached.ErrorMessage());
+    return -1;
+} else {
+    // Successfully checked, but target not reached yet
+    // Continue waiting
+}
+```
+
+#### Pattern 3: Error Logging with Continue
+
+For non-critical operations where you want to log but continue:
+
+```cpp
+auto speed_result = driver.rampControl.SetMaxSpeed(100.0f);
+if (!speed_result) {
+    printf("Warning: Failed to set speed: %s\n", speed_result.ErrorMessage());
+    // Continue with default or retry
+}
+```
+
+#### Pattern 4: Using ValueOr() for Defaults
+
+For operations where a default value is acceptable:
+
+```cpp
+auto position = driver.rampControl.GetCurrentPosition();
+float pos = position.ValueOr(0.0f); // Use 0.0 if error occurred
+// Note: This doesn't distinguish between actual 0.0 and error
+// For production code, prefer explicit error checking
+```
+
+### Complete Example: Initialization with Full Error Handling
+
+```cpp
+// Initialize driver
+tmc51x0::DriverConfig cfg{};
+cfg.motor_spec.rated_current_ma = 2000;
+cfg.motor_spec.sense_resistor_mohm = 50;
+cfg.motor_spec.supply_voltage_mv = 24000;
+
+auto init_result = driver.Initialize(cfg);
+if (!init_result) {
+    printf("Initialization error: %s\n", init_result.ErrorMessage());
+    printf("Error code: %d\n", static_cast<int>(init_result.Error()));
+    return -1;
+}
+
+// Configure ramp mode
+auto mode_result = driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+if (!mode_result) {
+    printf("Error setting ramp mode: %s\n", mode_result.ErrorMessage());
+    return -1;
+}
+
+// Set target position
+auto pos_result = driver.rampControl.SetTargetPosition(1000);
+if (!pos_result) {
+    printf("Error setting target position: %s\n", pos_result.ErrorMessage());
+    return -1;
+}
+
+// Enable motor
+auto enable_result = driver.motorControl.Enable();
+if (!enable_result) {
+    printf("Error enabling motor: %s\n", enable_result.ErrorMessage());
+    return -1;
+}
+
+// Wait for target with error checking
+while (true) {
+    auto reached = driver.rampControl.IsTargetReached();
+    if (reached && reached.Value()) {
+        printf("Target reached\n");
+        break;
+    }
+    if (!reached) {
+        printf("Error checking target: %s\n", reached.ErrorMessage());
+        break;
+    }
+    // Target not reached yet, continue waiting
+    driver.comm.DelayMs(10);
+}
+```
+
+### Error Codes
+
+The `Result<T>` type includes an `Error()` method that returns an `ErrorCode` enum:
+
+```cpp
+auto result = driver.Initialize(cfg);
+if (!result) {
+    tmc51x0::ErrorCode code = result.Error();
+    switch (code) {
+        case tmc51x0::ErrorCode::NOT_INITIALIZED:
+            printf("Driver not initialized\n");
+            break;
+        case tmc51x0::ErrorCode::COMM_ERROR:
+            printf("Communication error - check wiring\n");
+            break;
+        case tmc51x0::ErrorCode::INVALID_VALUE:
+            printf("Invalid parameter value\n");
+            break;
+        // ... handle other error codes
+        default:
+            printf("Unknown error: %s\n", result.ErrorMessage());
+            break;
+    }
+}
+```
+
+### Best Practices
+
+1. **Always check return values**: Never ignore `Result<T>` return values
+2. **Use early return**: For critical operations, return immediately on error
+3. **Log errors**: Always log error messages for debugging
+4. **Check boolean results properly**: For `Result<bool>`, check both the result and the value
+5. **Handle errors appropriately**: Don't just log and continue - decide if the error is recoverable
+6. **Use descriptive variable names**: `init_result`, `pos_result`, etc. make code more readable
+
+### Common Error Handling Mistakes
+
+**❌ Don't do this:**
+```cpp
+driver.Initialize(cfg);  // Error ignored!
+driver.rampControl.SetTargetPosition(1000);  // Error ignored!
+```
+
+**✅ Do this:**
+```cpp
+auto init_result = driver.Initialize(cfg);
+if (!init_result) {
+    printf("Error: %s\n", init_result.ErrorMessage());
+    return -1;
+}
+
+auto pos_result = driver.rampControl.SetTargetPosition(1000);
+if (!pos_result) {
+    printf("Error: %s\n", pos_result.ErrorMessage());
+    return -1;
+}
+```
+
+**❌ Don't do this:**
+```cpp
+auto reached = driver.rampControl.IsTargetReached();
+if (reached.Value()) {  // Crashes if reached is an error!
+    // ...
+}
+```
+
+**✅ Do this:**
+```cpp
+auto reached = driver.rampControl.IsTargetReached();
+if (reached && reached.Value()) {  // Check result first!
+    // ...
 }
 ```
 
@@ -1405,9 +1603,9 @@ High-level manager for multiple TMC51x0 drivers in a SPI daisy-chain configurati
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
 | `operator[]` | `TMC51x0<CommType>& operator[](size_t index)` | Reference to driver | Access driver at specified position (0-based) |
-| `InitializeAll()` | `bool InitializeAll(const DriverConfig& config) noexcept` | `true` on success | Initialize all onboard devices with same config |
-| `AddDevice()` | `bool AddDevice(size_t position) noexcept` | `true` on success | Add extra device at specified position |
-| `RemoveDevice()` | `bool RemoveDevice(size_t position) noexcept` | `true` on success | Remove extra device at specified position |
+| `InitializeAll()` | `Result<void> InitializeAll(const DriverConfig& config) noexcept` | `Result<void>` indicating success or error | Initialize all onboard devices with same config |
+| `AddDevice()` | `Result<void> AddDevice(size_t position) noexcept` | `Result<void>` indicating success or error | Add extra device at specified position |
+| `RemoveDevice()` | `Result<void> RemoveDevice(size_t position) noexcept` | `Result<void>` indicating success or error | Remove extra device at specified position |
 | `GetNumDevices()` | `size_t GetNumDevices() const noexcept` | Number of devices | Get total number of devices (onboard + extra) |
 | `GetOnboardCount()` | `size_t GetOnboardCount() const noexcept` | Number of onboard devices | Get number of onboard devices |
 
@@ -1419,9 +1617,19 @@ cfg.motor_spec.rated_current_ma = 2000;
 cfg.motor_spec.sense_resistor_mohm = 50;
 cfg.motor_spec.supply_voltage_mv = 24000;
 cfg.external_clk_config.frequency_hz = 0; // 0 = use internal 12 MHz clock
-chain.InitializeAll(cfg);
+
+auto init_result = chain.InitializeAll(cfg);
+if (!init_result) {
+    printf("Chain initialization error: %s\n", init_result.ErrorMessage());
+    return -1;
+}
+
 auto& motor_x = chain[0];
-motor_x.rampControl.SetTargetPosition(1000);
+auto pos_result = motor_x.rampControl.SetTargetPosition(1000);
+if (!pos_result) {
+    printf("Error setting target position: %s\n", pos_result.ErrorMessage());
+    return -1;
+}
 ```
 
 ### TMC51x0MultiNode
@@ -1441,11 +1649,11 @@ High-level manager for multiple TMC51x0 drivers in a UART multi-node configurati
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
 | `operator[]` | `TMC51x0<CommType>& operator[](size_t index)` | Reference to driver | Access driver at specified logical index (0-based) |
-| `ProgramSequentially()` | `bool ProgramSequentially() noexcept` | `true` on success | Program all devices sequentially using NAI/NAO pins (required at startup) |
-| `ProgramDevice()` | `bool ProgramDevice(size_t index) noexcept` | `true` on success | Program single device at specified index (must be accessible at address 0) |
-| `InitializeAll()` | `bool InitializeAll(const DriverConfig& config) noexcept` | `true` on success | Initialize all onboard devices with same config |
-| `AddDevice()` | `bool AddDevice(size_t index) noexcept` | `true` on success | Add extra device at specified logical index |
-| `RemoveDevice()` | `bool RemoveDevice(size_t index) noexcept` | `true` on success | Remove extra device at specified logical index |
+| `ProgramSequentially()` | `Result<void> ProgramSequentially(uint8_t send_delay = 2) noexcept` | `Result<void>` indicating success or error | Program all devices sequentially using NAI/NAO pins (required at startup) |
+| `ProgramDevice()` | `Result<void> ProgramDevice(uint8_t index, uint8_t send_delay = 2) noexcept` | `Result<void>` indicating success or error | Program single device at specified index (must be accessible at address 0) |
+| `InitializeAll()` | `Result<void> InitializeAll(const DriverConfig& config) noexcept` | `Result<void>` indicating success or error | Initialize all onboard devices with same config |
+| `AddDevice()` | `Result<void> AddDevice(uint8_t index) noexcept` | `Result<void>` indicating success or error | Add extra device at specified logical index |
+| `RemoveDevice()` | `Result<void> RemoveDevice(uint8_t index) noexcept` | `Result<void>` indicating success or error | Remove extra device at specified logical index |
 | `GetNumDevices()` | `size_t GetNumDevices() const noexcept` | Number of devices | Get total number of devices (onboard + extra) |
 | `GetOnboardCount()` | `size_t GetOnboardCount() const noexcept` | Number of onboard devices | Get number of onboard devices |
 

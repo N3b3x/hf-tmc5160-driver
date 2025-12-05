@@ -11,7 +11,7 @@ permalink: /docs/special_features_unit_conversions/
 
 The TMC51x0 driver (TMC5130 & TMC5160) works internally with steps, but most applications need to work with physical units like millimeters, degrees, RPM, or revolutions per second. This guide shows how to use the unit conversion functions and unit-aware API to work with intuitive units.
 
-**New in this version**: Velocity-related functions now default to `Unit::RevPerSec` (revolutions per second), making it much easier to specify speeds without manual conversions. Simply call `SetMaxSpeed(0.5f)` to set 0.5 rev/s (30 RPM) - no unit parameter needed!
+**Important**: All unit-aware functions require explicit unit specification. Always specify the unit parameter to ensure clarity and prevent accidental use of step-based values.
 
 ## Overview
 
@@ -19,7 +19,7 @@ The driver provides unit-aware functions and free conversion functions for worki
 - **Physical units**: millimeters, degrees, RPM, revolutions per second (RevPerSec), mm/s, mm/s²
 - **Driver units**: steps, steps/s, steps/s²
 
-**Note**: The default unit for velocity-related functions is now `Unit::RevPerSec` (revolutions per second), making it easier to work with intuitive units without specifying the unit parameter.
+**Note**: All unit-aware functions require explicit unit specification. Recommended units: `Unit::Deg` for position, `Unit::RPM` for velocity, and `Unit::RevPerSec` for acceleration.
 
 All conversion functions require knowledge of your motor's steps per revolution and mechanical system parameters (e.g., lead screw pitch).
 
@@ -55,9 +55,12 @@ driver.rampControl.SetTargetPosition(steps);
 driver.rampControl.SetTargetPosition(10.0f, tmc51x0::Unit::Mm);
 
 // Get current position in mm
-float current_mm = 0.0f;
-if (driver.rampControl.GetCurrentPosition(current_mm, tmc51x0::Unit::Mm, STEPS_PER_REV, LEAD_SCREW_PITCH_MM)) {
+auto pos_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Mm);
+if (pos_result) {
+    float current_mm = pos_result.Value();
     // Use current_mm
+} else {
+    printf("Error reading position: %s\n", pos_result.ErrorMessage());
 }
 ```
 
@@ -142,31 +145,66 @@ void setupMotor() {
     cfg.motor_spec.steps_per_rev = STEPS_PER_REV;
     cfg.mechanical.system_type = tmc51x0::MechanicalSystemType::LeadScrew;
     cfg.mechanical.lead_screw_pitch_mm = LEAD_SCREW_PITCH_MM;
-    driver.Initialize(cfg);
+    auto init_result = driver.Initialize(cfg);
+    if (!init_result) {
+        printf("Initialization error: %s\n", init_result.ErrorMessage());
+        return; // or handle error appropriately
+    }
     
     // Set speeds in revolutions per second (default unit - no parameter needed!)
-    driver.rampControl.SetMaxSpeed(1.67f);  // 1.67 rev/s = 100 RPM - Unit::RevPerSec is default
+    auto speed_result = driver.rampControl.SetMaxSpeed(1.67f);  // 1.67 rev/s = 100 RPM - Unit::RevPerSec is default
+    if (!speed_result) {
+        printf("Error setting max speed: %s\n", speed_result.ErrorMessage());
+        return;
+    }
     
     // Or use RPM (converts automatically)
-    driver.rampControl.SetMaxSpeed(100.0f, tmc51x0::Unit::Rpm);
+    auto rpm_result = driver.rampControl.SetMaxSpeed(100.0f, tmc51x0::Unit::Rpm);
+    if (!rpm_result) {
+        printf("Error setting max speed: %s\n", rpm_result.ErrorMessage());
+        return;
+    }
     
     // Set acceleration in rev/s² (default unit)
-    driver.rampControl.SetAcceleration(0.83f);  // 0.83 rev/s² - Unit::RevPerSec is default
+    auto accel_result = driver.rampControl.SetAcceleration(0.83f);  // 0.83 rev/s² - Unit::RevPerSec is default
+    if (!accel_result) {
+        printf("Error setting acceleration: %s\n", accel_result.ErrorMessage());
+        return;
+    }
     
     // Or use mm/s² (uses mechanical system from DriverConfig)
-    driver.rampControl.SetAcceleration(50.0f, tmc51x0::Unit::Mm);  // 50 mm/s²
+    auto accel_mm_result = driver.rampControl.SetAcceleration(50.0f, tmc51x0::Unit::Mm);  // 50 mm/s²
+    if (!accel_mm_result) {
+        printf("Error setting acceleration: %s\n", accel_mm_result.ErrorMessage());
+        return;
+    }
 }
 
 void moveToPosition(float target_mm) {
     // Move to position in millimeters (uses mechanical system from DriverConfig)
-    driver.rampControl.SetTargetPosition(target_mm, tmc51x0::Unit::Mm);
+    auto pos_result = driver.rampControl.SetTargetPosition(target_mm, tmc51x0::Unit::Mm);
+    if (!pos_result) {
+        printf("Error setting target position: %s\n", pos_result.ErrorMessage());
+        return; // or handle error appropriately
+    }
     
     // Wait for completion
-    while (!driver.rampControl.IsTargetReached()) {
+    while (true) {
+        auto reached = driver.rampControl.IsTargetReached();
+        if (reached && reached.Value()) {
+            break; // Target reached
+        }
+        if (!reached) {
+            printf("Error checking target: %s\n", reached.ErrorMessage());
+            break;
+        }
         // Monitor position in mm (uses mechanical system from DriverConfig)
-        float mm = 0.0f;
-        if (driver.rampControl.GetCurrentPosition(mm, tmc51x0::Unit::Mm)) {
-            printf("Current position: %.2f mm\n", mm);
+        auto pos_result2 = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Mm);
+        if (pos_result2) {
+            printf("Current position: %.2f mm\n", pos_result2.Value());
+        } else {
+            printf("Error reading position: %s\n", pos_result2.ErrorMessage());
+            // Continue monitoring despite read error
         }
     }
 }

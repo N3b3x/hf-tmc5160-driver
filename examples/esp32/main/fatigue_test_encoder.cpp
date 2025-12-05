@@ -238,25 +238,21 @@ class FatigueTestMotion {
 private:
   tmc51x0::TMC51x0<Esp32SPI>* driver_;
 
-  // Global bounds (hardware limits found during initialization)
-  int32_t global_min_bound_; // Global minimum position in steps
-  int32_t global_max_bound_; // Global maximum position in steps
+  // Global bounds (hardware limits found during initialization) - all in degrees
+  float global_min_bound_; // Global minimum position in degrees
+  float global_max_bound_; // Global maximum position in degrees
 
-  // Local bounds (oscillation range, clipped to global bounds)
-  int32_t local_min_bound_; // Local minimum for oscillation in steps
-  int32_t local_max_bound_; // Local maximum for oscillation in steps
+  // Local bounds (oscillation range, clipped to global bounds) - all in degrees
+  float local_min_bound_; // Local minimum for oscillation in degrees
+  float local_max_bound_; // Local maximum for oscillation in degrees
 
-  int32_t home_position_; // Home position (center) in steps
-  float amplitude_;       // Amplitude in steps
+  float home_position_; // Home position (center) in degrees
+  float amplitude_;       // Amplitude in degrees
   float frequency_hz_;    // Frequency in Hz
   bool running_;
   uint32_t start_time_us_;
   float phase_offset_;
   bool bounded_; // Whether global bounds were found
-
-  // Motor configuration for unit conversions
-  uint16_t steps_per_rev_; // Steps per revolution
-  AngleUnit angle_unit_;   // Preferred angle unit
 
   // Dwell times (can be set to 0 to disable)
   uint32_t dwell_at_min_ms_;    // Dwell time at minimum bound
@@ -268,7 +264,7 @@ private:
   bool cycle_complete_;          // Whether target cycles reached
   bool last_was_negative_;       // Last position relative to center (for cycle counting)
   bool cycle_started_;           // Whether a cycle has started (left center)
-  int32_t last_target_relative_; // Last target position relative to center (for cycle counting)
+  float last_target_relative_; // Last target position relative to center (in degrees)
 
   // State machine
   // Note: Sinusoidal motion uses the same states - it's a motion mode, not a separate state
@@ -279,9 +275,9 @@ private:
   // Motion mode flag (true = sinusoidal, false = ramp-based)
   bool sinusoidal_mode_;
 
-  // Computed trajectory parameters
-  float calculated_vmax_;
-  float calculated_amax_;
+  // Computed trajectory parameters (in physical units)
+  float calculated_vmax_rpm_;      // Maximum velocity in RPM
+  float calculated_amax_rev_s2_;    // Maximum acceleration in rev/s²
   float estimated_frequency_hz_;
 
   // Thread safety
@@ -289,15 +285,16 @@ private:
 
   /**
    * @brief Recalculate trajectory parameters based on frequency, bounds, and dwell
+   * All calculations in degrees, output in RPM and rev/s²
    */
   void RecalculateTrajectory() noexcept {
     // NOTE: Must be called with mutex locked
     
-    // Calculate total travel distance (one way)
-    int32_t distance = abs(local_max_bound_ - local_min_bound_);
-    if (distance == 0 || frequency_hz_ <= 0.0001f) {
-      calculated_vmax_ = 1000.0f; // Default safe fallback
-      calculated_amax_ = 5000.0f;
+    // Calculate total travel distance (one way) in degrees
+    float distance_deg = std::abs(local_max_bound_ - local_min_bound_);
+    if (distance_deg < 0.1f || frequency_hz_ <= 0.0001f) {
+      calculated_vmax_rpm_ = 30.0f; // Default safe fallback in RPM
+      calculated_amax_rev_s2_ = 10.0f; // Default in rev/s²
       estimated_frequency_hz_ = 0.0f;
       return;
     }
@@ -320,79 +317,66 @@ private:
     // Time for one leg (one way)
     float leg_time_s = total_move_time_s / 2.0f;
     
-    // Calculate VMAX and AMAX for Trapezoidal Profile (no center dwell)
-    // We want to reach the target distance D in time T (leg_time_s).
-    // Profile: Accel -> Constant Vel -> Decel.
-    // Let's assume 1/3 Accel, 1/3 Const, 1/3 Decel for smooth motion.
-    // Vmax = 1.5 * Distance / Time.
-    // Accel = Vmax / (Time/3) = 4.5 * Distance / Time^2.
+    // Calculate velocity and acceleration in physical units
+    // Distance in degrees, convert to revolutions: distance_deg / 360.0f
+    // Velocity in rev/s: (distance_deg / 360.0f) / leg_time_s
+    // Velocity in RPM: ((distance_deg / 360.0f) / leg_time_s) * 60.0f
+    // For trapezoidal profile (1/3 accel, 1/3 const, 1/3 decel):
+    // Average velocity = 2/3 * max velocity
+    // So: distance_rev = (2/3 * vmax_rev_s) * leg_time_s
+    // vmax_rev_s = (3/2) * distance_rev / leg_time_s
+    float distance_rev = distance_deg / 360.0f;
+    float vmax_rev_s = (1.5f * distance_rev) / leg_time_s;
+    calculated_vmax_rpm_ = vmax_rev_s * 60.0f;
     
-    calculated_vmax_ = (1.5f * distance) / leg_time_s;
-    calculated_amax_ = calculated_vmax_ / (leg_time_s / 3.0f);
+    // Acceleration: reach max velocity in leg_time_s / 3
+    // amax_rev_s2 = vmax_rev_s / (leg_time_s / 3.0f)
+    calculated_amax_rev_s2_ = vmax_rev_s / (leg_time_s / 3.0f);
     
-    // Clamp to driver limits (approximate)
-    if (calculated_vmax_ > 5000000.0f) calculated_vmax_ = 5000000.0f; // Cap velocity (higher limit)
-    if (calculated_amax_ > 5000000.0f) calculated_amax_ = 5000000.0f; // Cap acceleration
+    // Clamp to reasonable limits
+    if (calculated_vmax_rpm_ > 1000.0f) calculated_vmax_rpm_ = 1000.0f; // Cap velocity
+    if (calculated_amax_rev_s2_ > 100.0f) calculated_amax_rev_s2_ = 100.0f; // Cap acceleration
     
-    // Recalculate actual expected frequency based on calculated parameters
-    // T_leg_actual = Distance/Vavg. For 1/3-1/3-1/3 profile, Vavg = 2/3 Vmax.
-    // So T_leg = D / (2/3 * 1.5 * D/T) = T. It should match.
+    // Recalculate actual expected frequency
     estimated_frequency_hz_ = 1.0f / (2.0f * leg_time_s + total_dwell_s);
     
-    ESP_LOGI(TAG, "Trajectory Recalculated: Dist=%ld steps, LegTime=%.3fs", distance, leg_time_s);
+    ESP_LOGI(TAG, "Trajectory Recalculated: Dist=%.2f degrees, LegTime=%.3fs", distance_deg, leg_time_s);
     ESP_LOGI(TAG, "  Target Freq=%.2fHz, Est Freq=%.2fHz", frequency_hz_, estimated_frequency_hz_);
-    ESP_LOGI(TAG, "  VMAX=%.1f, AMAX=%.1f", calculated_vmax_, calculated_amax_);
+    ESP_LOGI(TAG, "  VMAX=%.1f RPM, AMAX=%.2f rev/s²", calculated_vmax_rpm_, calculated_amax_rev_s2_);
   }
 
 public:
   FatigueTestMotion(tmc51x0::TMC51x0<Esp32SPI>* driver) noexcept
-      : driver_(driver), global_min_bound_(0), global_max_bound_(0), local_min_bound_(0), local_max_bound_(0),
-        home_position_(0), amplitude_(1000.0F), frequency_hz_(0.5F), running_(false), start_time_us_(0),
-        phase_offset_(0.0F), bounded_(false), steps_per_rev_(200), angle_unit_(AngleUnit::DEGREES), dwell_at_min_ms_(0),
+      : driver_(driver), global_min_bound_(0.0f), global_max_bound_(0.0f), local_min_bound_(0.0f), local_max_bound_(0.0f),
+        home_position_(0.0f), amplitude_(180.0f), frequency_hz_(0.5f), running_(false), start_time_us_(0),
+        phase_offset_(0.0f), bounded_(false), dwell_at_min_ms_(0),
         dwell_at_max_ms_(0), target_cycles_(0), current_cycles_(0), cycle_complete_(false),
-        last_was_negative_(false), cycle_started_(false), last_target_relative_(0), state_(MotionState::STOPPED),
-        dwell_start_time_ms_(0), sinusoidal_mode_(false), calculated_vmax_(10000.0f), calculated_amax_(5000.0f), estimated_frequency_hz_(0.0f) {
+        last_was_negative_(false), cycle_started_(false), last_target_relative_(0.0f), state_(MotionState::STOPPED),
+        dwell_start_time_ms_(0), sinusoidal_mode_(false), calculated_vmax_rpm_(30.0f), calculated_amax_rev_s2_(10.0f), estimated_frequency_hz_(0.0f) {
     // Mutex is automatically created by Esp32TmcMutex constructor
+    // Driver handles all unit conversions internally - no need for steps_per_rev
   }
 
   ~FatigueTestMotion() noexcept = default; // Mutex automatically destroyed by Esp32TmcMutex destructor
 
   /**
-   * @brief Configure motor parameters for unit conversions
-   * @param steps_per_rev Steps per revolution (e.g., 200 for 1.8° motor)
-   * @param unit Preferred angle unit (degrees or radians)
+   * @brief Set global bounds (hardware limits found during initialization) - in degrees
+   * @param min_bound_deg Global minimum position in degrees
+   * @param max_bound_deg Global maximum position in degrees
    */
-  void ConfigureMotor(uint16_t steps_per_rev, AngleUnit unit = AngleUnit::DEGREES) noexcept {
-    TmcMutexGuard guard(mutex_);
-    steps_per_rev_ = steps_per_rev;
-    angle_unit_ = unit;
-    ESP_LOGI(TAG, "Motor configured: %d steps/rev, angle unit: %s", steps_per_rev_,
-             unit == AngleUnit::DEGREES ? "degrees" : "radians");
-  }
-
-  /**
-   * @brief Set global bounds (hardware limits found during initialization)
-   * @param min_bound Global minimum position in steps
-   * @param max_bound Global maximum position in steps
-   */
-  void SetGlobalBounds(int32_t min_bound, int32_t max_bound) noexcept {
+  void SetGlobalBounds(float min_bound_deg, float max_bound_deg) noexcept {
     {
       TmcMutexGuard guard(mutex_);
-      global_min_bound_ = min_bound;
-      global_max_bound_ = max_bound;
+      global_min_bound_ = min_bound_deg;
+      global_max_bound_ = max_bound_deg;
       bounded_ = true;
     }
-    ESP_LOGI(TAG, "Global bounds set: min=%d, max=%d steps", global_min_bound_, global_max_bound_);
-    if (steps_per_rev_ > 0) {
-      float min_deg = tmc51x0::StepsToDegrees(global_min_bound_, steps_per_rev_);
-      float max_deg = tmc51x0::StepsToDegrees(global_max_bound_, steps_per_rev_);
-      ESP_LOGI(TAG, "Global bounds: min=%.2f°, max=%.2f°", min_deg, max_deg);
-    }
+    ESP_LOGI(TAG, "Global bounds set: min=%.2f°, max=%.2f°", global_min_bound_, global_max_bound_);
 
     // Clip local bounds to global bounds if they exist
     {
       TmcMutexGuard guard(mutex_);
-      if (local_min_bound_ != 0 || local_max_bound_ != 0) {
+      if (std::abs(local_min_bound_) > 0.01f || std::abs(local_max_bound_) > 0.01f) {
         guard.unlock(); // Unlock before calling ClipLocalBoundsToGlobal which will lock again
         ClipLocalBoundsToGlobal();
         return;
@@ -400,52 +384,35 @@ public:
     }
   }
 
+
   /**
    * @brief Get global bounds in degrees (for command interface)
    */
   void GetGlobalBoundsDegrees(float& min_degrees, float& max_degrees) const noexcept {
-    int32_t min_bound, max_bound;
-    uint16_t steps;
-    {
-      TmcMutexGuard guard(mutex_);
-      if (steps_per_rev_ == 0) {
-        min_degrees = 0.0F;
-        max_degrees = 0.0F;
-        return;
-      }
-      min_bound = global_min_bound_;
-      max_bound = global_max_bound_;
-      steps = steps_per_rev_;
-    }
-    min_degrees = tmc51x0::StepsToDegrees(min_bound, steps);
-    max_degrees = tmc51x0::StepsToDegrees(max_bound, steps);
+    TmcMutexGuard guard(mutex_);
+    min_degrees = global_min_bound_;
+    max_degrees = global_max_bound_;
   }
 
   /**
    * @brief Set unbounded mode (no mechanical stops found)
    * Uses current position as home and sets reasonable default global bounds
+   * @param current_position_deg Current position in degrees
+   * @param default_range_deg Default range in degrees (default: 350°)
    */
-  void SetUnbounded(int32_t current_position, int32_t default_range_steps = 10000) noexcept {
-    int32_t min_bound, max_bound;
-    uint16_t steps;
+  void SetUnbounded(float current_position_deg, float default_range_deg = 350.0f) noexcept {
     {
       TmcMutexGuard guard(mutex_);
       bounded_ = false;
-      home_position_ = current_position;
-      global_min_bound_ = current_position - default_range_steps / 2;
-      global_max_bound_ = current_position + default_range_steps / 2;
-      min_bound = global_min_bound_;
-      max_bound = global_max_bound_;
-      steps = steps_per_rev_;
+      home_position_ = current_position_deg;
+      global_min_bound_ = current_position_deg - default_range_deg / 2.0f;
+      global_max_bound_ = current_position_deg + default_range_deg / 2.0f;
     }
-    driver_->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Steps);
+    driver_->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
     ESP_LOGW(TAG, "Unbounded mode: No mechanical stops found");
-    ESP_LOGI(TAG, "Using current position as home: %d steps", current_position);
-    ESP_LOGI(TAG, "Default global range: [%d, %d] steps", min_bound, max_bound);
-    if (steps > 0) {
-      float range_deg = tmc51x0::StepsToDegrees(default_range_steps, steps);
-      ESP_LOGI(TAG, "Default global range: %.2f°", range_deg);
-    }
+    ESP_LOGI(TAG, "Using current position as home: %.2f degrees", current_position_deg);
+    ESP_LOGI(TAG, "Default global range: [%.2f°, %.2f°] (%.2f° total)", 
+             global_min_bound_, global_max_bound_, default_range_deg);
   }
 
   /**
@@ -454,46 +421,33 @@ public:
    * @param max_degrees_from_center Maximum angle from center (positive)
    */
   bool SetLocalBoundsFromCenterDegrees(float min_degrees_from_center, float max_degrees_from_center) noexcept {
-    if (steps_per_rev_ == 0) {
-      ESP_LOGE(TAG, "Cannot set bounds: steps_per_rev not configured");
-      return false;
-    }
-
     float min_deg, max_deg;
-    uint16_t steps;
     bool is_bounded;
-    int32_t global_min, global_max;
+    float global_min, global_max;
     {
       TmcMutexGuard guard(mutex_);
       min_deg = min_degrees_from_center;
       max_deg = max_degrees_from_center;
-      steps = steps_per_rev_;
       is_bounded = bounded_;
       global_min = global_min_bound_;
       global_max = global_max_bound_;
     }
 
-    // Convert to steps
-    int32_t min_steps = tmc51x0::DegreesToSteps(min_deg, steps);
-    int32_t max_steps = tmc51x0::DegreesToSteps(max_deg, steps);
-
-    // Clip to global bounds
+    // Clip to global bounds (all in degrees)
     if (is_bounded) {
-      min_steps = std::max(min_steps, global_min);
-      max_steps = std::min(max_steps, global_max);
+      min_deg = std::max(min_deg, global_min);
+      max_deg = std::min(max_deg, global_max);
     }
 
     {
       TmcMutexGuard guard(mutex_);
-      local_min_bound_ = min_steps;
-      local_max_bound_ = max_steps;
-      home_position_ = (local_min_bound_ + local_max_bound_) / 2;
-      amplitude_ = static_cast<float>((local_max_bound_ - local_min_bound_) / 2);
+      local_min_bound_ = min_deg;
+      local_max_bound_ = max_deg;
+      home_position_ = (local_min_bound_ + local_max_bound_) / 2.0f;
+      amplitude_ = (local_max_bound_ - local_min_bound_) / 2.0f;
     }
 
-    float actual_min = tmc51x0::StepsToDegrees(min_steps, steps);
-    float actual_max = tmc51x0::StepsToDegrees(max_steps, steps);
-    ESP_LOGI(TAG, "Local bounds set: min=%.2f°, max=%.2f° from center", actual_min, actual_max);
+    ESP_LOGI(TAG, "Local bounds set: min=%.2f°, max=%.2f° from center", min_deg, max_deg);
     
     // Recalculate trajectory with new bounds
     {
@@ -607,21 +561,9 @@ public:
    * @brief Get local bounds in degrees from center (thread-safe)
    */
   void GetLocalBoundsFromCenterDegrees(float& min_degrees, float& max_degrees) const noexcept {
-    int32_t min_bound, max_bound;
-    uint16_t steps;
-    {
-      TmcMutexGuard guard(mutex_);
-      if (steps_per_rev_ == 0) {
-        min_degrees = 0.0F;
-        max_degrees = 0.0F;
-        return;
-      }
-      min_bound = local_min_bound_;
-      max_bound = local_max_bound_;
-      steps = steps_per_rev_;
-    }
-    min_degrees = tmc51x0::StepsToDegrees(min_bound, steps);
-    max_degrees = tmc51x0::StepsToDegrees(max_bound, steps);
+    TmcMutexGuard guard(mutex_);
+    min_degrees = local_min_bound_;
+    max_degrees = local_max_bound_;
   }
 
   /**
@@ -637,11 +579,11 @@ public:
    */
   bool Start() noexcept {
     uint32_t current_cycles, target_cycles;
-    int32_t min_pos, max_pos, current_pos;
+    float min_pos_deg, max_pos_deg;
     
     {
       TmcMutexGuard guard(mutex_);
-      if (local_min_bound_ == 0 && local_max_bound_ == 0) {
+      if (std::abs(local_min_bound_) < 0.01f && std::abs(local_max_bound_) < 0.01f) {
         ESP_LOGE(TAG, "Cannot start: local bounds not set!");
         return false;
       }
@@ -656,35 +598,35 @@ public:
 
       // Configure driver for positioning mode
       driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-      driver_->rampControl.SetMaxSpeed(calculated_vmax_);
-      driver_->rampControl.SetAcceleration(calculated_amax_);
-      driver_->rampControl.SetDeceleration(calculated_amax_); // Symmetric acceleration/deceleration
-      // Ensure VSTART/VSTOP/VZERO are reasonable
-      driver_->rampControl.SetRampSpeeds(1000.0f, 100.0f, 0.0f);
+      // Use calculated values directly (already in RPM and rev/s²)
+      driver_->rampControl.SetMaxSpeed(calculated_vmax_rpm_, tmc51x0::Unit::RPM);
+      driver_->rampControl.SetAcceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+      driver_->rampControl.SetDeceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec); // Symmetric acceleration/deceleration
+      // Ensure VSTART/VSTOP/VZERO are reasonable (in RPM)
+      float vstart_rpm = 30.0f;  // ~1000 steps/s for 200 steps/rev
+      float vstop_rpm = 3.0f;   // ~100 steps/s for 200 steps/rev
+      driver_->rampControl.SetRampSpeeds(vstart_rpm, vstop_rpm, 0.0f, tmc51x0::Unit::RPM);
 
       running_ = true;
       start_time_us_ = esp_timer_get_time();
       
       // Determine initial state based on current position
-      float current_pos_float = 0.0f;
-      if (!driver_->rampControl.GetCurrentPosition(current_pos_float, tmc51x0::Unit::Steps)) {
-        current_pos_float = 0.0f;
-      }
-      current_pos = static_cast<int32_t>(current_pos_float);
-      min_pos = local_min_bound_;
-      max_pos = local_max_bound_;
+      auto current_pos_deg_result = driver_->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+      float current_pos_deg = current_pos_deg_result.IsOk() ? current_pos_deg_result.Value() : 0.0f;
+      min_pos_deg = local_min_bound_;
+      max_pos_deg = local_max_bound_;
       
       // Find closest bound or determine direction
-      int32_t dist_to_min = abs(current_pos - min_pos);
-      int32_t dist_to_max = abs(current_pos - max_pos);
+      float dist_to_min = fabsf(current_pos_deg - min_pos_deg);
+      float dist_to_max = fabsf(current_pos_deg - max_pos_deg);
       
       // Default to moving towards min unless we're already there
-      if (dist_to_min < 100) {
+      if (dist_to_min < 1.0f) { // 1 degree threshold
         state_ = MotionState::MOVING_TO_MAX;
-        driver_->rampControl.SetTargetPosition(static_cast<float>(max_pos), tmc51x0::Unit::Steps);
+        driver_->rampControl.SetTargetPosition(max_pos_deg, tmc51x0::Unit::Deg);
       } else {
         state_ = MotionState::MOVING_TO_MIN;
-        driver_->rampControl.SetTargetPosition(static_cast<float>(min_pos), tmc51x0::Unit::Steps);
+        driver_->rampControl.SetTargetPosition(min_pos_deg, tmc51x0::Unit::Deg);
       }
 
       current_cycles = current_cycles_;
@@ -693,8 +635,8 @@ public:
 
     ESP_LOGI(TAG, "Starting fatigue test (cycles: %lu/%lu)", current_cycles,
              target_cycles == 0 ? 0xFFFFFFFF : target_cycles);
-    ESP_LOGI(TAG, "  Motion: Positioning mode, VMAX=%.1f, AMAX=%.1f", 
-             calculated_vmax_, calculated_amax_);
+    ESP_LOGI(TAG, "  Motion: Positioning mode, VMAX=%.1f RPM, AMAX=%.2f rev/s²", 
+             calculated_vmax_rpm_, calculated_amax_rev_s2_);
     return true;
   }
 
@@ -774,7 +716,7 @@ public:
     // Handle dwell states or ramp-based motion mode
     uint32_t current_time_ms = esp_timer_get_time() / 1000;
     uint32_t dwell_min, dwell_max, dwell_start;
-    int32_t min_bound, max_bound;
+    float min_bound_deg, max_bound_deg;
     
     {
       TmcMutexGuard guard(mutex_);
@@ -782,13 +724,14 @@ public:
       dwell_min = dwell_at_min_ms_;
       dwell_max = dwell_at_max_ms_;
       dwell_start = dwell_start_time_ms_;
-      min_bound = local_min_bound_;
-      max_bound = local_max_bound_;
+      min_bound_deg = local_min_bound_;
+      max_bound_deg = local_max_bound_;
     }
 
     switch (current_state) {
-    case MotionState::MOVING_TO_MAX:
-      if (driver_->rampControl.IsTargetReached()) {
+    case MotionState::MOVING_TO_MAX: {
+      auto reached_result = driver_->rampControl.IsTargetReached();
+      if (reached_result && reached_result.Value()) {
         // Reached Max
         TmcMutexGuard guard(mutex_);
         if (dwell_max > 0) {
@@ -796,17 +739,19 @@ public:
           dwell_start_time_ms_ = esp_timer_get_time() / 1000;
         } else {
           state_ = MotionState::MOVING_TO_MIN;
-          // Apply potentially new speed/accel for next leg
-          driver_->rampControl.SetMaxSpeed(calculated_vmax_);
-          driver_->rampControl.SetAcceleration(calculated_amax_);
-          driver_->rampControl.SetDeceleration(calculated_amax_);
-          driver_->rampControl.SetTargetPosition(static_cast<float>(min_bound), tmc51x0::Unit::Steps);
+          // Apply potentially new speed/accel for next leg (already in physical units)
+          driver_->rampControl.SetMaxSpeed(calculated_vmax_rpm_, tmc51x0::Unit::RPM);
+          driver_->rampControl.SetAcceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+          driver_->rampControl.SetDeceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+          driver_->rampControl.SetTargetPosition(min_bound_deg, tmc51x0::Unit::Deg);
         }
       }
       break;
+    }
 
-    case MotionState::MOVING_TO_MIN:
-      if (driver_->rampControl.IsTargetReached()) {
+    case MotionState::MOVING_TO_MIN: {
+      auto reached_result = driver_->rampControl.IsTargetReached();
+      if (reached_result && reached_result.Value()) {
         // Reached Min - Cycle Complete!
         {
           TmcMutexGuard guard(mutex_);
@@ -816,15 +761,16 @@ public:
             dwell_start_time_ms_ = esp_timer_get_time() / 1000;
           } else {
             state_ = MotionState::MOVING_TO_MAX;
-            // Apply potentially new speed/accel for next leg
-            driver_->rampControl.SetMaxSpeed(calculated_vmax_);
-            driver_->rampControl.SetAcceleration(calculated_amax_);
-            driver_->rampControl.SetDeceleration(calculated_amax_);
-            driver_->rampControl.SetTargetPosition(static_cast<float>(max_bound), tmc51x0::Unit::Steps);
+            // Apply potentially new speed/accel for next leg (already in physical units)
+            driver_->rampControl.SetMaxSpeed(calculated_vmax_rpm_, tmc51x0::Unit::RPM);
+            driver_->rampControl.SetAcceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+            driver_->rampControl.SetDeceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+            driver_->rampControl.SetTargetPosition(max_bound_deg, tmc51x0::Unit::Deg);
           }
         }
       }
       break;
+    }
 
     case MotionState::DWELL_AT_MIN:
       if (current_time_ms - dwell_start >= dwell_min) {
@@ -833,10 +779,10 @@ public:
         // Otherwise, move to max bound
         if (!sinusoidal_mode_) {
         state_ = MotionState::MOVING_TO_MAX;
-        driver_->rampControl.SetMaxSpeed(calculated_vmax_);
-        driver_->rampControl.SetAcceleration(calculated_amax_);
-        driver_->rampControl.SetDeceleration(calculated_amax_);
-        driver_->rampControl.SetTargetPosition(static_cast<float>(max_bound), tmc51x0::Unit::Steps);
+        driver_->rampControl.SetMaxSpeed(calculated_vmax_rpm_, tmc51x0::Unit::RPM);
+        driver_->rampControl.SetAcceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+        driver_->rampControl.SetDeceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+        driver_->rampControl.SetTargetPosition(max_bound_deg, tmc51x0::Unit::Deg);
         } else {
           // Sinusoidal mode - will be handled by UpdateSinuousMotion()
           state_ = MotionState::MOVING_TO_MAX;
@@ -851,10 +797,10 @@ public:
         // Otherwise, move to min bound
         if (!sinusoidal_mode_) {
         state_ = MotionState::MOVING_TO_MIN;
-        driver_->rampControl.SetMaxSpeed(calculated_vmax_);
-        driver_->rampControl.SetAcceleration(calculated_amax_);
-        driver_->rampControl.SetDeceleration(calculated_amax_);
-        driver_->rampControl.SetTargetPosition(static_cast<float>(min_bound), tmc51x0::Unit::Steps);
+        driver_->rampControl.SetMaxSpeed(calculated_vmax_rpm_, tmc51x0::Unit::RPM);
+        driver_->rampControl.SetAcceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+        driver_->rampControl.SetDeceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+        driver_->rampControl.SetTargetPosition(min_bound_deg, tmc51x0::Unit::Deg);
         } else {
           // Sinusoidal mode - will be handled by UpdateSinuousMotion()
           state_ = MotionState::MOVING_TO_MIN;
@@ -886,31 +832,18 @@ public:
 
   Status GetStatus() const noexcept {
     Status status{};
-    int32_t min_bound, max_bound, global_min, global_max;
-    uint16_t steps;
-    {
-      TmcMutexGuard guard(mutex_);
-      status.running = running_ && state_ != MotionState::STOPPED;
-      status.bounded = bounded_;
-      status.frequency_hz = frequency_hz_;
-      status.current_cycles = current_cycles_;
-      status.target_cycles = target_cycles_;
-      status.dwell_min_ms = dwell_at_min_ms_;
-      status.dwell_max_ms = dwell_at_max_ms_;
-      min_bound = local_min_bound_;
-      max_bound = local_max_bound_;
-      global_min = global_min_bound_;
-      global_max = global_max_bound_;
-      steps = steps_per_rev_;
-    }
-    
-    if (steps > 0) {
-      status.min_degrees_from_center = tmc51x0::StepsToDegrees(min_bound, steps);
-      status.max_degrees_from_center = tmc51x0::StepsToDegrees(max_bound, steps);
-      status.global_min_degrees = tmc51x0::StepsToDegrees(global_min, steps);
-      status.global_max_degrees = tmc51x0::StepsToDegrees(global_max, steps);
-    }
-    
+    TmcMutexGuard guard(mutex_);
+    status.running = running_ && state_ != MotionState::STOPPED;
+    status.bounded = bounded_;
+    status.frequency_hz = frequency_hz_;
+    status.current_cycles = current_cycles_;
+    status.target_cycles = target_cycles_;
+    status.dwell_min_ms = dwell_at_min_ms_;
+    status.dwell_max_ms = dwell_at_max_ms_;
+    status.min_degrees_from_center = local_min_bound_;
+    status.max_degrees_from_center = local_max_bound_;
+    status.global_min_degrees = global_min_bound_;
+    status.global_max_degrees = global_max_bound_;
     return status;
   }
 
@@ -930,25 +863,20 @@ private:
     if (!bounded_)
       return;
 
-    int32_t old_min = local_min_bound_;
-    int32_t old_max = local_max_bound_;
+    float old_min = local_min_bound_;
+    float old_max = local_max_bound_;
 
-    // Clip local bounds to global bounds
+    // Clip local bounds to global bounds (all in degrees)
     local_min_bound_ = std::max(local_min_bound_, global_min_bound_);
     local_max_bound_ = std::min(local_max_bound_, global_max_bound_);
 
     // Update home position
-    home_position_ = (local_min_bound_ + local_max_bound_) / 2;
-    amplitude_ = static_cast<float>((local_max_bound_ - local_min_bound_) / 2);
+    home_position_ = (local_min_bound_ + local_max_bound_) / 2.0f;
+    amplitude_ = (local_max_bound_ - local_min_bound_) / 2.0f;
 
-    if (old_min != local_min_bound_ || old_max != local_max_bound_) {
+    if (fabsf(old_min - local_min_bound_) > 0.01f || fabsf(old_max - local_max_bound_) > 0.01f) {
       ESP_LOGW(TAG, "Local bounds clipped to global bounds");
-      ESP_LOGI(TAG, "Clipped local bounds: min=%d, max=%d steps", local_min_bound_, local_max_bound_);
-      if (steps_per_rev_ > 0) {
-        float min_deg = tmc51x0::StepsToDegrees(local_min_bound_, steps_per_rev_);
-        float max_deg = tmc51x0::StepsToDegrees(local_max_bound_, steps_per_rev_);
-        ESP_LOGI(TAG, "Clipped local bounds: min=%.2f°, max=%.2f°", min_deg, max_deg);
-      }
+      ESP_LOGI(TAG, "Clipped local bounds: min=%.2f°, max=%.2f°", local_min_bound_, local_max_bound_);
     }
   }
 
@@ -958,10 +886,10 @@ private:
   void UpdateSinuousMotion() noexcept {
     uint64_t elapsed_us;
     float freq, amp;
-    int32_t home, local_min, local_max;
+    float home, local_min, local_max;
     uint32_t target_cycles;
     bool cycle_started;
-    int32_t last_target_rel;
+    float last_target_rel;
     uint32_t dwell_min, dwell_max;
     float phase_off;
     
@@ -981,29 +909,26 @@ private:
       phase_off = phase_offset_;
     }
 
-    // Calculate sinusoidal position
+    // Calculate sinusoidal position in degrees
     double elapsed_s = elapsed_us / 1000000.0;
     double angle = 2.0 * M_PI * freq * elapsed_s + phase_off;
     double sin_value = sin(angle);
 
-    // Calculate target position
-    int32_t target = home + static_cast<int32_t>(amp * sin_value);
+    // Calculate target position in degrees
+    float target_deg = home + (amp * sin_value);
 
     // Get current position relative to center for cycle counting
-    float current_pos_float = 0.0f;
-    if (!driver_->rampControl.GetCurrentPosition(current_pos_float, tmc51x0::Unit::Steps)) {
-      current_pos_float = 0.0f;
-    }
-    int32_t current_pos = static_cast<int32_t>(current_pos_float);
-    int32_t target_relative = target - home;
+    auto current_pos_deg_result = driver_->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+    float current_pos_deg = current_pos_deg_result.IsOk() ? current_pos_deg_result.Value() : 0.0f;
+    float target_relative_deg = target_deg - home;
 
     // Cycle counting: one cycle = center → min → max → center (or center → max → min → center)
     // Count cycles when crossing through center (0 crossing point)
       // Check if we're crossing through center (sign change of target position)
-      bool currently_negative = (target_relative < 0);
-      bool last_was_negative = (last_target_rel < 0);
+      bool currently_negative = (target_relative_deg < 0);
+      bool last_was_neg = (last_target_rel < 0);
       bool crossing_center =
-          (last_was_negative != currently_negative) && (abs(target_relative) < 30) && (abs(last_target_rel) < 30);
+          (last_was_neg != currently_negative) && (fabsf(target_relative_deg) < 1.0f) && (fabsf(last_target_rel) < 1.0f);
 
       // If we've started a cycle (left center) and now crossing back through center
       if (cycle_started && crossing_center) {
@@ -1017,7 +942,7 @@ private:
         }
         ESP_LOGI(TAG, "Cycle %lu completed at center (target: %lu)", new_cycles, 
                  target_cycles == 0 ? 0xFFFFFFFF : target_cycles);
-      } else if (!cycle_started && abs(target_relative) > 30) {
+      } else if (!cycle_started && fabsf(target_relative_deg) > 1.0f) {
         // We've left center, cycle has started
         TmcMutexGuard guard(mutex_);
         cycle_started_ = true;
@@ -1027,21 +952,20 @@ private:
       // Update tracking
       {
         TmcMutexGuard guard(mutex_);
-        last_target_relative_ = target_relative;
-        if (abs(target_relative) > 10) { // Only update if significantly away from center
+        last_target_relative_ = target_relative_deg; // Store in degrees
+        if (fabsf(target_relative_deg) > 0.5f) { // Only update if significantly away from center (0.5 degrees)
           last_was_negative_ = currently_negative;
-      }
+        }
     }
 
-    // Clamp to local bounds and handle dwell states
-    // During sinusoidal motion, we transition to proper motion states when hitting bounds
-    if (target <= local_min) {
-      target = local_min;
+    // Clamp to local bounds and handle dwell states (all in degrees)
+    if (target_deg <= local_min) {
+      target_deg = local_min;
       if (dwell_min > 0) {
         TmcMutexGuard guard(mutex_);
         state_ = MotionState::DWELL_AT_MIN;
         dwell_start_time_ms_ = esp_timer_get_time() / 1000;
-        driver_->rampControl.SetTargetPosition(static_cast<float>(target), tmc51x0::Unit::Steps);
+        driver_->rampControl.SetTargetPosition(target_deg, tmc51x0::Unit::Deg);
         return;
       } else {
         // No dwell - continue sinusoidal motion (will reverse direction naturally)
@@ -1049,13 +973,13 @@ private:
         TmcMutexGuard guard(mutex_);
         state_ = MotionState::MOVING_TO_MAX;
       }
-    } else if (target >= local_max) {
-      target = local_max;
+    } else if (target_deg >= local_max) {
+      target_deg = local_max;
       if (dwell_max > 0) {
         TmcMutexGuard guard(mutex_);
         state_ = MotionState::DWELL_AT_MAX;
         dwell_start_time_ms_ = esp_timer_get_time() / 1000;
-        driver_->rampControl.SetTargetPosition(static_cast<float>(target), tmc51x0::Unit::Steps);
+        driver_->rampControl.SetTargetPosition(target_deg, tmc51x0::Unit::Deg);
         return;
       } else {
         // No dwell - continue sinusoidal motion (will reverse direction naturally)
@@ -1066,7 +990,7 @@ private:
     } else {
       // Between bounds - update state based on direction
       TmcMutexGuard guard(mutex_);
-      if (target_relative > 0) {
+      if (target_relative_deg > 0) {
         state_ = MotionState::MOVING_TO_MAX;
       } else {
         state_ = MotionState::MOVING_TO_MIN;
@@ -1074,11 +998,12 @@ private:
     }
 
     // Update target position if it changed significantly
-    if (abs(target - current_pos) > 10) { // Update threshold: 10 steps
+    if (fabsf(target_deg - current_pos_deg) > 0.5f) { // Update threshold: 0.5 degrees
       driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-      driver_->rampControl.SetTargetPosition(static_cast<float>(target), tmc51x0::Unit::Steps);
-      driver_->rampControl.SetMaxSpeed(1000.0F);
-      driver_->rampControl.SetAcceleration(2000.0F);
+      driver_->rampControl.SetTargetPosition(target_deg, tmc51x0::Unit::Deg);
+      // Use calculated values (already in physical units)
+      driver_->rampControl.SetMaxSpeed(calculated_vmax_rpm_, tmc51x0::Unit::RPM);
+      driver_->rampControl.SetAcceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
     }
   }
 };
@@ -1418,8 +1343,9 @@ extern "C" void app_main() {
   // Create SPI communication interface using default pin configuration
   Esp32SPI spi(tmc51x0_test_config::SPI_HOST, pin_config, 1000000, active_levels); // 1 MHz SPI clock (reduced for stability)
 
-  if (!spi.Initialize()) {
-    ESP_LOGE(TAG, "Failed to initialize SPI interface");
+  auto spi_init_result = spi.Initialize();
+  if (!spi_init_result) {
+    ESP_LOGE(TAG, "Failed to initialize SPI interface (ErrorCode: %d)", static_cast<int>(spi_init_result.Error()));
     return;
   }
 
@@ -1443,7 +1369,7 @@ extern "C" void app_main() {
   }
   
   // Test configuration (currently shared across motors, can be motor-specific if needed)
-  namespace Test = tmc51x0_test_config::TestConfig_17HS4401S;
+  using Test = tmc51x0_test_config::TestConfig_17HS4401S;
 
   if (!driver.Initialize(cfg)) {
     ESP_LOGE(TAG, "Failed to initialize TMC51x0 driver");
@@ -1466,22 +1392,22 @@ extern "C" void app_main() {
   }
   
   // Set encoder resolution
-  bool enc_res_ok = driver.encoder.SetResolution(
+  auto enc_res_result = driver.encoder.SetResolution(
       tmc51x0_test_config::GetTestRigEncoderPulsesPerRev<SELECTED_TEST_RIG>(),
       tmc51x0_test_config::GetTestRigEncoderInvertDirection<SELECTED_TEST_RIG>());
-  
-  if (!enc_res_ok) {
-    ESP_LOGW(TAG, "Encoder resolution set with approximation");
+  if (!enc_res_result.IsOk()) {
+    ESP_LOGW(TAG, "Encoder resolution set with approximation (ErrorCode: %d)", static_cast<int>(enc_res_result.Error()));
   }
   
   ESP_LOGI(TAG, "✓ Encoder configured successfully");
   
   // Verify encoder is working by reading position
-  int32_t enc_pos_test = 0;
-  if (!driver.encoder.GetPosition(enc_pos_test)) {
-    ESP_LOGE(TAG, "Failed to read encoder position - encoder may not be connected!");
+  auto enc_pos_result = driver.encoder.GetPosition();
+  if (!enc_pos_result.IsOk()) {
+    ESP_LOGE(TAG, "Failed to read encoder position - encoder may not be connected! (ErrorCode: %d)", static_cast<int>(enc_pos_result.Error()));
     return;
   }
+  int32_t enc_pos_test = enc_pos_result.Value();
   ESP_LOGI(TAG, "Encoder position read successfully: %ld", enc_pos_test);
 
   // Enable motor
@@ -1493,9 +1419,7 @@ extern "C" void app_main() {
   ESP_LOGI(TAG, "Motor enabled");
 
   // Configure motor parameters for unit conversions
-  // Steps per output revolution = Motor Full Steps * Gear Ratio * Microsteps
-  // 200 * 5.18 * 256 = ~265,216 steps/rev (for geared motor)
-  float steps_per_rev = static_cast<float>(output_full_steps) * 256.0f; 
+  // Driver handles all unit conversions internally - no need to calculate steps_per_rev 
   
   // ============================================================
   // STEP 1: Find global bounds using positioning mode with encoder-based stall detection
@@ -1504,36 +1428,30 @@ extern "C" void app_main() {
   ESP_LOGI(TAG, "║                    STEP 1: Finding Global Bounds (Encoder-Based)            ║");
   ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
 
-  // Calculate 360 degrees in steps (one full output revolution)
-  // steps_per_rev already accounts for microsteps (OUTPUT_FULL_STEPS * 256)
-  int32_t steps_per_360_deg = static_cast<int32_t>(steps_per_rev);
-  float search_speed = Test::Motion::BOUNDS_SEARCH_SPEED; // steps/s
+  // Search speed is already in RPM
+  float search_speed_rpm = Test::Motion::BOUNDS_SEARCH_SPEED_RPM;
   
-  // Calculate 5° offset in steps (for backing off from detected stalls)
-  // Using utility function to ensure proper microstep handling
+  // Calculate 5° offset (for backing off from detected stalls)
   float offset_deg = 5.0f;
-  int32_t offset_steps = tmc51x0::DegreesToSteps(offset_deg, steps_per_rev);
   
   // CRITICAL: Reset position to 0 and ensure clean state before starting
-  float initial_pos_float = 0.0f;
-  if (!driver.rampControl.GetCurrentPosition(initial_pos_float, tmc51x0::Unit::Steps)) {
-    initial_pos_float = 0.0f;
+  auto initial_pos_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+  if (!initial_pos_result.IsOk()) {
+    ESP_LOGE(TAG, "❌ Failed to read initial position (ErrorCode: %d)", static_cast<int>(initial_pos_result.Error()));
+    return;
   }
-  int32_t initial_position = static_cast<int32_t>(initial_pos_float);
-  ESP_LOGI(TAG, "Initial position before reset: %ld steps", initial_position);
+  float initial_pos_deg = initial_pos_result.Value();
+  ESP_LOGI(TAG, "Initial position before reset: %.2f degrees", initial_pos_deg);
   
   driver.rampControl.Stop();
   driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
   vTaskDelay(pdMS_TO_TICKS(100));
   
   // Reset position to 0
-  driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Steps);
-  float pos_after_reset_float = 0.0f;
-  if (!driver.rampControl.GetCurrentPosition(pos_after_reset_float, tmc51x0::Unit::Steps)) {
-    pos_after_reset_float = 0.0f;
-  }
-  int32_t position_after_reset = static_cast<int32_t>(pos_after_reset_float);
-  ESP_LOGI(TAG, "Position reset to: %ld steps (should be 0)", position_after_reset);
+  driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
+  auto pos_after_reset_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+  float pos_after_reset_deg = pos_after_reset_result.IsOk() ? pos_after_reset_result.Value() : 0.0f;
+  ESP_LOGI(TAG, "Position reset to: %.2f degrees (should be 0)", pos_after_reset_deg);
   
   // Ensure motor is enabled
   if (!driver.motorControl.Enable()) {
@@ -1559,8 +1477,9 @@ extern "C" void app_main() {
     ESP_LOGI(TAG, "✓ Reference switches disabled (not using endstops)");
     
     // Verify SW_MODE register was written correctly
-    tmc51x0::ReferenceSwitchConfig verify_ref_cfg{};
-    if (driver.rampControl.GetReferenceSwitchConfig(verify_ref_cfg)) {
+    auto verify_ref_result = driver.rampControl.GetReferenceSwitchConfig();
+    if (verify_ref_result.IsOk()) {
+      tmc51x0::ReferenceSwitchConfig verify_ref_cfg = verify_ref_result.Value();
       ESP_LOGI(TAG, "SW_MODE verification: stop_l_enable=%d, stop_r_enable=%d, stop_mode=%s",
                verify_ref_cfg.left_switch_stop_enable ? 1 : 0,
                verify_ref_cfg.right_switch_stop_enable ? 1 : 0,
@@ -1579,8 +1498,9 @@ extern "C" void app_main() {
   }
   
   // Check physical pin states (informational only - switches are disabled)
-  uint32_t ramp_stat_precheck = 0;
-  if (driver.diagnostics.GetRampStatusRegister(ramp_stat_precheck)) {
+  auto ramp_stat_precheck_result = driver.diagnostics.GetRampStatusRegister();
+  if (ramp_stat_precheck_result.IsOk()) {
+    uint32_t ramp_stat_precheck = ramp_stat_precheck_result.Value();
     tmc51x0::RAMP_STAT_Register stat{};
     stat.value = ramp_stat_precheck;
     if (stat.bits.status_stop_l || stat.bits.status_stop_r) {
@@ -1596,11 +1516,13 @@ extern "C" void app_main() {
   ESP_LOGI(TAG, "Using encoder-based stall detection (no StallGuard2 required)");
   
   // Read initial encoder position for baseline
+  auto enc_pos_baseline_result = driver.encoder.GetPosition();
   int32_t enc_pos_baseline = 0;
-  if (!driver.encoder.GetPosition(enc_pos_baseline)) {
-    ESP_LOGE(TAG, "Failed to read initial encoder position");
+  if (!enc_pos_baseline_result.IsOk()) {
+    ESP_LOGE(TAG, "Failed to read initial encoder position (ErrorCode: %d)", static_cast<int>(enc_pos_baseline_result.Error()));
     return;
   }
+  enc_pos_baseline = enc_pos_baseline_result.Value();
   ESP_LOGI(TAG, "Initial encoder position baseline: %ld", enc_pos_baseline);
   
   // Configure positioning mode parameters
@@ -1609,8 +1531,9 @@ extern "C" void app_main() {
   vTaskDelay(pdMS_TO_TICKS(100)); // Wait for motor to fully stop
   
   // Read current RAMPMODE
-  tmc51x0::RampMode rampmode_before = tmc51x0::RampMode::HOLD;
-  if (driver.rampControl.GetRampMode(rampmode_before)) {
+  auto rampmode_result = driver.rampControl.GetRampMode();
+  if (rampmode_result.IsOk()) {
+    tmc51x0::RampMode rampmode_before = rampmode_result.Value();
     const char* mode_str = (rampmode_before == tmc51x0::RampMode::HOLD) ? "HOLD" :
                           (rampmode_before == tmc51x0::RampMode::POSITIONING) ? "POSITIONING" :
                           (rampmode_before == tmc51x0::RampMode::VELOCITY_POS) ? "VELOCITY_POS" :
@@ -1626,8 +1549,9 @@ extern "C" void app_main() {
   vTaskDelay(pdMS_TO_TICKS(100)); // Longer delay for register write
   
   // Verify RAMPMODE was set correctly
-  tmc51x0::RampMode rampmode_verify = tmc51x0::RampMode::HOLD;
-  if (driver.rampControl.GetRampMode(rampmode_verify)) {
+  auto rampmode_verify_result = driver.rampControl.GetRampMode();
+  if (rampmode_verify_result.IsOk()) {
+    tmc51x0::RampMode rampmode_verify = rampmode_verify_result.Value();
     if (rampmode_verify != tmc51x0::RampMode::POSITIONING) {
       ESP_LOGE(TAG, "CRITICAL: RAMPMODE not set to POSITIONING! Current mode: %d", static_cast<int>(rampmode_verify));
       return;
@@ -1639,10 +1563,17 @@ extern "C" void app_main() {
     return;
   }
   
-  driver.rampControl.SetMaxSpeed(search_speed);
-  driver.rampControl.SetAcceleration(search_speed * 2.0f); // Reasonable acceleration
-  driver.rampControl.SetDeceleration(search_speed * 2.0f);
-  driver.rampControl.SetRampSpeeds(1000.0f, 100.0f, 0.0f); // VSTART, VSTOP, V1
+  // Convert search speed from RPM to rev/s for acceleration calculation
+  float search_velocity_rev_s = search_speed_rpm / 60.0f;
+  float search_accel_rev_s2 = search_velocity_rev_s * 2.0f; // Reasonable acceleration: reach speed in 0.5s
+  // Use physical units directly - driver handles conversions
+  float vstart_rpm = 30.0f;  // ~1000 steps/s for 200 steps/rev motor
+  float vstop_rpm = 3.0f;   // ~100 steps/s for 200 steps/rev motor
+  
+  driver.rampControl.SetMaxSpeed(search_speed_rpm, tmc51x0::Unit::RPM);
+  driver.rampControl.SetAcceleration(search_accel_rev_s2, tmc51x0::Unit::RevPerSec);
+  driver.rampControl.SetDeceleration(search_accel_rev_s2, tmc51x0::Unit::RevPerSec);
+  driver.rampControl.SetRampSpeeds(vstart_rpm, vstop_rpm, 0.0f, tmc51x0::Unit::RPM); // VSTART, VSTOP, V1
   
   // Small delay to ensure all registers are written before starting motion
   vTaskDelay(pdMS_TO_TICKS(100));
@@ -1650,18 +1581,16 @@ extern "C" void app_main() {
   // ============================================================
   // Find maximum bound: Command to +360° and detect stall
   // ============================================================
-  ESP_LOGI(TAG, "Finding maximum bound: Commanding to +360° (%ld steps)...", steps_per_360_deg);
+  float target_deg = 360.0f;
+  ESP_LOGI(TAG, "Finding maximum bound: Commanding to +360°...");
   
   // Verify current position before setting target
-  float pos_before_target_float = 0.0f;
-  if (!driver.rampControl.GetCurrentPosition(pos_before_target_float, tmc51x0::Unit::Steps)) {
-    pos_before_target_float = 0.0f;
-  }
-  int32_t pos_before_target = static_cast<int32_t>(pos_before_target_float);
-  ESP_LOGI(TAG, "Current position before setting target: %ld steps", pos_before_target);
+  auto pos_before_target_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+  float pos_before_target_deg = pos_before_target_result.IsOk() ? pos_before_target_result.Value() : 0.0f;
+  ESP_LOGI(TAG, "Current position before setting target: %.2f degrees", pos_before_target_deg);
   
   // Set target position
-  if (!driver.rampControl.SetTargetPosition(static_cast<float>(steps_per_360_deg), tmc51x0::Unit::Steps)) {
+  if (!driver.rampControl.SetTargetPosition(target_deg, tmc51x0::Unit::Deg)) {
     ESP_LOGE(TAG, "Failed to set target position!");
     return;
   }
@@ -1672,23 +1601,27 @@ extern "C" void app_main() {
   vTaskDelay(pdMS_TO_TICKS(100));
   
   // Check if motion started
-  float initial_speed = 0.0f;
-  if (!driver.rampControl.GetCurrentSpeed(initial_speed, tmc51x0::Unit::Steps)) {
-    initial_speed = 0.0f;
-  }
-  float initial_pos_check_float = 0.0f;
-  if (!driver.rampControl.GetCurrentPosition(initial_pos_check_float, tmc51x0::Unit::Steps)) {
-    initial_pos_check_float = 0.0f;
-  }
-  int32_t initial_pos_check = static_cast<int32_t>(initial_pos_check_float);
-  ESP_LOGI(TAG, "After setting target: position=%ld, speed=%.1f steps/s", initial_pos_check, initial_speed);
+  float initial_speed_rpm = 0.0f;
+    auto speed_result = driver.rampControl.GetCurrentSpeed(tmc51x0::Unit::RPM);
+    if (!speed_result) {
+      ESP_LOGW(TAG, "⚠ Failed to read speed (ErrorCode: %d), using 0", static_cast<int>(speed_result.Error()));
+      initial_speed_rpm = 0.0f;
+    } else {
+      initial_speed_rpm = speed_result.Value();
+    }
+  auto initial_pos_check_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+  float initial_pos_check_deg = initial_pos_check_result.IsOk() ? initial_pos_check_result.Value() : 0.0f;
+  ESP_LOGI(TAG, "After setting target: position=%.2f degrees, speed=%.1f RPM", initial_pos_check_deg, initial_speed_rpm);
   
-  if (std::abs(initial_speed) < 10.0f && std::abs(initial_pos_check - pos_before_target) < 10) {
+  // Use physical units directly
+  float speed_threshold_rpm = 0.3f;  // ~10 steps/s for 200 steps/rev motor
+  if (std::abs(initial_speed_rpm) < speed_threshold_rpm && std::abs(initial_pos_check_deg - pos_before_target_deg) < 1.0f) {
     ESP_LOGW(TAG, "⚠️ Motor not moving after setting target! Checking status...");
     
     // Read RAMP_STAT to see why motion isn't starting
-    uint32_t ramp_stat_no_motion = 0;
-    if (driver.diagnostics.GetRampStatusRegister(ramp_stat_no_motion)) {
+    auto ramp_stat_no_motion_result = driver.diagnostics.GetRampStatusRegister();
+    if (ramp_stat_no_motion_result.IsOk()) {
+      uint32_t ramp_stat_no_motion = ramp_stat_no_motion_result.Value();
       tmc51x0::RAMP_STAT_Register stat{};
       stat.value = ramp_stat_no_motion;
       ESP_LOGW(TAG, "RAMP_STAT: vzero=%d, velocity_reached=%d, position_reached=%d, stop_l=%d, stop_r=%d, event_stop_sg=%d",
@@ -1705,8 +1638,9 @@ extern "C" void app_main() {
       // Check if reference switches are blocking (only if enabled)
       if (stat.bits.status_stop_l || stat.bits.status_stop_r) {
         // Check if switches are actually enabled
-        tmc51x0::ReferenceSwitchConfig sw_mode_check{};
-        if (driver.rampControl.GetReferenceSwitchConfig(sw_mode_check)) {
+        auto sw_mode_check_result = driver.rampControl.GetReferenceSwitchConfig();
+    if (sw_mode_check_result.IsOk()) {
+      tmc51x0::ReferenceSwitchConfig sw_mode_check = sw_mode_check_result.Value();
           if (sw_mode_check.left_switch_stop_enable || sw_mode_check.right_switch_stop_enable) {
             ESP_LOGE(TAG, "  CRITICAL: Reference switches are ENABLED and ACTIVE - blocking motion!");
             ESP_LOGE(TAG, "  stop_l_enable=%d, stop_r_enable=%d", 
@@ -1733,8 +1667,9 @@ extern "C" void app_main() {
     
     // CRITICAL: Ensure we're in POSITIONING mode (not HOLD)
     // Stall events or other conditions might force RAMPMODE back to HOLD
-    tmc51x0::RampMode rampmode_check = tmc51x0::RampMode::HOLD;
-    if (driver.rampControl.GetRampMode(rampmode_check)) {
+    auto rampmode_check_result = driver.rampControl.GetRampMode();
+    if (rampmode_check_result.IsOk()) {
+      tmc51x0::RampMode rampmode_check = rampmode_check_result.Value();
       const char* mode_str = (rampmode_check == tmc51x0::RampMode::HOLD) ? "HOLD" :
                             (rampmode_check == tmc51x0::RampMode::POSITIONING) ? "POSITIONING" :
                             (rampmode_check == tmc51x0::RampMode::VELOCITY_POS) ? "VELOCITY_POS" :
@@ -1754,8 +1689,9 @@ extern "C" void app_main() {
         vTaskDelay(pdMS_TO_TICKS(100)); // Longer delay for register write
         
         // Verify it was set
-        tmc51x0::RampMode rampmode_verify = tmc51x0::RampMode::HOLD;
-        if (driver.rampControl.GetRampMode(rampmode_verify)) {
+        auto rampmode_verify_result = driver.rampControl.GetRampMode();
+  if (rampmode_verify_result.IsOk()) {
+    tmc51x0::RampMode rampmode_verify = rampmode_verify_result.Value();
           if (rampmode_verify == tmc51x0::RampMode::POSITIONING) {
             ESP_LOGI(TAG, "  ✓ RAMPMODE confirmed set to POSITIONING");
           } else {
@@ -1777,15 +1713,12 @@ extern "C" void app_main() {
   uint32_t max_start_time = esp_timer_get_time() / 1000;
   uint32_t timeout_ms = Test::Motion::HOMING_TIMEOUT_MS;
   
-  float start_pos_float = 0.0f;
-  if (!driver.rampControl.GetCurrentPosition(start_pos_float, tmc51x0::Unit::Steps)) {
-    start_pos_float = 0.0f;
-  }
-  int32_t start_position = static_cast<int32_t>(start_pos_float);
-  int32_t last_position = start_position;
+  auto start_pos_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+  float start_pos_deg = start_pos_result.IsOk() ? start_pos_result.Value() : 0.0f;
+  float last_pos_deg = start_pos_deg;
   uint32_t last_position_check_time = max_start_time;
-  constexpr int32_t MIN_MOVEMENT_FOR_VALID_STALL = 5000; // Must move at least 5000 steps (~7°) before stall is valid
-  constexpr int32_t MIN_MOVEMENT_FOR_STALL_CHECK = 2000; // Don't even check for stalls until motor moves this much
+  constexpr float MIN_MOVEMENT_FOR_VALID_STALL_DEG = 7.0f; // Must move at least 7° before stall is valid
+  constexpr float MIN_MOVEMENT_FOR_STALL_CHECK_DEG = 2.0f; // Don't even check for stalls until motor moves this much
   
   // Encoder-based stall detection variables
   int32_t last_encoder_position = enc_pos_baseline;
@@ -1803,19 +1736,21 @@ extern "C" void app_main() {
     }
     
     // Check current position to verify motor is actually moving
-    float current_pos_float = 0.0f;
-    if (!driver.rampControl.GetCurrentPosition(current_pos_float, tmc51x0::Unit::Steps)) {
-      current_pos_float = 0.0f;
+    float current_pos_deg = 0.0f;
+    auto pos_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+    if (!pos_result) {
+      ESP_LOGW(TAG, "⚠ Failed to read position (ErrorCode: %d)", static_cast<int>(pos_result.Error()));
+      current_pos_deg = 0.0f;
+    } else {
+      current_pos_deg = pos_result.Value();
     }
-    int32_t current_pos = static_cast<int32_t>(current_pos_float);
-    int32_t position_delta = current_pos - start_position;
+    float position_delta_deg = current_pos_deg - start_pos_deg;
     
     // CRITICAL SAFETY CHECK: Never rotate more than 360° from start position
     // This prevents excessive rotation that could damage cables or mechanical systems
-    if (position_delta > steps_per_360_deg) {
+    if (position_delta_deg > 360.0f) {
       ESP_LOGE(TAG, "⚠️ SAFETY LIMIT: Motor rotated %.2f° (exceeds 360° limit) - STOPPING IMMEDIATELY!",
-               tmc51x0::StepsToDegrees(position_delta, steps_per_rev));
-      ESP_LOGE(TAG, "  Position delta: %ld steps (limit: %ld steps)", position_delta, steps_per_360_deg);
+               position_delta_deg);
       driver.rampControl.Stop();
       vTaskDelay(pdMS_TO_TICKS(200));
       max_reached_360 = true; // Treat as reached 360° to use default bounds
@@ -1830,22 +1765,21 @@ extern "C" void app_main() {
       break;
     }
     uint32_t current_time = esp_timer_get_time() / 1000;
-    float vactual = 0.0f;
-    if (!driver.rampControl.GetCurrentSpeed(vactual, tmc51x0::Unit::Steps)) {
-      vactual = 0.0f;
-    }
+    auto vactual_result = driver.rampControl.GetCurrentSpeed(tmc51x0::Unit::RPM);
+    float vactual_rpm = vactual_result.IsOk() ? vactual_result.Value() : 0.0f;
     
-    // Detect if motion has started
-    if (!motion_started && std::abs(position_delta) > 100) {
+    // Detect if motion has started (use physical units)
+    float motion_start_threshold_deg = 0.5f;  // ~100 steps for 200 steps/rev motor
+    if (!motion_started && std::abs(position_delta_deg) > motion_start_threshold_deg) {
       motion_started = true;
-      ESP_LOGI(TAG, "Motion started: position=%ld, speed=%.1f steps/s", current_pos, vactual);
+      ESP_LOGI(TAG, "Motion started: position=%.2f degrees, speed=%.1f RPM", current_pos_deg, vactual_rpm);
     }
     
     // Encoder-based stall detection: Check if encoder position is changing
+    auto encoder_pos_result = driver.encoder.GetPosition();
     int32_t current_encoder_position = 0;
-    bool encoder_read_ok = driver.encoder.GetPosition(current_encoder_position);
-    
-    if (encoder_read_ok) {
+    if (encoder_pos_result.IsOk()) {
+      current_encoder_position = encoder_pos_result.Value();
       int32_t encoder_change = std::abs(current_encoder_position - last_encoder_position);
       
       // Check if encoder position has changed significantly
@@ -1856,7 +1790,9 @@ extern "C" void app_main() {
       } else {
         // Encoder position hasn't changed - check if motor is trying to move
         // Only consider it a stall if motor is commanded to move (VACTUAL > threshold)
-        if (std::abs(vactual) > 500.0f && motion_started) {
+        // Use physical units directly
+        float speed_threshold_rpm = 15.0f;  // ~500 steps/s for 200 steps/rev motor
+        if (std::abs(vactual_rpm) > speed_threshold_rpm && motion_started) {
           // Motor is trying to move but encoder isn't changing
           uint32_t time_since_encoder_change = current_time - last_encoder_change_time;
           
@@ -1865,11 +1801,11 @@ extern "C" void app_main() {
             // This indicates a stall condition
             
             // Check if motor has moved enough to consider stall valid
-            if (position_delta < MIN_MOVEMENT_FOR_VALID_STALL) {
-              ESP_LOGW(TAG, "⚠️ Encoder stall detected but motor hasn't moved enough (%ld steps < %d) - IGNORING FALSE STALL", 
-                       position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
-              ESP_LOGW(TAG, "  Encoder position: %ld (no change for %lu ms), VACTUAL=%.1f steps/s", 
-                       current_encoder_position, time_since_encoder_change, vactual);
+            if (position_delta_deg < MIN_MOVEMENT_FOR_VALID_STALL_DEG) {
+              ESP_LOGW(TAG, "⚠️ Encoder stall detected but motor hasn't moved enough (%.2f° < %.2f°) - IGNORING FALSE STALL", 
+                       position_delta_deg, MIN_MOVEMENT_FOR_VALID_STALL_DEG);
+              ESP_LOGW(TAG, "  Encoder position: %ld (no change for %lu ms), VACTUAL=%.1f RPM", 
+                       current_encoder_position, time_since_encoder_change, vactual_rpm);
               ESP_LOGW(TAG, "  Resetting encoder stall timer and continuing search...");
               
               // Reset encoder stall timer and continue
@@ -1880,11 +1816,11 @@ extern "C" void app_main() {
             // Motor has moved enough - this is likely a real stall
             max_stall_detected = true;
             ESP_LOGI(TAG, "✓ Encoder-based stall detected during maximum bound search!");
-            ESP_LOGI(TAG, "  Motor position moved: %ld steps from start (threshold: %d)", 
-                     position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
+            ESP_LOGI(TAG, "  Motor position moved: %.2f degrees from start (threshold: %.2f°)", 
+                     position_delta_deg, MIN_MOVEMENT_FOR_VALID_STALL_DEG);
             ESP_LOGI(TAG, "  Encoder position: %ld (no change for %lu ms)", 
                      current_encoder_position, time_since_encoder_change);
-            ESP_LOGI(TAG, "  VACTUAL=%.1f steps/s, elapsed=%lu ms", vactual, elapsed);
+            ESP_LOGI(TAG, "  VACTUAL=%.1f RPM, elapsed=%lu ms", vactual_rpm, elapsed);
             
             // Stop the motor
             driver.rampControl.Stop();
@@ -1902,21 +1838,24 @@ extern "C" void app_main() {
     
     // Log position progress periodically (every 500ms)
     if (current_time - last_position_check_time >= 500) {
-      int32_t position_change = current_pos - last_position;
-      int32_t encoder_change = encoder_read_ok ? (current_encoder_position - last_encoder_position) : 0;
-      ESP_LOGI(TAG, "  Progress: position=%ld (+%ld from start, +%ld since last), encoder=%ld (+%ld), speed=%.1f steps/s, elapsed=%lu ms",
-               current_pos, position_delta, position_change, 
-               encoder_read_ok ? current_encoder_position : 0, encoder_change, vactual, elapsed);
+      float position_change_deg = current_pos_deg - last_pos_deg;
+      int32_t encoder_change = encoder_pos_result.IsOk() ? (current_encoder_position - last_encoder_position) : 0;
+      ESP_LOGI(TAG, "  Progress: position=%.2f° (+%.2f° from start, +%.2f° since last), encoder=%ld (+%ld), speed=%.1f RPM, elapsed=%lu ms",
+               current_pos_deg, position_delta_deg, position_change_deg, 
+               encoder_pos_result.IsOk() ? current_encoder_position : 0, encoder_change, vactual_rpm, elapsed);
       
       // Check if motor is stuck (position not changing but should be moving)
-      if (motion_started && std::abs(position_change) < 50 && std::abs(vactual) < 100.0f && elapsed > 1000) {
-        ESP_LOGW(TAG, "  ⚠️ Motor appears stuck: position change=%ld steps, encoder change=%ld, speed=%.1f steps/s", 
-                 position_change, encoder_change, vactual);
+      // Use physical units directly
+      float stuck_pos_threshold_deg = 0.25f;  // ~50 steps for 200 steps/rev motor
+      float stuck_speed_threshold_rpm = 3.0f;  // ~100 steps/s for 200 steps/rev motor
+      if (motion_started && std::abs(position_change_deg) < stuck_pos_threshold_deg && std::abs(vactual_rpm) < stuck_speed_threshold_rpm && elapsed > 1000) {
+        ESP_LOGW(TAG, "  ⚠️ Motor appears stuck: position change=%.2f°, encoder change=%ld, speed=%.1f RPM", 
+                 position_change_deg, encoder_change, vactual_rpm);
       }
       
       last_position_check_time = current_time;
-      last_position = current_pos;
-      if (encoder_read_ok) {
+      last_pos_deg = current_pos_deg;
+      if (encoder_pos_result.IsOk()) {
         last_encoder_position = current_encoder_position;
       }
     }
@@ -1924,32 +1863,27 @@ extern "C" void app_main() {
     vTaskDelay(pdMS_TO_TICKS(10)); // Poll every 10ms
   }
   
-  float max_pos_float = 0.0f;
-  if (!driver.rampControl.GetCurrentPosition(max_pos_float, tmc51x0::Unit::Steps)) {
-    max_pos_float = 0.0f;
-  }
-  int32_t max_position = static_cast<int32_t>(max_pos_float);
+  auto max_pos_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+  float max_pos_deg = max_pos_result.IsOk() ? max_pos_result.Value() : 0.0f;
   
   if (max_stall_detected) {
-    ESP_LOGI(TAG, "Maximum bound found at stall: %ld steps", max_position);
+    ESP_LOGI(TAG, "Maximum bound found at stall: %.2f degrees", max_pos_deg);
     
     // Back off with 5° offset
     driver.rampControl.Stop();
     driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
     vTaskDelay(pdMS_TO_TICKS(500));
     
-    ESP_LOGI(TAG, "Backing off 5° (%ld steps) from maximum stall...", offset_steps);
+    float backoff_target_deg = max_pos_deg - offset_deg;
+    ESP_LOGI(TAG, "Backing off 5° from maximum stall (%.2f° -> %.2f°)...", max_pos_deg, backoff_target_deg);
     driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(static_cast<float>(max_position - offset_steps), tmc51x0::Unit::Steps);
-    driver.rampControl.SetMaxSpeed(search_speed / 2.0f);
+    driver.rampControl.SetTargetPosition(backoff_target_deg, tmc51x0::Unit::Deg);
+    driver.rampControl.SetMaxSpeed(search_speed_rpm / 2.0f, tmc51x0::Unit::RPM);
     while (!driver.rampControl.IsTargetReached()) {
       vTaskDelay(pdMS_TO_TICKS(100));
     }
-    float max_pos_float = 0.0f;
-    if (!driver.rampControl.GetCurrentPosition(max_pos_float, tmc51x0::Unit::Steps)) {
-      max_pos_float = 0.0f;
-    }
-    max_position = static_cast<int32_t>(max_pos_float);
+    auto max_pos_after_backoff_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+    max_pos_deg = max_pos_after_backoff_result.IsOk() ? max_pos_after_backoff_result.Value() : max_pos_deg;
   } else if (max_reached_360) {
     ESP_LOGI(TAG, "No stall at +360° - will use -175° to +175° bounds");
     // Will handle this after checking minimum bound
@@ -1958,27 +1892,27 @@ extern "C" void app_main() {
   // ============================================================
   // Find minimum bound: Command to -360° and detect stall via encoder
   // ============================================================
-  ESP_LOGI(TAG, "Finding minimum bound: Commanding to -360° (%ld steps)...", -steps_per_360_deg);
+  float min_target_deg = -360.0f;
+  ESP_LOGI(TAG, "Finding minimum bound: Commanding to -360°...");
   
   // Read encoder position before starting minimum bound search
-  int32_t min_enc_pos_baseline = 0;
-  if (!driver.encoder.GetPosition(min_enc_pos_baseline)) {
-    ESP_LOGW(TAG, "Failed to read encoder position before minimum search - using motor position only");
-    min_enc_pos_baseline = enc_pos_baseline; // Fallback to previous baseline
+  auto min_enc_pos_baseline_result = driver.encoder.GetPosition();
+  int32_t min_enc_pos_baseline = enc_pos_baseline; // Default fallback
+  if (!min_enc_pos_baseline_result.IsOk()) {
+    ESP_LOGW(TAG, "Failed to read encoder position before minimum search - using motor position only (ErrorCode: %d)", static_cast<int>(min_enc_pos_baseline_result.Error()));
+  } else {
+    min_enc_pos_baseline = min_enc_pos_baseline_result.Value();
   }
   
-  driver.rampControl.SetTargetPosition(static_cast<float>(-steps_per_360_deg), tmc51x0::Unit::Steps);
+  driver.rampControl.SetTargetPosition(min_target_deg, tmc51x0::Unit::Deg);
   
   // Wait for motion to complete (either target reached or stall detected via encoder)
   bool min_stall_detected = false;
   bool min_reached_360 = false;
   uint32_t min_start_time = esp_timer_get_time() / 1000;
-  float min_start_pos_float = 0.0f;
-  if (!driver.rampControl.GetCurrentPosition(min_start_pos_float, tmc51x0::Unit::Steps)) {
-    min_start_pos_float = 0.0f;
-  }
-  int32_t min_start_position = static_cast<int32_t>(min_start_pos_float);
-  int32_t min_last_position = min_start_position;
+  auto min_start_pos_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+  float min_start_pos_deg = min_start_pos_result.IsOk() ? min_start_pos_result.Value() : 0.0f;
+  float min_last_pos_deg = min_start_pos_deg;
   uint32_t min_last_position_check_time = min_start_time;
   
   // Encoder-based stall detection variables for minimum bound search
@@ -1995,19 +1929,21 @@ extern "C" void app_main() {
     }
     
     // Check current position to verify motor is actually moving
-    float current_pos_float = 0.0f;
-    if (!driver.rampControl.GetCurrentPosition(current_pos_float, tmc51x0::Unit::Steps)) {
-      current_pos_float = 0.0f;
+    float current_pos_deg = 0.0f;
+    auto pos_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+    if (!pos_result) {
+      ESP_LOGW(TAG, "⚠ Failed to read position (ErrorCode: %d)", static_cast<int>(pos_result.Error()));
+      current_pos_deg = 0.0f;
+    } else {
+      current_pos_deg = pos_result.Value();
     }
-    int32_t current_pos = static_cast<int32_t>(current_pos_float);
-    int32_t position_delta = std::abs(current_pos - min_start_position);
+    float position_delta_deg = std::abs(current_pos_deg - min_start_pos_deg);
     
     // CRITICAL SAFETY CHECK: Never rotate more than 360° from start position
     // This prevents excessive rotation that could damage cables or mechanical systems
-    if (position_delta > steps_per_360_deg) {
+    if (position_delta_deg > 360.0f) {
       ESP_LOGE(TAG, "⚠️ SAFETY LIMIT: Motor rotated %.2f° (exceeds 360° limit) - STOPPING IMMEDIATELY!",
-               tmc51x0::StepsToDegrees(position_delta, steps_per_rev));
-      ESP_LOGE(TAG, "  Position delta: %ld steps (limit: %ld steps)", position_delta, steps_per_360_deg);
+               position_delta_deg);
       driver.rampControl.Stop();
       vTaskDelay(pdMS_TO_TICKS(200));
       min_reached_360 = true; // Treat as reached 360° to use default bounds
@@ -2022,22 +1958,21 @@ extern "C" void app_main() {
       break;
     }
     uint32_t current_time = esp_timer_get_time() / 1000;
-    float vactual = 0.0f;
-    if (!driver.rampControl.GetCurrentSpeed(vactual, tmc51x0::Unit::Steps)) {
-      vactual = 0.0f;
-    }
+    auto vactual_result = driver.rampControl.GetCurrentSpeed(tmc51x0::Unit::RPM);
+    float vactual_rpm = vactual_result.IsOk() ? vactual_result.Value() : 0.0f;
     
-    // Detect if motion has started
-    if (!min_motion_started && position_delta > 100) {
+    // Detect if motion has started (use physical units)
+    float motion_start_threshold_deg = 0.5f;  // ~100 steps for 200 steps/rev motor
+    if (!min_motion_started && position_delta_deg > motion_start_threshold_deg) {
       min_motion_started = true;
-      ESP_LOGI(TAG, "Motion started: position=%ld, speed=%.1f steps/s", current_pos, vactual);
+      ESP_LOGI(TAG, "Motion started: position=%.2f degrees, speed=%.1f RPM", current_pos_deg, vactual_rpm);
     }
     
     // Encoder-based stall detection: Check if encoder position is changing
+    auto encoder_pos_result = driver.encoder.GetPosition();
     int32_t current_encoder_position = 0;
-    bool encoder_read_ok = driver.encoder.GetPosition(current_encoder_position);
-    
-    if (encoder_read_ok) {
+    if (encoder_pos_result.IsOk()) {
+      current_encoder_position = encoder_pos_result.Value();
       int32_t encoder_change = std::abs(current_encoder_position - min_last_encoder_position);
       
       // Check if encoder position has changed significantly
@@ -2048,7 +1983,9 @@ extern "C" void app_main() {
       } else {
         // Encoder position hasn't changed - check if motor is trying to move
         // Only consider it a stall if motor is commanded to move (VACTUAL > threshold)
-        if (std::abs(vactual) > 500.0f && min_motion_started) {
+        // Use physical units directly
+        float speed_threshold_rpm = 15.0f;  // ~500 steps/s for 200 steps/rev motor
+        if (std::abs(vactual_rpm) > speed_threshold_rpm && min_motion_started) {
           // Motor is trying to move but encoder isn't changing
           uint32_t time_since_encoder_change = current_time - min_last_encoder_change_time;
           
@@ -2057,11 +1994,11 @@ extern "C" void app_main() {
             // This indicates a stall condition
             
             // Check if motor has moved enough to consider stall valid
-            if (position_delta < MIN_MOVEMENT_FOR_VALID_STALL) {
-              ESP_LOGW(TAG, "⚠️ Encoder stall detected but motor hasn't moved enough (%ld steps < %d) - IGNORING FALSE STALL", 
-                       position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
-              ESP_LOGW(TAG, "  Encoder position: %ld (no change for %lu ms), VACTUAL=%.1f steps/s", 
-                       current_encoder_position, time_since_encoder_change, vactual);
+            if (position_delta_deg < MIN_MOVEMENT_FOR_VALID_STALL_DEG) {
+              ESP_LOGW(TAG, "⚠️ Encoder stall detected but motor hasn't moved enough (%.2f° < %.2f°) - IGNORING FALSE STALL", 
+                       position_delta_deg, MIN_MOVEMENT_FOR_VALID_STALL_DEG);
+              ESP_LOGW(TAG, "  Encoder position: %ld (no change for %lu ms), VACTUAL=%.1f RPM", 
+                       current_encoder_position, time_since_encoder_change, vactual_rpm);
               ESP_LOGW(TAG, "  Resetting encoder stall timer and continuing search...");
               
               // Reset encoder stall timer and continue
@@ -2072,11 +2009,11 @@ extern "C" void app_main() {
             // Motor has moved enough - this is likely a real stall
             min_stall_detected = true;
             ESP_LOGI(TAG, "✓ Encoder-based stall detected during minimum bound search!");
-            ESP_LOGI(TAG, "  Motor position moved: %ld steps from start (threshold: %d)", 
-                     position_delta, MIN_MOVEMENT_FOR_VALID_STALL);
+            ESP_LOGI(TAG, "  Motor position moved: %.2f degrees from start (threshold: %.2f°)", 
+                     position_delta_deg, MIN_MOVEMENT_FOR_VALID_STALL_DEG);
             ESP_LOGI(TAG, "  Encoder position: %ld (no change for %lu ms)", 
                      current_encoder_position, time_since_encoder_change);
-            ESP_LOGI(TAG, "  VACTUAL=%.1f steps/s, elapsed=%lu ms", vactual, elapsed);
+            ESP_LOGI(TAG, "  VACTUAL=%.1f RPM, elapsed=%lu ms", vactual_rpm, elapsed);
             
             // Stop the motor
             driver.rampControl.Stop();
@@ -2094,21 +2031,23 @@ extern "C" void app_main() {
     
     // Log position progress periodically (every 500ms)
     if (current_time - min_last_position_check_time >= 500) {
-      int32_t position_change = current_pos - min_last_position;
-      int32_t encoder_change = encoder_read_ok ? (current_encoder_position - min_last_encoder_position) : 0;
-      ESP_LOGI(TAG, "  Progress: position=%ld (%ld from start, %ld since last), encoder=%ld (+%ld), speed=%.1f steps/s, elapsed=%lu ms",
-               current_pos, current_pos - min_start_position, position_change,
-               encoder_read_ok ? current_encoder_position : 0, encoder_change, vactual, elapsed);
+      float position_change_deg = current_pos_deg - min_last_pos_deg;
+      int32_t encoder_change = encoder_pos_result.IsOk() ? (current_encoder_position - min_last_encoder_position) : 0;
+      ESP_LOGI(TAG, "  Progress: position=%.2f° (%.2f° from start, %.2f° since last), encoder=%ld (+%ld), speed=%.1f RPM, elapsed=%lu ms",
+               current_pos_deg, current_pos_deg - min_start_pos_deg, position_change_deg,
+               encoder_pos_result.IsOk() ? current_encoder_position : 0, encoder_change, vactual_rpm, elapsed);
       
-      // Check if motor is stuck
-      if (min_motion_started && std::abs(position_change) < 50 && std::abs(vactual) < 100.0f && elapsed > 1000) {
-        ESP_LOGW(TAG, "  ⚠️ Motor appears stuck: position change=%ld steps, encoder change=%ld, speed=%.1f steps/s", 
-                 position_change, encoder_change, vactual);
+      // Check if motor is stuck (use physical units)
+      float stuck_pos_threshold_deg = 0.25f;  // ~50 steps for 200 steps/rev motor
+      float stuck_speed_threshold_rpm = 3.0f;  // ~100 steps/s for 200 steps/rev motor
+      if (min_motion_started && std::abs(position_change_deg) < stuck_pos_threshold_deg && std::abs(vactual_rpm) < stuck_speed_threshold_rpm && elapsed > 1000) {
+        ESP_LOGW(TAG, "  ⚠️ Motor appears stuck: position change=%.2f°, encoder change=%ld, speed=%.1f RPM", 
+                 position_change_deg, encoder_change, vactual_rpm);
       }
       
       min_last_position_check_time = current_time;
-      min_last_position = current_pos;
-      if (encoder_read_ok) {
+      min_last_pos_deg = current_pos_deg;
+      if (encoder_pos_result.IsOk()) {
         min_last_encoder_position = current_encoder_position;
       }
     }
@@ -2116,32 +2055,27 @@ extern "C" void app_main() {
     vTaskDelay(pdMS_TO_TICKS(10)); // Poll every 10ms
   }
   
-  float min_pos_float = 0.0f;
-  if (!driver.rampControl.GetCurrentPosition(min_pos_float, tmc51x0::Unit::Steps)) {
-    min_pos_float = 0.0f;
-  }
-  int32_t min_position = static_cast<int32_t>(min_pos_float);
+  auto min_pos_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+  float min_pos_deg = min_pos_result.IsOk() ? min_pos_result.Value() : 0.0f;
   
   if (min_stall_detected) {
-    ESP_LOGI(TAG, "Minimum bound found at stall: %ld steps", min_position);
+    ESP_LOGI(TAG, "Minimum bound found at stall: %.2f degrees", min_pos_deg);
     
     // Back off with 5° offset
     driver.rampControl.Stop();
     driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
     vTaskDelay(pdMS_TO_TICKS(500));
     
-    ESP_LOGI(TAG, "Backing off 5° (%ld steps) from minimum stall...", offset_steps);
+    float backoff_target_deg = min_pos_deg + offset_deg;
+    ESP_LOGI(TAG, "Backing off 5° from minimum stall (%.2f° -> %.2f°)...", min_pos_deg, backoff_target_deg);
     driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(static_cast<float>(min_position + offset_steps), tmc51x0::Unit::Steps);
-    driver.rampControl.SetMaxSpeed(search_speed / 2.0f);
+    driver.rampControl.SetTargetPosition(backoff_target_deg, tmc51x0::Unit::Deg);
+    driver.rampControl.SetMaxSpeed(search_speed_rpm / 2.0f, tmc51x0::Unit::RPM);
     while (!driver.rampControl.IsTargetReached()) {
       vTaskDelay(pdMS_TO_TICKS(100));
     }
-    float min_pos_float = 0.0f;
-    if (!driver.rampControl.GetCurrentPosition(min_pos_float, tmc51x0::Unit::Steps)) {
-      min_pos_float = 0.0f;
-    }
-    min_position = static_cast<int32_t>(min_pos_float);
+    auto min_pos_after_backoff_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+    min_pos_deg = min_pos_after_backoff_result.IsOk() ? min_pos_after_backoff_result.Value() : min_pos_deg;
   } else if (min_reached_360) {
     ESP_LOGI(TAG, "No stall at -360° - will use -175° to +175° bounds");
   }
@@ -2157,6 +2091,10 @@ extern "C" void app_main() {
   bool stall_detected_max = max_stall_detected;
   bool reached_360 = (min_reached_360 && max_reached_360); // Both reached 360° = no stalls
   
+  // Declare position variables at function scope (in degrees)
+  float min_position_deg = 0.0f;
+  float max_position_deg = 0.0f;
+  
   if (reached_360) {
     // No stalls detected - mark current position as 0 and use -175° to +175° bounds
     ESP_LOGI(TAG, "No stalls detected - marking current position as 0, using -175° to +175° bounds");
@@ -2167,70 +2105,77 @@ extern "C" void app_main() {
     // Wait for motor to stop
     uint32_t stop_wait_start = esp_timer_get_time() / 1000;
     while (true) {
-      float vactual = 0.0f;
-      if (!driver.rampControl.GetCurrentSpeed(vactual, tmc51x0::Unit::Steps)) {
-        vactual = 0.0f;
-      }
-      if (std::abs(vactual) < 10.0f) break;
+      auto vactual_result = driver.rampControl.GetCurrentSpeed(tmc51x0::Unit::RPM);
+      float vactual_rpm = vactual_result.IsOk() ? vactual_result.Value() : 0.0f;
+      // Use physical units directly
+      float speed_threshold_rpm = 0.3f;  // ~10 steps/s for 200 steps/rev motor
+      if (std::abs(vactual_rpm) < speed_threshold_rpm) break;
       if ((esp_timer_get_time() / 1000) - stop_wait_start > 2000) break;
       vTaskDelay(pdMS_TO_TICKS(50));
     }
     
     // Reset position to 0
-    driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Steps);
+    driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
     
     // Use -175° to +175° bounds
-    // Using utility function to ensure proper microstep handling
     float bounds_deg = 175.0f;
-    int32_t bounds_steps = tmc51x0::DegreesToSteps(bounds_deg, steps_per_rev);
-    max_position = bounds_steps;
-    min_position = -bounds_steps;
+    float max_pos_deg = bounds_deg;
+    float min_pos_deg = -bounds_deg;
     
-    ESP_LOGI(TAG, "Position reset to 0, bounds set to ±%.1f° (%ld steps)", bounds_deg, bounds_steps);
+    ESP_LOGI(TAG, "Position reset to 0, bounds set to ±%.1f°", bounds_deg);
     
     // Move to center (0) if not already there
-    float current_pos_float = 0.0f;
-    if (!driver.rampControl.GetCurrentPosition(current_pos_float, tmc51x0::Unit::Steps)) {
-      current_pos_float = 0.0f;
-    }
-    int32_t current_pos = static_cast<int32_t>(current_pos_float);
-    if (std::abs(current_pos) > 100) {
+    auto current_pos_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+    float current_pos_deg = current_pos_result.IsOk() ? current_pos_result.Value() : 0.0f;
+    if (std::abs(current_pos_deg) > 1.0f) { // 1 degree threshold
       ESP_LOGI(TAG, "Moving to center position (0)...");
       driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-      driver.rampControl.SetTargetPosition(0.0f, tmc51x0::Unit::Steps);
-      driver.rampControl.SetMaxSpeed(1000.0f);
-      driver.rampControl.SetAcceleration(2000.0f);
-      driver.rampControl.SetDeceleration(2000.0f);
+      driver.rampControl.SetTargetPosition(0.0f, tmc51x0::Unit::Deg);
+      // Use physical units directly
+      float vmax_rpm = 30.0f;  // ~1000 steps/s for 200 steps/rev motor
+      float amax_rev_s2 = 10.0f;  // Reasonable acceleration
+      driver.rampControl.SetMaxSpeed(vmax_rpm, tmc51x0::Unit::RPM);
+      driver.rampControl.SetAcceleration(amax_rev_s2, tmc51x0::Unit::RevPerSec);
+      driver.rampControl.SetDeceleration(amax_rev_s2, tmc51x0::Unit::RevPerSec);
       while (!driver.rampControl.IsTargetReached()) {
         vTaskDelay(pdMS_TO_TICKS(100));
       }
-      driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Steps);
+      driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
       ESP_LOGI(TAG, "Arrived at center position (0)");
     }
+    
+    // Store bounds in degrees (SetGlobalBounds now accepts degrees)
+    max_position_deg = max_pos_deg;
+    min_position_deg = min_pos_deg;
   } else {
     // At least one stall detected - move to center between bounds
-    int32_t center_position = (min_position + max_position) / 2;
-    ESP_LOGI(TAG, "Moving to center position: %ld steps (between %ld and %ld)", 
-             center_position, min_position, max_position);
+    float center_pos_deg = (min_pos_deg + max_pos_deg) / 2.0f;
+    ESP_LOGI(TAG, "Moving to center position: %.2f degrees (between %.2f° and %.2f°)", 
+             center_pos_deg, min_pos_deg, max_pos_deg);
     
     driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(static_cast<float>(center_position), tmc51x0::Unit::Steps);
-    driver.rampControl.SetMaxSpeed(1000.0f);
-    driver.rampControl.SetAcceleration(2000.0f);
-    driver.rampControl.SetDeceleration(2000.0f);
+    driver.rampControl.SetTargetPosition(center_pos_deg, tmc51x0::Unit::Deg);
+    // Use physical units directly
+    float vmax_rpm = 30.0f;  // ~1000 steps/s for 200 steps/rev motor
+    float amax_rev_s2 = 10.0f;  // Reasonable acceleration
+    driver.rampControl.SetMaxSpeed(vmax_rpm, tmc51x0::Unit::RPM);
+    driver.rampControl.SetAcceleration(amax_rev_s2, tmc51x0::Unit::RevPerSec);
+    driver.rampControl.SetDeceleration(amax_rev_s2, tmc51x0::Unit::RevPerSec);
     while (!driver.rampControl.IsTargetReached()) {
       vTaskDelay(pdMS_TO_TICKS(100));
     }
     
     // Reset position to 0 at center
-    driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Steps);
+    driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
     
-    // Adjust bounds relative to new center
-    min_position = min_position - center_position;
-    max_position = max_position - center_position;
+    // Adjust bounds relative to new center (in degrees)
+    float adjusted_min_deg = min_pos_deg - center_pos_deg;
+    float adjusted_max_deg = max_pos_deg - center_pos_deg;
+    min_position_deg = adjusted_min_deg;
+    max_position_deg = adjusted_max_deg;
     
     ESP_LOGI(TAG, "Home position set to 0 (center of bounds)");
-    ESP_LOGI(TAG, "Adjusted bounds: min=%ld, max=%ld steps", min_position, max_position);
+    ESP_LOGI(TAG, "Adjusted bounds: min=%.2f°, max=%.2f° from center", adjusted_min_deg, adjusted_max_deg);
   }
 
 
@@ -2243,18 +2188,15 @@ extern "C" void app_main() {
 
   // Determine if we're bounded (either by stall detection or 360° limit)
   bool bounded = (stall_detected_min && stall_detected_max) || reached_360;
-  float current_pos_float = 0.0f;
-  if (!driver.rampControl.GetCurrentPosition(current_pos_float, tmc51x0::Unit::Steps)) {
-    current_pos_float = 0.0f;
-  }
-  int32_t current_pos = static_cast<int32_t>(current_pos_float);
+  auto current_pos_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+  float current_pos_deg = current_pos_result.IsOk() ? current_pos_result.Value() : 0.0f;
 
   FatigueTestMotion motion(&driver);
-  motion.ConfigureMotor(steps_per_rev, AngleUnit::DEGREES);
+  // Driver handles all unit conversions - no ConfigureMotor needed
 
   if (!bounded) {
     ESP_LOGW(TAG, "=== UNBOUNDED MODE ===");
-    motion.SetUnbounded(current_pos, 10000);
+    motion.SetUnbounded(current_pos_deg, 350.0f); // 350 degrees default range
   } else {
     ESP_LOGI(TAG, "=== BOUNDED MODE ===");
 
@@ -2263,8 +2205,8 @@ extern "C" void app_main() {
       // Position is already at 0 (we reset it at 360° point and moved to center)
       ESP_LOGI(TAG, "Using -175° to +175° bounds (no stall detected at 360°)");
       
-      // Set global bounds directly (already relative to 0)
-      motion.SetGlobalBounds(min_position, max_position);
+      // Set global bounds directly in degrees (already relative to 0)
+      motion.SetGlobalBounds(-175.0f, 175.0f);
       
       float min_deg, max_deg;
       motion.GetGlobalBoundsDegrees(min_deg, max_deg);
@@ -2272,25 +2214,28 @@ extern "C" void app_main() {
     } else {
       // Normal case: Stall detected on both ends
     // Set middle as home
-    int32_t middle_position = (min_position + max_position) / 2;
-    ESP_LOGI(TAG, "Moving to middle position: %d steps", middle_position);
+    float middle_pos_deg = (min_pos_deg + max_pos_deg) / 2.0f;
+    ESP_LOGI(TAG, "Moving to middle position: %.2f degrees", middle_pos_deg);
 
     driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(static_cast<float>(middle_position), tmc51x0::Unit::Steps);
-    driver.rampControl.SetMaxSpeed(1000.0F);
-    driver.rampControl.SetAcceleration(2000.0F);
+    driver.rampControl.SetTargetPosition(middle_pos_deg, tmc51x0::Unit::Deg);
+    // Use physical units directly - driver handles conversions
+    float vmax_rpm = 30.0f;  // ~1000 steps/s for 200 steps/rev motor
+    float amax_rev_s2 = 10.0f;  // Reasonable acceleration
+    driver.rampControl.SetMaxSpeed(vmax_rpm, tmc51x0::Unit::RPM);
+    driver.rampControl.SetAcceleration(amax_rev_s2, tmc51x0::Unit::RevPerSec);
 
     while (!driver.rampControl.IsTargetReached()) {
       vTaskDelay(pdMS_TO_TICKS(100));
     }
 
-    driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Steps);
+    driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
     ESP_LOGI(TAG, "Home position set to 0 (middle of bounds)");
 
-    // Set global bounds relative to new home
-    int32_t global_min = min_position - middle_position;
-    int32_t global_max = max_position - middle_position;
-    motion.SetGlobalBounds(global_min, global_max);
+    // Set global bounds relative to new home (in degrees)
+    float global_min_deg = min_pos_deg - middle_pos_deg;
+    float global_max_deg = max_pos_deg - middle_pos_deg;
+    motion.SetGlobalBounds(global_min_deg, global_max_deg);
 
     float min_deg, max_deg;
     motion.GetGlobalBoundsDegrees(min_deg, max_deg);
@@ -2388,19 +2333,13 @@ extern "C" void app_main() {
     // Periodic status logging (UART commands are handled by uart_command_task)
     uint32_t current_time = esp_timer_get_time() / 1000;
     if (current_time - last_log_time > 10000) { // Log every 10 seconds
-      float pos_float = 0.0f;
-      if (!driver.rampControl.GetCurrentPosition(pos_float, tmc51x0::Unit::Steps)) {
-        pos_float = 0.0f;
-      }
-      int32_t pos = static_cast<int32_t>(pos_float);
-      float speed = 0.0f;
-      if (!driver.rampControl.GetCurrentSpeed(speed, tmc51x0::Unit::Steps)) {
-        speed = 0.0f;
-      }
-      float pos_deg = tmc51x0::StepsToDegrees(pos, steps_per_rev);
+      auto pos_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+      float pos_deg = pos_result.IsOk() ? pos_result.Value() : 0.0f;
+      auto speed_result = driver.rampControl.GetCurrentSpeed(tmc51x0::Unit::RPM);
+      float speed_rpm = speed_result.IsOk() ? speed_result.Value() : 0.0f;
       FatigueTestMotion::Status status = motion.GetStatus();
-      ESP_LOGI(TAG, "Position: %d steps (%.2f°), Speed: %.1f steps/s, Cycles: %lu/%lu %s", 
-               pos, pos_deg, speed, status.current_cycles,
+      ESP_LOGI(TAG, "Position: %.2f°, Speed: %.1f RPM, Cycles: %lu/%lu %s", 
+               pos_deg, speed_rpm, status.current_cycles,
                status.target_cycles == 0 ? 0xFFFFFFFF : status.target_cycles, 
                status.running ? "(running)" : "(stopped)");
       last_log_time = current_time;

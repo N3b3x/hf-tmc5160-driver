@@ -187,16 +187,30 @@ tmc51x0::TMC51x0 driver(spi);
 
 // 3. Initialize driver
 tmc51x0::DriverConfig cfg{};
-cfg.motor.irun = 20;  // Run current (0-31)
-cfg.motor.ihold = 10; // Hold current (0-31)
-driver.Initialize(cfg);
+cfg.motor_spec.rated_current_ma = 2000;  // 2A rated current
+cfg.motor_spec.sense_resistor_mohm = 50;  // 0.05Ω sense resistor
+cfg.motor_spec.supply_voltage_mv = 24000; // 24V supply
+// IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated
+auto init_result = driver.Initialize(cfg);
+if (!init_result) {
+    printf("Initialization error: %s\n", init_result.ErrorMessage());
+    return -1;
+}
 
 // 4. Configure and start motor
-driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+auto mode_result = driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+if (!mode_result) {
+    printf("Error setting ramp mode: %s\n", mode_result.ErrorMessage());
+    return -1;
+}
 driver.rampControl.SetTargetPosition(1000);
 driver.rampControl.SetMaxSpeed(1000.0f);
 driver.rampControl.SetAcceleration(500.0f);
-driver.motorControl.Enable();
+auto enable_result = driver.motorControl.Enable();
+if (!enable_result) {
+    printf("Error enabling motor: %s\n", enable_result.ErrorMessage());
+    return -1;
+}
 ```
 
 ### Multi-Motor Daisy Chain Setup
@@ -246,7 +260,11 @@ driver.rampControl.SetMaxSpeedRpm(100.0f, STEPS_PER_REV);
 
 // Or use conversion functions directly
 int32_t steps = tmc51x0::MmToSteps(10.0f, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
-driver.rampControl.SetTargetPosition(steps);
+auto pos_result = driver.rampControl.SetTargetPosition(steps);
+if (!pos_result) {
+    printf("Error setting target position: %s\n", pos_result.ErrorMessage());
+    return -1;
+}
 ```
 
 For detailed setup, see [Installation](docs/installation.md) and [Quick Start Guide](docs/quickstart.md).
@@ -273,16 +291,44 @@ The `TMC51x0` class is organized into intuitive subsystems for easy access to fu
 tmc51x0::TMC51x0<CommType> driver(comm_interface);
 
 // Motion Control
-driver.rampControl.SetRampMode(RampMode::POSITIONING);
-driver.rampControl.SetTargetPosition(1000, Unit::Steps);
+auto mode_result = driver.rampControl.SetRampMode(RampMode::POSITIONING);
+if (!mode_result) {
+    printf("Error setting ramp mode: %s\n", mode_result.ErrorMessage());
+    return -1;
+}
+auto pos_result = driver.rampControl.SetTargetPosition(1000, Unit::Steps);
+if (!pos_result) {
+    printf("Error setting target position: %s\n", pos_result.ErrorMessage());
+    return -1;
+}
 // Velocity functions default to revolutions per second (RevPerSec) - much more intuitive!
-driver.rampControl.SetMaxSpeed(0.02f);       // 0.02 rev/s (~1.2 RPM) - Unit::RevPerSec is default
-driver.rampControl.SetAcceleration(0.01f);    // 0.01 rev/s² - Unit::RevPerSec is default
+auto speed_result = driver.rampControl.SetMaxSpeed(0.02f);       // 0.02 rev/s (~1.2 RPM) - Unit::RevPerSec is default
+if (!speed_result) {
+    printf("Error setting max speed: %s\n", speed_result.ErrorMessage());
+    return -1;
+}
+auto accel_result = driver.rampControl.SetAcceleration(0.01f);    // 0.01 rev/s² - Unit::RevPerSec is default
+if (!accel_result) {
+    printf("Error setting acceleration: %s\n", accel_result.ErrorMessage());
+    return -1;
+}
 
 // Motor Control
-driver.motorControl.Enable();
-driver.motorControl.SetCurrent(20, 10);  // IRUN, IHOLD
-driver.motorControl.SetStealthChopEnabled(true);
+auto enable_result = driver.motorControl.Enable();
+if (!enable_result) {
+    printf("Error enabling motor: %s\n", enable_result.ErrorMessage());
+    return -1;
+}
+auto current_result = driver.motorControl.SetCurrent(20, 10);  // IRUN, IHOLD
+if (!current_result) {
+    printf("Error setting current: %s\n", current_result.ErrorMessage());
+    return -1;
+}
+auto stealth_result = driver.motorControl.SetStealthChopEnabled(true);
+if (!stealth_result) {
+    printf("Error enabling StealthChop: %s\n", stealth_result.ErrorMessage());
+    return -1;
+}
 
 // Diagnostics & Monitoring
 DriverStatus status = driver.diagnostics.GetStatus();

@@ -11,6 +11,7 @@
 
 #include "../../../inc/tmc51x0.hpp"
 #include "test_config/esp32_tmc51x0_bus.hpp"
+#include "test_config/esp32_tmc51x0_test_config.hpp"
 #include <cstdint>
 #include <memory>
 
@@ -57,8 +58,11 @@ public:
     virtual const char* GetMethodName() const = 0;
 };
 
-// Factory functions
+// Factory functions - template-based to automatically select test config based on test rig
+template<tmc51x0_test_config::TestRigType test_rig>
 std::unique_ptr<IBoundsFinder> CreateStallGuardBoundsFinder();
+
+template<tmc51x0_test_config::TestRigType test_rig>
 std::unique_ptr<IBoundsFinder> CreateEncoderBoundsFinder();
 
 } // namespace FatigueTest

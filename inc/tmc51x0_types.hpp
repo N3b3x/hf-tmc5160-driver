@@ -1539,6 +1539,79 @@ struct StallGuardTuningResult {
 
 //===============================================================================================================
 //===============================================================================================================
+//                          SELF-DESCRIBING VALUE TYPES WITH UNITS
+//===============================================================================================================
+//===============================================================================================================
+
+/**
+ * @brief Self-describing velocity value with explicit unit
+ * 
+ * Carries both the velocity value and its unit, eliminating ambiguity
+ * in configuration and ensuring proper unit conversions throughout the driver.
+ * 
+ * @code
+ * VelocityValue vel = {100.0f, Unit::RPM};
+ * VelocityValue vel2 = VelocityValue::FromRPM(100.0f);
+ * @endcode
+ */
+struct VelocityValue {
+    float value{0.0f};        ///< Velocity magnitude
+    Unit unit{Unit::Steps};   ///< Velocity unit
+    
+    /**
+     * @brief Default constructor
+     */
+    VelocityValue() = default;
+    
+    /**
+     * @brief Construct with value and unit
+     */
+    constexpr VelocityValue(float v, Unit u) noexcept : value(v), unit(u) {}
+    
+    // Factory methods for common units
+    static constexpr VelocityValue FromSteps(float v) noexcept { return {v, Unit::Steps}; }
+    static constexpr VelocityValue FromRPM(float v) noexcept { return {v, Unit::RPM}; }
+    static constexpr VelocityValue FromRevPerSec(float v) noexcept { return {v, Unit::RevPerSec}; }
+    static constexpr VelocityValue FromRad(float v) noexcept { return {v, Unit::Rad}; }
+    static constexpr VelocityValue FromDeg(float v) noexcept { return {v, Unit::Deg}; }
+    static constexpr VelocityValue FromMm(float v) noexcept { return {v, Unit::Mm}; }
+};
+
+/**
+ * @brief Self-describing acceleration value with explicit unit
+ * 
+ * Carries both the acceleration value and its unit, eliminating ambiguity
+ * in configuration and ensuring proper unit conversions throughout the driver.
+ * 
+ * @code
+ * AccelerationValue accel = {50.0f, Unit::RevPerSec};
+ * AccelerationValue accel2 = AccelerationValue::FromRevPerSec(50.0f);
+ * @endcode
+ */
+struct AccelerationValue {
+    float value{0.0f};        ///< Acceleration magnitude
+    Unit unit{Unit::Steps};   ///< Acceleration unit (per second²)
+    
+    /**
+     * @brief Default constructor
+     */
+    AccelerationValue() = default;
+    
+    /**
+     * @brief Construct with value and unit
+     */
+    constexpr AccelerationValue(float v, Unit u) noexcept : value(v), unit(u) {}
+    
+    // Factory methods for common units
+    static constexpr AccelerationValue FromSteps(float v) noexcept { return {v, Unit::Steps}; }
+    static constexpr AccelerationValue FromRevPerSec(float v) noexcept { return {v, Unit::RevPerSec}; }
+    static constexpr AccelerationValue FromRad(float v) noexcept { return {v, Unit::Rad}; }
+    static constexpr AccelerationValue FromDeg(float v) noexcept { return {v, Unit::Deg}; }
+    static constexpr AccelerationValue FromMm(float v) noexcept { return {v, Unit::Mm}; }
+};
+
+//===============================================================================================================
+//===============================================================================================================
 //                                 RAMP CONFIGURATION STRUCTURE
 //===============================================================================================================
 //===============================================================================================================
@@ -1550,7 +1623,8 @@ struct StallGuardTuningResult {
  * The ramp generator provides two-phase acceleration and deceleration with programmable
  * start/stop velocities and transition speed (V1) for optimal motor torque utilization.
  *
- * @note All velocity and acceleration parameters support unit-aware conversion (Steps, Rad, Deg, Mm, RPM).
+ * @note All velocity and acceleration parameters now use self-describing types (VelocityValue, AccelerationValue)
+ *       that explicitly carry their units, eliminating ambiguity.
  * @note Parameters set to 0.0 will use driver defaults or be auto-calculated where applicable.
  * @note VSTOP must be >= VSTART to ensure successful motion termination.
  * @note D1 must not be 0 in positioning mode (defaults to 100 if not set).
@@ -1558,48 +1632,17 @@ struct StallGuardTuningResult {
  * @see Datasheet section 12: Ramp Generator
  */
 struct RampConfig {
-  /**
-   * @brief Unit for all velocity parameters (vstart, vstop, vmax, v1)
-   *
-   * Specifies the unit system used for velocity values in this configuration.
-   * Critical for proper conversion during initialization.
-   *
-   * Supported units: Steps, Rad, Deg, Mm, RPM
-   *
-   * @note Default: Unit::Steps (driver native units)
-   * @note All velocity parameters (vstart, vstop, vmax, v1) use this unit
-   */
-  Unit velocity_unit{Unit::Steps};
+  // Velocity parameters (self-describing with explicit units)
+  VelocityValue vstart{0.0f, Unit::Steps};  ///< Start velocity (0 = can be set to zero if not used)
+  VelocityValue vstop{10.0f, Unit::Steps};  ///< Stop velocity (must be >= VSTART, minimum 1 recommended)
+  VelocityValue vmax{0.0f, Unit::Steps};    ///< Maximum velocity (0 = must be set via SetMaxSpeed() before motion)
+  VelocityValue v1{0.0f, Unit::Steps};      ///< Transition velocity (switches between A1/AMAX and D1/DMAX, 0 = disabled)
 
-  /**
-   * @brief Unit for all acceleration parameters (amax, a1, dmax, d1)
-   *
-   * Specifies the unit system used for acceleration/deceleration values in this configuration.
-   * Critical for proper conversion during initialization.
-   *
-   * Supported units: Steps, Rad, Deg, Mm (RPM not applicable for acceleration)
-   *
-   * @note Default: Unit::Steps (driver native units)
-   * @note All acceleration parameters (amax, a1, dmax, d1) use this unit
-   */
-  Unit acceleration_unit{Unit::Steps};
-
-  // Velocity parameters (unit specified by velocity_unit field)
-  float vstart{0.0F}; ///< Start velocity (unit specified by velocity_unit, 0 = can be set to zero if not used)
-  float vstop{10.0F}; ///< Stop velocity (unit specified by velocity_unit, must be >= VSTART, minimum 1 recommended)
-  float vmax{
-      0.0F}; ///< Maximum velocity (unit specified by velocity_unit, 0 = must be set via SetMaxSpeed() before motion)
-  float v1{0.0F}; ///< Transition velocity (unit specified by velocity_unit, switches between A1/AMAX and D1/DMAX, 0 =
-                  ///< disabled)
-
-  // Acceleration parameters (unit specified by acceleration_unit field)
-  float amax{0.0F}; ///< Maximum acceleration (unit specified by acceleration_unit, used above V1, 0 = must be set via
-                    ///< SetAcceleration() before motion)
-  float a1{
-      0.0F}; ///< First acceleration (unit specified by acceleration_unit, used between VSTART and V1, 0 = use AMAX)
-  float dmax{0.0F}; ///< Maximum deceleration (unit specified by acceleration_unit, used above V1, 0 = uses AMAX value)
-  float d1{100.0F}; ///< First deceleration (unit specified by acceleration_unit, used between VSTOP and V1, must not be
-                    ///< 0 in positioning mode)
+  // Acceleration parameters (self-describing with explicit units)
+  AccelerationValue amax{0.0f, Unit::Steps};   ///< Maximum acceleration (used above V1, 0 = must be set via SetAcceleration() before motion)
+  AccelerationValue a1{0.0f, Unit::Steps};     ///< First acceleration (used between VSTART and V1, 0 = use AMAX)
+  AccelerationValue dmax{0.0f, Unit::Steps};   ///< Maximum deceleration (used above V1, 0 = uses AMAX value)
+  AccelerationValue d1{100.0f, Unit::Steps};   ///< First deceleration (used between VSTOP and V1, must not be 0 in positioning mode)
 
   // Timing parameters (in milliseconds, automatically converted to register values)
   float tpowerdown_ms{437.0F}; ///< Power down delay in milliseconds (0-5600ms at 12MHz, automatically converted)
@@ -1658,16 +1701,14 @@ struct RampConfig {
    * @brief Default constructor
    *
    * Initializes with recommended default values:
-   * - velocity_unit: Steps (driver native units)
-   * - acceleration_unit: Steps (driver native units)
-   * - VSTART: 0 (can be zero if not used)
-   * - VSTOP: 10 (minimum recommended, ensures successful motion termination)
-   * - VMAX: 0 (must be set before motion)
-   * - V1: 0 (disabled, uses single acceleration/deceleration)
-   * - AMAX: 0 (must be set before motion)
-   * - A1: 0 (uses AMAX)
-   * - DMAX: 0 (uses AMAX value)
-   * - D1: 100 (required for positioning mode)
+   * - VSTART: {0, Unit::Steps} (can be zero if not used)
+   * - VSTOP: {10, Unit::Steps} (minimum recommended, ensures successful motion termination)
+   * - VMAX: {0, Unit::Steps} (must be set before motion)
+   * - V1: {0, Unit::Steps} (disabled, uses single acceleration/deceleration)
+   * - AMAX: {0, Unit::Steps} (must be set before motion)
+   * - A1: {0, Unit::Steps} (uses AMAX)
+   * - DMAX: {0, Unit::Steps} (uses AMAX value)
+   * - D1: {100, Unit::Steps} (required for positioning mode)
    * - TPOWERDOWN: 437ms (~0.44s at 12MHz, equivalent to register value 20)
    * - TZEROWAIT: 0ms (no delay)
    */

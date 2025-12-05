@@ -1281,9 +1281,9 @@ driver.comm.DelayMs(150);  // Ensure AT#1 completes (≤130ms)
 // Motor should be at standstill with nominal run current (IRUN)
 // AT#1 automatically completes during standstill period
 // Read automatic tuning results
-uint8_t pwm_ofs_auto = 0;
-uint8_t pwm_grad_auto = 0;
-if (driver.motorControl.GetPwmAuto(pwm_ofs_auto, pwm_grad_auto)) {
+auto pwm_auto_result = driver.diagnostics.GetPwmAuto();
+if (pwm_auto_result) {
+    uint8_t pwm_ofs_auto = pwm_auto_result.Value();
     ESP_LOGI(TAG, "AT#1 complete: PWM_OFS_AUTO = %u", pwm_ofs_auto);
 }
 ```
@@ -1293,24 +1293,48 @@ if (driver.motorControl.GetPwmAuto(pwm_ofs_auto, pwm_grad_auto)) {
 ```cpp
 // Move motor at medium velocity (60-300 RPM typical)
 // Include constant velocity ramp segment
-driver.rampControl.SetMaxSpeed(0.02f);  // Unit::RevPerSec is default
-driver.rampControl.SetAccelerations(0.01f, 0.01f);  // Unit::RevPerSec is default
-driver.rampControl.SetTargetPosition(10000);
+auto speed_result = driver.rampControl.SetMaxSpeed(0.02f);  // Unit::RevPerSec is default
+if (!speed_result) {
+    printf("Error setting max speed: %s\n", speed_result.ErrorMessage());
+    return;
+}
+auto accel_result = driver.rampControl.SetAccelerations(0.01f, 0.01f);  // Unit::RevPerSec is default
+if (!accel_result) {
+    printf("Error setting accelerations: %s\n", accel_result.ErrorMessage());
+    return;
+}
+auto pos_result = driver.rampControl.SetTargetPosition(10000);
+if (!pos_result) {
+    printf("Error setting target position: %s\n", pos_result.ErrorMessage());
+    return;
+}
 
 // Monitor PWM_SCALE_AUTO during motion
-uint8_t pwm_scale_sum = 0;
-int16_t pwm_scale_auto = 0;
-while (!driver.rampControl.IsTargetReached()) {
-    if (driver.motorControl.GetPwmScale(pwm_scale_sum, pwm_scale_auto)) {
+while (true) {
+    auto reached = driver.rampControl.IsTargetReached();
+    if (reached && reached.Value()) {
+        break; // Target reached
+    }
+    if (!reached) {
+        ESP_LOGE(TAG, "Error checking target: %s", reached.ErrorMessage());
+        break;
+    }
+    
+    auto pwm_result = driver.diagnostics.GetPwmScale();
+    if (pwm_result) {
+        uint8_t pwm_scale_sum = pwm_result.Value();
+        // Note: GetPwmScale returns pwm_scale_sum, pwm_scale_auto is available via diagnostics
         // PWM_SCALE_AUTO should approach 0 during constant velocity phase
-        ESP_LOGI(TAG, "PWM_SCALE_AUTO = %d (should approach 0)", pwm_scale_auto);
+        ESP_LOGI(TAG, "PWM_SCALE_SUM = %d", pwm_scale_sum);
     }
     driver.comm.DelayMs(10);
 }
 
 // Read final automatic tuning results
-if (driver.motorControl.GetPwmAuto(pwm_ofs_auto, pwm_grad_auto)) {
-    ESP_LOGI(TAG, "AT#2 complete: PWM_GRAD_AUTO = %u", pwm_grad_auto);
+auto pwm_auto_result2 = driver.diagnostics.GetPwmAuto();
+if (pwm_auto_result2) {
+    uint8_t pwm_ofs_auto = pwm_auto_result2.Value();
+    ESP_LOGI(TAG, "AT#2 complete: PWM_OFS_AUTO = %u", pwm_ofs_auto);
     // Store values for faster tuning in future (optional)
 }
 ```
@@ -1666,8 +1690,16 @@ for (uint8_t hstrt = 0; hstrt <= 7; hstrt++) {
     
     // Test motor smoothness at low velocity
     // Move motor and check for smooth operation
-    driver.rampControl.SetMaxSpeed(0.002f);  // Unit::RevPerSec is default
-    driver.rampControl.SetTargetPosition(1000);
+    auto speed_result = driver.rampControl.SetMaxSpeed(0.002f);  // Unit::RevPerSec is default
+    if (!speed_result) {
+        printf("Error setting max speed: %s\n", speed_result.ErrorMessage());
+        continue;
+    }
+    auto pos_result = driver.rampControl.SetTargetPosition(1000);
+    if (!pos_result) {
+        printf("Error setting target position: %s\n", pos_result.ErrorMessage());
+        continue;
+    }
     // ... wait for motion and check smoothness ...
     // If smooth, this is the optimal setting
     // break;
@@ -1683,8 +1715,16 @@ for (uint8_t tpfd = 1; tpfd <= 15; tpfd++) {
     driver.motorControl.ConfigureChopper(chopper);
     
     // Test for resonances at mid-range velocities
-    driver.rampControl.SetMaxSpeed(0.01f);  // Unit::RevPerSec is default
-    driver.rampControl.SetTargetPosition(5000);
+    auto speed_result = driver.rampControl.SetMaxSpeed(0.01f);  // Unit::RevPerSec is default
+    if (!speed_result) {
+        printf("Error setting max speed: %s\n", speed_result.ErrorMessage());
+        continue;
+    }
+    auto pos_result = driver.rampControl.SetTargetPosition(5000);
+    if (!pos_result) {
+        printf("Error setting target position: %s\n", pos_result.ErrorMessage());
+        continue;
+    }
     // ... wait for motion and check for resonances ...
     // If resonances reduced, this is the optimal setting
     // break;
@@ -1806,15 +1846,37 @@ void configureEndstops() {
 ```cpp
 void homeToEndstop() {
     // Move toward endstop
-    driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_NEG);
-    driver.rampControl.SetMaxSpeed(500.0f);
-    driver.motorControl.Enable();
+    auto mode_result = driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_NEG);
+    if (!mode_result) {
+        printf("Error setting ramp mode: %s\n", mode_result.ErrorMessage());
+        return;
+    }
+    auto speed_result = driver.rampControl.SetMaxSpeed(500.0f);
+    if (!speed_result) {
+        printf("Error setting max speed: %s\n", speed_result.ErrorMessage());
+        return;
+    }
+    auto enable_result = driver.motorControl.Enable();
+    if (!enable_result) {
+        printf("Error enabling motor: %s\n", enable_result.ErrorMessage());
+        return;
+    }
     
     // Wait for endstop (check RAMP_STAT register)
     // Or use GetLatchedPosition() after switch triggers
     
-    int32_t latched_pos = driver.rampControl.GetLatchedPosition();
-    driver.rampControl.SetCurrentPosition(0);  // Set as home
+    auto latched_result = driver.rampControl.GetLatchedPosition();
+    if (latched_result) {
+        int32_t latched_pos = latched_result.Value();
+        auto set_pos_result = driver.rampControl.SetCurrentPosition(0);  // Set as home
+        if (!set_pos_result) {
+            printf("Error setting current position: %s\n", set_pos_result.ErrorMessage());
+            return;
+        }
+    } else {
+        printf("Error reading latched position: %s\n", latched_result.ErrorMessage());
+        return;
+    }
 }
 ```
 
@@ -1905,7 +1967,11 @@ void checkStepLoss() {
 void setupAdvancedMotor() {
     // Basic initialization
     tmc51x0::DriverConfig cfg{};
-    driver.Initialize(cfg);
+    auto init_result = driver.Initialize(cfg);
+    if (!init_result) {
+        printf("Initialization error: %s\n", init_result.ErrorMessage());
+        return; // or handle error appropriately
+    }
     
     // Configure CoolStep
     tmc51x0::CoolStepConfig coolstep{};
@@ -1913,7 +1979,11 @@ void setupAdvancedMotor() {
     coolstep.upper_threshold_sg = 256;  // Automatically converts to SEMAX=5
     coolstep.increment_step = tmc51x0::CoolStepIncrementStep::STEP_2;
     coolstep.decrement_speed = tmc51x0::CoolStepDecrementSpeed::EVERY_2;
-    driver.motorControl.ConfigureCoolStep(coolstep);
+    auto coolstep_result = driver.motorControl.ConfigureCoolStep(coolstep);
+    if (!coolstep_result) {
+        printf("Error configuring CoolStep: %s\n", coolstep_result.ErrorMessage());
+        return;
+    }
     
     // Configure reference switches
     tmc51x0::ReferenceSwitchConfig ref_switch{};
@@ -1922,17 +1992,29 @@ void setupAdvancedMotor() {
     ref_switch.stop_mode = tmc51x0::ReferenceStopMode::SOFT_STOP;
     ref_switch.latch_left = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;
     ref_switch.latch_right = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;
-    driver.rampControl.ConfigureReferenceSwitch(ref_switch);
+    auto ref_result = driver.rampControl.ConfigureReferenceSwitch(ref_switch);
+    if (!ref_result) {
+        printf("Error configuring reference switch: %s\n", ref_result.ErrorMessage());
+        return;
+    }
     
     // Set mode change speeds
-    driver.motorControl.SetModeChangeSpeeds(
+    auto speed_result = driver.motorControl.SetModeChangeSpeeds(
         1000.0f,  // stealthChop threshold
         500.0f,   // CoolStep threshold
         5000.0f   // High-speed threshold
     );
+    if (!speed_result) {
+        printf("Error setting mode change speeds: %s\n", speed_result.ErrorMessage());
+        return;
+    }
     
     // Enable motor
-    driver.motorControl.Enable();
+    auto enable_result = driver.motorControl.Enable();
+    if (!enable_result) {
+        printf("Error enabling motor: %s\n", enable_result.ErrorMessage());
+        return;
+    }
 }
 ```
 

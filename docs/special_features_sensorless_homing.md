@@ -122,11 +122,22 @@ void tuneStallThreshold() {
     driver.motorControl.Enable();
     
     // Monitor StallGuard value
-    while (!driver.rampControl.IsTargetReached()) {
-        uint16_t sg_value = driver.diagnostics.GetStallGuard();
-        printf("StallGuard: %d\n", sg_value);
+    while (true) {
+        auto reached = driver.rampControl.IsTargetReached();
+        if (reached && reached.Value()) {
+            break; // Target reached
+        }
+        if (!reached) {
+            printf("Error checking target: %s\n", reached.ErrorMessage());
+            break;
+        }
         
-        // When motor hits stop, SG value will drop significantly
+        auto sg_result = driver.diagnostics.GetStallGuard();
+        if (sg_result) {
+            uint16_t sg_value = sg_result.Value();
+            printf("StallGuard: %d\n", sg_value);
+            
+            // When motor hits stop, SG value will drop significantly
         if (sg_value < 100) {  // Threshold depends on your motor
             printf("Stall detected!\n");
             break;
@@ -193,7 +204,15 @@ public:
         driver_.motorControl.Enable();
         
         // Wait for completion
-        while (!driver_.rampControl.IsTargetReached()) {
+        while (true) {
+            auto reached = driver_.rampControl.IsTargetReached();
+            if (reached && reached.Value()) {
+                break; // Target reached
+            }
+            if (!reached) {
+                // Handle error
+                break;
+            }
             // Could add timeout here
         }
         
@@ -232,7 +251,15 @@ driver.rampControl.SetCurrentPosition(0);
 
 // 2. Move away from stop slightly (optional)
 driver.rampControl.SetTargetPosition(100);  // Move 100 steps away
-while (!driver.rampControl.IsTargetReached()) {
+while (true) {
+    auto reached3 = driver.rampControl.IsTargetReached();
+    if (reached3 && reached3.Value()) {
+        break; // Target reached
+    }
+    if (!reached3) {
+        // Handle error
+        break;
+    }
     // Wait
 }
 

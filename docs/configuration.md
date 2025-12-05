@@ -103,12 +103,20 @@ tmc5160_test_config::ApplyBoardConfig<SELECTED_BOARD>(cfg);
 tmc5160_test_config::ApplyPlatformConfig<SELECTED_PLATFORM>(cfg);
 
 // 4. Initialize driver (current settings calculated automatically)
-driver.Initialize(cfg);
+auto init_result = driver.Initialize(cfg);
+if (!init_result) {
+    printf("Initialization error: %s\n", init_result.ErrorMessage());
+    return -1; // or handle error appropriately
+}
 
 // 5. Configure platform-specific features after initialization
 // Reference switches
 auto ref_cfg = tmc5160_test_config::GetReferenceSwitchConfig<SELECTED_PLATFORM>();
-driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
+auto ref_result = driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
+if (!ref_result) {
+    printf("Error configuring reference switch: %s\n", ref_result.ErrorMessage());
+    return -1;
+}
 
 // Encoder
 auto enc_cfg = tmc5160_test_config::GetEncoderConfig<SELECTED_PLATFORM>();
@@ -248,7 +256,11 @@ cfg.external_clk_config.frequency_hz = 0;  // 0 = use internal 12 MHz clock (def
 // Or for external clock:
 // cfg.external_clk_config.frequency_hz = 12000000;  // 12 MHz external clock
 
-driver.Initialize(cfg);
+auto init_result = driver.Initialize(cfg);
+if (!init_result) {
+    printf("Initialization error: %s\n", init_result.ErrorMessage());
+    return -1; // or handle error appropriately
+}
 ```
 
 ## Configuration Methods
@@ -257,25 +269,64 @@ driver.Initialize(cfg);
 
 ```cpp
 // Set ramp mode
-driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+auto mode_result = driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+if (!mode_result) {
+    printf("Error setting ramp mode: %s\n", mode_result.ErrorMessage());
+    return -1; // or handle error appropriately
+}
 
 // Set motion parameters (unit-aware API)
-driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);
-// Velocity functions default to revolutions per second (RevPerSec)
-driver.rampControl.SetMaxSpeed(0.02f);      // 0.02 rev/s (~1.2 RPM) - Unit::RevPerSec is default
-driver.rampControl.SetAcceleration(0.01f);   // 0.01 rev/s² - Unit::RevPerSec is default
-driver.rampControl.SetRampSpeeds(0.0f, 0.0002f, 0.0f); // start, stop, transition (Unit::RevPerSec is default)
+auto pos_result = driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);
+if (!pos_result) {
+    printf("Error setting target position: %s\n", pos_result.ErrorMessage());
+    return -1;
+}
+
+auto speed_result = driver.rampControl.SetMaxSpeed(1.2f, tmc51x0::Unit::RPM);      // 1.2 RPM
+if (!speed_result) {
+    printf("Error setting max speed: %s\n", speed_result.ErrorMessage());
+    return -1;
+}
+auto accel_result = driver.rampControl.SetAcceleration(0.01f, tmc51x0::Unit::RevPerSec);   // 0.01 rev/s²
+if (!accel_result) {
+    printf("Error setting acceleration: %s\n", accel_result.ErrorMessage());
+    return -1;
+}
+auto ramp_result = driver.rampControl.SetRampSpeeds(0.0f, 0.012f, 0.0f, tmc51x0::Unit::RPM); // start, stop, transition in RPM
+if (!ramp_result) {
+    printf("Error setting ramp speeds: %s\n", ramp_result.ErrorMessage());
+    return -1;
+}
 
 // Get current position and speed (unit-aware API)
-float position = 0.0f;
-float speed = 0.0f;
-driver.rampControl.GetCurrentPosition(position, tmc51x0::Unit::Steps);
-driver.rampControl.GetCurrentSpeed(speed);  // Returns in rev/s (Unit::RevPerSec is default)
+auto pos_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Steps);
+if (pos_result) {
+    float position = pos_result.Value();
+    // Use position
+}
+
+auto speed_result = driver.rampControl.GetCurrentSpeed(tmc51x0::Unit::RPM);  // Returns in RPM
+if (speed_result) {
+    float speed = speed_result.Value();
+    // Use speed
+}
 
 // Or use other physical units (requires mechanical system configuration)
-driver.rampControl.SetMaxSpeed(1.2f, tmc51x0::Unit::RPM);         // 1.2 RPM
-driver.rampControl.SetMaxSpeed(72.0f, tmc51x0::Unit::Deg);       // 72 deg/s = 0.2 rev/s
-driver.rampControl.SetAcceleration(360.0f, tmc51x0::Unit::Deg);   // 360 deg/s² = 1 rev/s²
+auto rpm_result = driver.rampControl.SetMaxSpeed(1.2f, tmc51x0::Unit::RPM);         // 1.2 RPM
+if (!rpm_result) {
+    printf("Error setting max speed: %s\n", rpm_result.ErrorMessage());
+    return -1;
+}
+auto deg_result = driver.rampControl.SetMaxSpeed(72.0f, tmc51x0::Unit::Deg);       // 72 deg/s = 0.2 rev/s
+if (!deg_result) {
+    printf("Error setting max speed: %s\n", deg_result.ErrorMessage());
+    return -1;
+}
+auto accel_deg_result = driver.rampControl.SetAcceleration(360.0f, tmc51x0::Unit::Deg);   // 360 deg/s² = 1 rev/s²
+if (!accel_deg_result) {
+    printf("Error setting acceleration: %s\n", accel_deg_result.ErrorMessage());
+    return -1;
+}
 ```
 
 ### Motor Control Configuration
@@ -305,13 +356,13 @@ driver.motorControl.ConfigureStealthChop(stealth_cfg);
 // Keep motor stopped for at least 128 chopper periods after enabling
 
 // Set mode change speeds (velocity thresholds, unit-aware)
-// Default unit is now RevPerSec (revolutions per second)
-driver.motorControl.SetModeChangeSpeeds(0.002f, 0.01f, 0.04f);  // Unit::RevPerSec is default
+// Specify units explicitly (recommended: RPM for velocity)
+driver.motorControl.SetModeChangeSpeeds(0.12f, 0.6f, 2.4f, tmc51x0::Unit::RPM);  // pwm_thrs, cool_thrs, high_thrs in RPM
 // pwm_thrs: StealthChop threshold (below this: StealthChop, above: SpreadCycle)
 // cool_thrs: CoolStep threshold (below this: CoolStep disabled)
 // high_thrs: High-speed mode threshold
 
-// Or set individual thresholds (Unit::RevPerSec is default):
+// Or set individual thresholds (specify unit explicitly):
 driver.motorControl.SetStealthChopVelocityThreshold(0.002f);  // 0.002 rev/s (~0.12 RPM)
 driver.motorControl.SetCoolStepThreshold(0.01f);              // 0.01 rev/s (~0.6 RPM)
 driver.motorControl.SetHighSpeedThreshold(0.04f);              // 0.04 rev/s (~2.4 RPM)
@@ -548,10 +599,18 @@ cfg.chopper.toff = 5;
 cfg.chopper.mres = tmc51x0::MicrostepResolution::MRES_256;  // 256 microsteps
 cfg.stealthchop.pwm_autoscale = true;
 cfg.stealthchop.pwm_autograd = true;
-driver.Initialize(cfg);
+auto init_result = driver.Initialize(cfg);
+if (!init_result) {
+    printf("Initialization error: %s\n", init_result.ErrorMessage());
+    return -1; // or handle error appropriately
+}
 
 // Enable stealthChop
-driver.motorControl.SetModeChangeSpeeds(0.002f, 0.0f, 0.0f);  // Unit::RevPerSec is default
+auto speed_result = driver.motorControl.SetModeChangeSpeeds(0.12f, 0.0f, 0.0f, tmc51x0::Unit::RPM);  // pwm_thrs in RPM
+if (!speed_result) {
+    printf("Error setting mode change speeds: %s\n", speed_result.ErrorMessage());
+    return -1;
+}
 ```
 
 ### For High Torque (spreadCycle)
@@ -565,10 +624,18 @@ cfg.motor_spec.supply_voltage_mv = 24000;
 cfg.chopper.toff = 5;
 cfg.chopper.mres = tmc51x0::MicrostepResolution::MRES_256;  // 256 microsteps
 cfg.chopper.mode = tmc51x0::ChopperMode::SPREAD_CYCLE;  // SpreadCycle mode (recommended)
-driver.Initialize(cfg);
+auto init_result = driver.Initialize(cfg);
+if (!init_result) {
+    printf("Initialization error: %s\n", init_result.ErrorMessage());
+    return -1; // or handle error appropriately
+}
 
 // Disable stealthChop (use spreadCycle)
-driver.motorControl.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::Steps);
+auto speed_result = driver.motorControl.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::Steps);
+if (!speed_result) {
+    printf("Error setting mode change speeds: %s\n", speed_result.ErrorMessage());
+    return -1;
+}
 ```
 
 ### For Closed-Loop Control (with Encoder)
@@ -579,18 +646,39 @@ cfg.motor_spec.rated_current_ma = 1680;
 cfg.motor_spec.sense_resistor_mohm = 50;
 cfg.motor_spec.supply_voltage_mv = 24000;
 // IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated - DO NOT set manually
-driver.Initialize(cfg);
+auto init_result = driver.Initialize(cfg);
+if (!init_result) {
+    printf("Initialization error: %s\n", init_result.ErrorMessage());
+    return -1; // or handle error appropriately
+}
 
 // Configure encoder
 tmc51x0::EncoderConfig enc_cfg{};
 enc_cfg.prescaler_mode = tmc51x0::EncoderPrescalerMode::BINARY; // Binary mode
-driver.encoder.Configure(enc_cfg);
-driver.encoder.SetResolution(200, 1000, false);
-driver.encoder.SetAllowedDeviation(10);
+auto enc_config_result = driver.encoder.Configure(enc_cfg);
+if (!enc_config_result) {
+    printf("Error configuring encoder: %s\n", enc_config_result.ErrorMessage());
+    return -1;
+}
+auto res_result = driver.encoder.SetResolution(200, 1000, false);
+if (!res_result) {
+    printf("Error setting encoder resolution: %s\n", res_result.ErrorMessage());
+    return -1;
+}
+auto dev_result = driver.encoder.SetAllowedDeviation(10);
+if (!dev_result) {
+    printf("Error setting allowed deviation: %s\n", dev_result.ErrorMessage());
+    return -1;
+}
 
 // Get encoder position
-int32_t enc_position = 0;
-driver.encoder.GetPosition(enc_position);
+auto enc_pos_result = driver.encoder.GetPosition();
+if (enc_pos_result) {
+    int32_t enc_position = enc_pos_result.Value();
+    // Use encoder position
+} else {
+    printf("Error reading encoder position: %s\n", enc_pos_result.ErrorMessage());
+}
 ```
 
 ## Next Steps

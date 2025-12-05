@@ -201,7 +201,7 @@ public:
    */
   [[nodiscard]] bool IsDeviceActive(uint8_t index) const noexcept {
     if (index >= MaxDevices) {
-      return false;
+      return Result<void>(ErrorCode::INVALID_STATE);
     }
     return drivers_[index].has_value();
   }
@@ -209,7 +209,7 @@ public:
   /**
    * @brief Program all active devices sequentially using NAI/NAO addressing
    * @param send_delay SENDDELAY value for SLAVECONF (default: 2, minimum for multi-node)
-   * @return true if all devices programmed successfully, false otherwise
+   * @return Result<void> indicating success or error
    *
    * This method programs all active devices sequentially using the datasheet procedure:
    *
@@ -232,7 +232,7 @@ public:
    * @note The programmed addresses (254, 253, 252...) are stored internally but the
    *       logical device indices (0, 1, 2...) are used for access via operator[].
    */
-  bool ProgramSequentially(uint8_t send_delay = 2) noexcept {
+  Result<void> ProgramSequentially(uint8_t send_delay = 2) noexcept {
     // Count active devices to determine starting address
     uint8_t num_devices = 0;
     for (size_t i = 0; i < MaxDevices; ++i) {
@@ -242,7 +242,7 @@ public:
     }
 
     if (num_devices == 0) {
-      return false; // No devices to program
+      return Result<void>(ErrorCode::INVALID_STATE); // No devices to program
     }
 
     // Program devices in forward order (index 0, 1, 2, ...)
@@ -264,7 +264,7 @@ public:
       // The device is currently accessible at address 0 (after previous chip's NAO went LOW)
       // or address 0 for the first chip (NAI=GND)
       if (!drivers_[i]->uartConfig.ConfigureUartNodeAddress(target_address, send_delay)) {
-        return false; // Failed to program device
+        return Result<void>(ErrorCode::INVALID_STATE); // Failed to program device
       }
 
       // Update the driver's node address to the programmed address
@@ -278,39 +278,39 @@ public:
       device_index++;
     }
 
-    return true;
+    return Result<void>();
   }
 
   /**
    * @brief Program a single device at the specified logical index
    * @param index Logical device index (0, 1, 2, ...)
    * @param send_delay SENDDELAY value for SLAVECONF (default: 2)
-   * @return true if device programmed successfully, false otherwise
+   * @return Result<void> indicating success or error
    *
    * @note This method programs the device at logical index to address (254 - index).
    * @note The device must be accessible at address 0 (previous chip's NAO must be LOW).
    * @note For programming all devices, use ProgramSequentially() instead.
    */
-  bool ProgramDevice(uint8_t index, uint8_t send_delay = 2) noexcept {
+  Result<void> ProgramDevice(uint8_t index, uint8_t send_delay = 2) noexcept {
     if (index >= MaxDevices || !drivers_[index].has_value()) {
-      return false;
+      return Result<void>(ErrorCode::INVALID_STATE);
     }
 
     // Calculate target address: 254 - index (per datasheet)
     uint8_t target_address = 254 - index;
 
     if (!drivers_[index]->uartConfig.ConfigureUartNodeAddress(target_address, send_delay)) {
-      return false;
+      return Result<void>(ErrorCode::INVALID_STATE);
     }
 
     drivers_[index]->SetUartNodeAddress(target_address);
-    return true;
+    return Result<void>();
   }
 
   /**
    * @brief Add an extra device at the specified logical index
    * @param index Logical device index (must be >= num_onboard_devices)
-   * @return true if device was added successfully, false otherwise
+   * @return Result<void> indicating success or error
    *
    * @note Index must be >= num_onboard_devices (cannot add before onboard devices)
    * @note Index must be < MaxDevices
@@ -322,22 +322,22 @@ public:
    *          Indices MUST be sequential. The actual programmed addresses will be
    *          (254, 253, 252, ...) per datasheet procedure.
    */
-  bool AddDevice(uint8_t index) noexcept {
+  Result<void> AddDevice(uint8_t index) noexcept {
     // Validate index
     if (index < num_onboard_devices_ || index >= MaxDevices) {
-      return false;
+      return Result<void>(ErrorCode::INVALID_STATE);
     }
 
     // Check if slot is already occupied
     if (drivers_[index].has_value()) {
-      return false;
+      return Result<void>(ErrorCode::INVALID_STATE);
     }
 
     // Enforce sequential indexing: cannot skip indices
     // All indices before this one (starting from num_onboard_devices) must be filled
     for (uint8_t i = num_onboard_devices_; i < index; ++i) {
       if (!drivers_[i].has_value()) {
-        return false; // Cannot skip indices
+        return Result<void>(ErrorCode::INVALID_STATE); // Cannot skip indices
       }
     }
 
@@ -346,13 +346,13 @@ public:
     drivers_[index] = std::make_optional<TMC51x0<CommType>>(comm_, f_clk_, 0, 0);
     num_active_devices_++;
 
-    return true;
+    return Result<void>();
   }
 
   /**
    * @brief Remove an extra device at the specified logical index
    * @param index Logical device index
-   * @return true if device was removed successfully, false otherwise
+   * @return Result<void> indicating success or error
    *
    * @note Cannot remove onboard devices (index < num_onboard_devices)
    * @note Device slot must be active (have a device)
@@ -364,27 +364,27 @@ public:
    *          Removing a device in the middle would create a gap, which is
    *          not physically possible in a sequential addressing scheme.
    */
-  bool RemoveDevice(uint8_t index) noexcept {
+  Result<void> RemoveDevice(uint8_t index) noexcept {
     // Cannot remove onboard devices
     if (index < num_onboard_devices_) {
-      return false;
+      return Result<void>(ErrorCode::INVALID_STATE);
     }
 
     // Validate index
     if (index >= MaxDevices) {
-      return false;
+      return Result<void>(ErrorCode::INVALID_STATE);
     }
 
     // Check if slot is actually active
     if (!drivers_[index].has_value()) {
-      return false;
+      return Result<void>(ErrorCode::INVALID_STATE);
     }
 
     // Enforce sequential removal: can only remove from the end
     // Check if there are any devices after this index
     for (size_t i = index + 1; i < MaxDevices; ++i) {
       if (drivers_[i].has_value()) {
-        return false; // Cannot remove device in the middle of the chain
+        return Result<void>(ErrorCode::INVALID_STATE); // Cannot remove device in the middle of the chain
       }
     }
 
@@ -392,7 +392,7 @@ public:
     drivers_[index] = std::nullopt;
     num_active_devices_--;
 
-    return true;
+    return Result<void>();
   }
 
   /**
@@ -421,9 +421,9 @@ public:
   /**
    * @brief Initialize all active devices with the same configuration
    * @param config Driver configuration (applied to all active devices)
-   * @return true if all devices initialized successfully, false otherwise
+   * @return Result<void> indicating success or error
    */
-  bool InitializeAll(const DriverConfig& config = DriverConfig()) noexcept {
+  Result<void> InitializeAll(const DriverConfig& config = DriverConfig()) noexcept {
     bool all_success = true;
     for (size_t i = 0; i < MaxDevices; ++i) {
       if (drivers_[i].has_value()) {

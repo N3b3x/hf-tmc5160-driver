@@ -45,7 +45,9 @@ No special configuration needed - the driver handles differences automatically:
 tmc51x0::DriverConfig cfg;
 // ... configure cfg ...
 
-if (!driver.Initialize(cfg)) {
+auto init_result = driver.Initialize(cfg);
+if (!init_result) {
+    printf("Initialization error: %s\n", init_result.ErrorMessage());
     // Handle error
 }
 

@@ -29,20 +29,45 @@ int main() {
     cfg.motor_spec.rated_current_ma = 1500;
     cfg.motor_spec.sense_resistor_mohm = 50;  // Required for calculation
     cfg.motor_spec.supply_voltage_mv = 24000;  // Required for calculation
-    driver.Initialize(cfg);
+    auto init_result = driver.Initialize(cfg);
+    if (!init_result) {
+        printf("Initialization error: %s\n", init_result.ErrorMessage());
+        return -1;
+    }
     
     // Configure positioning mode
-    driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);  // Move 1000 steps
+    auto mode_result = driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+    if (!mode_result) {
+        printf("Error setting ramp mode: %s\n", mode_result.ErrorMessage());
+        return -1;
+    }
+    
+    auto pos_result = driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);  // Move 1000 steps
+    if (!pos_result) {
+        printf("Error setting target position: %s\n", pos_result.ErrorMessage());
+        return -1;
+    }
     // Velocity defaults to revolutions per second - 0.02 rev/s ≈ 1.2 RPM for typical motor
     driver.rampControl.SetMaxSpeed(0.02f);     // Unit::RevPerSec is default
     driver.rampControl.SetAcceleration(0.01f); // Unit::RevPerSec is default for acceleration too
     
     // Enable motor
-    driver.motorControl.Enable();
+    auto enable_result = driver.motorControl.Enable();
+    if (!enable_result) {
+        printf("Error enabling motor: %s\n", enable_result.ErrorMessage());
+        return -1;
+    }
     
     // Wait for target reached
-    while (!driver.rampControl.IsTargetReached()) {
+    while (true) {
+        auto reached = driver.rampControl.IsTargetReached();
+        if (reached && reached.Value()) {
+            break; // Target reached
+        }
+        if (!reached) {
+            printf("Error checking target: %s\n", reached.ErrorMessage());
+            break;
+        }
         // Motion in progress
     }
     
@@ -74,15 +99,27 @@ int main() {
     cfg.motor_spec.rated_current_ma = 1500;
     cfg.motor_spec.sense_resistor_mohm = 50;
     cfg.motor_spec.supply_voltage_mv = 24000;
-    driver.Initialize(cfg);
+    auto init_result = driver.Initialize(cfg);
+    if (!init_result) {
+        printf("Initialization error: %s\n", init_result.ErrorMessage());
+        return -1;
+    }
     
     // Set velocity mode
-    driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
+    auto mode_result = driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
+    if (!mode_result) {
+        printf("Error setting ramp mode: %s\n", mode_result.ErrorMessage());
+        return -1;
+    }
     // Using revolutions per second (default) - 0.01 rev/s ≈ 0.6 RPM for typical motor
     driver.rampControl.SetMaxSpeed(0.01f);  // Unit::RevPerSec is default
     driver.rampControl.SetAcceleration(0.005f);  // Unit::RevPerSec is default
     
-    driver.motorControl.Enable();
+    auto enable_result = driver.motorControl.Enable();
+    if (!enable_result) {
+        printf("Error enabling motor: %s\n", enable_result.ErrorMessage());
+        return -1;
+    }
     
     // Motor runs continuously at 0.01 rev/s
     // To stop, call driver.rampControl.Stop()
@@ -110,20 +147,45 @@ int main() {
     cfg.chopper.mres = tmc51x0::MicrostepResolution::MRES_256;  // 256 microsteps for smooth operation
     cfg.stealthchop.pwm_autoscale = true;
     cfg.stealthchop.pwm_autograd = true;
-    driver.Initialize(cfg);
+    auto init_result = driver.Initialize(cfg);
+    if (!init_result) {
+        printf("Initialization error: %s\n", init_result.ErrorMessage());
+        return -1;
+    }
     
     // Configure stealthChop thresholds
     // Below 0.002 rev/s (~0.12 RPM): stealthChop mode (silent)
     // Above 0.002 rev/s: spreadCycle mode (more torque)
     driver.motorControl.SetModeChangeSpeeds(0.002f, 0.0f, 0.0f);  // Unit::RevPerSec is default
     
-    driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);
+    auto mode_result = driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+    if (!mode_result) {
+        printf("Error setting ramp mode: %s\n", mode_result.ErrorMessage());
+        return -1;
+    }
+    
+    auto pos_result = driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);
+    if (!pos_result) {
+        printf("Error setting target position: %s\n", pos_result.ErrorMessage());
+        return -1;
+    }
     driver.rampControl.SetMaxSpeed(0.001f);  // Low speed = stealthChop (Unit::RevPerSec is default)
     
-    driver.motorControl.Enable();
+    auto enable_result = driver.motorControl.Enable();
+    if (!enable_result) {
+        printf("Error enabling motor: %s\n", enable_result.ErrorMessage());
+        return -1;
+    }
     
-    while (!driver.rampControl.IsTargetReached()) {
+    while (true) {
+        auto reached = driver.rampControl.IsTargetReached();
+        if (reached && reached.Value()) {
+            break; // Target reached
+        }
+        if (!reached) {
+            printf("Error checking target: %s\n", reached.ErrorMessage());
+            break;
+        }
         // Silent operation
     }
     
@@ -147,26 +209,57 @@ int main() {
     cfg.motor_spec.rated_current_ma = 1500;
     cfg.motor_spec.sense_resistor_mohm = 50;
     cfg.motor_spec.supply_voltage_mv = 24000;
-    driver.Initialize(cfg);
+    auto init_result = driver.Initialize(cfg);
+    if (!init_result) {
+        printf("Initialization error: %s\n", init_result.ErrorMessage());
+        return -1;
+    }
     
     // Configure encoder
     tmc51x0::EncoderConfig enc_cfg{};
     enc_cfg.prescaler_mode = tmc51x0::EncoderPrescalerMode::BINARY; // Binary mode
-    driver.encoder.Configure(enc_cfg);
+    auto enc_result = driver.encoder.Configure(enc_cfg);
+    if (!enc_result) {
+        printf("Error configuring encoder: %s\n", enc_result.ErrorMessage());
+        return -1;
+    }
     
     // Set encoder resolution: 200 steps/rev motor, 1000 pulses/rev encoder
     driver.encoder.SetResolution(200, 1000, false);
     driver.encoder.SetAllowedDeviation(10); // 10 steps tolerance
     
     // Move to position
-    driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-    driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);
+    auto mode_result2 = driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+    if (!mode_result2) {
+        printf("Error setting ramp mode: %s\n", mode_result2.ErrorMessage());
+        return -1;
+    }
+    
+    auto pos_result2 = driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);
+    if (!pos_result2) {
+        printf("Error setting target position: %s\n", pos_result2.ErrorMessage());
+        return -1;
+    }
     driver.rampControl.SetMaxSpeed(0.02f);  // Unit::RevPerSec is default
-    driver.motorControl.Enable();
+    auto enable_result2 = driver.motorControl.Enable();
+    if (!enable_result2) {
+        printf("Error enabling motor: %s\n", enable_result2.ErrorMessage());
+        return -1;
+    }
     
     // Monitor encoder deviation
-    while (!driver.rampControl.IsTargetReached()) {
-        if (driver.encoder.IsDeviationDetected()) {
+    while (true) {
+        auto reached2 = driver.rampControl.IsTargetReached();
+        if (reached2 && reached2.Value()) {
+            break; // Target reached
+        }
+        if (!reached2) {
+            printf("Error checking target: %s\n", reached2.ErrorMessage());
+            break;
+        }
+        
+        auto dev_result = driver.encoder.IsDeviationDetected();
+        if (dev_result && dev_result.Value()) {
             // Step loss detected - take corrective action
             driver.encoder.ClearDeviationFlag();
         }
@@ -192,28 +285,48 @@ int main() {
     cfg.motor_spec.rated_current_ma = 1500;
     cfg.motor_spec.sense_resistor_mohm = 50;
     cfg.motor_spec.supply_voltage_mv = 24000;
-    driver.Initialize(cfg);
+    auto init_result2 = driver.Initialize(cfg);
+    if (!init_result2) {
+        printf("Initialization error: %s\n", init_result2.ErrorMessage());
+        return -1;
+    }
     
     // Configure StallGuard2
     tmc51x0::StallGuardConfig sg_cfg{};
     sg_cfg.threshold = 0;      // Threshold (tune for your motor)
     sg_cfg.enable_filter = false; // Filter disabled
     // Note: semin/semax are CoolStep parameters, configure separately if needed
-    driver.diagnostics.ConfigureStallGuard(sg_cfg);
+    auto sg_result = driver.diagnostics.ConfigureStallGuard(sg_cfg);
+    if (!sg_result) {
+        printf("Error configuring StallGuard: %s\n", sg_result.ErrorMessage());
+        return -1;
+    }
     
-    driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
+    auto mode_result3 = driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
+    if (!mode_result3) {
+        printf("Error setting ramp mode: %s\n", mode_result3.ErrorMessage());
+        return -1;
+    }
     driver.rampControl.SetMaxSpeed(0.01f);  // Unit::RevPerSec is default
-    driver.motorControl.Enable();
+    auto enable_result3 = driver.motorControl.Enable();
+    if (!enable_result3) {
+        printf("Error enabling motor: %s\n", enable_result3.ErrorMessage());
+        return -1;
+    }
     
     // Monitor StallGuard value
     while (true) {
-        uint16_t sg_value = 0;
-        if (driver.diagnostics.GetStallGuard(sg_value)) {
+        auto sg_result2 = driver.diagnostics.GetStallGuard();
+        if (sg_result2) {
+            uint16_t sg_value = sg_result2.Value();
             if (sg_value < 100) {  // Threshold depends on motor
                 // Stall detected - stop motor
                 driver.rampControl.Stop();
                 break;
             }
+        } else {
+            printf("Error reading StallGuard: %s\n", sg_result2.ErrorMessage());
+            break;
         }
     }
     
@@ -265,7 +378,11 @@ cfg.motor_spec.rated_current_ma = 1500;
 cfg.motor_spec.sense_resistor_mohm = 50;
 cfg.motor_spec.supply_voltage_mv = 24000;
 cfg.chopper.mres = tmc51x0::MicrostepResolution::MRES_256; // 256 microsteps
-driver.Initialize(cfg);
+auto init_result4 = driver.Initialize(cfg);
+if (!init_result4) {
+    printf("Initialization error: %s\n", init_result4.ErrorMessage());
+    return -1;
+}
 
 // Create fatigue test motion controller
 FatigueTestMotion motion(&driver);

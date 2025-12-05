@@ -96,6 +96,183 @@ This guide helps you diagnose and resolve common issues when using the TMC51x0 d
 - **Noise but no movement**: Verify motor supply voltage, check motor connections, verify current settings
 - **Loses steps**: Increase motor current, reduce acceleration, check mechanical load
 
+## Result<T> Error Handling
+
+The driver uses `Result<T>` return types for explicit error handling. Understanding how to properly handle these errors is crucial for debugging.
+
+### Understanding Error Codes
+
+All `Result<T>` objects contain an `ErrorCode` that indicates what went wrong:
+
+```cpp
+auto result = driver.Initialize(cfg);
+if (!result) {
+    tmc51x0::ErrorCode code = result.Error();
+    switch (code) {
+        case tmc51x0::ErrorCode::NOT_INITIALIZED:
+            // Driver not initialized before operation
+            break;
+        case tmc51x0::ErrorCode::COMM_ERROR:
+            // Communication interface error (SPI/UART)
+            // Check wiring, clock frequency, CS pin
+            break;
+        case tmc51x0::ErrorCode::INVALID_VALUE:
+            // Invalid parameter value
+            // Check configuration parameters
+            break;
+        case tmc51x0::ErrorCode::INVALID_STATE:
+            // Operation not valid in current state
+            // Check driver initialization status
+            break;
+        case tmc51x0::ErrorCode::TIMEOUT:
+            // Operation timed out
+            // Check communication, increase timeout
+            break;
+        case tmc51x0::ErrorCode::HARDWARE_ERROR:
+            // Hardware fault detected
+            // Check power supply, connections
+            break;
+        case tmc51x0::ErrorCode::SHORT_CIRCUIT:
+            // Short circuit detected
+            // Check motor wiring, power stage
+            break;
+        case tmc51x0::ErrorCode::OPEN_LOAD:
+            // Open load detected
+            // Check motor connections
+            break;
+        case tmc51x0::ErrorCode::OVERTEMP_WARNING:
+            // Overtemperature warning
+            // Reduce current, improve cooling
+            break;
+        case tmc51x0::ErrorCode::OVERTEMP_SHUTDOWN:
+            // Overtemperature shutdown
+            // Wait for cooling, reduce current
+            break;
+        case tmc51x0::ErrorCode::UNSUPPORTED:
+            // Feature not supported by chip variant
+            // Check chip type (TMC5130 vs TMC5160)
+            break;
+        default:
+            printf("Unknown error: %s\n", result.ErrorMessage());
+            break;
+    }
+}
+```
+
+### Common Error Handling Mistakes
+
+#### Mistake 1: Ignoring Return Values
+
+**❌ Wrong:**
+```cpp
+driver.Initialize(cfg);  // Error ignored!
+driver.rampControl.SetTargetPosition(1000);  // Error ignored!
+```
+
+**✅ Correct:**
+```cpp
+auto init_result = driver.Initialize(cfg);
+if (!init_result) {
+    printf("Initialization error: %s\n", init_result.ErrorMessage());
+    return -1;
+}
+
+auto pos_result = driver.rampControl.SetTargetPosition(1000);
+if (!pos_result) {
+    printf("Error setting position: %s\n", pos_result.ErrorMessage());
+    return -1;
+}
+```
+
+#### Mistake 2: Incorrect Boolean Result Handling
+
+**❌ Wrong:**
+```cpp
+auto reached = driver.rampControl.IsTargetReached();
+if (reached.Value()) {  // Crashes if reached is an error!
+    // ...
+}
+```
+
+**✅ Correct:**
+```cpp
+auto reached = driver.rampControl.IsTargetReached();
+if (reached && reached.Value()) {  // Check result first!
+    // Target reached
+} else if (!reached) {
+    // Error occurred
+    printf("Error: %s\n", reached.ErrorMessage());
+}
+```
+
+#### Mistake 3: Not Checking Before Using Value
+
+**❌ Wrong:**
+```cpp
+auto position = driver.rampControl.GetCurrentPosition();
+float pos = position.Value();  // Crashes if position is an error!
+```
+
+**✅ Correct:**
+```cpp
+auto position = driver.rampControl.GetCurrentPosition();
+if (position) {
+    float pos = position.Value();  // Safe to use
+} else {
+    printf("Error: %s\n", position.ErrorMessage());
+}
+```
+
+### Debugging with Error Messages
+
+Always log error messages for debugging:
+
+```cpp
+auto result = driver.Initialize(cfg);
+if (!result) {
+    // Log both error code and message
+    printf("Initialization failed:\n");
+    printf("  Error code: %d\n", static_cast<int>(result.Error()));
+    printf("  Error message: %s\n", result.ErrorMessage());
+    
+    // Additional debugging based on error type
+    if (result.Error() == tmc51x0::ErrorCode::COMM_ERROR) {
+        printf("  Check SPI/UART wiring and configuration\n");
+        printf("  Verify clock frequency is correct\n");
+        printf("  Check CS pin configuration\n");
+    }
+    
+    return -1;
+}
+```
+
+### Error Recovery Strategies
+
+Different errors require different recovery strategies:
+
+```cpp
+// Retry strategy for communication errors
+auto result = driver.Initialize(cfg);
+if (!result && result.Error() == tmc51x0::ErrorCode::COMM_ERROR) {
+    // Retry initialization
+    driver.comm.DelayMs(100);
+    result = driver.Initialize(cfg);
+    if (!result) {
+        printf("Retry failed: %s\n", result.ErrorMessage());
+        return -1;
+    }
+}
+
+// Recovery for overtemperature
+auto status = driver.diagnostics.GetStatus();
+if (status == tmc51x0::DriverStatus::OVERTEMP) {
+    // Reduce current and wait
+    driver.motorControl.SetCurrent(10, 5);  // Lower current
+    driver.comm.DelayMs(5000);  // Wait for cooling
+    // Retry operation
+}
+```
+
 ## Software Issues
 
 ### Compilation Errors
