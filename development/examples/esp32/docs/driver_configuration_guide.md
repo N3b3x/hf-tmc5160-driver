@@ -156,7 +156,7 @@ driver.encoder.SetResolution(
 - `steps_per_rev`: Motor full steps per revolution (from MotorConfig)
 - `rated_current_ma`: Motor rated current (from MotorConfig, used for calculation)
 - `winding_resistance_mohm`: Motor winding resistance (from MotorConfig, if available)
-- `winding_inductance_uh`: Motor winding inductance (from MotorConfig, if available)
+- `winding_inductance_mh`: Motor winding inductance (from MotorConfig, if available)
 
 ### Chopper Configuration (`chopper`)
 - `mode`: SpreadCycle (recommended) or Classic

@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['n_5fchannel_5factive_0',['N_CHANNEL_ACTIVE',['../structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1Encoder.html#a9abf25429d6dd105a8cbeeb620e4f747',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::Encoder::N_CHANNEL_ACTIVE'],['../structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#a41e6e0dabe13074053a1c2a449f6dc40',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::Encoder::N_CHANNEL_ACTIVE']]],
-  ['n_5fchannel_5factive_1',['n_channel_active',['../structtmc51x0_1_1EncoderConfig.html#a78cf54995158a3964b8ec45d6a969355',1,'tmc51x0::EncoderConfig']]],
+  ['n_5fchannel_5factive_0',['n_channel_active',['../structtmc51x0_1_1EncoderConfig.html#a78cf54995158a3964b8ec45d6a969355',1,'tmc51x0::EncoderConfig']]],
+  ['n_5fchannel_5factive_1',['N_CHANNEL_ACTIVE',['../structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1Encoder.html#a9abf25429d6dd105a8cbeeb620e4f747',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::Encoder::N_CHANNEL_ACTIVE'],['../structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#a41e6e0dabe13074053a1c2a449f6dc40',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::Encoder::N_CHANNEL_ACTIVE']]],
   ['n_5fevent_2',['n_event',['../uniontmc51x0_1_1ENC__STATUS__Register.html#ae2408e51aeee2f4be9c51a678e5988b0',1,'tmc51x0::ENC_STATUS_Register']]],
-  ['n_5fsensitivity_3',['N_SENSITIVITY',['../structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1Encoder.html#ac90062636916b223b8f120c296ffc0ee',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::Encoder::N_SENSITIVITY'],['../structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#af7f767051436d993bc22e5236723805a',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::Encoder::N_SENSITIVITY']]],
-  ['n_5fsensitivity_4',['n_sensitivity',['../structtmc51x0_1_1EncoderConfig.html#aaa92bc1a9d59ef83f231b72d24296bad',1,'tmc51x0::EncoderConfig']]],
-  ['naming_20convention_5',['Unit Naming Convention',['../tmc51x0__config__builder_8hpp.html#autotoc_md10',1,'']]],
+  ['n_5fsensitivity_3',['n_sensitivity',['../structtmc51x0_1_1EncoderConfig.html#aaa92bc1a9d59ef83f231b72d24296bad',1,'tmc51x0::EncoderConfig']]],
+  ['n_5fsensitivity_4',['N_SENSITIVITY',['../structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1Encoder.html#ac90062636916b223b8f120c296ffc0ee',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::Encoder::N_SENSITIVITY'],['../structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#af7f767051436d993bc22e5236723805a',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::Encoder::N_SENSITIVITY']]],
+  ['naming_20convention_5',['Unit Naming Convention',['../tmc51x0__config__builder_8hpp.html#autotoc_md0',1,'']]],
   ['native_5fhandle_6',['native_handle',['../classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f',1,'Esp32TmcMutex::native_handle() const noexcept'],['../classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f',1,'Esp32TmcMutex::native_handle() const noexcept'],['../classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f',1,'Esp32TmcMutex::native_handle() const noexcept']]],
   ['navigatedown_7',['navigateDown',['../classOLEDMenu.html#a8933eca3c698ffff2df0d2f44805f740',1,'OLEDMenu']]],
   ['navigateup_8',['navigateUp',['../classOLEDMenu.html#ad0634484d24f960a2aafd0a4ff14f59b',1,'OLEDMenu']]],
@@ -18,8 +18,9 @@ var searchData=
   ['node_5faddress_15',['node_address',['../structtmc51x0_1_1UartConfig.html#a3c10e16e32097acaa8734e207e1226aa',1,'tmc51x0::UartConfig']]],
   ['normal_16',['NORMAL',['../namespacetmc51x0.html#ae988d381e96f02ccf88517740b83e5f1a1e23852820b9154316c7c06e2b7ba051',1,'tmc51x0::NORMAL'],['../namespacetmc51x0.html#a6a87b8eb4c1843e07007d7162048bf4da1e23852820b9154316c7c06e2b7ba051',1,'tmc51x0::NORMAL']]],
   ['not_5finitialized_17',['NOT_INITIALIZED',['../namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3a02de9649e258d1dd94056e676061e969',1,'tmc51x0']]],
-  ['num_5factive_5fdevices_5f_18',['num_active_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a589a348bfced31beaf1ad6ff39bca58e',1,'tmc51x0::TMC51x0DaisyChain::num_active_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#a58c0f7968d95a448504292f5043536dd',1,'tmc51x0::TMC51x0MultiNode::num_active_devices_']]],
-  ['num_5fimage_5fextensions_19',['NUM_IMAGE_EXTENSIONS',['../ui__slideshow__board_2config_8hpp.html#af264cb284cfebc6e2975523e4626d863',1,'config.hpp']]],
-  ['num_5fonboard_5fdevices_5f_20',['num_onboard_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a4fd8aa10deac6ac8e55e397a34e6fe94',1,'tmc51x0::TMC51x0DaisyChain::num_onboard_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#afd8d19c9724c0f933cdaa38f66d5e0c0',1,'tmc51x0::TMC51x0MultiNode::num_onboard_devices_']]],
-  ['nvs_5fnamespace_21',['NVS_NAMESPACE',['../namespaceanonymous__namespace_02settings_8cpp_03.html#ac404bd8fc90a64de408a60472f580891',1,'anonymous_namespace{settings.cpp}']]]
+  ['ns_5fper_5fsec_18',['NS_PER_SEC',['../namespacetmc51x0_1_1RegisterConstants.html#aea8cc1e5b0cd6c2eacb7612521e2f461',1,'tmc51x0::RegisterConstants']]],
+  ['num_5factive_5fdevices_5f_19',['num_active_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a589a348bfced31beaf1ad6ff39bca58e',1,'tmc51x0::TMC51x0DaisyChain::num_active_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#a58c0f7968d95a448504292f5043536dd',1,'tmc51x0::TMC51x0MultiNode::num_active_devices_']]],
+  ['num_5fimage_5fextensions_20',['NUM_IMAGE_EXTENSIONS',['../ui__slideshow__board_2config_8hpp.html#af264cb284cfebc6e2975523e4626d863',1,'config.hpp']]],
+  ['num_5fonboard_5fdevices_5f_21',['num_onboard_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a4fd8aa10deac6ac8e55e397a34e6fe94',1,'tmc51x0::TMC51x0DaisyChain::num_onboard_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#afd8d19c9724c0f933cdaa38f66d5e0c0',1,'tmc51x0::TMC51x0MultiNode::num_onboard_devices_']]],
+  ['nvs_5fnamespace_22',['NVS_NAMESPACE',['../namespaceanonymous__namespace_02settings_8cpp_03.html#ac404bd8fc90a64de408a60472f580891',1,'anonymous_namespace{settings.cpp}']]]
 ];

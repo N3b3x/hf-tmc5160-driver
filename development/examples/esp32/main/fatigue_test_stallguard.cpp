@@ -951,7 +951,7 @@ private:
         last_target_relative_ = target_relative_deg; // Store in degrees
         if (fabsf(target_relative_deg) > 0.5f) { // Only update if significantly away from center (0.5 degrees)
           last_was_negative_ = currently_negative;
-        }
+      }
     }
 
     // Clamp to local bounds and handle dwell states (all in degrees)
@@ -2007,9 +2007,9 @@ extern "C" void app_main() {
     // Monitor SG_RESULT periodically for diagnostics
     if (current_time - last_sg_result_time >= 200) {
       auto current_sg_result = driver.diagnostics.GetStallGuardResult();
-    uint16_t current_sg = 0;
-    if (current_sg_result.IsOk()) {
-      current_sg = current_sg_result.Value();
+      uint16_t current_sg = 0;
+      if (current_sg_result.IsOk()) {
+        current_sg = current_sg_result.Value();
         if (current_sg != last_sg_result) {
           ESP_LOGI(TAG, "  SG_RESULT changed: %d -> %d (position=%.2f degrees, speed=%.1f RPM)", 
                    last_sg_result, current_sg, current_pos_deg, vactual_rpm);
@@ -2234,9 +2234,9 @@ extern "C" void app_main() {
     // Monitor SG_RESULT periodically
     if (current_time - min_last_sg_result_time >= 200) {
       auto current_sg_result = driver.diagnostics.GetStallGuardResult();
-    uint16_t current_sg = 0;
-    if (current_sg_result.IsOk()) {
-      current_sg = current_sg_result.Value();
+      uint16_t current_sg = 0;
+      if (current_sg_result.IsOk()) {
+        current_sg = current_sg_result.Value();
         if (current_sg != min_last_sg_result) {
           ESP_LOGI(TAG, "  SG_RESULT changed: %d -> %d (position=%.2f degrees, speed=%.1f RPM)", 
                    min_last_sg_result, current_sg, current_pos_deg, vactual_rpm);
@@ -2428,8 +2428,6 @@ extern "C" void app_main() {
   bool bounded = (stall_detected_min && stall_detected_max) || reached_360;
   auto current_pos_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
   float current_pos_deg = current_pos_result.IsOk() ? current_pos_result.Value() : 0.0f;
-  auto current_pos_deg_result = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
-  float current_pos_deg = current_pos_deg_result.IsOk() ? current_pos_deg_result.Value() : 0.0f;
 
   FatigueTestMotion motion(&driver);
   // Driver handles all unit conversions - no ConfigureMotor needed

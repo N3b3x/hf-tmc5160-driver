@@ -1,7 +1,7 @@
 var searchData=
 [
   ['key_20capabilities_0',['Key Capabilities',['../index.html#autotoc_md33',1,'']]],
-  ['key_20features_1',['Key Features',['../classtmc51x0_1_1TMC51x0.html#autotoc_md0',1,'Key Features'],['../classtmc51x0_1_1TMC51x0DaisyChain.html#autotoc_md11',1,'Key Features'],['../classtmc51x0_1_1TMC51x0MultiNode.html#autotoc_md15',1,'Key Features']]],
+  ['key_20features_1',['Key Features',['../classtmc51x0_1_1TMC51x0DaisyChain.html#autotoc_md1',1,'Key Features'],['../classtmc51x0_1_1TMC51x0MultiNode.html#autotoc_md5',1,'Key Features'],['../classtmc51x0_1_1TMC51x0.html#autotoc_md9',1,'Key Features']]],
   ['key_20methods_20by_20subsystem_2',['Key Methods by Subsystem',['../index.html#autotoc_md58',1,'']]],
   ['key_5fbounds_3',['KEY_BOUNDS',['../namespaceanonymous__namespace_02settings_8cpp_03.html#aff9b5a410eeeac3936943223fff7b017',1,'anonymous_namespace{settings.cpp}']]],
   ['key_5fcycles_4',['KEY_CYCLES',['../namespaceanonymous__namespace_02settings_8cpp_03.html#a184c754a5977aa3ce9cfc473b90ac809',1,'anonymous_namespace{settings.cpp}']]],

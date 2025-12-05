@@ -1,6 +1,6 @@
 var uniontmc51x0_1_1GCONF__Register =
 [
-    [ "bits", "uniontmc51x0_1_1GCONF__Register.html#a4fb52603325ac6833c04c7427d7c5acd", null ],
+    [ "bits", "uniontmc51x0_1_1GCONF__Register.html#af3bdf63e33be72003780bcdb36153d8d", null ],
     [ "diag0_error", "uniontmc51x0_1_1GCONF__Register.html#a87b8146e7bfe7306942a38ec893068b8", null ],
     [ "diag0_int_pushpull", "uniontmc51x0_1_1GCONF__Register.html#aab378beca174ccb6e9670311da25c2da", null ],
     [ "diag0_otpw", "uniontmc51x0_1_1GCONF__Register.html#a46493e6fdf631a96df1fcb3ef0131dcb", null ],

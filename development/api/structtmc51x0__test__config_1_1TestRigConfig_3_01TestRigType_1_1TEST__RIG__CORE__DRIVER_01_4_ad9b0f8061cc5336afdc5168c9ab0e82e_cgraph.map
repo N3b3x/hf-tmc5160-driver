@@ -16,7 +16,7 @@
 <area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="371,956,381,1113,407,1342,426,1461,450,1570,481,1659,498,1694,517,1720,533,1733,529,1737,513,1723,493,1696,476,1661,445,1571,421,1462,401,1343,376,1113,365,957"/>
 <area shape="rect" id="Node000008" href="$classtmc51x0_1_1ConfigBuilder.html#ab45f4fa9465bc7d40cd53b1865bf0d1a" title="Set motor direction." alt="" coords="543,1093,718,1133"/>
 <area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="388,956,442,1018,477,1051,516,1079,531,1087,529,1092,513,1084,474,1055,438,1022,384,959"/>
-<area shape="rect" id="Node000009" href="$classtmc51x0_1_1ConfigBuilder.html#ae3c5e2f70400a51fb7efad8829bd8ba8" title="Set hold current with user&#45;friendly units." alt="" coords="543,1157,718,1197"/>
+<area shape="rect" id="Node000009" href="$classtmc51x0_1_1ConfigBuilder.html#a3a1e4201a3e535eb36cd6c6debc25890" title="Set hold current value." alt="" coords="543,1157,718,1197"/>
 <area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="380,956,400,997,430,1048,469,1100,516,1143,532,1153,529,1157,513,1147,465,1103,426,1051,396,1000,375,958"/>
 <area shape="rect" id="Node000010" href="$classtmc51x0_1_1ConfigBuilder.html#a25be94fa8f900c0de6b5491f7c8b3744" title="Set hysteresis end value (SpreadCycle mode)" alt="" coords="543,1221,718,1261"/>
 <area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="376,956,392,1009,420,1077,461,1148,487,1180,516,1207,532,1218,529,1222,513,1211,483,1183,457,1151,416,1080,387,1011,371,957"/>
@@ -26,13 +26,13 @@
 <area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="371,956,380,1032,403,1134,422,1189,447,1242,478,1292,516,1335,532,1347,529,1351,513,1339,474,1295,442,1245,417,1191,398,1135,375,1033,366,957"/>
 <area shape="rect" id="Node000013" href="$classtmc51x0_1_1ConfigBuilder.html#a4f87e98bc39714f631b93da897e5caaa" title="Set microstep resolution." alt="" coords="534,1413,727,1453"/>
 <area shape="poly" id="edge12_Node000002_Node000013" title=" " alt="" coords="369,957,375,1042,383,1099,395,1162,414,1226,439,1289,473,1348,517,1399,524,1406,520,1410,513,1403,469,1351,435,1291,409,1228,390,1163,377,1100,370,1043,364,957"/>
-<area shape="rect" id="Node000014" href="$classtmc51x0_1_1ConfigBuilder.html#a01eaf1530e9c6850a27d5bbced56d1b1" title="Configure motor specifications with user&#45;friendly units." alt="" coords="543,1477,718,1517"/>
+<area shape="rect" id="Node000014" href="$classtmc51x0_1_1ConfigBuilder.html#a5b99fb555b3565d387bc1f5e4792578c" title="Configure motor specifications." alt="" coords="543,1477,718,1517"/>
 <area shape="poly" id="edge13_Node000002_Node000014" title=" " alt="" coords="373,956,392,1067,423,1219,443,1297,465,1367,490,1425,517,1463,533,1476,530,1480,513,1467,485,1427,460,1369,438,1298,418,1221,386,1068,368,957"/>
 <area shape="rect" id="Node000015" href="$classtmc51x0_1_1ConfigBuilder.html#a631e2378504ce09410a8538ff92b411f" title="Set motor power down delay time." alt="" coords="515,1541,747,1581"/>
 <area shape="poly" id="edge14_Node000002_Node000015" title=" " alt="" coords="372,957,389,1079,419,1251,439,1338,462,1418,488,1484,502,1509,517,1528,520,1531,517,1535,513,1531,497,1512,483,1486,457,1420,433,1340,414,1252,384,1080,367,957"/>
 <area shape="rect" id="Node000016" href="$classtmc51x0_1_1ConfigBuilder.html#a888eac28f2326b865b10e72a3c136a68" title="Enable/disable recalibration." alt="" coords="543,1605,718,1645"/>
 <area shape="poly" id="edge15_Node000002_Node000016" title=" " alt="" coords="372,956,386,1090,415,1281,434,1379,458,1469,485,1542,501,1570,517,1591,533,1604,530,1609,513,1595,496,1573,481,1544,453,1470,429,1381,409,1282,381,1091,366,957"/>
-<area shape="rect" id="Node000017" href="$classtmc51x0_1_1ConfigBuilder.html#a9fdc143bb2cbf06a93f3d25f6ea9936e" title="Set run current with user&#45;friendly units." alt="" coords="543,1669,718,1709"/>
+<area shape="rect" id="Node000017" href="$classtmc51x0_1_1ConfigBuilder.html#abf0a33651a724a8517a99f78f12dbb9c" title="Set run current value." alt="" coords="543,1669,718,1709"/>
 <area shape="poly" id="edge16_Node000002_Node000017" title=" " alt="" coords="371,957,384,1102,411,1312,430,1420,454,1520,483,1601,499,1632,517,1655,533,1668,529,1673,513,1659,495,1635,478,1603,449,1521,425,1422,405,1313,378,1102,366,957"/>
 <area shape="rect" id="Node000018" href="$classtmc51x0_1_1ConfigBuilder.html#ac17f8ed0c6ff298248da13029e4b9cfe" title="Enable/disable short standstill timeout." alt="" coords="526,69,735,109"/>
 <area shape="poly" id="edge17_Node000002_Node000018" title=" " alt="" coords="453,900,465,888,480,858,490,821,496,778,499,730,495,621,485,503,476,386,473,278,476,229,483,186,495,149,513,120,515,117,519,120,517,123,500,151,488,187,482,230,479,278,481,386,491,503,500,620,504,730,502,779,496,823,485,860,469,891,457,904"/>
@@ -50,12 +50,12 @@
 <area shape="poly" id="edge23_Node000002_Node000024" title=" " alt="" coords="452,900,465,888,481,863,492,838,498,814,500,790,496,743,485,696,475,649,472,601,475,577,482,553,495,528,513,504,517,499,521,503,517,507,499,531,487,555,480,578,477,601,480,648,491,695,501,742,505,790,503,815,497,840,486,865,469,891,456,904"/>
 <area shape="rect" id="Node000025" href="$classtmc51x0_1_1ConfigBuilder.html#adb7afa76392771f590c3561516702594" title="Set StealthChop threshold velocity." alt="" coords="529,517,732,557"/>
 <area shape="poly" id="edge24_Node000002_Node000025" title=" " alt="" coords="452,900,465,888,479,867,488,847,496,807,493,767,486,728,479,689,477,649,486,608,497,588,513,568,516,564,520,567,517,571,502,591,491,610,482,649,484,688,491,727,499,767,501,807,493,848,483,870,469,891,456,904"/>
-<area shape="rect" id="Node000026" href="$classtmc51x0_1_1ConfigBuilder.html#aa478c5032b159c827226b46da2948e51" title="Set supply voltage with user&#45;friendly units." alt="" coords="543,581,718,621"/>
+<area shape="rect" id="Node000026" href="$classtmc51x0_1_1ConfigBuilder.html#aed8119b0d75c07b3d4e0e491b4f34482" title="Set supply voltage value." alt="" coords="543,581,718,621"/>
 <area shape="poly" id="edge25_Node000002_Node000026" title=" " alt="" coords="452,900,465,888,484,855,492,823,491,792,486,760,482,728,482,696,491,664,513,632,529,618,533,622,517,635,496,666,487,697,487,728,492,759,496,791,497,824,489,857,469,891,455,904"/>
-<area shape="rect" id="Node000027" href="$classtmc51x0_1_1ConfigBuilder.html#a2c333f94116c662ca6deafc9805b63ba" title="Set winding inductance with user&#45;friendly units." alt="" coords="539,645,723,685"/>
-<area shape="poly" id="edge26_Node000002_Node000027" title=" " alt="" coords="451,900,465,888,480,864,487,840,487,792,485,768,487,744,495,720,513,696,525,685,528,689,517,699,500,722,492,745,490,768,492,792,493,841,485,866,469,891,455,904"/>
-<area shape="rect" id="Node000028" href="$classtmc51x0_1_1ConfigBuilder.html#a20ba7669989e1a8cc0c891193324f3c7" title="Set winding resistance with user&#45;friendly units." alt="" coords="539,709,723,749"/>
-<area shape="poly" id="edge27_Node000002_Node000028" title=" " alt="" coords="450,900,465,887,477,872,483,856,487,824,492,792,499,775,513,759,525,750,528,754,517,763,504,778,497,793,492,825,488,857,481,874,469,891,453,904"/>
+<area shape="rect" id="Node000027" href="$classtmc51x0_1_1ConfigBuilder.html#a369820f97c2ef4a9c9e72d97ce7955f5" title="Set winding inductance value." alt="" coords="529,645,733,685"/>
+<area shape="poly" id="edge26_Node000002_Node000027" title=" " alt="" coords="451,900,465,888,480,864,487,840,487,792,485,768,487,744,495,720,513,696,517,692,520,696,517,699,500,722,492,745,490,768,492,792,493,841,485,866,469,891,455,904"/>
+<area shape="rect" id="Node000028" href="$classtmc51x0_1_1ConfigBuilder.html#ac243cdcc3bf8c19238f620634f9749cf" title="Set winding resistance value." alt="" coords="518,709,743,749"/>
+<area shape="poly" id="edge27_Node000002_Node000028" title=" " alt="" coords="450,900,465,887,477,872,483,856,487,824,492,792,499,775,513,759,518,755,522,759,517,763,504,778,497,793,492,825,488,857,481,874,469,891,453,904"/>
 <area shape="rect" id="Node000029" href="$classtmc51x0_1_1ConfigBuilder.html#aefd8c68025118812f2ebacd5419beb54" title="Set zero velocity wait time." alt="" coords="543,773,718,813"/>
 <area shape="poly" id="edge28_Node000002_Node000029" title=" " alt="" coords="445,900,465,887,480,871,488,856,497,839,513,823,529,814,532,818,516,827,501,842,493,858,484,875,468,891,448,904"/>
 <area shape="poly" id="edge30_Node000030_Node000003" title=" " alt="" coords="467,851,530,852,530,857,467,856"/>

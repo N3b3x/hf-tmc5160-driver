@@ -59,10 +59,10 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#a81a651bf803937a3d943982b39fbbacd" target="_top" xlink:title="Use external clock.">
+<g id="a_Node000004"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#a854e94f9fabda334df868742c7df4a58" target="_top" xlink:title="Use external clock.">
 <polygon fill="white" stroke="#666666" points="296.5,-414 165.5,-414 165.5,-384 296.5,-384 296.5,-414"/>
 <text text-anchor="start" x="173.5" y="-402" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::ConfigBuilder</text>
-<text text-anchor="middle" x="231" y="-391" font-family="Helvetica,sans-Serif" font-size="10.00">::WithExternalClock</text>
+<text text-anchor="middle" x="231" y="-391" font-family="Helvetica,sans-Serif" font-size="10.00">::WithExternalClockHz</text>
 </a>
 </g>
 </g>
@@ -192,10 +192,10 @@
 <!-- Node11 -->
 <g id="Node000011" class="node">
 <title>Node11</title>
-<g id="a_Node000011"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#a8cf7b8b925be1b407fd645f76205ee4e" target="_top" xlink:title="Set sense resistor with user&#45;friendly units.">
-<polygon fill="white" stroke="#666666" points="296.5,-78 165.5,-78 165.5,-48 296.5,-48 296.5,-78"/>
-<text text-anchor="start" x="173.5" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::ConfigBuilder</text>
-<text text-anchor="middle" x="231" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">::WithSenseResistor</text>
+<g id="a_Node000011"><a xlink:href="classtmc51x0_1_1ConfigBuilder.html#ac04ef30c9090d10b6db11c4765f3cfba" target="_top" xlink:title="Set sense resistor value.">
+<polygon fill="white" stroke="#666666" points="303.5,-78 158.5,-78 158.5,-48 303.5,-48 303.5,-78"/>
+<text text-anchor="start" x="166.5" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::ConfigBuilder</text>
+<text text-anchor="middle" x="231" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">::WithSenseResistorMohm</text>
 </a>
 </g>
 </g>

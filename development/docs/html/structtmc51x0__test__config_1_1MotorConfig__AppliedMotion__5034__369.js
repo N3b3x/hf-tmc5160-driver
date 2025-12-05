@@ -20,7 +20,7 @@ var structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369 =
     [ "RAMP_VSTART_RPM", "structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a370116b23c4128ed15c45d558a428834", null ],
     [ "RAMP_VSTOP_RPM", "structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#ad739f48784d10d9fb40a60c98f06ad26", null ],
     [ "RATED_CURRENT_MA", "structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#af955b6279cf278ffddfbeeaed6ed17dd", null ],
-    [ "RESISTANCE_OHMS", "structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a0c655bbfeff0597128932976fc4fd8c9", null ],
+    [ "RESISTANCE_MOHM", "structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#abe91006f1833c87b167382bf81193076", null ],
     [ "STEALTH_AUTOGRAD", "structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a7184dfaf5e3dc54081a345258bdeffe8", null ],
     [ "STEALTH_AUTOSCALE", "structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a13b098989d5954eca84f33744aceaf1e", null ],
     [ "STEALTH_FREQ", "structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#af3ac6255b0fdb65b7fd826d644647664", null ],

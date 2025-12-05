@@ -2,7 +2,7 @@ var uniontmc51x0_1_1DRV__CONF__Register =
 [
     [ "bbmclks", "uniontmc51x0_1_1DRV__CONF__Register.html#a817b13b388e8fff4c4db678b206c5b3b", null ],
     [ "bbmtime", "uniontmc51x0_1_1DRV__CONF__Register.html#acb02a39f7e5e5e6e7fa0902ae6aa56c8", null ],
-    [ "bits", "uniontmc51x0_1_1DRV__CONF__Register.html#a5d8fc473efcab96a39df7d5fa57e13c9", null ],
+    [ "bits", "uniontmc51x0_1_1DRV__CONF__Register.html#a58c914c859168480ad2033d0ef545d45", null ],
     [ "drvstrength", "uniontmc51x0_1_1DRV__CONF__Register.html#ad62c5d0e52eaac579edfda9b56ae33e0", null ],
     [ "filt_isense", "uniontmc51x0_1_1DRV__CONF__Register.html#a1e7e888844425f5e1589c8a07928829c", null ],
     [ "otselect", "uniontmc51x0_1_1DRV__CONF__Register.html#a181c110b7510a88bc4ff4d444e5f68bd", null ],

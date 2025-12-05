@@ -20,7 +20,7 @@ var structtmc51x0__test__config_1_1MotorConfig__17HS4401S =
     [ "RAMP_VSTART_RPM", "structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#a23138a61dfb4965489cfb9e4b981b258", null ],
     [ "RAMP_VSTOP_RPM", "structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#a6f6d90a01b68d3323f561c66aa0ca7a7", null ],
     [ "RATED_CURRENT_MA", "structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#ab765ae6ed4a6737cb13f4ff234513bb5", null ],
-    [ "RESISTANCE_OHMS", "structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#ac94d236eb4866f6ba0c6baa9445b74f4", null ],
+    [ "RESISTANCE_MOHM", "structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#ac8306ad3342524793353c990c9b95848", null ],
     [ "STEALTH_AUTOGRAD", "structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#afa000eec357a03e7a1505df16c351095", null ],
     [ "STEALTH_AUTOSCALE", "structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#aaa608803e180fd328b5f65d8e848d3da", null ],
     [ "STEALTH_FREQ", "structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#a6555467430037cc05031a06874a49bd1", null ],

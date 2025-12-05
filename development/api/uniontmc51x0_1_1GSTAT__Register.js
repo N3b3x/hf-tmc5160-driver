@@ -1,6 +1,6 @@
 var uniontmc51x0_1_1GSTAT__Register =
 [
-    [ "bits", "uniontmc51x0_1_1GSTAT__Register.html#a61aa4f427a1b711d10f1a48c21cb8e7f", null ],
+    [ "bits", "uniontmc51x0_1_1GSTAT__Register.html#a9d3716c78fc07788e2b1fb7a7445c091", null ],
     [ "drv_err", "uniontmc51x0_1_1GSTAT__Register.html#abd295a47d3d76220bd457c10a6a8d561", null ],
     [ "reserved", "uniontmc51x0_1_1GSTAT__Register.html#a97889d59dd279bd3e1bf2edd436d2767", null ],
     [ "reset", "uniontmc51x0_1_1GSTAT__Register.html#a9854fc334986b764c7f1854ef13a53ff", null ],

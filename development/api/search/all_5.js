@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['f_5fclk_5f_0',['f_clk_',['../classtmc51x0_1_1TMC51x0.html#aa4b7f1f19323c6aa88d0f21042899e5f',1,'tmc51x0::TMC51x0::f_clk_'],['../classtmc51x0_1_1TMC51x0DaisyChain.html#a8c80373bad4dde5975538bd25731ce41',1,'tmc51x0::TMC51x0DaisyChain::f_clk_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#abb2f9576a486b7773dd67c570eeba6b5',1,'tmc51x0::TMC51x0MultiNode::f_clk_']]],
+  ['f_5fclk_5f_0',['f_clk_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a8c80373bad4dde5975538bd25731ce41',1,'tmc51x0::TMC51x0DaisyChain::f_clk_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#abb2f9576a486b7773dd67c570eeba6b5',1,'tmc51x0::TMC51x0MultiNode::f_clk_'],['../classtmc51x0_1_1TMC51x0.html#aa4b7f1f19323c6aa88d0f21042899e5f',1,'tmc51x0::TMC51x0::f_clk_']]],
   ['failed_5ftests_1',['failed_tests',['../structTestResults.html#a0acef46f38f27f0fbb8fa822bb218b3a',1,'TestResults']]],
   ['falling_5fedge_2',['FALLING_EDGE',['../namespacetmc51x0.html#a72806fd22f0c0112600ad9056aa3be97a297f5ea19073f4b51715b029f48d5d52',1,'tmc51x0::FALLING_EDGE'],['../namespacetmc51x0.html#a0bb937f055abebd74c4f74fb03bb5696a297f5ea19073f4b51715b029f48d5d52',1,'tmc51x0::FALLING_EDGE']]],
   ['fast_3',['FAST',['../namespacetmc51x0.html#aaa19c98f87ff911ca28183768e39f607adca6e617f6fb54033deb311e7e7c93cc',1,'tmc51x0']]],
@@ -13,8 +13,8 @@ var searchData=
   ['fatigue_5ftest_5fstallguard_2ecpp_10',['fatigue_test_stallguard.cpp',['../fatigue__test__stallguard_8cpp.html',1,'']]],
   ['fatiguetest_11',['FatigueTest',['../namespaceFatigueTest.html',1,'']]],
   ['fatiguetestmotion_12',['FatigueTestMotion',['../classFatigueTest_1_1FatigueTestMotion.html',1,'FatigueTest::FatigueTestMotion'],['../classFatigueTestMotion.html',1,'FatigueTestMotion'],['../classFatigueTestMotion.html#a373fb38818685e8852c2e238a8643f8a',1,'FatigueTestMotion::FatigueTestMotion()'],['../classFatigueTest_1_1FatigueTestMotion.html#a373fb38818685e8852c2e238a8643f8a',1,'FatigueTest::FatigueTestMotion::FatigueTestMotion()'],['../classFatigueTestMotion.html#a373fb38818685e8852c2e238a8643f8a',1,'FatigueTestMotion::FatigueTestMotion()']]],
-  ['features_13',['Features',['../index.html#autotoc_md49',1,'⚙️ Advanced Features'],['../index.html#autotoc_md34',1,'✨ Features'],['../index.html#autotoc_md72',1,'Advanced Features'],['../classtmc51x0_1_1TMC51x0.html#autotoc_md0',1,'Key Features'],['../classtmc51x0_1_1TMC51x0DaisyChain.html#autotoc_md11',1,'Key Features'],['../classtmc51x0_1_1TMC51x0MultiNode.html#autotoc_md15',1,'Key Features']]],
-  ['fields_14',['fields',['../uniontmc51x0_1_1SpiCommand_1_1Frame.html#adf366b9b993cc4897b9b91f087c86287',1,'tmc51x0::SpiCommand::Frame']]],
+  ['features_13',['Features',['../index.html#autotoc_md49',1,'⚙️ Advanced Features'],['../index.html#autotoc_md34',1,'✨ Features'],['../index.html#autotoc_md72',1,'Advanced Features'],['../classtmc51x0_1_1TMC51x0DaisyChain.html#autotoc_md1',1,'Key Features'],['../classtmc51x0_1_1TMC51x0MultiNode.html#autotoc_md5',1,'Key Features'],['../classtmc51x0_1_1TMC51x0.html#autotoc_md9',1,'Key Features']]],
+  ['fields_14',['fields',['../uniontmc51x0_1_1SpiCommand_1_1Frame.html#a26111f9ae18f3b9c7886c658fbde3b67',1,'tmc51x0::SpiCommand::Frame']]],
   ['filesize_15',['fileSize',['../structImageLoader_1_1BMPHeader.html#a1806f0d76081d0edd2fe670d0e69874e',1,'ImageLoader::BMPHeader']]],
   ['filt_5fisense_16',['filt_isense',['../uniontmc51x0_1_1DRV__CONF__Register.html#a1e7e888844425f5e1589c8a07928829c',1,'tmc51x0::DRV_CONF_Register']]],
   ['filter_5fenabled_17',['FILTER_ENABLED',['../structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1StallGuard.html#a9873aa90a47420534928bb556fd7ae6b',1,'tmc51x0_test_config::TestConfig_17HS4401S::StallGuard::FILTER_ENABLED'],['../structtmc51x0__test__config_1_1TestConfig__AppliedMotion__5034_1_1StallGuard.html#a61b316aa85466135521c11533ea4a0e1',1,'tmc51x0_test_config::TestConfig_AppliedMotion_5034::StallGuard::FILTER_ENABLED'],['../structtmc51x0__test__config_1_1TestConfigAccessor_1_1StallGuard.html#adb2ae139be653d7384b90ad0a05b7ab6',1,'tmc51x0_test_config::TestConfigAccessor::StallGuard::FILTER_ENABLED']]],
@@ -41,5 +41,5 @@ var searchData=
   ['fsactive_38',['fsactive',['../uniontmc51x0_1_1DRV__STATUS__Register.html#a5a9367ea7d34e5c7203f4a0eb9044fe4',1,'tmc51x0::DRV_STATUS_Register']]],
   ['fullstep_39',['FULLSTEP',['../namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4a420bb3b8bd24be08a8b037864fca23e3',1,'tmc51x0']]],
   ['functionality_40',['Core Functionality',['../index.html#autotoc_md70',1,'']]],
-  ['functions_20in_20uart_20mode_41',['Pin Functions in UART Mode',['../classtmc51x0_1_1UartCommInterface.html#autotoc_md8',1,'']]]
+  ['functions_20in_20uart_20mode_41',['Pin Functions in UART Mode',['../classtmc51x0_1_1UartCommInterface.html#autotoc_md17',1,'']]]
 ];

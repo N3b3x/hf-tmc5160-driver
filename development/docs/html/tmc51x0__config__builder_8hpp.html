@@ -104,11 +104,11 @@ $(function(){initNavTree('tmc51x0__config__builder_8hpp.html',''); initResizable
 <p>Fluent configuration builder for TMC51x0 driver.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;cstdint&gt;</code><br />
-<code>#include &quot;<a class="el" href="tmc51x0__types_8hpp_source.html">tmc51x0_types.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="tmc51x0__types_8hpp_source.html">../tmc51x0_types.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tmc51x0_config_builder.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__config__builder_8hpp__incl.svg" width="346" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__config__builder_8hpp__incl.svg" width="375" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -132,16 +132,23 @@ Namespaces</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Fluent configuration builder for TMC51x0 driver. </p>
 <p>Provides a fluent interface for building DriverConfig with:</p><ul>
-<li>User-friendly units (Amps, Volts) converted to internal units (mA, mV)</li>
+<li>Units in milliamps, millivolts, milliohms, millihenries</li>
 <li>Chainable method calls for easy configuration</li>
 <li>Complete coverage of all DriverConfig fields</li>
 <li>Mimics the ESP32 test config initialization pattern</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md10"></a>
+<h2><a class="anchor" id="autotoc_md0"></a>
 Unit Naming Convention</h2>
 <p>Functions follow a clear unit naming convention for safety and readability:</p>
 <ul>
 <li><b>Unit suffixes for fixed units</b>: Functions that always use a specific unit have the unit suffix in the function name:<ul>
+<li><code>WithMotorMa()</code> - rated current in milliamps</li>
+<li><code>WithRunCurrentMa()</code> - run current in milliamps</li>
+<li><code>WithHoldCurrentMa()</code> - hold current in milliamps</li>
+<li><code>WithSupplyVoltageMv()</code> - supply voltage in millivolts</li>
+<li><code>WithSenseResistorMohm()</code> - sense resistor in milliohms</li>
+<li><code>WithWindingResistanceMohm()</code> - winding resistance in milliohms</li>
+<li><code>WithWindingInductanceMh()</code> - winding inductance in millihenries</li>
 <li><code>WithMotorPowerDownDelayMs()</code> - always milliseconds</li>
 <li><code>WithRampPowerDownDelayMs()</code> - always milliseconds</li>
 <li><code>WithZeroWaitTimeMs()</code> - always milliseconds</li>
@@ -150,6 +157,7 @@ Unit Naming Convention</h2>
 <li><code>WithS2gVoltageMv()</code> - always millivolts</li>
 <li><code>WithMosfetMillerChargeNc()</code> - always nanocoulombs</li>
 <li><code>WithShortDetectionDelayUsX10()</code> - always 0.1µs units</li>
+<li><code>WithExternalClockHz()</code> - clock frequency in Hz</li>
 </ul>
 </li>
 <li><b>Unit-agnostic for flexible units</b>: Functions that accept different units use self-describing value types (VelocityValue, AccelerationValue):<ul>
@@ -167,11 +175,11 @@ Unit Naming Convention</h2>
 </ol>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> config = ConfigBuilder()</div>
 <div class="line">    <span class="comment">// Motor configuration</span></div>
-<div class="line">    .WithMotor(200, 1.5f)  <span class="comment">// 200 steps, 1.5A rated</span></div>
-<div class="line">    .WithSupplyVoltage(24.0f)  <span class="comment">// 24V</span></div>
-<div class="line">    .WithSenseResistor(0.05f)  <span class="comment">// 0.05Ω = 50mΩ</span></div>
-<div class="line">    .WithRunCurrent(1.5f)  <span class="comment">// 1.5A run current</span></div>
-<div class="line">    .WithHoldCurrent(0.75f)  <span class="comment">// 0.75A hold current</span></div>
+<div class="line">    .WithMotorMa(200, 1500)  <span class="comment">// 200 steps, 1500mA = 1.5A rated</span></div>
+<div class="line">    .WithSupplyVoltageMv(24000)  <span class="comment">// 24000mV = 24V</span></div>
+<div class="line">    .WithSenseResistorMohm(50)  <span class="comment">// 50mΩ = 0.05Ω</span></div>
+<div class="line">    .WithRunCurrentMa(1500)  <span class="comment">// 1500mA = 1.5A run current</span></div>
+<div class="line">    .WithHoldCurrentMa(750)  <span class="comment">// 750mA = 0.75A hold current</span></div>
 <div class="line">    <span class="comment">// Chopper configuration</span></div>
 <div class="line">    .WithChopperMode(ChopperMode::SPREAD_CYCLE)</div>
 <div class="line">    .WithChopperToff(5)</div>
@@ -190,7 +198,7 @@ Unit Naming Convention</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_bfccd401955b95cf8c75461437045ac0.html">inc</a></li><li class="navelem"><a class="el" href="tmc51x0__config__builder_8hpp.html">tmc51x0_config_builder.hpp</a></li>
+    <li class="navelem"><a class="el" href="dir_bfccd401955b95cf8c75461437045ac0.html">inc</a></li><li class="navelem"><a class="el" href="dir_5fda2624541748e3fe3c08341e0ef89b.html">features</a></li><li class="navelem"><a class="el" href="tmc51x0__config__builder_8hpp.html">tmc51x0_config_builder.hpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

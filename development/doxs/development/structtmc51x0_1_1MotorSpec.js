@@ -12,6 +12,6 @@ var structtmc51x0_1_1MotorSpec =
     [ "sense_resistor_mohm", "structtmc51x0_1_1MotorSpec.html#a299e6a98bc2013d01777568b7b17324a", null ],
     [ "steps_per_rev", "structtmc51x0_1_1MotorSpec.html#a00a6db5195cb23e329d5eb721e873f71", null ],
     [ "supply_voltage_mv", "structtmc51x0_1_1MotorSpec.html#a0a445408ce2fcca9983f4d580a707076", null ],
-    [ "winding_inductance_uh", "structtmc51x0_1_1MotorSpec.html#a777ef87e68ff6a20bfac9ca1b60a9826", null ],
+    [ "winding_inductance_mh", "structtmc51x0_1_1MotorSpec.html#ae054399b42d229791841c86325e3ccce", null ],
     [ "winding_resistance_mohm", "structtmc51x0_1_1MotorSpec.html#a9e082d5fcee32fc3caf35cc155599cb9", null ]
 ];

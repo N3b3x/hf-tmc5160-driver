@@ -170,7 +170,7 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:acdcebba658c1076ab42bb18ede91f695" id="r_acdcebba658c1076ab42bb18ede91f695"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acdcebba658c1076ab42bb18ede91f695">TMC51X0_LOG_DEBUG</a>(comm_obj,  level,  tag, ...)&#160;&#160;&#160;(comm_obj).LogDebug(level, tag, __VA_ARGS__)</td></tr>
+<tr class="memitem:acdcebba658c1076ab42bb18ede91f695" id="r_acdcebba658c1076ab42bb18ede91f695"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acdcebba658c1076ab42bb18ede91f695">TMC51X0_LOG_DEBUG</a>(comm_obj,  level,  tag, ...)&#160;&#160;&#160;  (comm_obj).LogDebug(level, tag, __VA_ARGS__)</td></tr>
 <tr class="memdesc:acdcebba658c1076ab42bb18ede91f695"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile-time debug logging control for TMC51x0 library.  <br /></td></tr>
 <tr class="separator:acdcebba658c1076ab42bb18ede91f695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -226,7 +226,7 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Communication interfaces for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160) using SPI and UART. </p>
 <p>This file provides comprehensive communication interfaces for the TMC51x0 motor driver, supporting both SPI and UART protocols with register read/write operations. It includes GPIO control interfaces and board-agnostic pin management for different hardware implementations. Supports both TMC5130 and TMC5160 chips.</p>
-<h2><a class="anchor" id="autotoc_md3"></a>
+<h2><a class="anchor" id="autotoc_md12"></a>
 Compile-Time Configuration</h2>
 <p><b>TMC51X0_DISABLE_DEBUG_LOGGING</b>: Define this macro to completely disable all debug logging throughout the TMC51x0 library. This removes all logging code from the binary at compile time, saving code size and improving performance.</p>
 <p>Example usage: </p><div class="fragment"><div class="line"><span class="preprocessor">#define TMC51X0_DISABLE_DEBUG_LOGGING</span></div>
@@ -257,7 +257,7 @@ Compile-Time Configuration</h2>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>...</em></span>&#160;)&#160;&#160;&#160;(comm_obj).LogDebug(level, tag, __VA_ARGS__)</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>...</em></span>&#160;)&#160;&#160;&#160;  (comm_obj).LogDebug(level, tag, __VA_ARGS__)</td>
         </tr>
       </table>
 </div><div class="memdoc">

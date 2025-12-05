@@ -31,7 +31,7 @@
  */
 
 #include "tmc51x0.hpp"
-#include "tmc51x0_units.hpp"
+#include "features/tmc51x0_units.hpp"
 #include "test_config/esp32_tmc51x0_bus.hpp"
 #include "test_config/esp32_tmc51x0_test_config.hpp"
 #include "test_config/TestFramework.h"
@@ -226,19 +226,16 @@ uint8_t CalculateCurrentRegister(uint16_t current_ma, uint16_t global_scaler = 0
         global_scaler = 256; // Default to full scale
     }
     
-    // Datasheet constants
-    constexpr float VFS = 0.325f; // Full-scale voltage (V)
+    // Datasheet constants (working directly in millivolts and milliohms)
+    constexpr float VFS_MV = 325.0f; // Full-scale voltage (mV) = 0.325V
     constexpr float SQRT2 = 1.41421356237f; // √2
     
-    // Convert to SI units
-    float i_rms_a = static_cast<float>(current_ma) / 1000.0f;
-    float r_sense_ohm = static_cast<float>(sense_resistor_mohm) / 1000.0f;
     float global_scaler_norm = static_cast<float>(global_scaler) / 256.0f;
     
-    // Calculate CS register value
-    // CS = (I_RMS * 256 * 32) / (GLOBAL_SCALER * (VFS/RSENSE) * (1/√2)) - 1
-    float cs_float = (i_rms_a * 256.0f * 32.0f) / 
-                     (global_scaler_norm * (VFS / r_sense_ohm) / SQRT2) - 1.0f;
+    // Calculate CS register value (working directly in milliamps and milliohms)
+    // CS = (I_RMS_ma * 256 * 32) / (GLOBAL_SCALER * (VFS_mV/RSENSE_mΩ) * (1/√2)) - 1
+    float cs_float = (static_cast<float>(current_ma) * 256.0f * 32.0f) / 
+                     (global_scaler_norm * (VFS_MV / static_cast<float>(sense_resistor_mohm)) / SQRT2) - 1.0f;
     
     // Clamp to valid range (0-31)
     int32_t cs = static_cast<int32_t>(std::round(cs_float));

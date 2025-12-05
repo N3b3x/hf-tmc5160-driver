@@ -112,7 +112,16 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacetmc51x0_1_1ClockFreq" id="r_namespacetmc51x0_1_1ClockFreq"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1ClockFreq.html">ClockFreq</a></td></tr>
 <tr class="memdesc:namespacetmc51x0_1_1ClockFreq"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> clock frequency constants. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacetmc51x0_1_1MathConstants" id="r_namespacetmc51x0_1_1MathConstants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MathConstants.html">MathConstants</a></td></tr>
+<tr class="memdesc:namespacetmc51x0_1_1MathConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mathematical constants. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacetmc51x0_1_1MotorCalcConstants" id="r_namespacetmc51x0_1_1MotorCalcConstants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MotorCalcConstants.html">MotorCalcConstants</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacetmc51x0_1_1MotorCalcLegacyConstants" id="r_namespacetmc51x0_1_1MotorCalcLegacyConstants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MotorCalcLegacyConstants.html">MotorCalcLegacyConstants</a></td></tr>
+<tr class="memdesc:namespacetmc51x0_1_1MotorCalcLegacyConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor calculation constants. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacetmc51x0_1_1RegisterConstants" id="r_namespacetmc51x0_1_1RegisterConstants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1RegisterConstants.html">RegisterConstants</a></td></tr>
+<tr class="memdesc:namespacetmc51x0_1_1RegisterConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register conversion constants. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacetmc51x0_1_1Registers" id="r_namespacetmc51x0_1_1Registers"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1Registers.html">Registers</a></td></tr>
 <tr class="memdesc:namespacetmc51x0_1_1Registers"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> register addresses. <br /></td></tr>
@@ -308,6 +317,27 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:a9296c8b77977c4b405a85597699ada76" id="r_a9296c8b77977c4b405a85597699ada76"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9296c8b77977c4b405a85597699ada76">RampMode</a> : uint8_t { <a class="el" href="#a9296c8b77977c4b405a85597699ada76a1e66935e3ab51cc2128e078cfd49d845">POSITIONING</a> = 0x00
+, <a class="el" href="#a9296c8b77977c4b405a85597699ada76a7bcfb8bf64b1e3308d24ad10baf53fa5">VELOCITY_POS</a> = 0x01
+, <a class="el" href="#a9296c8b77977c4b405a85597699ada76a155d6ef5b0ee9bf966b419b00d4b6034">VELOCITY_NEG</a> = 0x02
+, <a class="el" href="#a9296c8b77977c4b405a85597699ada76a0c6d9dfb485b43c6fba87439f9f73ac4">HOLD</a> = 0x03
+ }</td></tr>
+<tr class="memdesc:a9296c8b77977c4b405a85597699ada76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ramp mode enumeration values.  <a href="#a9296c8b77977c4b405a85597699ada76">More...</a><br /></td></tr>
+<tr class="separator:a9296c8b77977c4b405a85597699ada76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae988d381e96f02ccf88517740b83e5f1" id="r_ae988d381e96f02ccf88517740b83e5f1"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae988d381e96f02ccf88517740b83e5f1">PWMFreewheel</a> : uint8_t { <a class="el" href="#ae988d381e96f02ccf88517740b83e5f1a1e23852820b9154316c7c06e2b7ba051">NORMAL</a> = 0x00
+, <a class="el" href="#ae988d381e96f02ccf88517740b83e5f1ac8cf6eea8f096ed51160b484d97c5bbd">ENABLED</a> = 0x01
+, <a class="el" href="#ae988d381e96f02ccf88517740b83e5f1aeb51cc63a45cb5784abfe6676612cd39">SHORT_LS</a> = 0x02
+, <a class="el" href="#ae988d381e96f02ccf88517740b83e5f1acfc47c02fa806a942e75b88155de3a41">SHORT_HS</a> = 0x03
+ }</td></tr>
+<tr class="memdesc:ae988d381e96f02ccf88517740b83e5f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">PWM freewheel mode enumeration values.  <a href="#ae988d381e96f02ccf88517740b83e5f1">More...</a><br /></td></tr>
+<tr class="separator:ae988d381e96f02ccf88517740b83e5f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72806fd22f0c0112600ad9056aa3be97" id="r_a72806fd22f0c0112600ad9056aa3be97"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72806fd22f0c0112600ad9056aa3be97">EncoderSensitivity</a> : uint8_t { <a class="el" href="#a72806fd22f0c0112600ad9056aa3be97a38a74ee0f8764437c5fce05a7b4964e1">NO_EDGE</a> = 0x00
+, <a class="el" href="#a72806fd22f0c0112600ad9056aa3be97ad85243a747ac5537ef0b7adde99c3e98">RISING_EDGE</a> = 0x01
+, <a class="el" href="#a72806fd22f0c0112600ad9056aa3be97a297f5ea19073f4b51715b029f48d5d52">FALLING_EDGE</a> = 0x02
+, <a class="el" href="#a72806fd22f0c0112600ad9056aa3be97a03495d0b1362f1d841b59007e2887c7f">BOTH_EDGES</a>
+ }</td></tr>
+<tr class="memdesc:a72806fd22f0c0112600ad9056aa3be97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder N channel sensitivity enumeration values.  <a href="#a72806fd22f0c0112600ad9056aa3be97">More...</a><br /></td></tr>
+<tr class="separator:a72806fd22f0c0112600ad9056aa3be97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3d18824bf231d968c6c33bd1aaeae5f" id="r_af3d18824bf231d968c6c33bd1aaeae5f"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3d18824bf231d968c6c33bd1aaeae5f">CommMode</a> : uint8_t { <a class="el" href="#af3d18824bf231d968c6c33bd1aaeae5fa33dc5312b091968f5a120c2484d40df8">SPI</a>
 , <a class="el" href="#af3d18824bf231d968c6c33bd1aaeae5facec5769b01fb096efaf0d6186823c78f">UART</a>
  }</td></tr>
@@ -348,27 +378,6 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a1326aa19da2a0db21e9ad25f701fcb14"><td class="mdescLeft">&#160;</td><td class="mdescRight">TMC5160 UART frame types.  <a href="#a1326aa19da2a0db21e9ad25f701fcb14">More...</a><br /></td></tr>
 <tr class="separator:a1326aa19da2a0db21e9ad25f701fcb14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9296c8b77977c4b405a85597699ada76" id="r_a9296c8b77977c4b405a85597699ada76"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9296c8b77977c4b405a85597699ada76">RampMode</a> : uint8_t { <a class="el" href="#a9296c8b77977c4b405a85597699ada76a1e66935e3ab51cc2128e078cfd49d845">POSITIONING</a> = 0x00
-, <a class="el" href="#a9296c8b77977c4b405a85597699ada76a7bcfb8bf64b1e3308d24ad10baf53fa5">VELOCITY_POS</a> = 0x01
-, <a class="el" href="#a9296c8b77977c4b405a85597699ada76a155d6ef5b0ee9bf966b419b00d4b6034">VELOCITY_NEG</a> = 0x02
-, <a class="el" href="#a9296c8b77977c4b405a85597699ada76a0c6d9dfb485b43c6fba87439f9f73ac4">HOLD</a> = 0x03
- }</td></tr>
-<tr class="memdesc:a9296c8b77977c4b405a85597699ada76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ramp mode enumeration values.  <a href="#a9296c8b77977c4b405a85597699ada76">More...</a><br /></td></tr>
-<tr class="separator:a9296c8b77977c4b405a85597699ada76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae988d381e96f02ccf88517740b83e5f1" id="r_ae988d381e96f02ccf88517740b83e5f1"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae988d381e96f02ccf88517740b83e5f1">PWMFreewheel</a> : uint8_t { <a class="el" href="#ae988d381e96f02ccf88517740b83e5f1a1e23852820b9154316c7c06e2b7ba051">NORMAL</a> = 0x00
-, <a class="el" href="#ae988d381e96f02ccf88517740b83e5f1ac8cf6eea8f096ed51160b484d97c5bbd">ENABLED</a> = 0x01
-, <a class="el" href="#ae988d381e96f02ccf88517740b83e5f1aeb51cc63a45cb5784abfe6676612cd39">SHORT_LS</a> = 0x02
-, <a class="el" href="#ae988d381e96f02ccf88517740b83e5f1acfc47c02fa806a942e75b88155de3a41">SHORT_HS</a> = 0x03
- }</td></tr>
-<tr class="memdesc:ae988d381e96f02ccf88517740b83e5f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">PWM freewheel mode enumeration values.  <a href="#ae988d381e96f02ccf88517740b83e5f1">More...</a><br /></td></tr>
-<tr class="separator:ae988d381e96f02ccf88517740b83e5f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72806fd22f0c0112600ad9056aa3be97" id="r_a72806fd22f0c0112600ad9056aa3be97"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72806fd22f0c0112600ad9056aa3be97">EncoderSensitivity</a> : uint8_t { <a class="el" href="#a72806fd22f0c0112600ad9056aa3be97a38a74ee0f8764437c5fce05a7b4964e1">NO_EDGE</a> = 0x00
-, <a class="el" href="#a72806fd22f0c0112600ad9056aa3be97ad85243a747ac5537ef0b7adde99c3e98">RISING_EDGE</a> = 0x01
-, <a class="el" href="#a72806fd22f0c0112600ad9056aa3be97a297f5ea19073f4b51715b029f48d5d52">FALLING_EDGE</a> = 0x02
-, <a class="el" href="#a72806fd22f0c0112600ad9056aa3be97a03495d0b1362f1d841b59007e2887c7f">BOTH_EDGES</a> = 0x03
- }</td></tr>
-<tr class="memdesc:a72806fd22f0c0112600ad9056aa3be97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder N channel sensitivity enumeration values.  <a href="#a72806fd22f0c0112600ad9056aa3be97">More...</a><br /></td></tr>
-<tr class="separator:a72806fd22f0c0112600ad9056aa3be97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a530ddae090151490fa12a61b9b9b57b3" id="r_a530ddae090151490fa12a61b9b9b57b3"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> : uint8_t { <br />
 &#160;&#160;<a class="el" href="#a530ddae090151490fa12a61b9b9b57b3ae0aa021e21dddbd6d8cecec71e9cf564">OK</a> = 0
 , <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3a02de9649e258d1dd94056e676061e969">NOT_INITIALIZED</a>
@@ -594,9 +603,6 @@ Enumerations</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:aca4ec7876f2bc35ce259eee027485701" id="r_aca4ec7876f2bc35ce259eee027485701"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca4ec7876f2bc35ce259eee027485701">GetRegisterDef</a> (uint8_t address)</td></tr>
 <tr class="separator:aca4ec7876f2bc35ce259eee027485701"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c305b5819dc304ee0866ba0c7b63682" id="r_a4c305b5819dc304ee0866ba0c7b63682"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c305b5819dc304ee0866ba0c7b63682">calculateCrc8</a> (const uint8_t *data, size_t length) noexcept</td></tr>
-<tr class="memdesc:a4c305b5819dc304ee0866ba0c7b63682"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate CRC8 checksum for UART communication.  <br /></td></tr>
-<tr class="separator:a4c305b5819dc304ee0866ba0c7b63682"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac742f74b3a0ad095b8db62d07300c8c9" id="r_ac742f74b3a0ad095b8db62d07300c8c9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac742f74b3a0ad095b8db62d07300c8c9">CalculateMotorCurrent</a> (const <a class="el" href="structtmc51x0_1_1MotorSpec.html">MotorSpec</a> &amp;motor_spec, uint32_t sense_resistor_mohm, uint32_t supply_voltage_mv, uint16_t run_current_ma, uint16_t hold_current_ma, uint8_t &amp;irun, uint8_t &amp;ihold, uint16_t &amp;global_scaler) noexcept</td></tr>
 <tr class="memdesc:ac742f74b3a0ad095b8db62d07300c8c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate motor current settings from physical parameters.  <br /></td></tr>
 <tr class="separator:ac742f74b3a0ad095b8db62d07300c8c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -615,9 +621,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a3da6e7a7011465219730793db49358e0" id="r_a3da6e7a7011465219730793db49358e0"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3da6e7a7011465219730793db49358e0">CalculateShortDelay</a> (uint8_t delay_us_x10) noexcept</td></tr>
 <tr class="memdesc:a3da6e7a7011465219730793db49358e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate shortdelay register bit from detection delay time.  <br /></td></tr>
 <tr class="separator:a3da6e7a7011465219730793db49358e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03326fea54f838942f2a8b4e1d1ed01f" id="r_a03326fea54f838942f2a8b4e1d1ed01f"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a03326fea54f838942f2a8b4e1d1ed01f">ErrorMessage</a> (<a class="el" href="#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> code)</td></tr>
-<tr class="memdesc:a03326fea54f838942f2a8b4e1d1ed01f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get human-readable error message.  <br /></td></tr>
-<tr class="separator:a03326fea54f838942f2a8b4e1d1ed01f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14a9cbf63a5eb7e330795cacdf8fadc3" id="r_a14a9cbf63a5eb7e330795cacdf8fadc3"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14a9cbf63a5eb7e330795cacdf8fadc3">StepsToMm</a> (int32_t steps, float steps_per_rev, float lead_screw_pitch_mm) noexcept</td></tr>
 <tr class="memdesc:a14a9cbf63a5eb7e330795cacdf8fadc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert steps to millimeters.  <br /></td></tr>
 <tr class="separator:a14a9cbf63a5eb7e330795cacdf8fadc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -654,6 +657,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a774504ccaf07160eba05e41574b8bb8f" id="r_a774504ccaf07160eba05e41574b8bb8f"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a774504ccaf07160eba05e41574b8bb8f">StepsToBeltTeeth</a> (int32_t steps, float steps_per_rev, uint16_t belt_pulley_teeth) noexcept</td></tr>
 <tr class="memdesc:a774504ccaf07160eba05e41574b8bb8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert steps to belt drive distance (teeth)  <br /></td></tr>
 <tr class="separator:a774504ccaf07160eba05e41574b8bb8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c305b5819dc304ee0866ba0c7b63682" id="r_a4c305b5819dc304ee0866ba0c7b63682"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c305b5819dc304ee0866ba0c7b63682">calculateCrc8</a> (const uint8_t *data, size_t length) noexcept</td></tr>
+<tr class="memdesc:a4c305b5819dc304ee0866ba0c7b63682"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate CRC8 checksum for UART communication.  <br /></td></tr>
+<tr class="separator:a4c305b5819dc304ee0866ba0c7b63682"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03326fea54f838942f2a8b4e1d1ed01f" id="r_a03326fea54f838942f2a8b4e1d1ed01f"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a03326fea54f838942f2a8b4e1d1ed01f">ErrorMessage</a> (<a class="el" href="#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> code)</td></tr>
+<tr class="memdesc:a03326fea54f838942f2a8b4e1d1ed01f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get human-readable error message.  <br /></td></tr>
+<tr class="separator:a03326fea54f838942f2a8b4e1d1ed01f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a29f23dd48483983409679925db836440" name="a29f23dd48483983409679925db836440"></a>
@@ -1824,29 +1833,29 @@ Higher acceleration during AT#2 requires higher regulation speed. </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106ebaaa85f1840e282d8a8304dbc2c0d7c9b2" name="a564533944e9fa3223c5db30f0f4106ebaaa85f1840e282d8a8304dbc2c0d7c9b2"></a>EN&#160;</td><td class="fielddoc"><p>Enable pin (DRV_ENN, pin 28) - Active HIGH disables power stage. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106ebac1561b120842fabe1310417083827590" name="a564533944e9fa3223c5db30f0f4106ebac1561b120842fabe1310417083827590"></a>DIR&#160;</td><td class="fielddoc"><p>Direction pin (REFR_DIR, pin 18) - DIR input when SD_MODE=1, Right reference when SD_MODE=0. </p>
+<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106ebac1561b120842fabe1310417083827590" name="a564533944e9fa3223c5db30f0f4106ebac1561b120842fabe1310417083827590"></a>DIR&#160;</td><td class="fielddoc"><p>Direction pin (REFR_DIR, pin 18) - DIR input when SD_MODE=1, Right reference when SD_MODE=0 </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106eba522f694f92e679d874a1cc2b2616c3d7" name="a564533944e9fa3223c5db30f0f4106eba522f694f92e679d874a1cc2b2616c3d7"></a>STEP&#160;</td><td class="fielddoc"><p>Step pin (REFL_STEP, pin 17) - STEP input when SD_MODE=1, Left reference when SD_MODE=0. </p>
+<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106eba522f694f92e679d874a1cc2b2616c3d7" name="a564533944e9fa3223c5db30f0f4106eba522f694f92e679d874a1cc2b2616c3d7"></a>STEP&#160;</td><td class="fielddoc"><p>Step pin (REFL_STEP, pin 17) - STEP input when SD_MODE=1, Left reference when SD_MODE=0 </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106eba4a12e55d1f7a734e479eb5fd2f87f4a0" name="a564533944e9fa3223c5db30f0f4106eba4a12e55d1f7a734e479eb5fd2f87f4a0"></a>REFL_STEP&#160;</td><td class="fielddoc"><p>Left reference switch input (REFL_STEP, pin 17) - Used when SD_MODE=0. </p>
+<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106eba4a12e55d1f7a734e479eb5fd2f87f4a0" name="a564533944e9fa3223c5db30f0f4106eba4a12e55d1f7a734e479eb5fd2f87f4a0"></a>REFL_STEP&#160;</td><td class="fielddoc"><p>Left reference switch input (REFL_STEP, pin 17) - Used when SD_MODE=0 </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106ebae3f98f6082347dbcb851880a110ded3f" name="a564533944e9fa3223c5db30f0f4106ebae3f98f6082347dbcb851880a110ded3f"></a>REFR_DIR&#160;</td><td class="fielddoc"><p>Right reference switch input (REFR_DIR, pin 18) - Used when SD_MODE=0. </p>
+<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106ebae3f98f6082347dbcb851880a110ded3f" name="a564533944e9fa3223c5db30f0f4106ebae3f98f6082347dbcb851880a110ded3f"></a>REFR_DIR&#160;</td><td class="fielddoc"><p>Right reference switch input (REFR_DIR, pin 18) - Used when SD_MODE=0 </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106eba096538213f7a62873f3e7f37801559de" name="a564533944e9fa3223c5db30f0f4106eba096538213f7a62873f3e7f37801559de"></a>DIAG0&#160;</td><td class="fielddoc"><p>Diagnostic output 0 (DIAG0_SWN, pin 26) - Interrupt/STEP output when SD_MODE=0, SPI_MODE=1. Single wire I/O (negative) when SD_MODE=0, SPI_MODE=0 (UART mode). Use with DIAG1_SWP for RS485 bus. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106eba7ba8a2a766732ac17ad64ec3826f0281" name="a564533944e9fa3223c5db30f0f4106eba7ba8a2a766732ac17ad64ec3826f0281"></a>DIAG1&#160;</td><td class="fielddoc"><p>Diagnostic output 1 (DIAG1_SWP, pin 27) - Position-compare/DIR output when SD_MODE=0, SPI_MODE=1. Single wire I/O (positive) when SD_MODE=0, SPI_MODE=0 (UART mode). Use alone for single wire UART. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106eba9b124d075302f51d5412a1fbe6d83ac9" name="a564533944e9fa3223c5db30f0f4106eba9b124d075302f51d5412a1fbe6d83ac9"></a>ENCA&#160;</td><td class="fielddoc"><p>Encoder A-channel input (ENCA_DCIN_CFG5, pin 24) - Used when SD_MODE=0. </p>
+<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106eba9b124d075302f51d5412a1fbe6d83ac9" name="a564533944e9fa3223c5db30f0f4106eba9b124d075302f51d5412a1fbe6d83ac9"></a>ENCA&#160;</td><td class="fielddoc"><p>Encoder A-channel input (ENCA_DCIN_CFG5, pin 24) - Used when SD_MODE=0 </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106eba75da289ed9e532ac25b29a971675c64c" name="a564533944e9fa3223c5db30f0f4106eba75da289ed9e532ac25b29a971675c64c"></a>ENCB&#160;</td><td class="fielddoc"><p>Encoder B-channel input (ENCB_DCEN_CFG4, pin 23) - Used when SD_MODE=0. </p>
+<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106eba75da289ed9e532ac25b29a971675c64c" name="a564533944e9fa3223c5db30f0f4106eba75da289ed9e532ac25b29a971675c64c"></a>ENCB&#160;</td><td class="fielddoc"><p>Encoder B-channel input (ENCB_DCEN_CFG4, pin 23) - Used when SD_MODE=0 </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106eba70273f6707f8d960a22a5157ef454bd8" name="a564533944e9fa3223c5db30f0f4106eba70273f6707f8d960a22a5157ef454bd8"></a>ENCN&#160;</td><td class="fielddoc"><p>Encoder N-channel input (ENCN_DCO_CFG6, pin 25) - Used when SD_MODE=0. </p>
+<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106eba70273f6707f8d960a22a5157ef454bd8" name="a564533944e9fa3223c5db30f0f4106eba70273f6707f8d960a22a5157ef454bd8"></a>ENCN&#160;</td><td class="fielddoc"><p>Encoder N-channel input (ENCN_DCO_CFG6, pin 25) - Used when SD_MODE=0 </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106ebac61f660d0a38ca70970b88ade5b9c205" name="a564533944e9fa3223c5db30f0f4106ebac61f660d0a38ca70970b88ade5b9c205"></a>DCEN&#160;</td><td class="fielddoc"><p>DC Step enable input (ENCB_DCEN_CFG4, pin 23) - Used when SD_MODE=1, SPI_MODE=1. </p>
+<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106ebac61f660d0a38ca70970b88ade5b9c205" name="a564533944e9fa3223c5db30f0f4106ebac61f660d0a38ca70970b88ade5b9c205"></a>DCEN&#160;</td><td class="fielddoc"><p>DC Step enable input (ENCB_DCEN_CFG4, pin 23) - Used when SD_MODE=1, SPI_MODE=1 </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106ebac87f65790239520034c32e73b50e3a12" name="a564533944e9fa3223c5db30f0f4106ebac87f65790239520034c32e73b50e3a12"></a>DCIN&#160;</td><td class="fielddoc"><p>DC Step gating input (ENCA_DCIN_CFG5, pin 24) - Used when SD_MODE=1, SPI_MODE=1. </p>
+<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106ebac87f65790239520034c32e73b50e3a12" name="a564533944e9fa3223c5db30f0f4106ebac87f65790239520034c32e73b50e3a12"></a>DCIN&#160;</td><td class="fielddoc"><p>DC Step gating input (ENCA_DCIN_CFG5, pin 24) - Used when SD_MODE=1, SPI_MODE=1 </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106eba56326fb851c1918c9b954a13cd007c57" name="a564533944e9fa3223c5db30f0f4106eba56326fb851c1918c9b954a13cd007c57"></a>DCO&#160;</td><td class="fielddoc"><p>DC Step ready output (ENCN_DCO_CFG6, pin 25) - Used when SD_MODE=1, SPI_MODE=1. </p>
+<tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106eba56326fb851c1918c9b954a13cd007c57" name="a564533944e9fa3223c5db30f0f4106eba56326fb851c1918c9b954a13cd007c57"></a>DCO&#160;</td><td class="fielddoc"><p>DC Step ready output (ENCN_DCO_CFG6, pin 25) - Used when SD_MODE=1, SPI_MODE=1 </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a564533944e9fa3223c5db30f0f4106ebafcea8677932f698f06799f81e024d7ab" name="a564533944e9fa3223c5db30f0f4106ebafcea8677932f698f06799f81e024d7ab"></a>CLK&#160;</td><td class="fielddoc"><p>Clock input (CLK, pin 12) - External clock input (tie to GND for internal clock) </p>
 </td></tr>
@@ -2223,7 +2232,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if calculation successful, false if parameters invalid</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Based on datasheet equation: I_RMS = (GLOBAL_SCALER/256) * ((CS+1)/32) * (VFS/RSENSE) * (1/√2) Where VFS ≈ 0.325V (typical full-scale voltage)</dd>
+<dl class="section note"><dt>Note</dt><dd>Based on datasheet equation: I_RMS = (GLOBAL_SCALER/256) * ((CS+1)/32) * (VFS/RSENSE) * (1/√2) Where VFS ≈ 325mV (0.325V, typical full-scale voltage) Calculations work directly in milliohms, millivolts, and milliamps</dd>
 <dd>
 For best precision, IRUN will be constrained to 16-31 range </dd>
 <dd>
@@ -2231,7 +2240,7 @@ For automatic tuning compatibility, IRUN will be at least 8 </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ac742f74b3a0ad095b8db62d07300c8c9_icgraph.svg" width="535" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ac742f74b3a0ad095b8db62d07300c8c9_icgraph.svg" width="492" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2433,11 +2442,6 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Lower current limit in milliamps, or 0 if calculation not possible</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Based on datasheet equation: I_Lower_Limit = t_BLANK * f_PWM * V_M / R_COIL Where t_BLANK depends on TBL setting </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ad149efd95c065a993dbdc5372239927c_icgraph.svg" width="482" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

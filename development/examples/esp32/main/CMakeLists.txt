@@ -83,6 +83,10 @@ if(APP_TYPE STREQUAL "fatigue_test_espnow_slideshow")
         "${CMAKE_CURRENT_SOURCE_DIR}/../components/Adafruit_EPD"
         "${CMAKE_CURRENT_SOURCE_DIR}/../components/Adafruit_BusIO_ESPIDF"
     )
+    # Add fatfs vfs subdirectory for esp_vfs_fat.h
+    list(APPEND MAIN_INCLUDE_DIRS
+        "${IDF_PATH}/components/fatfs/vfs"
+    )
 endif()
 
 # =============================================================================
@@ -101,6 +105,7 @@ if(APP_TYPE STREQUAL "fatigue_test_espnow_slideshow")
         Adafruit_BusIO_ESPIDF
         fatfs
         esp_driver_sdspi
+        vfs
     )
 else()
     # Default requirements for other apps

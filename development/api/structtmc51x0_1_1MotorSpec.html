@@ -125,9 +125,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a9e082d5fcee32fc3caf35cc155599cb9" id="r_a9e082d5fcee32fc3caf35cc155599cb9"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e082d5fcee32fc3caf35cc155599cb9">winding_resistance_mohm</a> {3}</td></tr>
 <tr class="memdesc:a9e082d5fcee32fc3caf35cc155599cb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Winding resistance in milliohms (required for StealthChop lower limit calc)  <br /></td></tr>
 <tr class="separator:a9e082d5fcee32fc3caf35cc155599cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a777ef87e68ff6a20bfac9ca1b60a9826" id="r_a777ef87e68ff6a20bfac9ca1b60a9826"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a777ef87e68ff6a20bfac9ca1b60a9826">winding_inductance_uh</a></td></tr>
-<tr class="memdesc:a777ef87e68ff6a20bfac9ca1b60a9826"><td class="mdescLeft">&#160;</td><td class="mdescRight">Winding inductance in microhenries (optional, 0 = not specified) (for StealthChop)  <br /></td></tr>
-<tr class="separator:a777ef87e68ff6a20bfac9ca1b60a9826"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae054399b42d229791841c86325e3ccce" id="r_ae054399b42d229791841c86325e3ccce"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae054399b42d229791841c86325e3ccce">winding_inductance_mh</a> {0.0F}</td></tr>
+<tr class="memdesc:ae054399b42d229791841c86325e3ccce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Winding inductance in millihenries (optional, 0 = not specified) (for StealthChop)  <br /></td></tr>
+<tr class="separator:ae054399b42d229791841c86325e3ccce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a440668f541449ee49793814799d35656" id="r_a440668f541449ee49793814799d35656"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a440668f541449ee49793814799d35656">run_current_ma</a> {0}</td></tr>
 <tr class="memdesc:a440668f541449ee49793814799d35656"><td class="mdescLeft">&#160;</td><td class="mdescRight">Desired run current in milliamps (0 = use rated_current_ma)  <br /></td></tr>
 <tr class="separator:a440668f541449ee49793814799d35656"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -433,21 +433,19 @@ Default: 0.0 (no adjustment) </dd></dl>
 
 </div>
 </div>
-<a id="a777ef87e68ff6a20bfac9ca1b60a9826" name="a777ef87e68ff6a20bfac9ca1b60a9826"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a777ef87e68ff6a20bfac9ca1b60a9826">&#9670;&#160;</a></span>winding_inductance_uh</h2>
+<a id="ae054399b42d229791841c86325e3ccce" name="ae054399b42d229791841c86325e3ccce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae054399b42d229791841c86325e3ccce">&#9670;&#160;</a></span>winding_inductance_mh</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t tmc51x0::MotorSpec::winding_inductance_uh</td>
+          <td class="memname">float tmc51x0::MotorSpec::winding_inductance_mh {0.0F}</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">{</div>
-<div class="line">      0}</div>
-</div><!-- fragment -->
-<p>Winding inductance in microhenries (optional, 0 = not specified) (for StealthChop) </p>
+
+<p>Winding inductance in millihenries (optional, 0 = not specified) (for StealthChop) </p>
 
 </div>
 </div>

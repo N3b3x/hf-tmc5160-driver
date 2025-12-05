@@ -1,6 +1,6 @@
 var uniontmc51x0_1_1CHOPCONF__Register =
 [
-    [ "bits", "uniontmc51x0_1_1CHOPCONF__Register.html#a2c3b0514b4fb75d9f8b4aeba55a1b5d8", null ],
+    [ "bits", "uniontmc51x0_1_1CHOPCONF__Register.html#abbcfc6191a6af119ba647daaaacd662c", null ],
     [ "chm", "uniontmc51x0_1_1CHOPCONF__Register.html#ac2d0fe660036c5723585ecd4e46837dd", null ],
     [ "dedge", "uniontmc51x0_1_1CHOPCONF__Register.html#af266d5f63c0190a26d473ab90163f7dd", null ],
     [ "disfdcc", "uniontmc51x0_1_1CHOPCONF__Register.html#a25b2060aadf3858c77005bb5c753a744", null ],

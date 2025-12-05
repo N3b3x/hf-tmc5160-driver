@@ -1,6 +1,6 @@
 var uniontmc51x0_1_1RAMP__STAT__Register =
 [
-    [ "bits", "uniontmc51x0_1_1RAMP__STAT__Register.html#aa9e67a86190ecb0693bfc68ccab04e98", null ],
+    [ "bits", "uniontmc51x0_1_1RAMP__STAT__Register.html#a04962eeb6425881ad62a1124beeeabf0", null ],
     [ "event_pos_reached", "uniontmc51x0_1_1RAMP__STAT__Register.html#a9e51de9cfd4f9297581bd262f5bb0109", null ],
     [ "event_stop_l", "uniontmc51x0_1_1RAMP__STAT__Register.html#a9bae457ec007da344d4e55cc77159866", null ],
     [ "event_stop_r", "uniontmc51x0_1_1RAMP__STAT__Register.html#a9e8a0c15414880054eee053cb5cff3f5", null ],

@@ -9,9 +9,27 @@ var namespacetmc51x0 =
       [ "MAX_F_CLK", "namespacetmc51x0_1_1ClockFreq.html#a3646764e23b0e26677311b320cb8d530", null ],
       [ "MIN_F_CLK", "namespacetmc51x0_1_1ClockFreq.html#a19ecaea87d80c60b18513b3c8364dde4", null ]
     ] ],
+    [ "MathConstants", "namespacetmc51x0_1_1MathConstants.html", [
+      [ "DEGREES_PER_REV", "namespacetmc51x0_1_1MathConstants.html#acb6742f022495d32d5335c6b5b67a97a", null ],
+      [ "PI", "namespacetmc51x0_1_1MathConstants.html#a0ff92ff0ce1a04a8e74a707251a24e62", null ],
+      [ "TWO_PI", "namespacetmc51x0_1_1MathConstants.html#a19282ec1a9cb329c29ff8a991def602d", null ]
+    ] ],
     [ "MotorCalcConstants", "namespacetmc51x0_1_1MotorCalcConstants.html", [
       [ "SQRT2", "namespacetmc51x0_1_1MotorCalcConstants.html#ac49779d8236ba6233732bcd701711b02", null ],
-      [ "VFS", "namespacetmc51x0_1_1MotorCalcConstants.html#aac204bb85a8c08283e9d628137868a4f", null ]
+      [ "VFS_MV", "namespacetmc51x0_1_1MotorCalcConstants.html#ac1ac0aad525fc9eb35894e385b84b54e", null ]
+    ] ],
+    [ "MotorCalcLegacyConstants", "namespacetmc51x0_1_1MotorCalcLegacyConstants.html", [
+      [ "IRUN_CALC_DIVISOR", "namespacetmc51x0_1_1MotorCalcLegacyConstants.html#afa6378ce049fe60d1aa901ec1da62fec", null ],
+      [ "TARGET_HOLD_CURRENT_RATIO", "namespacetmc51x0_1_1MotorCalcLegacyConstants.html#a7d57385f9735b3343ce5396709352c90", null ],
+      [ "TARGET_RUN_CURRENT_RATIO", "namespacetmc51x0_1_1MotorCalcLegacyConstants.html#a0ee5fa8819b611cdde475b3382743146", null ]
+    ] ],
+    [ "RegisterConstants", "namespacetmc51x0_1_1RegisterConstants.html", [
+      [ "ENC_BINARY_MULTIPLIER", "namespacetmc51x0_1_1RegisterConstants.html#afee6b0ffb118e92cfc104f5fbddb532d", null ],
+      [ "ENC_DECIMAL_MULTIPLIER", "namespacetmc51x0_1_1RegisterConstants.html#a70c707a89f5e0d52aff71334a36837ba", null ],
+      [ "MS_PER_SEC", "namespacetmc51x0_1_1RegisterConstants.html#aa68083d7c3f8c3df13b047f0076ccf80", null ],
+      [ "NS_PER_SEC", "namespacetmc51x0_1_1RegisterConstants.html#aea8cc1e5b0cd6c2eacb7612521e2f461", null ],
+      [ "TPOWERDOWN_DIVISOR", "namespacetmc51x0_1_1RegisterConstants.html#a06d385c4c12f99f0817d3628d9510d2f", null ],
+      [ "US_PER_SEC", "namespacetmc51x0_1_1RegisterConstants.html#aec0fc50a9a829d404645482a7e641a35", null ]
     ] ],
     [ "Registers", "namespacetmc51x0_1_1Registers.html", null ],
     [ "AccelerationValue", "structtmc51x0_1_1AccelerationValue.html", "structtmc51x0_1_1AccelerationValue" ],

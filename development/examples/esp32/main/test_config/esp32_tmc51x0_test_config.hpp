@@ -132,7 +132,7 @@
 
 #include "driver/gpio.h"
 #include "tmc51x0_comm_interface.hpp"
-#include "tmc51x0_config_builder.hpp"  // For ConfigBuilder
+#include "features/tmc51x0_config_builder.hpp"  // For ConfigBuilder
 #include "esp32_tmc51x0_bus.hpp"  // For Esp32SpiPinConfig
 
 namespace tmc51x0_test_config {
@@ -356,7 +356,7 @@ enum class TestRigType {
 struct MotorConfig_17HS4401S {
     // ===== Physical Motor Specs =====
     static constexpr uint16_t RATED_CURRENT_MA = 1700;  // 1.7A (17HS4401 motor specification)
-    static constexpr float RESISTANCE_OHMS = 1.5f;      // 1.5 Ω per phase (17HS4401 motor specification)
+    static constexpr uint32_t RESISTANCE_MOHM = 1500;   // 1.5 Ω = 1500 mΩ per phase (17HS4401 motor specification)
     static constexpr float INDUCTANCE_MH = 3.2f;        // 3.2 mH per phase (17HS4401 motor specification)
     static constexpr float GEAR_RATIO = 5.18f;          // Planetary gearbox ratio (5.18:1)
     static constexpr uint16_t MOTOR_FULL_STEPS = 200;   // Motor steps per revolution (1.8° step angle)
@@ -462,7 +462,7 @@ struct MotorConfig_17HS4401S {
 struct MotorConfig_17HS4401S_Direct {
     // ===== Physical Motor Specs =====
     static constexpr uint16_t RATED_CURRENT_MA = 1700;  // 1.7A (17HS4401 motor specification)
-    static constexpr float RESISTANCE_OHMS = 1.5f;      // 1.5 Ω per phase (17HS4401 motor specification)
+    static constexpr uint32_t RESISTANCE_MOHM = 1500;   // 1.5 Ω = 1500 mΩ per phase (17HS4401 motor specification)
     static constexpr float INDUCTANCE_MH = 3.2f;         // 3.2 mH per phase (17HS4401 motor specification)
     static constexpr float GEAR_RATIO = 1.0f;            // Direct drive (no gearbox)
     static constexpr uint16_t MOTOR_FULL_STEPS = 200;
@@ -565,7 +565,7 @@ struct MotorConfig_AppliedMotion_5034_369 {
     // OUTPUT_FULL_STEPS: Steps per revolution at output shaft (same as motor for direct drive)
     // Calculation: MOTOR_FULL_STEPS * GEAR_RATIO = 200 * 1.0 = 200 steps/rev
     static constexpr uint16_t OUTPUT_FULL_STEPS = MOTOR_FULL_STEPS;
-    static constexpr float RESISTANCE_OHMS = 0.84f;      // Bipolar series resistance
+    static constexpr uint32_t RESISTANCE_MOHM = 840;     // 0.84 Ω = 840 mΩ (Bipolar series resistance)
     static constexpr float INDUCTANCE_MH = 10.4f;        // Bipolar series inductance
     static constexpr uint32_t SUPPLY_VOLTAGE_MV = 24000; // 24V (motor-specific supply voltage)
 
@@ -983,7 +983,7 @@ inline void ApplyBoardConfig(tmc51x0::DriverConfig& cfg) noexcept {
     
     if constexpr (board_type == BoardType::BOARD_TMC51x0_EVAL) {
         // TMC51x0 Evaluation Kit hardware configuration
-        builder.WithSenseResistor(BoardConfig_TMC51x0_EVAL::SENSE_RESISTOR_MOHM / 1000.0f)  // Convert mΩ to Ω
+        builder.WithSenseResistorMohm(BoardConfig_TMC51x0_EVAL::SENSE_RESISTOR_MOHM)
                .WithMosfetMillerChargeNc(BoardConfig_TMC51x0_EVAL::MOSFET_MILLER_CHARGE_NC)
                .WithBbmTimeNs(BoardConfig_TMC51x0_EVAL::BBM_TIME_NS)
                .WithSenseFilter(tmc51x0::SenseFilterTime::T100ns)
@@ -996,12 +996,12 @@ inline void ApplyBoardConfig(tmc51x0::DriverConfig& cfg) noexcept {
         if (BoardConfig_TMC51x0_EVAL::CLOCK_FREQUENCY_HZ == 0) {
             builder.WithInternalClock();
         } else {
-            builder.WithExternalClock(BoardConfig_TMC51x0_EVAL::CLOCK_FREQUENCY_HZ);
+            builder.WithExternalClockHz(BoardConfig_TMC51x0_EVAL::CLOCK_FREQUENCY_HZ);
         }
     }
     else if constexpr (board_type == BoardType::BOARD_TMC51x0_BOB) {
         // TMC51x0 Break-Out Board hardware configuration
-        builder.WithSenseResistor(BoardConfig_TMC51x0_BOB::SENSE_RESISTOR_MOHM / 1000.0f)  // Convert mΩ to Ω
+        builder.WithSenseResistorMohm(BoardConfig_TMC51x0_BOB::SENSE_RESISTOR_MOHM)
                .WithMosfetMillerChargeNc(BoardConfig_TMC51x0_BOB::MOSFET_MILLER_CHARGE_NC)
                .WithBbmTimeNs(BoardConfig_TMC51x0_BOB::BBM_TIME_NS)
                .WithSenseFilter(tmc51x0::SenseFilterTime::T100ns)
@@ -1014,7 +1014,7 @@ inline void ApplyBoardConfig(tmc51x0::DriverConfig& cfg) noexcept {
         if (BoardConfig_TMC51x0_BOB::CLOCK_FREQUENCY_HZ == 0) {
             builder.WithInternalClock();
         } else {
-            builder.WithExternalClock(BoardConfig_TMC51x0_BOB::CLOCK_FREQUENCY_HZ);
+            builder.WithExternalClockHz(BoardConfig_TMC51x0_BOB::CLOCK_FREQUENCY_HZ);
         }
     }
     
@@ -1037,13 +1037,13 @@ inline void ConfigureDriverFromMotor_17HS4401S_Gearbox(tmc51x0::DriverConfig& cf
     tmc51x0::ConfigBuilder builder(cfg);
     
     // ===== MOTOR CONFIGURATION =====
-    builder.WithMotor(MotorConfig_17HS4401S::MOTOR_FULL_STEPS, 
-                      MotorConfig_17HS4401S::RATED_CURRENT_MA / 1000.0f)  // Convert mA to A
-           .WithSupplyVoltage(MotorConfig_17HS4401S::SUPPLY_VOLTAGE_MV / 1000.0f)  // Convert mV to V
-           .WithRunCurrent(MotorConfig_17HS4401S::TARGET_RUN_CURRENT_MA / 1000.0f)  // Convert mA to A
-           .WithHoldCurrent(MotorConfig_17HS4401S::TARGET_HOLD_CURRENT_MA / 1000.0f)  // Convert mA to A
-           .WithWindingResistance(MotorConfig_17HS4401S::RESISTANCE_OHMS)
-           .WithWindingInductance(MotorConfig_17HS4401S::INDUCTANCE_MH)
+    builder.WithMotorMa(MotorConfig_17HS4401S::MOTOR_FULL_STEPS, 
+                        MotorConfig_17HS4401S::RATED_CURRENT_MA)
+           .WithSupplyVoltageMv(MotorConfig_17HS4401S::SUPPLY_VOLTAGE_MV)
+           .WithRunCurrentMa(MotorConfig_17HS4401S::TARGET_RUN_CURRENT_MA)
+           .WithHoldCurrentMa(MotorConfig_17HS4401S::TARGET_HOLD_CURRENT_MA)
+           .WithWindingResistanceMohm(MotorConfig_17HS4401S::RESISTANCE_MOHM)
+           .WithWindingInductanceMh(MotorConfig_17HS4401S::INDUCTANCE_MH)
            .WithMotorPowerDownDelayMs(MotorConfig_17HS4401S::IHOLDDELAY_MS)
            
            // ===== CHOPPER CONFIGURATION =====
@@ -1106,13 +1106,13 @@ inline void ConfigureDriverFromMotor_17HS4401S_Direct(tmc51x0::DriverConfig& cfg
     tmc51x0::ConfigBuilder builder(cfg);
     
     // ===== MOTOR CONFIGURATION =====
-    builder.WithMotor(MotorConfig_17HS4401S_Direct::MOTOR_FULL_STEPS, 
-                      MotorConfig_17HS4401S_Direct::RATED_CURRENT_MA / 1000.0f)  // Convert mA to A
-           .WithSupplyVoltage(MotorConfig_17HS4401S_Direct::SUPPLY_VOLTAGE_MV / 1000.0f)  // Convert mV to V
-           .WithRunCurrent(MotorConfig_17HS4401S_Direct::TARGET_RUN_CURRENT_MA / 1000.0f)  // Convert mA to A
-           .WithHoldCurrent(MotorConfig_17HS4401S_Direct::TARGET_HOLD_CURRENT_MA / 1000.0f)  // Convert mA to A
-           .WithWindingResistance(MotorConfig_17HS4401S_Direct::RESISTANCE_OHMS)
-           .WithWindingInductance(MotorConfig_17HS4401S_Direct::INDUCTANCE_MH)
+    builder.WithMotorMa(MotorConfig_17HS4401S_Direct::MOTOR_FULL_STEPS, 
+                        MotorConfig_17HS4401S_Direct::RATED_CURRENT_MA)
+           .WithSupplyVoltageMv(MotorConfig_17HS4401S_Direct::SUPPLY_VOLTAGE_MV)
+           .WithRunCurrentMa(MotorConfig_17HS4401S_Direct::TARGET_RUN_CURRENT_MA)
+           .WithHoldCurrentMa(MotorConfig_17HS4401S_Direct::TARGET_HOLD_CURRENT_MA)
+           .WithWindingResistanceMohm(MotorConfig_17HS4401S_Direct::RESISTANCE_MOHM)
+           .WithWindingInductanceMh(MotorConfig_17HS4401S_Direct::INDUCTANCE_MH)
            .WithMotorPowerDownDelayMs(MotorConfig_17HS4401S_Direct::IHOLDDELAY_MS)
            
            // ===== CHOPPER CONFIGURATION =====
@@ -1175,13 +1175,13 @@ inline void ConfigureDriverFromMotor_AppliedMotion_5034(tmc51x0::DriverConfig& c
     tmc51x0::ConfigBuilder builder(cfg);
     
     // ===== MOTOR CONFIGURATION =====
-    builder.WithMotor(MotorConfig_AppliedMotion_5034_369::MOTOR_FULL_STEPS, 
-                      MotorConfig_AppliedMotion_5034_369::RATED_CURRENT_MA / 1000.0f)  // Convert mA to A
-           .WithSupplyVoltage(MotorConfig_AppliedMotion_5034_369::SUPPLY_VOLTAGE_MV / 1000.0f)  // Convert mV to V
-           .WithRunCurrent(MotorConfig_AppliedMotion_5034_369::TARGET_RUN_CURRENT_MA / 1000.0f)  // Convert mA to A
-           .WithHoldCurrent(MotorConfig_AppliedMotion_5034_369::TARGET_HOLD_CURRENT_MA / 1000.0f)  // Convert mA to A
-           .WithWindingResistance(MotorConfig_AppliedMotion_5034_369::RESISTANCE_OHMS)
-           .WithWindingInductance(MotorConfig_AppliedMotion_5034_369::INDUCTANCE_MH)
+    builder.WithMotorMa(MotorConfig_AppliedMotion_5034_369::MOTOR_FULL_STEPS, 
+                        MotorConfig_AppliedMotion_5034_369::RATED_CURRENT_MA)
+           .WithSupplyVoltageMv(MotorConfig_AppliedMotion_5034_369::SUPPLY_VOLTAGE_MV)
+           .WithRunCurrentMa(MotorConfig_AppliedMotion_5034_369::TARGET_RUN_CURRENT_MA)
+           .WithHoldCurrentMa(MotorConfig_AppliedMotion_5034_369::TARGET_HOLD_CURRENT_MA)
+           .WithWindingResistanceMohm(MotorConfig_AppliedMotion_5034_369::RESISTANCE_MOHM)
+           .WithWindingInductanceMh(MotorConfig_AppliedMotion_5034_369::INDUCTANCE_MH)
            .WithMotorPowerDownDelayMs(MotorConfig_AppliedMotion_5034_369::IHOLDDELAY_MS)
            
            // ===== CHOPPER CONFIGURATION =====

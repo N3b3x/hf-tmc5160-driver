@@ -1,10 +1,10 @@
 var searchData=
 [
   ['uart_0',['UART',['../namespacetmc51x0.html#af3d18824bf231d968c6c33bd1aaeae5facec5769b01fb096efaf0d6186823c78f',1,'tmc51x0']]],
-  ['uart_20daisy_20chaining_1',['UART Daisy Chaining',['../classtmc51x0_1_1UartCommInterface.html#autotoc_md9',1,'']]],
-  ['uart_20mode_2',['Pin Functions in UART Mode',['../classtmc51x0_1_1UartCommInterface.html#autotoc_md8',1,'']]],
-  ['uart_20mode_20requirements_3',['UART Mode Requirements',['../classtmc51x0_1_1UartCommInterface.html#autotoc_md7',1,'']]],
-  ['uart_20protocol_4',['UART Protocol',['../group__TMC51X0__CommTypes.html#autotoc_md5',1,'']]],
+  ['uart_20daisy_20chaining_1',['UART Daisy Chaining',['../classtmc51x0_1_1UartCommInterface.html#autotoc_md18',1,'']]],
+  ['uart_20mode_2',['Pin Functions in UART Mode',['../classtmc51x0_1_1UartCommInterface.html#autotoc_md17',1,'']]],
+  ['uart_20mode_20requirements_3',['UART Mode Requirements',['../classtmc51x0_1_1UartCommInterface.html#autotoc_md16',1,'']]],
+  ['uart_20protocol_4',['UART Protocol',['../group__TMC51X0__CommTypes.html#autotoc_md14',1,'']]],
   ['uart_5fcommand_5ftask_5',['uart_command_task',['../fatigue__test__encoder_8cpp.html#a257128a931ab6472c0421a29abeb0443',1,'uart_command_task(void *param) noexcept:&#160;fatigue_test_encoder.cpp'],['../test__unit_2main_8cpp.html#a5a8d7cdba17444119b8f942be87ffe68',1,'uart_command_task(void *arg):&#160;main.cpp'],['../fatigue__test__stallguard_8cpp.html#a257128a931ab6472c0421a29abeb0443',1,'uart_command_task(void *param) noexcept:&#160;fatigue_test_stallguard.cpp']]],
   ['uart_5fconfig_6',['uart_config',['../structtmc51x0_1_1DriverConfig.html#a2f7263160e64b155119717707047e129',1,'tmc51x0::DriverConfig']]],
   ['uart_5finternal_5framp_7',['UART_INTERNAL_RAMP',['../namespacetmc51x0.html#ac801995f570807ad863a40346b5b7294aee770912474919e17ca4da2f54c9cd6b',1,'tmc51x0']]],
@@ -41,7 +41,7 @@ var searchData=
   ['unit_38',['Unit',['../namespacetmc51x0.html#a68e41191c288365e02cfca672681f686',1,'tmc51x0']]],
   ['unit_20conversion_20helpers_39',['Unit Conversion Helpers',['../index.html#autotoc_md68',1,'']]],
   ['unit_20conversions_40',['Unit Conversions',['../group__TMC51X0__Units.html',1,'']]],
-  ['unit_20naming_20convention_41',['Unit Naming Convention',['../tmc51x0__config__builder_8hpp.html#autotoc_md10',1,'']]],
+  ['unit_20naming_20convention_41',['Unit Naming Convention',['../tmc51x0__config__builder_8hpp.html#autotoc_md0',1,'']]],
   ['units_42',['Using Physical Units',['../index.html#autotoc_md54',1,'']]],
   ['unlock_43',['unlock',['../classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf',1,'TmcMutexGuard::unlock() noexcept'],['../classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf',1,'TmcMutexGuard::unlock() noexcept'],['../classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf',1,'TmcMutexGuard::unlock() noexcept']]],
   ['unsupported_44',['UNSUPPORTED',['../namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3a40aa75f8e8cfdf7b660c5620e953229f',1,'tmc51x0']]],
@@ -52,9 +52,10 @@ var searchData=
   ['updatechainlength_49',['UpdateChainLength',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a27fde0b867d5e1943903e93ace73f905',1,'tmc51x0::TMC51x0DaisyChain']]],
   ['updatesinuousmotion_50',['UpdateSinuousMotion',['../classFatigueTestMotion.html#a00b20bc353584e6851ec34eb34c95205',1,'FatigueTestMotion::UpdateSinuousMotion()'],['../classFatigueTest_1_1FatigueTestMotion.html#a00b20bc353584e6851ec34eb34c95205',1,'FatigueTest::FatigueTestMotion::UpdateSinuousMotion()'],['../classFatigueTestMotion.html#a00b20bc353584e6851ec34eb34c95205',1,'FatigueTestMotion::UpdateSinuousMotion()']]],
   ['upper_5fthreshold_5fsg_51',['upper_threshold_sg',['../structtmc51x0_1_1CoolStepConfig.html#a0b53d3498fdc44d5658e0097cc04a1ef',1,'tmc51x0::CoolStepConfig']]],
-  ['usage_52',['Usage',['../esp32__tmc51x0__test__config_8hpp.html#autotoc_md24',1,'']]],
-  ['usage_20example_53',['Usage Example',['../classtmc51x0_1_1TMC51x0.html#autotoc_md2',1,'Usage Example'],['../classtmc51x0_1_1TMC51x0DaisyChain.html#autotoc_md14',1,'Usage Example'],['../classtmc51x0_1_1TMC51x0MultiNode.html#autotoc_md18',1,'Usage Example']]],
-  ['user_5fspecified_5fchain_5flength_5f_54',['user_specified_chain_length_',['../classtmc51x0_1_1SpiCommInterface.html#ae51148b7e5a26f3318ee15d88ae5621d',1,'tmc51x0::SpiCommInterface']]],
-  ['using_20physical_20units_55',['Using Physical Units',['../index.html#autotoc_md54',1,'']]],
-  ['uv_5fcp_56',['uv_cp',['../uniontmc51x0_1_1GSTAT__Register.html#a4e1e55cfd02a01cc02ee94c3f6a1ef62',1,'tmc51x0::GSTAT_Register']]]
+  ['us_5fper_5fsec_52',['US_PER_SEC',['../namespacetmc51x0_1_1RegisterConstants.html#aec0fc50a9a829d404645482a7e641a35',1,'tmc51x0::RegisterConstants']]],
+  ['usage_53',['Usage',['../esp32__tmc51x0__test__config_8hpp.html#autotoc_md24',1,'']]],
+  ['usage_20example_54',['Usage Example',['../classtmc51x0_1_1TMC51x0DaisyChain.html#autotoc_md4',1,'Usage Example'],['../classtmc51x0_1_1TMC51x0MultiNode.html#autotoc_md8',1,'Usage Example'],['../classtmc51x0_1_1TMC51x0.html#autotoc_md11',1,'Usage Example']]],
+  ['user_5fspecified_5fchain_5flength_5f_55',['user_specified_chain_length_',['../classtmc51x0_1_1SpiCommInterface.html#ae51148b7e5a26f3318ee15d88ae5621d',1,'tmc51x0::SpiCommInterface']]],
+  ['using_20physical_20units_56',['Using Physical Units',['../index.html#autotoc_md54',1,'']]],
+  ['uv_5fcp_57',['uv_cp',['../uniontmc51x0_1_1GSTAT__Register.html#a4e1e55cfd02a01cc02ee94c3f6a1ef62',1,'tmc51x0::GSTAT_Register']]]
 ];

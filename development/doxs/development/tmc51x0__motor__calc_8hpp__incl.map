@@ -1,18 +1,18 @@
 <map id="tmc51x0_motor_calc.hpp" name="tmc51x0_motor_calc.hpp">
-<area shape="rect" id="Node000001" title="Motor current calculation functions for TMC51x0 (TMC5130 &amp; TMC5160)" alt="" coords="295,5,482,31"/>
-<area shape="rect" id="Node000002" href="$tmc51x0__types_8hpp.html" title="Type definitions and enumerations for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="124,79,275,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="359,33,244,76,242,71,357,28"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="299,79,385,104"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="383,32,359,69,355,66,379,30"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="409,79,465,104"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="399,30,424,66,419,69,394,33"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="489,79,552,104"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="411,28,488,70,486,74,409,33"/>
-<area shape="rect" id="Node000003" href="$tmc51x0__registers_8hpp.html" title="Register definitions and bitfield structures for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="53,152,223,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="191,106,159,143,155,140,187,103"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="227,225,294,251"/>
-<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="210,103,238,151,257,211,252,212,233,153,205,105"/>
-<area shape="rect" id="Node000004" href="$tmc51x0__register__defs_8hpp.html" title="X&#45;MACRO definitions for TMC51x0 registers (TMC5130 &amp; TMC5160)" alt="" coords="5,225,204,251"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="135,179,118,214,113,212,130,177"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="159,175,230,216,228,221,156,180"/>
+<area shape="rect" id="Node000001" title="Motor current calculation functions for TMC51x0 (TMC5130 &amp; TMC5160)" alt="" coords="216,5,403,31"/>
+<area shape="rect" id="Node000002" href="$tmc51x0__types_8hpp.html" title="Type definitions and enumerations for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="33,79,196,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="279,33,160,76,158,71,277,28"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="220,79,305,104"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="304,32,280,69,276,66,299,30"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="329,79,385,104"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="319,30,344,66,340,69,315,33"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="410,79,473,104"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="332,28,409,70,407,74,329,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,225,72,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="104,106,85,127,66,153,54,183,46,212,41,211,49,181,62,151,80,124,100,102"/>
+<area shape="rect" id="Node000004" href="$tmc51x0__registers_8hpp.html" title="Register definitions and bitfield structures for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="76,152,308,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="129,102,171,141,167,144,125,106"/>
+<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="168,180,77,222,75,217,166,175"/>
+<area shape="rect" id="Node000005" href="$tmc51x0__register__defs_8hpp.html" title="X&#45;MACRO definitions for TMC51x0 registers (TMC5130 &amp; TMC5160)" alt="" coords="95,225,294,251"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="195,178,196,212,191,212,190,178"/>
 </map>

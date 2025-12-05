@@ -435,7 +435,7 @@
     <span class="c1">// ... required parameters ...</span>
     
     <span class="kt">uint32_t</span> <span class="n">winding_resistance_mohm</span><span class="p">;</span>  <span class="c1">// Winding resistance in milliohms (required for StealthChop)</span>
-    <span class="kt">uint32_t</span> <span class="n">winding_inductance_uh</span><span class="p">;</span>    <span class="c1">// Winding inductance in microhenries (0 = not specified)</span>
+    <span class="kt">float</span> <span class="n">winding_inductance_mh</span><span class="p">;</span>       <span class="c1">// Winding inductance in millihenries (0 = not specified)</span>
     <span class="kt">uint16_t</span> <span class="n">run_current_ma</span><span class="p">;</span>          <span class="c1">// Desired run current (0 = use rated_current_ma)</span>
     <span class="kt">uint16_t</span> <span class="n">hold_current_ma</span><span class="p">;</span>          <span class="c1">// Desired hold current (0 = auto-calculate as 30% of run)</span>
     <span class="kt">float</span> <span class="n">scaler_adjustment_percent</span><span class="p">;</span>   <span class="c1">// Fine-tuning for GLOBAL_SCALER calculation (-50.0 to +50.0)</span>
@@ -536,7 +536,7 @@
     <span class="n">nema17</span><span class="p">.</span><span class="n">steps_per_rev</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>           <span class="c1">// 1.8° per step</span>
     <span class="n">nema17</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">;</span>       <span class="c1">// 1.5A rated</span>
     <span class="n">nema17</span><span class="p">.</span><span class="n">winding_resistance_mohm</span> <span class="o">=</span> <span class="mi">3200</span><span class="p">;</span> <span class="c1">// 3.2Ω per phase</span>
-    <span class="n">nema17</span><span class="p">.</span><span class="n">winding_inductance_uh</span> <span class="o">=</span> <span class="mi">2800</span><span class="p">;</span>  <span class="c1">// 2.8mH per phase</span>
+    <span class="n">nema17</span><span class="p">.</span><span class="n">winding_inductance_mh</span> <span class="o">=</span> <span class="mf">2.8</span><span class="n">f</span><span class="p">;</span>   <span class="c1">// 2.8 mH per phase</span>
     
     <span class="c1">// Lead screw mechanical system</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">MechanicalSystem</span> <span class="n">lead_screw</span><span class="p">{};</span>

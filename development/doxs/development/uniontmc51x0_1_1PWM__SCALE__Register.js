@@ -1,6 +1,6 @@
 var uniontmc51x0_1_1PWM__SCALE__Register =
 [
-    [ "bits", "uniontmc51x0_1_1PWM__SCALE__Register.html#abac256a4d60d6a49620223e007a8104f", null ],
+    [ "bits", "uniontmc51x0_1_1PWM__SCALE__Register.html#a919f45188cd6bc73e865b2fe9b1adf0c", null ],
     [ "pwm_scale_auto", "uniontmc51x0_1_1PWM__SCALE__Register.html#a4e0a8e7f354eba229177fe1dd34ce97e", null ],
     [ "pwm_scale_sum", "uniontmc51x0_1_1PWM__SCALE__Register.html#a708ba9bfa65433b1917c19cba2947a78", null ],
     [ "reserved1", "uniontmc51x0_1_1PWM__SCALE__Register.html#a52f8e62ad735737a2487f33a3b202c2c", null ],

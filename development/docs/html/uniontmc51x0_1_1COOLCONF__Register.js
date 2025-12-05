@@ -1,6 +1,6 @@
 var uniontmc51x0_1_1COOLCONF__Register =
 [
-    [ "bits", "uniontmc51x0_1_1COOLCONF__Register.html#ae97e3091f152de13d379c93aea9cf31b", null ],
+    [ "bits", "uniontmc51x0_1_1COOLCONF__Register.html#a7dbe354f94085f4a4ef2e65d4ac38107", null ],
     [ "reserved1", "uniontmc51x0_1_1COOLCONF__Register.html#a10eb0be9d8b517d762f62b4b390d70c6", null ],
     [ "reserved2", "uniontmc51x0_1_1COOLCONF__Register.html#a0c15003c2bdfb0ae1ffe3e2a8814317a", null ],
     [ "reserved3", "uniontmc51x0_1_1COOLCONF__Register.html#afa261261bea9b110b0a2eb2967f18a3a", null ],

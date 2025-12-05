@@ -1,6 +1,6 @@
 var uniontmc51x0_1_1PWM__AUTO__Register =
 [
-    [ "bits", "uniontmc51x0_1_1PWM__AUTO__Register.html#af6009757aa8e9e0f775b8b4f14b1be09", null ],
+    [ "bits", "uniontmc51x0_1_1PWM__AUTO__Register.html#aecebae147a6166949d1ce711b15020ca", null ],
     [ "pwm_grad_auto", "uniontmc51x0_1_1PWM__AUTO__Register.html#aaeb9216b956114be50e93a72212a96f6", null ],
     [ "pwm_ofs_auto", "uniontmc51x0_1_1PWM__AUTO__Register.html#a4cacbe08cfe4b7995437543990b69c52", null ],
     [ "reserved1", "uniontmc51x0_1_1PWM__AUTO__Register.html#a149de29ce0e54dab226d03ca8ce49386", null ],

@@ -105,12 +105,12 @@ $(function(){initNavTree('tmc51x0__types_8hpp.html',''); initResizable(); });
 
 <p>Type definitions and enumerations for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="tmc51x0__registers_8hpp_source.html">tmc51x0_registers.hpp</a>&quot;</code><br />
-<code>#include &lt;cstdint&gt;</code><br />
+<div class="textblock"><code>#include &lt;cstdint&gt;</code><br />
+<code>#include &quot;<a class="el" href="tmc51x0__registers_8hpp_source.html">registers/tmc51x0_registers.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tmc51x0_types.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__types_8hpp__incl.svg" width="300" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__types_8hpp__incl.svg" width="314" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -198,6 +198,15 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacetmc51x0_1_1ChipVersion" id="r_namespacetmc51x0_1_1ChipVersion"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1ChipVersion.html">tmc51x0::ChipVersion</a></td></tr>
 <tr class="memdesc:namespacetmc51x0_1_1ChipVersion"><td class="mdescLeft">&#160;</td><td class="mdescRight">TMC chip version constants. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacetmc51x0_1_1RegisterConstants" id="r_namespacetmc51x0_1_1RegisterConstants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1RegisterConstants.html">tmc51x0::RegisterConstants</a></td></tr>
+<tr class="memdesc:namespacetmc51x0_1_1RegisterConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register conversion constants. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacetmc51x0_1_1MathConstants" id="r_namespacetmc51x0_1_1MathConstants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MathConstants.html">tmc51x0::MathConstants</a></td></tr>
+<tr class="memdesc:namespacetmc51x0_1_1MathConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mathematical constants. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacetmc51x0_1_1MotorCalcLegacyConstants" id="r_namespacetmc51x0_1_1MotorCalcLegacyConstants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MotorCalcLegacyConstants.html">tmc51x0::MotorCalcLegacyConstants</a></td></tr>
+<tr class="memdesc:namespacetmc51x0_1_1MotorCalcLegacyConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor calculation constants. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
@@ -421,6 +430,42 @@ Variables</h2></td></tr>
 <tr class="memitem:a59657011cede04bf230887b9d1bf42b9" id="r_a59657011cede04bf230887b9d1bf42b9"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1ChipVersion.html#a59657011cede04bf230887b9d1bf42b9">tmc51x0::ChipVersion::TMC5160</a> = 0x30</td></tr>
 <tr class="memdesc:a59657011cede04bf230887b9d1bf42b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">TMC5160 chip version.  <br /></td></tr>
 <tr class="separator:a59657011cede04bf230887b9d1bf42b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06d385c4c12f99f0817d3628d9510d2f" id="r_a06d385c4c12f99f0817d3628d9510d2f"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1RegisterConstants.html#a06d385c4c12f99f0817d3628d9510d2f">tmc51x0::RegisterConstants::TPOWERDOWN_DIVISOR</a> = 262144.0F</td></tr>
+<tr class="memdesc:a06d385c4c12f99f0817d3628d9510d2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">2^18, used for TPOWERDOWN and TZEROWAIT register conversion  <br /></td></tr>
+<tr class="separator:a06d385c4c12f99f0817d3628d9510d2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa68083d7c3f8c3df13b047f0076ccf80" id="r_aa68083d7c3f8c3df13b047f0076ccf80"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1RegisterConstants.html#aa68083d7c3f8c3df13b047f0076ccf80">tmc51x0::RegisterConstants::MS_PER_SEC</a> = 1e3F</td></tr>
+<tr class="memdesc:aa68083d7c3f8c3df13b047f0076ccf80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds per second (used for ms to seconds conversion)  <br /></td></tr>
+<tr class="separator:aa68083d7c3f8c3df13b047f0076ccf80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec0fc50a9a829d404645482a7e641a35" id="r_aec0fc50a9a829d404645482a7e641a35"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1RegisterConstants.html#aec0fc50a9a829d404645482a7e641a35">tmc51x0::RegisterConstants::US_PER_SEC</a> = 1e6F</td></tr>
+<tr class="memdesc:aec0fc50a9a829d404645482a7e641a35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Microseconds per second (used for us to seconds conversion)  <br /></td></tr>
+<tr class="separator:aec0fc50a9a829d404645482a7e641a35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea8cc1e5b0cd6c2eacb7612521e2f461" id="r_aea8cc1e5b0cd6c2eacb7612521e2f461"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1RegisterConstants.html#aea8cc1e5b0cd6c2eacb7612521e2f461">tmc51x0::RegisterConstants::NS_PER_SEC</a> = 1e9F</td></tr>
+<tr class="memdesc:aea8cc1e5b0cd6c2eacb7612521e2f461"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nanoseconds per second (used for ns to seconds conversion)  <br /></td></tr>
+<tr class="separator:aea8cc1e5b0cd6c2eacb7612521e2f461"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70c707a89f5e0d52aff71334a36837ba" id="r_a70c707a89f5e0d52aff71334a36837ba"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1RegisterConstants.html#a70c707a89f5e0d52aff71334a36837ba">tmc51x0::RegisterConstants::ENC_DECIMAL_MULTIPLIER</a> = 1e4F</td></tr>
+<tr class="memdesc:a70c707a89f5e0d52aff71334a36837ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplier for encoder decimal mode (fractional part)  <br /></td></tr>
+<tr class="separator:a70c707a89f5e0d52aff71334a36837ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afee6b0ffb118e92cfc104f5fbddb532d" id="r_afee6b0ffb118e92cfc104f5fbddb532d"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1RegisterConstants.html#afee6b0ffb118e92cfc104f5fbddb532d">tmc51x0::RegisterConstants::ENC_BINARY_MULTIPLIER</a> = 65536U</td></tr>
+<tr class="memdesc:afee6b0ffb118e92cfc104f5fbddb532d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplier for encoder binary mode (2^16)  <br /></td></tr>
+<tr class="separator:afee6b0ffb118e92cfc104f5fbddb532d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ff92ff0ce1a04a8e74a707251a24e62" id="r_a0ff92ff0ce1a04a8e74a707251a24e62"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MathConstants.html#a0ff92ff0ce1a04a8e74a707251a24e62">tmc51x0::MathConstants::PI</a> = 3.14159265359F</td></tr>
+<tr class="memdesc:a0ff92ff0ce1a04a8e74a707251a24e62"><td class="mdescLeft">&#160;</td><td class="mdescRight">π (pi) constant  <br /></td></tr>
+<tr class="separator:a0ff92ff0ce1a04a8e74a707251a24e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19282ec1a9cb329c29ff8a991def602d" id="r_a19282ec1a9cb329c29ff8a991def602d"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MathConstants.html#a19282ec1a9cb329c29ff8a991def602d">tmc51x0::MathConstants::TWO_PI</a> = 2.0F * <a class="el" href="namespacetmc51x0_1_1MathConstants.html#a0ff92ff0ce1a04a8e74a707251a24e62">PI</a></td></tr>
+<tr class="memdesc:a19282ec1a9cb329c29ff8a991def602d"><td class="mdescLeft">&#160;</td><td class="mdescRight">2π (two pi)  <br /></td></tr>
+<tr class="separator:a19282ec1a9cb329c29ff8a991def602d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb6742f022495d32d5335c6b5b67a97a" id="r_acb6742f022495d32d5335c6b5b67a97a"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MathConstants.html#acb6742f022495d32d5335c6b5b67a97a">tmc51x0::MathConstants::DEGREES_PER_REV</a> = 360.0F</td></tr>
+<tr class="memdesc:acb6742f022495d32d5335c6b5b67a97a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Degrees per revolution.  <br /></td></tr>
+<tr class="separator:acb6742f022495d32d5335c6b5b67a97a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa6378ce049fe60d1aa901ec1da62fec" id="r_afa6378ce049fe60d1aa901ec1da62fec"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MotorCalcLegacyConstants.html#afa6378ce049fe60d1aa901ec1da62fec">tmc51x0::MotorCalcLegacyConstants::IRUN_CALC_DIVISOR</a> = 0.046875F</td></tr>
+<tr class="memdesc:afa6378ce049fe60d1aa901ec1da62fec"><td class="mdescLeft">&#160;</td><td class="mdescRight">1.5/32, from datasheet formula for IRUN calculation  <br /></td></tr>
+<tr class="separator:afa6378ce049fe60d1aa901ec1da62fec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ee5fa8819b611cdde475b3382743146" id="r_a0ee5fa8819b611cdde475b3382743146"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MotorCalcLegacyConstants.html#a0ee5fa8819b611cdde475b3382743146">tmc51x0::MotorCalcLegacyConstants::TARGET_RUN_CURRENT_RATIO</a> = 0.8F</td></tr>
+<tr class="memdesc:a0ee5fa8819b611cdde475b3382743146"><td class="mdescLeft">&#160;</td><td class="mdescRight">80% of rated current for run current target  <br /></td></tr>
+<tr class="separator:a0ee5fa8819b611cdde475b3382743146"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d57385f9735b3343ce5396709352c90" id="r_a7d57385f9735b3343ce5396709352c90"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MotorCalcLegacyConstants.html#a7d57385f9735b3343ce5396709352c90">tmc51x0::MotorCalcLegacyConstants::TARGET_HOLD_CURRENT_RATIO</a> = 0.3F</td></tr>
+<tr class="memdesc:a7d57385f9735b3343ce5396709352c90"><td class="mdescLeft">&#160;</td><td class="mdescRight">30% of rated current for hold current target  <br /></td></tr>
+<tr class="separator:a7d57385f9735b3343ce5396709352c90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Type definitions and enumerations for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160) </p>
