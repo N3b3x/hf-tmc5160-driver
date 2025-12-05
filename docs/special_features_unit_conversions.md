@@ -37,7 +37,7 @@ All conversion functions require knowledge of your motor's steps per revolution 
 ### Including the Header
 
 ```cpp
-#include "tmc51x0_units.hpp"
+#include "tmc51x0/features/tmc51x0_units.hpp"
 ```
 
 ### Lead Screw Example
@@ -133,7 +133,7 @@ driver.rampControl.SetTargetPosition(steps);
 
 ```cpp
 #include "tmc51x0.hpp"
-#include "tmc51x0_units.hpp"
+#include "tmc51x0/features/tmc51x0_units.hpp"
 
 // Motor and mechanical system parameters
 constexpr uint16_t STEPS_PER_REV = 200;      // 1.8° stepper

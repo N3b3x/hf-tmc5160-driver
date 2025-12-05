@@ -324,7 +324,7 @@ bool test_multi_motor_coordination() noexcept {
       }
       
       if (check % LOG_INTERVAL == 0) {
-        ESP_LOGI(TAG, "  Driver %zu: Position=%ld steps, Target Reached=%s", i, pos, reached ? "YES" : "NO");
+        ESP_LOGI(TAG, "  Driver %zu: Position=%.2f deg, Target Reached=%s", i, pos_deg, reached ? "YES" : "NO");
       }
     }
     

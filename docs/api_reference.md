@@ -922,7 +922,7 @@ Motor specification structure for high-level setup.
 | `steps_per_rev` | `uint16_t` | Steps per revolution (typically 200 for 1.8° motors) |
 | `rated_current_ma` | `uint16_t` | Rated motor current in milliamps |
 | `winding_resistance_mohm` | `uint32_t` | Winding resistance in milliohms (optional, 0 = not specified) |
-| `winding_inductance_uh` | `uint32_t` | Winding inductance in microhenries (optional, 0 = not specified) |
+| `winding_inductance_mh` | `float` | Winding inductance in millihenries (optional, 0 = not specified) |
 
 ### MechanicalSystem
 

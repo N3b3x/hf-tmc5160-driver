@@ -164,7 +164,7 @@ cfg.motor_spec.supply_voltage_mv = 24000;  // 24V (REQUIRED for calculation)
 
 // Optional motor specifications:
 cfg.motor_spec.winding_resistance_mohm = 3000;  // Winding resistance (for StealthChop validation)
-cfg.motor_spec.winding_inductance_uh = 2800;  // Winding inductance
+cfg.motor_spec.winding_inductance_mh = 2.8f;  // Winding inductance (2.8 mH)
 
 // Desired current settings (0 = use rated_current_ma and auto-calculate)
 cfg.motor_spec.run_current_ma = 0;   // 0 = use rated_current_ma

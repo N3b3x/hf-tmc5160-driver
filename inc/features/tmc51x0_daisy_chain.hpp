@@ -1,11 +1,12 @@
 /**
  * @file tmc51x0_daisy_chain.hpp
- * @brief High-level daisy-chain manager for multiple TMC51x0 drivers (TMC5130 & TMC5160)
+ * @brief High-level daisy-chain manager for multiple TMC51x0 drivers (TMC5130 &
+ * TMC5160)
  *
- * This file provides a TMC51x0DaisyChain class that manages multiple TMC51x0 drivers
- * on a single SPI bus using daisy-chaining. It handles proper device creation,
- * chain length configuration, and supports dynamic addition/removal of devices.
- * Supports both TMC5130 and TMC5160 chips.
+ * This file provides a TMC51x0DaisyChain class that manages multiple TMC51x0
+ * drivers on a single SPI bus using daisy-chaining. It handles proper device
+ * creation, chain length configuration, and supports dynamic addition/removal
+ * of devices. Supports both TMC5130 and TMC5160 chips.
  *
  * @defgroup TMC51X0_DaisyChain Daisy-Chain Management
  * @brief High-level daisy-chain management
@@ -18,43 +19,52 @@
 #include <cstdint>
 #include <optional>
 
-#include "tmc51x0.hpp"
-#include "tmc51x0_comm_interface.hpp"
+#include "../tmc51x0.hpp"
+#include "../tmc51x0_comm_interface.hpp"
 
 namespace tmc51x0 {
 
 /**
- * @brief High-level manager for multiple TMC51x0 drivers in a daisy-chain configuration
+ * @brief High-level manager for multiple TMC51x0 drivers in a daisy-chain
+ * configuration
  * @ingroup TMC51X0_DaisyChain
  *
- * This class manages multiple TMC51x0 drivers on a single SPI bus using daisy-chaining.
- * It supports a fixed number of onboard devices (known at construction) and allows
- * dynamic addition/removal of extra devices up to a maximum capacity.
+ * This class manages multiple TMC51x0 drivers on a single SPI bus using
+ * daisy-chaining. It supports a fixed number of onboard devices (known at
+ * construction) and allows dynamic addition/removal of extra devices up to a
+ * maximum capacity.
  *
  * ## Key Features
  *
  * - **Onboard Devices**: Fixed number of devices created at construction time
  * - **Dynamic Devices**: Support for adding/removing extra devices at runtime
- * - **Proper Chain Length**: Automatically configures SpiCommInterface with total chain length
+ * - **Proper Chain Length**: Automatically configures SpiCommInterface with
+ * total chain length
  * - **Individual Access**: Access individual drivers via operator[]
  *
  * ## Architecture
  *
  * - **One SpiCommInterface**: Shared by all TMC51x0 instances in the chain
- * - **Multiple TMC51x0 Instances**: One per device, each with its own position (0, 1, 2, ...)
- * - **Total Chain Length**: Automatically updated when devices are added/removed
+ * - **Multiple TMC51x0 Instances**: One per device, each with its own position
+ * (0, 1, 2, ...)
+ * - **Total Chain Length**: Automatically updated when devices are
+ * added/removed
  *
  * ## Important: Sequential Positioning
  *
- * In a daisy chain, devices are physically connected in sequence (MISO of one device
- * connects to MOSI of the next). Therefore, positions MUST be sequential (0, 1, 2, 3...).
- * The position corresponds to the physical order in the chain, not arbitrary numbering.
+ * In a daisy chain, devices are physically connected in sequence (MISO of one
+ * device connects to MOSI of the next). Therefore, positions MUST be sequential
+ * (0, 1, 2, 3...). The position corresponds to the physical order in the chain,
+ * not arbitrary numbering.
  *
- * - Onboard devices are always created at positions 0, 1, 2, ..., (num_onboard-1)
+ * - Onboard devices are always created at positions 0, 1, 2, ...,
+ * (num_onboard-1)
  * - Extra devices must be added sequentially starting from position num_onboard
- * - You cannot skip positions (e.g., cannot add device at position 5 if position 4 is empty)
+ * - You cannot skip positions (e.g., cannot add device at position 5 if
+ * position 4 is empty)
  *
- * Users can create their own aliases/names in their code for better readability:
+ * Users can create their own aliases/names in their code for better
+ * readability:
  *
  * @code
  * // Create daisy-chain with 3 onboard devices
@@ -89,8 +99,8 @@ namespace tmc51x0 {
  * cfg.motor.ihold = 10;
  * chain.InitializeAll(cfg);
  *
- * // Add an extra device at runtime (must be position 3, next sequential position)
- * if (chain.AddDevice(3)) { // Adds device at position 3
+ * // Add an extra device at runtime (must be position 3, next sequential
+ * position) if (chain.AddDevice(3)) { // Adds device at position 3
  *   chain[3].Initialize(cfg);
  * }
  *
@@ -108,25 +118,28 @@ namespace tmc51x0 {
  * chain.RemoveDevice(3);
  * @endcode
  *
- * @tparam CommType The communication interface type (must be SpiCommInterface<CommType>)
- * @tparam MaxDevices Maximum total capacity (onboard + extra devices, default: 8)
+ * @tparam CommType The communication interface type (must be
+ * SpiCommInterface<CommType>)
+ * @tparam MaxDevices Maximum total capacity (onboard + extra devices, default:
+ * 8)
  */
-template <typename CommType, size_t MaxDevices = 8>
-class TMC51x0DaisyChain {
+template <typename CommType, size_t MaxDevices = 8> class TMC51x0DaisyChain {
 public:
   /**
    * @brief Construct a daisy-chain manager
-   * @param comm Reference to SPI communication interface (shared by all devices)
-   * @param num_onboard_devices Number of onboard devices (fixed, created at construction)
+   * @param comm Reference to SPI communication interface (shared by all
+   * devices)
+   * @param num_onboard_devices Number of onboard devices (fixed, created at
+   * construction)
    * @param f_clk TMC51x0 clock frequency in Hz (default: 12 MHz)
    *
    * @note Onboard devices are created immediately and cannot be removed.
    *       Extra devices can be added/removed at runtime up to MaxDevices total.
    */
-  explicit TMC51x0DaisyChain(CommType& comm, uint8_t num_onboard_devices,
+  explicit TMC51x0DaisyChain(CommType &comm, uint8_t num_onboard_devices,
                              uint32_t f_clk = ClockFreq::DEFAULT_F_CLK) noexcept
-      : comm_(comm), num_onboard_devices_(num_onboard_devices), num_active_devices_(num_onboard_devices),
-        f_clk_(f_clk) {
+      : comm_(comm), num_onboard_devices_(num_onboard_devices),
+        num_active_devices_(num_onboard_devices), f_clk_(f_clk) {
     // Validate num_onboard_devices
     if (num_onboard_devices == 0 || num_onboard_devices > MaxDevices) {
       num_onboard_devices_ = 1;
@@ -145,7 +158,8 @@ public:
     }
 
     // CRITICAL: Set the total chain length on the SpiCommInterface
-    // This enables proper response extraction using datasheet formula 40·(n-k+1)
+    // This enables proper response extraction using datasheet formula
+    // 40·(n-k+1)
     UpdateChainLength();
   }
 
@@ -190,16 +204,17 @@ public:
    * @param position Position in daisy chain (must be >= num_onboard_devices)
    * @return Result<void> indicating success or error
    *
-   * @note Position must be >= num_onboard_devices (cannot add before onboard devices)
+   * @note Position must be >= num_onboard_devices (cannot add before onboard
+   * devices)
    * @note Position must be < MaxDevices
    * @note Device slot must be empty (not already have a device)
    * @note Positions must be sequential - cannot skip positions in daisy chain
    *       (e.g., cannot add position 5 if position 4 is empty)
    * @note Chain length is automatically updated
    *
-   * @warning In a daisy chain, positions correspond to physical order (MISO→MOSI).
-   *          Positions MUST be sequential. Users can create aliases in their code
-   *          for better readability, but the library uses numeric indices.
+   * @warning In a daisy chain, positions correspond to physical order
+   * (MISO→MOSI). Positions MUST be sequential. Users can create aliases in
+   * their code for better readability, but the library uses numeric indices.
    */
   Result<void> AddDevice(uint8_t position) noexcept {
     // Validate position
@@ -213,15 +228,18 @@ public:
     }
 
     // Enforce sequential positioning: cannot skip positions
-    // All positions before this one (starting from num_onboard_devices) must be filled
+    // All positions before this one (starting from num_onboard_devices) must be
+    // filled
     for (uint8_t i = num_onboard_devices_; i < position; ++i) {
       if (!drivers_[i].has_value()) {
-        return Result<void>(ErrorCode::INVALID_STATE); // Cannot skip positions in daisy chain
+        return Result<void>(
+            ErrorCode::INVALID_STATE); // Cannot skip positions in daisy chain
       }
     }
 
     // Create device instance at specified position
-    drivers_[position] = std::make_optional<TMC51x0<CommType>>(comm_, f_clk_, position);
+    drivers_[position] =
+        std::make_optional<TMC51x0<CommType>>(comm_, f_clk_, position);
     num_active_devices_++;
 
     // Update chain length on SpiCommInterface
@@ -266,7 +284,9 @@ public:
     // Check if there are any devices after this position
     for (size_t i = position + 1; i < MaxDevices; ++i) {
       if (drivers_[i].has_value()) {
-        return Result<void>(ErrorCode::INVALID_STATE); // Cannot remove device in the middle of the chain
+        return Result<void>(
+            ErrorCode::INVALID_STATE); // Cannot remove device in the middle of
+                                       // the chain
       }
     }
 
@@ -285,11 +305,11 @@ public:
    * @param index Device index (0 = first device, 1 = second, etc.)
    * @return Reference to TMC51x0 driver instance
    *
-   * @note Index must be in range [0, num_active_devices-1] and device must be active.
-   *       No bounds checking is performed for performance reasons.
-   *       Use IsDeviceActive() to verify device exists before access.
+   * @note Index must be in range [0, num_active_devices-1] and device must be
+   * active. No bounds checking is performed for performance reasons. Use
+   * IsDeviceActive() to verify device exists before access.
    */
-  [[nodiscard]] TMC51x0<CommType>& operator[](uint8_t index) noexcept {
+  [[nodiscard]] TMC51x0<CommType> &operator[](uint8_t index) noexcept {
     return drivers_[index].value();
   }
 
@@ -298,7 +318,8 @@ public:
    * @param index Device index (0 = first device, 1 = second, etc.)
    * @return Const reference to TMC51x0 driver instance
    */
-  [[nodiscard]] const TMC51x0<CommType>& operator[](uint8_t index) const noexcept {
+  [[nodiscard]] const TMC51x0<CommType> &
+  operator[](uint8_t index) const noexcept {
     return drivers_[index].value();
   }
 
@@ -307,7 +328,8 @@ public:
    * @param config Driver configuration (applied to all active devices)
    * @return Result<void> indicating success or first error encountered
    */
-  Result<void> InitializeAll(const DriverConfig& config = DriverConfig()) noexcept {
+  Result<void>
+  InitializeAll(const DriverConfig &config = DriverConfig()) noexcept {
     for (size_t i = 0; i < MaxDevices; ++i) {
       if (drivers_[i].has_value()) {
         auto result = drivers_[i]->Initialize(config);
@@ -341,10 +363,11 @@ private:
     comm_.SetDaisyChainLength(total_length);
   }
 
-  CommType& comm_;              ///< Shared SPI communication interface
+  CommType &comm_;              ///< Shared SPI communication interface
   uint8_t num_onboard_devices_; ///< Number of onboard devices (fixed)
-  uint8_t num_active_devices_;  ///< Total number of active devices (onboard + extra)
-  uint32_t f_clk_;              ///< TMC51x0 clock frequency
+  uint8_t
+      num_active_devices_; ///< Total number of active devices (onboard + extra)
+  uint32_t f_clk_;         ///< TMC51x0 clock frequency
   std::array<std::optional<TMC51x0<CommType>>, MaxDevices>
       drivers_; ///< TMC51x0 driver instances (optional for dynamic devices)
 };

@@ -24,8 +24,7 @@
 #include <algorithm>
 #include <cmath>
 
-#include "../inc/tmc51x0_motor_calc.hpp"
-#include "../inc/tmc51x0_units.hpp"
+#include "../inc/features/tmc51x0_motor_calc.hpp"
 
 using namespace tmc51x0;
 
@@ -147,10 +146,10 @@ float TMC51x0<CommType>::convertSpeedToSteps(float value, Unit unit) const noexc
     return value * effective_steps_per_rev;
   case Unit::Rad:
     // rad/s * steps_per_rev / (2*PI)
-    return (value * effective_steps_per_rev) / (2.0f * 3.14159265359f);
+    return (value * effective_steps_per_rev) / MathConstants::TWO_PI;
   case Unit::Deg:
     // deg/s * steps_per_rev / 360
-    return (value * effective_steps_per_rev) / 360.0f;
+    return (value * effective_steps_per_rev) / MathConstants::DEGREES_PER_REV;
   case Unit::Mm:
     if (mechanical_system_.system_type == MechanicalSystemType::LeadScrew &&
         mechanical_system_.lead_screw_pitch_mm > 0.0f) {
@@ -211,9 +210,9 @@ float TMC51x0<CommType>::convertPositionToSteps(float value, Unit unit) const no
   case Unit::RevPerSec: // Treated as Revolutions
     return value * effective_steps_per_rev;
   case Unit::Rad:
-    return (value * effective_steps_per_rev) / (2.0f * 3.14159265359f);
+    return (value * effective_steps_per_rev) / MathConstants::TWO_PI;
   case Unit::Deg:
-    return (value * effective_steps_per_rev) / 360.0f;
+    return (value * effective_steps_per_rev) / MathConstants::DEGREES_PER_REV;
   case Unit::Mm:
     if (mechanical_system_.system_type == MechanicalSystemType::LeadScrew &&
         mechanical_system_.lead_screw_pitch_mm > 0.0f) {
@@ -246,9 +245,9 @@ float TMC51x0<CommType>::convertStepsToUnit(int32_t steps, Unit unit) const noex
   case Unit::RevPerSec: // Revolutions
     return val / effective_steps_per_rev;
   case Unit::Rad:
-    return (val / effective_steps_per_rev) * (2.0f * 3.14159265359f);
+    return (val / effective_steps_per_rev) * MathConstants::TWO_PI;
   case Unit::Deg:
-    return (val / effective_steps_per_rev) * 360.0f;
+    return (val / effective_steps_per_rev) * MathConstants::DEGREES_PER_REV;
   case Unit::Mm:
     if (mechanical_system_.system_type == MechanicalSystemType::LeadScrew) {
       return (val / effective_steps_per_rev) * mechanical_system_.lead_screw_pitch_mm;
@@ -282,9 +281,9 @@ float TMC51x0<CommType>::convertSpeedToUnit(float steps_per_sec, Unit unit) cons
   case Unit::RevPerSec:
     return steps_per_sec / effective_steps_per_rev;
   case Unit::Rad:
-    return (steps_per_sec / effective_steps_per_rev) * (2.0f * 3.14159265359f);
+    return (steps_per_sec / effective_steps_per_rev) * MathConstants::TWO_PI;
   case Unit::Deg:
-    return (steps_per_sec / effective_steps_per_rev) * 360.0f;
+    return (steps_per_sec / effective_steps_per_rev) * MathConstants::DEGREES_PER_REV;
   case Unit::Mm:
     if (mechanical_system_.system_type == MechanicalSystemType::LeadScrew) {
       return (steps_per_sec / effective_steps_per_rev) * mechanical_system_.lead_screw_pitch_mm;
@@ -333,9 +332,8 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
       uint16_t lower_limit = CalculateStealthChopLowerLimit(motor_spec_, motor_spec_.supply_voltage_mv,
                                                             config.chopper.tbl, config.stealthchop.pwm_freq, f_clk_);
       if (lower_limit > 0) {
-        float run_current_a = static_cast<float>(run_current) / 1000.0f;
-        float lower_limit_a = static_cast<float>(lower_limit) / 1000.0f;
-        if (run_current_a < lower_limit_a * 1.1f) {
+        // Compare directly in milliamps (both values already in mA)
+        if (static_cast<float>(run_current) < static_cast<float>(lower_limit) * 1.1f) {
           TMC51X0_LOG_DEBUG(comm_, 0, "TMC5160",
                             "WARNING: Run current (%.1fmA) may be below StealthChop lower limit (%.1fmA)", run_current,
                             lower_limit);
@@ -1217,7 +1215,8 @@ template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetPowerDownDelayMs(float delay_ms) noexcept {
   // TPOWERDOWN: time_ms = tpowerdown * 2^18 / fCLK * 1000
   // Rearranged: tpowerdown = time_ms * fCLK / (2^18 * 1000)
-  float tpowerdown_reg = (delay_ms * static_cast<float>(driver_.f_clk_)) / (262144.0f * 1000.0f);
+  float tpowerdown_reg = (delay_ms * static_cast<float>(driver_.f_clk_)) / 
+                          (RegisterConstants::TPOWERDOWN_DIVISOR * RegisterConstants::MS_PER_SEC);
   uint8_t tpowerdown = constrain<uint8_t>(static_cast<uint8_t>(std::round(tpowerdown_reg)), 0U, 255U);
   return SetPowerDownDelay(tpowerdown);
 }
@@ -1238,7 +1237,8 @@ template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetZeroWaitTimeMs(float delay_ms) noexcept {
   // TZEROWAIT: time_ms = tzerowait * 2^18 / fCLK * 1000
   // Rearranged: tzerowait = time_ms * fCLK / (2^18 * 1000)
-  float tzerowait_reg = (delay_ms * static_cast<float>(driver_.f_clk_)) / (262144.0f * 1000.0f);
+  float tzerowait_reg = (delay_ms * static_cast<float>(driver_.f_clk_)) / 
+                         (RegisterConstants::TPOWERDOWN_DIVISOR * RegisterConstants::MS_PER_SEC);
   uint16_t tzerowait = constrain<uint16_t>(static_cast<uint16_t>(std::round(tzerowait_reg)), 0U, 65535U);
   return SetZeroWaitTime(tzerowait);
 }
@@ -1250,7 +1250,8 @@ Result<void> TMC51x0<CommType>::RampControl::ConfigureRamp(const RampConfig& con
 
   // Set timing parameters first (convert from milliseconds to register values)
   if (config.tpowerdown_ms >= 0.0f) {
-    float tpowerdown_reg = (config.tpowerdown_ms * static_cast<float>(driver_.f_clk_)) / (262144.0f * 1000.0f);
+    float tpowerdown_reg = (config.tpowerdown_ms * static_cast<float>(driver_.f_clk_)) / 
+                            (RegisterConstants::TPOWERDOWN_DIVISOR * RegisterConstants::MS_PER_SEC);
     uint8_t tpowerdown = constrain<uint8_t>(static_cast<uint8_t>(std::round(tpowerdown_reg)), 0U, 255U);
     if (!SetPowerDownDelay(tpowerdown)) {
       return Result<void>(ErrorCode::COMM_ERROR);
@@ -1258,7 +1259,8 @@ Result<void> TMC51x0<CommType>::RampControl::ConfigureRamp(const RampConfig& con
   }
 
   if (config.tzerowait_ms >= 0.0f) {
-    float tzerowait_reg = (config.tzerowait_ms * static_cast<float>(driver_.f_clk_)) / (262144.0f * 1000.0f);
+    float tzerowait_reg = (config.tzerowait_ms * static_cast<float>(driver_.f_clk_)) / 
+                           (RegisterConstants::TPOWERDOWN_DIVISOR * RegisterConstants::MS_PER_SEC);
     uint16_t tzerowait = constrain<uint16_t>(static_cast<uint16_t>(std::round(tzerowait_reg)), 0U, 65535U);
     if (!SetZeroWaitTime(tzerowait)) {
       return Result<void>(ErrorCode::COMM_ERROR);
@@ -1654,7 +1656,8 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigurePowerStage(const PowerSta
     // Calculate clock cycles: cycles = (time_ns * f_clk) / 1e9
     // At 12MHz: 1 cycle = 83.3ns
     uint32_t clock_cycles =
-        static_cast<uint32_t>((bbm_ns_with_headroom * static_cast<float>(driver_.f_clk_)) / 1000000000.0f);
+        static_cast<uint32_t>((bbm_ns_with_headroom * static_cast<float>(driver_.f_clk_)) / 
+                               RegisterConstants::NS_PER_SEC);
     bbm_clks_reg = constrain<uint8_t>(static_cast<uint8_t>(clock_cycles), 0U, 15U);
     if (bbm_clks_reg == 0 && bbm_ns > 200) {
       bbm_clks_reg = 1; // Minimum 1 clock cycle if >200ns requested
@@ -1780,12 +1783,14 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureMotorCurrent(const MotorS
       float per_step_delay_ms = motor_spec.iholddelay_ms / static_cast<float>(current_steps);
       // Calculate IHOLDDELAY register value: delay_value = (per_step_delay_ms * f_clk) / (1000 * 2^18)
       // Where 2^18 = 262144
-      float delay_clocks = (per_step_delay_ms * static_cast<float>(driver_.f_clk_)) / (1000.0f * 262144.0f);
+      float delay_clocks = (per_step_delay_ms * static_cast<float>(driver_.f_clk_)) / 
+                           (RegisterConstants::MS_PER_SEC * RegisterConstants::TPOWERDOWN_DIVISOR);
       iholddelay_value = constrain<uint8_t>(static_cast<uint8_t>(std::round(delay_clocks)), 0U, 15U);
 
       // Calculate actual total delay for logging
       float actual_total_delay_ms = static_cast<float>(current_steps) * static_cast<float>(iholddelay_value) *
-                                    (262144.0f * 1000.0f / static_cast<float>(driver_.f_clk_));
+                                    (RegisterConstants::TPOWERDOWN_DIVISOR * RegisterConstants::MS_PER_SEC / 
+                                     static_cast<float>(driver_.f_clk_));
       TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160",
                         "IHOLDDELAY calculation: desired_total=%.2f ms, steps=%u, per_step=%.2f ms, IHOLDDELAY=%u, "
                         "actual_total=%.2f ms",
@@ -2048,7 +2053,8 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureDcStep(const DcStepConfig
 
   if (config.pwm_on_time_us > 0.0F) {
     // Convert microseconds to clock cycles: cycles = (time_us * f_clk) / 1e6
-    float clock_cycles = (config.pwm_on_time_us * static_cast<float>(driver_.f_clk_)) / 1000000.0F;
+    float clock_cycles = (config.pwm_on_time_us * static_cast<float>(driver_.f_clk_)) / 
+                          RegisterConstants::US_PER_SEC;
     dc_time = static_cast<uint16_t>(std::round(clock_cycles));
     dc_time = constrain<decltype(dc_time)>(dc_time, 0U, 1023U);
   } else {
@@ -2467,7 +2473,8 @@ Result<void> TMC51x0<CommType>::MotorControl::SetIholdDelayMs(float total_delay_
 
   // Calculate IHOLDDELAY register value: delay_value = (per_step_delay_ms * f_clk) / (1000 * 2^18)
   // Where 2^18 = 262144
-  float delay_clocks = (per_step_delay_ms * static_cast<float>(driver_.f_clk_)) / (1000.0f * 262144.0f);
+  float delay_clocks = (per_step_delay_ms * static_cast<float>(driver_.f_clk_)) / 
+                       (RegisterConstants::MS_PER_SEC * RegisterConstants::TPOWERDOWN_DIVISOR);
   uint8_t iholddelay_value = constrain<uint8_t>(static_cast<uint8_t>(std::round(delay_clocks)), 0U, 15U);
 
   // Update register
@@ -2541,13 +2548,17 @@ Result<void> TMC51x0<CommType>::MotorControl::SetupMotorFromSpec(const MotorSpec
     // Calculate irun: target current = (irun/32) * (global_scaler/32) * sense_resistor_current
     // Simplified: irun = (target_current * 32) / (global_scaler * sense_resistor_current / 32)
     // Assuming sense resistor gives ~1.5A at irun=31, global_scaler=32
-    float target_run_current = static_cast<float>(motor_spec.rated_current_ma) * 0.8F;
+    float target_run_current = static_cast<float>(motor_spec.rated_current_ma) * 
+                                 MotorCalcLegacyConstants::TARGET_RUN_CURRENT_RATIO;
     auto irun_calc =
-        static_cast<uint32_t>((target_run_current * 32.0F) / (static_cast<float>(global_scaler) * 0.046875F));
+        static_cast<uint32_t>((target_run_current * 32.0F) / 
+                              (static_cast<float>(global_scaler) * MotorCalcLegacyConstants::IRUN_CALC_DIVISOR));
     irun = static_cast<uint8_t>(std::min(static_cast<uint32_t>(31U), std::max(static_cast<uint32_t>(16U), irun_calc)));
-    float target_hold_current = static_cast<float>(motor_spec.rated_current_ma) * 0.3F;
+    float target_hold_current = static_cast<float>(motor_spec.rated_current_ma) * 
+                                MotorCalcLegacyConstants::TARGET_HOLD_CURRENT_RATIO;
     auto ihold_calc =
-        static_cast<uint32_t>((target_hold_current * 32.0F) / (static_cast<float>(global_scaler) * 0.046875F));
+        static_cast<uint32_t>((target_hold_current * 32.0F) / 
+                              (static_cast<float>(global_scaler) * MotorCalcLegacyConstants::IRUN_CALC_DIVISOR));
     ihold = static_cast<uint8_t>(std::min(static_cast<uint32_t>(31U), ihold_calc));
   }
 
@@ -2557,11 +2568,11 @@ Result<void> TMC51x0<CommType>::MotorControl::SetupMotorFromSpec(const MotorSpec
   }
 
   // Configure chopper based on inductance if available
-  if (motor_spec.winding_inductance_uh > 0) {
+  if (motor_spec.winding_inductance_mh > 0.0F) {
     ChopperConfig chop_config{};
     // Higher inductance may need different settings
     // This is a simplified heuristic
-    if (motor_spec.winding_inductance_uh > 3000) {
+    if (motor_spec.winding_inductance_mh > 3.0F) {
       chop_config.tbl = 3; // Longer blank time for high inductance
     }
     ConfigureChopper(chop_config);
@@ -2755,8 +2766,9 @@ Result<void> TMC51x0<CommType>::Encoder::SetResolution(int32_t motor_steps, int3
   float factor = static_cast<float>(motor_steps * driver_.current_microsteps_) / static_cast<float>(enc_resolution);
 
   // Check if binary prescaler gives exact match
-  auto enc_const_binary = static_cast<int32_t>(factor * 65536.0F);
-  if (enc_const_binary * enc_resolution == motor_steps * driver_.current_microsteps_ * 65536) {
+  auto enc_const_binary = static_cast<int32_t>(factor * static_cast<float>(RegisterConstants::ENC_BINARY_MULTIPLIER));
+  if (enc_const_binary * enc_resolution == motor_steps * driver_.current_microsteps_ * 
+      static_cast<int32_t>(RegisterConstants::ENC_BINARY_MULTIPLIER)) {
     // Use binary mode
     auto encmode_value_result = driver_.comm_.ReadRegister(Registers::ENCMODE, driver_.GetCommAddress());
     if (!encmode_value_result) {
@@ -2795,12 +2807,13 @@ Result<void> TMC51x0<CommType>::Encoder::SetResolution(int32_t motor_steps, int3
     return encmode_result;
   }
   int integer_part = static_cast<int>(std::floor(factor));
-  int decimal_part = static_cast<int>((factor - static_cast<float>(integer_part)) * 10000.0F);
+  int decimal_part = static_cast<int>((factor - static_cast<float>(integer_part)) * 
+                                      RegisterConstants::ENC_DECIMAL_MULTIPLIER);
   if (inverted) {
     integer_part = 65535 - integer_part;
-    decimal_part = 10000 - decimal_part;
+    decimal_part = static_cast<int>(RegisterConstants::ENC_DECIMAL_MULTIPLIER) - decimal_part;
   }
-  int32_t enc_const_decimal = (integer_part * 65536) + decimal_part;
+  int32_t enc_const_decimal = (integer_part * static_cast<int>(RegisterConstants::ENC_BINARY_MULTIPLIER)) + decimal_part;
   uint32_t enc_const_value = static_cast<uint32_t>(enc_const_decimal);
   auto enc_const_result = driver_.comm_.WriteRegister(Registers::ENC_CONST, enc_const_value, driver_.GetCommAddress());
   if (!enc_const_result) {
@@ -4603,23 +4616,23 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
   bool current_was_reduced = false;
   if (safe_current_margin_mA > 0) {
     // Calculate current RMS from saved settings
-    // I_RMS = (GLOBAL_SCALER/256) * ((IRUN+1)/32) * (VFS/RSENSE) * (1/√2)
-    constexpr float VFS = 0.325F;
+    // I_RMS (mA) = (GLOBAL_SCALER/256) * ((IRUN+1)/32) * (VFS_mV/RSENSE_mΩ) * (1/√2)
+    constexpr float VFS_MV = 325.0F;
     constexpr float SQRT2 = 1.41421356237F;
-    float rsense_ohm = static_cast<float>(driver_.motor_spec_.sense_resistor_mohm) / 1000.0F;
 
-    if (rsense_ohm > 0.0F && driver_.motor_spec_.sense_resistor_mohm > 0) {
-      float current_rms_a = (static_cast<float>(saved.saved_global_scaler) / 256.0F) *
-                            (static_cast<float>(saved.saved_irun + 1) / 32.0F) * (VFS / rsense_ohm) / SQRT2;
-      uint16_t current_rms_ma = static_cast<uint16_t>(current_rms_a * 1000.0F);
+    if (driver_.motor_spec_.sense_resistor_mohm > 0) {
+      float current_rms_ma = (static_cast<float>(saved.saved_global_scaler) / 256.0F) *
+                            (static_cast<float>(saved.saved_irun + 1) / 32.0F) * 
+                            (VFS_MV / static_cast<float>(driver_.motor_spec_.sense_resistor_mohm)) / SQRT2;
+      uint16_t current_rms_ma_int = static_cast<uint16_t>(current_rms_ma);
 
       // Calculate new current with margin
-      uint16_t new_current_ma = (current_rms_ma > safe_current_margin_mA) ?
-                                 (current_rms_ma - safe_current_margin_mA) : 0;
+      uint16_t new_current_ma = (current_rms_ma_int > safe_current_margin_mA) ?
+                                 (current_rms_ma_int - safe_current_margin_mA) : 0;
 
       // Ensure minimum current (at least 100mA or 20% of original, whichever is higher)
       uint16_t min_current_ma = std::max(static_cast<uint16_t>(100U),
-                                          static_cast<uint16_t>(current_rms_ma * 0.2F));
+                                          static_cast<uint16_t>(current_rms_ma_int * 0.2F));
       if (new_current_ma < min_current_ma) {
         new_current_ma = min_current_ma;
         TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
@@ -4627,20 +4640,21 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
                           new_current_ma);
       }
 
-      if (new_current_ma > 0 && new_current_ma < current_rms_ma) {
+      if (new_current_ma > 0 && new_current_ma < current_rms_ma_int) {
         // Calculate new IRUN and GLOBAL_SCALER from reduced current
         uint8_t new_irun = 0;
         uint8_t new_ihold = 0;
         uint16_t new_scaler = 0;
 
         // Calculate hold current proportionally from original hold current
-        // First calculate original hold current RMS
-        float original_hold_rms_a = (static_cast<float>(saved.saved_global_scaler) / 256.0F) *
-                                    (static_cast<float>(saved.saved_ihold + 1) / 32.0F) * (VFS / rsense_ohm) / SQRT2;
-        uint16_t original_hold_ma = static_cast<uint16_t>(original_hold_rms_a * 1000.0F);
+        // First calculate original hold current RMS directly in milliamps
+        float original_hold_rms_ma = (static_cast<float>(saved.saved_global_scaler) / 256.0F) *
+                                     (static_cast<float>(saved.saved_ihold + 1) / 32.0F) * 
+                                     (VFS_MV / static_cast<float>(driver_.motor_spec_.sense_resistor_mohm)) / SQRT2;
+        uint16_t original_hold_ma = static_cast<uint16_t>(original_hold_rms_ma);
         
         // Scale hold current proportionally to run current reduction
-        float current_ratio = static_cast<float>(new_current_ma) / static_cast<float>(current_rms_ma);
+        float current_ratio = static_cast<float>(new_current_ma) / static_cast<float>(current_rms_ma_int);
         uint16_t new_hold_current_ma = static_cast<uint16_t>(static_cast<float>(original_hold_ma) * current_ratio);
 
         if (CalculateMotorCurrent(driver_.motor_spec_, driver_.motor_spec_.sense_resistor_mohm,
@@ -4649,9 +4663,9 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
           // Ensure minimum IRUN=8 for StealthChop compatibility
           if (new_irun < 8) {
             new_irun = 8;
-            // Recalculate scaler for IRUN=8
-            float run_current_a = static_cast<float>(new_current_ma) / 1000.0F;
-            float scaler_float = (run_current_a * 256.0F * 32.0F) / (9.0F * (VFS / rsense_ohm) / SQRT2);
+            // Recalculate scaler for IRUN=8 (working directly in milliamps)
+            float scaler_float = (static_cast<float>(new_current_ma) * 256.0F * 32.0F) / 
+                                 (9.0F * (VFS_MV / static_cast<float>(driver_.motor_spec_.sense_resistor_mohm)) / SQRT2);
             new_scaler = static_cast<uint16_t>(std::round(scaler_float));
             new_scaler = std::max<uint16_t>(new_scaler, 32U);
             new_scaler = std::min<uint16_t>(new_scaler, 256U);

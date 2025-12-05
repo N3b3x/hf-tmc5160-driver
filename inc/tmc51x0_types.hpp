@@ -12,8 +12,8 @@
 #ifndef TMC51X0_TYPES_HPP
 #define TMC51X0_TYPES_HPP
 
-#include "tmc51x0_registers.hpp"
 #include <cstdint>
+#include "registers/tmc51x0_registers.hpp"
 
 namespace tmc51x0 {
 
@@ -33,6 +33,40 @@ namespace ChipVersion {
 constexpr uint8_t TMC5130 = 0x11; ///< TMC5130 chip version
 constexpr uint8_t TMC5160 = 0x30; ///< TMC5160 chip version
 } // namespace ChipVersion
+
+/**
+ * @brief Register conversion constants
+ * 
+ * Constants used for converting between user-friendly units and register values.
+ */
+namespace RegisterConstants {
+constexpr float TPOWERDOWN_DIVISOR = 262144.0F;  ///< 2^18, used for TPOWERDOWN and TZEROWAIT register conversion
+constexpr float MS_PER_SEC = 1e3F;              ///< Milliseconds per second (used for ms to seconds conversion)
+constexpr float US_PER_SEC = 1e6F;           ///< Microseconds per second (used for us to seconds conversion)
+constexpr float NS_PER_SEC = 1e9F;        ///< Nanoseconds per second (used for ns to seconds conversion)
+constexpr float ENC_DECIMAL_MULTIPLIER = 1e4F; ///< Multiplier for encoder decimal mode (fractional part)
+constexpr uint32_t ENC_BINARY_MULTIPLIER = 65536U; ///< Multiplier for encoder binary mode (2^16)
+} // namespace RegisterConstants
+
+/**
+ * @brief Mathematical constants
+ */
+namespace MathConstants {
+constexpr float PI = 3.14159265359F;        ///< π (pi) constant
+constexpr float TWO_PI = 2.0F * PI;        ///< 2π (two pi)
+constexpr float DEGREES_PER_REV = 360.0F;  ///< Degrees per revolution
+} // namespace MathConstants
+
+/**
+ * @brief Motor calculation constants
+ * 
+ * Constants used in legacy motor setup calculations.
+ */
+namespace MotorCalcLegacyConstants {
+constexpr float IRUN_CALC_DIVISOR = 0.046875F;  ///< 1.5/32, from datasheet formula for IRUN calculation
+constexpr float TARGET_RUN_CURRENT_RATIO = 0.8F;  ///< 80% of rated current for run current target
+constexpr float TARGET_HOLD_CURRENT_RATIO = 0.3F; ///< 30% of rated current for hold current target
+} // namespace MotorCalcLegacyConstants
 
 //===============================================================================================================
 //===============================================================================================================
@@ -235,8 +269,7 @@ struct MotorSpec {
                                        ///< Not used for DC motors/solenoids (set to 0 or ignore)
   uint16_t rated_current_ma{1500};     ///< Rated motor current in milliamps (RMS)
   uint32_t winding_resistance_mohm{3}; ///< Winding resistance in milliohms (required for StealthChop lower limit calc)
-  uint32_t winding_inductance_uh{
-      0}; ///< Winding inductance in microhenries (optional, 0 = not specified) (for StealthChop)
+  float winding_inductance_mh{0.0F}; ///< Winding inductance in millihenries (optional, 0 = not specified) (for StealthChop)
 
   // Desired current settings (used for calculation, not stored as register values)
   uint16_t run_current_ma{0};  ///< Desired run current in milliamps (0 = use rated_current_ma)
@@ -2502,7 +2535,7 @@ struct GlobalConfig {
  *
  * **Optional Parameters**:
  * - `motor_spec.winding_resistance_mohm` (for StealthChop lower limit validation)
- * - `motor_spec.winding_inductance_uh` (for motor characterization)
+ * - `motor_spec.winding_inductance_mh` (for motor characterization)
  * - `motor_spec.hold_current_ma` (if 0, auto-calculates as 30% of run current)
  * - `motor_spec.scaler_adjustment_percent`, `irun_adjustment_percent`, `ihold_adjustment_percent` (for fine-tuning)
  *

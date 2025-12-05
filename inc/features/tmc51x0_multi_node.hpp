@@ -1,11 +1,12 @@
 /**
  * @file tmc51x0_multi_node.hpp
- * @brief High-level multi-node manager for multiple TMC51x0 drivers on UART (TMC5130 & TMC5160)
+ * @brief High-level multi-node manager for multiple TMC51x0 drivers on UART
+ * (TMC5130 & TMC5160)
  *
- * This file provides a TMC51x0MultiNode class that manages multiple TMC51x0 drivers
- * on a single UART bus using sequential addressing with NAI/NAO pins. It handles
- * proper device creation, sequential programming, and supports dynamic addition/removal
- * of devices. Supports both TMC5130 and TMC5160 chips.
+ * This file provides a TMC51x0MultiNode class that manages multiple TMC51x0
+ * drivers on a single UART bus using sequential addressing with NAI/NAO pins.
+ * It handles proper device creation, sequential programming, and supports
+ * dynamic addition/removal of devices. Supports both TMC5130 and TMC5160 chips.
  *
  * @defgroup TMC51X0_MultiNode Multi-Node Management
  * @brief High-level UART multi-node management
@@ -18,36 +19,42 @@
 #include <cstdint>
 #include <optional>
 
-#include "tmc51x0.hpp"
-#include "tmc51x0_comm_interface.hpp"
+#include "../tmc51x0.hpp"
+#include "../tmc51x0_comm_interface.hpp"
 
 namespace tmc51x0 {
 
 /**
- * @brief High-level manager for multiple TMC51x0 drivers in a UART multi-node configuration
+ * @brief High-level manager for multiple TMC51x0 drivers in a UART multi-node
+ * configuration
  * @ingroup TMC51X0_MultiNode
  *
- * This class manages multiple TMC51x0 drivers on a single UART bus using sequential
- * addressing with NAI/NAO pins. It supports a fixed number of onboard devices (known
- * at construction) and allows dynamic addition/removal of extra devices up to a maximum
- * capacity.
+ * This class manages multiple TMC51x0 drivers on a single UART bus using
+ * sequential addressing with NAI/NAO pins. It supports a fixed number of
+ * onboard devices (known at construction) and allows dynamic addition/removal
+ * of extra devices up to a maximum capacity.
  *
  * ## Key Features
  *
  * - **Onboard Devices**: Fixed number of devices created at construction time
  * - **Dynamic Devices**: Support for adding/removing extra devices at runtime
- * - **Sequential Programming**: Handles NAI/NAO pin control for sequential addressing
- * - **Individual Access**: Access individual drivers via operator[] using logical indices
+ * - **Sequential Programming**: Handles NAI/NAO pin control for sequential
+ * addressing
+ * - **Individual Access**: Access individual drivers via operator[] using
+ * logical indices
  *
  * ## Architecture
  *
  * - **One UartCommInterface**: Shared by all TMC51x0 instances on the UART bus
- * - **Multiple TMC51x0 Instances**: One per device, each with its own programmed node address
- * - **Sequential Addressing**: Uses NAI/NAO pins for sequential programming per datasheet
+ * - **Multiple TMC51x0 Instances**: One per device, each with its own
+ * programmed node address
+ * - **Sequential Addressing**: Uses NAI/NAO pins for sequential programming per
+ * datasheet
  *
  * ## Important: Sequential Addressing (Per Datasheet)
  *
- * In UART multi-node mode, devices are programmed sequentially using NAI/NAO pins:
+ * In UART multi-node mode, devices are programmed sequentially using NAI/NAO
+ * pins:
  *
  * **Initial State at Power-Up:**
  * - First chip: NAI tied to GND (hardware) → responds to address 0
@@ -55,7 +62,8 @@ namespace tmc51x0 {
  *
  * **Programming Sequence (Per Datasheet Figure 5.1):**
  * - Program first chip (accessible at address 0) to address 254, NAO goes LOW
- * - Next chip becomes accessible at address 0 (because previous chip's NAO is LOW)
+ * - Next chip becomes accessible at address 0 (because previous chip's NAO is
+ * LOW)
  * - Program second chip (accessible at address 0) to address 253, NAO goes LOW
  * - Continue: program chip i to address (254 - i)
  *
@@ -64,7 +72,8 @@ namespace tmc51x0 {
  * - Physical addresses programmed into chips are (254, 253, 252, ...)
  * - This follows the datasheet procedure for addressing up to 255 nodes
  *
- * Users can create their own aliases/names in their code for better readability:
+ * Users can create their own aliases/names in their code for better
+ * readability:
  *
  * @code
  * // Create multi-node manager with 3 onboard devices
@@ -130,16 +139,19 @@ namespace tmc51x0 {
  * nodes.RemoveDevice(3);
  * @endcode
  *
- * @tparam CommType The communication interface type (must be UartCommInterface<CommType>)
- * @tparam MaxDevices Maximum total capacity (onboard + extra devices, default: 8)
+ * @tparam CommType The communication interface type (must be
+ * UartCommInterface<CommType>)
+ * @tparam MaxDevices Maximum total capacity (onboard + extra devices, default:
+ * 8)
  */
-template <typename CommType, size_t MaxDevices = 8>
-class TMC51x0MultiNode {
+template <typename CommType, size_t MaxDevices = 8> class TMC51x0MultiNode {
 public:
   /**
    * @brief Construct a multi-node manager
-   * @param comm Reference to UART communication interface (shared by all devices)
-   * @param num_onboard_devices Number of onboard devices (fixed, created at construction)
+   * @param comm Reference to UART communication interface (shared by all
+   * devices)
+   * @param num_onboard_devices Number of onboard devices (fixed, created at
+   * construction)
    * @param f_clk TMC5160 clock frequency in Hz (default: 12 MHz)
    *
    * @note Onboard devices are created immediately with initial address 0.
@@ -147,10 +159,10 @@ public:
    * @note After construction, call ProgramSequentially() to program all devices
    *       to addresses (254, 253, 252, ...) per datasheet procedure.
    */
-  explicit TMC51x0MultiNode(CommType& comm, uint8_t num_onboard_devices,
+  explicit TMC51x0MultiNode(CommType &comm, uint8_t num_onboard_devices,
                             uint32_t f_clk = ClockFreq::DEFAULT_F_CLK) noexcept
-      : comm_(comm), num_onboard_devices_(num_onboard_devices), num_active_devices_(num_onboard_devices),
-        f_clk_(f_clk) {
+      : comm_(comm), num_onboard_devices_(num_onboard_devices),
+        num_active_devices_(num_onboard_devices), f_clk_(f_clk) {
     // Validate num_onboard_devices
     if (num_onboard_devices == 0 || num_onboard_devices > MaxDevices) {
       num_onboard_devices_ = 1;
@@ -208,29 +220,36 @@ public:
 
   /**
    * @brief Program all active devices sequentially using NAI/NAO addressing
-   * @param send_delay SENDDELAY value for SLAVECONF (default: 2, minimum for multi-node)
+   * @param send_delay SENDDELAY value for SLAVECONF (default: 2, minimum for
+   * multi-node)
    * @return Result<void> indicating success or error
    *
-   * This method programs all active devices sequentially using the datasheet procedure:
+   * This method programs all active devices sequentially using the datasheet
+   * procedure:
    *
    * Initial state at power-up:
    * - First chip: NAI=GND (hardware) → responds to address 0
-   * - All other chips: NAI=HIGH (from previous chip's NAO) → respond to address 1
+   * - All other chips: NAI=HIGH (from previous chip's NAO) → respond to address
+   * 1
    *
    * Programming sequence (per datasheet Figure 5.1):
    * 1. Program first chip (accessible at address 0) to address (254 - 0) = 254
-   *    After programming, chip's NAO goes LOW → next chip becomes accessible at address 0
+   *    After programming, chip's NAO goes LOW → next chip becomes accessible at
+   * address 0
    * 2. Program second chip (accessible at address 0) to address (254 - 1) = 253
-   *    After programming, chip's NAO goes LOW → next chip becomes accessible at address 0
+   *    After programming, chip's NAO goes LOW → next chip becomes accessible at
+   * address 0
    * 3. Continue for all devices: program chip i to address (254 - i)
    *
-   * The devices are stored with their logical indices (0, 1, 2, ...) but programmed
-   * with addresses (254, 253, 252, ...) as per datasheet specification.
+   * The devices are stored with their logical indices (0, 1, 2, ...) but
+   * programmed with addresses (254, 253, 252, ...) as per datasheet
+   * specification.
    *
    * @note This must be called after construction and before using the devices.
-   * @note For multi-node systems, SENDDELAY should be set to minimum 2 for all nodes.
-   * @note The programmed addresses (254, 253, 252...) are stored internally but the
-   *       logical device indices (0, 1, 2...) are used for access via operator[].
+   * @note For multi-node systems, SENDDELAY should be set to minimum 2 for all
+   * nodes.
+   * @note The programmed addresses (254, 253, 252...) are stored internally but
+   * the logical device indices (0, 1, 2...) are used for access via operator[].
    */
   Result<void> ProgramSequentially(uint8_t send_delay = 2) noexcept {
     // Count active devices to determine starting address
@@ -261,18 +280,20 @@ public:
       uint8_t target_address = 254 - device_index;
 
       // Program device to target address
-      // The device is currently accessible at address 0 (after previous chip's NAO went LOW)
-      // or address 0 for the first chip (NAI=GND)
-      if (!drivers_[i]->uartConfig.ConfigureUartNodeAddress(target_address, send_delay)) {
-        return Result<void>(ErrorCode::INVALID_STATE); // Failed to program device
+      // The device is currently accessible at address 0 (after previous chip's
+      // NAO went LOW) or address 0 for the first chip (NAI=GND)
+      if (!drivers_[i]->uartConfig.ConfigureUartNodeAddress(target_address,
+                                                            send_delay)) {
+        return Result<void>(
+            ErrorCode::INVALID_STATE); // Failed to program device
       }
 
       // Update the driver's node address to the programmed address
       drivers_[i]->SetUartNodeAddress(target_address);
 
-      // After programming, the chip's NAO automatically goes LOW (per datasheet)
-      // This makes the next chip accessible at address 0
-      // Small delay to ensure NAO settles
+      // After programming, the chip's NAO automatically goes LOW (per
+      // datasheet) This makes the next chip accessible at address 0 Small delay
+      // to ensure NAO settles
       comm_.DelayMs(10);
 
       device_index++;
@@ -287,8 +308,10 @@ public:
    * @param send_delay SENDDELAY value for SLAVECONF (default: 2)
    * @return Result<void> indicating success or error
    *
-   * @note This method programs the device at logical index to address (254 - index).
-   * @note The device must be accessible at address 0 (previous chip's NAO must be LOW).
+   * @note This method programs the device at logical index to address (254 -
+   * index).
+   * @note The device must be accessible at address 0 (previous chip's NAO must
+   * be LOW).
    * @note For programming all devices, use ProgramSequentially() instead.
    */
   Result<void> ProgramDevice(uint8_t index, uint8_t send_delay = 2) noexcept {
@@ -299,7 +322,8 @@ public:
     // Calculate target address: 254 - index (per datasheet)
     uint8_t target_address = 254 - index;
 
-    if (!drivers_[index]->uartConfig.ConfigureUartNodeAddress(target_address, send_delay)) {
+    if (!drivers_[index]->uartConfig.ConfigureUartNodeAddress(target_address,
+                                                              send_delay)) {
       return Result<void>(ErrorCode::INVALID_STATE);
     }
 
@@ -312,15 +336,16 @@ public:
    * @param index Logical device index (must be >= num_onboard_devices)
    * @return Result<void> indicating success or error
    *
-   * @note Index must be >= num_onboard_devices (cannot add before onboard devices)
+   * @note Index must be >= num_onboard_devices (cannot add before onboard
+   * devices)
    * @note Index must be < MaxDevices
    * @note Device slot must be empty (not already have a device)
    * @note Indices must be sequential - cannot skip indices
    *       (e.g., cannot add index 5 if index 4 is empty)
    *
-   * @warning In UART multi-node mode, indices correspond to physical order (NAO→NAI).
-   *          Indices MUST be sequential. The actual programmed addresses will be
-   *          (254, 253, 252, ...) per datasheet procedure.
+   * @warning In UART multi-node mode, indices correspond to physical order
+   * (NAO→NAI). Indices MUST be sequential. The actual programmed addresses will
+   * be (254, 253, 252, ...) per datasheet procedure.
    */
   Result<void> AddDevice(uint8_t index) noexcept {
     // Validate index
@@ -334,7 +359,8 @@ public:
     }
 
     // Enforce sequential indexing: cannot skip indices
-    // All indices before this one (starting from num_onboard_devices) must be filled
+    // All indices before this one (starting from num_onboard_devices) must be
+    // filled
     for (uint8_t i = num_onboard_devices_; i < index; ++i) {
       if (!drivers_[i].has_value()) {
         return Result<void>(ErrorCode::INVALID_STATE); // Cannot skip indices
@@ -342,8 +368,10 @@ public:
     }
 
     // Create device instance with initial address 0
-    // The actual address will be programmed via ProgramSequentially() or ProgramDevice()
-    drivers_[index] = std::make_optional<TMC51x0<CommType>>(comm_, f_clk_, 0, 0);
+    // The actual address will be programmed via ProgramSequentially() or
+    // ProgramDevice()
+    drivers_[index] =
+        std::make_optional<TMC51x0<CommType>>(comm_, f_clk_, 0, 0);
     num_active_devices_++;
 
     return Result<void>();
@@ -359,10 +387,10 @@ public:
    * @note Can only remove from the end of the chain (highest index)
    *       to maintain sequential indexing
    *
-   * @warning In UART multi-node mode, indices must remain sequential. You can only
-   *          remove devices from the end of the chain (highest index).
-   *          Removing a device in the middle would create a gap, which is
-   *          not physically possible in a sequential addressing scheme.
+   * @warning In UART multi-node mode, indices must remain sequential. You can
+   * only remove devices from the end of the chain (highest index). Removing a
+   * device in the middle would create a gap, which is not physically possible
+   * in a sequential addressing scheme.
    */
   Result<void> RemoveDevice(uint8_t index) noexcept {
     // Cannot remove onboard devices
@@ -384,7 +412,9 @@ public:
     // Check if there are any devices after this index
     for (size_t i = index + 1; i < MaxDevices; ++i) {
       if (drivers_[i].has_value()) {
-        return Result<void>(ErrorCode::INVALID_STATE); // Cannot remove device in the middle of the chain
+        return Result<void>(
+            ErrorCode::INVALID_STATE); // Cannot remove device in the middle of
+                                       // the chain
       }
     }
 
@@ -400,12 +430,13 @@ public:
    * @param index Logical device index (0 = first device, 1 = second, etc.)
    * @return Reference to TMC5160 driver instance
    *
-   * @note Index must be in range [0, num_active_devices-1] and device must be active.
-   *       No bounds checking is performed for performance reasons.
-   *       Use IsDeviceActive() to verify device exists before access.
-   * @note The device's actual programmed address is (254 - index) per datasheet.
+   * @note Index must be in range [0, num_active_devices-1] and device must be
+   * active. No bounds checking is performed for performance reasons. Use
+   * IsDeviceActive() to verify device exists before access.
+   * @note The device's actual programmed address is (254 - index) per
+   * datasheet.
    */
-  [[nodiscard]] TMC51x0<CommType>& operator[](uint8_t index) noexcept {
+  [[nodiscard]] TMC51x0<CommType> &operator[](uint8_t index) noexcept {
     return drivers_[index].value();
   }
 
@@ -414,7 +445,8 @@ public:
    * @param index Logical device index (0 = first device, 1 = second, etc.)
    * @return Const reference to TMC5160 driver instance
    */
-  [[nodiscard]] const TMC51x0<CommType>& operator[](uint8_t index) const noexcept {
+  [[nodiscard]] const TMC51x0<CommType> &
+  operator[](uint8_t index) const noexcept {
     return drivers_[index].value();
   }
 
@@ -423,7 +455,8 @@ public:
    * @param config Driver configuration (applied to all active devices)
    * @return Result<void> indicating success or error
    */
-  Result<void> InitializeAll(const DriverConfig& config = DriverConfig()) noexcept {
+  Result<void>
+  InitializeAll(const DriverConfig &config = DriverConfig()) noexcept {
     bool all_success = true;
     for (size_t i = 0; i < MaxDevices; ++i) {
       if (drivers_[i].has_value()) {
@@ -436,10 +469,11 @@ public:
   }
 
 private:
-  CommType& comm_;              ///< Shared UART communication interface
+  CommType &comm_;              ///< Shared UART communication interface
   uint8_t num_onboard_devices_; ///< Number of onboard devices (fixed)
-  uint8_t num_active_devices_;  ///< Total number of active devices (onboard + extra)
-  uint32_t f_clk_;              ///< TMC5160 clock frequency
+  uint8_t
+      num_active_devices_; ///< Total number of active devices (onboard + extra)
+  uint32_t f_clk_;         ///< TMC5160 clock frequency
   std::array<std::optional<TMC51x0<CommType>>, MaxDevices>
       drivers_; ///< TMC5160 driver instances (optional for dynamic devices)
 };

@@ -13,7 +13,7 @@
 set(SRC_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../../../")
 
 idf_component_register(
-    INCLUDE_DIRS "${SRC_ROOT}/inc" "${SRC_ROOT}/src"
+    INCLUDE_DIRS "${SRC_ROOT}/inc" "${SRC_ROOT}/inc/features" "${SRC_ROOT}/inc/registers" "${SRC_ROOT}/src"
     REQUIRES driver
 )
 

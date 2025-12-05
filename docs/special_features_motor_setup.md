@@ -83,7 +83,7 @@ struct MotorSpec {
     // ... required parameters ...
     
     uint32_t winding_resistance_mohm;  // Winding resistance in milliohms (required for StealthChop)
-    uint32_t winding_inductance_uh;    // Winding inductance in microhenries (0 = not specified)
+    float winding_inductance_mh;       // Winding inductance in millihenries (0 = not specified)
     uint16_t run_current_ma;          // Desired run current (0 = use rated_current_ma)
     uint16_t hold_current_ma;          // Desired hold current (0 = auto-calculate as 30% of run)
     float scaler_adjustment_percent;   // Fine-tuning for GLOBAL_SCALER calculation (-50.0 to +50.0)
@@ -124,7 +124,7 @@ void setupNema17Motor() {
     nema17.steps_per_rev = 200;           // 1.8° per step
     nema17.rated_current_ma = 1500;       // 1.5A rated
     nema17.winding_resistance_mohm = 3200; // 3.2Ω per phase
-    nema17.winding_inductance_uh = 2800;  // 2.8mH per phase
+    nema17.winding_inductance_mh = 2.8f;   // 2.8 mH per phase
     
     // Lead screw mechanical system
     tmc51x0::MechanicalSystem lead_screw{};

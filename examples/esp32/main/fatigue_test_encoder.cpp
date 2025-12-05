@@ -955,7 +955,7 @@ private:
         last_target_relative_ = target_relative_deg; // Store in degrees
         if (fabsf(target_relative_deg) > 0.5f) { // Only update if significantly away from center (0.5 degrees)
           last_was_negative_ = currently_negative;
-        }
+      }
     }
 
     // Clamp to local bounds and handle dwell states (all in degrees)

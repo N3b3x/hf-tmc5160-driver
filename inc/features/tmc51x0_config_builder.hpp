@@ -3,7 +3,7 @@
  * @brief Fluent configuration builder for TMC51x0 driver
  * 
  * Provides a fluent interface for building DriverConfig with:
- * - User-friendly units (Amps, Volts) converted to internal units (mA, mV)
+ * - Units in milliamps, millivolts, milliohms, millihenries
  * - Chainable method calls for easy configuration
  * - Complete coverage of all DriverConfig fields
  * - Mimics the ESP32 test config initialization pattern
@@ -14,6 +14,13 @@
  * 
  * - **Unit suffixes for fixed units**: Functions that always use a specific unit
  *   have the unit suffix in the function name:
+ *   - `WithMotorMa()` - rated current in milliamps
+ *   - `WithRunCurrentMa()` - run current in milliamps
+ *   - `WithHoldCurrentMa()` - hold current in milliamps
+ *   - `WithSupplyVoltageMv()` - supply voltage in millivolts
+ *   - `WithSenseResistorMohm()` - sense resistor in milliohms
+ *   - `WithWindingResistanceMohm()` - winding resistance in milliohms
+ *   - `WithWindingInductanceMh()` - winding inductance in millihenries
  *   - `WithMotorPowerDownDelayMs()` - always milliseconds
  *   - `WithRampPowerDownDelayMs()` - always milliseconds
  *   - `WithZeroWaitTimeMs()` - always milliseconds
@@ -22,6 +29,7 @@
  *   - `WithS2gVoltageMv()` - always millivolts
  *   - `WithMosfetMillerChargeNc()` - always nanocoulombs
  *   - `WithShortDetectionDelayUsX10()` - always 0.1µs units
+ *   - `WithExternalClockHz()` - clock frequency in Hz
  * 
  * - **Unit-agnostic for flexible units**: Functions that accept different units
  *   use self-describing value types (VelocityValue, AccelerationValue):
@@ -39,11 +47,11 @@
  * @code
  * auto config = ConfigBuilder()
  *     // Motor configuration
- *     .WithMotor(200, 1.5f)  // 200 steps, 1.5A rated
- *     .WithSupplyVoltage(24.0f)  // 24V
- *     .WithSenseResistor(0.05f)  // 0.05Ω = 50mΩ
- *     .WithRunCurrent(1.5f)  // 1.5A run current
- *     .WithHoldCurrent(0.75f)  // 0.75A hold current
+ *     .WithMotorMa(200, 1500)  // 200 steps, 1500mA = 1.5A rated
+ *     .WithSupplyVoltageMv(24000)  // 24000mV = 24V
+ *     .WithSenseResistorMohm(50)  // 50mΩ = 0.05Ω
+ *     .WithRunCurrentMa(1500)  // 1500mA = 1.5A run current
+ *     .WithHoldCurrentMa(750)  // 750mA = 0.75A hold current
  *     // Chopper configuration
  *     .WithChopperMode(ChopperMode::SPREAD_CYCLE)
  *     .WithChopperToff(5)
@@ -64,7 +72,7 @@
 #define TMC51X0_CONFIG_BUILDER_HPP
 
 #include <cstdint>
-#include "tmc51x0_types.hpp"
+#include "../tmc51x0_types.hpp"
 
 namespace tmc51x0 {
 
@@ -101,104 +109,101 @@ public:
     // ========== MOTOR SPECIFICATION ==========
 
     /**
-     * @brief Configure motor specifications with user-friendly units
+     * @brief Configure motor specifications
      * 
      * Sets basic motor parameters: steps per revolution and rated current.
      * 
      * @param steps_per_rev Steps per revolution (e.g., 200 for 1.8° motors)
-     * @param rated_current_amps Rated motor current in Amps (e.g., 1.5 for 1.5A)
+     * @param rated_current_ma Rated motor current in milliamps (e.g., 1500 for 1.5A)
      * @return Reference to builder for chaining
      * 
      * @code
-     * builder.WithMotor(200, 1.5f);  // 200 steps, 1.5A rated
+     * builder.WithMotorMa(200, 1500);  // 200 steps, 1500mA = 1.5A rated
      * @endcode
      */
-    ConfigBuilder& WithMotor(uint16_t steps_per_rev, float rated_current_amps) {
+    ConfigBuilder& WithMotorMa(uint16_t steps_per_rev, uint16_t rated_current_ma) {
         config_.motor_spec.steps_per_rev = steps_per_rev;
-        config_.motor_spec.rated_current_ma = static_cast<uint16_t>(rated_current_amps * 1000.0f);
+        config_.motor_spec.rated_current_ma = rated_current_ma;
         return *this;
     }
 
     /**
-     * @brief Set run current with user-friendly units
+     * @brief Set run current value
      * 
-     * @param run_current_amps Run current in Amps (0 = use rated current)
+     * @param run_current_ma Run current in milliamps (0 = use rated current)
      * @return Reference to builder for chaining
      */
-    ConfigBuilder& WithRunCurrent(float run_current_amps) {
-        config_.motor_spec.run_current_ma = static_cast<uint16_t>(run_current_amps * 1000.0f);
+    ConfigBuilder& WithRunCurrentMa(uint16_t run_current_ma) {
+        config_.motor_spec.run_current_ma = run_current_ma;
         return *this;
     }
 
     /**
-     * @brief Set hold current with user-friendly units
+     * @brief Set hold current value
      * 
-     * @param hold_current_amps Hold current in Amps (0 = auto-calculate as 30% of run)
+     * @param hold_current_ma Hold current in milliamps (0 = auto-calculate as 30% of run)
      * @return Reference to builder for chaining
      */
-    ConfigBuilder& WithHoldCurrent(float hold_current_amps) {
-        config_.motor_spec.hold_current_ma = static_cast<uint16_t>(hold_current_amps * 1000.0f);
+    ConfigBuilder& WithHoldCurrentMa(uint16_t hold_current_ma) {
+        config_.motor_spec.hold_current_ma = hold_current_ma;
         return *this;
     }
 
     /**
-     * @brief Set supply voltage with user-friendly units
+     * @brief Set supply voltage value
      * 
-     * Accepts Volts and converts to millivolts internally.
-     * 
-     * @param voltage_volts Supply voltage in Volts (e.g., 24.0 for 24V)
+     * @param voltage_mv Supply voltage in millivolts (e.g., 24000 for 24V)
      * @return Reference to builder for chaining
      * 
      * @code
-     * builder.WithSupplyVoltage(24.0f);  // 24V
+     * builder.WithSupplyVoltageMv(24000);  // 24000mV = 24V
      * @endcode
      */
-    ConfigBuilder& WithSupplyVoltage(float voltage_volts) {
-        config_.motor_spec.supply_voltage_mv = static_cast<uint32_t>(voltage_volts * 1000.0f);
+    ConfigBuilder& WithSupplyVoltageMv(uint32_t voltage_mv) {
+        config_.motor_spec.supply_voltage_mv = voltage_mv;
         return *this;
     }
 
     /**
-     * @brief Set sense resistor with user-friendly units
+     * @brief Set sense resistor value
      * 
-     * Accepts Ohms and converts to milliohms internally.
      * Required for automatic current calculation.
      * 
-     * @param resistance_ohms Sense resistor in Ohms (e.g., 0.05 for 50mΩ)
+     * @param resistance_mohm Sense resistor in milliohms (e.g., 50 for 0.05Ω)
      * @return Reference to builder for chaining
      * 
      * @code
-     * builder.WithSenseResistor(0.05f);  // 0.05Ω = 50mΩ
+     * builder.WithSenseResistorMohm(50);  // 50mΩ = 0.05Ω
      * @endcode
      */
-    ConfigBuilder& WithSenseResistor(float resistance_ohms) {
-        config_.motor_spec.sense_resistor_mohm = static_cast<uint32_t>(resistance_ohms * 1000.0f);
+    ConfigBuilder& WithSenseResistorMohm(uint32_t resistance_mohm) {
+        config_.motor_spec.sense_resistor_mohm = resistance_mohm;
         return *this;
     }
 
     /**
-     * @brief Set winding resistance with user-friendly units
+     * @brief Set winding resistance value
      * 
      * Required for StealthChop lower limit calculation.
      * 
-     * @param resistance_ohms Winding resistance in Ohms
+     * @param resistance_mohm Winding resistance in milliohms
      * @return Reference to builder for chaining
      */
-    ConfigBuilder& WithWindingResistance(float resistance_ohms) {
-        config_.motor_spec.winding_resistance_mohm = static_cast<uint32_t>(resistance_ohms * 1000.0f);
+    ConfigBuilder& WithWindingResistanceMohm(uint32_t resistance_mohm) {
+        config_.motor_spec.winding_resistance_mohm = resistance_mohm;
         return *this;
     }
 
     /**
-     * @brief Set winding inductance with user-friendly units
+     * @brief Set winding inductance value
      * 
      * Used for StealthChop configuration.
      * 
-     * @param inductance_millihenries Winding inductance in mH
+     * @param inductance_mh Winding inductance in millihenries
      * @return Reference to builder for chaining
      */
-    ConfigBuilder& WithWindingInductance(float inductance_millihenries) {
-        config_.motor_spec.winding_inductance_uh = static_cast<uint32_t>(inductance_millihenries * 1000.0f);
+    ConfigBuilder& WithWindingInductanceMh(float inductance_mh) {
+        config_.motor_spec.winding_inductance_mh = inductance_mh;
         return *this;
     }
 
@@ -670,7 +675,7 @@ public:
      * @param frequency_hz External clock frequency in Hz
      * @return Reference to builder for chaining
      */
-    ConfigBuilder& WithExternalClock(uint32_t frequency_hz) {
+    ConfigBuilder& WithExternalClockHz(uint32_t frequency_hz) {
         config_.external_clk_config.frequency_hz = frequency_hz;
         return *this;
     }

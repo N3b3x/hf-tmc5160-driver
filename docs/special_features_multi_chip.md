@@ -542,7 +542,7 @@ public:
 The easiest way to manage multiple UART nodes is using the `TMC51x0MultiNode` class:
 
 ```cpp
-#include "tmc51x0_multi_node.hpp"
+#include "tmc51x0/features/tmc51x0_multi_node.hpp"
 
 // Create shared UART communication interface
 MyUART uart_comm(/* ... constructor args ... */);
