@@ -80,9 +80,11 @@ inline bool CalculateMotorCurrent(const MotorSpec& motor_spec, uint32_t sense_re
   constexpr float SQRT2 = MotorCalcConstants::SQRT2;
 
   // Calculate maximum possible RMS current at full scale (GLOBAL_SCALER=256, CS=31)
-  // I_RMS_max (mA) = (256/256) * ((31+1)/32) * (VFS_mV/RSENSE_mΩ) * (1/√2)
-  //                 = 1.0 * 1.0 * (VFS_mV/RSENSE_mΩ) * (1/√2)
-  float i_rms_max_ma = (VFS_MV / static_cast<float>(sense_resistor_mohm)) / SQRT2;
+  // I_RMS_max (A) = (256/256) * ((31+1)/32) * (VFS_V/RSENSE_Ω) * (1/√2)
+  //               = 1.0 * 1.0 * (VFS_V/RSENSE_Ω) * (1/√2)
+  // Converting from mV/mΩ to A: (VFS_mV/1000) / (RSENSE_mΩ/1000) = VFS_mV/RSENSE_mΩ (already in A)
+  // Then convert to mA: multiply by 1000
+  float i_rms_max_ma = ((VFS_MV / static_cast<float>(sense_resistor_mohm)) / SQRT2) * 1000.0F;
 
   // Check if desired current exceeds maximum possible
   if (static_cast<float>(run_current_ma) > i_rms_max_ma * 1.1F) { // Allow 10% tolerance
@@ -223,7 +225,9 @@ inline uint16_t CalculateMaxCurrentForSenseResistor(uint32_t sense_resistor_mohm
   constexpr float SQRT2 = MotorCalcConstants::SQRT2;
 
   // Calculate maximum RMS current directly in milliamps
-  float i_rms_max_ma = (VFS_MV / static_cast<float>(sense_resistor_mohm)) / SQRT2;
+  // Converting from mV/mΩ to A: (VFS_mV/1000) / (RSENSE_mΩ/1000) = VFS_mV/RSENSE_mΩ (already in A)
+  // Then convert to mA: multiply by 1000
+  float i_rms_max_ma = ((VFS_MV / static_cast<float>(sense_resistor_mohm)) / SQRT2) * 1000.0F;
 
   return static_cast<uint16_t>(i_rms_max_ma);
 }

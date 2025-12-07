@@ -302,6 +302,15 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
   TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Initialize(toff=%u, mres=%u)", config.chopper.toff,
                     static_cast<uint8_t>(config.chopper.mres));
 
+  // Debug: Log received configuration values
+  TMC51X0_LOG_DEBUG(comm_, 1, "TMC5160", "Initialize - Motor Spec: sense_resistor_mohm=%u, supply_voltage_mv=%u, rated_current_ma=%u, run_current_ma=%u, steps_per_rev=%u",
+                    config.motor_spec.sense_resistor_mohm, config.motor_spec.supply_voltage_mv,
+                    config.motor_spec.rated_current_ma, config.motor_spec.run_current_ma, config.motor_spec.steps_per_rev);
+  TMC51X0_LOG_DEBUG(comm_, 1, "TMC5160", "Initialize - Mechanical: system_type=%d, gear_ratio=%.2f",
+                    static_cast<int>(config.mechanical.system_type), config.mechanical.gear_ratio);
+  TMC51X0_LOG_DEBUG(comm_, 1, "TMC5160", "Initialize - Clock: frequency_hz=%u",
+                    config.external_clk_config.frequency_hz);
+
   // Store physical configuration
   motor_spec_ = config.motor_spec;
   mechanical_system_ = config.mechanical;
@@ -1687,12 +1696,18 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigurePowerStage(const PowerSta
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::MotorControl::ConfigureMotorCurrent(const MotorSpec& motor_spec) noexcept {
+  // Debug: Log motor spec values for troubleshooting
+  TMC51X0_LOG_DEBUG(driver_.comm_, 0, "TMC5160",
+                    "ConfigureMotorCurrent: sense_resistor_mohm=%u, supply_voltage_mv=%u, rated_current_ma=%u, run_current_ma=%u, hold_current_ma=%u",
+                    motor_spec.sense_resistor_mohm, motor_spec.supply_voltage_mv, motor_spec.rated_current_ma,
+                    motor_spec.run_current_ma, motor_spec.hold_current_ma);
+  
   // Validate inputs
   if (motor_spec.sense_resistor_mohm == 0 || motor_spec.supply_voltage_mv == 0) {
     TMC51X0_LOG_DEBUG(driver_.comm_, 0, "TMC5160",
                       "Cannot calculate motor current: sense_resistor_mohm=%u, supply_voltage_mv=%u",
                       motor_spec.sense_resistor_mohm, motor_spec.supply_voltage_mv);
-    return Result<void>(ErrorCode::COMM_ERROR);
+    return Result<void>(ErrorCode::INVALID_VALUE);
   }
 
   // Calculate motor current settings from physical parameters
@@ -1705,14 +1720,19 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureMotorCurrent(const MotorS
     run_current = motor_spec.rated_current_ma;
   }
   if (run_current == 0) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "TMC5160", "Failed to calculate motor current: no current specified");
-    return Result<void>(ErrorCode::COMM_ERROR);
+    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "TMC5160", "Failed to calculate motor current: no current specified (run_current_ma=%u, rated_current_ma=%u)",
+                      motor_spec.run_current_ma, motor_spec.rated_current_ma);
+    return Result<void>(ErrorCode::INVALID_VALUE);
   }
 
+  TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TMC5160", "Calculating motor current: run_current=%u mA, sense_resistor=%u mOhm, supply_voltage=%u mV",
+                    run_current, motor_spec.sense_resistor_mohm, motor_spec.supply_voltage_mv);
+  
   if (!CalculateMotorCurrent(motor_spec, motor_spec.sense_resistor_mohm, motor_spec.supply_voltage_mv, run_current,
                              motor_spec.hold_current_ma, calc_irun, calc_ihold, calc_scaler)) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "TMC5160", "Failed to calculate motor current settings");
-    return Result<void>(ErrorCode::COMM_ERROR);
+    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "TMC5160", "Failed to calculate motor current settings: run_current=%u mA may exceed max for sense_resistor=%u mOhm",
+                      run_current, motor_spec.sense_resistor_mohm);
+    return Result<void>(ErrorCode::INVALID_VALUE);
   }
 
   // Apply percentage adjustments before constraining

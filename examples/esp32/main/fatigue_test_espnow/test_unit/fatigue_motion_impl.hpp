@@ -30,21 +30,13 @@ FatigueTestMotion::FatigueTestMotion(tmc51x0::TMC51x0<Esp32SPI>* driver) noexcep
       phase_offset_(0.0F), target_cycles_(0), current_cycles_(0), cycle_complete_(false),
       last_was_negative_(false), cycle_started_(false), last_target_relative_(0.0f), 
       state_(MotionState::STOPPED), dwell_start_time_ms_(0), sinusoidal_mode_(false), 
-      calculated_vmax_(10000.0f), calculated_amax_(5000.0f), estimated_frequency_hz_(0.0f),
-      steps_per_rev_(200), angle_unit_(AngleUnit::DEGREES) {
+      calculated_vmax_rpm_(30.0f), calculated_amax_rev_s2_(2.0f), estimated_frequency_hz_(0.0f) {
     // Mutex is automatically created by Esp32TmcMutex constructor
     // Note: Initialization order matches member declaration order in header
 }
 
 FatigueTestMotion::~FatigueTestMotion() noexcept = default;
 
-void FatigueTestMotion::ConfigureMotor(uint16_t steps_per_rev, AngleUnit unit) noexcept {
-    TmcMutexGuard guard(mutex_);
-    steps_per_rev_ = steps_per_rev;
-    angle_unit_ = unit;
-    ESP_LOGI(TAG_MOTION, "Motor configured: %d steps/rev, angle unit: %s", steps_per_rev_,
-             unit == AngleUnit::DEGREES ? "degrees" : "radians");
-}
 
 void FatigueTestMotion::SetGlobalBounds(float min_bound_degrees, float max_bound_degrees) noexcept {
     {
@@ -230,15 +222,12 @@ bool FatigueTestMotion::Start() noexcept {
         RecalculateTrajectory();
 
         // Configure driver for positioning mode
-        // Convert calculated values from steps/s to higher-level units (RPM for velocity, RevPerSec for acceleration)
-        float vmax_rpm = (calculated_vmax_ / static_cast<float>(steps_per_rev_)) * 60.0f;
-        float amax_rev_s2 = calculated_amax_ / static_cast<float>(steps_per_rev_);
-        
+        // Values are already in proper units (RPM and rev/s²) - use directly
         driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-        driver_->rampControl.SetMaxSpeed(vmax_rpm, tmc51x0::Unit::RPM);
-        driver_->rampControl.SetAcceleration(amax_rev_s2, tmc51x0::Unit::RevPerSec);
-        driver_->rampControl.SetDeceleration(amax_rev_s2, tmc51x0::Unit::RevPerSec);
-        driver_->rampControl.SetRampSpeeds(30.0f, 3.0f, 0.0f, tmc51x0::Unit::RPM); // ~1000/100 steps/s for 200 steps/rev
+        driver_->rampControl.SetMaxSpeed(calculated_vmax_rpm_, tmc51x0::Unit::RPM);
+        driver_->rampControl.SetAcceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+        driver_->rampControl.SetDeceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+        driver_->rampControl.SetRampSpeeds(30.0f, 3.0f, 0.0f, tmc51x0::Unit::RPM);
 
         running_ = true;
         start_time_us_ = esp_timer_get_time();
@@ -267,8 +256,8 @@ bool FatigueTestMotion::Start() noexcept {
 
     ESP_LOGI(TAG_MOTION, "Starting fatigue test (cycles: %lu/%lu)", current_cycles,
              target_cycles == 0 ? 0xFFFFFFFF : target_cycles);
-    ESP_LOGI(TAG_MOTION, "  Motion: Sinusoidal mode, VMAX=%.1f, AMAX=%.1f", 
-             calculated_vmax_, calculated_amax_);
+    ESP_LOGI(TAG_MOTION, "  Motion: Sinusoidal mode, VMAX=%.2f RPM, AMAX=%.3f rev/s²", 
+             calculated_vmax_rpm_, calculated_amax_rev_s2_);
     return true;
 }
 
@@ -293,8 +282,9 @@ void FatigueTestMotion::RecalculateTrajectory() noexcept {
     // Calculate total travel distance (one way) in degrees
     float distance_deg = fabsf(local_max_bound_ - local_min_bound_);
     if (distance_deg < 0.1f || frequency_hz_ <= 0.0001f) {
-        calculated_vmax_ = 1000.0f;
-        calculated_amax_ = 5000.0f;
+        // Default values in proper units
+        calculated_vmax_rpm_ = 30.0f;      // 30 RPM default
+        calculated_amax_rev_s2_ = 2.0f;    // 2 rev/s² default
         estimated_frequency_hz_ = 0.0f;
         return;
     }
@@ -316,28 +306,32 @@ void FatigueTestMotion::RecalculateTrajectory() noexcept {
     // Time for one leg (one way)
     float leg_time_s = total_move_time_s / 2.0f;
     
-    // Convert distance from degrees to steps for internal calculations
-    // (calculated_vmax_ and calculated_amax_ are stored in steps/s and steps/s²)
-    float distance_steps = tmc51x0::DegreesToSteps(distance_deg, steps_per_rev_);
+    // Calculate velocity in degrees per second
+    // Using 1.5x factor for trapezoidal profile (allows for acceleration/deceleration phases)
+    float velocity_deg_per_s = (1.5f * distance_deg) / leg_time_s;
     
-    // Calculate VMAX and AMAX for Trapezoidal Profile (in steps/s and steps/s²)
-    calculated_vmax_ = (1.5f * distance_steps) / leg_time_s;
-    calculated_amax_ = calculated_vmax_ / (leg_time_s / 3.0f);
+    // Convert to RPM: (deg/s / 360 deg/rev) * 60 s/min = RPM
+    calculated_vmax_rpm_ = (velocity_deg_per_s / 360.0f) * 60.0f;
     
-    // Clamp to driver limits
-    if (calculated_vmax_ > 5000000.0f) calculated_vmax_ = 5000000.0f;
-    if (calculated_amax_ > 5000000.0f) calculated_amax_ = 5000000.0f;
+    // Calculate acceleration in rev/s²
+    // Acceleration = velocity_change / time_to_reach_velocity
+    // Time to reach velocity is approximately leg_time / 3 (for trapezoidal profile)
+    float time_to_reach_velocity = leg_time_s / 3.0f;
+    float velocity_rev_per_s = calculated_vmax_rpm_ / 60.0f;
+    calculated_amax_rev_s2_ = velocity_rev_per_s / time_to_reach_velocity;
+    
+    // Clamp to reasonable limits (300 RPM max, 10 rev/s² max)
+    if (calculated_vmax_rpm_ > 300.0f) calculated_vmax_rpm_ = 300.0f;
+    if (calculated_amax_rev_s2_ > 10.0f) calculated_amax_rev_s2_ = 10.0f;
+    if (calculated_vmax_rpm_ < 1.0f) calculated_vmax_rpm_ = 1.0f;  // Minimum 1 RPM
+    if (calculated_amax_rev_s2_ < 0.1f) calculated_amax_rev_s2_ = 0.1f;  // Minimum 0.1 rev/s²
     
     estimated_frequency_hz_ = 1.0f / (2.0f * leg_time_s + total_dwell_s);
     
-    // Calculate values in higher-level units for logging
-    float vmax_rpm = (calculated_vmax_ / static_cast<float>(steps_per_rev_)) * 60.0f;
-    float amax_rev_s2 = calculated_amax_ / static_cast<float>(steps_per_rev_);
-    
-    ESP_LOGI(TAG_MOTION, "Trajectory Recalculated: Dist=%.2f° (%.0f steps), LegTime=%.3fs", distance_deg, distance_steps, leg_time_s);
+    ESP_LOGI(TAG_MOTION, "Trajectory Recalculated: Dist=%.2f°, LegTime=%.3fs", distance_deg, leg_time_s);
     ESP_LOGI(TAG_MOTION, "  Target Freq=%.2fHz, Est Freq=%.2fHz", frequency_hz_, estimated_frequency_hz_);
-    ESP_LOGI(TAG_MOTION, "  VMAX=%.1f steps/s (%.2f RPM), AMAX=%.1f steps/s² (%.3f rev/s²)", 
-             calculated_vmax_, vmax_rpm, calculated_amax_, amax_rev_s2);
+    ESP_LOGI(TAG_MOTION, "  VMAX=%.2f RPM, AMAX=%.3f rev/s²", 
+             calculated_vmax_rpm_, calculated_amax_rev_s2_);
 }
 
 void FatigueTestMotion::ClipLocalBoundsToGlobal() noexcept {
@@ -485,13 +479,13 @@ void FatigueTestMotion::UpdateSinuousMotion() noexcept {
     // Use ABSOLUTE positioning - home is established, target_deg is absolute
     if (fabsf(target_deg - current_pos_deg) > 0.5f) {  // ~0.5 degree threshold
         driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-        // Use higher-level units for slow motion (RPM for velocity, RevPerSec for acceleration)
-        float slow_vmax_rpm = (1000.0f / static_cast<float>(steps_per_rev_)) * 60.0f;
-        float slow_amax_rev_s2 = 2000.0f / static_cast<float>(steps_per_rev_);
+        // Use slow speed for position correction (5 RPM, 1 rev/s²)
+        constexpr float SLOW_VMAX_RPM = 5.0f;
+        constexpr float SLOW_AMAX_REV_S2 = 1.0f;
         
         driver_->rampControl.SetTargetPosition(target_deg, tmc51x0::Unit::Deg);
-        driver_->rampControl.SetMaxSpeed(slow_vmax_rpm, tmc51x0::Unit::RPM);
-        driver_->rampControl.SetAcceleration(slow_amax_rev_s2, tmc51x0::Unit::RevPerSec);
+        driver_->rampControl.SetMaxSpeed(SLOW_VMAX_RPM, tmc51x0::Unit::RPM);
+        driver_->rampControl.SetAcceleration(SLOW_AMAX_REV_S2, tmc51x0::Unit::RevPerSec);
     }
 }
 
@@ -553,14 +547,11 @@ void FatigueTestMotion::Update() noexcept {
         if (current_time_ms - dwell_start >= dwell_min) {
             TmcMutexGuard guard(mutex_);
             if (!sinusoidal_mode_) {
-                // Convert to higher-level units (RPM for velocity, RevPerSec for acceleration)
-                float vmax_rpm = (calculated_vmax_ / static_cast<float>(steps_per_rev_)) * 60.0f;
-                float amax_rev_s2 = calculated_amax_ / static_cast<float>(steps_per_rev_);
-                
+                // Values are already in proper units (RPM and rev/s²) - use directly
                 state_ = MotionState::MOVING_TO_MAX;
-                driver_->rampControl.SetMaxSpeed(vmax_rpm, tmc51x0::Unit::RPM);
-                driver_->rampControl.SetAcceleration(amax_rev_s2, tmc51x0::Unit::RevPerSec);
-                driver_->rampControl.SetDeceleration(amax_rev_s2, tmc51x0::Unit::RevPerSec);
+                driver_->rampControl.SetMaxSpeed(calculated_vmax_rpm_, tmc51x0::Unit::RPM);
+                driver_->rampControl.SetAcceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+                driver_->rampControl.SetDeceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
                 driver_->rampControl.SetTargetPosition(max_bound, tmc51x0::Unit::Deg);
             } else {
                 state_ = MotionState::MOVING_TO_MAX;
@@ -572,14 +563,11 @@ void FatigueTestMotion::Update() noexcept {
         if (current_time_ms - dwell_start >= dwell_max) {
             TmcMutexGuard guard(mutex_);
             if (!sinusoidal_mode_) {
-                // Convert to higher-level units (RPM for velocity, RevPerSec for acceleration)
-                float vmax_rpm = (calculated_vmax_ / static_cast<float>(steps_per_rev_)) * 60.0f;
-                float amax_rev_s2 = calculated_amax_ / static_cast<float>(steps_per_rev_);
-                
+                // Values are already in proper units (RPM and rev/s²) - use directly
                 state_ = MotionState::MOVING_TO_MIN;
-                driver_->rampControl.SetMaxSpeed(vmax_rpm, tmc51x0::Unit::RPM);
-                driver_->rampControl.SetAcceleration(amax_rev_s2, tmc51x0::Unit::RevPerSec);
-                driver_->rampControl.SetDeceleration(amax_rev_s2, tmc51x0::Unit::RevPerSec);
+                driver_->rampControl.SetMaxSpeed(calculated_vmax_rpm_, tmc51x0::Unit::RPM);
+                driver_->rampControl.SetAcceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+                driver_->rampControl.SetDeceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
                 driver_->rampControl.SetTargetPosition(min_bound, tmc51x0::Unit::Deg);
             } else {
                 state_ = MotionState::MOVING_TO_MIN;

@@ -47,8 +47,6 @@ public:
     FatigueTestMotion(tmc51x0::TMC51x0<Esp32SPI>* driver) noexcept;
     ~FatigueTestMotion() noexcept;
 
-    // Configuration
-    void ConfigureMotor(uint16_t steps_per_rev, AngleUnit unit = AngleUnit::DEGREES) noexcept;
     void SetGlobalBounds(float min_bound_degrees, float max_bound_degrees) noexcept;
     void GetGlobalBoundsDegrees(float& min_degrees, float& max_degrees) const noexcept;
     void SetUnbounded(float current_position_degrees, float default_range_degrees = 175.0f) noexcept;
@@ -113,14 +111,10 @@ private:
     uint32_t dwell_start_time_ms_;
     bool sinusoidal_mode_;
     
-    // Trajectory parameters
-    float calculated_vmax_;
-    float calculated_amax_;
-    float estimated_frequency_hz_;
-    
-    // Motor configuration
-    uint16_t steps_per_rev_;
-    AngleUnit angle_unit_;
+    // Trajectory parameters (all in higher-level units)
+    float calculated_vmax_rpm_;      // Maximum velocity in RPM
+    float calculated_amax_rev_s2_;   // Maximum acceleration in rev/s²
+    float estimated_frequency_hz_;   // Estimated actual frequency
     
     // Thread safety
     mutable Esp32TmcMutex mutex_;

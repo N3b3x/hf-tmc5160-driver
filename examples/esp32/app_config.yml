@@ -82,6 +82,15 @@ apps:
     ci_enabled: true
     featured: true
 
+  abn_encoder_reader:
+    description: "ABN encoder position reader - Continuously reads and displays encoder position from ABN incremental encoder"
+    source_file: "abn_encoder_reader.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: false
+    featured: true
+
   # ESP-NOW Fatigue Test System
   fatigue_test_espnow_unit:
     description: "Unified fatigue test unit with ESP-NOW and UART support, dual bounds detection (StallGuard2/Encoder)"
