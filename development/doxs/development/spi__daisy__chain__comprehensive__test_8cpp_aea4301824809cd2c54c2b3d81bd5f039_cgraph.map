@@ -1,7 +1,10 @@
 <map id="test_daisy_chain_setup" name="test_daisy_chain_setup">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,180,38"/>
-<area shape="rect" id="Node000002" href="$spi__daisy__chain__comprehensive__test_8cpp.html#ae1c358956ec587c7bd3a5105761b86a0" title=" " alt="" coords="228,5,375,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="180,23,214,23,214,28,180,28"/>
-<area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="423,5,585,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="375,23,409,23,409,28,375,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,69,180,94"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0__test__config.html#a01546734dfbb01aa89c186b7bdf20bab" title="Configure driver from test rig selection." alt="" coords="228,29,440,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="180,67,214,63,215,68,181,72"/>
+<area shape="rect" id="Node000003" href="$spi__daisy__chain__comprehensive__test_8cpp.html#ae1c358956ec587c7bd3a5105761b86a0" title=" " alt="" coords="261,93,407,133"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="181,90,247,99,247,105,180,96"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="290,30,288,20,295,10,310,5,334,3,361,6,376,13,374,18,360,11,334,8,311,10,298,15,293,21,295,28"/>
+<area shape="rect" id="Node000004" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="488,93,651,133"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="408,111,474,111,474,116,408,116"/>
 </map>

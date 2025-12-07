@@ -26,12 +26,12 @@
 <area shape="poly" id="edge21_Node000001_Node000015" title=" " alt="" coords="102,453,116,499,141,564,180,634,205,667,234,695,240,700,237,704,230,699,201,670,176,637,137,566,110,501,97,455"/>
 <area shape="rect" id="Node000016" href="$classFatigueTest_1_1FatigueTestMotion.html#aedf901d32a07a14e2eba330abf2988e9" title=" " alt="" coords="239,773,415,813"/>
 <area shape="poly" id="edge22_Node000001_Node000016" title=" " alt="" coords="100,454,111,510,134,592,151,636,174,681,201,723,234,759,239,763,235,767,230,763,197,726,169,684,147,639,129,593,106,511,95,455"/>
-<area shape="rect" id="Node000019" href="$classFatigueTest_1_1FatigueTestMotion.html#a1b73c95ad6dfe1deaa3dc5a3b271bd2e" title=" " alt="" coords="239,837,415,877"/>
-<area shape="poly" id="edge25_Node000001_Node000019" title=" " alt="" coords="99,454,106,519,126,618,144,672,167,727,196,778,234,823,238,827,235,831,230,827,192,781,162,729,139,674,121,619,101,519,94,454"/>
+<area shape="rect" id="Node000018" href="$classFatigueTest_1_1FatigueTestMotion.html#a1b73c95ad6dfe1deaa3dc5a3b271bd2e" title=" " alt="" coords="239,837,415,877"/>
+<area shape="poly" id="edge24_Node000001_Node000018" title=" " alt="" coords="99,454,106,519,126,618,144,672,167,727,196,778,234,823,238,827,235,831,230,827,192,781,162,729,139,674,121,619,101,519,94,454"/>
 <area shape="rect" id="Node000004" href="$espnow__receiver_8cpp.html#a56b1fa458feb934b57be89468e71627f" title=" " alt="" coords="505,301,648,326"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="402,107,423,119,469,159,509,205,542,251,564,287,560,290,537,254,505,209,466,163,420,124,399,112"/>
-<area shape="rect" id="Node000005" href="$espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" title=" " alt="" coords="781,301,873,326"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="648,311,768,311,768,316,648,316"/>
+<area shape="rect" id="Node000005" href="$espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" title=" " alt="" coords="732,301,824,326"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="648,311,718,311,718,316,648,316"/>
 <area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="397,171,423,183,462,208,498,237,556,289,552,293,495,241,459,212,420,188,395,176"/>
 <area shape="poly" id="edge8_Node000007_Node000004" title=" " alt="" coords="389,235,422,247,535,293,533,298,420,252,388,240"/>
 <area shape="poly" id="edge10_Node000008_Node000004" title=" " alt="" coords="412,290,492,300,491,305,412,295"/>
@@ -41,6 +41,4 @@
 <area shape="poly" id="edge18_Node000012_Node000004" title=" " alt="" coords="399,515,420,503,466,464,505,418,537,373,560,336,564,339,542,376,509,421,469,467,423,508,402,520"/>
 <area shape="rect" id="Node000017" href="$classFatigueTest_1_1FatigueTestMotion.html#af8e6c53b8ceac2943e4ea919b745782f" title=" " alt="" coords="469,773,684,813"/>
 <area shape="poly" id="edge23_Node000016_Node000017" title=" " alt="" coords="415,791,455,791,455,796,415,796"/>
-<area shape="rect" id="Node000018" href="$namespacetmc51x0.html#aeb46c0090617c6181b568bdaf4415ae3" title="Convert degrees to steps." alt="" coords="732,781,923,806"/>
-<area shape="poly" id="edge24_Node000017_Node000018" title=" " alt="" coords="684,791,718,791,718,796,684,796"/>
 </map>

@@ -1,5 +1,5 @@
 <map id="tmc51x0::CalculateStealthChopLowerLimit" name="tmc51x0::CalculateStealthChopLowerLimit">
-<area shape="rect" id="Node000001" title="Calculate StealthChop lower current limit." alt="" coords="281,5,476,45"/>
-<area shape="rect" id="Node000002" href="$structtmc51x0_1_1TMC51x0_1_1RampControl.html#a567e41c6951a0da49d9b0298af562eed" title="Move relative to current position." alt="" coords="5,5,233,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="267,28,234,28,234,23,267,23"/>
+<area shape="rect" id="Node000001" title="Calculate StealthChop lower current limit." alt="" coords="304,5,499,45"/>
+<area shape="rect" id="Node000002" href="$structtmc51x0_1_1TMC51x0_1_1RampControl.html#a12204b1885a575d99f102f4fb6f4f279" title="Set target position (absolute)" alt="" coords="5,5,256,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="290,28,256,28,256,23,290,23"/>
 </map>

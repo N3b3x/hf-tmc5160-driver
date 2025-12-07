@@ -1,0 +1,6 @@
+<map id="tmc51x0_test_config::GetEncoderConfig" name="tmc51x0_test_config::GetEncoderConfig">
+<area shape="rect" id="Node000001" title="Helper function to configure encoder from platform config." alt="" coords="5,29,163,69"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0__test__config.html#a01546734dfbb01aa89c186b7bdf20bab" title="Configure driver from test rig selection." alt="" coords="211,29,423,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,47,197,47,197,52,163,52"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="273,30,271,20,278,10,293,5,317,3,344,6,358,13,356,18,342,11,317,8,294,10,281,15,276,21,278,28"/>
+</map>

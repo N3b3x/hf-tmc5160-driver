@@ -1,9 +1,12 @@
 <map id="test_deviation_detection" name="test_deviation_detection">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,42,188,67"/>
-<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="236,42,376,67"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,52,222,52,222,57,188,57"/>
-<area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="424,5,587,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="376,42,410,37,411,42,377,47"/>
-<area shape="rect" id="Node000004" href="$internal__ramp__comprehensive__test_8cpp.html#a266d3b939b723d24f9230b6b22b3b8a9" title="Verify mode pins match expected communication mode." alt="" coords="437,70,574,95"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="376,62,423,68,422,74,376,67"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,101,188,126"/>
+<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="236,101,376,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,111,222,111,222,116,188,116"/>
+<area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#a01546734dfbb01aa89c186b7bdf20bab" title="Configure driver from test rig selection." alt="" coords="424,29,636,69"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="351,98,445,71,447,76,352,103"/>
+<area shape="rect" id="Node000004" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="449,93,611,133"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="376,111,435,111,435,116,376,116"/>
+<area shape="rect" id="Node000005" href="$internal__ramp__comprehensive__test_8cpp.html#a266d3b939b723d24f9230b6b22b3b8a9" title="Verify mode pins match expected communication mode." alt="" coords="461,158,599,183"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="353,124,425,143,462,152,461,157,423,148,352,129"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="488,30,486,20,492,10,507,5,530,3,556,6,570,13,568,18,555,11,530,8,508,10,496,15,491,21,493,28"/>
 </map>

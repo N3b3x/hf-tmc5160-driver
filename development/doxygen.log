@@ -1,5 +1,5 @@
-warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.cQRydm
-warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.cQRydm' has become obsolete.
+warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.fxghYv
+warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.fxghYv' has become obsolete.
          To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
 Doxygen version used: 1.10.0 (ebc57c6dd303a980bd19dd74b8b61c8f3f5180ca)
 Searching for include files...
@@ -48,6 +48,8 @@ Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc51x0_
 Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc51x0_result.hpp...
 Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc51x0_types.hpp...
 Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc51x0_types.hpp...
+Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/abn_encoder_reader.cpp...
+Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/abn_encoder_reader.cpp...
 Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp...
 Parsing file /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp...
 Preprocessing /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_espnow/espnow_protocol.hpp...
@@ -155,14 +157,6 @@ Searching for documented variables...
 Building interface member list...
 Building member list...
 Searching for friends...
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:40: warning: Unsupported xml/html tag <min> found
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:40: warning: Unsupported xml/html tag <max> found
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:41: warning: Unsupported xml/html tag <min> found
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:41: warning: Unsupported xml/html tag <max> found
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:41: warning: Unsupported xml/html tag <min> found
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:41: warning: Unsupported xml/html tag <max> found
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:42: warning: Unsupported xml/html tag <count> found
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:42: warning: Unsupported xml/html tag <count> found
 Searching for documented defines...
 Computing class inheritance relations...
 Computing class usage relations...
@@ -203,6 +197,7 @@ Generating style sheet...
 Generating search indices...
 Generating example documentation...
 Generating file sources...
+Parsing code for file abn_encoder_reader.cpp...
 Parsing code for file fatigue_test_encoder.cpp...
 Generating code for file bounds_finder.hpp...
 Parsing code for file bounds_finder_encoder.cpp...
@@ -258,9 +253,19 @@ Generating code for file tmc51x0_comm_interface.hpp...
 Generating code for file tmc51x0_result.hpp...
 Generating code for file tmc51x0_types.hpp...
 Parsing code for file README.md...
-Generating code for file tmc51x0.cpp...
+Generating code for file tmc51x0.c/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:40: warning: Unsupported xml/html tag <min> found
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:40: warning: Unsupported xml/html tag <max> found
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:41: warning: Unsupported xml/html tag <min> found
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:41: warning: Unsupported xml/html tag <max> found
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:41: warning: Unsupported xml/html tag <min> found
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:41: warning: Unsupported xml/html tag <max> found
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:42: warning: Unsupported xml/html tag <count> found
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_encoder.cpp:42: warning: Unsupported xml/html tag <count> found
+pp...
 Parsing code for file tmc51x0_register_defs.cpp...
 Generating file documentation...
+Generating docs for file abn_encoder_reader.cpp...
+Generating call graph for function app_main
 Generating docs for file fatigue_test_encoder.cpp...
 Generating call graph for function app_main
 Generating caller graph for function HandleAction
@@ -340,14 +345,7 @@ Generating caller graph for function draw_complete_screen
 Generating call graph for function draw_confirm_stop
 Generating caller graph for function draw_confirm_stop
 Generating call graph for function draw_error_screen
-Generating caller graph for function draw_error_screen
-Generating call graph for function draw_main_screen
-Generating caller graph for function draw_main_screen
-Generating call graph for function draw_menu_item
-Generating caller graph for function draw_menu_item
-Generating call graph for function draw_settings_edit
-Generating caller graph for function draw_settings_edit
-Generating call graph for fun/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_stallguard.cpp:37: warning: Unsupported xml/html tag <min> found
+Generating caller graph for func/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_stallguard.cpp:37: warning: Unsupported xml/html tag <min> found
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_stallguard.cpp:37: warning: Unsupported xml/html tag <max> found
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_stallguard.cpp:38: warning: Unsupported xml/html tag <min> found
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_stallguard.cpp:38: warning: Unsupported xml/html tag <max> found
@@ -355,7 +353,14 @@ Generating call graph for fun/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driv
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_stallguard.cpp:38: warning: Unsupported xml/html tag <max> found
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_stallguard.cpp:39: warning: Unsupported xml/html tag <count> found
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/fatigue_test_stallguard.cpp:39: warning: Unsupported xml/html tag <count> found
-ction draw_settings_menu
+tion draw_error_screen
+Generating call graph for function draw_main_screen
+Generating caller graph for function draw_main_screen
+Generating call graph for function draw_menu_item
+Generating caller graph for function draw_menu_item
+Generating call graph for function draw_settings_edit
+Generating caller graph for function draw_settings_edit
+Generating call graph for function draw_settings_menu
 Generating caller graph for function draw_settings_menu
 Generating call graph for function handle_button
 Generating caller graph for function handle_button
@@ -414,6 +419,7 @@ Generating call graph for function uart_command_task
 Generating caller graph for function uart_command_task
 Generating docs for file internal_ramp_comprehensive_test.cpp...
 Generating call graph for function app_main
+Generating call graph for function CalculateCurrentRegister
 Generating caller graph for function CalculateCurrentRegister
 Generating call graph for function create_test_driver
 Generating caller graph for function create_test_driver
@@ -495,14 +501,7 @@ Generating call graph for function test_stallguard
 Generating caller graph for function test_stallguard
 Generating call graph for function test_stealthchop_configuration
 Generating caller graph for function test_stealthchop_configuration
-Generating call graph for function test_uart_transmission_count
-Generating caller graph for function test_uart_transmission_count
-Generating call graph for function test_unit_conversions
-Generating caller graph for function test_unit_conversions
-Generating caller graph for function verify_mode_pins
-Generating docs for file internal_ramp_sinusoidal.cpp...
-Generating call graph for function app_main
-Generating docs for file spi_daisy_chain_comprehensive_te/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/TestFramework.h:383: warning: The following parameter of print_test_section_footer(const char *tag, const char *section_name, bool enabled=true) is not documented:
+Generating call graph for fu/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/TestFramework.h:383: warning: The following parameter of print_test_section_footer(const char *tag, const char *section_name, bool enabled=true) is not documented:
   parameter 'tag'
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/TestFramework.h:357: warning: The following parameter of print_test_section_header(const char *tag, const char *section_name, bool enabled=true) is not documented:
   parameter 'tag'
@@ -513,7 +512,14 @@ Generating docs for file spi_daisy_chain_comprehensive_te/home/runner/work/hf-tm
   parameter 'tag'
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/registers/tmc51x0_register_defs.hpp:11: warning: explicit link request to 'define' could not be resolved
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/registers/tmc51x0_register_defs.hpp:13: warning: explicit link request to 'undef' could not be resolved
-st.cpp...
+nction test_uart_transmission_count
+Generating caller graph for function test_uart_transmission_count
+Generating call graph for function test_unit_conversions
+Generating caller graph for function test_unit_conversions
+Generating caller graph for function verify_mode_pins
+Generating docs for file internal_ramp_sinusoidal.cpp...
+Generating call graph for function app_main
+Generating docs for file spi_daisy_chain_comprehensive_test.cpp...
 Generating call graph for function app_main
 Generating call graph for function create_daisy_chain_drivers
 Generating caller graph for function create_daisy_chain_drivers
@@ -758,11 +764,9 @@ Generating caller graph for function FatigueTest::EncoderBoundsFinderImpl::FindB
 Generating call graph for function FatigueTest::EncoderBoundsFinderImpl::FindBounds
 Generating caller graph for function FatigueTest::EncoderBoundsFinderImpl::MoveToPosition
 Generating docs for compound FatigueTest::FatigueTestMotion...
-Generating caller graph for function FatigueTest::FatigueTestMotion::ConfigureMotor
 Generating caller graph for function FatigueTest::FatigueTestMotion::GetCurrentCycles
 Generating caller graph for function FatigueTest::FatigueTestMotion::GetStatus
 Generating caller graph for function FatigueTest::FatigueTestMotion::IsRunning
-Generating call graph for function FatigueTest::FatigueTestMotion::RecalculateTrajectory
 Generating caller graph for function FatigueTest::FatigueTestMotion::RecalculateTrajectory
 Generating caller graph for function FatigueTest::FatigueTestMotion::SetDwellTimes
 Generating caller graph for function FatigueTest::FatigueTestMotion::SetFrequency
@@ -815,7 +819,7 @@ Generating caller graph for function tmc51x0::CalculateMotorCurrent
 Generating caller graph for function tmc51x0::CalculateS2GLevel
 Generating caller graph for function tmc51x0::CalculateS2VSLevel
 Generating caller graph for function tmc51x0::CalculateShortDelay
-Generating caller graph for function tmc51x0::DegreesToSteps
+Generating caller graph for function tmc51x0::CalculateStealthChopLowerLimit
 Generating caller graph for function tmc51x0::ErrorMessage
 Generating caller graph for function tmc51x0::MmToSteps
 Generating caller graph for function tmc51x0::RpmToStepsPerSec
@@ -842,47 +846,8 @@ Generating call graph for function tmc51x0::CommInterface::ReadRegister
 Generating caller graph for function tmc51x0::CommInterface::ReadRegister
 Generating call graph for function tmc51x0::CommInterface::WriteRegister
 Generating caller graph for function tmc51x0::CommInterface::WriteRegister
-Generating docs for compound tmc51x0::ConfigBuilder...
-Generating caller graph for function tmc51x0::ConfigBuilder::Build
-Generating caller graph for function tmc51x0::ConfigBuilder::WithBbmTimeNs
-Generating caller graph for function tmc51x0::ConfigBuilder::WithBeltDrive
-Generating caller graph for function tmc51x0::ConfigBuilder::WithChopperBlankTime
-Generating caller graph for function tmc51x0::ConfigBuilder::WithChopperMode
-Generating caller graph for function tmc51x0::ConfigBuilder::WithChopperToff
-Generating caller graph for function tmc51x0::ConfigBuilder::WithDirectDrive
-Generating caller graph for function tmc51x0::ConfigBuilder::WithDirection
-Generating caller graph for function tmc51x0::ConfigBuilder::WithExternalClockHz
-Generating caller graph for function tmc51x0::ConfigBuilder::WithGearbox
-Generating caller graph for function tmc51x0::ConfigBuilder::WithHoldCurrentMa
-Generating caller graph for function tmc51x0::ConfigBuilder::WithHysteresisEnd
-Generating caller graph for function tmc51x0::ConfigBuilder::WithHysteresisStart
-Generating caller graph for function tmc51x0::ConfigBuilder::WithInternalClock
-Generating caller graph for function tmc51x0::ConfigBuilder::WithInterpolation
-Generating caller graph for function tmc51x0::ConfigBuilder::WithLeadScrew
-Generating caller graph for function tmc51x0::ConfigBuilder::WithMicrostepResolution
-Generating caller graph for function tmc51x0::ConfigBuilder::WithMosfetMillerChargeNc
-Generating caller graph for function tmc51x0::ConfigBuilder::WithMotorMa
-Generating caller graph for function tmc51x0::ConfigBuilder::WithMotorPowerDownDelayMs
-Generating caller graph for function tmc51x0::ConfigBuilder::WithOverTempProtection
-Generating caller graph for function tmc51x0::ConfigBuilder::WithRecalibration
-Generating caller graph for function tmc51x0::ConfigBuilder::WithRunCurrentMa
-Generating caller graph for function tmc51x0::ConfigBuilder::WithS2gVoltageMv
-Generating caller graph for function tmc51x0::ConfigBuilder::WithS2vsVoltageMv
-Generating caller graph for function tmc51x0::ConfigBuilder::WithSenseFilter
-Generating caller graph for function tmc51x0::ConfigBuilder::WithSenseResistorMohm
-Generating caller graph for function tmc51x0::ConfigBuilder::WithShortFilter
-Generating caller graph for function tmc51x0::ConfigBuilder::WithShortStandstillTimeout
-Generating caller graph for function tmc51x0::ConfigBuilder::WithStartSpeed
-Generating caller graph for function tmc51x0::ConfigBuilder::WithStealthChop
-Generating caller graph for function tmc51x0::ConfigBuilder::WithStealthChopAutograd
-Generating caller graph for function tmc51x0::ConfigBuilder::WithStealthChopAutoscale
-Generating caller graph for function tmc51x0::ConfigBuilder::WithStealthChopPwmOfs
-Generating caller graph for function tmc51x0::ConfigBuilder::WithStealthChopStepFilter
-Generating caller graph for function tmc51x0::ConfigBuilder::WithStealthChopThreshold
-Generating caller graph for function tmc51x0::ConfigBuilder::WithSupplyVoltageMv
-Generating caller graph for function tmc51x0::ConfigBuilder::WithWindingInductanceMh
-Generating caller graph for function tmc51x0::ConfigBuilder::WithWindingResistanceMohm
-Generating caller graph for function tmc51x0::ConfigBuilder::WithZeroWaitTimeMs
+Generating/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc51x0_comm_interface.hpp:1769: warning: argument 'value' of command @param is not found in the argument list of tmc51x0::SpiCommInterface< Derived >::ReadRegister(uint8_t address, uint8_t daisy_chain_position=0)
+ docs for compound tmc51x0::ConfigBuilder...
 Generating docs for compound tmc51x0::COOLCONF_Register...
 Generating docs for compound tmc51x0::CoolStepConfig...
 Generating docs for compound tmc51x0::DCCTRL_Register...
@@ -902,8 +867,7 @@ Generating docs for compound tmc51x0::GSTAT_Register...
 Generating docs for compound tmc51x0::HomingSettingsCache...
 Generating docs for compound tmc51x0::IHOLD_IRUN_Register...
 Generating docs for compound tmc51x0::InputStatus...
-Generating docs for compound tmc51x0::IOIN_R/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc51x0_comm_interface.hpp:1769: warning: argument 'value' of command @param is not found in the argument list of tmc51x0::SpiCommInterface< Derived >::ReadRegister(uint8_t address, uint8_t daisy_chain_position=0)
-egister...
+Generating docs for compound tmc51x0::IOIN_Register...
 Generating docs for compound tmc51x0::MechanicalSystem...
 Generating docs for compound tmc51x0::MotorSpec...
 Generating docs for compound tmc51x0::MSCURACT_Register...
@@ -948,26 +912,7 @@ Generating docs for compound tmc51x0::SpiResponse...
 Generating docs for compound tmc51x0::SpiStatus...
 Generating caller graph for function tmc51x0::SpiStatus::DriverError
 Generating call graph for function tmc51x0::SpiStatus::FormatStatusBits
-Generating caller graph for function tmc51x0::SpiStatus::FormatStatusBits
-Generating caller graph for function tmc51x0::SpiStatus::FromByte
-Generating call graph for function tmc51x0::SpiStatus::HasError
-Generating caller graph for function tmc51x0::SpiStatus::HasError
-Generating caller graph for function tmc51x0::SpiStatus::PositionReached
-Generating caller graph for function tmc51x0::SpiStatus::ResetFlag
-Generating caller graph for function tmc51x0::SpiStatus::StallGuard2
-Generating caller graph for function tmc51x0::SpiStatus::Standstill
-Generating caller graph for function tmc51x0::SpiStatus::StopLeft
-Generating caller graph for function tmc51x0::SpiStatus::StopRight
-Generating call graph for function tmc51x0::SpiStatus::ToString
-Generating caller graph for function tmc51x0::SpiStatus::VelocityReached
-Generating docs for compound tmc51x0::StallGuardConfig...
-Generating docs for compound tmc51x0::StallGuardTuningResult...
-Generating docs for compound tmc51x0::StealthChopConfig...
-Generating docs for compound tmc51x0::SW_MODE_Register...
-Generating docs for compound tmc51x0::TMC51x0...
-Generating caller graph for function tmc51x0::TMC51x0::GetComm
-Generating caller graph for function tmc51x0::TMC51x0::Initialize
-Generating/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc51x0.hpp:1220: warning: tmc51x0::TMC51x0::Communication::GetOperatingMode has @param documentation sections but no arguments
+Generating caller graph for function tmc51x0::SpiStatus::FormatStatusBits/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc51x0.hpp:1220: warning: tmc51x0::TMC51x0::Communication::GetOperatingMode has @param documentation sections but no arguments
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc51x0.hpp:1458: warning: tmc51x0::TMC51x0::Diagnostics::GetDriverStatusRegister has @param documentation sections but no arguments
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc51x0.hpp:1386: warning: argument 'reset' of command @param is not found in the argument list of tmc51x0::TMC51x0< CommType >::Diagnostics::GetGlobalStatus(bool &drv_err, bool &uv_cp)
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc51x0.hpp:1582: warning: tmc51x0::TMC51x0::Diagnostics::GetLostSteps has @param documentation sections but no arguments
@@ -1002,14 +947,32 @@ Generating/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc51x0.hpp:
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc51x0_comm_interface.hpp:2729: warning: tmc51x0::UartCommInterface::UartCommInterface has @param documentation sections but no arguments
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc51x0_comm_interface.hpp:2771: warning: tmc51x0::UartCommInterface::GetNaoPin has @param documentation sections but no arguments
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/tmc51x0_comm_interface.hpp:2814: warning: argument 'value' of command @param is not found in the argument list of tmc51x0::UartCommInterface< Derived >::ReadRegister(uint8_t address, uint8_t node_address=0)
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:963: warning: argument 'board_type' of command @param is not found in the argument list of tmc51x0_test_config::ApplyBoardConfig(tmc51x0::DriverConfig &cfg)
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1234: warning: argument 'platform_type' of command @param is not found in the argument list of tmc51x0_test_config::ApplyPlatformConfig(tmc51x0::DriverConfig &cfg)
- docs for nested compound tmc51x0::TMC51x0::Communication...
+
+Generating caller graph for function tmc51x0::SpiStatus::FromByte
+Generating call graph for function tmc51x0::SpiStatus::HasError
+Generating caller graph for function tmc51x0::SpiStatus::HasError
+Generating caller graph for function tmc51x0::SpiStatus::PositionReached
+Generating caller graph for function tmc51x0::SpiStatus::ResetFlag
+Generating caller graph for function tmc51x0::SpiStatus::StallGuard2
+Generating caller graph for function tmc51x0::SpiStatus::Standstill
+Generating caller graph for function tmc51x0::SpiStatus::StopLeft
+Generating caller graph for function tmc51x0::SpiStatus::StopRight
+Generating call graph for function tmc51x0::SpiStatus::ToString
+Generating caller graph for function tmc51x0::SpiStatus::VelocityReached
+Generating docs for compound tmc51x0::StallGuardConfig...
+Generating docs for compound tmc51x0::StallGuardTuningResult...
+Generating docs for compound tmc51x0::StealthChopConfig...
+Generating docs for compound tmc51x0::SW_MODE_Register...
+Generating docs for compound tmc51x0::TMC51x0...
+Generating caller graph for function tmc51x0::TMC51x0::GetComm
+Generating caller graph for function tmc51x0::TMC51x0::Initialize
+Generating docs for nested compound tmc51x0::TMC51x0::Communication...
 Generating docs for nested compound tmc51x0::TMC51x0::Diagnostics...
 Generating docs for nested compound tmc51x0::TMC51x0::Encoder...
 Generating docs for nested compound tmc51x0::TMC51x0::Homing...
 Generating call graph for function tmc51x0::TMC51x0::Homing::CacheCurrentSettings
 Generating docs for nested compound tmc51x0::TMC51x0::MotorControl...
+Generating call graph for function tmc51x0::TMC51x0::MotorControl::ConfigureChopper
 Generating docs for nested compound tmc51x0::TMC51x0::Printer...
 Generating docs for nested compound tmc51x0::TMC51x0::Protection...
 Generating call graph for function tmc51x0::TMC51x0::Protection::ConfigureShortProtection
@@ -1044,7 +1007,22 @@ Generating call graph for function tmc51x0::UartFrame::GetFrame
 Generating caller graph for function tmc51x0::UartFrame::GetFrame
 Generating caller graph for function tmc51x0::UartFrame::GetSize
 Generating caller graph for function tmc51x0::UartFrame::GetValue
-Generating call graph for function tmc51x0::UartFrame::IsValid
+Generating call graph for function tmc51x0::Uart/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:963: warning: argument 'board_type' of command @param is not found in the argument list of tmc51x0_test_config::ApplyBoardConfig(tmc51x0::DriverConfig &cfg)
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1234: warning: argument 'platform_type' of command @param is not found in the argument list of tmc51x0_test_config::ApplyPlatformConfig(tmc51x0::DriverConfig &cfg)
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1611: warning: argument 'test_rig' of command @param is not found in the argument list of tmc51x0_test_config::ConfigureDriverFromTestRig(tmc51x0::DriverConfig &cfg, bool use_direct_drive=false)
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1331: warning: tmc51x0_test_config::GetEncoderConfig has @param documentation sections but no arguments
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1385: warning: tmc51x0_test_config::GetEncoderInvertDirection has @param documentation sections but no arguments
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1367: warning: tmc51x0_test_config::GetEncoderPulsesPerRev has @param documentation sections but no arguments
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1292: warning: tmc51x0_test_config::GetReferenceSwitchConfig has @param documentation sections but no arguments
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1420: warning: tmc51x0_test_config::GetTestRigBoardType has @param documentation sections but no arguments
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1640: warning: tmc51x0_test_config::GetTestRigEncoderConfig has @param documentation sections but no arguments
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1664: warning: tmc51x0_test_config::GetTestRigEncoderInvertDirection has @param documentation sections but no arguments
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1653: warning: tmc51x0_test_config::GetTestRigEncoderPulsesPerRev has @param documentation sections but no arguments
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1675: warning: argument 'test_rig' of command @param is not found in the argument list of tmc51x0_test_config::GetTestRigMotorOutputFullSteps(bool use_direct_drive=false)
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1403: warning: tmc51x0_test_config::GetTestRigMotorType has @param documentation sections but no arguments
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1437: warning: tmc51x0_test_config::GetTestRigPlatformType has @param documentation sections but no arguments
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1627: warning: tmc51x0_test_config::GetTestRigReferenceSwitchConfig has @param documentation sections but no arguments
+Frame::IsValid
 Generating caller graph for function tmc51x0::UartFrame::IsValid
 Generating caller graph for function tmc51x0::UartFrame::ReadReply
 Generating caller graph for function tmc51x0::UartFrame::ReadRequest
@@ -1064,26 +1042,25 @@ Generating docs for namespace tmc51x0::Registers
 Generating docs for namespace tmc51x0_test_config
 Generating call graph for function tmc51x0_test_config::ApplyBoardConfig
 Generating call graph for function tmc51x0_test_config::ApplyPlatformConfig
-Generating call graph for function tmc51x0_test_config::ConfigureDriverFromMotor/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1611: warning: argument 'test_rig' of command @param is not found in the argument list of tmc51x0_test_config::ConfigureDriverFromTestRig(tmc51x0::DriverConfig &cfg, bool use_direct_drive=false)
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1331: warning: tmc51x0_test_config::GetEncoderConfig has @param documentation sections but no arguments
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1385: warning: tmc51x0_test_config::GetEncoderInvertDirection has @param documentation sections but no arguments
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1367: warning: tmc51x0_test_config::GetEncoderPulsesPerRev has @param documentation sections but no arguments
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1292: warning: tmc51x0_test_config::GetReferenceSwitchConfig has @param documentation sections but no arguments
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1420: warning: tmc51x0_test_config::GetTestRigBoardType has @param documentation sections but no arguments
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1640: warning: tmc51x0_test_config::GetTestRigEncoderConfig has @param documentation sections but no arguments
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1664: warning: tmc51x0_test_config::GetTestRigEncoderInvertDirection has @param documentation sections but no arguments
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1653: warning: tmc51x0_test_config::GetTestRigEncoderPulsesPerRev has @param documentation sections but no arguments
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1675: warning: argument 'test_rig' of command @param is not found in the argument list of tmc51x0_test_config::GetTestRigMotorOutputFullSteps(bool use_direct_drive=false)
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1403: warning: tmc51x0_test_config::GetTestRigMotorType has @param documentation sections but no arguments
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1437: warning: tmc51x0_test_config::GetTestRigPlatformType has @param documentation sections but no arguments
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/esp32_tmc51x0_test_config.hpp:1627: warning: tmc51x0_test_config::GetTestRigReferenceSwitchConfig has @param documentation sections but no arguments
-_17HS4401S_Direct
+Generating call graph for function tmc51x0_test_config::ConfigureDriverFromMotor_17HS4401S_Direct
 Generating caller graph for function tmc51x0_test_config::ConfigureDriverFromMotor_17HS4401S_Direct
 Generating call graph for function tmc51x0_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox
 Generating caller graph for function tmc51x0_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox
 Generating call graph for function tmc51x0_test_config::ConfigureDriverFromMotor_AppliedMotion_5034
 Generating caller graph for function tmc51x0_test_config::ConfigureDriverFromMotor_AppliedMotion_5034
+Generating call graph for function tmc51x0_test_config::ConfigureDriverFromTestRig
+Generating caller graph for function tmc51x0_test_config::ConfigureDriverFromTestRig
 Generating caller graph for function tmc51x0_test_config::GetDefaultPinConfig
+Generating call graph for function tmc51x0_test_config::GetEncoderConfig
+Generating call graph for function tmc51x0_test_config::GetReferenceSwitchConfig
+Generating call graph for function tmc51x0_test_config::GetTestRigBoardType
+Generating call graph for function tmc51x0_test_config::GetTestRigEncoderConfig
+Generating call graph for function tmc51x0_test_config::GetTestRigEncoderInvertDirection
+Generating call graph for function tmc51x0_test_config::GetTestRigEncoderPulsesPerRev
+Generating call graph for function tmc51x0_test_config::GetTestRigMotorOutputFullSteps
+Generating call graph for function tmc51x0_test_config::GetTestRigMotorType
+Generating call graph for function tmc51x0_test_config::GetTestRigPlatformType
+Generating call graph for function tmc51x0_test_config::GetTestRigReferenceSwitchConfig
 Generating docs for compound tmc51x0_test_config::BoardConfig_TMC51x0_BOB...
 Generating docs for compound tmc51x0_test_config::BoardConfig_TMC51x0_EVAL...
 Generating docs for compound tmc51x0_test_config::MotorConfig_17HS4401S...
@@ -1097,7 +1074,24 @@ Generating docs for compound tmc51x0_test_config::PlatformConfig_FatigueTestRig.
 Generating docs for nested compound tmc51x0_test_config::PlatformConfig_FatigueTestRig::Encoder...
 Generating docs for nested compound tmc51x0_test_config::PlatformConfig_FatigueTestRig::Mechanical...
 Generating docs for nested compound tmc51x0_test_config::PlatformConfig_FatigueTestRig::ReferenceSwitches...
-Generating docs for compound tmc51x0_test_config::TestConfig_17HS4401S...
+Generating docs for compound tmc51x0_test_config::TestConfig_1/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:12: warning: unable to resolve reference to '-overview' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:13: warning: unable to resolve reference to '-features' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:14: warning: unable to resolve reference to '-quick-start' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:15: warning: unable to resolve reference to '-installation' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:16: warning: unable to resolve reference to '-api-reference' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:17: warning: unable to resolve reference to '-examples' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:18: warning: unable to resolve reference to '-documentation' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:19: warning: unable to resolve reference to '-contributing' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:20: warning: unable to resolve reference to '-license' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:24: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/index.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:264: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/installation.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:264: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/quickstart.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:269: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/platform_integration.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:276: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/installation.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:434: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/api_reference.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:465: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/examples.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:469: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/index.md' for \ref command
+7HS4401S...
 Generating docs for nested compound tmc51x0_test_config::TestConfig_17HS4401S::Motion...
 Generating docs for nested compound tmc51x0_test_config::TestConfig_17HS4401S::StallGuard...
 Generating docs for compound tmc51x0_test_config::TestConfig_AppliedMotion_5034...
@@ -1109,8 +1103,14 @@ Generating docs for nested compound tmc51x0_test_config::TestConfigAccessor::Sta
 Generating docs for compound tmc51x0_test_config::TestRigConfig...
 Generating docs for compound tmc51x0_test_config::TestRigConfig< TestRigType::TEST_RIG_CORE_DRIVER >...
 Generating call graph for function tmc51x0_test_config::TestRigConfig< TestRigType::TEST_RIG_CORE_DRIVER >::ConfigureDriver
+Generating call graph for function tmc51x0_test_config::TestRigConfig< TestRigType::TEST_RIG_CORE_DRIVER >::GetEncoderConfig
+Generating call graph for function tmc51x0_test_config::TestRigConfig< TestRigType::TEST_RIG_CORE_DRIVER >::GetMotorOutputFullSteps
+Generating call graph for function tmc51x0_test_config::TestRigConfig< TestRigType::TEST_RIG_CORE_DRIVER >::GetReferenceSwitchConfig
 Generating docs for compound tmc51x0_test_config::TestRigConfig< TestRigType::TEST_RIG_FATIGUE >...
 Generating call graph for function tmc51x0_test_config::TestRigConfig< TestRigType::TEST_RIG_FATIGUE >::ConfigureDriver
+Generating call graph for function tmc51x0_test_config::TestRigConfig< TestRigType::TEST_RIG_FATIGUE >::GetEncoderConfig
+Generating call graph for function tmc51x0_test_config::TestRigConfig< TestRigType::TEST_RIG_FATIGUE >::GetMotorOutputFullSteps
+Generating call graph for function tmc51x0_test_config::TestRigConfig< TestRigType::TEST_RIG_FATIGUE >::GetReferenceSwitchConfig
 Generating docs for namespace tmc51x0_test_config::anonymous_namespace{esp32_tmc51x0_test_config.hpp}
 Generating docs for namespace tmc51x0_test_config::ConfigValidators
 Generating docs for namespace UI
@@ -1130,24 +1130,7 @@ Generating dependency graph for directory features
 Generating dependency graph for directory inc
 Generating dependency graph for directory main
 Generating dependency graph for directory registers
-Generating dependency graph for directory /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:12: warning: unable to resolve reference to '-overview' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:13: warning: unable to resolve reference to '-features' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:14: warning: unable to resolve reference to '-quick-start' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:15: warning: unable to resolve reference to '-installation' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:16: warning: unable to resolve reference to '-api-reference' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:17: warning: unable to resolve reference to '-examples' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:18: warning: unable to resolve reference to '-documentation' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:19: warning: unable to resolve reference to '-contributing' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:20: warning: unable to resolve reference to '-license' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:24: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/index.md' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:264: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/installation.md' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:264: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/quickstart.md' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:269: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/platform_integration.md' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:276: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/installation.md' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:434: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/api_reference.md' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:465: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/examples.md' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:469: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/index.md' for \ref command
-src
+Generating dependency graph for directory src
 Generating dependency graph for directory test_config
 Generating dependency graph for directory test_unit
 Generating dependency graph for directory ui_board
@@ -1174,14 +1157,255 @@ writing tag file...
 Running plantuml with JAVA...
 Running dot...
 Generating dot graphs using 5 parallel threads...
-Running dot for graph 1/3
-Running dot for graph 2/3
-Running dot for graph 3/3
-Patching output file 1/5
-Patching output file 2/5
-Patching output file 3/5
-Patching output file 4/5
-Patching output file 5/5
-type lookup cache used 12368/65536 hits=73093 misses=12673
-symbol lookup cache used 10947/65536 hits=68333 misses=10947
+Running dot for graph 1/108
+Running dot for graph 2/108
+Running dot for graph 3/108
+Running dot for graph 4/108
+Running dot for graph 5/108
+Running dot for graph 6/108
+Running dot for graph 7/108
+Running dot for graph 8/108
+Running dot for graph 9/108
+Running dot for graph 10/108
+Running dot for graph 11/108
+Running dot for graph 12/108
+Running dot for graph 13/108
+Running dot for graph 14/108
+Running dot for graph 15/108
+Running dot for graph 16/108
+Running dot for graph 17/108
+Running dot for graph 18/108
+Running dot for graph 19/108
+Running dot for graph 20/108
+Running dot for graph 21/108
+Running dot for graph 22/108
+Running dot for graph 23/108
+Running dot for graph 24/108
+Running dot for graph 25/108
+Running dot for graph 26/108
+Running dot for graph 27/108
+Running dot for graph 28/108
+Running dot for graph 29/108
+Running dot for graph 30/108
+Running dot for graph 31/108
+Running dot for graph 32/108
+Running dot for graph 33/108
+Running dot for graph 34/108
+Running dot for graph 35/108
+Running dot for graph 36/108
+Running dot for graph 37/108
+Running dot for graph 38/108
+Running dot for graph 39/108
+Running dot for graph 40/108
+Running dot for graph 41/108
+Running dot for graph 42/108
+Running dot for graph 43/108
+Running dot for graph 44/108
+Running dot for graph 45/108
+Running dot for graph 46/108
+Running dot for graph 47/108
+Running dot for graph 48/108
+Running dot for graph 49/108
+Running dot for graph 50/108
+Running dot for graph 51/108
+Running dot for graph 52/108
+Running dot for graph 53/108
+Running dot for graph 54/108
+Running dot for graph 55/108
+Running dot for graph 56/108
+Running dot for graph 57/108
+Running dot for graph 58/108
+Running dot for graph 59/108
+Running dot for graph 60/108
+Running dot for graph 61/108
+Running dot for graph 62/108
+Running dot for graph 63/108
+Running dot for graph 64/108
+Running dot for graph 65/108
+Running dot for graph 66/108
+Running dot for graph 67/108
+Running dot for graph 68/108
+Running dot for graph 69/108
+Running dot for graph 70/108
+Running dot for graph 71/108
+Running dot for graph 72/108
+Running dot for graph 73/108
+Running dot for graph 74/108
+Running dot for graph 75/108
+Running dot for graph 76/108
+Running dot for graph 77/108
+Running dot for graph 78/108
+Running dot for graph 79/108
+Running dot for graph 80/108
+Running dot for graph 81/108
+Running dot for graph 82/108
+Running dot for graph 83/108
+Running dot for graph 84/108
+Running dot for graph 85/108
+Running dot for graph 86/108
+Running dot for graph 87/108
+Running dot for graph 88/108
+Running dot for graph 89/108
+Running dot for graph 90/108
+Running dot for graph 91/108
+Running dot for graph 92/108
+Running dot for graph 93/108
+Running dot for graph 94/108
+Running dot for graph 95/108
+Running dot for graph 96/108
+Running dot for graph 97/108
+Running dot for graph 98/108
+Running dot for graph 99/108
+Running dot for graph 100/108
+Running dot for graph 101/108
+Running dot for graph 102/108
+Running dot for graph 103/108
+Running dot for graph 104/108
+Running dot for graph 105/108
+Running dot for graph 106/108
+Running dot for graph 107/108
+Running dot for graph 108/108
+Patching output file 1/141
+Patching output file 2/141
+Patching output file 3/141
+Patching output file 4/141
+Patching output file 5/141
+Patching output file 6/141
+Patching output file 7/141
+Patching output file 8/141
+Patching output file 9/141
+Patching output file 10/141
+Patching output file 11/141
+Patching output file 12/141
+Patching output file 13/141
+Patching output file 14/141
+Patching output file 15/141
+Patching output file 16/141
+Patching output file 17/141
+Patching output file 18/141
+Patching output file 19/141
+Patching output file 20/141
+Patching output file 21/141
+Patching output file 22/141
+Patching output file 23/141
+Patching output file 24/141
+Patching output file 25/141
+Patching output file 26/141
+Patching output file 27/141
+Patching output file 28/141
+Patching output file 29/141
+Patching output file 30/141
+Patching output file 31/141
+Patching output file 32/141
+Patching output file 33/141
+Patching output file 34/141
+Patching output file 35/141
+Patching output file 36/141
+Patching output file 37/141
+Patching output file 38/141
+Patching output file 39/141
+Patching output file 40/141
+Patching output file 41/141
+Patching output file 42/141
+Patching output file 43/141
+Patching output file 44/141
+Patching output file 45/141
+Patching output file 46/141
+Patching output file 47/141
+Patching output file 48/141
+Patching output file 49/141
+Patching output file 50/141
+Patching output file 51/141
+Patching output file 52/141
+Patching output file 53/141
+Patching output file 54/141
+Patching output file 55/141
+Patching output file 56/141
+Patching output file 57/141
+Patching output file 58/141
+Patching output file 59/141
+Patching output file 60/141
+Patching output file 61/141
+Patching output file 62/141
+Patching output file 63/141
+Patching output file 64/141
+Patching output file 65/141
+Patching output file 66/141
+Patching output file 67/141
+Patching output file 68/141
+Patching output file 69/141
+Patching output file 70/141
+Patching output file 71/141
+Patching output file 72/141
+Patching output file 73/141
+Patching output file 74/141
+Patching output file 75/141
+Patching output file 76/141
+Patching output file 77/141
+Patching output file 78/141
+Patching output file 79/141
+Patching output file 80/141
+Patching output file 81/141
+Patching output file 82/141
+Patching output file 83/141
+Patching output file 84/141
+Patching output file 85/141
+Patching output file 86/141
+Patching output file 87/141
+Patching output file 88/141
+Patching output file 89/141
+Patching output file 90/141
+Patching output file 91/141
+Patching output file 92/141
+Patching output file 93/141
+Patching output file 94/141
+Patching output file 95/141
+Patching output file 96/141
+Patching output file 97/141
+Patching output file 98/141
+Patching output file 99/141
+Patching output file 100/141
+Patching output file 101/141
+Patching output file 102/141
+Patching output file 103/141
+Patching output file 104/141
+Patching output file 105/141
+Patching output file 106/141
+Patching output file 107/141
+Patching output file 108/141
+Patching output file 109/141
+Patching output file 110/141
+Patching output file 111/141
+Patching output file 112/141
+Patching output file 113/141
+Patching output file 114/141
+Patching output file 115/141
+Patching output file 116/141
+Patching output file 117/141
+Patching output file 118/141
+Patching output file 119/141
+Patching output file 120/141
+Patching output file 121/141
+Patching output file 122/141
+Patching output file 123/141
+Patching output file 124/141
+Patching output file 125/141
+Patching output file 126/141
+Patching output file 127/141
+Patching output file 128/141
+Patching output file 129/141
+Patching output file 130/141
+Patching output file 131/141
+Patching output file 132/141
+Patching output file 133/141
+Patching output file 134/141
+Patching output file 135/141
+Patching output file 136/141
+Patching output file 137/141
+Patching output file 138/141
+Patching output file 139/141
+Patching output file 140/141
+Patching output file 141/141
+type lookup cache used 12433/65536 hits=74331 misses=12738
+symbol lookup cache used 11012/65536 hits=68418 misses=11012
 finished...

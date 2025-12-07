@@ -11,7 +11,6 @@ var classFatigueTest_1_1FatigueTestMotion =
     [ "FatigueTestMotion", "classFatigueTest_1_1FatigueTestMotion.html#a373fb38818685e8852c2e238a8643f8a", null ],
     [ "~FatigueTestMotion", "classFatigueTest_1_1FatigueTestMotion.html#a1989a6da8680e5c7709979769e99c806", null ],
     [ "ClipLocalBoundsToGlobal", "classFatigueTest_1_1FatigueTestMotion.html#afd810bcf984589fb9b837d8fd5a2a1c5", null ],
-    [ "ConfigureMotor", "classFatigueTest_1_1FatigueTestMotion.html#a1c9f125fc81bde1deddf504df1820f5f", null ],
     [ "GetCurrentCycles", "classFatigueTest_1_1FatigueTestMotion.html#a5cebd24e21ac7817e63e9ecec40b4135", null ],
     [ "GetDwellTimes", "classFatigueTest_1_1FatigueTestMotion.html#a1d8da15caed8d14757161e6a93c02378", null ],
     [ "GetEstimatedFrequency", "classFatigueTest_1_1FatigueTestMotion.html#a19ead8c0f95f9a3ef88c084438437d77", null ],
@@ -36,10 +35,9 @@ var classFatigueTest_1_1FatigueTestMotion =
     [ "Update", "classFatigueTest_1_1FatigueTestMotion.html#a40e43a61bc8beddb3df12e7d3b72b141", null ],
     [ "UpdateSinuousMotion", "classFatigueTest_1_1FatigueTestMotion.html#a00b20bc353584e6851ec34eb34c95205", null ],
     [ "amplitude_", "classFatigueTest_1_1FatigueTestMotion.html#a99991c6d4aa3435bbd594bade961c532", null ],
-    [ "angle_unit_", "classFatigueTest_1_1FatigueTestMotion.html#aa91b0add34c56a1ddda50e5ed8e3ab4c", null ],
     [ "bounded_", "classFatigueTest_1_1FatigueTestMotion.html#a1d7c8fba458eda621d78128301ba948c", null ],
-    [ "calculated_amax_", "classFatigueTest_1_1FatigueTestMotion.html#aa115e1bbad29a0336c8f48cc37322aeb", null ],
-    [ "calculated_vmax_", "classFatigueTest_1_1FatigueTestMotion.html#a3c43315d572f99f97171510f3b20bad5", null ],
+    [ "calculated_amax_rev_s2_", "classFatigueTest_1_1FatigueTestMotion.html#a127f6905467990bc8aeead3193e3fadc", null ],
+    [ "calculated_vmax_rpm_", "classFatigueTest_1_1FatigueTestMotion.html#aeb4b07017f4c92a8ff5ff346ab991133", null ],
     [ "current_cycles_", "classFatigueTest_1_1FatigueTestMotion.html#a85f6a27263375873867ec36c546258e2", null ],
     [ "cycle_complete_", "classFatigueTest_1_1FatigueTestMotion.html#af247e967042de53df2f705a1c4c69483", null ],
     [ "cycle_started_", "classFatigueTest_1_1FatigueTestMotion.html#a5223dbd8065b81c074303b2b6725eb46", null ],
@@ -62,6 +60,5 @@ var classFatigueTest_1_1FatigueTestMotion =
     [ "sinusoidal_mode_", "classFatigueTest_1_1FatigueTestMotion.html#adc487e9b7eb1096ff309c8732d8a8462", null ],
     [ "start_time_us_", "classFatigueTest_1_1FatigueTestMotion.html#aed80d660e340f615abdeeaad3e9d1ea4", null ],
     [ "state_", "classFatigueTest_1_1FatigueTestMotion.html#a2f1292d3524f8b2cf6ae90551b44abc6", null ],
-    [ "steps_per_rev_", "classFatigueTest_1_1FatigueTestMotion.html#aa179b29505c975b1996c94a711ee9b8b", null ],
     [ "target_cycles_", "classFatigueTest_1_1FatigueTestMotion.html#a2b7361b35de6f1d250b4983ce047967f", null ]
 ];

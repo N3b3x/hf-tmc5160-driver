@@ -134,8 +134,8 @@ endif()
 # Component Registration
 # =============================================================================
 # Register the main component with ESP-IDF build system
-# For ESP-NOW apps, we need to include additional source files
-set(COMPONENT_SRCS "spi_daisy_chain_comprehensive_test.cpp" "internal_ramp_comprehensive_test.cpp" "${APP_SOURCE_FILE}")
+# Only include the source file for the specific app being built
+set(COMPONENT_SRCS "${APP_SOURCE_FILE}")
 
 # Add ESP-NOW test unit additional sources if building that app
 if(APP_TYPE STREQUAL "fatigue_test_espnow_unit")

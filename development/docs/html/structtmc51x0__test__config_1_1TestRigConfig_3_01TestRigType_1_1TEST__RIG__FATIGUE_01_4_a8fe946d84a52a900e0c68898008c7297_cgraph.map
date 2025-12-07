@@ -1,0 +1,6 @@
+<map id="tmc51x0_test_config::TestRigConfig&lt; TestRigType::TEST_RIG_FATIGUE &gt;::GetReferenceSwitchConfig" name="tmc51x0_test_config::TestRigConfig&lt; TestRigType::TEST_RIG_FATIGUE &gt;::GetReferenceSwitchConfig">
+<area shape="rect" id="Node000001" title="Get reference switch configuration." alt="" coords="5,15,271,84"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0__test__config.html#a01546734dfbb01aa89c186b7bdf20bab" title="Configure driver from test rig selection." alt="" coords="319,29,531,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="271,47,305,47,305,52,271,52"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="372,30,369,20,377,10,396,5,425,3,458,5,476,13,474,18,456,11,425,8,397,10,380,15,374,21,377,28"/>
+</map>

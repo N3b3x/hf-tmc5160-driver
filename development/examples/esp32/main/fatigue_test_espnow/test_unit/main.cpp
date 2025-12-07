@@ -1219,6 +1219,23 @@ extern "C" void app_main()
     tmc51x0::DriverConfig cfg{};
     tmc51x0_test_config::ConfigureDriverFromTestRig<SELECTED_TEST_RIG>(cfg);
     
+    // Debug: Log motor specification values to verify configuration
+    ESP_LOGI(TAG, "=== Motor Configuration Debug ===");
+    ESP_LOGI(TAG, "Motor Spec - sense_resistor_mohm: %u", cfg.motor_spec.sense_resistor_mohm);
+    ESP_LOGI(TAG, "Motor Spec - supply_voltage_mv: %u", cfg.motor_spec.supply_voltage_mv);
+    ESP_LOGI(TAG, "Motor Spec - rated_current_ma: %u", cfg.motor_spec.rated_current_ma);
+    ESP_LOGI(TAG, "Motor Spec - run_current_ma: %u", cfg.motor_spec.run_current_ma);
+    ESP_LOGI(TAG, "Motor Spec - hold_current_ma: %u", cfg.motor_spec.hold_current_ma);
+    ESP_LOGI(TAG, "Motor Spec - winding_resistance_mohm: %u", cfg.motor_spec.winding_resistance_mohm);
+    ESP_LOGI(TAG, "Motor Spec - winding_inductance_mh: %.2f", cfg.motor_spec.winding_inductance_mh);
+    ESP_LOGI(TAG, "Motor Spec - steps_per_rev: %u", cfg.motor_spec.steps_per_rev);
+    ESP_LOGI(TAG, "Mechanical - system_type: %d", static_cast<int>(cfg.mechanical.system_type));
+    ESP_LOGI(TAG, "Mechanical - gear_ratio: %.2f", cfg.mechanical.gear_ratio);
+    ESP_LOGI(TAG, "Chopper - toff: %u", cfg.chopper.toff);
+    ESP_LOGI(TAG, "Chopper - mres: %d", static_cast<int>(cfg.chopper.mres));
+    ESP_LOGI(TAG, "Clock Config - frequency_hz: %u", cfg.external_clk_config.frequency_hz);
+    ESP_LOGI(TAG, "===================================");
+    
     constexpr uint16_t output_full_steps = 
         tmc51x0_test_config::GetTestRigMotorOutputFullSteps<SELECTED_TEST_RIG>();
     
@@ -1253,13 +1270,10 @@ extern "C" void app_main()
 
     ESP_LOGI(TAG, "Motor enabled");
 
-    // Calculate steps per revolution (with microsteps)
-    float steps_per_rev_with_microsteps = static_cast<float>(output_full_steps) * 256.0f;
-    uint16_t full_steps_per_rev = output_full_steps; // Full steps without microsteps
-
     // Create motion controller (full implementation)
+    // The motion controller works entirely in higher-level units (degrees, RPM, rev/s²)
+    // Driver already has motor configuration, so no setup needed
     FatigueTest::FatigueTestMotion motion(&driver);
-    motion.ConfigureMotor(static_cast<uint16_t>(steps_per_rev_with_microsteps));
     g_motion = &motion;
 
     // Wait for config from UI board before finding bounds
@@ -1278,6 +1292,7 @@ extern "C" void app_main()
 
     if (bounds_finder) {
         // FindBounds expects full steps per rev (used only for logging, driver handles conversions)
+        constexpr uint16_t full_steps_per_rev = output_full_steps; // Full steps without microsteps
         auto result = bounds_finder->FindBounds(driver, full_steps_per_rev);
         if (result.success) {
             motion.SetGlobalBounds(result.min_bound, result.max_bound);  // Already in degrees
