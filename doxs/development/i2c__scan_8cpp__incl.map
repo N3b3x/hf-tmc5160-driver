@@ -1,0 +1,17 @@
+<map id="i2c_scan.cpp" name="i2c_scan.cpp">
+<area shape="rect" id="Node000001" title="Simple I2C bus scanner for the OLED UI board wiring." alt="" coords="357,5,462,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,88,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="357,32,103,81,102,76,356,27"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="112,79,173,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="367,33,187,81,186,76,366,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="197,79,344,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="388,33,307,75,304,70,386,28"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="369,79,450,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="412,31,412,65,407,65,407,31"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="474,79,558,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="428,28,489,69,486,73,425,33"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="582,79,733,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="450,28,605,72,603,77,448,33"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="757,79,875,104"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="463,26,744,75,743,80,462,31"/>
+</map>

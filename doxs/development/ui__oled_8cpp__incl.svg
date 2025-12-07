@@ -223,7 +223,7 @@
 <!-- Node19 -->
 <g id="Node000019" class="node">
 <title>Node19</title>
-<g id="a_Node000019"><a xlink:href="ui__board_2config_8hpp.html" target="_top" xlink:title="Configuration for UI board (remote controller)">
+<g id="a_Node000019"><a xlink:href="ui__board_2config_8hpp.html" target="_top" xlink:title="Configuration for OLED UI board (remote controller)">
 <polygon fill="white" stroke="#666666" points="773.5,-74 706.5,-74 706.5,-55 773.5,-55 773.5,-74"/>
 <text text-anchor="middle" x="740" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">config.hpp</text>
 </a>

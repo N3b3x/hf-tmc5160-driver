@@ -1,5 +1,5 @@
 <map id="main.cpp" name="main.cpp">
-<area shape="rect" id="Node000001" title="Main application for UI board (remote controller with e&#45;ink display)" alt="" coords="1216,5,1299,31"/>
+<area shape="rect" id="Node000001" title="Main application for OLED UI board (remote controller)" alt="" coords="1216,5,1299,31"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="194,401,345,427"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1216,22,1011,25,712,33,408,51,282,64,187,81,122,91,64,98,41,106,23,117,12,136,8,164,8,254,12,283,25,308,44,330,68,349,125,377,186,396,184,401,123,382,65,353,40,334,20,311,7,285,3,254,3,163,7,134,20,114,39,101,63,93,122,86,186,76,281,59,407,46,712,28,1010,20,1216,17"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="1440,79,1557,104"/>
@@ -12,7 +12,7 @@
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1299,25,1568,75,1567,81,1298,30"/>
 <area shape="rect" id="Node000007" title=" " alt="" coords="1704,79,1816,104"/>
 <area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1299,22,1691,76,1690,81,1298,27"/>
-<area shape="rect" id="Node000008" href="$ui__board_2config_8hpp.html" title="Configuration for UI board (remote controller)" alt="" coords="1302,152,1391,177"/>
+<area shape="rect" id="Node000008" href="$ui__board_2config_8hpp.html" title="Configuration for OLED UI board (remote controller)" alt="" coords="1302,152,1391,177"/>
 <area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="1267,30,1335,139,1330,142,1262,33"/>
 <area shape="rect" id="Node000012" href="$ui__board_2espnow__protocol_8hpp.html" title="ESP&#45;NOW protocol API for UI board." alt="" coords="43,240,203,265"/>
 <area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="1216,22,995,24,682,32,525,39,387,50,282,64,245,72,223,81,204,95,188,112,161,152,143,193,131,228,126,226,138,191,156,149,183,109,200,91,220,76,244,67,281,58,387,44,525,34,682,27,995,19,1216,17"/>
