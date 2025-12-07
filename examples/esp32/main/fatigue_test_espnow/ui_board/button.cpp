@@ -32,28 +32,17 @@ bool Buttons::init(QueueHandle_t evt_queue)
     io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
     io_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
 
-    // Configure all buttons (legacy + new)
-    io_conf.pin_bit_mask = (1ULL << BTN_UP_GPIO) |
-                           (1ULL << BTN_SELECT_GPIO) |
-                           (1ULL << BTN_DOWN_GPIO) |
-                           (1ULL << BTN_BACK_GPIO) |
+    // Configure OLED UI board buttons (BACK and CONFIRM only)
+    io_conf.pin_bit_mask = (1ULL << BTN_BACK_GPIO) |
                            (1ULL << BTN_CONFIRM_GPIO);
     ESP_ERROR_CHECK(gpio_config(&io_conf));
 
     ESP_ERROR_CHECK(gpio_install_isr_service(0));
 
-    // Legacy buttons (for e-ink slideshow)
-    static ButtonId upId   = ButtonId::UP;
-    static ButtonId selId  = ButtonId::SELECT;
-    static ButtonId downId = ButtonId::DOWN;
-    
-    // New buttons (for OLED menu)
+    // OLED UI board buttons
     static ButtonId backId = ButtonId::BACK;
     static ButtonId confirmId = ButtonId::CONFIRM;
 
-    ESP_ERROR_CHECK(gpio_isr_handler_add(BTN_UP_GPIO, gpio_isr_handler, &upId));
-    ESP_ERROR_CHECK(gpio_isr_handler_add(BTN_SELECT_GPIO, gpio_isr_handler, &selId));
-    ESP_ERROR_CHECK(gpio_isr_handler_add(BTN_DOWN_GPIO, gpio_isr_handler, &downId));
     ESP_ERROR_CHECK(gpio_isr_handler_add(BTN_BACK_GPIO, gpio_isr_handler, &backId));
     ESP_ERROR_CHECK(gpio_isr_handler_add(BTN_CONFIRM_GPIO, gpio_isr_handler, &confirmId));
 
@@ -63,13 +52,10 @@ bool Buttons::init(QueueHandle_t evt_queue)
 
 void Buttons::configure_wakeup()
 {
-    // All buttons as EXT1 wake sources (any low)
-    uint64_t mask = (1ULL << BTN_UP_GPIO) |
-                    (1ULL << BTN_SELECT_GPIO) |
-                    (1ULL << BTN_DOWN_GPIO) |
-                    (1ULL << BTN_BACK_GPIO) |
+    // BACK and CONFIRM buttons as EXT1 wake sources (any low)
+    uint64_t mask = (1ULL << BTN_BACK_GPIO) |
                     (1ULL << BTN_CONFIRM_GPIO);
 
     esp_sleep_enable_ext1_wakeup(mask, ESP_EXT1_WAKEUP_ALL_LOW);
-    // NOTE: these GPIOs must be RTC-capable; adjust pins if necessary.
+    // NOTE: these GPIOs must be RTC-capable; GPIO4 and GPIO6 are RTC-capable on ESP32C6
 }

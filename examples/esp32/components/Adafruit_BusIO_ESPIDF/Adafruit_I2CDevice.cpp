@@ -28,7 +28,7 @@ static gpio_num_t s_bus_scl_pin[MAX_I2C_PORTS] = {GPIO_NUM_NC};
 // Default I2C pins (chip-specific defaults)
 gpio_num_t Adafruit_I2CDevice::s_default_sda = GPIO_NUM_NC;
 gpio_num_t Adafruit_I2CDevice::s_default_scl = GPIO_NUM_NC;
-uint32_t Adafruit_I2CDevice::s_default_freq = 400000;
+uint32_t Adafruit_I2CDevice::s_default_freq = 100000;
 i2c_port_num_t Adafruit_I2CDevice::s_default_port = I2C_NUM_0;
 
 Adafruit_I2CDevice::Adafruit_I2CDevice(uint8_t addr, void* theWire)
@@ -124,7 +124,9 @@ bool Adafruit_I2CDevice::initBus() {
     }
     
     // Initialize I2C bus using configured pins
-    i2c_master_bus_config_t i2c_bus_config = {};
+    // CRITICAL: Must use memset for ESP-IDF v5.5 structs with unions/flags
+    i2c_master_bus_config_t i2c_bus_config;
+    memset(&i2c_bus_config, 0, sizeof(i2c_bus_config));
     i2c_bus_config.i2c_port = i2c_port_;
     i2c_bus_config.sda_io_num = sda_pin_;
     i2c_bus_config.scl_io_num = scl_pin_;
@@ -161,7 +163,9 @@ bool Adafruit_I2CDevice::begin(bool addr_detect) {
     }
     
     // Configure I2C device
-    i2c_device_config_t dev_cfg = {};
+    // CRITICAL: Must use memset for ESP-IDF v5.5 structs with unions/flags
+    i2c_device_config_t dev_cfg;
+    memset(&dev_cfg, 0, sizeof(dev_cfg));
     dev_cfg.dev_addr_length = I2C_ADDR_BIT_LEN_7;
     dev_cfg.device_address = addr_;
     dev_cfg.scl_speed_hz = i2c_freq_;
@@ -176,7 +180,11 @@ bool Adafruit_I2CDevice::begin(bool addr_detect) {
     initialized_ = true;
     
     // Optional: Detect device
-    if (addr_detect) {
+    // NOTE: Detection disabled by default for OLED displays (0x3C, 0x3D) as they can 
+    // enter invalid state when probed with dummy reads before proper initialization
+    bool skip_detection = (addr_ == 0x3C || addr_ == 0x3D);  // Common OLED addresses
+    
+    if (addr_detect && !skip_detection) {
         if (!detected()) {
             ESP_LOGW(TAG_I2C, "I2C device at 0x%02X not detected (may be normal for some devices)", addr_);
             // Don't fail - device might be slow to respond or not support detection
@@ -198,24 +206,16 @@ void Adafruit_I2CDevice::end() {
         }
         device_handle_ = nullptr;
     }
-    initialized_ = false;
 }
 
 bool Adafruit_I2CDevice::detected() {
-    if (!initialized_ || !device_handle_) {
+    if (!initialized_ || !bus_handle_) {
         return false;
     }
     
-    // Try to read 1 byte (some devices support this, others need write-then-read)
-    uint8_t dummy;
-    esp_err_t ret = i2c_master_transmit_receive(device_handle_, nullptr, 0, &dummy, 1, 
-                                                 pdMS_TO_TICKS(100));
-    if (ret == ESP_OK) {
-        return true;
-    }
-    
-    // Alternative: Try write (some devices ACK on write)
-    ret = i2c_master_transmit(device_handle_, nullptr, 0, pdMS_TO_TICKS(100));
+    // Use i2c_master_probe for detection (ESP-IDF v5.5+)
+    // This sends a START + ADDR + WRITE bit and checks for ACK
+    esp_err_t ret = i2c_master_probe(bus_handle_, addr_, pdMS_TO_TICKS(1000));
     return (ret == ESP_OK);
 }
 
@@ -226,7 +226,7 @@ bool Adafruit_I2CDevice::read(uint8_t *buffer, size_t len, bool stop) {
         return false;
     }
     
-    esp_err_t ret = i2c_master_receive(device_handle_, buffer, len, pdMS_TO_TICKS(100));
+    esp_err_t ret = i2c_master_receive(device_handle_, buffer, len, pdMS_TO_TICKS(1000));
     if (ret != ESP_OK) {
         ESP_LOGE(TAG_I2C, "I2C read failed (addr=0x%02X, len=%zu): %s", 
                  addr_, len, esp_err_to_name(ret));
@@ -255,7 +255,7 @@ bool Adafruit_I2CDevice::write(const uint8_t *buffer, size_t len, bool stop,
             memcpy(combined, prefix_buffer, prefix_len);
             memcpy(combined + prefix_len, buffer, len);
             
-            esp_err_t ret = i2c_master_transmit(device_handle_, combined, total_len, pdMS_TO_TICKS(100));
+            esp_err_t ret = i2c_master_transmit(device_handle_, combined, total_len, pdMS_TO_TICKS(1000));
             if (ret != ESP_OK) {
                 ESP_LOGE(TAG_I2C, "I2C write failed (addr=0x%02X, len=%zu): %s", 
                          addr_, total_len, esp_err_to_name(ret));
@@ -271,7 +271,7 @@ bool Adafruit_I2CDevice::write(const uint8_t *buffer, size_t len, bool stop,
             memcpy(combined, prefix_buffer, prefix_len);
             memcpy(combined + prefix_len, buffer, len);
             
-            esp_err_t ret = i2c_master_transmit(device_handle_, combined, total_len, pdMS_TO_TICKS(100));
+            esp_err_t ret = i2c_master_transmit(device_handle_, combined, total_len, pdMS_TO_TICKS(1000));
             free(combined);
             
             if (ret != ESP_OK) {
@@ -281,7 +281,7 @@ bool Adafruit_I2CDevice::write(const uint8_t *buffer, size_t len, bool stop,
             }
         }
     } else {
-        esp_err_t ret = i2c_master_transmit(device_handle_, buffer, len, pdMS_TO_TICKS(100));
+        esp_err_t ret = i2c_master_transmit(device_handle_, buffer, len, pdMS_TO_TICKS(1000));
         if (ret != ESP_OK) {
             ESP_LOGE(TAG_I2C, "I2C write failed (addr=0x%02X, len=%zu): %s", 
                      addr_, len, esp_err_to_name(ret));
@@ -301,7 +301,7 @@ bool Adafruit_I2CDevice::write_then_read(const uint8_t *write_buffer, size_t wri
     
     if (write_buffer && write_len > 0) {
         esp_err_t ret = i2c_master_transmit(device_handle_, write_buffer, write_len, 
-                                            pdMS_TO_TICKS(100));
+                                            pdMS_TO_TICKS(1000));
         if (ret != ESP_OK) {
             ESP_LOGE(TAG_I2C, "I2C write_then_read: write failed (addr=0x%02X, len=%zu): %s", 
                      addr_, write_len, esp_err_to_name(ret));
@@ -311,7 +311,7 @@ bool Adafruit_I2CDevice::write_then_read(const uint8_t *write_buffer, size_t wri
     
     if (read_buffer && read_len > 0) {
         esp_err_t ret = i2c_master_receive(device_handle_, read_buffer, read_len, 
-                                          pdMS_TO_TICKS(100));
+                                          pdMS_TO_TICKS(1000));
         if (ret != ESP_OK) {
             ESP_LOGE(TAG_I2C, "I2C write_then_read: read failed (addr=0x%02X, len=%zu): %s", 
                      addr_, read_len, esp_err_to_name(ret));

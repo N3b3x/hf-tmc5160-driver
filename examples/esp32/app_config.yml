@@ -119,6 +119,15 @@ apps:
     ci_enabled: false
     featured: false
 
+  i2c_scan:
+    description: "I2C bus scanner for OLED UI board wiring (SDA=GPIO5, SCL=GPIO23)"
+    source_file: "i2c_scan.cpp"
+    category: "diagnostics"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: false
+    featured: false
+
 build_config:
   build_types:
     Debug:

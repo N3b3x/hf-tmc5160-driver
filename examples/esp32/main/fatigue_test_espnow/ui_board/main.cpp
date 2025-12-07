@@ -1,6 +1,6 @@
 /**
  * @file main.cpp
- * @brief Main application for UI board (remote controller with e-ink display)
+ * @brief Main application for OLED UI board (remote controller)
  */
 
 #include "freertos/FreeRTOS.h"

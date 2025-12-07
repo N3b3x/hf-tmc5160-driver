@@ -37,6 +37,7 @@ bool OLEDMenu::update() {
     static int32_t last_pos = encoder_->getPosition();
     int32_t current_pos = encoder_->getPosition();
     if (current_pos != last_pos) {
+        ESP_LOGI(TAG_MENU, "Encoder rotated: %ld -> %ld", (long)last_pos, (long)current_pos);
         if (current_pos > last_pos) {
             handleEncoderRotation(EC11Encoder::Direction::CW);
         } else {
@@ -49,6 +50,7 @@ bool OLEDMenu::update() {
     static bool last_button = encoder_->isButtonPressed();
     bool current_button = encoder_->isButtonPressed();
     if (current_button && !last_button) {
+        ESP_LOGI(TAG_MENU, "Encoder button pressed");
         handleEncoderButton(true);
     } else if (!current_button && last_button) {
         handleEncoderButton(false);
@@ -70,6 +72,7 @@ bool OLEDMenu::update() {
 }
 
 void OLEDMenu::handleButton(ButtonId btn_id) {
+    ESP_LOGI(TAG_MENU, "Menu Button event: %d", (int)btn_id);
     if (editing_value_) {
         if (btn_id == ButtonId::BACK) {
             cancelValueEdit();
