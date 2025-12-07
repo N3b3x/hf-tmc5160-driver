@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="Button handling implementation." alt="" coords="454,5,545,31"/>
 <area shape="rect" id="Node000002" href="$ui__board_2button_8hpp.html" title="Button handling for UI board." alt="" coords="267,79,359,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="470,33,357,76,355,71,468,28"/>
-<area shape="rect" id="Node000006" href="$ui__board_2config_8hpp.html" title="Configuration for UI board (remote controller)" alt="" coords="396,79,485,104"/>
+<area shape="rect" id="Node000006" href="$ui__board_2config_8hpp.html" title="Configuration for OLED UI board (remote controller)" alt="" coords="396,79,485,104"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="492,33,461,70,457,67,488,29"/>
 <area shape="rect" id="Node000009" title=" " alt="" coords="510,79,609,104"/>
 <area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="511,29,543,66,539,70,507,33"/>

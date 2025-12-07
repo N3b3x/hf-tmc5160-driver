@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Main application for UI board (remote controller with e&#45;ink display)">
+<g id="a_Node000001"><a xlink:title="Main application for OLED UI board (remote controller)">
 <polygon fill="#999999" stroke="#666666" points="970,-316 908,-316 908,-297 970,-297 970,-316"/>
 <text text-anchor="middle" x="939" y="-304" font-family="Helvetica,sans-Serif" font-size="10.00">main.cpp</text>
 </a>
@@ -128,7 +128,7 @@
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="ui__board_2config_8hpp.html" target="_top" xlink:title="Configuration for UI board (remote controller)">
+<g id="a_Node000008"><a xlink:href="ui__board_2config_8hpp.html" target="_top" xlink:title="Configuration for OLED UI board (remote controller)">
 <polygon fill="white" stroke="#666666" points="1039.5,-206 972.5,-206 972.5,-187 1039.5,-187 1039.5,-206"/>
 <text text-anchor="middle" x="1006" y="-194" font-family="Helvetica,sans-Serif" font-size="10.00">config.hpp</text>
 </a>

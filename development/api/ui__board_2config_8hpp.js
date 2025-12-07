@@ -2,14 +2,7 @@ var ui__board_2config_8hpp =
 [
     [ "BTN_BACK_GPIO", "ui__board_2config_8hpp.html#a022345793ba142e5c22a02caa25b7ba7", null ],
     [ "BTN_CONFIRM_GPIO", "ui__board_2config_8hpp.html#ac206d4167f32c60e89946395ab185c91", null ],
-    [ "BTN_DOWN_GPIO", "ui__board_2config_8hpp.html#a3a7c65bfebe82afde44c835ad48789d2", null ],
-    [ "BTN_SELECT_GPIO", "ui__board_2config_8hpp.html#a808da61da39ad2d0360ecdc480e253a8", null ],
-    [ "BTN_UP_GPIO", "ui__board_2config_8hpp.html#a7a4f48c54e7c97bfc0f1296d7fc939db", null ],
     [ "BUTTON_DEBOUNCE_MS", "ui__board_2config_8hpp.html#ab0256118e033bb84c0e616c62f4c996a", null ],
-    [ "EINK_BUSY_PIN", "ui__board_2config_8hpp.html#a84a8244bde6fff28680b2e93772196fa", null ],
-    [ "EINK_CS_PIN", "ui__board_2config_8hpp.html#a6159e0de7ac578070c020a279c2ca908", null ],
-    [ "EINK_DC_PIN", "ui__board_2config_8hpp.html#aea01c0d8c82234e61ee52e0c0a18ad23", null ],
-    [ "EINK_RESET_PIN", "ui__board_2config_8hpp.html#a0c0ebaa1e8cb1112fabc989d18f4cf4b", null ],
     [ "ENCODER_BUTTON_DEBOUNCE_MS", "ui__board_2config_8hpp.html#ac2f6e16482d30f56445c34573c5f2049", null ],
     [ "ENCODER_DEBOUNCE_MS", "ui__board_2config_8hpp.html#a7c102fa55f67adb1bc768c5c412ae20e", null ],
     [ "ENCODER_PSH_PIN", "ui__board_2config_8hpp.html#a1445e74d5add7f2f6240151723c257ec", null ],
@@ -24,8 +17,5 @@ var ui__board_2config_8hpp =
     [ "OLED_SCL_PIN", "ui__board_2config_8hpp.html#ab3bfeff630be898de1eee0742e9783a7", null ],
     [ "OLED_SDA_PIN", "ui__board_2config_8hpp.html#ab8fa82b182a5f2f5de6143d20cbd59db", null ],
     [ "OLED_WIDTH", "ui__board_2config_8hpp.html#ab40d92b3cf5a188bee2881421d1d67f5", null ],
-    [ "SPI_MISO_PIN", "ui__board_2config_8hpp.html#a07e5b45d6438b85cbdeacde4db3f6c08", null ],
-    [ "SPI_MOSI_PIN", "ui__board_2config_8hpp.html#a8f98347ed0b57ce64cea4bffbc944ef1", null ],
-    [ "SPI_SCK_PIN", "ui__board_2config_8hpp.html#ad3ed0d4611c2fca1d3079f21e2f28a24", null ],
     [ "TEST_UNIT_MAC", "ui__board_2config_8hpp.html#a181e708f8b66eb0d56f819e707a2e4d3", null ]
 ];

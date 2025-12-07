@@ -8,7 +8,7 @@
 <area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="670,26,264,80,263,75,669,21"/>
 <area shape="rect" id="Node000014" href="$settings_8hpp.html" title="Settings storage for UI board." alt="" coords="452,79,555,104"/>
 <area shape="poly" id="edge20_Node000001_Node000014" title=" " alt="" coords="671,33,549,76,547,71,669,28"/>
-<area shape="rect" id="Node000015" href="$ui__board_2config_8hpp.html" title="Configuration for UI board (remote controller)" alt="" coords="581,152,671,177"/>
+<area shape="rect" id="Node000015" href="$ui__board_2config_8hpp.html" title="Configuration for OLED UI board (remote controller)" alt="" coords="581,152,671,177"/>
 <area shape="poly" id="edge22_Node000001_Node000015" title=" " alt="" coords="697,32,641,141,636,138,692,30"/>
 <area shape="rect" id="Node000017" title=" " alt="" coords="738,79,837,104"/>
 <area shape="poly" id="edge27_Node000001_Node000017" title=" " alt="" coords="716,29,764,68,761,72,713,33"/>

@@ -146,16 +146,17 @@ void Adafruit_SH1106::display(void) {
     // Each page is 8 pixels tall, 128 pixels wide
     // There are 8 pages (64 pixels / 8 = 8 pages)
     for (uint8_t page = 0; page < 8; page++) {
-        // Set page address
-        sh1106_command(SH1106_PAGEADDR);
-        sh1106_command(page);
-        sh1106_command(0x07); // Page end (7 = last page)
+        // SH1106 requires setting the page address and column address for each page
+        // Unlike SSD1306, it doesn't support automatic page increment or the 0x21/0x22 commands
         
-        // Set column address (SH1106 has 132 columns, but we use 128)
-        // Column start = 2 (offset), Column end = 129 (128 + 2 - 1)
-        sh1106_command(SH1106_COLUMNADDR);
-        sh1106_command(0x02); // Column start (offset by 2 for 128x64)
-        sh1106_command(0x81);  // Column end (128 + 2 - 1 = 129 = 0x81)
+        // 1. Set Page Address (0xB0 - 0xB7)
+        sh1106_command(0xB0 + page);
+        
+        // 2. Set Column Address (offset by 2 for 128 pixel wide displays centered in 132 RAM)
+        // Lower 4 bits of column start address (0x00 - 0x0F) -> 2 & 0x0F = 0x02
+        sh1106_command(0x00 | 0x02); 
+        // Higher 4 bits of column start address (0x10 - 0x1F) -> 2 >> 4 = 0x00 -> 0x10
+        sh1106_command(0x10 | 0x00);
         
         // Send page data with data mode prefix (0x40)
         uint8_t *page_buffer = buffer + (page * WIDTH);

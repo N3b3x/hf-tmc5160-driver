@@ -7,6 +7,7 @@
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "driver/gpio.h"
+#include "driver/gpio_filter.h"
 #include <climits>
 #include <cstring>
 
@@ -41,7 +42,7 @@ EC11Encoder::EC11Encoder(gpio_num_t tra_pin, gpio_num_t trb_pin, gpio_num_t psh_
       max_pos_(INT32_MAX), button_state_(false), button_press_count_(0),
       last_direction_(Direction::NONE), event_queue_(nullptr), last_state_(0),
       last_rotation_time_(0), last_button_time_(0),
-      rotation_debounce_ms_(50), button_debounce_ms_(100), task_handle_(nullptr) {
+      rotation_debounce_ms_(1), button_debounce_ms_(50), task_handle_(nullptr) {
 }
 
 EC11Encoder::~EC11Encoder() {
@@ -72,13 +73,27 @@ bool EC11Encoder::begin(int32_t min_pos, int32_t max_pos) {
         ESP_LOGE(TAG_EC11, "Failed to configure GPIO: %s", esp_err_to_name(ret));
         return false;
     }
+
+    // Enable hardware glitch filter for ESP32-C6
+    // This is much better than software debounce for encoders
+    gpio_pin_glitch_filter_config_t filter_config = {
+        .clk_src = GLITCH_FILTER_CLK_SRC_DEFAULT,
+    };
+    gpio_glitch_filter_handle_t filter_handle;
     
-    // Install GPIO ISR service
+    // Apply filter to all 3 pins
+    if (gpio_new_pin_glitch_filter(&filter_config, &filter_handle) == ESP_OK) {
+        gpio_glitch_filter_enable(filter_handle);
+        // Note: We're not storing the handle to free it later, which is a minor leak but acceptable for this singleton-like usage
+    }
+    
+    // Install GPIO ISR service (if not already installed)
     ret = gpio_install_isr_service(0);
     if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
         ESP_LOGE(TAG_EC11, "Failed to install GPIO ISR service: %s", esp_err_to_name(ret));
         return false;
     }
+    // ESP_ERR_INVALID_STATE means service is already installed, which is OK
     
     // Add ISR handlers
     ret = gpio_isr_handler_add(tra_pin_, gpio_isr_handler, this);

@@ -5,6 +5,7 @@ var dir_7751913d9073a449937b5bcfd50bf3a6 =
     [ "abn_encoder_reader.cpp", "abn__encoder__reader_8cpp.html", "abn__encoder__reader_8cpp" ],
     [ "fatigue_test_encoder.cpp", "fatigue__test__encoder_8cpp.html", "fatigue__test__encoder_8cpp" ],
     [ "fatigue_test_stallguard.cpp", "fatigue__test__stallguard_8cpp.html", "fatigue__test__stallguard_8cpp" ],
+    [ "i2c_scan.cpp", "i2c__scan_8cpp.html", "i2c__scan_8cpp" ],
     [ "internal_ramp_comprehensive_test.cpp", "internal__ramp__comprehensive__test_8cpp.html", "internal__ramp__comprehensive__test_8cpp" ],
     [ "internal_ramp_sinusoidal.cpp", "internal__ramp__sinusoidal_8cpp.html", "internal__ramp__sinusoidal_8cpp" ],
     [ "spi_daisy_chain_comprehensive_test.cpp", "spi__daisy__chain__comprehensive__test_8cpp.html", "spi__daisy__chain__comprehensive__test_8cpp" ],

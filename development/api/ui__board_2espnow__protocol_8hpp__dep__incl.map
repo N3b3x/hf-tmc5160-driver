@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="ESP&#45;NOW protocol API for UI board." alt="" coords="155,5,315,31"/>
 <area shape="rect" id="Node000002" href="$espnow__protocol_8cpp.html" title="ESP&#45;NOW protocol implementation for UI board." alt="" coords="5,79,164,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,39,110,81,108,76,198,34"/>
-<area shape="rect" id="Node000003" href="$ui__board_2main_8cpp.html" title="Main application for UI board (remote controller with e&#45;ink display)" alt="" coords="190,152,273,177"/>
+<area shape="rect" id="Node000003" href="$ui__board_2main_8cpp.html" title="Main application for OLED UI board (remote controller)" alt="" coords="190,152,273,177"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="234,45,230,79,230,119,233,152,227,152,225,119,225,79,229,44"/>
 <area shape="rect" id="Node000004" href="$ui_8cpp.html" title="UI implementation with Adafruit 2.9&quot; ThinkInk E&#45;Ink tricolor display." alt="" coords="239,79,301,104"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="249,42,267,77,262,80,245,44"/>

@@ -20,9 +20,9 @@ var searchData=
   ['btn_17',['btn',['../structUiEvent.html#a2c421c7cf21cc74b5b3ca2b5c001a435',1,'UiEvent']]],
   ['btn_5fback_5fgpio_18',['BTN_BACK_GPIO',['../ui__board_2config_8hpp.html#a022345793ba142e5c22a02caa25b7ba7',1,'config.hpp']]],
   ['btn_5fconfirm_5fgpio_19',['BTN_CONFIRM_GPIO',['../ui__board_2config_8hpp.html#ac206d4167f32c60e89946395ab185c91',1,'config.hpp']]],
-  ['btn_5fdown_5fgpio_20',['BTN_DOWN_GPIO',['../ui__board_2config_8hpp.html#a3a7c65bfebe82afde44c835ad48789d2',1,'BTN_DOWN_GPIO:&#160;config.hpp'],['../ui__slideshow__board_2config_8hpp.html#a3a7c65bfebe82afde44c835ad48789d2',1,'BTN_DOWN_GPIO:&#160;config.hpp']]],
-  ['btn_5fselect_5fgpio_21',['BTN_SELECT_GPIO',['../ui__board_2config_8hpp.html#a808da61da39ad2d0360ecdc480e253a8',1,'BTN_SELECT_GPIO:&#160;config.hpp'],['../ui__slideshow__board_2config_8hpp.html#a808da61da39ad2d0360ecdc480e253a8',1,'BTN_SELECT_GPIO:&#160;config.hpp']]],
-  ['btn_5fup_5fgpio_22',['BTN_UP_GPIO',['../ui__board_2config_8hpp.html#a7a4f48c54e7c97bfc0f1296d7fc939db',1,'BTN_UP_GPIO:&#160;config.hpp'],['../ui__slideshow__board_2config_8hpp.html#a7a4f48c54e7c97bfc0f1296d7fc939db',1,'BTN_UP_GPIO:&#160;config.hpp']]],
+  ['btn_5fdown_5fgpio_20',['BTN_DOWN_GPIO',['../ui__slideshow__board_2config_8hpp.html#a3a7c65bfebe82afde44c835ad48789d2',1,'config.hpp']]],
+  ['btn_5fselect_5fgpio_21',['BTN_SELECT_GPIO',['../ui__slideshow__board_2config_8hpp.html#a808da61da39ad2d0360ecdc480e253a8',1,'config.hpp']]],
+  ['btn_5fup_5fgpio_22',['BTN_UP_GPIO',['../ui__slideshow__board_2config_8hpp.html#a7a4f48c54e7c97bfc0f1296d7fc939db',1,'config.hpp']]],
   ['bus_5ftag_23',['BUS_TAG',['../esp32__tmc51x0__bus_8hpp.html#a73a911be261c628a3ee57cedbafb89a1',1,'esp32_tmc51x0_bus.hpp']]],
   ['button_5fdebounce_5fms_24',['BUTTON_DEBOUNCE_MS',['../ui__board_2config_8hpp.html#ab0256118e033bb84c0e616c62f4c996a',1,'BUTTON_DEBOUNCE_MS:&#160;config.hpp'],['../ui__slideshow__board_2config_8hpp.html#ab0256118e033bb84c0e616c62f4c996a',1,'BUTTON_DEBOUNCE_MS:&#160;config.hpp']]],
   ['bytes_25',['bytes',['../uniontmc51x0_1_1SpiCommand_1_1Frame.html#a50b3f151a5e22e862bfc7d6b62d78611',1,'tmc51x0::SpiCommand::Frame::bytes'],['../uniontmc51x0_1_1UartFrame_1_1Frame.html#a529ef99d1f3750e785fc0f730f7264b3',1,'tmc51x0::UartFrame::Frame::bytes']]]

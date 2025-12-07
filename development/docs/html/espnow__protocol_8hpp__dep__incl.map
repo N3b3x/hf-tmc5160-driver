@@ -16,7 +16,7 @@
 <area shape="poly" id="edge22_Node000001_Node000015" title=" " alt="" coords="541,38,413,82,411,77,539,33"/>
 <area shape="rect" id="Node000003" href="$espnow__protocol_8cpp.html" title="ESP&#45;NOW protocol implementation for UI board." alt="" coords="5,152,164,177"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="208,112,112,154,110,149,206,107"/>
-<area shape="rect" id="Node000004" href="$ui__board_2main_8cpp.html" title="Main application for UI board (remote controller with e&#45;ink display)" alt="" coords="211,299,294,324"/>
+<area shape="rect" id="Node000004" href="$ui__board_2main_8cpp.html" title="Main application for OLED UI board (remote controller)" alt="" coords="211,299,294,324"/>
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="248,118,255,298,250,298,243,118"/>
 <area shape="rect" id="Node000005" href="$ui_8cpp.html" title="UI implementation with Adafruit 2.9&quot; ThinkInk E&#45;Ink tricolor display." alt="" coords="341,152,402,177"/>
 <area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="278,108,352,149,349,154,276,113"/>

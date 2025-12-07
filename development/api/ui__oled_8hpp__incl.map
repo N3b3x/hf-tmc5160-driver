@@ -12,7 +12,7 @@
 <area shape="poly" id="edge25_Node000001_Node000015" title=" " alt="" coords="534,28,642,76,765,143,762,147,639,81,532,33"/>
 <area shape="rect" id="Node000016" title=" " alt="" coords="937,159,1163,199"/>
 <area shape="poly" id="edge26_Node000001_Node000016" title=" " alt="" coords="545,28,974,153,972,158,543,33"/>
-<area shape="rect" id="Node000018" href="$ui__board_2config_8hpp.html" title="Configuration for UI board (remote controller)" alt="" coords="941,255,1031,280"/>
+<area shape="rect" id="Node000018" href="$ui__board_2config_8hpp.html" title="Configuration for OLED UI board (remote controller)" alt="" coords="941,255,1031,280"/>
 <area shape="poly" id="edge27_Node000001_Node000018" title=" " alt="" coords="554,19,699,28,888,50,982,67,1065,89,1133,117,1158,133,1177,150,1186,165,1189,179,1186,193,1177,208,1150,234,1116,252,1080,262,1045,268,1044,262,1079,257,1114,247,1147,230,1173,205,1181,192,1184,179,1181,167,1173,154,1155,137,1130,121,1064,94,980,73,887,56,699,34,554,24"/>
 <area shape="rect" id="Node000020" href="$ui__board_2espnow__protocol_8hpp.html" title="ESP&#45;NOW protocol API for UI board." alt="" coords="27,167,187,192"/>
 <area shape="poly" id="edge33_Node000001_Node000020" title=" " alt="" coords="456,29,367,49,316,63,267,81,193,120,135,161,132,156,191,116,265,76,314,58,365,43,455,24"/>

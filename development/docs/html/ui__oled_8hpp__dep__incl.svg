@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="ui__board_2main_8cpp.html" target="_top" xlink:title="Main application for UI board (remote controller with e&#45;ink display)">
+<g id="a_Node000002"><a xlink:href="ui__board_2main_8cpp.html" target="_top" xlink:title="Main application for OLED UI board (remote controller)">
 <polygon fill="white" stroke="#666666" points="62,-19 0,-19 0,0 62,0 62,-19"/>
 <text text-anchor="middle" x="31" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">main.cpp</text>
 </a>

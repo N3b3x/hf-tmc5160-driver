@@ -1,0 +1,5 @@
+<map id="scan_at_frequency" name="scan_at_frequency">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,149,31"/>
+<area shape="rect" id="Node000002" href="$i2c__scan_8cpp.html#aff81e030bd27a229426463e6dc67c131" title=" " alt="" coords="197,5,308,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,15,183,15,183,21,149,21"/>
+</map>

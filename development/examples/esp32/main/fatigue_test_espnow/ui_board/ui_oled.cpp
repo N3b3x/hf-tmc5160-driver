@@ -137,6 +137,7 @@ void UI_OLED::task(void* arg) {
 }
 
 static void handle_button(const ButtonEvent& be) {
+    ESP_LOGI(TAG_UI_OLED, "UI Button event: ID=%d", (int)be.id);
     if (!g_menu) return;
 
     // Handle menu navigation buttons
