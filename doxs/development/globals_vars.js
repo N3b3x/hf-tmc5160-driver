@@ -10,6 +10,7 @@ var globals_vars =
     [ "m", "globals_vars_m.html", null ],
     [ "n", "globals_vars_n.html", null ],
     [ "o", "globals_vars_o.html", null ],
+    [ "r", "globals_vars_r.html", null ],
     [ "s", "globals_vars_s.html", null ],
     [ "t", "globals_vars_t.html", null ],
     [ "v", "globals_vars_v.html", null ],
