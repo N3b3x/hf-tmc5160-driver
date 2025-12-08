@@ -152,10 +152,10 @@ void Adafruit_SH1106::display(void) {
         // 1. Set Page Address (0xB0 - 0xB7)
         sh1106_command(0xB0 + page);
         
-        // 2. Set Column Address (offset by 2 for 128 pixel wide displays centered in 132 RAM)
-        // Lower 4 bits of column start address (0x00 - 0x0F) -> 2 & 0x0F = 0x02
-        sh1106_command(0x00 | 0x02); 
-        // Higher 4 bits of column start address (0x10 - 0x1F) -> 2 >> 4 = 0x00 -> 0x10
+        // 2. Set Column Address (offset by 0 for 128 pixel wide displays left-aligned in 132 RAM)
+        // Lower 4 bits of column start address (0x00 - 0x0F) -> 0 & 0x0F = 0x00
+        sh1106_command(0x00 | 0x00); 
+        // Higher 4 bits of column start address (0x10 - 0x1F) -> 0 >> 4 = 0x00 -> 0x10
         sh1106_command(0x10 | 0x00);
         
         // Send page data with data mode prefix (0x40)
@@ -166,11 +166,31 @@ void Adafruit_SH1106::display(void) {
 }
 
 void Adafruit_SH1106::drawPixel(int16_t x, int16_t y, uint16_t color) {
-    if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) {
+    if (!buffer) {
         return;
     }
-    
-    if (!buffer) {
+
+    // Transform coordinates based on rotation
+    int16_t t;
+    switch (rotation) {
+        case 1:
+            t = x;
+            x = y;
+            y = HEIGHT - 1 - t;
+            break;
+        case 2:
+            x = WIDTH - 1 - x;
+            y = HEIGHT - 1 - y;
+            break;
+        case 3:
+            t = x;
+            x = WIDTH - 1 - y;
+            y = t;
+            break;
+    }
+
+    // Check bounds (using physical dimensions)
+    if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) {
         return;
     }
     
@@ -188,7 +208,30 @@ void Adafruit_SH1106::drawPixel(int16_t x, int16_t y, uint16_t color) {
 }
 
 bool Adafruit_SH1106::getPixel(int16_t x, int16_t y) {
-    if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT || !buffer) {
+    if (!buffer) {
+        return false;
+    }
+
+    // Transform coordinates based on rotation
+    int16_t t;
+    switch (rotation) {
+        case 1:
+            t = x;
+            x = y;
+            y = HEIGHT - 1 - t;
+            break;
+        case 2:
+            x = WIDTH - 1 - x;
+            y = HEIGHT - 1 - y;
+            break;
+        case 3:
+            t = x;
+            x = WIDTH - 1 - y;
+            y = t;
+            break;
+    }
+
+    if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) {
         return false;
     }
     
