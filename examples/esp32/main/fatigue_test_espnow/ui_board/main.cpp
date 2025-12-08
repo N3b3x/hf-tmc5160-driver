@@ -25,6 +25,12 @@ static QueueHandle_t g_uiQueue     = nullptr;
 // Used for inactivity->deep sleep
 static uint32_t g_lastActivityTick = 0;
 
+// Global settings instance (MUST be static/global because app_main returns)
+static Settings g_settings;
+
+// Track boot time for wake-up debouncing
+static TickType_t g_bootTick = 0;
+
 // Forward tasks
 static void button_task(void* arg);
 static void proto_task(void* arg);
@@ -32,10 +38,13 @@ static void power_task(void* arg);
 
 extern "C" void app_main(void)
 {
-    ESP_LOGI(TAG_MAIN, "Boot, wakeup cause: %d", (int)esp_sleep_get_wakeup_cause());
+    g_bootTick = xTaskGetTickCount();
+    esp_sleep_wakeup_cause_t wakeup_cause = esp_sleep_get_wakeup_cause();
+    ESP_LOGI(TAG_MAIN, "Boot, wakeup cause: %d", (int)wakeup_cause);
 
-    Settings settings;
-    SettingsStore::init(settings);
+    // Initialize settings from NVS
+    // Note: g_settings is global so it persists after app_main returns
+    SettingsStore::init(g_settings);
 
     g_buttonQueue = xQueueCreate(10, sizeof(ButtonEvent));
     g_protoQueue  = xQueueCreate(10, sizeof(ProtoEvent));
@@ -52,9 +61,10 @@ extern "C" void app_main(void)
 
     // Initialize OLED-based UI (replaces e-ink display)
     g_lastActivityTick = xTaskGetTickCount();
-    UI_OLED::init(g_uiQueue, &settings, &g_lastActivityTick);
+    UI_OLED::init(g_uiQueue, &g_settings, &g_lastActivityTick);
 
-    // Request config from test unit at startup
+    // Request config from test unit at startup to sync test machine settings
+    // UI-only settings (like orientation_flipped) are preserved and not overwritten
     EspNowProto::send_config_request();
 
     // Launch tasks
@@ -68,8 +78,18 @@ extern "C" void app_main(void)
 static void button_task(void* arg)
 {
     ButtonEvent be{};
+    const TickType_t debounceTime = pdMS_TO_TICKS(2000); // 2 second debounce after wake
+    
     while (true) {
         if (xQueueReceive(g_buttonQueue, &be, portMAX_DELAY) == pdTRUE) {
+            // Ignore button events for 2 seconds after waking from sleep
+            TickType_t now = xTaskGetTickCount();
+            if (now - g_bootTick < debounceTime) {
+                ESP_LOGI(TAG_MAIN, "Button ignored (wake-up debounce): %d ms since boot", 
+                         (int)pdTICKS_TO_MS(now - g_bootTick));
+                continue;
+            }
+            
             UiEvent ev{};
             ev.type = UiEventType::BTN;
             ev.data.btn = be;
@@ -103,6 +123,9 @@ static void power_task(void* arg)
         TickType_t timeoutTicks = pdMS_TO_TICKS(INACTIVITY_TIMEOUT_SEC * 1000);
         if (now - g_lastActivityTick > timeoutTicks) {
             ESP_LOGI(TAG_MAIN, "Inactivity timeout reached, entering deep sleep");
+
+            // Prepare UI for sleep (show message, configure wakeups)
+            UI_OLED::prepareForSleep();
 
             vTaskDelay(pdMS_TO_TICKS(100));
             esp_deep_sleep_start();

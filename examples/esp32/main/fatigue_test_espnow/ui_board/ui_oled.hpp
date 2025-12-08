@@ -25,6 +25,7 @@ namespace UI_OLED {
 
 void init(QueueHandle_t ui_queue, Settings* settings, uint32_t* inactivity_ticks_ptr);
 void task(void* arg);
+void prepareForSleep();
 
 } // namespace UI_OLED
 

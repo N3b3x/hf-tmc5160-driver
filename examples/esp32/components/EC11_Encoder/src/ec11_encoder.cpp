@@ -74,17 +74,25 @@ bool EC11Encoder::begin(int32_t min_pos, int32_t max_pos) {
         return false;
     }
 
-    // Enable hardware glitch filter for ESP32-C6
-    // This is much better than software debounce for encoders
-    gpio_pin_glitch_filter_config_t filter_config = {
-        .clk_src = GLITCH_FILTER_CLK_SRC_DEFAULT,
+    // Enable hardware glitch filters per pin (recommended on ESP32-C6)
+    auto enable_glitch_filter = [](gpio_num_t pin) {
+        gpio_pin_glitch_filter_config_t cfg = {
+            .clk_src = GLITCH_FILTER_CLK_SRC_DEFAULT,
+            .gpio_num = pin
+        };
+        gpio_glitch_filter_handle_t handle;
+        if (gpio_new_pin_glitch_filter(&cfg, &handle) == ESP_OK) {
+            gpio_glitch_filter_enable(handle);
+            return true;
+        }
+        return false;
     };
-    gpio_glitch_filter_handle_t filter_handle;
-    
-    // Apply filter to all 3 pins
-    if (gpio_new_pin_glitch_filter(&filter_config, &filter_handle) == ESP_OK) {
-        gpio_glitch_filter_enable(filter_handle);
-        // Note: We're not storing the handle to free it later, which is a minor leak but acceptable for this singleton-like usage
+    bool filter_ok = true;
+    filter_ok &= enable_glitch_filter(tra_pin_);
+    filter_ok &= enable_glitch_filter(trb_pin_);
+    filter_ok &= enable_glitch_filter(psh_pin_);
+    if (!filter_ok) {
+        ESP_LOGW(TAG_EC11, "Glitch filter not enabled on all pins");
     }
     
     // Install GPIO ISR service (if not already installed)

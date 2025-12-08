@@ -109,10 +109,10 @@ static void handle_packet(const EspNowPacket& pkt)
             ConfigPayload p{};
             std::memcpy(&p, pkt.payload, sizeof(p));
             ev.type = ProtoEventType::CONFIG_UPDATED;
+            // Convert ConfigPayload to TestUnitSettings (UI settings not in protocol)
             ev.data.config.cycle_amount   = p.cycle_amount;
             ev.data.config.time_per_cycle = p.time_per_cycle_sec;
             ev.data.config.dwell_time     = p.dwell_time_sec;
-            ev.data.config.orientation_flipped = (p.orientation_flipped != 0);
             ev.data.config.bounds_method_stallguard = (p.bounds_method == 0);
             break;
         }
@@ -231,11 +231,11 @@ bool send_config_request()
 bool send_config_set(const Settings& s)
 {
     ConfigPayload p{};
-    p.cycle_amount       = s.cycle_amount;
-    p.time_per_cycle_sec = s.time_per_cycle;
-    p.dwell_time_sec     = s.dwell_time;
-    p.orientation_flipped= s.orientation_flipped ? 1 : 0;
-    p.bounds_method      = s.bounds_method_stallguard ? 0 : 1;
+    // Only send test unit settings (UI settings are local-only)
+    p.cycle_amount       = s.test_unit.cycle_amount;
+    p.time_per_cycle_sec = s.test_unit.time_per_cycle;
+    p.dwell_time_sec     = s.test_unit.dwell_time;
+    p.bounds_method      = s.test_unit.bounds_method_stallguard ? 0 : 1;
     return send_packet(MsgType::CONFIG_SET, &p, sizeof(p));
 }
 

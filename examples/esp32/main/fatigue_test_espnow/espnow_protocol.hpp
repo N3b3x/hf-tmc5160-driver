@@ -81,7 +81,6 @@ struct ConfigPayload {
     uint32_t cycle_amount;
     uint32_t time_per_cycle_sec;
     uint32_t dwell_time_sec;
-    uint8_t  orientation_flipped; // 0 or 1
     uint8_t  bounds_method;      // 0 = stallguard, 1 = encoder
 };
 
@@ -104,12 +103,33 @@ struct ErrorPayload {
 
 // ------------- SETTINGS STRUCTURE -------------
 
-struct Settings {
+/**
+ * @brief Test unit settings - synchronized with test machine via ESP-NOW
+ * These settings control the fatigue test behavior
+ */
+struct TestUnitSettings {
     uint32_t cycle_amount   = 1000;
     uint32_t time_per_cycle = 1;    // seconds
     uint32_t dwell_time     = 1;    // seconds
-    bool     orientation_flipped = false;
     bool     bounds_method_stallguard = true; // true = stallguard, false = encoder
+};
+
+/**
+ * @brief UI board settings - stored locally, never synchronized with test unit
+ * These settings control the UI board's display and behavior
+ */
+struct UISettings {
+    bool orientation_flipped = false;
+    // Future UI settings can be added here (e.g., brightness, contrast, etc.)
+};
+
+/**
+ * @brief Complete settings structure containing both test unit and UI settings
+ * This is the main settings structure used throughout the application
+ */
+struct Settings {
+    TestUnitSettings test_unit;  // Test machine settings (synced via ESP-NOW)
+    UISettings        ui;         // UI board settings (local only)
 };
 
 // ------------- EVENTS -------------
@@ -139,7 +159,7 @@ enum class ProtoEventType {
 struct ProtoEvent {
     ProtoEventType type;
     union {
-        Settings config;
+        TestUnitSettings config;  // Only test unit settings in protocol events
         struct { uint32_t cycle; TestState state; uint8_t err_code; } status;
         struct { uint8_t err_code; uint32_t at_cycle; } error;
     } data;
