@@ -28,7 +28,7 @@ var searchData=
   ['options_25',['options',['../structParsedCommand.html#a8fa2e61e1bee1046be4c02bd150c1150',1,'ParsedCommand']]],
   ['optiontype_26',['OptionType',['../test__unit_2main_8cpp.html#a976bded296a67e09242af85291a639d6',1,'main.cpp']]],
   ['orient_5fitem_5f_27',['orient_item_',['../classOLEDMenu.html#a04787d14342a8742ff2a030909d5947f',1,'OLEDMenu']]],
-  ['orientation_5fflipped_28',['orientation_flipped',['../structConfigPayload.html#adaa8dd308956534e2ab84aeca4398cb7',1,'ConfigPayload::orientation_flipped'],['../structSettings.html#a068c69686ed20576e6aadb4054de649e',1,'Settings::orientation_flipped']]],
+  ['orientation_5fflipped_28',['orientation_flipped',['../structUISettings.html#a1cf22b287479d0ea65aa41dcca3c09d6',1,'UISettings']]],
   ['ot_29',['ot',['../uniontmc51x0_1_1DRV__STATUS__Register.html#adc19d3f9d001378c80b3e16d64df3814',1,'tmc51x0::DRV_STATUS_Register']]],
   ['ot_30',['OT',['../namespacetmc51x0.html#afdc019b38a68bc8a317ade8ff4fafa0ba583dce1e7a2507b30a9eb71314c47d1c',1,'tmc51x0']]],
   ['other_5ferr_31',['OTHER_ERR',['../namespacetmc51x0.html#afdc019b38a68bc8a317ade8ff4fafa0ba598c6a2431f188feea077b1a92b28f2b',1,'tmc51x0']]],

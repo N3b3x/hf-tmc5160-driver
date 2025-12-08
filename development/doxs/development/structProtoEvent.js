@@ -1,7 +1,7 @@
 var structProtoEvent =
 [
     [ "at_cycle", "structProtoEvent.html#ac2c3f3a1beec65aa1bf3b38149cc5604", null ],
-    [ "config", "structProtoEvent.html#a32135221e6a8add5650ae224ae94638b", null ],
+    [ "config", "structProtoEvent.html#ae1fcb0180b849183d34ff20435759ac0", null ],
     [ "cycle", "structProtoEvent.html#a760274f2e3a34d06684653262046da6b", null ],
     [ "data", "structProtoEvent.html#a3f2fdd1c7b46534db2723b0818ab2bb1", null ],
     [ "err_code", "structProtoEvent.html#a0315209b00c6276f0691c78e132da9a5", null ],

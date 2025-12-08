@@ -14,7 +14,7 @@ var searchData=
   ['optimal_5fsgt_11',['optimal_sgt',['../structtmc51x0_1_1StallGuardTuningResult.html#a85b6f9fa9a22e98c354dc0c2c08ccb1b',1,'tmc51x0::StallGuardTuningResult']]],
   ['options_12',['options',['../structParsedCommand.html#a8fa2e61e1bee1046be4c02bd150c1150',1,'ParsedCommand']]],
   ['orient_5fitem_5f_13',['orient_item_',['../classOLEDMenu.html#a04787d14342a8742ff2a030909d5947f',1,'OLEDMenu']]],
-  ['orientation_5fflipped_14',['orientation_flipped',['../structConfigPayload.html#adaa8dd308956534e2ab84aeca4398cb7',1,'ConfigPayload::orientation_flipped'],['../structSettings.html#a068c69686ed20576e6aadb4054de649e',1,'Settings::orientation_flipped']]],
+  ['orientation_5fflipped_14',['orientation_flipped',['../structUISettings.html#a1cf22b287479d0ea65aa41dcca3c09d6',1,'UISettings']]],
   ['ot_15',['ot',['../uniontmc51x0_1_1DRV__STATUS__Register.html#adc19d3f9d001378c80b3e16d64df3814',1,'tmc51x0::DRV_STATUS_Register']]],
   ['otp_5fbbm_16',['otp_bbm',['../uniontmc51x0_1_1OTP__READ__Register.html#ae4691d3798cfdd83788969ce6f634932',1,'tmc51x0::OTP_READ_Register']]],
   ['otp_5ffclktrim_17',['otp_fclktrim',['../uniontmc51x0_1_1OTP__READ__Register.html#ac965eb8e3447ed9b655a8fa2fb2c75ec',1,'tmc51x0::OTP_READ_Register']]],

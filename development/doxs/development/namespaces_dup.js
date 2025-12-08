@@ -1,11 +1,8 @@
 var namespaces_dup =
 [
     [ "anonymous_namespace{settings.cpp}", "namespaceanonymous__namespace_02settings_8cpp_03.html", [
-      [ "KEY_BOUNDS", "namespaceanonymous__namespace_02settings_8cpp_03.html#aff9b5a410eeeac3936943223fff7b017", null ],
-      [ "KEY_CYCLES", "namespaceanonymous__namespace_02settings_8cpp_03.html#a184c754a5977aa3ce9cfc473b90ac809", null ],
-      [ "KEY_DWELL", "namespaceanonymous__namespace_02settings_8cpp_03.html#a8b94602849a9732d44143bc92c520ee1", null ],
-      [ "KEY_ORIENT", "namespaceanonymous__namespace_02settings_8cpp_03.html#a82354010fab26a52ada8cfab01988457", null ],
-      [ "KEY_TPER", "namespaceanonymous__namespace_02settings_8cpp_03.html#af60a53794ee22e98016f3adb38ca9d8f", null ],
+      [ "KEY_BLOB", "namespaceanonymous__namespace_02settings_8cpp_03.html#a1dc088d1257df066b3d4dbcbdfd1739c", null ],
+      [ "KEY_CRC", "namespaceanonymous__namespace_02settings_8cpp_03.html#a542234b2a5aa5e0bc083d57c0b02c0f1", null ],
       [ "NVS_NAMESPACE", "namespaceanonymous__namespace_02settings_8cpp_03.html#ac404bd8fc90a64de408a60472f580891", null ]
     ] ],
     [ "Buttons", "namespaceButtons.html", [
@@ -88,6 +85,7 @@ var namespaces_dup =
     ] ],
     [ "UI_OLED", "namespaceUI__OLED.html", [
       [ "init", "namespaceUI__OLED.html#a3fb06a3d6e7ee4a413e6f7d6cb4fa28d", null ],
+      [ "prepareForSleep", "namespaceUI__OLED.html#aed059a7fb1ba0e09513a8bc71c15eb44", null ],
       [ "task", "namespaceUI__OLED.html#aea7f6983e038b29ef67094c88c849c58", null ]
     ] ]
 ];

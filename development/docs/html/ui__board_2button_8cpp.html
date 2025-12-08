@@ -95,6 +95,7 @@ $(function(){initNavTree('ui__board_2button_8cpp.html',''); initResizable(); });
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">button.cpp File Reference</div></div>
@@ -107,12 +108,19 @@ $(function(){initNavTree('ui__board_2button_8cpp.html',''); initResizable(); });
 <code>#include &quot;<a class="el" href="ui__board_2config_8hpp_source.html">config.hpp</a>&quot;</code><br />
 <code>#include &quot;esp_sleep.h&quot;</code><br />
 <code>#include &quot;esp_log.h&quot;</code><br />
+<code>#include &quot;esp_timer.h&quot;</code><br />
+<code>#include &quot;driver/gpio_filter.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ui_board/button.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui__board_2button_8cpp__incl.svg" width="723" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui__board_2button_8cpp__incl.svg" width="1011" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structButtonContext.html">ButtonContext</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a4041b0adf4b519d3b30a8a566b742111" id="r_a4041b0adf4b519d3b30a8a566b742111"><td class="memItemLeft" align="right" valign="top">static void IRAM_ATTR&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4041b0adf4b519d3b30a8a566b742111">gpio_isr_handler</a> (void *arg)</td></tr>
@@ -124,6 +132,10 @@ Variables</h2></td></tr>
 <tr class="separator:ad63578b384276c74c1f2533d1e06fb9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4cf8f32500a1f162cacc969e8b5a03e" id="r_ac4cf8f32500a1f162cacc969e8b5a03e"><td class="memItemLeft" align="right" valign="top">static QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac4cf8f32500a1f162cacc969e8b5a03e">s_btnQueue</a> = nullptr</td></tr>
 <tr class="separator:ac4cf8f32500a1f162cacc969e8b5a03e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c70df088e8465ca946fee137e0f4dd4" id="r_a1c70df088e8465ca946fee137e0f4dd4"><td class="memItemLeft" align="right" valign="top">static volatile int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1c70df088e8465ca946fee137e0f4dd4">s_lastBackTime</a> = 0</td></tr>
+<tr class="separator:a1c70df088e8465ca946fee137e0f4dd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafce39298d1fa9b741960a83ddb8a5d5" id="r_aafce39298d1fa9b741960a83ddb8a5d5"><td class="memItemLeft" align="right" valign="top">static volatile int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aafce39298d1fa9b741960a83ddb8a5d5">s_lastConfirmTime</a> = 0</td></tr>
+<tr class="separator:aafce39298d1fa9b741960a83ddb8a5d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Button handling implementation. </p>
@@ -170,6 +182,50 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">QueueHandle_t s_btnQueue = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1c70df088e8465ca946fee137e0f4dd4" name="a1c70df088e8465ca946fee137e0f4dd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c70df088e8465ca946fee137e0f4dd4">&#9670;&#160;</a></span>s_lastBackTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile int64_t s_lastBackTime = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aafce39298d1fa9b741960a83ddb8a5d5" name="aafce39298d1fa9b741960a83ddb8a5d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafce39298d1fa9b741960a83ddb8a5d5">&#9670;&#160;</a></span>s_lastConfirmTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile int64_t s_lastConfirmTime = 0</td>
         </tr>
       </table>
   </td>

@@ -93,6 +93,7 @@ var annotated_dup =
       [ "TestRigConfig< TestRigType::TEST_RIG_FATIGUE >", "structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4.html", "structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4" ]
     ] ],
     [ "BackAndForthMotion", "classBackAndForthMotion.html", "classBackAndForthMotion" ],
+    [ "ButtonContext", "structButtonContext.html", "structButtonContext" ],
     [ "ButtonEvent", "structButtonEvent.html", "structButtonEvent" ],
     [ "CommandArg", "structCommandArg.html", "structCommandArg" ],
     [ "CommandEntry", "structCommandEntry.html", "structCommandEntry" ],
@@ -117,7 +118,9 @@ var annotated_dup =
     [ "TestDriverHandle", "structTestDriverHandle.html", "structTestDriverHandle" ],
     [ "TestResults", "structTestResults.html", "structTestResults" ],
     [ "TestTaskContext", "structTestTaskContext.html", "structTestTaskContext" ],
+    [ "TestUnitSettings", "structTestUnitSettings.html", "structTestUnitSettings" ],
     [ "TmcMutexGuard", "classTmcMutexGuard.html", "classTmcMutexGuard" ],
     [ "UartCommandParser", "classUartCommandParser.html", "classUartCommandParser" ],
-    [ "UiEvent", "structUiEvent.html", "structUiEvent" ]
+    [ "UiEvent", "structUiEvent.html", "structUiEvent" ],
+    [ "UISettings", "structUISettings.html", "structUISettings" ]
 ];

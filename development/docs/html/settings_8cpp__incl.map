@@ -1,13 +1,15 @@
 <map id="settings.cpp" name="settings.cpp">
-<area shape="rect" id="Node000001" title="Settings storage implementation." alt="" coords="692,5,793,31"/>
+<area shape="rect" id="Node000001" title="Settings storage implementation." alt="" coords="735,5,836,31"/>
 <area shape="rect" id="Node000002" href="$settings_8hpp.html" title="Settings storage for UI board." alt="" coords="542,79,645,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="720,33,631,75,629,70,718,28"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="755,33,639,76,637,71,754,28"/>
 <area shape="rect" id="Node000010" title=" " alt="" coords="742,225,826,251"/>
-<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="740,32,729,64,727,84,728,103,748,163,773,212,768,215,743,165,723,105,721,84,724,63,735,30"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="769,33,746,53,728,80,723,97,722,116,731,152,748,186,767,213,763,216,744,189,726,154,717,116,718,97,723,78,742,49,766,29"/>
 <area shape="rect" id="Node000011" title=" " alt="" coords="738,79,833,104"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="752,30,774,66,769,68,747,32"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="788,31,788,65,783,65,783,31"/>
 <area shape="rect" id="Node000012" title=" " alt="" coords="857,79,914,104"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="767,28,851,70,849,75,764,33"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="803,29,859,68,856,73,800,33"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="939,79,1021,104"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="818,28,936,71,935,76,816,33"/>
 <area shape="rect" id="Node000003" href="$espnow__protocol_8hpp.html" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="407,152,579,177"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="579,106,522,146,519,142,576,102"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="5,225,72,251"/>

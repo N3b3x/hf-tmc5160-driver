@@ -27,7 +27,8 @@ enum class MenuItemType {
     SUBMENU,        // Opens a submenu
     ACTION,         // Executes an action
     VALUE_EDIT,     // Edits a numeric value
-    TOGGLE          // Toggles a boolean value
+    TOGGLE,         // Toggles a boolean value
+    CHOICE          // Selects from a list of options (boolean for now)
 };
 
 /**
@@ -40,6 +41,7 @@ struct MenuItem {
     MenuItem* parent;            // Parent menu (for navigation)
     MenuItem* children;          // Child items (for submenus)
     size_t child_count;          // Number of children
+    const char* units;           // Units string (e.g., "sec", "cycles")
 };
 
 /**
@@ -70,8 +72,9 @@ public:
     /**
      * @brief Process button event
      * @param btn_id Button ID
+     * @return true if event was handled within menu, false if menu exited
      */
-    void handleButton(ButtonId btn_id);
+    bool handleButton(ButtonId btn_id);
     
     /**
      * @brief Process encoder rotation
@@ -90,18 +93,34 @@ public:
      */
     void refresh();
 
+    /**
+     * @brief Reset input state (e.g. when entering menu)
+     */
+    void resetInputState();
+
+    /**
+     * @brief Check if menu exit was requested (e.g. via Back item)
+     * @return true if exit requested
+     */
+    bool isExitRequested() const { return exit_requested_; }
+
 private:
     Adafruit_SH1106* display_;
     EC11Encoder* encoder_;
     Settings* settings_;
     
+    bool last_button_state_; // Track encoder button state
+    int32_t last_encoder_pos_;  // Track encoder position between updates
     MenuItem* current_menu_;
     int current_index_;
     bool needs_refresh_;
+    bool exit_requested_; // Track exit request
     
     // Value editing state
     bool editing_value_;
+    bool editing_choice_; // New state for choice editing
     uint32_t* edit_value_ptr_;
+    bool* edit_bool_ptr_; // Pointer for boolean choice editing
     uint32_t edit_min_;
     uint32_t edit_max_;
     uint32_t edit_step_;
@@ -112,8 +131,10 @@ private:
     MenuItem cycles_item_;
     MenuItem time_item_;
     MenuItem dwell_item_;
-    MenuItem method_item_;
     MenuItem orient_item_;
+    MenuItem bounds_item_;
+    MenuItem back_item_; // Generic back item
+    MenuItem root_back_item_; // Back item for root menu
     
     // Menu building
     void buildMenuStructure();
@@ -121,12 +142,13 @@ private:
     // Rendering
     void renderMenu();
     void renderValueEdit();
+    void renderChoiceEdit();
     void renderMainScreen();
     
     // Navigation
     void navigateUp();
     void navigateDown();
-    void enterItem();
+    bool enterItem();
     void exitMenu();
     
     // Value editing

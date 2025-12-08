@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classOLEDMenu.html#a5b4497438be5d1f79a77337b480504bd" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="classOLEDMenu.html#ab7a205622312d04ca897682dd6ca8c7e" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="709,-37 585,-37 585,-18 709,-18 709,-37"/>
 <text text-anchor="middle" x="647" y="-25" font-family="Helvetica,sans-Serif" font-size="10.00">OLEDMenu::enterItem</text>
 </a>
@@ -38,7 +38,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classOLEDMenu.html#ac7a253098e907c95f1bbf4e6b817d23e" target="_top" xlink:title="Process button event.">
+<g id="a_Node000003"><a xlink:href="classOLEDMenu.html#a675bd21a9b516ff1133e36a11fa2c8c4" target="_top" xlink:title="Process button event.">
 <polygon fill="white" stroke="#666666" points="529.5,-56 388.5,-56 388.5,-37 529.5,-37 529.5,-56"/>
 <text text-anchor="middle" x="459" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">OLEDMenu::handleButton</text>
 </a>

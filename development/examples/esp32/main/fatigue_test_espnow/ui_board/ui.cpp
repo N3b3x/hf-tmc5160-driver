@@ -116,7 +116,7 @@ void UI::init(QueueHandle_t ui_queue, Settings* settings, uint32_t* inactivity_t
     // Set rotation for vertical/portrait phone-like appearance
     // Rotation 1 = 90° clockwise (portrait mode, 128x296 - phone-like)
     // Rotation 3 = 90° counter-clockwise (portrait mode flipped, 128x296)
-    g_display->setRotation(s_settings->orientation_flipped ? 3 : 1);
+    g_display->setRotation(s_settings->ui.orientation_flipped ? 3 : 1);
     ESP_LOGI(TAG_UI, "Display rotated to portrait/phone mode: %dx%d (width x height)", 
              DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
@@ -214,7 +214,7 @@ static void handle_button(const ButtonEvent& be)
                 switch (s_settingsMenuIndex) {
                     case 0: // Cycles
                         s_state = UiState::SETTINGS_EDIT_CYCLES;
-                        s_editValue = s_settings->cycle_amount;
+                        s_editValue = s_settings->test_unit.cycle_amount;
                         s_editMin = 1;
                         s_editMax = 100000;
                         s_editStep = 100;
@@ -222,7 +222,7 @@ static void handle_button(const ButtonEvent& be)
                         break;
                     case 1: // Time per cycle
                         s_state = UiState::SETTINGS_EDIT_TIME;
-                        s_editValue = s_settings->time_per_cycle;
+                        s_editValue = s_settings->test_unit.time_per_cycle;
                         s_editMin = 1;
                         s_editMax = 3600;
                         s_editStep = 1;
@@ -230,7 +230,7 @@ static void handle_button(const ButtonEvent& be)
                         break;
                     case 2: // Dwell time
                         s_state = UiState::SETTINGS_EDIT_DWELL;
-                        s_editValue = s_settings->dwell_time;
+                        s_editValue = s_settings->test_unit.dwell_time;
                         s_editMin = 0;
                         s_editMax = 60;
                         s_editStep = 1;
@@ -238,7 +238,7 @@ static void handle_button(const ButtonEvent& be)
                         break;
                     case 3: // Bounds method
                         s_state = UiState::SETTINGS_EDIT_METHOD;
-                        s_editValue = s_settings->bounds_method_stallguard ? 0 : 1;
+                        s_editValue = s_settings->test_unit.bounds_method_stallguard ? 0 : 1;
                         s_editMin = 0;
                         s_editMax = 1;
                         s_editStep = 1;
@@ -246,7 +246,7 @@ static void handle_button(const ButtonEvent& be)
                         break;
                     case 4: // Orientation
                         s_state = UiState::SETTINGS_EDIT_ORIENT;
-                        s_editValue = s_settings->orientation_flipped ? 1 : 0;
+                        s_editValue = s_settings->ui.orientation_flipped ? 1 : 0;
                         s_editMin = 0;
                         s_editMax = 1;
                         s_editStep = 1;
@@ -282,21 +282,21 @@ static void handle_button(const ButtonEvent& be)
                 // Save and return to settings menu
                 switch (s_state) {
                     case UiState::SETTINGS_EDIT_CYCLES:
-                        s_settings->cycle_amount = s_editValue;
+                        s_settings->test_unit.cycle_amount = s_editValue;
                         break;
                     case UiState::SETTINGS_EDIT_TIME:
-                        s_settings->time_per_cycle = s_editValue;
+                        s_settings->test_unit.time_per_cycle = s_editValue;
                         break;
                     case UiState::SETTINGS_EDIT_DWELL:
-                        s_settings->dwell_time = s_editValue;
+                        s_settings->test_unit.dwell_time = s_editValue;
                         break;
                     case UiState::SETTINGS_EDIT_METHOD:
-                        s_settings->bounds_method_stallguard = (s_editValue == 0);
+                        s_settings->test_unit.bounds_method_stallguard = (s_editValue == 0);
                         break;
                     case UiState::SETTINGS_EDIT_ORIENT:
-                        s_settings->orientation_flipped = (s_editValue == 1);
+                        s_settings->ui.orientation_flipped = (s_editValue == 1);
                         if (g_display) {
-                            g_display->setRotation(s_settings->orientation_flipped ? 3 : 1);
+                            g_display->setRotation(s_settings->ui.orientation_flipped ? 3 : 1);
                         }
                         break;
                     default:
@@ -338,7 +338,7 @@ static void handle_proto(const ProtoEvent& pe)
             *s_settings = pe.data.config;
             // Update display rotation if orientation changed
             if (g_display) {
-                g_display->setRotation(s_settings->orientation_flipped ? 3 : 1);
+                g_display->setRotation(s_settings->ui.orientation_flipped ? 3 : 1);
             }
             draw_main_screen();
             break;
@@ -455,13 +455,13 @@ static void draw_main_screen()
     uint16_t y = 60;
     
     // Build compact info strings
-    const char* bounds_str = s_settings->bounds_method_stallguard ? "StallGuard" : "Encoder";
+    const char* bounds_str = s_settings->test_unit.bounds_method_stallguard ? "StallGuard" : "Encoder";
     
     // Left-aligned labels, right-aligned values (phone-style)
     g_display->setCursor(5, y);
     g_display->print("Cycles:");
     char cycles_str[16];
-    snprintf(cycles_str, sizeof(cycles_str), "%lu", s_settings->cycle_amount);
+    snprintf(cycles_str, sizeof(cycles_str), "%lu", s_settings->test_unit.cycle_amount);
     int16_t x1, y1;
     uint16_t w, h;
     g_display->getTextBounds(cycles_str, 0, 0, &x1, &y1, &w, &h);
@@ -472,7 +472,7 @@ static void draw_main_screen()
     g_display->setCursor(5, y);
     g_display->print("Time/Cycle:");
     char time_str[16];
-    snprintf(time_str, sizeof(time_str), "%lus", s_settings->time_per_cycle);
+    snprintf(time_str, sizeof(time_str), "%lus", s_settings->test_unit.time_per_cycle);
     g_display->getTextBounds(time_str, 0, 0, &x1, &y1, &w, &h);
     g_display->setCursor(DISPLAY_WIDTH - w - 5, y);
     g_display->print(time_str);
@@ -481,7 +481,7 @@ static void draw_main_screen()
     g_display->setCursor(5, y);
     g_display->print("Dwell:");
     char dwell_str[16];
-    snprintf(dwell_str, sizeof(dwell_str), "%lus", s_settings->dwell_time);
+    snprintf(dwell_str, sizeof(dwell_str), "%lus", s_settings->test_unit.dwell_time);
     g_display->getTextBounds(dwell_str, 0, 0, &x1, &y1, &w, &h);
     g_display->setCursor(DISPLAY_WIDTH - w - 5, y);
     g_display->print(dwell_str);
@@ -621,11 +621,11 @@ static void draw_menu_item(const char* label, const char* value, int y, bool sel
             break;
         case 3:
             snprintf(value_str, sizeof(value_str), "%s", 
-                     s_settings->bounds_method_stallguard ? "StallGuard" : "Encoder");
+                     s_settings->test_unit.bounds_method_stallguard ? "StallGuard" : "Encoder");
             break;
         case 4:
             snprintf(value_str, sizeof(value_str), "%s", 
-                     s_settings->orientation_flipped ? "Flipped" : "Normal");
+                     s_settings->ui.orientation_flipped ? "Flipped" : "Normal");
             break;
     }
     

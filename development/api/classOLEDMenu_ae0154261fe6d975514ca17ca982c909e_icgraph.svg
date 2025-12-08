@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classOLEDMenu.html#ac7a253098e907c95f1bbf4e6b817d23e" target="_top" xlink:title="Process button event.">
+<g id="a_Node000002"><a xlink:href="classOLEDMenu.html#a675bd21a9b516ff1133e36a11fa2c8c4" target="_top" xlink:title="Process button event.">
 <polygon fill="white" stroke="#666666" points="486,-19 345,-19 345,0 486,0 486,-19"/>
 <text text-anchor="middle" x="415.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">OLEDMenu::handleButton</text>
 </a>

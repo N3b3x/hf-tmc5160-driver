@@ -15,6 +15,7 @@ var ui_8hpp =
       [ "SETTINGS_EDIT_METHOD", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9a0a91ea21767c9d79314ddc55d6aa3af0", null ],
       [ "SETTINGS_EDIT_ORIENT", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9a5fe3bc17e13afaaab67d4e7dddc625a4", null ],
       [ "CONFIRM_STOP", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9af87a8e13b0dcca7b3fd39ceb63498bbd", null ],
+      [ "CONFIRM_POPUP", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9a61ca35ddd63b02dac1c742e3a61fa566", null ],
       [ "ERROR_SCREEN", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9adced1aad9c5ca399712c43acaac444a0", null ],
       [ "RUNNING", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9a43491564ebcfd38568918efbd6e840fd", null ],
       [ "PAUSED", "ui_8hpp.html#aff234db60d2afa16a04eebd95c563af9a99b2439e63f73ad515f7ab2447a80673", null ],

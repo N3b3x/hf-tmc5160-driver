@@ -1,9 +1,11 @@
 <map id="OLEDMenu::handleEncoderButton" name="OLEDMenu::handleEncoderButton">
-<area shape="rect" id="Node000001" title="Process encoder button." alt="" coords="5,31,245,56"/>
-<area shape="rect" id="Node000002" href="$classOLEDMenu.html#a5b4497438be5d1f79a77337b480504bd" title=" " alt="" coords="295,5,460,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,29,281,25,281,30,246,34"/>
-<area shape="rect" id="Node000004" href="$classOLEDMenu.html#a6ae458f0db504178114ffac30de8cbaf" title=" " alt="" coords="293,55,461,80"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="246,52,280,55,280,61,245,57"/>
-<area shape="rect" id="Node000003" href="$classOLEDMenu.html#a559064c9b5ef239ad82d0b8ba91c4703" title=" " alt="" coords="509,5,701,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="460,15,496,15,496,21,460,21"/>
+<area shape="rect" id="Node000001" title="Process encoder button." alt="" coords="5,55,245,80"/>
+<area shape="rect" id="Node000002" href="$classOLEDMenu.html#ab7a205622312d04ca897682dd6ca8c7e" title=" " alt="" coords="295,29,460,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,53,281,49,281,54,246,58"/>
+<area shape="rect" id="Node000005" href="$classOLEDMenu.html#a6ae458f0db504178114ffac30de8cbaf" title=" " alt="" coords="293,79,461,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="246,76,280,79,280,85,245,81"/>
+<area shape="rect" id="Node000003" href="$classOLEDMenu.html#a9b2c9a0d71316ed9748ee856d5b01d8a" title=" " alt="" coords="524,5,687,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="460,31,510,25,511,31,460,36"/>
+<area shape="rect" id="Node000004" href="$classOLEDMenu.html#a559064c9b5ef239ad82d0b8ba91c4703" title=" " alt="" coords="509,55,701,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="460,48,496,52,495,58,460,54"/>
 </map>

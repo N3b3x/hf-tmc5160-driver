@@ -1,8 +1,12 @@
 <map id="OLEDMenu" name="OLEDMenu">
-<area shape="rect" id="Node000001" title="Menu system class." alt="" coords="45,220,139,245"/>
-<area shape="rect" id="Node000002" href="$structSettings.html" title=" " alt="" coords="5,12,80,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="40,51,35,119,40,157,52,194,61,207,73,217,70,221,57,211,47,197,34,159,30,119,35,51"/>
-<area shape="rect" id="Node000003" href="$structMenuItem.html" title="Menu item structure." alt="" coords="104,12,192,38"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="148,52,138,118,116,197,103,220,98,218,111,195,133,117,143,51"/>
-<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="177,5,192,3,205,5,215,13,219,25,213,39,199,46,182,46,164,40,165,35,183,41,198,41,209,36,213,25,211,16,203,10,191,8,177,10"/>
+<area shape="rect" id="Node000001" title="Menu system class." alt="" coords="141,361,235,387"/>
+<area shape="rect" id="Node000002" href="$structSettings.html" title="Complete settings structure containing both test unit and UI settings This is the main settings struc..." alt="" coords="99,95,173,121"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,135,128,175,125,227,131,283,137,310,148,336,157,349,169,359,166,363,153,353,143,339,132,312,125,284,120,227,122,175,128,134"/>
+<area shape="rect" id="Node000003" href="$structTestUnitSettings.html" title="Test unit settings &#45; synchronized with test machine via ESP&#45;NOW These settings control the fatigue te..." alt="" coords="5,5,133,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="88,40,129,93,125,97,84,43"/>
+<area shape="rect" id="Node000004" href="$structUISettings.html" title="UI board settings &#45; stored locally, never synchronized with test unit These settings control the UI b..." alt="" coords="158,5,247,31"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="193,45,175,71,151,97,147,93,171,68,188,42"/>
+<area shape="rect" id="Node000005" href="$structMenuItem.html" title="Menu item structure." alt="" coords="197,95,285,121"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="244,135,237,226,227,283,212,338,199,362,194,360,207,336,222,281,231,225,238,135"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="300,99,308,102,312,108,304,117,286,119,285,114,301,112,307,108,305,106,299,103"/>
 </map>

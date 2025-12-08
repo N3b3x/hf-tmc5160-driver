@@ -110,7 +110,7 @@ $(function(){initNavTree('classOLEDMenu.html',''); initResizable(); });
 <div class="dynheader">
 Collaboration diagram for OLEDMenu:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu__coll__graph.svg" width="279" height="251"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu__coll__graph.svg" width="372" height="392"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -124,9 +124,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae545fc5224d66f5e20f6911285847131" id="r_ae545fc5224d66f5e20f6911285847131"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae545fc5224d66f5e20f6911285847131">update</a> ()</td></tr>
 <tr class="memdesc:ae545fc5224d66f5e20f6911285847131"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update menu (call from main loop)  <br /></td></tr>
 <tr class="separator:ae545fc5224d66f5e20f6911285847131"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7a253098e907c95f1bbf4e6b817d23e" id="r_ac7a253098e907c95f1bbf4e6b817d23e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac7a253098e907c95f1bbf4e6b817d23e">handleButton</a> (<a class="el" href="ui__board_2button_8hpp.html#aa60e15d86cfe7033f28c7d066c85266e">ButtonId</a> btn_id)</td></tr>
-<tr class="memdesc:ac7a253098e907c95f1bbf4e6b817d23e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process button event.  <br /></td></tr>
-<tr class="separator:ac7a253098e907c95f1bbf4e6b817d23e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a675bd21a9b516ff1133e36a11fa2c8c4" id="r_a675bd21a9b516ff1133e36a11fa2c8c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a675bd21a9b516ff1133e36a11fa2c8c4">handleButton</a> (<a class="el" href="ui__board_2button_8hpp.html#aa60e15d86cfe7033f28c7d066c85266e">ButtonId</a> btn_id)</td></tr>
+<tr class="memdesc:a675bd21a9b516ff1133e36a11fa2c8c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process button event.  <br /></td></tr>
+<tr class="separator:a675bd21a9b516ff1133e36a11fa2c8c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a230b9700fb516c528921866a88290888" id="r_a230b9700fb516c528921866a88290888"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a230b9700fb516c528921866a88290888">handleEncoderRotation</a> (EC11Encoder::Direction direction)</td></tr>
 <tr class="memdesc:a230b9700fb516c528921866a88290888"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process encoder rotation.  <br /></td></tr>
 <tr class="separator:a230b9700fb516c528921866a88290888"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,6 +136,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a405ad59acfd26235241b14d1c4927c47" id="r_a405ad59acfd26235241b14d1c4927c47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a405ad59acfd26235241b14d1c4927c47">refresh</a> ()</td></tr>
 <tr class="memdesc:a405ad59acfd26235241b14d1c4927c47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Force menu refresh.  <br /></td></tr>
 <tr class="separator:a405ad59acfd26235241b14d1c4927c47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8308932c179772524d3fe27679440caf" id="r_a8308932c179772524d3fe27679440caf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8308932c179772524d3fe27679440caf">resetInputState</a> ()</td></tr>
+<tr class="memdesc:a8308932c179772524d3fe27679440caf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset input state (e.g. when entering menu)  <br /></td></tr>
+<tr class="separator:a8308932c179772524d3fe27679440caf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac02241246a7d6960e56bedd33f55ff70" id="r_ac02241246a7d6960e56bedd33f55ff70"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac02241246a7d6960e56bedd33f55ff70">isExitRequested</a> () const</td></tr>
+<tr class="memdesc:ac02241246a7d6960e56bedd33f55ff70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if menu exit was requested (e.g. via Back item)  <br /></td></tr>
+<tr class="separator:ac02241246a7d6960e56bedd33f55ff70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -145,14 +151,16 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:afa804bdf41e7de87688810b82069e8dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14e4efabf3a7df73884905396754a4c2" id="r_a14e4efabf3a7df73884905396754a4c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14e4efabf3a7df73884905396754a4c2">renderValueEdit</a> ()</td></tr>
 <tr class="separator:a14e4efabf3a7df73884905396754a4c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a290e2e775f2d2a6a3c5e4d1d577f6394" id="r_a290e2e775f2d2a6a3c5e4d1d577f6394"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a290e2e775f2d2a6a3c5e4d1d577f6394">renderChoiceEdit</a> ()</td></tr>
+<tr class="separator:a290e2e775f2d2a6a3c5e4d1d577f6394"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae56f5d302f81e457e93bebab5de2fdca" id="r_ae56f5d302f81e457e93bebab5de2fdca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae56f5d302f81e457e93bebab5de2fdca">renderMainScreen</a> ()</td></tr>
 <tr class="separator:ae56f5d302f81e457e93bebab5de2fdca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0634484d24f960a2aafd0a4ff14f59b" id="r_ad0634484d24f960a2aafd0a4ff14f59b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad0634484d24f960a2aafd0a4ff14f59b">navigateUp</a> ()</td></tr>
 <tr class="separator:ad0634484d24f960a2aafd0a4ff14f59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8933eca3c698ffff2df0d2f44805f740" id="r_a8933eca3c698ffff2df0d2f44805f740"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8933eca3c698ffff2df0d2f44805f740">navigateDown</a> ()</td></tr>
 <tr class="separator:a8933eca3c698ffff2df0d2f44805f740"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b4497438be5d1f79a77337b480504bd" id="r_a5b4497438be5d1f79a77337b480504bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b4497438be5d1f79a77337b480504bd">enterItem</a> ()</td></tr>
-<tr class="separator:a5b4497438be5d1f79a77337b480504bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7a205622312d04ca897682dd6ca8c7e" id="r_ab7a205622312d04ca897682dd6ca8c7e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7a205622312d04ca897682dd6ca8c7e">enterItem</a> ()</td></tr>
+<tr class="separator:ab7a205622312d04ca897682dd6ca8c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b2c9a0d71316ed9748ee856d5b01d8a" id="r_a9b2c9a0d71316ed9748ee856d5b01d8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b2c9a0d71316ed9748ee856d5b01d8a">exitMenu</a> ()</td></tr>
 <tr class="separator:a9b2c9a0d71316ed9748ee856d5b01d8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a559064c9b5ef239ad82d0b8ba91c4703" id="r_a559064c9b5ef239ad82d0b8ba91c4703"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a559064c9b5ef239ad82d0b8ba91c4703">startValueEdit</a> (uint32_t *value_ptr, uint32_t min_val, uint32_t max_val, uint32_t step)</td></tr>
@@ -172,16 +180,26 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a3fcc8bd1ab4c0dff3531c8d540b34774"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28dc5d1add1ba0003698350b72611c62" id="r_a28dc5d1add1ba0003698350b72611c62"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSettings.html">Settings</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a28dc5d1add1ba0003698350b72611c62">settings_</a></td></tr>
 <tr class="separator:a28dc5d1add1ba0003698350b72611c62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd8044f537452f40ad55339d1544df67" id="r_afd8044f537452f40ad55339d1544df67"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd8044f537452f40ad55339d1544df67">last_button_state_</a></td></tr>
+<tr class="separator:afd8044f537452f40ad55339d1544df67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ca5153146ac4f09c4064cd751158450" id="r_a3ca5153146ac4f09c4064cd751158450"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ca5153146ac4f09c4064cd751158450">last_encoder_pos_</a></td></tr>
+<tr class="separator:a3ca5153146ac4f09c4064cd751158450"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21a94d91a478eb6845f68043d6d2c1b1" id="r_a21a94d91a478eb6845f68043d6d2c1b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMenuItem.html">MenuItem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a21a94d91a478eb6845f68043d6d2c1b1">current_menu_</a></td></tr>
 <tr class="separator:a21a94d91a478eb6845f68043d6d2c1b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acef179b490db3b1e4a5ff9af2f4e82a1" id="r_acef179b490db3b1e4a5ff9af2f4e82a1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acef179b490db3b1e4a5ff9af2f4e82a1">current_index_</a></td></tr>
 <tr class="separator:acef179b490db3b1e4a5ff9af2f4e82a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe58b654ac6605724d5d7300c8a4bcd8" id="r_afe58b654ac6605724d5d7300c8a4bcd8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe58b654ac6605724d5d7300c8a4bcd8">needs_refresh_</a></td></tr>
 <tr class="separator:afe58b654ac6605724d5d7300c8a4bcd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcb0974105f27b1c302bc328ef66c130" id="r_abcb0974105f27b1c302bc328ef66c130"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abcb0974105f27b1c302bc328ef66c130">exit_requested_</a></td></tr>
+<tr class="separator:abcb0974105f27b1c302bc328ef66c130"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23acb6251bf2b3090d5021d0db8450f0" id="r_a23acb6251bf2b3090d5021d0db8450f0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a23acb6251bf2b3090d5021d0db8450f0">editing_value_</a></td></tr>
 <tr class="separator:a23acb6251bf2b3090d5021d0db8450f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae03ea812434b84ac8e741c273e002caf" id="r_ae03ea812434b84ac8e741c273e002caf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae03ea812434b84ac8e741c273e002caf">editing_choice_</a></td></tr>
+<tr class="separator:ae03ea812434b84ac8e741c273e002caf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80a8f26c3f39406918493f9db6971f83" id="r_a80a8f26c3f39406918493f9db6971f83"><td class="memItemLeft" align="right" valign="top">uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80a8f26c3f39406918493f9db6971f83">edit_value_ptr_</a></td></tr>
 <tr class="separator:a80a8f26c3f39406918493f9db6971f83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e0e6209dbe6b036677179837ff92f9d" id="r_a1e0e6209dbe6b036677179837ff92f9d"><td class="memItemLeft" align="right" valign="top">bool *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e0e6209dbe6b036677179837ff92f9d">edit_bool_ptr_</a></td></tr>
+<tr class="separator:a1e0e6209dbe6b036677179837ff92f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05d0a5127cfa29e0a1e246edc3a41578" id="r_a05d0a5127cfa29e0a1e246edc3a41578"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05d0a5127cfa29e0a1e246edc3a41578">edit_min_</a></td></tr>
 <tr class="separator:a05d0a5127cfa29e0a1e246edc3a41578"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a407342c876d8e78ced27f471bed26fe8" id="r_a407342c876d8e78ced27f471bed26fe8"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a407342c876d8e78ced27f471bed26fe8">edit_max_</a></td></tr>
@@ -198,10 +216,14 @@ Private Attributes</h2></td></tr>
 <tr class="separator:af5b4ff9afd4190e4bbac890c47153ff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab95eefde86a8c70a2722d1e14c51485b" id="r_ab95eefde86a8c70a2722d1e14c51485b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMenuItem.html">MenuItem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab95eefde86a8c70a2722d1e14c51485b">dwell_item_</a></td></tr>
 <tr class="separator:ab95eefde86a8c70a2722d1e14c51485b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a815e1a8e6b274fc894d655c29d66d291" id="r_a815e1a8e6b274fc894d655c29d66d291"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMenuItem.html">MenuItem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a815e1a8e6b274fc894d655c29d66d291">method_item_</a></td></tr>
-<tr class="separator:a815e1a8e6b274fc894d655c29d66d291"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04787d14342a8742ff2a030909d5947f" id="r_a04787d14342a8742ff2a030909d5947f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMenuItem.html">MenuItem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04787d14342a8742ff2a030909d5947f">orient_item_</a></td></tr>
 <tr class="separator:a04787d14342a8742ff2a030909d5947f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a5a78d728381fc6fb8c30923f360fbf" id="r_a5a5a78d728381fc6fb8c30923f360fbf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMenuItem.html">MenuItem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a5a78d728381fc6fb8c30923f360fbf">bounds_item_</a></td></tr>
+<tr class="separator:a5a5a78d728381fc6fb8c30923f360fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29e9642929b6eec6134c3c3bd926b452" id="r_a29e9642929b6eec6134c3c3bd926b452"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMenuItem.html">MenuItem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29e9642929b6eec6134c3c3bd926b452">back_item_</a></td></tr>
+<tr class="separator:a29e9642929b6eec6134c3c3bd926b452"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec31fd49b42cb9088b150a8ef0514df5" id="r_aec31fd49b42cb9088b150a8ef0514df5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMenuItem.html">MenuItem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aec31fd49b42cb9088b150a8ef0514df5">root_back_item_</a></td></tr>
+<tr class="separator:aec31fd49b42cb9088b150a8ef0514df5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Menu system class. </p>
@@ -235,7 +257,7 @@ Private Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">display</td><td>SH1106 display instance </td></tr>
     <tr><td class="paramname">encoder</td><td>EC11 encoder instance </td></tr>
-    <tr><td class="paramname">settings</td><td><a class="el" href="structSettings.html">Settings</a> structure pointer </td></tr>
+    <tr><td class="paramname">settings</td><td><a class="el" href="structSettings.html" title="Complete settings structure containing both test unit and UI settings This is the main settings struc...">Settings</a> structure pointer </td></tr>
   </table>
   </dd>
 </dl>
@@ -363,8 +385,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a5b4497438be5d1f79a77337b480504bd" name="a5b4497438be5d1f79a77337b480504bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b4497438be5d1f79a77337b480504bd">&#9670;&#160;</a></span>enterItem()</h2>
+<a id="ab7a205622312d04ca897682dd6ca8c7e" name="ab7a205622312d04ca897682dd6ca8c7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7a205622312d04ca897682dd6ca8c7e">&#9670;&#160;</a></span>enterItem()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -373,7 +395,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void OLEDMenu::enterItem </td>
+          <td class="memname">bool OLEDMenu::enterItem </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -388,12 +410,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_a5b4497438be5d1f79a77337b480504bd_cgraph.svg" width="416" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_ab7a205622312d04ca897682dd6ca8c7e_cgraph.svg" width="416" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_a5b4497438be5d1f79a77337b480504bd_icgraph.svg" width="956" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_ab7a205622312d04ca897682dd6ca8c7e_icgraph.svg" width="956" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -423,19 +445,19 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_a9b2c9a0d71316ed9748ee856d5b01d8a_icgraph.svg" width="870" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_a9b2c9a0d71316ed9748ee856d5b01d8a_icgraph.svg" width="1167" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="ac7a253098e907c95f1bbf4e6b817d23e" name="ac7a253098e907c95f1bbf4e6b817d23e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac7a253098e907c95f1bbf4e6b817d23e">&#9670;&#160;</a></span>handleButton()</h2>
+<a id="a675bd21a9b516ff1133e36a11fa2c8c4" name="a675bd21a9b516ff1133e36a11fa2c8c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a675bd21a9b516ff1133e36a11fa2c8c4">&#9670;&#160;</a></span>handleButton()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void OLEDMenu::handleButton </td>
+          <td class="memname">bool OLEDMenu::handleButton </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="ui__board_2button_8hpp.html#aa60e15d86cfe7033f28c7d066c85266e">ButtonId</a></td>          <td class="paramname"><span class="paramname"><em>btn_id</em></span></td><td>)</td>
           <td></td>
@@ -450,15 +472,16 @@ Here is the caller graph for this function:</div>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>true if event was handled within menu, false if menu exited </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_ac7a253098e907c95f1bbf4e6b817d23e_cgraph.svg" width="691" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_a675bd21a9b516ff1133e36a11fa2c8c4_cgraph.svg" width="691" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_ac7a253098e907c95f1bbf4e6b817d23e_icgraph.svg" width="659" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_a675bd21a9b516ff1133e36a11fa2c8c4_icgraph.svg" width="659" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -488,7 +511,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_a0affbbc435e3cbab7d35fc97ff8c1e61_cgraph.svg" width="707" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_a0affbbc435e3cbab7d35fc97ff8c1e61_cgraph.svg" width="707" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -530,6 +553,34 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_a230b9700fb516c528921866a88290888_icgraph.svg" width="755" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="ac02241246a7d6960e56bedd33f55ff70" name="ac02241246a7d6960e56bedd33f55ff70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac02241246a7d6960e56bedd33f55ff70">&#9670;&#160;</a></span>isExitRequested()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool OLEDMenu::isExitRequested </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if menu exit was requested (e.g. via Back item) </p>
+<dl class="section return"><dt>Returns</dt><dd>true if exit requested </dd></dl>
 
 </div>
 </div>
@@ -612,7 +663,37 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_a405ad59acfd26235241b14d1c4927c47_icgraph.svg" width="618" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_a405ad59acfd26235241b14d1c4927c47_icgraph.svg" width="455" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a290e2e775f2d2a6a3c5e4d1d577f6394" name="a290e2e775f2d2a6a3c5e4d1d577f6394"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a290e2e775f2d2a6a3c5e4d1d577f6394">&#9670;&#160;</a></span>renderChoiceEdit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OLEDMenu::renderChoiceEdit </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_a290e2e775f2d2a6a3c5e4d1d577f6394_icgraph.svg" width="715" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -698,6 +779,30 @@ Here is the caller graph for this function:</div>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_a14e4efabf3a7df73884905396754a4c2_icgraph.svg" width="707" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a8308932c179772524d3fe27679440caf" name="a8308932c179772524d3fe27679440caf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8308932c179772524d3fe27679440caf">&#9670;&#160;</a></span>resetInputState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OLEDMenu::resetInputState </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reset input state (e.g. when entering menu) </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_a8308932c179772524d3fe27679440caf_icgraph.svg" width="510" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -796,7 +901,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_ae545fc5224d66f5e20f6911285847131_cgraph.svg" width="940" height="258"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classOLEDMenu_ae545fc5224d66f5e20f6911285847131_cgraph.svg" width="940" height="331"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -807,6 +912,50 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a29e9642929b6eec6134c3c3bd926b452" name="a29e9642929b6eec6134c3c3bd926b452"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29e9642929b6eec6134c3c3bd926b452">&#9670;&#160;</a></span>back_item_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structMenuItem.html">MenuItem</a> OLEDMenu::back_item_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5a5a78d728381fc6fb8c30923f360fbf" name="a5a5a78d728381fc6fb8c30923f360fbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a5a78d728381fc6fb8c30923f360fbf">&#9670;&#160;</a></span>bounds_item_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structMenuItem.html">MenuItem</a> OLEDMenu::bounds_item_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="acef179b490db3b1e4a5ff9af2f4e82a1" name="acef179b490db3b1e4a5ff9af2f4e82a1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acef179b490db3b1e4a5ff9af2f4e82a1">&#9670;&#160;</a></span>current_index_</h2>
 
@@ -917,6 +1066,28 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a1e0e6209dbe6b036677179837ff92f9d" name="a1e0e6209dbe6b036677179837ff92f9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e0e6209dbe6b036677179837ff92f9d">&#9670;&#160;</a></span>edit_bool_ptr_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool* OLEDMenu::edit_bool_ptr_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a407342c876d8e78ced27f471bed26fe8" name="a407342c876d8e78ced27f471bed26fe8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a407342c876d8e78ced27f471bed26fe8">&#9670;&#160;</a></span>edit_max_</h2>
 
@@ -1005,6 +1176,28 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="ae03ea812434b84ac8e741c273e002caf" name="ae03ea812434b84ac8e741c273e002caf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae03ea812434b84ac8e741c273e002caf">&#9670;&#160;</a></span>editing_choice_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool OLEDMenu::editing_choice_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a23acb6251bf2b3090d5021d0db8450f0" name="a23acb6251bf2b3090d5021d0db8450f0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a23acb6251bf2b3090d5021d0db8450f0">&#9670;&#160;</a></span>editing_value_</h2>
 
@@ -1049,8 +1242,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a815e1a8e6b274fc894d655c29d66d291" name="a815e1a8e6b274fc894d655c29d66d291"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a815e1a8e6b274fc894d655c29d66d291">&#9670;&#160;</a></span>method_item_</h2>
+<a id="abcb0974105f27b1c302bc328ef66c130" name="abcb0974105f27b1c302bc328ef66c130"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcb0974105f27b1c302bc328ef66c130">&#9670;&#160;</a></span>exit_requested_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1059,7 +1252,51 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structMenuItem.html">MenuItem</a> OLEDMenu::method_item_</td>
+          <td class="memname">bool OLEDMenu::exit_requested_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afd8044f537452f40ad55339d1544df67" name="afd8044f537452f40ad55339d1544df67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd8044f537452f40ad55339d1544df67">&#9670;&#160;</a></span>last_button_state_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool OLEDMenu::last_button_state_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3ca5153146ac4f09c4064cd751158450" name="a3ca5153146ac4f09c4064cd751158450"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ca5153146ac4f09c4064cd751158450">&#9670;&#160;</a></span>last_encoder_pos_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t OLEDMenu::last_encoder_pos_</td>
         </tr>
       </table>
   </td>
@@ -1104,6 +1341,28 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structMenuItem.html">MenuItem</a> OLEDMenu::orient_item_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aec31fd49b42cb9088b150a8ef0514df5" name="aec31fd49b42cb9088b150a8ef0514df5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec31fd49b42cb9088b150a8ef0514df5">&#9670;&#160;</a></span>root_back_item_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structMenuItem.html">MenuItem</a> OLEDMenu::root_back_item_</td>
         </tr>
       </table>
   </td>

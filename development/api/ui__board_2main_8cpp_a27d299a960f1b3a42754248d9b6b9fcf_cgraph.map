@@ -1,0 +1,5 @@
+<map id="power_task" name="power_task">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,103,31"/>
+<area shape="rect" id="Node000002" href="$namespaceUI__OLED.html#aed059a7fb1ba0e09513a8bc71c15eb44" title=" " alt="" coords="151,5,343,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,15,137,15,137,21,103,21"/>
+</map>
