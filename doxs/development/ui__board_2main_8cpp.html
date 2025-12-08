@@ -143,6 +143,10 @@ Variables</h2></td></tr>
 <tr class="separator:aa39c4d81e58fb749fd00c583fc2a50f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f9916fd3a93ea34a3d50684f2936bea" id="r_a6f9916fd3a93ea34a3d50684f2936bea"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f9916fd3a93ea34a3d50684f2936bea">g_lastActivityTick</a> = 0</td></tr>
 <tr class="separator:a6f9916fd3a93ea34a3d50684f2936bea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa1661a2fb6edee5161e88c785b539ca" id="r_afa1661a2fb6edee5161e88c785b539ca"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSettings.html">Settings</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa1661a2fb6edee5161e88c785b539ca">g_settings</a></td></tr>
+<tr class="separator:afa1661a2fb6edee5161e88c785b539ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d57fa252656cdc33bd25ff6a62d9559" id="r_a3d57fa252656cdc33bd25ff6a62d9559"><td class="memItemLeft" align="right" valign="top">static TickType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d57fa252656cdc33bd25ff6a62d9559">g_bootTick</a> = 0</td></tr>
+<tr class="separator:a3d57fa252656cdc33bd25ff6a62d9559"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Main application for OLED <a class="el" href="namespaceUI.html">UI</a> board (remote controller) </p>
@@ -164,7 +168,7 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ui__board_2main_8cpp_a630544a7f0a2cc40d8a7fefab7e2fe70_cgraph.svg" width="1326" height="856"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui__board_2main_8cpp_a630544a7f0a2cc40d8a7fefab7e2fe70_cgraph.svg" width="1351" height="1127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -222,6 +226,11 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 <div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="ui__board_2main_8cpp_a27d299a960f1b3a42754248d9b6b9fcf_cgraph.svg" width="348" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="ui__board_2main_8cpp_a27d299a960f1b3a42754248d9b6b9fcf_icgraph.svg" width="243" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
@@ -260,6 +269,28 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a3d57fa252656cdc33bd25ff6a62d9559" name="a3d57fa252656cdc33bd25ff6a62d9559"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d57fa252656cdc33bd25ff6a62d9559">&#9670;&#160;</a></span>g_bootTick</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TickType_t g_bootTick = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aca732de82d8c109a4bec6597cf107bc1" name="aca732de82d8c109a4bec6597cf107bc1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aca732de82d8c109a4bec6597cf107bc1">&#9670;&#160;</a></span>g_buttonQueue</h2>
 
@@ -315,6 +346,28 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">QueueHandle_t g_protoQueue = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afa1661a2fb6edee5161e88c785b539ca" name="afa1661a2fb6edee5161e88c785b539ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa1661a2fb6edee5161e88c785b539ca">&#9670;&#160;</a></span>g_settings</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSettings.html">Settings</a> g_settings</td>
         </tr>
       </table>
   </td>

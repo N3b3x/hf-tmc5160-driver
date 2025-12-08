@@ -1,19 +1,46 @@
 <map id="handle_button" name="handle_button">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,80,120,105"/>
-<area shape="rect" id="Node000002" href="$ui__oled_8cpp.html#a4be20a3d7faccbb1c6d931858839299b" title=" " alt="" coords="190,31,334,56"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,77,196,57,197,62,115,83"/>
-<area shape="rect" id="Node000003" href="$classOLEDMenu.html#ac7a253098e907c95f1bbf4e6b817d23e" title="Process button event." alt="" coords="168,80,356,105"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="120,90,154,90,154,95,120,95"/>
-<area shape="rect" id="Node000009" href="$classOLEDMenu.html#a405ad59acfd26235241b14d1c4927c47" title="Force menu refresh." alt="" coords="189,129,335,155"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="115,103,197,123,196,129,114,108"/>
-<area shape="rect" id="Node000004" href="$classOLEDMenu.html#ae0154261fe6d975514ca17ca982c909e" title=" " alt="" coords="404,5,608,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="317,77,355,65,379,52,403,40,426,32,428,37,405,44,381,57,357,70,319,82"/>
-<area shape="rect" id="Node000005" href="$classOLEDMenu.html#a5b4497438be5d1f79a77337b480504bd" title=" " alt="" coords="423,55,589,80"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="356,80,410,75,410,80,357,86"/>
-<area shape="rect" id="Node000007" href="$classOLEDMenu.html#a9b2c9a0d71316ed9748ee856d5b01d8a" title=" " alt="" coords="425,104,587,129"/>
-<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="357,99,411,105,411,110,356,105"/>
-<area shape="rect" id="Node000008" href="$classOLEDMenu.html#a6ae458f0db504178114ffac30de8cbaf" title=" " alt="" coords="422,153,590,179"/>
-<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="321,103,357,114,405,138,433,147,431,152,403,143,355,119,319,108"/>
-<area shape="rect" id="Node000006" href="$classOLEDMenu.html#a559064c9b5ef239ad82d0b8ba91c4703" title=" " alt="" coords="656,55,848,80"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="589,65,642,65,642,70,589,70"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,252,120,277"/>
+<area shape="rect" id="Node000002" href="$ui__oled_8cpp.html#a4be20a3d7faccbb1c6d931858839299b" title=" " alt="" coords="206,5,350,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="63,251,72,210,91,152,121,92,142,64,166,40,191,26,194,31,170,44,146,67,126,94,96,154,77,211,69,252"/>
+<area shape="rect" id="Node000003" href="$ui__oled_8cpp.html#ae07952b03f42cb788a2e2bcdb6892aae" title=" " alt="" coords="199,55,357,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="65,251,77,218,98,174,127,128,145,107,166,89,185,79,187,84,170,94,149,111,131,131,102,176,82,220,70,253"/>
+<area shape="rect" id="Node000004" href="$ui__oled_8cpp.html#aef28b60e15c759a399eb3f0d036881af" title=" " alt="" coords="198,104,358,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="69,250,105,196,133,164,167,138,184,130,186,135,169,143,137,168,109,199,73,253"/>
+<area shape="rect" id="Node000005" href="$classOLEDMenu.html#a675bd21a9b516ff1133e36a11fa2c8c4" title="Process button event." alt="" coords="184,153,372,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="77,249,116,218,167,188,186,180,188,185,169,192,119,223,80,254"/>
+<area shape="rect" id="Node000011" href="$namespaceSettingsStore.html#a96abe24acca0411d6b536eef7fc9d804" title=" " alt="" coords="204,203,352,228"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="115,249,167,237,204,228,205,234,169,242,116,255"/>
+<area shape="rect" id="Node000012" href="$namespaceEspNowProto.html#ae10d7d10ff1e16ae1cc04080709f7b30" title=" " alt="" coords="168,252,388,277"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="120,262,154,262,154,267,120,267"/>
+<area shape="rect" id="Node000015" href="$namespaceEspNowProto.html#ab6600c2a17f6a22fdccd8bea6d4ae6df" title=" " alt="" coords="181,301,375,327"/>
+<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="119,275,209,296,208,301,118,280"/>
+<area shape="rect" id="Node000016" href="$namespaceEspNowProto.html#aa6084e91299950cab595846adcb45cb6" title=" " alt="" coords="177,351,379,376"/>
+<area shape="poly" id="edge17_Node000001_Node000016" title=" " alt="" coords="80,275,119,306,169,336,192,344,190,349,167,340,116,310,77,280"/>
+<area shape="rect" id="Node000017" href="$namespaceEspNowProto.html#a39fe710db9b494e45662e8af1de53f82" title=" " alt="" coords="186,400,370,425"/>
+<area shape="poly" id="edge19_Node000001_Node000017" title=" " alt="" coords="73,276,110,330,137,360,169,385,184,393,181,397,167,390,133,364,105,333,69,279"/>
+<area shape="rect" id="Node000018" href="$namespaceEspNowProto.html#a54cf2968e7e4dfd30f6034eaa7f2d7ec" title=" " alt="" coords="187,449,369,475"/>
+<area shape="poly" id="edge21_Node000001_Node000018" title=" " alt="" coords="70,277,82,309,102,352,132,397,149,417,170,435,180,441,177,446,166,439,146,421,127,400,98,355,77,311,65,278"/>
+<area shape="rect" id="Node000019" href="$ui__oled_8cpp.html#a08fc770b3b752fa57da8bbdd18bcff68" title=" " alt="" coords="227,499,329,524"/>
+<area shape="poly" id="edge23_Node000001_Node000019" title=" " alt="" coords="69,277,77,318,96,375,126,435,146,462,170,485,190,497,214,505,212,510,188,502,166,489,142,465,121,438,91,377,72,319,63,278"/>
+<area shape="rect" id="Node000006" href="$classOLEDMenu.html#ae0154261fe6d975514ca17ca982c909e" title=" " alt="" coords="436,77,640,103"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="340,151,387,138,435,119,480,104,482,109,437,125,389,143,341,156"/>
+<area shape="rect" id="Node000007" href="$classOLEDMenu.html#ab7a205622312d04ca897682dd6ca8c7e" title=" " alt="" coords="455,179,621,204"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="372,172,441,179,441,185,372,178"/>
+<area shape="rect" id="Node000008" href="$classOLEDMenu.html#a9b2c9a0d71316ed9748ee856d5b01d8a" title=" " alt="" coords="703,129,865,155"/>
+<area shape="poly" id="edge9_Node000005_Node000008" title=" " alt="" coords="372,159,689,144,689,149,372,164"/>
+<area shape="rect" id="Node000010" href="$classOLEDMenu.html#a6ae458f0db504178114ffac30de8cbaf" title=" " alt="" coords="454,228,622,253"/>
+<area shape="poly" id="edge10_Node000005_Node000010" title=" " alt="" coords="351,176,389,188,413,200,437,213,464,222,462,227,435,218,411,205,387,192,350,181"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="601,176,706,155,707,160,603,181"/>
+<area shape="rect" id="Node000009" href="$classOLEDMenu.html#a559064c9b5ef239ad82d0b8ba91c4703" title=" " alt="" coords="688,179,880,204"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="621,189,674,189,674,194,621,194"/>
+<area shape="rect" id="Node000013" href="$espnow__protocol_8cpp.html#a4c9cea15a712845f833c94b0724c93ec" title=" " alt="" coords="487,351,589,376"/>
+<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="350,275,389,286,451,313,505,341,502,346,449,318,387,291,348,280"/>
+<area shape="rect" id="Node000014" href="$espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" title=" " alt="" coords="738,351,830,376"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="590,361,724,361,724,366,590,366"/>
+<area shape="poly" id="edge16_Node000015_Node000013" title=" " alt="" coords="346,324,474,349,473,354,345,329"/>
+<area shape="poly" id="edge18_Node000016_Node000013" title=" " alt="" coords="380,361,473,361,473,366,380,366"/>
+<area shape="poly" id="edge20_Node000017_Node000013" title=" " alt="" coords="345,397,473,373,474,378,346,403"/>
+<area shape="poly" id="edge22_Node000018_Node000013" title=" " alt="" coords="344,447,387,434,449,408,502,380,504,385,451,413,389,439,346,452"/>
+<area shape="rect" id="Node000020" href="$ui__oled_8cpp.html#ac369c62b3c7f14f7696ca075fb4c48bd" title=" " alt="" coords="487,499,589,524"/>
+<area shape="poly" id="edge24_Node000019_Node000020" title=" " alt="" coords="330,509,473,509,473,514,330,514"/>
 </map>

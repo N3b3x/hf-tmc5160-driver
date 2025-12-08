@@ -6,6 +6,7 @@ var hierarchy =
     [ "tmc51x0_test_config::BoardConfig_TMC51x0_BOB", "structtmc51x0__test__config_1_1BoardConfig__TMC51x0__BOB.html", null ],
     [ "tmc51x0_test_config::BoardConfig_TMC51x0_EVAL", "structtmc51x0__test__config_1_1BoardConfig__TMC51x0__EVAL.html", null ],
     [ "FatigueTest::BoundsResult", "structFatigueTest_1_1BoundsResult.html", null ],
+    [ "ButtonContext", "structButtonContext.html", null ],
     [ "ButtonEvent", "structButtonEvent.html", null ],
     [ "tmc51x0::CHOPCONF_Register", "uniontmc51x0_1_1CHOPCONF__Register.html", null ],
     [ "tmc51x0::ChopperConfig", "structtmc51x0_1_1ChopperConfig.html", null ],
@@ -130,6 +131,7 @@ var hierarchy =
     [ "tmc51x0_test_config::TestRigConfig< TestRigType::TEST_RIG_CORE_DRIVER >", "structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__CORE__DRIVER_01_4.html", null ],
     [ "tmc51x0_test_config::TestRigConfig< TestRigType::TEST_RIG_FATIGUE >", "structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4.html", null ],
     [ "TestTaskContext", "structTestTaskContext.html", null ],
+    [ "TestUnitSettings", "structTestUnitSettings.html", null ],
     [ "tmc51x0::TMC51x0< CommType >", "classtmc51x0_1_1TMC51x0.html", null ],
     [ "tmc51x0::TMC51x0< Esp32SPI >", "classtmc51x0_1_1TMC51x0.html", null ],
     [ "tmc51x0::TMC51x0DaisyChain< CommType, MaxDevices >", "classtmc51x0_1_1TMC51x0DaisyChain.html", null ],
@@ -144,6 +146,7 @@ var hierarchy =
     [ "tmc51x0::UartConfig", "structtmc51x0_1_1UartConfig.html", null ],
     [ "tmc51x0::UartFrame", "structtmc51x0_1_1UartFrame.html", null ],
     [ "UiEvent", "structUiEvent.html", null ],
+    [ "UISettings", "structUISettings.html", null ],
     [ "tmc51x0::VelocityValue", "structtmc51x0_1_1VelocityValue.html", null ],
     [ "tmc51x0::TMC51x0< CommType >::WriteOnlyRegisters", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html", null ]
 ];

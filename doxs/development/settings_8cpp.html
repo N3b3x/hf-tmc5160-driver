@@ -96,21 +96,23 @@ $(function(){initNavTree('settings_8cpp.html',''); initResizable(); });
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">settings.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="structSettings.html">Settings</a> storage implementation.  
+<p><a class="el" href="structSettings.html" title="Complete settings structure containing both test unit and UI settings This is the main settings struc...">Settings</a> storage implementation.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="settings_8hpp_source.html">settings.hpp</a>&quot;</code><br />
 <code>#include &quot;nvs_flash.h&quot;</code><br />
 <code>#include &quot;nvs.h&quot;</code><br />
 <code>#include &quot;esp_log.h&quot;</code><br />
+<code>#include &quot;esp_crc.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for settings.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="settings_8cpp__incl.svg" width="920" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="settings_8cpp__incl.svg" width="1027" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -118,26 +120,56 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceanonymous__namespace_02settings_8cpp_03" id="r_namespaceanonymous__namespace_02settings_8cpp_03"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02settings_8cpp_03.html">anonymous_namespace{settings.cpp}</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ad5fb55f5f11a4a62672de06d24f2d250" id="r_ad5fb55f5f11a4a62672de06d24f2d250"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5fb55f5f11a4a62672de06d24f2d250">validate_bool</a> (uint8_t val)</td></tr>
+<tr class="separator:ad5fb55f5f11a4a62672de06d24f2d250"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a2be972aece3ad0a638f71bc84b3f449a" id="r_a2be972aece3ad0a638f71bc84b3f449a"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2be972aece3ad0a638f71bc84b3f449a">TAG_SET</a> = &quot;Settings&quot;</td></tr>
 <tr class="separator:a2be972aece3ad0a638f71bc84b3f449a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac404bd8fc90a64de408a60472f580891" id="r_ac404bd8fc90a64de408a60472f580891"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02settings_8cpp_03.html#ac404bd8fc90a64de408a60472f580891">anonymous_namespace{settings.cpp}::NVS_NAMESPACE</a> = &quot;fatigue&quot;</td></tr>
 <tr class="separator:ac404bd8fc90a64de408a60472f580891"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a184c754a5977aa3ce9cfc473b90ac809" id="r_a184c754a5977aa3ce9cfc473b90ac809"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02settings_8cpp_03.html#a184c754a5977aa3ce9cfc473b90ac809">anonymous_namespace{settings.cpp}::KEY_CYCLES</a> = &quot;cycles&quot;</td></tr>
-<tr class="separator:a184c754a5977aa3ce9cfc473b90ac809"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af60a53794ee22e98016f3adb38ca9d8f" id="r_af60a53794ee22e98016f3adb38ca9d8f"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02settings_8cpp_03.html#af60a53794ee22e98016f3adb38ca9d8f">anonymous_namespace{settings.cpp}::KEY_TPER</a> = &quot;tper&quot;</td></tr>
-<tr class="separator:af60a53794ee22e98016f3adb38ca9d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b94602849a9732d44143bc92c520ee1" id="r_a8b94602849a9732d44143bc92c520ee1"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02settings_8cpp_03.html#a8b94602849a9732d44143bc92c520ee1">anonymous_namespace{settings.cpp}::KEY_DWELL</a> = &quot;dwell&quot;</td></tr>
-<tr class="separator:a8b94602849a9732d44143bc92c520ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82354010fab26a52ada8cfab01988457" id="r_a82354010fab26a52ada8cfab01988457"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02settings_8cpp_03.html#a82354010fab26a52ada8cfab01988457">anonymous_namespace{settings.cpp}::KEY_ORIENT</a> = &quot;orient&quot;</td></tr>
-<tr class="separator:a82354010fab26a52ada8cfab01988457"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff9b5a410eeeac3936943223fff7b017" id="r_aff9b5a410eeeac3936943223fff7b017"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02settings_8cpp_03.html#aff9b5a410eeeac3936943223fff7b017">anonymous_namespace{settings.cpp}::KEY_BOUNDS</a> = &quot;bounds&quot;</td></tr>
-<tr class="separator:aff9b5a410eeeac3936943223fff7b017"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dc088d1257df066b3d4dbcbdfd1739c" id="r_a1dc088d1257df066b3d4dbcbdfd1739c"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02settings_8cpp_03.html#a1dc088d1257df066b3d4dbcbdfd1739c">anonymous_namespace{settings.cpp}::KEY_BLOB</a> = &quot;cfg_blob&quot;</td></tr>
+<tr class="separator:a1dc088d1257df066b3d4dbcbdfd1739c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a542234b2a5aa5e0bc083d57c0b02c0f1" id="r_a542234b2a5aa5e0bc083d57c0b02c0f1"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02settings_8cpp_03.html#a542234b2a5aa5e0bc083d57c0b02c0f1">anonymous_namespace{settings.cpp}::KEY_CRC</a> = &quot;cfg_crc&quot;</td></tr>
+<tr class="separator:a542234b2a5aa5e0bc083d57c0b02c0f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="structSettings.html">Settings</a> storage implementation. </p>
-</div><h2 class="groupheader">Variable Documentation</h2>
+<div class="textblock"><p><a class="el" href="structSettings.html" title="Complete settings structure containing both test unit and UI settings This is the main settings struc...">Settings</a> storage implementation. </p>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="ad5fb55f5f11a4a62672de06d24f2d250" name="ad5fb55f5f11a4a62672de06d24f2d250"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5fb55f5f11a4a62672de06d24f2d250">&#9670;&#160;</a></span>validate_bool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool validate_bool </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>val</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="settings_8cpp_ad5fb55f5f11a4a62672de06d24f2d250_icgraph.svg" width="443" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
 <a id="a2be972aece3ad0a638f71bc84b3f449a" name="a2be972aece3ad0a638f71bc84b3f449a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2be972aece3ad0a638f71bc84b3f449a">&#9670;&#160;</a></span>TAG_SET</h2>
 

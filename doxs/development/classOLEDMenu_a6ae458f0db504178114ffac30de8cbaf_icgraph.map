@@ -1,6 +1,6 @@
 <map id="OLEDMenu::saveValue" name="OLEDMenu::saveValue">
 <area shape="rect" id="Node000001" title=" " alt="" coords="785,31,953,56"/>
-<area shape="rect" id="Node000002" href="$classOLEDMenu.html#ac7a253098e907c95f1bbf4e6b817d23e" title="Process button event." alt="" coords="523,5,711,31"/>
+<area shape="rect" id="Node000002" href="$classOLEDMenu.html#a675bd21a9b516ff1133e36a11fa2c8c4" title="Process button event." alt="" coords="523,5,711,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="772,36,711,30,712,25,772,31"/>
 <area shape="rect" id="Node000006" href="$classOLEDMenu.html#a0affbbc435e3cbab7d35fc97ff8c1e61" title="Process encoder button." alt="" coords="497,55,737,80"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="772,55,738,59,737,53,772,50"/>

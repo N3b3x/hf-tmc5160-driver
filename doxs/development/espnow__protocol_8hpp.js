@@ -6,6 +6,8 @@ var espnow__protocol_8hpp =
     [ "ConfigAckPayload", "structConfigAckPayload.html", "structConfigAckPayload" ],
     [ "StatusPayload", "structStatusPayload.html", "structStatusPayload" ],
     [ "ErrorPayload", "structErrorPayload.html", "structErrorPayload" ],
+    [ "TestUnitSettings", "structTestUnitSettings.html", "structTestUnitSettings" ],
+    [ "UISettings", "structUISettings.html", "structUISettings" ],
     [ "Settings", "structSettings.html", "structSettings" ],
     [ "ProtoEvent", "structProtoEvent.html", "structProtoEvent" ],
     [ "MsgType", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2", [

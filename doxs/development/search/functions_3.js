@@ -19,11 +19,12 @@ var searchData=
   ['draw_5fmain_5fscreen_16',['draw_main_screen',['../ui_8cpp.html#a4be20a3d7faccbb1c6d931858839299b',1,'draw_main_screen():&#160;ui.cpp'],['../ui__oled_8cpp.html#a4be20a3d7faccbb1c6d931858839299b',1,'draw_main_screen():&#160;ui_oled.cpp']]],
   ['draw_5fmenu_5fitem_17',['draw_menu_item',['../ui_8cpp.html#a48a3de6daffe131336f1ca90af07e2e8',1,'ui.cpp']]],
   ['draw_5fpaused_5fscreen_18',['draw_paused_screen',['../ui__oled_8cpp.html#ae07952b03f42cb788a2e2bcdb6892aae',1,'ui_oled.cpp']]],
-  ['draw_5frunning_5fscreen_19',['draw_running_screen',['../ui__oled_8cpp.html#aef28b60e15c759a399eb3f0d036881af',1,'ui_oled.cpp']]],
-  ['draw_5fsettings_5fedit_20',['draw_settings_edit',['../ui_8cpp.html#a49a7a89161a22675434e00b56ffbc3c9',1,'ui.cpp']]],
-  ['draw_5fsettings_5fmenu_21',['draw_settings_menu',['../ui_8cpp.html#ae017559aa66d2b58e26dae763ddf9095',1,'ui.cpp']]],
-  ['drawerrorscreen_22',['drawErrorScreen',['../slideshow_8cpp.html#a35d630c73fca148c88b2bd5462a40afa',1,'slideshow.cpp']]],
-  ['drawloadingscreen_23',['drawLoadingScreen',['../slideshow_8cpp.html#ae0d80d7b4bf8b41bb2573db046fa0d0b',1,'slideshow.cpp']]],
-  ['driverconfig_24',['DriverConfig',['../structtmc51x0_1_1DriverConfig.html#a85eb308c8f8f57cd95bf495d3eb4c751',1,'tmc51x0::DriverConfig']]],
-  ['drivererror_25',['DriverError',['../structtmc51x0_1_1SpiStatus.html#aa01f0baca6f2b42f5c71f98df60edd1a',1,'tmc51x0::SpiStatus']]]
+  ['draw_5fpopup_19',['draw_popup',['../ui__oled_8cpp.html#ac369c62b3c7f14f7696ca075fb4c48bd',1,'ui_oled.cpp']]],
+  ['draw_5frunning_5fscreen_20',['draw_running_screen',['../ui__oled_8cpp.html#aef28b60e15c759a399eb3f0d036881af',1,'ui_oled.cpp']]],
+  ['draw_5fsettings_5fedit_21',['draw_settings_edit',['../ui_8cpp.html#a49a7a89161a22675434e00b56ffbc3c9',1,'ui.cpp']]],
+  ['draw_5fsettings_5fmenu_22',['draw_settings_menu',['../ui_8cpp.html#ae017559aa66d2b58e26dae763ddf9095',1,'ui.cpp']]],
+  ['drawerrorscreen_23',['drawErrorScreen',['../slideshow_8cpp.html#a35d630c73fca148c88b2bd5462a40afa',1,'slideshow.cpp']]],
+  ['drawloadingscreen_24',['drawLoadingScreen',['../slideshow_8cpp.html#ae0d80d7b4bf8b41bb2573db046fa0d0b',1,'slideshow.cpp']]],
+  ['driverconfig_25',['DriverConfig',['../structtmc51x0_1_1DriverConfig.html#a85eb308c8f8f57cd95bf495d3eb4c751',1,'tmc51x0::DriverConfig']]],
+  ['drivererror_26',['DriverError',['../structtmc51x0_1_1SpiStatus.html#aa01f0baca6f2b42f5c71f98df60edd1a',1,'tmc51x0::SpiStatus']]]
 ];

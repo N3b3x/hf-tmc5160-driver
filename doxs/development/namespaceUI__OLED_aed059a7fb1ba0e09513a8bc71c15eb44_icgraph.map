@@ -1,0 +1,7 @@
+<map id="UI_OLED::prepareForSleep" name="UI_OLED::prepareForSleep">
+<area shape="rect" id="Node000001" title=" " alt="" coords="285,5,477,31"/>
+<area shape="rect" id="Node000002" href="$ui__board_2main_8cpp.html#a27d299a960f1b3a42754248d9b6b9fcf" title=" " alt="" coords="140,5,237,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="271,21,237,21,237,15,271,15"/>
+<area shape="rect" id="Node000003" href="$ui__board_2main_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,5,92,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,21,92,21,92,15,126,15"/>
+</map>

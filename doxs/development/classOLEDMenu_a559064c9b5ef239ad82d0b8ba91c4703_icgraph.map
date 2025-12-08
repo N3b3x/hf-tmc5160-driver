@@ -1,8 +1,8 @@
 <map id="OLEDMenu::startValueEdit" name="OLEDMenu::startValueEdit">
 <area shape="rect" id="Node000001" title=" " alt="" coords="999,31,1191,56"/>
-<area shape="rect" id="Node000002" href="$classOLEDMenu.html#a5b4497438be5d1f79a77337b480504bd" title=" " alt="" coords="785,31,951,56"/>
+<area shape="rect" id="Node000002" href="$classOLEDMenu.html#ab7a205622312d04ca897682dd6ca8c7e" title=" " alt="" coords="785,31,951,56"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="985,46,951,46,951,41,985,41"/>
-<area shape="rect" id="Node000003" href="$classOLEDMenu.html#ac7a253098e907c95f1bbf4e6b817d23e" title="Process button event." alt="" coords="523,5,711,31"/>
+<area shape="rect" id="Node000003" href="$classOLEDMenu.html#a675bd21a9b516ff1133e36a11fa2c8c4" title="Process button event." alt="" coords="523,5,711,31"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="771,36,711,30,712,25,772,31"/>
 <area shape="rect" id="Node000007" href="$classOLEDMenu.html#a0affbbc435e3cbab7d35fc97ff8c1e61" title="Process encoder button." alt="" coords="497,55,737,80"/>
 <area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="772,55,738,58,737,53,771,50"/>
