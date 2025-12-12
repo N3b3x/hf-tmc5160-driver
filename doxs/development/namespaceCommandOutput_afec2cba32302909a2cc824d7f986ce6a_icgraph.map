@@ -1,12 +1,12 @@
 <map id="CommandOutput::PrintError" name="CommandOutput::PrintError">
 <area shape="rect" id="Node000001" title=" " alt="" coords="505,132,708,157"/>
-<area shape="rect" id="Node000002" href="$test__unit_2main_8cpp.html#abda5ef2605b311dad7dc06cc34373d11" title="Handle HELP command." alt="" coords="289,5,387,31"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#abda5ef2605b311dad7dc06cc34373d11" title="Handle HELP command." alt="" coords="289,5,387,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="577,126,523,89,456,52,387,30,388,25,458,48,525,84,580,122"/>
 <area shape="rect" id="Node000003" href="$classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68" title="Process a command line." alt="" coords="5,99,171,139"/>
 <area shape="poly" id="edge10_Node000001_Node000003" title=" " alt="" coords="564,129,513,111,457,97,391,88,338,86,219,97,171,104,170,98,218,91,338,81,391,83,458,91,515,106,565,124"/>
-<area shape="rect" id="Node000004" href="$test__unit_2main_8cpp.html#a35d4c27b82242d39e341bf9d35d50a0f" title="Handle SET command with multiple options." alt="" coords="293,107,383,132"/>
+<area shape="rect" id="Node000004" href="$main_8cpp.html#a35d4c27b82242d39e341bf9d35d50a0f" title="Handle SET command with multiple options." alt="" coords="293,107,383,132"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="491,136,383,126,383,121,492,131"/>
-<area shape="rect" id="Node000005" href="$test__unit_2main_8cpp.html#af9a61f18ec0bf52c35280fd8748a0679" title="Handle START command." alt="" coords="289,156,387,181"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html#af9a61f18ec0bf52c35280fd8748a0679" title="Handle START command." alt="" coords="289,156,387,181"/>
 <area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="492,158,388,167,387,162,492,152"/>
 <area shape="rect" id="Node000006" href="$classUartCommandParser.html#ab0e959fc2d336b5fbfb2dfafb901b167" title="Parse command line into ParsedCommand structure." alt="" coords="255,206,421,246"/>
 <area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="555,164,458,195,413,209,411,203,457,190,553,159"/>

@@ -21,8 +21,8 @@
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:href="espnow__protocol_8hpp.html" target="_top" xlink:title="ESP&#45;NOW communication protocol for fatigue tester.">
-<polygon fill="white" stroke="#666666" points="366,-74 237,-74 237,-55 366,-55 366,-74"/>
-<text text-anchor="middle" x="301.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">../espnow_protocol.hpp</text>
+<polygon fill="white" stroke="#666666" points="361.5,-74 241.5,-74 241.5,-55 361.5,-55 361.5,-74"/>
+<text text-anchor="middle" x="301.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">espnow_protocol.hpp</text>
 </a>
 </g>
 </g>
