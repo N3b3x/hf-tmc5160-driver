@@ -1,0 +1,46 @@
+# ESP32 UI Slideshow - Apps Configuration
+# Standalone e-ink slideshow application
+# No dependencies on TMC driver library
+
+version: "1.0"
+metadata:
+  project: "ESP32 UI Slideshow - E-Ink Display Application"
+  default_app: "ui_slideshow"
+  target: "esp32c6"
+  idf_versions: ["release/v5.5", "release/v5.4"]
+  build_types: [["Debug", "Release"], ["Debug"]]
+
+apps:
+  ui_slideshow:
+    description: "E-ink slideshow application - displays images from SD card on 2.9\" ThinkInk display"
+    source_file: "main.cpp"
+    category: "display"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: false
+    featured: true
+
+build_config:
+  build_types:
+    Debug:
+      description: "Debug symbols, verbose logging, assertions enabled"
+      cmake_build_type: "Debug"
+      optimization: "-O0"
+      debug_level: "-g3"
+      defines: ["DEBUG"]
+    Release:
+      description: "Release build optimized for performance and size"
+      cmake_build_type: "Release"
+      optimization: "-O2"
+      debug_level: "-g0"
+      defines: ["NDEBUG"]
+
+  build_directory_pattern: "build-app-{app_type}-type-{build_type}-target-{target}-idf-{idf_version}"
+  project_name_pattern: "esp32_ui_slideshow_{app_type}_app"
+
+ci_config:
+  timeout_minutes: 30
+  fail_fast: false
+  exclude_combinations: []
+  special_apps: []
+

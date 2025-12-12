@@ -1,44 +1,31 @@
 # Fatigue Test with ESP-NOW Communication
 
-This directory contains a complete fatigue testing system with wireless remote control via ESP-NOW.
+This directory contains the fatigue test unit that receives commands via ESP-NOW and performs fatigue testing with dual bounds detection methods.
 
 ## Overview
 
-The system consists of two ESP32 devices:
+The **Test Unit** is a unified fatigue tester with dual communication:
+- Receives commands from remote controller via ESP-NOW
+- Accepts direct commands via UART (for debugging/development)
+- Performs bounds finding using selectable method (StallGuard2 or encoder-based)
+- Runs sinusoidal fatigue test motion
+- Sends status updates back to remote controller
+- **Unified Implementation**: Combines `fatigue_test_encoder.cpp` and `fatigue_test_stallguard.cpp` with proper C++ abstractions
 
-1. **UI Board** (`ui_board/`): Remote controller with e-ink display and buttons
-   - Sends commands to test unit via ESP-NOW
-   - Displays status and settings on e-ink display
-   - Supports deep sleep wake from buttons
-   - Inactivity timeout for power saving
-
-2. **Test Unit** (`test_unit/`): Unified fatigue tester with dual communication
-   - Receives commands from UI board via ESP-NOW
-   - Accepts direct commands via UART (for debugging/development)
-   - Performs bounds finding using selectable method (StallGuard2 or encoder-based)
-   - Runs sinusoidal fatigue test motion
-   - Sends status updates back to UI board
-   - **Unified Implementation**: Combines `fatigue_test_encoder.cpp` and `fatigue_test_stallguard.cpp` with proper C++ abstractions
+**Note**: The remote controller UI has been moved to a standalone project: `examples/esp32_remote_controller/`
 
 ## Directory Structure
 
 ```
 fatigue_test_espnow/
 ├── espnow_protocol.hpp          # Shared ESP-NOW protocol definitions
-├── ui_board/                     # Remote controller code
-│   ├── main.cpp                 # Main application
-│   ├── config.hpp               # GPIO and configuration
-│   ├── button.hpp/cpp           # Button handling
-│   ├── settings.hpp/cpp         # Settings storage (NVS)
-│   ├── espnow_protocol.hpp/cpp  # ESP-NOW protocol implementation
-│   └── ui.hpp/cpp               # UI state machine (e-ink display)
-└── test_unit/                    # Fatigue tester code
-    ├── main.cpp                 # Main application (unified implementation)
-    ├── espnow_receiver.hpp/cpp  # ESP-NOW receiver implementation
-    ├── bounds_finder.hpp        # Abstract bounds finder interface
-    ├── bounds_finder_stallguard.cpp  # StallGuard2 implementation
-    ├── bounds_finder_encoder.cpp     # Encoder-based implementation
-    └── fatigue_motion.hpp       # Unified motion controller interface
+├── main.cpp                     # Main application (unified implementation)
+├── espnow_receiver.hpp/cpp      # ESP-NOW receiver implementation
+├── bounds_finder.hpp            # Abstract bounds finder interface
+├── bounds_finder_stallguard.cpp # StallGuard2 implementation
+├── bounds_finder_encoder.cpp    # Encoder-based implementation
+├── fatigue_motion.hpp           # Unified motion controller interface
+└── fatigue_motion_impl.hpp      # Motion controller implementation
 ```
 
 ## ESP-NOW Protocol
@@ -64,36 +51,15 @@ struct Settings {
     uint32_t cycle_amount;        // Target number of cycles
     uint32_t time_per_cycle;      // Time per cycle in seconds
     uint32_t dwell_time;          // Dwell time at bounds in seconds
-    bool orientation_flipped;      // Display orientation
     bool bounds_method_stallguard; // true = StallGuard2, false = encoder
 };
 ```
 
 ## Configuration
 
-### UI Board Configuration
-
-Edit `ui_board/config.hpp`:
-
-```cpp
-// Button GPIOs (must be RTC-capable for deep sleep wake)
-static constexpr gpio_num_t BTN_UP_GPIO     = GPIO_NUM_4;
-static constexpr gpio_num_t BTN_SELECT_GPIO = GPIO_NUM_5;
-static constexpr gpio_num_t BTN_DOWN_GPIO   = GPIO_NUM_6;
-
-// E-ink display pins (adjust for your hardware)
-static constexpr int EINK_DC_PIN   = 10;
-static constexpr int EINK_RESET_PIN = 11;
-static constexpr int EINK_CS_PIN    = 9;
-static constexpr int EINK_BUSY_PIN  = 12;
-
-// Test unit MAC address (set to your test unit's MAC)
-static constexpr uint8_t TEST_UNIT_MAC[6] = { 0x24, 0x6F, 0x28, 0x00, 0x00, 0x01 };
-```
-
 ### Test Unit Configuration
 
-The test unit uses the same test rig configuration as other fatigue test examples. Edit `test_unit/main.cpp`:
+The test unit uses the same test rig configuration as other fatigue test examples. Edit `main.cpp`:
 
 ```cpp
 // Test rig selection
@@ -103,52 +69,20 @@ static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG =
 
 ## Building
 
-### UI Board
-
-```bash
-cd examples/esp32
-./scripts/build_app.sh fatigue_test_espnow_ui Release
-```
-
-### Test Unit
-
-The unified test unit is built from `fatigue_test_espnow_unit.cpp` in the main directory:
-
 ```bash
 cd examples/esp32
 ./scripts/build_app.sh fatigue_test_espnow_unit Release
 ```
 
-**Note**: The main application file (`fatigue_test_espnow_unit.cpp`) includes the full implementation combining:
-- Bounds finding from both `fatigue_test_encoder.cpp` and `fatigue_test_stallguard.cpp`
-- UART command interface (same commands as standalone examples)
-- ESP-NOW communication with UI board
-- Unified `FatigueTestMotion` class
-
-The implementation uses proper C++ abstractions:
-- `IBoundsFinder` interface for bounds detection strategies
-- Factory functions for creating bounds finders
-- Unified motion controller extracted from existing implementations
-
 ## Usage
 
-1. **Flash both devices** with their respective firmware
-2. **Configure MAC addresses**: Set the test unit's MAC in `ui_board/config.hpp`
-3. **Power on test unit first**, then UI board
-4. **UI board will request config** from test unit on startup
-5. **Use buttons** on UI board to:
-   - UP: Start test
-   - SELECT: Settings menu / Pause/Resume
-   - DOWN: Stop test (with confirmation)
+1. **Flash the test unit** with the firmware
+2. **Configure MAC address** in the remote controller (see `examples/esp32_remote_controller/`)
+3. **Power on test unit first**, then remote controller
+4. **Remote controller will request config** from test unit on startup
+5. **Use remote controller** to start, pause, resume, or stop tests
 
 ## Features
-
-### UI Board
-- E-ink display for status and settings
-- Three-button navigation
-- Deep sleep with button wake
-- Inactivity timeout (60 seconds default)
-- Settings stored in NVS
 
 ### Test Unit
 - **Dual Communication**: ESP-NOW (wireless) + UART (direct serial)
@@ -156,7 +90,7 @@ The implementation uses proper C++ abstractions:
 - **Unified Motion Controller**: Extracted from `fatigue_test_encoder.cpp` and `fatigue_test_stallguard.cpp`
 - Sinusoidal fatigue test motion
 - Cycle counting
-- Status updates sent to UI board
+- Status updates sent to remote controller
 - Error handling and reporting
 - **Proper C++ Abstractions**: Interface-based design for extensibility
 
@@ -182,31 +116,9 @@ The implementation uses proper C++ abstractions:
 - 2: Start failed
 - 3: Configuration error
 
-## Integration Notes
+## Bounds Finding
 
-### E-ink Display
-
-The UI code includes **full, production-ready** e-ink display integration for the **2.9" ThinkInk FeatherWing**:
-
-- **Vertical Orientation**: Optimized for portrait mode (128x296 pixels)
-- **All Drawing Functions Implemented**:
-  - `draw_main_screen()`: Main UI with settings summary and controls
-  - `draw_settings_screen()`: Settings display with all parameters
-  - `draw_error_screen()`: Error display with slow blinking (e-ink optimized)
-  - `draw_complete_screen()`: Test completion screen
-  - `update_status_footer()`: Dynamic footer with cycle progress
-
-- **E-ink Optimizations**:
-  - Slow refresh rates (2+ seconds for blinking)
-  - Partial update support (when available)
-  - Proper rotation handling (portrait mode)
-  - Compact layout for vertical display
-
-The display is initialized with proper dimensions and rotation in `UI::init()`.
-
-### Bounds Finding
-
-The unified test unit includes **full implementations** of both bounds finding methods:
+The test unit includes **full implementations** of both bounds finding methods:
 
 - **Encoder-based** (`bounds_finder_encoder.cpp`): Complete implementation extracted from `fatigue_test_encoder.cpp`
   - Monitors encoder position changes
@@ -218,9 +130,9 @@ The unified test unit includes **full implementations** of both bounds finding m
   - Configures SGT threshold for homing
   - Handles false stall detection with movement thresholds
 
-Both implementations follow the `IBoundsFinder` interface, allowing easy switching between methods. The method is selected via the `bounds_method_stallguard` setting in the UI.
+Both implementations follow the `IBoundsFinder` interface, allowing easy switching between methods. The method is selected via the `bounds_method_stallguard` setting from the remote controller.
 
-### UART Command Interface
+## UART Command Interface
 
 The test unit supports the same UART commands as the standalone fatigue test examples:
 
@@ -236,17 +148,16 @@ This allows direct control and debugging via serial terminal while ESP-NOW handl
 
 ## Troubleshooting
 
-1. **No communication**: Check MAC addresses are correct
+1. **No communication**: Check MAC addresses are correct in remote controller
 2. **CRC errors**: Check WiFi channel matches (default: channel 1)
-3. **Buttons not working**: Verify GPIO pins and RTC capability
-4. **Display not updating**: Implement e-ink drawing functions
-5. **Bounds finding fails**: Check motor and encoder connections
+3. **Bounds finding fails**: Check motor and encoder connections
+4. **UART commands not working**: Check baud rate (115200 default)
 
 ## Implementation Details
 
 ### Unified Architecture
 
-The test unit implementation (`fatigue_test_espnow_unit.cpp`) combines:
+The test unit implementation combines:
 
 1. **Bounds Finding Abstraction**:
    - `IBoundsFinder` interface defines the contract
@@ -264,16 +175,21 @@ The test unit implementation (`fatigue_test_espnow_unit.cpp`) combines:
    - ESP-NOW commands processed via `EspNowReceiver`
    - Both interfaces update the same `FatigueTestMotion` instance
 
-### File Organization
+## Documentation
 
-- **Main Application**: `fatigue_test_espnow_unit.cpp` (in `main/` directory)
-- **Bounds Finders**: `test_unit/bounds_finder_*.cpp` (implementations)
-- **Motion Controller**: Extracted inline or in separate header
-- **UI Board**: Complete implementation in `ui_board/` directory
+Comprehensive documentation is available:
+
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture, component overview, and design patterns
+- **[PROTOCOL.md](PROTOCOL.md)** - Complete ESP-NOW protocol specification
+- **[HARDWARE_SETUP.md](HARDWARE_SETUP.md)** - Hardware setup guide, pin configuration, and troubleshooting
+
+## Related Projects
+
+- **Remote Controller**: `examples/esp32_remote_controller/` - Standalone remote controller with OLED display
+- **E-Ink Slideshow**: `examples/esp32_ui_slideshow/` - Standalone e-ink slideshow application
 
 ## Future Enhancements
 
-- Settings editing UI (nested menu with value editing)
 - Real-time parameter adjustment via ESP-NOW
 - Data logging to SD card or flash
 - Multiple test unit support (broadcast commands)
