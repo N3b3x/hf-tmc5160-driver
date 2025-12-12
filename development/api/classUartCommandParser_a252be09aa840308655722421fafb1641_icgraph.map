@@ -8,11 +8,11 @@
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="552,78,517,73,518,68,552,73"/>
 <area shape="rect" id="Node000005" href="$classUartCommandParser.html#aa9c8b4a43f0bb19ee715e9f61f86870c" title="Read and process commands from UART." alt="" coords="343,101,517,141"/>
 <area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="552,106,518,111,517,106,552,101"/>
-<area shape="rect" id="Node000006" href="$test__unit_2main_8cpp.html#a5a8d7cdba17444119b8f942be87ffe68" title=" " alt="" coords="140,83,295,109"/>
+<area shape="rect" id="Node000006" href="$main_8cpp.html#a5a8d7cdba17444119b8f942be87ffe68" title=" " alt="" coords="140,83,295,109"/>
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="329,112,294,108,295,103,329,107"/>
 <area shape="rect" id="Node000008" href="$fatigue__test__encoder_8cpp.html#a257128a931ab6472c0421a29abeb0443" title="UART command processing task." alt="" coords="140,133,295,158"/>
 <area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="329,135,295,139,294,134,329,130"/>
-<area shape="rect" id="Node000007" href="$test__unit_2main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,83,92,109"/>
+<area shape="rect" id="Node000007" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,83,92,109"/>
 <area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="126,99,92,99,92,93,126,93"/>
 <area shape="rect" id="Node000009" href="$fatigue__test__encoder_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,133,92,158"/>
 <area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="126,148,92,148,92,143,126,143"/>

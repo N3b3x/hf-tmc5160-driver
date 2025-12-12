@@ -1,0 +1,874 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  <style id="jtd-nav-activation">
+  
+
+    
+    .site-nav > ul.nav-list:first-child > li:not(:nth-child(12)) > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:not(:first-child) a,
+    .site-nav li.external a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:first-child > li:nth-child(12) > a {
+      font-weight: 600;
+      text-decoration: none;
+    }.site-nav > ul.nav-list:first-child > li:nth-child(12) > button svg {
+      transform: rotate(-90deg);
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(12) > ul.nav-list {
+      display: block;
+    }
+  </style>
+
+  
+
+  
+    <script src="/hf-tmc5160-driver/development/assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="/hf-tmc5160-driver/development/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>ESP32 UI Slideshow - Architecture Documentation | HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="ESP32 UI Slideshow - Architecture Documentation" />
+<meta name="author" content="N3b3x" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
+<meta property="og:description" content="Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
+<link rel="canonical" href="https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/docs/ARCHITECTURE.html" />
+<meta property="og:url" content="https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/docs/ARCHITECTURE.html" />
+<meta property="og:site_name" content="HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="ESP32 UI Slideshow - Architecture Documentation" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support","headline":"ESP32 UI Slideshow - Architecture Documentation","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/docs/ARCHITECTURE.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- =============================================================================
+     Custom Head Content for HardFOC Driver Documentation
+     =============================================================================
+     This file is included in the <head> section of every page.
+     It loads custom CSS and JavaScript for enhanced functionality.
+     ============================================================================= -->
+
+<!-- Custom CSS for enhanced styling and fixes -->
+<link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/custom.css">
+
+<!-- Custom JavaScript for interactive features -->
+<script src="/hf-tmc5160-driver/development/assets/js/custom.js" defer></script>
+
+
+
+</head>
+
+<body>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    <div class="side-bar">
+  <div class="site-header" role="banner">
+    <a href="/hf-tmc5160-driver/development/" class="site-title lh-tight">
+  HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development
+
+</a>
+    <button id="menu-button" class="site-button btn-reset" aria-label="Toggle menu" aria-pressed="false">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Main" id="site-nav" class="site-nav">
+  
+  
+    <ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in HardFOC TMC51x0 Driver (TMC5130 & TMC5160) category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC51x0 Driver (TMC5130 & TMC5160)</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/dev_board_setup/" class="nav-list-link">🛠️ Dev Board Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/tmc5130_support/" class="nav-list-link">🔧 TMC5130 Support</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/VERIFICATION_REPORT.html" class="nav-list-link">Code Verification Report - Button Handling &amp; Event Routing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_communication_interface.html" class="nav-list-link">Communication Interface</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/docs/DEVICE_DEVELOPMENT.html" class="nav-list-link">Device Development Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/driver_configuration_guide.html" class="nav-list-link">Driver Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/docs/SLIDESHOW_PLAN.html" class="nav-list-link">E-Ink Slideshow Application Plan</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/PROTOCOL.html" class="nav-list-link">ESP-NOW Protocol Specification</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/docs/PROTOCOL.html" class="nav-list-link">ESP-NOW Protocol Specification - Remote Controller</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/" class="nav-list-link">ESP32 Examples and Tests Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/" class="nav-list-link">ESP32 Remote Controller</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/docs/ARCHITECTURE.html" class="nav-list-link">ESP32 Remote Controller - Architecture Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/docs/ARCHITECTURE.html" class="nav-list-link">ESP32 UI Slideshow - Architecture Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/" class="nav-list-link">ESP32 UI Slideshow - Standalone E-Ink Display Application</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/CODING_STANDARDS.html" class="nav-list-link">Embedded Systems Coding Standards</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/ARCHITECTURE.html" class="nav-list-link">Fatigue Test ESP-NOW Unit - Architecture Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/" class="nav-list-link">Fatigue Test with ESP-NOW Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/fatigue_test.html" class="nav-list-link">Fatigue Testing: Back-and-Forth Motion Between Bounds</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/gpio_pin_configuration.html" class="nav-list-link">GPIO Pin Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/docs/HARDWARE_SETUP.html" class="nav-list-link">Hardware Setup Guide - ESP32 Remote Controller</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/docs/HARDWARE_SETUP.html" class="nav-list-link">Hardware Setup Guide - ESP32 UI Slideshow</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/HARDWARE_SETUP.html" class="nav-list-link">Hardware Setup Guide - Fatigue Test ESP-NOW Unit</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/docs/IMAGE_FORMAT.html" class="nav-list-link">Image Format Specification</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_comprehensive_test.html" class="nav-list-link">Internal Ramp Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html" class="nav-list-link">Motor Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/spi_daisy_chain_comprehensive_test.html" class="nav-list-link">SPI Daisy Chain Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_sinusoidal.html" class="nav-list-link">Sinusoidal Motion Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/" class="nav-list-link">TMC5160 Driver - ESP32 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_register_access.html" class="nav-list-link">TMC51x0 Register Access and Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/uart_multi_node_comprehensive_test.html" class="nav-list-link">UART Multi-Node Comprehensive Test</a></li></ul>
+  
+</nav>
+
+
+
+
+  
+  
+    <footer class="site-footer">
+      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+    </footer>
+  
+</div>
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header">
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" aria-label="Search HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" autocomplete="off">
+    <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+    <nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    
+      <li class="aux-nav-list-item">
+        <a href="/hf-tmc5160-driver/development/api/index.html" class="site-button"
+          
+        >
+          📖 API Reference
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver" class="site-button"
+          
+        >
+          📚 GitHub Repository
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/issues" class="site-button"
+          
+        >
+          🐛 Report Issues
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/stargazers" class="site-button"
+          
+        >
+          ⭐ Star on GitHub
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+
+  
+</div>
+
+    <div class="main-content-wrap">
+      
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <h1 id="esp32-ui-slideshow---architecture-documentation">
+  
+  
+    <a href="#esp32-ui-slideshow---architecture-documentation" class="anchor-heading" aria-labelledby="esp32-ui-slideshow---architecture-documentation"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ESP32 UI Slideshow - Architecture Documentation
+  
+  
+</h1>
+    
+<h2 id="overview">
+  
+  
+    <a href="#overview" class="anchor-heading" aria-labelledby="overview"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Overview
+  
+  
+</h2>
+    
+
+<p>The ESP32 UI Slideshow is a standalone application for displaying images from an SD card on a 2.9” ThinkInk Tricolor E-Ink display. It features automatic image scanning, navigation controls, and power management.</p>
+<h2 id="system-architecture">
+  
+  
+    <a href="#system-architecture" class="anchor-heading" aria-labelledby="system-architecture"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> System Architecture
+  
+  
+</h2>
+    
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="rouge-code"><pre>┌─────────────────────────────────────────────────────────────┐
+│                    Slideshow Application                     │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐ │
+│  │   Button     │    │   SD Card    │    │   Image      │ │
+│  │   Handler    │───▶│   Manager    │───▶│   Loader     │ │
+│  │              │    │              │    │              │ │
+│  └──────────────┘    └──────┬───────┘    └──────┬───────┘ │
+│         │                    │                    │          │
+│         │                    │                    │          │
+│         └────────────────────┴────────────────────┘          │
+│                            │                                  │
+│                   ┌────────▼────────┐                         │
+│                   │   Slideshow     │                         │
+│                   │   Controller    │                         │
+│                   └────────┬────────┘                         │
+│                            │                                  │
+│                   ┌────────▼────────┐                         │
+│                   │  E-Ink Display  │                         │
+│                   │  (IL0373)       │                         │
+│                   └─────────────────┘                         │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="component-overview">
+  
+  
+    <a href="#component-overview" class="anchor-heading" aria-labelledby="component-overview"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Component Overview
+  
+  
+</h2>
+    
+<h3 id="1-slideshow-controller">
+  
+  
+    <a href="#1-slideshow-controller" class="anchor-heading" aria-labelledby="1-slideshow-controller"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 1. Slideshow Controller
+  
+  
+</h3>
+    
+
+<p><strong>Files</strong>: <code class="language-plaintext highlighter-rouge">slideshow.hpp/cpp</code></p>
+
+<ul>
+  <li><strong>Purpose</strong>: Main state machine and coordination</li>
+  <li><strong>States</strong>: INIT, SCANNING, DISPLAYING, AUTO_ADVANCE, ERROR, SLEEPING</li>
+  <li><strong>Features</strong>:
+    <ul>
+      <li>State machine management</li>
+      <li>Image file scanning</li>
+      <li>Auto-advance timing</li>
+      <li>Inactivity timeout</li>
+      <li>Deep sleep management</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Key Functions</strong>:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Slideshow::init()</code> - Initialize slideshow system</li>
+  <li><code class="language-plaintext highlighter-rouge">Slideshow::task()</code> - Main slideshow task</li>
+  <li><code class="language-plaintext highlighter-rouge">Slideshow::getState()</code> - Get current state</li>
+</ul>
+<h3 id="2-sd-card-manager">
+  
+  
+    <a href="#2-sd-card-manager" class="anchor-heading" aria-labelledby="2-sd-card-manager"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 2. SD Card Manager
+  
+  
+</h3>
+    
+
+<p><strong>Files</strong>: <code class="language-plaintext highlighter-rouge">sd_card.hpp/cpp</code></p>
+
+<ul>
+  <li><strong>Purpose</strong>: SD card initialization and file system access</li>
+  <li><strong>Interface</strong>: FAT32 via ESP-IDF VFS</li>
+  <li><strong>Features</strong>:
+    <ul>
+      <li>SD card detection</li>
+      <li>FAT32 filesystem mounting</li>
+      <li>Directory scanning</li>
+      <li>File listing</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Key Functions</strong>:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">SDCard::init()</code> - Initialize SD card</li>
+  <li><code class="language-plaintext highlighter-rouge">SDCard::scanImages()</code> - Scan for image files</li>
+  <li><code class="language-plaintext highlighter-rouge">SDCard::getImageList()</code> - Get list of image files</li>
+</ul>
+<h3 id="3-image-loader">
+  
+  
+    <a href="#3-image-loader" class="anchor-heading" aria-labelledby="3-image-loader"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 3. Image Loader
+  
+  
+</h3>
+    
+
+<p><strong>Files</strong>: <code class="language-plaintext highlighter-rouge">image_loader.hpp/cpp</code></p>
+
+<ul>
+  <li><strong>Purpose</strong>: Load and convert BMP images for display</li>
+  <li><strong>Supported Formats</strong>: 1-bit, 4-bit, 8-bit, 24-bit RGB BMP</li>
+  <li><strong>Features</strong>:
+    <ul>
+      <li>BMP header parsing</li>
+      <li>Format conversion</li>
+      <li>Color quantization (for tricolor)</li>
+      <li>Scaling/cropping to fit display</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Key Functions</strong>:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">ImageLoader::loadAndDisplayBMP()</code> - Load and display image</li>
+  <li><code class="language-plaintext highlighter-rouge">ImageLoader::rgbToEinkColor()</code> - Convert RGB to e-ink color</li>
+</ul>
+<h3 id="4-button-handler">
+  
+  
+    <a href="#4-button-handler" class="anchor-heading" aria-labelledby="4-button-handler"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 4. Button Handler
+  
+  
+</h3>
+    
+
+<p><strong>Files</strong>: <code class="language-plaintext highlighter-rouge">button.hpp/cpp</code></p>
+
+<ul>
+  <li><strong>Purpose</strong>: Handle button input with debouncing</li>
+  <li><strong>Buttons</strong>: UP, SELECT, DOWN</li>
+  <li><strong>Features</strong>:
+    <ul>
+      <li>GPIO interrupt handling</li>
+      <li>Debouncing</li>
+      <li>Deep sleep wake support</li>
+      <li>Queue-based event delivery</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Key Functions</strong>:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Buttons::init()</code> - Initialize buttons</li>
+  <li><code class="language-plaintext highlighter-rouge">Buttons::ConfigureWakeup()</code> - Configure deep sleep wake</li>
+</ul>
+<h3 id="5-e-ink-display-driver">
+  
+  
+    <a href="#5-e-ink-display-driver" class="anchor-heading" aria-labelledby="5-e-ink-display-driver"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 5. E-Ink Display Driver
+  
+  
+</h3>
+    
+
+<p><strong>Component</strong>: <code class="language-plaintext highlighter-rouge">Adafruit_EPD</code> (IL0373 driver)</p>
+
+<ul>
+  <li><strong>Purpose</strong>: Control e-ink display</li>
+  <li><strong>Interface</strong>: SPI</li>
+  <li><strong>Features</strong>:
+    <ul>
+      <li>Display buffer management</li>
+      <li>Partial update support</li>
+      <li>Tricolor support (black/white/red)</li>
+      <li>Power management</li>
+    </ul>
+  </li>
+</ul>
+<h2 id="state-machine">
+  
+  
+    <a href="#state-machine" class="anchor-heading" aria-labelledby="state-machine"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> State Machine
+  
+  
+</h2>
+    
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+</pre></td><td class="rouge-code"><pre>┌─────────┐
+│  INIT   │
+└────┬────┘
+     │
+     ▼
+┌──────────┐
+│ SCANNING │───▶ (if no images) ──▶ ERROR
+└────┬─────┘
+     │
+     ▼
+┌────────────┐
+│ DISPLAYING │◀──┐
+└────┬───────┘   │
+     │           │
+     │ (button)  │ (auto-advance)
+     ▼           │
+┌──────────────┐ │
+│ AUTO_ADVANCE │─┘
+└────┬─────────┘
+     │
+     │ (timeout)
+     ▼
+┌──────────┐
+│ SLEEPING │
+└──────────┘
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="state-descriptions">
+  
+  
+    <a href="#state-descriptions" class="anchor-heading" aria-labelledby="state-descriptions"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> State Descriptions
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>INIT</strong>: Initializing hardware and scanning for images</li>
+  <li><strong>SCANNING</strong>: Scanning SD card for image files</li>
+  <li><strong>DISPLAYING</strong>: Displaying current image, waiting for input</li>
+  <li><strong>AUTO_ADVANCE</strong>: Automatically advancing through images</li>
+  <li><strong>ERROR</strong>: Error state (no images, SD card error, etc.)</li>
+  <li><strong>SLEEPING</strong>: Deep sleep mode (inactivity timeout)</li>
+</ul>
+<h2 id="image-format-support">
+  
+  
+    <a href="#image-format-support" class="anchor-heading" aria-labelledby="image-format-support"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Image Format Support
+  
+  
+</h2>
+    
+<h3 id="bmp-format-details">
+  
+  
+    <a href="#bmp-format-details" class="anchor-heading" aria-labelledby="bmp-format-details"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> BMP Format Details
+  
+  
+</h3>
+    
+
+<p>The loader supports standard Windows BMP format:</p>
+
+<ul>
+  <li><strong>1-bit BMP</strong>: Direct display (monochrome)</li>
+  <li><strong>4-bit BMP</strong>: Converted to 1-bit (grayscale)</li>
+  <li><strong>8-bit BMP</strong>: Converted to 1-bit (grayscale)</li>
+  <li><strong>24-bit RGB BMP</strong>: Converted to tricolor (black/white/red)</li>
+</ul>
+<h3 id="color-conversion">
+  
+  
+    <a href="#color-conversion" class="anchor-heading" aria-labelledby="color-conversion"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Color Conversion
+  
+  
+</h3>
+    
+
+<p><strong>Tricolor Mode</strong> (24-bit RGB):</p>
+<ul>
+  <li>Red channel &gt; threshold → EPD_RED</li>
+  <li>Brightness &gt; threshold → EPD_WHITE</li>
+  <li>Otherwise → EPD_BLACK</li>
+</ul>
+
+<p><strong>Grayscale Mode</strong> (4-bit, 8-bit):</p>
+<ul>
+  <li>Brightness &gt; threshold → EPD_WHITE</li>
+  <li>Otherwise → EPD_BLACK</li>
+</ul>
+<h3 id="image-processing">
+  
+  
+    <a href="#image-processing" class="anchor-heading" aria-labelledby="image-processing"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Image Processing
+  
+  
+</h3>
+    
+
+<ol>
+  <li><strong>Header Parsing</strong>: Read BMP header to determine format</li>
+  <li><strong>Format Detection</strong>: Identify bits per pixel</li>
+  <li><strong>Data Reading</strong>: Read pixel data from file</li>
+  <li><strong>Conversion</strong>: Convert to e-ink format</li>
+  <li><strong>Scaling</strong>: Scale/crop to fit display (128x296)</li>
+  <li><strong>Display</strong>: Send to display buffer</li>
+</ol>
+<h2 id="file-system-structure">
+  
+  
+    <a href="#file-system-structure" class="anchor-heading" aria-labelledby="file-system-structure"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> File System Structure
+  
+  
+</h2>
+    
+<h3 id="sd-card-layout">
+  
+  
+    <a href="#sd-card-layout" class="anchor-heading" aria-labelledby="sd-card-layout"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> SD Card Layout
+  
+  
+</h3>
+    
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre>/sdcard/
+└── images/
+    ├── image1.bmp
+    ├── image2.bmp
+    ├── image3.bmp
+    └── ...
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="image-naming">
+  
+  
+    <a href="#image-naming" class="anchor-heading" aria-labelledby="image-naming"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Image Naming
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>Format</strong>: Any valid filename</li>
+  <li><strong>Extension</strong>: <code class="language-plaintext highlighter-rouge">.bmp</code> or <code class="language-plaintext highlighter-rouge">.BMP</code></li>
+  <li><strong>Sorting</strong>: Alphabetical by filename</li>
+</ul>
+<h2 id="power-management">
+  
+  
+    <a href="#power-management" class="anchor-heading" aria-labelledby="power-management"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Power Management
+  
+  
+</h2>
+    
+<h3 id="deep-sleep">
+  
+  
+    <a href="#deep-sleep" class="anchor-heading" aria-labelledby="deep-sleep"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Deep Sleep
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>Trigger</strong>: Inactivity timeout (default: 5 minutes)</li>
+  <li><strong>Wake Sources</strong>: Any button press</li>
+  <li><strong>State</strong>: All peripherals powered down</li>
+  <li><strong>Recovery</strong>: Full restart on wake</li>
+</ul>
+<h3 id="low-power-modes">
+  
+  
+    <a href="#low-power-modes" class="anchor-heading" aria-labelledby="low-power-modes"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Low Power Modes
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>Between Images</strong>: CPU can sleep in auto-advance mode</li>
+  <li><strong>Display Refresh</strong>: E-ink display consumes power only during refresh</li>
+</ul>
+<h2 id="task-architecture">
+  
+  
+    <a href="#task-architecture" class="anchor-heading" aria-labelledby="task-architecture"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Task Architecture
+  
+  
+</h2>
+    
+<h3 id="main-task">
+  
+  
+    <a href="#main-task" class="anchor-heading" aria-labelledby="main-task"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Main Task
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>Name</strong>: <code class="language-plaintext highlighter-rouge">slideshow_task</code></li>
+  <li><strong>Priority</strong>: Normal</li>
+  <li><strong>Stack Size</strong>: 8192 bytes</li>
+  <li><strong>Purpose</strong>: Main slideshow state machine</li>
+</ul>
+<h3 id="button-task">
+  
+  
+    <a href="#button-task" class="anchor-heading" aria-labelledby="button-task"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Button Task
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>Name</strong>: <code class="language-plaintext highlighter-rouge">button_task</code></li>
+  <li><strong>Priority</strong>: High (interrupt-driven)</li>
+  <li><strong>Stack Size</strong>: 2048 bytes</li>
+  <li><strong>Purpose</strong>: Process button events</li>
+</ul>
+<h2 id="memory-management">
+  
+  
+    <a href="#memory-management" class="anchor-heading" aria-labelledby="memory-management"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Memory Management
+  
+  
+</h2>
+    
+<h3 id="image-caching">
+  
+  
+    <a href="#image-caching" class="anchor-heading" aria-labelledby="image-caching"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Image Caching
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>File List</strong>: Cached in memory (vector of strings)</li>
+  <li><strong>Display Buffer</strong>: Managed by Adafruit_EPD</li>
+  <li><strong>BMP Buffer</strong>: Temporary buffer for image loading</li>
+</ul>
+<h3 id="memory-constraints">
+  
+  
+    <a href="#memory-constraints" class="anchor-heading" aria-labelledby="memory-constraints"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Memory Constraints
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>ESP32-C6</strong>: Limited RAM (~512KB)</li>
+  <li><strong>Image Size</strong>: Large images may cause memory issues</li>
+  <li><strong>Recommendation</strong>: Keep images reasonably sized</li>
+</ul>
+<h2 id="performance-considerations">
+  
+  
+    <a href="#performance-considerations" class="anchor-heading" aria-labelledby="performance-considerations"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Performance Considerations
+  
+  
+</h2>
+    
+<h3 id="display-refresh">
+  
+  
+    <a href="#display-refresh" class="anchor-heading" aria-labelledby="display-refresh"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Display Refresh
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>Full Refresh</strong>: ~2-3 seconds (e-ink limitation)</li>
+  <li><strong>Partial Refresh</strong>: Faster, but may cause ghosting</li>
+  <li><strong>Optimization</strong>: Minimize refresh frequency</li>
+</ul>
+<h3 id="sd-card-access">
+  
+  
+    <a href="#sd-card-access" class="anchor-heading" aria-labelledby="sd-card-access"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> SD Card Access
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>SPI Speed</strong>: Configured for SD card</li>
+  <li><strong>File Reading</strong>: Sequential access optimized</li>
+  <li><strong>Directory Scanning</strong>: Done once at startup</li>
+</ul>
+<h2 id="extension-points">
+  
+  
+    <a href="#extension-points" class="anchor-heading" aria-labelledby="extension-points"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Extension Points
+  
+  
+</h2>
+    
+
+<ol>
+  <li><strong>New Image Formats</strong>: Extend <code class="language-plaintext highlighter-rouge">ImageLoader</code> class</li>
+  <li><strong>New Display Types</strong>: Implement new display driver</li>
+  <li><strong>New Controls</strong>: Add to button handler</li>
+  <li><strong>New Features</strong>: Extend state machine</li>
+</ol>
+
+          
+
+          
+            
+          
+        </main>
+        
+
+  <hr>
+  <footer>
+    
+
+    <!-- =============================================================================
+     Custom Footer Content for HardFOC Driver Documentation
+     =============================================================================
+     This footer is displayed at the bottom of every page.
+     ============================================================================= -->
+
+<footer class="site-footer">
+  <div class="site-footer-credits">
+    <p>Built with ❤️ using <a href="https://just-the-docs.github.io/just-the-docs/">Just the Docs</a></p>
+    <p>
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development/blob/main/LICENSE">GPL v3 License</a> • 
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development">View on GitHub</a>
+    </p>
+  </div>
+</footer>
+
+
+
+    
+  </footer>
+
+
+      </div>
+    </div>
+    
+      
+<button id="search-button" class="search-button btn-reset" aria-label="Focus on search">
+  <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+</button>
+
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+</body>
+</html>
+

@@ -1,5 +1,6 @@
 var structtmc51x0__test__config_1_1TestConfig__AppliedMotion__5034_1_1Motion =
 [
+    [ "BOUNDS_SEARCH_ACCEL_REV_S2", "structtmc51x0__test__config_1_1TestConfig__AppliedMotion__5034_1_1Motion.html#a05810ae4a78b17b23194dbfc05527ad0", null ],
     [ "BOUNDS_SEARCH_SPEED_RPM", "structtmc51x0__test__config_1_1TestConfig__AppliedMotion__5034_1_1Motion.html#ad15aa9541693779258c5bc9ede0acb58", null ],
     [ "DWELL_MS", "structtmc51x0__test__config_1_1TestConfig__AppliedMotion__5034_1_1Motion.html#a060aed8313970373c09ecde379f43833", null ],
     [ "FATIGUE_AMPLITUDE_DEG", "structtmc51x0__test__config_1_1TestConfig__AppliedMotion__5034_1_1Motion.html#aa53ef674d5736c25c25cfeb5b4d61f6e", null ],

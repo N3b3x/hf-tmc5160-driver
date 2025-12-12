@@ -1,8 +1,8 @@
 <map id="CommandOutput::PrintTableRow" name="CommandOutput::PrintTableRow">
 <area shape="rect" id="Node000001" title=" " alt="" coords="376,38,609,63"/>
-<area shape="rect" id="Node000002" href="$test__unit_2main_8cpp.html#abda5ef2605b311dad7dc06cc34373d11" title="Handle HELP command." alt="" coords="224,13,323,38"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#abda5ef2605b311dad7dc06cc34373d11" title="Handle HELP command." alt="" coords="224,13,323,38"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="368,39,323,34,323,28,369,34"/>
-<area shape="rect" id="Node000004" href="$test__unit_2main_8cpp.html#ac11dd858f48b436538b6a2bb4981db1c" title="Handle STATUS command." alt="" coords="219,62,328,87"/>
+<area shape="rect" id="Node000004" href="$main_8cpp.html#ac11dd858f48b436538b6a2bb4981db1c" title="Handle STATUS command." alt="" coords="219,62,328,87"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="364,67,329,71,328,66,363,62"/>
 <area shape="rect" id="Node000003" href="$classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68" title="Process a command line." alt="" coords="5,5,171,45"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="210,28,171,28,171,23,210,23"/>

@@ -673,6 +673,8 @@ struct TestConfig_17HS4401S {
         
         // Bounds Finding Test (RPM) - driver handles microstep conversion internally
         static constexpr float BOUNDS_SEARCH_SPEED_RPM = 30.0f; // RPM (driver converts based on current microsteps)
+        // Bounds Finding Acceleration (rev/s²) - reach search speed in 3-5 seconds
+        static constexpr float BOUNDS_SEARCH_ACCEL_REV_S2 = 2; 
         static constexpr uint32_t HOMING_TIMEOUT_MS = 30000;
         
         // Fatigue Test Defaults
@@ -714,7 +716,10 @@ struct TestConfig_AppliedMotion_5034 {
         static constexpr float HOMING_SWITCH_SPEED_RPM = 3.0f;  // Slower for precision (RPM)
         
         // Bounds Finding Test (RPM) - driver handles microstep conversion internally
-        static constexpr float BOUNDS_SEARCH_SPEED_RPM = 30.0f; // RPM (driver converts based on current microsteps)
+        // Increased to 60 RPM for reliable StallGuard2 operation (minimum recommended: 60 RPM)
+        static constexpr float BOUNDS_SEARCH_SPEED_RPM = 60.0f; // RPM (driver converts based on current microsteps)
+        // Bounds Finding Acceleration (rev/s²) - reach search speed in some seconds
+        static constexpr float BOUNDS_SEARCH_ACCEL_REV_S2 = 2; 
         static constexpr uint32_t HOMING_TIMEOUT_MS = 30000;
         
         // Fatigue Test Defaults
@@ -1536,6 +1541,17 @@ struct TestConfigAccessor {
                 return TestConfig_AppliedMotion_5034::Motion::BOUNDS_SEARCH_SPEED_RPM;
             }
             return 30.0f; // Default fallback
+        }();
+        
+        static constexpr float BOUNDS_SEARCH_ACCEL_REV_S2 = []() {
+            if constexpr (motor_type == MotorType::MOTOR_17HS4401S_GEARBOX || 
+                          motor_type == MotorType::MOTOR_17HS4401S_DIRECT) {
+                return TestConfig_17HS4401S::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
+            }
+            else if constexpr (motor_type == MotorType::MOTOR_APPLIED_MOTION_5034) {
+                return TestConfig_AppliedMotion_5034::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
+            }
+            return 5; // Default fallback
         }();
         
         static constexpr uint32_t HOMING_TIMEOUT_MS = []() {

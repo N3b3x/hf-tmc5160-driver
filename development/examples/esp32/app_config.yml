@@ -94,30 +94,12 @@ apps:
   # ESP-NOW Fatigue Test System
   fatigue_test_espnow_unit:
     description: "Unified fatigue test unit with ESP-NOW and UART support, dual bounds detection (StallGuard2/Encoder)"
-    source_file: "fatigue_test_espnow/test_unit/main.cpp"
+    source_file: "fatigue_test_espnow/main.cpp"
     category: "motor_control"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]
     ci_enabled: false
     featured: true
-
-  fatigue_test_espnow_ui:
-    description: "Remote controller with OLED display and rotary encoder for fatigue test unit (ESP-NOW communication)"
-    source_file: "fatigue_test_espnow/ui_board/main.cpp"
-    category: "motor_control"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: false
-    featured: true
-
-  fatigue_test_espnow_slideshow:
-    description: "E-ink slideshow application - displays images from SD card on 2.9\" ThinkInk display"
-    source_file: "fatigue_test_espnow/ui_slideshow_board/main.cpp"
-    category: "display"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: false
-    featured: false
 
   i2c_scan:
     description: "I2C bus scanner for OLED UI board wiring (SDA=GPIO5, SCL=GPIO23)"

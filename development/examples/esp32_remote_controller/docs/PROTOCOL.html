@@ -1,0 +1,956 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  <style id="jtd-nav-activation">
+  
+
+    
+    .site-nav > ul.nav-list:first-child > li:not(:nth-child(8)) > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:not(:first-child) a,
+    .site-nav li.external a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:first-child > li:nth-child(8) > a {
+      font-weight: 600;
+      text-decoration: none;
+    }.site-nav > ul.nav-list:first-child > li:nth-child(8) > button svg {
+      transform: rotate(-90deg);
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(8) > ul.nav-list {
+      display: block;
+    }
+  </style>
+
+  
+
+  
+    <script src="/hf-tmc5160-driver/development/assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="/hf-tmc5160-driver/development/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>ESP-NOW Protocol Specification - Remote Controller | HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="ESP-NOW Protocol Specification - Remote Controller" />
+<meta name="author" content="N3b3x" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
+<meta property="og:description" content="Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
+<link rel="canonical" href="https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32_remote_controller/docs/PROTOCOL.html" />
+<meta property="og:url" content="https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32_remote_controller/docs/PROTOCOL.html" />
+<meta property="og:site_name" content="HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="ESP-NOW Protocol Specification - Remote Controller" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support","headline":"ESP-NOW Protocol Specification - Remote Controller","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32_remote_controller/docs/PROTOCOL.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- =============================================================================
+     Custom Head Content for HardFOC Driver Documentation
+     =============================================================================
+     This file is included in the <head> section of every page.
+     It loads custom CSS and JavaScript for enhanced functionality.
+     ============================================================================= -->
+
+<!-- Custom CSS for enhanced styling and fixes -->
+<link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/custom.css">
+
+<!-- Custom JavaScript for interactive features -->
+<script src="/hf-tmc5160-driver/development/assets/js/custom.js" defer></script>
+
+
+
+</head>
+
+<body>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    <div class="side-bar">
+  <div class="site-header" role="banner">
+    <a href="/hf-tmc5160-driver/development/" class="site-title lh-tight">
+  HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development
+
+</a>
+    <button id="menu-button" class="site-button btn-reset" aria-label="Toggle menu" aria-pressed="false">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Main" id="site-nav" class="site-nav">
+  
+  
+    <ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in HardFOC TMC51x0 Driver (TMC5130 & TMC5160) category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC51x0 Driver (TMC5130 & TMC5160)</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/dev_board_setup/" class="nav-list-link">🛠️ Dev Board Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/tmc5130_support/" class="nav-list-link">🔧 TMC5130 Support</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/VERIFICATION_REPORT.html" class="nav-list-link">Code Verification Report - Button Handling &amp; Event Routing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_communication_interface.html" class="nav-list-link">Communication Interface</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/docs/DEVICE_DEVELOPMENT.html" class="nav-list-link">Device Development Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/driver_configuration_guide.html" class="nav-list-link">Driver Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/docs/SLIDESHOW_PLAN.html" class="nav-list-link">E-Ink Slideshow Application Plan</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/PROTOCOL.html" class="nav-list-link">ESP-NOW Protocol Specification</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/docs/PROTOCOL.html" class="nav-list-link">ESP-NOW Protocol Specification - Remote Controller</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/" class="nav-list-link">ESP32 Examples and Tests Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/" class="nav-list-link">ESP32 Remote Controller</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/docs/ARCHITECTURE.html" class="nav-list-link">ESP32 Remote Controller - Architecture Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/docs/ARCHITECTURE.html" class="nav-list-link">ESP32 UI Slideshow - Architecture Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/" class="nav-list-link">ESP32 UI Slideshow - Standalone E-Ink Display Application</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/CODING_STANDARDS.html" class="nav-list-link">Embedded Systems Coding Standards</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/ARCHITECTURE.html" class="nav-list-link">Fatigue Test ESP-NOW Unit - Architecture Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/" class="nav-list-link">Fatigue Test with ESP-NOW Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/fatigue_test.html" class="nav-list-link">Fatigue Testing: Back-and-Forth Motion Between Bounds</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/gpio_pin_configuration.html" class="nav-list-link">GPIO Pin Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/docs/HARDWARE_SETUP.html" class="nav-list-link">Hardware Setup Guide - ESP32 Remote Controller</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/docs/HARDWARE_SETUP.html" class="nav-list-link">Hardware Setup Guide - ESP32 UI Slideshow</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/HARDWARE_SETUP.html" class="nav-list-link">Hardware Setup Guide - Fatigue Test ESP-NOW Unit</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/docs/IMAGE_FORMAT.html" class="nav-list-link">Image Format Specification</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_comprehensive_test.html" class="nav-list-link">Internal Ramp Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html" class="nav-list-link">Motor Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/spi_daisy_chain_comprehensive_test.html" class="nav-list-link">SPI Daisy Chain Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_sinusoidal.html" class="nav-list-link">Sinusoidal Motion Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/" class="nav-list-link">TMC5160 Driver - ESP32 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_register_access.html" class="nav-list-link">TMC51x0 Register Access and Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/uart_multi_node_comprehensive_test.html" class="nav-list-link">UART Multi-Node Comprehensive Test</a></li></ul>
+  
+</nav>
+
+
+
+
+  
+  
+    <footer class="site-footer">
+      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+    </footer>
+  
+</div>
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header">
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" aria-label="Search HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" autocomplete="off">
+    <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+    <nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    
+      <li class="aux-nav-list-item">
+        <a href="/hf-tmc5160-driver/development/api/index.html" class="site-button"
+          
+        >
+          📖 API Reference
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver" class="site-button"
+          
+        >
+          📚 GitHub Repository
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/issues" class="site-button"
+          
+        >
+          🐛 Report Issues
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/stargazers" class="site-button"
+          
+        >
+          ⭐ Star on GitHub
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+
+  
+</div>
+
+    <div class="main-content-wrap">
+      
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <h1 id="esp-now-protocol-specification---remote-controller">
+  
+  
+    <a href="#esp-now-protocol-specification---remote-controller" class="anchor-heading" aria-labelledby="esp-now-protocol-specification---remote-controller"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ESP-NOW Protocol Specification - Remote Controller
+  
+  
+</h1>
+    
+<h2 id="overview">
+  
+  
+    <a href="#overview" class="anchor-heading" aria-labelledby="overview"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Overview
+  
+  
+</h2>
+    
+
+<p>The ESP-NOW protocol provides generic wireless communication between the remote controller and multiple device types. It supports protocol versioning, device ID routing, and extensible message types.</p>
+<h2 id="protocol-version">
+  
+  
+    <a href="#protocol-version" class="anchor-heading" aria-labelledby="protocol-version"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Protocol Version
+  
+  
+</h2>
+    
+
+<p><strong>Current Version</strong>: 1</p>
+
+<p>The protocol header includes a version field for future compatibility. Devices should check version and handle version mismatches gracefully.</p>
+<h2 id="packet-format">
+  
+  
+    <a href="#packet-format" class="anchor-heading" aria-labelledby="packet-format"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Packet Format
+  
+  
+</h2>
+    
+<h3 id="header-structure">
+  
+  
+    <a href="#header-structure" class="anchor-heading" aria-labelledby="header-structure"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Header Structure
+  
+  
+</h3>
+    
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre>┌─────────────────────────────────────────────────────────┐
+│              EspNowHeader (6 bytes)                    │
+├──────┬──────┬──────────┬──────┬──────┬─────────────────┤
+│ Sync │ Ver  │ DeviceID │ Type │  ID  │ Length          │
+│(1B)  │(1B)  │   (1B)   │(1B)  │(1B)  │  (1B)          │
+└──────┴──────┴──────────┴──────┴──────┴─────────────────┘
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Field Descriptions</strong>:</p>
+<ul>
+  <li><strong>Sync</strong>: Always <code class="language-plaintext highlighter-rouge">0xAA</code> (sync byte)</li>
+  <li><strong>Ver</strong>: Protocol version (currently <code class="language-plaintext highlighter-rouge">1</code>)</li>
+  <li><strong>DeviceID</strong>: Device type identifier
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">0</code> = Broadcast (all devices)</li>
+      <li><code class="language-plaintext highlighter-rouge">1</code> = Fatigue Tester</li>
+      <li><code class="language-plaintext highlighter-rouge">2</code> = Mock Device</li>
+      <li><code class="language-plaintext highlighter-rouge">3+</code> = Reserved for future devices</li>
+    </ul>
+  </li>
+  <li><strong>Type</strong>: Message type (see MsgType enum)</li>
+  <li><strong>ID</strong>: Sequence ID (increments per message, wraps at 255)</li>
+  <li><strong>Length</strong>: Payload length (0-200 bytes)</li>
+</ul>
+<h3 id="full-packet-structure">
+  
+  
+    <a href="#full-packet-structure" class="anchor-heading" aria-labelledby="full-packet-structure"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Full Packet Structure
+  
+  
+</h3>
+    
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre>┌─────────────────────────────────────────────────────────┐
+│ EspNowHeader (6 bytes)                                  │
+├─────────────────────────────────────────────────────────┤
+│ Payload (0-200 bytes, variable length)                 │
+├─────────────────────────────────────────────────────────┤
+│ CRC16 (2 bytes, CRC16-CCITT over header + payload)     │
+└─────────────────────────────────────────────────────────┘
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Total Packet Size</strong>: 8-208 bytes (6 header + 0-200 payload + 2 CRC)</p>
+<h2 id="message-types">
+  
+  
+    <a href="#message-types" class="anchor-heading" aria-labelledby="message-types"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Message Types
+  
+  
+</h2>
+    
+<h3 id="discovery-messages">
+  
+  
+    <a href="#discovery-messages" class="anchor-heading" aria-labelledby="discovery-messages"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Discovery Messages
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Value</th>
+      <th>Direction</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">DeviceDiscovery</code></td>
+      <td>1</td>
+      <td>Controller → Device</td>
+      <td>Broadcast to discover devices</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">DeviceInfo</code></td>
+      <td>2</td>
+      <td>Device → Controller</td>
+      <td>Device information response</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="configuration-messages">
+  
+  
+    <a href="#configuration-messages" class="anchor-heading" aria-labelledby="configuration-messages"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configuration Messages
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Value</th>
+      <th>Direction</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigRequest</code></td>
+      <td>3</td>
+      <td>Controller → Device</td>
+      <td>Request current configuration</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigResponse</code></td>
+      <td>4</td>
+      <td>Device → Controller</td>
+      <td>Send current configuration</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigSet</code></td>
+      <td>5</td>
+      <td>Controller → Device</td>
+      <td>Set new configuration</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ConfigAck</code></td>
+      <td>6</td>
+      <td>Device → Controller</td>
+      <td>Acknowledge config set</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="command-messages">
+  
+  
+    <a href="#command-messages" class="anchor-heading" aria-labelledby="command-messages"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Command Messages
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Value</th>
+      <th>Direction</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Command</code></td>
+      <td>7</td>
+      <td>Controller → Device</td>
+      <td>Send command to device</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">CommandAck</code></td>
+      <td>8</td>
+      <td>Device → Controller</td>
+      <td>Acknowledge command</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="status-messages">
+  
+  
+    <a href="#status-messages" class="anchor-heading" aria-labelledby="status-messages"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Status Messages
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Value</th>
+      <th>Direction</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">StatusUpdate</code></td>
+      <td>9</td>
+      <td>Device → Controller</td>
+      <td>Periodic status update</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Error</code></td>
+      <td>10</td>
+      <td>Device → Controller</td>
+      <td>Error notification</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">TestComplete</code></td>
+      <td>11</td>
+      <td>Device → Controller</td>
+      <td>Test/operation complete</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="device-ids">
+  
+  
+    <a href="#device-ids" class="anchor-heading" aria-labelledby="device-ids"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Device IDs
+  
+  
+</h2>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Device Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>Broadcast</td>
+      <td>All devices (for discovery)</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Fatigue Tester</td>
+      <td>Fatigue test unit</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Mock Device</td>
+      <td>Mock device for testing</td>
+    </tr>
+    <tr>
+      <td>3+</td>
+      <td>Reserved</td>
+      <td>Future devices</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="device-specific-payloads">
+  
+  
+    <a href="#device-specific-payloads" class="anchor-heading" aria-labelledby="device-specific-payloads"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Device-Specific Payloads
+  
+  
+</h2>
+    
+<h3 id="fatigue-tester">
+  
+  
+    <a href="#fatigue-tester" class="anchor-heading" aria-labelledby="fatigue-tester"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Fatigue Tester
+  
+  
+</h3>
+    
+
+<p><strong>Config Payload</strong> (<code class="language-plaintext highlighter-rouge">FatigueTestConfigPayload</code>):</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="nc">FatigueTestConfigPayload</span> <span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">cycle_amount</span><span class="p">;</span>        <span class="c1">// Target cycles</span>
+    <span class="kt">uint32_t</span> <span class="n">time_per_cycle_sec</span><span class="p">;</span>  <span class="c1">// Seconds per cycle</span>
+    <span class="kt">uint32_t</span> <span class="n">dwell_time_sec</span><span class="p">;</span>      <span class="c1">// Dwell time at bounds</span>
+    <span class="kt">uint8_t</span>  <span class="n">bounds_method</span><span class="p">;</span>       <span class="c1">// 0 = StallGuard, 1 = Encoder</span>
+<span class="p">};</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Status Payload</strong> (<code class="language-plaintext highlighter-rouge">FatigueTestStatusPayload</code>):</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="nc">FatigueTestStatusPayload</span> <span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">cycle_number</span><span class="p">;</span>  <span class="c1">// Current cycle</span>
+    <span class="kt">uint8_t</span>  <span class="n">state</span><span class="p">;</span>         <span class="c1">// TestState enum</span>
+    <span class="kt">uint8_t</span>  <span class="n">err_code</span><span class="p">;</span>      <span class="c1">// Error code if state == Error</span>
+<span class="p">};</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Commands</strong> (<code class="language-plaintext highlighter-rouge">FatigueTestCommand</code>):</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Start = 1</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Pause = 2</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Resume = 3</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Stop = 4</code></li>
+  <li><code class="language-plaintext highlighter-rouge">SetConfig = 5</code></li>
+  <li><code class="language-plaintext highlighter-rouge">RequestConfig = 6</code></li>
+  <li><code class="language-plaintext highlighter-rouge">RequestStatus = 7</code></li>
+</ul>
+<h3 id="mock-device">
+  
+  
+    <a href="#mock-device" class="anchor-heading" aria-labelledby="mock-device"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Mock Device
+  
+  
+</h3>
+    
+
+<p><strong>Config Payload</strong> (<code class="language-plaintext highlighter-rouge">MockDeviceConfigPayload</code>):</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="nc">MockDeviceConfigPayload</span> <span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">param1</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">param2</span><span class="p">;</span>
+    <span class="kt">bool</span>     <span class="n">enable_feature</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Status Payload</strong> (<code class="language-plaintext highlighter-rouge">MockDeviceStatusPayload</code>):</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="nc">MockDeviceStatusPayload</span> <span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">value1</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">value2</span><span class="p">;</span>
+    <span class="kt">float</span>    <span class="n">temperature</span><span class="p">;</span>
+    <span class="kt">bool</span>     <span class="n">status_flag</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="communication-flow">
+  
+  
+    <a href="#communication-flow" class="anchor-heading" aria-labelledby="communication-flow"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Communication Flow
+  
+  
+</h2>
+    
+<h3 id="device-discovery">
+  
+  
+    <a href="#device-discovery" class="anchor-heading" aria-labelledby="device-discovery"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Device Discovery
+  
+  
+</h3>
+    
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre>Controller                          Device
+    │                                  │
+    │─── DeviceDiscovery (ID=0) ──────▶│
+    │                                  │
+    │◀── DeviceInfo (ID=1, name=...) ─│
+    │                                  │
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="configuration-flow">
+  
+  
+    <a href="#configuration-flow" class="anchor-heading" aria-labelledby="configuration-flow"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configuration Flow
+  
+  
+</h3>
+    
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre>Controller                          Device
+    │                                  │
+    │─── ConfigRequest (ID=1) ────────▶│
+    │                                  │
+    │◀── ConfigResponse (ID=1, data) ─│
+    │                                  │
+    │─── ConfigSet (ID=1, data) ──────▶│
+    │                                  │
+    │◀── ConfigAck (ID=1, ok) ─────────│
+    │                                  │
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="command-flow">
+  
+  
+    <a href="#command-flow" class="anchor-heading" aria-labelledby="command-flow"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Command Flow
+  
+  
+</h3>
+    
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre>Controller                          Device
+    │                                  │
+    │─── Command (ID=1, cmd=Start) ───▶│
+    │                                  │
+    │◀── CommandAck (ID=1, ok) ───────│
+    │                                  │
+    │◀── StatusUpdate (ID=1, status) ─│
+    │                                  │
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="crc16-ccitt-calculation">
+  
+  
+    <a href="#crc16-ccitt-calculation" class="anchor-heading" aria-labelledby="crc16-ccitt-calculation"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> CRC16-CCITT Calculation
+  
+  
+</h2>
+    
+
+<p>Same as fatigue test unit protocol. See <code class="language-plaintext highlighter-rouge">PROTOCOL.md</code> in fatigue_test_espnow for details.</p>
+<h2 id="wifi-channel">
+  
+  
+    <a href="#wifi-channel" class="anchor-heading" aria-labelledby="wifi-channel"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> WiFi Channel
+  
+  
+</h2>
+    
+
+<p><strong>Default Channel</strong>: 1</p>
+
+<p>Both devices must use the same WiFi channel.</p>
+<h2 id="mac-address-configuration">
+  
+  
+    <a href="#mac-address-configuration" class="anchor-heading" aria-labelledby="mac-address-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> MAC Address Configuration
+  
+  
+</h2>
+    
+
+<p>The controller must be configured with the target device’s MAC address in <code class="language-plaintext highlighter-rouge">config.hpp</code>:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="k">static</span> <span class="k">constexpr</span> <span class="kt">uint8_t</span> <span class="n">TEST_UNIT_MAC_</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mh">0x24</span><span class="p">,</span> <span class="mh">0x6F</span><span class="p">,</span> <span class="mh">0x28</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x01</span> <span class="p">};</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="protocol-extensibility">
+  
+  
+    <a href="#protocol-extensibility" class="anchor-heading" aria-labelledby="protocol-extensibility"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Protocol Extensibility
+  
+  
+</h2>
+    
+<h3 id="adding-new-device-types">
+  
+  
+    <a href="#adding-new-device-types" class="anchor-heading" aria-labelledby="adding-new-device-types"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Adding New Device Types
+  
+  
+</h3>
+    
+
+<ol>
+  <li><strong>Assign Device ID</strong>: Choose unused ID (3+)</li>
+  <li><strong>Define Payloads</strong>: Add structures to <code class="language-plaintext highlighter-rouge">device_protocols.hpp</code></li>
+  <li><strong>Implement Device</strong>: Create device class inheriting from <code class="language-plaintext highlighter-rouge">DeviceBase</code></li>
+  <li><strong>Register Device</strong>: Add to device registry</li>
+</ol>
+<h3 id="adding-new-message-types">
+  
+  
+    <a href="#adding-new-message-types" class="anchor-heading" aria-labelledby="adding-new-message-types"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Adding New Message Types
+  
+  
+</h3>
+    
+
+<ol>
+  <li><strong>Add to Enum</strong>: Add to <code class="language-plaintext highlighter-rouge">MsgType</code> enum in <code class="language-plaintext highlighter-rouge">espnow_protocol.hpp</code></li>
+  <li><strong>Update Handlers</strong>: Update protocol handlers in both controller and device</li>
+  <li><strong>Define Payload</strong>: Create payload structure if needed</li>
+</ol>
+<h2 id="version-compatibility">
+  
+  
+    <a href="#version-compatibility" class="anchor-heading" aria-labelledby="version-compatibility"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Version Compatibility
+  
+  
+</h2>
+    
+<h3 id="version-checking">
+  
+  
+    <a href="#version-checking" class="anchor-heading" aria-labelledby="version-checking"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Version Checking
+  
+  
+</h3>
+    
+
+<ul>
+  <li>Devices should check protocol version in header</li>
+  <li>Mismatched versions should be handled gracefully</li>
+  <li>Future versions may add new fields or message types</li>
+</ul>
+<h3 id="backward-compatibility">
+  
+  
+    <a href="#backward-compatibility" class="anchor-heading" aria-labelledby="backward-compatibility"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Backward Compatibility
+  
+  
+</h3>
+    
+
+<ul>
+  <li>Version 1 devices should work with version 1 controller</li>
+  <li>New message types should be optional</li>
+  <li>Unknown message types should be ignored (with logging)</li>
+</ul>
+<h2 id="error-handling">
+  
+  
+    <a href="#error-handling" class="anchor-heading" aria-labelledby="error-handling"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Error Handling
+  
+  
+</h2>
+    
+<h3 id="protocol-errors">
+  
+  
+    <a href="#protocol-errors" class="anchor-heading" aria-labelledby="protocol-errors"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Protocol Errors
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>Invalid Sync Byte</strong>: Packet rejected</li>
+  <li><strong>Version Mismatch</strong>: Packet rejected, error logged</li>
+  <li><strong>CRC Mismatch</strong>: Packet rejected</li>
+  <li><strong>Invalid Device ID</strong>: Packet rejected</li>
+</ul>
+<h3 id="application-errors">
+  
+  
+    <a href="#application-errors" class="anchor-heading" aria-labelledby="application-errors"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Application Errors
+  
+  
+</h3>
+    
+
+<ul>
+  <li><strong>Command Failed</strong>: Device sends <code class="language-plaintext highlighter-rouge">Error</code> message</li>
+  <li><strong>Config Invalid</strong>: Device sends <code class="language-plaintext highlighter-rouge">ConfigAck</code> with error code</li>
+  <li><strong>Timeout</strong>: Application-level timeout handling</li>
+</ul>
+<h2 id="performance">
+  
+  
+    <a href="#performance" class="anchor-heading" aria-labelledby="performance"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Performance
+  
+  
+</h2>
+    
+
+<ul>
+  <li><strong>Latency</strong>: &lt; 10ms typical</li>
+  <li><strong>Throughput</strong>: Sufficient for control messages</li>
+  <li><strong>Range</strong>: ~100-200m line-of-sight</li>
+  <li><strong>Reliability</strong>: High (CRC validation, sequence IDs)</li>
+</ul>
+<h2 id="security-considerations">
+  
+  
+    <a href="#security-considerations" class="anchor-heading" aria-labelledby="security-considerations"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Security Considerations
+  
+  
+</h2>
+    
+
+<ul>
+  <li><strong>No Encryption</strong>: Current protocol has no encryption</li>
+  <li><strong>MAC Filtering</strong>: Can be added at ESP-NOW level</li>
+  <li><strong>Future</strong>: Encryption support planned</li>
+</ul>
+
+          
+
+          
+            
+          
+        </main>
+        
+
+  <hr>
+  <footer>
+    
+
+    <!-- =============================================================================
+     Custom Footer Content for HardFOC Driver Documentation
+     =============================================================================
+     This footer is displayed at the bottom of every page.
+     ============================================================================= -->
+
+<footer class="site-footer">
+  <div class="site-footer-credits">
+    <p>Built with ❤️ using <a href="https://just-the-docs.github.io/just-the-docs/">Just the Docs</a></p>
+    <p>
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development/blob/main/LICENSE">GPL v3 License</a> • 
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development">View on GitHub</a>
+    </p>
+  </div>
+</footer>
+
+
+
+    
+  </footer>
+
+
+      </div>
+    </div>
+    
+      
+<button id="search-button" class="search-button btn-reset" aria-label="Focus on search">
+  <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+</button>
+
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+</body>
+</html>
+

@@ -13,6 +13,5 @@ var searchData=
   ['amax_10',['amax',['../structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a9c143fb74fd022bff3362092f9b2cc20',1,'tmc51x0::TMC51x0::WriteOnlyRegisters::amax'],['../structtmc51x0_1_1RampConfig.html#a6294a2203d1d284e3dad33933b62664f',1,'tmc51x0::RampConfig::amax']]],
   ['amplitude_5f_11',['amplitude_',['../classFatigueTestMotion.html#a5e1422dc0e09efc8facd3768d8813158',1,'FatigueTestMotion::amplitude_'],['../classFatigueTest_1_1FatigueTestMotion.html#a99991c6d4aa3435bbd594bade961c532',1,'FatigueTest::FatigueTestMotion::amplitude_']]],
   ['arg_12',['arg',['../structCommandEntry.html#a0c9f0f99c2006d914dde9150272d6deb',1,'CommandEntry']]],
-  ['at_5fcycle_13',['at_cycle',['../structErrorPayload.html#a301d38c548ae1cf4c503824ed0b18306',1,'ErrorPayload::at_cycle'],['../structProtoEvent.html#ac2c3f3a1beec65aa1bf3b38149cc5604',1,'ProtoEvent::at_cycle']]],
-  ['auto_5fadvance_5fdelay_5fsec_14',['AUTO_ADVANCE_DELAY_SEC',['../ui__slideshow__board_2config_8hpp.html#ae8874a5175647e8c8e77e9dd89807794',1,'config.hpp']]]
+  ['at_5fcycle_13',['at_cycle',['../structErrorPayload.html#a301d38c548ae1cf4c503824ed0b18306',1,'ErrorPayload::at_cycle'],['../structProtoEvent.html#ac2c3f3a1beec65aa1bf3b38149cc5604',1,'ProtoEvent::at_cycle']]]
 ];

@@ -114,7 +114,7 @@ var NAVTREE =
       [ "File Members", "globals.html", [
         [ "All", "globals.html", "globals_dup" ],
         [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", "globals_vars" ],
+        [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
         [ "Macros", "globals_defs.html", null ]
@@ -127,22 +127,20 @@ var NAVTREEINDEX =
 [
 "TestFramework_8h.html",
 "classFatigueTest_1_1FatigueTestMotion.html#a1b73c95ad6dfe1deaa3dc5a3b271bd2e",
-"classtmc51x0_1_1CommInterface.html#ab5a248d6096af8a926505e55b08cfadd",
-"classtmc51x0_1_1TMC51x0.html#ab075afd9b080790f5e9d609429b595fe",
-"fatigue__test__stallguard_8cpp.html#a0d0d2bd312981ee8f4d16b1c83d6faf2",
-"internal__ramp__comprehensive__test_8cpp.html#a53baa7a51766f139f26974bb17978b1e",
-"namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3ad403fd986888b047f1defd55483f87ba",
-"slideshow_8hpp.html#a3f4f5af67dbc2a47667f68beded3bcf2",
-"structtmc51x0_1_1AccelerationValue.html#a3b57bb39e325b92ceae802a97643bfa4",
-"structtmc51x0_1_1InputStatus.html#aaff93ea59f052eb1342f201e20a7f7e6",
-"structtmc51x0_1_1StallGuardTuningResult.html#afb82c4af44dd737f71ff417ba1066aa3",
-"structtmc51x0_1_1TMC51x0_1_1UartConfig.html#a7252e9b5a5c73d4b16bf2624fb766c4c",
-"structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a13b098989d5954eca84f33744aceaf1e",
-"structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__CORE__DRIVER_01_4.html#a9a9e9692f63b423a924ade1d435d97c7",
-"tmc51x0__types_8hpp.html#a68e41191c288365e02cfca672681f686",
-"ui__oled_8hpp_source.html",
-"uniontmc51x0_1_1GCONF__Register.html#a77e756d544a1703f53b775be509f258c",
-"uniontmc51x0_1_1SHORT__CONF__Register.html#a4816f213fddafd68ec3fa61fdce2c4ee"
+"classtmc51x0_1_1ConfigBuilder.html#a3a1e4201a3e535eb36cd6c6debc25890",
+"classtmc51x0_1_1TMC51x0MultiNode.html#aff420bbfed13e12933e819656c5d007c",
+"functions_vars_b.html",
+"main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79",
+"namespacetmc51x0.html#aca6b71c611ab7e217b0d3ce4208821d9a41bc94cbd8eebea13ce0491b2ac11b88",
+"structTestDriverHandle.html",
+"structtmc51x0_1_1GlobalConfig.html#ae65c6d9a0d196098717b4727edeb864a",
+"structtmc51x0_1_1StallGuardConfig.html",
+"structtmc51x0_1_1TMC51x0_1_1RampControl.html#a3cc12778351749590faaee007675efd3",
+"structtmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#a84b95652b50be25c72b9e02c858d906e",
+"structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1StallGuard.html#a9873aa90a47420534928bb556fd7ae6b",
+"tmc51x0__types_8hpp.html#a59657011cede04bf230887b9d1bf42b9",
+"uniontmc51x0_1_1DRV__STATUS__Register.html#ada187c433517e17ab0e6322bba6d5cba",
+"uniontmc51x0_1_1PWMCONF__Register.html#af1f1c792c205de7cd34dc29a321bc6b3"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

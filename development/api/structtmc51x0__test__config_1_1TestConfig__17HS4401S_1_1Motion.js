@@ -1,5 +1,6 @@
 var structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1Motion =
 [
+    [ "BOUNDS_SEARCH_ACCEL_REV_S2", "structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1Motion.html#a0b87bb0bbfb9f5893c7ce8a5294a24da", null ],
     [ "BOUNDS_SEARCH_SPEED_RPM", "structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1Motion.html#af0270fff289726819dbcfdd47c814ed8", null ],
     [ "DWELL_MS", "structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1Motion.html#aaa94abe9c9abc9439fa8b80c13493aaa", null ],
     [ "FATIGUE_AMPLITUDE_DEG", "structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1Motion.html#a6a000ff183ff277d25b4cd2e8a2caf51", null ],

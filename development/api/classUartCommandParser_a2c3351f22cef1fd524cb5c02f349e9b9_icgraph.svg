@@ -59,7 +59,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="test__unit_2main_8cpp.html#a5a8d7cdba17444119b8f942be87ffe68" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="main_8cpp.html#a5a8d7cdba17444119b8f942be87ffe68" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="217,-56 101,-56 101,-37 217,-37 217,-56"/>
 <text text-anchor="middle" x="159" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">uart_command_task</text>
 </a>
@@ -95,7 +95,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="test__unit_2main_8cpp.html#abce06be17fc37d675118a678a8100a36" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="main_8cpp.html#abce06be17fc37d675118a678a8100a36" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="65,-56 0,-56 0,-37 65,-37 65,-56"/>
 <text text-anchor="middle" x="32.5" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">app_main</text>
 </a>

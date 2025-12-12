@@ -1,0 +1,567 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  <style id="jtd-nav-activation">
+  
+
+    
+    .site-nav > ul.nav-list:first-child > li:not(:nth-child(2)) > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:not(:first-child) a,
+    .site-nav li.external a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:first-child > li:nth-child(2) > a {
+      font-weight: 600;
+      text-decoration: none;
+    }.site-nav > ul.nav-list:first-child > li:nth-child(2) > button svg {
+      transform: rotate(-90deg);
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(2) > ul.nav-list {
+      display: block;
+    }
+  </style>
+
+  
+
+  
+    <script src="/hf-tmc5160-driver/development/assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="/hf-tmc5160-driver/development/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Code Verification Report - Button Handling &amp; Event Routing | HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Code Verification Report - Button Handling &amp; Event Routing" />
+<meta name="author" content="N3b3x" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
+<meta property="og:description" content="Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
+<link rel="canonical" href="https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32_remote_controller/VERIFICATION_REPORT.html" />
+<meta property="og:url" content="https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32_remote_controller/VERIFICATION_REPORT.html" />
+<meta property="og:site_name" content="HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Code Verification Report - Button Handling &amp; Event Routing" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support","headline":"Code Verification Report - Button Handling &amp; Event Routing","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32_remote_controller/VERIFICATION_REPORT.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- =============================================================================
+     Custom Head Content for HardFOC Driver Documentation
+     =============================================================================
+     This file is included in the <head> section of every page.
+     It loads custom CSS and JavaScript for enhanced functionality.
+     ============================================================================= -->
+
+<!-- Custom CSS for enhanced styling and fixes -->
+<link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/custom.css">
+
+<!-- Custom JavaScript for interactive features -->
+<script src="/hf-tmc5160-driver/development/assets/js/custom.js" defer></script>
+
+
+
+</head>
+
+<body>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    <div class="side-bar">
+  <div class="site-header" role="banner">
+    <a href="/hf-tmc5160-driver/development/" class="site-title lh-tight">
+  HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development
+
+</a>
+    <button id="menu-button" class="site-button btn-reset" aria-label="Toggle menu" aria-pressed="false">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Main" id="site-nav" class="site-nav">
+  
+  
+    <ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in HardFOC TMC51x0 Driver (TMC5130 & TMC5160) category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC51x0 Driver (TMC5130 & TMC5160)</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📚 Documentation category" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/dev_board_setup/" class="nav-list-link">🛠️ Dev Board Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/tmc5130_support/" class="nav-list-link">🔧 TMC5130 Support</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/VERIFICATION_REPORT.html" class="nav-list-link">Code Verification Report - Button Handling &amp; Event Routing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_communication_interface.html" class="nav-list-link">Communication Interface</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/docs/DEVICE_DEVELOPMENT.html" class="nav-list-link">Device Development Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/driver_configuration_guide.html" class="nav-list-link">Driver Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/docs/SLIDESHOW_PLAN.html" class="nav-list-link">E-Ink Slideshow Application Plan</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/PROTOCOL.html" class="nav-list-link">ESP-NOW Protocol Specification</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/docs/PROTOCOL.html" class="nav-list-link">ESP-NOW Protocol Specification - Remote Controller</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/" class="nav-list-link">ESP32 Examples and Tests Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/" class="nav-list-link">ESP32 Remote Controller</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/docs/ARCHITECTURE.html" class="nav-list-link">ESP32 Remote Controller - Architecture Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/docs/ARCHITECTURE.html" class="nav-list-link">ESP32 UI Slideshow - Architecture Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/" class="nav-list-link">ESP32 UI Slideshow - Standalone E-Ink Display Application</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/CODING_STANDARDS.html" class="nav-list-link">Embedded Systems Coding Standards</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/ARCHITECTURE.html" class="nav-list-link">Fatigue Test ESP-NOW Unit - Architecture Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/" class="nav-list-link">Fatigue Test with ESP-NOW Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/fatigue_test.html" class="nav-list-link">Fatigue Testing: Back-and-Forth Motion Between Bounds</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/gpio_pin_configuration.html" class="nav-list-link">GPIO Pin Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_remote_controller/docs/HARDWARE_SETUP.html" class="nav-list-link">Hardware Setup Guide - ESP32 Remote Controller</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/docs/HARDWARE_SETUP.html" class="nav-list-link">Hardware Setup Guide - ESP32 UI Slideshow</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/HARDWARE_SETUP.html" class="nav-list-link">Hardware Setup Guide - Fatigue Test ESP-NOW Unit</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32_ui_slideshow/docs/IMAGE_FORMAT.html" class="nav-list-link">Image Format Specification</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_comprehensive_test.html" class="nav-list-link">Internal Ramp Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html" class="nav-list-link">Motor Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/spi_daisy_chain_comprehensive_test.html" class="nav-list-link">SPI Daisy Chain Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_sinusoidal.html" class="nav-list-link">Sinusoidal Motion Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/" class="nav-list-link">TMC5160 Driver - ESP32 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_register_access.html" class="nav-list-link">TMC51x0 Register Access and Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/uart_multi_node_comprehensive_test.html" class="nav-list-link">UART Multi-Node Comprehensive Test</a></li></ul>
+  
+</nav>
+
+
+
+
+  
+  
+    <footer class="site-footer">
+      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+    </footer>
+  
+</div>
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header">
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" aria-label="Search HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" autocomplete="off">
+    <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+    <nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    
+      <li class="aux-nav-list-item">
+        <a href="/hf-tmc5160-driver/development/api/index.html" class="site-button"
+          
+        >
+          📖 API Reference
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver" class="site-button"
+          
+        >
+          📚 GitHub Repository
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/issues" class="site-button"
+          
+        >
+          🐛 Report Issues
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/stargazers" class="site-button"
+          
+        >
+          ⭐ Star on GitHub
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+
+  
+</div>
+
+    <div class="main-content-wrap">
+      
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <h1 id="code-verification-report---button-handling--event-routing">
+  
+  
+    <a href="#code-verification-report---button-handling--event-routing" class="anchor-heading" aria-labelledby="code-verification-report---button-handling--event-routing"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Code Verification Report - Button Handling &amp; Event Routing
+  
+  
+</h1>
+    
+<h2 id="issues-found-and-fixed">
+  
+  
+    <a href="#issues-found-and-fixed" class="anchor-heading" aria-labelledby="issues-found-and-fixed"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Issues Found and Fixed
+  
+  
+</h2>
+    
+<h3 id="-1-button-event-routing-fixed">
+  
+  
+    <a href="#-1-button-event-routing-fixed" class="anchor-heading" aria-labelledby="-1-button-event-routing-fixed"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ✅ 1. Button Event Routing (FIXED)
+  
+  
+</h3>
+    
+<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">main.cpp:button_task()</code>, <code class="language-plaintext highlighter-rouge">ui_controller.cpp:Task()</code></p>
+
+<p><strong>Problem</strong>:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">button_task</code> consumed button events from <code class="language-plaintext highlighter-rouge">g_button_queue_</code> but only sent a type byte to <code class="language-plaintext highlighter-rouge">g_ui_queue_</code></li>
+  <li>UI controller tried to read button event from <code class="language-plaintext highlighter-rouge">g_button_queue_</code> but it was already consumed</li>
+  <li>Result: Back button events were lost</li>
+</ul>
+
+<p><strong>Fix Applied</strong>:</p>
+<ul>
+  <li>Changed <code class="language-plaintext highlighter-rouge">g_ui_queue_</code> to hold <code class="language-plaintext highlighter-rouge">ButtonEvent</code> directly (instead of <code class="language-plaintext highlighter-rouge">uint8_t</code>)</li>
+  <li><code class="language-plaintext highlighter-rouge">button_task</code> now forwards complete <code class="language-plaintext highlighter-rouge">ButtonEvent</code> to <code class="language-plaintext highlighter-rouge">g_ui_queue_</code></li>
+  <li>UI controller receives <code class="language-plaintext highlighter-rouge">ButtonEvent</code> directly from <code class="language-plaintext highlighter-rouge">g_ui_queue_</code></li>
+</ul>
+
+<p><strong>Status</strong>: ✅ FIXED</p><hr />
+<h3 id="️-2-devicesettings-back-button---missing-fallback">
+  
+  
+    <a href="#️-2-devicesettings-back-button---missing-fallback" class="anchor-heading" aria-labelledby="️-2-devicesettings-back-button---missing-fallback"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ⚠️ 2. DeviceSettings Back Button - Missing Fallback
+  
+  
+</h3>
+    
+<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">ui_controller.cpp:457-481</code></p>
+
+<p><strong>Problem</strong>:</p>
+<ul>
+  <li>If <code class="language-plaintext highlighter-rouge">current_device_</code> is null in <code class="language-plaintext highlighter-rouge">DeviceSettings</code> state, Back button does nothing</li>
+  <li>User gets stuck in settings screen with no way to go back</li>
+</ul>
+
+<p><strong>Fix Needed</strong>:</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="k">case</span> <span class="n">UiState</span><span class="o">::</span><span class="n">DeviceSettings</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">current_device_</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// ... existing menu handling ...</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// Fallback: if device is null, go back to DeviceMain</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">ButtonId</span><span class="o">::</span><span class="n">Back</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">transitionToState</span><span class="p">(</span><span class="n">UiState</span><span class="o">::</span><span class="n">DeviceMain</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">break</span><span class="p">;</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Status</strong>: ⚠️ NEEDS FIX</p><hr />
+<h3 id="️-3-devicecontrol-back-button---missing-fallback">
+  
+  
+    <a href="#️-3-devicecontrol-back-button---missing-fallback" class="anchor-heading" aria-labelledby="️-3-devicecontrol-back-button---missing-fallback"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ⚠️ 3. DeviceControl Back Button - Missing Fallback
+  
+  
+</h3>
+    
+<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">ui_controller.cpp:426-456</code></p>
+
+<p><strong>Problem</strong>:</p>
+<ul>
+  <li>If <code class="language-plaintext highlighter-rouge">current_device_</code> is null in <code class="language-plaintext highlighter-rouge">DeviceControl</code> state, Back button does nothing</li>
+  <li>User gets stuck in control screen</li>
+</ul>
+
+<p><strong>Fix Needed</strong>:</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="k">case</span> <span class="n">UiState</span><span class="o">::</span><span class="n">DeviceControl</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">current_device_</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// ... existing popup handling ...</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// Fallback: if device is null, go back to DeviceMain</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">ButtonId</span><span class="o">::</span><span class="n">Back</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">transitionToState</span><span class="p">(</span><span class="n">UiState</span><span class="o">::</span><span class="n">DeviceMain</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">break</span><span class="p">;</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Status</strong>: ⚠️ NEEDS FIX</p><hr />
+<h3 id="️-4-protocol-event-queue---potential-event-loss">
+  
+  
+    <a href="#️-4-protocol-event-queue---potential-event-loss" class="anchor-heading" aria-labelledby="️-4-protocol-event-queue---potential-event-loss"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ⚠️ 4. Protocol Event Queue - Potential Event Loss
+  
+  
+</h3>
+    
+<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">espnow_protocol.cpp:241</code></p>
+
+<p><strong>Problem</strong>:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">xQueueSend(s_proto_event_queue_, &amp;evt, 0)</code> uses timeout 0</li>
+  <li>If queue is full, events are silently dropped</li>
+  <li>Could cause protocol events to be lost under high load</li>
+</ul>
+
+<p><strong>Current Behavior</strong>: Non-blocking (intentional for ISR context)
+<strong>Risk</strong>: Low (queue size is 10, unlikely to fill in normal operation)
+<strong>Recommendation</strong>: Monitor queue usage, consider increasing queue size if needed</p>
+
+<p><strong>Status</strong>: ⚠️ ACCEPTABLE (but should be monitored)</p><hr />
+<h3 id="-5-state-transitions---all-call-rendercurrentscreen">
+  
+  
+    <a href="#-5-state-transitions---all-call-rendercurrentscreen" class="anchor-heading" aria-labelledby="-5-state-transitions---all-call-rendercurrentscreen"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ✅ 5. State Transitions - All Call renderCurrentScreen()
+  
+  
+</h3>
+    
+<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">ui_controller.cpp:transitionToState()</code></p>
+
+<p><strong>Verification</strong>: All state transitions go through <code class="language-plaintext highlighter-rouge">transitionToState()</code> which calls <code class="language-plaintext highlighter-rouge">renderCurrentScreen()</code>
+<strong>Status</strong>: ✅ CORRECT</p><hr />
+<h3 id="-6-null-pointer-checks">
+  
+  
+    <a href="#-6-null-pointer-checks" class="anchor-heading" aria-labelledby="-6-null-pointer-checks"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ✅ 6. Null Pointer Checks
+  
+  
+</h3>
+    
+<p><strong>Location</strong>: Various rendering functions</p>
+
+<p><strong>Verification</strong>:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">renderDeviceMainScreen()</code>: Checks <code class="language-plaintext highlighter-rouge">current_device_</code> ✓</li>
+  <li><code class="language-plaintext highlighter-rouge">renderDeviceSettingsScreen()</code>: Checks <code class="language-plaintext highlighter-rouge">current_device_</code> and <code class="language-plaintext highlighter-rouge">s_display_</code> ✓</li>
+  <li><code class="language-plaintext highlighter-rouge">renderDeviceControlScreen()</code>: Checks <code class="language-plaintext highlighter-rouge">current_device_</code> and <code class="language-plaintext highlighter-rouge">s_display_</code> ✓</li>
+  <li><code class="language-plaintext highlighter-rouge">renderSplashScreen()</code>: Checks <code class="language-plaintext highlighter-rouge">s_display_</code> ✓</li>
+</ul>
+
+<p><strong>Status</strong>: ✅ MOSTLY CORRECT (see issues 2 &amp; 3 for missing fallbacks)</p><hr />
+<h3 id="-7-device-cleanup">
+  
+  
+    <a href="#-7-device-cleanup" class="anchor-heading" aria-labelledby="-7-device-cleanup"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ✅ 7. Device Cleanup
+  
+  
+</h3>
+    
+<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">ui_controller.cpp:handleButton()</code></p>
+
+<p><strong>Verification</strong>:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">DeviceMain</code> → Back: Calls <code class="language-plaintext highlighter-rouge">current_device_.reset()</code> ✓</li>
+  <li>Device creation: Properly checks for null before use ✓</li>
+</ul>
+
+<p><strong>Status</strong>: ✅ CORRECT</p><hr />
+<h3 id="️-8-devicesettings-menu-exit-logic">
+  
+  
+    <a href="#️-8-devicesettings-menu-exit-logic" class="anchor-heading" aria-labelledby="️-8-devicesettings-menu-exit-logic"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ⚠️ 8. DeviceSettings Menu Exit Logic
+  
+  
+</h3>
+    
+<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">ui_controller.cpp:457-481</code></p>
+
+<p><strong>Potential Issue</strong>:</p>
+<ul>
+  <li>If menu is not active initially (<code class="language-plaintext highlighter-rouge">menu_was_active = false</code>) but device handles Back button</li>
+  <li>The check <code class="language-plaintext highlighter-rouge">if (menu_was_active &amp;&amp; !menu_still_active)</code> won’t trigger</li>
+  <li>Back button might not exit settings screen properly</li>
+</ul>
+
+<p><strong>Analysis</strong>:</p>
+<ul>
+  <li>Looking at <code class="language-plaintext highlighter-rouge">fatigue_tester.cpp</code>, the device’s <code class="language-plaintext highlighter-rouge">HandleButton()</code> should handle Back to exit menu</li>
+  <li>Menu exit sets <code class="language-plaintext highlighter-rouge">menu_active_ = false</code></li>
+  <li>UI controller checks if menu was exited and transitions to DeviceMain</li>
+  <li>This should work, but edge case exists if menu wasn’t active to begin with</li>
+</ul>
+
+<p><strong>Status</strong>: ⚠️ NEEDS VERIFICATION</p><hr />
+<h2 id="summary">
+  
+  
+    <a href="#summary" class="anchor-heading" aria-labelledby="summary"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Summary
+  
+  
+</h2>
+    
+<h3 id="critical-issues-must-fix">
+  
+  
+    <a href="#critical-issues-must-fix" class="anchor-heading" aria-labelledby="critical-issues-must-fix"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Critical Issues (Must Fix):
+  
+  
+</h3>
+    
+<ol>
+  <li>✅ Button event routing - <strong>FIXED</strong></li>
+  <li>⚠️ DeviceSettings Back button fallback - <strong>NEEDS FIX</strong></li>
+  <li>⚠️ DeviceControl Back button fallback - <strong>NEEDS FIX</strong></li>
+</ol>
+<h3 id="minor-issues-should-fix">
+  
+  
+    <a href="#minor-issues-should-fix" class="anchor-heading" aria-labelledby="minor-issues-should-fix"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Minor Issues (Should Fix):
+  
+  
+</h3>
+    
+<ol>
+  <li>⚠️ Protocol event queue timeout (acceptable but monitor)</li>
+  <li>⚠️ DeviceSettings menu exit edge case (verify behavior)</li>
+</ol>
+<h3 id="verified-correct">
+  
+  
+    <a href="#verified-correct" class="anchor-heading" aria-labelledby="verified-correct"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Verified Correct:
+  
+  
+</h3>
+    
+<ul>
+  <li>State transitions</li>
+  <li>Null pointer checks (mostly)</li>
+  <li>Device cleanup</li>
+  <li>Queue initialization</li>
+</ul>
+
+          
+
+          
+            
+          
+        </main>
+        
+
+  <hr>
+  <footer>
+    
+
+    <!-- =============================================================================
+     Custom Footer Content for HardFOC Driver Documentation
+     =============================================================================
+     This footer is displayed at the bottom of every page.
+     ============================================================================= -->
+
+<footer class="site-footer">
+  <div class="site-footer-credits">
+    <p>Built with ❤️ using <a href="https://just-the-docs.github.io/just-the-docs/">Just the Docs</a></p>
+    <p>
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development/blob/main/LICENSE">GPL v3 License</a> • 
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development">View on GitHub</a>
+    </p>
+  </div>
+</footer>
+
+
+
+    
+  </footer>
+
+
+      </div>
+    </div>
+    
+      
+<button id="search-button" class="search-button btn-reset" aria-label="Focus on search">
+  <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+</button>
+
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+</body>
+</html>
+

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['🎯_20core_20motor_20control_0',['🎯 Core Motor Control',['../index.html#autotoc_md35',1,'']]]
+  ['🏗️_20platform_20architecture_0',['🏗️ Platform &amp; Architecture',['../index.html#autotoc_md50',1,'']]]
 ];

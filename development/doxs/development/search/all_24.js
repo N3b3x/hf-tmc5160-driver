@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['🔄_20encoder_20integration_0',['🔄 Encoder Integration',['../index.html#autotoc_md43',1,'']]]
+  ['🔍_20diagnostics_20tuning_0',['🔍 Diagnostics &amp; Tuning',['../index.html#autotoc_md38',1,'']]]
 ];

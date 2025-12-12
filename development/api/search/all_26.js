@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['🔗_20multi_20chip_20communication_0',['🔗 Multi-Chip Communication',['../index.html#autotoc_md47',1,'']]]
+  ['🔧_20installation_0',['🔧 Installation',['../index.html#autotoc_md55',1,'']]]
 ];

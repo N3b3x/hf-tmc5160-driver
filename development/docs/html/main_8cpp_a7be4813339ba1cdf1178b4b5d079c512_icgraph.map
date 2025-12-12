@@ -1,0 +1,5 @@
+<map id="HandlePause" name="HandlePause">
+<area shape="rect" id="Node000001" title="Handle PAUSE command (future)" alt="" coords="219,13,325,38"/>
+<area shape="rect" id="Node000002" href="$classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68" title="Process a command line." alt="" coords="5,5,171,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,28,171,28,171,23,205,23"/>
+</map>

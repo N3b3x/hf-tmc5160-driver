@@ -1,10 +1,10 @@
 <map id="CommandOutput::PrintWarning" name="CommandOutput::PrintWarning">
 <area shape="rect" id="Node000001" title=" " alt="" coords="365,55,589,80"/>
-<area shape="rect" id="Node000002" href="$test__unit_2main_8cpp.html#a35d4c27b82242d39e341bf9d35d50a0f" title="Handle SET command with multiple options." alt="" coords="223,5,313,31"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#a35d4c27b82242d39e341bf9d35d50a0f" title="Handle SET command with multiple options." alt="" coords="223,5,313,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="409,54,312,31,314,26,410,49"/>
-<area shape="rect" id="Node000004" href="$test__unit_2main_8cpp.html#af9a61f18ec0bf52c35280fd8748a0679" title="Handle START command." alt="" coords="219,55,317,80"/>
+<area shape="rect" id="Node000004" href="$main_8cpp.html#af9a61f18ec0bf52c35280fd8748a0679" title="Handle START command." alt="" coords="219,55,317,80"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="351,70,317,70,317,65,351,65"/>
-<area shape="rect" id="Node000005" href="$test__unit_2main_8cpp.html#a39ccc4c53283879fb74a5a5538daa92b" title="Handle STOP command." alt="" coords="219,104,317,129"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html#a39ccc4c53283879fb74a5a5538daa92b" title="Handle STOP command." alt="" coords="219,104,317,129"/>
 <area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="410,86,317,108,316,103,409,81"/>
 <area shape="rect" id="Node000003" href="$classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68" title="Process a command line." alt="" coords="5,47,171,87"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="211,36,162,50,161,45,209,31"/>
