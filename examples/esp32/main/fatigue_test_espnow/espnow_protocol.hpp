@@ -27,6 +27,14 @@ static constexpr size_t ESPNOW_MAX_PAYLOAD = 48;
 // WiFi/ESP-NOW channel
 static constexpr uint8_t WIFI_CHANNEL = 1;
 
+// Remote controller (UI board) MAC address (STA interface).
+// If set non-zero, the test unit can send responses immediately (without waiting
+// to "learn" the sender MAC from the first inbound ESPNOW message).
+//
+// Update this when the remote controller prints its MAC, e.g.:
+//   Remote Controller MAC (STA): 9C:9E:6E:77:24:F8
+static constexpr uint8_t UI_BOARD_MAC_[6] = { 0x9C, 0x9E, 0x6E, 0x77, 0x24, 0xF8 };
+
 // ------------- MESSAGE TYPES -------------
 
 enum class MsgType : uint8_t {

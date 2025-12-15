@@ -18,11 +18,16 @@
 // class No need to include header or open namespace
 #else
 // Not included from header (shouldn't happen for template implementation)
+// If this file is compiled directly as a translation unit (e.g. by IDE tooling),
+// avoid recursive inclusion (tmc51x0.hpp includes this file for template instantiation).
+#define TMC51X0_COMPILING_SRC 1
 #include "../inc/tmc51x0.hpp"
+#undef TMC51X0_COMPILING_SRC
 #endif
 
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
 #include "../inc/features/tmc51x0_motor_calc.hpp"
 
@@ -124,42 +129,76 @@ static constexpr T constrain(T value, T min_val, T max_val) noexcept {
   return value;
 }
 
+// Helper functions for consistent float -> integer conversion
+// Policy: round-to-nearest, ties away from zero (std::lround semantics).
+static inline int32_t round_to_int32(float value) noexcept {
+  long rounded = std::lround(value);
+  if (rounded > static_cast<long>(std::numeric_limits<int32_t>::max())) {
+    return std::numeric_limits<int32_t>::max();
+  }
+  if (rounded < static_cast<long>(std::numeric_limits<int32_t>::min())) {
+    return std::numeric_limits<int32_t>::min();
+  }
+  return static_cast<int32_t>(rounded);
+}
+
+static inline uint32_t round_to_uint32_nonneg(float value) noexcept {
+  if (value <= 0.0f) {
+    return 0U;
+  }
+  long rounded = std::lround(value);
+  if (rounded <= 0) {
+    return 0U;
+  }
+  if (rounded > static_cast<long>(std::numeric_limits<uint32_t>::max())) {
+    return std::numeric_limits<uint32_t>::max();
+  }
+  return static_cast<uint32_t>(rounded);
+}
+
 // Implementation of unit conversion helpers
 template <typename CommType>
 float TMC51x0<CommType>::convertSpeedToSteps(float value, Unit unit) const noexcept {
   if (value == 0.0f)
     return 0.0f;
 
-  // Calculate effective steps per revolution (full steps * gear ratio)
-  // Note: We do NOT include microsteps here - speedToInternal will convert to μsteps/sec
-  float effective_steps_per_rev = static_cast<float>(motor_spec_.steps_per_rev) *
-                                  mechanical_system_.gear_ratio;
+  // IMPORTANT:
+  // - This function converts *real-world velocity units* to **motor full-steps per second**.
+  // - Microstep resolution (MRES / USC) is intentionally NOT applied here.
+  //   The microstep factor is applied later in speedToInternal(), because TMC5160 velocity
+  //   registers use µsteps/s as their physical base unit.
+  //
+  // Effective motor full-steps per mechanical (output) revolution:
+  // - motor_spec_.steps_per_rev: motor full-steps per motor revolution (e.g. 200)
+  // - mechanical_system_.gear_ratio: motor revolutions per output revolution (>= 1 for gearboxes)
+  float effective_fullsteps_per_rev =
+      static_cast<float>(motor_spec_.steps_per_rev) * mechanical_system_.gear_ratio;
 
   switch (unit) {
   case Unit::Steps:
     return value;
   case Unit::RPM:
-    // RPM * steps_per_rev / 60
-    return (value * effective_steps_per_rev) / 60.0f;
+    // (rev/min) -> (fullsteps/s): RPM * fullsteps/rev / 60
+    return (value * effective_fullsteps_per_rev) / 60.0f;
   case Unit::RevPerSec:
-    // rev/s * steps_per_rev
-    return value * effective_steps_per_rev;
+    // (rev/s) -> (fullsteps/s): rev/s * fullsteps/rev
+    return value * effective_fullsteps_per_rev;
   case Unit::Rad:
-    // rad/s * steps_per_rev / (2*PI)
-    return (value * effective_steps_per_rev) / MathConstants::TWO_PI;
+    // (rad/s) -> (rev/s) -> (fullsteps/s)
+    return (value * effective_fullsteps_per_rev) / MathConstants::TWO_PI;
   case Unit::Deg:
-    // deg/s * steps_per_rev / 360
-    return (value * effective_steps_per_rev) / MathConstants::DEGREES_PER_REV;
+    // (deg/s) -> (rev/s) -> (fullsteps/s)
+    return (value * effective_fullsteps_per_rev) / MathConstants::DEGREES_PER_REV;
   case Unit::Mm:
     if (mechanical_system_.system_type == MechanicalSystemType::LeadScrew &&
         mechanical_system_.lead_screw_pitch_mm > 0.0f) {
-      // mm/s / pitch * steps_per_rev
-      return (value / mechanical_system_.lead_screw_pitch_mm) * effective_steps_per_rev;
+      // (mm/s) -> (rev/s) -> (fullsteps/s)
+      return (value / mechanical_system_.lead_screw_pitch_mm) * effective_fullsteps_per_rev;
     } else if (mechanical_system_.system_type == MechanicalSystemType::BeltDrive &&
                mechanical_system_.belt_pitch_mm > 0.0f && mechanical_system_.belt_pulley_teeth > 0) {
-      // mm/s / (pitch * teeth) * steps_per_rev
+      // (mm/s) -> (rev/s) -> (fullsteps/s)
       float mm_per_rev = mechanical_system_.belt_pitch_mm * static_cast<float>(mechanical_system_.belt_pulley_teeth);
-      return (value / mm_per_rev) * effective_steps_per_rev;
+      return (value / mm_per_rev) * effective_fullsteps_per_rev;
     }
     return 0.0f; // Invalid config for mm
   default:
@@ -199,28 +238,34 @@ float TMC51x0<CommType>::convertPositionToSteps(float value, Unit unit) const no
   if (value == 0.0f)
     return 0.0f;
 
-  float effective_steps_per_rev = static_cast<float>(motor_spec_.steps_per_rev) *
-                                  static_cast<float>(current_microsteps_) * mechanical_system_.gear_ratio;
+  // IMPORTANT:
+  // - Position registers (XACTUAL/XTARGET/X_COMPARE) are in **microsteps** and therefore depend on USC (microstep resolution).
+  // - Unit::Steps is treated as **motor full steps** (not microsteps). We convert fullsteps -> microsteps using current_microsteps_.
+  // - For real-world units (rev/rad/deg/mm), we convert to **microsteps** using:
+  //     microsteps_per_output_rev = motor_fullsteps_per_rev * USC * gear_ratio
+  float microsteps_per_output_rev =
+      static_cast<float>(motor_spec_.steps_per_rev) * static_cast<float>(current_microsteps_) * mechanical_system_.gear_ratio;
 
   switch (unit) {
   case Unit::Steps:
-    return value;
+    // motor fullsteps -> microsteps
+    return value * static_cast<float>(current_microsteps_);
   case Unit::RPM: // Treated as Revolutions
-    return value * effective_steps_per_rev;
+    return value * microsteps_per_output_rev;
   case Unit::RevPerSec: // Treated as Revolutions
-    return value * effective_steps_per_rev;
+    return value * microsteps_per_output_rev;
   case Unit::Rad:
-    return (value * effective_steps_per_rev) / MathConstants::TWO_PI;
+    return (value * microsteps_per_output_rev) / MathConstants::TWO_PI;
   case Unit::Deg:
-    return (value * effective_steps_per_rev) / MathConstants::DEGREES_PER_REV;
+    return (value * microsteps_per_output_rev) / MathConstants::DEGREES_PER_REV;
   case Unit::Mm:
     if (mechanical_system_.system_type == MechanicalSystemType::LeadScrew &&
         mechanical_system_.lead_screw_pitch_mm > 0.0f) {
-      return (value / mechanical_system_.lead_screw_pitch_mm) * effective_steps_per_rev;
+      return (value / mechanical_system_.lead_screw_pitch_mm) * microsteps_per_output_rev;
     } else if (mechanical_system_.system_type == MechanicalSystemType::BeltDrive &&
                mechanical_system_.belt_pitch_mm > 0.0f && mechanical_system_.belt_pulley_teeth > 0) {
       float mm_per_rev = mechanical_system_.belt_pitch_mm * static_cast<float>(mechanical_system_.belt_pulley_teeth);
-      return (value / mm_per_rev) * effective_steps_per_rev;
+      return (value / mm_per_rev) * microsteps_per_output_rev;
     }
     return 0.0f;
   default:
@@ -230,30 +275,35 @@ float TMC51x0<CommType>::convertPositionToSteps(float value, Unit unit) const no
 
 template <typename CommType>
 float TMC51x0<CommType>::convertStepsToUnit(int32_t steps, Unit unit) const noexcept {
-  float effective_steps_per_rev = static_cast<float>(motor_spec_.steps_per_rev) *
-                                  static_cast<float>(current_microsteps_) * mechanical_system_.gear_ratio;
+  // Input 'steps' is in **microsteps** (TMC51x0 position register units).
+  float microsteps_per_output_rev =
+      static_cast<float>(motor_spec_.steps_per_rev) * static_cast<float>(current_microsteps_) * mechanical_system_.gear_ratio;
 
-  if (effective_steps_per_rev == 0.0f)
+  if (microsteps_per_output_rev == 0.0f)
     return 0.0f;
   float val = static_cast<float>(steps);
 
   switch (unit) {
   case Unit::Steps:
-    return val;
+    // microsteps -> motor fullsteps
+    if (current_microsteps_ == 0) {
+      return 0.0f;
+    }
+    return val / static_cast<float>(current_microsteps_);
   case Unit::RPM: // Revolutions
-    return val / effective_steps_per_rev;
+    return val / microsteps_per_output_rev;
   case Unit::RevPerSec: // Revolutions
-    return val / effective_steps_per_rev;
+    return val / microsteps_per_output_rev;
   case Unit::Rad:
-    return (val / effective_steps_per_rev) * MathConstants::TWO_PI;
+    return (val / microsteps_per_output_rev) * MathConstants::TWO_PI;
   case Unit::Deg:
-    return (val / effective_steps_per_rev) * MathConstants::DEGREES_PER_REV;
+    return (val / microsteps_per_output_rev) * MathConstants::DEGREES_PER_REV;
   case Unit::Mm:
     if (mechanical_system_.system_type == MechanicalSystemType::LeadScrew) {
-      return (val / effective_steps_per_rev) * mechanical_system_.lead_screw_pitch_mm;
+      return (val / microsteps_per_output_rev) * mechanical_system_.lead_screw_pitch_mm;
     } else if (mechanical_system_.system_type == MechanicalSystemType::BeltDrive) {
       float mm_per_rev = mechanical_system_.belt_pitch_mm * static_cast<float>(mechanical_system_.belt_pulley_teeth);
-      return (val / effective_steps_per_rev) * mm_per_rev;
+      return (val / microsteps_per_output_rev) * mm_per_rev;
     }
     return 0.0f;
   default:
@@ -543,6 +593,50 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
     return Result<void>(ErrorCode::INVALID_VALUE);
   }
 
+  // CRITICAL: Ensure motor is in a safe, stopped state after initialization
+  // This prevents any accidental motion from previous sessions or stale target positions
+  TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Initialize: Ensuring safe stopped state");
+  
+  // Stop any ongoing motion
+  rampControl.Stop();
+  
+  // Set to HOLD mode to prevent any motion
+  if (!rampControl.SetRampMode(RampMode::HOLD)) {
+    TMC51X0_LOG_DEBUG(comm_, 1, "TMC5160", "Warning: Failed to set HOLD mode during initialization");
+    // Continue anyway - not critical enough to fail initialization
+  }
+  
+  // Wait a short time for motor to stop (if it was moving)
+  comm_.DelayMs(200);
+  
+  // Wait for standstill (with timeout to avoid hanging)
+  uint32_t standstill_checks = 0;
+  const uint32_t max_standstill_checks = 20; // 2 seconds max wait (20 * 100ms)
+  while (standstill_checks < max_standstill_checks) {
+    auto standstill_result = rampControl.IsStandstill();
+    if (standstill_result.IsOk() && standstill_result.Value()) {
+      break;
+    }
+    comm_.DelayMs(100);
+    standstill_checks++;
+  }
+  
+  // Clear any stale target position by setting it to current position
+  // This ensures the motor won't start moving unexpectedly
+  auto current_pos_result = rampControl.GetCurrentPosition(Unit::Deg);
+  if (current_pos_result.IsOk()) {
+    auto set_target_result = rampControl.SetTargetPosition(current_pos_result.Value(), Unit::Deg);
+    if (!set_target_result.IsOk()) {
+      TMC51X0_LOG_DEBUG(comm_, 1, "TMC5160", "Warning: Failed to clear stale target position during initialization");
+      // Continue anyway - not critical enough to fail initialization
+    }
+  } else {
+    TMC51X0_LOG_DEBUG(comm_, 1, "TMC5160", "Warning: Failed to read current position during initialization");
+    // Continue anyway - not critical enough to fail initialization
+  }
+  
+  TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Initialize: Safe stopped state ensured");
+
   // Store configuration (will be updated on all runtime changes via Configure* methods)
   driver_config_ = config;
 
@@ -570,7 +664,7 @@ int32_t TMC51x0<CommType>::speedToInternal(float speed_hz) const noexcept {
   }
   float internal = (speed_hz * static_cast<float>(1UL << 24)) / static_cast<float>(f_clk_);
   internal *= static_cast<float>(current_microsteps_);
-  return static_cast<int32_t>(internal);
+  return round_to_int32(internal);
 }
 
 template <typename CommType>
@@ -603,21 +697,47 @@ int32_t TMC51x0<CommType>::accelToInternal(float accel_hz) const noexcept {
   float internal = accel_hz * 512.0F * 256.0F * static_cast<float>(1UL << 24) /
                    (static_cast<float>(f_clk_) * static_cast<float>(f_clk_));
   internal *= static_cast<float>(current_microsteps_);
-  return static_cast<int32_t>(internal);
+  return round_to_int32(internal);
+}
+
+template <typename CommType>
+float TMC51x0<CommType>::accelFromInternal(int32_t accel_internal) const noexcept {
+  // Datasheet formula: a[Hz/s] = a[5160] * f_CLK[Hz]^2 / (512*256) / 2^24
+  // Where a[Hz/s] is in μsteps/s² (microsteps per second squared)
+  // Output is in steps/s², so we divide by microstep count (USC) to convert from μsteps/s²
+  // Final: a[steps/s²] = (a[5160] * f_CLK^2 / (512*256) / 2^24) / USC
+  // Note: USC (microstep count) is tracked in current_microsteps_ and can vary (256, 128, 64, etc.)
+  // Note: The 256 in (512*256) is a fixed constant from the datasheet formula, not the microstep count
+  if (accel_internal == 0) {
+    return 0.0F;
+  }
+  float accel_hz = static_cast<float>(accel_internal) * static_cast<float>(f_clk_) * static_cast<float>(f_clk_) /
+                   (512.0F * 256.0F * static_cast<float>(1UL << 24));
+  accel_hz /= static_cast<float>(current_microsteps_);
+  return accel_hz;
 }
 
 template <typename CommType>
 int32_t TMC51x0<CommType>::thresholdSpeedToTstep(float speed_hz) const noexcept {
   // Datasheet formula: TSTEP = f_CLK / f256STEP = f_CLK / (fSTEP*256/USC)
-  // Where fSTEP is in μsteps/s, USC is microstep count (can vary: 256, 128, 64, etc.)
-  // Input speed_hz is in steps/s, so fSTEP = speed_hz * USC (convert to μsteps/s)
-  // Final: TSTEP = f_CLK / (speed_hz * USC)
-  // Note: USC (microstep count) is tracked in current_microsteps_ and can vary
+  //
+  // IMPORTANT:
+  // This threshold uses the **1/256 microstep time base** (f256STEP), independent of the
+  // currently selected microstep resolution (USC).
+  //
+  // Let:
+  // - speed_hz be motor **full-steps/s**
+  // - USC be current microsteps per full-step (e.g. 256, 128, ...)
+  // - fSTEP be the sequencer step frequency in microsteps/s = speed_hz * USC
+  //
+  // Then: f256STEP = fSTEP * 256 / USC = (speed_hz * USC) * 256 / USC = speed_hz * 256
+  //
+  // Final: TSTEP = f_CLK / (speed_hz * 256)
   // TSTEP is 20-bit unsigned (max value 0xFFFFF = 1048575)
   if (speed_hz == 0.0F) {
     return 0;
   }
-  float tstep = static_cast<float>(f_clk_) / (speed_hz * static_cast<float>(current_microsteps_));
+  float tstep = static_cast<float>(f_clk_) / (speed_hz * 256.0F);
   tstep = std::max(0.0F, std::min(1048575.0F, tstep));
   return static_cast<int32_t>(tstep);
 }
@@ -741,7 +861,7 @@ Result<float> TMC51x0<CommType>::RampControl::GetXCompare(Unit unit) const noexc
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetTargetPosition(float value, Unit unit) noexcept {
   float steps = driver_.convertPositionToSteps(value, unit);
-  return SetTargetPosition(static_cast<int32_t>(steps)); // Calls private helper
+  return SetTargetPosition(round_to_int32(steps)); // Calls private helper
 }
 
 template <typename CommType>
@@ -794,7 +914,7 @@ Result<float> TMC51x0<CommType>::RampControl::GetTargetPosition(Unit unit) noexc
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetCurrentPosition(float value, Unit unit, bool update_encoder) noexcept {
   float steps = driver_.convertPositionToSteps(value, unit);
-  return SetCurrentPosition(static_cast<int32_t>(steps), update_encoder); // Calls private helper
+  return SetCurrentPosition(round_to_int32(steps), update_encoder); // Calls private helper
 }
 
 // Private helper implementation
@@ -821,7 +941,8 @@ Result<void> TMC51x0<CommType>::RampControl::SetMaxSpeed(float value, Unit unit)
   TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetMaxSpeed(%.2f steps/s)", steps_per_sec);
 
   int32_t internal = driver_.speedToInternal(std::abs(steps_per_sec));
-  internal = std::min(internal, static_cast<decltype(internal)>(0x7FFFFF)); // VMAX is 23 bits
+  // VMAX range per datasheet: 0 to (2^23)-512 = 0x7FFE00 (8,388,096)
+  internal = std::min(internal, static_cast<decltype(internal)>(0x7FFE00)); // VMAX max: (2^23)-512
   auto write_result = driver_.comm_.WriteRegister(Registers::VMAX, static_cast<uint32_t>(internal));
   if (!write_result) {
     return write_result;
@@ -913,6 +1034,12 @@ Result<void> TMC51x0<CommType>::RampControl::SetRampSpeeds(float start_speed, fl
   vstart = std::min(vstart, static_cast<decltype(vstart)>(0x3FFFF)); // VSTART is 18 bits
   vstop = std::min(vstop,
                    static_cast<decltype(vstop)>(0x3FFFF)); // VSTOP is 18 bits
+  // Datasheet: VSTOP minimum is 1 (in internal units), recommend >100 for faster termination
+  // Enforce minimum 1 in internal register units if the user requested a non-zero stop speed
+  // but it rounded/quantized down to 0.
+  if (stop_steps > 0.0F && vstop == 0) {
+    vstop = 1;
+  }
   v1 = std::min(v1, static_cast<decltype(v1)>(0xFFFFF));   // V1 is 20 bits
   auto vstart_result = driver_.comm_.WriteRegister(Registers::VSTART, static_cast<uint32_t>(vstart));
   if (!vstart_result) {
@@ -1284,12 +1411,17 @@ Result<void> TMC51x0<CommType>::RampControl::ConfigureRamp(const RampConfig& con
   // Get units from self-describing values (use vstart unit for all velocities - they should match)
   Unit velocity_unit = config.vstart.unit;
 
-  // Ensure VSTOP >= VSTART (datasheet requirement)
+  // Ensure VSTOP >= VSTART (datasheet requirement) - check in user units
   if (vstop < vstart && vstart > 0.0f) {
     vstop = vstart; // Use VSTART if VSTOP is less
   } else if (vstop == 0.0f && vstart == 0.0f) {
-    vstop = 10.0f; // Default minimum VSTOP
+    // Default minimum VSTOP - use a reasonable value that works across units
+    // For RPM: 10 RPM is reasonable. For other units, this will be converted appropriately.
+    // The actual minimum (1 in internal units) will be enforced after conversion.
+    vstop = 10.0f;
   }
+  // Note: Minimum VSTOP validation (>= 1 in internal units) is done in SetRampSpeeds()
+  // after conversion to internal format, since the minimum of 1 only makes sense in register units
 
   if (!SetRampSpeeds(vstart, vstop, v1, velocity_unit)) {
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -1364,19 +1496,28 @@ Result<void> TMC51x0<CommType>::RampControl::SetFirstAcceleration(float a1, Unit
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetFinalDeceleration(float d1, Unit unit) noexcept {
   float d1_steps = driver_.convertAccelerationToSteps(d1, unit);
+  int32_t d1_internal = 0;
   if (d1_steps == 0.0F) {
     // Datasheet warning: "Attention: Do not set 0 in positioning mode, even if V1=0!"
-    // We allow setting 0 here as it might be used in other modes or user intends it,
-    // but we log a warning if logging is enabled?
-    // For now, we just pass it through, but user should be aware.
+    // Check if we're in positioning mode and reject D1=0
+    auto rampmode_result = GetRampMode();
+    if (rampmode_result && rampmode_result.Value() == RampMode::POSITIONING) {
+      // In positioning mode, D1 must not be 0 - use minimum value
+      d1_steps = 1.0F; // Set to minimum (will convert to internal format)
+      TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TMC5160", 
+                        "D1=0 rejected in positioning mode, using minimum value");
+    }
+    // If not in positioning mode, allow 0 (will be written as 0)
   }
-  int32_t d1_internal = driver_.accelToInternal(std::abs(d1_steps));
-  d1_internal = std::min(d1_internal,
-                         static_cast<decltype(d1_internal)>(0xFFFF)); // D_1 is 16 bits
-  // Ensure value is at least 1 if user tries to set very low non-zero value that rounds to 0?
-  // The register range starts at 1.
-  if (d1_internal == 0 && d1_steps != 0.0F) {
-    d1_internal = 1;
+  if (d1_steps > 0.0F) {
+    d1_internal = driver_.accelToInternal(std::abs(d1_steps));
+    d1_internal = std::min(d1_internal,
+                           static_cast<decltype(d1_internal)>(0xFFFF)); // D_1 is 16 bits
+    // Ensure value is at least 1 if user tries to set very low non-zero value that rounds to 0
+    // The register range starts at 1 (datasheet: 1 to (2^16)-1)
+    if (d1_internal == 0 && d1_steps != 0.0F) {
+      d1_internal = 1;
+    }
   }
   auto write_result = driver_.comm_.WriteRegister(Registers::D_1, static_cast<uint32_t>(d1_internal));
   if (write_result) {
@@ -1487,6 +1628,23 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureChopper(const ChopperConf
   // Update driver config
   driver_.driver_config_.chopper = config;
 
+  // If MRES changes at runtime, preserve physical meaning by default:
+  // - Require standstill (no implicit stop)
+  // - Rescale X registers + rewrite ramp profile to keep user units stable
+  //
+  // During Initialize(), driver_.initialized_ is still false, so we skip this behavior.
+  if (driver_.initialized_) {
+    uint8_t requested_mres_u = constrain<uint8_t>(static_cast<uint8_t>(config.mres), 0U, 8U);
+    uint16_t requested_usc = static_cast<uint16_t>(256U >> requested_mres_u);
+    if (requested_usc != driver_.current_microsteps_) {
+      MicrostepChangeOptions opts{};
+      auto mres_result = SetMicrostepResolution(config.mres, opts);
+      if (!mres_result) {
+        return mres_result;
+      }
+    }
+  }
+
   // Read-Modify-Write to preserve any fields not explicitly set in ChopperConfig
   auto chopconf_val_result = driver_.comm_.ReadRegister(Registers::CHOPCONF, driver_.GetCommAddress());
   if (!chopconf_val_result) {
@@ -1539,6 +1697,227 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureChopper(const ChopperConf
   if (!write_result) {
     return write_result;
   }
+  return Result<void>();
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::MotorControl::SetMicrostepResolution(
+    MicrostepResolution mres,
+    const MicrostepChangeOptions& opts) noexcept {
+  if (!driver_.initialized_) {
+    return Result<void>(ErrorCode::NOT_INITIALIZED);
+  }
+
+  const uint16_t old_usc = driver_.current_microsteps_;
+  uint8_t new_mres_u = constrain<uint8_t>(static_cast<uint8_t>(mres), 0U, 8U);
+  const uint16_t new_usc = static_cast<uint16_t>(256U >> new_mres_u);
+  if (new_usc == old_usc) {
+    // Still update config mirror in case caller expects it.
+    driver_.driver_config_.chopper.mres = mres;
+    return Result<void>();
+  }
+
+  if (opts.require_standstill) {
+    auto standstill_result = driver_.rampControl.IsStandstill();
+    if (!standstill_result) {
+      return Result<void>(ErrorCode::COMM_ERROR);
+    }
+    if (!standstill_result.Value()) {
+      return Result<void>(ErrorCode::INVALID_STATE);
+    }
+  }
+
+  // Capture state in canonical units BEFORE changing USC.
+  // - Positions are raw microstep counts -> rescaled by newUSC/oldUSC.
+  // - Ramp profile is converted to full-step units, then rewritten after USC changes.
+  int32_t old_xactual = 0;
+  int32_t old_xtarget = 0;
+  int32_t old_xcompare = static_cast<int32_t>(driver_.write_only_regs_.x_compare);
+
+  auto xactual_result = driver_.comm_.ReadRegister(Registers::XACTUAL, driver_.GetCommAddress());
+  if (!xactual_result) {
+    return Result<void>(ErrorCode::COMM_ERROR);
+  }
+  old_xactual = static_cast<int32_t>(xactual_result.Value());
+
+  auto xtarget_result = driver_.comm_.ReadRegister(Registers::XTARGET, driver_.GetCommAddress());
+  if (!xtarget_result) {
+    return Result<void>(ErrorCode::COMM_ERROR);
+  }
+  old_xtarget = static_cast<int32_t>(xtarget_result.Value());
+
+  // Convert cached write-only ramp registers into canonical full-step units.
+  const float old_vstart_fs = (driver_.write_only_regs_.vstart > 0U)
+                                  ? driver_.speedFromInternal(static_cast<int32_t>(driver_.write_only_regs_.vstart))
+                                  : 0.0F;
+  const float old_vstop_fs = (driver_.write_only_regs_.vstop > 0U)
+                                 ? driver_.speedFromInternal(static_cast<int32_t>(driver_.write_only_regs_.vstop))
+                                 : 0.0F;
+  const float old_v1_fs = (driver_.write_only_regs_.v_1 > 0U)
+                              ? driver_.speedFromInternal(static_cast<int32_t>(driver_.write_only_regs_.v_1))
+                              : 0.0F;
+  const float old_vmax_fs = (driver_.write_only_regs_.vmax > 0U)
+                                ? driver_.speedFromInternal(static_cast<int32_t>(driver_.write_only_regs_.vmax))
+                                : 0.0F;
+
+  const float old_a1_fs2 = (driver_.write_only_regs_.a_1 > 0U)
+                               ? driver_.accelFromInternal(static_cast<int32_t>(driver_.write_only_regs_.a_1))
+                               : 0.0F;
+  const float old_amax_fs2 = (driver_.write_only_regs_.amax > 0U)
+                                 ? driver_.accelFromInternal(static_cast<int32_t>(driver_.write_only_regs_.amax))
+                                 : 0.0F;
+  const float old_dmax_fs2 = (driver_.write_only_regs_.dmax > 0U)
+                                 ? driver_.accelFromInternal(static_cast<int32_t>(driver_.write_only_regs_.dmax))
+                                 : 0.0F;
+  const float old_d1_fs2 = (driver_.write_only_regs_.d_1 > 0U)
+                               ? driver_.accelFromInternal(static_cast<int32_t>(driver_.write_only_regs_.d_1))
+                               : 0.0F;
+
+  // Apply MRES change (read-modify-write CHOPCONF to preserve other fields).
+  auto chopconf_val_result = driver_.comm_.ReadRegister(Registers::CHOPCONF, driver_.GetCommAddress());
+  if (!chopconf_val_result) {
+    return Result<void>(ErrorCode::COMM_ERROR);
+  }
+  CHOPCONF_Register chopconf{};
+  chopconf.value = chopconf_val_result.Value();
+  chopconf.bits.mres = new_mres_u;
+  auto chop_write_result = driver_.comm_.WriteRegister(Registers::CHOPCONF, chopconf.value, driver_.GetCommAddress());
+  if (!chop_write_result) {
+    return chop_write_result;
+  }
+
+  // Update cached microstep count and config mirror.
+  driver_.current_microsteps_ = new_usc;
+  driver_.driver_config_.chopper.mres = mres;
+
+  if (!opts.preserve_physical_units) {
+    return Result<void>();
+  }
+
+  // Rescale positions (microstep counts).
+  const double scale = static_cast<double>(new_usc) / static_cast<double>(old_usc);
+  auto scale_microsteps = [&](int32_t v) -> int32_t {
+    const double scaled = static_cast<double>(v) * scale;
+    const long long rounded = std::llround(scaled);
+    if (rounded > static_cast<long long>(std::numeric_limits<int32_t>::max())) {
+      return std::numeric_limits<int32_t>::max();
+    }
+    if (rounded < static_cast<long long>(std::numeric_limits<int32_t>::min())) {
+      return std::numeric_limits<int32_t>::min();
+    }
+    return static_cast<int32_t>(rounded);
+  };
+
+  const int32_t new_xactual = scale_microsteps(old_xactual);
+  const int32_t new_xtarget = scale_microsteps(old_xtarget);
+  const int32_t new_xcompare = scale_microsteps(old_xcompare);
+
+  auto w_xactual = driver_.comm_.WriteRegister(Registers::XACTUAL, static_cast<uint32_t>(new_xactual), driver_.GetCommAddress());
+  if (!w_xactual) {
+    return w_xactual;
+  }
+  auto w_xtarget = driver_.comm_.WriteRegister(Registers::XTARGET, static_cast<uint32_t>(new_xtarget), driver_.GetCommAddress());
+  if (!w_xtarget) {
+    return w_xtarget;
+  }
+  auto w_xcompare = driver_.comm_.WriteRegister(Registers::X_COMPARE, static_cast<uint32_t>(new_xcompare), driver_.GetCommAddress());
+  if (!w_xcompare) {
+    return w_xcompare;
+  }
+  driver_.write_only_regs_.x_compare = static_cast<uint32_t>(new_xcompare);
+
+  // Rewrite ramp profile registers from canonical full-step units using the new USC.
+  auto to_speed_internal = [&](float fullsteps_per_sec) -> uint32_t {
+    int32_t v = driver_.speedToInternal(std::abs(fullsteps_per_sec));
+    return static_cast<uint32_t>(std::max<int32_t>(0, v));
+  };
+  auto to_accel_internal = [&](float fullsteps_per_sec2) -> uint32_t {
+    int32_t a = driver_.accelToInternal(std::abs(fullsteps_per_sec2));
+    return static_cast<uint32_t>(std::max<int32_t>(0, a));
+  };
+
+  // Velocities
+  if (driver_.write_only_regs_.vstart > 0U) {
+    uint32_t vstart = std::min<uint32_t>(to_speed_internal(old_vstart_fs), 0x3FFFFU);
+    auto r = driver_.comm_.WriteRegister(Registers::VSTART, vstart, driver_.GetCommAddress());
+    if (!r) return r;
+    driver_.write_only_regs_.vstart = vstart;
+  }
+
+  if (driver_.write_only_regs_.vstop > 0U) {
+    uint32_t vstop = std::min<uint32_t>(to_speed_internal(old_vstop_fs), 0x3FFFFU);
+    if (vstop == 0U) vstop = 1U; // keep datasheet minimum if it was previously enabled
+    auto r = driver_.comm_.WriteRegister(Registers::VSTOP, vstop, driver_.GetCommAddress());
+    if (!r) return r;
+    driver_.write_only_regs_.vstop = vstop;
+  }
+
+  if (driver_.write_only_regs_.v_1 > 0U) {
+    uint32_t v1 = std::min<uint32_t>(to_speed_internal(old_v1_fs), 0xFFFFFU);
+    auto r = driver_.comm_.WriteRegister(Registers::V_1, v1, driver_.GetCommAddress());
+    if (!r) return r;
+    driver_.write_only_regs_.v_1 = v1;
+  }
+
+  if (driver_.write_only_regs_.vmax > 0U) {
+    uint32_t vmax = std::min<uint32_t>(to_speed_internal(old_vmax_fs), 0x7FFE00U);
+    auto r = driver_.comm_.WriteRegister(Registers::VMAX, vmax, driver_.GetCommAddress());
+    if (!r) return r;
+    driver_.write_only_regs_.vmax = vmax;
+  }
+
+  // Accelerations (16-bit registers in this driver)
+  if (driver_.write_only_regs_.a_1 > 0U) {
+    uint32_t a1 = std::min<uint32_t>(to_accel_internal(old_a1_fs2), 0xFFFFU);
+    if (a1 == 0U) a1 = 1U;
+    auto r = driver_.comm_.WriteRegister(Registers::A_1, a1, driver_.GetCommAddress());
+    if (!r) return r;
+    driver_.write_only_regs_.a_1 = a1;
+  }
+
+  if (driver_.write_only_regs_.amax > 0U) {
+    uint32_t amax = std::min<uint32_t>(to_accel_internal(old_amax_fs2), 0xFFFFU);
+    if (amax == 0U) amax = 1U;
+    auto r = driver_.comm_.WriteRegister(Registers::AMAX, amax, driver_.GetCommAddress());
+    if (!r) return r;
+    driver_.write_only_regs_.amax = amax;
+  }
+
+  if (driver_.write_only_regs_.dmax > 0U) {
+    uint32_t dmax = std::min<uint32_t>(to_accel_internal(old_dmax_fs2), 0xFFFFU);
+    if (dmax == 0U) dmax = 1U;
+    auto r = driver_.comm_.WriteRegister(Registers::DMAX, dmax, driver_.GetCommAddress());
+    if (!r) return r;
+    driver_.write_only_regs_.dmax = dmax;
+  }
+
+  if (driver_.write_only_regs_.d_1 > 0U) {
+    uint32_t d1 = std::min<uint32_t>(to_accel_internal(old_d1_fs2), 0xFFFFU);
+    if (d1 == 0U) d1 = 1U;
+    auto r = driver_.comm_.WriteRegister(Registers::D_1, d1, driver_.GetCommAddress());
+    if (!r) return r;
+    driver_.write_only_regs_.d_1 = d1;
+  }
+
+  // Reapply encoder scaling/deviation if configured.
+  if (opts.rescale_encoder && driver_.driver_config_.encoder_config.pulses_per_rev > 0) {
+    int32_t motor_output_steps =
+        static_cast<int32_t>(static_cast<float>(driver_.motor_spec_.steps_per_rev) * driver_.mechanical_system_.gear_ratio);
+    auto enc_res = driver_.encoder.SetResolution(
+        motor_output_steps,
+        static_cast<int32_t>(driver_.driver_config_.encoder_config.pulses_per_rev),
+        driver_.driver_config_.encoder_config.invert_direction);
+    if (!enc_res) {
+      return enc_res;
+    }
+    if (driver_.driver_config_.encoder_config.allowed_deviation_steps > 0) {
+      auto dev_res = driver_.encoder.SetAllowedDeviation(driver_.driver_config_.encoder_config.allowed_deviation_steps);
+      if (!dev_res) {
+        return dev_res;
+      }
+    }
+  }
+
   return Result<void>();
 }
 
@@ -1934,6 +2313,20 @@ Result<void> TMC51x0<CommType>::MotorControl::SetStealthChopVelocityThreshold(fl
 }
 
 template <typename CommType>
+Result<float> TMC51x0<CommType>::MotorControl::GetStealthChopVelocityThreshold(Unit unit) const noexcept {
+  uint32_t tpwmthrs = driver_.write_only_regs_.tpwmthrs;
+  float threshold;
+  if (tpwmthrs == 0) {
+    threshold = 0.0f; // 0 means disabled (infinite threshold)
+  } else {
+    float f_clk = static_cast<float>(driver_.f_clk_);
+    float steps_per_sec = f_clk / (static_cast<float>(tpwmthrs) * 256.0F);
+    threshold = driver_.convertSpeedToUnit(steps_per_sec, unit);
+  }
+  return Result<float>(threshold);
+}
+
+template <typename CommType>
 Result<void> TMC51x0<CommType>::MotorControl::SetGlobalScaler(uint16_t scaler) noexcept {
   // TMC5130 doesn't support GLOBAL_SCALER register
   if (driver_.chip_version_ == ChipVersion::TMC5130) {
@@ -2325,6 +2718,13 @@ Result<ChopperConfig> TMC51x0<CommType>::MotorControl::GetChopperConfig() noexce
   config.vhighchm = chopconf.bits.vhighchm != 0;
   config.diss2g = chopconf.bits.diss2g != 0;
   config.diss2vs = chopconf.bits.diss2vs != 0;
+
+  // Keep driver microstep cache in sync with the actual chip setting (MRES).
+  // This is critical for correct XTARGET/XACTUAL conversions (position is in microsteps).
+  {
+    uint8_t mres_u = constrain<uint8_t>(static_cast<uint8_t>(config.mres), 0U, 8U);
+    driver_.current_microsteps_ = 256U >> mres_u;
+  }
 
   // Mode-specific fields
   bool is_classic_mode = (chopconf.bits.chm != 0);
@@ -3095,21 +3495,77 @@ Result<bool> TMC51x0<CommType>::Diagnostics::IsSoftStopEnabled() noexcept {
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Diagnostics::ClearStallFlag() noexcept {
-  RAMP_STAT_Register ramp_stat{};
-  ramp_stat.bits.event_stop_sg = 1; // Write 1 to clear
-  return driver_.comm_.WriteRegister(Registers::RAMP_STAT, ramp_stat.value, driver_.GetCommAddress());
+  // RAMP_STAT is read-write-clear: writing 1 to event_stop_sg (bit 6 = 0x40) clears it
+  // Per datasheet: "The write and clear function of the event_stop_sg flag in RAMP_STAT
+  // restarts the motor after expiration of TZEROWAIT in case the motion parameters have not been modified."
+  // Best practice: Read-modify-write to avoid overwriting other status bits
+  auto read_result = driver_.comm_.ReadRegister(Registers::RAMP_STAT, driver_.GetCommAddress());
+  if (!read_result) {
+    return Result<void>(read_result.Error());
+  }
+  
+  // Read current value, set bit 6 (event_stop_sg) to 1 to clear it, write back
+  uint32_t current_value = read_result.Value();
+  constexpr uint32_t EVENT_STOP_SG_BIT = 0x40; // Bit 6
+  uint32_t new_value = current_value | EVENT_STOP_SG_BIT; // Set bit 6 to 1 to clear it
+  
+  return driver_.comm_.WriteRegister(Registers::RAMP_STAT, new_value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
 Result<bool> TMC51x0<CommType>::Diagnostics::IsStallDetected() noexcept {
-  auto value_result = driver_.comm_.ReadRegister(Registers::RAMP_STAT, driver_.GetCommAddress());
-  if (!value_result) {
-    return Result<bool>(ErrorCode::COMM_ERROR);
+  // Check if sg_stop is enabled to determine which method to use
+  auto sg_stop_enabled_result = IsStopOnStallEnabled();
+  if (!sg_stop_enabled_result) {
+    return Result<bool>(sg_stop_enabled_result.Error());
   }
-  uint32_t value = value_result.Value();
-  RAMP_STAT_Register ramp_stat{};
-  ramp_stat.value = value;
-  return Result<bool>(ramp_stat.bits.event_stop_sg != 0);
+  bool sg_stop_enabled = sg_stop_enabled_result.Value();
+  
+  if (sg_stop_enabled) {
+    // When sg_stop is enabled, check event_stop_sg flag (hardware sets this when stall detected)
+    auto value_result = driver_.comm_.ReadRegister(Registers::RAMP_STAT, driver_.GetCommAddress());
+    if (!value_result) {
+      return Result<bool>(ErrorCode::COMM_ERROR);
+    }
+    uint32_t value = value_result.Value();
+    RAMP_STAT_Register ramp_stat{};
+    ramp_stat.value = value;
+    return Result<bool>(ramp_stat.bits.event_stop_sg != 0);
+  } else {
+    // When sg_stop is disabled, check status_sg and SG_RESULT directly
+    // status_sg indicates StallGuard2 is active, SG_RESULT indicates load level
+    auto ramp_stat_result = driver_.comm_.ReadRegister(Registers::RAMP_STAT, driver_.GetCommAddress());
+    if (!ramp_stat_result) {
+      return Result<bool>(ErrorCode::COMM_ERROR);
+    }
+    RAMP_STAT_Register ramp_stat{};
+    ramp_stat.value = ramp_stat_result.Value();
+    
+    // If status_sg is not active, no stall
+    if (ramp_stat.bits.status_sg == 0) {
+      return Result<bool>(false);
+    }
+    
+    // Check SG_RESULT to determine if it's a real stall
+    // Use threshold from driver config (defaults to 10 if not configured)
+    auto sg_result = GetStallGuardResult();
+    if (!sg_result) {
+      // If we can't read SG_RESULT but status_sg is active, assume stall
+      return Result<bool>(true);
+    }
+    
+    // Get threshold from driver config (SGT value converted to SG_RESULT threshold)
+    // Default threshold: SG_RESULT <= 10 indicates high load/stall
+    // This is a conservative threshold - user can adjust SGT in StallGuardConfig for different sensitivity
+    constexpr uint16_t DEFAULT_STALL_THRESHOLD = 10;
+    uint16_t stall_threshold = DEFAULT_STALL_THRESHOLD;
+    
+    // If StallGuard is configured, use a threshold based on SGT
+    // Lower SGT values = more sensitive = lower SG_RESULT threshold
+    // For now, use a fixed threshold - could be made configurable in the future
+    // Typical: SG_RESULT <= 100 = high load, but we use 10 for more conservative detection
+    return Result<bool>(sg_result.Value() <= stall_threshold);
+  }
 }
 
 template <typename CommType>
@@ -3187,20 +3643,28 @@ Result<void> TMC51x0<CommType>::Diagnostics::SetTcoolthrs(float threshold, Unit 
 template <typename CommType>
 Result<float> TMC51x0<CommType>::Diagnostics::GetTcoolthrs(Unit unit) const noexcept {
   uint32_t tcoolthrs = driver_.write_only_regs_.tcoolthrs;
-  // Convert TSTEP value back to speed: fSTEP = f_CLK / (TSTEP * USC)
-  // TCOOLTHRS is in TSTEP units (20 bits), where TSTEP = f_CLK / (fSTEP * USC)
-  // So fSTEP = f_CLK / (TCOOLTHRS * USC)
-  // For threshold, we use the same conversion as thresholdSpeedToTstep but in reverse
+  // Convert TSTEP value back to speed in full-steps/s.
+  // See thresholdSpeedToTstep(): TSTEP = f_CLK / (speed_fullsteps_per_sec * 256)
+  // => speed_fullsteps_per_sec = f_CLK / (TSTEP * 256)
   float threshold;
   if (tcoolthrs == 0) {
     threshold = 0.0f; // 0 means disabled (infinite threshold)
   } else {
     float f_clk = static_cast<float>(driver_.f_clk_);
-    float current_microsteps = static_cast<float>(driver_.current_microsteps_);
-    float steps_per_sec = f_clk / (static_cast<float>(tcoolthrs) * current_microsteps);
+    float steps_per_sec = f_clk / (static_cast<float>(tcoolthrs) * 256.0F);
     threshold = driver_.convertSpeedToUnit(steps_per_sec, unit);
   }
   return Result<float>(threshold);
+}
+
+template <typename CommType>
+uint32_t TMC51x0<CommType>::Diagnostics::GetTpwmthrsRegisterValue() const noexcept {
+  return driver_.write_only_regs_.tpwmthrs;
+}
+
+template <typename CommType>
+uint32_t TMC51x0<CommType>::Diagnostics::GetTcoolthrsRegisterValue() const noexcept {
+  return driver_.write_only_regs_.tcoolthrs;
 }
 
 template <typename CommType>
@@ -3233,10 +3697,10 @@ Result<void> TMC51x0<CommType>::Homing::CacheCurrentSettings() noexcept {
   cache_.sw_mode_was_modified = false; // Will be set if we modify it
   
   // Cache ramp settings - read from registers
-  uint32_t ramp_mode_val = 0;
   auto read_result_tmp = driver_.comm_.ReadRegister(Registers::RAMPMODE, driver_.GetCommAddress());
   if (read_result_tmp) {
-    cache_.cached_ramp_mode = static_cast<RampMode>(ramp_mode_val);
+    uint32_t ramp_mode_val = read_result_tmp.Value();
+    cache_.cached_ramp_mode = static_cast<RampMode>(static_cast<uint8_t>(ramp_mode_val & 0x03U));
   }
   
   // Use cached values as VMAX, AMAX, DMAX, VSTART, VSTOP are write-only registers
@@ -3247,18 +3711,15 @@ Result<void> TMC51x0<CommType>::Homing::CacheCurrentSettings() noexcept {
   }
   
   if (driver_.write_only_regs_.amax > 0) {
-    // Convert from internal units (Hz) to steps/s²
-    // Internal: accel = (2^24) / (256 * accel_internal)
-    // Reverse: accel_internal = (2^24) / (256 * accel)
-    // So: accel = (2^24) / (256 * accel_internal)
-    cache_.cached_acceleration = static_cast<float>(16777216.0 / (256.0 * static_cast<double>(driver_.write_only_regs_.amax)));
+    // Convert from internal units to full-steps/s² using the same path as normal ramp reads.
+    cache_.cached_acceleration = driver_.accelFromInternal(static_cast<int32_t>(driver_.write_only_regs_.amax));
   } else {
     cache_.cached_acceleration = 0.0f;
   }
   
   if (driver_.write_only_regs_.dmax > 0) {
-    // Convert from internal units (Hz) to steps/s²
-    cache_.cached_deceleration = static_cast<float>(16777216.0 / (256.0 * static_cast<double>(driver_.write_only_regs_.dmax)));
+    // Convert from internal units to full-steps/s² using the same path as normal ramp reads.
+    cache_.cached_deceleration = driver_.accelFromInternal(static_cast<int32_t>(driver_.write_only_regs_.dmax));
   } else {
     cache_.cached_deceleration = 0.0f;
   }

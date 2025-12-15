@@ -341,6 +341,12 @@ chop_cfg.toff = 5;
 chop_cfg.mres = tmc51x0::MicrostepResolution::MRES_256;  // 256 microsteps
 driver.motorControl.ConfigureChopper(chop_cfg);
 
+// Note:
+// - If you change MRES at runtime, the driver preserves physical meaning by default:
+//   positions (XACTUAL/XTARGET) and ramp profile are rescaled so motion stays consistent.
+// - Changing MRES while moving is rejected (requires standstill).
+// - For explicit control, use SetMicrostepResolution() with MicrostepChangeOptions.
+
 // Configure StealthChop (automatic tuning mode - recommended)
 tmc51x0::StealthChopConfig stealth_cfg{};
 stealth_cfg.pwm_freq = 1;           // PWM frequency (~35kHz @ 12MHz)

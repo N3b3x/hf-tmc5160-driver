@@ -1194,8 +1194,8 @@ bool test_reference_switch_configuration() noexcept {
   int32_t final_pos = 0;
   // Use short timeout for test
   auto result = handle->driver->homing.PerformSwitchHoming(true, 
-                                                                Test::Motion::HOMING_SEARCH_SPEED_RPM, 
-                                                                Test::Motion::HOMING_SWITCH_SPEED_RPM, 
+                                                                Test::Motion::BOUNDS_SEARCH_SPEED_RPM, 
+                                                                0.0f,  // switch_speed unused in current implementation 
                                                                 final_pos, true, 100);
   
   if (result.IsErr()) {

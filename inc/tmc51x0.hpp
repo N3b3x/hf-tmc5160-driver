@@ -331,6 +331,11 @@ public:
      * zero/home position set via SetCurrentPosition(). If home is unknown, call
      * SetCurrentPosition(0.0f) at the current physical position to establish a
      * reference point.
+     *
+     * @note Internally, XTARGET/XACTUAL are in **microsteps** and therefore depend
+     *       on the configured microstep resolution (CHOPCONF.MRES). When using
+     *       Unit::Steps here, the value is interpreted as **motor full steps**
+     *       and will be converted to microsteps using the current MRES setting.
      */
     Result<void> SetTargetPosition(float value, Unit unit) noexcept;
 
@@ -359,6 +364,10 @@ public:
      * Returns the current position relative to the zero/home position set via
      * SetCurrentPosition(). If home is unknown, call SetCurrentPosition(0.0f)
      * at the current physical position first.
+     *
+     * @note Internally, XACTUAL is in **microsteps** (depends on CHOPCONF.MRES).
+     *       When requesting Unit::Steps, the returned value is in **motor full
+     *       steps** (microsteps are converted back using the current MRES).
      */
     Result<float> GetCurrentPosition(Unit unit) noexcept;
 
@@ -671,6 +680,14 @@ public:
     TMC51x0 &driver_; ///< Reference to parent driver instance
 
     // Internal helper methods (used by unit-aware public methods)
+    /**
+     * @brief Set XTARGET directly in register units
+     * @param position Target position in **microsteps** (XTARGET register units)
+     *
+     * @note This bypasses unit conversion. XTARGET units depend on CHOPCONF.MRES
+     *       (microstep resolution). Prefer the public float+Unit overload unless
+     *       you intentionally work in raw register units.
+     */
     Result<void> SetTargetPosition(int32_t position) noexcept;
     Result<void> SetCurrentPosition(int32_t position,
                                     bool update_encoder = false) noexcept;
@@ -722,6 +739,24 @@ public:
      * @return Result<void> indicating success or error
      */
     Result<void> ConfigureChopper(const ChopperConfig &config) noexcept;
+
+    /**
+     * @brief Change microstep resolution (CHOPCONF.MRES)
+     * @param mres New microstep resolution
+     * @param opts Options controlling rescaling behavior
+     * @return Result<void> indicating success or error
+     *
+     * By default, this preserves physical meaning across the MRES change:
+     * - Position registers (XACTUAL/XTARGET/X_COMPARE) are rescaled in microstep counts
+     * - Motion profile registers are rewritten so speed/accel in user units remain unchanged
+     * - Encoder scaling is recalculated if encoder is configured
+     *
+     * If the motor is not in standstill and opts.require_standstill is true (default),
+     * the operation fails with INVALID_STATE.
+     */
+    Result<void> SetMicrostepResolution(
+        MicrostepResolution mres,
+        const MicrostepChangeOptions &opts = MicrostepChangeOptions{}) noexcept;
 
     /**
      * @brief Configure stealthChop settings
@@ -799,6 +834,20 @@ public:
      */
     Result<void> SetStealthChopVelocityThreshold(float value,
                                                  Unit unit) noexcept;
+
+    /**
+     * @brief Get StealthChop velocity threshold (TPWMTHRS) from local storage
+     * @param unit Unit of the returned threshold
+     * @return Result<float> containing the threshold in requested units
+     *
+     * Returns the locally tracked value of TPWMTHRS register converted back to
+     * a speed threshold. This is the velocity below which StealthChop may be
+     * used (when StealthChop is enabled via GCONF.en_pwm_mode).
+     *
+     * @note TPWMTHRS uses the same TSTEP timebase conversion as TCOOLTHRS:
+     * TSTEP = f_CLK / (speed_fullsteps_per_sec * 256).
+     */
+    Result<float> GetStealthChopVelocityThreshold(Unit unit) const noexcept;
 
     /**
      * @brief Set global current scaler
@@ -1447,9 +1496,17 @@ public:
     Result<void> ClearStallFlag() noexcept;
 
     /**
-     * @brief Check if stall was detected (event_stop_sg in RAMP_STAT)
-     * @return Result<bool> containing true if stall event detected, false
-     * otherwise
+     * @brief Check if stall was detected
+     * 
+     * Automatically adapts based on whether stop-on-stall (sg_stop) is enabled:
+     * - If sg_stop is enabled: Checks event_stop_sg flag (hardware sets this when stall detected)
+     * - If sg_stop is disabled: Checks status_sg and SG_RESULT directly
+     *   (status_sg indicates StallGuard2 is active, SG_RESULT <= 10 indicates high load/stall)
+     * 
+     * This method abstracts away the complexity of knowing which register to check
+     * based on the driver configuration.
+     * 
+     * @return Result<bool> containing true if stall detected, false otherwise
      */
     Result<bool> IsStallDetected() noexcept;
 
@@ -1536,6 +1593,18 @@ public:
      * @return Result<uint32_t> containing the value or error
      */
     Result<uint32_t> GetRampStatusRegister() noexcept;
+
+    /**
+     * @brief Get locally tracked TPWMTHRS register value (raw)
+     * @return Raw TPWMTHRS register value (20-bit meaningful range)
+     */
+    uint32_t GetTpwmthrsRegisterValue() const noexcept;
+
+    /**
+     * @brief Get locally tracked TCOOLTHRS register value (raw)
+     * @return Raw TCOOLTHRS register value (20-bit meaningful range)
+     */
+    uint32_t GetTcoolthrsRegisterValue() const noexcept;
 
     /**
      * @brief Clear specific bits in RAMP_STAT register
@@ -2314,6 +2383,13 @@ private:
   [[nodiscard]] int32_t accelToInternal(float accel_hz) const noexcept;
 
   /**
+   * @brief Convert acceleration from internal TMC5160 units to steps/s²
+   * @param accel_internal Acceleration in internal TMC5160 units
+   * @return Acceleration in steps per second squared
+   */
+  [[nodiscard]] float accelFromInternal(int32_t accel_internal) const noexcept;
+
+  /**
    * @brief Convert threshold speed to TSTEP format
    * @param speed_hz Speed threshold in steps per second
    * @return TSTEP value (0 if speed is 0)
@@ -2324,10 +2400,12 @@ private:
 } // namespace tmc51x0
 
 // Include template implementation
+#ifndef TMC51X0_COMPILING_SRC
 #define TMC51X0_HEADER_INCLUDED
 // NOLINTNEXTLINE(bugprone-suspicious-include) - Intentional: template
 // implementation file
 #include "../src/tmc51x0.cpp"
 #undef TMC51X0_HEADER_INCLUDED
+#endif
 
 #endif // TMC51X0_HPP

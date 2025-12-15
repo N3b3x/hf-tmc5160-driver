@@ -11,14 +11,23 @@
  * Supports both StallGuard2 and encoder-based bounds detection.
  */
 
+ #include <memory>
+ #include <algorithm>
+ #include <cmath>
+ #include <cstring>
+ #include <string>
+ #include <vector>
+ #include <cstdarg>
+
 #include "../../../inc/tmc51x0.hpp"
 #include "test_config/esp32_tmc51x0_bus.hpp"
-#include "test_config/esp32_tmc51x0_test_config.hpp"
 
 #include "espnow_protocol.hpp"
 #include "espnow_receiver.hpp"
 #include "bounds_finder.hpp"
-#include <memory>
+
+#include "test_config/esp32_tmc51x0_test_config.hpp"
+#include "fatigue_motion.hpp"
 
 #include "esp_log.h"
 #include "esp_timer.h"
@@ -27,15 +36,6 @@
 #include "freertos/task.h"
 #include "freertos/queue.h"
 #include "freertos/semphr.h"
-#include <algorithm>
-#include <cmath>
-#include <cstring>
-#include <cstdlib>
-#include <string>
-#include <vector>
-#include <cstdarg>
-#include <map>
-
 static const char* TAG = "FatigueTestUnit";
 
 // Test rig selection
@@ -56,55 +56,6 @@ static bool g_use_stallguard = true;
 
 // g_motion will be declared after FatigueTestMotion is defined
 
-// RAII Mutex classes (same as fatigue_test_encoder.cpp)
-class Esp32TmcMutex {
-public:
-    Esp32TmcMutex() noexcept : handle_(xSemaphoreCreateMutex()) {
-        if (handle_ == nullptr) {
-            ESP_LOGE(TAG, "Failed to create mutex");
-        }
-    }
-    ~Esp32TmcMutex() noexcept {
-        if (handle_ != nullptr) {
-            vSemaphoreDelete(handle_);
-            handle_ = nullptr;
-        }
-    }
-    Esp32TmcMutex(const Esp32TmcMutex&) = delete;
-    Esp32TmcMutex& operator=(const Esp32TmcMutex&) = delete;
-    SemaphoreHandle_t native_handle() const noexcept { return handle_; }
-    bool is_valid() const noexcept { return handle_ != nullptr; }
-private:
-    SemaphoreHandle_t handle_;
-};
-
-class TmcMutexGuard {
-public:
-    explicit TmcMutexGuard(Esp32TmcMutex& mutex) noexcept : mutex_(mutex), locked_(false) {
-        if (mutex_.is_valid()) {
-            SemaphoreHandle_t handle = mutex_.native_handle();
-            if (xSemaphoreTake(handle, portMAX_DELAY) == pdTRUE) {
-                locked_ = true;
-            }
-        }
-    }
-    ~TmcMutexGuard() noexcept { unlock(); }
-    void unlock() noexcept {
-        if (locked_ && mutex_.is_valid()) {
-            SemaphoreHandle_t handle = mutex_.native_handle();
-            xSemaphoreGive(handle);
-            locked_ = false;
-        }
-    }
-    bool is_locked() const noexcept { return locked_; }
-private:
-    Esp32TmcMutex& mutex_;
-    bool locked_;
-};
-
-// Include full FatigueTestMotion implementation (after mutex classes are defined)
-#include "fatigue_motion.hpp"
-#include "fatigue_motion_impl.hpp"
 
 // Now declare g_motion after FatigueTestMotion is fully defined
 static FatigueTest::FatigueTestMotion* g_motion = nullptr;
@@ -257,7 +208,12 @@ static void motion_control_task(void* arg)
             }
             motion_was_running = motion_is_running;
             
-            g_motion->Update();
+            // Only call Update() if motion is actually running
+            // This prevents UpdateSinuousMotion() from being called when motion hasn't started
+            // which could cause fast oscillation if start_time_us_ is 0
+            if (motion_is_running) {
+                g_motion->Update();
+            }
             
             // Monitor StallGuard values during motion (only when using StallGuard method)
             if (g_use_stallguard && motion_is_running && g_driver) {
@@ -1325,9 +1281,6 @@ extern "C" void app_main()
     ESP_LOGI(TAG, "Clock Config - frequency_hz: %u", cfg.external_clk_config.frequency_hz);
     ESP_LOGI(TAG, "===================================");
     
-    constexpr uint16_t output_full_steps = 
-        tmc51x0_test_config::GetTestRigMotorOutputFullSteps<SELECTED_TEST_RIG>();
-    
     auto driver_init_result = driver.Initialize(cfg);
     if (!driver_init_result) {
         ESP_LOGE(TAG, "Failed to initialize TMC51x0 driver (ErrorCode: %d)", static_cast<int>(driver_init_result.Error()));
@@ -1367,22 +1320,11 @@ extern "C" void app_main()
 
     // Wait for config from UI board before finding bounds
     ESP_LOGI(TAG, "Waiting for configuration from UI board...");
-    vTaskDelay(pdMS_TO_TICKS(2000)); // Give UI board time to send config
+    vTaskDelay(pdMS_TO_TICKS(2000));
 
     // Find bounds using abstracted bounds finder
+    // NOTE: Bounds finder will command its own motion - this is expected and safe
     ESP_LOGI(TAG, "Finding bounds using %s method...", g_use_stallguard ? "StallGuard2" : "Encoder");
-    
-    if (g_use_stallguard) {
-        using TestConfig = tmc51x0_test_config::GetTestConfigForTestRig<SELECTED_TEST_RIG>;
-        ESP_LOGI(TAG, "StallGuard2 Requirements:");
-        ESP_LOGI(TAG, "  - SpreadCycle mode (StealthChop disabled) - REQUIRED");
-        ESP_LOGI(TAG, "  - Minimum velocity: ~1-5 RPS (60-300 RPM) for reliable operation");
-        ESP_LOGI(TAG, "  - Current setting: 30-70%% of nominal motor current");
-        ESP_LOGI(TAG, "  - SGT threshold: %d (configured for this motor)", 
-                 TestConfig::StallGuard::SGT_HOMING);
-        ESP_LOGI(TAG, "  - SG_RESULT: 0-100 = high load/near stall, 500-1023 = low load");
-        ESP_LOGI(TAG, "  - StallGuard values will be logged during motion for diagnostics");
-    }
     
     std::unique_ptr<FatigueTest::IBoundsFinder> bounds_finder;
     if (g_use_stallguard) {
@@ -1392,9 +1334,8 @@ extern "C" void app_main()
     }
 
     if (bounds_finder) {
-        // FindBounds expects full steps per rev (used only for logging, driver handles conversions)
-        constexpr uint16_t full_steps_per_rev = output_full_steps; // Full steps without microsteps
-        auto result = bounds_finder->FindBounds(driver, full_steps_per_rev);
+        // FindBounds gets steps_per_rev from test rig config automatically
+        auto result = bounds_finder->FindBounds(driver);
         if (result.success) {
             motion.SetGlobalBounds(result.min_bound, result.max_bound);  // Already in degrees
             motion.SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
@@ -1431,14 +1372,25 @@ extern "C" void app_main()
     ESP_LOGI(TAG, "UART command interface ready on UART_NUM_0 (USB serial)");
     ESP_LOGI(TAG, "Type 'help' for command usage information");
 
+    // CRITICAL: Ensure motor is stopped before creating tasks
+    // Tasks will call Update() but it will return early if motion not running
+    ESP_LOGI(TAG, "Ensuring motor is stopped before creating tasks...");
+    driver.rampControl.Stop();
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+    vTaskDelay(pdMS_TO_TICKS(200)); // Allow motor to fully stop
+
     // Create tasks
+    // NOTE: motion_control_task will call Update() but Update() checks running_ flag
+    // Since motion is not started, Update() will return early and cause no motion
+    ESP_LOGI(TAG, "Creating background tasks...");
     xTaskCreate(espnow_command_task, "espnow_cmd", 4096, nullptr, 5, nullptr);
     xTaskCreate(motion_control_task, "motion_ctrl", 8192, nullptr, 5, nullptr);
     xTaskCreate(status_update_task, "status_upd", 4096, nullptr, 3, nullptr);
     xTaskCreate(uart_command_task, "uart_cmd", 4096, &parser, 3, nullptr);
+    ESP_LOGI(TAG, "All tasks created");
     
     ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
-    ESP_LOGI(TAG, "║                    System Ready - Use UART or ESP-NOW Commands                ║");
+    ESP_LOGI(TAG, "║                    System Ready - Use UART or ESP-NOW Commands               ║");
     ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
 
     // Main loop (also tracks time elapsed)

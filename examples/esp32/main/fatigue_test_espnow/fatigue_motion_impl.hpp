@@ -4,11 +4,23 @@
  * 
  * Complete implementation extracted from fatigue_test_stallguard.cpp and fatigue_test_encoder.cpp
  * Provides full-featured sinusoidal motion with trajectory calculation, dwell handling, and cycle counting.
+ * 
+ * This file is included by fatigue_motion.hpp to provide header-only implementation.
  */
 
-#pragma once
+#ifndef FATIGUE_MOTION_IMPL
+#define FATIGUE_MOTION_IMPL
 
+// When included from header, use conditional include; when compiled directly, include header
+#ifdef FATIGUE_MOTION_HEADER_INCLUDED
+// Already included from header - the class definition is available in the current context
+// We're inside the namespace, so we can access the class
+// No need to include header or open namespace
+#else
+// Not included from header (shouldn't happen for template implementation)
 #include "fatigue_motion.hpp"
+#endif
+
 #include "esp_log.h"
 #include "esp_timer.h"
 #include <algorithm>
@@ -16,10 +28,18 @@
 
 static const char* TAG_MOTION = "FatigueMotion";
 
+// When included from header, namespace is already closed in header
+// When compiled standalone, we need to open the namespace
+#ifdef FATIGUE_MOTION_HEADER_INCLUDED
+// Included from header - namespace was closed before this include
+// Use 'using namespace' to bring namespace into scope (matches tmc51x0.cpp pattern)
+using namespace FatigueTest;
+#else
+// Standalone compilation - open namespace
 namespace FatigueTest {
+#endif
 
-// Note: Esp32TmcMutex and TmcMutexGuard must be defined before including this file
-// They are defined in main.cpp before this include
+// Note: Esp32TmcMutex and TmcMutexGuard are included by fatigue_motion.hpp
 
 // Implementation
 
@@ -76,6 +96,8 @@ void FatigueTestMotion::SetUnbounded(float current_position_degrees, float defau
     // IMPORTANT: After this point, use ABSOLUTE positioning (SetTargetPosition)
     // Before this, we would use RELATIVE positioning (MoveRelative) if needed
     driver_->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
+    driver_->rampControl.SetTargetPosition(0.0f, tmc51x0::Unit::Deg);
+    driver_->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
     ESP_LOGW(TAG_MOTION, "Unbounded mode: No mechanical stops found");
     ESP_LOGI(TAG_MOTION, "Using current position as home: %.2f°", current_position_degrees);
     ESP_LOGI(TAG_MOTION, "Default global range: [%.2f°, %.2f°]", global_min_bound_, global_max_bound_);
@@ -208,6 +230,7 @@ bool FatigueTestMotion::Start() noexcept {
     
     {
         TmcMutexGuard guard(mutex_);
+        // CRITICAL: Verify bounds are set before allowing motion to start
         if (fabsf(local_min_bound_) < 0.01f && fabsf(local_max_bound_) < 0.01f) {
             ESP_LOGE(TAG_MOTION, "Cannot start: local bounds not set!");
             return false;
@@ -217,6 +240,30 @@ bool FatigueTestMotion::Start() noexcept {
             ESP_LOGW(TAG_MOTION, "Cycle count reached. Reset cycles or set new target to continue.");
             return false;
         }
+    }
+    
+    // CRITICAL: Verify motor is stopped before starting new motion
+    // This prevents parameter changes during active motion
+    // Check outside mutex to avoid holding lock during driver calls
+    auto standstill_result = driver_->rampControl.IsStandstill();
+    if (!standstill_result || !standstill_result.Value()) {
+        ESP_LOGW(TAG_MOTION, "Motor not at standstill, stopping before start...");
+        driver_->rampControl.Stop();
+        vTaskDelay(pdMS_TO_TICKS(200));
+        // Wait for standstill
+        uint32_t checks = 0;
+        while (checks < 20) {
+            checks++;
+            auto check_result = driver_->rampControl.IsStandstill();
+            if (check_result && check_result.Value()) {
+                break;
+            }
+            vTaskDelay(pdMS_TO_TICKS(100));
+        }
+    }
+    
+    {
+        TmcMutexGuard guard(mutex_);
         
         // Update trajectory before starting
         RecalculateTrajectory();
@@ -356,6 +403,15 @@ void FatigueTestMotion::ClipLocalBoundsToGlobal() noexcept {
 }
 
 void FatigueTestMotion::UpdateSinuousMotion() noexcept {
+    // CRITICAL SAFETY CHECK: Never run sinusoidal motion if not started properly
+    // This prevents fast oscillation when start_time_us_ is 0 (uninitialized)
+    {
+        TmcMutexGuard guard(mutex_);
+        if (!running_ || start_time_us_ == 0) {
+            return; // Motion not started or not properly initialized
+        }
+    }
+    
     uint64_t elapsed_us;
     float freq, amp;
     float home, local_min, local_max;
@@ -608,4 +664,9 @@ float FatigueTestMotion::GetEstimatedFrequency() const noexcept {
     return estimated_frequency_hz_;
 }
 
+// Close namespace only if we opened it (standalone compilation)
+#ifndef FATIGUE_MOTION_HEADER_INCLUDED
 } // namespace FatigueTest
+#endif
+
+#endif // FATIGUE_MOTION_IMPL

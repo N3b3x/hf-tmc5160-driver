@@ -649,6 +649,46 @@ enum class MicrostepResolution : uint8_t {
 };
 
 /**
+ * @brief Options for changing microstep resolution (CHOPCONF.MRES)
+ *
+ * The TMC51x0 uses **microsteps** as the native unit for position (XACTUAL/XTARGET)
+ * and as the physical base for the internal ramp generator timing (velocity/acceleration
+ * scaling). Changing microstep resolution therefore changes the meaning of stored
+ * register values unless they are rescaled.
+ *
+ * These options control whether the driver preserves the *physical* meaning of
+ * positions and motion profiles when MRES changes.
+ */
+struct MicrostepChangeOptions {
+  /**
+   * @brief Preserve physical meaning of position and motion profile on MRES change
+   *
+   * When true (default), the driver rescales all dependent registers so that:
+   * - Physical position remains unchanged (XACTUAL/XTARGET/X_COMPARE rescaled)
+   * - Motion profile remains unchanged in user units (VMAX/VSTART/VSTOP/V1 + AMAX/A1/DMAX/D1 rewritten)
+   *
+   * When false, the driver performs a \"raw\" MRES change and does not touch other registers.
+   */
+  bool preserve_physical_units{true};
+
+  /**
+   * @brief Require standstill before changing MRES
+   *
+   * When true (default), the driver rejects MRES changes unless the motor is in standstill.
+   * This avoids discontinuities while moving.
+   */
+  bool require_standstill{true};
+
+  /**
+   * @brief Reapply encoder scaling after MRES change (if encoder is configured)
+   *
+   * Encoder mapping uses microsteps internally (ENC_CONST and deviation thresholds), so
+   * it typically must be recalculated after MRES changes to preserve physical meaning.
+   */
+  bool rescale_encoder{true};
+};
+
+/**
  * @brief Chopper configuration structure
  *
  * User-friendly configuration for SpreadCycle and Classic chopper modes.

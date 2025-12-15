@@ -233,8 +233,24 @@ void moveToPosition(float target_mm) {
 
 **Solution**:
 - Verify `steps_per_rev` is correct
-- Check that microstep resolution matches your chopper configuration
-- Remember: internal calculations use microsteps (256 per step)
+- Check the configured microstep resolution (`chopper.mres`)
+- If you change microstep resolution (MRES) at runtime, do it at standstill:
+  - The driver will preserve physical meaning by default (position + ramp profile are rescaled)
+  - If you intentionally want a \"raw\" change (no rescaling), use `SetMicrostepResolution()` with `MicrostepChangeOptions{ .preserve_physical_units = false }`
+
+### Quick Verification: MRES Change Preserves Physical Units
+
+At standstill:
+- Record position in full steps: `GetCurrentPosition(Unit::Steps)`
+- Record configured max speed in RPM: `GetCurrentSpeed(Unit::RPM)` (or track your configured VMAX)
+- Change MRES (e.g. 256 → 128) using `SetMicrostepResolution()`
+- Verify:
+  - `GetCurrentPosition(Unit::Steps)` is unchanged
+  - A move of N full steps still moves the same physical distance
+
+### Note on Quantization and Rounding
+
+All motion and position settings are ultimately written to integer-valued driver registers.\nThis means values expressed in real units (RPM/deg/mm) are **quantized** to the nearest representable register value.\nThe driver uses a consistent policy of **round-to-nearest (ties away from zero)** when converting float inputs to register values.\n 
 
 ---
 

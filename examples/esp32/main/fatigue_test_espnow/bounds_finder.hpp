@@ -44,12 +44,10 @@ public:
     /**
      * @brief Find motor bounds in both directions
      * @param driver TMC51x0 driver instance
-     * @param steps_per_rev Steps per revolution (used only for logging, driver handles conversions)
      * @return BoundsResult with found bounds in degrees
      */
     virtual BoundsResult FindBounds(
-        tmc51x0::TMC51x0<Esp32SPI>& driver,
-        uint16_t steps_per_rev
+        tmc51x0::TMC51x0<Esp32SPI>& driver
     ) = 0;
     
     /**

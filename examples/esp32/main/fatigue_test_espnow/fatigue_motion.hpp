@@ -10,13 +10,10 @@
 
 #include "../../../inc/tmc51x0.hpp"
 #include "test_config/esp32_tmc51x0_bus.hpp"
+#include "test_config/esp32_tmc_mutex.hpp"  // Required for Esp32TmcMutex member variable
 #include <cstdint>
 #include <cstdbool>
 #include <cmath>
-
-// Forward declarations
-class Esp32TmcMutex;
-class TmcMutexGuard;
 
 namespace FatigueTest {
 
@@ -126,3 +123,12 @@ private:
 };
 
 } // namespace FatigueTest
+
+// Include implementation
+// Note: esp32_tmc_mutex.hpp is already included above (required for Esp32TmcMutex member variable)
+#ifndef FATIGUE_MOTION_HEADER_INCLUDED
+#define FATIGUE_MOTION_HEADER_INCLUDED
+// NOLINTNEXTLINE(bugprone-suspicious-include) - Intentional: implementation file
+#include "fatigue_motion_impl.hpp"
+#undef FATIGUE_MOTION_HEADER_INCLUDED
+#endif // FATIGUE_MOTION_HEADER_INCLUDED
