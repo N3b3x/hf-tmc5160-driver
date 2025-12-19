@@ -87,10 +87,12 @@ namespace tmc51x0 {
  * | `rampControl` motion/profile setters (XTARGET/VMAX/AMAX/...) | ✅ | ❌ (INVALID_STATE) |
  * | `homing` (sensorless/switch homing routines) | ✅ | ❌ (INVALID_STATE) |
  * | `tuning` (StallGuard tuning routines) | ✅ | ❌ (INVALID_STATE) |
- * | `motorControl` (chopper, stealthChop, currents, LUT, power stage) | ✅ | ✅ (feature-dependent) |
- * | `encoder` (ABN encoder config/read) | ✅ | ✅ |
- * | `diagnostics` (status, StallGuard values, DRV_STATUS, IOIN, etc.) | ✅ | ✅ |
- * | `communication` (SPI_MODE/SD_MODE pins, UART node addr, clock) | ✅ | ✅ |
+ * | `motorControl` (chopper, stealthChop, currents, LUT) | ✅ | ✅ (feature-dependent) |
+ * | `thresholds` (TPWMTHRS/TCOOLTHRS/THIGH/VDCMIN) | ✅ | ✅ (feature-dependent) |
+ * | `powerStage` (DRV_CONF/SHORT_CONF) | ✅ | ✅ |
+ * | `encoder` (ABN encoder config/read) | ✅ | ❌ (INVALID_STATE) |
+ * | `status` (GSTAT/DRV_STATUS/RAMP_STAT/IOIN/etc.) | ✅ | ✅ |
+ * | `io` (SPI_MODE/SD_MODE pin helpers, IOIN/OUTPUT helpers) | ✅ | ✅ |
  *
  * Notes:
  * - In SD_MODE=1, you typically still configure chopper/StealthChop/CoolStep/
@@ -106,10 +108,10 @@ namespace tmc51x0 {
  *   // ... implement required methods
  * };
  *
- * MySPI spiComm;
+ * MySPI spi_comm;
  *
  * // Create TMC51x0 driver with template parameter
- * tmc51x0::TMC51x0<MySPI> driver(spiComm);
+ * tmc51x0::TMC51x0<MySPI> driver(spi_comm);
  *
  * // Initialize driver
  * tmc51x0::DriverConfig cfg{};

@@ -766,18 +766,18 @@ static constexpr uint8_t calculateCrc8(const uint8_t *data,
 
   // Process each byte LSB to MSB
   for (size_t i = 0; i < length; ++i) {
-    uint8_t currentByte = data[i];
+    uint8_t current_byte = data[i];
 
     // Process each bit LSB to MSB (j=0 is LSB, j=7 is MSB)
     for (uint8_t j = 0; j < 8; ++j) {
-      // Check: (CRC >> 7) XOR (currentByte & 0x01)
-      // This XORs the MSB of CRC with the LSB of currentByte
-      if (((crc >> 7) ^ (currentByte & 0x01)) != 0) {
+      // Check: (CRC >> 7) XOR (current_byte & 0x01)
+      // This XORs the MSB of CRC with the LSB of current_byte
+      if (((crc >> 7) ^ (current_byte & 0x01)) != 0) {
         crc = (crc << 1) ^ 0x07; // Polynomial 0x07 (CRC8-ATM)
       } else {
         crc = (crc << 1);
       }
-      currentByte = currentByte >> 1; // Shift to next bit (LSB to MSB)
+      current_byte = current_byte >> 1; // Shift to next bit (LSB to MSB)
     }
   }
 

@@ -68,7 +68,7 @@ namespace tmc51x0 {
  *
  * @code
  * // Create daisy-chain with 3 onboard devices
- * tmc51x0::TMC51x0DaisyChain<MySPI, 5> chain(spiComm, 3, 12'000'000);
+ * tmc51x0::TMC51x0DaisyChain<MySPI, 5> chain(spi_comm, 3, 12'000'000);
  *
  * // Create user-friendly aliases for device indices
  * auto& x_axis = chain[0];  // Position 0 = X-axis motor
@@ -86,12 +86,12 @@ namespace tmc51x0 {
  * @code
  * // Create SPI communication interface (shared by all devices)
  * class MySPI : public tmc51x0::SpiCommInterface<MySPI> { ... };
- * MySPI spiComm;
- * spiComm.Initialize();
+ * MySPI spi_comm;
+ * spi_comm.Initialize();
  *
  * // Create daisy-chain manager with 3 onboard devices, capacity for 5 total
  * // Onboard devices are created at positions 0, 1, 2 (sequential)
- * tmc51x0::TMC51x0DaisyChain<MySPI, 5> chain(spiComm, 3, 12'000'000);
+ * tmc51x0::TMC51x0DaisyChain<MySPI, 5> chain(spi_comm, 3, 12'000'000);
  *
  * // Initialize onboard devices
  * tmc51x0::DriverConfig cfg{};
