@@ -60,7 +60,7 @@ bool homeMotor() {
     sg_config.threshold = -10;        // Stall threshold (tune for your motor)
     sg_config.enable_filter = true;     // Enable filter for stability
     
-    if (!driver.diagnostics.ConfigureStallGuard(sg_config)) {
+    if (!driver.stallGuard.ConfigureStallGuard(sg_config)) {
         return false;
     }
     
@@ -132,7 +132,7 @@ void tuneStallThreshold() {
             break;
         }
         
-        auto sg_result = driver.diagnostics.GetStallGuard();
+        auto sg_result = driver.stallGuard.GetStallGuard();
         if (sg_result) {
             uint16_t sg_value = sg_result.Value();
             printf("StallGuard: %d\n", sg_value);
@@ -172,7 +172,7 @@ public:
         sg_config.threshold = stall_threshold_;
         sg_config.enable_filter = true;  // Filter for stability
         
-        if (!driver_.diagnostics.ConfigureStallGuard(sg_config)) {
+        if (!driver_.stallGuard.ConfigureStallGuard(sg_config)) {
             return false;
         }
         
@@ -309,7 +309,7 @@ bool homeManual() {
     tmc51x0::StallGuardConfig sg_config{};
     sg_config.threshold = -10;
     sg_config.enable_filter = true;
-    driver.diagnostics.ConfigureStallGuard(sg_config);
+    driver.stallGuard.ConfigureStallGuard(sg_config);
     
     // Start movement
     driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_NEG);
@@ -322,7 +322,7 @@ bool homeManual() {
     uint32_t start_time = getCurrentTimeMs();
     
     while (getCurrentTimeMs() - start_time < TIMEOUT_MS) {
-        uint16_t sg_value = driver.diagnostics.GetStallGuard();
+        uint16_t sg_value = driver.stallGuard.GetStallGuard().Value();
         
         if (sg_value < STALL_THRESHOLD) {
             // Stall detected

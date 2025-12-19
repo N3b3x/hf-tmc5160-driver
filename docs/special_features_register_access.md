@@ -17,7 +17,7 @@ The TMC51x0 registers are divided into functional groups. Each register has spec
 | `0x00` | `GCONF` | **RW** | Global configuration flags (direction, PWM mode, diagnostics). |
 | `0x01` | `GSTAT` | **RWC** | Global status flags (reset, error, UV). Write 1 to clear flags. |
 | `0x02` | `IFCNT` | **R** | Interface transmission counter (UART only). |
-| `0x03` | `SLAVECONF`| **W** | UART slave address and send delay configuration. |
+| `0x03` | `NODECONF`| **W** | UART node address and send delay configuration. |
 | `0x04` | `IOIN` | **R** | Reads state of all digital input pins. |
 | `0x04` | `OUTPUT` | **W** | Sets SDO_CFG0 pin polarity (Bit 0). Same address as IOIN! |
 | `0x05` | `X_COMPARE`| **W** | Position comparison value for position pulse output. |
@@ -32,7 +32,7 @@ The TMC51x0 registers are divided into functional groups. Each register has spec
 **Usage Recommendations:**
 - **`GCONF`**: Configure at startup. Use `driver.ConfigureGlobalConfig()`.
 - **`GSTAT`**: Check for `uv_cp` (Charge Pump Undervoltage) if motor stops unexpectedly. Clear `reset` flag after initialization.
-- **`IOIN`**: Use `driver.diagnostics.ReadInputStatus()` to verify wiring (e.g., `REFL`/`REFR` switches, `DRV_ENN`).
+- **`IOIN`**: Use `driver.io.ReadInputStatus()` to verify wiring (e.g., `REFL`/`REFR` switches, `DRV_ENN`).
 - **`GLOBAL_SCALER`**: Set to appropriate value (e.g., 160-256) to match motor current capability.
 
 ### 1.2 Velocity Dependent Driver Feature Control (0x10...0x1F)
@@ -48,7 +48,7 @@ The TMC51x0 registers are divided into functional groups. Each register has spec
 
 **Usage Recommendations:**
 - **`IHOLD_IRUN`**: Use `driver.motorControl.SetCurrent(irun, ihold)`. Typical `irun=16-31`, `ihold=0-16`.
-- **Thresholds**: Use `driver.motorControl.SetModeChangeSpeeds()` to set `TPWMTHRS`, `TCOOLTHRS`, and `THIGH` (default unit: revolutions per second).
+- **Thresholds**: Use `driver.thresholds.SetModeChangeSpeeds()` to set `TPWMTHRS`, `TCOOLTHRS`, and `THIGH` (default unit: revolutions per second).
     - `TPWMTHRS`: Set typical cruising speed limit for silent operation.
     - `TCOOLTHRS`: Set above startup speed to enable StallGuard only when moving stably.
 
@@ -87,7 +87,7 @@ The TMC51x0 registers are divided into functional groups. Each register has spec
 
 **Usage Recommendations:**
 - **Homing**: Use `driver.homing.PerformSensorlessHoming()` or `driver.homing.PerformSwitchHoming()`.
-- **Endstops**: Configure with `driver.rampControl.ConfigureReferenceSwitch()`. Use `ReadInputStatus` to verify wiring logic (NO/NC).
+- **Endstops**: Configure with `driver.switches.ConfigureReferenceSwitch()`. Use `driver.io.ReadInputStatus()` to verify wiring logic (NO/NC).
 
 ### 1.5 Encoder Registers (0x38...0x3C)
 
@@ -133,7 +133,7 @@ The TMC51x0 registers are divided into functional groups. Each register has spec
 Always perform a setup verification at startup to catch hardware issues early:
 ```cpp
 // Verify IC connection and Input Pins
-if (!driver.diagnostics.VerifySetup()) {
+if (!driver.status.VerifySetup()) {
     // Handle error - check power/wiring
 }
 ```

@@ -358,7 +358,7 @@ ref_cfg.left_switch_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;
 ref_cfg.right_switch_active = tmc51x0::ReferenceSwitchActiveLevel::ACTIVE_LOW;
 ref_cfg.latch_left = tmc51x0::ReferenceLatchMode::DISABLED;
 ref_cfg.latch_right = tmc51x0::ReferenceLatchMode::DISABLED;
-driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
+driver.switches.ConfigureReferenceSwitch(ref_cfg);
 ```
 
 ## Encoder Pins
@@ -477,7 +477,7 @@ tmc51x0::TMC51x0<Esp32SPI> driver(spi);
 
 ```cpp
 // Set mode to SPI + Internal Ramp Generator
-if (driver.communication.SetOperatingMode(tmc51x0::ChipCommMode::SPI_INTERNAL_RAMP)) {
+if (driver.io.SetOperatingMode(tmc51x0::ChipCommMode::SPI_INTERNAL_RAMP)) {
   ESP_LOGI(TAG, "Mode set to SPI + Internal Ramp");
   // ⚠️ CRITICAL: Must reset chip for mode change to take effect
   // The mode pins are read at startup, so changes require a reset
@@ -485,9 +485,9 @@ if (driver.communication.SetOperatingMode(tmc51x0::ChipCommMode::SPI_INTERNAL_RA
 }
 
 // Read current mode
-tmc51x0::ChipCommMode current_mode;
-if (driver.communication.GetOperatingMode(current_mode)) {
-  ESP_LOGI(TAG, "Current mode: %d", static_cast<int>(current_mode));
+auto current_mode_result = driver.io.GetOperatingMode();
+if (current_mode_result) {
+  ESP_LOGI(TAG, "Current mode: %d", static_cast<int>(current_mode_result.Value()));
 }
 ```
 

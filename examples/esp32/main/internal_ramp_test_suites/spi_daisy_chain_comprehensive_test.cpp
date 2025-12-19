@@ -111,7 +111,7 @@ std::unique_ptr<TestDriverHandle> create_daisy_chain_drivers() noexcept {
   // Verify mode pins match expected communication mode (if pins are configured)
   // Only check the first driver (all drivers share the same SPI interface)
   if (!handle->drivers.empty()) {
-    auto mode_result = handle->drivers[0]->communication.GetOperatingMode();
+    auto mode_result = handle->drivers[0]->io.GetOperatingMode();
     if (mode_result.IsOk()) {
       tmc51x0::ChipCommMode actual_mode = mode_result.Value();
       gpio_num_t spi_mode_gpio = handle->spi->GetPinMapping(tmc51x0::TMC51x0CtrlPin::SPI_MODE);

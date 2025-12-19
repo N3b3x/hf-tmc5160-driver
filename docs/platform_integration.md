@@ -217,12 +217,15 @@ private:
     gpio_num_t tx_pin_;
     gpio_num_t rx_pin_;
     gpio_num_t txen_pin_;
+    gpio_num_t tmc_power_en_pin_{GPIO_NUM_NC}; // optional: load-switch enable for TMC VIO
 
 public:
     Esp32UART(uart_port_t uart_num, gpio_num_t tx_pin, gpio_num_t rx_pin,
-              gpio_num_t txen_pin, uint8_t slave_address)
-        : UartCommInterface(true, true, true, slave_address),
-          uart_num_(uart_num), tx_pin_(tx_pin), rx_pin_(rx_pin), txen_pin_(txen_pin) {
+              gpio_num_t txen_pin, uint8_t node_address,
+              gpio_num_t tmc_power_en_pin = GPIO_NUM_NC)
+        : UartCommInterface(true, true, true, node_address),
+          uart_num_(uart_num), tx_pin_(tx_pin), rx_pin_(rx_pin), txen_pin_(txen_pin),
+          tmc_power_en_pin_(tmc_power_en_pin) {
         uart_config_t uart_config = {};
         uart_config.baud_rate = 500000;
         uart_config.data_bits = UART_DATA_8_BITS;
@@ -235,6 +238,12 @@ public:
         uart_driver_install(uart_num_, 1024, 1024, 0, NULL, 0);
         
         gpio_set_direction(txen_pin_, GPIO_MODE_OUTPUT);
+
+        // Optional: power-enable control for true hard reset (power cycle)
+        if (tmc_power_en_pin_ != GPIO_NUM_NC) {
+            gpio_set_direction(tmc_power_en_pin_, GPIO_MODE_OUTPUT);
+            gpio_set_level(tmc_power_en_pin_, 1); // power on by default
+        }
     }
 
     CommMode GetMode() const noexcept {
@@ -247,6 +256,15 @@ public:
         uart_wait_tx_done(uart_num_, portMAX_DELAY);
         gpio_set_level(txen_pin_, 0); // Disable transmitter
         return bytes_written == length;
+    }
+
+    // Optional power control hook (enables TMC51x0::HardReset() to power-cycle)
+    tmc51x0::Result<void> SetPowerEnabled(bool enabled) noexcept {
+        if (tmc_power_en_pin_ == GPIO_NUM_NC) {
+            return tmc51x0::Result<void>(tmc51x0::ErrorCode::UNSUPPORTED);
+        }
+        gpio_set_level(tmc_power_en_pin_, enabled ? 1 : 0);
+        return tmc51x0::Result<void>();
     }
 
     bool UartReceive(uint8_t* data, size_t length) noexcept {

@@ -27,12 +27,17 @@ tmc51x0::TMC51x0<MySPI> driver(spi);
 // Organized subsystems for intuitive access
 driver.rampControl      // Motion planning, positioning, velocity control
 driver.motorControl     // Current control, chopper modes, stealthChop
+driver.thresholds       // Velocity thresholds (TPWMTHRS/TCOOLTHRS/THIGH/VDCMIN)
+driver.powerStage       // Power stage + protection (DRV_CONF/SHORT_CONF)
+driver.io               // IOIN + mode pins (SPI_MODE/SD_MODE) + SDO_CFG0
+driver.status           // Read-only monitoring (GSTAT/DRV_STATUS/RAMP_STAT/etc.)
+driver.switches         // Reference switches/endstops (SW_MODE/XLATCH)
+driver.events           // Motion events (X_COMPARE, RAMP_STAT clear)
+driver.stallGuard       // StallGuard2 config + stop-on-stall/soft-stop
 driver.encoder          // Encoder integration, closed-loop control
-driver.diagnostics      // Status monitoring, StallGuard2, diagnostics
 driver.tuning           // Automatic parameter optimization (SGT tuning) ⭐
 driver.homing           // Sensorless and switch-based homing
-driver.protection       // Safety systems, short circuit protection
-driver.communication    // Multi-chip communication setup
+driver.communication    // Multi-chip comm settings + raw register access helpers
 driver.printer          // Debug register printing
 ```
 
@@ -132,7 +137,7 @@ int main() {
             break;
         }
         // Optional: Monitor status (Diagnostics subsystem)
-        tmc51x0::DriverStatus status = driver.diagnostics.GetStatus();
+        tmc51x0::DriverStatus status = driver.status.GetStatus();
         if (status != tmc51x0::DriverStatus::OK) {
             // Handle error condition
             break;
@@ -210,17 +215,17 @@ Once you have basic motion working, explore the other subsystems:
 ### Diagnostics & Monitoring
 ```cpp
 // Check driver status
-tmc51x0::DriverStatus status = driver.diagnostics.GetStatus();
+tmc51x0::DriverStatus status = driver.status.GetStatus();
 
 // Read StallGuard2 value (load measurement)
-auto sg_result = driver.diagnostics.GetStallGuard();
+auto sg_result = driver.stallGuard.GetStallGuard();
 if (sg_result) {
     uint16_t sg_value = sg_result.Value();
     printf("StallGuard value: %u\n", sg_value);
 }
 
 // Verify setup
-auto verify_result = driver.diagnostics.VerifySetup();
+auto verify_result = driver.status.VerifySetup();
 if (!verify_result) {
     printf("Setup verification error: %s\n", verify_result.ErrorMessage());
 }
@@ -246,7 +251,7 @@ if (tune_result) {
     // Use the optimal SGT value
     tmc51x0::StallGuardConfig sg_config;
     sg_config.threshold = result.optimal_sgt;
-    driver.diagnostics.ConfigureStallGuard(sg_config);
+    driver.stallGuard.ConfigureStallGuard(sg_config);
 } else {
     printf("Tuning error: %s\n", tune_result.ErrorMessage());
 }

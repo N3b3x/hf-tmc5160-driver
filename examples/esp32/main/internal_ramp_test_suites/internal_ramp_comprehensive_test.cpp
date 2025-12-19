@@ -266,7 +266,7 @@ bool verify_mode_pins(const Esp32SPI& spi, const tmc51x0::TMC51x0<Esp32SPI>& dri
   }
   
   // Read mode pins
-  auto mode_result = driver.communication.GetOperatingMode();
+  auto mode_result = driver.io.GetOperatingMode();
   if (!mode_result) {
     ESP_LOGW(TAG, "⚠ Failed to read mode pins for verification (ErrorCode: %d)", static_cast<int>(mode_result.Error()));
     ESP_LOGW(TAG, "   Check: Mode pin connections and communication interface");
@@ -385,7 +385,7 @@ std::unique_ptr<TestDriverHandle> create_test_driver(bool enable_ref_switch_stop
     cfg.reference_switch_config.left_switch_stop_enable = false;
     cfg.reference_switch_config.right_switch_stop_enable = false;
     // Re-configure with updated settings
-    handle->driver->rampControl.ConfigureReferenceSwitch(cfg.reference_switch_config);
+    handle->driver->switches.ConfigureReferenceSwitch(cfg.reference_switch_config);
     ESP_LOGI(TAG, "Reference switches configured but stop disabled (normal test mode)");
   } else {
     ESP_LOGI(TAG, "Reference switches configured with stop enabled (testing switch feature)");
@@ -410,7 +410,7 @@ bool test_driver_initialization() noexcept {
   }
   
   // Verify driver status
-  tmc51x0::DriverStatus status = handle->driver->diagnostics.GetStatus();
+  tmc51x0::DriverStatus status = handle->driver->status.GetStatus();
   ESP_LOGI(TAG, "Driver Status: %d", static_cast<int>(status));
   ESP_LOGI(TAG, "✓ Driver initialized and ready");
   
@@ -428,7 +428,7 @@ bool test_register_read_write() noexcept {
   
   // Test reading global status (GSTAT register)
   bool drv_err = false, uv_cp = false;
-  auto status_result = handle->driver->diagnostics.GetGlobalStatus(drv_err, uv_cp);
+  auto status_result = handle->driver->status.GetGlobalStatus(drv_err, uv_cp);
   if (!status_result) {
     ESP_LOGE(TAG, "❌ Failed to read global status (ErrorCode: %d)", static_cast<int>(status_result.Error()));
     ESP_LOGE(TAG, "   Check: SPI communication and chip power");
@@ -439,7 +439,7 @@ bool test_register_read_write() noexcept {
   
   // Test writing X_COMPARE register in degrees (write-only per datasheet)
   constexpr float TEST_X_COMPARE_DEG = 22.2f; // ~12345 steps for 200 steps/rev motor
-  if (!handle->driver->rampControl.SetXCompare(TEST_X_COMPARE_DEG, tmc51x0::Unit::Deg)) {
+  if (!handle->driver->events.SetXCompare(TEST_X_COMPARE_DEG, tmc51x0::Unit::Deg)) {
     ESP_LOGE(TAG, "Failed to write X_COMPARE register");
     return false;
   }
@@ -752,7 +752,7 @@ bool test_stealthchop_configuration() noexcept {
 
   // Read back auto-tuned values (optional check)
   uint8_t pwm_grad_auto = 0;
-  auto pwm_result = handle->driver->diagnostics.GetPwmAuto(pwm_grad_auto);
+  auto pwm_result = handle->driver->status.GetPwmAuto(pwm_grad_auto);
   if (pwm_result) {
     uint8_t pwm_ofs_auto = pwm_result.Value();
     ESP_LOGI(TAG, "✓ Auto-Tuned Values: PWM_OFS_AUTO=%d, PWM_GRAD_AUTO=%d", pwm_ofs_auto, pwm_grad_auto);
@@ -782,7 +782,7 @@ bool test_mode_change_speeds() noexcept {
   float med_rpm = 30.0f; // 0.5 rev/s = 30 RPM
   float high_rpm = 60.0f; // 1.0 rev/s = 60 RPM
 
-  if (!handle->driver->motorControl.SetModeChangeSpeeds(low_rpm, med_rpm, high_rpm, tmc51x0::Unit::RPM)) {
+  if (!handle->driver->thresholds.SetModeChangeSpeeds(low_rpm, med_rpm, high_rpm, tmc51x0::Unit::RPM)) {
     ESP_LOGE(TAG, "Failed to set mode change speeds");
     return false;
   }
@@ -1182,7 +1182,7 @@ bool test_reference_switch_configuration() noexcept {
   tmc51x0::ReferenceSwitchConfig ref_cfg = 
       tmc51x0_test_config::GetTestRigReferenceSwitchConfig<SELECTED_TEST_RIG>();
   
-  if (!handle->driver->rampControl.ConfigureReferenceSwitch(ref_cfg)) {
+  if (!handle->driver->switches.ConfigureReferenceSwitch(ref_cfg)) {
     ESP_LOGE(TAG, "Failed to configure reference switch");
     return false;
   }
@@ -1260,7 +1260,7 @@ bool test_driver_status() noexcept {
     return false;
   }
   
-  tmc51x0::DriverStatus status = handle->driver->diagnostics.GetStatus();
+  tmc51x0::DriverStatus status = handle->driver->status.GetStatus();
   ESP_LOGI(TAG, "Driver Status: %d", static_cast<int>(status));
   
   ESP_LOGI(TAG, "✓ Driver status test passed");
@@ -1281,12 +1281,12 @@ bool test_stallguard() noexcept {
   sg_cfg.enable_filter = Test::StallGuard::FILTER_ENABLED;
   // Note: semin/semax are CoolStep parameters, not StallGuard2 parameters
   
-  if (!handle->driver->diagnostics.ConfigureStallGuard(sg_cfg)) {
+  if (!handle->driver->stallGuard.ConfigureStallGuard(sg_cfg)) {
     ESP_LOGE(TAG, "Failed to configure StallGuard");
     return false;
   }
   
-  auto sg_result = handle->driver->diagnostics.GetStallGuard();
+  auto sg_result = handle->driver->stallGuard.GetStallGuard();
   if (!sg_result) {
     ESP_LOGE(TAG, "❌ Failed to get StallGuard value (ErrorCode: %d)", static_cast<int>(sg_result.Error()));
     ESP_LOGE(TAG, "   Check: SPI communication and StallGuard configuration");
@@ -1307,7 +1307,7 @@ bool test_lost_steps() noexcept {
     return false;
   }
   
-  auto lost_steps_result = handle->driver->diagnostics.GetLostSteps();
+  auto lost_steps_result = handle->driver->status.GetLostSteps();
   if (lost_steps_result.IsErr()) {
     ESP_LOGE(TAG, "Failed to get lost steps (ErrorCode: %d)", static_cast<int>(lost_steps_result.Error()));
     return false;
@@ -1328,7 +1328,7 @@ bool test_phase_currents() noexcept {
   }
   
   int16_t phase_b = 0;
-  auto phase_a_result = handle->driver->diagnostics.GetMicrostepCurrent(phase_b);
+  auto phase_a_result = handle->driver->status.GetMicrostepCurrent(phase_b);
   if (phase_a_result.IsErr()) {
     ESP_LOGE(TAG, "Failed to get microstep currents (ErrorCode: %d)", static_cast<int>(phase_a_result.Error()));
     return false;
@@ -1350,7 +1350,7 @@ bool test_pwm_scale() noexcept {
   }
   
   int16_t pwm_scale_auto = 0;
-  auto pwm_scale_result = handle->driver->diagnostics.GetPwmScale(pwm_scale_auto);
+  auto pwm_scale_result = handle->driver->status.GetPwmScale(pwm_scale_auto);
   if (pwm_scale_result.IsErr()) {
     ESP_LOGE(TAG, "Failed to get PWM scale (ErrorCode: %d)", static_cast<int>(pwm_scale_result.Error()));
     return false;
@@ -1371,7 +1371,7 @@ bool test_microstep_diagnostics() noexcept {
     return false;
   }
   
-  auto time_between_result = handle->driver->diagnostics.GetTimeBetweenMicrosteps();
+  auto time_between_result = handle->driver->status.GetTimeBetweenMicrosteps();
   if (time_between_result.IsErr()) {
     ESP_LOGE(TAG, "Failed to get time between microsteps (ErrorCode: %d)", static_cast<int>(time_between_result.Error()));
     return false;
@@ -1379,7 +1379,7 @@ bool test_microstep_diagnostics() noexcept {
   uint32_t time_between = time_between_result.Value();
   ESP_LOGI(TAG, "Time Between Microsteps: %lu", time_between);
   
-  auto mscnt_result = handle->driver->diagnostics.GetMicrostepCounter();
+  auto mscnt_result = handle->driver->status.GetMicrostepCounter();
   if (mscnt_result.IsErr()) {
     ESP_LOGE(TAG, "Failed to get microstep counter (ErrorCode: %d)", static_cast<int>(mscnt_result.Error()));
     return false;
@@ -1388,7 +1388,7 @@ bool test_microstep_diagnostics() noexcept {
   ESP_LOGI(TAG, "Microstep Counter: %u", mscnt);
   
   int16_t ms_current_b = 0;
-  auto ms_current_a_result = handle->driver->diagnostics.GetMicrostepCurrent(ms_current_b);
+  auto ms_current_a_result = handle->driver->status.GetMicrostepCurrent(ms_current_b);
   if (ms_current_a_result.IsOk()) {
     int16_t ms_current_a = ms_current_a_result.Value();
     ESP_LOGI(TAG, "Microstep Current A: %d, B: %d", ms_current_a, ms_current_b);
@@ -1406,7 +1406,7 @@ bool test_gpio_pins() noexcept {
     return false;
   }
   
-  auto gpio_pins_result = handle->driver->diagnostics.ReadGpioPins();
+  auto gpio_pins_result = handle->driver->io.ReadGpioPins();
   if (gpio_pins_result.IsErr()) {
     ESP_LOGW(TAG, "Failed to read GPIO pins (may not be mapped) (ErrorCode: %d)", static_cast<int>(gpio_pins_result.Error()));
     return true; // Not a failure if pins aren't mapped
@@ -1427,7 +1427,7 @@ bool test_factory_otp_config() noexcept {
     return false;
   }
   
-  auto factory_cfg_result = handle->driver->diagnostics.ReadFactoryConfig();
+  auto factory_cfg_result = handle->driver->status.ReadFactoryConfig();
   if (factory_cfg_result.IsErr()) {
     ESP_LOGW(TAG, "Failed to read factory config (ErrorCode: %d)", static_cast<int>(factory_cfg_result.Error()));
   } else {
@@ -1436,7 +1436,7 @@ bool test_factory_otp_config() noexcept {
   }
   
   bool otp_s2_level = false, otp_bbm = false, otp_tbl = false;
-  auto otp_result = handle->driver->diagnostics.ReadOtpConfig(otp_s2_level, otp_bbm, otp_tbl);
+  auto otp_result = handle->driver->status.ReadOtpConfig(otp_s2_level, otp_bbm, otp_tbl);
   uint8_t otp_fclktrim = 0;
   if (otp_result.IsErr()) {
     ESP_LOGW(TAG, "Failed to read OTP config (ErrorCode: %d)", static_cast<int>(otp_result.Error()));
@@ -1460,7 +1460,7 @@ bool test_uart_transmission_count() noexcept {
     return false;
   }
   
-  auto uart_count_result = handle->driver->diagnostics.GetUartTransmissionCount();
+  auto uart_count_result = handle->driver->status.GetUartTransmissionCount();
   uint8_t uart_count = uart_count_result.IsOk() ? uart_count_result.Value() : 0;
   ESP_LOGI(TAG, "UART Transmission Count: %u", uart_count);
   
@@ -1477,7 +1477,7 @@ bool test_offset_calibration() noexcept {
   }
   
   uint8_t offset_b = 0;
-  auto offset_a_result = handle->driver->diagnostics.ReadOffsetCalibration(offset_b);
+  auto offset_a_result = handle->driver->status.ReadOffsetCalibration(offset_b);
   uint8_t offset_a = 0;
   if (offset_a_result.IsErr()) {
     ESP_LOGW(TAG, "Failed to read offset calibration (ErrorCode: %d)", static_cast<int>(offset_a_result.Error()));
@@ -1505,7 +1505,7 @@ bool test_sensorless_homing() noexcept {
   sg_config.enable_filter = Test::StallGuard::FILTER_ENABLED;
   // Note: semin/semax are CoolStep parameters, not StallGuard2 parameters
   
-  if (!handle->driver->diagnostics.ConfigureStallGuard(sg_config)) {
+  if (!handle->driver->stallGuard.ConfigureStallGuard(sg_config)) {
     ESP_LOGE(TAG, "Failed to configure StallGuard2 for homing");
     return false;
   }
@@ -1557,8 +1557,8 @@ bool test_open_load() noexcept {
     while (!target_reached && check_count < 50) {
       target_reached_result = handle->driver->rampControl.IsTargetReached();
       target_reached = target_reached_result.IsOk() ? target_reached_result.Value() : false;
-    auto phase_a_result = handle->driver->diagnostics.IsOpenLoadA();
-    auto phase_b_result = handle->driver->diagnostics.IsOpenLoadB();
+    auto phase_a_result = handle->driver->status.IsOpenLoadA();
+    auto phase_b_result = handle->driver->status.IsOpenLoadB();
     bool phase_a = phase_a_result.IsOk() ? phase_a_result.Value() : false;
     bool phase_b = phase_b_result.IsOk() ? phase_b_result.Value() : false;
     
@@ -1578,7 +1578,7 @@ bool test_open_load() noexcept {
   
   // Check both phases at once
   bool phase_a_final, phase_b_final;
-  if (handle->driver->diagnostics.CheckOpenLoad(phase_a_final, phase_b_final)) {
+  if (handle->driver->status.CheckOpenLoad(phase_a_final, phase_b_final)) {
     ESP_LOGI(TAG, "Final open load check: Phase A=%d, Phase B=%d", 
              phase_a_final, phase_b_final);
     if (phase_a_final || phase_b_final) {
@@ -1617,7 +1617,7 @@ bool test_short_circuit_protection() noexcept {
   power_cfg.shortfilter = 1;
   power_cfg.short_detection_delay_us_x10 = 0;  // Auto (0.85µs = shortdelay=0)
   
-  if (!handle->driver->protection.ConfigureShortProtection(power_cfg)) {
+  if (!handle->driver->powerStage.ConfigureShortProtection(power_cfg)) {
     ESP_LOGE(TAG, "Failed to configure short protection");
     return false;
   }
@@ -1635,7 +1635,7 @@ bool test_overtemperature_protection() noexcept {
   }
   
   // Overtemperature status is read via diagnostics.GetStatus()
-  tmc51x0::DriverStatus prot_status = handle->driver->diagnostics.GetStatus();
+  tmc51x0::DriverStatus prot_status = handle->driver->status.GetStatus();
   bool has_otpw = (prot_status == tmc51x0::DriverStatus::OTPW);
   bool has_ot = (prot_status == tmc51x0::DriverStatus::OT);
   ESP_LOGI(TAG, "OTPW: %s, OT: %s", has_otpw ? "true" : "false", has_ot ? "true" : "false");

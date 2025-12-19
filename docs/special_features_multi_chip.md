@@ -19,7 +19,7 @@ The TMC51x0 driver (TMC5130 & TMC5160) supports multiple chips on a single commu
 When multiple TMC5160 chips are used in a system, each chip must be individually addressable. The driver provides methods for:
 
 - **SPI**: Chip selection via CSN pins or extended transfers (>40 bits)
-- **UART**: Node address configuration via SLAVECONF register and NAI/NAO pin control
+- **UART**: Node address configuration via NODECONF register and NAI/NAO pin control
 
 ## Architecture Overview
 
@@ -94,7 +94,7 @@ SD_MODE  (pin 21) ──────> GND  (LOW)
 
 **Software Control (Advanced):**
 - If SPI_MODE and SD_MODE pins are connected to GPIO outputs, they can be controlled via software
-- Configure pins in `TMC51x0PinConfig` (spi_mode_pin, sd_mode_pin) and use `driver.communication.SetOperatingMode()`
+- Configure pins in `TMC51x0PinConfig` (spi_mode_pin, sd_mode_pin) and use `driver.io.SetOperatingMode()`
 - **⚠️ CRITICAL**: Mode changes require a chip reset to take effect (pins are read at startup)
 
 ### Hardware Setup
@@ -331,7 +331,7 @@ uint8_t detected = spi.AutoDetectChainLength(16); // Probe up to 16 devices
 
 ## UART Multi-Node Addressing
 
-**Important**: UART multi-node addressing is **NOT** daisy-chaining like SPI. It uses a shared UART bus with node addresses (0-254) programmed via SLAVECONF register. Multiple TMC5160 instances share one `UartCommInterface` on the same UART bus. **Per datasheet procedure, devices are programmed backwards starting from address 254** (254, 253, 252, ...).
+**Important**: UART multi-node addressing is **NOT** daisy-chaining like SPI. It uses a shared UART bus with node addresses (0-254) programmed via NODECONF register. Multiple TMC5160 instances share one `UartCommInterface` on the same UART bus. **Per datasheet procedure, devices are typically programmed backwards starting from address 254** (254, 253, 252, ...).
 
 ### UART Mode Requirements
 
@@ -446,12 +446,12 @@ To program addresses for multiple chips (up to 255 nodes), follow the datasheet 
 
 1. **Addressing Phase 1**: First chip responds to address 0 (NAI = GND)
    - Program first chip (logical index 0) to address **254**
-   - Set SLAVECONF node address = 254
+   - Set NODECONF node address = 254
    - **After programming, the chip's NAO automatically goes LOW** → next chip becomes accessible at address 0
 
 2. **Addressing Phase 2**: Second chip now responds to address 0 (because previous chip's NAO is LOW)
    - Program second chip (logical index 1) to address **253**
-   - Set SLAVECONF node address = 253
+   - Set NODECONF node address = 253
    - After programming, NAO goes LOW → next chip becomes accessible at address 0
 
 3. **Addressing Phase 3+**: Continue for remaining chips
@@ -697,7 +697,7 @@ void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
 |--------|-------------|
 | `communication.SetUartNodeAddress(address)` | Set UART node address (0-254) for this instance |
 | `communication.GetUartNodeAddress()` | Get current UART node address |
-| `uartConfig.ConfigureUartNodeAddress(address, send_delay)` | Configure SLAVECONF register with UART node address |
+| `uartConfig.ConfigureUartNodeAddress(address, send_delay)` | Configure NODECONF register with UART node address |
 
 ### TMC51x0MultiNode Manager Class
 

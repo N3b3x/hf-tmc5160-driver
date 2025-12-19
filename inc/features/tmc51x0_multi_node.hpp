@@ -220,7 +220,7 @@ public:
 
   /**
    * @brief Program all active devices sequentially using NAI/NAO addressing
-   * @param send_delay SENDDELAY value for SLAVECONF (default: 2, minimum for
+   * @param send_delay SENDDELAY value for NODECONF (default: 2, minimum for
    * multi-node)
    * @return Result<void> indicating success or error
    *
@@ -305,7 +305,7 @@ public:
   /**
    * @brief Program a single device at the specified logical index
    * @param index Logical device index (0, 1, 2, ...)
-   * @param send_delay SENDDELAY value for SLAVECONF (default: 2)
+   * @param send_delay SENDDELAY value for NODECONF (default: 2)
    * @return Result<void> indicating success or error
    *
    * @note This method programs the device at logical index to address (254 -

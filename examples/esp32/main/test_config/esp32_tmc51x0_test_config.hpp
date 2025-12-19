@@ -65,7 +65,7 @@
  * // 4. Get encoder and reference switch configs
  * auto ref_cfg = Config::GetReferenceSwitchConfig();
  * auto enc_cfg = Config::GetEncoderConfig();
- * driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
+ * driver.switches.ConfigureReferenceSwitch(ref_cfg);
  * driver.encoder.Configure(enc_cfg);
  * ```
  *

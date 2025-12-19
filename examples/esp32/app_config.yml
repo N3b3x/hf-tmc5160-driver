@@ -36,7 +36,7 @@ apps:
     featured: false
 
   uart_multi_node_comprehensive_test:
-    description: "Comprehensive UART multi-node testing suite - UART node addressing, slave address configuration, send delay, multi-node coordination (MULTI-MOTOR HARDWARE REQUIRED)"
+    description: "Comprehensive UART multi-node testing suite - UART node addressing, NODECONF node address configuration, send delay, multi-node coordination (MULTI-MOTOR HARDWARE REQUIRED)"
     source_file: "internal_ramp_test_suites/uart_multi_node_comprehensive_test.cpp"
     category: "testing"
     idf_versions: ["release/v5.5"]

@@ -9,7 +9,11 @@
 #ifndef TMC51X0_RESULT_HPP
 #define TMC51X0_RESULT_HPP
 
+#include <cstddef>
 #include <cstdint>
+#include <tuple>
+#include <type_traits>
+#include <utility>
 
 namespace tmc51x0 {
 
@@ -95,7 +99,7 @@ public:
    * @brief Construct a successful result with value
    */
   explicit Result(T &&value) noexcept
-      : error_(ErrorCode::OK), value_(static_cast<T &&>(value)) {}
+      : error_(ErrorCode::OK), value_(std::move(value)) {}
 
   /**
    * @brief Construct a successful result with value (copy)
@@ -179,18 +183,32 @@ public:
   /**
    * @brief Support structured bindings: auto [err, value] = result;
    */
-  template <std::size_t N> decltype(auto) get() const noexcept {
-    if constexpr (N == 0)
-      return error_;
-    else if constexpr (N == 1)
-      return value_;
+  template <std::size_t N>
+  std::enable_if_t<N == 0, ErrorCode> get() const & noexcept {
+    return error_;
   }
 
-  template <std::size_t N> decltype(auto) get() noexcept {
-    if constexpr (N == 0)
-      return error_;
-    else if constexpr (N == 1)
-      return (value_);
+  template <std::size_t N>
+  std::enable_if_t<N == 1, const T &> get() const & noexcept {
+    return value_;
+  }
+
+  template <std::size_t N>
+  std::enable_if_t<N == 0, ErrorCode> get() & noexcept {
+    return error_;
+  }
+
+  template <std::size_t N> std::enable_if_t<N == 1, T &> get() & noexcept {
+    return value_;
+  }
+
+  template <std::size_t N>
+  std::enable_if_t<N == 0, ErrorCode> get() && noexcept {
+    return error_;
+  }
+
+  template <std::size_t N> std::enable_if_t<N == 1, T &&> get() && noexcept {
+    return std::move(value_);
   }
 };
 
@@ -271,6 +289,43 @@ public:
 // Type alias for Result<void> to allow Result<> syntax
 using ResultVoid = Result<void>;
 
+/**
+ * @brief Tuple-like access for structured bindings (C++17)
+ *
+ * Structured bindings use unqualified get<N>(obj) found via ADL for tuple-like
+ * types. These overloads make `auto [err, value] = result;` work reliably.
+ */
+template <std::size_t N, typename T>
+decltype(auto) get(Result<T> &r) noexcept {
+  return r.template get<N>();
+}
+
+template <std::size_t N, typename T>
+decltype(auto) get(const Result<T> &r) noexcept {
+  return r.template get<N>();
+}
+
+template <std::size_t N, typename T>
+decltype(auto) get(Result<T> &&r) noexcept {
+  return std::move(r).template get<N>();
+}
+
+// Result<void> is tuple-like with a single element: the ErrorCode.
+template <std::size_t N>
+std::enable_if_t<N == 0, ErrorCode> get(Result<void> &r) noexcept {
+  return r.Error();
+}
+
+template <std::size_t N>
+std::enable_if_t<N == 0, ErrorCode> get(const Result<void> &r) noexcept {
+  return r.Error();
+}
+
+template <std::size_t N>
+std::enable_if_t<N == 0, ErrorCode> get(Result<void> &&r) noexcept {
+  return r.Error();
+}
+
 } // namespace tmc51x0
 
 // Support for structured bindings
@@ -278,12 +333,19 @@ namespace std {
 template <typename T>
 struct tuple_size<tmc51x0::Result<T>> : integral_constant<size_t, 2> {};
 
+template <>
+struct tuple_size<tmc51x0::Result<void>> : integral_constant<size_t, 1> {};
+
 template <typename T> struct tuple_element<0, tmc51x0::Result<T>> {
   using type = tmc51x0::ErrorCode;
 };
 
 template <typename T> struct tuple_element<1, tmc51x0::Result<T>> {
   using type = T;
+};
+
+template <> struct tuple_element<0, tmc51x0::Result<void>> {
+  using type = tmc51x0::ErrorCode;
 };
 } // namespace std
 

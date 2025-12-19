@@ -229,7 +229,7 @@ static void motion_control_task(void* arg)
                     float vel_rpm = vel_result.IsOk() ? vel_result.Value() : 0.0f;
                     
                     // Read StallGuard value
-                    auto sg_result = g_driver->diagnostics.GetStallGuardResult();
+                    auto sg_result = g_driver->stallGuard.GetStallGuardResult();
                     uint16_t sg_val = 0;
                     if (sg_result.IsOk()) {
                         sg_val = sg_result.Value();

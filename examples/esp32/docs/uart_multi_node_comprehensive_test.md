@@ -2,14 +2,14 @@
 
 ## Overview
 
-The `uart_multi_node_comprehensive_test.cpp` provides comprehensive testing for TMC5160 UART multi-node features including node addressing, slave address configuration, send delay configuration, and multi-node coordination.
+The `uart_multi_node_comprehensive_test.cpp` provides comprehensive testing for TMC5160 UART multi-node features including node addressing, NODECONF node address configuration, send delay configuration, and multi-node coordination.
 
 ## Purpose
 
 This test suite is ideal for:
 - Validating UART multi-node configuration
 - Testing node addressing
-- Verifying slave address assignment
+- Verifying node address assignment
 - Testing send delay configuration
 - Validating multi-node coordination
 
@@ -29,10 +29,10 @@ Tests UART node addressing:
 - Address assignment
 - Address verification
 
-### 2. Slave Address Tests
+### 2. Node Address (NODECONF) Tests
 
-Tests slave address configuration:
-- Slave address setting
+Tests NODECONF node address configuration:
+- Node address setting
 - Address reading
 - Address verification
 
@@ -112,7 +112,7 @@ Tests can be enabled/disabled:
 
 ```cpp
 static constexpr bool ENABLE_NODE_ADDRESSING_TESTS = true;
-static constexpr bool ENABLE_SLAVE_ADDRESS_TESTS = true;
+static constexpr bool ENABLE_NODECONF_ADDRESS_TESTS = true;
 static constexpr bool ENABLE_SEND_DELAY_TESTS = true;
 static constexpr bool ENABLE_MULTI_NODE_COORDINATION_TESTS = true;
 ```
@@ -131,7 +131,7 @@ static constexpr uint8_t TEST_NODE_COUNT = 2; // Number of nodes
 
 Each node in the UART network has:
 - **Hardware Address**: Determined by NAI/NAO chain position (0, 1, 2, ...)
-- **Slave Address**: Software-configurable address (default matches hardware address)
+- **Node Address (NODECONF.NODEADDR)**: Software-configurable node address (typically set during sequential programming)
 
 ### Communication Protocol
 
@@ -145,7 +145,7 @@ UART multi-node uses:
 For initial configuration, use sequential programming:
 - Configure nodes one at a time
 - Use NAI/NAO pins to select node
-- Set slave address and other parameters
+- Set NODECONF node address and other parameters
 
 ## Detailed Test Descriptions
 
@@ -167,15 +167,15 @@ For initial configuration, use sequential programming:
   3. Test addressing works
 - **Expected**: Addresses verified correctly
 
-### Slave Address Tests
+### Node Address (NODECONF) Tests
 
-#### Test: Slave Address Configuration
-- **Purpose**: Verify slave addresses can be set
+#### Test: NODECONF Node Address Configuration
+- **Purpose**: Verify NODECONF node addresses can be set
 - **Steps**:
-  1. Set slave address for each node
+  1. Set node address for each node (NODECONF.NODEADDR)
   2. Read back addresses
   3. Verify addresses match
-- **Expected**: Slave addresses set correctly
+- **Expected**: Node addresses set correctly
 
 ### Send Delay Tests
 
@@ -235,7 +235,7 @@ node1->communication.SetUartNodeAddress(1);
 
 1. **Initialization**: UART interface and multi-node setup
 2. **Addressing Tests**: Node addressing configuration
-3. **Slave Address Tests**: Slave address configuration
+3. **Node Address Tests**: NODECONF node address configuration
 4. **Send Delay Tests**: Send delay configuration
 5. **Coordination Tests**: Multi-node coordination
 6. **Summary**: Test results displayed
@@ -248,7 +248,7 @@ I (1235) UART_MultiNode_Test: ║        UART Multi-Node Comprehensive Test Suit
 I (1236) UART_MultiNode_Test: ╚══════════════════════════════════════════════════════════════════════════════╝
 I (1237) UART_MultiNode_Test: ⚠️ MULTI-MOTOR HARDWARE REQUIRED
 I (1238) UART_MultiNode_Test: [PASS] Node Addressing: Node addresses configured
-I (1239) UART_MultiNode_Test: [PASS] Slave Address: Slave addresses set correctly
+I (1239) UART_MultiNode_Test: [PASS] Node Address: Node addresses set correctly
 ...
 ```
 
@@ -263,7 +263,7 @@ I (1239) UART_MultiNode_Test: [PASS] Slave Address: Slave addresses set correctl
 2. Check baud rate matches all nodes
 3. Verify mode pins (SD_MODE=0, SPI_MODE=0)
 4. Check NAI/NAO addressing chain
-5. Verify slave addresses are set correctly
+5. Verify node addresses (NODECONF.NODEADDR) are set correctly
 
 ### Wrong Node Responding
 
@@ -271,7 +271,7 @@ I (1239) UART_MultiNode_Test: [PASS] Slave Address: Slave addresses set correctl
 
 **Solutions**:
 1. Verify NAI/NAO addressing chain
-2. Check slave addresses match expected
+2. Check node addresses match expected
 3. Verify send delay is configured
 4. Check for addressing conflicts
 
@@ -282,7 +282,7 @@ I (1239) UART_MultiNode_Test: [PASS] Slave Address: Slave addresses set correctl
 **Solutions**:
 1. Verify NAI/NAO pin configuration
 2. Check addressing chain wiring
-3. Verify slave addresses are unique
+3. Verify node addresses are unique
 4. Check send delay timing
 5. Test with broadcast address first
 

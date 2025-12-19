@@ -143,7 +143,7 @@ overhead** while maintaining complete platform independence.
   - Position-based addressing (0, 1, 2, ...)
   - `TMC51x0DaisyChain` helper class for easy management
 - ✅ **UART Multi-Node**: Support for up to 255 devices on a single UART bus
-  - Slave addressing (0-254)
+  - Node addressing (0-254)
   - Sequential programming support
   - `TMC51x0MultiNode` helper class for multi-device management
 - ✅ **Automatic Detection**: Chip version detection (TMC5130 vs TMC5160)
@@ -332,9 +332,9 @@ if (!stealth_result) {
 }
 
 // Diagnostics & Monitoring
-DriverStatus status = driver.diagnostics.GetStatus();
-uint16_t sg_value;
-driver.diagnostics.GetStallGuard(sg_value);
+DriverStatus status = driver.status.GetStatus();
+auto sg_value_result = driver.stallGuard.GetStallGuard();
+uint16_t sg_value = sg_value_result.IsOk() ? sg_value_result.Value() : 0;
 
 // Automatic Tuning ⭐
 StallGuardTuningResult result;
@@ -354,8 +354,8 @@ driver.encoder.ConfigureEncoder(encoder_config);
 driver.encoder.EnableDeviationDetection(100);  // 100 step threshold
 
 // Protection
-driver.protection.ConfigureShortProtection(short_config);
-bool ot = driver.diagnostics.GetStatus() == DriverStatus::OT;
+driver.powerStage.ConfigureShortProtection(short_config);
+bool ot = driver.status.GetStatus() == DriverStatus::OT;
 ```
 
 ### Key Methods by Subsystem
@@ -369,7 +369,22 @@ bool ot = driver.diagnostics.GetStatus() == DriverStatus::OT;
 | `SetAcceleration()` | Set acceleration/deceleration (unit-aware) |
 | `IsTargetReached()` | Check if position target reached |
 | `Stop()` | Stop motor immediately |
+
+#### Switches Subsystem
+| Method | Description |
+|--------|-------------|
 | `ConfigureReferenceSwitch()` | Configure endstops/reference switches |
+
+#### Thresholds Subsystem
+| Method | Description |
+|--------|-------------|
+| `SetModeChangeSpeeds()` | Convenience setter for TPWMTHRS/TCOOLTHRS/THIGH |
+
+#### PowerStage Subsystem
+| Method | Description |
+|--------|-------------|
+| `ConfigurePowerStage()` | Configure DRV_CONF (power MOSFET drive, BBM, OT) |
+| `ConfigureShortProtection()` | Configure SHORT_CONF levels (short protection) |
 
 #### MotorControl Subsystem
 | Method | Description |

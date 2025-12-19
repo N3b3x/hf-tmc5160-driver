@@ -65,6 +65,39 @@ namespace tmc51x0 {
  * a template parameter, providing compile-time polymorphism with zero runtime
  * overhead.
  *
+ * ## Operating Modes (SD_MODE) and API Validity
+ *
+ * The TMC51x0 family supports **two fundamentally different motion sources**:
+ *
+ * - **Internal ramp generator / motion controller** (**SD_MODE = 0**):
+ *   The chip executes motion profiles from registers (XTARGET/VMAX/AMAX/…).
+ * - **External Step/Dir** (**SD_MODE = 1**):
+ *   Motion comes from STEP/DIR pins. The internal ramp generator is not the
+ *   active motion source.
+ *
+ * This driver supports both, but **not every API makes sense in every mode**.
+ * To prevent confusing behavior, motion-controller operations require
+ * SD_MODE=0 and will return **ErrorCode::INVALID_STATE** if the chip reports
+ * SD_MODE=1 (external Step/Dir) via IOIN.
+ *
+ * **Quick mode matrix**
+ *
+ * | Subsystem / Feature | SD_MODE=0 (Internal ramp) | SD_MODE=1 (External Step/Dir) |
+ * |---------------------|---------------------------|--------------------------------|
+ * | `rampControl` motion/profile setters (XTARGET/VMAX/AMAX/...) | ✅ | ❌ (INVALID_STATE) |
+ * | `homing` (sensorless/switch homing routines) | ✅ | ❌ (INVALID_STATE) |
+ * | `tuning` (StallGuard tuning routines) | ✅ | ❌ (INVALID_STATE) |
+ * | `motorControl` (chopper, stealthChop, currents, LUT, power stage) | ✅ | ✅ (feature-dependent) |
+ * | `encoder` (ABN encoder config/read) | ✅ | ✅ |
+ * | `diagnostics` (status, StallGuard values, DRV_STATUS, IOIN, etc.) | ✅ | ✅ |
+ * | `communication` (SPI_MODE/SD_MODE pins, UART node addr, clock) | ✅ | ✅ |
+ *
+ * Notes:
+ * - In SD_MODE=1, you typically still configure chopper/StealthChop/CoolStep/
+ *   StallGuard thresholds, but you do **not** command motion via XTARGET/VMAX.
+ * - Some features (e.g., StallGuard/CoolStep) have additional datasheet
+ *   requirements (SpreadCycle vs StealthChop, velocity thresholds, etc.).
+ *
  * ## Usage Example
  *
  * @code
@@ -180,6 +213,38 @@ public:
   Result<void> Initialize(const DriverConfig &config = DriverConfig()) noexcept;
 
   /**
+   * @brief Options for HardReset()
+   */
+  struct HardResetOptions {
+    uint32_t power_off_ms{20};         ///< Power-off duration for power-cycle
+    uint32_t power_on_settle_ms{20};   ///< Post power-on settle time before IO
+    bool reinitialize{true};           ///< Re-run Initialize() after reset
+    bool prefer_power_cycle{true};     ///< Use comm_.PowerCycle() when supported
+    bool uart_assume_accessible_at_0{true}; ///< After power-cycle, assume the
+                                            ///< device is reachable at UART
+                                            ///< address 0 for re-init
+  };
+
+  /**
+   * @brief Perform a hard reset (power-cycle when available, else software reset)
+   * @param opts Hard reset options
+   * @return Result<void> indicating success or error
+   *
+   * Behavior:
+   * - If the platform implements CommInterface::PowerCycle(), this will power-cycle
+   *   the device (true hard reset / POR semantics).
+   * - Otherwise, it falls back to Reset() (software reset via GSTAT).
+   * - If opts.reinitialize=true, Initialize(GetDriverConfig()) is called after reset.
+   *
+   * UART multi-node note:
+   * - A power-cycle resets NODECONF in the chip. To re-initialize reliably, the
+   *   device must be reachable at UART address 0 (typically the first chip with
+   *   NAI tied to GND). For multi-node chains, prefer using TMC51x0MultiNode and
+   *   ProgramSequentially() after power-up.
+   */
+  Result<void> HardReset(const HardResetOptions &opts = HardResetOptions()) noexcept;
+
+  /**
    * @brief Get current driver configuration
    * @return Current driver configuration (including all runtime changes)
    *
@@ -284,41 +349,6 @@ public:
      * otherwise
      */
     Result<bool> IsStandstill() noexcept;
-
-    /**
-     * @brief Get reference switch status
-     * @param left_active Reference to store left switch active status
-     * @param right_active Reference to store right switch active status
-     * @param left_enabled Reference to store left switch enabled status
-     * @param right_enabled Reference to store right switch enabled status
-     * @return Result<bool> containing true if read successfully, false
-     * otherwise
-     */
-    Result<bool> GetReferenceSwitchStatus(bool &right_active,
-                                          bool &left_enabled,
-                                          bool &right_enabled) noexcept;
-
-    /**
-     * @brief Set X_COMPARE register
-     * @param position Position value to compare against
-     * @param unit Unit of the position value (default: Steps)
-     * @return Result<void> indicating success or error
-     *
-     * Sets the position comparison register. When XACTUAL equals X_COMPARE,
-     * the pos_reached flag is set in RAMP_STAT.
-     */
-    Result<void> SetXCompare(float position, Unit unit) noexcept;
-
-    /**
-     * @brief Get X_COMPARE register value (from local storage)
-     * @param position Reference to store the position value
-     * @param unit Unit to return the position in (default: Steps)
-     * @return Result<float> containing the value or error
-     *
-     * Returns the locally tracked value of X_COMPARE register.
-     * This register is write-only, so we track it locally.
-     */
-    Result<float> GetXCompare(Unit unit) const noexcept;
 
     /**
      * @brief Set target position (absolute)
@@ -467,117 +497,6 @@ public:
     Result<void> Stop() noexcept;
 
     /**
-     * @brief Configure reference switches/endstops
-     * @param config Reference switch configuration structure
-     * @return Result<void> indicating success or error
-     */
-    Result<void>
-    ConfigureReferenceSwitch(const ReferenceSwitchConfig &config) noexcept;
-
-    /**
-     * @brief Get current reference switch configuration
-     * @return Result<ReferenceSwitchConfig> containing the configuration or
-     * error
-     */
-    Result<ReferenceSwitchConfig> GetReferenceSwitchConfig() noexcept;
-
-    /**
-     * @brief Set left switch active level (determines polarity)
-     * @param active_level Active level (ACTIVE_LOW or ACTIVE_HIGH)
-     * @return Result<void> indicating success or error
-     *
-     * Updates only the active level, preserving other settings.
-     * Allows real-time polarity changes while keeping stop enable and latching
-     * configured.
-     */
-    Result<void>
-    SetLeftSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept;
-
-    /**
-     * @brief Set right switch active level (determines polarity)
-     * @param active_level Active level (ACTIVE_LOW or ACTIVE_HIGH)
-     * @return Result<void> indicating success or error
-     *
-     * Updates only the active level, preserving other settings.
-     * Allows real-time polarity changes while keeping stop enable and latching
-     * configured.
-     */
-    Result<void>
-    SetRightSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept;
-
-    /**
-     * @brief Enable or disable motor stop on left switch
-     * @param enable true to enable stop, false to disable
-     * @return Result<void> indicating success or error
-     *
-     * Updates only stop enable, preserving other settings.
-     * Allows real-time enable/disable of motor stop while keeping polarity and
-     * latching configured.
-     */
-    Result<void> SetLeftSwitchStopEnable(bool enable) noexcept;
-
-    /**
-     * @brief Enable or disable motor stop on right switch
-     * @param enable true to enable stop, false to disable
-     * @return Result<void> indicating success or error
-     *
-     * Updates only stop enable, preserving other settings.
-     * Allows real-time enable/disable of motor stop while keeping polarity and
-     * latching configured.
-     */
-    Result<void> SetRightSwitchStopEnable(bool enable) noexcept;
-
-    /**
-     * @brief Set left switch latching mode
-     * @param latch_mode Latching mode (DISABLED, ACTIVE_EDGE, INACTIVE_EDGE,
-     * BOTH_EDGES)
-     * @return Result<void> indicating success or error
-     *
-     * Updates only latching mode, preserving other settings.
-     */
-    Result<void> SetLeftSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept;
-
-    /**
-     * @brief Set right switch latching mode
-     * @param latch_mode Latching mode (DISABLED, ACTIVE_EDGE, INACTIVE_EDGE,
-     * BOTH_EDGES)
-     * @return Result<void> indicating success or error
-     *
-     * Updates only latching mode, preserving other settings.
-     */
-    Result<void>
-    SetRightSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept;
-
-    /**
-     * @brief Set stop mode (hard or soft stop)
-     * @param stop_mode Stop mode (HARD_STOP or SOFT_STOP)
-     * @return Result<void> indicating success or error
-     *
-     * Updates only stop mode, preserving other settings.
-     */
-    Result<void> SetStopMode(ReferenceStopMode stop_mode) noexcept;
-
-    /**
-     * @brief Get latched position
-     * @param position Reference to store the latched position
-     * @param unit Unit to return the position in (default: Steps)
-     * @return Result<float> containing the value or error
-     *
-     * Reads the position that was latched on the last reference switch event.
-     */
-    Result<float> GetLatchedPosition(Unit unit) noexcept;
-
-    /**
-     * @brief Set position comparison register
-     * @param value Position value for comparison
-     * @param unit Unit of the value (default: Steps)
-     * @return Result<void> indicating success or error
-     *
-     * When XACTUAL equals X_COMPARE, the position pulse output becomes high.
-     */
-    Result<void> SetComparePosition(float value, Unit unit) noexcept;
-
-    /**
      * @brief Set power down delay (raw register value)
      * @param tpowerdown Power down delay (0-255, time range ~0 to 5.6 seconds)
      * @return Result<void> indicating success or error
@@ -695,6 +614,176 @@ public:
 
   //================================================================================
   //================================================================================
+  //                                    SWITCHES STRUCT
+  //================================================================================
+  //================================================================================
+  /**
+   * @brief Reference switches / endstops subsystem (SW_MODE / XLATCH)
+   * @ingroup TMC51X0_Subsystems
+   *
+   * Owns reference switch configuration, latching, and related status helpers.
+   * (This used to live under RampControl; it is separated to keep RampControl
+   * focused on motion profile programming.)
+   */
+  struct Switches {
+    explicit Switches(TMC51x0 &driver) noexcept : driver_(driver) {}
+
+    /**
+     * @brief Configure reference switches / endstops (SW_MODE)
+     * @param config Reference switch configuration
+     * @return Result<void> indicating success or error
+     *
+     * Programs the reference switch logic in the SW_MODE register, including:
+     * - input polarity / active level (left/right)
+     * - enable/disable stop-on-switch per side
+     * - latch configuration (XLATCH behavior)
+     * - hard/soft stop behavior for the internal motion controller
+     *
+     * Use `GetReferenceSwitchStatus()` to read the current active state and
+     * whether stop-on-switch is enabled.
+     */
+    Result<void> ConfigureReferenceSwitch(const ReferenceSwitchConfig &config) noexcept;
+
+    /**
+     * @brief Read reference switch configuration (SW_MODE)
+     * @return Result<ReferenceSwitchConfig> containing the value or error
+     */
+    Result<ReferenceSwitchConfig> GetReferenceSwitchConfig() noexcept;
+
+    /**
+     * @brief Set left reference switch active level / polarity
+     * @param active_level Active level (ACTIVE_LOW / ACTIVE_HIGH)
+     * @return Result<void> indicating success or error
+     *
+     * Convenience helper that reads the current SW_MODE, updates the left
+     * polarity field, and writes it back.
+     */
+    Result<void> SetLeftSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept;
+
+    /**
+     * @brief Set right reference switch active level / polarity
+     * @param active_level Active level (ACTIVE_LOW / ACTIVE_HIGH)
+     * @return Result<void> indicating success or error
+     *
+     * Convenience helper that reads the current SW_MODE, updates the right
+     * polarity field, and writes it back.
+     */
+    Result<void> SetRightSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept;
+
+    /**
+     * @brief Enable/disable stop-on-left-switch (SW_MODE.stop_l_enable)
+     * @param enable True to enable stop-on-switch
+     * @return Result<void> indicating success or error
+     */
+    Result<void> SetLeftSwitchStopEnable(bool enable) noexcept;
+
+    /**
+     * @brief Enable/disable stop-on-right-switch (SW_MODE.stop_r_enable)
+     * @param enable True to enable stop-on-switch
+     * @return Result<void> indicating success or error
+     */
+    Result<void> SetRightSwitchStopEnable(bool enable) noexcept;
+
+    /**
+     * @brief Configure left switch latching behavior (SW_MODE.latch_l_active)
+     * @param latch_mode Latch mode selection
+     * @return Result<void> indicating success or error
+     */
+    Result<void> SetLeftSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept;
+
+    /**
+     * @brief Configure right switch latching behavior (SW_MODE.latch_r_active)
+     * @param latch_mode Latch mode selection
+     * @return Result<void> indicating success or error
+     */
+    Result<void> SetRightSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept;
+
+    /**
+     * @brief Set reference stop mode (hard/soft stop) for internal ramp generator
+     * @param stop_mode Stop mode selection
+     * @return Result<void> indicating success or error
+     *
+     * @warning Datasheet (SW_MODE): do not use soft stop in combination with
+     *          StallGuard stop-on-stall (sg_stop). This API returns INVALID_STATE
+     *          if soft-stop is requested while sg_stop is enabled.
+     */
+    Result<void> SetStopMode(ReferenceStopMode stop_mode) noexcept;
+
+    /**
+     * @brief Get reference switch active/enabled status (RAMP_STAT + SW_MODE)
+     * @param right_active Output: true if right switch is currently active
+     * @param left_enabled Output: true if left stop-on-switch is enabled
+     * @param right_enabled Output: true if right stop-on-switch is enabled
+     * @return Result<bool> true on success, or error
+     *
+     * - Active state is read from RAMP_STAT status bits.
+     * - Enabled state is derived from SW_MODE stop-enable bits.
+     */
+    Result<bool> GetReferenceSwitchStatus(bool &right_active,
+                                          bool &left_enabled,
+                                          bool &right_enabled) noexcept;
+
+    /**
+     * @brief Read latched position from XLATCH (unit-aware)
+     * @param unit Unit to return the position in
+     * @return Result<float> containing the latched position or error
+     *
+     * XLATCH latches the internal position counter (microsteps). This helper
+     * converts it into the requested user unit based on the current microstep
+     * resolution and mechanical system configuration.
+     */
+    Result<float> GetLatchedPosition(Unit unit) noexcept;
+
+  private:
+    TMC51x0 &driver_;
+  } switches{*this};
+
+  //================================================================================
+  //================================================================================
+  //                                    EVENTS STRUCT
+  //================================================================================
+  //================================================================================
+  /**
+   * @brief Motion events / status outputs (X_COMPARE, RAMP_STAT clear)
+   * @ingroup TMC51X0_Subsystems
+   */
+  struct Events {
+    explicit Events(TMC51x0 &driver) noexcept : driver_(driver) {}
+
+    /**
+     * @brief Program the X_COMPARE position compare threshold (unit-aware)
+     * @param position Compare position
+     * @param unit Unit of the compare position
+     * @return Result<void> indicating success or error
+     *
+     * Note: X_COMPARE is a **write-only** register. The driver caches the last
+     * written value; use `GetXCompare()` to retrieve that cached value.
+     */
+    Result<void> SetXCompare(float position, Unit unit) noexcept;
+
+    /**
+     * @brief Get last programmed X_COMPARE threshold (cached, unit-aware)
+     * @param unit Unit to return the cached compare value in
+     * @return Result<float> containing the cached value
+     *
+     * This does not read hardware (X_COMPARE is write-only); it returns the
+     * last value written by `SetXCompare()` (or other APIs writing X_COMPARE).
+     */
+    Result<float> GetXCompare(Unit unit) const noexcept;
+
+    /**
+     * @brief Clear specific bits in RAMP_STAT
+     * @param bits_to_clear Bitmask of RAMP_STAT bits to clear (write-1-to-clear)
+     * @return Result<void> indicating success or error
+     */
+    Result<void> ClearRampStatus(uint32_t bits_to_clear) noexcept;
+
+  private:
+    TMC51x0 &driver_;
+  } events{*this};
+
+  //================================================================================
+  //================================================================================
   //                                    MOTOR CONTROL STRUCT
   //================================================================================
   //================================================================================
@@ -766,18 +855,6 @@ public:
     Result<void> ConfigureStealthChop(const StealthChopConfig &config) noexcept;
 
     /**
-     * @brief Configure power stage parameters (DRV_CONF register)
-     * @param config Power stage parameters structure
-     * @return Result<void> indicating success or error
-     *
-     * Configures MOSFET driver strength, break-before-make time,
-     * over-temperature protection, and sense filter based on user-friendly
-     * physical parameters.
-     */
-    Result<void>
-    ConfigurePowerStage(const PowerStageParameters &config) noexcept;
-
-    /**
      * @brief Configure motor current from motor specifications
      * @param motor_spec Motor specifications including current, sense resistor,
      * supply voltage
@@ -787,67 +864,6 @@ public:
      * motor specifications. Also sets IHOLDDELAY if configured in motor_spec.
      */
     Result<void> ConfigureMotorCurrent(const MotorSpec &motor_spec) noexcept;
-
-    /**
-     * @brief Set mode change speeds
-     * @param pwm_thrs Speed threshold for stealthChop
-     * @param cool_thrs Speed threshold for coolStep
-     * @param high_thrs Speed threshold for high-speed mode
-     * @param unit Unit of the speed values (default: RevPerSec)
-     * @return Result<void> indicating success or error
-     */
-    Result<void> SetModeChangeSpeeds(float pwm_thrs, float cool_thrs,
-                                     float high_thrs, Unit unit) noexcept;
-
-    /**
-     * @brief Set CoolStep velocity threshold (TCOOLTHRS)
-     * @param value Velocity threshold value
-     * @param unit Unit of the value (default: Steps)
-     * @return Result<void> indicating success or error
-     */
-    Result<void> SetCoolStepThreshold(float value, Unit unit) noexcept;
-
-    /**
-     * @brief Set High-Speed velocity threshold (THIGH)
-     * @param value Velocity threshold value
-     * @param unit Unit of the value (default: Steps)
-     * @return Result<void> indicating success or error
-     */
-    Result<void> SetHighSpeedThreshold(float value, Unit unit) noexcept;
-
-    /**
-     * @brief Set StealthChop velocity threshold (TPWMTHRS)
-     * @param value Velocity threshold value
-     * @param unit Unit of the value (default: Steps)
-     * @return Result<void> indicating success or error
-     *
-     * Sets the velocity threshold for switching between StealthChop and
-     * SpreadCycle modes. Below this threshold, StealthChop is used (quiet
-     * operation). Above this threshold, SpreadCycle is used (higher torque,
-     * more noise).
-     *
-     * Setting to 0.0 disables the threshold (StealthChop always used if
-     * enabled).
-     *
-     * @note This is automatically configured during Initialize() if
-     * velocity_threshold is set in StealthChopConfig.
-     */
-    Result<void> SetStealthChopVelocityThreshold(float value,
-                                                 Unit unit) noexcept;
-
-    /**
-     * @brief Get StealthChop velocity threshold (TPWMTHRS) from local storage
-     * @param unit Unit of the returned threshold
-     * @return Result<float> containing the threshold in requested units
-     *
-     * Returns the locally tracked value of TPWMTHRS register converted back to
-     * a speed threshold. This is the velocity below which StealthChop may be
-     * used (when StealthChop is enabled via GCONF.en_pwm_mode).
-     *
-     * @note TPWMTHRS uses the same TSTEP timebase conversion as TCOOLTHRS:
-     * TSTEP = f_CLK / (speed_fullsteps_per_sec * 256).
-     */
-    Result<float> GetStealthChopVelocityThreshold(Unit unit) const noexcept;
 
     /**
      * @brief Set global current scaler
@@ -1072,6 +1088,162 @@ public:
 
   //================================================================================
   //================================================================================
+  //                                    THRESHOLDS STRUCT
+  //================================================================================
+  //================================================================================
+  /**
+   * @brief Velocity thresholds / mode thresholds (TPWMTHRS, TCOOLTHRS, THIGH)
+   * @ingroup TMC51X0_Subsystems
+   *
+   * Consolidates all "threshold" knobs so users don't have to guess whether a
+   * given threshold belongs to motor control, StallGuard, or diagnostics.
+   */
+  struct Thresholds {
+    explicit Thresholds(TMC51x0 &driver) noexcept : driver_(driver) {}
+
+    /**
+     * @brief Set StealthChop velocity threshold (TPWMTHRS)
+     * @param value Velocity threshold value
+     * @param unit Unit of the value
+     * @return Result<void> indicating success or error
+     */
+    Result<void> SetStealthChopVelocityThreshold(float value, Unit unit) noexcept;
+
+    /**
+     * @brief Get StealthChop velocity threshold (TPWMTHRS) from local tracking
+     * @param unit Unit of the returned threshold
+     * @return Result<float> containing the threshold in requested units
+     */
+    Result<float> GetStealthChopVelocityThreshold(Unit unit) const noexcept;
+
+    /**
+     * @brief Set StallGuard/CoolStep threshold velocity (TCOOLTHRS)
+     * @param threshold Threshold velocity
+     * @param unit Unit of threshold
+     * @return Result<void> indicating success or error
+     */
+    Result<void> SetTcoolthrs(float threshold, Unit unit) noexcept;
+
+    /**
+     * @brief Get cached StallGuard/CoolStep threshold velocity (TCOOLTHRS)
+     * @param unit Unit to return the cached value in
+     * @return Result<float> containing the cached value or error
+     */
+    Result<float> GetTcoolthrs(Unit unit) const noexcept;
+
+    /**
+     * @brief Set High-Speed velocity threshold (THIGH)
+     * @param value Velocity threshold value
+     * @param unit Unit of the value
+     * @return Result<void> indicating success or error
+     */
+    Result<void> SetHighSpeedThreshold(float value, Unit unit) noexcept;
+
+    /**
+     * @brief Set DcStep velocity threshold (VDCMIN)
+     * @param value Velocity threshold value (0 disables)
+     * @param unit Unit of the value
+     * @return Result<void> indicating success or error
+     *
+     * VDCMIN is part of the ramp-generator driver feature control register set.
+     * Per datasheet, VDCMIN-based DcStep enable is only valid when using the
+     * **internal ramp generator** (SD_MODE=LOW). In external STEP/DIR mode,
+     * DcStep is enabled via the external DCEN pin instead.
+     *
+     * @retval INVALID_STATE if called while in external STEP/DIR mode
+     */
+    Result<void> SetDcStepVelocityThreshold(float value, Unit unit) noexcept;
+
+    /**
+     * @brief Get cached DcStep velocity threshold (VDCMIN)
+     * @param unit Unit to return the cached value in
+     * @return Result<float> containing the cached value or error
+     *
+     * This returns the locally tracked value (VDCMIN is treated as write-only by
+     * this driver).
+     */
+    Result<float> GetDcStepVelocityThreshold(Unit unit) const noexcept;
+
+    /**
+     * @brief Get locally tracked VDCMIN register value (raw)
+     * @return Raw VDCMIN register value
+     */
+    uint32_t GetVdcminRegisterValue() const noexcept;
+
+    /**
+     * @brief Convenience: set TPWMTHRS, TCOOLTHRS, and THIGH in one call
+     * @param pwm_thrs Speed threshold for StealthChop (TPWMTHRS)
+     * @param cool_thrs Speed threshold for StallGuard/CoolStep (TCOOLTHRS)
+     * @param high_thrs Speed threshold for high-speed mode (THIGH)
+     * @param unit Unit of the speed values
+     * @return Result<void> indicating success or error
+     */
+    Result<void> SetModeChangeSpeeds(float pwm_thrs, float cool_thrs,
+                                     float high_thrs, Unit unit) noexcept;
+
+    /**
+     * @brief Get locally tracked TPWMTHRS register value (raw)
+     * @return Raw TPWMTHRS register value (20-bit meaningful range)
+     */
+    uint32_t GetTpwmthrsRegisterValue() const noexcept;
+
+    /**
+     * @brief Get locally tracked TCOOLTHRS register value (raw)
+     * @return Raw TCOOLTHRS register value (20-bit meaningful range)
+     */
+    uint32_t GetTcoolthrsRegisterValue() const noexcept;
+
+  private:
+    TMC51x0 &driver_;
+  } thresholds{*this};
+
+  //================================================================================
+  //================================================================================
+  //                                    POWER STAGE STRUCT
+  //================================================================================
+  //================================================================================
+  /**
+   * @brief Power stage + protection subsystem (DRV_CONF, SHORT_CONF)
+   * @ingroup TMC51X0_Subsystems
+   *
+   * Groups board/power-electronics configuration and short protection, keeping
+   * `motorControl` focused on motor drive behavior.
+   */
+  struct PowerStage {
+    explicit PowerStage(TMC51x0 &driver) noexcept : driver_(driver) {}
+
+    /**
+     * @brief Configure power stage parameters (DRV_CONF register)
+     * @param config Power stage parameters structure
+     * @return Result<void> indicating success or error
+     */
+    Result<void> ConfigurePowerStage(const PowerStageParameters &config) noexcept;
+
+    /**
+     * @brief Configure short protection levels from PowerStageParameters
+     * @param config Power stage parameters structure (contains short protection fields)
+     * @return Result<void> indicating success or error
+     */
+    Result<void> ConfigureShortProtection(const PowerStageParameters &config) noexcept;
+
+    /**
+     * @brief Set short protection levels
+     * @param s2vs_level Short to VS detector sensitivity (4-15)
+     * @param s2g_level Short to GND detector sensitivity (2-15)
+     * @param shortfilter Spike filtering bandwidth (0-3)
+     * @param shortdelay Short detection delay (0-1)
+     * @return Result<void> indicating success or error
+     */
+    Result<void> SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level,
+                                          uint8_t shortfilter,
+                                          uint8_t shortdelay) noexcept;
+
+  private:
+    TMC51x0 &driver_;
+  } powerStage{*this};
+
+  //================================================================================
+  //================================================================================
   //                                    COMMUNICATION STRUCT
   //================================================================================
   //================================================================================
@@ -1151,21 +1323,21 @@ public:
     Result<void> SetClkFreq(const ExternalClockConfig &config) noexcept;
 
     /**
-     * @brief Configure UART node address and send delay (writes SLAVECONF
+     * @brief Configure UART node address and send delay (writes NODECONF
      * register)
-     * @param node_address UART node address (0-254), same as slave address in
-     * SLAVECONF
+     * @param node_address UART node address (0-254), same as NODECONF.NODEADDR
+     * NODECONF
      * @param send_delay Number of bit times before replying to register read
      * (0-15), stored locally
      * @return Result<void> indicating success or error
      *
-     * Writes the SLAVECONF register to configure the chip's UART node address
+     * Writes the NODECONF register to configure the chip's UART node address
      * and send delay. Also updates the local software representation
      * (uart_node_address_ and send_delay_).
      *
      * @note This writes to hardware. For sequential programming, use
      * `uartConfig.ConfigureUartNodeAddress()` instead.
-     * @note Send delay is stored locally since SLAVECONF register is
+     * @note Send delay is stored locally since NODECONF register is
      * write-only.
      */
     Result<void> ConfigureUartNodeAddress(uint8_t node_address,
@@ -1208,7 +1380,7 @@ public:
      * WriteRegister() to determine the correct node address for UART
      * communication.
      *
-     * @note The node address must be programmed into the chip via SLAVECONF
+     * @note The node address must be programmed into the chip via NODECONF
      * register (using ConfigureUartNodeAddress() or
      * uartConfig.ConfigureUartNodeAddress()). This method only updates the
      * software representation. Only applicable for UART communication
@@ -1226,6 +1398,25 @@ public:
     [[nodiscard]] uint8_t GetUartNodeAddress() const noexcept {
       return driver_.uart_node_address_;
     }
+
+  private:
+    TMC51x0 &driver_; ///< Reference to parent driver instance
+  } communication{*this};
+
+  //================================================================================
+  //================================================================================
+  //                                    IO / PINS STRUCT
+  //================================================================================
+  //================================================================================
+  /**
+   * @brief Chip IO / mode pins / IOIN helpers
+   * @ingroup TMC51X0_Subsystems
+   *
+   * Groups "pin-state / IOIN / mode pins" operations so they don't get mixed
+   * into status monitoring or communication addressing.
+   */
+  struct Io {
+    explicit Io(TMC51x0 &driver) noexcept : driver_(driver) {}
 
     /**
      * @brief Set the chip operating mode via SPI_MODE and SD_MODE pins
@@ -1265,8 +1456,7 @@ public:
     Result<void> SetOperatingMode(ChipCommMode mode) noexcept;
 
     /**
-     * @brief Get the current chip operating mode from SPI_MODE and SD_MODE pins
-     * @param mode Reference to store the current mode
+     * @brief Read the current mode-pin state (SPI_MODE/SD_MODE)
      * @return Result<ChipCommMode> containing the value or error
      *
      * This method reads the current state of SPI_MODE (pin 22) and SD_MODE (pin
@@ -1277,9 +1467,35 @@ public:
      */
     Result<ChipCommMode> GetOperatingMode() const noexcept;
 
+    /**
+     * @brief Read GPIO input pins (parsed) from IOIN
+     * @return Result<InputStatus> containing the value or error
+     */
+    Result<InputStatus> ReadInputStatus() noexcept;
+
+    /**
+     * @brief Read IC version from IOIN
+     * @return Result<uint8_t> containing the value or error
+     */
+    Result<uint8_t> ReadIcVersion() noexcept;
+
+    /**
+     * @brief Read GPIO input pins (raw) from IOIN
+     * @return Result<uint32_t> containing the value or error
+     */
+    Result<uint32_t> ReadGpioPins() noexcept;
+
+    /**
+     * @brief Set SDO_CFG0 pin polarity (UART/Single Wire mode)
+     * @param polarity Output pin polarity (false=normal/active high,
+     * true=inverted/active low)
+     * @return Result<void> indicating success or error
+     */
+    Result<void> SetSdoCfg0Polarity(bool polarity) noexcept;
+
   private:
-    TMC51x0 &driver_; ///< Reference to parent driver instance
-  } communication{*this};
+    TMC51x0 &driver_;
+  } io{*this};
 
   //================================================================================
   //================================================================================
@@ -1304,6 +1520,13 @@ public:
      * @brief Configure encoder settings
      * @param config Encoder configuration structure
      * @return Result<void> indicating success or error
+     *
+     * @note Encoder registers are only functional when the chip is using the
+     *       **internal ramp generator** (SD_MODE=LOW). In external STEP/DIR
+     *       mode the encoder pins are repurposed (DCEN/DCIN/DCO) and encoder
+     *       functionality is not available.
+     *
+     * @retval INVALID_STATE if called while in external STEP/DIR mode
      */
     Result<void> Configure(const EncoderConfig &config) noexcept;
 
@@ -1311,6 +1534,8 @@ public:
      * @brief Get current encoder configuration
      * @param config Reference to store current configuration
      * @return Result<EncoderConfig> containing the value or error
+     *
+     * @retval INVALID_STATE if called while in external STEP/DIR mode
      */
     Result<EncoderConfig> GetEncoderConfig() noexcept;
 
@@ -1358,6 +1583,8 @@ public:
      * @brief Get encoder position
      * @param position Reference to store encoder position in steps
      * @return Result<int32_t> containing the value or error
+     *
+     * @retval INVALID_STATE if called while in external STEP/DIR mode
      */
     Result<int32_t> GetPosition() noexcept;
 
@@ -1382,14 +1609,37 @@ public:
      * @brief Check if encoder deviation detected
      * @return Result<bool> containing true if deviation detected, false
      * otherwise
+     *
+     * @retval INVALID_STATE if called while in external STEP/DIR mode
      */
     Result<bool> IsDeviationDetected() noexcept;
 
     /**
      * @brief Clear encoder deviation flag
      * @return Result<void> indicating success or error
+     *
+     * @retval INVALID_STATE if called while in external STEP/DIR mode
      */
     Result<void> ClearDeviationFlag() noexcept;
+
+    /**
+     * @brief Check if an encoder N-event was detected (ENC_STATUS.n_event)
+     * @return Result<bool> true if an N-event is latched, false otherwise
+     *
+     * ENC_STATUS.n_event is a write-1-to-clear flag set by the hardware on an
+     * N-channel event (as configured by ENCMODE).
+     *
+     * @retval INVALID_STATE if called while in external STEP/DIR mode
+     */
+    Result<bool> IsNEventDetected() noexcept;
+
+    /**
+     * @brief Clear the encoder N-event flag (ENC_STATUS.n_event, W1C)
+     * @return Result<void> indicating success or error
+     *
+     * @retval INVALID_STATE if called while in external STEP/DIR mode
+     */
+    Result<void> ClearNEventFlag() noexcept;
 
     /**
      * @brief Get encoder latched position
@@ -1397,6 +1647,8 @@ public:
      * @return Result<int32_t> containing the value or error
      *
      * Reads the encoder position that was latched on the last N channel event.
+     *
+     * @retval INVALID_STATE if called while in external STEP/DIR mode
      */
     Result<int32_t> GetLatchedPosition() noexcept;
 
@@ -1406,23 +1658,22 @@ public:
 
   //================================================================================
   //================================================================================
-  //                                    DIAGNOSTICS STRUCT
+  //                                    STATUS STRUCT
   //================================================================================
   //================================================================================
 
   /**
-   * @brief Diagnostics subsystem
+   * @brief Status / monitoring subsystem (read-only)
    * @ingroup TMC51X0_Subsystems
    *
-   * Provides methods for reading driver status, StallGuard values, and error
-   * detection.
+   * Provides methods for reading status/telemetry and configuration/OTP info.
    */
-  struct Diagnostics {
+  struct Status {
     /**
      * @brief Construct diagnostics subsystem
      * @param driver Reference to parent TMC51x0 driver instance
      */
-    explicit Diagnostics(TMC51x0 &driver) noexcept : driver_(driver) {}
+    explicit Status(TMC51x0 &driver) noexcept : driver_(driver) {}
 
     /**
      * @brief Get driver status
@@ -1439,76 +1690,6 @@ public:
      * otherwise
      */
     Result<bool> GetGlobalStatus(bool &drv_err, bool &uv_cp) noexcept;
-
-    /**
-     * @brief Get StallGuard2 value
-     * @param value Reference to store StallGuard2 value (0-1023)
-     * @return Result<uint16_t> containing the value or error
-     */
-    Result<uint16_t> GetStallGuard() noexcept;
-
-    /**
-     * @brief Get StallGuard2 result from DRV_STATUS register
-     * @param sg_result Reference to store StallGuard2 value (0-1023)
-     * @return Result<uint16_t> containing the value or error
-     */
-    Result<uint16_t> GetStallGuardResult() noexcept;
-
-    /**
-     * @brief Configure StallGuard2
-     * @param config StallGuard configuration structure
-     * @return Result<void> indicating success or error
-     */
-    Result<void> ConfigureStallGuard(const StallGuardConfig &config) noexcept;
-
-    /**
-     * @brief Enable/Disable stop on stall (sg_stop in SW_MODE)
-     * @param enable true to enable stop on stall, false to disable
-     * @return Result<void> indicating success or error
-     */
-    Result<void> EnableStopOnStall(bool enable) noexcept;
-
-    /**
-     * @brief Check if stop on stall is enabled
-     * @return Result<bool> containing true if stop on stall is enabled, false
-     * otherwise
-     */
-    Result<bool> IsStopOnStallEnabled() noexcept;
-
-    /**
-     * @brief Enable/Disable soft stop (en_softstop in SW_MODE)
-     * @param enable true to enable soft stop, false to disable
-     * @return Result<void> indicating success or error
-     */
-    Result<void> SetSoftStop(bool enable) noexcept;
-
-    /**
-     * @brief Check if soft stop is enabled
-     * @return Result<bool> containing true if soft stop is enabled, false
-     * otherwise
-     */
-    Result<bool> IsSoftStopEnabled() noexcept;
-
-    /**
-     * @brief Clear stall event flag (event_stop_sg in RAMP_STAT)
-     * @return Result<void> indicating success or error
-     */
-    Result<void> ClearStallFlag() noexcept;
-
-    /**
-     * @brief Check if stall was detected
-     * 
-     * Automatically adapts based on whether stop-on-stall (sg_stop) is enabled:
-     * - If sg_stop is enabled: Checks event_stop_sg flag (hardware sets this when stall detected)
-     * - If sg_stop is disabled: Checks status_sg and SG_RESULT directly
-     *   (status_sg indicates StallGuard2 is active, SG_RESULT <= 10 indicates high load/stall)
-     * 
-     * This method abstracts away the complexity of knowing which register to check
-     * based on the driver configuration.
-     * 
-     * @return Result<bool> containing true if stall detected, false otherwise
-     */
-    Result<bool> IsStallDetected() noexcept;
 
     /**
      * @brief Get driver status register value
@@ -1595,58 +1776,6 @@ public:
     Result<uint32_t> GetRampStatusRegister() noexcept;
 
     /**
-     * @brief Get locally tracked TPWMTHRS register value (raw)
-     * @return Raw TPWMTHRS register value (20-bit meaningful range)
-     */
-    uint32_t GetTpwmthrsRegisterValue() const noexcept;
-
-    /**
-     * @brief Get locally tracked TCOOLTHRS register value (raw)
-     * @return Raw TCOOLTHRS register value (20-bit meaningful range)
-     */
-    uint32_t GetTcoolthrsRegisterValue() const noexcept;
-
-    /**
-     * @brief Clear specific bits in RAMP_STAT register
-     * @param bits_to_clear Bits to clear (write 1 to clear corresponding bit)
-     * @return Result<void> indicating success or error
-     *
-     * RAMP_STAT is a read-write-clear register. Writing 1 to a bit clears it.
-     * Common bits to clear:
-     * - event_stop_sg (bit 0): Stall event flag
-     * - event_stop_l (bit 1): Left switch event flag
-     * - event_stop_r (bit 2): Right switch event flag
-     * - event_pos_reached (bit 3): Position reached flag
-     * - velocity_reached (bit 4): Velocity reached flag
-     */
-    Result<void> ClearRampStatus(uint32_t bits_to_clear) noexcept;
-
-    /**
-     * @brief Set TCOOLTHRS register directly
-     * @param threshold Velocity threshold in steps/s (0 = disable, max =
-     * 0xFFFFF)
-     * @return Result<void> indicating success or error
-     *
-     * Sets the lower threshold velocity for CoolStep and StallGuard2.
-     * When TSTEP < TCOOLTHRS (velocity > threshold), CoolStep and StallGuard2
-     * are enabled. Setting to 0 disables these features at all speeds.
-     *
-     * @note For high-level configuration, use ConfigureStallGuard() instead.
-     */
-    Result<void> SetTcoolthrs(float threshold, Unit unit) noexcept;
-
-    /**
-     * @brief Get TCOOLTHRS register value (from local storage)
-     * @param threshold Reference to store the threshold value
-     * @param unit Unit to return the threshold in (default: Steps)
-     * @return Result<float> containing the value or error
-     *
-     * Returns the locally tracked value of TCOOLTHRS register.
-     * This register is write-only, so we track it locally.
-     */
-    Result<float> GetTcoolthrs(Unit unit) const noexcept;
-
-    /**
      * @brief Get lost steps counter
      * @param steps Reference to store the number of lost steps
      * @return Result<uint32_t> containing the value or error
@@ -1708,35 +1837,6 @@ public:
     Result<uint8_t> GetPwmAuto(uint8_t &pwm_grad_auto) noexcept;
 
     /**
-     * @brief Read GPIO input pins
-     * @param input_status Reference to store parsed input pin states
-     * @return Result<InputStatus> containing the value or error
-     *
-     * Reads the state of all GPIO input pins and the IC version from register
-     * 0x04 (IOIN).
-     */
-    Result<InputStatus> ReadInputStatus() noexcept;
-
-    /**
-     * @brief Read IC version
-     * @param version Reference to store the 8-bit IC version
-     * @return Result<uint8_t> containing the value or error
-     *
-     * Reads the VERSION field from IOIN register (0x04).
-     * Expected values: 0x11 for TMC5130, 0x30 for TMC5160.
-     */
-    Result<uint8_t> ReadIcVersion() noexcept;
-
-    /**
-     * @brief Read GPIO input pins (raw)
-     * @param io_pins Reference to store raw IO pin register value
-     * @return Result<uint32_t> containing the value or error
-     *
-     * Reads the raw state of all GPIO input pins (register 0x04).
-     */
-    Result<uint32_t> ReadGpioPins() noexcept;
-
-    /**
      * @brief Read factory configuration
      * @param fclktrim Reference to store FCLKTRIM value (0-31)
      * @return Result<uint8_t> containing the value or error
@@ -1744,20 +1844,6 @@ public:
      * Reads the factory configuration/clock trim value.
      */
     Result<uint8_t> ReadFactoryConfig() noexcept;
-
-    /**
-     * @brief Set SDO_CFG0 pin polarity (UART/Single Wire mode)
-     * @param polarity Output pin polarity (false=normal/active high,
-     * true=inverted/active low)
-     * @return Result<void> indicating success or error
-     *
-     * Sets the polarity of the SDO_CFG0 pin when used as Next Address Output
-     * (NAO) in single-wire UART chain mode.
-     *
-     * @note This affects the OUTPUT register (0x04), bit 0.
-     *       The reset value is 1 (active low/inverted) for use as NAO.
-     */
-    Result<void> SetSdoCfg0Polarity(bool polarity) noexcept;
 
     /**
      * @brief Read OTP configuration
@@ -1811,7 +1897,98 @@ public:
 
   private:
     TMC51x0 &driver_; ///< Reference to parent driver instance
-  } diagnostics{*this};
+  } status{*this};
+
+  //================================================================================
+  //================================================================================
+  //                                    STALLGUARD STRUCT
+  //================================================================================
+  //================================================================================
+  /**
+   * @brief StallGuard2 subsystem (COOLCONF/DRV_STATUS + SW_MODE interactions)
+   * @ingroup TMC51X0_Subsystems
+   *
+   * Owns StallGuard configuration and control signals that affect motion
+   * behavior (stop-on-stall, soft-stop), keeping `diagnostics` focused on
+   * monitoring.
+   */
+  struct StallGuard {
+    explicit StallGuard(TMC51x0 &driver) noexcept : driver_(driver) {}
+
+    /**
+     * @brief Read StallGuard2 value (SG_RESULT)
+     * @return Result<uint16_t> containing the value or error
+     */
+    Result<uint16_t> GetStallGuard() noexcept;
+
+    /**
+     * @brief Read StallGuard2 result from DRV_STATUS (SG_RESULT)
+     * @return Result<uint16_t> containing the value or error
+     */
+    Result<uint16_t> GetStallGuardResult() noexcept;
+
+    /**
+     * @brief Configure StallGuard2 parameters (COOLCONF)
+     * @param config StallGuard configuration
+     * @return Result<void> indicating success or error
+     */
+    Result<void> ConfigureStallGuard(const StallGuardConfig &config) noexcept;
+
+    /**
+     * @brief Enable/disable stop-on-stall behavior
+     * @param enable True to enable stop on stall
+     * @return Result<void> indicating success or error
+     *
+     * @warning Datasheet (SW_MODE): do not combine stop-on-stall (sg_stop) with
+     *          soft-stop (en_softstop). This API returns INVALID_STATE if
+     *          enabling sg_stop while soft-stop is enabled.
+     */
+    Result<void> EnableStopOnStall(bool enable) noexcept;
+
+    /**
+     * @brief Check whether stop-on-stall is enabled
+     * @return Result<bool> containing true if enabled, false otherwise
+     */
+    Result<bool> IsStopOnStallEnabled() noexcept;
+
+    /**
+     * @brief Enable/disable soft-stop behavior (instead of hard stop)
+     * @param enable True to enable soft stop
+     * @return Result<void> indicating success or error
+     *
+     * @warning Datasheet (SW_MODE): do not combine soft-stop (en_softstop) with
+     *          stop-on-stall (sg_stop). This API returns INVALID_STATE if
+     *          enabling soft-stop while sg_stop is enabled.
+     */
+    Result<void> SetSoftStop(bool enable) noexcept;
+
+    /**
+     * @brief Check whether soft-stop is enabled
+     * @return Result<bool> containing true if enabled, false otherwise
+     */
+    Result<bool> IsSoftStopEnabled() noexcept;
+
+    /**
+     * @brief Clear stall event flag (RAMP_STAT)
+     * @return Result<void> indicating success or error
+     */
+    Result<void> ClearStallFlag() noexcept;
+
+    /**
+     * @brief Check if stall has been detected (RAMP_STAT)
+     * @return Result<bool> containing true if stall event is set
+     */
+    Result<bool> IsStallDetected() noexcept;
+
+    /**
+     * @brief Set StallGuard/CoolStep threshold velocity (TCOOLTHRS, unit-aware)
+     * @param threshold Threshold velocity
+     * @param unit Unit of threshold
+     * @return Result<void> indicating success or error
+     */
+  private:
+    TMC51x0 &driver_;
+  } stallGuard{*this};
 
   //================================================================================
   //================================================================================
@@ -1877,38 +2054,6 @@ public:
      */
     Result<void>
     TuneStallGuard(float target_velocity, StallGuardTuningResult &result,
-                   int8_t min_sgt = -10, int8_t max_sgt = 63,
-                   float acceleration = 0.06F, float min_velocity = 0.0F,
-                   float max_velocity = 0.0F,
-                   Unit velocity_unit = Unit::RevPerSec,
-                   Unit acceleration_unit = Unit::RevPerSec) noexcept;
-
-    /**
-     * @brief Legacy overload: Automatically tune StallGuard threshold (SGT)
-     * @param target_velocity Velocity to tune at
-     * @param final_sgt Reference to store the tuned SGT value
-     * @param min_sgt Minimum SGT to try (default: -10)
-     * @param max_sgt Maximum SGT to try (default: 63)
-     * @param acceleration Acceleration/deceleration (default: 3000.0f
-     * steps/s^2)
-     * @param min_velocity Minimum velocity to verify tuning at (0 = disabled)
-     * @param max_velocity Maximum velocity to verify tuning at (0 = disabled)
-     * @param velocity_unit Unit for velocity parameters (default: RevPerSec)
-     * @param acceleration_unit Unit for acceleration parameter (default:
-     * RevPerSec, RPM is not valid)
-     * @return Result<void> indicating success or error
-     *
-     * @deprecated Use the overload that returns StallGuardTuningResult for
-     * comprehensive results
-     *
-     * This is a convenience wrapper around the new comprehensive tuning
-     * function. For better results and velocity range analysis, use the
-     * StallGuardTuningResult version.
-     */
-    [[deprecated("Use TuneStallGuard with StallGuardTuningResult for "
-                 "comprehensive results")]]
-    Result<void>
-    TuneStallGuard(float target_velocity, int8_t &final_sgt,
                    int8_t min_sgt = -10, int8_t max_sgt = 63,
                    float acceleration = 0.06F, float min_velocity = 0.0F,
                    float max_velocity = 0.0F,
@@ -2178,7 +2323,7 @@ public:
      * @param send_delay Number of bit times before replying (0-15)
      * @return Result<void> indicating success or error
      *
-     * Writes to SLAVECONF register using address 0 (for sequential programming
+     * Writes to NODECONF register using address 0 (for sequential programming
      * via NAI/NAO pins). This is used during sequential programming when
      * devices are accessible at address 0.
      *
@@ -2190,45 +2335,6 @@ public:
     Result<void> ConfigureUartNodeAddress(uint8_t node_address,
                                           uint8_t send_delay) noexcept;
   } uartConfig{this};
-
-  /**
-   * @brief Protection subsystem
-   * @ingroup TMC51X0_Subsystems
-   *
-   * Provides methods for configuring protection systems including short circuit
-   * detection and overtemperature protection.
-   */
-  struct Protection {
-    /**
-     * @brief Construct protection subsystem
-     * @param driver Reference to parent TMC51x0 driver instance
-     */
-    explicit Protection(TMC51x0 &driver) noexcept : driver_(driver) {}
-
-    /**
-     * @brief Configure short protection levels
-     * @param config Power stage parameters structure (contains short protection
-     * fields)
-     * @return Result<void> indicating success or error
-     */
-    Result<void>
-    ConfigureShortProtection(const PowerStageParameters &config) noexcept;
-
-    /**
-     * @brief Set short protection levels
-     * @param s2vs_level Short to VS detector sensitivity (4-15)
-     * @param s2g_level Short to GND detector sensitivity (2-15)
-     * @param shortfilter Spike filtering bandwidth (0-3)
-     * @param shortdelay Short detection delay (0-1)
-     * @return Result<void> indicating success or error
-     */
-    Result<void> SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level,
-                                          uint8_t shortfilter,
-                                          uint8_t shortdelay) noexcept;
-
-  private:
-    TMC51x0 &driver_; ///< Reference to parent driver instance
-  } protection{*this};
 
   // @}
 
@@ -2259,6 +2365,28 @@ protected:
   [[nodiscard]] bool IsInitialized() const noexcept { return initialized_; }
 
 private:
+  /**
+   * @brief Check whether the chip is currently in internal ramp-generator mode
+   * (SD_MODE=0).
+   *
+   * This reads IOIN.SD_MODE from the chip. If SD_MODE=1 (external Step/Dir),
+   * the internal ramp generator is not the active motion source and many
+   * motion-controller registers will not behave as users expect.
+   *
+   * @return Result<bool> with true if SD_MODE=0 (internal ramp), false if
+   * SD_MODE=1 (external Step/Dir), or an error on communication failure.
+   */
+  Result<bool> IsInternalRampMode() noexcept;
+
+  /**
+   * @brief Require internal ramp-generator mode (SD_MODE=0) for motion-controller
+   * operations.
+   *
+   * @return Result<void> OK if internal ramp mode, INVALID_STATE if in external
+   * Step/Dir mode, COMM_ERROR if IOIN cannot be read.
+   */
+  Result<void> RequireInternalRampMode() noexcept;
+
   CommType &comm_; ///< Communication interface reference
   uint32_t f_clk_{ClockFreq::DEFAULT_F_CLK}; ///< TMC51x0 clock frequency in Hz
   uint8_t daisy_chain_position_; ///< Position in daisy chain (0 = first
@@ -2266,7 +2394,7 @@ private:
   uint8_t uart_node_address_;    ///< UART node address (0-254) for multi-node
                                  ///< addressing
   uint8_t send_delay_{
-      0}; ///< UART send delay (0-15) stored locally from SLAVECONF register
+      0}; ///< UART send delay (0-15) stored locally from NODECONF register
   bool initialized_{false};                    ///< Initialization status flag
   uint8_t chip_version_{ChipVersion::TMC5160}; ///< Detected chip version (0x11
                                                ///< = TMC5130, 0x30 = TMC5160)
@@ -2299,12 +2427,12 @@ private:
     uint32_t tcoolthrs{0};     ///< TCOOLTHRS (0x14) - CoolStep threshold
     uint32_t thigh{0};         ///< THIGH (0x15) - High speed threshold
     uint32_t vstart{0};        ///< VSTART (0x23) - Start velocity
-    uint32_t a_1{0};           ///< A_1 (0x24) - First acceleration
-    uint32_t v_1{0};           ///< V_1 (0x25) - Transition velocity
+    uint32_t a1{0};            ///< A1 (0x24) - First acceleration
+    uint32_t v1{0};            ///< V1 (0x25) - Transition velocity
     uint32_t amax{0};          ///< AMAX (0x26) - Max acceleration
     uint32_t vmax{0};          ///< VMAX (0x27) - Max velocity
     uint32_t dmax{0};          ///< DMAX (0x28) - Max deceleration
-    uint32_t d_1{0};           ///< D_1 (0x2A) - First deceleration
+    uint32_t d1{0};            ///< D1 (0x2A) - First deceleration
     uint32_t vstop{0};         ///< VSTOP (0x2B) - Stop velocity
     uint32_t tzerowait{0};     ///< TZEROWAIT (0x2C) - Zero wait time
     uint32_t vdcmin{0};        ///< VDCMIN (0x33) - DcStep threshold
@@ -2313,7 +2441,7 @@ private:
     uint32_t coolconf{0};      ///< COOLCONF (0x6D) - CoolStep config
     uint32_t dcctrl{0};        ///< DCCTRL (0x6E) - DcStep config
     uint32_t pwmconf{0};       ///< PWMCONF (0x70) - StealthChop config
-    uint32_t slaveconf{0};     ///< SLAVECONF (0x03) - UART node address config
+    uint32_t nodeconf{0};      ///< NODECONF (0x03) - UART node address config
   } write_only_regs_;
 
   /**

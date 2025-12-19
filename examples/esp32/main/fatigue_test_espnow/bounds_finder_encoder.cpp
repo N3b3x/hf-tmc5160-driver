@@ -47,7 +47,7 @@ public:
         ref_cfg.right_switch_stop_enable = false;
         ref_cfg.latch_left = tmc51x0::ReferenceLatchMode::DISABLED;
         ref_cfg.latch_right = tmc51x0::ReferenceLatchMode::DISABLED;
-        driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
+        driver.switches.ConfigureReferenceSwitch(ref_cfg);
 
         // Read initial encoder position
         auto enc_pos_result = driver.encoder.GetPosition();

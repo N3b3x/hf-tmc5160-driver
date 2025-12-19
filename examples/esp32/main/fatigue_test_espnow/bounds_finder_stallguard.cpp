@@ -58,7 +58,7 @@ public:
         bool cached_stop_on_stall = false;
         auto restore_stop_on_stall_if_needed = [&driver, &restore_stop_on_stall, &cached_stop_on_stall]() {
             if (restore_stop_on_stall) {
-                driver.diagnostics.EnableStopOnStall(cached_stop_on_stall);
+                driver.stallGuard.EnableStopOnStall(cached_stop_on_stall);
             }
         };
         {
@@ -119,7 +119,7 @@ public:
         ESP_LOGI(TAG, "  Filter: %s", TestConfig::StallGuard::FILTER_ENABLED ? "enabled" : "disabled");
         ESP_LOGI(TAG, "  Min velocity: %.0f RPM", TestConfig::StallGuard::MIN_VELOCITY_RPM);
         
-        if (!driver.diagnostics.ConfigureStallGuard(sg_config)) {
+        if (!driver.stallGuard.ConfigureStallGuard(sg_config)) {
             ESP_LOGE(TAG, "❌ Failed to configure StallGuard2");
             restore_stealthchop_if_needed();
             return BoundsResult(false, 0, 0, false);
@@ -131,8 +131,8 @@ public:
         {
             uint32_t drv_status_raw = 0;
             uint32_t ramp_stat_raw = 0;
-            auto drv_status_res = driver.diagnostics.GetDriverStatusRegister();
-            auto ramp_stat_res = driver.diagnostics.GetRampStatusRegister();
+            auto drv_status_res = driver.status.GetDriverStatusRegister();
+            auto ramp_stat_res = driver.status.GetRampStatusRegister();
             if (drv_status_res) drv_status_raw = drv_status_res.Value();
             if (ramp_stat_res) ramp_stat_raw = ramp_stat_res.Value();
 
@@ -142,10 +142,10 @@ public:
             ramp_stat.value = ramp_stat_raw;
 
             auto stealth_enabled = driver.motorControl.IsStealthChopEnabled();
-            auto tpwmthrs_rpm = driver.motorControl.GetStealthChopVelocityThreshold(tmc51x0::Unit::RPM);
-            auto tcoolthrs_rpm = driver.diagnostics.GetTcoolthrs(tmc51x0::Unit::RPM);
-            uint32_t tpwmthrs = driver.diagnostics.GetTpwmthrsRegisterValue();
-            uint32_t tcoolthrs = driver.diagnostics.GetTcoolthrsRegisterValue();
+            auto tpwmthrs_rpm = driver.thresholds.GetStealthChopVelocityThreshold(tmc51x0::Unit::RPM);
+            auto tcoolthrs_rpm = driver.thresholds.GetTcoolthrs(tmc51x0::Unit::RPM);
+            uint32_t tpwmthrs = driver.thresholds.GetTpwmthrsRegisterValue();
+            uint32_t tcoolthrs = driver.thresholds.GetTcoolthrsRegisterValue();
 
             ESP_LOGI(TAG, "StallGuard Debug Snapshot:");
             ESP_LOGI(TAG, "  GCONF.en_pwm_mode (StealthChop enabled): %s",
@@ -175,20 +175,20 @@ public:
         ref_cfg.right_switch_stop_enable = false;
         ref_cfg.latch_left = tmc51x0::ReferenceLatchMode::DISABLED;
         ref_cfg.latch_right = tmc51x0::ReferenceLatchMode::DISABLED;
-        driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
+        driver.switches.ConfigureReferenceSwitch(ref_cfg);
         ESP_LOGI(TAG, "  ✓ Reference switches disabled");
 
         // Configure stall handling
         {
-            auto stop_on_stall = driver.diagnostics.IsStopOnStallEnabled();
+            auto stop_on_stall = driver.stallGuard.IsStopOnStallEnabled();
             cached_stop_on_stall = stop_on_stall.IsOk() ? stop_on_stall.Value() : false;
             restore_stop_on_stall = true;
             // Enable stop-on-stall so the chip stops immediately on a stall event.
             // We'll still do our own backoff afterwards.
-            driver.diagnostics.EnableStopOnStall(true);
+            driver.stallGuard.EnableStopOnStall(true);
         }
-        driver.rampControl.SetStopMode(tmc51x0::ReferenceStopMode::HARD_STOP);
-        driver.diagnostics.ClearStallFlag();
+        driver.switches.SetStopMode(tmc51x0::ReferenceStopMode::HARD_STOP);
+        driver.stallGuard.ClearStallFlag();
         ESP_LOGI(TAG, "  ✓ Stall handling configured (sg_stop enabled, hard stop)");
 
         // Establish home position
@@ -246,7 +246,7 @@ public:
         vTaskDelay(pdMS_TO_TICKS(200));
         ESP_LOGI(TAG, "");
         ESP_LOGI(TAG, "Searching for MAX bound: -%.0f° @ %.0f RPM", TARGET_ANGLE_DEG, search_speed_rpm);
-        driver.diagnostics.ClearStallFlag();
+        driver.stallGuard.ClearStallFlag();
         uint32_t max_search_start = esp_timer_get_time() / 1000;
         float max_pos_deg = FindBound(driver, -TARGET_ANGLE_DEG, search_speed_rpm, OFFSET_ANGLE_DEG);
         uint32_t max_search_time = (esp_timer_get_time() / 1000) - max_search_start;
@@ -364,7 +364,7 @@ private:
         float search_accel_rev_s2 = TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
         driver.rampControl.SetAcceleration(search_accel_rev_s2, tmc51x0::Unit::RevPerSec);
         driver.rampControl.SetDeceleration(search_accel_rev_s2, tmc51x0::Unit::RevPerSec);
-        driver.diagnostics.ClearStallFlag();
+        driver.stallGuard.ClearStallFlag();
         auto move_result = driver.rampControl.MoveRelative(target_angle_deg, tmc51x0::Unit::Deg);
         if (!move_result) {
             ESP_LOGE(TAG, "❌ Failed to start move (ErrorCode: %d)", static_cast<int>(move_result.Error()));
@@ -395,7 +395,7 @@ private:
             auto vel_result = driver.rampControl.GetCurrentSpeed(tmc51x0::Unit::RPM);
             float vel_rpm = vel_result.IsOk() ? vel_result.Value() : 0.0f;
             
-            auto sg_result = driver.diagnostics.GetStallGuardResult();
+            auto sg_result = driver.stallGuard.GetStallGuardResult();
             uint16_t sg_val = sg_result.IsOk() ? sg_result.Value() : 1023;
 
             // Read status every loop so we can detect sg_stop events precisely.
@@ -403,8 +403,8 @@ private:
             uint32_t ramp_stat_raw = 0;
             tmc51x0::DRV_STATUS_Register drv_status{};
             tmc51x0::RAMP_STAT_Register ramp_stat{};
-            auto drv_status_res = driver.diagnostics.GetDriverStatusRegister();
-            auto ramp_stat_res = driver.diagnostics.GetRampStatusRegister();
+            auto drv_status_res = driver.status.GetDriverStatusRegister();
+            auto ramp_stat_res = driver.status.GetRampStatusRegister();
             if (drv_status_res) {
                 drv_status_raw = drv_status_res.Value();
                 drv_status.value = drv_status_raw;
@@ -526,7 +526,7 @@ private:
 
             driver.rampControl.Stop();
             vTaskDelay(pdMS_TO_TICKS(150));
-            driver.diagnostics.ClearStallFlag();
+            driver.stallGuard.ClearStallFlag();
 
             // Back off
             // Back off MUST be opposite the travel direction.

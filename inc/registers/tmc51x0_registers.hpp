@@ -214,20 +214,22 @@ union GSTAT_Register {
 };
 
 /**
- * @brief UART slave configuration register (SLAVECONF)
+ * @brief UART node address configuration register (NODECONF)
  *
- * Configuration for UART slave mode operation.
+ * Configuration for UART multi-node operation.
  */
-union SLAVECONF_Register {
+union NODECONF_Register {
   uint32_t value;
 
   struct {
-    uint32_t slaveaddr : 8; ///< Address of unit for the UART interface. The
-                            ///< address becomes incremented by one when the
-                            ///< external address pin NAI is active.
+    uint32_t nodeaddr : 8; ///< NODEADDR (7..0): Address of unit for the UART
+                           ///< interface. The address becomes incremented by
+                           ///< one when the external address pin NEXTADDR/NAI
+                           ///< is active (see datasheet).
     uint32_t
-        senddelay : 4; ///< Number of bit times before replying to a register
-                       ///< read in UART mode. Set > 1 with multiple slaves.
+        senddelay : 4; ///< SENDDELAY (11..8): Number of bit times before
+                       ///< replying to a register read in UART mode. Set >1
+                       ///< with multiple nodes.
     uint32_t reserved : 20; ///< Reserved bits
   } bits;
 };

@@ -20,7 +20,7 @@ The driver detects the chip version during `Initialize()`:
 The chip version is read from the IOIN register and stored internally. You can check which chip was detected using:
 
 ```cpp
-uint8_t version = driver.diagnostics.GetChipVersion();
+uint8_t version = driver.status.GetChipVersion();
 if (version == ChipVersion::TMC5130) {
     // TMC5130-specific logic if needed
 } else if (version == ChipVersion::TMC5160) {
@@ -34,7 +34,7 @@ The driver automatically handles differences between TMC5130 and TMC5160:
 
 1. **GLOBAL_SCALER**: TMC5130 doesn't have this register - driver skips it automatically
 2. **Current Limits**: TMC5130 has internal MOSFETs (1.64A max), TMC5160 uses external MOSFETs
-3. **Version Detection**: Use `driver.diagnostics.GetChipVersion()` to check detected version
+3. **Version Detection**: Use `driver.status.GetChipVersion()` to check detected version
 
 ## Usage
 
@@ -52,7 +52,7 @@ if (!init_result) {
 }
 
 // Check which chip was detected
-uint8_t version = driver.diagnostics.GetChipVersion();
+uint8_t version = driver.status.GetChipVersion();
 if (version == ChipVersion::TMC5130) {
     printf("Detected TMC5130\n");
 } else if (version == ChipVersion::TMC5160) {

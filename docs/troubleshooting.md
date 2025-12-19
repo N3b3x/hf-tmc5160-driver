@@ -264,7 +264,7 @@ if (!result && result.Error() == tmc51x0::ErrorCode::COMM_ERROR) {
 }
 
 // Recovery for overtemperature
-auto status = driver.diagnostics.GetStatus();
+auto status = driver.status.GetStatus();
 if (status == tmc51x0::DriverStatus::OVERTEMP) {
     // Reduce current and wait
     driver.motorControl.SetCurrent(10, 5);  // Lower current
@@ -315,7 +315,7 @@ if (status == tmc51x0::DriverStatus::OVERTEMP) {
 - [ ] Check for timing issues (delays between operations)
 - [ ] Review error handling code
 - [ ] Verify register values match expected values
-- [ ] Check driver status: `driver.diagnostics.GetStatus()`
+- [ ] Check driver status: `driver.status.GetStatus()`
 
 ## Debugging Tips
 
@@ -349,7 +349,7 @@ driver.GetComm().ReadRegister(Registers::GCONF, gconf);
 ### Monitor Driver Status
 
 ```cpp
-DriverStatus status = driver.diagnostics.GetStatus();
+DriverStatus status = driver.status.GetStatus();
 if (status != DriverStatus::OK) {
     // Handle error condition
 }

@@ -156,7 +156,7 @@ int main() {
     // Configure stealthChop thresholds
     // Below 0.002 rev/s (~0.12 RPM): stealthChop mode (silent)
     // Above 0.002 rev/s: spreadCycle mode (more torque)
-    driver.motorControl.SetModeChangeSpeeds(0.002f, 0.0f, 0.0f);  // Unit::RevPerSec is default
+    driver.thresholds.SetModeChangeSpeeds(0.002f, 0.0f, 0.0f, tmc51x0::Unit::RevPerSec);  // Unit::RevPerSec is default
     
     auto mode_result = driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
     if (!mode_result) {
@@ -296,7 +296,7 @@ int main() {
     sg_cfg.threshold = 0;      // Threshold (tune for your motor)
     sg_cfg.enable_filter = false; // Filter disabled
     // Note: semin/semax are CoolStep parameters, configure separately if needed
-    auto sg_result = driver.diagnostics.ConfigureStallGuard(sg_cfg);
+    auto sg_result = driver.stallGuard.ConfigureStallGuard(sg_cfg);
     if (!sg_result) {
         printf("Error configuring StallGuard: %s\n", sg_result.ErrorMessage());
         return -1;
@@ -316,7 +316,7 @@ int main() {
     
     // Monitor StallGuard value
     while (true) {
-        auto sg_result2 = driver.diagnostics.GetStallGuard();
+        auto sg_result2 = driver.stallGuard.GetStallGuard();
         if (sg_result2) {
             uint16_t sg_value = sg_result2.Value();
             if (sg_value < 100) {  // Threshold depends on motor

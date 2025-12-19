@@ -31,17 +31,17 @@
 
 #include "../inc/features/tmc51x0_motor_calc.hpp"
 
-using namespace tmc51x0;
+namespace tmc51x0 {
 
 // Implementation of operating mode control methods
 template <typename CommType>
-Result<void> TMC51x0<CommType>::Communication::SetOperatingMode(ChipCommMode mode) noexcept {
+Result<void> TMC51x0<CommType>::Io::SetOperatingMode(ChipCommMode mode) noexcept {
   const char* mode_name = (mode == ChipCommMode::SPI_INTERNAL_RAMP)             ? "SPI_INTERNAL_RAMP"
                           : (mode == ChipCommMode::SPI_EXTERNAL_STEPDIR)        ? "SPI_EXTERNAL_STEPDIR"
                           : (mode == ChipCommMode::UART_INTERNAL_RAMP)          ? "UART_INTERNAL_RAMP"
                           : (mode == ChipCommMode::STANDALONE_EXTERNAL_STEPDIR) ? "STANDALONE_EXTERNAL_STEPDIR"
                                                                                 : "UNKNOWN";
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "Communication::SetOperatingMode(%s)", mode_name);
+  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "Io::SetOperatingMode(%s)", mode_name);
 
   // Map mode to SPI_MODE and SD_MODE pin states
   GpioSignal spi_mode_signal, sd_mode_signal;
@@ -81,7 +81,7 @@ Result<void> TMC51x0<CommType>::Communication::SetOperatingMode(ChipCommMode mod
 }
 
 template <typename CommType>
-Result<ChipCommMode> TMC51x0<CommType>::Communication::GetOperatingMode() const noexcept {
+Result<ChipCommMode> TMC51x0<CommType>::Io::GetOperatingMode() const noexcept {
   // Read SPI_MODE pin
   auto spi_mode_result = driver_.comm_.GpioRead(TMC51x0CtrlPin::SPI_MODE);
   if (!spi_mode_result.IsOk()) {
@@ -411,7 +411,7 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
   }
 
   // Configure power stage
-  if (!motorControl.ConfigurePowerStage(config.power_stage)) {
+  if (!powerStage.ConfigurePowerStage(config.power_stage)) {
     return Result<void>(ErrorCode::INVALID_VALUE);
   }
 
@@ -473,7 +473,7 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
   }
 
   // Detect chip version (read from IOIN register)
-  auto chip_version_result = diagnostics.ReadIcVersion();
+  auto chip_version_result = io.ReadIcVersion();
   if (chip_version_result.IsOk()) {
     uint8_t chip_version = chip_version_result.Value();
     chip_version_ = chip_version;
@@ -532,7 +532,7 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
 
   // Configure reference switches (defaults are safe/disabled)
   TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Initialize: Configuring reference switches");
-  if (!rampControl.ConfigureReferenceSwitch(config.reference_switch_config)) {
+  if (!switches.ConfigureReferenceSwitch(config.reference_switch_config)) {
     TMC51X0_LOG_DEBUG(comm_, 0, "TMC5160", "Failed to configure reference switches");
     return Result<void>(ErrorCode::INVALID_VALUE);
   }
@@ -574,7 +574,7 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
 
   // Configure StallGuard2 (defaults are safe/disabled)
   TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Initialize: Configuring StallGuard2");
-  if (!diagnostics.ConfigureStallGuard(config.stallguard)) {
+  if (!stallGuard.ConfigureStallGuard(config.stallguard)) {
     TMC51X0_LOG_DEBUG(comm_, 0, "TMC5160", "Failed to configure StallGuard2");
     return Result<void>(ErrorCode::INVALID_VALUE);
   }
@@ -649,6 +649,75 @@ Result<void> TMC51x0<CommType>::Reset() noexcept {
   GSTAT_Register gstat{};
   gstat.bits.reset = true;
   return this->comm_.WriteRegister(Registers::GSTAT, gstat.value, this->GetCommAddress());
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::HardReset(const HardResetOptions &opts) noexcept {
+  // Clear local caches/flags so we don't pretend write-only state survived a reset.
+  auto clear_local_state = [&]() noexcept {
+    initialized_ = false;
+    write_only_regs_ = {};
+  };
+
+  // Prefer a true hard reset (power cycle) if the platform provides it.
+  if (opts.prefer_power_cycle) {
+    auto pc = comm_.PowerCycle(opts.power_off_ms, opts.power_on_settle_ms);
+    if (pc) {
+      clear_local_state();
+
+      // After power-up, the chip's NODECONF resets. Re-init requires a reachable
+      // UART address. For the common single-device / first-device case, address 0
+      // is correct.
+      if (comm_.GetMode() == CommMode::UART && opts.uart_assume_accessible_at_0) {
+        uart_node_address_ = 0;
+      }
+
+      if (!opts.reinitialize) {
+        return Result<void>();
+      }
+      return Initialize(driver_config_);
+    }
+
+    // If power-cycle isn't supported, fall through to software reset fallback.
+    if (pc.Error() != ErrorCode::UNSUPPORTED) {
+      return pc;
+    }
+  }
+
+  // Fallback: software reset via GSTAT (not a true POR).
+  auto sw = Reset();
+  if (!sw) {
+    return sw;
+  }
+  clear_local_state();
+  if (!opts.reinitialize) {
+    return Result<void>();
+  }
+  return Initialize(driver_config_);
+}
+
+template <typename CommType>
+Result<bool> TMC51x0<CommType>::IsInternalRampMode() noexcept {
+  auto io_result = comm_.ReadRegister(Registers::IOIN, GetCommAddress());
+  if (!io_result) {
+    return Result<bool>(ErrorCode::COMM_ERROR);
+  }
+  IOIN_Register ioin{};
+  ioin.value = io_result.Value();
+  // SD_MODE=0 => internal ramp generator. SD_MODE=1 => external Step/Dir.
+  return Result<bool>(ioin.bits.sd_mode == 0);
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::RequireInternalRampMode() noexcept {
+  auto mode_result = IsInternalRampMode();
+  if (!mode_result) {
+    return Result<void>(ErrorCode::COMM_ERROR);
+  }
+  if (!mode_result.Value()) {
+    return Result<void>(ErrorCode::INVALID_STATE);
+  }
+  return Result<void>();
 }
 
 template <typename CommType>
@@ -752,6 +821,11 @@ Result<void> TMC51x0<CommType>::RampControl::SetRampMode(RampMode mode) noexcept
                                                              : "HOLD";
   TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetRampMode(%s)", mode_name);
 
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
+
   // Read-Modify-Write to preserve reserved bits (bits 2-31)
   auto rampmode_result = driver_.comm_.ReadRegister(Registers::RAMPMODE, driver_.GetCommAddress());
   if (!rampmode_result) {
@@ -777,7 +851,7 @@ Result<RampMode> TMC51x0<CommType>::RampControl::GetRampMode() noexcept {
 
 template <typename CommType>
 Result<bool> TMC51x0<CommType>::RampControl::IsPositionReached() noexcept {
-  auto ramp_stat_result = driver_.diagnostics.GetRampStatusRegister();
+  auto ramp_stat_result = driver_.status.GetRampStatusRegister();
   if (!ramp_stat_result) {
     return Result<bool>(ErrorCode::COMM_ERROR);
   }
@@ -789,7 +863,7 @@ Result<bool> TMC51x0<CommType>::RampControl::IsPositionReached() noexcept {
 
 template <typename CommType>
 Result<bool> TMC51x0<CommType>::RampControl::IsVelocityReached() noexcept {
-  auto ramp_stat_result = driver_.diagnostics.GetRampStatusRegister();
+  auto ramp_stat_result = driver_.status.GetRampStatusRegister();
   if (!ramp_stat_result) {
     return Result<bool>(ErrorCode::COMM_ERROR);
   }
@@ -801,7 +875,7 @@ Result<bool> TMC51x0<CommType>::RampControl::IsVelocityReached() noexcept {
 
 template <typename CommType>
 Result<bool> TMC51x0<CommType>::RampControl::IsStandstill() noexcept {
-  auto ramp_stat_result = driver_.diagnostics.GetRampStatusRegister();
+  auto ramp_stat_result = driver_.status.GetRampStatusRegister();
   if (!ramp_stat_result) {
     return Result<bool>(ErrorCode::COMM_ERROR);
   }
@@ -812,10 +886,10 @@ Result<bool> TMC51x0<CommType>::RampControl::IsStandstill() noexcept {
 }
 
 template <typename CommType>
-Result<bool> TMC51x0<CommType>::RampControl::GetReferenceSwitchStatus(bool& right_active, bool& left_enabled,
+Result<bool> TMC51x0<CommType>::Switches::GetReferenceSwitchStatus(bool& right_active, bool& left_enabled,
                                                               bool& right_enabled) noexcept {
   // Get switch active status from RAMP_STAT
-  auto ramp_stat_result = driver_.diagnostics.GetRampStatusRegister();
+  auto ramp_stat_result = driver_.status.GetRampStatusRegister();
   if (!ramp_stat_result) {
     return Result<bool>(ErrorCode::COMM_ERROR);
   }
@@ -839,7 +913,7 @@ Result<bool> TMC51x0<CommType>::RampControl::GetReferenceSwitchStatus(bool& righ
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::RampControl::SetXCompare(float position, Unit unit) noexcept {
+Result<void> TMC51x0<CommType>::Events::SetXCompare(float position, Unit unit) noexcept {
   float steps = driver_.convertPositionToSteps(position, unit);
   int32_t x_compare = static_cast<int32_t>(std::round(steps));
 
@@ -852,7 +926,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetXCompare(float position, Unit un
 }
 
 template <typename CommType>
-Result<float> TMC51x0<CommType>::RampControl::GetXCompare(Unit unit) const noexcept {
+Result<float> TMC51x0<CommType>::Events::GetXCompare(Unit unit) const noexcept {
   int32_t steps = static_cast<int32_t>(driver_.write_only_regs_.x_compare);
   float position = driver_.convertStepsToUnit(steps, unit);
   return Result<float>(position);
@@ -860,6 +934,10 @@ Result<float> TMC51x0<CommType>::RampControl::GetXCompare(Unit unit) const noexc
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetTargetPosition(float value, Unit unit) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   float steps = driver_.convertPositionToSteps(value, unit);
   return SetTargetPosition(round_to_int32(steps)); // Calls private helper
 }
@@ -884,6 +962,10 @@ Result<void> TMC51x0<CommType>::RampControl::MoveRelative(float offset, Unit uni
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetTargetPosition(int32_t position) noexcept {
   TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetTargetPosition(%d)", position);
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   return driver_.comm_.WriteRegister(Registers::XTARGET, static_cast<uint32_t>(position));
 }
 
@@ -920,6 +1002,10 @@ Result<void> TMC51x0<CommType>::RampControl::SetCurrentPosition(float value, Uni
 // Private helper implementation
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetCurrentPosition(int32_t position, bool update_encoder) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   if (!driver_.comm_.WriteRegister(Registers::XACTUAL, static_cast<uint32_t>(position))) {
     return Result<void>(ErrorCode::COMM_ERROR);
   }
@@ -937,6 +1023,10 @@ Result<void> TMC51x0<CommType>::RampControl::SetCurrentPosition(int32_t position
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetMaxSpeed(float value, Unit unit) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   float steps_per_sec = driver_.convertSpeedToSteps(value, unit);
   TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetMaxSpeed(%.2f steps/s)", steps_per_sec);
 
@@ -975,6 +1065,10 @@ Result<void> TMC51x0<CommType>::RampControl::SetAcceleration(float value, Unit u
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetAccelerations(float accel_val, float decel_val, Unit unit) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   float accel_steps = driver_.convertAccelerationToSteps(accel_val, unit);
   float decel_steps = driver_.convertAccelerationToSteps(decel_val, unit);
 
@@ -1007,6 +1101,10 @@ Result<void> TMC51x0<CommType>::RampControl::SetAccelerations(float accel_val, f
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetDeceleration(float value, Unit unit) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   float decel_steps = driver_.convertAccelerationToSteps(value, unit);
   TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetDeceleration(decel=%.2f steps/s²)", decel_steps);
   int32_t decel_internal = driver_.accelToInternal(std::abs(decel_steps));
@@ -1024,6 +1122,10 @@ Result<void> TMC51x0<CommType>::RampControl::SetDeceleration(float value, Unit u
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetRampSpeeds(float start_speed, float stop_speed, float transition_speed,
                                                    Unit unit) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   float start_steps = driver_.convertSpeedToSteps(start_speed, unit);
   float stop_steps = driver_.convertSpeedToSteps(stop_speed, unit);
   float transition_steps = driver_.convertSpeedToSteps(transition_speed, unit);
@@ -1053,11 +1155,11 @@ Result<void> TMC51x0<CommType>::RampControl::SetRampSpeeds(float start_speed, fl
   }
   driver_.write_only_regs_.vstop = static_cast<uint32_t>(vstop);
   
-  auto v1_result = driver_.comm_.WriteRegister(Registers::V_1, static_cast<uint32_t>(v1));
+  auto v1_result = driver_.comm_.WriteRegister(Registers::V1, static_cast<uint32_t>(v1));
   if (!v1_result) {
     return v1_result;
   }
-  driver_.write_only_regs_.v_1 = static_cast<uint32_t>(v1);
+  driver_.write_only_regs_.v1 = static_cast<uint32_t>(v1);
   // Update driver config if in steps unit
   if (unit == Unit::Steps) {
     driver_.driver_config_.ramp_config.vstart = VelocityValue(start_speed, unit);
@@ -1110,6 +1212,10 @@ Result<bool> TMC51x0<CommType>::RampControl::IsTargetVelocityReached() noexcept 
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::Stop() noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   auto vstart_result = driver_.comm_.WriteRegister(Registers::VSTART, 0, driver_.GetCommAddress());
   if (!vstart_result) {
     return vstart_result;
@@ -1126,7 +1232,7 @@ Result<void> TMC51x0<CommType>::RampControl::Stop() noexcept {
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::RampControl::ConfigureReferenceSwitch(const ReferenceSwitchConfig& config) noexcept {
+Result<void> TMC51x0<CommType>::Switches::ConfigureReferenceSwitch(const ReferenceSwitchConfig& config) noexcept {
   // Update driver config
   driver_.driver_config_.reference_switch_config = config;
 
@@ -1138,6 +1244,11 @@ Result<void> TMC51x0<CommType>::RampControl::ConfigureReferenceSwitch(const Refe
   uint32_t sw_mode_val = sw_mode_val_result.Value();
   SW_MODE_Register sw_mode{};
   sw_mode.value = sw_mode_val;
+
+  // Datasheet warning: do not use soft stop in combination with StallGuard2 stop
+  if (config.stop_mode == ReferenceStopMode::SOFT_STOP && sw_mode.bits.sg_stop != 0) {
+    return Result<void>(ErrorCode::INVALID_STATE);
+  }
 
   // Use stop enable flags (independent of active level)
   // Allows enabling/disabling motor stop in real-time while keeping polarity configured
@@ -1174,7 +1285,7 @@ Result<void> TMC51x0<CommType>::RampControl::ConfigureReferenceSwitch(const Refe
 }
 
 template <typename CommType>
-Result<ReferenceSwitchConfig> TMC51x0<CommType>::RampControl::GetReferenceSwitchConfig() noexcept {
+Result<ReferenceSwitchConfig> TMC51x0<CommType>::Switches::GetReferenceSwitchConfig() noexcept {
   auto sw_mode_val_result = driver_.comm_.ReadRegister(Registers::SW_MODE, driver_.GetCommAddress());
   if (!sw_mode_val_result) {
     return Result<ReferenceSwitchConfig>(ErrorCode::COMM_ERROR);
@@ -1233,7 +1344,7 @@ Result<ReferenceSwitchConfig> TMC51x0<CommType>::RampControl::GetReferenceSwitch
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::RampControl::SetLeftSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept {
+Result<void> TMC51x0<CommType>::Switches::SetLeftSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept {
   auto config_result = GetReferenceSwitchConfig();
   if (!config_result.IsOk()) {
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -1244,7 +1355,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetLeftSwitchActiveLevel(ReferenceS
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::RampControl::SetRightSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept {
+Result<void> TMC51x0<CommType>::Switches::SetRightSwitchActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept {
   auto config_result = GetReferenceSwitchConfig();
   if (!config_result.IsOk()) {
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -1255,7 +1366,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetRightSwitchActiveLevel(Reference
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::RampControl::SetLeftSwitchStopEnable(bool enable) noexcept {
+Result<void> TMC51x0<CommType>::Switches::SetLeftSwitchStopEnable(bool enable) noexcept {
   auto config_result = GetReferenceSwitchConfig();
   if (!config_result.IsOk()) {
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -1266,7 +1377,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetLeftSwitchStopEnable(bool enable
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::RampControl::SetRightSwitchStopEnable(bool enable) noexcept {
+Result<void> TMC51x0<CommType>::Switches::SetRightSwitchStopEnable(bool enable) noexcept {
   auto config_result = GetReferenceSwitchConfig();
   if (!config_result.IsOk()) {
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -1277,7 +1388,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetRightSwitchStopEnable(bool enabl
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::RampControl::SetLeftSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept {
+Result<void> TMC51x0<CommType>::Switches::SetLeftSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept {
   auto config_result = GetReferenceSwitchConfig();
   if (!config_result.IsOk()) {
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -1288,7 +1399,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetLeftSwitchLatchMode(ReferenceLat
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::RampControl::SetRightSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept {
+Result<void> TMC51x0<CommType>::Switches::SetRightSwitchLatchMode(ReferenceLatchMode latch_mode) noexcept {
   auto config_result = GetReferenceSwitchConfig();
   if (!config_result.IsOk()) {
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -1299,7 +1410,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetRightSwitchLatchMode(ReferenceLa
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::RampControl::SetStopMode(ReferenceStopMode stop_mode) noexcept {
+Result<void> TMC51x0<CommType>::Switches::SetStopMode(ReferenceStopMode stop_mode) noexcept {
   auto config_result = GetReferenceSwitchConfig();
   if (!config_result.IsOk()) {
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -1310,7 +1421,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetStopMode(ReferenceStopMode stop_
 }
 
 template <typename CommType>
-Result<float> TMC51x0<CommType>::RampControl::GetLatchedPosition(Unit unit) noexcept {
+Result<float> TMC51x0<CommType>::Switches::GetLatchedPosition(Unit unit) noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::XLATCH, driver_.GetCommAddress());
   if (!value_result) {
     return Result<float>(ErrorCode::COMM_ERROR);
@@ -1322,21 +1433,11 @@ Result<float> TMC51x0<CommType>::RampControl::GetLatchedPosition(Unit unit) noex
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::RampControl::SetComparePosition(float value, Unit unit) noexcept {
-  float steps = driver_.convertPositionToSteps(value, unit);
-  int32_t x_compare = static_cast<int32_t>(steps);
-  auto write_result = driver_.comm_.WriteRegister(Registers::X_COMPARE, static_cast<uint32_t>(x_compare));
-  if (write_result) {
-    driver_.write_only_regs_.x_compare = static_cast<uint32_t>(x_compare);
-  }
-  if (!write_result) {
-    return write_result;
-  }
-  return Result<void>();
-}
-
-template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetPowerDownDelay(uint8_t tpowerdown) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   auto write_result = driver_.comm_.WriteRegister(Registers::TPOWERDOWN, static_cast<uint32_t>(tpowerdown));
   if (write_result) {
     driver_.write_only_regs_.tpowerdown = tpowerdown;
@@ -1359,6 +1460,10 @@ Result<void> TMC51x0<CommType>::RampControl::SetPowerDownDelayMs(float delay_ms)
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetZeroWaitTime(uint16_t tzerowait) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   auto write_result = driver_.comm_.WriteRegister(Registers::TZEROWAIT, static_cast<uint32_t>(tzerowait));
   if (write_result) {
     driver_.write_only_regs_.tzerowait = tzerowait;
@@ -1381,6 +1486,10 @@ Result<void> TMC51x0<CommType>::RampControl::SetZeroWaitTimeMs(float delay_ms) n
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::ConfigureRamp(const RampConfig& config) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   // Update driver config
   driver_.driver_config_.ramp_config = config;
 
@@ -1469,6 +1578,10 @@ Result<void> TMC51x0<CommType>::RampControl::ConfigureRamp(const RampConfig& con
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetFirstAcceleration(float a1, Unit unit) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   float a1_steps = driver_.convertAccelerationToSteps(a1, unit);
   uint32_t a1_value = 0;
   if (a1_steps == 0.0F) {
@@ -1476,12 +1589,12 @@ Result<void> TMC51x0<CommType>::RampControl::SetFirstAcceleration(float a1, Unit
     a1_value = 0;
   } else {
     int32_t a1_internal = driver_.accelToInternal(std::abs(a1_steps));
-    a1_internal = std::min(a1_internal, static_cast<decltype(a1_internal)>(0xFFFF)); // A_1 is 16 bits
+    a1_internal = std::min(a1_internal, static_cast<decltype(a1_internal)>(0xFFFF)); // A1 is 16 bits
     a1_value = static_cast<uint32_t>(a1_internal);
   }
-  auto write_result = driver_.comm_.WriteRegister(Registers::A_1, a1_value, driver_.GetCommAddress());
+  auto write_result = driver_.comm_.WriteRegister(Registers::A1, a1_value, driver_.GetCommAddress());
   if (write_result) {
-    driver_.write_only_regs_.a_1 = a1_value;
+    driver_.write_only_regs_.a1 = a1_value;
     // Update driver config if in steps unit
     if (unit == Unit::Steps) {
       driver_.driver_config_.ramp_config.a1 = AccelerationValue(a1, unit);
@@ -1495,6 +1608,10 @@ Result<void> TMC51x0<CommType>::RampControl::SetFirstAcceleration(float a1, Unit
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetFinalDeceleration(float d1, Unit unit) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   float d1_steps = driver_.convertAccelerationToSteps(d1, unit);
   int32_t d1_internal = 0;
   if (d1_steps == 0.0F) {
@@ -1512,16 +1629,16 @@ Result<void> TMC51x0<CommType>::RampControl::SetFinalDeceleration(float d1, Unit
   if (d1_steps > 0.0F) {
     d1_internal = driver_.accelToInternal(std::abs(d1_steps));
     d1_internal = std::min(d1_internal,
-                           static_cast<decltype(d1_internal)>(0xFFFF)); // D_1 is 16 bits
+                           static_cast<decltype(d1_internal)>(0xFFFF)); // D1 is 16 bits
     // Ensure value is at least 1 if user tries to set very low non-zero value that rounds to 0
     // The register range starts at 1 (datasheet: 1 to (2^16)-1)
     if (d1_internal == 0 && d1_steps != 0.0F) {
       d1_internal = 1;
     }
   }
-  auto write_result = driver_.comm_.WriteRegister(Registers::D_1, static_cast<uint32_t>(d1_internal));
+  auto write_result = driver_.comm_.WriteRegister(Registers::D1, static_cast<uint32_t>(d1_internal));
   if (write_result) {
-    driver_.write_only_regs_.d_1 = static_cast<uint32_t>(d1_internal);
+    driver_.write_only_regs_.d1 = static_cast<uint32_t>(d1_internal);
   }
   if (!write_result) {
     return write_result;
@@ -1753,15 +1870,15 @@ Result<void> TMC51x0<CommType>::MotorControl::SetMicrostepResolution(
   const float old_vstop_fs = (driver_.write_only_regs_.vstop > 0U)
                                  ? driver_.speedFromInternal(static_cast<int32_t>(driver_.write_only_regs_.vstop))
                                  : 0.0F;
-  const float old_v1_fs = (driver_.write_only_regs_.v_1 > 0U)
-                              ? driver_.speedFromInternal(static_cast<int32_t>(driver_.write_only_regs_.v_1))
+  const float old_v1_fs = (driver_.write_only_regs_.v1 > 0U)
+                              ? driver_.speedFromInternal(static_cast<int32_t>(driver_.write_only_regs_.v1))
                               : 0.0F;
   const float old_vmax_fs = (driver_.write_only_regs_.vmax > 0U)
                                 ? driver_.speedFromInternal(static_cast<int32_t>(driver_.write_only_regs_.vmax))
                                 : 0.0F;
 
-  const float old_a1_fs2 = (driver_.write_only_regs_.a_1 > 0U)
-                               ? driver_.accelFromInternal(static_cast<int32_t>(driver_.write_only_regs_.a_1))
+  const float old_a1_fs2 = (driver_.write_only_regs_.a1 > 0U)
+                               ? driver_.accelFromInternal(static_cast<int32_t>(driver_.write_only_regs_.a1))
                                : 0.0F;
   const float old_amax_fs2 = (driver_.write_only_regs_.amax > 0U)
                                  ? driver_.accelFromInternal(static_cast<int32_t>(driver_.write_only_regs_.amax))
@@ -1769,8 +1886,8 @@ Result<void> TMC51x0<CommType>::MotorControl::SetMicrostepResolution(
   const float old_dmax_fs2 = (driver_.write_only_regs_.dmax > 0U)
                                  ? driver_.accelFromInternal(static_cast<int32_t>(driver_.write_only_regs_.dmax))
                                  : 0.0F;
-  const float old_d1_fs2 = (driver_.write_only_regs_.d_1 > 0U)
-                               ? driver_.accelFromInternal(static_cast<int32_t>(driver_.write_only_regs_.d_1))
+  const float old_d1_fs2 = (driver_.write_only_regs_.d1 > 0U)
+                               ? driver_.accelFromInternal(static_cast<int32_t>(driver_.write_only_regs_.d1))
                                : 0.0F;
 
   // Apply MRES change (read-modify-write CHOPCONF to preserve other fields).
@@ -1852,11 +1969,11 @@ Result<void> TMC51x0<CommType>::MotorControl::SetMicrostepResolution(
     driver_.write_only_regs_.vstop = vstop;
   }
 
-  if (driver_.write_only_regs_.v_1 > 0U) {
+  if (driver_.write_only_regs_.v1 > 0U) {
     uint32_t v1 = std::min<uint32_t>(to_speed_internal(old_v1_fs), 0xFFFFFU);
-    auto r = driver_.comm_.WriteRegister(Registers::V_1, v1, driver_.GetCommAddress());
+    auto r = driver_.comm_.WriteRegister(Registers::V1, v1, driver_.GetCommAddress());
     if (!r) return r;
-    driver_.write_only_regs_.v_1 = v1;
+    driver_.write_only_regs_.v1 = v1;
   }
 
   if (driver_.write_only_regs_.vmax > 0U) {
@@ -1867,12 +1984,12 @@ Result<void> TMC51x0<CommType>::MotorControl::SetMicrostepResolution(
   }
 
   // Accelerations (16-bit registers in this driver)
-  if (driver_.write_only_regs_.a_1 > 0U) {
+  if (driver_.write_only_regs_.a1 > 0U) {
     uint32_t a1 = std::min<uint32_t>(to_accel_internal(old_a1_fs2), 0xFFFFU);
     if (a1 == 0U) a1 = 1U;
-    auto r = driver_.comm_.WriteRegister(Registers::A_1, a1, driver_.GetCommAddress());
+    auto r = driver_.comm_.WriteRegister(Registers::A1, a1, driver_.GetCommAddress());
     if (!r) return r;
-    driver_.write_only_regs_.a_1 = a1;
+    driver_.write_only_regs_.a1 = a1;
   }
 
   if (driver_.write_only_regs_.amax > 0U) {
@@ -1891,12 +2008,12 @@ Result<void> TMC51x0<CommType>::MotorControl::SetMicrostepResolution(
     driver_.write_only_regs_.dmax = dmax;
   }
 
-  if (driver_.write_only_regs_.d_1 > 0U) {
+  if (driver_.write_only_regs_.d1 > 0U) {
     uint32_t d1 = std::min<uint32_t>(to_accel_internal(old_d1_fs2), 0xFFFFU);
     if (d1 == 0U) d1 = 1U;
-    auto r = driver_.comm_.WriteRegister(Registers::D_1, d1, driver_.GetCommAddress());
+    auto r = driver_.comm_.WriteRegister(Registers::D1, d1, driver_.GetCommAddress());
     if (!r) return r;
-    driver_.write_only_regs_.d_1 = d1;
+    driver_.write_only_regs_.d1 = d1;
   }
 
   // Reapply encoder scaling/deviation if configured.
@@ -1960,7 +2077,7 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureStealthChop(const Stealth
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::MotorControl::ConfigurePowerStage(const PowerStageParameters& config) noexcept {
+Result<void> TMC51x0<CommType>::PowerStage::ConfigurePowerStage(const PowerStageParameters& config) noexcept {
   // Update driver config
   driver_.driver_config_.power_stage = config;
 
@@ -2231,7 +2348,7 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureMotorCurrent(const MotorS
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::MotorControl::SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs, Unit unit) noexcept {
+Result<void> TMC51x0<CommType>::Thresholds::SetModeChangeSpeeds(float pwm_thrs, float cool_thrs, float high_thrs, Unit unit) noexcept {
   float pwm_steps = driver_.convertSpeedToSteps(pwm_thrs, unit);
   float cool_steps = driver_.convertSpeedToSteps(cool_thrs, unit);
   float high_steps = driver_.convertSpeedToSteps(high_thrs, unit);
@@ -2263,22 +2380,7 @@ Result<void> TMC51x0<CommType>::MotorControl::SetModeChangeSpeeds(float pwm_thrs
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::MotorControl::SetCoolStepThreshold(float value, Unit unit) noexcept {
-  float steps_per_sec = driver_.convertSpeedToSteps(value, unit);
-  int32_t tcoolthrs = driver_.thresholdSpeedToTstep(steps_per_sec);
-  tcoolthrs = std::min(tcoolthrs, static_cast<decltype(tcoolthrs)>(0xFFFFF));
-  auto write_result = driver_.comm_.WriteRegister(Registers::TCOOLTHRS, static_cast<uint32_t>(tcoolthrs));
-  if (write_result) {
-    driver_.write_only_regs_.tcoolthrs = static_cast<uint32_t>(tcoolthrs);
-  }
-  if (!write_result) {
-    return write_result;
-  }
-  return Result<void>();
-}
-
-template <typename CommType>
-Result<void> TMC51x0<CommType>::MotorControl::SetHighSpeedThreshold(float value, Unit unit) noexcept {
+Result<void> TMC51x0<CommType>::Thresholds::SetHighSpeedThreshold(float value, Unit unit) noexcept {
   float steps_per_sec = driver_.convertSpeedToSteps(value, unit);
   int32_t thigh = driver_.thresholdSpeedToTstep(steps_per_sec);
   thigh = std::min(thigh, static_cast<decltype(thigh)>(0xFFFFF));
@@ -2293,7 +2395,49 @@ Result<void> TMC51x0<CommType>::MotorControl::SetHighSpeedThreshold(float value,
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::MotorControl::SetStealthChopVelocityThreshold(float value, Unit unit) noexcept {
+Result<void> TMC51x0<CommType>::Thresholds::SetDcStepVelocityThreshold(float value, Unit unit) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
+
+  uint32_t vdcmin_value = 0;
+  if (value > 0.0F) {
+    float steps_per_sec = driver_.convertSpeedToSteps(value, unit);
+    int32_t vdcmin_internal = driver_.speedToInternal(std::abs(steps_per_sec));
+    // VDCMIN comparator ignores bits 7..0 (only bits 22..8 used)
+    vdcmin_internal &= 0x7FFF00;
+    vdcmin_value = static_cast<uint32_t>(vdcmin_internal);
+  }
+
+  auto write_result = driver_.comm_.WriteRegister(Registers::VDCMIN, vdcmin_value, driver_.GetCommAddress());
+  if (write_result) {
+    driver_.write_only_regs_.vdcmin = vdcmin_value;
+  }
+  if (!write_result) {
+    return write_result;
+  }
+  return Result<void>();
+}
+
+template <typename CommType>
+Result<float> TMC51x0<CommType>::Thresholds::GetDcStepVelocityThreshold(Unit unit) const noexcept {
+  uint32_t vdcmin = driver_.write_only_regs_.vdcmin;
+  if (vdcmin == 0) {
+    return Result<float>(0.0F);
+  }
+  float steps_per_sec = driver_.speedFromInternal(static_cast<int32_t>(vdcmin));
+  float threshold = driver_.convertSpeedToUnit(steps_per_sec, unit);
+  return Result<float>(threshold);
+}
+
+template <typename CommType>
+uint32_t TMC51x0<CommType>::Thresholds::GetVdcminRegisterValue() const noexcept {
+  return driver_.write_only_regs_.vdcmin;
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Thresholds::SetStealthChopVelocityThreshold(float value, Unit unit) noexcept {
   uint32_t tpwmthrs_value = 0;
   if (value > 0.0F) {
     // Setting to 0 disables the threshold (StealthChop always used if enabled)
@@ -2313,7 +2457,7 @@ Result<void> TMC51x0<CommType>::MotorControl::SetStealthChopVelocityThreshold(fl
 }
 
 template <typename CommType>
-Result<float> TMC51x0<CommType>::MotorControl::GetStealthChopVelocityThreshold(Unit unit) const noexcept {
+Result<float> TMC51x0<CommType>::Thresholds::GetStealthChopVelocityThreshold(Unit unit) const noexcept {
   uint32_t tpwmthrs = driver_.write_only_regs_.tpwmthrs;
   float threshold;
   if (tpwmthrs == 0) {
@@ -2445,6 +2589,11 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureDcStep(const DcStepConfig
   // Convert velocity threshold to internal format with unit support
   int32_t vdc_min = 0;
   if (config.min_velocity > 0.0F) {
+    // Datasheet: VDCMIN-based DcStep enable is only valid with the internal ramp generator.
+    auto mode_guard = driver_.RequireInternalRampMode();
+    if (!mode_guard) {
+      return mode_guard;
+    }
     float steps_per_sec = driver_.convertSpeedToSteps(config.min_velocity, config.velocity_unit);
     vdc_min = driver_.speedToInternal(steps_per_sec);
     // VDCMIN is 23-bit register (0...2^22), but only bits 22..8 are used for comparison
@@ -2476,6 +2625,7 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureDcStep(const DcStepConfig
     uint32_t chopconf_value = 0;
     auto read_result_tmp = driver_.comm_.ReadRegister(Registers::CHOPCONF, driver_.GetCommAddress());
     if (read_result_tmp) {
+      chopconf_value = read_result_tmp.Value();
       CHOPCONF_Register chopconf{};
       chopconf.value = chopconf_value;
 
@@ -2535,12 +2685,21 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureDcStep(const DcStepConfig
 
   // Configure stop on stall if requested
   if (config.stop_on_stall && config.stall_sensitivity != DcStepStallSensitivity::DISABLED) {
+    // Stop-on-stall is implemented via SW_MODE.sg_stop (ramp generator stop logic)
+    auto mode_guard = driver_.RequireInternalRampMode();
+    if (!mode_guard) {
+      return mode_guard;
+    }
     // Read current SW_MODE register
     auto read_result_tmp = driver_.comm_.ReadRegister(Registers::SW_MODE, driver_.GetCommAddress());
     if (read_result_tmp) {
       uint32_t sw_mode_value = read_result_tmp.Value();
       SW_MODE_Register sw_mode{};
       sw_mode.value = sw_mode_value;
+      if (sw_mode.bits.en_softstop != 0) {
+        // Datasheet warning: do not use soft stop in combination with StallGuard2 stop
+        return Result<void>(ErrorCode::INVALID_STATE);
+      }
       sw_mode.bits.sg_stop = 1; // Enable stop on stall
       auto sw_mode_result = driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value, driver_.GetCommAddress());
       if (!sw_mode_result) {
@@ -2681,7 +2840,7 @@ Result<bool> TMC51x0<CommType>::MotorControl::IsStealthChopCalibrated() noexcept
   int16_t pwm_scale_auto = 0;
   // Note: GetPwmScale is declared in MotorControl but implemented in Diagnostics
   // Using Diagnostics implementation for now
-  auto pwm_result = driver_.diagnostics.GetPwmScale(pwm_scale_sum, pwm_scale_auto);
+  auto pwm_result = driver_.status.GetPwmScale(pwm_scale_sum, pwm_scale_auto);
   if (!pwm_result) {
     return Result<bool>(ErrorCode::COMM_ERROR);
   }
@@ -3007,6 +3166,10 @@ Result<void> TMC51x0<CommType>::MotorControl::SetupMotorFromSpec(const MotorSpec
 // Encoder implementation
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Encoder::Configure(const EncoderConfig& config) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   // Update driver config
   driver_.driver_config_.encoder_config = config;
 
@@ -3078,6 +3241,10 @@ Result<void> TMC51x0<CommType>::Encoder::Configure(const EncoderConfig& config) 
 
 template <typename CommType>
 Result<EncoderConfig> TMC51x0<CommType>::Encoder::GetEncoderConfig() noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return Result<EncoderConfig>(mode_guard.Error());
+  }
   auto encmode_val_result = driver_.comm_.ReadRegister(Registers::ENCMODE, driver_.GetCommAddress());
   if (!encmode_val_result) {
     return Result<EncoderConfig>(ErrorCode::COMM_ERROR);
@@ -3130,6 +3297,10 @@ Result<EncoderConfig> TMC51x0<CommType>::Encoder::GetEncoderConfig() noexcept {
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Encoder::SetNChannelActiveLevel(ReferenceSwitchActiveLevel active_level) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   EncoderConfig config{};
   if (!GetEncoderConfig(config)) {
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -3140,6 +3311,10 @@ Result<void> TMC51x0<CommType>::Encoder::SetNChannelActiveLevel(ReferenceSwitchA
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Encoder::SetNChannelSensitivity(EncoderNSensitivity sensitivity) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   EncoderConfig config{};
   if (!GetEncoderConfig(config)) {
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -3150,6 +3325,10 @@ Result<void> TMC51x0<CommType>::Encoder::SetNChannelSensitivity(EncoderNSensitiv
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Encoder::SetClearMode(EncoderClearMode clear_mode) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   EncoderConfig config{};
   if (!GetEncoderConfig(config)) {
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -3160,6 +3339,10 @@ Result<void> TMC51x0<CommType>::Encoder::SetClearMode(EncoderClearMode clear_mod
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Encoder::SetPrescalerMode(EncoderPrescalerMode prescaler_mode) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   EncoderConfig config{};
   if (!GetEncoderConfig(config)) {
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -3170,6 +3353,10 @@ Result<void> TMC51x0<CommType>::Encoder::SetPrescalerMode(EncoderPrescalerMode p
 
 template <typename CommType>
 Result<int32_t> TMC51x0<CommType>::Encoder::GetPosition() noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return Result<int32_t>(mode_guard.Error());
+  }
   auto value_result = driver_.comm_.ReadRegister(Registers::X_ENC, driver_.GetCommAddress());
   if (!value_result) {
     return Result<int32_t>(ErrorCode::COMM_ERROR);
@@ -3181,6 +3368,10 @@ Result<int32_t> TMC51x0<CommType>::Encoder::GetPosition() noexcept {
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Encoder::SetResolution(int32_t motor_steps, int32_t enc_resolution, bool inverted) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   // Calculate factor: (motor_steps * microsteps) / enc_resolution
   // Use current microstep setting (may vary: 256, 128, 64, etc.)
   float factor = static_cast<float>(motor_steps * driver_.current_microsteps_) / static_cast<float>(enc_resolution);
@@ -3245,6 +3436,10 @@ Result<void> TMC51x0<CommType>::Encoder::SetResolution(int32_t motor_steps, int3
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Encoder::SetAllowedDeviation(int32_t steps) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   // Convert steps to microsteps using current microstep setting
   int32_t deviation = steps * driver_.current_microsteps_;
   deviation = std::min(deviation, static_cast<int32_t>(0xFFFFF)); // 20 bits
@@ -3261,6 +3456,10 @@ Result<void> TMC51x0<CommType>::Encoder::SetAllowedDeviation(int32_t steps) noex
 
 template <typename CommType>
 Result<bool> TMC51x0<CommType>::Encoder::IsDeviationDetected() noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return Result<bool>(mode_guard.Error());
+  }
   auto enc_status_value_result = driver_.comm_.ReadRegister(Registers::ENC_STATUS, driver_.GetCommAddress());
   if (!enc_status_value_result) {
     return Result<bool>(ErrorCode::COMM_ERROR);
@@ -3273,13 +3472,47 @@ Result<bool> TMC51x0<CommType>::Encoder::IsDeviationDetected() noexcept {
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Encoder::ClearDeviationFlag() noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   ENC_STATUS_Register enc_status{};
   enc_status.bits.deviation_warn = true;
   return driver_.comm_.WriteRegister(Registers::ENC_STATUS, enc_status.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
+Result<bool> TMC51x0<CommType>::Encoder::IsNEventDetected() noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return Result<bool>(mode_guard.Error());
+  }
+  auto enc_status_value_result = driver_.comm_.ReadRegister(Registers::ENC_STATUS, driver_.GetCommAddress());
+  if (!enc_status_value_result) {
+    return Result<bool>(ErrorCode::COMM_ERROR);
+  }
+  ENC_STATUS_Register enc_status{};
+  enc_status.value = enc_status_value_result.Value();
+  return Result<bool>(enc_status.bits.n_event != 0);
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Encoder::ClearNEventFlag() noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
+  ENC_STATUS_Register enc_status{};
+  enc_status.bits.n_event = true;
+  return driver_.comm_.WriteRegister(Registers::ENC_STATUS, enc_status.value, driver_.GetCommAddress());
+}
+
+template <typename CommType>
 Result<int32_t> TMC51x0<CommType>::Encoder::GetLatchedPosition() noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return Result<int32_t>(mode_guard.Error());
+  }
   auto value_result = driver_.comm_.ReadRegister(Registers::ENC_LATCH, driver_.GetCommAddress());
   if (!value_result) {
     return Result<int32_t>(ErrorCode::COMM_ERROR);
@@ -3291,7 +3524,7 @@ Result<int32_t> TMC51x0<CommType>::Encoder::GetLatchedPosition() noexcept {
 
 // Diagnostics implementation
 template <typename CommType>
-DriverStatus TMC51x0<CommType>::Diagnostics::GetStatus() noexcept {
+DriverStatus TMC51x0<CommType>::Status::GetStatus() noexcept {
   uint32_t gstat_value = 0;
   auto drv_status_value_result = driver_.comm_.ReadRegister(Registers::GSTAT, driver_.GetCommAddress());
   if (!drv_status_value_result) {
@@ -3337,7 +3570,7 @@ DriverStatus TMC51x0<CommType>::Diagnostics::GetStatus() noexcept {
 }
 
 template <typename CommType>
-Result<bool> TMC51x0<CommType>::Diagnostics::GetGlobalStatus(bool& drv_err, bool& uv_cp) noexcept {
+Result<bool> TMC51x0<CommType>::Status::GetGlobalStatus(bool& drv_err, bool& uv_cp) noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::GSTAT, driver_.GetCommAddress());
   if (!value_result) {
     return Result<bool>(ErrorCode::COMM_ERROR);
@@ -3352,7 +3585,7 @@ Result<bool> TMC51x0<CommType>::Diagnostics::GetGlobalStatus(bool& drv_err, bool
 }
 
 template <typename CommType>
-Result<uint16_t> TMC51x0<CommType>::Diagnostics::GetStallGuard() noexcept {
+Result<uint16_t> TMC51x0<CommType>::StallGuard::GetStallGuard() noexcept {
   auto drv_status_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
   if (!drv_status_result) {
     return Result<uint16_t>(ErrorCode::COMM_ERROR);
@@ -3365,7 +3598,7 @@ Result<uint16_t> TMC51x0<CommType>::Diagnostics::GetStallGuard() noexcept {
 }
 
 template <typename CommType>
-Result<uint16_t> TMC51x0<CommType>::Diagnostics::GetStallGuardResult() noexcept {
+Result<uint16_t> TMC51x0<CommType>::StallGuard::GetStallGuardResult() noexcept {
   auto drv_status_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
   if (!drv_status_result) {
     return Result<uint16_t>(ErrorCode::COMM_ERROR);
@@ -3378,7 +3611,7 @@ Result<uint16_t> TMC51x0<CommType>::Diagnostics::GetStallGuardResult() noexcept 
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::Diagnostics::ConfigureStallGuard(const StallGuardConfig& config) noexcept {
+Result<void> TMC51x0<CommType>::StallGuard::ConfigureStallGuard(const StallGuardConfig& config) noexcept {
   // Update driver config
   driver_.driver_config_.stallguard = config;
 
@@ -3433,6 +3666,10 @@ Result<void> TMC51x0<CommType>::Diagnostics::ConfigureStallGuard(const StallGuar
       uint32_t sw_mode_value = read_result_tmp.Value();
       SW_MODE_Register sw_mode{};
       sw_mode.value = sw_mode_value;
+      if (sw_mode.bits.en_softstop != 0) {
+        // Datasheet warning: do not use soft stop in combination with StallGuard2 stop
+        return Result<void>(ErrorCode::INVALID_STATE);
+      }
       sw_mode.bits.sg_stop = 1; // Enable stop on stall
       auto sw_mode_result = driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value, driver_.GetCommAddress());
       if (!sw_mode_result) {
@@ -3445,7 +3682,7 @@ Result<void> TMC51x0<CommType>::Diagnostics::ConfigureStallGuard(const StallGuar
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::Diagnostics::EnableStopOnStall(bool enable) noexcept {
+Result<void> TMC51x0<CommType>::StallGuard::EnableStopOnStall(bool enable) noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::SW_MODE, driver_.GetCommAddress());
   if (!value_result) {
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -3453,12 +3690,16 @@ Result<void> TMC51x0<CommType>::Diagnostics::EnableStopOnStall(bool enable) noex
   uint32_t value = value_result.Value();
   SW_MODE_Register sw_mode{};
   sw_mode.value = value;
+  if (enable && sw_mode.bits.en_softstop != 0) {
+    // Datasheet warning: do not use soft stop in combination with StallGuard2 stop
+    return Result<void>(ErrorCode::INVALID_STATE);
+  }
   sw_mode.bits.sg_stop = enable ? 1 : 0;
   return driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
-Result<bool> TMC51x0<CommType>::Diagnostics::IsStopOnStallEnabled() noexcept {
+Result<bool> TMC51x0<CommType>::StallGuard::IsStopOnStallEnabled() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::SW_MODE, driver_.GetCommAddress());
   if (!value_result) {
     return Result<bool>(ErrorCode::COMM_ERROR);
@@ -3470,19 +3711,23 @@ Result<bool> TMC51x0<CommType>::Diagnostics::IsStopOnStallEnabled() noexcept {
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::Diagnostics::SetSoftStop(bool enable) noexcept {
+Result<void> TMC51x0<CommType>::StallGuard::SetSoftStop(bool enable) noexcept {
   auto sw_mode_result = driver_.comm_.ReadRegister(Registers::SW_MODE, driver_.GetCommAddress());
   if (!sw_mode_result) {
     return Result<void>(ErrorCode::COMM_ERROR);
   }
   SW_MODE_Register sw_mode{};
   sw_mode.value = sw_mode_result.Value();
+  if (enable && sw_mode.bits.sg_stop != 0) {
+    // Datasheet warning: do not use soft stop in combination with StallGuard2 stop
+    return Result<void>(ErrorCode::INVALID_STATE);
+  }
   sw_mode.bits.en_softstop = enable ? 1 : 0;
   return driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
-Result<bool> TMC51x0<CommType>::Diagnostics::IsSoftStopEnabled() noexcept {
+Result<bool> TMC51x0<CommType>::StallGuard::IsSoftStopEnabled() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::SW_MODE, driver_.GetCommAddress());
   if (!value_result) {
     return Result<bool>(ErrorCode::COMM_ERROR);
@@ -3494,7 +3739,7 @@ Result<bool> TMC51x0<CommType>::Diagnostics::IsSoftStopEnabled() noexcept {
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::Diagnostics::ClearStallFlag() noexcept {
+Result<void> TMC51x0<CommType>::StallGuard::ClearStallFlag() noexcept {
   // RAMP_STAT is read-write-clear: writing 1 to event_stop_sg (bit 6 = 0x40) clears it
   // Per datasheet: "The write and clear function of the event_stop_sg flag in RAMP_STAT
   // restarts the motor after expiration of TZEROWAIT in case the motion parameters have not been modified."
@@ -3513,7 +3758,7 @@ Result<void> TMC51x0<CommType>::Diagnostics::ClearStallFlag() noexcept {
 }
 
 template <typename CommType>
-Result<bool> TMC51x0<CommType>::Diagnostics::IsStallDetected() noexcept {
+Result<bool> TMC51x0<CommType>::StallGuard::IsStallDetected() noexcept {
   // Check if sg_stop is enabled to determine which method to use
   auto sg_stop_enabled_result = IsStopOnStallEnabled();
   if (!sg_stop_enabled_result) {
@@ -3569,12 +3814,12 @@ Result<bool> TMC51x0<CommType>::Diagnostics::IsStallDetected() noexcept {
 }
 
 template <typename CommType>
-Result<uint32_t> TMC51x0<CommType>::Diagnostics::GetDriverStatusRegister() noexcept {
+Result<uint32_t> TMC51x0<CommType>::Status::GetDriverStatusRegister() noexcept {
   return driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
 }
 
 template <typename CommType>
-Result<bool> TMC51x0<CommType>::Diagnostics::IsOpenLoadA() noexcept {
+Result<bool> TMC51x0<CommType>::Status::IsOpenLoadA() noexcept {
   auto drv_status_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
   if (!drv_status_result) {
     return Result<bool>(ErrorCode::COMM_ERROR);
@@ -3586,7 +3831,7 @@ Result<bool> TMC51x0<CommType>::Diagnostics::IsOpenLoadA() noexcept {
 }
 
 template <typename CommType>
-Result<bool> TMC51x0<CommType>::Diagnostics::IsOpenLoadB() noexcept {
+Result<bool> TMC51x0<CommType>::Status::IsOpenLoadB() noexcept {
   auto drv_status_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
   if (!drv_status_result) {
     return Result<bool>(ErrorCode::COMM_ERROR);
@@ -3598,7 +3843,7 @@ Result<bool> TMC51x0<CommType>::Diagnostics::IsOpenLoadB() noexcept {
 }
 
 template <typename CommType>
-Result<bool> TMC51x0<CommType>::Diagnostics::CheckOpenLoad(bool& phase_a, bool& phase_b) noexcept {
+Result<bool> TMC51x0<CommType>::Status::CheckOpenLoad(bool& phase_a, bool& phase_b) noexcept {
   auto drv_status_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
   if (!drv_status_result) {
     return Result<bool>(ErrorCode::COMM_ERROR);
@@ -3612,18 +3857,18 @@ Result<bool> TMC51x0<CommType>::Diagnostics::CheckOpenLoad(bool& phase_a, bool& 
 }
 
 template <typename CommType>
-Result<uint32_t> TMC51x0<CommType>::Diagnostics::GetRampStatusRegister() noexcept {
+Result<uint32_t> TMC51x0<CommType>::Status::GetRampStatusRegister() noexcept {
   return driver_.comm_.ReadRegister(Registers::RAMP_STAT, driver_.GetCommAddress());
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::Diagnostics::ClearRampStatus(uint32_t bits_to_clear) noexcept {
+Result<void> TMC51x0<CommType>::Events::ClearRampStatus(uint32_t bits_to_clear) noexcept {
   // RAMP_STAT is read-write-clear: writing 1 to a bit clears it
   return driver_.comm_.WriteRegister(Registers::RAMP_STAT, bits_to_clear, driver_.GetCommAddress());
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::Diagnostics::SetTcoolthrs(float threshold, Unit unit) noexcept {
+Result<void> TMC51x0<CommType>::Thresholds::SetTcoolthrs(float threshold, Unit unit) noexcept {
   if (threshold < 0.0F) {
     return Result<void>(ErrorCode::COMM_ERROR);
   }
@@ -3641,7 +3886,7 @@ Result<void> TMC51x0<CommType>::Diagnostics::SetTcoolthrs(float threshold, Unit 
 }
 
 template <typename CommType>
-Result<float> TMC51x0<CommType>::Diagnostics::GetTcoolthrs(Unit unit) const noexcept {
+Result<float> TMC51x0<CommType>::Thresholds::GetTcoolthrs(Unit unit) const noexcept {
   uint32_t tcoolthrs = driver_.write_only_regs_.tcoolthrs;
   // Convert TSTEP value back to speed in full-steps/s.
   // See thresholdSpeedToTstep(): TSTEP = f_CLK / (speed_fullsteps_per_sec * 256)
@@ -3658,17 +3903,17 @@ Result<float> TMC51x0<CommType>::Diagnostics::GetTcoolthrs(Unit unit) const noex
 }
 
 template <typename CommType>
-uint32_t TMC51x0<CommType>::Diagnostics::GetTpwmthrsRegisterValue() const noexcept {
+uint32_t TMC51x0<CommType>::Thresholds::GetTpwmthrsRegisterValue() const noexcept {
   return driver_.write_only_regs_.tpwmthrs;
 }
 
 template <typename CommType>
-uint32_t TMC51x0<CommType>::Diagnostics::GetTcoolthrsRegisterValue() const noexcept {
+uint32_t TMC51x0<CommType>::Thresholds::GetTcoolthrsRegisterValue() const noexcept {
   return driver_.write_only_regs_.tcoolthrs;
 }
 
 template <typename CommType>
-Result<uint32_t> TMC51x0<CommType>::Diagnostics::GetLostSteps() noexcept {
+Result<uint32_t> TMC51x0<CommType>::Status::GetLostSteps() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::LOST_STEPS, driver_.GetCommAddress());
   if (!value_result) {
     return Result<uint32_t>(ErrorCode::COMM_ERROR);
@@ -3805,6 +4050,10 @@ Result<void> TMC51x0<CommType>::Homing::EnsureSpreadCycleForStallGuard() noexcep
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Homing::PerformSensorlessHoming(bool direction, float search_speed,
                                                          int32_t& final_position, uint32_t timeout_ms) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   // Cache current settings
   if (!CacheCurrentSettings()) {
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -3923,6 +4172,10 @@ template <typename CommType>
 Result<void> TMC51x0<CommType>::Homing::PerformSwitchHoming(bool direction, float search_speed, float switch_speed,
                                                       int32_t& final_position, bool use_left_switch,
                                                       uint32_t timeout_ms) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   // Cache current settings
   if (!CacheCurrentSettings()) {
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -4076,7 +4329,7 @@ Result<void> TMC51x0<CommType>::Homing::PerformSwitchHoming(bool direction, floa
 
   // Read latched position (XLATCH) - captured at switch hit
   int32_t latched_position = 0;
-  auto latched_pos_result = driver_.rampControl.GetLatchedPosition(Unit::Steps);
+  auto latched_pos_result = driver_.switches.GetLatchedPosition(Unit::Steps);
   if (latched_pos_result.IsOk()) {
     latched_position = static_cast<int32_t>(latched_pos_result.Value());
   }
@@ -4136,18 +4389,18 @@ Result<void> TMC51x0<CommType>::Homing::PerformSwitchHoming(bool direction, floa
 // Communication implementation
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Communication::ConfigureUartNodeAddress(uint8_t node_address, uint8_t send_delay) noexcept {
-  SLAVECONF_Register slaveconf{};
-  slaveconf.bits.slaveaddr = node_address & 0xFF; // Address range is 0-254 (8-bit)
-  slaveconf.bits.senddelay = constrain<uint8_t>(send_delay, 0U, 15U);
+  NODECONF_Register nodeconf{};
+  nodeconf.bits.nodeaddr = node_address & 0xFF; // Address range is 0-254 (8-bit)
+  nodeconf.bits.senddelay = constrain<uint8_t>(send_delay, 0U, 15U);
 
-  auto write_result = driver_.comm_.WriteRegister(Registers::SLAVECONF, slaveconf.value, driver_.GetCommAddress());
+  auto write_result = driver_.comm_.WriteRegister(Registers::NODECONF, nodeconf.value, driver_.GetCommAddress());
   if (write_result) {
-    driver_.write_only_regs_.slaveconf = slaveconf.value;
+    driver_.write_only_regs_.nodeconf = nodeconf.value;
 
-    // Store send delay locally (SLAVECONF register is write-only)
+    // Store send delay locally (NODECONF register is write-only)
     driver_.send_delay_ = constrain<uint8_t>(send_delay, 0U, 15U);
 
-    // Update UART node address (node address and slave address are the same)
+    // Update UART node address (NODECONF.NODEADDR and software node address are the same)
     driver_.uart_node_address_ = node_address & 0xFF;
 
     // Update driver config
@@ -4160,7 +4413,7 @@ Result<void> TMC51x0<CommType>::Communication::ConfigureUartNodeAddress(uint8_t 
   }
   return Result<void>();
 
-  // Update UART interface slave address if using UART
+  // Update UART interface node address if using UART
   if (driver_.comm_.GetMode() == CommMode::UART) {
     // Cast to UART interface and update address
     // Note: This requires the interface to be UartCommInterface
@@ -4170,9 +4423,9 @@ Result<void> TMC51x0<CommType>::Communication::ConfigureUartNodeAddress(uint8_t 
   return Result<void>();
 }
 
-// Protection implementation
+// PowerStage implementation
 template <typename CommType>
-Result<void> TMC51x0<CommType>::Protection::ConfigureShortProtection(const PowerStageParameters& config) noexcept {
+Result<void> TMC51x0<CommType>::PowerStage::ConfigureShortProtection(const PowerStageParameters& config) noexcept {
   // Update driver config (short protection is part of power_stage)
   driver_.driver_config_.power_stage = config;
 
@@ -4200,7 +4453,7 @@ Result<void> TMC51x0<CommType>::Protection::ConfigureShortProtection(const Power
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::Protection::SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter,
+Result<void> TMC51x0<CommType>::PowerStage::SetShortProtectionLevels(uint8_t s2vs_level, uint8_t s2g_level, uint8_t shortfilter,
                                                              uint8_t shortdelay) noexcept {
   SHORT_CONF_Register short_conf{};
   short_conf.bits.s2vs_level = constrain<decltype(s2vs_level)>(s2vs_level, 4U, 15U);
@@ -4219,7 +4472,7 @@ Result<void> TMC51x0<CommType>::Protection::SetShortProtectionLevels(uint8_t s2v
 
 // Diagnostics read-only register implementations
 template <typename CommType>
-Result<uint32_t> TMC51x0<CommType>::Diagnostics::GetTimeBetweenMicrosteps() noexcept {
+Result<uint32_t> TMC51x0<CommType>::Status::GetTimeBetweenMicrosteps() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::TSTEP, driver_.GetCommAddress());
   if (!value_result) {
     return Result<uint32_t>(ErrorCode::COMM_ERROR);
@@ -4230,7 +4483,7 @@ Result<uint32_t> TMC51x0<CommType>::Diagnostics::GetTimeBetweenMicrosteps() noex
 }
 
 template <typename CommType>
-Result<uint16_t> TMC51x0<CommType>::Diagnostics::GetMicrostepCounter() noexcept {
+Result<uint16_t> TMC51x0<CommType>::Status::GetMicrostepCounter() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::MSCNT, driver_.GetCommAddress());
   if (!value_result) {
     return Result<uint16_t>(ErrorCode::COMM_ERROR);
@@ -4241,7 +4494,7 @@ Result<uint16_t> TMC51x0<CommType>::Diagnostics::GetMicrostepCounter() noexcept 
 }
 
 template <typename CommType>
-Result<int16_t> TMC51x0<CommType>::Diagnostics::GetMicrostepCurrent(int16_t& phase_b) noexcept {
+Result<int16_t> TMC51x0<CommType>::Status::GetMicrostepCurrent(int16_t& phase_b) noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::MSCURACT, driver_.GetCommAddress());
   if (!value_result) {
     return Result<int16_t>(ErrorCode::COMM_ERROR);
@@ -4268,7 +4521,7 @@ Result<int16_t> TMC51x0<CommType>::Diagnostics::GetMicrostepCurrent(int16_t& pha
 }
 
 template <typename CommType>
-Result<uint8_t> TMC51x0<CommType>::Diagnostics::GetPwmScale(int16_t& pwm_scale_auto) noexcept {
+Result<uint8_t> TMC51x0<CommType>::Status::GetPwmScale(int16_t& pwm_scale_auto) noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::PWM_SCALE, driver_.GetCommAddress());
   if (!value_result) {
     return Result<uint8_t>(ErrorCode::COMM_ERROR);
@@ -4287,7 +4540,7 @@ Result<uint8_t> TMC51x0<CommType>::Diagnostics::GetPwmScale(int16_t& pwm_scale_a
 }
 
 template <typename CommType>
-Result<uint8_t> TMC51x0<CommType>::Diagnostics::GetPwmAuto(uint8_t& pwm_grad_auto) noexcept {
+Result<uint8_t> TMC51x0<CommType>::Status::GetPwmAuto(uint8_t& pwm_grad_auto) noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::PWM_AUTO, driver_.GetCommAddress());
   if (!value_result) {
     return Result<uint8_t>(ErrorCode::COMM_ERROR);
@@ -4301,7 +4554,7 @@ Result<uint8_t> TMC51x0<CommType>::Diagnostics::GetPwmAuto(uint8_t& pwm_grad_aut
 }
 
 template <typename CommType>
-Result<InputStatus> TMC51x0<CommType>::Diagnostics::ReadInputStatus() noexcept {
+Result<InputStatus> TMC51x0<CommType>::Io::ReadInputStatus() noexcept {
   auto io_pins_result = ReadGpioPins();
   if (!io_pins_result) {
     return Result<InputStatus>(ErrorCode::COMM_ERROR);
@@ -4326,7 +4579,7 @@ Result<InputStatus> TMC51x0<CommType>::Diagnostics::ReadInputStatus() noexcept {
 }
 
 template <typename CommType>
-Result<uint8_t> TMC51x0<CommType>::Diagnostics::ReadIcVersion() noexcept {
+Result<uint8_t> TMC51x0<CommType>::Io::ReadIcVersion() noexcept {
   auto io_pins_result = ReadGpioPins();
   if (!io_pins_result) {
     return Result<uint8_t>(ErrorCode::COMM_ERROR);
@@ -4339,7 +4592,7 @@ Result<uint8_t> TMC51x0<CommType>::Diagnostics::ReadIcVersion() noexcept {
 }
 
 template <typename CommType>
-Result<uint32_t> TMC51x0<CommType>::Diagnostics::ReadGpioPins() noexcept {
+Result<uint32_t> TMC51x0<CommType>::Io::ReadGpioPins() noexcept {
   return driver_.comm_.ReadRegister(Registers::IOIN, driver_.GetCommAddress());
 }
 
@@ -4492,12 +4745,12 @@ std::string TMC51x0<CommType>::GetDriverConfigString() const noexcept {
   info += "TCOOLTHRS: " + std::to_string(write_only_regs_.tcoolthrs) + "\n";
   info += "THIGH: " + std::to_string(write_only_regs_.thigh) + "\n";
   info += "VSTART: " + std::to_string(write_only_regs_.vstart) + "\n";
-  info += "A_1: " + std::to_string(write_only_regs_.a_1) + "\n";
-  info += "V_1: " + std::to_string(write_only_regs_.v_1) + "\n";
+  info += "A1: " + std::to_string(write_only_regs_.a1) + "\n";
+  info += "V1: " + std::to_string(write_only_regs_.v1) + "\n";
   info += "AMAX: " + std::to_string(write_only_regs_.amax) + "\n";
   info += "VMAX: " + std::to_string(write_only_regs_.vmax) + "\n";
   info += "DMAX: " + std::to_string(write_only_regs_.dmax) + "\n";
-  info += "D_1: " + std::to_string(write_only_regs_.d_1) + "\n";
+  info += "D1: " + std::to_string(write_only_regs_.d1) + "\n";
   info += "VSTOP: " + std::to_string(write_only_regs_.vstop) + "\n";
   info += "TZEROWAIT: " + std::to_string(write_only_regs_.tzerowait) + "\n";
   info += "VDCMIN: " + std::to_string(write_only_regs_.vdcmin) + "\n";
@@ -4506,14 +4759,14 @@ std::string TMC51x0<CommType>::GetDriverConfigString() const noexcept {
   info += "COOLCONF: 0x" + std::to_string(write_only_regs_.coolconf) + "\n";
   info += "DCCTRL: 0x" + std::to_string(write_only_regs_.dcctrl) + "\n";
   info += "PWMCONF: 0x" + std::to_string(write_only_regs_.pwmconf) + "\n";
-  info += "SLAVECONF: 0x" + std::to_string(write_only_regs_.slaveconf) + "\n";
+  info += "NODECONF: 0x" + std::to_string(write_only_regs_.nodeconf) + "\n";
   info += "\n";
 
   return info;
 }
 
 template <typename CommType>
-Result<uint8_t> TMC51x0<CommType>::Diagnostics::ReadFactoryConfig() noexcept {
+Result<uint8_t> TMC51x0<CommType>::Status::ReadFactoryConfig() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::FACTORY_CONF, driver_.GetCommAddress());
   if (!value_result) {
     return Result<uint8_t>(ErrorCode::COMM_ERROR);
@@ -4525,7 +4778,7 @@ Result<uint8_t> TMC51x0<CommType>::Diagnostics::ReadFactoryConfig() noexcept {
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::Diagnostics::SetSdoCfg0Polarity(bool polarity) noexcept {
+Result<void> TMC51x0<CommType>::Io::SetSdoCfg0Polarity(bool polarity) noexcept {
   // Register 0x04 is dual purpose:
   // - Read: IOIN (Input states)
   // - Write: OUTPUT (Output configuration)
@@ -4542,7 +4795,7 @@ Result<void> TMC51x0<CommType>::Diagnostics::SetSdoCfg0Polarity(bool polarity) n
 }
 
 template <typename CommType>
-Result<uint8_t> TMC51x0<CommType>::Diagnostics::ReadOtpConfig(bool& otp_s2_level, bool& otp_bbm,
+Result<uint8_t> TMC51x0<CommType>::Status::ReadOtpConfig(bool& otp_s2_level, bool& otp_bbm,
                                                    bool& otp_tbl) noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::OTP_READ, driver_.GetCommAddress());
   if (!value_result) {
@@ -4559,7 +4812,7 @@ Result<uint8_t> TMC51x0<CommType>::Diagnostics::ReadOtpConfig(bool& otp_s2_level
 }
 
 template <typename CommType>
-Result<uint8_t> TMC51x0<CommType>::Diagnostics::GetUartTransmissionCount() noexcept {
+Result<uint8_t> TMC51x0<CommType>::Status::GetUartTransmissionCount() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::IFCNT, driver_.GetCommAddress());
   if (!value_result) {
     return Result<uint8_t>(ErrorCode::COMM_ERROR);
@@ -4569,7 +4822,7 @@ Result<uint8_t> TMC51x0<CommType>::Diagnostics::GetUartTransmissionCount() noexc
 }
 
 template <typename CommType>
-Result<uint8_t> TMC51x0<CommType>::Diagnostics::ReadOffsetCalibration(uint8_t& phase_b) noexcept {
+Result<uint8_t> TMC51x0<CommType>::Status::ReadOffsetCalibration(uint8_t& phase_b) noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::OFFSET_READ, driver_.GetCommAddress());
   if (!value_result) {
     return Result<uint8_t>(ErrorCode::COMM_ERROR);
@@ -4583,11 +4836,11 @@ Result<uint8_t> TMC51x0<CommType>::Diagnostics::ReadOffsetCalibration(uint8_t& p
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::Diagnostics::VerifySetup() noexcept {
+Result<void> TMC51x0<CommType>::Status::VerifySetup() noexcept {
   TMC51X0_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "--- TMC5160 Setup Verification ---");
 
   // 1. Check IC Version
-  auto version_result = ReadIcVersion();
+  auto version_result = driver_.io.ReadIcVersion();
   if (version_result.IsOk()) {
     uint8_t version = version_result.Value();
     if (version == 0x30) {
@@ -4606,7 +4859,7 @@ Result<void> TMC51x0<CommType>::Diagnostics::VerifySetup() noexcept {
   }
 
   // 2. Check Input Pins (Reg 0x04)
-  auto inputs_result = ReadInputStatus();
+  auto inputs_result = driver_.io.ReadInputStatus();
   if (inputs_result.IsOk()) {
     InputStatus inputs = inputs_result.Value();
     TMC51X0_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "--- Input Pins (IOIN 0x04) ---");
@@ -4642,7 +4895,7 @@ bool TestVelocityWithSGT(TMC51x0<CommType>& driver, float velocity_steps, int8_t
   StallGuardConfig sg_config{};
   sg_config.threshold = sgt;
   sg_config.enable_filter = false;
-  auto config_result = driver.diagnostics.ConfigureStallGuard(sg_config);
+  auto config_result = driver.stallGuard.ConfigureStallGuard(sg_config);
   if (!config_result) {
     return false;
   }
@@ -4672,7 +4925,7 @@ bool TestVelocityWithSGT(TMC51x0<CommType>& driver, float velocity_steps, int8_t
   bool stall_detected = false;
 
   for (int i = 0; i < sample_count; i++) {
-    auto sg_result = driver.diagnostics.GetStallGuard();
+    auto sg_result = driver.stallGuard.GetStallGuard();
     if (sg_result) {
       uint16_t sg_val = sg_result.Value();
       if (sg_val == 0) {
@@ -4734,6 +4987,10 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
                                                     int8_t min_sgt, int8_t max_sgt, float acceleration,
                                                     float min_velocity, float max_velocity,
                                                     Unit velocity_unit, Unit acceleration_unit) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   // Initialize result
   result = StallGuardTuningResult{};
 
@@ -4748,12 +5005,12 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
                     target_v_steps, min_v_steps, max_v_steps);
 
   // 0. CRITICAL: Ensure stop-on-stall is DISABLED
-  if (!driver_.diagnostics.EnableStopOnStall(false)) {
+  if (!driver_.stallGuard.EnableStopOnStall(false)) {
     return Result<void>(ErrorCode::COMM_ERROR);
   }
 
   // Clear any previous stop events/flags
-  driver_.diagnostics.ClearStallFlag();
+  driver_.stallGuard.ClearStallFlag();
   driver_.comm_.DelayMs(10);
 
   // 1. Start with SGT=0 (datasheet recommendation) or min_sgt if higher
@@ -4820,7 +5077,7 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
     StallGuardConfig sg_config{};
     sg_config.threshold = current_sgt;
     sg_config.enable_filter = false; // Disable filter during tuning
-    if (!driver_.diagnostics.ConfigureStallGuard(sg_config)) {
+    if (!driver_.stallGuard.ConfigureStallGuard(sg_config)) {
       driver_.rampControl.Stop();
       return Result<void>(ErrorCode::COMM_ERROR);
     }
@@ -4833,7 +5090,7 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
     uint16_t sg_count = 0;
 
     for (int i = 0; i < 8; i++) {
-      auto sg_result = driver_.diagnostics.GetStallGuard();
+      auto sg_result = driver_.stallGuard.GetStallGuard();
       if (sg_result.IsOk()) {
         uint16_t sg_val = sg_result.Value();
         if (sg_val == 0) {
@@ -4853,8 +5110,8 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
         float vact = vact_result.Value();
         TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard",
                           "Motor stopped during tuning! (V=%.1f). Restarting...", vact);
-        driver_.diagnostics.EnableStopOnStall(false);
-        driver_.diagnostics.ClearStallFlag();
+        driver_.stallGuard.EnableStopOnStall(false);
+        driver_.stallGuard.ClearStallFlag();
         driver_.rampControl.SetMaxSpeed(target_v_steps, Unit::Steps);
         driver_.comm_.DelayMs(200);
       }
@@ -4922,13 +5179,13 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
     StallGuardConfig sg_config{};
     sg_config.threshold = result.optimal_sgt;
     sg_config.enable_filter = false;
-    driver_.diagnostics.ConfigureStallGuard(sg_config);
+    driver_.stallGuard.ConfigureStallGuard(sg_config);
     driver_.comm_.DelayMs(10);
     
     uint16_t sg_sum = 0;
     uint16_t sg_count = 0;
     for (int i = 0; i < 8; i++) {
-      auto sg_result = driver_.diagnostics.GetStallGuard();
+      auto sg_result = driver_.stallGuard.GetStallGuard();
       if (sg_result.IsOk() && sg_result.Value() > 0) {
         uint16_t sg_val = sg_result.Value();
         sg_sum += sg_val;
@@ -5021,28 +5278,16 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
   return Result<void>();
 }
 
-// Legacy overload for backward compatibility
-template <typename CommType>
-Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, int8_t& final_sgt, int8_t min_sgt,
-                                                    int8_t max_sgt, float acceleration, float min_velocity,
-                                                    float max_velocity, Unit velocity_unit, Unit acceleration_unit) noexcept {
-  // Call the new comprehensive function and extract just the optimal SGT
-  StallGuardTuningResult result;
-  auto tune_result = TuneStallGuard(target_velocity, result, min_sgt, max_sgt, acceleration,
-                                  min_velocity, max_velocity, velocity_unit, acceleration_unit);
-  if (!tune_result) {
-    return tune_result;
-  }
-  final_sgt = result.optimal_sgt;
-  return Result<void>();
-}
-
 // AutoTuneStallGuard implementation
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity, StallGuardTuningResult& result,
                                                      int8_t min_sgt, int8_t max_sgt, float acceleration,
                                                      float min_velocity, float max_velocity, Unit velocity_unit,
                                                      Unit acceleration_unit, uint16_t safe_current_margin_mA) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
   // Initialize result
   result = StallGuardTuningResult{};
 
@@ -5205,7 +5450,7 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
   StallGuardConfig sg_config_no_filter{};
   sg_config_no_filter.threshold = 0; // Temporary, will be set during tuning
   sg_config_no_filter.enable_filter = false; // Disable filter for immediate response
-  if (!driver_.diagnostics.ConfigureStallGuard(sg_config_no_filter)) {
+  if (!driver_.stallGuard.ConfigureStallGuard(sg_config_no_filter)) {
     TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
                       "Failed to configure StallGuard filter (non-critical)");
     // Continue anyway - TuneStallGuard will set it
@@ -5214,12 +5459,12 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
   // ========================================================================
   // STEP 5: Disable stop-on-stall and clear stall flags
   // ========================================================================
-  if (!driver_.diagnostics.EnableStopOnStall(false)) {
+  if (!driver_.stallGuard.EnableStopOnStall(false)) {
     TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
                       "Failed to disable stop-on-stall");
     // Continue anyway
   }
-  driver_.diagnostics.ClearStallFlag();
+  driver_.stallGuard.ClearStallFlag();
   driver_.comm_.DelayMs(10);
 
   // ========================================================================
@@ -5304,18 +5549,18 @@ Result<void> TMC51x0<CommType>::UartConfig::ConfigureUartNodeAddress(uint8_t nod
   // We need to use address 0 to communicate, not the target address
   uint8_t current_accessible_address = 0;
 
-  SLAVECONF_Register slaveconf{};
-  slaveconf.bits.slaveaddr = node_address & 0xFF; // Address range is 0-254 (8-bit)
-  slaveconf.bits.senddelay = constrain<decltype(send_delay)>(send_delay, 0U, 15U);
+  NODECONF_Register nodeconf{};
+  nodeconf.bits.nodeaddr = node_address & 0xFF; // Address range is 0-254 (8-bit)
+  nodeconf.bits.senddelay = constrain<decltype(send_delay)>(send_delay, 0U, 15U);
 
-  // Write to SLAVECONF using current accessible address (0)
-  auto write_result = driver_->comm_.WriteRegister(Registers::SLAVECONF, slaveconf.value, current_accessible_address);
+  // Write to NODECONF using current accessible address (0)
+  auto write_result = driver_->comm_.WriteRegister(Registers::NODECONF, nodeconf.value, current_accessible_address);
 
   // Only update the driver's node address and send delay after successful programming
   if (!write_result) {
     return write_result;
   }
-  driver_->write_only_regs_.slaveconf = slaveconf.value;
+  driver_->write_only_regs_.nodeconf = nodeconf.value;
   driver_->uart_node_address_ = node_address & 0xFF;                           // Address range is 0-254
   driver_->send_delay_ = constrain<decltype(send_delay)>(send_delay, 0U, 15U); // Store send delay locally
   return Result<void>();
@@ -5566,5 +5811,7 @@ void TMC51x0<CommType>::Printer::PrintAll() noexcept {
   PrintSwMode();
   PrintIoin();
 }
+
+} // namespace tmc51x0
 
 #endif // TMC51X0_IMPL

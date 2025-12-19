@@ -112,7 +112,7 @@ if (!init_result) {
 // 5. Configure platform-specific features after initialization
 // Reference switches
 auto ref_cfg = tmc5160_test_config::GetReferenceSwitchConfig<SELECTED_PLATFORM>();
-auto ref_result = driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
+auto ref_result = driver.switches.ConfigureReferenceSwitch(ref_cfg);
 if (!ref_result) {
     printf("Error configuring reference switch: %s\n", ref_result.ErrorMessage());
     return -1;
@@ -238,7 +238,7 @@ cfg.ramp_config.acceleration_unit = tmc51x0::Unit::RevPerSec;   // All accelerat
 // cfg.ramp_config.velocity_unit = tmc51x0::Unit::RPM;      // Velocities in RPM
 // cfg.ramp_config.velocity_unit = tmc51x0::Unit::Deg;     // Velocities in deg/s
 // cfg.ramp_config.acceleration_unit = tmc51x0::Unit::Deg;  // Accelerations in deg/s²
-// cfg.ramp_config.velocity_unit = tmc51x0::Unit::Steps;    // Velocities in steps/s (legacy)
+// cfg.ramp_config.velocity_unit = tmc51x0::Unit::Steps;    // Velocities in steps/s
 
 cfg.ramp_config.vstart = 0.0f;      // Start velocity (unit specified by velocity_unit, 0 = can be zero)
 cfg.ramp_config.vstop = 10.0f;     // Stop velocity (unit specified by velocity_unit, must be >= VSTART)
@@ -363,15 +363,15 @@ driver.motorControl.ConfigureStealthChop(stealth_cfg);
 
 // Set mode change speeds (velocity thresholds, unit-aware)
 // Specify units explicitly (recommended: RPM for velocity)
-driver.motorControl.SetModeChangeSpeeds(0.12f, 0.6f, 2.4f, tmc51x0::Unit::RPM);  // pwm_thrs, cool_thrs, high_thrs in RPM
+driver.thresholds.SetModeChangeSpeeds(0.12f, 0.6f, 2.4f, tmc51x0::Unit::RPM);  // pwm_thrs, cool_thrs, high_thrs in RPM
 // pwm_thrs: StealthChop threshold (below this: StealthChop, above: SpreadCycle)
 // cool_thrs: CoolStep threshold (below this: CoolStep disabled)
 // high_thrs: High-speed mode threshold
 
 // Or set individual thresholds (specify unit explicitly):
-driver.motorControl.SetStealthChopVelocityThreshold(0.002f);  // 0.002 rev/s (~0.12 RPM)
-driver.motorControl.SetCoolStepThreshold(0.01f);              // 0.01 rev/s (~0.6 RPM)
-driver.motorControl.SetHighSpeedThreshold(0.04f);              // 0.04 rev/s (~2.4 RPM)
+driver.thresholds.SetStealthChopVelocityThreshold(0.002f, tmc51x0::Unit::RevPerSec);  // 0.002 rev/s (~0.12 RPM)
+driver.thresholds.SetTcoolthrs(0.01f, tmc51x0::Unit::RevPerSec);                     // 0.01 rev/s (~0.6 RPM)
+driver.thresholds.SetHighSpeedThreshold(0.04f, tmc51x0::Unit::RevPerSec);            // 0.04 rev/s (~2.4 RPM)
 ```
 
 ### Encoder Configuration
@@ -429,7 +429,7 @@ sg_cfg.velocity_unit = tmc51x0::Unit::RevPerSec;  // Recommended default
 sg_cfg.stop_on_stall = true;
 
 // Configure StallGuard2 (automatically sets velocity thresholds and stop on stall)
-driver.diagnostics.ConfigureStallGuard(sg_cfg);
+driver.stallGuard.ConfigureStallGuard(sg_cfg);
 
 // Alternative: Use sensitivity enum for convenience
 // tmc51x0::StallGuardConfig sg_cfg(tmc51x0::StallGuardSensitivity::MODERATE, true, 500.0f, 5000.0f, tmc51x0::Unit::Steps, true);
@@ -481,7 +481,11 @@ driver.motorControl.ConfigureCoolStep(coolstep);
 
 DcStep allows the motor to run near its load limit without losing steps by automatically reducing velocity when overloaded.
 
-**Prerequisites**: DcStep requires SD_MODE=1 (external step/dir mode) or can be enabled via VDCMIN threshold. CHOPCONF.TOFF should be >2 (preferably 8-15).
+**Prerequisites**:
+- **Internal ramp mode (SD_MODE=0)**: DcStep can be enabled above the VDCMIN threshold (`dcstep.min_velocity`).
+- **External STEP/DIR mode (SD_MODE=1)**: DcStep is enabled via the external DCEN pin; VDCMIN does not enable DcStep in this mode.
+
+CHOPCONF.TOFF should be >2 (preferably 8-15).
 
 ```cpp
 // Configure DcStep with user-friendly API
@@ -612,7 +616,7 @@ if (!init_result) {
 }
 
 // Enable stealthChop
-auto speed_result = driver.motorControl.SetModeChangeSpeeds(0.12f, 0.0f, 0.0f, tmc51x0::Unit::RPM);  // pwm_thrs in RPM
+auto speed_result = driver.thresholds.SetModeChangeSpeeds(0.12f, 0.0f, 0.0f, tmc51x0::Unit::RPM);  // pwm_thrs in RPM
 if (!speed_result) {
     printf("Error setting mode change speeds: %s\n", speed_result.ErrorMessage());
     return -1;
@@ -637,7 +641,7 @@ if (!init_result) {
 }
 
 // Disable stealthChop (use spreadCycle)
-auto speed_result = driver.motorControl.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::Steps);
+auto speed_result = driver.thresholds.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::Steps);
 if (!speed_result) {
     printf("Error setting mode change speeds: %s\n", speed_result.ErrorMessage());
     return -1;

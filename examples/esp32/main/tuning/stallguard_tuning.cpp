@@ -76,7 +76,7 @@ extern "C" void app_main(void) {
   }
 
   // 3. Verify Setup
-  if (!driver.diagnostics.VerifySetup()) {
+  if (!driver.status.VerifySetup()) {
     ESP_LOGE(TAG, "Setup verification failed");
     return;
   }
@@ -100,7 +100,7 @@ extern "C" void app_main(void) {
   // Set velocity thresholds for StallGuard
   // TCOOLTHRS needs to be set such that StallGuard is active at tuning velocity
   // Using RPM units - 1.2 RPM threshold ensures StallGuard is active
-  driver.motorControl.SetModeChangeSpeeds(0.12f, 1.2f, 0.0f, VELOCITY_UNIT); // PWM_THRS, COOL_THRS, HIGH_THRS
+  driver.thresholds.SetModeChangeSpeeds(0.12f, 1.2f, 0.0f, VELOCITY_UNIT); // PWM_THRS, COOL_THRS, HIGH_THRS
 
   ESP_LOGI(TAG, "Starting Comprehensive Auto-Tuning Sequence...");
   ESP_LOGI(TAG, "Target Velocity: %.2f RPM", TUNING_VELOCITY_RPM);
@@ -165,7 +165,7 @@ extern "C" void app_main(void) {
     tmc51x0::StallGuardConfig sg_config;
     sg_config.threshold = result.optimal_sgt;
     sg_config.enable_filter = true; // Enable filter for verification/operation (reduces noise)
-    driver.diagnostics.ConfigureStallGuard(sg_config);
+    driver.stallGuard.ConfigureStallGuard(sg_config);
     
     // Set explicit acceleration and deceleration (same value for both)
     // Acceleration is in rev/s² (not RPM/s, as RPM/s is not a standard unit)
@@ -203,7 +203,7 @@ extern "C" void app_main(void) {
     for(int i=0; i<50; i++) { // Run longer (5s)
         vTaskDelay(pdMS_TO_TICKS(100));
         // Read StallGuard value
-        auto sg_result = driver.diagnostics.GetStallGuard();
+        auto sg_result = driver.stallGuard.GetStallGuard();
         uint16_t sg_val = 0;
         if (!sg_result) {
           ESP_LOGW(TAG, "⚠ Failed to read StallGuard (ErrorCode: %d), using 0", static_cast<int>(sg_result.Error()));

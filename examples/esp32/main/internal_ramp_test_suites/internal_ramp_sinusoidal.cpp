@@ -276,7 +276,7 @@ extern "C" void app_main() {
   
   // Run verification immediately after initialization
   ESP_LOGI(TAG, "Running startup verification...");
-  if (!driver.diagnostics.VerifySetup()) {
+  if (!driver.status.VerifySetup()) {
       ESP_LOGW(TAG, "Startup verification flagged issues - check logs above");
   } else {
       ESP_LOGI(TAG, "Startup verification passed");
@@ -299,21 +299,21 @@ extern "C" void app_main() {
   
   // 1. Disable StallGuard2 stop and soft stop (not needed for continuous motion)
   bool changed = false;
-  if (driver.diagnostics.IsStopOnStallEnabled()) {
+  if (driver.stallGuard.IsStopOnStallEnabled()) {
     ESP_LOGW(TAG, "StallGuard2 stop is ENABLED - disabling for sinusoidal motion");
-    if (driver.diagnostics.EnableStopOnStall(false)) {
+    if (driver.stallGuard.EnableStopOnStall(false)) {
       changed = true;
     }
   }
-  if (driver.diagnostics.IsSoftStopEnabled()) {
+  if (driver.stallGuard.IsSoftStopEnabled()) {
     ESP_LOGW(TAG, "Soft stop is ENABLED - disabling for continuous sinusoidal motion");
-    if (driver.diagnostics.SetSoftStop(false)) {
+    if (driver.stallGuard.SetSoftStop(false)) {
       changed = true;
     }
   }
   if (changed) {
     // Verify it was written
-    if (!driver.diagnostics.IsStopOnStallEnabled() && !driver.diagnostics.IsSoftStopEnabled()) {
+    if (!driver.stallGuard.IsStopOnStallEnabled() && !driver.stallGuard.IsSoftStopEnabled()) {
       ESP_LOGI(TAG, "✓ StallGuard2 stop and soft stop confirmed DISABLED");
     } else {
       ESP_LOGE(TAG, "✗ Failed to disable StallGuard2 stop or soft stop!");
@@ -326,7 +326,7 @@ extern "C" void app_main() {
   // TCOOLTHRS = velocity threshold below which StallGuard2 is disabled
   // Enabled if TSTEP < TCOOLTHRS (Velocity > Threshold)
   // To disable, we want Threshold to be infinite (TCOOLTHRS = 0)
-  if (driver.diagnostics.SetTcoolthrs(0.0f, tmc51x0::Unit::RPM)) {
+  if (driver.thresholds.SetTcoolthrs(0.0f, tmc51x0::Unit::RPM)) {
     ESP_LOGI(TAG, "✓ TCOOLTHRS set to 0 RPM - StallGuard2 disabled at all speeds");
   } else {
     ESP_LOGE(TAG, "✗ Failed to set TCOOLTHRS");
@@ -337,7 +337,7 @@ extern "C" void app_main() {
   // Setting high ensures StallGuard2 doesn't affect operation
   // Maximum value corresponds to very high RPM (driver handles conversion)
   constexpr float MAX_THIGH_RPM = 10000.0f; // Very high RPM threshold
-  if (driver.motorControl.SetHighSpeedThreshold(MAX_THIGH_RPM, tmc51x0::Unit::RPM)) {
+  if (driver.thresholds.SetHighSpeedThreshold(MAX_THIGH_RPM, tmc51x0::Unit::RPM)) {
     ESP_LOGI(TAG, "✓ THIGH set to maximum (%.0f RPM) - ensures StallGuard2 doesn't interfere", MAX_THIGH_RPM);
   } else {
     ESP_LOGW(TAG, "Failed to set THIGH (may not be critical)");
@@ -350,7 +350,7 @@ extern "C" void app_main() {
   sg_cfg.threshold = 63;        // Maximum threshold (least sensitive) - won't trigger
   sg_cfg.enable_filter = false; // No filter (faster response)
   // Note: semin/semax are CoolStep parameters, configure separately if needed
-  if (driver.diagnostics.ConfigureStallGuard(sg_cfg)) {
+  if (driver.stallGuard.ConfigureStallGuard(sg_cfg)) {
     ESP_LOGI(TAG, "✓ StallGuard2 configured for diagnostics only (sgt=63, least sensitive)");
     ESP_LOGI(TAG, "  Note: StallGuard2 is DISABLED and will NOT stop the motor");
     if (cfg.global_config.en_stealthchop_mode) {
@@ -370,7 +370,7 @@ extern "C" void app_main() {
   ref_cfg.right_switch_stop_enable = false;  // Don't stop motor
   ref_cfg.latch_left = tmc51x0::ReferenceLatchMode::DISABLED;   // No latching
   ref_cfg.latch_right = tmc51x0::ReferenceLatchMode::DISABLED;  // No latching
-  if (!driver.rampControl.ConfigureReferenceSwitch(ref_cfg)) {
+  if (!driver.switches.ConfigureReferenceSwitch(ref_cfg)) {
     ESP_LOGW(TAG, "Failed to configure reference switches (may not be critical)");
   } else {
     ESP_LOGI(TAG, "Reference switches disabled (not using endstops)");
@@ -379,18 +379,18 @@ extern "C" void app_main() {
     // Verify reference switch configuration
     bool right_active = false;
     bool left_enabled = false, right_enabled = false;
-    auto ref_switch_result = driver.rampControl.GetReferenceSwitchStatus(right_active, left_enabled, right_enabled);
+    auto ref_switch_result = driver.switches.GetReferenceSwitchStatus(right_active, left_enabled, right_enabled);
     if (ref_switch_result.IsOk()) {
       ESP_LOGI(TAG, "SW_MODE verification: stop_l_enable=%d, stop_r_enable=%d, en_softstop=%d",
                left_enabled ? 1 : 0,
                right_enabled ? 1 : 0,
-               driver.diagnostics.IsSoftStopEnabled() ? 1 : 0);
+               driver.stallGuard.IsSoftStopEnabled() ? 1 : 0);
       
       if (left_enabled || right_enabled) {
         ESP_LOGE(TAG, "ERROR: Reference switches still enabled in SW_MODE!");
         ESP_LOGE(TAG, "Motion will be blocked. Re-configuring...");
         // Try again
-        driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
+        driver.switches.ConfigureReferenceSwitch(ref_cfg);
       } else {
         ESP_LOGI(TAG, "✓ Reference switches confirmed disabled in SW_MODE");
       }
@@ -425,13 +425,13 @@ extern "C" void app_main() {
   // Verify chip is in internal ramp mode (SPI_MODE=HIGH, SD_MODE=LOW)
   // If mode pins are configured, verify they're set correctly
   if (pin_config.tmc51x0_pins.spi_mode_pin != -1 && pin_config.tmc51x0_pins.sd_mode_pin != -1) {
-    auto mode_result = driver.communication.GetOperatingMode();
+    auto mode_result = driver.io.GetOperatingMode();
     if (mode_result.IsOk()) {
       tmc51x0::ChipCommMode current_mode = mode_result.Value();
       if (current_mode != tmc51x0::ChipCommMode::SPI_INTERNAL_RAMP) {
         ESP_LOGW(TAG, "Chip is not in SPI_INTERNAL_RAMP mode (current: %d)", static_cast<int>(current_mode));
         ESP_LOGW(TAG, "Setting to SPI_INTERNAL_RAMP mode...");
-        if (driver.communication.SetOperatingMode(tmc51x0::ChipCommMode::SPI_INTERNAL_RAMP)) {
+        if (driver.io.SetOperatingMode(tmc51x0::ChipCommMode::SPI_INTERNAL_RAMP)) {
           ESP_LOGW(TAG, "Mode changed - chip reset required! Power cycle the TMC51x0 now.");
           ESP_LOGW(TAG, "After reset, restart this program.");
           return;
@@ -466,7 +466,7 @@ extern "C" void app_main() {
   // Check for Charge Pump Undervoltage immediately after enabling
   // Check for critical hardware errors
   bool drv_err = false, uv_cp = false;
-  auto global_status_result = driver.diagnostics.GetGlobalStatus(drv_err, uv_cp);
+  auto global_status_result = driver.status.GetGlobalStatus(drv_err, uv_cp);
   if (global_status_result.IsOk()) {
     bool reset = global_status_result.Value();
     if (uv_cp) {
@@ -573,7 +573,7 @@ extern "C" void app_main() {
         
         // Read GSTAT for reset and driver errors
         bool drv_err = false, uv_cp = false;
-        auto gstat_result = driver.diagnostics.GetGlobalStatus(drv_err, uv_cp);
+        auto gstat_result = driver.status.GetGlobalStatus(drv_err, uv_cp);
         bool gstat_read = gstat_result.IsOk();
         bool reset = gstat_read ? gstat_result.Value() : false;
         tmc51x0::GSTAT_Register gstat{};
@@ -608,7 +608,7 @@ extern "C" void app_main() {
       tmc51x0::DRV_STATUS_Register drv_status{};
       drv_status.value = 0;
       bool drv_status_read = false;
-      auto drv_status_result = driver.diagnostics.GetDriverStatusRegister();
+      auto drv_status_result = driver.status.GetDriverStatusRegister();
       if (drv_status_result) {
         uint32_t drv_status_value = drv_status_result.Value();
         drv_status.value = drv_status_value;
@@ -657,7 +657,7 @@ extern "C" void app_main() {
       // Read RAMP_STAT for stall and position information
       tmc51x0::RAMP_STAT_Register ramp_stat{};
       ramp_stat.value = 0;
-      auto ramp_stat_result = driver.diagnostics.GetRampStatusRegister();
+      auto ramp_stat_result = driver.status.GetRampStatusRegister();
       if (ramp_stat_result.IsOk()) {
         ramp_stat.value = ramp_stat_result.Value();
         
@@ -715,7 +715,7 @@ extern "C" void app_main() {
   
   // Read RAMP_STAT to check for any flags preventing motion
   uint32_t ramp_stat = 0;
-  auto ramp_stat_result = driver.diagnostics.GetRampStatusRegister();
+  auto ramp_stat_result = driver.status.GetRampStatusRegister();
   if (ramp_stat_result.IsOk()) {
     ramp_stat = ramp_stat_result.Value();
     tmc51x0::RAMP_STAT_Register status{};
@@ -732,7 +732,7 @@ extern "C" void app_main() {
     bool left_enabled = false, right_enabled = false;
     bool stops_enabled = false;
     bool left_active = false;
-    auto ref_switch_result = driver.rampControl.GetReferenceSwitchStatus(right_active, left_enabled, right_enabled);
+    auto ref_switch_result = driver.switches.GetReferenceSwitchStatus(right_active, left_enabled, right_enabled);
     if (ref_switch_result.IsOk()) {
       left_active = ref_switch_result.Value();
       stops_enabled = left_enabled || right_enabled;
@@ -834,7 +834,7 @@ extern "C" void app_main() {
       }
       
       // Read ramp status
-      auto ramp_stat_result = driver.diagnostics.GetRampStatusRegister();
+      auto ramp_stat_result = driver.status.GetRampStatusRegister();
       bool has_ramp_stat = ramp_stat_result.IsOk();
       uint32_t ramp_stat = has_ramp_stat ? ramp_stat_result.Value() : 0;
       

@@ -251,10 +251,10 @@ Before configuring CoolStep, tune StallGuard2 threshold for your motor:
 tmc51x0::StallGuardConfig sg_config{};
 sg_config.threshold = 0;  // Start with 0, adjust based on your motor
 sg_config.enable_filter = true;  // Enable filter for stable readings
-driver.diagnostics.ConfigureStallGuard(sg_config);
+driver.stallGuard.ConfigureStallGuard(sg_config);
 
 // Monitor SG_RESULT during operation
-uint16_t sg_value = driver.diagnostics.GetStallGuard();
+uint16_t sg_value = driver.stallGuard.GetStallGuard().Value();
 // Adjust threshold until SG_RESULT is in the middle of the range (200-600) at typical load
 ```
 
@@ -268,7 +268,7 @@ uint16_t sg_min = 1023;
 uint16_t sg_max = 0;
 
 for (int i = 0; i < 1000; i++) {
-    uint16_t sg = driver.diagnostics.GetStallGuard();
+    uint16_t sg = driver.stallGuard.GetStallGuard().Value();
     sg_min = std::min(sg_min, sg);
     sg_max = std::max(sg_max, sg);
     vTaskDelay(pdMS_TO_TICKS(10));
@@ -596,7 +596,11 @@ dcstep.stall_sensitivity = tmc51x0::DcStepStallSensitivity::MODERATE;
 - TBL=2: 36 clocks (~3.0µs @ 12MHz, typical)
 - TBL=3: 54 clocks (~4.5µs @ 12MHz)
 
-**Note**: DcStep requires SD_MODE=1 (external step/dir mode) or can be enabled via VDCMIN threshold. DcStep automatically sets CHOPCONF.vhighfs and CHOPCONF.vhighchm to 1.
+**Note**:
+- In **internal ramp mode (SD_MODE=0)**, DcStep can be enabled above the VDCMIN threshold.
+- In **external STEP/DIR mode (SD_MODE=1)**, DcStep is enabled via the external DCEN pin; VDCMIN does not enable DcStep in this mode.
+
+DcStep automatically sets CHOPCONF.vhighfs and CHOPCONF.vhighchm to 1.
 
 ## StallGuard2 Load Measurement
 
@@ -726,7 +730,7 @@ void configureStallGuard() {
     sg_config.stop_on_stall = false;
     
     // Configure StallGuard2
-    driver.diagnostics.ConfigureStallGuard(sg_config);
+    driver.stallGuard.ConfigureStallGuard(sg_config);
 }
 ```
 
@@ -742,7 +746,7 @@ tmc51x0::StallGuardConfig sg_config(
     tmc51x0::Unit::RevPerSec,
     false   // Don't stop on stall
 );
-driver.diagnostics.ConfigureStallGuard(sg_config);
+driver.stallGuard.ConfigureStallGuard(sg_config);
 ```
 
 #### Sensorless Homing Configuration
@@ -756,7 +760,7 @@ sg_config.min_velocity = 1000.0f;  // Match search speed
 sg_config.max_velocity = 0.0f;  // No upper limit
 sg_config.velocity_unit = tmc51x0::Unit::RevPerSec;
 sg_config.stop_on_stall = true;  // Stop motor on stall
-driver.diagnostics.ConfigureStallGuard(sg_config);
+driver.stallGuard.ConfigureStallGuard(sg_config);
 ```
 
 #### CoolStep Integration Configuration
@@ -770,7 +774,7 @@ sg_config.min_velocity = 500.0f;  // Match CoolStep min_velocity
 sg_config.max_velocity = 5000.0f;  // Match CoolStep max_velocity
 sg_config.velocity_unit = tmc51x0::Unit::RevPerSec;
 sg_config.stop_on_stall = false;  // CoolStep handles current, not stopping
-driver.diagnostics.ConfigureStallGuard(sg_config);
+driver.stallGuard.ConfigureStallGuard(sg_config);
 ```
 
 ### Automatic Tuning with Comprehensive Velocity Range Analysis
@@ -802,7 +806,7 @@ if (success) {
     sg_config.threshold = result.optimal_sgt;
     sg_config.min_velocity = result.min_velocity_success ? min_velocity : result.actual_min_velocity;
     sg_config.max_velocity = result.max_velocity_success ? max_velocity : result.actual_max_velocity;
-    driver.diagnostics.ConfigureStallGuard(sg_config);
+    driver.stallGuard.ConfigureStallGuard(sg_config);
     
     ESP_LOGI(TAG, "Optimal SGT: %d (SG_RESULT=%u at target)", 
              result.optimal_sgt, result.target_velocity_sg_result);
@@ -866,7 +870,7 @@ uint16_t sg_min = 1023;
 uint16_t sg_max = 0;
 
 for (int i = 0; i < 1000; i++) {
-    uint16_t sg = driver.diagnostics.GetStallGuard();
+    uint16_t sg = driver.stallGuard.GetStallGuard().Value();
     sg_min = std::min(sg_min, sg);
     sg_max = std::max(sg_max, sg);
     vTaskDelay(pdMS_TO_TICKS(10));
@@ -884,7 +888,7 @@ ESP_LOGI(TAG, "SG_RESULT range: %d to %d", sg_min, sg_max);
 
 // Goal: SG_RESULT between 0-100 at maximum load before stall
 sg_config.threshold = /* adjusted value */;
-driver.diagnostics.ConfigureStallGuard(sg_config);
+driver.stallGuard.ConfigureStallGuard(sg_config);
 ```
 
 #### Step 4: Fine-Tuning
@@ -1196,7 +1200,7 @@ void configureStealthChop() {
     // Set velocity threshold for StealthChop (TPWMTHRS)
     // Below this velocity: StealthChop (silent)
     // Above this velocity: SpreadCycle (more torque)
-    driver.motorControl.SetModeChangeSpeeds(0.002f, 0.0f, 0.0f);  // Unit::RevPerSec is default
+    driver.thresholds.SetModeChangeSpeeds(0.002f, 0.0f, 0.0f, tmc51x0::Unit::RevPerSec);  // Unit::RevPerSec is default
 }
 ```
 
@@ -1281,7 +1285,7 @@ driver.comm.DelayMs(150);  // Ensure AT#1 completes (≤130ms)
 // Motor should be at standstill with nominal run current (IRUN)
 // AT#1 automatically completes during standstill period
 // Read automatic tuning results
-auto pwm_auto_result = driver.diagnostics.GetPwmAuto();
+auto pwm_auto_result = driver.status.GetPwmAuto();
 if (pwm_auto_result) {
     uint8_t pwm_ofs_auto = pwm_auto_result.Value();
     ESP_LOGI(TAG, "AT#1 complete: PWM_OFS_AUTO = %u", pwm_ofs_auto);
@@ -1320,7 +1324,7 @@ while (true) {
         break;
     }
     
-    auto pwm_result = driver.diagnostics.GetPwmScale();
+    auto pwm_result = driver.status.GetPwmScale();
     if (pwm_result) {
         uint8_t pwm_scale_sum = pwm_result.Value();
         // Note: GetPwmScale returns pwm_scale_sum, pwm_scale_auto is available via diagnostics
@@ -1331,7 +1335,7 @@ while (true) {
 }
 
 // Read final automatic tuning results
-auto pwm_auto_result2 = driver.diagnostics.GetPwmAuto();
+auto pwm_auto_result2 = driver.status.GetPwmAuto();
 if (pwm_auto_result2) {
     uint8_t pwm_ofs_auto = pwm_auto_result2.Value();
     ESP_LOGI(TAG, "AT#2 complete: PWM_OFS_AUTO = %u", pwm_ofs_auto);
@@ -1352,7 +1356,7 @@ driver.motorControl.ConfigureStealthChop(stealth);
 // Set velocity threshold (TPWMTHRS)
 // Below threshold: StealthChop (silent)
 // Above threshold: SpreadCycle (more torque)
-driver.motorControl.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f, tmc51x0::Unit::Steps);
+driver.thresholds.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f, tmc51x0::Unit::Steps);
 
 // Use low transfer velocity to avoid jerk at switching point
 // Typical: 1 to a few 10 RPM
@@ -1837,7 +1841,7 @@ void configureEndstops() {
     ref_switch.latch_left = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;
     ref_switch.latch_right = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;
     
-    driver.rampControl.ConfigureReferenceSwitch(ref_switch);
+    driver.switches.ConfigureReferenceSwitch(ref_switch);
 }
 ```
 
@@ -1865,10 +1869,11 @@ void homeToEndstop() {
     // Wait for endstop (check RAMP_STAT register)
     // Or use GetLatchedPosition() after switch triggers
     
-    auto latched_result = driver.rampControl.GetLatchedPosition();
+    auto latched_result = driver.switches.GetLatchedPosition(tmc51x0::Unit::Steps);
     if (latched_result) {
-        int32_t latched_pos = latched_result.Value();
-        auto set_pos_result = driver.rampControl.SetCurrentPosition(0);  // Set as home
+        float latched_pos_steps = latched_result.Value();
+        (void)latched_pos_steps;
+        auto set_pos_result = driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Steps);  // Set as home
         if (!set_pos_result) {
             printf("Error setting current position: %s\n", set_pos_result.ErrorMessage());
             return;
@@ -1933,7 +1938,7 @@ The X_COMPARE register generates a pulse when XACTUAL equals the compare value.
 ```cpp
 void setupPositionPulse() {
     // Generate pulse when position reaches 1000 steps
-    driver.rampControl.SetComparePosition(1000);
+    driver.events.SetXCompare(1000.0f, tmc51x0::Unit::Steps);
     
     // The pulse appears on SWP_DIAG1 output pin
     // Useful for triggering external events at specific positions
@@ -1948,7 +1953,7 @@ When dcStep is enabled, the driver can count lost steps.
 
 ```cpp
 void checkStepLoss() {
-    uint32_t lost_steps = driver.diagnostics.GetLostSteps();
+    uint32_t lost_steps = driver.status.GetLostSteps();
     
     if (lost_steps > 0) {
         printf("Warning: %u steps lost\n", lost_steps);
@@ -1992,14 +1997,14 @@ void setupAdvancedMotor() {
     ref_switch.stop_mode = tmc51x0::ReferenceStopMode::SOFT_STOP;
     ref_switch.latch_left = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;
     ref_switch.latch_right = tmc51x0::ReferenceLatchMode::ACTIVE_EDGE;
-    auto ref_result = driver.rampControl.ConfigureReferenceSwitch(ref_switch);
+    auto ref_result = driver.switches.ConfigureReferenceSwitch(ref_switch);
     if (!ref_result) {
         printf("Error configuring reference switch: %s\n", ref_result.ErrorMessage());
         return;
     }
     
     // Set mode change speeds
-    auto speed_result = driver.motorControl.SetModeChangeSpeeds(
+    auto speed_result = driver.thresholds.SetModeChangeSpeeds(
         1000.0f,  // stealthChop threshold
         500.0f,   // CoolStep threshold
         5000.0f   // High-speed threshold

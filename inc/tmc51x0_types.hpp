@@ -1960,7 +1960,11 @@ enum class DcStepStallSensitivity : uint8_t {
  * reducing velocity when overloaded. The motor operates in fullstep mode at the target velocity
  * or at reduced velocity if overloaded.
  *
- * @note DcStep requires SD_MODE=1 (external step/dir mode) or can be enabled via VDCMIN threshold.
+ * @note DcStep enable mechanism depends on the chip mode:
+ *       - **Internal ramp generator (SD_MODE=0)**: DcStep can be enabled above the
+ *         VDCMIN threshold (register VDCMIN).
+ *       - **External STEP/DIR (SD_MODE=1)**: DcStep is enabled via the external
+ *         DCEN pin (ENCB_DCEN_CFG4). VDCMIN does not enable DcStep in this mode.
  * @note DcStep automatically sets chopper to constant TOFF mode with slow decay only.
  * @note CHOPCONF.vhighfs and CHOPCONF.vhighchm must be set to 1 for DcStep (handled automatically).
  * @note CHOPCONF.TOFF should be >2, preferably 8-15 for DcStep operation.
@@ -2448,10 +2452,10 @@ struct ExternalClockConfig {
  */
 struct UartConfig {
   /**
-   * @brief UART node address (slave address)
+   * @brief UART node address
    *
    * 7-bit UART node address for multi-device UART chains (0-127).
-   * Same value as slave address in SLAVECONF register.
+   * Same value as node address in NODECONF register.
    *
    * Range: 0-127 (7-bit address)
    * Default: 0 (first device in chain, or single device)

@@ -1085,41 +1085,39 @@ public:
   /**
    * @brief Read a 32-bit register from the TMC5160
    * @param address Register address (0x00-0x73)
-   * @param daisy_chain_position Position in daisy chain (0 = first chip/single
-   * chip, default: 0) Only used for SPI daisy-chaining. Ignored for UART.
+   * @param address_param Transport-specific addressing parameter:
+   * - **SPI**: daisy-chain position (0 = first chip/single chip)
+   * - **UART**: UART node address (0-254) for multi-node chains
    * @return Result<uint32_t> containing the register value, or error code
    *
    * Each CommInterface instance can be shared by multiple TMC5160 drivers on
-   * the same bus. For daisy-chaining, the daisy_chain_position parameter
-   * specifies which chip in the chain to address. For multi-chip setups with
-   * separate CSN pins, use separate CommInterface instances or set
-   * daisy_chain_position to 0.
+   * the same bus. The meaning of @p address_param depends on the active
+   * communication mode (SPI vs UART).
    */
   Result<uint32_t> ReadRegister(uint8_t address,
-                                uint8_t daisy_chain_position = 0) noexcept {
+                                uint8_t address_param = 0) noexcept {
     uint32_t value = 0;
     return static_cast<Derived *>(this)->ReadRegister(address,
-                                                      daisy_chain_position);
+                                                      address_param);
   }
 
   /**
    * @brief Write a 32-bit register to the TMC5160
    * @param address Register address (0x00-0x73)
    * @param value 32-bit value to write
-   * @param daisy_chain_position Position in daisy chain (0 = first chip/single
-   * chip, default: 0) Only used for SPI daisy-chaining. Ignored for UART.
+   * @param address_param Transport-specific addressing parameter:
+   * - **SPI**: daisy-chain position (0 = first chip/single chip)
+   * - **UART**: UART node address (0-254) for multi-node chains
    * @return Result<void> indicating success or error code
    *
    * Each CommInterface instance can be shared by multiple TMC5160 drivers on
-   * the same bus. For daisy-chaining, the daisy_chain_position parameter
-   * specifies which chip in the chain to address. For multi-chip setups with
-   * separate CSN pins, use separate CommInterface instances or set
-   * daisy_chain_position to 0.
+   * the same bus. The meaning of @p address_param depends on the active
+   * communication mode (SPI vs UART).
    */
   Result<void> WriteRegister(uint8_t address, uint32_t value,
-                             uint8_t daisy_chain_position = 0) noexcept {
+                             uint8_t address_param = 0) noexcept {
     return static_cast<Derived *>(this)->WriteRegister(address,
-                                                       daisy_chain_position);
+                                                       address_param);
   }
 
   /**
@@ -1187,6 +1185,54 @@ public:
    */
   void DelayUs(uint32_t us) noexcept {
     static_cast<Derived *>(this)->DelayUs(us);
+  }
+
+  /**
+   * @brief Enable/disable power to the TMC51x0 (optional)
+   * @param enabled true to enable power, false to disable power
+   * @return Result<void> indicating success or ErrorCode::UNSUPPORTED
+   *
+   * This hook allows a platform to control a load switch / regulator that
+   * supplies the TMC51x0 (typically VIO, or a dedicated enable pin for the
+   * device's logic rail). It is OPTIONAL.
+   *
+   * If not implemented by the derived class, the default implementation returns
+   * ErrorCode::UNSUPPORTED.
+   *
+   * @note This is intended for a true hard reset (power-on reset). Most users
+   * will not provide this capability.
+   */
+  Result<void> SetPowerEnabled(bool enabled) noexcept {
+    (void)enabled;
+    return Result<void>(ErrorCode::UNSUPPORTED);
+  }
+
+  /**
+   * @brief Power-cycle the TMC51x0 (optional)
+   * @param power_off_ms Time to keep power disabled (milliseconds)
+   * @param power_on_settle_ms Time to wait after re-enabling power (milliseconds)
+   * @return Result<void> indicating success or ErrorCode::UNSUPPORTED
+   *
+   * Default implementation uses SetPowerEnabled(false/true) and DelayMs().
+   * Derived classes may override this to implement board-specific sequencing.
+   *
+   * @note If SetPowerEnabled() is not implemented, this will return
+   * ErrorCode::UNSUPPORTED.
+   */
+  Result<void> PowerCycle(uint32_t power_off_ms = 20,
+                          uint32_t power_on_settle_ms = 20) noexcept {
+    auto r_off = SetPowerEnabled(false);
+    if (!r_off) {
+      return r_off;
+    }
+    DelayMs(power_off_ms);
+
+    auto r_on = SetPowerEnabled(true);
+    if (!r_on) {
+      return r_on;
+    }
+    DelayMs(power_on_settle_ms);
+    return Result<void>();
   }
 
   /**
@@ -2752,7 +2798,7 @@ public:
    *
    * For UART daisy chaining, NAI controls the addressing sequence.
    * - NAI is the SDI_CFG1 pin (pin 15) in UART mode
-   * - When NAI is active (high), the slave address increments by one
+   * - When NAI is active (high), the node address increments by one
    * - First chip in chain: NAI should be tied to GND (low) → responds to
    * address 0
    * - Subsequent chips: NAI connected to previous chip's NAO

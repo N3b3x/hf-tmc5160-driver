@@ -34,6 +34,8 @@
 #ifndef TMC51X0_REGISTER_DEFS_HPP
 #define TMC51X0_REGISTER_DEFS_HPP
 
+#include <cstdint>
+
 //--------------------------------------
 //  TMC51x0 Register List
 //--------------------------------------
@@ -42,10 +44,11 @@
 #define REGISTER_LIST(X)                                                       \
   /* General configuration registers */                                        \
   X(0x00, GCONF, RW, CONFIG, "Global configuration flags")                     \
-  X(0x01, GSTAT, RWC, STATUS, "Global status flags (clear on read)")           \
+  X(0x01, GSTAT, RWC, STATUS,                                                  \
+    "Global status flags (W1C: re-write '1' bits to clear respective flags)")  \
   X(0x02, IFCNT, R, STATUS, "UART transmission counter")                       \
-  X(0x03, SLAVECONF, W, CONFIG,                                                \
-    "UART slave configuration (write-only per datasheet)")                     \
+  X(0x03, NODECONF, W, CONFIG,                                                 \
+    "UART node address configuration (write-only per datasheet)")              \
   X(0x04, IOIN, R, IO, "Read state of all input pins and version")             \
   X(0x04, OUTPUT, W, IO, "Set SDO_CFG0 polarity / NAO output (write-only)")    \
   X(0x05, X_COMPARE, W, MOTION, "Position comparison register (write-only)")   \
@@ -76,15 +79,15 @@
   X(0x21, XACTUAL, RW, MOTION, "Actual motor position")                        \
   X(0x22, VACTUAL, R, STATUS, "Actual motor velocity from ramp generator")     \
   X(0x23, VSTART, W, MOTION, "Motor start velocity (write-only)")              \
-  X(0x24, A_1, W, MOTION,                                                      \
+  X(0x24, A1, W, MOTION,                                                       \
     "First acceleration between VSTART and V1 (write-only)")                   \
-  X(0x25, V_1, W, MOTION,                                                      \
+  X(0x25, V1, W, MOTION,                                                       \
     "First acceleration/deceleration phase target velocity (write-only)")      \
   X(0x26, AMAX, W, MOTION,                                                     \
     "Second acceleration between V1 and VMAX (write-only)")                    \
   X(0x27, VMAX, W, MOTION, "Target velocity in velocity mode (write-only)")    \
   X(0x28, DMAX, W, MOTION, "Deceleration between VMAX and V1 (write-only)")    \
-  X(0x2A, D_1, W, MOTION, "Deceleration between V1 and VSTOP (write-only)")    \
+  X(0x2A, D1, W, MOTION, "Deceleration between V1 and VSTOP (write-only)")     \
   X(0x2B, VSTOP, W, MOTION, "Motor stop velocity (write-only)")                \
   X(0x2C, TZEROWAIT, W, MOTION,                                                \
     "Waiting time after ramping down to zero velocity (write-only)")           \
