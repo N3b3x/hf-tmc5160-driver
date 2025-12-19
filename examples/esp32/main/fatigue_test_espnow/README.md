@@ -183,11 +183,6 @@ Comprehensive documentation is available:
 - **[PROTOCOL.md](PROTOCOL.md)** - Complete ESP-NOW protocol specification
 - **[HARDWARE_SETUP.md](HARDWARE_SETUP.md)** - Hardware setup guide, pin configuration, and troubleshooting
 
-## Related Projects
-
-- **Remote Controller**: `examples/esp32_remote_controller/` - Standalone remote controller with OLED display
-- **E-Ink Slideshow**: `examples/esp32_ui_slideshow/` - Standalone e-ink slideshow application
-
 ## Future Enhancements
 
 - Real-time parameter adjustment via ESP-NOW

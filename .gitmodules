@@ -4,9 +4,6 @@
 [submodule "_config/doxygen-extensions/doxygen-awesome-css"]
 	path = _config/doxygen-extensions/doxygen-awesome-css
 	url = https://github.com/jothepro/doxygen-awesome-css.git
-[submodule "examples/esp32_ui_slideshow"]
-	path = examples/esp32_ui_slideshow
-	url = https://github.com/N3b3x/esp32-thinkink-epaper-slidshow.git
 [submodule "esp32_remote_controller"]
 	path = examples/esp32_remote_controller
 	url = https://github.com/N3b3x/esp32-simple-remote-controller.git
