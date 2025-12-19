@@ -57,16 +57,6 @@ constexpr float TWO_PI = 2.0F * PI;        ///< 2π (two pi)
 constexpr float DEGREES_PER_REV = 360.0F;  ///< Degrees per revolution
 } // namespace MathConstants
 
-/**
- * @brief Motor calculation constants
- * 
- * Constants used in legacy motor setup calculations.
- */
-namespace MotorCalcLegacyConstants {
-constexpr float IRUN_CALC_DIVISOR = 0.046875F;  ///< 1.5/32, from datasheet formula for IRUN calculation
-constexpr float TARGET_RUN_CURRENT_RATIO = 0.8F;  ///< 80% of rated current for run current target
-constexpr float TARGET_HOLD_CURRENT_RATIO = 0.3F; ///< 30% of rated current for hold current target
-} // namespace MotorCalcLegacyConstants
 
 //===============================================================================================================
 //===============================================================================================================

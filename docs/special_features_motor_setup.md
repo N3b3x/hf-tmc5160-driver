@@ -92,22 +92,19 @@ struct MotorSpec {
 };
 ```
 
-**Note**: The recommended approach is to use `DriverConfig` with `motor_spec` and call `Initialize()`, which automatically calculates IRUN, IHOLD, and GLOBAL_SCALER. `SetupMotorFromSpec()` is a legacy method that may use approximations.
+**Note**: Both `Initialize()` with `DriverConfig` and `SetupMotorFromSpec()` use the same accurate calculation methods based on datasheet formulas. `Initialize()` is recommended for complete driver setup, while `SetupMotorFromSpec()` is useful for updating motor settings after initialization.
 
 ## How It Works
 
-The `SetupMotorFromSpec()` function:
+The `SetupMotorFromSpec()` function uses the same accurate calculation methods as `Initialize()`:
 
-1. **Calculates Global Scaler**: Based on rated current
-   - Formula: `global_scaler ≈ (rated_current_ma * 32) / 1500`
-   - Clamped to range 32-256
+1. **Calculates Motor Current Settings**: Uses datasheet formulas to calculate IRUN, IHOLD, and GLOBAL_SCALER
+   - Based on sense resistor value, supply voltage, and desired current
+   - Uses proper datasheet formula: `I_RMS = (GLOBAL_SCALER/256) * ((CS+1)/32) * (VFS/RSENSE) * (1/√2)`
+   - Optimizes IRUN to be in the 16-31 range for best performance
+   - Defaults to 80% of rated current for run current, 30% for hold current (if not specified)
 
-2. **Calculates Run Current (`irun`)**: 
-   - Uses 80% of rated current
-   - Ensures `irun` is between 16-31 for best performance
-
-3. **Calculates Hold Current (`ihold`)**:
-   - Uses 30% of rated current
+2. **Configures Chopper**: Automatically adjusts chopper settings based on motor inductance (if provided)
    - Reduces power consumption when motor is stationary
 
 4. **Configures Chopper** (if inductance specified):

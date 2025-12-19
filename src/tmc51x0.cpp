@@ -3104,45 +3104,35 @@ Result<void> TMC51x0<CommType>::MotorControl::SetMicrostepLookupTableStart(uint1
 template <typename CommType>
 Result<void> TMC51x0<CommType>::MotorControl::SetupMotorFromSpec(const MotorSpec& motor_spec,
                                                          const MechanicalSystem* mechanical_system) noexcept {
-  // Calculate global scaler based on rated current
-  // Typical calculation: global_scaler = (rated_current_ma * 32) / (irun * sense_resistor_current)
-  // For simplicity, we'll use a basic calculation
-  uint16_t global_scaler = 32;
-  if (motor_spec.rated_current_ma > 0) {
-    // Basic calculation: assume 1.5A max current, scale accordingly
-    global_scaler = static_cast<uint16_t>(std::min(256U, std::max(32U, (motor_spec.rated_current_ma * 32U) / 1500U)));
+  // Validate required parameters
+  if (motor_spec.sense_resistor_mohm == 0 || motor_spec.supply_voltage_mv == 0) {
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+
+  // Use proper calculation method (same as Initialize())
+  uint8_t calc_irun = 0;
+  uint8_t calc_ihold = 0;
+  uint16_t calc_scaler = 0;
+
+  // Determine run current (use specified or default to 80% of rated)
+  uint16_t run_current = motor_spec.run_current_ma;
+  if (run_current == 0) {
+    run_current = static_cast<uint16_t>(static_cast<float>(motor_spec.rated_current_ma) * 0.8F);
+  }
+
+  // Use CalculateMotorCurrent for accurate calculations
+  if (!CalculateMotorCurrent(motor_spec, motor_spec.sense_resistor_mohm, motor_spec.supply_voltage_mv,
+                             run_current, motor_spec.hold_current_ma, calc_irun, calc_ihold, calc_scaler)) {
+    return Result<void>(ErrorCode::INVALID_VALUE);
   }
 
   // Set global scaler
-  if (!SetGlobalScaler(global_scaler)) {
+  if (!SetGlobalScaler(calc_scaler)) {
     return Result<void>(ErrorCode::COMM_ERROR);
   }
 
-  // Calculate irun and ihold from rated current
-  // irun should be between 16-31 for best performance
-  // We'll use 80% of rated current for irun, 30% for ihold
-  uint8_t irun = 16;
-  uint8_t ihold = 0;
-  if (motor_spec.rated_current_ma > 0 && global_scaler > 0) {
-    // Calculate irun: target current = (irun/32) * (global_scaler/32) * sense_resistor_current
-    // Simplified: irun = (target_current * 32) / (global_scaler * sense_resistor_current / 32)
-    // Assuming sense resistor gives ~1.5A at irun=31, global_scaler=32
-    float target_run_current = static_cast<float>(motor_spec.rated_current_ma) * 
-                                 MotorCalcLegacyConstants::TARGET_RUN_CURRENT_RATIO;
-    auto irun_calc =
-        static_cast<uint32_t>((target_run_current * 32.0F) / 
-                              (static_cast<float>(global_scaler) * MotorCalcLegacyConstants::IRUN_CALC_DIVISOR));
-    irun = static_cast<uint8_t>(std::min(static_cast<uint32_t>(31U), std::max(static_cast<uint32_t>(16U), irun_calc)));
-    float target_hold_current = static_cast<float>(motor_spec.rated_current_ma) * 
-                                MotorCalcLegacyConstants::TARGET_HOLD_CURRENT_RATIO;
-    auto ihold_calc =
-        static_cast<uint32_t>((target_hold_current * 32.0F) / 
-                              (static_cast<float>(global_scaler) * MotorCalcLegacyConstants::IRUN_CALC_DIVISOR));
-    ihold = static_cast<uint8_t>(std::min(static_cast<uint32_t>(31U), ihold_calc));
-  }
-
   // Set motor current
-  if (!SetCurrent(irun, ihold)) {
+  if (!SetCurrent(calc_irun, calc_ihold)) {
     return Result<void>(ErrorCode::COMM_ERROR);
   }
 
