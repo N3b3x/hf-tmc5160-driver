@@ -1,11 +1,14 @@
 var searchData=
 [
-  ['ramp_5fstat_5fregister_0',['RAMP_STAT_Register',['../uniontmc51x0_1_1RAMP__STAT__Register.html',1,'tmc51x0']]],
-  ['rampconfig_1',['RampConfig',['../structtmc51x0_1_1RampConfig.html',1,'tmc51x0']]],
-  ['rampcontrol_2',['RampControl',['../structtmc51x0_1_1TMC51x0_1_1RampControl.html',1,'tmc51x0::TMC51x0']]],
-  ['rawmsg_3',['RawMsg',['../structRawMsg.html',1,'']]],
-  ['referenceswitchconfig_4',['ReferenceSwitchConfig',['../structtmc51x0_1_1ReferenceSwitchConfig.html',1,'tmc51x0']]],
-  ['referenceswitches_5',['ReferenceSwitches',['../structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1ReferenceSwitches.html',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::ReferenceSwitches'],['../structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1ReferenceSwitches.html',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::ReferenceSwitches']]],
-  ['result_6',['Result',['../classtmc51x0_1_1Result.html',1,'tmc51x0']]],
-  ['result_3c_20void_20_3e_7',['Result&lt; void &gt;',['../classtmc51x0_1_1Result_3_01void_01_4.html',1,'tmc51x0']]]
+  ['parsedcommand_0',['ParsedCommand',['../structParsedCommand.html',1,'']]],
+  ['pinactivelevels_1',['PinActiveLevels',['../structtmc51x0_1_1PinActiveLevels.html',1,'tmc51x0']]],
+  ['platformconfig_5fcoredrivertestrig_2',['PlatformConfig_CoreDriverTestRig',['../structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig.html',1,'tmc51x0_test_config']]],
+  ['platformconfig_5ffatiguetestrig_3',['PlatformConfig_FatigueTestRig',['../structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig.html',1,'tmc51x0_test_config']]],
+  ['powerstage_4',['PowerStage',['../structtmc51x0_1_1TMC51x0_1_1PowerStage.html',1,'tmc51x0::TMC51x0']]],
+  ['powerstageparameters_5',['PowerStageParameters',['../structtmc51x0_1_1PowerStageParameters.html',1,'tmc51x0']]],
+  ['printer_6',['Printer',['../structtmc51x0_1_1TMC51x0_1_1Printer.html',1,'tmc51x0::TMC51x0']]],
+  ['protoevent_7',['ProtoEvent',['../structProtoEvent.html',1,'']]],
+  ['pwm_5fauto_5fregister_8',['PWM_AUTO_Register',['../uniontmc51x0_1_1PWM__AUTO__Register.html',1,'tmc51x0']]],
+  ['pwm_5fscale_5fregister_9',['PWM_SCALE_Register',['../uniontmc51x0_1_1PWM__SCALE__Register.html',1,'tmc51x0']]],
+  ['pwmconf_5fregister_10',['PWMCONF_Register',['../uniontmc51x0_1_1PWMCONF__Register.html',1,'tmc51x0']]]
 ];

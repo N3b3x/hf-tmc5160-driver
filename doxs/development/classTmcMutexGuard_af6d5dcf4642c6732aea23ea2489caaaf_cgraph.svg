@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Manually unlock mutex (called automatically in destructor)">
+<g id="a_Node000001"><a xlink:title="Manually unlock mutex.">
 <polygon fill="#999999" stroke="#666666" points="136,-45.5 0,-45.5 0,-26.5 136,-26.5 136,-45.5"/>
 <text text-anchor="middle" x="68" y="-33.5" font-family="Helvetica,sans-Serif" font-size="10.00">TmcMutexGuard::unlock</text>
 </a>
@@ -38,7 +38,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f" target="_top" xlink:title="Get native mutex handle.">
+<g id="a_Node000003"><a xlink:href="classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f" target="_top" xlink:title="Get native FreeRTOS semaphore handle.">
 <polygon fill="white" stroke="#666666" points="309.5,-30 175.5,-30 175.5,0 309.5,0 309.5,-30"/>
 <text text-anchor="start" x="183.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Esp32TmcMutex::native</text>
 <text text-anchor="middle" x="242.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_handle</text>

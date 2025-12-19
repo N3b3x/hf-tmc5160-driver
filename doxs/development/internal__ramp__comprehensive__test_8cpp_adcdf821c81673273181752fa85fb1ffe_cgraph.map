@@ -1,12 +1,9 @@
 <map id="test_pwm_scale" name="test_pwm_scale">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,101,132,126"/>
-<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="180,101,320,126"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="132,111,166,111,166,116,132,116"/>
-<area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#a01546734dfbb01aa89c186b7bdf20bab" title="Configure driver from test rig selection." alt="" coords="368,29,580,69"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="295,98,389,71,391,76,296,103"/>
-<area shape="rect" id="Node000004" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="393,93,555,133"/>
-<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="320,111,379,111,379,116,320,116"/>
-<area shape="rect" id="Node000005" href="$internal__ramp__comprehensive__test_8cpp.html#a266d3b939b723d24f9230b6b22b3b8a9" title="Verify mode pins match expected communication mode." alt="" coords="405,158,543,183"/>
-<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="297,124,369,143,406,152,405,157,367,148,296,129"/>
-<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="432,30,430,20,436,10,451,5,474,3,500,6,514,13,512,18,499,11,474,8,452,10,440,15,435,21,437,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,42,132,67"/>
+<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="180,42,320,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="132,52,166,52,166,57,132,57"/>
+<area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="368,5,531,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="320,42,354,37,355,42,321,47"/>
+<area shape="rect" id="Node000004" href="$internal__ramp__comprehensive__test_8cpp.html#a266d3b939b723d24f9230b6b22b3b8a9" title="Verify mode pins match expected communication mode." alt="" coords="381,70,518,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="320,62,367,68,366,74,320,67"/>
 </map>

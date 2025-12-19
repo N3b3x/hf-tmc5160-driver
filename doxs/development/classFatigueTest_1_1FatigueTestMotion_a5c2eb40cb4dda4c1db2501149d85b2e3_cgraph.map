@@ -1,0 +1,9 @@
+<map id="FatigueTest::FatigueTestMotion::UpdateSinuousMotion" name="FatigueTest::FatigueTestMotion::UpdateSinuousMotion">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,27,224,67"/>
+<area shape="rect" id="Node000002" href="$classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf" title="Manually unlock mutex." alt="" coords="272,35,453,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,45,258,45,258,50,224,50"/>
+<area shape="rect" id="Node000003" href="$classEsp32TmcMutex.html#aa1c5042b5ace0f9a58c140b0f02db0f2" title="Check if mutex is valid." alt="" coords="501,5,689,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="453,33,488,29,488,34,454,39"/>
+<area shape="rect" id="Node000004" href="$classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f" title="Get native FreeRTOS semaphore handle." alt="" coords="506,55,685,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="454,56,493,60,492,66,453,61"/>
+</map>

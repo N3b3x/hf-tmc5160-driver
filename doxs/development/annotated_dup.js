@@ -9,8 +9,10 @@ var annotated_dup =
     ] ],
     [ "std", "namespacestd.html", [
       [ "tuple_element< 0, tmc51x0::Result< T > >", "structstd_1_1tuple__element_3_010_00_01tmc51x0_1_1Result_3_01T_01_4_01_4.html", "structstd_1_1tuple__element_3_010_00_01tmc51x0_1_1Result_3_01T_01_4_01_4" ],
+      [ "tuple_element< 0, tmc51x0::Result< void > >", "structstd_1_1tuple__element_3_010_00_01tmc51x0_1_1Result_3_01void_01_4_01_4.html", "structstd_1_1tuple__element_3_010_00_01tmc51x0_1_1Result_3_01void_01_4_01_4" ],
       [ "tuple_element< 1, tmc51x0::Result< T > >", "structstd_1_1tuple__element_3_011_00_01tmc51x0_1_1Result_3_01T_01_4_01_4.html", "structstd_1_1tuple__element_3_011_00_01tmc51x0_1_1Result_3_01T_01_4_01_4" ],
-      [ "tuple_size< tmc51x0::Result< T > >", "structstd_1_1tuple__size_3_01tmc51x0_1_1Result_3_01T_01_4_01_4.html", null ]
+      [ "tuple_size< tmc51x0::Result< T > >", "structstd_1_1tuple__size_3_01tmc51x0_1_1Result_3_01T_01_4_01_4.html", null ],
+      [ "tuple_size< tmc51x0::Result< void > >", "structstd_1_1tuple__size_3_01tmc51x0_1_1Result_3_01void_01_4_01_4.html", null ]
     ] ],
     [ "tmc51x0", "namespacetmc51x0.html", [
       [ "AccelerationValue", "structtmc51x0_1_1AccelerationValue.html", "structtmc51x0_1_1AccelerationValue" ],
@@ -39,9 +41,11 @@ var annotated_dup =
       [ "InputStatus", "structtmc51x0_1_1InputStatus.html", "structtmc51x0_1_1InputStatus" ],
       [ "IOIN_Register", "uniontmc51x0_1_1IOIN__Register.html", "uniontmc51x0_1_1IOIN__Register" ],
       [ "MechanicalSystem", "structtmc51x0_1_1MechanicalSystem.html", "structtmc51x0_1_1MechanicalSystem" ],
+      [ "MicrostepChangeOptions", "structtmc51x0_1_1MicrostepChangeOptions.html", "structtmc51x0_1_1MicrostepChangeOptions" ],
       [ "MotorSpec", "structtmc51x0_1_1MotorSpec.html", "structtmc51x0_1_1MotorSpec" ],
       [ "MSCURACT_Register", "uniontmc51x0_1_1MSCURACT__Register.html", "uniontmc51x0_1_1MSCURACT__Register" ],
       [ "MSLUTSEL_Register", "uniontmc51x0_1_1MSLUTSEL__Register.html", "uniontmc51x0_1_1MSLUTSEL__Register" ],
+      [ "NODECONF_Register", "uniontmc51x0_1_1NODECONF__Register.html", "uniontmc51x0_1_1NODECONF__Register" ],
       [ "OFFSET_READ_Register", "uniontmc51x0_1_1OFFSET__READ__Register.html", "uniontmc51x0_1_1OFFSET__READ__Register" ],
       [ "OTP_PROG_Register", "uniontmc51x0_1_1OTP__PROG__Register.html", "uniontmc51x0_1_1OTP__PROG__Register" ],
       [ "OTP_READ_Register", "uniontmc51x0_1_1OTP__READ__Register.html", "uniontmc51x0_1_1OTP__READ__Register" ],
@@ -56,7 +60,6 @@ var annotated_dup =
       [ "Result", "classtmc51x0_1_1Result.html", "classtmc51x0_1_1Result" ],
       [ "Result< void >", "classtmc51x0_1_1Result_3_01void_01_4.html", "classtmc51x0_1_1Result_3_01void_01_4" ],
       [ "SHORT_CONF_Register", "uniontmc51x0_1_1SHORT__CONF__Register.html", "uniontmc51x0_1_1SHORT__CONF__Register" ],
-      [ "SLAVECONF_Register", "uniontmc51x0_1_1SLAVECONF__Register.html", "uniontmc51x0_1_1SLAVECONF__Register" ],
       [ "SpiCommand", "structtmc51x0_1_1SpiCommand.html", "structtmc51x0_1_1SpiCommand" ],
       [ "SpiCommInterface", "classtmc51x0_1_1SpiCommInterface.html", "classtmc51x0_1_1SpiCommInterface" ],
       [ "SpiResponse", "structtmc51x0_1_1SpiResponse.html", "structtmc51x0_1_1SpiResponse" ],
@@ -90,8 +93,6 @@ var annotated_dup =
       [ "TestRigConfig< TestRigType::TEST_RIG_FATIGUE >", "structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4.html", "structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4" ]
     ] ],
     [ "BackAndForthMotion", "classBackAndForthMotion.html", "classBackAndForthMotion" ],
-    [ "CommandArg", "structCommandArg.html", "structCommandArg" ],
-    [ "CommandEntry", "structCommandEntry.html", "structCommandEntry" ],
     [ "ConfigAckPayload", "structConfigAckPayload.html", "structConfigAckPayload" ],
     [ "ConfigPayload", "structConfigPayload.html", "structConfigPayload" ],
     [ "ErrorPayload", "structErrorPayload.html", "structErrorPayload" ],
@@ -100,7 +101,6 @@ var annotated_dup =
     [ "Esp32TmcMutex", "classEsp32TmcMutex.html", "classEsp32TmcMutex" ],
     [ "EspNowHeader", "structEspNowHeader.html", "structEspNowHeader" ],
     [ "EspNowPacket", "structEspNowPacket.html", "structEspNowPacket" ],
-    [ "FatigueTestMotion", "classFatigueTestMotion.html", "classFatigueTestMotion" ],
     [ "OptionParser", "classOptionParser.html", "classOptionParser" ],
     [ "ParsedCommand", "structParsedCommand.html", "structParsedCommand" ],
     [ "ProtoEvent", "structProtoEvent.html", "structProtoEvent" ],

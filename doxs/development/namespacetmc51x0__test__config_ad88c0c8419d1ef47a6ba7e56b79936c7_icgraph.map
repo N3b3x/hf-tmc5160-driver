@@ -1,6 +1,6 @@
 <map id="tmc51x0_test_config::GetDefaultPinConfig" name="tmc51x0_test_config::GetDefaultPinConfig">
 <area shape="rect" id="Node000001" title="Complete pin configuration for all tests." alt="" coords="605,77,768,117"/>
-<area shape="rect" id="Node000002" href="$fatigue__test__encoder_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="441,5,527,31"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="441,5,527,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="627,74,556,44,525,33,526,28,558,40,629,69"/>
 <area shape="rect" id="Node000003" href="$abn__encoder__reader_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="441,55,527,80"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="591,86,527,76,528,71,592,80"/>

@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classEsp32TmcMutex.html" target="_top" xlink:title="ESP32 TMC mutex wrapper using FreeRTOS semaphore.">
+<g id="a_Node000002"><a xlink:href="classEsp32TmcMutex.html" target="_top" xlink:title="ESP32 FreeRTOS mutex wrapper for TMC51x0 driver.">
 <polygon fill="white" stroke="#666666" points="98,-85 0,-85 0,-66 98,-66 98,-85"/>
 <text text-anchor="middle" x="49" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">Esp32TmcMutex</text>
 </a>

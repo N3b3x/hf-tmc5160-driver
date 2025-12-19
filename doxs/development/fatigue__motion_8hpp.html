@@ -97,6 +97,7 @@ $(function(){initNavTree('fatigue__motion_8hpp.html',''); initResizable(); });
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">fatigue_motion.hpp File Reference</div></div>
 </div><!--header-->
@@ -106,18 +107,20 @@ $(function(){initNavTree('fatigue__motion_8hpp.html',''); initResizable(); });
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;../../../inc/tmc51x0.hpp&quot;</code><br />
 <code>#include &quot;<a class="el" href="esp32__tmc51x0__bus_8hpp_source.html">test_config/esp32_tmc51x0_bus.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp32__tmc__mutex_8hpp_source.html">test_config/esp32_tmc_mutex.hpp</a>&quot;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;cstdbool&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
+<code>#include &quot;<a class="el" href="fatigue__motion__impl_8hpp_source.html">fatigue_motion_impl.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for fatigue_motion.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="fatigue__motion_8hpp__incl.svg" width="2255" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="fatigue__motion_8hpp__incl.svg" width="1995" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="fatigue__motion_8hpp__dep__incl.svg" width="244" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="fatigue__motion_8hpp__dep__incl.svg" width="304" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="fatigue__motion_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -135,6 +138,11 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceFatigueTest" id="r_namespaceFatigueTest"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFatigueTest.html">FatigueTest</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a5107205eb56db2c01968c161856f69e9" id="r_a5107205eb56db2c01968c161856f69e9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5107205eb56db2c01968c161856f69e9">FATIGUE_MOTION_HEADER_INCLUDED</a></td></tr>
+<tr class="separator:a5107205eb56db2c01968c161856f69e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:a48eb0e8a2a7aba7fca309c9c65aed80b" id="r_a48eb0e8a2a7aba7fca309c9c65aed80b"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFatigueTest.html#a48eb0e8a2a7aba7fca309c9c65aed80b">FatigueTest::AngleUnit</a> { <a class="el" href="namespaceFatigueTest.html#a48eb0e8a2a7aba7fca309c9c65aed80bafee20551b6d06fd83aa56a486e557307">FatigueTest::DEGREES</a>
@@ -144,8 +152,23 @@ Enumerations</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Unified fatigue test motion controller. </p>
-<p>Extracted and improved from <a class="el" href="fatigue__test__encoder_8cpp.html" title="Fatigue testing platform: Back-and-forth motion between bounds using encoder position monitoring.">fatigue_test_encoder.cpp</a> and <a class="el" href="fatigue__test__stallguard_8cpp.html" title="Fatigue testing platform: Back-and-forth motion between bounds using StallGuard2 sensorless detection...">fatigue_test_stallguard.cpp</a> Provides sinusoidal back-and-forth motion between bounds for fatigue testing. </p>
-</div></div><!-- contents -->
+<p>Extracted and improved from fatigue_test_encoder.cpp and fatigue_test_stallguard.cpp Provides sinusoidal back-and-forth motion between bounds for fatigue testing. </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a5107205eb56db2c01968c161856f69e9" name="a5107205eb56db2c01968c161856f69e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5107205eb56db2c01968c161856f69e9">&#9670;&#160;</a></span>FATIGUE_MOTION_HEADER_INCLUDED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FATIGUE_MOTION_HEADER_INCLUDED</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

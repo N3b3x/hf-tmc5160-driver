@@ -64,5 +64,5 @@ var searchData=
   ['write_5fonly_5fregs_5f_61',['write_only_regs_',['../classtmc51x0_1_1TMC51x0.html#ab276816df6d3666e5330b4ba9f0c4921',1,'tmc51x0::TMC51x0']]],
   ['writeaccess_62',['WriteAccess',['../namespacetmc51x0.html#a1326aa19da2a0db21e9ad25f701fcb14a0d351c9de65e962d661a3f4eb99a3a56',1,'tmc51x0']]],
   ['writeonlyregisters_63',['WriteOnlyRegisters',['../structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html',1,'tmc51x0::TMC51x0']]],
-  ['writeregister_64',['WriteRegister',['../classtmc51x0_1_1CommInterface.html#abe44583c7551eaf4044eac8ed39d5fd8',1,'tmc51x0::CommInterface::WriteRegister()'],['../classtmc51x0_1_1SpiCommInterface.html#a5002dc4e4bd5c2ba5e350cda8c6ee142',1,'tmc51x0::SpiCommInterface::WriteRegister()'],['../classtmc51x0_1_1UartCommInterface.html#aac90ee8b81f46514c749a20c8c496711',1,'tmc51x0::UartCommInterface::WriteRegister()']]]
+  ['writeregister_64',['WriteRegister',['../classtmc51x0_1_1CommInterface.html#ac1e2141f032dcc66e5e7562fd98fef8f',1,'tmc51x0::CommInterface::WriteRegister()'],['../classtmc51x0_1_1SpiCommInterface.html#a5002dc4e4bd5c2ba5e350cda8c6ee142',1,'tmc51x0::SpiCommInterface::WriteRegister()'],['../classtmc51x0_1_1UartCommInterface.html#aac90ee8b81f46514c749a20c8c496711',1,'tmc51x0::UartCommInterface::WriteRegister()']]]
 ];
