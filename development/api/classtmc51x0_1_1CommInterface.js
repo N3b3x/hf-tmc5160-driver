@@ -15,7 +15,9 @@ var classtmc51x0_1_1CommInterface =
     [ "LogDebug", "classtmc51x0_1_1CommInterface.html#aa5358fda94e214d25d2800a5564416b3", null ],
     [ "operator=", "classtmc51x0_1_1CommInterface.html#ab5a248d6096af8a926505e55b08cfadd", null ],
     [ "operator=", "classtmc51x0_1_1CommInterface.html#aaa7569f6ef52dc8295f9d2dd5a1473a0", null ],
-    [ "ReadRegister", "classtmc51x0_1_1CommInterface.html#a1ad7ff22bfd2e0259405c840f0d93427", null ],
+    [ "PowerCycle", "classtmc51x0_1_1CommInterface.html#af8b4aadbdb0b590766b5bcf2579a2af2", null ],
+    [ "ReadRegister", "classtmc51x0_1_1CommInterface.html#a5f8be8e7c99eff55a7a2f068635d28e3", null ],
     [ "SetClkFreq", "classtmc51x0_1_1CommInterface.html#ac066818679e165ce389c9d8b263f73ff", null ],
-    [ "WriteRegister", "classtmc51x0_1_1CommInterface.html#abe44583c7551eaf4044eac8ed39d5fd8", null ]
+    [ "SetPowerEnabled", "classtmc51x0_1_1CommInterface.html#a97dde03652157dbe9d6f9d29cefaf0ee", null ],
+    [ "WriteRegister", "classtmc51x0_1_1CommInterface.html#ac1e2141f032dcc66e5e7562fd98fef8f", null ]
 ];

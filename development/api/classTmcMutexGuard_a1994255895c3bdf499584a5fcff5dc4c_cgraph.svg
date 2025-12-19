@@ -38,7 +38,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f" target="_top" xlink:title="Get native mutex handle.">
+<g id="a_Node000003"><a xlink:href="classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f" target="_top" xlink:title="Get native FreeRTOS semaphore handle.">
 <polygon fill="white" stroke="#666666" points="358.5,-30 224.5,-30 224.5,0 358.5,0 358.5,-30"/>
 <text text-anchor="start" x="232.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Esp32TmcMutex::native</text>
 <text text-anchor="middle" x="291.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_handle</text>

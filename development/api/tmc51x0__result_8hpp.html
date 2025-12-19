@@ -106,16 +106,20 @@ $(function(){initNavTree('tmc51x0__result_8hpp.html',''); initResizable(); });
 
 <p>Result type for error handling in TMC51x0 driver.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;cstdint&gt;</code><br />
+<div class="textblock"><code>#include &lt;cstddef&gt;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;tuple&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tmc51x0_result.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__result_8hpp__incl.svg" width="162" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__result_8hpp__incl.svg" width="452" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__result_8hpp__dep__incl.svg" width="2892" height="432"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__result_8hpp__dep__incl.svg" width="1946" height="432"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="tmc51x0__result_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -130,9 +134,13 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__size_3_01tmc51x0_1_1Result_3_01T_01_4_01_4.html">std::tuple_size&lt; tmc51x0::Result&lt; T &gt; &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__size_3_01tmc51x0_1_1Result_3_01void_01_4_01_4.html">std::tuple_size&lt; tmc51x0::Result&lt; void &gt; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__element_3_010_00_01tmc51x0_1_1Result_3_01T_01_4_01_4.html">std::tuple_element&lt; 0, tmc51x0::Result&lt; T &gt; &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__element_3_011_00_01tmc51x0_1_1Result_3_01T_01_4_01_4.html">std::tuple_element&lt; 1, tmc51x0::Result&lt; T &gt; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__element_3_010_00_01tmc51x0_1_1Result_3_01void_01_4_01_4.html">std::tuple_element&lt; 0, tmc51x0::Result&lt; void &gt; &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -174,6 +182,25 @@ Functions</h2></td></tr>
 <tr class="memitem:a03326fea54f838942f2a8b4e1d1ed01f" id="r_a03326fea54f838942f2a8b4e1d1ed01f"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#a03326fea54f838942f2a8b4e1d1ed01f">tmc51x0::ErrorMessage</a> (<a class="el" href="namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> code)</td></tr>
 <tr class="memdesc:a03326fea54f838942f2a8b4e1d1ed01f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get human-readable error message.  <br /></td></tr>
 <tr class="separator:a03326fea54f838942f2a8b4e1d1ed01f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad20f982e1ae588d4e210b3a566955613" id="r_ad20f982e1ae588d4e210b3a566955613"><td class="memTemplParams" colspan="2">template&lt;std::size_t N, typename T &gt; </td></tr>
+<tr class="memitem:ad20f982e1ae588d4e210b3a566955613"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#ad20f982e1ae588d4e210b3a566955613">tmc51x0::get</a> (<a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; T &gt; &amp;r) noexcept</td></tr>
+<tr class="memdesc:ad20f982e1ae588d4e210b3a566955613"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tuple-like access for structured bindings (C++17)  <br /></td></tr>
+<tr class="separator:ad20f982e1ae588d4e210b3a566955613"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5b364c363b276e92a44c5e3f2c0bd15" id="r_ae5b364c363b276e92a44c5e3f2c0bd15"><td class="memTemplParams" colspan="2">template&lt;std::size_t N, typename T &gt; </td></tr>
+<tr class="memitem:ae5b364c363b276e92a44c5e3f2c0bd15"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#ae5b364c363b276e92a44c5e3f2c0bd15">tmc51x0::get</a> (const <a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; T &gt; &amp;r) noexcept</td></tr>
+<tr class="separator:ae5b364c363b276e92a44c5e3f2c0bd15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4ed315f0b11099e0620e55cdf0b1038" id="r_ad4ed315f0b11099e0620e55cdf0b1038"><td class="memTemplParams" colspan="2">template&lt;std::size_t N, typename T &gt; </td></tr>
+<tr class="memitem:ad4ed315f0b11099e0620e55cdf0b1038"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#ad4ed315f0b11099e0620e55cdf0b1038">tmc51x0::get</a> (<a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; T &gt; &amp;&amp;r) noexcept</td></tr>
+<tr class="separator:ad4ed315f0b11099e0620e55cdf0b1038"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a257ff48df86e06b78f94c8f6153932b1" id="r_a257ff48df86e06b78f94c8f6153932b1"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
+<tr class="memitem:a257ff48df86e06b78f94c8f6153932b1"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if_t&lt; N==0, <a class="el" href="namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#a257ff48df86e06b78f94c8f6153932b1">tmc51x0::get</a> (<a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; &amp;r) noexcept</td></tr>
+<tr class="separator:a257ff48df86e06b78f94c8f6153932b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d0c7c80a6e56655b3714e2e445395db" id="r_a5d0c7c80a6e56655b3714e2e445395db"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
+<tr class="memitem:a5d0c7c80a6e56655b3714e2e445395db"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if_t&lt; N==0, <a class="el" href="namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#a5d0c7c80a6e56655b3714e2e445395db">tmc51x0::get</a> (const <a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; &amp;r) noexcept</td></tr>
+<tr class="separator:a5d0c7c80a6e56655b3714e2e445395db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6818ace9cb52dc7f7363b93d6778ae77" id="r_a6818ace9cb52dc7f7363b93d6778ae77"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
+<tr class="memitem:a6818ace9cb52dc7f7363b93d6778ae77"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if_t&lt; N==0, <a class="el" href="namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#a6818ace9cb52dc7f7363b93d6778ae77">tmc51x0::get</a> (<a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; &amp;&amp;r) noexcept</td></tr>
+<tr class="separator:a6818ace9cb52dc7f7363b93d6778ae77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Result type for error handling in TMC51x0 driver. </p>

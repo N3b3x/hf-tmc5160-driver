@@ -8,8 +8,7 @@ var searchData=
   ['delayus_5',['DelayUs',['../classtmc51x0_1_1CommInterface.html#ae3a5e93e4f03f7dce22dbe476f42e6ae',1,'tmc51x0::CommInterface::DelayUs()'],['../classEsp32SPI.html#a7d824ef0096f7ac31b76b53ec8e536c2',1,'Esp32SPI::DelayUs()']]],
   ['diag0config_6',['Diag0Config',['../structtmc51x0_1_1Diag0Config.html#a97f94a66cc0d55b05101f123f431f37d',1,'tmc51x0::Diag0Config']]],
   ['diag1config_7',['Diag1Config',['../structtmc51x0_1_1Diag1Config.html#a7e59095e6260632c8bdd77cedf9e48aa',1,'tmc51x0::Diag1Config']]],
-  ['diagnostics_8',['Diagnostics',['../structtmc51x0_1_1TMC51x0_1_1Diagnostics.html#a45b3bf4c06538f4b8d47982144ff620e',1,'tmc51x0::TMC51x0::Diagnostics']]],
-  ['disable_9',['Disable',['../structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a847c61e9fc4835e1ca9809507081c167',1,'tmc51x0::TMC51x0::MotorControl']]],
-  ['driverconfig_10',['DriverConfig',['../structtmc51x0_1_1DriverConfig.html#a85eb308c8f8f57cd95bf495d3eb4c751',1,'tmc51x0::DriverConfig']]],
-  ['drivererror_11',['DriverError',['../structtmc51x0_1_1SpiStatus.html#aa01f0baca6f2b42f5c71f98df60edd1a',1,'tmc51x0::SpiStatus']]]
+  ['disable_8',['Disable',['../structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a988cf424bec53e397254ff02deee10ab',1,'tmc51x0::TMC51x0::MotorControl']]],
+  ['driverconfig_9',['DriverConfig',['../structtmc51x0_1_1DriverConfig.html#a85eb308c8f8f57cd95bf495d3eb4c751',1,'tmc51x0::DriverConfig']]],
+  ['drivererror_10',['DriverError',['../structtmc51x0_1_1SpiStatus.html#aa01f0baca6f2b42f5c71f98df60edd1a',1,'tmc51x0::SpiStatus']]]
 ];

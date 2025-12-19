@@ -1,26 +1,17 @@
 <map id="TmcMutexGuard::unlock" name="TmcMutexGuard::unlock">
-<area shape="rect" id="Node000001" title="Manually unlock mutex (called automatically in destructor)" alt="" coords="865,138,1047,163"/>
-<area shape="rect" id="Node000002" href="$classFatigueTestMotion.html#a4600c218085cef6ea1a7e88579aaa343" title="Set global bounds (hardware limits found during initialization) &#45; in degrees." alt="" coords="389,152,537,192"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="852,158,537,171,537,166,852,152"/>
-<area shape="rect" id="Node000004" href="$classFatigueTest_1_1FatigueTestMotion.html#a7b9084bbe2f4ab2e113cfeb349c97627" title=" " alt="" coords="140,181,327,221"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="856,168,818,173,685,193,551,207,463,209,375,207,327,206,327,201,375,201,463,203,551,201,684,188,817,168,856,163"/>
-<area shape="rect" id="Node000006" href="$classFatigueTestMotion.html#a40e43a61bc8beddb3df12e7d3b72b141" title="Update motion (call this in main loop, thread&#45;safe)" alt="" coords="634,101,782,141"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="851,141,782,133,783,127,852,136"/>
-<area shape="rect" id="Node000008" href="$classFatigueTest_1_1FatigueTestMotion.html#a40e43a61bc8beddb3df12e7d3b72b141" title=" " alt="" coords="375,37,551,77"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="936,129,887,74,854,48,816,28,778,16,739,10,658,11,583,23,521,40,519,35,582,18,658,6,739,5,780,11,818,23,857,43,890,70,940,125"/>
-<area shape="rect" id="Node000010" href="$classFatigueTest_1_1FatigueTestMotion.html#a00b20bc353584e6851ec34eb34c95205" title=" " alt="" coords="599,37,817,77"/>
-<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="916,134,816,92,781,80,783,75,818,87,918,130"/>
-<area shape="rect" id="Node000011" href="$classTmcMutexGuard.html#ab7846844360a06130bb8138d2c8c63c0" title="Unlock mutex (automatically called on destruction)" alt="" coords="599,267,817,307"/>
-<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="930,174,880,212,819,250,776,269,773,264,816,246,877,208,927,170"/>
-<area shape="rect" id="Node000003" href="$fatigue__test__encoder_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="190,117,277,142"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="375,158,277,140,278,135,376,153"/>
-<area shape="rect" id="Node000005" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,135,92,161"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="150,180,91,163,93,158,151,175"/>
-<area shape="rect" id="Node000007" href="$fatigue__test__encoder_8cpp.html#aece70ebbea100bbe6db5c7738264bfd4" title="Motion control task &#45; handles bounds finding and sinusoidal motion." alt="" coords="385,102,540,127"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="620,122,540,119,540,114,620,116"/>
-<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="372,123,277,129,277,124,371,118"/>
-<area shape="rect" id="Node000009" href="$main_8cpp.html#a30da369114ee453fe81be5a919262abf" title=" " alt="" coords="156,57,311,82"/>
-<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="361,65,311,68,311,63,361,60"/>
-<area shape="poly" id="edge10_Node000009_Node000005" title=" " alt="" coords="186,89,141,108,77,138,75,133,139,103,184,85"/>
-<area shape="poly" id="edge12_Node000010_Node000008" title=" " alt="" coords="585,60,551,60,551,55,585,55"/>
+<area shape="rect" id="Node000001" title="Manually unlock mutex." alt="" coords="844,93,1025,118"/>
+<area shape="rect" id="Node000002" href="$classFatigueTest_1_1FatigueTestMotion.html#a144e2f8d8b876e1ea4a3625edf1b53ca" title=" " alt="" coords="343,5,529,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="857,93,796,81,529,41,530,35,796,76,858,87"/>
+<area shape="rect" id="Node000004" href="$classFatigueTest_1_1FatigueTestMotion.html#a3364c23a36aa498aa324bfa8afc48587" title=" " alt="" coords="348,69,524,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="830,105,524,95,524,89,830,99"/>
+<area shape="rect" id="Node000006" href="$classFatigueTest_1_1FatigueTestMotion.html#a5c2eb40cb4dda4c1db2501149d85b2e3" title=" " alt="" coords="577,113,796,153"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="830,120,796,124,796,118,830,114"/>
+<area shape="rect" id="Node000007" href="$classTmcMutexGuard.html#ab7846844360a06130bb8138d2c8c63c0" title="Unlock mutex (automatically called on destruction)" alt="" coords="577,177,796,217"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="896,126,797,168,761,180,760,175,795,163,894,121"/>
+<area shape="rect" id="Node000003" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,45,92,70"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="329,37,93,56,92,51,329,31"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html#a30da369114ee453fe81be5a919262abf" title=" " alt="" coords="140,70,295,95"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="334,89,295,88,295,82,334,84"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="126,72,92,66,93,61,127,66"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="563,114,524,107,525,102,564,109"/>
 </map>

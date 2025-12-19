@@ -1,6 +1,6 @@
 /**
  * @file esp32_tmc51x0_test_config.hpp
- * @brief ESP32 GPIO pin configuration and compile-time configuration for TMC51x0 driver (TMC5130 & TMC51x0)
+ * @brief ESP32 GPIO pin configuration and compile-time configuration for TMC51x0 driver (TMC5130 & TMC5160)
  *
  * This file defines compile-time configuration for TMC51x0 driver initialization using
  * struct-based configuration with static constexpr members for zero runtime overhead.
@@ -65,7 +65,7 @@
  * // 4. Get encoder and reference switch configs
  * auto ref_cfg = Config::GetReferenceSwitchConfig();
  * auto enc_cfg = Config::GetEncoderConfig();
- * driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
+ * driver.switches.ConfigureReferenceSwitch(ref_cfg);
  * driver.encoder.Configure(enc_cfg);
  * ```
  *
@@ -424,7 +424,11 @@ struct MotorConfig_17HS4401S {
     // RAMP_D1: First deceleration phase in rev/s². Used for S-curve deceleration.
     static constexpr float RAMP_D1_REV_S2 = 1.0f;
     // RAMP_V1: Velocity threshold in RPM for acceleration/deceleration phase transition.
-    static constexpr float RAMP_V1_RPM = 0.0f;
+    // CRITICAL: Must be > 0 to enable two-phase acceleration and use A1/D1.
+    // Set to ~30% of VMAX (36 RPM) to enable S-curve profile with smooth transition.
+    // Acceleration: VSTART(3) -> V1(36) using A1(1.0), then V1(36) -> VMAX(120) using AMAX(2.0)
+    // Deceleration: VMAX(120) -> V1(36) using DMAX(2.0), then V1(36) -> VSTOP(5) using D1(1.0)
+    static constexpr float RAMP_V1_RPM = 36.0f;
     // RAMP_TPOWERDOWN_MS: Power down delay after standstill (ms). Motor current reduces after this time.
     static constexpr float RAMP_TPOWERDOWN_MS = 100.0f;
     // RAMP_TZEROWAIT_MS: Wait time at zero velocity before power down (ms). 0 = immediate.
@@ -519,7 +523,12 @@ struct MotorConfig_17HS4401S_Direct {
     // RAMP_A1: First acceleration phase in rev/s². Set to half of AMAX for smooth S-curve
     static constexpr float RAMP_A1_REV_S2 = 1.0f;
     static constexpr float RAMP_D1_REV_S2 = 1.0f;
-    static constexpr float RAMP_V1_RPM = 0.0f;
+    // RAMP_V1: Velocity threshold in RPM for acceleration/deceleration phase transition.
+    // CRITICAL: Must be > 0 to enable two-phase acceleration and use A1/D1.
+    // Set to ~30% of VMAX (36 RPM) to enable S-curve profile with smooth transition.
+    // Acceleration: VSTART(3) -> V1(36) using A1(1.0), then V1(36) -> VMAX(120) using AMAX(2.0)
+    // Deceleration: VMAX(120) -> V1(36) using DMAX(2.0), then V1(36) -> VSTOP(5) using D1(1.0)
+    static constexpr float RAMP_V1_RPM = 36.0f;
     static constexpr float RAMP_TPOWERDOWN_MS = 100.0f;
     static constexpr float RAMP_TZEROWAIT_MS = 0.0f;
     
@@ -607,21 +616,26 @@ struct MotorConfig_AppliedMotion_5034_369 {
     // All values in physical units for clarity and maintainability
     // Direct drive: MOTOR_FULL_STEPS * 256 = 200 * 256 = 51,200 steps/rev
     // Lower acceleration due to higher rotor inertia
-    // RAMP_VSTART: Start velocity in RPM. Set to 3 RPM for reliable starting (above 2 RPM minimum)
-    static constexpr float RAMP_VSTART_RPM = 3.0f;
+    // RAMP_VSTART: Start velocity in RPM. Set to 5 RPM for reliable starting (above 2 RPM minimum)
+    static constexpr float RAMP_VSTART_RPM = 5.0f;
     // RAMP_VSTOP: Stop velocity in RPM. Set to 5 RPM to ensure smooth stopping above minimum test speed
-    static constexpr float RAMP_VSTOP_RPM = 5.0f;
+    static constexpr float RAMP_VSTOP_RPM = 7.0f;
     // RAMP_VMAX: Maximum velocity in RPM. NEMA 34 typically operates 30-100 RPM for testing.
     // Set to 60 RPM for balanced performance with higher inertia motor.
     static constexpr float RAMP_VMAX_RPM = 60.0f;
     // RAMP_AMAX: Maximum acceleration in rev/s². Lower for NEMA 34 due to higher rotor inertia.
     // Set to reach 60 RPM in ~1 second: 1 rev/s²
-    static constexpr float RAMP_AMAX_REV_S2 = 1.0f;
-    static constexpr float RAMP_DMAX_REV_S2 = 1.0f;
+    static constexpr float RAMP_AMAX_REV_S2 = 5.0f;
+    static constexpr float RAMP_DMAX_REV_S2 = 5.0f;
     // RAMP_A1: First acceleration phase in rev/s². Set to half of AMAX for smooth S-curve
-    static constexpr float RAMP_A1_REV_S2 = 0.5f;
-    static constexpr float RAMP_D1_REV_S2 = 0.5f;
-    static constexpr float RAMP_V1_RPM = 0.0f;
+    static constexpr float RAMP_A1_REV_S2 = 2.5f;
+    static constexpr float RAMP_D1_REV_S2 = 2.5f;
+    // RAMP_V1: Velocity threshold in RPM for acceleration/deceleration phase transition.
+    // CRITICAL: Must be > 0 to enable two-phase acceleration and use A1/D1.
+    // Set to ~30% of VMAX (18 RPM) to enable S-curve profile with smooth transition.
+    // Acceleration: VSTART(3) -> V1(18) using A1(0.5), then V1(18) -> VMAX(60) using AMAX(1.0)
+    // Deceleration: VMAX(60) -> V1(18) using DMAX(1.0), then V1(18) -> VSTOP(5) using D1(0.5)
+    static constexpr float RAMP_V1_RPM = 18.0f;
     static constexpr float RAMP_TPOWERDOWN_MS = 100.0f;
     static constexpr float RAMP_TZEROWAIT_MS = 0.0f;
     
@@ -636,7 +650,7 @@ struct MotorConfig_AppliedMotion_5034_369 {
     // Velocity below which StealthChop is active, above which SpreadCycle is used
     // Set to 0 to disable StealthChop (always use SpreadCycle)
     // Set to 20 RPM - below this StealthChop (quiet), above this SpreadCycle (more torque for larger motor)
-    static constexpr float STEALTH_VELOCITY_THRESHOLD_RPM = 20.0f;
+    static constexpr float STEALTH_VELOCITY_THRESHOLD_RPM = 0.0f;
 };
 
 /**
@@ -658,23 +672,34 @@ struct TestConfig_17HS4401S {
         // This value was found to work well at 30-40k steps/s for the 17HS4401S motor
         static constexpr int8_t SGT_HOMING = 10;  
         
-        // CoolStep configuration for homing (usually disabled or tuned for stability)
-        static constexpr bool FILTER_ENABLED = true;
-        static constexpr uint8_t SEMIN = 2;
-        static constexpr uint8_t SEMAX = 5;
+        // CoolStep (COOLCONF.SEMIN/SEMAX) is a *current scaling* feature.
+        // For sensorless homing / bounds finding we generally want a stable,
+        // fixed current (CoolStep disabled) to avoid current modulation that can
+        // look/feel like "shaky" motion and can also distort StallGuard readings.
+        //
+        // If you later want CoolStep during normal operation, a common starting
+        // point is SEMIN=2, SEMAX=5 (lower=64, upper=256 SG units), but it
+        // must be tuned using real SG_RESULT ranges for your load.
+        static constexpr bool FILTER_ENABLED = false;
+        static constexpr uint8_t SEMIN = 0; // 0 = CoolStep disabled
+        static constexpr uint8_t SEMAX = 0;
+        
+        // Minimum velocity (TCOOLTHRS) for StallGuard2 operation in RPM
+        // Per datasheet: "StallGuard needs a certain velocity to work (as set by TCOOLTHRS)"
+        // Set to a value below the search speed to ensure StallGuard2 is active during bounds finding
+        // For 17HS4401S: Set to 50% of BOUNDS_SEARCH_SPEED_RPM (120 RPM) = 60 RPM
+        static constexpr float MIN_VELOCITY_RPM = 15.0f;
     };
 
     // ===== Motion Profiles =====
     struct Motion {
-        // Homing Speeds (RPM) - driver handles microstep conversion internally
-        // Needs to be fast enough for back-EMF sensing (Sensorless)
-        static constexpr float HOMING_SEARCH_SPEED_RPM = 30.0f; // RPM output (driver converts based on current microsteps)
-        static constexpr float HOMING_SWITCH_SPEED_RPM = 3.0f;  // Slower for precision (RPM)
-        
-        // Bounds Finding Test (RPM) - driver handles microstep conversion internally
-        static constexpr float BOUNDS_SEARCH_SPEED_RPM = 30.0f; // RPM (driver converts based on current microsteps)
+        // Search Speed (RPM) - used for both bounds finding and homing operations
+        // Driver handles microstep conversion internally
+        // Must be >= MIN_VELOCITY_RPM (15 RPM) for reliable StallGuard2 operation
+        // Higher speeds (60-120 RPM) provide better StallGuard reliability
+        static constexpr float BOUNDS_SEARCH_SPEED_RPM = 60.0f; // RPM (driver converts based on current microsteps)
         // Bounds Finding Acceleration (rev/s²) - reach search speed in 3-5 seconds
-        static constexpr float BOUNDS_SEARCH_ACCEL_REV_S2 = 2; 
+        static constexpr float BOUNDS_SEARCH_ACCEL_REV_S2 = 1.0f; 
         static constexpr uint32_t HOMING_TIMEOUT_MS = 30000;
         
         // Fatigue Test Defaults
@@ -699,27 +724,31 @@ struct TestConfig_AppliedMotion_5034 {
         // For Applied Motion 5034-369 (NEMA 34, higher torque):
         // May need slightly different threshold than NEMA 17 motors
         // Start with same value as 17HS4401S, tune if needed
-        static constexpr int8_t SGT_HOMING = 10;  
+        static constexpr int8_t SGT_HOMING = 4;  
         
-        // CoolStep configuration for homing (usually disabled or tuned for stability)
-        static constexpr bool FILTER_ENABLED = true;
-        static constexpr uint8_t SEMIN = 2;
-        static constexpr uint8_t SEMAX = 5;
+        // See TestConfig_17HS4401S::StallGuard notes.
+        // For this high torque NEMA34 rig, we keep CoolStep disabled during
+        // StallGuard bounds finding to avoid current modulation and jitter.
+        static constexpr bool FILTER_ENABLED = false;
+        static constexpr uint8_t SEMIN = 0; // 0 = CoolStep disabled
+        static constexpr uint8_t SEMAX = 0;
+        
+        // Minimum velocity (TCOOLTHRS) for StallGuard2 operation in RPM
+        // Per datasheet: "StallGuard needs a certain velocity to work (as set by TCOOLTHRS)"
+        // Set to a value below the search speed to ensure StallGuard2 is active during bounds finding
+        // For Applied Motion 5034-369: Set to 50% of BOUNDS_SEARCH_SPEED_RPM (120 RPM) = 60 RPM
+        static constexpr float MIN_VELOCITY_RPM = 15.0f;
     };
 
     // ===== Motion Profiles =====
     struct Motion {
-        // Homing Speeds (RPM) - driver handles microstep conversion internally
-        // Needs to be fast enough for back-EMF sensing (Sensorless)
-        // Applied Motion motor can handle same speeds as 17HS4401S
-        static constexpr float HOMING_SEARCH_SPEED_RPM = 30.0f; // RPM output (driver converts based on current microsteps)
-        static constexpr float HOMING_SWITCH_SPEED_RPM = 3.0f;  // Slower for precision (RPM)
-        
-        // Bounds Finding Test (RPM) - driver handles microstep conversion internally
-        // Increased to 60 RPM for reliable StallGuard2 operation (minimum recommended: 60 RPM)
+        // Search Speed (RPM) - used for both bounds finding and homing operations
+        // Driver handles microstep conversion internally
+        // Must be >= MIN_VELOCITY_RPM (15 RPM) for reliable StallGuard2 operation
+        // Higher speeds (120 RPM) provide better StallGuard reliability for NEMA 34
         static constexpr float BOUNDS_SEARCH_SPEED_RPM = 60.0f; // RPM (driver converts based on current microsteps)
         // Bounds Finding Acceleration (rev/s²) - reach search speed in some seconds
-        static constexpr float BOUNDS_SEARCH_ACCEL_REV_S2 = 2; 
+        static constexpr float BOUNDS_SEARCH_ACCEL_REV_S2 = 5.0f; 
         static constexpr uint32_t HOMING_TIMEOUT_MS = 30000;
         
         // Fatigue Test Defaults
@@ -1506,31 +1535,25 @@ struct TestConfigAccessor {
             }
             return uint8_t(5); // Default fallback
         }();
+        
+        // Minimum velocity (TCOOLTHRS) for StallGuard2 operation in RPM
+        static constexpr float MIN_VELOCITY_RPM = []() {
+            if constexpr (motor_type == MotorType::MOTOR_17HS4401S_GEARBOX || 
+                          motor_type == MotorType::MOTOR_17HS4401S_DIRECT) {
+                return TestConfig_17HS4401S::StallGuard::MIN_VELOCITY_RPM;
+            }
+            else if constexpr (motor_type == MotorType::MOTOR_APPLIED_MOTION_5034) {
+                return TestConfig_AppliedMotion_5034::StallGuard::MIN_VELOCITY_RPM;
+            }
+            return 60.0f; // Default fallback
+        }();
     };
     
     // Motion profile configuration
     struct Motion {
-        static constexpr float HOMING_SEARCH_SPEED_RPM = []() {
-            if constexpr (motor_type == MotorType::MOTOR_17HS4401S_GEARBOX || 
-                          motor_type == MotorType::MOTOR_17HS4401S_DIRECT) {
-                return TestConfig_17HS4401S::Motion::HOMING_SEARCH_SPEED_RPM;
-            }
-            else if constexpr (motor_type == MotorType::MOTOR_APPLIED_MOTION_5034) {
-                return TestConfig_AppliedMotion_5034::Motion::HOMING_SEARCH_SPEED_RPM;
-            }
-            return 30.0f; // Default fallback
-        }();
-        
-        static constexpr float HOMING_SWITCH_SPEED_RPM = []() {
-            if constexpr (motor_type == MotorType::MOTOR_17HS4401S_GEARBOX || 
-                          motor_type == MotorType::MOTOR_17HS4401S_DIRECT) {
-                return TestConfig_17HS4401S::Motion::HOMING_SWITCH_SPEED_RPM;
-            }
-            else if constexpr (motor_type == MotorType::MOTOR_APPLIED_MOTION_5034) {
-                return TestConfig_AppliedMotion_5034::Motion::HOMING_SWITCH_SPEED_RPM;
-            }
-            return 3.0f; // Default fallback
-        }();
+        // HOMING_SEARCH_SPEED_RPM removed - use BOUNDS_SEARCH_SPEED_RPM for all search operations
+        // (consolidated since both are search speeds for finding limits)
+        // HOMING_SWITCH_SPEED_RPM removed - not used in current implementation
         
         static constexpr float BOUNDS_SEARCH_SPEED_RPM = []() {
             if constexpr (motor_type == MotorType::MOTOR_17HS4401S_GEARBOX || 
@@ -2031,8 +2054,7 @@ namespace ConfigValidators {
         TestConfig_17HS4401S::StallGuard::FILTER_ENABLED;
         TestConfig_17HS4401S::StallGuard::SEMIN;
         TestConfig_17HS4401S::StallGuard::SEMAX;
-        TestConfig_17HS4401S::Motion::HOMING_SEARCH_SPEED_RPM;
-        TestConfig_17HS4401S::Motion::HOMING_SWITCH_SPEED_RPM;
+        TestConfig_17HS4401S::StallGuard::MIN_VELOCITY_RPM;
         TestConfig_17HS4401S::Motion::BOUNDS_SEARCH_SPEED_RPM;
         TestConfig_17HS4401S::Motion::HOMING_TIMEOUT_MS;
         TestConfig_17HS4401S::Motion::FATIGUE_FREQ_HZ;
@@ -2046,8 +2068,7 @@ namespace ConfigValidators {
         TestConfig_AppliedMotion_5034::StallGuard::FILTER_ENABLED;
         TestConfig_AppliedMotion_5034::StallGuard::SEMIN;
         TestConfig_AppliedMotion_5034::StallGuard::SEMAX;
-        TestConfig_AppliedMotion_5034::Motion::HOMING_SEARCH_SPEED_RPM;
-        TestConfig_AppliedMotion_5034::Motion::HOMING_SWITCH_SPEED_RPM;
+        TestConfig_AppliedMotion_5034::StallGuard::MIN_VELOCITY_RPM;
         TestConfig_AppliedMotion_5034::Motion::BOUNDS_SEARCH_SPEED_RPM;
         TestConfig_AppliedMotion_5034::Motion::HOMING_TIMEOUT_MS;
         TestConfig_AppliedMotion_5034::Motion::FATIGUE_FREQ_HZ;

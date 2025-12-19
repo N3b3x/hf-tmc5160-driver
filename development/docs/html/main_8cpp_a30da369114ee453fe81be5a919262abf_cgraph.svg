@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classFatigueTest_1_1FatigueTestMotion.html#aa21a0ad5beb06b24d87d0b2755339d4a" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="classFatigueTest_1_1FatigueTestMotion.html#ab76244c4aa6363f37451985846c1debe" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="284,-238 152,-238 152,-208 284,-208 284,-238"/>
 <text text-anchor="start" x="160" y="-226" font-family="Helvetica,sans-Serif" font-size="10.00">FatigueTest::FatigueTest</text>
 <text text-anchor="middle" x="218" y="-215" font-family="Helvetica,sans-Serif" font-size="10.00">Motion::GetStatus</text>
@@ -39,7 +39,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classFatigueTest_1_1FatigueTestMotion.html#a23d9f8430ce81b0f5b1376209bf9b0e6" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="classFatigueTest_1_1FatigueTestMotion.html#a8bbda0702fdd8f9ed10c82e49d093ba9" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="284,-190 152,-190 152,-160 284,-160 284,-190"/>
 <text text-anchor="start" x="160" y="-178" font-family="Helvetica,sans-Serif" font-size="10.00">FatigueTest::FatigueTest</text>
 <text text-anchor="middle" x="218" y="-167" font-family="Helvetica,sans-Serif" font-size="10.00">Motion::IsRunning</text>
@@ -96,7 +96,7 @@
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="classFatigueTest_1_1FatigueTestMotion.html#a40e43a61bc8beddb3df12e7d3b72b141" target="_top" xlink:title=" ">
+<g id="a_Node000008"><a xlink:href="classFatigueTest_1_1FatigueTestMotion.html#a3364c23a36aa498aa324bfa8afc48587" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="284,-46 152,-46 152,-16 284,-16 284,-46"/>
 <text text-anchor="start" x="160" y="-34" font-family="Helvetica,sans-Serif" font-size="10.00">FatigueTest::FatigueTest</text>
 <text text-anchor="middle" x="218" y="-23" font-family="Helvetica,sans-Serif" font-size="10.00">Motion::Update</text>
@@ -160,7 +160,7 @@
 <!-- Node9 -->
 <g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_Node000009"><a xlink:href="classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf" target="_top" xlink:title="Manually unlock mutex (called automatically in destructor)">
+<g id="a_Node000009"><a xlink:href="classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf" target="_top" xlink:title="Manually unlock mutex.">
 <polygon fill="white" stroke="#666666" points="656,-46.5 520,-46.5 520,-27.5 656,-27.5 656,-46.5"/>
 <text text-anchor="middle" x="588" y="-34.5" font-family="Helvetica,sans-Serif" font-size="10.00">TmcMutexGuard::unlock</text>
 </a>
@@ -178,7 +178,7 @@
 <!-- Node12 -->
 <g id="Node000012" class="node">
 <title>Node12</title>
-<g id="a_Node000012"><a xlink:href="classFatigueTest_1_1FatigueTestMotion.html#a00b20bc353584e6851ec34eb34c95205" target="_top" xlink:title=" ">
+<g id="a_Node000012"><a xlink:href="classFatigueTest_1_1FatigueTestMotion.html#a5c2eb40cb4dda4c1db2501149d85b2e3" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="484,-30 320,-30 320,0 484,0 484,-30"/>
 <text text-anchor="start" x="328" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">FatigueTest::FatigueTest</text>
 <text text-anchor="middle" x="402" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Motion::UpdateSinuousMotion</text>
@@ -215,7 +215,7 @@
 <!-- Node11 -->
 <g id="Node000011" class="node">
 <title>Node11</title>
-<g id="a_Node000011"><a xlink:href="classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f" target="_top" xlink:title="Get native mutex handle.">
+<g id="a_Node000011"><a xlink:href="classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f" target="_top" xlink:title="Get native FreeRTOS semaphore handle.">
 <polygon fill="white" stroke="#666666" points="829.5,-31 695.5,-31 695.5,-1 829.5,-1 829.5,-31"/>
 <text text-anchor="start" x="703.5" y="-19" font-family="Helvetica,sans-Serif" font-size="10.00">Esp32TmcMutex::native</text>
 <text text-anchor="middle" x="762.5" y="-8" font-family="Helvetica,sans-Serif" font-size="10.00">_handle</text>

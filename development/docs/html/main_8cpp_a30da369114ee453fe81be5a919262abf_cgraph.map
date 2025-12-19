@@ -1,27 +1,27 @@
 <map id="motion_control_task" name="motion_control_task">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,141,160,166"/>
-<area shape="rect" id="Node000002" href="$classFatigueTest_1_1FatigueTestMotion.html#aa21a0ad5beb06b24d87d0b2755339d4a" title=" " alt="" coords="208,5,384,45"/>
+<area shape="rect" id="Node000002" href="$classFatigueTest_1_1FatigueTestMotion.html#ab76244c4aa6363f37451985846c1debe" title=" " alt="" coords="208,5,384,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,139,143,98,207,55,219,49,222,53,209,60,146,103,99,143"/>
-<area shape="rect" id="Node000003" href="$classFatigueTest_1_1FatigueTestMotion.html#a23d9f8430ce81b0f5b1376209bf9b0e6" title=" " alt="" coords="208,69,384,109"/>
+<area shape="rect" id="Node000003" href="$classFatigueTest_1_1FatigueTestMotion.html#a8bbda0702fdd8f9ed10c82e49d093ba9" title=" " alt="" coords="208,69,384,109"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="125,138,215,111,217,116,127,143"/>
 <area shape="rect" id="Node000004" href="$namespaceEspNowReceiver.html#ad20a4032cfbaf4698d2a894139c339ae" title=" " alt="" coords="211,133,381,173"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="160,151,197,151,197,156,160,156"/>
 <area shape="rect" id="Node000007" href="$namespaceEspNowReceiver.html#a24fe7b15e7685c89e8468b1fdbcbaf7d" title=" " alt="" coords="211,197,381,237"/>
 <area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="127,164,217,191,215,196,125,169"/>
-<area shape="rect" id="Node000008" href="$classFatigueTest_1_1FatigueTestMotion.html#a40e43a61bc8beddb3df12e7d3b72b141" title=" " alt="" coords="208,261,384,301"/>
+<area shape="rect" id="Node000008" href="$classFatigueTest_1_1FatigueTestMotion.html#a3364c23a36aa498aa324bfa8afc48587" title=" " alt="" coords="208,261,384,301"/>
 <area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="99,164,146,204,209,247,222,253,219,258,207,252,143,208,96,168"/>
 <area shape="rect" id="Node000005" href="$espnow__receiver_8cpp.html#a56b1fa458feb934b57be89468e71627f" title=" " alt="" coords="470,162,613,187"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="382,158,456,165,456,170,381,163"/>
 <area shape="rect" id="Node000006" href="$espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" title=" " alt="" coords="743,162,835,187"/>
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="613,172,730,172,730,177,613,177"/>
 <area shape="poly" id="edge7_Node000007_Node000005" title=" " alt="" coords="381,200,456,187,457,192,382,205"/>
-<area shape="rect" id="Node000009" href="$classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf" title="Manually unlock mutex (called automatically in destructor)" alt="" coords="699,261,880,286"/>
+<area shape="rect" id="Node000009" href="$classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf" title="Manually unlock mutex." alt="" coords="699,261,880,286"/>
 <area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="384,271,432,268,564,266,685,267,685,273,564,271,432,273,384,276"/>
-<area shape="rect" id="Node000012" href="$classFatigueTest_1_1FatigueTestMotion.html#a00b20bc353584e6851ec34eb34c95205" title=" " alt="" coords="432,283,651,323"/>
+<area shape="rect" id="Node000012" href="$classFatigueTest_1_1FatigueTestMotion.html#a5c2eb40cb4dda4c1db2501149d85b2e3" title=" " alt="" coords="432,283,651,323"/>
 <area shape="poly" id="edge12_Node000008_Node000012" title=" " alt="" coords="384,286,418,289,418,295,384,292"/>
 <area shape="rect" id="Node000010" href="$classEsp32TmcMutex.html#aa1c5042b5ace0f9a58c140b0f02db0f2" title="Check if mutex is valid." alt="" coords="928,231,1116,257"/>
 <area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="880,259,914,255,915,260,881,265"/>
-<area shape="rect" id="Node000011" href="$classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f" title="Get native mutex handle." alt="" coords="933,281,1111,321"/>
+<area shape="rect" id="Node000011" href="$classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f" title="Get native FreeRTOS semaphore handle." alt="" coords="933,281,1111,321"/>
 <area shape="poly" id="edge11_Node000009_Node000011" title=" " alt="" coords="881,282,919,286,919,292,880,287"/>
 <area shape="poly" id="edge13_Node000012_Node000009" title=" " alt="" coords="651,287,685,283,685,288,651,292"/>
 </map>

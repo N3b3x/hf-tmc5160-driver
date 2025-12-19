@@ -1,0 +1,5 @@
+<map id="tmc51x0::TMC51x0::MotorControl::SetupMotorFromSpec" name="tmc51x0::TMC51x0::MotorControl::SetupMotorFromSpec">
+<area shape="rect" id="Node000001" title="Setup motor from high&#45;level specifications." alt="" coords="5,5,247,45"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0.html#ac742f74b3a0ad095b8db62d07300c8c9" title="Calculate motor current settings from physical parameters." alt="" coords="295,13,529,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,23,281,23,281,28,247,28"/>
+</map>

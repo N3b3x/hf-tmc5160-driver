@@ -116,7 +116,7 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a3c10e16e32097acaa8734e207e1226aa" id="r_a3c10e16e32097acaa8734e207e1226aa"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c10e16e32097acaa8734e207e1226aa">node_address</a> {0}</td></tr>
-<tr class="memdesc:a3c10e16e32097acaa8734e207e1226aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART node address (slave address)  <br /></td></tr>
+<tr class="memdesc:a3c10e16e32097acaa8734e207e1226aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART node address.  <br /></td></tr>
 <tr class="separator:a3c10e16e32097acaa8734e207e1226aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52adcebaf876d1e3c874a49f54c5d77f" id="r_a52adcebaf876d1e3c874a49f54c5d77f"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a52adcebaf876d1e3c874a49f54c5d77f">send_delay</a> {0}</td></tr>
 <tr class="memdesc:a52adcebaf876d1e3c874a49f54c5d77f"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART send delay.  <br /></td></tr>
@@ -173,8 +173,8 @@ In UART daisy-chain mode, each device must have a unique node address. </dd></dl
       </table>
 </div><div class="memdoc">
 
-<p>UART node address (slave address) </p>
-<p>7-bit UART node address for multi-device UART chains (0-127). Same value as slave address in SLAVECONF register.</p>
+<p>UART node address. </p>
+<p>7-bit UART node address for multi-device UART chains (0-127). Same value as node address in NODECONF register.</p>
 <p>Range: 0-127 (7-bit address) Default: 0 (first device in chain, or single device)</p>
 <dl class="section note"><dt>Note</dt><dd>Only used when communication mode is UART (SPI_MODE=0). </dd>
 <dd>

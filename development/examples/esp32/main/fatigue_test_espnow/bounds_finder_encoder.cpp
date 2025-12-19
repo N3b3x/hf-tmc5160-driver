@@ -25,16 +25,17 @@ namespace FatigueTest {
 template<tmc51x0_test_config::TestRigType test_rig>
 class EncoderBoundsFinderImpl : public IBoundsFinder {
 public:
-    // Get test config for this test rig's motor type
+    // Get test config and motor config for this test rig
     using TestConfig = tmc51x0_test_config::GetTestConfigForTestRig<test_rig>;
+    using RigConfig = tmc51x0_test_config::TestRigConfig<test_rig>;
+    using MotorConfig = typename RigConfig::Motor;
     
     const char* GetMethodName() const override {
         return "Encoder";
     }
 
     BoundsResult FindBounds(
-        tmc51x0::TMC51x0<Esp32SPI>& driver,
-        uint16_t steps_per_rev
+        tmc51x0::TMC51x0<Esp32SPI>& driver
     ) override {
         ESP_LOGI(TAG, "Starting encoder-based bounds finding...");
 
@@ -46,7 +47,7 @@ public:
         ref_cfg.right_switch_stop_enable = false;
         ref_cfg.latch_left = tmc51x0::ReferenceLatchMode::DISABLED;
         ref_cfg.latch_right = tmc51x0::ReferenceLatchMode::DISABLED;
-        driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
+        driver.switches.ConfigureReferenceSwitch(ref_cfg);
 
         // Read initial encoder position
         auto enc_pos_result = driver.encoder.GetPosition();
@@ -86,7 +87,7 @@ public:
 
         // Find maximum bound (in degrees)
         ESP_LOGI(TAG, "Finding maximum bound...");
-        float max_pos_deg = FindBound(driver, TARGET_ANGLE_DEG, search_speed_rpm, OFFSET_ANGLE_DEG, enc_baseline, true);
+        float max_pos_deg = FindBound(driver, TARGET_ANGLE_DEG, search_speed_rpm, OFFSET_ANGLE_DEG, enc_baseline);
         if (max_pos_deg == 0.0f && !driver.rampControl.IsTargetReached()) {
             ESP_LOGW(TAG, "Max bound search failed or timeout");
         }
@@ -101,7 +102,7 @@ public:
         } else {
             min_enc_baseline = min_enc_result.Value();
         }
-        float min_pos_deg = FindBound(driver, -TARGET_ANGLE_DEG, search_speed_rpm, OFFSET_ANGLE_DEG, min_enc_baseline, false);
+        float min_pos_deg = FindBound(driver, -TARGET_ANGLE_DEG, search_speed_rpm, OFFSET_ANGLE_DEG, min_enc_baseline);
         auto min_reached_result = driver.rampControl.IsTargetReached();
         if (min_pos_deg == 0.0f && (!min_reached_result || !min_reached_result.Value())) {
             ESP_LOGW(TAG, "⚠ Min bound search failed or timeout");
@@ -123,7 +124,14 @@ public:
             // Both stalls detected - move to center (in degrees)
             float center_deg = (min_pos_deg + max_pos_deg) / 2.0f;
             MoveToPosition(driver, center_deg, search_speed_rpm);
+            // IMPORTANT:
+            // SetCurrentPosition() changes XACTUAL but does NOT change XTARGET.
+            // In POSITIONING mode, leaving an old XTARGET will cause the ramp generator
+            // to keep moving to chase that stale target. After redefining home/zero,
+            // set XTARGET to the new zero (or current position) and hold.
             driver.rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
+            driver.rampControl.SetTargetPosition(0.0f, tmc51x0::Unit::Deg);
+            driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
             
             // Return bounds relative to center (in degrees)
             float min_bound_deg = min_pos_deg - center_deg;
@@ -141,8 +149,7 @@ private:
         float target_angle_deg,
         float search_speed_rpm,
         float offset_angle_deg,
-        int32_t enc_baseline,
-        bool is_max
+        int32_t enc_baseline
     ) {
         constexpr float MIN_MOVEMENT_DEG = 1.0f; // Minimum movement in degrees to avoid false stalls
         constexpr uint32_t ENCODER_STALL_TIMEOUT_MS = 300;
@@ -239,7 +246,10 @@ private:
                         // Back off relative to current position (in degrees)
                         // Use RELATIVE positioning here - we don't know exact position after stall,
                         // and relative movement is safer and more intuitive for backoff operations
-                        float backoff_offset_deg = is_max ? -offset_angle_deg : offset_angle_deg;
+                        // Back off MUST be opposite the travel direction.
+                        // - If target_angle_deg > 0 (moving +), backoff should be negative.
+                        // - If target_angle_deg < 0 (moving -), backoff should be positive.
+                        float backoff_offset_deg = (target_angle_deg >= 0.0f) ? -offset_angle_deg : offset_angle_deg;
 
                         // Back off at half speed (in RPM)
                         float backoff_speed_rpm = search_speed_rpm / 2.0f;
@@ -248,13 +258,13 @@ private:
                         if (!ramp_mode_result) {
                             ESP_LOGW(TAG, "⚠ Failed to set ramp mode (ErrorCode: %d)", static_cast<int>(ramp_mode_result.Error()));
                         }
-                        auto move_result = driver.rampControl.MoveRelative(backoff_offset_deg, tmc51x0::Unit::Deg);
-                        if (!move_result) {
-                            ESP_LOGW(TAG, "⚠ Failed to move relative (ErrorCode: %d)", static_cast<int>(move_result.Error()));
-                        }
                         auto speed_result = driver.rampControl.SetMaxSpeed(backoff_speed_rpm, tmc51x0::Unit::RPM);
                         if (!speed_result) {
                             ESP_LOGW(TAG, "⚠ Failed to set backoff speed (ErrorCode: %d)", static_cast<int>(speed_result.Error()));
+                        }
+                        auto move_result = driver.rampControl.MoveRelative(backoff_offset_deg, tmc51x0::Unit::Deg);
+                        if (!move_result) {
+                            ESP_LOGW(TAG, "⚠ Failed to move relative (ErrorCode: %d)", static_cast<int>(move_result.Error()));
                         }
                         
                         // Wait for backoff to complete

@@ -1,0 +1,9 @@
+<map id="esp32_tmc_mutex.hpp" name="esp32_tmc_mutex.hpp">
+<area shape="rect" id="Node000001" title="ESP32 FreeRTOS mutex wrapper for TMC51x0 driver thread safety." alt="" coords="163,5,334,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,156,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,33,122,76,120,71,221,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="180,79,317,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="251,31,251,65,246,65,246,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="341,79,425,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="272,28,350,70,348,74,269,33"/>
+</map>

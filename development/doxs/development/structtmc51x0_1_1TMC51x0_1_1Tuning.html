@@ -109,7 +109,7 @@ $(function(){initNavTree('structtmc51x0_1_1TMC51x0_1_1Tuning.html',''); initResi
 <div class="dynheader">
 Collaboration diagram for tmc51x0::TMC51x0&lt; CommType &gt;::Tuning:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc51x0_1_1TMC51x0_1_1Tuning__coll__graph.svg" width="1740" height="1099"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc51x0_1_1TMC51x0_1_1Tuning__coll__graph.svg" width="1740" height="1450"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -117,15 +117,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a904d378242b3120a7f8649871766ef56" id="r_a904d378242b3120a7f8649871766ef56"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a904d378242b3120a7f8649871766ef56">Tuning</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a> &amp;driver) noexcept</td></tr>
 <tr class="memdesc:a904d378242b3120a7f8649871766ef56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct tuning subsystem.  <br /></td></tr>
 <tr class="separator:a904d378242b3120a7f8649871766ef56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d3fdec0ca82702e94137abc937733c2" id="r_a4d3fdec0ca82702e94137abc937733c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d3fdec0ca82702e94137abc937733c2">TuneStallGuard</a> (float target_velocity, <a class="el" href="structtmc51x0_1_1StallGuardTuningResult.html">StallGuardTuningResult</a> &amp;result, int8_t min_sgt=-10, int8_t max_sgt=63, float acceleration=0.06F, float min_velocity=0.0F, float max_velocity=0.0F, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> velocity_unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> acceleration_unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>) noexcept</td></tr>
-<tr class="memdesc:a4d3fdec0ca82702e94137abc937733c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automatically tune StallGuard threshold (SGT) with comprehensive velocity range analysis.  <br /></td></tr>
-<tr class="separator:a4d3fdec0ca82702e94137abc937733c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac6f2742ad151d0a8ef858cd15cf1a6c" id="r_aac6f2742ad151d0a8ef858cd15cf1a6c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac6f2742ad151d0a8ef858cd15cf1a6c">TuneStallGuard</a> (float target_velocity, int8_t &amp;final_sgt, int8_t min_sgt=-10, int8_t max_sgt=63, float acceleration=0.06F, float min_velocity=0.0F, float max_velocity=0.0F, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> velocity_unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> acceleration_unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>) noexcept</td></tr>
-<tr class="memdesc:aac6f2742ad151d0a8ef858cd15cf1a6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Legacy overload: Automatically tune StallGuard threshold (SGT)  <br /></td></tr>
-<tr class="separator:aac6f2742ad151d0a8ef858cd15cf1a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5da67d4675ec22052e3d438ee96b6b99" id="r_a5da67d4675ec22052e3d438ee96b6b99"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5da67d4675ec22052e3d438ee96b6b99">AutoTuneStallGuard</a> (float target_velocity, <a class="el" href="structtmc51x0_1_1StallGuardTuningResult.html">StallGuardTuningResult</a> &amp;result, int8_t min_sgt=0, int8_t max_sgt=63, float acceleration=0.06F, float min_velocity=0.0F, float max_velocity=0.0F, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> velocity_unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> acceleration_unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>, uint16_t safe_current_margin_mA=0) noexcept</td></tr>
-<tr class="memdesc:a5da67d4675ec22052e3d438ee96b6b99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comprehensive automatic StallGuard tuning with safe current margin and optional encoder verification.  <br /></td></tr>
-<tr class="separator:a5da67d4675ec22052e3d438ee96b6b99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a410f4063ad9462424cbfbb351cc8a657" id="r_a410f4063ad9462424cbfbb351cc8a657"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a410f4063ad9462424cbfbb351cc8a657">TuneStallGuard</a> (float target_velocity, <a class="el" href="structtmc51x0_1_1StallGuardTuningResult.html">StallGuardTuningResult</a> &amp;result, int8_t min_sgt=-10, int8_t max_sgt=63, float acceleration=0.06F, float min_velocity=0.0F, float max_velocity=0.0F, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> velocity_unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> acceleration_unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>) noexcept</td></tr>
+<tr class="memdesc:a410f4063ad9462424cbfbb351cc8a657"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automatically tune <a class="el" href="structtmc51x0_1_1TMC51x0_1_1StallGuard.html" title="StallGuard2 subsystem (COOLCONF/DRV_STATUS + SW_MODE interactions)">StallGuard</a> threshold (SGT) with comprehensive velocity range analysis.  <br /></td></tr>
+<tr class="separator:a410f4063ad9462424cbfbb351cc8a657"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab039ccc53f0607b6a3a434baf57bb219" id="r_ab039ccc53f0607b6a3a434baf57bb219"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab039ccc53f0607b6a3a434baf57bb219">AutoTuneStallGuard</a> (float target_velocity, <a class="el" href="structtmc51x0_1_1StallGuardTuningResult.html">StallGuardTuningResult</a> &amp;result, int8_t min_sgt=0, int8_t max_sgt=63, float acceleration=0.06F, float min_velocity=0.0F, float max_velocity=0.0F, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> velocity_unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> acceleration_unit=<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a>, uint16_t safe_current_margin_mA=0) noexcept</td></tr>
+<tr class="memdesc:ab039ccc53f0607b6a3a434baf57bb219"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comprehensive automatic <a class="el" href="structtmc51x0_1_1TMC51x0_1_1StallGuard.html" title="StallGuard2 subsystem (COOLCONF/DRV_STATUS + SW_MODE interactions)">StallGuard</a> tuning with safe current margin and optional encoder verification.  <br /></td></tr>
+<tr class="separator:ab039ccc53f0607b6a3a434baf57bb219"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -174,8 +171,8 @@ template&lt;typename CommType &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5da67d4675ec22052e3d438ee96b6b99" name="a5da67d4675ec22052e3d438ee96b6b99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5da67d4675ec22052e3d438ee96b6b99">&#9670;&#160;</a></span>AutoTuneStallGuard()</h2>
+<a id="ab039ccc53f0607b6a3a434baf57bb219" name="ab039ccc53f0607b6a3a434baf57bb219"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab039ccc53f0607b6a3a434baf57bb219">&#9670;&#160;</a></span>AutoTuneStallGuard()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -186,7 +183,7 @@ template&lt;typename CommType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; TMC51x0::Tuning::AutoTuneStallGuard </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Tuning::AutoTuneStallGuard </td>
           <td>(</td>
           <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>target_velocity</em>, </span></td>
         </tr>
@@ -243,7 +240,7 @@ template&lt;typename CommType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Comprehensive automatic StallGuard tuning with safe current margin and optional encoder verification. </p>
+<p>Comprehensive automatic <a class="el" href="structtmc51x0_1_1TMC51x0_1_1StallGuard.html" title="StallGuard2 subsystem (COOLCONF/DRV_STATUS + SW_MODE interactions)">StallGuard</a> tuning with safe current margin and optional encoder verification. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target_velocity</td><td>Target velocity for tuning (most important - optimal SGT is determined here) </td></tr>
@@ -262,8 +259,8 @@ template&lt;typename CommType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
 <p>This is an enhanced version of TuneStallGuard that implements comprehensive automatic tuning following Trinamic application note AN-002 guidelines and industry best practices:</p>
 <p><b>Key Features:</b></p><ul>
-<li><b>Safe Current Margin</b>: Reduces motor current by specified margin (in mA) for safer tuning and improved StallGuard sensitivity. Current is automatically restored after tuning.</li>
-<li><b>Comprehensive Preparation</b>: Disables interfering features (CoolStep, StallGuard filter, stop-on-stall) during tuning, then restores them afterward.</li>
+<li><b>Safe Current Margin</b>: Reduces motor current by specified margin (in mA) for safer tuning and improved <a class="el" href="structtmc51x0_1_1TMC51x0_1_1StallGuard.html" title="StallGuard2 subsystem (COOLCONF/DRV_STATUS + SW_MODE interactions)">StallGuard</a> sensitivity. Current is automatically restored after tuning.</li>
+<li><b>Comprehensive Preparation</b>: Disables interfering features (CoolStep, <a class="el" href="structtmc51x0_1_1TMC51x0_1_1StallGuard.html" title="StallGuard2 subsystem (COOLCONF/DRV_STATUS + SW_MODE interactions)">StallGuard</a> filter, stop-on-stall) during tuning, then restores them afterward.</li>
 <li><b>Systematic SGT Scanning</b>: Searches for optimal SGT value that provides SG_RESULT in the ideal range (100-500) at no-load, ensuring reliable stall detection.</li>
 <li><b>Velocity Range Validation</b>: Tests optimal SGT at min/max velocities to determine actual operating range.</li>
 <li><b>Optional <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Encoder.html" title="Encoder subsystem.">Encoder</a> Verification</b>: If encoder is available, can verify stall detection accuracy (requires external implementation).</li>
@@ -272,7 +269,7 @@ template&lt;typename CommType &gt; </div>
 <li>Save current motor settings (IRUN, IHOLD, GLOBAL_SCALER, CoolStep config)</li>
 <li>Apply safe current margin if specified (reduces current for safer tuning)</li>
 <li>Disable CoolStep (SGMIN=0) to prevent current modulation during tuning</li>
-<li>Disable StallGuard filter (SFILT=0) for immediate response during calibration</li>
+<li>Disable <a class="el" href="structtmc51x0_1_1TMC51x0_1_1StallGuard.html" title="StallGuard2 subsystem (COOLCONF/DRV_STATUS + SW_MODE interactions)">StallGuard</a> filter (SFILT=0) for immediate response during calibration</li>
 <li>Disable stop-on-stall to allow manual observation during tuning</li>
 <li>Find optimal SGT at target velocity (primary goal)</li>
 <li>Verify optimal SGT works at min/max velocities (if specified)</li>
@@ -290,102 +287,17 @@ All settings (current, CoolStep, filter) are automatically restored after tuning
 This function takes several seconds to complete (typically 5-30 seconds depending on SGT range) </dd>
 <dd>
 For best results, ensure the motor is unloaded during tuning</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a4d3fdec0ca82702e94137abc937733c2" title="Automatically tune StallGuard threshold (SGT) with comprehensive velocity range analysis.">TuneStallGuard()</a> for a simpler version without current margin handling </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a410f4063ad9462424cbfbb351cc8a657" title="Automatically tune StallGuard threshold (SGT) with comprehensive velocity range analysis.">TuneStallGuard()</a> for a simpler version without current margin handling </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc51x0_1_1TMC51x0_1_1Tuning_a5da67d4675ec22052e3d438ee96b6b99_cgraph.svg" width="492" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc51x0_1_1TMC51x0_1_1Tuning_ab039ccc53f0607b6a3a434baf57bb219_cgraph.svg" width="492" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="aac6f2742ad151d0a8ef858cd15cf1a6c" name="aac6f2742ad151d0a8ef858cd15cf1a6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac6f2742ad151d0a8ef858cd15cf1a6c">&#9670;&#160;</a></span>TuneStallGuard() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename CommType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; TMC51x0::Tuning::TuneStallGuard </td>
-          <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>target_velocity</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int8_t &amp;</td>          <td class="paramname"><span class="paramname"><em>final_sgt</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int8_t</td>          <td class="paramname"><span class="paramname"><em>min_sgt</em><span class="paramdefsep"> = </span><span class="paramdefval">-10</span>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int8_t</td>          <td class="paramname"><span class="paramname"><em>max_sgt</em><span class="paramdefsep"> = </span><span class="paramdefval">63</span>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>acceleration</em><span class="paramdefsep"> = </span><span class="paramdefval">0.06F</span>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>min_velocity</em><span class="paramdefsep"> = </span><span class="paramdefval">0.0F</span>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>max_velocity</em><span class="paramdefsep"> = </span><span class="paramdefval">0.0F</span>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>velocity_unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a></span>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>acceleration_unit</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">Unit::RevPerSec</a></span></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Legacy overload: Automatically tune StallGuard threshold (SGT) </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">target_velocity</td><td>Velocity to tune at </td></tr>
-    <tr><td class="paramname">final_sgt</td><td>Reference to store the tuned SGT value </td></tr>
-    <tr><td class="paramname">min_sgt</td><td>Minimum SGT to try (default: -10) </td></tr>
-    <tr><td class="paramname">max_sgt</td><td>Maximum SGT to try (default: 63) </td></tr>
-    <tr><td class="paramname">acceleration</td><td>Acceleration/deceleration (default: 3000.0f steps/s^2) </td></tr>
-    <tr><td class="paramname">min_velocity</td><td>Minimum velocity to verify tuning at (0 = disabled) </td></tr>
-    <tr><td class="paramname">max_velocity</td><td>Maximum velocity to verify tuning at (0 = disabled) </td></tr>
-    <tr><td class="paramname">velocity_unit</td><td>Unit for velocity parameters (default: RevPerSec) </td></tr>
-    <tr><td class="paramname">acceleration_unit</td><td>Unit for acceleration parameter (default: RevPerSec, RPM is not valid) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated</a></b></dt><dd>Use the overload that returns <a class="el" href="structtmc51x0_1_1StallGuardTuningResult.html" title="Result structure for StallGuard2 threshold (SGT) tuning.">StallGuardTuningResult</a> for comprehensive results</dd></dl>
-<p>This is a convenience wrapper around the new comprehensive tuning function. For better results and velocity range analysis, use the <a class="el" href="structtmc51x0_1_1StallGuardTuningResult.html" title="Result structure for StallGuard2 threshold (SGT) tuning.">StallGuardTuningResult</a> version. </p>
-
-</div>
-</div>
-<a id="a4d3fdec0ca82702e94137abc937733c2" name="a4d3fdec0ca82702e94137abc937733c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d3fdec0ca82702e94137abc937733c2">&#9670;&#160;</a></span>TuneStallGuard() <span class="overload">[2/2]</span></h2>
+<a id="a410f4063ad9462424cbfbb351cc8a657" name="a410f4063ad9462424cbfbb351cc8a657"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a410f4063ad9462424cbfbb351cc8a657">&#9670;&#160;</a></span>TuneStallGuard()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -396,7 +308,7 @@ template&lt;typename CommType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; TMC51x0::Tuning::TuneStallGuard </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Tuning::TuneStallGuard </td>
           <td>(</td>
           <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>target_velocity</em>, </span></td>
         </tr>
@@ -448,7 +360,7 @@ template&lt;typename CommType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Automatically tune StallGuard threshold (SGT) with comprehensive velocity range analysis. </p>
+<p>Automatically tune <a class="el" href="structtmc51x0_1_1TMC51x0_1_1StallGuard.html" title="StallGuard2 subsystem (COOLCONF/DRV_STATUS + SW_MODE interactions)">StallGuard</a> threshold (SGT) with comprehensive velocity range analysis. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target_velocity</td><td>Target velocity for tuning (most important - optimal SGT is determined here) </td></tr>
@@ -483,7 +395,7 @@ If min/max velocities are not possible, actual_min_velocity and actual_max_veloc
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc51x0_1_1TMC51x0_1_1Tuning_a4d3fdec0ca82702e94137abc937733c2_cgraph.svg" width="927" height="70"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc51x0_1_1TMC51x0_1_1Tuning_a410f4063ad9462424cbfbb351cc8a657_cgraph.svg" width="1016" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -517,7 +429,7 @@ template&lt;typename CommType &gt; </div>
 </div>
 <hr/>The documentation for this struct was generated from the following files:<ul>
 <li><a class="el" href="tmc51x0_8hpp_source.html">tmc51x0.hpp</a></li>
-<li><a class="el" href="tmc51x0_8cpp_source.html">tmc51x0.cpp</a></li>
+<li><a class="el" href="tmc51x0_8cpp.html">tmc51x0.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -55,5 +55,6 @@ var espnow__protocol_8hpp =
     [ "crc16_ccitt", "espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740", null ],
     [ "ESPNOW_MAX_PAYLOAD", "espnow__protocol_8hpp.html#a4608441df3e488ee211a1ae34a0d5159", null ],
     [ "ESPNOW_SYNC_BYTE", "espnow__protocol_8hpp.html#aa7c5e0728b0dcea06f43dbd07863d579", null ],
+    [ "UI_BOARD_MAC_", "espnow__protocol_8hpp.html#a2a4adb34269d3b39e3b058ed89c0f1dd", null ],
     [ "WIFI_CHANNEL", "espnow__protocol_8hpp.html#a98ebb7458d234a38d7ae44ddebd93366", null ]
 ];

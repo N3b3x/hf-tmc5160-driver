@@ -120,12 +120,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac43b4089ca441ddb3771c3395c2d2743" id="r_ac43b4089ca441ddb3771c3395c2d2743"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetmc51x0.html#af3d18824bf231d968c6c33bd1aaeae5f">CommMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac43b4089ca441ddb3771c3395c2d2743">GetMode</a> () const noexcept</td></tr>
 <tr class="memdesc:ac43b4089ca441ddb3771c3395c2d2743"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the underlying communication mode used by this interface.  <br /></td></tr>
 <tr class="separator:ac43b4089ca441ddb3771c3395c2d2743"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ad7ff22bfd2e0259405c840f0d93427" id="r_a1ad7ff22bfd2e0259405c840f0d93427"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ad7ff22bfd2e0259405c840f0d93427">ReadRegister</a> (uint8_t address, uint8_t daisy_chain_position=0) noexcept</td></tr>
-<tr class="memdesc:a1ad7ff22bfd2e0259405c840f0d93427"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a 32-bit register from the TMC5160.  <br /></td></tr>
-<tr class="separator:a1ad7ff22bfd2e0259405c840f0d93427"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe44583c7551eaf4044eac8ed39d5fd8" id="r_abe44583c7551eaf4044eac8ed39d5fd8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe44583c7551eaf4044eac8ed39d5fd8">WriteRegister</a> (uint8_t address, uint32_t value, uint8_t daisy_chain_position=0) noexcept</td></tr>
-<tr class="memdesc:abe44583c7551eaf4044eac8ed39d5fd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a 32-bit register to the TMC5160.  <br /></td></tr>
-<tr class="separator:abe44583c7551eaf4044eac8ed39d5fd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f8be8e7c99eff55a7a2f068635d28e3" id="r_a5f8be8e7c99eff55a7a2f068635d28e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f8be8e7c99eff55a7a2f068635d28e3">ReadRegister</a> (uint8_t address, uint8_t address_param=0) noexcept</td></tr>
+<tr class="memdesc:a5f8be8e7c99eff55a7a2f068635d28e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a 32-bit register from the TMC5160.  <br /></td></tr>
+<tr class="separator:a5f8be8e7c99eff55a7a2f068635d28e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1e2141f032dcc66e5e7562fd98fef8f" id="r_ac1e2141f032dcc66e5e7562fd98fef8f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac1e2141f032dcc66e5e7562fd98fef8f">WriteRegister</a> (uint8_t address, uint32_t value, uint8_t address_param=0) noexcept</td></tr>
+<tr class="memdesc:ac1e2141f032dcc66e5e7562fd98fef8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a 32-bit register to the TMC5160.  <br /></td></tr>
+<tr class="separator:ac1e2141f032dcc66e5e7562fd98fef8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad16d15399e9208eabb772d6e518a5e98" id="r_ad16d15399e9208eabb772d6e518a5e98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad16d15399e9208eabb772d6e518a5e98">GpioSet</a> (<a class="el" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb">TMC51x0CtrlPin</a> pin, <a class="el" href="namespacetmc51x0.html#a066cfe7d73f5a7f546c6d7215c0b4577">GpioSignal</a> signal) noexcept</td></tr>
 <tr class="memdesc:ad16d15399e9208eabb772d6e518a5e98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GPIO pin signal state (output control)  <br /></td></tr>
 <tr class="separator:ad16d15399e9208eabb772d6e518a5e98"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,6 +144,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae3a5e93e4f03f7dce22dbe476f42e6ae" id="r_ae3a5e93e4f03f7dce22dbe476f42e6ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3a5e93e4f03f7dce22dbe476f42e6ae">DelayUs</a> (uint32_t us) noexcept</td></tr>
 <tr class="memdesc:ae3a5e93e4f03f7dce22dbe476f42e6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delay execution for specified microseconds.  <br /></td></tr>
 <tr class="separator:ae3a5e93e4f03f7dce22dbe476f42e6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97dde03652157dbe9d6f9d29cefaf0ee" id="r_a97dde03652157dbe9d6f9d29cefaf0ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97dde03652157dbe9d6f9d29cefaf0ee">SetPowerEnabled</a> (bool enabled) noexcept</td></tr>
+<tr class="memdesc:a97dde03652157dbe9d6f9d29cefaf0ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable power to the <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> (optional)  <br /></td></tr>
+<tr class="separator:a97dde03652157dbe9d6f9d29cefaf0ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8b4aadbdb0b590766b5bcf2579a2af2" id="r_af8b4aadbdb0b590766b5bcf2579a2af2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af8b4aadbdb0b590766b5bcf2579a2af2">PowerCycle</a> (uint32_t power_off_ms=20, uint32_t power_on_settle_ms=20) noexcept</td></tr>
+<tr class="memdesc:af8b4aadbdb0b590766b5bcf2579a2af2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power-cycle the <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> (optional)  <br /></td></tr>
+<tr class="separator:af8b4aadbdb0b590766b5bcf2579a2af2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac066818679e165ce389c9d8b263f73ff" id="r_ac066818679e165ce389c9d8b263f73ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac066818679e165ce389c9d8b263f73ff">SetClkFreq</a> (uint32_t frequency_hz) noexcept</td></tr>
 <tr class="memdesc:ac066818679e165ce389c9d8b263f73ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set external clock frequency on CLK pin (optional)  <br /></td></tr>
 <tr class="separator:ac066818679e165ce389c9d8b263f73ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -404,7 +410,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1CommInterface_ae20e456634dc99586a02612061370ed2_icgraph.svg" width="199" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1CommInterface_ae20e456634dc99586a02612061370ed2_icgraph.svg" width="435" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -784,8 +790,56 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a id="a1ad7ff22bfd2e0259405c840f0d93427" name="a1ad7ff22bfd2e0259405c840f0d93427"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ad7ff22bfd2e0259405c840f0d93427">&#9670;&#160;</a></span>ReadRegister()</h2>
+<a id="af8b4aadbdb0b590766b5bcf2579a2af2" name="af8b4aadbdb0b590766b5bcf2579a2af2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8b4aadbdb0b590766b5bcf2579a2af2">&#9670;&#160;</a></span>PowerCycle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1CommInterface.html">tmc51x0::CommInterface</a>&lt; Derived &gt;::PowerCycle </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>power_off_ms</em><span class="paramdefsep"> = </span><span class="paramdefval">20</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>power_on_settle_ms</em><span class="paramdefsep"> = </span><span class="paramdefval">20</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Power-cycle the <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> (optional) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">power_off_ms</td><td>Time to keep power disabled (milliseconds) </td></tr>
+    <tr><td class="paramname">power_on_settle_ms</td><td>Time to wait after re-enabling power (milliseconds) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or <a class="el" href="namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3a40aa75f8e8cfdf7b660c5620e953229f" title="Feature not supported by this chip variant.">ErrorCode::UNSUPPORTED</a></dd></dl>
+<p>Default implementation uses SetPowerEnabled(false/true) and <a class="el" href="#ae20e456634dc99586a02612061370ed2" title="Delay execution for specified milliseconds.">DelayMs()</a>. Derived classes may override this to implement board-specific sequencing.</p>
+<dl class="section note"><dt>Note</dt><dd>If <a class="el" href="#a97dde03652157dbe9d6f9d29cefaf0ee" title="Enable/disable power to the TMC51x0 (optional)">SetPowerEnabled()</a> is not implemented, this will return <a class="el" href="namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3a40aa75f8e8cfdf7b660c5620e953229f" title="Feature not supported by this chip variant.">ErrorCode::UNSUPPORTED</a>. </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1CommInterface_af8b4aadbdb0b590766b5bcf2579a2af2_cgraph.svg" width="435" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a5f8be8e7c99eff55a7a2f068635d28e3" name="a5f8be8e7c99eff55a7a2f068635d28e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f8be8e7c99eff55a7a2f068635d28e3">&#9670;&#160;</a></span>ReadRegister()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -803,7 +857,7 @@ template&lt;typename Derived &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>daisy_chain_position</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span>&#160;)</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>address_param</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -817,21 +871,25 @@ template&lt;typename Derived &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">address</td><td>Register address (0x00-0x73) </td></tr>
-    <tr><td class="paramname">daisy_chain_position</td><td>Position in daisy chain (0 = first chip/single chip, default: 0) Only used for SPI daisy-chaining. Ignored for UART. </td></tr>
+    <tr><td class="paramname">address_param</td><td>Transport-specific addressing parameter:<ul>
+<li><b>SPI</b>: daisy-chain position (0 = first chip/single chip)</li>
+<li><b>UART</b>: UART node address (0-254) for multi-node chains </li>
+</ul>
+</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result&lt;uint32_t&gt; containing the register value, or error code</dd></dl>
-<p>Each <a class="el" href="classtmc51x0_1_1CommInterface.html" title="CRTP-based communication interface for register read/write operations.">CommInterface</a> instance can be shared by multiple TMC5160 drivers on the same bus. For daisy-chaining, the daisy_chain_position parameter specifies which chip in the chain to address. For multi-chip setups with separate CSN pins, use separate <a class="el" href="classtmc51x0_1_1CommInterface.html" title="CRTP-based communication interface for register read/write operations.">CommInterface</a> instances or set daisy_chain_position to 0. </p>
+<p>Each <a class="el" href="classtmc51x0_1_1CommInterface.html" title="CRTP-based communication interface for register read/write operations.">CommInterface</a> instance can be shared by multiple TMC5160 drivers on the same bus. The meaning of <code>address_param</code> depends on the active communication mode (SPI vs UART). </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1CommInterface_a1ad7ff22bfd2e0259405c840f0d93427_cgraph.svg" width="199" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1CommInterface_a5f8be8e7c99eff55a7a2f068635d28e3_cgraph.svg" width="199" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1CommInterface_a1ad7ff22bfd2e0259405c840f0d93427_icgraph.svg" width="199" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1CommInterface_a5f8be8e7c99eff55a7a2f068635d28e3_icgraph.svg" width="199" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -917,8 +975,52 @@ supply external clock." </dd></dl>
 
 </div>
 </div>
-<a id="abe44583c7551eaf4044eac8ed39d5fd8" name="abe44583c7551eaf4044eac8ed39d5fd8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe44583c7551eaf4044eac8ed39d5fd8">&#9670;&#160;</a></span>WriteRegister()</h2>
+<a id="a97dde03652157dbe9d6f9d29cefaf0ee" name="a97dde03652157dbe9d6f9d29cefaf0ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97dde03652157dbe9d6f9d29cefaf0ee">&#9670;&#160;</a></span>SetPowerEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1CommInterface.html">tmc51x0::CommInterface</a>&lt; Derived &gt;::SetPowerEnabled </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>enabled</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enable/disable power to the <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> (optional) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enabled</td><td>true to enable power, false to disable power </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or <a class="el" href="namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3a40aa75f8e8cfdf7b660c5620e953229f" title="Feature not supported by this chip variant.">ErrorCode::UNSUPPORTED</a></dd></dl>
+<p>This hook allows a platform to control a load switch / regulator that supplies the <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> (typically VIO, or a dedicated enable pin for the device's logic rail). It is OPTIONAL.</p>
+<p>If not implemented by the derived class, the default implementation returns <a class="el" href="namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3a40aa75f8e8cfdf7b660c5620e953229f" title="Feature not supported by this chip variant.">ErrorCode::UNSUPPORTED</a>.</p>
+<dl class="section note"><dt>Note</dt><dd>This is intended for a true hard reset (power-on reset). Most users will not provide this capability. </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1CommInterface_a97dde03652157dbe9d6f9d29cefaf0ee_icgraph.svg" width="435" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ac1e2141f032dcc66e5e7562fd98fef8f" name="ac1e2141f032dcc66e5e7562fd98fef8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1e2141f032dcc66e5e7562fd98fef8f">&#9670;&#160;</a></span>WriteRegister()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -941,7 +1043,7 @@ template&lt;typename Derived &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>daisy_chain_position</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span>&#160;)</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>address_param</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -956,21 +1058,25 @@ template&lt;typename Derived &gt; </div>
   <table class="params">
     <tr><td class="paramname">address</td><td>Register address (0x00-0x73) </td></tr>
     <tr><td class="paramname">value</td><td>32-bit value to write </td></tr>
-    <tr><td class="paramname">daisy_chain_position</td><td>Position in daisy chain (0 = first chip/single chip, default: 0) Only used for SPI daisy-chaining. Ignored for UART. </td></tr>
+    <tr><td class="paramname">address_param</td><td>Transport-specific addressing parameter:<ul>
+<li><b>SPI</b>: daisy-chain position (0 = first chip/single chip)</li>
+<li><b>UART</b>: UART node address (0-254) for multi-node chains </li>
+</ul>
+</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error code</dd></dl>
-<p>Each <a class="el" href="classtmc51x0_1_1CommInterface.html" title="CRTP-based communication interface for register read/write operations.">CommInterface</a> instance can be shared by multiple TMC5160 drivers on the same bus. For daisy-chaining, the daisy_chain_position parameter specifies which chip in the chain to address. For multi-chip setups with separate CSN pins, use separate <a class="el" href="classtmc51x0_1_1CommInterface.html" title="CRTP-based communication interface for register read/write operations.">CommInterface</a> instances or set daisy_chain_position to 0. </p>
+<p>Each <a class="el" href="classtmc51x0_1_1CommInterface.html" title="CRTP-based communication interface for register read/write operations.">CommInterface</a> instance can be shared by multiple TMC5160 drivers on the same bus. The meaning of <code>address_param</code> depends on the active communication mode (SPI vs UART). </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1CommInterface_abe44583c7551eaf4044eac8ed39d5fd8_cgraph.svg" width="199" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1CommInterface_ac1e2141f032dcc66e5e7562fd98fef8f_cgraph.svg" width="199" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1CommInterface_abe44583c7551eaf4044eac8ed39d5fd8_icgraph.svg" width="199" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1CommInterface_ac1e2141f032dcc66e5e7562fd98fef8f_icgraph.svg" width="199" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

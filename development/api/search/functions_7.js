@@ -1,19 +1,15 @@
 var searchData=
 [
   ['handle_5fpacket_0',['handle_packet',['../espnow__receiver_8cpp.html#a211bc701b043b68b2a0a4462c1ca43c5',1,'espnow_receiver.cpp']]],
-  ['handleaction_1',['HandleAction',['../fatigue__test__encoder_8cpp.html#a8ce1f915a66444f56a02e43bde4cc0c5',1,'HandleAction(const std::vector&lt; std::string &gt; &amp;args, FatigueTestMotion &amp;motion) noexcept:&#160;fatigue_test_encoder.cpp'],['../fatigue__test__stallguard_8cpp.html#a8ce1f915a66444f56a02e43bde4cc0c5',1,'HandleAction(const std::vector&lt; std::string &gt; &amp;args, FatigueTestMotion &amp;motion) noexcept:&#160;fatigue_test_stallguard.cpp']]],
-  ['handlebounds_2',['HandleBounds',['../fatigue__test__encoder_8cpp.html#a7f27ed3ceaa20624467d32d610c23d7f',1,'HandleBounds(const std::vector&lt; std::string &gt; &amp;args, FatigueTestMotion &amp;motion) noexcept:&#160;fatigue_test_encoder.cpp'],['../fatigue__test__stallguard_8cpp.html#a7f27ed3ceaa20624467d32d610c23d7f',1,'HandleBounds(const std::vector&lt; std::string &gt; &amp;args, FatigueTestMotion &amp;motion) noexcept:&#160;fatigue_test_stallguard.cpp']]],
-  ['handlecycles_3',['HandleCycles',['../fatigue__test__encoder_8cpp.html#a4ac23d1ea8f5bd1fdc1b62db4484e296',1,'HandleCycles(const std::vector&lt; std::string &gt; &amp;args, FatigueTestMotion &amp;motion) noexcept:&#160;fatigue_test_encoder.cpp'],['../fatigue__test__stallguard_8cpp.html#a4ac23d1ea8f5bd1fdc1b62db4484e296',1,'HandleCycles(const std::vector&lt; std::string &gt; &amp;args, FatigueTestMotion &amp;motion) noexcept:&#160;fatigue_test_stallguard.cpp']]],
-  ['handledwell_4',['HandleDwell',['../fatigue__test__encoder_8cpp.html#a0d0d2bd312981ee8f4d16b1c83d6faf2',1,'HandleDwell(const std::vector&lt; std::string &gt; &amp;args, FatigueTestMotion &amp;motion) noexcept:&#160;fatigue_test_encoder.cpp'],['../fatigue__test__stallguard_8cpp.html#a0d0d2bd312981ee8f4d16b1c83d6faf2',1,'HandleDwell(const std::vector&lt; std::string &gt; &amp;args, FatigueTestMotion &amp;motion) noexcept:&#160;fatigue_test_stallguard.cpp']]],
-  ['handlefrequency_5',['HandleFrequency',['../fatigue__test__encoder_8cpp.html#a468299e399fa65feaeb080eecfcd654f',1,'HandleFrequency(const std::vector&lt; std::string &gt; &amp;args, FatigueTestMotion &amp;motion) noexcept:&#160;fatigue_test_encoder.cpp'],['../fatigue__test__stallguard_8cpp.html#a468299e399fa65feaeb080eecfcd654f',1,'HandleFrequency(const std::vector&lt; std::string &gt; &amp;args, FatigueTestMotion &amp;motion) noexcept:&#160;fatigue_test_stallguard.cpp']]],
-  ['handlehelp_6',['HandleHelp',['../main_8cpp.html#abda5ef2605b311dad7dc06cc34373d11',1,'main.cpp']]],
-  ['handlepause_7',['HandlePause',['../main_8cpp.html#a7be4813339ba1cdf1178b4b5d079c512',1,'main.cpp']]],
-  ['handlereset_8',['HandleReset',['../main_8cpp.html#ac1d6f7a1c228ebd547a7e992d2356eb1',1,'main.cpp']]],
-  ['handleresume_9',['HandleResume',['../main_8cpp.html#ab522c1d58a0763675c4a3d7256071a13',1,'main.cpp']]],
-  ['handleset_10',['HandleSet',['../main_8cpp.html#a35d4c27b82242d39e341bf9d35d50a0f',1,'main.cpp']]],
-  ['handlestart_11',['HandleStart',['../main_8cpp.html#af9a61f18ec0bf52c35280fd8748a0679',1,'main.cpp']]],
-  ['handlestatus_12',['HandleStatus',['../fatigue__test__encoder_8cpp.html#ae1393ad4a23750c0916847967cc4032f',1,'HandleStatus(const std::vector&lt; std::string &gt; &amp;args, FatigueTestMotion &amp;motion) noexcept:&#160;fatigue_test_encoder.cpp'],['../main_8cpp.html#ac11dd858f48b436538b6a2bb4981db1c',1,'HandleStatus(FatigueTest::FatigueTestMotion &amp;motion) noexcept:&#160;main.cpp'],['../fatigue__test__stallguard_8cpp.html#ae1393ad4a23750c0916847967cc4032f',1,'HandleStatus(const std::vector&lt; std::string &gt; &amp;args, FatigueTestMotion &amp;motion) noexcept:&#160;fatigue_test_stallguard.cpp']]],
-  ['handlestop_13',['HandleStop',['../main_8cpp.html#a39ccc4c53283879fb74a5a5538daa92b',1,'main.cpp']]],
-  ['haserror_14',['HasError',['../structtmc51x0_1_1SpiStatus.html#aad5ded7d89400550078e2115489aec50',1,'tmc51x0::SpiStatus']]],
-  ['homing_15',['Homing',['../structtmc51x0_1_1TMC51x0_1_1Homing.html#a9a99b07ff6f208b17a12f29e684c171f',1,'tmc51x0::TMC51x0::Homing']]]
+  ['handlehelp_1',['HandleHelp',['../main_8cpp.html#abda5ef2605b311dad7dc06cc34373d11',1,'main.cpp']]],
+  ['handlepause_2',['HandlePause',['../main_8cpp.html#a7be4813339ba1cdf1178b4b5d079c512',1,'main.cpp']]],
+  ['handlereset_3',['HandleReset',['../main_8cpp.html#ac1d6f7a1c228ebd547a7e992d2356eb1',1,'main.cpp']]],
+  ['handleresume_4',['HandleResume',['../main_8cpp.html#ab522c1d58a0763675c4a3d7256071a13',1,'main.cpp']]],
+  ['handleset_5',['HandleSet',['../main_8cpp.html#a35d4c27b82242d39e341bf9d35d50a0f',1,'main.cpp']]],
+  ['handlestart_6',['HandleStart',['../main_8cpp.html#af9a61f18ec0bf52c35280fd8748a0679',1,'main.cpp']]],
+  ['handlestatus_7',['HandleStatus',['../main_8cpp.html#ac11dd858f48b436538b6a2bb4981db1c',1,'main.cpp']]],
+  ['handlestop_8',['HandleStop',['../main_8cpp.html#a39ccc4c53283879fb74a5a5538daa92b',1,'main.cpp']]],
+  ['hardreset_9',['HardReset',['../classtmc51x0_1_1TMC51x0.html#a0819cf562bcbb0a747b56fc15a8da5b1',1,'tmc51x0::TMC51x0']]],
+  ['haserror_10',['HasError',['../structtmc51x0_1_1SpiStatus.html#aad5ded7d89400550078e2115489aec50',1,'tmc51x0::SpiStatus']]],
+  ['homing_11',['Homing',['../structtmc51x0_1_1TMC51x0_1_1Homing.html#a9a99b07ff6f208b17a12f29e684c171f',1,'tmc51x0::TMC51x0::Homing']]]
 ];

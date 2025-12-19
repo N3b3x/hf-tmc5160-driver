@@ -96,8 +96,7 @@ $(function(){initNavTree('tmc51x0_8hpp.html',''); initResizable(); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">tmc51x0.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -110,16 +109,15 @@ $(function(){initNavTree('tmc51x0_8hpp.html',''); initResizable(); });
 <code>#include &quot;<a class="el" href="tmc51x0__registers_8hpp_source.html">registers/tmc51x0_registers.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="tmc51x0__result_8hpp_source.html">tmc51x0_result.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="tmc51x0__types_8hpp_source.html">tmc51x0_types.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="tmc51x0_8cpp_source.html">../src/tmc51x0.cpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tmc51x0.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0_8hpp__incl.svg" width="1072" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0_8hpp__incl.svg" width="1087" height="330"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0_8hpp__dep__incl.svg" width="2364" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0_8hpp__dep__incl.svg" width="1542" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="tmc51x0_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -129,20 +127,41 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0&lt; CommType &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main class representing a <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> stepper motor driver (TMC5130 &amp; TMC5160)  <a href="classtmc51x0_1_1TMC51x0.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1HardResetOptions.html">tmc51x0::TMC51x0&lt; CommType &gt;::HardResetOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options for <a class="el" href="classtmc51x0_1_1TMC51x0.html#a0819cf562bcbb0a747b56fc15a8da5b1" title="Perform a hard reset (power-cycle when available, else software reset)">HardReset()</a>  <a href="structtmc51x0_1_1TMC51x0_1_1HardResetOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1RampControl.html">tmc51x0::TMC51x0&lt; CommType &gt;::RampControl</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ramp control subsystem.  <a href="structtmc51x0_1_1TMC51x0_1_1RampControl.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Switches.html">tmc51x0::TMC51x0&lt; CommType &gt;::Switches</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference switches / endstops subsystem (SW_MODE / XLATCH)  <a href="structtmc51x0_1_1TMC51x0_1_1Switches.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Events.html">tmc51x0::TMC51x0&lt; CommType &gt;::Events</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motion events / status outputs (X_COMPARE, RAMP_STAT clear)  <a href="structtmc51x0_1_1TMC51x0_1_1Events.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1MotorControl.html">tmc51x0::TMC51x0&lt; CommType &gt;::MotorControl</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor control subsystem.  <a href="structtmc51x0_1_1TMC51x0_1_1MotorControl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Thresholds.html">tmc51x0::TMC51x0&lt; CommType &gt;::Thresholds</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Velocity thresholds / mode thresholds (TPWMTHRS, TCOOLTHRS, THIGH)  <a href="structtmc51x0_1_1TMC51x0_1_1Thresholds.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1PowerStage.html">tmc51x0::TMC51x0&lt; CommType &gt;::PowerStage</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power stage + protection subsystem (DRV_CONF, SHORT_CONF)  <a href="structtmc51x0_1_1TMC51x0_1_1PowerStage.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Communication.html">tmc51x0::TMC51x0&lt; CommType &gt;::Communication</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Communication.html" title="Communication subsystem.">Communication</a> subsystem.  <a href="structtmc51x0_1_1TMC51x0_1_1Communication.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Io.html">tmc51x0::TMC51x0&lt; CommType &gt;::Io</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chip IO / mode pins / IOIN helpers.  <a href="structtmc51x0_1_1TMC51x0_1_1Io.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Encoder.html">tmc51x0::TMC51x0&lt; CommType &gt;::Encoder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Encoder.html" title="Encoder subsystem.">Encoder</a> subsystem.  <a href="structtmc51x0_1_1TMC51x0_1_1Encoder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Diagnostics.html">tmc51x0::TMC51x0&lt; CommType &gt;::Diagnostics</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Diagnostics.html" title="Diagnostics subsystem.">Diagnostics</a> subsystem.  <a href="structtmc51x0_1_1TMC51x0_1_1Diagnostics.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Status.html">tmc51x0::TMC51x0&lt; CommType &gt;::Status</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Status.html" title="Status / monitoring subsystem (read-only)">Status</a> / monitoring subsystem (read-only)  <a href="structtmc51x0_1_1TMC51x0_1_1Status.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1StallGuard.html">tmc51x0::TMC51x0&lt; CommType &gt;::StallGuard</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">StallGuard2 subsystem (COOLCONF/DRV_STATUS + SW_MODE interactions)  <a href="structtmc51x0_1_1TMC51x0_1_1StallGuard.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html">tmc51x0::TMC51x0&lt; CommType &gt;::Tuning</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Tuning.html" title="Tuning subsystem for automatic parameter optimization.">Tuning</a> subsystem for automatic parameter optimization.  <a href="structtmc51x0_1_1TMC51x0_1_1Tuning.html#details">More...</a><br /></td></tr>
@@ -156,9 +175,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1UartConfig.html">tmc51x0::TMC51x0&lt; CommType &gt;::UartConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART configuration subsystem.  <a href="structtmc51x0_1_1TMC51x0_1_1UartConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Protection.html">tmc51x0::TMC51x0&lt; CommType &gt;::Protection</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Protection.html" title="Protection subsystem.">Protection</a> subsystem.  <a href="structtmc51x0_1_1TMC51x0_1_1Protection.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html">tmc51x0::TMC51x0&lt; CommType &gt;::WriteOnlyRegisters</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -166,31 +182,11 @@ Classes</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacetmc51x0" id="r_namespacetmc51x0"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html">tmc51x0</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a0af86be4595f72f72796cf56746e41fd" id="r_a0af86be4595f72f72796cf56746e41fd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0af86be4595f72f72796cf56746e41fd">TMC51X0_HEADER_INCLUDED</a></td></tr>
-<tr class="separator:a0af86be4595f72f72796cf56746e41fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Main TMC51x0 stepper motor driver interface and subsystem classes (TMC5130 &amp; TMC5160) </p>
 <p>This file contains the primary TMC51x0 class and all its subsystem interfaces for comprehensive stepper motor control functionality including ramp control, motor configuration, encoder integration, diagnostics, and protection systems. Supports both TMC5130 and TMC5160 chips with automatic detection. </p>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a0af86be4595f72f72796cf56746e41fd" name="a0af86be4595f72f72796cf56746e41fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0af86be4595f72f72796cf56746e41fd">&#9670;&#160;</a></span>TMC51X0_HEADER_INCLUDED</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TMC51X0_HEADER_INCLUDED</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classFatigueTest_1_1FatigueTestMotion.html#aa21a0ad5beb06b24d87d0b2755339d4a" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="classFatigueTest_1_1FatigueTestMotion.html#ab76244c4aa6363f37451985846c1debe" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="280,-126 148,-126 148,-96 280,-96 280,-126"/>
 <text text-anchor="start" x="156" y="-114" font-family="Helvetica,sans-Serif" font-size="10.00">FatigueTest::FatigueTest</text>
 <text text-anchor="middle" x="214" y="-103" font-family="Helvetica,sans-Serif" font-size="10.00">Motion::GetStatus</text>
@@ -39,7 +39,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classFatigueTest_1_1FatigueTestMotion.html#a23d9f8430ce81b0f5b1376209bf9b0e6" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="classFatigueTest_1_1FatigueTestMotion.html#a8bbda0702fdd8f9ed10c82e49d093ba9" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="280,-78 148,-78 148,-48 280,-48 280,-78"/>
 <text text-anchor="start" x="156" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">FatigueTest::FatigueTest</text>
 <text text-anchor="middle" x="214" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">Motion::IsRunning</text>

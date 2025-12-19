@@ -110,12 +110,12 @@ $(function(){initNavTree('tmc51x0__types_8hpp.html',''); initResizable(); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tmc51x0_types.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__types_8hpp__incl.svg" width="314" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__types_8hpp__incl.svg" width="296" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__types_8hpp__dep__incl.svg" width="2648" height="359"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__types_8hpp__dep__incl.svg" width="2454" height="359"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="tmc51x0__types_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -133,6 +133,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1PowerStageParameters.html">tmc51x0::PowerStageParameters</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power stage parameters structure.  <a href="structtmc51x0_1_1PowerStageParameters.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1MicrostepChangeOptions.html">tmc51x0::MicrostepChangeOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options for changing microstep resolution (CHOPCONF.MRES)  <a href="structtmc51x0_1_1MicrostepChangeOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1ChopperConfig.html">tmc51x0::ChopperConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chopper configuration structure.  <a href="structtmc51x0_1_1ChopperConfig.html#details">More...</a><br /></td></tr>
@@ -204,9 +207,6 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacetmc51x0_1_1MathConstants" id="r_namespacetmc51x0_1_1MathConstants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MathConstants.html">tmc51x0::MathConstants</a></td></tr>
 <tr class="memdesc:namespacetmc51x0_1_1MathConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mathematical constants. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacetmc51x0_1_1MotorCalcLegacyConstants" id="r_namespacetmc51x0_1_1MotorCalcLegacyConstants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MotorCalcLegacyConstants.html">tmc51x0::MotorCalcLegacyConstants</a></td></tr>
-<tr class="memdesc:namespacetmc51x0_1_1MotorCalcLegacyConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor calculation constants. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
@@ -457,15 +457,6 @@ Variables</h2></td></tr>
 <tr class="memitem:acb6742f022495d32d5335c6b5b67a97a" id="r_acb6742f022495d32d5335c6b5b67a97a"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MathConstants.html#acb6742f022495d32d5335c6b5b67a97a">tmc51x0::MathConstants::DEGREES_PER_REV</a> = 360.0F</td></tr>
 <tr class="memdesc:acb6742f022495d32d5335c6b5b67a97a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Degrees per revolution.  <br /></td></tr>
 <tr class="separator:acb6742f022495d32d5335c6b5b67a97a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa6378ce049fe60d1aa901ec1da62fec" id="r_afa6378ce049fe60d1aa901ec1da62fec"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MotorCalcLegacyConstants.html#afa6378ce049fe60d1aa901ec1da62fec">tmc51x0::MotorCalcLegacyConstants::IRUN_CALC_DIVISOR</a> = 0.046875F</td></tr>
-<tr class="memdesc:afa6378ce049fe60d1aa901ec1da62fec"><td class="mdescLeft">&#160;</td><td class="mdescRight">1.5/32, from datasheet formula for IRUN calculation  <br /></td></tr>
-<tr class="separator:afa6378ce049fe60d1aa901ec1da62fec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ee5fa8819b611cdde475b3382743146" id="r_a0ee5fa8819b611cdde475b3382743146"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MotorCalcLegacyConstants.html#a0ee5fa8819b611cdde475b3382743146">tmc51x0::MotorCalcLegacyConstants::TARGET_RUN_CURRENT_RATIO</a> = 0.8F</td></tr>
-<tr class="memdesc:a0ee5fa8819b611cdde475b3382743146"><td class="mdescLeft">&#160;</td><td class="mdescRight">80% of rated current for run current target  <br /></td></tr>
-<tr class="separator:a0ee5fa8819b611cdde475b3382743146"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d57385f9735b3343ce5396709352c90" id="r_a7d57385f9735b3343ce5396709352c90"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MotorCalcLegacyConstants.html#a7d57385f9735b3343ce5396709352c90">tmc51x0::MotorCalcLegacyConstants::TARGET_HOLD_CURRENT_RATIO</a> = 0.3F</td></tr>
-<tr class="memdesc:a7d57385f9735b3343ce5396709352c90"><td class="mdescLeft">&#160;</td><td class="mdescRight">30% of rated current for hold current target  <br /></td></tr>
-<tr class="separator:a7d57385f9735b3343ce5396709352c90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Type definitions and enumerations for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160) </p>

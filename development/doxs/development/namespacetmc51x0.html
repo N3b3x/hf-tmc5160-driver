@@ -117,9 +117,6 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacetmc51x0_1_1MotorCalcConstants" id="r_namespacetmc51x0_1_1MotorCalcConstants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MotorCalcConstants.html">MotorCalcConstants</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacetmc51x0_1_1MotorCalcLegacyConstants" id="r_namespacetmc51x0_1_1MotorCalcLegacyConstants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MotorCalcLegacyConstants.html">MotorCalcLegacyConstants</a></td></tr>
-<tr class="memdesc:namespacetmc51x0_1_1MotorCalcLegacyConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor calculation constants. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacetmc51x0_1_1RegisterConstants" id="r_namespacetmc51x0_1_1RegisterConstants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1RegisterConstants.html">RegisterConstants</a></td></tr>
 <tr class="memdesc:namespacetmc51x0_1_1RegisterConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register conversion constants. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -207,6 +204,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1MechanicalSystem.html">MechanicalSystem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mechanical system configuration structure.  <a href="structtmc51x0_1_1MechanicalSystem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1MicrostepChangeOptions.html">MicrostepChangeOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options for changing microstep resolution (CHOPCONF.MRES)  <a href="structtmc51x0_1_1MicrostepChangeOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1MotorSpec.html">MotorSpec</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor specification structure.  <a href="structtmc51x0_1_1MotorSpec.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,6 +215,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniontmc51x0_1_1MSLUTSEL__Register.html">MSLUTSEL_Register</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Microstep lookup table segmentation definition register (MSLUTSEL)  <a href="uniontmc51x0_1_1MSLUTSEL__Register.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniontmc51x0_1_1NODECONF__Register.html">NODECONF_Register</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART node address configuration register (NODECONF)  <a href="uniontmc51x0_1_1NODECONF__Register.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniontmc51x0_1_1OFFSET__READ__Register.html">OFFSET_READ_Register</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset calibration result register (OFFSET_READ)  <a href="uniontmc51x0_1_1OFFSET__READ__Register.html#details">More...</a><br /></td></tr>
@@ -257,9 +260,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniontmc51x0_1_1SHORT__CONF__Register.html">SHORT_CONF_Register</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short detector configuration register (SHORT_CONF)  <a href="uniontmc51x0_1_1SHORT__CONF__Register.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniontmc51x0_1_1SLAVECONF__Register.html">SLAVECONF_Register</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART slave configuration register (SLAVECONF)  <a href="uniontmc51x0_1_1SLAVECONF__Register.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1SpiCommand.html">SpiCommand</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">TMC5160 SPI command structure with union-based frame representation.  <a href="structtmc51x0_1_1SpiCommand.html#details">More...</a><br /></td></tr>
@@ -601,6 +601,19 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a5fa3afe83ae033126d377aed702dddf6" id="r_a5fa3afe83ae033126d377aed702dddf6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a5fa3afe83ae033126d377aed702dddf6"><td class="memTemplItemLeft" align="right" valign="top">static constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5fa3afe83ae033126d377aed702dddf6">constrain</a> (T value, T min_val, T max_val) noexcept</td></tr>
+<tr class="separator:a5fa3afe83ae033126d377aed702dddf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6360e59e574521bae72c9b548eb29f0" id="r_ad6360e59e574521bae72c9b548eb29f0"><td class="memItemLeft" align="right" valign="top">static int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6360e59e574521bae72c9b548eb29f0">round_to_int32</a> (float value) noexcept</td></tr>
+<tr class="separator:ad6360e59e574521bae72c9b548eb29f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a7265cc09cba99affeeae51b6490348" id="r_a4a7265cc09cba99affeeae51b6490348"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a7265cc09cba99affeeae51b6490348">round_to_uint32_nonneg</a> (float value) noexcept</td></tr>
+<tr class="separator:a4a7265cc09cba99affeeae51b6490348"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98dfd26a5eeed2974ce057fb9d203098" id="r_a98dfd26a5eeed2974ce057fb9d203098"><td class="memTemplParams" colspan="2">template&lt;typename CommType &gt; </td></tr>
+<tr class="memitem:a98dfd26a5eeed2974ce057fb9d203098"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a98dfd26a5eeed2974ce057fb9d203098">TestVelocityWithSGT</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;driver, float velocity_steps, int8_t sgt, uint16_t &amp;sg_result_out, int sample_count=8)</td></tr>
+<tr class="separator:a98dfd26a5eeed2974ce057fb9d203098"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaf6037a652c82c965a94e0433e13a7c" id="r_afaf6037a652c82c965a94e0433e13a7c"><td class="memTemplParams" colspan="2">template&lt;typename CommType &gt; </td></tr>
+<tr class="memitem:afaf6037a652c82c965a94e0433e13a7c"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afaf6037a652c82c965a94e0433e13a7c">FindWorkingVelocityRange</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;driver, int8_t sgt, float start_velocity, float direction, float &amp;found_velocity, uint16_t &amp;sg_result_out, float min_velocity=100.0f, float max_velocity=100000.0f)</td></tr>
+<tr class="separator:afaf6037a652c82c965a94e0433e13a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca4ec7876f2bc35ce259eee027485701" id="r_aca4ec7876f2bc35ce259eee027485701"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca4ec7876f2bc35ce259eee027485701">GetRegisterDef</a> (uint8_t address)</td></tr>
 <tr class="separator:aca4ec7876f2bc35ce259eee027485701"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac742f74b3a0ad095b8db62d07300c8c9" id="r_ac742f74b3a0ad095b8db62d07300c8c9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac742f74b3a0ad095b8db62d07300c8c9">CalculateMotorCurrent</a> (const <a class="el" href="structtmc51x0_1_1MotorSpec.html">MotorSpec</a> &amp;motor_spec, uint32_t sense_resistor_mohm, uint32_t supply_voltage_mv, uint16_t run_current_ma, uint16_t hold_current_ma, uint8_t &amp;irun, uint8_t &amp;ihold, uint16_t &amp;global_scaler) noexcept</td></tr>
@@ -663,6 +676,25 @@ Functions</h2></td></tr>
 <tr class="memitem:a03326fea54f838942f2a8b4e1d1ed01f" id="r_a03326fea54f838942f2a8b4e1d1ed01f"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a03326fea54f838942f2a8b4e1d1ed01f">ErrorMessage</a> (<a class="el" href="#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> code)</td></tr>
 <tr class="memdesc:a03326fea54f838942f2a8b4e1d1ed01f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get human-readable error message.  <br /></td></tr>
 <tr class="separator:a03326fea54f838942f2a8b4e1d1ed01f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad20f982e1ae588d4e210b3a566955613" id="r_ad20f982e1ae588d4e210b3a566955613"><td class="memTemplParams" colspan="2">template&lt;std::size_t N, typename T &gt; </td></tr>
+<tr class="memitem:ad20f982e1ae588d4e210b3a566955613"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ad20f982e1ae588d4e210b3a566955613">get</a> (<a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; T &gt; &amp;r) noexcept</td></tr>
+<tr class="memdesc:ad20f982e1ae588d4e210b3a566955613"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tuple-like access for structured bindings (C++17)  <br /></td></tr>
+<tr class="separator:ad20f982e1ae588d4e210b3a566955613"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5b364c363b276e92a44c5e3f2c0bd15" id="r_ae5b364c363b276e92a44c5e3f2c0bd15"><td class="memTemplParams" colspan="2">template&lt;std::size_t N, typename T &gt; </td></tr>
+<tr class="memitem:ae5b364c363b276e92a44c5e3f2c0bd15"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ae5b364c363b276e92a44c5e3f2c0bd15">get</a> (const <a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; T &gt; &amp;r) noexcept</td></tr>
+<tr class="separator:ae5b364c363b276e92a44c5e3f2c0bd15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4ed315f0b11099e0620e55cdf0b1038" id="r_ad4ed315f0b11099e0620e55cdf0b1038"><td class="memTemplParams" colspan="2">template&lt;std::size_t N, typename T &gt; </td></tr>
+<tr class="memitem:ad4ed315f0b11099e0620e55cdf0b1038"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ad4ed315f0b11099e0620e55cdf0b1038">get</a> (<a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; T &gt; &amp;&amp;r) noexcept</td></tr>
+<tr class="separator:ad4ed315f0b11099e0620e55cdf0b1038"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a257ff48df86e06b78f94c8f6153932b1" id="r_a257ff48df86e06b78f94c8f6153932b1"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
+<tr class="memitem:a257ff48df86e06b78f94c8f6153932b1"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if_t&lt; N==0, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a257ff48df86e06b78f94c8f6153932b1">get</a> (<a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; &amp;r) noexcept</td></tr>
+<tr class="separator:a257ff48df86e06b78f94c8f6153932b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d0c7c80a6e56655b3714e2e445395db" id="r_a5d0c7c80a6e56655b3714e2e445395db"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
+<tr class="memitem:a5d0c7c80a6e56655b3714e2e445395db"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if_t&lt; N==0, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5d0c7c80a6e56655b3714e2e445395db">get</a> (const <a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; &amp;r) noexcept</td></tr>
+<tr class="separator:a5d0c7c80a6e56655b3714e2e445395db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6818ace9cb52dc7f7363b93d6778ae77" id="r_a6818ace9cb52dc7f7363b93d6778ae77"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
+<tr class="memitem:a6818ace9cb52dc7f7363b93d6778ae77"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if_t&lt; N==0, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6818ace9cb52dc7f7363b93d6778ae77">get</a> (<a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; &amp;&amp;r) noexcept</td></tr>
+<tr class="separator:a6818ace9cb52dc7f7363b93d6778ae77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a29f23dd48483983409679925db836440" name="a29f23dd48483983409679925db836440"></a>
@@ -2240,7 +2272,7 @@ For automatic tuning compatibility, IRUN will be at least 8 </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ac742f74b3a0ad095b8db62d07300c8c9_icgraph.svg" width="492" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ac742f74b3a0ad095b8db62d07300c8c9_icgraph.svg" width="535" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2291,7 +2323,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a2e6968ff0ef7ea91a3cfd74286cd84a8_icgraph.svg" width="491" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a2e6968ff0ef7ea91a3cfd74286cd84a8_icgraph.svg" width="502" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2336,7 +2368,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a735799ad1db46015a3121adbf1cec9ac_icgraph.svg" width="498" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a735799ad1db46015a3121adbf1cec9ac_icgraph.svg" width="508" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2381,7 +2413,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a3da6e7a7011465219730793db49358e0_icgraph.svg" width="502" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a3da6e7a7011465219730793db49358e0_icgraph.svg" width="512" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2442,10 +2474,46 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Lower current limit in milliamps, or 0 if calculation not possible</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Based on datasheet equation: I_Lower_Limit = t_BLANK * f_PWM * V_M / R_COIL Where t_BLANK depends on TBL setting </dd></dl>
+
+</div>
+</div>
+<a id="a5fa3afe83ae033126d377aed702dddf6" name="a5fa3afe83ae033126d377aed702dddf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fa3afe83ae033126d377aed702dddf6">&#9670;&#160;</a></span>constrain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static constexpr T tmc51x0::constrain </td>
+          <td>(</td>
+          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>value</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>min_val</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>max_val</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ad149efd95c065a993dbdc5372239927c_icgraph.svg" width="504" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a5fa3afe83ae033126d377aed702dddf6_icgraph.svg" width="447" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2524,6 +2592,249 @@ Here is the caller graph for this function:</div>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a03326fea54f838942f2a8b4e1d1ed01f_icgraph.svg" width="460" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="afaf6037a652c82c965a94e0433e13a7c" name="afaf6037a652c82c965a94e0433e13a7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afaf6037a652c82c965a94e0433e13a7c">&#9670;&#160;</a></span>FindWorkingVelocityRange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tmc51x0::FindWorkingVelocityRange </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>driver</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t</td>          <td class="paramname"><span class="paramname"><em>sgt</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>start_velocity</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>direction</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;</td>          <td class="paramname"><span class="paramname"><em>found_velocity</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t &amp;</td>          <td class="paramname"><span class="paramname"><em>sg_result_out</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>min_velocity</em><span class="paramdefsep"> = </span><span class="paramdefval">100.0f</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>max_velocity</em><span class="paramdefsep"> = </span><span class="paramdefval">100000.0f</span></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_afaf6037a652c82c965a94e0433e13a7c_cgraph.svg" width="770" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_afaf6037a652c82c965a94e0433e13a7c_icgraph.svg" width="476" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ae5b364c363b276e92a44c5e3f2c0bd15" name="ae5b364c363b276e92a44c5e3f2c0bd15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5b364c363b276e92a44c5e3f2c0bd15">&#9670;&#160;</a></span>get() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t N, typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">decltype(auto) tmc51x0::get </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>r</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5d0c7c80a6e56655b3714e2e445395db" name="a5d0c7c80a6e56655b3714e2e445395db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d0c7c80a6e56655b3714e2e445395db">&#9670;&#160;</a></span>get() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::enable_if_t&lt; N==0, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> &gt; tmc51x0::get </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>r</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a5d0c7c80a6e56655b3714e2e445395db_cgraph.svg" width="334" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ad4ed315f0b11099e0620e55cdf0b1038" name="ad4ed315f0b11099e0620e55cdf0b1038"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4ed315f0b11099e0620e55cdf0b1038">&#9670;&#160;</a></span>get() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t N, typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">decltype(auto) tmc51x0::get </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; T &gt; &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>r</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad20f982e1ae588d4e210b3a566955613" name="ad20f982e1ae588d4e210b3a566955613"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad20f982e1ae588d4e210b3a566955613">&#9670;&#160;</a></span>get() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t N, typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">decltype(auto) tmc51x0::get </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>r</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tuple-like access for structured bindings (C++17) </p>
+<p>Structured bindings use unqualified get&lt;N&gt;(obj) found via ADL for tuple-like types. These overloads make <code>auto [err, value] = result;</code> work reliably. </p>
+
+</div>
+</div>
+<a id="a6818ace9cb52dc7f7363b93d6778ae77" name="a6818ace9cb52dc7f7363b93d6778ae77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6818ace9cb52dc7f7363b93d6778ae77">&#9670;&#160;</a></span>get() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::enable_if_t&lt; N==0, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> &gt; tmc51x0::get </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>r</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a6818ace9cb52dc7f7363b93d6778ae77_cgraph.svg" width="334" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a257ff48df86e06b78f94c8f6153932b1" name="a257ff48df86e06b78f94c8f6153932b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a257ff48df86e06b78f94c8f6153932b1">&#9670;&#160;</a></span>get() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::enable_if_t&lt; N==0, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> &gt; tmc51x0::get </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>r</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a257ff48df86e06b78f94c8f6153932b1_cgraph.svg" width="334" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2637,6 +2948,61 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a67bdb4d4ee51eb6afb6483731177af81_icgraph.svg" width="520" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="ad6360e59e574521bae72c9b548eb29f0" name="ad6360e59e574521bae72c9b548eb29f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6360e59e574521bae72c9b548eb29f0">&#9670;&#160;</a></span>round_to_int32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int32_t tmc51x0::round_to_int32 </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ad6360e59e574521bae72c9b548eb29f0_icgraph.svg" width="486" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a4a7265cc09cba99affeeae51b6490348" name="a4a7265cc09cba99affeeae51b6490348"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a7265cc09cba99affeeae51b6490348">&#9670;&#160;</a></span>round_to_uint32_nonneg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static uint32_t tmc51x0::round_to_uint32_nonneg </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -2895,6 +3261,54 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Distance in millimeters</dd></dl>
 <p>For lead screws: distance = (steps / steps_per_rev) * lead_screw_pitch_mm </p>
+
+</div>
+</div>
+<a id="a98dfd26a5eeed2974ce057fb9d203098" name="a98dfd26a5eeed2974ce057fb9d203098"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98dfd26a5eeed2974ce057fb9d203098">&#9670;&#160;</a></span>TestVelocityWithSGT()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tmc51x0::TestVelocityWithSGT </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>driver</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>velocity_steps</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t</td>          <td class="paramname"><span class="paramname"><em>sgt</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t &amp;</td>          <td class="paramname"><span class="paramname"><em>sg_result_out</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>sample_count</em><span class="paramdefsep"> = </span><span class="paramdefval">8</span></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a98dfd26a5eeed2974ce057fb9d203098_cgraph.svg" width="503" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a98dfd26a5eeed2974ce057fb9d203098_icgraph.svg" width="746" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

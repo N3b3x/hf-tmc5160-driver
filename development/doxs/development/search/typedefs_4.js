@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['platform_0',['Platform',['../structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__CORE__DRIVER_01_4.html#a124dd8135f0c3fe3093a9a1a62368258',1,'tmc51x0_test_config::TestRigConfig&lt; TestRigType::TEST_RIG_CORE_DRIVER &gt;::Platform'],['../structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4.html#a506cbf015a248a1ce53e6d7270d8209f',1,'tmc51x0_test_config::TestRigConfig&lt; TestRigType::TEST_RIG_FATIGUE &gt;::Platform']]]
+  ['resultvoid_0',['ResultVoid',['../namespacetmc51x0.html#a29f23dd48483983409679925db836440',1,'tmc51x0']]],
+  ['rigconfig_1',['RigConfig',['../classFatigueTest_1_1EncoderBoundsFinderImpl.html#a2e3d78627398a3550128dbf73a8b5730',1,'FatigueTest::EncoderBoundsFinderImpl::RigConfig'],['../classFatigueTest_1_1StallGuardBoundsFinderImpl.html#a7a009506827831fa3dfc17d845419c53',1,'FatigueTest::StallGuardBoundsFinderImpl::RigConfig']]]
 ];

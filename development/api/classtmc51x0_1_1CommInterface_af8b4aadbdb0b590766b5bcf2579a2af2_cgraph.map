@@ -1,0 +1,8 @@
+<map id="tmc51x0::CommInterface::PowerCycle" name="tmc51x0::CommInterface::PowerCycle">
+<area shape="rect" id="Node000001" title="Power&#45;cycle the TMC51x0 (optional)" alt="" coords="5,61,193,101"/>
+<area shape="rect" id="Node000002" href="$classtmc51x0_1_1CommInterface.html#ae20e456634dc99586a02612061370ed2" title="Delay execution for specified milliseconds." alt="" coords="241,29,429,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,66,227,61,228,67,194,71"/>
+<area shape="rect" id="Node000003" href="$classtmc51x0_1_1CommInterface.html#a97dde03652157dbe9d6f9d29cefaf0ee" title="Enable/disable power to the TMC51x0 (optional)" alt="" coords="241,93,429,133"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="194,91,228,96,227,101,193,97"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="292,30,289,20,296,10,312,5,335,3,363,6,378,13,375,18,361,11,335,8,313,10,299,15,294,21,297,28"/>
+</map>

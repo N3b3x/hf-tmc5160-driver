@@ -95,6 +95,7 @@ $(function(){initNavTree('tmc51x0_8cpp.html',''); initResizable(); });
 
 <div class="header">
   <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">tmc51x0.cpp File Reference</div></div>
@@ -106,41 +107,60 @@ $(function(){initNavTree('tmc51x0_8cpp.html',''); initResizable(); });
 <div class="textblock"><code>#include &quot;<a class="el" href="tmc51x0_8hpp_source.html">../inc/tmc51x0.hpp</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;limits&gt;</code><br />
 <code>#include &quot;<a class="el" href="tmc51x0__motor__calc_8hpp_source.html">../inc/features/tmc51x0_motor_calc.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tmc51x0.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0_8cpp__incl.svg" width="1112" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0_8cpp__incl.svg" width="1491" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-</div><div class="textblock"><div class="dynheader">
-This graph shows which files directly or indirectly include this file:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0_8cpp__dep__incl.svg" width="2234" height="198"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div>
-<p><a href="tmc51x0_8cpp_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacetmc51x0" id="r_namespacetmc51x0"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html">tmc51x0</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ad344fbcd7adf34d35d52b811b6fe0627" id="r_ad344fbcd7adf34d35d52b811b6fe0627"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad344fbcd7adf34d35d52b811b6fe0627">TMC51X0_IMPL</a></td></tr>
 <tr class="separator:ad344fbcd7adf34d35d52b811b6fe0627"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26b9980fe703ad12faba15a0e4484ca1" id="r_a26b9980fe703ad12faba15a0e4484ca1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a26b9980fe703ad12faba15a0e4484ca1">TMC51X0_COMPILING_SRC</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a26b9980fe703ad12faba15a0e4484ca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a6b5c74bc9056ff38815021d63986f681" id="r_a6b5c74bc9056ff38815021d63986f681"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a6b5c74bc9056ff38815021d63986f681"><td class="memTemplItemLeft" align="right" valign="top">static constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6b5c74bc9056ff38815021d63986f681">constrain</a> (T value, T min_val, T max_val) noexcept</td></tr>
-<tr class="separator:a6b5c74bc9056ff38815021d63986f681"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdceff5e2e5ab9351a3af9a68566920d" id="r_afdceff5e2e5ab9351a3af9a68566920d"><td class="memTemplParams" colspan="2">template&lt;typename CommType &gt; </td></tr>
-<tr class="memitem:afdceff5e2e5ab9351a3af9a68566920d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afdceff5e2e5ab9351a3af9a68566920d">TestVelocityWithSGT</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;driver, float velocity_steps, int8_t sgt, uint16_t &amp;sg_result_out, int sample_count=8)</td></tr>
-<tr class="separator:afdceff5e2e5ab9351a3af9a68566920d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13bc96a1c20a549d52e531f1642f7509" id="r_a13bc96a1c20a549d52e531f1642f7509"><td class="memTemplParams" colspan="2">template&lt;typename CommType &gt; </td></tr>
-<tr class="memitem:a13bc96a1c20a549d52e531f1642f7509"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a13bc96a1c20a549d52e531f1642f7509">FindWorkingVelocityRange</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;driver, int8_t sgt, float start_velocity, float direction, float &amp;found_velocity, uint16_t &amp;sg_result_out, float min_velocity=100.0f, float max_velocity=100000.0f)</td></tr>
-<tr class="separator:a13bc96a1c20a549d52e531f1642f7509"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fa3afe83ae033126d377aed702dddf6" id="r_a5fa3afe83ae033126d377aed702dddf6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a5fa3afe83ae033126d377aed702dddf6"><td class="memTemplItemLeft" align="right" valign="top">static constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#a5fa3afe83ae033126d377aed702dddf6">tmc51x0::constrain</a> (T value, T min_val, T max_val) noexcept</td></tr>
+<tr class="separator:a5fa3afe83ae033126d377aed702dddf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6360e59e574521bae72c9b548eb29f0" id="r_ad6360e59e574521bae72c9b548eb29f0"><td class="memItemLeft" align="right" valign="top">static int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#ad6360e59e574521bae72c9b548eb29f0">tmc51x0::round_to_int32</a> (float value) noexcept</td></tr>
+<tr class="separator:ad6360e59e574521bae72c9b548eb29f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a7265cc09cba99affeeae51b6490348" id="r_a4a7265cc09cba99affeeae51b6490348"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#a4a7265cc09cba99affeeae51b6490348">tmc51x0::round_to_uint32_nonneg</a> (float value) noexcept</td></tr>
+<tr class="separator:a4a7265cc09cba99affeeae51b6490348"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98dfd26a5eeed2974ce057fb9d203098" id="r_a98dfd26a5eeed2974ce057fb9d203098"><td class="memTemplParams" colspan="2">template&lt;typename CommType &gt; </td></tr>
+<tr class="memitem:a98dfd26a5eeed2974ce057fb9d203098"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#a98dfd26a5eeed2974ce057fb9d203098">tmc51x0::TestVelocityWithSGT</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;driver, float velocity_steps, int8_t sgt, uint16_t &amp;sg_result_out, int sample_count=8)</td></tr>
+<tr class="separator:a98dfd26a5eeed2974ce057fb9d203098"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaf6037a652c82c965a94e0433e13a7c" id="r_afaf6037a652c82c965a94e0433e13a7c"><td class="memTemplParams" colspan="2">template&lt;typename CommType &gt; </td></tr>
+<tr class="memitem:afaf6037a652c82c965a94e0433e13a7c"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#afaf6037a652c82c965a94e0433e13a7c">tmc51x0::FindWorkingVelocityRange</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;driver, int8_t sgt, float start_velocity, float direction, float &amp;found_velocity, uint16_t &amp;sg_result_out, float min_velocity=100.0f, float max_velocity=100000.0f)</td></tr>
+<tr class="separator:afaf6037a652c82c965a94e0433e13a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of TMC51x0 driver methods (TMC5130 &amp; TMC5160) </p>
 <p>This file contains the template implementation of all TMC51x0 driver methods. It is included by <a class="el" href="tmc51x0_8hpp.html" title="Main TMC51x0 stepper motor driver interface and subsystem classes (TMC5130 &amp; TMC5160)">tmc51x0.hpp</a> to provide header-only template instantiation. Supports both TMC5130 and TMC5160 chips. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a26b9980fe703ad12faba15a0e4484ca1" name="a26b9980fe703ad12faba15a0e4484ca1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26b9980fe703ad12faba15a0e4484ca1">&#9670;&#160;</a></span>TMC51X0_COMPILING_SRC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TMC51X0_COMPILING_SRC&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ad344fbcd7adf34d35d52b811b6fe0627" name="ad344fbcd7adf34d35d52b811b6fe0627"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad344fbcd7adf34d35d52b811b6fe0627">&#9670;&#160;</a></span>TMC51X0_IMPL</h2>
 
@@ -152,159 +172,6 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a6b5c74bc9056ff38815021d63986f681" name="a6b5c74bc9056ff38815021d63986f681"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b5c74bc9056ff38815021d63986f681">&#9670;&#160;</a></span>constrain()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static constexpr T constrain </td>
-          <td>(</td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>value</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>min_val</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>max_val</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0_8cpp_a6b5c74bc9056ff38815021d63986f681_icgraph.svg" width="383" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a13bc96a1c20a549d52e531f1642f7509" name="a13bc96a1c20a549d52e531f1642f7509"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13bc96a1c20a549d52e531f1642f7509">&#9670;&#160;</a></span>FindWorkingVelocityRange()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename CommType &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool FindWorkingVelocityRange </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>driver</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int8_t</td>          <td class="paramname"><span class="paramname"><em>sgt</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>start_velocity</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>direction</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float &amp;</td>          <td class="paramname"><span class="paramname"><em>found_velocity</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t &amp;</td>          <td class="paramname"><span class="paramname"><em>sg_result_out</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>min_velocity</em><span class="paramdefsep"> = </span><span class="paramdefval">100.0f</span>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>max_velocity</em><span class="paramdefsep"> = </span><span class="paramdefval">100000.0f</span></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0_8cpp_a13bc96a1c20a549d52e531f1642f7509_cgraph.svg" width="680" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0_8cpp_a13bc96a1c20a549d52e531f1642f7509_icgraph.svg" width="452" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="afdceff5e2e5ab9351a3af9a68566920d" name="afdceff5e2e5ab9351a3af9a68566920d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afdceff5e2e5ab9351a3af9a68566920d">&#9670;&#160;</a></span>TestVelocityWithSGT()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename CommType &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TestVelocityWithSGT </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>driver</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>velocity_steps</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int8_t</td>          <td class="paramname"><span class="paramname"><em>sgt</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t &amp;</td>          <td class="paramname"><span class="paramname"><em>sg_result_out</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>sample_count</em><span class="paramdefsep"> = </span><span class="paramdefval">8</span></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0_8cpp_afdceff5e2e5ab9351a3af9a68566920d_cgraph.svg" width="438" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0_8cpp_afdceff5e2e5ab9351a3af9a68566920d_icgraph.svg" width="656" height="70"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

@@ -1,12 +1,9 @@
 <map id="test_overtemperature_protection" name="test_overtemperature_protection">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,93,169,133"/>
-<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="217,101,357,126"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,111,203,111,203,116,169,116"/>
-<area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#a01546734dfbb01aa89c186b7bdf20bab" title="Configure driver from test rig selection." alt="" coords="405,29,617,69"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="332,98,427,71,428,76,334,103"/>
-<area shape="rect" id="Node000004" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="430,93,593,133"/>
-<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="357,111,416,111,416,116,357,116"/>
-<area shape="rect" id="Node000005" href="$internal__ramp__comprehensive__test_8cpp.html#a266d3b939b723d24f9230b6b22b3b8a9" title="Verify mode pins match expected communication mode." alt="" coords="443,158,580,183"/>
-<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="335,124,406,143,443,152,442,157,405,148,333,129"/>
-<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="469,30,467,20,474,10,489,5,511,3,537,6,552,13,549,18,536,11,511,8,490,10,477,15,472,21,475,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,169,75"/>
+<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="217,42,357,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,52,203,52,203,57,169,57"/>
+<area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="405,5,568,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="357,42,391,37,392,42,358,47"/>
+<area shape="rect" id="Node000004" href="$internal__ramp__comprehensive__test_8cpp.html#a266d3b939b723d24f9230b6b22b3b8a9" title="Verify mode pins match expected communication mode." alt="" coords="418,70,555,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="358,62,405,68,404,74,357,67"/>
 </map>

@@ -1,9 +1,16 @@
 <map id="CommandOutput::PrintFooter" name="CommandOutput::PrintFooter">
-<area shape="rect" id="Node000001" title=" " alt="" coords="376,38,588,63"/>
-<area shape="rect" id="Node000002" href="$main_8cpp.html#abda5ef2605b311dad7dc06cc34373d11" title="Handle HELP command." alt="" coords="224,13,323,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="363,39,323,34,323,29,364,34"/>
-<area shape="rect" id="Node000004" href="$main_8cpp.html#ac11dd858f48b436538b6a2bb4981db1c" title="Handle STATUS command." alt="" coords="219,62,328,87"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="363,67,329,71,328,66,362,62"/>
-<area shape="rect" id="Node000003" href="$classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68" title="Process a command line." alt="" coords="5,5,171,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="210,28,171,28,171,23,210,23"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="936,31,1148,56"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#abda5ef2605b311dad7dc06cc34373d11" title="Handle HELP command." alt="" coords="784,5,883,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="923,32,883,27,883,21,924,26"/>
+<area shape="rect" id="Node000007" href="$main_8cpp.html#ac11dd858f48b436538b6a2bb4981db1c" title="Handle STATUS command." alt="" coords="779,55,888,80"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="923,60,889,64,888,58,922,54"/>
+<area shape="rect" id="Node000003" href="$classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68" title="Process a command line." alt="" coords="565,23,731,63"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="771,29,731,35,731,29,770,24"/>
+<area shape="rect" id="Node000004" href="$classUartCommandParser.html#a867cccdf009c2a69f1edf9a02f50c984" title="Read and process commands from UART (line&#45;by&#45;line)" alt="" coords="343,23,517,63"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="552,46,518,46,518,41,552,41"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html#a5a8d7cdba17444119b8f942be87ffe68" title=" " alt="" coords="140,31,295,56"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="329,46,295,46,295,41,329,41"/>
+<area shape="rect" id="Node000006" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,31,92,56"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="126,46,92,46,92,41,126,41"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="765,61,731,57,731,51,765,56"/>
 </map>

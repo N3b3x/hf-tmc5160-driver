@@ -1,16 +1,13 @@
 <map id="test_unit_conversions" name="test_unit_conversions">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,150,169,175"/>
-<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="253,101,393,126"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,147,247,126,248,132,149,153"/>
-<area shape="rect" id="Node000006" href="$namespacetmc51x0.html#a67bdb4d4ee51eb6afb6483731177af81" title="Convert millimeters to steps." alt="" coords="241,150,404,175"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="169,160,227,160,227,165,169,165"/>
-<area shape="rect" id="Node000007" href="$namespacetmc51x0.html#ab0c004bd8dcf257419def5c59d0081d0" title="Convert RPM to steps per second." alt="" coords="217,199,428,225"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="149,173,248,194,247,199,148,178"/>
-<area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#a01546734dfbb01aa89c186b7bdf20bab" title="Configure driver from test rig selection." alt="" coords="476,29,688,69"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="375,98,486,70,488,75,376,103"/>
-<area shape="rect" id="Node000004" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="501,93,663,133"/>
-<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="393,111,487,111,487,116,393,116"/>
-<area shape="rect" id="Node000005" href="$internal__ramp__comprehensive__test_8cpp.html#a266d3b939b723d24f9230b6b22b3b8a9" title="Verify mode pins match expected communication mode." alt="" coords="513,158,651,183"/>
-<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="382,123,511,152,510,158,380,129"/>
-<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="534,30,531,20,539,10,556,5,582,3,612,6,628,13,626,18,611,11,582,8,557,10,542,15,536,21,539,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,90,169,115"/>
+<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="253,41,393,66"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,87,247,66,248,72,149,93"/>
+<area shape="rect" id="Node000005" href="$namespacetmc51x0.html#a67bdb4d4ee51eb6afb6483731177af81" title="Convert millimeters to steps." alt="" coords="241,90,404,115"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="169,100,227,100,227,105,169,105"/>
+<area shape="rect" id="Node000006" href="$namespacetmc51x0.html#ab0c004bd8dcf257419def5c59d0081d0" title="Convert RPM to steps per second." alt="" coords="217,139,428,165"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="149,113,248,134,247,139,148,118"/>
+<area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="476,5,639,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="393,42,462,34,463,39,393,48"/>
+<area shape="rect" id="Node000004" href="$internal__ramp__comprehensive__test_8cpp.html#a266d3b939b723d24f9230b6b22b3b8a9" title="Verify mode pins match expected communication mode." alt="" coords="489,70,626,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="393,59,476,70,475,75,393,65"/>
 </map>

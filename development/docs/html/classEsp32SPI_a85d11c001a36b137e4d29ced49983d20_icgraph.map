@@ -1,6 +1,6 @@
 <map id="Esp32SPI::Initialize" name="Esp32SPI::Initialize">
 <area shape="rect" id="Node000001" title="Initialize the SPI interface." alt="" coords="251,55,396,80"/>
-<area shape="rect" id="Node000002" href="$fatigue__test__encoder_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="61,5,147,31"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="61,5,147,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="252,54,147,30,148,25,253,49"/>
 <area shape="rect" id="Node000003" href="$abn__encoder__reader_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="61,55,147,80"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="237,70,148,70,148,65,237,65"/>

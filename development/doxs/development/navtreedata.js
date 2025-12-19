@@ -25,66 +25,69 @@
 var NAVTREE =
 [
   [ "HF-TMC51x0 Driver (TMC5130 & TMC5160)", "index.html", [
-    [ "📚 Table of Contents", "index.html#autotoc_md30", null ],
-    [ "📦 Overview", "index.html#autotoc_md31", [
-      [ "Architecture & Design", "index.html#autotoc_md32", null ],
-      [ "Key Capabilities", "index.html#autotoc_md33", null ]
+    [ "📚 Table of Contents", "index.html#autotoc_md31", null ],
+    [ "📦 Overview", "index.html#autotoc_md32", [
+      [ "Architecture & Design", "index.html#autotoc_md33", null ],
+      [ "Key Capabilities", "index.html#autotoc_md34", null ]
     ] ],
-    [ "✨ Features", "index.html#autotoc_md34", [
-      [ "🎯 Core Motor Control", "index.html#autotoc_md35", [
-        [ "RampControl Subsystem", "index.html#autotoc_md36", null ],
-        [ "MotorControl Subsystem", "index.html#autotoc_md37", null ]
+    [ "✨ Features", "index.html#autotoc_md35", [
+      [ "🎯 Core Motor Control", "index.html#autotoc_md36", [
+        [ "RampControl Subsystem", "index.html#autotoc_md37", null ],
+        [ "MotorControl Subsystem", "index.html#autotoc_md38", null ]
       ] ],
-      [ "🔍 Diagnostics & Tuning", "index.html#autotoc_md38", [
-        [ "Diagnostics Subsystem", "index.html#autotoc_md39", null ],
-        [ "Tuning Subsystem ⭐ NEW", "index.html#autotoc_md40", null ]
+      [ "🔍 Diagnostics & Tuning", "index.html#autotoc_md39", [
+        [ "Diagnostics Subsystem", "index.html#autotoc_md40", null ],
+        [ "Tuning Subsystem ⭐ NEW", "index.html#autotoc_md41", null ]
       ] ],
-      [ "🏠 Homing & Positioning", "index.html#autotoc_md41", [
-        [ "Homing Subsystem", "index.html#autotoc_md42", null ]
+      [ "🏠 Homing & Positioning", "index.html#autotoc_md42", [
+        [ "Homing Subsystem", "index.html#autotoc_md43", null ]
       ] ],
-      [ "🔄 Encoder Integration", "index.html#autotoc_md43", [
-        [ "Encoder Subsystem", "index.html#autotoc_md44", null ]
+      [ "🔄 Encoder Integration", "index.html#autotoc_md44", [
+        [ "Encoder Subsystem", "index.html#autotoc_md45", null ]
       ] ],
-      [ "🛡️ Protection Systems", "index.html#autotoc_md45", [
-        [ "Protection Subsystem", "index.html#autotoc_md46", null ]
+      [ "🛡️ Protection Systems", "index.html#autotoc_md46", [
+        [ "Protection Subsystem", "index.html#autotoc_md47", null ]
       ] ],
-      [ "🔗 Multi-Chip Communication", "index.html#autotoc_md47", [
-        [ "Communication Subsystem", "index.html#autotoc_md48", null ]
+      [ "🔗 Multi-Chip Communication", "index.html#autotoc_md48", [
+        [ "Communication Subsystem", "index.html#autotoc_md49", null ]
       ] ],
-      [ "⚙️ Advanced Features", "index.html#autotoc_md49", null ],
-      [ "🏗️ Platform & Architecture", "index.html#autotoc_md50", null ]
+      [ "⚙️ Advanced Features", "index.html#autotoc_md50", null ],
+      [ "🏗️ Platform & Architecture", "index.html#autotoc_md51", null ]
     ] ],
-    [ "🚀 Quick Start", "index.html#autotoc_md51", [
-      [ "Single Motor Setup", "index.html#autotoc_md52", null ],
-      [ "Multi-Motor Daisy Chain Setup", "index.html#autotoc_md53", null ],
-      [ "Using Physical Units", "index.html#autotoc_md54", null ]
+    [ "🚀 Quick Start", "index.html#autotoc_md52", [
+      [ "Single Motor Setup", "index.html#autotoc_md53", null ],
+      [ "Multi-Motor Daisy Chain Setup", "index.html#autotoc_md54", null ],
+      [ "Using Physical Units", "index.html#autotoc_md55", null ]
     ] ],
-    [ "🔧 Installation", "index.html#autotoc_md55", null ],
-    [ "📖 API Reference", "index.html#autotoc_md56", [
-      [ "Class Structure & Subsystems", "index.html#autotoc_md57", null ],
-      [ "Key Methods by Subsystem", "index.html#autotoc_md58", [
-        [ "RampControl Subsystem", "index.html#autotoc_md59", null ],
-        [ "MotorControl Subsystem", "index.html#autotoc_md60", null ],
-        [ "Diagnostics Subsystem", "index.html#autotoc_md61", null ],
-        [ "Tuning Subsystem ⭐ NEW", "index.html#autotoc_md62", null ],
-        [ "Homing Subsystem", "index.html#autotoc_md63", null ],
-        [ "Encoder Subsystem", "index.html#autotoc_md64", null ],
-        [ "Protection Subsystem", "index.html#autotoc_md65", null ],
-        [ "Communication Subsystem", "index.html#autotoc_md66", null ]
+    [ "🔧 Installation", "index.html#autotoc_md56", null ],
+    [ "📖 API Reference", "index.html#autotoc_md57", [
+      [ "Class Structure & Subsystems", "index.html#autotoc_md58", null ],
+      [ "Key Methods by Subsystem", "index.html#autotoc_md59", [
+        [ "RampControl Subsystem", "index.html#autotoc_md60", null ],
+        [ "Switches Subsystem", "index.html#autotoc_md61", null ],
+        [ "Thresholds Subsystem", "index.html#autotoc_md62", null ],
+        [ "PowerStage Subsystem", "index.html#autotoc_md63", null ],
+        [ "MotorControl Subsystem", "index.html#autotoc_md64", null ],
+        [ "Diagnostics Subsystem", "index.html#autotoc_md65", null ],
+        [ "Tuning Subsystem ⭐ NEW", "index.html#autotoc_md66", null ],
+        [ "Homing Subsystem", "index.html#autotoc_md67", null ],
+        [ "Encoder Subsystem", "index.html#autotoc_md68", null ],
+        [ "Protection Subsystem", "index.html#autotoc_md69", null ],
+        [ "Communication Subsystem", "index.html#autotoc_md70", null ]
       ] ],
-      [ "Multi-Chip Support", "index.html#autotoc_md67", null ],
-      [ "Unit Conversion Helpers", "index.html#autotoc_md68", null ]
+      [ "Multi-Chip Support", "index.html#autotoc_md71", null ],
+      [ "Unit Conversion Helpers", "index.html#autotoc_md72", null ]
     ] ],
-    [ "📊 Examples", "index.html#autotoc_md69", [
-      [ "Core Functionality", "index.html#autotoc_md70", null ],
-      [ "Multi-Chip Communication", "index.html#autotoc_md71", null ],
-      [ "Advanced Features", "index.html#autotoc_md72", null ],
-      [ "Motor Control & Motion", "index.html#autotoc_md73", null ],
-      [ "Specialized Applications", "index.html#autotoc_md74", null ]
+    [ "📊 Examples", "index.html#autotoc_md73", [
+      [ "Core Functionality", "index.html#autotoc_md74", null ],
+      [ "Multi-Chip Communication", "index.html#autotoc_md75", null ],
+      [ "Advanced Features", "index.html#autotoc_md76", null ],
+      [ "Motor Control & Motion", "index.html#autotoc_md77", null ],
+      [ "Specialized Applications", "index.html#autotoc_md78", null ]
     ] ],
-    [ "📚 Documentation", "index.html#autotoc_md75", null ],
-    [ "🤝 Contributing", "index.html#autotoc_md76", null ],
-    [ "📄 License", "index.html#autotoc_md77", null ],
+    [ "📚 Documentation", "index.html#autotoc_md79", null ],
+    [ "🤝 Contributing", "index.html#autotoc_md80", null ],
+    [ "📄 License", "index.html#autotoc_md81", null ],
     [ "Deprecated List", "deprecated.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Namespaces", "namespaces.html", [
@@ -126,21 +129,21 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "TestFramework_8h.html",
-"classFatigueTest_1_1FatigueTestMotion.html#a1b73c95ad6dfe1deaa3dc5a3b271bd2e",
-"classtmc51x0_1_1ConfigBuilder.html#a3a1e4201a3e535eb36cd6c6debc25890",
-"classtmc51x0_1_1TMC51x0MultiNode.html#aff420bbfed13e12933e819656c5d007c",
-"functions_vars_b.html",
-"main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79",
-"namespacetmc51x0.html#aca6b71c611ab7e217b0d3ce4208821d9a41bc94cbd8eebea13ce0491b2ac11b88",
-"structTestDriverHandle.html",
-"structtmc51x0_1_1GlobalConfig.html#ae65c6d9a0d196098717b4727edeb864a",
-"structtmc51x0_1_1StallGuardConfig.html",
-"structtmc51x0_1_1TMC51x0_1_1RampControl.html#a3cc12778351749590faaee007675efd3",
-"structtmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#a84b95652b50be25c72b9e02c858d906e",
-"structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1StallGuard.html#a9873aa90a47420534928bb556fd7ae6b",
-"tmc51x0__types_8hpp.html#a59657011cede04bf230887b9d1bf42b9",
-"uniontmc51x0_1_1DRV__STATUS__Register.html#ada187c433517e17ab0e6322bba6d5cba",
-"uniontmc51x0_1_1PWMCONF__Register.html#af1f1c792c205de7cd34dc29a321bc6b3"
+"classFatigueTest_1_1IBoundsFinder.html#ac11fe7f9ff90d16e0ff307e2a1fab6a6",
+"classtmc51x0_1_1Result_3_01void_01_4.html#a9fedc070d4dff36beefa666b640bd917",
+"espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea17130e6c806885e23770df1519b18eb7",
+"internal__ramp__comprehensive__test_8cpp.html#a31a4c053ffd992cb44486a7a9f520ab5",
+"namespacetmc51x0.html#a52bd7474fc03fcfde3c7249fea7ea055a5137485eff3ff278d233d993c8539599",
+"structEsp32SpiPinConfig.html#a132463900b6d532c41dabab359994643",
+"structtmc51x0_1_1Diag1Config.html#a9c5e0482d7947b399d486133693f2e3e",
+"structtmc51x0_1_1RampConfig.html",
+"structtmc51x0_1_1TMC51x0_1_1HardResetOptions.html#ab885e4346c76445d186b42426d55238d",
+"structtmc51x0_1_1VelocityValue.html#a7b32133fa6a0b974031ab0e39f8796f9",
+"structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1Mechanical.html",
+"tmc51x0__motor__calc_8hpp.html",
+"uniontmc51x0_1_1CHOPCONF__Register.html#a766c98cb2fbef3a3e3055f61bc7be99e",
+"uniontmc51x0_1_1IOIN__Register.html",
+"uniontmc51x0_1_1SW__MODE__Register.html#a8916fc5bc7408532083c8cba3589130c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

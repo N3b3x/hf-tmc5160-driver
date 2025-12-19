@@ -2,7 +2,7 @@ var tmc51x0__registers_8hpp =
 [
     [ "tmc51x0::GCONF_Register", "uniontmc51x0_1_1GCONF__Register.html", "uniontmc51x0_1_1GCONF__Register" ],
     [ "tmc51x0::GSTAT_Register", "uniontmc51x0_1_1GSTAT__Register.html", "uniontmc51x0_1_1GSTAT__Register" ],
-    [ "tmc51x0::SLAVECONF_Register", "uniontmc51x0_1_1SLAVECONF__Register.html", "uniontmc51x0_1_1SLAVECONF__Register" ],
+    [ "tmc51x0::NODECONF_Register", "uniontmc51x0_1_1NODECONF__Register.html", "uniontmc51x0_1_1NODECONF__Register" ],
     [ "tmc51x0::IOIN_Register", "uniontmc51x0_1_1IOIN__Register.html", "uniontmc51x0_1_1IOIN__Register" ],
     [ "tmc51x0::OTP_PROG_Register", "uniontmc51x0_1_1OTP__PROG__Register.html", "uniontmc51x0_1_1OTP__PROG__Register" ],
     [ "tmc51x0::OTP_READ_Register", "uniontmc51x0_1_1OTP__READ__Register.html", "uniontmc51x0_1_1OTP__READ__Register" ],

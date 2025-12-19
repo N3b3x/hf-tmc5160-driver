@@ -82,7 +82,7 @@ var searchData=
   ['error_5f_79',['error_',['../classtmc51x0_1_1Result.html#aafd6a20318368386272035e85800874d',1,'tmc51x0::Result::error_'],['../classtmc51x0_1_1Result_3_01void_01_4.html#a9ecd72cc69cb493259d8e7c5f261f62d',1,'tmc51x0::Result&lt; void &gt;::error_']]],
   ['espnow_5fmax_5fpayload_80',['ESPNOW_MAX_PAYLOAD',['../espnow__protocol_8hpp.html#a4608441df3e488ee211a1ae34a0d5159',1,'espnow_protocol.hpp']]],
   ['espnow_5fsync_5fbyte_81',['ESPNOW_SYNC_BYTE',['../espnow__protocol_8hpp.html#aa7c5e0728b0dcea06f43dbd07863d579',1,'espnow_protocol.hpp']]],
-  ['estimated_5ffrequency_5fhz_5f_82',['estimated_frequency_hz_',['../classFatigueTestMotion.html#a2fe846983e6761a3ca123c4eaad8e730',1,'FatigueTestMotion::estimated_frequency_hz_'],['../classFatigueTest_1_1FatigueTestMotion.html#ad0b7d76a3032bd47b9c6f3eb46bf0299',1,'FatigueTest::FatigueTestMotion::estimated_frequency_hz_']]],
+  ['estimated_5ffrequency_5fhz_5f_82',['estimated_frequency_hz_',['../classFatigueTest_1_1FatigueTestMotion.html#ad0b7d76a3032bd47b9c6f3eb46bf0299',1,'FatigueTest::FatigueTestMotion']]],
   ['event_5fpos_5freached_83',['event_pos_reached',['../uniontmc51x0_1_1RAMP__STAT__Register.html#a9e51de9cfd4f9297581bd262f5bb0109',1,'tmc51x0::RAMP_STAT_Register']]],
   ['event_5fstop_5fl_84',['event_stop_l',['../uniontmc51x0_1_1RAMP__STAT__Register.html#a9bae457ec007da344d4e55cc77159866',1,'tmc51x0::RAMP_STAT_Register']]],
   ['event_5fstop_5fr_85',['event_stop_r',['../uniontmc51x0_1_1RAMP__STAT__Register.html#a9e8a0c15414880054eee053cb5cff3f5',1,'tmc51x0::RAMP_STAT_Register']]],

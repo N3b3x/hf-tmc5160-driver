@@ -169,7 +169,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Driver initialization configuration structure. </p>
 <p>Complete configuration structure for initializing the TMC5160 driver. Contains all necessary parameters for power stage, motor, and driver operation.</p>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md20"></a>
 Automatic Current Calculation</h2>
 <p><b>IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated</b> from <code>motor_spec</code> parameters during <code>Initialize()</code>. These values are stored internally and NOT in <code>motor_spec</code>.</p>
 <p><b>Required Parameters</b> for automatic calculation:</p><ul>
@@ -184,7 +184,7 @@ Automatic Current Calculation</h2>
 <li><code>motor_spec.scaler_adjustment_percent</code>, <code>irun_adjustment_percent</code>, <code>ihold_adjustment_percent</code> (for fine-tuning)</li>
 </ul>
 <p><b>DO NOT</b> manually set IRUN, IHOLD, or GLOBAL_SCALER - they are calculated automatically.</p>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md21"></a>
 Clock Configuration</h2>
 <p><b>f_clk is automatically calculated</b> from <code>external_clk_config</code> during <code>Initialize()</code>. The actual clock frequency used for timing calculations (f_clk) is determined internally:</p><ul>
 <li>If <code>external_clk_config.frequency_hz &gt; 0</code>: f_clk = external_clk_config.frequency_hz (external clock)</li>
@@ -213,7 +213,7 @@ Clock Configuration</h2>
 </li>
 </ul>
 <p><b>DO NOT</b> manually set f_clk - it is calculated automatically from <code>external_clk_config</code>.</p>
-<h2><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 ESP32 Platform Configuration</h2>
 <p>For ESP32 examples, use helper functions from <code>esp32_tmc5160_test_config.hpp</code>:</p><ul>
 <li><code>ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg)</code></li>

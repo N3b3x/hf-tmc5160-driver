@@ -1,71 +1,75 @@
 <map id="UartCommandParser::ProcessCommand" name="UartCommandParser::ProcessCommand">
-<area shape="rect" id="Node000001" title="Process a command line." alt="" coords="5,361,171,401"/>
-<area shape="rect" id="Node000002" href="$main_8cpp.html#abda5ef2605b311dad7dc06cc34373d11" title="Handle HELP command." alt="" coords="252,104,351,129"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,360,106,314,131,255,168,192,191,164,217,139,238,126,241,131,220,143,195,167,172,195,136,257,111,316,97,361"/>
+<area shape="rect" id="Node000001" title="Process a command line." alt="" coords="5,359,171,399"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#abda5ef2605b311dad7dc06cc34373d11" title="Handle HELP command." alt="" coords="252,153,351,179"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,358,113,321,139,275,174,228,217,188,238,177,240,181,220,192,178,232,143,278,117,324,100,360"/>
 <area shape="rect" id="Node000004" href="$namespaceCommandOutput.html#afec2cba32302909a2cc824d7f986ce6a" title=" " alt="" coords="451,367,653,392"/>
-<area shape="poly" id="edge41_Node000001_Node000004" title=" " alt="" coords="170,360,218,353,301,348,384,353,465,362,465,367,384,358,301,353,219,358,171,365"/>
-<area shape="rect" id="Node000009" href="$main_8cpp.html#a7be4813339ba1cdf1178b4b5d079c512" title="Handle PAUSE command (future)" alt="" coords="248,203,355,228"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="101,359,148,299,180,267,217,238,234,230,236,234,220,243,184,271,152,303,105,362"/>
-<area shape="rect" id="Node000010" href="$main_8cpp.html#ac1d6f7a1c228ebd547a7e992d2356eb1" title="Handle RESET command." alt="" coords="249,417,354,443"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="171,397,236,412,235,418,170,402"/>
-<area shape="rect" id="Node000012" href="$main_8cpp.html#ab522c1d58a0763675c4a3d7256071a13" title="Handle RESUME command (future)" alt="" coords="241,153,362,179"/>
-<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="95,359,112,323,139,276,174,229,217,188,227,182,229,186,220,192,178,232,143,279,117,325,100,362"/>
-<area shape="rect" id="Node000013" href="$main_8cpp.html#a35d4c27b82242d39e341bf9d35d50a0f" title="Handle SET command with multiple options." alt="" coords="257,368,346,393"/>
-<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="171,378,242,378,242,383,171,383"/>
+<area shape="poly" id="edge45_Node000001_Node000004" title=" " alt="" coords="171,377,437,377,437,382,171,382"/>
+<area shape="rect" id="Node000009" href="$main_8cpp.html#a7be4813339ba1cdf1178b4b5d079c512" title="Handle PAUSE command (future)" alt="" coords="248,252,355,277"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="112,357,159,322,217,288,237,279,239,284,220,292,162,326,115,361"/>
+<area shape="rect" id="Node000010" href="$main_8cpp.html#ac1d6f7a1c228ebd547a7e992d2356eb1" title="Handle RESET command." alt="" coords="249,516,354,541"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="107,398,154,449,186,477,220,501,237,510,235,514,217,506,182,481,151,453,103,401"/>
+<area shape="rect" id="Node000012" href="$main_8cpp.html#ab522c1d58a0763675c4a3d7256071a13" title="Handle RESUME command (future)" alt="" coords="241,203,362,228"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="101,357,147,298,180,265,217,237,228,231,231,236,220,242,184,269,151,301,105,361"/>
+<area shape="rect" id="Node000013" href="$main_8cpp.html#a35d4c27b82242d39e341bf9d35d50a0f" title="Handle SET command with multiple options." alt="" coords="257,417,346,443"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="171,396,244,414,243,419,170,402"/>
 <area shape="rect" id="Node000015" href="$main_8cpp.html#af9a61f18ec0bf52c35280fd8748a0679" title="Handle START command." alt="" coords="252,467,351,492"/>
-<area shape="poly" id="edge19_Node000001_Node000015" title=" " alt="" coords="122,398,167,425,220,452,241,460,239,465,218,456,165,430,119,403"/>
-<area shape="rect" id="Node000020" href="$fatigue__test__stallguard_8cpp.html#ae1393ad4a23750c0916847967cc4032f" title=" " alt="" coords="247,565,356,591"/>
-<area shape="poly" id="edge28_Node000001_Node000020" title=" " alt="" coords="101,400,120,433,146,473,180,515,220,551,235,559,233,564,217,555,176,519,142,476,115,435,97,402"/>
-<area shape="rect" id="Node000021" href="$main_8cpp.html#a39ccc4c53283879fb74a5a5538daa92b" title="Handle STOP command." alt="" coords="253,516,350,541"/>
-<area shape="poly" id="edge29_Node000001_Node000021" title=" " alt="" coords="108,399,155,450,186,477,220,501,241,511,238,516,217,506,183,482,151,454,104,403"/>
-<area shape="rect" id="Node000023" href="$classUartCommandParser.html#ab0e959fc2d336b5fbfb2dfafb901b167" title="Parse command line into ParsedCommand structure." alt="" coords="219,253,384,293"/>
-<area shape="poly" id="edge35_Node000001_Node000023" title=" " alt="" coords="125,358,217,309,243,296,245,301,220,314,127,363"/>
+<area shape="poly" id="edge19_Node000001_Node000015" title=" " alt="" coords="121,397,167,425,220,452,241,460,239,465,218,456,164,429,118,402"/>
+<area shape="rect" id="Node000020" href="$main_8cpp.html#ac11dd858f48b436538b6a2bb4981db1c" title="Handle STATUS command." alt="" coords="247,104,356,129"/>
+<area shape="poly" id="edge28_Node000001_Node000020" title=" " alt="" coords="92,358,106,313,131,254,168,192,191,163,217,139,232,129,235,134,220,143,195,167,172,195,136,256,111,315,97,360"/>
+<area shape="rect" id="Node000021" href="$main_8cpp.html#a39ccc4c53283879fb74a5a5538daa92b" title="Handle STOP command." alt="" coords="253,565,350,591"/>
+<area shape="poly" id="edge33_Node000001_Node000021" title=" " alt="" coords="101,398,120,432,146,473,180,515,220,550,241,562,239,566,217,555,176,518,142,476,115,434,97,401"/>
+<area shape="rect" id="Node000023" href="$classUartCommandParser.html#ab0e959fc2d336b5fbfb2dfafb901b167" title="Parse command line into ParsedCommand structure." alt="" coords="219,302,384,342"/>
+<area shape="poly" id="edge39_Node000001_Node000023" title=" " alt="" coords="162,357,212,343,214,348,164,362"/>
 <area shape="rect" id="Node000027" href="$classUartCommandParser.html#a252be09aa840308655722421fafb1641" title="Parse command line into tokens." alt="" coords="219,615,384,655"/>
-<area shape="poly" id="edge42_Node000001_Node000027" title=" " alt="" coords="98,400,115,441,140,494,176,551,220,600,228,606,225,610,217,604,171,554,136,497,110,443,94,402"/>
-<area shape="rect" id="Node000003" href="$namespaceCommandOutput.html#a17f37c6f2219b07e23e7ece83c27bb18" title=" " alt="" coords="432,153,672,179"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="352,124,474,148,473,153,351,129"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="352,120,370,127,386,139,405,166,412,194,413,221,410,249,407,275,407,301,415,327,434,352,441,358,437,362,430,356,410,329,402,302,401,275,404,248,407,221,407,195,400,169,382,143,367,131,350,124"/>
-<area shape="rect" id="Node000005" href="$namespaceCommandOutput.html#ac1bb1e11fb1eac54489e3d3cae372fce" title=" " alt="" coords="446,5,658,31"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="319,102,368,70,431,40,456,32,457,37,433,44,371,75,322,106"/>
-<area shape="rect" id="Node000006" href="$namespaceCommandOutput.html#a1d3cebfb1eecf215784a06c6f3492241" title=" " alt="" coords="443,55,661,80"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="351,104,473,80,474,85,352,110"/>
+<area shape="poly" id="edge46_Node000001_Node000027" title=" " alt="" coords="98,399,115,440,140,494,176,550,220,600,228,606,225,610,217,604,171,553,136,496,110,442,93,400"/>
+<area shape="rect" id="Node000003" href="$namespaceCommandOutput.html#a17f37c6f2219b07e23e7ece83c27bb18" title=" " alt="" coords="432,55,672,80"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="350,153,383,138,397,126,406,114,415,101,431,89,445,82,447,87,433,94,419,105,410,117,401,130,385,143,352,158"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="352,169,370,177,386,188,402,209,409,231,410,273,411,314,418,333,434,352,440,357,437,361,430,356,414,336,406,315,405,273,404,232,397,212,382,192,367,181,350,174"/>
+<area shape="rect" id="Node000005" href="$namespaceCommandOutput.html#ac1bb1e11fb1eac54489e3d3cae372fce" title=" " alt="" coords="446,104,658,129"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="351,154,473,129,474,135,352,159"/>
+<area shape="rect" id="Node000006" href="$namespaceCommandOutput.html#a1d3cebfb1eecf215784a06c6f3492241" title=" " alt="" coords="443,153,661,179"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="351,163,429,163,429,169,351,169"/>
 <area shape="rect" id="Node000007" href="$namespaceCommandOutput.html#adbbaa4766846cac446f219e82c816b59" title=" " alt="" coords="454,203,650,228"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="352,124,385,138,401,151,410,164,419,176,433,188,451,196,448,201,431,192,415,180,406,167,397,155,383,143,350,129"/>
-<area shape="rect" id="Node000008" href="$namespaceCommandOutput.html#a2657a77facb7e74dce96aa9265d7407c" title=" " alt="" coords="435,104,669,129"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="351,114,422,114,422,119,351,119"/>
-<area shape="poly" id="edge9_Node000009_Node000007" title=" " alt="" coords="355,213,440,213,440,218,355,218"/>
-<area shape="rect" id="Node000011" href="$namespaceCommandOutput.html#a2bed37b24a202a9189a9810ca7bd2ec2" title=" " alt="" coords="441,416,663,441"/>
-<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="354,427,427,427,427,432,354,432"/>
-<area shape="poly" id="edge13_Node000012_Node000007" title=" " alt="" coords="363,175,474,197,473,203,362,180"/>
-<area shape="poly" id="edge15_Node000013_Node000004" title=" " alt="" coords="346,378,437,377,437,383,346,383"/>
-<area shape="poly" id="edge16_Node000013_Node000007" title=" " alt="" coords="316,366,382,303,395,284,403,268,413,252,430,237,441,231,444,236,434,242,417,256,408,270,400,287,386,306,320,370"/>
-<area shape="poly" id="edge17_Node000013_Node000011" title=" " alt="" coords="347,387,472,411,471,416,346,392"/>
-<area shape="rect" id="Node000014" href="$namespaceCommandOutput.html#a7530059a95b958a7d66c5b0613dcbb67" title=" " alt="" coords="440,465,664,491"/>
-<area shape="poly" id="edge18_Node000013_Node000014" title=" " alt="" coords="347,387,385,402,401,415,410,427,419,439,433,450,451,458,449,463,431,455,415,443,406,431,397,418,383,407,345,392"/>
-<area shape="poly" id="edge20_Node000015_Node000004" title=" " alt="" coords="350,466,383,452,397,440,406,427,415,413,431,401,445,394,447,399,433,406,419,417,410,430,401,443,385,456,352,471"/>
-<area shape="poly" id="edge21_Node000015_Node000011" title=" " alt="" coords="351,467,431,450,473,442,475,447,433,455,352,472"/>
-<area shape="poly" id="edge22_Node000015_Node000014" title=" " alt="" coords="351,476,426,476,426,481,351,482"/>
-<area shape="rect" id="Node000016" href="$namespaceEspNowReceiver.html#afb76d5c6ce79015229aca11c94603692" title=" " alt="" coords="467,515,637,555"/>
-<area shape="poly" id="edge23_Node000015_Node000016" title=" " alt="" coords="352,488,454,511,452,516,350,493"/>
-<area shape="rect" id="Node000019" href="$namespaceEspNowReceiver.html#ad20a4032cfbaf4698d2a894139c339ae" title=" " alt="" coords="467,579,637,619"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="352,173,474,197,473,203,351,178"/>
+<area shape="rect" id="Node000008" href="$namespaceCommandOutput.html#a2657a77facb7e74dce96aa9265d7407c" title=" " alt="" coords="435,5,669,31"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="350,156,367,149,382,139,393,127,399,115,405,90,411,65,418,52,430,40,437,35,440,39,434,44,422,55,416,67,410,91,404,117,397,130,386,143,370,153,352,161"/>
+<area shape="poly" id="edge9_Node000009_Node000007" title=" " alt="" coords="355,252,473,228,474,233,356,257"/>
+<area shape="rect" id="Node000011" href="$namespaceCommandOutput.html#a2bed37b24a202a9189a9810ca7bd2ec2" title=" " alt="" coords="441,531,663,556"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="354,529,427,533,427,539,354,534"/>
+<area shape="poly" id="edge13_Node000012_Node000007" title=" " alt="" coords="362,213,440,213,440,218,362,218"/>
+<area shape="poly" id="edge15_Node000013_Node000004" title=" " alt="" coords="346,418,474,392,475,397,347,424"/>
+<area shape="poly" id="edge16_Node000013_Node000007" title=" " alt="" coords="319,415,350,388,382,353,396,321,401,292,408,265,417,251,430,237,440,230,443,235,434,241,421,254,413,267,406,293,401,323,386,355,354,392,322,419"/>
+<area shape="poly" id="edge17_Node000013_Node000011" title=" " alt="" coords="347,435,386,452,402,468,410,485,418,501,434,516,447,523,444,528,430,520,414,504,405,488,397,471,382,456,345,440"/>
+<area shape="rect" id="Node000014" href="$namespaceCommandOutput.html#a7530059a95b958a7d66c5b0613dcbb67" title=" " alt="" coords="440,481,664,507"/>
+<area shape="poly" id="edge18_Node000013_Node000014" title=" " alt="" coords="347,440,385,451,433,466,474,476,473,481,431,471,383,457,345,445"/>
+<area shape="poly" id="edge20_Node000015_Node000004" title=" " alt="" coords="350,466,383,452,397,440,406,427,415,415,431,402,448,394,451,399,433,407,419,418,410,430,401,443,385,456,352,471"/>
+<area shape="poly" id="edge21_Node000015_Node000011" title=" " alt="" coords="347,490,385,501,433,515,474,525,473,530,431,521,383,506,345,495"/>
+<area shape="poly" id="edge22_Node000015_Node000014" title=" " alt="" coords="351,480,426,484,426,489,351,485"/>
+<area shape="rect" id="Node000016" href="$namespaceEspNowReceiver.html#afb76d5c6ce79015229aca11c94603692" title=" " alt="" coords="467,417,637,457"/>
+<area shape="poly" id="edge23_Node000015_Node000016" title=" " alt="" coords="351,468,453,451,453,456,352,474"/>
+<area shape="rect" id="Node000019" href="$namespaceEspNowReceiver.html#ad20a4032cfbaf4698d2a894139c339ae" title=" " alt="" coords="467,581,637,621"/>
 <area shape="poly" id="edge26_Node000015_Node000019" title=" " alt="" coords="352,486,386,501,402,518,410,534,418,550,434,565,455,577,453,582,430,569,414,553,406,537,398,521,382,506,350,491"/>
-<area shape="rect" id="Node000017" href="$espnow__receiver_8cpp.html#a56b1fa458feb934b57be89468e71627f" title=" " alt="" coords="740,587,883,612"/>
-<area shape="poly" id="edge24_Node000016_Node000017" title=" " alt="" coords="634,553,746,581,745,586,633,558"/>
-<area shape="rect" id="Node000018" href="$espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" title=" " alt="" coords="951,587,1043,612"/>
-<area shape="poly" id="edge25_Node000017_Node000018" title=" " alt="" coords="883,597,937,597,937,602,883,602"/>
-<area shape="poly" id="edge27_Node000019_Node000017" title=" " alt="" coords="637,597,726,597,726,602,637,602"/>
-<area shape="poly" id="edge30_Node000021_Node000011" title=" " alt="" coords="349,516,383,501,397,489,406,476,415,463,431,450,445,444,447,448,433,455,419,466,410,479,401,492,385,506,351,521"/>
-<area shape="poly" id="edge31_Node000021_Node000014" title=" " alt="" coords="350,516,474,491,476,496,351,522"/>
-<area shape="poly" id="edge32_Node000021_Node000019" title=" " alt="" coords="347,539,385,550,433,565,462,573,461,578,431,570,383,555,345,544"/>
-<area shape="rect" id="Node000022" href="$namespaceEspNowReceiver.html#a5f9e63a444d010ed79c649b6a2467277" title=" " alt="" coords="467,643,637,683"/>
-<area shape="poly" id="edge33_Node000021_Node000022" title=" " alt="" coords="351,534,386,551,403,571,410,591,418,611,434,629,455,642,453,646,430,633,413,614,405,593,398,573,382,555,349,539"/>
-<area shape="poly" id="edge34_Node000022_Node000017" title=" " alt="" coords="633,641,745,613,746,618,634,646"/>
-<area shape="poly" id="edge39_Node000023_Node000004" title=" " alt="" coords="352,290,386,309,409,332,419,342,433,352,453,360,450,365,431,356,415,346,405,336,382,313,349,295"/>
-<area shape="poly" id="edge40_Node000023_Node000007" title=" " alt="" coords="377,250,431,237,471,228,472,233,433,242,378,255"/>
+<area shape="rect" id="Node000017" href="$espnow__receiver_8cpp.html#a56b1fa458feb934b57be89468e71627f" title=" " alt="" coords="740,588,883,613"/>
+<area shape="poly" id="edge24_Node000016_Node000017" title=" " alt="" coords="639,451,673,466,710,491,744,521,794,576,790,579,740,524,707,496,671,471,637,456"/>
+<area shape="rect" id="Node000018" href="$espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" title=" " alt="" coords="951,588,1043,613"/>
+<area shape="poly" id="edge25_Node000017_Node000018" title=" " alt="" coords="883,598,937,598,937,603,883,603"/>
+<area shape="poly" id="edge27_Node000019_Node000017" title=" " alt="" coords="637,598,726,598,726,603,637,603"/>
+<area shape="poly" id="edge29_Node000020_Node000003" title=" " alt="" coords="356,103,473,80,474,85,357,109"/>
+<area shape="poly" id="edge30_Node000020_Node000005" title=" " alt="" coords="356,114,433,114,433,119,356,119"/>
+<area shape="poly" id="edge31_Node000020_Node000006" title=" " alt="" coords="357,125,474,148,473,153,356,130"/>
+<area shape="poly" id="edge32_Node000020_Node000008" title=" " alt="" coords="319,102,368,70,431,40,456,32,457,37,433,44,371,75,322,106"/>
+<area shape="poly" id="edge34_Node000021_Node000011" title=" " alt="" coords="350,569,446,555,447,561,351,574"/>
+<area shape="poly" id="edge35_Node000021_Node000014" title=" " alt="" coords="349,564,383,550,406,533,431,516,451,508,453,513,433,520,409,537,385,555,351,569"/>
+<area shape="poly" id="edge36_Node000021_Node000019" title=" " alt="" coords="351,580,453,589,453,594,350,585"/>
+<area shape="rect" id="Node000022" href="$namespaceEspNowReceiver.html#a5f9e63a444d010ed79c649b6a2467277" title=" " alt="" coords="467,645,637,685"/>
+<area shape="poly" id="edge37_Node000021_Node000022" title=" " alt="" coords="351,588,385,601,409,616,433,630,455,639,453,644,431,635,407,620,383,606,349,593"/>
+<area shape="poly" id="edge38_Node000022_Node000017" title=" " alt="" coords="633,642,745,614,746,619,634,647"/>
+<area shape="poly" id="edge43_Node000023_Node000004" title=" " alt="" coords="383,339,433,351,476,361,475,366,431,357,381,345"/>
+<area shape="poly" id="edge44_Node000023_Node000007" title=" " alt="" coords="359,300,382,286,396,274,405,261,415,249,431,237,445,230,447,235,433,242,419,253,410,265,400,278,386,291,362,304"/>
 <area shape="rect" id="Node000024" href="$classUartCommandParser.html#a1b1cc802df8531601b19af3dd97b9f52" title="Parse command type from token." alt="" coords="469,302,635,342"/>
-<area shape="poly" id="edge36_Node000023_Node000024" title=" " alt="" coords="385,286,456,300,455,306,384,292"/>
+<area shape="poly" id="edge40_Node000023_Node000024" title=" " alt="" coords="384,319,455,319,455,325,384,325"/>
 <area shape="rect" id="Node000025" href="$classOptionParser.html#a0fcac6b340ed22755f610e139cd760f7" title=" " alt="" coords="453,252,651,277"/>
-<area shape="poly" id="edge37_Node000023_Node000025" title=" " alt="" coords="384,267,439,266,439,271,384,273"/>
+<area shape="poly" id="edge41_Node000023_Node000025" title=" " alt="" coords="381,299,431,287,475,278,476,283,433,293,383,305"/>
 <area shape="rect" id="Node000026" href="$classOptionParser.html#ac8b6271049930c9ddcd7d4217fc998db" title=" " alt="" coords="720,252,903,277"/>
-<area shape="poly" id="edge38_Node000025_Node000026" title=" " alt="" coords="651,262,706,262,706,267,651,267"/>
+<area shape="poly" id="edge42_Node000025_Node000026" title=" " alt="" coords="651,262,706,262,706,267,651,267"/>
 </map>

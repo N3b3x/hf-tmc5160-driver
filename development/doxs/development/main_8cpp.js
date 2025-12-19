@@ -1,7 +1,5 @@
 var main_8cpp =
 [
-    [ "Esp32TmcMutex", "classEsp32TmcMutex.html", "classEsp32TmcMutex" ],
-    [ "TmcMutexGuard", "classTmcMutexGuard.html", "classTmcMutexGuard" ],
     [ "ParsedCommand", "structParsedCommand.html", "structParsedCommand" ],
     [ "OptionParser", "classOptionParser.html", "classOptionParser" ],
     [ "OptionParser::OptionDef", "structOptionParser_1_1OptionDef.html", "structOptionParser_1_1OptionDef" ],

@@ -9,7 +9,9 @@ var searchData=
   ['neg_5fedge_6',['neg_edge',['../uniontmc51x0_1_1ENCMODE__Register.html#a3a2426164568f62f5694c61594e886f2',1,'tmc51x0::ENCMODE_Register']]],
   ['node_5faddr_7',['node_addr',['../uniontmc51x0_1_1UartFrame_1_1Frame.html#a33d27f1f0203472b2a5befa0922eef25',1,'tmc51x0::UartFrame::Frame']]],
   ['node_5faddress_8',['node_address',['../structtmc51x0_1_1UartConfig.html#a3c10e16e32097acaa8734e207e1226aa',1,'tmc51x0::UartConfig']]],
-  ['ns_5fper_5fsec_9',['NS_PER_SEC',['../namespacetmc51x0_1_1RegisterConstants.html#aea8cc1e5b0cd6c2eacb7612521e2f461',1,'tmc51x0::RegisterConstants']]],
-  ['num_5factive_5fdevices_5f_10',['num_active_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a589a348bfced31beaf1ad6ff39bca58e',1,'tmc51x0::TMC51x0DaisyChain::num_active_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#a58c0f7968d95a448504292f5043536dd',1,'tmc51x0::TMC51x0MultiNode::num_active_devices_']]],
-  ['num_5fonboard_5fdevices_5f_11',['num_onboard_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a4fd8aa10deac6ac8e55e397a34e6fe94',1,'tmc51x0::TMC51x0DaisyChain::num_onboard_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#afd8d19c9724c0f933cdaa38f66d5e0c0',1,'tmc51x0::TMC51x0MultiNode::num_onboard_devices_']]]
+  ['nodeaddr_9',['nodeaddr',['../uniontmc51x0_1_1NODECONF__Register.html#a1f8d83875f7de244781fae7f8ad7f1ea',1,'tmc51x0::NODECONF_Register']]],
+  ['nodeconf_10',['nodeconf',['../structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a50949c56b208f6eacd994c4c10bc0da6',1,'tmc51x0::TMC51x0::WriteOnlyRegisters']]],
+  ['ns_5fper_5fsec_11',['NS_PER_SEC',['../namespacetmc51x0_1_1RegisterConstants.html#aea8cc1e5b0cd6c2eacb7612521e2f461',1,'tmc51x0::RegisterConstants']]],
+  ['num_5factive_5fdevices_5f_12',['num_active_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a589a348bfced31beaf1ad6ff39bca58e',1,'tmc51x0::TMC51x0DaisyChain::num_active_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#a58c0f7968d95a448504292f5043536dd',1,'tmc51x0::TMC51x0MultiNode::num_active_devices_']]],
+  ['num_5fonboard_5fdevices_5f_13',['num_onboard_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a4fd8aa10deac6ac8e55e397a34e6fe94',1,'tmc51x0::TMC51x0DaisyChain::num_onboard_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#afd8d19c9724c0f933cdaa38f66d5e0c0',1,'tmc51x0::TMC51x0MultiNode::num_onboard_devices_']]]
 ];

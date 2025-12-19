@@ -1,10 +1,7 @@
 <map id="test_multi_motor_coordination" name="test_multi_motor_coordination">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,69,228,94"/>
-<area shape="rect" id="Node000002" href="$namespacetmc51x0__test__config.html#a01546734dfbb01aa89c186b7bdf20bab" title="Configure driver from test rig selection." alt="" coords="276,29,488,69"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="222,66,262,61,263,66,223,71"/>
-<area shape="rect" id="Node000003" href="$spi__daisy__chain__comprehensive__test_8cpp.html#ae1c358956ec587c7bd3a5105761b86a0" title=" " alt="" coords="309,93,455,133"/>
-<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="223,91,295,100,295,106,222,97"/>
-<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="338,30,336,20,343,10,358,5,382,3,409,6,424,13,422,18,408,11,382,8,359,10,346,15,341,21,343,28"/>
-<area shape="rect" id="Node000004" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="536,93,699,133"/>
-<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="456,111,522,111,522,116,456,116"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,228,38"/>
+<area shape="rect" id="Node000002" href="$spi__daisy__chain__comprehensive__test_8cpp.html#ae1c358956ec587c7bd3a5105761b86a0" title=" " alt="" coords="276,5,423,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="228,23,262,23,262,28,228,28"/>
+<area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="471,5,633,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="423,23,457,23,457,28,423,28"/>
 </map>

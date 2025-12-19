@@ -16,20 +16,19 @@ metadata:
   build_types: [["Debug", "Release"], ["Debug"]]
 
 apps:
-  # Comprehensive Test Suites (Single Motor)
+  # Internal Ramp Test Suites
   internal_ramp_comprehensive_test:
     description: "Comprehensive internal ramp testing suite - combines core, motor control, ramp control, diagnostics, and protection tests into a single wholesome test suite for SPI internal ramp mode (single motor, with encoder and reference switches)"
-    source_file: "internal_ramp_comprehensive_test.cpp"
+    source_file: "internal_ramp_test_suites/internal_ramp_comprehensive_test.cpp"
     category: "testing"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]
     ci_enabled: true
     featured: true
 
-  # Comprehensive Test Suites (Multi-Motor - Requires Special Hardware)
   spi_daisy_chain_comprehensive_test:
     description: "Comprehensive SPI daisy chain testing suite - SPI daisy chain setup, position management, multi-motor coordination (MULTI-MOTOR HARDWARE REQUIRED)"
-    source_file: "spi_daisy_chain_comprehensive_test.cpp"
+    source_file: "internal_ramp_test_suites/spi_daisy_chain_comprehensive_test.cpp"
     category: "testing"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]
@@ -37,63 +36,26 @@ apps:
     featured: false
 
   uart_multi_node_comprehensive_test:
-    description: "Comprehensive UART multi-node testing suite - UART node addressing, slave address configuration, send delay, multi-node coordination (MULTI-MOTOR HARDWARE REQUIRED)"
-    source_file: "uart_multi_node_comprehensive_test.cpp"
+    description: "Comprehensive UART multi-node testing suite - UART node addressing, NODECONF node address configuration, send delay, multi-node coordination (MULTI-MOTOR HARDWARE REQUIRED)"
+    source_file: "internal_ramp_test_suites/uart_multi_node_comprehensive_test.cpp"
     category: "testing"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]
     ci_enabled: false
     featured: false
 
-  # Specialized Examples (Not covered by comprehensive tests)
   internal_ramp_sinusoidal:
     description: "Sinusoidal motion pattern example"
-    source_file: "internal_ramp_sinusoidal.cpp"
+    source_file: "internal_ramp_test_suites/internal_ramp_sinusoidal.cpp"
     category: "motor_control"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]
     ci_enabled: true
     featured: true
 
-  fatigue_test_stallguard:
-    description: "Fatigue testing: Back-and-forth oscillatory motion between bounds using StallGuard2 sensorless detection"
-    source_file: "fatigue_test_stallguard.cpp"
-    category: "motor_control"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: true
-    featured: true
-
-  fatigue_test_encoder:
-    description: "Fatigue testing: Back-and-forth oscillatory motion between bounds using encoder position monitoring"
-    source_file: "fatigue_test_encoder.cpp"
-    category: "motor_control"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: true
-    featured: true
-
-  stallguard_tuning:
-    description: "Tool to automatically tune StallGuard2 Threshold (SGT) for sensorless homing"
-    source_file: "stallguard_tuning.cpp"
-    category: "motor_control"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: true
-    featured: true
-
-  abn_encoder_reader:
-    description: "ABN encoder position reader - Continuously reads and displays encoder position from ABN incremental encoder"
-    source_file: "abn_encoder_reader.cpp"
-    category: "motor_control"
-    idf_versions: ["release/v5.5"]
-    build_types: ["Debug", "Release"]
-    ci_enabled: false
-    featured: true
-
-  # ESP-NOW Fatigue Test System
+  # Fatigue Testing Application (Unified - supports both StallGuard2 and encoder)
   fatigue_test_espnow_unit:
-    description: "Unified fatigue test unit with ESP-NOW and UART support, dual bounds detection (StallGuard2/Encoder)"
+    description: "Unified fatigue test unit with ESP-NOW and UART support, dual bounds detection (StallGuard2/Encoder) - replaces fatigue_test_stallguard and fatigue_test_encoder"
     source_file: "fatigue_test_espnow/main.cpp"
     category: "motor_control"
     idf_versions: ["release/v5.5"]
@@ -101,9 +63,30 @@ apps:
     ci_enabled: false
     featured: true
 
+  # Tuning Tools
+  stallguard_tuning:
+    description: "Tool to automatically tune StallGuard2 Threshold (SGT) for sensorless homing"
+    source_file: "tuning/stallguard_tuning.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: true
+    featured: true
+
+  # Sensor Examples
+  abn_encoder_reader:
+    description: "ABN encoder position reader - Continuously reads and displays encoder position from ABN incremental encoder"
+    source_file: "sensors/abn_encoder_reader.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: false
+    featured: true
+
+  # Diagnostics
   i2c_scan:
     description: "I2C bus scanner for OLED UI board wiring (SDA=GPIO5, SCL=GPIO23)"
-    source_file: "i2c_scan.cpp"
+    source_file: "diagnostics/i2c_scan.cpp"
     category: "diagnostics"
     idf_versions: ["release/v5.5"]
     build_types: ["Debug", "Release"]

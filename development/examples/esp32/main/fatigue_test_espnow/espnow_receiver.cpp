@@ -70,10 +70,43 @@ bool EspNowReceiver::init(QueueHandle_t event_queue)
     ESP_ERROR_CHECK(esp_now_register_recv_cb(espnow_recv_cb));
     ESP_ERROR_CHECK(esp_now_register_send_cb(espnow_send_cb));
 
+    // Pre-configure the UI board MAC (if provided) so we can send immediately.
+    // If the UI board MAC is left as all zeros, we fall back to learning it from
+    // the first received ESPNOW packet.
+    bool ui_mac_configured = false;
+    {
+        uint8_t zero[6] = {0};
+        if (std::memcmp(UI_BOARD_MAC_, zero, 6) != 0) {
+            std::memcpy(s_uiBoardMac, UI_BOARD_MAC_, 6);
+            ui_mac_configured = true;
+            ESP_LOGI(TAG, "Using configured UI board MAC: %02X:%02X:%02X:%02X:%02X:%02X",
+                     s_uiBoardMac[0], s_uiBoardMac[1], s_uiBoardMac[2],
+                     s_uiBoardMac[3], s_uiBoardMac[4], s_uiBoardMac[5]);
+
+            esp_now_peer_info_t peer{};
+            std::memset(&peer, 0, sizeof(peer));
+            std::memcpy(peer.peer_addr, s_uiBoardMac, 6);
+            peer.ifidx = WIFI_IF_STA;
+            peer.channel = WIFI_CHANNEL;
+            peer.encrypt = false;
+            esp_err_t add_err = esp_now_add_peer(&peer);
+            if (add_err != ESP_OK && add_err != ESP_ERR_ESPNOW_EXIST) {
+                ESP_LOGW(TAG, "Failed to add UI board peer (err=%s). Will still try to learn via RX.",
+                         esp_err_to_name(add_err));
+                // Clear so send path falls back to learning.
+                std::memset(s_uiBoardMac, 0, sizeof(s_uiBoardMac));
+                ui_mac_configured = false;
+            }
+        }
+    }
+
     s_rawRecvQueue = xQueueCreate(10, sizeof(RawMsg));
     xTaskCreate(recv_task, "espnow_recv_task", 4096, nullptr, 5, nullptr);
 
     ESP_LOGI(TAG, "ESP-NOW receiver initialized");
+    if (!ui_mac_configured) {
+        ESP_LOGI(TAG, "UI board MAC not pre-configured; will learn from first received packet.");
+    }
     return true;
 }
 

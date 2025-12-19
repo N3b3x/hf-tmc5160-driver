@@ -129,7 +129,7 @@ driver.Initialize(cfg);
 // 5. Configure platform-specific features after initialization
 // Reference switches
 auto ref_cfg = tmc5160_test_config::GetReferenceSwitchConfig<SELECTED_PLATFORM>();
-driver.rampControl.ConfigureReferenceSwitch(ref_cfg);
+driver.switches.ConfigureReferenceSwitch(ref_cfg);
 
 // Encoder
 auto enc_cfg = tmc5160_test_config::GetEncoderConfig<SELECTED_PLATFORM>();

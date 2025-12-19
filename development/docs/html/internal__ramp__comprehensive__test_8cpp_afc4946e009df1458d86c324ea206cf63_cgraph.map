@@ -1,12 +1,9 @@
 <map id="test_register_read_write" name="test_register_read_write">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,93,145,133"/>
-<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="193,101,333,126"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,111,179,111,179,116,146,116"/>
-<area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#a01546734dfbb01aa89c186b7bdf20bab" title="Configure driver from test rig selection." alt="" coords="381,29,593,69"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="308,98,403,71,404,76,310,103"/>
-<area shape="rect" id="Node000004" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="406,93,569,133"/>
-<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="333,111,392,111,392,116,333,116"/>
-<area shape="rect" id="Node000005" href="$internal__ramp__comprehensive__test_8cpp.html#a266d3b939b723d24f9230b6b22b3b8a9" title="Verify mode pins match expected communication mode." alt="" coords="419,158,556,183"/>
-<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="311,124,382,143,419,152,418,157,381,148,309,129"/>
-<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="445,30,443,20,450,10,465,5,487,3,513,6,528,13,525,18,512,11,487,8,466,10,453,15,448,21,451,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,145,75"/>
+<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="193,42,333,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,52,179,52,179,57,146,57"/>
+<area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="381,5,544,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="333,42,367,37,368,42,334,47"/>
+<area shape="rect" id="Node000004" href="$internal__ramp__comprehensive__test_8cpp.html#a266d3b939b723d24f9230b6b22b3b8a9" title="Verify mode pins match expected communication mode." alt="" coords="394,70,531,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="334,62,381,68,380,74,333,67"/>
 </map>

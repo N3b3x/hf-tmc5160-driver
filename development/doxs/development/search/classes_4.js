@@ -11,5 +11,6 @@ var searchData=
   ['esp32tmcmutex_8',['Esp32TmcMutex',['../classEsp32TmcMutex.html',1,'']]],
   ['espnowheader_9',['EspNowHeader',['../structEspNowHeader.html',1,'']]],
   ['espnowpacket_10',['EspNowPacket',['../structEspNowPacket.html',1,'']]],
-  ['externalclockconfig_11',['ExternalClockConfig',['../structtmc51x0_1_1ExternalClockConfig.html',1,'tmc51x0']]]
+  ['events_11',['Events',['../structtmc51x0_1_1TMC51x0_1_1Events.html',1,'tmc51x0::TMC51x0']]],
+  ['externalclockconfig_12',['ExternalClockConfig',['../structtmc51x0_1_1ExternalClockConfig.html',1,'tmc51x0']]]
 ];

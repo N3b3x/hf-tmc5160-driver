@@ -137,7 +137,11 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>DcStep configuration structure. </p>
 <p>User-friendly configuration for DcStep automatic commutation mode. DcStep allows the motor to run near its load limit without losing steps by automatically reducing velocity when overloaded. The motor operates in fullstep mode at the target velocity or at reduced velocity if overloaded.</p>
-<dl class="section note"><dt>Note</dt><dd>DcStep requires SD_MODE=1 (external step/dir mode) or can be enabled via VDCMIN threshold. </dd>
+<dl class="section note"><dt>Note</dt><dd>DcStep enable mechanism depends on the chip mode:<ul>
+<li><b>Internal ramp generator (SD_MODE=0)</b>: DcStep can be enabled above the VDCMIN threshold (register VDCMIN).</li>
+<li><b>External STEP/DIR (SD_MODE=1)</b>: DcStep is enabled via the external DCEN pin (ENCB_DCEN_CFG4). VDCMIN does not enable DcStep in this mode. </li>
+</ul>
+</dd>
 <dd>
 DcStep automatically sets chopper to constant TOFF mode with slow decay only. </dd>
 <dd>
