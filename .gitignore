@@ -137,6 +137,9 @@ Thumbs.db
 # Archived drivers (reference only, not part of main codebase)
 archivedDrivers/
 
+# Ignore pdf's converted to txt files
+datasheet/*.txt
+
 # Third-party component cleanup (prevent adding unnecessary files from embedded repos)
 # These patterns help keep third-party components clean when they're added as regular files
 examples/esp32/components/*/.github/
