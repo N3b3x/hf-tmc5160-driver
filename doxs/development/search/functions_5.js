@@ -6,7 +6,7 @@ var searchData=
   ['findoption_3',['FindOption',['../classOptionParser.html#ac8b6271049930c9ddcd7d4217fc998db',1,'OptionParser']]],
   ['findworkingvelocityrange_4',['FindWorkingVelocityRange',['../namespacetmc51x0.html#afaf6037a652c82c965a94e0433e13a7c',1,'tmc51x0']]],
   ['flip_5ftest_5fprogress_5findicator_5',['flip_test_progress_indicator',['../TestFramework_8h.html#a7bb80345e5681c19686df292fa897daf',1,'TestFramework.h']]],
-  ['formatstatusbits_6',['FormatStatusBits',['../structtmc51x0_1_1SpiStatus.html#a074ce9431f7b5c30ef7b83e1818dfd3b',1,'tmc51x0::SpiStatus']]],
+  ['formatstatusbits_6',['FormatStatusBits',['../structtmc51x0_1_1SpiStatus.html#a772e84571daef24f715d07b33f295f85',1,'tmc51x0::SpiStatus']]],
   ['frombyte_7',['FromByte',['../structtmc51x0_1_1SpiStatus.html#a503043f0b56362c63d76225c4876b9a2',1,'tmc51x0::SpiStatus']]],
   ['fromdeg_8',['FromDeg',['../structtmc51x0_1_1VelocityValue.html#a74e655b3745df386f7941a4c1f0f9ddf',1,'tmc51x0::VelocityValue::FromDeg()'],['../structtmc51x0_1_1AccelerationValue.html#a9a7a024e64f362bc4d63e486dec890c9',1,'tmc51x0::AccelerationValue::FromDeg()']]],
   ['frommm_9',['FromMm',['../structtmc51x0_1_1VelocityValue.html#aa373410261d69bdcb70100c66f9d53c2',1,'tmc51x0::VelocityValue::FromMm()'],['../structtmc51x0_1_1AccelerationValue.html#ab3c7f482cc44985702fef59cfe135b75',1,'tmc51x0::AccelerationValue::FromMm()']]],

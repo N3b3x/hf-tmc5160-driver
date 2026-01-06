@@ -131,19 +131,19 @@ var NAVTREEINDEX =
 "TestFramework_8h.html",
 "classFatigueTest_1_1IBoundsFinder.html#ac11fe7f9ff90d16e0ff307e2a1fab6a6",
 "classtmc51x0_1_1Result_3_01void_01_4.html#a3422048a7ae8aa070c02c02b66ededa7",
-"espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7a8f7afecbc8fbc4cd0f50a57d1172482e",
-"index.html#autotoc_md81",
-"namespacetmc51x0.html#a06dfa560a9edb58f6e572b8e904ae79eadf428b6611eb44f97ac5f072e5ef3bfc",
-"namespacetmc51x0__test__config.html",
-"structtmc51x0_1_1AccelerationValue.html#ab282ff8a138ec32ac5d0393c03f8bd0b",
-"structtmc51x0_1_1MechanicalSystem.html",
-"structtmc51x0_1_1StallGuardTuningResult.html#acb1353fb156b4825bf8ca2443aef4187",
-"structtmc51x0_1_1TMC51x0_1_1Status.html#aeb64d74614e244bc21b81279b75a8a5f",
-"structtmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#a966892827e916a5efb8b62d467e47bf6",
-"structtmc51x0__test__config_1_1TestConfig__AppliedMotion__5034_1_1Motion.html",
-"tmc51x0__types_8hpp.html#a20af559eb85dbac784b3a4cb644cf63ba5927394ea5c7e8451c52b39dbb6f9629",
-"uniontmc51x0_1_1DRV__CONF__Register.html#a817b13b388e8fff4c4db678b206c5b3b",
-"uniontmc51x0_1_1OTP__PROG__Register.html#a4d18032c01766c32e32fe91f94b87cd5"
+"espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2ab078ffd28db767c502ac367053f6e0ac",
+"index.html#autotoc_md73",
+"namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4ab227ff1ca50d147d685877a0c73041c6",
+"namespacetmc51x0_1_1detail.html#a7fbd9d5719c3c7ac393acfc49aa55132",
+"structtmc51x0_1_1AccelerationValue.html#a34201928df1fb6c0f0658cc7625b3c08",
+"structtmc51x0_1_1InputStatus.html#a855b92c6c427c1d7f7b2993d909f7db9",
+"structtmc51x0_1_1StallGuardTuningResult.html#a9bc3ff385d4437946c549c742d878d87",
+"structtmc51x0_1_1TMC51x0_1_1Status.html#a6d02f6913d99ca43ad38daf243b0c7aa",
+"structtmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#a6b4698227ac426aa4fe26f1f39f7ab37",
+"structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1StallGuard.html#a465f83594cb78d3abde4e5bc1d00539e",
+"tmc51x0__types_8hpp.html#a07832e7cdd1dd4846d32a144704b2088ae447a0875e209a8690bcc3ede1271f04",
+"uniontmc51x0_1_1DRV__CONF__Register.html",
+"uniontmc51x0_1_1OFFSET__READ__Register.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
