@@ -324,7 +324,7 @@ if (status == tmc51x0::DriverStatus::OVERTEMP) {
 ```cpp
 // Debug logging is enabled by default
 // To disable (reduce code size):
-#define TMC5160_DISABLE_DEBUG_LOGGING
+#define TMC51X0_DISABLE_DEBUG_LOGGING
 #include "inc/tmc51x0.hpp"
 ```
 

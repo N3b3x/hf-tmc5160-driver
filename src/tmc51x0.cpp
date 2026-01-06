@@ -5357,6 +5357,7 @@ Result<void> TMC51x0<CommType>::Communication::SetClkFreq(const ExternalClockCon
   return Result<void>();
 }
 
+#ifndef TMC51X0_DISABLE_DEBUG_LOGGING
 template <typename CommType>
 std::string TMC51x0<CommType>::GetDriverConfigString() const noexcept {
   std::string info;
@@ -5459,6 +5460,7 @@ std::string TMC51x0<CommType>::GetDriverConfigString() const noexcept {
 
   return info;
 }
+#endif // TMC51X0_DISABLE_DEBUG_LOGGING
 
 template <typename CommType>
 typename TMC51x0<CommType>::MotorCurrentDebugInfo TMC51x0<CommType>::GetMotorCurrentDebugInfo() const noexcept {

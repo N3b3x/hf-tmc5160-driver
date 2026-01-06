@@ -278,20 +278,24 @@ public:
     return driver_config_;
   }
 
+  // NOTE: Heap-heavy string diagnostics are intentionally only available when
+  // debug logging is enabled. For embedded targets, prefer LogConfigSummary()
+  // and friends (which can be compiled out).
+#ifndef TMC51X0_DISABLE_DEBUG_LOGGING
   /**
-   * @brief Get driver configuration as formatted string
+   * @brief Get driver configuration as formatted string (heap allocating)
    * @return String containing complete driver configuration and status
    * information
    *
    * Returns a human-readable string with all driver configuration, register
    * values, and current status. Useful for debugging and diagnostics.
    *
-   * @note The returned string is allocated on the heap. Caller is responsible
-   * for freeing.
-   * @note For embedded systems, consider using a fixed-size buffer version
-   * instead.
+   * @note The returned string is allocated on the heap (std::string / std::to_string).
+   * @note For embedded systems, prefer LogConfigSummary() / LogDerivedInitSummary()
+   *       or implement a fixed-size buffer variant.
    */
   [[nodiscard]] std::string GetDriverConfigString() const noexcept;
+#endif // TMC51X0_DISABLE_DEBUG_LOGGING
 
 #ifndef TMC51X0_DISABLE_DEBUG_LOGGING
   /**

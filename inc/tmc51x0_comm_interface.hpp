@@ -115,8 +115,6 @@
 #include <cstdarg>
 #include <cstdint>
 #include <cstdio>
-#include <string>
-#include <vector>
 
 #include "tmc51x0_result.hpp"
 
@@ -151,15 +149,71 @@ enum class LogLevel : uint8_t {
  * optimized out at compile time, including argument evaluation.
  */
 #ifndef TMC51X0_DISABLE_DEBUG_LOGGING
-// Debug logging enabled - use actual function call
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage) - Intentional: compile-time
-// logging control
+// Optional compile-time log level filter:
+// 0=Error, 1=Warn, 2=Info, 3=Debug, 4=Verbose.
+// If not defined, everything up to Verbose is compiled in.
+#ifndef TMC51X0_LOG_LEVEL
+#define TMC51X0_LOG_LEVEL 4
+#endif
+
+// Level-specific macros provide best compile-time dead-stripping.
+#if TMC51X0_LOG_LEVEL >= 0
+#define TMC51X0_LOGE(comm_obj, tag, ...) (comm_obj).LogDebug(::tmc51x0::LogLevel::Error, tag, __VA_ARGS__)
+#else
+#define TMC51X0_LOGE(comm_obj, tag, ...) ((void)0)
+#endif
+
+#if TMC51X0_LOG_LEVEL >= 1
+#define TMC51X0_LOGW(comm_obj, tag, ...) (comm_obj).LogDebug(::tmc51x0::LogLevel::Warn, tag, __VA_ARGS__)
+#else
+#define TMC51X0_LOGW(comm_obj, tag, ...) ((void)0)
+#endif
+
+#if TMC51X0_LOG_LEVEL >= 2
+#define TMC51X0_LOGI(comm_obj, tag, ...) (comm_obj).LogDebug(::tmc51x0::LogLevel::Info, tag, __VA_ARGS__)
+#else
+#define TMC51X0_LOGI(comm_obj, tag, ...) ((void)0)
+#endif
+
+#if TMC51X0_LOG_LEVEL >= 3
+#define TMC51X0_LOGD(comm_obj, tag, ...) (comm_obj).LogDebug(::tmc51x0::LogLevel::Debug, tag, __VA_ARGS__)
+#else
+#define TMC51X0_LOGD(comm_obj, tag, ...) ((void)0)
+#endif
+
+#if TMC51X0_LOG_LEVEL >= 4
+#define TMC51X0_LOGV(comm_obj, tag, ...) (comm_obj).LogDebug(::tmc51x0::LogLevel::Verbose, tag, __VA_ARGS__)
+#else
+#define TMC51X0_LOGV(comm_obj, tag, ...) ((void)0)
+#endif
+
+// Backwards-compatible macro: routes to the level-specific macros when possible.
+// If `level` is a constant `LogLevel` (recommended), the compiler will fold the branch.
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage) - Intentional: compile-time logging control
 #define TMC51X0_LOG_DEBUG(comm_obj, level, tag, ...)                           \
-  (comm_obj).LogDebug(level, tag, __VA_ARGS__)
+  do {                                                                         \
+    const int _lvl = static_cast<int>(level);                                  \
+    if (_lvl <= 0) {                                                           \
+      TMC51X0_LOGE(comm_obj, tag, __VA_ARGS__);                                \
+    } else if (_lvl == 1) {                                                    \
+      TMC51X0_LOGW(comm_obj, tag, __VA_ARGS__);                                \
+    } else if (_lvl == 2) {                                                    \
+      TMC51X0_LOGI(comm_obj, tag, __VA_ARGS__);                                \
+    } else if (_lvl == 3) {                                                    \
+      TMC51X0_LOGD(comm_obj, tag, __VA_ARGS__);                                \
+    } else {                                                                   \
+      TMC51X0_LOGV(comm_obj, tag, __VA_ARGS__);                                \
+    }                                                                          \
+  } while (0)
 #else
 // Debug logging disabled - optimize out completely (arguments not evaluated)
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage) - Intentional: compile-time
 // logging control
+#define TMC51X0_LOGE(comm_obj, tag, ...) ((void)0)
+#define TMC51X0_LOGW(comm_obj, tag, ...) ((void)0)
+#define TMC51X0_LOGI(comm_obj, tag, ...) ((void)0)
+#define TMC51X0_LOGD(comm_obj, tag, ...) ((void)0)
+#define TMC51X0_LOGV(comm_obj, tag, ...) ((void)0)
 #define TMC51X0_LOG_DEBUG(comm_obj, level, tag, ...) ((void)0)
 #endif
 
@@ -617,18 +671,22 @@ struct SpiStatus {
 
   /**
    * @brief Format status bits as compact string (bit names and values)
-   * @return String with format "RST:0 STST:0 VEL:0 POS:0 STOP_L:0 STOP_R:0
-   * SG2:0 DRV_ERR:0"
+   * @param out Destination buffer
+   * @param cap Destination capacity in bytes
+   *
+   * Output format:
+   *   "RST:0 STST:0 VEL:0 POS:0 STOP_L:0 STOP_R:0 SG2:0 DRV_ERR:0"
+   *
+   * @note No heap allocation (embedded-friendly).
    */
-  [[nodiscard]] std::string FormatStatusBits() const noexcept {
-    char buf[128];
-    snprintf(
-        buf, sizeof(buf),
+  void FormatStatusBits(char *out, size_t cap) const noexcept {
+    if (out == nullptr || cap == 0) return;
+    std::snprintf(
+        out, cap,
         "RST:%d STST:%d VEL:%d POS:%d STOP_L:%d STOP_R:%d SG2:%d DRV_ERR:%d",
         ResetFlag() ? 1 : 0, Standstill() ? 1 : 0, VelocityReached() ? 1 : 0,
         PositionReached() ? 1 : 0, StopLeft() ? 1 : 0, StopRight() ? 1 : 0,
         StallGuard2() ? 1 : 0, DriverError() ? 1 : 0);
-    return std::string(buf);
   }
 
   /**
@@ -1351,19 +1409,9 @@ public:
   void LogDebug(int level, const char *tag, const char *format, ...) noexcept {
     va_list args{}; // va_start will properly initialize this
     va_start(args, format);
-
-    // Modern C++ string handling - no manual memory management
-    std::string format_str(format);
-
-    // Ensure format string ends with newline
-    if (format_str.empty() || format_str.back() != '\n') {
-      format_str += '\n';
-    }
-
-    // Pass modified format string and va_list to DebugLog
-    // DebugLog will handle the actual formatting (e.g., via esp_log_writev)
-    DebugLog(level, tag, format_str.c_str(), args);
-
+    // Do not allocate (no std::string) just to enforce a newline.
+    // Platform log backends (ESP-IDF, etc.) typically add their own newline.
+    DebugLog(level, tag, format, args);
     va_end(args);
   }
 
@@ -1373,13 +1421,7 @@ public:
   void LogDebug(LogLevel level, const char *tag, const char *format, ...) noexcept {
     va_list args{}; // va_start will properly initialize this
     va_start(args, format);
-
-    std::string format_str(format);
-    if (format_str.empty() || format_str.back() != '\n') {
-      format_str += '\n';
-    }
-
-    DebugLog(static_cast<int>(level), tag, format_str.c_str(), args);
+    DebugLog(static_cast<int>(level), tag, format, args);
     va_end(args);
   }
 #else
@@ -1619,6 +1661,27 @@ public:
 template <typename Derived>
 class SpiCommInterface : public CommInterface<Derived> {
 public:
+  //--------------------------------------------------------------------------------
+  // Configuration
+  //--------------------------------------------------------------------------------
+  // Maximum supported daisy-chain size for static SPI scratch buffers.
+  // Default keeps RAM small while supporting common chains.
+  // Override at compile time if you have longer chains:
+  //   #define TMC51X0_SPI_MAX_CHAIN_DEVICES 255
+  // Note: scratch buffers are sized for (max_devices+2)*5 bytes to support
+  // AutoDetectChainLength() and the "beyond last device" probe.
+#ifndef TMC51X0_SPI_MAX_CHAIN_DEVICES
+#define TMC51X0_SPI_MAX_CHAIN_DEVICES 8
+#endif
+
+  static_assert(TMC51X0_SPI_MAX_CHAIN_DEVICES >= 1,
+                "TMC51X0_SPI_MAX_CHAIN_DEVICES must be >= 1");
+  static_assert(TMC51X0_SPI_MAX_CHAIN_DEVICES <= 255,
+                "TMC51X0_SPI_MAX_CHAIN_DEVICES must be <= 255");
+
+  static constexpr size_t kSpiScratchBytes =
+      static_cast<size_t>(TMC51X0_SPI_MAX_CHAIN_DEVICES + 2U) * 5U;
+
   /**
    * @brief Construct SPI communication interface
    *
@@ -1697,6 +1760,9 @@ public:
     if (max_devices == 0) {
       max_devices = 8; // Default to 8 devices
     }
+    if (max_devices > TMC51X0_SPI_MAX_CHAIN_DEVICES) {
+      max_devices = TMC51X0_SPI_MAX_CHAIN_DEVICES;
+    }
 
     // Create a unique command pattern that we can reliably identify when it
     // loops back Use a read command to a register that's safe to read (GSTAT =
@@ -1722,12 +1788,19 @@ public:
     // Send command to position (max_devices+1) - beyond the last device
     // Total transfer: (max_devices+2)*40 bits to ensure we capture loopback
     size_t transfer_bytes = static_cast<size_t>(max_devices + 2) * 5;
+    if (transfer_bytes > kSpiScratchBytes) {
+      // Should not happen due to clamping, but keep it safe.
+      return 0;
+    }
 
-    std::vector<uint8_t> tx_buf(transfer_bytes, 0);
-    std::vector<uint8_t> rx_buf(transfer_bytes, 0);
+    // No heap: use static scratch buffers sized by TMC51X0_SPI_MAX_CHAIN_DEVICES.
+    std::fill(tx_scratch_.begin(), tx_scratch_.end(), 0);
+    std::fill(rx_scratch_.begin(), rx_scratch_.end(), 0);
+    uint8_t *tx_buf = tx_scratch_.data();
+    uint8_t *rx_buf = rx_scratch_.data();
 
     // Place command at the beginning (bytes 0-4)
-    cmd.GetFrame(tx_buf.data());
+    cmd.GetFrame(tx_buf);
     // Rest is padding (zeros) - already initialized to 0
 
     TMC51X0_LOG_DEBUG(
@@ -1738,7 +1811,7 @@ public:
         cmd_bytes[3], cmd_bytes[4]);
 
     // Perform SPI transfer
-    if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
+    if (!SpiTransfer(tx_buf, rx_buf, transfer_bytes)) {
       TMC51X0_LOG_DEBUG(*static_cast<Derived *>(this), 1, "SPI",
                         "AutoDetectChainLength: SPI transfer failed");
       return 0;
@@ -1757,7 +1830,7 @@ public:
     for (uint8_t n = max_devices; n >= 1; --n) {
       size_t loopback_offset = static_cast<size_t>(n) * 5;
 
-      if (loopback_offset + 4 < rx_buf.size()) {
+      if (loopback_offset + 4 < transfer_bytes) {
         // Check if the 5-byte chunk at loopback_offset matches our command
         // pattern EXACTLY This is the only reliable way to confirm the command
         // looped back correctly
@@ -1797,7 +1870,7 @@ public:
       // Log first few potential loopback positions for debugging
       for (uint8_t n = 1; n <= 3 && n <= max_devices; ++n) {
         size_t loopback_offset = static_cast<size_t>(n) * 5;
-        if (loopback_offset + 4 < rx_buf.size()) {
+        if (loopback_offset + 4 < transfer_bytes) {
           TMC51X0_LOG_DEBUG(
               *static_cast<Derived *>(this), 3, "SPI",
               "AutoDetectChainLength: At offset %zu (n=%u): %02X %02X %02X "
@@ -1962,6 +2035,17 @@ public:
     // Response offset: (n-k-1)*5 bytes (reverse order: last device first)
     uint8_t n = total_chain_length_;
     uint8_t k = daisy_chain_position;
+    if (n == 0) {
+      // Single-chip mode should effectively be 1 device.
+      n = 1;
+    }
+    if (n > TMC51X0_SPI_MAX_CHAIN_DEVICES) {
+      TMC51X0_LOG_DEBUG(
+          *static_cast<Derived *>(this), 1, "SPI",
+          "ReadRegister: Chain length %u exceeds TMC51X0_SPI_MAX_CHAIN_DEVICES=%u",
+          n, static_cast<unsigned>(TMC51X0_SPI_MAX_CHAIN_DEVICES));
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
+    }
 
     // Validate: k must be < n (device position must be less than total chain
     // length)
@@ -2004,8 +2088,17 @@ public:
       return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
-    std::vector<uint8_t> tx_buf(transfer_bytes, 0);
-    std::vector<uint8_t> rx_buf(transfer_bytes, 0);
+    if (transfer_bytes > kSpiScratchBytes) {
+      TMC51X0_LOG_DEBUG(*static_cast<Derived *>(this), 1, "SPI",
+                        "ReadRegister: transfer_bytes=%zu exceeds scratch cap=%zu",
+                        transfer_bytes, kSpiScratchBytes);
+      return Result<uint32_t>(ErrorCode::COMM_ERROR);
+    }
+
+    std::fill(tx_scratch_.begin(), tx_scratch_.end(), 0);
+    std::fill(rx_scratch_.begin(), rx_scratch_.end(), 0);
+    uint8_t *tx_buf = tx_scratch_.data();
+    uint8_t *rx_buf = rx_scratch_.data();
 
     // Place command at the beginning (bytes 0-4)
     // For daisy-chain position k, the command is placed first, then padding
@@ -2015,12 +2108,12 @@ public:
     //   response extraction
     //     (only present if transfer_bytes > (k+1)*5, i.e., when (n-k)*5 >
     //     (k+1)*5)
-    cmd.GetFrame(tx_buf.data());
+    cmd.GetFrame(tx_buf);
     // Bytes 5 onwards are padding (zeros) - already initialized to 0 by vector
     // constructor
 
     // First transaction: Send read command (TX1), receive status (RX1)
-    if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
+    if (!SpiTransfer(tx_buf, rx_buf, transfer_bytes)) {
       return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
@@ -2032,16 +2125,16 @@ public:
                       "/ RX1 %02X %02X %02X %02X %02X",
                       address, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3],
                       tx_buf[4], rx_buf[response_byte_offset],
-                      (response_byte_offset + 1 < rx_buf.size())
+                      (response_byte_offset + 1 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 1]
                           : 0,
-                      (response_byte_offset + 2 < rx_buf.size())
+                      (response_byte_offset + 2 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 2]
                           : 0,
-                      (response_byte_offset + 3 < rx_buf.size())
+                      (response_byte_offset + 3 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 3]
                           : 0,
-                      (response_byte_offset + 4 < rx_buf.size())
+                      (response_byte_offset + 4 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 4]
                           : 0);
 
@@ -2056,14 +2149,15 @@ public:
     // Second transaction: Send address again (TX2), receive actual data (RX2 -
     // pipelined read) Per datasheet: Read data is transferred back with the
     // subsequent access Use same transfer size for daisy-chaining consistency
-    if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
+    if (!SpiTransfer(tx_buf, rx_buf, transfer_bytes)) {
       return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
     // Log TX2/[RX2] after second transfer (RX2 contains the actual read data)
     // Align TX2 line with TX1 line by padding address field
     SpiStatus status = SpiStatus::FromByte(rx_buf[response_byte_offset]);
-    std::string status_bits = status.FormatStatusBits();
+    char status_bits[128];
+    status.FormatStatusBits(status_bits, sizeof(status_bits));
 
     // Align TX2 bytes with TX1 bytes: "Read 0xXX=0x00000000: " (25) + "[TX1] "
     // (6) = 31 chars to first byte For TX2: "Read 0xXX=0x00000000: " (25) + "
@@ -2076,16 +2170,16 @@ public:
                       "[RX2] %02X %02X %02X %02X %02X (STATUS=0x%02X)",
                       address, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3],
                       tx_buf[4], rx_buf[response_byte_offset],
-                      (response_byte_offset + 1 < rx_buf.size())
+                      (response_byte_offset + 1 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 1]
                           : 0,
-                      (response_byte_offset + 2 < rx_buf.size())
+                      (response_byte_offset + 2 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 2]
                           : 0,
-                      (response_byte_offset + 3 < rx_buf.size())
+                      (response_byte_offset + 3 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 3]
                           : 0,
-                      (response_byte_offset + 4 < rx_buf.size())
+                      (response_byte_offset + 4 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 4]
                           : 0,
                       rx_buf[response_byte_offset]);
@@ -2096,7 +2190,7 @@ public:
     TMC51X0_LOG_DEBUG(
         *static_cast<Derived *>(this), 3, "SPI",
         "                                                   └─> %s",
-        status_bits.c_str());
+        status_bits);
 
     // Extract response data based on daisy-chain position
     // IMPORTANT: Responses come back in REVERSE order (last device first, first
@@ -2110,11 +2204,11 @@ public:
     // Extract SPI_STATUS from response byte 0 (bits 39-32 per datasheet
     // section 4.1.2) For daisy-chaining, this is at the calculated offset
     // (status was already extracted above for logging)
-    if (response_byte_offset >= rx_buf.size()) {
+    if (response_byte_offset >= transfer_bytes) {
       TMC51X0_LOG_DEBUG(
           *static_cast<Derived *>(this), 1, "SPI",
           "Read register 0x%02X: Response offset %zu exceeds buffer size %zu",
-          address, response_byte_offset, rx_buf.size());
+          address, response_byte_offset, transfer_bytes);
       return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
@@ -2145,7 +2239,7 @@ public:
                         status.value, error_flags, info_flags);
     } else {
       // Log response bytes (first 8 or all if less)
-      size_t log_rx_bytes = (rx_buf.size() < 8) ? rx_buf.size() : 8;
+      size_t log_rx_bytes = (transfer_bytes < 8) ? transfer_bytes : 8;
       TMC51X0_LOG_DEBUG(*static_cast<Derived *>(this), 3, "SPI",
                         "Read register 0x%02X: RX[0..%zu] %02X %02X %02X %02X "
                         "%02X %02X %02X %02X "
@@ -2172,11 +2266,11 @@ public:
     // (response_byte_offset+4) Byte (response_byte_offset+0) contains
     // SPI_STATUS (bits 39-32) Bytes (response_byte_offset+1) to
     // (response_byte_offset+4) contain data (bits 31-0)
-    if (response_byte_offset + 4 >= rx_buf.size()) {
+    if (response_byte_offset + 4 >= transfer_bytes) {
       TMC51X0_LOG_DEBUG(
           *static_cast<Derived *>(this), 1, "SPI",
           "Read register 0x%02X: Data offset %zu+4 exceeds buffer size %zu",
-          address, response_byte_offset, rx_buf.size());
+          address, response_byte_offset, transfer_bytes);
       return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
@@ -2281,6 +2375,16 @@ public:
     // Response offset: (n-k-1)*5 bytes (reverse order: last device first)
     uint8_t n = total_chain_length_;
     uint8_t k = daisy_chain_position;
+    if (n == 0) {
+      n = 1;
+    }
+    if (n > TMC51X0_SPI_MAX_CHAIN_DEVICES) {
+      TMC51X0_LOG_DEBUG(
+          *static_cast<Derived *>(this), 1, "SPI",
+          "WriteRegister: Chain length %u exceeds TMC51X0_SPI_MAX_CHAIN_DEVICES=%u",
+          n, static_cast<unsigned>(TMC51X0_SPI_MAX_CHAIN_DEVICES));
+      return Result<void>(ErrorCode::COMM_ERROR);
+    }
 
     // Validate: k must be < n (device position must be less than total chain
     // length)
@@ -2323,8 +2427,17 @@ public:
       return Result<void>(ErrorCode::COMM_ERROR);
     }
 
-    std::vector<uint8_t> tx_buf(transfer_bytes, 0);
-    std::vector<uint8_t> rx_buf(transfer_bytes, 0);
+    if (transfer_bytes > kSpiScratchBytes) {
+      TMC51X0_LOG_DEBUG(*static_cast<Derived *>(this), 1, "SPI",
+                        "WriteRegister: transfer_bytes=%zu exceeds scratch cap=%zu",
+                        transfer_bytes, kSpiScratchBytes);
+      return Result<void>(ErrorCode::COMM_ERROR);
+    }
+
+    std::fill(tx_scratch_.begin(), tx_scratch_.end(), 0);
+    std::fill(rx_scratch_.begin(), rx_scratch_.end(), 0);
+    uint8_t *tx_buf = tx_scratch_.data();
+    uint8_t *rx_buf = rx_scratch_.data();
 
     // Place command at the beginning (bytes 0-4)
     // For daisy-chain position k, the command is placed first, then padding
@@ -2334,12 +2447,12 @@ public:
     //   response extraction
     //     (only present if transfer_bytes > (k+1)*5, i.e., when (n-k)*5 >
     //     (k+1)*5)
-    cmd.GetFrame(tx_buf.data());
+    cmd.GetFrame(tx_buf);
     // Bytes 5 onwards are padding (zeros) - already initialized to 0 by vector
     // constructor
 
     // First transaction: Send write command (TX1), receive status (RX1)
-    if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
+    if (!SpiTransfer(tx_buf, rx_buf, transfer_bytes)) {
       return Result<void>(ErrorCode::COMM_ERROR);
     }
 
@@ -2349,16 +2462,16 @@ public:
                       "RX1 %02X %02X %02X %02X %02X",
                       address, value, tx_buf[0], tx_buf[1], tx_buf[2],
                       tx_buf[3], tx_buf[4], rx_buf[response_byte_offset],
-                      (response_byte_offset + 1 < rx_buf.size())
+                      (response_byte_offset + 1 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 1]
                           : 0,
-                      (response_byte_offset + 2 < rx_buf.size())
+                      (response_byte_offset + 2 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 2]
                           : 0,
-                      (response_byte_offset + 3 < rx_buf.size())
+                      (response_byte_offset + 3 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 3]
                           : 0,
-                      (response_byte_offset + 4 < rx_buf.size())
+                      (response_byte_offset + 4 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 4]
                           : 0);
 
@@ -2370,11 +2483,11 @@ public:
     // (n-k-1)*5 bytes
     // - If total_chain_length_ == 0: Use simplified approach, response at k*5
     // bytes (end of transfer)
-    if (response_byte_offset >= rx_buf.size()) {
+    if (response_byte_offset >= transfer_bytes) {
       TMC51X0_LOG_DEBUG(
           *static_cast<Derived *>(this), 1, "SPI",
           "Write register 0x%02X: Response offset %zu exceeds buffer size %zu",
-          address, response_byte_offset, rx_buf.size());
+          address, response_byte_offset, transfer_bytes);
       return Result<void>(ErrorCode::COMM_ERROR);
     }
 
@@ -2410,7 +2523,7 @@ public:
                         status1.value, error_flags, info_flags);
     } else {
       // Log response bytes (first 8 or all if less)
-      size_t log_rx1_bytes = (rx_buf.size() < 8) ? rx_buf.size() : 8;
+      size_t log_rx1_bytes = (transfer_bytes < 8) ? transfer_bytes : 8;
       TMC51X0_LOG_DEBUG(*static_cast<Derived *>(this), 3, "SPI",
                         "Write register 0x%02X (TX1): RX[0..%zu] %02X %02X "
                         "%02X %02X %02X %02X %02X %02X | "
@@ -2442,19 +2555,20 @@ public:
     // for the write command sent in the first transaction
     // Clear tx_buf and place read command at the beginning (same position as
     // write command)
-    std::fill(tx_buf.begin(), tx_buf.end(), 0);
+    std::fill(tx_scratch_.begin(), tx_scratch_.end(), 0);
     SpiCommand read_cmd = SpiCommand::Read(address);
-    read_cmd.GetFrame(tx_buf.data());
+    read_cmd.GetFrame(tx_buf);
     // Padding (zeros) after byte 4 will shift this command to the target device
 
-    if (!SpiTransfer(tx_buf.data(), rx_buf.data(), transfer_bytes)) {
+    if (!SpiTransfer(tx_buf, rx_buf, transfer_bytes)) {
       return Result<void>(ErrorCode::COMM_ERROR);
     }
 
     // Log TX2/[RX2] after second transfer (RX2 contains the write confirmation)
     // Align TX2 line with TX1 line by padding address field
     SpiStatus status2 = SpiStatus::FromByte(rx_buf[response_byte_offset]);
-    std::string status2_bits = status2.FormatStatusBits();
+    char status2_bits[128];
+    status2.FormatStatusBits(status2_bits, sizeof(status2_bits));
 
     // Align TX2 bytes with TX1 bytes: "Write 0xXX=0xXXXXXXXX: " (25) + "[TX1] "
     // (6) = 31 chars to first byte For TX2: "Write 0xXX: " (13) + padding to
@@ -2469,16 +2583,16 @@ public:
                       "/ [RX2] %02X %02X %02X %02X %02X (STATUS=0x%02X)",
                       address, tx_buf[0], tx_buf[1], tx_buf[2], tx_buf[3],
                       tx_buf[4], rx_buf[response_byte_offset],
-                      (response_byte_offset + 1 < rx_buf.size())
+                      (response_byte_offset + 1 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 1]
                           : 0,
-                      (response_byte_offset + 2 < rx_buf.size())
+                      (response_byte_offset + 2 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 2]
                           : 0,
-                      (response_byte_offset + 3 < rx_buf.size())
+                      (response_byte_offset + 3 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 3]
                           : 0,
-                      (response_byte_offset + 4 < rx_buf.size())
+                      (response_byte_offset + 4 < transfer_bytes)
                           ? rx_buf[response_byte_offset + 4]
                           : 0,
                       rx_buf[response_byte_offset]);
@@ -2487,15 +2601,15 @@ public:
     TMC51X0_LOG_DEBUG(
         *static_cast<Derived *>(this), 3, "SPI",
         "                                                   └─> %s",
-        status2_bits.c_str());
+        status2_bits);
 
     // Validate response offset (status2 was already extracted above for
     // logging)
-    if (response_byte_offset >= rx_buf.size()) {
+    if (response_byte_offset >= transfer_bytes) {
       TMC51X0_LOG_DEBUG(*static_cast<Derived *>(this), 1, "SPI",
                         "Write register 0x%02X (TX2): Response offset %zu "
                         "exceeds buffer size %zu",
-                        address, response_byte_offset, rx_buf.size());
+                        address, response_byte_offset, transfer_bytes);
       return Result<void>(ErrorCode::COMM_ERROR);
     }
 
@@ -2526,7 +2640,7 @@ public:
                         status2.value, error_flags, info_flags);
     } else {
       // Log response bytes (first 8 or all if less)
-      size_t log_rx2_bytes = (rx_buf.size() < 8) ? rx_buf.size() : 8;
+      size_t log_rx2_bytes = (transfer_bytes < 8) ? transfer_bytes : 8;
       TMC51X0_LOG_DEBUG(*static_cast<Derived *>(this), 3, "SPI",
                         "Write register 0x%02X (TX2): RX[0..%zu] %02X %02X "
                         "%02X %02X %02X %02X %02X %02X | "
@@ -2553,7 +2667,7 @@ public:
     // written data (bytes 1-4) "If the previous access was a write access, then
     // the data read back mirrors the previously received write data." Verify
     // that the returned data matches what we wrote
-    if (response_byte_offset + 4 < rx_buf.size()) {
+    if (response_byte_offset + 4 < transfer_bytes) {
       uint32_t returned_value =
           (static_cast<uint32_t>(rx_buf[response_byte_offset + 1]) << 24) |
           (static_cast<uint32_t>(rx_buf[response_byte_offset + 2]) << 16) |
@@ -2616,6 +2730,11 @@ public:
   SpiCommInterface &operator=(const SpiCommInterface &) = delete;
 
 private:
+  // Static scratch buffers used for SPI transfers to avoid heap allocation.
+  // Sized by TMC51X0_SPI_MAX_CHAIN_DEVICES (+2 for auto-detect probe).
+  std::array<uint8_t, kSpiScratchBytes> tx_scratch_{};
+  std::array<uint8_t, kSpiScratchBytes> rx_scratch_{};
+
   /**
    * @brief Ensure chain length is known and verified for daisy-chain operations
    * @param daisy_chain_position Position in daisy chain (0 = first chip/single
@@ -2640,7 +2759,7 @@ private:
     // Auto-detect chain length on first access if needed
     if (daisy_chain_position > 0 && total_chain_length_ == 0) {
       uint8_t detected_length =
-          AutoDetectChainLength(8); // Probe up to 8 devices
+          AutoDetectChainLength(TMC51X0_SPI_MAX_CHAIN_DEVICES); // Probe up to configured max
       if (detected_length == 0) {
         // Detection failed - cannot proceed without chain length
         TMC51X0_LOG_DEBUG(

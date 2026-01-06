@@ -58,11 +58,18 @@ See [`examples/esp32/docs/driver_configuration_guide.md`](../examples/esp32/docs
 You can disable debug logging at compile time to reduce code size:
 
 ```cpp
-#define TMC5160_DISABLE_DEBUG_LOGGING
+#define TMC51X0_DISABLE_DEBUG_LOGGING
 #include "inc/tmc51x0.hpp"
 ```
 
-When disabled, all debug logging code is optimized out completely.
+When disabled, all driver debug logging code is optimized out completely.
+
+You can also optionally compile out lower-priority logs while keeping errors/warnings:
+
+```cpp
+// 0=Error, 1=Warn, 2=Info, 3=Debug, 4=Verbose
+#define TMC51X0_LOG_LEVEL 2
+```
 
 ## Runtime Configuration
 
