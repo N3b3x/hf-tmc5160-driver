@@ -1,21 +1,23 @@
 <map id="espnow_receiver.hpp" name="espnow_receiver.hpp">
-<area shape="rect" id="Node000001" title="ESP&#45;NOW receiver for test unit." alt="" coords="328,5,487,31"/>
-<area shape="rect" id="Node000002" href="$espnow__protocol_8hpp.html" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="327,79,487,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="410,31,410,65,405,65,405,31"/>
+<area shape="rect" id="Node000001" title="ESP&#45;NOW receiver for test unit." alt="" coords="308,5,467,31"/>
+<area shape="rect" id="Node000002" href="$espnow__protocol_8hpp.html" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="307,79,467,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="390,31,390,65,385,65,385,31"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="5,152,156,177"/>
-<area shape="poly" id="edge9_Node000001_Node000005" title=" " alt="" coords="382,33,120,149,118,144,380,28"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="696,152,825,177"/>
-<area shape="poly" id="edge10_Node000001_Node000006" title=" " alt="" coords="437,28,721,144,719,149,435,33"/>
+<area shape="poly" id="edge10_Node000001_Node000005" title=" " alt="" coords="364,33,118,149,116,144,362,28"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="711,152,840,177"/>
+<area shape="poly" id="edge11_Node000001_Node000006" title=" " alt="" coords="419,28,733,145,731,150,418,33"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="181,152,247,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="377,107,259,150,257,145,375,102"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="360,106,256,149,254,144,358,102"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="271,152,338,177"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="392,106,334,146,331,142,389,102"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="355,107,148,152,146,146,354,101"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="465,101,691,147,690,152,464,107"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="362,152,453,177"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="410,104,410,138,405,138,405,104"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="477,152,564,177"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="427,102,492,142,489,147,424,106"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="588,152,672,177"/>
-<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="444,101,582,145,580,150,442,107"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="376,106,330,145,327,141,372,102"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="339,107,144,151,143,146,337,101"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="450,101,700,147,699,152,449,107"/>
+<area shape="rect" id="Node000007" href="$esp__idf__pedantic__compat_8hpp.html" title="Compatibility include wrapper for ESP&#45;IDF headers when building with &#45;Wpedantic in C++." alt="" coords="362,152,578,177"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="402,102,448,141,444,145,399,106"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="603,152,687,177"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="429,101,591,146,589,151,428,107"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="367,225,458,251"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="463,179,433,216,429,213,458,176"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="483,225,569,251"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="481,176,511,213,506,216,477,179"/>
 </map>

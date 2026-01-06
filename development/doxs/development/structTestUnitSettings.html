@@ -116,6 +116,14 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a4eadbca6eeb9fc2e5de9dce1750713e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2186abd0ad8717551b638611de74285b" id="r_a2186abd0ad8717551b638611de74285b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2186abd0ad8717551b638611de74285b">bounds_method_stallguard</a> = true</td></tr>
 <tr class="separator:a2186abd0ad8717551b638611de74285b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a053bdd1049837f985e448259fcb71f22" id="r_a053bdd1049837f985e448259fcb71f22"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a053bdd1049837f985e448259fcb71f22">bounds_search_velocity_rpm</a> = 0.0f</td></tr>
+<tr class="separator:a053bdd1049837f985e448259fcb71f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7767600ca72e070e74679a319932616f" id="r_a7767600ca72e070e74679a319932616f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7767600ca72e070e74679a319932616f">stallguard_min_velocity_rpm</a> = 0.0f</td></tr>
+<tr class="separator:a7767600ca72e070e74679a319932616f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a4ea873f0665708b0c86e65d2689a80" id="r_a1a4ea873f0665708b0c86e65d2689a80"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1a4ea873f0665708b0c86e65d2689a80">stall_detection_current_factor</a> = 0.0f</td></tr>
+<tr class="separator:a1a4ea873f0665708b0c86e65d2689a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6077309ea0f86a7c018f258d5b428ef" id="r_ac6077309ea0f86a7c018f258d5b428ef"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6077309ea0f86a7c018f258d5b428ef">bounds_search_accel_rev_s2</a> = 0.0f</td></tr>
+<tr class="separator:ac6077309ea0f86a7c018f258d5b428ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Test unit settings - synchronized with test machine via ESP-NOW These settings control the fatigue test behavior. </p>
@@ -128,6 +136,34 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">bool TestUnitSettings::bounds_method_stallguard = true</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac6077309ea0f86a7c018f258d5b428ef" name="ac6077309ea0f86a7c018f258d5b428ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6077309ea0f86a7c018f258d5b428ef">&#9670;&#160;</a></span>bounds_search_accel_rev_s2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TestUnitSettings::bounds_search_accel_rev_s2 = 0.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a053bdd1049837f985e448259fcb71f22" name="a053bdd1049837f985e448259fcb71f22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a053bdd1049837f985e448259fcb71f22">&#9670;&#160;</a></span>bounds_search_velocity_rpm</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TestUnitSettings::bounds_search_velocity_rpm = 0.0f</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -156,6 +192,34 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">uint32_t TestUnitSettings::dwell_time = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1a4ea873f0665708b0c86e65d2689a80" name="a1a4ea873f0665708b0c86e65d2689a80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a4ea873f0665708b0c86e65d2689a80">&#9670;&#160;</a></span>stall_detection_current_factor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TestUnitSettings::stall_detection_current_factor = 0.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7767600ca72e070e74679a319932616f" name="a7767600ca72e070e74679a319932616f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7767600ca72e070e74679a319932616f">&#9670;&#160;</a></span>stallguard_min_velocity_rpm</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TestUnitSettings::stallguard_min_velocity_rpm = 0.0f</td>
         </tr>
       </table>
 </div><div class="memdoc">

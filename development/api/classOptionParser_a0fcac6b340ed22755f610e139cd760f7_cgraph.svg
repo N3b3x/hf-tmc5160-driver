@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Parse SET command options from a token sequence.">
 <polygon fill="#999999" stroke="#666666" points="149,-19 0,-19 0,0 149,0 149,-19"/>
 <text text-anchor="middle" x="74.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">OptionParser::ParseOptions</text>
 </a>
@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classOptionParser.html#ac8b6271049930c9ddcd7d4217fc998db" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="classOptionParser.html#ac8b6271049930c9ddcd7d4217fc998db" target="_top" xlink:title="Find a supported option definition by token.">
 <polygon fill="white" stroke="#666666" points="322,-19 185,-19 185,0 322,0 322,-19"/>
 <text text-anchor="middle" x="253.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">OptionParser::FindOption</text>
 </a>

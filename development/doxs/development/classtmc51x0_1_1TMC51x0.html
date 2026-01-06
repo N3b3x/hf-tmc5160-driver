@@ -139,6 +139,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1MotorControl.html">MotorControl</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor control subsystem.  <a href="structtmc51x0_1_1TMC51x0_1_1MotorControl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html">MotorCurrentDebugInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Snapshot of motor-current related calculated/cached values.  <a href="structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1PowerStage.html">PowerStage</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power stage + protection subsystem (DRV_CONF, SHORT_CONF)  <a href="structtmc51x0_1_1TMC51x0_1_1PowerStage.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,6 +198,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ada3e7090570b7221e2048445d4f22035" id="r_ada3e7090570b7221e2048445d4f22035"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada3e7090570b7221e2048445d4f22035">GetDriverConfigString</a> () const noexcept</td></tr>
 <tr class="memdesc:ada3e7090570b7221e2048445d4f22035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get driver configuration as formatted string.  <br /></td></tr>
 <tr class="separator:ada3e7090570b7221e2048445d4f22035"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20cfe6cdf1f4310965a619a81863d66b" id="r_a20cfe6cdf1f4310965a619a81863d66b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20cfe6cdf1f4310965a619a81863d66b">LogConfigSummary</a> (const <a class="el" href="structtmc51x0_1_1DriverConfig.html">DriverConfig</a> &amp;cfg, const char *tag=&quot;TMC5160&quot;, <a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d">LogLevel</a> lvl=<a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da4059b0251f66a18cb56f544728796875">LogLevel::Info</a>) noexcept</td></tr>
+<tr class="memdesc:a20cfe6cdf1f4310965a619a81863d66b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a comprehensive, human-readable summary of a <a class="el" href="structtmc51x0_1_1DriverConfig.html" title="Driver initialization configuration structure.">DriverConfig</a>.  <br /></td></tr>
+<tr class="separator:a20cfe6cdf1f4310965a619a81863d66b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acee0f2d63d519db90810232f824ab4fe" id="r_acee0f2d63d519db90810232f824ab4fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acee0f2d63d519db90810232f824ab4fe">LogDerivedInitSummary</a> (const char *tag=&quot;TMC5160&quot;, <a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d">LogLevel</a> lvl=<a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da4059b0251f66a18cb56f544728796875">LogLevel::Info</a>) noexcept</td></tr>
+<tr class="memdesc:acee0f2d63d519db90810232f824ab4fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a compact, table-style summary of derived/cached initialization values.  <br /></td></tr>
+<tr class="separator:acee0f2d63d519db90810232f824ab4fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab538d0dd470bdb627262fde5504d3c02" id="r_ab538d0dd470bdb627262fde5504d3c02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab538d0dd470bdb627262fde5504d3c02">LogLiveStatusReport</a> (const char *tag=&quot;TMC5160&quot;, <a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d">LogLevel</a> lvl=<a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da4059b0251f66a18cb56f544728796875">LogLevel::Info</a>) noexcept</td></tr>
+<tr class="memdesc:ab538d0dd470bdb627262fde5504d3c02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read silicon registers and log a comprehensive live status report.  <br /></td></tr>
+<tr class="separator:ab538d0dd470bdb627262fde5504d3c02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfb1a464c20f433450d1e96ce51744dc" id="r_acfb1a464c20f433450d1e96ce51744dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html">MotorCurrentDebugInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acfb1a464c20f433450d1e96ce51744dc">GetMotorCurrentDebugInfo</a> () const noexcept</td></tr>
+<tr class="memdesc:acfb1a464c20f433450d1e96ce51744dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get motor-current calculated/cached values for application logging.  <br /></td></tr>
+<tr class="separator:acfb1a464c20f433450d1e96ce51744dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -398,10 +413,10 @@ Usage Example</h2>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Enable motor</span></div>
 <div class="line">driver.motorControl.Enable();</div>
-<div class="ttc" id="aclasstmc51x0_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:1577</div></div>
+<div class="ttc" id="aclasstmc51x0_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:1620</div></div>
 <div class="ttc" id="aclasstmc51x0_1_1TMC51x0_html"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a></div><div class="ttdoc">Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)</div><div class="ttdef"><b>Definition</b> tmc51x0.hpp:135</div></div>
 <div class="ttc" id="anamespacetmc51x0_html_a9296c8b77977c4b405a85597699ada76a1e66935e3ab51cc2128e078cfd49d845"><div class="ttname"><a href="namespacetmc51x0.html#a9296c8b77977c4b405a85597699ada76a1e66935e3ab51cc2128e078cfd49d845">tmc51x0::RampMode::POSITIONING</a></div><div class="ttdeci">@ POSITIONING</div><div class="ttdoc">Positioning mode using all A, D and V parameters.</div></div>
-<div class="ttc" id="astructtmc51x0_1_1DriverConfig_html"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2618</div></div>
+<div class="ttc" id="astructtmc51x0_1_1DriverConfig_html"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2832</div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">CommType</td><td>The communication interface type (must inherit from SpiCommInterface&lt;CommType&gt; or UartCommInterface&lt;CommType&gt;) </td></tr>
@@ -561,6 +576,11 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Acceleration in internal TMC5160 units </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_ae213754e8c4fa75ea8b67b905f940c64_cgraph.svg" width="447" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -832,6 +852,11 @@ template&lt;typename CommType &gt; </div>
 <p>Get the appropriate address parameter for ReadRegister/WriteRegister. </p>
 <dl class="section return"><dt>Returns</dt><dd>daisy_chain_position_ for SPI, uart_node_address_ for UART</dd></dl>
 <p>This method is protected so that subsystem classes can access it. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a627c44d51a13f84ffc820d562ee0d209_icgraph.svg" width="754" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -939,6 +964,37 @@ For embedded systems, consider using a fixed-size buffer version instead. </dd><
 
 </div>
 </div>
+<a id="acfb1a464c20f433450d1e96ce51744dc" name="acfb1a464c20f433450d1e96ce51744dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfb1a464c20f433450d1e96ce51744dc">&#9670;&#160;</a></span>GetMotorCurrentDebugInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt;::MotorCurrentDebugInfo <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::GetMotorCurrentDebugInfo </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get motor-current calculated/cached values for application logging. </p>
+<dl class="section return"><dt>Returns</dt><dd>A snapshot of motor-current related values.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If the driver has not been initialized yet, values may be defaults. </dd></dl>
+
+</div>
+</div>
 <a id="a0819cf562bcbb0a747b56fc15a8da5b1" name="a0819cf562bcbb0a747b56fc15a8da5b1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0819cf562bcbb0a747b56fc15a8da5b1">&#9670;&#160;</a></span>HardReset()</h2>
 
@@ -980,6 +1036,11 @@ template&lt;typename CommType &gt; </div>
 <p>UART multi-node note:</p><ul>
 <li>A power-cycle resets NODECONF in the chip. To re-initialize reliably, the device must be reachable at UART address 0 (typically the first chip with NAI tied to GND). For multi-node chains, prefer using <a class="el" href="classtmc51x0_1_1TMC51x0MultiNode.html" title="High-level manager for multiple TMC51x0 drivers in a UART multi-node configuration.">TMC51x0MultiNode</a> and ProgramSequentially() after power-up. </li>
 </ul>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a0819cf562bcbb0a747b56fc15a8da5b1_cgraph.svg" width="1560" height="318"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -1032,9 +1093,14 @@ template&lt;typename CommType &gt; </div>
 <div class="line">    printf(<span class="stringliteral">&quot;Error: %s\n&quot;</span>, result.ErrorMessage());</div>
 <div class="line">}</div>
 </div><!-- fragment --> <div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a60e918b0153cf9034871291ce27ea813_cgraph.svg" width="1288" height="318"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a60e918b0153cf9034871291ce27ea813_icgraph.svg" width="358" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a60e918b0153cf9034871291ce27ea813_icgraph.svg" width="495" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1098,10 +1164,139 @@ template&lt;typename CommType &gt; </div>
 <p>This reads IOIN.SD_MODE from the chip. If SD_MODE=1 (external Step/Dir), the internal ramp generator is not the active motion source and many motion-controller registers will not behave as users expect.</p>
 <dl class="section return"><dt>Returns</dt><dd>Result&lt;bool&gt; with true if SD_MODE=0 (internal ramp), false if SD_MODE=1 (external Step/Dir), or an error on communication failure. </dd></dl>
 <div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_abd5a49d0cb0c802a394a71ede9967b32_cgraph.svg" width="499" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_abd5a49d0cb0c802a394a71ede9967b32_icgraph.svg" width="483" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="a20cfe6cdf1f4310965a619a81863d66b" name="a20cfe6cdf1f4310965a619a81863d66b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20cfe6cdf1f4310965a619a81863d66b">&#9670;&#160;</a></span>LogConfigSummary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::LogConfigSummary </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structtmc51x0_1_1DriverConfig.html">DriverConfig</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>cfg</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>tag</em><span class="paramdefsep"> = </span><span class="paramdefval">&quot;TMC5160&quot;</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d">LogLevel</a></td>          <td class="paramname"><span class="paramname"><em>lvl</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da4059b0251f66a18cb56f544728796875">LogLevel::Info</a></span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Log a comprehensive, human-readable summary of a <a class="el" href="structtmc51x0_1_1DriverConfig.html" title="Driver initialization configuration structure.">DriverConfig</a>. </p>
+<p>Uses the driver's communication interface for logging (TMC51X0_LOG_DEBUG).</p>
+<p>This is useful both before <a class="el" href="#a60e918b0153cf9034871291ce27ea813" title="Initialize the TMC51x0 driver with configuration.">Initialize()</a> (to verify the config you are about to apply) and after <a class="el" href="#a60e918b0153cf9034871291ce27ea813" title="Initialize the TMC51x0 driver with configuration.">Initialize()</a> (to compare with derived/cached values).</p>
+<dl class="section note"><dt>Note</dt><dd>This method is only available when TMC51X0_DISABLE_DEBUG_LOGGING is not defined. When disabled, calls to this method are optimized out at compile time. </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a20cfe6cdf1f4310965a619a81863d66b_cgraph.svg" width="1028" height="318"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a20cfe6cdf1f4310965a619a81863d66b_icgraph.svg" width="763" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="acee0f2d63d519db90810232f824ab4fe" name="acee0f2d63d519db90810232f824ab4fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acee0f2d63d519db90810232f824ab4fe">&#9670;&#160;</a></span>LogDerivedInitSummary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::LogDerivedInitSummary </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>tag</em><span class="paramdefsep"> = </span><span class="paramdefval">&quot;TMC5160&quot;</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d">LogLevel</a></td>          <td class="paramname"><span class="paramname"><em>lvl</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da4059b0251f66a18cb56f544728796875">LogLevel::Info</a></span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Log a compact, table-style summary of derived/cached initialization values. </p>
+<p>Includes f_clk, detected chip version, calculated currents (IRUN/IHOLD/GLOBAL_SCALER), cached write-only registers (IHOLD_IRUN, GLOBAL_SCALER, DRV_CONF), and a decoded IHOLDDELAY timing estimate.</p>
+<dl class="section note"><dt>Note</dt><dd>Requires that the driver has been initialized at least once (uses cached values). </dd>
+<dd>
+This method is only available when TMC51X0_DISABLE_DEBUG_LOGGING is not defined. When disabled, calls to this method are optimized out at compile time. </dd></dl>
+
+</div>
+</div>
+<a id="ab538d0dd470bdb627262fde5504d3c02" name="ab538d0dd470bdb627262fde5504d3c02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab538d0dd470bdb627262fde5504d3c02">&#9670;&#160;</a></span>LogLiveStatusReport()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::LogLiveStatusReport </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>tag</em><span class="paramdefsep"> = </span><span class="paramdefval">&quot;TMC5160&quot;</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d">LogLevel</a></td>          <td class="paramname"><span class="paramname"><em>lvl</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da4059b0251f66a18cb56f544728796875">LogLevel::Info</a></span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Read silicon registers and log a comprehensive live status report. </p>
+<p>Performs SPI/UART transactions to capture the current hardware state of the chip (GSTAT, DRV_STATUS, IOIN, CHOPCONF, PWMCONF, etc.) and prints it in a beautiful table format.</p>
+<p>This is useful for "recapturing" the actual live state from the driver to verify it matches requested settings or to diagnose issues.</p>
+<dl class="section note"><dt>Note</dt><dd>This method is only available when TMC51X0_DISABLE_DEBUG_LOGGING is not defined. When disabled, calls to this method are optimized out at compile time. </dd></dl>
 
 </div>
 </div>
@@ -1135,7 +1330,7 @@ template&lt;typename CommType &gt; </div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a699bab1a90d2f8a262daabfa855878b1_cgraph.svg" width="483" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a699bab1a90d2f8a262daabfa855878b1_cgraph.svg" width="754" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1168,6 +1363,11 @@ template&lt;typename CommType &gt; </div>
 <p>Reset the <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> driver. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
 <p>Performs a software reset by writing to the GSTAT register. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a27d55da2949bc7fdbcd0cd84ba9f37bf_icgraph.svg" width="476" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -1240,6 +1440,11 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Speed in internal TMC5160 units </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a5c568d0c3a5758768cd4b6c64b049e82_cgraph.svg" width="452" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

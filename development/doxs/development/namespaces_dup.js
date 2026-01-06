@@ -27,6 +27,15 @@ var namespaces_dup =
     ] ],
     [ "FatigueTest", "namespaceFatigueTest.html", "namespaceFatigueTest" ],
     [ "std", "namespacestd.html", "namespacestd" ],
+    [ "TaskTiming", "namespaceTaskTiming.html", [
+      [ "LOG_INTERVAL_LONG_US", "namespaceTaskTiming.html#a3f20df455bc5fda76473928e39ab345c", null ],
+      [ "LOG_INTERVAL_US", "namespaceTaskTiming.html#a58be5d5ca97b35c1686fa818847f4787", null ],
+      [ "MOTION_UPDATE_PERIOD_MS", "namespaceTaskTiming.html#adab8a2bff58e372e6c6416c8c0312b5e", null ],
+      [ "SG_LOG_INTERVAL_ALWAYS_US", "namespaceTaskTiming.html#af0bf1cd5b29639c62f69c160132c4e33", null ],
+      [ "SG_LOG_INTERVAL_US", "namespaceTaskTiming.html#a7bae26607c34d069952291ab80fd0dd5", null ],
+      [ "STATUS_UPDATE_PERIOD_MS", "namespaceTaskTiming.html#a66bfe49bec32266461faae91315b9ffa", null ],
+      [ "UART_POLL_PERIOD_MS", "namespaceTaskTiming.html#a28efcb55ae61f55c96d4fef53b5e4c04", null ]
+    ] ],
     [ "tmc51x0", "namespacetmc51x0.html", "namespacetmc51x0" ],
     [ "tmc51x0_test_config", "namespacetmc51x0__test__config.html", "namespacetmc51x0__test__config" ]
 ];

@@ -18,9 +18,12 @@
  #include <string>
  #include <vector>
  #include <cstdarg>
+#include <cstdint>
+#include <inttypes.h>
 
-#include "../../../inc/tmc51x0.hpp"
+#include "tmc51x0.hpp"
 #include "test_config/esp32_tmc51x0_bus.hpp"
+#include "registers/tmc51x0_registers.hpp"
 
 #include "espnow_protocol.hpp"
 #include "espnow_receiver.hpp"
@@ -42,17 +45,65 @@ static const char* TAG = "FatigueTestUnit";
 static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
     tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE;
 
+/**
+ * @brief Centralized timing constants for FreeRTOS tasks in this application.
+ *
+ * @details
+ * These are intentionally `static constexpr` so:
+ * - all tasks share a single source of truth
+ * - the compiler can still fold constants
+ *
+ * Change values here to tune logging cadence and control-loop update rates.
+ */
+namespace TaskTiming {
+    // Common periodic "I'm alive" log interval for tasks
+    static constexpr int64_t LOG_INTERVAL_US = 5'000'000;        // 5 seconds
+    static constexpr int64_t LOG_INTERVAL_LONG_US = 30'000'000;  // 30 seconds
+
+    // Motion update loop timing
+    static constexpr uint32_t MOTION_UPDATE_PERIOD_MS = 10; // 10ms update rate (~100 Hz)
+
+    // StallGuard monitoring (only when StallGuard method is active)
+    static constexpr int64_t SG_LOG_INTERVAL_US = 200'000;          // 200ms
+    static constexpr int64_t SG_LOG_INTERVAL_ALWAYS_US = 1'000'000; // 1s
+
+    // Status update cadence to remote controller
+    static constexpr uint32_t STATUS_UPDATE_PERIOD_MS = 1'000; // 1 second
+
+    // UART polling cadence
+    static constexpr uint32_t UART_POLL_PERIOD_MS = 50; // 50ms
+}
+
 // Forward declarations
 static void espnow_command_task(void* arg);
 static void motion_control_task(void* arg);
 static void status_update_task(void* arg);
+static void bounds_finding_task(void* arg);
 
 // Global state (forward declarations)
 static tmc51x0::TMC51x0<Esp32SPI>* g_driver = nullptr;
 static Settings g_settings{};
 static QueueHandle_t g_espnowQueue = nullptr;
-static bool g_bounds_found = false;
+
+// -------------------- Runtime control/state --------------------
+enum class InternalState : uint8_t {
+    IDLE = 0,
+    BOUNDS_FINDING,
+    RUNNING,
+    PAUSED,
+    ERROR
+};
+
+static volatile InternalState g_state = InternalState::IDLE;
+static volatile bool g_cancel_bounds = false;
+static volatile bool g_bounds_task_running = false;
+static TaskHandle_t g_bounds_task_handle = nullptr;
+
+static bool g_bounds_found = false;          // informational; we always re-find on START/RESUME
 static bool g_use_stallguard = true;
+
+enum class PendingStartKind : uint8_t { NONE = 0, START, RESUME };
+static volatile PendingStartKind g_pending_start = PendingStartKind::NONE;
 
 // g_motion will be declared after FatigueTestMotion is defined
 
@@ -60,13 +111,145 @@ static bool g_use_stallguard = true;
 // Now declare g_motion after FatigueTestMotion is fully defined
 static FatigueTest::FatigueTestMotion* g_motion = nullptr;
 
-// ESP-NOW command handler task
+/**
+ * @brief Map the internal application state machine to the protocol-visible `TestState`.
+ *
+ * @details
+ * The on-wire protocol only supports a limited set of states. Internally we track
+ * additional phases (notably `BOUNDS_FINDING`). While bounds finding is active
+ * the motor is energized and moving, so we currently report `TestState::RUNNING`.
+ *
+ * @param s Internal state value.
+ * @return Protocol state value suitable for `STATUS_UPDATE`.
+ *
+ * @note If you later extend the protocol to include a dedicated "BOUNDS_FINDING"
+ * state, update this mapping accordingly.
+ */
+static inline TestState ToProtoState(InternalState s) noexcept {
+    switch (s) {
+        case InternalState::IDLE: return TestState::IDLE;
+        case InternalState::BOUNDS_FINDING: return TestState::RUNNING; // motor is active
+        case InternalState::RUNNING: return TestState::RUNNING;
+        case InternalState::PAUSED: return TestState::PAUSED;
+        case InternalState::ERROR: return TestState::ERROR;
+        default: return TestState::ERROR;
+    }
+}
+
+/**
+ * @brief Immediately stop motion, enter HOLD, and de-energize (disable) the motor.
+ *
+ * @details
+ * This is the hard-stop safety primitive used by:
+ * - STOP command handling (always)
+ * - PAUSE handling (always)
+ * - cancellation of bounds finding
+ * - completion of a finite-cycle run
+ *
+ * It is safe to call multiple times.
+ *
+ * @warning This disables the power stage. After this, the axis may be back-drivable.
+ * @note This function does *not* change `g_state`; the caller owns state transitions.
+ */
+static void MotorStopHoldDisable() noexcept {
+    if (!g_driver) return;
+    (void)g_driver->rampControl.Stop();
+    (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+    (void)g_driver->motorControl.Disable();
+}
+
+/**
+ * @brief Enable (energize) the motor power stage.
+ *
+ * @details
+ * Per requirements, the motor must remain disabled at boot and only be enabled
+ * during active operations (bounds finding and active motion).
+ *
+ * @return true if the motor was enabled successfully; false otherwise.
+ *
+ * @note This function does *not* start motion; it only energizes the driver.
+ */
+static bool MotorEnable() noexcept {
+    if (!g_driver) return false;
+    auto res = g_driver->motorControl.Enable();
+    if (!res) {
+        ESP_LOGE(TAG, "Failed to enable motor (ErrorCode: %d)", static_cast<int>(res.Error()));
+        return false;
+    }
+    return true;
+}
+
+/**
+ * @brief Pretty-print motor-current calculated and cached register values under the FatigueTestUnit tag.
+ *
+ * @details
+ * The driver already logs these values under the "TMC5160" tag during Initialize().
+ * This function prints the same information again under the application tag so
+ * field logs are easier to scan without mixing driver/component tags.
+ *
+ * Values are sourced from the driver’s internal calculated fields and write-only
+ * register cache via `TMC51x0::GetMotorCurrentDebugInfo()` (no duplicated math).
+ *
+ * @param driver Initialized TMC51x0 driver instance.
+ */
+
+/**
+ * @brief Begin a START/RESUME sequence by launching cancellable bounds finding.
+ *
+ * @details
+ * This function transitions the application into `InternalState::BOUNDS_FINDING`,
+ * clears any prior bounds, and starts `bounds_finding_task` in its own FreeRTOS task.
+ *
+ * Bounds are always re-found (even if previously found) to handle the case where
+ * mechanical limits may have moved between runs.
+ *
+ * @param kind Whether this request originated from START or RESUME.
+ *
+ * @note If bounds finding is already running, this call is ignored.
+ * @note Task creation failure transitions to `ERROR`, stops and disables the motor,
+ * and sends an error frame.
+ */
+static void RequestStart(PendingStartKind kind) noexcept {
+    if (g_bounds_task_running) {
+        ESP_LOGW(TAG, "Start requested but bounds task already running; ignoring");
+        return;
+    }
+    g_cancel_bounds = false;
+    g_bounds_found = false; // always re-find to account for moved stops
+    g_pending_start = kind;
+    g_state = InternalState::BOUNDS_FINDING;
+    g_bounds_task_running = true;
+    BaseType_t ok = xTaskCreate(bounds_finding_task, "bounds_find", 8192, nullptr, 5, &g_bounds_task_handle);
+    if (ok != pdPASS) {
+        ESP_LOGE(TAG, "Failed to create bounds finding task");
+        g_bounds_task_running = false;
+        g_bounds_task_handle = nullptr;
+        g_state = InternalState::ERROR;
+        MotorStopHoldDisable();
+        EspNowReceiver::send_error(2, 0);
+    }
+}
+
+/**
+ * @brief FreeRTOS task: process inbound ESP-NOW protocol events.
+ *
+ * @details
+ * Events arrive via `g_espnowQueue` from `EspNowReceiver`. This task:
+ * - applies CONFIG_SET updates to `g_settings` and `g_motion`
+ * - launches bounds-finding (START/RESUME)
+ * - cancels bounds finding and/or stops motion (PAUSE/STOP)
+ *
+ * @param arg Unused (FreeRTOS task signature).
+ *
+ * @note This task must never block for long periods. Bounds finding is therefore
+ * executed in a separate task (`bounds_finding_task`) so PAUSE/STOP remain responsive.
+ */
 static void espnow_command_task(void* arg)
 {
     const char* task_name = "espnow_cmd";
     int64_t start_time_us = esp_timer_get_time();
     int64_t last_log_time_us = start_time_us;
-    const int64_t log_interval_us = 5000000; // Log every 5 seconds
+    const int64_t log_interval_us = TaskTiming::LOG_INTERVAL_LONG_US;
     
     ESP_LOGI(TAG, "[%s] Task started", task_name);
     
@@ -100,7 +283,13 @@ static void espnow_command_task(void* arg)
                     g_settings.test_unit.time_per_cycle = ev.data.config.time_per_cycle;
                     g_settings.test_unit.dwell_time = ev.data.config.dwell_time;
                     g_settings.test_unit.bounds_method_stallguard = ev.data.config.bounds_method_stallguard;
+                    g_settings.test_unit.bounds_search_velocity_rpm = ev.data.config.bounds_search_velocity_rpm;
+                    g_settings.test_unit.stallguard_min_velocity_rpm = ev.data.config.stallguard_min_velocity_rpm;
+                    g_settings.test_unit.stall_detection_current_factor = ev.data.config.stall_detection_current_factor;
+                    g_settings.test_unit.bounds_search_accel_rev_s2 = ev.data.config.bounds_search_accel_rev_s2;
                     g_use_stallguard = ev.data.config.bounds_method_stallguard;
+                    // Any config change forces bounds re-find on next START/RESUME
+                    g_bounds_found = false;
                     
                     if (g_motion) {
                         g_motion->SetTargetCycles(g_settings.test_unit.cycle_amount);
@@ -114,46 +303,59 @@ static void espnow_command_task(void* arg)
                     
                 case ProtoEventType::START:
                     ESP_LOGI(TAG, "Start command received");
-                    if (!g_bounds_found) {
-                        ESP_LOGW(TAG, "Bounds not found yet, cannot start");
+                    if (g_state == InternalState::RUNNING || g_state == InternalState::BOUNDS_FINDING) {
+                        ESP_LOGW(TAG, "Start ignored: already running or finding bounds");
                         EspNowReceiver::send_start_ack();
-                        EspNowReceiver::send_error(1, 0); // Error: bounds not found
                         break;
                     }
-                    if (g_motion && g_motion->Start()) {
-                        EspNowReceiver::send_start_ack();
-                        EspNowReceiver::send_status_update(0, TestState::RUNNING);
-                    } else {
-                        EspNowReceiver::send_start_ack();
-                        EspNowReceiver::send_error(2, 0); // Error: start failed
-                    }
+                    EspNowReceiver::send_start_ack(); // acknowledge receipt immediately
+                    RequestStart(PendingStartKind::START);
+                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state));
                     break;
                     
                 case ProtoEventType::PAUSE:
                     ESP_LOGI(TAG, "Pause command received");
+                    EspNowReceiver::send_pause_ack();
+                    // If bounds-finding is active, cancel it. Pause means motor de-energized.
+                    if (g_state == InternalState::BOUNDS_FINDING) {
+                        g_cancel_bounds = true;
+                        g_state = InternalState::PAUSED;
+                        MotorStopHoldDisable();
+                        EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::PAUSED);
+                        break;
+                    }
+                    // If running, stop motion and de-energize.
                     if (g_motion) {
                         g_motion->Stop();
-                        EspNowReceiver::send_pause_ack();
-                        EspNowReceiver::send_status_update(g_motion->GetCurrentCycles(), TestState::PAUSED);
                     }
+                    g_state = InternalState::PAUSED;
+                    MotorStopHoldDisable();
+                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::PAUSED);
                     break;
                     
                 case ProtoEventType::RESUME:
                     ESP_LOGI(TAG, "Resume command received");
-                    if (g_motion && g_motion->Start()) {
-                        EspNowReceiver::send_resume_ack();
-                        EspNowReceiver::send_status_update(g_motion->GetCurrentCycles(), TestState::RUNNING);
+                    EspNowReceiver::send_resume_ack();
+                    if (g_state == InternalState::RUNNING || g_state == InternalState::BOUNDS_FINDING) {
+                        ESP_LOGW(TAG, "Resume ignored: already running or finding bounds");
+                        break;
                     }
+                    // Resume should redo bounds finding (bounds may have shifted)
+                    RequestStart(PendingStartKind::RESUME);
+                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state));
                     break;
                     
                 case ProtoEventType::STOP:
                     ESP_LOGI(TAG, "Stop command received");
+                    EspNowReceiver::send_stop_ack();
+                    // Stop should stop everything and de-energize the motor immediately.
+                    g_cancel_bounds = true;
                     if (g_motion) {
-                        uint32_t cycles = g_motion->GetCurrentCycles();
                         g_motion->Stop();
-                        EspNowReceiver::send_stop_ack();
-                        EspNowReceiver::send_status_update(cycles, TestState::IDLE);
                     }
+                    g_state = InternalState::IDLE;
+                    MotorStopHoldDisable();
+                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::IDLE);
                     break;
                     
                 default:
@@ -164,18 +366,157 @@ static void espnow_command_task(void* arg)
     }
 }
 
-// Motion control task
+/**
+ * @brief FreeRTOS task: perform bounds finding, then start motion.
+ *
+ * @details
+ * This task is launched by `RequestStart()` and exists specifically so that PAUSE/STOP
+ * can cancel bounds finding while it is in progress (the bounds finders poll the
+ * `g_cancel_bounds` flag).
+ *
+ * Sequence:
+ * - snapshot settings (`g_settings.test_unit`) and method (`g_use_stallguard`)
+ * - enable motor power stage
+ * - run the selected `IBoundsFinder::FindBounds(..., cancel_flag)`
+ * - if successful, apply bounds to `g_motion` and start motion
+ * - update state and send a STATUS_UPDATE
+ *
+ * Cancellation rules:
+ * - If `g_cancel_bounds` becomes true at any time, the task stops motion, disables
+ *   the motor, and exits. A later RESUME will re-run bounds finding from scratch.
+ *
+ * @param arg Unused (FreeRTOS task signature).
+ *
+ * @warning This task directly controls motor motion during bounds finding; ensure
+ * no other code drives the axis concurrently.
+ */
+static void bounds_finding_task(void* arg)
+{
+    (void)arg;
+    ESP_LOGI(TAG, "[bounds_find] Task started");
+
+    // Snapshot settings at start of bounds finding to avoid concurrent edits mid-run
+    const bool use_sg = g_use_stallguard;
+    const TestUnitSettings tu = g_settings.test_unit;
+    const PendingStartKind start_kind = g_pending_start;
+
+    if (!MotorEnable()) {
+        g_state = InternalState::ERROR;
+        g_bounds_task_running = false;
+        g_bounds_task_handle = nullptr;
+        EspNowReceiver::send_error(2, 0);
+        vTaskDelete(nullptr);
+        return;
+    }
+
+    // Create bounds finder
+    std::unique_ptr<FatigueTest::IBoundsFinder> bounds_finder;
+    if (use_sg) {
+        bounds_finder = FatigueTest::CreateStallGuardBoundsFinder<SELECTED_TEST_RIG>();
+    } else {
+        bounds_finder = FatigueTest::CreateEncoderBoundsFinder<SELECTED_TEST_RIG>();
+    }
+
+    if (!bounds_finder || !g_driver || !g_motion) {
+        ESP_LOGE(TAG, "[bounds_find] Missing components (bounds_finder=%p g_driver=%p g_motion=%p)",
+                 bounds_finder.get(), g_driver, g_motion);
+        g_state = InternalState::ERROR;
+        MotorStopHoldDisable();
+        g_bounds_task_running = false;
+        g_bounds_task_handle = nullptr;
+        EspNowReceiver::send_error(4, 0);
+        vTaskDelete(nullptr);
+        return;
+    }
+
+    // Create config from settings
+    FatigueTest::BoundsFinderConfig finder_config{};
+    finder_config.search_velocity_rpm = tu.bounds_search_velocity_rpm;
+    finder_config.min_velocity_rpm = tu.stallguard_min_velocity_rpm;
+    finder_config.current_factor = tu.stall_detection_current_factor;
+    finder_config.search_accel_rev_s2 = tu.bounds_search_accel_rev_s2;
+
+    auto result = bounds_finder->FindBounds(*g_driver, &finder_config, &g_cancel_bounds);
+    if (result.cancelled || g_cancel_bounds) {
+        ESP_LOGW(TAG, "[bounds_find] Cancelled");
+        MotorStopHoldDisable();
+        g_bounds_task_running = false;
+        g_bounds_task_handle = nullptr;
+        vTaskDelete(nullptr);
+        return;
+    }
+
+    if (!result.success) {
+        ESP_LOGE(TAG, "[bounds_find] Failed");
+        g_state = InternalState::ERROR;
+        MotorStopHoldDisable();
+        g_bounds_task_running = false;
+        g_bounds_task_handle = nullptr;
+        EspNowReceiver::send_error(3, 0);
+        vTaskDelete(nullptr);
+        return;
+    }
+
+    // Apply bounds and start motion
+    g_motion->SetGlobalBounds(result.min_bound, result.max_bound);
+    g_motion->SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
+    g_bounds_found = true;
+
+    if (g_state != InternalState::BOUNDS_FINDING) {
+        // PAUSE/STOP may have arrived after bounds finished.
+        ESP_LOGW(TAG, "[bounds_find] State changed before motion start; stopping and disabling motor");
+        MotorStopHoldDisable();
+        g_bounds_task_running = false;
+        g_bounds_task_handle = nullptr;
+        vTaskDelete(nullptr);
+        return;
+    }
+
+    if (!g_motion->Start()) {
+        ESP_LOGE(TAG, "[bounds_find] Motion start failed after bounds");
+        g_state = InternalState::ERROR;
+        MotorStopHoldDisable();
+        g_bounds_task_running = false;
+        g_bounds_task_handle = nullptr;
+        EspNowReceiver::send_error(2, 0);
+        vTaskDelete(nullptr);
+        return;
+    }
+
+    g_state = InternalState::RUNNING;
+    (void)start_kind; // ack is already sent in command handlers
+    EspNowReceiver::send_status_update(g_motion->GetCurrentCycles(), TestState::RUNNING);
+
+    g_bounds_task_running = false;
+    g_bounds_task_handle = nullptr;
+    ESP_LOGI(TAG, "[bounds_find] Completed successfully");
+    vTaskDelete(nullptr);
+}
+
+/**
+ * @brief FreeRTOS task: drive the motion update loop and detect completion.
+ *
+ * @details
+ * Runs at ~10ms period. When `g_state == RUNNING`, it calls `g_motion->Update()`.
+ * It also logs StallGuard telemetry when StallGuard bounds mode is selected.
+ *
+ * Completion:
+ * - If a finite target cycle count is reached, sends COMPLETED + TEST_COMPLETE,
+ *   transitions to IDLE, and disables the motor.
+ *
+ * @param arg Unused (FreeRTOS task signature).
+ */
 static void motion_control_task(void* arg)
 {
     const char* task_name = "motion_ctrl";
     int64_t start_time_us = esp_timer_get_time();
     int64_t last_log_time_us = start_time_us;
-    const int64_t log_interval_us = 5000000; // Log every 5 seconds
+    const int64_t log_interval_us = TaskTiming::LOG_INTERVAL_LONG_US;
     
     // StallGuard monitoring (only when using StallGuard method)
     int64_t last_sg_log_time_us = start_time_us;
-    const int64_t sg_log_interval_us = 200000; // Log StallGuard values every 200ms
-    const int64_t sg_log_interval_always_us = 1000000; // Always log at least every 1 second
+    const int64_t sg_log_interval_us = TaskTiming::SG_LOG_INTERVAL_US;
+    const int64_t sg_log_interval_always_us = TaskTiming::SG_LOG_INTERVAL_ALWAYS_US;
     uint16_t last_sg_result = 0;
     bool motion_was_running = false;
     int64_t motion_start_time_us = 0;
@@ -196,7 +537,7 @@ static void motion_control_task(void* arg)
         }
         
         if (g_motion) {
-            bool motion_is_running = g_motion->IsRunning();
+            const bool motion_is_running = (g_state == InternalState::RUNNING) && g_motion->IsRunning();
             
             // Detect when motion starts
             if (motion_is_running && !motion_was_running) {
@@ -280,25 +621,36 @@ static void motion_control_task(void* arg)
             }
             
             // Check if test completed
-            if (!g_motion->IsRunning()) {
+            if (g_state == InternalState::RUNNING && !g_motion->IsRunning()) {
                 auto status = g_motion->GetStatus();
                 if (status.current_cycles >= status.target_cycles && status.target_cycles > 0) {
                     EspNowReceiver::send_status_update(status.current_cycles, TestState::COMPLETED);
                     EspNowReceiver::send_test_complete();
+                    // Completion should de-energize motor
+                    g_state = InternalState::IDLE;
+                    MotorStopHoldDisable();
                 }
             }
         }
-        vTaskDelay(pdMS_TO_TICKS(10)); // 10ms update rate
+        vTaskDelay(pdMS_TO_TICKS(TaskTiming::MOTION_UPDATE_PERIOD_MS));
     }
 }
 
-// Status update task (sends periodic status to UI board)
+/**
+ * @brief FreeRTOS task: periodically send `STATUS_UPDATE` to the remote controller.
+ *
+ * @details
+ * Runs at 1Hz and publishes cycle count and a protocol state mapping.
+ * While bounds finding is active, we currently report RUNNING via `ToProtoState()`.
+ *
+ * @param arg Unused (FreeRTOS task signature).
+ */
 static void status_update_task(void* arg)
 {
     const char* task_name = "status_upd";
     int64_t start_time_us = esp_timer_get_time();
     int64_t last_log_time_us = start_time_us;
-    const int64_t log_interval_us = 5000000; // Log every 5 seconds
+    const int64_t log_interval_us = TaskTiming::LOG_INTERVAL_US;
     
     ESP_LOGI(TAG, "[%s] Task started", task_name);
     
@@ -313,12 +665,14 @@ static void status_update_task(void* arg)
             last_log_time_us = current_time_us;
         }
         
-        vTaskDelay(pdMS_TO_TICKS(1000)); // Update every second
+        vTaskDelay(pdMS_TO_TICKS(TaskTiming::STATUS_UPDATE_PERIOD_MS));
         
-        if (g_motion && g_motion->IsRunning()) {
-            auto status = g_motion->GetStatus();
-            TestState state = status.running ? TestState::RUNNING : TestState::IDLE;
-            EspNowReceiver::send_status_update(status.current_cycles, state);
+        if (g_motion) {
+            InternalState s = g_state;
+            if (s == InternalState::RUNNING || s == InternalState::BOUNDS_FINDING) {
+                auto status = g_motion->GetStatus();
+                EspNowReceiver::send_status_update(status.current_cycles, ToProtoState(s));
+            }
         }
     }
 }
@@ -378,6 +732,12 @@ struct ParsedCommand {
 namespace CommandOutput {
     static constexpr int BOX_WIDTH = 78;
     
+    /**
+     * @brief Print a success message to the ESP-IDF log.
+     * @param format printf-style format string.
+     * @param ... printf-style arguments.
+     * @note Uses `ESP_LOGI` and includes a success glyph prefix.
+     */
     void PrintSuccess(const char* format, ...) {
         va_list args;
         va_start(args, format);
@@ -387,6 +747,12 @@ namespace CommandOutput {
         ESP_LOGI(TAG, "✓ %s", buffer);
     }
     
+    /**
+     * @brief Print an error message to the ESP-IDF log.
+     * @param format printf-style format string.
+     * @param ... printf-style arguments.
+     * @note Uses `ESP_LOGE` and includes an error glyph prefix.
+     */
     void PrintError(const char* format, ...) {
         va_list args;
         va_start(args, format);
@@ -396,6 +762,12 @@ namespace CommandOutput {
         ESP_LOGE(TAG, "✗ Error: %s", buffer);
     }
     
+    /**
+     * @brief Print an informational message to the ESP-IDF log.
+     * @param format printf-style format string.
+     * @param ... printf-style arguments.
+     * @note Uses `ESP_LOGI` and includes an info glyph prefix.
+     */
     void PrintInfo(const char* format, ...) {
         va_list args;
         va_start(args, format);
@@ -405,6 +777,12 @@ namespace CommandOutput {
         ESP_LOGI(TAG, "ℹ %s", buffer);
     }
     
+    /**
+     * @brief Print a warning message to the ESP-IDF log.
+     * @param format printf-style format string.
+     * @param ... printf-style arguments.
+     * @note Uses `ESP_LOGW` and includes a warning glyph prefix.
+     */
     void PrintWarning(const char* format, ...) {
         va_list args;
         va_start(args, format);
@@ -414,6 +792,11 @@ namespace CommandOutput {
         ESP_LOGW(TAG, "⚠ Warning: %s", buffer);
     }
     
+    /**
+     * @brief Print a boxed header line for human-readable UART output.
+     * @param title Title to center in the header.
+     * @note This is presentation-only and does not affect system state.
+     */
     void PrintHeader(const char* title) {
         ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
         char header[BOX_WIDTH + 1];
@@ -424,14 +807,25 @@ namespace CommandOutput {
         ESP_LOGI(TAG, "╠══════════════════════════════════════════════════════════════════════════════╣");
     }
     
+    /**
+     * @brief Print a boxed separator line for UART output.
+     */
     void PrintSeparator() {
         ESP_LOGI(TAG, "╠══════════════════════════════════════════════════════════════════════════════╣");
     }
     
+    /**
+     * @brief Print a boxed footer line for UART output.
+     */
     void PrintFooter() {
         ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
     }
     
+    /**
+     * @brief Print a key/value row within the boxed UART output format.
+     * @param label Left column label.
+     * @param value Right column value (will be truncated to fit).
+     */
     void PrintTableRow(const char* label, const char* value) {
         // Use a larger buffer to account for multi-byte Unicode characters
         char row[BOX_WIDTH * 2 + 1];
@@ -447,10 +841,19 @@ namespace CommandOutput {
         ESP_LOGI(TAG, "%s", row);
     }
     
+    /**
+     * @brief Print an empty boxed line for spacing in UART output.
+     */
     void PrintEmptyLine() {
         ESP_LOGI(TAG, "║%*s║", BOX_WIDTH - 2, "");
     }
     
+    /**
+     * @brief Print a success/failure result line for a command.
+     * @param command Command name (displayed).
+     * @param success Whether the command succeeded.
+     * @param details Optional additional details.
+     */
     void PrintCommandResult(const char* command, bool success, const char* details = nullptr) {
         if (success) {
             if (details) {
@@ -482,6 +885,11 @@ public:
         int max_args;
     };
     
+    /**
+     * @brief Find a supported option definition by token.
+     * @param name Token such as "-f", "--frequency", etc.
+     * @return Pointer to the matching definition, or nullptr if unknown.
+     */
     static const OptionDef* FindOption(const std::string& name) {
         static const OptionDef options[] = {
             {OptionType::FREQUENCY, "-f", "--frequency", "Motion frequency in Hz", 1, 1},
@@ -498,8 +906,18 @@ public:
         return nullptr;
     }
     
-    static bool ParseOptions(const std::vector<std::string>& tokens, 
-                            std::vector<std::pair<OptionType, std::vector<std::string>>>& options) {
+    /**
+     * @brief Parse SET command options from a token sequence.
+     *
+     * @details Supports both flag-style (e.g. `-f 0.5`) and word-style
+     * (e.g. `frequency 0.5`) options. Multiple options may be specified.
+     *
+     * @param tokens Tokens following the "set" verb.
+     * @param options Output vector of parsed options and their argument strings.
+     * @return true if parsing succeeded; false if tokens are malformed.
+     */
+    static bool ParseOptions(const std::vector<std::string>& tokens,
+                             std::vector<std::pair<OptionType, std::vector<std::string>>>& options) {
         options.clear();
         
         for (size_t i = 0; i < tokens.size(); ++i) {
@@ -545,6 +963,11 @@ public:
         return true;
     }
     
+    /**
+     * @brief Get an option definition by OptionType.
+     * @param type Option type enum.
+     * @return Pointer to the definition, or nullptr if not found.
+     */
     static const OptionDef* GetOptionDef(OptionType type) {
         static const OptionDef options[] = {
             {OptionType::FREQUENCY, "-f", "--frequency", "Motion frequency in Hz", 1, 1},
@@ -574,7 +997,14 @@ private:
     static constexpr size_t RX_BUF_SIZE = 256;
 
     /**
-     * @brief Parse command line into tokens
+     * @brief Split a command line into tokens.
+     *
+     * @details
+     * - Splits on whitespace
+     * - Preserves quoted substrings (double quotes)
+     *
+     * @param line Null-terminated command line string.
+     * @return Token vector (may be empty).
      */
     std::vector<std::string> Tokenize(const char* line) noexcept {
         std::vector<std::string> tokens;
@@ -602,7 +1032,10 @@ private:
     }
     
     /**
-     * @brief Parse command type from token
+     * @brief Map a verb token (first token) to a `CommandType`.
+     *
+     * @param token Lowercase verb token (e.g. "set", "start").
+     * @return Parsed command type. Unknown verbs map to HELP.
      */
     CommandType ParseCommandType(const std::string& token) noexcept {
         if (token == "set") return CommandType::SET;
@@ -617,7 +1050,11 @@ private:
     }
     
     /**
-     * @brief Parse command line into ParsedCommand structure
+     * @brief Convert tokens into a structured ParsedCommand.
+     *
+     * @param tokens Token vector as returned by Tokenize().
+     * @param cmd Output structured command.
+     * @return true if parsing succeeded; false otherwise.
      */
     bool ParseCommand(const std::vector<std::string>& tokens, ParsedCommand& cmd) noexcept {
         if (tokens.empty()) {
@@ -649,6 +1086,16 @@ private:
     }
 
 public:
+    /**
+     * @brief Construct a UART command parser bound to a specific UART port.
+     *
+     * @details
+     * Configures the UART driver for non-blocking reads and line-based parsing.
+     * On ESP32-C6, UART0 is often already configured by the console; this
+     * constructor tolerates that case.
+     *
+     * @param uart_port UART port to use (e.g. UART_NUM_0).
+     */
     UartCommandParser(uart_port_t uart_port) : uart_port_(uart_port), line_buffer_pos_(0) {
         line_buffer_[0] = '\0';
         
@@ -704,7 +1151,13 @@ public:
     }
 
     /**
-     * @brief Process a command line
+     * @brief Parse and execute a single command line.
+     *
+     * @param line Null-terminated command line.
+     * @param motion Motion controller to operate on.
+     * @return true if the command executed successfully; false otherwise.
+     *
+     * @note This function routes to the `Handle*` command handlers.
      */
     bool ProcessCommand(const char* line, FatigueTest::FatigueTestMotion& motion) noexcept {
         if (!line || strlen(line) == 0) {
@@ -747,7 +1200,16 @@ public:
     }
 
     /**
-     * @brief Read and process commands from UART (line-by-line)
+     * @brief Poll the UART for input and process complete lines.
+     *
+     * @details
+     * Reads any currently buffered bytes (non-blocking) and accumulates them
+     * into a line buffer. When a newline is received, the line is executed via
+     * ProcessCommand().
+     *
+     * @param motion Motion controller to operate on.
+     *
+     * @warning This runs in a polling task. Keep per-call work bounded.
      */
     void ProcessUartCommands(FatigueTest::FatigueTestMotion& motion) noexcept {
         // Check available bytes first
@@ -818,7 +1280,15 @@ public:
 //=============================================================================
 
 /**
- * @brief Handle SET command with multiple options
+ * @brief Apply SET command options to the motion controller.
+ *
+ * @details
+ * Validates arguments, applies parameters to `motion`, and prints a structured
+ * success/failure summary. Some options also update global settings (e.g., cycle target).
+ *
+ * @param cmd Parsed command containing SET options.
+ * @param motion Motion controller instance to update.
+ * @return true if all options applied successfully; false otherwise.
  */
 static bool HandleSet(const ParsedCommand& cmd, FatigueTest::FatigueTestMotion& motion) noexcept {
     if (cmd.options.empty()) {
@@ -827,7 +1297,6 @@ static bool HandleSet(const ParsedCommand& cmd, FatigueTest::FatigueTestMotion& 
         return false;
     }
     
-    bool all_success = true;
     int success_count = 0;
     int failure_count = 0;
     
@@ -965,13 +1434,16 @@ static bool HandleSet(const ParsedCommand& cmd, FatigueTest::FatigueTestMotion& 
 
 /**
  * @brief Handle START command
+ *
+ * @details
+ * UART START behaves like remote START: it launches cancellable bounds finding
+ * and then starts motion if bounds succeed. The motor is enabled only during
+ * bounds finding and active motion.
+ *
+ * @param motion Motion controller instance.
+ * @return true if the START request was accepted; false otherwise.
  */
 static bool HandleStart(FatigueTest::FatigueTestMotion& motion) noexcept {
-    if (!g_bounds_found) {
-        CommandOutput::PrintError("Cannot start: bounds not found. Run bounds finding first.");
-        return false;
-    }
-    
     auto status = motion.GetStatus();
     if (status.running) {
         CommandOutput::PrintWarning("Test is already running");
@@ -983,36 +1455,58 @@ static bool HandleStart(FatigueTest::FatigueTestMotion& motion) noexcept {
         return false;
     }
     
-    bool result = motion.Start();
-    if (result) {
-        CommandOutput::PrintSuccess("Fatigue test started");
-        EspNowReceiver::send_start_ack();
-        EspNowReceiver::send_status_update(motion.GetCurrentCycles(), TestState::RUNNING);
-    } else {
-        CommandOutput::PrintError("Failed to start fatigue test");
+    // UART start should behave like remote start: (re)find bounds then start.
+    if (g_state == InternalState::RUNNING || g_state == InternalState::BOUNDS_FINDING) {
+        CommandOutput::PrintWarning("Already running or finding bounds");
+        return false;
     }
-    return result;
+    CommandOutput::PrintInfo("Starting: will (re)find bounds then begin motion");
+    EspNowReceiver::send_start_ack();
+    RequestStart(PendingStartKind::START);
+    return true;
 }
 
 /**
  * @brief Handle STOP command
+ *
+ * @details
+ * STOP is a hard stop: cancels bounds finding (if active), stops motion, sets
+ * the internal state to IDLE, and de-energizes the motor.
+ *
+ * @param motion Motion controller instance.
+ * @return true if a stop action was performed (even if already idle); false otherwise.
  */
 static bool HandleStop(FatigueTest::FatigueTestMotion& motion) noexcept {
     auto status = motion.GetStatus();
     if (!status.running) {
         CommandOutput::PrintWarning("Test is not running");
-        return false;
+        // Still ensure motor is de-energized
+        g_cancel_bounds = true;
+        g_state = InternalState::IDLE;
+        MotorStopHoldDisable();
+        EspNowReceiver::send_stop_ack();
+        EspNowReceiver::send_status_update(motion.GetCurrentCycles(), TestState::IDLE);
+        return true;
     }
     
     motion.Stop();
     CommandOutput::PrintSuccess("Fatigue test stopped");
+    g_cancel_bounds = true;
+    g_state = InternalState::IDLE;
+    MotorStopHoldDisable();
     EspNowReceiver::send_stop_ack();
     EspNowReceiver::send_status_update(motion.GetCurrentCycles(), TestState::IDLE);
     return true;
 }
 
 /**
- * @brief Handle PAUSE command (future)
+ * @brief Handle PAUSE command (UART path).
+ *
+ * @details
+ * UART pause/resume are currently not implemented (remote control handles PAUSE/RESUME).
+ *
+ * @param motion Motion controller instance (unused).
+ * @return false (not implemented).
  */
 static bool HandlePause(FatigueTest::FatigueTestMotion& motion) noexcept {
     (void)motion;
@@ -1021,7 +1515,13 @@ static bool HandlePause(FatigueTest::FatigueTestMotion& motion) noexcept {
 }
 
 /**
- * @brief Handle RESUME command (future)
+ * @brief Handle RESUME command (UART path).
+ *
+ * @details
+ * UART pause/resume are currently not implemented (remote control handles PAUSE/RESUME).
+ *
+ * @param motion Motion controller instance (unused).
+ * @return false (not implemented).
  */
 static bool HandleResume(FatigueTest::FatigueTestMotion& motion) noexcept {
     (void)motion;
@@ -1031,6 +1531,11 @@ static bool HandleResume(FatigueTest::FatigueTestMotion& motion) noexcept {
 
 /**
  * @brief Handle RESET command
+ *
+ * @details Resets the cycle counter to 0 (does not start motion).
+ *
+ * @param motion Motion controller instance.
+ * @return true on success.
  */
 static bool HandleReset(FatigueTest::FatigueTestMotion& motion) noexcept {
     motion.ResetCycles();
@@ -1040,6 +1545,11 @@ static bool HandleReset(FatigueTest::FatigueTestMotion& motion) noexcept {
 
 /**
  * @brief Handle STATUS command
+ *
+ * @details Prints a human-readable status snapshot (state, bounds, frequency, cycles, dwell).
+ *
+ * @param motion Motion controller instance.
+ * @return true always (printing only).
  */
 static bool HandleStatus(FatigueTest::FatigueTestMotion& motion) noexcept {
     FatigueTest::FatigueTestMotion::Status status = motion.GetStatus();
@@ -1091,6 +1601,9 @@ static bool HandleStatus(FatigueTest::FatigueTestMotion& motion) noexcept {
 
 /**
  * @brief Handle HELP command
+ *
+ * @param topic Optional help topic (e.g. "set", "start").
+ * @return true if help was shown successfully; false if topic was unknown.
  */
 static bool HandleHelp(const std::string& topic) noexcept {
     if (topic.empty()) {
@@ -1195,14 +1708,21 @@ static bool HandleHelp(const std::string& topic) noexcept {
     }
 }
 
-// UART Command Task
+/**
+ * @brief FreeRTOS task: poll UART and process commands.
+ *
+ * @details
+ * This task calls `UartCommandParser::ProcessUartCommands()` periodically.
+ *
+ * @param arg Pointer to a `UartCommandParser` instance.
+ */
 static void uart_command_task(void* arg)
 {
     UartCommandParser* parser = static_cast<UartCommandParser*>(arg);
     const char* task_name = "uart_cmd";
     int64_t start_time_us = esp_timer_get_time();
     int64_t last_log_time_us = start_time_us;
-    const int64_t log_interval_us = 5000000; // Log every 5 seconds
+    const int64_t log_interval_us = TaskTiming::LOG_INTERVAL_US;
     
     ESP_LOGI(TAG, "[%s] Task started", task_name);
     
@@ -1227,12 +1747,30 @@ static void uart_command_task(void* arg)
                 ESP_LOGE(TAG, "[%s] parser is null!", task_name);
             }
         }
-        vTaskDelay(pdMS_TO_TICKS(50)); // Check for commands every 50ms
+        vTaskDelay(pdMS_TO_TICKS(TaskTiming::UART_POLL_PERIOD_MS));
     }
 }
 
 extern "C" void app_main()
 {
+    /**
+     * @brief ESP-IDF application entry point.
+     *
+     * @details
+     * Performs one-time initialization:
+     * - ESP-NOW receiver (event queue + WiFi)
+     * - SPI bus and TMC51x0 driver configuration for the selected test rig
+     * - encoder configuration
+     * - UART command parser
+     * - background tasks for command processing, motion control, and status updates
+     *
+     * Safety policy:
+     * - The motor is left DISABLED at boot.
+     * - The motor is enabled only during bounds finding and active motion, and
+     *   disabled again on PAUSE/STOP/completion.
+     *
+     * @note This function never returns under normal operation.
+     */
     ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
     ESP_LOGI(TAG, "║         Fatigue Test Unit with ESP-NOW Communication                         ║");
     ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
@@ -1264,23 +1802,6 @@ extern "C" void app_main()
     tmc51x0::DriverConfig cfg{};
     tmc51x0_test_config::ConfigureDriverFromTestRig<SELECTED_TEST_RIG>(cfg);
     
-    // Debug: Log motor specification values to verify configuration
-    ESP_LOGI(TAG, "=== Motor Configuration Debug ===");
-    ESP_LOGI(TAG, "Motor Spec - sense_resistor_mohm: %u", cfg.motor_spec.sense_resistor_mohm);
-    ESP_LOGI(TAG, "Motor Spec - supply_voltage_mv: %u", cfg.motor_spec.supply_voltage_mv);
-    ESP_LOGI(TAG, "Motor Spec - rated_current_ma: %u", cfg.motor_spec.rated_current_ma);
-    ESP_LOGI(TAG, "Motor Spec - run_current_ma: %u", cfg.motor_spec.run_current_ma);
-    ESP_LOGI(TAG, "Motor Spec - hold_current_ma: %u", cfg.motor_spec.hold_current_ma);
-    ESP_LOGI(TAG, "Motor Spec - winding_resistance_mohm: %u", cfg.motor_spec.winding_resistance_mohm);
-    ESP_LOGI(TAG, "Motor Spec - winding_inductance_mh: %.2f", cfg.motor_spec.winding_inductance_mh);
-    ESP_LOGI(TAG, "Motor Spec - steps_per_rev: %u", cfg.motor_spec.steps_per_rev);
-    ESP_LOGI(TAG, "Mechanical - system_type: %d", static_cast<int>(cfg.mechanical.system_type));
-    ESP_LOGI(TAG, "Mechanical - gear_ratio: %.2f", cfg.mechanical.gear_ratio);
-    ESP_LOGI(TAG, "Chopper - toff: %u", cfg.chopper.toff);
-    ESP_LOGI(TAG, "Chopper - mres: %d", static_cast<int>(cfg.chopper.mres));
-    ESP_LOGI(TAG, "Clock Config - frequency_hz: %u", cfg.external_clk_config.frequency_hz);
-    ESP_LOGI(TAG, "===================================");
-    
     auto driver_init_result = driver.Initialize(cfg);
     if (!driver_init_result) {
         ESP_LOGE(TAG, "Failed to initialize TMC51x0 driver (ErrorCode: %d)", static_cast<int>(driver_init_result.Error()));
@@ -1303,14 +1824,17 @@ extern "C" void app_main()
         tmc51x0_test_config::GetTestRigEncoderPulsesPerRev<SELECTED_TEST_RIG>(),
         tmc51x0_test_config::GetTestRigEncoderInvertDirection<SELECTED_TEST_RIG>());
 
-    // Enable motor
-    auto enable_result = driver.motorControl.Enable();
-    if (!enable_result) {
-        ESP_LOGE(TAG, "Failed to enable motor (ErrorCode: %d)", static_cast<int>(enable_result.Error()));
-        return;
-    }
+    // Motor must NOT be enabled at boot. We only energize during bounds-finding and active motion.
+    (void)driver.motorControl.Disable();
+    ESP_LOGI(TAG, "Motor left disabled at boot (will enable on START)");
 
-    ESP_LOGI(TAG, "Motor enabled");
+    // Initialize default stall detection parameters from test config
+    using TestConfig = tmc51x0_test_config::GetTestConfigForTestRig<SELECTED_TEST_RIG>;
+    g_settings.test_unit.bounds_search_velocity_rpm = TestConfig::Motion::BOUNDS_SEARCH_SPEED_RPM;
+    g_settings.test_unit.stallguard_min_velocity_rpm = TestConfig::StallGuard::MIN_VELOCITY_RPM;
+    g_settings.test_unit.stall_detection_current_factor = TestConfig::StallGuard::STALL_DETECTION_CURRENT_FACTOR;
+    g_settings.test_unit.bounds_search_accel_rev_s2 = TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
+    ESP_LOGI(TAG, "Default stall detection parameters initialized from test config");
 
     // Create motion controller (full implementation)
     // The motion controller works entirely in higher-level units (degrees, RPM, rev/s²)
@@ -1318,43 +1842,8 @@ extern "C" void app_main()
     FatigueTest::FatigueTestMotion motion(&driver);
     g_motion = &motion;
 
-    // Wait for config from UI board before finding bounds
-    ESP_LOGI(TAG, "Waiting for configuration from UI board...");
-    vTaskDelay(pdMS_TO_TICKS(2000));
-
-    // Find bounds using abstracted bounds finder
-    // NOTE: Bounds finder will command its own motion - this is expected and safe
-    ESP_LOGI(TAG, "Finding bounds using %s method...", g_use_stallguard ? "StallGuard2" : "Encoder");
-    
-    std::unique_ptr<FatigueTest::IBoundsFinder> bounds_finder;
-    if (g_use_stallguard) {
-        bounds_finder = FatigueTest::CreateStallGuardBoundsFinder<SELECTED_TEST_RIG>();
-    } else {
-        bounds_finder = FatigueTest::CreateEncoderBoundsFinder<SELECTED_TEST_RIG>();
-    }
-
-    if (bounds_finder) {
-        // FindBounds gets steps_per_rev from test rig config automatically
-        auto result = bounds_finder->FindBounds(driver);
-        if (result.success) {
-            motion.SetGlobalBounds(result.min_bound, result.max_bound);  // Already in degrees
-            motion.SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
-            g_bounds_found = true;
-            ESP_LOGI(TAG, "Bounds found using %s: min=%.2f°, max=%.2f° (bounded=%d)", 
-                     bounds_finder->GetMethodName(), result.min_bound, result.max_bound, 
-                     result.bounded ? 1 : 0);
-        } else {
-            ESP_LOGW(TAG, "Bounds finding failed, using default bounds");
-            motion.SetGlobalBounds(-175.0f, 175.0f);  // Default bounds in degrees
-            motion.SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
-            g_bounds_found = false;
-        }
-    } else {
-        ESP_LOGE(TAG, "Failed to create bounds finder");
-        motion.SetGlobalBounds(-175.0f, 175.0f);  // Default bounds in degrees
-        motion.SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
-        g_bounds_found = false;
-    }
+    // Bounds finding will happen when START command is received from UI board
+    ESP_LOGI(TAG, "Waiting for START command from UI board to find bounds...");
 
     // Initialize UART command parser
     ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
@@ -1397,7 +1886,7 @@ extern "C" void app_main()
     const char* task_name = "main_loop";
     int64_t start_time_us = esp_timer_get_time();
     int64_t last_log_time_us = start_time_us;
-    const int64_t log_interval_us = 5000000; // Log every 5 seconds
+    const int64_t log_interval_us = TaskTiming::LOG_INTERVAL_US;
     
     ESP_LOGI(TAG, "[%s] Main loop started", task_name);
     

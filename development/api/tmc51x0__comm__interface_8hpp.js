@@ -20,6 +20,13 @@ var tmc51x0__comm__interface_8hpp =
       [ "INACTIVE", "tmc51x0__comm__interface_8hpp.html#a066cfe7d73f5a7f546c6d7215c0b4577a6b273343c454f9c53dcfc9c4ccf171d2", null ],
       [ "ACTIVE", "tmc51x0__comm__interface_8hpp.html#a066cfe7d73f5a7f546c6d7215c0b4577a18ff74f43da410c5529f7d6fca84f115", null ]
     ] ],
+    [ "LogLevel", "tmc51x0__comm__interface_8hpp.html#a2080204610f0192a190d910abbe2869d", [
+      [ "Error", "tmc51x0__comm__interface_8hpp.html#a2080204610f0192a190d910abbe2869da902b0d55fddef6f8d651fe1035b7d4bd", null ],
+      [ "Warn", "tmc51x0__comm__interface_8hpp.html#a2080204610f0192a190d910abbe2869da56525ae64d370c0b448ac0d60710ef17", null ],
+      [ "Info", "tmc51x0__comm__interface_8hpp.html#a2080204610f0192a190d910abbe2869da4059b0251f66a18cb56f544728796875", null ],
+      [ "Debug", "tmc51x0__comm__interface_8hpp.html#a2080204610f0192a190d910abbe2869daa603905470e2a5b8c13e96b579ef0dba", null ],
+      [ "Verbose", "tmc51x0__comm__interface_8hpp.html#a2080204610f0192a190d910abbe2869dad4a9fa383ab700c5bdd6f31cf7df0faf", null ]
+    ] ],
     [ "TMC51x0CtrlPin", "tmc51x0__comm__interface_8hpp.html#a564533944e9fa3223c5db30f0f4106eb", [
       [ "EN", "tmc51x0__comm__interface_8hpp.html#a564533944e9fa3223c5db30f0f4106ebaaa85f1840e282d8a8304dbc2c0d7c9b2", null ],
       [ "DIR", "tmc51x0__comm__interface_8hpp.html#a564533944e9fa3223c5db30f0f4106ebac1561b120842fabe1310417083827590", null ],

@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classFatigueTest_1_1EncoderBoundsFinderImpl.html#a4c15dcfcea121e5b5c9de5b968447d72" target="_top" xlink:title="Find motor bounds in both directions.">
+<g id="a_Node000002"><a xlink:href="classFatigueTest_1_1EncoderBoundsFinderImpl.html#a664059e6ebcd4547d3f4862de5fd2dd4" target="_top" xlink:title="Find motor bounds in both directions.">
 <polygon fill="white" stroke="#666666" points="152,-30 0,-30 0,0 152,0 152,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">FatigueTest::EncoderBounds</text>
 <text text-anchor="middle" x="76" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">FinderImpl::FindBounds</text>

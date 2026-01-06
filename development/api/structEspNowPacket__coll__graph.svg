@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Full packet representation (header + max payload + CRC field).">
 <polygon fill="#999999" stroke="#666666" points="89,-19 2,-19 2,0 89,0 89,-19"/>
 <text text-anchor="middle" x="45.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">EspNowPacket</text>
 </a>
@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="structEspNowHeader.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="structEspNowHeader.html" target="_top" xlink:title="ESP&#45;NOW packet header (wire format).">
 <polygon fill="white" stroke="#666666" points="91,-85 0,-85 0,-66 91,-66 91,-85"/>
 <text text-anchor="middle" x="45.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">EspNowHeader</text>
 </a>

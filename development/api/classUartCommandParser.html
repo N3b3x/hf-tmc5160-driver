@@ -110,24 +110,25 @@ $(function(){initNavTree('classUartCommandParser.html',''); initResizable(); });
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:afdef7bdf482397b93c5bdb48e6f6f294" id="r_afdef7bdf482397b93c5bdb48e6f6f294"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afdef7bdf482397b93c5bdb48e6f6f294">UartCommandParser</a> (uart_port_t uart_port)</td></tr>
+<tr class="memdesc:afdef7bdf482397b93c5bdb48e6f6f294"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a UART command parser bound to a specific UART port.  <br /></td></tr>
 <tr class="separator:afdef7bdf482397b93c5bdb48e6f6f294"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b7090fe7118485c639dce94074b6e68" id="r_a2b7090fe7118485c639dce94074b6e68"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b7090fe7118485c639dce94074b6e68">ProcessCommand</a> (const char *line, <a class="el" href="classFatigueTest_1_1FatigueTestMotion.html">FatigueTest::FatigueTestMotion</a> &amp;motion) noexcept</td></tr>
-<tr class="memdesc:a2b7090fe7118485c639dce94074b6e68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process a command line.  <br /></td></tr>
+<tr class="memdesc:a2b7090fe7118485c639dce94074b6e68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse and execute a single command line.  <br /></td></tr>
 <tr class="separator:a2b7090fe7118485c639dce94074b6e68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a867cccdf009c2a69f1edf9a02f50c984" id="r_a867cccdf009c2a69f1edf9a02f50c984"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a867cccdf009c2a69f1edf9a02f50c984">ProcessUartCommands</a> (<a class="el" href="classFatigueTest_1_1FatigueTestMotion.html">FatigueTest::FatigueTestMotion</a> &amp;motion) noexcept</td></tr>
-<tr class="memdesc:a867cccdf009c2a69f1edf9a02f50c984"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read and process commands from UART (line-by-line)  <br /></td></tr>
+<tr class="memdesc:a867cccdf009c2a69f1edf9a02f50c984"><td class="mdescLeft">&#160;</td><td class="mdescRight">Poll the UART for input and process complete lines.  <br /></td></tr>
 <tr class="separator:a867cccdf009c2a69f1edf9a02f50c984"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a252be09aa840308655722421fafb1641" id="r_a252be09aa840308655722421fafb1641"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a252be09aa840308655722421fafb1641">Tokenize</a> (const char *line) noexcept</td></tr>
-<tr class="memdesc:a252be09aa840308655722421fafb1641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse command line into tokens.  <br /></td></tr>
+<tr class="memdesc:a252be09aa840308655722421fafb1641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split a command line into tokens.  <br /></td></tr>
 <tr class="separator:a252be09aa840308655722421fafb1641"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b1cc802df8531601b19af3dd97b9f52" id="r_a1b1cc802df8531601b19af3dd97b9f52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="main_8cpp.html#a21e038f5b8958e203d28bc4f18472352">CommandType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1b1cc802df8531601b19af3dd97b9f52">ParseCommandType</a> (const std::string &amp;token) noexcept</td></tr>
-<tr class="memdesc:a1b1cc802df8531601b19af3dd97b9f52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse command type from token.  <br /></td></tr>
+<tr class="memdesc:a1b1cc802df8531601b19af3dd97b9f52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map a verb token (first token) to a <code>CommandType</code>.  <br /></td></tr>
 <tr class="separator:a1b1cc802df8531601b19af3dd97b9f52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0e959fc2d336b5fbfb2dfafb901b167" id="r_ab0e959fc2d336b5fbfb2dfafb901b167"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0e959fc2d336b5fbfb2dfafb901b167">ParseCommand</a> (const std::vector&lt; std::string &gt; &amp;tokens, <a class="el" href="structParsedCommand.html">ParsedCommand</a> &amp;cmd) noexcept</td></tr>
-<tr class="memdesc:ab0e959fc2d336b5fbfb2dfafb901b167"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse command line into <a class="el" href="structParsedCommand.html" title="Parsed command structure.">ParsedCommand</a> structure.  <br /></td></tr>
+<tr class="memdesc:ab0e959fc2d336b5fbfb2dfafb901b167"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert tokens into a structured <a class="el" href="structParsedCommand.html" title="Parsed command structure.">ParsedCommand</a>.  <br /></td></tr>
 <tr class="separator:ab0e959fc2d336b5fbfb2dfafb901b167"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
@@ -172,6 +173,15 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Construct a UART command parser bound to a specific UART port. </p>
+<p>Configures the UART driver for non-blocking reads and line-based parsing. On ESP32-C6, UART0 is often already configured by the console; this constructor tolerates that case.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uart_port</td><td>UART port to use (e.g. UART_NUM_0). </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -202,7 +212,15 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Parse command line into <a class="el" href="structParsedCommand.html" title="Parsed command structure.">ParsedCommand</a> structure. </p>
+<p>Convert tokens into a structured <a class="el" href="structParsedCommand.html" title="Parsed command structure.">ParsedCommand</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tokens</td><td>Token vector as returned by <a class="el" href="#a252be09aa840308655722421fafb1641" title="Split a command line into tokens.">Tokenize()</a>. </td></tr>
+    <tr><td class="paramname">cmd</td><td>Output structured command. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if parsing succeeded; false otherwise. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -239,7 +257,14 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Parse command type from token. </p>
+<p>Map a verb token (first token) to a <code>CommandType</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>Lowercase verb token (e.g. "set", "start"). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Parsed command type. Unknown verbs map to HELP. </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -275,11 +300,20 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Process a command line. </p>
+<p>Parse and execute a single command line. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">line</td><td>Null-terminated command line. </td></tr>
+    <tr><td class="paramname">motion</td><td>Motion controller to operate on. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the command executed successfully; false otherwise.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function routes to the <code>Handle*</code> command handlers. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a2b7090fe7118485c639dce94074b6e68_cgraph.svg" width="1048" height="691"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a2b7090fe7118485c639dce94074b6e68_cgraph.svg" width="1710" height="792"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -312,11 +346,19 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Read and process commands from UART (line-by-line) </p>
+<p>Poll the UART for input and process complete lines. </p>
+<p>Reads any currently buffered bytes (non-blocking) and accumulates them into a line buffer. When a newline is received, the line is executed via <a class="el" href="#a2b7090fe7118485c639dce94074b6e68" title="Parse and execute a single command line.">ProcessCommand()</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">motion</td><td>Motion controller to operate on.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section warning"><dt>Warning</dt><dd>This runs in a polling task. Keep per-call work bounded. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a867cccdf009c2a69f1edf9a02f50c984_cgraph.svg" width="1271" height="691"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a867cccdf009c2a69f1edf9a02f50c984_cgraph.svg" width="1932" height="792"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -349,7 +391,18 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Parse command line into tokens. </p>
+<p>Split a command line into tokens. </p>
+<ul>
+<li>Splits on whitespace</li>
+<li>Preserves quoted substrings (double quotes)</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">line</td><td>Null-terminated command line string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Token vector (may be empty). </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">

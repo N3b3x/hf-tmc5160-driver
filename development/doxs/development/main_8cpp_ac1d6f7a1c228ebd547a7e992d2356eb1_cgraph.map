@@ -1,5 +1,5 @@
 <map id="HandleReset" name="HandleReset">
 <area shape="rect" id="Node000001" title="Handle RESET command." alt="" coords="5,5,111,31"/>
-<area shape="rect" id="Node000002" href="$namespaceCommandOutput.html#a2bed37b24a202a9189a9810ca7bd2ec2" title=" " alt="" coords="159,5,381,31"/>
+<area shape="rect" id="Node000002" href="$namespaceCommandOutput.html#a2bed37b24a202a9189a9810ca7bd2ec2" title="Print a success message to the ESP&#45;IDF log." alt="" coords="159,5,381,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,15,145,15,145,21,111,21"/>
 </map>

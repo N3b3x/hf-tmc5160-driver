@@ -24,6 +24,8 @@ var searchData=
   ['local_5fmax_5fbound_5f_21',['local_max_bound_',['../classFatigueTest_1_1FatigueTestMotion.html#a21bd758a9f7bcaac8e16bda8134fc7ec',1,'FatigueTest::FatigueTestMotion']]],
   ['local_5fmin_5fbound_5f_22',['local_min_bound_',['../classFatigueTest_1_1FatigueTestMotion.html#aa3ee77a1e8df8b48dae1061cdda20734',1,'FatigueTest::FatigueTestMotion']]],
   ['locked_5f_23',['locked_',['../classTmcMutexGuard.html#a57ef84d5629c9f4ad53660b8a9747e7d',1,'TmcMutexGuard']]],
-  ['long_5fname_24',['long_name',['../structOptionParser_1_1OptionDef.html#ace652f81c03c1dbd64340385254b9173',1,'OptionParser::OptionDef']]],
-  ['lower_5fthreshold_5fsg_25',['lower_threshold_sg',['../structtmc51x0_1_1CoolStepConfig.html#a80039da9cefd52f8190a94bb6bd1e710',1,'tmc51x0::CoolStepConfig']]]
+  ['log_5finterval_5flong_5fus_24',['LOG_INTERVAL_LONG_US',['../namespaceTaskTiming.html#a3f20df455bc5fda76473928e39ab345c',1,'TaskTiming']]],
+  ['log_5finterval_5fus_25',['LOG_INTERVAL_US',['../namespaceTaskTiming.html#a58be5d5ca97b35c1686fa818847f4787',1,'TaskTiming']]],
+  ['long_5fname_26',['long_name',['../structOptionParser_1_1OptionDef.html#ace652f81c03c1dbd64340385254b9173',1,'OptionParser::OptionDef']]],
+  ['lower_5fthreshold_5fsg_27',['lower_threshold_sg',['../structtmc51x0_1_1CoolStepConfig.html#a80039da9cefd52f8190a94bb6bd1e710',1,'tmc51x0::CoolStepConfig']]]
 ];

@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Snapshot current controller status.">
 <polygon fill="#999999" stroke="#666666" points="385,-42.5 253,-42.5 253,-12.5 385,-12.5 385,-42.5"/>
 <text text-anchor="start" x="261" y="-30.5" font-family="Helvetica,sans-Serif" font-size="10.00">FatigueTest::FatigueTest</text>
 <text text-anchor="middle" x="319" y="-19.5" font-family="Helvetica,sans-Serif" font-size="10.00">Motion::GetStatus</text>
@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="main_8cpp.html#a30da369114ee453fe81be5a919262abf" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="main_8cpp.html#a30da369114ee453fe81be5a919262abf" target="_top" xlink:title="FreeRTOS task: drive the motion update loop and detect completion.">
 <polygon fill="white" stroke="#666666" points="217,-56 101,-56 101,-37 217,-37 217,-56"/>
 <text text-anchor="middle" x="159" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">motion_control_task</text>
 </a>
@@ -39,7 +39,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="main_8cpp.html#a087fdcdd7d4c34c0c22196a7223d96f5" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="main_8cpp.html#a087fdcdd7d4c34c0c22196a7223d96f5" target="_top" xlink:title="FreeRTOS task: periodically send STATUS_UPDATE to the remote controller.">
 <polygon fill="white" stroke="#666666" points="215,-19 103,-19 103,0 215,0 215,-19"/>
 <text text-anchor="middle" x="159" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">status_update_task</text>
 </a>

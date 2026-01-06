@@ -1,8 +1,8 @@
 <map id="UartCommandParser::ProcessCommand" name="UartCommandParser::ProcessCommand">
-<area shape="rect" id="Node000001" title="Process a command line." alt="" coords="565,5,731,45"/>
-<area shape="rect" id="Node000002" href="$classUartCommandParser.html#a867cccdf009c2a69f1edf9a02f50c984" title="Read and process commands from UART (line&#45;by&#45;line)" alt="" coords="343,5,517,45"/>
+<area shape="rect" id="Node000001" title="Parse and execute a single command line." alt="" coords="565,5,731,45"/>
+<area shape="rect" id="Node000002" href="$classUartCommandParser.html#a867cccdf009c2a69f1edf9a02f50c984" title="Poll the UART for input and process complete lines." alt="" coords="343,5,517,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="552,28,518,28,518,23,552,23"/>
-<area shape="rect" id="Node000003" href="$main_8cpp.html#a5a8d7cdba17444119b8f942be87ffe68" title=" " alt="" coords="140,13,295,38"/>
+<area shape="rect" id="Node000003" href="$main_8cpp.html#a5a8d7cdba17444119b8f942be87ffe68" title="FreeRTOS task: poll UART and process commands." alt="" coords="140,13,295,38"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="329,28,295,28,295,23,329,23"/>
 <area shape="rect" id="Node000004" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,13,92,38"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="126,28,92,28,92,23,126,23"/>

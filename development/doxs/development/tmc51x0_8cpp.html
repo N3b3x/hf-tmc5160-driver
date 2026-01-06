@@ -97,7 +97,8 @@ $(function(){initNavTree('tmc51x0_8cpp.html',''); initResizable(); });
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">tmc51x0.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -109,15 +110,21 @@ $(function(){initNavTree('tmc51x0_8cpp.html',''); initResizable(); });
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;limits&gt;</code><br />
 <code>#include &quot;<a class="el" href="tmc51x0__motor__calc_8hpp_source.html">../inc/features/tmc51x0_motor_calc.hpp</a>&quot;</code><br />
+<code>#include &lt;inttypes.h&gt;</code><br />
+<code>#include &lt;cstdio&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;string_view&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tmc51x0.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0_8cpp__incl.svg" width="1491" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0_8cpp__incl.svg" width="1334" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacetmc51x0" id="r_namespacetmc51x0"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html">tmc51x0</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacetmc51x0_1_1detail" id="r_namespacetmc51x0_1_1detail"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html">tmc51x0::detail</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -126,9 +133,60 @@ Macros</h2></td></tr>
 <tr class="separator:ad344fbcd7adf34d35d52b811b6fe0627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26b9980fe703ad12faba15a0e4484ca1" id="r_a26b9980fe703ad12faba15a0e4484ca1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a26b9980fe703ad12faba15a0e4484ca1">TMC51X0_COMPILING_SRC</a>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:a26b9980fe703ad12faba15a0e4484ca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d17d2c849a937c740cdc5a4dde8d4f0" id="r_a7d17d2c849a937c740cdc5a4dde8d4f0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d17d2c849a937c740cdc5a4dde8d4f0">CLR_RST</a>&#160;&#160;&#160;&quot;\033[0m&quot;</td></tr>
+<tr class="separator:a7d17d2c849a937c740cdc5a4dde8d4f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c25e924a39197908df3e1919593afae" id="r_a5c25e924a39197908df3e1919593afae"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5c25e924a39197908df3e1919593afae">CLR_BOLD</a>&#160;&#160;&#160;&quot;\033[1m&quot;</td></tr>
+<tr class="separator:a5c25e924a39197908df3e1919593afae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d8c7d9960773718d8dac44a99bcac4" id="r_a59d8c7d9960773718d8dac44a99bcac4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59d8c7d9960773718d8dac44a99bcac4">CLR_CYAN</a>&#160;&#160;&#160;&quot;\033[36m&quot;</td></tr>
+<tr class="separator:a59d8c7d9960773718d8dac44a99bcac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc1c9f2ac0286a714544e890949412a2" id="r_acc1c9f2ac0286a714544e890949412a2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc1c9f2ac0286a714544e890949412a2">CLR_YLW</a>&#160;&#160;&#160;&quot;\033[33m&quot;</td></tr>
+<tr class="separator:acc1c9f2ac0286a714544e890949412a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe704e11e12fa967b28d74a59c96a2eb" id="r_abe704e11e12fa967b28d74a59c96a2eb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe704e11e12fa967b28d74a59c96a2eb">CLR_MAG</a>&#160;&#160;&#160;&quot;\033[35m&quot;</td></tr>
+<tr class="separator:abe704e11e12fa967b28d74a59c96a2eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93c4fe8b803cee6ecfa0996f7f5a13e9" id="r_a93c4fe8b803cee6ecfa0996f7f5a13e9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a93c4fe8b803cee6ecfa0996f7f5a13e9">CLR_GRN</a>&#160;&#160;&#160;&quot;\033[32m&quot;</td></tr>
+<tr class="separator:a93c4fe8b803cee6ecfa0996f7f5a13e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a440726f8973da46eba779f170566b4cc" id="r_a440726f8973da46eba779f170566b4cc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a440726f8973da46eba779f170566b4cc">CLR_RED</a>&#160;&#160;&#160;&quot;\033[31m&quot;</td></tr>
+<tr class="separator:a440726f8973da46eba779f170566b4cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad69f027d74a0cec9f5b91e8610f2a2aa" id="r_ad69f027d74a0cec9f5b91e8610f2a2aa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad69f027d74a0cec9f5b91e8610f2a2aa">CLR_DIM</a>&#160;&#160;&#160;&quot;\033[2m&quot;</td></tr>
+<tr class="separator:ad69f027d74a0cec9f5b91e8610f2a2aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a3fb371dd61ab27e467c1ca7557ab7b57" id="r_a3fb371dd61ab27e467c1ca7557ab7b57"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html#a3fb371dd61ab27e467c1ca7557ab7b57">tmc51x0::detail::OnOffStyled</a> (bool v) noexcept</td></tr>
+<tr class="separator:a3fb371dd61ab27e467c1ca7557ab7b57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6312aef422236f3477944818f3d71a05" id="r_a6312aef422236f3477944818f3d71a05"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html#a6312aef422236f3477944818f3d71a05">tmc51x0::detail::TrueFalseStyled</a> (bool v) noexcept</td></tr>
+<tr class="separator:a6312aef422236f3477944818f3d71a05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a833a4b389fcef9493fa5bd7aaf88ba48" id="r_a833a4b389fcef9493fa5bd7aaf88ba48"><td class="memTemplParams" colspan="2">template&lt;typename CommT &gt; </td></tr>
+<tr class="memitem:a833a4b389fcef9493fa5bd7aaf88ba48"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html#a833a4b389fcef9493fa5bd7aaf88ba48">tmc51x0::detail::LogBoxLine</a> (CommT &amp;comm, <a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d">LogLevel</a> lvl, const char *tag, const char *line) noexcept</td></tr>
+<tr class="separator:a833a4b389fcef9493fa5bd7aaf88ba48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a443b2edee4617c6cc74c128d524b7edb" id="r_a443b2edee4617c6cc74c128d524b7edb"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html#a443b2edee4617c6cc74c128d524b7edb">tmc51x0::detail::AppendPadded</a> (char *dst, size_t cap, size_t pos, std::string_view s, size_t width) noexcept</td></tr>
+<tr class="separator:a443b2edee4617c6cc74c128d524b7edb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fbd9d5719c3c7ac393acfc49aa55132" id="r_a7fbd9d5719c3c7ac393acfc49aa55132"><td class="memTemplParams" colspan="2">template&lt;typename CommT &gt; </td></tr>
+<tr class="memitem:a7fbd9d5719c3c7ac393acfc49aa55132"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html#a7fbd9d5719c3c7ac393acfc49aa55132">tmc51x0::detail::LogBoxTop</a> (CommT &amp;comm, <a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d">LogLevel</a> lvl, const char *tag, size_t inner_width) noexcept</td></tr>
+<tr class="separator:a7fbd9d5719c3c7ac393acfc49aa55132"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a975a6723c266a92c869dfec5de543b16" id="r_a975a6723c266a92c869dfec5de543b16"><td class="memTemplParams" colspan="2">template&lt;typename CommT &gt; </td></tr>
+<tr class="memitem:a975a6723c266a92c869dfec5de543b16"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html#a975a6723c266a92c869dfec5de543b16">tmc51x0::detail::LogBoxBottom</a> (CommT &amp;comm, <a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d">LogLevel</a> lvl, const char *tag, size_t inner_width) noexcept</td></tr>
+<tr class="separator:a975a6723c266a92c869dfec5de543b16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae493739f70a91419eece66dd1d958094" id="r_ae493739f70a91419eece66dd1d958094"><td class="memTemplParams" colspan="2">template&lt;typename CommT &gt; </td></tr>
+<tr class="memitem:ae493739f70a91419eece66dd1d958094"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html#ae493739f70a91419eece66dd1d958094">tmc51x0::detail::LogBoxRow</a> (CommT &amp;comm, <a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d">LogLevel</a> lvl, const char *tag, size_t inner_width, std::string_view content) noexcept</td></tr>
+<tr class="separator:ae493739f70a91419eece66dd1d958094"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a042585aacefd87238f1c771567fd1647" id="r_a042585aacefd87238f1c771567fd1647"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html#a042585aacefd87238f1c771567fd1647">tmc51x0::detail::NextWrapChunk</a> (std::string_view s, size_t width, size_t &amp;start, size_t &amp;end)</td></tr>
+<tr class="separator:a042585aacefd87238f1c771567fd1647"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3de64d95185b08d40faab18e706ea8f" id="r_ac3de64d95185b08d40faab18e706ea8f"><td class="memTemplParams" colspan="2">template&lt;typename CommT &gt; </td></tr>
+<tr class="memitem:ac3de64d95185b08d40faab18e706ea8f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html#ac3de64d95185b08d40faab18e706ea8f">tmc51x0::detail::LogBoxRowWrapped</a> (CommT &amp;comm, <a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d">LogLevel</a> lvl, const char *tag, size_t inner_width, std::string_view content) noexcept</td></tr>
+<tr class="separator:ac3de64d95185b08d40faab18e706ea8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a089bcd93942e19e55813e20b2f891293" id="r_a089bcd93942e19e55813e20b2f891293"><td class="memTemplParams" colspan="2">template&lt;typename CommT &gt; </td></tr>
+<tr class="memitem:a089bcd93942e19e55813e20b2f891293"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html#a089bcd93942e19e55813e20b2f891293">tmc51x0::detail::LogTableSeparator</a> (CommT &amp;comm, <a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d">LogLevel</a> lvl, const char *tag, size_t inner_width) noexcept</td></tr>
+<tr class="separator:a089bcd93942e19e55813e20b2f891293"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1f4b7d44b55921d635447a9266de1b8" id="r_ad1f4b7d44b55921d635447a9266de1b8"><td class="memTemplParams" colspan="2">template&lt;typename CommT &gt; </td></tr>
+<tr class="memitem:ad1f4b7d44b55921d635447a9266de1b8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html#ad1f4b7d44b55921d635447a9266de1b8">tmc51x0::detail::LogTableHeader</a> (CommT &amp;comm, <a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d">LogLevel</a> lvl, const char *tag, size_t key_w, size_t val_w, size_t unit_w, size_t notes_w) noexcept</td></tr>
+<tr class="separator:ad1f4b7d44b55921d635447a9266de1b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c46bbcc44fe3dc439828d0786c43fb0" id="r_a8c46bbcc44fe3dc439828d0786c43fb0"><td class="memTemplParams" colspan="2">template&lt;typename CommT &gt; </td></tr>
+<tr class="memitem:a8c46bbcc44fe3dc439828d0786c43fb0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html#a8c46bbcc44fe3dc439828d0786c43fb0">tmc51x0::detail::LogTableSection</a> (CommT &amp;comm, <a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d">LogLevel</a> lvl, const char *tag, size_t inner_width, std::string_view title) noexcept</td></tr>
+<tr class="separator:a8c46bbcc44fe3dc439828d0786c43fb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd95b88236a2c35527927fb24f042666" id="r_afd95b88236a2c35527927fb24f042666"><td class="memTemplParams" colspan="2">template&lt;typename CommT &gt; </td></tr>
+<tr class="memitem:afd95b88236a2c35527927fb24f042666"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html#afd95b88236a2c35527927fb24f042666">tmc51x0::detail::LogTableRow</a> (CommT &amp;comm, <a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d">LogLevel</a> lvl, const char *tag, size_t inner_width, std::string_view key, std::string_view value, std::string_view unit, std::string_view notes, size_t key_w, size_t val_w, size_t unit_w, size_t notes_w) noexcept</td></tr>
+<tr class="separator:afd95b88236a2c35527927fb24f042666"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fa3afe83ae033126d377aed702dddf6" id="r_a5fa3afe83ae033126d377aed702dddf6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a5fa3afe83ae033126d377aed702dddf6"><td class="memTemplItemLeft" align="right" valign="top">static constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#a5fa3afe83ae033126d377aed702dddf6">tmc51x0::constrain</a> (T value, T min_val, T max_val) noexcept</td></tr>
 <tr class="separator:a5fa3afe83ae033126d377aed702dddf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,11 +200,128 @@ Functions</h2></td></tr>
 <tr class="memitem:afaf6037a652c82c965a94e0433e13a7c" id="r_afaf6037a652c82c965a94e0433e13a7c"><td class="memTemplParams" colspan="2">template&lt;typename CommType &gt; </td></tr>
 <tr class="memitem:afaf6037a652c82c965a94e0433e13a7c"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#afaf6037a652c82c965a94e0433e13a7c">tmc51x0::FindWorkingVelocityRange</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;driver, int8_t sgt, float start_velocity, float direction, float &amp;found_velocity, uint16_t &amp;sg_result_out, float min_velocity=100.0f, float max_velocity=100000.0f)</td></tr>
 <tr class="separator:afaf6037a652c82c965a94e0433e13a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a0502e80a6ce8097c8c177e323bbb7c22" id="r_a0502e80a6ce8097c8c177e323bbb7c22"><td class="memItemLeft" align="right" valign="top">static char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html#a0502e80a6ce8097c8c177e323bbb7c22">tmc51x0::detail::report_row_buf</a> [512]</td></tr>
+<tr class="separator:a0502e80a6ce8097c8c177e323bbb7c22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of TMC51x0 driver methods (TMC5130 &amp; TMC5160) </p>
 <p>This file contains the template implementation of all TMC51x0 driver methods. It is included by <a class="el" href="tmc51x0_8hpp.html" title="Main TMC51x0 stepper motor driver interface and subsystem classes (TMC5130 &amp; TMC5160)">tmc51x0.hpp</a> to provide header-only template instantiation. Supports both TMC5130 and TMC5160 chips. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a5c25e924a39197908df3e1919593afae" name="a5c25e924a39197908df3e1919593afae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c25e924a39197908df3e1919593afae">&#9670;&#160;</a></span>CLR_BOLD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CLR_BOLD&#160;&#160;&#160;&quot;\033[1m&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a59d8c7d9960773718d8dac44a99bcac4" name="a59d8c7d9960773718d8dac44a99bcac4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59d8c7d9960773718d8dac44a99bcac4">&#9670;&#160;</a></span>CLR_CYAN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CLR_CYAN&#160;&#160;&#160;&quot;\033[36m&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad69f027d74a0cec9f5b91e8610f2a2aa" name="ad69f027d74a0cec9f5b91e8610f2a2aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad69f027d74a0cec9f5b91e8610f2a2aa">&#9670;&#160;</a></span>CLR_DIM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CLR_DIM&#160;&#160;&#160;&quot;\033[2m&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a93c4fe8b803cee6ecfa0996f7f5a13e9" name="a93c4fe8b803cee6ecfa0996f7f5a13e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93c4fe8b803cee6ecfa0996f7f5a13e9">&#9670;&#160;</a></span>CLR_GRN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CLR_GRN&#160;&#160;&#160;&quot;\033[32m&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abe704e11e12fa967b28d74a59c96a2eb" name="abe704e11e12fa967b28d74a59c96a2eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe704e11e12fa967b28d74a59c96a2eb">&#9670;&#160;</a></span>CLR_MAG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CLR_MAG&#160;&#160;&#160;&quot;\033[35m&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a440726f8973da46eba779f170566b4cc" name="a440726f8973da46eba779f170566b4cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a440726f8973da46eba779f170566b4cc">&#9670;&#160;</a></span>CLR_RED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CLR_RED&#160;&#160;&#160;&quot;\033[31m&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7d17d2c849a937c740cdc5a4dde8d4f0" name="a7d17d2c849a937c740cdc5a4dde8d4f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d17d2c849a937c740cdc5a4dde8d4f0">&#9670;&#160;</a></span>CLR_RST</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CLR_RST&#160;&#160;&#160;&quot;\033[0m&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acc1c9f2ac0286a714544e890949412a2" name="acc1c9f2ac0286a714544e890949412a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc1c9f2ac0286a714544e890949412a2">&#9670;&#160;</a></span>CLR_YLW</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CLR_YLW&#160;&#160;&#160;&quot;\033[33m&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a26b9980fe703ad12faba15a0e4484ca1" name="a26b9980fe703ad12faba15a0e4484ca1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a26b9980fe703ad12faba15a0e4484ca1">&#9670;&#160;</a></span>TMC51X0_COMPILING_SRC</h2>
 

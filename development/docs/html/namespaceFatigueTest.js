@@ -1,5 +1,6 @@
 var namespaceFatigueTest =
 [
+    [ "BoundsFinderConfig", "structFatigueTest_1_1BoundsFinderConfig.html", "structFatigueTest_1_1BoundsFinderConfig" ],
     [ "BoundsResult", "structFatigueTest_1_1BoundsResult.html", "structFatigueTest_1_1BoundsResult" ],
     [ "EncoderBoundsFinderImpl", "classFatigueTest_1_1EncoderBoundsFinderImpl.html", "classFatigueTest_1_1EncoderBoundsFinderImpl" ],
     [ "FatigueTestMotion", "classFatigueTest_1_1FatigueTestMotion.html", "classFatigueTest_1_1FatigueTestMotion" ],

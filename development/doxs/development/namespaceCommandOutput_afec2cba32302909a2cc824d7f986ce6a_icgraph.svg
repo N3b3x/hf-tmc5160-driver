@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Print an error message to the ESP&#45;IDF log.">
 <polygon fill="#999999" stroke="#666666" points="947,-133.5 795,-133.5 795,-114.5 947,-114.5 947,-133.5"/>
 <text text-anchor="middle" x="871" y="-121.5" font-family="Helvetica,sans-Serif" font-size="10.00">CommandOutput::PrintError</text>
 </a>
@@ -38,7 +38,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68" target="_top" xlink:title="Process a command line.">
+<g id="a_Node000003"><a xlink:href="classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68" target="_top" xlink:title="Parse and execute a single command line.">
 <polygon fill="white" stroke="#666666" points="544,-158 420,-158 420,-128 544,-128 544,-158"/>
 <text text-anchor="start" x="428" y="-146" font-family="Helvetica,sans-Serif" font-size="10.00">UartCommandParser::</text>
 <text text-anchor="middle" x="482" y="-135" font-family="Helvetica,sans-Serif" font-size="10.00">ProcessCommand</text>
@@ -57,7 +57,7 @@
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="main_8cpp.html#a35d4c27b82242d39e341bf9d35d50a0f" target="_top" xlink:title="Handle SET command with multiple options.">
+<g id="a_Node000007"><a xlink:href="main_8cpp.html#a35d4c27b82242d39e341bf9d35d50a0f" target="_top" xlink:title="Apply SET command options to the motion controller.">
 <polygon fill="white" stroke="#666666" points="703,-152.5 636,-152.5 636,-133.5 703,-133.5 703,-152.5"/>
 <text text-anchor="middle" x="669.5" y="-140.5" font-family="Helvetica,sans-Serif" font-size="10.00">HandleSet</text>
 </a>
@@ -93,7 +93,7 @@
 <!-- Node9 -->
 <g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_Node000009"><a xlink:href="classUartCommandParser.html#ab0e959fc2d336b5fbfb2dfafb901b167" target="_top" xlink:title="Parse command line into ParsedCommand structure.">
+<g id="a_Node000009"><a xlink:href="classUartCommandParser.html#ab0e959fc2d336b5fbfb2dfafb901b167" target="_top" xlink:title="Convert tokens into a structured ParsedCommand.">
 <polygon fill="white" stroke="#666666" points="731.5,-78 607.5,-78 607.5,-48 731.5,-48 731.5,-78"/>
 <text text-anchor="start" x="615.5" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">UartCommandParser::</text>
 <text text-anchor="middle" x="669.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">ParseCommand</text>
@@ -112,7 +112,7 @@
 <!-- Node10 -->
 <g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_Node000010"><a xlink:href="namespaceCommandOutput.html#ae19be1e7f6cf49a36ef024d47be9d1b7" target="_top" xlink:title=" ">
+<g id="a_Node000010"><a xlink:href="namespaceCommandOutput.html#ae19be1e7f6cf49a36ef024d47be9d1b7" target="_top" xlink:title="Print a success/failure result line for a command.">
 <polygon fill="white" stroke="#666666" points="759,-30 580,-30 580,0 759,0 759,-30"/>
 <text text-anchor="start" x="588" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">CommandOutput::PrintCommand</text>
 <text text-anchor="middle" x="669.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Result</text>
@@ -140,7 +140,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classUartCommandParser.html#a867cccdf009c2a69f1edf9a02f50c984" target="_top" xlink:title="Read and process commands from UART (line&#45;by&#45;line)">
+<g id="a_Node000004"><a xlink:href="classUartCommandParser.html#a867cccdf009c2a69f1edf9a02f50c984" target="_top" xlink:title="Poll the UART for input and process complete lines.">
 <polygon fill="white" stroke="#666666" points="384,-158 253,-158 253,-128 384,-128 384,-158"/>
 <text text-anchor="start" x="261" y="-146" font-family="Helvetica,sans-Serif" font-size="10.00">UartCommandParser::</text>
 <text text-anchor="middle" x="318.5" y="-135" font-family="Helvetica,sans-Serif" font-size="10.00">ProcessUartCommands</text>
@@ -159,7 +159,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="main_8cpp.html#a5a8d7cdba17444119b8f942be87ffe68" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="main_8cpp.html#a5a8d7cdba17444119b8f942be87ffe68" target="_top" xlink:title="FreeRTOS task: poll UART and process commands.">
 <polygon fill="white" stroke="#666666" points="217,-152.5 101,-152.5 101,-133.5 217,-133.5 217,-152.5"/>
 <text text-anchor="middle" x="159" y="-140.5" font-family="Helvetica,sans-Serif" font-size="10.00">uart_command_task</text>
 </a>

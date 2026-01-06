@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Parse command line into ParsedCommand structure.">
+<g id="a_Node000001"><a xlink:title="Convert tokens into a structured ParsedCommand.">
 <polygon fill="#999999" stroke="#666666" points="124,-79.5 0,-79.5 0,-49.5 124,-49.5 124,-79.5"/>
 <text text-anchor="start" x="8" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00">UartCommandParser::</text>
 <text text-anchor="middle" x="62" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00">ParseCommand</text>
@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classUartCommandParser.html#a1b1cc802df8531601b19af3dd97b9f52" target="_top" xlink:title="Parse command type from token.">
+<g id="a_Node000002"><a xlink:href="classUartCommandParser.html#a1b1cc802df8531601b19af3dd97b9f52" target="_top" xlink:title="Map a verb token (first token) to a CommandType.">
 <polygon fill="white" stroke="#666666" points="298,-141.5 174,-141.5 174,-111.5 298,-111.5 298,-141.5"/>
 <text text-anchor="start" x="182" y="-129.5" font-family="Helvetica,sans-Serif" font-size="10.00">UartCommandParser::</text>
 <text text-anchor="middle" x="236" y="-118.5" font-family="Helvetica,sans-Serif" font-size="10.00">ParseCommandType</text>
@@ -40,7 +40,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classOptionParser.html#a0fcac6b340ed22755f610e139cd760f7" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="classOptionParser.html#a0fcac6b340ed22755f610e139cd760f7" target="_top" xlink:title="Parse SET command options from a token sequence.">
 <polygon fill="white" stroke="#666666" points="310.5,-93 161.5,-93 161.5,-74 310.5,-74 310.5,-93"/>
 <text text-anchor="middle" x="236" y="-81" font-family="Helvetica,sans-Serif" font-size="10.00">OptionParser::ParseOptions</text>
 </a>
@@ -58,7 +58,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="namespaceCommandOutput.html#afec2cba32302909a2cc824d7f986ce6a" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="namespaceCommandOutput.html#afec2cba32302909a2cc824d7f986ce6a" target="_top" xlink:title="Print an error message to the ESP&#45;IDF log.">
 <polygon fill="white" stroke="#666666" points="312,-56 160,-56 160,-37 312,-37 312,-56"/>
 <text text-anchor="middle" x="236" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">CommandOutput::PrintError</text>
 </a>
@@ -76,7 +76,7 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="namespaceCommandOutput.html#adbbaa4766846cac446f219e82c816b59" target="_top" xlink:title=" ">
+<g id="a_Node000006"><a xlink:href="namespaceCommandOutput.html#adbbaa4766846cac446f219e82c816b59" target="_top" xlink:title="Print an informational message to the ESP&#45;IDF log.">
 <polygon fill="white" stroke="#666666" points="309.5,-19 162.5,-19 162.5,0 309.5,0 309.5,-19"/>
 <text text-anchor="middle" x="236" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">CommandOutput::PrintInfo</text>
 </a>
@@ -94,7 +94,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classOptionParser.html#ac8b6271049930c9ddcd7d4217fc998db" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="classOptionParser.html#ac8b6271049930c9ddcd7d4217fc998db" target="_top" xlink:title="Find a supported option definition by token.">
 <polygon fill="white" stroke="#666666" points="485,-93 348,-93 348,-74 485,-74 485,-93"/>
 <text text-anchor="middle" x="416.5" y="-81" font-family="Helvetica,sans-Serif" font-size="10.00">OptionParser::FindOption</text>
 </a>

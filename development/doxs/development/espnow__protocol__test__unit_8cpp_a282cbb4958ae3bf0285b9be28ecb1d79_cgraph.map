@@ -1,0 +1,27 @@
+<map id="espnow_command_task" name="espnow_command_task">
+<area shape="rect" id="Node000001" title="FreeRTOS task: handle incoming ESP&#45;NOW protocol events (test&#45;unit simulator)." alt="" coords="5,205,184,230"/>
+<area shape="rect" id="Node000002" href="$namespaceEspNowReceiver.html#a126f3feacea21b45e4af0a34deb50dcd" title="Send CONFIG_ACK for a CONFIG_SET request." alt="" coords="232,5,403,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,203,150,134,187,92,230,55,239,49,242,54,234,59,191,96,154,137,106,206"/>
+<area shape="rect" id="Node000005" href="$namespaceEspNowReceiver.html#ac4af6aafe2cc9de4cbd2354dfc627dc7" title="Send CONFIG_RESPONSE containing the current settings." alt="" coords="232,69,403,109"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="110,202,162,163,231,119,244,113,246,117,233,124,165,167,113,207"/>
+<area shape="rect" id="Node000006" href="$namespaceEspNowReceiver.html#a4af879c40f8c3223b890b26dfcd1d7aa" title="Send PAUSE_ACK (acknowledge PAUSE receipt)." alt="" coords="232,133,403,173"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="139,202,233,175,235,180,141,207"/>
+<area shape="rect" id="Node000007" href="$namespaceEspNowReceiver.html#a5996f034b8b0ad5a9e75441c454b8a52" title="Send RESUME_ACK (acknowledge RESUME receipt)." alt="" coords="232,197,403,237"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="184,215,218,215,218,220,184,220"/>
+<area shape="rect" id="Node000008" href="$namespaceEspNowReceiver.html#afb76d5c6ce79015229aca11c94603692" title="Send START_ACK (acknowledge START receipt)." alt="" coords="232,261,403,301"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="141,228,235,255,233,260,139,233"/>
+<area shape="rect" id="Node000009" href="$namespaceEspNowReceiver.html#ad20a4032cfbaf4698d2a894139c339ae" title="Send STATUS_UPDATE with cycle count and state." alt="" coords="232,325,403,365"/>
+<area shape="poly" id="edge12_Node000001_Node000009" title=" " alt="" coords="113,228,165,268,233,311,246,317,244,322,231,316,162,272,110,232"/>
+<area shape="rect" id="Node000010" href="$namespaceEspNowReceiver.html#a5f9e63a444d010ed79c649b6a2467277" title="Send STOP_ACK (acknowledge STOP receipt)." alt="" coords="232,389,403,429"/>
+<area shape="poly" id="edge14_Node000001_Node000010" title=" " alt="" coords="106,228,154,297,191,339,234,375,242,381,239,385,230,379,187,342,150,301,101,232"/>
+<area shape="rect" id="Node000003" href="$espnow__receiver_8cpp.html#a56b1fa458feb934b57be89468e71627f" title=" " alt="" coords="451,205,593,230"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="384,43,404,55,439,87,469,124,510,191,506,194,465,127,435,91,401,59,382,48"/>
+<area shape="rect" id="Node000004" href="$espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="641,205,733,230"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="594,215,628,215,628,220,594,220"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="380,107,404,119,457,156,500,193,496,197,454,160,401,124,377,112"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="383,171,468,198,467,203,381,176"/>
+<area shape="poly" id="edge9_Node000007_Node000003" title=" " alt="" coords="403,215,437,215,437,220,403,220"/>
+<area shape="poly" id="edge11_Node000008_Node000003" title=" " alt="" coords="381,259,467,232,468,237,383,264"/>
+<area shape="poly" id="edge13_Node000009_Node000003" title=" " alt="" coords="377,323,401,311,454,274,496,238,500,242,457,279,404,316,380,328"/>
+<area shape="poly" id="edge15_Node000010_Node000003" title=" " alt="" coords="382,387,401,375,435,344,465,307,506,241,510,244,469,310,439,347,404,379,384,392"/>
+</map>

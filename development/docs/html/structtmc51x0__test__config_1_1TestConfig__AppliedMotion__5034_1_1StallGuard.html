@@ -105,7 +105,7 @@ $(function(){initNavTree('structtmc51x0__test__config_1_1TestConfig__AppliedMoti
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:aa58f31ab3449e44229e5e71b7f84abe4" id="r_aa58f31ab3449e44229e5e71b7f84abe4"><td class="memItemLeft" align="right" valign="top">static constexpr int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa58f31ab3449e44229e5e71b7f84abe4">SGT_HOMING</a> = 4</td></tr>
+<tr class="memitem:aa58f31ab3449e44229e5e71b7f84abe4" id="r_aa58f31ab3449e44229e5e71b7f84abe4"><td class="memItemLeft" align="right" valign="top">static constexpr int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa58f31ab3449e44229e5e71b7f84abe4">SGT_HOMING</a> = -2</td></tr>
 <tr class="separator:aa58f31ab3449e44229e5e71b7f84abe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61b316aa85466135521c11533ea4a0e1" id="r_a61b316aa85466135521c11533ea4a0e1"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a61b316aa85466135521c11533ea4a0e1">FILTER_ENABLED</a> = false</td></tr>
 <tr class="separator:a61b316aa85466135521c11533ea4a0e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -113,8 +113,10 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:a29df7dbcf7f31aa8538199f81f651dcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98542a4a4dbee1aabd2130cbebc50811" id="r_a98542a4a4dbee1aabd2130cbebc50811"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98542a4a4dbee1aabd2130cbebc50811">SEMAX</a> = 0</td></tr>
 <tr class="separator:a98542a4a4dbee1aabd2130cbebc50811"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76ec99be84acba115a39c3b1dedb0d74" id="r_a76ec99be84acba115a39c3b1dedb0d74"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a76ec99be84acba115a39c3b1dedb0d74">MIN_VELOCITY_RPM</a> = 15.0f</td></tr>
+<tr class="memitem:a76ec99be84acba115a39c3b1dedb0d74" id="r_a76ec99be84acba115a39c3b1dedb0d74"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a76ec99be84acba115a39c3b1dedb0d74">MIN_VELOCITY_RPM</a> = 20.0f</td></tr>
 <tr class="separator:a76ec99be84acba115a39c3b1dedb0d74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a103fc25a1db446fd18036f320595fc45" id="r_a103fc25a1db446fd18036f320595fc45"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a103fc25a1db446fd18036f320595fc45">STALL_DETECTION_CURRENT_FACTOR</a> = 0.3f</td></tr>
+<tr class="separator:a103fc25a1db446fd18036f320595fc45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a61b316aa85466135521c11533ea4a0e1" name="a61b316aa85466135521c11533ea4a0e1"></a>
@@ -149,7 +151,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr float tmc51x0_test_config::TestConfig_AppliedMotion_5034::StallGuard::MIN_VELOCITY_RPM = 15.0f</td>
+          <td class="memname">constexpr float tmc51x0_test_config::TestConfig_AppliedMotion_5034::StallGuard::MIN_VELOCITY_RPM = 20.0f</td>
         </tr>
       </table>
   </td>
@@ -215,7 +217,29 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr int8_t tmc51x0_test_config::TestConfig_AppliedMotion_5034::StallGuard::SGT_HOMING = 4</td>
+          <td class="memname">constexpr int8_t tmc51x0_test_config::TestConfig_AppliedMotion_5034::StallGuard::SGT_HOMING = -2</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a103fc25a1db446fd18036f320595fc45" name="a103fc25a1db446fd18036f320595fc45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a103fc25a1db446fd18036f320595fc45">&#9670;&#160;</a></span>STALL_DETECTION_CURRENT_FACTOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr float tmc51x0_test_config::TestConfig_AppliedMotion_5034::StallGuard::STALL_DETECTION_CURRENT_FACTOR = 0.3f</td>
         </tr>
       </table>
   </td>

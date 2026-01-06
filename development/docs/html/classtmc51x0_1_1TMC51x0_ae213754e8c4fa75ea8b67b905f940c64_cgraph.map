@@ -1,0 +1,5 @@
+<map id="tmc51x0::TMC51x0::accelToInternal" name="tmc51x0::TMC51x0::accelToInternal">
+<area shape="rect" id="Node000001" title="Convert acceleration from Hz/s to internal TMC5160 units." alt="" coords="5,5,209,45"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0.html#ad6360e59e574521bae72c9b548eb29f0" title=" " alt="" coords="257,13,441,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="209,23,244,23,244,28,209,28"/>
+</map>

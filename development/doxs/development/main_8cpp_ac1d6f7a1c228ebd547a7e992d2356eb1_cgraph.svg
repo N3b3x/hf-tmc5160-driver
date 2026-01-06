@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="namespaceCommandOutput.html#a2bed37b24a202a9189a9810ca7bd2ec2" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="namespaceCommandOutput.html#a2bed37b24a202a9189a9810ca7bd2ec2" target="_top" xlink:title="Print a success message to the ESP&#45;IDF log.">
 <polygon fill="white" stroke="#666666" points="282,-19 115,-19 115,0 282,0 282,-19"/>
 <text text-anchor="middle" x="198.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">CommandOutput::PrintSuccess</text>
 </a>

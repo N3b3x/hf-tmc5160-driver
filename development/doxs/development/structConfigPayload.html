@@ -101,6 +101,9 @@ $(function(){initNavTree('structConfigPayload.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 
+<p>Payload for CONFIG_SET / CONFIG_RESPONSE.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="espnow__protocol_8hpp_source.html">espnow_protocol.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -113,8 +116,18 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a37ecae7b4da8430254b16fd1796c3496"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6573df1b45ec87ff790523e1d1686e11" id="r_a6573df1b45ec87ff790523e1d1686e11"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6573df1b45ec87ff790523e1d1686e11">bounds_method</a></td></tr>
 <tr class="separator:a6573df1b45ec87ff790523e1d1686e11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af408cd2ed522ab45d3d0022f575d4500" id="r_af408cd2ed522ab45d3d0022f575d4500"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af408cd2ed522ab45d3d0022f575d4500">bounds_search_velocity_rpm</a></td></tr>
+<tr class="separator:af408cd2ed522ab45d3d0022f575d4500"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e6cd16e76276b63b86bda2e9e7bf84a" id="r_a4e6cd16e76276b63b86bda2e9e7bf84a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e6cd16e76276b63b86bda2e9e7bf84a">stallguard_min_velocity_rpm</a></td></tr>
+<tr class="separator:a4e6cd16e76276b63b86bda2e9e7bf84a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b9de256b8bda26f6d5a7ea8fa78e57f" id="r_a3b9de256b8bda26f6d5a7ea8fa78e57f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b9de256b8bda26f6d5a7ea8fa78e57f">stall_detection_current_factor</a></td></tr>
+<tr class="separator:a3b9de256b8bda26f6d5a7ea8fa78e57f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a305d393dc810f89345d7b2acd04125a9" id="r_a305d393dc810f89345d7b2acd04125a9"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a305d393dc810f89345d7b2acd04125a9">bounds_search_accel_rev_s2</a></td></tr>
+<tr class="separator:a305d393dc810f89345d7b2acd04125a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Payload for CONFIG_SET / CONFIG_RESPONSE. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a6573df1b45ec87ff790523e1d1686e11" name="a6573df1b45ec87ff790523e1d1686e11"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6573df1b45ec87ff790523e1d1686e11">&#9670;&#160;</a></span>bounds_method</h2>
 
@@ -123,6 +136,34 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">uint8_t ConfigPayload::bounds_method</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a305d393dc810f89345d7b2acd04125a9" name="a305d393dc810f89345d7b2acd04125a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a305d393dc810f89345d7b2acd04125a9">&#9670;&#160;</a></span>bounds_search_accel_rev_s2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ConfigPayload::bounds_search_accel_rev_s2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af408cd2ed522ab45d3d0022f575d4500" name="af408cd2ed522ab45d3d0022f575d4500"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af408cd2ed522ab45d3d0022f575d4500">&#9670;&#160;</a></span>bounds_search_velocity_rpm</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ConfigPayload::bounds_search_velocity_rpm</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -151,6 +192,34 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">uint32_t ConfigPayload::dwell_time_sec</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3b9de256b8bda26f6d5a7ea8fa78e57f" name="a3b9de256b8bda26f6d5a7ea8fa78e57f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b9de256b8bda26f6d5a7ea8fa78e57f">&#9670;&#160;</a></span>stall_detection_current_factor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ConfigPayload::stall_detection_current_factor</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4e6cd16e76276b63b86bda2e9e7bf84a" name="a4e6cd16e76276b63b86bda2e9e7bf84a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e6cd16e76276b63b86bda2e9e7bf84a">&#9670;&#160;</a></span>stallguard_min_velocity_rpm</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ConfigPayload::stallguard_min_velocity_rpm</td>
         </tr>
       </table>
 </div><div class="memdoc">

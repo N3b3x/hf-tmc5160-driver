@@ -112,6 +112,8 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacetmc51x0_1_1ClockFreq" id="r_namespacetmc51x0_1_1ClockFreq"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1ClockFreq.html">ClockFreq</a></td></tr>
 <tr class="memdesc:namespacetmc51x0_1_1ClockFreq"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> clock frequency constants. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacetmc51x0_1_1detail" id="r_namespacetmc51x0_1_1detail"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1detail.html">detail</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacetmc51x0_1_1MathConstants" id="r_namespacetmc51x0_1_1MathConstants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0_1_1MathConstants.html">MathConstants</a></td></tr>
 <tr class="memdesc:namespacetmc51x0_1_1MathConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mathematical constants. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -338,6 +340,17 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a72806fd22f0c0112600ad9056aa3be97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder N channel sensitivity enumeration values.  <a href="#a72806fd22f0c0112600ad9056aa3be97">More...</a><br /></td></tr>
 <tr class="separator:a72806fd22f0c0112600ad9056aa3be97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2080204610f0192a190d910abbe2869d" id="r_a2080204610f0192a190d910abbe2869d"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2080204610f0192a190d910abbe2869d">LogLevel</a> : uint8_t { <br />
+&#160;&#160;<a class="el" href="#a2080204610f0192a190d910abbe2869da902b0d55fddef6f8d651fe1035b7d4bd">Error</a> = 0
+, <a class="el" href="#a2080204610f0192a190d910abbe2869da56525ae64d370c0b448ac0d60710ef17">Warn</a> = 1
+, <a class="el" href="#a2080204610f0192a190d910abbe2869da4059b0251f66a18cb56f544728796875">Info</a> = 2
+, <a class="el" href="#a2080204610f0192a190d910abbe2869daa603905470e2a5b8c13e96b579ef0dba">Debug</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="#a2080204610f0192a190d910abbe2869dad4a9fa383ab700c5bdd6f31cf7df0faf">Verbose</a> = 4
+<br />
+ }</td></tr>
+<tr class="memdesc:a2080204610f0192a190d910abbe2869d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Driver-native log levels for debug output.  <a href="#a2080204610f0192a190d910abbe2869d">More...</a><br /></td></tr>
+<tr class="separator:a2080204610f0192a190d910abbe2869d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3d18824bf231d968c6c33bd1aaeae5f" id="r_af3d18824bf231d968c6c33bd1aaeae5f"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3d18824bf231d968c6c33bd1aaeae5f">CommMode</a> : uint8_t { <a class="el" href="#af3d18824bf231d968c6c33bd1aaeae5fa33dc5312b091968f5a120c2484d40df8">SPI</a>
 , <a class="el" href="#af3d18824bf231d968c6c33bd1aaeae5facec5769b01fb096efaf0d6186823c78f">UART</a>
  }</td></tr>
@@ -695,6 +708,45 @@ Functions</h2></td></tr>
 <tr class="memitem:a6818ace9cb52dc7f7363b93d6778ae77" id="r_a6818ace9cb52dc7f7363b93d6778ae77"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
 <tr class="memitem:a6818ace9cb52dc7f7363b93d6778ae77"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if_t&lt; N==0, <a class="el" href="#a530ddae090151490fa12a61b9b9b57b3">ErrorCode</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6818ace9cb52dc7f7363b93d6778ae77">get</a> (<a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; &amp;&amp;r) noexcept</td></tr>
 <tr class="separator:a6818ace9cb52dc7f7363b93d6778ae77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2687c1ffa238ddc4d2c6fbb36523ec24" id="r_a2687c1ffa238ddc4d2c6fbb36523ec24"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2687c1ffa238ddc4d2c6fbb36523ec24">ToString</a> (<a class="el" href="#a6a87b8eb4c1843e07007d7162048bf4d">MotorDirection</a> d) noexcept</td></tr>
+<tr class="memdesc:a2687c1ffa238ddc4d2c6fbb36523ec24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert MotorDirection to human-readable string.  <br /></td></tr>
+<tr class="separator:a2687c1ffa238ddc4d2c6fbb36523ec24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05bf4335137c09ab1cf64a7e37a83828" id="r_a05bf4335137c09ab1cf64a7e37a83828"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05bf4335137c09ab1cf64a7e37a83828">ToString</a> (<a class="el" href="#a43a3659df2d2d9c81f83cfc72daad756">MotorType</a> t) noexcept</td></tr>
+<tr class="memdesc:a05bf4335137c09ab1cf64a7e37a83828"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert MotorType to human-readable string.  <br /></td></tr>
+<tr class="separator:a05bf4335137c09ab1cf64a7e37a83828"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ee86cd36d23133f5021deeccdd3c4f8" id="r_a5ee86cd36d23133f5021deeccdd3c4f8"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ee86cd36d23133f5021deeccdd3c4f8">ToString</a> (<a class="el" href="#a68e41191c288365e02cfca672681f686">Unit</a> u) noexcept</td></tr>
+<tr class="memdesc:a5ee86cd36d23133f5021deeccdd3c4f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert Unit to human-readable string.  <br /></td></tr>
+<tr class="separator:a5ee86cd36d23133f5021deeccdd3c4f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0564b59a674cbeb306a2d9f93ad0dfe" id="r_ab0564b59a674cbeb306a2d9f93ad0dfe"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0564b59a674cbeb306a2d9f93ad0dfe">ToString</a> (<a class="el" href="#a20af559eb85dbac784b3a4cb644cf63b">MechanicalSystemType</a> type) noexcept</td></tr>
+<tr class="memdesc:ab0564b59a674cbeb306a2d9f93ad0dfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert MechanicalSystemType to human-readable string.  <br /></td></tr>
+<tr class="separator:ab0564b59a674cbeb306a2d9f93ad0dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab651cf153e7df9b12cd02c075e721a62" id="r_ab651cf153e7df9b12cd02c075e721a62"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab651cf153e7df9b12cd02c075e721a62">ToString</a> (<a class="el" href="#af55e97adffb8cd4694d00b13ebc75db9">ChopperMode</a> m) noexcept</td></tr>
+<tr class="memdesc:ab651cf153e7df9b12cd02c075e721a62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert ChopperMode to human-readable string.  <br /></td></tr>
+<tr class="separator:ab651cf153e7df9b12cd02c075e721a62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87842913785c7ae36ec86b05855fa685" id="r_a87842913785c7ae36ec86b05855fa685"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87842913785c7ae36ec86b05855fa685">ToString</a> (<a class="el" href="#a06908f208ee192aff6a8e8f0346bd8c4">MicrostepResolution</a> mres) noexcept</td></tr>
+<tr class="memdesc:a87842913785c7ae36ec86b05855fa685"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert MicrostepResolution to human-readable string.  <br /></td></tr>
+<tr class="separator:a87842913785c7ae36ec86b05855fa685"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60be1af970c350d5071ed3ba6a96c489" id="r_a60be1af970c350d5071ed3ba6a96c489"><td class="memItemLeft" align="right" valign="top">constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60be1af970c350d5071ed3ba6a96c489">MicrostepsPerFullStep</a> (<a class="el" href="#a06908f208ee192aff6a8e8f0346bd8c4">MicrostepResolution</a> mres) noexcept</td></tr>
+<tr class="memdesc:a60be1af970c350d5071ed3ba6a96c489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get microsteps-per-full-step for an MRES value.  <br /></td></tr>
+<tr class="separator:a60be1af970c350d5071ed3ba6a96c489"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dbedcb137f707b1b2d1734e719e35d5" id="r_a1dbedcb137f707b1b2d1734e719e35d5"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1dbedcb137f707b1b2d1734e719e35d5">ToString</a> (<a class="el" href="#a8cb45f50ef60b0895ae7c456412b9f57">ReferenceSwitchActiveLevel</a> a) noexcept</td></tr>
+<tr class="memdesc:a1dbedcb137f707b1b2d1734e719e35d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert ReferenceSwitchActiveLevel to human-readable string.  <br /></td></tr>
+<tr class="separator:a1dbedcb137f707b1b2d1734e719e35d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afffa196cafae3052b4963ddb5aa03e68" id="r_afffa196cafae3052b4963ddb5aa03e68"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afffa196cafae3052b4963ddb5aa03e68">ToString</a> (<a class="el" href="#a27074bd299d4daedf7fa42542a072679">ReferenceLatchMode</a> m) noexcept</td></tr>
+<tr class="memdesc:afffa196cafae3052b4963ddb5aa03e68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert ReferenceLatchMode to human-readable string.  <br /></td></tr>
+<tr class="separator:afffa196cafae3052b4963ddb5aa03e68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae47a5e9499793dcbb3521f42bcdc312d" id="r_ae47a5e9499793dcbb3521f42bcdc312d"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae47a5e9499793dcbb3521f42bcdc312d">ToString</a> (<a class="el" href="#a26f6dfac177caad1ec044ec801218843">ReferenceStopMode</a> m) noexcept</td></tr>
+<tr class="memdesc:ae47a5e9499793dcbb3521f42bcdc312d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert ReferenceStopMode to human-readable string.  <br /></td></tr>
+<tr class="separator:ae47a5e9499793dcbb3521f42bcdc312d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7c9cd8e87838faf750c8d0674e8443e" id="r_ad7c9cd8e87838faf750c8d0674e8443e"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad7c9cd8e87838faf750c8d0674e8443e">ToString</a> (<a class="el" href="#a0bb937f055abebd74c4f74fb03bb5696">EncoderNSensitivity</a> s) noexcept</td></tr>
+<tr class="memdesc:ad7c9cd8e87838faf750c8d0674e8443e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert EncoderNSensitivity to human-readable string.  <br /></td></tr>
+<tr class="separator:ad7c9cd8e87838faf750c8d0674e8443e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53b45b9929e8676895feec279f636a92" id="r_a53b45b9929e8676895feec279f636a92"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53b45b9929e8676895feec279f636a92">ToString</a> (<a class="el" href="#a16f1b74dc7ec9f3e7d0588b6fb2e6774">EncoderClearMode</a> m) noexcept</td></tr>
+<tr class="memdesc:a53b45b9929e8676895feec279f636a92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert EncoderClearMode to human-readable string.  <br /></td></tr>
+<tr class="separator:a53b45b9929e8676895feec279f636a92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a357c46b81ab3724ff0cb7edb0a63a1b3" id="r_a357c46b81ab3724ff0cb7edb0a63a1b3"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a357c46b81ab3724ff0cb7edb0a63a1b3">ToString</a> (<a class="el" href="#a84ea1648f7a9d02773c685cf16f64c77">EncoderPrescalerMode</a> m) noexcept</td></tr>
+<tr class="memdesc:a357c46b81ab3724ff0cb7edb0a63a1b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert EncoderPrescalerMode to human-readable string.  <br /></td></tr>
+<tr class="separator:a357c46b81ab3724ff0cb7edb0a63a1b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a29f23dd48483983409679925db836440" name="a29f23dd48483983409679925db836440"></a>
@@ -1256,6 +1308,45 @@ For highly capacitive loads (e.g., filter networks), TBL_36CLK or TBL_54CLK may 
 </td></tr>
 <tr><td class="fieldname"><a id="a066cfe7d73f5a7f546c6d7215c0b4577a18ff74f43da410c5529f7d6fca84f115" name="a066cfe7d73f5a7f546c6d7215c0b4577a18ff74f43da410c5529f7d6fca84f115"></a>ACTIVE&#160;</td><td class="fielddoc"><p>Active signal state (logical high) </p>
 </td></tr>
+</table>
+
+</div>
+</div>
+<a id="a2080204610f0192a190d910abbe2869d" name="a2080204610f0192a190d910abbe2869d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2080204610f0192a190d910abbe2869d">&#9670;&#160;</a></span>LogLevel</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a2080204610f0192a190d910abbe2869d">tmc51x0::LogLevel</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Driver-native log levels for debug output. </p>
+<p>These are intentionally numeric and stable so platform integrations can map them onto their own logging systems.</p>
+<p>Convention:</p><ul>
+<li>Error (0): Serious failures / incorrect behavior</li>
+<li>Warn (1): Unexpected but recoverable situations</li>
+<li>Info (2): High-level informational messages (typical init/runtime logs)</li>
+<li>Debug (3): Debug details (noisy)</li>
+<li>Verbose (4): Very noisy trace </li>
+</ul>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2080204610f0192a190d910abbe2869da902b0d55fddef6f8d651fe1035b7d4bd" name="a2080204610f0192a190d910abbe2869da902b0d55fddef6f8d651fe1035b7d4bd"></a>Error&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2080204610f0192a190d910abbe2869da56525ae64d370c0b448ac0d60710ef17" name="a2080204610f0192a190d910abbe2869da56525ae64d370c0b448ac0d60710ef17"></a>Warn&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2080204610f0192a190d910abbe2869da4059b0251f66a18cb56f544728796875" name="a2080204610f0192a190d910abbe2869da4059b0251f66a18cb56f544728796875"></a>Info&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2080204610f0192a190d910abbe2869daa603905470e2a5b8c13e96b579ef0dba" name="a2080204610f0192a190d910abbe2869daa603905470e2a5b8c13e96b579ef0dba"></a>Debug&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2080204610f0192a190d910abbe2869dad4a9fa383ab700c5bdd6f31cf7df0faf" name="a2080204610f0192a190d910abbe2869dad4a9fa383ab700c5bdd6f31cf7df0faf"></a>Verbose&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -2272,7 +2363,7 @@ For automatic tuning compatibility, IRUN will be at least 8 </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ac742f74b3a0ad095b8db62d07300c8c9_icgraph.svg" width="535" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ac742f74b3a0ad095b8db62d07300c8c9_icgraph.svg" width="535" height="179"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2474,6 +2565,11 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Lower current limit in milliamps, or 0 if calculation not possible</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Based on datasheet equation: I_Lower_Limit = t_BLANK * f_PWM * V_M / R_COIL Where t_BLANK depends on TBL setting </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ad149efd95c065a993dbdc5372239927c_icgraph.svg" width="492" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -2513,7 +2609,7 @@ template&lt;typename T &gt; </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a5fa3afe83ae033126d377aed702dddf6_icgraph.svg" width="447" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a5fa3afe83ae033126d377aed702dddf6_icgraph.svg" width="447" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2856,6 +2952,34 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a60be1af970c350d5071ed3ba6a96c489" name="a60be1af970c350d5071ed3ba6a96c489"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60be1af970c350d5071ed3ba6a96c489">&#9670;&#160;</a></span>MicrostepsPerFullStep()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint16_t tmc51x0::MicrostepsPerFullStep </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a06908f208ee192aff6a8e8f0346bd8c4">MicrostepResolution</a></td>          <td class="paramname"><span class="paramname"><em>mres</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get microsteps-per-full-step for an MRES value. </p>
+<dl class="section note"><dt>Note</dt><dd>Encoded: 0=256 ... 8=1 (fullstep). Values outside [0,8] are clamped. </dd></dl>
+
+</div>
+</div>
 <a id="a75950339da8df172472557556f439628" name="a75950339da8df172472557556f439628"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a75950339da8df172472557556f439628">&#9670;&#160;</a></span>MmPerSecToStepsPerSec()</h2>
 
@@ -2976,7 +3100,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ad6360e59e574521bae72c9b548eb29f0_icgraph.svg" width="486" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ad6360e59e574521bae72c9b548eb29f0_icgraph.svg" width="452" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -3309,6 +3433,330 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a98dfd26a5eeed2974ce057fb9d203098_icgraph.svg" width="746" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="ab651cf153e7df9b12cd02c075e721a62" name="ab651cf153e7df9b12cd02c075e721a62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab651cf153e7df9b12cd02c075e721a62">&#9670;&#160;</a></span>ToString() <span class="overload">[1/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char * tmc51x0::ToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#af55e97adffb8cd4694d00b13ebc75db9">ChopperMode</a></td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert ChopperMode to human-readable string. </p>
+
+</div>
+</div>
+<a id="a53b45b9929e8676895feec279f636a92" name="a53b45b9929e8676895feec279f636a92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53b45b9929e8676895feec279f636a92">&#9670;&#160;</a></span>ToString() <span class="overload">[2/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char * tmc51x0::ToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a16f1b74dc7ec9f3e7d0588b6fb2e6774">EncoderClearMode</a></td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert EncoderClearMode to human-readable string. </p>
+
+</div>
+</div>
+<a id="ad7c9cd8e87838faf750c8d0674e8443e" name="ad7c9cd8e87838faf750c8d0674e8443e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7c9cd8e87838faf750c8d0674e8443e">&#9670;&#160;</a></span>ToString() <span class="overload">[3/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char * tmc51x0::ToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a0bb937f055abebd74c4f74fb03bb5696">EncoderNSensitivity</a></td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert EncoderNSensitivity to human-readable string. </p>
+
+</div>
+</div>
+<a id="a357c46b81ab3724ff0cb7edb0a63a1b3" name="a357c46b81ab3724ff0cb7edb0a63a1b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a357c46b81ab3724ff0cb7edb0a63a1b3">&#9670;&#160;</a></span>ToString() <span class="overload">[4/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char * tmc51x0::ToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a84ea1648f7a9d02773c685cf16f64c77">EncoderPrescalerMode</a></td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert EncoderPrescalerMode to human-readable string. </p>
+
+</div>
+</div>
+<a id="ab0564b59a674cbeb306a2d9f93ad0dfe" name="ab0564b59a674cbeb306a2d9f93ad0dfe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0564b59a674cbeb306a2d9f93ad0dfe">&#9670;&#160;</a></span>ToString() <span class="overload">[5/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char * tmc51x0::ToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a20af559eb85dbac784b3a4cb644cf63b">MechanicalSystemType</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert MechanicalSystemType to human-readable string. </p>
+
+</div>
+</div>
+<a id="a87842913785c7ae36ec86b05855fa685" name="a87842913785c7ae36ec86b05855fa685"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87842913785c7ae36ec86b05855fa685">&#9670;&#160;</a></span>ToString() <span class="overload">[6/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char * tmc51x0::ToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a06908f208ee192aff6a8e8f0346bd8c4">MicrostepResolution</a></td>          <td class="paramname"><span class="paramname"><em>mres</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert MicrostepResolution to human-readable string. </p>
+
+</div>
+</div>
+<a id="a2687c1ffa238ddc4d2c6fbb36523ec24" name="a2687c1ffa238ddc4d2c6fbb36523ec24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2687c1ffa238ddc4d2c6fbb36523ec24">&#9670;&#160;</a></span>ToString() <span class="overload">[7/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char * tmc51x0::ToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a6a87b8eb4c1843e07007d7162048bf4d">MotorDirection</a></td>          <td class="paramname"><span class="paramname"><em>d</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert MotorDirection to human-readable string. </p>
+
+</div>
+</div>
+<a id="a05bf4335137c09ab1cf64a7e37a83828" name="a05bf4335137c09ab1cf64a7e37a83828"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05bf4335137c09ab1cf64a7e37a83828">&#9670;&#160;</a></span>ToString() <span class="overload">[8/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char * tmc51x0::ToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a43a3659df2d2d9c81f83cfc72daad756">MotorType</a></td>          <td class="paramname"><span class="paramname"><em>t</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert MotorType to human-readable string. </p>
+
+</div>
+</div>
+<a id="afffa196cafae3052b4963ddb5aa03e68" name="afffa196cafae3052b4963ddb5aa03e68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afffa196cafae3052b4963ddb5aa03e68">&#9670;&#160;</a></span>ToString() <span class="overload">[9/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char * tmc51x0::ToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a27074bd299d4daedf7fa42542a072679">ReferenceLatchMode</a></td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert ReferenceLatchMode to human-readable string. </p>
+
+</div>
+</div>
+<a id="ae47a5e9499793dcbb3521f42bcdc312d" name="ae47a5e9499793dcbb3521f42bcdc312d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae47a5e9499793dcbb3521f42bcdc312d">&#9670;&#160;</a></span>ToString() <span class="overload">[10/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char * tmc51x0::ToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a26f6dfac177caad1ec044ec801218843">ReferenceStopMode</a></td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert ReferenceStopMode to human-readable string. </p>
+
+</div>
+</div>
+<a id="a1dbedcb137f707b1b2d1734e719e35d5" name="a1dbedcb137f707b1b2d1734e719e35d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1dbedcb137f707b1b2d1734e719e35d5">&#9670;&#160;</a></span>ToString() <span class="overload">[11/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char * tmc51x0::ToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a8cb45f50ef60b0895ae7c456412b9f57">ReferenceSwitchActiveLevel</a></td>          <td class="paramname"><span class="paramname"><em>a</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert ReferenceSwitchActiveLevel to human-readable string. </p>
+
+</div>
+</div>
+<a id="a5ee86cd36d23133f5021deeccdd3c4f8" name="a5ee86cd36d23133f5021deeccdd3c4f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ee86cd36d23133f5021deeccdd3c4f8">&#9670;&#160;</a></span>ToString() <span class="overload">[12/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char * tmc51x0::ToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>u</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert Unit to human-readable string. </p>
 
 </div>
 </div>

@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Handle SET command with multiple options.">
+<g id="a_Node000001"><a xlink:title="Apply SET command options to the motion controller.">
 <polygon fill="#999999" stroke="#666666" points="67,-74 0,-74 0,-55 67,-55 67,-74"/>
 <text text-anchor="middle" x="33.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">HandleSet</text>
 </a>
@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="namespaceCommandOutput.html#afec2cba32302909a2cc824d7f986ce6a" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="namespaceCommandOutput.html#afec2cba32302909a2cc824d7f986ce6a" target="_top" xlink:title="Print an error message to the ESP&#45;IDF log.">
 <polygon fill="white" stroke="#666666" points="263,-130 111,-130 111,-111 263,-111 263,-130"/>
 <text text-anchor="middle" x="187" y="-118" font-family="Helvetica,sans-Serif" font-size="10.00">CommandOutput::PrintError</text>
 </a>
@@ -38,7 +38,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="namespaceCommandOutput.html#adbbaa4766846cac446f219e82c816b59" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="namespaceCommandOutput.html#adbbaa4766846cac446f219e82c816b59" target="_top" xlink:title="Print an informational message to the ESP&#45;IDF log.">
 <polygon fill="white" stroke="#666666" points="260.5,-93 113.5,-93 113.5,-74 260.5,-74 260.5,-93"/>
 <text text-anchor="middle" x="187" y="-81" font-family="Helvetica,sans-Serif" font-size="10.00">CommandOutput::PrintInfo</text>
 </a>
@@ -56,7 +56,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="namespaceCommandOutput.html#a2bed37b24a202a9189a9810ca7bd2ec2" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="namespaceCommandOutput.html#a2bed37b24a202a9189a9810ca7bd2ec2" target="_top" xlink:title="Print a success message to the ESP&#45;IDF log.">
 <polygon fill="white" stroke="#666666" points="270.5,-56 103.5,-56 103.5,-37 270.5,-37 270.5,-56"/>
 <text text-anchor="middle" x="187" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">CommandOutput::PrintSuccess</text>
 </a>
@@ -74,7 +74,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="namespaceCommandOutput.html#a7530059a95b958a7d66c5b0613dcbb67" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="namespaceCommandOutput.html#a7530059a95b958a7d66c5b0613dcbb67" target="_top" xlink:title="Print a warning message to the ESP&#45;IDF log.">
 <polygon fill="white" stroke="#666666" points="271,-19 103,-19 103,0 271,0 271,-19"/>
 <text text-anchor="middle" x="187" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">CommandOutput::PrintWarning</text>
 </a>

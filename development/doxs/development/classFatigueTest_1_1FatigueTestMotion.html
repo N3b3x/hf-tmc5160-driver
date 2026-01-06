@@ -123,50 +123,73 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7c54e26e7b4f9bb416c9e5a35b85ded5" id="r_a7c54e26e7b4f9bb416c9e5a35b85ded5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7c54e26e7b4f9bb416c9e5a35b85ded5">FatigueTestMotion</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; *driver) noexcept</td></tr>
+<tr class="memdesc:a7c54e26e7b4f9bb416c9e5a35b85ded5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a motion controller bound to a TMC51x0 driver instance.  <br /></td></tr>
 <tr class="separator:a7c54e26e7b4f9bb416c9e5a35b85ded5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37f5a91409194f509e05c3ca94c4d65b" id="r_a37f5a91409194f509e05c3ca94c4d65b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37f5a91409194f509e05c3ca94c4d65b">~FatigueTestMotion</a> () noexcept</td></tr>
+<tr class="memdesc:a37f5a91409194f509e05c3ca94c4d65b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="separator:a37f5a91409194f509e05c3ca94c4d65b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a144e2f8d8b876e1ea4a3625edf1b53ca" id="r_a144e2f8d8b876e1ea4a3625edf1b53ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a144e2f8d8b876e1ea4a3625edf1b53ca">SetGlobalBounds</a> (float min_bound_degrees, float max_bound_degrees) noexcept</td></tr>
+<tr class="memdesc:a144e2f8d8b876e1ea4a3625edf1b53ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set global (hardware) bounds in degrees.  <br /></td></tr>
 <tr class="separator:a144e2f8d8b876e1ea4a3625edf1b53ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69e6aeb3204199960b13549d96bf6289" id="r_a69e6aeb3204199960b13549d96bf6289"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69e6aeb3204199960b13549d96bf6289">GetGlobalBoundsDegrees</a> (float &amp;min_degrees, float &amp;max_degrees) const noexcept</td></tr>
+<tr class="memdesc:a69e6aeb3204199960b13549d96bf6289"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read current global bounds (degrees).  <br /></td></tr>
 <tr class="separator:a69e6aeb3204199960b13549d96bf6289"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a735c3786d89d3c468ccd6612e7e459dd" id="r_a735c3786d89d3c468ccd6612e7e459dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a735c3786d89d3c468ccd6612e7e459dd">SetUnbounded</a> (float current_position_degrees, float default_range_degrees=175.0f) noexcept</td></tr>
+<tr class="memdesc:a735c3786d89d3c468ccd6612e7e459dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the system as unbounded and establish a default travel window.  <br /></td></tr>
 <tr class="separator:a735c3786d89d3c468ccd6612e7e459dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a542066c24867765c0c8249683cdac39f" id="r_a542066c24867765c0c8249683cdac39f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a542066c24867765c0c8249683cdac39f">SetLocalBoundsFromCenterDegrees</a> (float min_degrees_from_center, float max_degrees_from_center) noexcept</td></tr>
+<tr class="memdesc:a542066c24867765c0c8249683cdac39f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set local oscillation bounds (degrees) relative to the center.  <br /></td></tr>
 <tr class="separator:a542066c24867765c0c8249683cdac39f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e687a410ef9e23e3f819ce76c799c41" id="r_a0e687a410ef9e23e3f819ce76c799c41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e687a410ef9e23e3f819ce76c799c41">GetLocalBoundsFromCenterDegrees</a> (float &amp;min_degrees, float &amp;max_degrees) const noexcept</td></tr>
+<tr class="memdesc:a0e687a410ef9e23e3f819ce76c799c41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read local bounds (degrees).  <br /></td></tr>
 <tr class="separator:a0e687a410ef9e23e3f819ce76c799c41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab49ed51733b5f4666c0c1736839831b9" id="r_ab49ed51733b5f4666c0c1736839831b9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab49ed51733b5f4666c0c1736839831b9">SetFrequency</a> (float frequency_hz) noexcept</td></tr>
+<tr class="memdesc:ab49ed51733b5f4666c0c1736839831b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set target oscillation frequency (Hz).  <br /></td></tr>
 <tr class="separator:ab49ed51733b5f4666c0c1736839831b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcf2e10f7b91ec36ff85c317fadbfa36" id="r_abcf2e10f7b91ec36ff85c317fadbfa36"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abcf2e10f7b91ec36ff85c317fadbfa36">GetFrequency</a> () const noexcept</td></tr>
+<tr class="memdesc:abcf2e10f7b91ec36ff85c317fadbfa36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get configured frequency (Hz).  <br /></td></tr>
 <tr class="separator:abcf2e10f7b91ec36ff85c317fadbfa36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34f3dbfb224fbe0d723fc71881c7fb13" id="r_a34f3dbfb224fbe0d723fc71881c7fb13"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34f3dbfb224fbe0d723fc71881c7fb13">SetDwellTimes</a> (uint32_t dwell_at_min_ms, uint32_t dwell_at_max_ms) noexcept</td></tr>
+<tr class="memdesc:a34f3dbfb224fbe0d723fc71881c7fb13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set dwell times at local bounds.  <br /></td></tr>
 <tr class="separator:a34f3dbfb224fbe0d723fc71881c7fb13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad13c6a99e2fbdc94b4938e90d8960258" id="r_ad13c6a99e2fbdc94b4938e90d8960258"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad13c6a99e2fbdc94b4938e90d8960258">GetDwellTimes</a> (uint32_t &amp;dwell_at_min_ms, uint32_t &amp;dwell_at_max_ms) const noexcept</td></tr>
+<tr class="memdesc:ad13c6a99e2fbdc94b4938e90d8960258"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get dwell times at local bounds.  <br /></td></tr>
 <tr class="separator:ad13c6a99e2fbdc94b4938e90d8960258"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed0a3ce0e3373432f6d47bda89839577" id="r_aed0a3ce0e3373432f6d47bda89839577"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aed0a3ce0e3373432f6d47bda89839577">SetTargetCycles</a> (uint32_t cycles) noexcept</td></tr>
+<tr class="memdesc:aed0a3ce0e3373432f6d47bda89839577"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set target cycle count (0 = infinite).  <br /></td></tr>
 <tr class="separator:aed0a3ce0e3373432f6d47bda89839577"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e9113bd0bda2c479aec845073f78102" id="r_a1e9113bd0bda2c479aec845073f78102"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e9113bd0bda2c479aec845073f78102">GetCurrentCycles</a> () const noexcept</td></tr>
+<tr class="memdesc:a1e9113bd0bda2c479aec845073f78102"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current completed cycles.  <br /></td></tr>
 <tr class="separator:a1e9113bd0bda2c479aec845073f78102"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a236cc040edfa5ecb6edc9c9be44033f7" id="r_a236cc040edfa5ecb6edc9c9be44033f7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a236cc040edfa5ecb6edc9c9be44033f7">GetTargetCycles</a> () const noexcept</td></tr>
+<tr class="memdesc:a236cc040edfa5ecb6edc9c9be44033f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get configured target cycles.  <br /></td></tr>
 <tr class="separator:a236cc040edfa5ecb6edc9c9be44033f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab452d6e7e1b50503623e6060819ecfe0" id="r_ab452d6e7e1b50503623e6060819ecfe0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab452d6e7e1b50503623e6060819ecfe0">IsCycleComplete</a> () const noexcept</td></tr>
+<tr class="memdesc:ab452d6e7e1b50503623e6060819ecfe0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the configured target cycle count has been reached.  <br /></td></tr>
 <tr class="separator:ab452d6e7e1b50503623e6060819ecfe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72eab33f7f498ee30bafbacb0d879b0e" id="r_a72eab33f7f498ee30bafbacb0d879b0e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72eab33f7f498ee30bafbacb0d879b0e">ResetCycles</a> () noexcept</td></tr>
+<tr class="memdesc:a72eab33f7f498ee30bafbacb0d879b0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset cycle counter and completion flags.  <br /></td></tr>
 <tr class="separator:a72eab33f7f498ee30bafbacb0d879b0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97b23d8b7204e2756cea1a30e406a5e9" id="r_a97b23d8b7204e2756cea1a30e406a5e9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97b23d8b7204e2756cea1a30e406a5e9">Start</a> () noexcept</td></tr>
+<tr class="memdesc:a97b23d8b7204e2756cea1a30e406a5e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start active motion.  <br /></td></tr>
 <tr class="separator:a97b23d8b7204e2756cea1a30e406a5e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0248435a2425638b9868a4892e87e9f" id="r_ac0248435a2425638b9868a4892e87e9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0248435a2425638b9868a4892e87e9f">Stop</a> () noexcept</td></tr>
+<tr class="memdesc:ac0248435a2425638b9868a4892e87e9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop active motion and command driver stop.  <br /></td></tr>
 <tr class="separator:ac0248435a2425638b9868a4892e87e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bbda0702fdd8f9ed10c82e49d093ba9" id="r_a8bbda0702fdd8f9ed10c82e49d093ba9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8bbda0702fdd8f9ed10c82e49d093ba9">IsRunning</a> () const noexcept</td></tr>
+<tr class="memdesc:a8bbda0702fdd8f9ed10c82e49d093ba9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the motion controller is currently active.  <br /></td></tr>
 <tr class="separator:a8bbda0702fdd8f9ed10c82e49d093ba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3364c23a36aa498aa324bfa8afc48587" id="r_a3364c23a36aa498aa324bfa8afc48587"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3364c23a36aa498aa324bfa8afc48587">Update</a> () noexcept</td></tr>
+<tr class="memdesc:a3364c23a36aa498aa324bfa8afc48587"><td class="mdescLeft">&#160;</td><td class="mdescRight">Periodic update tick.  <br /></td></tr>
 <tr class="separator:a3364c23a36aa498aa324bfa8afc48587"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab76244c4aa6363f37451985846c1debe" id="r_ab76244c4aa6363f37451985846c1debe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFatigueTest_1_1FatigueTestMotion_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab76244c4aa6363f37451985846c1debe">GetStatus</a> () const noexcept</td></tr>
+<tr class="memdesc:ab76244c4aa6363f37451985846c1debe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Snapshot current controller status.  <br /></td></tr>
 <tr class="separator:ab76244c4aa6363f37451985846c1debe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeae5a1456d3a1d09272a647870578d12" id="r_aeae5a1456d3a1d09272a647870578d12"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeae5a1456d3a1d09272a647870578d12">GetEstimatedFrequency</a> () const noexcept</td></tr>
+<tr class="memdesc:aeae5a1456d3a1d09272a647870578d12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get estimated realized frequency (Hz) based on dwell + trajectory.  <br /></td></tr>
 <tr class="separator:aeae5a1456d3a1d09272a647870578d12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d7e991ea038ca328a455867791e728c" id="r_a9d7e991ea038ca328a455867791e728c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d7e991ea038ca328a455867791e728c">IsBounded</a> () const noexcept</td></tr>
+<tr class="memdesc:a9d7e991ea038ca328a455867791e728c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the controller is in bounded mode (mechanical stops found).  <br /></td></tr>
 <tr class="separator:a9d7e991ea038ca328a455867791e728c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-types" name="pri-types"></a>
@@ -305,6 +328,15 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Construct a motion controller bound to a TMC51x0 driver instance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">driver</td><td>Pointer to an initialized driver (must remain valid for the lifetime of this object).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This class uses internal locking (<code><a class="el" href="classEsp32TmcMutex.html" title="ESP32 FreeRTOS mutex wrapper for TMC51x0 driver.">Esp32TmcMutex</a></code>) to serialize access. </dd></dl>
+
 </div>
 </div>
 <a id="a37f5a91409194f509e05c3ca94c4d65b" name="a37f5a91409194f509e05c3ca94c4d65b"></a>
@@ -329,6 +361,9 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Destructor. </p>
+<dl class="section note"><dt>Note</dt><dd>Does not implicitly stop the motor; callers should call <a class="el" href="#ac0248435a2425638b9868a4892e87e9f" title="Stop active motion and command driver stop.">Stop()</a> as part of application shutdown/state transitions. </dd></dl>
 
 </div>
 </div>
@@ -380,10 +415,12 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Get current completed cycles. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a1e9113bd0bda2c479aec845073f78102_icgraph.svg" width="562" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a1e9113bd0bda2c479aec845073f78102_icgraph.svg" width="1558" height="99"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -415,6 +452,15 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Get dwell times at local bounds. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dwell_at_min_ms</td><td>Output dwell at min (ms). </td></tr>
+    <tr><td class="paramname">dwell_at_max_ms</td><td>Output dwell at max (ms). </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="aeae5a1456d3a1d09272a647870578d12" name="aeae5a1456d3a1d09272a647870578d12"></a>
@@ -440,6 +486,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Get estimated realized frequency (Hz) based on dwell + trajectory. </p>
+
 </div>
 </div>
 <a id="abcf2e10f7b91ec36ff85c317fadbfa36" name="abcf2e10f7b91ec36ff85c317fadbfa36"></a>
@@ -464,6 +512,8 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Get configured frequency (Hz). </p>
 
 </div>
 </div>
@@ -494,6 +544,15 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Read current global bounds (degrees). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">min_degrees</td><td>Output min bound. </td></tr>
+    <tr><td class="paramname">max_degrees</td><td>Output max bound. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a0e687a410ef9e23e3f819ce76c799c41" name="a0e687a410ef9e23e3f819ce76c799c41"></a>
@@ -523,6 +582,15 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Read local bounds (degrees). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">min_degrees</td><td>Output min local bound. </td></tr>
+    <tr><td class="paramname">max_degrees</td><td>Output max local bound. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="ab76244c4aa6363f37451985846c1debe" name="ab76244c4aa6363f37451985846c1debe"></a>
@@ -547,6 +615,8 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Snapshot current controller status. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -578,6 +648,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Get configured target cycles. </p>
+
 </div>
 </div>
 <a id="a9d7e991ea038ca328a455867791e728c" name="a9d7e991ea038ca328a455867791e728c"></a>
@@ -602,6 +674,8 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Whether the controller is in bounded mode (mechanical stops found). </p>
 
 </div>
 </div>
@@ -628,6 +702,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Check whether the configured target cycle count has been reached. </p>
+
 </div>
 </div>
 <a id="a8bbda0702fdd8f9ed10c82e49d093ba9" name="a8bbda0702fdd8f9ed10c82e49d093ba9"></a>
@@ -652,10 +728,12 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Whether the motion controller is currently active. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a8bbda0702fdd8f9ed10c82e49d093ba9_icgraph.svg" width="524" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a8bbda0702fdd8f9ed10c82e49d093ba9_icgraph.svg" width="524" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -685,7 +763,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a0e7f5468779deb21c3f5fa3b2a90b7ae_icgraph.svg" width="811" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a0e7f5468779deb21c3f5fa3b2a90b7ae_icgraph.svg" width="1740" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -712,6 +790,8 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Reset cycle counter and completion flags. </p>
 
 </div>
 </div>
@@ -741,6 +821,16 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Set dwell times at local bounds. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dwell_at_min_ms</td><td>Dwell at min (ms). </td></tr>
+    <tr><td class="paramname">dwell_at_max_ms</td><td>Dwell at max (ms). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if accepted; false otherwise. </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -771,6 +861,15 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Set target oscillation frequency (Hz). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">frequency_hz</td><td>Frequency in Hz. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if accepted; false otherwise. </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -805,6 +904,16 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Set global (hardware) bounds in degrees. </p>
+<p>These bounds represent the full allowed travel range and are typically produced by bounds finding.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">min_bound_degrees</td><td>Minimum bound (degrees). </td></tr>
+    <tr><td class="paramname">max_bound_degrees</td><td>Maximum bound (degrees). </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -813,7 +922,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a144e2f8d8b876e1ea4a3625edf1b53ca_icgraph.svg" width="332" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a144e2f8d8b876e1ea4a3625edf1b53ca_icgraph.svg" width="1488" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -844,10 +953,21 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Set local oscillation bounds (degrees) relative to the center. </p>
+<p>Local bounds are clipped to global bounds (if bounded) and used as the sinusoidal target range.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">min_degrees_from_center</td><td>Minimum local bound. </td></tr>
+    <tr><td class="paramname">max_degrees_from_center</td><td>Maximum local bound. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if accepted; false if rejected. </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a542066c24867765c0c8249683cdac39f_icgraph.svg" width="400" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a542066c24867765c0c8249683cdac39f_icgraph.svg" width="1556" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -874,6 +994,15 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Set target cycle count (0 = infinite). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cycles</td><td>Target cycles. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if accepted. </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -909,6 +1038,16 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Mark the system as unbounded and establish a default travel window. </p>
+<p>Used when no mechanical stops are detected. Sets a default global range around the current position and establishes home/zero at the current position.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">current_position_degrees</td><td>Current position (degrees). </td></tr>
+    <tr><td class="paramname">default_range_degrees</td><td>Default travel range to assume (degrees). </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a97b23d8b7204e2756cea1a30e406a5e9" name="a97b23d8b7204e2756cea1a30e406a5e9"></a>
@@ -933,6 +1072,10 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Start active motion. </p>
+<p>Requires local bounds to be set. Configures the driver for positioning mode.</p>
+<dl class="section return"><dt>Returns</dt><dd>true on success; false on failure (e.g., bounds not set, driver not standstill). </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -941,7 +1084,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a97b23d8b7204e2756cea1a30e406a5e9_icgraph.svg" width="548" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1FatigueTestMotion_a97b23d8b7204e2756cea1a30e406a5e9_icgraph.svg" width="1478" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -968,6 +1111,8 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Stop active motion and command driver stop. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -998,6 +1143,9 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Periodic update tick. </p>
+<p>Intended to be called from a periodic task. Generates and applies updated target positions and handles dwell/cycle completion logic. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

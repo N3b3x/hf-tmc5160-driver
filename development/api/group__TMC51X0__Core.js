@@ -8,6 +8,16 @@ var group__TMC51X0__Core =
         [ "reinitialize", "structtmc51x0_1_1TMC51x0_1_1HardResetOptions.html#ab885e4346c76445d186b42426d55238d", null ],
         [ "uart_assume_accessible_at_0", "structtmc51x0_1_1TMC51x0_1_1HardResetOptions.html#afd582913e4557ad17c1040ccb38d86a9", null ]
       ] ],
+      [ "MotorCurrentDebugInfo", "structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html", [
+        [ "cached_global_scaler", "structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html#aae6bf96f25cae3d71e934f2a28f4b63c", null ],
+        [ "cached_ihold_irun", "structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html#a632146203eac3e6ec9ba3fdacf37e47d", null ],
+        [ "calculated_global_scaler", "structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html#a311859093ca40286661ec289e9f46734", null ],
+        [ "calculated_ihold", "structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html#a858187af01ec64a7d3d405c290d6e3e3", null ],
+        [ "calculated_irun", "structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html#a767a33d001b36166efaa937727d8a7a9", null ],
+        [ "f_clk_hz", "structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html#aec681d678038ca1234d295ebc440f048", null ],
+        [ "initialized", "structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html#a2be3af9c66a57befaa39cf4745ca746e", null ],
+        [ "motor_spec", "structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html#af1be654f7858b01654e28e4c9afc62b9", null ]
+      ] ],
       [ "WriteOnlyRegisters", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html", [
         [ "a1", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a2b2a368a943c230335fff7958ae09643", null ],
         [ "amax", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a9c143fb74fd022bff3362092f9b2cc20", null ],
@@ -49,10 +59,14 @@ var group__TMC51X0__Core =
       [ "GetDriverConfig", "classtmc51x0_1_1TMC51x0.html#ae6d19e6af0ebf1f83e24e27b11f62a25", null ],
       [ "GetDriverConfig", "classtmc51x0_1_1TMC51x0.html#a6aa297696740875cf9cff7a37ddd0601", null ],
       [ "GetDriverConfigString", "classtmc51x0_1_1TMC51x0.html#ada3e7090570b7221e2048445d4f22035", null ],
+      [ "GetMotorCurrentDebugInfo", "classtmc51x0_1_1TMC51x0.html#acfb1a464c20f433450d1e96ce51744dc", null ],
       [ "HardReset", "classtmc51x0_1_1TMC51x0.html#a0819cf562bcbb0a747b56fc15a8da5b1", null ],
       [ "Initialize", "classtmc51x0_1_1TMC51x0.html#a60e918b0153cf9034871291ce27ea813", null ],
       [ "IsInitialized", "classtmc51x0_1_1TMC51x0.html#af1458eb313a868ca4860f44e32630c8c", null ],
       [ "IsInternalRampMode", "classtmc51x0_1_1TMC51x0.html#abd5a49d0cb0c802a394a71ede9967b32", null ],
+      [ "LogConfigSummary", "classtmc51x0_1_1TMC51x0.html#a20cfe6cdf1f4310965a619a81863d66b", null ],
+      [ "LogDerivedInitSummary", "classtmc51x0_1_1TMC51x0.html#acee0f2d63d519db90810232f824ab4fe", null ],
+      [ "LogLiveStatusReport", "classtmc51x0_1_1TMC51x0.html#ab538d0dd470bdb627262fde5504d3c02", null ],
       [ "RequireInternalRampMode", "classtmc51x0_1_1TMC51x0.html#a699bab1a90d2f8a262daabfa855878b1", null ],
       [ "Reset", "classtmc51x0_1_1TMC51x0.html#a27d55da2949bc7fdbcd0cd84ba9f37bf", null ],
       [ "speedFromInternal", "classtmc51x0_1_1TMC51x0.html#a75d0ee0ccc1ae331e8cb4c3508031917", null ],

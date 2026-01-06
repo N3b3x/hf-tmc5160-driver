@@ -103,24 +103,34 @@ $(function(){initNavTree('namespaceEspNowReceiver.html',''); initResizable(); })
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a7b5448c32668c4ce8c8b2e825fe523ee" id="r_a7b5448c32668c4ce8c8b2e825fe523ee"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b5448c32668c4ce8c8b2e825fe523ee">init</a> (QueueHandle_t event_queue)</td></tr>
+<tr class="memdesc:a7b5448c32668c4ce8c8b2e825fe523ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize ESP-NOW (WiFi STA + ESP-NOW) and start the receive task.  <br /></td></tr>
 <tr class="separator:a7b5448c32668c4ce8c8b2e825fe523ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4af6aafe2cc9de4cbd2354dfc627dc7" id="r_ac4af6aafe2cc9de4cbd2354dfc627dc7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac4af6aafe2cc9de4cbd2354dfc627dc7">send_config_response</a> (const <a class="el" href="structSettings.html">Settings</a> &amp;s)</td></tr>
+<tr class="memdesc:ac4af6aafe2cc9de4cbd2354dfc627dc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send CONFIG_RESPONSE containing the current settings.  <br /></td></tr>
 <tr class="separator:ac4af6aafe2cc9de4cbd2354dfc627dc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a126f3feacea21b45e4af0a34deb50dcd" id="r_a126f3feacea21b45e4af0a34deb50dcd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a126f3feacea21b45e4af0a34deb50dcd">send_config_ack</a> (bool ok, uint8_t err_code=0)</td></tr>
+<tr class="memdesc:a126f3feacea21b45e4af0a34deb50dcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send CONFIG_ACK for a CONFIG_SET request.  <br /></td></tr>
 <tr class="separator:a126f3feacea21b45e4af0a34deb50dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb76d5c6ce79015229aca11c94603692" id="r_afb76d5c6ce79015229aca11c94603692"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb76d5c6ce79015229aca11c94603692">send_start_ack</a> ()</td></tr>
+<tr class="memdesc:afb76d5c6ce79015229aca11c94603692"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send START_ACK (acknowledge START receipt).  <br /></td></tr>
 <tr class="separator:afb76d5c6ce79015229aca11c94603692"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4af879c40f8c3223b890b26dfcd1d7aa" id="r_a4af879c40f8c3223b890b26dfcd1d7aa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4af879c40f8c3223b890b26dfcd1d7aa">send_pause_ack</a> ()</td></tr>
+<tr class="memdesc:a4af879c40f8c3223b890b26dfcd1d7aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send PAUSE_ACK (acknowledge PAUSE receipt).  <br /></td></tr>
 <tr class="separator:a4af879c40f8c3223b890b26dfcd1d7aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5996f034b8b0ad5a9e75441c454b8a52" id="r_a5996f034b8b0ad5a9e75441c454b8a52"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5996f034b8b0ad5a9e75441c454b8a52">send_resume_ack</a> ()</td></tr>
+<tr class="memdesc:a5996f034b8b0ad5a9e75441c454b8a52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send RESUME_ACK (acknowledge RESUME receipt).  <br /></td></tr>
 <tr class="separator:a5996f034b8b0ad5a9e75441c454b8a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f9e63a444d010ed79c649b6a2467277" id="r_a5f9e63a444d010ed79c649b6a2467277"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f9e63a444d010ed79c649b6a2467277">send_stop_ack</a> ()</td></tr>
+<tr class="memdesc:a5f9e63a444d010ed79c649b6a2467277"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send STOP_ACK (acknowledge STOP receipt).  <br /></td></tr>
 <tr class="separator:a5f9e63a444d010ed79c649b6a2467277"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad20a4032cfbaf4698d2a894139c339ae" id="r_ad20a4032cfbaf4698d2a894139c339ae"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad20a4032cfbaf4698d2a894139c339ae">send_status_update</a> (uint32_t cycle, <a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7">TestState</a> state, uint8_t err_code=0)</td></tr>
+<tr class="memdesc:ad20a4032cfbaf4698d2a894139c339ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send STATUS_UPDATE with cycle count and state.  <br /></td></tr>
 <tr class="separator:ad20a4032cfbaf4698d2a894139c339ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e573039958657010ab3722b0eb6cfd8" id="r_a0e573039958657010ab3722b0eb6cfd8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e573039958657010ab3722b0eb6cfd8">send_error</a> (uint8_t err_code, uint32_t at_cycle)</td></tr>
+<tr class="memdesc:a0e573039958657010ab3722b0eb6cfd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send ERROR message.  <br /></td></tr>
 <tr class="separator:a0e573039958657010ab3722b0eb6cfd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24fe7b15e7685c89e8468b1fdbcbaf7d" id="r_a24fe7b15e7685c89e8468b1fdbcbaf7d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24fe7b15e7685c89e8468b1fdbcbaf7d">send_test_complete</a> ()</td></tr>
+<tr class="memdesc:a24fe7b15e7685c89e8468b1fdbcbaf7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send TEST_COMPLETE message.  <br /></td></tr>
 <tr class="separator:a24fe7b15e7685c89e8468b1fdbcbaf7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -138,6 +148,20 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Initialize ESP-NOW (WiFi STA + ESP-NOW) and start the receive task. </p>
+<ul>
+<li>Initializes NVS/WiFi/ESP-NOW.</li>
+<li>Registers RX/TX callbacks.</li>
+<li>Creates an internal queue for raw RX frames and starts an internal task that parses/validates packets and pushes <code><a class="el" href="structProtoEvent.html" title="Protocol event structure pushed through FreeRTOS queues.">ProtoEvent</a></code> messages to <code>event_queue</code>.</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">event_queue</td><td>FreeRTOS queue that receives parsed <code><a class="el" href="structProtoEvent.html" title="Protocol event structure pushed through FreeRTOS queues.">ProtoEvent</a></code> values. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on successful initialization; false otherwise. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -169,6 +193,16 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Send CONFIG_ACK for a CONFIG_SET request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ok</td><td>true if configuration was applied; false if rejected. </td></tr>
+    <tr><td class="paramname">err_code</td><td>Optional error code (meaning is application-defined). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the packet was queued for transmission; false otherwise. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -177,7 +211,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a126f3feacea21b45e4af0a34deb50dcd_icgraph.svg" width="543" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a126f3feacea21b45e4af0a34deb50dcd_icgraph.svg" width="543" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -196,6 +230,15 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Send CONFIG_RESPONSE containing the current settings. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>Current settings (test unit portion is serialized to wire). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the packet was queued for transmission; false otherwise. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -204,7 +247,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_ac4af6aafe2cc9de4cbd2354dfc627dc7_icgraph.svg" width="543" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_ac4af6aafe2cc9de4cbd2354dfc627dc7_icgraph.svg" width="543" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -227,6 +270,16 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Send ERROR message. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">err_code</td><td>Application-defined error code. </td></tr>
+    <tr><td class="paramname">at_cycle</td><td>Cycle count at which the error was observed. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the packet was queued for transmission; false otherwise. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -235,7 +288,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a0e573039958657010ab3722b0eb6cfd8_icgraph.svg" width="543" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a0e573039958657010ab3722b0eb6cfd8_icgraph.svg" width="1472" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -254,6 +307,9 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Send PAUSE_ACK (acknowledge PAUSE receipt). </p>
+<dl class="section return"><dt>Returns</dt><dd>true if the packet was queued for transmission; false otherwise. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -262,7 +318,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a4af879c40f8c3223b890b26dfcd1d7aa_icgraph.svg" width="543" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a4af879c40f8c3223b890b26dfcd1d7aa_icgraph.svg" width="543" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -281,6 +337,9 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Send RESUME_ACK (acknowledge RESUME receipt). </p>
+<dl class="section return"><dt>Returns</dt><dd>true if the packet was queued for transmission; false otherwise. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -289,7 +348,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a5996f034b8b0ad5a9e75441c454b8a52_icgraph.svg" width="543" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a5996f034b8b0ad5a9e75441c454b8a52_icgraph.svg" width="543" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -308,6 +367,9 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Send START_ACK (acknowledge START receipt). </p>
+<dl class="section return"><dt>Returns</dt><dd>true if the packet was queued for transmission; false otherwise. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -316,7 +378,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_afb76d5c6ce79015229aca11c94603692_icgraph.svg" width="1115" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_afb76d5c6ce79015229aca11c94603692_icgraph.svg" width="1186" height="152"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -344,6 +406,17 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Send STATUS_UPDATE with cycle count and state. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cycle</td><td>Current cycle count. </td></tr>
+    <tr><td class="paramname">state</td><td>Current protocol state. </td></tr>
+    <tr><td class="paramname">err_code</td><td>Optional error code (used when state == ERROR). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the packet was queued for transmission; false otherwise. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -352,7 +425,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_ad20a4032cfbaf4698d2a894139c339ae_icgraph.svg" width="1115" height="218"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_ad20a4032cfbaf4698d2a894139c339ae_icgraph.svg" width="1563" height="327"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -371,6 +444,9 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Send STOP_ACK (acknowledge STOP receipt). </p>
+<dl class="section return"><dt>Returns</dt><dd>true if the packet was queued for transmission; false otherwise. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -379,7 +455,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a5f9e63a444d010ed79c649b6a2467277_icgraph.svg" width="1114" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a5f9e63a444d010ed79c649b6a2467277_icgraph.svg" width="1186" height="152"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -398,6 +474,9 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Send TEST_COMPLETE message. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if the packet was queued for transmission; false otherwise. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -406,7 +485,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a24fe7b15e7685c89e8468b1fdbcbaf7d_icgraph.svg" width="519" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a24fe7b15e7685c89e8468b1fdbcbaf7d_icgraph.svg" width="519" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

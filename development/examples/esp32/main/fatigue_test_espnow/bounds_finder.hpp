@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../inc/tmc51x0.hpp"
+#include "tmc51x0.hpp"
 #include "test_config/esp32_tmc51x0_bus.hpp"
 #include "test_config/esp32_tmc51x0_test_config.hpp"
 #include <cstdint>
@@ -28,10 +28,24 @@ struct BoundsResult {
     float min_bound;  // Minimum bound in degrees
     float max_bound;  // Maximum bound in degrees
     bool bounded;     // Whether mechanical stops were found
+    bool cancelled;   // Whether the operation was cancelled
     
-    BoundsResult() : success(false), min_bound(0.0f), max_bound(0.0f), bounded(false) {}
-    BoundsResult(bool s, float min, float max, bool b) 
-        : success(s), min_bound(min), max_bound(max), bounded(b) {}
+    BoundsResult() : success(false), min_bound(0.0f), max_bound(0.0f), bounded(false), cancelled(false) {}
+    BoundsResult(bool s, float min, float max, bool b, bool c = false)
+        : success(s), min_bound(min), max_bound(max), bounded(b), cancelled(c) {}
+};
+
+/**
+ * @brief Runtime configuration for bounds finding
+ * 
+ * When values are 0.0f, test config defaults are used.
+ * This allows backward compatibility and sensible defaults.
+ */
+struct BoundsFinderConfig {
+    float search_velocity_rpm = 0.0f;           // 0 = use test config default (BOUNDS_SEARCH_SPEED_RPM)
+    float min_velocity_rpm = 0.0f;              // 0 = use test config default (MIN_VELOCITY_RPM)
+    float current_factor = 0.0f;                // 0 = use test config default  
+    float search_accel_rev_s2 = 0.0f;           // 0 = use test config default
 };
 
 /**
@@ -44,10 +58,13 @@ public:
     /**
      * @brief Find motor bounds in both directions
      * @param driver TMC51x0 driver instance
+     * @param config Optional runtime configuration (nullptr = use test config defaults)
      * @return BoundsResult with found bounds in degrees
      */
     virtual BoundsResult FindBounds(
-        tmc51x0::TMC51x0<Esp32SPI>& driver
+        tmc51x0::TMC51x0<Esp32SPI>& driver,
+        const BoundsFinderConfig* config = nullptr,  // nullptr = use test config defaults
+        const volatile bool* cancel = nullptr        // optional cancellation flag (true = cancel)
     ) = 0;
     
     /**

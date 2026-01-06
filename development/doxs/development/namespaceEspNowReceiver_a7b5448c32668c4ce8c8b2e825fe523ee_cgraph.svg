@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Initialize ESP&#45;NOW (WiFi STA + ESP&#45;NOW) and start the receive task.">
 <polygon fill="#999999" stroke="#666666" points="120,-56 0,-56 0,-37 120,-37 120,-56"/>
 <text text-anchor="middle" x="60" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">EspNowReceiver::init</text>
 </a>
@@ -74,7 +74,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="espnow__receiver_8cpp.html#a211bc701b043b68b2a0a4462c1ca43c5" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="espnow__receiver_8cpp.html#a7b66833f47870fc437dedd1e79d23dd9" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="378,-19 291,-19 291,0 378,0 378,-19"/>
 <text text-anchor="middle" x="334.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">handle_packet</text>
 </a>
@@ -92,7 +92,7 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" target="_top" xlink:title=" ">
+<g id="a_Node000006"><a xlink:href="espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" target="_top" xlink:title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF).">
 <polygon fill="white" stroke="#666666" points="483,-19 414,-19 414,0 483,0 483,-19"/>
 <text text-anchor="middle" x="448.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">crc16_ccitt</text>
 </a>

@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="namespaceCommandOutput.html#a17f37c6f2219b07e23e7ece83c27bb18" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="namespaceCommandOutput.html#a17f37c6f2219b07e23e7ece83c27bb18" target="_top" xlink:title="Print an empty boxed line for spacing in UART output.">
 <polygon fill="white" stroke="#666666" points="298,-130 118,-130 118,-111 298,-111 298,-130"/>
 <text text-anchor="middle" x="208" y="-118" font-family="Helvetica,sans-Serif" font-size="10.00">CommandOutput::PrintEmptyLine</text>
 </a>
@@ -38,7 +38,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="namespaceCommandOutput.html#ac1bb1e11fb1eac54489e3d3cae372fce" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="namespaceCommandOutput.html#ac1bb1e11fb1eac54489e3d3cae372fce" target="_top" xlink:title="Print a boxed footer line for UART output.">
 <polygon fill="white" stroke="#666666" points="287.5,-93 128.5,-93 128.5,-74 287.5,-74 287.5,-93"/>
 <text text-anchor="middle" x="208" y="-81" font-family="Helvetica,sans-Serif" font-size="10.00">CommandOutput::PrintFooter</text>
 </a>
@@ -56,7 +56,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="namespaceCommandOutput.html#a1d3cebfb1eecf215784a06c6f3492241" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="namespaceCommandOutput.html#a1d3cebfb1eecf215784a06c6f3492241" target="_top" xlink:title="Print a boxed header line for human&#45;readable UART output.">
 <polygon fill="white" stroke="#666666" points="290,-56 126,-56 126,-37 290,-37 290,-56"/>
 <text text-anchor="middle" x="208" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">CommandOutput::PrintHeader</text>
 </a>
@@ -74,7 +74,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="namespaceCommandOutput.html#a2657a77facb7e74dce96aa9265d7407c" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="namespaceCommandOutput.html#a2657a77facb7e74dce96aa9265d7407c" target="_top" xlink:title="Print a key/value row within the boxed UART output format.">
 <polygon fill="white" stroke="#666666" points="295.5,-19 120.5,-19 120.5,0 295.5,0 295.5,-19"/>
 <text text-anchor="middle" x="208" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">CommandOutput::PrintTableRow</text>
 </a>

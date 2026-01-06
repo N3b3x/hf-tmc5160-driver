@@ -1,6 +1,7 @@
 var classtmc51x0_1_1TMC51x0 =
 [
     [ "HardResetOptions", "structtmc51x0_1_1TMC51x0_1_1HardResetOptions.html", "structtmc51x0_1_1TMC51x0_1_1HardResetOptions" ],
+    [ "MotorCurrentDebugInfo", "structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html", "structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo" ],
     [ "WriteOnlyRegisters", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters" ],
     [ "TMC51x0", "classtmc51x0_1_1TMC51x0.html#a336ff34e456339182ce6e57c11a25fa7", null ],
     [ "~TMC51x0", "classtmc51x0_1_1TMC51x0.html#a6098762930c8b3b638a5e7db5e4290c7", null ],
@@ -16,10 +17,14 @@ var classtmc51x0_1_1TMC51x0 =
     [ "GetDriverConfig", "classtmc51x0_1_1TMC51x0.html#ae6d19e6af0ebf1f83e24e27b11f62a25", null ],
     [ "GetDriverConfig", "classtmc51x0_1_1TMC51x0.html#a6aa297696740875cf9cff7a37ddd0601", null ],
     [ "GetDriverConfigString", "classtmc51x0_1_1TMC51x0.html#ada3e7090570b7221e2048445d4f22035", null ],
+    [ "GetMotorCurrentDebugInfo", "classtmc51x0_1_1TMC51x0.html#acfb1a464c20f433450d1e96ce51744dc", null ],
     [ "HardReset", "classtmc51x0_1_1TMC51x0.html#a0819cf562bcbb0a747b56fc15a8da5b1", null ],
     [ "Initialize", "classtmc51x0_1_1TMC51x0.html#a60e918b0153cf9034871291ce27ea813", null ],
     [ "IsInitialized", "classtmc51x0_1_1TMC51x0.html#af1458eb313a868ca4860f44e32630c8c", null ],
     [ "IsInternalRampMode", "classtmc51x0_1_1TMC51x0.html#abd5a49d0cb0c802a394a71ede9967b32", null ],
+    [ "LogConfigSummary", "classtmc51x0_1_1TMC51x0.html#a20cfe6cdf1f4310965a619a81863d66b", null ],
+    [ "LogDerivedInitSummary", "classtmc51x0_1_1TMC51x0.html#acee0f2d63d519db90810232f824ab4fe", null ],
+    [ "LogLiveStatusReport", "classtmc51x0_1_1TMC51x0.html#ab538d0dd470bdb627262fde5504d3c02", null ],
     [ "RequireInternalRampMode", "classtmc51x0_1_1TMC51x0.html#a699bab1a90d2f8a262daabfa855878b1", null ],
     [ "Reset", "classtmc51x0_1_1TMC51x0.html#a27d55da2949bc7fdbcd0cd84ba9f37bf", null ],
     [ "speedFromInternal", "classtmc51x0_1_1TMC51x0.html#a75d0ee0ccc1ae331e8cb4c3508031917", null ],

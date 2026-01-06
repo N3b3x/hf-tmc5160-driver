@@ -109,13 +109,12 @@ $(function(){initNavTree('espnow__receiver_8cpp.html',''); initResizable(); });
 <code>#include &lt;cstring&gt;</code><br />
 <code>#include &quot;esp_system.h&quot;</code><br />
 <code>#include &quot;nvs_flash.h&quot;</code><br />
-<code>#include &quot;esp_wifi.h&quot;</code><br />
-<code>#include &quot;esp_now.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp__idf__pedantic__compat_8hpp_source.html">esp_idf_pedantic_compat.hpp</a>&quot;</code><br />
 <code>#include &quot;esp_log.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for espnow_receiver.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp__incl.svg" width="938" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp__incl.svg" width="896" height="330"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -133,8 +132,8 @@ Functions</h2></td></tr>
 <tr class="separator:a60f0e60b9ba93f8290923d5b39e6ce5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56b1fa458feb934b57be89468e71627f" id="r_a56b1fa458feb934b57be89468e71627f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a56b1fa458feb934b57be89468e71627f">send_packet_to_ui</a> (<a class="el" href="espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2">MsgType</a> type, const void *payload, uint8_t payload_len)</td></tr>
 <tr class="separator:a56b1fa458feb934b57be89468e71627f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a211bc701b043b68b2a0a4462c1ca43c5" id="r_a211bc701b043b68b2a0a4462c1ca43c5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a211bc701b043b68b2a0a4462c1ca43c5">handle_packet</a> (const <a class="el" href="structEspNowPacket.html">EspNowPacket</a> &amp;pkt)</td></tr>
-<tr class="separator:a211bc701b043b68b2a0a4462c1ca43c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b66833f47870fc437dedd1e79d23dd9" id="r_a7b66833f47870fc437dedd1e79d23dd9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b66833f47870fc437dedd1e79d23dd9">handle_packet</a> (const <a class="el" href="structEspNowPacket.html">EspNowPacket</a> &amp;pkt, uint16_t recv_crc_from_data)</td></tr>
+<tr class="separator:a7b66833f47870fc437dedd1e79d23dd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -225,8 +224,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a211bc701b043b68b2a0a4462c1ca43c5" name="a211bc701b043b68b2a0a4462c1ca43c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a211bc701b043b68b2a0a4462c1ca43c5">&#9670;&#160;</a></span>handle_packet()</h2>
+<a id="a7b66833f47870fc437dedd1e79d23dd9" name="a7b66833f47870fc437dedd1e79d23dd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b66833f47870fc437dedd1e79d23dd9">&#9670;&#160;</a></span>handle_packet()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -237,8 +236,12 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">static void handle_packet </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structEspNowPacket.html">EspNowPacket</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>pkt</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="structEspNowPacket.html">EspNowPacket</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>pkt</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>recv_crc_from_data</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -250,12 +253,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a211bc701b043b68b2a0a4462c1ca43c5_cgraph.svg" width="267" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a7b66833f47870fc437dedd1e79d23dd9_cgraph.svg" width="267" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a211bc701b043b68b2a0a4462c1ca43c5_icgraph.svg" width="603" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a7b66833f47870fc437dedd1e79d23dd9_icgraph.svg" width="603" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -334,7 +337,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a56b1fa458feb934b57be89468e71627f_icgraph.svg" width="1372" height="563"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a56b1fa458feb934b57be89468e71627f_icgraph.svg" width="1754" height="723"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

@@ -1,0 +1,17 @@
+<map id="tmc51x0::detail::LogBoxRow" name="tmc51x0::detail::LogBoxRow">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1061,87,1269,112"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0_1_1detail.html#ac3de64d95185b08d40faab18e706ea8f" title=" " alt="" coords="805,47,1013,87"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1050,88,1013,83,1014,78,1050,82"/>
+<area shape="rect" id="Node000008" href="$namespacetmc51x0_1_1detail.html#a8c46bbcc44fe3dc439828d0786c43fb0" title=" " alt="" coords="815,111,1004,151"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="1050,116,1004,122,1004,117,1050,111"/>
+<area shape="rect" id="Node000003" href="$classtmc51x0_1_1TMC51x0.html#a20cfe6cdf1f4310965a619a81863d66b" title="Log a comprehensive, human&#45;readable summary of a DriverConfig." alt="" coords="537,47,757,87"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="792,70,757,70,757,65,792,65"/>
+<area shape="rect" id="Node000004" href="$classtmc51x0_1_1TMC51x0.html#a60e918b0153cf9034871291ce27ea813" title="Initialize the TMC51x0 driver with configuration." alt="" coords="277,55,489,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="523,70,490,70,490,65,523,65"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="74,5,161,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="300,55,160,29,161,23,301,49"/>
+<area shape="rect" id="Node000006" href="$abn__encoder__reader_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="74,55,161,80"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="264,70,161,70,161,65,264,65"/>
+<area shape="rect" id="Node000007" href="$classtmc51x0_1_1TMC51x0.html#a0819cf562bcbb0a747b56fc15a8da5b1" title="Perform a hard reset (power&#45;cycle when available, else software reset)" alt="" coords="5,104,229,129"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="301,85,187,107,186,101,301,80"/>
+</map>

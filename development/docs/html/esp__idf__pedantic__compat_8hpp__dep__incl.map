@@ -1,0 +1,17 @@
+<map id="esp_idf_pedantic_compat.hpp" name="esp_idf_pedantic_compat.hpp">
+<area shape="rect" id="Node000001" title="Compatibility include wrapper for ESP&#45;IDF headers when building with &#45;Wpedantic in C++." alt="" coords="33,5,249,31"/>
+<area shape="rect" id="Node000002" href="$espnow__protocol_8hpp.html" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="119,79,279,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,40,192,77,188,80,157,43"/>
+<area shape="rect" id="Node000004" href="$espnow__receiver_8cpp.html" title="ESP&#45;NOW receiver implementation for test unit." alt="" coords="5,233,164,258"/>
+<area shape="poly" id="edge9_Node000001_Node000004" title=" " alt="" coords="127,44,110,80,99,123,92,166,87,233,82,232,87,166,93,122,105,78,123,41"/>
+<area shape="rect" id="Node000003" href="$espnow__protocol__test__unit_8cpp.html" title="Minimal ESP&#45;NOW protocol test unit &#45; no motor control." alt="" coords="188,225,352,265"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="201,118,204,147,212,176,229,202,249,223,245,227,225,205,208,178,199,148,196,118"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="185,116,96,234,91,231,181,113"/>
+<area shape="rect" id="Node000005" href="$espnow__receiver_8hpp.html" title="ESP&#45;NOW receiver for test unit." alt="" coords="221,152,380,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="228,110,286,150,283,154,225,114"/>
+<area shape="rect" id="Node000006" href="$main_8cpp.html" title="Fatigue test unit with ESP&#45;NOW communication." alt="" coords="377,233,459,258"/>
+<area shape="poly" id="edge8_Node000002_Node000006" title=" " alt="" coords="294,100,347,118,373,132,395,150,408,170,416,192,421,232,416,232,411,194,403,172,391,154,370,136,345,122,292,105"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="294,191,280,226,275,224,289,189"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="257,184,117,235,115,230,256,179"/>
+<area shape="poly" id="edge7_Node000005_Node000006" title=" " alt="" coords="331,183,402,230,399,235,328,187"/>
+</map>

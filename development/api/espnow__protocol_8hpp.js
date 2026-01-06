@@ -25,7 +25,8 @@ var espnow__protocol_8hpp =
       [ "STOP_ACK", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a83e36857e89fcac3c91a510b5ac5fb70", null ],
       [ "STATUS_UPDATE", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2ac9f38cbcb08e48079a1aada9bed6bd23", null ],
       [ "ERROR", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2abb1ca97ec761fc37101737ba0aa2e7c5", null ],
-      [ "TEST_COMPLETE", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a5aa303ccc0c43027d0a70c7fcf8e9a71", null ]
+      [ "TEST_COMPLETE", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a5aa303ccc0c43027d0a70c7fcf8e9a71", null ],
+      [ "ERROR_CLEAR", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a44aed0870d4fc9ff76583fc24ac39c35", null ]
     ] ],
     [ "ProtoEventType", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5ae", [
       [ "CONFIG_REQUEST", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea0b670c8c72d6656f8b6b7eef1e0f3927", null ],

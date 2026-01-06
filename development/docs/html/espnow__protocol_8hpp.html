@@ -109,18 +109,17 @@ $(function(){initNavTree('espnow__protocol_8hpp.html',''); initResizable(); });
 <code>#include &lt;cstring&gt;</code><br />
 <code>#include &quot;freertos/FreeRTOS.h&quot;</code><br />
 <code>#include &quot;freertos/queue.h&quot;</code><br />
-<code>#include &quot;esp_now.h&quot;</code><br />
-<code>#include &quot;esp_wifi.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp__idf__pedantic__compat_8hpp_source.html">esp_idf_pedantic_compat.hpp</a>&quot;</code><br />
 <code>#include &quot;esp_log.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for espnow_protocol.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol_8hpp__incl.svg" width="832" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol_8hpp__incl.svg" width="847" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol_8hpp__dep__incl.svg" width="300" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol_8hpp__dep__incl.svg" width="466" height="198"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="espnow__protocol_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -128,16 +127,22 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEspNowHeader.html">EspNowHeader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ESP-NOW packet header (wire format).  <a href="structEspNowHeader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEspNowPacket.html">EspNowPacket</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Full packet representation (header + max payload + CRC field).  <a href="structEspNowPacket.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structConfigPayload.html">ConfigPayload</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Payload for CONFIG_SET / CONFIG_RESPONSE.  <a href="structConfigPayload.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structConfigAckPayload.html">ConfigAckPayload</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Payload for CONFIG_ACK.  <a href="structConfigAckPayload.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structStatusPayload.html">StatusPayload</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Payload for STATUS_UPDATE.  <a href="structStatusPayload.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structErrorPayload.html">ErrorPayload</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Payload for ERROR.  <a href="structErrorPayload.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTestUnitSettings.html">TestUnitSettings</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test unit settings - synchronized with test machine via ESP-NOW These settings control the fatigue test behavior.  <a href="structTestUnitSettings.html#details">More...</a><br /></td></tr>
@@ -149,6 +154,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Complete settings structure containing both test unit and UI settings This is the main settings structure used throughout the application.  <a href="structSettings.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structProtoEvent.html">ProtoEvent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protocol event structure pushed through FreeRTOS queues.  <a href="structProtoEvent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
@@ -172,8 +178,10 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="#a4d47dc9870566f2f294eaab1426094a2ac9f38cbcb08e48079a1aada9bed6bd23">STATUS_UPDATE</a>
 , <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2abb1ca97ec761fc37101737ba0aa2e7c5">ERROR</a>
 , <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a5aa303ccc0c43027d0a70c7fcf8e9a71">TEST_COMPLETE</a>
+, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a44aed0870d4fc9ff76583fc24ac39c35">ERROR_CLEAR</a> = 16
 <br />
  }</td></tr>
+<tr class="memdesc:a4d47dc9870566f2f294eaab1426094a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wire-level message type identifiers.  <a href="#a4d47dc9870566f2f294eaab1426094a2">More...</a><br /></td></tr>
 <tr class="separator:a4d47dc9870566f2f294eaab1426094a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60f8cc7211722b1cc1767ba7c7a5d4d7" id="r_a60f8cc7211722b1cc1767ba7c7a5d4d7"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60f8cc7211722b1cc1767ba7c7a5d4d7">TestState</a> : uint8_t { <br />
 &#160;&#160;<a class="el" href="#a60f8cc7211722b1cc1767ba7c7a5d4d7aa5daf7f2ebbba4975d61dab1c40188c7">IDLE</a> = 0
@@ -184,6 +192,7 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="#a60f8cc7211722b1cc1767ba7c7a5d4d7abb1ca97ec761fc37101737ba0aa2e7c5">ERROR</a>
 <br />
  }</td></tr>
+<tr class="memdesc:a60f8cc7211722b1cc1767ba7c7a5d4d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protocol-visible test states encoded in <code>STATUS_UPDATE</code>.  <a href="#a60f8cc7211722b1cc1767ba7c7a5d4d7">More...</a><br /></td></tr>
 <tr class="separator:a60f8cc7211722b1cc1767ba7c7a5d4d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3e128b3e7e8c9e272e987f862e1d5ae" id="r_ae3e128b3e7e8c9e272e987f862e1d5ae"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5ae">ProtoEventType</a> { <br />
 &#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea0b670c8c72d6656f8b6b7eef1e0f3927">CONFIG_REQUEST</a>
@@ -207,11 +216,13 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aead71a637068b9cea4296244f419a40c34">TEST_COMPLETED</a>
 <br />
  }</td></tr>
+<tr class="memdesc:ae3e128b3e7e8c9e272e987f862e1d5ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Higher-level events emitted by the protocol layer.  <a href="#ae3e128b3e7e8c9e272e987f862e1d5ae">More...</a><br /></td></tr>
 <tr class="separator:ae3e128b3e7e8c9e272e987f862e1d5ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aad8e572c4e16e9a24c82fd3db6f99740" id="r_aad8e572c4e16e9a24c82fd3db6f99740"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad8e572c4e16e9a24c82fd3db6f99740">crc16_ccitt</a> (const uint8_t *data, size_t len)</td></tr>
+<tr class="memdesc:aad8e572c4e16e9a24c82fd3db6f99740"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute CRC16-CCITT (poly 0x1021, init 0xFFFF).  <br /></td></tr>
 <tr class="separator:aad8e572c4e16e9a24c82fd3db6f99740"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
@@ -248,6 +259,9 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Wire-level message type identifiers. </p>
+<p>These values are serialized into <code><a class="el" href="structEspNowHeader.html#a9590e934eeb5552ecbee6bf1905a0039">EspNowHeader::type</a></code> and must match on both the test unit and the remote controller. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a0b670c8c72d6656f8b6b7eef1e0f3927" name="a4d47dc9870566f2f294eaab1426094a2a0b670c8c72d6656f8b6b7eef1e0f3927"></a>CONFIG_REQUEST&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a689e774c07d429c54d29280de778b5eb" name="a4d47dc9870566f2f294eaab1426094a2a689e774c07d429c54d29280de778b5eb"></a>CONFIG_RESPONSE&#160;</td><td class="fielddoc"></td></tr>
@@ -264,6 +278,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2ac9f38cbcb08e48079a1aada9bed6bd23" name="a4d47dc9870566f2f294eaab1426094a2ac9f38cbcb08e48079a1aada9bed6bd23"></a>STATUS_UPDATE&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2abb1ca97ec761fc37101737ba0aa2e7c5" name="a4d47dc9870566f2f294eaab1426094a2abb1ca97ec761fc37101737ba0aa2e7c5"></a>ERROR&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a5aa303ccc0c43027d0a70c7fcf8e9a71" name="a4d47dc9870566f2f294eaab1426094a2a5aa303ccc0c43027d0a70c7fcf8e9a71"></a>TEST_COMPLETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a44aed0870d4fc9ff76583fc24ac39c35" name="a4d47dc9870566f2f294eaab1426094a2a44aed0870d4fc9ff76583fc24ac39c35"></a>ERROR_CLEAR&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -287,6 +302,9 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Higher-level events emitted by the protocol layer. </p>
+<p>On the test-unit side, these events represent commands received from the UI board. On either side, these can also represent parsed status/response semantics. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea0b670c8c72d6656f8b6b7eef1e0f3927" name="ae3e128b3e7e8c9e272e987f862e1d5aea0b670c8c72d6656f8b6b7eef1e0f3927"></a>CONFIG_REQUEST&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea5a0fcce86a75eb684b5798e7b6205f77" name="ae3e128b3e7e8c9e272e987f862e1d5aea5a0fcce86a75eb684b5798e7b6205f77"></a>CONFIG_SET&#160;</td><td class="fielddoc"></td></tr>
@@ -327,6 +345,8 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Protocol-visible test states encoded in <code>STATUS_UPDATE</code>. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a60f8cc7211722b1cc1767ba7c7a5d4d7aa5daf7f2ebbba4975d61dab1c40188c7" name="a60f8cc7211722b1cc1767ba7c7a5d4d7aa5daf7f2ebbba4975d61dab1c40188c7"></a>IDLE&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a60f8cc7211722b1cc1767ba7c7a5d4d7a43491564ebcfd38568918efbd6e840fd" name="a60f8cc7211722b1cc1767ba7c7a5d4d7a43491564ebcfd38568918efbd6e840fd"></a>RUNNING&#160;</td><td class="fielddoc"></td></tr>
@@ -364,10 +384,20 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Compute CRC16-CCITT (poly 0x1021, init 0xFFFF). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>Data buffer. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes to include. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Computed CRC16 value. </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol_8hpp_aad8e572c4e16e9a24c82fd3db6f99740_icgraph.svg" width="1512" height="614"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol_8hpp_aad8e572c4e16e9a24c82fd3db6f99740_icgraph.svg" width="1894" height="780"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

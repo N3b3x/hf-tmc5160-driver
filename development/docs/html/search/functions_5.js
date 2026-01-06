@@ -1,8 +1,8 @@
 var searchData=
 [
   ['fatiguetestmotion_0',['FatigueTestMotion',['../classFatigueTest_1_1FatigueTestMotion.html#a7c54e26e7b4f9bb416c9e5a35b85ded5',1,'FatigueTest::FatigueTestMotion']]],
-  ['findbound_1',['FindBound',['../classFatigueTest_1_1EncoderBoundsFinderImpl.html#a3c5df1b84ab21625409a99a4f820d9c4',1,'FatigueTest::EncoderBoundsFinderImpl::FindBound()'],['../classFatigueTest_1_1StallGuardBoundsFinderImpl.html#ad22ac1d63ff237d1101d4c63f53cd927',1,'FatigueTest::StallGuardBoundsFinderImpl::FindBound()']]],
-  ['findbounds_2',['FindBounds',['../classFatigueTest_1_1IBoundsFinder.html#a19b207021df24bf152929cffa662a938',1,'FatigueTest::IBoundsFinder::FindBounds()'],['../classFatigueTest_1_1EncoderBoundsFinderImpl.html#a4c15dcfcea121e5b5c9de5b968447d72',1,'FatigueTest::EncoderBoundsFinderImpl::FindBounds()'],['../classFatigueTest_1_1StallGuardBoundsFinderImpl.html#acadb91e0d843ceffbd345e2b7ae0f81d',1,'FatigueTest::StallGuardBoundsFinderImpl::FindBounds()']]],
+  ['findbound_1',['FindBound',['../classFatigueTest_1_1EncoderBoundsFinderImpl.html#a9b3eb529b3603d8bb65d9e41aaf3e8ea',1,'FatigueTest::EncoderBoundsFinderImpl::FindBound()'],['../classFatigueTest_1_1StallGuardBoundsFinderImpl.html#abda032e3fe1bc2a4b5ea75c2deacabb2',1,'FatigueTest::StallGuardBoundsFinderImpl::FindBound()']]],
+  ['findbounds_2',['FindBounds',['../classFatigueTest_1_1IBoundsFinder.html#a227bb2e3caf489b77f7aaa00d0d3f218',1,'FatigueTest::IBoundsFinder::FindBounds()'],['../classFatigueTest_1_1EncoderBoundsFinderImpl.html#a664059e6ebcd4547d3f4862de5fd2dd4',1,'FatigueTest::EncoderBoundsFinderImpl::FindBounds()'],['../classFatigueTest_1_1StallGuardBoundsFinderImpl.html#a42b464b8be7b92ae34ff940e09cb6adf',1,'FatigueTest::StallGuardBoundsFinderImpl::FindBounds()']]],
   ['findoption_3',['FindOption',['../classOptionParser.html#ac8b6271049930c9ddcd7d4217fc998db',1,'OptionParser']]],
   ['findworkingvelocityrange_4',['FindWorkingVelocityRange',['../namespacetmc51x0.html#afaf6037a652c82c965a94e0433e13a7c',1,'tmc51x0']]],
   ['flip_5ftest_5fprogress_5findicator_5',['flip_test_progress_indicator',['../TestFramework_8h.html#a7bb80345e5681c19686df292fa897daf',1,'TestFramework.h']]],

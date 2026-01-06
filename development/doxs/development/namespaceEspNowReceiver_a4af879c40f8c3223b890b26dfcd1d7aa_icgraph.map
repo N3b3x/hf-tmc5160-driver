@@ -1,7 +1,11 @@
 <map id="EspNowReceiver::send_pause_ack" name="EspNowReceiver::send_pause_ack">
-<area shape="rect" id="Node000001" title=" " alt="" coords="367,5,537,45"/>
-<area shape="rect" id="Node000002" href="$main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" title=" " alt="" coords="140,13,319,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="353,28,319,28,319,23,353,23"/>
-<area shape="rect" id="Node000003" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,13,92,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,28,92,28,92,23,126,23"/>
+<area shape="rect" id="Node000001" title="Send PAUSE_ACK (acknowledge PAUSE receipt)." alt="" coords="367,23,537,63"/>
+<area shape="rect" id="Node000002" href="$espnow__protocol__test__unit_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" title="FreeRTOS task: handle incoming ESP&#45;NOW protocol events (test&#45;unit simulator)." alt="" coords="140,5,319,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="352,35,319,31,319,26,353,29"/>
+<area shape="rect" id="Node000004" href="$main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" title="FreeRTOS task: process inbound ESP&#45;NOW protocol events." alt="" coords="140,55,319,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="353,57,319,60,319,55,352,51"/>
+<area shape="rect" id="Node000003" href="$espnow__protocol__test__unit_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,5,92,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,21,92,21,92,15,126,15"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,55,92,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="126,70,92,70,92,65,126,65"/>
 </map>

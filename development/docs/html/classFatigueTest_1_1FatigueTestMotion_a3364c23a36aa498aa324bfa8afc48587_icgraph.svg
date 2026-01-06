@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Periodic update tick.">
 <polygon fill="#999999" stroke="#666666" points="385,-30 253,-30 253,0 385,0 385,-30"/>
 <text text-anchor="start" x="261" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">FatigueTest::FatigueTest</text>
 <text text-anchor="middle" x="319" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Motion::Update</text>
@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="main_8cpp.html#a30da369114ee453fe81be5a919262abf" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="main_8cpp.html#a30da369114ee453fe81be5a919262abf" target="_top" xlink:title="FreeRTOS task: drive the motion update loop and detect completion.">
 <polygon fill="white" stroke="#666666" points="217,-24.5 101,-24.5 101,-5.5 217,-5.5 217,-24.5"/>
 <text text-anchor="middle" x="159" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">motion_control_task</text>
 </a>

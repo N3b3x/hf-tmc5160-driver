@@ -1,16 +1,20 @@
 <map id="EspNowReceiver::send_stop_ack" name="EspNowReceiver::send_stop_ack">
-<area shape="rect" id="Node000001" title=" " alt="" coords="937,27,1108,67"/>
-<area shape="rect" id="Node000002" href="$main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" title=" " alt="" coords="565,5,744,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="923,42,744,28,745,22,924,37"/>
-<area shape="rect" id="Node000004" href="$main_8cpp.html#a39ccc4c53283879fb74a5a5538daa92b" title="Handle STOP command." alt="" coords="792,60,889,85"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="924,64,890,69,889,63,923,59"/>
-<area shape="rect" id="Node000003" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,33,92,59"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="552,25,92,47,92,41,551,20"/>
-<area shape="rect" id="Node000005" href="$classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68" title="Process a command line." alt="" coords="572,55,737,95"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="778,76,738,77,737,71,778,71"/>
-<area shape="rect" id="Node000006" href="$classUartCommandParser.html#a867cccdf009c2a69f1edf9a02f50c984" title="Read and process commands from UART (line&#45;by&#45;line)" alt="" coords="343,55,517,95"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="558,78,518,78,518,73,558,73"/>
-<area shape="rect" id="Node000007" href="$main_8cpp.html#a5a8d7cdba17444119b8f942be87ffe68" title=" " alt="" coords="140,59,295,84"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="329,76,295,75,295,70,329,71"/>
-<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="126,60,92,55,93,50,127,55"/>
+<area shape="rect" id="Node000001" title="Send STOP_ACK (acknowledge STOP receipt)." alt="" coords="1009,49,1180,89"/>
+<area shape="rect" id="Node000002" href="$espnow__protocol__test__unit_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" title="FreeRTOS task: handle incoming ESP&#45;NOW protocol events (test&#45;unit simulator)." alt="" coords="783,5,961,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="995,49,928,33,929,28,996,44"/>
+<area shape="rect" id="Node000004" href="$main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" title="FreeRTOS task: process inbound ESP&#45;NOW protocol events." alt="" coords="343,56,521,81"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="995,71,522,71,522,66,995,66"/>
+<area shape="rect" id="Node000006" href="$main_8cpp.html#a39ccc4c53283879fb74a5a5538daa92b" title="Handle STOP command." alt="" coords="823,109,921,135"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="998,94,922,113,921,108,997,89"/>
+<area shape="rect" id="Node000003" href="$espnow__protocol__test__unit_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="609,5,695,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="769,21,696,21,696,15,769,15"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,85,92,111"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="329,79,92,97,92,92,329,74"/>
+<area shape="rect" id="Node000007" href="$classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68" title="Parse and execute a single command line." alt="" coords="569,106,735,146"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="809,126,735,127,735,122,809,120"/>
+<area shape="rect" id="Node000008" href="$classUartCommandParser.html#a867cccdf009c2a69f1edf9a02f50c984" title="Poll the UART for input and process complete lines." alt="" coords="345,106,519,146"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="556,129,520,129,520,123,556,123"/>
+<area shape="rect" id="Node000009" href="$main_8cpp.html#a5a8d7cdba17444119b8f942be87ffe68" title="FreeRTOS task: poll UART and process commands." alt="" coords="140,111,295,136"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="331,127,295,127,295,122,331,122"/>
+<area shape="poly" id="edge9_Node000009_Node000005" title=" " alt="" coords="126,112,92,107,93,102,127,107"/>
 </map>

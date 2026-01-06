@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="espnow__receiver_8cpp.html#a211bc701b043b68b2a0a4462c1ca43c5" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="espnow__receiver_8cpp.html#a7b66833f47870fc437dedd1e79d23dd9" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="187,-19 100,-19 100,0 187,0 187,-19"/>
 <text text-anchor="middle" x="143.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">handle_packet</text>
 </a>
@@ -38,7 +38,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" target="_top" xlink:title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF).">
 <polygon fill="white" stroke="#666666" points="292,-19 223,-19 223,0 292,0 292,-19"/>
 <text text-anchor="middle" x="257.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">crc16_ccitt</text>
 </a>

@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['testrigtype_0',['TestRigType',['../namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0',1,'tmc51x0_test_config']]],
-  ['teststate_1',['TestState',['../espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7',1,'espnow_protocol.hpp']]],
-  ['tmc51x0ctrlpin_2',['TMC51x0CtrlPin',['../namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eb',1,'tmc51x0']]]
+  ['rampmode_0',['RampMode',['../namespacetmc51x0.html#a9296c8b77977c4b405a85597699ada76',1,'tmc51x0']]],
+  ['referencelatchmode_1',['ReferenceLatchMode',['../namespacetmc51x0.html#a27074bd299d4daedf7fa42542a072679',1,'tmc51x0']]],
+  ['referencestopmode_2',['ReferenceStopMode',['../namespacetmc51x0.html#a26f6dfac177caad1ec044ec801218843',1,'tmc51x0']]],
+  ['referenceswitchactivelevel_3',['ReferenceSwitchActiveLevel',['../namespacetmc51x0.html#a8cb45f50ef60b0895ae7c456412b9f57',1,'tmc51x0']]]
 ];

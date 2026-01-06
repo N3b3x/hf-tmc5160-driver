@@ -1,0 +1,12 @@
+<map id="status_update_task" name="status_update_task">
+<area shape="rect" id="Node000001" title="FreeRTOS task: periodically send simulated STATUS_UPDATE messages." alt="" coords="5,45,155,70"/>
+<area shape="rect" id="Node000002" href="$namespaceEspNowReceiver.html#ad20a4032cfbaf4698d2a894139c339ae" title="Send STATUS_UPDATE with cycle count and state." alt="" coords="203,5,373,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,43,189,38,189,43,155,49"/>
+<area shape="rect" id="Node000005" href="$namespaceEspNowReceiver.html#a24fe7b15e7685c89e8468b1fdbcbaf7d" title="Send TEST_COMPLETE message." alt="" coords="203,69,373,109"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="155,66,189,71,189,77,154,71"/>
+<area shape="rect" id="Node000003" href="$espnow__receiver_8cpp.html#a56b1fa458feb934b57be89468e71627f" title=" " alt="" coords="421,45,564,70"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="374,36,408,41,407,47,373,41"/>
+<area shape="rect" id="Node000004" href="$espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="612,45,704,70"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="564,55,598,55,598,60,564,60"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="373,73,407,68,408,73,374,79"/>
+</map>

@@ -14,13 +14,26 @@ var main_8cpp =
       [ "STATUS", "main_8cpp.html#a21e038f5b8958e203d28bc4f18472352a5f241c8c8f985b3c51e05d39cf030f4c", null ],
       [ "HELP", "main_8cpp.html#a21e038f5b8958e203d28bc4f18472352a4fc963e213bba362778f5c175eb4d5ff", null ]
     ] ],
+    [ "InternalState", "main_8cpp.html#aa041e16b2a09d6f2a5b8b74582790ed5", [
+      [ "IDLE", "main_8cpp.html#aa041e16b2a09d6f2a5b8b74582790ed5aa5daf7f2ebbba4975d61dab1c40188c7", null ],
+      [ "BOUNDS_FINDING", "main_8cpp.html#aa041e16b2a09d6f2a5b8b74582790ed5a7496a1a0e479ed36762983a70d1dbb09", null ],
+      [ "RUNNING", "main_8cpp.html#aa041e16b2a09d6f2a5b8b74582790ed5a43491564ebcfd38568918efbd6e840fd", null ],
+      [ "PAUSED", "main_8cpp.html#aa041e16b2a09d6f2a5b8b74582790ed5a99b2439e63f73ad515f7ab2447a80673", null ],
+      [ "ERROR", "main_8cpp.html#aa041e16b2a09d6f2a5b8b74582790ed5abb1ca97ec761fc37101737ba0aa2e7c5", null ]
+    ] ],
     [ "OptionType", "main_8cpp.html#a976bded296a67e09242af85291a639d6", [
       [ "FREQUENCY", "main_8cpp.html#a976bded296a67e09242af85291a639d6a1e3e433edd76f91457ea26d0ae88ec2f", null ],
       [ "DWELL", "main_8cpp.html#a976bded296a67e09242af85291a639d6acecbe724c2b17ddafe095ad9d1208778", null ],
       [ "BOUNDS", "main_8cpp.html#a976bded296a67e09242af85291a639d6a297aa690cb244f9804ad84b7cba60892", null ],
       [ "CYCLES", "main_8cpp.html#a976bded296a67e09242af85291a639d6af2d56265e12cb0fcd5828517291b6e21", null ]
     ] ],
+    [ "PendingStartKind", "main_8cpp.html#a806a56232ad25c740e34fcbbe00ef97a", [
+      [ "NONE", "main_8cpp.html#a806a56232ad25c740e34fcbbe00ef97aab50339a10e1de285ac99d4c3990b8693", null ],
+      [ "START", "main_8cpp.html#a806a56232ad25c740e34fcbbe00ef97aab078ffd28db767c502ac367053f6e0ac", null ],
+      [ "RESUME", "main_8cpp.html#a806a56232ad25c740e34fcbbe00ef97aabac2aec3ee8d7d495123dbe5ca2fdac9", null ]
+    ] ],
     [ "app_main", "main_8cpp.html#abce06be17fc37d675118a678a8100a36", null ],
+    [ "bounds_finding_task", "main_8cpp.html#aad11fcee042534d6e42aa0b3f79f5b0f", null ],
     [ "espnow_command_task", "main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79", null ],
     [ "HandleHelp", "main_8cpp.html#abda5ef2605b311dad7dc06cc34373d11", null ],
     [ "HandlePause", "main_8cpp.html#a7be4813339ba1cdf1178b4b5d079c512", null ],
@@ -31,6 +44,8 @@ var main_8cpp =
     [ "HandleStatus", "main_8cpp.html#ac11dd858f48b436538b6a2bb4981db1c", null ],
     [ "HandleStop", "main_8cpp.html#a39ccc4c53283879fb74a5a5538daa92b", null ],
     [ "motion_control_task", "main_8cpp.html#a30da369114ee453fe81be5a919262abf", null ],
+    [ "MotorEnable", "main_8cpp.html#a8aaffec68f13f95314677ea8f112a338", null ],
+    [ "MotorStopHoldDisable", "main_8cpp.html#a3f72921e4deaf387f7444281647ba4b9", null ],
     [ "PrintCommandResult", "main_8cpp.html#ae19be1e7f6cf49a36ef024d47be9d1b7", null ],
     [ "PrintEmptyLine", "main_8cpp.html#a17f37c6f2219b07e23e7ece83c27bb18", null ],
     [ "PrintError", "main_8cpp.html#afec2cba32302909a2cc824d7f986ce6a", null ],
@@ -41,15 +56,29 @@ var main_8cpp =
     [ "PrintSuccess", "main_8cpp.html#a2bed37b24a202a9189a9810ca7bd2ec2", null ],
     [ "PrintTableRow", "main_8cpp.html#a2657a77facb7e74dce96aa9265d7407c", null ],
     [ "PrintWarning", "main_8cpp.html#a7530059a95b958a7d66c5b0613dcbb67", null ],
+    [ "RequestStart", "main_8cpp.html#a05b979a9e80a20ecf074106e268da672", null ],
     [ "status_update_task", "main_8cpp.html#a087fdcdd7d4c34c0c22196a7223d96f5", null ],
+    [ "ToProtoState", "main_8cpp.html#a77af09d9386bbe795dc848a935bff12f", null ],
     [ "uart_command_task", "main_8cpp.html#a5a8d7cdba17444119b8f942be87ffe68", null ],
     [ "BOX_WIDTH", "main_8cpp.html#a26cca625bfbb1df43ca6f8b4579dc39a", null ],
     [ "g_bounds_found", "main_8cpp.html#a33f52b292f8b4fa1829a9ab0708a0d2f", null ],
+    [ "g_bounds_task_handle", "main_8cpp.html#ae4415921902316a679f9f7c691f4bb53", null ],
+    [ "g_bounds_task_running", "main_8cpp.html#ac9cdf48a3b721f542ed27e4cd01516d0", null ],
+    [ "g_cancel_bounds", "main_8cpp.html#a575838eaf0bca40b616abd93aa44c171", null ],
     [ "g_driver", "main_8cpp.html#af1f67ca3cb390e539ec89b27a4710590", null ],
     [ "g_espnowQueue", "main_8cpp.html#a54a3aff038aa4ba3076f44534574404b", null ],
     [ "g_motion", "main_8cpp.html#a9d0550e6576a54512053ed0012f57ae0", null ],
+    [ "g_pending_start", "main_8cpp.html#ab3bb865236d215d6463a0e2d082bf207", null ],
     [ "g_settings", "main_8cpp.html#afa1661a2fb6edee5161e88c785b539ca", null ],
+    [ "g_state", "main_8cpp.html#acdeb1d6db89102aa21a20633088932a7", null ],
     [ "g_use_stallguard", "main_8cpp.html#a1015f103c81a7548604603c04c21901e", null ],
+    [ "LOG_INTERVAL_LONG_US", "main_8cpp.html#a3f20df455bc5fda76473928e39ab345c", null ],
+    [ "LOG_INTERVAL_US", "main_8cpp.html#a58be5d5ca97b35c1686fa818847f4787", null ],
+    [ "MOTION_UPDATE_PERIOD_MS", "main_8cpp.html#adab8a2bff58e372e6c6416c8c0312b5e", null ],
     [ "SELECTED_TEST_RIG", "main_8cpp.html#a3f1e89f6e3a0be599511d4a8cc389305", null ],
-    [ "TAG", "main_8cpp.html#a5a85b9c772bbeb480b209a3e6ea92b4c", null ]
+    [ "SG_LOG_INTERVAL_ALWAYS_US", "main_8cpp.html#af0bf1cd5b29639c62f69c160132c4e33", null ],
+    [ "SG_LOG_INTERVAL_US", "main_8cpp.html#a7bae26607c34d069952291ab80fd0dd5", null ],
+    [ "STATUS_UPDATE_PERIOD_MS", "main_8cpp.html#a66bfe49bec32266461faae91315b9ffa", null ],
+    [ "TAG", "main_8cpp.html#a5a85b9c772bbeb480b209a3e6ea92b4c", null ],
+    [ "UART_POLL_PERIOD_MS", "main_8cpp.html#a28efcb55ae61f55c96d4fef53b5e4c04", null ]
 ];

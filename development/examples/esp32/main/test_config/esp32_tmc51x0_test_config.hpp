@@ -689,6 +689,13 @@ struct TestConfig_17HS4401S {
         // Set to a value below the search speed to ensure StallGuard2 is active during bounds finding
         // For 17HS4401S: Set to 50% of BOUNDS_SEARCH_SPEED_RPM (120 RPM) = 60 RPM
         static constexpr float MIN_VELOCITY_RPM = 15.0f;
+        
+        // Motor current reduction for stall detection (percentage of rated current)
+        // Per Duet3D documentation: "Motor current is often reduced during stall-detect homing"
+        // Lower current (30-50%) makes stall detection easier at low speeds and reduces false positives
+        // Range: 0.0-1.0 (0.0 = no reduction/use full current, 0.3 = 30% of rated current)
+        // Recommended: 0.3 (30% of rated current) per Duet3D best practices
+        static constexpr float STALL_DETECTION_CURRENT_FACTOR = 0.3f;  // Use 30% of rated current
     };
 
     // ===== Motion Profiles =====
@@ -724,7 +731,7 @@ struct TestConfig_AppliedMotion_5034 {
         // For Applied Motion 5034-369 (NEMA 34, higher torque):
         // May need slightly different threshold than NEMA 17 motors
         // Start with same value as 17HS4401S, tune if needed
-        static constexpr int8_t SGT_HOMING = 4;  
+        static constexpr int8_t SGT_HOMING = -2;  
         
         // See TestConfig_17HS4401S::StallGuard notes.
         // For this high torque NEMA34 rig, we keep CoolStep disabled during
@@ -736,8 +743,16 @@ struct TestConfig_AppliedMotion_5034 {
         // Minimum velocity (TCOOLTHRS) for StallGuard2 operation in RPM
         // Per datasheet: "StallGuard needs a certain velocity to work (as set by TCOOLTHRS)"
         // Set to a value below the search speed to ensure StallGuard2 is active during bounds finding
-        // For Applied Motion 5034-369: Set to 50% of BOUNDS_SEARCH_SPEED_RPM (120 RPM) = 60 RPM
-        static constexpr float MIN_VELOCITY_RPM = 15.0f;
+        // For Applied Motion 5034-369: Higher torque motor needs slightly higher minimum velocity (20 RPM)
+        // Updated based on Duet3D formula and motor specs for reliable stall detection at 30% current
+        static constexpr float MIN_VELOCITY_RPM = 20.0f;
+        
+        // Motor current reduction for stall detection (percentage of rated current)
+        // Per Duet3D documentation: "Motor current is often reduced during stall-detect homing"
+        // Lower current (30-50%) makes stall detection easier at low speeds and reduces false positives
+        // Range: 0.0-1.0 (0.0 = no reduction/use full current, 0.3 = 30% of rated current)
+        // Recommended: 0.3 (30% of rated current) per Duet3D best practices
+        static constexpr float STALL_DETECTION_CURRENT_FACTOR = 0.3f;  // Use 30% of rated current
     };
 
     // ===== Motion Profiles =====

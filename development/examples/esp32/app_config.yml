@@ -63,6 +63,16 @@ apps:
     ci_enabled: false
     featured: true
 
+  # ESP-NOW Protocol Test Unit (No Motor Control)
+  espnow_protocol_test_unit:
+    description: "Minimal ESP-NOW protocol test unit - receives commands and responds with protocol messages, but does NOT control motors (useful for testing ESP-NOW communication without hardware dependencies)"
+    source_file: "fatigue_test_espnow/espnow_protocol_test_unit.cpp"
+    category: "testing"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: false
+    featured: false
+
   # Tuning Tools
   stallguard_tuning:
     description: "Tool to automatically tune StallGuard2 Threshold (SGT) for sensorless homing"

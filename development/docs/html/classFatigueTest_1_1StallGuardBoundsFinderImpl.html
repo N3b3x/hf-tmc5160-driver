@@ -124,31 +124,49 @@ Public Types</h2></td></tr>
 <tr class="separator:a7a009506827831fa3dfc17d845419c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad143c079fefebd9800839839959f1127" id="r_ad143c079fefebd9800839839959f1127"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad143c079fefebd9800839839959f1127">MotorConfig</a> = typename RigConfig::Motor</td></tr>
 <tr class="separator:ad143c079fefebd9800839839959f1127"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1220a1f2174e535cbe5fe010789e9d1b" id="r_a1220a1f2174e535cbe5fe010789e9d1b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1220a1f2174e535cbe5fe010789e9d1b">BoardConfig</a> = typename RigConfig::Board</td></tr>
+<tr class="separator:a1220a1f2174e535cbe5fe010789e9d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a911de9eb1ac662016902b783ffa5273a" id="r_a911de9eb1ac662016902b783ffa5273a"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a911de9eb1ac662016902b783ffa5273a">GetMethodName</a> () const override</td></tr>
 <tr class="memdesc:a911de9eb1ac662016902b783ffa5273a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get method name for logging.  <br /></td></tr>
 <tr class="separator:a911de9eb1ac662016902b783ffa5273a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acadb91e0d843ceffbd345e2b7ae0f81d" id="r_acadb91e0d843ceffbd345e2b7ae0f81d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFatigueTest_1_1BoundsResult.html">BoundsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acadb91e0d843ceffbd345e2b7ae0f81d">FindBounds</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &amp;driver) override</td></tr>
-<tr class="memdesc:acadb91e0d843ceffbd345e2b7ae0f81d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find motor bounds in both directions.  <br /></td></tr>
-<tr class="separator:acadb91e0d843ceffbd345e2b7ae0f81d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42b464b8be7b92ae34ff940e09cb6adf" id="r_a42b464b8be7b92ae34ff940e09cb6adf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFatigueTest_1_1BoundsResult.html">BoundsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a42b464b8be7b92ae34ff940e09cb6adf">FindBounds</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &amp;driver, const <a class="el" href="structFatigueTest_1_1BoundsFinderConfig.html">BoundsFinderConfig</a> *config=nullptr, const volatile bool *cancel=nullptr) override</td></tr>
+<tr class="memdesc:a42b464b8be7b92ae34ff940e09cb6adf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find motor bounds in both directions.  <br /></td></tr>
+<tr class="separator:a42b464b8be7b92ae34ff940e09cb6adf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classFatigueTest_1_1IBoundsFinder"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classFatigueTest_1_1IBoundsFinder')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classFatigueTest_1_1IBoundsFinder.html">FatigueTest::IBoundsFinder</a></td></tr>
 <tr class="memitem:ac11fe7f9ff90d16e0ff307e2a1fab6a6 inherit pub_methods_classFatigueTest_1_1IBoundsFinder" id="r_ac11fe7f9ff90d16e0ff307e2a1fab6a6"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFatigueTest_1_1IBoundsFinder.html#ac11fe7f9ff90d16e0ff307e2a1fab6a6">~IBoundsFinder</a> ()=default</td></tr>
 <tr class="separator:ac11fe7f9ff90d16e0ff307e2a1fab6a6 inherit pub_methods_classFatigueTest_1_1IBoundsFinder"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:ad22ac1d63ff237d1101d4c63f53cd927" id="r_ad22ac1d63ff237d1101d4c63f53cd927"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad22ac1d63ff237d1101d4c63f53cd927">FindBound</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &amp;driver, float target_angle_deg, float search_speed_rpm, float offset_angle_deg)</td></tr>
-<tr class="separator:ad22ac1d63ff237d1101d4c63f53cd927"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13c76ded8ad25f187229786308498d21" id="r_a13c76ded8ad25f187229786308498d21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13c76ded8ad25f187229786308498d21">MoveToPosition</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &amp;driver, float target_deg, float speed_rpm)</td></tr>
-<tr class="separator:a13c76ded8ad25f187229786308498d21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abda032e3fe1bc2a4b5ea75c2deacabb2" id="r_abda032e3fe1bc2a4b5ea75c2deacabb2"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abda032e3fe1bc2a4b5ea75c2deacabb2">FindBound</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &amp;driver, float target_angle_deg, float search_speed_rpm, float offset_angle_deg, float search_accel_rev_s2, float min_velocity_rpm, const volatile bool *cancel)</td></tr>
+<tr class="separator:abda032e3fe1bc2a4b5ea75c2deacabb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac8b3e993acbc58cecef0ef59ce00c1c" id="r_aac8b3e993acbc58cecef0ef59ce00c1c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac8b3e993acbc58cecef0ef59ce00c1c">MoveToPosition</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &amp;driver, float target_deg, float speed_rpm, float accel_rev_s2)</td></tr>
+<tr class="separator:aac8b3e993acbc58cecef0ef59ce00c1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a> test_rig&gt;<br />
 class FatigueTest::StallGuardBoundsFinderImpl&lt; test_rig &gt;</div><p>StallGuard2-based bounds finder. </p>
 <p>Template-based implementation that automatically selects test config based on test rig type. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a1220a1f2174e535cbe5fe010789e9d1b" name="a1220a1f2174e535cbe5fe010789e9d1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1220a1f2174e535cbe5fe010789e9d1b">&#9670;&#160;</a></span>BoardConfig</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a> test_rig&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classFatigueTest_1_1StallGuardBoundsFinderImpl.html">FatigueTest::StallGuardBoundsFinderImpl</a>&lt; test_rig &gt;::BoardConfig = typename RigConfig::Board</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ad143c079fefebd9800839839959f1127" name="ad143c079fefebd9800839839959f1127"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad143c079fefebd9800839839959f1127">&#9670;&#160;</a></span>MotorConfig</h2>
 
@@ -198,8 +216,8 @@ template&lt;<a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad22ac1d63ff237d1101d4c63f53cd927" name="ad22ac1d63ff237d1101d4c63f53cd927"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad22ac1d63ff237d1101d4c63f53cd927">&#9670;&#160;</a></span>FindBound()</h2>
+<a id="abda032e3fe1bc2a4b5ea75c2deacabb2" name="abda032e3fe1bc2a4b5ea75c2deacabb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abda032e3fe1bc2a4b5ea75c2deacabb2">&#9670;&#160;</a></span>FindBound()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -227,7 +245,22 @@ template&lt;<a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>offset_angle_deg</em></span>&#160;)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>offset_angle_deg</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>search_accel_rev_s2</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>min_velocity_rpm</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const volatile bool *</td>          <td class="paramname"><span class="paramname"><em>cancel</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -239,13 +272,13 @@ template&lt;<a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1StallGuardBoundsFinderImpl_ad22ac1d63ff237d1101d4c63f53cd927_icgraph.svg" width="496" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1StallGuardBoundsFinderImpl_abda032e3fe1bc2a4b5ea75c2deacabb2_icgraph.svg" width="496" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="acadb91e0d843ceffbd345e2b7ae0f81d" name="acadb91e0d843ceffbd345e2b7ae0f81d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acadb91e0d843ceffbd345e2b7ae0f81d">&#9670;&#160;</a></span>FindBounds()</h2>
+<a id="a42b464b8be7b92ae34ff940e09cb6adf" name="a42b464b8be7b92ae34ff940e09cb6adf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42b464b8be7b92ae34ff940e09cb6adf">&#9670;&#160;</a></span>FindBounds()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -258,8 +291,17 @@ template&lt;<a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2
         <tr>
           <td class="memname"><a class="el" href="structFatigueTest_1_1BoundsResult.html">BoundsResult</a> <a class="el" href="classFatigueTest_1_1StallGuardBoundsFinderImpl.html">FatigueTest::StallGuardBoundsFinderImpl</a>&lt; test_rig &gt;::FindBounds </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>driver</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>driver</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="structFatigueTest_1_1BoundsFinderConfig.html">BoundsFinderConfig</a> *</td>          <td class="paramname"><span class="paramname"><em>config</em><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const volatile bool *</td>          <td class="paramname"><span class="paramname"><em>cancel</em><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -273,16 +315,17 @@ template&lt;<a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">driver</td><td>TMC51x0 driver instance </td></tr>
+    <tr><td class="paramname">config</td><td>Optional runtime configuration (nullptr = use test config defaults) </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structFatigueTest_1_1BoundsResult.html" title="Bounds finding result.">BoundsResult</a> with found bounds in degrees </dd></dl>
 
-<p>Implements <a class="el" href="classFatigueTest_1_1IBoundsFinder.html#a19b207021df24bf152929cffa662a938">FatigueTest::IBoundsFinder</a>.</p>
+<p>Implements <a class="el" href="classFatigueTest_1_1IBoundsFinder.html#a227bb2e3caf489b77f7aaa00d0d3f218">FatigueTest::IBoundsFinder</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1StallGuardBoundsFinderImpl_acadb91e0d843ceffbd345e2b7ae0f81d_cgraph.svg" width="496" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1StallGuardBoundsFinderImpl_a42b464b8be7b92ae34ff940e09cb6adf_cgraph.svg" width="496" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -318,8 +361,8 @@ template&lt;<a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2
 
 </div>
 </div>
-<a id="a13c76ded8ad25f187229786308498d21" name="a13c76ded8ad25f187229786308498d21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13c76ded8ad25f187229786308498d21">&#9670;&#160;</a></span>MoveToPosition()</h2>
+<a id="aac8b3e993acbc58cecef0ef59ce00c1c" name="aac8b3e993acbc58cecef0ef59ce00c1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac8b3e993acbc58cecef0ef59ce00c1c">&#9670;&#160;</a></span>MoveToPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -342,7 +385,12 @@ template&lt;<a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>speed_rpm</em></span>&#160;)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>speed_rpm</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>accel_rev_s2</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -354,7 +402,7 @@ template&lt;<a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1StallGuardBoundsFinderImpl_a13c76ded8ad25f187229786308498d21_icgraph.svg" width="496" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classFatigueTest_1_1StallGuardBoundsFinderImpl_aac8b3e993acbc58cecef0ef59ce00c1c_icgraph.svg" width="496" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

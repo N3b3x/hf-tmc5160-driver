@@ -1,10 +1,7 @@
 <map id="FatigueTest::FatigueTestMotion::IsRunning" name="FatigueTest::FatigueTestMotion::IsRunning">
-<area shape="rect" id="Node000001" title=" " alt="" coords="343,23,519,63"/>
-<area shape="rect" id="Node000002" href="$main_8cpp.html#a30da369114ee453fe81be5a919262abf" title=" " alt="" coords="140,5,295,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="329,34,295,30,296,25,329,29"/>
-<area shape="rect" id="Node000004" href="$main_8cpp.html#a087fdcdd7d4c34c0c22196a7223d96f5" title=" " alt="" coords="143,55,292,80"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="329,57,293,62,292,56,329,52"/>
-<area shape="rect" id="Node000003" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,31,92,56"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="127,34,93,40,92,34,126,29"/>
-<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="129,57,92,52,93,47,129,52"/>
+<area shape="rect" id="Node000001" title="Whether the motion controller is currently active." alt="" coords="343,5,519,45"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#a30da369114ee453fe81be5a919262abf" title="FreeRTOS task: drive the motion update loop and detect completion." alt="" coords="140,13,295,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="329,28,295,28,295,23,329,23"/>
+<area shape="rect" id="Node000003" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,13,92,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,28,92,28,92,23,126,23"/>
 </map>

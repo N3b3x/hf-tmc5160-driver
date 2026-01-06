@@ -13,6 +13,7 @@ var classtmc51x0_1_1CommInterface =
     [ "GpioSetActive", "classtmc51x0_1_1CommInterface.html#afe522498b22d4925f4df9e5988808c42", null ],
     [ "GpioSetInactive", "classtmc51x0_1_1CommInterface.html#afd4d35dd88a88c284676d7f66d64e1c9", null ],
     [ "LogDebug", "classtmc51x0_1_1CommInterface.html#aa5358fda94e214d25d2800a5564416b3", null ],
+    [ "LogDebug", "classtmc51x0_1_1CommInterface.html#a8542b0b8eecae7125533d713938dd148", null ],
     [ "operator=", "classtmc51x0_1_1CommInterface.html#ab5a248d6096af8a926505e55b08cfadd", null ],
     [ "operator=", "classtmc51x0_1_1CommInterface.html#aaa7569f6ef52dc8295f9d2dd5a1473a0", null ],
     [ "PowerCycle", "classtmc51x0_1_1CommInterface.html#af8b4aadbdb0b590766b5bcf2579a2af2", null ],

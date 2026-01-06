@@ -113,10 +113,13 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ac8b6271049930c9ddcd7d4217fc998db" id="r_ac8b6271049930c9ddcd7d4217fc998db"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="structOptionParser_1_1OptionDef.html">OptionDef</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac8b6271049930c9ddcd7d4217fc998db">FindOption</a> (const std::string &amp;name)</td></tr>
+<tr class="memdesc:ac8b6271049930c9ddcd7d4217fc998db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a supported option definition by token.  <br /></td></tr>
 <tr class="separator:ac8b6271049930c9ddcd7d4217fc998db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fcac6b340ed22755f610e139cd760f7" id="r_a0fcac6b340ed22755f610e139cd760f7"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fcac6b340ed22755f610e139cd760f7">ParseOptions</a> (const std::vector&lt; std::string &gt; &amp;tokens, std::vector&lt; std::pair&lt; <a class="el" href="main_8cpp.html#a976bded296a67e09242af85291a639d6">OptionType</a>, std::vector&lt; std::string &gt; &gt; &gt; &amp;options)</td></tr>
+<tr class="memdesc:a0fcac6b340ed22755f610e139cd760f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse SET command options from a token sequence.  <br /></td></tr>
 <tr class="separator:a0fcac6b340ed22755f610e139cd760f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adefa0c88ca33ef5e90b54714f3e9f4bb" id="r_adefa0c88ca33ef5e90b54714f3e9f4bb"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="structOptionParser_1_1OptionDef.html">OptionDef</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adefa0c88ca33ef5e90b54714f3e9f4bb">GetOptionDef</a> (<a class="el" href="main_8cpp.html#a976bded296a67e09242af85291a639d6">OptionType</a> type)</td></tr>
+<tr class="memdesc:adefa0c88ca33ef5e90b54714f3e9f4bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an option definition by OptionType.  <br /></td></tr>
 <tr class="separator:adefa0c88ca33ef5e90b54714f3e9f4bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -144,6 +147,15 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Find a supported option definition by token. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>Token such as "-f", "--frequency", etc. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the matching definition, or nullptr if unknown. </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -175,6 +187,15 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Get an option definition by OptionType. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>Option type enum. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the definition, or nullptr if not found. </dd></dl>
+
 </div>
 </div>
 <a id="a0fcac6b340ed22755f610e139cd760f7" name="a0fcac6b340ed22755f610e139cd760f7"></a>
@@ -203,6 +224,17 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Parse SET command options from a token sequence. </p>
+<p>Supports both flag-style (e.g. <code>-f 0.5</code>) and word-style (e.g. <code>frequency 0.5</code>) options. Multiple options may be specified.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tokens</td><td>Tokens following the "set" verb. </td></tr>
+    <tr><td class="paramname">options</td><td>Output vector of parsed options and their argument strings. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if parsing succeeded; false if tokens are malformed. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

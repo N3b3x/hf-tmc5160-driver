@@ -1,0 +1,7 @@
+<map id="FatigueTest::EncoderBoundsFinderImpl::FindBounds" name="FatigueTest::EncoderBoundsFinderImpl::FindBounds">
+<area shape="rect" id="Node000001" title="Find motor bounds in both directions." alt="" coords="5,37,208,77"/>
+<area shape="rect" id="Node000002" href="$classFatigueTest_1_1EncoderBoundsFinderImpl.html#a9b3eb529b3603d8bb65d9e41aaf3e8ea" title=" " alt="" coords="256,5,459,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,42,242,37,243,43,208,47"/>
+<area shape="rect" id="Node000003" href="$classFatigueTest_1_1EncoderBoundsFinderImpl.html#aa15bd0043d22dfc13e47f8f3c7d1a2b2" title=" " alt="" coords="256,69,459,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="208,68,243,72,242,77,208,73"/>
+</map>

@@ -1,5 +1,5 @@
 <map id="FatigueTest::FatigueTestMotion::SetGlobalBounds" name="FatigueTest::FatigueTestMotion::SetGlobalBounds">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,27,192,67"/>
+<area shape="rect" id="Node000001" title="Set global (hardware) bounds in degrees." alt="" coords="5,27,192,67"/>
 <area shape="rect" id="Node000002" href="$classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf" title="Manually unlock mutex." alt="" coords="240,35,421,60"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,45,226,45,226,50,193,50"/>
 <area shape="rect" id="Node000003" href="$classEsp32TmcMutex.html#aa1c5042b5ace0f9a58c140b0f02db0f2" title="Check if mutex is valid." alt="" coords="469,5,657,31"/>

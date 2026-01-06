@@ -101,6 +101,9 @@ $(function(){initNavTree('structEspNowHeader.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 
+<p>ESP-NOW packet header (wire format).  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="espnow__protocol_8hpp_source.html">espnow_protocol.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -114,7 +117,10 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a70df20eda5255df03118bc4af98ea9eb" id="r_a70df20eda5255df03118bc4af98ea9eb"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70df20eda5255df03118bc4af98ea9eb">len</a></td></tr>
 <tr class="separator:a70df20eda5255df03118bc4af98ea9eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>ESP-NOW packet header (wire format). </p>
+<p>This header is followed by <code>len</code> bytes of payload and then a 16-bit CRC. CRC is computed over <code>hdr + payload[0..len-1]</code> (CRC field excluded). </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a7da42de1e8d5a052d2d2432feebe0eef" name="a7da42de1e8d5a052d2d2432feebe0eef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7da42de1e8d5a052d2d2432feebe0eef">&#9670;&#160;</a></span>id</h2>
 
