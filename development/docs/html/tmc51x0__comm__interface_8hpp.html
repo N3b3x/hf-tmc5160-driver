@@ -111,13 +111,11 @@ $(function(){initNavTree('tmc51x0__comm__interface_8hpp.html',''); initResizable
 <code>#include &lt;cstdarg&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;cstdio&gt;</code><br />
-<code>#include &lt;string&gt;</code><br />
-<code>#include &lt;vector&gt;</code><br />
 <code>#include &quot;<a class="el" href="tmc51x0__result_8hpp_source.html">tmc51x0_result.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tmc51x0_comm_interface.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__comm__interface_8hpp__incl.svg" width="856" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__comm__interface_8hpp__incl.svg" width="731" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -170,9 +168,23 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:acdcebba658c1076ab42bb18ede91f695" id="r_acdcebba658c1076ab42bb18ede91f695"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acdcebba658c1076ab42bb18ede91f695">TMC51X0_LOG_DEBUG</a>(comm_obj,  level,  tag, ...)&#160;&#160;&#160;  (comm_obj).LogDebug(level, tag, __VA_ARGS__)</td></tr>
-<tr class="memdesc:acdcebba658c1076ab42bb18ede91f695"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile-time debug logging control for TMC51x0 library.  <br /></td></tr>
+<tr class="memitem:af776b699df46bafb5e0236be5c299237" id="r_af776b699df46bafb5e0236be5c299237"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af776b699df46bafb5e0236be5c299237">TMC51X0_LOG_LEVEL</a>&#160;&#160;&#160;4</td></tr>
+<tr class="memdesc:af776b699df46bafb5e0236be5c299237"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile-time debug logging control for TMC51x0 library.  <br /></td></tr>
+<tr class="separator:af776b699df46bafb5e0236be5c299237"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5add8c9c8a35b653df35a4815207a6ca" id="r_a5add8c9c8a35b653df35a4815207a6ca"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5add8c9c8a35b653df35a4815207a6ca">TMC51X0_LOGE</a>(comm_obj,  tag, ...)&#160;&#160;&#160;(comm_obj).LogDebug(<a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da902b0d55fddef6f8d651fe1035b7d4bd">::tmc51x0::LogLevel::Error</a>, tag, __VA_ARGS__)</td></tr>
+<tr class="separator:a5add8c9c8a35b653df35a4815207a6ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89bd1245fbfae2d878f30b97a28003b1" id="r_a89bd1245fbfae2d878f30b97a28003b1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89bd1245fbfae2d878f30b97a28003b1">TMC51X0_LOGW</a>(comm_obj,  tag, ...)&#160;&#160;&#160;(comm_obj).LogDebug(<a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da56525ae64d370c0b448ac0d60710ef17">::tmc51x0::LogLevel::Warn</a>, tag, __VA_ARGS__)</td></tr>
+<tr class="separator:a89bd1245fbfae2d878f30b97a28003b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcc9d7abb6db6e971c49ac38e5cefefc" id="r_afcc9d7abb6db6e971c49ac38e5cefefc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afcc9d7abb6db6e971c49ac38e5cefefc">TMC51X0_LOGI</a>(comm_obj,  tag, ...)&#160;&#160;&#160;(comm_obj).LogDebug(<a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da4059b0251f66a18cb56f544728796875">::tmc51x0::LogLevel::Info</a>, tag, __VA_ARGS__)</td></tr>
+<tr class="separator:afcc9d7abb6db6e971c49ac38e5cefefc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ca047bdb87883b9f0e1cc140113c645" id="r_a8ca047bdb87883b9f0e1cc140113c645"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ca047bdb87883b9f0e1cc140113c645">TMC51X0_LOGD</a>(comm_obj,  tag, ...)&#160;&#160;&#160;(comm_obj).LogDebug(<a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869daa603905470e2a5b8c13e96b579ef0dba">::tmc51x0::LogLevel::Debug</a>, tag, __VA_ARGS__)</td></tr>
+<tr class="separator:a8ca047bdb87883b9f0e1cc140113c645"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6548d87c059c8be1b63de7aa8e371f5" id="r_aa6548d87c059c8be1b63de7aa8e371f5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6548d87c059c8be1b63de7aa8e371f5">TMC51X0_LOGV</a>(comm_obj,  tag, ...)&#160;&#160;&#160;(comm_obj).LogDebug(<a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869dad4a9fa383ab700c5bdd6f31cf7df0faf">::tmc51x0::LogLevel::Verbose</a>, tag, __VA_ARGS__)</td></tr>
+<tr class="separator:aa6548d87c059c8be1b63de7aa8e371f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdcebba658c1076ab42bb18ede91f695" id="r_acdcebba658c1076ab42bb18ede91f695"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acdcebba658c1076ab42bb18ede91f695">TMC51X0_LOG_DEBUG</a>(comm_obj,  level,  tag, ...)</td></tr>
 <tr class="separator:acdcebba658c1076ab42bb18ede91f695"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ce7e4c67ba824f2aadd8b7e27eb1a4b" id="r_a4ce7e4c67ba824f2aadd8b7e27eb1a4b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ce7e4c67ba824f2aadd8b7e27eb1a4b">TMC51X0_SPI_MAX_CHAIN_DEVICES</a>&#160;&#160;&#160;8</td></tr>
+<tr class="separator:a4ce7e4c67ba824f2aadd8b7e27eb1a4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -268,13 +280,185 @@ Compile-Time Configuration</h2>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>...</em></span>&#160;)&#160;&#160;&#160;  (comm_obj).LogDebug(level, tag, __VA_ARGS__)</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>...</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                                                         \</div>
+<div class="line">    <span class="keyword">const</span> <span class="keywordtype">int</span> _lvl = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(level);                                  \</div>
+<div class="line">    if (_lvl &lt;= 0) {                                                           \</div>
+<div class="line">      TMC51X0_LOGE(comm_obj, tag, __VA_ARGS__);                                \</div>
+<div class="line">    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lvl == 1) {                                                    \</div>
+<div class="line">      TMC51X0_LOGW(comm_obj, tag, __VA_ARGS__);                                \</div>
+<div class="line">    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lvl == 2) {                                                    \</div>
+<div class="line">      TMC51X0_LOGI(comm_obj, tag, __VA_ARGS__);                                \</div>
+<div class="line">    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lvl == 3) {                                                    \</div>
+<div class="line">      TMC51X0_LOGD(comm_obj, tag, __VA_ARGS__);                                \</div>
+<div class="line">    } <span class="keywordflow">else</span> {                                                                   \</div>
+<div class="line">      TMC51X0_LOGV(comm_obj, tag, __VA_ARGS__);                                \</div>
+<div class="line">    }                                                                          \</div>
+<div class="line">  } <span class="keywordflow">while</span> (0)</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="af776b699df46bafb5e0236be5c299237" name="af776b699df46bafb5e0236be5c299237"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af776b699df46bafb5e0236be5c299237">&#9670;&#160;</a></span>TMC51X0_LOG_LEVEL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TMC51X0_LOG_LEVEL&#160;&#160;&#160;4</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Compile-time debug logging control for TMC51x0 library. </p>
 <p>Define TMC51X0_DISABLE_DEBUG_LOGGING before including this header to completely disable all debug logging. When disabled, all logDebug() calls are optimized out at compile time, including argument evaluation. </p>
+
+</div>
+</div>
+<a id="a8ca047bdb87883b9f0e1cc140113c645" name="a8ca047bdb87883b9f0e1cc140113c645"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ca047bdb87883b9f0e1cc140113c645">&#9670;&#160;</a></span>TMC51X0_LOGD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TMC51X0_LOGD</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">comm_obj, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">tag, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>...</em></span>&#160;)&#160;&#160;&#160;(comm_obj).LogDebug(<a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869daa603905470e2a5b8c13e96b579ef0dba">::tmc51x0::LogLevel::Debug</a>, tag, __VA_ARGS__)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5add8c9c8a35b653df35a4815207a6ca" name="a5add8c9c8a35b653df35a4815207a6ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5add8c9c8a35b653df35a4815207a6ca">&#9670;&#160;</a></span>TMC51X0_LOGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TMC51X0_LOGE</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">comm_obj, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">tag, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>...</em></span>&#160;)&#160;&#160;&#160;(comm_obj).LogDebug(<a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da902b0d55fddef6f8d651fe1035b7d4bd">::tmc51x0::LogLevel::Error</a>, tag, __VA_ARGS__)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afcc9d7abb6db6e971c49ac38e5cefefc" name="afcc9d7abb6db6e971c49ac38e5cefefc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcc9d7abb6db6e971c49ac38e5cefefc">&#9670;&#160;</a></span>TMC51X0_LOGI</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TMC51X0_LOGI</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">comm_obj, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">tag, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>...</em></span>&#160;)&#160;&#160;&#160;(comm_obj).LogDebug(<a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da4059b0251f66a18cb56f544728796875">::tmc51x0::LogLevel::Info</a>, tag, __VA_ARGS__)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa6548d87c059c8be1b63de7aa8e371f5" name="aa6548d87c059c8be1b63de7aa8e371f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6548d87c059c8be1b63de7aa8e371f5">&#9670;&#160;</a></span>TMC51X0_LOGV</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TMC51X0_LOGV</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">comm_obj, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">tag, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>...</em></span>&#160;)&#160;&#160;&#160;(comm_obj).LogDebug(<a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869dad4a9fa383ab700c5bdd6f31cf7df0faf">::tmc51x0::LogLevel::Verbose</a>, tag, __VA_ARGS__)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a89bd1245fbfae2d878f30b97a28003b1" name="a89bd1245fbfae2d878f30b97a28003b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89bd1245fbfae2d878f30b97a28003b1">&#9670;&#160;</a></span>TMC51X0_LOGW</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TMC51X0_LOGW</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">comm_obj, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">tag, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>...</em></span>&#160;)&#160;&#160;&#160;(comm_obj).LogDebug(<a class="el" href="namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da56525ae64d370c0b448ac0d60710ef17">::tmc51x0::LogLevel::Warn</a>, tag, __VA_ARGS__)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4ce7e4c67ba824f2aadd8b7e27eb1a4b" name="a4ce7e4c67ba824f2aadd8b7e27eb1a4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ce7e4c67ba824f2aadd8b7e27eb1a4b">&#9670;&#160;</a></span>TMC51X0_SPI_MAX_CHAIN_DEVICES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TMC51X0_SPI_MAX_CHAIN_DEVICES&#160;&#160;&#160;8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

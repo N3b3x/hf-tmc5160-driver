@@ -841,7 +841,7 @@
   },"120": {
     "doc": "⚙️ Configuration",
     "title": "Debug Logging",
-    "content": "You can disable debug logging at compile time to reduce code size: . | 1 2 . | #define TMC5160_DISABLE_DEBUG_LOGGING #include \"inc/tmc51x0.hpp\" . | . When disabled, all debug logging code is optimized out completely. ",
+    "content": "You can disable debug logging at compile time to reduce code size: . | 1 2 . | #define TMC51X0_DISABLE_DEBUG_LOGGING #include \"inc/tmc51x0.hpp\" . | . When disabled, all driver debug logging code is optimized out completely. You can also optionally compile out lower-priority logs while keeping errors/warnings: . | 1 2 . | // 0=Error, 1=Warn, 2=Info, 3=Debug, 4=Verbose #define TMC51X0_LOG_LEVEL 2 . | . ",
     "url": "/hf-tmc5160-driver/development/docs/configuration/#debug-logging",
     
     "relUrl": "/docs/configuration/#debug-logging"
@@ -3151,7 +3151,7 @@
   },"450": {
     "doc": "🐛 Troubleshooting",
     "title": "Enable Debug Output",
-    "content": "| 1 2 3 4 . | // Debug logging is enabled by default // To disable (reduce code size): #define TMC5160_DISABLE_DEBUG_LOGGING #include \"inc/tmc51x0.hpp\" . | . ",
+    "content": "| 1 2 3 4 . | // Debug logging is enabled by default // To disable (reduce code size): #define TMC51X0_DISABLE_DEBUG_LOGGING #include \"inc/tmc51x0.hpp\" . | . ",
     "url": "/hf-tmc5160-driver/development/docs/troubleshooting/#enable-debug-output",
     
     "relUrl": "/docs/troubleshooting/#enable-debug-output"

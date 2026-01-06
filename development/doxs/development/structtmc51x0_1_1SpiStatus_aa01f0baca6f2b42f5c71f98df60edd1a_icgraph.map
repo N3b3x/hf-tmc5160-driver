@@ -1,6 +1,6 @@
 <map id="tmc51x0::SpiStatus::DriverError" name="tmc51x0::SpiStatus::DriverError">
 <area shape="rect" id="Node000001" title="Get driver error flag (bit 1)" alt="" coords="457,99,605,139"/>
-<area shape="rect" id="Node000002" href="$structtmc51x0_1_1SpiStatus.html#a074ce9431f7b5c30ef7b83e1818dfd3b" title="Format status bits as compact string (bit names and values)" alt="" coords="261,127,409,167"/>
+<area shape="rect" id="Node000002" href="$structtmc51x0_1_1SpiStatus.html#a772e84571daef24f715d07b33f295f85" title="Format status bits as compact string (bit names and values)" alt="" coords="261,127,409,167"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="444,134,410,139,409,133,443,129"/>
 <area shape="rect" id="Node000003" href="$classtmc51x0_1_1SpiCommInterface.html#af73aaff6b24f03a85379528680513c75" title="Read a 32&#45;bit register via SPI." alt="" coords="5,69,213,109"/>
 <area shape="poly" id="edge8_Node000001_Node000003" title=" " alt="" coords="443,115,213,99,214,94,444,110"/>

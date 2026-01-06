@@ -559,7 +559,11 @@ public:
     bus_config.sclk_io_num = sclk_pin_;
     bus_config.quadwp_io_num = -1;
     bus_config.quadhd_io_num = -1;
-    bus_config.max_transfer_sz = 64; // Support up to 64 bytes for daisy-chain auto-detection (8 devices * 8 bytes)
+    // Size large enough for the core driver's scratch requirement:
+    // (TMC51X0_SPI_MAX_CHAIN_DEVICES + 2) * 5 bytes (40 bits per device)
+    const int max_transfer_sz_bytes =
+        static_cast<int>((TMC51X0_SPI_MAX_CHAIN_DEVICES + 2U) * 5U);
+    bus_config.max_transfer_sz = max_transfer_sz_bytes;
     bus_config.flags = SPICOMMON_BUSFLAG_MASTER;
 
     esp_err_t ret = spi_bus_initialize(host_, &bus_config, SPI_DMA_CH_AUTO);
@@ -649,6 +653,7 @@ public:
    * @return true if successful, false otherwise
    */
   tmc51x0::Result<void> SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) noexcept {
+    // Caller must ensure Initialize() (or EnsureInitialized()) was invoked once before use.
     if (!initialized_ || !device_handle_) {
       ESP_LOGE(BUS_TAG, "SPI interface not initialized");
       return tmc51x0::Result<void>(tmc51x0::ErrorCode::COMM_ERROR);
@@ -821,8 +826,12 @@ public:
     constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
     
     if (clk_pin == UNMAPPED_PIN) {
-      ESP_LOGW(BUS_TAG, "CLK pin not mapped, cannot configure clock");
-      return tmc51x0::Result<void>(tmc51x0::ErrorCode::INVALID_VALUE);
+      // If CLK is hard-wired to GND for internal osc, treat as OK for frequency_hz == 0.
+      if (frequency_hz == 0) {
+        return tmc51x0::Result<void>();
+      }
+      ESP_LOGW(BUS_TAG, "CLK pin not mapped; external clock request unsupported");
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::UNSUPPORTED);
     }
 
     if (frequency_hz == 0) {

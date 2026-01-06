@@ -22,7 +22,7 @@ var searchData=
   ['findoption_19',['FindOption',['../classOptionParser.html#ac8b6271049930c9ddcd7d4217fc998db',1,'OptionParser']]],
   ['findworkingvelocityrange_20',['FindWorkingVelocityRange',['../namespacetmc51x0.html#afaf6037a652c82c965a94e0433e13a7c',1,'tmc51x0']]],
   ['flip_5ftest_5fprogress_5findicator_21',['flip_test_progress_indicator',['../TestFramework_8h.html#a7bb80345e5681c19686df292fa897daf',1,'TestFramework.h']]],
-  ['formatstatusbits_22',['FormatStatusBits',['../structtmc51x0_1_1SpiStatus.html#a074ce9431f7b5c30ef7b83e1818dfd3b',1,'tmc51x0::SpiStatus']]],
+  ['formatstatusbits_22',['FormatStatusBits',['../structtmc51x0_1_1SpiStatus.html#a772e84571daef24f715d07b33f295f85',1,'tmc51x0::SpiStatus']]],
   ['frame_23',['Frame',['../uniontmc51x0_1_1SpiCommand_1_1Frame.html',1,'tmc51x0::SpiCommand::Frame'],['../uniontmc51x0_1_1UartFrame_1_1Frame.html',1,'tmc51x0::UartFrame::Frame']]],
   ['frame_24',['frame',['../structtmc51x0_1_1SpiCommand.html#ad7f4ed89ac4fc3a716c8dc02034e5a93',1,'tmc51x0::SpiCommand::frame'],['../structtmc51x0_1_1UartFrame.html#aa02f0c05bcc0a43a9d5c9ae8d7f13c69',1,'tmc51x0::UartFrame::frame']]],
   ['freewheel_25',['freewheel',['../uniontmc51x0_1_1PWMCONF__Register.html#a3ad535d90982338c472adb36e4788404',1,'tmc51x0::PWMCONF_Register::freewheel'],['../structtmc51x0_1_1StealthChopConfig.html#ad417fd59a21f94c6bbb62d62917a1763',1,'tmc51x0::StealthChopConfig::freewheel']]],

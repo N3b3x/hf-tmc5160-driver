@@ -1,7 +1,9 @@
 <map id="tmc51x0::round_to_int32" name="tmc51x0::round_to_int32">
-<area shape="rect" id="Node000001" title=" " alt="" coords="263,45,447,70"/>
-<area shape="rect" id="Node000002" href="$classtmc51x0_1_1TMC51x0.html#ae213754e8c4fa75ea8b67b905f940c64" title="Convert acceleration from Hz/s to internal TMC5160 units." alt="" coords="8,5,212,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="249,46,212,41,213,36,249,41"/>
-<area shape="rect" id="Node000003" href="$classtmc51x0_1_1TMC51x0.html#a5c568d0c3a5758768cd4b6c64b049e82" title="Convert speed from Hz to internal TMC5160 units." alt="" coords="5,69,215,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="250,74,215,78,214,73,249,68"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="295,77,479,102"/>
+<area shape="rect" id="Node000002" href="$classtmc51x0_1_1TMC51x0.html#ae213754e8c4fa75ea8b67b905f940c64" title="Convert acceleration from Hz/s to internal TMC5160 units." alt="" coords="24,5,228,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="320,76,208,48,209,43,321,71"/>
+<area shape="rect" id="Node000003" href="$structtmc51x0_1_1TMC51x0_1_1RampControl.html#a332e5d366ec06be3ac19ce2bac62abe7" title="Set current position." alt="" coords="5,69,247,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="281,92,247,92,247,87,281,87"/>
+<area shape="rect" id="Node000004" href="$classtmc51x0_1_1TMC51x0.html#a5c568d0c3a5758768cd4b6c64b049e82" title="Convert speed from Hz to internal TMC5160 units." alt="" coords="21,133,231,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="321,108,209,136,208,131,320,103"/>
 </map>

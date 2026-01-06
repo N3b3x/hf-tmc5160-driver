@@ -356,11 +356,19 @@
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
-</pre></td><td class="rouge-code"><pre><span class="cp">#define TMC5160_DISABLE_DEBUG_LOGGING
+</pre></td><td class="rouge-code"><pre><span class="cp">#define TMC51X0_DISABLE_DEBUG_LOGGING
 #include</span> <span class="cpf">"inc/tmc51x0.hpp"</span><span class="cp">
 </span></pre></td></tr></tbody></table></div></code></pre></div></div>
 
-<p>When disabled, all debug logging code is optimized out completely.</p>
+<p>When disabled, all driver debug logging code is optimized out completely.</p>
+
+<p>You can also optionally compile out lower-priority logs while keeping errors/warnings:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="c1">// 0=Error, 1=Warn, 2=Info, 3=Debug, 4=Verbose</span>
+<span class="cp">#define TMC51X0_LOG_LEVEL 2
+</span></pre></td></tr></tbody></table></div></code></pre></div></div>
 <h2 id="runtime-configuration">
   
   

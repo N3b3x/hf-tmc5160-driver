@@ -15,6 +15,9 @@ var classtmc51x0_1_1SpiCommInterface =
     [ "SpiTransfer", "classtmc51x0_1_1SpiCommInterface.html#a20861cc797a4153c02d34cebf66af7d7", null ],
     [ "WriteRegister", "classtmc51x0_1_1SpiCommInterface.html#a5002dc4e4bd5c2ba5e350cda8c6ee142", null ],
     [ "chain_length_verified_", "classtmc51x0_1_1SpiCommInterface.html#ab8f380d99d0827e7c6e0a3ec24479ec2", null ],
+    [ "kSpiScratchBytes", "classtmc51x0_1_1SpiCommInterface.html#aefb1697b958a6ae39674ad1fef906c2c", null ],
+    [ "rx_scratch_", "classtmc51x0_1_1SpiCommInterface.html#a7849870486bbf15ec2f69420d51183f4", null ],
     [ "total_chain_length_", "classtmc51x0_1_1SpiCommInterface.html#a2d2bb0cc5f3407b25fdff3f3aeda6de2", null ],
+    [ "tx_scratch_", "classtmc51x0_1_1SpiCommInterface.html#adbec9e4fb0cc7c5b8db96af17ebe4626", null ],
     [ "user_specified_chain_length_", "classtmc51x0_1_1SpiCommInterface.html#ae51148b7e5a26f3318ee15d88ae5621d", null ]
 ];

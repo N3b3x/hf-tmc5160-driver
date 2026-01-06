@@ -1,31 +1,4 @@
 var searchData=
 [
-  ['last_5ftarget_5frelative_5f_0',['last_target_relative_',['../classFatigueTest_1_1FatigueTestMotion.html#a31c9cf08227d5de31dff9e847eb3b4f7',1,'FatigueTest::FatigueTestMotion']]],
-  ['last_5fwas_5fnegative_5f_1',['last_was_negative_',['../classFatigueTest_1_1FatigueTestMotion.html#ae4f7c0421710aa1403e482358e32a851',1,'FatigueTest::FatigueTestMotion']]],
-  ['latch_5fl_5factive_2',['latch_l_active',['../uniontmc51x0_1_1SW__MODE__Register.html#a05bc5fd27b61aa70817e4c718f64f602',1,'tmc51x0::SW_MODE_Register']]],
-  ['latch_5fl_5finactive_3',['latch_l_inactive',['../uniontmc51x0_1_1SW__MODE__Register.html#a81cd3d005c7605705e30cfbd35ddf22b',1,'tmc51x0::SW_MODE_Register']]],
-  ['latch_5fleft_4',['latch_left',['../structtmc51x0_1_1ReferenceSwitchConfig.html#a6bd1d60dba548343a406d60e2c663773',1,'tmc51x0::ReferenceSwitchConfig']]],
-  ['latch_5fr_5factive_5',['latch_r_active',['../uniontmc51x0_1_1SW__MODE__Register.html#af40aa59c827bcc1e50fa75b25837cd8c',1,'tmc51x0::SW_MODE_Register']]],
-  ['latch_5fr_5finactive_6',['latch_r_inactive',['../uniontmc51x0_1_1SW__MODE__Register.html#a3e7634d91fd2f18a83311676b9f12064',1,'tmc51x0::SW_MODE_Register']]],
-  ['latch_5fright_7',['latch_right',['../structtmc51x0_1_1ReferenceSwitchConfig.html#a5b2d4006250632802d119bb4231448d4',1,'tmc51x0::ReferenceSwitchConfig']]],
-  ['latch_5fx_5fact_8',['latch_x_act',['../uniontmc51x0_1_1ENCMODE__Register.html#a09155edd976c2140f4a5aab48adde77b',1,'tmc51x0::ENCMODE_Register']]],
-  ['latch_5fxactual_5fwith_5fenc_9',['latch_xactual_with_enc',['../structtmc51x0_1_1EncoderConfig.html#ae995c01d2b1f049c1053a8afd510eca2',1,'tmc51x0::EncoderConfig']]],
-  ['lead_5fscrew_5fpitch_5fmm_10',['LEAD_SCREW_PITCH_MM',['../structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1Mechanical.html#a1efce425d64d8aaf5067f257aa00a382',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::Mechanical::LEAD_SCREW_PITCH_MM'],['../structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Mechanical.html#af8a244c34fabeaffca145dddcb54558b',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::Mechanical::LEAD_SCREW_PITCH_MM']]],
-  ['lead_5fscrew_5fpitch_5fmm_11',['lead_screw_pitch_mm',['../structtmc51x0_1_1MechanicalSystem.html#af49c179cc84abdc1ded8b9a0189295dc',1,'tmc51x0::MechanicalSystem']]],
-  ['lead_5fscrew_5fpitch_5fmm_12',['LEAD_SCREW_PITCH_MM',['../internal__ramp__comprehensive__test_8cpp.html#a2f7680fdd51cb1381f016a751a6b3370',1,'internal_ramp_comprehensive_test.cpp']]],
-  ['left_5factive_5flevel_13',['LEFT_ACTIVE_LEVEL',['../structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1ReferenceSwitches.html#a1e3d76e526f349c73e46bfd9166f0e12',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::ReferenceSwitches::LEFT_ACTIVE_LEVEL'],['../structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1ReferenceSwitches.html#ac589f4d734e5c62fcadb418db0ec43e5',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::ReferenceSwitches::LEFT_ACTIVE_LEVEL']]],
-  ['left_5flatch_5fmode_14',['LEFT_LATCH_MODE',['../structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1ReferenceSwitches.html#a5d15615079fb9bc0486ceb969164ee62',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::ReferenceSwitches::LEFT_LATCH_MODE'],['../structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1ReferenceSwitches.html#a991a0aa0c11d113d36f21b87c3394081',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::ReferenceSwitches::LEFT_LATCH_MODE']]],
-  ['left_5fstop_5fenable_15',['LEFT_STOP_ENABLE',['../structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1ReferenceSwitches.html#a3b6ca7e7e4b687d88ce51e9eefd48078',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::ReferenceSwitches::LEFT_STOP_ENABLE'],['../structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1ReferenceSwitches.html#a1e20032f55519937571d8a9072876c91',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::ReferenceSwitches::LEFT_STOP_ENABLE']]],
-  ['left_5fswitch_5factive_16',['left_switch_active',['../structtmc51x0_1_1ReferenceSwitchConfig.html#aa7bc962e13ef81e3b1de5e0dcac5efd6',1,'tmc51x0::ReferenceSwitchConfig']]],
-  ['left_5fswitch_5fstop_5fenable_17',['left_switch_stop_enable',['../structtmc51x0_1_1ReferenceSwitchConfig.html#afdde1105641a0337dfc5b92eef186d6f',1,'tmc51x0::ReferenceSwitchConfig']]],
-  ['len_18',['len',['../structEspNowHeader.html#a70df20eda5255df03118bc4af98ea9eb',1,'EspNowHeader::len'],['../structRawMsg.html#ae259799b0779c226f9bfe3bf667d09ae',1,'RawMsg::len']]],
-  ['line_5fbuffer_5f_19',['line_buffer_',['../classUartCommandParser.html#a7c47be0b9c8271421cd4901f6aa637e6',1,'UartCommandParser']]],
-  ['line_5fbuffer_5fpos_5f_20',['line_buffer_pos_',['../classUartCommandParser.html#a610837f77beb8786cb72350ae33d7c4c',1,'UartCommandParser']]],
-  ['local_5fmax_5fbound_5f_21',['local_max_bound_',['../classFatigueTest_1_1FatigueTestMotion.html#a21bd758a9f7bcaac8e16bda8134fc7ec',1,'FatigueTest::FatigueTestMotion']]],
-  ['local_5fmin_5fbound_5f_22',['local_min_bound_',['../classFatigueTest_1_1FatigueTestMotion.html#aa3ee77a1e8df8b48dae1061cdda20734',1,'FatigueTest::FatigueTestMotion']]],
-  ['locked_5f_23',['locked_',['../classTmcMutexGuard.html#a57ef84d5629c9f4ad53660b8a9747e7d',1,'TmcMutexGuard']]],
-  ['log_5finterval_5flong_5fus_24',['LOG_INTERVAL_LONG_US',['../namespaceTaskTiming.html#a3f20df455bc5fda76473928e39ab345c',1,'TaskTiming']]],
-  ['log_5finterval_5fus_25',['LOG_INTERVAL_US',['../namespaceTaskTiming.html#a58be5d5ca97b35c1686fa818847f4787',1,'TaskTiming']]],
-  ['long_5fname_26',['long_name',['../structOptionParser_1_1OptionDef.html#ace652f81c03c1dbd64340385254b9173',1,'OptionParser::OptionDef']]],
-  ['lower_5fthreshold_5fsg_27',['lower_threshold_sg',['../structtmc51x0_1_1CoolStepConfig.html#a80039da9cefd52f8190a94bb6bd1e710',1,'tmc51x0::CoolStepConfig']]]
+  ['kspiscratchbytes_0',['kSpiScratchBytes',['../classtmc51x0_1_1SpiCommInterface.html#aefb1697b958a6ae39674ad1fef906c2c',1,'tmc51x0::SpiCommInterface']]]
 ];

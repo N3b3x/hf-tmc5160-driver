@@ -12,7 +12,7 @@
 <area shape="poly" id="edge24_Node000001_Node000007" title=" " alt="" coords="117,482,132,535,159,605,178,641,202,675,230,705,263,730,302,744,356,753,422,755,494,754,644,741,776,724,777,729,644,747,494,759,421,761,356,758,301,749,260,734,226,709,198,678,174,644,154,607,127,537,112,483"/>
 <area shape="rect" id="Node000008" href="$classtmc51x0_1_1SpiCommInterface.html#a20861cc797a4153c02d34cebf66af7d7" title="Low&#45;level SPI transfer for register read/write." alt="" coords="773,781,981,821"/>
 <area shape="poly" id="edge26_Node000001_Node000008" title=" " alt="" coords="116,482,129,540,156,618,175,659,199,698,228,733,263,762,300,779,351,791,413,800,482,805,627,808,759,805,760,810,627,814,482,810,412,805,350,796,298,784,260,766,224,737,195,701,170,662,151,620,124,542,111,484"/>
-<area shape="rect" id="Node000009" href="$structtmc51x0_1_1SpiStatus.html#a074ce9431f7b5c30ef7b83e1818dfd3b" title="Format status bits as compact string (bit names and values)" alt="" coords="291,360,439,400"/>
+<area shape="rect" id="Node000009" href="$structtmc51x0_1_1SpiStatus.html#a772e84571daef24f715d07b33f295f85" title="Format status bits as compact string (bit names and values)" alt="" coords="291,360,439,400"/>
 <area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="171,440,289,402,290,407,173,445"/>
 <area shape="rect" id="Node000010" href="$structtmc51x0_1_1SpiStatus.html#a21b664e82df5831eede7110b31bae438" title="Get position reached flag (bit 5)" alt="" coords="547,181,695,221"/>
 <area shape="poly" id="edge23_Node000001_Node000010" title=" " alt="" coords="118,441,139,404,170,357,211,309,260,270,327,238,399,217,470,205,533,199,534,204,471,210,400,222,329,243,263,274,214,313,174,360,143,407,123,444"/>

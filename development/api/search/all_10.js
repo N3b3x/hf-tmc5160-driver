@@ -75,8 +75,8 @@ var searchData=
   ['reserved3_72',['reserved3',['../uniontmc51x0_1_1OTP__PROG__Register.html#aa10bd9b87ddc950e0fbfeedc1765654b',1,'tmc51x0::OTP_PROG_Register::reserved3'],['../uniontmc51x0_1_1SHORT__CONF__Register.html#aa6b5396f3f4118d75afd9ffaecc8a0a1',1,'tmc51x0::SHORT_CONF_Register::reserved3'],['../uniontmc51x0_1_1DRV__CONF__Register.html#a14546397909f86471983e87b181ddabd',1,'tmc51x0::DRV_CONF_Register::reserved3'],['../uniontmc51x0_1_1IHOLD__IRUN__Register.html#a32a5682e4e399b1f3b6334e56604ddcc',1,'tmc51x0::IHOLD_IRUN_Register::reserved3'],['../uniontmc51x0_1_1COOLCONF__Register.html#afa261261bea9b110b0a2eb2967f18a3a',1,'tmc51x0::COOLCONF_Register::reserved3']]],
   ['reserved4_73',['reserved4',['../uniontmc51x0_1_1COOLCONF__Register.html#abaa6025e446c8ec2b164017d144782a8',1,'tmc51x0::COOLCONF_Register']]],
   ['reserved5_74',['reserved5',['../uniontmc51x0_1_1COOLCONF__Register.html#ac839669051dbafa5e2b4d9e3bfe7b880',1,'tmc51x0::COOLCONF_Register']]],
-  ['reset_75',['Reset',['../classtmc51x0_1_1TMC51x0.html#a27d55da2949bc7fdbcd0cd84ba9f37bf',1,'tmc51x0::TMC51x0']]],
-  ['reset_76',['reset',['../uniontmc51x0_1_1GSTAT__Register.html#a9854fc334986b764c7f1854ef13a53ff',1,'tmc51x0::GSTAT_Register']]],
+  ['reset_75',['reset',['../uniontmc51x0_1_1GSTAT__Register.html#a9854fc334986b764c7f1854ef13a53ff',1,'tmc51x0::GSTAT_Register']]],
+  ['reset_76',['Reset',['../classtmc51x0_1_1TMC51x0.html#a27d55da2949bc7fdbcd0cd84ba9f37bf',1,'tmc51x0::TMC51x0']]],
   ['reset_77',['RESET',['../main_8cpp.html#a21e038f5b8958e203d28bc4f18472352ab5859d8721cfdc0312b2838b9c985bc1',1,'main.cpp']]],
   ['resetcycles_78',['ResetCycles',['../classFatigueTest_1_1FatigueTestMotion.html#a72eab33f7f498ee30bafbacb0d879b0e',1,'FatigueTest::FatigueTestMotion']]],
   ['resetflag_79',['ResetFlag',['../structtmc51x0_1_1SpiStatus.html#ab66e0c76dca0c201e220bddf3d9ffa09',1,'tmc51x0::SpiStatus']]],
@@ -117,5 +117,6 @@ var searchData=
   ['running_5f_114',['running_',['../classFatigueTest_1_1FatigueTestMotion.html#af2204e8074fbbf33ff9d3c36acf43af6',1,'FatigueTest::FatigueTestMotion']]],
   ['rw_5faddress_115',['rw_address',['../uniontmc51x0_1_1UartFrame_1_1Frame.html#adb1b98bdb6be2e4a358c47c54791c911',1,'tmc51x0::UartFrame::Frame']]],
   ['rx_5fbuf_5fsize_116',['RX_BUF_SIZE',['../classUartCommandParser.html#a8c85b7234bca147407b09bdedab478dd',1,'UartCommandParser']]],
-  ['rx_5fbuffer_5f_117',['rx_buffer_',['../classUartCommandParser.html#a64ce7b221fe1feea9af1a9b9681df668',1,'UartCommandParser']]]
+  ['rx_5fbuffer_5f_117',['rx_buffer_',['../classUartCommandParser.html#a64ce7b221fe1feea9af1a9b9681df668',1,'UartCommandParser']]],
+  ['rx_5fscratch_5f_118',['rx_scratch_',['../classtmc51x0_1_1SpiCommInterface.html#a7849870486bbf15ec2f69420d51183f4',1,'tmc51x0::SpiCommInterface']]]
 ];

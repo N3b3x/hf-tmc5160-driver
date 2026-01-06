@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="structtmc51x0_1_1SpiStatus.html#a074ce9431f7b5c30ef7b83e1818dfd3b" target="_top" xlink:title="Format status bits as compact string (bit names and values)">
+<g id="a_Node000002"><a xlink:href="structtmc51x0_1_1SpiStatus.html#a772e84571daef24f715d07b33f295f85" target="_top" xlink:title="Format status bits as compact string (bit names and values)">
 <polygon fill="white" stroke="#666666" points="303,-54 192,-54 192,-24 303,-24 303,-54"/>
 <text text-anchor="start" x="200" y="-42" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::SpiStatus</text>
 <text text-anchor="middle" x="247.5" y="-31" font-family="Helvetica,sans-Serif" font-size="10.00">::FormatStatusBits</text>

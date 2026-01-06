@@ -12,6 +12,13 @@ var tmc51x0__comm__interface_8hpp =
     [ "tmc51x0::SpiCommInterface< Derived >", "classtmc51x0_1_1SpiCommInterface.html", "classtmc51x0_1_1SpiCommInterface" ],
     [ "tmc51x0::UartCommInterface< Derived >", "classtmc51x0_1_1UartCommInterface.html", "classtmc51x0_1_1UartCommInterface" ],
     [ "TMC51X0_LOG_DEBUG", "tmc51x0__comm__interface_8hpp.html#acdcebba658c1076ab42bb18ede91f695", null ],
+    [ "TMC51X0_LOG_LEVEL", "tmc51x0__comm__interface_8hpp.html#af776b699df46bafb5e0236be5c299237", null ],
+    [ "TMC51X0_LOGD", "tmc51x0__comm__interface_8hpp.html#a8ca047bdb87883b9f0e1cc140113c645", null ],
+    [ "TMC51X0_LOGE", "tmc51x0__comm__interface_8hpp.html#a5add8c9c8a35b653df35a4815207a6ca", null ],
+    [ "TMC51X0_LOGI", "tmc51x0__comm__interface_8hpp.html#afcc9d7abb6db6e971c49ac38e5cefefc", null ],
+    [ "TMC51X0_LOGV", "tmc51x0__comm__interface_8hpp.html#aa6548d87c059c8be1b63de7aa8e371f5", null ],
+    [ "TMC51X0_LOGW", "tmc51x0__comm__interface_8hpp.html#a89bd1245fbfae2d878f30b97a28003b1", null ],
+    [ "TMC51X0_SPI_MAX_CHAIN_DEVICES", "tmc51x0__comm__interface_8hpp.html#a4ce7e4c67ba824f2aadd8b7e27eb1a4b", null ],
     [ "CommMode", "tmc51x0__comm__interface_8hpp.html#af3d18824bf231d968c6c33bd1aaeae5f", [
       [ "SPI", "tmc51x0__comm__interface_8hpp.html#af3d18824bf231d968c6c33bd1aaeae5fa33dc5312b091968f5a120c2484d40df8", null ],
       [ "UART", "tmc51x0__comm__interface_8hpp.html#af3d18824bf231d968c6c33bd1aaeae5facec5769b01fb096efaf0d6186823c78f", null ]
