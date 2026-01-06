@@ -30,8 +30,715 @@
 #include <limits>
 
 #include "../inc/features/tmc51x0_motor_calc.hpp"
+#include <inttypes.h>
+#include <cstdio>
+#include <string>
+#include <string_view>
 
 namespace tmc51x0 {
+
+#ifndef TMC51X0_DISABLE_DEBUG_LOGGING
+namespace detail {
+// ANSI Color Codes for terminal-styled output
+#define CLR_RST  "\033[0m"
+#define CLR_BOLD "\033[1m"
+#define CLR_CYAN "\033[36m"
+#define CLR_YLW  "\033[33m"
+#define CLR_MAG  "\033[35m"
+#define CLR_GRN  "\033[32m"
+#define CLR_RED  "\033[31m"
+#define CLR_DIM  "\033[2m"
+
+// Infrastructure for large tables: Use static buffers to keep them OFF the stack.
+// ANSI codes take significant byte space but zero visual width, so 512 is safer.
+static char report_row_buf[512];
+
+inline const char* OnOffStyled(bool v) noexcept { 
+  return v ? CLR_GRN "ON " CLR_RST : CLR_RED "OFF" CLR_RST; 
+}
+inline const char* TrueFalseStyled(bool v) noexcept { 
+  return v ? CLR_GRN "true " CLR_RST : CLR_RED "false" CLR_RST; 
+}
+
+template <typename CommT>
+inline void LogBoxLine(CommT &comm, LogLevel lvl, const char *tag,
+                       const char* line) noexcept {
+  TMC51X0_LOG_DEBUG(comm, lvl, tag, "%s", line);
+}
+
+// Append a string and pad to the desired visible width. ANSI escape sequences
+// (e.g., color codes) contribute zero visible width but are still copied so
+// styling remains intact across padding/truncation.
+inline size_t AppendPadded(char *dst, size_t cap, size_t pos,
+                           std::string_view s, size_t width) noexcept {
+  size_t visible = 0;
+  const size_t n = s.size();
+  for (size_t i = 0; i < n && pos < cap; ) {
+    const char c = s[i];
+    const bool is_ansi = (c == '\033' && (i + 1) < n && s[i + 1] == '[');
+    if (is_ansi) {
+      // Copy the whole escape sequence verbatim; it does not consume width.
+      size_t j = i + 2;
+      while (j < n && s[j] != 'm') ++j;
+      if (j < n) ++j; // include the 'm'
+      for (size_t k = i; k < j && pos < cap; ++k) {
+        dst[pos++] = s[k];
+      }
+      i = j;
+      continue;
+    }
+    if (visible < width && pos < cap) {
+      dst[pos++] = c;
+      ++visible;
+    }
+    ++i;
+  }
+  while (visible < width && pos < cap) {
+    dst[pos++] = ' ';
+    ++visible;
+  }
+  return pos;
+}
+
+template <typename CommT>
+inline void LogBoxTop(CommT &comm, LogLevel lvl, const char *tag,
+                      size_t inner_width) noexcept {
+  size_t pos = 0;
+  pos += std::sprintf(&report_row_buf[pos], "╔");
+  for (size_t i = 0; i < inner_width + 2; ++i) pos += std::sprintf(&report_row_buf[pos], "═");
+  pos += std::sprintf(&report_row_buf[pos], "╗");
+  LogBoxLine(comm, lvl, tag, report_row_buf);
+}
+
+template <typename CommT>
+inline void LogBoxBottom(CommT &comm, LogLevel lvl, const char *tag,
+                         size_t inner_width) noexcept {
+  size_t pos = 0;
+  pos += std::sprintf(&report_row_buf[pos], "╚");
+  for (size_t i = 0; i < inner_width + 2; ++i) pos += std::sprintf(&report_row_buf[pos], "═");
+  pos += std::sprintf(&report_row_buf[pos], "╝");
+  LogBoxLine(comm, lvl, tag, report_row_buf);
+}
+
+template <typename CommT>
+inline void LogBoxRow(CommT &comm, LogLevel lvl, const char *tag,
+                      size_t inner_width,
+                      std::string_view content) noexcept {
+  size_t pos = 0;
+  pos += std::sprintf(&report_row_buf[pos], "║ ");
+  pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, content, inner_width);
+  pos += std::sprintf(&report_row_buf[pos], " ║");
+  LogBoxLine(comm, lvl, tag, report_row_buf);
+}
+
+inline bool NextWrapChunk(std::string_view s, size_t width, size_t &start, size_t &end) {
+  while (start < s.size() && s[start] == ' ') ++start;
+  if (start >= s.size()) return false;
+  const size_t max_end = (start + width < s.size()) ? (start + width) : s.size();
+  end = max_end;
+  if (end == s.size()) return true;
+  for (size_t i = max_end; i > start; --i) {
+    if (s[i - 1] == ' ') { end = i - 1; return true; }
+  }
+  end = max_end;
+  return true;
+}
+
+template <typename CommT>
+inline void LogBoxRowWrapped(CommT &comm, LogLevel lvl, const char *tag,
+                             size_t inner_width,
+                             std::string_view content) noexcept {
+  size_t start = 0, end = 0;
+  while (NextWrapChunk(content, inner_width, start, end)) {
+    LogBoxRow(comm, lvl, tag, inner_width, content.substr(start, end - start));
+    start = end;
+  }
+}
+
+template <typename CommT>
+inline void LogTableSeparator(CommT &comm, LogLevel lvl, const char *tag,
+                              size_t inner_width) noexcept {
+  size_t pos = 0;
+  pos += std::sprintf(&report_row_buf[pos], "╟");
+  for (size_t i = 0; i < inner_width + 2; ++i) pos += std::sprintf(&report_row_buf[pos], "─");
+  pos += std::sprintf(&report_row_buf[pos], "╢");
+  LogBoxLine(comm, lvl, tag, report_row_buf);
+  // Yield lightly at every separator to avoid long uninterrupted UART bursts.
+  // We use 10ms to ensure at least 1 tick on 100Hz systems.
+  comm.DelayMs(10);
+}
+
+template <typename CommT>
+inline void LogTableHeader(CommT &comm, LogLevel lvl, const char *tag,
+                           size_t key_w, size_t val_w, size_t unit_w,
+                           size_t notes_w) noexcept {
+  size_t pos = 0;
+  pos += std::sprintf(&report_row_buf[pos], "║ " CLR_BOLD);
+  pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, "Key", key_w);
+  pos += std::sprintf(&report_row_buf[pos], CLR_RST " │ " CLR_BOLD);
+  pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, "Value", val_w);
+  pos += std::sprintf(&report_row_buf[pos], CLR_RST " │ " CLR_BOLD);
+  pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, "Unit", unit_w);
+  pos += std::sprintf(&report_row_buf[pos], CLR_RST " │ " CLR_BOLD);
+  pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, "Notes", notes_w);
+  pos += std::sprintf(&report_row_buf[pos], CLR_RST " ║");
+  LogBoxLine(comm, lvl, tag, report_row_buf);
+}
+
+template <typename CommT>
+inline void LogTableSection(CommT &comm, LogLevel lvl, const char *tag,
+                            size_t inner_width,
+                            std::string_view title) noexcept {
+  size_t pos = 0;
+  pos += std::sprintf(&report_row_buf[pos], "╠");
+  for (size_t i = 0; i < inner_width + 2; ++i) pos += std::sprintf(&report_row_buf[pos], "═");
+  pos += std::sprintf(&report_row_buf[pos], "╣");
+  LogBoxLine(comm, lvl, tag, report_row_buf);
+  
+  char t[128];
+  std::snprintf(t, sizeof(t), CLR_BOLD "%.*s" CLR_RST, static_cast<int>(title.size()), title.data());
+  LogBoxRow(comm, lvl, tag, inner_width, t);
+  
+  pos = 0;
+  pos += std::sprintf(&report_row_buf[pos], "╠");
+  for (size_t i = 0; i < inner_width + 2; ++i) pos += std::sprintf(&report_row_buf[pos], "═");
+  pos += std::sprintf(&report_row_buf[pos], "╣");
+  LogBoxLine(comm, lvl, tag, report_row_buf);
+  // Yield once per section to ease the watchdog during long prints.
+  // We use 10ms to ensure 1 tick on 100Hz systems.
+  comm.DelayMs(10);
+}
+
+template <typename CommT>
+inline void LogTableRow(CommT &comm, LogLevel lvl, const char *tag,
+                        size_t inner_width,
+                        std::string_view key, std::string_view value,
+                        std::string_view unit, std::string_view notes,
+                        size_t key_w, size_t val_w, size_t unit_w,
+                        size_t notes_w) noexcept {
+  size_t ns = 0, ne = 0;
+  bool first = true;
+  std::string_view u_disp = unit.empty() ? "-" : unit;
+
+  while (NextWrapChunk(notes, notes_w, ns, ne)) {
+    size_t pos = 0;
+    pos += std::sprintf(&report_row_buf[pos], "║ ");
+    if (first) {
+      pos += std::sprintf(&report_row_buf[pos], CLR_CYAN);
+      pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, key, key_w);
+      pos += std::sprintf(&report_row_buf[pos], CLR_RST " │ " CLR_BOLD CLR_YLW);
+      pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, value, val_w);
+      pos += std::sprintf(&report_row_buf[pos], CLR_RST " │ " CLR_MAG);
+      pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, u_disp, unit_w);
+      pos += std::sprintf(&report_row_buf[pos], CLR_RST " │ ");
+    } else {
+      pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, "", key_w);
+      pos += std::sprintf(&report_row_buf[pos], " │ ");
+      pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, "", val_w);
+      pos += std::sprintf(&report_row_buf[pos], " │ ");
+      pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, "", unit_w);
+      pos += std::sprintf(&report_row_buf[pos], " │ ");
+    }
+    pos += std::sprintf(&report_row_buf[pos], CLR_DIM);
+    pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, notes.substr(ns, ne - ns), notes_w);
+    pos += std::sprintf(&report_row_buf[pos], CLR_RST " ║");
+    LogBoxLine(comm, lvl, tag, report_row_buf);
+    first = false;
+    ns = ne;
+  }
+  if (first) {
+    size_t pos = 0;
+    pos += std::sprintf(&report_row_buf[pos], "║ " CLR_CYAN);
+    pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, key, key_w);
+    pos += std::sprintf(&report_row_buf[pos], CLR_RST " │ " CLR_BOLD CLR_YLW);
+    pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, value, val_w);
+    pos += std::sprintf(&report_row_buf[pos], CLR_RST " │ " CLR_MAG);
+    pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, u_disp, unit_w);
+    pos += std::sprintf(&report_row_buf[pos], CLR_RST " │ " CLR_DIM);
+    pos = AppendPadded(report_row_buf, sizeof(report_row_buf), pos, "", notes_w);
+    pos += std::sprintf(&report_row_buf[pos], CLR_RST " ║");
+    LogBoxLine(comm, lvl, tag, report_row_buf);
+  }
+  LogTableSeparator(comm, lvl, tag, inner_width);
+}
+} // namespace detail
+#endif // TMC51X0_DISABLE_DEBUG_LOGGING
+
+#ifndef TMC51X0_DISABLE_DEBUG_LOGGING
+template <typename CommType>
+void TMC51x0<CommType>::LogConfigSummary(const DriverConfig &cfg, const char *tag,
+                                        LogLevel lvl) noexcept {
+  const uint32_t desired_clk = cfg.external_clk_config.frequency_hz;
+  const uint32_t resolved_clk =
+      (desired_clk == 0U) ? ClockFreq::DEFAULT_F_CLK : desired_clk;
+
+  // Big 4-column table: Key | Value | Unit | Notes
+  constexpr size_t W = 108;
+  constexpr size_t KEY_W = 24;
+  constexpr size_t VAL_W = 18;
+  constexpr size_t UNIT_W = 10;
+  constexpr size_t NOTES_W = (W - (KEY_W + VAL_W + UNIT_W + 3 /*separators*/ * 3 + 2 /*padding*/));
+  // Sanity: NOTES_W is derived for inner width W and the table format below.
+
+  detail::LogBoxTop(comm_, lvl, tag, W);
+  detail::LogBoxRowWrapped(comm_, lvl, tag, W, "Driver Configuration (requested)");
+  detail::LogTableSeparator(comm_, lvl, tag, W);
+  detail::LogTableHeader(comm_, lvl, tag, KEY_W, VAL_W, UNIT_W, NOTES_W);
+  detail::LogTableSeparator(comm_, lvl, tag, W);
+
+  size_t row_counter = 0;
+  auto row = [&](std::string_view key, std::string_view value,
+                 std::string_view unit, std::string_view notes) noexcept {
+    detail::LogTableRow(comm_, lvl, tag, W, key, value, unit, notes, KEY_W, VAL_W, UNIT_W, NOTES_W);
+    // Yield periodically to avoid starving the watchdog when emitting long tables.
+    // On ESP-IDF with 100Hz tick, DelayMs(1) is 0 ticks. We use 10ms to ensure 1 tick.
+    if ((++row_counter % 10U) == 0U) {
+      comm_.DelayMs(10);
+    }
+  };
+
+  char v[96];
+
+  // Summary
+  detail::LogTableSection(comm_, lvl, tag, W, "Summary");
+  row("motor_type", ToString(cfg.motor_spec.motor_type), "", "Intended motor type (documentation + some feature expectations).");
+  row("system_type", ToString(cfg.mechanical.system_type), "", "Mechanical model used for unit conversions (rev/deg/mm <-> steps).");
+  row("chopper_mode", ToString(cfg.chopper.mode), "", "SPREAD_CYCLE for StallGuard; StealthChop for quietness.");
+  std::snprintf(v, sizeof(v), "%s (%u)", ToString(cfg.chopper.mres),
+                static_cast<unsigned>(MicrostepsPerFullStep(cfg.chopper.mres)));
+  row("microstep_resolution", v, "usteps", "Microsteps per full step (USC).");
+  row("stealthchop_enabled", detail::OnOffStyled(cfg.global_config.en_stealthchop_mode), "", "Global enable for StealthChop mode.");
+  row("coolstep_enabled", detail::OnOffStyled(cfg.coolstep.lower_threshold_sg != 0), "", "Enabled when lower_threshold_sg != 0.");
+  row("dcstep_enabled", detail::OnOffStyled(cfg.dcstep.min_velocity != 0.0F), "", "Enabled when min_velocity != 0.");
+  if (desired_clk == 0U) {
+    std::snprintf(v, sizeof(v), "%" PRIu32, resolved_clk);
+    row("clock_frequency", v, "Hz", "Default internal oscillator frequency (CLK pin to GND).");
+  } else {
+    std::snprintf(v, sizeof(v), "%" PRIu32, desired_clk);
+    row("clock_frequency", v, "Hz", "External clock frequency provided by the platform.");
+  }
+
+  // Motor Spec
+  detail::LogTableSection(comm_, lvl, tag, W, "Motor Spec");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.motor_spec.steps_per_rev));
+  row("steps_per_rev", v, "steps", "Full steps per mechanical revolution of the motor (typically 200).");
+  std::snprintf(v, sizeof(v), "%" PRIu32, cfg.motor_spec.sense_resistor_mohm);
+  row("sense_resistor", v, "mOhm", "Sense resistor for current scaling (Rsense). 0 means not specified.");
+  std::snprintf(v, sizeof(v), "%" PRIu32, cfg.motor_spec.supply_voltage_mv);
+  row("supply_voltage", v, "mV", "Motor supply voltage used for current calculations. 0 means not specified.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.motor_spec.rated_current_ma));
+  row("rated_current", v, "mA", "Nameplate rated current (used mainly for reference).");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.motor_spec.run_current_ma));
+  row("run_current", v, "mA", "Target run current used to compute IRUN and GLOBAL_SCALER.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.motor_spec.hold_current_ma));
+  row("hold_current", v, "mA", "Target hold current used to compute IHOLD.");
+  std::snprintf(v, sizeof(v), "%" PRIu32, cfg.motor_spec.winding_resistance_mohm);
+  row("winding_resistance", v, "mOhm", "Used for StealthChop lower-limit checks.");
+  std::snprintf(v, sizeof(v), "%.2f", static_cast<double>(cfg.motor_spec.winding_inductance_mh));
+  row("winding_inductance", v, "mH", "Used for StealthChop tuning/limits (approximate is OK).");
+  std::snprintf(v, sizeof(v), "%.2f", static_cast<double>(cfg.motor_spec.iholddelay_ms));
+  row("iholddelay_total", v, "ms", "Desired IHOLD ramp-down total time (driver chooses register encoding).");
+  std::snprintf(v, sizeof(v), "scaler=%.1f irun=%.1f ihold=%.1f",
+                static_cast<double>(cfg.motor_spec.scaler_adjustment_percent),
+                static_cast<double>(cfg.motor_spec.irun_adjustment_percent),
+                static_cast<double>(cfg.motor_spec.ihold_adjustment_percent));
+  row("adjustments", v, "%", "Post-calculation adjustments (fine-tuning).");
+
+  // Mechanical
+  detail::LogTableSection(comm_, lvl, tag, W, "Mechanical");
+  row("motor_direction", ToString(cfg.direction), "", "Logical direction (NORMAL/INVERSE).");
+  row("system_type", ToString(cfg.mechanical.system_type), "", "DirectDrive / LeadScrew / BeltDrive / Gearbox.");
+  switch (cfg.mechanical.system_type) {
+  case MechanicalSystemType::Gearbox:
+    std::snprintf(v, sizeof(v), "%.3f", static_cast<double>(cfg.mechanical.gear_ratio));
+    row("gear_ratio", v, "", "Output revs per motor rev (or inverse, depending on your convention).");
+    break;
+  case MechanicalSystemType::LeadScrew:
+    std::snprintf(v, sizeof(v), "%.3f", static_cast<double>(cfg.mechanical.lead_screw_pitch_mm));
+    row("lead_screw_pitch", v, "mm/rev", "Linear travel per output revolution.");
+    break;
+  case MechanicalSystemType::BeltDrive:
+    std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.mechanical.belt_pulley_teeth));
+    row("belt_pulley_teeth", v, "teeth", "Pulley teeth count.");
+    std::snprintf(v, sizeof(v), "%.3f", static_cast<double>(cfg.mechanical.belt_pitch_mm));
+    row("belt_pitch", v, "mm", "Belt pitch (distance between teeth).");
+    break;
+  case MechanicalSystemType::DirectDrive:
+  default:
+    break;
+  }
+
+  // Clock
+  detail::LogTableSection(comm_, lvl, tag, W, "Clock");
+  if (desired_clk == 0U) {
+    std::snprintf(v, sizeof(v), "%" PRIu32, resolved_clk);
+    row("frequency", v, "Hz", "Default internal oscillator (CLK pin to GND).");
+  } else {
+    std::snprintf(v, sizeof(v), "%" PRIu32, desired_clk);
+    row("frequency", v, "Hz", "External clock (platform supplied).");
+  }
+
+  // Chopper
+  detail::LogTableSection(comm_, lvl, tag, W, "Chopper");
+  row("mode", ToString(cfg.chopper.mode), "", "SPREAD_CYCLE recommended; CLASSIC is legacy.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.chopper.toff));
+  row("toff", v, "", "Chopper off time; must be > 0 to enable chopper.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.chopper.tbl));
+  row("tbl", v, "", "Comparator blank time (TBL).");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.chopper.hstrt));
+  row("hstrt", v, "", "Hysteresis start (SpreadCycle).");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.chopper.hend));
+  row("hend", v, "", "Hysteresis end (SpreadCycle).");
+  std::snprintf(v, sizeof(v), "%s (%u)", ToString(cfg.chopper.mres),
+                static_cast<unsigned>(MicrostepsPerFullStep(cfg.chopper.mres)));
+  row("mres", v, "usteps", "Microstep resolution (MRES).");
+  row("intpol", detail::TrueFalseStyled(cfg.chopper.intpol), "", "Interpolate to 256 microsteps internally.");
+  row("dedge", detail::TrueFalseStyled(cfg.chopper.dedge), "", "Enable double-edge step pulses.");
+  row("vhighfs", detail::TrueFalseStyled(cfg.chopper.vhighfs), "", "High-velocity fullstep option.");
+  row("vhighchm", detail::TrueFalseStyled(cfg.chopper.vhighchm), "", "High-velocity chopper mode option.");
+  row("disfdcc", detail::TrueFalseStyled(cfg.chopper.disfdcc), "", "Disable fast decay comparator.");
+  row("diss2g", detail::TrueFalseStyled(cfg.chopper.diss2g), "", "Disable short-to-GND protection.");
+  row("diss2vs", detail::TrueFalseStyled(cfg.chopper.diss2vs), "", "Disable short-to-supply protection.");
+
+  // StealthChop
+  detail::LogTableSection(comm_, lvl, tag, W, "StealthChop");
+  row("enabled", detail::OnOffStyled(cfg.global_config.en_stealthchop_mode), "", "Global enable for StealthChop.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.stealthchop.pwm_ofs));
+  row("pwm_ofs", v, "", "PWM offset (base duty).");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.stealthchop.pwm_grad));
+  row("pwm_grad", v, "", "PWM gradient (slope).");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.stealthchop.pwm_freq));
+  row("pwm_freq", v, "", "PWM frequency selection.");
+  row("pwm_autoscale", detail::TrueFalseStyled(cfg.stealthchop.pwm_autoscale), "", "Enable automatic PWM scaling.");
+  row("pwm_autograd", detail::TrueFalseStyled(cfg.stealthchop.pwm_autograd), "", "Enable automatic gradient.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.stealthchop.pwm_reg));
+  row("pwm_reg", v, "", "PWM regulation parameter.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.stealthchop.pwm_lim));
+  row("pwm_lim", v, "", "PWM limit.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.stealthchop.freewheel));
+  row("freewheel", v, "", "Freewheeling mode.");
+  std::snprintf(v, sizeof(v), "%.2f", static_cast<double>(cfg.stealthchop.velocity_threshold));
+  row("velocity_threshold", v, ToString(cfg.stealthchop.velocity_threshold_unit), "StealthChop velocity threshold unit/value.");
+
+  // Note: Remaining sections (Power Stage, Global, Ramp, StallGuard, CoolStep, DcStep, RefSwitch, Encoder, UART)
+  // still print below in their existing (boxed) format for now. We'll convert them to table rows next.
+
+  // Power stage
+  detail::LogTableSection(comm_, lvl, tag, W, "Power Stage");
+  std::snprintf(v, sizeof(v), "%.1f", static_cast<double>(cfg.power_stage.mosfet_miller_charge_nc));
+  row("mosfet_miller_charge", v, "nC", "Used to pick DRVSTRENGTH (MOSFET gate drive strength).");
+  std::snprintf(v, sizeof(v), "%" PRIu32, cfg.power_stage.bbm_time_ns);
+  row("bbm_time", v, "ns", "Break-before-make time for half-bridges.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.power_stage.sense_filter));
+  row("sense_filter", v, "", "Sense filter selection (FILT_ISENSE).");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.power_stage.over_temp_protection));
+  row("over_temp_protection", v, "", "Overtemperature protection selector.");
+  if (cfg.power_stage.s2vs_voltage_mv == 0) {
+    row("s2vs_voltage", "auto", "mV", "Short-to-supply threshold (auto ~625mV).");
+  } else {
+    std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.power_stage.s2vs_voltage_mv));
+    row("s2vs_voltage", v, "mV", "Short-to-supply threshold.");
+  }
+  if (cfg.power_stage.s2g_voltage_mv == 0) {
+    row("s2g_voltage", "auto", "mV", "Short-to-GND threshold (auto ~625mV).");
+  } else {
+    std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.power_stage.s2g_voltage_mv));
+    row("s2g_voltage", v, "mV", "Short-to-GND threshold.");
+  }
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.power_stage.shortfilter));
+  row("shortfilter", v, "", "Short detection filter time selection.");
+  if (cfg.power_stage.short_detection_delay_us_x10 == 0) {
+    row("short_detection_delay", "auto", "us", "Short detection delay (auto ~0.85us).");
+  } else {
+    std::snprintf(v, sizeof(v), "%.2f",
+                  static_cast<double>(static_cast<float>(cfg.power_stage.short_detection_delay_us_x10) / 10.0f));
+    row("short_detection_delay", v, "us", "Short detection delay.");
+  }
+
+  // Global config
+  detail::LogTableSection(comm_, lvl, tag, W, "Global");
+  row("recalibrate", detail::TrueFalseStyled(cfg.global_config.recalibrate), "", "Recalibrate chopper settings on standstill.");
+  row("en_short_standstill_timeout", detail::TrueFalseStyled(cfg.global_config.en_short_standstill_timeout), "", "Enable short protection standstill timeout.");
+  row("en_stealthchop_mode", detail::TrueFalseStyled(cfg.global_config.en_stealthchop_mode), "", "Enable StealthChop mode (global).");
+  row("en_stealthchop_step_filter", detail::TrueFalseStyled(cfg.global_config.en_stealthchop_step_filter), "", "Enable StealthChop step filter.");
+  row("invert_direction", detail::TrueFalseStyled(cfg.global_config.invert_direction), "", "Invert internal motor direction bit.");
+  row("en_small_step_frequency_hysteresis", detail::TrueFalseStyled(cfg.global_config.en_small_step_frequency_hysteresis), "", "Enable small step frequency hysteresis.");
+  row("enca_dcin_sequencer_stop", detail::TrueFalseStyled(cfg.global_config.enca_dcin_sequencer_stop), "", "Stop sequencer on ENCA/DCIN event.");
+  row("direct_mode", detail::TrueFalseStyled(cfg.global_config.direct_mode), "", "Direct mode (coil currents driven via XTARGET instead of motion).");
+
+  // Ramp config
+  detail::LogTableSection(comm_, lvl, tag, W, "Ramp");
+  std::snprintf(v, sizeof(v), "%.3f", static_cast<double>(cfg.ramp_config.vstart.value));
+  row("vstart", v, ToString(cfg.ramp_config.vstart.unit), "Start velocity.");
+  std::snprintf(v, sizeof(v), "%.3f", static_cast<double>(cfg.ramp_config.vstop.value));
+  row("vstop", v, ToString(cfg.ramp_config.vstop.unit), "Stop velocity.");
+  std::snprintf(v, sizeof(v), "%.3f", static_cast<double>(cfg.ramp_config.vmax.value));
+  row("vmax", v, ToString(cfg.ramp_config.vmax.unit), "Maximum velocity.");
+  std::snprintf(v, sizeof(v), "%.3f", static_cast<double>(cfg.ramp_config.v1.value));
+  row("v1", v, ToString(cfg.ramp_config.v1.unit), "Velocity threshold for accel/decel segments.");
+  std::snprintf(v, sizeof(v), "%.3f", static_cast<double>(cfg.ramp_config.amax.value));
+  row("amax", v, ToString(cfg.ramp_config.amax.unit), "Maximum acceleration.");
+  std::snprintf(v, sizeof(v), "%.3f", static_cast<double>(cfg.ramp_config.a1.value));
+  row("a1", v, ToString(cfg.ramp_config.a1.unit), "Acceleration for first segment.");
+  std::snprintf(v, sizeof(v), "%.3f", static_cast<double>(cfg.ramp_config.dmax.value));
+  row("dmax", v, ToString(cfg.ramp_config.dmax.unit), "Maximum deceleration.");
+  std::snprintf(v, sizeof(v), "%.3f", static_cast<double>(cfg.ramp_config.d1.value));
+  row("d1", v, ToString(cfg.ramp_config.d1.unit), "Deceleration for first segment.");
+  std::snprintf(v, sizeof(v), "%.2f", static_cast<double>(cfg.ramp_config.tpowerdown_ms));
+  row("tpowerdown", v, "ms", "Delay before power-down after standstill (register encoded).");
+  std::snprintf(v, sizeof(v), "%.2f", static_cast<double>(cfg.ramp_config.tzerowait_ms));
+  row("tzerowait", v, "ms", "Standstill wait time for certain features (register encoded).");
+
+  // StallGuard
+  detail::LogTableSection(comm_, lvl, tag, W, "StallGuard");
+  std::snprintf(v, sizeof(v), "%d", cfg.stallguard.threshold);
+  row("threshold", v, "", "SGT threshold (sensitivity).");
+  row("enable_filter", detail::TrueFalseStyled(cfg.stallguard.enable_filter), "", "Enable StallGuard filter (SFILT).");
+  std::snprintf(v, sizeof(v), "%.2f", static_cast<double>(cfg.stallguard.min_velocity));
+  row("min_velocity", v, ToString(cfg.stallguard.velocity_unit), "Minimum velocity for StallGuard to be considered valid.");
+  std::snprintf(v, sizeof(v), "%.2f", static_cast<double>(cfg.stallguard.max_velocity));
+  row("max_velocity", v, ToString(cfg.stallguard.velocity_unit), "Maximum velocity for StallGuard checks (0 disables).");
+  row("stop_on_stall", detail::TrueFalseStyled(cfg.stallguard.stop_on_stall), "", "Enable stop-on-stall behavior.");
+
+  // CoolStep
+  detail::LogTableSection(comm_, lvl, tag, W, "CoolStep");
+  row("enabled", detail::OnOffStyled(cfg.coolstep.lower_threshold_sg != 0), "", "Enabled when lower_threshold_sg != 0.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.coolstep.lower_threshold_sg));
+  row("lower_threshold_sg", v, "", "Lower SG threshold (0 disables CoolStep).");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.coolstep.upper_threshold_sg));
+  row("upper_threshold_sg", v, "", "Upper SG threshold.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.coolstep.increment_step));
+  row("increment_step", v, "", "Current increment step size.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.coolstep.decrement_speed));
+  row("decrement_speed", v, "", "Current decrement speed.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.coolstep.min_current));
+  row("min_current", v, "", "Minimum current (as a fraction selector).");
+  row("enable_filter", detail::TrueFalseStyled(cfg.coolstep.enable_filter), "", "Enable CoolStep filter.");
+  std::snprintf(v, sizeof(v), "%.2f", static_cast<double>(cfg.coolstep.min_velocity));
+  row("min_velocity", v, ToString(cfg.coolstep.velocity_unit), "Minimum velocity for CoolStep.");
+  std::snprintf(v, sizeof(v), "%.2f", static_cast<double>(cfg.coolstep.max_velocity));
+  row("max_velocity", v, ToString(cfg.coolstep.velocity_unit), "Maximum velocity for CoolStep (0 disables).");
+
+  // DcStep
+  detail::LogTableSection(comm_, lvl, tag, W, "DcStep");
+  row("enabled", detail::OnOffStyled(cfg.dcstep.min_velocity != 0.0F), "", "Enabled when min_velocity != 0.");
+  std::snprintf(v, sizeof(v), "%.2f", static_cast<double>(cfg.dcstep.min_velocity));
+  row("min_velocity", v, ToString(cfg.dcstep.velocity_unit), "Minimum velocity for DcStep.");
+  std::snprintf(v, sizeof(v), "%.2f", static_cast<double>(cfg.dcstep.pwm_on_time_us));
+  row("pwm_on_time", v, "us", "PWM on-time for DcStep.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.dcstep.stall_sensitivity));
+  row("stall_sensitivity", v, "", "DcStep stall sensitivity selector.");
+  row("stop_on_stall", detail::TrueFalseStyled(cfg.dcstep.stop_on_stall), "", "Enable stop-on-stall behavior for DcStep.");
+
+  // Reference switches
+  detail::LogTableSection(comm_, lvl, tag, W, "Reference Switches");
+  row("left_active", ToString(cfg.reference_switch_config.left_switch_active), "", "Active polarity for left switch (REFL).");
+  row("right_active", ToString(cfg.reference_switch_config.right_switch_active), "", "Active polarity for right switch (REFR).");
+  row("left_stop_enable", detail::TrueFalseStyled(cfg.reference_switch_config.left_switch_stop_enable), "", "Enable stop on left switch.");
+  row("right_stop_enable", detail::TrueFalseStyled(cfg.reference_switch_config.right_switch_stop_enable), "", "Enable stop on right switch.");
+  row("stop_mode", ToString(cfg.reference_switch_config.stop_mode), "", "HARD_STOP or SOFT_STOP.");
+  row("swap_left_right", detail::TrueFalseStyled(cfg.reference_switch_config.swap_left_right), "", "Swap left/right switch wiring interpretation.");
+  row("latch_left", ToString(cfg.reference_switch_config.latch_left), "", "Position latch mode for left switch.");
+  row("latch_right", ToString(cfg.reference_switch_config.latch_right), "", "Position latch mode for right switch.");
+  row("en_latch_encoder", detail::TrueFalseStyled(cfg.reference_switch_config.en_latch_encoder), "", "Latch encoder position on switch events.");
+
+  // Encoder
+  detail::LogTableSection(comm_, lvl, tag, W, "Encoder");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.encoder_config.pulses_per_rev));
+  row("pulses_per_rev", v, "ppr", "Encoder pulses per revolution.");
+  row("invert_direction", detail::TrueFalseStyled(cfg.encoder_config.invert_direction), "", "Invert encoder counting direction.");
+  std::snprintf(v, sizeof(v), "%ld", static_cast<long>(cfg.encoder_config.allowed_deviation_steps));
+  row("allowed_deviation_steps", v, "usteps", "Allowed deviation before error handling (in microsteps).");
+  row("n_channel_active", ToString(cfg.encoder_config.n_channel_active), "", "N channel active polarity.");
+  row("n_sensitivity", ToString(cfg.encoder_config.n_sensitivity), "", "N channel sensitivity (level/edge).");
+  row("clear_mode", ToString(cfg.encoder_config.clear_mode), "", "Encoder clear mode on N events.");
+  row("prescaler_mode", ToString(cfg.encoder_config.prescaler_mode), "", "ENC_CONST prescaler divisor mode.");
+
+  // UART
+  detail::LogTableSection(comm_, lvl, tag, W, "UART");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.uart_config.node_address));
+  row("node_address", v, "", "UART node address (0 for single device).");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(cfg.uart_config.send_delay));
+  row("send_delay", v, "", "UART send delay (implementation/platform dependent).");
+
+  // Close table + box
+  detail::LogTableSeparator(comm_, lvl, tag, W);
+  detail::LogBoxBottom(comm_, lvl, tag, W);
+}
+
+template <typename CommType>
+void TMC51x0<CommType>::LogDerivedInitSummary(const char *tag,
+                                             LogLevel lvl) noexcept {
+  constexpr size_t W = 108;
+  constexpr size_t KEY_W = 24;
+  constexpr size_t VAL_W = 18;
+  constexpr size_t UNIT_W = 10;
+  constexpr size_t NOTES_W = (W - (KEY_W + VAL_W + UNIT_W + 3 * 3 + 2));
+
+  detail::LogBoxTop(comm_, lvl, tag, W);
+  detail::LogBoxRowWrapped(comm_, lvl, tag, W, "Derived / Calculated (post-Initialize)");
+  detail::LogTableSeparator(comm_, lvl, tag, W);
+  detail::LogTableHeader(comm_, lvl, tag, KEY_W, VAL_W, UNIT_W, NOTES_W);
+  detail::LogTableSeparator(comm_, lvl, tag, W);
+
+  auto row = [&](std::string_view key, std::string_view value,
+                 std::string_view unit, std::string_view notes) noexcept {
+    detail::LogTableRow(comm_, lvl, tag, W, key, value, unit, notes, KEY_W, VAL_W, UNIT_W, NOTES_W);
+  };
+
+  char v[96];
+  const uint32_t requested = driver_config_.external_clk_config.frequency_hz;
+
+  // System & Clock
+  detail::LogTableSection(comm_, lvl, tag, W, "System & Clock");
+  std::snprintf(v, sizeof(v), "%" PRIu32, requested);
+  row("requested_clk", v, "Hz", "External clock frequency requested in config.");
+  std::snprintf(v, sizeof(v), "%" PRIu32, static_cast<uint32_t>(f_clk_));
+  row("resolved_f_clk", v, "Hz", "Actual clock frequency used for all internal math.");
+  std::snprintf(v, sizeof(v), "0x%02X", static_cast<unsigned>(chip_version_));
+  row("chip_version", v, "", "Silicon version detected during communication check.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(current_microsteps_));
+  row("microsteps", v, "usteps", "Current microsteps per full step (MRES-derived).");
+
+  // Motor Current Settings
+  detail::LogTableSection(comm_, lvl, tag, W, "Motor Current (Calculated)");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(calculated_irun_));
+  row("calculated_irun", v, "0..31", "Calculated IRUN value based on Rsense and run current.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(calculated_ihold_));
+  row("calculated_ihold", v, "0..31", "Calculated IHOLD value based on Rsense and hold current.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(calculated_global_scaler_));
+  row("global_scaler", v, "32..256", "Current scaling factor (GLOBAL_SCALER). 256 = 100%.");
+
+  // Write-Only Register Caches
+  detail::LogTableSection(comm_, lvl, tag, W, "Register Caches (Write-Only)");
+  std::snprintf(v, sizeof(v), "0x%08" PRIX32, static_cast<uint32_t>(write_only_regs_.ihold_irun));
+  row("ihold_irun_reg", v, "hex", "Cached value of the IHOLD_IRUN register.");
+  std::snprintf(v, sizeof(v), "0x%02" PRIX32, static_cast<uint32_t>(write_only_regs_.global_scaler));
+  row("global_scaler_reg", v, "hex", "Cached value of the GLOBAL_SCALER register.");
+  std::snprintf(v, sizeof(v), "0x%08" PRIX32, static_cast<uint32_t>(write_only_regs_.drv_conf));
+  row("drv_conf_reg", v, "hex", "Cached value of the DRV_CONF register.");
+
+  // Timings
+  detail::LogTableSection(comm_, lvl, tag, W, "Timing Estimates");
+  IHOLD_IRUN_Register ih{};
+  ih.value = write_only_regs_.ihold_irun;
+  const uint8_t steps = (ih.bits.irun > ih.bits.ihold)
+                            ? static_cast<uint8_t>(ih.bits.irun - ih.bits.ihold)
+                            : 0U;
+  const float per_step_ms =
+      static_cast<float>(ih.bits.iholddelay) *
+      (RegisterConstants::TPOWERDOWN_DIVISOR * RegisterConstants::MS_PER_SEC /
+       (f_clk_ > 0 ? static_cast<float>(f_clk_) : 1.0F));
+  const float total_ms = static_cast<float>(steps) * per_step_ms;
+
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(ih.bits.iholddelay));
+  row("iholddelay", v, "0..15", "Register value for power-down ramp speed.");
+  std::snprintf(v, sizeof(v), "%.2f", static_cast<double>(per_step_ms));
+  row("ramp_step_time", v, "ms", "Time per current decrement step during power-down.");
+  std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(steps));
+  row("ramp_steps", v, "steps", "Total current steps from IRUN down to IHOLD.");
+  std::snprintf(v, sizeof(v), "%.2f", static_cast<double>(total_ms));
+  row("total_powerdown", v, "ms", "Total time to reach IHOLD after standstill.");
+
+  detail::LogBoxBottom(comm_, lvl, tag, W);
+}
+
+template <typename CommType>
+void TMC51x0<CommType>::LogLiveStatusReport(const char *tag,
+                                           LogLevel lvl) noexcept {
+  // Capture current state from silicon
+  auto gstat_res = comm_.ReadRegister(Registers::GSTAT, GetCommAddress());
+  auto drv_res = comm_.ReadRegister(Registers::DRV_STATUS, GetCommAddress());
+  auto ioin_res = comm_.ReadRegister(Registers::IOIN, GetCommAddress());
+  auto chop_res = comm_.ReadRegister(Registers::CHOPCONF, GetCommAddress());
+  auto pwm_res = comm_.ReadRegister(Registers::PWM_SCALE, GetCommAddress());
+  auto ramp_res = comm_.ReadRegister(Registers::RAMP_STAT, GetCommAddress());
+
+  constexpr size_t W = 108;
+  constexpr size_t KEY_W = 24;
+  constexpr size_t VAL_W = 18;
+  constexpr size_t UNIT_W = 10;
+  constexpr size_t NOTES_W = (W - (KEY_W + VAL_W + UNIT_W + 3 * 3 + 2));
+
+  detail::LogBoxTop(comm_, lvl, tag, W);
+  detail::LogBoxRowWrapped(comm_, lvl, tag, W, "Live Hardware Status Report (Silicon State)");
+  detail::LogTableSeparator(comm_, lvl, tag, W);
+  detail::LogTableHeader(comm_, lvl, tag, KEY_W, VAL_W, UNIT_W, NOTES_W);
+  detail::LogTableSeparator(comm_, lvl, tag, W);
+
+  auto row = [&](std::string_view key, std::string_view value,
+                 std::string_view unit, std::string_view notes) noexcept {
+    detail::LogTableRow(comm_, lvl, tag, W, key, value, unit, notes, KEY_W, VAL_W, UNIT_W, NOTES_W);
+  };
+
+  char v[96];
+
+  // System Status (GSTAT)
+  detail::LogTableSection(comm_, lvl, tag, W, "General Status (GSTAT)");
+  if (gstat_res) {
+    GSTAT_Register gs{};
+    gs.value = gstat_res.Value();
+    row("reset_occurred", detail::TrueFalseStyled(gs.bits.reset), "", "Chip has been reset since last GSTAT clear.");
+    row("driver_error", detail::TrueFalseStyled(gs.bits.drv_err), "", "A driver error (short, OT) is active.");
+    row("uv_cp", detail::TrueFalseStyled(gs.bits.uv_cp), "", "Charge pump undervoltage occurred.");
+  } else {
+    row("GSTAT", "ERROR", "", "Failed to read register.");
+  }
+
+  // Inputs (IOIN)
+  detail::LogTableSection(comm_, lvl, tag, W, "Inputs (IOIN)");
+  if (ioin_res) {
+    IOIN_Register io{};
+    io.value = ioin_res.Value();
+    row("drv_enn", io.bits.drv_enn ? "HIGH" : "LOW", "", "Hardware enable pin state (LOW = enabled).");
+    row("sd_mode", io.bits.sd_mode ? "STEP/DIR" : "INTERNAL", "", "Motion control source selector pin.");
+    std::snprintf(v, sizeof(v), "0x%02X", static_cast<unsigned>(io.bits.version));
+    row("version_id", v, "hex", "Silicon version ID (0x30 for TMC5160).");
+  } else {
+    row("IOIN", "ERROR", "", "Failed to read register.");
+  }
+
+  // Driver Status (DRV_STATUS)
+  detail::LogTableSection(comm_, lvl, tag, W, "Driver Diagnostics (DRV_STATUS)");
+  if (drv_res) {
+    DRV_STATUS_Register ds{};
+    ds.value = drv_res.Value();
+    
+    std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(ds.bits.sg_result));
+    row("sg_result", v, "0..1023", "Current StallGuard load value.");
+    row("stallguard", detail::OnOffStyled(ds.bits.stallguard), "", "Stall detected by StallGuard2.");
+    row("otpw", detail::TrueFalseStyled(ds.bits.otpw), "", "Overtemperature pre-warning active.");
+    row("ot", detail::TrueFalseStyled(ds.bits.ot), "", "Overtemperature shutdown active.");
+    row("standstill_drv", detail::TrueFalseStyled(ds.bits.stst), "", "Driver stage standstill indicator.");
+    
+    const char* s2g = (ds.bits.s2ga || ds.bits.s2gb) ? "FAULT" : "OK";
+    row("short_to_gnd", s2g, "", "Short to ground detected on phase A or B.");
+    const char* s2vs = (ds.bits.s2vsa || ds.bits.s2vsb) ? "FAULT" : "OK";
+    row("short_to_supply", s2vs, "", "Short to supply detected on phase A or B.");
+    
+    std::snprintf(v, sizeof(v), "%u", static_cast<unsigned>(ds.bits.cs_actual));
+    row("cs_actual", v, "0..31", "Actual current scaling (applied by CoolStep/Ramp).");
+  } else {
+    row("DRV_STATUS", "ERROR", "", "Failed to read register.");
+  }
+
+  // Ramp Status (RAMP_STAT)
+  detail::LogTableSection(comm_, lvl, tag, W, "Ramp Generator (RAMP_STAT)");
+  if (ramp_res) {
+    RAMP_STAT_Register rs{};
+    rs.value = ramp_res.Value();
+    row("status_stop_l", detail::TrueFalseStyled(rs.bits.status_stop_l), "", "Left reference switch is active.");
+    row("status_stop_r", detail::TrueFalseStyled(rs.bits.status_stop_r), "", "Right reference switch is active.");
+    row("position_reached", detail::TrueFalseStyled(rs.bits.position_reached), "", "Target position has been reached.");
+    row("velocity_reached", detail::TrueFalseStyled(rs.bits.velocity_reached), "", "Target velocity has been reached.");
+    row("standstill_ramp", detail::TrueFalseStyled(rs.bits.vzero), "", "Ramp generator velocity is zero.");
+  } else {
+    row("RAMP_STAT", "ERROR", "", "Failed to read register.");
+  }
+
+  detail::LogBoxBottom(comm_, lvl, tag, W);
+}
+#endif // TMC51X0_DISABLE_DEBUG_LOGGING
 
 // Implementation of operating mode control methods
 template <typename CommType>
@@ -41,7 +748,7 @@ Result<void> TMC51x0<CommType>::Io::SetOperatingMode(ChipCommMode mode) noexcept
                           : (mode == ChipCommMode::UART_INTERNAL_RAMP)          ? "UART_INTERNAL_RAMP"
                           : (mode == ChipCommMode::STANDALONE_EXTERNAL_STEPDIR) ? "STANDALONE_EXTERNAL_STEPDIR"
                                                                                 : "UNKNOWN";
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "Io::SetOperatingMode(%s)", mode_name);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "IO - operating_mode: %s", mode_name);
 
   // Map mode to SPI_MODE and SD_MODE pin states
   GpioSignal spi_mode_signal, sd_mode_signal;
@@ -214,7 +921,7 @@ float TMC51x0<CommType>::convertAccelerationToSteps(float value, Unit unit) cons
   // RPM is not a valid acceleration unit (it's velocity only)
   // If RPM is passed, treat it as RevPerSec and log a warning
   if (unit == Unit::RPM) {
-    TMC51X0_LOG_DEBUG(comm_, 0, "convertAccelerationToSteps",
+    TMC51X0_LOG_DEBUG(comm_, LogLevel::Error, "convertAccelerationToSteps",
                       "WARNING: RPM is not a valid acceleration unit. Converting as if RevPerSec (may be incorrect).");
     // Fall through to treat as RevPerSec (backward compatibility, but log warning)
     unit = Unit::RevPerSec;
@@ -349,17 +1056,10 @@ float TMC51x0<CommType>::convertSpeedToUnit(float steps_per_sec, Unit unit) cons
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept {
-  TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Initialize(toff=%u, mres=%u)", config.chopper.toff,
-                    static_cast<uint8_t>(config.chopper.mres));
-
-  // Debug: Log received configuration values
-  TMC51X0_LOG_DEBUG(comm_, 1, "TMC5160", "Initialize - Motor Spec: sense_resistor_mohm=%u, supply_voltage_mv=%u, rated_current_ma=%u, run_current_ma=%u, steps_per_rev=%u",
-                    config.motor_spec.sense_resistor_mohm, config.motor_spec.supply_voltage_mv,
-                    config.motor_spec.rated_current_ma, config.motor_spec.run_current_ma, config.motor_spec.steps_per_rev);
-  TMC51X0_LOG_DEBUG(comm_, 1, "TMC5160", "Initialize - Mechanical: system_type=%d, gear_ratio=%.2f",
-                    static_cast<int>(config.mechanical.system_type), config.mechanical.gear_ratio);
-  TMC51X0_LOG_DEBUG(comm_, 1, "TMC5160", "Initialize - Clock: frequency_hz=%u",
-                    config.external_clk_config.frequency_hz);
+#ifndef TMC51X0_DISABLE_DEBUG_LOGGING
+  // Debug: Log received configuration values (comprehensive summary)
+  LogConfigSummary(config, "TMC5160", LogLevel::Info);
+#endif // TMC51X0_DISABLE_DEBUG_LOGGING
 
   // Store physical configuration
   motor_spec_ = config.motor_spec;
@@ -393,8 +1093,8 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
       if (lower_limit > 0) {
         // Compare directly in milliamps (both values already in mA)
         if (static_cast<float>(run_current) < static_cast<float>(lower_limit) * 1.1f) {
-          TMC51X0_LOG_DEBUG(comm_, 0, "TMC5160",
-                            "WARNING: Run current (%.1fmA) may be below StealthChop lower limit (%.1fmA)", run_current,
+          TMC51X0_LOG_DEBUG(comm_, LogLevel::Warn, "TMC5160",
+                            "Run current (%.1fmA) may be below StealthChop lower limit (%.1fmA)", run_current,
                             lower_limit);
         }
       }
@@ -467,7 +1167,7 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
   }
 
   // Set ramp mode to positioning
-  TMC51X0_LOG_DEBUG(comm_, 3, "TMC5160", "Initialize: Setting ramp mode to POSITIONING");
+  TMC51X0_LOG_DEBUG(comm_, LogLevel::Debug, "TMC5160", "Initialize: Setting ramp mode to POSITIONING");
   if (!rampControl.SetRampMode(RampMode::POSITIONING)) {
     return Result<void>(ErrorCode::COMM_ERROR);
   }
@@ -478,14 +1178,14 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
     uint8_t chip_version = chip_version_result.Value();
     chip_version_ = chip_version;
     if (chip_version == ChipVersion::TMC5130) {
-      TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Detected TMC5130 chip (version 0x%02X)", chip_version);
+      TMC51X0_LOG_DEBUG(comm_, LogLevel::Info, "TMC5160", "Detected TMC5130 chip (version 0x%02X)", chip_version);
     } else if (chip_version == ChipVersion::TMC5160) {
-      TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Detected TMC5160 chip (version 0x%02X)", chip_version);
+      TMC51X0_LOG_DEBUG(comm_, LogLevel::Info, "TMC5160", "Detected TMC5160 chip (version 0x%02X)", chip_version);
     } else {
-      TMC51X0_LOG_DEBUG(comm_, 1, "TMC5160", "Unknown chip version: 0x%02X", chip_version);
+      TMC51X0_LOG_DEBUG(comm_, LogLevel::Warn, "TMC5160", "Unknown chip version: 0x%02X", chip_version);
     }
   } else {
-    TMC51X0_LOG_DEBUG(comm_, 1, "TMC5160", "Failed to read chip version, assuming TMC5160");
+    TMC51X0_LOG_DEBUG(comm_, LogLevel::Warn, "TMC5160", "Failed to read chip version, assuming TMC5160");
     chip_version_ = ChipVersion::TMC5160; // Default to TMC5160
   }
 
@@ -531,16 +1231,16 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
   }
 
   // Configure reference switches (defaults are safe/disabled)
-  TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Initialize: Configuring reference switches");
+  TMC51X0_LOG_DEBUG(comm_, LogLevel::Info, "TMC5160", "Initialize: Configuring reference switches");
   if (!switches.ConfigureReferenceSwitch(config.reference_switch_config)) {
-    TMC51X0_LOG_DEBUG(comm_, 0, "TMC5160", "Failed to configure reference switches");
+    TMC51X0_LOG_DEBUG(comm_, LogLevel::Error, "TMC5160", "Failed to configure reference switches");
     return Result<void>(ErrorCode::INVALID_VALUE);
   }
 
   // Configure encoder (defaults are safe/disabled)
-  TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Initialize: Configuring encoder");
+  TMC51X0_LOG_DEBUG(comm_, LogLevel::Info, "TMC5160", "Initialize: Configuring encoder");
   if (!encoder.Configure(config.encoder_config)) {
-    TMC51X0_LOG_DEBUG(comm_, 0, "TMC5160", "Failed to configure encoder");
+    TMC51X0_LOG_DEBUG(comm_, LogLevel::Error, "TMC5160", "Failed to configure encoder");
     return Result<void>(ErrorCode::INVALID_VALUE);
   }
 
@@ -551,58 +1251,58 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
     int32_t motor_output_steps =
         static_cast<int32_t>(static_cast<float>(motor_spec_.steps_per_rev) * mechanical_system_.gear_ratio);
 
-    TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160",
+    TMC51X0_LOG_DEBUG(comm_, LogLevel::Info, "TMC5160",
                       "Initialize: Setting encoder resolution (motor_steps=%ld, enc_pulses=%u, invert=%s)",
                       motor_output_steps, config.encoder_config.pulses_per_rev,
                       config.encoder_config.invert_direction ? "true" : "false");
     if (!encoder.SetResolution(motor_output_steps, static_cast<int32_t>(config.encoder_config.pulses_per_rev),
                                config.encoder_config.invert_direction)) {
-      TMC51X0_LOG_DEBUG(comm_, 0, "TMC5160", "Failed to set encoder resolution");
+      TMC51X0_LOG_DEBUG(comm_, LogLevel::Error, "TMC5160", "Failed to set encoder resolution");
       return Result<void>(ErrorCode::INVALID_VALUE);
     }
   }
 
   // Configure UART node address if set (only used in UART mode)
   if (config.uart_config.node_address > 0 || config.uart_config.send_delay > 0) {
-    TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Initialize: Configuring UART node address (address=%u, send_delay=%u)",
+    TMC51X0_LOG_DEBUG(comm_, LogLevel::Info, "TMC5160", "Initialize: Configuring UART node address (address=%u, send_delay=%u)",
                       config.uart_config.node_address, config.uart_config.send_delay);
     if (!communication.ConfigureUartNodeAddress(config.uart_config.node_address, config.uart_config.send_delay)) {
-      TMC51X0_LOG_DEBUG(comm_, 0, "TMC5160", "Failed to configure UART node address");
+      TMC51X0_LOG_DEBUG(comm_, LogLevel::Error, "TMC5160", "Failed to configure UART node address");
       return Result<void>(ErrorCode::INVALID_VALUE);
     }
   }
 
   // Configure StallGuard2 (defaults are safe/disabled)
-  TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Initialize: Configuring StallGuard2");
+  TMC51X0_LOG_DEBUG(comm_, LogLevel::Info, "TMC5160", "Initialize: Configuring StallGuard2");
   if (!stallGuard.ConfigureStallGuard(config.stallguard)) {
-    TMC51X0_LOG_DEBUG(comm_, 0, "TMC5160", "Failed to configure StallGuard2");
+    TMC51X0_LOG_DEBUG(comm_, LogLevel::Error, "TMC5160", "Failed to configure StallGuard2");
     return Result<void>(ErrorCode::INVALID_VALUE);
   }
 
   // Configure CoolStep (defaults are safe/disabled)
-  TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Initialize: Configuring CoolStep");
+  TMC51X0_LOG_DEBUG(comm_, LogLevel::Info, "TMC5160", "Initialize: Configuring CoolStep");
   if (!motorControl.ConfigureCoolStep(config.coolstep)) {
-    TMC51X0_LOG_DEBUG(comm_, 0, "TMC5160", "Failed to configure CoolStep");
+    TMC51X0_LOG_DEBUG(comm_, LogLevel::Error, "TMC5160", "Failed to configure CoolStep");
     return Result<void>(ErrorCode::INVALID_VALUE);
   }
 
   // Configure DcStep (defaults are safe/disabled)
-  TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Initialize: Configuring DcStep");
+  TMC51X0_LOG_DEBUG(comm_, LogLevel::Info, "TMC5160", "Initialize: Configuring DcStep");
   if (!motorControl.ConfigureDcStep(config.dcstep)) {
-    TMC51X0_LOG_DEBUG(comm_, 0, "TMC5160", "Failed to configure DcStep");
+    TMC51X0_LOG_DEBUG(comm_, LogLevel::Error, "TMC5160", "Failed to configure DcStep");
     return Result<void>(ErrorCode::INVALID_VALUE);
   }
 
   // CRITICAL: Ensure motor is in a safe, stopped state after initialization
   // This prevents any accidental motion from previous sessions or stale target positions
-  TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Initialize: Ensuring safe stopped state");
+  TMC51X0_LOG_DEBUG(comm_, LogLevel::Info, "TMC5160", "Initialize: Ensuring safe stopped state");
   
   // Stop any ongoing motion
   rampControl.Stop();
   
   // Set to HOLD mode to prevent any motion
   if (!rampControl.SetRampMode(RampMode::HOLD)) {
-    TMC51X0_LOG_DEBUG(comm_, 1, "TMC5160", "Warning: Failed to set HOLD mode during initialization");
+    TMC51X0_LOG_DEBUG(comm_, LogLevel::Warn, "TMC5160", "Warning: Failed to set HOLD mode during initialization");
     // Continue anyway - not critical enough to fail initialization
   }
   
@@ -627,18 +1327,23 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
   if (current_pos_result.IsOk()) {
     auto set_target_result = rampControl.SetTargetPosition(current_pos_result.Value(), Unit::Deg);
     if (!set_target_result.IsOk()) {
-      TMC51X0_LOG_DEBUG(comm_, 1, "TMC5160", "Warning: Failed to clear stale target position during initialization");
+      TMC51X0_LOG_DEBUG(comm_, LogLevel::Warn, "TMC5160", "Warning: Failed to clear stale target position during initialization");
       // Continue anyway - not critical enough to fail initialization
     }
   } else {
-    TMC51X0_LOG_DEBUG(comm_, 1, "TMC5160", "Warning: Failed to read current position during initialization");
+    TMC51X0_LOG_DEBUG(comm_, LogLevel::Warn, "TMC5160", "Warning: Failed to read current position during initialization");
     // Continue anyway - not critical enough to fail initialization
   }
   
-  TMC51X0_LOG_DEBUG(comm_, 2, "TMC5160", "Initialize: Safe stopped state ensured");
+  TMC51X0_LOG_DEBUG(comm_, LogLevel::Info, "TMC5160", "Initialize: Safe stopped state ensured");
 
   // Store configuration (will be updated on all runtime changes via Configure* methods)
   driver_config_ = config;
+
+#ifndef TMC51X0_DISABLE_DEBUG_LOGGING
+  // Print a compact, table-style summary of derived / calculated values (currents, cached write-only regs, etc.)
+  LogDerivedInitSummary("TMC5160", LogLevel::Info);
+#endif // TMC51X0_DISABLE_DEBUG_LOGGING
 
   initialized_ = true;
   return Result<void>();
@@ -819,7 +1524,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetRampMode(RampMode mode) noexcept
                           : (mode == RampMode::VELOCITY_POS) ? "VELOCITY_POS"
                           : (mode == RampMode::VELOCITY_NEG) ? "VELOCITY_NEG"
                                                              : "HOLD";
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetRampMode(%s)", mode_name);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "Ramp - mode: %s", mode_name);
 
   auto mode_guard = driver_.RequireInternalRampMode();
   if (!mode_guard) {
@@ -961,7 +1666,7 @@ Result<void> TMC51x0<CommType>::RampControl::MoveRelative(float offset, Unit uni
 // Private helper implementation
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetTargetPosition(int32_t position) noexcept {
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetTargetPosition(%d)", position);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "Ramp - target_position: %d", position);
   auto mode_guard = driver_.RequireInternalRampMode();
   if (!mode_guard) {
     return mode_guard;
@@ -1028,7 +1733,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetMaxSpeed(float value, Unit unit)
     return mode_guard;
   }
   float steps_per_sec = driver_.convertSpeedToSteps(value, unit);
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetMaxSpeed(%.2f steps/s)", steps_per_sec);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "Ramp - max_speed: %.2f steps/s", steps_per_sec);
 
   int32_t internal = driver_.speedToInternal(std::abs(steps_per_sec));
   // VMAX range per datasheet: 0 to (2^23)-512 = 0x7FFE00 (8,388,096)
@@ -1072,7 +1777,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetAccelerations(float accel_val, f
   float accel_steps = driver_.convertAccelerationToSteps(accel_val, unit);
   float decel_steps = driver_.convertAccelerationToSteps(decel_val, unit);
 
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetAccelerations(accel=%.2f, decel=%.2f steps/s²)",
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "Ramp - accelerations: accel=%.2f, decel=%.2f steps/s²",
                     accel_steps, decel_steps);
 
   int32_t accel_internal = driver_.accelToInternal(std::abs(accel_steps));
@@ -1106,7 +1811,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetDeceleration(float value, Unit u
     return mode_guard;
   }
   float decel_steps = driver_.convertAccelerationToSteps(value, unit);
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "RampControl::SetDeceleration(decel=%.2f steps/s²)", decel_steps);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "Ramp - deceleration: %.2f steps/s²", decel_steps);
   int32_t decel_internal = driver_.accelToInternal(std::abs(decel_steps));
   decel_internal = std::min(decel_internal, static_cast<decltype(decel_internal)>(0xFFFF)); // DMAX is 16 bits
   auto write_result = driver_.comm_.WriteRegister(Registers::DMAX, static_cast<uint32_t>(decel_internal));
@@ -1621,7 +2326,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetFinalDeceleration(float d1, Unit
     if (rampmode_result && rampmode_result.Value() == RampMode::POSITIONING) {
       // In positioning mode, D1 must not be 0 - use minimum value
       d1_steps = 1.0F; // Set to minimum (will convert to internal format)
-      TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TMC5160", 
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "TMC5160", 
                         "D1=0 rejected in positioning mode, using minimum value");
     }
     // If not in positioning mode, allow 0 (will be written as 0)
@@ -1649,7 +2354,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetFinalDeceleration(float d1, Unit
 // MotorControl implementation
 template <typename CommType>
 Result<void> TMC51x0<CommType>::MotorControl::Enable() noexcept {
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "MotorControl::Enable()");
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "MotorControl::Enable()");
 
   // Enable via EN pin GPIO (EN is active LOW to enable, so set to ACTIVE/LOW to enable power stage)
   // This must be done first to enable the power stage
@@ -1661,16 +2366,17 @@ Result<void> TMC51x0<CommType>::MotorControl::Enable() noexcept {
     IOIN_Register ioin{};
     ioin.value = io_result.Value();
     bool drv_enn_high = (ioin.bits.drv_enn != 0);
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "MotorControl::Enable", 
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "MotorControl::Enable", 
                       "IOIN Register: DRV_ENN=%s (Active LOW, %s)",
                       drv_enn_high ? "HIGH" : "LOW",
                       drv_enn_high ? "DISABLED" : "ENABLED");
     if (drv_enn_high) {
-      TMC51X0_LOG_DEBUG(driver_.comm_, 0, "MotorControl::Enable", 
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "MotorControl::Enable", 
                         "WARNING: DRV_ENN is HIGH after enable attempt. Driver power stage is DISABLED.");
     }
   } else {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "MotorControl::Enable", "Failed to read IOIN register to verify DRV_ENN status");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "MotorControl::Enable",
+                      "Failed to read IOIN register to verify DRV_ENN status");
   }
 
   // Enable via CHOPCONF register (set toff > 0)
@@ -1690,7 +2396,7 @@ Result<void> TMC51x0<CommType>::MotorControl::Enable() noexcept {
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::MotorControl::Disable() noexcept {
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "MotorControl::Disable()");
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "MotorControl::Disable()");
 
   // Disable via CHOPCONF register (set toff = 0)
   auto chopconf_value_result = driver_.comm_.ReadRegister(Registers::CHOPCONF, driver_.GetCommAddress());
@@ -1715,7 +2421,7 @@ Result<void> TMC51x0<CommType>::MotorControl::Disable() noexcept {
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::MotorControl::SetCurrent(uint8_t irun, uint8_t ihold) noexcept {
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "MotorControl::SetCurrent(irun=%u, ihold=%u)", irun, ihold);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "MotorControl::SetCurrent(irun=%u, ihold=%u)", irun, ihold);
   
   // Use cached value from write_only_regs_ to preserve iholddelay (IHOLD_IRUN is write-only)
   IHOLD_IRUN_Register iholdrun{};
@@ -2063,7 +2769,7 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureStealthChop(const Stealth
     float steps_per_sec = driver_.convertSpeedToSteps(config.velocity_threshold, config.velocity_threshold_unit);
     int32_t tpwmthrs = driver_.thresholdSpeedToTstep(steps_per_sec);
     tpwmthrs = std::min(tpwmthrs, static_cast<decltype(tpwmthrs)>(0xFFFFF)); // TPWMTHRS is 20 bits
-    TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "Setting TPWMTHRS=%ld (%.2f %s)", tpwmthrs,
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "Setting TPWMTHRS=%ld (%.2f %s)", tpwmthrs,
                       config.velocity_threshold,
                       (config.velocity_threshold_unit == Unit::Steps) ? "steps/s" : "units/s");
     auto tpwmthrs_result = driver_.comm_.WriteRegister(Registers::TPWMTHRS, static_cast<uint32_t>(tpwmthrs), driver_.GetCommAddress());
@@ -2176,7 +2882,8 @@ Result<void> TMC51x0<CommType>::PowerStage::ConfigurePowerStage(const PowerStage
   drv_conf.bits.filt_isense = static_cast<uint8_t>(config.sense_filter);
 
   TMC51X0_LOG_DEBUG(
-      driver_.comm_, 2, "TMC5160", "Power stage: DRVSTRENGTH=%u (from %.1fnC), BBMTIME=%u, BBMCLKS=%u, FILT_ISENSE=%u",
+      driver_.comm_, LogLevel::Debug, "TMC5160",
+      "Power Stage - DRVSTRENGTH=%u (from %.1fnC), BBMTIME=%u, BBMCLKS=%u, FILT_ISENSE=%u",
       drv_conf.bits.drvstrength, miller, drv_conf.bits.bbmtime, drv_conf.bits.bbmclks, drv_conf.bits.filt_isense);
 
   auto write_result = driver_.comm_.WriteRegister(Registers::DRV_CONF, drv_conf.value, driver_.GetCommAddress());
@@ -2193,14 +2900,14 @@ Result<void> TMC51x0<CommType>::PowerStage::ConfigurePowerStage(const PowerStage
 template <typename CommType>
 Result<void> TMC51x0<CommType>::MotorControl::ConfigureMotorCurrent(const MotorSpec& motor_spec) noexcept {
   // Debug: Log motor spec values for troubleshooting
-  TMC51X0_LOG_DEBUG(driver_.comm_, 0, "TMC5160",
-                    "ConfigureMotorCurrent: sense_resistor_mohm=%u, supply_voltage_mv=%u, rated_current_ma=%u, run_current_ma=%u, hold_current_ma=%u",
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Debug, "TMC5160",
+                    "Motor Current - inputs: sense_resistor_mohm=%u, supply_voltage_mv=%u, rated_current_ma=%u, run_current_ma=%u, hold_current_ma=%u",
                     motor_spec.sense_resistor_mohm, motor_spec.supply_voltage_mv, motor_spec.rated_current_ma,
                     motor_spec.run_current_ma, motor_spec.hold_current_ma);
   
   // Validate inputs
   if (motor_spec.sense_resistor_mohm == 0 || motor_spec.supply_voltage_mv == 0) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "TMC5160",
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "TMC5160",
                       "Cannot calculate motor current: sense_resistor_mohm=%u, supply_voltage_mv=%u",
                       motor_spec.sense_resistor_mohm, motor_spec.supply_voltage_mv);
     return Result<void>(ErrorCode::INVALID_VALUE);
@@ -2216,17 +2923,17 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureMotorCurrent(const MotorS
     run_current = motor_spec.rated_current_ma;
   }
   if (run_current == 0) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "TMC5160", "Failed to calculate motor current: no current specified (run_current_ma=%u, rated_current_ma=%u)",
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "TMC5160", "Failed to calculate motor current: no current specified (run_current_ma=%u, rated_current_ma=%u)",
                       motor_spec.run_current_ma, motor_spec.rated_current_ma);
     return Result<void>(ErrorCode::INVALID_VALUE);
   }
 
-  TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TMC5160", "Calculating motor current: run_current=%u mA, sense_resistor=%u mOhm, supply_voltage=%u mV",
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Debug, "TMC5160", "Calculating motor current: run_current=%u mA, sense_resistor=%u mOhm, supply_voltage=%u mV",
                     run_current, motor_spec.sense_resistor_mohm, motor_spec.supply_voltage_mv);
   
   if (!CalculateMotorCurrent(motor_spec, motor_spec.sense_resistor_mohm, motor_spec.supply_voltage_mv, run_current,
                              motor_spec.hold_current_ma, calc_irun, calc_ihold, calc_scaler)) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "TMC5160", "Failed to calculate motor current settings: run_current=%u mA may exceed max for sense_resistor=%u mOhm",
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "TMC5160", "Failed to calculate motor current settings: run_current=%u mA may exceed max for sense_resistor=%u mOhm",
                       run_current, motor_spec.sense_resistor_mohm);
     return Result<void>(ErrorCode::INVALID_VALUE);
   }
@@ -2266,14 +2973,14 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureMotorCurrent(const MotorS
   driver_.calculated_global_scaler_ = calc_scaler;
 
   TMC51X0_LOG_DEBUG(
-      driver_.comm_, 1, "TMC5160",
-      "Calculated: IRUN=%u, IHOLD=%u, GLOBAL_SCALER=%u (adjustments: scaler=%.1f%%, irun=%.1f%%, ihold=%.1f%%)",
+      driver_.comm_, LogLevel::Debug, "TMC5160",
+      "Motor Current - calculated: IRUN=%u, IHOLD=%u, GLOBAL_SCALER=%u (adjustments: scaler=%.1f%%, irun=%.1f%%, ihold=%.1f%%)",
       calc_irun, calc_ihold, calc_scaler, motor_spec.scaler_adjustment_percent, motor_spec.irun_adjustment_percent,
       motor_spec.ihold_adjustment_percent);
 
   // Configure global scaler (TMC5160 only, TMC5130 doesn't have this register)
   if (driver_.chip_version_ != ChipVersion::TMC5130) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 3, "TMC5160", "Setting GLOBAL_SCALER=%u", calc_scaler);
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Debug, "TMC5160", "Setting GLOBAL_SCALER=%u", calc_scaler);
     if (!driver_.comm_.WriteRegister(Registers::GLOBAL_SCALER, calc_scaler, driver_.GetCommAddress())) {
       return Result<void>(ErrorCode::COMM_ERROR);
     }
@@ -2282,7 +2989,7 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureMotorCurrent(const MotorS
     driver_.calculated_global_scaler_ = calc_scaler;
   } else {
     // TMC5130: Skip GLOBAL_SCALER, use calculated IRUN directly
-    TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "TMC5130: Skipping GLOBAL_SCALER (not supported)");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "TMC5130: Skipping GLOBAL_SCALER (not supported)");
   }
 
   // Configure motor current (use calculated values)
@@ -2307,14 +3014,14 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureMotorCurrent(const MotorS
       float actual_total_delay_ms = static_cast<float>(current_steps) * static_cast<float>(iholddelay_value) *
                                     (RegisterConstants::TPOWERDOWN_DIVISOR * RegisterConstants::MS_PER_SEC / 
                                      static_cast<float>(driver_.f_clk_));
-      TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160",
-                        "IHOLDDELAY calculation: desired_total=%.2f ms, steps=%u, per_step=%.2f ms, IHOLDDELAY=%u, "
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Debug, "TMC5160",
+                        "Motor Current - IHOLDDELAY: desired_total=%.2f ms, steps=%u, per_step=%.2f ms, IHOLDDELAY=%u, "
                         "actual_total=%.2f ms",
                         motor_spec.iholddelay_ms, current_steps, per_step_delay_ms, iholddelay_value,
                         actual_total_delay_ms);
     } else {
       // IRUN == IHOLD, no current reduction steps, delay is always 0
-      TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160",
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160",
                         "IHOLDDELAY ignored (IRUN=%u == IHOLD=%u, no current reduction steps)", calc_irun, calc_ihold);
     }
   }
@@ -2324,7 +3031,7 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureMotorCurrent(const MotorS
   iholdrun.bits.ihold = calc_ihold;
   iholdrun.bits.irun = calc_irun;
   iholdrun.bits.iholddelay = iholddelay_value;
-  TMC51X0_LOG_DEBUG(driver_.comm_, 3, "TMC5160", "Setting IHOLD_IRUN(irun=%u, ihold=%u, iholddelay=%u)",
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Debug, "TMC5160", "Setting IHOLD_IRUN(irun=%u, ihold=%u, iholddelay=%u)",
                     iholdrun.bits.irun, iholdrun.bits.ihold, iholdrun.bits.iholddelay);
 
   // Configure global scaler (TMC5160 only, TMC5130 doesn't have this register)
@@ -2336,7 +3043,7 @@ Result<void> TMC51x0<CommType>::MotorControl::ConfigureMotorCurrent(const MotorS
     driver_.write_only_regs_.global_scaler = calc_scaler;
   } else {
     // TMC5130: Skip GLOBAL_SCALER, use calculated IRUN directly
-    TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160", "TMC5130: Skipping GLOBAL_SCALER (not supported)");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "TMC5130: Skipping GLOBAL_SCALER (not supported)");
   }
   
   auto iholdrun_result = driver_.comm_.WriteRegister(Registers::IHOLD_IRUN, iholdrun.value, driver_.GetCommAddress());
@@ -2474,7 +3181,7 @@ template <typename CommType>
 Result<void> TMC51x0<CommType>::MotorControl::SetGlobalScaler(uint16_t scaler) noexcept {
   // TMC5130 doesn't support GLOBAL_SCALER register
   if (driver_.chip_version_ == ChipVersion::TMC5130) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TMC5160", "TMC5130: GLOBAL_SCALER not supported, skipping");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "TMC5160", "TMC5130: GLOBAL_SCALER not supported, skipping");
     return Result<void>(); // Return success but don't write
   }
   scaler = constrain<decltype(scaler)>(scaler, 32U, 256U);
@@ -4598,7 +5305,7 @@ Result<void> TMC51x0<CommType>::Communication::SetClkFreq(const ExternalClockCon
     driver_.f_clk_ = config.frequency_hz;
     // Validate external clock frequency range
     if (driver_.f_clk_ < ClockFreq::MIN_F_CLK || driver_.f_clk_ > ClockFreq::MAX_F_CLK) {
-      TMC51X0_LOG_DEBUG(driver_.comm_, 0, "TMC5160",
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "TMC5160",
                         "Invalid external clock frequency: %u Hz (valid range: %u-%u Hz). Using internal 12 MHz clock.",
                         driver_.f_clk_, ClockFreq::MIN_F_CLK, ClockFreq::MAX_F_CLK);
       driver_.f_clk_ = ClockFreq::DEFAULT_F_CLK; // Fallback to internal clock
@@ -4618,33 +5325,31 @@ Result<void> TMC51x0<CommType>::Communication::SetClkFreq(const ExternalClockCon
   auto clk_result = driver_.comm_.SetClkFreq(clk_freq_to_set);
   if (!clk_result.IsOk()) {
     if (clk_freq_to_set == 0) {
-      TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160",
-                        "Communication::SetClkFreq: Using internal oscillator (frequency_hz=0, CLK pin should be tied "
-                        "to GND, f_clk=%u Hz)",
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160",
+                        "Clock - using internal oscillator (frequency_hz=0, CLK pin should be tied to GND, f_clk=%u Hz)",
                         driver_.f_clk_);
     } else {
-      TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160",
-                        "Communication::SetClkFreq: Using internal oscillator (clock control not supported, CLK pin "
-                        "tied to GND, f_clk=%u Hz for calculations)",
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160",
+                        "Clock - using internal oscillator (clock control not supported, CLK pin tied to GND, f_clk=%u Hz for calculations)",
                         driver_.f_clk_);
       // Clock control not supported, but we still use the configured frequency for calculations
       // If external clock was requested but not supported, we fall back to internal
       if (config.frequency_hz > 0) {
-        TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TMC5160",
-                          "WARNING: External clock requested (%u Hz) but not supported, using internal 12 MHz clock",
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "TMC5160",
+                          "Clock - WARNING: external clock requested (%u Hz) but not supported, using internal 12 MHz clock",
                           config.frequency_hz);
         driver_.f_clk_ = ClockFreq::DEFAULT_F_CLK; // Fallback to internal clock frequency
       }
     }
   } else {
     if (clk_freq_to_set == 0) {
-      TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TMC5160",
-                        "Communication::SetClkFreq: Internal clock enabled (CLK pin set to GND, f_clk=%u Hz)",
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160",
+                        "Clock - internal oscillator enabled (CLK pin set to GND, f_clk=%u Hz)",
                         driver_.f_clk_);
     } else {
       TMC51X0_LOG_DEBUG(
-          driver_.comm_, 2, "TMC5160",
-          "Communication::SetClkFreq: External clock set to %u Hz on CLK pin (f_clk=%u Hz for calculations)",
+          driver_.comm_, LogLevel::Info, "TMC5160",
+          "Clock - external clock set to %u Hz on CLK pin (f_clk=%u Hz for calculations)",
           clk_freq_to_set, driver_.f_clk_);
     }
   }
@@ -4756,6 +5461,20 @@ std::string TMC51x0<CommType>::GetDriverConfigString() const noexcept {
 }
 
 template <typename CommType>
+typename TMC51x0<CommType>::MotorCurrentDebugInfo TMC51x0<CommType>::GetMotorCurrentDebugInfo() const noexcept {
+  MotorCurrentDebugInfo info{};
+  info.initialized = initialized_;
+  info.f_clk_hz = f_clk_;
+  info.motor_spec = motor_spec_;
+  info.calculated_irun = calculated_irun_;
+  info.calculated_ihold = calculated_ihold_;
+  info.calculated_global_scaler = calculated_global_scaler_;
+  info.cached_global_scaler = write_only_regs_.global_scaler;
+  info.cached_ihold_irun = write_only_regs_.ihold_irun;
+  return info;
+}
+
+template <typename CommType>
 Result<uint8_t> TMC51x0<CommType>::Status::ReadFactoryConfig() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::FACTORY_CONF, driver_.GetCommAddress());
   if (!value_result) {
@@ -4827,24 +5546,24 @@ Result<uint8_t> TMC51x0<CommType>::Status::ReadOffsetCalibration(uint8_t& phase_
 
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Status::VerifySetup() noexcept {
-  TMC51X0_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "--- TMC5160 Setup Verification ---");
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "VerifySetup", "--- TMC5160 Setup Verification ---");
 
   // 1. Check IC Version
   auto version_result = driver_.io.ReadIcVersion();
   if (version_result.IsOk()) {
     uint8_t version = version_result.Value();
     if (version == 0x30) {
-      TMC51X0_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "IC Version: 0x30 (Matches TMC5160)");
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "VerifySetup", "IC Version: 0x30 (Matches TMC5160)");
     } else {
-      TMC51X0_LOG_DEBUG(driver_.comm_, 0, "VerifySetup", "IC Version MISMATCH: 0x%02X (Expected 0x30)", version);
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "VerifySetup", "IC Version MISMATCH: 0x%02X (Expected 0x30)", version);
       // If version is 0x00 or 0xFF, it's likely a communication error
       if (version == 0x00 || version == 0xFF) {
-        TMC51X0_LOG_DEBUG(driver_.comm_, 0, "VerifySetup", "CRITICAL: Bus communication likely failed!");
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "VerifySetup", "CRITICAL: Bus communication likely failed!");
         return Result<void>(ErrorCode::COMM_ERROR);
       }
     }
   } else {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "VerifySetup", "Failed to read IC Version!");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "VerifySetup", "Failed to read IC Version!");
     return Result<void>(ErrorCode::COMM_ERROR);
   }
 
@@ -4852,28 +5571,28 @@ Result<void> TMC51x0<CommType>::Status::VerifySetup() noexcept {
   auto inputs_result = driver_.io.ReadInputStatus();
   if (inputs_result.IsOk()) {
     InputStatus inputs = inputs_result.Value();
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "--- Input Pins (IOIN 0x04) ---");
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "REFL_STEP:      %s", inputs.refl_step ? "HIGH" : "LOW");
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "REFR_DIR:       %s", inputs.refr_dir ? "HIGH" : "LOW");
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "ENCB_DCEN_CFG4: %s", inputs.encb_dcen_cfg4 ? "HIGH" : "LOW");
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "ENCA_DCIN_CFG5: %s", inputs.enca_dcin_cfg5 ? "HIGH" : "LOW");
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "DRV_ENN:        %s (Active LOW)",
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "VerifySetup", "--- Input Pins (IOIN 0x04) ---");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "VerifySetup", "REFL_STEP:      %s", inputs.refl_step ? "HIGH" : "LOW");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "VerifySetup", "REFR_DIR:       %s", inputs.refr_dir ? "HIGH" : "LOW");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "VerifySetup", "ENCB_DCEN_CFG4: %s", inputs.encb_dcen_cfg4 ? "HIGH" : "LOW");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "VerifySetup", "ENCA_DCIN_CFG5: %s", inputs.enca_dcin_cfg5 ? "HIGH" : "LOW");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "VerifySetup", "DRV_ENN:        %s (Active LOW)",
                       inputs.drv_enn ? "HIGH (Disabled)" : "LOW (Enabled)");
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "ENC_N_DCO_CFG6: %s", inputs.enc_n_dco_cfg6 ? "HIGH" : "LOW");
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "SD_MODE:        %s %s", inputs.sd_mode ? "HIGH" : "LOW",
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "VerifySetup", "ENC_N_DCO_CFG6: %s", inputs.enc_n_dco_cfg6 ? "HIGH" : "LOW");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "VerifySetup", "SD_MODE:        %s %s", inputs.sd_mode ? "HIGH" : "LOW",
                       inputs.sd_mode ? "(External Step/Dir)" : "(Internal Ramp)");
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "SWCOMP_IN:      %s", inputs.swcomp_in ? "HIGH" : "LOW");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "VerifySetup", "SWCOMP_IN:      %s", inputs.swcomp_in ? "HIGH" : "LOW");
 
     // Warn about configuration mismatches
     if (inputs.drv_enn) {
-      TMC51X0_LOG_DEBUG(driver_.comm_, 1, "VerifySetup",
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "VerifySetup",
                         "NOTE: DRV_ENN is HIGH. Driver power stage is currently DISABLED.");
     }
   } else {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "VerifySetup", "Failed to read Input Status!");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "VerifySetup", "Failed to read Input Status!");
   }
 
-  TMC51X0_LOG_DEBUG(driver_.comm_, 1, "VerifySetup", "----------------------------------");
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "VerifySetup", "----------------------------------");
   return Result<void>();
 }
 
@@ -4990,7 +5709,7 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
   float max_v_steps = driver_.convertSpeedToSteps(max_velocity, velocity_unit);
   float accel_steps = driver_.convertAccelerationToSteps(acceleration, acceleration_unit);
 
-  TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                     "Starting comprehensive SGT tuning. Target=%.2f, Min=%.2f, Max=%.2f steps/s",
                     target_v_steps, min_v_steps, max_v_steps);
 
@@ -5006,7 +5725,7 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
   // 1. Start with SGT=0 (datasheet recommendation) or min_sgt if higher
   int8_t current_sgt = (min_sgt < 0) ? 0 : min_sgt;
   if (current_sgt != min_sgt) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                       "Adjusted starting SGT from %d to %d (avoiding false stalls)", min_sgt, current_sgt);
   }
 
@@ -5045,12 +5764,12 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
   if (!velocity_reached) {
     auto current_speed_debug_result = driver_.rampControl.GetCurrentSpeed(Unit::Steps);
     float current_speed_debug = current_speed_debug_result.IsOk() ? current_speed_debug_result.Value() : 0.0f;
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard",
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "TuneStallGuard",
                       "Warning: Target velocity not reached before tuning (V=%.1f)", current_speed_debug);
   }
 
   // 2. PRIMARY GOAL: Find optimal SGT at target velocity (most important)
-  TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                     "Phase 1: Finding optimal SGT at target velocity %.2f steps/s", target_v_steps);
 
   // First, find the range of working SGT values
@@ -5098,7 +5817,7 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
       auto vact_result = driver_.rampControl.GetCurrentSpeed(Unit::Steps);
       if (vact_result.IsOk() && std::abs(vact_result.Value()) < 10.0f) {
         float vact = vact_result.Value();
-        TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard",
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard",
                           "Motor stopped during tuning! (V=%.1f). Restarting...", vact);
         driver_.stallGuard.EnableStopOnStall(false);
         driver_.stallGuard.ClearStallFlag();
@@ -5106,7 +5825,7 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
         driver_.comm_.DelayMs(200);
       }
 
-      TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TuneStallGuard", 
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                         "SGT %d too low at target velocity (SG=0), increasing...", current_sgt);
       current_sgt++;
     } else {
@@ -5138,7 +5857,7 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
         best_sg_diff = sg_diff;
       }
 
-      TMC51X0_LOG_DEBUG(driver_.comm_, 2, "TuneStallGuard", 
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                         "SGT %d works: SG_RESULT=%u (diff from target=%u)", 
                         current_sgt, avg_sg_result, sg_diff);
 
@@ -5149,7 +5868,7 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
   // Determine optimal SGT
   if (min_working_sgt == -1) {
     // No working SGT found
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "TuneStallGuard", 
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "TuneStallGuard", 
                       "Failed to find any working SGT at target velocity. Reached max SGT %d.", max_sgt);
     driver_.rampControl.Stop();
     return Result<void>(ErrorCode::COMM_ERROR);
@@ -5159,7 +5878,7 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
   if (best_sgt != -1) {
     result.optimal_sgt = best_sgt;
     result.target_velocity_sg_result = best_sg_result;
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                       "Optimal SGT found: %d (SG_RESULT=%u, in ideal range 100-500)", 
                       best_sgt, best_sg_result);
   } else {
@@ -5185,7 +5904,7 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
     }
     result.target_velocity_sg_result = (sg_count > 0) ? (sg_sum / sg_count) : 0;
     
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                       "Optimal SGT found: %d (middle of working range %d-%d, SG_RESULT=%u)", 
                       result.optimal_sgt, min_working_sgt, max_working_sgt, result.target_velocity_sg_result);
   }
@@ -5194,21 +5913,21 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
 
   // 3. SECONDARY GOAL: Verify optimal SGT works at min/max velocities (if specified)
   if (min_v_steps > 0.0f || max_v_steps > 0.0f) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                       "Phase 2: Verifying optimal SGT %d at min/max velocities", result.optimal_sgt);
 
     // Test at min velocity
     if (min_v_steps > 0.0f) {
-      TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                         "Testing min velocity %.2f steps/s with SGT %d", min_v_steps, result.optimal_sgt);
 
       if (TestVelocityWithSGT(driver_, min_v_steps, result.optimal_sgt, result.min_velocity_sg_result)) {
         result.min_velocity_success = true;
         result.min_velocity_sgt = result.optimal_sgt;
-        TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                           "Min velocity works! SG_RESULT=%u", result.min_velocity_sg_result);
       } else {
-        TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                           "Min velocity %.2f does NOT work with optimal SGT %d. Finding working min velocity...",
                           min_v_steps, result.optimal_sgt);
 
@@ -5217,11 +5936,11 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
         if (FindWorkingVelocityRange(driver_, result.optimal_sgt, target_v_steps, -1.0f, 
                                      found_min_vel, result.min_velocity_sg_result, 100.0f, target_v_steps)) {
           result.actual_min_velocity = driver_.convertSpeedToUnit(found_min_vel, velocity_unit);
-          TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+          TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                             "Found working min velocity: %.2f (SG_RESULT=%u)", 
                             result.actual_min_velocity, result.min_velocity_sg_result);
         } else {
-          TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+          TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                             "Could not find working min velocity with optimal SGT");
         }
       }
@@ -5229,16 +5948,16 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
 
     // Test at max velocity
     if (max_v_steps > 0.0f) {
-      TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                         "Testing max velocity %.2f steps/s with SGT %d", max_v_steps, result.optimal_sgt);
 
       if (TestVelocityWithSGT(driver_, max_v_steps, result.optimal_sgt, result.max_velocity_sg_result)) {
         result.max_velocity_success = true;
         result.max_velocity_sgt = result.optimal_sgt;
-        TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                           "Max velocity works! SG_RESULT=%u", result.max_velocity_sg_result);
       } else {
-        TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                           "Max velocity %.2f does NOT work with optimal SGT %d. Finding working max velocity...",
                           max_v_steps, result.optimal_sgt);
 
@@ -5247,11 +5966,11 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
         if (FindWorkingVelocityRange(driver_, result.optimal_sgt, target_v_steps, 1.0f, 
                                      found_max_vel, result.max_velocity_sg_result, target_v_steps, 100000.0f)) {
           result.actual_max_velocity = driver_.convertSpeedToUnit(found_max_vel, velocity_unit);
-          TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+          TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                             "Found working max velocity: %.2f (SG_RESULT=%u)", 
                             result.actual_max_velocity, result.max_velocity_sg_result);
         } else {
-          TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+          TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                             "Could not find working max velocity with optimal SGT");
         }
       }
@@ -5261,7 +5980,7 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
   // Stop motor
   driver_.rampControl.Stop();
 
-  TMC51X0_LOG_DEBUG(driver_.comm_, 1, "TuneStallGuard", 
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
                     "Tuning complete. Optimal SGT=%d, Min success=%d, Max success=%d",
                     result.optimal_sgt, result.min_velocity_success, result.max_velocity_success);
 
@@ -5281,7 +6000,7 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
   // Initialize result
   result = StallGuardTuningResult{};
 
-  TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard",
                     "Starting comprehensive StallGuard tuning with current margin=%u mA",
                     safe_current_margin_mA);
 
@@ -5300,7 +6019,7 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
   // Use cached values directly as IHOLD_IRUN is write-only
   saved.saved_irun = driver_.calculated_irun_;
   saved.saved_ihold = driver_.calculated_ihold_;
-  TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard",
                     "Using cached IHOLD_IRUN: IRUN=%u, IHOLD=%u",
                     saved.saved_irun, saved.saved_ihold);
 
@@ -5310,7 +6029,7 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
     if (saved.saved_global_scaler == 0) {
       saved.saved_global_scaler = 256; // 0 means 256
     }
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard",
                       "Using cached GLOBAL_SCALER: %u",
                       saved.saved_global_scaler);
   }
@@ -5322,7 +6041,7 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
   saved.saved_stallguard = driver_.driver_config_.stallguard;
 
   saved.settings_saved = true;
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "AutoTuneStallGuard",
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard",
                     "Saved settings: IRUN=%u, IHOLD=%u, GLOBAL_SCALER=%u",
                     saved.saved_irun, saved.saved_ihold, saved.saved_global_scaler);
 
@@ -5351,7 +6070,7 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
                                           static_cast<uint16_t>(current_rms_ma_int * 0.2F));
       if (new_current_ma < min_current_ma) {
         new_current_ma = min_current_ma;
-        TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard",
                           "Current margin would reduce current too low, using minimum: %u mA",
                           new_current_ma);
       }
@@ -5390,30 +6109,30 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
           // Apply new current settings
           if (driver_.chip_version_ != ChipVersion::TMC5130) {
             if (!driver_.motorControl.SetGlobalScaler(new_scaler)) {
-              TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+              TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "AutoTuneStallGuard",
                                 "Failed to set GLOBAL_SCALER for current margin");
               // Continue anyway - might still work
             }
           }
 
           if (!driver_.motorControl.SetCurrent(new_irun, new_ihold)) {
-            TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+            TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "AutoTuneStallGuard",
                               "Failed to set current for current margin");
             // Continue anyway - might still work
           } else {
             current_was_reduced = true;
-            TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+            TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard",
                               "Reduced current: %u mA -> %u mA (IRUN: %u->%u, SCALER: %u->%u)",
                               current_rms_ma, new_current_ma, saved.saved_irun, new_irun,
                               saved.saved_global_scaler, new_scaler);
           }
         } else {
-          TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+          TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "AutoTuneStallGuard",
                             "Could not calculate new current settings, using original current");
         }
       }
     } else {
-      TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "AutoTuneStallGuard",
                         "Cannot apply current margin: sense resistor not configured");
     }
   }
@@ -5425,11 +6144,11 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
   coolstep_disabled.lower_threshold_sg = 0; // Disable CoolStep
   coolstep_disabled.enable_filter = false;   // Disable filter during tuning
   if (!driver_.motorControl.ConfigureCoolStep(coolstep_disabled)) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "AutoTuneStallGuard",
                       "Failed to disable CoolStep");
     // Continue anyway
   } else {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 2, "AutoTuneStallGuard", "CoolStep disabled for tuning");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard", "CoolStep disabled for tuning");
   }
 
   // ========================================================================
@@ -5441,7 +6160,7 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
   sg_config_no_filter.threshold = 0; // Temporary, will be set during tuning
   sg_config_no_filter.enable_filter = false; // Disable filter for immediate response
   if (!driver_.stallGuard.ConfigureStallGuard(sg_config_no_filter)) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard",
                       "Failed to configure StallGuard filter (non-critical)");
     // Continue anyway - TuneStallGuard will set it
   }
@@ -5450,7 +6169,7 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
   // STEP 5: Disable stop-on-stall and clear stall flags
   // ========================================================================
   if (!driver_.stallGuard.EnableStopOnStall(false)) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "AutoTuneStallGuard",
                       "Failed to disable stop-on-stall");
     // Continue anyway
   }
@@ -5463,7 +6182,7 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
   // Adjust min_sgt to start at 0 if negative (to avoid false stalls)
   int8_t adjusted_min_sgt = (min_sgt < 0) ? 0 : min_sgt;
   if (adjusted_min_sgt != min_sgt) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard",
                       "Adjusted min_sgt from %d to %d (avoiding false stalls)", min_sgt, adjusted_min_sgt);
   }
 
@@ -5478,24 +6197,24 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
 
   // Restore motor current if it was reduced
   if (current_was_reduced && saved.settings_saved) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 2, "AutoTuneStallGuard",
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard",
                       "Restoring motor current: IRUN=%u, IHOLD=%u, GLOBAL_SCALER=%u",
                       saved.saved_irun, saved.saved_ihold, saved.saved_global_scaler);
 
     if (driver_.chip_version_ != ChipVersion::TMC5130) {
       if (!driver_.motorControl.SetGlobalScaler(saved.saved_global_scaler)) {
-        TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "AutoTuneStallGuard",
                           "Failed to restore GLOBAL_SCALER");
         restore_success = false;
       }
     }
 
     if (!driver_.motorControl.SetCurrent(saved.saved_irun, saved.saved_ihold)) {
-      TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "AutoTuneStallGuard",
                         "Failed to restore motor current");
       restore_success = false;
     } else {
-      TMC51X0_LOG_DEBUG(driver_.comm_, 2, "AutoTuneStallGuard",
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard",
                         "Motor current restored successfully");
     }
   }
@@ -5503,11 +6222,11 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
   // Restore CoolStep configuration
   if (saved.settings_saved) {
     if (!driver_.motorControl.ConfigureCoolStep(saved.saved_coolstep)) {
-      TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard",
                         "Failed to restore CoolStep configuration (non-critical)");
       // Non-critical, continue
     } else {
-      TMC51X0_LOG_DEBUG(driver_.comm_, 2, "AutoTuneStallGuard",
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard",
                         "CoolStep configuration restored");
     }
   }
@@ -5517,11 +6236,11 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
   // The user can configure it explicitly if needed.
 
   if (!restore_success) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "AutoTuneStallGuard",
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "AutoTuneStallGuard",
                       "Warning: Some settings could not be restored");
   }
 
-  TMC51X0_LOG_DEBUG(driver_.comm_, 1, "AutoTuneStallGuard",
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard",
                     "Tuning complete. Success=%d, Optimal SGT=%d",
                     tuning_success, result.optimal_sgt);
 
@@ -5564,14 +6283,14 @@ template <typename CommType>
 void TMC51x0<CommType>::Printer::PrintRegisterField(const char* name, uint32_t value, const char* format) noexcept {
   char format_str[64];
   snprintf(format_str, sizeof(format_str), "  %%s: %s", format);
-  TMC51X0_LOG_DEBUG(driver_.comm_, 3, "Printer", format_str, name, value);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Debug, "Printer", format_str, name, value);
 }
 
 template <typename CommType>
 void TMC51x0<CommType>::Printer::PrintGconf() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::GCONF, driver_.GetCommAddress());
   if (!value_result) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "Printer", "Error reading GCONF");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Printer", "Error reading GCONF");
     return;
   }
   uint32_t value = value_result.Value();
@@ -5579,7 +6298,7 @@ void TMC51x0<CommType>::Printer::PrintGconf() noexcept {
   GCONF_Register gconf{};
   gconf.value = value;
   
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "Printer", "GCONF Register: 0x%08X", gconf.value);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Printer", "GCONF Register: 0x%08X", gconf.value);
   PrintRegisterField("recalibrate", gconf.bits.recalibrate, "%u");
   PrintRegisterField("faststandstill", gconf.bits.faststandstill, "%u");
   PrintRegisterField("en_pwm_mode (StealthChop)", gconf.bits.en_pwm_mode, "%u");
@@ -5603,7 +6322,7 @@ template <typename CommType>
 void TMC51x0<CommType>::Printer::PrintGstat() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::GSTAT, driver_.GetCommAddress());
   if (!value_result) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "Printer", "Error reading GSTAT");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Printer", "Error reading GSTAT");
     return;
   }
   uint32_t value = value_result.Value();
@@ -5611,7 +6330,7 @@ void TMC51x0<CommType>::Printer::PrintGstat() noexcept {
   GSTAT_Register gstat{};
   gstat.value = value;
   
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "Printer", "GSTAT Register: 0x%08X", gstat.value);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Printer", "GSTAT Register: 0x%08X", gstat.value);
   PrintRegisterField("reset", gstat.bits.reset, "%u");
   PrintRegisterField("drv_err", gstat.bits.drv_err, "%u");
   PrintRegisterField("uv_cp", gstat.bits.uv_cp, "%u");
@@ -5626,7 +6345,7 @@ template <typename CommType>
 void TMC51x0<CommType>::Printer::PrintRampStat() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::RAMP_STAT, driver_.GetCommAddress());
   if (!value_result) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "Printer", "Error reading RAMP_STAT");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Printer", "Error reading RAMP_STAT");
     return;
   }
   uint32_t value = value_result.Value();
@@ -5634,7 +6353,7 @@ void TMC51x0<CommType>::Printer::PrintRampStat() noexcept {
   RAMP_STAT_Register ramp_stat{};
   ramp_stat.value = value;
   
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "Printer", "RAMP_STAT Register: 0x%08X", ramp_stat.value);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Printer", "RAMP_STAT Register: 0x%08X", ramp_stat.value);
   PrintRegisterField("status_stop_l", ramp_stat.bits.status_stop_l, "%u");
   PrintRegisterField("status_stop_r", ramp_stat.bits.status_stop_r, "%u");
   PrintRegisterField("status_latch_l", ramp_stat.bits.status_latch_l, "%u");
@@ -5653,7 +6372,7 @@ template <typename CommType>
 void TMC51x0<CommType>::Printer::PrintDrvStatus() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
   if (!value_result) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "Printer", "Error reading DRV_STATUS");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Printer", "Error reading DRV_STATUS");
     return;
   }
   uint32_t value = value_result.Value();
@@ -5661,7 +6380,7 @@ void TMC51x0<CommType>::Printer::PrintDrvStatus() noexcept {
   DRV_STATUS_Register drv_status{};
   drv_status.value = value;
   
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "Printer", "DRV_STATUS Register: 0x%08X", drv_status.value);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Printer", "DRV_STATUS Register: 0x%08X", drv_status.value);
   PrintRegisterField("stst", drv_status.bits.stst, "%u");
   PrintRegisterField("olb", drv_status.bits.olb, "%u");
   PrintRegisterField("ola", drv_status.bits.ola, "%u");
@@ -5680,7 +6399,7 @@ template <typename CommType>
 void TMC51x0<CommType>::Printer::PrintChopconf() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::CHOPCONF, driver_.GetCommAddress());
   if (!value_result) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "Printer", "Error reading CHOPCONF");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Printer", "Error reading CHOPCONF");
     return;
   }
   uint32_t value = value_result.Value();
@@ -5688,7 +6407,7 @@ void TMC51x0<CommType>::Printer::PrintChopconf() noexcept {
   CHOPCONF_Register chopconf{};
   chopconf.value = value;
   
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "Printer", "CHOPCONF Register: 0x%08X", chopconf.value);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Printer", "CHOPCONF Register: 0x%08X", chopconf.value);
   PrintRegisterField("toff", chopconf.bits.toff, "%u");
   PrintRegisterField("hstrt_tfd", chopconf.bits.hstrt_tfd, "%u");
   PrintRegisterField("hend_offset", chopconf.bits.hend_offset, "%u");
@@ -5712,7 +6431,7 @@ void TMC51x0<CommType>::Printer::PrintPwmconf() noexcept {
   PWMCONF_Register pwmconf{};
   pwmconf.value = driver_.write_only_regs_.pwmconf;
   
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "Printer", "PWMCONF Register: 0x%08X", pwmconf.value);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Printer", "PWMCONF Register: 0x%08X", pwmconf.value);
   PrintRegisterField("pwm_ofs", pwmconf.bits.pwm_ofs, "%u");
   PrintRegisterField("pwm_grad", pwmconf.bits.pwm_grad, "%u");
   PrintRegisterField("pwm_freq", pwmconf.bits.pwm_freq, "%u");
@@ -5725,7 +6444,7 @@ template <typename CommType>
 void TMC51x0<CommType>::Printer::PrintPwmScale() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::PWM_SCALE, driver_.GetCommAddress());
   if (!value_result) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "Printer", "Error reading PWM_SCALE");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Printer", "Error reading PWM_SCALE");
     return;
   }
   uint32_t value = value_result.Value();
@@ -5733,7 +6452,7 @@ void TMC51x0<CommType>::Printer::PrintPwmScale() noexcept {
   PWM_SCALE_Register pwm_scale{};
   pwm_scale.value = value;
   
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "Printer", "PWM_SCALE Register: 0x%08X", pwm_scale.value);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Printer", "PWM_SCALE Register: 0x%08X", pwm_scale.value);
   PrintRegisterField("pwm_scale_sum", pwm_scale.bits.pwm_scale_sum, "%u");
   PrintRegisterField("pwm_scale_auto", pwm_scale.bits.pwm_scale_auto, "%d");
 }
@@ -5742,7 +6461,7 @@ template <typename CommType>
 void TMC51x0<CommType>::Printer::PrintSwMode() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::SW_MODE, driver_.GetCommAddress());
   if (!value_result) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "Printer", "Error reading SW_MODE");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Printer", "Error reading SW_MODE");
     return;
   }
   uint32_t value = value_result.Value();
@@ -5750,7 +6469,7 @@ void TMC51x0<CommType>::Printer::PrintSwMode() noexcept {
   SW_MODE_Register sw_mode{};
   sw_mode.value = value;
   
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "Printer", "SW_MODE Register: 0x%08X", sw_mode.value);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Printer", "SW_MODE Register: 0x%08X", sw_mode.value);
   PrintRegisterField("stop_l_enable", sw_mode.bits.stop_l_enable, "%u");
   PrintRegisterField("stop_r_enable", sw_mode.bits.stop_r_enable, "%u");
   PrintRegisterField("pol_stop_l", sw_mode.bits.pol_stop_l, "%u");
@@ -5769,7 +6488,7 @@ template <typename CommType>
 void TMC51x0<CommType>::Printer::PrintIoin() noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::IOIN, driver_.GetCommAddress());
   if (!value_result) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, 0, "Printer", "Error reading IOIN");
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Printer", "Error reading IOIN");
     return;
   }
   uint32_t value = value_result.Value();
@@ -5777,7 +6496,7 @@ void TMC51x0<CommType>::Printer::PrintIoin() noexcept {
   IOIN_Register ioin{};
   ioin.value = value;
   
-  TMC51X0_LOG_DEBUG(driver_.comm_, 2, "Printer", "IOIN Register: 0x%08X", ioin.value);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Printer", "IOIN Register: 0x%08X", ioin.value);
   PrintRegisterField("refl_step", ioin.bits.refl_step, "%u");
   PrintRegisterField("refr_dir", ioin.bits.refr_dir, "%u");
   PrintRegisterField("encb_dcen_cfg4", ioin.bits.encb_dcen_cfg4, "%u");

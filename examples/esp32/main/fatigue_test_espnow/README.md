@@ -20,6 +20,7 @@ The **Test Unit** is a unified fatigue tester with dual communication:
 fatigue_test_espnow/
 ├── espnow_protocol.hpp          # Shared ESP-NOW protocol definitions
 ├── main.cpp                     # Main application (unified implementation)
+├── espnow_protocol_test_unit.cpp # Protocol test unit (no motor control)
 ├── espnow_receiver.hpp/cpp      # ESP-NOW receiver implementation
 ├── bounds_finder.hpp            # Abstract bounds finder interface
 ├── bounds_finder_stallguard.cpp # StallGuard2 implementation
@@ -69,10 +70,34 @@ static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG =
 
 ## Building
 
+### Full Test Unit (with Motor Control)
+
 ```bash
 cd examples/esp32
 ./scripts/build_app.sh fatigue_test_espnow_unit Release
 ```
+
+### Protocol Test Unit (No Motor Control)
+
+For testing ESP-NOW protocol communication without hardware dependencies:
+
+```bash
+cd examples/esp32
+./scripts/build_app.sh espnow_protocol_test_unit Release
+```
+
+The protocol test unit (`espnow_protocol_test_unit.cpp`) is a minimal implementation that:
+- Receives all ESP-NOW protocol commands (CONFIG_REQUEST, CONFIG_SET, START, PAUSE, RESUME, STOP)
+- Responds with appropriate protocol messages (ACKs, status updates, etc.)
+- Simulates test state changes (IDLE → RUNNING → PAUSED → COMPLETED)
+- Does NOT initialize motor driver, bounds finder, or motion controller
+- Useful for validating ESP-NOW communication without requiring motor hardware
+
+**Use Cases:**
+- Testing ESP-NOW protocol implementation
+- Validating remote controller communication
+- Debugging protocol issues without motor hardware
+- Development and CI/CD testing
 
 ## Usage
 

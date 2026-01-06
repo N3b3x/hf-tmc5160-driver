@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
+#include <limits>
 #include <inttypes.h>
 #include "registers/tmc51x0_registers.hpp"
 
@@ -31,18 +32,46 @@ public:
     using TestConfig = tmc51x0_test_config::GetTestConfigForTestRig<test_rig>;
     using RigConfig = tmc51x0_test_config::TestRigConfig<test_rig>;
     using MotorConfig = typename RigConfig::Motor;
+    using BoardConfig = typename RigConfig::Board;
     
     const char* GetMethodName() const override {
         return "StallGuard2";
     }
 
     BoundsResult FindBounds(
-        tmc51x0::TMC51x0<Esp32SPI>& driver
+        tmc51x0::TMC51x0<Esp32SPI>& driver,
+        const BoundsFinderConfig* config = nullptr,
+        const volatile bool* cancel = nullptr
     ) override {
         uint32_t total_start_time = esp_timer_get_time() / 1000;
         ESP_LOGI(TAG, "═══════════════════════════════════════════════════════════");
         ESP_LOGI(TAG, "Starting StallGuard2 bounds finding...");
         ESP_LOGI(TAG, "═══════════════════════════════════════════════════════════");
+
+        auto is_cancelled = [cancel]() -> bool {
+            return (cancel != nullptr) && (*cancel);
+        };
+        if (is_cancelled()) {
+            ESP_LOGW(TAG, "Bounds finding cancelled before start");
+            return BoundsResult(false, 0, 0, false, true);
+        }
+        
+        // Use runtime config if provided, otherwise use test config defaults
+        float search_velocity_rpm = config && config->search_velocity_rpm > 0.0f
+            ? config->search_velocity_rpm
+            : TestConfig::Motion::BOUNDS_SEARCH_SPEED_RPM;
+        
+        float min_velocity_rpm = config && config->min_velocity_rpm > 0.0f 
+            ? config->min_velocity_rpm 
+            : TestConfig::StallGuard::MIN_VELOCITY_RPM;
+        
+        float current_factor = config && config->current_factor > 0.0f
+            ? config->current_factor
+            : TestConfig::StallGuard::STALL_DETECTION_CURRENT_FACTOR;
+        
+        float search_accel_rev_s2 = config && config->search_accel_rev_s2 > 0.0f
+            ? config->search_accel_rev_s2
+            : TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
 
         // StallGuard2 requires SpreadCycle (StealthChop disabled). We temporarily
         // force it off for this bounds-finding run and restore afterward.
@@ -61,6 +90,7 @@ public:
                 driver.stallGuard.EnableStopOnStall(cached_stop_on_stall);
             }
         };
+        // Current reduction restoration will be handled after saved_current is populated
         {
             auto stealth_enabled = driver.motorControl.IsStealthChopEnabled();
             if (stealth_enabled && stealth_enabled.Value()) {
@@ -72,6 +102,73 @@ public:
                              static_cast<int>(disable_res.Error()));
                 }
             }
+        }
+
+        if (is_cancelled()) {
+            ESP_LOGW(TAG, "Bounds finding cancelled during setup (stealthchop stage)");
+            restore_stealthchop_if_needed();
+            return BoundsResult(false, 0, 0, false, true);
+        }
+
+        // Save original motor current settings and reduce current for stall detection
+        // Per Duet3D documentation: "Motor current is often reduced during stall-detect homing"
+        // Lower current (30-50%) makes stall detection easier at low speeds and reduces false positives
+        struct SavedCurrentSettings {
+            tmc51x0::MotorSpec original_motor_spec{};
+            bool was_reduced{false};
+        } saved_current{};
+
+        // Construct original motor spec from test config values
+        saved_current.original_motor_spec.steps_per_rev = MotorConfig::MOTOR_FULL_STEPS;
+        saved_current.original_motor_spec.rated_current_ma = MotorConfig::RATED_CURRENT_MA;
+        saved_current.original_motor_spec.run_current_ma = MotorConfig::TARGET_RUN_CURRENT_MA;
+        saved_current.original_motor_spec.hold_current_ma = MotorConfig::TARGET_HOLD_CURRENT_MA;
+        saved_current.original_motor_spec.winding_resistance_mohm = MotorConfig::RESISTANCE_MOHM;
+        saved_current.original_motor_spec.winding_inductance_mh = MotorConfig::INDUCTANCE_MH;
+        saved_current.original_motor_spec.sense_resistor_mohm = BoardConfig::SENSE_RESISTOR_MOHM;
+        saved_current.original_motor_spec.supply_voltage_mv = MotorConfig::SUPPLY_VOLTAGE_MV;
+
+        // Reduce current for stall detection if configured
+        if (current_factor > 0.0f && current_factor < 1.0f) {
+            
+            // Calculate reduced current: rated_current * reduction_factor
+            uint16_t reduced_run_current_ma = static_cast<uint16_t>(
+                MotorConfig::RATED_CURRENT_MA * current_factor
+            );
+            
+            // Calculate hold current proportionally (maintain same ratio as original)
+            float hold_ratio = static_cast<float>(saved_current.original_motor_spec.hold_current_ma) / 
+                               static_cast<float>(saved_current.original_motor_spec.run_current_ma);
+            uint16_t reduced_hold_current_ma = static_cast<uint16_t>(
+                reduced_run_current_ma * hold_ratio
+            );
+            
+            // Create modified motor spec with reduced current
+            tmc51x0::MotorSpec reduced_motor_spec = saved_current.original_motor_spec;
+            reduced_motor_spec.run_current_ma = reduced_run_current_ma;
+            reduced_motor_spec.hold_current_ma = reduced_hold_current_ma;
+            
+            // Apply reduced current using ConfigureMotorCurrent (automatically calculates IRUN/IHOLD/GLOBAL_SCALER)
+            auto reduce_result = driver.motorControl.ConfigureMotorCurrent(reduced_motor_spec);
+            if (reduce_result) {
+                saved_current.was_reduced = true;
+                ESP_LOGI(TAG, "Reduced motor current for stall detection: %u mA (%.0f%% of rated %u mA)",
+                         reduced_run_current_ma,
+                         current_factor * 100.0f,
+                         MotorConfig::RATED_CURRENT_MA);
+            } else {
+                ESP_LOGW(TAG, "Failed to reduce motor current (ErrorCode: %d), continuing with full current",
+                         static_cast<int>(reduce_result.Error()));
+            }
+        }
+
+        if (is_cancelled()) {
+            ESP_LOGW(TAG, "Bounds finding cancelled during setup (current stage)");
+            if (saved_current.was_reduced) {
+                (void)driver.motorControl.ConfigureMotorCurrent(saved_current.original_motor_spec);
+            }
+            restore_stealthchop_if_needed();
+            return BoundsResult(false, 0, 0, false, true);
         }
 
         // Configure StallGuard2
@@ -97,7 +194,7 @@ public:
             cool_cfg.enable_filter = TestConfig::StallGuard::FILTER_ENABLED;
             // If you enable CoolStep, make sure it is only active in the same
             // velocity region where StallGuard is stable.
-            cool_cfg.min_velocity = TestConfig::StallGuard::MIN_VELOCITY_RPM;
+            cool_cfg.min_velocity = min_velocity_rpm;
             cool_cfg.max_velocity = 0.0f; // no upper limit
             cool_cfg.velocity_unit = tmc51x0::Unit::RPM;
 
@@ -111,20 +208,42 @@ public:
         tmc51x0::StallGuardConfig sg_config{};
         sg_config.threshold = TestConfig::StallGuard::SGT_HOMING;
         sg_config.enable_filter = TestConfig::StallGuard::FILTER_ENABLED;
-        sg_config.min_velocity = TestConfig::StallGuard::MIN_VELOCITY_RPM;
+        sg_config.min_velocity = min_velocity_rpm;
         sg_config.velocity_unit = tmc51x0::Unit::RPM;
         
         ESP_LOGI(TAG, "StallGuard2 Config:");
         ESP_LOGI(TAG, "  SGT threshold: %d", TestConfig::StallGuard::SGT_HOMING);
         ESP_LOGI(TAG, "  Filter: %s", TestConfig::StallGuard::FILTER_ENABLED ? "enabled" : "disabled");
-        ESP_LOGI(TAG, "  Min velocity: %.0f RPM", TestConfig::StallGuard::MIN_VELOCITY_RPM);
+        ESP_LOGI(TAG, "  Min velocity: %.0f RPM", min_velocity_rpm);
         
         if (!driver.stallGuard.ConfigureStallGuard(sg_config)) {
             ESP_LOGE(TAG, "❌ Failed to configure StallGuard2");
+            // Restore current before returning
+            if (saved_current.was_reduced) {
+                auto restore_result = driver.motorControl.ConfigureMotorCurrent(saved_current.original_motor_spec);
+                if (restore_result) {
+                    ESP_LOGI(TAG, "Restored motor current to normal: %u mA", saved_current.original_motor_spec.run_current_ma);
+                } else {
+                    ESP_LOGW(TAG, "Failed to restore motor current (ErrorCode: %d)",
+                             static_cast<int>(restore_result.Error()));
+                }
+            }
             restore_stealthchop_if_needed();
             return BoundsResult(false, 0, 0, false);
         }
         ESP_LOGI(TAG, "  ✓ StallGuard2 configured");
+
+        if (is_cancelled()) {
+            ESP_LOGW(TAG, "Bounds finding cancelled during setup (stallguard stage)");
+            driver.rampControl.Stop();
+            driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+            if (saved_current.was_reduced) {
+                (void)driver.motorControl.ConfigureMotorCurrent(saved_current.original_motor_spec);
+            }
+            restore_stop_on_stall_if_needed();
+            restore_stealthchop_if_needed();
+            return BoundsResult(false, 0, 0, false, true);
+        }
 
         // Print a debug snapshot of the relevant registers / thresholds so we can
         // diagnose "SG_RESULT always 0" issues.
@@ -201,11 +320,11 @@ public:
         // Configure motion parameters
         constexpr float TARGET_ANGLE_DEG = 360.0f;
         constexpr float OFFSET_ANGLE_DEG = 5.0f;
-        float search_speed_rpm = TestConfig::Motion::BOUNDS_SEARCH_SPEED_RPM;
+        float search_speed_rpm = search_velocity_rpm;
         // Use the test's bounds-search acceleration (MotorConfig ramp defaults are
         // for general motion profiles and can be much slower, keeping us longer in
         // low-speed resonance bands and near the StallGuard minimum-velocity edge).
-        float search_accel_rev_s2 = TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
+        // Note: search_accel_rev_s2 is already set from config above
         float vstart_rpm = MotorConfig::RAMP_VSTART_RPM;
         float vstop_rpm = MotorConfig::RAMP_VSTOP_RPM;
         float v1_rpm = MotorConfig::RAMP_V1_RPM;
@@ -234,8 +353,19 @@ public:
         ESP_LOGI(TAG, "");
         ESP_LOGI(TAG, "Searching for MIN bound: +%.0f° @ %.0f RPM", TARGET_ANGLE_DEG, search_speed_rpm);
         uint32_t min_search_start = esp_timer_get_time() / 1000;
-        float min_pos_deg = FindBound(driver, TARGET_ANGLE_DEG, search_speed_rpm, OFFSET_ANGLE_DEG);
+        float min_pos_deg = FindBound(driver, TARGET_ANGLE_DEG, search_speed_rpm, OFFSET_ANGLE_DEG, search_accel_rev_s2, min_velocity_rpm, cancel);
         uint32_t min_search_time = (esp_timer_get_time() / 1000) - min_search_start;
+        if (std::isnan(min_pos_deg)) {
+            ESP_LOGW(TAG, "Bounds finding cancelled during MIN search");
+            driver.rampControl.Stop();
+            driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+            if (saved_current.was_reduced) {
+                (void)driver.motorControl.ConfigureMotorCurrent(saved_current.original_motor_spec);
+            }
+            restore_stop_on_stall_if_needed();
+            restore_stealthchop_if_needed();
+            return BoundsResult(false, 0, 0, false, true);
+        }
         if (min_pos_deg != 0.0f) {
             ESP_LOGI(TAG, "  ✓ Min bound found: %.1f° (took %ums)", min_pos_deg, min_search_time);
         } else {
@@ -248,8 +378,19 @@ public:
         ESP_LOGI(TAG, "Searching for MAX bound: -%.0f° @ %.0f RPM", TARGET_ANGLE_DEG, search_speed_rpm);
         driver.stallGuard.ClearStallFlag();
         uint32_t max_search_start = esp_timer_get_time() / 1000;
-        float max_pos_deg = FindBound(driver, -TARGET_ANGLE_DEG, search_speed_rpm, OFFSET_ANGLE_DEG);
+        float max_pos_deg = FindBound(driver, -TARGET_ANGLE_DEG, search_speed_rpm, OFFSET_ANGLE_DEG, search_accel_rev_s2, min_velocity_rpm, cancel);
         uint32_t max_search_time = (esp_timer_get_time() / 1000) - max_search_start;
+        if (std::isnan(max_pos_deg)) {
+            ESP_LOGW(TAG, "Bounds finding cancelled during MAX search");
+            driver.rampControl.Stop();
+            driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+            if (saved_current.was_reduced) {
+                (void)driver.motorControl.ConfigureMotorCurrent(saved_current.original_motor_spec);
+            }
+            restore_stop_on_stall_if_needed();
+            restore_stealthchop_if_needed();
+            return BoundsResult(false, 0, 0, false, true);
+        }
         if (max_pos_deg != 0.0f) {
             ESP_LOGI(TAG, "  ✓ Max bound found: %.1f° (took %ums)", max_pos_deg, max_search_time);
         } else {
@@ -273,13 +414,23 @@ public:
             constexpr float bounds_deg = 175.0f;
             ESP_LOGI(TAG, "  → No mechanical bounds found, using default: ±%.1f°", bounds_deg);
             ESP_LOGI(TAG, "═══════════════════════════════════════════════════════════");
+            // Restore current before returning
+            if (saved_current.was_reduced) {
+                auto restore_result = driver.motorControl.ConfigureMotorCurrent(saved_current.original_motor_spec);
+                if (restore_result) {
+                    ESP_LOGI(TAG, "Restored motor current to normal: %u mA", saved_current.original_motor_spec.run_current_ma);
+                } else {
+                    ESP_LOGW(TAG, "Failed to restore motor current (ErrorCode: %d)",
+                             static_cast<int>(restore_result.Error()));
+                }
+            }
             restore_stop_on_stall_if_needed();
             restore_stealthchop_if_needed();
             return BoundsResult(true, -bounds_deg, bounds_deg, false);
         } else if (max_stall && min_stall) {
             float center_deg = (min_pos_deg + max_pos_deg) / 2.0f;
             ESP_LOGI(TAG, "  → Both bounds found, moving to center: %.1f°", center_deg);
-            MoveToPosition(driver, center_deg, search_speed_rpm);
+            MoveToPosition(driver, center_deg, search_speed_rpm, search_accel_rev_s2);
             // IMPORTANT:
             // SetCurrentPosition() changes XACTUAL but does NOT change XTARGET.
             // In POSITIONING mode, leaving an old XTARGET will cause the ramp generator
@@ -292,12 +443,32 @@ public:
             float max_bound_deg = max_pos_deg - center_deg;
             ESP_LOGI(TAG, "  ✓ Final bounds (relative to center): %.1f° to %.1f°", min_bound_deg, max_bound_deg);
             ESP_LOGI(TAG, "═══════════════════════════════════════════════════════════");
+            // Restore current before returning
+            if (saved_current.was_reduced) {
+                auto restore_result = driver.motorControl.ConfigureMotorCurrent(saved_current.original_motor_spec);
+                if (restore_result) {
+                    ESP_LOGI(TAG, "Restored motor current to normal: %u mA", saved_current.original_motor_spec.run_current_ma);
+                } else {
+                    ESP_LOGW(TAG, "Failed to restore motor current (ErrorCode: %d)",
+                             static_cast<int>(restore_result.Error()));
+                }
+            }
             restore_stop_on_stall_if_needed();
             restore_stealthchop_if_needed();
             return BoundsResult(true, min_bound_deg, max_bound_deg, true);
         } else {
             ESP_LOGI(TAG, "  → Partial bounds detected");
             ESP_LOGI(TAG, "═══════════════════════════════════════════════════════════");
+            // Restore current before returning
+            if (saved_current.was_reduced) {
+                auto restore_result = driver.motorControl.ConfigureMotorCurrent(saved_current.original_motor_spec);
+                if (restore_result) {
+                    ESP_LOGI(TAG, "Restored motor current to normal: %u mA", saved_current.original_motor_spec.run_current_ma);
+                } else {
+                    ESP_LOGW(TAG, "Failed to restore motor current (ErrorCode: %d)",
+                             static_cast<int>(restore_result.Error()));
+                }
+            }
             restore_stop_on_stall_if_needed();
             restore_stealthchop_if_needed();
             return BoundsResult(true, min_pos_deg, max_pos_deg, (max_stall && min_stall));
@@ -309,7 +480,10 @@ private:
         tmc51x0::TMC51x0<Esp32SPI>& driver,
         float target_angle_deg,
         float search_speed_rpm,
-        float offset_angle_deg
+        float offset_angle_deg,
+        float search_accel_rev_s2,
+        float min_velocity_rpm,
+        const volatile bool* cancel
     ) {
         uint32_t timeout_ms = TestConfig::Motion::HOMING_TIMEOUT_MS;
 
@@ -361,7 +535,6 @@ private:
         float vstop_rpm = MotorConfig::RAMP_VSTOP_RPM;
         float v1_rpm = MotorConfig::RAMP_V1_RPM;
         driver.rampControl.SetRampSpeeds(vstart_rpm, vstop_rpm, v1_rpm, tmc51x0::Unit::RPM);
-        float search_accel_rev_s2 = TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
         driver.rampControl.SetAcceleration(search_accel_rev_s2, tmc51x0::Unit::RevPerSec);
         driver.rampControl.SetDeceleration(search_accel_rev_s2, tmc51x0::Unit::RevPerSec);
         driver.stallGuard.ClearStallFlag();
@@ -377,6 +550,13 @@ private:
         constexpr uint32_t LOG_INTERVAL = 10;
 
         while (true) {
+            // Allow cancellation from higher-level control (PAUSE/STOP)
+            if ((cancel != nullptr) && (*cancel)) {
+                ESP_LOGW(TAG, "Bounds search cancelled");
+                driver.rampControl.Stop();
+                driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+                return std::numeric_limits<float>::quiet_NaN();
+            }
             uint32_t current_time = esp_timer_get_time() / 1000;
             uint32_t elapsed = current_time - start_time;
             if (elapsed > timeout_ms) {
@@ -458,7 +638,7 @@ private:
             
             // CRITICAL: StallGuard requires minimum velocity (TCOOLTHRS) to operate
             // Even SG=0 is unreliable if velocity is below MIN_VELOCITY_RPM
-            float min_velocity_required = TestConfig::StallGuard::MIN_VELOCITY_RPM;
+            float min_velocity_required = min_velocity_rpm;
             bool velocity_above_minimum = std::abs(vel_rpm) >= min_velocity_required;
             
             // Validate stall
@@ -534,7 +714,7 @@ private:
             // - If target_angle_deg < 0 (moving -), backoff should be positive.
             float backoff_offset_deg = (target_angle_deg >= 0.0f) ? -offset_angle_deg : offset_angle_deg;
             float backoff_speed_rpm = search_speed_rpm;
-            float backoff_accel_rev_s2 = TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
+            float backoff_accel_rev_s2 = search_accel_rev_s2;
             float vstart_rpm = MotorConfig::RAMP_VSTART_RPM;
             float vstop_rpm = MotorConfig::RAMP_VSTOP_RPM;
             float v1_rpm = MotorConfig::RAMP_V1_RPM;
@@ -565,11 +745,9 @@ private:
         return 0.0f;
     }
 
-    void MoveToPosition(tmc51x0::TMC51x0<Esp32SPI>& driver, float target_deg, float speed_rpm) {
-        // Speed is already in RPM, calculate acceleration in rev/s²
+    void MoveToPosition(tmc51x0::TMC51x0<Esp32SPI>& driver, float target_deg, float speed_rpm, float accel_rev_s2) {
+        // Speed is already in RPM, acceleration is passed as parameter
         // Driver handles microstep conversion internally
-        // Use motor config acceleration (RAMP_AMAX) directly
-        float accel_rev_s2 = TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
         
         // Use ABSOLUTE positioning - home was established before calling this function
         // target_deg is relative to the established home (0.0°)

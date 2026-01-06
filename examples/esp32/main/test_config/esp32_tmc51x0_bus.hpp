@@ -31,7 +31,9 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include <cstdarg>
+#include <cstddef>
 #include <cstdint>
+#include <cstdio>
 #include <cstring>
 
 static const char* BUS_TAG = "TMC51x0_Bus";
@@ -756,7 +758,28 @@ public:
       esp_level = ESP_LOG_VERBOSE;
       break;
     }
-    esp_log_writev(esp_level, tag, format, args);
+
+    // NOTE:
+    // - `esp_log_writev()` does NOT add the "I (time) TAG:" prefix unless you pass a format
+    //   string created via ESP-IDF log macros.
+    // - To ensure logs show the standard ESP-IDF prefix, we format into a buffer and re-log
+    //   via ESP_LOG_LEVEL().
+    //
+    // This is used by the core driver via TMC51X0_LOG_DEBUG() -> CommInterface::LogDebug().
+    char msg[512];
+    va_list args_copy;
+    va_copy(args_copy, args);
+    vsnprintf(msg, sizeof(msg), format, args_copy);
+    va_end(args_copy);
+
+    // Strip trailing newlines to avoid double-spacing (ESP_LOG_* adds its own newline).
+    size_t len = strlen(msg);
+    while (len > 0 && (msg[len - 1] == '\n' || msg[len - 1] == '\r')) {
+      msg[len - 1] = '\0';
+      --len;
+    }
+
+    ESP_LOG_LEVEL(esp_level, tag, "%s", msg);
   }
 
   /**

@@ -123,6 +123,27 @@
 namespace tmc51x0 {
 
 /**
+ * @brief Driver-native log levels for debug output
+ *
+ * These are intentionally numeric and stable so platform integrations can map
+ * them onto their own logging systems.
+ *
+ * Convention:
+ * - Error   (0): Serious failures / incorrect behavior
+ * - Warn    (1): Unexpected but recoverable situations
+ * - Info    (2): High-level informational messages (typical init/runtime logs)
+ * - Debug   (3): Debug details (noisy)
+ * - Verbose (4): Very noisy trace
+ */
+enum class LogLevel : uint8_t {
+  Error = 0,
+  Warn = 1,
+  Info = 2,
+  Debug = 3,
+  Verbose = 4
+};
+
+/**
  * @brief Compile-time debug logging control for TMC51x0 library
  *
  * Define TMC51X0_DISABLE_DEBUG_LOGGING before including this header to
@@ -1345,9 +1366,31 @@ public:
 
     va_end(args);
   }
+
+  /**
+   * @brief LogDebug overload that accepts the driver-native LogLevel enum
+   */
+  void LogDebug(LogLevel level, const char *tag, const char *format, ...) noexcept {
+    va_list args{}; // va_start will properly initialize this
+    va_start(args, format);
+
+    std::string format_str(format);
+    if (format_str.empty() || format_str.back() != '\n') {
+      format_str += '\n';
+    }
+
+    DebugLog(static_cast<int>(level), tag, format_str.c_str(), args);
+    va_end(args);
+  }
 #else
   // Debug logging disabled - function optimized out completely
   inline void LogDebug(int /*level*/, const char * /*tag*/,
+                       const char * /*format*/, ...) noexcept {
+    // Empty function body - all logging optimized out
+  }
+
+  // Debug logging disabled - overload also optimized out completely
+  inline void LogDebug(LogLevel /*level*/, const char * /*tag*/,
                        const char * /*format*/, ...) noexcept {
     // Empty function body - all logging optimized out
   }

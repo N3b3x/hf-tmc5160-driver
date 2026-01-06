@@ -95,6 +95,13 @@ if(APP_TYPE STREQUAL "fatigue_test_espnow_unit")
     )
 endif()
 
+# Add ESP-NOW protocol test unit additional sources (only needs receiver, no bounds finders)
+if(APP_TYPE STREQUAL "espnow_protocol_test_unit")
+    list(APPEND COMPONENT_SRCS
+        "fatigue_test_espnow/espnow_receiver.cpp"
+    )
+endif()
+
 idf_component_register(
     SRCS ${COMPONENT_SRCS}                 # Source files (main + additional for ESP-NOW apps)
     INCLUDE_DIRS ${MAIN_INCLUDE_DIRS}      # Include directories defined above

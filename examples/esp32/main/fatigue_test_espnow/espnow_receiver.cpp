@@ -8,8 +8,7 @@
 #include <cstring>
 #include "esp_system.h"
 #include "nvs_flash.h"
-#include "esp_wifi.h"
-#include "esp_now.h"
+#include "esp_idf_pedantic_compat.hpp"
 #include "esp_log.h"
 
 static const char* TAG = "EspNowRx";
@@ -134,11 +133,22 @@ static bool send_packet_to_ui(MsgType type, const void* payload, uint8_t payload
         std::memcpy(pkt.payload, payload, payload_len);
     }
 
+    // Calculate CRC over header + payload (NOT including CRC field itself)
     size_t crc_len = sizeof(pkt.hdr) + payload_len;
-    pkt.crc = crc16_ccitt(reinterpret_cast<uint8_t*>(&pkt), crc_len);
+    uint16_t crc = crc16_ccitt(reinterpret_cast<const uint8_t*>(&pkt.hdr), crc_len);
 
-    size_t total_len = crc_len + sizeof(pkt.crc);
-    esp_err_t err = esp_now_send(s_uiBoardMac, reinterpret_cast<uint8_t*>(&pkt), total_len);
+    size_t total_len = crc_len + sizeof(uint16_t);
+    
+    // Construct packet buffer: header + payload + CRC
+    // We can't send directly from &pkt because the CRC field is at the wrong offset in the structure
+    uint8_t send_buf[sizeof(EspNowHeader) + ESPNOW_MAX_PAYLOAD + sizeof(uint16_t)];
+    std::memcpy(send_buf, &pkt.hdr, sizeof(pkt.hdr));
+    if (payload_len > 0) {
+        std::memcpy(send_buf + sizeof(pkt.hdr), pkt.payload, payload_len);
+    }
+    std::memcpy(send_buf + sizeof(pkt.hdr) + payload_len, &crc, sizeof(uint16_t));
+    
+    esp_err_t err = esp_now_send(s_uiBoardMac, send_buf, total_len);
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "esp_now_send error: %s", esp_err_to_name(err));
         return false;
@@ -155,6 +165,10 @@ bool EspNowReceiver::send_config_response(const Settings& s)
     p.time_per_cycle_sec = s.test_unit.time_per_cycle;
     p.dwell_time_sec     = s.test_unit.dwell_time;
     p.bounds_method      = s.test_unit.bounds_method_stallguard ? 0 : 1;
+    p.bounds_search_velocity_rpm = s.test_unit.bounds_search_velocity_rpm;
+    p.stallguard_min_velocity_rpm = s.test_unit.stallguard_min_velocity_rpm;
+    p.stall_detection_current_factor = s.test_unit.stall_detection_current_factor;
+    p.bounds_search_accel_rev_s2 = s.test_unit.bounds_search_accel_rev_s2;
     return send_packet_to_ui(MsgType::CONFIG_RESPONSE, &p, sizeof(p));
 }
 
@@ -219,7 +233,19 @@ static void espnow_send_cb(const wifi_tx_info_t* info, esp_now_send_status_t sta
 
 static void espnow_recv_cb(const esp_now_recv_info_t* info, const uint8_t* data, int len)
 {
-    if (len <= 0 || len > (int)sizeof(EspNowPacket)) return;
+    // Minimum packet size: header (4 bytes) + CRC (2 bytes) = 6 bytes
+    if (len < 6 || len > (int)sizeof(EspNowPacket)) {
+        ESP_LOGW(TAG, "RX callback: Invalid length %d (min=6, max=%zu)", len, sizeof(EspNowPacket));
+        return;
+    }
+    
+    // Debug: Print raw received data and length
+    ESP_LOGW(TAG, "RX callback: len=%d bytes", len);
+    ESP_LOGW(TAG, "RX callback: first 8 bytes: 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X", 
+             data[0], data[1], data[2], data[3], data[4], data[5], len > 6 ? data[6] : 0, len > 7 ? data[7] : 0);
+    if (len >= 6) {
+        ESP_LOGW(TAG, "RX callback: CRC bytes [4]=0x%02X [5]=0x%02X", data[4], data[5]);
+    }
 
     // Store UI board MAC on first message
     if (s_uiBoardMac[0] == 0 && s_uiBoardMac[1] == 0) {
@@ -248,7 +274,7 @@ static void espnow_recv_cb(const esp_now_recv_info_t* info, const uint8_t* data,
     if (hpw == pdTRUE) portYIELD_FROM_ISR();
 }
 
-static void handle_packet(const EspNowPacket& pkt)
+static void handle_packet(const EspNowPacket& pkt, uint16_t recv_crc_from_data)
 {
     if (pkt.hdr.sync != ESPNOW_SYNC_BYTE) {
         ESP_LOGW(TAG, "Bad SYNC 0x%02X", pkt.hdr.sync);
@@ -258,10 +284,22 @@ static void handle_packet(const EspNowPacket& pkt)
         ESP_LOGW(TAG, "Bad LEN %d", pkt.hdr.len);
         return;
     }
+    // Calculate CRC over header + payload (NOT including CRC field itself)
     size_t crc_len = sizeof(pkt.hdr) + pkt.hdr.len;
-    uint16_t calc = crc16_ccitt(reinterpret_cast<const uint8_t*>(&pkt), crc_len);
-    if (calc != pkt.crc) {
-        ESP_LOGW(TAG, "CRC mismatch (calc=0x%04X recv=0x%04X)", calc, pkt.crc);
+    uint16_t calc = crc16_ccitt(reinterpret_cast<const uint8_t*>(&pkt.hdr), crc_len);
+    
+    // Debug: Print CRC calculation details
+    ESP_LOGD(TAG, "CRC check: calc_len=%zu, calc=0x%04X, recv=0x%04X", crc_len, calc, recv_crc_from_data);
+    
+    if (calc != recv_crc_from_data) {
+        ESP_LOGW(TAG, "CRC mismatch (calc=0x%04X recv=0x%04X) - type=%u, id=%u, payload_len=%u", 
+                 calc, recv_crc_from_data, pkt.hdr.type, pkt.hdr.id, pkt.hdr.len);
+        // Print raw packet bytes for debugging
+        ESP_LOGW(TAG, "Raw packet bytes (first 32):");
+        const uint8_t* raw = reinterpret_cast<const uint8_t*>(&pkt.hdr);
+        for (int i = 0; i < 32 && i < (int)(sizeof(pkt.hdr) + pkt.hdr.len + sizeof(uint16_t)); i++) {
+            ESP_LOGW(TAG, "  [%d] = 0x%02X", i, raw[i]);
+        }
         return;
     }
 
@@ -281,6 +319,10 @@ static void handle_packet(const EspNowPacket& pkt)
             ev.data.config.time_per_cycle = p.time_per_cycle_sec;
             ev.data.config.dwell_time     = p.dwell_time_sec;
             ev.data.config.bounds_method_stallguard = (p.bounds_method == 0);
+            ev.data.config.bounds_search_velocity_rpm = p.bounds_search_velocity_rpm;
+            ev.data.config.stallguard_min_velocity_rpm = p.stallguard_min_velocity_rpm;
+            ev.data.config.stall_detection_current_factor = p.stall_detection_current_factor;
+            ev.data.config.bounds_search_accel_rev_s2 = p.bounds_search_accel_rev_s2;
             break;
         }
         case MsgType::START: {
@@ -314,10 +356,58 @@ static void recv_task(void* arg)
     RawMsg msg{};
     while (true) {
         if (xQueueReceive(s_rawRecvQueue, &msg, portMAX_DELAY) == pdTRUE) {
-            if (msg.len < (int)sizeof(EspNowHeader) + 2) continue;
+            if (msg.len < (int)sizeof(EspNowHeader) + 2) {
+                ESP_LOGW(TAG, "Packet too short: %d bytes (min %zu)", msg.len, sizeof(EspNowHeader) + 2);
+                continue;
+            }
+            
+            // Parse header first to get payload length
+            EspNowHeader hdr{};
+            std::memcpy(&hdr, msg.data, sizeof(hdr));
+            
+            // Verify we have enough data for header + payload + CRC
+            size_t expected_len = sizeof(hdr) + hdr.len + sizeof(uint16_t);
+            if (msg.len < (int)expected_len) {
+                ESP_LOGW(TAG, "Packet too short: got %d, need %zu (hdr=%zu, payload=%u, crc=%zu)", 
+                         msg.len, expected_len, sizeof(hdr), hdr.len, sizeof(uint16_t));
+                continue;
+            }
+            
+            // Copy header and payload into packet structure
             EspNowPacket pkt{};
-            std::memcpy(&pkt, msg.data, msg.len);
-            handle_packet(pkt);
+            std::memcpy(&pkt.hdr, msg.data, sizeof(hdr));
+            if (hdr.len > 0) {
+                std::memcpy(pkt.payload, msg.data + sizeof(hdr), hdr.len);
+            }
+            
+            // Read CRC from the correct offset in received data (NOT from structure!)
+            // CRC is at offset: sizeof(header) + actual_payload_len
+            size_t crc_offset = sizeof(hdr) + hdr.len;
+            uint16_t recv_crc = 0;
+            std::memcpy(&recv_crc, msg.data + crc_offset, sizeof(uint16_t));
+            
+            // Debug: Print raw received data and packet details
+            ESP_LOGW(TAG, "RX: msg.len=%d, type=%u, id=%u, payload_len=%u, crc_offset=%zu", 
+                     msg.len, hdr.type, hdr.id, hdr.len, crc_offset);
+            ESP_LOGW(TAG, "Raw received data (first %d bytes):", msg.len > 16 ? 16 : msg.len);
+            for (int i = 0; i < (msg.len > 16 ? 16 : msg.len); i++) {
+                ESP_LOGW(TAG, "  msg.data[%d] = 0x%02X", i, msg.data[i]);
+            }
+            if (msg.len >= (int)(crc_offset + sizeof(uint16_t))) {
+                ESP_LOGW(TAG, "CRC bytes at offset %zu: 0x%02X 0x%02X, recv_crc=0x%04X",
+                         crc_offset, msg.data[crc_offset], msg.data[crc_offset+1], recv_crc);
+            } else {
+                ESP_LOGW(TAG, "ERROR: Packet too short for CRC! msg.len=%d, need=%zu", 
+                         msg.len, crc_offset + sizeof(uint16_t));
+            }
+            if (hdr.len > 0) {
+                ESP_LOGD(TAG, "Payload (first %d bytes):", hdr.len > 16 ? 16 : hdr.len);
+                for (int i = 0; i < (hdr.len > 16 ? 16 : hdr.len); i++) {
+                    ESP_LOGD(TAG, "  [%d] = 0x%02X", i, pkt.payload[i]);
+                }
+            }
+            
+            handle_packet(pkt, recv_crc);
         }
     }
 }

@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
+#include <limits>
 
 static const char* TAG = "BoundsFinderENC";
 
@@ -35,9 +36,30 @@ public:
     }
 
     BoundsResult FindBounds(
-        tmc51x0::TMC51x0<Esp32SPI>& driver
+        tmc51x0::TMC51x0<Esp32SPI>& driver,
+        const BoundsFinderConfig* config = nullptr,
+        const volatile bool* cancel = nullptr
     ) override {
         ESP_LOGI(TAG, "Starting encoder-based bounds finding...");
+
+        auto is_cancelled = [cancel]() -> bool {
+            return (cancel != nullptr) && (*cancel);
+        };
+        if (is_cancelled()) {
+            ESP_LOGW(TAG, "Bounds finding cancelled before start");
+            return BoundsResult(false, 0, 0, false, true);
+        }
+        
+        // Use runtime config if provided, otherwise use test config defaults
+        // Note: Encoder-based bounds finding doesn't use StallGuard parameters,
+        // but we respect search velocity and acceleration if provided
+        float search_velocity_rpm = config && config->search_velocity_rpm > 0.0f
+            ? config->search_velocity_rpm
+            : TestConfig::Motion::BOUNDS_SEARCH_SPEED_RPM;
+        
+        float search_accel_rev_s2 = config && config->search_accel_rev_s2 > 0.0f
+            ? config->search_accel_rev_s2
+            : TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
 
         // Disable reference switches
         tmc51x0::ReferenceSwitchConfig ref_cfg{};
@@ -72,22 +94,26 @@ public:
         constexpr float TARGET_ANGLE_DEG = 360.0f; // One full revolution
         constexpr float OFFSET_ANGLE_DEG = 5.0f;   // Back off angle in degrees
 
-        // BOUNDS_SEARCH_SPEED is in RPM - use directly, driver handles all conversions
-        float search_speed_rpm = TestConfig::Motion::BOUNDS_SEARCH_SPEED_RPM;
-        // Acceleration: use reasonable value in rev/s² (typically 2x the velocity in rev/s)
-        float search_velocity_rev_s = search_speed_rpm / 60.0f;
-        float search_accel_rev_s2 = search_velocity_rev_s * 2.0f; // 2x velocity for acceleration
+        // Use configured search speed and acceleration
+        float search_speed_rpm = search_velocity_rpm;
+        float search_accel_rev_s2_val = search_accel_rev_s2;
 
         driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
         driver.rampControl.SetMaxSpeed(search_speed_rpm, tmc51x0::Unit::RPM);
-        driver.rampControl.SetAcceleration(search_accel_rev_s2, tmc51x0::Unit::RevPerSec);
-        driver.rampControl.SetDeceleration(search_accel_rev_s2, tmc51x0::Unit::RevPerSec);
+        driver.rampControl.SetAcceleration(search_accel_rev_s2_val, tmc51x0::Unit::RevPerSec);
+        driver.rampControl.SetDeceleration(search_accel_rev_s2_val, tmc51x0::Unit::RevPerSec);
         driver.rampControl.SetRampSpeeds(30.0f, 3.0f, 0.0f, tmc51x0::Unit::RPM); // ~1000/100 steps/s for 200 steps/rev
         vTaskDelay(pdMS_TO_TICKS(100));
 
         // Find maximum bound (in degrees)
         ESP_LOGI(TAG, "Finding maximum bound...");
-        float max_pos_deg = FindBound(driver, TARGET_ANGLE_DEG, search_speed_rpm, OFFSET_ANGLE_DEG, enc_baseline);
+        float max_pos_deg = FindBound(driver, TARGET_ANGLE_DEG, search_speed_rpm, OFFSET_ANGLE_DEG, enc_baseline, cancel);
+        if (std::isnan(max_pos_deg)) {
+            ESP_LOGW(TAG, "Bounds finding cancelled during MAX search");
+            driver.rampControl.Stop();
+            driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+            return BoundsResult(false, 0, 0, false, true);
+        }
         if (max_pos_deg == 0.0f && !driver.rampControl.IsTargetReached()) {
             ESP_LOGW(TAG, "Max bound search failed or timeout");
         }
@@ -102,7 +128,13 @@ public:
         } else {
             min_enc_baseline = min_enc_result.Value();
         }
-        float min_pos_deg = FindBound(driver, -TARGET_ANGLE_DEG, search_speed_rpm, OFFSET_ANGLE_DEG, min_enc_baseline);
+        float min_pos_deg = FindBound(driver, -TARGET_ANGLE_DEG, search_speed_rpm, OFFSET_ANGLE_DEG, min_enc_baseline, cancel);
+        if (std::isnan(min_pos_deg)) {
+            ESP_LOGW(TAG, "Bounds finding cancelled during MIN search");
+            driver.rampControl.Stop();
+            driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+            return BoundsResult(false, 0, 0, false, true);
+        }
         auto min_reached_result = driver.rampControl.IsTargetReached();
         if (min_pos_deg == 0.0f && (!min_reached_result || !min_reached_result.Value())) {
             ESP_LOGW(TAG, "⚠ Min bound search failed or timeout");
@@ -149,7 +181,8 @@ private:
         float target_angle_deg,
         float search_speed_rpm,
         float offset_angle_deg,
-        int32_t enc_baseline
+        int32_t enc_baseline,
+        const volatile bool* cancel
     ) {
         constexpr float MIN_MOVEMENT_DEG = 1.0f; // Minimum movement in degrees to avoid false stalls
         constexpr uint32_t ENCODER_STALL_TIMEOUT_MS = 300;
@@ -178,6 +211,12 @@ private:
         }
 
         while (true) {
+            if ((cancel != nullptr) && (*cancel)) {
+                ESP_LOGW(TAG, "Bounds search cancelled");
+                driver.rampControl.Stop();
+                driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+                return std::numeric_limits<float>::quiet_NaN();
+            }
             uint32_t elapsed = (esp_timer_get_time() / 1000) - start_time;
             if (elapsed > timeout_ms) {
                 ESP_LOGW(TAG, "⚠ Bound search timeout after %u ms", timeout_ms);

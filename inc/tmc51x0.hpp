@@ -293,6 +293,84 @@ public:
    */
   [[nodiscard]] std::string GetDriverConfigString() const noexcept;
 
+#ifndef TMC51X0_DISABLE_DEBUG_LOGGING
+  /**
+   * @brief Log a comprehensive, human-readable summary of a DriverConfig
+   *
+   * Uses the driver's communication interface for logging (TMC51X0_LOG_DEBUG).
+   *
+   * This is useful both before Initialize() (to verify the config you are about to apply)
+   * and after Initialize() (to compare with derived/cached values).
+   *
+   * @note This method is only available when TMC51X0_DISABLE_DEBUG_LOGGING is not defined.
+   *       When disabled, calls to this method are optimized out at compile time.
+   */
+  void LogConfigSummary(const DriverConfig &cfg, const char *tag = "TMC5160",
+                        LogLevel lvl = LogLevel::Info) noexcept;
+
+  /**
+   * @brief Log a compact, table-style summary of derived/cached initialization values
+   *
+   * Includes f_clk, detected chip version, calculated currents (IRUN/IHOLD/GLOBAL_SCALER),
+   * cached write-only registers (IHOLD_IRUN, GLOBAL_SCALER, DRV_CONF), and a decoded
+   * IHOLDDELAY timing estimate.
+   *
+   * @note Requires that the driver has been initialized at least once (uses cached values).
+   * @note This method is only available when TMC51X0_DISABLE_DEBUG_LOGGING is not defined.
+   *       When disabled, calls to this method are optimized out at compile time.
+   */
+  void LogDerivedInitSummary(const char *tag = "TMC5160",
+                             LogLevel lvl = LogLevel::Info) noexcept;
+
+  /**
+   * @brief Read silicon registers and log a comprehensive live status report
+   *
+   * Performs SPI/UART transactions to capture the current hardware state of the
+   * chip (GSTAT, DRV_STATUS, IOIN, CHOPCONF, PWMCONF, etc.) and prints it in
+   * a beautiful table format.
+   *
+   * This is useful for "recapturing" the actual live state from the driver
+   * to verify it matches requested settings or to diagnose issues.
+   *
+   * @note This method is only available when TMC51X0_DISABLE_DEBUG_LOGGING is not defined.
+   *       When disabled, calls to this method are optimized out at compile time.
+   */
+  void LogLiveStatusReport(const char *tag = "TMC5160",
+                           LogLevel lvl = LogLevel::Info) noexcept;
+#endif // TMC51X0_DISABLE_DEBUG_LOGGING
+
+  /**
+   * @brief Snapshot of motor-current related calculated/cached values.
+   *
+   * @details
+   * The TMC5160 has several write-only registers (notably `GLOBAL_SCALER` and
+   * `IHOLD_IRUN`). This driver maintains an internal cache of those values and
+   * also stores the most recent calculated values from motor-current
+   * configuration (IRUN/IHOLD/GLOBAL_SCALER).
+   *
+   * This struct exposes those values for application-level logging without
+   * duplicating the calculation logic in the application.
+   */
+  struct MotorCurrentDebugInfo {
+    bool initialized{false};          ///< True if Initialize() has completed successfully
+    uint32_t f_clk_hz{0};             ///< Effective clock used for calculations
+    MotorSpec motor_spec{};           ///< MotorSpec used for calculations
+    uint8_t calculated_irun{0};       ///< Last calculated IRUN (0..31)
+    uint8_t calculated_ihold{0};      ///< Last calculated IHOLD (0..31)
+    uint16_t calculated_global_scaler{0}; ///< Last calculated GLOBAL_SCALER (32..256)
+    uint16_t cached_global_scaler{0}; ///< Cached write-only GLOBAL_SCALER value
+    uint32_t cached_ihold_irun{0};    ///< Cached write-only IHOLD_IRUN raw register value
+  };
+
+  /**
+   * @brief Get motor-current calculated/cached values for application logging.
+   *
+   * @return A snapshot of motor-current related values.
+   *
+   * @note If the driver has not been initialized yet, values may be defaults.
+   */
+  [[nodiscard]] MotorCurrentDebugInfo GetMotorCurrentDebugInfo() const noexcept;
+
   // @}
 
   //================================================================================

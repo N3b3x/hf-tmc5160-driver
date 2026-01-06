@@ -106,6 +106,20 @@ enum class MotorDirection : uint8_t {
 };
 
 /**
+ * @brief Convert MotorDirection to human-readable string
+ */
+inline constexpr const char* ToString(MotorDirection d) noexcept {
+  switch (d) {
+  case MotorDirection::NORMAL:
+    return "NORMAL";
+  case MotorDirection::INVERSE:
+    return "INVERSE";
+  default:
+    return "Unknown";
+  }
+}
+
+/**
  * @brief Motor type enumeration
  *
  * Defines the type of motor being controlled. This is primarily for documentation
@@ -132,6 +146,26 @@ enum class MotorType : uint8_t {
 };
 
 /**
+ * @brief Convert MotorType to human-readable string
+ */
+inline constexpr const char* ToString(MotorType t) noexcept {
+  switch (t) {
+  case MotorType::STEPPER:
+    return "STEPPER";
+  case MotorType::DC_MOTOR_SINGLE:
+    return "DC_MOTOR_SINGLE";
+  case MotorType::DC_MOTOR_DUAL:
+    return "DC_MOTOR_DUAL";
+  case MotorType::SOLENOID_SINGLE:
+    return "SOLENOID_SINGLE";
+  case MotorType::SOLENOID_DUAL:
+    return "SOLENOID_DUAL";
+  default:
+    return "Unknown";
+  }
+}
+
+/**
  * @brief Unit enumeration
  *
  * Defines the unit of measurement for position, velocity, and acceleration.
@@ -150,6 +184,28 @@ enum class Unit : uint8_t {
   RPM,       ///< Revolutions per Minute (Velocity only, typically)
   RevPerSec  ///< Revolutions per Second (recommended default for velocity)
 };
+
+/**
+ * @brief Convert Unit to human-readable string
+ */
+inline constexpr const char* ToString(Unit u) noexcept {
+  switch (u) {
+  case Unit::Steps:
+    return "Steps";
+  case Unit::Rad:
+    return "Rad";
+  case Unit::Deg:
+    return "Deg";
+  case Unit::Mm:
+    return "Mm";
+  case Unit::RPM:
+    return "RPM";
+  case Unit::RevPerSec:
+    return "RevPerSec";
+  default:
+    return "Unknown";
+  }
+}
 
 /**
  * @brief Driver status enumeration
@@ -209,6 +265,24 @@ enum class MechanicalSystemType : uint8_t {
   BeltDrive,   ///< Belt drive with pulleys
   Gearbox      ///< Gearbox reduction
 };
+
+/**
+ * @brief Convert MechanicalSystemType to human-readable string
+ */
+inline constexpr const char* ToString(MechanicalSystemType type) noexcept {
+  switch (type) {
+  case MechanicalSystemType::DirectDrive:
+    return "DirectDrive";
+  case MechanicalSystemType::LeadScrew:
+    return "LeadScrew";
+  case MechanicalSystemType::BeltDrive:
+    return "BeltDrive";
+  case MechanicalSystemType::Gearbox:
+    return "Gearbox";
+  default:
+    return "Unknown";
+  }
+}
 
 /**
  * @brief Mechanical system configuration structure
@@ -603,6 +677,13 @@ enum class ChopperMode : bool {
 };
 
 /**
+ * @brief Convert ChopperMode to human-readable string
+ */
+inline constexpr const char* ToString(ChopperMode m) noexcept {
+  return (m == ChopperMode::SPREAD_CYCLE) ? "SPREAD_CYCLE" : "CLASSIC";
+}
+
+/**
  * @brief Comparator blank time enumeration
  *
  * Blank time masks comparator input to block spikes from parasitic capacitances during switching.
@@ -637,6 +718,45 @@ enum class MicrostepResolution : uint8_t {
   MRES_2 = 7,   ///< 2 microsteps per full step
   FULLSTEP = 8  ///< Full step (no microstepping)
 };
+
+/**
+ * @brief Convert MicrostepResolution to human-readable string
+ */
+inline constexpr const char* ToString(MicrostepResolution mres) noexcept {
+  switch (mres) {
+  case MicrostepResolution::MRES_256:
+    return "MRES_256";
+  case MicrostepResolution::MRES_128:
+    return "MRES_128";
+  case MicrostepResolution::MRES_64:
+    return "MRES_64";
+  case MicrostepResolution::MRES_32:
+    return "MRES_32";
+  case MicrostepResolution::MRES_16:
+    return "MRES_16";
+  case MicrostepResolution::MRES_8:
+    return "MRES_8";
+  case MicrostepResolution::MRES_4:
+    return "MRES_4";
+  case MicrostepResolution::MRES_2:
+    return "MRES_2";
+  case MicrostepResolution::FULLSTEP:
+    return "FULLSTEP";
+  default:
+    return "Unknown";
+  }
+}
+
+/**
+ * @brief Get microsteps-per-full-step for an MRES value
+ *
+ * @note Encoded: 0=256 ... 8=1 (fullstep). Values outside [0,8] are clamped.
+ */
+inline constexpr uint16_t MicrostepsPerFullStep(MicrostepResolution mres) noexcept {
+  const uint8_t enc = static_cast<uint8_t>(mres);
+  const uint8_t clamped = (enc > 8U) ? 8U : enc;
+  return static_cast<uint16_t>(256U >> clamped);
+}
 
 /**
  * @brief Options for changing microstep resolution (CHOPCONF.MRES)
@@ -2075,6 +2195,20 @@ enum class ReferenceSwitchActiveLevel : uint8_t {
 };
 
 /**
+ * @brief Convert ReferenceSwitchActiveLevel to human-readable string
+ */
+inline constexpr const char* ToString(ReferenceSwitchActiveLevel a) noexcept {
+  switch (a) {
+  case ReferenceSwitchActiveLevel::ACTIVE_LOW:
+    return "ACTIVE_LOW";
+  case ReferenceSwitchActiveLevel::ACTIVE_HIGH:
+    return "ACTIVE_HIGH";
+  default:
+    return "Unknown";
+  }
+}
+
+/**
  * @brief Position latching mode enumeration
  *
  * Defines when position should be latched (captured) on switch events.
@@ -2091,6 +2225,24 @@ enum class ReferenceLatchMode : uint8_t {
 };
 
 /**
+ * @brief Convert ReferenceLatchMode to human-readable string
+ */
+inline constexpr const char* ToString(ReferenceLatchMode m) noexcept {
+  switch (m) {
+  case ReferenceLatchMode::DISABLED:
+    return "DISABLED";
+  case ReferenceLatchMode::ACTIVE_EDGE:
+    return "ACTIVE_EDGE";
+  case ReferenceLatchMode::INACTIVE_EDGE:
+    return "INACTIVE_EDGE";
+  case ReferenceLatchMode::BOTH_EDGES:
+    return "BOTH_EDGES";
+  default:
+    return "Unknown";
+  }
+}
+
+/**
  * @brief Stop mode enumeration
  *
  * Defines how the motor stops when a reference switch is triggered.
@@ -2103,6 +2255,20 @@ enum class ReferenceStopMode : uint8_t {
              ///< Use for normal operation to prevent mechanical shock
              ///< Motor decelerates smoothly to zero velocity
 };
+
+/**
+ * @brief Convert ReferenceStopMode to human-readable string
+ */
+inline constexpr const char* ToString(ReferenceStopMode m) noexcept {
+  switch (m) {
+  case ReferenceStopMode::HARD_STOP:
+    return "HARD_STOP";
+  case ReferenceStopMode::SOFT_STOP:
+    return "SOFT_STOP";
+  default:
+    return "Unknown";
+  }
+}
 
 /**
  * @brief Reference switch configuration structure
@@ -2188,6 +2354,24 @@ enum class EncoderNSensitivity : uint8_t {
 };
 
 /**
+ * @brief Convert EncoderNSensitivity to human-readable string
+ */
+inline constexpr const char* ToString(EncoderNSensitivity s) noexcept {
+  switch (s) {
+  case EncoderNSensitivity::ACTIVE_LEVEL:
+    return "ACTIVE_LEVEL";
+  case EncoderNSensitivity::RISING_EDGE:
+    return "RISING_EDGE";
+  case EncoderNSensitivity::FALLING_EDGE:
+    return "FALLING_EDGE";
+  case EncoderNSensitivity::BOTH_EDGES:
+    return "BOTH_EDGES";
+  default:
+    return "Unknown";
+  }
+}
+
+/**
  * @brief Encoder clear mode enumeration
  *
  * Defines when and how the encoder counter is cleared on N channel events.
@@ -2203,6 +2387,22 @@ enum class EncoderClearMode : uint8_t {
 };
 
 /**
+ * @brief Convert EncoderClearMode to human-readable string
+ */
+inline constexpr const char* ToString(EncoderClearMode m) noexcept {
+  switch (m) {
+  case EncoderClearMode::DISABLED:
+    return "DISABLED";
+  case EncoderClearMode::ONCE:
+    return "ONCE";
+  case EncoderClearMode::CONTINUOUS:
+    return "CONTINUOUS";
+  default:
+    return "Unknown";
+  }
+}
+
+/**
  * @brief Encoder prescaler mode enumeration
  *
  * Defines the encoder prescaler divisor mode for ENC_CONST calculation.
@@ -2213,6 +2413,20 @@ enum class EncoderPrescalerMode : uint8_t {
   DECIMAL ///< Decimal mode - Counts ENC_CONST(fractional part) / 10000
           ///< Decimal representation: FACTOR.DECIMALS (e.g., 25.6 = 0x0019.0x1770)
 };
+
+/**
+ * @brief Convert EncoderPrescalerMode to human-readable string
+ */
+inline constexpr const char* ToString(EncoderPrescalerMode m) noexcept {
+  switch (m) {
+  case EncoderPrescalerMode::BINARY:
+    return "BINARY";
+  case EncoderPrescalerMode::DECIMAL:
+    return "DECIMAL";
+  default:
+    return "Unknown";
+  }
+}
 
 /**
  * @brief Encoder configuration structure

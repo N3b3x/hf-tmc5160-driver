@@ -226,7 +226,6 @@ bool FatigueTestMotion::IsBounded() const noexcept {
 
 bool FatigueTestMotion::Start() noexcept {
     uint32_t current_cycles, target_cycles;
-    float min_pos, max_pos, current_pos;
     
     {
         TmcMutexGuard guard(mutex_);
@@ -290,11 +289,16 @@ bool FatigueTestMotion::Start() noexcept {
         float dist_to_min = fabsf(current_pos_deg - min_pos_deg);
         float dist_to_max = fabsf(current_pos_deg - max_pos_deg);
         
-        // Default to moving towards min unless we're already there
-        if (dist_to_min < 1.0f) {  // ~1 degree threshold
+        // Choose an initial direction that moves away from the nearest bound.
+        // - If we are already at/near one bound, start by moving toward the opposite bound.
+        // - Otherwise, move toward the nearer bound first.
+        constexpr float NEAR_BOUND_DEG = 1.0f;
+        if (dist_to_min < NEAR_BOUND_DEG) {
             state_ = MotionState::MOVING_TO_MAX;
-        } else {
+        } else if (dist_to_max < NEAR_BOUND_DEG) {
             state_ = MotionState::MOVING_TO_MIN;
+        } else {
+            state_ = (dist_to_min <= dist_to_max) ? MotionState::MOVING_TO_MIN : MotionState::MOVING_TO_MAX;
         }
 
         current_cycles = current_cycles_;
