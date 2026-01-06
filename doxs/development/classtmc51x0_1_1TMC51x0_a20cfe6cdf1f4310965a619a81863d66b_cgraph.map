@@ -1,0 +1,25 @@
+<map id="tmc51x0::TMC51x0::LogConfigSummary" name="tmc51x0::TMC51x0::LogConfigSummary">
+<area shape="rect" id="Node000001" title="Log a comprehensive, human&#45;readable summary of a DriverConfig." alt="" coords="5,171,225,211"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0_1_1detail.html#ac3de64d95185b08d40faab18e706ea8f" title=" " alt="" coords="278,107,486,147"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,168,284,147,286,152,200,173"/>
+<area shape="rect" id="Node000007" href="$namespacetmc51x0_1_1detail.html#a7fbd9d5719c3c7ac393acfc49aa55132" title=" " alt="" coords="541,235,744,261"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="205,208,274,220,405,234,528,241,528,247,405,239,273,225,204,213"/>
+<area shape="rect" id="Node000008" href="$namespacetmc51x0_1_1detail.html#ad1f4b7d44b55921d635447a9266de1b8" title=" " alt="" coords="548,5,737,45"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="141,168,199,129,235,109,272,92,338,70,407,54,534,33,534,38,408,59,340,76,274,97,238,114,202,134,144,173"/>
+<area shape="rect" id="Node000009" href="$namespacetmc51x0_1_1detail.html#afd95b88236a2c35527927fb24f042666" title=" " alt="" coords="273,286,491,311"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="155,208,211,236,274,264,320,280,318,285,272,269,208,241,153,213"/>
+<area shape="rect" id="Node000010" href="$namespacetmc51x0_1_1detail.html#a089bcd93942e19e55813e20b2f891293" title=" " alt="" coords="287,171,477,211"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="226,188,273,188,273,193,226,193"/>
+<area shape="rect" id="Node000003" href="$namespacetmc51x0_1_1detail.html#ae493739f70a91419eece66dd1d958094" title=" " alt="" coords="539,134,747,159"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="486,132,525,135,525,140,486,137"/>
+<area shape="rect" id="Node000006" href="$namespacetmc51x0_1_1detail.html#a042585aacefd87238f1c771567fd1647" title=" " alt="" coords="544,69,741,109"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="486,109,530,103,531,108,486,114"/>
+<area shape="rect" id="Node000004" href="$namespacetmc51x0_1_1detail.html#a443b2edee4617c6cc74c128d524b7edb" title=" " alt="" coords="795,110,1023,135"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="747,135,781,132,781,137,747,140"/>
+<area shape="rect" id="Node000005" href="$namespacetmc51x0_1_1detail.html#a833a4b389fcef9493fa5bd7aaf88ba48" title=" " alt="" coords="805,159,1012,185"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="747,154,792,158,791,164,747,159"/>
+<area shape="poly" id="edge7_Node000007_Node000005" title=" " alt="" coords="687,233,849,186,851,191,689,238"/>
+<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="712,43,748,55,867,102,865,107,746,60,710,48"/>
+<area shape="poly" id="edge10_Node000008_Node000005" title=" " alt="" coords="730,43,748,55,766,78,773,102,779,124,796,145,806,151,803,155,793,149,775,126,768,103,761,81,745,59,727,48"/>
+<area shape="poly" id="edge13_Node000010_Node000005" title=" " alt="" coords="477,185,791,173,791,179,477,190"/>
+</map>

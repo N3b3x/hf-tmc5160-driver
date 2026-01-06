@@ -1,10 +1,32 @@
 var tmc51x0_8cpp =
 [
+    [ "CLR_BOLD", "tmc51x0_8cpp.html#a5c25e924a39197908df3e1919593afae", null ],
+    [ "CLR_CYAN", "tmc51x0_8cpp.html#a59d8c7d9960773718d8dac44a99bcac4", null ],
+    [ "CLR_DIM", "tmc51x0_8cpp.html#ad69f027d74a0cec9f5b91e8610f2a2aa", null ],
+    [ "CLR_GRN", "tmc51x0_8cpp.html#a93c4fe8b803cee6ecfa0996f7f5a13e9", null ],
+    [ "CLR_MAG", "tmc51x0_8cpp.html#abe704e11e12fa967b28d74a59c96a2eb", null ],
+    [ "CLR_RED", "tmc51x0_8cpp.html#a440726f8973da46eba779f170566b4cc", null ],
+    [ "CLR_RST", "tmc51x0_8cpp.html#a7d17d2c849a937c740cdc5a4dde8d4f0", null ],
+    [ "CLR_YLW", "tmc51x0_8cpp.html#acc1c9f2ac0286a714544e890949412a2", null ],
     [ "TMC51X0_COMPILING_SRC", "tmc51x0_8cpp.html#a26b9980fe703ad12faba15a0e4484ca1", null ],
     [ "TMC51X0_IMPL", "tmc51x0_8cpp.html#ad344fbcd7adf34d35d52b811b6fe0627", null ],
+    [ "AppendPadded", "tmc51x0_8cpp.html#a443b2edee4617c6cc74c128d524b7edb", null ],
     [ "constrain", "tmc51x0_8cpp.html#a5fa3afe83ae033126d377aed702dddf6", null ],
     [ "FindWorkingVelocityRange", "tmc51x0_8cpp.html#afaf6037a652c82c965a94e0433e13a7c", null ],
+    [ "LogBoxBottom", "tmc51x0_8cpp.html#a975a6723c266a92c869dfec5de543b16", null ],
+    [ "LogBoxLine", "tmc51x0_8cpp.html#a833a4b389fcef9493fa5bd7aaf88ba48", null ],
+    [ "LogBoxRow", "tmc51x0_8cpp.html#ae493739f70a91419eece66dd1d958094", null ],
+    [ "LogBoxRowWrapped", "tmc51x0_8cpp.html#ac3de64d95185b08d40faab18e706ea8f", null ],
+    [ "LogBoxTop", "tmc51x0_8cpp.html#a7fbd9d5719c3c7ac393acfc49aa55132", null ],
+    [ "LogTableHeader", "tmc51x0_8cpp.html#ad1f4b7d44b55921d635447a9266de1b8", null ],
+    [ "LogTableRow", "tmc51x0_8cpp.html#afd95b88236a2c35527927fb24f042666", null ],
+    [ "LogTableSection", "tmc51x0_8cpp.html#a8c46bbcc44fe3dc439828d0786c43fb0", null ],
+    [ "LogTableSeparator", "tmc51x0_8cpp.html#a089bcd93942e19e55813e20b2f891293", null ],
+    [ "NextWrapChunk", "tmc51x0_8cpp.html#a042585aacefd87238f1c771567fd1647", null ],
+    [ "OnOffStyled", "tmc51x0_8cpp.html#a3fb371dd61ab27e467c1ca7557ab7b57", null ],
     [ "round_to_int32", "tmc51x0_8cpp.html#ad6360e59e574521bae72c9b548eb29f0", null ],
     [ "round_to_uint32_nonneg", "tmc51x0_8cpp.html#a4a7265cc09cba99affeeae51b6490348", null ],
-    [ "TestVelocityWithSGT", "tmc51x0_8cpp.html#a98dfd26a5eeed2974ce057fb9d203098", null ]
+    [ "TestVelocityWithSGT", "tmc51x0_8cpp.html#a98dfd26a5eeed2974ce057fb9d203098", null ],
+    [ "TrueFalseStyled", "tmc51x0_8cpp.html#a6312aef422236f3477944818f3d71a05", null ],
+    [ "report_row_buf", "tmc51x0_8cpp.html#a0502e80a6ce8097c8c177e323bbb7c22", null ]
 ];

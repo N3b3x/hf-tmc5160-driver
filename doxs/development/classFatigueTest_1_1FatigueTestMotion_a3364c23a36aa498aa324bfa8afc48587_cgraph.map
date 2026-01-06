@@ -1,5 +1,5 @@
 <map id="FatigueTest::FatigueTestMotion::Update" name="FatigueTest::FatigueTestMotion::Update">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,27,181,67"/>
+<area shape="rect" id="Node000001" title="Periodic update tick." alt="" coords="5,27,181,67"/>
 <area shape="rect" id="Node000002" href="$classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf" title="Manually unlock mutex." alt="" coords="496,35,677,60"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,42,229,41,448,41,482,41,482,47,448,46,229,46,182,47"/>
 <area shape="rect" id="Node000005" href="$classFatigueTest_1_1FatigueTestMotion.html#a5c2eb40cb4dda4c1db2501149d85b2e3" title=" " alt="" coords="229,55,448,95"/>

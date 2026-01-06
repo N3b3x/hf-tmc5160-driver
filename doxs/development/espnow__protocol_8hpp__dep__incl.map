@@ -1,11 +1,14 @@
 <map id="espnow_protocol.hpp" name="espnow_protocol.hpp">
-<area shape="rect" id="Node000001" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="78,5,238,31"/>
-<area shape="rect" id="Node000002" href="$espnow__receiver_8cpp.html" title="ESP&#45;NOW receiver implementation for test unit." alt="" coords="5,152,164,177"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,39,88,56,68,80,64,98,66,117,80,151,75,153,61,118,58,98,64,77,85,52,112,35"/>
-<area shape="rect" id="Node000003" href="$espnow__receiver_8hpp.html" title="ESP&#45;NOW receiver for test unit." alt="" coords="79,79,237,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="161,44,161,79,155,79,155,44"/>
-<area shape="rect" id="Node000004" href="$main_8cpp.html" title="Fatigue test unit with ESP&#45;NOW communication." alt="" coords="211,152,294,177"/>
-<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="204,34,231,52,252,77,259,97,262,117,258,152,253,151,256,117,254,98,248,80,227,56,201,39"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="138,116,98,154,95,150,134,112"/>
-<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="186,110,239,150,236,154,183,114"/>
+<area shape="rect" id="Node000001" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="217,5,377,31"/>
+<area shape="rect" id="Node000002" href="$espnow__protocol__test__unit_8cpp.html" title="Minimal ESP&#45;NOW protocol test unit &#45; no motor control." alt="" coords="5,152,169,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="234,37,189,55,148,81,131,97,117,117,97,153,93,151,113,114,127,94,144,77,187,50,232,32"/>
+<area shape="rect" id="Node000003" href="$espnow__receiver_8cpp.html" title="ESP&#45;NOW receiver implementation for test unit." alt="" coords="193,159,352,185"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="317,41,332,70,335,88,333,105,313,137,289,161,285,157,309,134,327,103,330,88,327,72,313,43"/>
+<area shape="rect" id="Node000004" href="$espnow__receiver_8hpp.html" title="ESP&#45;NOW receiver for test unit." alt="" coords="159,79,317,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="280,43,250,80,245,77,276,40"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html" title="Fatigue test unit with ESP&#45;NOW communication." alt="" coords="377,159,459,185"/>
+<area shape="poly" id="edge7_Node000001_Node000005" title=" " alt="" coords="318,39,351,77,412,158,408,161,347,80,314,43"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="205,113,125,154,122,149,202,108"/>
+<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="251,115,270,158,265,160,246,118"/>
+<area shape="poly" id="edge6_Node000004_Node000005" title=" " alt="" coords="278,107,393,157,391,162,276,112"/>
 </map>

@@ -9,6 +9,22 @@ var namespacetmc51x0 =
       [ "MAX_F_CLK", "namespacetmc51x0_1_1ClockFreq.html#a3646764e23b0e26677311b320cb8d530", null ],
       [ "MIN_F_CLK", "namespacetmc51x0_1_1ClockFreq.html#a19ecaea87d80c60b18513b3c8364dde4", null ]
     ] ],
+    [ "detail", "namespacetmc51x0_1_1detail.html", [
+      [ "AppendPadded", "namespacetmc51x0_1_1detail.html#a443b2edee4617c6cc74c128d524b7edb", null ],
+      [ "LogBoxBottom", "namespacetmc51x0_1_1detail.html#a975a6723c266a92c869dfec5de543b16", null ],
+      [ "LogBoxLine", "namespacetmc51x0_1_1detail.html#a833a4b389fcef9493fa5bd7aaf88ba48", null ],
+      [ "LogBoxRow", "namespacetmc51x0_1_1detail.html#ae493739f70a91419eece66dd1d958094", null ],
+      [ "LogBoxRowWrapped", "namespacetmc51x0_1_1detail.html#ac3de64d95185b08d40faab18e706ea8f", null ],
+      [ "LogBoxTop", "namespacetmc51x0_1_1detail.html#a7fbd9d5719c3c7ac393acfc49aa55132", null ],
+      [ "LogTableHeader", "namespacetmc51x0_1_1detail.html#ad1f4b7d44b55921d635447a9266de1b8", null ],
+      [ "LogTableRow", "namespacetmc51x0_1_1detail.html#afd95b88236a2c35527927fb24f042666", null ],
+      [ "LogTableSection", "namespacetmc51x0_1_1detail.html#a8c46bbcc44fe3dc439828d0786c43fb0", null ],
+      [ "LogTableSeparator", "namespacetmc51x0_1_1detail.html#a089bcd93942e19e55813e20b2f891293", null ],
+      [ "NextWrapChunk", "namespacetmc51x0_1_1detail.html#a042585aacefd87238f1c771567fd1647", null ],
+      [ "OnOffStyled", "namespacetmc51x0_1_1detail.html#a3fb371dd61ab27e467c1ca7557ab7b57", null ],
+      [ "TrueFalseStyled", "namespacetmc51x0_1_1detail.html#a6312aef422236f3477944818f3d71a05", null ],
+      [ "report_row_buf", "namespacetmc51x0_1_1detail.html#a0502e80a6ce8097c8c177e323bbb7c22", null ]
+    ] ],
     [ "MathConstants", "namespacetmc51x0_1_1MathConstants.html", [
       [ "DEGREES_PER_REV", "namespacetmc51x0_1_1MathConstants.html#acb6742f022495d32d5335c6b5b67a97a", null ],
       [ "PI", "namespacetmc51x0_1_1MathConstants.html#a0ff92ff0ce1a04a8e74a707251a24e62", null ],
@@ -181,6 +197,13 @@ var namespacetmc51x0 =
       [ "INACTIVE", "namespacetmc51x0.html#a066cfe7d73f5a7f546c6d7215c0b4577a6b273343c454f9c53dcfc9c4ccf171d2", null ],
       [ "ACTIVE", "namespacetmc51x0.html#a066cfe7d73f5a7f546c6d7215c0b4577a18ff74f43da410c5529f7d6fca84f115", null ]
     ] ],
+    [ "LogLevel", "namespacetmc51x0.html#a2080204610f0192a190d910abbe2869d", [
+      [ "Error", "namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da902b0d55fddef6f8d651fe1035b7d4bd", null ],
+      [ "Warn", "namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da56525ae64d370c0b448ac0d60710ef17", null ],
+      [ "Info", "namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da4059b0251f66a18cb56f544728796875", null ],
+      [ "Debug", "namespacetmc51x0.html#a2080204610f0192a190d910abbe2869daa603905470e2a5b8c13e96b579ef0dba", null ],
+      [ "Verbose", "namespacetmc51x0.html#a2080204610f0192a190d910abbe2869dad4a9fa383ab700c5bdd6f31cf7df0faf", null ]
+    ] ],
     [ "MechanicalSystemType", "namespacetmc51x0.html#a20af559eb85dbac784b3a4cb644cf63b", [
       [ "DirectDrive", "namespacetmc51x0.html#a20af559eb85dbac784b3a4cb644cf63baeaa47a40d5ae24b55e477563e264c94f", null ],
       [ "LeadScrew", "namespacetmc51x0.html#a20af559eb85dbac784b3a4cb644cf63ba6f645ee65c04d44c3039f8b55622bb70", null ],
@@ -326,6 +349,7 @@ var namespacetmc51x0 =
     [ "get", "namespacetmc51x0.html#a6818ace9cb52dc7f7363b93d6778ae77", null ],
     [ "get", "namespacetmc51x0.html#a257ff48df86e06b78f94c8f6153932b1", null ],
     [ "GetRegisterDef", "namespacetmc51x0.html#aca4ec7876f2bc35ce259eee027485701", null ],
+    [ "MicrostepsPerFullStep", "namespacetmc51x0.html#a60be1af970c350d5071ed3ba6a96c489", null ],
     [ "MmPerSecToStepsPerSec", "namespacetmc51x0.html#a75950339da8df172472557556f439628", null ],
     [ "MmToSteps", "namespacetmc51x0.html#a67bdb4d4ee51eb6afb6483731177af81", null ],
     [ "round_to_int32", "namespacetmc51x0.html#ad6360e59e574521bae72c9b548eb29f0", null ],
@@ -336,5 +360,17 @@ var namespacetmc51x0 =
     [ "StepsToBeltTeeth", "namespacetmc51x0.html#a774504ccaf07160eba05e41574b8bb8f", null ],
     [ "StepsToDegrees", "namespacetmc51x0.html#aa654a36849533f2f559d3e113176bf35", null ],
     [ "StepsToMm", "namespacetmc51x0.html#a14a9cbf63a5eb7e330795cacdf8fadc3", null ],
-    [ "TestVelocityWithSGT", "namespacetmc51x0.html#a98dfd26a5eeed2974ce057fb9d203098", null ]
+    [ "TestVelocityWithSGT", "namespacetmc51x0.html#a98dfd26a5eeed2974ce057fb9d203098", null ],
+    [ "ToString", "namespacetmc51x0.html#ab651cf153e7df9b12cd02c075e721a62", null ],
+    [ "ToString", "namespacetmc51x0.html#a53b45b9929e8676895feec279f636a92", null ],
+    [ "ToString", "namespacetmc51x0.html#ad7c9cd8e87838faf750c8d0674e8443e", null ],
+    [ "ToString", "namespacetmc51x0.html#a357c46b81ab3724ff0cb7edb0a63a1b3", null ],
+    [ "ToString", "namespacetmc51x0.html#ab0564b59a674cbeb306a2d9f93ad0dfe", null ],
+    [ "ToString", "namespacetmc51x0.html#a87842913785c7ae36ec86b05855fa685", null ],
+    [ "ToString", "namespacetmc51x0.html#a2687c1ffa238ddc4d2c6fbb36523ec24", null ],
+    [ "ToString", "namespacetmc51x0.html#a05bf4335137c09ab1cf64a7e37a83828", null ],
+    [ "ToString", "namespacetmc51x0.html#afffa196cafae3052b4963ddb5aa03e68", null ],
+    [ "ToString", "namespacetmc51x0.html#ae47a5e9499793dcbb3521f42bcdc312d", null ],
+    [ "ToString", "namespacetmc51x0.html#a1dbedcb137f707b1b2d1734e719e35d5", null ],
+    [ "ToString", "namespacetmc51x0.html#a5ee86cd36d23133f5021deeccdd3c4f8", null ]
 ];

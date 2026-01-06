@@ -1,13 +1,13 @@
 <map id="EspNowReceiver::init" name="EspNowReceiver::init">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,165,80"/>
+<area shape="rect" id="Node000001" title="Initialize ESP&#45;NOW (WiFi STA + ESP&#45;NOW) and start the receive task." alt="" coords="5,55,165,80"/>
 <area shape="rect" id="Node000002" href="$espnow__receiver_8cpp.html#a44061e0266f1b1a77b44a0a63331886a" title=" " alt="" coords="215,5,344,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,52,214,32,216,37,137,57"/>
 <area shape="rect" id="Node000003" href="$espnow__receiver_8cpp.html#a1b279e5b3cf405bbb7035b85142c6134" title=" " alt="" coords="213,55,345,80"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,65,200,65,200,70,166,70"/>
 <area shape="rect" id="Node000004" href="$espnow__receiver_8cpp.html#a60f0e60b9ba93f8290923d5b39e6ce5a" title=" " alt="" coords="237,104,322,129"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="137,77,224,100,223,105,135,83"/>
-<area shape="rect" id="Node000005" href="$espnow__receiver_8cpp.html#a211bc701b043b68b2a0a4462c1ca43c5" title=" " alt="" coords="393,104,509,129"/>
+<area shape="rect" id="Node000005" href="$espnow__receiver_8cpp.html#a7b66833f47870fc437dedd1e79d23dd9" title=" " alt="" coords="393,104,509,129"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="322,114,380,114,380,119,322,119"/>
-<area shape="rect" id="Node000006" href="$espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" title=" " alt="" coords="557,104,649,129"/>
+<area shape="rect" id="Node000006" href="$espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="557,104,649,129"/>
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="510,114,543,114,543,119,510,119"/>
 </map>

@@ -1,13 +1,13 @@
 <map id="status_update_task" name="status_update_task">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,77,155,102"/>
-<area shape="rect" id="Node000002" href="$classFatigueTest_1_1FatigueTestMotion.html#ab76244c4aa6363f37451985846c1debe" title=" " alt="" coords="203,5,379,45"/>
+<area shape="rect" id="Node000001" title="FreeRTOS task: periodically send STATUS_UPDATE to the remote controller." alt="" coords="5,77,155,102"/>
+<area shape="rect" id="Node000002" href="$classFatigueTest_1_1FatigueTestMotion.html#ab76244c4aa6363f37451985846c1debe" title="Snapshot current controller status." alt="" coords="203,5,379,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,74,210,47,212,52,124,79"/>
-<area shape="rect" id="Node000003" href="$classFatigueTest_1_1FatigueTestMotion.html#a8bbda0702fdd8f9ed10c82e49d093ba9" title=" " alt="" coords="203,69,379,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="155,87,189,87,189,92,155,92"/>
-<area shape="rect" id="Node000004" href="$namespaceEspNowReceiver.html#ad20a4032cfbaf4698d2a894139c339ae" title=" " alt="" coords="205,133,376,173"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="124,100,212,127,210,132,122,105"/>
-<area shape="rect" id="Node000005" href="$espnow__receiver_8cpp.html#a56b1fa458feb934b57be89468e71627f" title=" " alt="" coords="427,141,569,166"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="376,151,413,151,413,156,376,156"/>
-<area shape="rect" id="Node000006" href="$espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" title=" " alt="" coords="617,141,709,166"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="570,151,604,151,604,156,570,156"/>
+<area shape="rect" id="Node000003" href="$namespaceEspNowReceiver.html#ad20a4032cfbaf4698d2a894139c339ae" title="Send STATUS_UPDATE with cycle count and state." alt="" coords="205,69,376,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="155,87,191,87,191,92,155,92"/>
+<area shape="rect" id="Node000006" href="$main_8cpp.html#a77af09d9386bbe795dc848a935bff12f" title="Map the internal application state machine to the protocol&#45;visible TestState." alt="" coords="239,134,343,159"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="128,99,231,128,230,133,127,105"/>
+<area shape="rect" id="Node000004" href="$espnow__receiver_8cpp.html#a56b1fa458feb934b57be89468e71627f" title=" " alt="" coords="427,77,569,102"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="376,87,413,87,413,92,376,92"/>
+<area shape="rect" id="Node000005" href="$espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="617,77,709,102"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="570,87,604,87,604,92,570,92"/>
 </map>

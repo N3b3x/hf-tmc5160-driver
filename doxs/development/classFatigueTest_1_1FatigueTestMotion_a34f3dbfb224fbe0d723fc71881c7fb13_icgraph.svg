@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Set dwell times at local bounds.">
 <polygon fill="#999999" stroke="#666666" points="403,-30 271,-30 271,0 403,0 403,-30"/>
 <text text-anchor="start" x="279" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">FatigueTest::FatigueTest</text>
 <text text-anchor="middle" x="337" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Motion::SetDwellTimes</text>
@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" target="_top" xlink:title="FreeRTOS task: process inbound ESP&#45;NOW protocol events.">
 <polygon fill="white" stroke="#666666" points="235,-24.5 101,-24.5 101,-5.5 235,-5.5 235,-24.5"/>
 <text text-anchor="middle" x="168" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">espnow_command_task</text>
 </a>

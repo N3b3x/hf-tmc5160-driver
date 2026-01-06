@@ -101,6 +101,9 @@ $(function(){initNavTree('structEspNowPacket.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 
+<p>Full packet representation (header + max payload + CRC field).  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="espnow__protocol_8hpp_source.html">espnow_protocol.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for EspNowPacket:</div>
@@ -117,7 +120,10 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a3adce4a46a2448c2da304debc2b00364" id="r_a3adce4a46a2448c2da304debc2b00364"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3adce4a46a2448c2da304debc2b00364">crc</a></td></tr>
 <tr class="separator:a3adce4a46a2448c2da304debc2b00364"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Full packet representation (header + max payload + CRC field). </p>
+<dl class="section note"><dt>Note</dt><dd>On the wire, payload length is <code>hdr.len</code> and CRC is located at offset <code>sizeof(EspNowHeader) + hdr.len</code>. Do not assume the <code>crc</code> field in this struct aligns with the received buffer for shorter payloads. </dd></dl>
+</div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a3adce4a46a2448c2da304debc2b00364" name="a3adce4a46a2448c2da304debc2b00364"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3adce4a46a2448c2da304debc2b00364">&#9670;&#160;</a></span>crc</h2>
 
