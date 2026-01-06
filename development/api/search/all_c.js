@@ -10,7 +10,7 @@ var searchData=
   ['naming_20convention_7',['Unit Naming Convention',['../tmc51x0__config__builder_8hpp.html#autotoc_md0',1,'']]],
   ['native_5fhandle_8',['native_handle',['../classEsp32TmcMutex.html#a7921afd7a51298dbdeec91d115871e7f',1,'Esp32TmcMutex']]],
   ['neg_5fedge_9',['neg_edge',['../uniontmc51x0_1_1ENCMODE__Register.html#a3a2426164568f62f5694c61594e886f2',1,'tmc51x0::ENCMODE_Register']]],
-  ['new_10',['NEW',['../index.html#autotoc_md41',1,'Tuning Subsystem ⭐ NEW'],['../index.html#autotoc_md66',1,'Tuning Subsystem ⭐ NEW']]],
+  ['new_10',['NEW',['../index.html#autotoc_md42',1,'Tuning Subsystem ⭐ NEW'],['../index.html#autotoc_md67',1,'Tuning Subsystem ⭐ NEW']]],
   ['nextwrapchunk_11',['NextWrapChunk',['../namespacetmc51x0_1_1detail.html#a042585aacefd87238f1c771567fd1647',1,'tmc51x0::detail']]],
   ['no_5fedge_12',['NO_EDGE',['../namespacetmc51x0.html#a72806fd22f0c0112600ad9056aa3be97a38a74ee0f8764437c5fce05a7b4964e1',1,'tmc51x0']]],
   ['node_20management_13',['Multi-Node Management',['../group__TMC51X0__MultiNode.html',1,'']]],
@@ -22,7 +22,8 @@ var searchData=
   ['none_19',['NONE',['../main_8cpp.html#a806a56232ad25c740e34fcbbe00ef97aab50339a10e1de285ac99d4c3990b8693',1,'main.cpp']]],
   ['normal_20',['NORMAL',['../namespacetmc51x0.html#ae988d381e96f02ccf88517740b83e5f1a1e23852820b9154316c7c06e2b7ba051',1,'tmc51x0::NORMAL'],['../namespacetmc51x0.html#a6a87b8eb4c1843e07007d7162048bf4da1e23852820b9154316c7c06e2b7ba051',1,'tmc51x0::NORMAL']]],
   ['not_5finitialized_21',['NOT_INITIALIZED',['../namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3a02de9649e258d1dd94056e676061e969',1,'tmc51x0']]],
-  ['ns_5fper_5fsec_22',['NS_PER_SEC',['../namespacetmc51x0_1_1RegisterConstants.html#aea8cc1e5b0cd6c2eacb7612521e2f461',1,'tmc51x0::RegisterConstants']]],
-  ['num_5factive_5fdevices_5f_23',['num_active_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a589a348bfced31beaf1ad6ff39bca58e',1,'tmc51x0::TMC51x0DaisyChain::num_active_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#a58c0f7968d95a448504292f5043536dd',1,'tmc51x0::TMC51x0MultiNode::num_active_devices_']]],
-  ['num_5fonboard_5fdevices_5f_24',['num_onboard_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a4fd8aa10deac6ac8e55e397a34e6fe94',1,'tmc51x0::TMC51x0DaisyChain::num_onboard_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#afd8d19c9724c0f933cdaa38f66d5e0c0',1,'tmc51x0::TMC51x0MultiNode::num_onboard_devices_']]]
+  ['notes_20important_22',['Concurrency / RTOS Notes (Important)',['../classEsp32SPI.html#autotoc_md23',1,'']]],
+  ['ns_5fper_5fsec_23',['NS_PER_SEC',['../namespacetmc51x0_1_1RegisterConstants.html#aea8cc1e5b0cd6c2eacb7612521e2f461',1,'tmc51x0::RegisterConstants']]],
+  ['num_5factive_5fdevices_5f_24',['num_active_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a589a348bfced31beaf1ad6ff39bca58e',1,'tmc51x0::TMC51x0DaisyChain::num_active_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#a58c0f7968d95a448504292f5043536dd',1,'tmc51x0::TMC51x0MultiNode::num_active_devices_']]],
+  ['num_5fonboard_5fdevices_5f_25',['num_onboard_devices_',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a4fd8aa10deac6ac8e55e397a34e6fe94',1,'tmc51x0::TMC51x0DaisyChain::num_onboard_devices_'],['../classtmc51x0_1_1TMC51x0MultiNode.html#afd8d19c9724c0f933cdaa38f66d5e0c0',1,'tmc51x0::TMC51x0MultiNode::num_onboard_devices_']]]
 ];

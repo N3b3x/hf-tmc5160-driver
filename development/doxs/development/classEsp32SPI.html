@@ -1376,7 +1376,14 @@ Here is the caller graph for this function:</div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if successful, false otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if successful, false otherwise</dd></dl>
+<h2><a class="anchor" id="autotoc_md23"></a>
+Concurrency / RTOS Notes (Important)</h2>
+<ul>
+<li><b>Single-task assumption (current examples)</b>: This implementation assumes the driver is accessed from a single task. If you call into the driver from multiple tasks concurrently, you must add a mutex around <code>spi_device_transmit()</code> (or provide external serialization).</li>
+<li><b>Not ISR-safe</b>: <code>spi_device_transmit()</code> may block; do not call this from an ISR.</li>
+<li><b>Why serialization matters</b>: The core SPI comm layer uses per-instance scratch buffers and expects SPI transfers to be serialized. </li>
+</ul>
 
 </div>
 </div>

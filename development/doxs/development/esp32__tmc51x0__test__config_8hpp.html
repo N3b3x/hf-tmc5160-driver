@@ -351,7 +351,7 @@ Variables</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>ESP32 GPIO pin configuration and compile-time configuration for TMC51x0 driver (TMC5130 &amp; TMC5160) </p>
 <p>This file defines compile-time configuration for TMC51x0 driver initialization using struct-based configuration with static constexpr members for zero runtime overhead.</p>
-<h2><a class="anchor" id="autotoc_md23"></a>
+<h2><a class="anchor" id="autotoc_md24"></a>
 Configuration Structure</h2>
 <p>All configurations are defined as structs with <code>static constexpr</code> members:</p><ul>
 <li><b>MotorConfig</b>: Motor-specific configurations (physical specs, chopper, StealthChop)</li>
@@ -359,7 +359,7 @@ Configuration Structure</h2>
 <li><b>PlatformConfig</b>: Platform/application-specific configuration (switches, encoder, mechanical)</li>
 <li><b>TestConfig</b>: Test-specific parameters (StallGuard, motion profiles)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md24"></a>
+<h2><a class="anchor" id="autotoc_md25"></a>
 Configuration Hierarchy</h2>
 <ol type="1">
 <li><b>BoardConfig</b>: Hardware parameters that stay the same for the same driver board<ul>
@@ -389,9 +389,9 @@ Configuration Hierarchy</h2>
 </ul>
 </li>
 </ol>
-<h2><a class="anchor" id="autotoc_md25"></a>
+<h2><a class="anchor" id="autotoc_md26"></a>
 Usage</h2>
-<h3><a class="anchor" id="autotoc_md26"></a>
+<h3><a class="anchor" id="autotoc_md27"></a>
 Unified Test Rig Selection (Recommended)</h3>
 <p>The <code>TestRigConfig</code> template provides unified access to all configurations:</p>
 <div class="fragment"><div class="line"><span class="comment">// Select test rig at compile time - automatically selects motor, board, and platform</span></div>
@@ -422,7 +422,7 @@ Unified Test Rig Selection (Recommended)</h3>
 <div class="ttc" id="anamespacetmc51x0__test__config_html_abbe03fa70b2e9f4f6cc025761f518df0af1a83fc037447a7b142f4aa8220d8d15"><div class="ttname"><a href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0af1a83fc037447a7b142f4aa8220d8d15">tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE</a></div><div class="ttdeci">@ TEST_RIG_FATIGUE</div><div class="ttdoc">Fatigue test rig (Applied Motion 5034-369 motor, TMC51x0 EVAL board, reference switches,...</div></div>
 <div class="ttc" id="astructtmc51x0_1_1DriverConfig_html"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2832</div></div>
 <div class="ttc" id="astructtmc51x0__test__config_1_1TestRigConfig_html"><div class="ttname"><a href="structtmc51x0__test__config_1_1TestRigConfig.html">tmc51x0_test_config::TestRigConfig</a></div><div class="ttdoc">Base template for test rig configuration (undefined - forces explicit specialization)</div><div class="ttdef"><b>Definition</b> esp32_tmc51x0_test_config.hpp:1001</div></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md27"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md28"></a>
 Direct Struct Access</h3>
 <p>You can also access configuration structs directly:</p>
 <div class="fragment"><div class="line"><span class="comment">// Access motor config values</span></div>
@@ -438,7 +438,7 @@ Direct Struct Access</h3>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Access test config values</span></div>
 <div class="line"><span class="keywordtype">float</span> speed = TestConfig_17HS4401S::Motion::BOUNDS_SEARCH_SPEED_RPM;</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md28"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md29"></a>
 Manual Selection (Advanced)</h3>
 <p>For advanced use cases, you can still manually select motor, board, and platform:</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a> cfg{};</div>
@@ -448,7 +448,7 @@ Manual Selection (Advanced)</h3>
 <div class="line">driver.Initialize(cfg);</div>
 <div class="ttc" id="anamespacetmc51x0__test__config_html_a04e6467cc9c09e86f765728ce4874d55"><div class="ttname"><a href="namespacetmc51x0__test__config.html#a04e6467cc9c09e86f765728ce4874d55">tmc51x0_test_config::ConfigureDriverFromMotor_17HS4401S_Gearbox</a></div><div class="ttdeci">void ConfigureDriverFromMotor_17HS4401S_Gearbox(tmc51x0::DriverConfig &amp;cfg) noexcept</div><div class="ttdoc">Helper function to populate DriverConfig from 17HS4401S gearbox motor configuration.</div><div class="ttdef"><b>Definition</b> esp32_tmc51x0_test_config.hpp:1083</div></div>
 </div><!-- fragment --><p>This file also provides GPIO pin assignments and a complete <a class="el" href="structEsp32SpiPinConfig.html" title="Complete ESP32 SPI bus and TMC51x0 pin configuration structure.">Esp32SpiPinConfig</a> structure.</p>
-<h2><a class="anchor" id="autotoc_md29"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 Test Rig Configuration</h2>
 <p>The project uses two test rigs, each with a specific motor, board, and platform configuration:</p>
 <ol type="1">

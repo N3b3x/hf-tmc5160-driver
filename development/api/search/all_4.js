@@ -84,8 +84,8 @@ var searchData=
   ['encn_81',['encn',['../structtmc51x0_1_1PinActiveLevels.html#a4aec1928edb9722f0424908d2979e5ec',1,'tmc51x0::PinActiveLevels']]],
   ['encn_82',['ENCN',['../namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eba70273f6707f8d960a22a5157ef454bd8',1,'tmc51x0']]],
   ['encoder_83',['Encoder',['../structtmc51x0_1_1TMC51x0_1_1Encoder.html',1,'tmc51x0::TMC51x0&lt; CommType &gt;::Encoder'],['../structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1Encoder.html',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::Encoder'],['../structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::Encoder'],['../structtmc51x0_1_1TMC51x0_1_1Encoder.html#af5755d7dee09aa5b787b3f97c95a34dd',1,'tmc51x0::TMC51x0::Encoder::Encoder()']]],
-  ['encoder_20integration_84',['🔄 Encoder Integration',['../index.html#autotoc_md44',1,'']]],
-  ['encoder_20subsystem_85',['Encoder Subsystem',['../index.html#autotoc_md45',1,'Encoder Subsystem'],['../index.html#autotoc_md68',1,'Encoder Subsystem']]],
+  ['encoder_20integration_84',['🔄 Encoder Integration',['../index.html#autotoc_md45',1,'']]],
+  ['encoder_20subsystem_85',['Encoder Subsystem',['../index.html#autotoc_md46',1,'Encoder Subsystem'],['../index.html#autotoc_md69',1,'Encoder Subsystem']]],
   ['encoder_5fconfig_86',['encoder_config',['../structtmc51x0_1_1DriverConfig.html#a87f4505ddcf4602019dccbf88143519b',1,'tmc51x0::DriverConfig']]],
   ['encoder_5finvert_5fdirection_87',['ENCODER_INVERT_DIRECTION',['../abn__encoder__reader_8cpp.html#a785c9ed81b5a3c7ee117bd156c453f52',1,'abn_encoder_reader.cpp']]],
   ['encoder_5fppr_88',['ENCODER_PPR',['../abn__encoder__reader_8cpp.html#a91d65b448d5a969e4f00b36cde53e0b0',1,'abn_encoder_reader.cpp']]],
@@ -140,7 +140,7 @@ var searchData=
   ['every_5f32_137',['EVERY_32',['../namespacetmc51x0.html#a871c301c3ba553b1aa04199d9774259ea1a79f124cf969a8fa05d912917ad6f88',1,'tmc51x0']]],
   ['every_5f8_138',['EVERY_8',['../namespacetmc51x0.html#a871c301c3ba553b1aa04199d9774259eacc3653124fa2c8ef75c0dfca267e0683',1,'tmc51x0']]],
   ['example_139',['Example',['../classtmc51x0_1_1TMC51x0DaisyChain.html#autotoc_md4',1,'Usage Example'],['../classtmc51x0_1_1TMC51x0MultiNode.html#autotoc_md8',1,'Usage Example'],['../classtmc51x0_1_1TMC51x0.html#autotoc_md12',1,'Usage Example']]],
-  ['examples_140',['📊 Examples',['../index.html#autotoc_md73',1,'']]],
+  ['examples_140',['📊 Examples',['../index.html#autotoc_md74',1,'']]],
   ['external_5fclk_5fconfig_141',['external_clk_config',['../structtmc51x0_1_1DriverConfig.html#a24653db24abcfd9670e8714dfe5d3aa9',1,'tmc51x0::DriverConfig']]],
   ['externalclockconfig_142',['ExternalClockConfig',['../structtmc51x0_1_1ExternalClockConfig.html',1,'tmc51x0::ExternalClockConfig'],['../structtmc51x0_1_1ExternalClockConfig.html#a15447f0bf2e27fdbd673692b046e7eec',1,'tmc51x0::ExternalClockConfig::ExternalClockConfig()']]]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['of_20contents_0',['📚 Table of Contents',['../index.html#autotoc_md31',1,'']]],
+  ['of_20contents_0',['📚 Table of Contents',['../index.html#autotoc_md32',1,'']]],
   ['offset_5fread_5fregister_1',['OFFSET_READ_Register',['../uniontmc51x0_1_1OFFSET__READ__Register.html',1,'tmc51x0']]],
   ['ok_2',['ok',['../structConfigAckPayload.html#a1246bee302f06c6584c1d12e54b98218',1,'ConfigAckPayload']]],
   ['ok_3',['OK',['../namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3ae0aa021e21dddbd6d8cecec71e9cf564',1,'tmc51x0::OK'],['../namespacetmc51x0.html#afdc019b38a68bc8a317ade8ff4fafa0bae0aa021e21dddbd6d8cecec71e9cf564',1,'tmc51x0::OK']]],
@@ -41,5 +41,5 @@ var searchData=
   ['overtemp_5fshutdown_38',['OVERTEMP_SHUTDOWN',['../namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3ae401b6cd40690075883d21464da174e2',1,'tmc51x0']]],
   ['overtemp_5fwarning_39',['OVERTEMP_WARNING',['../namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3ad403fd986888b047f1defd55483f87ba',1,'tmc51x0']]],
   ['overtempprotection_40',['OverTempProtection',['../namespacetmc51x0.html#a06dfa560a9edb58f6e572b8e904ae79e',1,'tmc51x0']]],
-  ['overview_41',['📦 Overview',['../index.html#autotoc_md32',1,'']]]
+  ['overview_41',['📦 Overview',['../index.html#autotoc_md33',1,'']]]
 ];
