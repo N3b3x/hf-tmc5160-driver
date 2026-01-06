@@ -651,6 +651,15 @@ public:
    * @param rx Receive buffer
    * @param length Number of bytes to transfer
    * @return true if successful, false otherwise
+   *
+   * ## Concurrency / RTOS Notes (Important)
+   * - **Single-task assumption (current examples)**: This implementation assumes the
+   *   driver is accessed from a single task. If you call into the driver from multiple
+   *   tasks concurrently, you must add a mutex around `spi_device_transmit()` (or provide
+   *   external serialization).
+   * - **Not ISR-safe**: `spi_device_transmit()` may block; do not call this from an ISR.
+   * - **Why serialization matters**: The core SPI comm layer uses per-instance scratch
+   *   buffers and expects SPI transfers to be serialized.
    */
   tmc51x0::Result<void> SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) noexcept {
     // Caller must ensure Initialize() (or EnsureInitialized()) was invoked once before use.
