@@ -1671,7 +1671,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetTargetPosition(int32_t position)
   if (!mode_guard) {
     return mode_guard;
   }
-  return driver_.comm_.WriteRegister(Registers::XTARGET, static_cast<uint32_t>(position));
+  return driver_.comm_.WriteRegister(Registers::XTARGET, static_cast<uint32_t>(position), driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -1711,11 +1711,11 @@ Result<void> TMC51x0<CommType>::RampControl::SetCurrentPosition(int32_t position
   if (!mode_guard) {
     return mode_guard;
   }
-  if (!driver_.comm_.WriteRegister(Registers::XACTUAL, static_cast<uint32_t>(position))) {
+  if (!driver_.comm_.WriteRegister(Registers::XACTUAL, static_cast<uint32_t>(position), driver_.GetCommAddress())) {
     return Result<void>(ErrorCode::COMM_ERROR);
   }
   if (update_encoder) {
-    if (!driver_.comm_.WriteRegister(Registers::X_ENC, static_cast<uint32_t>(position))) {
+    if (!driver_.comm_.WriteRegister(Registers::X_ENC, static_cast<uint32_t>(position), driver_.GetCommAddress())) {
       return Result<void>(ErrorCode::COMM_ERROR);
     }
     // Clear deviation flag
@@ -1738,7 +1738,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetMaxSpeed(float value, Unit unit)
   int32_t internal = driver_.speedToInternal(std::abs(steps_per_sec));
   // VMAX range per datasheet: 0 to (2^23)-512 = 0x7FFE00 (8,388,096)
   internal = std::min(internal, static_cast<decltype(internal)>(0x7FFE00)); // VMAX max: (2^23)-512
-  auto write_result = driver_.comm_.WriteRegister(Registers::VMAX, static_cast<uint32_t>(internal));
+  auto write_result = driver_.comm_.WriteRegister(Registers::VMAX, static_cast<uint32_t>(internal), driver_.GetCommAddress());
   if (!write_result) {
     return write_result;
   }
@@ -1785,13 +1785,13 @@ Result<void> TMC51x0<CommType>::RampControl::SetAccelerations(float accel_val, f
   accel_internal = std::min(accel_internal,
                             static_cast<decltype(accel_internal)>(0xFFFF)); // AMAX/DMAX are 16 bits
   decel_internal = std::min(decel_internal, static_cast<decltype(decel_internal)>(0xFFFF));
-  auto amax_result = driver_.comm_.WriteRegister(Registers::AMAX, static_cast<uint32_t>(accel_internal));
+  auto amax_result = driver_.comm_.WriteRegister(Registers::AMAX, static_cast<uint32_t>(accel_internal), driver_.GetCommAddress());
   if (!amax_result) {
     return amax_result;
   }
   driver_.write_only_regs_.amax = static_cast<uint32_t>(accel_internal);
   
-  auto dmax_result = driver_.comm_.WriteRegister(Registers::DMAX, static_cast<uint32_t>(decel_internal));
+  auto dmax_result = driver_.comm_.WriteRegister(Registers::DMAX, static_cast<uint32_t>(decel_internal), driver_.GetCommAddress());
   if (!dmax_result) {
     return dmax_result;
   }
@@ -1814,7 +1814,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetDeceleration(float value, Unit u
   TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "Ramp - deceleration: %.2f steps/s²", decel_steps);
   int32_t decel_internal = driver_.accelToInternal(std::abs(decel_steps));
   decel_internal = std::min(decel_internal, static_cast<decltype(decel_internal)>(0xFFFF)); // DMAX is 16 bits
-  auto write_result = driver_.comm_.WriteRegister(Registers::DMAX, static_cast<uint32_t>(decel_internal));
+  auto write_result = driver_.comm_.WriteRegister(Registers::DMAX, static_cast<uint32_t>(decel_internal), driver_.GetCommAddress());
   if (write_result) {
     driver_.write_only_regs_.dmax = static_cast<uint32_t>(decel_internal);
   }
@@ -1848,19 +1848,19 @@ Result<void> TMC51x0<CommType>::RampControl::SetRampSpeeds(float start_speed, fl
     vstop = 1;
   }
   v1 = std::min(v1, static_cast<decltype(v1)>(0xFFFFF));   // V1 is 20 bits
-  auto vstart_result = driver_.comm_.WriteRegister(Registers::VSTART, static_cast<uint32_t>(vstart));
+  auto vstart_result = driver_.comm_.WriteRegister(Registers::VSTART, static_cast<uint32_t>(vstart), driver_.GetCommAddress());
   if (!vstart_result) {
     return vstart_result;
   }
   driver_.write_only_regs_.vstart = static_cast<uint32_t>(vstart);
   
-  auto vstop_result = driver_.comm_.WriteRegister(Registers::VSTOP, static_cast<uint32_t>(vstop));
+  auto vstop_result = driver_.comm_.WriteRegister(Registers::VSTOP, static_cast<uint32_t>(vstop), driver_.GetCommAddress());
   if (!vstop_result) {
     return vstop_result;
   }
   driver_.write_only_regs_.vstop = static_cast<uint32_t>(vstop);
   
-  auto v1_result = driver_.comm_.WriteRegister(Registers::V1, static_cast<uint32_t>(v1));
+  auto v1_result = driver_.comm_.WriteRegister(Registers::V1, static_cast<uint32_t>(v1), driver_.GetCommAddress());
   if (!v1_result) {
     return v1_result;
   }
@@ -2143,7 +2143,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetPowerDownDelay(uint8_t tpowerdow
   if (!mode_guard) {
     return mode_guard;
   }
-  auto write_result = driver_.comm_.WriteRegister(Registers::TPOWERDOWN, static_cast<uint32_t>(tpowerdown));
+  auto write_result = driver_.comm_.WriteRegister(Registers::TPOWERDOWN, static_cast<uint32_t>(tpowerdown), driver_.GetCommAddress());
   if (write_result) {
     driver_.write_only_regs_.tpowerdown = tpowerdown;
   }
@@ -2169,7 +2169,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetZeroWaitTime(uint16_t tzerowait)
   if (!mode_guard) {
     return mode_guard;
   }
-  auto write_result = driver_.comm_.WriteRegister(Registers::TZEROWAIT, static_cast<uint32_t>(tzerowait));
+  auto write_result = driver_.comm_.WriteRegister(Registers::TZEROWAIT, static_cast<uint32_t>(tzerowait), driver_.GetCommAddress());
   if (write_result) {
     driver_.write_only_regs_.tzerowait = tzerowait;
   }
@@ -2341,7 +2341,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetFinalDeceleration(float d1, Unit
       d1_internal = 1;
     }
   }
-  auto write_result = driver_.comm_.WriteRegister(Registers::D1, static_cast<uint32_t>(d1_internal));
+  auto write_result = driver_.comm_.WriteRegister(Registers::D1, static_cast<uint32_t>(d1_internal), driver_.GetCommAddress());
   if (write_result) {
     driver_.write_only_regs_.d1 = static_cast<uint32_t>(d1_internal);
   }
@@ -3091,7 +3091,7 @@ Result<void> TMC51x0<CommType>::Thresholds::SetHighSpeedThreshold(float value, U
   float steps_per_sec = driver_.convertSpeedToSteps(value, unit);
   int32_t thigh = driver_.thresholdSpeedToTstep(steps_per_sec);
   thigh = std::min(thigh, static_cast<decltype(thigh)>(0xFFFFF));
-  auto write_result = driver_.comm_.WriteRegister(Registers::THIGH, static_cast<uint32_t>(thigh));
+  auto write_result = driver_.comm_.WriteRegister(Registers::THIGH, static_cast<uint32_t>(thigh), driver_.GetCommAddress());
   if (write_result) {
     driver_.write_only_regs_.thigh = static_cast<uint32_t>(thigh);
   }
@@ -4141,7 +4141,7 @@ Result<void> TMC51x0<CommType>::Encoder::SetAllowedDeviation(int32_t steps) noex
   int32_t deviation = steps * driver_.current_microsteps_;
   deviation = std::min(deviation, static_cast<int32_t>(0xFFFFF)); // 20 bits
   uint32_t deviation_value = static_cast<uint32_t>(deviation);
-  auto write_result = driver_.comm_.WriteRegister(Registers::ENC_DEVIATION, deviation_value);
+  auto write_result = driver_.comm_.WriteRegister(Registers::ENC_DEVIATION, deviation_value, driver_.GetCommAddress());
   if (write_result) {
     driver_.write_only_regs_.enc_deviation = deviation_value;
   }
@@ -7751,7 +7751,7 @@ void TMC51x0<CommType>::Printer::PrintGstat() noexcept {
   
   // Clear flags by writing 1 to them
   if (gstat.value != 0) {
-    driver_.comm_.WriteRegister(Registers::GSTAT, gstat.value);
+    driver_.comm_.WriteRegister(Registers::GSTAT, gstat.value, driver_.GetCommAddress());
   }
 }
 

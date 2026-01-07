@@ -1195,7 +1195,7 @@ public:
    */
   Result<void> WriteRegister(uint8_t address, uint32_t value,
                              uint8_t address_param = 0) noexcept {
-    return static_cast<Derived *>(this)->WriteRegister(address,
+    return static_cast<Derived *>(this)->WriteRegister(address, value,
                                                        address_param);
   }
 
