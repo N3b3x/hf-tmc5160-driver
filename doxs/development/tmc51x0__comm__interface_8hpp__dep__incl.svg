@@ -230,7 +230,7 @@
 <!-- Node12 -->
 <g id="Node000012" class="node">
 <title>Node12</title>
-<g id="a_Node000012"><a xlink:href="stallguard__tuning_8cpp.html" target="_top" xlink:title="Automatic StallGuard2 Tuning Tool with Safe Current Margin.">
+<g id="a_Node000012"><a xlink:href="stallguard__tuning_8cpp.html" target="_top" xlink:title="Automatic StallGuard2 Tuning Tool with Current Reduction.">
 <polygon fill="white" stroke="#666666" points="515.5,-79.5 393.5,-79.5 393.5,-60.5 515.5,-60.5 515.5,-79.5"/>
 <text text-anchor="middle" x="454.5" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00">stallguard_tuning.cpp</text>
 </a>

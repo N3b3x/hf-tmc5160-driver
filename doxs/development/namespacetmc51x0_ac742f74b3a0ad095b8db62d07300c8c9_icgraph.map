@@ -1,9 +1,12 @@
 <map id="tmc51x0::CalculateMotorCurrent" name="tmc51x0::CalculateMotorCurrent">
-<area shape="rect" id="Node000001" title="Calculate motor current settings from physical parameters." alt="" coords="295,77,529,102"/>
-<area shape="rect" id="Node000002" href="$structtmc51x0_1_1TMC51x0_1_1Tuning.html#ab039ccc53f0607b6a3a434baf57bb219" title="Comprehensive automatic StallGuard tuning with safe current margin and optional encoder verification." alt="" coords="27,5,225,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="340,76,215,48,216,43,341,71"/>
+<area shape="rect" id="Node000001" title="Calculate motor current settings from physical parameters." alt="" coords="295,125,529,150"/>
+<area shape="rect" id="Node000002" href="$structtmc51x0_1_1TMC51x0_1_1Tuning.html#a733a14d500aa8ef09ff364014b0a99f0" title="Comprehensive automatic StallGuard tuning with current reduction and optional encoder verification." alt="" coords="27,5,225,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="375,120,315,90,246,60,210,48,212,43,248,55,317,85,377,116"/>
 <area shape="rect" id="Node000003" href="$structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a1b161ad0b80141d5547088c441311411" title="Configure motor current from motor specifications." alt="" coords="5,69,247,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="281,92,247,92,247,87,281,87"/>
-<area shape="rect" id="Node000004" href="$structtmc51x0_1_1TMC51x0_1_1MotorControl.html#af9e0f73230cbbc287c275562a1ef151b" title="Setup motor from high&#45;level specifications." alt="" coords="5,133,247,173"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="341,108,216,136,215,131,340,102"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="322,125,245,112,246,107,323,120"/>
+<area shape="rect" id="Node000004" href="$namespacetmc51x0_1_1anonymous__namespace_02tmc51x0_8cpp_03.html#a318abe41261027e58937bce4a2756ef9" title=" " alt="" coords="13,158,239,213"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="323,155,239,169,238,164,322,150"/>
+<area shape="rect" id="Node000005" href="$structtmc51x0_1_1TMC51x0_1_1MotorControl.html#af9e0f73230cbbc287c275562a1ef151b" title="Setup motor from high&#45;level specifications." alt="" coords="5,237,247,277"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="380,159,319,193,248,226,209,240,207,235,246,222,317,188,377,155"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="174,147,157,140,126,137,100,139,84,143,76,150,76,158,71,158,71,148,81,139,99,133,126,131,158,134,176,142"/>
 </map>
