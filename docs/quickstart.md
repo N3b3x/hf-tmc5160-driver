@@ -235,7 +235,7 @@ if (!verify_result) {
 ```cpp
 // Automatically find optimal StallGuard2 threshold
 tmc51x0::StallGuardTuningResult result;
-// Using AutoTuneStallGuard (recommended) - includes safe current margin
+// Using AutoTuneStallGuard (recommended) - includes current reduction
 // Note: Separate unit parameters for velocity and acceleration
 auto tune_result = driver.tuning.AutoTuneStallGuard(
     0.6f, result,                          // Target velocity: 0.6 rev/s (~36 RPM)
@@ -244,7 +244,7 @@ auto tune_result = driver.tuning.AutoTuneStallGuard(
     0.18f, 0.9f,                           // Velocity range: 0.18-0.9 rev/s (30%-150% of target)
     tmc51x0::Unit::RevPerSec,              // Velocity unit (default, can be omitted)
     tmc51x0::Unit::RevPerSec,              // Acceleration unit (default, can be omitted)
-    300                        // Safe current margin: 300mA
+    0.3f                                   // Current reduction factor: 30% (recommended)
 );
 
 if (tune_result) {
@@ -261,12 +261,15 @@ if (tune_result) {
 ```cpp
 // Home without endstops using StallGuard2
 int32_t final_position;
-auto homing_result = driver.homing.PerformSensorlessHoming(
-    true,           // Direction (true = positive)
-    search_speed,   // Search speed
-    final_position, // Final position after homing
-    10000           // Timeout in milliseconds
-);
+tmc51x0::TMC51x0<MyComm>::Homing::BoundsOptions opt{};
+opt.speed_unit = tmc51x0::Unit::RPM;
+opt.position_unit = tmc51x0::Unit::Deg;
+opt.search_speed = search_speed;
+opt.search_span = 360.0F;     // max travel cap (one direction)
+opt.backoff_distance = 5.0F;  // optional
+opt.timeout_ms = 10000;
+
+auto homing_result = driver.homing.PerformSensorlessHoming(true, opt, final_position);
 if (!homing_result) {
     printf("Homing error: %s\n", homing_result.ErrorMessage());
 }

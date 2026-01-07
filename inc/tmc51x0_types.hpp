@@ -2875,9 +2875,12 @@ struct DriverConfig {
  * @brief Cached settings for homing operations
  * 
  * Stores only the settings that are modified during homing and need to be restored.
- * Motor currents are NOT cached because they are not changed during homing.
- * StallGuard SGT threshold is NOT cached because it should be configured once per motor
- * and not changed during homing.
+ * Notes:
+ * - Motor currents may be temporarily reduced during sensorless homing / bounds finding
+ *   (see `BoundsOptions.current_reduction_factor/current_reduction_target_mA`), but are
+ *   restored via local RAII guards rather than this cache.
+ * - StallGuard config may be temporarily overridden via `BoundsOptions.stallguard_override`
+ *   and restored by the homing routines when used as an override.
  */
 struct HomingSettingsCache {
     // StealthChop state (must be disabled for StallGuard)
@@ -2895,6 +2898,7 @@ struct HomingSettingsCache {
     float cached_deceleration = 0.0f;
     float cached_vstart = 0.0f;
     float cached_vstop = 0.0f;
+    float cached_v1 = 0.0f;
     bool ramp_settings_were_modified = false;
     
     bool is_valid = false;  // True if cache has been populated

@@ -2145,7 +2145,7 @@ public:
                    Unit acceleration_unit = Unit::RevPerSec) noexcept;
 
     /**
-     * @brief Comprehensive automatic StallGuard tuning with safe current margin
+     * @brief Comprehensive automatic StallGuard tuning with current reduction
      * and optional encoder verification
      * @param target_velocity Target velocity for tuning (most important -
      * optimal SGT is determined here)
@@ -2160,8 +2160,10 @@ public:
      * @param velocity_unit Unit for velocity parameters (default: RevPerSec)
      * @param acceleration_unit Unit for acceleration parameter (default:
      * RevPerSec, RPM is not valid)
-     * @param safe_current_margin_mA Safe current margin in milliamps (0 = no
-     * margin, use nominal current)
+     * @param current_reduction_factor Current reduction factor as percentage
+     * (0.0-1.0, where 0.3 = 30% of current motor current). If 0, no reduction
+     * is applied. Recommended: 0.3 (30%) per Duet3D best practices for stall
+     * detection.
      * @return Result<void> indicating success or error
      *
      * This is an enhanced version of TuneStallGuard that implements
@@ -2169,9 +2171,9 @@ public:
      * guidelines and industry best practices:
      *
      * **Key Features:**
-     * - **Safe Current Margin**: Reduces motor current by specified margin (in
-     * mA) for safer tuning and improved StallGuard sensitivity. Current is
-     * automatically restored after tuning.
+     * - **Current Reduction**: Reduces motor current for safer tuning and
+     * improved StallGuard sensitivity using percentage-based reduction. Current
+     * is automatically restored after tuning.
      * - **Comprehensive Preparation**: Disables interfering features (CoolStep,
      * StallGuard filter, stop-on-stall) during tuning, then restores them
      * afterward.
@@ -2186,8 +2188,8 @@ public:
      * **Tuning Process:**
      * 1. Save current motor settings (IRUN, IHOLD, GLOBAL_SCALER, CoolStep
      * config)
-     * 2. Apply safe current margin if specified (reduces current for safer
-     * tuning)
+     * 2. Apply current reduction if specified (percentage-based) - reduces
+     * current for safer tuning and improved StallGuard sensitivity
      * 3. Disable CoolStep (SGMIN=0) to prevent current modulation during tuning
      * 4. Disable StallGuard filter (SFILT=0) for immediate response during
      * calibration
@@ -2196,25 +2198,26 @@ public:
      * 7. Verify optimal SGT works at min/max velocities (if specified)
      * 8. Restore all saved settings
      *
-     * **Current Margin Calculation:**
-     * The function calculates the new current by subtracting
-     * safe_current_margin_mA from the current motor current. It uses the
-     * driver's current calculation functions to determine the appropriate IRUN
-     * and GLOBAL_SCALER values. The current is constrained to ensure the motor
-     * can still move (minimum IRUN=8 for StealthChop compatibility).
+     * **Current Reduction:**
+     * If current_reduction_factor > 0, reduces current to
+     * (current_motor_current * current_reduction_factor). Example: 0.3 = 30% of
+     * current motor current. The function uses the driver's current calculation
+     * functions to determine the appropriate IRUN and GLOBAL_SCALER values. The
+     * current is constrained to ensure the motor can still move (minimum
+     * IRUN=8 for StealthChop compatibility).
      *
      * @note Target velocity is the most important parameter - optimal SGT is
      * determined here first
-     * @note If safe_current_margin_mA is 0, the motor current is not changed
-     * @note Current margin is applied by recalculating IRUN/GLOBAL_SCALER from
-     * the reduced current
+     * @note If current_reduction_factor is 0, the motor current is not changed
+     * @note Current reduction is applied by recalculating IRUN/GLOBAL_SCALER
+     * from the reduced current
      * @note All settings (current, CoolStep, filter) are automatically restored
      * after tuning
      * @note This function takes several seconds to complete (typically 5-30
      * seconds depending on SGT range)
      * @note For best results, ensure the motor is unloaded during tuning
      *
-     * @see TuneStallGuard() for a simpler version without current margin
+     * @see TuneStallGuard() for a simpler version without current reduction
      * handling
      */
     Result<void>
@@ -2224,7 +2227,7 @@ public:
                        float max_velocity = 0.0F,
                        Unit velocity_unit = Unit::RevPerSec,
                        Unit acceleration_unit = Unit::RevPerSec,
-                       uint16_t safe_current_margin_mA = 0) noexcept;
+                       float current_reduction_factor = 0.0F) noexcept;
 
   private:
     TMC51x0 &driver_; ///< Reference to parent driver instance
@@ -2250,13 +2253,51 @@ public:
      */
     explicit Homing(TMC51x0 &driver) noexcept : driver_(driver) {}
 
+    // Bounds finding helpers
+    enum class BoundsMethod { StallGuard, Encoder, Switch };
+    enum class HomePlacement { None, AtMin, AtMax, AtCenter, AtOffsetFromMin };
+
+    struct BoundsResult {
+      bool success{false};
+      bool bounded{false};    ///< true if bounds found on both sides
+      bool cancelled{false};
+      float min_bound{0.0F};  ///< In caller-provided position_unit
+      float max_bound{0.0F};  ///< In caller-provided position_unit
+    };
+
+    using CancelCallback = bool (*)();
+
+    struct HomeConfig {
+      HomePlacement mode{HomePlacement::AtCenter};
+      float offset{0.0F};         ///< Used only for AtOffsetFromMin
+      Unit offset_unit{Unit::Deg};
+    };
+
+    struct BoundsOptions {
+      // Units
+      Unit speed_unit{Unit::RPM};
+      Unit position_unit{Unit::Deg};
+
+      // Motion behavior
+      float search_speed{0.0F};    ///< In speed_unit
+      float search_span{360.0F};   ///< Max distance to attempt per direction, in position_unit
+      float backoff_distance{5.0F};///< Backoff after bound hit, in position_unit
+      uint32_t timeout_ms{30000};  ///< Timeout per direction
+      bool preflight_clear_active_switch{true}; ///< Switch homing: if selected switch is active at start, attempt a bounded move away to clear it.
+
+      // StallGuard-only (ignored for Encoder/Switch)
+      float current_reduction_factor{0.3F};   ///< 0..1 (percentage of configured current). Ignored if current_reduction_target_mA > 0.
+      uint16_t current_reduction_target_mA{0};///< Absolute RMS current target during bounds (0 = disabled).
+      const StallGuardConfig* stallguard_override{nullptr}; ///< Optional override (SGT/min_velocity/filter/etc.). If null, uses configured StallGuard settings.
+    };
+
     /**
      * @brief Perform sensorless homing using StallGuard2 (with settings
      * caching)
      * @param direction Direction to search (true = positive, false = negative)
-     * @param search_speed Search speed in steps/s
-     * @param final_position Reference to store final position after homing
-     * @param timeout_ms Maximum time to wait in milliseconds (default: 10000)
+     * @param opt Homing options (unit-aware). Uses opt.search_speed, opt.search_span, opt.timeout_ms.
+     * @param final_position Reference to store final position after homing (in steps).
+     *        Note: if `opt.backoff_distance > 0`, the motor backs off and the **post-backoff** point becomes home (XACTUAL=0).
      * @return Result<void> indicating success or error
      *
      * This is a blocking function that automatically:
@@ -2264,25 +2305,37 @@ public:
      * - Disables StealthChop if enabled (StallGuard requires SpreadCycle)
      * - Uses existing StallGuard configuration (SGT threshold from motor
      * config)
-     * - Enables sg_stop and waits for stall event (SG_RESULT reaches threshold)
+     * - Enables sg_stop and waits for stall event
      * - Restores cached settings after homing completes
      *
      * @note StallGuard threshold (SGT) should be configured via Initialize() or
-     * ConfigureStallGuard() before calling this method. The method uses the
-     * existing SGT configuration.
+     *       ConfigureStallGuard() before calling this method. The method uses the
+     *       existing SGT configuration (or opt.stallguard_override if provided).
      */
-    Result<void> PerformSensorlessHoming(bool direction, float search_speed,
+     /**
+     * @brief Perform sensorless homing using StallGuard2 (span-capped, unit-aware)
+     *
+     * Uses `BoundsOptions.search_speed` (in `speed_unit`) and `BoundsOptions.search_span`
+     * (in `position_unit`) to perform a **single-direction** homing move. If StallGuard
+     * stop triggers, the current position is defined as home (XACTUAL=0).
+     *
+     * `final_position` returns the **pre-zero** position in steps (i.e., the position at the
+     * moment homing finished, after any optional backoff, before XACTUAL is reset to 0).
+     *
+     * @note `search_span` is a hard cap on travel; this prevents excessive motion even
+     *       if `timeout_ms` is large.
+     */
+    Result<void> PerformSensorlessHoming(bool direction, const BoundsOptions& opt,
                                          int32_t &final_position,
-                                         uint32_t timeout_ms = 10000) noexcept;
+                                         CancelCallback should_cancel = nullptr) noexcept;
 
     /**
      * @brief Perform homing using a reference switch (with settings caching)
      * @param direction Direction to search (true = positive, false = negative)
-     * @param search_speed Speed for homing search in steps/s
-     * @param switch_speed Speed for slow approach (unused, reserved for future)
-     * @param final_position Reference to store final position after homing
+     * @param opt Homing options (unit-aware). Uses opt.search_speed, opt.search_span, opt.timeout_ms.
+     * @param final_position Reference to store final position after homing (in steps).
+     *        Note: if `opt.backoff_distance > 0`, the motor backs off and the **post-backoff** point becomes home (XACTUAL=0).
      * @param use_left_switch true to use REFL, false to use REFR
-     * @param timeout_ms Maximum time to wait in milliseconds (default: 10000)
      * @return Result<void> indicating success or error
      *
      * This is a blocking function that automatically:
@@ -2290,11 +2343,39 @@ public:
      * - Configures switches and performs homing
      * - Restores cached settings after homing completes
      */
-    Result<void> PerformSwitchHoming(bool direction, float search_speed,
-                                     float switch_speed,
+    /**
+     * @brief Perform homing using a reference switch (span-capped, unit-aware)
+     *
+     * Uses `BoundsOptions.search_speed` and `BoundsOptions.search_span` to perform a
+     * **single-direction** homing move. When the selected switch triggers, the
+     * current position is defined as home (XACTUAL=0).
+     *
+     * `final_position` returns the **pre-zero** position in steps (i.e., the position at the
+     * moment homing finished, after any optional backoff, before XACTUAL is reset to 0).
+     *
+     * `BoundsOptions.search_span` is the max relative travel cap.
+     * StallGuard-only fields in `BoundsOptions` are ignored.
+     */
+    Result<void> PerformSwitchHoming(bool direction, const BoundsOptions& opt,
                                      int32_t &final_position,
                                      bool use_left_switch,
-                                     uint32_t timeout_ms = 10000) noexcept;
+                                     CancelCallback should_cancel = nullptr) noexcept;
+
+    Result<BoundsResult>
+    FindBoundsStallGuard(const BoundsOptions& opt, const HomeConfig& home = {},
+                         CancelCallback should_cancel = nullptr) noexcept;
+
+    Result<BoundsResult>
+    FindBoundsEncoder(const BoundsOptions& opt, const HomeConfig& home = {},
+                      CancelCallback should_cancel = nullptr) noexcept;
+
+    Result<BoundsResult>
+    FindBoundsSwitch(const BoundsOptions& opt, const HomeConfig& home = {},
+                     CancelCallback should_cancel = nullptr) noexcept;
+
+    Result<BoundsResult>
+    FindBounds(BoundsMethod method, const BoundsOptions& opt, const HomeConfig& home = {},
+               CancelCallback should_cancel = nullptr) noexcept;
 
   private:
     TMC51x0 &driver_;
@@ -2304,6 +2385,9 @@ public:
     Result<void> RestoreCachedSettings() noexcept;
     Result<void>
     EnsureSpreadCycleForStallGuard() noexcept; // Disable StealthChop if needed
+
+    Result<void> ApplyHomePlacement(BoundsResult& out, float raw_min, float raw_max,
+                                    const HomeConfig& home, const BoundsOptions& opt) noexcept;
   } homing{*this};
 
   //================================================================================

@@ -310,12 +310,12 @@ Automatic parameter tuning for optimal driver performance.
 | Method | Signature | Return | Description |
 |--------|-----------|--------|-------------|
 | `TuneStallGuard()` | `Result<void> TuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = -10, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec) noexcept` | `Result<void>` indicating success or error | Automatically tune StallGuard threshold (SGT) with comprehensive velocity range analysis. Separate unit parameters for velocity and acceleration (RPM not valid for acceleration) |
-| `AutoTuneStallGuard()` | `Result<void> AutoTuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = 0, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec, uint16_t safe_current_margin_mA = 0) noexcept` | `Result<void>` indicating success or error | Comprehensive automatic StallGuard tuning with safe current margin handling (recommended). Separate unit parameters for velocity and acceleration (RPM not valid for acceleration) |
+| `AutoTuneStallGuard()` | `Result<void> AutoTuneStallGuard(float target_velocity, StallGuardTuningResult& result, int8_t min_sgt = 0, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec, float current_reduction_factor = 0.0F) noexcept` | `Result<void>` indicating success or error | Comprehensive automatic StallGuard tuning with current reduction (recommended). Separate unit parameters for velocity and acceleration (RPM not valid for acceleration) |
 
 **Usage Example**:
 ```cpp
 tmc51x0::StallGuardTuningResult result;
-// Using AutoTuneStallGuard (recommended) with safe current margin
+// Using AutoTuneStallGuard (recommended) with current reduction
 // Note: Separate unit parameters for velocity and acceleration
 auto result_tune = driver.tuning.AutoTuneStallGuard(
     0.6f, result,                          // Target velocity: 0.6 rev/s (~36 RPM)
@@ -324,7 +324,7 @@ auto result_tune = driver.tuning.AutoTuneStallGuard(
     0.18f, 0.9f,                           // Velocity range: 0.18-0.9 rev/s (30%-150% of target)
     tmc51x0::Unit::RevPerSec,              // Velocity unit (default, can be omitted)
     tmc51x0::Unit::RevPerSec,              // Acceleration unit (default, can be omitted)
-    300                                    // Safe current margin: 300mA
+    0.3f                                   // Current reduction factor: 30% (recommended)
 );
 
 // Example with RPM for velocity, RevPerSec for acceleration (RPM not valid for acceleration)
@@ -335,7 +335,7 @@ auto result_tune2 = driver.tuning.AutoTuneStallGuard(
     10.8f, 54.0f,                          // Velocity range: 10.8-54.0 RPM (30%-150% of target)
     tmc51x0::Unit::RPM,                    // Velocity unit: RPM
     tmc51x0::Unit::RevPerSec,              // Acceleration unit: RevPerSec (RPM not valid)
-    300                                    // Safe current margin: 300mA
+    0.3f                                   // Current reduction factor: 30% (recommended)
 );
 
 // Or using TuneStallGuard (simpler, no current margin)
@@ -372,17 +372,48 @@ Homing methods with automatic settings caching for endstop-free and switch-based
 
 **Purpose**: Provides both sensorless (StallGuard2-based) and switch-based homing operations. Automatically caches and restores driver settings modified during homing, ensuring your configuration is preserved.
 
+**Safety Note**:
+- Homing/bounds operations **always return with the motor stopped** (`RampMode::HOLD`) to avoid unexpected motion resuming after settings restore.
+- The driver also performs **XTARGET hygiene** (sets `XTARGET` to the current position) so switching ramp modes later cannot “chase” a stale target.
+
 **Key Features**:
 - **Sensorless Homing**: Endstop-free homing using StallGuard2 stall detection
 - **Switch-Based Homing**: Homing using reference switches/endstops
 - **Automatic Settings Caching**: Preserves and restores driver settings during homing
 - **Configurable Search Speed**: Adjustable homing speed and switch approach speed
 - **Timeout Protection**: Configurable timeout to prevent infinite searches
+- **Cancellation Support**: Optional `CancelCallback` for aborting long-running homing operations
+- **Span-Capped Homing Moves**: The `Perform*Homing()` helpers are span-capped using `BoundsOptions.search_span` (after unit conversion). This prevents excessive travel even with large `timeout_ms`.
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `PerformSensorlessHoming()` | `Result<void> PerformSensorlessHoming(bool direction, float search_speed, int32_t& final_position, uint32_t timeout_ms = 10000) noexcept` | `Result<void>` indicating success or error | Perform sensorless homing using StallGuard2 (uses existing SGT threshold from motor config) |
-| `PerformSwitchHoming()` | `Result<void> PerformSwitchHoming(bool direction, float search_speed, float switch_speed, int32_t& final_position, bool use_left_switch, uint32_t timeout_ms = 10000) noexcept` | `Result<void>` indicating success or error | Perform homing using a reference switch |
+| `PerformSensorlessHoming()` | `Result<void> PerformSensorlessHoming(bool direction, const BoundsOptions& opt, int32_t& final_position, CancelCallback should_cancel = nullptr) noexcept` | `Result<void>` indicating success or error | Sensorless homing using StallGuard2. Uses `opt.search_speed`/`opt.search_span`/`opt.timeout_ms` (unit-aware) for a **single-direction**, span-capped homing move. **If `opt.backoff_distance > 0`, the motor backs off first and the post-backoff point becomes home (XACTUAL=0).** `final_position` returns the *pre-zero* position in steps (after any optional backoff, before XACTUAL is reset). |
+| `PerformSwitchHoming()` | `Result<void> PerformSwitchHoming(bool direction, const BoundsOptions& opt, int32_t& final_position, bool use_left_switch, CancelCallback should_cancel = nullptr) noexcept` | `Result<void>` indicating success or error | Switch homing. Uses `opt.search_speed`/`opt.search_span`/`opt.timeout_ms` (unit-aware) for a **single-direction**, span-capped homing move. **If `opt.backoff_distance > 0`, the motor backs off first and the post-backoff point becomes home (XACTUAL=0).** `final_position` returns the *pre-zero* position in steps (after any optional backoff, before XACTUAL is reset). |
+
+### Bounds Finding (Homing)
+
+Bounds finding scans in both directions to discover mechanical end limits using one of three methods (StallGuard2, encoder, or switches). The API returns bounds in the configured `position_unit` and can optionally redefine home/zero according to `HomeConfig`.
+
+| Method | Signature | Returns | Description |
+|--------|-----------|---------|-------------|
+| `FindBounds()` | `Result<BoundsResult> FindBounds(BoundsMethod method, const BoundsOptions& opt, const HomeConfig& home = {}, CancelCallback should_cancel = nullptr) noexcept` | `Result<BoundsResult>` | Dispatch bounds-finding by method |
+| `FindBoundsStallGuard()` | `Result<BoundsResult> FindBoundsStallGuard(const BoundsOptions& opt, const HomeConfig& home = {}, CancelCallback should_cancel = nullptr) noexcept` | `Result<BoundsResult>` | StallGuard2-based bounds finding (uses optional `stallguard_override`, and optional current reduction) |
+| `FindBoundsEncoder()` | `Result<BoundsResult> FindBoundsEncoder(const BoundsOptions& opt, const HomeConfig& home = {}, CancelCallback should_cancel = nullptr) noexcept` | `Result<BoundsResult>` | Encoder-based bounds finding (requires encoder configured) |
+| `FindBoundsSwitch()` | `Result<BoundsResult> FindBoundsSwitch(const BoundsOptions& opt, const HomeConfig& home = {}, CancelCallback should_cancel = nullptr) noexcept` | `Result<BoundsResult>` | Switch-based bounds finding (requires switches configured) |
+
+**Key Options (`BoundsOptions`)**:
+- `search_speed` / `speed_unit`: speed used for the sweep.
+- `search_span`: maximum travel per direction (safety cap if no bounds are found).
+- `backoff_distance`: distance to back off after detecting a bound so the returned bound is not hard against the stop.
+- `timeout_ms`: timeout per direction.
+- `current_reduction_factor`: StallGuard-only, reduces motor current during sweep (0.0 disables). Ignored if `current_reduction_target_mA > 0`.
+- `current_reduction_target_mA`: StallGuard-only, absolute RMS current target during sweep (0 disables).
+- `stallguard_override`: optional pointer; if set, this config is applied for the sweep.
+
+**Home Placement (`HomeConfig`)**:
+- `mode=AtCenter` (default): moves to center and defines that as 0; returns symmetric bounds (negative/positive).
+- `mode=AtMin` / `AtMax`: defines 0 at min/max bound.
+- `mode=AtOffsetFromMin`: defines 0 at `(min_bound + offset)`.
 
 ### Printer Subsystem
 

@@ -1,13 +1,13 @@
 /**
  * @file stallguard_tuning.cpp
- * @brief Automatic StallGuard2 Tuning Tool with Safe Current Margin
+ * @brief Automatic StallGuard2 Tuning Tool with Current Reduction
  *
  * This tool automatically tunes the StallGuard2 Threshold (SGT) for a specific
  * motor and velocity configuration using the comprehensive AutoTuneStallGuard function.
  * It implements the tuning algorithm following Trinamic application note AN-002 guidelines:
  * 
  * 1. Saves current motor settings (current, CoolStep, etc.)
- * 2. Applies safe current margin for safer tuning and improved sensitivity
+ * 2. Applies current reduction for safer tuning and improved sensitivity
  * 3. Disables interfering features (CoolStep, filter, stop-on-stall)
  * 4. Moves the motor at a constant velocity
  * 5. Monitors the SG_RESULT (StallGuard value) across SGT range
@@ -105,31 +105,31 @@ extern "C" void app_main(void) {
   ESP_LOGI(TAG, "Starting Comprehensive Auto-Tuning Sequence...");
   ESP_LOGI(TAG, "Target Velocity: %.2f RPM", TUNING_VELOCITY_RPM);
   ESP_LOGI(TAG, "Acceleration: %.3f rev/s²", TUNING_ACCELERATION_REV_S2);
-  ESP_LOGI(TAG, "Using AutoTuneStallGuard with safe current margin handling");
+  ESP_LOGI(TAG, "Using AutoTuneStallGuard with current reduction");
   ESP_LOGI(TAG, "NOTE: At %.2f RPM, one full revolution should take %.1f seconds", 
            TUNING_VELOCITY_RPM, 60.0f / TUNING_VELOCITY_RPM);
   
-  // Use comprehensive automatic tuning with safe current margin
+  // Use comprehensive automatic tuning with current reduction
   tmc51x0::StallGuardTuningResult result;
-  // AutoTuneStallGuard: target_vel (most important), result, min_sgt, max_sgt, accel, min_vel, max_vel, unit, safe_current_margin_mA
+  // AutoTuneStallGuard: target_vel (most important), result, min_sgt, max_sgt, accel, min_vel, max_vel, unit, current_reduction_factor
   // For this example, we'll test a velocity range to demonstrate the feature
   float min_vel = TUNING_VELOCITY_RPM * 0.3f;  // 30% of target
   float max_vel = TUNING_VELOCITY_RPM * 1.2f;  // 120% of target
-  // Safe current margin: reduce current by specified amount for safer tuning and improved StallGuard sensitivity
+  // Current reduction factor: reduces current to percentage of current motor current
   // This helps avoid excessive torque during stall tests and makes StallGuard more responsive to load changes
-  // Recommended: 15-25% of motor's rated current (e.g., 300mA for a 2A motor = 15% margin)
-  // Set to 0 to disable current margin (use nominal current)
-  uint16_t safe_current_margin_mA = 100; // Adjust based on your motor's rated current
+  // Recommended: 0.3 (30%) per Duet3D best practices for stall detection
+  // Set to 0.0 to disable current reduction (use nominal current)
+  float current_reduction_factor = 0.3f; // 30% of current motor current
   // Using RPM units for velocity parameters, RevPerSec for acceleration (RPM is not valid for acceleration)
   ESP_LOGI(TAG, "Starting AutoTuneStallGuard...");
   ESP_LOGI(TAG, "  Target velocity: %.2f %s", TUNING_VELOCITY_RPM, (VELOCITY_UNIT == tmc51x0::Unit::RPM) ? "RPM" : "units");
   ESP_LOGI(TAG, "  Acceleration: %.2f rev/s²", TUNING_ACCELERATION_REV_S2);
   ESP_LOGI(TAG, "  Velocity range: %.2f - %.2f %s", min_vel, max_vel, (VELOCITY_UNIT == tmc51x0::Unit::RPM) ? "RPM" : "units");
-  ESP_LOGI(TAG, "  Safe current margin: %u mA", safe_current_margin_mA);
+  ESP_LOGI(TAG, "  Current reduction factor: %.1f%%", current_reduction_factor * 100.0f);
   
   auto tune_result = driver.tuning.AutoTuneStallGuard(TUNING_VELOCITY_RPM, result, 0, 63, 
                                                      TUNING_ACCELERATION_REV_S2, min_vel, max_vel, 
-                                                     VELOCITY_UNIT, ACCELERATION_UNIT, safe_current_margin_mA);
+                                                     VELOCITY_UNIT, ACCELERATION_UNIT, current_reduction_factor);
 
   if (tune_result) {
     ESP_LOGI(TAG, "==========================================");

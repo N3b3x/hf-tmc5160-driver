@@ -27,6 +27,7 @@ enum class ErrorCode : uint8_t {
   INVALID_VALUE,     ///< Invalid parameter value
   INVALID_STATE,     ///< Operation not valid in current state
   TIMEOUT,           ///< Operation timed out
+  CANCELLED,         ///< Operation cancelled by user/request
   HARDWARE_ERROR,    ///< Hardware fault detected
   SHORT_CIRCUIT,     ///< Short circuit detected
   OPEN_LOAD,         ///< Open load detected
@@ -55,6 +56,8 @@ inline const char *ErrorMessage(ErrorCode code) {
     return "Invalid state for operation";
   case ErrorCode::TIMEOUT:
     return "Operation timed out";
+  case ErrorCode::CANCELLED:
+    return "Operation cancelled";
   case ErrorCode::HARDWARE_ERROR:
     return "Hardware fault detected";
   case ErrorCode::SHORT_CIRCUIT:

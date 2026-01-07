@@ -67,20 +67,25 @@ bool homeMotor() {
     // Perform homing in negative direction
     // Note: Uses existing SGT threshold from motor configuration
     // Automatically caches and restores settings (StealthChop, SW_MODE, ramp settings)
-    int32_t home_position = 0;
+    int32_t pre_zero_position_steps = 0;
     float search_speed = 0.01f;  // 0.01 rev/s (~0.6 RPM) - Unit::RevPerSec is default
     
-    if (!driver.homing.PerformSensorlessHoming(
-            false,  // false = negative direction
-            search_speed,
-            home_position)) {
+    tmc51x0::TMC51x0<MyComm>::Homing::BoundsOptions opt{};
+    opt.speed_unit = tmc51x0::Unit::RevPerSec;
+    opt.position_unit = tmc51x0::Unit::Deg;
+    opt.search_speed = search_speed;
+    opt.search_span = 360.0F;     // max travel cap (one direction)
+    opt.backoff_distance = 5.0F;  // optional
+    opt.timeout_ms = 10000;
+
+    if (!driver.homing.PerformSensorlessHoming(false, opt, pre_zero_position_steps)) {
         return false;
     }
     
-    // Set current position as home (0)
-    driver.rampControl.SetCurrentPosition(0);
-    
-    printf("Homed to position: %d\n", home_position);
+    // Note: PerformSensorlessHoming() already defines home by setting XACTUAL=0.
+    // The returned value is the *pre-zero* position in steps (after any optional backoff),
+    // which is useful for diagnostics (e.g., how far the axis travelled during homing).
+    printf("Homing pre-zero position (steps): %d\n", pre_zero_position_steps);
     return true;
 }
 ```
@@ -182,12 +187,16 @@ public:
         // 3. Home in negative direction
         int32_t home_pos = 0;
         float search_speed = 0.01f;  // 0.01 rev/s (~0.6 RPM) - Unit::RevPerSec is default
-        
-        if (!driver_.homing.PerformSensorlessHoming(
-                false,  // negative direction
-                stall_threshold_,
-                search_speed,
-                home_pos)) {
+
+        tmc51x0::TMC51x0<Esp32SPI>::Homing::BoundsOptions opt{};
+        opt.speed_unit = tmc51x0::Unit::RevPerSec;
+        opt.position_unit = tmc51x0::Unit::Deg;
+        opt.search_speed = search_speed;
+        opt.search_span = 360.0F;     // max travel cap (one direction)
+        opt.backoff_distance = 5.0F;  // optional
+        opt.timeout_ms = 10000;
+
+        if (!driver_.homing.PerformSensorlessHoming(false, opt, home_pos)) {
             return false;
         }
         

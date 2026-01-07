@@ -788,7 +788,7 @@ float target_velocity = 0.6f;      // Most important - optimal SGT determined he
 float min_velocity = 0.18f;         // Used to determine SGT range (30% of target)
 float max_velocity = 0.9f;          // Used to determine SGT range (150% of target)
 
-// Using AutoTuneStallGuard (recommended) with safe current margin
+// Using AutoTuneStallGuard (recommended) with current reduction
 // Note: Separate unit parameters for velocity and acceleration
 bool success = driver.tuning.AutoTuneStallGuard(
     target_velocity, result,               // Target velocity: e.g., 0.6 rev/s (~36 RPM)
@@ -797,7 +797,7 @@ bool success = driver.tuning.AutoTuneStallGuard(
     min_velocity, max_velocity,            // Velocity range: e.g., 0.18-0.9 rev/s
     tmc51x0::Unit::RevPerSec,              // Velocity unit (default, can be omitted)
     tmc51x0::Unit::RevPerSec,              // Acceleration unit (default, can be omitted)
-    300                                    // Safe current margin: 300mA
+    0.3f                                   // Current reduction factor: 30% (recommended)
 );
 
 if (success) {
@@ -850,7 +850,7 @@ Use the comprehensive automatic tuning function for best results:
 
 ```cpp
 tmc51x0::StallGuardTuningResult result;
-// Using AutoTuneStallGuard (recommended) - includes safe current margin handling
+// Using AutoTuneStallGuard (recommended) - includes current reduction
 // Note: Separate unit parameters for velocity and acceleration
 bool success = driver.tuning.AutoTuneStallGuard(
     target_velocity, result,               // Your target operating velocity: e.g., 0.6 rev/s
@@ -858,7 +858,7 @@ bool success = driver.tuning.AutoTuneStallGuard(
     0.06f,                                 // Acceleration: 0.06 rev/s²
     min_velocity, max_velocity, // Your velocity range: e.g., 0.18-0.9 rev/s
     tmc51x0::Unit::RevPerSec,  // Unit (default, can be omitted)
-    300                        // Safe current margin: 300mA
+    0.3f                        // Current reduction factor: 30% (recommended)
 );
 ```
 

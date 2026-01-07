@@ -340,14 +340,21 @@ uint16_t sg_value = sg_value_result.IsOk() ? sg_value_result.Value() : 0;
 StallGuardTuningResult result;
 driver.tuning.AutoTuneStallGuard(target_velocity, result, min_sgt, max_sgt,
                                   acceleration, min_velocity, max_velocity,
-                                  tmc51x0::Unit::RevPerSec, safe_current_margin_mA);
+                                  tmc51x0::Unit::RevPerSec, 0.3f);  // 30% current reduction
 // Or simpler version:
 driver.tuning.TuneStallGuard(target_velocity, result, min_sgt, max_sgt, 
                               acceleration, min_velocity, max_velocity);
 
 // Homing
 int32_t final_position;
-driver.homing.PerformSensorlessHoming(true, search_speed, final_position);
+tmc51x0::TMC51x0<MyComm>::Homing::BoundsOptions opt{};
+opt.speed_unit = tmc51x0::Unit::RPM;
+opt.position_unit = tmc51x0::Unit::Deg;
+opt.search_speed = search_speed;
+opt.search_span = 360.0F;
+opt.backoff_distance = 5.0F;
+opt.timeout_ms = 10000;
+driver.homing.PerformSensorlessHoming(true, opt, final_position);
 
 // Encoder Integration
 driver.encoder.ConfigureEncoder(encoder_config);
@@ -406,7 +413,7 @@ bool ot = driver.status.GetStatus() == DriverStatus::OT;
 #### Tuning Subsystem ⭐ NEW
 | Method | Description |
 |--------|-------------|
-| `AutoTuneStallGuard()` | Comprehensive automatic SGT tuning with safe current margin (recommended) |
+| `AutoTuneStallGuard()` | Comprehensive automatic SGT tuning with current reduction (recommended) |
 | `TuneStallGuard()` | Automatic SGT tuning with comprehensive velocity range analysis |
 | Returns `StallGuardTuningResult` with optimal SGT, velocity compatibility, and actual achievable velocities |
 
