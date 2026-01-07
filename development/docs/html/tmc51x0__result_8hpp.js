@@ -15,6 +15,7 @@ var tmc51x0__result_8hpp =
       [ "INVALID_VALUE", "tmc51x0__result_8hpp.html#a530ddae090151490fa12a61b9b9b57b3ad8f24f388e990b9ccf8905b7993b99ae", null ],
       [ "INVALID_STATE", "tmc51x0__result_8hpp.html#a530ddae090151490fa12a61b9b9b57b3a5e6a8de74c8f7d4b04d91a3dc3bf7659", null ],
       [ "TIMEOUT", "tmc51x0__result_8hpp.html#a530ddae090151490fa12a61b9b9b57b3a070a0fb40f6c308ab544b227660aadff", null ],
+      [ "CANCELLED", "tmc51x0__result_8hpp.html#a530ddae090151490fa12a61b9b9b57b3a9f935beb31030ad0d4d26126c0f39bf2", null ],
       [ "HARDWARE_ERROR", "tmc51x0__result_8hpp.html#a530ddae090151490fa12a61b9b9b57b3a89fe56ed105248667fe799031276ab23", null ],
       [ "SHORT_CIRCUIT", "tmc51x0__result_8hpp.html#a530ddae090151490fa12a61b9b9b57b3a01fa42acfb9d4827860c37424640bc05", null ],
       [ "OPEN_LOAD", "tmc51x0__result_8hpp.html#a530ddae090151490fa12a61b9b9b57b3af3fc34e9855cc32fa80bd1603a1da530", null ],

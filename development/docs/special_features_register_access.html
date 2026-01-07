@@ -849,7 +849,7 @@
 <ol>
   <li>Configure <code class="language-plaintext highlighter-rouge">StallGuard</code> (<code class="language-plaintext highlighter-rouge">COOLCONF</code>) with <code class="language-plaintext highlighter-rouge">SGT</code> (Threshold).</li>
   <li>Set <code class="language-plaintext highlighter-rouge">TCOOLTHRS</code> low enough to cover homing speed.</li>
-  <li>Call <code class="language-plaintext highlighter-rouge">driver.homing.PerformSensorlessHoming()</code> (uses existing SGT threshold from motor config).
+  <li>Call <code class="language-plaintext highlighter-rouge">driver.homing.PerformSensorlessHoming()</code> with a span-capped <code class="language-plaintext highlighter-rouge">BoundsOptions</code> (uses existing SGT threshold from motor config).
     <ul>
       <li>This internally sets <code class="language-plaintext highlighter-rouge">SW_MODE.sg_stop = 1</code>.</li>
       <li>Moves motor until stall detected.</li>

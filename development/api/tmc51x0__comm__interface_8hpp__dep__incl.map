@@ -23,7 +23,7 @@
 <area shape="poly" id="edge20_Node000002_Node000010" title=" " alt="" coords="933,112,1060,245,1056,249,930,116"/>
 <area shape="rect" id="Node000011" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="1199,240,1431,280"/>
 <area shape="poly" id="edge22_Node000002_Node000011" title=" " alt="" coords="953,107,1270,237,1268,242,951,112"/>
-<area shape="rect" id="Node000012" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Safe Current Margin." alt="" coords="530,247,693,273"/>
+<area shape="rect" id="Node000012" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Current Reduction." alt="" coords="530,247,693,273"/>
 <area shape="poly" id="edge23_Node000002_Node000012" title=" " alt="" coords="901,118,875,157,857,177,837,194,806,209,761,224,663,250,662,245,759,219,804,204,834,190,854,173,871,154,897,115"/>
 <area shape="rect" id="Node000013" href="$fatigue__motion_8hpp.html" title="Unified fatigue test motion controller." alt="" coords="1455,247,1605,273"/>
 <area shape="poly" id="edge15_Node000002_Node000013" title=" " alt="" coords="968,105,1488,245,1487,250,966,110"/>

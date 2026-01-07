@@ -152,7 +152,7 @@ if (!driver.status.VerifySetup()) {
 ### 2.4 Sensorless Homing
 1. Configure `StallGuard` (`COOLCONF`) with `SGT` (Threshold).
 2. Set `TCOOLTHRS` low enough to cover homing speed.
-3. Call `driver.homing.PerformSensorlessHoming()` (uses existing SGT threshold from motor config).
+3. Call `driver.homing.PerformSensorlessHoming()` with a span-capped `BoundsOptions` (uses existing SGT threshold from motor config).
    - This internally sets `SW_MODE.sg_stop = 1`.
    - Moves motor until stall detected.
    - Stops and returns position.

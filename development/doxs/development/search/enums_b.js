@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['rampmode_0',['RampMode',['../namespacetmc51x0.html#a9296c8b77977c4b405a85597699ada76',1,'tmc51x0']]],
-  ['referencelatchmode_1',['ReferenceLatchMode',['../namespacetmc51x0.html#a27074bd299d4daedf7fa42542a072679',1,'tmc51x0']]],
-  ['referencestopmode_2',['ReferenceStopMode',['../namespacetmc51x0.html#a26f6dfac177caad1ec044ec801218843',1,'tmc51x0']]],
-  ['referenceswitchactivelevel_3',['ReferenceSwitchActiveLevel',['../namespacetmc51x0.html#a8cb45f50ef60b0895ae7c456412b9f57',1,'tmc51x0']]]
+  ['pendingstartkind_0',['PendingStartKind',['../main_8cpp.html#a806a56232ad25c740e34fcbbe00ef97a',1,'main.cpp']]],
+  ['platformtype_1',['PlatformType',['../namespacetmc51x0__test__config.html#af9a64c084cd330e868fabfadaea7102a',1,'tmc51x0_test_config']]],
+  ['protoeventtype_2',['ProtoEventType',['../espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5ae',1,'espnow_protocol.hpp']]],
+  ['pwmfreewheel_3',['PWMFreewheel',['../namespacetmc51x0.html#ae988d381e96f02ccf88517740b83e5f1',1,'tmc51x0']]]
 ];

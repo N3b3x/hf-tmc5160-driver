@@ -101,7 +101,7 @@ $(function(){initNavTree('stallguard__tuning_8cpp.html',''); initResizable(); })
 </div><!--header-->
 <div class="contents">
 
-<p>Automatic StallGuard2 Tuning Tool with Safe Current Margin.  
+<p>Automatic StallGuard2 Tuning Tool with Current Reduction.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;../../../inc/tmc51x0.hpp&quot;</code><br />
 <code>#include &quot;<a class="el" href="esp32__tmc51x0__bus_8hpp_source.html">test_config/esp32_tmc51x0_bus.hpp</a>&quot;</code><br />
@@ -136,11 +136,11 @@ Variables</h2></td></tr>
 <tr class="separator:a721de94fd658d839797d4b54d72aebd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Automatic StallGuard2 Tuning Tool with Safe Current Margin. </p>
+<div class="textblock"><p>Automatic StallGuard2 Tuning Tool with Current Reduction. </p>
 <p>This tool automatically tunes the StallGuard2 Threshold (SGT) for a specific motor and velocity configuration using the comprehensive AutoTuneStallGuard function. It implements the tuning algorithm following Trinamic application note AN-002 guidelines:</p>
 <ol type="1">
 <li>Saves current motor settings (current, CoolStep, etc.)</li>
-<li>Applies safe current margin for safer tuning and improved sensitivity</li>
+<li>Applies current reduction for safer tuning and improved sensitivity</li>
 <li>Disables interfering features (CoolStep, filter, stop-on-stall)</li>
 <li>Moves the motor at a constant velocity</li>
 <li>Monitors the SG_RESULT (StallGuard value) across SGT range</li>

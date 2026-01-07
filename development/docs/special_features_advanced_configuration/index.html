@@ -1798,7 +1798,7 @@
 <span class="kt">float</span> <span class="n">min_velocity</span> <span class="o">=</span> <span class="mf">0.18</span><span class="n">f</span><span class="p">;</span>         <span class="c1">// Used to determine SGT range (30% of target)</span>
 <span class="kt">float</span> <span class="n">max_velocity</span> <span class="o">=</span> <span class="mf">0.9</span><span class="n">f</span><span class="p">;</span>          <span class="c1">// Used to determine SGT range (150% of target)</span>
 
-<span class="c1">// Using AutoTuneStallGuard (recommended) with safe current margin</span>
+<span class="c1">// Using AutoTuneStallGuard (recommended) with current reduction</span>
 <span class="c1">// Note: Separate unit parameters for velocity and acceleration</span>
 <span class="kt">bool</span> <span class="n">success</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">tuning</span><span class="p">.</span><span class="n">AutoTuneStallGuard</span><span class="p">(</span>
     <span class="n">target_velocity</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span>               <span class="c1">// Target velocity: e.g., 0.6 rev/s (~36 RPM)</span>
@@ -1807,7 +1807,7 @@
     <span class="n">min_velocity</span><span class="p">,</span> <span class="n">max_velocity</span><span class="p">,</span>            <span class="c1">// Velocity range: e.g., 0.18-0.9 rev/s</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">,</span>              <span class="c1">// Velocity unit (default, can be omitted)</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">,</span>              <span class="c1">// Acceleration unit (default, can be omitted)</span>
-    <span class="mi">300</span>                                    <span class="c1">// Safe current margin: 300mA</span>
+    <span class="mf">0.3</span><span class="n">f</span>                                   <span class="c1">// Current reduction factor: 30% (recommended)</span>
 <span class="p">);</span>
 
 <span class="k">if</span> <span class="p">(</span><span class="n">success</span><span class="p">)</span> <span class="p">{</span>
@@ -1894,7 +1894,7 @@
 10
 11
 </pre></td><td class="rouge-code"><pre><span class="n">tmc51x0</span><span class="o">::</span><span class="n">StallGuardTuningResult</span> <span class="n">result</span><span class="p">;</span>
-<span class="c1">// Using AutoTuneStallGuard (recommended) - includes safe current margin handling</span>
+<span class="c1">// Using AutoTuneStallGuard (recommended) - includes current reduction</span>
 <span class="c1">// Note: Separate unit parameters for velocity and acceleration</span>
 <span class="kt">bool</span> <span class="n">success</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">tuning</span><span class="p">.</span><span class="n">AutoTuneStallGuard</span><span class="p">(</span>
     <span class="n">target_velocity</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span>               <span class="c1">// Your target operating velocity: e.g., 0.6 rev/s</span>
@@ -1902,7 +1902,7 @@
     <span class="mf">0.06</span><span class="n">f</span><span class="p">,</span>                                 <span class="c1">// Acceleration: 0.06 rev/s²</span>
     <span class="n">min_velocity</span><span class="p">,</span> <span class="n">max_velocity</span><span class="p">,</span> <span class="c1">// Your velocity range: e.g., 0.18-0.9 rev/s</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">,</span>  <span class="c1">// Unit (default, can be omitted)</span>
-    <span class="mi">300</span>                        <span class="c1">// Safe current margin: 300mA</span>
+    <span class="mf">0.3</span><span class="n">f</span>                        <span class="c1">// Current reduction factor: 30% (recommended)</span>
 <span class="p">);</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h4 id="step-3-interactive-tuning-manual-alternative">

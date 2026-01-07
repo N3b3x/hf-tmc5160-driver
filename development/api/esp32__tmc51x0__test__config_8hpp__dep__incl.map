@@ -12,7 +12,7 @@
 <area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="689,47,832,98,830,103,687,52"/>
 <area shape="rect" id="Node000009" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="994,93,1226,133"/>
 <area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="715,40,1003,91,1002,96,714,45"/>
-<area shape="rect" id="Node000010" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Safe Current Margin." alt="" coords="1250,101,1413,126"/>
+<area shape="rect" id="Node000010" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Current Reduction." alt="" coords="1250,101,1413,126"/>
 <area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="715,31,953,54,1238,91,1279,98,1278,103,1238,96,952,60,714,37"/>
 <area shape="rect" id="Node000004" href="$bounds__finder__encoder_8cpp.html" title="Encoder&#45;based bounds finder implementation." alt="" coords="5,181,204,207"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="316,132,143,184,142,179,314,127"/>

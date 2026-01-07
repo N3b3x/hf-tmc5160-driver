@@ -133,6 +133,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:af6745fba4f393bd7763244114cf16b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3c436541df8fed036cec9e3d7ae3fef" id="r_ac3c436541df8fed036cec9e3d7ae3fef"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3c436541df8fed036cec9e3d7ae3fef">cached_vstop</a> = 0.0f</td></tr>
 <tr class="separator:ac3c436541df8fed036cec9e3d7ae3fef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9069b96c8937e45617450f3b3d96f32" id="r_af9069b96c8937e45617450f3b3d96f32"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9069b96c8937e45617450f3b3d96f32">cached_v1</a> = 0.0f</td></tr>
+<tr class="separator:af9069b96c8937e45617450f3b3d96f32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a265d33985fba0fac7ea66447c0a16a0a" id="r_a265d33985fba0fac7ea66447c0a16a0a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a265d33985fba0fac7ea66447c0a16a0a">ramp_settings_were_modified</a> = false</td></tr>
 <tr class="separator:a265d33985fba0fac7ea66447c0a16a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae504e6c2c8b9931e7d9c7a8c027ad3c3" id="r_ae504e6c2c8b9931e7d9c7a8c027ad3c3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae504e6c2c8b9931e7d9c7a8c027ad3c3">is_valid</a> = false</td></tr>
@@ -140,7 +142,10 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Cached settings for homing operations. </p>
-<p>Stores only the settings that are modified during homing and need to be restored. Motor currents are NOT cached because they are not changed during homing. StallGuard SGT threshold is NOT cached because it should be configured once per motor and not changed during homing. </p>
+<p>Stores only the settings that are modified during homing and need to be restored. Notes:</p><ul>
+<li>Motor currents may be temporarily reduced during sensorless homing / bounds finding (see <code>BoundsOptions.current_reduction_factor/current_reduction_target_mA</code>), but are restored via local RAII guards rather than this cache.</li>
+<li>StallGuard config may be temporarily overridden via <code>BoundsOptions.stallguard_override</code> and restored by the homing routines when used as an override. </li>
+</ul>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="ada7b89140bf58774397bb08fcfa4d128" name="ada7b89140bf58774397bb08fcfa4d128"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ada7b89140bf58774397bb08fcfa4d128">&#9670;&#160;</a></span>cached_acceleration</h2>
@@ -220,6 +225,20 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="uniontmc51x0_1_1SW__MODE__Register.html">SW_MODE_Register</a> tmc51x0::HomingSettingsCache::cached_sw_mode {}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af9069b96c8937e45617450f3b3d96f32" name="af9069b96c8937e45617450f3b3d96f32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9069b96c8937e45617450f3b3d96f32">&#9670;&#160;</a></span>cached_v1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float tmc51x0::HomingSettingsCache::cached_v1 = 0.0f</td>
         </tr>
       </table>
 </div><div class="memdoc">

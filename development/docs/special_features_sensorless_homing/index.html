@@ -391,6 +391,11 @@
 30
 31
 32
+33
+34
+35
+36
+37
 </pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"tmc51x0.hpp"</span><span class="cp">
 </span>
 <span class="kt">bool</span> <span class="nf">homeMotor</span><span class="p">()</span> <span class="p">{</span>
@@ -407,20 +412,25 @@
     <span class="c1">// Perform homing in negative direction</span>
     <span class="c1">// Note: Uses existing SGT threshold from motor configuration</span>
     <span class="c1">// Automatically caches and restores settings (StealthChop, SW_MODE, ramp settings)</span>
-    <span class="kt">int32_t</span> <span class="n">home_position</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int32_t</span> <span class="n">pre_zero_position_steps</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="kt">float</span> <span class="n">search_speed</span> <span class="o">=</span> <span class="mf">0.01</span><span class="n">f</span><span class="p">;</span>  <span class="c1">// 0.01 rev/s (~0.6 RPM) - Unit::RevPerSec is default</span>
     
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">driver</span><span class="p">.</span><span class="n">homing</span><span class="p">.</span><span class="n">PerformSensorlessHoming</span><span class="p">(</span>
-            <span class="nb">false</span><span class="p">,</span>  <span class="c1">// false = negative direction</span>
-            <span class="n">search_speed</span><span class="p">,</span>
-            <span class="n">home_position</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">tmc51x0</span><span class="o">::</span><span class="n">TMC51x0</span><span class="o">&lt;</span><span class="n">MyComm</span><span class="o">&gt;::</span><span class="n">Homing</span><span class="o">::</span><span class="n">BoundsOptions</span> <span class="n">opt</span><span class="p">{};</span>
+    <span class="n">opt</span><span class="p">.</span><span class="n">speed_unit</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">;</span>
+    <span class="n">opt</span><span class="p">.</span><span class="n">position_unit</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Deg</span><span class="p">;</span>
+    <span class="n">opt</span><span class="p">.</span><span class="n">search_speed</span> <span class="o">=</span> <span class="n">search_speed</span><span class="p">;</span>
+    <span class="n">opt</span><span class="p">.</span><span class="n">search_span</span> <span class="o">=</span> <span class="mf">360.0</span><span class="n">F</span><span class="p">;</span>     <span class="c1">// max travel cap (one direction)</span>
+    <span class="n">opt</span><span class="p">.</span><span class="n">backoff_distance</span> <span class="o">=</span> <span class="mf">5.0</span><span class="n">F</span><span class="p">;</span>  <span class="c1">// optional</span>
+    <span class="n">opt</span><span class="p">.</span><span class="n">timeout_ms</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">driver</span><span class="p">.</span><span class="n">homing</span><span class="p">.</span><span class="n">PerformSensorlessHoming</span><span class="p">(</span><span class="nb">false</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">pre_zero_position_steps</span><span class="p">))</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
     <span class="p">}</span>
     
-    <span class="c1">// Set current position as home (0)</span>
-    <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetCurrentPosition</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-    
-    <span class="n">printf</span><span class="p">(</span><span class="s">"Homed to position: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">home_position</span><span class="p">);</span>
+    <span class="c1">// Note: PerformSensorlessHoming() already defines home by setting XACTUAL=0.</span>
+    <span class="c1">// The returned value is the *pre-zero* position in steps (after any optional backoff),</span>
+    <span class="c1">// which is useful for diagnostics (e.g., how far the axis travelled during homing).</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Homing pre-zero position (steps): %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pre_zero_position_steps</span><span class="p">);</span>
     <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
@@ -631,6 +641,10 @@
 62
 63
 64
+65
+66
+67
+68
 </pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"tmc51x0.hpp"</span><span class="cp">
 </span>
 <span class="k">class</span> <span class="nc">MotorController</span> <span class="p">{</span>
@@ -658,12 +672,16 @@
         <span class="c1">// 3. Home in negative direction</span>
         <span class="kt">int32_t</span> <span class="n">home_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="kt">float</span> <span class="n">search_speed</span> <span class="o">=</span> <span class="mf">0.01</span><span class="n">f</span><span class="p">;</span>  <span class="c1">// 0.01 rev/s (~0.6 RPM) - Unit::RevPerSec is default</span>
-        
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">driver_</span><span class="p">.</span><span class="n">homing</span><span class="p">.</span><span class="n">PerformSensorlessHoming</span><span class="p">(</span>
-                <span class="nb">false</span><span class="p">,</span>  <span class="c1">// negative direction</span>
-                <span class="n">stall_threshold_</span><span class="p">,</span>
-                <span class="n">search_speed</span><span class="p">,</span>
-                <span class="n">home_pos</span><span class="p">))</span> <span class="p">{</span>
+
+        <span class="n">tmc51x0</span><span class="o">::</span><span class="n">TMC51x0</span><span class="o">&lt;</span><span class="n">Esp32SPI</span><span class="o">&gt;::</span><span class="n">Homing</span><span class="o">::</span><span class="n">BoundsOptions</span> <span class="n">opt</span><span class="p">{};</span>
+        <span class="n">opt</span><span class="p">.</span><span class="n">speed_unit</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">;</span>
+        <span class="n">opt</span><span class="p">.</span><span class="n">position_unit</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Deg</span><span class="p">;</span>
+        <span class="n">opt</span><span class="p">.</span><span class="n">search_speed</span> <span class="o">=</span> <span class="n">search_speed</span><span class="p">;</span>
+        <span class="n">opt</span><span class="p">.</span><span class="n">search_span</span> <span class="o">=</span> <span class="mf">360.0</span><span class="n">F</span><span class="p">;</span>     <span class="c1">// max travel cap (one direction)</span>
+        <span class="n">opt</span><span class="p">.</span><span class="n">backoff_distance</span> <span class="o">=</span> <span class="mf">5.0</span><span class="n">F</span><span class="p">;</span>  <span class="c1">// optional</span>
+        <span class="n">opt</span><span class="p">.</span><span class="n">timeout_ms</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">driver_</span><span class="p">.</span><span class="n">homing</span><span class="p">.</span><span class="n">PerformSensorlessHoming</span><span class="p">(</span><span class="nb">false</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">home_pos</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
         <span class="p">}</span>
         

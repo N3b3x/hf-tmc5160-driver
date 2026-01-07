@@ -6,6 +6,7 @@ var structtmc51x0_1_1HomingSettingsCache =
     [ "cached_ramp_mode", "structtmc51x0_1_1HomingSettingsCache.html#abc6d251b3f52b22355e6ca35174eade9", null ],
     [ "cached_stealthchop_enabled", "structtmc51x0_1_1HomingSettingsCache.html#a25d7f4e4424d1746381865850e38391d", null ],
     [ "cached_sw_mode", "structtmc51x0_1_1HomingSettingsCache.html#aa424d54e5a6e08e9c17fae43aea5bf7c", null ],
+    [ "cached_v1", "structtmc51x0_1_1HomingSettingsCache.html#af9069b96c8937e45617450f3b3d96f32", null ],
     [ "cached_vstart", "structtmc51x0_1_1HomingSettingsCache.html#af6745fba4f393bd7763244114cf16b29", null ],
     [ "cached_vstop", "structtmc51x0_1_1HomingSettingsCache.html#ac3c436541df8fed036cec9e3d7ae3fef", null ],
     [ "is_valid", "structtmc51x0_1_1HomingSettingsCache.html#ae504e6c2c8b9931e7d9c7a8c027ad3c3", null ],

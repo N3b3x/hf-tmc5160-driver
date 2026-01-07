@@ -24,6 +24,8 @@ var tmc51x0_8cpp =
     [ "LogTableSeparator", "tmc51x0_8cpp.html#a089bcd93942e19e55813e20b2f891293", null ],
     [ "NextWrapChunk", "tmc51x0_8cpp.html#a042585aacefd87238f1c771567fd1647", null ],
     [ "OnOffStyled", "tmc51x0_8cpp.html#a3fb371dd61ab27e467c1ca7557ab7b57", null ],
+    [ "ReduceCurrentForBounds", "tmc51x0_8cpp.html#a318abe41261027e58937bce4a2756ef9", null ],
+    [ "RestoreCurrent", "tmc51x0_8cpp.html#a4126c03af0af361cd473966eeb78cd0a", null ],
     [ "round_to_int32", "tmc51x0_8cpp.html#ad6360e59e574521bae72c9b548eb29f0", null ],
     [ "round_to_uint32_nonneg", "tmc51x0_8cpp.html#a4a7265cc09cba99affeeae51b6490348", null ],
     [ "TestVelocityWithSGT", "tmc51x0_8cpp.html#a98dfd26a5eeed2974ce057fb9d203098", null ],

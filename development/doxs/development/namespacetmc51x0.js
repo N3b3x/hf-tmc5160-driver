@@ -1,5 +1,9 @@
 var namespacetmc51x0 =
 [
+    [ "anonymous_namespace{tmc51x0.cpp}", "namespacetmc51x0_1_1anonymous__namespace_02tmc51x0_8cpp_03.html", [
+      [ "ReduceCurrentForBounds", "namespacetmc51x0_1_1anonymous__namespace_02tmc51x0_8cpp_03.html#a318abe41261027e58937bce4a2756ef9", null ],
+      [ "RestoreCurrent", "namespacetmc51x0_1_1anonymous__namespace_02tmc51x0_8cpp_03.html#a4126c03af0af361cd473966eeb78cd0a", null ]
+    ] ],
     [ "ChipVersion", "namespacetmc51x0_1_1ChipVersion.html", [
       [ "TMC5130", "namespacetmc51x0_1_1ChipVersion.html#a5f3f2fc1e4d4a86a2d6ae8b752add859", null ],
       [ "TMC5160", "namespacetmc51x0_1_1ChipVersion.html#a59657011cede04bf230887b9d1bf42b9", null ]
@@ -186,6 +190,7 @@ var namespacetmc51x0 =
       [ "INVALID_VALUE", "namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3ad8f24f388e990b9ccf8905b7993b99ae", null ],
       [ "INVALID_STATE", "namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3a5e6a8de74c8f7d4b04d91a3dc3bf7659", null ],
       [ "TIMEOUT", "namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3a070a0fb40f6c308ab544b227660aadff", null ],
+      [ "CANCELLED", "namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3a9f935beb31030ad0d4d26126c0f39bf2", null ],
       [ "HARDWARE_ERROR", "namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3a89fe56ed105248667fe799031276ab23", null ],
       [ "SHORT_CIRCUIT", "namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3a01fa42acfb9d4827860c37424640bc05", null ],
       [ "OPEN_LOAD", "namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3af3fc34e9855cc32fa80bd1603a1da530", null ],

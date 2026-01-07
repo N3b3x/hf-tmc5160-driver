@@ -44,7 +44,7 @@
 <area shape="poly" id="edge25_Node000017_Node000011" title=" " alt="" coords="741,185,1095,238,1095,244,740,190"/>
 <area shape="rect" id="Node000018" href="$abn__encoder__reader_8cpp.html" title="ABN Encoder Position Reader &#45; Continuously reads encoder position." alt="" coords="5,247,185,273"/>
 <area shape="poly" id="edge20_Node000017_Node000018" title=" " alt="" coords="557,189,198,243,157,250,156,245,198,237,556,183"/>
-<area shape="rect" id="Node000019" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Safe Current Margin." alt="" coords="210,247,373,273"/>
+<area shape="rect" id="Node000019" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Current Reduction." alt="" coords="210,247,373,273"/>
 <area shape="poly" id="edge26_Node000017_Node000019" title=" " alt="" coords="558,198,340,250,338,245,556,193"/>
 <area shape="poly" id="edge28_Node000020_Node000012" title=" " alt="" coords="2007,108,2291,245,2289,250,2005,112"/>
 </map>

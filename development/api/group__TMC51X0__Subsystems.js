@@ -184,16 +184,58 @@ var group__TMC51X0__Subsystems =
     ] ],
     [ "tmc51x0::TMC51x0< CommType >::Tuning", "structtmc51x0_1_1TMC51x0_1_1Tuning.html", [
       [ "Tuning", "structtmc51x0_1_1TMC51x0_1_1Tuning.html#a904d378242b3120a7f8649871766ef56", null ],
-      [ "AutoTuneStallGuard", "structtmc51x0_1_1TMC51x0_1_1Tuning.html#ab039ccc53f0607b6a3a434baf57bb219", null ],
+      [ "AutoTuneStallGuard", "structtmc51x0_1_1TMC51x0_1_1Tuning.html#a733a14d500aa8ef09ff364014b0a99f0", null ],
       [ "TuneStallGuard", "structtmc51x0_1_1TMC51x0_1_1Tuning.html#a410f4063ad9462424cbfbb351cc8a657", null ],
       [ "driver_", "structtmc51x0_1_1TMC51x0_1_1Tuning.html#a8c366093a8ad4549b92fd7a0bb40e995", null ]
     ] ],
     [ "tmc51x0::TMC51x0< CommType >::Homing", "structtmc51x0_1_1TMC51x0_1_1Homing.html", [
+      [ "BoundsOptions", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html", [
+        [ "backoff_distance", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#af61e7bf639badb2c0e8b4c7db0bab370", null ],
+        [ "current_reduction_factor", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a16d416ba889b0f71b05b592c1a25e67a", null ],
+        [ "current_reduction_target_mA", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a2c02d582fcd9c11871e14d4162663ad5", null ],
+        [ "position_unit", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a50530a711b3f2128478d3455ca07a545", null ],
+        [ "preflight_clear_active_switch", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#ad5f8cc9ed8ef6e9cd386cdeb9007e3eb", null ],
+        [ "search_span", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a31baea798652e903330c682a777598aa", null ],
+        [ "search_speed", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#aa8ed5c5933c3592fb92f86f727fa91bc", null ],
+        [ "speed_unit", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a3718deb5ff8da6a0fab18c248425a850", null ],
+        [ "stallguard_override", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a89814575ce2e676c22eb701095b975c3", null ],
+        [ "timeout_ms", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a3cefad833c48608db9bdb6616471e162", null ]
+      ] ],
+      [ "BoundsResult", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html", [
+        [ "bounded", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html#aaa252e8b80ca67bd523e1e8d5ab510b8", null ],
+        [ "cancelled", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html#a063f4fde2821e05391b05136d019e994", null ],
+        [ "max_bound", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html#a38f69f12b83167218698642fadb9c2cd", null ],
+        [ "min_bound", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html#a2c7a6adb4044b97ff1c9c4b95aaabe87", null ],
+        [ "success", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html#ac41514e7fb2341deb46183928d09f32e", null ]
+      ] ],
+      [ "HomeConfig", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html", [
+        [ "mode", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html#abb5fbad11fad43a078e2a1657e403342", null ],
+        [ "offset", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html#a13f4545443720b2423a18806ded09b13", null ],
+        [ "offset_unit", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html#a03437c72e5490ed3251341c89cbcfd1f", null ]
+      ] ],
+      [ "CancelCallback", "structtmc51x0_1_1TMC51x0_1_1Homing.html#aa01c97a661dc5004d9360acba2d6934c", null ],
+      [ "BoundsMethod", "structtmc51x0_1_1TMC51x0_1_1Homing.html#af2c82a28cd0d66a8a680464e4ebfeb3a", [
+        [ "StallGuard", "structtmc51x0_1_1TMC51x0_1_1Homing.html#af2c82a28cd0d66a8a680464e4ebfeb3aa12f4e38394a3014e25f1dc62c037c23f", null ],
+        [ "Encoder", "structtmc51x0_1_1TMC51x0_1_1Homing.html#af2c82a28cd0d66a8a680464e4ebfeb3aa87d487f6f605eb96e61be67988e41e6d", null ],
+        [ "Switch", "structtmc51x0_1_1TMC51x0_1_1Homing.html#af2c82a28cd0d66a8a680464e4ebfeb3aabbc155fb2b111bf61c4f5ff892915e6b", null ]
+      ] ],
+      [ "HomePlacement", "structtmc51x0_1_1TMC51x0_1_1Homing.html#adf1f273c7ceedea89d64422e5541272e", [
+        [ "None", "structtmc51x0_1_1TMC51x0_1_1Homing.html#adf1f273c7ceedea89d64422e5541272ea6adf97f83acf6453d4a6a4b1070f3754", null ],
+        [ "AtMin", "structtmc51x0_1_1TMC51x0_1_1Homing.html#adf1f273c7ceedea89d64422e5541272ead15e9c4b26dad7a18d466aaa04b2bb58", null ],
+        [ "AtMax", "structtmc51x0_1_1TMC51x0_1_1Homing.html#adf1f273c7ceedea89d64422e5541272ea96a8b627ffde2c0159c851ec7bb3aba0", null ],
+        [ "AtCenter", "structtmc51x0_1_1TMC51x0_1_1Homing.html#adf1f273c7ceedea89d64422e5541272ea2701fbcd63873520927f79475da80d04", null ],
+        [ "AtOffsetFromMin", "structtmc51x0_1_1TMC51x0_1_1Homing.html#adf1f273c7ceedea89d64422e5541272ead98f9df0e9031ee60590d08318896ae0", null ]
+      ] ],
       [ "Homing", "structtmc51x0_1_1TMC51x0_1_1Homing.html#a9a99b07ff6f208b17a12f29e684c171f", null ],
+      [ "ApplyHomePlacement", "structtmc51x0_1_1TMC51x0_1_1Homing.html#a5798952825e02afe3755b1b9a55976cb", null ],
       [ "CacheCurrentSettings", "structtmc51x0_1_1TMC51x0_1_1Homing.html#ae538cd7bdc9613f36b8e7d4ec8beb6cb", null ],
       [ "EnsureSpreadCycleForStallGuard", "structtmc51x0_1_1TMC51x0_1_1Homing.html#a3ddb905f9df66d1330ff022aa679f193", null ],
-      [ "PerformSensorlessHoming", "structtmc51x0_1_1TMC51x0_1_1Homing.html#aa605a7a3f349729c583ca258735ab049", null ],
-      [ "PerformSwitchHoming", "structtmc51x0_1_1TMC51x0_1_1Homing.html#aa37f7386e66d45e032c049f24b841c56", null ],
+      [ "FindBounds", "structtmc51x0_1_1TMC51x0_1_1Homing.html#aeef1b5af5be99b10b64bdf9fec56d661", null ],
+      [ "FindBoundsEncoder", "structtmc51x0_1_1TMC51x0_1_1Homing.html#ab49cd9865a358a18fb5e94e026ff7a1b", null ],
+      [ "FindBoundsStallGuard", "structtmc51x0_1_1TMC51x0_1_1Homing.html#a5aff97457b88a61646f146bcf2c0abcd", null ],
+      [ "FindBoundsSwitch", "structtmc51x0_1_1TMC51x0_1_1Homing.html#a3996b6e0a219e0874276ac7626fe60e5", null ],
+      [ "PerformSensorlessHoming", "structtmc51x0_1_1TMC51x0_1_1Homing.html#a5f6b30afd4a4e03363c93a60f488c70c", null ],
+      [ "PerformSwitchHoming", "structtmc51x0_1_1TMC51x0_1_1Homing.html#a2fd703fc38f2ff2986e660fc10f18c1a", null ],
       [ "RestoreCachedSettings", "structtmc51x0_1_1TMC51x0_1_1Homing.html#a27baa71198702d59f75bc161af473e80", null ],
       [ "cache_", "structtmc51x0_1_1TMC51x0_1_1Homing.html#a4a405cda733b7e67e9eb21d830e3d4de", null ],
       [ "driver_", "structtmc51x0_1_1TMC51x0_1_1Homing.html#a24c9f722399d05d4cd26e4af46a58aef", null ]

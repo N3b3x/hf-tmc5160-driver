@@ -53,7 +53,7 @@
 <area shape="poly" id="edge31_Node000020_Node000013" title=" " alt="" coords="1646,344,1449,389,1448,384,1645,339"/>
 <area shape="rect" id="Node000021" href="$abn__encoder__reader_8cpp.html" title="ABN Encoder Position Reader &#45; Continuously reads encoder position." alt="" coords="2228,394,2408,419"/>
 <area shape="poly" id="edge26_Node000020_Node000021" title=" " alt="" coords="1830,330,2209,384,2253,391,2253,397,2208,389,1830,335"/>
-<area shape="rect" id="Node000022" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Safe Current Margin." alt="" coords="1990,394,2152,419"/>
+<area shape="rect" id="Node000022" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Current Reduction." alt="" coords="1990,394,2152,419"/>
 <area shape="poly" id="edge32_Node000020_Node000022" title=" " alt="" coords="1825,339,2027,391,2026,397,1823,345"/>
 <area shape="poly" id="edge34_Node000023_Node000014" title=" " alt="" coords="923,255,586,307,376,345,165,389,137,397,135,391,164,384,375,340,586,302,923,250"/>
 </map>

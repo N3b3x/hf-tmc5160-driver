@@ -744,7 +744,7 @@
 22
 </pre></td><td class="rouge-code"><pre><span class="c1">// Automatically find optimal StallGuard2 threshold</span>
 <span class="n">tmc51x0</span><span class="o">::</span><span class="n">StallGuardTuningResult</span> <span class="n">result</span><span class="p">;</span>
-<span class="c1">// Using AutoTuneStallGuard (recommended) - includes safe current margin</span>
+<span class="c1">// Using AutoTuneStallGuard (recommended) - includes current reduction</span>
 <span class="c1">// Note: Separate unit parameters for velocity and acceleration</span>
 <span class="k">auto</span> <span class="n">tune_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">tuning</span><span class="p">.</span><span class="n">AutoTuneStallGuard</span><span class="p">(</span>
     <span class="mf">0.6</span><span class="n">f</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span>                          <span class="c1">// Target velocity: 0.6 rev/s (~36 RPM)</span>
@@ -753,7 +753,7 @@
     <span class="mf">0.18</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.9</span><span class="n">f</span><span class="p">,</span>                           <span class="c1">// Velocity range: 0.18-0.9 rev/s (30%-150% of target)</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">,</span>              <span class="c1">// Velocity unit (default, can be omitted)</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">,</span>              <span class="c1">// Acceleration unit (default, can be omitted)</span>
-    <span class="mi">300</span>                        <span class="c1">// Safe current margin: 300mA</span>
+    <span class="mf">0.3</span><span class="n">f</span>                                   <span class="c1">// Current reduction factor: 30% (recommended)</span>
 <span class="p">);</span>
 
 <span class="k">if</span> <span class="p">(</span><span class="n">tune_result</span><span class="p">)</span> <span class="p">{</span>
@@ -784,14 +784,20 @@
 9
 10
 11
+12
+13
+14
 </pre></td><td class="rouge-code"><pre><span class="c1">// Home without endstops using StallGuard2</span>
 <span class="kt">int32_t</span> <span class="n">final_position</span><span class="p">;</span>
-<span class="k">auto</span> <span class="n">homing_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">homing</span><span class="p">.</span><span class="n">PerformSensorlessHoming</span><span class="p">(</span>
-    <span class="nb">true</span><span class="p">,</span>           <span class="c1">// Direction (true = positive)</span>
-    <span class="n">search_speed</span><span class="p">,</span>   <span class="c1">// Search speed</span>
-    <span class="n">final_position</span><span class="p">,</span> <span class="c1">// Final position after homing</span>
-    <span class="mi">10000</span>           <span class="c1">// Timeout in milliseconds</span>
-<span class="p">);</span>
+<span class="n">tmc51x0</span><span class="o">::</span><span class="n">TMC51x0</span><span class="o">&lt;</span><span class="n">MyComm</span><span class="o">&gt;::</span><span class="n">Homing</span><span class="o">::</span><span class="n">BoundsOptions</span> <span class="n">opt</span><span class="p">{};</span>
+<span class="n">opt</span><span class="p">.</span><span class="n">speed_unit</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">;</span>
+<span class="n">opt</span><span class="p">.</span><span class="n">position_unit</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Deg</span><span class="p">;</span>
+<span class="n">opt</span><span class="p">.</span><span class="n">search_speed</span> <span class="o">=</span> <span class="n">search_speed</span><span class="p">;</span>
+<span class="n">opt</span><span class="p">.</span><span class="n">search_span</span> <span class="o">=</span> <span class="mf">360.0</span><span class="n">F</span><span class="p">;</span>     <span class="c1">// max travel cap (one direction)</span>
+<span class="n">opt</span><span class="p">.</span><span class="n">backoff_distance</span> <span class="o">=</span> <span class="mf">5.0</span><span class="n">F</span><span class="p">;</span>  <span class="c1">// optional</span>
+<span class="n">opt</span><span class="p">.</span><span class="n">timeout_ms</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
+
+<span class="k">auto</span> <span class="n">homing_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">homing</span><span class="p">.</span><span class="n">PerformSensorlessHoming</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">final_position</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">homing_result</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">printf</span><span class="p">(</span><span class="s">"Homing error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">homing_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
 <span class="p">}</span>

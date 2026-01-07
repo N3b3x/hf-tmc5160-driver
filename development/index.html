@@ -905,6 +905,13 @@ overhead</strong> while maintaining complete platform independence.</p>
 65
 66
 67
+68
+69
+70
+71
+72
+73
+74
 </pre></td><td class="rouge-code"><pre><span class="n">tmc51x0</span><span class="o">::</span><span class="n">TMC51x0</span><span class="o">&lt;</span><span class="n">CommType</span><span class="o">&gt;</span> <span class="n">driver</span><span class="p">(</span><span class="n">comm_interface</span><span class="p">);</span>
 
 <span class="c1">// Motion Control</span>
@@ -956,14 +963,21 @@ overhead</strong> while maintaining complete platform independence.</p>
 <span class="n">StallGuardTuningResult</span> <span class="n">result</span><span class="p">;</span>
 <span class="n">driver</span><span class="p">.</span><span class="n">tuning</span><span class="p">.</span><span class="n">AutoTuneStallGuard</span><span class="p">(</span><span class="n">target_velocity</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">min_sgt</span><span class="p">,</span> <span class="n">max_sgt</span><span class="p">,</span>
                                   <span class="n">acceleration</span><span class="p">,</span> <span class="n">min_velocity</span><span class="p">,</span> <span class="n">max_velocity</span><span class="p">,</span>
-                                  <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">,</span> <span class="n">safe_current_margin_mA</span><span class="p">);</span>
+                                  <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">,</span> <span class="mf">0.3</span><span class="n">f</span><span class="p">);</span>  <span class="c1">// 30% current reduction</span>
 <span class="c1">// Or simpler version:</span>
 <span class="n">driver</span><span class="p">.</span><span class="n">tuning</span><span class="p">.</span><span class="n">TuneStallGuard</span><span class="p">(</span><span class="n">target_velocity</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">min_sgt</span><span class="p">,</span> <span class="n">max_sgt</span><span class="p">,</span> 
                               <span class="n">acceleration</span><span class="p">,</span> <span class="n">min_velocity</span><span class="p">,</span> <span class="n">max_velocity</span><span class="p">);</span>
 
 <span class="c1">// Homing</span>
 <span class="kt">int32_t</span> <span class="n">final_position</span><span class="p">;</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">homing</span><span class="p">.</span><span class="n">PerformSensorlessHoming</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="n">search_speed</span><span class="p">,</span> <span class="n">final_position</span><span class="p">);</span>
+<span class="n">tmc51x0</span><span class="o">::</span><span class="n">TMC51x0</span><span class="o">&lt;</span><span class="n">MyComm</span><span class="o">&gt;::</span><span class="n">Homing</span><span class="o">::</span><span class="n">BoundsOptions</span> <span class="n">opt</span><span class="p">{};</span>
+<span class="n">opt</span><span class="p">.</span><span class="n">speed_unit</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">;</span>
+<span class="n">opt</span><span class="p">.</span><span class="n">position_unit</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Deg</span><span class="p">;</span>
+<span class="n">opt</span><span class="p">.</span><span class="n">search_speed</span> <span class="o">=</span> <span class="n">search_speed</span><span class="p">;</span>
+<span class="n">opt</span><span class="p">.</span><span class="n">search_span</span> <span class="o">=</span> <span class="mf">360.0</span><span class="n">F</span><span class="p">;</span>
+<span class="n">opt</span><span class="p">.</span><span class="n">backoff_distance</span> <span class="o">=</span> <span class="mf">5.0</span><span class="n">F</span><span class="p">;</span>
+<span class="n">opt</span><span class="p">.</span><span class="n">timeout_ms</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">homing</span><span class="p">.</span><span class="n">PerformSensorlessHoming</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">final_position</span><span class="p">);</span>
 
 <span class="c1">// Encoder Integration</span>
 <span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">ConfigureEncoder</span><span class="p">(</span><span class="n">encoder_config</span><span class="p">);</span>
@@ -1070,7 +1084,7 @@ overhead</strong> while maintaining complete platform independence.</p>
     
 <p>| Method | Description |
 |——–|————-|
-| <code class="language-plaintext highlighter-rouge">AutoTuneStallGuard()</code> | Comprehensive automatic SGT tuning with safe current margin (recommended) |
+| <code class="language-plaintext highlighter-rouge">AutoTuneStallGuard()</code> | Comprehensive automatic SGT tuning with current reduction (recommended) |
 | <code class="language-plaintext highlighter-rouge">TuneStallGuard()</code> | Automatic SGT tuning with comprehensive velocity range analysis |
 | Returns <code class="language-plaintext highlighter-rouge">StallGuardTuningResult</code> with optimal SGT, velocity compatibility, and actual achievable velocities |</p>
 <h4 id="homing-subsystem-1">

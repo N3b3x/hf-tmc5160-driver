@@ -1193,10 +1193,15 @@ bool test_reference_switch_configuration() noexcept {
   ESP_LOGI(TAG, "Testing PerformSwitchHoming API (expect timeout)...");
   int32_t final_pos = 0;
   // Use short timeout for test
-  auto result = handle->driver->homing.PerformSwitchHoming(true, 
-                                                                Test::Motion::BOUNDS_SEARCH_SPEED_RPM, 
-                                                                0.0f,  // switch_speed unused in current implementation 
-                                                                final_pos, true, 100);
+  tmc51x0::TMC51x0<Esp32SPI>::Homing::BoundsOptions opt{};
+  opt.speed_unit = tmc51x0::Unit::RPM;
+  opt.position_unit = tmc51x0::Unit::Deg;
+  opt.search_speed = Test::Motion::BOUNDS_SEARCH_SPEED_RPM;
+  opt.search_span = 360.0F;     // cap the move so we don't run forever during long timeouts
+  opt.backoff_distance = 0.0F;  // no backoff in this API check
+  opt.timeout_ms = 100;
+
+  auto result = handle->driver->homing.PerformSwitchHoming(true, opt, final_pos, true);
   
   if (result.IsErr()) {
     ESP_LOGI(TAG, "Homing timed out as expected (no physical switch)");

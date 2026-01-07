@@ -95,6 +95,8 @@ $(function(){initNavTree('structtmc51x0_1_1TMC51x0_1_1Homing.html',''); initResi
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
@@ -113,17 +115,54 @@ Collaboration diagram for tmc51x0::TMC51x0&lt; CommType &gt;::Homing:</div>
 <div class="center"><iframe scrolling="no" frameborder="0" src="structtmc51x0_1_1TMC51x0_1_1Homing__coll__graph.svg" width="1740" height="1472"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:af2c82a28cd0d66a8a680464e4ebfeb3a" id="r_af2c82a28cd0d66a8a680464e4ebfeb3a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3a">BoundsMethod</a> { <a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3aa12f4e38394a3014e25f1dc62c037c23f">StallGuard</a>
+, <a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3aa87d487f6f605eb96e61be67988e41e6d">Encoder</a>
+, <a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3aabbc155fb2b111bf61c4f5ff892915e6b">Switch</a>
+ }</td></tr>
+<tr class="separator:af2c82a28cd0d66a8a680464e4ebfeb3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf1f273c7ceedea89d64422e5541272e" id="r_adf1f273c7ceedea89d64422e5541272e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf1f273c7ceedea89d64422e5541272e">HomePlacement</a> { <br />
+&#160;&#160;<a class="el" href="#adf1f273c7ceedea89d64422e5541272ea6adf97f83acf6453d4a6a4b1070f3754">None</a>
+, <a class="el" href="#adf1f273c7ceedea89d64422e5541272ead15e9c4b26dad7a18d466aaa04b2bb58">AtMin</a>
+, <a class="el" href="#adf1f273c7ceedea89d64422e5541272ea96a8b627ffde2c0159c851ec7bb3aba0">AtMax</a>
+, <a class="el" href="#adf1f273c7ceedea89d64422e5541272ea2701fbcd63873520927f79475da80d04">AtCenter</a>
+, <br />
+&#160;&#160;<a class="el" href="#adf1f273c7ceedea89d64422e5541272ead98f9df0e9031ee60590d08318896ae0">AtOffsetFromMin</a>
+<br />
+ }</td></tr>
+<tr class="separator:adf1f273c7ceedea89d64422e5541272e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa01c97a661dc5004d9360acba2d6934c" id="r_aa01c97a661dc5004d9360acba2d6934c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> = bool (*)()</td></tr>
+<tr class="separator:aa01c97a661dc5004d9360acba2d6934c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9a99b07ff6f208b17a12f29e684c171f" id="r_a9a99b07ff6f208b17a12f29e684c171f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a99b07ff6f208b17a12f29e684c171f">Homing</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a> &amp;driver) noexcept</td></tr>
 <tr class="memdesc:a9a99b07ff6f208b17a12f29e684c171f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct homing subsystem.  <br /></td></tr>
 <tr class="separator:a9a99b07ff6f208b17a12f29e684c171f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa605a7a3f349729c583ca258735ab049" id="r_aa605a7a3f349729c583ca258735ab049"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa605a7a3f349729c583ca258735ab049">PerformSensorlessHoming</a> (bool direction, float search_speed, int32_t &amp;final_position, uint32_t timeout_ms=10000) noexcept</td></tr>
-<tr class="memdesc:aa605a7a3f349729c583ca258735ab049"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform sensorless homing using StallGuard2 (with settings caching)  <br /></td></tr>
-<tr class="separator:aa605a7a3f349729c583ca258735ab049"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa37f7386e66d45e032c049f24b841c56" id="r_aa37f7386e66d45e032c049f24b841c56"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa37f7386e66d45e032c049f24b841c56">PerformSwitchHoming</a> (bool direction, float search_speed, float switch_speed, int32_t &amp;final_position, bool use_left_switch, uint32_t timeout_ms=10000) noexcept</td></tr>
-<tr class="memdesc:aa37f7386e66d45e032c049f24b841c56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform homing using a reference switch (with settings caching)  <br /></td></tr>
-<tr class="separator:aa37f7386e66d45e032c049f24b841c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f6b30afd4a4e03363c93a60f488c70c" id="r_a5f6b30afd4a4e03363c93a60f488c70c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f6b30afd4a4e03363c93a60f488c70c">PerformSensorlessHoming</a> (bool direction, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, int32_t &amp;final_position, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
+<tr class="memdesc:a5f6b30afd4a4e03363c93a60f488c70c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform sensorless homing using StallGuard2 (with settings caching)  <br /></td></tr>
+<tr class="separator:a5f6b30afd4a4e03363c93a60f488c70c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fd703fc38f2ff2986e660fc10f18c1a" id="r_a2fd703fc38f2ff2986e660fc10f18c1a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2fd703fc38f2ff2986e660fc10f18c1a">PerformSwitchHoming</a> (bool direction, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, int32_t &amp;final_position, bool use_left_switch, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
+<tr class="memdesc:a2fd703fc38f2ff2986e660fc10f18c1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform homing using a reference switch (with settings caching)  <br /></td></tr>
+<tr class="separator:a2fd703fc38f2ff2986e660fc10f18c1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aff97457b88a61646f146bcf2c0abcd" id="r_a5aff97457b88a61646f146bcf2c0abcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5aff97457b88a61646f146bcf2c0abcd">FindBoundsStallGuard</a> (const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;home={}, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
+<tr class="separator:a5aff97457b88a61646f146bcf2c0abcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab49cd9865a358a18fb5e94e026ff7a1b" id="r_ab49cd9865a358a18fb5e94e026ff7a1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab49cd9865a358a18fb5e94e026ff7a1b">FindBoundsEncoder</a> (const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;home={}, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
+<tr class="separator:ab49cd9865a358a18fb5e94e026ff7a1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3996b6e0a219e0874276ac7626fe60e5" id="r_a3996b6e0a219e0874276ac7626fe60e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3996b6e0a219e0874276ac7626fe60e5">FindBoundsSwitch</a> (const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;home={}, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
+<tr class="separator:a3996b6e0a219e0874276ac7626fe60e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeef1b5af5be99b10b64bdf9fec56d661" id="r_aeef1b5af5be99b10b64bdf9fec56d661"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeef1b5af5be99b10b64bdf9fec56d661">FindBounds</a> (<a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3a">BoundsMethod</a> method, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;home={}, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
+<tr class="separator:aeef1b5af5be99b10b64bdf9fec56d661"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -133,6 +172,8 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:a27baa71198702d59f75bc161af473e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ddb905f9df66d1330ff022aa679f193" id="r_a3ddb905f9df66d1330ff022aa679f193"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ddb905f9df66d1330ff022aa679f193">EnsureSpreadCycleForStallGuard</a> () noexcept</td></tr>
 <tr class="separator:a3ddb905f9df66d1330ff022aa679f193"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5798952825e02afe3755b1b9a55976cb" id="r_a5798952825e02afe3755b1b9a55976cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5798952825e02afe3755b1b9a55976cb">ApplyHomePlacement</a> (<a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &amp;out, float raw_min, float raw_max, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;home, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt) noexcept</td></tr>
+<tr class="separator:a5798952825e02afe3755b1b9a55976cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -145,7 +186,85 @@ Private Attributes</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename CommType&gt;<br />
 struct tmc51x0::TMC51x0&lt; CommType &gt;::Homing</div><p><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing.html" title="Homing subsystem with automatic settings caching.">Homing</a> subsystem with automatic settings caching. </p>
 <p>Provides homing methods that automatically cache and restore settings modified during homing operations. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="aa01c97a661dc5004d9360acba2d6934c" name="aa01c97a661dc5004d9360acba2d6934c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa01c97a661dc5004d9360acba2d6934c">&#9670;&#160;</a></span>CancelCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::CancelCallback = bool (*)()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="af2c82a28cd0d66a8a680464e4ebfeb3a" name="af2c82a28cd0d66a8a680464e4ebfeb3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2c82a28cd0d66a8a680464e4ebfeb3a">&#9670;&#160;</a></span>BoundsMethod</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3a">tmc51x0::TMC51x0::Homing::BoundsMethod</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af2c82a28cd0d66a8a680464e4ebfeb3aa12f4e38394a3014e25f1dc62c037c23f" name="af2c82a28cd0d66a8a680464e4ebfeb3aa12f4e38394a3014e25f1dc62c037c23f"></a>StallGuard&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af2c82a28cd0d66a8a680464e4ebfeb3aa87d487f6f605eb96e61be67988e41e6d" name="af2c82a28cd0d66a8a680464e4ebfeb3aa87d487f6f605eb96e61be67988e41e6d"></a>Encoder&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af2c82a28cd0d66a8a680464e4ebfeb3aabbc155fb2b111bf61c4f5ff892915e6b" name="af2c82a28cd0d66a8a680464e4ebfeb3aabbc155fb2b111bf61c4f5ff892915e6b"></a>Switch&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="adf1f273c7ceedea89d64422e5541272e" name="adf1f273c7ceedea89d64422e5541272e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf1f273c7ceedea89d64422e5541272e">&#9670;&#160;</a></span>HomePlacement</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#adf1f273c7ceedea89d64422e5541272e">tmc51x0::TMC51x0::Homing::HomePlacement</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adf1f273c7ceedea89d64422e5541272ea6adf97f83acf6453d4a6a4b1070f3754" name="adf1f273c7ceedea89d64422e5541272ea6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="adf1f273c7ceedea89d64422e5541272ead15e9c4b26dad7a18d466aaa04b2bb58" name="adf1f273c7ceedea89d64422e5541272ead15e9c4b26dad7a18d466aaa04b2bb58"></a>AtMin&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="adf1f273c7ceedea89d64422e5541272ea96a8b627ffde2c0159c851ec7bb3aba0" name="adf1f273c7ceedea89d64422e5541272ea96a8b627ffde2c0159c851ec7bb3aba0"></a>AtMax&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="adf1f273c7ceedea89d64422e5541272ea2701fbcd63873520927f79475da80d04" name="adf1f273c7ceedea89d64422e5541272ea2701fbcd63873520927f79475da80d04"></a>AtCenter&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="adf1f273c7ceedea89d64422e5541272ead98f9df0e9031ee60590d08318896ae0" name="adf1f273c7ceedea89d64422e5541272ead98f9df0e9031ee60590d08318896ae0"></a>AtOffsetFromMin&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9a99b07ff6f208b17a12f29e684c171f" name="a9a99b07ff6f208b17a12f29e684c171f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9a99b07ff6f208b17a12f29e684c171f">&#9670;&#160;</a></span>Homing()</h2>
 
@@ -182,6 +301,52 @@ template&lt;typename CommType &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5798952825e02afe3755b1b9a55976cb" name="a5798952825e02afe3755b1b9a55976cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5798952825e02afe3755b1b9a55976cb">&#9670;&#160;</a></span>ApplyHomePlacement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::ApplyHomePlacement </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>out</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>raw_min</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>raw_max</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>home</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>opt</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ae538cd7bdc9613f36b8e7d4ec8beb6cb" name="ae538cd7bdc9613f36b8e7d4ec8beb6cb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae538cd7bdc9613f36b8e7d4ec8beb6cb">&#9670;&#160;</a></span>CacheCurrentSettings()</h2>
 
@@ -206,11 +371,6 @@ template&lt;typename CommType &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc51x0_1_1TMC51x0_1_1Homing_ae538cd7bdc9613f36b8e7d4ec8beb6cb_cgraph.svg" width="436" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -241,8 +401,157 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="aa605a7a3f349729c583ca258735ab049" name="aa605a7a3f349729c583ca258735ab049"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa605a7a3f349729c583ca258735ab049">&#9670;&#160;</a></span>PerformSensorlessHoming()</h2>
+<a id="aeef1b5af5be99b10b64bdf9fec56d661" name="aeef1b5af5be99b10b64bdf9fec56d661"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeef1b5af5be99b10b64bdf9fec56d661">&#9670;&#160;</a></span>FindBounds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; typename <a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt;::Homing::BoundsResult &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::FindBounds </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3a">BoundsMethod</a></td>          <td class="paramname"><span class="paramname"><em>method</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>opt</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>home</em><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a></td>          <td class="paramname"><span class="paramname"><em>should_cancel</em><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab49cd9865a358a18fb5e94e026ff7a1b" name="ab49cd9865a358a18fb5e94e026ff7a1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab49cd9865a358a18fb5e94e026ff7a1b">&#9670;&#160;</a></span>FindBoundsEncoder()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; typename <a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt;::Homing::BoundsResult &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::FindBoundsEncoder </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>opt</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>home</em><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a></td>          <td class="paramname"><span class="paramname"><em>should_cancel</em><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5aff97457b88a61646f146bcf2c0abcd" name="a5aff97457b88a61646f146bcf2c0abcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5aff97457b88a61646f146bcf2c0abcd">&#9670;&#160;</a></span>FindBoundsStallGuard()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; typename <a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt;::Homing::BoundsResult &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::FindBoundsStallGuard </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>opt</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>home</em><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a></td>          <td class="paramname"><span class="paramname"><em>should_cancel</em><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3996b6e0a219e0874276ac7626fe60e5" name="a3996b6e0a219e0874276ac7626fe60e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3996b6e0a219e0874276ac7626fe60e5">&#9670;&#160;</a></span>FindBoundsSwitch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; typename <a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt;::Homing::BoundsResult &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::FindBoundsSwitch </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>opt</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>home</em><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a></td>          <td class="paramname"><span class="paramname"><em>should_cancel</em><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5f6b30afd4a4e03363c93a60f488c70c" name="a5f6b30afd4a4e03363c93a60f488c70c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f6b30afd4a4e03363c93a60f488c70c">&#9670;&#160;</a></span>PerformSensorlessHoming()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -260,7 +569,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>search_speed</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>opt</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -270,7 +579,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>timeout_ms</em><span class="paramdefsep"> = </span><span class="paramdefval">10000</span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a></td>          <td class="paramname"><span class="paramname"><em>should_cancel</em><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -284,9 +593,8 @@ template&lt;typename CommType &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">direction</td><td>Direction to search (true = positive, false = negative) </td></tr>
-    <tr><td class="paramname">search_speed</td><td>Search speed in steps/s </td></tr>
-    <tr><td class="paramname">final_position</td><td>Reference to store final position after homing </td></tr>
-    <tr><td class="paramname">timeout_ms</td><td>Maximum time to wait in milliseconds (default: 10000) </td></tr>
+    <tr><td class="paramname">opt</td><td><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing.html" title="Homing subsystem with automatic settings caching.">Homing</a> options (unit-aware). Uses opt.search_speed, opt.search_span, opt.timeout_ms. </td></tr>
+    <tr><td class="paramname">final_position</td><td>Reference to store final position after homing (in steps). Note: if <code>opt.backoff_distance &gt; 0</code>, the motor backs off and the <b>post-backoff</b> point becomes home (XACTUAL=0). </td></tr>
   </table>
   </dd>
 </dl>
@@ -295,15 +603,19 @@ template&lt;typename CommType &gt; </div>
 <li>Caches current settings (StealthChop, SW_MODE, ramp settings)</li>
 <li>Disables StealthChop if enabled (<a class="el" href="structtmc51x0_1_1TMC51x0_1_1StallGuard.html" title="StallGuard2 subsystem (COOLCONF/DRV_STATUS + SW_MODE interactions)">StallGuard</a> requires SpreadCycle)</li>
 <li>Uses existing <a class="el" href="structtmc51x0_1_1TMC51x0_1_1StallGuard.html" title="StallGuard2 subsystem (COOLCONF/DRV_STATUS + SW_MODE interactions)">StallGuard</a> configuration (SGT threshold from motor config)</li>
-<li>Enables sg_stop and waits for stall event (SG_RESULT reaches threshold)</li>
+<li>Enables sg_stop and waits for stall event</li>
 <li>Restores cached settings after homing completes</li>
 </ul>
-<dl class="section note"><dt>Note</dt><dd><a class="el" href="structtmc51x0_1_1TMC51x0_1_1StallGuard.html" title="StallGuard2 subsystem (COOLCONF/DRV_STATUS + SW_MODE interactions)">StallGuard</a> threshold (SGT) should be configured via <a class="el" href="classtmc51x0_1_1TMC51x0.html#a60e918b0153cf9034871291ce27ea813" title="Initialize the TMC51x0 driver with configuration.">Initialize()</a> or ConfigureStallGuard() before calling this method. The method uses the existing SGT configuration. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="structtmc51x0_1_1TMC51x0_1_1StallGuard.html" title="StallGuard2 subsystem (COOLCONF/DRV_STATUS + SW_MODE interactions)">StallGuard</a> threshold (SGT) should be configured via <a class="el" href="classtmc51x0_1_1TMC51x0.html#a60e918b0153cf9034871291ce27ea813" title="Initialize the TMC51x0 driver with configuration.">Initialize()</a> or ConfigureStallGuard() before calling this method. The method uses the existing SGT configuration (or opt.stallguard_override if provided).</dd></dl>
+<p>Perform sensorless homing using StallGuard2 (span-capped, unit-aware)</p>
+<p>Uses <code><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#aa8ed5c5933c3592fb92f86f727fa91bc" title="In speed_unit.">BoundsOptions.search_speed</a></code> (in <code>speed_unit</code>) and <code><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a31baea798652e903330c682a777598aa" title="Max distance to attempt per direction, in position_unit.">BoundsOptions.search_span</a></code> (in <code>position_unit</code>) to perform a <b>single-direction</b> homing move. If <a class="el" href="structtmc51x0_1_1TMC51x0_1_1StallGuard.html" title="StallGuard2 subsystem (COOLCONF/DRV_STATUS + SW_MODE interactions)">StallGuard</a> stop triggers, the current position is defined as home (XACTUAL=0).</p>
+<p><code>final_position</code> returns the <b>pre-zero</b> position in steps (i.e., the position at the moment homing finished, after any optional backoff, before XACTUAL is reset to 0).</p>
+<dl class="section note"><dt>Note</dt><dd><code>search_span</code> is a hard cap on travel; this prevents excessive motion even if <code>timeout_ms</code> is large. </dd></dl>
 
 </div>
 </div>
-<a id="aa37f7386e66d45e032c049f24b841c56" name="aa37f7386e66d45e032c049f24b841c56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa37f7386e66d45e032c049f24b841c56">&#9670;&#160;</a></span>PerformSwitchHoming()</h2>
+<a id="a2fd703fc38f2ff2986e660fc10f18c1a" name="a2fd703fc38f2ff2986e660fc10f18c1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fd703fc38f2ff2986e660fc10f18c1a">&#9670;&#160;</a></span>PerformSwitchHoming()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -321,12 +633,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>search_speed</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>switch_speed</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>opt</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -341,7 +648,7 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>timeout_ms</em><span class="paramdefsep"> = </span><span class="paramdefval">10000</span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a></td>          <td class="paramname"><span class="paramname"><em>should_cancel</em><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -355,11 +662,9 @@ template&lt;typename CommType &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">direction</td><td>Direction to search (true = positive, false = negative) </td></tr>
-    <tr><td class="paramname">search_speed</td><td>Speed for homing search in steps/s </td></tr>
-    <tr><td class="paramname">switch_speed</td><td>Speed for slow approach (unused, reserved for future) </td></tr>
-    <tr><td class="paramname">final_position</td><td>Reference to store final position after homing </td></tr>
+    <tr><td class="paramname">opt</td><td><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing.html" title="Homing subsystem with automatic settings caching.">Homing</a> options (unit-aware). Uses opt.search_speed, opt.search_span, opt.timeout_ms. </td></tr>
+    <tr><td class="paramname">final_position</td><td>Reference to store final position after homing (in steps). Note: if <code>opt.backoff_distance &gt; 0</code>, the motor backs off and the <b>post-backoff</b> point becomes home (XACTUAL=0). </td></tr>
     <tr><td class="paramname">use_left_switch</td><td>true to use REFL, false to use REFR </td></tr>
-    <tr><td class="paramname">timeout_ms</td><td>Maximum time to wait in milliseconds (default: 10000) </td></tr>
   </table>
   </dd>
 </dl>
@@ -367,8 +672,12 @@ template&lt;typename CommType &gt; </div>
 <p>This is a blocking function that automatically:</p><ul>
 <li>Caches current settings (SW_MODE, ramp settings)</li>
 <li>Configures switches and performs homing</li>
-<li>Restores cached settings after homing completes </li>
+<li>Restores cached settings after homing completes</li>
 </ul>
+<p>Perform homing using a reference switch (span-capped, unit-aware)</p>
+<p>Uses <code><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#aa8ed5c5933c3592fb92f86f727fa91bc" title="In speed_unit.">BoundsOptions.search_speed</a></code> and <code><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a31baea798652e903330c682a777598aa" title="Max distance to attempt per direction, in position_unit.">BoundsOptions.search_span</a></code> to perform a <b>single-direction</b> homing move. When the selected switch triggers, the current position is defined as home (XACTUAL=0).</p>
+<p><code>final_position</code> returns the <b>pre-zero</b> position in steps (i.e., the position at the moment homing finished, after any optional backoff, before XACTUAL is reset to 0).</p>
+<p><code><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a31baea798652e903330c682a777598aa" title="Max distance to attempt per direction, in position_unit.">BoundsOptions.search_span</a></code> is the max relative travel cap. StallGuard-only fields in <code><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a></code> are ignored. </p>
 
 </div>
 </div>

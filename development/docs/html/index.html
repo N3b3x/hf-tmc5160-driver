@@ -435,14 +435,21 @@ Class Structure &amp; Subsystems</h2>
 <div class="line">StallGuardTuningResult result;</div>
 <div class="line">driver.tuning.AutoTuneStallGuard(target_velocity, result, min_sgt, max_sgt,</div>
 <div class="line">                                  acceleration, min_velocity, max_velocity,</div>
-<div class="line">                                  <a class="code hl_enumvalue" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">tmc51x0::Unit::RevPerSec</a>, safe_current_margin_mA);</div>
+<div class="line">                                  <a class="code hl_enumvalue" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">tmc51x0::Unit::RevPerSec</a>, 0.3f);  <span class="comment">// 30% current reduction</span></div>
 <div class="line"><span class="comment">// Or simpler version:</span></div>
 <div class="line">driver.tuning.TuneStallGuard(target_velocity, result, min_sgt, max_sgt, </div>
 <div class="line">                              acceleration, min_velocity, max_velocity);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Homing</span></div>
 <div class="line">int32_t final_position;</div>
-<div class="line">driver.homing.PerformSensorlessHoming(<span class="keyword">true</span>, search_speed, final_position);</div>
+<div class="line"><a class="code hl_struct" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">tmc51x0::TMC51x0&lt;MyComm&gt;::Homing::BoundsOptions</a> opt{};</div>
+<div class="line">opt.<a class="code hl_variable" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a3718deb5ff8da6a0fab18c248425a850">speed_unit</a> = <a class="code hl_enumvalue" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686afe2284eb32d4b09d29fd34217324b19a">tmc51x0::Unit::RPM</a>;</div>
+<div class="line">opt.position_unit = <a class="code hl_enumvalue" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686ab70808dc1e3f9e2c06c9ba840cc7f44c">tmc51x0::Unit::Deg</a>;</div>
+<div class="line">opt.search_speed = search_speed;</div>
+<div class="line">opt.search_span = 360.0F;</div>
+<div class="line">opt.backoff_distance = 5.0F;</div>
+<div class="line">opt.timeout_ms = 10000;</div>
+<div class="line">driver.homing.PerformSensorlessHoming(<span class="keyword">true</span>, opt, final_position);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Encoder Integration</span></div>
 <div class="line">driver.encoder.ConfigureEncoder(encoder_config);</div>
@@ -452,7 +459,11 @@ Class Structure &amp; Subsystems</h2>
 <div class="line">driver.powerStage.ConfigureShortProtection(short_config);</div>
 <div class="line"><span class="keywordtype">bool</span> ot = driver.status.GetStatus() == DriverStatus::OT;</div>
 <div class="ttc" id="anamespacetmc51x0_html_a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8"><div class="ttname"><a href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686a5410e62f887ed7fc4c8d18fc8090b0c8">tmc51x0::Unit::RevPerSec</a></div><div class="ttdeci">@ RevPerSec</div><div class="ttdoc">Revolutions per Second (recommended default for velocity)</div></div>
+<div class="ttc" id="anamespacetmc51x0_html_a68e41191c288365e02cfca672681f686ab70808dc1e3f9e2c06c9ba840cc7f44c"><div class="ttname"><a href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686ab70808dc1e3f9e2c06c9ba840cc7f44c">tmc51x0::Unit::Deg</a></div><div class="ttdeci">@ Deg</div><div class="ttdoc">Degrees (per second for velocity, per second^2 for accel)</div></div>
+<div class="ttc" id="anamespacetmc51x0_html_a68e41191c288365e02cfca672681f686afe2284eb32d4b09d29fd34217324b19a"><div class="ttname"><a href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686afe2284eb32d4b09d29fd34217324b19a">tmc51x0::Unit::RPM</a></div><div class="ttdeci">@ RPM</div><div class="ttdoc">Revolutions per Minute (Velocity only, typically)</div></div>
 <div class="ttc" id="anamespacetmc51x0_html_afdc019b38a68bc8a317ade8ff4fafa0b"><div class="ttname"><a href="namespacetmc51x0.html#afdc019b38a68bc8a317ade8ff4fafa0b">tmc51x0::DriverStatus</a></div><div class="ttdeci">DriverStatus</div><div class="ttdoc">Driver status enumeration.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:216</div></div>
+<div class="ttc" id="astructtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions_html"><div class="ttname"><a href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">tmc51x0::TMC51x0::Homing::BoundsOptions</a></div><div class="ttdef"><b>Definition</b> tmc51x0.hpp:2276</div></div>
+<div class="ttc" id="astructtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions_html_a3718deb5ff8da6a0fab18c248425a850"><div class="ttname"><a href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a3718deb5ff8da6a0fab18c248425a850">tmc51x0::TMC51x0::Homing::BoundsOptions::speed_unit</a></div><div class="ttdeci">Unit speed_unit</div><div class="ttdef"><b>Definition</b> tmc51x0.hpp:2278</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md60"></a>
 Key Methods by Subsystem</h2>
 <h3><a class="anchor" id="autotoc_md61"></a>
@@ -535,7 +546,7 @@ Tuning Subsystem ⭐ NEW</h3>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Method   </th><th class="markdownTableHeadNone">Description    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>AutoTuneStallGuard()</code>   </td><td class="markdownTableBodyNone">Comprehensive automatic SGT tuning with safe current margin (recommended)    </td></tr>
+<td class="markdownTableBodyNone"><code>AutoTuneStallGuard()</code>   </td><td class="markdownTableBodyNone">Comprehensive automatic SGT tuning with current reduction (recommended)    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>TuneStallGuard()</code>   </td><td class="markdownTableBodyNone">Automatic SGT tuning with comprehensive velocity range analysis   </td></tr>
 </table>
@@ -627,7 +638,7 @@ Multi-Chip Communication</h2>
 <h2><a class="anchor" id="autotoc_md77"></a>
 Advanced Features</h2>
 <ul>
-<li>**<code><a class="el" href="stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Safe Current Margin.">stallguard_tuning.cpp</a></code>**: Automatic StallGuard2 threshold tuning with velocity range analysis ⭐</li>
+<li>**<code><a class="el" href="stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Current Reduction.">stallguard_tuning.cpp</a></code>**: Automatic StallGuard2 threshold tuning with velocity range analysis ⭐</li>
 <li>**<code>encoder_comprehensive_test.cpp</code>**: Encoder integration and closed-loop control with deviation detection</li>
 <li>**<code>diagnostics_comprehensive_test.cpp</code>**: Comprehensive diagnostics, status monitoring, and StallGuard2 reading</li>
 <li>**<code>protection_comprehensive_test.cpp</code>**: Protection system configuration and monitoring</li>
@@ -644,7 +655,7 @@ Motor Control &amp; Motion</h2>
 Specialized Applications</h2>
 <ul>
 <li>**<code><a class="el" href="internal__ramp__comprehensive__test_8cpp.html" title="Comprehensive internal ramp test suite for TMC51x0 (single motor)">internal_ramp_comprehensive_test.cpp</a></code>**: Internal ramp generator comprehensive testing</li>
-<li>**<code><a class="el" href="stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Safe Current Margin.">stallguard_tuning.cpp</a></code>**: Automatic SGT tuning for optimal stall detection</li>
+<li>**<code><a class="el" href="stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Current Reduction.">stallguard_tuning.cpp</a></code>**: Automatic SGT tuning for optimal stall detection</li>
 </ul>
 <p>All examples include detailed documentation and are ready to compile and run. See docs/examples.md for detailed walkthroughs.</p>
 <h1><a class="anchor" id="autotoc_md80"></a>

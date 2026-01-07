@@ -134,16 +134,17 @@ var NAVTREEINDEX =
 "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2ab078ffd28db767c502ac367053f6e0ac",
 "index.html#autotoc_md74",
 "namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4ab227ff1ca50d147d685877a0c73041c6",
-"namespacetmc51x0_1_1detail.html#a7fbd9d5719c3c7ac393acfc49aa55132",
-"structtmc51x0_1_1AccelerationValue.html#a34201928df1fb6c0f0658cc7625b3c08",
-"structtmc51x0_1_1InputStatus.html#a855b92c6c427c1d7f7b2993d909f7db9",
-"structtmc51x0_1_1StallGuardTuningResult.html#a9bc3ff385d4437946c549c742d878d87",
-"structtmc51x0_1_1TMC51x0_1_1Status.html#a6d02f6913d99ca43ad38daf243b0c7aa",
-"structtmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#a6b4698227ac426aa4fe26f1f39f7ab37",
-"structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1StallGuard.html#a465f83594cb78d3abde4e5bc1d00539e",
-"tmc51x0__types_8hpp.html#a07832e7cdd1dd4846d32a144704b2088ae447a0875e209a8690bcc3ede1271f04",
-"uniontmc51x0_1_1DRV__CONF__Register.html",
-"uniontmc51x0_1_1OFFSET__READ__Register.html"
+"namespacetmc51x0_1_1detail.html#a089bcd93942e19e55813e20b2f891293",
+"structtmc51x0_1_1AccelerationValue.html",
+"structtmc51x0_1_1InputStatus.html#a4ebb307ca2a1193308c6ee9c5e25fb65",
+"structtmc51x0_1_1StallGuardTuningResult.html#a5c9db698bb474c5a5b6e2584a724acb0",
+"structtmc51x0_1_1TMC51x0_1_1RampControl.html#a563d39d46dd50eeba6b4c47ca91da9c8",
+"structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#ac8306ad3342524793353c990c9b95848",
+"structtmc51x0__test__config_1_1TestConfigAccessor_1_1Motion.html#ab7d54846d47f1046555afb2a816f2a12",
+"tmc51x0__result_8hpp.html#a29f23dd48483983409679925db836440",
+"uniontmc51x0_1_1CHOPCONF__Register.html#afcc1e3ce2107bbcccc349bbdefae932d",
+"uniontmc51x0_1_1MSCURACT__Register.html",
+"uniontmc51x0_1_1UartFrame_1_1Frame.html#a15266b25cf6b3ef299eed253a7d115fb"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

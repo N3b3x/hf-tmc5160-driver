@@ -1,0 +1,5 @@
+<map id="tmc51x0::TMC51x0::Tuning::AutoTuneStallGuard" name="tmc51x0::TMC51x0::Tuning::AutoTuneStallGuard">
+<area shape="rect" id="Node000001" title="Comprehensive automatic StallGuard tuning with current reduction and optional encoder verification." alt="" coords="5,5,204,45"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0.html#ac742f74b3a0ad095b8db62d07300c8c9" title="Calculate motor current settings from physical parameters." alt="" coords="252,13,487,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,23,238,23,238,28,204,28"/>
+</map>

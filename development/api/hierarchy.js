@@ -5,7 +5,9 @@ var hierarchy =
     [ "tmc51x0_test_config::BoardConfig_TMC51x0_BOB", "structtmc51x0__test__config_1_1BoardConfig__TMC51x0__BOB.html", null ],
     [ "tmc51x0_test_config::BoardConfig_TMC51x0_EVAL", "structtmc51x0__test__config_1_1BoardConfig__TMC51x0__EVAL.html", null ],
     [ "FatigueTest::BoundsFinderConfig", "structFatigueTest_1_1BoundsFinderConfig.html", null ],
+    [ "tmc51x0::TMC51x0< CommType >::Homing::BoundsOptions", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html", null ],
     [ "FatigueTest::BoundsResult", "structFatigueTest_1_1BoundsResult.html", null ],
+    [ "tmc51x0::TMC51x0< CommType >::Homing::BoundsResult", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html", null ],
     [ "tmc51x0::CHOPCONF_Register", "uniontmc51x0_1_1CHOPCONF__Register.html", null ],
     [ "tmc51x0::ChopperConfig", "structtmc51x0_1_1ChopperConfig.html", null ],
     [ "tmc51x0::CommInterface< Derived >", "classtmc51x0_1_1CommInterface.html", [
@@ -49,6 +51,7 @@ var hierarchy =
     [ "tmc51x0::GlobalConfig", "structtmc51x0_1_1GlobalConfig.html", null ],
     [ "tmc51x0::GSTAT_Register", "uniontmc51x0_1_1GSTAT__Register.html", null ],
     [ "tmc51x0::TMC51x0< CommType >::HardResetOptions", "structtmc51x0_1_1TMC51x0_1_1HardResetOptions.html", null ],
+    [ "tmc51x0::TMC51x0< CommType >::Homing::HomeConfig", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html", null ],
     [ "tmc51x0::TMC51x0< CommType >::Homing", "structtmc51x0_1_1TMC51x0_1_1Homing.html", null ],
     [ "tmc51x0::HomingSettingsCache", "structtmc51x0_1_1HomingSettingsCache.html", null ],
     [ "FatigueTest::IBoundsFinder", "classFatigueTest_1_1IBoundsFinder.html", [

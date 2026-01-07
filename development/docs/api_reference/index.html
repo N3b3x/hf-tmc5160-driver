@@ -1295,9 +1295,9 @@ APIs return <code class="language-plaintext highlighter-rouge">INVALID_STATE</co
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">AutoTuneStallGuard()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; AutoTuneStallGuard(float target_velocity, StallGuardTuningResult&amp; result, int8_t min_sgt = 0, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec, uint16_t safe_current_margin_mA = 0) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; AutoTuneStallGuard(float target_velocity, StallGuardTuningResult&amp; result, int8_t min_sgt = 0, int8_t max_sgt = 63, float acceleration = 0.06F, float min_velocity = 0.0F, float max_velocity = 0.0F, Unit velocity_unit = Unit::RevPerSec, Unit acceleration_unit = Unit::RevPerSec, float current_reduction_factor = 0.0F) noexcept</code></td>
       <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
-      <td>Comprehensive automatic StallGuard tuning with safe current margin handling (recommended). Separate unit parameters for velocity and acceleration (RPM not valid for acceleration)</td>
+      <td>Comprehensive automatic StallGuard tuning with current reduction (recommended). Separate unit parameters for velocity and acceleration (RPM not valid for acceleration)</td>
     </tr>
   </tbody>
 </table></div>
@@ -1350,7 +1350,7 @@ APIs return <code class="language-plaintext highlighter-rouge">INVALID_STATE</co
 45
 46
 </pre></td><td class="rouge-code"><pre><span class="n">tmc51x0</span><span class="o">::</span><span class="n">StallGuardTuningResult</span> <span class="n">result</span><span class="p">;</span>
-<span class="c1">// Using AutoTuneStallGuard (recommended) with safe current margin</span>
+<span class="c1">// Using AutoTuneStallGuard (recommended) with current reduction</span>
 <span class="c1">// Note: Separate unit parameters for velocity and acceleration</span>
 <span class="k">auto</span> <span class="n">result_tune</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">tuning</span><span class="p">.</span><span class="n">AutoTuneStallGuard</span><span class="p">(</span>
     <span class="mf">0.6</span><span class="n">f</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span>                          <span class="c1">// Target velocity: 0.6 rev/s (~36 RPM)</span>
@@ -1359,7 +1359,7 @@ APIs return <code class="language-plaintext highlighter-rouge">INVALID_STATE</co
     <span class="mf">0.18</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.9</span><span class="n">f</span><span class="p">,</span>                           <span class="c1">// Velocity range: 0.18-0.9 rev/s (30%-150% of target)</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">,</span>              <span class="c1">// Velocity unit (default, can be omitted)</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">,</span>              <span class="c1">// Acceleration unit (default, can be omitted)</span>
-    <span class="mi">300</span>                                    <span class="c1">// Safe current margin: 300mA</span>
+    <span class="mf">0.3</span><span class="n">f</span>                                   <span class="c1">// Current reduction factor: 30% (recommended)</span>
 <span class="p">);</span>
 
 <span class="c1">// Example with RPM for velocity, RevPerSec for acceleration (RPM not valid for acceleration)</span>
@@ -1370,7 +1370,7 @@ APIs return <code class="language-plaintext highlighter-rouge">INVALID_STATE</co
     <span class="mf">10.8</span><span class="n">f</span><span class="p">,</span> <span class="mf">54.0</span><span class="n">f</span><span class="p">,</span>                          <span class="c1">// Velocity range: 10.8-54.0 RPM (30%-150% of target)</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">,</span>                    <span class="c1">// Velocity unit: RPM</span>
     <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">,</span>              <span class="c1">// Acceleration unit: RevPerSec (RPM not valid)</span>
-    <span class="mi">300</span>                                    <span class="c1">// Safe current margin: 300mA</span>
+    <span class="mf">0.3</span><span class="n">f</span>                                   <span class="c1">// Current reduction factor: 30% (recommended)</span>
 <span class="p">);</span>
 
 <span class="c1">// Or using TuneStallGuard (simpler, no current margin)</span>
@@ -1413,6 +1413,12 @@ APIs return <code class="language-plaintext highlighter-rouge">INVALID_STATE</co
 
 <p><strong>Purpose</strong>: Provides both sensorless (StallGuard2-based) and switch-based homing operations. Automatically caches and restores driver settings modified during homing, ensuring your configuration is preserved.</p>
 
+<p><strong>Safety Note</strong>:</p>
+<ul>
+  <li>Homing/bounds operations <strong>always return with the motor stopped</strong> (<code class="language-plaintext highlighter-rouge">RampMode::HOLD</code>) to avoid unexpected motion resuming after settings restore.</li>
+  <li>The driver also performs <strong>XTARGET hygiene</strong> (sets <code class="language-plaintext highlighter-rouge">XTARGET</code> to the current position) so switching ramp modes later cannot “chase” a stale target.</li>
+</ul>
+
 <p><strong>Key Features</strong>:</p>
 <ul>
   <li><strong>Sensorless Homing</strong>: Endstop-free homing using StallGuard2 stall detection</li>
@@ -1420,6 +1426,8 @@ APIs return <code class="language-plaintext highlighter-rouge">INVALID_STATE</co
   <li><strong>Automatic Settings Caching</strong>: Preserves and restores driver settings during homing</li>
   <li><strong>Configurable Search Speed</strong>: Adjustable homing speed and switch approach speed</li>
   <li><strong>Timeout Protection</strong>: Configurable timeout to prevent infinite searches</li>
+  <li><strong>Cancellation Support</strong>: Optional <code class="language-plaintext highlighter-rouge">CancelCallback</code> for aborting long-running homing operations</li>
+  <li><strong>Span-Capped Homing Moves</strong>: The <code class="language-plaintext highlighter-rouge">Perform*Homing()</code> helpers are span-capped using <code class="language-plaintext highlighter-rouge">BoundsOptions.search_span</code> (after unit conversion). This prevents excessive travel even with large <code class="language-plaintext highlighter-rouge">timeout_ms</code>.</li>
 </ul>
 
 <div class="table-wrapper"><table>
@@ -1434,18 +1442,83 @@ APIs return <code class="language-plaintext highlighter-rouge">INVALID_STATE</co
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">PerformSensorlessHoming()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; PerformSensorlessHoming(bool direction, float search_speed, int32_t&amp; final_position, uint32_t timeout_ms = 10000) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; PerformSensorlessHoming(bool direction, const BoundsOptions&amp; opt, int32_t&amp; final_position, CancelCallback should_cancel = nullptr) noexcept</code></td>
       <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
-      <td>Perform sensorless homing using StallGuard2 (uses existing SGT threshold from motor config)</td>
+      <td>Sensorless homing using StallGuard2. Uses <code class="language-plaintext highlighter-rouge">opt.search_speed</code>/<code class="language-plaintext highlighter-rouge">opt.search_span</code>/<code class="language-plaintext highlighter-rouge">opt.timeout_ms</code> (unit-aware) for a <strong>single-direction</strong>, span-capped homing move. <strong>If <code class="language-plaintext highlighter-rouge">opt.backoff_distance &gt; 0</code>, the motor backs off first and the post-backoff point becomes home (XACTUAL=0).</strong> <code class="language-plaintext highlighter-rouge">final_position</code> returns the <em>pre-zero</em> position in steps (after any optional backoff, before XACTUAL is reset).</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">PerformSwitchHoming()</code></td>
-      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; PerformSwitchHoming(bool direction, float search_speed, float switch_speed, int32_t&amp; final_position, bool use_left_switch, uint32_t timeout_ms = 10000) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt; PerformSwitchHoming(bool direction, const BoundsOptions&amp; opt, int32_t&amp; final_position, bool use_left_switch, CancelCallback should_cancel = nullptr) noexcept</code></td>
       <td><code class="language-plaintext highlighter-rouge">Result&lt;void&gt;</code> indicating success or error</td>
-      <td>Perform homing using a reference switch</td>
+      <td>Switch homing. Uses <code class="language-plaintext highlighter-rouge">opt.search_speed</code>/<code class="language-plaintext highlighter-rouge">opt.search_span</code>/<code class="language-plaintext highlighter-rouge">opt.timeout_ms</code> (unit-aware) for a <strong>single-direction</strong>, span-capped homing move. <strong>If <code class="language-plaintext highlighter-rouge">opt.backoff_distance &gt; 0</code>, the motor backs off first and the post-backoff point becomes home (XACTUAL=0).</strong> <code class="language-plaintext highlighter-rouge">final_position</code> returns the <em>pre-zero</em> position in steps (after any optional backoff, before XACTUAL is reset).</td>
     </tr>
   </tbody>
 </table></div>
+<h3 id="bounds-finding-homing">
+  
+  
+    <a href="#bounds-finding-homing" class="anchor-heading" aria-labelledby="bounds-finding-homing"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Bounds Finding (Homing)
+  
+  
+</h3>
+    
+
+<p>Bounds finding scans in both directions to discover mechanical end limits using one of three methods (StallGuard2, encoder, or switches). The API returns bounds in the configured <code class="language-plaintext highlighter-rouge">position_unit</code> and can optionally redefine home/zero according to <code class="language-plaintext highlighter-rouge">HomeConfig</code>.</p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Signature</th>
+      <th>Returns</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">FindBounds()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;BoundsResult&gt; FindBounds(BoundsMethod method, const BoundsOptions&amp; opt, const HomeConfig&amp; home = {}, CancelCallback should_cancel = nullptr) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;BoundsResult&gt;</code></td>
+      <td>Dispatch bounds-finding by method</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">FindBoundsStallGuard()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;BoundsResult&gt; FindBoundsStallGuard(const BoundsOptions&amp; opt, const HomeConfig&amp; home = {}, CancelCallback should_cancel = nullptr) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;BoundsResult&gt;</code></td>
+      <td>StallGuard2-based bounds finding (uses optional <code class="language-plaintext highlighter-rouge">stallguard_override</code>, and optional current reduction)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">FindBoundsEncoder()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;BoundsResult&gt; FindBoundsEncoder(const BoundsOptions&amp; opt, const HomeConfig&amp; home = {}, CancelCallback should_cancel = nullptr) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;BoundsResult&gt;</code></td>
+      <td>Encoder-based bounds finding (requires encoder configured)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">FindBoundsSwitch()</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;BoundsResult&gt; FindBoundsSwitch(const BoundsOptions&amp; opt, const HomeConfig&amp; home = {}, CancelCallback should_cancel = nullptr) noexcept</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Result&lt;BoundsResult&gt;</code></td>
+      <td>Switch-based bounds finding (requires switches configured)</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Key Options (<code class="language-plaintext highlighter-rouge">BoundsOptions</code>)</strong>:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">search_speed</code> / <code class="language-plaintext highlighter-rouge">speed_unit</code>: speed used for the sweep.</li>
+  <li><code class="language-plaintext highlighter-rouge">search_span</code>: maximum travel per direction (safety cap if no bounds are found).</li>
+  <li><code class="language-plaintext highlighter-rouge">backoff_distance</code>: distance to back off after detecting a bound so the returned bound is not hard against the stop.</li>
+  <li><code class="language-plaintext highlighter-rouge">timeout_ms</code>: timeout per direction.</li>
+  <li><code class="language-plaintext highlighter-rouge">current_reduction_factor</code>: StallGuard-only, reduces motor current during sweep (0.0 disables). Ignored if <code class="language-plaintext highlighter-rouge">current_reduction_target_mA &gt; 0</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">current_reduction_target_mA</code>: StallGuard-only, absolute RMS current target during sweep (0 disables).</li>
+  <li><code class="language-plaintext highlighter-rouge">stallguard_override</code>: optional pointer; if set, this config is applied for the sweep.</li>
+</ul>
+
+<p><strong>Home Placement (<code class="language-plaintext highlighter-rouge">HomeConfig</code>)</strong>:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">mode=AtCenter</code> (default): moves to center and defines that as 0; returns symmetric bounds (negative/positive).</li>
+  <li><code class="language-plaintext highlighter-rouge">mode=AtMin</code> / <code class="language-plaintext highlighter-rouge">AtMax</code>: defines 0 at min/max bound.</li>
+  <li><code class="language-plaintext highlighter-rouge">mode=AtOffsetFromMin</code>: defines 0 at <code class="language-plaintext highlighter-rouge">(min_bound + offset)</code>.</li>
+</ul>
 <h3 id="printer-subsystem">
   
   
