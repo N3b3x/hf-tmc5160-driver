@@ -31,7 +31,6 @@
  */
 
 #include "tmc51x0.hpp"
-#include "features/tmc51x0_units.hpp"
 #include "test_config/esp32_tmc51x0_bus.hpp"
 #include "test_config/esp32_tmc51x0_test_config.hpp"
 #include "test_config/TestFramework.h"
@@ -1237,14 +1236,20 @@ bool test_unit_conversions() noexcept {
     success = false;
   }
   
-  // Test unit conversion functions
-  float target_mm = 10.0F;
-  int32_t steps = tmc51x0::MmToSteps(target_mm, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
-  ESP_LOGI(TAG, "%.2f mm = %ld steps", target_mm, steps);
+  // Test unit conversion via driver API (driver handles conversions internally)
+  // Get current position in different units to verify conversion
+  auto pos_steps = handle->driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Steps);
+  auto pos_mm = handle->driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Mm);
+  if (pos_steps && pos_mm) {
+    ESP_LOGI(TAG, "Position: %.2f steps = %.2f mm", pos_steps.Value(), pos_mm.Value());
+  }
   
-  float target_rpm = 100.0F;
-  float steps_per_sec = tmc51x0::RpmToStepsPerSec(target_rpm, STEPS_PER_REV);
-  ESP_LOGI(TAG, "%.2f RPM = %.2f steps/s", target_rpm, steps_per_sec);
+  // Get current speed in different units
+  auto speed_steps = handle->driver->rampControl.GetCurrentSpeed(tmc51x0::Unit::Steps);
+  auto speed_rpm = handle->driver->rampControl.GetCurrentSpeed(tmc51x0::Unit::RPM);
+  if (speed_steps && speed_rpm) {
+    ESP_LOGI(TAG, "Speed: %.2f steps/s = %.2f RPM", speed_steps.Value(), speed_rpm.Value());
+  }
   
   if (success) {
     ESP_LOGI(TAG, "✓ Unit conversions test passed");

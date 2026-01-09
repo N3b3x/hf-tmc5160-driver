@@ -17,7 +17,7 @@ Complete reference documentation for all public methods and types in the TMC51x0
 - **Communication Interface**: [`inc/tmc51x0_comm_interface.hpp`](../inc/tmc51x0_comm_interface.hpp)
 - **Registers**: [`inc/registers/tmc51x0_registers.hpp`](../inc/registers/tmc51x0_registers.hpp)
 - **Types**: [`inc/tmc51x0_types.hpp`](../inc/tmc51x0_types.hpp)
-- **Unit Conversions**: [`inc/features/tmc51x0_units.hpp`](../inc/features/tmc51x0_units.hpp)
+- **Type-Safe Units**: [`inc/features/tmc51x0_unit_types.hpp`](../inc/features/tmc51x0_unit_types.hpp) - Position, Velocity, Acceleration structs with conversion methods
 
 ## TMC51x0 Class
 
@@ -1337,38 +1337,101 @@ Ramp generator configuration structure for two-phase acceleration and decelerati
 - Unit conversion requires `MotorSpec` and `MechanicalSystem` configuration for non-Step units
 - See datasheet section 12 for detailed ramp generator operation
 
-## Unit Conversion Functions
+## Type-Safe Unit Conversion System
 
-Free functions for converting between physical units and driver steps.
+The driver provides type-safe unit wrappers that prevent mixing up position, velocity, and acceleration units.
 
-**Location**: [`inc/features/tmc51x0_units.hpp`](../inc/features/tmc51x0_units.hpp)
+**Location**: [`inc/features/tmc51x0_unit_types.hpp`](../inc/features/tmc51x0_unit_types.hpp)
 
-### Position Conversions
+### Unit Types
 
-| Function | Signature | Returns | Description |
-|----------|-----------|---------|-------------|
-| `MmToSteps()` | `int32_t MmToSteps(float mm, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept` | Steps | Convert millimeters to steps |
-| `StepsToMm()` | `float StepsToMm(int32_t steps, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept` | Millimeters | Convert steps to millimeters |
-| `DegreesToSteps()` | `int32_t DegreesToSteps(float degrees, uint16_t steps_per_rev) noexcept` | Steps | Convert degrees to steps |
-| `StepsToDegrees()` | `float StepsToDegrees(int32_t steps, uint16_t steps_per_rev) noexcept` | Degrees | Convert steps to degrees |
-| `BeltTeethToSteps()` | `int32_t BeltTeethToSteps(uint32_t teeth, uint16_t steps_per_rev, uint16_t belt_pulley_teeth) noexcept` | Steps | Convert belt teeth to steps |
-| `StepsToBeltTeeth()` | `float StepsToBeltTeeth(int32_t steps, uint16_t steps_per_rev, uint16_t belt_pulley_teeth) noexcept` | Belt teeth | Convert steps to belt teeth |
+| Type | Unit Enum | Description |
+|------|-----------|-------------|
+| `Position` | `PositionUnit` | Position/distance (Steps, Microsteps, Revolutions, Radians, Degrees, Millimeters) |
+| `Velocity` | `VelocityUnit` | Speed (StepsPerSec, RPM, RevPerSec, RadPerSec, DegPerSec, MmPerSec) |
+| `Acceleration` | `AccelerationUnit` | Acceleration (StepsPerSec2, RevPerSec2, RadPerSec2, DegPerSec2, MmPerSec2) |
 
-### Speed Conversions
+### ConversionParams
 
-| Function | Signature | Returns | Description |
-|----------|-----------|---------|-------------|
-| `RpmToStepsPerSec()` | `float RpmToStepsPerSec(float rpm, uint16_t steps_per_rev) noexcept` | Steps/s | Convert RPM to steps per second |
-| `StepsPerSecToRpm()` | `float StepsPerSecToRpm(float steps_per_sec, uint16_t steps_per_rev) noexcept` | RPM | Convert steps per second to RPM |
-| `MmPerSecToStepsPerSec()` | `float MmPerSecToStepsPerSec(float mm_per_sec, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept` | Steps/s | Convert mm/s to steps/s |
-| `StepsPerSecToMmPerSec()` | `float StepsPerSecToMmPerSec(float steps_per_sec, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept` | mm/s | Convert steps/s to mm/s |
+The `ConversionParams` struct holds mechanical system parameters needed for unit conversions:
 
-### Acceleration Conversions
+```cpp
+// Create params for different mechanical systems
+auto direct = ConversionParams::DirectDrive(200);  // 200 steps/rev motor
+auto geared = ConversionParams::Geared(200, 5.18);  // 200 steps/rev with 5.18:1 gear ratio
+auto lead = ConversionParams::LeadScrew(200, 2.0f);  // 200 steps/rev, 2mm pitch lead screw
+auto belt = ConversionParams::BeltDrive(200, 2.0f, 20);  // 200 steps/rev, 2mm pitch, 20-tooth pulley
+```
 
-| Function | Signature | Returns | Description |
-|----------|-----------|---------|-------------|
-| `AccelerationMmToSteps()` | `float AccelerationMmToSteps(float accel_mm_per_sec2, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept` | Steps/s² | Convert mm/s² to steps/s² |
-| `AccelerationStepsToMm()` | `float AccelerationStepsToMm(float accel_steps_per_sec2, uint16_t steps_per_rev, float lead_screw_pitch_mm) noexcept` | mm/s² | Convert steps/s² to mm/s² |
+### Position Struct Methods
+
+| Method | Description |
+|--------|-------------|
+| `Position::Steps(float)` | Create position in motor full steps |
+| `Position::Deg(float)` | Create position in degrees |
+| `Position::Mm(float)` | Create position in millimeters |
+| `Position::Revolutions(float)` | Create position in revolutions |
+| `toSteps(params)` | Convert to motor full steps |
+| `toMicrosteps(params)` | Convert to microsteps |
+| `convertTo(unit, params)` | Convert to any PositionUnit |
+
+### Velocity Struct Methods
+
+| Method | Description |
+|--------|-------------|
+| `Velocity::RPM(float)` | Create velocity in RPM |
+| `Velocity::RevPerSec(float)` | Create velocity in rev/s |
+| `Velocity::StepsPerSec(float)` | Create velocity in steps/s |
+| `Velocity::MmPerSec(float)` | Create velocity in mm/s |
+| `toStepsPerSec(params)` | Convert to steps per second |
+| `convertTo(unit, params)` | Convert to any VelocityUnit |
+
+### Acceleration Struct Methods
+
+| Method | Description |
+|--------|-------------|
+| `Acceleration::RevPerSec2(float)` | Create acceleration in rev/s² |
+| `Acceleration::StepsPerSec2(float)` | Create acceleration in steps/s² |
+| `Acceleration::MmPerSec2(float)` | Create acceleration in mm/s² |
+| `toStepsPerSec2(params)` | Convert to steps per second squared |
+| `convertTo(unit, params)` | Convert to any AccelerationUnit |
+
+### Example Usage
+
+```cpp
+#include "features/tmc51x0_unit_types.hpp"
+
+// Create conversion params for your mechanical system
+auto params = tmc51x0::ConversionParams::LeadScrew(200, 2.0f);  // 200 steps/rev, 2mm pitch
+
+// Type-safe position conversions
+auto pos = tmc51x0::Position::Mm(10.0f);
+float steps = pos.toSteps(params);  // Convert to steps
+
+// Type-safe velocity conversions  
+auto vel = tmc51x0::Velocity::RPM(60.0f);
+float steps_per_sec = vel.toStepsPerSec(params);
+
+// Type-safe acceleration conversions
+auto accel = tmc51x0::Acceleration::RevPerSec2(2.0f);
+float steps_per_sec2 = accel.toStepsPerSec2(params);
+
+// Convert between units
+auto vel_mm = vel.convertTo(tmc51x0::VelocityUnit::MmPerSec, params);
+```
+
+### Standalone Conversion Functions
+
+For convenience, standalone functions are also provided:
+
+| Function | Description |
+|----------|-------------|
+| `MmToSteps(mm, params)` | Convert mm to steps |
+| `StepsToMm(steps, params)` | Convert steps to mm |
+| `DegreesToSteps(deg, params)` | Convert degrees to steps |
+| `StepsToDegrees(steps, params)` | Convert steps to degrees |
+| `RpmToStepsPerSec(rpm, params)` | Convert RPM to steps/s |
+| `StepsPerSecToRpm(steps_s, params)` | Convert steps/s to RPM |
 
 ## Feature Implementation Summary
 

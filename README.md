@@ -247,21 +247,22 @@ z_axis.motorControl.Enable();
 
 ```cpp
 #include "inc/tmc51x0.hpp"
-#include "inc/tmc51x0_units.hpp"
+#include "inc/features/tmc51x0_unit_types.hpp"
 
 // Motor: 200 steps/rev, Lead screw: 2mm pitch
 constexpr uint16_t STEPS_PER_REV = 200;
 constexpr float LEAD_SCREW_PITCH_MM = 2.0f;
 
-// Move 10mm using convenience method
-driver.rampControl.SetTargetPositionMm(10.0f, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
+// Use driver API with Unit parameter
+driver.rampControl.SetTargetPosition(10.0f, tmc51x0::Unit::Mm);  // Move 10mm
+driver.rampControl.SetMaxSpeed(100.0f, tmc51x0::Unit::RPM);      // Set speed to 100 RPM
 
-// Set speed in RPM
-driver.rampControl.SetMaxSpeedRpm(100.0f, STEPS_PER_REV);
+// Or use type-safe unit structs for standalone conversions
+auto params = tmc51x0::ConversionParams::LeadScrew(STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
+auto pos = tmc51x0::Position::Mm(10.0f);
+float steps = pos.toSteps(params);
 
-// Or use conversion functions directly
-int32_t steps = tmc51x0::MmToSteps(10.0f, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
-auto pos_result = driver.rampControl.SetTargetPosition(steps);
+auto pos_result = driver.rampControl.SetTargetPosition(steps, tmc51x0::Unit::Steps);
 if (!pos_result) {
     printf("Error setting target position: %s\n", pos_result.ErrorMessage());
     return -1;
@@ -451,14 +452,16 @@ bool ot = driver.status.GetStatus() == DriverStatus::OT;
 | `TMC51x0MultiNode<CommType>` | High-level manager for UART multi-node addressing |
 | `chain[0]`, `chain[1]`, ... | Access individual drivers in chain |
 
-### Unit Conversion Helpers
+### Type-Safe Unit System
 
-| Function | Description |
-|----------|-------------|
-| `MmToSteps()` / `StepsToMm()` | Convert between millimeters and steps |
-| `RpmToStepsPerSec()` / `StepsPerSecToRpm()` | Convert between RPM and steps/s |
-| **Default Units**: Velocity functions default to `Unit::RevPerSec` (revolutions per second) for user-friendly operation |
-| `DegreesToSteps()` / `StepsToDegrees()` | Convert between degrees and steps |
+| Type | Description |
+|------|-------------|
+| `Position` | Type-safe position with `PositionUnit` (Steps, Degrees, Mm, Revolutions, etc.) |
+| `Velocity` | Type-safe velocity with `VelocityUnit` (StepsPerSec, RPM, RevPerSec, MmPerSec, etc.) |
+| `Acceleration` | Type-safe acceleration with `AccelerationUnit` (StepsPerSec2, RevPerSec2, etc.) |
+| `ConversionParams` | Holds mechanical system params for unit conversions |
+
+Standalone conversion functions: `MmToSteps()`, `StepsToMm()`, `RpmToStepsPerSec()`, `DegreesToSteps()`, etc.
 
 For complete API documentation with all methods and parameters, see [docs/api_reference.md](docs/api_reference.md).
 

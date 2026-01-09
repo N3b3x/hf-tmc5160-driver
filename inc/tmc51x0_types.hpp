@@ -5,6 +5,10 @@
  * This file contains all type definitions, enumerations, and structures
  * used by the TMC51x0 driver library. Supports both TMC5130 and TMC5160 chips.
  *
+ * For type-safe unit handling, see also:
+ * - `features/tmc51x0_unit_types.hpp` - Type-safe Position, Velocity, Acceleration structs
+ *   with proper unit enums (PositionUnit, VelocityUnit, AccelerationUnit)
+ *
  * @defgroup TMC51X0_Types Type Definitions
  * @brief Enums, structs, and type definitions
  */
@@ -14,6 +18,7 @@
 
 #include <cstdint>
 #include "registers/tmc51x0_registers.hpp"
+#include "features/tmc51x0_unit_types.hpp"
 
 namespace tmc51x0 {
 
@@ -166,23 +171,33 @@ inline constexpr const char* ToString(MotorType t) noexcept {
 }
 
 /**
- * @brief Unit enumeration
+ * @brief Unit enumeration (legacy, use type-safe units for new code)
  *
  * Defines the unit of measurement for position, velocity, and acceleration.
- * Steps: Microsteps (driver native)
- * Rad: Radians (per second for velocity, per second^2 for accel)
- * Deg: Degrees (per second for velocity, per second^2 for accel)
- * Mm: Millimeters (linear only)
- * RPM: Revolutions per Minute (Velocity only, typically)
- * RevPerSec: Revolutions per Second (recommended default for velocity)
+ * This enum is overloaded for multiple purposes (position, velocity, acceleration)
+ * which can lead to confusion.
+ *
+ * @note For new code, prefer the type-safe unit structs in tmc51x0_unit_types.hpp:
+ *       - Position with PositionUnit (Steps, Degrees, Mm, etc.)
+ *       - Velocity with VelocityUnit (StepsPerSec, RPM, RevPerSec, etc.)
+ *       - Acceleration with AccelerationUnit (StepsPerSec2, RevPerSec2, etc.)
+ *
+ * Steps: Motor full steps (for velocity: steps/s, for accel: steps/s²)
+ * Rad: Radians (for velocity: rad/s, for accel: rad/s²)
+ * Deg: Degrees (for velocity: deg/s, for accel: deg/s²)
+ * Mm: Millimeters (for velocity: mm/s, for accel: mm/s²)
+ * RPM: Revolutions per Minute (velocity only - NOT valid for acceleration!)
+ * RevPerSec: Revolutions per Second (for velocity: rev/s, for accel: rev/s²)
+ *
+ * @warning Using RPM for acceleration is invalid and will be treated as RevPerSec.
  */
 enum class Unit : uint8_t {
-  Steps,     ///< Microsteps (driver native)
-  Rad,       ///< Radians (per second for velocity, per second^2 for accel)
-  Deg,       ///< Degrees (per second for velocity, per second^2 for accel)
-  Mm,        ///< Millimeters (linear only)
-  RPM,       ///< Revolutions per Minute (Velocity only, typically)
-  RevPerSec  ///< Revolutions per Second (recommended default for velocity)
+  Steps,     ///< Motor full steps (velocity: steps/s, accel: steps/s²)
+  Rad,       ///< Radians (velocity: rad/s, accel: rad/s²)
+  Deg,       ///< Degrees (velocity: deg/s, accel: deg/s²)
+  Mm,        ///< Millimeters (velocity: mm/s, accel: mm/s²)
+  RPM,       ///< Revolutions per Minute (velocity ONLY - invalid for accel!)
+  RevPerSec  ///< Revolutions per Second (velocity: rev/s, accel: rev/s²)
 };
 
 /**
@@ -1768,14 +1783,21 @@ struct StallGuardTuningResult {
 //===============================================================================================================
 
 /**
- * @brief Self-describing velocity value with explicit unit
+ * @brief Self-describing velocity value with explicit unit (legacy)
  * 
  * Carries both the velocity value and its unit, eliminating ambiguity
  * in configuration and ensuring proper unit conversions throughout the driver.
  * 
+ * @note For new code, consider using the type-safe `Velocity` struct from
+ *       tmc51x0_unit_types.hpp which uses `VelocityUnit` enum and provides
+ *       built-in conversion methods.
+ * 
  * @code
  * VelocityValue vel = {100.0f, Unit::RPM};
  * VelocityValue vel2 = VelocityValue::FromRPM(100.0f);
+ * 
+ * // New type-safe alternative:
+ * // Velocity vel = Velocity::RPM(100.0f);
  * @endcode
  */
 struct VelocityValue {
@@ -1802,14 +1824,24 @@ struct VelocityValue {
 };
 
 /**
- * @brief Self-describing acceleration value with explicit unit
+ * @brief Self-describing acceleration value with explicit unit (legacy)
  * 
  * Carries both the acceleration value and its unit, eliminating ambiguity
  * in configuration and ensuring proper unit conversions throughout the driver.
  * 
+ * @note For new code, consider using the type-safe `Acceleration` struct from
+ *       tmc51x0_unit_types.hpp which uses `AccelerationUnit` enum and provides
+ *       built-in conversion methods.
+ * 
+ * @warning RPM is NOT a valid acceleration unit! Using Unit::RPM for acceleration
+ *          will be treated as RevPerSec (rev/s²).
+ * 
  * @code
  * AccelerationValue accel = {50.0f, Unit::RevPerSec};
  * AccelerationValue accel2 = AccelerationValue::FromRevPerSec(50.0f);
+ * 
+ * // New type-safe alternative:
+ * // Acceleration accel = Acceleration::RevPerSec2(50.0f);
  * @endcode
  */
 struct AccelerationValue {
