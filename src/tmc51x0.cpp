@@ -7905,14 +7905,8 @@ Result<void> TMC51x0<CommType>::Status::ProgramOtpBit(uint8_t byte_index, uint8_
   }
 
   // Datasheet requires minimum 10ms programming time per bit
-  // Use a blocking delay (platform-specific)
-#if defined(ESP_PLATFORM) || defined(ESP32)
-  vTaskDelay(pdMS_TO_TICKS(15)); // 15ms with margin
-#else
-  // For other platforms, caller must ensure adequate delay
-  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "OTP",
-                    "Caller must ensure 10ms+ delay for OTP programming");
-#endif
+  // Use comm-layer blocking delay to stay platform-agnostic.
+  driver_.comm_.DelayMs(15); // 15ms with margin
 
   return Result<void>();
 }
