@@ -29,14 +29,6 @@
 #include <cmath>
 #include <limits>
 
-#if defined(ESP_PLATFORM) || defined(ESP32)
-// Needed for pdMS_TO_TICKS/vTaskDelay used in template methods.
-// This file is included by `tmc51x0.hpp`, so these must be visible at the
-// template definition point (include order in user code should not matter).
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#endif
-
 #include "../inc/features/tmc51x0_motor_calc.hpp"
 #include <inttypes.h>
 #include <cstdio>
@@ -7913,14 +7905,8 @@ Result<void> TMC51x0<CommType>::Status::ProgramOtpBit(uint8_t byte_index, uint8_
   }
 
   // Datasheet requires minimum 10ms programming time per bit
-  // Use a blocking delay (platform-specific)
-#if defined(ESP_PLATFORM) || defined(ESP32)
-  vTaskDelay(pdMS_TO_TICKS(15)); // 15ms with margin
-#else
-  // For other platforms, caller must ensure adequate delay
-  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "OTP",
-                    "Caller must ensure 10ms+ delay for OTP programming");
-#endif
+  // Use comm-layer blocking delay to stay platform-agnostic.
+  driver_.comm_.DelayMs(15); // 15ms with margin
 
   return Result<void>();
 }
