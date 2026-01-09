@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Complete settings structure containing both test unit and UI settings This is the main settings struc...">
+<g id="a_Node000001"><a xlink:title="Complete settings structure containing both test unit and UI settings.">
 <polygon fill="#999999" stroke="#666666" points="126,-19 70,-19 70,0 126,0 126,-19"/>
 <text text-anchor="middle" x="98" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Settings</text>
 </a>
@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="structTestUnitSettings.html" target="_top" xlink:title="Test unit settings &#45; synchronized with test machine via ESP&#45;NOW These settings control the fatigue te...">
+<g id="a_Node000002"><a xlink:href="structTestUnitSettings.html" target="_top" xlink:title="Test unit settings &#45; synchronized with test machine via ESP&#45;NOW.">
 <polygon fill="white" stroke="#666666" points="96,-85 0,-85 0,-66 96,-66 96,-85"/>
 <text text-anchor="middle" x="48" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">TestUnitSettings</text>
 </a>
@@ -39,7 +39,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="structUISettings.html" target="_top" xlink:title="UI board settings &#45; stored locally, never synchronized with test unit These settings control the UI b...">
+<g id="a_Node000003"><a xlink:href="structUISettings.html" target="_top" xlink:title="UI board settings &#45; stored locally, never synchronized with test unit.">
 <polygon fill="white" stroke="#666666" points="181.5,-85 114.5,-85 114.5,-66 181.5,-66 181.5,-85"/>
 <text text-anchor="middle" x="148" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">UISettings</text>
 </a>

@@ -159,6 +159,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a93a20648187025b2c3437aa3a9be4987" id="r_a93a20648187025b2c3437aa3a9be4987"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a93a20648187025b2c3437aa3a9be4987">SetMicrostepLookupTableStart</a> (uint16_t start_current) noexcept</td></tr>
 <tr class="memdesc:a93a20648187025b2c3437aa3a9be4987"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set microstep lookup table start current.  <br /></td></tr>
 <tr class="separator:a93a20648187025b2c3437aa3a9be4987"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada7f880e121bc90bcf75945596efc811" id="r_ada7f880e121bc90bcf75945596efc811"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada7f880e121bc90bcf75945596efc811">ConfigureMicrostepLutPreset</a> (<a class="el" href="namespacetmc51x0.html#afcd9fedd00ee975b4d3fd51e0decf37f">MicrostepLutPreset</a> preset) noexcept</td></tr>
+<tr class="memdesc:ada7f880e121bc90bcf75945596efc811"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure microstep lookup table with a preset waveform.  <br /></td></tr>
+<tr class="separator:ada7f880e121bc90bcf75945596efc811"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1038bbb41b0258225239d41c41899513" id="r_a1038bbb41b0258225239d41c41899513"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1038bbb41b0258225239d41c41899513">ConfigureMicrostepLutCustom</a> (const uint32_t lut[8], uint8_t w0, uint8_t w1, uint8_t w2, uint8_t w3, uint8_t x1, uint8_t x2, uint8_t x3, uint8_t start_sin, uint8_t start_sin90) noexcept</td></tr>
+<tr class="memdesc:a1038bbb41b0258225239d41c41899513"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure microstep lookup table from raw data.  <br /></td></tr>
+<tr class="separator:a1038bbb41b0258225239d41c41899513"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9e0f73230cbbc287c275562a1ef151b" id="r_af9e0f73230cbbc287c275562a1ef151b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9e0f73230cbbc287c275562a1ef151b">SetupMotorFromSpec</a> (const <a class="el" href="structtmc51x0_1_1MotorSpec.html">MotorSpec</a> &amp;motor_spec, const <a class="el" href="structtmc51x0_1_1MechanicalSystem.html">MechanicalSystem</a> *mechanical_system=nullptr) noexcept</td></tr>
 <tr class="memdesc:af9e0f73230cbbc287c275562a1ef151b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup motor from high-level specifications.  <br /></td></tr>
 <tr class="separator:af9e0f73230cbbc287c275562a1ef151b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -390,6 +396,140 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
+<a id="a1038bbb41b0258225239d41c41899513" name="a1038bbb41b0258225239d41c41899513"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1038bbb41b0258225239d41c41899513">&#9670;&#160;</a></span>ConfigureMicrostepLutCustom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::MotorControl::ConfigureMicrostepLutCustom </td>
+          <td>(</td>
+          <td class="paramtype">const uint32_t</td>          <td class="paramname"><span class="paramname"><em>lut</em>[8], </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>w0</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>w1</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>w2</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>w3</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>x1</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>x2</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>x3</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>start_sin</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>start_sin90</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Configure microstep lookup table from raw data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lut</td><td>Array of 8 uint32_t values for MSLUT0-7 </td></tr>
+    <tr><td class="paramname">w0</td><td>Width select for segment 0 (0-3) </td></tr>
+    <tr><td class="paramname">w1</td><td>Width select for segment 1 (0-3) </td></tr>
+    <tr><td class="paramname">w2</td><td>Width select for segment 2 (0-3) </td></tr>
+    <tr><td class="paramname">w3</td><td>Width select for segment 3 (0-3) </td></tr>
+    <tr><td class="paramname">x1</td><td>Segment 1 start (0-255) </td></tr>
+    <tr><td class="paramname">x2</td><td>Segment 2 start (0-255) </td></tr>
+    <tr><td class="paramname">x3</td><td>Segment 3 start (0-255) </td></tr>
+    <tr><td class="paramname">start_sin</td><td>Start sine value at entry 0 (0-255) </td></tr>
+    <tr><td class="paramname">start_sin90</td><td>Sine value at entry 256 / 90° (0-255) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>Programs all MSLUT registers with custom values for advanced waveform shaping. Use this for custom motor characteristics or torque ripple compensation.</p>
+<dl class="section see"><dt>See also</dt><dd>Datasheet Section 18: Microstep Lookup Table </dd></dl>
+
+</div>
+</div>
+<a id="ada7f880e121bc90bcf75945596efc811" name="ada7f880e121bc90bcf75945596efc811"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada7f880e121bc90bcf75945596efc811">&#9670;&#160;</a></span>ConfigureMicrostepLutPreset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::MotorControl::ConfigureMicrostepLutPreset </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#afcd9fedd00ee975b4d3fd51e0decf37f">MicrostepLutPreset</a></td>          <td class="paramname"><span class="paramname"><em>preset</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Configure microstep lookup table with a preset waveform. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">preset</td><td>Waveform preset (DEFAULT_SINE, PURE_SINE, etc.) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>Programs all MSLUT registers (MSLUT0-7, MSLUTSEL, MSLUTSTART) with optimized values for the selected waveform type.</p>
+<p>Available presets:</p><ul>
+<li>DEFAULT_SINE: TMC5160 power-on default (slightly modified sine)</li>
+<li>PURE_SINE: Mathematical pure sine wave (smooth, standard torque)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>The lookup table defines the first quarter of the sine wave; the driver mirrors it for the remaining three quarters.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Datasheet Section 18: Microstep Lookup Table </dd></dl>
+
+</div>
+</div>
 <a id="a1b161ad0b80141d5547088c441311411" name="a1b161ad0b80141d5547088c441311411"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1b161ad0b80141d5547088c441311411">&#9670;&#160;</a></span>ConfigureMotorCurrent()</h2>
 
@@ -424,11 +564,6 @@ template&lt;typename CommType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
 <p>Automatically calculates and sets IRUN, IHOLD, and GLOBAL_SCALER from motor specifications. Also sets IHOLDDELAY if configured in motor_spec. </p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc51x0_1_1TMC51x0_1_1MotorControl_a1b161ad0b80141d5547088c441311411_cgraph.svg" width="535" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -465,11 +600,6 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc51x0_1_1TMC51x0_1_1MotorControl_a05be94f504684f1c70c6738e3e4ac42b_cgraph.svg" width="447" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

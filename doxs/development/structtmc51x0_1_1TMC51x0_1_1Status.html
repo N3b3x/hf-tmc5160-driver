@@ -123,6 +123,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaef808253a6847d1e5dc41f0648ca47e" id="r_aaef808253a6847d1e5dc41f0648ca47e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaef808253a6847d1e5dc41f0648ca47e">GetGlobalStatus</a> (bool &amp;drv_err, bool &amp;uv_cp) noexcept</td></tr>
 <tr class="memdesc:aaef808253a6847d1e5dc41f0648ca47e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get global status flags (GSTAT)  <br /></td></tr>
 <tr class="separator:aaef808253a6847d1e5dc41f0648ca47e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace267221c07544146a59d90757fa3510" id="r_ace267221c07544146a59d90757fa3510"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace267221c07544146a59d90757fa3510">ClearGlobalStatus</a> (bool clear_reset=true, bool clear_drv_err=true, bool clear_uv_cp=true) noexcept</td></tr>
+<tr class="memdesc:ace267221c07544146a59d90757fa3510"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear global status flags (GSTAT)  <br /></td></tr>
+<tr class="separator:ace267221c07544146a59d90757fa3510"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a452dab2d89f490b62346fbb985fda0" id="r_a4a452dab2d89f490b62346fbb985fda0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a452dab2d89f490b62346fbb985fda0">GetDriverStatusRegister</a> () noexcept</td></tr>
 <tr class="memdesc:a4a452dab2d89f490b62346fbb985fda0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get driver status register value.  <br /></td></tr>
 <tr class="separator:a4a452dab2d89f490b62346fbb985fda0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,6 +138,33 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab84e2c362a28a4ac64e8e3753046ea2f" id="r_ab84e2c362a28a4ac64e8e3753046ea2f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab84e2c362a28a4ac64e8e3753046ea2f">CheckOpenLoad</a> (bool &amp;phase_a, bool &amp;phase_b) noexcept</td></tr>
 <tr class="memdesc:ab84e2c362a28a4ac64e8e3753046ea2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if open load is detected on either phase.  <br /></td></tr>
 <tr class="separator:ab84e2c362a28a4ac64e8e3753046ea2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4ba7e9b58ecdd0a9532de5c113db23d" id="r_ac4ba7e9b58ecdd0a9532de5c113db23d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac4ba7e9b58ecdd0a9532de5c113db23d">IsOvertemperature</a> () noexcept</td></tr>
+<tr class="memdesc:ac4ba7e9b58ecdd0a9532de5c113db23d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if overtemperature shutdown is active.  <br /></td></tr>
+<tr class="separator:ac4ba7e9b58ecdd0a9532de5c113db23d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a432c651b6205e68a58e11f04fa615a07" id="r_a432c651b6205e68a58e11f04fa615a07"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a432c651b6205e68a58e11f04fa615a07">IsOvertempWarning</a> () noexcept</td></tr>
+<tr class="memdesc:a432c651b6205e68a58e11f04fa615a07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if overtemperature pre-warning is active.  <br /></td></tr>
+<tr class="separator:a432c651b6205e68a58e11f04fa615a07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e5aa09487dba4b862197770b67948af" id="r_a5e5aa09487dba4b862197770b67948af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5e5aa09487dba4b862197770b67948af">GetTemperatureStatus</a> (bool &amp;overtemp, bool &amp;prewarning) noexcept</td></tr>
+<tr class="memdesc:a5e5aa09487dba4b862197770b67948af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get both temperature status flags at once.  <br /></td></tr>
+<tr class="separator:a5e5aa09487dba4b862197770b67948af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8001931be68e19d5f4b59d7b0f58a04" id="r_ad8001931be68e19d5f4b59d7b0f58a04"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8001931be68e19d5f4b59d7b0f58a04">IsStealthChopActive</a> () noexcept</td></tr>
+<tr class="memdesc:ad8001931be68e19d5f4b59d7b0f58a04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if StealthChop mode is currently active.  <br /></td></tr>
+<tr class="separator:ad8001931be68e19d5f4b59d7b0f58a04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2faf069db9244856adbe56663c6ce7fe" id="r_a2faf069db9244856adbe56663c6ce7fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2faf069db9244856adbe56663c6ce7fe">IsFullstepActive</a> () noexcept</td></tr>
+<tr class="memdesc:a2faf069db9244856adbe56663c6ce7fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if fullstep mode is currently active.  <br /></td></tr>
+<tr class="separator:a2faf069db9244856adbe56663c6ce7fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a931391c734e9232b76a4baf65e748599" id="r_a931391c734e9232b76a4baf65e748599"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a931391c734e9232b76a4baf65e748599">GetActualCurrentScale</a> () noexcept</td></tr>
+<tr class="memdesc:a931391c734e9232b76a4baf65e748599"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get actual motor current scale (CS_ACTUAL)  <br /></td></tr>
+<tr class="separator:a931391c734e9232b76a4baf65e748599"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae2b2d4b9f51b6a5536f440fe337b7f9" id="r_aae2b2d4b9f51b6a5536f440fe337b7f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae2b2d4b9f51b6a5536f440fe337b7f9">IsShortToSupply</a> (bool &amp;phase_a, bool &amp;phase_b) noexcept</td></tr>
+<tr class="memdesc:aae2b2d4b9f51b6a5536f440fe337b7f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for short to supply (VS) condition.  <br /></td></tr>
+<tr class="separator:aae2b2d4b9f51b6a5536f440fe337b7f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a644b95f6dc17cf672300c188d990d679" id="r_a644b95f6dc17cf672300c188d990d679"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a644b95f6dc17cf672300c188d990d679">IsShortToGround</a> (bool &amp;phase_a, bool &amp;phase_b) noexcept</td></tr>
+<tr class="memdesc:a644b95f6dc17cf672300c188d990d679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for short to ground (GND) condition.  <br /></td></tr>
+<tr class="separator:a644b95f6dc17cf672300c188d990d679"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3821197dad2a3351b412e76e2734b488" id="r_a3821197dad2a3351b412e76e2734b488"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3821197dad2a3351b412e76e2734b488">GetShortCircuitStatus</a> (bool &amp;s2vs_a, bool &amp;s2vs_b, bool &amp;s2g_a, bool &amp;s2g_b) noexcept</td></tr>
+<tr class="memdesc:a3821197dad2a3351b412e76e2734b488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all short circuit status flags at once.  <br /></td></tr>
+<tr class="separator:a3821197dad2a3351b412e76e2734b488"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c0953b4765fafce9568ed02e0ab07f9" id="r_a3c0953b4765fafce9568ed02e0ab07f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c0953b4765fafce9568ed02e0ab07f9">GetRampStatusRegister</a> () noexcept</td></tr>
 <tr class="memdesc:a3c0953b4765fafce9568ed02e0ab07f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get ramp status register value.  <br /></td></tr>
 <tr class="separator:a3c0953b4765fafce9568ed02e0ab07f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -174,6 +204,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aeb64d74614e244bc21b81279b75a8a5f" id="r_aeb64d74614e244bc21b81279b75a8a5f"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb64d74614e244bc21b81279b75a8a5f">GetChipVersion</a> () const noexcept</td></tr>
 <tr class="memdesc:aeb64d74614e244bc21b81279b75a8a5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get detected chip version.  <br /></td></tr>
 <tr class="separator:aeb64d74614e244bc21b81279b75a8a5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaeb4cbb9812b9e112720f65af9c0c6b3" id="r_aaeb4cbb9812b9e112720f65af9c0c6b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaeb4cbb9812b9e112720f65af9c0c6b3">ProgramOtpBit</a> (uint8_t byte_index, uint8_t bit_index, bool confirm_permanent) noexcept</td></tr>
+<tr class="memdesc:aaeb4cbb9812b9e112720f65af9c0c6b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Program a single OTP bit (PERMANENT - USE WITH EXTREME CAUTION!)  <br /></td></tr>
+<tr class="separator:aaeb4cbb9812b9e112720f65af9c0c6b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fe77281657691a8696e64791a085710" id="r_a7fe77281657691a8696e64791a085710"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7fe77281657691a8696e64791a085710">ProgramOtpFclktrim</a> (uint8_t fclktrim, bool confirm_permanent) noexcept</td></tr>
+<tr class="memdesc:a7fe77281657691a8696e64791a085710"><td class="mdescLeft">&#160;</td><td class="mdescRight">Program OTP FCLKTRIM value (PERMANENT - USE WITH EXTREME CAUTION!)  <br /></td></tr>
+<tr class="separator:a7fe77281657691a8696e64791a085710"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68447f603a62943927c68d32711a495c" id="r_a68447f603a62943927c68d32711a495c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a68447f603a62943927c68d32711a495c">ProgramOtpS2Level</a> (bool high_level, bool confirm_permanent) noexcept</td></tr>
+<tr class="memdesc:a68447f603a62943927c68d32711a495c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Program OTP short detection level default (PERMANENT!)  <br /></td></tr>
+<tr class="separator:a68447f603a62943927c68d32711a495c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a417ee03eb7f5f03329398fae40746df8" id="r_a417ee03eb7f5f03329398fae40746df8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a417ee03eb7f5f03329398fae40746df8">ProgramOtpBbm</a> (bool short_bbm, bool confirm_permanent) noexcept</td></tr>
+<tr class="memdesc:a417ee03eb7f5f03329398fae40746df8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Program OTP BBM (break-before-make) default (PERMANENT!)  <br /></td></tr>
+<tr class="separator:a417ee03eb7f5f03329398fae40746df8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c8c54f8686780d3598d24eafd185bce" id="r_a4c8c54f8686780d3598d24eafd185bce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c8c54f8686780d3598d24eafd185bce">ProgramOtpTbl</a> (bool short_tbl, bool confirm_permanent) noexcept</td></tr>
+<tr class="memdesc:a4c8c54f8686780d3598d24eafd185bce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Program OTP TBL (blank time) default (PERMANENT!)  <br /></td></tr>
+<tr class="separator:a4c8c54f8686780d3598d24eafd185bce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -270,6 +315,93 @@ template&lt;typename CommType &gt; </div>
 </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Open load flags are informative only and do not cause driver action. Also triggered by undervoltage, high velocity, short circuit, or overtemperature conditions.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>Datasheet section 11.3: Open Load Diagnostics </dd></dl>
+
+</div>
+</div>
+<a id="ace267221c07544146a59d90757fa3510" name="ace267221c07544146a59d90757fa3510"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace267221c07544146a59d90757fa3510">&#9670;&#160;</a></span>ClearGlobalStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Status::ClearGlobalStatus </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>clear_reset</em><span class="paramdefsep"> = </span><span class="paramdefval">true</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>clear_drv_err</em><span class="paramdefsep"> = </span><span class="paramdefval">true</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>clear_uv_cp</em><span class="paramdefsep"> = </span><span class="paramdefval">true</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clear global status flags (GSTAT) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">clear_reset</td><td>Clear the reset flag (IC was reset since last read) </td></tr>
+    <tr><td class="paramname">clear_drv_err</td><td>Clear the driver error flag (short/overtemp occurred) </td></tr>
+    <tr><td class="paramname">clear_uv_cp</td><td>Clear the undervoltage charge pump flag </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>GSTAT is a write-1-to-clear (W1C) register. Writing '1' to a bit clears that flag. Use this after handling a fault to acknowledge it.</p>
+<dl class="section note"><dt>Note</dt><dd>Reading GSTAT also clears the flags, so <a class="el" href="#aaef808253a6847d1e5dc41f0648ca47e" title="Get global status flags (GSTAT)">GetGlobalStatus()</a> implicitly clears. Use this method when you want selective clearing.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 4.1: GSTAT Register </dd></dl>
+
+</div>
+</div>
+<a id="a931391c734e9232b76a4baf65e748599" name="a931391c734e9232b76a4baf65e748599"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a931391c734e9232b76a4baf65e748599">&#9670;&#160;</a></span>GetActualCurrentScale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; uint8_t &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Status::GetActualCurrentScale </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get actual motor current scale (CS_ACTUAL) </p>
+<dl class="section return"><dt>Returns</dt><dd>Result&lt;uint8_t&gt; containing current scale (0-31)</dd></dl>
+<p>Returns the actual current scaling being applied to the motor, which may differ from IRUN due to:</p><ul>
+<li>CoolStep automatic current reduction (when load is light)</li>
+<li>Current ramping (IHOLDDELAY transition between IRUN and IHOLD)</li>
+<li>Standstill (showing IHOLD value)</li>
+</ul>
+<p>To convert to actual current: I = (CS_ACTUAL + 1) / 32 * I_max</p>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 12: CoolStep Smart Current Control </dd></dl>
 
 </div>
 </div>
@@ -605,6 +737,60 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
+<a id="a3821197dad2a3351b412e76e2734b488" name="a3821197dad2a3351b412e76e2734b488"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3821197dad2a3351b412e76e2734b488">&#9670;&#160;</a></span>GetShortCircuitStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Status::GetShortCircuitStatus </td>
+          <td>(</td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>s2vs_a</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>s2vs_b</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>s2g_a</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>s2g_b</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get all short circuit status flags at once. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s2vs_a</td><td>Short to VS on phase A </td></tr>
+    <tr><td class="paramname">s2vs_b</td><td>Short to VS on phase B </td></tr>
+    <tr><td class="paramname">s2g_a</td><td>Short to GND on phase A </td></tr>
+    <tr><td class="paramname">s2g_b</td><td>Short to GND on phase B </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>More efficient than calling individual short check methods separately. </p>
+
+</div>
+</div>
 <a id="aebc1db752abccbe9f6ee8d63cf091c41" name="aebc1db752abccbe9f6ee8d63cf091c41"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aebc1db752abccbe9f6ee8d63cf091c41">&#9670;&#160;</a></span>GetStatus()</h2>
 
@@ -632,6 +818,48 @@ template&lt;typename CommType &gt; </div>
 
 <p>Get driver status. </p>
 <dl class="section return"><dt>Returns</dt><dd>DriverStatus enumeration indicating current status </dd></dl>
+
+</div>
+</div>
+<a id="a5e5aa09487dba4b862197770b67948af" name="a5e5aa09487dba4b862197770b67948af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e5aa09487dba4b862197770b67948af">&#9670;&#160;</a></span>GetTemperatureStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Status::GetTemperatureStatus </td>
+          <td>(</td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>overtemp</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>prewarning</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get both temperature status flags at once. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">overtemp</td><td>Reference to store overtemperature shutdown status </td></tr>
+    <tr><td class="paramname">prewarning</td><td>Reference to store pre-warning status </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>More efficient than calling <a class="el" href="#ac4ba7e9b58ecdd0a9532de5c113db23d" title="Check if overtemperature shutdown is active.">IsOvertemperature()</a> and <a class="el" href="#a432c651b6205e68a58e11f04fa615a07" title="Check if overtemperature pre-warning is active.">IsOvertempWarning()</a> separately as it only requires one register read. </p>
 
 </div>
 </div>
@@ -700,6 +928,42 @@ template&lt;typename CommType &gt; </div>
 <p>Get UART transmission counter. </p>
 <dl class="section return"><dt>Returns</dt><dd>UART transmission counter value, or 0 on error</dd></dl>
 <p>Returns the number of UART transmissions since last read. </p>
+
+</div>
+</div>
+<a id="a2faf069db9244856adbe56663c6ce7fe" name="a2faf069db9244856adbe56663c6ce7fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2faf069db9244856adbe56663c6ce7fe">&#9670;&#160;</a></span>IsFullstepActive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; bool &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Status::IsFullstepActive </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if fullstep mode is currently active. </p>
+<dl class="section return"><dt>Returns</dt><dd>Result&lt;bool&gt; true if motor is running in fullstep mode</dd></dl>
+<p>Fullstep becomes active when:</p><ul>
+<li>Velocity exceeds THIGH threshold AND CHOPCONF.vhighfs=1</li>
+<li>OR dcStep is active</li>
+</ul>
+<p>In fullstep mode, the motor runs at native full steps (not microstepping).</p>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 8: High Velocity Operation </dd></dl>
 
 </div>
 </div>
@@ -780,6 +1044,436 @@ template&lt;typename CommType &gt; </div>
 </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Open load flags are informative only and do not cause driver action. Also triggered by undervoltage, high velocity, short circuit, or overtemperature conditions.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>Datasheet section 11.3: Open Load Diagnostics </dd></dl>
+
+</div>
+</div>
+<a id="ac4ba7e9b58ecdd0a9532de5c113db23d" name="ac4ba7e9b58ecdd0a9532de5c113db23d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4ba7e9b58ecdd0a9532de5c113db23d">&#9670;&#160;</a></span>IsOvertemperature()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; bool &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Status::IsOvertemperature </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if overtemperature shutdown is active. </p>
+<dl class="section return"><dt>Returns</dt><dd>Result&lt;bool&gt; true if chip is in overtemperature shutdown</dd></dl>
+<p>When true, the bridge drivers are disabled due to excessive die temperature. The motor will not be driven until temperature drops below the threshold.</p>
+<dl class="section note"><dt>Note</dt><dd>The overtemperature threshold is set via DRV_CONF.OTSELECT: 0=150°C, 1=143°C, 2=136°C, 3=120°C</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 5.1: Overtemperature Protection </dd></dl>
+
+</div>
+</div>
+<a id="a432c651b6205e68a58e11f04fa615a07" name="a432c651b6205e68a58e11f04fa615a07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a432c651b6205e68a58e11f04fa615a07">&#9670;&#160;</a></span>IsOvertempWarning()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; bool &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Status::IsOvertempWarning </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if overtemperature pre-warning is active. </p>
+<dl class="section return"><dt>Returns</dt><dd>Result&lt;bool&gt; true if chip temperature is approaching shutdown threshold</dd></dl>
+<p>Pre-warning typically activates ~20°C before shutdown. Use this to implement thermal management (reduce current, add cooling, slow motion).</p>
+<dl class="section note"><dt>Note</dt><dd>Can be routed to DIAG0 pin via GCONF.diag0_otpw for hardware interrupt.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 5.1: Overtemperature Protection </dd></dl>
+
+</div>
+</div>
+<a id="a644b95f6dc17cf672300c188d990d679" name="a644b95f6dc17cf672300c188d990d679"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a644b95f6dc17cf672300c188d990d679">&#9670;&#160;</a></span>IsShortToGround()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Status::IsShortToGround </td>
+          <td>(</td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>phase_a</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>phase_b</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check for short to ground (GND) condition. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">phase_a</td><td>Reference to store phase A short-to-GND status </td></tr>
+    <tr><td class="paramname">phase_b</td><td>Reference to store phase B short-to-GND status </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>Short to GND occurs when a high-side FET output is unexpectedly low. This can indicate:</p><ul>
+<li>Damaged motor winding shorting to ground</li>
+<li>PCB fault</li>
+<li>Damaged high-side FET</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Sensitivity is controlled by SHORT_CONF.S2G_LEVEL </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Short detection causes immediate driver shutdown for protection.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 5.2: Short Protection </dd></dl>
+
+</div>
+</div>
+<a id="aae2b2d4b9f51b6a5536f440fe337b7f9" name="aae2b2d4b9f51b6a5536f440fe337b7f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae2b2d4b9f51b6a5536f440fe337b7f9">&#9670;&#160;</a></span>IsShortToSupply()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Status::IsShortToSupply </td>
+          <td>(</td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>phase_a</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>phase_b</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check for short to supply (VS) condition. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">phase_a</td><td>Reference to store phase A short-to-VS status </td></tr>
+    <tr><td class="paramname">phase_b</td><td>Reference to store phase B short-to-VS status </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>Short to VS occurs when a low-side FET output is unexpectedly high. This can indicate:</p><ul>
+<li>Damaged motor winding shorting to supply</li>
+<li>PCB fault</li>
+<li>Damaged low-side FET</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Sensitivity is controlled by SHORT_CONF.S2VS_LEVEL </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Short detection causes immediate driver shutdown for protection.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 5.2: Short Protection </dd></dl>
+
+</div>
+</div>
+<a id="ad8001931be68e19d5f4b59d7b0f58a04" name="ad8001931be68e19d5f4b59d7b0f58a04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8001931be68e19d5f4b59d7b0f58a04">&#9670;&#160;</a></span>IsStealthChopActive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; bool &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Status::IsStealthChopActive </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if StealthChop mode is currently active. </p>
+<dl class="section return"><dt>Returns</dt><dd>Result&lt;bool&gt; true if motor is being driven in StealthChop mode</dd></dl>
+<p>StealthChop is active when:</p><ul>
+<li>GCONF.en_pwm_mode = 1 (StealthChop enabled globally)</li>
+<li>Velocity is below TPWMTHRS threshold</li>
+<li>Motor is not in standstill with IHOLD=0</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 9: StealthChop </dd></dl>
+
+</div>
+</div>
+<a id="a417ee03eb7f5f03329398fae40746df8" name="a417ee03eb7f5f03329398fae40746df8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a417ee03eb7f5f03329398fae40746df8">&#9670;&#160;</a></span>ProgramOtpBbm()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Status::ProgramOtpBbm </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>short_bbm</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>confirm_permanent</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Program OTP BBM (break-before-make) default (PERMANENT!) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">short_bbm</td><td>true for BBMCLKS=2 (shorter), false for BBMCLKS=4 </td></tr>
+    <tr><td class="paramname">confirm_permanent</td><td>Must be true to confirm permanent operation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>⚠️ WARNING: This permanently changes the reset default for BBMCLKS. Once set to short (1), it cannot be changed back.</p>
+<dl class="section note"><dt>Note</dt><dd>Programs bit 6 of OTP byte 0. </dd></dl>
+
+</div>
+</div>
+<a id="aaeb4cbb9812b9e112720f65af9c0c6b3" name="aaeb4cbb9812b9e112720f65af9c0c6b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaeb4cbb9812b9e112720f65af9c0c6b3">&#9670;&#160;</a></span>ProgramOtpBit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Status::ProgramOtpBit </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>byte_index</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>bit_index</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>confirm_permanent</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Program a single OTP bit (PERMANENT - USE WITH EXTREME CAUTION!) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">byte_index</td><td>OTP byte index (0 only for TMC5160) </td></tr>
+    <tr><td class="paramname">bit_index</td><td>Bit index within the byte (0-7) </td></tr>
+    <tr><td class="paramname">confirm_permanent</td><td>Must be true to confirm permanent operation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>⚠️ CRITICAL WARNING: OTP memory can only be programmed ONCE. Bits can only be set (0→1), never cleared. This operation is IRREVERSIBLE.</p>
+<p>OTP bit mapping for byte 0 (TMC5160):</p><ul>
+<li>Bits 4..0: OTP_FCLKTRIM - Clock frequency trim (factory calibrated!)</li>
+<li>Bit 5: OTP_S2_LEVEL - Short detection level (0: level=6, 1: level=12)</li>
+<li>Bit 6: OTP_BBM - Break-before-make (0: BBMCLKS=4, 1: BBMCLKS=2)</li>
+<li>Bit 7: OTP_TBL - Blank time (0: TBL=2 ~3µs, 1: TBL=1 ~2µs)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Requires minimum 10ms programming time per bit (handled internally). </dd>
+<dd>
+The function will fail if confirm_permanent is false.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Datasheet Section 6: One-Time Programmable Memory </dd></dl>
+
+</div>
+</div>
+<a id="a7fe77281657691a8696e64791a085710" name="a7fe77281657691a8696e64791a085710"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fe77281657691a8696e64791a085710">&#9670;&#160;</a></span>ProgramOtpFclktrim()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Status::ProgramOtpFclktrim </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>fclktrim</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>confirm_permanent</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Program OTP FCLKTRIM value (PERMANENT - USE WITH EXTREME CAUTION!) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fclktrim</td><td>Clock trim value (0-31, affects internal oscillator) </td></tr>
+    <tr><td class="paramname">confirm_permanent</td><td>Must be true to confirm permanent operation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>⚠️ CRITICAL WARNING: This permanently changes the internal clock frequency. The factory already programs this for 12MHz. Only use if you need a different clock frequency AND understand the implications.</p>
+<dl class="section note"><dt>Note</dt><dd>This programs bits 4..0 of OTP byte 0. Since OTP bits can only be set (not cleared), you can only increase the FCLKTRIM value from the current OTP setting. </dd></dl>
+
+</div>
+</div>
+<a id="a68447f603a62943927c68d32711a495c" name="a68447f603a62943927c68d32711a495c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68447f603a62943927c68d32711a495c">&#9670;&#160;</a></span>ProgramOtpS2Level()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Status::ProgramOtpS2Level </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>high_level</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>confirm_permanent</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Program OTP short detection level default (PERMANENT!) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">high_level</td><td>true for level=12 (less sensitive), false for level=6 </td></tr>
+    <tr><td class="paramname">confirm_permanent</td><td>Must be true to confirm permanent operation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>⚠️ WARNING: This permanently changes the reset default for S2G_LEVEL and S2VS_LEVEL. Once set to high (1), it cannot be changed back.</p>
+<dl class="section note"><dt>Note</dt><dd>Programs bit 5 of OTP byte 0. </dd></dl>
+
+</div>
+</div>
+<a id="a4c8c54f8686780d3598d24eafd185bce" name="a4c8c54f8686780d3598d24eafd185bce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c8c54f8686780d3598d24eafd185bce">&#9670;&#160;</a></span>ProgramOtpTbl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Status::ProgramOtpTbl </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>short_tbl</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>confirm_permanent</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Program OTP TBL (blank time) default (PERMANENT!) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">short_tbl</td><td>true for TBL=1 (~2µs), false for TBL=2 (~3µs) </td></tr>
+    <tr><td class="paramname">confirm_permanent</td><td>Must be true to confirm permanent operation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>⚠️ WARNING: This permanently changes the reset default for TBL. Once set to short (1), it cannot be changed back.</p>
+<dl class="section note"><dt>Note</dt><dd>Programs bit 7 of OTP byte 0. </dd></dl>
 
 </div>
 </div>

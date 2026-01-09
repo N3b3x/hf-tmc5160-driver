@@ -1,6 +1,8 @@
 <map id="tmc51x0::anonymous_namespace{tmc51x0::cpp}::ReduceCurrentForBounds" name="tmc51x0::anonymous_namespace{tmc51x0::cpp}::ReduceCurrentForBounds">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,29,231,84"/>
-<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="64,29,65,19,74,10,92,5,118,3,149,6,167,14,165,18,148,11,118,8,93,10,77,15,70,21,70,29"/>
-<area shape="rect" id="Node000002" href="$namespacetmc51x0.html#ac742f74b3a0ad095b8db62d07300c8c9" title="Calculate motor current settings from physical parameters." alt="" coords="279,44,513,69"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="231,54,265,54,265,59,231,59"/>
+<area shape="poly" id="edge3_Node000001_Node000001" title=" " alt="" coords="64,29,65,19,74,10,92,5,118,3,149,6,167,14,165,18,148,11,118,8,93,10,77,15,70,21,70,29"/>
+<area shape="rect" id="Node000002" href="$namespacetmc51x0.html#ac742f74b3a0ad095b8db62d07300c8c9" title="Calculate motor current settings from physical parameters." alt="" coords="279,15,513,40"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="231,42,265,38,265,44,231,47"/>
+<area shape="rect" id="Node000003" href="$classtmc51x0_1_1TMC51x0.html#acfb1a464c20f433450d1e96ce51744dc" title="Get motor&#45;current calculated/cached values for application logging." alt="" coords="287,65,505,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="231,65,274,70,273,75,231,71"/>
 </map>

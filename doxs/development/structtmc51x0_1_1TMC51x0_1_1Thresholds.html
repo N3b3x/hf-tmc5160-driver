@@ -149,11 +149,32 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae01916809197fd5f656695727cc6b07c" id="r_ae01916809197fd5f656695727cc6b07c"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae01916809197fd5f656695727cc6b07c">GetTcoolthrsRegisterValue</a> () const noexcept</td></tr>
 <tr class="memdesc:ae01916809197fd5f656695727cc6b07c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get locally tracked TCOOLTHRS register value (raw)  <br /></td></tr>
 <tr class="separator:ae01916809197fd5f656695727cc6b07c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5519752354fd876d7cbedce6fe6dc02" id="r_af5519752354fd876d7cbedce6fe6dc02"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af5519752354fd876d7cbedce6fe6dc02">GetThighRegisterValue</a> () const noexcept</td></tr>
+<tr class="memdesc:af5519752354fd876d7cbedce6fe6dc02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get locally tracked THIGH register value (raw)  <br /></td></tr>
+<tr class="separator:af5519752354fd876d7cbedce6fe6dc02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3079f252b494c2a4cfd368df9138a384" id="r_a3079f252b494c2a4cfd368df9138a384"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3079f252b494c2a4cfd368df9138a384">SetModeHysteresis</a> (float lower_speed, float upper_speed, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit) noexcept</td></tr>
+<tr class="memdesc:a3079f252b494c2a4cfd368df9138a384"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure StealthChop to SpreadCycle transition with hysteresis.  <br /></td></tr>
+<tr class="separator:a3079f252b494c2a4cfd368df9138a384"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e7f016e3c37d5ad050138e70ca49251" id="r_a3e7f016e3c37d5ad050138e70ca49251"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3e7f016e3c37d5ad050138e70ca49251">UpdateModeHysteresis</a> () noexcept</td></tr>
+<tr class="memdesc:a3e7f016e3c37d5ad050138e70ca49251"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update TPWMTHRS based on current chopper mode for hysteresis.  <br /></td></tr>
+<tr class="separator:a3e7f016e3c37d5ad050138e70ca49251"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a141259a74ceba53c5ee63e80875e610c" id="r_a141259a74ceba53c5ee63e80875e610c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a141259a74ceba53c5ee63e80875e610c">DisableModeHysteresis</a> () noexcept</td></tr>
+<tr class="memdesc:a141259a74ceba53c5ee63e80875e610c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable mode hysteresis (use single TPWMTHRS threshold)  <br /></td></tr>
+<tr class="separator:a141259a74ceba53c5ee63e80875e610c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9daba612b6a0ac7b9732701f19f6eade" id="r_a9daba612b6a0ac7b9732701f19f6eade"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9daba612b6a0ac7b9732701f19f6eade">IsModeHysteresisEnabled</a> () const noexcept</td></tr>
+<tr class="memdesc:a9daba612b6a0ac7b9732701f19f6eade"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if mode hysteresis is currently configured.  <br /></td></tr>
+<tr class="separator:a9daba612b6a0ac7b9732701f19f6eade"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a343fd625f134d68147ac729424a4e9b1" id="r_a343fd625f134d68147ac729424a4e9b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a343fd625f134d68147ac729424a4e9b1">driver_</a></td></tr>
 <tr class="separator:a343fd625f134d68147ac729424a4e9b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaba407a35f92757307f5e725095f47b" id="r_aaaba407a35f92757307f5e725095f47b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaaba407a35f92757307f5e725095f47b">hysteresis_to_spreadcycle_tstep_</a> {0}</td></tr>
+<tr class="separator:aaaba407a35f92757307f5e725095f47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14d35a4de5f1ce95b839686e6b2a89f5" id="r_a14d35a4de5f1ce95b839686e6b2a89f5"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14d35a4de5f1ce95b839686e6b2a89f5">hysteresis_to_stealthchop_tstep_</a> {0}</td></tr>
+<tr class="separator:a14d35a4de5f1ce95b839686e6b2a89f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a639dd52a5612fb7a6430dc1f86312a41" id="r_a639dd52a5612fb7a6430dc1f86312a41"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a639dd52a5612fb7a6430dc1f86312a41">hysteresis_enabled_</a> {false}</td></tr>
+<tr class="separator:a639dd52a5612fb7a6430dc1f86312a41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename CommType&gt;<br />
@@ -188,6 +209,37 @@ template&lt;typename CommType &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a141259a74ceba53c5ee63e80875e610c" name="a141259a74ceba53c5ee63e80875e610c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a141259a74ceba53c5ee63e80875e610c">&#9670;&#160;</a></span>DisableModeHysteresis()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Thresholds::DisableModeHysteresis </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Disable mode hysteresis (use single TPWMTHRS threshold) </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>Clears the hysteresis configuration and returns to standard single-threshold mode switching behavior. </p>
+
+</div>
+</div>
 <a id="ae0fa5b72f89ca0850f0c90787bfad775" name="ae0fa5b72f89ca0850f0c90787bfad775"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae0fa5b72f89ca0850f0c90787bfad775">&#9670;&#160;</a></span>GetDcStepVelocityThreshold()</h2>
 
@@ -327,6 +379,37 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
+<a id="af5519752354fd876d7cbedce6fe6dc02" name="af5519752354fd876d7cbedce6fe6dc02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5519752354fd876d7cbedce6fe6dc02">&#9670;&#160;</a></span>GetThighRegisterValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Thresholds::GetThighRegisterValue </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get locally tracked THIGH register value (raw) </p>
+<dl class="section return"><dt>Returns</dt><dd>Raw THIGH register value (20-bit meaningful range) </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>THIGH defines the upper velocity limit for StallGuard2/CoolStep. Above this velocity, SG and CoolStep are disabled. </dd></dl>
+
+</div>
+</div>
 <a id="a940a857c4adde0811ff7a6e050783341" name="a940a857c4adde0811ff7a6e050783341"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a940a857c4adde0811ff7a6e050783341">&#9670;&#160;</a></span>GetTpwmthrsRegisterValue()</h2>
 
@@ -384,6 +467,36 @@ template&lt;typename CommType &gt; </div>
 
 <p>Get locally tracked VDCMIN register value (raw) </p>
 <dl class="section return"><dt>Returns</dt><dd>Raw VDCMIN register value </dd></dl>
+
+</div>
+</div>
+<a id="a9daba612b6a0ac7b9732701f19f6eade" name="a9daba612b6a0ac7b9732701f19f6eade"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9daba612b6a0ac7b9732701f19f6eade">&#9670;&#160;</a></span>IsModeHysteresisEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Thresholds::IsModeHysteresisEnabled </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if mode hysteresis is currently configured. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if hysteresis is enabled with valid upper/lower thresholds </dd></dl>
 
 </div>
 </div>
@@ -529,6 +642,64 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
+<a id="a3079f252b494c2a4cfd368df9138a384" name="a3079f252b494c2a4cfd368df9138a384"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3079f252b494c2a4cfd368df9138a384">&#9670;&#160;</a></span>SetModeHysteresis()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Thresholds::SetModeHysteresis </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>lower_speed</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>upper_speed</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a></td>          <td class="paramname"><span class="paramname"><em>unit</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Configure StealthChop to SpreadCycle transition with hysteresis. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lower_speed</td><td>Speed below which StealthChop activates (lower threshold) </td></tr>
+    <tr><td class="paramname">upper_speed</td><td>Speed above which SpreadCycle activates (upper threshold) </td></tr>
+    <tr><td class="paramname">unit</td><td>Speed unit for both thresholds </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>Creates a velocity hysteresis band to prevent mode oscillation near the threshold. The motor will:</p><ul>
+<li>Switch to SpreadCycle when accelerating above <code>upper_speed</code></li>
+<li>Switch to StealthChop when decelerating below <code>lower_speed</code></li>
+</ul>
+<p>Implementation note: The TMC5160 has only one TPWMTHRS register. This method dynamically updates TPWMTHRS based on current chopper mode to create the hysteresis effect. Call <code><a class="el" href="#a3e7f016e3c37d5ad050138e70ca49251" title="Update TPWMTHRS based on current chopper mode for hysteresis.">UpdateModeHysteresis()</a></code> periodically or after velocity changes for best results.</p>
+<p>Example: SetModeHysteresis(50, 70, Unit::RPM) creates a 20 RPM dead band:</p><ul>
+<li>StealthChop → SpreadCycle at 70 RPM (accelerating)</li>
+<li>SpreadCycle → StealthChop at 50 RPM (decelerating)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Requires GCONF.en_pwm_mode = 1 (StealthChop enabled globally)</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Datasheet section 9.2: Switching between SpreadCycle and StealthChop </dd></dl>
+
+</div>
+</div>
 <a id="a090e1bf1ca74511a2b4185bd7347c4cf" name="a090e1bf1ca74511a2b4185bd7347c4cf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a090e1bf1ca74511a2b4185bd7347c4cf">&#9670;&#160;</a></span>SetStealthChopVelocityThreshold()</h2>
 
@@ -611,6 +782,41 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
+<a id="a3e7f016e3c37d5ad050138e70ca49251" name="a3e7f016e3c37d5ad050138e70ca49251"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e7f016e3c37d5ad050138e70ca49251">&#9670;&#160;</a></span>UpdateModeHysteresis()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Thresholds::UpdateModeHysteresis </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Update TPWMTHRS based on current chopper mode for hysteresis. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>Call this method periodically to maintain hysteresis behavior. It reads the current chopper mode (DRV_STATUS.stealth) and updates TPWMTHRS to the appropriate threshold:</p><ul>
+<li>If in StealthChop: set TPWMTHRS to upper threshold (switch at higher speed)</li>
+<li>If in SpreadCycle: set TPWMTHRS to lower threshold (switch at lower speed)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Only effective after calling <a class="el" href="#a3079f252b494c2a4cfd368df9138a384" title="Configure StealthChop to SpreadCycle transition with hysteresis.">SetModeHysteresis()</a> to configure the upper and lower thresholds. </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a343fd625f134d68147ac729424a4e9b1" name="a343fd625f134d68147ac729424a4e9b1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a343fd625f134d68147ac729424a4e9b1">&#9670;&#160;</a></span>driver_</h2>
@@ -625,6 +831,78 @@ template&lt;typename CommType &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&amp; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Thresholds::driver_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a639dd52a5612fb7a6430dc1f86312a41" name="a639dd52a5612fb7a6430dc1f86312a41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a639dd52a5612fb7a6430dc1f86312a41">&#9670;&#160;</a></span>hysteresis_enabled_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Thresholds::hysteresis_enabled_ {false}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aaaba407a35f92757307f5e725095f47b" name="aaaba407a35f92757307f5e725095f47b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaba407a35f92757307f5e725095f47b">&#9670;&#160;</a></span>hysteresis_to_spreadcycle_tstep_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Thresholds::hysteresis_to_spreadcycle_tstep_ {0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a14d35a4de5f1ce95b839686e6b2a89f5" name="a14d35a4de5f1ce95b839686e6b2a89f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14d35a4de5f1ce95b839686e6b2a89f5">&#9670;&#160;</a></span>hysteresis_to_stealthchop_tstep_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Thresholds::hysteresis_to_stealthchop_tstep_ {0}</td>
         </tr>
       </table>
   </td>

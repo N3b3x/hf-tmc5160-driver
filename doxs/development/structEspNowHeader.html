@@ -101,7 +101,7 @@ $(function(){initNavTree('structEspNowHeader.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 
-<p>ESP-NOW packet header (wire format).  
+<p>ESP-NOW packet header (wire format) - 6 bytes.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="espnow__protocol_8hpp_source.html">espnow_protocol.hpp</a>&gt;</code></p>
@@ -110,6 +110,10 @@ $(function(){initNavTree('structEspNowHeader.html',''); initResizable(); });
 Public Attributes</h2></td></tr>
 <tr class="memitem:a25ef1e5b3a375c1473152f02c4844fdd" id="r_a25ef1e5b3a375c1473152f02c4844fdd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a70df20eda5255df03118bc4af98ea9eb">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25ef1e5b3a375c1473152f02c4844fdd">sync</a></td></tr>
 <tr class="separator:a25ef1e5b3a375c1473152f02c4844fdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66b0661d62b106dff934366695eab496" id="r_a66b0661d62b106dff934366695eab496"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a70df20eda5255df03118bc4af98ea9eb">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a66b0661d62b106dff934366695eab496">version</a></td></tr>
+<tr class="separator:a66b0661d62b106dff934366695eab496"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcfc80d0527e7f9274bb5228e939d039" id="r_abcfc80d0527e7f9274bb5228e939d039"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a70df20eda5255df03118bc4af98ea9eb">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abcfc80d0527e7f9274bb5228e939d039">device_id</a></td></tr>
+<tr class="separator:abcfc80d0527e7f9274bb5228e939d039"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9590e934eeb5552ecbee6bf1905a0039" id="r_a9590e934eeb5552ecbee6bf1905a0039"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a70df20eda5255df03118bc4af98ea9eb">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9590e934eeb5552ecbee6bf1905a0039">type</a></td></tr>
 <tr class="separator:a9590e934eeb5552ecbee6bf1905a0039"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7da42de1e8d5a052d2d2432feebe0eef" id="r_a7da42de1e8d5a052d2d2432feebe0eef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a70df20eda5255df03118bc4af98ea9eb">uint8_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7da42de1e8d5a052d2d2432feebe0eef">id</a></td></tr>
@@ -118,9 +122,31 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a70df20eda5255df03118bc4af98ea9eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>ESP-NOW packet header (wire format). </p>
-<p>This header is followed by <code>len</code> bytes of payload and then a 16-bit CRC. CRC is computed over <code>hdr + payload[0..len-1]</code> (CRC field excluded). </p>
+<div class="textblock"><p>ESP-NOW packet header (wire format) - 6 bytes. </p>
+<p>This header matches the remote controller's protocol:</p><ul>
+<li>sync: sync byte (0xAA)</li>
+<li>version: protocol version</li>
+<li>device_id: device type ID</li>
+<li>type: MsgType</li>
+<li>id: sequence ID</li>
+<li>len: payload length</li>
+</ul>
+<p>CRC is computed over <code>hdr + payload[0..len-1]</code> (CRC field excluded). </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="abcfc80d0527e7f9274bb5228e939d039" name="abcfc80d0527e7f9274bb5228e939d039"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcfc80d0527e7f9274bb5228e939d039">&#9670;&#160;</a></span>device_id</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a70df20eda5255df03118bc4af98ea9eb">uint8_t</a> EspNowHeader::device_id</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a7da42de1e8d5a052d2d2432feebe0eef" name="a7da42de1e8d5a052d2d2432feebe0eef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7da42de1e8d5a052d2d2432feebe0eef">&#9670;&#160;</a></span>id</h2>
 
@@ -171,6 +197,20 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="#a70df20eda5255df03118bc4af98ea9eb">uint8_t</a> EspNowHeader::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a66b0661d62b106dff934366695eab496" name="a66b0661d62b106dff934366695eab496"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66b0661d62b106dff934366695eab496">&#9670;&#160;</a></span>version</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a70df20eda5255df03118bc4af98ea9eb">uint8_t</a> EspNowHeader::version</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -116,7 +116,7 @@ Include dependency graph for tmc51x0_types.hpp:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__types_8hpp__dep__incl.svg" width="2374" height="359"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tmc51x0__types_8hpp__dep__incl.svg" width="2575" height="359"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="tmc51x0__types_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -312,6 +312,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a06908f208ee192aff6a8e8f0346bd8c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Microstep resolution enumeration.  <a href="namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4">More...</a><br /></td></tr>
 <tr class="separator:a06908f208ee192aff6a8e8f0346bd8c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcd9fedd00ee975b4d3fd51e0decf37f" id="r_afcd9fedd00ee975b4d3fd51e0decf37f"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#afcd9fedd00ee975b4d3fd51e0decf37f">tmc51x0::MicrostepLutPreset</a> : uint8_t { <a class="el" href="namespacetmc51x0.html#afcd9fedd00ee975b4d3fd51e0decf37faffe80c955acdef8a527ec4af0d4620c1">tmc51x0::DEFAULT_SINE</a> = 0
+, <a class="el" href="namespacetmc51x0.html#afcd9fedd00ee975b4d3fd51e0decf37fa7318924f4a4e48f07f9e2b7c13ee2c59">tmc51x0::PURE_SINE</a> = 1
+ }</td></tr>
+<tr class="memdesc:afcd9fedd00ee975b4d3fd51e0decf37f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Microstep lookup table preset waveforms.  <a href="namespacetmc51x0.html#afcd9fedd00ee975b4d3fd51e0decf37f">More...</a><br /></td></tr>
+<tr class="separator:afcd9fedd00ee975b4d3fd51e0decf37f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93bd28a35e3561cd6881d51ef2dbbc24" id="r_a93bd28a35e3561cd6881d51ef2dbbc24"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#a93bd28a35e3561cd6881d51ef2dbbc24">tmc51x0::StealthChopPwmFreq</a> : uint8_t { <a class="el" href="namespacetmc51x0.html#a93bd28a35e3561cd6881d51ef2dbbc24a9320cca3f5079c6a9ecba3526cedbb03">tmc51x0::PWM_FREQ_0</a> = 0
 , <a class="el" href="namespacetmc51x0.html#a93bd28a35e3561cd6881d51ef2dbbc24a95ca2fbd901cde6a78072539a144bbb6">tmc51x0::PWM_FREQ_1</a> = 1
 , <a class="el" href="namespacetmc51x0.html#a93bd28a35e3561cd6881d51ef2dbbc24ae368d4931308d6d2ad481f53620b392c">tmc51x0::PWM_FREQ_2</a> = 2
@@ -437,6 +442,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a60be1af970c350d5071ed3ba6a96c489" id="r_a60be1af970c350d5071ed3ba6a96c489"><td class="memItemLeft" align="right" valign="top">constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#a60be1af970c350d5071ed3ba6a96c489">tmc51x0::MicrostepsPerFullStep</a> (<a class="el" href="namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4">MicrostepResolution</a> mres) noexcept</td></tr>
 <tr class="memdesc:a60be1af970c350d5071ed3ba6a96c489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get microsteps-per-full-step for an MRES value.  <br /></td></tr>
 <tr class="separator:a60be1af970c350d5071ed3ba6a96c489"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae40d2d521bb732150b9827bf07928e47" id="r_ae40d2d521bb732150b9827bf07928e47"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#ae40d2d521bb732150b9827bf07928e47">tmc51x0::ToString</a> (<a class="el" href="namespacetmc51x0.html#afcd9fedd00ee975b4d3fd51e0decf37f">MicrostepLutPreset</a> preset) noexcept</td></tr>
+<tr class="memdesc:ae40d2d521bb732150b9827bf07928e47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert MicrostepLutPreset to human-readable string.  <br /></td></tr>
+<tr class="separator:ae40d2d521bb732150b9827bf07928e47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1dbedcb137f707b1b2d1734e719e35d5" id="r_a1dbedcb137f707b1b2d1734e719e35d5"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetmc51x0.html#a1dbedcb137f707b1b2d1734e719e35d5">tmc51x0::ToString</a> (<a class="el" href="namespacetmc51x0.html#a8cb45f50ef60b0895ae7c456412b9f57">ReferenceSwitchActiveLevel</a> a) noexcept</td></tr>
 <tr class="memdesc:a1dbedcb137f707b1b2d1734e719e35d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert ReferenceSwitchActiveLevel to human-readable string.  <br /></td></tr>
 <tr class="separator:a1dbedcb137f707b1b2d1734e719e35d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
