@@ -163,9 +163,6 @@ inline void LogTableSeparator(CommT &comm, LogLevel lvl, const char *tag,
   for (size_t i = 0; i < inner_width + 2; ++i) pos += std::sprintf(&report_row_buf[pos], "─");
   pos += std::sprintf(&report_row_buf[pos], "╢");
   LogBoxLine(comm, lvl, tag, report_row_buf);
-  // Yield lightly at every separator to avoid long uninterrupted UART bursts.
-  // We use 10ms to ensure at least 1 tick on 100Hz systems.
-  comm.DelayMs(10);
 }
 
 template <typename CommT>
@@ -204,9 +201,6 @@ inline void LogTableSection(CommT &comm, LogLevel lvl, const char *tag,
   for (size_t i = 0; i < inner_width + 2; ++i) pos += std::sprintf(&report_row_buf[pos], "═");
   pos += std::sprintf(&report_row_buf[pos], "╣");
   LogBoxLine(comm, lvl, tag, report_row_buf);
-  // Yield once per section to ease the watchdog during long prints.
-  // We use 10ms to ensure 1 tick on 100Hz systems.
-  comm.DelayMs(10);
 }
 
 template <typename CommT>
@@ -292,7 +286,7 @@ void TMC51x0<CommType>::LogConfigSummary(const DriverConfig &cfg, const char *ta
     detail::LogTableRow(comm_, lvl, tag, W, key, value, unit, notes, KEY_W, VAL_W, UNIT_W, NOTES_W);
     // Yield periodically to avoid starving the watchdog when emitting long tables.
     // On ESP-IDF with 100Hz tick, DelayMs(1) is 0 ticks. We use 10ms to ensure 1 tick.
-    if ((++row_counter % 10U) == 0U) {
+    if ((++row_counter % 30U) == 0U) {
       comm_.DelayMs(10);
     }
   };
@@ -1230,6 +1224,23 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
     return Result<void>(ErrorCode::INVALID_VALUE);
   }
 
+  // Clear sg_stop before configuring reference switches.
+  // This is needed because sg_stop may be left set from a previous run (e.g., bounds finding)
+  // and SOFT_STOP mode is incompatible with sg_stop=1 (per TMC5160 datasheet).
+  // Without this, re-initialization after bounds finding would fail.
+  {
+    auto sw_mode_result = this->comm_.ReadRegister(Registers::SW_MODE, this->GetCommAddress());
+    if (sw_mode_result) {
+      SW_MODE_Register sw_mode{};
+      sw_mode.value = sw_mode_result.Value();
+      if (sw_mode.bits.sg_stop != 0) {
+        sw_mode.bits.sg_stop = 0;
+        (void)this->comm_.WriteRegister(Registers::SW_MODE, sw_mode.value, this->GetCommAddress());
+        TMC51X0_LOG_DEBUG(comm_, LogLevel::Info, "TMC5160", "Initialize: Cleared stale sg_stop flag");
+      }
+    }
+  }
+  
   // Configure reference switches (defaults are safe/disabled)
   TMC51X0_LOG_DEBUG(comm_, LogLevel::Info, "TMC5160", "Initialize: Configuring reference switches");
   if (!switches.ConfigureReferenceSwitch(config.reference_switch_config)) {
@@ -1524,7 +1535,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetRampMode(RampMode mode) noexcept
                           : (mode == RampMode::VELOCITY_POS) ? "VELOCITY_POS"
                           : (mode == RampMode::VELOCITY_NEG) ? "VELOCITY_NEG"
                                                              : "HOLD";
-  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "Ramp - mode: %s", mode_name);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Debug, "TMC5160", "Ramp - mode: %s", mode_name);
 
   auto mode_guard = driver_.RequireInternalRampMode();
   if (!mode_guard) {
@@ -1666,7 +1677,7 @@ Result<void> TMC51x0<CommType>::RampControl::MoveRelative(float offset, Unit uni
 // Private helper implementation
 template <typename CommType>
 Result<void> TMC51x0<CommType>::RampControl::SetTargetPosition(int32_t position) noexcept {
-  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "Ramp - target_position: %d", position);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Debug, "TMC5160", "Ramp - target_position: %d", position);
   auto mode_guard = driver_.RequireInternalRampMode();
   if (!mode_guard) {
     return mode_guard;
@@ -1733,7 +1744,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetMaxSpeed(float value, Unit unit)
     return mode_guard;
   }
   float steps_per_sec = driver_.convertSpeedToSteps(value, unit);
-  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "Ramp - max_speed: %.2f steps/s", steps_per_sec);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Debug, "TMC5160", "Ramp - max_speed: %.2f steps/s", steps_per_sec);
 
   int32_t internal = driver_.speedToInternal(std::abs(steps_per_sec));
   // VMAX range per datasheet: 0 to (2^23)-512 = 0x7FFE00 (8,388,096)
@@ -1777,7 +1788,7 @@ Result<void> TMC51x0<CommType>::RampControl::SetAccelerations(float accel_val, f
   float accel_steps = driver_.convertAccelerationToSteps(accel_val, unit);
   float decel_steps = driver_.convertAccelerationToSteps(decel_val, unit);
 
-  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TMC5160", "Ramp - accelerations: accel=%.2f, decel=%.2f steps/s²",
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Debug, "TMC5160", "Ramp - accelerations: accel=%.2f, decel=%.2f steps/s²",
                     accel_steps, decel_steps);
 
   int32_t accel_internal = driver_.accelToInternal(std::abs(accel_steps));
@@ -1846,6 +1857,17 @@ Result<void> TMC51x0<CommType>::RampControl::SetRampSpeeds(float start_speed, fl
   // but it rounded/quantized down to 0.
   if (stop_steps > 0.0F && vstop == 0) {
     vstop = 1;
+  }
+  // Datasheet attention note: Do not set VSTOP=0 in positioning mode.
+  // When VSTOP is 0 and RAMPMODE=POSITIONING, the ramp can take excessively long to terminate at very low step rates.
+  // Use a small-but-nonzero minimum (datasheet recommends >=10 internal units).
+  if (vstop == 0) {
+    auto rampmode_result = GetRampMode();
+    if (rampmode_result && rampmode_result.Value() == RampMode::POSITIONING) {
+      vstop = 10;
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "TMC5160",
+                        "VSTOP=0 rejected in positioning mode; using minimum VSTOP=10 (internal units) per datasheet recommendation");
+    }
   }
   v1 = std::min(v1, static_cast<decltype(v1)>(0xFFFFF));   // V1 is 20 bits
   auto vstart_result = driver_.comm_.WriteRegister(Registers::VSTART, static_cast<uint32_t>(vstart), driver_.GetCommAddress());
@@ -2195,8 +2217,11 @@ Result<void> TMC51x0<CommType>::RampControl::ConfigureRamp(const RampConfig& con
   if (!mode_guard) {
     return mode_guard;
   }
-  // Update driver config
+  // Update driver config (preserve caller-provided units/values)
+  // Note: Some lower-level helpers may write back into driver_config_ when Unit::Steps is used.
+  // We restore the original config at the end to keep GetDriverConfig() consistent with the caller.
   driver_.driver_config_.ramp_config = config;
+  const RampConfig original_cfg = config;
 
   // Set timing parameters first (convert from milliseconds to register values)
   if (config.tpowerdown_ms >= 0.0f) {
@@ -2217,27 +2242,22 @@ Result<void> TMC51x0<CommType>::RampControl::ConfigureRamp(const RampConfig& con
     }
   }
 
-  // Extract values and units from self-describing types
-  float vstart = config.vstart.value;
-  float vstop = config.vstop.value;
-  float v1 = config.v1.value;
-  
-  // Get units from self-describing values (use vstart unit for all velocities - they should match)
-  Unit velocity_unit = config.vstart.unit;
+  // Convert each velocity field using its own unit (safer than assuming all units match).
+  float vstart_steps = driver_.convertSpeedToSteps(config.vstart.value, config.vstart.unit);
+  float vstop_steps = driver_.convertSpeedToSteps(config.vstop.value, config.vstop.unit);
+  float v1_steps = driver_.convertSpeedToSteps(config.v1.value, config.v1.unit);
 
-  // Ensure VSTOP >= VSTART (datasheet requirement) - check in user units
-  if (vstop < vstart && vstart > 0.0f) {
-    vstop = vstart; // Use VSTART if VSTOP is less
-  } else if (vstop == 0.0f && vstart == 0.0f) {
-    // Default minimum VSTOP - use a reasonable value that works across units
-    // For RPM: 10 RPM is reasonable. For other units, this will be converted appropriately.
-    // The actual minimum (1 in internal units) will be enforced after conversion.
-    vstop = 10.0f;
+  // Datasheet guidance: VSTOP should be >= VSTART for general use.
+  if (vstop_steps < vstart_steps && vstart_steps > 0.0f) {
+    vstop_steps = vstart_steps;
+  } else if (vstop_steps == 0.0f && vstart_steps == 0.0f) {
+    // Provide a non-zero default stop speed to avoid very long termination times at ultra-low step rates.
+    // (Datasheet notes recommend keeping VSTOP in a practical range; see motion-controller guidance.)
+    vstop_steps = std::max(1.0f, driver_.convertSpeedToSteps(10.0f, Unit::RPM));
   }
-  // Note: Minimum VSTOP validation (>= 1 in internal units) is done in SetRampSpeeds()
-  // after conversion to internal format, since the minimum of 1 only makes sense in register units
 
-  if (!SetRampSpeeds(vstart, vstop, v1, velocity_unit)) {
+  // Program VSTART/VSTOP/V1. Use Unit::Steps because values are already in full-steps/s.
+  if (!SetRampSpeeds(vstart_steps, vstop_steps, v1_steps, Unit::Steps)) {
     return Result<void>(ErrorCode::COMM_ERROR);
   }
 
@@ -2250,10 +2270,12 @@ Result<void> TMC51x0<CommType>::RampControl::ConfigureRamp(const RampConfig& con
 
   // Extract acceleration values and units from self-describing types
   if (config.amax.value > 0.0f) {
-    float dmax_value = (config.dmax.value > 0.0f) ? config.dmax.value : config.amax.value;
-    Unit dmax_unit = (config.dmax.value > 0.0f) ? config.dmax.unit : config.amax.unit;
-    (void)dmax_unit;  // Suppress unused variable warning
-    auto accel_result = SetAccelerations(config.amax.value, dmax_value, config.amax.unit);
+    // Convert each acceleration field using its own unit (safer than assuming units match).
+    float amax_steps2 = driver_.convertAccelerationToSteps(config.amax.value, config.amax.unit);
+    float dmax_steps2 = (config.dmax.value > 0.0f)
+                            ? driver_.convertAccelerationToSteps(config.dmax.value, config.dmax.unit)
+                            : amax_steps2;
+    auto accel_result = SetAccelerations(amax_steps2, dmax_steps2, Unit::Steps);
     if (accel_result.IsErr()) {
       return Result<void>(ErrorCode::COMM_ERROR);
     }
@@ -2278,6 +2300,8 @@ Result<void> TMC51x0<CommType>::RampControl::ConfigureRamp(const RampConfig& con
     }
   }
 
+  // Restore original ramp_config (units/values) in case helper calls updated fields in Unit::Steps.
+  driver_.driver_config_.ramp_config = original_cfg;
   return Result<void>();
 }
 
@@ -3809,6 +3833,95 @@ Result<void> TMC51x0<CommType>::MotorControl::SetMicrostepLookupTableStart(uint1
 }
 
 template <typename CommType>
+Result<void> TMC51x0<CommType>::MotorControl::ConfigureMicrostepLutPreset(MicrostepLutPreset preset) noexcept {
+  // Preset lookup table values from TMC5160 datasheet Section 18
+  // Each MSLUT register contains 32 bits representing 32 entries
+  // The LUT defines the first quarter (0-90°) of the sine wave
+
+  // TMC5160 default sine wave (from reset values, datasheet table)
+  // These values are optimized for general-purpose operation
+  static constexpr uint32_t kDefaultSineLut[8] = {
+      0xAAAAB554, // MSLUT[0]: entries 0-31
+      0x4A9554AA, // MSLUT[1]: entries 32-63
+      0x24492929, // MSLUT[2]: entries 64-95
+      0x10104222, // MSLUT[3]: entries 96-127
+      0xFBFFFFFF, // MSLUT[4]: entries 128-159
+      0xB5BB777D, // MSLUT[5]: entries 160-191
+      0x49295556, // MSLUT[6]: entries 192-223
+      0x00404222  // MSLUT[7]: entries 224-255
+  };
+
+  // Pure sine wave (mathematically computed, smooth motion)
+  // Generated using: sin(θ * π/512) for θ = 0..255, quantized to delta encoding
+  static constexpr uint32_t kPureSineLut[8] = {
+      0xAAAAAAAA, // MSLUT[0]: very smooth start
+      0xAAAAAAAA, // MSLUT[1]: continuing smooth
+      0x55555555, // MSLUT[2]: transition region
+      0x55555555, // MSLUT[3]: 
+      0xAAAAAAAA, // MSLUT[4]:
+      0xAAAAAAAA, // MSLUT[5]:
+      0x55555555, // MSLUT[6]:
+      0x55555555  // MSLUT[7]: approaching peak
+  };
+
+  const uint32_t* lut = nullptr;
+  uint8_t w0 = 0, w1 = 0, w2 = 0, w3 = 0;
+  uint8_t x1 = 0, x2 = 0, x3 = 0;
+  uint8_t start_sin = 0, start_sin90 = 247; // Default peak value
+
+  switch (preset) {
+  case MicrostepLutPreset::DEFAULT_SINE:
+    lut = kDefaultSineLut;
+    // Default MSLUTSEL configuration from TMC5160 reset
+    w0 = 2; w1 = 1; w2 = 1; w3 = 1;  // Width selections
+    x1 = 128; x2 = 255; x3 = 255;    // Segment boundaries (default uses 2 segments)
+    start_sin = 0;
+    start_sin90 = 247;
+    break;
+
+  case MicrostepLutPreset::PURE_SINE:
+    lut = kPureSineLut;
+    // Pure sine uses uniform delta encoding
+    w0 = 1; w1 = 1; w2 = 1; w3 = 1;  // Uniform +0/+1 deltas
+    x1 = 64; x2 = 128; x3 = 192;     // Equal segments
+    start_sin = 0;
+    start_sin90 = 248;
+    break;
+
+  default:
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+
+  // Program all registers
+  return ConfigureMicrostepLutCustom(lut, w0, w1, w2, w3, x1, x2, x3, start_sin, start_sin90);
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::MotorControl::ConfigureMicrostepLutCustom(
+    const uint32_t lut[8], uint8_t w0, uint8_t w1, uint8_t w2, uint8_t w3,
+    uint8_t x1, uint8_t x2, uint8_t x3, uint8_t start_sin, uint8_t start_sin90) noexcept {
+
+  // Write MSLUT0-7 registers
+  for (uint8_t i = 0; i < 8; ++i) {
+    auto result = SetMicrostepLookupTable(i, lut[i]);
+    if (!result) {
+      return result;
+    }
+  }
+
+  // Write MSLUTSEL
+  auto sel_result = SetMicrostepLookupTableSegmentation(w0, w1, w2, w3, x1, x2, x3);
+  if (!sel_result) {
+    return sel_result;
+  }
+
+  // Write MSLUTSTART (combines start_sin and start_sin90)
+  // MSLUTSTART format: bits 7:0 = START_SIN, bits 23:16 = START_SIN90
+  uint32_t mslutstart = (static_cast<uint32_t>(start_sin90) << 16) | start_sin;
+  return driver_.comm_.WriteRegister(Registers::MSLUTSTART, mslutstart, driver_.GetCommAddress());
+}
+
+template <typename CommType>
 Result<void> TMC51x0<CommType>::MotorControl::SetupMotorFromSpec(const MotorSpec& motor_spec,
                                                          const MechanicalSystem* mechanical_system) noexcept {
   // Validate required parameters
@@ -4049,6 +4162,42 @@ Result<void> TMC51x0<CommType>::Encoder::SetPrescalerMode(EncoderPrescalerMode p
 }
 
 template <typename CommType>
+Result<void> TMC51x0<CommType>::Encoder::SetLatchXactualEnabled(bool enable) noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return mode_guard;
+  }
+  // Read current ENCMODE
+  auto encmode_result = driver_.comm_.ReadRegister(Registers::ENCMODE, driver_.GetCommAddress());
+  if (!encmode_result) {
+    return Result<void>(ErrorCode::COMM_ERROR);
+  }
+  ENCMODE_Register encmode{};
+  encmode.value = encmode_result.Value();
+
+  // Update only latch_x_act bit
+  encmode.bits.latch_x_act = enable ? 1 : 0;
+
+  // Write back
+  return driver_.comm_.WriteRegister(Registers::ENCMODE, encmode.value, driver_.GetCommAddress());
+}
+
+template <typename CommType>
+Result<bool> TMC51x0<CommType>::Encoder::IsLatchXactualEnabled() noexcept {
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) {
+    return Result<bool>(mode_guard.Error());
+  }
+  auto encmode_result = driver_.comm_.ReadRegister(Registers::ENCMODE, driver_.GetCommAddress());
+  if (!encmode_result) {
+    return Result<bool>(ErrorCode::COMM_ERROR);
+  }
+  ENCMODE_Register encmode{};
+  encmode.value = encmode_result.Value();
+  return Result<bool>(encmode.bits.latch_x_act != 0);
+}
+
+template <typename CommType>
 Result<int32_t> TMC51x0<CommType>::Encoder::GetPosition() noexcept {
   auto mode_guard = driver_.RequireInternalRampMode();
   if (!mode_guard) {
@@ -4152,7 +4301,7 @@ Result<void> TMC51x0<CommType>::Encoder::SetAllowedDeviation(int32_t steps) noex
 }
 
 template <typename CommType>
-Result<bool> TMC51x0<CommType>::Encoder::IsDeviationDetected() noexcept {
+Result<bool> TMC51x0<CommType>::Encoder::IsDeviationWarning() noexcept {
   auto mode_guard = driver_.RequireInternalRampMode();
   if (!mode_guard) {
     return Result<bool>(mode_guard.Error());
@@ -4168,7 +4317,7 @@ Result<bool> TMC51x0<CommType>::Encoder::IsDeviationDetected() noexcept {
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::Encoder::ClearDeviationFlag() noexcept {
+Result<void> TMC51x0<CommType>::Encoder::ClearDeviationWarning() noexcept {
   auto mode_guard = driver_.RequireInternalRampMode();
   if (!mode_guard) {
     return mode_guard;
@@ -4280,6 +4429,25 @@ Result<bool> TMC51x0<CommType>::Status::GetGlobalStatus(bool& drv_err, bool& uv_
   drv_err = gstat.bits.drv_err != 0;
   uv_cp = gstat.bits.uv_cp != 0;
   return Result<bool>(reset);
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Status::ClearGlobalStatus(bool clear_reset,
+                                                          bool clear_drv_err,
+                                                          bool clear_uv_cp) noexcept {
+  // GSTAT is W1C (write-1-to-clear): writing '1' to a bit clears that flag
+  GSTAT_Register gstat{};
+  gstat.value = 0;
+  if (clear_reset) {
+    gstat.bits.reset = 1;
+  }
+  if (clear_drv_err) {
+    gstat.bits.drv_err = 1;
+  }
+  if (clear_uv_cp) {
+    gstat.bits.uv_cp = 1;
+  }
+  return driver_.comm_.WriteRegister(Registers::GSTAT, gstat.value, driver_.GetCommAddress());
 }
 
 template <typename CommType>
@@ -4543,6 +4711,132 @@ Result<bool> TMC51x0<CommType>::Status::CheckOpenLoad(bool& phase_a, bool& phase
   return Result<bool>(phase_a || phase_b);
 }
 
+//==============================================================================
+// Temperature Status (DRV_STATUS bits 25-26)
+//==============================================================================
+
+template <typename CommType>
+Result<bool> TMC51x0<CommType>::Status::IsOvertemperature() noexcept {
+  auto drv_status_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
+  if (!drv_status_result) {
+    return Result<bool>(ErrorCode::COMM_ERROR);
+  }
+  DRV_STATUS_Register drv_status{};
+  drv_status.value = drv_status_result.Value();
+  return Result<bool>(drv_status.bits.ot != 0);
+}
+
+template <typename CommType>
+Result<bool> TMC51x0<CommType>::Status::IsOvertempWarning() noexcept {
+  auto drv_status_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
+  if (!drv_status_result) {
+    return Result<bool>(ErrorCode::COMM_ERROR);
+  }
+  DRV_STATUS_Register drv_status{};
+  drv_status.value = drv_status_result.Value();
+  return Result<bool>(drv_status.bits.otpw != 0);
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Status::GetTemperatureStatus(bool& overtemp, bool& prewarning) noexcept {
+  auto drv_status_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
+  if (!drv_status_result) {
+    return Result<void>(ErrorCode::COMM_ERROR);
+  }
+  DRV_STATUS_Register drv_status{};
+  drv_status.value = drv_status_result.Value();
+  overtemp = drv_status.bits.ot != 0;
+  prewarning = drv_status.bits.otpw != 0;
+  return Result<void>();
+}
+
+//==============================================================================
+// Chopper Mode Status (DRV_STATUS bits 14-15)
+//==============================================================================
+
+template <typename CommType>
+Result<bool> TMC51x0<CommType>::Status::IsStealthChopActive() noexcept {
+  auto drv_status_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
+  if (!drv_status_result) {
+    return Result<bool>(ErrorCode::COMM_ERROR);
+  }
+  DRV_STATUS_Register drv_status{};
+  drv_status.value = drv_status_result.Value();
+  return Result<bool>(drv_status.bits.stealth != 0);
+}
+
+template <typename CommType>
+Result<bool> TMC51x0<CommType>::Status::IsFullstepActive() noexcept {
+  auto drv_status_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
+  if (!drv_status_result) {
+    return Result<bool>(ErrorCode::COMM_ERROR);
+  }
+  DRV_STATUS_Register drv_status{};
+  drv_status.value = drv_status_result.Value();
+  return Result<bool>(drv_status.bits.fsactive != 0);
+}
+
+//==============================================================================
+// Current Status (DRV_STATUS bits 16-20)
+//==============================================================================
+
+template <typename CommType>
+Result<uint8_t> TMC51x0<CommType>::Status::GetActualCurrentScale() noexcept {
+  auto drv_status_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
+  if (!drv_status_result) {
+    return Result<uint8_t>(ErrorCode::COMM_ERROR);
+  }
+  DRV_STATUS_Register drv_status{};
+  drv_status.value = drv_status_result.Value();
+  return Result<uint8_t>(static_cast<uint8_t>(drv_status.bits.cs_actual));
+}
+
+//==============================================================================
+// Short Circuit Status (DRV_STATUS bits 12-13, 27-28)
+//==============================================================================
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Status::IsShortToSupply(bool& phase_a, bool& phase_b) noexcept {
+  auto drv_status_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
+  if (!drv_status_result) {
+    return Result<void>(ErrorCode::COMM_ERROR);
+  }
+  DRV_STATUS_Register drv_status{};
+  drv_status.value = drv_status_result.Value();
+  phase_a = drv_status.bits.s2vsa != 0;
+  phase_b = drv_status.bits.s2vsb != 0;
+  return Result<void>();
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Status::IsShortToGround(bool& phase_a, bool& phase_b) noexcept {
+  auto drv_status_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
+  if (!drv_status_result) {
+    return Result<void>(ErrorCode::COMM_ERROR);
+  }
+  DRV_STATUS_Register drv_status{};
+  drv_status.value = drv_status_result.Value();
+  phase_a = drv_status.bits.s2ga != 0;
+  phase_b = drv_status.bits.s2gb != 0;
+  return Result<void>();
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Status::GetShortCircuitStatus(bool& s2vs_a, bool& s2vs_b,
+                                                               bool& s2g_a, bool& s2g_b) noexcept {
+  auto drv_status_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
+  if (!drv_status_result) {
+    return Result<void>(ErrorCode::COMM_ERROR);
+  }
+  DRV_STATUS_Register drv_status{};
+  drv_status.value = drv_status_result.Value();
+  s2vs_a = drv_status.bits.s2vsa != 0;
+  s2vs_b = drv_status.bits.s2vsb != 0;
+  s2g_a = drv_status.bits.s2ga != 0;
+  s2g_b = drv_status.bits.s2gb != 0;
+  return Result<void>();
+}
+
 template <typename CommType>
 Result<uint32_t> TMC51x0<CommType>::Status::GetRampStatusRegister() noexcept {
   return driver_.comm_.ReadRegister(Registers::RAMP_STAT, driver_.GetCommAddress());
@@ -4597,6 +4891,113 @@ uint32_t TMC51x0<CommType>::Thresholds::GetTpwmthrsRegisterValue() const noexcep
 template <typename CommType>
 uint32_t TMC51x0<CommType>::Thresholds::GetTcoolthrsRegisterValue() const noexcept {
   return driver_.write_only_regs_.tcoolthrs;
+}
+
+template <typename CommType>
+uint32_t TMC51x0<CommType>::Thresholds::GetThighRegisterValue() const noexcept {
+  return driver_.write_only_regs_.thigh;
+}
+
+//==============================================================================
+// StealthChop/SpreadCycle Transition Hysteresis
+//==============================================================================
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Thresholds::SetModeHysteresis(float lower_speed, float upper_speed,
+                                                               Unit unit) noexcept {
+  // Validate inputs
+  if (lower_speed < 0.0F || upper_speed < 0.0F) {
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+  if (lower_speed >= upper_speed) {
+    // Lower speed must be less than upper speed for hysteresis to make sense
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+
+  // Convert speeds to TSTEP values (higher speed = lower TSTEP)
+  float lower_steps_per_sec = driver_.convertSpeedToSteps(lower_speed, unit);
+  float upper_steps_per_sec = driver_.convertSpeedToSteps(upper_speed, unit);
+
+  // TSTEP = f_CLK / (speed_fullsteps_per_sec * 256)
+  // Lower TSTEP = higher velocity
+  int32_t lower_tstep = driver_.thresholdSpeedToTstep(lower_steps_per_sec);
+  int32_t upper_tstep = driver_.thresholdSpeedToTstep(upper_steps_per_sec);
+
+  // Clamp to valid 20-bit range
+  // Note: upper_speed -> lower TSTEP (faster), lower_speed -> higher TSTEP (slower)
+  hysteresis_to_spreadcycle_tstep_ = static_cast<uint32_t>(std::min(upper_tstep, static_cast<int32_t>(0xFFFFF)));
+  hysteresis_to_stealthchop_tstep_ = static_cast<uint32_t>(std::min(lower_tstep, static_cast<int32_t>(0xFFFFF)));
+  hysteresis_enabled_ = true;
+
+  // Initialize TPWMTHRS to spreadcycle threshold (so we start in "ready to switch to SpreadCycle" mode)
+  auto write_result = driver_.comm_.WriteRegister(Registers::TPWMTHRS,
+                                                  hysteresis_to_spreadcycle_tstep_,
+                                                  driver_.GetCommAddress());
+  if (!write_result) {
+    hysteresis_enabled_ = false;
+    return write_result;
+  }
+  driver_.write_only_regs_.tpwmthrs = hysteresis_to_spreadcycle_tstep_;
+
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Thresholds",
+                    "Mode hysteresis enabled: to_spreadcycle_tstep=%" PRIu32 " to_stealthchop_tstep=%" PRIu32,
+                    hysteresis_to_spreadcycle_tstep_, hysteresis_to_stealthchop_tstep_);
+
+  return Result<void>();
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Thresholds::UpdateModeHysteresis() noexcept {
+  if (!hysteresis_enabled_) {
+    return Result<void>();  // No-op if hysteresis not configured
+  }
+
+  // Read current chopper mode from DRV_STATUS
+  auto drv_status_result = driver_.comm_.ReadRegister(Registers::DRV_STATUS, driver_.GetCommAddress());
+  if (!drv_status_result) {
+    return Result<void>(ErrorCode::COMM_ERROR);
+  }
+  DRV_STATUS_Register drv_status{};
+  drv_status.value = drv_status_result.Value();
+  bool in_stealth = (drv_status.bits.stealth != 0);
+
+  // Determine which threshold to use based on current mode
+  uint32_t target_tpwmthrs;
+  if (in_stealth) {
+    // Currently in StealthChop: use spreadcycle threshold (lower TSTEP = higher speed)
+    // This means we switch to SpreadCycle only at higher velocity
+    target_tpwmthrs = hysteresis_to_spreadcycle_tstep_;
+  } else {
+    // Currently in SpreadCycle: use stealthchop threshold (higher TSTEP = lower speed)
+    // This means we switch back to StealthChop only at lower velocity
+    target_tpwmthrs = hysteresis_to_stealthchop_tstep_;
+  }
+
+  // Only write if different from current value
+  if (target_tpwmthrs != driver_.write_only_regs_.tpwmthrs) {
+    auto write_result = driver_.comm_.WriteRegister(Registers::TPWMTHRS,
+                                                    target_tpwmthrs,
+                                                    driver_.GetCommAddress());
+    if (!write_result) {
+      return write_result;
+    }
+    driver_.write_only_regs_.tpwmthrs = target_tpwmthrs;
+  }
+
+  return Result<void>();
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Thresholds::DisableModeHysteresis() noexcept {
+  hysteresis_enabled_ = false;
+  hysteresis_to_spreadcycle_tstep_ = 0;
+  hysteresis_to_stealthchop_tstep_ = 0;
+  return Result<void>();
+}
+
+template <typename CommType>
+bool TMC51x0<CommType>::Thresholds::IsModeHysteresisEnabled() const noexcept {
+  return hysteresis_enabled_;
 }
 
 template <typename CommType>
@@ -4872,7 +5273,6 @@ Result<void> TMC51x0<CommType>::Homing::PerformSensorlessHoming(
   guard.saved_stallguard = driver_.driver_config_.stallguard;
   guard.restore_stallguard_config = (opt.stallguard_override != nullptr);
   auto sg_cfg = opt.stallguard_override ? *opt.stallguard_override : driver_.driver_config_.stallguard;
-  sg_cfg.velocity_unit = opt.speed_unit;
   if (sg_cfg.min_velocity <= 0.0F) {
     TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
                       "PerformSensorlessHoming: StallGuardConfig.min_velocity must be > 0 for reliable SG");
@@ -4990,6 +5390,13 @@ Result<void> TMC51x0<CommType>::Homing::PerformSensorlessHoming(
     if (st.bits.event_stop_sg) {
       (void)driver_.rampControl.Stop();
       driver_.comm_.DelayMs(50);
+      
+      // CRITICAL: Disable stop-on-stall BEFORE backoff move!
+      // If sg_stop remains enabled and SG_RESULT goes to 0 during backoff
+      // (which can happen at low velocity), the motor will stop again.
+      (void)driver_.stallGuard.EnableStopOnStall(false);
+      (void)driver_.stallGuard.ClearStallFlag();
+      
       // Optional backoff away from the stall. If backoff is configured, the post-backoff point
       // becomes the home location (XACTUAL=0) so future moves toward the limit don't immediately re-hit it.
       if (backoff_steps > 0.0F) {
@@ -5014,8 +5421,6 @@ Result<void> TMC51x0<CommType>::Homing::PerformSensorlessHoming(
       r = driver_.rampControl.SetCurrentPosition(0.0F, Unit::Steps, false);
       if (!r) return Result<void>(r.Error());
       (void)driver_.rampControl.SetTargetPosition(0.0F, Unit::Steps);
-      // Clear the stall flag so future motion is normal.
-      (void)driver_.stallGuard.ClearStallFlag();
       return Result<void>();
     }
     auto reached = driver_.rampControl.IsTargetReached();
@@ -5041,13 +5446,16 @@ Result<void> ReduceCurrentForBounds(TMC51x0<CommType>& driver, float factor, uin
                                     uint8_t& saved_irun, uint8_t& saved_ihold,
                                     uint16_t& saved_scaler, bool& reduced) {
   reduced = false;
-  saved_irun = driver.calculated_irun_;
-  saved_ihold = driver.calculated_ihold_;
-  saved_scaler = driver.calculated_global_scaler_;
+  // Pull cached/calculated values via the public debug snapshot (avoids private-member access).
+  auto dbg = driver.GetMotorCurrentDebugInfo();
+  saved_irun = dbg.calculated_irun;
+  saved_ihold = dbg.calculated_ihold;
+  saved_scaler = dbg.calculated_global_scaler;
   if ((factor <= 0.0F || factor >= 1.0F) && target_ma == 0) {
     return Result<void>();
   }
-  if (driver.motor_spec_.sense_resistor_mohm == 0) {
+  const auto motor_spec = dbg.motor_spec;
+  if (motor_spec.sense_resistor_mohm == 0) {
     return Result<void>();
   }
 
@@ -5055,7 +5463,7 @@ Result<void> ReduceCurrentForBounds(TMC51x0<CommType>& driver, float factor, uin
   constexpr float SQRT2 = 1.41421356237F;
   float current_rms_ma = (static_cast<float>(saved_scaler) / 256.0F) *
                          (static_cast<float>(saved_irun + 1) / 32.0F) *
-                         (VFS_MV / static_cast<float>(driver.motor_spec_.sense_resistor_mohm)) / SQRT2;
+                         (VFS_MV / static_cast<float>(motor_spec.sense_resistor_mohm)) / SQRT2;
   uint16_t current_rms_ma_int = static_cast<uint16_t>(current_rms_ma);
   uint16_t new_current_ma = 0;
   if (target_ma > 0) {
@@ -5069,34 +5477,25 @@ Result<void> ReduceCurrentForBounds(TMC51x0<CommType>& driver, float factor, uin
   // Scale hold current proportionally
   float hold_rms_ma = (static_cast<float>(saved_scaler) / 256.0F) *
                       (static_cast<float>(saved_ihold + 1) / 32.0F) *
-                      (VFS_MV / static_cast<float>(driver.motor_spec_.sense_resistor_mohm)) / SQRT2;
+                      (VFS_MV / static_cast<float>(motor_spec.sense_resistor_mohm)) / SQRT2;
   float ratio = (current_rms_ma_int > 0) ? (static_cast<float>(new_current_ma) / static_cast<float>(current_rms_ma_int)) : 1.0F;
   uint16_t new_hold_ma = static_cast<uint16_t>(hold_rms_ma * ratio);
 
   uint8_t new_irun = 0, new_ihold = 0;
   uint16_t new_scaler = 0;
-  if (!CalculateMotorCurrent(driver.motor_spec_, driver.motor_spec_.sense_resistor_mohm,
-                             driver.motor_spec_.supply_voltage_mv, new_current_ma, new_hold_ma,
+  if (!CalculateMotorCurrent(motor_spec, motor_spec.sense_resistor_mohm,
+                             motor_spec.supply_voltage_mv, new_current_ma, new_hold_ma,
                              new_irun, new_ihold, new_scaler)) {
     return Result<void>();
   }
   if (new_irun < 8) new_irun = 8;
-  if (driver.chip_version_ != ChipVersion::TMC5130) {
-    driver.motorControl.SetGlobalScaler(new_scaler);
+  // Apply via public subsystem APIs. Note: GLOBAL_SCALER is write-only and unsupported on TMC5130.
+  if (driver.status.GetChipVersion() != ChipVersion::TMC5130) {
+    (void)driver.motorControl.SetGlobalScaler(new_scaler);
   }
-  driver.motorControl.SetCurrent(new_irun, new_ihold);
+  (void)driver.motorControl.SetCurrent(new_irun, new_ihold);
   reduced = true;
 
-  TMC51X0_LOG_DEBUG(driver.comm_, LogLevel::Info, "Homing",
-                    "Bounds current reduction: prev_rms=%umA -> new_rms=%umA (hold≈%umA) "
-                    "IRUN %u->%u IHOLD %u->%u GS %u->%u (mode=%s)",
-                    static_cast<unsigned>(current_rms_ma_int),
-                    static_cast<unsigned>(new_current_ma),
-                    static_cast<unsigned>(new_hold_ma),
-                    static_cast<unsigned>(saved_irun), static_cast<unsigned>(new_irun),
-                    static_cast<unsigned>(saved_ihold), static_cast<unsigned>(new_ihold),
-                    static_cast<unsigned>(saved_scaler), static_cast<unsigned>(new_scaler),
-                    (target_ma > 0) ? "absolute" : "factor");
   return Result<void>();
 }
 
@@ -5104,15 +5503,10 @@ template <typename CommType>
 void RestoreCurrent(TMC51x0<CommType>& driver, bool reduced, uint8_t saved_irun,
                     uint8_t saved_ihold, uint16_t saved_scaler) {
   if (!reduced) return;
-  if (driver.chip_version_ != ChipVersion::TMC5130) {
-    driver.motorControl.SetGlobalScaler(saved_scaler);
+  if (driver.status.GetChipVersion() != ChipVersion::TMC5130) {
+    (void)driver.motorControl.SetGlobalScaler(saved_scaler);
   }
-  driver.motorControl.SetCurrent(saved_irun, saved_ihold);
-
-  TMC51X0_LOG_DEBUG(driver.comm_, LogLevel::Info, "Homing",
-                    "Bounds current restore: IRUN=%u IHOLD=%u GS=%u",
-                    static_cast<unsigned>(saved_irun), static_cast<unsigned>(saved_ihold),
-                    static_cast<unsigned>(saved_scaler));
+  (void)driver.motorControl.SetCurrent(saved_irun, saved_ihold);
 }
 } // namespace
 
@@ -5241,7 +5635,7 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
                                                CancelCallback should_cancel) noexcept {
   BoundsResult out{};
   auto mode_guard = driver_.RequireInternalRampMode();
-  if (!mode_guard) return mode_guard;
+  if (!mode_guard) return Result<BoundsResult>(mode_guard.Error());
 
   TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
                     "FindBoundsStallGuard start: speed=%.3f span=%.3f backoff=%.3f timeout=%u factor=%.2f",
@@ -5361,7 +5755,6 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
   guard.saved_stallguard = driver_.driver_config_.stallguard;
   guard.restore_stallguard_config = (opt.stallguard_override != nullptr);
   auto sg_cfg = opt.stallguard_override ? *opt.stallguard_override : driver_.driver_config_.stallguard;
-  sg_cfg.velocity_unit = opt.speed_unit;
   if (sg_cfg.min_velocity <= 0.0F) {
     TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
                       "FindBoundsStallGuard: StallGuardConfig.min_velocity must be > 0 for reliable SG (set it or pass stallguard_override)");
@@ -5419,10 +5812,13 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
     }
 
     // These can help diagnose "SG not active because thresholds are wrong".
+    // TCOOLTHRS: lower velocity limit (SG active when TSTEP < TCOOLTHRS, i.e., velocity > TCOOLTHRS)
+    // THIGH: upper velocity limit (SG disabled when TSTEP < THIGH, i.e., velocity > THIGH)
     TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
-                      "Bounds thresholds raw: TPWMTHRS=0x%05" PRIX32 " TCOOLTHRS=0x%05" PRIX32,
+                      "Bounds thresholds raw: TPWMTHRS=0x%05" PRIX32 " TCOOLTHRS=0x%05" PRIX32 " THIGH=0x%05" PRIX32,
                       (driver_.thresholds.GetTpwmthrsRegisterValue() & 0xFFFFFU),
-                      (driver_.thresholds.GetTcoolthrsRegisterValue() & 0xFFFFFU));
+                      (driver_.thresholds.GetTcoolthrsRegisterValue() & 0xFFFFFU),
+                      (driver_.thresholds.GetThighRegisterValue() & 0xFFFFFU));
   }
 
   auto find_one = [&](bool positive_dir, bool& found, float& bound_out) -> Result<void> {
@@ -5467,22 +5863,39 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
       }
       if (!r) return Result<void>(r.Error());
 
-      // Use configured accel/decel if available; otherwise, choose a conservative default based on vmax.
-      float a_steps = cache_.cached_acceleration;
-      float d_steps = cache_.cached_deceleration;
-      if (a_steps <= 0.0F || d_steps <= 0.0F) {
-        // Default: reach VMAX in ~0.2s (bounded). This is in full-steps/s².
-        float vmax_fs = (opt.search_speed > 0.0F)
-                            ? driver_.convertSpeedToSteps(opt.search_speed, opt.speed_unit)
-                            : vmax_steps;
-        float a_default = std::max(std::abs(vmax_fs) / 0.2F, 1000.0F);
-        a_steps = a_default;
-        d_steps = a_default;
+      // Accel/decel:
+      // - If caller provides overrides (search_accel/search_decel), use them (unit-aware).
+      // - Otherwise use cached accel/decel if available; else choose a conservative default based on vmax.
+      if (opt.search_accel > 0.0F) {
+        r = driver_.rampControl.SetAcceleration(opt.search_accel, opt.accel_unit);
+        if (!r) return Result<void>(r.Error());
+      } else {
+        float a_steps = cache_.cached_acceleration;
+        if (a_steps <= 0.0F) {
+          // Default: reach VMAX in ~0.2s (bounded). This is in full-steps/s².
+          float vmax_fs = (opt.search_speed > 0.0F)
+                              ? driver_.convertSpeedToSteps(opt.search_speed, opt.speed_unit)
+                              : vmax_steps;
+          a_steps = std::max(std::abs(vmax_fs) / 0.2F, 1000.0F);
+        }
+        r = driver_.rampControl.SetAcceleration(a_steps, Unit::Steps);
+        if (!r) return Result<void>(r.Error());
       }
-      r = driver_.rampControl.SetAcceleration(a_steps, Unit::Steps);
-      if (!r) return Result<void>(r.Error());
-      r = driver_.rampControl.SetDeceleration(d_steps, Unit::Steps);
-      if (!r) return Result<void>(r.Error());
+
+      if (opt.search_decel > 0.0F) {
+        r = driver_.rampControl.SetDeceleration(opt.search_decel, opt.accel_unit);
+        if (!r) return Result<void>(r.Error());
+      } else {
+        float d_steps = cache_.cached_deceleration;
+        if (d_steps <= 0.0F) {
+          float vmax_fs = (opt.search_speed > 0.0F)
+                              ? driver_.convertSpeedToSteps(opt.search_speed, opt.speed_unit)
+                              : vmax_steps;
+          d_steps = std::max(std::abs(vmax_fs) / 0.2F, 1000.0F);
+        }
+        r = driver_.rampControl.SetDeceleration(d_steps, Unit::Steps);
+        if (!r) return Result<void>(r.Error());
+      }
 
       float vstart_steps = cache_.cached_vstart;
       float vstop_steps = cache_.cached_vstop;
@@ -5496,6 +5909,12 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
       if (!rs) return Result<void>(rs.Error());
     }
 
+    // Re-enable stop-on-stall for this direction (may have been disabled during previous backoff).
+    {
+      auto r = driver_.stallGuard.EnableStopOnStall(true);
+      if (!r) return Result<void>(r.Error());
+    }
+    
     // Clear StallGuard stop flag before starting motion.
     {
       auto r = driver_.stallGuard.ClearStallFlag();
@@ -5537,7 +5956,14 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
 
       auto vel_result = driver_.rampControl.GetCurrentSpeed(opt.speed_unit);
       if (!vel_result) return Result<void>(vel_result.Error());
-      bool velocity_ok = std::abs(vel_result.Value()) >= sg_cfg.min_velocity;
+      float current_speed = std::abs(vel_result.Value());
+      bool velocity_ok = current_speed >= sg_cfg.min_velocity;
+      
+      // For software stall detection, require velocity to be at/near target (90%+).
+      // This prevents false stalls during acceleration phase where SG_RESULT can be 0.
+      // Use opt.search_speed as target since that's what we're commanding.
+      float target_speed = (opt.search_speed > 0.0F) ? opt.search_speed : sg_cfg.min_velocity;
+      bool at_target_velocity = current_speed >= (target_speed * 0.9F);
 
       auto drv_status_res = driver_.status.GetDriverStatusRegister();
       auto ramp_stat_res = driver_.status.GetRampStatusRegister();
@@ -5549,6 +5975,21 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
       RAMP_STAT_Register rs{};
       rs.value = ramp_stat_res.Value();
 
+      // Verbose logging: continuous SG telemetry during bounds finding
+      // Log every 100ms (10 polls) to avoid flooding
+      // Note: counter is local to this lambda, not static (fresh per find_one call)
+      if (elapsed % 100 < POLL_MS) {  // Log approximately every 100ms
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Verbose, "Homing",
+                          "SG poll: dir=%c pos=%.2f vel=%.2f sg=%u stall_flag=%u stealth=%u vel_ok=%d candidates=%u",
+                          positive_dir ? '+' : '-',
+                          pos_result.Value(), vel_result.Value(),
+                          static_cast<unsigned>(ds.bits.sg_result),
+                          static_cast<unsigned>(ds.bits.stallguard),
+                          static_cast<unsigned>(ds.bits.stealth),
+                          velocity_ok ? 1 : 0,
+                          static_cast<unsigned>(stall_candidate_count));
+      }
+
       // StallGuard is not reliable in StealthChop.
       if (ds.bits.stealth != 0) {
         stall_candidate_count = 0;
@@ -5556,7 +5997,13 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
         const bool hw_stop_event = (rs.bits.event_stop_sg != 0);
         bool stall_confirmed = hw_stop_event;
 
-        if (!stall_confirmed && velocity_ok) {
+        // For software stall detection, require motor to be AT target velocity (not just above min).
+        // This prevents false stalls during acceleration where SG_RESULT can naturally be 0.
+        // Also require a minimum elapsed time (200ms) for motor to settle.
+        constexpr uint32_t MIN_SETTLE_TIME_MS = 200;
+        bool can_check_software_stall = at_target_velocity && (elapsed >= MIN_SETTLE_TIME_MS);
+        
+        if (!stall_confirmed && can_check_software_stall) {
           // Secondary validation (if sg_stop event hasn't fired yet):
           // require low SG_RESULT for a few consecutive samples + DRV_STATUS.stallguard.
           auto sg_res = driver_.stallGuard.GetStallGuardResult();
@@ -5564,7 +6011,13 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
             constexpr uint16_t SG_HIGH_LOAD_THRESHOLD = 100;
             if (sg_res.Value() <= SG_HIGH_LOAD_THRESHOLD) {
               if (stall_candidate_count < 255) stall_candidate_count++;
-              if (stall_candidate_count >= 3) {
+              TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Debug, "Homing",
+                                "Stall candidate: sg=%u <= %u, count=%u/5",
+                                static_cast<unsigned>(sg_res.Value()),
+                                static_cast<unsigned>(SG_HIGH_LOAD_THRESHOLD),
+                                static_cast<unsigned>(stall_candidate_count));
+              // Increased from 3 to 5 consecutive samples to reduce false positives
+              if (stall_candidate_count >= 5) {
                 stall_confirmed = true;
               }
             } else {
@@ -5574,7 +6027,7 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
             stall_candidate_count = 0;
           }
         } else if (!hw_stop_event) {
-          // Either not above min velocity yet or not moving: don't accumulate candidates.
+          // Either not at target velocity yet, settling, or in StealthChop: don't accumulate candidates.
           stall_candidate_count = 0;
         }
 
@@ -5589,6 +6042,13 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
 
           (void)driver_.rampControl.Stop();
           driver_.comm_.DelayMs(150);
+          
+          // CRITICAL: Disable stop-on-stall BEFORE backoff move!
+          // If sg_stop remains enabled and SG_RESULT goes to 0 during backoff
+          // (which can happen at low velocity), the motor will stop again
+          // causing a "bouncing" effect.
+          (void)driver_.stallGuard.EnableStopOnStall(false);
+          
           auto clr = driver_.stallGuard.ClearStallFlag();
           if (!clr) return Result<void>(clr.Error());
 
@@ -5872,6 +6332,27 @@ Result<void> TMC51x0<CommType>::Homing::PerformSwitchHoming(
   }
   sw_mode.bits.en_softstop = false;
 
+  // Clear stale switch-stop and latch state before enabling the stop function.
+  // Datasheet (SW_MODE/RAMP_STAT):
+  // - stop flags clear when the stop function is disabled
+  // - latch-ready flags (status_latch_l/r) are WC (write-1-to-clear)
+  {
+    SW_MODE_Register sw_mode_tmp{};
+    sw_mode_tmp.value = cache_.cached_sw_mode.value;
+    sw_mode_tmp.bits.en_softstop = 0;
+    sw_mode_tmp.bits.sg_stop = 0;
+    sw_mode_tmp.bits.stop_l_enable = 0;
+    sw_mode_tmp.bits.stop_r_enable = 0;
+    sw_mode_tmp.bits.latch_l_active = 0;
+    sw_mode_tmp.bits.latch_l_inactive = 0;
+    sw_mode_tmp.bits.latch_r_active = 0;
+    sw_mode_tmp.bits.latch_r_inactive = 0;
+    auto wr = driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode_tmp.value, driver_.GetCommAddress());
+    if (!wr) return Result<void>(wr.Error());
+    cache_.sw_mode_was_modified = true;
+  }
+  (void)driver_.events.ClearRampStatus((1u << 2) /*status_latch_l*/ | (1u << 3) /*status_latch_r*/);
+
   auto sw_wr = driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value, driver_.GetCommAddress());
   if (!sw_wr) return Result<void>(sw_wr.Error());
   cache_.sw_mode_was_modified = true;
@@ -5889,9 +6370,8 @@ Result<void> TMC51x0<CommType>::Homing::PerformSwitchHoming(
     }
   }
 
-  // Clear sticky stop events before starting (RAMP_STAT is write-1-to-clear for event bits).
-  // Without this, a stale event_stop_l/r from earlier motion could cause an immediate false "switch hit".
-  (void)driver_.events.ClearRampStatus((1u << 4) /*event_stop_l*/ | (1u << 5) /*event_stop_r*/);
+  // Note: event_stop_l/r are cleared by disabling the stop function / hold / opposite move (datasheet).
+  // We disabled the stop function above before enabling it, so stale events should be cleared here.
 
   float move_delta = direction ? span_steps : -span_steps;
 
@@ -5986,6 +6466,264 @@ Result<void> TMC51x0<CommType>::Homing::PerformSwitchHoming(
     (void)driver_.rampControl.SetTargetPosition(0.0F, Unit::Steps);
   }
 
+  // Cleanup: clear latch-ready bits so later latch reads aren't confused by this homing run.
+  (void)driver_.events.ClearRampStatus((1u << 2) /*status_latch_l*/ | (1u << 3) /*status_latch_r*/);
+
+  return Result<void>();
+}
+
+//==============================================================================
+// Encoder Index Homing (uses N-channel pulse with latch_x_act for precision)
+//==============================================================================
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Homing::PerformEncoderIndexHoming(
+    bool direction, const BoundsOptions& opt, int32_t& final_position,
+    CancelCallback should_cancel) noexcept {
+
+  auto mode_guard = driver_.RequireInternalRampMode();
+  if (!mode_guard) return mode_guard;
+
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                    "PerformEncoderIndexHoming start: dir=%d speed=%.3f span=%.3f timeout=%u",
+                    direction ? 1 : 0, opt.search_speed, opt.search_span, opt.timeout_ms);
+
+  // Encoder must be available/configured
+  auto enc_cfg = driver_.encoder.GetEncoderConfig();
+  if (!enc_cfg) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Homing",
+                      "EncoderIndexHoming: encoder not configured");
+    return Result<void>(ErrorCode::INVALID_STATE);
+  }
+
+  if (!CacheCurrentSettings()) return Result<void>(ErrorCode::COMM_ERROR);
+
+  // RestoreGuard for RAII cleanup
+  struct RestoreGuard {
+    TMC51x0& driver;
+    bool restore_cached{false};
+    bool restore_motor_enable{false};
+    bool original_motor_enabled{false};
+    bool restore_latch_x_act{false};
+    bool original_latch_x_act{false};
+    explicit RestoreGuard(TMC51x0& d) : driver(d) {}
+    ~RestoreGuard() {
+      // Restore latch_x_act to original state
+      if (restore_latch_x_act) {
+        (void)driver.encoder.SetLatchXactualEnabled(original_latch_x_act);
+      }
+      // Restore motor enable state
+      if (restore_motor_enable && !original_motor_enabled) {
+        (void)driver.motorControl.Disable();
+      }
+      // Restore cached ramp settings
+      if (restore_cached) {
+        driver.homing.RestoreCachedSettings();
+      }
+    }
+  } guard(driver_);
+  guard.restore_cached = true;
+
+  // Check and cache original latch_x_act state
+  {
+    auto latch_state = driver_.encoder.IsLatchXactualEnabled();
+    if (latch_state) {
+      guard.original_latch_x_act = latch_state.Value();
+      guard.restore_latch_x_act = true;
+    }
+  }
+
+  // Enable latch_x_act so XACTUAL is captured to XLATCH when N-event fires
+  {
+    auto r = driver_.encoder.SetLatchXactualEnabled(true);
+    if (!r) {
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Homing",
+                        "EncoderIndexHoming: failed to enable latch_x_act");
+      return Result<void>(r.Error());
+    }
+  }
+
+  // Ensure motor is enabled
+  {
+    auto enabled = driver_.motorControl.IsEnabled();
+    if (!enabled) return Result<void>(enabled.Error());
+    guard.original_motor_enabled = enabled.Value();
+    if (!enabled.Value()) {
+      auto en = driver_.motorControl.Enable();
+      if (!en) return Result<void>(en.Error());
+      guard.restore_motor_enable = true;
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                        "EncoderIndexHoming: motor was disabled -> enabled temporarily");
+    }
+  }
+
+  // Clear any existing N-event flag before starting
+  {
+    auto r = driver_.encoder.ClearNEventFlag();
+    if (!r) {
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
+                        "EncoderIndexHoming: failed to clear N-event flag");
+    }
+  }
+
+  // Configure motion parameters
+  float vmax_steps = 0.0F;
+  if (opt.search_speed > 0.0F) {
+    vmax_steps = driver_.convertSpeedToSteps(opt.search_speed, opt.speed_unit);
+  } else if (cache_.cached_max_speed > 0.0F) {
+    vmax_steps = cache_.cached_max_speed;
+  } else {
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+
+  float span_steps = driver_.convertPositionToSteps(opt.search_span, opt.position_unit);
+
+  // Set up ramp for positioning move
+  {
+    auto r = driver_.rampControl.Stop();
+    if (!r) return Result<void>(r.Error());
+    driver_.comm_.DelayMs(10);
+    r = driver_.rampControl.SetRampMode(RampMode::HOLD);
+    if (!r) return Result<void>(r.Error());
+  }
+
+  // Configure speed and acceleration
+  {
+    auto r = driver_.rampControl.SetMaxSpeed(vmax_steps, Unit::Steps);
+    if (!r) return Result<void>(r.Error());
+
+    // Use configured or conservative acceleration
+    float a_steps = cache_.cached_acceleration;
+    if (opt.search_accel > 0.0F) {
+      a_steps = driver_.convertAccelerationToSteps(opt.search_accel, opt.accel_unit);
+    } else if (a_steps <= 0.0F) {
+      a_steps = std::max(std::abs(vmax_steps) / 0.2F, 1000.0F);
+    }
+    r = driver_.rampControl.SetAcceleration(a_steps, Unit::Steps);
+    if (!r) return Result<void>(r.Error());
+
+    float d_steps = cache_.cached_deceleration;
+    if (opt.search_decel > 0.0F) {
+      d_steps = driver_.convertAccelerationToSteps(opt.search_decel, opt.accel_unit);
+    } else if (d_steps <= 0.0F) {
+      d_steps = a_steps;
+    }
+    r = driver_.rampControl.SetDeceleration(d_steps, Unit::Steps);
+    if (!r) return Result<void>(r.Error());
+
+    // Configure ramp speeds
+    float vstop = cache_.cached_vstop > 0.0F ? cache_.cached_vstop : 1.0F;
+    r = driver_.rampControl.SetRampSpeeds(cache_.cached_vstart, vstop, 0.0F, Unit::Steps);
+    if (!r) return Result<void>(r.Error());
+  }
+
+  // Start the search move
+  {
+    auto r = driver_.rampControl.SetRampMode(RampMode::POSITIONING);
+    if (!r) return Result<void>(r.Error());
+
+    float target = direction ? span_steps : -span_steps;
+    r = driver_.rampControl.MoveRelative(target, Unit::Steps);
+    if (!r) return Result<void>(r.Error());
+  }
+
+  // Poll for N-event
+  constexpr uint32_t POLL_MS = 5;
+  uint32_t elapsed = 0;
+  bool n_event_found = false;
+
+  while (elapsed <= opt.timeout_ms) {
+    if (should_cancel && should_cancel()) {
+      (void)driver_.rampControl.Stop();
+      (void)driver_.rampControl.SetRampMode(RampMode::HOLD);
+      return Result<void>(ErrorCode::CANCELLED);
+    }
+
+    // Check for N-event
+    auto n_event = driver_.encoder.IsNEventDetected();
+    if (n_event && n_event.Value()) {
+      n_event_found = true;
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                        "EncoderIndexHoming: N-event detected at elapsed=%ums", elapsed);
+      break;
+    }
+
+    // Check if target reached (no index found within span)
+    auto reached = driver_.rampControl.IsTargetReached();
+    if (reached && reached.Value()) {
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
+                        "EncoderIndexHoming: target reached without N-event");
+      (void)driver_.rampControl.SetRampMode(RampMode::HOLD);
+      return Result<void>(ErrorCode::INVALID_STATE);  // No index pulse found in search span
+    }
+
+    driver_.comm_.DelayMs(POLL_MS);
+    elapsed += POLL_MS;
+  }
+
+  // Stop motion immediately when N-event found
+  (void)driver_.rampControl.Stop();
+  driver_.comm_.DelayMs(50);
+  (void)driver_.rampControl.SetRampMode(RampMode::HOLD);
+
+  if (!n_event_found) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Homing",
+                      "EncoderIndexHoming: timeout waiting for N-event");
+    return Result<void>(ErrorCode::TIMEOUT);
+  }
+
+  // Read the latched XACTUAL from XLATCH - this is the precise position when N-event fired
+  {
+    auto latched = driver_.switches.GetLatchedPosition(Unit::Steps);
+    if (!latched) {
+      // Fallback to current position if XLATCH read fails
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
+                        "EncoderIndexHoming: XLATCH read failed, using current position");
+      auto pos = driver_.rampControl.GetCurrentPosition(Unit::Steps);
+      if (!pos) return Result<void>(pos.Error());
+      final_position = static_cast<int32_t>(std::lround(pos.Value()));
+    } else {
+      final_position = static_cast<int32_t>(std::lround(latched.Value()));
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                        "EncoderIndexHoming: latched XACTUAL=%" PRId32 " steps", final_position);
+    }
+  }
+
+  // Clear the N-event flag now that we've processed it
+  (void)driver_.encoder.ClearNEventFlag();
+
+  // Define home at the latched position
+  // First move to that position if we overshot
+  {
+    auto current = driver_.rampControl.GetCurrentPosition(Unit::Steps);
+    if (current) {
+      int32_t current_pos = static_cast<int32_t>(std::lround(current.Value()));
+      int32_t delta = final_position - current_pos;
+      if (std::abs(delta) > 5) {
+        // Move back to the latched position
+        (void)driver_.rampControl.SetRampMode(RampMode::POSITIONING);
+        (void)driver_.rampControl.MoveRelative(static_cast<float>(delta), Unit::Steps);
+        for (int i = 0; i < 100; ++i) {
+          auto r = driver_.rampControl.IsTargetReached();
+          if (r && r.Value()) break;
+          driver_.comm_.DelayMs(10);
+        }
+      }
+    }
+  }
+
+  // Set home position at the latched index position
+  {
+    auto r = driver_.rampControl.SetRampMode(RampMode::HOLD);
+    if (!r) return Result<void>(r.Error());
+    r = driver_.rampControl.SetCurrentPosition(0.0F, Unit::Steps, false);
+    if (!r) return Result<void>(r.Error());
+    (void)driver_.rampControl.SetTargetPosition(0.0F, Unit::Steps);
+  }
+
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                    "EncoderIndexHoming complete: home set, latched_pos=%" PRId32, final_position);
+
   return Result<void>();
 }
 
@@ -5995,7 +6733,7 @@ TMC51x0<CommType>::Homing::FindBoundsEncoder(const BoundsOptions& opt, const Hom
                                             CancelCallback should_cancel) noexcept {
   BoundsResult out{};
   auto mode_guard = driver_.RequireInternalRampMode();
-  if (!mode_guard) return mode_guard;
+  if (!mode_guard) return Result<BoundsResult>(mode_guard.Error());
 
   TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
                     "FindBoundsEncoder start: speed=%.3f span=%.3f backoff=%.3f timeout=%u",
@@ -6090,20 +6828,38 @@ TMC51x0<CommType>::Homing::FindBoundsEncoder(const BoundsOptions& opt, const Hom
       }
       if (!r) return Result<void>(r.Error());
 
-      float a_steps = cache_.cached_acceleration;
-      float d_steps = cache_.cached_deceleration;
-      if (a_steps <= 0.0F || d_steps <= 0.0F) {
-        float vmax_fs = (opt.search_speed > 0.0F)
-                            ? driver_.convertSpeedToSteps(opt.search_speed, opt.speed_unit)
-                            : vmax_steps;
-        float a_default = std::max(std::abs(vmax_fs) / 0.2F, 1000.0F);
-        a_steps = a_default;
-        d_steps = a_default;
+      // Accel/decel override support (same policy as StallGuard bounds):
+      // - If caller provides overrides, use them (unit-aware)
+      // - Else use cached accel/decel (or conservative default)
+      if (opt.search_accel > 0.0F) {
+        r = driver_.rampControl.SetAcceleration(opt.search_accel, opt.accel_unit);
+        if (!r) return Result<void>(r.Error());
+      } else {
+        float a_steps = cache_.cached_acceleration;
+        if (a_steps <= 0.0F) {
+          float vmax_fs = (opt.search_speed > 0.0F)
+                              ? driver_.convertSpeedToSteps(opt.search_speed, opt.speed_unit)
+                              : vmax_steps;
+          a_steps = std::max(std::abs(vmax_fs) / 0.2F, 1000.0F);
+        }
+        r = driver_.rampControl.SetAcceleration(a_steps, Unit::Steps);
+        if (!r) return Result<void>(r.Error());
       }
-      r = driver_.rampControl.SetAcceleration(a_steps, Unit::Steps);
-      if (!r) return Result<void>(r.Error());
-      r = driver_.rampControl.SetDeceleration(d_steps, Unit::Steps);
-      if (!r) return Result<void>(r.Error());
+
+      if (opt.search_decel > 0.0F) {
+        r = driver_.rampControl.SetDeceleration(opt.search_decel, opt.accel_unit);
+        if (!r) return Result<void>(r.Error());
+      } else {
+        float d_steps = cache_.cached_deceleration;
+        if (d_steps <= 0.0F) {
+          float vmax_fs = (opt.search_speed > 0.0F)
+                              ? driver_.convertSpeedToSteps(opt.search_speed, opt.speed_unit)
+                              : vmax_steps;
+          d_steps = std::max(std::abs(vmax_fs) / 0.2F, 1000.0F);
+        }
+        r = driver_.rampControl.SetDeceleration(d_steps, Unit::Steps);
+        if (!r) return Result<void>(r.Error());
+      }
 
       float vstart_steps = cache_.cached_vstart;
       float vstop_steps = cache_.cached_vstop;
@@ -6239,7 +6995,7 @@ TMC51x0<CommType>::Homing::FindBoundsSwitch(const BoundsOptions& opt, const Home
                                            CancelCallback should_cancel) noexcept {
   BoundsResult out{};
   auto mode_guard = driver_.RequireInternalRampMode();
-  if (!mode_guard) return mode_guard;
+  if (!mode_guard) return Result<BoundsResult>(mode_guard.Error());
 
   TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
                     "FindBoundsSwitch start: speed=%.3f span=%.3f backoff=%.3f timeout=%u",
@@ -6279,6 +7035,133 @@ TMC51x0<CommType>::Homing::FindBoundsSwitch(const BoundsOptions& opt, const Home
     }
   }
 
+  // Convert backoff/span to steps for preflight and search.
+  float backoff_steps = 0.0F;
+  if (opt.backoff_distance > 0.0F) {
+    backoff_steps = driver_.convertPositionToSteps(opt.backoff_distance, opt.position_unit);
+  }
+  float span_steps = driver_.convertPositionToSteps(opt.search_span, opt.position_unit);
+  float vmax_steps = 0.0F;
+  if (opt.search_speed > 0.0F) {
+    vmax_steps = driver_.convertSpeedToSteps(opt.search_speed, opt.speed_unit);
+  } else if (cache_.cached_max_speed > 0.0F) {
+    vmax_steps = cache_.cached_max_speed;
+  } else {
+    return Result<BoundsResult>(ErrorCode::INVALID_VALUE);
+  }
+
+  // Preflight: if either switch is currently active, attempt to clear it by backing off.
+  // This handles the case where the motor starts on a switch (bounds finding needs to move in both directions).
+  {
+    auto rs = driver_.status.GetRampStatusRegister();
+    if (!rs) return Result<BoundsResult>(rs.Error());
+    RAMP_STAT_Register st{};
+    st.value = rs.Value();
+    bool left_active = (st.bits.status_stop_l != 0);
+    bool right_active = (st.bits.status_stop_r != 0);
+    if (left_active || right_active) {
+      if (!opt.preflight_clear_active_switch) {
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
+                          "FindBoundsSwitch: switch already active at start (L=%d R=%d), preflight_clear_active_switch=false",
+                          left_active, right_active);
+        return Result<BoundsResult>(ErrorCode::INVALID_STATE);
+      }
+      if (backoff_steps <= 0.0F) {
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Homing",
+                          "FindBoundsSwitch: switch active but no backoff_distance configured");
+        return Result<BoundsResult>(ErrorCode::INVALID_STATE);
+      }
+
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
+                        "FindBoundsSwitch: switch already active at start (L=%d R=%d), attempting preflight clear",
+                        left_active, right_active);
+
+      // Disable all stop sources while clearing an already-active switch (prevents immediately re-stopping).
+      {
+        SW_MODE_Register sw_mode_tmp{};
+        sw_mode_tmp.value = cache_.cached_sw_mode.value;
+        sw_mode_tmp.bits.en_softstop = 0;
+        sw_mode_tmp.bits.sg_stop = 0;
+        sw_mode_tmp.bits.stop_l_enable = 0;
+        sw_mode_tmp.bits.stop_r_enable = 0;
+        sw_mode_tmp.bits.latch_l_active = 0;
+        sw_mode_tmp.bits.latch_l_inactive = 0;
+        sw_mode_tmp.bits.latch_r_active = 0;
+        sw_mode_tmp.bits.latch_r_inactive = 0;
+        auto wr = driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode_tmp.value, driver_.GetCommAddress());
+        if (!wr) return Result<BoundsResult>(wr.Error());
+        cache_.sw_mode_was_modified = true;
+      }
+
+      // Move away from the active switch: left => positive, right => negative
+      float away = left_active ? std::min(backoff_steps, span_steps) : -std::min(backoff_steps, span_steps);
+
+      // Ensure stable stop.
+      {
+        auto r = driver_.rampControl.Stop();
+        if (!r) return Result<BoundsResult>(r.Error());
+        driver_.comm_.DelayMs(50);
+        r = driver_.rampControl.SetRampMode(RampMode::HOLD);
+        if (!r) return Result<BoundsResult>(r.Error());
+      }
+
+      // Configure a short positioning move using existing/cached ramp defaults.
+      {
+        auto r = driver_.rampControl.SetRampMode(RampMode::POSITIONING);
+        if (!r) return Result<BoundsResult>(r.Error());
+        cache_.ramp_settings_were_modified = true;
+        r = driver_.rampControl.SetMaxSpeed(vmax_steps, Unit::Steps);
+        if (!r) return Result<BoundsResult>(r.Error());
+        float a_steps = cache_.cached_acceleration;
+        float d_steps = cache_.cached_deceleration;
+        if (a_steps <= 0.0F || d_steps <= 0.0F) {
+          float a_default = std::max(std::abs(vmax_steps) / 0.2F, 1000.0F);
+          a_steps = a_default;
+          d_steps = a_default;
+        }
+        r = driver_.rampControl.SetAcceleration(a_steps, Unit::Steps);
+        if (!r) return Result<BoundsResult>(r.Error());
+        r = driver_.rampControl.SetDeceleration(d_steps, Unit::Steps);
+        if (!r) return Result<BoundsResult>(r.Error());
+        float vstop = cache_.cached_vstop;
+        if (vstop <= 0.0F) vstop = 1.0F;
+        auto rs2 = driver_.rampControl.SetRampSpeeds(cache_.cached_vstart, vstop, cache_.cached_v1, Unit::Steps);
+        if (!rs2) return Result<BoundsResult>(rs2.Error());
+        r = driver_.rampControl.MoveRelative(away, Unit::Steps);
+        if (!r) return Result<BoundsResult>(r.Error());
+      }
+
+      // Wait for the preflight move to finish (bounded).
+      for (int i = 0; i < 200; ++i) {
+        if (should_cancel && should_cancel()) {
+          (void)driver_.rampControl.Stop();
+          out.cancelled = true;
+          return Result<BoundsResult>(ErrorCode::CANCELLED);
+        }
+        auto tr = driver_.rampControl.IsTargetReached();
+        if (!tr) return Result<BoundsResult>(tr.Error());
+        if (tr.Value()) break;
+        driver_.comm_.DelayMs(10);
+      }
+      (void)driver_.rampControl.Stop();
+      driver_.comm_.DelayMs(50);
+
+      // Verify switches cleared.
+      auto rs_after = driver_.status.GetRampStatusRegister();
+      if (!rs_after) return Result<BoundsResult>(rs_after.Error());
+      RAMP_STAT_Register st_after{};
+      st_after.value = rs_after.Value();
+      bool left_still_active = (st_after.bits.status_stop_l != 0);
+      bool right_still_active = (st_after.bits.status_stop_r != 0);
+      if (left_still_active || right_still_active) {
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Homing",
+                          "FindBoundsSwitch: preflight clear failed; switch still active (L=%d R=%d)",
+                          left_still_active, right_still_active);
+        return Result<BoundsResult>(ErrorCode::INVALID_STATE);
+      }
+    }
+  }
+
   // Establish local coordinate frame
   {
     auto r = driver_.rampControl.Stop();
@@ -6311,11 +7194,19 @@ TMC51x0<CommType>::Homing::FindBoundsSwitch(const BoundsOptions& opt, const Home
   }
   cache_.sw_mode_was_modified = true;
 
-  auto clear_stop_events = [&]() {
-    RAMP_STAT_Register clear{};
-    clear.bits.event_stop_l = 1;
-    clear.bits.event_stop_r = 1;
-    driver_.comm_.WriteRegister(Registers::RAMP_STAT, clear.value, driver_.GetCommAddress());
+  // Clear stale stop/latch state using datasheet-defined mechanisms:
+  // - stop flags clear when stop function is disabled (SW_MODE.stop_*_enable = 0)
+  // - latch-ready flags (status_latch_l/r) are WC (write-1-to-clear)
+  auto clear_stop_state = [&]() -> Result<void> {
+    SW_MODE_Register sw_mode_tmp = sw_mode;
+    sw_mode_tmp.bits.stop_l_enable = 0;
+    sw_mode_tmp.bits.stop_r_enable = 0;
+    auto r = driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode_tmp.value, driver_.GetCommAddress());
+    if (!r) return Result<void>(r.Error());
+    r = driver_.comm_.WriteRegister(Registers::SW_MODE, sw_mode.value, driver_.GetCommAddress());
+    if (!r) return Result<void>(r.Error());
+    (void)driver_.events.ClearRampStatus((1u << 2) /*status_latch_l*/ | (1u << 3) /*status_latch_r*/);
+    return Result<void>();
   };
 
   auto find_one = [&](bool positive_dir, bool& found, float& bound_out) -> Result<void> {
@@ -6323,7 +7214,11 @@ TMC51x0<CommType>::Homing::FindBoundsSwitch(const BoundsOptions& opt, const Home
     if (opt.search_span <= 0.0F || opt.backoff_distance < 0.0F || opt.timeout_ms == 0) {
       return Result<void>(ErrorCode::INVALID_VALUE);
     }
-    clear_stop_events();
+    // Ensure stale stop conditions don't cause immediate false "switch hit".
+    {
+      auto clr = clear_stop_state();
+      if (!clr) return clr;
+    }
     // Ensure stable stop / clear XTARGET.
     {
       auto r = driver_.rampControl.Stop();
@@ -6355,20 +7250,36 @@ TMC51x0<CommType>::Homing::FindBoundsSwitch(const BoundsOptions& opt, const Home
       }
       if (!r) return Result<void>(r.Error());
 
-      float a_steps = cache_.cached_acceleration;
-      float d_steps = cache_.cached_deceleration;
-      if (a_steps <= 0.0F || d_steps <= 0.0F) {
-        float vmax_fs = (opt.search_speed > 0.0F)
-                            ? driver_.convertSpeedToSteps(opt.search_speed, opt.speed_unit)
-                            : vmax_steps;
-        float a_default = std::max(std::abs(vmax_fs) / 0.2F, 1000.0F);
-        a_steps = a_default;
-        d_steps = a_default;
+      // Accel/decel override support (same policy as StallGuard/Encoder bounds):
+      if (opt.search_accel > 0.0F) {
+        r = driver_.rampControl.SetAcceleration(opt.search_accel, opt.accel_unit);
+        if (!r) return Result<void>(r.Error());
+      } else {
+        float a_steps = cache_.cached_acceleration;
+        if (a_steps <= 0.0F) {
+          float vmax_fs = (opt.search_speed > 0.0F)
+                              ? driver_.convertSpeedToSteps(opt.search_speed, opt.speed_unit)
+                              : vmax_steps;
+          a_steps = std::max(std::abs(vmax_fs) / 0.2F, 1000.0F);
+        }
+        r = driver_.rampControl.SetAcceleration(a_steps, Unit::Steps);
+        if (!r) return Result<void>(r.Error());
       }
-      r = driver_.rampControl.SetAcceleration(a_steps, Unit::Steps);
-      if (!r) return Result<void>(r.Error());
-      r = driver_.rampControl.SetDeceleration(d_steps, Unit::Steps);
-      if (!r) return Result<void>(r.Error());
+
+      if (opt.search_decel > 0.0F) {
+        r = driver_.rampControl.SetDeceleration(opt.search_decel, opt.accel_unit);
+        if (!r) return Result<void>(r.Error());
+      } else {
+        float d_steps = cache_.cached_deceleration;
+        if (d_steps <= 0.0F) {
+          float vmax_fs = (opt.search_speed > 0.0F)
+                              ? driver_.convertSpeedToSteps(opt.search_speed, opt.speed_unit)
+                              : vmax_steps;
+          d_steps = std::max(std::abs(vmax_fs) / 0.2F, 1000.0F);
+        }
+        r = driver_.rampControl.SetDeceleration(d_steps, Unit::Steps);
+        if (!r) return Result<void>(r.Error());
+      }
 
       float vstart_steps = cache_.cached_vstart;
       float vstop_steps = cache_.cached_vstop;
@@ -6415,7 +7326,7 @@ TMC51x0<CommType>::Homing::FindBoundsSwitch(const BoundsOptions& opt, const Home
           auto final_pos = driver_.rampControl.GetCurrentPosition(opt.position_unit);
           if (!final_pos) return Result<void>(final_pos.Error());
           bound_out = final_pos.Value();
-          clear_stop_events();
+          (void)clear_stop_state();
           found = true;
 
           TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
@@ -6952,6 +7863,147 @@ Result<uint8_t> TMC51x0<CommType>::Status::ReadOffsetCalibration(uint8_t& phase_
   return Result<uint8_t>(phase_a);
 }
 
+//==============================================================================
+// OTP Programming (One-Time Programmable Memory) - USE WITH EXTREME CAUTION!
+//==============================================================================
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Status::ProgramOtpBit(uint8_t byte_index, uint8_t bit_index,
+                                                       bool confirm_permanent) noexcept {
+  // Safety check: require explicit confirmation
+  if (!confirm_permanent) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "OTP",
+                      "OTP programming rejected: confirm_permanent must be true");
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+
+  // Validate parameters
+  if (byte_index > 0) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "OTP",
+                      "OTP byte_index %u invalid (TMC5160 only has byte 0)", byte_index);
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+  if (bit_index > 7) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "OTP",
+                      "OTP bit_index %u invalid (must be 0-7)", bit_index);
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+
+  // Construct OTP_PROG register value
+  OTP_PROG_Register otp_prog{};
+  otp_prog.bits.otpbit = bit_index;
+  otp_prog.bits.otpbyte = byte_index;
+  otp_prog.bits.otpmagic = 0xBD; // Magic value to enable programming
+
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "OTP",
+                    "⚠️ PROGRAMMING OTP: byte=%u, bit=%u (PERMANENT!)", byte_index, bit_index);
+
+  // Write to OTP_PROG register
+  auto write_result = driver_.comm_.WriteRegister(Registers::OTP_PROG, otp_prog.value, driver_.GetCommAddress());
+  if (!write_result) {
+    return write_result;
+  }
+
+  // Datasheet requires minimum 10ms programming time per bit
+  // Use a blocking delay (platform-specific)
+#if defined(ESP_PLATFORM) || defined(ESP32)
+  vTaskDelay(pdMS_TO_TICKS(15)); // 15ms with margin
+#else
+  // For other platforms, caller must ensure adequate delay
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "OTP",
+                    "Caller must ensure 10ms+ delay for OTP programming");
+#endif
+
+  return Result<void>();
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Status::ProgramOtpFclktrim(uint8_t fclktrim,
+                                                           bool confirm_permanent) noexcept {
+  if (!confirm_permanent) {
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+  if (fclktrim > 31) {
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+
+  // Read current OTP to check which bits need to be set
+  auto otp_result = driver_.comm_.ReadRegister(Registers::OTP_READ, driver_.GetCommAddress());
+  if (!otp_result) {
+    return Result<void>(ErrorCode::COMM_ERROR);
+  }
+  OTP_READ_Register current_otp{};
+  current_otp.value = otp_result.Value();
+  uint8_t current_fclktrim = static_cast<uint8_t>(current_otp.bits.otp_fclktrim);
+
+  // OTP can only SET bits, not clear them
+  if ((fclktrim & ~current_fclktrim) != (fclktrim ^ current_fclktrim)) {
+    // Some bits would need to be cleared, which is impossible
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "OTP",
+                      "Cannot program FCLKTRIM=%u: current=%u, can only set bits",
+                      fclktrim, current_fclktrim);
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+
+  // Program each bit that needs to be set (bits 0-4)
+  for (uint8_t bit = 0; bit < 5; ++bit) {
+    bool need_to_set = (fclktrim & (1U << bit)) && !(current_fclktrim & (1U << bit));
+    if (need_to_set) {
+      auto result = ProgramOtpBit(0, bit, true);
+      if (!result) {
+        return result;
+      }
+    }
+  }
+
+  return Result<void>();
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Status::ProgramOtpS2Level(bool high_level,
+                                                          bool confirm_permanent) noexcept {
+  if (!confirm_permanent) {
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+  if (!high_level) {
+    // OTP bit 5: 0=level 6, 1=level 12. Can only set to 1 (high_level=true)
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "OTP",
+                      "Cannot clear OTP bit - can only set S2_LEVEL to high (1)");
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+  return ProgramOtpBit(0, 5, true); // Bit 5 = otp_S2_level
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Status::ProgramOtpBbm(bool short_bbm,
+                                                       bool confirm_permanent) noexcept {
+  if (!confirm_permanent) {
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+  if (!short_bbm) {
+    // OTP bit 6: 0=BBMCLKS=4, 1=BBMCLKS=2. Can only set to 1 (short_bbm=true)
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "OTP",
+                      "Cannot clear OTP bit - can only set BBM to short (1)");
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+  return ProgramOtpBit(0, 6, true); // Bit 6 = otp_bbm
+}
+
+template <typename CommType>
+Result<void> TMC51x0<CommType>::Status::ProgramOtpTbl(bool short_tbl,
+                                                       bool confirm_permanent) noexcept {
+  if (!confirm_permanent) {
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+  if (!short_tbl) {
+    // OTP bit 7: 0=TBL=2, 1=TBL=1. Can only set to 1 (short_tbl=true)
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "OTP",
+                      "Cannot clear OTP bit - can only set TBL to short (1)");
+    return Result<void>(ErrorCode::INVALID_VALUE);
+  }
+  return ProgramOtpBit(0, 7, true); // Bit 7 = otp_tbl
+}
+
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Status::VerifySetup() noexcept {
   TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "VerifySetup", "--- TMC5160 Setup Verification ---");
@@ -7007,7 +8059,7 @@ Result<void> TMC51x0<CommType>::Status::VerifySetup() noexcept {
 // Helper function to test if a velocity works with a given SGT
 template <typename CommType>
 bool TestVelocityWithSGT(TMC51x0<CommType>& driver, float velocity_steps, int8_t sgt,
-                                 uint16_t& sg_result_out, int sample_count = 8) {
+                                 uint16_t& sg_result_out, int sample_count = 32) {
   // Configure SGT
   StallGuardConfig sg_config{};
   sg_config.threshold = sgt;
@@ -7016,7 +8068,7 @@ bool TestVelocityWithSGT(TMC51x0<CommType>& driver, float velocity_steps, int8_t
   if (!config_result) {
     return false;
   }
-  driver.GetComm().DelayMs(10);
+  driver.GetComm().DelayMs(50);
 
   // Set velocity
   auto speed_result = driver.rampControl.SetMaxSpeed(velocity_steps, Unit::Steps);
@@ -7024,7 +8076,7 @@ bool TestVelocityWithSGT(TMC51x0<CommType>& driver, float velocity_steps, int8_t
     return false;
   }
 
-  // Wait for velocity to stabilize
+  // Wait for velocity to stabilize (with timeout)
   for (int i = 0; i < 100; i++) { // 100 * 10ms = 1000ms timeout
     auto speed_result = driver.rampControl.GetCurrentSpeed(Unit::Steps);
     if (speed_result) {
@@ -7036,23 +8088,33 @@ bool TestVelocityWithSGT(TMC51x0<CommType>& driver, float velocity_steps, int8_t
     driver.GetComm().DelayMs(10);
   }
 
-  // Sample SG_RESULT
+  // Allow additional settle time after reaching velocity
+  driver.GetComm().DelayMs(100);
+
+  // Sample SG_RESULT multiple times for better averaging
   uint16_t sg_sum = 0;
   uint16_t sg_count = 0;
   bool stall_detected = false;
+  uint8_t zero_count = 0;
 
   for (int i = 0; i < sample_count; i++) {
     auto sg_result = driver.stallGuard.GetStallGuard();
     if (sg_result) {
       uint16_t sg_val = sg_result.Value();
       if (sg_val == 0) {
-        stall_detected = true;
-        break;
+        zero_count++;
+        // Require 3+ consecutive zeros to confirm stall
+        if (zero_count >= 3) {
+          stall_detected = true;
+          break;
+        }
+      } else {
+        zero_count = 0;  // Reset on non-zero reading
+        sg_sum += sg_val;
+        sg_count++;
       }
-      sg_sum += sg_val;
-      sg_count++;
     }
-    driver.GetComm().DelayMs(5);
+    driver.GetComm().DelayMs(15);
   }
 
   if (stall_detected) {
@@ -7130,12 +8192,13 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
   driver_.stallGuard.ClearStallFlag();
   driver_.comm_.DelayMs(10);
 
-  // 1. Start with SGT=0 (datasheet recommendation) or min_sgt if higher
-  int8_t current_sgt = (min_sgt < 0) ? 0 : min_sgt;
-  if (current_sgt != min_sgt) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                      "Adjusted starting SGT from %d to %d (avoiding false stalls)", min_sgt, current_sgt);
-  }
+  // 1. Start with min_sgt (SGT range is -64 to +63 per TMC5160 datasheet)
+  // Negative values = more sensitive (lower load triggers stall)
+  // Positive values = less sensitive (higher load needed to trigger stall)
+  // For high-torque motors, negative SGT values may be needed
+  int8_t current_sgt = constrain<int8_t>(min_sgt, -64, 63);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
+                    "Starting SGT tuning from %d (range: %d to %d)", current_sgt, min_sgt, max_sgt);
 
   // Enable velocity mode for continuous motion during tuning
   if (!driver_.rampControl.SetRampMode(RampMode::VELOCITY_POS)) {
@@ -7176,17 +8239,38 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
                       "Warning: Target velocity not reached before tuning (V=%.1f)", current_speed_debug);
   }
 
-  // 2. PRIMARY GOAL: Find optimal SGT at target velocity (most important)
+  // 2. PRIMARY GOAL: Find ALL SGT values that work at target velocity
   TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                    "Phase 1: Finding optimal SGT at target velocity %.2f steps/s", target_v_steps);
+                    "Phase 1: Finding ALL working SGT values at target velocity %.2f steps/s", target_v_steps);
 
-  // First, find the range of working SGT values
+  // Structure to store candidate SGT values
+  struct SgtCandidate {
+    int8_t sgt;
+    uint16_t sg_result_target;  // SG_RESULT at target velocity
+    uint16_t sg_result_min;     // SG_RESULT at min velocity (0 = not tested or failed)
+    uint16_t sg_result_max;     // SG_RESULT at max velocity (0 = not tested or failed)
+    bool passes_min;
+    bool passes_max;
+    bool passes_all;
+  };
+  
+  // ===== TUNING PARAMETERS (easy to adjust) =====
+  // SG_RESULT acceptable range for candidate selection
+  // 0 = stall detected, 1023 = no load
+  // Lower values = more sensitive (closer to stall detection)
+  // Higher values = less sensitive (more margin before stall)
+  static constexpr uint16_t SG_RESULT_MIN = 50;   // Minimum acceptable SG_RESULT (avoid false stalls)
+  static constexpr uint16_t SG_RESULT_MAX = 950;  // Maximum acceptable SG_RESULT (ensure load detection works)
+  static constexpr uint16_t SG_RESULT_TARGET = 500; // Ideal SG_RESULT for optimal sensitivity
+  
+  // Storage for candidates (max 128 possible SGT values from -64 to +63)
+  static constexpr size_t MAX_CANDIDATES = 64;  // Practical limit for candidates in range
+  SgtCandidate candidates[MAX_CANDIDATES];
+  size_t num_candidates = 0;
+  
+  // Track working range
   int8_t min_working_sgt = -1;
   int8_t max_working_sgt = -1;
-  int8_t best_sgt = -1;
-  uint16_t best_sg_result = 0;
-  const uint16_t target_sg_result = 200; // Target SG_RESULT for optimal sensitivity (100-500 range is good)
-  uint16_t best_sg_diff = 1023; // Difference from target
 
   // Scan through SGT range to find all working values
   while (current_sgt <= max_sgt) {
@@ -7199,25 +8283,35 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
       return Result<void>(ErrorCode::COMM_ERROR);
     }
 
-    driver_.comm_.DelayMs(10);
+    // Allow SGT to take effect and motor to stabilize
+    driver_.comm_.DelayMs(100);
 
     // Sample SG_RESULT multiple times at target velocity
+    // At 30 RPM (0.5 rev/sec), 500ms covers ~90 degrees of rotation
+    // This provides a better average across rotor positions
     bool stall_indicated = false;
     uint16_t sg_sum = 0;
     uint16_t sg_count = 0;
+    uint8_t zero_count = 0;  // Count consecutive zeros
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 32; i++) {
       auto sg_result = driver_.stallGuard.GetStallGuard();
       if (sg_result.IsOk()) {
         uint16_t sg_val = sg_result.Value();
         if (sg_val == 0) {
-          stall_indicated = true;
-          break;
+          zero_count++;
+          // Require 3+ consecutive zeros to confirm stall (avoid noise)
+          if (zero_count >= 3) {
+            stall_indicated = true;
+            break;
+          }
+        } else {
+          zero_count = 0;  // Reset on non-zero reading
+          sg_sum += sg_val;
+          sg_count++;
         }
-        sg_sum += sg_val;
-        sg_count++;
       }
-      driver_.comm_.DelayMs(5);
+      driver_.comm_.DelayMs(15);
     }
 
     if (stall_indicated) {
@@ -7246,144 +8340,174 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
       max_working_sgt = current_sgt; // Last working SGT so far
 
       // Calculate how close this SG_RESULT is to our target (200 is ideal for good sensitivity)
-      uint16_t sg_diff = (avg_sg_result > target_sg_result) ? 
-                         (avg_sg_result - target_sg_result) : 
-                         (target_sg_result - avg_sg_result);
+      uint16_t sg_diff = (avg_sg_result > SG_RESULT_TARGET) ? 
+                         (avg_sg_result - SG_RESULT_TARGET) : 
+                         (SG_RESULT_TARGET - avg_sg_result);
 
-      // Prefer SG_RESULT in range 100-500 (good sensitivity range)
-      // Closer to 200 is better, but anything in 100-500 is acceptable
-      if (avg_sg_result >= 100 && avg_sg_result <= 500) {
-        if (sg_diff < best_sg_diff) {
-          best_sgt = current_sgt;
-          best_sg_result = avg_sg_result;
-          best_sg_diff = sg_diff;
-        }
-      } else if (best_sgt == -1) {
-        // If no SGT in ideal range yet, use this one as fallback
-        best_sgt = current_sgt;
-        best_sg_result = avg_sg_result;
-        best_sg_diff = sg_diff;
+      // Store as candidate if SG_RESULT is in usable range
+      if (avg_sg_result >= SG_RESULT_MIN && avg_sg_result <= SG_RESULT_MAX && num_candidates < MAX_CANDIDATES) {
+        candidates[num_candidates].sgt = current_sgt;
+        candidates[num_candidates].sg_result_target = avg_sg_result;
+        candidates[num_candidates].sg_result_min = 0;
+        candidates[num_candidates].sg_result_max = 0;
+        candidates[num_candidates].passes_min = false;
+        candidates[num_candidates].passes_max = false;
+        candidates[num_candidates].passes_all = false;
+        num_candidates++;
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
+                          "SGT %d CANDIDATE: SG_RESULT=%u (diff=%u) [%zu candidates]", 
+                          current_sgt, avg_sg_result, sg_diff, num_candidates);
+      } else {
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
+                          "SGT %d works but outside usable range (%u-%u): SG_RESULT=%u",
+                          current_sgt, static_cast<unsigned>(SG_RESULT_MIN), 
+                          static_cast<unsigned>(SG_RESULT_MAX), avg_sg_result);
       }
-
-      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                        "SGT %d works: SG_RESULT=%u (diff from target=%u)", 
-                        current_sgt, avg_sg_result, sg_diff);
 
       current_sgt++;
     }
   }
 
-  // Determine optimal SGT
-  if (min_working_sgt == -1) {
-    // No working SGT found
-    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "TuneStallGuard", 
-                      "Failed to find any working SGT at target velocity. Reached max SGT %d.", max_sgt);
+  // Check if we found any candidates
+  if (num_candidates == 0) {
+    if (min_working_sgt == -1) {
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "TuneStallGuard", 
+                        "Failed to find any working SGT at target velocity. Reached max SGT %d.", max_sgt);
+    } else {
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "TuneStallGuard", 
+                        "No SGT candidates in usable range (%u-%u). Working range: %d to %d",
+                        static_cast<unsigned>(SG_RESULT_MIN), static_cast<unsigned>(SG_RESULT_MAX), 
+                        min_working_sgt, max_working_sgt);
+    }
     driver_.rampControl.Stop();
     return Result<void>(ErrorCode::COMM_ERROR);
   }
 
-  // If we found a best SGT (in ideal range), use it; otherwise use middle of working range
-  if (best_sgt != -1) {
-    result.optimal_sgt = best_sgt;
-    result.target_velocity_sg_result = best_sg_result;
-    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                      "Optimal SGT found: %d (SG_RESULT=%u, in ideal range 100-500)", 
-                      best_sgt, best_sg_result);
-  } else {
-    // Use middle of working range for stability
-    result.optimal_sgt = (min_working_sgt + max_working_sgt) / 2;
-    // Re-test to get actual SG_RESULT at optimal SGT
-    StallGuardConfig sg_config{};
-    sg_config.threshold = result.optimal_sgt;
-    sg_config.enable_filter = false;
-    driver_.stallGuard.ConfigureStallGuard(sg_config);
-    driver_.comm_.DelayMs(10);
-    
-    uint16_t sg_sum = 0;
-    uint16_t sg_count = 0;
-    for (int i = 0; i < 8; i++) {
-      auto sg_result = driver_.stallGuard.GetStallGuard();
-      if (sg_result.IsOk() && sg_result.Value() > 0) {
-        uint16_t sg_val = sg_result.Value();
-        sg_sum += sg_val;
-        sg_count++;
-      }
-      driver_.comm_.DelayMs(5);
-    }
-    result.target_velocity_sg_result = (sg_count > 0) ? (sg_sum / sg_count) : 0;
-    
-    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                      "Optimal SGT found: %d (middle of working range %d-%d, SG_RESULT=%u)", 
-                      result.optimal_sgt, min_working_sgt, max_working_sgt, result.target_velocity_sg_result);
-  }
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
+                    "Phase 1 complete: Found %zu candidates in usable range (%u-%u)", 
+                    num_candidates, static_cast<unsigned>(SG_RESULT_MIN), static_cast<unsigned>(SG_RESULT_MAX));
 
-  result.tuning_success = true;
-
-  // 3. SECONDARY GOAL: Verify optimal SGT works at min/max velocities (if specified)
+  // ========================================================================
+  // PHASE 2: Test ALL candidates at min/max velocities
+  // ========================================================================
   if (min_v_steps > 0.0f || max_v_steps > 0.0f) {
     TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                      "Phase 2: Verifying optimal SGT %d at min/max velocities", result.optimal_sgt);
+                      "Phase 2: Testing ALL %zu candidates at min/max velocities", num_candidates);
 
-    // Test at min velocity
-    if (min_v_steps > 0.0f) {
-      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                        "Testing min velocity %.2f steps/s with SGT %d", min_v_steps, result.optimal_sgt);
+    for (size_t i = 0; i < num_candidates; i++) {
+      SgtCandidate& c = candidates[i];
+      
+      // Assume passes unless we test and fail
+      c.passes_min = (min_v_steps <= 0.0f);  // Skip if not testing min
+      c.passes_max = (max_v_steps <= 0.0f);  // Skip if not testing max
 
-      if (TestVelocityWithSGT(driver_, min_v_steps, result.optimal_sgt, result.min_velocity_sg_result)) {
-        result.min_velocity_success = true;
-        result.min_velocity_sgt = result.optimal_sgt;
-        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                          "Min velocity works! SG_RESULT=%u", result.min_velocity_sg_result);
-      } else {
-        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                          "Min velocity %.2f does NOT work with optimal SGT %d. Finding working min velocity...",
-                          min_v_steps, result.optimal_sgt);
-
-        // Try to find a working min velocity (search downward from target)
-        float found_min_vel = 0.0f;
-        if (FindWorkingVelocityRange(driver_, result.optimal_sgt, target_v_steps, -1.0f, 
-                                     found_min_vel, result.min_velocity_sg_result, 100.0f, target_v_steps)) {
-          result.actual_min_velocity = driver_.convertSpeedToUnit(found_min_vel, velocity_unit);
-          TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                            "Found working min velocity: %.2f (SG_RESULT=%u)", 
-                            result.actual_min_velocity, result.min_velocity_sg_result);
-        } else {
-          TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                            "Could not find working min velocity with optimal SGT");
+      // Test at min velocity
+      if (min_v_steps > 0.0f) {
+        if (TestVelocityWithSGT(driver_, min_v_steps, c.sgt, c.sg_result_min)) {
+          c.passes_min = true;
         }
       }
-    }
 
-    // Test at max velocity
-    if (max_v_steps > 0.0f) {
-      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                        "Testing max velocity %.2f steps/s with SGT %d", max_v_steps, result.optimal_sgt);
-
-      if (TestVelocityWithSGT(driver_, max_v_steps, result.optimal_sgt, result.max_velocity_sg_result)) {
-        result.max_velocity_success = true;
-        result.max_velocity_sgt = result.optimal_sgt;
-        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                          "Max velocity works! SG_RESULT=%u", result.max_velocity_sg_result);
-      } else {
-        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                          "Max velocity %.2f does NOT work with optimal SGT %d. Finding working max velocity...",
-                          max_v_steps, result.optimal_sgt);
-
-        // Try to find a working max velocity (search upward from target)
-        float found_max_vel = 0.0f;
-        if (FindWorkingVelocityRange(driver_, result.optimal_sgt, target_v_steps, 1.0f, 
-                                     found_max_vel, result.max_velocity_sg_result, target_v_steps, 100000.0f)) {
-          result.actual_max_velocity = driver_.convertSpeedToUnit(found_max_vel, velocity_unit);
-          TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                            "Found working max velocity: %.2f (SG_RESULT=%u)", 
-                            result.actual_max_velocity, result.max_velocity_sg_result);
-        } else {
-          TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
-                            "Could not find working max velocity with optimal SGT");
+      // Test at max velocity  
+      if (max_v_steps > 0.0f) {
+        if (TestVelocityWithSGT(driver_, max_v_steps, c.sgt, c.sg_result_max)) {
+          c.passes_max = true;
         }
+      }
+
+      c.passes_all = c.passes_min && c.passes_max;
+      
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
+                        "SGT %d: target=%u, min=%u(%s), max=%u(%s) -> %s",
+                        c.sgt, c.sg_result_target,
+                        c.sg_result_min, c.passes_min ? "PASS" : "FAIL",
+                        c.sg_result_max, c.passes_max ? "PASS" : "FAIL",
+                        c.passes_all ? "FULL PASS" : "partial");
+    }
+  } else {
+    // No min/max testing - all candidates pass by default
+    for (size_t i = 0; i < num_candidates; i++) {
+      candidates[i].passes_min = true;
+      candidates[i].passes_max = true;
+      candidates[i].passes_all = true;
+    }
+  }
+
+  // ========================================================================
+  // PHASE 3: Select the best candidate that passes all velocity tests
+  // ========================================================================
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
+                    "Phase 3: Selecting optimal SGT from candidates that pass all tests");
+
+  // First, try to find a candidate that passes ALL tests
+  int8_t selected_sgt = -128;  // Invalid marker
+  uint16_t selected_sg_target = 0;
+  uint16_t selected_sg_min = 0;
+  uint16_t selected_sg_max = 0;
+  uint16_t best_min_sg = 0;  // Prefer candidate with highest min SG_RESULT (most margin)
+  
+  for (size_t i = 0; i < num_candidates; i++) {
+    const SgtCandidate& c = candidates[i];
+    if (c.passes_all) {
+      // Prefer the candidate with highest minimum SG_RESULT across all velocities
+      // This gives the most margin before stall detection
+      uint16_t min_sg = c.sg_result_target;
+      if (c.sg_result_min > 0 && c.sg_result_min < min_sg) min_sg = c.sg_result_min;
+      if (c.sg_result_max > 0 && c.sg_result_max < min_sg) min_sg = c.sg_result_max;
+      
+      if (min_sg > best_min_sg) {
+        best_min_sg = min_sg;
+        selected_sgt = c.sgt;
+        selected_sg_target = c.sg_result_target;
+        selected_sg_min = c.sg_result_min;
+        selected_sg_max = c.sg_result_max;
       }
     }
   }
+
+  // If no candidate passes all tests, fall back to the one closest to target=200
+  if (selected_sgt == -128) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "TuneStallGuard", 
+                      "No candidate passes all velocity tests! Using best at target velocity.");
+    uint16_t best_diff = 1023;
+    for (size_t i = 0; i < num_candidates; i++) {
+      const SgtCandidate& c = candidates[i];
+      uint16_t diff = (c.sg_result_target > SG_RESULT_TARGET) ? 
+                      (c.sg_result_target - SG_RESULT_TARGET) : 
+                      (SG_RESULT_TARGET - c.sg_result_target);
+      if (diff < best_diff) {
+        best_diff = diff;
+        selected_sgt = c.sgt;
+        selected_sg_target = c.sg_result_target;
+        selected_sg_min = c.sg_result_min;
+        selected_sg_max = c.sg_result_max;
+      }
+    }
+  }
+
+  // Populate result
+  result.optimal_sgt = selected_sgt;
+  result.target_velocity_sg_result = selected_sg_target;
+  result.min_velocity_sg_result = selected_sg_min;
+  result.max_velocity_sg_result = selected_sg_max;
+  
+  // Check success for each velocity
+  for (size_t i = 0; i < num_candidates; i++) {
+    if (candidates[i].sgt == selected_sgt) {
+      result.min_velocity_success = candidates[i].passes_min;
+      result.max_velocity_success = candidates[i].passes_max;
+      result.min_velocity_sgt = selected_sgt;
+      result.max_velocity_sgt = selected_sgt;
+      break;
+    }
+  }
+  
+  result.tuning_success = true;
+
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "TuneStallGuard", 
+                    "Selected SGT=%d (target=%u, min=%u, max=%u) - passes all: %s",
+                    selected_sgt, selected_sg_target, selected_sg_min, selected_sg_max,
+                    (result.min_velocity_success && result.max_velocity_success) ? "YES" : "NO");
 
   // Stop motor
   driver_.rampControl.Stop();
@@ -7593,14 +8717,18 @@ Result<void> TMC51x0<CommType>::Tuning::AutoTuneStallGuard(float target_velocity
   // ========================================================================
   // STEP 6: Perform comprehensive SGT tuning using existing function
   // ========================================================================
-  // Adjust min_sgt to start at 0 if negative (to avoid false stalls)
-  int8_t adjusted_min_sgt = (min_sgt < 0) ? 0 : min_sgt;
-  if (adjusted_min_sgt != min_sgt) {
-    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard",
-                      "Adjusted min_sgt from %d to %d (avoiding false stalls)", min_sgt, adjusted_min_sgt);
-  }
+  // SGT range is -64 to +63 (signed 7-bit value per TMC5160 datasheet)
+  // Negative values = more sensitive (lower load triggers stall)
+  // Positive values = less sensitive (higher load needed to trigger stall)
+  // For high-torque motors like NEMA 34, negative SGT values may be needed
+  int8_t clamped_min_sgt = constrain<int8_t>(min_sgt, -64, 63);
+  int8_t clamped_max_sgt = constrain<int8_t>(max_sgt, -64, 63);
+  
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "AutoTuneStallGuard",
+                    "SGT search range: %d to %d (negative=more sensitive, positive=less sensitive)", 
+                    clamped_min_sgt, clamped_max_sgt);
 
-  auto tune_result = TuneStallGuard(target_velocity, result, adjusted_min_sgt, max_sgt,
+  auto tune_result = TuneStallGuard(target_velocity, result, clamped_min_sgt, clamped_max_sgt,
                                        acceleration, min_velocity, max_velocity, velocity_unit, acceleration_unit);
   bool tuning_success = tune_result.IsOk();
 

@@ -1010,6 +1010,50 @@ public:
     Result<void> SetMicrostepLookupTableStart(uint16_t start_current) noexcept;
 
     /**
+     * @brief Configure microstep lookup table with a preset waveform
+     * @param preset Waveform preset (DEFAULT_SINE, PURE_SINE, etc.)
+     * @return Result<void> indicating success or error
+     *
+     * Programs all MSLUT registers (MSLUT0-7, MSLUTSEL, MSLUTSTART) with
+     * optimized values for the selected waveform type.
+     *
+     * Available presets:
+     * - DEFAULT_SINE: TMC5160 power-on default (slightly modified sine)
+     * - PURE_SINE: Mathematical pure sine wave (smooth, standard torque)
+     *
+     * @note The lookup table defines the first quarter of the sine wave;
+     *       the driver mirrors it for the remaining three quarters.
+     *
+     * @see Datasheet Section 18: Microstep Lookup Table
+     */
+    Result<void> ConfigureMicrostepLutPreset(MicrostepLutPreset preset) noexcept;
+
+    /**
+     * @brief Configure microstep lookup table from raw data
+     * @param lut Array of 8 uint32_t values for MSLUT0-7
+     * @param w0 Width select for segment 0 (0-3)
+     * @param w1 Width select for segment 1 (0-3)
+     * @param w2 Width select for segment 2 (0-3)
+     * @param w3 Width select for segment 3 (0-3)
+     * @param x1 Segment 1 start (0-255)
+     * @param x2 Segment 2 start (0-255)
+     * @param x3 Segment 3 start (0-255)
+     * @param start_sin Start sine value at entry 0 (0-255)
+     * @param start_sin90 Sine value at entry 256 / 90° (0-255)
+     * @return Result<void> indicating success or error
+     *
+     * Programs all MSLUT registers with custom values for advanced waveform
+     * shaping. Use this for custom motor characteristics or torque ripple
+     * compensation.
+     *
+     * @see Datasheet Section 18: Microstep Lookup Table
+     */
+    Result<void> ConfigureMicrostepLutCustom(
+        const uint32_t lut[8], uint8_t w0, uint8_t w1, uint8_t w2, uint8_t w3,
+        uint8_t x1, uint8_t x2, uint8_t x3, uint8_t start_sin,
+        uint8_t start_sin90) noexcept;
+
+    /**
      * @brief Setup motor from high-level specifications
      * @param motor_spec Motor specification structure
      * @param mechanical_system Optional mechanical system configuration
@@ -1277,8 +1321,84 @@ public:
      */
     uint32_t GetTcoolthrsRegisterValue() const noexcept;
 
+    /**
+     * @brief Get locally tracked THIGH register value (raw)
+     * @return Raw THIGH register value (20-bit meaningful range)
+     * @note THIGH defines the upper velocity limit for StallGuard2/CoolStep.
+     *       Above this velocity, SG and CoolStep are disabled.
+     */
+    uint32_t GetThighRegisterValue() const noexcept;
+
+    //==========================================================================
+    // StealthChop/SpreadCycle Transition Hysteresis
+    //==========================================================================
+
+    /**
+     * @brief Configure StealthChop to SpreadCycle transition with hysteresis
+     * @param lower_speed Speed below which StealthChop activates (lower threshold)
+     * @param upper_speed Speed above which SpreadCycle activates (upper threshold)
+     * @param unit Speed unit for both thresholds
+     * @return Result<void> indicating success or error
+     *
+     * Creates a velocity hysteresis band to prevent mode oscillation near the
+     * threshold. The motor will:
+     * - Switch to SpreadCycle when accelerating above `upper_speed`
+     * - Switch to StealthChop when decelerating below `lower_speed`
+     *
+     * Implementation note: The TMC5160 has only one TPWMTHRS register. This
+     * method dynamically updates TPWMTHRS based on current chopper mode to
+     * create the hysteresis effect. Call `UpdateModeHysteresis()` periodically
+     * or after velocity changes for best results.
+     *
+     * Example: SetModeHysteresis(50, 70, Unit::RPM) creates a 20 RPM dead band:
+     * - StealthChop → SpreadCycle at 70 RPM (accelerating)
+     * - SpreadCycle → StealthChop at 50 RPM (decelerating)
+     *
+     * @note Requires GCONF.en_pwm_mode = 1 (StealthChop enabled globally)
+     *
+     * @see Datasheet section 9.2: Switching between SpreadCycle and StealthChop
+     */
+    Result<void> SetModeHysteresis(float lower_speed, float upper_speed,
+                                   Unit unit) noexcept;
+
+    /**
+     * @brief Update TPWMTHRS based on current chopper mode for hysteresis
+     * @return Result<void> indicating success or error
+     *
+     * Call this method periodically to maintain hysteresis behavior. It reads
+     * the current chopper mode (DRV_STATUS.stealth) and updates TPWMTHRS to
+     * the appropriate threshold:
+     * - If in StealthChop: set TPWMTHRS to upper threshold (switch at higher speed)
+     * - If in SpreadCycle: set TPWMTHRS to lower threshold (switch at lower speed)
+     *
+     * @note Only effective after calling SetModeHysteresis() to configure the
+     *       upper and lower thresholds.
+     */
+    Result<void> UpdateModeHysteresis() noexcept;
+
+    /**
+     * @brief Disable mode hysteresis (use single TPWMTHRS threshold)
+     * @return Result<void> indicating success or error
+     *
+     * Clears the hysteresis configuration and returns to standard single-threshold
+     * mode switching behavior.
+     */
+    Result<void> DisableModeHysteresis() noexcept;
+
+    /**
+     * @brief Check if mode hysteresis is currently configured
+     * @return true if hysteresis is enabled with valid upper/lower thresholds
+     */
+    bool IsModeHysteresisEnabled() const noexcept;
+
   private:
     TMC51x0 &driver_;
+    
+    // Hysteresis state tracking (internal units: TSTEP register values)
+    // Note: TSTEP is inverse of velocity (lower TSTEP = higher speed)
+    uint32_t hysteresis_to_spreadcycle_tstep_{0};  // Switch to SpreadCycle when TSTEP < this (higher velocity)
+    uint32_t hysteresis_to_stealthchop_tstep_{0};  // Switch to StealthChop when TSTEP > this (lower velocity)
+    bool hysteresis_enabled_{false};
   } thresholds{*this};
 
   //================================================================================
@@ -1664,6 +1784,27 @@ public:
     Result<void> SetPrescalerMode(EncoderPrescalerMode prescaler_mode) noexcept;
 
     /**
+     * @brief Enable/disable latching XACTUAL with encoder position
+     * @param enable true to latch XACTUAL together with X_ENC on N-event
+     * @return Result<void> indicating success or error
+     *
+     * When enabled, the motor position (XACTUAL) is latched into X_LATCH
+     * simultaneously with the encoder position on N-channel events.
+     * This is useful for precise position verification and homing.
+     *
+     * Updates only latch_x_act, preserving other ENCMODE settings.
+     *
+     * @see Datasheet Section 20: Encoder Interface, ENCMODE.latch_x_act
+     */
+    Result<void> SetLatchXactualEnabled(bool enable) noexcept;
+
+    /**
+     * @brief Check if XACTUAL latching is enabled
+     * @return Result<bool> true if latch_x_act is enabled, false otherwise
+     */
+    Result<bool> IsLatchXactualEnabled() noexcept;
+
+    /**
      * @brief Get encoder position
      * @param position Reference to store encoder position in steps
      * @return Result<int32_t> containing the value or error
@@ -1688,23 +1829,6 @@ public:
      * @return Result<void> indicating success or error
      */
     Result<void> SetAllowedDeviation(int32_t steps) noexcept;
-
-    /**
-     * @brief Check if encoder deviation detected
-     * @return Result<bool> containing true if deviation detected, false
-     * otherwise
-     *
-     * @retval INVALID_STATE if called while in external STEP/DIR mode
-     */
-    Result<bool> IsDeviationDetected() noexcept;
-
-    /**
-     * @brief Clear encoder deviation flag
-     * @return Result<void> indicating success or error
-     *
-     * @retval INVALID_STATE if called while in external STEP/DIR mode
-     */
-    Result<void> ClearDeviationFlag() noexcept;
 
     /**
      * @brief Check if an encoder N-event was detected (ENC_STATUS.n_event)
@@ -1735,6 +1859,43 @@ public:
      * @retval INVALID_STATE if called while in external STEP/DIR mode
      */
     Result<int32_t> GetLatchedPosition() noexcept;
+
+    //==========================================================================
+    // Encoder Deviation Detection
+    //==========================================================================
+
+    /**
+     * @brief Check if encoder deviation warning is active
+     * @return Result<bool> true if deviation between X_ENC and XACTUAL exceeds
+     *         the threshold set by SetAllowedDeviation()
+     *
+     * Deviation detection compares the encoder position (X_ENC) with the
+     * internal motor position (XACTUAL). If they differ by more than
+     * ENC_DEVIATION steps, a warning is triggered.
+     *
+     * This is useful for:
+     * - Detecting lost steps (motor missed steps due to overload)
+     * - Detecting mechanical slippage
+     * - Closed-loop position verification
+     *
+     * @note Set ENC_DEVIATION to 0 to disable deviation detection.
+     * @note The warning cannot be cleared while deviation persists.
+     *
+     * @see SetAllowedDeviation()
+     */
+    Result<bool> IsDeviationWarning() noexcept;
+
+    /**
+     * @brief Clear encoder deviation warning flag
+     * @return Result<void> indicating success or error
+     *
+     * Attempts to clear the deviation warning flag. The flag will only
+     * clear if the deviation is no longer present (X_ENC and XACTUAL
+     * are within ENC_DEVIATION steps).
+     *
+     * @note This writes '1' to the deviation_warn bit in ENC_STATUS (W1C).
+     */
+    Result<void> ClearDeviationWarning() noexcept;
 
   private:
     TMC51x0 &driver_; ///< Reference to parent driver instance
@@ -1774,6 +1935,25 @@ public:
      * otherwise
      */
     Result<bool> GetGlobalStatus(bool &drv_err, bool &uv_cp) noexcept;
+
+    /**
+     * @brief Clear global status flags (GSTAT)
+     * @param clear_reset Clear the reset flag (IC was reset since last read)
+     * @param clear_drv_err Clear the driver error flag (short/overtemp occurred)
+     * @param clear_uv_cp Clear the undervoltage charge pump flag
+     * @return Result<void> indicating success or error
+     *
+     * GSTAT is a write-1-to-clear (W1C) register. Writing '1' to a bit clears
+     * that flag. Use this after handling a fault to acknowledge it.
+     *
+     * @note Reading GSTAT also clears the flags, so GetGlobalStatus() implicitly
+     *       clears. Use this method when you want selective clearing.
+     *
+     * @see Datasheet section 4.1: GSTAT Register
+     */
+    Result<void> ClearGlobalStatus(bool clear_reset = true,
+                                   bool clear_drv_err = true,
+                                   bool clear_uv_cp = true) noexcept;
 
     /**
      * @brief Get driver status register value
@@ -1851,6 +2031,154 @@ public:
      * @see Datasheet section 11.3: Open Load Diagnostics
      */
     Result<bool> CheckOpenLoad(bool &phase_a, bool &phase_b) noexcept;
+
+    //==========================================================================
+    // Temperature Status (DRV_STATUS bits 25-26)
+    //==========================================================================
+
+    /**
+     * @brief Check if overtemperature shutdown is active
+     * @return Result<bool> true if chip is in overtemperature shutdown
+     *
+     * When true, the bridge drivers are disabled due to excessive die temperature.
+     * The motor will not be driven until temperature drops below the threshold.
+     *
+     * @note The overtemperature threshold is set via DRV_CONF.OTSELECT:
+     *       0=150°C, 1=143°C, 2=136°C, 3=120°C
+     *
+     * @see Datasheet section 5.1: Overtemperature Protection
+     */
+    Result<bool> IsOvertemperature() noexcept;
+
+    /**
+     * @brief Check if overtemperature pre-warning is active
+     * @return Result<bool> true if chip temperature is approaching shutdown threshold
+     *
+     * Pre-warning typically activates ~20°C before shutdown. Use this to
+     * implement thermal management (reduce current, add cooling, slow motion).
+     *
+     * @note Can be routed to DIAG0 pin via GCONF.diag0_otpw for hardware interrupt.
+     *
+     * @see Datasheet section 5.1: Overtemperature Protection
+     */
+    Result<bool> IsOvertempWarning() noexcept;
+
+    /**
+     * @brief Get both temperature status flags at once
+     * @param overtemp Reference to store overtemperature shutdown status
+     * @param prewarning Reference to store pre-warning status
+     * @return Result<void> indicating success or error
+     *
+     * More efficient than calling IsOvertemperature() and IsOvertempWarning()
+     * separately as it only requires one register read.
+     */
+    Result<void> GetTemperatureStatus(bool &overtemp, bool &prewarning) noexcept;
+
+    //==========================================================================
+    // Chopper Mode Status (DRV_STATUS bits 14-15)
+    //==========================================================================
+
+    /**
+     * @brief Check if StealthChop mode is currently active
+     * @return Result<bool> true if motor is being driven in StealthChop mode
+     *
+     * StealthChop is active when:
+     * - GCONF.en_pwm_mode = 1 (StealthChop enabled globally)
+     * - Velocity is below TPWMTHRS threshold
+     * - Motor is not in standstill with IHOLD=0
+     *
+     * @see Datasheet section 9: StealthChop
+     */
+    Result<bool> IsStealthChopActive() noexcept;
+
+    /**
+     * @brief Check if fullstep mode is currently active
+     * @return Result<bool> true if motor is running in fullstep mode
+     *
+     * Fullstep becomes active when:
+     * - Velocity exceeds THIGH threshold AND CHOPCONF.vhighfs=1
+     * - OR dcStep is active
+     *
+     * In fullstep mode, the motor runs at native full steps (not microstepping).
+     *
+     * @see Datasheet section 8: High Velocity Operation
+     */
+    Result<bool> IsFullstepActive() noexcept;
+
+    //==========================================================================
+    // Current Status (DRV_STATUS bits 16-20)
+    //==========================================================================
+
+    /**
+     * @brief Get actual motor current scale (CS_ACTUAL)
+     * @return Result<uint8_t> containing current scale (0-31)
+     *
+     * Returns the actual current scaling being applied to the motor, which
+     * may differ from IRUN due to:
+     * - CoolStep automatic current reduction (when load is light)
+     * - Current ramping (IHOLDDELAY transition between IRUN and IHOLD)
+     * - Standstill (showing IHOLD value)
+     *
+     * To convert to actual current: I = (CS_ACTUAL + 1) / 32 * I_max
+     *
+     * @see Datasheet section 12: CoolStep Smart Current Control
+     */
+    Result<uint8_t> GetActualCurrentScale() noexcept;
+
+    //==========================================================================
+    // Short Circuit Status (DRV_STATUS bits 12-13, 27-28)
+    //==========================================================================
+
+    /**
+     * @brief Check for short to supply (VS) condition
+     * @param phase_a Reference to store phase A short-to-VS status
+     * @param phase_b Reference to store phase B short-to-VS status
+     * @return Result<void> indicating success or error
+     *
+     * Short to VS occurs when a low-side FET output is unexpectedly high.
+     * This can indicate:
+     * - Damaged motor winding shorting to supply
+     * - PCB fault
+     * - Damaged low-side FET
+     *
+     * @note Sensitivity is controlled by SHORT_CONF.S2VS_LEVEL
+     * @warning Short detection causes immediate driver shutdown for protection.
+     *
+     * @see Datasheet section 5.2: Short Protection
+     */
+    Result<void> IsShortToSupply(bool &phase_a, bool &phase_b) noexcept;
+
+    /**
+     * @brief Check for short to ground (GND) condition
+     * @param phase_a Reference to store phase A short-to-GND status
+     * @param phase_b Reference to store phase B short-to-GND status
+     * @return Result<void> indicating success or error
+     *
+     * Short to GND occurs when a high-side FET output is unexpectedly low.
+     * This can indicate:
+     * - Damaged motor winding shorting to ground
+     * - PCB fault
+     * - Damaged high-side FET
+     *
+     * @note Sensitivity is controlled by SHORT_CONF.S2G_LEVEL
+     * @warning Short detection causes immediate driver shutdown for protection.
+     *
+     * @see Datasheet section 5.2: Short Protection
+     */
+    Result<void> IsShortToGround(bool &phase_a, bool &phase_b) noexcept;
+
+    /**
+     * @brief Get all short circuit status flags at once
+     * @param s2vs_a Short to VS on phase A
+     * @param s2vs_b Short to VS on phase B
+     * @param s2g_a Short to GND on phase A
+     * @param s2g_b Short to GND on phase B
+     * @return Result<void> indicating success or error
+     *
+     * More efficient than calling individual short check methods separately.
+     */
+    Result<void> GetShortCircuitStatus(bool &s2vs_a, bool &s2vs_b,
+                                       bool &s2g_a, bool &s2g_b) noexcept;
 
     /**
      * @brief Get ramp status register value
@@ -1979,6 +2307,93 @@ public:
      */
     uint8_t GetChipVersion() const noexcept { return driver_.chip_version_; }
 
+    //==========================================================================
+    // OTP Programming (One-Time Programmable Memory)
+    //==========================================================================
+
+    /**
+     * @brief Program a single OTP bit (PERMANENT - USE WITH EXTREME CAUTION!)
+     * @param byte_index OTP byte index (0 only for TMC5160)
+     * @param bit_index Bit index within the byte (0-7)
+     * @param confirm_permanent Must be true to confirm permanent operation
+     * @return Result<void> indicating success or error
+     *
+     * ⚠️ CRITICAL WARNING: OTP memory can only be programmed ONCE. Bits can only
+     * be set (0→1), never cleared. This operation is IRREVERSIBLE.
+     *
+     * OTP bit mapping for byte 0 (TMC5160):
+     * - Bits 4..0: OTP_FCLKTRIM - Clock frequency trim (factory calibrated!)
+     * - Bit 5: OTP_S2_LEVEL - Short detection level (0: level=6, 1: level=12)
+     * - Bit 6: OTP_BBM - Break-before-make (0: BBMCLKS=4, 1: BBMCLKS=2)
+     * - Bit 7: OTP_TBL - Blank time (0: TBL=2 ~3µs, 1: TBL=1 ~2µs)
+     *
+     * @note Requires minimum 10ms programming time per bit (handled internally).
+     * @note The function will fail if confirm_permanent is false.
+     *
+     * @see Datasheet Section 6: One-Time Programmable Memory
+     */
+    Result<void> ProgramOtpBit(uint8_t byte_index, uint8_t bit_index,
+                               bool confirm_permanent) noexcept;
+
+    /**
+     * @brief Program OTP FCLKTRIM value (PERMANENT - USE WITH EXTREME CAUTION!)
+     * @param fclktrim Clock trim value (0-31, affects internal oscillator)
+     * @param confirm_permanent Must be true to confirm permanent operation
+     * @return Result<void> indicating success or error
+     *
+     * ⚠️ CRITICAL WARNING: This permanently changes the internal clock frequency.
+     * The factory already programs this for 12MHz. Only use if you need a
+     * different clock frequency AND understand the implications.
+     *
+     * @note This programs bits 4..0 of OTP byte 0. Since OTP bits can only be
+     *       set (not cleared), you can only increase the FCLKTRIM value from
+     *       the current OTP setting.
+     */
+    Result<void> ProgramOtpFclktrim(uint8_t fclktrim,
+                                    bool confirm_permanent) noexcept;
+
+    /**
+     * @brief Program OTP short detection level default (PERMANENT!)
+     * @param high_level true for level=12 (less sensitive), false for level=6
+     * @param confirm_permanent Must be true to confirm permanent operation
+     * @return Result<void> indicating success or error
+     *
+     * ⚠️ WARNING: This permanently changes the reset default for S2G_LEVEL
+     * and S2VS_LEVEL. Once set to high (1), it cannot be changed back.
+     *
+     * @note Programs bit 5 of OTP byte 0.
+     */
+    Result<void> ProgramOtpS2Level(bool high_level,
+                                   bool confirm_permanent) noexcept;
+
+    /**
+     * @brief Program OTP BBM (break-before-make) default (PERMANENT!)
+     * @param short_bbm true for BBMCLKS=2 (shorter), false for BBMCLKS=4
+     * @param confirm_permanent Must be true to confirm permanent operation
+     * @return Result<void> indicating success or error
+     *
+     * ⚠️ WARNING: This permanently changes the reset default for BBMCLKS.
+     * Once set to short (1), it cannot be changed back.
+     *
+     * @note Programs bit 6 of OTP byte 0.
+     */
+    Result<void> ProgramOtpBbm(bool short_bbm,
+                               bool confirm_permanent) noexcept;
+
+    /**
+     * @brief Program OTP TBL (blank time) default (PERMANENT!)
+     * @param short_tbl true for TBL=1 (~2µs), false for TBL=2 (~3µs)
+     * @param confirm_permanent Must be true to confirm permanent operation
+     * @return Result<void> indicating success or error
+     *
+     * ⚠️ WARNING: This permanently changes the reset default for TBL.
+     * Once set to short (1), it cannot be changed back.
+     *
+     * @note Programs bit 7 of OTP byte 0.
+     */
+    Result<void> ProgramOtpTbl(bool short_tbl,
+                               bool confirm_permanent) noexcept;
+
   private:
     TMC51x0 &driver_; ///< Reference to parent driver instance
   } status{*this};
@@ -2100,17 +2515,16 @@ public:
      * @param target_velocity Target velocity for tuning (most important -
      * optimal SGT is determined here)
      * @param result Reference to store comprehensive tuning results
-     * @param min_sgt Minimum SGT to try (default: -10)
-     * @param max_sgt Maximum SGT to try (default: 63)
-     * @param acceleration Acceleration/deceleration (default: 3000.0f
-     * steps/s^2)
+     * @param min_sgt Minimum SGT to try (default: -20, range: -64 to +63)
+     * @param max_sgt Maximum SGT to try (default: +20, range: -64 to +63)
+     * @param acceleration Acceleration/deceleration in rev/s² (default: 5.0)
      * @param min_velocity Minimum velocity to verify tuning at (0 = disabled,
      * used to determine SGT range)
      * @param max_velocity Maximum velocity to verify tuning at (0 = disabled,
      * used to determine SGT range)
-     * @param velocity_unit Unit for velocity parameters (default: RevPerSec)
+     * @param velocity_unit Unit for velocity parameters (default: RPM)
      * @param acceleration_unit Unit for acceleration parameter (default:
-     * RevPerSec, RPM is not valid)
+     * RevPerSec, RPM is not valid for acceleration)
      * @return Result<void> indicating success or error
      *
      * Implements a comprehensive automatic tuning algorithm that prioritizes
@@ -2138,10 +2552,10 @@ public:
      */
     Result<void>
     TuneStallGuard(float target_velocity, StallGuardTuningResult &result,
-                   int8_t min_sgt = -10, int8_t max_sgt = 63,
-                   float acceleration = 0.06F, float min_velocity = 0.0F,
+                   int8_t min_sgt = -20, int8_t max_sgt = 20,
+                   float acceleration = 5.0F, float min_velocity = 0.0F,
                    float max_velocity = 0.0F,
-                   Unit velocity_unit = Unit::RevPerSec,
+                   Unit velocity_unit = Unit::RPM,
                    Unit acceleration_unit = Unit::RevPerSec) noexcept;
 
     /**
@@ -2150,20 +2564,17 @@ public:
      * @param target_velocity Target velocity for tuning (most important -
      * optimal SGT is determined here)
      * @param result Reference to store comprehensive tuning results
-     * @param min_sgt Minimum SGT to try (default: 0, negative values may cause
-     * false stalls)
-     * @param max_sgt Maximum SGT to try (default: 63)
-     * @param acceleration Acceleration/deceleration (default: 3000.0f
-     * steps/s^2)
+     * @param min_sgt Minimum SGT to try (default: -20, range: -64 to +63)
+     * @param max_sgt Maximum SGT to try (default: +20, range: -64 to +63)
+     * @param acceleration Acceleration/deceleration in rev/s² (default: 5.0)
      * @param min_velocity Minimum velocity to verify tuning at (0 = disabled)
      * @param max_velocity Maximum velocity to verify tuning at (0 = disabled)
-     * @param velocity_unit Unit for velocity parameters (default: RevPerSec)
+     * @param velocity_unit Unit for velocity parameters (default: RPM)
      * @param acceleration_unit Unit for acceleration parameter (default:
-     * RevPerSec, RPM is not valid)
+     * RevPerSec, RPM is not valid for acceleration)
      * @param current_reduction_factor Current reduction factor as percentage
-     * (0.0-1.0, where 0.3 = 30% of current motor current). If 0, no reduction
-     * is applied. Recommended: 0.3 (30%) per Duet3D best practices for stall
-     * detection.
+     * (0.0-1.0, where 0.3 = 30% of current motor current). Default: 0.3 (30%)
+     * per Duet3D best practices for stall detection. Set to 0 to disable.
      * @return Result<void> indicating success or error
      *
      * This is an enhanced version of TuneStallGuard that implements
@@ -2222,12 +2633,12 @@ public:
      */
     Result<void>
     AutoTuneStallGuard(float target_velocity, StallGuardTuningResult &result,
-                       int8_t min_sgt = 0, int8_t max_sgt = 63,
-                       float acceleration = 0.06F, float min_velocity = 0.0F,
+                       int8_t min_sgt = -20, int8_t max_sgt = 20,
+                       float acceleration = 5.0F, float min_velocity = 0.0F,
                        float max_velocity = 0.0F,
-                       Unit velocity_unit = Unit::RevPerSec,
+                       Unit velocity_unit = Unit::RPM,
                        Unit acceleration_unit = Unit::RevPerSec,
-                       float current_reduction_factor = 0.0F) noexcept;
+                       float current_reduction_factor = 0.3F) noexcept;
 
   private:
     TMC51x0 &driver_; ///< Reference to parent driver instance
@@ -2277,6 +2688,7 @@ public:
       // Units
       Unit speed_unit{Unit::RPM};
       Unit position_unit{Unit::Deg};
+      Unit accel_unit{Unit::RevPerSec}; ///< Accel/decel unit (interpreted as rev/s² when used for acceleration fields)
 
       // Motion behavior
       float search_speed{0.0F};    ///< In speed_unit
@@ -2284,6 +2696,11 @@ public:
       float backoff_distance{5.0F};///< Backoff after bound hit, in position_unit
       uint32_t timeout_ms{30000};  ///< Timeout per direction
       bool preflight_clear_active_switch{true}; ///< Switch homing: if selected switch is active at start, attempt a bounded move away to clear it.
+
+      // Optional accel/decel override (applies to bounds finding and homing moves that configure positioning ramps).
+      // If 0, the routines use the cached driver acceleration/deceleration, or a conservative default.
+      float search_accel{0.0F}; ///< Acceleration override in accel_unit (0 = use cached/default)
+      float search_decel{0.0F}; ///< Deceleration override in accel_unit (0 = use cached/default)
 
       // StallGuard-only (ignored for Encoder/Switch)
       float current_reduction_factor{0.3F};   ///< 0..1 (percentage of configured current). Ignored if current_reduction_target_mA > 0.
@@ -2360,6 +2777,34 @@ public:
                                      int32_t &final_position,
                                      bool use_left_switch,
                                      CancelCallback should_cancel = nullptr) noexcept;
+
+    /**
+     * @brief Perform homing using encoder index pulse (N-channel) with latch_x_act
+     * @param direction Direction to search (true = positive, false = negative)
+     * @param opt Homing options (unit-aware). Uses opt.search_speed, opt.search_span, opt.timeout_ms.
+     * @param final_position Reference to store final position after homing (in steps).
+     *        This is the latched XACTUAL at the moment the N-event fired, providing
+     *        precise motor position at index pulse detection.
+     * @return Result<void> indicating success or error
+     *
+     * This method uses the encoder's N-channel (index pulse) for high-precision homing:
+     * - Enables ENCMODE.latch_x_act so XACTUAL is latched to XLATCH on N-event
+     * - Clears N-event flag and searches for the index pulse
+     * - When N-event fires, reads XLATCH for the exact motor position at that instant
+     * - This provides microsecond-accurate position capture vs polling uncertainty
+     *
+     * Prerequisites:
+     * - Encoder must be configured (Configure() or SetNChannelSensitivity())
+     * - Motor must have an encoder with index pulse (N channel)
+     *
+     * @note The latched position is typically more accurate than polling-based
+     *       homing because it captures XACTUAL at the hardware level when N fires.
+     *
+     * @see SetLatchXactualEnabled(), IsNEventDetected(), Switches::GetLatchedPosition()
+     */
+    Result<void> PerformEncoderIndexHoming(bool direction, const BoundsOptions& opt,
+                                           int32_t &final_position,
+                                           CancelCallback should_cancel = nullptr) noexcept;
 
     Result<BoundsResult>
     FindBoundsStallGuard(const BoundsOptions& opt, const HomeConfig& home = {},

@@ -197,8 +197,8 @@ APIs return `INVALID_STATE`.
 | `GetPosition()` | `Result<int32_t> GetPosition() noexcept` | `Result<int32_t>` containing the value or error | Get encoder position in steps |
 | `SetResolution()` | `Result<void> SetResolution(int32_t motor_steps, int32_t enc_resolution, bool inverted = false) noexcept` | `Result<void>` indicating success or error | Set encoder resolution (motor steps per encoder resolution) |
 | `SetAllowedDeviation()` | `Result<void> SetAllowedDeviation(int32_t steps) noexcept` | `Result<void>` indicating success or error | Set allowed encoder deviation threshold in steps |
-| `IsDeviationDetected()` | `Result<bool> IsDeviationDetected() noexcept` | `Result<bool>` containing true if deviation detected, false otherwise | Check if encoder deviation detected |
-| `ClearDeviationFlag()` | `Result<void> ClearDeviationFlag() noexcept` | `Result<void>` indicating success or error | Clear encoder deviation flag |
+| `IsDeviationWarning()` | `Result<bool> IsDeviationWarning() noexcept` | `Result<bool>` containing true if deviation warning active, false otherwise | Check if encoder deviation warning is active |
+| `ClearDeviationWarning()` | `Result<void> ClearDeviationWarning() noexcept` | `Result<void>` indicating success or error | Clear encoder deviation warning flag |
 | `IsNEventDetected()` | `Result<bool> IsNEventDetected() noexcept` | `Result<bool>` containing true if N-event detected, false otherwise | Check ENC_STATUS.n_event |
 | `ClearNEventFlag()` | `Result<void> ClearNEventFlag() noexcept` | `Result<void>` indicating success or error | Clear ENC_STATUS.n_event (W1C) |
 | `GetLatchedPosition()` | `Result<int32_t> GetLatchedPosition() noexcept` | `Result<int32_t>` containing the value or error | Get encoder position latched on N event |
@@ -901,9 +901,9 @@ driver.encoder.SetClearMode(tmc51x0::EncoderClearMode::CONTINUOUS);
 driver.encoder.SetResolution(200, 1000, false);  // 200 motor steps, 1000 encoder pulses
 
 // Monitor encoder deviation
-if (driver.encoder.IsDeviationDetected()) {
+if (driver.encoder.IsDeviationWarning()) {
     // Handle step loss
-    driver.encoder.ClearDeviationFlag();
+    driver.encoder.ClearDeviationWarning();
 }
 ```
 

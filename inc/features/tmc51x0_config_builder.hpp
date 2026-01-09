@@ -40,7 +40,7 @@
  * This convention ensures type safety and prevents unit conversion errors.
  * 
  * The builder follows the same pattern as ESP32 test config:
- * 1. Motor configuration (motor specs, chopper, StealthChop, ramp defaults)
+ * 1. Motor configuration (motor specs, chopper, StealthChop, StallGuard, ramp defaults)
  * 2. Board configuration (sense resistor, power stage, clock)
  * 3. Platform configuration (mechanical system type)
  * 
@@ -494,6 +494,100 @@ public:
      */
     ConfigBuilder& WithStealthChopAutograd(bool enable) {
         config_.stealthchop.pwm_autograd = enable;
+        return *this;
+    }
+
+    // ========== STALLGUARD CONFIGURATION ==========
+
+    /**
+     * @brief Set StallGuard2 threshold (SGT)
+     * 
+     * Controls StallGuard2 sensitivity for stall detection.
+     * 
+     * @param threshold SGT value (-64 to +63)
+     *                  - Lower values: Higher sensitivity (detects stalls easier)
+     *                  - Higher values: Lower sensitivity (needs more torque to detect)
+     *                  - 0: Starting value, works with most motors
+     * @return Reference to builder for chaining
+     * 
+     * @code
+     * builder.WithStallGuardThreshold(10);   // Less sensitive
+     * builder.WithStallGuardThreshold(-10);  // More sensitive
+     * @endcode
+     */
+    ConfigBuilder& WithStallGuardThreshold(int8_t threshold) {
+        config_.stallguard.threshold = threshold;
+        return *this;
+    }
+
+    /**
+     * @brief Enable/disable StallGuard2 filter
+     * 
+     * Filter reduces measurement rate to one per electrical period (4 fullsteps).
+     * 
+     * @param enable True to enable filter (smoother, recommended for CoolStep),
+     *               False to disable (faster response, recommended for homing)
+     * @return Reference to builder for chaining
+     */
+    ConfigBuilder& WithStallGuardFilter(bool enable) {
+        config_.stallguard.enable_filter = enable;
+        return *this;
+    }
+
+    /**
+     * @brief Set StallGuard2 minimum velocity threshold
+     * 
+     * StallGuard readings are only valid above this velocity.
+     * Below this speed, stall detection is unreliable.
+     * 
+     * @param velocity Minimum velocity value
+     * @param unit Velocity unit (default: RPM)
+     * @return Reference to builder for chaining
+     * 
+     * @code
+     * builder.WithStallGuardMinVelocity(20.0f, Unit::RPM);  // 20 RPM minimum
+     * @endcode
+     */
+    ConfigBuilder& WithStallGuardMinVelocity(float velocity, Unit unit = Unit::RPM) {
+        config_.stallguard.min_velocity = velocity;
+        config_.stallguard.velocity_unit = unit;
+        return *this;
+    }
+
+    /**
+     * @brief Set StallGuard2 maximum velocity threshold
+     * 
+     * StallGuard is disabled above this velocity. Set to 0 to disable limit.
+     * 
+     * @param velocity Maximum velocity value (0 = no limit)
+     * @param unit Velocity unit (default: RPM)
+     * @return Reference to builder for chaining
+     */
+    ConfigBuilder& WithStallGuardMaxVelocity(float velocity, Unit unit = Unit::RPM) {
+        config_.stallguard.max_velocity = velocity;
+        config_.stallguard.velocity_unit = unit;
+        return *this;
+    }
+
+    /**
+     * @brief Configure StallGuard2 with a complete config struct
+     * 
+     * Sets all StallGuard parameters at once.
+     * 
+     * @param sg_config Complete StallGuard configuration
+     * @return Reference to builder for chaining
+     * 
+     * @code
+     * StallGuardConfig sg{};
+     * sg.threshold = -5;
+     * sg.enable_filter = false;
+     * sg.min_velocity = 20.0f;
+     * sg.velocity_unit = Unit::RPM;
+     * builder.WithStallGuard(sg);
+     * @endcode
+     */
+    ConfigBuilder& WithStallGuard(const StallGuardConfig& sg_config) {
+        config_.stallguard = sg_config;
         return *this;
     }
 

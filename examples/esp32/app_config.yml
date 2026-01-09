@@ -83,6 +83,15 @@ apps:
     ci_enabled: true
     featured: true
 
+  bounds_finding_test:
+    description: "Standalone bounds finding test - searches for mechanical limits, homes to center, reports results"
+    source_file: "tuning/bounds_finding_test.cpp"
+    category: "motor_control"
+    idf_versions: ["release/v5.5"]
+    build_types: ["Debug", "Release"]
+    ci_enabled: false
+    featured: true
+
   # Sensor Examples
   abn_encoder_reader:
     description: "ABN encoder position reader - Continuously reads and displays encoder position from ABN incremental encoder"

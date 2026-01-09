@@ -258,10 +258,10 @@ int main() {
             break;
         }
         
-        auto dev_result = driver.encoder.IsDeviationDetected();
+        auto dev_result = driver.encoder.IsDeviationWarning();
         if (dev_result && dev_result.Value()) {
             // Step loss detected - take corrective action
-            driver.encoder.ClearDeviationFlag();
+            driver.encoder.ClearDeviationWarning();
         }
     }
     

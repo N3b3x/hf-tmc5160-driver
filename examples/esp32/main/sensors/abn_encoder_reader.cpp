@@ -241,10 +241,10 @@ extern "C" void app_main(void) {
                      read_count, current_position, position_revs, position_deg, motor_pos_deg, position_change);
             
             // Check for deviation warning
-            auto deviation_result = driver.encoder.IsDeviationDetected();
+            auto deviation_result = driver.encoder.IsDeviationWarning();
             if (deviation_result && deviation_result.Value()) {
-                ESP_LOGW(TAG, "⚠ Encoder deviation detected! Motor and encoder positions differ significantly.");
-                driver.encoder.ClearDeviationFlag();
+                ESP_LOGW(TAG, "⚠ Encoder deviation warning! Motor and encoder positions differ significantly.");
+                driver.encoder.ClearDeviationWarning();
             }
             
             // Check for latched position (if index channel is configured)

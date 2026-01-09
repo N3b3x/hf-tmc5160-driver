@@ -729,14 +729,17 @@ struct TestConfig_AppliedMotion_5034 {
         // Lower values = Higher sensitivity (stops easier).
         // Higher values = Lower sensitivity (needs more force to stop).
         // For Applied Motion 5034-369 (NEMA 34, higher torque):
-        // May need slightly different threshold than NEMA 17 motors
-        // Start with same value as 17HS4401S, tune if needed
-        static constexpr int8_t SGT_HOMING = -2;  
+        // Tuned via AutoTuneStallGuard at 60 RPM with 30% current reduction
+        // Value determined to work across 40-120 RPM velocity range
+        static constexpr int8_t SGT_HOMING = -40;  
         
         // See TestConfig_17HS4401S::StallGuard notes.
         // For this high torque NEMA34 rig, we keep CoolStep disabled during
         // StallGuard bounds finding to avoid current modulation and jitter.
-        static constexpr bool FILTER_ENABLED = false;
+        // FILTER_ENABLED: Enable StallGuard filter (SFILT) for bounds finding.
+        // The filter averages SG readings over 4 samples, reducing false stalls
+        // during acceleration/deceleration phases where SG_RESULT can spike to 0.
+        static constexpr bool FILTER_ENABLED = true;
         static constexpr uint8_t SEMIN = 0; // 0 = CoolStep disabled
         static constexpr uint8_t SEMAX = 0;
         
@@ -763,7 +766,7 @@ struct TestConfig_AppliedMotion_5034 {
         // Higher speeds (120 RPM) provide better StallGuard reliability for NEMA 34
         static constexpr float BOUNDS_SEARCH_SPEED_RPM = 60.0f; // RPM (driver converts based on current microsteps)
         // Bounds Finding Acceleration (rev/s²) - reach search speed in some seconds
-        static constexpr float BOUNDS_SEARCH_ACCEL_REV_S2 = 5.0f; 
+        static constexpr float BOUNDS_SEARCH_ACCEL_REV_S2 = 20.0f; 
         static constexpr uint32_t HOMING_TIMEOUT_MS = 30000;
         
         // Fatigue Test Defaults
@@ -1133,6 +1136,12 @@ inline void ConfigureDriverFromMotor_17HS4401S_Gearbox(tmc51x0::DriverConfig& cf
            // Note: System type and other mechanical parameters are set via ApplyPlatformConfig()
            .WithGearbox(MotorConfig_17HS4401S::GEAR_RATIO)
            
+           // ===== STALLGUARD CONFIGURATION =====
+           // Set default StallGuard config from test config
+           .WithStallGuardThreshold(TestConfig_17HS4401S::StallGuard::SGT_HOMING)
+           .WithStallGuardFilter(TestConfig_17HS4401S::StallGuard::FILTER_ENABLED)
+           .WithStallGuardMinVelocity(TestConfig_17HS4401S::StallGuard::MIN_VELOCITY_RPM, tmc51x0::Unit::RPM)
+           
            // ===== DIRECTION =====
            .WithDirection(tmc51x0::MotorDirection::NORMAL);
     
@@ -1202,6 +1211,12 @@ inline void ConfigureDriverFromMotor_17HS4401S_Direct(tmc51x0::DriverConfig& cfg
            // Note: System type and other mechanical parameters are set via ApplyPlatformConfig()
            .WithDirectDrive()  // Direct drive (gear_ratio = 1.0)
            
+           // ===== STALLGUARD CONFIGURATION =====
+           // Set default StallGuard config from test config
+           .WithStallGuardThreshold(TestConfig_17HS4401S::StallGuard::SGT_HOMING)
+           .WithStallGuardFilter(TestConfig_17HS4401S::StallGuard::FILTER_ENABLED)
+           .WithStallGuardMinVelocity(TestConfig_17HS4401S::StallGuard::MIN_VELOCITY_RPM, tmc51x0::Unit::RPM)
+           
            // ===== DIRECTION =====
            .WithDirection(tmc51x0::MotorDirection::NORMAL);
     
@@ -1270,6 +1285,13 @@ inline void ConfigureDriverFromMotor_AppliedMotion_5034(tmc51x0::DriverConfig& c
            // ===== MECHANICAL SYSTEM (Motor-specific gear ratio) =====
            // Note: System type and other mechanical parameters are set via ApplyPlatformConfig()
            .WithDirectDrive()  // Direct drive (gear_ratio = 1.0)
+           
+           // ===== STALLGUARD CONFIGURATION =====
+           // Set default StallGuard config from test config
+           // This provides a sensible starting point; can be overridden at runtime (e.g., during bounds finding)
+           .WithStallGuardThreshold(TestConfig_AppliedMotion_5034::StallGuard::SGT_HOMING)
+           .WithStallGuardFilter(TestConfig_AppliedMotion_5034::StallGuard::FILTER_ENABLED)
+           .WithStallGuardMinVelocity(TestConfig_AppliedMotion_5034::StallGuard::MIN_VELOCITY_RPM, tmc51x0::Unit::RPM)
            
            // ===== DIRECTION =====
            .WithDirection(tmc51x0::MotorDirection::NORMAL);

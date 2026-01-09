@@ -11,34 +11,39 @@
  * Supports both StallGuard2 and encoder-based bounds detection.
  */
 
- #include <memory>
- #include <algorithm>
- #include <cmath>
- #include <cstring>
- #include <string>
- #include <vector>
- #include <cstdarg>
+// Standard library includes
+#include <memory>
+#include <algorithm>
+#include <cmath>
+#include <cstring>
+#include <string>
+#include <vector>
+#include <cstdarg>
 #include <cstdint>
 #include <inttypes.h>
 
-#include "tmc51x0.hpp"
-#include "test_config/esp32_tmc51x0_bus.hpp"
-#include "registers/tmc51x0_registers.hpp"
-
-#include "espnow_protocol.hpp"
-#include "espnow_receiver.hpp"
-#include "bounds_finder.hpp"
-
-#include "test_config/esp32_tmc51x0_test_config.hpp"
-#include "fatigue_motion.hpp"
-
-#include "esp_log.h"
-#include "esp_timer.h"
-#include "driver/uart.h"
+// FreeRTOS includes (must be before tmc51x0.hpp for ESP32 platform support)
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
 #include "freertos/semphr.h"
+
+// ESP-IDF includes
+#include "esp_log.h"
+#include "esp_timer.h"
+#include "driver/uart.h"
+
+// TMC51x0 driver includes
+#include "tmc51x0.hpp"
+#include "test_config/esp32_tmc51x0_bus.hpp"
+#include "test_config/esp32_tmc_mutex.hpp"
+#include "registers/tmc51x0_registers.hpp"
+#include "test_config/esp32_tmc51x0_test_config.hpp"
+
+// Application includes
+#include "espnow_protocol.hpp"
+#include "espnow_receiver.hpp"
+#include "fatigue_motion.hpp"
 static const char* TAG = "FatigueTestUnit";
 
 // Test rig selection
@@ -82,6 +87,7 @@ static void bounds_finding_task(void* arg);
 
 // Global state (forward declarations)
 static tmc51x0::TMC51x0<Esp32SPI>* g_driver = nullptr;
+static Esp32TmcMutex* g_driver_mutex = nullptr;  // Protects ALL SPI access to g_driver
 static Settings g_settings{};
 static QueueHandle_t g_espnowQueue = nullptr;
 
@@ -111,13 +117,17 @@ static volatile PendingStartKind g_pending_start = PendingStartKind::NONE;
 // Now declare g_motion after FatigueTestMotion is fully defined
 static FatigueTest::FatigueTestMotion* g_motion = nullptr;
 
+// Cancel callback for library homing/bounds routines.
+// (Signature must be a free function pointer; it reads our global cancel flag.)
+static bool ShouldCancelBounds() { return g_cancel_bounds; }
+
 /**
  * @brief Map the internal application state machine to the protocol-visible `TestState`.
  *
  * @details
  * The on-wire protocol only supports a limited set of states. Internally we track
  * additional phases (notably `BOUNDS_FINDING`). While bounds finding is active
- * the motor is energized and moving, so we currently report `TestState::RUNNING`.
+ * the motor is energized and moving, so we currently report `TestState::Running`.
  *
  * @param s Internal state value.
  * @return Protocol state value suitable for `STATUS_UPDATE`.
@@ -127,12 +137,12 @@ static FatigueTest::FatigueTestMotion* g_motion = nullptr;
  */
 static inline TestState ToProtoState(InternalState s) noexcept {
     switch (s) {
-        case InternalState::IDLE: return TestState::IDLE;
-        case InternalState::BOUNDS_FINDING: return TestState::RUNNING; // motor is active
-        case InternalState::RUNNING: return TestState::RUNNING;
-        case InternalState::PAUSED: return TestState::PAUSED;
-        case InternalState::ERROR: return TestState::ERROR;
-        default: return TestState::ERROR;
+        case InternalState::IDLE: return TestState::Idle;
+        case InternalState::BOUNDS_FINDING: return TestState::Running; // motor is active
+        case InternalState::RUNNING: return TestState::Running;
+        case InternalState::PAUSED: return TestState::Paused;
+        case InternalState::ERROR: return TestState::Error;
+        default: return TestState::Error;
     }
 }
 
@@ -150,9 +160,11 @@ static inline TestState ToProtoState(InternalState s) noexcept {
  *
  * @warning This disables the power stage. After this, the axis may be back-drivable.
  * @note This function does *not* change `g_state`; the caller owns state transitions.
+ * @note Thread-safe: acquires g_driver_mutex internally.
  */
 static void MotorStopHoldDisable() noexcept {
-    if (!g_driver) return;
+    if (!g_driver || !g_driver_mutex) return;
+    TmcMutexGuard guard(*g_driver_mutex);
     (void)g_driver->rampControl.Stop();
     (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
     (void)g_driver->motorControl.Disable();
@@ -168,9 +180,11 @@ static void MotorStopHoldDisable() noexcept {
  * @return true if the motor was enabled successfully; false otherwise.
  *
  * @note This function does *not* start motion; it only energizes the driver.
+ * @note Thread-safe: acquires g_driver_mutex internally.
  */
 static bool MotorEnable() noexcept {
-    if (!g_driver) return false;
+    if (!g_driver || !g_driver_mutex) return false;
+    TmcMutexGuard guard(*g_driver_mutex);
     auto res = g_driver->motorControl.Enable();
     if (!res) {
         ESP_LOGE(TAG, "Failed to enable motor (ErrorCode: %d)", static_cast<int>(res.Error()));
@@ -268,25 +282,51 @@ static void espnow_command_task(void* arg)
         // Use timeout so we can check time even when no messages arrive
         if (xQueueReceive(g_espnowQueue, &ev, pdMS_TO_TICKS(100)) == pdTRUE) {
             switch (ev.type) {
-                case ProtoEventType::CONFIG_REQUEST:
+                case ProtoEventType::ConfigRequest:
                     ESP_LOGI(TAG, "Config request received");
                     EspNowReceiver::send_config_response(g_settings);
                     break;
                     
-                case ProtoEventType::CONFIG_SET:
+                case ProtoEventType::ConfigSet: {
+                    // Get test config defaults for fallback when remote sends 0.0f
+                    using TestConfig = tmc51x0_test_config::GetTestConfigForTestRig<SELECTED_TEST_RIG>;
+                    
                     ESP_LOGI(TAG, "Config set: cycles=%u, tper=%u, dwell=%u, bounds=%s",
                              ev.data.config.cycle_amount,
                              ev.data.config.time_per_cycle,
                              ev.data.config.dwell_time,
                              ev.data.config.bounds_method_stallguard ? "StallGuard" : "Encoder");
+                    
+                    // Base fields (always set)
                     g_settings.test_unit.cycle_amount = ev.data.config.cycle_amount;
                     g_settings.test_unit.time_per_cycle = ev.data.config.time_per_cycle;
                     g_settings.test_unit.dwell_time = ev.data.config.dwell_time;
                     g_settings.test_unit.bounds_method_stallguard = ev.data.config.bounds_method_stallguard;
-                    g_settings.test_unit.bounds_search_velocity_rpm = ev.data.config.bounds_search_velocity_rpm;
-                    g_settings.test_unit.stallguard_min_velocity_rpm = ev.data.config.stallguard_min_velocity_rpm;
-                    g_settings.test_unit.stall_detection_current_factor = ev.data.config.stall_detection_current_factor;
-                    g_settings.test_unit.bounds_search_accel_rev_s2 = ev.data.config.bounds_search_accel_rev_s2;
+                    
+                    // Extended fields: 0.0f means "use test config defaults"
+                    g_settings.test_unit.bounds_search_velocity_rpm = 
+                        (ev.data.config.bounds_search_velocity_rpm > 0.01f) 
+                            ? ev.data.config.bounds_search_velocity_rpm 
+                            : TestConfig::Motion::BOUNDS_SEARCH_SPEED_RPM;
+                    g_settings.test_unit.stallguard_min_velocity_rpm = 
+                        (ev.data.config.stallguard_min_velocity_rpm > 0.01f) 
+                            ? ev.data.config.stallguard_min_velocity_rpm 
+                            : TestConfig::StallGuard::MIN_VELOCITY_RPM;
+                    g_settings.test_unit.stall_detection_current_factor = 
+                        (ev.data.config.stall_detection_current_factor > 0.01f) 
+                            ? ev.data.config.stall_detection_current_factor 
+                            : TestConfig::StallGuard::STALL_DETECTION_CURRENT_FACTOR;
+                    g_settings.test_unit.bounds_search_accel_rev_s2 = 
+                        (ev.data.config.bounds_search_accel_rev_s2 > 0.01f) 
+                            ? ev.data.config.bounds_search_accel_rev_s2 
+                            : TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
+                    
+                    ESP_LOGI(TAG, "Extended config (after defaults): search_vel=%.1f, sg_min=%.1f, cur_factor=%.2f, accel=%.1f",
+                             g_settings.test_unit.bounds_search_velocity_rpm,
+                             g_settings.test_unit.stallguard_min_velocity_rpm,
+                             g_settings.test_unit.stall_detection_current_factor,
+                             g_settings.test_unit.bounds_search_accel_rev_s2);
+                    
                     g_use_stallguard = ev.data.config.bounds_method_stallguard;
                     // Any config change forces bounds re-find on next START/RESUME
                     g_bounds_found = false;
@@ -300,8 +340,9 @@ static void espnow_command_task(void* arg)
                     }
                     EspNowReceiver::send_config_ack(true, 0);
                     break;
+                }
                     
-                case ProtoEventType::START:
+                case ProtoEventType::CommandStart:
                     ESP_LOGI(TAG, "Start command received");
                     if (g_state == InternalState::RUNNING || g_state == InternalState::BOUNDS_FINDING) {
                         ESP_LOGW(TAG, "Start ignored: already running or finding bounds");
@@ -313,7 +354,7 @@ static void espnow_command_task(void* arg)
                     EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state));
                     break;
                     
-                case ProtoEventType::PAUSE:
+                case ProtoEventType::CommandPause:
                     ESP_LOGI(TAG, "Pause command received");
                     EspNowReceiver::send_pause_ack();
                     // If bounds-finding is active, cancel it. Pause means motor de-energized.
@@ -321,7 +362,7 @@ static void espnow_command_task(void* arg)
                         g_cancel_bounds = true;
                         g_state = InternalState::PAUSED;
                         MotorStopHoldDisable();
-                        EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::PAUSED);
+                        EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Paused);
                         break;
                     }
                     // If running, stop motion and de-energize.
@@ -330,10 +371,10 @@ static void espnow_command_task(void* arg)
                     }
                     g_state = InternalState::PAUSED;
                     MotorStopHoldDisable();
-                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::PAUSED);
+                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Paused);
                     break;
                     
-                case ProtoEventType::RESUME:
+                case ProtoEventType::CommandResume:
                     ESP_LOGI(TAG, "Resume command received");
                     EspNowReceiver::send_resume_ack();
                     if (g_state == InternalState::RUNNING || g_state == InternalState::BOUNDS_FINDING) {
@@ -345,7 +386,7 @@ static void espnow_command_task(void* arg)
                     EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state));
                     break;
                     
-                case ProtoEventType::STOP:
+                case ProtoEventType::CommandStop:
                     ESP_LOGI(TAG, "Stop command received");
                     EspNowReceiver::send_stop_ack();
                     // Stop should stop everything and de-energize the motor immediately.
@@ -355,7 +396,7 @@ static void espnow_command_task(void* arg)
                     }
                     g_state = InternalState::IDLE;
                     MotorStopHoldDisable();
-                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::IDLE);
+                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Idle);
                     break;
                     
                 default:
@@ -377,7 +418,7 @@ static void espnow_command_task(void* arg)
  * Sequence:
  * - snapshot settings (`g_settings.test_unit`) and method (`g_use_stallguard`)
  * - enable motor power stage
- * - run the selected `IBoundsFinder::FindBounds(..., cancel_flag)`
+ * - run the library bounds finder (`g_driver->homing.FindBounds(..., cancel_cb)`)
  * - if successful, apply bounds to `g_motion` and start motion
  * - update state and send a STATUS_UPDATE
  *
@@ -409,17 +450,8 @@ static void bounds_finding_task(void* arg)
         return;
     }
 
-    // Create bounds finder
-    std::unique_ptr<FatigueTest::IBoundsFinder> bounds_finder;
-    if (use_sg) {
-        bounds_finder = FatigueTest::CreateStallGuardBoundsFinder<SELECTED_TEST_RIG>();
-    } else {
-        bounds_finder = FatigueTest::CreateEncoderBoundsFinder<SELECTED_TEST_RIG>();
-    }
-
-    if (!bounds_finder || !g_driver || !g_motion) {
-        ESP_LOGE(TAG, "[bounds_find] Missing components (bounds_finder=%p g_driver=%p g_motion=%p)",
-                 bounds_finder.get(), g_driver, g_motion);
+    if (!g_driver || !g_motion) {
+        ESP_LOGE(TAG, "[bounds_find] Missing components (g_driver=%p g_motion=%p)", g_driver, g_motion);
         g_state = InternalState::ERROR;
         MotorStopHoldDisable();
         g_bounds_task_running = false;
@@ -429,25 +461,57 @@ static void bounds_finding_task(void* arg)
         return;
     }
 
-    // Create config from settings
-    FatigueTest::BoundsFinderConfig finder_config{};
-    finder_config.search_velocity_rpm = tu.bounds_search_velocity_rpm;
-    finder_config.min_velocity_rpm = tu.stallguard_min_velocity_rpm;
-    finder_config.current_factor = tu.stall_detection_current_factor;
-    finder_config.search_accel_rev_s2 = tu.bounds_search_accel_rev_s2;
+    // Use the library built-in homing/bounds implementation.
+    using DriverT = tmc51x0::TMC51x0<Esp32SPI>;
+    using Homing = DriverT::Homing;
+    using TestConfig = tmc51x0_test_config::GetTestConfigForTestRig<SELECTED_TEST_RIG>;
 
-    auto result = bounds_finder->FindBounds(*g_driver, &finder_config, &g_cancel_bounds);
-    if (result.cancelled || g_cancel_bounds) {
-        ESP_LOGW(TAG, "[bounds_find] Cancelled");
-        MotorStopHoldDisable();
-        g_bounds_task_running = false;
-        g_bounds_task_handle = nullptr;
-        vTaskDelete(nullptr);
-        return;
+    Homing::BoundsOptions opt{};
+    opt.speed_unit = tmc51x0::Unit::RPM;
+    opt.position_unit = tmc51x0::Unit::Deg;
+    opt.search_speed = tu.bounds_search_velocity_rpm;      // RPM
+    opt.search_span = 360.0f;                              // degrees per direction (cap)
+    opt.backoff_distance = 5.0f;                           // degrees
+    opt.timeout_ms = TestConfig::Motion::HOMING_TIMEOUT_MS;
+
+    // Preserve the UI knobs:
+    // - StallGuard min velocity/current reduction apply only to SG mode
+    // - Search acceleration applies to all modes (library uses it when non-zero)
+    opt.search_accel = tu.bounds_search_accel_rev_s2;
+    opt.search_decel = tu.bounds_search_accel_rev_s2;
+    opt.accel_unit = tmc51x0::Unit::RevPerSec; // rev/s² (library treats Unit::RevPerSec as "rev-per-sec^2" for accel fields)
+
+    Homing::HomeConfig home{};
+    home.mode = Homing::HomePlacement::AtCenter; // center becomes XACTUAL=0 when both sides found
+
+    Homing::BoundsMethod method = use_sg ? Homing::BoundsMethod::StallGuard : Homing::BoundsMethod::Encoder;
+
+    // StallGuard override: we want runtime control over min velocity (and we keep the homing SGT).
+    tmc51x0::StallGuardConfig sg_override{};
+    if (use_sg) {
+        sg_override.threshold = TestConfig::StallGuard::SGT_HOMING;
+        sg_override.enable_filter = TestConfig::StallGuard::FILTER_ENABLED;
+        sg_override.min_velocity = tu.stallguard_min_velocity_rpm;
+        sg_override.max_velocity = 0.0f;
+        sg_override.velocity_unit = tmc51x0::Unit::RPM;
+        opt.stallguard_override = &sg_override;
+        opt.current_reduction_factor = tu.stall_detection_current_factor;
+    } else {
+        opt.stallguard_override = nullptr;
+        opt.current_reduction_factor = 0.0f;
     }
 
-    if (!result.success) {
-        ESP_LOGE(TAG, "[bounds_find] Failed");
+    auto lib_res = g_driver->homing.FindBounds(method, opt, home, &ShouldCancelBounds);
+    if (!lib_res) {
+        if (lib_res.Error() == tmc51x0::ErrorCode::CANCELLED || g_cancel_bounds) {
+            ESP_LOGW(TAG, "[bounds_find] Cancelled");
+            MotorStopHoldDisable();
+            g_bounds_task_running = false;
+            g_bounds_task_handle = nullptr;
+            vTaskDelete(nullptr);
+            return;
+        }
+        ESP_LOGE(TAG, "[bounds_find] Failed (err=%u)", static_cast<unsigned>(lib_res.Error()));
         g_state = InternalState::ERROR;
         MotorStopHoldDisable();
         g_bounds_task_running = false;
@@ -457,9 +521,72 @@ static void bounds_finding_task(void* arg)
         return;
     }
 
+    Homing::BoundsResult result = lib_res.Value();
+    if (result.cancelled || g_cancel_bounds) {
+        ESP_LOGW(TAG, "[bounds_find] Cancelled");
+        MotorStopHoldDisable();
+        g_bounds_task_running = false;
+        g_bounds_task_handle = nullptr;
+        vTaskDelete(nullptr);
+        return;
+    }
+
+    // Note: library returns a successful Result<BoundsResult> even if it did not detect
+    // mechanical stalls on either side. In that case, `result.success` will be false.
+    // We treat this as "unbounded" and use a safe default oscillation window.
+
     // Apply bounds and start motion
-    g_motion->SetGlobalBounds(result.min_bound, result.max_bound);
-    g_motion->SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
+    //
+    // IMPORTANT:
+    // - Bounds finders return bounds in degrees relative to the *current* established zero/home.
+    // - If the finder did NOT find both mechanical stops (`bounded == false`), we must treat the
+    //   system as unbounded and re-establish home at the *current* position. Otherwise the next
+    //   positioning command can look like "going in circles" as the controller tries to return
+    //   to an assumed center that isn't actually the current axis location.
+    //
+    // Snapshot current position for logging and (unbounded) home establishment.
+    float pos_deg = 0.0f;
+    {
+        TmcMutexGuard guard(*g_driver_mutex);
+        auto pos_res = g_driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+        pos_deg = pos_res ? pos_res.Value() : 0.0f;
+        
+        // CRITICAL: Explicitly disable stop-on-stall after bounds finding.
+        // The library's RAII guard should restore SW_MODE, but we add this explicit
+        // disable as a safety measure to ensure motion won't be interrupted by
+        // stall events during normal operation (especially at low velocities where
+        // SG_RESULT can naturally be 0).
+        auto sg_stop_result = g_driver->stallGuard.EnableStopOnStall(false);
+        if (!sg_stop_result) {
+            ESP_LOGW(TAG, "[bounds_find] Failed to disable stop-on-stall (err=%u)", 
+                     static_cast<unsigned>(sg_stop_result.Error()));
+        } else {
+            ESP_LOGI(TAG, "[bounds_find] Stop-on-stall disabled for normal motion");
+        }
+    }
+    ESP_LOGI(TAG, "[bounds_find] Result: success=%d bounded=%d min=%.2f° max=%.2f° current_pos=%.2f° (method=%s)",
+             result.success ? 1 : 0, result.bounded ? 1 : 0, result.min_bound, result.max_bound, pos_deg,
+             use_sg ? "StallGuard" : "Encoder");
+
+    if (result.bounded) {
+        // Use the measured mechanical range as the oscillation range.
+        g_motion->SetGlobalBounds(result.min_bound, result.max_bound);
+        g_motion->SetLocalBoundsFromCenterDegrees(result.min_bound, result.max_bound);
+    } else {
+        // Treat as unbounded:
+        // - Define home at the *current* physical position (XACTUAL=0), so subsequent motion is small and local.
+        {
+            TmcMutexGuard guard(*g_driver_mutex);
+            (void)g_driver->rampControl.Stop();
+            (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+            (void)g_driver->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
+            (void)g_driver->rampControl.SetTargetPosition(0.0f, tmc51x0::Unit::Deg);
+        }
+
+        // NOTE: FatigueTestMotion::SetUnbounded expects a *total* range; pass 350° to yield ±175°.
+        g_motion->SetUnbounded(0.0f, 350.0f);
+        g_motion->SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
+    }
     g_bounds_found = true;
 
     if (g_state != InternalState::BOUNDS_FINDING) {
@@ -485,7 +612,7 @@ static void bounds_finding_task(void* arg)
 
     g_state = InternalState::RUNNING;
     (void)start_kind; // ack is already sent in command handlers
-    EspNowReceiver::send_status_update(g_motion->GetCurrentCycles(), TestState::RUNNING);
+    EspNowReceiver::send_status_update(g_motion->GetCurrentCycles(), TestState::Running);
 
     g_bounds_task_running = false;
     g_bounds_task_handle = nullptr;
@@ -557,24 +684,31 @@ static void motion_control_task(void* arg)
             }
             
             // Monitor StallGuard values during motion (only when using StallGuard method)
-            if (g_use_stallguard && motion_is_running && g_driver) {
+            if (g_use_stallguard && motion_is_running && g_driver && g_driver_mutex) {
                 bool always_log = (current_time_us - last_sg_log_time_us >= sg_log_interval_always_us);
                 
                 if (always_log || (current_time_us - last_sg_log_time_us >= sg_log_interval_us)) {
-                    // Read current position
-                    auto pos_result = g_driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
-                    float pos_deg = pos_result.IsOk() ? pos_result.Value() : 0.0f;
-                    
-                    // Read current velocity
-                    auto vel_result = g_driver->rampControl.GetCurrentSpeed(tmc51x0::Unit::RPM);
-                    float vel_rpm = vel_result.IsOk() ? vel_result.Value() : 0.0f;
-                    
-                    // Read StallGuard value
-                    auto sg_result = g_driver->stallGuard.GetStallGuardResult();
+                    // Read driver telemetry with mutex protection
+                    float pos_deg = 0.0f;
+                    float vel_rpm = 0.0f;
                     uint16_t sg_val = 0;
-                    if (sg_result.IsOk()) {
-                        sg_val = sg_result.Value();
+                    bool sg_read_ok = false;
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        auto pos_result = g_driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+                        pos_deg = pos_result.IsOk() ? pos_result.Value() : 0.0f;
                         
+                        auto vel_result = g_driver->rampControl.GetCurrentSpeed(tmc51x0::Unit::RPM);
+                        vel_rpm = vel_result.IsOk() ? vel_result.Value() : 0.0f;
+                        
+                        auto sg_result = g_driver->stallGuard.GetStallGuardResult();
+                        sg_read_ok = sg_result.IsOk();
+                        if (sg_read_ok) {
+                            sg_val = sg_result.Value();
+                        }
+                    }
+                    
+                    if (sg_read_ok) {
                         // Always log first value when motion starts, or if value changed significantly, or periodically
                         bool first_log = (motion_start_time_us > 0 && 
                                          (current_time_us - motion_start_time_us) < 500000); // First 500ms
@@ -597,7 +731,7 @@ static void motion_control_task(void* arg)
                             }
                         }
                     } else {
-                        ESP_LOGW(TAG, "⚠ Failed to read StallGuard (ErrorCode: %d)", static_cast<int>(sg_result.Error()));
+                        ESP_LOGW(TAG, "⚠ Failed to read StallGuard");
                     }
                     
                     last_sg_log_time_us = current_time_us;
@@ -624,7 +758,7 @@ static void motion_control_task(void* arg)
             if (g_state == InternalState::RUNNING && !g_motion->IsRunning()) {
                 auto status = g_motion->GetStatus();
                 if (status.current_cycles >= status.target_cycles && status.target_cycles > 0) {
-                    EspNowReceiver::send_status_update(status.current_cycles, TestState::COMPLETED);
+                    EspNowReceiver::send_status_update(status.current_cycles, TestState::Completed);
                     EspNowReceiver::send_test_complete();
                     // Completion should de-energize motor
                     g_state = InternalState::IDLE;
@@ -1485,7 +1619,7 @@ static bool HandleStop(FatigueTest::FatigueTestMotion& motion) noexcept {
         g_state = InternalState::IDLE;
         MotorStopHoldDisable();
         EspNowReceiver::send_stop_ack();
-        EspNowReceiver::send_status_update(motion.GetCurrentCycles(), TestState::IDLE);
+        EspNowReceiver::send_status_update(motion.GetCurrentCycles(), TestState::Idle);
         return true;
     }
     
@@ -1495,7 +1629,7 @@ static bool HandleStop(FatigueTest::FatigueTestMotion& motion) noexcept {
     g_state = InternalState::IDLE;
     MotorStopHoldDisable();
     EspNowReceiver::send_stop_ack();
-    EspNowReceiver::send_status_update(motion.GetCurrentCycles(), TestState::IDLE);
+    EspNowReceiver::send_status_update(motion.GetCurrentCycles(), TestState::Idle);
     return true;
 }
 
@@ -1810,6 +1944,13 @@ extern "C" void app_main()
 
     ESP_LOGI(TAG, "Driver initialized successfully");
 
+    // Configure logging levels:
+    // - Homing: VERBOSE for bounds finding SG telemetry
+    // - TMC5160: INFO (Debug/Verbose suppressed to avoid ramp position spam)
+    esp_log_level_set("Homing", ESP_LOG_VERBOSE);
+    esp_log_level_set("TMC5160", ESP_LOG_INFO);
+    ESP_LOGI(TAG, "Logging configured: Homing=VERBOSE, TMC5160=INFO (ramp spam suppressed)");
+
     // Configure encoder
     tmc51x0::EncoderConfig enc_cfg = 
         tmc51x0_test_config::GetTestRigEncoderConfig<SELECTED_TEST_RIG>();
@@ -1836,10 +1977,17 @@ extern "C" void app_main()
     g_settings.test_unit.bounds_search_accel_rev_s2 = TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
     ESP_LOGI(TAG, "Default stall detection parameters initialized from test config");
 
+    // Create driver mutex for thread-safe SPI access
+    // This mutex protects ALL SPI transactions to the TMC5160
+    static Esp32TmcMutex driver_mutex;
+    g_driver_mutex = &driver_mutex;
+    ESP_LOGI(TAG, "Driver mutex created for thread-safe SPI access");
+
     // Create motion controller (full implementation)
     // The motion controller works entirely in higher-level units (degrees, RPM, rev/s²)
     // Driver already has motor configuration, so no setup needed
-    FatigueTest::FatigueTestMotion motion(&driver);
+    // Pass the driver mutex so FatigueTestMotion uses the same lock for SPI access
+    FatigueTest::FatigueTestMotion motion(&driver, driver_mutex);
     g_motion = &motion;
 
     // Bounds finding will happen when START command is received from UI board
@@ -1864,8 +2012,11 @@ extern "C" void app_main()
     // CRITICAL: Ensure motor is stopped before creating tasks
     // Tasks will call Update() but it will return early if motion not running
     ESP_LOGI(TAG, "Ensuring motor is stopped before creating tasks...");
-    driver.rampControl.Stop();
-    driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+    {
+        TmcMutexGuard guard(driver_mutex);
+        driver.rampControl.Stop();
+        driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+    }
     vTaskDelay(pdMS_TO_TICKS(200)); // Allow motor to fully stop
 
     // Create tasks

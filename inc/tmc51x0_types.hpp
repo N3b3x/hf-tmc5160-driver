@@ -759,6 +759,47 @@ inline constexpr uint16_t MicrostepsPerFullStep(MicrostepResolution mres) noexce
 }
 
 /**
+ * @brief Microstep lookup table preset waveforms
+ *
+ * Defines preset waveform configurations for the microstep lookup table (MSLUT).
+ * The lookup table defines the first quarter of the sine wave (0-90°); the
+ * driver mirrors it for the remaining three quarters.
+ *
+ * @see Datasheet Section 18: Microstep Lookup Table
+ */
+enum class MicrostepLutPreset : uint8_t {
+  /**
+   * @brief TMC5160 power-on default (slightly modified sine)
+   *
+   * Uses the factory default values programmed at reset. This provides a
+   * balanced tradeoff between smoothness and torque.
+   */
+  DEFAULT_SINE = 0,
+
+  /**
+   * @brief Mathematical pure sine wave
+   *
+   * Provides the smoothest motion with minimal torque ripple. Best for
+   * applications where smooth motion is more important than maximum torque.
+   */
+  PURE_SINE = 1
+};
+
+/**
+ * @brief Convert MicrostepLutPreset to human-readable string
+ */
+inline constexpr const char* ToString(MicrostepLutPreset preset) noexcept {
+  switch (preset) {
+  case MicrostepLutPreset::DEFAULT_SINE:
+    return "DEFAULT_SINE";
+  case MicrostepLutPreset::PURE_SINE:
+    return "PURE_SINE";
+  default:
+    return "Unknown";
+  }
+}
+
+/**
  * @brief Options for changing microstep resolution (CHOPCONF.MRES)
  *
  * The TMC51x0 uses **microsteps** as the native unit for position (XACTUAL/XTARGET)
