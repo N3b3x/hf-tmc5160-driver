@@ -345,7 +345,7 @@ void TMC51x0<CommType>::LogConfigSummary(const DriverConfig &cfg, const char *ta
   switch (cfg.mechanical.system_type) {
   case MechanicalSystemType::Gearbox:
     std::snprintf(v, sizeof(v), "%.3f", static_cast<double>(cfg.mechanical.gear_ratio));
-    row("gear_ratio", v, "", "Output revs per motor rev (or inverse, depending on your convention).");
+    row("gear_ratio", v, "", "Gear ratio = motor revolutions per output revolution (e.g., 5.18 for 5.18:1 reduction).");
     break;
   case MechanicalSystemType::LeadScrew:
     std::snprintf(v, sizeof(v), "%.3f", static_cast<double>(cfg.mechanical.lead_screw_pitch_mm));

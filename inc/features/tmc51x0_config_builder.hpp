@@ -63,7 +63,7 @@
  *     .WithMaxSpeed({100.0f, Unit::RPM})
  *     .WithAcceleration({50.0f, Unit::RevPerSec})
  *     // Mechanical system
- *     .WithGearbox(5.18f)  // 5.18:1 gearbox
+ *     .WithGearbox(5.18f)  // 5.18:1 gearbox (motor revolutions per output revolution)
  *     .Build();
  * @endcode
  */
@@ -793,7 +793,8 @@ public:
     /**
      * @brief Configure gearbox system
      * 
-     * @param gear_ratio Gear ratio (output/input, e.g., 5.18 for 5.18:1)
+     * @param gear_ratio Gear ratio as **motor revolutions per output revolution**
+     *                  (e.g., 5.18 for a 5.18:1 reduction gearbox)
      * @return Reference to builder for chaining
      */
     ConfigBuilder& WithGearbox(float gear_ratio) {

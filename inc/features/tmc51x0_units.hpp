@@ -3,7 +3,12 @@
  * @brief Unit conversion functions for TMC51x0 driver (TMC5130 & TMC5160)
  *
  * This file provides free functions for converting between physical units
- * (millimeters, degrees, RPM) and internal driver units (steps, steps/s).
+ * (millimeters, degrees, RPM) and **generic step units** (steps, steps/s).
+ *
+ * @note These are purely geometric/kinematic helpers. They do **not** perform the TMC51x0
+ *       register fixed-point conversions (e.g., VMAX/AMAX encoding), and they do not know
+ *       about the driver’s configured microstep resolution or gearbox ratio unless the caller
+ *       bakes that into `steps_per_rev`.
  * All functions are in the tmc51x0 namespace and follow PascalCase naming.
  *
  * @defgroup TMC51X0_Units Unit Conversions

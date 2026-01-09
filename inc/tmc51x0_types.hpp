@@ -169,15 +169,19 @@ inline constexpr const char* ToString(MotorType t) noexcept {
  * @brief Unit enumeration
  *
  * Defines the unit of measurement for position, velocity, and acceleration.
- * Steps: Microsteps (driver native)
+ * Steps: **Motor full steps** (user-facing, independent of microstep resolution)
  * Rad: Radians (per second for velocity, per second^2 for accel)
  * Deg: Degrees (per second for velocity, per second^2 for accel)
  * Mm: Millimeters (linear only)
  * RPM: Revolutions per Minute (Velocity only, typically)
  * RevPerSec: Revolutions per Second (recommended default for velocity)
+ *
+ * @note Internally, TMC51x0 position registers are in **microsteps** and ramp registers are
+ *       fixed-point values derived from **microsteps/s** and **microsteps/s²**.
+ *       The driver converts between these internal encodings and this public unit system.
  */
 enum class Unit : uint8_t {
-  Steps,     ///< Microsteps (driver native)
+  Steps,     ///< Motor full steps (user-facing). Driver applies microstep resolution internally.
   Rad,       ///< Radians (per second for velocity, per second^2 for accel)
   Deg,       ///< Degrees (per second for velocity, per second^2 for accel)
   Mm,        ///< Millimeters (linear only)
@@ -295,7 +299,7 @@ struct MechanicalSystem {
   float lead_screw_pitch_mm{0.0F};                                     ///< Lead screw pitch in mm (for LeadScrew)
   uint16_t belt_pulley_teeth{0}; ///< Number of teeth on motor pulley (for BeltDrive)
   float belt_pitch_mm{0.0F};     ///< Belt pitch in mm (for BeltDrive)
-  float gear_ratio{1.0F};        ///< Gear ratio (output/input, for Gearbox)
+  float gear_ratio{1.0F};        ///< Gear ratio as **motor revolutions per output revolution** (for Gearbox)
 
   /**
    * @brief Default constructor
@@ -320,7 +324,7 @@ struct MechanicalSystem {
  * Current settings (IRUN, IHOLD, GLOBAL_SCALER) can be automatically calculated from these parameters.
  *
  * @note If sense_resistor_mohm and supply_voltage_mv are set, current settings can be calculated
- *       automatically using CalculateMotorCurrent() from tmc5160_motor_calc.hpp
+ *       automatically using CalculateMotorCurrent() from tmc51x0_motor_calc.hpp
  */
 struct MotorSpec {
   // Motor type (for documentation and configuration purposes)
@@ -332,7 +336,7 @@ struct MotorSpec {
   uint16_t steps_per_rev{200};         ///< Steps per revolution (typically 200 for 1.8° motors)
                                        ///< Not used for DC motors/solenoids (set to 0 or ignore)
   uint16_t rated_current_ma{1500};     ///< Rated motor current in milliamps (RMS)
-  uint32_t winding_resistance_mohm{3}; ///< Winding resistance in milliohms (required for StealthChop lower limit calc)
+  uint32_t winding_resistance_mohm{3000}; ///< Winding resistance in milliohms (required for StealthChop lower limit calc)
   float winding_inductance_mh{0.0F}; ///< Winding inductance in millihenries (optional, 0 = not specified) (for StealthChop)
 
   // Desired current settings (used for calculation, not stored as register values)
@@ -2867,7 +2871,7 @@ struct GlobalConfig {
  *
  * These functions automatically configure all parameters from compile-time motor/platform specifications.
  *
- * See `tmc5160_motor_calc.hpp` for calculation details.
+ * See `tmc51x0_motor_calc.hpp` for calculation details.
  * See `docs/configuration.md` for configuration guide.
  */
 struct DriverConfig {

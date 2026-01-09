@@ -24,6 +24,10 @@ namespace tmc51x0 {
 namespace MotorCalcConstants {
 constexpr float VFS_MV = 325.0F;        // Typical full-scale voltage (mV) = 0.325V
 constexpr float SQRT2 = 1.41421356237F; // √2
+// Unit conversion helpers
+constexpr float MV_PER_V = 1000.0F;
+constexpr float MOHM_PER_OHM = 1000.0F;
+constexpr float MA_PER_A = 1000.0F;
 } // namespace MotorCalcConstants
 
 /**
@@ -78,13 +82,25 @@ inline bool CalculateMotorCurrent(const MotorSpec& motor_spec, uint32_t sense_re
   // Use shared constants
   constexpr float VFS_MV = MotorCalcConstants::VFS_MV;
   constexpr float SQRT2 = MotorCalcConstants::SQRT2;
+  constexpr float MV_PER_V = MotorCalcConstants::MV_PER_V;
+  constexpr float MOHM_PER_OHM = MotorCalcConstants::MOHM_PER_OHM;
+  constexpr float MA_PER_A = MotorCalcConstants::MA_PER_A;
+
+  // Convert to coherent base units for datasheet formulas (V, Ω, A).
+  const float rsense_ohm = static_cast<float>(sense_resistor_mohm) / MOHM_PER_OHM;
+  const float vfs_v = VFS_MV / MV_PER_V;
+  const float irun_rms_a = static_cast<float>(run_current_ma) / MA_PER_A;
+  const float ihold_rms_a = static_cast<float>(hold_current_ma) / MA_PER_A;
+
+  if (rsense_ohm <= 0.0F || vfs_v <= 0.0F) {
+    return false;
+  }
 
   // Calculate maximum possible RMS current at full scale (GLOBAL_SCALER=256, CS=31)
   // I_RMS_max (A) = (256/256) * ((31+1)/32) * (VFS_V/RSENSE_Ω) * (1/√2)
-  //               = 1.0 * 1.0 * (VFS_V/RSENSE_Ω) * (1/√2)
-  // Converting from mV/mΩ to A: (VFS_mV/1000) / (RSENSE_mΩ/1000) = VFS_mV/RSENSE_mΩ (already in A)
-  // Then convert to mA: multiply by 1000
-  float i_rms_max_ma = ((VFS_MV / static_cast<float>(sense_resistor_mohm)) / SQRT2) * 1000.0F;
+  //               = (VFS_V/RSENSE_Ω) * (1/√2)
+  const float i_rms_max_a = (vfs_v / rsense_ohm) / SQRT2;
+  const float i_rms_max_ma = i_rms_max_a * MA_PER_A;
 
   // Check if desired current exceeds maximum possible
   if (static_cast<float>(run_current_ma) > i_rms_max_ma * 1.1F) { // Allow 10% tolerance
@@ -96,10 +112,10 @@ inline bool CalculateMotorCurrent(const MotorSpec& motor_spec, uint32_t sense_re
   // Then adjust IRUN down if GLOBAL_SCALER would be too low
 
   // Calculate required GLOBAL_SCALER for IRUN=31
-  // I_RMS (mA) = (GLOBAL_SCALER/256) * ((31+1)/32) * (VFS_mV/RSENSE_mΩ) * (1/√2)
-  // Rearranged: GLOBAL_SCALER = I_RMS_ma * 256 * 32 / ((31+1) * (VFS_mV/RSENSE_mΩ) * (1/√2))
-  float global_scaler_float = (static_cast<float>(run_current_ma) * 256.0F * 32.0F) / 
-                               (32.0F * (VFS_MV / static_cast<float>(sense_resistor_mohm)) / SQRT2);
+  // I_RMS (A) = (GLOBAL_SCALER/256) * ((CS+1)/32) * (VFS_V/RSENSE_Ω) * (1/√2)
+  // For CS=31 => (CS+1)/32 = 1.
+  // Rearranged: GLOBAL_SCALER = I_RMS_A * 256 * √2 * RSENSE_Ω / VFS_V
+  float global_scaler_float = (irun_rms_a * 256.0F * SQRT2 * rsense_ohm) / vfs_v;
 
   // Constrain GLOBAL_SCALER to valid range (32-256, where 0 = 256)
   auto calculated_scaler = static_cast<uint16_t>(std::round(global_scaler_float));
@@ -114,8 +130,9 @@ inline bool CalculateMotorCurrent(const MotorSpec& motor_spec, uint32_t sense_re
   if (calculated_scaler >= 200) {
     // Try reducing IRUN to get GLOBAL_SCALER in better range (128-200)
     for (uint8_t test_irun = 30; test_irun >= 16; --test_irun) {
-      float test_scaler_float = (static_cast<float>(run_current_ma) * 256.0F * 32.0F) / 
-                                 (static_cast<float>(test_irun + 1) * (VFS_MV / static_cast<float>(sense_resistor_mohm)) / SQRT2);
+      const float cs_factor = static_cast<float>(test_irun + 1) / 32.0F;
+      // GLOBAL_SCALER = I * 256 * √2 * RSENSE / (VFS * cs_factor)
+      float test_scaler_float = (irun_rms_a * 256.0F * SQRT2 * rsense_ohm) / (vfs_v * cs_factor);
       auto test_scaler = static_cast<uint16_t>(std::round(test_scaler_float));
 
       if (test_scaler >= 32 && test_scaler <= 200) {
@@ -130,8 +147,8 @@ inline bool CalculateMotorCurrent(const MotorSpec& motor_spec, uint32_t sense_re
   if (optimal_irun < 8) {
     optimal_irun = 8;
     // Recalculate scaler for IRUN=8
-    float scaler_float = (static_cast<float>(run_current_ma) * 256.0F * 32.0F) / 
-                         (9.0F * (VFS_MV / static_cast<float>(sense_resistor_mohm)) / SQRT2);
+    const float cs_factor = 9.0F / 32.0F;
+    float scaler_float = (irun_rms_a * 256.0F * SQRT2 * rsense_ohm) / (vfs_v * cs_factor);
     optimal_scaler = static_cast<uint16_t>(std::round(scaler_float));
     optimal_scaler = std::max<uint16_t>(optimal_scaler, 32);
     optimal_scaler = std::min<uint16_t>(optimal_scaler, 256);
@@ -139,11 +156,14 @@ inline bool CalculateMotorCurrent(const MotorSpec& motor_spec, uint32_t sense_re
 
   // Calculate IHOLD using same method
   // Calculate required IHOLD (use same scaler as IRUN)
-  // I_RMS (mA) = (GLOBAL_SCALER/256) * ((IHOLD+1)/32) * (VFS_mV/RSENSE_mΩ) * (1/√2)
-  // Rearranged: IHOLD = (I_RMS_ma * 256 * 32) / (GLOBAL_SCALER * (VFS_mV/RSENSE_mΩ) * (1/√2)) - 1
+  // I_RMS (A) = (GLOBAL_SCALER/256) * ((CS+1)/32) * (VFS_V/RSENSE_Ω) * (1/√2)
+  // Solve for CS:
+  // (CS+1) = I * 32 * 256 * √2 * RSENSE / (GLOBAL_SCALER * VFS)
+  // CS = ... - 1
   float ihold_float =
-      ((static_cast<float>(hold_current_ma) * 256.0F * 32.0F) / 
-       (static_cast<float>(optimal_scaler) * (VFS_MV / static_cast<float>(sense_resistor_mohm)) / SQRT2)) - 1.0F;
+      ((ihold_rms_a * 32.0F * 256.0F * SQRT2 * rsense_ohm) /
+       (static_cast<float>(optimal_scaler) * vfs_v)) -
+      1.0F;
 
   auto calculated_ihold = static_cast<uint8_t>(std::round(ihold_float));
 
@@ -203,8 +223,17 @@ inline uint16_t CalculateStealthChopLowerLimit(const MotorSpec& motor_spec, uint
   // Calculate lower limit: I (mA) = t_BLANK * f_PWM * V_M (mV) / R_COIL (mΩ)
   // t_BLANK is in clock cycles, so we need: t_BLANK / f_CLK (time in seconds)
   float t_blank_sec = static_cast<float>(t_blank) / static_cast<float>(f_clk);
-  float i_lower_ma = (t_blank_sec * f_pwm * static_cast<float>(supply_voltage_mv)) / 
-                      static_cast<float>(motor_spec.winding_resistance_mohm);
+  // Use base units V/Ω/A, then convert to mA at the end.
+  constexpr float MV_PER_V = MotorCalcConstants::MV_PER_V;
+  constexpr float MOHM_PER_OHM = MotorCalcConstants::MOHM_PER_OHM;
+  constexpr float MA_PER_A = MotorCalcConstants::MA_PER_A;
+  const float vm_v = static_cast<float>(supply_voltage_mv) / MV_PER_V;
+  const float rcoil_ohm = static_cast<float>(motor_spec.winding_resistance_mohm) / MOHM_PER_OHM;
+  if (rcoil_ohm <= 0.0F) {
+    return 0;
+  }
+  float i_lower_a = (t_blank_sec * f_pwm * vm_v) / rcoil_ohm;
+  float i_lower_ma = i_lower_a * MA_PER_A;
 
   return static_cast<uint16_t>(i_lower_ma);
 }
