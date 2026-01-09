@@ -1,5 +1,5 @@
 <map id="EspNowPacket" name="EspNowPacket">
 <area shape="rect" id="Node000001" title="Full packet representation (header + max payload + CRC field)." alt="" coords="8,93,124,119"/>
-<area shape="rect" id="Node000002" href="$structEspNowHeader.html" title="ESP&#45;NOW packet header (wire format)." alt="" coords="5,5,127,31"/>
+<area shape="rect" id="Node000002" href="$structEspNowHeader.html" title="ESP&#45;NOW packet header (wire format) &#45; 6 bytes." alt="" coords="5,5,127,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,45,69,93,63,93,63,45"/>
 </map>

@@ -1750,17 +1750,17 @@ bool test_deviation_detection() noexcept {
   }
   
   // Check for deviation
-  auto deviation_result = handle->driver->encoder.IsDeviationDetected();
+  auto deviation_result = handle->driver->encoder.IsDeviationWarning();
   if (deviation_result.IsErr()) {
     ESP_LOGE(TAG, "Failed to check deviation (ErrorCode: %d)", static_cast<int>(deviation_result.Error()));
     return false;
   }
   bool dev_detected = deviation_result.Value();
-  ESP_LOGI(TAG, "Deviation Detected: %s", dev_detected ? "true" : "false");
+  ESP_LOGI(TAG, "Deviation Warning: %s", dev_detected ? "true" : "false");
   
-  // Clear deviation flag
-  if (!handle->driver->encoder.ClearDeviationFlag()) {
-    ESP_LOGE(TAG, "Failed to clear deviation flag");
+  // Clear deviation warning
+  if (!handle->driver->encoder.ClearDeviationWarning()) {
+    ESP_LOGE(TAG, "Failed to clear deviation warning");
     return false;
   }
   

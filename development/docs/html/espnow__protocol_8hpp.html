@@ -127,7 +127,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEspNowHeader.html">EspNowHeader</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ESP-NOW packet header (wire format).  <a href="structEspNowHeader.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ESP-NOW packet header (wire format) - 6 bytes.  <a href="structEspNowHeader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEspNowPacket.html">EspNowPacket</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Full packet representation (header + max payload + CRC field).  <a href="structEspNowPacket.html#details">More...</a><br /></td></tr>
@@ -138,6 +138,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structConfigAckPayload.html">ConfigAckPayload</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Payload for CONFIG_ACK.  <a href="structConfigAckPayload.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCommandPayload.html">CommandPayload</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Payload for COMMAND message.  <a href="structCommandPayload.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structStatusPayload.html">StatusPayload</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Payload for STATUS_UPDATE.  <a href="structStatusPayload.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,13 +148,13 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Payload for ERROR.  <a href="structErrorPayload.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTestUnitSettings.html">TestUnitSettings</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test unit settings - synchronized with test machine via ESP-NOW These settings control the fatigue test behavior.  <a href="structTestUnitSettings.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test unit settings - synchronized with test machine via ESP-NOW.  <a href="structTestUnitSettings.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structUISettings.html">UISettings</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">UI board settings - stored locally, never synchronized with test unit These settings control the UI board's display and behavior.  <a href="structUISettings.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">UI board settings - stored locally, never synchronized with test unit.  <a href="structUISettings.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSettings.html">Settings</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Complete settings structure containing both test unit and UI settings This is the main settings structure used throughout the application.  <a href="structSettings.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Complete settings structure containing both test unit and UI settings.  <a href="structSettings.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structProtoEvent.html">ProtoEvent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protocol event structure pushed through FreeRTOS queues.  <a href="structProtoEvent.html#details">More...</a><br /></td></tr>
@@ -160,60 +163,62 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:a4d47dc9870566f2f294eaab1426094a2" id="r_a4d47dc9870566f2f294eaab1426094a2"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d47dc9870566f2f294eaab1426094a2">MsgType</a> : uint8_t { <br />
-&#160;&#160;<a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a0b670c8c72d6656f8b6b7eef1e0f3927">CONFIG_REQUEST</a> = 1
-, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a689e774c07d429c54d29280de778b5eb">CONFIG_RESPONSE</a>
-, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a5a0fcce86a75eb684b5798e7b6205f77">CONFIG_SET</a>
-, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a4cea151589809d9ffd1c1c97511085b4">CONFIG_ACK</a>
+&#160;&#160;<a class="el" href="#a4d47dc9870566f2f294eaab1426094a2aeaa9d092108601bfc0f307504f35074c">DeviceDiscovery</a> = 1
+, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a8a74f6c559c36ff78e885f75931a7cf2">DeviceInfo</a>
+, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2ab084422d74753e090a89ca958b75d62f">ConfigRequest</a>
+, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2ab6cc30140d392030d4222393c6a860c6">ConfigResponse</a>
 , <br />
-&#160;&#160;<a class="el" href="#a4d47dc9870566f2f294eaab1426094a2ab078ffd28db767c502ac367053f6e0ac">START</a>
-, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a62726fd8f06c4fae09958877d06db577">START_ACK</a>
-, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a291554596c183e837f0a6bec3767c891">PAUSE</a>
-, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a30a75a8c0b3abebabcca1501635684ed">PAUSE_ACK</a>
+&#160;&#160;<a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a98a3c65d7bf55d8c4e5436a322e4fc14">ConfigSet</a>
+, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a665d005725c4f7472027245063eba38f">ConfigAck</a>
+, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2aee97be03cb04119af45014d815621ce1">Command</a>
+, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a081582fba4fc23d38ecac1be34dd1f79">CommandAck</a>
 , <br />
-&#160;&#160;<a class="el" href="#a4d47dc9870566f2f294eaab1426094a2abac2aec3ee8d7d495123dbe5ca2fdac9">RESUME</a>
-, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a39c910a71df7dcd2e3e224be6858d8e0">RESUME_ACK</a>
-, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a615a46af313786fc4e349f34118be111">STOP</a>
-, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a83e36857e89fcac3c91a510b5ac5fb70">STOP_ACK</a>
-, <br />
-&#160;&#160;<a class="el" href="#a4d47dc9870566f2f294eaab1426094a2ac9f38cbcb08e48079a1aada9bed6bd23">STATUS_UPDATE</a>
-, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2abb1ca97ec761fc37101737ba0aa2e7c5">ERROR</a>
-, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a5aa303ccc0c43027d0a70c7fcf8e9a71">TEST_COMPLETE</a>
-, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a44aed0870d4fc9ff76583fc24ac39c35">ERROR_CLEAR</a> = 16
+&#160;&#160;<a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a6e09aeebd8293d23eb6717ce6a2b8843">StatusUpdate</a>
+, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a902b0d55fddef6f8d651fe1035b7d4bd">Error</a>
+, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2adc045624031172f4a63f6bec9ba0370e">ErrorClear</a>
+, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a83ba8397ea552f99fb3fb2d1543b5d58">TestComplete</a>
 <br />
  }</td></tr>
 <tr class="memdesc:a4d47dc9870566f2f294eaab1426094a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wire-level message type identifiers.  <a href="#a4d47dc9870566f2f294eaab1426094a2">More...</a><br /></td></tr>
 <tr class="separator:a4d47dc9870566f2f294eaab1426094a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60f8cc7211722b1cc1767ba7c7a5d4d7" id="r_a60f8cc7211722b1cc1767ba7c7a5d4d7"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60f8cc7211722b1cc1767ba7c7a5d4d7">TestState</a> : uint8_t { <br />
-&#160;&#160;<a class="el" href="#a60f8cc7211722b1cc1767ba7c7a5d4d7aa5daf7f2ebbba4975d61dab1c40188c7">IDLE</a> = 0
-, <a class="el" href="#a60f8cc7211722b1cc1767ba7c7a5d4d7a43491564ebcfd38568918efbd6e840fd">RUNNING</a>
-, <a class="el" href="#a60f8cc7211722b1cc1767ba7c7a5d4d7a99b2439e63f73ad515f7ab2447a80673">PAUSED</a>
-, <a class="el" href="#a60f8cc7211722b1cc1767ba7c7a5d4d7a8f7afecbc8fbc4cd0f50a57d1172482e">COMPLETED</a>
+&#160;&#160;<a class="el" href="#a60f8cc7211722b1cc1767ba7c7a5d4d7ae599161956d626eda4cb0a5ffb85271c">Idle</a> = 0
+, <a class="el" href="#a60f8cc7211722b1cc1767ba7c7a5d4d7a5bda814c4aedb126839228f1a3d92f09">Running</a>
+, <a class="el" href="#a60f8cc7211722b1cc1767ba7c7a5d4d7ae99180abf47a8b3a856e0bcb2656990a">Paused</a>
+, <a class="el" href="#a60f8cc7211722b1cc1767ba7c7a5d4d7a07ca5050e697392c9ed47e6453f1453f">Completed</a>
 , <br />
-&#160;&#160;<a class="el" href="#a60f8cc7211722b1cc1767ba7c7a5d4d7abb1ca97ec761fc37101737ba0aa2e7c5">ERROR</a>
+&#160;&#160;<a class="el" href="#a60f8cc7211722b1cc1767ba7c7a5d4d7a902b0d55fddef6f8d651fe1035b7d4bd">Error</a>
 <br />
  }</td></tr>
 <tr class="memdesc:a60f8cc7211722b1cc1767ba7c7a5d4d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protocol-visible test states encoded in <code>STATUS_UPDATE</code>.  <a href="#a60f8cc7211722b1cc1767ba7c7a5d4d7">More...</a><br /></td></tr>
 <tr class="separator:a60f8cc7211722b1cc1767ba7c7a5d4d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62651afa1b82816bb6ca42a7dece0901" id="r_a62651afa1b82816bb6ca42a7dece0901"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62651afa1b82816bb6ca42a7dece0901">CommandId</a> : uint8_t { <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901aa6122a65eaa676f700ae68d393054a37">Start</a> = 1
+, <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901a105b296a83f9c105355403f3332af50f">Pause</a> = 2
+, <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901af1cefec9e2196c672a622347f1fbc325">Resume</a> = 3
+, <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901a11a755d598c0c417f9a36758c3da7481">Stop</a> = 4
+ }</td></tr>
+<tr class="memdesc:a62651afa1b82816bb6ca42a7dece0901"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command IDs for COMMAND message type.  <a href="#a62651afa1b82816bb6ca42a7dece0901">More...</a><br /></td></tr>
+<tr class="separator:a62651afa1b82816bb6ca42a7dece0901"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3e128b3e7e8c9e272e987f862e1d5ae" id="r_ae3e128b3e7e8c9e272e987f862e1d5ae"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5ae">ProtoEventType</a> { <br />
-&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea0b670c8c72d6656f8b6b7eef1e0f3927">CONFIG_REQUEST</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea5a0fcce86a75eb684b5798e7b6205f77">CONFIG_SET</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeab078ffd28db767c502ac367053f6e0ac">START</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea291554596c183e837f0a6bec3767c891">PAUSE</a>
+&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeab084422d74753e090a89ca958b75d62f">ConfigRequest</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea98a3c65d7bf55d8c4e5436a322e4fc14">ConfigSet</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea020880ff17a03b5de04d3fa0f8e98308">CommandStart</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeab84b21911985eb695b569c86276cbf32">CommandPause</a>
 , <br />
-&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeabac2aec3ee8d7d495123dbe5ca2fdac9">RESUME</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea615a46af313786fc4e349f34118be111">STOP</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea2e7d5569e99e4559e87fb0e75776a692">CONFIG_UPDATED</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea20d492729f5b3c36c9f977a9d8d2f5dc">CONFIG_APPLY_OK</a>
+&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea744e0e7d8814c6ce12d2d7992131a5a9">CommandResume</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea15bc458ccd8081b6f7a5006e94f0fd36">CommandStop</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea89e049f20cbb75d50c912687cf036a22">ConfigUpdated</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aead92b5dda2129b9614905aa23d482b5b1">ConfigApplyOk</a>
 , <br />
-&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea7b7487ca2c9d201c9a01c01c1de8519f">CONFIG_APPLY_FAIL</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea17130e6c806885e23770df1519b18eb7">STARTED</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea99b2439e63f73ad515f7ab2447a80673">PAUSED</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeacb842fd609bb013fa97c3b7eef11b685">RESUMED</a>
+&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeafb6038726e9e65a2426a75f8ac1b3175">ConfigApplyFail</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea8428552d86c0d262a542a528af490afa">Started</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeae99180abf47a8b3a856e0bcb2656990a">Paused</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeab2a21932ddc3b1e41c012d711c7bd238">Resumed</a>
 , <br />
-&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea09d4d696b4e935115b9313e3c412509a">STOPPED</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea5f241c8c8f985b3c51e05d39cf030f4c">STATUS</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea15f30429404e0a7a88fbd69a793da285">ERROR_EVENT</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aead71a637068b9cea4296244f419a40c34">TEST_COMPLETED</a>
+&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeac23e2b09ebe6bf4cb5e2a9abe85c0be2">Stopped</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeaec53a8c4f07baed5d8825072c89799be">Status</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aead9b024b1a3a8208b7edc8eb711ff441e">ErrorEvent</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea716f0ec05d9f5bd5e06f08ae004686c4">TestCompleted</a>
 <br />
  }</td></tr>
 <tr class="memdesc:ae3e128b3e7e8c9e272e987f862e1d5ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Higher-level events emitted by the protocol layer.  <a href="#ae3e128b3e7e8c9e272e987f862e1d5ae">More...</a><br /></td></tr>
@@ -221,25 +226,61 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aad8e572c4e16e9a24c82fd3db6f99740" id="r_aad8e572c4e16e9a24c82fd3db6f99740"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad8e572c4e16e9a24c82fd3db6f99740">crc16_ccitt</a> (const uint8_t *data, size_t len)</td></tr>
-<tr class="memdesc:aad8e572c4e16e9a24c82fd3db6f99740"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute CRC16-CCITT (poly 0x1021, init 0xFFFF).  <br /></td></tr>
-<tr class="separator:aad8e572c4e16e9a24c82fd3db6f99740"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa7c999b99fb5716dc9d60af3a151d11" id="r_afa7c999b99fb5716dc9d60af3a151d11"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa7c999b99fb5716dc9d60af3a151d11">Crc16Ccitt</a> (const uint8_t *data, size_t len) noexcept</td></tr>
+<tr class="memdesc:afa7c999b99fb5716dc9d60af3a151d11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute CRC16-CCITT (poly 0x1021, init 0xFFFF).  <br /></td></tr>
+<tr class="separator:afa7c999b99fb5716dc9d60af3a151d11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:aa7c5e0728b0dcea06f43dbd07863d579" id="r_aa7c5e0728b0dcea06f43dbd07863d579"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7c5e0728b0dcea06f43dbd07863d579">ESPNOW_SYNC_BYTE</a> = 0xAA</td></tr>
 <tr class="separator:aa7c5e0728b0dcea06f43dbd07863d579"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4608441df3e488ee211a1ae34a0d5159" id="r_a4608441df3e488ee211a1ae34a0d5159"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4608441df3e488ee211a1ae34a0d5159">ESPNOW_MAX_PAYLOAD</a> = 48</td></tr>
+<tr class="memitem:abcaa6cc02d62814d53832a063288e36e" id="r_abcaa6cc02d62814d53832a063288e36e"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abcaa6cc02d62814d53832a063288e36e">ESPNOW_PROTOCOL_VERSION</a> = 1</td></tr>
+<tr class="separator:abcaa6cc02d62814d53832a063288e36e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a330c227130799ae2ddb70dc83d90bb90" id="r_a330c227130799ae2ddb70dc83d90bb90"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a330c227130799ae2ddb70dc83d90bb90">DEVICE_ID_FATIGUE_TESTER</a> = 1</td></tr>
+<tr class="separator:a330c227130799ae2ddb70dc83d90bb90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4608441df3e488ee211a1ae34a0d5159" id="r_a4608441df3e488ee211a1ae34a0d5159"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4608441df3e488ee211a1ae34a0d5159">ESPNOW_MAX_PAYLOAD</a> = 200</td></tr>
 <tr class="separator:a4608441df3e488ee211a1ae34a0d5159"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98ebb7458d234a38d7ae44ddebd93366" id="r_a98ebb7458d234a38d7ae44ddebd93366"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98ebb7458d234a38d7ae44ddebd93366">WIFI_CHANNEL</a> = 1</td></tr>
 <tr class="separator:a98ebb7458d234a38d7ae44ddebd93366"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a4adb34269d3b39e3b058ed89c0f1dd" id="r_a2a4adb34269d3b39e3b058ed89c0f1dd"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2a4adb34269d3b39e3b058ed89c0f1dd">UI_BOARD_MAC_</a> [6] = { 0x9C, 0x9E, 0x6E, 0x77, 0x24, 0xF8 }</td></tr>
-<tr class="separator:a2a4adb34269d3b39e3b058ed89c0f1dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95f459db8f6dcc34bbb3e93dcb1f0749" id="r_a95f459db8f6dcc34bbb3e93dcb1f0749"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a95f459db8f6dcc34bbb3e93dcb1f0749">UI_BOARD_MAC</a> [6] = { 0x9C, 0x9E, 0x6E, 0x77, 0x24, 0xF8 }</td></tr>
+<tr class="separator:a95f459db8f6dcc34bbb3e93dcb1f0749"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>ESP-NOW communication protocol for fatigue tester. </p>
+<p>Protocol compatible with esp32_remote_controller. Uses 6-byte header with version and device_id fields.</p>
 <p>Defines message types, packet structures, and protocol handlers for communication between UI board (remote controller) and test unit. </p>
 </div><h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a62651afa1b82816bb6ca42a7dece0901" name="a62651afa1b82816bb6ca42a7dece0901"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62651afa1b82816bb6ca42a7dece0901">&#9670;&#160;</a></span>CommandId</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901">CommandId</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Command IDs for COMMAND message type. </p>
+<p>Per coding standards: PascalCase for enum values. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901aa6122a65eaa676f700ae68d393054a37" name="a62651afa1b82816bb6ca42a7dece0901aa6122a65eaa676f700ae68d393054a37"></a>Start&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901a105b296a83f9c105355403f3332af50f" name="a62651afa1b82816bb6ca42a7dece0901a105b296a83f9c105355403f3332af50f"></a>Pause&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901af1cefec9e2196c672a622347f1fbc325" name="a62651afa1b82816bb6ca42a7dece0901af1cefec9e2196c672a622347f1fbc325"></a>Resume&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901a11a755d598c0c417f9a36758c3da7481" name="a62651afa1b82816bb6ca42a7dece0901a11a755d598c0c417f9a36758c3da7481"></a>Stop&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a id="a4d47dc9870566f2f294eaab1426094a2" name="a4d47dc9870566f2f294eaab1426094a2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4d47dc9870566f2f294eaab1426094a2">&#9670;&#160;</a></span>MsgType</h2>
 
@@ -261,24 +302,21 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Wire-level message type identifiers. </p>
-<p>These values are serialized into <code><a class="el" href="structEspNowHeader.html#a9590e934eeb5552ecbee6bf1905a0039">EspNowHeader::type</a></code> and must match on both the test unit and the remote controller. </p>
+<p>These values are serialized into <code><a class="el" href="structEspNowHeader.html#a9590e934eeb5552ecbee6bf1905a0039">EspNowHeader::type</a></code> and must match the remote controller's espnow::MsgType enum exactly.</p>
+<p>Per coding standards: PascalCase for enum values (state/error types). </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a0b670c8c72d6656f8b6b7eef1e0f3927" name="a4d47dc9870566f2f294eaab1426094a2a0b670c8c72d6656f8b6b7eef1e0f3927"></a>CONFIG_REQUEST&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a689e774c07d429c54d29280de778b5eb" name="a4d47dc9870566f2f294eaab1426094a2a689e774c07d429c54d29280de778b5eb"></a>CONFIG_RESPONSE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a5a0fcce86a75eb684b5798e7b6205f77" name="a4d47dc9870566f2f294eaab1426094a2a5a0fcce86a75eb684b5798e7b6205f77"></a>CONFIG_SET&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a4cea151589809d9ffd1c1c97511085b4" name="a4d47dc9870566f2f294eaab1426094a2a4cea151589809d9ffd1c1c97511085b4"></a>CONFIG_ACK&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2ab078ffd28db767c502ac367053f6e0ac" name="a4d47dc9870566f2f294eaab1426094a2ab078ffd28db767c502ac367053f6e0ac"></a>START&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a62726fd8f06c4fae09958877d06db577" name="a4d47dc9870566f2f294eaab1426094a2a62726fd8f06c4fae09958877d06db577"></a>START_ACK&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a291554596c183e837f0a6bec3767c891" name="a4d47dc9870566f2f294eaab1426094a2a291554596c183e837f0a6bec3767c891"></a>PAUSE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a30a75a8c0b3abebabcca1501635684ed" name="a4d47dc9870566f2f294eaab1426094a2a30a75a8c0b3abebabcca1501635684ed"></a>PAUSE_ACK&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2abac2aec3ee8d7d495123dbe5ca2fdac9" name="a4d47dc9870566f2f294eaab1426094a2abac2aec3ee8d7d495123dbe5ca2fdac9"></a>RESUME&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a39c910a71df7dcd2e3e224be6858d8e0" name="a4d47dc9870566f2f294eaab1426094a2a39c910a71df7dcd2e3e224be6858d8e0"></a>RESUME_ACK&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a615a46af313786fc4e349f34118be111" name="a4d47dc9870566f2f294eaab1426094a2a615a46af313786fc4e349f34118be111"></a>STOP&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a83e36857e89fcac3c91a510b5ac5fb70" name="a4d47dc9870566f2f294eaab1426094a2a83e36857e89fcac3c91a510b5ac5fb70"></a>STOP_ACK&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2ac9f38cbcb08e48079a1aada9bed6bd23" name="a4d47dc9870566f2f294eaab1426094a2ac9f38cbcb08e48079a1aada9bed6bd23"></a>STATUS_UPDATE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2abb1ca97ec761fc37101737ba0aa2e7c5" name="a4d47dc9870566f2f294eaab1426094a2abb1ca97ec761fc37101737ba0aa2e7c5"></a>ERROR&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a5aa303ccc0c43027d0a70c7fcf8e9a71" name="a4d47dc9870566f2f294eaab1426094a2a5aa303ccc0c43027d0a70c7fcf8e9a71"></a>TEST_COMPLETE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a44aed0870d4fc9ff76583fc24ac39c35" name="a4d47dc9870566f2f294eaab1426094a2a44aed0870d4fc9ff76583fc24ac39c35"></a>ERROR_CLEAR&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2aeaa9d092108601bfc0f307504f35074c" name="a4d47dc9870566f2f294eaab1426094a2aeaa9d092108601bfc0f307504f35074c"></a>DeviceDiscovery&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a8a74f6c559c36ff78e885f75931a7cf2" name="a4d47dc9870566f2f294eaab1426094a2a8a74f6c559c36ff78e885f75931a7cf2"></a>DeviceInfo&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2ab084422d74753e090a89ca958b75d62f" name="a4d47dc9870566f2f294eaab1426094a2ab084422d74753e090a89ca958b75d62f"></a>ConfigRequest&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2ab6cc30140d392030d4222393c6a860c6" name="a4d47dc9870566f2f294eaab1426094a2ab6cc30140d392030d4222393c6a860c6"></a>ConfigResponse&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a98a3c65d7bf55d8c4e5436a322e4fc14" name="a4d47dc9870566f2f294eaab1426094a2a98a3c65d7bf55d8c4e5436a322e4fc14"></a>ConfigSet&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a665d005725c4f7472027245063eba38f" name="a4d47dc9870566f2f294eaab1426094a2a665d005725c4f7472027245063eba38f"></a>ConfigAck&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2aee97be03cb04119af45014d815621ce1" name="a4d47dc9870566f2f294eaab1426094a2aee97be03cb04119af45014d815621ce1"></a>Command&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a081582fba4fc23d38ecac1be34dd1f79" name="a4d47dc9870566f2f294eaab1426094a2a081582fba4fc23d38ecac1be34dd1f79"></a>CommandAck&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a6e09aeebd8293d23eb6717ce6a2b8843" name="a4d47dc9870566f2f294eaab1426094a2a6e09aeebd8293d23eb6717ce6a2b8843"></a>StatusUpdate&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a902b0d55fddef6f8d651fe1035b7d4bd" name="a4d47dc9870566f2f294eaab1426094a2a902b0d55fddef6f8d651fe1035b7d4bd"></a>Error&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2adc045624031172f4a63f6bec9ba0370e" name="a4d47dc9870566f2f294eaab1426094a2adc045624031172f4a63f6bec9ba0370e"></a>ErrorClear&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a83ba8397ea552f99fb3fb2d1543b5d58" name="a4d47dc9870566f2f294eaab1426094a2a83ba8397ea552f99fb3fb2d1543b5d58"></a>TestComplete&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -304,24 +342,25 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Higher-level events emitted by the protocol layer. </p>
-<p>On the test-unit side, these events represent commands received from the UI board. On either side, these can also represent parsed status/response semantics. </p>
+<p>On the test-unit side, these events represent commands received from the UI board. On either side, these can also represent parsed status/response semantics.</p>
+<p>Per coding standards: PascalCase for enum values (event types). </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea0b670c8c72d6656f8b6b7eef1e0f3927" name="ae3e128b3e7e8c9e272e987f862e1d5aea0b670c8c72d6656f8b6b7eef1e0f3927"></a>CONFIG_REQUEST&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea5a0fcce86a75eb684b5798e7b6205f77" name="ae3e128b3e7e8c9e272e987f862e1d5aea5a0fcce86a75eb684b5798e7b6205f77"></a>CONFIG_SET&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeab078ffd28db767c502ac367053f6e0ac" name="ae3e128b3e7e8c9e272e987f862e1d5aeab078ffd28db767c502ac367053f6e0ac"></a>START&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea291554596c183e837f0a6bec3767c891" name="ae3e128b3e7e8c9e272e987f862e1d5aea291554596c183e837f0a6bec3767c891"></a>PAUSE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeabac2aec3ee8d7d495123dbe5ca2fdac9" name="ae3e128b3e7e8c9e272e987f862e1d5aeabac2aec3ee8d7d495123dbe5ca2fdac9"></a>RESUME&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea615a46af313786fc4e349f34118be111" name="ae3e128b3e7e8c9e272e987f862e1d5aea615a46af313786fc4e349f34118be111"></a>STOP&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea2e7d5569e99e4559e87fb0e75776a692" name="ae3e128b3e7e8c9e272e987f862e1d5aea2e7d5569e99e4559e87fb0e75776a692"></a>CONFIG_UPDATED&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea20d492729f5b3c36c9f977a9d8d2f5dc" name="ae3e128b3e7e8c9e272e987f862e1d5aea20d492729f5b3c36c9f977a9d8d2f5dc"></a>CONFIG_APPLY_OK&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea7b7487ca2c9d201c9a01c01c1de8519f" name="ae3e128b3e7e8c9e272e987f862e1d5aea7b7487ca2c9d201c9a01c01c1de8519f"></a>CONFIG_APPLY_FAIL&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea17130e6c806885e23770df1519b18eb7" name="ae3e128b3e7e8c9e272e987f862e1d5aea17130e6c806885e23770df1519b18eb7"></a>STARTED&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea99b2439e63f73ad515f7ab2447a80673" name="ae3e128b3e7e8c9e272e987f862e1d5aea99b2439e63f73ad515f7ab2447a80673"></a>PAUSED&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeacb842fd609bb013fa97c3b7eef11b685" name="ae3e128b3e7e8c9e272e987f862e1d5aeacb842fd609bb013fa97c3b7eef11b685"></a>RESUMED&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea09d4d696b4e935115b9313e3c412509a" name="ae3e128b3e7e8c9e272e987f862e1d5aea09d4d696b4e935115b9313e3c412509a"></a>STOPPED&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea5f241c8c8f985b3c51e05d39cf030f4c" name="ae3e128b3e7e8c9e272e987f862e1d5aea5f241c8c8f985b3c51e05d39cf030f4c"></a>STATUS&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea15f30429404e0a7a88fbd69a793da285" name="ae3e128b3e7e8c9e272e987f862e1d5aea15f30429404e0a7a88fbd69a793da285"></a>ERROR_EVENT&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aead71a637068b9cea4296244f419a40c34" name="ae3e128b3e7e8c9e272e987f862e1d5aead71a637068b9cea4296244f419a40c34"></a>TEST_COMPLETED&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeab084422d74753e090a89ca958b75d62f" name="ae3e128b3e7e8c9e272e987f862e1d5aeab084422d74753e090a89ca958b75d62f"></a>ConfigRequest&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea98a3c65d7bf55d8c4e5436a322e4fc14" name="ae3e128b3e7e8c9e272e987f862e1d5aea98a3c65d7bf55d8c4e5436a322e4fc14"></a>ConfigSet&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea020880ff17a03b5de04d3fa0f8e98308" name="ae3e128b3e7e8c9e272e987f862e1d5aea020880ff17a03b5de04d3fa0f8e98308"></a>CommandStart&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeab84b21911985eb695b569c86276cbf32" name="ae3e128b3e7e8c9e272e987f862e1d5aeab84b21911985eb695b569c86276cbf32"></a>CommandPause&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea744e0e7d8814c6ce12d2d7992131a5a9" name="ae3e128b3e7e8c9e272e987f862e1d5aea744e0e7d8814c6ce12d2d7992131a5a9"></a>CommandResume&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea15bc458ccd8081b6f7a5006e94f0fd36" name="ae3e128b3e7e8c9e272e987f862e1d5aea15bc458ccd8081b6f7a5006e94f0fd36"></a>CommandStop&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea89e049f20cbb75d50c912687cf036a22" name="ae3e128b3e7e8c9e272e987f862e1d5aea89e049f20cbb75d50c912687cf036a22"></a>ConfigUpdated&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aead92b5dda2129b9614905aa23d482b5b1" name="ae3e128b3e7e8c9e272e987f862e1d5aead92b5dda2129b9614905aa23d482b5b1"></a>ConfigApplyOk&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeafb6038726e9e65a2426a75f8ac1b3175" name="ae3e128b3e7e8c9e272e987f862e1d5aeafb6038726e9e65a2426a75f8ac1b3175"></a>ConfigApplyFail&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea8428552d86c0d262a542a528af490afa" name="ae3e128b3e7e8c9e272e987f862e1d5aea8428552d86c0d262a542a528af490afa"></a>Started&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeae99180abf47a8b3a856e0bcb2656990a" name="ae3e128b3e7e8c9e272e987f862e1d5aeae99180abf47a8b3a856e0bcb2656990a"></a>Paused&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeab2a21932ddc3b1e41c012d711c7bd238" name="ae3e128b3e7e8c9e272e987f862e1d5aeab2a21932ddc3b1e41c012d711c7bd238"></a>Resumed&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeac23e2b09ebe6bf4cb5e2a9abe85c0be2" name="ae3e128b3e7e8c9e272e987f862e1d5aeac23e2b09ebe6bf4cb5e2a9abe85c0be2"></a>Stopped&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeaec53a8c4f07baed5d8825072c89799be" name="ae3e128b3e7e8c9e272e987f862e1d5aeaec53a8c4f07baed5d8825072c89799be"></a>Status&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aead9b024b1a3a8208b7edc8eb711ff441e" name="ae3e128b3e7e8c9e272e987f862e1d5aead9b024b1a3a8208b7edc8eb711ff441e"></a>ErrorEvent&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea716f0ec05d9f5bd5e06f08ae004686c4" name="ae3e128b3e7e8c9e272e987f862e1d5aea716f0ec05d9f5bd5e06f08ae004686c4"></a>TestCompleted&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -347,19 +386,20 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Protocol-visible test states encoded in <code>STATUS_UPDATE</code>. </p>
+<p>Per coding standards: PascalCase for enum values (state types). </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a60f8cc7211722b1cc1767ba7c7a5d4d7aa5daf7f2ebbba4975d61dab1c40188c7" name="a60f8cc7211722b1cc1767ba7c7a5d4d7aa5daf7f2ebbba4975d61dab1c40188c7"></a>IDLE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a60f8cc7211722b1cc1767ba7c7a5d4d7a43491564ebcfd38568918efbd6e840fd" name="a60f8cc7211722b1cc1767ba7c7a5d4d7a43491564ebcfd38568918efbd6e840fd"></a>RUNNING&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a60f8cc7211722b1cc1767ba7c7a5d4d7a99b2439e63f73ad515f7ab2447a80673" name="a60f8cc7211722b1cc1767ba7c7a5d4d7a99b2439e63f73ad515f7ab2447a80673"></a>PAUSED&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a60f8cc7211722b1cc1767ba7c7a5d4d7a8f7afecbc8fbc4cd0f50a57d1172482e" name="a60f8cc7211722b1cc1767ba7c7a5d4d7a8f7afecbc8fbc4cd0f50a57d1172482e"></a>COMPLETED&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a60f8cc7211722b1cc1767ba7c7a5d4d7abb1ca97ec761fc37101737ba0aa2e7c5" name="a60f8cc7211722b1cc1767ba7c7a5d4d7abb1ca97ec761fc37101737ba0aa2e7c5"></a>ERROR&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a60f8cc7211722b1cc1767ba7c7a5d4d7ae599161956d626eda4cb0a5ffb85271c" name="a60f8cc7211722b1cc1767ba7c7a5d4d7ae599161956d626eda4cb0a5ffb85271c"></a>Idle&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a60f8cc7211722b1cc1767ba7c7a5d4d7a5bda814c4aedb126839228f1a3d92f09" name="a60f8cc7211722b1cc1767ba7c7a5d4d7a5bda814c4aedb126839228f1a3d92f09"></a>Running&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a60f8cc7211722b1cc1767ba7c7a5d4d7ae99180abf47a8b3a856e0bcb2656990a" name="a60f8cc7211722b1cc1767ba7c7a5d4d7ae99180abf47a8b3a856e0bcb2656990a"></a>Paused&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a60f8cc7211722b1cc1767ba7c7a5d4d7a07ca5050e697392c9ed47e6453f1453f" name="a60f8cc7211722b1cc1767ba7c7a5d4d7a07ca5050e697392c9ed47e6453f1453f"></a>Completed&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a60f8cc7211722b1cc1767ba7c7a5d4d7a902b0d55fddef6f8d651fe1035b7d4bd" name="a60f8cc7211722b1cc1767ba7c7a5d4d7a902b0d55fddef6f8d651fe1035b7d4bd"></a>Error&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="aad8e572c4e16e9a24c82fd3db6f99740" name="aad8e572c4e16e9a24c82fd3db6f99740"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad8e572c4e16e9a24c82fd3db6f99740">&#9670;&#160;</a></span>crc16_ccitt()</h2>
+<a id="afa7c999b99fb5716dc9d60af3a151d11" name="afa7c999b99fb5716dc9d60af3a151d11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa7c999b99fb5716dc9d60af3a151d11">&#9670;&#160;</a></span>Crc16Ccitt()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -368,7 +408,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint16_t crc16_ccitt </td>
+          <td class="memname">uint16_t Crc16Ccitt </td>
           <td>(</td>
           <td class="paramtype">const uint8_t *</td>          <td class="paramname"><span class="paramname"><em>data</em>, </span></td>
         </tr>
@@ -380,7 +420,7 @@ Variables</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -397,12 +437,34 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol_8hpp_aad8e572c4e16e9a24c82fd3db6f99740_icgraph.svg" width="1894" height="780"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol_8hpp_afa7c999b99fb5716dc9d60af3a151d11_icgraph.svg" width="1860" height="779"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a330c227130799ae2ddb70dc83d90bb90" name="a330c227130799ae2ddb70dc83d90bb90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a330c227130799ae2ddb70dc83d90bb90">&#9670;&#160;</a></span>DEVICE_ID_FATIGUE_TESTER</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t DEVICE_ID_FATIGUE_TESTER = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a4608441df3e488ee211a1ae34a0d5159" name="a4608441df3e488ee211a1ae34a0d5159"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4608441df3e488ee211a1ae34a0d5159">&#9670;&#160;</a></span>ESPNOW_MAX_PAYLOAD</h2>
 
@@ -413,7 +475,29 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t ESPNOW_MAX_PAYLOAD = 48</td>
+          <td class="memname">constexpr size_t ESPNOW_MAX_PAYLOAD = 200</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abcaa6cc02d62814d53832a063288e36e" name="abcaa6cc02d62814d53832a063288e36e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcaa6cc02d62814d53832a063288e36e">&#9670;&#160;</a></span>ESPNOW_PROTOCOL_VERSION</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t ESPNOW_PROTOCOL_VERSION = 1</td>
         </tr>
       </table>
   </td>
@@ -447,8 +531,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a2a4adb34269d3b39e3b058ed89c0f1dd" name="a2a4adb34269d3b39e3b058ed89c0f1dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2a4adb34269d3b39e3b058ed89c0f1dd">&#9670;&#160;</a></span>UI_BOARD_MAC_</h2>
+<a id="a95f459db8f6dcc34bbb3e93dcb1f0749" name="a95f459db8f6dcc34bbb3e93dcb1f0749"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95f459db8f6dcc34bbb3e93dcb1f0749">&#9670;&#160;</a></span>UI_BOARD_MAC</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -457,7 +541,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t UI_BOARD_MAC_[6] = { 0x9C, 0x9E, 0x6E, 0x77, 0x24, 0xF8 }</td>
+          <td class="memname">constexpr uint8_t UI_BOARD_MAC[6] = { 0x9C, 0x9E, 0x6E, 0x77, 0x24, 0xF8 }</td>
         </tr>
       </table>
   </td>

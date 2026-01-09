@@ -12,11 +12,11 @@
 <area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="110,186,209,234,226,241,224,245,207,238,108,191"/>
 <area shape="rect" id="Node000009" href="$classFatigueTest_1_1FatigueTestMotion.html#a3364c23a36aa498aa324bfa8afc48587" title="Periodic update tick." alt="" coords="208,312,384,352"/>
 <area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="96,187,141,240,174,271,209,298,220,304,217,308,207,302,170,275,137,243,92,190"/>
-<area shape="rect" id="Node000006" href="$espnow__receiver_8cpp.html#a56b1fa458feb934b57be89468e71627f" title=" " alt="" coords="470,213,613,238"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="382,209,456,215,456,221,381,214"/>
-<area shape="rect" id="Node000007" href="$espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="743,213,835,238"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="613,223,730,223,730,228,613,228"/>
-<area shape="poly" id="edge8_Node000008_Node000006" title=" " alt="" coords="381,251,456,237,457,243,382,256"/>
+<area shape="rect" id="Node000006" href="$espnow__receiver_8cpp.html#af394d93fad387639cb5c155cfd037163" title=" " alt="" coords="480,213,603,238"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="382,209,466,216,466,221,381,214"/>
+<area shape="rect" id="Node000007" href="$espnow__protocol_8hpp.html#afa7c999b99fb5716dc9d60af3a151d11" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="745,213,834,238"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="603,223,731,223,731,228,603,228"/>
+<area shape="poly" id="edge8_Node000008_Node000006" title=" " alt="" coords="381,251,466,236,467,241,382,256"/>
 <area shape="rect" id="Node000010" href="$classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf" title="Manually unlock mutex." alt="" coords="699,311,880,337"/>
 <area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="384,321,432,319,564,316,685,318,685,323,564,322,432,324,384,327"/>
 <area shape="rect" id="Node000013" href="$classFatigueTest_1_1FatigueTestMotion.html#a5c2eb40cb4dda4c1db2501149d85b2e3" title=" " alt="" coords="432,333,651,373"/>

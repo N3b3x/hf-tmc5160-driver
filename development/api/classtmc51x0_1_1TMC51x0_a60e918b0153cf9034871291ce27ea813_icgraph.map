@@ -1,9 +1,7 @@
 <map id="tmc51x0::TMC51x0::Initialize" name="tmc51x0::TMC51x0::Initialize">
-<area shape="rect" id="Node000001" title="Initialize the TMC51x0 driver with configuration." alt="" coords="277,55,489,80"/>
-<area shape="rect" id="Node000002" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="74,5,161,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="300,55,160,29,161,23,301,49"/>
-<area shape="rect" id="Node000003" href="$abn__encoder__reader_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="74,55,161,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="264,70,161,70,161,65,264,65"/>
-<area shape="rect" id="Node000004" href="$classtmc51x0_1_1TMC51x0.html#a0819cf562bcbb0a747b56fc15a8da5b1" title="Perform a hard reset (power&#45;cycle when available, else software reset)" alt="" coords="5,104,229,129"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="301,85,187,107,186,101,301,80"/>
+<area shape="rect" id="Node000001" title="Initialize the TMC51x0 driver with configuration." alt="" coords="140,31,352,56"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,5,92,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,31,92,26,93,21,134,26"/>
+<area shape="rect" id="Node000003" href="$abn__encoder__reader_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,55,92,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="129,60,92,65,92,59,128,55"/>
 </map>

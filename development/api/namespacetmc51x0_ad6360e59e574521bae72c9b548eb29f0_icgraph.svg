@@ -58,10 +58,10 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classtmc51x0_1_1TMC51x0.html#a5c568d0c3a5758768cd4b6c64b049e82" target="_top" xlink:title="Convert speed from Hz to internal TMC5160 units.">
-<polygon fill="white" stroke="#666666" points="169,-30 12,-30 12,0 169,0 169,-30"/>
-<text text-anchor="start" x="20" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::TMC51x0::speedTo</text>
-<text text-anchor="middle" x="90.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Internal</text>
+<g id="a_Node000004"><a xlink:href="structtmc51x0_1_1TMC51x0_1_1RampControl.html#a563d39d46dd50eeba6b4c47ca91da9c8" target="_top" xlink:title="Set target position (absolute)">
+<polygon fill="white" stroke="#666666" points="181,-30 0,-30 0,0 181,0 181,-30"/>
+<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::TMC51x0::RampControl</text>
+<text text-anchor="middle" x="90.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::SetTargetPosition</text>
 </a>
 </g>
 </g>

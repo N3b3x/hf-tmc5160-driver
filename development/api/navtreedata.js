@@ -129,22 +129,22 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "TestFramework_8h.html",
-"classFatigueTest_1_1IBoundsFinder.html#ac11fe7f9ff90d16e0ff307e2a1fab6a6",
-"classtmc51x0_1_1Result_3_01void_01_4.html#a3422048a7ae8aa070c02c02b66ededa7",
-"espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2ab078ffd28db767c502ac367053f6e0ac",
-"index.html#autotoc_md74",
-"namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4ab227ff1ca50d147d685877a0c73041c6",
-"namespacetmc51x0_1_1detail.html#a089bcd93942e19e55813e20b2f891293",
-"structtmc51x0_1_1AccelerationValue.html",
-"structtmc51x0_1_1InputStatus.html#a4ebb307ca2a1193308c6ee9c5e25fb65",
-"structtmc51x0_1_1StallGuardTuningResult.html#a5c9db698bb474c5a5b6e2584a724acb0",
-"structtmc51x0_1_1TMC51x0_1_1RampControl.html#a563d39d46dd50eeba6b4c47ca91da9c8",
-"structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#ac8306ad3342524793353c990c9b95848",
-"structtmc51x0__test__config_1_1TestConfigAccessor_1_1Motion.html#ab7d54846d47f1046555afb2a816f2a12",
-"tmc51x0__result_8hpp.html#a29f23dd48483983409679925db836440",
-"uniontmc51x0_1_1CHOPCONF__Register.html#afcc1e3ce2107bbcccc349bbdefae932d",
-"uniontmc51x0_1_1MSCURACT__Register.html",
-"uniontmc51x0_1_1UartFrame_1_1Frame.html#a15266b25cf6b3ef299eed253a7d115fb"
+"classFatigueTest_1_1FatigueTestMotion.html#aed80d660e340f615abdeeaad3e9d1ea4",
+"classtmc51x0_1_1Result.html#aac2ec47cb8b220860282c357632bb00a",
+"esp32__tmc51x0__test__config_8hpp.html#af9a64c084cd330e868fabfadaea7102aa37963ffe381c387bd4a29dc8ba37b120",
+"index.html#autotoc_md47",
+"namespaceTaskTiming.html#a28efcb55ae61f55c96d4fef53b5e4c04",
+"namespacetmc51x0.html#afdc019b38a68bc8a317ade8ff4fafa0baac0b147690352ccd55facc0f3468846a",
+"structTestResults.html#a7eddc258a4288ac5f0a36a1008c9d014",
+"structtmc51x0_1_1GlobalConfig.html#ae65c6d9a0d196098717b4727edeb864a",
+"structtmc51x0_1_1SpiStatus.html#aa4ce0ac24fc4558ed4edb77ed93acbbe",
+"structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a9ce4981ebcb7cf056b76c82cdeeec7a4",
+"structtmc51x0__test__config_1_1BoardConfig__TMC51x0__BOB.html#a618ae32344432593510c67b64fe1e1f9",
+"structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1ReferenceSwitches.html#a24253f2defea151e3dc09a716c473e31",
+"tmc51x0__comm__interface_8hpp.html#a564533944e9fa3223c5db30f0f4106eba4d7aa7898beee1c19acd8d5b20d2793c",
+"tmc51x0__units_8hpp.html",
+"uniontmc51x0_1_1GCONF__Register.html#aab378beca174ccb6e9670311da25c2da",
+"uniontmc51x0_1_1RAMP__STAT__Register.html#afdcffb1685208e729293b9814d566e86"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

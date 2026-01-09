@@ -46,10 +46,13 @@ public:
      *
      * @param driver Pointer to an initialized driver (must remain valid for the
      * lifetime of this object).
+     * @param driver_mutex Reference to a mutex that protects ALL driver SPI access.
+     *        This same mutex must be used by any code that directly accesses the driver.
      *
-     * @note This class uses internal locking (`Esp32TmcMutex`) to serialize access.
+     * @note Thread safety: The provided mutex is used to serialize all SPI transactions.
+     *       Callers MUST use the same mutex for any direct driver access outside this class.
      */
-    FatigueTestMotion(tmc51x0::TMC51x0<Esp32SPI>* driver) noexcept;
+    FatigueTestMotion(tmc51x0::TMC51x0<Esp32SPI>* driver, Esp32TmcMutex& driver_mutex) noexcept;
 
     /**
      * @brief Destructor.
@@ -250,8 +253,8 @@ private:
     float calculated_amax_rev_s2_;   // Maximum acceleration in rev/s²
     float estimated_frequency_hz_;   // Estimated actual frequency
     
-    // Thread safety
-    mutable Esp32TmcMutex mutex_;
+    // Thread safety - reference to external mutex that protects ALL driver SPI access
+    Esp32TmcMutex& driver_mutex_;
     
     // Internal methods
     void RecalculateTrajectory() noexcept;

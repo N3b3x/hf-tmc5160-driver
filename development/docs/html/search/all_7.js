@@ -2,8 +2,8 @@ var searchData=
 [
   ['half_5firun_0',['HALF_IRUN',['../namespacetmc51x0.html#a0279a9b8b855afe30f3d2f8fb8297d21ab5df3d530fe63d11b4f120792e5cbe83',1,'tmc51x0']]],
   ['handle_5f_1',['handle_',['../classEsp32TmcMutex.html#af735579a1cd0f7b645a36adf83dd8daa',1,'Esp32TmcMutex']]],
-  ['handle_5fpacket_2',['handle_packet',['../espnow__receiver_8cpp.html#a7b66833f47870fc437dedd1e79d23dd9',1,'espnow_receiver.cpp']]],
-  ['handlehelp_3',['HandleHelp',['../main_8cpp.html#abda5ef2605b311dad7dc06cc34373d11',1,'main.cpp']]],
+  ['handlehelp_2',['HandleHelp',['../main_8cpp.html#abda5ef2605b311dad7dc06cc34373d11',1,'main.cpp']]],
+  ['handlepacket_3',['handlePacket',['../espnow__receiver_8cpp.html#ab80d2bd65f0315d85e8526ebed066ea6',1,'espnow_receiver.cpp']]],
   ['handlepause_4',['HandlePause',['../main_8cpp.html#a7be4813339ba1cdf1178b4b5d079c512',1,'main.cpp']]],
   ['handlereset_5',['HandleReset',['../main_8cpp.html#ac1d6f7a1c228ebd547a7e992d2356eb1',1,'main.cpp']]],
   ['handleresume_6',['HandleResume',['../main_8cpp.html#ab522c1d58a0763675c4a3d7256071a13',1,'main.cpp']]],
@@ -20,8 +20,8 @@ var searchData=
   ['help_17',['HELP',['../main_8cpp.html#a21e038f5b8958e203d28bc4f18472352a4fc963e213bba362778f5c175eb4d5ff',1,'main.cpp']]],
   ['help_5ftopic_18',['help_topic',['../structParsedCommand.html#ad2229f77a169279a45c90df5c99c8846',1,'ParsedCommand']]],
   ['helpers_19',['Unit Conversion Helpers',['../index.html#autotoc_md73',1,'']]],
-  ['hend_20',['hend',['../structtmc51x0_1_1ChopperConfig.html#a4fa0f7bcdd271f442e9a3d704b5aa561',1,'tmc51x0::ChopperConfig']]],
-  ['hend_21',['HEND',['../structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#acfd96b12ec6976acc04048f420dfff28',1,'tmc51x0_test_config::MotorConfig_17HS4401S::HEND'],['../structtmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#a854678ed754a3bbcd52a6d907a42cc49',1,'tmc51x0_test_config::MotorConfig_17HS4401S_Direct::HEND'],['../structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#afc9c39dcd37437c7815452df38fe0444',1,'tmc51x0_test_config::MotorConfig_AppliedMotion_5034_369::HEND']]],
+  ['hend_20',['HEND',['../structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#acfd96b12ec6976acc04048f420dfff28',1,'tmc51x0_test_config::MotorConfig_17HS4401S::HEND'],['../structtmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#a854678ed754a3bbcd52a6d907a42cc49',1,'tmc51x0_test_config::MotorConfig_17HS4401S_Direct::HEND'],['../structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#afc9c39dcd37437c7815452df38fe0444',1,'tmc51x0_test_config::MotorConfig_AppliedMotion_5034_369::HEND']]],
+  ['hend_21',['hend',['../structtmc51x0_1_1ChopperConfig.html#a4fa0f7bcdd271f442e9a3d704b5aa561',1,'tmc51x0::ChopperConfig']]],
   ['hend_5foffset_22',['hend_offset',['../uniontmc51x0_1_1CHOPCONF__Register.html#ae8c119b6a849df392f997b02ef1fb57a',1,'tmc51x0::CHOPCONF_Register']]],
   ['hf_20tmc51x0_20driver_20tmc5130_20tmc5160_23',['HF-TMC51x0 Driver (TMC5130 &amp; TMC5160)',['../index.html',1,'']]],
   ['hierarchy_24',['Configuration Hierarchy',['../esp32__tmc51x0__test__config_8hpp.html#autotoc_md25',1,'']]],
@@ -37,7 +37,10 @@ var searchData=
   ['homing_5ftimeout_5fms_34',['HOMING_TIMEOUT_MS',['../structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1Motion.html#ab6a7059b25e35cad3b1ef5c51468dff5',1,'tmc51x0_test_config::TestConfig_17HS4401S::Motion::HOMING_TIMEOUT_MS'],['../structtmc51x0__test__config_1_1TestConfig__AppliedMotion__5034_1_1Motion.html#ac94e25f65210a5002e4b2fd5b7c5034a',1,'tmc51x0_test_config::TestConfig_AppliedMotion_5034::Motion::HOMING_TIMEOUT_MS'],['../structtmc51x0__test__config_1_1TestConfigAccessor_1_1Motion.html#a2e34e07730a02d3f1e3889160ea9df06',1,'tmc51x0_test_config::TestConfigAccessor::Motion::HOMING_TIMEOUT_MS']]],
   ['homingsettingscache_35',['HomingSettingsCache',['../structtmc51x0_1_1HomingSettingsCache.html',1,'tmc51x0']]],
   ['host_5f_36',['host_',['../classEsp32SPI.html#a2a9f2b32920fff6516071194bfaa8b02',1,'Esp32SPI']]],
-  ['hstrt_37',['hstrt',['../structtmc51x0_1_1ChopperConfig.html#a5ef340117697ea312c55069850035a9a',1,'tmc51x0::ChopperConfig']]],
-  ['hstrt_38',['HSTRT',['../structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#a19600e7fdb8df96d00e4f4dcc7c054d4',1,'tmc51x0_test_config::MotorConfig_17HS4401S::HSTRT'],['../structtmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#a966892827e916a5efb8b62d467e47bf6',1,'tmc51x0_test_config::MotorConfig_17HS4401S_Direct::HSTRT'],['../structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a508ce43fa86d04ebd09450e125500e3b',1,'tmc51x0_test_config::MotorConfig_AppliedMotion_5034_369::HSTRT']]],
-  ['hstrt_5ftfd_39',['hstrt_tfd',['../uniontmc51x0_1_1CHOPCONF__Register.html#acd3050f2bc35ec66d0efc82ceca11aa6',1,'tmc51x0::CHOPCONF_Register']]]
+  ['hstrt_37',['HSTRT',['../structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#a19600e7fdb8df96d00e4f4dcc7c054d4',1,'tmc51x0_test_config::MotorConfig_17HS4401S::HSTRT'],['../structtmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#a966892827e916a5efb8b62d467e47bf6',1,'tmc51x0_test_config::MotorConfig_17HS4401S_Direct::HSTRT'],['../structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#a508ce43fa86d04ebd09450e125500e3b',1,'tmc51x0_test_config::MotorConfig_AppliedMotion_5034_369::HSTRT']]],
+  ['hstrt_38',['hstrt',['../structtmc51x0_1_1ChopperConfig.html#a5ef340117697ea312c55069850035a9a',1,'tmc51x0::ChopperConfig']]],
+  ['hstrt_5ftfd_39',['hstrt_tfd',['../uniontmc51x0_1_1CHOPCONF__Register.html#acd3050f2bc35ec66d0efc82ceca11aa6',1,'tmc51x0::CHOPCONF_Register']]],
+  ['hysteresis_5fenabled_5f_40',['hysteresis_enabled_',['../structtmc51x0_1_1TMC51x0_1_1Thresholds.html#a639dd52a5612fb7a6430dc1f86312a41',1,'tmc51x0::TMC51x0::Thresholds']]],
+  ['hysteresis_5fto_5fspreadcycle_5ftstep_5f_41',['hysteresis_to_spreadcycle_tstep_',['../structtmc51x0_1_1TMC51x0_1_1Thresholds.html#aaaba407a35f92757307f5e725095f47b',1,'tmc51x0::TMC51x0::Thresholds']]],
+  ['hysteresis_5fto_5fstealthchop_5ftstep_5f_42',['hysteresis_to_stealthchop_tstep_',['../structtmc51x0_1_1TMC51x0_1_1Thresholds.html#a14d35a4de5f1ce95b839686e6b2a89f5',1,'tmc51x0::TMC51x0::Thresholds']]]
 ];

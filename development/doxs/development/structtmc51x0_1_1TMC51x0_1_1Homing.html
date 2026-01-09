@@ -155,6 +155,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2fd703fc38f2ff2986e660fc10f18c1a" id="r_a2fd703fc38f2ff2986e660fc10f18c1a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2fd703fc38f2ff2986e660fc10f18c1a">PerformSwitchHoming</a> (bool direction, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, int32_t &amp;final_position, bool use_left_switch, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
 <tr class="memdesc:a2fd703fc38f2ff2986e660fc10f18c1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform homing using a reference switch (with settings caching)  <br /></td></tr>
 <tr class="separator:a2fd703fc38f2ff2986e660fc10f18c1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d79ab094024e3606734885187ae6ec7" id="r_a3d79ab094024e3606734885187ae6ec7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d79ab094024e3606734885187ae6ec7">PerformEncoderIndexHoming</a> (bool direction, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, int32_t &amp;final_position, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
+<tr class="memdesc:a3d79ab094024e3606734885187ae6ec7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform homing using encoder index pulse (N-channel) with latch_x_act.  <br /></td></tr>
+<tr class="separator:a3d79ab094024e3606734885187ae6ec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5aff97457b88a61646f146bcf2c0abcd" id="r_a5aff97457b88a61646f146bcf2c0abcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5aff97457b88a61646f146bcf2c0abcd">FindBoundsStallGuard</a> (const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;home={}, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
 <tr class="separator:a5aff97457b88a61646f146bcf2c0abcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab49cd9865a358a18fb5e94e026ff7a1b" id="r_ab49cd9865a358a18fb5e94e026ff7a1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab49cd9865a358a18fb5e94e026ff7a1b">FindBoundsEncoder</a> (const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;home={}, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
@@ -547,6 +550,70 @@ template&lt;typename CommType &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3d79ab094024e3606734885187ae6ec7" name="a3d79ab094024e3606734885187ae6ec7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d79ab094024e3606734885187ae6ec7">&#9670;&#160;</a></span>PerformEncoderIndexHoming()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::PerformEncoderIndexHoming </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>direction</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>opt</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t &amp;</td>          <td class="paramname"><span class="paramname"><em>final_position</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a></td>          <td class="paramname"><span class="paramname"><em>should_cancel</em><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Perform homing using encoder index pulse (N-channel) with latch_x_act. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>Direction to search (true = positive, false = negative) </td></tr>
+    <tr><td class="paramname">opt</td><td><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing.html" title="Homing subsystem with automatic settings caching.">Homing</a> options (unit-aware). Uses opt.search_speed, opt.search_span, opt.timeout_ms. </td></tr>
+    <tr><td class="paramname">final_position</td><td>Reference to store final position after homing (in steps). This is the latched XACTUAL at the moment the N-event fired, providing precise motor position at index pulse detection. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
+<p>This method uses the encoder's N-channel (index pulse) for high-precision homing:</p><ul>
+<li>Enables ENCMODE.latch_x_act so XACTUAL is latched to XLATCH on N-event</li>
+<li>Clears N-event flag and searches for the index pulse</li>
+<li>When N-event fires, reads XLATCH for the exact motor position at that instant</li>
+<li>This provides microsecond-accurate position capture vs polling uncertainty</li>
+</ul>
+<p>Prerequisites:</p><ul>
+<li><a class="el" href="structtmc51x0_1_1TMC51x0_1_1Encoder.html" title="Encoder subsystem.">Encoder</a> must be configured (Configure() or SetNChannelSensitivity())</li>
+<li>Motor must have an encoder with index pulse (N channel)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>The latched position is typically more accurate than polling-based homing because it captures XACTUAL at the hardware level when N fires.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SetLatchXactualEnabled(), IsNEventDetected(), <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Switches.html#a281aa8f73d7feeecf92c616a857a1dc1" title="Read latched position from XLATCH (unit-aware)">Switches::GetLatchedPosition()</a> </dd></dl>
 
 </div>
 </div>

@@ -11,11 +11,11 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4.html" target="_top" xlink:title="Test rig configuration for TEST_RIG_FATIGUE.">
+<g id="a_Node000000"><a xlink:href="structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__CORE__DRIVER_01_4.html" target="_top" xlink:title="Test rig configuration for TEST_RIG_CORE_DRIVER.">
 <polygon fill="white" stroke="#666666" points="158,-41 0,-41 0,0 158,0 158,-41"/>
 <text text-anchor="start" x="8" y="-29" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0_test_config</text>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">::TestRigConfig&lt; TestRigType</text>
-<text text-anchor="middle" x="79" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::TEST_RIG_FATIGUE &gt;</text>
+<text text-anchor="middle" x="79" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::TEST_RIG_CORE_DRIVER &gt;</text>
 </a>
 </g>
 </g>

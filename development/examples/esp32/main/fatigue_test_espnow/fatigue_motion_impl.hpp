@@ -43,15 +43,15 @@ namespace FatigueTest {
 
 // Implementation
 
-FatigueTestMotion::FatigueTestMotion(tmc51x0::TMC51x0<Esp32SPI>* driver) noexcept
+FatigueTestMotion::FatigueTestMotion(tmc51x0::TMC51x0<Esp32SPI>* driver, Esp32TmcMutex& driver_mutex) noexcept
     : driver_(driver), global_min_bound_(0.0f), global_max_bound_(0.0f), local_min_bound_(0.0f), local_max_bound_(0.0f),
       home_position_(0.0f), bounded_(false), amplitude_(1000.0F), frequency_hz_(0.5F), 
       dwell_at_min_ms_(0), dwell_at_max_ms_(0), running_(false), start_time_us_(0),
       phase_offset_(0.0F), target_cycles_(0), current_cycles_(0), cycle_complete_(false),
       last_was_negative_(false), cycle_started_(false), last_target_relative_(0.0f), 
       state_(MotionState::STOPPED), dwell_start_time_ms_(0), sinusoidal_mode_(false), 
-      calculated_vmax_rpm_(30.0f), calculated_amax_rev_s2_(2.0f), estimated_frequency_hz_(0.0f) {
-    // Mutex is automatically created by Esp32TmcMutex constructor
+      calculated_vmax_rpm_(30.0f), calculated_amax_rev_s2_(2.0f), estimated_frequency_hz_(0.0f),
+      driver_mutex_(driver_mutex) {
     // Note: Initialization order matches member declaration order in header
 }
 
@@ -60,7 +60,7 @@ FatigueTestMotion::~FatigueTestMotion() noexcept = default;
 
 void FatigueTestMotion::SetGlobalBounds(float min_bound_degrees, float max_bound_degrees) noexcept {
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         global_min_bound_ = min_bound_degrees;
         global_max_bound_ = max_bound_degrees;
         bounded_ = true;
@@ -69,7 +69,7 @@ void FatigueTestMotion::SetGlobalBounds(float min_bound_degrees, float max_bound
 
     // Clip local bounds to global bounds if they exist
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         if (local_min_bound_ != 0.0f || local_max_bound_ != 0.0f) {
             guard.unlock();
             ClipLocalBoundsToGlobal();
@@ -79,14 +79,14 @@ void FatigueTestMotion::SetGlobalBounds(float min_bound_degrees, float max_bound
 }
 
 void FatigueTestMotion::GetGlobalBoundsDegrees(float& min_degrees, float& max_degrees) const noexcept {
-    TmcMutexGuard guard(mutex_);
+    TmcMutexGuard guard(driver_mutex_);
     min_degrees = global_min_bound_;
     max_degrees = global_max_bound_;
 }
 
 void FatigueTestMotion::SetUnbounded(float current_position_degrees, float default_range_degrees) noexcept {
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         bounded_ = false;
         home_position_ = current_position_degrees;
         global_min_bound_ = current_position_degrees - default_range_degrees / 2.0f;
@@ -108,7 +108,7 @@ bool FatigueTestMotion::SetLocalBoundsFromCenterDegrees(float min_degrees_from_c
     bool is_bounded;
     float global_min, global_max;
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         min_deg = min_degrees_from_center;
         max_deg = max_degrees_from_center;
         is_bounded = bounded_;
@@ -123,7 +123,7 @@ bool FatigueTestMotion::SetLocalBoundsFromCenterDegrees(float min_degrees_from_c
     }
 
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         local_min_bound_ = min_deg;
         local_max_bound_ = max_deg;
         home_position_ = (local_min_bound_ + local_max_bound_) / 2.0f;
@@ -134,14 +134,14 @@ bool FatigueTestMotion::SetLocalBoundsFromCenterDegrees(float min_degrees_from_c
     
     // Recalculate trajectory with new bounds
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         RecalculateTrajectory();
     }
     return true;
 }
 
 void FatigueTestMotion::GetLocalBoundsFromCenterDegrees(float& min_degrees, float& max_degrees) const noexcept {
-    TmcMutexGuard guard(mutex_);
+    TmcMutexGuard guard(driver_mutex_);
     min_degrees = local_min_bound_;
     max_degrees = local_max_bound_;
 }
@@ -152,7 +152,7 @@ bool FatigueTestMotion::SetFrequency(float frequency_hz) noexcept {
         return false;
     }
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         frequency_hz_ = frequency_hz;
         RecalculateTrajectory();
     }
@@ -161,13 +161,13 @@ bool FatigueTestMotion::SetFrequency(float frequency_hz) noexcept {
 }
 
 float FatigueTestMotion::GetFrequency() const noexcept {
-    TmcMutexGuard guard(mutex_);
+    TmcMutexGuard guard(driver_mutex_);
     return frequency_hz_;
 }
 
 bool FatigueTestMotion::SetDwellTimes(uint32_t dwell_at_min_ms, uint32_t dwell_at_max_ms) noexcept {
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         dwell_at_min_ms_ = dwell_at_min_ms;
         dwell_at_max_ms_ = dwell_at_max_ms;
         RecalculateTrajectory();
@@ -178,14 +178,14 @@ bool FatigueTestMotion::SetDwellTimes(uint32_t dwell_at_min_ms, uint32_t dwell_a
 }
 
 void FatigueTestMotion::GetDwellTimes(uint32_t& dwell_at_min_ms, uint32_t& dwell_at_max_ms) const noexcept {
-    TmcMutexGuard guard(mutex_);
+    TmcMutexGuard guard(driver_mutex_);
     dwell_at_min_ms = dwell_at_min_ms_;
     dwell_at_max_ms = dwell_at_max_ms_;
 }
 
 bool FatigueTestMotion::SetTargetCycles(uint32_t cycles) noexcept {
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         target_cycles_ = cycles;
     }
     ESP_LOGI(TAG_MOTION, "Target cycles set: %lu (0 = infinite)", target_cycles_);
@@ -193,23 +193,23 @@ bool FatigueTestMotion::SetTargetCycles(uint32_t cycles) noexcept {
 }
 
 uint32_t FatigueTestMotion::GetCurrentCycles() const noexcept {
-    TmcMutexGuard guard(mutex_);
+    TmcMutexGuard guard(driver_mutex_);
     return current_cycles_;
 }
 
 uint32_t FatigueTestMotion::GetTargetCycles() const noexcept {
-    TmcMutexGuard guard(mutex_);
+    TmcMutexGuard guard(driver_mutex_);
     return target_cycles_;
 }
 
 bool FatigueTestMotion::IsCycleComplete() const noexcept {
-    TmcMutexGuard guard(mutex_);
+    TmcMutexGuard guard(driver_mutex_);
     return cycle_complete_;
 }
 
 void FatigueTestMotion::ResetCycles() noexcept {
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         current_cycles_ = 0;
         cycle_complete_ = false;
         last_was_negative_ = false;
@@ -220,7 +220,7 @@ void FatigueTestMotion::ResetCycles() noexcept {
 }
 
 bool FatigueTestMotion::IsBounded() const noexcept {
-    TmcMutexGuard guard(mutex_);
+    TmcMutexGuard guard(driver_mutex_);
     return bounded_;
 }
 
@@ -228,7 +228,7 @@ bool FatigueTestMotion::Start() noexcept {
     uint32_t current_cycles, target_cycles;
     
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         // CRITICAL: Verify bounds are set before allowing motion to start
         if (fabsf(local_min_bound_) < 0.01f && fabsf(local_max_bound_) < 0.01f) {
             ESP_LOGE(TAG_MOTION, "Cannot start: local bounds not set!");
@@ -262,7 +262,7 @@ bool FatigueTestMotion::Start() noexcept {
     }
     
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         
         // Update trajectory before starting
         RecalculateTrajectory();
@@ -315,17 +315,18 @@ bool FatigueTestMotion::Start() noexcept {
 void FatigueTestMotion::Stop() noexcept {
     uint32_t cycles;
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         running_ = false;
         state_ = MotionState::STOPPED;
         cycles = current_cycles_;
+        // Driver SPI call MUST be inside mutex guard!
+        driver_->rampControl.Stop();
     }
-    driver_->rampControl.Stop();
     ESP_LOGI(TAG_MOTION, "Stopped fatigue test motion (cycles completed: %lu)", cycles);
 }
 
 bool FatigueTestMotion::IsRunning() const noexcept {
-    TmcMutexGuard guard(mutex_);
+    TmcMutexGuard guard(driver_mutex_);
     return running_ && state_ != MotionState::STOPPED;
 }
 
@@ -410,7 +411,7 @@ void FatigueTestMotion::UpdateSinuousMotion() noexcept {
     // CRITICAL SAFETY CHECK: Never run sinusoidal motion if not started properly
     // This prevents fast oscillation when start_time_us_ is 0 (uninitialized)
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         if (!running_ || start_time_us_ == 0) {
             return; // Motion not started or not properly initialized
         }
@@ -426,7 +427,7 @@ void FatigueTestMotion::UpdateSinuousMotion() noexcept {
     float phase_off;
     
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         elapsed_us = esp_timer_get_time() - start_time_us_;
         freq = frequency_hz_;
         amp = amplitude_;
@@ -450,8 +451,12 @@ void FatigueTestMotion::UpdateSinuousMotion() noexcept {
     float target_deg = home + static_cast<float>(amp * sin_value);
 
     // Get current position relative to center for cycle counting
+    float current_pos_deg = 0.0f;
+    {
+        TmcMutexGuard guard(driver_mutex_);
     auto current_pos_result = driver_->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
-    float current_pos_deg = current_pos_result.IsOk() ? current_pos_result.Value() : 0.0f;
+        current_pos_deg = current_pos_result.IsOk() ? current_pos_result.Value() : 0.0f;
+    }
     float target_relative = target_deg - home;
 
     // Cycle counting: one cycle = center → extreme → center
@@ -465,7 +470,7 @@ void FatigueTestMotion::UpdateSinuousMotion() noexcept {
         // Completed a cycle
         uint32_t new_cycles;
         {
-            TmcMutexGuard guard(mutex_);
+            TmcMutexGuard guard(driver_mutex_);
             current_cycles_++;
             cycle_started_ = false;
             new_cycles = current_cycles_;
@@ -475,8 +480,9 @@ void FatigueTestMotion::UpdateSinuousMotion() noexcept {
                 cycle_complete_ = true;
                 running_ = false;
                 state_ = MotionState::STOPPED;
-                guard.unlock();
+                // Driver call inside mutex guard
                 driver_->rampControl.Stop();
+                guard.unlock();
                 ESP_LOGI(TAG_MOTION, "Target cycle count reached: %lu cycles. Stopping.", new_cycles);
                 return;
             }
@@ -485,14 +491,14 @@ void FatigueTestMotion::UpdateSinuousMotion() noexcept {
                  target_cycles == 0 ? 0xFFFFFFFF : target_cycles);
     } else if (!cycle_started && fabsf(target_relative) > 1.0f) {
         // We've left center, cycle has started
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         cycle_started_ = true;
         last_was_negative_ = currently_negative;
     }
 
     // Update tracking
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         last_target_relative_ = target_relative;
         if (fabsf(target_relative) > 0.5f) {
             last_was_negative_ = currently_negative;
@@ -505,29 +511,29 @@ void FatigueTestMotion::UpdateSinuousMotion() noexcept {
     if (target_deg <= local_min) {
         target_deg = local_min;
         if (dwell_min > 0) {
-            TmcMutexGuard guard(mutex_);
+            TmcMutexGuard guard(driver_mutex_);
             state_ = MotionState::DWELL_AT_MIN;
             dwell_start_time_ms_ = esp_timer_get_time() / 1000;
             driver_->rampControl.SetTargetPosition(target_deg, tmc51x0::Unit::Deg);
             return;
         } else {
-            TmcMutexGuard guard(mutex_);
+            TmcMutexGuard guard(driver_mutex_);
             state_ = MotionState::MOVING_TO_MAX;
         }
     } else if (target_deg >= local_max) {
         target_deg = local_max;
         if (dwell_max > 0) {
-            TmcMutexGuard guard(mutex_);
+            TmcMutexGuard guard(driver_mutex_);
             state_ = MotionState::DWELL_AT_MAX;
             dwell_start_time_ms_ = esp_timer_get_time() / 1000;
             driver_->rampControl.SetTargetPosition(target_deg, tmc51x0::Unit::Deg);
             return;
         } else {
-            TmcMutexGuard guard(mutex_);
+            TmcMutexGuard guard(driver_mutex_);
             state_ = MotionState::MOVING_TO_MIN;
         }
     } else {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         if (target_relative > 0.0f) {
             state_ = MotionState::MOVING_TO_MAX;
         } else {
@@ -538,6 +544,7 @@ void FatigueTestMotion::UpdateSinuousMotion() noexcept {
     // Update target position if it changed significantly
     // Use ABSOLUTE positioning - home is established, target_deg is absolute
     if (fabsf(target_deg - current_pos_deg) > 0.5f) {  // ~0.5 degree threshold
+        TmcMutexGuard guard(driver_mutex_);
         driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
         // Use slow speed for position correction (5 RPM, 1 rev/s²)
         constexpr float SLOW_VMAX_RPM = 5.0f;
@@ -551,7 +558,7 @@ void FatigueTestMotion::UpdateSinuousMotion() noexcept {
 
 void FatigueTestMotion::Update() noexcept {
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         if (!running_ || state_ == MotionState::STOPPED) {
             return;
         }
@@ -563,8 +570,9 @@ void FatigueTestMotion::Update() noexcept {
                 uint32_t cycles = current_cycles_;
                 state_ = MotionState::STOPPED;
                 running_ = false;
-                guard.unlock();
+                // Driver call inside mutex guard
                 driver_->rampControl.Stop();
+                guard.unlock();
                 ESP_LOGI(TAG_MOTION, "Target cycle count reached: %lu cycles. Stopping.", cycles);
             }
             return;
@@ -575,7 +583,7 @@ void FatigueTestMotion::Update() noexcept {
     bool use_sinusoidal;
     MotionState current_state;
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         use_sinusoidal = sinusoidal_mode_;
         current_state = state_;
     }
@@ -593,7 +601,7 @@ void FatigueTestMotion::Update() noexcept {
     float min_bound, max_bound;
     
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         current_state = state_;
         dwell_min = dwell_at_min_ms_;
         dwell_max = dwell_at_max_ms_;
@@ -605,7 +613,7 @@ void FatigueTestMotion::Update() noexcept {
     switch (current_state) {
     case MotionState::DWELL_AT_MIN:
         if (current_time_ms - dwell_start >= dwell_min) {
-            TmcMutexGuard guard(mutex_);
+            TmcMutexGuard guard(driver_mutex_);
             if (!sinusoidal_mode_) {
                 // Values are already in proper units (RPM and rev/s²) - use directly
                 state_ = MotionState::MOVING_TO_MAX;
@@ -621,7 +629,7 @@ void FatigueTestMotion::Update() noexcept {
 
     case MotionState::DWELL_AT_MAX:
         if (current_time_ms - dwell_start >= dwell_max) {
-            TmcMutexGuard guard(mutex_);
+            TmcMutexGuard guard(driver_mutex_);
             if (!sinusoidal_mode_) {
                 // Values are already in proper units (RPM and rev/s²) - use directly
                 state_ = MotionState::MOVING_TO_MIN;
@@ -646,7 +654,7 @@ void FatigueTestMotion::Update() noexcept {
 FatigueTestMotion::Status FatigueTestMotion::GetStatus() const noexcept {
     Status status{};
     {
-        TmcMutexGuard guard(mutex_);
+        TmcMutexGuard guard(driver_mutex_);
         status.running = running_ && state_ != MotionState::STOPPED;
         status.bounded = bounded_;
         status.frequency_hz = frequency_hz_;
@@ -664,7 +672,7 @@ FatigueTestMotion::Status FatigueTestMotion::GetStatus() const noexcept {
 }
 
 float FatigueTestMotion::GetEstimatedFrequency() const noexcept {
-    TmcMutexGuard guard(mutex_);
+    TmcMutexGuard guard(driver_mutex_);
     return estimated_frequency_hz_;
 }
 

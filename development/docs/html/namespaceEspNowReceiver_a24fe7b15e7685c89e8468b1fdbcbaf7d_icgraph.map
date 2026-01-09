@@ -2,10 +2,10 @@
 <area shape="rect" id="Node000001" title="Send TEST_COMPLETE message." alt="" coords="343,23,513,63"/>
 <area shape="rect" id="Node000002" href="$main_8cpp.html#a30da369114ee453fe81be5a919262abf" title="FreeRTOS task: drive the motion update loop and detect completion." alt="" coords="140,5,295,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="329,34,295,30,295,25,330,29"/>
-<area shape="rect" id="Node000004" href="$espnow__protocol__test__unit_8cpp.html#a087fdcdd7d4c34c0c22196a7223d96f5" title="FreeRTOS task: periodically send simulated STATUS_UPDATE messages." alt="" coords="143,55,292,80"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="330,57,293,61,292,56,329,52"/>
+<area shape="rect" id="Node000004" href="$espnow__protocol__test__unit_8cpp.html#a7911069ff3b4a42e289e32769900f4da" title="FreeRTOS task: periodically send simulated STATUS_UPDATE messages." alt="" coords="148,55,287,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="329,57,287,62,287,57,329,52"/>
 <area shape="rect" id="Node000003" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,5,92,31"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,21,92,21,92,15,126,15"/>
 <area shape="rect" id="Node000005" href="$espnow__protocol__test__unit_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,55,92,80"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="129,70,92,70,92,65,129,65"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="134,70,92,70,92,65,134,65"/>
 </map>

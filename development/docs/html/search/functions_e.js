@@ -13,7 +13,7 @@ var searchData=
   ['readreply_10',['ReadReply',['../structtmc51x0_1_1UartFrame.html#a2db72a1ba9681ae39c1b466d374fe680',1,'tmc51x0::UartFrame']]],
   ['readrequest_11',['ReadRequest',['../structtmc51x0_1_1UartFrame.html#acd70a40cddbb48e78f85cce3a2ddb5ff',1,'tmc51x0::UartFrame']]],
   ['recalculatetrajectory_12',['RecalculateTrajectory',['../classFatigueTest_1_1FatigueTestMotion.html#a0e7f5468779deb21c3f5fa3b2a90b7ae',1,'FatigueTest::FatigueTestMotion']]],
-  ['recv_5ftask_13',['recv_task',['../espnow__receiver_8cpp.html#a60f0e60b9ba93f8290923d5b39e6ce5a',1,'espnow_receiver.cpp']]],
+  ['recvtask_13',['recvTask',['../espnow__receiver_8cpp.html#acfefef0575d2f148427e2d4fc622f175',1,'espnow_receiver.cpp']]],
   ['reducecurrentforbounds_14',['ReduceCurrentForBounds',['../namespacetmc51x0_1_1anonymous__namespace_02tmc51x0_8cpp_03.html#a318abe41261027e58937bce4a2756ef9',1,'tmc51x0::anonymous_namespace{tmc51x0.cpp}']]],
   ['referenceswitchconfig_15',['ReferenceSwitchConfig',['../structtmc51x0_1_1ReferenceSwitchConfig.html#a1f2b03f56a2dc83a056915411643d78a',1,'tmc51x0::ReferenceSwitchConfig']]],
   ['removedevice_16',['RemoveDevice',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a1806b526d1c3fa5eba2d7bd66498c947',1,'tmc51x0::TMC51x0DaisyChain::RemoveDevice()'],['../classtmc51x0_1_1TMC51x0MultiNode.html#a8bb7cdcac8d963af57abc8908c344758',1,'tmc51x0::TMC51x0MultiNode::RemoveDevice()']]],

@@ -514,6 +514,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a06908f208ee192aff6a8e8f0346bd8c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Microstep resolution enumeration.  <a href="#a06908f208ee192aff6a8e8f0346bd8c4">More...</a><br /></td></tr>
 <tr class="separator:a06908f208ee192aff6a8e8f0346bd8c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcd9fedd00ee975b4d3fd51e0decf37f" id="r_afcd9fedd00ee975b4d3fd51e0decf37f"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afcd9fedd00ee975b4d3fd51e0decf37f">MicrostepLutPreset</a> : uint8_t { <a class="el" href="#afcd9fedd00ee975b4d3fd51e0decf37faffe80c955acdef8a527ec4af0d4620c1">DEFAULT_SINE</a> = 0
+, <a class="el" href="#afcd9fedd00ee975b4d3fd51e0decf37fa7318924f4a4e48f07f9e2b7c13ee2c59">PURE_SINE</a> = 1
+ }</td></tr>
+<tr class="memdesc:afcd9fedd00ee975b4d3fd51e0decf37f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Microstep lookup table preset waveforms.  <a href="#afcd9fedd00ee975b4d3fd51e0decf37f">More...</a><br /></td></tr>
+<tr class="separator:afcd9fedd00ee975b4d3fd51e0decf37f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93bd28a35e3561cd6881d51ef2dbbc24" id="r_a93bd28a35e3561cd6881d51ef2dbbc24"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a93bd28a35e3561cd6881d51ef2dbbc24">StealthChopPwmFreq</a> : uint8_t { <a class="el" href="#a93bd28a35e3561cd6881d51ef2dbbc24a9320cca3f5079c6a9ecba3526cedbb03">PWM_FREQ_0</a> = 0
 , <a class="el" href="#a93bd28a35e3561cd6881d51ef2dbbc24a95ca2fbd901cde6a78072539a144bbb6">PWM_FREQ_1</a> = 1
 , <a class="el" href="#a93bd28a35e3561cd6881d51ef2dbbc24ae368d4931308d6d2ad481f53620b392c">PWM_FREQ_2</a> = 2
@@ -625,9 +630,9 @@ Functions</h2></td></tr>
 <tr class="separator:ad6360e59e574521bae72c9b548eb29f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a7265cc09cba99affeeae51b6490348" id="r_a4a7265cc09cba99affeeae51b6490348"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a7265cc09cba99affeeae51b6490348">round_to_uint32_nonneg</a> (float value) noexcept</td></tr>
 <tr class="separator:a4a7265cc09cba99affeeae51b6490348"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98dfd26a5eeed2974ce057fb9d203098" id="r_a98dfd26a5eeed2974ce057fb9d203098"><td class="memTemplParams" colspan="2">template&lt;typename CommType &gt; </td></tr>
-<tr class="memitem:a98dfd26a5eeed2974ce057fb9d203098"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a98dfd26a5eeed2974ce057fb9d203098">TestVelocityWithSGT</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;driver, float velocity_steps, int8_t sgt, uint16_t &amp;sg_result_out, int sample_count=8)</td></tr>
-<tr class="separator:a98dfd26a5eeed2974ce057fb9d203098"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adff0626464f4c508695b55c6490023be" id="r_adff0626464f4c508695b55c6490023be"><td class="memTemplParams" colspan="2">template&lt;typename CommType &gt; </td></tr>
+<tr class="memitem:adff0626464f4c508695b55c6490023be"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#adff0626464f4c508695b55c6490023be">TestVelocityWithSGT</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;driver, float velocity_steps, int8_t sgt, uint16_t &amp;sg_result_out, int sample_count=32)</td></tr>
+<tr class="separator:adff0626464f4c508695b55c6490023be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afaf6037a652c82c965a94e0433e13a7c" id="r_afaf6037a652c82c965a94e0433e13a7c"><td class="memTemplParams" colspan="2">template&lt;typename CommType &gt; </td></tr>
 <tr class="memitem:afaf6037a652c82c965a94e0433e13a7c"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afaf6037a652c82c965a94e0433e13a7c">FindWorkingVelocityRange</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt; &amp;driver, int8_t sgt, float start_velocity, float direction, float &amp;found_velocity, uint16_t &amp;sg_result_out, float min_velocity=100.0f, float max_velocity=100000.0f)</td></tr>
 <tr class="separator:afaf6037a652c82c965a94e0433e13a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -733,6 +738,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a60be1af970c350d5071ed3ba6a96c489" id="r_a60be1af970c350d5071ed3ba6a96c489"><td class="memItemLeft" align="right" valign="top">constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60be1af970c350d5071ed3ba6a96c489">MicrostepsPerFullStep</a> (<a class="el" href="#a06908f208ee192aff6a8e8f0346bd8c4">MicrostepResolution</a> mres) noexcept</td></tr>
 <tr class="memdesc:a60be1af970c350d5071ed3ba6a96c489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get microsteps-per-full-step for an MRES value.  <br /></td></tr>
 <tr class="separator:a60be1af970c350d5071ed3ba6a96c489"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae40d2d521bb732150b9827bf07928e47" id="r_ae40d2d521bb732150b9827bf07928e47"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae40d2d521bb732150b9827bf07928e47">ToString</a> (<a class="el" href="#afcd9fedd00ee975b4d3fd51e0decf37f">MicrostepLutPreset</a> preset) noexcept</td></tr>
+<tr class="memdesc:ae40d2d521bb732150b9827bf07928e47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert MicrostepLutPreset to human-readable string.  <br /></td></tr>
+<tr class="separator:ae40d2d521bb732150b9827bf07928e47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1dbedcb137f707b1b2d1734e719e35d5" id="r_a1dbedcb137f707b1b2d1734e719e35d5"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1dbedcb137f707b1b2d1734e719e35d5">ToString</a> (<a class="el" href="#a8cb45f50ef60b0895ae7c456412b9f57">ReferenceSwitchActiveLevel</a> a) noexcept</td></tr>
 <tr class="memdesc:a1dbedcb137f707b1b2d1734e719e35d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert ReferenceSwitchActiveLevel to human-readable string.  <br /></td></tr>
 <tr class="separator:a1dbedcb137f707b1b2d1734e719e35d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1387,6 +1395,40 @@ For highly capacitive loads (e.g., filter networks), TBL_36CLK or TBL_54CLK may 
 <tr><td class="fieldname"><a id="a20af559eb85dbac784b3a4cb644cf63bad3fe043af498c0c3096222212fbeef50" name="a20af559eb85dbac784b3a4cb644cf63bad3fe043af498c0c3096222212fbeef50"></a>BeltDrive&#160;</td><td class="fielddoc"><p>Belt drive with pulleys. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a20af559eb85dbac784b3a4cb644cf63ba5927394ea5c7e8451c52b39dbb6f9629" name="a20af559eb85dbac784b3a4cb644cf63ba5927394ea5c7e8451c52b39dbb6f9629"></a>Gearbox&#160;</td><td class="fielddoc"><p>Gearbox reduction. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="afcd9fedd00ee975b4d3fd51e0decf37f" name="afcd9fedd00ee975b4d3fd51e0decf37f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcd9fedd00ee975b4d3fd51e0decf37f">&#9670;&#160;</a></span>MicrostepLutPreset</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#afcd9fedd00ee975b4d3fd51e0decf37f">tmc51x0::MicrostepLutPreset</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Microstep lookup table preset waveforms. </p>
+<p>Defines preset waveform configurations for the microstep lookup table (MSLUT). The lookup table defines the first quarter of the sine wave (0-90°); the driver mirrors it for the remaining three quarters.</p>
+<dl class="section see"><dt>See also</dt><dd>Datasheet Section 18: Microstep Lookup Table </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="afcd9fedd00ee975b4d3fd51e0decf37faffe80c955acdef8a527ec4af0d4620c1" name="afcd9fedd00ee975b4d3fd51e0decf37faffe80c955acdef8a527ec4af0d4620c1"></a>DEFAULT_SINE&#160;</td><td class="fielddoc"><p>TMC5160 power-on default (slightly modified sine) </p>
+<p>Uses the factory default values programmed at reset. This provides a balanced tradeoff between smoothness and torque. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="afcd9fedd00ee975b4d3fd51e0decf37fa7318924f4a4e48f07f9e2b7c13ee2c59" name="afcd9fedd00ee975b4d3fd51e0decf37fa7318924f4a4e48f07f9e2b7c13ee2c59"></a>PURE_SINE&#160;</td><td class="fielddoc"><p>Mathematical pure sine wave. </p>
+<p>Provides the smoothest motion with minimal torque ripple. Best for applications where smooth motion is more important than maximum torque. </p>
 </td></tr>
 </table>
 
@@ -2369,7 +2411,7 @@ For automatic tuning compatibility, IRUN will be at least 8 </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ac742f74b3a0ad095b8db62d07300c8c9_icgraph.svg" width="535" height="283"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_ac742f74b3a0ad095b8db62d07300c8c9_icgraph.svg" width="535" height="219"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2607,11 +2649,6 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a5fa3afe83ae033126d377aed702dddf6_icgraph.svg" width="447" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -2747,11 +2784,6 @@ template&lt;typename CommType &gt; </div>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_afaf6037a652c82c965a94e0433e13a7c_cgraph.svg" width="770" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_afaf6037a652c82c965a94e0433e13a7c_icgraph.svg" width="476" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -3389,8 +3421,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a98dfd26a5eeed2974ce057fb9d203098" name="a98dfd26a5eeed2974ce057fb9d203098"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98dfd26a5eeed2974ce057fb9d203098">&#9670;&#160;</a></span>TestVelocityWithSGT()</h2>
+<a id="adff0626464f4c508695b55c6490023be" name="adff0626464f4c508695b55c6490023be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adff0626464f4c508695b55c6490023be">&#9670;&#160;</a></span>TestVelocityWithSGT()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3420,25 +3452,25 @@ template&lt;typename CommType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>sample_count</em><span class="paramdefsep"> = </span><span class="paramdefval">8</span></span>&#160;)</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>sample_count</em><span class="paramdefsep"> = </span><span class="paramdefval">32</span></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a98dfd26a5eeed2974ce057fb9d203098_cgraph.svg" width="503" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_adff0626464f4c508695b55c6490023be_cgraph.svg" width="503" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_a98dfd26a5eeed2974ce057fb9d203098_icgraph.svg" width="746" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetmc51x0_adff0626464f4c508695b55c6490023be_icgraph.svg" width="499" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
 <a id="ab651cf153e7df9b12cd02c075e721a62" name="ab651cf153e7df9b12cd02c075e721a62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab651cf153e7df9b12cd02c075e721a62">&#9670;&#160;</a></span>ToString() <span class="overload">[1/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab651cf153e7df9b12cd02c075e721a62">&#9670;&#160;</a></span>ToString() <span class="overload">[1/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3465,7 +3497,7 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="a53b45b9929e8676895feec279f636a92" name="a53b45b9929e8676895feec279f636a92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53b45b9929e8676895feec279f636a92">&#9670;&#160;</a></span>ToString() <span class="overload">[2/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a53b45b9929e8676895feec279f636a92">&#9670;&#160;</a></span>ToString() <span class="overload">[2/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3492,7 +3524,7 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="ad7c9cd8e87838faf750c8d0674e8443e" name="ad7c9cd8e87838faf750c8d0674e8443e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7c9cd8e87838faf750c8d0674e8443e">&#9670;&#160;</a></span>ToString() <span class="overload">[3/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7c9cd8e87838faf750c8d0674e8443e">&#9670;&#160;</a></span>ToString() <span class="overload">[3/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3519,7 +3551,7 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="a357c46b81ab3724ff0cb7edb0a63a1b3" name="a357c46b81ab3724ff0cb7edb0a63a1b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a357c46b81ab3724ff0cb7edb0a63a1b3">&#9670;&#160;</a></span>ToString() <span class="overload">[4/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a357c46b81ab3724ff0cb7edb0a63a1b3">&#9670;&#160;</a></span>ToString() <span class="overload">[4/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3546,7 +3578,7 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="ab0564b59a674cbeb306a2d9f93ad0dfe" name="ab0564b59a674cbeb306a2d9f93ad0dfe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0564b59a674cbeb306a2d9f93ad0dfe">&#9670;&#160;</a></span>ToString() <span class="overload">[5/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0564b59a674cbeb306a2d9f93ad0dfe">&#9670;&#160;</a></span>ToString() <span class="overload">[5/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3572,8 +3604,35 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="ae40d2d521bb732150b9827bf07928e47" name="ae40d2d521bb732150b9827bf07928e47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae40d2d521bb732150b9827bf07928e47">&#9670;&#160;</a></span>ToString() <span class="overload">[6/13]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char * tmc51x0::ToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#afcd9fedd00ee975b4d3fd51e0decf37f">MicrostepLutPreset</a></td>          <td class="paramname"><span class="paramname"><em>preset</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert MicrostepLutPreset to human-readable string. </p>
+
+</div>
+</div>
 <a id="a87842913785c7ae36ec86b05855fa685" name="a87842913785c7ae36ec86b05855fa685"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87842913785c7ae36ec86b05855fa685">&#9670;&#160;</a></span>ToString() <span class="overload">[6/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a87842913785c7ae36ec86b05855fa685">&#9670;&#160;</a></span>ToString() <span class="overload">[7/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3600,7 +3659,7 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="a2687c1ffa238ddc4d2c6fbb36523ec24" name="a2687c1ffa238ddc4d2c6fbb36523ec24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2687c1ffa238ddc4d2c6fbb36523ec24">&#9670;&#160;</a></span>ToString() <span class="overload">[7/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2687c1ffa238ddc4d2c6fbb36523ec24">&#9670;&#160;</a></span>ToString() <span class="overload">[8/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3627,7 +3686,7 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="a05bf4335137c09ab1cf64a7e37a83828" name="a05bf4335137c09ab1cf64a7e37a83828"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05bf4335137c09ab1cf64a7e37a83828">&#9670;&#160;</a></span>ToString() <span class="overload">[8/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a05bf4335137c09ab1cf64a7e37a83828">&#9670;&#160;</a></span>ToString() <span class="overload">[9/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3654,7 +3713,7 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="afffa196cafae3052b4963ddb5aa03e68" name="afffa196cafae3052b4963ddb5aa03e68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afffa196cafae3052b4963ddb5aa03e68">&#9670;&#160;</a></span>ToString() <span class="overload">[9/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afffa196cafae3052b4963ddb5aa03e68">&#9670;&#160;</a></span>ToString() <span class="overload">[10/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3681,7 +3740,7 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="ae47a5e9499793dcbb3521f42bcdc312d" name="ae47a5e9499793dcbb3521f42bcdc312d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae47a5e9499793dcbb3521f42bcdc312d">&#9670;&#160;</a></span>ToString() <span class="overload">[10/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae47a5e9499793dcbb3521f42bcdc312d">&#9670;&#160;</a></span>ToString() <span class="overload">[11/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3708,7 +3767,7 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="a1dbedcb137f707b1b2d1734e719e35d5" name="a1dbedcb137f707b1b2d1734e719e35d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1dbedcb137f707b1b2d1734e719e35d5">&#9670;&#160;</a></span>ToString() <span class="overload">[11/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1dbedcb137f707b1b2d1734e719e35d5">&#9670;&#160;</a></span>ToString() <span class="overload">[12/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3735,7 +3794,7 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <a id="a5ee86cd36d23133f5021deeccdd3c4f8" name="a5ee86cd36d23133f5021deeccdd3c4f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ee86cd36d23133f5021deeccdd3c4f8">&#9670;&#160;</a></span>ToString() <span class="overload">[12/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ee86cd36d23133f5021deeccdd3c4f8">&#9670;&#160;</a></span>ToString() <span class="overload">[13/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

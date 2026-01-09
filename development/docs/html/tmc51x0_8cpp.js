@@ -28,7 +28,7 @@ var tmc51x0_8cpp =
     [ "RestoreCurrent", "tmc51x0_8cpp.html#a4126c03af0af361cd473966eeb78cd0a", null ],
     [ "round_to_int32", "tmc51x0_8cpp.html#ad6360e59e574521bae72c9b548eb29f0", null ],
     [ "round_to_uint32_nonneg", "tmc51x0_8cpp.html#a4a7265cc09cba99affeeae51b6490348", null ],
-    [ "TestVelocityWithSGT", "tmc51x0_8cpp.html#a98dfd26a5eeed2974ce057fb9d203098", null ],
+    [ "TestVelocityWithSGT", "tmc51x0_8cpp.html#adff0626464f4c508695b55c6490023be", null ],
     [ "TrueFalseStyled", "tmc51x0_8cpp.html#a6312aef422236f3477944818f3d71a05", null ],
     [ "report_row_buf", "tmc51x0_8cpp.html#a0502e80a6ce8097c8c177e323bbb7c22", null ]
 ];

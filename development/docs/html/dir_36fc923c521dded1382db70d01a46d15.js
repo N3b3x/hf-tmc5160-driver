@@ -1,8 +1,6 @@
 var dir_36fc923c521dded1382db70d01a46d15 =
 [
-    [ "bounds_finder.hpp", "bounds__finder_8hpp.html", "bounds__finder_8hpp" ],
-    [ "bounds_finder_encoder.cpp", "bounds__finder__encoder_8cpp.html", "bounds__finder__encoder_8cpp" ],
-    [ "bounds_finder_stallguard.cpp", "bounds__finder__stallguard_8cpp.html", "bounds__finder__stallguard_8cpp" ],
+    [ "potential_delete", "dir_25f7264db42e9b2710cdd716d26651e0.html", "dir_25f7264db42e9b2710cdd716d26651e0" ],
     [ "esp_idf_pedantic_compat.hpp", "esp__idf__pedantic__compat_8hpp.html", null ],
     [ "espnow_protocol.hpp", "espnow__protocol_8hpp.html", "espnow__protocol_8hpp" ],
     [ "espnow_protocol_test_unit.cpp", "espnow__protocol__test__unit_8cpp.html", "espnow__protocol__test__unit_8cpp" ],

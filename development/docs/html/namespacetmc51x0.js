@@ -215,6 +215,10 @@ var namespacetmc51x0 =
       [ "BeltDrive", "namespacetmc51x0.html#a20af559eb85dbac784b3a4cb644cf63bad3fe043af498c0c3096222212fbeef50", null ],
       [ "Gearbox", "namespacetmc51x0.html#a20af559eb85dbac784b3a4cb644cf63ba5927394ea5c7e8451c52b39dbb6f9629", null ]
     ] ],
+    [ "MicrostepLutPreset", "namespacetmc51x0.html#afcd9fedd00ee975b4d3fd51e0decf37f", [
+      [ "DEFAULT_SINE", "namespacetmc51x0.html#afcd9fedd00ee975b4d3fd51e0decf37faffe80c955acdef8a527ec4af0d4620c1", null ],
+      [ "PURE_SINE", "namespacetmc51x0.html#afcd9fedd00ee975b4d3fd51e0decf37fa7318924f4a4e48f07f9e2b7c13ee2c59", null ]
+    ] ],
     [ "MicrostepResolution", "namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4", [
       [ "MRES_256", "namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4af6a5e029c66401ac3bb0d52f2f29353e", null ],
       [ "MRES_128", "namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4ab227ff1ca50d147d685877a0c73041c6", null ],
@@ -365,12 +369,13 @@ var namespacetmc51x0 =
     [ "StepsToBeltTeeth", "namespacetmc51x0.html#a774504ccaf07160eba05e41574b8bb8f", null ],
     [ "StepsToDegrees", "namespacetmc51x0.html#aa654a36849533f2f559d3e113176bf35", null ],
     [ "StepsToMm", "namespacetmc51x0.html#a14a9cbf63a5eb7e330795cacdf8fadc3", null ],
-    [ "TestVelocityWithSGT", "namespacetmc51x0.html#a98dfd26a5eeed2974ce057fb9d203098", null ],
+    [ "TestVelocityWithSGT", "namespacetmc51x0.html#adff0626464f4c508695b55c6490023be", null ],
     [ "ToString", "namespacetmc51x0.html#ab651cf153e7df9b12cd02c075e721a62", null ],
     [ "ToString", "namespacetmc51x0.html#a53b45b9929e8676895feec279f636a92", null ],
     [ "ToString", "namespacetmc51x0.html#ad7c9cd8e87838faf750c8d0674e8443e", null ],
     [ "ToString", "namespacetmc51x0.html#a357c46b81ab3724ff0cb7edb0a63a1b3", null ],
     [ "ToString", "namespacetmc51x0.html#ab0564b59a674cbeb306a2d9f93ad0dfe", null ],
+    [ "ToString", "namespacetmc51x0.html#ae40d2d521bb732150b9827bf07928e47", null ],
     [ "ToString", "namespacetmc51x0.html#a87842913785c7ae36ec86b05855fa685", null ],
     [ "ToString", "namespacetmc51x0.html#a2687c1ffa238ddc4d2c6fbb36523ec24", null ],
     [ "ToString", "namespacetmc51x0.html#a05bf4335137c09ab1cf64a7e37a83828", null ],

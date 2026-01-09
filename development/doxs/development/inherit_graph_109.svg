@@ -11,9 +11,9 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structtmc51x0_1_1UartFrame.html" target="_top" xlink:title="TMC5160 UART command/response frame structure with built&#45;in CRC8.">
+<g id="a_Node000000"><a xlink:href="structtmc51x0_1_1UartConfig.html" target="_top" xlink:title="UART communication configuration structure.">
 <polygon fill="white" stroke="#666666" points="117,-19 0,-19 0,0 117,0 117,-19"/>
-<text text-anchor="middle" x="58.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::UartFrame</text>
+<text text-anchor="middle" x="58.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::UartConfig</text>
 </a>
 </g>
 </g>

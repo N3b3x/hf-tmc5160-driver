@@ -416,7 +416,7 @@ Usage Example</h2>
 <div class="ttc" id="aclasstmc51x0_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:1662</div></div>
 <div class="ttc" id="aclasstmc51x0_1_1TMC51x0_html"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a></div><div class="ttdoc">Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)</div><div class="ttdef"><b>Definition</b> tmc51x0.hpp:135</div></div>
 <div class="ttc" id="anamespacetmc51x0_html_a9296c8b77977c4b405a85597699ada76a1e66935e3ab51cc2128e078cfd49d845"><div class="ttname"><a href="namespacetmc51x0.html#a9296c8b77977c4b405a85597699ada76a1e66935e3ab51cc2128e078cfd49d845">tmc51x0::RampMode::POSITIONING</a></div><div class="ttdeci">@ POSITIONING</div><div class="ttdoc">Positioning mode using all A, D and V parameters.</div></div>
-<div class="ttc" id="astructtmc51x0_1_1DriverConfig_html"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2832</div></div>
+<div class="ttc" id="astructtmc51x0_1_1DriverConfig_html"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2873</div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">CommType</td><td>The communication interface type (must inherit from SpiCommInterface&lt;CommType&gt; or UartCommInterface&lt;CommType&gt;) </td></tr>
@@ -819,7 +819,7 @@ template&lt;typename CommType &gt; </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a2aca219d7b860bc5a35738a28900a151_icgraph.svg" width="1016" height="94"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a2aca219d7b860bc5a35738a28900a151_icgraph.svg" width="770" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -992,6 +992,11 @@ template&lt;typename CommType &gt; </div>
 <p>Get motor-current calculated/cached values for application logging. </p>
 <dl class="section return"><dt>Returns</dt><dd>A snapshot of motor-current related values.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>If the driver has not been initialized yet, values may be defaults. </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_acfb1a464c20f433450d1e96ce51744dc_icgraph.svg" width="502" height="90"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -1036,11 +1041,6 @@ template&lt;typename CommType &gt; </div>
 <p>UART multi-node note:</p><ul>
 <li>A power-cycle resets NODECONF in the chip. To re-initialize reliably, the device must be reachable at UART address 0 (typically the first chip with NAI tied to GND). For multi-node chains, prefer using <a class="el" href="classtmc51x0_1_1TMC51x0MultiNode.html" title="High-level manager for multiple TMC51x0 drivers in a UART multi-node configuration.">TMC51x0MultiNode</a> and ProgramSequentially() after power-up. </li>
 </ul>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a0819cf562bcbb0a747b56fc15a8da5b1_cgraph.svg" width="1560" height="318"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -1100,7 +1100,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a60e918b0153cf9034871291ce27ea813_icgraph.svg" width="495" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a60e918b0153cf9034871291ce27ea813_icgraph.svg" width="358" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1222,7 +1222,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a20cfe6cdf1f4310965a619a81863d66b_icgraph.svg" width="763" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a20cfe6cdf1f4310965a619a81863d66b_icgraph.svg" width="626" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1363,11 +1363,6 @@ template&lt;typename CommType &gt; </div>
 <p>Reset the <a class="el" href="classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">TMC51x0</a> driver. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
 <p>Performs a software reset by writing to the GSTAT register. </p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a27d55da2949bc7fdbcd0cd84ba9f37bf_icgraph.svg" width="476" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -1440,11 +1435,6 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Speed in internal TMC5160 units </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtmc51x0_1_1TMC51x0_a5c568d0c3a5758768cd4b6c64b049e82_cgraph.svg" width="452" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

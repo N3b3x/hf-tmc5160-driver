@@ -1,7 +1,7 @@
 <map id="FatigueTest::FatigueTestMotion" name="FatigueTest::FatigueTestMotion">
-<area shape="rect" id="Node000001" title="Unified fatigue test motion controller." alt="" coords="2240,828,2416,868"/>
+<area shape="rect" id="Node000001" title="Unified fatigue test motion controller." alt="" coords="2285,828,2461,868"/>
 <area shape="rect" id="Node000002" href="$classtmc51x0_1_1TMC51x0.html" title=" " alt="" coords="1901,809,2139,834"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2153,830,2240,838,2240,843,2152,835"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2153,829,2285,839,2285,844,2152,834"/>
 <area shape="rect" id="Node000003" href="$structtmc51x0_1_1TMC51x0_1_1RampControl.html" title="Ramp control subsystem." alt="" coords="747,687,983,727"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="894,675,1173,403,1328,262,1386,214,1424,190,1457,181,1502,176,1612,173,1723,182,1768,191,1801,203,1823,220,1844,245,1883,314,1918,401,1948,499,1995,687,2019,808,2014,809,1990,689,1943,500,1913,403,1878,316,1840,248,1819,224,1799,208,1767,196,1722,187,1612,178,1502,181,1458,186,1426,194,1389,218,1331,266,1177,407,897,679"/>
 <area shape="rect" id="Node000004" href="$classtmc51x0_1_1TMC51x0.html" title="Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="1151,762,1401,787"/>
@@ -122,5 +122,5 @@
 <area shape="rect" id="Node000044" href="$structtmc51x0_1_1PinActiveLevels.html" title="Pin active level configuration structure." alt="" coords="1181,1643,1371,1669"/>
 <area shape="poly" id="edge74_Node000041_Node000044" title=" " alt="" coords="1380,1639,1641,1602,1641,1607,1381,1644"/>
 <area shape="rect" id="Node000045" href="$classEsp32TmcMutex.html" title="ESP32 FreeRTOS mutex wrapper for TMC51x0 driver." alt="" coords="1955,858,2085,883"/>
-<area shape="poly" id="edge79_Node000001_Node000045" title=" " alt="" coords="2099,870,2216,865,2240,862,2240,868,2216,871,2099,875"/>
+<area shape="poly" id="edge79_Node000001_Node000045" title=" " alt="" coords="2099,870,2178,870,2261,865,2285,862,2286,868,2262,871,2178,875,2099,876"/>
 </map>

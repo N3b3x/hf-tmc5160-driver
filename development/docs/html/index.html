@@ -201,7 +201,7 @@ Homing Subsystem</h3>
 <ul>
 <li>✅ <b>Sensorless Homing</b>: Endstop-free homing using StallGuard2 stall detection</li>
 <li>✅ <b>Switch-Based Homing</b>: Homing using reference switches/endstops</li>
-<li>✅ <b>Automatic <a class="el" href="structSettings.html" title="Complete settings structure containing both test unit and UI settings This is the main settings struc...">Settings</a> Caching</b>: Preserves and restores driver settings during homing</li>
+<li>✅ <b>Automatic <a class="el" href="structSettings.html" title="Complete settings structure containing both test unit and UI settings.">Settings</a> Caching</b>: Preserves and restores driver settings during homing</li>
 <li>✅ <b>Configurable Search Speed</b>: Adjustable homing speed and switch approach speed</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md45"></a>
@@ -312,8 +312,8 @@ Single Motor Setup</h2>
 <div class="line">}</div>
 <div class="ttc" id="aclasstmc51x0_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:1662</div></div>
 <div class="ttc" id="anamespacetmc51x0_html_a9296c8b77977c4b405a85597699ada76a1e66935e3ab51cc2128e078cfd49d845"><div class="ttname"><a href="namespacetmc51x0.html#a9296c8b77977c4b405a85597699ada76a1e66935e3ab51cc2128e078cfd49d845">tmc51x0::RampMode::POSITIONING</a></div><div class="ttdeci">@ POSITIONING</div><div class="ttdoc">Positioning mode using all A, D and V parameters.</div></div>
-<div class="ttc" id="astructtmc51x0_1_1DriverConfig_html"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2832</div></div>
-<div class="ttc" id="astructtmc51x0_1_1DriverConfig_html_a66cdf0c5a672129d08f8601822ba3e07"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html#a66cdf0c5a672129d08f8601822ba3e07">tmc51x0::DriverConfig::motor_spec</a></div><div class="ttdeci">MotorSpec motor_spec</div><div class="ttdoc">Motor specifications (physical parameters for automatic current calculation)</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2833</div></div>
+<div class="ttc" id="astructtmc51x0_1_1DriverConfig_html"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2873</div></div>
+<div class="ttc" id="astructtmc51x0_1_1DriverConfig_html_a66cdf0c5a672129d08f8601822ba3e07"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html#a66cdf0c5a672129d08f8601822ba3e07">tmc51x0::DriverConfig::motor_spec</a></div><div class="ttdeci">MotorSpec motor_spec</div><div class="ttdoc">Motor specifications (physical parameters for automatic current calculation)</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2874</div></div>
 <div class="ttc" id="astructtmc51x0_1_1MotorSpec_html_af85ebe8e9d6c2b1f171f740cd6596984"><div class="ttname"><a href="structtmc51x0_1_1MotorSpec.html#af85ebe8e9d6c2b1f171f740cd6596984">tmc51x0::MotorSpec::rated_current_ma</a></div><div class="ttdeci">uint16_t rated_current_ma</div><div class="ttdoc">Rated motor current in milliamps (RMS)</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:334</div></div>
 <div class="ttc" id="atmc51x0_8hpp_html"><div class="ttname"><a href="tmc51x0_8hpp.html">tmc51x0.hpp</a></div><div class="ttdoc">Main TMC51x0 stepper motor driver interface and subsystem classes (TMC5130 &amp; TMC5160)</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md55"></a>
@@ -462,8 +462,8 @@ Class Structure &amp; Subsystems</h2>
 <div class="ttc" id="anamespacetmc51x0_html_a68e41191c288365e02cfca672681f686ab70808dc1e3f9e2c06c9ba840cc7f44c"><div class="ttname"><a href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686ab70808dc1e3f9e2c06c9ba840cc7f44c">tmc51x0::Unit::Deg</a></div><div class="ttdeci">@ Deg</div><div class="ttdoc">Degrees (per second for velocity, per second^2 for accel)</div></div>
 <div class="ttc" id="anamespacetmc51x0_html_a68e41191c288365e02cfca672681f686afe2284eb32d4b09d29fd34217324b19a"><div class="ttname"><a href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686afe2284eb32d4b09d29fd34217324b19a">tmc51x0::Unit::RPM</a></div><div class="ttdeci">@ RPM</div><div class="ttdoc">Revolutions per Minute (Velocity only, typically)</div></div>
 <div class="ttc" id="anamespacetmc51x0_html_afdc019b38a68bc8a317ade8ff4fafa0b"><div class="ttname"><a href="namespacetmc51x0.html#afdc019b38a68bc8a317ade8ff4fafa0b">tmc51x0::DriverStatus</a></div><div class="ttdeci">DriverStatus</div><div class="ttdoc">Driver status enumeration.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:216</div></div>
-<div class="ttc" id="astructtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions_html"><div class="ttname"><a href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">tmc51x0::TMC51x0::Homing::BoundsOptions</a></div><div class="ttdef"><b>Definition</b> tmc51x0.hpp:2276</div></div>
-<div class="ttc" id="astructtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions_html_a3718deb5ff8da6a0fab18c248425a850"><div class="ttname"><a href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a3718deb5ff8da6a0fab18c248425a850">tmc51x0::TMC51x0::Homing::BoundsOptions::speed_unit</a></div><div class="ttdeci">Unit speed_unit</div><div class="ttdef"><b>Definition</b> tmc51x0.hpp:2278</div></div>
+<div class="ttc" id="astructtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions_html"><div class="ttname"><a href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">tmc51x0::TMC51x0::Homing::BoundsOptions</a></div><div class="ttdef"><b>Definition</b> tmc51x0.hpp:2687</div></div>
+<div class="ttc" id="astructtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions_html_a3718deb5ff8da6a0fab18c248425a850"><div class="ttname"><a href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a3718deb5ff8da6a0fab18c248425a850">tmc51x0::TMC51x0::Homing::BoundsOptions::speed_unit</a></div><div class="ttdeci">Unit speed_unit</div><div class="ttdef"><b>Definition</b> tmc51x0.hpp:2689</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md60"></a>
 Key Methods by Subsystem</h2>
 <h3><a class="anchor" id="autotoc_md61"></a>
@@ -482,7 +482,7 @@ RampControl Subsystem</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>IsTargetReached()</code>   </td><td class="markdownTableBodyNone">Check if position target reached    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>Stop()</code>   </td><td class="markdownTableBodyNone">Stop motor immediately   </td></tr>
+<td class="markdownTableBodyNone"><code><a class="el" href="espnow__protocol_8hpp.html#a62651afa1b82816bb6ca42a7dece0901a11a755d598c0c417f9a36758c3da7481">Stop()</a></code>   </td><td class="markdownTableBodyNone">Stop motor immediately   </td></tr>
 </table>
 <h3><a class="anchor" id="autotoc_md62"></a>
 Switches Subsystem</h3>

@@ -9,8 +9,8 @@ The **Test Unit** is a unified fatigue tester with dual communication:
 - Accepts direct commands via UART (for debugging/development)
 - Performs bounds finding using selectable method (StallGuard2 or encoder-based)
 - Runs sinusoidal fatigue test motion
-- Sends status updates back to remote controller
-- **Unified Implementation**: Combines `fatigue_test_encoder.cpp` and `fatigue_test_stallguard.cpp` with proper C++ abstractions
+- Sends status updates back to remote controller (1 Hz while running)
+- **Unified Implementation**: Uses the driver library's built-in homing/bounds subsystem
 
 **Note**: The remote controller UI has been moved to a standalone project: `examples/esp32_remote_controller/`
 
@@ -18,43 +18,73 @@ The **Test Unit** is a unified fatigue tester with dual communication:
 
 ```
 fatigue_test_espnow/
-├── espnow_protocol.hpp          # Shared ESP-NOW protocol definitions
+├── docs/
+│   ├── ARCHITECTURE.md          # System architecture documentation
+│   ├── HARDWARE_SETUP.md        # Hardware setup guide
+│   └── PROTOCOL.md              # ESP-NOW protocol specification
+├── espnow_protocol.hpp          # ESP-NOW protocol definitions
+├── espnow_receiver.hpp/cpp      # ESP-NOW receiver implementation
 ├── main.cpp                     # Main application (unified implementation)
 ├── espnow_protocol_test_unit.cpp # Protocol test unit (no motor control)
-├── espnow_receiver.hpp/cpp      # ESP-NOW receiver implementation
-├── bounds_finder.hpp            # Abstract bounds finder interface
-├── bounds_finder_stallguard.cpp # StallGuard2 implementation
-├── bounds_finder_encoder.cpp    # Encoder-based implementation
 ├── fatigue_motion.hpp           # Unified motion controller interface
 └── fatigue_motion_impl.hpp      # Motion controller implementation
 ```
 
 ## ESP-NOW Protocol
 
-The protocol uses a sync byte (0xAA) and CRC16-CCITT for error detection.
+The protocol uses a 6-byte header with sync byte (0xAA), version, device ID, and CRC16-CCITT for error detection.
 
 ### Message Types
 
-- `CONFIG_REQUEST` / `CONFIG_RESPONSE`: Request/send current settings
-- `CONFIG_SET` / `CONFIG_ACK`: Set new configuration
-- `START` / `START_ACK`: Start fatigue test
-- `PAUSE` / `PAUSE_ACK`: Pause test
-- `RESUME` / `RESUME_ACK`: Resume test
-- `STOP` / `STOP_ACK`: Stop test
-- `STATUS_UPDATE`: Periodic status updates (cycle count, state)
-- `ERROR`: Error notification
-- `TEST_COMPLETE`: Test completion notification
+| Type | Description |
+|------|-------------|
+| `ConfigRequest` / `ConfigResponse` | Request/send current settings |
+| `ConfigSet` / `ConfigAck` | Set new configuration |
+| `Command` | Start/Pause/Resume/Stop commands |
+| `CommandAck` | Command acknowledgment |
+| `StatusUpdate` | Periodic status updates (1 Hz) |
+| `Error` | Error notification |
+| `TestComplete` | Test completion notification |
 
 ### Settings Structure
 
 ```cpp
-struct Settings {
-    uint32_t cycle_amount;        // Target number of cycles
-    uint32_t time_per_cycle;      // Time per cycle in seconds
-    uint32_t dwell_time;          // Dwell time at bounds in seconds
-    bool bounds_method_stallguard; // true = StallGuard2, false = encoder
+struct TestUnitSettings {
+    // Base fields (always synchronized)
+    uint32_t cycle_amount;              // Target number of cycles
+    uint32_t time_per_cycle;            // Time per cycle in seconds
+    uint32_t dwell_time;                // Dwell time at bounds in seconds
+    bool     bounds_method_stallguard;  // true = StallGuard2, false = encoder
+    
+    // Extended fields (0.0f = use test config defaults)
+    float    bounds_search_velocity_rpm;       // Search speed during bounds finding (RPM)
+    float    stallguard_min_velocity_rpm;      // Min velocity for StallGuard2 (RPM)
+    float    stall_detection_current_factor;   // Current reduction factor (0.0-1.0)
+    float    bounds_search_accel_rev_s2;       // Search acceleration (rev/s²)
 };
 ```
+
+**Extended Field Behavior**:
+- Value of `0.0f` → uses test unit's TestConfig default
+- Non-zero value → overrides the default
+- Backward compatible with older remote controllers (base fields only)
+
+### Remote Controller Settings Menu
+
+The remote controller provides a scrollable settings menu:
+
+| Setting | Range | Step | Description |
+|---------|-------|------|-------------|
+| Cycles | 1-100,000 | 100 | Target cycle count |
+| Time/Cycle | 1-3600 s | 1 | Oscillation period |
+| Dwell Time | 0-60 s | 1 | Pause at bounds |
+| Bounds Mode | SG/ENC | Toggle | Detection method |
+| Search Speed | 0-300 RPM | 5 | Bounds search speed (0=AUTO) |
+| SG Min Vel | 0-100 RPM | 1 | StallGuard min velocity (0=AUTO) |
+| Curr Factor | 0.0-1.0 | 0.05 | Current reduction (0=AUTO) |
+| Search Accel | 0-20 rev/s² | 0.5 | Search acceleration (0=AUTO) |
+| Error Severity | 1-3 | 1 | Min error level to display |
+| Flip Screen | NORM/FLIP | Toggle | Display orientation |
 
 ## Configuration
 
@@ -68,6 +98,24 @@ static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG =
     tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE;
 ```
 
+### MAC Address Configuration
+
+1. **Flash test unit** and note its MAC address from serial output:
+   ```
+   ESP-NOW Device MAC Address: XX:XX:XX:XX:XX:XX
+   ```
+
+2. **Update remote controller** (`config.hpp`):
+   ```cpp
+   static constexpr uint8_t TEST_UNIT_MAC_[6] = { 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX };
+   ```
+
+3. **(Optional)** Update test unit with controller MAC for immediate responses:
+   ```cpp
+   // In espnow_protocol.hpp
+   static constexpr uint8_t UI_BOARD_MAC[6] = { 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX };
+   ```
+
 ## Building
 
 ### Full Test Unit (with Motor Control)
@@ -75,6 +123,7 @@ static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG =
 ```bash
 cd examples/esp32
 ./scripts/build_app.sh fatigue_test_espnow_unit Release
+./scripts/flash_app.sh flash_monitor fatigue_test_espnow_unit Release
 ```
 
 ### Protocol Test Unit (No Motor Control)
@@ -87,126 +136,168 @@ cd examples/esp32
 ```
 
 The protocol test unit (`espnow_protocol_test_unit.cpp`) is a minimal implementation that:
-- Receives all ESP-NOW protocol commands (CONFIG_REQUEST, CONFIG_SET, START, PAUSE, RESUME, STOP)
-- Responds with appropriate protocol messages (ACKs, status updates, etc.)
+- Receives all ESP-NOW protocol commands
+- Responds with appropriate protocol messages (ACKs, status updates)
 - Simulates test state changes (IDLE → RUNNING → PAUSED → COMPLETED)
-- Does NOT initialize motor driver, bounds finder, or motion controller
-- Useful for validating ESP-NOW communication without requiring motor hardware
-
-**Use Cases:**
-- Testing ESP-NOW protocol implementation
-- Validating remote controller communication
-- Debugging protocol issues without motor hardware
-- Development and CI/CD testing
+- Does NOT initialize motor driver or motion controller
+- Useful for validating ESP-NOW communication without motor hardware
 
 ## Usage
 
 1. **Flash the test unit** with the firmware
-2. **Configure MAC address** in the remote controller (see `examples/esp32_remote_controller/`)
+2. **Configure MAC address** in the remote controller
 3. **Power on test unit first**, then remote controller
-4. **Remote controller will request config** from test unit on startup
-5. **Use remote controller** to start, pause, resume, or stop tests
+4. **Remote controller requests config** from test unit on startup
+5. **Use remote controller** to configure and run tests
 
 ## Features
 
 ### Test Unit
 - **Dual Communication**: ESP-NOW (wireless) + UART (direct serial)
-- **Dual Bounds Detection**: Selectable StallGuard2 or encoder-based
-- **Unified Motion Controller**: Extracted from `fatigue_test_encoder.cpp` and `fatigue_test_stallguard.cpp`
-- Sinusoidal fatigue test motion
-- Cycle counting
-- Status updates sent to remote controller
-- Error handling and reporting
-- **Proper C++ Abstractions**: Interface-based design for extensibility
+- **Dual Bounds Detection**: StallGuard2 or encoder-based (selectable)
+- **Library-Based Homing**: Uses `driver.homing.FindBounds()` for robust bounds detection
+- **Sinusoidal Motion**: Smooth oscillation between detected bounds
+- **Configurable Parameters**: All settings adjustable via remote controller
+- **Status Updates**: 1 Hz updates while running, immediate on state changes
+- **Error Reporting**: Error codes and cycle counts sent to remote
+
+### Communication Flow
+
+```
+Remote Controller                       Test Unit
+      │                                     │
+      │──── CONFIG_REQUEST ────────────────►│
+      │◄── CONFIG_RESPONSE (29-byte payload)│
+      │                                     │
+      │     [User adjusts settings]         │
+      │                                     │
+      │──── CONFIG_SET (29-byte payload) ──►│
+      │◄── CONFIG_ACK ──────────────────────│
+      │                                     │
+      │──── Command:Start ─────────────────►│
+      │◄── COMMAND_ACK ─────────────────────│
+      │                                     │
+      │◄── STATUS_UPDATE (1 Hz) ────────────│  ← cycles, state
+      │◄── STATUS_UPDATE ───────────────────│
+      │...                                  │
+      │                                     │
+      │──── Command:Stop ──────────────────►│
+      │◄── COMMAND_ACK ─────────────────────│
+      │◄── TEST_COMPLETE ───────────────────│
+      │                                     │
+```
 
 ## Protocol Details
 
 ### Packet Format
 
 ```
-[Sync Byte: 0xAA][Type][ID][Length][Payload...][CRC16]
+┌─────────────────────────────────────────────────────────────────┐
+│ Header (6 bytes): [Sync:0xAA][Ver:1][DevID][Type][ID][Length]   │
+├─────────────────────────────────────────────────────────────────┤
+│ Payload (0-200 bytes, per Length field)                         │
+├─────────────────────────────────────────────────────────────────┤
+│ CRC16 (2 bytes, CRC16-CCITT over header + payload)              │
+└─────────────────────────────────────────────────────────────────┘
 ```
-
-- Sync Byte: Always 0xAA
-- Type: Message type (MsgType enum)
-- ID: Sequence ID (increments)
-- Length: Payload length (0-48 bytes)
-- Payload: Message-specific data
-- CRC16: CRC16-CCITT over header + payload
 
 ### Error Codes
 
-- 0: Success
-- 1: Bounds not found
-- 2: Start failed
-- 3: Configuration error
+| Code | Description |
+|------|-------------|
+| 0 | Success |
+| 1 | Bounds not found |
+| 2 | Start failed |
+| 3 | Configuration error |
+| 4 | Motion control error |
+| 5 | Communication error |
 
 ## Bounds Finding
 
-The test unit includes **full implementations** of both bounds finding methods:
+The test unit uses the **driver library built-in homing/bounds subsystem**:
 
-- **Encoder-based** (`bounds_finder_encoder.cpp`): Complete implementation extracted from `fatigue_test_encoder.cpp`
-  - Monitors encoder position changes
-  - Detects stalls when encoder stops moving while motor is commanded to move
-  - Handles false stall detection with movement thresholds
+```cpp
+// StallGuard2 method
+g_driver->homing.FindBounds(Homing::BoundsMethod::StallGuard, options, home_config, cancel_cb);
 
-- **StallGuard2** (`bounds_finder_stallguard.cpp`): Complete implementation extracted from `fatigue_test_stallguard.cpp`
-  - Uses TMC51x0 StallGuard2 sensorless detection
-  - Configures SGT threshold for homing
-  - Handles false stall detection with movement thresholds
+// Encoder method
+g_driver->homing.FindBounds(Homing::BoundsMethod::Encoder, options, home_config, cancel_cb);
+```
 
-Both implementations follow the `IBoundsFinder` interface, allowing easy switching between methods. The method is selected via the `bounds_method_stallguard` setting from the remote controller.
+**Features**:
+- Automatic backoff from detected bounds
+- Configurable search speed and acceleration
+- Timeout protection
+- Cancel callback for user-initiated stop
+- Home placement at center of detected bounds
 
 ## UART Command Interface
 
-The test unit supports the same UART commands as the standalone fatigue test examples:
+The test unit supports UART commands for debugging:
 
-- `-f <freq>` / `--freq <freq>`: Set frequency in Hz
-- `-d <min> <max>` / `--dwell <min> <max>`: Set dwell times in ms
-- `-b <min> <max>` / `--bounds <min> <max>`: Set angle bounds in degrees
-- `-c <count>` / `--cycles <count>`: Set target cycle count (0 = infinite)
-- `-a <action>` / `--action <action>`: start, stop, or reset
-- `-s` / `--status`: Show current status
-- `-h` / `--help`: Show help message
-
-This allows direct control and debugging via serial terminal while ESP-NOW handles remote control.
+| Command | Description |
+|---------|-------------|
+| `-f <freq>` | Set frequency in Hz |
+| `-d <min> <max>` | Set dwell times in ms |
+| `-b <min> <max>` | Set angle bounds in degrees |
+| `-c <count>` | Set target cycle count (0 = infinite) |
+| `-a <action>` | start, stop, or reset |
+| `-s` | Show current status |
+| `-h` | Show help message |
 
 ## Troubleshooting
 
-1. **No communication**: Check MAC addresses are correct in remote controller
-2. **CRC errors**: Check WiFi channel matches (default: channel 1)
-3. **Bounds finding fails**: Check motor and encoder connections
-4. **UART commands not working**: Check baud rate (115200 default)
-
-## Implementation Details
-
-### Unified Architecture
-
-The test unit implementation combines:
-
-1. **Bounds Finding Abstraction**:
-   - `IBoundsFinder` interface defines the contract
-   - `StallGuardBoundsFinder` and `EncoderBoundsFinder` implement the interface
-   - Factory functions create instances: `CreateStallGuardBoundsFinder()`, `CreateEncoderBoundsFinder()`
-
-2. **Motion Controller**:
-   - Unified `FatigueTestMotion` class extracted from existing implementations
-   - Supports both sinusoidal and ramp-based motion
-   - Thread-safe with RAII mutex guards
-   - Cycle counting with center-crossing detection
-
-3. **Command Interface**:
-   - `UartCommandParser` handles UART commands
-   - ESP-NOW commands processed via `EspNowReceiver`
-   - Both interfaces update the same `FatigueTestMotion` instance
+| Issue | Solution |
+|-------|----------|
+| No communication | Check MAC addresses match in both projects |
+| CRC errors | Verify WiFi channel is 1 in both projects |
+| Bounds finding fails | Check motor/encoder connections, adjust search speed |
+| UART not working | Check baud rate (115200 default) |
+| Settings not saving | Ensure both exit paths trigger save (BACK button or "Back" menu) |
 
 ## Documentation
 
 Comprehensive documentation is available:
 
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture, component overview, and design patterns
-- **[PROTOCOL.md](PROTOCOL.md)** - Complete ESP-NOW protocol specification
-- **[HARDWARE_SETUP.md](HARDWARE_SETUP.md)** - Hardware setup guide, pin configuration, and troubleshooting
+- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** - System architecture and design patterns
+- **[docs/PROTOCOL.md](docs/PROTOCOL.md)** - Complete ESP-NOW protocol specification
+- **[docs/HARDWARE_SETUP.md](docs/HARDWARE_SETUP.md)** - Hardware setup and pin configuration
+
+## Implementation Details
+
+### Task Architecture
+
+| Task | Priority | Period | Description |
+|------|----------|--------|-------------|
+| `espnow_command_task` | 5 | Event-driven | Process ESP-NOW commands |
+| `motion_control_task` | 5 | 10ms | Motion update loop |
+| `status_update_task` | 3 | 1000ms | Send status to remote |
+| `uart_command_task` | 3 | 50ms | Process UART commands |
+| `bounds_finding_task` | 4 | Dynamic | Created on demand |
+
+### State Machine
+
+```
+                    ┌─────────────┐
+                    │    IDLE     │◄──────────────────┐
+                    └──────┬──────┘                   │
+                           │ START                    │ STOP/Complete
+                           ▼                          │
+                    ┌─────────────┐                   │
+                    │   BOUNDS    │                   │
+                    │   FINDING   │                   │
+                    └──────┬──────┘                   │
+                           │ Bounds found             │
+                           ▼                          │
+            ┌─────►┌─────────────┐                    │
+            │      │   RUNNING   │────────────────────┤
+            │      └──────┬──────┘                    │
+    RESUME  │             │ PAUSE                     │
+            │             ▼                           │
+            │      ┌─────────────┐                    │
+            └──────│   PAUSED    │────────────────────┘
+                   └─────────────┘         STOP
+```
 
 ## Future Enhancements
 
@@ -214,3 +305,4 @@ Comprehensive documentation is available:
 - Data logging to SD card or flash
 - Multiple test unit support (broadcast commands)
 - Web interface for configuration
+- OTA firmware updates

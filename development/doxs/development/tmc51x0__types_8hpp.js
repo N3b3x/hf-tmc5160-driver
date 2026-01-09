@@ -93,6 +93,10 @@ var tmc51x0__types_8hpp =
       [ "BeltDrive", "tmc51x0__types_8hpp.html#a20af559eb85dbac784b3a4cb644cf63bad3fe043af498c0c3096222212fbeef50", null ],
       [ "Gearbox", "tmc51x0__types_8hpp.html#a20af559eb85dbac784b3a4cb644cf63ba5927394ea5c7e8451c52b39dbb6f9629", null ]
     ] ],
+    [ "MicrostepLutPreset", "tmc51x0__types_8hpp.html#afcd9fedd00ee975b4d3fd51e0decf37f", [
+      [ "DEFAULT_SINE", "tmc51x0__types_8hpp.html#afcd9fedd00ee975b4d3fd51e0decf37faffe80c955acdef8a527ec4af0d4620c1", null ],
+      [ "PURE_SINE", "tmc51x0__types_8hpp.html#afcd9fedd00ee975b4d3fd51e0decf37fa7318924f4a4e48f07f9e2b7c13ee2c59", null ]
+    ] ],
     [ "MicrostepResolution", "tmc51x0__types_8hpp.html#a06908f208ee192aff6a8e8f0346bd8c4", [
       [ "MRES_256", "tmc51x0__types_8hpp.html#a06908f208ee192aff6a8e8f0346bd8c4af6a5e029c66401ac3bb0d52f2f29353e", null ],
       [ "MRES_128", "tmc51x0__types_8hpp.html#a06908f208ee192aff6a8e8f0346bd8c4ab227ff1ca50d147d685877a0c73041c6", null ],
@@ -182,6 +186,7 @@ var tmc51x0__types_8hpp =
     [ "ToString", "tmc51x0__types_8hpp.html#ad7c9cd8e87838faf750c8d0674e8443e", null ],
     [ "ToString", "tmc51x0__types_8hpp.html#a357c46b81ab3724ff0cb7edb0a63a1b3", null ],
     [ "ToString", "tmc51x0__types_8hpp.html#ab0564b59a674cbeb306a2d9f93ad0dfe", null ],
+    [ "ToString", "tmc51x0__types_8hpp.html#ae40d2d521bb732150b9827bf07928e47", null ],
     [ "ToString", "tmc51x0__types_8hpp.html#a87842913785c7ae36ec86b05855fa685", null ],
     [ "ToString", "tmc51x0__types_8hpp.html#a2687c1ffa238ddc4d2c6fbb36523ec24", null ],
     [ "ToString", "tmc51x0__types_8hpp.html#a05bf4335137c09ab1cf64a7e37a83828", null ],

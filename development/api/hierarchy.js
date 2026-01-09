@@ -10,6 +10,7 @@ var hierarchy =
     [ "tmc51x0::TMC51x0< CommType >::Homing::BoundsResult", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html", null ],
     [ "tmc51x0::CHOPCONF_Register", "uniontmc51x0_1_1CHOPCONF__Register.html", null ],
     [ "tmc51x0::ChopperConfig", "structtmc51x0_1_1ChopperConfig.html", null ],
+    [ "CommandPayload", "structCommandPayload.html", null ],
     [ "tmc51x0::CommInterface< Derived >", "classtmc51x0_1_1CommInterface.html", [
       [ "tmc51x0::SpiCommInterface< Esp32SPI >", "classtmc51x0_1_1SpiCommInterface.html", [
         [ "Esp32SPI", "classEsp32SPI.html", null ]

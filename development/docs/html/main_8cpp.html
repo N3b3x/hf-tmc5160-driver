@@ -115,25 +115,25 @@ $(function(){initNavTree('main_8cpp.html',''); initResizable(); });
 <code>#include &lt;cstdarg&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;inttypes.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="tmc51x0_8hpp_source.html">tmc51x0.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="esp32__tmc51x0__bus_8hpp_source.html">test_config/esp32_tmc51x0_bus.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="tmc51x0__registers_8hpp_source.html">registers/tmc51x0_registers.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="espnow__protocol_8hpp_source.html">espnow_protocol.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="espnow__receiver_8hpp_source.html">espnow_receiver.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="bounds__finder_8hpp_source.html">bounds_finder.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="esp32__tmc51x0__test__config_8hpp_source.html">test_config/esp32_tmc51x0_test_config.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="fatigue__motion_8hpp_source.html">fatigue_motion.hpp</a>&quot;</code><br />
-<code>#include &quot;esp_log.h&quot;</code><br />
-<code>#include &quot;esp_timer.h&quot;</code><br />
-<code>#include &quot;driver/uart.h&quot;</code><br />
 <code>#include &quot;freertos/FreeRTOS.h&quot;</code><br />
 <code>#include &quot;freertos/task.h&quot;</code><br />
 <code>#include &quot;freertos/queue.h&quot;</code><br />
 <code>#include &quot;freertos/semphr.h&quot;</code><br />
+<code>#include &quot;esp_log.h&quot;</code><br />
+<code>#include &quot;esp_timer.h&quot;</code><br />
+<code>#include &quot;driver/uart.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="tmc51x0_8hpp_source.html">tmc51x0.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp32__tmc51x0__bus_8hpp_source.html">test_config/esp32_tmc51x0_bus.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp32__tmc__mutex_8hpp_source.html">test_config/esp32_tmc_mutex.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="tmc51x0__registers_8hpp_source.html">registers/tmc51x0_registers.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp32__tmc51x0__test__config_8hpp_source.html">test_config/esp32_tmc51x0_test_config.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="espnow__protocol_8hpp_source.html">espnow_protocol.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="espnow__receiver_8hpp_source.html">espnow_receiver.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="fatigue__motion_8hpp_source.html">fatigue_motion.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for main.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp__incl.svg" width="3372" height="579"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp__incl.svg" width="3371" height="506"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -214,6 +214,8 @@ Functions</h2></td></tr>
 <tr class="memitem:aad11fcee042534d6e42aa0b3f79f5b0f" id="r_aad11fcee042534d6e42aa0b3f79f5b0f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad11fcee042534d6e42aa0b3f79f5b0f">bounds_finding_task</a> (void *arg)</td></tr>
 <tr class="memdesc:aad11fcee042534d6e42aa0b3f79f5b0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">FreeRTOS task: perform bounds finding, then start motion.  <br /></td></tr>
 <tr class="separator:aad11fcee042534d6e42aa0b3f79f5b0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25a95fc0d7fa9ed58edd599d795ecd86" id="r_a25a95fc0d7fa9ed58edd599d795ecd86"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25a95fc0d7fa9ed58edd599d795ecd86">ShouldCancelBounds</a> ()</td></tr>
+<tr class="separator:a25a95fc0d7fa9ed58edd599d795ecd86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77af09d9386bbe795dc848a935bff12f" id="r_a77af09d9386bbe795dc848a935bff12f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7">TestState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77af09d9386bbe795dc848a935bff12f">ToProtoState</a> (<a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5">InternalState</a> s) noexcept</td></tr>
 <tr class="memdesc:a77af09d9386bbe795dc848a935bff12f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map the internal application state machine to the protocol-visible <code>TestState</code>.  <br /></td></tr>
 <tr class="separator:a77af09d9386bbe795dc848a935bff12f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -308,6 +310,8 @@ Variables</h2></td></tr>
 <tr class="separator:a28efcb55ae61f55c96d4fef53b5e4c04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1f67ca3cb390e539ec89b27a4710590" id="r_af1f67ca3cb390e539ec89b27a4710590"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1f67ca3cb390e539ec89b27a4710590">g_driver</a> = nullptr</td></tr>
 <tr class="separator:af1f67ca3cb390e539ec89b27a4710590"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55d44a3f18f1d07c1f7533a8ee5cbf66" id="r_a55d44a3f18f1d07c1f7533a8ee5cbf66"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classEsp32TmcMutex.html">Esp32TmcMutex</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a55d44a3f18f1d07c1f7533a8ee5cbf66">g_driver_mutex</a> = nullptr</td></tr>
+<tr class="separator:a55d44a3f18f1d07c1f7533a8ee5cbf66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa1661a2fb6edee5161e88c785b539ca" id="r_afa1661a2fb6edee5161e88c785b539ca"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSettings.html">Settings</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa1661a2fb6edee5161e88c785b539ca">g_settings</a> {}</td></tr>
 <tr class="separator:afa1661a2fb6edee5161e88c785b539ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54a3aff038aa4ba3076f44534574404b" id="r_a54a3aff038aa4ba3076f44534574404b"><td class="memItemLeft" align="right" valign="top">static QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54a3aff038aa4ba3076f44534574404b">g_espnowQueue</a> = nullptr</td></tr>
@@ -525,7 +529,7 @@ Here is the call graph for this function:</div>
 <p>Sequence:</p><ul>
 <li>snapshot settings (<code>g_settings.test_unit</code>) and method (<code>g_use_stallguard</code>)</li>
 <li>enable motor power stage</li>
-<li>run the selected <code>IBoundsFinder::FindBounds(..., cancel_flag)</code></li>
+<li>run the library bounds finder (<code>g_driver-&gt;homing.FindBounds(..., cancel_cb)</code>)</li>
 <li>if successful, apply bounds to <code>g_motion</code> and start motion</li>
 <li>update state and send a STATUS_UPDATE</li>
 </ul>
@@ -542,7 +546,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_aad11fcee042534d6e42aa0b3f79f5b0f_cgraph.svg" width="967" height="487"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_aad11fcee042534d6e42aa0b3f79f5b0f_cgraph.svg" width="967" height="602"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -591,7 +595,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a282cbb4958ae3bf0285b9be28ecb1d79_cgraph.svg" width="1436" height="1066"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a282cbb4958ae3bf0285b9be28ecb1d79_cgraph.svg" width="1436" height="1180"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -865,7 +869,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_af9a61f18ec0bf52c35280fd8748a0679_cgraph.svg" width="1402" height="666"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_af9a61f18ec0bf52c35280fd8748a0679_cgraph.svg" width="1402" height="623"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -955,7 +959,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a39ccc4c53283879fb74a5a5538daa92b_cgraph.svg" width="711" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a39ccc4c53283879fb74a5a5538daa92b_cgraph.svg" width="688" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1038,7 +1042,9 @@ Here is the caller graph for this function:</div>
 <p>Enable (energize) the motor power stage. </p>
 <p>Per requirements, the motor must remain disabled at boot and only be enabled during active operations (bounds finding and active motion).</p>
 <dl class="section return"><dt>Returns</dt><dd>true if the motor was enabled successfully; false otherwise.</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This function does <em>not</em> start motion; it only energizes the driver. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function does <em>not</em> start motion; it only energizes the driver. </dd>
+<dd>
+Thread-safe: acquires g_driver_mutex internally. </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1079,7 +1085,9 @@ Here is the caller graph for this function:</div>
 </ul>
 <p>It is safe to call multiple times.</p>
 <dl class="section warning"><dt>Warning</dt><dd>This disables the power stage. After this, the axis may be back-drivable. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This function does <em>not</em> change <code>g_state</code>; the caller owns state transitions. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function does <em>not</em> change <code>g_state</code>; the caller owns state transitions. </dd>
+<dd>
+Thread-safe: acquires g_driver_mutex internally. </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1135,12 +1143,42 @@ Task creation failure transitions to <code>ERROR</code>, stops and disables the 
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a05b979a9e80a20ecf074106e268da672_cgraph.svg" width="1122" height="488"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a05b979a9e80a20ecf074106e268da672_cgraph.svg" width="1122" height="602"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a05b979a9e80a20ecf074106e268da672_icgraph.svg" width="1051" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a25a95fc0d7fa9ed58edd599d795ecd86" name="a25a95fc0d7fa9ed58edd599d795ecd86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25a95fc0d7fa9ed58edd599d795ecd86">&#9670;&#160;</a></span>ShouldCancelBounds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool ShouldCancelBounds </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a25a95fc0d7fa9ed58edd599d795ecd86_icgraph.svg" width="1460" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1179,7 +1217,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a087fdcdd7d4c34c0c22196a7223d96f5_cgraph.svg" width="715" height="166"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a087fdcdd7d4c34c0c22196a7223d96f5_cgraph.svg" width="692" height="166"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1213,7 +1251,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Map the internal application state machine to the protocol-visible <code>TestState</code>. </p>
-<p>The on-wire protocol only supports a limited set of states. Internally we track additional phases (notably <code>BOUNDS_FINDING</code>). While bounds finding is active the motor is energized and moving, so we currently report <code><a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7a43491564ebcfd38568918efbd6e840fd">TestState::RUNNING</a></code>.</p>
+<p>The on-wire protocol only supports a limited set of states. Internally we track additional phases (notably <code>BOUNDS_FINDING</code>). While bounds finding is active the motor is energized and moving, so we currently report <code><a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7a5bda814c4aedb126839228f1a3d92f09">TestState::Running</a></code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">s</td><td>Internal state value. </td></tr>
@@ -1264,7 +1302,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a5a8d7cdba17444119b8f942be87ffe68_cgraph.svg" width="2135" height="792"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a5a8d7cdba17444119b8f942be87ffe68_cgraph.svg" width="2135" height="959"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1374,6 +1412,28 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt;<a class="el" href="classEsp32SPI.html">Esp32SPI</a>&gt;* g_driver = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a55d44a3f18f1d07c1f7533a8ee5cbf66" name="a55d44a3f18f1d07c1f7533a8ee5cbf66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55d44a3f18f1d07c1f7533a8ee5cbf66">&#9670;&#160;</a></span>g_driver_mutex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classEsp32TmcMutex.html">Esp32TmcMutex</a>* g_driver_mutex = nullptr</td>
         </tr>
       </table>
   </td>

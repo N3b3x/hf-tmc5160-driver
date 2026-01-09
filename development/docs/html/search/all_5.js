@@ -12,7 +12,7 @@ var searchData=
   ['fatigue_5fmotion_5fheader_5fincluded_9',['FATIGUE_MOTION_HEADER_INCLUDED',['../fatigue__motion_8hpp.html#a5107205eb56db2c01968c161856f69e9',1,'fatigue_motion.hpp']]],
   ['fatigue_5fmotion_5fimpl_2ehpp_10',['fatigue_motion_impl.hpp',['../fatigue__motion__impl_8hpp.html',1,'']]],
   ['fatiguetest_11',['FatigueTest',['../namespaceFatigueTest.html',1,'']]],
-  ['fatiguetestmotion_12',['FatigueTestMotion',['../classFatigueTest_1_1FatigueTestMotion.html',1,'FatigueTest::FatigueTestMotion'],['../classFatigueTest_1_1FatigueTestMotion.html#a7c54e26e7b4f9bb416c9e5a35b85ded5',1,'FatigueTest::FatigueTestMotion::FatigueTestMotion()']]],
+  ['fatiguetestmotion_12',['FatigueTestMotion',['../classFatigueTest_1_1FatigueTestMotion.html',1,'FatigueTest::FatigueTestMotion'],['../classFatigueTest_1_1FatigueTestMotion.html#aa662bc01f52f211508789f8f55b45108',1,'FatigueTest::FatigueTestMotion::FatigueTestMotion()']]],
   ['features_13',['Features',['../index.html#autotoc_md51',1,'⚙️ Advanced Features'],['../index.html#autotoc_md36',1,'✨ Features'],['../index.html#autotoc_md77',1,'Advanced Features'],['../classtmc51x0_1_1TMC51x0DaisyChain.html#autotoc_md1',1,'Key Features'],['../classtmc51x0_1_1TMC51x0MultiNode.html#autotoc_md5',1,'Key Features'],['../classtmc51x0_1_1TMC51x0.html#autotoc_md9',1,'Key Features']]],
   ['fields_14',['fields',['../uniontmc51x0_1_1SpiCommand_1_1Frame.html#a26111f9ae18f3b9c7886c658fbde3b67',1,'tmc51x0::SpiCommand::Frame']]],
   ['filt_5fisense_15',['filt_isense',['../uniontmc51x0_1_1DRV__CONF__Register.html#a1e7e888844425f5e1589c8a07928829c',1,'tmc51x0::DRV_CONF_Register']]],

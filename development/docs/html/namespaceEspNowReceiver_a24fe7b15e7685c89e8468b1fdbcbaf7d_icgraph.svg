@@ -39,9 +39,9 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="espnow__protocol__test__unit_8cpp.html#a087fdcdd7d4c34c0c22196a7223d96f5" target="_top" xlink:title="FreeRTOS task: periodically send simulated STATUS_UPDATE messages.">
-<polygon fill="white" stroke="#666666" points="215,-19 103,-19 103,0 215,0 215,-19"/>
-<text text-anchor="middle" x="159" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">status_update_task</text>
+<g id="a_Node000004"><a xlink:href="espnow__protocol__test__unit_8cpp.html#a7911069ff3b4a42e289e32769900f4da" target="_top" xlink:title="FreeRTOS task: periodically send simulated STATUS_UPDATE messages.">
+<polygon fill="white" stroke="#666666" points="211,-19 107,-19 107,0 211,0 211,-19"/>
+<text text-anchor="middle" x="159" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">statusUpdateTask</text>
 </a>
 </g>
 </g>
@@ -49,7 +49,7 @@
 <g id="edge3_Node000001_Node000004" class="edge">
 <title>Node1&#45;&gt;Node4</title>
 <g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M242.94,-19.07C233.61,-17.99 224.18,-16.91 215.2,-15.87"/>
+<path fill="none" stroke="#63b8ff" d="M242.83,-19.06C232.16,-17.83 221.37,-16.58 211.27,-15.42"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="242.66,-22.56 253,-20.23 243.47,-15.61 242.66,-22.56"/>
 </a>
 </g>
@@ -85,8 +85,8 @@
 <g id="edge4_Node000004_Node000005" class="edge">
 <title>Node4&#45;&gt;Node5</title>
 <g id="a_edge4_Node000004_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M92.38,-9.5C82.9,-9.5 73.52,-9.5 65.13,-9.5"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="92.67,-13 102.67,-9.5 92.67,-6 92.67,-13"/>
+<path fill="none" stroke="#63b8ff" d="M96.33,-9.5C85.52,-9.5 74.69,-9.5 65.14,-9.5"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="96.64,-13 106.64,-9.5 96.64,-6 96.64,-13"/>
 </a>
 </g>
 </g>

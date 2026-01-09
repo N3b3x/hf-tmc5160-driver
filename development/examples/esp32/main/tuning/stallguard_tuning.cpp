@@ -25,12 +25,14 @@
  * @date 2025
  */
 
+// FreeRTOS headers MUST come before tmc51x0.hpp (library uses FreeRTOS macros when ESP_PLATFORM defined)
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+
 #include "../../../inc/tmc51x0.hpp"
 #include "test_config/esp32_tmc51x0_bus.hpp"
 #include "test_config/esp32_tmc51x0_test_config.hpp"
 #include "esp_log.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
 
 static const char* TAG = "SGT_Tuning";
 
@@ -43,8 +45,12 @@ static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG =
     tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE;
 
 // Tuning Parameters (using RPM for user-friendly units)
-static constexpr float TUNING_VELOCITY_RPM = 200.0f; // Target velocity: 0.6 RPM
-static constexpr float TUNING_ACCELERATION_REV_S2 = 50.0f; // Acceleration: 0.01 rev/s² (slower for testing)
+// For Applied Motion 5034-369 NEMA 34 motor:
+// - 60 RPM is above motor resonance zone (smoother operation)
+// - 30 RPM causes vibration due to mid-band resonance (~100 Hz step frequency)
+// - 5 rev/s² is the bounds search acceleration in fatigue test config
+static constexpr float TUNING_VELOCITY_RPM = 60.0f;       // Target velocity for tuning (above resonance)
+static constexpr float TUNING_ACCELERATION_REV_S2 = 5.0f; // Acceleration matching fatigue test config
 
 // Unit definitions
 static constexpr tmc51x0::Unit VELOCITY_UNIT = tmc51x0::Unit::RPM;
@@ -99,8 +105,10 @@ extern "C" void app_main(void) {
   
   // Set velocity thresholds for StallGuard
   // TCOOLTHRS needs to be set such that StallGuard is active at tuning velocity
-  // Using RPM units - 1.2 RPM threshold ensures StallGuard is active
-  driver.thresholds.SetModeChangeSpeeds(0.12f, 1.2f, 0.0f, VELOCITY_UNIT); // PWM_THRS, COOL_THRS, HIGH_THRS
+  // For Applied Motion 5034: MIN_VELOCITY_RPM = 20 RPM
+  // Set TCOOLTHRS to 20 RPM so StallGuard is active above this speed
+  // PWM_THRS = 0 (no StealthChop), COOL_THRS = 20 RPM (SG min), HIGH_THRS = 0 (no limit)
+  driver.thresholds.SetModeChangeSpeeds(0.0f, 20.0f, 0.0f, VELOCITY_UNIT); // PWM_THRS, COOL_THRS, HIGH_THRS
 
   ESP_LOGI(TAG, "Starting Comprehensive Auto-Tuning Sequence...");
   ESP_LOGI(TAG, "Target Velocity: %.2f RPM", TUNING_VELOCITY_RPM);
@@ -112,13 +120,19 @@ extern "C" void app_main(void) {
   // Use comprehensive automatic tuning with current reduction
   tmc51x0::StallGuardTuningResult result;
   // AutoTuneStallGuard: target_vel (most important), result, min_sgt, max_sgt, accel, min_vel, max_vel, unit, current_reduction_factor
-  // For this example, we'll test a velocity range to demonstrate the feature
-  float min_vel = TUNING_VELOCITY_RPM * 0.3f;  // 30% of target
-  float max_vel = TUNING_VELOCITY_RPM * 1.2f;  // 120% of target
+  // 
+  // For Applied Motion 5034-369:
+  // - Target: 60 RPM (above motor resonance zone for smooth operation)
+  // - Min velocity: 40 RPM (above resonance, above SG min of 20 RPM)
+  // - Max velocity: 120 RPM (2x target for velocity range validation)
+  float min_vel = 40.0f;  // Above resonance zone and SG min velocity
+  float max_vel = 120.0f; // 2x target for range testing
+  
   // Current reduction factor: reduces current to percentage of current motor current
   // This helps avoid excessive torque during stall tests and makes StallGuard more responsive to load changes
   // Recommended: 0.3 (30%) per Duet3D best practices for stall detection
   // Set to 0.0 to disable current reduction (use nominal current)
+  // Matches TestConfig_AppliedMotion_5034::StallGuard::STALL_DETECTION_CURRENT_FACTOR
   float current_reduction_factor = 0.3f; // 30% of current motor current
   // Using RPM units for velocity parameters, RevPerSec for acceleration (RPM is not valid for acceleration)
   ESP_LOGI(TAG, "Starting AutoTuneStallGuard...");
@@ -127,7 +141,7 @@ extern "C" void app_main(void) {
   ESP_LOGI(TAG, "  Velocity range: %.2f - %.2f %s", min_vel, max_vel, (VELOCITY_UNIT == tmc51x0::Unit::RPM) ? "RPM" : "units");
   ESP_LOGI(TAG, "  Current reduction factor: %.1f%%", current_reduction_factor * 100.0f);
   
-  auto tune_result = driver.tuning.AutoTuneStallGuard(TUNING_VELOCITY_RPM, result, 0, 63, 
+  auto tune_result = driver.tuning.AutoTuneStallGuard(TUNING_VELOCITY_RPM, result, -63, 20, 
                                                      TUNING_ACCELERATION_REV_S2, min_vel, max_vel, 
                                                      VELOCITY_UNIT, ACCELERATION_UNIT, current_reduction_factor);
 
@@ -224,9 +238,9 @@ extern "C" void app_main(void) {
         
         ESP_LOGI(TAG, "SG_RESULT: %u, VACTUAL: %.2f RPM", sg_val, current_speed);
         
-        // Ignore low-speed stalls (resonance area)
-        // Only trigger stop if speed is significant (> 6 RPM) AND SG=0
-        if (sg_val == 0 && std::abs(current_speed) > 6.0f) {
+        // Ignore low-speed stalls (StallGuard unreliable below MIN_VELOCITY_RPM)
+        // Only trigger stop if speed is above SG min velocity (20 RPM) AND SG=0
+        if (sg_val == 0 && std::abs(current_speed) > 20.0f) {
             ESP_LOGW(TAG, "⚠️ Stall detected (SG=0) at V=%.2f RPM! Stopping motor...", current_speed);
             stall_detected = true;
             auto stop_result = driver.rampControl.Stop();
@@ -260,10 +274,27 @@ extern "C" void app_main(void) {
     ESP_LOGE(TAG, "     - Motor not connected or not powered");
     ESP_LOGE(TAG, "     - Velocity range too narrow or invalid");
     ESP_LOGE(TAG, "     - Acceleration too high for motor");
-    ESP_LOGE(TAG, "     - SGT range (0-63) may need adjustment");
+    ESP_LOGE(TAG, "     - SGT range (-64 to +63) may need adjustment");
   }
 
-  ESP_LOGI(TAG, "Done. Reset to restart.");
+  // ========================================================================
+  // CLEANUP: Stop motor and disable driver outputs
+  // ========================================================================
+  ESP_LOGI(TAG, "Stopping motor and disabling driver...");
+  driver.rampControl.Stop();
+  vTaskDelay(pdMS_TO_TICKS(500)); // Allow time to fully stop
+  
+  if (!driver.motorControl.Disable()) {
+    ESP_LOGW(TAG, "Warning: Failed to disable motor outputs");
+  } else {
+    ESP_LOGI(TAG, "Motor disabled successfully");
+  }
+
+  ESP_LOGI(TAG, "==========================================");
+  ESP_LOGI(TAG, "Tuning complete. Motor is now disabled.");
+  ESP_LOGI(TAG, "Reset to restart tuning.");
+  ESP_LOGI(TAG, "==========================================");
+  
   while (1) {
     vTaskDelay(pdMS_TO_TICKS(1000));
   }

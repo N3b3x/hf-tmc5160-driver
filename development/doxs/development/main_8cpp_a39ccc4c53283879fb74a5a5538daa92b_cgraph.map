@@ -10,9 +10,9 @@
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="102,127,177,148,176,153,100,132"/>
 <area shape="rect" id="Node000008" href="$namespaceEspNowReceiver.html#a5f9e63a444d010ed79c649b6a2467277" title="Send STOP_ACK (acknowledge STOP receipt)." alt="" coords="177,218,348,258"/>
 <area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="68,128,103,166,126,186,152,204,165,211,163,215,149,208,123,190,99,169,64,131"/>
-<area shape="rect" id="Node000006" href="$espnow__receiver_8cpp.html#a56b1fa458feb934b57be89468e71627f" title=" " alt="" coords="423,193,565,219"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="349,183,409,192,409,197,348,188"/>
-<area shape="rect" id="Node000007" href="$espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="613,193,705,219"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="566,203,600,203,600,209,566,209"/>
-<area shape="poly" id="edge8_Node000008_Node000006" title=" " alt="" coords="348,224,409,215,409,220,349,229"/>
+<area shape="rect" id="Node000006" href="$espnow__receiver_8cpp.html#af394d93fad387639cb5c155cfd037163" title=" " alt="" coords="423,193,545,219"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="349,184,409,193,408,198,348,189"/>
+<area shape="rect" id="Node000007" href="$espnow__protocol_8hpp.html#afa7c999b99fb5716dc9d60af3a151d11" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="593,193,683,219"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="546,203,579,203,579,209,546,209"/>
+<area shape="poly" id="edge8_Node000008_Node000006" title=" " alt="" coords="348,223,408,214,409,219,349,228"/>
 </map>

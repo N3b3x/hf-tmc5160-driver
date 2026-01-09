@@ -133,9 +133,9 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="espnow__receiver_8cpp.html#a56b1fa458feb934b57be89468e71627f" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="455.5,-120.5 348.5,-120.5 348.5,-101.5 455.5,-101.5 455.5,-120.5"/>
-<text text-anchor="middle" x="402" y="-108.5" font-family="Helvetica,sans-Serif" font-size="10.00">send_packet_to_ui</text>
+<g id="a_Node000006"><a xlink:href="espnow__receiver_8cpp.html#af394d93fad387639cb5c155cfd037163" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="448,-120.5 356,-120.5 356,-101.5 448,-101.5 448,-120.5"/>
+<text text-anchor="middle" x="402" y="-108.5" font-family="Helvetica,sans-Serif" font-size="10.00">sendPacketToUi</text>
 </a>
 </g>
 </g>
@@ -143,17 +143,17 @@
 <g id="edge5_Node000005_Node000006" class="edge">
 <title>Node5&#45;&gt;Node6</title>
 <g id="a_edge5_Node000005_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M282.14,-121.45C300.25,-119.86 319.99,-118.12 338.08,-116.53"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="338.58,-120 348.23,-115.64 337.96,-113.03 338.58,-120"/>
+<path fill="none" stroke="#63b8ff" d="M282.14,-121.45C302.78,-119.63 325.52,-117.64 345.55,-115.87"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="346.09,-119.34 355.74,-114.98 345.48,-112.37 346.09,-119.34"/>
 </a>
 </g>
 </g>
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="espnow__protocol_8hpp.html#aad8e572c4e16e9a24c82fd3db6f99740" target="_top" xlink:title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF).">
-<polygon fill="white" stroke="#666666" points="622.5,-120.5 553.5,-120.5 553.5,-101.5 622.5,-101.5 622.5,-120.5"/>
-<text text-anchor="middle" x="588" y="-108.5" font-family="Helvetica,sans-Serif" font-size="10.00">crc16_ccitt</text>
+<g id="a_Node000007"><a xlink:href="espnow__protocol_8hpp.html#afa7c999b99fb5716dc9d60af3a151d11" target="_top" xlink:title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF).">
+<polygon fill="white" stroke="#666666" points="621.5,-120.5 554.5,-120.5 554.5,-101.5 621.5,-101.5 621.5,-120.5"/>
+<text text-anchor="middle" x="588" y="-108.5" font-family="Helvetica,sans-Serif" font-size="10.00">Crc16Ccitt</text>
 </a>
 </g>
 </g>
@@ -161,8 +161,8 @@
 <g id="edge6_Node000006_Node000007" class="edge">
 <title>Node6&#45;&gt;Node7</title>
 <g id="a_edge6_Node000006_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M455.73,-111C483.48,-111 517.1,-111 543.36,-111"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="543.41,-114.5 553.41,-111 543.41,-107.5 543.41,-114.5"/>
+<path fill="none" stroke="#63b8ff" d="M448.01,-111C477.29,-111 515.25,-111 544.1,-111"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="544.28,-114.5 554.28,-111 544.28,-107.5 544.28,-114.5"/>
 </a>
 </g>
 </g>
@@ -170,8 +170,8 @@
 <g id="edge8_Node000008_Node000006" class="edge">
 <title>Node8&#45;&gt;Node6</title>
 <g id="a_edge8_Node000008_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M282.14,-90.1C300.34,-93.3 320.17,-96.79 338.33,-99.98"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="337.78,-103.44 348.23,-101.72 338.99,-96.54 337.78,-103.44"/>
+<path fill="none" stroke="#63b8ff" d="M282.14,-90.1C302.87,-93.75 325.73,-97.77 345.82,-101.3"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="345.29,-104.76 355.74,-103.04 346.5,-97.86 345.29,-104.76"/>
 </a>
 </g>
 </g>

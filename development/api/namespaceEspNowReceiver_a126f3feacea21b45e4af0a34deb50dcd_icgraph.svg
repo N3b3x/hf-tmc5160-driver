@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="espnow__protocol__test__unit_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" target="_top" xlink:title="FreeRTOS task: handle incoming ESP&#45;NOW protocol events (test&#45;unit simulator).">
+<g id="a_Node000002"><a xlink:href="main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" target="_top" xlink:title="FreeRTOS task: process inbound ESP&#45;NOW protocol events.">
 <polygon fill="white" stroke="#666666" points="235,-56 101,-56 101,-37 235,-37 235,-56"/>
 <text text-anchor="middle" x="168" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">espnow_command_task</text>
 </a>
@@ -39,9 +39,9 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" target="_top" xlink:title="FreeRTOS task: process inbound ESP&#45;NOW protocol events.">
-<polygon fill="white" stroke="#666666" points="235,-19 101,-19 101,0 235,0 235,-19"/>
-<text text-anchor="middle" x="168" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">espnow_command_task</text>
+<g id="a_Node000004"><a xlink:href="espnow__protocol__test__unit_8cpp.html#ac614fd7d8e7742a5eae2eb719c3cf4eb" target="_top" xlink:title="FreeRTOS task: handle incoming ESP&#45;NOW protocol events (test&#45;unit simulator).">
+<polygon fill="white" stroke="#666666" points="231,-19 105,-19 105,0 231,0 231,-19"/>
+<text text-anchor="middle" x="168" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">espnowCommandTask</text>
 </a>
 </g>
 </g>
@@ -49,7 +49,7 @@
 <g id="edge3_Node000001_Node000004" class="edge">
 <title>Node1&#45;&gt;Node4</title>
 <g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M260.48,-19.48C252.05,-18.56 243.49,-17.63 235.16,-16.72"/>
+<path fill="none" stroke="#63b8ff" d="M260.52,-19.48C250.68,-18.41 240.68,-17.32 231.06,-16.27"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="260.36,-22.99 270.68,-20.59 261.12,-16.03 260.36,-22.99"/>
 </a>
 </g>
@@ -57,7 +57,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="espnow__protocol__test__unit_8cpp.html#abce06be17fc37d675118a678a8100a36" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="main_8cpp.html#abce06be17fc37d675118a678a8100a36" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="65,-56 0,-56 0,-37 65,-37 65,-56"/>
 <text text-anchor="middle" x="32.5" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">app_main</text>
 </a>
@@ -75,7 +75,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="main_8cpp.html#abce06be17fc37d675118a678a8100a36" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="espnow__protocol__test__unit_8cpp.html#abce06be17fc37d675118a678a8100a36" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="65,-19 0,-19 0,0 65,0 65,-19"/>
 <text text-anchor="middle" x="32.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">app_main</text>
 </a>
@@ -85,8 +85,8 @@
 <g id="edge4_Node000004_Node000005" class="edge">
 <title>Node4&#45;&gt;Node5</title>
 <g id="a_edge4_Node000004_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M90.47,-9.5C81.53,-9.5 72.82,-9.5 65.01,-9.5"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="90.64,-13 100.64,-9.5 90.64,-6 90.64,-13"/>
+<path fill="none" stroke="#63b8ff" d="M94.93,-9.5C84.52,-9.5 74.27,-9.5 65.23,-9.5"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="94.94,-13 104.94,-9.5 94.94,-6 94.94,-13"/>
 </a>
 </g>
 </g>

@@ -118,12 +118,12 @@ Include dependency graph for espnow_protocol_test_unit.cpp:</div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a282cbb4958ae3bf0285b9be28ecb1d79" id="r_a282cbb4958ae3bf0285b9be28ecb1d79"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a282cbb4958ae3bf0285b9be28ecb1d79">espnow_command_task</a> (void *arg)</td></tr>
-<tr class="memdesc:a282cbb4958ae3bf0285b9be28ecb1d79"><td class="mdescLeft">&#160;</td><td class="mdescRight">FreeRTOS task: handle incoming ESP-NOW protocol events (test-unit simulator).  <br /></td></tr>
-<tr class="separator:a282cbb4958ae3bf0285b9be28ecb1d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a087fdcdd7d4c34c0c22196a7223d96f5" id="r_a087fdcdd7d4c34c0c22196a7223d96f5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a087fdcdd7d4c34c0c22196a7223d96f5">status_update_task</a> (void *arg)</td></tr>
-<tr class="memdesc:a087fdcdd7d4c34c0c22196a7223d96f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">FreeRTOS task: periodically send simulated STATUS_UPDATE messages.  <br /></td></tr>
-<tr class="separator:a087fdcdd7d4c34c0c22196a7223d96f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac614fd7d8e7742a5eae2eb719c3cf4eb" id="r_ac614fd7d8e7742a5eae2eb719c3cf4eb"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac614fd7d8e7742a5eae2eb719c3cf4eb">espnowCommandTask</a> (void *arg)</td></tr>
+<tr class="memdesc:ac614fd7d8e7742a5eae2eb719c3cf4eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">FreeRTOS task: handle incoming ESP-NOW protocol events (test-unit simulator).  <br /></td></tr>
+<tr class="separator:ac614fd7d8e7742a5eae2eb719c3cf4eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7911069ff3b4a42e289e32769900f4da" id="r_a7911069ff3b4a42e289e32769900f4da"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7911069ff3b4a42e289e32769900f4da">statusUpdateTask</a> (void *arg)</td></tr>
+<tr class="memdesc:a7911069ff3b4a42e289e32769900f4da"><td class="mdescLeft">&#160;</td><td class="mdescRight">FreeRTOS task: periodically send simulated STATUS_UPDATE messages.  <br /></td></tr>
+<tr class="separator:a7911069ff3b4a42e289e32769900f4da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abce06be17fc37d675118a678a8100a36" id="r_abce06be17fc37d675118a678a8100a36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abce06be17fc37d675118a678a8100a36">app_main</a> ()</td></tr>
 <tr class="separator:abce06be17fc37d675118a678a8100a36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -133,9 +133,9 @@ Variables</h2></td></tr>
 <tr class="separator:a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa1661a2fb6edee5161e88c785b539ca" id="r_afa1661a2fb6edee5161e88c785b539ca"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSettings.html">Settings</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa1661a2fb6edee5161e88c785b539ca">g_settings</a> {}</td></tr>
 <tr class="separator:afa1661a2fb6edee5161e88c785b539ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54a3aff038aa4ba3076f44534574404b" id="r_a54a3aff038aa4ba3076f44534574404b"><td class="memItemLeft" align="right" valign="top">static QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54a3aff038aa4ba3076f44534574404b">g_espnowQueue</a> = nullptr</td></tr>
-<tr class="separator:a54a3aff038aa4ba3076f44534574404b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b15da93522cdefdc5fb19c322afd02f" id="r_a0b15da93522cdefdc5fb19c322afd02f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7">TestState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b15da93522cdefdc5fb19c322afd02f">g_current_state</a> = <a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7aa5daf7f2ebbba4975d61dab1c40188c7">TestState::IDLE</a></td></tr>
+<tr class="memitem:ac0d25b5992612965ab9775877d86c19a" id="r_ac0d25b5992612965ab9775877d86c19a"><td class="memItemLeft" align="right" valign="top">static QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0d25b5992612965ab9775877d86c19a">g_espnow_queue</a> = nullptr</td></tr>
+<tr class="separator:ac0d25b5992612965ab9775877d86c19a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b15da93522cdefdc5fb19c322afd02f" id="r_a0b15da93522cdefdc5fb19c322afd02f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7">TestState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b15da93522cdefdc5fb19c322afd02f">g_current_state</a> = <a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7ae599161956d626eda4cb0a5ffb85271c">TestState::Idle</a></td></tr>
 <tr class="separator:a0b15da93522cdefdc5fb19c322afd02f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cc2998763e1334c5332cbdc7205d90a" id="r_a2cc2998763e1334c5332cbdc7205d90a"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2cc2998763e1334c5332cbdc7205d90a">g_simulated_cycle</a> = 0</td></tr>
 <tr class="separator:a2cc2998763e1334c5332cbdc7205d90a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,8 +146,9 @@ Variables</h2></td></tr>
 <li>Receives ESP-NOW commands from remote controller</li>
 <li>Responds with appropriate protocol messages</li>
 <li>Does NOT initialize motor driver, bounds finder, or motion controller</li>
-<li>Useful for testing ESP-NOW protocol communication without hardware dependencies </li>
+<li>Useful for testing ESP-NOW protocol communication without hardware dependencies</li>
 </ul>
+<p>Protocol compatible with esp32_remote_controller (6-byte header). </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="abce06be17fc37d675118a678a8100a36" name="abce06be17fc37d675118a678a8100a36"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abce06be17fc37d675118a678a8100a36">&#9670;&#160;</a></span>app_main()</h2>
@@ -168,13 +169,13 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol__test__unit_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="874" height="648"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol__test__unit_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="840" height="648"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a282cbb4958ae3bf0285b9be28ecb1d79" name="a282cbb4958ae3bf0285b9be28ecb1d79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a282cbb4958ae3bf0285b9be28ecb1d79">&#9670;&#160;</a></span>espnow_command_task()</h2>
+<a id="ac614fd7d8e7742a5eae2eb719c3cf4eb" name="ac614fd7d8e7742a5eae2eb719c3cf4eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac614fd7d8e7742a5eae2eb719c3cf4eb">&#9670;&#160;</a></span>espnowCommandTask()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -183,7 +184,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void espnow_command_task </td>
+          <td class="memname">static void espnowCommandTask </td>
           <td>(</td>
           <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>arg</em></span></td><td>)</td>
           <td></td>
@@ -197,7 +198,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p>FreeRTOS task: handle incoming ESP-NOW protocol events (test-unit simulator). </p>
-<p>This task consumes <code><a class="el" href="structProtoEvent.html" title="Protocol event structure pushed through FreeRTOS queues.">ProtoEvent</a></code> messages from <code>g_espnowQueue</code> and responds with protocol ACKs and status updates. It does not initialize motor hardware.</p>
+<p>This task consumes <code><a class="el" href="structProtoEvent.html" title="Protocol event structure pushed through FreeRTOS queues.">ProtoEvent</a></code> messages from <code>g_espnow_queue</code> and responds with protocol ACKs and status updates. It does not initialize motor hardware.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">arg</td><td>Unused (FreeRTOS task signature). </td></tr>
@@ -207,18 +208,18 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol__test__unit_8cpp_a282cbb4958ae3bf0285b9be28ecb1d79_cgraph.svg" width="739" height="435"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol__test__unit_8cpp_ac614fd7d8e7742a5eae2eb719c3cf4eb_cgraph.svg" width="706" height="435"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol__test__unit_8cpp_a282cbb4958ae3bf0285b9be28ecb1d79_icgraph.svg" width="324" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol__test__unit_8cpp_ac614fd7d8e7742a5eae2eb719c3cf4eb_icgraph.svg" width="314" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a087fdcdd7d4c34c0c22196a7223d96f5" name="a087fdcdd7d4c34c0c22196a7223d96f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a087fdcdd7d4c34c0c22196a7223d96f5">&#9670;&#160;</a></span>status_update_task()</h2>
+<a id="a7911069ff3b4a42e289e32769900f4da" name="a7911069ff3b4a42e289e32769900f4da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7911069ff3b4a42e289e32769900f4da">&#9670;&#160;</a></span>statusUpdateTask()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -227,7 +228,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void status_update_task </td>
+          <td class="memname">static void statusUpdateTask </td>
           <td>(</td>
           <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>arg</em></span></td><td>)</td>
           <td></td>
@@ -251,12 +252,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol__test__unit_8cpp_a087fdcdd7d4c34c0c22196a7223d96f5_cgraph.svg" width="710" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol__test__unit_8cpp_a7911069ff3b4a42e289e32769900f4da_cgraph.svg" width="676" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol__test__unit_8cpp_a087fdcdd7d4c34c0c22196a7223d96f5_icgraph.svg" width="295" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol__test__unit_8cpp_a7911069ff3b4a42e289e32769900f4da_icgraph.svg" width="284" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -272,7 +273,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7">TestState</a> g_current_state = <a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7aa5daf7f2ebbba4975d61dab1c40188c7">TestState::IDLE</a></td>
+          <td class="memname"><a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7">TestState</a> g_current_state = <a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7ae599161956d626eda4cb0a5ffb85271c">TestState::Idle</a></td>
         </tr>
       </table>
   </td>
@@ -284,8 +285,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a54a3aff038aa4ba3076f44534574404b" name="a54a3aff038aa4ba3076f44534574404b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54a3aff038aa4ba3076f44534574404b">&#9670;&#160;</a></span>g_espnowQueue</h2>
+<a id="ac0d25b5992612965ab9775877d86c19a" name="ac0d25b5992612965ab9775877d86c19a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0d25b5992612965ab9775877d86c19a">&#9670;&#160;</a></span>g_espnow_queue</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -294,7 +295,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">QueueHandle_t g_espnowQueue = nullptr</td>
+          <td class="memname">QueueHandle_t g_espnow_queue = nullptr</td>
         </tr>
       </table>
   </td>

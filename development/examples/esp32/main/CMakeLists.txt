@@ -89,8 +89,6 @@ set(COMPONENT_SRCS "${APP_SOURCE_FILE}")
 # Add ESP-NOW test unit additional sources if building that app
 if(APP_TYPE STREQUAL "fatigue_test_espnow_unit")
     list(APPEND COMPONENT_SRCS
-        "fatigue_test_espnow/bounds_finder_stallguard.cpp"
-        "fatigue_test_espnow/bounds_finder_encoder.cpp"
         "fatigue_test_espnow/espnow_receiver.cpp"
     )
 endif()
