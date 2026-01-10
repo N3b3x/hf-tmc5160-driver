@@ -77,6 +77,7 @@ set(MAIN_REQUIRES
     hf_tmc51x0
     esp_wifi
     nvs_flash
+    mbedtls
 )
 
 # =============================================================================
@@ -90,6 +91,7 @@ set(COMPONENT_SRCS "${APP_SOURCE_FILE}")
 if(APP_TYPE STREQUAL "fatigue_test_espnow_unit")
     list(APPEND COMPONENT_SRCS
         "fatigue_test_espnow/espnow_receiver.cpp"
+        "fatigue_test_espnow/espnow_peer_store.cpp"
     )
 endif()
 
@@ -97,6 +99,7 @@ endif()
 if(APP_TYPE STREQUAL "espnow_protocol_test_unit")
     list(APPEND COMPONENT_SRCS
         "fatigue_test_espnow/espnow_receiver.cpp"
+        "fatigue_test_espnow/espnow_peer_store.cpp"
     )
 endif()
 
@@ -143,3 +146,20 @@ endif()
 target_compile_definitions(${COMPONENT_LIB} PRIVATE
     "EXAMPLE_TYPE_${APP_TYPE}=1"           # Enable specific example type features
 )
+
+# =============================================================================
+# ESP-NOW Pairing Secret Injection
+# =============================================================================
+# The secret is passed from build_app.sh via -D ESPNOW_PAIRING_SECRET_HEX
+# If not provided:
+#   - Debug builds: Use placeholder (with warning)
+#   - Release builds: Compile error with helpful message
+# =============================================================================
+if(DEFINED ESPNOW_PAIRING_SECRET_HEX)
+    message(STATUS "ESP-NOW pairing secret: configured")
+    target_compile_definitions(${COMPONENT_LIB} PRIVATE
+        ESPNOW_PAIRING_SECRET_HEX="${ESPNOW_PAIRING_SECRET_HEX}"
+    )
+else()
+    message(STATUS "ESP-NOW pairing secret: not configured (using build-type defaults)")
+endif()

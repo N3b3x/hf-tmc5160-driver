@@ -130,6 +130,10 @@ package*.json
 Thumbs.db
 **/Thumbs.db
 
+# Secrets (pairing keys, credentials, etc.)
+**/secrets.local.yml
+secrets.local.yml
+
 # Backup files
 **/*.bak*
 *.bak
