@@ -169,7 +169,12 @@ inline constexpr const char* ToString(MotorType t) noexcept {
  * @brief Unit enumeration
  *
  * Defines the unit of measurement for position, velocity, and acceleration.
- * Steps: Microsteps (driver native)
+ * Steps:
+ * - For **float** APIs (e.g. `SetTargetPosition(float, Unit)` / `SetMaxSpeed(float, Unit)`),
+ *   `Unit::Steps` is treated as **motor full-steps** for convenience.
+ * - The TMC51x0 motion-controller position registers (XACTUAL/XTARGET/...) use **microsteps**
+ *   internally. The driver converts full-steps ↔ microsteps using the current microstep resolution.
+ * - For **raw** register units, use the APIs that accept `int32_t` positions (these are microsteps).
  * Rad: Radians (per second for velocity, per second^2 for accel)
  * Deg: Degrees (per second for velocity, per second^2 for accel)
  * Mm: Millimeters (linear only)
@@ -177,7 +182,7 @@ inline constexpr const char* ToString(MotorType t) noexcept {
  * RevPerSec: Revolutions per Second (recommended default for velocity)
  */
 enum class Unit : uint8_t {
-  Steps,     ///< Microsteps (driver native)
+  Steps,     ///< Steps (see notes above; float APIs treat this as full-steps, register units are microsteps)
   Rad,       ///< Radians (per second for velocity, per second^2 for accel)
   Deg,       ///< Degrees (per second for velocity, per second^2 for accel)
   Mm,        ///< Millimeters (linear only)

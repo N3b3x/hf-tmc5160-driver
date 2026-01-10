@@ -1699,6 +1699,16 @@ Result<float> TMC51x0<CommType>::RampControl::GetCurrentPosition(Unit unit) noex
 }
 
 template <typename CommType>
+Result<int32_t> TMC51x0<CommType>::RampControl::GetCurrentPositionMicrosteps() noexcept {
+  auto value_result = driver_.comm_.ReadRegister(Registers::XACTUAL, driver_.GetCommAddress());
+  if (!value_result) {
+    return Result<int32_t>(ErrorCode::COMM_ERROR);
+  }
+  // XACTUAL is a signed 32-bit microstep position.
+  return Result<int32_t>(static_cast<int32_t>(value_result.Value()));
+}
+
+template <typename CommType>
 Result<float> TMC51x0<CommType>::RampControl::GetTargetPosition(Unit unit) noexcept {
   auto value_result = driver_.comm_.ReadRegister(Registers::XTARGET, driver_.GetCommAddress());
   if (!value_result) {
@@ -1707,6 +1717,16 @@ Result<float> TMC51x0<CommType>::RampControl::GetTargetPosition(Unit unit) noexc
   uint32_t value = value_result.Value();
   float position = driver_.convertStepsToUnit(static_cast<int32_t>(value), unit);
   return Result<float>(position);
+}
+
+template <typename CommType>
+Result<int32_t> TMC51x0<CommType>::RampControl::GetTargetPositionMicrosteps() noexcept {
+  auto value_result = driver_.comm_.ReadRegister(Registers::XTARGET, driver_.GetCommAddress());
+  if (!value_result) {
+    return Result<int32_t>(ErrorCode::COMM_ERROR);
+  }
+  // XTARGET is a signed 32-bit microstep target position.
+  return Result<int32_t>(static_cast<int32_t>(value_result.Value()));
 }
 
 template <typename CommType>
@@ -5459,43 +5479,67 @@ Result<void> ReduceCurrentForBounds(TMC51x0<CommType>& driver, float factor, uin
     return Result<void>();
   }
 
-  constexpr float VFS_MV = 325.0F;
-  constexpr float SQRT2 = 1.41421356237F;
-  float current_rms_ma = (static_cast<float>(saved_scaler) / 256.0F) *
-                         (static_cast<float>(saved_irun + 1) / 32.0F) *
-                         (VFS_MV / static_cast<float>(motor_spec.sense_resistor_mohm)) / SQRT2;
-  uint16_t current_rms_ma_int = static_cast<uint16_t>(current_rms_ma);
-  uint16_t new_current_ma = 0;
-  if (target_ma > 0) {
-    new_current_ma = std::min<uint16_t>(target_ma, current_rms_ma_int);
-  } else {
-    new_current_ma = static_cast<uint16_t>(current_rms_ma * factor);
-  }
-  uint16_t min_current_ma = std::max<uint16_t>(100U, static_cast<uint16_t>(current_rms_ma_int * 0.2F));
-  if (new_current_ma < min_current_ma) new_current_ma = min_current_ma;
+  // Policy A (requested): Reduce run current target, keep hold current target (clamped <= run),
+  // then recalculate IRUN/IHOLD/GLOBAL_SCALER via the library's datasheet-based calculator.
+  //
+  // This aligns with the datasheet current model:
+  //   I_RMS = (GLOBAL_SCALER/256) * ((CS+1)/32) * (VFS/RSENSE) * (1/√2)
+  // (see inc/features/tmc51x0_motor_calc.hpp).
 
-  // Scale hold current proportionally
-  float hold_rms_ma = (static_cast<float>(saved_scaler) / 256.0F) *
-                      (static_cast<float>(saved_ihold + 1) / 32.0F) *
-                      (VFS_MV / static_cast<float>(motor_spec.sense_resistor_mohm)) / SQRT2;
-  float ratio = (current_rms_ma_int > 0) ? (static_cast<float>(new_current_ma) / static_cast<float>(current_rms_ma_int)) : 1.0F;
-  uint16_t new_hold_ma = static_cast<uint16_t>(hold_rms_ma * ratio);
-
-  uint8_t new_irun = 0, new_ihold = 0;
-  uint16_t new_scaler = 0;
-  if (!CalculateMotorCurrent(motor_spec, motor_spec.sense_resistor_mohm,
-                             motor_spec.supply_voltage_mv, new_current_ma, new_hold_ma,
-                             new_irun, new_ihold, new_scaler)) {
+  // Resolve base targets from MotorSpec.
+  uint16_t base_run_ma = motor_spec.run_current_ma;
+  if (base_run_ma == 0) base_run_ma = motor_spec.rated_current_ma;
+  if (base_run_ma == 0) {
+    // No configured targets -> nothing to do.
     return Result<void>();
   }
-  if (new_irun < 8) new_irun = 8;
+
+  uint16_t base_hold_ma = motor_spec.hold_current_ma;
+  if (base_hold_ma == 0) {
+    base_hold_ma = static_cast<uint16_t>(std::lround(static_cast<float>(base_run_ma) * 0.7F));
+  }
+
+  // Compute reduced run current target.
+  uint16_t new_run_ma = base_run_ma;
+  if (target_ma > 0) {
+    new_run_ma = std::min<uint16_t>(target_ma, base_run_ma);
+  } else {
+    new_run_ma = static_cast<uint16_t>(std::lround(static_cast<float>(base_run_ma) * factor));
+  }
+
+  // Keep run reduction within a sane range (avoid collapsing torque to unusable levels).
+  // Note: This is a homing/bounds heuristic, not a datasheet constraint.
+  uint16_t min_current_ma = std::max<uint16_t>(100U, static_cast<uint16_t>(std::lround(static_cast<float>(base_run_ma) * 0.2F)));
+  if (new_run_ma < min_current_ma) new_run_ma = min_current_ma;
+
+  // Keep hold current target unchanged (strong holding), but clamp it to not exceed run target.
+  uint16_t new_hold_ma = std::min<uint16_t>(base_hold_ma, new_run_ma);
+
+  uint8_t new_irun = 0;
+  uint8_t new_ihold = 0;
+  uint16_t new_scaler = 0;
+  if (!CalculateMotorCurrent(motor_spec, motor_spec.sense_resistor_mohm,
+                             motor_spec.supply_voltage_mv,
+                             new_run_ma, new_hold_ma,
+                             new_irun, new_ihold, new_scaler)) {
+    // If calculation fails, do not change anything (safe fallback).
+    return Result<void>();
+  }
+
+  // If nothing would change, do nothing.
+  if (new_irun == saved_irun && new_ihold == saved_ihold && new_scaler == saved_scaler) {
+    return Result<void>();
+  }
+
   // Apply via public subsystem APIs. Note: GLOBAL_SCALER is write-only and unsupported on TMC5130.
   if (driver.status.GetChipVersion() != ChipVersion::TMC5130) {
-    (void)driver.motorControl.SetGlobalScaler(new_scaler);
+    auto r = driver.motorControl.SetGlobalScaler(new_scaler);
+    if (!r) return r;
   }
-  (void)driver.motorControl.SetCurrent(new_irun, new_ihold);
-  reduced = true;
+  auto r2 = driver.motorControl.SetCurrent(new_irun, new_ihold);
+  if (!r2) return r2;
 
+  reduced = true;
   return Result<void>();
 }
 
@@ -5611,11 +5655,32 @@ Result<void> TMC51x0<CommType>::Homing::ApplyHomePlacement(BoundsResult& out, fl
     if (!r) return Result<void>(r.Error());
   }
 
+  bool reached_target = false;
   for (uint32_t i = 0; i < 5000; i++) {
     auto reached = driver_.rampControl.IsTargetReached();
-    if (reached && reached.Value()) break;
+    if (reached && reached.Value()) {
+      reached_target = true;
+      break;
+    }
     driver_.comm_.DelayMs(2);
   }
+
+  // CRITICAL SAFETY:
+  // Do NOT redefine the coordinate frame (XACTUAL=0) unless we actually reached the home target.
+  // If we hit a hard stop / skipped steps / were interrupted, forcing XACTUAL=0 would corrupt the
+  // coordinate system and can lead to subsequent motion crashing into bounds.
+  if (!reached_target) {
+    (void)driver_.rampControl.Stop();
+    (void)driver_.rampControl.SetRampMode(RampMode::HOLD);
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
+                      "ApplyHomePlacement: target not reached (mode=%u target=%.3f %u). "
+                      "Refusing to set XACTUAL=0; returning TIMEOUT.",
+                      static_cast<unsigned>(home.mode),
+                      home_pos,
+                      static_cast<unsigned>(position_unit));
+    return Result<void>(ErrorCode::TIMEOUT);
+  }
+
   {
     auto r = driver_.rampControl.SetCurrentPosition(0.0F, position_unit);
     if (!r) return Result<void>(r.Error());
@@ -5975,18 +6040,32 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
       RAMP_STAT_Register rs{};
       rs.value = ramp_stat_res.Value();
 
-      // Verbose logging: continuous SG telemetry during bounds finding
-      // Log every 100ms (10 polls) to avoid flooding
-      // Note: counter is local to this lambda, not static (fresh per find_one call)
-      if (elapsed % 100 < POLL_MS) {  // Log approximately every 100ms
+      // Verbose logging: SG telemetry during bounds finding.
+      // Note: StallGuard2 is only meaningful when:
+      // - SpreadCycle is active (not StealthChop)
+      // - velocity is above TCOOLTHRS (we approximate by checking configured min_velocity)
+      // StallGuard validity:
+      // - StallGuard2 requires SpreadCycle (not StealthChop)
+      // - StallGuard2 is only meaningful above TCOOLTHRS (we approximate via min_velocity)
+      //
+      // NOTE: RAMP_STAT.status_sg is documented as the StallGuard2 input from CoolStep/DcStep.
+      // In practice it may remain 0 even when StallGuard stop-on-stall works, so we DO NOT gate on it.
+      const bool sg_valid = (ds.bits.stealth == 0) && velocity_ok;
+
+      // Default: log every ~100ms to avoid flooding. This is a good compromise for ESP-NOW logging.
+      // If you need more "oscilloscope-like" SG traces, lower this interval.
+      constexpr uint32_t SG_LOG_MS = 50;
+      if (elapsed % SG_LOG_MS < POLL_MS) { // Log approximately every SG_LOG_MS
         TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Verbose, "Homing",
-                          "SG poll: dir=%c pos=%.2f vel=%.2f sg=%u stall_flag=%u stealth=%u vel_ok=%d candidates=%u",
+                          "SG poll: dir=%c pos=%.2f vel=%.2f sg=%u drv_stall=%u status_sg=%u event_stop_sg=%u stealth=%u sg_valid=%u candidates=%u",
                           positive_dir ? '+' : '-',
                           pos_result.Value(), vel_result.Value(),
                           static_cast<unsigned>(ds.bits.sg_result),
                           static_cast<unsigned>(ds.bits.stallguard),
+                          static_cast<unsigned>(rs.bits.status_sg),
+                          static_cast<unsigned>(rs.bits.event_stop_sg),
                           static_cast<unsigned>(ds.bits.stealth),
-                          velocity_ok ? 1 : 0,
+                          sg_valid ? 1 : 0,
                           static_cast<unsigned>(stall_candidate_count));
       }
 
@@ -6007,7 +6086,9 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
           // Secondary validation (if sg_stop event hasn't fired yet):
           // require low SG_RESULT for a few consecutive samples + DRV_STATUS.stallguard.
           auto sg_res = driver_.stallGuard.GetStallGuardResult();
-          if (sg_res && ds.bits.stallguard != 0) {
+          // Require non-StealthChop + valid velocity + DRV_STATUS.stallguard as a secondary check.
+          // Do not require RAMP_STAT.status_sg here (it can be 0 even when sg_stop works).
+          if (sg_res && sg_valid && ds.bits.stallguard != 0) {
             constexpr uint16_t SG_HIGH_LOAD_THRESHOLD = 100;
             if (sg_res.Value() <= SG_HIGH_LOAD_THRESHOLD) {
               if (stall_candidate_count < 255) stall_candidate_count++;
@@ -6032,9 +6113,19 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
         }
 
         if (stall_confirmed) {
-          // Stall detected: stop, clear flag, and back off.
+          // Stall detected:
+          // Policy: record the *raw* stall-hit position as the bound, and do NOT perform a physical
+          // backoff move during bounds finding. Any requested backoff_distance is applied *numerically*
+          // after both sides are found (see below).
+          //
+          // IMPORTANT accuracy note:
+          // We sample position at the top of the polling loop, then read RAMP_STAT/DRV_STATUS.
+          // The stall-stop event can assert between those reads. At 60RPM (360 deg/s), even a 10ms
+          // polling interval can introduce a few degrees of error if we use the pre-event position.
+          // Therefore, once a stall is detected, we re-read the current position after stopping to
+          // capture the final latched stop position (XACTUAL at standstill).
           TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
-                            "Bounds stall: dir=%d pos=%.3f v=%.3f (unit=%u) event_stop_sg=%u sg_result=%u",
+                            "Bounds stall: dir=%d stall_pos=%.3f v=%.3f (unit=%u) event_stop_sg=%u sg_result=%u",
                             positive_dir ? 1 : -1, pos_result.Value(), vel_result.Value(),
                             static_cast<unsigned>(opt.speed_unit),
                             static_cast<unsigned>(rs.bits.event_stop_sg),
@@ -6042,35 +6133,32 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
 
           (void)driver_.rampControl.Stop();
           driver_.comm_.DelayMs(150);
-          
-          // CRITICAL: Disable stop-on-stall BEFORE backoff move!
-          // If sg_stop remains enabled and SG_RESULT goes to 0 during backoff
-          // (which can happen at low velocity), the motor will stop again
-          // causing a "bouncing" effect.
+
+          // Re-read final position after the stop has taken effect (more accurate than the pre-event sample).
+          float stall_pos = pos_result.Value();
+          {
+            auto p2 = driver_.rampControl.GetCurrentPosition(opt.position_unit);
+            if (p2) {
+              stall_pos = p2.Value();
+            }
+          }
+
+          // IMPORTANT: Disable stop-on-stall after a stall hit so subsequent repositioning moves
+          // (including the eventual "home to center") are not immediately stopped by sg_stop.
+          // The next direction search explicitly re-enables sg_stop at the start of find_one().
           (void)driver_.stallGuard.EnableStopOnStall(false);
-          
+
+          // Clear the stall-stop event (W1C) so it won't be mistaken for a new stall later.
           auto clr = driver_.stallGuard.ClearStallFlag();
           if (!clr) return Result<void>(clr.Error());
 
-          float backoff = positive_dir ? -opt.backoff_distance : opt.backoff_distance;
-          auto bo = driver_.rampControl.MoveRelative(backoff, opt.position_unit);
-          if (!bo) return Result<void>(bo.Error());
-
-          for (int i = 0; i < 30; ++i) {
-            auto reached = driver_.rampControl.IsTargetReached();
-            if (reached && reached.Value()) break;
-            driver_.comm_.DelayMs(50);
-          }
-          driver_.comm_.DelayMs(50);
-
-          auto final_pos = driver_.rampControl.GetCurrentPosition(opt.position_unit);
-          if (!final_pos) return Result<void>(final_pos.Error());
-          bound_out = final_pos.Value();
+          // Record the raw stall-hit position (final stopped position).
+          bound_out = stall_pos;
           found = true;
 
           TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
-                            "Bounds stall backoff: final_pos=%.3f backoff=%.3f",
-                            bound_out, backoff);
+                            "Bounds stall recorded: raw_bound=%.3f (dir=%c)",
+                            bound_out, positive_dir ? '+' : '-');
           return Result<void>();
         }
       }
@@ -6099,37 +6187,62 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
   float max_bound = 0.0F, min_bound = 0.0F;
   bool max_ok = false, min_ok = false;
 
-  auto res_pos = find_one(true, max_ok, max_bound);
-  if (!res_pos) {
-    if (res_pos.Error() == ErrorCode::CANCELLED) {
-      out.cancelled = true;
-      return Result<BoundsResult>(ErrorCode::CANCELLED);
+  auto run_dir = [&](bool positive_dir) -> Result<void> {
+    auto r = positive_dir ? find_one(true, max_ok, max_bound) : find_one(false, min_ok, min_bound);
+    if (!r) {
+      if (r.Error() == ErrorCode::CANCELLED) {
+        out.cancelled = true;
+        return Result<void>(ErrorCode::CANCELLED);
+      }
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
+                        "FindBoundsStallGuard failed (%sdir): err=%u",
+                        positive_dir ? "+" : "-",
+                        static_cast<unsigned>(r.Error()));
+      return Result<void>(r.Error());
     }
-    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
-                      "FindBoundsStallGuard failed (+dir): err=%u",
-                      static_cast<unsigned>(res_pos.Error()));
-    // Propagate timeouts/comm errors (bounds must be deterministic/safe).
-    return Result<BoundsResult>(res_pos.Error());
-  }
+    return Result<void>();
+  };
+
+  // Run the requested first direction.
+  auto r1 = run_dir(opt.search_positive_first);
+  if (!r1) return Result<BoundsResult>(r1.Error());
 
   // Small pause before reversing direction to let the driver settle and clear any stale SG flags.
   driver_.comm_.DelayMs(200);
 
-  auto res_neg = find_one(false, min_ok, min_bound);
-  if (!res_neg) {
-    if (res_neg.Error() == ErrorCode::CANCELLED) {
-      out.cancelled = true;
-      return Result<BoundsResult>(ErrorCode::CANCELLED);
-    }
-    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
-                      "FindBoundsStallGuard failed (-dir): err=%u",
-                      static_cast<unsigned>(res_neg.Error()));
-    return Result<BoundsResult>(res_neg.Error());
+  // Run the opposite direction second.
+  auto r2 = run_dir(!opt.search_positive_first);
+  if (!r2) return Result<BoundsResult>(r2.Error());
+
+  // Apply numeric backoff AFTER both raw bounds are found.
+  // This yields "safe" limits without doing physical backoff moves during the scan.
+  float safe_min = min_bound;
+  float safe_max = max_bound;
+  if (opt.backoff_distance > 0.0F) {
+    if (min_ok) safe_min = min_bound + opt.backoff_distance;
+    if (max_ok) safe_max = max_bound - opt.backoff_distance;
   }
+
+  // If both sides are found, ensure numeric backoff didn't invert the interval.
+  if (min_ok && max_ok && !(safe_min < safe_max)) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
+                      "FindBoundsStallGuard: numeric backoff too large (raw_min=%.3f raw_max=%.3f backoff=%.3f -> safe_min=%.3f safe_max=%.3f)",
+                      min_bound, max_bound, opt.backoff_distance, safe_min, safe_max);
+    return Result<BoundsResult>(ErrorCode::INVALID_VALUE);
+  }
+
+  // Before performing the home placement move (e.g., to center), ensure sg_stop is disabled and
+  // the stall event is cleared. Otherwise the ramp generator can immediately stop on a stale/active
+  // StallGuard condition.
+  (void)driver_.stallGuard.EnableStopOnStall(false);
+  (void)driver_.stallGuard.ClearStallFlag();
 
   out.bounded = min_ok && max_ok;
   out.success = out.bounded || max_ok || min_ok;
-  (void)ApplyHomePlacement(out, min_bound, max_bound, home, opt);
+  {
+    auto hr = ApplyHomePlacement(out, safe_min, safe_max, home, opt);
+    if (!hr) return Result<BoundsResult>(hr.Error());
+  }
 
   TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
                     "FindBoundsStallGuard done: success=%d bounded=%d min=%.3f max=%.3f",
@@ -6959,29 +7072,32 @@ TMC51x0<CommType>::Homing::FindBoundsEncoder(const BoundsOptions& opt, const Hom
   float max_bound = 0.0F, min_bound = 0.0F;
   bool max_ok = false, min_ok = false;
 
-  auto rpos = find_one(true, max_ok, max_bound);
-  if (!rpos) {
-    if (rpos.Error() == ErrorCode::CANCELLED) {
-      out.cancelled = true;
-      return Result<BoundsResult>(ErrorCode::CANCELLED);
+  auto run_dir = [&](bool positive_dir) -> Result<void> {
+    auto r = positive_dir ? find_one(true, max_ok, max_bound) : find_one(false, min_ok, min_bound);
+    if (!r) {
+      if (r.Error() == ErrorCode::CANCELLED) {
+        out.cancelled = true;
+        return Result<void>(ErrorCode::CANCELLED);
+      }
+      return Result<void>(r.Error());
     }
-    return Result<BoundsResult>(rpos.Error());
-  }
+    return Result<void>();
+  };
+
+  auto r1 = run_dir(opt.search_positive_first);
+  if (!r1) return Result<BoundsResult>(r1.Error());
 
   driver_.comm_.DelayMs(200);
 
-  auto rneg = find_one(false, min_ok, min_bound);
-  if (!rneg) {
-    if (rneg.Error() == ErrorCode::CANCELLED) {
-      out.cancelled = true;
-      return Result<BoundsResult>(ErrorCode::CANCELLED);
-    }
-    return Result<BoundsResult>(rneg.Error());
-  }
+  auto r2 = run_dir(!opt.search_positive_first);
+  if (!r2) return Result<BoundsResult>(r2.Error());
 
   out.bounded = min_ok && max_ok;
   out.success = out.bounded || min_ok || max_ok;
-  (void)ApplyHomePlacement(out, min_bound, max_bound, home, opt);
+  {
+    auto hr = ApplyHomePlacement(out, min_bound, max_bound, home, opt);
+    if (!hr) return Result<BoundsResult>(hr.Error());
+  }
 
   TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
                     "FindBoundsEncoder done: success=%d bounded=%d min=%.3f max=%.3f",
@@ -7353,29 +7469,32 @@ TMC51x0<CommType>::Homing::FindBoundsSwitch(const BoundsOptions& opt, const Home
   float max_bound = 0.0F, min_bound = 0.0F;
   bool max_ok = false, min_ok = false;
 
-  auto rpos = find_one(true, max_ok, max_bound);
-  if (!rpos) {
-    if (rpos.Error() == ErrorCode::CANCELLED) {
-      out.cancelled = true;
-      return Result<BoundsResult>(ErrorCode::CANCELLED);
+  auto run_dir = [&](bool positive_dir) -> Result<void> {
+    auto r = positive_dir ? find_one(true, max_ok, max_bound) : find_one(false, min_ok, min_bound);
+    if (!r) {
+      if (r.Error() == ErrorCode::CANCELLED) {
+        out.cancelled = true;
+        return Result<void>(ErrorCode::CANCELLED);
+      }
+      return Result<void>(r.Error());
     }
-    return Result<BoundsResult>(rpos.Error());
-  }
+    return Result<void>();
+  };
+
+  auto r1 = run_dir(opt.search_positive_first);
+  if (!r1) return Result<BoundsResult>(r1.Error());
 
   driver_.comm_.DelayMs(200);
 
-  auto rneg = find_one(false, min_ok, min_bound);
-  if (!rneg) {
-    if (rneg.Error() == ErrorCode::CANCELLED) {
-      out.cancelled = true;
-      return Result<BoundsResult>(ErrorCode::CANCELLED);
-    }
-    return Result<BoundsResult>(rneg.Error());
-  }
+  auto r2 = run_dir(!opt.search_positive_first);
+  if (!r2) return Result<BoundsResult>(r2.Error());
 
   out.bounded = min_ok && max_ok;
   out.success = out.bounded || min_ok || max_ok;
-  (void)ApplyHomePlacement(out, min_bound, max_bound, home, opt);
+  {
+    auto hr = ApplyHomePlacement(out, min_bound, max_bound, home, opt);
+    if (!hr) return Result<BoundsResult>(hr.Error());
+  }
 
   TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
                     "FindBoundsSwitch done: success=%d bounded=%d min=%.3f max=%.3f",

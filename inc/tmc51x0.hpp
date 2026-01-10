@@ -493,6 +493,21 @@ public:
     Result<float> GetTargetPosition(Unit unit) noexcept;
 
     /**
+     * @brief Get current position in raw driver microsteps (XACTUAL)
+     * @return Result<int32_t> containing XACTUAL in **microsteps** (native register unit)
+     *
+     * Use this when you want to inspect the exact microstep-level position used by the ramp generator.
+     * This avoids any conversion/rounding to degrees/full-steps.
+     */
+    Result<int32_t> GetCurrentPositionMicrosteps() noexcept;
+
+    /**
+     * @brief Get target position in raw driver microsteps (XTARGET)
+     * @return Result<int32_t> containing XTARGET in **microsteps** (native register unit)
+     */
+    Result<int32_t> GetTargetPositionMicrosteps() noexcept;
+
+    /**
      * @brief Set current position
      * @param value Position value
      * @param unit Unit of the value (default: Steps)
@@ -2695,6 +2710,7 @@ public:
       float search_span{360.0F};   ///< Max distance to attempt per direction, in position_unit
       float backoff_distance{5.0F};///< Backoff after bound hit, in position_unit
       uint32_t timeout_ms{30000};  ///< Timeout per direction
+      bool search_positive_first{true}; ///< Bounds finding: when true, search + direction first; when false, search - direction first.
       bool preflight_clear_active_switch{true}; ///< Switch homing: if selected switch is active at start, attempt a bounded move away to clear it.
 
       // Optional accel/decel override (applies to bounds finding and homing moves that configure positioning ramps).
@@ -2804,20 +2820,155 @@ public:
      */
     Result<void> PerformEncoderIndexHoming(bool direction, const BoundsOptions& opt,
                                            int32_t &final_position,
-                                           CancelCallback should_cancel = nullptr) noexcept;
+                                     CancelCallback should_cancel = nullptr) noexcept;
 
+    /**
+     * @brief Find motion bounds using StallGuard2 (sensorless hard-stop detection).
+     *
+     * This is a **blocking** routine that actively moves the motor to discover the
+     * reachable travel range around the current location, then optionally establishes
+     * a new coordinate frame via @p home.
+     *
+     * **High-level behavior**
+     * - Requires **internal ramp mode** (SD_MODE=0). Returns `INVALID_STATE` otherwise.
+     * - Caches and restores driver settings that are modified during the procedure
+     *   (ramp settings, SW_MODE, StealthChop/CoolStep, etc.).
+     * - Defines a local coordinate frame at the start by setting the current
+     *   position to 0 in `opt.position_unit`.
+     * - Performs two span-capped searches (± `opt.search_span`) in the requested order
+     *   (`opt.search_positive_first`), attempting to stop on a StallGuard2 stall.
+     *
+     * **StallGuard specifics**
+     * - Ensures **SpreadCycle** is active (StallGuard2 is not reliable in StealthChop).
+     * - Disables **CoolStep** during the scan to avoid current modulation affecting detection.
+     * - Configures `SW_MODE.sg_stop=1` and `SW_MODE.en_softstop=0` (hard stop), and disables
+     *   reference-switch stop/latch sources so StallGuard is the only stop cause.
+     * - If `opt.stallguard_override` is non-null, it is used temporarily and restored on exit.
+     * - `StallGuardConfig.min_velocity` must be > 0 (enforced), because StallGuard2 is only
+     *   meaningful above a minimum velocity threshold.
+     *
+     * **Backoff semantics**
+     * - Unlike switch/encoder methods, this routine does **not** physically back off after a stall hit.
+     * - After both sides complete, it applies `opt.backoff_distance` **numerically** to compute a
+     *   "safe" interval (min increased, max decreased). If this would invert the interval,
+     *   the function returns `INVALID_VALUE`.
+     *
+     * **Home placement**
+     * - If `home.mode != HomePlacement::None`, the routine may move to the selected home position
+     *   (min/max/center/offset-from-min), then redefines that position as 0.
+     * - Center/offset placement requires both bounds; if only one side is detected, the placement
+     *   is skipped and the origin remains at the start position.
+     *
+     * @param opt Bounds-search options (units, span/speed, timeouts, optional current reduction, etc.).
+     * @param home Optional home placement policy (defaults to `AtCenter`).
+     * @param should_cancel Optional cancellation callback polled during motion; when it returns true,
+     *        motion is stopped and the function returns `CANCELLED`.
+     * @return `Result<BoundsResult>`:
+     * - On success (`OK`): returns `BoundsResult` containing bounds in `opt.position_unit`.
+     * - On error: returns an error code such as `INVALID_STATE`, `INVALID_VALUE`, `TIMEOUT`,
+     *   `CANCELLED`, or a communication error.
+     *
+     * @warning This function **moves the motor** and can hit hard mechanical stops. Ensure your
+     *          mechanism can tolerate this and use conservative speed/accel/current settings.
+     *
+     * @note `BoundsResult.bounded` is true only when a stall is detected on **both** sides.
+     *       When a side does not stall within `search_span`, the corresponding bound value
+     *       will be the final position reached at the end of the span-capped move.
+     */
     Result<BoundsResult>
     FindBoundsStallGuard(const BoundsOptions& opt, const HomeConfig& home = {},
                          CancelCallback should_cancel = nullptr) noexcept;
 
+    /**
+     * @brief Find motion bounds using encoder feedback (detects "no further motion" via stalled encoder).
+     *
+     * This routine performs two span-capped searches (± `opt.search_span`). For each direction, it
+     * monitors the encoder position during motion and considers a bound detected when the encoder
+     * position stops changing for a short window while motion has already started.
+     *
+     * **Behavior**
+     * - Requires **internal ramp mode** (SD_MODE=0).
+     * - Requires the encoder subsystem to be configured (otherwise returns `INVALID_STATE`).
+     * - Establishes a local coordinate frame by setting the current position to 0 in `opt.position_unit`.
+     * - For each direction:
+     *   - Command a relative move (± `opt.search_span`) using either `opt.search_speed` or cached VMAX,
+     *     with optional accel/decel overrides.
+     *   - Detect a bound when the encoder position does not change by a minimum delta for a short time
+     *     after motion begins.
+     *   - On detection, performs a **physical backoff move** of `opt.backoff_distance` away from the bound
+     *     and records the post-backoff position as the bound.
+     *
+     * **Home placement**
+     * After both directions complete, `home` is applied via the same policy as the StallGuard variant.
+     *
+     * @param opt Bounds-search options (units, span/speed, backoff, timeouts, accel/decel overrides).
+     * @param home Optional home placement policy (defaults to `AtCenter`).
+     * @param should_cancel Optional cancellation callback polled during motion; when it returns true,
+     *        motion is stopped and the function returns `CANCELLED`.
+     * @return `Result<BoundsResult>` on success, otherwise an error code.
+     *
+     * @warning This function **moves the motor**. Ensure your encoder is correctly wired and configured;
+     *          a missing/failed encoder can prevent detection and lead to large travel up to `search_span`.
+     *
+     * @note When a side does not "stall" within `search_span`, `BoundsResult.bounded` will be false and
+     *       that side's bound is the final span endpoint (i.e., not a detected limit).
+     */
     Result<BoundsResult>
     FindBoundsEncoder(const BoundsOptions& opt, const HomeConfig& home = {},
                       CancelCallback should_cancel = nullptr) noexcept;
 
+    /**
+     * @brief Find motion bounds using reference switches (REFL/REFR stop events).
+     *
+     * This routine configures the TMC51x0 reference-switch stop sources and performs two span-capped
+     * searches. A bound is detected when the corresponding stop event fires; the routine then backs off
+     * from the switch and records the post-backoff position as the bound.
+     *
+     * **Behavior**
+     * - Requires **internal ramp mode** (SD_MODE=0).
+     * - Establishes a local coordinate frame by setting the current position to 0 in `opt.position_unit`.
+     * - Preflight handling: if a switch is already active at the start and `opt.preflight_clear_active_switch`
+     *   is true, the routine attempts a bounded move away (using `opt.backoff_distance`) to clear it.
+     *   If preflight is disabled or `backoff_distance` is not configured, returns `INVALID_STATE`.
+     * - During bounds finding, enables both `SW_MODE.stop_l_enable` and `SW_MODE.stop_r_enable`
+     *   (hard stop), disables latching, and clears stale stop/latch state between passes.
+     * - On each direction search:
+     *   - Positive direction expects the **right** stop event; negative direction expects the **left** stop event.
+     *   - After a hit, performs a **physical backoff move** of `opt.backoff_distance` away from the switch.
+     *
+     * **Home placement**
+     * After both directions complete, `home` is applied via the same policy as the other variants.
+     *
+     * @param opt Bounds-search options (units, span/speed, backoff, timeouts, accel/decel overrides).
+     * @param home Optional home placement policy (defaults to `AtCenter`).
+     * @param should_cancel Optional cancellation callback polled during motion; when it returns true,
+     *        motion is stopped and the function returns `CANCELLED`.
+     * @return `Result<BoundsResult>` on success, otherwise an error code.
+     *
+     * @warning This function **moves the motor** and relies on correctly wired/functional limit switches.
+     *
+     * @note When a side does not trigger within `search_span`, `BoundsResult.bounded` will be false and
+     *       that side's bound is the final span endpoint (i.e., not a detected limit).
+     */
     Result<BoundsResult>
     FindBoundsSwitch(const BoundsOptions& opt, const HomeConfig& home = {},
                      CancelCallback should_cancel = nullptr) noexcept;
 
+    /**
+     * @brief Dispatch bounds finding by method.
+     *
+     * Convenience wrapper around:
+     * - `FindBoundsStallGuard()` when `method == BoundsMethod::StallGuard`
+     * - `FindBoundsEncoder()` when `method == BoundsMethod::Encoder`
+     * - `FindBoundsSwitch()` when `method == BoundsMethod::Switch`
+     *
+     * @param method Bounds detection method to use.
+     * @param opt Bounds-search options.
+     * @param home Optional home placement policy (defaults to `AtCenter`).
+     * @param should_cancel Optional cancellation callback polled during motion.
+     * @return `Result<BoundsResult>` on success, otherwise an error code (e.g. `INVALID_STATE` if
+     *         an unknown method is provided).
+     */
     Result<BoundsResult>
     FindBounds(BoundsMethod method, const BoundsOptions& opt, const HomeConfig& home = {},
                CancelCallback should_cancel = nullptr) noexcept;

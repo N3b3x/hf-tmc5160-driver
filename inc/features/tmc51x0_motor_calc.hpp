@@ -95,11 +95,19 @@ inline bool CalculateMotorCurrent(const MotorSpec& motor_spec, uint32_t sense_re
   // Start with IRUN=31 (maximum CS) and calculate required GLOBAL_SCALER
   // Then adjust IRUN down if GLOBAL_SCALER would be too low
 
-  // Calculate required GLOBAL_SCALER for IRUN=31
-  // I_RMS (mA) = (GLOBAL_SCALER/256) * ((31+1)/32) * (VFS_mV/RSENSE_mΩ) * (1/√2)
-  // Rearranged: GLOBAL_SCALER = I_RMS_ma * 256 * 32 / ((31+1) * (VFS_mV/RSENSE_mΩ) * (1/√2))
-  float global_scaler_float = (static_cast<float>(run_current_ma) * 256.0F * 32.0F) / 
-                               (32.0F * (VFS_MV / static_cast<float>(sense_resistor_mohm)) / SQRT2);
+  // Calculate required GLOBAL_SCALER for IRUN=31.
+  //
+  // Datasheet equation (expressed in mA):
+  //   I_RMS_ma = (GLOBAL_SCALER/256) * ((CS+1)/32) * I_RMS_MAX_ma
+  // where:
+  //   I_RMS_MAX_ma = (VFS/RSENSE) * (1/√2) * 1000
+  //
+  // For CS=31: ((CS+1)/32)=1, so:
+  //   GLOBAL_SCALER = I_RMS_ma * 256 / I_RMS_MAX_ma
+  //
+  // NOTE: We intentionally use i_rms_max_ma here to keep units consistent (mA).
+  float global_scaler_float =
+      (static_cast<float>(run_current_ma) * 256.0F) / std::max(i_rms_max_ma, 1.0F);
 
   // Constrain GLOBAL_SCALER to valid range (32-256, where 0 = 256)
   auto calculated_scaler = static_cast<uint16_t>(std::round(global_scaler_float));
@@ -114,8 +122,10 @@ inline bool CalculateMotorCurrent(const MotorSpec& motor_spec, uint32_t sense_re
   if (calculated_scaler >= 200) {
     // Try reducing IRUN to get GLOBAL_SCALER in better range (128-200)
     for (uint8_t test_irun = 30; test_irun >= 16; --test_irun) {
-      float test_scaler_float = (static_cast<float>(run_current_ma) * 256.0F * 32.0F) / 
-                                 (static_cast<float>(test_irun + 1) * (VFS_MV / static_cast<float>(sense_resistor_mohm)) / SQRT2);
+      // GLOBAL_SCALER = I_RMS_ma * 256 * 32 / ((CS+1) * I_RMS_MAX_ma)
+      float test_scaler_float =
+          (static_cast<float>(run_current_ma) * 256.0F * 32.0F) /
+          (static_cast<float>(test_irun + 1) * std::max(i_rms_max_ma, 1.0F));
       auto test_scaler = static_cast<uint16_t>(std::round(test_scaler_float));
 
       if (test_scaler >= 32 && test_scaler <= 200) {
@@ -130,8 +140,8 @@ inline bool CalculateMotorCurrent(const MotorSpec& motor_spec, uint32_t sense_re
   if (optimal_irun < 8) {
     optimal_irun = 8;
     // Recalculate scaler for IRUN=8
-    float scaler_float = (static_cast<float>(run_current_ma) * 256.0F * 32.0F) / 
-                         (9.0F * (VFS_MV / static_cast<float>(sense_resistor_mohm)) / SQRT2);
+    float scaler_float =
+        (static_cast<float>(run_current_ma) * 256.0F * 32.0F) / (9.0F * std::max(i_rms_max_ma, 1.0F));
     optimal_scaler = static_cast<uint16_t>(std::round(scaler_float));
     optimal_scaler = std::max<uint16_t>(optimal_scaler, 32);
     optimal_scaler = std::min<uint16_t>(optimal_scaler, 256);
@@ -139,11 +149,13 @@ inline bool CalculateMotorCurrent(const MotorSpec& motor_spec, uint32_t sense_re
 
   // Calculate IHOLD using same method
   // Calculate required IHOLD (use same scaler as IRUN)
-  // I_RMS (mA) = (GLOBAL_SCALER/256) * ((IHOLD+1)/32) * (VFS_mV/RSENSE_mΩ) * (1/√2)
-  // Rearranged: IHOLD = (I_RMS_ma * 256 * 32) / (GLOBAL_SCALER * (VFS_mV/RSENSE_mΩ) * (1/√2)) - 1
+  // I_RMS_ma = (GLOBAL_SCALER/256) * ((IHOLD+1)/32) * I_RMS_MAX_ma
+  // Rearranged:
+  //   IHOLD = (I_RMS_ma * 256 * 32) / (GLOBAL_SCALER * I_RMS_MAX_ma) - 1
   float ihold_float =
-      ((static_cast<float>(hold_current_ma) * 256.0F * 32.0F) / 
-       (static_cast<float>(optimal_scaler) * (VFS_MV / static_cast<float>(sense_resistor_mohm)) / SQRT2)) - 1.0F;
+      ((static_cast<float>(hold_current_ma) * 256.0F * 32.0F) /
+       (static_cast<float>(optimal_scaler) * std::max(i_rms_max_ma, 1.0F))) -
+      1.0F;
 
   auto calculated_ihold = static_cast<uint8_t>(std::round(ihold_float));
 
