@@ -7,3 +7,6 @@
 [submodule "esp32_remote_controller"]
 	path = examples/esp32_remote_controller
 	url = https://github.com/N3b3x/esp32-simple-remote-controller.git
+[submodule "examples/esp32_m5dial_remote_controller"]
+	path = examples/esp32_m5dial_remote_controller
+	url = https://github.com/N3b3x/esp32-m5dial-remote-controller.git
