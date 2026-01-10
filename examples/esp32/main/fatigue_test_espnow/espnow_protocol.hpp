@@ -18,6 +18,9 @@
 #include "esp_idf_pedantic_compat.hpp"
 #include "esp_log.h"
 
+// Include security definitions for pairing support
+#include "espnow_security.hpp"
+
 // ------------- ESPNOW CONFIG -------------
 
 // Sync byte at start of every message
@@ -66,7 +69,14 @@ enum class MsgType : uint8_t {
     StatusUpdate,      // = 9
     Error,             // = 10
     ErrorClear,        // = 11
-    TestComplete       // = 12
+    TestComplete,      // = 12
+    
+    // Security / Pairing messages (20-29 range)
+    PairingRequest  = 20,   ///< Initiate pairing (broadcast)
+    PairingResponse = 21,   ///< Response with HMAC proof
+    PairingConfirm  = 22,   ///< Final confirmation
+    PairingReject   = 23,   ///< Explicit rejection
+    Unpair          = 24,   ///< Remove a paired device
 };
 
 /**
@@ -257,7 +267,13 @@ enum class ProtoEventType {
     Stopped,
     Status,
     ErrorEvent,
-    TestCompleted
+    TestCompleted,
+    
+    // Pairing events
+    PairingRequest,     ///< Incoming pairing request (test unit receives)
+    PairingComplete,    ///< Pairing completed successfully
+    PairingFailed,      ///< Pairing failed (rejected or timeout)
+    PeerUnpaired,       ///< A peer was unpaired
 };
 
 /**
@@ -271,6 +287,11 @@ struct ProtoEvent {
         TestUnitSettings config;  // Config data (includes extended float fields)
         struct { uint32_t cycle; TestState state; uint8_t err_code; } status;
         struct { uint8_t err_code; uint32_t at_cycle; } error;
+        struct { 
+            uint8_t peer_mac[6];
+            uint8_t device_type;
+            char    device_name[MAX_DEVICE_NAME_LEN];
+        } pairing;
     } data;
 };
 

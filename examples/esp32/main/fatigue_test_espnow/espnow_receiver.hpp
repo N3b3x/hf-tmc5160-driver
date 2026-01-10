@@ -1,11 +1,18 @@
 /**
  * @file espnow_receiver.hpp
- * @brief ESP-NOW receiver for test unit
+ * @brief ESP-NOW receiver for test unit with secure pairing support
+ * 
+ * Features:
+ * - Pre-configured MAC address support (backward compatibility)
+ * - Secure pairing with HMAC mutual authentication
+ * - NVS-based approved peer storage
+ * - Message validation against approved peer list
  */
 
 #pragma once
 
 #include "espnow_protocol.hpp"
+#include "espnow_security.hpp"
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
 
@@ -86,5 +93,66 @@ bool send_error(uint8_t err_code, uint32_t at_cycle);
  * @return true if the packet was queued for transmission; false otherwise.
  */
 bool send_test_complete();
+
+// ============================================================================
+// PAIRING FUNCTIONS
+// ============================================================================
+
+/**
+ * @brief Enter pairing mode for the specified duration.
+ * 
+ * While in pairing mode, the test unit will respond to PairingRequest
+ * messages from remote controllers. After the timeout expires, pairing
+ * mode is automatically disabled.
+ * 
+ * @param timeout_sec Duration of pairing mode in seconds (default: 30)
+ */
+void enter_pairing_mode(uint32_t timeout_sec = PAIRING_MODE_TIMEOUT_SEC);
+
+/**
+ * @brief Exit pairing mode immediately.
+ */
+void exit_pairing_mode();
+
+/**
+ * @brief Check if device is currently in pairing mode.
+ * @return true if in pairing mode
+ */
+bool is_in_pairing_mode();
+
+/**
+ * @brief Get access to the security settings for peer management.
+ * 
+ * Use this with PeerStore functions to manage approved peers.
+ * 
+ * @return Reference to internal SecuritySettings
+ */
+SecuritySettings& get_security_settings();
+
+/**
+ * @brief Manually add a peer as approved (bypasses pairing).
+ * 
+ * Useful for adding pre-configured peers or debugging.
+ * 
+ * @param mac Peer's MAC address
+ * @param type Peer's device type
+ * @param name Human-readable name
+ * @return true if added successfully
+ */
+bool add_approved_peer(const uint8_t mac[6], DeviceType type, const char* name);
+
+/**
+ * @brief Remove a peer from the approved list.
+ * 
+ * @param mac Peer's MAC address
+ * @return true if removed
+ */
+bool remove_approved_peer(const uint8_t mac[6]);
+
+/**
+ * @brief Get the number of approved peers.
+ * @return Number of approved peers (including pre-configured)
+ */
+size_t get_approved_peer_count();
 
 } // namespace EspNowReceiver

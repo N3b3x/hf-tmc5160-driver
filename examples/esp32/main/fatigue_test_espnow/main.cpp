@@ -12,13 +12,13 @@
  */
 
 // Standard library includes
-#include <memory>
-#include <algorithm>
-#include <cmath>
-#include <cstring>
-#include <string>
-#include <vector>
-#include <cstdarg>
+ #include <memory>
+ #include <algorithm>
+ #include <cmath>
+ #include <cstring>
+ #include <string>
+ #include <vector>
+ #include <cstdarg>
 #include <cstdint>
 #include <inttypes.h>
 
@@ -105,8 +105,83 @@ static volatile bool g_cancel_bounds = false;
 static volatile bool g_bounds_task_running = false;
 static TaskHandle_t g_bounds_task_handle = nullptr;
 
-static bool g_bounds_found = false;          // informational; we always re-find on START/RESUME
+static bool g_bounds_found = false;          // true if bounds have been found at least once
 static bool g_use_stallguard = true;
+
+// -------------------- Bounds Caching System --------------------
+// After bounds finding completes, motor stays energized for a configurable time.
+// If START is requested within this window, bounds finding is skipped.
+// After timeout, motor is de-energized to prevent heating.
+
+namespace BoundsCache {
+    /// Default time window (in minutes) during which bounds remain valid
+    static constexpr uint32_t DEFAULT_VALIDITY_MINUTES = 2;
+    
+    /// Time (microseconds, from esp_timer_get_time) when bounds were last found
+    static volatile int64_t g_bounds_timestamp_us = 0;
+    
+    /// Bounds validity window in microseconds
+    static volatile int64_t g_bounds_validity_us = DEFAULT_VALIDITY_MINUTES * 60 * 1000000LL;
+    
+    /// True if motor is currently energized from bounds finding
+    static volatile bool g_motor_energized_for_bounds = false;
+    
+    /// Timer handle for de-energize timeout
+    static esp_timer_handle_t g_deenergize_timer = nullptr;
+    
+    /**
+     * @brief Check if bounds are still valid (within time window and motor energized).
+     * @return true if we can skip bounds finding
+     */
+    inline bool AreBoundsValid() noexcept {
+        if (!g_bounds_found || !g_motor_energized_for_bounds) {
+            return false;
+        }
+        int64_t now = esp_timer_get_time();
+        int64_t elapsed = now - g_bounds_timestamp_us;
+        return elapsed < g_bounds_validity_us;
+    }
+    
+    /**
+     * @brief Get remaining time until bounds expire (seconds).
+     * @return Seconds remaining, or 0 if expired
+     */
+    inline uint32_t GetRemainingValiditySec() noexcept {
+        if (!g_bounds_found || !g_motor_energized_for_bounds) {
+            return 0;
+        }
+        int64_t now = esp_timer_get_time();
+        int64_t elapsed = now - g_bounds_timestamp_us;
+        int64_t remaining = g_bounds_validity_us - elapsed;
+        return remaining > 0 ? static_cast<uint32_t>(remaining / 1000000LL) : 0;
+    }
+    
+    /**
+     * @brief Mark bounds as freshly found and start de-energize timer.
+     */
+    void MarkBoundsFound() noexcept;
+    
+    /**
+     * @brief Cancel de-energize timer (e.g., when test starts).
+     */
+    void CancelDeenergizeTimer() noexcept;
+    
+    /**
+     * @brief Invalidate bounds (e.g., on config change or explicit request).
+     */
+    void InvalidateBounds() noexcept;
+    
+    /**
+     * @brief Set the validity window in minutes.
+     */
+    void SetValidityMinutes(uint32_t minutes) noexcept;
+    
+    /**
+     * @brief Initialize the bounds cache system (create timer).
+     */
+    void Init() noexcept;
+    
+} // namespace BoundsCache
 
 enum class PendingStartKind : uint8_t { NONE = 0, START, RESUME };
 static volatile PendingStartKind g_pending_start = PendingStartKind::NONE;
@@ -193,6 +268,81 @@ static bool MotorEnable() noexcept {
     return true;
 }
 
+// -------------------- BoundsCache Implementation --------------------
+
+/**
+ * @brief Timer callback to de-energize motor after bounds validity expires.
+ */
+static void DeenergizeTimerCallback(void* arg) {
+    (void)arg;
+    ESP_LOGI(TAG, "[BoundsCache] Validity window expired - de-energizing motor to prevent heating");
+    BoundsCache::g_motor_energized_for_bounds = false;
+    MotorStopHoldDisable();
+}
+
+void BoundsCache::Init() noexcept {
+    if (g_deenergize_timer != nullptr) {
+        return; // Already initialized
+    }
+    
+    esp_timer_create_args_t timer_args = {};
+    timer_args.callback = DeenergizeTimerCallback;
+    timer_args.arg = nullptr;
+    timer_args.dispatch_method = ESP_TIMER_TASK;
+    timer_args.name = "bounds_deenergize";
+    
+    esp_err_t err = esp_timer_create(&timer_args, &g_deenergize_timer);
+    if (err != ESP_OK) {
+        ESP_LOGE(TAG, "[BoundsCache] Failed to create de-energize timer: %s", esp_err_to_name(err));
+    }
+}
+
+void BoundsCache::MarkBoundsFound() noexcept {
+    g_bounds_timestamp_us = esp_timer_get_time();
+    g_motor_energized_for_bounds = true;
+    
+    // Cancel any existing timer
+    if (g_deenergize_timer != nullptr) {
+        esp_timer_stop(g_deenergize_timer);
+    }
+    
+    // Start new timer
+    if (g_deenergize_timer != nullptr) {
+        esp_err_t err = esp_timer_start_once(g_deenergize_timer, g_bounds_validity_us);
+        if (err != ESP_OK) {
+            ESP_LOGE(TAG, "[BoundsCache] Failed to start de-energize timer: %s", esp_err_to_name(err));
+        } else {
+            ESP_LOGI(TAG, "[BoundsCache] Bounds valid for %d seconds - motor will de-energize after timeout",
+                     static_cast<int>(g_bounds_validity_us / 1000000LL));
+        }
+    }
+}
+
+void BoundsCache::CancelDeenergizeTimer() noexcept {
+    if (g_deenergize_timer != nullptr) {
+        esp_timer_stop(g_deenergize_timer);
+    }
+    // Keep motor_energized_for_bounds = true since we're using the motor
+}
+
+void BoundsCache::InvalidateBounds() noexcept {
+    g_bounds_found = false;
+    g_bounds_timestamp_us = 0;
+    g_motor_energized_for_bounds = false;
+    
+    if (g_deenergize_timer != nullptr) {
+        esp_timer_stop(g_deenergize_timer);
+    }
+    ESP_LOGI(TAG, "[BoundsCache] Bounds invalidated");
+}
+
+void BoundsCache::SetValidityMinutes(uint32_t minutes) noexcept {
+    g_bounds_validity_us = static_cast<int64_t>(minutes) * 60 * 1000000LL;
+    ESP_LOGI(TAG, "[BoundsCache] Validity window set to %lu minutes", (unsigned long)minutes);
+}
+
+// -------------------- End BoundsCache Implementation --------------------
+
 /**
  * @brief Pretty-print motor-current calculated and cached register values under the FatigueTestUnit tag.
  *
@@ -223,14 +373,60 @@ static bool MotorEnable() noexcept {
  * @note Task creation failure transitions to `ERROR`, stops and disables the motor,
  * and sends an error frame.
  */
+/**
+ * @brief Mode for bounds finding task.
+ */
+enum class BoundsTaskMode : uint8_t {
+    FIND_AND_START,   ///< Find bounds then start test (normal START flow)
+    FIND_ONLY         ///< Find bounds only, keep motor energized with timeout
+};
+
+static volatile BoundsTaskMode g_bounds_task_mode = BoundsTaskMode::FIND_AND_START;
+
+/**
+ * @brief Request a START/RESUME with optional bounds caching.
+ * 
+ * @details
+ * If bounds were recently found (within validity window) and motor is still
+ * energized, bounds finding is skipped and motion starts immediately.
+ * Otherwise, bounds finding runs first.
+ * 
+ * @param kind START or RESUME request type
+ */
 static void RequestStart(PendingStartKind kind) noexcept {
     if (g_bounds_task_running) {
         ESP_LOGW(TAG, "Start requested but bounds task already running; ignoring");
         return;
     }
+    
+    // Check if we can use cached bounds
+    if (BoundsCache::AreBoundsValid() && g_motion) {
+        ESP_LOGI(TAG, "Using cached bounds (valid for %lu more seconds)",
+                 (unsigned long)BoundsCache::GetRemainingValiditySec());
+        
+        // Cancel the de-energize timer since we're starting the test
+        BoundsCache::CancelDeenergizeTimer();
+        
+        // Start motion directly without bounds finding
+        if (!g_motion->Start()) {
+            ESP_LOGE(TAG, "Motion start failed with cached bounds");
+            g_state = InternalState::ERROR;
+            MotorStopHoldDisable();
+            EspNowReceiver::send_error(2, 0);
+            return;
+        }
+        
+        g_state = InternalState::RUNNING;
+        EspNowReceiver::send_status_update(g_motion->GetCurrentCycles(), TestState::Running);
+        return;
+    }
+    
+    // Need to find bounds first
+    ESP_LOGI(TAG, "Bounds not cached or expired - running bounds finding");
     g_cancel_bounds = false;
-    g_bounds_found = false; // always re-find to account for moved stops
+    g_bounds_found = false;
     g_pending_start = kind;
+    g_bounds_task_mode = BoundsTaskMode::FIND_AND_START;
     g_state = InternalState::BOUNDS_FINDING;
     g_bounds_task_running = true;
     BaseType_t ok = xTaskCreate(bounds_finding_task, "bounds_find", 8192, nullptr, 5, &g_bounds_task_handle);
@@ -242,6 +438,43 @@ static void RequestStart(PendingStartKind kind) noexcept {
         MotorStopHoldDisable();
         EspNowReceiver::send_error(2, 0);
     }
+}
+
+/**
+ * @brief Run bounds finding independently (without starting test).
+ * 
+ * @details
+ * After bounds are found, motor stays energized for the configured validity
+ * period. If START is requested within this window, bounds finding is skipped.
+ * 
+ * @return true if bounds finding was started, false if already running or error
+ */
+static bool RequestBoundsOnly() noexcept {
+    if (g_bounds_task_running) {
+        ESP_LOGW(TAG, "Bounds finding already running");
+        return false;
+    }
+    
+    if (g_state == InternalState::RUNNING) {
+        ESP_LOGW(TAG, "Cannot run bounds finding while test is running");
+        return false;
+    }
+    
+    g_cancel_bounds = false;
+    g_pending_start = PendingStartKind::NONE;
+    g_bounds_task_mode = BoundsTaskMode::FIND_ONLY;
+    g_state = InternalState::BOUNDS_FINDING;
+    g_bounds_task_running = true;
+    BaseType_t ok = xTaskCreate(bounds_finding_task, "bounds_find", 8192, nullptr, 5, &g_bounds_task_handle);
+    if (ok != pdPASS) {
+        ESP_LOGE(TAG, "Failed to create bounds finding task");
+        g_bounds_task_running = false;
+        g_bounds_task_handle = nullptr;
+        g_state = InternalState::IDLE;
+        MotorStopHoldDisable();
+        return false;
+    }
+    return true;
 }
 
 /**
@@ -329,7 +562,7 @@ static void espnow_command_task(void* arg)
                     
                     g_use_stallguard = ev.data.config.bounds_method_stallguard;
                     // Any config change forces bounds re-find on next START/RESUME
-                    g_bounds_found = false;
+                    BoundsCache::InvalidateBounds();
                     
                     if (g_motion) {
                         g_motion->SetTargetCycles(g_settings.test_unit.cycle_amount);
@@ -434,12 +667,25 @@ static void espnow_command_task(void* arg)
 static void bounds_finding_task(void* arg)
 {
     (void)arg;
-    ESP_LOGI(TAG, "[bounds_find] Task started");
+    ESP_LOGI(TAG, "[bounds_find] ==========================================");
+    ESP_LOGI(TAG, "[bounds_find] Starting Bounds Finding...");
+    ESP_LOGI(TAG, "[bounds_find] ==========================================");
 
     // Snapshot settings at start of bounds finding to avoid concurrent edits mid-run
     const bool use_sg = g_use_stallguard;
     const TestUnitSettings tu = g_settings.test_unit;
     const PendingStartKind start_kind = g_pending_start;
+    
+    // Log configuration for debugging
+    ESP_LOGI(TAG, "[bounds_find] Configuration:");
+    ESP_LOGI(TAG, "[bounds_find]   Search Order: MAX (+) first");
+    ESP_LOGI(TAG, "[bounds_find]   Search Speed: %.1f RPM", tu.bounds_search_velocity_rpm);
+    ESP_LOGI(TAG, "[bounds_find]   Search Accel: %.1f rev/s²", tu.bounds_search_accel_rev_s2);
+    ESP_LOGI(TAG, "[bounds_find]   Method: %s", use_sg ? "StallGuard" : "Encoder");
+    if (use_sg) {
+        ESP_LOGI(TAG, "[bounds_find]   SG Min Velocity: %.1f RPM", tu.stallguard_min_velocity_rpm);
+        ESP_LOGI(TAG, "[bounds_find]   Current Reduction: %.0f%%", tu.stall_detection_current_factor * 100.0f);
+    }
 
     if (!MotorEnable()) {
         g_state = InternalState::ERROR;
@@ -470,9 +716,10 @@ static void bounds_finding_task(void* arg)
     opt.speed_unit = tmc51x0::Unit::RPM;
     opt.position_unit = tmc51x0::Unit::Deg;
     opt.search_speed = tu.bounds_search_velocity_rpm;      // RPM
-    opt.search_span = 360.0f;                              // degrees per direction (cap)
-    opt.backoff_distance = 5.0f;                           // degrees
+    opt.search_span = 400.0f;                              // degrees per direction (generous cap)
+    opt.backoff_distance = 0.0f;                           // NO physical backoff (library applies numerically)
     opt.timeout_ms = TestConfig::Motion::HOMING_TIMEOUT_MS;
+    opt.search_positive_first = true;                      // Find MAX first, then MIN (matches bounds_finding_test)
 
     // Preserve the UI knobs:
     // - StallGuard min velocity/current reduction apply only to SG mode
@@ -487,15 +734,20 @@ static void bounds_finding_task(void* arg)
     Homing::BoundsMethod method = use_sg ? Homing::BoundsMethod::StallGuard : Homing::BoundsMethod::Encoder;
 
     // StallGuard override: we want runtime control over min velocity (and we keep the homing SGT).
+    // IMPORTANT: Always enable filter for bounds finding to reduce false stalls during
+    // acceleration/deceleration. The filter averages SG readings over 4 samples.
     tmc51x0::StallGuardConfig sg_override{};
     if (use_sg) {
         sg_override.threshold = TestConfig::StallGuard::SGT_HOMING;
-        sg_override.enable_filter = TestConfig::StallGuard::FILTER_ENABLED;
+        sg_override.enable_filter = true;  // Always ON for bounds finding (critical for reliability)
         sg_override.min_velocity = tu.stallguard_min_velocity_rpm;
         sg_override.max_velocity = 0.0f;
         sg_override.velocity_unit = tmc51x0::Unit::RPM;
         opt.stallguard_override = &sg_override;
         opt.current_reduction_factor = tu.stall_detection_current_factor;
+        
+        ESP_LOGI(TAG, "[bounds_find] StallGuard config: SGT=%d, Filter=ON, MinVel=%.1f RPM, CurrentFactor=%.0f%%",
+                 sg_override.threshold, sg_override.min_velocity, tu.stall_detection_current_factor * 100.0f);
     } else {
         opt.stallguard_override = nullptr;
         opt.current_reduction_factor = 0.0f;
@@ -504,13 +756,13 @@ static void bounds_finding_task(void* arg)
     auto lib_res = g_driver->homing.FindBounds(method, opt, home, &ShouldCancelBounds);
     if (!lib_res) {
         if (lib_res.Error() == tmc51x0::ErrorCode::CANCELLED || g_cancel_bounds) {
-            ESP_LOGW(TAG, "[bounds_find] Cancelled");
-            MotorStopHoldDisable();
-            g_bounds_task_running = false;
-            g_bounds_task_handle = nullptr;
-            vTaskDelete(nullptr);
-            return;
-        }
+        ESP_LOGW(TAG, "[bounds_find] Cancelled");
+        MotorStopHoldDisable();
+        g_bounds_task_running = false;
+        g_bounds_task_handle = nullptr;
+        vTaskDelete(nullptr);
+        return;
+    }
         ESP_LOGE(TAG, "[bounds_find] Failed (err=%u)", static_cast<unsigned>(lib_res.Error()));
         g_state = InternalState::ERROR;
         MotorStopHoldDisable();
@@ -563,14 +815,25 @@ static void bounds_finding_task(void* arg)
         } else {
             ESP_LOGI(TAG, "[bounds_find] Stop-on-stall disabled for normal motion");
         }
+        
+        // CRITICAL: Restore smooth motion mode for fatigue testing.
+        // Bounds finding uses SpreadCycle (required for StallGuard), but normal
+        // motion should use StealthChop for quiet operation. Also clear mode
+        // change thresholds so StealthChop is active at all velocities.
+        (void)g_driver->motorControl.SetStealthChopEnabled(true);
+        (void)g_driver->thresholds.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::RPM);
+        ESP_LOGI(TAG, "[bounds_find] Restored StealthChop and cleared mode thresholds for smooth motion");
     }
+    
+    // Allow motor to settle at new mode/current before starting motion
+    vTaskDelay(pdMS_TO_TICKS(200));
     ESP_LOGI(TAG, "[bounds_find] Result: success=%d bounded=%d min=%.2f° max=%.2f° current_pos=%.2f° (method=%s)",
              result.success ? 1 : 0, result.bounded ? 1 : 0, result.min_bound, result.max_bound, pos_deg,
              use_sg ? "StallGuard" : "Encoder");
 
     if (result.bounded) {
         // Use the measured mechanical range as the oscillation range.
-        g_motion->SetGlobalBounds(result.min_bound, result.max_bound);
+    g_motion->SetGlobalBounds(result.min_bound, result.max_bound);
         g_motion->SetLocalBoundsFromCenterDegrees(result.min_bound, result.max_bound);
     } else {
         // Treat as unbounded:
@@ -585,19 +848,38 @@ static void bounds_finding_task(void* arg)
 
         // NOTE: FatigueTestMotion::SetUnbounded expects a *total* range; pass 350° to yield ±175°.
         g_motion->SetUnbounded(0.0f, 350.0f);
-        g_motion->SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
+    g_motion->SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
     }
     g_bounds_found = true;
+    
+    // Mark bounds as found in cache (starts de-energize timer)
+    BoundsCache::MarkBoundsFound();
 
     if (g_state != InternalState::BOUNDS_FINDING) {
         // PAUSE/STOP may have arrived after bounds finished.
         ESP_LOGW(TAG, "[bounds_find] State changed before motion start; stopping and disabling motor");
+        BoundsCache::InvalidateBounds();
         MotorStopHoldDisable();
         g_bounds_task_running = false;
         g_bounds_task_handle = nullptr;
         vTaskDelete(nullptr);
         return;
     }
+    
+    // Check if this was a FIND_ONLY request (independent bounds finding)
+    if (g_bounds_task_mode == BoundsTaskMode::FIND_ONLY) {
+        ESP_LOGI(TAG, "[bounds_find] Bounds-only mode complete - motor staying energized for %lu seconds",
+                 (unsigned long)BoundsCache::GetRemainingValiditySec());
+        g_state = InternalState::IDLE;
+        g_bounds_task_running = false;
+        g_bounds_task_handle = nullptr;
+        // Motor stays energized; de-energize timer will fire after validity window
+        vTaskDelete(nullptr);
+        return;
+    }
+
+    // Cancel de-energize timer since we're starting the test
+    BoundsCache::CancelDeenergizeTimer();
 
     if (!g_motion->Start()) {
         ESP_LOGE(TAG, "[bounds_find] Motion start failed after bounds");
@@ -695,19 +977,19 @@ static void motion_control_task(void* arg)
                     bool sg_read_ok = false;
                     {
                         TmcMutexGuard guard(*g_driver_mutex);
-                        auto pos_result = g_driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+                    auto pos_result = g_driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
                         pos_deg = pos_result.IsOk() ? pos_result.Value() : 0.0f;
-                        
-                        auto vel_result = g_driver->rampControl.GetCurrentSpeed(tmc51x0::Unit::RPM);
+                    
+                    auto vel_result = g_driver->rampControl.GetCurrentSpeed(tmc51x0::Unit::RPM);
                         vel_rpm = vel_result.IsOk() ? vel_result.Value() : 0.0f;
-                        
-                        auto sg_result = g_driver->stallGuard.GetStallGuardResult();
+                    
+                    auto sg_result = g_driver->stallGuard.GetStallGuardResult();
                         sg_read_ok = sg_result.IsOk();
                         if (sg_read_ok) {
-                            sg_val = sg_result.Value();
+                        sg_val = sg_result.Value();
                         }
                     }
-                    
+                        
                     if (sg_read_ok) {
                         // Always log first value when motion starts, or if value changed significantly, or periodically
                         bool first_log = (motion_start_time_us > 0 && 
@@ -826,6 +1108,8 @@ static bool HandleResume(FatigueTest::FatigueTestMotion& motion) noexcept;
 static bool HandleReset(FatigueTest::FatigueTestMotion& motion) noexcept;
 static bool HandleStatus(FatigueTest::FatigueTestMotion& motion) noexcept;
 static bool HandleHelp(const std::string& topic) noexcept;
+static bool HandlePair() noexcept;
+static bool HandleBounds() noexcept;
 
 /**
  * @brief Command types for word-based commands
@@ -836,6 +1120,8 @@ enum class CommandType {
     STOP,     // stop
     PAUSE,    // pause
     RESUME,   // resume
+    BOUNDS,   // bounds - run bounds finding independently
+    PAIR,     // pair - enter pairing mode for remote controller
     RESET,    // reset
     STATUS,   // status
     HELP      // help [command]
@@ -1177,9 +1463,11 @@ private:
         if (token == "stop") return CommandType::STOP;
         if (token == "pause") return CommandType::PAUSE;
         if (token == "resume") return CommandType::RESUME;
+        if (token == "bounds") return CommandType::BOUNDS;
         if (token == "reset") return CommandType::RESET;
         if (token == "status") return CommandType::STATUS;
         if (token == "help") return CommandType::HELP;
+        if (token == "pair") return CommandType::PAIR;
         return CommandType::HELP; // Default to help for unknown
     }
     
@@ -1321,12 +1609,16 @@ public:
                 return HandlePause(motion);
             case CommandType::RESUME:
                 return HandleResume(motion);
+            case CommandType::BOUNDS:
+                return HandleBounds();
             case CommandType::RESET:
                 return HandleReset(motion);
             case CommandType::STATUS:
                 return HandleStatus(motion);
             case CommandType::HELP:
                 return HandleHelp(cmd.help_topic);
+            case CommandType::PAIR:
+                return HandlePair();
             default:
                 CommandOutput::PrintError("Unknown command type");
                 return false;
@@ -1728,8 +2020,114 @@ static bool HandleStatus(FatigueTest::FatigueTestMotion& motion) noexcept {
     CommandOutput::PrintTableRow("Dwell Times:", dwell_str);
     
     CommandOutput::PrintEmptyLine();
+    
+    // Bounds cache status
+    CommandOutput::PrintInfo("BOUNDS CACHE:");
+    if (BoundsCache::AreBoundsValid()) {
+        char cache_str[64];
+        snprintf(cache_str, sizeof(cache_str), "Valid (%lu sec remaining)",
+                 (unsigned long)BoundsCache::GetRemainingValiditySec());
+        CommandOutput::PrintTableRow("  Status:", cache_str);
+        CommandOutput::PrintTableRow("  Motor:", "Energized (ready for start)");
+    } else if (g_bounds_found) {
+        CommandOutput::PrintTableRow("  Status:", "Expired (motor de-energized)");
+        CommandOutput::PrintTableRow("  Motor:", "Disabled");
+    } else {
+        CommandOutput::PrintTableRow("  Status:", "Not found");
+        CommandOutput::PrintTableRow("  Motor:", "Disabled");
+    }
+    
+    CommandOutput::PrintEmptyLine();
     CommandOutput::PrintFooter();
     
+    return true;
+}
+
+/**
+ * @brief Handle PAIR command
+ *
+ * @details Enters pairing mode for 30 seconds to allow a remote controller
+ * to securely pair with this test unit. The remote controller must also
+ * initiate pairing and know the shared PAIRING_SECRET.
+ *
+ * @return true always (pairing mode entered).
+ */
+/**
+ * @brief Handle BOUNDS command - run bounds finding independently.
+ * 
+ * @details
+ * Runs bounds finding without starting the test. After bounds are found,
+ * the motor stays energized for the configured validity period. If START
+ * is requested within this window, bounds finding is skipped.
+ * 
+ * @return true if bounds finding started; false on error.
+ */
+static bool HandleBounds() noexcept {
+    // Check if we can run bounds finding
+    if (g_bounds_task_running) {
+        CommandOutput::PrintWarning("Bounds finding already running");
+        return false;
+    }
+    
+    if (g_state == InternalState::RUNNING) {
+        CommandOutput::PrintWarning("Cannot run bounds finding while test is running");
+        return false;
+    }
+    
+    CommandOutput::PrintHeader("BOUNDS FINDING");
+    CommandOutput::PrintEmptyLine();
+    
+    // Check if bounds are already valid
+    if (BoundsCache::AreBoundsValid()) {
+        CommandOutput::PrintSuccess("Bounds are already valid!");
+        char remaining_str[64];
+        snprintf(remaining_str, sizeof(remaining_str), 
+                 "%lu seconds until motor de-energizes",
+                 (unsigned long)BoundsCache::GetRemainingValiditySec());
+        CommandOutput::PrintInfo(remaining_str);
+        CommandOutput::PrintInfo("Use 'start' to begin test without re-finding bounds.");
+        CommandOutput::PrintFooter();
+        return true;
+    }
+    
+    // Start bounds finding
+    if (!RequestBoundsOnly()) {
+        CommandOutput::PrintError("Failed to start bounds finding");
+        CommandOutput::PrintFooter();
+        return false;
+    }
+    
+    CommandOutput::PrintInfo("Bounds finding started...");
+    CommandOutput::PrintInfo("Motor will stay energized after completion.");
+    
+    char validity_str[64];
+    uint32_t validity_min = static_cast<uint32_t>(BoundsCache::g_bounds_validity_us / (60 * 1000000LL));
+    snprintf(validity_str, sizeof(validity_str), 
+             "Validity window: %lu minutes", (unsigned long)validity_min);
+    CommandOutput::PrintInfo(validity_str);
+    
+    CommandOutput::PrintEmptyLine();
+    CommandOutput::PrintInfo("Run 'start' within validity window to skip bounds finding.");
+    CommandOutput::PrintFooter();
+    
+    return true;
+}
+
+static bool HandlePair() noexcept {
+    EspNowReceiver::enter_pairing_mode(PAIRING_MODE_TIMEOUT_SEC);
+    
+    CommandOutput::PrintHeader("PAIRING MODE");
+    CommandOutput::PrintEmptyLine();
+    CommandOutput::PrintInfo("Pairing mode enabled for 30 seconds.");
+    CommandOutput::PrintInfo("Start pairing from your remote controller now.");
+    CommandOutput::PrintEmptyLine();
+    
+    char peer_count_str[32];
+    snprintf(peer_count_str, sizeof(peer_count_str), "%zu", 
+             EspNowReceiver::get_approved_peer_count());
+    CommandOutput::PrintTableRow("Current approved peers:", peer_count_str);
+    
+    CommandOutput::PrintFooter();
     return true;
 }
 
@@ -1747,8 +2145,10 @@ static bool HandleHelp(const std::string& topic) noexcept {
         CommandOutput::PrintTableRow("set [OPTIONS...]", "Configure test parameters");
         CommandOutput::PrintTableRow("start", "Start fatigue test");
         CommandOutput::PrintTableRow("stop", "Stop fatigue test");
+        CommandOutput::PrintTableRow("bounds", "Run bounds finding (keeps motor ready)");
         CommandOutput::PrintTableRow("reset", "Reset cycle counter");
         CommandOutput::PrintTableRow("status", "Show current status");
+        CommandOutput::PrintTableRow("pair", "Enter pairing mode for remote");
         CommandOutput::PrintTableRow("help [command]", "Show help (general or specific)");
         CommandOutput::PrintEmptyLine();
         CommandOutput::PrintInfo("Use 'help <command>' for detailed help on a specific command");
@@ -1783,13 +2183,42 @@ static bool HandleHelp(const std::string& topic) noexcept {
         CommandOutput::PrintHeader("COMMAND HELP: start");
         CommandOutput::PrintEmptyLine();
         CommandOutput::PrintInfo("DESCRIPTION:");
-        CommandOutput::PrintInfo("  Start the fatigue test. Bounds must be found before starting.");
+        CommandOutput::PrintInfo("  Start the fatigue test. Runs bounds finding first unless recently done.");
+        CommandOutput::PrintEmptyLine();
+        CommandOutput::PrintInfo("BOUNDS CACHING:");
+        CommandOutput::PrintInfo("  If 'bounds' was run within the validity window (default 2 min),");
+        CommandOutput::PrintInfo("  bounds finding is skipped and test starts immediately.");
         CommandOutput::PrintEmptyLine();
         CommandOutput::PrintInfo("SYNTAX:");
         CommandOutput::PrintInfo("  start");
         CommandOutput::PrintEmptyLine();
         CommandOutput::PrintInfo("EXAMPLES:");
-        CommandOutput::PrintInfo("  start");
+        CommandOutput::PrintInfo("  bounds        # Run bounds finding, keep motor ready");
+        CommandOutput::PrintInfo("  start         # Starts immediately if bounds still valid");
+        CommandOutput::PrintEmptyLine();
+        CommandOutput::PrintFooter();
+        return true;
+    } else if (topic == "bounds") {
+        CommandOutput::PrintHeader("COMMAND HELP: bounds");
+        CommandOutput::PrintEmptyLine();
+        CommandOutput::PrintInfo("DESCRIPTION:");
+        CommandOutput::PrintInfo("  Run bounds finding independently without starting the test.");
+        CommandOutput::PrintInfo("  After bounds are found, motor stays energized for the validity");
+        CommandOutput::PrintInfo("  window (default 2 minutes). If 'start' is run within this window,");
+        CommandOutput::PrintInfo("  bounds finding is skipped.");
+        CommandOutput::PrintEmptyLine();
+        CommandOutput::PrintInfo("MOTOR BEHAVIOR:");
+        CommandOutput::PrintInfo("  - Motor energizes during bounds finding");
+        CommandOutput::PrintInfo("  - Motor stays energized after completion");
+        CommandOutput::PrintInfo("  - Motor de-energizes after validity timeout to prevent heating");
+        CommandOutput::PrintEmptyLine();
+        CommandOutput::PrintInfo("SYNTAX:");
+        CommandOutput::PrintInfo("  bounds");
+        CommandOutput::PrintEmptyLine();
+        CommandOutput::PrintInfo("WORKFLOW:");
+        CommandOutput::PrintInfo("  1. Run 'bounds' to find limits");
+        CommandOutput::PrintInfo("  2. Adjust settings with 'set' if needed");
+        CommandOutput::PrintInfo("  3. Run 'start' within 2 minutes (no re-finding needed)");
         CommandOutput::PrintEmptyLine();
         CommandOutput::PrintFooter();
         return true;
@@ -1915,6 +2344,9 @@ extern "C" void app_main()
         ESP_LOGE(TAG, "Failed to initialize ESP-NOW receiver");
         return;
     }
+    
+    // Initialize bounds caching system (de-energize timer)
+    BoundsCache::Init();
 
     // Get default pin configuration
     auto pin_config = tmc51x0_test_config::GetDefaultPinConfig();
@@ -2014,8 +2446,8 @@ extern "C" void app_main()
     ESP_LOGI(TAG, "Ensuring motor is stopped before creating tasks...");
     {
         TmcMutexGuard guard(driver_mutex);
-        driver.rampControl.Stop();
-        driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+    driver.rampControl.Stop();
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
     }
     vTaskDelay(pdMS_TO_TICKS(200)); // Allow motor to fully stop
 
