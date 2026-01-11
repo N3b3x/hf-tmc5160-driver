@@ -154,3 +154,6 @@ examples/esp32/components/*/.gitignore
 examples/esp32/components/*/.clang-format
 examples/esp32/components/*/library.properties
 examples/esp32/components/*/README.md
+
+.vscode/
+.cursor/
