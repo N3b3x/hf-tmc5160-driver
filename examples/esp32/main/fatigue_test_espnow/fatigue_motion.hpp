@@ -30,7 +30,9 @@ public:
     struct Status {
         bool running;
         bool bounded;
-        float frequency_hz;
+        float vmax_rpm;                   // User-set max velocity (RPM)
+        float amax_rev_s2;                // User-set acceleration (rev/s²)
+        float estimated_frequency_hz;     // Derived cycle frequency (informational)
         float min_degrees_from_center;
         float max_degrees_from_center;
         uint32_t current_cycles;
@@ -99,13 +101,16 @@ public:
      *
      * @details
      * Local bounds are clipped to global bounds (if bounded) and used as the
-     * sinusoidal target range.
+     * sinusoidal target range. An optional edge_backoff_deg parameter specifies
+     * how far inside the mechanical bounds to stay during oscillation.
      *
      * @param min_degrees_from_center Minimum local bound.
      * @param max_degrees_from_center Maximum local bound.
+     * @param edge_backoff_deg How far inside bounds to stay (default 3.5°, like bounds_finding_test).
      * @return true if accepted; false if rejected.
      */
-    bool SetLocalBoundsFromCenterDegrees(float min_degrees_from_center, float max_degrees_from_center) noexcept;
+    bool SetLocalBoundsFromCenterDegrees(float min_degrees_from_center, float max_degrees_from_center, 
+                                         float edge_backoff_deg = 3.5f) noexcept;
 
     /**
      * @brief Read local bounds (degrees).
@@ -115,16 +120,35 @@ public:
     void GetLocalBoundsFromCenterDegrees(float& min_degrees, float& max_degrees) const noexcept;
 
     /**
-     * @brief Set target oscillation frequency (Hz).
-     * @param frequency_hz Frequency in Hz.
-     * @return true if accepted; false otherwise.
+     * @brief Set maximum velocity for oscillation (direct TMC5160 VMAX control).
+     * @param vmax_rpm Maximum velocity in RPM.
+     * @return true if accepted (value clamped to safe limits).
      */
-    bool SetFrequency(float frequency_hz) noexcept;
+    bool SetMaxVelocity(float vmax_rpm) noexcept;
 
     /**
-     * @brief Get configured frequency (Hz).
+     * @brief Get configured maximum velocity (RPM).
      */
-    float GetFrequency() const noexcept;
+    float GetMaxVelocity() const noexcept;
+
+    /**
+     * @brief Set acceleration for oscillation (direct TMC5160 AMAX control).
+     * @param amax_rev_s2 Acceleration in rev/s².
+     * @return true if accepted (value clamped to safe limits).
+     */
+    bool SetAcceleration(float amax_rev_s2) noexcept;
+
+    /**
+     * @brief Get configured acceleration (rev/s²).
+     */
+    float GetAcceleration() const noexcept;
+
+    /**
+     * @brief Get estimated cycle frequency based on current velocity/accel/distance.
+     * @return Estimated frequency in Hz (informational only).
+     * @note This is derived from the motion parameters, not a setpoint.
+     */
+    float GetEstimatedCycleFrequency() const noexcept;
 
     /**
      * @brief Set dwell times at local bounds.
@@ -205,11 +229,6 @@ public:
     Status GetStatus() const noexcept;
 
     /**
-     * @brief Get estimated realized frequency (Hz) based on dwell + trajectory.
-     */
-    float GetEstimatedFrequency() const noexcept;
-
-    /**
      * @brief Whether the controller is in bounded mode (mechanical stops found).
      */
     bool IsBounded() const noexcept;
@@ -225,9 +244,10 @@ private:
     float home_position_;
     bool bounded_;
     
-    // Motion parameters
+    // Motion parameters (directly user-controlled)
     float amplitude_;
-    float frequency_hz_;
+    float vmax_rpm_;                 // User-set max velocity (RPM) - direct to TMC5160
+    float amax_rev_s2_;              // User-set acceleration (rev/s²) - direct to TMC5160
     uint32_t dwell_at_min_ms_;
     uint32_t dwell_at_max_ms_;
     bool running_;
@@ -248,16 +268,14 @@ private:
     uint32_t dwell_start_time_ms_;
     bool sinusoidal_mode_;
     
-    // Trajectory parameters (all in higher-level units)
-    float calculated_vmax_rpm_;      // Maximum velocity in RPM
-    float calculated_amax_rev_s2_;   // Maximum acceleration in rev/s²
-    float estimated_frequency_hz_;   // Estimated actual frequency
+    // Derived parameters (calculated from user inputs)
+    float estimated_frequency_hz_;   // Estimated cycle frequency based on vmax/amax/distance
     
     // Thread safety - reference to external mutex that protects ALL driver SPI access
     Esp32TmcMutex& driver_mutex_;
     
     // Internal methods
-    void RecalculateTrajectory() noexcept;
+    void RecalculateEstimatedFrequency() noexcept;
     void ClipLocalBoundsToGlobal() noexcept;
     void UpdateSinuousMotion() noexcept;
 };

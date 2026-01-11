@@ -263,13 +263,15 @@ bool EspNowReceiver::send_config_response(const Settings& s)
 {
     ConfigPayload p{};
     p.cycle_amount = s.test_unit.cycle_amount;
-    p.time_per_cycle_sec = s.test_unit.time_per_cycle;
-    p.dwell_time_sec = s.test_unit.dwell_time;
+    p.oscillation_vmax_rpm = s.test_unit.oscillation_vmax_rpm;
+    p.oscillation_amax_rev_s2 = s.test_unit.oscillation_amax_rev_s2;
+    p.dwell_time_ms = s.test_unit.dwell_time_ms;
     p.bounds_method = s.test_unit.bounds_method_stallguard ? 0 : 1;
     p.bounds_search_velocity_rpm = s.test_unit.bounds_search_velocity_rpm;
     p.stallguard_min_velocity_rpm = s.test_unit.stallguard_min_velocity_rpm;
     p.stall_detection_current_factor = s.test_unit.stall_detection_current_factor;
     p.bounds_search_accel_rev_s2 = s.test_unit.bounds_search_accel_rev_s2;
+    p.stallguard_sgt = s.test_unit.stallguard_sgt;
     return sendPacketToUi(MsgType::ConfigResponse, &p, sizeof(p));
 }
 
@@ -672,32 +674,58 @@ static void handlePacket(const RawMsg& msg, const EspNowPacket& pkt, uint16_t re
             break;
 
         case MsgType::ConfigSet:
-            if (pkt.hdr.len >= sizeof(ConfigPayload)) {
-                ConfigPayload p{};
-                std::memcpy(&p, pkt.payload, sizeof(p));
-                ev.type = ProtoEventType::ConfigSet;
-                ev.data.config.cycle_amount = p.cycle_amount;
-                ev.data.config.time_per_cycle = p.time_per_cycle_sec;
-                ev.data.config.dwell_time = p.dwell_time_sec;
-                ev.data.config.bounds_method_stallguard = (p.bounds_method == 0);
-                ev.data.config.bounds_search_velocity_rpm = p.bounds_search_velocity_rpm;
-                ev.data.config.stallguard_min_velocity_rpm = p.stallguard_min_velocity_rpm;
-                ev.data.config.stall_detection_current_factor = p.stall_detection_current_factor;
-                ev.data.config.bounds_search_accel_rev_s2 = p.bounds_search_accel_rev_s2;
-            } else if (pkt.hdr.len >= 13) {
-                // Backward compatibility: minimal config from older controller
-                ev.type = ProtoEventType::ConfigSet;
-                std::memcpy(&ev.data.config.cycle_amount, pkt.payload, 4);
-                std::memcpy(&ev.data.config.time_per_cycle, pkt.payload + 4, 4);
-                std::memcpy(&ev.data.config.dwell_time, pkt.payload + 8, 4);
-                ev.data.config.bounds_method_stallguard = (pkt.payload[12] == 0);
-                ev.data.config.bounds_search_velocity_rpm = 0.0f;
-                ev.data.config.stallguard_min_velocity_rpm = 0.0f;
-                ev.data.config.stall_detection_current_factor = 0.0f;
-                ev.data.config.bounds_search_accel_rev_s2 = 0.0f;
-            } else {
-                ESP_LOGW(TAG, "CONFIG_SET payload too short: %u bytes", pkt.hdr.len);
-                return;
+            {
+                // PROTOCOL V2 layout:
+                // Bytes 0-3: cycle_amount (4)
+                // Bytes 4-7: oscillation_vmax_rpm (4)
+                // Bytes 8-11: oscillation_amax_rev_s2 (4)
+                // Bytes 12-15: dwell_time_ms (4)
+                // Byte 16: bounds_method (1)
+                // -- Base size = 17 --
+                // Bytes 17-20: bounds_search_velocity_rpm (4)
+                // Bytes 21-24: stallguard_min_velocity_rpm (4)
+                // Bytes 25-28: stall_detection_current_factor (4)
+                // Bytes 29-32: bounds_search_accel_rev_s2 (4)
+                // -- Extended V1 size = 33 --
+                // Byte 33: stallguard_sgt (1)
+                // -- Extended V2 size = 34 --
+                constexpr size_t kBaseSize = 17;
+                constexpr size_t kExtendedV1Size = 17 + (4 * 4); // 33 bytes
+                constexpr size_t kExtendedV2Size = kExtendedV1Size + 1; // 34 bytes
+
+                if (pkt.hdr.len >= kBaseSize) {
+                    ev.type = ProtoEventType::ConfigSet;
+                    
+                    // Base fields
+                    std::memcpy(&ev.data.config.cycle_amount, pkt.payload + 0, 4);
+                    std::memcpy(&ev.data.config.oscillation_vmax_rpm, pkt.payload + 4, 4);
+                    std::memcpy(&ev.data.config.oscillation_amax_rev_s2, pkt.payload + 8, 4);
+                    std::memcpy(&ev.data.config.dwell_time_ms, pkt.payload + 12, 4);
+                    ev.data.config.bounds_method_stallguard = (pkt.payload[16] == 0);
+
+                    // Default extended fields
+                    ev.data.config.bounds_search_velocity_rpm = 0.0f;
+                    ev.data.config.stallguard_min_velocity_rpm = 0.0f;
+                    ev.data.config.stall_detection_current_factor = 0.0f;
+                    ev.data.config.bounds_search_accel_rev_s2 = 0.0f;
+                    ev.data.config.stallguard_sgt = 127;
+
+                    // Extended V1 fields (bounds finding config)
+                    if (pkt.hdr.len >= kExtendedV1Size) {
+                        std::memcpy(&ev.data.config.bounds_search_velocity_rpm, pkt.payload + 17, 4);
+                        std::memcpy(&ev.data.config.stallguard_min_velocity_rpm, pkt.payload + 21, 4);
+                        std::memcpy(&ev.data.config.stall_detection_current_factor, pkt.payload + 25, 4);
+                        std::memcpy(&ev.data.config.bounds_search_accel_rev_s2, pkt.payload + 29, 4);
+                    }
+
+                    // Extended V2 field (SGT)
+                    if (pkt.hdr.len >= kExtendedV2Size) {
+                        std::memcpy(&ev.data.config.stallguard_sgt, pkt.payload + 33, 1);
+                    }
+                } else {
+                    ESP_LOGW(TAG, "CONFIG_SET payload too short: %u bytes (need >= %zu)", pkt.hdr.len, kBaseSize);
+                    return;
+                }
             }
             break;
 

@@ -52,13 +52,15 @@ The protocol uses a 6-byte header with sync byte (0xAA), version, device ID, and
 struct TestUnitSettings {
     // Base fields (always synchronized)
     uint32_t cycle_amount;              // Target number of cycles
-    uint32_t time_per_cycle;            // Time per cycle in seconds
-    uint32_t dwell_time;                // Dwell time at bounds in seconds
+   float    oscillation_vmax_rpm;       // Max velocity during oscillation (RPM)
+   float    oscillation_amax_rev_s2;    // Acceleration during oscillation (rev/s²)
+   uint32_t dwell_time_ms;             // Dwell time at endpoints (milliseconds)
     bool     bounds_method_stallguard;  // true = StallGuard2, false = encoder
     
     // Extended fields (0.0f = use test config defaults)
     float    bounds_search_velocity_rpm;       // Search speed during bounds finding (RPM)
     float    stallguard_min_velocity_rpm;      // Min velocity for StallGuard2 (RPM)
+   int8_t   stallguard_sgt;                   // StallGuard threshold [-64..63], 127=default
     float    stall_detection_current_factor;   // Current reduction factor (0.0-1.0)
     float    bounds_search_accel_rev_s2;       // Search acceleration (rev/s²)
 };
@@ -76,15 +78,16 @@ The remote controller provides a scrollable settings menu:
 | Setting | Range | Step | Description |
 |---------|-------|------|-------------|
 | Cycles | 1-100,000 | 100 | Target cycle count |
-| Time/Cycle | 1-3600 s | 1 | Oscillation period |
-| Dwell Time | 0-60 s | 1 | Pause at bounds |
+| VMAX | ≥ 5 RPM | 0.1 | Max velocity during oscillation |
+| AMAX | ≥ 0.5 rev/s² | 0.1 | Acceleration during oscillation |
+| Dwell | ≥ 0 ms | 1 | Pause at endpoints |
 | Bounds Mode | SG/ENC | Toggle | Detection method |
-| Search Speed | 0-300 RPM | 5 | Bounds search speed (0=AUTO) |
-| SG Min Vel | 0-100 RPM | 1 | StallGuard min velocity (0=AUTO) |
-| Curr Factor | 0.0-1.0 | 0.05 | Current reduction (0=AUTO) |
-| Search Accel | 0-20 rev/s² | 0.5 | Search acceleration (0=AUTO) |
-| Error Severity | 1-3 | 1 | Min error level to display |
-| Flip Screen | NORM/FLIP | Toggle | Display orientation |
+| Search Speed | 0=AUTO or >0 RPM | 0.1 | Bounds search speed |
+| SG Min Vel | 0=AUTO or >0 RPM | 0.1 | StallGuard min velocity |
+| Curr Factor | 0=AUTO or >0 | 0.05 | Current reduction |
+| Search Accel | 0=AUTO or >0 rev/s² | 0.1 | Search acceleration |
+| SGT | -64..63 / Default | 1 | StallGuard threshold tuning |
+| Brightness | 10-100% | 5% | Display brightness |
 
 ## Configuration
 

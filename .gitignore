@@ -134,6 +134,9 @@ Thumbs.db
 **/secrets.local.yml
 secrets.local.yml
 
+# Nested example repo (not part of this repo)
+examples/m5dial_user_demo/
+
 # Backup files
 **/*.bak*
 *.bak

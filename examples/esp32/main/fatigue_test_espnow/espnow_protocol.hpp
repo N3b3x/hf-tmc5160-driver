@@ -104,10 +104,9 @@ enum class CommandId : uint8_t {
     Start = 1,
     Pause = 2,
     Resume = 3,
-    Stop = 4
-    
-        // Dedicated bounds-finding command (independent of starting the test).
-        RunBoundsFinding = 5,
+    Stop = 4,
+    // Dedicated bounds-finding command (independent of starting the test).
+    RunBoundsFinding = 5,
 };
 
     /**
@@ -175,21 +174,30 @@ struct EspNowPacket {
  * @brief Payload for CONFIG_SET / CONFIG_RESPONSE.
  * 
  * @note Must match remote controller's FatigueTestConfigPayload structure.
- * Extended fields are optional - older remote controllers may send only 13 bytes.
+ * Extended fields are optional - older remote controllers may send only base bytes.
+ * 
+ * PROTOCOL V2 CHANGE: Replaced time_per_cycle_sec with oscillation_vmax_rpm and
+ * oscillation_amax_rev_s2 for direct TMC5160 ramp control.
  */
 #pragma pack(push, 1)
 struct ConfigPayload {
-    // Base fields (13 bytes) - required, always present
-    uint32_t cycle_amount;
-    uint32_t time_per_cycle_sec;
-    uint32_t dwell_time_sec;
-    uint8_t  bounds_method;      // 0 = stallguard, 1 = encoder
+    // Base fields (17 bytes) - required, always present
+    uint32_t cycle_amount;                     // Target number of cycles (0 = infinite)
+    float    oscillation_vmax_rpm;             // Max oscillation velocity (RPM) - directly to TMC5160 VMAX
+    float    oscillation_amax_rev_s2;          // Oscillation acceleration (rev/s²) - directly to TMC5160 AMAX
+    uint32_t dwell_time_ms;                    // Dwell time at endpoints (milliseconds)
+    uint8_t  bounds_method;                    // 0 = stallguard, 1 = encoder
     
-    // Extended fields (16 bytes) - optional, for advanced configuration
+    // Extended fields (16 bytes) - optional, for bounds finding configuration
     float    bounds_search_velocity_rpm;       // Search speed during bounds finding (RPM)
     float    stallguard_min_velocity_rpm;      // Minimum velocity threshold for StallGuard2 (RPM)
     float    stall_detection_current_factor;   // Current reduction factor (0.0-1.0)
     float    bounds_search_accel_rev_s2;       // Acceleration during bounds finding (rev/s²)
+
+    // Extended v2 field (optional)
+    // StallGuard threshold (SGT). Valid range is typically [-64, 63].
+    // 127 means "use test config default".
+    int8_t   stallguard_sgt;
 };
 
 /**
@@ -231,18 +239,24 @@ struct ErrorPayload {
  * @brief Test unit settings - synchronized with test machine via ESP-NOW.
  * 
  * These settings control the fatigue test behavior.
+ * 
+ * PROTOCOL V2: Uses direct velocity/acceleration control instead of cycle time.
  */
 struct TestUnitSettings {
-    uint32_t cycle_amount   = 1000;
-    uint32_t time_per_cycle = 5;    // seconds
-    uint32_t dwell_time     = 1;    // seconds
-    bool     bounds_method_stallguard = true; // true = stallguard, false = encoder
+    uint32_t cycle_amount = 1000;                     // Target cycles (0 = infinite)
+    float    oscillation_vmax_rpm = 60.0f;            // Max velocity during oscillation (RPM)
+    float    oscillation_amax_rev_s2 = 10.0f;         // Acceleration during oscillation (rev/s²)
+    uint32_t dwell_time_ms = 1000;                    // Dwell at endpoints (ms)
+    bool     bounds_method_stallguard = true;         // true = stallguard, false = encoder
     
-    // Extended configuration (configurable via remote controller)
+    // Extended configuration for bounds finding (configurable via remote controller)
     float    bounds_search_velocity_rpm = 0.0f;       // 0 = use test config default
     float    stallguard_min_velocity_rpm = 0.0f;      // 0 = use test config default
     float    stall_detection_current_factor = 0.0f;   // 0 = use test config default
     float    bounds_search_accel_rev_s2 = 0.0f;       // 0 = use test config default
+
+    // StallGuard threshold (SGT).
+    int8_t   stallguard_sgt = 127;                    // 127 = use test config default
 };
 
 /**

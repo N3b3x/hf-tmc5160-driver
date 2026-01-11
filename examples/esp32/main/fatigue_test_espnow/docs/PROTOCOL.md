@@ -6,7 +6,7 @@ The ESP-NOW protocol provides wireless communication between the remote controll
 
 ## Protocol Version
 
-**Current Version**: 1
+**Header Version**: 1
 
 The protocol header includes a version field for future compatibility.
 
@@ -64,7 +64,17 @@ enum class MsgType : uint8_t {
     StatusUpdate    = 9,   // Periodic status update
     Error           = 10,  // Error notification
     ErrorClear      = 11,  // Clear error state
-    TestComplete    = 12   // Test completion notification
+    TestComplete    = 12,  // Test completion notification
+
+    // Fatigue-test extensions
+    BoundsResult    = 13,
+
+    // Security / pairing (20-29)
+    PairingRequest  = 20,
+    PairingResponse = 21,
+    PairingConfirm  = 22,
+    PairingReject   = 23,
+    Unpair          = 24
 };
 ```
 
@@ -75,8 +85,8 @@ enum class MsgType : uint8_t {
 | `DeviceDiscovery` | 1 | Controller → Unit | None | Discover devices |
 | `DeviceInfo` | 2 | Unit → Controller | Device info | Device information |
 | `ConfigRequest` | 3 | Controller → Unit | None | Request configuration |
-| `ConfigResponse` | 4 | Unit → Controller | ConfigPayload (29B) | Current configuration |
-| `ConfigSet` | 5 | Controller → Unit | ConfigPayload (29B) | Set configuration |
+| `ConfigResponse` | 4 | Unit → Controller | ConfigPayload (17-34B) | Current configuration |
+| `ConfigSet` | 5 | Controller → Unit | ConfigPayload (17-34B) | Set configuration |
 | `ConfigAck` | 6 | Unit → Controller | ConfigAckPayload (2B) | Acknowledge config |
 | `Command` | 7 | Controller → Unit | CommandPayload (1B+) | Start/Pause/Resume/Stop |
 | `CommandAck` | 8 | Unit → Controller | None | Acknowledge command |
@@ -84,27 +94,32 @@ enum class MsgType : uint8_t {
 | `Error` | 10 | Unit → Controller | ErrorPayload (5B) | Error notification |
 | `ErrorClear` | 11 | Unit → Controller | None | Error cleared |
 | `TestComplete` | 12 | Unit → Controller | None | Test completed |
+| `BoundsResult` | 13 | Unit → Controller | BoundsResultPayload | Bounds finding result |
 
 ## Payload Structures
 
-### ConfigPayload (29 bytes)
+### ConfigPayload (17-34 bytes)
 
 Used in `ConfigSet` and `ConfigResponse` messages.
 
 ```cpp
 #pragma pack(push, 1)
 struct ConfigPayload {
-    // Base fields (13 bytes) - required, always present
-    uint32_t cycle_amount;                    // Target number of cycles
-    uint32_t time_per_cycle_sec;              // Time per cycle (seconds)
-    uint32_t dwell_time_sec;                  // Dwell time at bounds (seconds)
+    // Base fields (17 bytes) - required, always present
+    uint32_t cycle_amount;                    // Target number of cycles (0 = infinite)
+    float    oscillation_vmax_rpm;            // Max velocity during oscillation (RPM)
+    float    oscillation_amax_rev_s2;         // Acceleration during oscillation (rev/s²)
+    uint32_t dwell_time_ms;                   // Dwell time at endpoints (milliseconds)
     uint8_t  bounds_method;                   // 0 = StallGuard, 1 = Encoder
-    
-    // Extended fields (16 bytes) - optional advanced configuration
+
+    // Extended fields (16 bytes) - optional advanced configuration for bounds finding
     float    bounds_search_velocity_rpm;      // Search speed (RPM), 0 = use default
     float    stallguard_min_velocity_rpm;     // SG2 min velocity (RPM), 0 = use default
     float    stall_detection_current_factor;  // Current reduction (0.0-1.0), 0 = use default
     float    bounds_search_accel_rev_s2;      // Search acceleration (rev/s²), 0 = use default
+
+    // Extended v2 field (optional)
+    int8_t   stallguard_sgt;                  // StallGuard threshold [-64..63], 127 = default
 };
 #pragma pack(pop)
 ```
@@ -112,22 +127,26 @@ struct ConfigPayload {
 **Extended Field Behavior**:
 - Value of `0.0f` means "use test unit's default from TestConfig"
 - Non-zero values override the test unit's defaults
-- Backward compatible: older controllers can send only 13 bytes (base fields)
+- Backward compatible: older controllers can send only 17 bytes (base fields)
 
-**Byte Layout**:
+**Byte Layout (base + optional extensions)**:
 ```
 Offset  Size  Field
 ------  ----  -----
 0       4     cycle_amount
-4       4     time_per_cycle_sec
-8       4     dwell_time_sec
-12      1     bounds_method
-13      4     bounds_search_velocity_rpm (float)
-17      4     stallguard_min_velocity_rpm (float)
-21      4     stall_detection_current_factor (float)
-25      4     bounds_search_accel_rev_s2 (float)
+4       4     oscillation_vmax_rpm (float)
+8       4     oscillation_amax_rev_s2 (float)
+12      4     dwell_time_ms
+16      1     bounds_method
+17      4     bounds_search_velocity_rpm (float)
+21      4     stallguard_min_velocity_rpm (float)
+25      4     stall_detection_current_factor (float)
+29      4     bounds_search_accel_rev_s2 (float)
+33      1     stallguard_sgt (int8)
 ------  ----
-Total:  29 bytes
+Total:  17 bytes (base)
+    33 bytes (base + bounds tuning)
+    34 bytes (base + bounds tuning + SGT)
 ```
 
 ### CommandPayload (1+ bytes)
@@ -147,7 +166,9 @@ enum class CommandId : uint8_t {
     Start  = 1,  // Start fatigue test
     Pause  = 2,  // Pause test
     Resume = 3,  // Resume test
-    Stop   = 4   // Stop test
+    Stop   = 4,  // Stop test
+
+    RunBoundsFinding = 5 // Run bounds finding routine (independent of starting the test)
 };
 ```
 

@@ -222,14 +222,31 @@ static inline TestState ToProtoState(InternalState s) noexcept {
 }
 
 /**
+ * @brief Immediately stop motion and enter HOLD mode, but keep motor energized.
+ *
+ * @details
+ * This is used by PAUSE to stop motion while still delivering hold current.
+ * The motor remains energized and will hold position.
+ *
+ * @note Thread-safe: acquires g_driver_mutex internally.
+ */
+static void MotorStopHold() noexcept {
+    if (!g_driver || !g_driver_mutex) return;
+    TmcMutexGuard guard(*g_driver_mutex);
+    (void)g_driver->rampControl.Stop();
+    (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+    // Motor stays enabled - delivering hold current
+}
+
+/**
  * @brief Immediately stop motion, enter HOLD, and de-energize (disable) the motor.
  *
  * @details
  * This is the hard-stop safety primitive used by:
  * - STOP command handling (always)
- * - PAUSE handling (always)
  * - cancellation of bounds finding
  * - completion of a finite-cycle run
+ * - bounds cache timeout (de-energize to prevent heating)
  *
  * It is safe to call multiple times.
  *
@@ -407,6 +424,25 @@ static void RequestStart(PendingStartKind kind) noexcept {
         // Cancel the de-energize timer since we're starting the test
         BoundsCache::CancelDeenergizeTimer();
         
+        // SAFETY: Ensure StallGuard stop-on-stall is disabled and StealthChop is enabled
+        // These should already be set from bounds finding, but verify for safety
+        if (g_driver && g_driver_mutex) {
+            TmcMutexGuard guard(*g_driver_mutex);
+            (void)g_driver->stallGuard.EnableStopOnStall(false);
+            (void)g_driver->motorControl.SetStealthChopEnabled(true);
+            (void)g_driver->thresholds.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::RPM);
+        }
+        
+        // CRITICAL: On START (new test), reset cycle count to zero.
+        // On RESUME, keep existing cycle count and continue from where we left off.
+        if (kind == PendingStartKind::START) {
+            ESP_LOGI(TAG, "START with cached bounds: Resetting cycle count to zero");
+            g_motion->ResetCycles();
+        } else {
+            ESP_LOGI(TAG, "RESUME with cached bounds: Continuing from cycle %lu", 
+                     (unsigned long)g_motion->GetCurrentCycles());
+        }
+        
         // Start motion directly without bounds finding
         if (!g_motion->Start()) {
             ESP_LOGE(TAG, "Motion start failed with cached bounds");
@@ -524,19 +560,21 @@ static void espnow_command_task(void* arg)
                     // Get test config defaults for fallback when remote sends 0.0f
                     using TestConfig = tmc51x0_test_config::GetTestConfigForTestRig<SELECTED_TEST_RIG>;
                     
-                    ESP_LOGI(TAG, "Config set: cycles=%u, tper=%u, dwell=%u, bounds=%s",
+                    ESP_LOGI(TAG, "Config set: cycles=%u, vmax=%.1f RPM, amax=%.1f rev/s², dwell=%lu ms, bounds=%s",
                              ev.data.config.cycle_amount,
-                             ev.data.config.time_per_cycle,
-                             ev.data.config.dwell_time,
+                             ev.data.config.oscillation_vmax_rpm,
+                             ev.data.config.oscillation_amax_rev_s2,
+                             (unsigned long)ev.data.config.dwell_time_ms,
                              ev.data.config.bounds_method_stallguard ? "StallGuard" : "Encoder");
                     
-                    // Base fields (always set)
+                    // Base fields (always set) - direct velocity/acceleration control
                     g_settings.test_unit.cycle_amount = ev.data.config.cycle_amount;
-                    g_settings.test_unit.time_per_cycle = ev.data.config.time_per_cycle;
-                    g_settings.test_unit.dwell_time = ev.data.config.dwell_time;
+                    g_settings.test_unit.oscillation_vmax_rpm = ev.data.config.oscillation_vmax_rpm;
+                    g_settings.test_unit.oscillation_amax_rev_s2 = ev.data.config.oscillation_amax_rev_s2;
+                    g_settings.test_unit.dwell_time_ms = ev.data.config.dwell_time_ms;
                     g_settings.test_unit.bounds_method_stallguard = ev.data.config.bounds_method_stallguard;
                     
-                    // Extended fields: 0.0f means "use test config defaults"
+                    // Extended fields for bounds finding: 0.0f means "use test config defaults"
                     g_settings.test_unit.bounds_search_velocity_rpm = 
                         (ev.data.config.bounds_search_velocity_rpm > 0.01f) 
                             ? ev.data.config.bounds_search_velocity_rpm 
@@ -553,12 +591,23 @@ static void espnow_command_task(void* arg)
                         (ev.data.config.bounds_search_accel_rev_s2 > 0.01f) 
                             ? ev.data.config.bounds_search_accel_rev_s2 
                             : TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
+
+                    // SGT: valid range [-64, 63]. 127 means "use default".
+                    if (ev.data.config.stallguard_sgt >= -64 && ev.data.config.stallguard_sgt <= 63) {
+                        g_settings.test_unit.stallguard_sgt = ev.data.config.stallguard_sgt;
+                    } else {
+                        g_settings.test_unit.stallguard_sgt = TestConfig::StallGuard::SGT_HOMING;
+                    }
                     
-                    ESP_LOGI(TAG, "Extended config (after defaults): search_vel=%.1f, sg_min=%.1f, cur_factor=%.2f, accel=%.1f",
+                    ESP_LOGI(TAG, "Motion config: VMAX=%.1f RPM, AMAX=%.2f rev/s², dwell=%lu ms",
+                             g_settings.test_unit.oscillation_vmax_rpm,
+                             g_settings.test_unit.oscillation_amax_rev_s2,
+                             (unsigned long)g_settings.test_unit.dwell_time_ms);
+                    ESP_LOGI(TAG, "Bounds config: search_vel=%.1f, sg_min=%.1f, cur_factor=%.2f, SGT=%d",
                              g_settings.test_unit.bounds_search_velocity_rpm,
                              g_settings.test_unit.stallguard_min_velocity_rpm,
                              g_settings.test_unit.stall_detection_current_factor,
-                             g_settings.test_unit.bounds_search_accel_rev_s2);
+                             static_cast<int>(g_settings.test_unit.stallguard_sgt));
                     
                     g_use_stallguard = ev.data.config.bounds_method_stallguard;
                     // Any config change forces bounds re-find on next START/RESUME
@@ -566,10 +615,9 @@ static void espnow_command_task(void* arg)
                     
                     if (g_motion) {
                         g_motion->SetTargetCycles(g_settings.test_unit.cycle_amount);
-                        g_motion->SetDwellTimes(g_settings.test_unit.dwell_time * 1000, g_settings.test_unit.dwell_time * 1000);
-                        // Convert time_per_cycle to frequency
-                        float freq = 1.0f / (float)g_settings.test_unit.time_per_cycle;
-                        g_motion->SetFrequency(freq);
+                        g_motion->SetMaxVelocity(g_settings.test_unit.oscillation_vmax_rpm);
+                        g_motion->SetAcceleration(g_settings.test_unit.oscillation_amax_rev_s2);
+                        g_motion->SetDwellTimes(g_settings.test_unit.dwell_time_ms, g_settings.test_unit.dwell_time_ms);
                     }
                     EspNowReceiver::send_config_ack(true, 0);
                     break;
@@ -590,20 +638,23 @@ static void espnow_command_task(void* arg)
                 case ProtoEventType::CommandPause:
                     ESP_LOGI(TAG, "Pause command received");
                     EspNowReceiver::send_pause_ack();
-                    // If bounds-finding is active, cancel it. Pause means motor de-energized.
+                    // If bounds-finding is active, cancel it and disable motor (can't pause mid-bounds-finding).
                     if (g_state == InternalState::BOUNDS_FINDING) {
                         g_cancel_bounds = true;
                         g_state = InternalState::PAUSED;
-                        MotorStopHoldDisable();
+                        MotorStopHoldDisable();  // Disable during bounds-finding cancellation
+                        BoundsCache::InvalidateBounds();  // Must re-find bounds on resume
                         EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Paused);
                         break;
                     }
-                    // If running, stop motion and de-energize.
+                    // If running, stop motion but KEEP motor energized (still delivering hold current).
+                    // Resume will continue from current position without re-finding bounds.
                     if (g_motion) {
                         g_motion->Stop();
                     }
                     g_state = InternalState::PAUSED;
-                    MotorStopHoldDisable();
+                    MotorStopHold();  // Stop motion but keep motor energized (hold current delivered)
+                    ESP_LOGI(TAG, "Motor paused - holding position with hold current");
                     EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Paused);
                     break;
                     
@@ -752,7 +803,10 @@ static void bounds_finding_task(void* arg)
     // acceleration/deceleration. The filter averages SG readings over 4 samples.
     tmc51x0::StallGuardConfig sg_override{};
     if (use_sg) {
-        sg_override.threshold = TestConfig::StallGuard::SGT_HOMING;
+        const int8_t sgt = (tu.stallguard_sgt >= -64 && tu.stallguard_sgt <= 63)
+            ? tu.stallguard_sgt
+            : static_cast<int8_t>(TestConfig::StallGuard::SGT_HOMING);
+        sg_override.threshold = sgt;
         sg_override.enable_filter = true;  // Always ON for bounds finding (critical for reliability)
         sg_override.min_velocity = tu.stallguard_min_velocity_rpm;
         sg_override.max_velocity = 0.0f;
@@ -845,10 +899,20 @@ static void bounds_finding_task(void* arg)
              result.success ? 1 : 0, result.bounded ? 1 : 0, result.min_bound, result.max_bound, pos_deg,
              use_sg ? "StallGuard" : "Encoder");
 
+    // Edge backoff: how far inside the mechanical bounds to oscillate.
+    // This prevents repeatedly hitting the endpoints and gives margin for any residual error.
+    // Must match the value used in bounds_finding_test.cpp for consistent behavior.
+    static constexpr float OSCILLATION_EDGE_BACKOFF_DEG = 3.5f;
+    
     if (result.bounded) {
         // Use the measured mechanical range as the oscillation range.
-    g_motion->SetGlobalBounds(result.min_bound, result.max_bound);
-        g_motion->SetLocalBoundsFromCenterDegrees(result.min_bound, result.max_bound);
+        g_motion->SetGlobalBounds(result.min_bound, result.max_bound);
+        // Apply edge backoff to stay inside mechanical bounds during oscillation
+        g_motion->SetLocalBoundsFromCenterDegrees(result.min_bound, result.max_bound, OSCILLATION_EDGE_BACKOFF_DEG);
+        ESP_LOGI(TAG, "[bounds_find] Oscillation range: [%.2f°, %.2f°] (with %.2f° edge backoff)",
+                 result.min_bound + OSCILLATION_EDGE_BACKOFF_DEG, 
+                 result.max_bound - OSCILLATION_EDGE_BACKOFF_DEG,
+                 OSCILLATION_EDGE_BACKOFF_DEG);
     } else {
         // Treat as unbounded:
         // - Define home at the *current* physical position (XACTUAL=0), so subsequent motion is small and local.
@@ -862,7 +926,9 @@ static void bounds_finding_task(void* arg)
 
         // NOTE: FatigueTestMotion::SetUnbounded expects a *total* range; pass 350° to yield ±175°.
         g_motion->SetUnbounded(0.0f, 350.0f);
-    g_motion->SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f);
+        // Unbounded mode: use a safe default range with edge backoff
+        g_motion->SetLocalBoundsFromCenterDegrees(-60.0f, 60.0f, OSCILLATION_EDGE_BACKOFF_DEG);
+        ESP_LOGW(TAG, "[bounds_find] Unbounded mode: using default oscillation range [-60°, 60°]");
     }
     g_bounds_found = true;
     
@@ -914,6 +980,16 @@ static void bounds_finding_task(void* arg)
 
     // Cancel de-energize timer since we're starting the test
     BoundsCache::CancelDeenergizeTimer();
+    
+    // CRITICAL: On START (new test), reset cycle count to zero.
+    // On RESUME, keep existing cycle count and continue from where we left off.
+    if (start_kind == PendingStartKind::START) {
+        ESP_LOGI(TAG, "[bounds_find] START: Resetting cycle count to zero");
+        g_motion->ResetCycles();
+    } else {
+        ESP_LOGI(TAG, "[bounds_find] RESUME: Continuing from cycle %lu", 
+                 (unsigned long)g_motion->GetCurrentCycles());
+    }
 
     if (!g_motion->Start()) {
         ESP_LOGE(TAG, "[bounds_find] Motion start failed after bounds");
@@ -927,7 +1003,6 @@ static void bounds_finding_task(void* arg)
     }
 
     g_state = InternalState::RUNNING;
-    (void)start_kind; // ack is already sent in command handlers
     EspNowReceiver::send_status_update(g_motion->GetCurrentCycles(), TestState::Running);
 
     g_bounds_task_running = false;
@@ -1165,10 +1240,11 @@ enum class CommandType {
  * @brief Option types for SET command
  */
 enum class OptionType {
-    FREQUENCY,  // -f, --frequency
-    DWELL,      // -d, --dwell
-    BOUNDS,     // -b, --bounds
-    CYCLES      // -c, --cycles
+    VELOCITY,      // -v, --velocity (VMAX in RPM)
+    ACCELERATION,  // -a, --acceleration (AMAX in rev/s²)
+    DWELL,         // -d, --dwell
+    BOUNDS,        // -b, --bounds
+    CYCLES         // -c, --cycles
 };
 
 /**
@@ -1346,7 +1422,8 @@ public:
      */
     static const OptionDef* FindOption(const std::string& name) {
         static const OptionDef options[] = {
-            {OptionType::FREQUENCY, "-f", "--frequency", "Motion frequency in Hz", 1, 1},
+            {OptionType::VELOCITY, "-v", "--velocity", "Max velocity in RPM", 1, 1},
+            {OptionType::ACCELERATION, "-a", "--acceleration", "Acceleration in rev/s²", 1, 1},
             {OptionType::DWELL, "-d", "--dwell", "Dwell times in ms (min, max)", 2, 2},
             {OptionType::BOUNDS, "-b", "--bounds", "Angle bounds in degrees (min, max)", 2, 2},
             {OptionType::CYCLES, "-c", "--cycles", "Target cycle count (0 = infinite)", 1, 1}
@@ -1393,9 +1470,12 @@ public:
                 options.push_back({def->type, args});
                 i += arg_count; // Skip the arguments we just consumed
             } else {
-                // Check if it's a word-based option (e.g., "frequency", "dwell")
-                if (tokens[i] == "frequency" && i + 1 < tokens.size()) {
-                    options.push_back({OptionType::FREQUENCY, {tokens[i + 1]}});
+                // Check if it's a word-based option (e.g., "velocity", "dwell")
+                if ((tokens[i] == "velocity" || tokens[i] == "vmax") && i + 1 < tokens.size()) {
+                    options.push_back({OptionType::VELOCITY, {tokens[i + 1]}});
+                    i++;
+                } else if ((tokens[i] == "acceleration" || tokens[i] == "accel" || tokens[i] == "amax") && i + 1 < tokens.size()) {
+                    options.push_back({OptionType::ACCELERATION, {tokens[i + 1]}});
                     i++;
                 } else if (tokens[i] == "dwell" && i + 2 < tokens.size()) {
                     options.push_back({OptionType::DWELL, {tokens[i + 1], tokens[i + 2]}});
@@ -1424,7 +1504,8 @@ public:
      */
     static const OptionDef* GetOptionDef(OptionType type) {
         static const OptionDef options[] = {
-            {OptionType::FREQUENCY, "-f", "--frequency", "Motion frequency in Hz", 1, 1},
+            {OptionType::VELOCITY, "-v", "--velocity", "Max velocity in RPM", 1, 1},
+            {OptionType::ACCELERATION, "-a", "--acceleration", "Acceleration in rev/s²", 1, 1},
             {OptionType::DWELL, "-d", "--dwell", "Dwell times in ms (min, max)", 2, 2},
             {OptionType::BOUNDS, "-b", "--bounds", "Angle bounds in degrees (min, max)", 2, 2},
             {OptionType::CYCLES, "-c", "--cycles", "Target cycle count (0 = infinite)", 1, 1}
@@ -1767,24 +1848,47 @@ static bool HandleSet(const ParsedCommand& cmd, FatigueTest::FatigueTestMotion& 
         bool success = false;
         
         switch (opt_type) {
-            case OptionType::FREQUENCY: {
+            case OptionType::VELOCITY: {
                 if (args.empty()) {
-                    CommandOutput::PrintError("Frequency option requires a value");
+                    CommandOutput::PrintError("Velocity option requires a value (RPM)");
                     failure_count++;
                     break;
                 }
-                float freq = std::strtof(args[0].c_str(), nullptr);
-                if (freq < 0.01f || freq > 10.0f) {
-                    CommandOutput::PrintError("Frequency must be between 0.01 and 10.0 Hz (got %.2f)", freq);
+                float vmax = std::strtof(args[0].c_str(), nullptr);
+                if (vmax < 5.0f || vmax > 120.0f) {
+                    CommandOutput::PrintError("Velocity must be between 5 and 120 RPM (got %.1f)", vmax);
                     failure_count++;
                     break;
                 }
-                success = motion.SetFrequency(freq);
+                success = motion.SetMaxVelocity(vmax);
                 if (success) {
-                    CommandOutput::PrintSuccess("Frequency set to %.2f Hz", freq);
+                    CommandOutput::PrintSuccess("Max velocity set to %.1f RPM", vmax);
                     success_count++;
                 } else {
-                    CommandOutput::PrintError("Failed to set frequency");
+                    CommandOutput::PrintError("Failed to set velocity");
+                    failure_count++;
+                }
+                break;
+            }
+            
+            case OptionType::ACCELERATION: {
+                if (args.empty()) {
+                    CommandOutput::PrintError("Acceleration option requires a value (rev/s²)");
+                    failure_count++;
+                    break;
+                }
+                float amax = std::strtof(args[0].c_str(), nullptr);
+                if (amax < 0.5f || amax > 30.0f) {
+                    CommandOutput::PrintError("Acceleration must be between 0.5 and 30 rev/s² (got %.2f)", amax);
+                    failure_count++;
+                    break;
+                }
+                success = motion.SetAcceleration(amax);
+                if (success) {
+                    CommandOutput::PrintSuccess("Acceleration set to %.2f rev/s²", amax);
+                    success_count++;
+                } else {
+                    CommandOutput::PrintError("Failed to set acceleration");
                     failure_count++;
                 }
                 break;
@@ -2025,10 +2129,17 @@ static bool HandleStatus(FatigueTest::FatigueTestMotion& motion) noexcept {
     snprintf(bounded_str, sizeof(bounded_str), "%s", status.bounded ? "YES" : "NO");
     CommandOutput::PrintTableRow("Bounded:", bounded_str);
     
+    char vmax_str[64];
+    snprintf(vmax_str, sizeof(vmax_str), "%.1f RPM", status.vmax_rpm);
+    CommandOutput::PrintTableRow("VMAX:", vmax_str);
+    
+    char amax_str[64];
+    snprintf(amax_str, sizeof(amax_str), "%.2f rev/s²", status.amax_rev_s2);
+    CommandOutput::PrintTableRow("AMAX:", amax_str);
+    
     char freq_str[64];
-    snprintf(freq_str, sizeof(freq_str), "%.2f Hz (Estimated: %.2f Hz)", 
-             status.frequency_hz, motion.GetEstimatedFrequency());
-    CommandOutput::PrintTableRow("Frequency:", freq_str);
+    snprintf(freq_str, sizeof(freq_str), "%.2f Hz (estimated)", status.estimated_frequency_hz);
+    CommandOutput::PrintTableRow("Est. Freq:", freq_str);
     
     char local_bounds_str[64];
     snprintf(local_bounds_str, sizeof(local_bounds_str), "%.2f° to %.2f° from center",
@@ -2372,6 +2483,17 @@ extern "C" void app_main()
     ESP_LOGI(TAG, "║         Fatigue Test Unit with ESP-NOW Communication                         ║");
     ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
 
+    // Initialize default stall detection parameters from test config EARLY.
+    // This prevents ConfigResponse from ever reporting placeholder defaults (e.g. SGT=127)
+    // if a remote requests config immediately after ESP-NOW comes up.
+    using TestConfig = tmc51x0_test_config::GetTestConfigForTestRig<SELECTED_TEST_RIG>;
+    g_settings.test_unit.bounds_search_velocity_rpm = TestConfig::Motion::BOUNDS_SEARCH_SPEED_RPM;
+    g_settings.test_unit.stallguard_min_velocity_rpm = TestConfig::StallGuard::MIN_VELOCITY_RPM;
+    g_settings.test_unit.stall_detection_current_factor = TestConfig::StallGuard::STALL_DETECTION_CURRENT_FACTOR;
+    g_settings.test_unit.bounds_search_accel_rev_s2 = TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
+    g_settings.test_unit.stallguard_sgt = TestConfig::StallGuard::SGT_HOMING;
+    ESP_LOGI(TAG, "Default stall detection parameters initialized from test config");
+
     // Initialize ESP-NOW receiver
     g_espnowQueue = xQueueCreate(10, sizeof(ProtoEvent));
     if (!EspNowReceiver::init(g_espnowQueue)) {
@@ -2434,14 +2556,6 @@ extern "C" void app_main()
     // Motor must NOT be enabled at boot. We only energize during bounds-finding and active motion.
     (void)driver.motorControl.Disable();
     ESP_LOGI(TAG, "Motor left disabled at boot (will enable on START)");
-
-    // Initialize default stall detection parameters from test config
-    using TestConfig = tmc51x0_test_config::GetTestConfigForTestRig<SELECTED_TEST_RIG>;
-    g_settings.test_unit.bounds_search_velocity_rpm = TestConfig::Motion::BOUNDS_SEARCH_SPEED_RPM;
-    g_settings.test_unit.stallguard_min_velocity_rpm = TestConfig::StallGuard::MIN_VELOCITY_RPM;
-    g_settings.test_unit.stall_detection_current_factor = TestConfig::StallGuard::STALL_DETECTION_CURRENT_FACTOR;
-    g_settings.test_unit.bounds_search_accel_rev_s2 = TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
-    ESP_LOGI(TAG, "Default stall detection parameters initialized from test config");
 
     // Create driver mutex for thread-safe SPI access
     // This mutex protects ALL SPI transactions to the TMC5160

@@ -45,12 +45,13 @@ namespace FatigueTest {
 
 FatigueTestMotion::FatigueTestMotion(tmc51x0::TMC51x0<Esp32SPI>* driver, Esp32TmcMutex& driver_mutex) noexcept
     : driver_(driver), global_min_bound_(0.0f), global_max_bound_(0.0f), local_min_bound_(0.0f), local_max_bound_(0.0f),
-      home_position_(0.0f), bounded_(false), amplitude_(1000.0F), frequency_hz_(0.5F), 
+      home_position_(0.0f), bounded_(false), amplitude_(1000.0F),
+      vmax_rpm_(60.0f), amax_rev_s2_(10.0f),  // Default motion parameters
       dwell_at_min_ms_(0), dwell_at_max_ms_(0), running_(false), start_time_us_(0),
       phase_offset_(0.0F), target_cycles_(0), current_cycles_(0), cycle_complete_(false),
       last_was_negative_(false), cycle_started_(false), last_target_relative_(0.0f), 
       state_(MotionState::STOPPED), dwell_start_time_ms_(0), sinusoidal_mode_(false), 
-      calculated_vmax_rpm_(30.0f), calculated_amax_rev_s2_(2.0f), estimated_frequency_hz_(0.0f),
+      estimated_frequency_hz_(0.0f),
       driver_mutex_(driver_mutex) {
     // Note: Initialization order matches member declaration order in header
 }
@@ -103,7 +104,8 @@ void FatigueTestMotion::SetUnbounded(float current_position_degrees, float defau
     ESP_LOGI(TAG_MOTION, "Default global range: [%.2f°, %.2f°]", global_min_bound_, global_max_bound_);
 }
 
-bool FatigueTestMotion::SetLocalBoundsFromCenterDegrees(float min_degrees_from_center, float max_degrees_from_center) noexcept {
+bool FatigueTestMotion::SetLocalBoundsFromCenterDegrees(float min_degrees_from_center, float max_degrees_from_center,
+                                                         float edge_backoff_deg) noexcept {
     float min_deg, max_deg;
     bool is_bounded;
     float global_min, global_max;
@@ -121,6 +123,24 @@ bool FatigueTestMotion::SetLocalBoundsFromCenterDegrees(float min_degrees_from_c
         min_deg = std::max(min_deg, global_min);
         max_deg = std::min(max_deg, global_max);
     }
+    
+    // Apply edge backoff to stay inside mechanical bounds during oscillation
+    // This prevents repeatedly "kissing" the endpoints and accounts for any residual error
+    if (edge_backoff_deg > 0.0f) {
+        float backoff_min = min_deg + edge_backoff_deg;
+        float backoff_max = max_deg - edge_backoff_deg;
+        
+        // Only apply backoff if it leaves a valid range
+        if (backoff_min < backoff_max) {
+            ESP_LOGI(TAG_MOTION, "Applying edge backoff: %.2f° (min: %.2f° -> %.2f°, max: %.2f° -> %.2f°)",
+                     edge_backoff_deg, min_deg, backoff_min, max_deg, backoff_max);
+            min_deg = backoff_min;
+            max_deg = backoff_max;
+        } else {
+            ESP_LOGW(TAG_MOTION, "Edge backoff %.2f° too large for range [%.2f°, %.2f°] - using full range",
+                     edge_backoff_deg, min_deg, max_deg);
+        }
+    }
 
     {
         TmcMutexGuard guard(driver_mutex_);
@@ -130,12 +150,13 @@ bool FatigueTestMotion::SetLocalBoundsFromCenterDegrees(float min_degrees_from_c
         amplitude_ = (local_max_bound_ - local_min_bound_) / 2.0f;
     }
 
-    ESP_LOGI(TAG_MOTION, "Local bounds set: min=%.2f°, max=%.2f° from center", min_deg, max_deg);
+    ESP_LOGI(TAG_MOTION, "Local bounds set: min=%.2f°, max=%.2f° (with %.2f° edge backoff)", 
+             min_deg, max_deg, edge_backoff_deg);
     
-    // Recalculate trajectory with new bounds
+    // Recalculate estimated frequency with new bounds
     {
         TmcMutexGuard guard(driver_mutex_);
-        RecalculateTrajectory();
+        RecalculateEstimatedFrequency();
     }
     return true;
 }
@@ -146,23 +167,57 @@ void FatigueTestMotion::GetLocalBoundsFromCenterDegrees(float& min_degrees, floa
     max_degrees = local_max_bound_;
 }
 
-bool FatigueTestMotion::SetFrequency(float frequency_hz) noexcept {
-    if (frequency_hz < 0.0F || frequency_hz > 10.0F) {
-        ESP_LOGE(TAG_MOTION, "Invalid frequency: %.2f Hz (range: 0.0-10.0)", frequency_hz);
-        return false;
+// Velocity/Acceleration safety limits (conservative for fatigue testing)
+static constexpr float VMAX_MIN_RPM = 5.0f;     // Minimum useful velocity
+static constexpr float VMAX_MAX_RPM = 120.0f;   // Maximum safe velocity for fatigue testing
+static constexpr float AMAX_MIN_REV_S2 = 0.5f;  // Minimum acceleration
+static constexpr float AMAX_MAX_REV_S2 = 30.0f; // Maximum acceleration
+
+bool FatigueTestMotion::SetMaxVelocity(float vmax_rpm) noexcept {
+    // Clamp to safe limits
+    float clamped = std::clamp(vmax_rpm, VMAX_MIN_RPM, VMAX_MAX_RPM);
+    if (clamped != vmax_rpm) {
+        ESP_LOGW(TAG_MOTION, "VMAX clamped: %.1f -> %.1f RPM (limits: %.1f-%.1f)", 
+                 vmax_rpm, clamped, VMAX_MIN_RPM, VMAX_MAX_RPM);
     }
     {
         TmcMutexGuard guard(driver_mutex_);
-        frequency_hz_ = frequency_hz;
-        RecalculateTrajectory();
+        vmax_rpm_ = clamped;
+        RecalculateEstimatedFrequency();
     }
-    ESP_LOGI(TAG_MOTION, "Frequency updated: %.2f Hz", frequency_hz);
+    ESP_LOGI(TAG_MOTION, "Max velocity set: %.1f RPM", clamped);
     return true;
 }
 
-float FatigueTestMotion::GetFrequency() const noexcept {
+float FatigueTestMotion::GetMaxVelocity() const noexcept {
     TmcMutexGuard guard(driver_mutex_);
-    return frequency_hz_;
+    return vmax_rpm_;
+}
+
+bool FatigueTestMotion::SetAcceleration(float amax_rev_s2) noexcept {
+    // Clamp to safe limits
+    float clamped = std::clamp(amax_rev_s2, AMAX_MIN_REV_S2, AMAX_MAX_REV_S2);
+    if (clamped != amax_rev_s2) {
+        ESP_LOGW(TAG_MOTION, "AMAX clamped: %.2f -> %.2f rev/s² (limits: %.2f-%.2f)", 
+                 amax_rev_s2, clamped, AMAX_MIN_REV_S2, AMAX_MAX_REV_S2);
+    }
+    {
+        TmcMutexGuard guard(driver_mutex_);
+        amax_rev_s2_ = clamped;
+        RecalculateEstimatedFrequency();
+    }
+    ESP_LOGI(TAG_MOTION, "Acceleration set: %.2f rev/s²", clamped);
+    return true;
+}
+
+float FatigueTestMotion::GetAcceleration() const noexcept {
+    TmcMutexGuard guard(driver_mutex_);
+    return amax_rev_s2_;
+}
+
+float FatigueTestMotion::GetEstimatedCycleFrequency() const noexcept {
+    TmcMutexGuard guard(driver_mutex_);
+    return estimated_frequency_hz_;
 }
 
 bool FatigueTestMotion::SetDwellTimes(uint32_t dwell_at_min_ms, uint32_t dwell_at_max_ms) noexcept {
@@ -170,7 +225,7 @@ bool FatigueTestMotion::SetDwellTimes(uint32_t dwell_at_min_ms, uint32_t dwell_a
         TmcMutexGuard guard(driver_mutex_);
         dwell_at_min_ms_ = dwell_at_min_ms;
         dwell_at_max_ms_ = dwell_at_max_ms;
-        RecalculateTrajectory();
+        RecalculateEstimatedFrequency();
     }
     ESP_LOGI(TAG_MOTION, "Dwell times updated: min=%lu ms, max=%lu ms", 
              dwell_at_min_ms, dwell_at_max_ms);
@@ -264,16 +319,25 @@ bool FatigueTestMotion::Start() noexcept {
     {
         TmcMutexGuard guard(driver_mutex_);
         
-        // Update trajectory before starting
-        RecalculateTrajectory();
+        // Update estimated frequency before starting (informational)
+        RecalculateEstimatedFrequency();
 
+        // =====================================================================
+        // RAMP SPEED CONFIGURATION
+        // VSTART: Initial velocity when starting from standstill (must overcome friction)
+        // VSTOP: Velocity below which ramp generator considers "stopped"
+        // These should be low values - NOT the max speed!
+        // =====================================================================
+        static constexpr float VSTART_RPM = 3.0f;   // Start velocity (3 RPM)
+        static constexpr float VSTOP_RPM = 5.0f;    // Stop velocity threshold (5 RPM)
+        
         // Configure driver for positioning mode
-        // Values are already in proper units (RPM and rev/s²) - use directly
+        // VMAX and AMAX are directly user-controlled, not derived from frequency
         driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-        driver_->rampControl.SetMaxSpeed(calculated_vmax_rpm_, tmc51x0::Unit::RPM);
-        driver_->rampControl.SetAcceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
-        driver_->rampControl.SetDeceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
-        driver_->rampControl.SetRampSpeeds(30.0f, 3.0f, 0.0f, tmc51x0::Unit::RPM);
+        driver_->rampControl.SetMaxSpeed(vmax_rpm_, tmc51x0::Unit::RPM);
+        driver_->rampControl.SetAcceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+        driver_->rampControl.SetDeceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+        driver_->rampControl.SetRampSpeeds(VSTART_RPM, VSTOP_RPM, 0.0f, tmc51x0::Unit::RPM);
 
         running_ = true;
         start_time_us_ = esp_timer_get_time();
@@ -307,8 +371,8 @@ bool FatigueTestMotion::Start() noexcept {
 
     ESP_LOGI(TAG_MOTION, "Starting fatigue test (cycles: %lu/%lu)", current_cycles,
              target_cycles == 0 ? 0xFFFFFFFF : target_cycles);
-    ESP_LOGI(TAG_MOTION, "  Motion: Sinusoidal mode, VMAX=%.2f RPM, AMAX=%.3f rev/s²", 
-             calculated_vmax_rpm_, calculated_amax_rev_s2_);
+    ESP_LOGI(TAG_MOTION, "  Motion: Point-to-point mode, VMAX=%.1f RPM, AMAX=%.2f rev/s², Est.Freq=%.2f Hz", 
+             vmax_rpm_, amax_rev_s2_, estimated_frequency_hz_);
     return true;
 }
 
@@ -330,60 +394,62 @@ bool FatigueTestMotion::IsRunning() const noexcept {
     return running_ && state_ != MotionState::STOPPED;
 }
 
-void FatigueTestMotion::RecalculateTrajectory() noexcept {
+void FatigueTestMotion::RecalculateEstimatedFrequency() noexcept {
+    // =========================================================================
+    // ESTIMATED FREQUENCY CALCULATION
+    // Calculate the estimated cycle frequency based on user-set VMAX, AMAX,
+    // and travel distance. This is informational - the user directly controls
+    // VMAX and AMAX, so the frequency is a derived result.
+    // =========================================================================
+    
     // Calculate total travel distance (one way) in degrees
     float distance_deg = fabsf(local_max_bound_ - local_min_bound_);
-    if (distance_deg < 0.1f || frequency_hz_ <= 0.0001f) {
-        // Default values in proper units
-        calculated_vmax_rpm_ = 30.0f;      // 30 RPM default
-        calculated_amax_rev_s2_ = 2.0f;    // 2 rev/s² default
+    if (distance_deg < 0.1f || vmax_rpm_ <= 0.0f || amax_rev_s2_ <= 0.0f) {
         estimated_frequency_hz_ = 0.0f;
+        ESP_LOGW(TAG_MOTION, "Cannot estimate frequency (dist=%.2f°, vmax=%.1f RPM, amax=%.2f rev/s²)", 
+                 distance_deg, vmax_rpm_, amax_rev_s2_);
         return;
     }
-
-    // Target cycle period (total time for there + back + dwells)
-    float target_period_s = 1.0f / frequency_hz_;
     
-    // Total dwell time per cycle (min + max)
-    float total_dwell_s = (dwell_at_min_ms_ + dwell_at_max_ms_) / 1000.0f;
+    // Convert VMAX to deg/s: RPM * (360 deg/rev) / (60 s/min) = deg/s
+    float vmax_deg_per_s = vmax_rpm_ * 360.0f / 60.0f;
     
-    // Time available for motion (there + back)
-    float total_move_time_s = target_period_s - total_dwell_s;
+    // Convert AMAX to deg/s²: rev/s² * 360 deg/rev = deg/s²
+    float amax_deg_per_s2 = amax_rev_s2_ * 360.0f;
     
-    if (total_move_time_s <= 0.0f) {
-        total_move_time_s = 0.1f;
-        ESP_LOGW(TAG_MOTION, "Requested frequency %.2f Hz is impossible with given dwell times!", frequency_hz_);
+    // Time to accelerate to VMAX: t_accel = vmax / amax
+    float time_to_vmax_s = vmax_deg_per_s / amax_deg_per_s2;
+    
+    // Distance covered during acceleration: d_accel = 0.5 * a * t²
+    float distance_during_accel_deg = 0.5f * amax_deg_per_s2 * time_to_vmax_s * time_to_vmax_s;
+    
+    float leg_time_s;
+    
+    if (2.0f * distance_during_accel_deg >= distance_deg) {
+        // Triangular profile: can't reach VMAX
+        // d = 0.5 * a * t² * 2 (accel + decel)
+        // t_leg = sqrt(d / a)
+        leg_time_s = 2.0f * sqrtf(distance_deg / amax_deg_per_s2);
+    } else {
+        // Trapezoidal profile: reaches VMAX
+        // Cruise distance = total - 2*accel_dist
+        float cruise_distance_deg = distance_deg - 2.0f * distance_during_accel_deg;
+        float cruise_time_s = cruise_distance_deg / vmax_deg_per_s;
+        leg_time_s = 2.0f * time_to_vmax_s + cruise_time_s;
     }
     
-    // Time for one leg (one way)
-    float leg_time_s = total_move_time_s / 2.0f;
+    // Total dwell time per cycle
+    float total_dwell_s = (dwell_at_min_ms_ + dwell_at_max_ms_) / 1000.0f;
     
-    // Calculate velocity in degrees per second
-    // Using 1.5x factor for trapezoidal profile (allows for acceleration/deceleration phases)
-    float velocity_deg_per_s = (1.5f * distance_deg) / leg_time_s;
+    // Cycle period = 2 legs + dwell
+    float cycle_period_s = 2.0f * leg_time_s + total_dwell_s;
     
-    // Convert to RPM: (deg/s / 360 deg/rev) * 60 s/min = RPM
-    calculated_vmax_rpm_ = (velocity_deg_per_s / 360.0f) * 60.0f;
+    estimated_frequency_hz_ = (cycle_period_s > 0.0f) ? (1.0f / cycle_period_s) : 0.0f;
     
-    // Calculate acceleration in rev/s²
-    // Acceleration = velocity_change / time_to_reach_velocity
-    // Time to reach velocity is approximately leg_time / 3 (for trapezoidal profile)
-    float time_to_reach_velocity = leg_time_s / 3.0f;
-    float velocity_rev_per_s = calculated_vmax_rpm_ / 60.0f;
-    calculated_amax_rev_s2_ = velocity_rev_per_s / time_to_reach_velocity;
-    
-    // Clamp to reasonable limits (300 RPM max, 10 rev/s² max)
-    if (calculated_vmax_rpm_ > 300.0f) calculated_vmax_rpm_ = 300.0f;
-    if (calculated_amax_rev_s2_ > 10.0f) calculated_amax_rev_s2_ = 10.0f;
-    if (calculated_vmax_rpm_ < 1.0f) calculated_vmax_rpm_ = 1.0f;  // Minimum 1 RPM
-    if (calculated_amax_rev_s2_ < 0.1f) calculated_amax_rev_s2_ = 0.1f;  // Minimum 0.1 rev/s²
-    
-    estimated_frequency_hz_ = 1.0f / (2.0f * leg_time_s + total_dwell_s);
-    
-    ESP_LOGI(TAG_MOTION, "Trajectory Recalculated: Dist=%.2f°, LegTime=%.3fs", distance_deg, leg_time_s);
-    ESP_LOGI(TAG_MOTION, "  Target Freq=%.2fHz, Est Freq=%.2fHz", frequency_hz_, estimated_frequency_hz_);
-    ESP_LOGI(TAG_MOTION, "  VMAX=%.2f RPM, AMAX=%.3f rev/s²", 
-             calculated_vmax_rpm_, calculated_amax_rev_s2_);
+    ESP_LOGI(TAG_MOTION, "Estimated Frequency: %.2f Hz (dist=%.1f°, leg=%.3fs, dwell=%.1fs)", 
+             estimated_frequency_hz_, distance_deg, leg_time_s, total_dwell_s);
+    ESP_LOGI(TAG_MOTION, "  Using VMAX=%.1f RPM (%.1f°/s), AMAX=%.2f rev/s² (%.1f°/s²)", 
+             vmax_rpm_, vmax_deg_per_s, amax_rev_s2_, amax_deg_per_s2);
 }
 
 void FatigueTestMotion::ClipLocalBoundsToGlobal() noexcept {
@@ -429,7 +495,7 @@ void FatigueTestMotion::UpdateSinuousMotion() noexcept {
     {
         TmcMutexGuard guard(driver_mutex_);
         elapsed_us = esp_timer_get_time() - start_time_us_;
-        freq = frequency_hz_;
+        freq = estimated_frequency_hz_;  // Use estimated frequency based on VMAX/AMAX
         amp = amplitude_;
         home = home_position_;
         local_min = local_min_bound_;
@@ -546,13 +612,9 @@ void FatigueTestMotion::UpdateSinuousMotion() noexcept {
     if (fabsf(target_deg - current_pos_deg) > 0.5f) {  // ~0.5 degree threshold
         TmcMutexGuard guard(driver_mutex_);
         driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-        // Use slow speed for position correction (5 RPM, 1 rev/s²)
-        constexpr float SLOW_VMAX_RPM = 5.0f;
-        constexpr float SLOW_AMAX_REV_S2 = 1.0f;
-        
+        // Use the user-set velocity and acceleration (set via SetMaxVelocity/SetAcceleration)
+        // Do NOT override here - speeds were already configured at motion start
         driver_->rampControl.SetTargetPosition(target_deg, tmc51x0::Unit::Deg);
-        driver_->rampControl.SetMaxSpeed(SLOW_VMAX_RPM, tmc51x0::Unit::RPM);
-        driver_->rampControl.SetAcceleration(SLOW_AMAX_REV_S2, tmc51x0::Unit::RevPerSec);
     }
 }
 
@@ -615,11 +677,11 @@ void FatigueTestMotion::Update() noexcept {
         if (current_time_ms - dwell_start >= dwell_min) {
             TmcMutexGuard guard(driver_mutex_);
             if (!sinusoidal_mode_) {
-                // Values are already in proper units (RPM and rev/s²) - use directly
+                // User-set VMAX and AMAX are used directly
                 state_ = MotionState::MOVING_TO_MAX;
-                driver_->rampControl.SetMaxSpeed(calculated_vmax_rpm_, tmc51x0::Unit::RPM);
-                driver_->rampControl.SetAcceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
-                driver_->rampControl.SetDeceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+                driver_->rampControl.SetMaxSpeed(vmax_rpm_, tmc51x0::Unit::RPM);
+                driver_->rampControl.SetAcceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+                driver_->rampControl.SetDeceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
                 driver_->rampControl.SetTargetPosition(max_bound, tmc51x0::Unit::Deg);
             } else {
                 state_ = MotionState::MOVING_TO_MAX;
@@ -631,11 +693,11 @@ void FatigueTestMotion::Update() noexcept {
         if (current_time_ms - dwell_start >= dwell_max) {
             TmcMutexGuard guard(driver_mutex_);
             if (!sinusoidal_mode_) {
-                // Values are already in proper units (RPM and rev/s²) - use directly
+                // User-set VMAX and AMAX are used directly
                 state_ = MotionState::MOVING_TO_MIN;
-                driver_->rampControl.SetMaxSpeed(calculated_vmax_rpm_, tmc51x0::Unit::RPM);
-                driver_->rampControl.SetAcceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
-                driver_->rampControl.SetDeceleration(calculated_amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+                driver_->rampControl.SetMaxSpeed(vmax_rpm_, tmc51x0::Unit::RPM);
+                driver_->rampControl.SetAcceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+                driver_->rampControl.SetDeceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
                 driver_->rampControl.SetTargetPosition(min_bound, tmc51x0::Unit::Deg);
             } else {
                 state_ = MotionState::MOVING_TO_MIN;
@@ -657,7 +719,9 @@ FatigueTestMotion::Status FatigueTestMotion::GetStatus() const noexcept {
         TmcMutexGuard guard(driver_mutex_);
         status.running = running_ && state_ != MotionState::STOPPED;
         status.bounded = bounded_;
-        status.frequency_hz = frequency_hz_;
+        status.vmax_rpm = vmax_rpm_;
+        status.amax_rev_s2 = amax_rev_s2_;
+        status.estimated_frequency_hz = estimated_frequency_hz_;
         status.current_cycles = current_cycles_;
         status.target_cycles = target_cycles_;
         status.dwell_min_ms = dwell_at_min_ms_;
@@ -669,11 +733,6 @@ FatigueTestMotion::Status FatigueTestMotion::GetStatus() const noexcept {
     }
     
     return status;
-}
-
-float FatigueTestMotion::GetEstimatedFrequency() const noexcept {
-    TmcMutexGuard guard(driver_mutex_);
-    return estimated_frequency_hz_;
 }
 
 // Close namespace only if we opened it (standalone compilation)
