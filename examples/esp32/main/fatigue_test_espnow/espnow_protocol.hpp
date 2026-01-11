@@ -71,6 +71,9 @@ enum class MsgType : uint8_t {
     ErrorClear,        // = 11
     TestComplete,      // = 12
     
+        // Fatigue-test extensions
+        BoundsResult      = 13,
+    
     // Security / Pairing messages (20-29 range)
     PairingRequest  = 20,   ///< Initiate pairing (broadcast)
     PairingResponse = 21,   ///< Response with HMAC proof
@@ -102,7 +105,31 @@ enum class CommandId : uint8_t {
     Pause = 2,
     Resume = 3,
     Stop = 4
+    
+        // Dedicated bounds-finding command (independent of starting the test).
+        RunBoundsFinding = 5,
 };
+
+    /**
+     * @brief Payload for BOUNDS_RESULT.
+     *
+     * @details
+     * Sends the bounds relative to the established center/home (degrees).
+     * `min_degrees_from_center` is typically negative and `max_degrees_from_center`
+     * is typically positive.
+     */
+    #pragma pack(push, 1)
+    struct BoundsResultPayload {
+        uint8_t ok;        ///< 1=success (bounded or intentionally unbounded default); 0=failure
+        uint8_t bounded;   ///< 1=mechanical stops detected; 0=unbounded default window used
+        uint8_t cancelled; ///< 1=cancelled by user/STOP/PAUSE
+        uint8_t reserved;
+        float   min_degrees_from_center;
+        float   max_degrees_from_center;
+        float   global_min_degrees;
+        float   global_max_degrees;
+    };
+    #pragma pack(pop)
 
 // ------------- PACKET STRUCTURES -------------
 
@@ -257,6 +284,7 @@ enum class ProtoEventType {
     CommandPause,
     CommandResume,
     CommandStop,
+        CommandRunBoundsFinding,
     // Status/response events (both sides)
     ConfigUpdated,
     ConfigApplyOk,

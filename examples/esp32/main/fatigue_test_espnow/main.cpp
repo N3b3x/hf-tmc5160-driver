@@ -631,6 +631,20 @@ static void espnow_command_task(void* arg)
                     MotorStopHoldDisable();
                     EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Idle);
                     break;
+
+                case ProtoEventType::CommandRunBoundsFinding:
+                    ESP_LOGI(TAG, "RunBoundsFinding command received");
+                    // Always ACK receipt immediately; UI gates on ACK.
+                    EspNowReceiver::send_start_ack();
+                    if (!RequestBoundsOnly()) {
+                        ESP_LOGW(TAG, "Bounds-only request rejected (busy or running)");
+                        // Keep state unchanged; send a status update so UI can reflect reality.
+                        EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state));
+                        break;
+                    }
+                    // Bounds finding is active (InternalState::BOUNDS_FINDING maps to TestState::Running).
+                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state));
+                    break;
                     
                 default:
                     ESP_LOGW(TAG, "Unhandled event type: %d", (int)ev.type);
@@ -870,7 +884,27 @@ static void bounds_finding_task(void* arg)
     if (g_bounds_task_mode == BoundsTaskMode::FIND_ONLY) {
         ESP_LOGI(TAG, "[bounds_find] Bounds-only mode complete - motor staying energized for %lu seconds",
                  (unsigned long)BoundsCache::GetRemainingValiditySec());
+
+        // Report bounds to UI (relative to center/home).
+        float local_min = 0.0f;
+        float local_max = 0.0f;
+        float global_min = 0.0f;
+        float global_max = 0.0f;
+        if (g_motion) {
+            g_motion->GetLocalBoundsFromCenterDegrees(local_min, local_max);
+            g_motion->GetGlobalBoundsDegrees(global_min, global_max);
+        }
+        (void)EspNowReceiver::send_bounds_result(
+            1,
+            result.bounded ? 1 : 0,
+            0,
+            local_min,
+            local_max,
+            global_min,
+            global_max);
+
         g_state = InternalState::IDLE;
+        EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Idle);
         g_bounds_task_running = false;
         g_bounds_task_handle = nullptr;
         // Motor stays energized; de-energize timer will fire after validity window

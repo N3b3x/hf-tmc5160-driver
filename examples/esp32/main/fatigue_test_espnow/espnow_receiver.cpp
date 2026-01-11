@@ -323,6 +323,26 @@ bool EspNowReceiver::send_test_complete()
     return sendPacketToUi(MsgType::TestComplete, nullptr, 0);
 }
 
+bool EspNowReceiver::send_bounds_result(uint8_t ok,
+                                        uint8_t bounded,
+                                        uint8_t cancelled,
+                                        float min_deg_from_center,
+                                        float max_deg_from_center,
+                                        float global_min_deg,
+                                        float global_max_deg)
+{
+    BoundsResultPayload p{};
+    p.ok = ok;
+    p.bounded = bounded;
+    p.cancelled = cancelled;
+    p.reserved = 0;
+    p.min_degrees_from_center = min_deg_from_center;
+    p.max_degrees_from_center = max_deg_from_center;
+    p.global_min_degrees = global_min_deg;
+    p.global_max_degrees = global_max_deg;
+    return sendPacketToUi(MsgType::BoundsResult, &p, sizeof(p));
+}
+
 // ============================================================================
 // PAIRING FUNCTIONS
 // ============================================================================
@@ -696,6 +716,9 @@ static void handlePacket(const RawMsg& msg, const EspNowPacket& pkt, uint16_t re
                         break;
                     case CommandId::Stop:
                         ev.type = ProtoEventType::CommandStop;
+                        break;
+                    case CommandId::RunBoundsFinding:
+                        ev.type = ProtoEventType::CommandRunBoundsFinding;
                         break;
                     default:
                         ESP_LOGW(TAG, "Unknown command ID: %u", cmd_id);

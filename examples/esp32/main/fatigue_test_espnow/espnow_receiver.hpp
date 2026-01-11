@@ -94,6 +94,25 @@ bool send_error(uint8_t err_code, uint32_t at_cycle);
  */
 bool send_test_complete();
 
+/**
+ * @brief Send BOUNDS_RESULT message.
+ *
+ * @param ok 1 if bounds finding completed (bounded or default unbounded window); 0 on failure.
+ * @param bounded 1 if mechanical bounds were detected.
+ * @param cancelled 1 if cancelled by user/STOP/PAUSE.
+ * @param min_deg_from_center Local min bound relative to center/home (degrees).
+ * @param max_deg_from_center Local max bound relative to center/home (degrees).
+ * @param global_min_deg Global min (degrees).
+ * @param global_max_deg Global max (degrees).
+ */
+bool send_bounds_result(uint8_t ok,
+						uint8_t bounded,
+						uint8_t cancelled,
+						float min_deg_from_center,
+						float max_deg_from_center,
+						float global_min_deg,
+						float global_max_deg);
+
 // ============================================================================
 // PAIRING FUNCTIONS
 // ============================================================================
