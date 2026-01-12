@@ -1071,8 +1071,14 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
   current_microsteps_ = 256U >> mres;
 
   // Configure motor current from motor specifications
-  if (!motorControl.ConfigureMotorCurrent(motor_spec_)) {
-    return Result<void>(ErrorCode::INVALID_VALUE);
+  {
+    auto current_result = motorControl.ConfigureMotorCurrent(motor_spec_);
+    if (!current_result) {
+      TMC51X0_LOG_DEBUG(comm_, LogLevel::Error, "TMC5160",
+                        "Initialize failed: ConfigureMotorCurrent() (ErrorCode: %d)",
+                        static_cast<int>(current_result.Error()));
+      return current_result;
+    }
   }
 
   // Validate StealthChop lower limit if resistance is available
@@ -1105,8 +1111,14 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
   }
 
   // Configure power stage
-  if (!powerStage.ConfigurePowerStage(config.power_stage)) {
-    return Result<void>(ErrorCode::INVALID_VALUE);
+  {
+    auto ps_result = powerStage.ConfigurePowerStage(config.power_stage);
+    if (!ps_result) {
+      TMC51X0_LOG_DEBUG(comm_, LogLevel::Error, "TMC5160",
+                        "Initialize failed: ConfigurePowerStage() (ErrorCode: %d)",
+                        static_cast<int>(ps_result.Error()));
+      return ps_result;
+    }
   }
 
   // Configure short protection (convert user-friendly values to register values)
@@ -1151,13 +1163,25 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept 
   this->write_only_regs_.short_conf = short_conf.value;
 
   // Configure chopper
-  if (!motorControl.ConfigureChopper(config.chopper)) {
-    return Result<void>(ErrorCode::INVALID_VALUE);
+  {
+    auto chopper_result = motorControl.ConfigureChopper(config.chopper);
+    if (!chopper_result) {
+      TMC51X0_LOG_DEBUG(comm_, LogLevel::Error, "TMC5160",
+                        "Initialize failed: ConfigureChopper() (ErrorCode: %d)",
+                        static_cast<int>(chopper_result.Error()));
+      return chopper_result;
+    }
   }
 
   // Configure StealthChop
-  if (!motorControl.ConfigureStealthChop(config.stealthchop)) {
-    return Result<void>(ErrorCode::INVALID_VALUE);
+  {
+    auto stealth_result = motorControl.ConfigureStealthChop(config.stealthchop);
+    if (!stealth_result) {
+      TMC51X0_LOG_DEBUG(comm_, LogLevel::Error, "TMC5160",
+                        "Initialize failed: ConfigureStealthChop() (ErrorCode: %d)",
+                        static_cast<int>(stealth_result.Error()));
+      return stealth_result;
+    }
   }
 
   // Set ramp mode to positioning

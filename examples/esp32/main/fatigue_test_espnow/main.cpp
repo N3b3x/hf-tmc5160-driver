@@ -19,6 +19,7 @@
  #include <string>
  #include <vector>
  #include <cstdarg>
+ #include <new>
 #include <cstdint>
 #include <inttypes.h>
 
@@ -90,6 +91,15 @@ static tmc51x0::TMC51x0<Esp32SPI>* g_driver = nullptr;
 static Esp32TmcMutex* g_driver_mutex = nullptr;  // Protects ALL SPI access to g_driver
 static Settings g_settings{};
 static QueueHandle_t g_espnowQueue = nullptr;
+
+// -------------------- Lifetime-safe driver storage --------------------
+// These are constructed via placement-new in app_main() after we have pin/config values.
+// This avoids stack-lifetime issues if initialization fails and app_main() would otherwise return.
+alignas(Esp32SPI) static uint8_t g_spi_storage[sizeof(Esp32SPI)];
+alignas(tmc51x0::TMC51x0<Esp32SPI>) static uint8_t g_driver_storage[sizeof(tmc51x0::TMC51x0<Esp32SPI>)];
+alignas(FatigueTest::FatigueTestMotion) static uint8_t g_motion_storage[sizeof(FatigueTest::FatigueTestMotion)];
+
+static Esp32SPI* g_spi = nullptr;
 
 // -------------------- Runtime control/state --------------------
 enum class InternalState : uint8_t {
@@ -256,10 +266,25 @@ static void MotorStopHold() noexcept {
  */
 static void MotorStopHoldDisable() noexcept {
     if (!g_driver || !g_driver_mutex) return;
+    // If we're disabling the motor, cached-bounds "motor energized" must not remain true.
+    BoundsCache::g_motor_energized_for_bounds = false;
     TmcMutexGuard guard(*g_driver_mutex);
     (void)g_driver->rampControl.Stop();
     (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
     (void)g_driver->motorControl.Disable();
+}
+
+static void FatalInitError(const char* what, uint8_t err_code) noexcept {
+    ESP_LOGE(TAG, "FATAL init error: %s", what);
+    g_state = InternalState::ERROR;
+    // Best effort: tell remote if ESP-NOW is up.
+    (void)EspNowReceiver::send_error(err_code, 0);
+    // Best effort: ensure motor is de-energized.
+    MotorStopHoldDisable();
+    // Do not return from app_main; keep system alive for logs/remote visibility.
+    while (true) {
+        vTaskDelay(pdMS_TO_TICKS(1000));
+    }
 }
 
 /**
@@ -292,6 +317,16 @@ static bool MotorEnable() noexcept {
  */
 static void DeenergizeTimerCallback(void* arg) {
     (void)arg;
+    // Safety: never de-energize due to bounds-cache timeout while the test is active.
+    // This callback runs in the ESP timer task and can fire even if application state
+    // has advanced since bounds were found.
+    if (g_state != InternalState::IDLE) {
+        ESP_LOGW(TAG,
+                 "[BoundsCache] Validity expired but state=%d; skipping auto de-energize",
+                 static_cast<int>(g_state));
+        BoundsCache::g_motor_energized_for_bounds = false;
+        return;
+    }
     ESP_LOGI(TAG, "[BoundsCache] Validity window expired - de-energizing motor to prevent heating");
     BoundsCache::g_motor_energized_for_bounds = false;
     MotorStopHoldDisable();
@@ -339,7 +374,10 @@ void BoundsCache::CancelDeenergizeTimer() noexcept {
     if (g_deenergize_timer != nullptr) {
         esp_timer_stop(g_deenergize_timer);
     }
-    // Keep motor_energized_for_bounds = true since we're using the motor
+    // Bounds-cache energize is only intended for the "ready to start" window after FIND_ONLY.
+    // Once we commit to starting the test, clear this so future START/RESUME won't incorrectly
+    // skip bounds finding after STOP or other motor-disable events.
+    g_motor_energized_for_bounds = false;
 }
 
 void BoundsCache::InvalidateBounds() noexcept {
@@ -647,13 +685,15 @@ static void espnow_command_task(void* arg)
                         EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Paused);
                         break;
                     }
-                    // If running, stop motion but KEEP motor energized (still delivering hold current).
+                    // If running, pause motion but KEEP motor energized (still delivering hold current).
                     // Resume will continue from current position without re-finding bounds.
                     if (g_motion) {
-                        g_motion->Stop();
+                        g_motion->Pause();  // Use Pause() instead of Stop() - keeps running_=true for resume
+                    } else {
+                        // If no motion object, still stop the driver
+                        MotorStopHold();
                     }
                     g_state = InternalState::PAUSED;
-                    MotorStopHold();  // Stop motion but keep motor energized (hold current delivered)
                     ESP_LOGI(TAG, "Motor paused - holding position with hold current");
                     EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Paused);
                     break;
@@ -665,9 +705,40 @@ static void espnow_command_task(void* arg)
                         ESP_LOGW(TAG, "Resume ignored: already running or finding bounds");
                         break;
                     }
-                    // Resume should redo bounds finding (bounds may have shifted)
-                    RequestStart(PendingStartKind::RESUME);
-                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state));
+                    
+                    // If resuming from PAUSED state, motor is still energized and bounds are still valid
+                    // Just resume motion directly without re-finding bounds
+                    if (g_state == InternalState::PAUSED && g_motion) {
+                        ESP_LOGI(TAG, "Resuming from PAUSED - motor still energized, bounds still valid");
+                        
+                        // Ensure StallGuard stop-on-stall is disabled (should already be set)
+                        if (g_driver && g_driver_mutex) {
+                            TmcMutexGuard guard(*g_driver_mutex);
+                            (void)g_driver->stallGuard.EnableStopOnStall(false);
+                            (void)g_driver->motorControl.SetStealthChopEnabled(true);
+                            (void)g_driver->thresholds.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::RPM);
+                        }
+                        
+                        // Cancel de-energize timer since we're resuming
+                        BoundsCache::CancelDeenergizeTimer();
+                        
+                        // Resume motion directly
+                        if (!g_motion->Start()) {
+                            ESP_LOGE(TAG, "Motion resume failed");
+                            g_state = InternalState::ERROR;
+                            MotorStopHoldDisable();
+                            EspNowReceiver::send_error(2, 0);
+                            break;
+                        }
+                        
+                        g_state = InternalState::RUNNING;
+                        EspNowReceiver::send_status_update(g_motion->GetCurrentCycles(), TestState::Running);
+                    } else {
+                        // Resuming from IDLE or other state - may need to re-find bounds
+                        // Use RequestStart which will check bounds cache
+                        RequestStart(PendingStartKind::RESUME);
+                        EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state));
+                    }
                     break;
                     
                 case ProtoEventType::CommandStop:
@@ -2498,7 +2569,7 @@ extern "C" void app_main()
     g_espnowQueue = xQueueCreate(10, sizeof(ProtoEvent));
     if (!EspNowReceiver::init(g_espnowQueue)) {
         ESP_LOGE(TAG, "Failed to initialize ESP-NOW receiver");
-        return;
+        FatalInitError("ESP-NOW init failed", 10);
     }
     
     // Initialize bounds caching system (de-energize timer)
@@ -2508,27 +2579,44 @@ extern "C" void app_main()
     auto pin_config = tmc51x0_test_config::GetDefaultPinConfig();
     tmc51x0::PinActiveLevels active_levels;
     
-    // Create SPI communication interface
-    Esp32SPI spi(tmc51x0_test_config::SPI_HOST, pin_config, 1000000, active_levels);
-    auto spi_init_result = spi.Initialize();
+    // Enable driver logs BEFORE Initialize() so config validation failures are visible.
+    // (We may dial this back after init.)
+    esp_log_level_set("TMC5160", ESP_LOG_DEBUG);
+    esp_log_level_set("SPI", ESP_LOG_INFO);
+
+    // Create SPI communication interface (placement-new into static storage)
+    g_spi = new (g_spi_storage) Esp32SPI(tmc51x0_test_config::SPI_HOST, pin_config, 1000000, active_levels);
+    auto spi_init_result = g_spi->Initialize();
     if (!spi_init_result) {
         ESP_LOGE(TAG, "Failed to initialize SPI interface (ErrorCode: %d)", static_cast<int>(spi_init_result.Error()));
-        return;
+        FatalInitError("SPI init failed", 11);
     }
 
-    // Create TMC51x0 driver instance
-    tmc51x0::TMC51x0<Esp32SPI> driver(spi);
-    g_driver = &driver;
+    // Create TMC51x0 driver instance (placement-new into static storage)
+    using DriverT = tmc51x0::TMC51x0<Esp32SPI>;
+    DriverT* driver = new (g_driver_storage) DriverT(*g_spi);
 
     // Configure driver from test rig
     tmc51x0::DriverConfig cfg{};
     tmc51x0_test_config::ConfigureDriverFromTestRig<SELECTED_TEST_RIG>(cfg);
+
+    ESP_LOGI(TAG,
+             "DriverConfig snapshot: supply_voltage_mv=%u sense_resistor_mohm=%u rated_current_ma=%u run_current_ma=%u hold_current_ma=%u",
+             cfg.motor_spec.supply_voltage_mv,
+             cfg.motor_spec.sense_resistor_mohm,
+             cfg.motor_spec.rated_current_ma,
+             cfg.motor_spec.run_current_ma,
+             cfg.motor_spec.hold_current_ma);
     
-    auto driver_init_result = driver.Initialize(cfg);
+    auto driver_init_result = driver->Initialize(cfg);
     if (!driver_init_result) {
         ESP_LOGE(TAG, "Failed to initialize TMC51x0 driver (ErrorCode: %d)", static_cast<int>(driver_init_result.Error()));
-        return;
+        // Now that the driver propagates underlying errors, this ErrorCode should be meaningful.
+        FatalInitError("TMC51x0 Initialize() failed", 12);
     }
+
+    // From this point forward, global pointers are safe to use.
+    g_driver = driver;
 
     ESP_LOGI(TAG, "Driver initialized successfully");
 
@@ -2543,18 +2631,18 @@ extern "C" void app_main()
     tmc51x0::EncoderConfig enc_cfg = 
         tmc51x0_test_config::GetTestRigEncoderConfig<SELECTED_TEST_RIG>();
     
-    auto encoder_cfg_result = driver.encoder.Configure(enc_cfg);
+    auto encoder_cfg_result = driver->encoder.Configure(enc_cfg);
     if (!encoder_cfg_result) {
         ESP_LOGE(TAG, "Failed to configure encoder (ErrorCode: %d)", static_cast<int>(encoder_cfg_result.Error()));
-        return;
+        FatalInitError("Encoder configure failed", 13);
     }
 
-    driver.encoder.SetResolution(
+    driver->encoder.SetResolution(
         tmc51x0_test_config::GetTestRigEncoderPulsesPerRev<SELECTED_TEST_RIG>(),
         tmc51x0_test_config::GetTestRigEncoderInvertDirection<SELECTED_TEST_RIG>());
 
     // Motor must NOT be enabled at boot. We only energize during bounds-finding and active motion.
-    (void)driver.motorControl.Disable();
+    (void)driver->motorControl.Disable();
     ESP_LOGI(TAG, "Motor left disabled at boot (will enable on START)");
 
     // Create driver mutex for thread-safe SPI access
@@ -2567,8 +2655,8 @@ extern "C" void app_main()
     // The motion controller works entirely in higher-level units (degrees, RPM, rev/s²)
     // Driver already has motor configuration, so no setup needed
     // Pass the driver mutex so FatigueTestMotion uses the same lock for SPI access
-    FatigueTest::FatigueTestMotion motion(&driver, driver_mutex);
-    g_motion = &motion;
+    FatigueTest::FatigueTestMotion* motion = new (g_motion_storage) FatigueTest::FatigueTestMotion(driver, driver_mutex);
+    g_motion = motion;
 
     // Bounds finding will happen when START command is received from UI board
     ESP_LOGI(TAG, "Waiting for START command from UI board to find bounds...");
@@ -2594,8 +2682,8 @@ extern "C" void app_main()
     ESP_LOGI(TAG, "Ensuring motor is stopped before creating tasks...");
     {
         TmcMutexGuard guard(driver_mutex);
-    driver.rampControl.Stop();
-    driver.rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+        driver->rampControl.Stop();
+        driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
     }
     vTaskDelay(pdMS_TO_TICKS(200)); // Allow motor to fully stop
 

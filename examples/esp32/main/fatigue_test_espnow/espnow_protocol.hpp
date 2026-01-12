@@ -43,8 +43,8 @@ static constexpr uint8_t WIFI_CHANNEL = 1;
 // to "learn" the sender MAC from the first inbound ESPNOW message).
 //
 // Update this when the remote controller prints its MAC, e.g.:
-//   Remote Controller MAC (STA): 9C:9E:6E:77:24:F8
-static constexpr uint8_t UI_BOARD_MAC[6] = { 0x9C, 0x9E, 0x6E, 0x77, 0x24, 0xF8 };
+//   Remote Controller MAC (STA): B0:81:84:96:90:10
+static constexpr uint8_t UI_BOARD_MAC[6] = { 0xB0, 0x81, 0x84, 0x96, 0x90, 0x10 };
 
 // ------------- MESSAGE TYPES -------------
 

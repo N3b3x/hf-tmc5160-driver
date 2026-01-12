@@ -153,7 +153,7 @@ inline bool CalculateMotorCurrent(const MotorSpec& motor_spec, uint32_t sense_re
   // Rearranged:
   //   IHOLD = (I_RMS_ma * 256 * 32) / (GLOBAL_SCALER * I_RMS_MAX_ma) - 1
   float ihold_float =
-      ((static_cast<float>(hold_current_ma) * 256.0F * 32.0F) /
+      ((static_cast<float>(hold_current_ma) * 256.0F * 32.0F) / 
        (static_cast<float>(optimal_scaler) * std::max(i_rms_max_ma, 1.0F))) -
       1.0F;
 

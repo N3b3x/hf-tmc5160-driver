@@ -218,7 +218,7 @@ static bool sendPacketTo(const uint8_t* dst_mac, MsgType type, const void* paylo
     // Calculate CRC over header + payload
     size_t crc_len = sizeof(pkt.hdr) + payload_len;
     uint16_t crc = Crc16Ccitt(reinterpret_cast<const uint8_t*>(&pkt.hdr), crc_len);
-
+    
     // Build linear buffer: header + payload + CRC
     uint8_t send_buf[sizeof(EspNowHeader) + ESPNOW_MAX_PAYLOAD + sizeof(uint16_t)];
     std::memcpy(send_buf, &pkt.hdr, sizeof(pkt.hdr));
@@ -226,7 +226,7 @@ static bool sendPacketTo(const uint8_t* dst_mac, MsgType type, const void* paylo
         std::memcpy(send_buf + sizeof(pkt.hdr), pkt.payload, payload_len);
     }
     std::memcpy(send_buf + sizeof(pkt.hdr) + payload_len, &crc, sizeof(uint16_t));
-
+    
     size_t total_len = crc_len + sizeof(uint16_t);
     esp_err_t err = esp_now_send(dst_mac, send_buf, total_len);
     if (err != ESP_OK) {
@@ -744,14 +744,14 @@ static void handlePacket(const RawMsg& msg, const EspNowPacket& pkt, uint16_t re
                         break;
                     case CommandId::Stop:
                         ev.type = ProtoEventType::CommandStop;
-                        break;
+            break;
                     case CommandId::RunBoundsFinding:
                         ev.type = ProtoEventType::CommandRunBoundsFinding;
-                        break;
+            break;
                     default:
                         ESP_LOGW(TAG, "Unknown command ID: %u", cmd_id);
                         return;
-                }
+        }
             } else {
                 ESP_LOGW(TAG, "COMMAND without payload");
                 return;
@@ -779,30 +779,30 @@ static void recvTask(void* arg)
                 ESP_LOGW(TAG, "Packet too short: %d bytes", msg.len);
                 continue;
             }
-
+            
             // Parse header
             EspNowHeader hdr{};
             std::memcpy(&hdr, msg.data, sizeof(hdr));
-
+            
             // Verify length
             size_t expected_len = sizeof(hdr) + hdr.len + sizeof(uint16_t);
             if (msg.len < static_cast<int>(expected_len)) {
                 ESP_LOGW(TAG, "Packet too short: got %d, need %zu", msg.len, expected_len);
                 continue;
             }
-
+            
             // Build packet structure
             EspNowPacket pkt{};
             std::memcpy(&pkt.hdr, msg.data, sizeof(hdr));
             if (hdr.len > 0) {
                 std::memcpy(pkt.payload, msg.data + sizeof(hdr), hdr.len);
             }
-
+            
             // Extract CRC from correct offset
             size_t crc_offset = sizeof(hdr) + hdr.len;
             uint16_t recv_crc = 0;
             std::memcpy(&recv_crc, msg.data + crc_offset, sizeof(uint16_t));
-
+            
             handlePacket(msg, pkt, recv_crc);
         }
     }

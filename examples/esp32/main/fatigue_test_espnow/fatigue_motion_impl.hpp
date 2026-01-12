@@ -123,7 +123,7 @@ bool FatigueTestMotion::SetLocalBoundsFromCenterDegrees(float min_degrees_from_c
         min_deg = std::max(min_deg, global_min);
         max_deg = std::min(max_deg, global_max);
     }
-    
+
     // Apply edge backoff to stay inside mechanical bounds during oscillation
     // This prevents repeatedly "kissing" the endpoints and accounts for any residual error
     if (edge_backoff_deg > 0.0f) {
@@ -187,7 +187,7 @@ bool FatigueTestMotion::SetMaxVelocity(float vmax_rpm) noexcept {
     }
     ESP_LOGI(TAG_MOTION, "Max velocity set: %.1f RPM", clamped);
     return true;
-}
+    }
 
 float FatigueTestMotion::GetMaxVelocity() const noexcept {
     TmcMutexGuard guard(driver_mutex_);
@@ -330,7 +330,7 @@ bool FatigueTestMotion::Start() noexcept {
         // =====================================================================
         static constexpr float VSTART_RPM = 3.0f;   // Start velocity (3 RPM)
         static constexpr float VSTOP_RPM = 5.0f;    // Stop velocity threshold (5 RPM)
-        
+
         // Configure driver for positioning mode
         // VMAX and AMAX are directly user-controlled, not derived from frequency
         driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
@@ -338,31 +338,65 @@ bool FatigueTestMotion::Start() noexcept {
         driver_->rampControl.SetAcceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
         driver_->rampControl.SetDeceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
         driver_->rampControl.SetRampSpeeds(VSTART_RPM, VSTOP_RPM, 0.0f, tmc51x0::Unit::RPM);
-
-        running_ = true;
-        start_time_us_ = esp_timer_get_time();
-        sinusoidal_mode_ = true; // Use sinusoidal mode
         
-        // Determine initial state based on current position
+        // CRITICAL: Ensure StallGuard stop-on-stall is disabled for normal motion
+        // This prevents false stall detection during oscillation
+        (void)driver_->stallGuard.EnableStopOnStall(false);
+        
+        // CRITICAL: Clear TCOOLTHRS to prevent false stall detection
+        // TCOOLTHRS is used during bounds finding but must be cleared for normal motion
+        (void)driver_->thresholds.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::RPM);
+
+        // Check if resuming from pause
+        bool resuming_from_pause = (state_ == MotionState::PAUSED);
+        
+        if (resuming_from_pause) {
+            // Resume from pause - restore motion from current position
+            running_ = true;
+            // Don't reset start_time_us_ - keep the original start time for cycle counting
+            // Restore POSITIONING mode (was set to HOLD when paused)
+            driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+            ESP_LOGI(TAG_MOTION, "Resuming from pause - continuing motion from current position");
+        } else {
+            // Fresh start - reset everything
+            running_ = true;
+            start_time_us_ = esp_timer_get_time();
+            sinusoidal_mode_ = false; // Use point-to-point mode (like bounds_finding_test.cpp)
+            // Reset cycle tracking only on fresh start
+            cycle_started_ = false;
+            last_was_negative_ = false;
+        }
+        
+        // Determine target based on current position (for both fresh start and resume)
         auto current_pos_result = driver_->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
         float current_pos_deg = current_pos_result.IsOk() ? current_pos_result.Value() : 0.0f;
         float min_pos_deg = local_min_bound_;
         float max_pos_deg = local_max_bound_;
+        float home_pos = home_position_;
         
-        // Find closest bound or determine direction
+        // Determine which direction to move based on current position
+        float dist_to_home = fabsf(current_pos_deg - home_pos);
         float dist_to_min = fabsf(current_pos_deg - min_pos_deg);
         float dist_to_max = fabsf(current_pos_deg - max_pos_deg);
         
-        // Choose an initial direction that moves away from the nearest bound.
-        // - If we are already at/near one bound, start by moving toward the opposite bound.
-        // - Otherwise, move toward the nearer bound first.
-        constexpr float NEAR_BOUND_DEG = 1.0f;
-        if (dist_to_min < NEAR_BOUND_DEG) {
+        constexpr float NEAR_THRESHOLD_DEG = 2.0f;
+        if (dist_to_home < NEAR_THRESHOLD_DEG) {
+            // At center, start cycle by moving to MAX
             state_ = MotionState::MOVING_TO_MAX;
-        } else if (dist_to_max < NEAR_BOUND_DEG) {
+            driver_->rampControl.SetTargetPosition(max_pos_deg, tmc51x0::Unit::Deg);
+        } else if (dist_to_max < NEAR_THRESHOLD_DEG) {
+            // At MAX, move to MIN
             state_ = MotionState::MOVING_TO_MIN;
+            driver_->rampControl.SetTargetPosition(min_pos_deg, tmc51x0::Unit::Deg);
+        } else if (dist_to_min < NEAR_THRESHOLD_DEG) {
+            // At MIN, this completes a cycle - move to MAX for next cycle
+            state_ = MotionState::MOVING_TO_MAX;
+            driver_->rampControl.SetTargetPosition(max_pos_deg, tmc51x0::Unit::Deg);
         } else {
+            // Somewhere in between - move toward nearest endpoint
             state_ = (dist_to_min <= dist_to_max) ? MotionState::MOVING_TO_MIN : MotionState::MOVING_TO_MAX;
+            float target = (dist_to_min <= dist_to_max) ? min_pos_deg : max_pos_deg;
+            driver_->rampControl.SetTargetPosition(target, tmc51x0::Unit::Deg);
         }
 
         current_cycles = current_cycles_;
@@ -371,9 +405,22 @@ bool FatigueTestMotion::Start() noexcept {
 
     ESP_LOGI(TAG_MOTION, "Starting fatigue test (cycles: %lu/%lu)", current_cycles,
              target_cycles == 0 ? 0xFFFFFFFF : target_cycles);
-    ESP_LOGI(TAG_MOTION, "  Motion: Point-to-point mode, VMAX=%.1f RPM, AMAX=%.2f rev/s², Est.Freq=%.2f Hz", 
+    ESP_LOGI(TAG_MOTION, "  Motion: Point-to-point mode (center->MAX->MIN), VMAX=%.1f RPM, AMAX=%.2f rev/s², Est.Freq=%.2f Hz", 
              vmax_rpm_, amax_rev_s2_, estimated_frequency_hz_);
+    ESP_LOGI(TAG_MOTION, "  Cycle counting: one cycle = center -> MAX -> MIN (counted at MIN)");
     return true;
+}
+
+void FatigueTestMotion::Pause() noexcept {
+    // Simple approach: Just set state to PAUSED
+    // Update() will stop commanding new targets, but current move will finish naturally
+    {
+        TmcMutexGuard guard(driver_mutex_);
+        state_ = MotionState::PAUSED;
+        // running_ stays true - we can resume
+        // Don't stop the motor - let it finish the current move to its target
+    }
+    ESP_LOGI(TAG_MOTION, "Paused fatigue test motion - current move will finish, then hold");
 }
 
 void FatigueTestMotion::Stop() noexcept {
@@ -381,11 +428,35 @@ void FatigueTestMotion::Stop() noexcept {
     {
         TmcMutexGuard guard(driver_mutex_);
         running_ = false;
-        state_ = MotionState::STOPPED;
+        state_ = MotionState::STOPPED;  // Set state first to stop Update() from setting new targets
         cycles = current_cycles_;
-        // Driver SPI call MUST be inside mutex guard!
-        driver_->rampControl.Stop();
     }
+    
+    // Stop the ramp generator (outside mutex)
+    driver_->rampControl.Stop();
+    
+    // Wait for standstill
+    uint32_t checks = 0;
+    while (checks < 50) {  // Max 5 seconds
+        checks++;
+        auto standstill_result = driver_->rampControl.IsStandstill();
+        if (standstill_result.IsOk() && standstill_result.Value()) {
+            break;
+        }
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+    
+    // Clear target and set HOLD mode
+    {
+        TmcMutexGuard guard(driver_mutex_);
+        auto current_pos_result = driver_->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+        if (current_pos_result.IsOk()) {
+            float current_pos = current_pos_result.Value();
+            driver_->rampControl.SetTargetPosition(current_pos, tmc51x0::Unit::Deg);
+        }
+        driver_->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+    }
+    
     ESP_LOGI(TAG_MOTION, "Stopped fatigue test motion (cycles completed: %lu)", cycles);
 }
 
@@ -410,7 +481,7 @@ void FatigueTestMotion::RecalculateEstimatedFrequency() noexcept {
                  distance_deg, vmax_rpm_, amax_rev_s2_);
         return;
     }
-    
+
     // Convert VMAX to deg/s: RPM * (360 deg/rev) / (60 s/min) = deg/s
     float vmax_deg_per_s = vmax_rpm_ * 360.0f / 60.0f;
     
@@ -619,10 +690,23 @@ void FatigueTestMotion::UpdateSinuousMotion() noexcept {
 }
 
 void FatigueTestMotion::Update() noexcept {
+    // Check if running
     {
         TmcMutexGuard guard(driver_mutex_);
+        // Don't update if stopped
         if (!running_ || state_ == MotionState::STOPPED) {
             return;
+        }
+        
+        // If paused, allow current move to finish but don't command next target
+        if (state_ == MotionState::PAUSED) {
+            // Check if current move has finished - if so, set to HOLD mode
+            auto target_reached = driver_->rampControl.IsTargetReached();
+            if (target_reached.IsOk() && target_reached.Value()) {
+                // Current move finished - set to HOLD mode to maintain position
+                driver_->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+            }
+            return;  // Don't command next target while paused
         }
 
         // Check if cycle count reached
@@ -632,7 +716,6 @@ void FatigueTestMotion::Update() noexcept {
                 uint32_t cycles = current_cycles_;
                 state_ = MotionState::STOPPED;
                 running_ = false;
-                // Driver call inside mutex guard
                 driver_->rampControl.Stop();
                 guard.unlock();
                 ESP_LOGI(TAG_MOTION, "Target cycle count reached: %lu cycles. Stopping.", cycles);
@@ -641,74 +724,162 @@ void FatigueTestMotion::Update() noexcept {
         }
     }
 
-    // Check if we're in sinusoidal mode
-    bool use_sinusoidal;
+    // Get current state and bounds
     MotionState current_state;
-    {
-        TmcMutexGuard guard(driver_mutex_);
-        use_sinusoidal = sinusoidal_mode_;
-        current_state = state_;
-    }
-    
-    // If sinusoidal mode and not in a dwell state, use sinusoidal update
-    if (use_sinusoidal && current_state != MotionState::DWELL_AT_MIN && 
-        current_state != MotionState::DWELL_AT_MAX) {
-        UpdateSinuousMotion();
-        return;
-    }
-    
-    // Handle dwell states
-    uint32_t current_time_ms = esp_timer_get_time() / 1000;
-    uint32_t dwell_min, dwell_max, dwell_start;
     float min_bound, max_bound;
+    uint32_t dwell_min, dwell_max;
+    uint32_t target_cycles;
     
     {
         TmcMutexGuard guard(driver_mutex_);
         current_state = state_;
+        min_bound = local_min_bound_;
+        max_bound = local_max_bound_;
         dwell_min = dwell_at_min_ms_;
         dwell_max = dwell_at_max_ms_;
-        dwell_start = dwell_start_time_ms_;
-        min_bound = local_min_bound_;  // Already in degrees
-        max_bound = local_max_bound_;  // Already in degrees
+        target_cycles = target_cycles_;
     }
 
+    // Check if target reached (for moving states)
+    bool target_reached = false;
+    if (current_state == MotionState::MOVING_TO_MAX || current_state == MotionState::MOVING_TO_MIN) {
+        auto reached_result = driver_->rampControl.IsTargetReached();
+        target_reached = reached_result.IsOk() && reached_result.Value();
+    }
+
+    // Get current position for cycle counting
+    auto current_pos_result = driver_->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+    float current_pos_deg = current_pos_result.IsOk() ? current_pos_result.Value() : 0.0f;
+    float dist_to_min = fabsf(current_pos_deg - min_bound);
+    float dist_to_max = fabsf(current_pos_deg - max_bound);
+    constexpr float NEAR_THRESHOLD_DEG = 2.0f;
+
+    // State machine: point-to-point motion (like bounds_finding_test.cpp)
     switch (current_state) {
-    case MotionState::DWELL_AT_MIN:
-        if (current_time_ms - dwell_start >= dwell_min) {
+    case MotionState::PAUSED:
+        // Paused state - do nothing, Update() already returned early
+        // This case should never be reached, but included for completeness
+        return;
+    case MotionState::MOVING_TO_MAX:
+        if (target_reached || dist_to_max < NEAR_THRESHOLD_DEG) {
+            // Reached MAX - enter dwell or move to MIN
             TmcMutexGuard guard(driver_mutex_);
-            if (!sinusoidal_mode_) {
-                // User-set VMAX and AMAX are used directly
-                state_ = MotionState::MOVING_TO_MAX;
-                driver_->rampControl.SetMaxSpeed(vmax_rpm_, tmc51x0::Unit::RPM);
-                driver_->rampControl.SetAcceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
-                driver_->rampControl.SetDeceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
-                driver_->rampControl.SetTargetPosition(max_bound, tmc51x0::Unit::Deg);
+            // Check if paused - if so, don't transition, just wait
+            if (state_ == MotionState::PAUSED) {
+                // Paused - set to HOLD and wait for resume
+                driver_->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+                return;
+            }
+            if (dwell_max > 0) {
+                state_ = MotionState::DWELL_AT_MAX;
+                dwell_start_time_ms_ = esp_timer_get_time() / 1000;
             } else {
-                state_ = MotionState::MOVING_TO_MAX;
+                // No dwell, immediately move to MIN
+                state_ = MotionState::MOVING_TO_MIN;
+                driver_->rampControl.SetTargetPosition(min_bound, tmc51x0::Unit::Deg);
             }
         }
         break;
 
     case MotionState::DWELL_AT_MAX:
-        if (current_time_ms - dwell_start >= dwell_max) {
-            TmcMutexGuard guard(driver_mutex_);
-            if (!sinusoidal_mode_) {
-                // User-set VMAX and AMAX are used directly
+        {
+            uint32_t current_time_ms = esp_timer_get_time() / 1000;
+            uint32_t dwell_start;
+            {
+                TmcMutexGuard guard(driver_mutex_);
+                dwell_start = dwell_start_time_ms_;
+                // Check if paused - if so, don't transition
+                if (state_ == MotionState::PAUSED) {
+                    return;
+                }
+            }
+            if (current_time_ms - dwell_start >= dwell_max) {
+                // Dwell complete, move to MIN
+                TmcMutexGuard guard(driver_mutex_);
+                // Double-check not paused (could have been paused during dwell)
+                if (state_ == MotionState::PAUSED) {
+                    return;
+                }
                 state_ = MotionState::MOVING_TO_MIN;
-                driver_->rampControl.SetMaxSpeed(vmax_rpm_, tmc51x0::Unit::RPM);
-                driver_->rampControl.SetAcceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
-                driver_->rampControl.SetDeceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
                 driver_->rampControl.SetTargetPosition(min_bound, tmc51x0::Unit::Deg);
-            } else {
-                state_ = MotionState::MOVING_TO_MIN;
             }
         }
         break;
 
     case MotionState::MOVING_TO_MIN:
-    case MotionState::MOVING_TO_MAX:
+        if (target_reached || dist_to_min < NEAR_THRESHOLD_DEG) {
+            // Reached MIN - this completes a cycle! Count it.
+            uint32_t new_cycles;
+            bool should_stop = false;
+            {
+                TmcMutexGuard guard(driver_mutex_);
+                // Check if paused - if so, don't transition, just wait
+                if (state_ == MotionState::PAUSED) {
+                    // Paused - set to HOLD and wait for resume
+                    driver_->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+                    return;
+                }
+                
+                current_cycles_++;
+                new_cycles = current_cycles_;
+                
+                // Check if target reached
+                if (target_cycles > 0 && new_cycles >= target_cycles) {
+                    cycle_complete_ = true;
+                    running_ = false;
+                    state_ = MotionState::STOPPED;
+                    driver_->rampControl.Stop();
+                    should_stop = true;
+                } else {
+                    // Enter dwell or move to MAX for next cycle
+                    if (dwell_min > 0) {
+                        state_ = MotionState::DWELL_AT_MIN;
+                        dwell_start_time_ms_ = esp_timer_get_time() / 1000;
+                    } else {
+                        // No dwell, immediately move to MAX for next cycle
+                        state_ = MotionState::MOVING_TO_MAX;
+                        driver_->rampControl.SetTargetPosition(max_bound, tmc51x0::Unit::Deg);
+                    }
+                }
+            }
+            
+            if (should_stop) {
+                ESP_LOGI(TAG_MOTION, "Target cycle count reached: %lu cycles. Stopping.", new_cycles);
+                return;
+            } else {
+                ESP_LOGI(TAG_MOTION, "Cycle %lu completed at MIN position (target: %lu)", 
+                         new_cycles, target_cycles == 0 ? 0xFFFFFFFF : target_cycles);
+            }
+        }
+        break;
+
+    case MotionState::DWELL_AT_MIN:
+        {
+            uint32_t current_time_ms = esp_timer_get_time() / 1000;
+            uint32_t dwell_start;
+            {
+                TmcMutexGuard guard(driver_mutex_);
+                dwell_start = dwell_start_time_ms_;
+                // Check if paused - if so, don't transition
+                if (state_ == MotionState::PAUSED) {
+                    return;
+                }
+            }
+            if (current_time_ms - dwell_start >= dwell_min) {
+                // Dwell complete, move to MAX for next cycle
+                TmcMutexGuard guard(driver_mutex_);
+                // Double-check not paused (could have been paused during dwell)
+                if (state_ == MotionState::PAUSED) {
+                    return;
+                }
+                state_ = MotionState::MOVING_TO_MAX;
+                driver_->rampControl.SetTargetPosition(max_bound, tmc51x0::Unit::Deg);
+            }
+        }
+        break;
+
     case MotionState::STOPPED:
-        // These are handled by UpdateSinuousMotion or ramp control
+        // Do nothing
         break;
     }
 }

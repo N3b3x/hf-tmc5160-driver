@@ -205,6 +205,12 @@ public:
     bool Start() noexcept;
 
     /**
+     * @brief Pause active motion (stops movement but keeps motor energized for resume).
+     * @details Sets ramp mode to HOLD to maintain position. Motion can be resumed with Start().
+     */
+    void Pause() noexcept;
+    
+    /**
      * @brief Stop active motion and command driver stop.
      */
     void Stop() noexcept;
@@ -263,7 +269,7 @@ private:
     float last_target_relative_;
     
     // State machine
-    enum class MotionState { MOVING_TO_MIN, MOVING_TO_MAX, DWELL_AT_MIN, DWELL_AT_MAX, STOPPED };
+    enum class MotionState { MOVING_TO_MIN, MOVING_TO_MAX, DWELL_AT_MIN, DWELL_AT_MAX, PAUSED, STOPPED };
     MotionState state_;
     uint32_t dwell_start_time_ms_;
     bool sinusoidal_mode_;

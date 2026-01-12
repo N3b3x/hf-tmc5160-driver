@@ -822,7 +822,7 @@ struct SpiResponse {
   SpiStatus status; ///< SPI_STATUS flags from the chip
   uint32_t value; ///< 32-bit data value (for reads) or write confirmation (for
                   ///< writes)
-  bool success;   ///< true if no critical errors (reset_flag or driver_error)
+  bool success;   ///< true if the transport transaction succeeded
 };
 
 /**
@@ -2212,31 +2212,36 @@ public:
       return Result<uint32_t>(ErrorCode::COMM_ERROR);
     }
 
-    // Log SPI_STATUS with detailed flag information
-    // Note: RESET (bit 0) is informational (normal on power-up), only DRV_ERR
-    // (bit 1) is an error
+    // Log SPI_STATUS with detailed flag information.
+    // Note: RESET (bit 0) is informational (normal on power-up). DRV_ERR (bit
+    // 1) indicates a driver-side fault (e.g., OT/short) but does NOT imply a
+    // transport failure, so we do not return COMM_ERROR for it.
     if (status.HasError()) {
-      // Build error flags string (only actual errors)
-      const char *error_flags = "DRV_ERR";
+      // Rate-limit DRV_ERR logs to avoid spamming at high read rates.
+      const bool should_log = (drv_err_log_count_ < 5U) ||
+                              ((drv_err_log_count_ % 50U) == 0U);
+      ++drv_err_log_count_;
 
-      // Build informational flags string (reset + status flags)
-      char info_flags[64] = "";
-      if (status.ResetFlag() || status.StallGuard2() || status.Standstill() ||
-          status.VelocityReached() || status.PositionReached() ||
-          status.StopLeft() || status.StopRight()) {
-        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s%s]",
-                 status.ResetFlag() ? "RST " : "",
-                 status.StallGuard2() ? "SG2 " : "",
-                 status.Standstill() ? "STST " : "",
-                 status.VelocityReached() ? "VEL " : "",
-                 status.PositionReached() ? "POS " : "",
-                 status.StopLeft() ? "STOP_L " : "",
-                 status.StopRight() ? "STOP_R " : "");
+      if (should_log) {
+        // Build informational flags string (reset + status flags)
+        char info_flags[64] = "";
+        if (status.ResetFlag() || status.StallGuard2() || status.Standstill() ||
+            status.VelocityReached() || status.PositionReached() ||
+            status.StopLeft() || status.StopRight()) {
+          snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s%s]",
+                   status.ResetFlag() ? "RST " : "",
+                   status.StallGuard2() ? "SG2 " : "",
+                   status.Standstill() ? "STST " : "",
+                   status.VelocityReached() ? "VEL " : "",
+                   status.PositionReached() ? "POS " : "",
+                   status.StopLeft() ? "STOP_L " : "",
+                   status.StopRight() ? "STOP_R " : "");
+        }
+
+        TMC51X0_LOG_DEBUG(*static_cast<Derived *>(this), 1, "SPI",
+                          "Read 0x%02X: STATUS=0x%02X DRV_ERR%s", address,
+                          status.value, info_flags);
       }
-
-      TMC51X0_LOG_DEBUG(*static_cast<Derived *>(this), 1, "SPI",
-                        "Read 0x%02X: STATUS=0x%02X ERROR=%s%s", address,
-                        status.value, error_flags, info_flags);
     } else {
       // Log response bytes (first 8 or all if less)
       size_t log_rx_bytes = (transfer_bytes < 8) ? transfer_bytes : 8;
@@ -2281,11 +2286,8 @@ public:
             (static_cast<uint32_t>(rx_buf[response_byte_offset + 3]) << 8) |
             static_cast<uint32_t>(rx_buf[response_byte_offset + 4]);
 
-    // Return error if critical errors detected (but still extract value)
-    // Note: Reset flag is informational (normal on power-up), not an error
-    if (status.DriverError()) {
-      return Result<uint32_t>(ErrorCode::COMM_ERROR);
-    }
+    // Do not treat DRV_ERR as a transport failure. Caller may query GSTAT /
+    // DRV_STATUS to diagnose the underlying cause.
     return Result<uint32_t>(value);
   }
 
@@ -2496,31 +2498,34 @@ public:
     // data
     SpiStatus status1 = SpiStatus::FromByte(rx_buf[response_byte_offset]);
 
-    // Note: RESET (bit 0) is informational (normal on power-up), only DRV_ERR
-    // (bit 1) is an error
+    // Note: RESET is informational. DRV_ERR is a driver-side fault; we log it
+    // (rate-limited) but do not treat it as a transport error.
     if (status1.HasError()) {
-      // Build error flags string (only actual errors)
-      const char *error_flags = "DRV_ERR";
+      const bool should_log = (drv_err_log_count_ < 5U) ||
+                              ((drv_err_log_count_ % 50U) == 0U);
+      ++drv_err_log_count_;
 
-      // Build informational flags string (reset + status flags)
-      char info_flags[64] = "";
-      if (status1.ResetFlag() || status1.StallGuard2() ||
-          status1.Standstill() || status1.VelocityReached() ||
-          status1.PositionReached() || status1.StopLeft() ||
-          status1.StopRight()) {
-        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s%s]",
-                 status1.ResetFlag() ? "RST " : "",
-                 status1.StallGuard2() ? "SG2 " : "",
-                 status1.Standstill() ? "STST " : "",
-                 status1.VelocityReached() ? "VEL " : "",
-                 status1.PositionReached() ? "POS " : "",
-                 status1.StopLeft() ? "STOP_L " : "",
-                 status1.StopRight() ? "STOP_R " : "");
+      if (should_log) {
+        // Build informational flags string (reset + status flags)
+        char info_flags[64] = "";
+        if (status1.ResetFlag() || status1.StallGuard2() ||
+            status1.Standstill() || status1.VelocityReached() ||
+            status1.PositionReached() || status1.StopLeft() ||
+            status1.StopRight()) {
+          snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s%s]",
+                   status1.ResetFlag() ? "RST " : "",
+                   status1.StallGuard2() ? "SG2 " : "",
+                   status1.Standstill() ? "STST " : "",
+                   status1.VelocityReached() ? "VEL " : "",
+                   status1.PositionReached() ? "POS " : "",
+                   status1.StopLeft() ? "STOP_L " : "",
+                   status1.StopRight() ? "STOP_R " : "");
+        }
+
+        TMC51X0_LOG_DEBUG(*static_cast<Derived *>(this), 1, "SPI",
+                          "Write 0x%02X (TX1): STATUS=0x%02X DRV_ERR%s",
+                          address, status1.value, info_flags);
       }
-
-      TMC51X0_LOG_DEBUG(*static_cast<Derived *>(this), 1, "SPI",
-                        "Write 0x%02X (TX1): STATUS=0x%02X ERROR=%s%s", address,
-                        status1.value, error_flags, info_flags);
     } else {
       // Log response bytes (first 8 or all if less)
       size_t log_rx1_bytes = (transfer_bytes < 8) ? transfer_bytes : 8;
@@ -2613,31 +2618,34 @@ public:
       return Result<void>(ErrorCode::COMM_ERROR);
     }
 
-    // Note: RESET (bit 0) is informational (normal on power-up), only DRV_ERR
-    // (bit 1) is an error (status2 was already extracted above for logging)
+    // Note: RESET is informational. DRV_ERR is a driver-side fault; we log it
+    // (rate-limited) but do not treat it as a transport error.
     if (status2.HasError()) {
-      // Build error flags string (only actual errors)
-      const char *error_flags = "DRV_ERR";
+      const bool should_log = (drv_err_log_count_ < 5U) ||
+                              ((drv_err_log_count_ % 50U) == 0U);
+      ++drv_err_log_count_;
 
-      // Build informational flags string (reset + status flags)
-      char info_flags[64] = "";
-      if (status2.ResetFlag() || status2.StallGuard2() ||
-          status2.Standstill() || status2.VelocityReached() ||
-          status2.PositionReached() || status2.StopLeft() ||
-          status2.StopRight()) {
-        snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s%s]",
-                 status2.ResetFlag() ? "RST " : "",
-                 status2.StallGuard2() ? "SG2 " : "",
-                 status2.Standstill() ? "STST " : "",
-                 status2.VelocityReached() ? "VEL " : "",
-                 status2.PositionReached() ? "POS " : "",
-                 status2.StopLeft() ? "STOP_L " : "",
-                 status2.StopRight() ? "STOP_R " : "");
+      if (should_log) {
+        // Build informational flags string (reset + status flags)
+        char info_flags[64] = "";
+        if (status2.ResetFlag() || status2.StallGuard2() ||
+            status2.Standstill() || status2.VelocityReached() ||
+            status2.PositionReached() || status2.StopLeft() ||
+            status2.StopRight()) {
+          snprintf(info_flags, sizeof(info_flags), " [%s%s%s%s%s%s%s]",
+                   status2.ResetFlag() ? "RST " : "",
+                   status2.StallGuard2() ? "SG2 " : "",
+                   status2.Standstill() ? "STST " : "",
+                   status2.VelocityReached() ? "VEL " : "",
+                   status2.PositionReached() ? "POS " : "",
+                   status2.StopLeft() ? "STOP_L " : "",
+                   status2.StopRight() ? "STOP_R " : "");
+        }
+
+        TMC51X0_LOG_DEBUG(*static_cast<Derived *>(this), 1, "SPI",
+                          "Write 0x%02X (TX2): STATUS=0x%02X DRV_ERR%s",
+                          address, status2.value, info_flags);
       }
-
-      TMC51X0_LOG_DEBUG(*static_cast<Derived *>(this), 1, "SPI",
-                        "Write 0x%02X (TX2): STATUS=0x%02X ERROR=%s%s", address,
-                        status2.value, error_flags, info_flags);
     } else {
       // Log response bytes (first 8 or all if less)
       size_t log_rx2_bytes = (transfer_bytes < 8) ? transfer_bytes : 8;
@@ -2688,13 +2696,6 @@ public:
       }
     }
 
-    // Check for critical errors in the final status (status2 is the latched
-    // status after write) Note: Reset flag is informational (normal on
-    // power-up), not an error
-    if (status2.DriverError()) {
-      return Result<void>(ErrorCode::COMM_ERROR);
-    }
-
     return Result<void>();
   }
 
@@ -2734,6 +2735,10 @@ private:
   // Sized by TMC51X0_SPI_MAX_CHAIN_DEVICES (+2 for auto-detect probe).
   std::array<uint8_t, kSpiScratchBytes> tx_scratch_{};
   std::array<uint8_t, kSpiScratchBytes> rx_scratch_{};
+
+  // Counts how many times we've seen SPI_STATUS.DRV_ERR so we can rate-limit
+  // logs without relying on platform-specific time functions.
+  uint32_t drv_err_log_count_{0};
 
   /**
    * @brief Ensure chain length is known and verified for daisy-chain operations
