@@ -247,10 +247,10 @@ struct ErrorPayload {
  * PROTOCOL V2: Uses direct velocity/acceleration control instead of cycle time.
  */
 struct TestUnitSettings {
-    uint32_t cycle_amount = 1000;                     // Target cycles (0 = infinite)
+    uint32_t cycle_amount = 5000;                     // Target cycles (0 = infinite)
     float    oscillation_vmax_rpm = 60.0f;            // Max velocity during oscillation (RPM)
     float    oscillation_amax_rev_s2 = 10.0f;         // Acceleration during oscillation (rev/s²)
-    uint32_t dwell_time_ms = 1000;                    // Dwell at endpoints (ms)
+    uint32_t dwell_time_ms = 500;                     // Dwell at endpoints (ms)
     bool     bounds_method_stallguard = true;         // true = stallguard, false = encoder
     
     // Extended configuration for bounds finding (configurable via remote controller)

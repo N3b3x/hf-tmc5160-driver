@@ -73,6 +73,11 @@ static void tryAddEspNowPeer(const uint8_t mac[6])
 {
     if (isZeroMac(mac)) return;
 
+    // Check if peer already exists to avoid ESP-IDF warning spam
+    if (esp_now_is_peer_exist(mac)) {
+        return;  // Already added, nothing to do
+    }
+
     esp_now_peer_info_t peer{};
     std::memset(&peer, 0, sizeof(peer));
     std::memcpy(peer.peer_addr, mac, 6);

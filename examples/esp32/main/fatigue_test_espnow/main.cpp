@@ -116,8 +116,15 @@ static volatile bool g_bounds_task_running = false;
 static TaskHandle_t g_bounds_task_handle = nullptr;
 
 static bool g_bounds_found = false;         // true if bounds have been found at least once
-static bool g_use_stallguard = false;       // StallGuard monitoring default state 
-//                                          // (disabled for smooth StealthChop motion)
+static bool g_use_stallguard = true;       // Bounds finding method: true=StallGuard, false=Encoder
+                                           // NOTE: This only affects bounds finding, NOT motion monitoring
+                                           // Normal motion always uses StealthChop for smooth operation
+
+// StallGuard monitoring during motion (for debugging/diagnostics)
+// NOTE: StallGuard monitoring requires SpreadCycle mode, which causes vibratory motion.
+// For smooth StealthChop operation during fatigue testing, this should be false.
+// Set to true only if you need StallGuard-based jam detection (requires disabling StealthChop).
+static bool g_enable_sg_monitoring = false;
 
 // -------------------- Bounds Caching System --------------------
 // After bounds finding completes, motor stays energized for a configurable time.
@@ -257,7 +264,18 @@ static inline TestState ToProtoState(InternalState s) noexcept {
 static void MotorStopHold() noexcept {
     if (!g_driver || !g_driver_mutex) return;
     TmcMutexGuard guard(*g_driver_mutex);
+    
+    // Stop the ramp generator
     (void)g_driver->rampControl.Stop();
+    
+    // CRITICAL: Clear the target position by setting XTARGET = XACTUAL
+    // This prevents any lingering target from causing unexpected motion when
+    // switching back to POSITIONING mode later.
+    auto current_pos = g_driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+    if (current_pos.IsOk()) {
+        (void)g_driver->rampControl.SetTargetPosition(current_pos.Value(), tmc51x0::Unit::Deg);
+    }
+    
     (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
     // Motor stays enabled - delivering hold current
 }
@@ -283,7 +301,19 @@ static void MotorStopHoldDisable() noexcept {
     // If we're disabling the motor, cached-bounds "motor energized" must not remain true.
     BoundsCache::g_motor_energized_for_bounds = false;
     TmcMutexGuard guard(*g_driver_mutex);
+    
+    // Stop the ramp generator
     (void)g_driver->rampControl.Stop();
+    
+    // CRITICAL: Clear the target position by setting XTARGET = XACTUAL
+    // This prevents any lingering target from causing unexpected motion if the motor
+    // is re-enabled later. Without this, the ramp generator might still have a pending
+    // target position that could cause movement when switching back to POSITIONING mode.
+    auto current_pos = g_driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+    if (current_pos.IsOk()) {
+        (void)g_driver->rampControl.SetTargetPosition(current_pos.Value(), tmc51x0::Unit::Deg);
+    }
+    
     (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
     (void)g_driver->motorControl.Disable();
 }
@@ -338,11 +368,19 @@ static void DeenergizeTimerCallback(void* arg) {
         ESP_LOGW(TAG,
                  "[BoundsCache] Validity expired but state=%d; skipping auto de-energize",
                  static_cast<int>(g_state));
+        // Still invalidate the bounds - they're no longer considered fresh
+        g_bounds_found = false;  // File scope variable
         BoundsCache::g_motor_energized_for_bounds = false;
         return;
     }
-    ESP_LOGI(TAG, "[BoundsCache] Validity window expired - de-energizing motor to prevent heating");
+    ESP_LOGI(TAG, "[BoundsCache] Validity window expired - de-energizing motor and invalidating bounds");
+    
+    // Fully invalidate bounds cache - motor is being de-energized, bounds are stale
+    g_bounds_found = false;  // File scope variable
+    BoundsCache::g_bounds_timestamp_us = 0;
     BoundsCache::g_motor_energized_for_bounds = false;
+    
+    // De-energize the motor (this also clears the target position)
     MotorStopHoldDisable();
 }
 
@@ -978,11 +1016,43 @@ static void bounds_finding_task(void* arg)
         // change thresholds so StealthChop is active at all velocities.
         (void)g_driver->motorControl.SetStealthChopEnabled(true);
         (void)g_driver->thresholds.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::RPM);
-        ESP_LOGI(TAG, "[bounds_find] Restored StealthChop and cleared mode thresholds for smooth motion");
+        
+        // CRITICAL: Explicitly stop and clear target AFTER mode switch to prevent any
+        // residual motion from StealthChop switching or cached target positions.
+        // The guard's RestoreRampSettings already did this, but the mode change to
+        // StealthChop can cause transient motor behavior (only seen at off times).
+        (void)g_driver->rampControl.Stop();
+        auto cur_pos = g_driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+        if (cur_pos.IsOk()) {
+            (void)g_driver->rampControl.SetTargetPosition(cur_pos.Value(), tmc51x0::Unit::Deg);
+        }
+        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+        ESP_LOGI(TAG, "[bounds_find] Restored StealthChop, cleared targets, and set HOLD mode");
     }
     
     // Allow motor to settle at new mode/current before starting motion
     vTaskDelay(pdMS_TO_TICKS(200));
+    
+    // Verify motor is at standstill before proceeding
+    {
+        bool is_standstill = false;
+        {
+            TmcMutexGuard guard(*g_driver_mutex);
+            auto standstill = g_driver->rampControl.IsStandstill();
+            is_standstill = standstill.IsOk() && standstill.Value();
+            if (!is_standstill) {
+                ESP_LOGW(TAG, "[bounds_find] Motor not at standstill after settle - forcing stop");
+                (void)g_driver->rampControl.Stop();
+            }
+        }
+        // Wait for actual standstill (with timeout) - mutex released during delays
+        for (int i = 0; i < 20 && !is_standstill; i++) {  // 2 seconds max
+            vTaskDelay(pdMS_TO_TICKS(100));
+            TmcMutexGuard guard(*g_driver_mutex);
+            auto ss = g_driver->rampControl.IsStandstill();
+            is_standstill = ss.IsOk() && ss.Value();
+        }
+    }
     ESP_LOGI(TAG, "[bounds_find] Result: success=%d bounded=%d min=%.2f° max=%.2f° current_pos=%.2f° (method=%s)",
              result.success ? 1 : 0, result.bounded ? 1 : 0, result.min_bound, result.max_bound, pos_deg,
              use_sg ? "StallGuard" : "Encoder");
@@ -1138,8 +1208,12 @@ static void motion_control_task(void* arg)
     int64_t motion_start_time_us = 0;
     
     ESP_LOGI(TAG, "[%s] Task started", task_name);
-    ESP_LOGI(TAG, "[%s] StallGuard monitoring: g_use_stallguard=%d, g_motion=%p, g_driver=%p", 
-             task_name, g_use_stallguard ? 1 : 0, g_motion, g_driver);
+    ESP_LOGI(TAG, "[%s] Bounds finding method: %s (g_use_stallguard=%d)", 
+             task_name, g_use_stallguard ? "StallGuard" : "Encoder", g_use_stallguard ? 1 : 0);
+    ESP_LOGI(TAG, "[%s] Motion mode: StealthChop (smooth, quiet)", task_name);
+    ESP_LOGI(TAG, "[%s] StallGuard monitoring during motion: %s (g_enable_sg_monitoring=%d)", 
+             task_name, g_enable_sg_monitoring ? "ENABLED (requires SpreadCycle)" : "DISABLED (StealthChop)", 
+             g_enable_sg_monitoring ? 1 : 0);
     
     while (true) {
         int64_t current_time_us = esp_timer_get_time();
@@ -1218,6 +1292,33 @@ static void motion_control_task(void* arg)
                 g_state = InternalState::ERROR;
                 MotorStopHoldDisable();
                 (void)EspNowReceiver::send_error(2, g_motion ? g_motion->GetCurrentCycles() : 0);
+                
+                // If the chip self-reset (reset=1), we need to reinitialize it.
+                // Without this, all registers are back to defaults and nothing will work.
+                if (reset) {
+                    ESP_LOGW(TAG, "TMC5160 self-reset detected - attempting quiet reinitialization...");
+                    TmcMutexGuard guard(*g_driver_mutex);
+                    
+                    // Get the stored driver config and reinitialize quietly (no big table)
+                    auto config = g_driver->GetDriverConfig();
+                    auto reinit_result = g_driver->Initialize(config, false);  // false = quiet
+                    
+                    if (reinit_result.IsOk()) {
+                        ESP_LOGI(TAG, "TMC5160 reinitialized successfully after self-reset");
+                        
+                        // Invalidate bounds cache since position reference is lost
+                        BoundsCache::InvalidateBounds();
+                        g_bounds_found = false;
+                        
+                        // Transition to IDLE so user can try again
+                        g_state = InternalState::IDLE;
+                        ESP_LOGI(TAG, "Ready for new bounds finding command");
+                    } else {
+                        ESP_LOGE(TAG, "TMC5160 reinitialization failed (ErrorCode: %d) - chip may be damaged",
+                                 static_cast<int>(reinit_result.Error()));
+                        // Stay in ERROR state
+                    }
+                }
             }
 
             last_fault_poll_time_us = current_time_us;
@@ -1251,8 +1352,10 @@ static void motion_control_task(void* arg)
                 g_motion->Update();
             }
             
-            // Monitor StallGuard values during motion (only when using StallGuard method)
-            if (g_use_stallguard && motion_is_running && g_driver && g_driver_mutex) {
+            // Monitor StallGuard values during motion (if enabled)
+            // NOTE: StallGuard monitoring requires SpreadCycle mode, which causes vibratory motion.
+            // For smooth StealthChop operation, g_enable_sg_monitoring should be false.
+            if (g_enable_sg_monitoring && motion_is_running && g_driver && g_driver_mutex) {
                 bool always_log = (current_time_us - last_sg_log_time_us >= sg_log_interval_always_us);
                 
                 if (always_log || (current_time_us - last_sg_log_time_us >= sg_log_interval_us)) {
@@ -1328,10 +1431,10 @@ static void motion_control_task(void* arg)
                     
                     last_sg_log_time_us = current_time_us;
                 }
-            } else if (g_use_stallguard && !motion_is_running && motion_was_running) {
+            } else if (g_enable_sg_monitoring && !motion_is_running && motion_was_running) {
                 // Motion just stopped
                 ESP_LOGI(TAG, "Motion stopped - StallGuard monitoring paused");
-            } else if (g_use_stallguard && !motion_is_running) {
+            } else if (g_enable_sg_monitoring && !motion_is_running) {
                 // Debug: Log why StallGuard monitoring is not active (only once per second to avoid spam)
                 static int64_t last_debug_log_us = 0;
                 if (current_time_us - last_debug_log_us >= 1000000) {

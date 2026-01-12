@@ -217,7 +217,7 @@ extern "C" void app_main()
     g_settings.test_unit.cycle_amount = 1000;
     g_settings.test_unit.oscillation_vmax_rpm = 60.0f;
     g_settings.test_unit.oscillation_amax_rev_s2 = 10.0f;
-    g_settings.test_unit.dwell_time_ms = 1000;
+    g_settings.test_unit.dwell_time_ms = 500;
     g_settings.test_unit.bounds_method_stallguard = true;
     g_current_state = TestState::Idle;
     g_simulated_cycle = 0;

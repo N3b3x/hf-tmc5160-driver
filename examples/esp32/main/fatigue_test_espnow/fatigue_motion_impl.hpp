@@ -185,6 +185,10 @@ bool FatigueTestMotion::SetMaxVelocity(float vmax_rpm) noexcept {
         TmcMutexGuard guard(driver_mutex_);
         vmax_rpm_ = clamped;
         RecalculateEstimatedFrequency();
+        
+        // Always update the driver immediately - keeps registers in sync with settings
+        // This ensures changes take effect whether motion is running, paused, or stopped
+        driver_->rampControl.SetMaxSpeed(vmax_rpm_, tmc51x0::Unit::RPM);
     }
     ESP_LOGI(TAG_MOTION, "Max velocity set: %.1f RPM", clamped);
     return true;
@@ -206,6 +210,11 @@ bool FatigueTestMotion::SetAcceleration(float amax_rev_s2) noexcept {
         TmcMutexGuard guard(driver_mutex_);
         amax_rev_s2_ = clamped;
         RecalculateEstimatedFrequency();
+        
+        // Always update the driver immediately - keeps registers in sync with settings
+        // This ensures changes take effect whether motion is running, paused, or stopped
+        driver_->rampControl.SetAcceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
+        driver_->rampControl.SetDeceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
     }
     ESP_LOGI(TAG_MOTION, "Acceleration set: %.2f rev/s²", clamped);
     return true;
@@ -222,23 +231,15 @@ float FatigueTestMotion::GetEstimatedCycleFrequency() const noexcept {
 }
 
 bool FatigueTestMotion::SetDwellTimes(uint32_t dwell_at_min_ms, uint32_t dwell_at_max_ms) noexcept {
-    // Enforce minimum dwell time of 200ms (settle time like bounds_finding_test.cpp)
-    static constexpr uint32_t MIN_DWELL_MS = 200;
-    uint32_t effective_min = std::max(dwell_at_min_ms, MIN_DWELL_MS);
-    uint32_t effective_max = std::max(dwell_at_max_ms, MIN_DWELL_MS);
-    
+    // Accept dwell times as-is (no minimum enforcement - remote controller controls this)
     {
         TmcMutexGuard guard(driver_mutex_);
-        dwell_at_min_ms_ = effective_min;
-        dwell_at_max_ms_ = effective_max;
+        dwell_at_min_ms_ = dwell_at_min_ms;
+        dwell_at_max_ms_ = dwell_at_max_ms;
         RecalculateEstimatedFrequency();
     }
-    if (dwell_at_min_ms < MIN_DWELL_MS || dwell_at_max_ms < MIN_DWELL_MS) {
-        ESP_LOGW(TAG_MOTION, "Dwell times clamped to minimum %lu ms (requested: min=%lu, max=%lu)", 
-                 MIN_DWELL_MS, dwell_at_min_ms, dwell_at_max_ms);
-    }
     ESP_LOGI(TAG_MOTION, "Dwell times updated: min=%lu ms, max=%lu ms", 
-             effective_min, effective_max);
+             dwell_at_min_ms, dwell_at_max_ms);
     return true;
 }
 
@@ -342,9 +343,22 @@ bool FatigueTestMotion::Start() noexcept {
         const float vstart_rpm = MotorConfig::RAMP_VSTART_RPM;
         const float vstop_rpm = MotorConfig::RAMP_VSTOP_RPM;
 
-        // Configure driver for positioning mode
-        // VMAX and AMAX are directly user-controlled, not derived from frequency
-        driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+        // =====================================================================
+        // TMC5160 DATASHEET COMPLIANCE: Correct order for starting motion
+        // Per datasheet Section 12 (Ramp Generator):
+        // 1. Stay in HOLD mode while configuring
+        // 2. Set VMAX, AMAX, DMAX (safe in HOLD - no motion occurs)
+        // 3. Set XTARGET to desired position (safe in HOLD - no motion occurs)
+        // 4. THEN switch to POSITIONING mode → motor starts moving
+        //
+        // WRONG order was: Set POSITIONING first, then target (causes brief wrong-direction motion)
+        // =====================================================================
+        
+        // Ensure we're in HOLD mode before changing parameters
+        // This prevents any motion until we explicitly switch to POSITIONING
+        driver_->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+        
+        // Configure ramp parameters (safe to do in HOLD mode - no motion yet)
         driver_->rampControl.SetMaxSpeed(vmax_rpm_, tmc51x0::Unit::RPM);
         driver_->rampControl.SetAcceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
         driver_->rampControl.SetDeceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
@@ -354,8 +368,13 @@ bool FatigueTestMotion::Start() noexcept {
         // This prevents false stall detection during oscillation
         (void)driver_->stallGuard.EnableStopOnStall(false);
         
-        // CRITICAL: Clear TCOOLTHRS to prevent false stall detection
-        // TCOOLTHRS is used during bounds finding but must be cleared for normal motion
+        // CRITICAL: Enable StealthChop for smooth, quiet motion during oscillations
+        // StealthChop provides smooth motion without the vibration of SpreadCycle
+        (void)driver_->motorControl.SetStealthChopEnabled(true);
+        
+        // CRITICAL: Clear all mode change thresholds (TCOOLTHRS, TPWMTHRS, etc.)
+        // This ensures StealthChop stays active at all velocities during normal motion
+        // TCOOLTHRS is used during bounds finding (SpreadCycle for StallGuard) but must be cleared for normal motion
         (void)driver_->thresholds.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::RPM);
 
         // Check if resuming from pause
@@ -365,8 +384,6 @@ bool FatigueTestMotion::Start() noexcept {
             // Resume from pause - restore motion from current position
             running_ = true;
             // Don't reset start_time_us_ - keep the original start time for cycle counting
-            // Restore POSITIONING mode (was set to HOLD when paused)
-            driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
             ESP_LOGI(TAG_MOTION, "Resuming from pause - continuing motion from current position");
         } else {
             // Fresh start - reset everything
@@ -390,25 +407,34 @@ bool FatigueTestMotion::Start() noexcept {
         float dist_to_min = fabsf(current_pos_deg - min_pos_deg);
         float dist_to_max = fabsf(current_pos_deg - max_pos_deg);
         
+        // SET TARGET FIRST (while still in HOLD mode - no motion yet)
+        // This ensures XTARGET is correct BEFORE we switch to POSITIONING
+        float target_pos;
         constexpr float NEAR_THRESHOLD_DEG = 2.0f;
         if (dist_to_home < NEAR_THRESHOLD_DEG) {
             // At center, start cycle by moving to MAX
             state_ = MotionState::MOVING_TO_MAX;
-            driver_->rampControl.SetTargetPosition(max_pos_deg, tmc51x0::Unit::Deg);
+            target_pos = max_pos_deg;
         } else if (dist_to_max < NEAR_THRESHOLD_DEG) {
             // At MAX, move to MIN
             state_ = MotionState::MOVING_TO_MIN;
-            driver_->rampControl.SetTargetPosition(min_pos_deg, tmc51x0::Unit::Deg);
+            target_pos = min_pos_deg;
         } else if (dist_to_min < NEAR_THRESHOLD_DEG) {
             // At MIN, this completes a cycle - move to MAX for next cycle
             state_ = MotionState::MOVING_TO_MAX;
-            driver_->rampControl.SetTargetPosition(max_pos_deg, tmc51x0::Unit::Deg);
+            target_pos = max_pos_deg;
         } else {
             // Somewhere in between - move toward nearest endpoint
             state_ = (dist_to_min <= dist_to_max) ? MotionState::MOVING_TO_MIN : MotionState::MOVING_TO_MAX;
-            float target = (dist_to_min <= dist_to_max) ? min_pos_deg : max_pos_deg;
-            driver_->rampControl.SetTargetPosition(target, tmc51x0::Unit::Deg);
+            target_pos = (dist_to_min <= dist_to_max) ? min_pos_deg : max_pos_deg;
         }
+        
+        // Set target position WHILE STILL IN HOLD MODE (no motion yet)
+        driver_->rampControl.SetTargetPosition(target_pos, tmc51x0::Unit::Deg);
+        
+        // NOW switch to POSITIONING mode - motor starts moving toward the already-set target
+        // This is the correct order per TMC5160 datasheet
+        driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
 
         current_cycles = current_cycles_;
         target_cycles = target_cycles_;
@@ -420,6 +446,22 @@ bool FatigueTestMotion::Start() noexcept {
              vmax_rpm_, amax_rev_s2_, estimated_frequency_hz_);
     ESP_LOGI(TAG_MOTION, "  Dwell: min=%lu ms, max=%lu ms", (unsigned long)dwell_at_min_ms_, (unsigned long)dwell_at_max_ms_);
     ESP_LOGI(TAG_MOTION, "  Cycle counting: one cycle = center -> MAX -> MIN (counted at MIN)");
+    
+    // Debug: Check initial StealthChop status
+    {
+        TmcMutexGuard guard(driver_mutex_);
+        auto drv_status_res = driver_->status.GetDriverStatusRegister();
+        if (drv_status_res.IsOk()) {
+            tmc51x0::DRV_STATUS_Register ds{};
+            ds.value = drv_status_res.Value();
+            ESP_LOGI(TAG_MOTION, "[DEBUG] Initial motion: stealth=%u (1=StealthChop, 0=SpreadCycle) DRV_STATUS=0x%08lX",
+                     (unsigned)ds.bits.stealth, (unsigned long)ds.value);
+        }
+        // Also log TPWMTHRS to verify threshold setting
+        uint32_t tpwmthrs = driver_->thresholds.GetTpwmthrsRegisterValue();
+        ESP_LOGI(TAG_MOTION, "[DEBUG] TPWMTHRS register value: %lu (0=StealthChop always, 0xFFFFF=never)", (unsigned long)tpwmthrs);
+    }
+    
     return true;
 }
 
@@ -728,9 +770,21 @@ void FatigueTestMotion::Update() noexcept {
                 uint32_t cycles = current_cycles_;
                 state_ = MotionState::STOPPED;
                 running_ = false;
+                
+                // Stop the ramp generator
                 driver_->rampControl.Stop();
+                
+                // CRITICAL: Clear target by setting XTARGET = XACTUAL to prevent lingering targets
+                auto current_pos = driver_->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+                if (current_pos.IsOk()) {
+                    driver_->rampControl.SetTargetPosition(current_pos.Value(), tmc51x0::Unit::Deg);
+                }
+                
+                // Set HOLD mode
+                driver_->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+                
                 guard.unlock();
-                ESP_LOGI(TAG_MOTION, "Target cycle count reached: %lu cycles. Stopping.", cycles);
+                ESP_LOGI(TAG_MOTION, "Target cycle count reached: %lu cycles. Stopped and holding.", cycles);
             }
             return;
         }
@@ -782,7 +836,7 @@ void FatigueTestMotion::Update() noexcept {
                 driver_->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
                 return;
             }
-            // Dwell time includes the settle time (minimum 200ms enforced in SetDwellTimes)
+            // Enter dwell if requested (no minimum enforced - remote controller controls this)
             if (dwell_max > 0) {
                 state_ = MotionState::DWELL_AT_MAX;
                 dwell_start_time_ms_ = esp_timer_get_time() / 1000;
@@ -814,6 +868,20 @@ void FatigueTestMotion::Update() noexcept {
                     return;
                 }
                 state_ = MotionState::MOVING_TO_MIN;
+                
+                // Debug: Check StealthChop status before commanding reverse direction
+                static uint32_t debug_log_count = 0;
+                if (debug_log_count < 5) {  // Only log first 5 transitions
+                    auto drv_status_res = driver_->status.GetDriverStatusRegister();
+                    if (drv_status_res.IsOk()) {
+                        tmc51x0::DRV_STATUS_Register ds{};
+                        ds.value = drv_status_res.Value();
+                        ESP_LOGI(TAG_MOTION, "[DEBUG] Before MOVING_TO_MIN: stealth=%u (1=StealthChop, 0=SpreadCycle) sg_result=%u",
+                                 (unsigned)ds.bits.stealth, (unsigned)ds.bits.sg_result);
+                    }
+                    debug_log_count++;
+                }
+                
                 driver_->rampControl.SetTargetPosition(min_bound, tmc51x0::Unit::Deg);
             }
         }
@@ -846,7 +914,7 @@ void FatigueTestMotion::Update() noexcept {
                     should_stop = true;
                 } else {
                     // Enter dwell or move to MAX for next cycle
-                    // Dwell time includes the settle time (minimum 200ms enforced in SetDwellTimes)
+                    // Dwell time is controlled by remote controller (no minimum enforced)
                     if (dwell_min > 0) {
                         state_ = MotionState::DWELL_AT_MIN;
                         dwell_start_time_ms_ = esp_timer_get_time() / 1000;
@@ -888,6 +956,20 @@ void FatigueTestMotion::Update() noexcept {
                     return;
                 }
                 state_ = MotionState::MOVING_TO_MAX;
+                
+                // Debug: Check StealthChop status before commanding forward direction
+                static uint32_t debug_log_count_max = 0;
+                if (debug_log_count_max < 5) {  // Only log first 5 transitions
+                    auto drv_status_res = driver_->status.GetDriverStatusRegister();
+                    if (drv_status_res.IsOk()) {
+                        tmc51x0::DRV_STATUS_Register ds{};
+                        ds.value = drv_status_res.Value();
+                        ESP_LOGI(TAG_MOTION, "[DEBUG] Before MOVING_TO_MAX: stealth=%u (1=StealthChop, 0=SpreadCycle) sg_result=%u",
+                                 (unsigned)ds.bits.stealth, (unsigned)ds.bits.sg_result);
+                    }
+                    debug_log_count_max++;
+                }
+                
                 driver_->rampControl.SetTargetPosition(max_bound, tmc51x0::Unit::Deg);
             }
         }

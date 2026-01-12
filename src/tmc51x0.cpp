@@ -1049,10 +1049,15 @@ float TMC51x0<CommType>::convertSpeedToUnit(float steps_per_sec, Unit unit) cons
 }
 
 template <typename CommType>
-Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config) noexcept {
+Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config, bool verbose) noexcept {
 #ifndef TMC51X0_DISABLE_DEBUG_LOGGING
   // Debug: Log received configuration values (comprehensive summary)
-  LogConfigSummary(config, "TMC5160", LogLevel::Info);
+  // Only log if verbose mode is enabled (useful for quiet reinitializations after chip reset)
+  if (verbose) {
+    LogConfigSummary(config, "TMC5160", LogLevel::Info);
+  }
+#else
+  (void)verbose;  // Suppress unused parameter warning when logging is disabled
 #endif // TMC51X0_DISABLE_DEBUG_LOGGING
 
   // Store physical configuration
@@ -1415,7 +1420,7 @@ Result<void> TMC51x0<CommType>::HardReset(const HardResetOptions &opts) noexcept
       if (!opts.reinitialize) {
         return Result<void>();
       }
-      return Initialize(driver_config_);
+      return Initialize(driver_config_, opts.verbose);
     }
 
     // If power-cycle isn't supported, fall through to software reset fallback.
@@ -1433,7 +1438,7 @@ Result<void> TMC51x0<CommType>::HardReset(const HardResetOptions &opts) noexcept
   if (!opts.reinitialize) {
     return Result<void>();
   }
-  return Initialize(driver_config_);
+  return Initialize(driver_config_, opts.verbose);
 }
 
 template <typename CommType>
@@ -6064,6 +6069,43 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
       RAMP_STAT_Register rs{};
       rs.value = ramp_stat_res.Value();
 
+      // ======================================================================
+      // FAULT DETECTION: Check for critical hardware faults and abort immediately.
+      // This prevents getting stuck in a polling loop if the driver faults.
+      // CRITICAL: The reset flag indicates the chip has reset itself (all regs
+      // go to defaults), so we MUST abort immediately - further polling is useless.
+      // ======================================================================
+      {
+        bool drv_err = false;
+        bool uv_cp = false;
+        auto gstat_res = driver_.status.GetGlobalStatus(drv_err, uv_cp);
+        if (gstat_res.IsOk()) {
+          // IMPORTANT: GetGlobalStatus returns the RESET flag as its value!
+          bool reset = gstat_res.Value();
+          
+          // Check for critical faults: reset, undervoltage, shorts, overtemperature
+          bool has_critical_fault = reset || uv_cp || (ds.bits.ot != 0) ||
+                                    (ds.bits.s2ga != 0) || (ds.bits.s2gb != 0) ||
+                                    (ds.bits.s2vsa != 0) || (ds.bits.s2vsb != 0);
+          
+          if (has_critical_fault) {
+            TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Homing",
+                              "FAULT detected during bounds finding: reset=%u uv_cp=%u drv_err=%u ot=%u s2ga=%u s2gb=%u s2vsa=%u s2vsb=%u - aborting immediately",
+                              reset ? 1 : 0, uv_cp ? 1 : 0, drv_err ? 1 : 0,
+                              static_cast<unsigned>(ds.bits.ot),
+                              static_cast<unsigned>(ds.bits.s2ga),
+                              static_cast<unsigned>(ds.bits.s2gb),
+                              static_cast<unsigned>(ds.bits.s2vsa),
+                              static_cast<unsigned>(ds.bits.s2vsb));
+            
+            // Stop the motor and abort
+            (void)driver_.rampControl.Stop();
+            (void)driver_.rampControl.SetRampMode(RampMode::HOLD);
+            return Result<void>(ErrorCode::HARDWARE_ERROR);
+          }
+        }
+      }
+
       // Verbose logging: SG telemetry during bounds finding.
       // Note: StallGuard2 is only meaningful when:
       // - SpreadCycle is active (not StealthChop)
@@ -7036,6 +7078,45 @@ TMC51x0<CommType>::Homing::FindBoundsEncoder(const BoundsOptions& opt, const Hom
         return Result<void>(ErrorCode::CANCELLED);
       }
 
+      // ======================================================================
+      // FAULT DETECTION: Check for critical hardware faults and abort immediately.
+      // This prevents getting stuck in a polling loop if the driver faults.
+      // CRITICAL: The reset flag indicates the chip has reset itself (all regs
+      // go to defaults), so we MUST abort immediately - further polling is useless.
+      // ======================================================================
+      {
+        bool drv_err = false;
+        bool uv_cp = false;
+        auto gstat_res = driver_.status.GetGlobalStatus(drv_err, uv_cp);
+        if (gstat_res.IsOk()) {
+          // IMPORTANT: GetGlobalStatus returns the RESET flag as its value!
+          bool reset = gstat_res.Value();
+          
+          // Check reset first - if chip reset, all registers are defaults and we can't continue
+          if (reset || drv_err || uv_cp) {
+            auto drv_status_res = driver_.status.GetDriverStatusRegister();
+            DRV_STATUS_Register ds{};
+            if (drv_status_res) {
+              ds.value = drv_status_res.Value();
+            }
+            bool has_critical_fault = reset || uv_cp || (ds.bits.ot != 0) ||
+                                      (ds.bits.s2ga != 0) || (ds.bits.s2gb != 0) ||
+                                      (ds.bits.s2vsa != 0) || (ds.bits.s2vsb != 0);
+            
+            if (has_critical_fault) {
+              TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Homing",
+                                "FAULT detected during encoder bounds finding: reset=%u uv_cp=%u drv_err=%u ot=%u - aborting immediately",
+                                reset ? 1 : 0, uv_cp ? 1 : 0, drv_err ? 1 : 0,
+                                static_cast<unsigned>(ds.bits.ot));
+              
+              (void)driver_.rampControl.Stop();
+              (void)driver_.rampControl.SetRampMode(RampMode::HOLD);
+              return Result<void>(ErrorCode::HARDWARE_ERROR);
+            }
+          }
+        }
+      }
+
       auto pos_res = driver_.rampControl.GetCurrentPosition(opt.position_unit);
       float pos = pos_res ? pos_res.Value() : 0.0F;
       if (!motion_started && std::abs(pos) >= MIN_MOVEMENT_UNITS) {
@@ -7447,6 +7528,46 @@ TMC51x0<CommType>::Homing::FindBoundsSwitch(const BoundsOptions& opt, const Home
         (void)driver_.rampControl.SetRampMode(RampMode::HOLD);
         return Result<void>(ErrorCode::CANCELLED);
       }
+
+      // ======================================================================
+      // FAULT DETECTION: Check for critical hardware faults and abort immediately.
+      // This prevents getting stuck in a polling loop if the driver faults.
+      // CRITICAL: The reset flag indicates the chip has reset itself (all regs
+      // go to defaults), so we MUST abort immediately - further polling is useless.
+      // ======================================================================
+      {
+        bool drv_err = false;
+        bool uv_cp = false;
+        auto gstat_res = driver_.status.GetGlobalStatus(drv_err, uv_cp);
+        if (gstat_res.IsOk()) {
+          // IMPORTANT: GetGlobalStatus returns the RESET flag as its value!
+          bool reset = gstat_res.Value();
+          
+          // Check reset first - if chip reset, all registers are defaults and we can't continue
+          if (reset || drv_err || uv_cp) {
+            auto drv_status_res = driver_.status.GetDriverStatusRegister();
+            DRV_STATUS_Register ds{};
+            if (drv_status_res) {
+              ds.value = drv_status_res.Value();
+            }
+            bool has_critical_fault = reset || uv_cp || (ds.bits.ot != 0) ||
+                                      (ds.bits.s2ga != 0) || (ds.bits.s2gb != 0) ||
+                                      (ds.bits.s2vsa != 0) || (ds.bits.s2vsb != 0);
+            
+            if (has_critical_fault) {
+              TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Homing",
+                                "FAULT detected during switch bounds finding: reset=%u uv_cp=%u drv_err=%u ot=%u - aborting immediately",
+                                reset ? 1 : 0, uv_cp ? 1 : 0, drv_err ? 1 : 0,
+                                static_cast<unsigned>(ds.bits.ot));
+              
+              (void)driver_.rampControl.Stop();
+              (void)driver_.rampControl.SetRampMode(RampMode::HOLD);
+              return Result<void>(ErrorCode::HARDWARE_ERROR);
+            }
+          }
+        }
+      }
+
       auto rs = driver_.status.GetRampStatusRegister();
       if (rs) {
         RAMP_STAT_Register st{};

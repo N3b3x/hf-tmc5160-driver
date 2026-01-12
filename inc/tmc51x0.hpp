@@ -188,6 +188,7 @@ public:
   /**
    * @brief Initialize the TMC51x0 driver with configuration
    * @param config Driver configuration structure
+   * @param verbose If true, print configuration summary table (default: true)
    * @return Result<void> indicating success or specific error
    *
    * This method performs the complete initialization sequence:
@@ -210,9 +211,12 @@ public:
    * if (!result) {  // Bool operator
    *     printf("Error: %s\n", result.ErrorMessage());
    * }
+   * // Quiet reinitialization (e.g., after chip reset):
+   * auto result2 = driver.Initialize(config, false);
    * @endcode
    */
-  Result<void> Initialize(const DriverConfig &config = DriverConfig()) noexcept;
+  Result<void> Initialize(const DriverConfig &config = DriverConfig(),
+                          bool verbose = true) noexcept;
 
   /**
    * @brief Options for HardReset()
@@ -225,6 +229,8 @@ public:
     bool uart_assume_accessible_at_0{true}; ///< After power-cycle, assume the
                                             ///< device is reachable at UART
                                             ///< address 0 for re-init
+    bool verbose{true};                ///< Print config summary during reinitialize
+                                       ///< (set to false for quiet reinitializations)
   };
 
   /**
