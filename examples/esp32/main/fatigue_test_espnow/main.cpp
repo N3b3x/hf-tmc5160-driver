@@ -193,14 +193,27 @@ namespace BoundsCache {
     
 } // namespace BoundsCache
 
+// Global motion instance (constructed via placement-new in app_main()).
+static FatigueTest::FatigueTestMotion* g_motion = nullptr;
+
+static inline uint8_t GetBoundsValidFlag_() noexcept
+{
+    return BoundsCache::AreBoundsValid() ? 1 : 0;
+}
+
+static inline void ApplyMotionConfigFromSettings_() noexcept
+{
+    if (!g_motion) {
+        return;
+    }
+    g_motion->SetTargetCycles(g_settings.test_unit.cycle_amount);
+    g_motion->SetMaxVelocity(g_settings.test_unit.oscillation_vmax_rpm);
+    g_motion->SetAcceleration(g_settings.test_unit.oscillation_amax_rev_s2);
+    g_motion->SetDwellTimes(g_settings.test_unit.dwell_time_ms, g_settings.test_unit.dwell_time_ms);
+}
+
 enum class PendingStartKind : uint8_t { NONE = 0, START, RESUME };
 static volatile PendingStartKind g_pending_start = PendingStartKind::NONE;
-
-// g_motion will be declared after FatigueTestMotion is defined
-
-
-// Now declare g_motion after FatigueTestMotion is fully defined
-static FatigueTest::FatigueTestMotion* g_motion = nullptr;
 
 // Cancel callback for library homing/bounds routines.
 // (Signature must be a free function pointer; it reads our global cancel flag.)
@@ -480,6 +493,9 @@ static void RequestStart(PendingStartKind kind) noexcept {
             ESP_LOGI(TAG, "RESUME with cached bounds: Continuing from cycle %lu", 
                      (unsigned long)g_motion->GetCurrentCycles());
         }
+
+        // Ensure latest config is applied before starting motion.
+        ApplyMotionConfigFromSettings_();
         
         // Start motion directly without bounds finding
         if (!g_motion->Start()) {
@@ -491,7 +507,7 @@ static void RequestStart(PendingStartKind kind) noexcept {
         }
         
         g_state = InternalState::RUNNING;
-        EspNowReceiver::send_status_update(g_motion->GetCurrentCycles(), TestState::Running);
+        EspNowReceiver::send_status_update(g_motion->GetCurrentCycles(), TestState::Running, 0, GetBoundsValidFlag_());
         return;
     }
     
@@ -670,7 +686,7 @@ static void espnow_command_task(void* arg)
                     }
                     EspNowReceiver::send_start_ack(); // acknowledge receipt immediately
                     RequestStart(PendingStartKind::START);
-                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state));
+                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state), 0, GetBoundsValidFlag_());
                     break;
                     
                 case ProtoEventType::CommandPause:
@@ -682,7 +698,7 @@ static void espnow_command_task(void* arg)
                         g_state = InternalState::PAUSED;
                         MotorStopHoldDisable();  // Disable during bounds-finding cancellation
                         BoundsCache::InvalidateBounds();  // Must re-find bounds on resume
-                        EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Paused);
+                        EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Paused, 0, GetBoundsValidFlag_());
                         break;
                     }
                     // If running, pause motion but KEEP motor energized (still delivering hold current).
@@ -695,7 +711,7 @@ static void espnow_command_task(void* arg)
                     }
                     g_state = InternalState::PAUSED;
                     ESP_LOGI(TAG, "Motor paused - holding position with hold current");
-                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Paused);
+                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Paused, 0, GetBoundsValidFlag_());
                     break;
                     
                 case ProtoEventType::CommandResume:
@@ -732,12 +748,12 @@ static void espnow_command_task(void* arg)
                         }
                         
                         g_state = InternalState::RUNNING;
-                        EspNowReceiver::send_status_update(g_motion->GetCurrentCycles(), TestState::Running);
+                        EspNowReceiver::send_status_update(g_motion->GetCurrentCycles(), TestState::Running, 0, GetBoundsValidFlag_());
                     } else {
                         // Resuming from IDLE or other state - may need to re-find bounds
                         // Use RequestStart which will check bounds cache
                         RequestStart(PendingStartKind::RESUME);
-                        EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state));
+                        EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state), 0, GetBoundsValidFlag_());
                     }
                     break;
                     
@@ -751,7 +767,7 @@ static void espnow_command_task(void* arg)
                     }
                     g_state = InternalState::IDLE;
                     MotorStopHoldDisable();
-                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Idle);
+                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Idle, 0, GetBoundsValidFlag_());
                     break;
 
                 case ProtoEventType::CommandRunBoundsFinding:
@@ -761,11 +777,11 @@ static void espnow_command_task(void* arg)
                     if (!RequestBoundsOnly()) {
                         ESP_LOGW(TAG, "Bounds-only request rejected (busy or running)");
                         // Keep state unchanged; send a status update so UI can reflect reality.
-                        EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state));
+                        EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state), 0, GetBoundsValidFlag_());
                         break;
                     }
                     // Bounds finding is active (InternalState::BOUNDS_FINDING maps to TestState::Running).
-                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state));
+                    EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state), 0, GetBoundsValidFlag_());
                     break;
                     
                 default:
@@ -1041,7 +1057,7 @@ static void bounds_finding_task(void* arg)
             global_max);
 
         g_state = InternalState::IDLE;
-        EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Idle);
+        EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, TestState::Idle, 0, GetBoundsValidFlag_());
         g_bounds_task_running = false;
         g_bounds_task_handle = nullptr;
         // Motor stays energized; de-energize timer will fire after validity window
@@ -1062,6 +1078,9 @@ static void bounds_finding_task(void* arg)
                  (unsigned long)g_motion->GetCurrentCycles());
     }
 
+    // Ensure latest config is applied before starting motion.
+    ApplyMotionConfigFromSettings_();
+
     if (!g_motion->Start()) {
         ESP_LOGE(TAG, "[bounds_find] Motion start failed after bounds");
         g_state = InternalState::ERROR;
@@ -1074,7 +1093,7 @@ static void bounds_finding_task(void* arg)
     }
 
     g_state = InternalState::RUNNING;
-    EspNowReceiver::send_status_update(g_motion->GetCurrentCycles(), TestState::Running);
+    EspNowReceiver::send_status_update(g_motion->GetCurrentCycles(), TestState::Running, 0, GetBoundsValidFlag_());
 
     g_bounds_task_running = false;
     g_bounds_task_handle = nullptr;
@@ -1101,12 +1120,19 @@ static void motion_control_task(void* arg)
     int64_t start_time_us = esp_timer_get_time();
     int64_t last_log_time_us = start_time_us;
     const int64_t log_interval_us = TaskTiming::LOG_INTERVAL_LONG_US;
+
+    // Driver fault polling: DRV_ERR in SPI_STATUS is only a hint/summary.
+    // For actionable root-cause, poll GSTAT + DRV_STATUS at a low rate.
+    static constexpr int64_t fault_poll_interval_us = 500'000; // 500ms
+    int64_t last_fault_poll_time_us = start_time_us;
+    int64_t last_fault_log_time_us = 0;
     
     // StallGuard monitoring (only when using StallGuard method)
     int64_t last_sg_log_time_us = start_time_us;
     const int64_t sg_log_interval_us = TaskTiming::SG_LOG_INTERVAL_US;
     const int64_t sg_log_interval_always_us = TaskTiming::SG_LOG_INTERVAL_ALWAYS_US;
     uint16_t last_sg_result = 0;
+    int64_t last_sg_stealth_suppressed_log_us = 0;
     bool motion_was_running = false;
     int64_t motion_start_time_us = 0;
     
@@ -1116,6 +1142,85 @@ static void motion_control_task(void* arg)
     
     while (true) {
         int64_t current_time_us = esp_timer_get_time();
+
+        // ---------------------------------------------------------------------
+        // Fault policy: treat SPI_STATUS.DRV_ERR as a trigger only.
+        // Read GSTAT (latched flags) + DRV_STATUS (detailed bits) to decide.
+        // Note: reading GSTAT clears its flags (per driver implementation).
+        // ---------------------------------------------------------------------
+        if (g_driver && g_driver_mutex &&
+            (current_time_us - last_fault_poll_time_us) >= fault_poll_interval_us) {
+            bool drv_err = false;
+            bool uv_cp = false;
+            bool reset = false;
+            uint32_t drv_status_raw = 0;
+            bool have_drv_status = false;
+            bool should_hard_stop = false;
+
+            {
+                TmcMutexGuard guard(*g_driver_mutex);
+                auto gstat_res = g_driver->status.GetGlobalStatus(drv_err, uv_cp);
+                if (gstat_res.IsOk()) {
+                    reset = gstat_res.Value();
+                }
+
+                if (drv_err || uv_cp) {
+                    auto drv_status_res = g_driver->status.GetDriverStatusRegister();
+                    if (drv_status_res.IsOk()) {
+                        drv_status_raw = drv_status_res.Value();
+                        have_drv_status = true;
+                        tmc51x0::DRV_STATUS_Register ds{};
+                        ds.value = drv_status_raw;
+
+                        // "Hard stop" faults: charge pump undervoltage, shorts, or OT.
+                        should_hard_stop = uv_cp || (ds.bits.ot != 0) ||
+                                           (ds.bits.s2ga != 0) || (ds.bits.s2gb != 0) ||
+                                           (ds.bits.s2vsa != 0) || (ds.bits.s2vsb != 0);
+                    } else {
+                        // If we cannot read DRV_STATUS but GSTAT reports a fault, be conservative.
+                        should_hard_stop = true;
+                    }
+                }
+            }
+
+            // Rate-limit fault logs (avoid log storms if a fault is stuck).
+            const bool should_log_fault = (drv_err || uv_cp || reset) &&
+                                          ((last_fault_log_time_us == 0) ||
+                                           (current_time_us - last_fault_log_time_us) >= 2'000'000);
+            if (should_log_fault) {
+                last_fault_log_time_us = current_time_us;
+                if (drv_err || uv_cp) {
+                    if (have_drv_status) {
+                        tmc51x0::DRV_STATUS_Register ds{};
+                        ds.value = drv_status_raw;
+                        ESP_LOGW(TAG,
+                                 "TMC fault (GSTAT-latched): drv_err=%d uv_cp=%d reset=%d | "
+                                 "DRV_STATUS=0x%08" PRIX32 " [ot=%u otpw=%u s2ga=%u s2gb=%u s2vsa=%u s2vsb=%u stealth=%u]",
+                                 drv_err ? 1 : 0, uv_cp ? 1 : 0, reset ? 1 : 0,
+                                 drv_status_raw,
+                                 (unsigned)ds.bits.ot, (unsigned)ds.bits.otpw,
+                                 (unsigned)ds.bits.s2ga, (unsigned)ds.bits.s2gb,
+                                 (unsigned)ds.bits.s2vsa, (unsigned)ds.bits.s2vsb,
+                                 (unsigned)ds.bits.stealth);
+                    } else {
+                        ESP_LOGW(TAG,
+                                 "TMC fault (GSTAT-latched): drv_err=%d uv_cp=%d reset=%d | DRV_STATUS unreadable",
+                                 drv_err ? 1 : 0, uv_cp ? 1 : 0, reset ? 1 : 0);
+                    }
+                } else if (reset) {
+                    ESP_LOGI(TAG, "TMC GSTAT indicates reset since last poll");
+                }
+            }
+
+            if (should_hard_stop) {
+                ESP_LOGE(TAG, "TMC fault requires stop: entering ERROR and disabling motor");
+                g_state = InternalState::ERROR;
+                MotorStopHoldDisable();
+                (void)EspNowReceiver::send_error(2, g_motion ? g_motion->GetCurrentCycles() : 0);
+            }
+
+            last_fault_poll_time_us = current_time_us;
+        }
         
         // Log elapsed time periodically
         if (current_time_us - last_log_time_us >= log_interval_us) {
@@ -1150,6 +1255,30 @@ static void motion_control_task(void* arg)
                 bool always_log = (current_time_us - last_sg_log_time_us >= sg_log_interval_always_us);
                 
                 if (always_log || (current_time_us - last_sg_log_time_us >= sg_log_interval_us)) {
+                    // StallGuard2 is only meaningful in SpreadCycle. In StealthChop, SG_RESULT is invalid/usually 0.
+                    bool stealth_active = false;
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        auto drv_status_res = g_driver->status.GetDriverStatusRegister();
+                        if (drv_status_res.IsOk()) {
+                            tmc51x0::DRV_STATUS_Register ds{};
+                            ds.value = drv_status_res.Value();
+                            stealth_active = (ds.bits.stealth != 0);
+                        }
+                    }
+
+                    if (stealth_active) {
+                        if (last_sg_stealth_suppressed_log_us == 0 ||
+                            (current_time_us - last_sg_stealth_suppressed_log_us) >= 5'000'000) {
+                            ESP_LOGI(TAG,
+                                     "StallGuard monitoring suppressed (StealthChop active). "
+                                     "SG_RESULT is invalid in StealthChop; disable StealthChop if you need StallGuard-based jam detection.");
+                            last_sg_stealth_suppressed_log_us = current_time_us;
+                        }
+                        last_sg_log_time_us = current_time_us;
+                        continue;
+                    }
+
                     // Read driver telemetry with mutex protection
                     float pos_deg = 0.0f;
                     float vel_rpm = 0.0f;
@@ -1220,7 +1349,7 @@ static void motion_control_task(void* arg)
             if (g_state == InternalState::RUNNING && !g_motion->IsRunning()) {
                 auto status = g_motion->GetStatus();
                 if (status.current_cycles >= status.target_cycles && status.target_cycles > 0) {
-                    EspNowReceiver::send_status_update(status.current_cycles, TestState::Completed);
+                    EspNowReceiver::send_status_update(status.current_cycles, TestState::Completed, 0, GetBoundsValidFlag_());
                     EspNowReceiver::send_test_complete();
                     // Completion should de-energize motor
                     g_state = InternalState::IDLE;
@@ -1267,7 +1396,7 @@ static void status_update_task(void* arg)
             InternalState s = g_state;
             if (s == InternalState::RUNNING || s == InternalState::BOUNDS_FINDING) {
                 auto status = g_motion->GetStatus();
-                EspNowReceiver::send_status_update(status.current_cycles, ToProtoState(s));
+                EspNowReceiver::send_status_update(status.current_cycles, ToProtoState(s), 0, GetBoundsValidFlag_());
             }
         }
     }
@@ -2120,7 +2249,7 @@ static bool HandleStop(FatigueTest::FatigueTestMotion& motion) noexcept {
         g_state = InternalState::IDLE;
         MotorStopHoldDisable();
         EspNowReceiver::send_stop_ack();
-        EspNowReceiver::send_status_update(motion.GetCurrentCycles(), TestState::Idle);
+        EspNowReceiver::send_status_update(motion.GetCurrentCycles(), TestState::Idle, 0, GetBoundsValidFlag_());
         return true;
     }
     
@@ -2130,7 +2259,7 @@ static bool HandleStop(FatigueTest::FatigueTestMotion& motion) noexcept {
     g_state = InternalState::IDLE;
     MotorStopHoldDisable();
     EspNowReceiver::send_stop_ack();
-    EspNowReceiver::send_status_update(motion.GetCurrentCycles(), TestState::Idle);
+    EspNowReceiver::send_status_update(motion.GetCurrentCycles(), TestState::Idle, 0, GetBoundsValidFlag_());
     return true;
 }
 

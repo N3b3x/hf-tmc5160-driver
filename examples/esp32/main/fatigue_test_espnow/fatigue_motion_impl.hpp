@@ -407,6 +407,7 @@ bool FatigueTestMotion::Start() noexcept {
              target_cycles == 0 ? 0xFFFFFFFF : target_cycles);
     ESP_LOGI(TAG_MOTION, "  Motion: Point-to-point mode (center->MAX->MIN), VMAX=%.1f RPM, AMAX=%.2f rev/s², Est.Freq=%.2f Hz", 
              vmax_rpm_, amax_rev_s2_, estimated_frequency_hz_);
+    ESP_LOGI(TAG_MOTION, "  Dwell: min=%lu ms, max=%lu ms", (unsigned long)dwell_at_min_ms_, (unsigned long)dwell_at_max_ms_);
     ESP_LOGI(TAG_MOTION, "  Cycle counting: one cycle = center -> MAX -> MIN (counted at MIN)");
     return true;
 }

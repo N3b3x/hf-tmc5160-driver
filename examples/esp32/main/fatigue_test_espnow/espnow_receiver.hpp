@@ -78,7 +78,7 @@ bool send_stop_ack();
  * @param err_code Optional error code (used when state == ERROR).
  * @return true if the packet was queued for transmission; false otherwise.
  */
-bool send_status_update(uint32_t cycle, TestState state, uint8_t err_code = 0);
+bool send_status_update(uint32_t cycle, TestState state, uint8_t err_code = 0, uint8_t bounds_valid = 255);
 
 /**
  * @brief Send ERROR message.

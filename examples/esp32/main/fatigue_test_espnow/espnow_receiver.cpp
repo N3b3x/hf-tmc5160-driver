@@ -303,12 +303,13 @@ bool EspNowReceiver::send_stop_ack()
     return sendPacketToUi(MsgType::CommandAck, nullptr, 0);
 }
 
-bool EspNowReceiver::send_status_update(uint32_t cycle, TestState state, uint8_t err_code)
+bool EspNowReceiver::send_status_update(uint32_t cycle, TestState state, uint8_t err_code, uint8_t bounds_valid)
 {
     StatusPayload p{};
     p.cycle_number = cycle;
     p.state = static_cast<uint8_t>(state);
     p.err_code = err_code;
+    p.bounds_valid = bounds_valid;
     return sendPacketToUi(MsgType::StatusUpdate, &p, sizeof(p));
 }
 

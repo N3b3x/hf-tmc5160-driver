@@ -222,6 +222,10 @@ struct StatusPayload {
     uint32_t cycle_number;
     uint8_t  state;      // TestState enum value
     uint8_t  err_code;   // error code if state == Error
+    // 1 = bounds may be reused (motor still energized + within validity window)
+    // 0 = bounds invalid, must re-run bounds finding
+    // 255 = unknown/unspecified (backward compatibility)
+    uint8_t  bounds_valid;
 };
 
 /**
