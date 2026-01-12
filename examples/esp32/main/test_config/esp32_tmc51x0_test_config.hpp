@@ -542,7 +542,7 @@ struct MotorConfig_17HS4401S_Direct {
     // Velocity below which StealthChop is active, above which SpreadCycle is used
     // Set to 0 to disable StealthChop (always use SpreadCycle)
     // Set to 30 RPM - below this StealthChop (quiet), above this SpreadCycle (more torque)
-    static constexpr float STEALTH_VELOCITY_THRESHOLD_RPM = 30.0f;
+    static constexpr float STEALTH_VELOCITY_THRESHOLD_RPM = 200.0f;
 };
 
 /**
@@ -650,7 +650,7 @@ struct MotorConfig_AppliedMotion_5034_369 {
     // Velocity below which StealthChop is active, above which SpreadCycle is used
     // Set to 0 to disable StealthChop (always use SpreadCycle)
     // Set to 20 RPM - below this StealthChop (quiet), above this SpreadCycle (more torque for larger motor)
-    static constexpr float STEALTH_VELOCITY_THRESHOLD_RPM = 0.0f;
+    static constexpr float STEALTH_VELOCITY_THRESHOLD_RPM = 500.0f;
 };
 
 /**

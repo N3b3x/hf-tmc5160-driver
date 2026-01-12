@@ -115,8 +115,9 @@ static volatile bool g_cancel_bounds = false;
 static volatile bool g_bounds_task_running = false;
 static TaskHandle_t g_bounds_task_handle = nullptr;
 
-static bool g_bounds_found = false;          // true if bounds have been found at least once
-static bool g_use_stallguard = true;
+static bool g_bounds_found = false;         // true if bounds have been found at least once
+static bool g_use_stallguard = false;       // StallGuard monitoring default state 
+//                                          // (disabled for smooth StealthChop motion)
 
 // -------------------- Bounds Caching System --------------------
 // After bounds finding completes, motor stays energized for a configurable time.
