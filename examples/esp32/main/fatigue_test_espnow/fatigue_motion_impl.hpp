@@ -23,6 +23,7 @@
 
 #include "esp_log.h"
 #include "esp_timer.h"
+#include "test_config/esp32_tmc51x0_test_config.hpp"
 #include <algorithm>
 #include <cmath>
 
@@ -221,14 +222,23 @@ float FatigueTestMotion::GetEstimatedCycleFrequency() const noexcept {
 }
 
 bool FatigueTestMotion::SetDwellTimes(uint32_t dwell_at_min_ms, uint32_t dwell_at_max_ms) noexcept {
+    // Enforce minimum dwell time of 200ms (settle time like bounds_finding_test.cpp)
+    static constexpr uint32_t MIN_DWELL_MS = 200;
+    uint32_t effective_min = std::max(dwell_at_min_ms, MIN_DWELL_MS);
+    uint32_t effective_max = std::max(dwell_at_max_ms, MIN_DWELL_MS);
+    
     {
         TmcMutexGuard guard(driver_mutex_);
-        dwell_at_min_ms_ = dwell_at_min_ms;
-        dwell_at_max_ms_ = dwell_at_max_ms;
+        dwell_at_min_ms_ = effective_min;
+        dwell_at_max_ms_ = effective_max;
         RecalculateEstimatedFrequency();
     }
+    if (dwell_at_min_ms < MIN_DWELL_MS || dwell_at_max_ms < MIN_DWELL_MS) {
+        ESP_LOGW(TAG_MOTION, "Dwell times clamped to minimum %lu ms (requested: min=%lu, max=%lu)", 
+                 MIN_DWELL_MS, dwell_at_min_ms, dwell_at_max_ms);
+    }
     ESP_LOGI(TAG_MOTION, "Dwell times updated: min=%lu ms, max=%lu ms", 
-             dwell_at_min_ms, dwell_at_max_ms);
+             effective_min, effective_max);
     return true;
 }
 
@@ -324,12 +334,13 @@ bool FatigueTestMotion::Start() noexcept {
 
         // =====================================================================
         // RAMP SPEED CONFIGURATION
-        // VSTART: Initial velocity when starting from standstill (must overcome friction)
-        // VSTOP: Velocity below which ramp generator considers "stopped"
-        // These should be low values - NOT the max speed!
+        // Use motor config defaults for VSTART/VSTOP (don't override)
+        // These are tuned per motor and should be used as-is
         // =====================================================================
-        static constexpr float VSTART_RPM = 3.0f;   // Start velocity (3 RPM)
-        static constexpr float VSTOP_RPM = 5.0f;    // Stop velocity threshold (5 RPM)
+        // Get motor config defaults for VSTART/VSTOP
+        using MotorConfig = typename tmc51x0_test_config::TestRigConfig<tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE>::Motor;
+        const float vstart_rpm = MotorConfig::RAMP_VSTART_RPM;
+        const float vstop_rpm = MotorConfig::RAMP_VSTOP_RPM;
 
         // Configure driver for positioning mode
         // VMAX and AMAX are directly user-controlled, not derived from frequency
@@ -337,7 +348,7 @@ bool FatigueTestMotion::Start() noexcept {
         driver_->rampControl.SetMaxSpeed(vmax_rpm_, tmc51x0::Unit::RPM);
         driver_->rampControl.SetAcceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
         driver_->rampControl.SetDeceleration(amax_rev_s2_, tmc51x0::Unit::RevPerSec);
-        driver_->rampControl.SetRampSpeeds(VSTART_RPM, VSTOP_RPM, 0.0f, tmc51x0::Unit::RPM);
+        driver_->rampControl.SetRampSpeeds(vstart_rpm, vstop_rpm, 0.0f, tmc51x0::Unit::RPM);
         
         // CRITICAL: Ensure StallGuard stop-on-stall is disabled for normal motion
         // This prevents false stall detection during oscillation
@@ -763,7 +774,7 @@ void FatigueTestMotion::Update() noexcept {
         return;
     case MotionState::MOVING_TO_MAX:
         if (target_reached || dist_to_max < NEAR_THRESHOLD_DEG) {
-            // Reached MAX - enter dwell or move to MIN
+            // Reached MAX - enter dwell (which includes settle time) or move to MIN
             TmcMutexGuard guard(driver_mutex_);
             // Check if paused - if so, don't transition, just wait
             if (state_ == MotionState::PAUSED) {
@@ -771,11 +782,12 @@ void FatigueTestMotion::Update() noexcept {
                 driver_->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
                 return;
             }
+            // Dwell time includes the settle time (minimum 200ms enforced in SetDwellTimes)
             if (dwell_max > 0) {
                 state_ = MotionState::DWELL_AT_MAX;
                 dwell_start_time_ms_ = esp_timer_get_time() / 1000;
             } else {
-                // No dwell, immediately move to MIN
+                // No dwell, immediately move to MIN (dwell time already provides settle)
                 state_ = MotionState::MOVING_TO_MIN;
                 driver_->rampControl.SetTargetPosition(min_bound, tmc51x0::Unit::Deg);
             }
@@ -821,6 +833,7 @@ void FatigueTestMotion::Update() noexcept {
                     return;
                 }
                 
+                // This completes a cycle! Count it.
                 current_cycles_++;
                 new_cycles = current_cycles_;
                 
@@ -833,6 +846,7 @@ void FatigueTestMotion::Update() noexcept {
                     should_stop = true;
                 } else {
                     // Enter dwell or move to MAX for next cycle
+                    // Dwell time includes the settle time (minimum 200ms enforced in SetDwellTimes)
                     if (dwell_min > 0) {
                         state_ = MotionState::DWELL_AT_MIN;
                         dwell_start_time_ms_ = esp_timer_get_time() / 1000;
