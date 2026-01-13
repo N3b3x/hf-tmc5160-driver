@@ -1010,6 +1010,11 @@ static void bounds_finding_task(void* arg)
             ESP_LOGI(TAG, "[bounds_find] Stop-on-stall disabled for normal motion");
         }
         
+        // CRITICAL: Ensure motor is fully stopped before switching modes.
+        // Switching from SpreadCycle (used in bounds finding) to StealthChop while 
+        // moving or with residual current can cause phase jumps ("lost steps").
+        (void)g_driver->rampControl.Stop();
+
         // CRITICAL: Restore smooth motion mode for fatigue testing.
         // Bounds finding uses SpreadCycle (required for StallGuard), but normal
         // motion should use StealthChop for quiet operation. Also clear mode
@@ -1017,11 +1022,8 @@ static void bounds_finding_task(void* arg)
         (void)g_driver->motorControl.SetStealthChopEnabled(true);
         (void)g_driver->thresholds.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::RPM);
         
-        // CRITICAL: Explicitly stop and clear target AFTER mode switch to prevent any
-        // residual motion from StealthChop switching or cached target positions.
-        // The guard's RestoreRampSettings already did this, but the mode change to
-        // StealthChop can cause transient motor behavior (only seen at off times).
-        (void)g_driver->rampControl.Stop();
+        // CRITICAL: Clear target and set to HOLD to solidify the current position
+        // as the setpoint.
         auto cur_pos = g_driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
         if (cur_pos.IsOk()) {
             (void)g_driver->rampControl.SetTargetPosition(cur_pos.Value(), tmc51x0::Unit::Deg);
