@@ -942,6 +942,12 @@ static void bounds_finding_task(void* arg)
         
         ESP_LOGI(TAG, "[bounds_find] StallGuard config: SGT=%d, Filter=ON, MinVel=%.1f RPM, CurrentFactor=%.0f%%",
                  sg_override.threshold, sg_override.min_velocity, tu.stall_detection_current_factor * 100.0f);
+        
+        // Ensure we start in SpreadCycle so FindBounds caches this state.
+        // This prevents the library from restoring StealthChop immediately upon return,
+        // allowing us to perform the switch manually with proper stabilization delays
+        // in the post-bounds block below.
+        (void)g_driver->motorControl.SetStealthChopEnabled(false);
     } else {
         opt.stallguard_override = nullptr;
         opt.current_reduction_factor = 0.0f;
