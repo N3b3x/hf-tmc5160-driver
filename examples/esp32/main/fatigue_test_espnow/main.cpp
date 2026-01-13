@@ -1014,12 +1014,22 @@ static void bounds_finding_task(void* arg)
         // Switching from SpreadCycle (used in bounds finding) to StealthChop while 
         // moving or with residual current can cause phase jumps ("lost steps").
         (void)g_driver->rampControl.Stop();
+        
+        // Wait for standstill and current stabilization.
+        // Datasheet recommends switching modes only when motor is at standstill and currents are stable.
+        // If currents are not stable, StealthChop PWM initialization (PWM_AMPL) may be incorrect,
+        // causing a phase jump or "lost steps" (typically ~1-2 steps) as the rotor snaps to the new electrical phase.
+        vTaskDelay(pdMS_TO_TICKS(100));
 
         // CRITICAL: Restore smooth motion mode for fatigue testing.
         // Bounds finding uses SpreadCycle (required for StallGuard), but normal
         // motion should use StealthChop for quiet operation. Also clear mode
         // change thresholds so StealthChop is active at all velocities.
         (void)g_driver->motorControl.SetStealthChopEnabled(true);
+        
+        // Wait for StealthChop voltage PWM regulator to stabilize (PWM_SCALE_AUTO initialization).
+        vTaskDelay(pdMS_TO_TICKS(100));
+        
         (void)g_driver->thresholds.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::RPM);
         
         // CRITICAL: Clear target and set to HOLD to solidify the current position
