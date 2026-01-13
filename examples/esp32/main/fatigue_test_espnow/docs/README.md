@@ -42,18 +42,18 @@ This directory contains the fatigue test unit firmware that communicates with a 
 │          │                                                                   │
 │          │           ┌────────────────────────────────────────────────────┐  │
 │          └──────────►│              Motion Controller                     │  │
-│                      │  - Bounds finding (StallGuard/Encoder)            │  │
-│                      │  - Sinusoidal motion                              │  │
-│                      │  - Cycle counting                                 │  │
-│                      │  - Bounds cache (2 min validity)                  │  │
+│                      │  - Bounds finding (StallGuard/Encoder)             │  │
+│                      │  - Point-to-point motion                           │  │
+│                      │  - Cycle counting                                  │  │
+│                      │  - Bounds cache (2 min validity)                   │  │
 │                      └────────────────────────────────────────────────────┘  │
 │                                        │                                     │
 │                                        ▼                                     │
 │                      ┌────────────────────────────────────────────────────┐  │
 │                      │              TMC5160 Driver                        │  │
-│                      │  - SPI communication                              │  │
-│                      │  - StallGuard2                                    │  │
-│                      │  - Ramp generator                                 │  │
+│                      │  - SPI communication                               │  │
+│                      │  - StallGuard2                                     │  │
+│                      │  - Ramp generator                                  │  │
 │                      └────────────────────────────────────────────────────┘  │
 └──────────────────────────────────────────────────────────────────────────────┘
 ```

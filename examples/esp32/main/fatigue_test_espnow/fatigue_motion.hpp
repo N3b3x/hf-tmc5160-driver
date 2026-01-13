@@ -2,8 +2,8 @@
  * @file fatigue_motion.hpp
  * @brief Unified fatigue test motion controller
  * 
- * Extracted and improved from fatigue_test_encoder.cpp and fatigue_test_stallguard.cpp
- * Provides sinusoidal back-and-forth motion between bounds for fatigue testing.
+ * Provides point-to-point back-and-forth motion between bounds for fatigue testing.
+ * Uses direct VMAX/AMAX control like bounds_finding_test.cpp for smooth, predictable motion.
  */
 
 #pragma once
@@ -22,7 +22,7 @@ enum class AngleUnit { DEGREES, RADIANS };
 /**
  * @brief Unified fatigue test motion controller
  * 
- * Provides pure sinusoidal back-and-forth motion between bounds for fatigue testing.
+ * Provides point-to-point back-and-forth motion between bounds for fatigue testing.
  * Supports global bounds (hardware limits) and local bounds (oscillation range).
  */
 class FatigueTestMotion {
@@ -100,8 +100,8 @@ public:
      * @brief Set local oscillation bounds (degrees) relative to the center.
      *
      * @details
-     * Local bounds are clipped to global bounds (if bounded) and used as the
-     * sinusoidal target range. An optional edge_backoff_deg parameter specifies
+     * Local bounds are clipped to global bounds (if bounded) and define the
+     * oscillation range. An optional edge_backoff_deg parameter specifies
      * how far inside the mechanical bounds to stay during oscillation.
      *
      * @param min_degrees_from_center Minimum local bound.
@@ -209,7 +209,7 @@ public:
      * @details Sets ramp mode to HOLD to maintain position. Motion can be resumed with Start().
      */
     void Pause() noexcept;
-    
+
     /**
      * @brief Stop active motion and command driver stop.
      */
@@ -257,22 +257,17 @@ private:
     uint32_t dwell_at_min_ms_;
     uint32_t dwell_at_max_ms_;
     bool running_;
-    uint32_t start_time_us_;
-    float phase_offset_;
+    uint64_t start_time_us_;
     
     // Cycle tracking
     uint32_t target_cycles_;
     uint32_t current_cycles_;
     bool cycle_complete_;
-    bool last_was_negative_;
-    bool cycle_started_;
-    float last_target_relative_;
     
-    // State machine
+    // State machine for point-to-point motion
     enum class MotionState { MOVING_TO_MIN, MOVING_TO_MAX, DWELL_AT_MIN, DWELL_AT_MAX, PAUSED, STOPPED };
     MotionState state_;
     uint32_t dwell_start_time_ms_;
-    bool sinusoidal_mode_;
     
     // Derived parameters (calculated from user inputs)
     float estimated_frequency_hz_;   // Estimated cycle frequency based on vmax/amax/distance
@@ -283,7 +278,6 @@ private:
     // Internal methods
     void RecalculateEstimatedFrequency() noexcept;
     void ClipLocalBoundsToGlobal() noexcept;
-    void UpdateSinuousMotion() noexcept;
 };
 
 } // namespace FatigueTest

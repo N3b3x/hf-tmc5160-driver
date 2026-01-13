@@ -8,7 +8,7 @@ The **Test Unit** is a unified fatigue tester with dual communication:
 - Receives commands from remote controller via ESP-NOW
 - Accepts direct commands via UART (for debugging/development)
 - Performs bounds finding using selectable method (StallGuard2 or encoder-based)
-- Runs sinusoidal fatigue test motion
+- Runs point-to-point fatigue test motion
 - Sends status updates back to remote controller (1 Hz while running)
 - **Unified Implementation**: Uses the driver library's built-in homing/bounds subsystem
 
@@ -159,7 +159,7 @@ The protocol test unit (`espnow_protocol_test_unit.cpp`) is a minimal implementa
 - **Dual Communication**: ESP-NOW (wireless) + UART (direct serial)
 - **Dual Bounds Detection**: StallGuard2 or encoder-based (selectable)
 - **Library-Based Homing**: Uses `driver.homing.FindBounds()` for robust bounds detection
-- **Sinusoidal Motion**: Smooth oscillation between detected bounds
+- **Point-to-Point Motion**: Smooth oscillation between detected bounds using direct VMAX/AMAX control
 - **Configurable Parameters**: All settings adjustable via remote controller
 - **Status Updates**: 1 Hz updates while running, immediate on state changes
 - **Error Reporting**: Error codes and cycle counts sent to remote

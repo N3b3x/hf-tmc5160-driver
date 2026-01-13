@@ -3,7 +3,7 @@
  * @brief Full implementation of FatigueTestMotion class
  * 
  * Complete implementation extracted from fatigue_test_stallguard.cpp and fatigue_test_encoder.cpp
- * Provides full-featured sinusoidal motion with trajectory calculation, dwell handling, and cycle counting.
+ * Provides point-to-point motion with trajectory calculation, dwell handling, and cycle counting.
  * 
  * This file is included by fatigue_motion.hpp to provide header-only implementation.
  */
@@ -49,9 +49,8 @@ FatigueTestMotion::FatigueTestMotion(tmc51x0::TMC51x0<Esp32SPI>* driver, Esp32Tm
       home_position_(0.0f), bounded_(false), amplitude_(1000.0F),
       vmax_rpm_(60.0f), amax_rev_s2_(10.0f),  // Default motion parameters
       dwell_at_min_ms_(0), dwell_at_max_ms_(0), running_(false), start_time_us_(0),
-      phase_offset_(0.0F), target_cycles_(0), current_cycles_(0), cycle_complete_(false),
-      last_was_negative_(false), cycle_started_(false), last_target_relative_(0.0f), 
-      state_(MotionState::STOPPED), dwell_start_time_ms_(0), sinusoidal_mode_(false), 
+      target_cycles_(0), current_cycles_(0), cycle_complete_(false),
+      state_(MotionState::STOPPED), dwell_start_time_ms_(0),
       estimated_frequency_hz_(0.0f),
       driver_mutex_(driver_mutex) {
     // Note: Initialization order matches member declaration order in header
@@ -278,9 +277,6 @@ void FatigueTestMotion::ResetCycles() noexcept {
         TmcMutexGuard guard(driver_mutex_);
         current_cycles_ = 0;
         cycle_complete_ = false;
-        last_was_negative_ = false;
-        cycle_started_ = false;
-        last_target_relative_ = 0.0f;
     }
     ESP_LOGI(TAG_MOTION, "Cycle count reset");
 }
@@ -371,11 +367,6 @@ bool FatigueTestMotion::Start() noexcept {
         // CRITICAL: Enable StealthChop for smooth, quiet motion during oscillations
         // StealthChop provides smooth motion without the vibration of SpreadCycle
         (void)driver_->motorControl.SetStealthChopEnabled(true);
-        
-        // CRITICAL: Clear all mode change thresholds (TCOOLTHRS, TPWMTHRS, etc.)
-        // This ensures StealthChop stays active at all velocities during normal motion
-        // TCOOLTHRS is used during bounds finding (SpreadCycle for StallGuard) but must be cleared for normal motion
-        (void)driver_->thresholds.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::RPM);
 
         // Check if resuming from pause
         bool resuming_from_pause = (state_ == MotionState::PAUSED);
@@ -389,10 +380,6 @@ bool FatigueTestMotion::Start() noexcept {
             // Fresh start - reset everything
             running_ = true;
             start_time_us_ = esp_timer_get_time();
-            sinusoidal_mode_ = false; // Use point-to-point mode (like bounds_finding_test.cpp)
-            // Reset cycle tracking only on fresh start
-            cycle_started_ = false;
-            last_was_negative_ = false;
         }
         
         // Determine target based on current position (for both fresh start and resume)
@@ -447,20 +434,6 @@ bool FatigueTestMotion::Start() noexcept {
     ESP_LOGI(TAG_MOTION, "  Dwell: min=%lu ms, max=%lu ms", (unsigned long)dwell_at_min_ms_, (unsigned long)dwell_at_max_ms_);
     ESP_LOGI(TAG_MOTION, "  Cycle counting: one cycle = center -> MAX -> MIN (counted at MIN)");
     
-    // Debug: Check initial StealthChop status
-    {
-        TmcMutexGuard guard(driver_mutex_);
-        auto drv_status_res = driver_->status.GetDriverStatusRegister();
-        if (drv_status_res.IsOk()) {
-            tmc51x0::DRV_STATUS_Register ds{};
-            ds.value = drv_status_res.Value();
-            ESP_LOGI(TAG_MOTION, "[DEBUG] Initial motion: stealth=%u (1=StealthChop, 0=SpreadCycle) DRV_STATUS=0x%08lX",
-                     (unsigned)ds.bits.stealth, (unsigned long)ds.value);
-        }
-        // Also log TPWMTHRS to verify threshold setting
-        uint32_t tpwmthrs = driver_->thresholds.GetTpwmthrsRegisterValue();
-        ESP_LOGI(TAG_MOTION, "[DEBUG] TPWMTHRS register value: %lu (0=StealthChop always, 0xFFFFF=never)", (unsigned long)tpwmthrs);
-    }
     
     return true;
 }
@@ -598,151 +571,6 @@ void FatigueTestMotion::ClipLocalBoundsToGlobal() noexcept {
     }
 }
 
-void FatigueTestMotion::UpdateSinuousMotion() noexcept {
-    // CRITICAL SAFETY CHECK: Never run sinusoidal motion if not started properly
-    // This prevents fast oscillation when start_time_us_ is 0 (uninitialized)
-    {
-        TmcMutexGuard guard(driver_mutex_);
-        if (!running_ || start_time_us_ == 0) {
-            return; // Motion not started or not properly initialized
-        }
-    }
-    
-    uint64_t elapsed_us;
-    float freq, amp;
-    float home, local_min, local_max;
-    uint32_t target_cycles;
-    bool cycle_started;
-    float last_target_rel;
-    uint32_t dwell_min, dwell_max;
-    float phase_off;
-    
-    {
-        TmcMutexGuard guard(driver_mutex_);
-        elapsed_us = esp_timer_get_time() - start_time_us_;
-        freq = estimated_frequency_hz_;  // Use estimated frequency based on VMAX/AMAX
-        amp = amplitude_;
-        home = home_position_;
-        local_min = local_min_bound_;
-        local_max = local_max_bound_;
-        target_cycles = target_cycles_;
-        cycle_started = cycle_started_;
-        last_target_rel = last_target_relative_;
-        dwell_min = dwell_at_min_ms_;
-        dwell_max = dwell_at_max_ms_;
-        phase_off = phase_offset_;
-    }
-
-    // Calculate sinusoidal position
-    double elapsed_s = elapsed_us / 1000000.0;
-    double angle = 2.0 * M_PI * freq * elapsed_s + phase_off;
-    double sin_value = sin(angle);
-
-    // Calculate target position in degrees
-    float target_deg = home + static_cast<float>(amp * sin_value);
-
-    // Get current position relative to center for cycle counting
-    float current_pos_deg = 0.0f;
-    {
-        TmcMutexGuard guard(driver_mutex_);
-    auto current_pos_result = driver_->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
-        current_pos_deg = current_pos_result.IsOk() ? current_pos_result.Value() : 0.0f;
-    }
-    float target_relative = target_deg - home;
-
-    // Cycle counting: one cycle = center → extreme → center
-    bool currently_negative = (target_relative < 0.0f);
-    bool last_was_negative = (last_target_rel < 0.0f);
-    bool crossing_center =
-        (last_was_negative != currently_negative) && (fabsf(target_relative) < 1.0f) && (fabsf(last_target_rel) < 1.0f);
-
-    // If we've started a cycle (left center) and now crossing back through center
-    if (cycle_started && crossing_center) {
-        // Completed a cycle
-        uint32_t new_cycles;
-        {
-            TmcMutexGuard guard(driver_mutex_);
-            current_cycles_++;
-            cycle_started_ = false;
-            new_cycles = current_cycles_;
-            
-            // Check if target reached
-            if (target_cycles > 0 && new_cycles >= target_cycles) {
-                cycle_complete_ = true;
-                running_ = false;
-                state_ = MotionState::STOPPED;
-                // Driver call inside mutex guard
-                driver_->rampControl.Stop();
-                guard.unlock();
-                ESP_LOGI(TAG_MOTION, "Target cycle count reached: %lu cycles. Stopping.", new_cycles);
-                return;
-            }
-        }
-        ESP_LOGI(TAG_MOTION, "Cycle %lu completed at center (target: %lu)", new_cycles, 
-                 target_cycles == 0 ? 0xFFFFFFFF : target_cycles);
-    } else if (!cycle_started && fabsf(target_relative) > 1.0f) {
-        // We've left center, cycle has started
-        TmcMutexGuard guard(driver_mutex_);
-        cycle_started_ = true;
-        last_was_negative_ = currently_negative;
-    }
-
-    // Update tracking
-    {
-        TmcMutexGuard guard(driver_mutex_);
-        last_target_relative_ = target_relative;
-        if (fabsf(target_relative) > 0.5f) {
-            last_was_negative_ = currently_negative;
-        }
-    }
-
-    // Clamp to local bounds and handle dwell states
-    // Use ABSOLUTE positioning - home is established via bounds finding or SetUnbounded()
-    // target_deg is calculated as home + amplitude * sin(), so it's already absolute
-    if (target_deg <= local_min) {
-        target_deg = local_min;
-        if (dwell_min > 0) {
-            TmcMutexGuard guard(driver_mutex_);
-            state_ = MotionState::DWELL_AT_MIN;
-            dwell_start_time_ms_ = esp_timer_get_time() / 1000;
-            driver_->rampControl.SetTargetPosition(target_deg, tmc51x0::Unit::Deg);
-            return;
-        } else {
-            TmcMutexGuard guard(driver_mutex_);
-            state_ = MotionState::MOVING_TO_MAX;
-        }
-    } else if (target_deg >= local_max) {
-        target_deg = local_max;
-        if (dwell_max > 0) {
-            TmcMutexGuard guard(driver_mutex_);
-            state_ = MotionState::DWELL_AT_MAX;
-            dwell_start_time_ms_ = esp_timer_get_time() / 1000;
-            driver_->rampControl.SetTargetPosition(target_deg, tmc51x0::Unit::Deg);
-            return;
-        } else {
-            TmcMutexGuard guard(driver_mutex_);
-            state_ = MotionState::MOVING_TO_MIN;
-        }
-    } else {
-        TmcMutexGuard guard(driver_mutex_);
-        if (target_relative > 0.0f) {
-            state_ = MotionState::MOVING_TO_MAX;
-        } else {
-            state_ = MotionState::MOVING_TO_MIN;
-        }
-    }
-
-    // Update target position if it changed significantly
-    // Use ABSOLUTE positioning - home is established, target_deg is absolute
-    if (fabsf(target_deg - current_pos_deg) > 0.5f) {  // ~0.5 degree threshold
-        TmcMutexGuard guard(driver_mutex_);
-        driver_->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-        // Use the user-set velocity and acceleration (set via SetMaxVelocity/SetAcceleration)
-        // Do NOT override here - speeds were already configured at motion start
-        driver_->rampControl.SetTargetPosition(target_deg, tmc51x0::Unit::Deg);
-    }
-}
-
 void FatigueTestMotion::Update() noexcept {
     // Check if running
     {
@@ -868,20 +696,6 @@ void FatigueTestMotion::Update() noexcept {
                     return;
                 }
                 state_ = MotionState::MOVING_TO_MIN;
-                
-                // Debug: Check StealthChop status before commanding reverse direction
-                static uint32_t debug_log_count = 0;
-                if (debug_log_count < 5) {  // Only log first 5 transitions
-                    auto drv_status_res = driver_->status.GetDriverStatusRegister();
-                    if (drv_status_res.IsOk()) {
-                        tmc51x0::DRV_STATUS_Register ds{};
-                        ds.value = drv_status_res.Value();
-                        ESP_LOGI(TAG_MOTION, "[DEBUG] Before MOVING_TO_MIN: stealth=%u (1=StealthChop, 0=SpreadCycle) sg_result=%u",
-                                 (unsigned)ds.bits.stealth, (unsigned)ds.bits.sg_result);
-                    }
-                    debug_log_count++;
-                }
-                
                 driver_->rampControl.SetTargetPosition(min_bound, tmc51x0::Unit::Deg);
             }
         }
@@ -956,20 +770,6 @@ void FatigueTestMotion::Update() noexcept {
                     return;
                 }
                 state_ = MotionState::MOVING_TO_MAX;
-                
-                // Debug: Check StealthChop status before commanding forward direction
-                static uint32_t debug_log_count_max = 0;
-                if (debug_log_count_max < 5) {  // Only log first 5 transitions
-                    auto drv_status_res = driver_->status.GetDriverStatusRegister();
-                    if (drv_status_res.IsOk()) {
-                        tmc51x0::DRV_STATUS_Register ds{};
-                        ds.value = drv_status_res.Value();
-                        ESP_LOGI(TAG_MOTION, "[DEBUG] Before MOVING_TO_MAX: stealth=%u (1=StealthChop, 0=SpreadCycle) sg_result=%u",
-                                 (unsigned)ds.bits.stealth, (unsigned)ds.bits.sg_result);
-                    }
-                    debug_log_count_max++;
-                }
-                
                 driver_->rampControl.SetTargetPosition(max_bound, tmc51x0::Unit::Deg);
             }
         }

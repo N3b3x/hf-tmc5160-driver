@@ -5,14 +5,13 @@
  * This is the test unit (receiver) that:
  * 1. Receives commands from UI board via ESP-NOW
  * 2. Performs bounds finding (stallguard or encoder-based)
- * 3. Runs fatigue test with sinusoidal motion
+ * 3. Runs fatigue test with point-to-point motion
  * 4. Sends status updates back to UI board
  * 
  * Supports both StallGuard2 and encoder-based bounds detection.
  */
 
 // Standard library includes
- #include <memory>
  #include <algorithm>
  #include <cmath>
  #include <cstring>
@@ -520,7 +519,9 @@ static void RequestStart(PendingStartKind kind) noexcept {
             TmcMutexGuard guard(*g_driver_mutex);
             (void)g_driver->stallGuard.EnableStopOnStall(false);
             (void)g_driver->motorControl.SetStealthChopEnabled(true);
-            (void)g_driver->thresholds.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::RPM);
+            // NOTE: Do NOT override TPWMTHRS/TCOOLTHRS/THIGH thresholds here.
+            // The motor config already sets TPWMTHRS appropriately during initialization.
+            // Overriding with 0 can interfere with StealthChop operation.
         }
         
         // CRITICAL: On START (new test), reset cycle count to zero.
@@ -771,7 +772,6 @@ static void espnow_command_task(void* arg)
                             TmcMutexGuard guard(*g_driver_mutex);
                             (void)g_driver->stallGuard.EnableStopOnStall(false);
                             (void)g_driver->motorControl.SetStealthChopEnabled(true);
-                            (void)g_driver->thresholds.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::RPM);
                         }
                         
                         // Cancel de-energize timer since we're resuming
@@ -791,7 +791,7 @@ static void espnow_command_task(void* arg)
                     } else {
                         // Resuming from IDLE or other state - may need to re-find bounds
                         // Use RequestStart which will check bounds cache
-                        RequestStart(PendingStartKind::RESUME);
+                    RequestStart(PendingStartKind::RESUME);
                         EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state), 0, GetBoundsValidFlag_());
                     }
                     break;
@@ -1010,48 +1010,12 @@ static void bounds_finding_task(void* arg)
             ESP_LOGI(TAG, "[bounds_find] Stop-on-stall disabled for normal motion");
         }
         
-        // CRITICAL: Restore smooth motion mode for fatigue testing.
-        // Bounds finding uses SpreadCycle (required for StallGuard), but normal
-        // motion should use StealthChop for quiet operation. Also clear mode
-        // change thresholds so StealthChop is active at all velocities.
-        (void)g_driver->motorControl.SetStealthChopEnabled(true);
-        (void)g_driver->thresholds.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::RPM);
-        
-        // CRITICAL: Explicitly stop and clear target AFTER mode switch to prevent any
-        // residual motion from StealthChop switching or cached target positions.
-        // The guard's RestoreRampSettings already did this, but the mode change to
-        // StealthChop can cause transient motor behavior (only seen at off times).
-        (void)g_driver->rampControl.Stop();
-        auto cur_pos = g_driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
-        if (cur_pos.IsOk()) {
-            (void)g_driver->rampControl.SetTargetPosition(cur_pos.Value(), tmc51x0::Unit::Deg);
-        }
-        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
-        ESP_LOGI(TAG, "[bounds_find] Restored StealthChop, cleared targets, and set HOLD mode");
-    }
-    
-    // Allow motor to settle at new mode/current before starting motion
-    vTaskDelay(pdMS_TO_TICKS(200));
-    
-    // Verify motor is at standstill before proceeding
-    {
-        bool is_standstill = false;
-        {
-            TmcMutexGuard guard(*g_driver_mutex);
-            auto standstill = g_driver->rampControl.IsStandstill();
-            is_standstill = standstill.IsOk() && standstill.Value();
-            if (!is_standstill) {
-                ESP_LOGW(TAG, "[bounds_find] Motor not at standstill after settle - forcing stop");
-                (void)g_driver->rampControl.Stop();
-            }
-        }
-        // Wait for actual standstill (with timeout) - mutex released during delays
-        for (int i = 0; i < 20 && !is_standstill; i++) {  // 2 seconds max
-            vTaskDelay(pdMS_TO_TICKS(100));
-            TmcMutexGuard guard(*g_driver_mutex);
-            auto ss = g_driver->rampControl.IsStandstill();
-            is_standstill = ss.IsOk() && ss.Value();
-        }
+        // NOTE: StealthChop restoration and standstill verification are now handled
+        // internally by the driver library's RestoreCachedSettings() function.
+        // The library ensures complete motor standstill (ramp + driver core + 100ms
+        // chopper settle) before switching modes, preventing the "phase jump" issue
+        // per TMC5160 datasheet Section 6.5 and 7.
+        ESP_LOGI(TAG, "[bounds_find] Driver library handled mode restoration and standstill verification");
     }
     ESP_LOGI(TAG, "[bounds_find] Result: success=%d bounded=%d min=%.2f° max=%.2f° current_pos=%.2f° (method=%s)",
              result.success ? 1 : 0, result.bounded ? 1 : 0, result.min_bound, result.max_bound, pos_deg,
@@ -1064,7 +1028,7 @@ static void bounds_finding_task(void* arg)
     
     if (result.bounded) {
         // Use the measured mechanical range as the oscillation range.
-        g_motion->SetGlobalBounds(result.min_bound, result.max_bound);
+    g_motion->SetGlobalBounds(result.min_bound, result.max_bound);
         // Apply edge backoff to stay inside mechanical bounds during oscillation
         g_motion->SetLocalBoundsFromCenterDegrees(result.min_bound, result.max_bound, OSCILLATION_EDGE_BACKOFF_DEG);
         ESP_LOGI(TAG, "[bounds_find] Oscillation range: [%.2f°, %.2f°] (with %.2f° edge backoff)",
@@ -1346,8 +1310,6 @@ static void motion_control_task(void* arg)
             motion_was_running = motion_is_running;
             
             // Only call Update() if motion is actually running
-            // This prevents UpdateSinuousMotion() from being called when motion hasn't started
-            // which could cause fast oscillation if start_time_us_ is 0
             if (motion_is_running) {
                 g_motion->Update();
             }
@@ -1416,13 +1378,13 @@ static void motion_control_task(void* arg)
                             
                             // Warn if SG_RESULT is low and motor is moving (potential stall condition)
                             if (sg_val < 50 && std::abs(vel_rpm) > 10.0f) {
-                                ESP_LOGW(TAG, "⚠️ High load detected: SG_RESULT=%u at %.2f RPM (consider increasing SGT if false stall)", 
+                                ESP_LOGW(TAG, "High load detected: SG_RESULT=%u at %.2f RPM (consider increasing SGT if false stall)", 
                                          sg_val, vel_rpm);
                             }
                             
                             // Warn if velocity is too low for reliable StallGuard readings
                             if (std::abs(vel_rpm) < 60.0f && std::abs(vel_rpm) > 0.1f) {
-                                ESP_LOGW(TAG, "⚠️ Low velocity (%.2f RPM) - StallGuard readings may be unreliable (min: ~60 RPM)", vel_rpm);
+                                ESP_LOGW(TAG, "Low velocity (%.2f RPM) - StallGuard readings may be unreliable (min: ~60 RPM)", vel_rpm);
                             }
                         }
                     } else {
@@ -2832,7 +2794,7 @@ extern "C" void app_main()
     // Configure driver from test rig
     tmc51x0::DriverConfig cfg{};
     tmc51x0_test_config::ConfigureDriverFromTestRig<SELECTED_TEST_RIG>(cfg);
-
+    
     ESP_LOGI(TAG,
              "DriverConfig snapshot: supply_voltage_mv=%u sense_resistor_mohm=%u rated_current_ma=%u run_current_ma=%u hold_current_ma=%u",
              cfg.motor_spec.supply_voltage_mv,

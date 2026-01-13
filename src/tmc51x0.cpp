@@ -1269,7 +1269,7 @@ Result<void> TMC51x0<CommType>::Initialize(const DriverConfig& config, bool verb
       }
     }
   }
-  
+
   // Configure reference switches (defaults are safe/disabled)
   TMC51X0_LOG_DEBUG(comm_, LogLevel::Info, "TMC5160", "Initialize: Configuring reference switches");
   if (!switches.ConfigureReferenceSwitch(config.reference_switch_config)) {
@@ -5138,11 +5138,88 @@ Result<void> TMC51x0<CommType>::Homing::RestoreCachedSettings() noexcept {
     return Result<void>(ErrorCode::COMM_ERROR);
   }
   
+  // ===========================================================================
+  // CRITICAL: Ensure complete motor standstill BEFORE restoring cached settings
+  // ===========================================================================
+  // Per TMC5160 datasheet Section 6.5 and 7 (StealthChop):
+  // - Switching between SpreadCycle and StealthChop requires complete standstill
+  // - StealthChop regulates voltage, SpreadCycle regulates current
+  // - If mode switch happens while motor has residual current/back-EMF, the
+  //   StealthChop PWM initialization (PWM_SCALE_AUTO) can be incorrect, causing
+  //   the rotor to "snap" to the nearest electrical phase compatible with the
+  //   new mode. This physical jump (typically 1-2 full steps) occurs without
+  //   XACTUAL updating, creating a permanent coordinate offset.
+  //
+  // Standstill verification sequence:
+  // 1. Command motor stop (VMAX=0 via Stop())
+  // 2. Verify ramp standstill (VACTUAL == 0 via IsStandstill())
+  // 3. Verify driver core standstill (DRV_STATUS.stst bit)
+  // 4. Wait for chopper cycles to complete (~100ms for 128 cycles at kHz freq)
+  //
+  // This is especially critical when restoring StealthChop mode after bounds
+  // finding (which uses SpreadCycle for StallGuard).
+  // ===========================================================================
+  
+  // Step 1: Command motor stop and set HOLD mode
+  (void)driver_.rampControl.Stop();
+  (void)driver_.rampControl.SetRampMode(RampMode::HOLD);
+  
+  // Step 2 & 3: Verify both ramp generator AND driver core standstill
+  constexpr uint32_t STANDSTILL_POLL_MS = 50;
+  constexpr uint32_t STANDSTILL_TIMEOUT_MS = 2000;
+  constexpr uint32_t MAX_POLLS = STANDSTILL_TIMEOUT_MS / STANDSTILL_POLL_MS;
+  
+  bool ramp_standstill = false;
+  bool driver_standstill = false;
+  
+  for (uint32_t i = 0; i < MAX_POLLS; i++) {
+    // Check ramp generator standstill (VACTUAL == 0)
+    auto ramp_ss = driver_.rampControl.IsStandstill();
+    ramp_standstill = ramp_ss.IsOk() && ramp_ss.Value();
+    
+    // Check driver core standstill (DRV_STATUS.stst bit)
+    // stst=1 means motor is at standstill and TPOWERDOWN sequence has started
+    auto drv_status_res = driver_.status.GetDriverStatusRegister();
+    if (drv_status_res.IsOk()) {
+      DRV_STATUS_Register ds{};
+      ds.value = drv_status_res.Value();
+      driver_standstill = (ds.bits.stst != 0);
+    }
+    
+    if (ramp_standstill && driver_standstill) {
+      break;
+    }
+    
+    driver_.comm_.DelayMs(STANDSTILL_POLL_MS);
+  }
+  
+  // Step 4: Wait for chopper cycles to complete and coil currents to stabilize
+  // Per datasheet: ~128 chopper cycles at kHz frequencies ≈ 100ms
+  // This ensures coil currents settle to IHOLD and any residual back-EMF dissipates
+  driver_.comm_.DelayMs(100);
+  
+  if (!ramp_standstill || !driver_standstill) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
+                      "Standstill verification timeout (ramp=%d driver=%d) - mode switch may cause offset",
+                      ramp_standstill ? 1 : 0, driver_standstill ? 1 : 0);
+    // Continue anyway - better to restore settings than leave driver in inconsistent state
+  }
+  
+  // ===========================================================================
+  // Now safe to restore cached settings (motor is at complete standstill)
+  // ===========================================================================
+  
   // Restore StealthChop state (if it was modified)
   if (cache_.stealthchop_was_modified) {
     auto stealth_result = driver_.motorControl.SetStealthChopEnabled(cache_.cached_stealthchop_enabled);
     if (!stealth_result) {
       return stealth_result;
+    }
+    
+    // Wait for StealthChop PWM autotune to complete after mode switch
+    // Per datasheet: PWM_SCALE_AUTO needs time to stabilize
+    if (cache_.cached_stealthchop_enabled) {
+      driver_.comm_.DelayMs(100);
     }
   }
   
@@ -6008,7 +6085,7 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
       auto r = driver_.stallGuard.EnableStopOnStall(true);
       if (!r) return Result<void>(r.Error());
     }
-    
+
     // Clear StallGuard stop flag before starting motion.
     {
       auto r = driver_.stallGuard.ClearStallFlag();
@@ -8654,7 +8731,7 @@ Result<void> TMC51x0<CommType>::Tuning::TuneStallGuard(float target_velocity, St
 
     for (size_t i = 0; i < num_candidates; i++) {
       SgtCandidate& c = candidates[i];
-      
+
       // Assume passes unless we test and fail
       c.passes_min = (min_v_steps <= 0.0f);  // Skip if not testing min
       c.passes_max = (max_v_steps <= 0.0f);  // Skip if not testing max

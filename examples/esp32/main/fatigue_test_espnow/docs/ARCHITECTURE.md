@@ -14,7 +14,7 @@ The Fatigue Test ESP-NOW Unit is a unified fatigue testing system that combines 
 │  ┌─────────────────┐       ┌─────────────────┐       ┌─────────────────┐  │
 │  │   ESP-NOW       │       │   FreeRTOS      │       │   Motion        │  │
 │  │   Receiver      │──────▶│   Event Queue   │──────▶│   Controller    │  │
-│  │   (ISR-safe)    │       │                 │       │   (Sinusoidal)  │  │
+│  │   (ISR-safe)    │       │                 │       │ (Point-to-Point)│  │
 │  └─────────────────┘       └─────────────────┘       └────────┬────────┘  │
 │           │                                                    │          │
 │           │                ┌─────────────────┐                 │          │
@@ -115,9 +115,9 @@ struct BoundsOptions {
 
 **Files**: `fatigue_motion.hpp`, `fatigue_motion_impl.hpp`
 
-- **Purpose**: Generate sinusoidal back-and-forth motion between bounds
+- **Purpose**: Generate point-to-point back-and-forth motion between bounds
 - **Features**:
-  - Sinusoidal position profile generation
+  - Point-to-point position control (direct VMAX/AMAX)
   - Cycle counting (center-crossing detection)
   - Configurable dwell time at bounds
   - Thread-safe operation (RAII mutex guards)
@@ -222,13 +222,13 @@ The system uses FreeRTOS tasks for concurrent operation:
            │ Bounds found │  │ Cancelled│  │ Timeout/ │                      │
            │              │  │ (PAUSE)  │  │  Error   │                      │
            └──────┬───────┘  └────┬─────┘  └────┬─────┘                      │
-                  │               │              │                           │
-                  │               │              └───────────────────────────┤
+                  │               │             │                            │
+                  │               │             └────────────────────────────┤
                   │               │                                          │
                   ▼               ▼                                          │
          ┌─────────────────┐   ┌─────────────────┐                           │
          │    RUNNING      │   │     PAUSED      │                           │
-         │(sinusoidal move)│◀─▶│  (motor off)    │───────────────────────────┤
+         │(point-to-point) │◀─▶│  (motor off)    │───────────────────────────┤
          └────────┬────────┘   └─────────────────┘        STOP               │
                   │                    ▲                                     │
                   │ PAUSE              │ RESUME                              │
