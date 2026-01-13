@@ -998,6 +998,8 @@ static void bounds_finding_task(void* arg)
     //
     // Snapshot current position for logging and (unbounded) home establishment.
     float pos_deg = 0.0f;
+    
+    // 1. Disable stop-on-stall & Initiate Stop (Atomic)
     {
         TmcMutexGuard guard(*g_driver_mutex);
         auto pos_res = g_driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
@@ -1005,9 +1007,7 @@ static void bounds_finding_task(void* arg)
         
         // CRITICAL: Explicitly disable stop-on-stall after bounds finding.
         // The library's RAII guard should restore SW_MODE, but we add this explicit
-        // disable as a safety measure to ensure motion won't be interrupted by
-        // stall events during normal operation (especially at low velocities where
-        // SG_RESULT can naturally be 0).
+        // disable as a safety measure.
         auto sg_stop_result = g_driver->stallGuard.EnableStopOnStall(false);
         if (!sg_stop_result) {
             ESP_LOGW(TAG, "[bounds_find] Failed to disable stop-on-stall (err=%u)", 
@@ -1017,25 +1017,74 @@ static void bounds_finding_task(void* arg)
         }
         
         // CRITICAL: Ensure motor is fully stopped before switching modes.
-        // Switching from SpreadCycle (used in bounds finding) to StealthChop while 
-        // moving or with residual current can cause phase jumps ("lost steps").
+        // Switching from SpreadCycle to StealthChop must happen at standstill.
         (void)g_driver->rampControl.Stop();
-        
-        // Wait for standstill and current stabilization.
-        // Datasheet recommends switching modes only when motor is at standstill and currents are stable.
-        // If currents are not stable, StealthChop PWM initialization (PWM_AMPL) may be incorrect,
-        // causing a phase jump or "lost steps" (typically ~1-2 steps) as the rotor snaps to the new electrical phase.
-        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+    
+    // 2. Poll for Velocity 0 (Standstill)
+    // Wait up to 2 seconds for ramp generator to reach VACTUAL=0
+    bool standstill_confirmed = false;
+    for (int i = 0; i < 200; i++) {
+        if (g_cancel_bounds) break; 
+        {
+             TmcMutexGuard guard(*g_driver_mutex);
+             auto res = g_driver->rampControl.IsStandstill();
+             if (res.IsOk() && res.Value()) {
+                 standstill_confirmed = true;
+                 break;
+             }
+        }
+        vTaskDelay(pdMS_TO_TICKS(10));
+    }
+    if (!standstill_confirmed && !g_cancel_bounds) {
+        ESP_LOGW(TAG, "[bounds_find] Warning: IsStandstill() timeout, proceeding with delays");
+    }
 
+    // 3. Poll for Driver Standstill (stst=1)
+    // Wait up to 1 second for driver core to signal standstill (implies TPOWERDOWN started)
+    bool drv_stst_confirmed = false;
+    for (int i = 0; i < 100; i++) {
+        if (g_cancel_bounds) break;
+        {
+             TmcMutexGuard guard(*g_driver_mutex);
+             auto stat = g_driver->status.GetDriverStatusRegister();
+             if (stat.IsOk()) {
+                 tmc51x0::DRV_STATUS_Register ds{};
+                 ds.value = stat.Value();
+                 if (ds.bits.stst) {
+                     drv_stst_confirmed = true;
+                     break;
+                 }
+             }
+        }
+        vTaskDelay(pdMS_TO_TICKS(10));
+    }
+    if (!drv_stst_confirmed && !g_cancel_bounds) {
+        ESP_LOGW(TAG, "[bounds_find] Warning: DRV_STATUS.stst timeout, proceeding with delays");
+    }
+
+    // 4. Wait 100ms (Explicit Stabilization)
+    // Ensure coil currents have settled (likely at IHOLD) before switching modes.
+    // This prevents phase jumps caused by residual current during mode switch.
+    vTaskDelay(pdMS_TO_TICKS(100));
+
+    // 5. Enable StealthChop & Wait & Configure
+    {
+        TmcMutexGuard guard(*g_driver_mutex);
         // CRITICAL: Restore smooth motion mode for fatigue testing.
-        // Bounds finding uses SpreadCycle (required for StallGuard), but normal
-        // motion should use StealthChop for quiet operation. Also clear mode
-        // change thresholds so StealthChop is active at all velocities.
+        // Bounds finding uses SpreadCycle, but normal motion should use StealthChop.
         (void)g_driver->motorControl.SetStealthChopEnabled(true);
+    }
+    
+    // 6. Wait for PWM autotune
+    // Wait for StealthChop voltage PWM regulator to stabilize (PWM_SCALE_AUTO initialization).
+    vTaskDelay(pdMS_TO_TICKS(100));
         
-        // Wait for StealthChop voltage PWM regulator to stabilize (PWM_SCALE_AUTO initialization).
-        vTaskDelay(pdMS_TO_TICKS(100));
+    // 7. Final config and Hold
+    {
+        TmcMutexGuard guard(*g_driver_mutex);
         
+        // Also clear mode change thresholds so StealthChop is active at all velocities.
         (void)g_driver->thresholds.SetModeChangeSpeeds(0.0f, 0.0f, 0.0f, tmc51x0::Unit::RPM);
         
         // CRITICAL: Clear target and set to HOLD to solidify the current position
