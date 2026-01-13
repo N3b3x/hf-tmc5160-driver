@@ -17,8 +17,6 @@
 
 namespace FatigueTest {
 
-enum class AngleUnit { DEGREES, RADIANS };
-
 /**
  * @brief Unified fatigue test motion controller
  * 
@@ -27,20 +25,23 @@ enum class AngleUnit { DEGREES, RADIANS };
  */
 class FatigueTestMotion {
 public:
+    /**
+     * @brief Status structure containing current motion controller state.
+     */
     struct Status {
-        bool running;
-        bool bounded;
-        float vmax_rpm;                   // User-set max velocity (RPM)
-        float amax_rev_s2;                // User-set acceleration (rev/s²)
-        float estimated_frequency_hz;     // Derived cycle frequency (informational)
-        float min_degrees_from_center;
-        float max_degrees_from_center;
-        uint32_t current_cycles;
-        uint32_t target_cycles;
-        uint32_t dwell_min_ms;
-        uint32_t dwell_max_ms;
-        float global_min_degrees;
-        float global_max_degrees;
+        bool running;                      ///< Whether motion is currently active
+        bool bounded;                      ///< Whether mechanical bounds were detected
+        float vmax_rpm;                   ///< User-set max velocity (RPM)
+        float amax_rev_s2;                ///< User-set acceleration (rev/s²)
+        float estimated_frequency_hz;     ///< Derived cycle frequency (informational)
+        float min_degrees_from_center;    ///< Local min bound relative to center (degrees)
+        float max_degrees_from_center;    ///< Local max bound relative to center (degrees)
+        uint32_t current_cycles;          ///< Number of cycles completed
+        uint32_t target_cycles;           ///< Target cycle count (0 = infinite)
+        uint32_t dwell_min_ms;            ///< Dwell time at min position (ms)
+        uint32_t dwell_max_ms;            ///< Dwell time at max position (ms)
+        float global_min_degrees;         ///< Global min bound (degrees)
+        float global_max_degrees;         ///< Global max bound (degrees)
     };
 
     /**

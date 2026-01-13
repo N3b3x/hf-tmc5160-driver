@@ -160,7 +160,9 @@ The protocol test unit (`espnow_protocol_test_unit.cpp`) is a minimal implementa
 - **Dual Bounds Detection**: StallGuard2 or encoder-based (selectable)
 - **Library-Based Homing**: Uses `driver.homing.FindBounds()` for robust bounds detection
 - **Point-to-Point Motion**: Smooth oscillation between detected bounds using direct VMAX/AMAX control
-- **Configurable Parameters**: All settings adjustable via remote controller
+- **Bounds Caching**: Independent bounds finding with time-based validity window (default 2 min)
+- **Secure Pairing**: HMAC-based mutual authentication for ESP-NOW communication
+- **Configurable Parameters**: All settings adjustable via remote controller or UART
 - **Status Updates**: 1 Hz updates while running, immediate on state changes
 - **Error Reporting**: Error codes and cycle counts sent to remote
 
@@ -236,17 +238,45 @@ g_driver->homing.FindBounds(Homing::BoundsMethod::Encoder, options, home_config,
 
 ## UART Command Interface
 
-The test unit supports UART commands for debugging:
+The test unit supports UART commands for debugging and direct control:
 
 | Command | Description |
 |---------|-------------|
-| `-f <freq>` | Set frequency in Hz |
-| `-d <min> <max>` | Set dwell times in ms |
-| `-b <min> <max>` | Set angle bounds in degrees |
-| `-c <count>` | Set target cycle count (0 = infinite) |
-| `-a <action>` | start, stop, or reset |
-| `-s` | Show current status |
-| `-h` | Show help message |
+| `set [OPTIONS...]` | Configure test parameters (velocity, acceleration, dwell, bounds, cycles) |
+| `start` | Start fatigue test (runs bounds finding if needed) |
+| `stop` | Stop fatigue test |
+| `pause` | Pause running test |
+| `resume` | Resume paused test |
+| `bounds` | Run bounds finding independently (keeps motor ready) |
+| `reset` | Reset cycle counter |
+| `status` | Show current status |
+| `pair` | Enter pairing mode for remote controller |
+| `help [command]` | Show help (general or command-specific) |
+
+### SET Command Options
+
+The `set` command accepts multiple options in one command:
+
+| Option | Short | Long | Description | Example |
+|--------|-------|------|-------------|---------|
+| Velocity | `-v` | `--velocity` | Max velocity in RPM (5-120) | `set -v 60` or `set velocity 60` |
+| Acceleration | `-a` | `--acceleration` | Acceleration in rev/s² (0.5-30) | `set -a 10` or `set acceleration 10` |
+| Dwell | `-d` | `--dwell` | Dwell times in ms (min, max) | `set -d 500 1000` or `set dwell 500 1000` |
+| Bounds | `-b` | `--bounds` | Angle bounds in degrees (min, max) | `set -b -60 60` or `set bounds -60 60` |
+| Cycles | `-c` | `--cycles` | Target cycles (0 = infinite) | `set -c 1000` or `set cycles 1000` |
+
+**Examples:**
+```
+set velocity 60 acceleration 10
+set -v 60 -a 10 -d 500 1000 -b -60 60 -c 1000
+set -v 60 -d 500 1000
+```
+
+### Bounds Caching
+
+The `bounds` command runs bounds finding independently and keeps the motor energized for a validity window (default: 2 minutes). If `start` is run within this window, bounds finding is skipped for faster test startup.
+
+See **[docs/BOUNDS_CACHING.md](docs/BOUNDS_CACHING.md)** for complete details.
 
 ## Troubleshooting
 
@@ -265,6 +295,8 @@ Comprehensive documentation is available:
 - **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** - System architecture and design patterns
 - **[docs/PROTOCOL.md](docs/PROTOCOL.md)** - Complete ESP-NOW protocol specification
 - **[docs/HARDWARE_SETUP.md](docs/HARDWARE_SETUP.md)** - Hardware setup and pin configuration
+- **[docs/BOUNDS_CACHING.md](docs/BOUNDS_CACHING.md)** - Bounds finding cache system
+- **[docs/PAIRING_PROTOCOL.md](docs/PAIRING_PROTOCOL.md)** - Secure pairing protocol for ESP-NOW
 
 ## Implementation Details
 

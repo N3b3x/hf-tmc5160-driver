@@ -5135,8 +5135,14 @@ Result<void> TMC51x0<CommType>::Homing::CacheCurrentSettings() noexcept {
 template <typename CommType>
 Result<void> TMC51x0<CommType>::Homing::RestoreCachedSettings() noexcept {
   if (!cache_.is_valid) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
+                      "RestoreCachedSettings: Cache invalid, cannot restore");
     return Result<void>(ErrorCode::COMM_ERROR);
   }
+  
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                    "RestoreCachedSettings: Starting restoration (stealthchop_was_modified=%d, cached_enabled=%d)",
+                    cache_.stealthchop_was_modified ? 1 : 0, cache_.cached_stealthchop_enabled ? 1 : 0);
   
   // ===========================================================================
   // CRITICAL: Ensure complete motor standstill BEFORE restoring cached settings
@@ -5161,8 +5167,12 @@ Result<void> TMC51x0<CommType>::Homing::RestoreCachedSettings() noexcept {
   // ===========================================================================
   
   // Step 1: Command motor stop and set HOLD mode
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                    "RestoreCachedSettings: Starting standstill verification before mode switch");
   (void)driver_.rampControl.Stop();
   (void)driver_.rampControl.SetRampMode(RampMode::HOLD);
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                    "RestoreCachedSettings: Motor stop commanded, HOLD mode set");
   
   // Step 2 & 3: Verify both ramp generator AND driver core standstill
   constexpr uint32_t STANDSTILL_POLL_MS = 50;
@@ -5171,8 +5181,15 @@ Result<void> TMC51x0<CommType>::Homing::RestoreCachedSettings() noexcept {
   
   bool ramp_standstill = false;
   bool driver_standstill = false;
+  uint32_t poll_count = 0;
+  
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                    "RestoreCachedSettings: Polling for standstill (max %u attempts, %u ms interval)",
+                    MAX_POLLS, STANDSTILL_POLL_MS);
   
   for (uint32_t i = 0; i < MAX_POLLS; i++) {
+    poll_count = i + 1;
+    
     // Check ramp generator standstill (VACTUAL == 0)
     auto ramp_ss = driver_.rampControl.IsStandstill();
     ramp_standstill = ramp_ss.IsOk() && ramp_ss.Value();
@@ -5184,9 +5201,21 @@ Result<void> TMC51x0<CommType>::Homing::RestoreCachedSettings() noexcept {
       DRV_STATUS_Register ds{};
       ds.value = drv_status_res.Value();
       driver_standstill = (ds.bits.stst != 0);
+    } else {
+      driver_standstill = false;
+    }
+    
+    // Log progress every 5 polls (250ms intervals) or on first success
+    if (poll_count % 5 == 0 || (ramp_standstill && driver_standstill)) {
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                        "RestoreCachedSettings: Poll %u/%u - ramp_standstill=%d driver_standstill=%d",
+                        poll_count, MAX_POLLS, ramp_standstill ? 1 : 0, driver_standstill ? 1 : 0);
     }
     
     if (ramp_standstill && driver_standstill) {
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                        "RestoreCachedSettings: Complete standstill verified after %u polls (%u ms)",
+                        poll_count, poll_count * STANDSTILL_POLL_MS);
       break;
     }
     
@@ -5196,13 +5225,18 @@ Result<void> TMC51x0<CommType>::Homing::RestoreCachedSettings() noexcept {
   // Step 4: Wait for chopper cycles to complete and coil currents to stabilize
   // Per datasheet: ~128 chopper cycles at kHz frequencies ≈ 100ms
   // This ensures coil currents settle to IHOLD and any residual back-EMF dissipates
+  TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                    "RestoreCachedSettings: Waiting 100ms for chopper cycles to complete");
   driver_.comm_.DelayMs(100);
   
   if (!ramp_standstill || !driver_standstill) {
     TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
-                      "Standstill verification timeout (ramp=%d driver=%d) - mode switch may cause offset",
-                      ramp_standstill ? 1 : 0, driver_standstill ? 1 : 0);
+                      "RestoreCachedSettings: Standstill verification timeout after %u polls (ramp=%d driver=%d) - mode switch may cause offset",
+                      poll_count, ramp_standstill ? 1 : 0, driver_standstill ? 1 : 0);
     // Continue anyway - better to restore settings than leave driver in inconsistent state
+  } else {
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                      "RestoreCachedSettings: Standstill verification complete - safe to restore cached settings");
   }
   
   // ===========================================================================
@@ -5211,6 +5245,9 @@ Result<void> TMC51x0<CommType>::Homing::RestoreCachedSettings() noexcept {
   
   // Restore StealthChop state (if it was modified)
   if (cache_.stealthchop_was_modified) {
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                      "RestoreCachedSettings: Restoring StealthChop (enabled=%d)",
+                      cache_.cached_stealthchop_enabled ? 1 : 0);
     auto stealth_result = driver_.motorControl.SetStealthChopEnabled(cache_.cached_stealthchop_enabled);
     if (!stealth_result) {
       return stealth_result;
@@ -5219,8 +5256,48 @@ Result<void> TMC51x0<CommType>::Homing::RestoreCachedSettings() noexcept {
     // Wait for StealthChop PWM autotune to complete after mode switch
     // Per datasheet: PWM_SCALE_AUTO needs time to stabilize
     if (cache_.cached_stealthchop_enabled) {
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                        "RestoreCachedSettings: Waiting 100ms for StealthChop PWM autotune to stabilize");
       driver_.comm_.DelayMs(100);
+      
+      // NOTE: Position verification after mode switch
+      // The mode switch from SpreadCycle to StealthChop can cause a phase jump.
+      // We log the position for diagnostics, but don't correct here - the application
+      // layer handles any offset needed (e.g., BOUNDS_FINDING_CENTER_OFFSET_DEG).
+      {
+        auto current_pos_result = driver_.rampControl.GetCurrentPosition(Unit::Steps);
+        auto target_pos_result = driver_.rampControl.GetTargetPosition(Unit::Steps);
+        
+        if (current_pos_result.IsOk() && target_pos_result.IsOk()) {
+          float current_pos = current_pos_result.Value();
+          float target_pos = target_pos_result.Value();
+          float position_error = std::abs(current_pos - target_pos);
+          
+          // Log position for diagnostics (application layer will apply offset if needed)
+          constexpr float MAX_ALLOWED_ERROR_STEPS = 1.0f; // 1 full step tolerance
+          if (position_error > MAX_ALLOWED_ERROR_STEPS) {
+            TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
+                              "RestoreCachedSettings: Position error detected after mode switch: "
+                              "current=%.3f target=%.3f error=%.3f steps (application will apply offset if needed)",
+                              current_pos, target_pos, position_error);
+          } else {
+            TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                              "RestoreCachedSettings: Position verified after mode switch: "
+                              "current=%.3f target=%.3f error=%.3f steps (within tolerance)",
+                              current_pos, target_pos, position_error);
+          }
+        }
+      }
+      
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                        "RestoreCachedSettings: StealthChop restoration complete");
+    } else {
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                        "RestoreCachedSettings: StealthChop disabled (SpreadCycle mode)");
     }
+  } else {
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                      "RestoreCachedSettings: StealthChop state unchanged, no restoration needed");
   }
   
   // Restore SW_MODE register (if it was modified)
@@ -5787,6 +5864,59 @@ Result<void> TMC51x0<CommType>::Homing::ApplyHomePlacement(BoundsResult& out, fl
     return Result<void>(ErrorCode::TIMEOUT);
   }
 
+  // CRITICAL: Wait for complete standstill before redefining coordinate frame.
+  // IsTargetReached() only checks position, not velocity. The motor may still be decelerating.
+  // We must ensure complete standstill (ramp + driver core) to prevent position errors when
+  // RestoreCachedSettings() is called immediately after (which switches from SpreadCycle to StealthChop).
+  {
+    constexpr uint32_t STANDSTILL_POLL_MS = 50;
+    constexpr uint32_t STANDSTILL_TIMEOUT_MS = 2000;
+    constexpr uint32_t MAX_POLLS = STANDSTILL_TIMEOUT_MS / STANDSTILL_POLL_MS;
+    
+    bool ramp_standstill = false;
+    bool driver_standstill = false;
+    uint32_t poll_count = 0;
+    
+    TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                      "ApplyHomePlacement: Waiting for complete standstill before redefining coordinate frame");
+    
+    for (uint32_t i = 0; i < MAX_POLLS; i++) {
+      poll_count = i + 1;
+      
+      // Check ramp generator standstill (VACTUAL == 0)
+      auto ramp_ss = driver_.rampControl.IsStandstill();
+      ramp_standstill = ramp_ss.IsOk() && ramp_ss.Value();
+      
+      // Check driver core standstill (DRV_STATUS.stst bit)
+      auto drv_status_res = driver_.status.GetDriverStatusRegister();
+      if (drv_status_res.IsOk()) {
+        DRV_STATUS_Register ds{};
+        ds.value = drv_status_res.Value();
+        driver_standstill = (ds.bits.stst != 0);
+      } else {
+        driver_standstill = false;
+      }
+      
+      if (ramp_standstill && driver_standstill) {
+        TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Info, "Homing",
+                          "ApplyHomePlacement: Complete standstill verified after %u polls (%u ms)",
+                          poll_count, poll_count * STANDSTILL_POLL_MS);
+        break;
+      }
+      
+      driver_.comm_.DelayMs(STANDSTILL_POLL_MS);
+    }
+    
+    if (!ramp_standstill || !driver_standstill) {
+      TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Warn, "Homing",
+                        "ApplyHomePlacement: Standstill verification timeout after %u polls (ramp=%d driver=%d) - proceeding anyway",
+                        poll_count, ramp_standstill ? 1 : 0, driver_standstill ? 1 : 0);
+    }
+    
+    // Wait for chopper cycles to complete (~100ms)
+    driver_.comm_.DelayMs(100);
+  }
+
   {
     auto r = driver_.rampControl.SetCurrentPosition(0.0F, position_unit);
     if (!r) return Result<void>(r.Error());
@@ -6212,8 +6342,23 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
                           static_cast<unsigned>(stall_candidate_count));
       }
 
-      // StallGuard is not reliable in StealthChop.
+      // CRITICAL: StallGuard bounds finding REQUIRES SpreadCycle mode.
+      // If we're in StealthChop, StallGuard is not reliable and we must abort.
+      // This can happen if the driver resets and gets reinitialized in StealthChop (default).
       if (ds.bits.stealth != 0) {
+        // Check if we've moved significantly - if so, we're definitely in wrong mode
+        float distance_moved = std::abs(pos_steps - start_steps);
+        float max_expected_distance = std::abs(driver_.convertPositionToSteps(opt.search_span, opt.position_unit)) * 1.2F; // 20% margin
+        
+        if (distance_moved > max_expected_distance || motion_started) {
+          TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Homing",
+                            "CRITICAL: Driver is in StealthChop mode during StallGuard bounds finding! "
+                            "This is invalid - aborting. (moved=%.2f expected_max=%.2f motion_started=%d)",
+                            distance_moved, max_expected_distance, motion_started ? 1 : 0);
+          (void)driver_.rampControl.Stop();
+          (void)driver_.rampControl.SetRampMode(RampMode::HOLD);
+          return Result<void>(ErrorCode::INVALID_STATE);
+        }
         stall_candidate_count = 0;
       } else if (motion_started) {
         const bool hw_stop_event = (rs.bits.event_stop_sg != 0);
@@ -6306,6 +6451,24 @@ TMC51x0<CommType>::Homing::FindBoundsStallGuard(const BoundsOptions& opt, const 
         }
       }
 
+      // CRITICAL: Check if we've moved way past the expected search span.
+      // This can happen if the driver resets/reinitializes and continues moving.
+      // Abort if we've moved more than 1.5x the search span (with 20% margin for normal operation).
+      {
+        float distance_moved = std::abs(pos_steps - start_steps);
+        float max_allowed_distance = std::abs(driver_.convertPositionToSteps(opt.search_span, opt.position_unit)) * 1.5F;
+        
+        if (motion_started && distance_moved > max_allowed_distance) {
+          TMC51X0_LOG_DEBUG(driver_.comm_, LogLevel::Error, "Homing",
+                            "CRITICAL: Moved way past expected search span! "
+                            "distance=%.2f max_allowed=%.2f span=%.2f - aborting to prevent runaway",
+                            distance_moved, max_allowed_distance, opt.search_span);
+          (void)driver_.rampControl.Stop();
+          (void)driver_.rampControl.SetRampMode(RampMode::HOLD);
+          return Result<void>(ErrorCode::TIMEOUT);
+        }
+      }
+      
       auto reached = driver_.rampControl.IsTargetReached();
       if (reached && reached.Value()) {
         // No stall found on this side

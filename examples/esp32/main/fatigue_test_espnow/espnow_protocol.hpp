@@ -247,20 +247,19 @@ struct ErrorPayload {
  * PROTOCOL V2: Uses direct velocity/acceleration control instead of cycle time.
  */
 struct TestUnitSettings {
-    uint32_t cycle_amount = 5000;                     // Target cycles (0 = infinite)
-    float    oscillation_vmax_rpm = 60.0f;            // Max velocity during oscillation (RPM)
-    float    oscillation_amax_rev_s2 = 10.0f;         // Acceleration during oscillation (rev/s²)
-    uint32_t dwell_time_ms = 500;                     // Dwell at endpoints (ms)
-    bool     bounds_method_stallguard = true;         // true = stallguard, false = encoder
+    uint32_t cycle_amount = 300;                      ///< Target cycles (0 = infinite)
+    float    oscillation_vmax_rpm = 60.0f;            ///< Max velocity during oscillation (RPM)
+    float    oscillation_amax_rev_s2 = 10.0f;         ///< Acceleration during oscillation (rev/s²)
+    uint32_t dwell_time_ms = 500;                     ///< Dwell at endpoints (ms)
+    bool     bounds_method_stallguard = true;         ///< true = StallGuard2, false = encoder
     
     // Extended configuration for bounds finding (configurable via remote controller)
-    float    bounds_search_velocity_rpm = 0.0f;       // 0 = use test config default
-    float    stallguard_min_velocity_rpm = 0.0f;      // 0 = use test config default
-    float    stall_detection_current_factor = 0.0f;   // 0 = use test config default
-    float    bounds_search_accel_rev_s2 = 0.0f;       // 0 = use test config default
+    float    bounds_search_velocity_rpm = 0.0f;       ///< Search speed during bounds finding (RPM, 0 = use test config default)
+    float    stallguard_min_velocity_rpm = 0.0f;      ///< Min velocity for StallGuard2 (RPM, 0 = use test config default)
+    float    stall_detection_current_factor = 0.0f;   ///< Current reduction factor (0.0-1.0, 0 = use test config default)
+    float    bounds_search_accel_rev_s2 = 0.0f;       ///< Search acceleration (rev/s², 0 = use test config default)
 
-    // StallGuard threshold (SGT).
-    int8_t   stallguard_sgt = 127;                    // 127 = use test config default
+    int8_t   stallguard_sgt = 0;                    ///< StallGuard threshold [-64..63], 127 = use test config default
 };
 
 /**
@@ -269,7 +268,7 @@ struct TestUnitSettings {
  * These settings control the UI board's display and behavior.
  */
 struct UISettings {
-    bool orientation_flipped = false;
+    bool orientation_flipped = false;                ///< Whether display orientation is flipped
     // Future UI settings can be added here (e.g., brightness, contrast, etc.)
 };
 
@@ -279,8 +278,8 @@ struct UISettings {
  * This is the main settings structure used throughout the application.
  */
 struct Settings {
-    TestUnitSettings test_unit;  // Test machine settings (synced via ESP-NOW)
-    UISettings       ui;         // UI board settings (local only)
+    TestUnitSettings test_unit;  ///< Test machine settings (synced via ESP-NOW)
+    UISettings       ui;         ///< UI board settings (local only)
 };
 
 // ------------- EVENTS -------------

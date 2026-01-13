@@ -50,6 +50,18 @@ static const char* TAG = "FatigueTestUnit";
 static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
     tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE;
 
+// Bounds finding post-completion offset
+// After bounds finding completes, move this many degrees toward MIN (negative direction)
+// to avoid stopping at a full-step detent. For a 1.8° stepper, half-step = 0.9°
+// Adjust this value based on your motor's step angle (half-step = step_angle / 2)
+static constexpr float BOUNDS_FINDING_CENTER_OFFSET_DEG = -3.6f;  // Move 0.9° toward min after bounds finding
+
+// Oscillation edge backoff
+// How far inside the mechanical bounds to oscillate during fatigue testing.
+// This prevents repeatedly hitting the endpoints and gives margin for any residual error.
+// Must match the value used in bounds_finding_test.cpp for consistent behavior.
+static constexpr float OSCILLATION_EDGE_BACKOFF_DEG = 3.6f;  // Stay 3.5° inside mechanical bounds
+
 /**
  * @brief Centralized timing constants for FreeRTOS tasks in this application.
  *
@@ -341,6 +353,8 @@ static void FatalInitError(const char* what, uint8_t err_code) noexcept {
  *
  * @note This function does *not* start motion; it only energizes the driver.
  * @note Thread-safe: acquires g_driver_mutex internally.
+ * @note Power stabilization delay should be handled by the caller after setting
+ *       motor to a safe state (HOLD mode with current configured).
  */
 static bool MotorEnable() noexcept {
     if (!g_driver || !g_driver_mutex) return false;
@@ -378,9 +392,12 @@ static void DeenergizeTimerCallback(void* arg) {
     g_bounds_found = false;  // File scope variable
     BoundsCache::g_bounds_timestamp_us = 0;
     BoundsCache::g_motor_energized_for_bounds = false;
-    
+
     // De-energize the motor (this also clears the target position)
     MotorStopHoldDisable();
+
+    // Notify remote that bounds are no longer valid
+    EspNowReceiver::send_status_update(0, TestState::Idle, 0, 0); // bounds_valid=0
 }
 
 void BoundsCache::Init() noexcept {
@@ -887,6 +904,14 @@ static void bounds_finding_task(void* arg)
         return;
     }
 
+    // Power stabilization: ensure motor is in safe state (HOLD mode) and wait for power to stabilize
+    // This prevents faults when SetCurrent() is called during bounds finding
+    {
+        TmcMutexGuard guard(*g_driver_mutex);
+        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+    }
+    vTaskDelay(pdMS_TO_TICKS(500)); // Wait for power stage to stabilize
+
     if (!g_driver || !g_motion) {
         ESP_LOGE(TAG, "[bounds_find] Missing components (g_driver=%p g_motion=%p)", g_driver, g_motion);
         g_state = InternalState::ERROR;
@@ -947,17 +972,98 @@ static void bounds_finding_task(void* arg)
         opt.current_reduction_factor = 0.0f;
     }
 
-    auto lib_res = g_driver->homing.FindBounds(method, opt, home, &ShouldCancelBounds);
-    if (!lib_res) {
-        if (lib_res.Error() == tmc51x0::ErrorCode::CANCELLED || g_cancel_bounds) {
-        ESP_LOGW(TAG, "[bounds_find] Cancelled");
-        MotorStopHoldDisable();
-        g_bounds_task_running = false;
-        g_bounds_task_handle = nullptr;
-        vTaskDelete(nullptr);
-        return;
+    // Retry logic for bounds finding (handles transient resets)
+    constexpr uint32_t MAX_BOUNDS_RETRIES = 2;  // Allow 1 retry after reset
+    uint32_t retry_count = 0;
+    bool bounds_success = false;
+    Homing::BoundsResult result{};
+    
+    while (retry_count <= MAX_BOUNDS_RETRIES && !bounds_success) {
+        if (retry_count > 0) {
+            ESP_LOGW(TAG, "[bounds_find] Retry attempt %u/%u after reset", 
+                     retry_count, MAX_BOUNDS_RETRIES);
+            // Small delay before retry to let things settle
+            vTaskDelay(pdMS_TO_TICKS(500));
+        }
+        
+        auto lib_res = g_driver->homing.FindBounds(method, opt, home, &ShouldCancelBounds);
+        if (!lib_res) {
+            if (lib_res.Error() == tmc51x0::ErrorCode::CANCELLED || g_cancel_bounds) {
+                ESP_LOGW(TAG, "[bounds_find] Cancelled");
+                MotorStopHoldDisable();
+                g_bounds_task_running = false;
+                g_bounds_task_handle = nullptr;
+                vTaskDelete(nullptr);
+                return;
+            }
+            
+            // Check if this is a reset that we can retry
+            bool is_reset = false;
+            if (lib_res.Error() == tmc51x0::ErrorCode::HARDWARE_ERROR) {
+                // Check if it's actually a reset (vs other critical fault)
+                TmcMutexGuard guard(*g_driver_mutex);
+                bool drv_err = false;
+                bool uv_cp = false;
+                auto gstat_res = g_driver->status.GetGlobalStatus(drv_err, uv_cp);
+                if (gstat_res.IsOk()) {
+                    bool reset = gstat_res.Value();
+                    if (reset) {
+                        is_reset = true;
+                        ESP_LOGW(TAG, "[bounds_find] Reset detected during bounds finding - will retry");
+                        
+                        // Reinitialize the driver before retry
+                        auto config = g_driver->GetDriverConfig();
+                        auto reinit_result = g_driver->Initialize(config, false);  // false = quiet
+                        if (reinit_result.IsOk()) {
+                            ESP_LOGI(TAG, "[bounds_find] Driver reinitialized successfully, retrying bounds finding");
+                            // Invalidate bounds since position reference may be lost
+                            BoundsCache::InvalidateBounds();
+                            g_bounds_found = false;
+                            
+                            // Re-enable motor for retry
+                            if (!MotorEnable()) {
+                                ESP_LOGE(TAG, "[bounds_find] Failed to re-enable motor after reset");
+                                g_state = InternalState::ERROR;
+                                MotorStopHoldDisable();
+                                g_bounds_task_running = false;
+                                g_bounds_task_handle = nullptr;
+                                EspNowReceiver::send_error(2, 0);
+                                vTaskDelete(nullptr);
+                                return;
+                            }
+                            
+                            retry_count++;
+                            continue;  // Retry bounds finding
+                        } else {
+                            ESP_LOGE(TAG, "[bounds_find] Driver reinitialization failed (ErrorCode: %d)",
+                                     static_cast<int>(reinit_result.Error()));
+                            // Fall through to error handling
+                        }
+                    }
+                }
+            }
+            
+            // Not a reset, or retry limit exceeded, or reinit failed
+            if (!is_reset || retry_count >= MAX_BOUNDS_RETRIES) {
+                ESP_LOGE(TAG, "[bounds_find] Failed (err=%u, retries=%u)", 
+                         static_cast<unsigned>(lib_res.Error()), retry_count);
+                g_state = InternalState::ERROR;
+                MotorStopHoldDisable();
+                g_bounds_task_running = false;
+                g_bounds_task_handle = nullptr;
+                EspNowReceiver::send_error(3, 0);
+                vTaskDelete(nullptr);
+                return;
+            }
+        } else {
+            // Success!
+            result = lib_res.Value();
+            bounds_success = true;
+        }
     }
-        ESP_LOGE(TAG, "[bounds_find] Failed (err=%u)", static_cast<unsigned>(lib_res.Error()));
+    
+    if (!bounds_success) {
+        ESP_LOGE(TAG, "[bounds_find] Failed after %u retries", retry_count);
         g_state = InternalState::ERROR;
         MotorStopHoldDisable();
         g_bounds_task_running = false;
@@ -967,7 +1073,6 @@ static void bounds_finding_task(void* arg)
         return;
     }
 
-    Homing::BoundsResult result = lib_res.Value();
     if (result.cancelled || g_cancel_bounds) {
         ESP_LOGW(TAG, "[bounds_find] Cancelled");
         MotorStopHoldDisable();
@@ -1016,15 +1121,92 @@ static void bounds_finding_task(void* arg)
         // chopper settle) before switching modes, preventing the "phase jump" issue
         // per TMC5160 datasheet Section 6.5 and 7.
         ESP_LOGI(TAG, "[bounds_find] Driver library handled mode restoration and standstill verification");
+        
+        // CRITICAL: Apply offset to avoid stopping at full-step detent
+        // After bounds finding, the motor may be at a full-step detent. Move a small
+        // amount toward MIN (negative direction) to position at a microstep instead.
+        if (BOUNDS_FINDING_CENTER_OFFSET_DEG != 0.0f) {
+            ESP_LOGI(TAG, "[bounds_find] Applying center offset: %.3f° toward MIN to avoid full-step detent",
+                     BOUNDS_FINDING_CENTER_OFFSET_DEG);
+            
+            // Get initial position for diagnostics
+            auto init_pos = g_driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+            float init_pos_deg = init_pos.IsOk() ? init_pos.Value() : 0.0f;
+            
+            // Set POSITIONING mode to allow motion (RestoreCachedSettings leaves motor in HOLD mode)
+            (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+            
+            // CRITICAL: Set VMAX and acceleration explicitly for the offset move
+            // RestoreCachedSettings may have restored VMAX=0 or invalid values
+            // Use a conservative speed (10 RPM) and reasonable acceleration for a small move
+            constexpr float OFFSET_MOVE_SPEED_RPM = 10.0f;
+            constexpr float OFFSET_MOVE_ACCEL_REV_S2 = 5.0f;
+            (void)g_driver->rampControl.SetMaxSpeed(OFFSET_MOVE_SPEED_RPM, tmc51x0::Unit::RPM);
+            (void)g_driver->rampControl.SetAcceleration(OFFSET_MOVE_ACCEL_REV_S2, tmc51x0::Unit::RevPerSec);
+            (void)g_driver->rampControl.SetDeceleration(OFFSET_MOVE_ACCEL_REV_S2, tmc51x0::Unit::RevPerSec);
+            
+            vTaskDelay(pdMS_TO_TICKS(10));
+            
+            // Move the offset amount toward MIN (negative direction)
+            auto offset_result = g_driver->rampControl.MoveRelative(BOUNDS_FINDING_CENTER_OFFSET_DEG, tmc51x0::Unit::Deg);
+            if (offset_result.IsOk()) {
+                // Get target position for diagnostics
+                auto target_pos = g_driver->rampControl.GetTargetPosition(tmc51x0::Unit::Deg);
+                float target_pos_deg = target_pos.IsOk() ? target_pos.Value() : 0.0f;
+                ESP_LOGI(TAG, "[bounds_find] Center offset move: initial=%.3f° target=%.3f° (delta=%.3f°)",
+                         init_pos_deg, target_pos_deg, target_pos_deg - init_pos_deg);
+                
+                // Wait for offset move to complete (with timeout)
+                bool offset_complete = false;
+                for (uint32_t i = 0; i < 100; i++) { // 2 second timeout (20ms * 100)
+                    auto reached = g_driver->rampControl.IsTargetReached();
+                    auto current_pos = g_driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+                    float current_pos_deg = current_pos.IsOk() ? current_pos.Value() : 0.0f;
+                    
+                    if (reached.IsOk() && reached.Value()) {
+                        offset_complete = true;
+                        ESP_LOGI(TAG, "[bounds_find] Center offset move completed after %u polls (%.1f ms) - final position=%.3f°",
+                                 i + 1, (i + 1) * 20.0f, current_pos_deg);
+                        break;
+                    }
+                    
+                    // Log progress every 10 polls (200ms) for diagnostics
+                    if ((i + 1) % 10 == 0) {
+                        ESP_LOGI(TAG, "[bounds_find] Center offset move in progress: poll %u/100, current=%.3f° target=%.3f° reached=%s",
+                                 i + 1, current_pos_deg, target_pos_deg, 
+                                 (reached.IsOk() && reached.Value()) ? "YES" : "NO");
+                    }
+                    
+                    vTaskDelay(pdMS_TO_TICKS(20));
+                }
+                
+                if (offset_complete) {
+                    // Update position reference: set new position as zero
+                    auto new_pos = g_driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+                    if (new_pos.IsOk()) {
+                        (void)g_driver->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
+                        (void)g_driver->rampControl.SetTargetPosition(0.0f, tmc51x0::Unit::Deg);
+                        ESP_LOGI(TAG, "[bounds_find] Center offset applied successfully - new home at %.3f°",
+                                 new_pos.Value());
+                    }
+                } else {
+                    // Get final position for diagnostics
+                    auto final_pos = g_driver->rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+                    auto final_target = g_driver->rampControl.GetTargetPosition(tmc51x0::Unit::Deg);
+                    float final_pos_deg = final_pos.IsOk() ? final_pos.Value() : 0.0f;
+                    float final_target_deg = final_target.IsOk() ? final_target.Value() : 0.0f;
+                    ESP_LOGW(TAG, "[bounds_find] Center offset move timeout - current=%.3f° target=%.3f° error=%.3f°",
+                             final_pos_deg, final_target_deg, final_pos_deg - final_target_deg);
+                }
+            } else {
+                ESP_LOGW(TAG, "[bounds_find] Failed to apply center offset (err=%u)",
+                         static_cast<unsigned>(offset_result.Error()));
+            }
+        }
     }
     ESP_LOGI(TAG, "[bounds_find] Result: success=%d bounded=%d min=%.2f° max=%.2f° current_pos=%.2f° (method=%s)",
              result.success ? 1 : 0, result.bounded ? 1 : 0, result.min_bound, result.max_bound, pos_deg,
              use_sg ? "StallGuard" : "Encoder");
-
-    // Edge backoff: how far inside the mechanical bounds to oscillate.
-    // This prevents repeatedly hitting the endpoints and gives margin for any residual error.
-    // Must match the value used in bounds_finding_test.cpp for consistent behavior.
-    static constexpr float OSCILLATION_EDGE_BACKOFF_DEG = 3.5f;
     
     if (result.bounded) {
         // Use the measured mechanical range as the oscillation range.
@@ -2578,15 +2760,17 @@ static bool HandleHelp(const std::string& topic) noexcept {
         CommandOutput::PrintInfo("  set [OPTIONS...]");
         CommandOutput::PrintEmptyLine();
         CommandOutput::PrintInfo("OPTIONS:");
-        CommandOutput::PrintInfo("  -f, --frequency <Hz>        Motion frequency (0.01 - 10.0 Hz)");
-        CommandOutput::PrintInfo("  -d, --dwell <min> <max>     Dwell times in ms (0 - 60000)");
+        CommandOutput::PrintInfo("  -v, --velocity <RPM>        Max velocity (5-120 RPM)");
+        CommandOutput::PrintInfo("  -a, --acceleration <rev/s²> Acceleration (0.5-30 rev/s²)");
+        CommandOutput::PrintInfo("  -d, --dwell <min> <max>     Dwell times in ms (0-60000)");
         CommandOutput::PrintInfo("  -b, --bounds <min> <max>    Angle bounds in degrees (-180 to 180)");
         CommandOutput::PrintInfo("  -c, --cycles <count>        Target cycles (0 = infinite)");
         CommandOutput::PrintEmptyLine();
         CommandOutput::PrintInfo("EXAMPLES:");
-        CommandOutput::PrintInfo("  set frequency 0.5");
-        CommandOutput::PrintInfo("  set -f 0.5 -d 500 1000");
-        CommandOutput::PrintInfo("  set -f 0.5 -d 500 1000 -b -60 60 -c 1000");
+        CommandOutput::PrintInfo("  set velocity 60");
+        CommandOutput::PrintInfo("  set -v 60 -a 10 -d 500 1000");
+        CommandOutput::PrintInfo("  set -v 60 -a 10 -d 500 1000 -b -60 60 -c 1000");
+        CommandOutput::PrintInfo("  set velocity 60 acceleration 10  # Word-based options");
         CommandOutput::PrintEmptyLine();
         CommandOutput::PrintFooter();
         return true;
