@@ -1,0 +1,5 @@
+<map id="GetBoundsValidFlag_" name="GetBoundsValidFlag_">
+<area shape="rect" id="Node000001" title="Get bounds validity flag for protocol status updates." alt="" coords="5,5,165,31"/>
+<area shape="rect" id="Node000002" href="$namespaceBoundsCache.html#ae4eb0a6db10372b5c14aeaf29c2d28b0" title="Check if bounds are still valid (within time window and motor energized)." alt="" coords="213,5,433,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,15,200,15,200,21,166,21"/>
+</map>

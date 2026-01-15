@@ -1,0 +1,7 @@
+<map id="PeerStore::RemovePeer" name="PeerStore::RemovePeer">
+<area shape="rect" id="Node000001" title="Remove a peer by MAC address." alt="" coords="5,31,181,56"/>
+<area shape="rect" id="Node000002" href="$espnow__security_8hpp.html#af7a73c0e28901c88d30288faf14c6a5d" title="Compare two MAC addresses." alt="" coords="246,5,338,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,29,232,23,233,28,182,35"/>
+<area shape="rect" id="Node000003" href="$namespacePeerStore.html#a3318088ed933db034120d60f25e2ec9f" title="Save the current peer list to NVS." alt="" coords="229,55,355,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="182,51,216,56,215,61,181,57"/>
+</map>

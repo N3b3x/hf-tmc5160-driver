@@ -1,23 +1,34 @@
 <map id="espnow_receiver.hpp" name="espnow_receiver.hpp">
-<area shape="rect" id="Node000001" title="ESP&#45;NOW receiver for test unit." alt="" coords="308,5,467,31"/>
-<area shape="rect" id="Node000002" href="$espnow__protocol_8hpp.html" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="307,79,467,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="390,31,390,65,385,65,385,31"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="5,152,156,177"/>
-<area shape="poly" id="edge10_Node000001_Node000005" title=" " alt="" coords="364,33,118,149,116,144,362,28"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="711,152,840,177"/>
-<area shape="poly" id="edge11_Node000001_Node000006" title=" " alt="" coords="419,28,733,145,731,150,418,33"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="181,152,247,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="360,106,256,149,254,144,358,102"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="271,152,338,177"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="376,106,330,145,327,141,372,102"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="339,107,144,151,143,146,337,101"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="450,101,700,147,699,152,449,107"/>
-<area shape="rect" id="Node000007" href="$esp__idf__pedantic__compat_8hpp.html" title="Compatibility include wrapper for ESP&#45;IDF headers when building with &#45;Wpedantic in C++." alt="" coords="362,152,578,177"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="402,102,448,141,444,145,399,106"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="603,152,687,177"/>
-<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="429,101,591,146,589,151,428,107"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="367,225,458,251"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="463,179,433,216,429,213,458,176"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="483,225,569,251"/>
-<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="481,176,511,213,506,216,477,179"/>
+<area shape="rect" id="Node000001" title="ESP&#45;NOW receiver for test unit with secure pairing support." alt="" coords="595,5,754,31"/>
+<area shape="rect" id="Node000002" href="$espnow__protocol_8hpp.html" title="ESP&#45;NOW communication protocol for fatigue tester." alt="" coords="536,79,696,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="667,33,636,70,632,67,663,29"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="837,152,987,177"/>
+<area shape="poly" id="edge17_Node000001_Node000005" title=" " alt="" coords="695,29,883,142,880,147,692,33"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="1011,152,1141,177"/>
+<area shape="poly" id="edge18_Node000001_Node000006" title=" " alt="" coords="707,28,1032,145,1030,150,706,33"/>
+<area shape="rect" id="Node000011" href="$espnow__security_8hpp.html" title="ESP&#45;NOW security and pairing protocol definitions." alt="" coords="204,152,361,177"/>
+<area shape="poly" id="edge16_Node000001_Node000011" title=" " alt="" coords="644,33,328,150,326,145,642,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="365,225,432,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="537,102,478,120,450,135,426,154,416,167,409,182,403,212,397,211,404,180,412,164,422,150,447,130,476,115,535,97"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="491,225,557,251"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="611,106,541,215,536,212,606,103"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="664,101,851,146,850,151,663,107"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="690,101,998,149,997,154,690,107"/>
+<area shape="rect" id="Node000007" href="$esp__idf__pedantic__compat_8hpp.html" title="Compatibility include wrapper for ESP&#45;IDF headers when building with &#45;Wpedantic in C++." alt="" coords="596,152,812,177"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="632,102,681,141,677,145,628,106"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="437,152,521,177"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="595,106,514,148,512,143,593,102"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="563,107,350,152,349,146,562,101"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="620,225,711,251"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="700,179,680,215,676,212,695,176"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="735,225,822,251"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="718,175,758,214,755,218,714,179"/>
+<area shape="poly" id="edge11_Node000011_Node000003" title=" " alt="" coords="303,175,369,216,367,220,300,180"/>
+<area shape="poly" id="edge13_Node000011_Node000004" title=" " alt="" coords="322,175,478,220,476,225,321,180"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="5,225,67,251"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="244,180,81,227,79,222,242,175"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="91,225,205,251"/>
+<area shape="poly" id="edge14_Node000011_Node000013" title=" " alt="" coords="262,180,183,221,181,216,260,175"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="229,225,341,251"/>
+<area shape="poly" id="edge15_Node000011_Node000014" title=" " alt="" coords="286,178,287,212,282,212,280,178"/>
 </map>

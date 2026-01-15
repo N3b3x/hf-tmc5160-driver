@@ -6,7 +6,8 @@ var group__TMC51X0__Core =
         [ "power_on_settle_ms", "structtmc51x0_1_1TMC51x0_1_1HardResetOptions.html#a1034f492980ac298d5e6965a75ea3708", null ],
         [ "prefer_power_cycle", "structtmc51x0_1_1TMC51x0_1_1HardResetOptions.html#af5c44d537d1802b2db029223076e8dc1", null ],
         [ "reinitialize", "structtmc51x0_1_1TMC51x0_1_1HardResetOptions.html#ab885e4346c76445d186b42426d55238d", null ],
-        [ "uart_assume_accessible_at_0", "structtmc51x0_1_1TMC51x0_1_1HardResetOptions.html#afd582913e4557ad17c1040ccb38d86a9", null ]
+        [ "uart_assume_accessible_at_0", "structtmc51x0_1_1TMC51x0_1_1HardResetOptions.html#afd582913e4557ad17c1040ccb38d86a9", null ],
+        [ "verbose", "structtmc51x0_1_1TMC51x0_1_1HardResetOptions.html#a3326830fca9d9975d4c5afe0d8c2ddd0", null ]
       ] ],
       [ "MotorCurrentDebugInfo", "structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html", [
         [ "cached_global_scaler", "structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html#aae6bf96f25cae3d71e934f2a28f4b63c", null ],
@@ -61,7 +62,7 @@ var group__TMC51X0__Core =
       [ "GetDriverConfigString", "classtmc51x0_1_1TMC51x0.html#ada3e7090570b7221e2048445d4f22035", null ],
       [ "GetMotorCurrentDebugInfo", "classtmc51x0_1_1TMC51x0.html#acfb1a464c20f433450d1e96ce51744dc", null ],
       [ "HardReset", "classtmc51x0_1_1TMC51x0.html#a0819cf562bcbb0a747b56fc15a8da5b1", null ],
-      [ "Initialize", "classtmc51x0_1_1TMC51x0.html#a60e918b0153cf9034871291ce27ea813", null ],
+      [ "Initialize", "classtmc51x0_1_1TMC51x0.html#a97c3a1773a03aaeeb0882d2096f868d8", null ],
       [ "IsInitialized", "classtmc51x0_1_1TMC51x0.html#af1458eb313a868ca4860f44e32630c8c", null ],
       [ "IsInternalRampMode", "classtmc51x0_1_1TMC51x0.html#abd5a49d0cb0c802a394a71ede9967b32", null ],
       [ "LogConfigSummary", "classtmc51x0_1_1TMC51x0.html#a20cfe6cdf1f4310965a619a81863d66b", null ],

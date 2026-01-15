@@ -39,7 +39,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="espnow__receiver_8cpp.html" target="_top" xlink:title="ESP&#45;NOW receiver implementation for test unit.">
+<g id="a_Node000003"><a xlink:href="espnow__receiver_8cpp.html" target="_top" xlink:title="ESP&#45;NOW receiver implementation for test unit with secure pairing.">
 <polygon fill="white" stroke="#666666" points="260,-24.5 141,-24.5 141,-5.5 260,-5.5 260,-24.5"/>
 <text text-anchor="middle" x="200.5" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">espnow_receiver.cpp</text>
 </a>
@@ -57,7 +57,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="espnow__receiver_8hpp.html" target="_top" xlink:title="ESP&#45;NOW receiver for test unit.">
+<g id="a_Node000004"><a xlink:href="espnow__receiver_8hpp.html" target="_top" xlink:title="ESP&#45;NOW receiver for test unit with secure pairing support.">
 <polygon fill="white" stroke="#666666" points="234,-85 115,-85 115,-66 234,-66 234,-85"/>
 <text text-anchor="middle" x="174.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">espnow_receiver.hpp</text>
 </a>

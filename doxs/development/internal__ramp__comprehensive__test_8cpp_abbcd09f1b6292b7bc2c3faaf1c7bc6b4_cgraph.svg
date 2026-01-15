@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Test global scaler configuration.">
 <polygon fill="#999999" stroke="#666666" points="105,-40 0,-40 0,-21 105,-21 105,-40"/>
 <text text-anchor="middle" x="52.5" y="-28" font-family="Helvetica,sans-Serif" font-size="10.00">test_global_scaler</text>
 </a>

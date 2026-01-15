@@ -106,12 +106,13 @@ $(function(){initNavTree('fatigue__motion__impl_8hpp.html',''); initResizable();
 <div class="textblock"><code>#include &quot;<a class="el" href="fatigue__motion_8hpp_source.html">fatigue_motion.hpp</a>&quot;</code><br />
 <code>#include &quot;esp_log.h&quot;</code><br />
 <code>#include &quot;esp_timer.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp32__tmc51x0__test__config_8hpp_source.html">test_config/esp32_tmc51x0_test_config.hpp</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for fatigue_motion_impl.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="fatigue__motion__impl_8hpp__incl.svg" width="2287" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="fatigue__motion__impl_8hpp__incl.svg" width="2551" height="506"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -130,10 +131,18 @@ Namespaces</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a958424bf9e27ffdfcd12b97513390aee" id="r_a958424bf9e27ffdfcd12b97513390aee"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a958424bf9e27ffdfcd12b97513390aee">TAG_MOTION</a> = &quot;FatigueMotion&quot;</td></tr>
 <tr class="separator:a958424bf9e27ffdfcd12b97513390aee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55aea69f27cdfe1bbc4a609a15e7ac38" id="r_a55aea69f27cdfe1bbc4a609a15e7ac38"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFatigueTest.html#a55aea69f27cdfe1bbc4a609a15e7ac38">FatigueTest::VMAX_MIN_RPM</a> = 5.0f</td></tr>
+<tr class="separator:a55aea69f27cdfe1bbc4a609a15e7ac38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae53a88e46188871500b72528f2f1a48" id="r_aae53a88e46188871500b72528f2f1a48"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFatigueTest.html#aae53a88e46188871500b72528f2f1a48">FatigueTest::VMAX_MAX_RPM</a> = 120.0f</td></tr>
+<tr class="separator:aae53a88e46188871500b72528f2f1a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e9509c344ecc2cbf153d707ee51aaf1" id="r_a3e9509c344ecc2cbf153d707ee51aaf1"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFatigueTest.html#a3e9509c344ecc2cbf153d707ee51aaf1">FatigueTest::AMAX_MIN_REV_S2</a> = 0.5f</td></tr>
+<tr class="separator:a3e9509c344ecc2cbf153d707ee51aaf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23fe7b096d56182a83555bad82a1c2ed" id="r_a23fe7b096d56182a83555bad82a1c2ed"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFatigueTest.html#a23fe7b096d56182a83555bad82a1c2ed">FatigueTest::AMAX_MAX_REV_S2</a> = 30.0f</td></tr>
+<tr class="separator:a23fe7b096d56182a83555bad82a1c2ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Full implementation of FatigueTestMotion class. </p>
-<p>Complete implementation extracted from fatigue_test_stallguard.cpp and fatigue_test_encoder.cpp Provides full-featured sinusoidal motion with trajectory calculation, dwell handling, and cycle counting.</p>
+<p>Complete implementation extracted from fatigue_test_stallguard.cpp and fatigue_test_encoder.cpp Provides point-to-point motion with trajectory calculation, dwell handling, and cycle counting.</p>
 <p>This file is included by <a class="el" href="fatigue__motion_8hpp.html" title="Unified fatigue test motion controller.">fatigue_motion.hpp</a> to provide header-only implementation. </p>
 </div><h2 class="groupheader">Variable Documentation</h2>
 <a id="a958424bf9e27ffdfcd12b97513390aee" name="a958424bf9e27ffdfcd12b97513390aee"></a>

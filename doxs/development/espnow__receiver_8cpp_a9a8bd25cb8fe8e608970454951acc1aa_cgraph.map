@@ -1,0 +1,45 @@
+<map id="handlePacket" name="handlePacket">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,219,113,245"/>
+<area shape="rect" id="Node000002" href="$espnow__protocol_8hpp.html#afa7c999b99fb5716dc9d60af3a151d11" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="651,37,741,62"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="71,217,115,174,185,115,227,85,272,57,321,33,371,15,407,7,445,4,519,6,587,17,644,30,643,36,586,22,518,11,445,9,408,13,373,20,323,38,275,61,230,89,188,119,119,178,75,221"/>
+<area shape="rect" id="Node000003" href="$espnow__receiver_8cpp.html#ad03b1f7a342f6c86bb9ce0beec5636f2" title=" " alt="" coords="162,343,323,369"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="81,243,213,333,210,338,78,247"/>
+<area shape="rect" id="Node000009" href="$espnow__receiver_8cpp.html#a28441301837d03aa3ab77181c35c2001" title=" " alt="" coords="407,294,531,319"/>
+<area shape="poly" id="edge24_Node000001_Node000009" title=" " alt="" coords="114,239,394,290,393,296,113,244"/>
+<area shape="rect" id="Node000013" href="$espnow__receiver_8cpp.html#a969682e51603f89e14b08804e1434f86" title=" " alt="" coords="161,155,324,181"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="96,217,192,183,193,188,98,222"/>
+<area shape="rect" id="Node000017" href="$espnow__receiver_8cpp.html#a0dc64484e6494b6182745f1898ef3738" title=" " alt="" coords="396,193,543,218"/>
+<area shape="poly" id="edge25_Node000001_Node000017" title=" " alt="" coords="113,226,382,208,382,214,114,231"/>
+<area shape="rect" id="Node000018" href="$namespacePeerStore.html#a73b2cdf0c288d8403a1a70e0f571ffc2" title="Check if a MAC address is in the approved peer list." alt="" coords="372,491,567,517"/>
+<area shape="poly" id="edge21_Node000001_Node000018" title=" " alt="" coords="69,244,103,307,130,345,163,379,217,417,277,447,337,470,392,486,390,491,336,475,275,452,215,422,160,383,126,349,99,310,64,246"/>
+<area shape="rect" id="Node000004" href="$namespacePeerStore.html#afa0d1ce235ad40beccab05f96260bbb5" title="Add a new approved peer to storage." alt="" coords="396,442,543,467"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="264,367,312,397,373,428,394,436,392,441,371,433,309,402,261,371"/>
+<area shape="rect" id="Node000008" href="$espnow__receiver_8cpp.html#afc321dce05a09b7e8487be200c7e4537" title=" " alt="" coords="436,393,503,418"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="302,366,423,393,422,398,301,371"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="301,341,396,320,397,325,302,346"/>
+<area shape="rect" id="Node000011" href="$espnow__security_8hpp.html#a6103306a96642435fea015548e305d67" title="Verify an HMAC response using constant&#45;time comparison." alt="" coords="399,343,540,369"/>
+<area shape="poly" id="edge10_Node000003_Node000011" title=" " alt="" coords="324,353,385,353,385,359,324,359"/>
+<area shape="rect" id="Node000005" href="$espnow__security_8hpp.html#a5404f39e50ea5a07bb38e958bfecd9d1" title="Check if a MAC address is all zeros." alt="" coords="651,491,741,517"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="529,465,638,489,637,494,528,470"/>
+<area shape="rect" id="Node000006" href="$espnow__security_8hpp.html#af7a73c0e28901c88d30288faf14c6a5d" title="Compare two MAC addresses." alt="" coords="650,442,742,467"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="543,452,636,452,636,457,543,457"/>
+<area shape="rect" id="Node000007" href="$namespacePeerStore.html#a3318088ed933db034120d60f25e2ec9f" title="Save the current peer list to NVS." alt="" coords="633,393,759,418"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="528,439,623,418,624,424,529,445"/>
+<area shape="rect" id="Node000010" href="$espnow__receiver_8cpp.html#a38ae343ba91aa93458377b341e1d9e4a" title=" " alt="" coords="651,193,741,218"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="498,291,653,221,655,226,500,296"/>
+<area shape="rect" id="Node000012" href="$espnow__security_8hpp.html#ae69756054396d09425336d822aa6c6b9" title="Compute HMAC&#45;SHA256, truncated to HMAC_SIZE bytes." alt="" coords="615,293,777,318"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="527,341,625,318,626,324,528,346"/>
+<area shape="poly" id="edge13_Node000013_Node000012" title=" " alt="" coords="267,178,315,203,373,228,483,257,619,287,618,292,481,263,371,233,313,208,265,183"/>
+<area shape="rect" id="Node000014" href="$espnow__security_8hpp.html#a970f324b3c3c6db045205b7b1c692f0c" title="Generate a random challenge nonce." alt="" coords="396,143,543,169"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="324,161,382,158,382,163,324,166"/>
+<area shape="rect" id="Node000015" href="$namespaceEspNowReceiver.html#a93d8c346666ea692686d6fccfe1c2226" title="Check if device is currently in pairing mode." alt="" coords="394,29,545,69"/>
+<area shape="poly" id="edge15_Node000013_Node000015" title=" " alt="" coords="258,153,307,117,371,79,386,72,389,77,373,84,310,122,261,157"/>
+<area shape="rect" id="Node000016" href="$espnow__receiver_8cpp.html#a6eb0186376c3ffd1080f65ee4c597d9f" title=" " alt="" coords="415,94,524,119"/>
+<area shape="poly" id="edge16_Node000013_Node000016" title=" " alt="" coords="285,153,371,128,402,120,403,125,373,133,287,158"/>
+<area shape="poly" id="edge19_Node000013_Node000017" title=" " alt="" coords="321,178,383,189,382,194,320,183"/>
+<area shape="poly" id="edge17_Node000016_Node000002" title=" " alt="" coords="520,91,637,61,638,67,521,97"/>
+<area shape="poly" id="edge18_Node000016_Node000010" title=" " alt="" coords="525,115,568,128,621,155,667,183,664,187,619,159,566,133,524,120"/>
+<area shape="poly" id="edge20_Node000017_Node000010" title=" " alt="" coords="543,203,637,203,637,208,543,208"/>
+<area shape="poly" id="edge22_Node000018_Node000005" title=" " alt="" coords="567,501,637,501,637,507,567,507"/>
+<area shape="poly" id="edge23_Node000018_Node000006" title=" " alt="" coords="528,489,636,465,637,470,529,494"/>
+</map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['espnowreceiver_0',['EspNowReceiver',['../namespaceEspNowReceiver.html',1,'']]]
+  ['boundscache_0',['BoundsCache',['../namespaceBoundsCache.html',1,'']]]
 ];

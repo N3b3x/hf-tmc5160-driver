@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Create and initialize daisy chain driver instances.">
 <polygon fill="#999999" stroke="#666666" points="414,-61.5 304,-61.5 304,-31.5 414,-31.5 414,-61.5"/>
 <text text-anchor="start" x="312" y="-49.5" font-family="Helvetica,sans-Serif" font-size="10.00">create_daisy_chain</text>
 <text text-anchor="middle" x="359" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">_drivers</text>
@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="spi__daisy__chain__comprehensive__test_8cpp.html#a829c4d999ee75addcd4a80486173795b" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="spi__daisy__chain__comprehensive__test_8cpp.html#a829c4d999ee75addcd4a80486173795b" target="_top" xlink:title="Test daisy chain position management and addressing.">
 <polygon fill="white" stroke="#666666" points="256,-104.5 113,-104.5 113,-74.5 256,-74.5 256,-104.5"/>
 <text text-anchor="start" x="121" y="-92.5" font-family="Helvetica,sans-Serif" font-size="10.00">test_daisy_chain_position</text>
 <text text-anchor="middle" x="184.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">_management</text>
@@ -40,7 +40,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="spi__daisy__chain__comprehensive__test_8cpp.html#aea4301824809cd2c54c2b3d81bd5f039" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="spi__daisy__chain__comprehensive__test_8cpp.html#aea4301824809cd2c54c2b3d81bd5f039" target="_top" xlink:title="Test SPI daisy chain setup and initialization.">
 <polygon fill="white" stroke="#666666" points="250,-56 119,-56 119,-37 250,-37 250,-56"/>
 <text text-anchor="middle" x="184.5" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">test_daisy_chain_setup</text>
 </a>
@@ -58,7 +58,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="spi__daisy__chain__comprehensive__test_8cpp.html#a1751b60bd475b13f7f12c4e3ab674011" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="spi__daisy__chain__comprehensive__test_8cpp.html#a1751b60bd475b13f7f12c4e3ab674011" target="_top" xlink:title="Test multi&#45;motor coordination in daisy chain configuration.">
 <polygon fill="white" stroke="#666666" points="268,-19 101,-19 101,0 268,0 268,-19"/>
 <text text-anchor="middle" x="184.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">test_multi_motor_coordination</text>
 </a>

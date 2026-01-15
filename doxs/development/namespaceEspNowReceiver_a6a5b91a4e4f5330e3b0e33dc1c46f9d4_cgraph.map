@@ -1,0 +1,9 @@
+<map id="EspNowReceiver::remove_approved_peer" name="EspNowReceiver::remove_approved_peer">
+<area shape="rect" id="Node000001" title="Remove a peer from the approved list." alt="" coords="5,23,195,63"/>
+<area shape="rect" id="Node000002" href="$namespacePeerStore.html#a820cd747294882038071729fa15aaf5a" title="Remove a peer by MAC address." alt="" coords="243,31,419,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,41,229,41,229,46,195,46"/>
+<area shape="rect" id="Node000003" href="$espnow__security_8hpp.html#af7a73c0e28901c88d30288faf14c6a5d" title="Compare two MAC addresses." alt="" coords="483,5,575,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="419,29,469,23,470,28,419,35"/>
+<area shape="rect" id="Node000004" href="$namespacePeerStore.html#a3318088ed933db034120d60f25e2ec9f" title="Save the current peer list to NVS." alt="" coords="467,55,592,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="419,51,453,56,453,61,419,57"/>
+</map>

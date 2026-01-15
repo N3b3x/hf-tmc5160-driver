@@ -128,7 +128,7 @@ Private Member Functions</h2></td></tr>
 <tr class="memdesc:a1b1cc802df8531601b19af3dd97b9f52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map a verb token (first token) to a <code>CommandType</code>.  <br /></td></tr>
 <tr class="separator:a1b1cc802df8531601b19af3dd97b9f52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0e959fc2d336b5fbfb2dfafb901b167" id="r_ab0e959fc2d336b5fbfb2dfafb901b167"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0e959fc2d336b5fbfb2dfafb901b167">ParseCommand</a> (const std::vector&lt; std::string &gt; &amp;tokens, <a class="el" href="structParsedCommand.html">ParsedCommand</a> &amp;cmd) noexcept</td></tr>
-<tr class="memdesc:ab0e959fc2d336b5fbfb2dfafb901b167"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert tokens into a structured <a class="el" href="structParsedCommand.html" title="Parsed command structure.">ParsedCommand</a>.  <br /></td></tr>
+<tr class="memdesc:ab0e959fc2d336b5fbfb2dfafb901b167"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert tokens into a structured <a class="el" href="structParsedCommand.html" title="Parsed command structure for UART command processing.">ParsedCommand</a>.  <br /></td></tr>
 <tr class="separator:ab0e959fc2d336b5fbfb2dfafb901b167"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
@@ -212,7 +212,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Convert tokens into a structured <a class="el" href="structParsedCommand.html" title="Parsed command structure.">ParsedCommand</a>. </p>
+<p>Convert tokens into a structured <a class="el" href="structParsedCommand.html" title="Parsed command structure for UART command processing.">ParsedCommand</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">tokens</td><td>Token vector as returned by <a class="el" href="#a252be09aa840308655722421fafb1641" title="Split a command line into tokens.">Tokenize()</a>. </td></tr>
@@ -224,12 +224,7 @@ Static Private Attributes</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_ab0e959fc2d336b5fbfb2dfafb901b167_cgraph.svg" width="658" height="200"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_ab0e959fc2d336b5fbfb2dfafb901b167_icgraph.svg" width="950" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_ab0e959fc2d336b5fbfb2dfafb901b167_cgraph.svg" width="427" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -265,11 +260,6 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Parsed command type. Unknown verbs map to HELP. </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a1b1cc802df8531601b19af3dd97b9f52_icgraph.svg" width="1163" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -313,12 +303,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a2b7090fe7118485c639dce94074b6e68_cgraph.svg" width="1710" height="959"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a2b7090fe7118485c639dce94074b6e68_icgraph.svg" width="736" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a2b7090fe7118485c639dce94074b6e68_cgraph.svg" width="1436" height="1660"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -355,11 +340,6 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 <dl class="section warning"><dt>Warning</dt><dd>This runs in a polling task. Keep per-call work bounded. </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a867cccdf009c2a69f1edf9a02f50c984_cgraph.svg" width="1932" height="959"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -403,11 +383,6 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Token vector (may be empty). </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classUartCommandParser_a252be09aa840308655722421fafb1641_icgraph.svg" width="950" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

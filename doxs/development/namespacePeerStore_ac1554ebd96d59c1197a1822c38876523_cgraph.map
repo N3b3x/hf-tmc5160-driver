@@ -1,0 +1,5 @@
+<map id="PeerStore::LogPeers" name="PeerStore::LogPeers">
+<area shape="rect" id="Node000001" title="Log all approved peers (for debugging)." alt="" coords="5,5,157,31"/>
+<area shape="rect" id="Node000002" href="$namespacePeerStore.html#a9b28e00929e22d7fc686a164ff2951cf" title="Get the number of valid approved peers." alt="" coords="205,5,388,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,15,192,15,192,21,158,21"/>
+</map>

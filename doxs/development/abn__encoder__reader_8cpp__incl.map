@@ -1,74 +1,76 @@
 <map id="abn_encoder_reader.cpp" name="abn_encoder_reader.cpp">
-<area shape="rect" id="Node000001" title="ABN Encoder Position Reader &#45; Continuously reads encoder position." alt="" coords="1199,5,1379,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="525,86,692,111"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1199,29,974,49,705,81,677,86,676,81,704,76,973,43,1198,23"/>
-<area shape="rect" id="Node000003" href="$esp32__tmc51x0__bus_8hpp.html" title="ESP32&#45;specific communication interfaces for TMC51x0 using SPI and UART (TMC5130 &amp; TMC51x0)" alt="" coords="1026,167,1226,207"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1279,33,1156,159,1152,155,1276,29"/>
-<area shape="rect" id="Node000019" title=" " alt="" coords="1615,255,1699,280"/>
-<area shape="poly" id="edge40_Node000001_Node000019" title=" " alt="" coords="1289,31,1286,66,1286,113,1297,162,1307,185,1322,205,1343,218,1372,228,1447,240,1601,252,1601,257,1447,245,1371,233,1340,223,1319,209,1303,188,1292,164,1281,113,1280,65,1284,31"/>
-<area shape="rect" id="Node000021" title=" " alt="" coords="1723,255,1873,280"/>
-<area shape="poly" id="edge41_Node000001_Node000021" title=" " alt="" coords="1295,30,1327,123,1350,174,1362,192,1373,204,1709,252,1709,257,1370,209,1358,196,1345,176,1322,125,1290,32"/>
-<area shape="rect" id="Node000022" title=" " alt="" coords="1898,255,2015,280"/>
-<area shape="poly" id="edge42_Node000001_Node000022" title=" " alt="" coords="1302,29,1349,72,1382,96,1416,116,1509,151,1639,188,1892,249,1891,254,1638,193,1507,156,1414,121,1379,100,1346,76,1298,33"/>
-<area shape="rect" id="Node000024" href="$esp32__tmc51x0__test__config_8hpp.html" title="ESP32 GPIO pin configuration and compile&#45;time configuration for TMC51x0 driver (TMC5130 &amp; TMC5160)" alt="" coords="717,79,917,119"/>
-<area shape="poly" id="edge28_Node000001_Node000024" title=" " alt="" coords="1220,33,931,81,930,76,1220,28"/>
-<area shape="rect" id="Node000029" title=" " alt="" coords="1427,86,1510,111"/>
-<area shape="poly" id="edge43_Node000001_Node000029" title=" " alt="" coords="1316,28,1431,78,1429,83,1314,33"/>
-<area shape="rect" id="Node000004" href="$tmc51x0__comm__interface_8hpp.html" title="Communication interfaces for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160) using SPI and UART." alt="" coords="508,255,728,280"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1026,206,706,255,705,250,1025,201"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="880,328,951,353"/>
-<area shape="poly" id="edge23_Node000003_Node000007" title=" " alt="" coords="1101,209,944,322,941,318,1098,205"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="309,475,375,500"/>
-<area shape="poly" id="edge25_Node000003_Node000008" title=" " alt="" coords="1128,207,1122,254,1108,315,1095,348,1079,378,1059,406,1033,429,995,442,930,453,746,470,544,481,389,487,389,482,544,476,745,465,929,448,994,437,1030,424,1055,402,1075,375,1091,345,1103,314,1117,253,1122,206"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="993,328,1054,353"/>
-<area shape="poly" id="edge26_Node000003_Node000009" title=" " alt="" coords="1115,209,1041,318,1037,315,1111,206"/>
-<area shape="rect" id="Node000011" title=" " alt="" coords="949,401,1020,427"/>
-<area shape="poly" id="edge24_Node000003_Node000011" title=" " alt="" coords="1125,208,1108,276,1091,317,1068,355,1046,378,1021,396,1017,392,1042,374,1064,352,1086,315,1103,274,1120,206"/>
-<area shape="rect" id="Node000015" title=" " alt="" coords="379,255,483,280"/>
-<area shape="poly" id="edge15_Node000003_Node000015" title=" " alt="" coords="1026,199,789,222,497,257,497,252,788,217,1026,194"/>
-<area shape="rect" id="Node000016" title=" " alt="" coords="1189,255,1292,280"/>
-<area shape="poly" id="edge16_Node000003_Node000016" title=" " alt="" coords="1155,205,1214,245,1211,249,1152,209"/>
-<area shape="rect" id="Node000017" title=" " alt="" coords="1317,255,1463,280"/>
-<area shape="poly" id="edge17_Node000003_Node000017" title=" " alt="" coords="1190,204,1339,248,1337,253,1188,209"/>
-<area shape="rect" id="Node000018" title=" " alt="" coords="1488,255,1591,280"/>
-<area shape="poly" id="edge18_Node000003_Node000018" title=" " alt="" coords="1225,204,1475,251,1474,256,1225,209"/>
-<area shape="poly" id="edge19_Node000003_Node000019" title=" " alt="" coords="1227,198,1601,252,1601,257,1226,204"/>
-<area shape="rect" id="Node000020" title=" " alt="" coords="752,255,871,280"/>
-<area shape="poly" id="edge20_Node000003_Node000020" title=" " alt="" coords="1051,209,871,254,870,249,1050,204"/>
-<area shape="poly" id="edge21_Node000003_Node000021" title=" " alt="" coords="1226,196,1709,252,1709,257,1226,202"/>
-<area shape="poly" id="edge22_Node000003_Node000022" title=" " alt="" coords="1226,193,1565,221,1885,252,1884,257,1565,227,1226,199"/>
-<area shape="rect" id="Node000023" title=" " alt="" coords="895,255,962,280"/>
-<area shape="poly" id="edge27_Node000003_Node000023" title=" " alt="" coords="1080,209,972,252,970,247,1078,204"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="575,328,661,353"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="621,280,621,314,615,314,615,280"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="435,328,491,353"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="594,282,502,325,500,320,592,278"/>
-<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="666,277,867,325,866,330,665,283"/>
-<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="605,282,369,468,365,464,602,278"/>
-<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="686,277,962,325,979,328,978,334,962,331,685,283"/>
-<area shape="rect" id="Node000010" href="$tmc51x0__result_8hpp.html" title="Result type for error handling in TMC51x0 driver." alt="" coords="696,328,847,353"/>
-<area shape="poly" id="edge9_Node000004_Node000010" title=" " alt="" coords="644,278,735,320,733,325,642,282"/>
-<area shape="poly" id="edge11_Node000010_Node000008" title=" " alt="" coords="792,351,812,367,831,386,841,407,841,418,835,429,811,441,768,451,644,468,504,480,389,486,389,481,503,474,643,463,767,446,809,436,831,425,836,416,836,408,827,389,809,371,788,356"/>
-<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="806,351,938,394,936,399,805,356"/>
-<area shape="rect" id="Node000012" title=" " alt="" coords="567,401,621,427"/>
-<area shape="poly" id="edge12_Node000010_Node000012" title=" " alt="" coords="744,356,635,399,633,394,742,351"/>
-<area shape="rect" id="Node000013" title=" " alt="" coords="645,401,737,427"/>
-<area shape="poly" id="edge13_Node000010_Node000013" title=" " alt="" coords="760,355,716,394,713,390,757,351"/>
-<area shape="rect" id="Node000014" title=" " alt="" coords="761,401,821,427"/>
-<area shape="poly" id="edge14_Node000010_Node000014" title=" " alt="" coords="777,353,787,387,782,389,772,354"/>
-<area shape="poly" id="edge39_Node000024_Node000003" title=" " alt="" coords="885,116,1046,160,1045,166,884,121"/>
-<area shape="poly" id="edge30_Node000024_Node000004" title=" " alt="" coords="796,121,644,248,640,244,793,117"/>
-<area shape="poly" id="edge29_Node000024_Node000015" title=" " alt="" coords="774,121,472,252,469,247,772,116"/>
-<area shape="rect" id="Node000025" href="$tmc51x0__config__builder_8hpp.html" title="Fluent configuration builder for TMC51x0 driver." alt="" coords="251,167,433,207"/>
-<area shape="poly" id="edge31_Node000024_Node000025" title=" " alt="" coords="717,121,447,169,446,164,716,115"/>
-<area shape="poly" id="edge32_Node000025_Node000008" title=" " alt="" coords="345,207,345,461,339,461,339,207"/>
-<area shape="rect" id="Node000026" href="$tmc51x0__types_8hpp.html" title="Type definitions and enumerations for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="142,255,305,280"/>
-<area shape="poly" id="edge33_Node000025_Node000026" title=" " alt="" coords="315,209,254,249,251,245,312,205"/>
-<area shape="poly" id="edge34_Node000026_Node000008" title=" " alt="" coords="235,279,268,327,307,399,334,461,330,463,302,401,264,329,230,282"/>
-<area shape="rect" id="Node000027" href="$tmc51x0__registers_8hpp.html" title="Register definitions and bitfield structures for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="22,328,254,353"/>
-<area shape="poly" id="edge35_Node000026_Node000027" title=" " alt="" coords="211,282,164,321,161,317,208,278"/>
-<area shape="poly" id="edge38_Node000027_Node000008" title=" " alt="" coords="156,351,316,464,313,469,153,356"/>
-<area shape="rect" id="Node000028" href="$tmc51x0__register__defs_8hpp.html" title="X&#45;MACRO definitions for TMC51x0 registers (TMC5130 &amp; TMC5160)" alt="" coords="5,401,204,427"/>
-<area shape="poly" id="edge36_Node000027_Node000028" title=" " alt="" coords="135,355,118,390,113,388,130,353"/>
-<area shape="poly" id="edge37_Node000028_Node000008" title=" " alt="" coords="144,424,296,470,295,475,142,429"/>
+<area shape="rect" id="Node000001" title="ABN Encoder Position Reader &#45; Continuously reads encoder position." alt="" coords="1297,5,1477,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="625,86,791,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1297,29,1073,49,804,81,776,86,775,81,804,76,1072,43,1296,23"/>
+<area shape="rect" id="Node000003" href="$esp32__tmc51x0__bus_8hpp.html" title="ESP32&#45;specific communication interfaces for TMC51x0 using SPI and UART (TMC5130 &amp; TMC51x0)" alt="" coords="1124,167,1324,207"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1377,33,1254,159,1250,155,1374,29"/>
+<area shape="rect" id="Node000019" title=" " alt="" coords="1845,255,1929,280"/>
+<area shape="poly" id="edge41_Node000001_Node000019" title=" " alt="" coords="1387,31,1383,65,1383,113,1394,163,1405,185,1421,205,1451,223,1495,236,1549,243,1608,246,1729,248,1831,252,1831,258,1729,253,1607,252,1548,248,1494,241,1449,228,1417,209,1400,188,1389,165,1378,113,1378,65,1382,30"/>
+<area shape="rect" id="Node000021" title=" " alt="" coords="1953,255,2103,280"/>
+<area shape="poly" id="edge42_Node000001_Node000021" title=" " alt="" coords="1393,30,1425,123,1448,174,1460,193,1471,205,1509,223,1561,235,1622,243,1689,246,1825,249,1939,252,1939,257,1825,254,1689,252,1621,248,1560,241,1507,228,1468,209,1456,196,1443,176,1420,125,1388,32"/>
+<area shape="rect" id="Node000023" title=" " alt="" coords="2128,255,2245,280"/>
+<area shape="poly" id="edge43_Node000001_Node000023" title=" " alt="" coords="1400,29,1447,72,1479,96,1515,116,1565,135,1632,155,1798,193,1972,227,2115,252,2114,257,1971,232,1797,199,1631,160,1563,140,1512,121,1476,101,1444,76,1396,33"/>
+<area shape="rect" id="Node000025" href="$esp32__tmc51x0__test__config_8hpp.html" title="ESP32 GPIO pin configuration and compile&#45;time configuration for TMC51x0 driver (TMC5130 &amp; TMC5160)" alt="" coords="816,79,1016,119"/>
+<area shape="poly" id="edge29_Node000001_Node000025" title=" " alt="" coords="1319,33,1030,81,1029,76,1318,28"/>
+<area shape="rect" id="Node000030" title=" " alt="" coords="1525,86,1608,111"/>
+<area shape="poly" id="edge44_Node000001_Node000030" title=" " alt="" coords="1414,28,1529,78,1527,83,1412,33"/>
+<area shape="rect" id="Node000004" href="$tmc51x0__comm__interface_8hpp.html" title="Communication interfaces for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160) using SPI and UART." alt="" coords="447,255,667,280"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1124,202,668,256,668,250,1124,197"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="741,328,811,353"/>
+<area shape="poly" id="edge24_Node000003_Node000007" title=" " alt="" coords="1124,199,1009,218,948,235,889,257,839,287,799,321,795,317,836,283,887,252,946,230,1008,213,1123,193"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="255,475,321,500"/>
+<area shape="poly" id="edge26_Node000003_Node000008" title=" " alt="" coords="1125,205,1066,225,1038,239,1012,257,993,278,981,299,969,344,957,388,943,410,920,429,886,441,827,451,661,468,335,487,335,481,660,463,826,446,885,436,917,424,939,406,952,386,964,343,976,297,988,274,1009,253,1035,234,1064,220,1123,200"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="836,328,897,353"/>
+<area shape="poly" id="edge27_Node000003_Node000009" title=" " alt="" coords="1124,192,1073,198,1019,210,966,229,918,257,904,270,893,285,877,317,872,314,888,282,900,266,915,253,964,224,1018,205,1072,193,1124,187"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="837,401,907,427"/>
+<area shape="poly" id="edge25_Node000003_Node000011" title=" " alt="" coords="1124,198,1085,206,1044,218,1004,235,968,257,947,278,935,300,926,325,912,355,889,391,885,388,907,352,921,323,930,298,942,275,965,253,1002,230,1042,213,1083,201,1123,193"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="692,255,796,280"/>
+<area shape="poly" id="edge15_Node000003_Node000015" title=" " alt="" coords="1124,207,810,258,810,253,1124,202"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="1023,255,1126,280"/>
+<area shape="poly" id="edge16_Node000003_Node000016" title=" " alt="" coords="1190,209,1110,250,1108,246,1187,204"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="1151,255,1297,280"/>
+<area shape="poly" id="edge17_Node000003_Node000017" title=" " alt="" coords="1227,207,1227,241,1221,241,1221,207"/>
+<area shape="rect" id="Node000018" title=" " alt="" coords="1322,255,1425,280"/>
+<area shape="poly" id="edge18_Node000003_Node000018" title=" " alt="" coords="1261,204,1340,246,1338,250,1259,209"/>
+<area shape="poly" id="edge19_Node000003_Node000019" title=" " alt="" coords="1325,199,1368,204,1598,225,1700,235,1831,252,1830,257,1700,240,1598,230,1368,209,1324,204"/>
+<area shape="rect" id="Node000020" title=" " alt="" coords="1449,255,1567,280"/>
+<area shape="poly" id="edge20_Node000003_Node000020" title=" " alt="" coords="1293,204,1454,248,1453,254,1291,209"/>
+<area shape="poly" id="edge21_Node000003_Node000021" title=" " alt="" coords="1324,195,1419,204,1678,226,1939,252,1939,257,1677,232,1419,209,1324,200"/>
+<area shape="rect" id="Node000022" title=" " alt="" coords="1591,255,1729,280"/>
+<area shape="poly" id="edge22_Node000003_Node000022" title=" " alt="" coords="1325,203,1583,250,1582,255,1324,209"/>
+<area shape="poly" id="edge23_Node000003_Node000023" title=" " alt="" coords="1325,193,1470,204,1791,223,1933,233,2115,252,2114,257,1932,239,1790,229,1469,209,1324,198"/>
+<area shape="rect" id="Node000024" title=" " alt="" coords="1753,255,1820,280"/>
+<area shape="poly" id="edge28_Node000003_Node000024" title=" " alt="" coords="1325,198,1368,204,1553,224,1635,234,1740,252,1740,257,1635,240,1552,230,1368,209,1324,204"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="456,328,541,353"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="550,282,519,319,515,316,546,279"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="376,328,432,353"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="534,282,443,325,440,320,532,278"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="593,277,728,321,727,326,592,283"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="469,283,415,300,389,313,366,330,349,353,330,388,299,463,295,461,326,386,344,350,362,326,386,309,413,295,468,278"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="611,277,823,325,824,326,823,331,822,331,610,283"/>
+<area shape="rect" id="Node000010" href="$tmc51x0__result_8hpp.html" title="Result type for error handling in TMC51x0 driver." alt="" coords="566,328,717,353"/>
+<area shape="poly" id="edge9_Node000004_Node000010" title=" " alt="" coords="573,278,619,317,615,321,569,282"/>
+<area shape="poly" id="edge11_Node000010_Node000008" title=" " alt="" coords="614,356,330,472,328,467,612,351"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="679,351,825,395,823,400,678,356"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="517,401,571,427"/>
+<area shape="poly" id="edge12_Node000010_Node000012" title=" " alt="" coords="627,356,573,395,570,391,624,351"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="595,401,687,427"/>
+<area shape="poly" id="edge13_Node000010_Node000013" title=" " alt="" coords="644,354,644,388,639,388,639,354"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="711,401,771,427"/>
+<area shape="poly" id="edge14_Node000010_Node000014" title=" " alt="" coords="659,351,716,391,712,395,656,356"/>
+<area shape="poly" id="edge40_Node000025_Node000003" title=" " alt="" coords="984,116,1144,160,1143,166,983,121"/>
+<area shape="poly" id="edge31_Node000025_Node000004" title=" " alt="" coords="877,121,596,251,594,246,875,116"/>
+<area shape="poly" id="edge30_Node000025_Node000015" title=" " alt="" coords="898,121,768,247,764,243,895,117"/>
+<area shape="rect" id="Node000026" href="$tmc51x0__config__builder_8hpp.html" title="Fluent configuration builder for TMC51x0 driver." alt="" coords="119,167,302,207"/>
+<area shape="poly" id="edge32_Node000025_Node000026" title=" " alt="" coords="816,119,803,121,540,154,316,178,315,173,539,149,802,116,816,114"/>
+<area shape="poly" id="edge33_Node000026_Node000008" title=" " alt="" coords="151,209,100,231,52,263,32,282,18,303,10,327,9,353,13,393,18,409,31,425,46,434,67,443,123,459,242,478,241,484,122,464,65,448,43,439,28,429,14,411,8,394,4,353,4,326,13,301,28,278,48,259,98,227,149,204"/>
+<area shape="rect" id="Node000027" href="$tmc51x0__types_8hpp.html" title="Type definitions and enumerations for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="129,255,292,280"/>
+<area shape="poly" id="edge34_Node000026_Node000027" title=" " alt="" coords="213,207,213,241,208,241,208,207"/>
+<area shape="poly" id="edge35_Node000027_Node000008" title=" " alt="" coords="227,278,247,299,265,327,278,362,286,398,291,461,286,461,280,399,273,363,260,329,243,303,223,282"/>
+<area shape="rect" id="Node000028" href="$tmc51x0__registers_8hpp.html" title="Register definitions and bitfield structures for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="19,328,251,353"/>
+<area shape="poly" id="edge36_Node000027_Node000028" title=" " alt="" coords="200,282,159,320,155,317,197,278"/>
+<area shape="poly" id="edge39_Node000028_Node000008" title=" " alt="" coords="105,356,77,369,52,386,38,406,37,415,42,425,55,435,74,445,126,461,242,479,241,484,125,466,72,450,52,440,38,428,32,416,33,404,48,383,74,365,103,351"/>
+<area shape="rect" id="Node000029" href="$tmc51x0__register__defs_8hpp.html" title="X&#45;MACRO definitions for TMC51x0 registers (TMC5130 &amp; TMC5160)" alt="" coords="53,401,251,427"/>
+<area shape="poly" id="edge37_Node000028_Node000029" title=" " alt="" coords="140,353,149,388,143,389,135,354"/>
+<area shape="poly" id="edge38_Node000029_Node000008" title=" " alt="" coords="175,424,255,466,253,471,173,429"/>
 </map>

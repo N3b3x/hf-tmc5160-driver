@@ -1,0 +1,44 @@
+<map id="EspNowReceiver::send_status_update" name="EspNowReceiver::send_status_update">
+<area shape="rect" id="Node000001" title="Send STATUS_UPDATE with cycle count and state." alt="" coords="885,219,1056,259"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#aad11fcee042534d6e42aa0b3f79f5b0f" title="FreeRTOS task: perform bounds finding, then start motion." alt="" coords="665,74,819,100"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="941,211,895,165,836,121,792,102,794,97,839,117,898,161,945,207"/>
+<area shape="rect" id="Node000004" href="$main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" title="FreeRTOS task: process inbound ESP&#45;NOW protocol events." alt="" coords="219,174,397,200"/>
+<area shape="poly" id="edge14_Node000001_Node000004" title=" " alt="" coords="871,227,837,223,599,204,398,193,398,188,599,198,838,218,872,222"/>
+<area shape="rect" id="Node000008" href="$main_8cpp.html#a05b979a9e80a20ecf074106e268da672" title="Request a START/RESUME with optional bounds caching." alt="" coords="469,125,575,150"/>
+<area shape="poly" id="edge21_Node000001_Node000008" title=" " alt="" coords="926,214,884,191,837,172,767,156,697,146,575,139,576,134,697,141,768,151,838,167,886,186,929,209"/>
+<area shape="rect" id="Node000010" href="$main_8cpp.html#a9129736e9ca5c05905c4c74e75cb969c" title="Timer callback to de&#45;energize motor after bounds validity expires." alt="" coords="647,328,837,353"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="924,268,838,311,786,330,785,325,836,306,922,263"/>
+<area shape="rect" id="Node000012" href="$espnow__protocol__test__unit_8cpp.html#ac614fd7d8e7742a5eae2eb719c3cf4eb" title="FreeRTOS task: handle incoming ESP&#45;NOW protocol events (test&#45;unit simulator)." alt="" coords="658,426,826,452"/>
+<area shape="poly" id="edge15_Node000001_Node000012" title=" " alt="" coords="956,273,937,307,910,346,878,384,839,417,816,429,814,424,836,413,874,381,906,343,932,304,951,270"/>
+<area shape="rect" id="Node000014" href="$main_8cpp.html#a39ccc4c53283879fb74a5a5538daa92b" title="Handle STOP command." alt="" coords="259,25,357,50"/>
+<area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="954,208,935,172,909,132,876,93,836,64,774,38,708,20,641,11,574,8,510,10,451,15,357,30,357,24,450,10,510,5,574,3,641,6,710,15,776,33,839,59,880,90,914,128,940,169,958,205"/>
+<area shape="rect" id="Node000015" href="$main_8cpp.html#a30da369114ee453fe81be5a919262abf" title="FreeRTOS task: drive the motion update loop and detect completion." alt="" coords="231,226,385,252"/>
+<area shape="poly" id="edge19_Node000001_Node000015" title=" " alt="" coords="871,242,385,242,385,236,871,236"/>
+<area shape="rect" id="Node000016" href="$main_8cpp.html#a087fdcdd7d4c34c0c22196a7223d96f5" title="FreeRTOS task: periodically send STATUS_UPDATE to the remote controller." alt="" coords="447,277,597,302"/>
+<area shape="poly" id="edge22_Node000001_Node000016" title=" " alt="" coords="872,256,838,260,597,285,597,280,837,255,871,250"/>
+<area shape="rect" id="Node000017" href="$espnow__protocol__test__unit_8cpp.html#a7911069ff3b4a42e289e32769900f4da" title="FreeRTOS task: periodically send simulated STATUS_UPDATE messages." alt="" coords="673,377,811,402"/>
+<area shape="poly" id="edge24_Node000001_Node000017" title=" " alt="" coords="947,272,901,321,871,346,839,368,812,379,810,374,836,363,868,342,897,317,943,268"/>
+<area shape="rect" id="Node000003" href="$main_8cpp.html#a03b28507170724db0aecf3bdf950b30a" title="Run bounds finding independently (without starting test)." alt="" coords="445,76,599,101"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="651,90,599,90,599,85,651,85"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="673,105,576,128,575,123,672,100"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="458,109,447,114,432,126,424,139,414,151,399,164,370,177,368,172,396,159,410,148,419,135,429,123,444,110,455,104"/>
+<area shape="rect" id="Node000006" href="$main_8cpp.html#a26ba4ef0d74eb1cdd930e9ed4f0b2c3d" title="Handle PAIR command." alt="" coords="250,76,366,101"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="431,91,367,91,367,86,431,86"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="45,252,131,277"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="253,206,220,217,122,254,120,249,218,212,251,201"/>
+<area shape="rect" id="Node000007" href="$classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68" title="Parse and execute a single command line." alt="" coords="5,68,171,108"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="236,91,171,91,171,86,236,86"/>
+<area shape="poly" id="edge8_Node000008_Node000004" title=" " alt="" coords="456,155,365,177,363,172,455,150"/>
+<area shape="rect" id="Node000009" href="$main_8cpp.html#af9a61f18ec0bf52c35280fd8748a0679" title="Handle START command." alt="" coords="259,125,357,150"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="455,140,357,140,357,135,455,135"/>
+<area shape="poly" id="edge10_Node000009_Node000007" title=" " alt="" coords="245,126,170,109,171,104,246,121"/>
+<area shape="rect" id="Node000011" href="$namespaceBoundsCache.html#a471efef965016231bc4b531bc1c89161" title="Initialize the bounds cache system (create timer)." alt="" coords="453,328,591,353"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="633,343,591,343,591,338,633,338"/>
+<area shape="poly" id="edge13_Node000011_Node000005" title=" " alt="" coords="438,328,131,274,132,269,439,323"/>
+<area shape="rect" id="Node000013" href="$espnow__protocol__test__unit_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="479,401,565,426"/>
+<area shape="poly" id="edge16_Node000012_Node000013" title=" " alt="" coords="644,430,565,421,566,416,645,425"/>
+<area shape="poly" id="edge18_Node000014_Node000007" title=" " alt="" coords="246,54,171,72,170,67,245,49"/>
+<area shape="poly" id="edge20_Node000015_Node000005" title=" " alt="" coords="217,252,132,262,131,257,217,247"/>
+<area shape="poly" id="edge23_Node000016_Node000005" title=" " alt="" coords="433,287,132,269,132,264,433,282"/>
+<area shape="poly" id="edge25_Node000017_Node000013" title=" " alt="" coords="659,401,566,412,565,406,659,396"/>
+</map>

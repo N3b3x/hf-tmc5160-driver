@@ -102,10 +102,11 @@ $(function(){initNavTree('espnow__receiver_8cpp.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 
-<p>ESP-NOW receiver implementation for test unit.  
+<p>ESP-NOW receiver implementation for test unit with secure pairing.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="espnow__receiver_8hpp_source.html">espnow_receiver.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="espnow__protocol_8hpp_source.html">espnow_protocol.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="espnow__peer__store_8hpp_source.html">espnow_peer_store.hpp</a>&quot;</code><br />
 <code>#include &lt;cstring&gt;</code><br />
 <code>#include &quot;esp_system.h&quot;</code><br />
 <code>#include &quot;nvs_flash.h&quot;</code><br />
@@ -114,7 +115,7 @@ $(function(){initNavTree('espnow__receiver_8cpp.html',''); initResizable(); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for espnow_receiver.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp__incl.svg" width="896" height="330"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp__incl.svg" width="1072" height="330"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -124,16 +125,30 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a38ae343ba91aa93458377b341e1d9e4a" id="r_a38ae343ba91aa93458377b341e1d9e4a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a38ae343ba91aa93458377b341e1d9e4a">isZeroMac</a> (const uint8_t mac[6])</td></tr>
+<tr class="separator:a38ae343ba91aa93458377b341e1d9e4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc321dce05a09b7e8487be200c7e4537" id="r_afc321dce05a09b7e8487be200c7e4537"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc321dce05a09b7e8487be200c7e4537">macEq</a> (const uint8_t a[6], const uint8_t b[6])</td></tr>
+<tr class="separator:afc321dce05a09b7e8487be200c7e4537"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dc64484e6494b6182745f1898ef3738" id="r_a0dc64484e6494b6182745f1898ef3738"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0dc64484e6494b6182745f1898ef3738">tryAddEspNowPeer</a> (const uint8_t mac[6])</td></tr>
+<tr class="separator:a0dc64484e6494b6182745f1898ef3738"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28441301837d03aa3ab77181c35c2001" id="r_a28441301837d03aa3ab77181c35c2001"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a28441301837d03aa3ab77181c35c2001">setActiveUiMac</a> (const uint8_t mac[6])</td></tr>
+<tr class="separator:a28441301837d03aa3ab77181c35c2001"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5e16fbe9d7733f8a1dd357e6cae40e0" id="r_ac5e16fbe9d7733f8a1dd357e6cae40e0"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5e16fbe9d7733f8a1dd357e6cae40e0">espnowRecvCb</a> (const esp_now_recv_info_t *info, const uint8_t *data, int len)</td></tr>
 <tr class="separator:ac5e16fbe9d7733f8a1dd357e6cae40e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42c9c9de39e4830eafe9a538f7363a21" id="r_a42c9c9de39e4830eafe9a538f7363a21"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a42c9c9de39e4830eafe9a538f7363a21">espnowSendCb</a> (const wifi_tx_info_t *info, esp_now_send_status_t status)</td></tr>
 <tr class="separator:a42c9c9de39e4830eafe9a538f7363a21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfefef0575d2f148427e2d4fc622f175" id="r_acfefef0575d2f148427e2d4fc622f175"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acfefef0575d2f148427e2d4fc622f175">recvTask</a> (void *)</td></tr>
 <tr class="separator:acfefef0575d2f148427e2d4fc622f175"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a8bd25cb8fe8e608970454951acc1aa" id="r_a9a8bd25cb8fe8e608970454951acc1aa"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a8bd25cb8fe8e608970454951acc1aa">handlePacket</a> (const <a class="el" href="structRawMsg.html">RawMsg</a> &amp;msg, const <a class="el" href="structEspNowPacket.html">EspNowPacket</a> &amp;pkt, uint16_t recv_crc)</td></tr>
+<tr class="separator:a9a8bd25cb8fe8e608970454951acc1aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a969682e51603f89e14b08804e1434f86" id="r_a969682e51603f89e14b08804e1434f86"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a969682e51603f89e14b08804e1434f86">handlePairingRequest</a> (const uint8_t *src_mac, const <a class="el" href="structEspNowPacket.html">EspNowPacket</a> &amp;pkt)</td></tr>
+<tr class="separator:a969682e51603f89e14b08804e1434f86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad03b1f7a342f6c86bb9ce0beec5636f2" id="r_ad03b1f7a342f6c86bb9ce0beec5636f2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad03b1f7a342f6c86bb9ce0beec5636f2">handlePairingConfirm</a> (const uint8_t *src_mac, const <a class="el" href="structEspNowPacket.html">EspNowPacket</a> &amp;pkt)</td></tr>
+<tr class="separator:ad03b1f7a342f6c86bb9ce0beec5636f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6eb0186376c3ffd1080f65ee4c597d9f" id="r_a6eb0186376c3ffd1080f65ee4c597d9f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6eb0186376c3ffd1080f65ee4c597d9f">sendPacketTo</a> (const uint8_t *dst_mac, <a class="el" href="espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2">MsgType</a> type, const void *payload, uint8_t payload_len)</td></tr>
+<tr class="separator:a6eb0186376c3ffd1080f65ee4c597d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af394d93fad387639cb5c155cfd037163" id="r_af394d93fad387639cb5c155cfd037163"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af394d93fad387639cb5c155cfd037163">sendPacketToUi</a> (<a class="el" href="espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2">MsgType</a> type, const void *payload, uint8_t payload_len)</td></tr>
 <tr class="separator:af394d93fad387639cb5c155cfd037163"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab80d2bd65f0315d85e8526ebed066ea6" id="r_ab80d2bd65f0315d85e8526ebed066ea6"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab80d2bd65f0315d85e8526ebed066ea6">handlePacket</a> (const <a class="el" href="structEspNowPacket.html">EspNowPacket</a> &amp;pkt, uint16_t recv_crc_from_data)</td></tr>
-<tr class="separator:ab80d2bd65f0315d85e8526ebed066ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -143,14 +158,39 @@ Variables</h2></td></tr>
 <tr class="separator:a8f237987e84f562b06b742cca949cd2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ba307c073e6b71a921ae42f0896663a" id="r_a4ba307c073e6b71a921ae42f0896663a"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ba307c073e6b71a921ae42f0896663a">s_next_msg_id</a> = 1</td></tr>
 <tr class="separator:a4ba307c073e6b71a921ae42f0896663a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f8e31d2980ae725ee736e29f782ddca" id="r_a8f8e31d2980ae725ee736e29f782ddca"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f8e31d2980ae725ee736e29f782ddca">s_ui_board_mac</a> [6] = {0}</td></tr>
-<tr class="separator:a8f8e31d2980ae725ee736e29f782ddca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbc0a9b5e471b4ffc59d05d358371d18" id="r_afbc0a9b5e471b4ffc59d05d358371d18"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSecuritySettings.html">SecuritySettings</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afbc0a9b5e471b4ffc59d05d358371d18">s_security</a> {}</td></tr>
+<tr class="memdesc:afbc0a9b5e471b4ffc59d05d358371d18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Security settings with approved peer list.  <br /></td></tr>
+<tr class="separator:afbc0a9b5e471b4ffc59d05d358371d18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13d7a7ee1b1ecf06f3b126697573537b" id="r_a13d7a7ee1b1ecf06f3b126697573537b"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13d7a7ee1b1ecf06f3b126697573537b">s_active_ui_board_mac</a> [6] = {0}</td></tr>
+<tr class="memdesc:a13d7a7ee1b1ecf06f3b126697573537b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Active UI board MAC for replies (most recent approved sender)  <br /></td></tr>
+<tr class="separator:a13d7a7ee1b1ecf06f3b126697573537b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0de14943d7305429b653480ccfeb620d" id="r_a0de14943d7305429b653480ccfeb620d"><td class="memItemLeft" align="right" valign="top">static QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0de14943d7305429b653480ccfeb620d">s_raw_recv_queue</a> = nullptr</td></tr>
+<tr class="memdesc:a0de14943d7305429b653480ccfeb620d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive queue from ISR to this module.  <br /></td></tr>
 <tr class="separator:a0de14943d7305429b653480ccfeb620d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6180c058af8d6119bae576f192a80745" id="r_a6180c058af8d6119bae576f192a80745"><td class="memItemLeft" align="right" valign="top">static volatile bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6180c058af8d6119bae576f192a80745">s_pairing_mode</a> = false</td></tr>
+<tr class="memdesc:a6180c058af8d6119bae576f192a80745"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pairing mode state.  <br /></td></tr>
+<tr class="separator:a6180c058af8d6119bae576f192a80745"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0556d6b18ea31719a98bbdb528e9c09" id="r_aa0556d6b18ea31719a98bbdb528e9c09"><td class="memItemLeft" align="right" valign="top">static volatile TickType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa0556d6b18ea31719a98bbdb528e9c09">s_pairing_timeout_tick</a> = 0</td></tr>
+<tr class="separator:aa0556d6b18ea31719a98bbdb528e9c09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad833dbe8888147d8391824db40b06473" id="r_ad833dbe8888147d8391824db40b06473"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad833dbe8888147d8391824db40b06473">s_awaiting_pairing_confirm</a> = false</td></tr>
+<tr class="memdesc:ad833dbe8888147d8391824db40b06473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pending pairing state (waiting for confirm after sending response)  <br /></td></tr>
+<tr class="separator:ad833dbe8888147d8391824db40b06473"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16c1982d075bedae9be09182eecd04cb" id="r_a16c1982d075bedae9be09182eecd04cb"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a16c1982d075bedae9be09182eecd04cb">s_pending_requester_mac</a> [6] = {0}</td></tr>
+<tr class="separator:a16c1982d075bedae9be09182eecd04cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab255555537564672792a6da54f35dd3d" id="r_ab255555537564672792a6da54f35dd3d"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab255555537564672792a6da54f35dd3d">s_my_challenge</a> [<a class="el" href="espnow__security_8hpp.html#a1944668b4c80b9c813809b685c27519a">CHALLENGE_SIZE</a>] = {0}</td></tr>
+<tr class="separator:ab255555537564672792a6da54f35dd3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44c347b0b1d570c83ef3393358306f0a" id="r_a44c347b0b1d570c83ef3393358306f0a"><td class="memItemLeft" align="right" valign="top">static TickType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44c347b0b1d570c83ef3393358306f0a">s_pairing_confirm_timeout</a> = 0</td></tr>
+<tr class="separator:a44c347b0b1d570c83ef3393358306f0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>ESP-NOW receiver implementation for test unit. </p>
-<p>Protocol compatible with esp32_remote_controller (6-byte header). </p>
+<div class="textblock"><p>ESP-NOW receiver implementation for test unit with secure pairing. </p>
+<p>Protocol compatible with esp32_remote_controller (6-byte header).</p>
+<p>Features:</p><ul>
+<li>Pre-configured MAC address support (backward compatibility)</li>
+<li>Secure pairing with HMAC mutual authentication</li>
+<li>NVS-based approved peer storage</li>
+<li>Message validation against approved peer list </li>
+</ul>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ac5e16fbe9d7733f8a1dd357e6cae40e0" name="ac5e16fbe9d7733f8a1dd357e6cae40e0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac5e16fbe9d7733f8a1dd357e6cae40e0">&#9670;&#160;</a></span>espnowRecvCb()</h2>
@@ -225,8 +265,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="ab80d2bd65f0315d85e8526ebed066ea6" name="ab80d2bd65f0315d85e8526ebed066ea6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab80d2bd65f0315d85e8526ebed066ea6">&#9670;&#160;</a></span>handlePacket()</h2>
+<a id="a9a8bd25cb8fe8e608970454951acc1aa" name="a9a8bd25cb8fe8e608970454951acc1aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a8bd25cb8fe8e608970454951acc1aa">&#9670;&#160;</a></span>handlePacket()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -237,12 +277,17 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">static void handlePacket </td>
           <td>(</td>
+          <td class="paramtype">const <a class="el" href="structRawMsg.html">RawMsg</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>msg</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const <a class="el" href="structEspNowPacket.html">EspNowPacket</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>pkt</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>recv_crc_from_data</em></span>&#160;)</td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>recv_crc</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -254,12 +299,154 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_ab80d2bd65f0315d85e8526ebed066ea6_cgraph.svg" width="256" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a9a8bd25cb8fe8e608970454951acc1aa_cgraph.svg" width="783" height="523"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_ab80d2bd65f0315d85e8526ebed066ea6_icgraph.svg" width="588" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a9a8bd25cb8fe8e608970454951acc1aa_icgraph.svg" width="588" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ad03b1f7a342f6c86bb9ce0beec5636f2" name="ad03b1f7a342f6c86bb9ce0beec5636f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad03b1f7a342f6c86bb9ce0beec5636f2">&#9670;&#160;</a></span>handlePairingConfirm()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void handlePairingConfirm </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *</td>          <td class="paramname"><span class="paramname"><em>src_mac</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structEspNowPacket.html">EspNowPacket</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>pkt</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_ad03b1f7a342f6c86bb9ce0beec5636f2_cgraph.svg" width="578" height="234"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_ad03b1f7a342f6c86bb9ce0beec5636f2_icgraph.svg" width="798" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a969682e51603f89e14b08804e1434f86" name="a969682e51603f89e14b08804e1434f86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a969682e51603f89e14b08804e1434f86">&#9670;&#160;</a></span>handlePairingRequest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void handlePairingRequest </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *</td>          <td class="paramname"><span class="paramname"><em>src_mac</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structEspNowPacket.html">EspNowPacket</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>pkt</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a969682e51603f89e14b08804e1434f86_cgraph.svg" width="523" height="250"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a969682e51603f89e14b08804e1434f86_icgraph.svg" width="799" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a38ae343ba91aa93458377b341e1d9e4a" name="a38ae343ba91aa93458377b341e1d9e4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38ae343ba91aa93458377b341e1d9e4a">&#9670;&#160;</a></span>isZeroMac()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool isZeroMac </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t</td>          <td class="paramname"><span class="paramname"><em>mac</em>[6]</span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a38ae343ba91aa93458377b341e1d9e4a_icgraph.svg" width="1620" height="1366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="afc321dce05a09b7e8487be200c7e4537" name="afc321dce05a09b7e8487be200c7e4537"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc321dce05a09b7e8487be200c7e4537">&#9670;&#160;</a></span>macEq()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool macEq </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t</td>          <td class="paramname"><span class="paramname"><em>a</em>[6], </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint8_t</td>          <td class="paramname"><span class="paramname"><em>b</em>[6]</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_afc321dce05a09b7e8487be200c7e4537_icgraph.svg" width="912" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -289,12 +476,61 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_acfefef0575d2f148427e2d4fc622f175_cgraph.svg" width="383" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_acfefef0575d2f148427e2d4fc622f175_cgraph.svg" width="910" height="523"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_acfefef0575d2f148427e2d4fc622f175_icgraph.svg" width="432" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a6eb0186376c3ffd1080f65ee4c597d9f" name="a6eb0186376c3ffd1080f65ee4c597d9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6eb0186376c3ffd1080f65ee4c597d9f">&#9670;&#160;</a></span>sendPacketTo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool sendPacketTo </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *</td>          <td class="paramname"><span class="paramname"><em>dst_mac</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2">MsgType</a></td>          <td class="paramname"><span class="paramname"><em>type</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *</td>          <td class="paramname"><span class="paramname"><em>payload</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>payload_len</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a6eb0186376c3ffd1080f65ee4c597d9f_cgraph.svg" width="259" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a6eb0186376c3ffd1080f65ee4c597d9f_icgraph.svg" width="1600" height="919"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -333,17 +569,157 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_af394d93fad387639cb5c155cfd037163_cgraph.svg" width="271" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_af394d93fad387639cb5c155cfd037163_cgraph.svg" width="430" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_af394d93fad387639cb5c155cfd037163_icgraph.svg" width="1723" height="723"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_af394d93fad387639cb5c155cfd037163_icgraph.svg" width="1232" height="902"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a28441301837d03aa3ab77181c35c2001" name="a28441301837d03aa3ab77181c35c2001"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28441301837d03aa3ab77181c35c2001">&#9670;&#160;</a></span>setActiveUiMac()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void setActiveUiMac </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t</td>          <td class="paramname"><span class="paramname"><em>mac</em>[6]</span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a28441301837d03aa3ab77181c35c2001_cgraph.svg" width="274" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a28441301837d03aa3ab77181c35c2001_icgraph.svg" width="970" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a0dc64484e6494b6182745f1898ef3738" name="a0dc64484e6494b6182745f1898ef3738"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0dc64484e6494b6182745f1898ef3738">&#9670;&#160;</a></span>tryAddEspNowPeer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void tryAddEspNowPeer </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t</td>          <td class="paramname"><span class="paramname"><em>mac</em>[6]</span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a0dc64484e6494b6182745f1898ef3738_cgraph.svg" width="296" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8cpp_a0dc64484e6494b6182745f1898ef3738_icgraph.svg" width="994" height="186"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a13d7a7ee1b1ecf06f3b126697573537b" name="a13d7a7ee1b1ecf06f3b126697573537b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13d7a7ee1b1ecf06f3b126697573537b">&#9670;&#160;</a></span>s_active_ui_board_mac</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t s_active_ui_board_mac[6] = {0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Active UI board MAC for replies (most recent approved sender) </p>
+
+</div>
+</div>
+<a id="ad833dbe8888147d8391824db40b06473" name="ad833dbe8888147d8391824db40b06473"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad833dbe8888147d8391824db40b06473">&#9670;&#160;</a></span>s_awaiting_pairing_confirm</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool s_awaiting_pairing_confirm = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pending pairing state (waiting for confirm after sending response) </p>
+
+</div>
+</div>
+<a id="ab255555537564672792a6da54f35dd3d" name="ab255555537564672792a6da54f35dd3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab255555537564672792a6da54f35dd3d">&#9670;&#160;</a></span>s_my_challenge</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t s_my_challenge[<a class="el" href="espnow__security_8hpp.html#a1944668b4c80b9c813809b685c27519a">CHALLENGE_SIZE</a>] = {0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a4ba307c073e6b71a921ae42f0896663a" name="a4ba307c073e6b71a921ae42f0896663a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4ba307c073e6b71a921ae42f0896663a">&#9670;&#160;</a></span>s_next_msg_id</h2>
 
@@ -355,6 +731,96 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">uint8_t s_next_msg_id = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a44c347b0b1d570c83ef3393358306f0a" name="a44c347b0b1d570c83ef3393358306f0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44c347b0b1d570c83ef3393358306f0a">&#9670;&#160;</a></span>s_pairing_confirm_timeout</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TickType_t s_pairing_confirm_timeout = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6180c058af8d6119bae576f192a80745" name="a6180c058af8d6119bae576f192a80745"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6180c058af8d6119bae576f192a80745">&#9670;&#160;</a></span>s_pairing_mode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile bool s_pairing_mode = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pairing mode state. </p>
+
+</div>
+</div>
+<a id="aa0556d6b18ea31719a98bbdb528e9c09" name="aa0556d6b18ea31719a98bbdb528e9c09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0556d6b18ea31719a98bbdb528e9c09">&#9670;&#160;</a></span>s_pairing_timeout_tick</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile TickType_t s_pairing_timeout_tick = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a16c1982d075bedae9be09182eecd04cb" name="a16c1982d075bedae9be09182eecd04cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16c1982d075bedae9be09182eecd04cb">&#9670;&#160;</a></span>s_pending_requester_mac</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t s_pending_requester_mac[6] = {0}</td>
         </tr>
       </table>
   </td>
@@ -408,10 +874,12 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Receive queue from ISR to this module. </p>
+
 </div>
 </div>
-<a id="a8f8e31d2980ae725ee736e29f782ddca" name="a8f8e31d2980ae725ee736e29f782ddca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f8e31d2980ae725ee736e29f782ddca">&#9670;&#160;</a></span>s_ui_board_mac</h2>
+<a id="afbc0a9b5e471b4ffc59d05d358371d18" name="afbc0a9b5e471b4ffc59d05d358371d18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbc0a9b5e471b4ffc59d05d358371d18">&#9670;&#160;</a></span>s_security</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -420,7 +888,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t s_ui_board_mac[6] = {0}</td>
+          <td class="memname"><a class="el" href="structSecuritySettings.html">SecuritySettings</a> s_security {}</td>
         </tr>
       </table>
   </td>
@@ -429,6 +897,8 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Security settings with approved peer list. </p>
 
 </div>
 </div>

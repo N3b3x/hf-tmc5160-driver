@@ -95,6 +95,7 @@ $(function(){initNavTree('stallguard__tuning_8cpp.html',''); initResizable(); })
 
 <div class="header">
   <div class="summary">
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">stallguard_tuning.cpp File Reference</div></div>
@@ -112,9 +113,14 @@ $(function(){initNavTree('stallguard__tuning_8cpp.html',''); initResizable(); })
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for stallguard_tuning.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="stallguard__tuning_8cpp__incl.svg" width="2062" height="506"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="stallguard__tuning_8cpp__incl.svg" width="2075" height="506"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a86d8411cd7a2af787df8f0ecf44509bc" id="r_a86d8411cd7a2af787df8f0ecf44509bc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a86d8411cd7a2af787df8f0ecf44509bc">TestConfig</a> = <a class="el" href="namespacetmc51x0__test__config.html#a8ae0147105e341889eae3e97b79cbc01">tmc51x0_test_config::GetTestConfigForTestRig</a>&lt;<a class="el" href="main_8cpp.html#a3f1e89f6e3a0be599511d4a8cc389305">SELECTED_TEST_RIG</a>&gt;</td></tr>
+<tr class="separator:a86d8411cd7a2af787df8f0ecf44509bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a630544a7f0a2cc40d8a7fefab7e2fe70" id="r_a630544a7f0a2cc40d8a7fefab7e2fe70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a630544a7f0a2cc40d8a7fefab7e2fe70">app_main</a> (void)</td></tr>
@@ -126,9 +132,9 @@ Variables</h2></td></tr>
 <tr class="separator:a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f1e89f6e3a0be599511d4a8cc389305" id="r_a3f1e89f6e3a0be599511d4a8cc389305"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f1e89f6e3a0be599511d4a8cc389305">SELECTED_TEST_RIG</a></td></tr>
 <tr class="separator:a3f1e89f6e3a0be599511d4a8cc389305"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a078d8fc2f12b544d737b7d4803cb2fb6" id="r_a078d8fc2f12b544d737b7d4803cb2fb6"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a078d8fc2f12b544d737b7d4803cb2fb6">TUNING_VELOCITY_RPM</a> = 60.0f</td></tr>
+<tr class="memitem:a078d8fc2f12b544d737b7d4803cb2fb6" id="r_a078d8fc2f12b544d737b7d4803cb2fb6"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a078d8fc2f12b544d737b7d4803cb2fb6">TUNING_VELOCITY_RPM</a> = TestConfig::StallGuard::SGT_TUNED_AT_VELOCITY_RPM</td></tr>
 <tr class="separator:a078d8fc2f12b544d737b7d4803cb2fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa03d0e782bfa562f59b9fa3ea5b9b522" id="r_aa03d0e782bfa562f59b9fa3ea5b9b522"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa03d0e782bfa562f59b9fa3ea5b9b522">TUNING_ACCELERATION_REV_S2</a> = 5.0f</td></tr>
+<tr class="memitem:aa03d0e782bfa562f59b9fa3ea5b9b522" id="r_aa03d0e782bfa562f59b9fa3ea5b9b522"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa03d0e782bfa562f59b9fa3ea5b9b522">TUNING_ACCELERATION_REV_S2</a> = <a class="el" href="bounds__finding__test_8cpp.html#a84e0cb02ae08a59f68472cf8423d9ea0">TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2</a></td></tr>
 <tr class="separator:aa03d0e782bfa562f59b9fa3ea5b9b522"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f27f6311af00a818d56bb99e8d315fb" id="r_a6f27f6311af00a818d56bb99e8d315fb"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">tmc51x0::Unit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f27f6311af00a818d56bb99e8d315fb">VELOCITY_UNIT</a> = <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686afe2284eb32d4b09d29fd34217324b19a">tmc51x0::Unit::RPM</a></td></tr>
 <tr class="separator:a6f27f6311af00a818d56bb99e8d315fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,7 +162,22 @@ Variables</h2></td></tr>
 </ol>
 <dl class="section author"><dt>Author</dt><dd>Nebiyu Tadesse </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2025 </dd></dl>
-</div><h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Typedef Documentation</h2>
+<a id="a86d8411cd7a2af787df8f0ecf44509bc" name="a86d8411cd7a2af787df8f0ecf44509bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86d8411cd7a2af787df8f0ecf44509bc">&#9670;&#160;</a></span>TestConfig</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="bounds__finding__test_8cpp.html#a86d8411cd7a2af787df8f0ecf44509bc">TestConfig</a> = <a class="el" href="namespacetmc51x0__test__config.html#a8ae0147105e341889eae3e97b79cbc01">tmc51x0_test_config::GetTestConfigForTestRig</a>&lt;<a class="el" href="main_8cpp.html#a3f1e89f6e3a0be599511d4a8cc389305">SELECTED_TEST_RIG</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="a630544a7f0a2cc40d8a7fefab7e2fe70" name="a630544a7f0a2cc40d8a7fefab7e2fe70"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a630544a7f0a2cc40d8a7fefab7e2fe70">&#9670;&#160;</a></span>app_main()</h2>
 
@@ -174,7 +195,7 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="stallguard__tuning_8cpp_a630544a7f0a2cc40d8a7fefab7e2fe70_cgraph.svg" width="1423" height="430"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="stallguard__tuning_8cpp_a630544a7f0a2cc40d8a7fefab7e2fe70_cgraph.svg" width="1436" height="503"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -259,7 +280,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr float TUNING_ACCELERATION_REV_S2 = 5.0f</td>
+          <td class="memname">constexpr float TUNING_ACCELERATION_REV_S2 = <a class="el" href="bounds__finding__test_8cpp.html#a84e0cb02ae08a59f68472cf8423d9ea0">TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2</a></td>
         </tr>
       </table>
   </td>
@@ -281,7 +302,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr float TUNING_VELOCITY_RPM = 60.0f</td>
+          <td class="memname">constexpr float TUNING_VELOCITY_RPM = TestConfig::StallGuard::SGT_TUNED_AT_VELOCITY_RPM</td>
         </tr>
       </table>
   </td>

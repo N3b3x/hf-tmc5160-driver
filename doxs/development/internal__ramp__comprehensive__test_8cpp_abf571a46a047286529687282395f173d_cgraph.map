@@ -1,5 +1,5 @@
 <map id="test_unit_conversions" name="test_unit_conversions">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,90,169,115"/>
+<area shape="rect" id="Node000001" title="Test unit conversion functions (RPM, degrees, millimeters, etc.)." alt="" coords="5,90,169,115"/>
 <area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="253,41,393,66"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,87,247,66,248,72,149,93"/>
 <area shape="rect" id="Node000005" href="$namespacetmc51x0.html#a67bdb4d4ee51eb6afb6483731177af81" title="Convert millimeters to steps." alt="" coords="241,90,404,115"/>

@@ -1,0 +1,23 @@
+<map id="IsZeroMac" name="IsZeroMac">
+<area shape="rect" id="Node000001" title="Check if a MAC address is all zeros." alt="" coords="1091,121,1181,146"/>
+<area shape="rect" id="Node000002" href="$namespacePeerStore.html#afa0d1ce235ad40beccab05f96260bbb5" title="Add a new approved peer to storage." alt="" coords="872,70,1019,95"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1076,120,1042,111,995,98,996,93,1043,105,1078,115"/>
+<area shape="rect" id="Node000009" href="$namespacePeerStore.html#ad5335ecd8ed029adc89e1a2c571a5dcb" title="Initialize peer storage and load approved peers from NVS." alt="" coords="475,171,589,197"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1083,152,1043,161,917,177,790,185,590,188,589,183,790,180,916,171,1042,156,1082,147"/>
+<area shape="rect" id="Node000010" href="$namespacePeerStore.html#a73b2cdf0c288d8403a1a70e0f571ffc2" title="Check if a MAC address is in the approved peer list." alt="" coords="848,121,1043,146"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="1077,136,1043,136,1043,131,1077,131"/>
+<area shape="rect" id="Node000003" href="$namespaceEspNowReceiver.html#abffb366c1c55cb592662442c2531af86" title="Manually add a peer as approved (bypasses pairing)." alt="" coords="637,5,800,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="881,69,798,48,799,43,882,64"/>
+<area shape="rect" id="Node000004" href="$espnow__receiver_8cpp.html#ad03b1f7a342f6c86bb9ce0beec5636f2" title=" " alt="" coords="638,70,799,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="858,85,799,85,799,80,858,80"/>
+<area shape="rect" id="Node000005" href="$espnow__receiver_8cpp.html#a9a8bd25cb8fe8e608970454951acc1aa" title=" " alt="" coords="478,121,586,146"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="659,102,580,123,579,118,657,96"/>
+<area shape="rect" id="Node000006" href="$espnow__receiver_8cpp.html#acfefef0575d2f148427e2d4fc622f175" title=" " alt="" coords="348,121,427,146"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="464,136,427,136,427,131,464,131"/>
+<area shape="rect" id="Node000007" href="$namespaceEspNowReceiver.html#a7b5448c32668c4ce8c8b2e825fe523ee" title="Initialize ESP&#45;NOW (WiFi STA + ESP&#45;NOW) and start the receive task." alt="" coords="140,146,300,171"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="335,144,301,149,300,144,334,139"/>
+<area shape="rect" id="Node000008" href="$espnow__protocol__test__unit_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,146,92,171"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="126,161,92,161,92,156,126,156"/>
+<area shape="poly" id="edge9_Node000009_Node000007" title=" " alt="" coords="461,181,300,168,300,162,461,176"/>
+<area shape="poly" id="edge11_Node000010_Node000005" title=" " alt="" coords="834,136,586,136,586,131,834,131"/>
+</map>

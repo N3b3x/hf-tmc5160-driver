@@ -100,17 +100,28 @@ $(function(){initNavTree('structTestDriverHandle.html',''); initResizable(); });
   <div class="headertitle"><div class="title">TestDriverHandle Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Test driver handle containing SPI interface and driver instance.  
+ <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:acadfceb1371e23f3caf20c59f1df1546" id="r_acadfceb1371e23f3caf20c59f1df1546"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acadfceb1371e23f3caf20c59f1df1546">spi</a></td></tr>
+<tr class="memdesc:acadfceb1371e23f3caf20c59f1df1546"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI communication interface.  <br /></td></tr>
 <tr class="separator:acadfceb1371e23f3caf20c59f1df1546"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd5b482c2534b60e0ce834e0d144155c" id="r_acd5b482c2534b60e0ce834e0d144155c"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd5b482c2534b60e0ce834e0d144155c">driver</a></td></tr>
+<tr class="memdesc:acd5b482c2534b60e0ce834e0d144155c"><td class="mdescLeft">&#160;</td><td class="mdescRight">TMC51x0 driver instance.  <br /></td></tr>
 <tr class="separator:acd5b482c2534b60e0ce834e0d144155c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a5adf432f16cdac4301eff876be7777" id="r_a7a5adf432f16cdac4301eff876be7777"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::unique_ptr&lt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7a5adf432f16cdac4301eff876be7777">drivers</a></td></tr>
+<tr class="memdesc:a7a5adf432f16cdac4301eff876be7777"><td class="mdescLeft">&#160;</td><td class="mdescRight">Driver instances for each chain position.  <br /></td></tr>
 <tr class="separator:a7a5adf432f16cdac4301eff876be7777"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Test driver handle containing SPI interface and driver instance. </p>
+<p>Test driver handle for daisy chain tests.</p>
+<p>This structure holds the lifetime-managed SPI communication interface and TMC51x0 driver instance for test functions. Uses unique_ptr for automatic resource management.</p>
+<p>Contains the shared SPI interface and a vector of driver instances, one for each position in the daisy chain. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="acd5b482c2534b60e0ce834e0d144155c" name="acd5b482c2534b60e0ce834e0d144155c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acd5b482c2534b60e0ce834e0d144155c">&#9670;&#160;</a></span>driver</h2>
 
@@ -122,6 +133,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>TMC51x0 driver instance. </p>
 
 </div>
 </div>
@@ -137,6 +150,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Driver instances for each chain position. </p>
+
 </div>
 </div>
 <a id="acadfceb1371e23f3caf20c59f1df1546" name="acadfceb1371e23f3caf20c59f1df1546"></a>
@@ -150,6 +165,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>SPI communication interface. </p>
+<p>Shared SPI communication interface. </p>
 
 </div>
 </div>

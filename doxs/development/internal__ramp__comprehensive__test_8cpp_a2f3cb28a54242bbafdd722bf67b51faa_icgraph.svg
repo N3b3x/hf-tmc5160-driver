@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Test microstep lookup table configuration.">
 <polygon fill="#999999" stroke="#666666" points="228,-30 101,-30 101,0 228,0 228,-30"/>
 <text text-anchor="start" x="109" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test_microstep_lookup</text>
 <text text-anchor="middle" x="164.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_table</text>

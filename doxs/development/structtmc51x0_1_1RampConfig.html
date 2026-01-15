@@ -187,14 +187,14 @@ D1 must not be 0 in positioning mode (defaults to 100 if not set).</dd></dl>
 
 <p>Default constructor. </p>
 <p>Initializes with recommended default values:</p><ul>
-<li>VSTART: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (can be zero if not used)</li>
-<li>VSTOP: {10, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (minimum recommended, ensures successful motion termination)</li>
-<li>VMAX: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (must be set before motion)</li>
-<li>V1: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (disabled, uses single acceleration/deceleration)</li>
-<li>AMAX: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (must be set before motion)</li>
-<li>A1: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (uses AMAX)</li>
-<li>DMAX: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (uses AMAX value)</li>
-<li>D1: {100, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>} (required for positioning mode)</li>
+<li>VSTART: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Steps (see notes above; float APIs treat this as full-steps, register units are microsteps)">Unit::Steps</a>} (can be zero if not used)</li>
+<li>VSTOP: {10, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Steps (see notes above; float APIs treat this as full-steps, register units are microsteps)">Unit::Steps</a>} (minimum recommended, ensures successful motion termination)</li>
+<li>VMAX: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Steps (see notes above; float APIs treat this as full-steps, register units are microsteps)">Unit::Steps</a>} (must be set before motion)</li>
+<li>V1: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Steps (see notes above; float APIs treat this as full-steps, register units are microsteps)">Unit::Steps</a>} (disabled, uses single acceleration/deceleration)</li>
+<li>AMAX: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Steps (see notes above; float APIs treat this as full-steps, register units are microsteps)">Unit::Steps</a>} (must be set before motion)</li>
+<li>A1: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Steps (see notes above; float APIs treat this as full-steps, register units are microsteps)">Unit::Steps</a>} (uses AMAX)</li>
+<li>DMAX: {0, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Steps (see notes above; float APIs treat this as full-steps, register units are microsteps)">Unit::Steps</a>} (uses AMAX value)</li>
+<li>D1: {100, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Steps (see notes above; float APIs treat this as full-steps, register units are microsteps)">Unit::Steps</a>} (required for positioning mode)</li>
 <li>TPOWERDOWN: 437ms (~0.44s at 12MHz, equivalent to register value 20)</li>
 <li>TZEROWAIT: 0ms (no delay) </li>
 </ul>

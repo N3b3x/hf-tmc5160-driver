@@ -1,13 +1,13 @@
 var hierarchy =
 [
     [ "tmc51x0::AccelerationValue", "structtmc51x0_1_1AccelerationValue.html", null ],
+    [ "ApprovedPeer", "structApprovedPeer.html", null ],
     [ "BackAndForthMotion", "classBackAndForthMotion.html", null ],
     [ "tmc51x0_test_config::BoardConfig_TMC51x0_BOB", "structtmc51x0__test__config_1_1BoardConfig__TMC51x0__BOB.html", null ],
     [ "tmc51x0_test_config::BoardConfig_TMC51x0_EVAL", "structtmc51x0__test__config_1_1BoardConfig__TMC51x0__EVAL.html", null ],
-    [ "FatigueTest::BoundsFinderConfig", "structFatigueTest_1_1BoundsFinderConfig.html", null ],
     [ "tmc51x0::TMC51x0< CommType >::Homing::BoundsOptions", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html", null ],
-    [ "FatigueTest::BoundsResult", "structFatigueTest_1_1BoundsResult.html", null ],
     [ "tmc51x0::TMC51x0< CommType >::Homing::BoundsResult", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html", null ],
+    [ "BoundsResultPayload", "structBoundsResultPayload.html", null ],
     [ "tmc51x0::CHOPCONF_Register", "uniontmc51x0_1_1CHOPCONF__Register.html", null ],
     [ "tmc51x0::ChopperConfig", "structtmc51x0_1_1ChopperConfig.html", null ],
     [ "CommandPayload", "structCommandPayload.html", null ],
@@ -55,10 +55,6 @@ var hierarchy =
     [ "tmc51x0::TMC51x0< CommType >::Homing::HomeConfig", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html", null ],
     [ "tmc51x0::TMC51x0< CommType >::Homing", "structtmc51x0_1_1TMC51x0_1_1Homing.html", null ],
     [ "tmc51x0::HomingSettingsCache", "structtmc51x0_1_1HomingSettingsCache.html", null ],
-    [ "FatigueTest::IBoundsFinder", "classFatigueTest_1_1IBoundsFinder.html", [
-      [ "FatigueTest::EncoderBoundsFinderImpl< test_rig >", "classFatigueTest_1_1EncoderBoundsFinderImpl.html", null ],
-      [ "FatigueTest::StallGuardBoundsFinderImpl< test_rig >", "classFatigueTest_1_1StallGuardBoundsFinderImpl.html", null ]
-    ] ],
     [ "tmc51x0::IHOLD_IRUN_Register", "uniontmc51x0_1_1IHOLD__IRUN__Register.html", null ],
     [ "tmc51x0::InputStatus", "structtmc51x0_1_1InputStatus.html", null ],
     [ "integral_constant", null, [
@@ -88,6 +84,10 @@ var hierarchy =
     [ "OptionParser", "classOptionParser.html", null ],
     [ "tmc51x0::OTP_PROG_Register", "uniontmc51x0_1_1OTP__PROG__Register.html", null ],
     [ "tmc51x0::OTP_READ_Register", "uniontmc51x0_1_1OTP__READ__Register.html", null ],
+    [ "PairingConfirmPayload", "structPairingConfirmPayload.html", null ],
+    [ "PairingRejectPayload", "structPairingRejectPayload.html", null ],
+    [ "PairingRequestPayload", "structPairingRequestPayload.html", null ],
+    [ "PairingResponsePayload", "structPairingResponsePayload.html", null ],
     [ "ParsedCommand", "structParsedCommand.html", null ],
     [ "tmc51x0::PinActiveLevels", "structtmc51x0_1_1PinActiveLevels.html", null ],
     [ "tmc51x0_test_config::PlatformConfig_CoreDriverTestRig", "structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig.html", null ],
@@ -108,6 +108,7 @@ var hierarchy =
     [ "tmc51x0_test_config::PlatformConfig_FatigueTestRig::ReferenceSwitches", "structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1ReferenceSwitches.html", null ],
     [ "tmc51x0::Result< T >", "classtmc51x0_1_1Result.html", null ],
     [ "tmc51x0::Result< void >", "classtmc51x0_1_1Result_3_01void_01_4.html", null ],
+    [ "SecuritySettings", "structSecuritySettings.html", null ],
     [ "Settings", "structSettings.html", null ],
     [ "tmc51x0::SHORT_CONF_Register", "uniontmc51x0_1_1SHORT__CONF__Register.html", null ],
     [ "tmc51x0::SpiCommand", "structtmc51x0_1_1SpiCommand.html", null ],
