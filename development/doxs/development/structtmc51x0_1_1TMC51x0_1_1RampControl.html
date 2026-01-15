@@ -145,6 +145,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4a74ea77a4246592cb664b563e31d7f0" id="r_a4a74ea77a4246592cb664b563e31d7f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a74ea77a4246592cb664b563e31d7f0">GetTargetPosition</a> (<a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit) noexcept</td></tr>
 <tr class="memdesc:a4a74ea77a4246592cb664b563e31d7f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get target position.  <br /></td></tr>
 <tr class="separator:a4a74ea77a4246592cb664b563e31d7f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd12dc09d45403663b9423dc89731a80" id="r_afd12dc09d45403663b9423dc89731a80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; int32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd12dc09d45403663b9423dc89731a80">GetCurrentPositionMicrosteps</a> () noexcept</td></tr>
+<tr class="memdesc:afd12dc09d45403663b9423dc89731a80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current position in raw driver microsteps (XACTUAL)  <br /></td></tr>
+<tr class="separator:afd12dc09d45403663b9423dc89731a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9eb767d55e5d583564554686ad45ccb9" id="r_a9eb767d55e5d583564554686ad45ccb9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; int32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9eb767d55e5d583564554686ad45ccb9">GetTargetPositionMicrosteps</a> () noexcept</td></tr>
+<tr class="memdesc:a9eb767d55e5d583564554686ad45ccb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get target position in raw driver microsteps (XTARGET)  <br /></td></tr>
+<tr class="separator:a9eb767d55e5d583564554686ad45ccb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a332e5d366ec06be3ac19ce2bac62abe7" id="r_a332e5d366ec06be3ac19ce2bac62abe7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a332e5d366ec06be3ac19ce2bac62abe7">SetCurrentPosition</a> (float value, <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686">Unit</a> unit, bool update_encoder=false) noexcept</td></tr>
 <tr class="memdesc:a332e5d366ec06be3ac19ce2bac62abe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set current position.  <br /></td></tr>
 <tr class="separator:a332e5d366ec06be3ac19ce2bac62abe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -323,7 +329,38 @@ template&lt;typename CommType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result&lt;float&gt; containing the current position or error</dd></dl>
 <p>Returns the current position relative to the zero/home position set via <a class="el" href="#a332e5d366ec06be3ac19ce2bac62abe7" title="Set current position.">SetCurrentPosition()</a>. If home is unknown, call SetCurrentPosition(0.0f) at the current physical position first.</p>
-<dl class="section note"><dt>Note</dt><dd>Internally, XACTUAL is in <b>microsteps</b> (depends on CHOPCONF.MRES). When requesting <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a>, the returned value is in <b>motor full steps</b> (microsteps are converted back using the current MRES). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Internally, XACTUAL is in <b>microsteps</b> (depends on CHOPCONF.MRES). When requesting <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Steps (see notes above; float APIs treat this as full-steps, register units are microsteps)">Unit::Steps</a>, the returned value is in <b>motor full steps</b> (microsteps are converted back using the current MRES). </dd></dl>
+
+</div>
+</div>
+<a id="afd12dc09d45403663b9423dc89731a80" name="afd12dc09d45403663b9423dc89731a80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd12dc09d45403663b9423dc89731a80">&#9670;&#160;</a></span>GetCurrentPositionMicrosteps()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; int32_t &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::RampControl::GetCurrentPositionMicrosteps </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get current position in raw driver microsteps (XACTUAL) </p>
+<dl class="section return"><dt>Returns</dt><dd>Result&lt;int32_t&gt; containing XACTUAL in <b>microsteps</b> (native register unit)</dd></dl>
+<p>Use this when you want to inspect the exact microstep-level position used by the ramp generator. This avoids any conversion/rounding to degrees/full-steps. </p>
 
 </div>
 </div>
@@ -427,6 +464,36 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result&lt;float&gt; containing the target position or error </dd></dl>
+
+</div>
+</div>
+<a id="a9eb767d55e5d583564554686ad45ccb9" name="a9eb767d55e5d583564554686ad45ccb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9eb767d55e5d583564554686ad45ccb9">&#9670;&#160;</a></span>GetTargetPositionMicrosteps()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; int32_t &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::RampControl::GetTargetPositionMicrosteps </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get target position in raw driver microsteps (XTARGET) </p>
+<dl class="section return"><dt>Returns</dt><dd>Result&lt;int32_t&gt; containing XTARGET in <b>microsteps</b> (native register unit) </dd></dl>
 
 </div>
 </div>
@@ -1168,12 +1235,7 @@ template&lt;typename CommType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
 <p>Sets an absolute target position. The position is relative to the current zero/home position set via <a class="el" href="#a332e5d366ec06be3ac19ce2bac62abe7" title="Set current position.">SetCurrentPosition()</a>. If home is unknown, call SetCurrentPosition(0.0f) at the current physical position to establish a reference point.</p>
-<dl class="section note"><dt>Note</dt><dd>Internally, XTARGET/XACTUAL are in <b>microsteps</b> and therefore depend on the configured microstep resolution (CHOPCONF.MRES). When using <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Microsteps (driver native)">Unit::Steps</a> here, the value is interpreted as <b>motor full steps</b> and will be converted to microsteps using the current MRES setting. </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtmc51x0_1_1TMC51x0_1_1RampControl_a563d39d46dd50eeba6b4c47ca91da9c8_cgraph.svg" width="484" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<dl class="section note"><dt>Note</dt><dd>Internally, XTARGET/XACTUAL are in <b>microsteps</b> and therefore depend on the configured microstep resolution (CHOPCONF.MRES). When using <a class="el" href="namespacetmc51x0.html#a68e41191c288365e02cfca672681f686af3a29486bed19a90f2da6d007818b427" title="Steps (see notes above; float APIs treat this as full-steps, register units are microsteps)">Unit::Steps</a> here, the value is interpreted as <b>motor full steps</b> and will be converted to microsteps using the current MRES setting. </dd></dl>
 
 </div>
 </div>

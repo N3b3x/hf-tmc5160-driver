@@ -542,7 +542,7 @@ struct MotorConfig_17HS4401S_Direct {
     // Velocity below which StealthChop is active, above which SpreadCycle is used
     // Set to 0 to disable StealthChop (always use SpreadCycle)
     // Set to 30 RPM - below this StealthChop (quiet), above this SpreadCycle (more torque)
-    static constexpr float STEALTH_VELOCITY_THRESHOLD_RPM = 30.0f;
+    static constexpr float STEALTH_VELOCITY_THRESHOLD_RPM = 200.0f;
 };
 
 /**
@@ -619,7 +619,7 @@ struct MotorConfig_AppliedMotion_5034_369 {
     // RAMP_VSTART: Start velocity in RPM. Set to 5 RPM for reliable starting (above 2 RPM minimum)
     static constexpr float RAMP_VSTART_RPM = 5.0f;
     // RAMP_VSTOP: Stop velocity in RPM. Set to 5 RPM to ensure smooth stopping above minimum test speed
-    static constexpr float RAMP_VSTOP_RPM = 7.0f;
+    static constexpr float RAMP_VSTOP_RPM = 3.0f;
     // RAMP_VMAX: Maximum velocity in RPM. NEMA 34 typically operates 30-100 RPM for testing.
     // Set to 60 RPM for balanced performance with higher inertia motor.
     static constexpr float RAMP_VMAX_RPM = 60.0f;
@@ -650,7 +650,7 @@ struct MotorConfig_AppliedMotion_5034_369 {
     // Velocity below which StealthChop is active, above which SpreadCycle is used
     // Set to 0 to disable StealthChop (always use SpreadCycle)
     // Set to 20 RPM - below this StealthChop (quiet), above this SpreadCycle (more torque for larger motor)
-    static constexpr float STEALTH_VELOCITY_THRESHOLD_RPM = 0.0f;
+    static constexpr float STEALTH_VELOCITY_THRESHOLD_RPM = 500.0f;
 };
 
 /**
@@ -663,56 +663,54 @@ struct MotorConfig_AppliedMotion_5034_369 {
  * Use PlatformConfig_TestRig::ReferenceSwitches and PlatformConfig_TestRig::Encoder instead.
  */
 struct TestConfig_17HS4401S {
-    // ===== Sensorless Homing / StallGuard Configuration =====
-    struct StallGuard {
-        // SGT: StallGuard2 Threshold (-64 to +63).
-        // Lower values = Higher sensitivity (stops easier).
-        // Higher values = Lower sensitivity (needs more force to stop).
-        // Updated to SGT=10 based on automatic tuning results (stallguard_tuning example)
-        // This value was found to work well at 30-40k steps/s for the 17HS4401S motor
-        static constexpr int8_t SGT_HOMING = 10;  
-        
-        // CoolStep (COOLCONF.SEMIN/SEMAX) is a *current scaling* feature.
-        // For sensorless homing / bounds finding we generally want a stable,
-        // fixed current (CoolStep disabled) to avoid current modulation that can
-        // look/feel like "shaky" motion and can also distort StallGuard readings.
-        //
-        // If you later want CoolStep during normal operation, a common starting
-        // point is SEMIN=2, SEMAX=5 (lower=64, upper=256 SG units), but it
-        // must be tuned using real SG_RESULT ranges for your load.
-        static constexpr bool FILTER_ENABLED = false;
-        static constexpr uint8_t SEMIN = 0; // 0 = CoolStep disabled
-        static constexpr uint8_t SEMAX = 0;
-        
-        // Minimum velocity (TCOOLTHRS) for StallGuard2 operation in RPM
-        // Per datasheet: "StallGuard needs a certain velocity to work (as set by TCOOLTHRS)"
-        // Set to a value below the search speed to ensure StallGuard2 is active during bounds finding
-        // For 17HS4401S: Set to 50% of BOUNDS_SEARCH_SPEED_RPM (120 RPM) = 60 RPM
-        static constexpr float MIN_VELOCITY_RPM = 15.0f;
-        
-        // Motor current reduction for stall detection (percentage of rated current)
-        // Per Duet3D documentation: "Motor current is often reduced during stall-detect homing"
-        // Lower current (30-50%) makes stall detection easier at low speeds and reduces false positives
-        // Range: 0.0-1.0 (0.0 = no reduction/use full current, 0.3 = 30% of rated current)
-        // Recommended: 0.3 (30% of rated current) per Duet3D best practices
-        static constexpr float STALL_DETECTION_CURRENT_FACTOR = 0.3f;  // Use 30% of rated current
-    };
-
     // ===== Motion Profiles =====
     struct Motion {
-        // Search Speed (RPM) - used for both bounds finding and homing operations
-        // Driver handles microstep conversion internally
-        // Must be >= MIN_VELOCITY_RPM (15 RPM) for reliable StallGuard2 operation
-        // Higher speeds (60-120 RPM) provide better StallGuard reliability
-        static constexpr float BOUNDS_SEARCH_SPEED_RPM = 60.0f; // RPM (driver converts based on current microsteps)
-        // Bounds Finding Acceleration (rev/s²) - reach search speed in 3-5 seconds
-        static constexpr float BOUNDS_SEARCH_ACCEL_REV_S2 = 1.0f; 
+        // **Bounds / homing search speed (RPM)**:
+        // - Used by both bounds finding and sensorless homing (search phase).
+        // - Must be >= `StallGuard::MIN_VELOCITY_RPM` so StallGuard is actually active (TCOOLTHRS).
+        // - Higher speeds are typically more reliable for StallGuard, but increase impact energy.
+        static constexpr float BOUNDS_SEARCH_SPEED_RPM = 60.0f;
+
+        // **Bounds / homing acceleration (rev/s²)**:
+        // - This is *rev/s²*, not RPM/s. Keep it modest for repeatable SG behavior.
+        static constexpr float BOUNDS_SEARCH_ACCEL_REV_S2 = 5.0f;
+
+        // **Timeout for bounds/homing search (ms)**:
         static constexpr uint32_t HOMING_TIMEOUT_MS = 30000;
-        
-        // Fatigue Test Defaults
-        static constexpr float FATIGUE_FREQ_HZ = 0.5f;
-        static constexpr float FATIGUE_AMPLITUDE_DEG = 60.0f;
-        static constexpr uint32_t DWELL_MS = 2000;
+    };
+
+    // ===== Sensorless Homing / StallGuard Configuration =====
+    struct StallGuard {
+        // **SGT_HOMING** (StallGuard2 threshold, -64..+63):
+        // - Lower (more negative) = more sensitive (stall triggers easier).
+        // - Higher (more positive) = less sensitive.
+        // Tune with `stallguard_tuning` at the velocity below; then validate across the window.
+        static constexpr int8_t SGT_HOMING = 10;
+
+        // **SGT tuning context**:
+        // SGT is velocity dependent. Keep these values here so all apps/tools use the same assumptions.
+        static constexpr float SGT_TUNED_AT_VELOCITY_RPM = Motion::BOUNDS_SEARCH_SPEED_RPM;
+        static constexpr float TUNING_MIN_VELOCITY_RPM = 30.0f;
+        static constexpr float TUNING_MAX_VELOCITY_RPM = 60.0f;
+
+        // **FILTER_ENABLED (SFILT)**:
+        // Enables StallGuard filtering (reduces noise/false triggers, adds latency).
+        static constexpr bool FILTER_ENABLED = false;
+
+        // **CoolStep (optional)**:
+        // For sensorless homing / bounds finding we usually keep CoolStep disabled (SEMIN/SEMAX=0)
+        // to avoid current modulation distorting SG readings.
+        static constexpr uint8_t SEMIN = 0; // 0 = CoolStep disabled
+        static constexpr uint8_t SEMAX = 0;
+
+        // **MIN_VELOCITY_RPM (TCOOLTHRS)**:
+        // StallGuard2 is only valid above this velocity (SpreadCycle only).
+        static constexpr float MIN_VELOCITY_RPM = 15.0f;
+
+        // **STALL_DETECTION_CURRENT_FACTOR**:
+        // Reduces motor current during stall-detect moves. Lower current can improve sensitivity
+        // and reduce mechanical stress at the endstop.
+        static constexpr float STALL_DETECTION_CURRENT_FACTOR = 0.3f;  // Use 30% of rated current
     };
 };
 
@@ -723,56 +721,43 @@ struct TestConfig_17HS4401S {
  * These values are optimized for the fatigue test rig.
  */
 struct TestConfig_AppliedMotion_5034 {
+    // ===== Motion Profiles =====
+    struct Motion {
+        // **Bounds / homing search speed (RPM)**:
+        // For this NEMA34 fatigue rig, 60 RPM is above typical low-speed resonance and is a good
+        // baseline for StallGuard bounds finding.
+        static constexpr float BOUNDS_SEARCH_SPEED_RPM = 45.0f;
+
+        // **Bounds / homing acceleration (rev/s²)**:
+        static constexpr float BOUNDS_SEARCH_ACCEL_REV_S2 = 20.0f;
+
+        // **Timeout for bounds/homing search (ms)**:
+        static constexpr uint32_t HOMING_TIMEOUT_MS = 30000;
+    };
+
     // ===== Sensorless Homing / StallGuard Configuration =====
     struct StallGuard {
-        // SGT: StallGuard2 Threshold (-64 to +63).
-        // Lower values = Higher sensitivity (stops easier).
-        // Higher values = Lower sensitivity (needs more force to stop).
-        // For Applied Motion 5034-369 (NEMA 34, higher torque):
-        // Tuned via AutoTuneStallGuard at 60 RPM with 30% current reduction
-        // Value determined to work across 40-120 RPM velocity range
-        static constexpr int8_t SGT_HOMING = -40;  
-        
-        // See TestConfig_17HS4401S::StallGuard notes.
-        // For this high torque NEMA34 rig, we keep CoolStep disabled during
-        // StallGuard bounds finding to avoid current modulation and jitter.
-        // FILTER_ENABLED: Enable StallGuard filter (SFILT) for bounds finding.
-        // The filter averages SG readings over 4 samples, reducing false stalls
-        // during acceleration/deceleration phases where SG_RESULT can spike to 0.
+        // **SGT_HOMING** (StallGuard2 threshold, -64..+63):
+        // Tuned via AutoTuneStallGuard at the velocity below with current reduction.
+        static constexpr int8_t SGT_HOMING = -9;
+
+        // **SGT tuning context** (velocity dependent):
+        static constexpr float SGT_TUNED_AT_VELOCITY_RPM = Motion::BOUNDS_SEARCH_SPEED_RPM;
+        static constexpr float TUNING_MIN_VELOCITY_RPM = 30.0f;
+        static constexpr float TUNING_MAX_VELOCITY_RPM = 80.0f;
+
+        // **FILTER_ENABLED (SFILT)**:
+        // For this rig we enable filtering to reduce false stalls during accel/decel.
         static constexpr bool FILTER_ENABLED = true;
         static constexpr uint8_t SEMIN = 0; // 0 = CoolStep disabled
         static constexpr uint8_t SEMAX = 0;
-        
-        // Minimum velocity (TCOOLTHRS) for StallGuard2 operation in RPM
-        // Per datasheet: "StallGuard needs a certain velocity to work (as set by TCOOLTHRS)"
-        // Set to a value below the search speed to ensure StallGuard2 is active during bounds finding
-        // For Applied Motion 5034-369: Higher torque motor needs slightly higher minimum velocity (20 RPM)
-        // Updated based on Duet3D formula and motor specs for reliable stall detection at 30% current
-        static constexpr float MIN_VELOCITY_RPM = 20.0f;
-        
-        // Motor current reduction for stall detection (percentage of rated current)
-        // Per Duet3D documentation: "Motor current is often reduced during stall-detect homing"
-        // Lower current (30-50%) makes stall detection easier at low speeds and reduces false positives
-        // Range: 0.0-1.0 (0.0 = no reduction/use full current, 0.3 = 30% of rated current)
-        // Recommended: 0.3 (30% of rated current) per Duet3D best practices
-        static constexpr float STALL_DETECTION_CURRENT_FACTOR = 0.3f;  // Use 30% of rated current
-    };
 
-    // ===== Motion Profiles =====
-    struct Motion {
-        // Search Speed (RPM) - used for both bounds finding and homing operations
-        // Driver handles microstep conversion internally
-        // Must be >= MIN_VELOCITY_RPM (15 RPM) for reliable StallGuard2 operation
-        // Higher speeds (120 RPM) provide better StallGuard reliability for NEMA 34
-        static constexpr float BOUNDS_SEARCH_SPEED_RPM = 60.0f; // RPM (driver converts based on current microsteps)
-        // Bounds Finding Acceleration (rev/s²) - reach search speed in some seconds
-        static constexpr float BOUNDS_SEARCH_ACCEL_REV_S2 = 20.0f; 
-        static constexpr uint32_t HOMING_TIMEOUT_MS = 30000;
-        
-        // Fatigue Test Defaults
-        static constexpr float FATIGUE_FREQ_HZ = 0.5f;
-        static constexpr float FATIGUE_AMPLITUDE_DEG = 60.0f;
-        static constexpr uint32_t DWELL_MS = 2000;
+        // **MIN_VELOCITY_RPM (TCOOLTHRS)**:
+        static constexpr float MIN_VELOCITY_RPM = 20.0f;
+
+        // **STALL_DETECTION_CURRENT_FACTOR**:
+        // Reduce current during stall-detect moves to improve sensitivity and reduce impact energy.
+        static constexpr float STALL_DETECTION_CURRENT_FACTOR = 0.3f;  // Adjust per rig
     };
 };
 
@@ -926,6 +911,11 @@ struct PlatformConfig_CoreDriverTestRig {
         static constexpr float LEAD_SCREW_PITCH_MM = 0.0f;           ///< Lead screw pitch in mm (0 = not used)
         static constexpr uint16_t BELT_PULLEY_TEETH = 0;             ///< Number of teeth on motor pulley (0 = not used)
         static constexpr float BELT_PITCH_MM = 0.0f;                 ///< Belt pitch in mm (0 = not used)
+
+        // Motor direction for this platform:
+        // Use this to match the physical mounting / wiring so that "positive" motion in software
+        // corresponds to the preferred mechanical direction on this rig.
+        static constexpr tmc51x0::MotorDirection MOTOR_DIRECTION = tmc51x0::MotorDirection::NORMAL;
     };
 };
 
@@ -996,6 +986,10 @@ struct PlatformConfig_FatigueTestRig {
         static constexpr float LEAD_SCREW_PITCH_MM = 0.0f;           ///< Lead screw pitch in mm (0 = not used)
         static constexpr uint16_t BELT_PULLEY_TEETH = 0;             ///< Number of teeth on motor pulley (0 = not used)
         static constexpr float BELT_PITCH_MM = 0.0f;                 ///< Belt pitch in mm (0 = not used)
+
+        // Motor direction for this platform:
+        // Flip to INVERSE if the motor is mounted/wired such that the desired "positive" direction is reversed.
+        static constexpr tmc51x0::MotorDirection MOTOR_DIRECTION = tmc51x0::MotorDirection::INVERSE;
     };
 };
 
@@ -1334,6 +1328,9 @@ inline void ApplyPlatformConfig(tmc51x0::DriverConfig& cfg) noexcept {
             builder.WithBeltDrive(PlatformConfig_CoreDriverTestRig::Mechanical::BELT_PULLEY_TEETH,
                                   PlatformConfig_CoreDriverTestRig::Mechanical::BELT_PITCH_MM);
         }
+
+        // Direction is platform-dependent (mounting/wiring). Apply it here so it can override motor defaults.
+        builder.WithDirection(PlatformConfig_CoreDriverTestRig::Mechanical::MOTOR_DIRECTION);
     }
     else if constexpr (platform_type == PlatformType::PLATFORM_FATIGUE_TEST_RIG) {
         // Fatigue Test Rig mechanical system configuration
@@ -1348,6 +1345,9 @@ inline void ApplyPlatformConfig(tmc51x0::DriverConfig& cfg) noexcept {
             builder.WithBeltDrive(PlatformConfig_FatigueTestRig::Mechanical::BELT_PULLEY_TEETH,
                                   PlatformConfig_FatigueTestRig::Mechanical::BELT_PITCH_MM);
         }
+
+        // Direction is platform-dependent (mounting/wiring). Apply it here so it can override motor defaults.
+        builder.WithDirection(PlatformConfig_FatigueTestRig::Mechanical::MOTOR_DIRECTION);
     }
     // Add more platform types here:
     // else if constexpr (platform_type == PlatformType::PLATFORM_3D_PRINTER) {
@@ -1623,39 +1623,6 @@ struct TestConfigAccessor {
                 return TestConfig_AppliedMotion_5034::Motion::HOMING_TIMEOUT_MS;
             }
             return uint32_t(30000); // Default fallback
-        }();
-        
-        static constexpr float FATIGUE_FREQ_HZ = []() {
-            if constexpr (motor_type == MotorType::MOTOR_17HS4401S_GEARBOX || 
-                          motor_type == MotorType::MOTOR_17HS4401S_DIRECT) {
-                return TestConfig_17HS4401S::Motion::FATIGUE_FREQ_HZ;
-            }
-            else if constexpr (motor_type == MotorType::MOTOR_APPLIED_MOTION_5034) {
-                return TestConfig_AppliedMotion_5034::Motion::FATIGUE_FREQ_HZ;
-            }
-            return 0.5f; // Default fallback
-        }();
-        
-        static constexpr float FATIGUE_AMPLITUDE_DEG = []() {
-            if constexpr (motor_type == MotorType::MOTOR_17HS4401S_GEARBOX || 
-                          motor_type == MotorType::MOTOR_17HS4401S_DIRECT) {
-                return TestConfig_17HS4401S::Motion::FATIGUE_AMPLITUDE_DEG;
-            }
-            else if constexpr (motor_type == MotorType::MOTOR_APPLIED_MOTION_5034) {
-                return TestConfig_AppliedMotion_5034::Motion::FATIGUE_AMPLITUDE_DEG;
-            }
-            return 60.0f; // Default fallback
-        }();
-        
-        static constexpr uint32_t DWELL_MS = []() {
-            if constexpr (motor_type == MotorType::MOTOR_17HS4401S_GEARBOX || 
-                          motor_type == MotorType::MOTOR_17HS4401S_DIRECT) {
-                return TestConfig_17HS4401S::Motion::DWELL_MS;
-            }
-            else if constexpr (motor_type == MotorType::MOTOR_APPLIED_MOTION_5034) {
-                return TestConfig_AppliedMotion_5034::Motion::DWELL_MS;
-            }
-            return uint32_t(2000); // Default fallback
         }();
     };
 };
@@ -2057,6 +2024,7 @@ namespace ConfigValidators {
         PlatformConfig_CoreDriverTestRig::Encoder::INVERT_DIRECTION;
         PlatformConfig_CoreDriverTestRig::Encoder::ALLOWED_DEVIATION_STEPS;
         PlatformConfig_CoreDriverTestRig::Mechanical::SYSTEM_TYPE;
+        PlatformConfig_CoreDriverTestRig::Mechanical::MOTOR_DIRECTION;
         PlatformConfig_CoreDriverTestRig::Mechanical::LEAD_SCREW_PITCH_MM;
         PlatformConfig_CoreDriverTestRig::Mechanical::BELT_PULLEY_TEETH;
         PlatformConfig_CoreDriverTestRig::Mechanical::BELT_PITCH_MM;
@@ -2080,6 +2048,7 @@ namespace ConfigValidators {
         PlatformConfig_FatigueTestRig::Encoder::INVERT_DIRECTION;
         PlatformConfig_FatigueTestRig::Encoder::ALLOWED_DEVIATION_STEPS;
         PlatformConfig_FatigueTestRig::Mechanical::SYSTEM_TYPE;
+        PlatformConfig_FatigueTestRig::Mechanical::MOTOR_DIRECTION;
         PlatformConfig_FatigueTestRig::Mechanical::LEAD_SCREW_PITCH_MM;
         PlatformConfig_FatigueTestRig::Mechanical::BELT_PULLEY_TEETH;
         PlatformConfig_FatigueTestRig::Mechanical::BELT_PITCH_MM;
@@ -2094,9 +2063,6 @@ namespace ConfigValidators {
         TestConfig_17HS4401S::StallGuard::MIN_VELOCITY_RPM;
         TestConfig_17HS4401S::Motion::BOUNDS_SEARCH_SPEED_RPM;
         TestConfig_17HS4401S::Motion::HOMING_TIMEOUT_MS;
-        TestConfig_17HS4401S::Motion::FATIGUE_FREQ_HZ;
-        TestConfig_17HS4401S::Motion::FATIGUE_AMPLITUDE_DEG;
-        TestConfig_17HS4401S::Motion::DWELL_MS;
     }, "TestConfig_17HS4401S is missing required members");
 
     // Validate TestConfig_AppliedMotion_5034
@@ -2108,9 +2074,6 @@ namespace ConfigValidators {
         TestConfig_AppliedMotion_5034::StallGuard::MIN_VELOCITY_RPM;
         TestConfig_AppliedMotion_5034::Motion::BOUNDS_SEARCH_SPEED_RPM;
         TestConfig_AppliedMotion_5034::Motion::HOMING_TIMEOUT_MS;
-        TestConfig_AppliedMotion_5034::Motion::FATIGUE_FREQ_HZ;
-        TestConfig_AppliedMotion_5034::Motion::FATIGUE_AMPLITUDE_DEG;
-        TestConfig_AppliedMotion_5034::Motion::DWELL_MS;
     }, "TestConfig_AppliedMotion_5034 is missing required members");
 }
 

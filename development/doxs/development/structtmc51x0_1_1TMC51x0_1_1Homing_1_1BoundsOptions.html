@@ -129,6 +129,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a3cefad833c48608db9bdb6616471e162" id="r_a3cefad833c48608db9bdb6616471e162"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3cefad833c48608db9bdb6616471e162">timeout_ms</a> {30000}</td></tr>
 <tr class="memdesc:a3cefad833c48608db9bdb6616471e162"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timeout per direction.  <br /></td></tr>
 <tr class="separator:a3cefad833c48608db9bdb6616471e162"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf369b33c0a767aa5f6077dccca90c47" id="r_adf369b33c0a767aa5f6077dccca90c47"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf369b33c0a767aa5f6077dccca90c47">search_positive_first</a> {true}</td></tr>
+<tr class="memdesc:adf369b33c0a767aa5f6077dccca90c47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bounds finding: when true, search + direction first; when false, search - direction first.  <br /></td></tr>
+<tr class="separator:adf369b33c0a767aa5f6077dccca90c47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5f8cc9ed8ef6e9cd386cdeb9007e3eb" id="r_ad5f8cc9ed8ef6e9cd386cdeb9007e3eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5f8cc9ed8ef6e9cd386cdeb9007e3eb">preflight_clear_active_switch</a> {true}</td></tr>
 <tr class="memdesc:ad5f8cc9ed8ef6e9cd386cdeb9007e3eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Switch homing: if selected switch is active at start, attempt a bounded move away to clear it.  <br /></td></tr>
 <tr class="separator:ad5f8cc9ed8ef6e9cd386cdeb9007e3eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -288,6 +291,24 @@ template&lt;typename CommType &gt; </div>
 </div><div class="memdoc">
 
 <p>Deceleration override in accel_unit (0 = use cached/default) </p>
+
+</div>
+</div>
+<a id="adf369b33c0a767aa5f6077dccca90c47" name="adf369b33c0a767aa5f6077dccca90c47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf369b33c0a767aa5f6077dccca90c47">&#9670;&#160;</a></span>search_positive_first</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::BoundsOptions::search_positive_first {true}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Bounds finding: when true, search + direction first; when false, search - direction first. </p>
 
 </div>
 </div>

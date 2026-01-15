@@ -9,8 +9,9 @@ var searchData=
   ['logdebug_6',['LogDebug',['../classtmc51x0_1_1CommInterface.html#aa5358fda94e214d25d2800a5564416b3',1,'tmc51x0::CommInterface::LogDebug(int level, const char *tag, const char *format,...) noexcept'],['../classtmc51x0_1_1CommInterface.html#a8542b0b8eecae7125533d713938dd148',1,'tmc51x0::CommInterface::LogDebug(LogLevel level, const char *tag, const char *format,...) noexcept']]],
   ['logderivedinitsummary_7',['LogDerivedInitSummary',['../classtmc51x0_1_1TMC51x0.html#acee0f2d63d519db90810232f824ab4fe',1,'tmc51x0::TMC51x0']]],
   ['loglivestatusreport_8',['LogLiveStatusReport',['../classtmc51x0_1_1TMC51x0.html#ab538d0dd470bdb627262fde5504d3c02',1,'tmc51x0::TMC51x0']]],
-  ['logtableheader_9',['LogTableHeader',['../namespacetmc51x0_1_1detail.html#ad1f4b7d44b55921d635447a9266de1b8',1,'tmc51x0::detail']]],
-  ['logtablerow_10',['LogTableRow',['../namespacetmc51x0_1_1detail.html#afd95b88236a2c35527927fb24f042666',1,'tmc51x0::detail']]],
-  ['logtablesection_11',['LogTableSection',['../namespacetmc51x0_1_1detail.html#a8c46bbcc44fe3dc439828d0786c43fb0',1,'tmc51x0::detail']]],
-  ['logtableseparator_12',['LogTableSeparator',['../namespacetmc51x0_1_1detail.html#a089bcd93942e19e55813e20b2f891293',1,'tmc51x0::detail']]]
+  ['logpeers_9',['LogPeers',['../namespacePeerStore.html#ac1554ebd96d59c1197a1822c38876523',1,'PeerStore']]],
+  ['logtableheader_10',['LogTableHeader',['../namespacetmc51x0_1_1detail.html#ad1f4b7d44b55921d635447a9266de1b8',1,'tmc51x0::detail']]],
+  ['logtablerow_11',['LogTableRow',['../namespacetmc51x0_1_1detail.html#afd95b88236a2c35527927fb24f042666',1,'tmc51x0::detail']]],
+  ['logtablesection_12',['LogTableSection',['../namespacetmc51x0_1_1detail.html#a8c46bbcc44fe3dc439828d0786c43fb0',1,'tmc51x0::detail']]],
+  ['logtableseparator_13',['LogTableSeparator',['../namespacetmc51x0_1_1detail.html#a089bcd93942e19e55813e20b2f891293',1,'tmc51x0::detail']]]
 ];

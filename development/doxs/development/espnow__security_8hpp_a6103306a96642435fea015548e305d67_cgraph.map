@@ -1,0 +1,5 @@
+<map id="VerifyPairingHmac" name="VerifyPairingHmac">
+<area shape="rect" id="Node000001" title="Verify an HMAC response using constant&#45;time comparison." alt="" coords="5,5,147,31"/>
+<area shape="rect" id="Node000002" href="$espnow__security_8hpp.html#ae69756054396d09425336d822aa6c6b9" title="Compute HMAC&#45;SHA256, truncated to HMAC_SIZE bytes." alt="" coords="195,5,357,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,15,181,15,181,21,147,21"/>
+</map>

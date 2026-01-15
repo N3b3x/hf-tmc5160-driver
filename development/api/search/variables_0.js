@@ -11,6 +11,11 @@ var searchData=
   ['allowed_5fdeviation_5fsteps_8',['allowed_deviation_steps',['../structtmc51x0_1_1EncoderConfig.html#a65a27efdfb11218928eee1f1b171e939',1,'tmc51x0::EncoderConfig']]],
   ['allowed_5fdeviation_5fsteps_9',['ALLOWED_DEVIATION_STEPS',['../structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1Encoder.html#a26ee1c45dad6f5b76e12072ec4ff28ad',1,'tmc51x0_test_config::PlatformConfig_CoreDriverTestRig::Encoder::ALLOWED_DEVIATION_STEPS'],['../structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#a8aedb78ebe4b48e0ebc09104f9c714dc',1,'tmc51x0_test_config::PlatformConfig_FatigueTestRig::Encoder::ALLOWED_DEVIATION_STEPS']]],
   ['amax_10',['amax',['../structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html#a9c143fb74fd022bff3362092f9b2cc20',1,'tmc51x0::TMC51x0::WriteOnlyRegisters::amax'],['../structtmc51x0_1_1RampConfig.html#a6294a2203d1d284e3dad33933b62664f',1,'tmc51x0::RampConfig::amax']]],
-  ['amplitude_5f_11',['amplitude_',['../classFatigueTest_1_1FatigueTestMotion.html#a99991c6d4aa3435bbd594bade961c532',1,'FatigueTest::FatigueTestMotion']]],
-  ['at_5fcycle_12',['at_cycle',['../structErrorPayload.html#a301d38c548ae1cf4c503824ed0b18306',1,'ErrorPayload::at_cycle'],['../structProtoEvent.html#ac2c3f3a1beec65aa1bf3b38149cc5604',1,'ProtoEvent::at_cycle']]]
+  ['amax_5fmax_5frev_5fs2_11',['AMAX_MAX_REV_S2',['../namespaceFatigueTest.html#a23fe7b096d56182a83555bad82a1c2ed',1,'FatigueTest']]],
+  ['amax_5fmin_5frev_5fs2_12',['AMAX_MIN_REV_S2',['../namespaceFatigueTest.html#a3e9509c344ecc2cbf153d707ee51aaf1',1,'FatigueTest']]],
+  ['amax_5frev_5fs2_13',['amax_rev_s2',['../structFatigueTest_1_1FatigueTestMotion_1_1Status.html#a672349566e714252625e2d97eafddf60',1,'FatigueTest::FatigueTestMotion::Status']]],
+  ['amax_5frev_5fs2_5f_14',['amax_rev_s2_',['../classFatigueTest_1_1FatigueTestMotion.html#adc1913b934ffaf0c9874cd0e497c6d69',1,'FatigueTest::FatigueTestMotion']]],
+  ['amplitude_5f_15',['amplitude_',['../classFatigueTest_1_1FatigueTestMotion.html#a99991c6d4aa3435bbd594bade961c532',1,'FatigueTest::FatigueTestMotion']]],
+  ['approved_5fpeers_16',['approved_peers',['../structSecuritySettings.html#a022c77e285fca51e0852b60ca183be52',1,'SecuritySettings']]],
+  ['at_5fcycle_17',['at_cycle',['../structErrorPayload.html#a301d38c548ae1cf4c503824ed0b18306',1,'ErrorPayload::at_cycle'],['../structProtoEvent.html#ac2c3f3a1beec65aa1bf3b38149cc5604',1,'ProtoEvent::at_cycle']]]
 ];

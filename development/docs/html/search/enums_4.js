@@ -1,8 +1,4 @@
 var searchData=
 [
-  ['encoderclearmode_0',['EncoderClearMode',['../namespacetmc51x0.html#a16f1b74dc7ec9f3e7d0588b6fb2e6774',1,'tmc51x0']]],
-  ['encodernsensitivity_1',['EncoderNSensitivity',['../namespacetmc51x0.html#a0bb937f055abebd74c4f74fb03bb5696',1,'tmc51x0']]],
-  ['encoderprescalermode_2',['EncoderPrescalerMode',['../namespacetmc51x0.html#a84ea1648f7a9d02773c685cf16f64c77',1,'tmc51x0']]],
-  ['encodersensitivity_3',['EncoderSensitivity',['../namespacetmc51x0.html#a72806fd22f0c0112600ad9056aa3be97',1,'tmc51x0']]],
-  ['errorcode_4',['ErrorCode',['../namespacetmc51x0.html#a530ddae090151490fa12a61b9b9b57b3',1,'tmc51x0']]]
+  ['gpiosignal_0',['GpioSignal',['../namespacetmc51x0.html#a066cfe7d73f5a7f546c6d7215c0b4577',1,'tmc51x0']]]
 ];

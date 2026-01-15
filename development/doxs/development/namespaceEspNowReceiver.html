@@ -123,17 +123,185 @@ Functions</h2></td></tr>
 <tr class="memitem:a5f9e63a444d010ed79c649b6a2467277" id="r_a5f9e63a444d010ed79c649b6a2467277"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f9e63a444d010ed79c649b6a2467277">send_stop_ack</a> ()</td></tr>
 <tr class="memdesc:a5f9e63a444d010ed79c649b6a2467277"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send STOP_ACK (acknowledge STOP receipt).  <br /></td></tr>
 <tr class="separator:a5f9e63a444d010ed79c649b6a2467277"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad20a4032cfbaf4698d2a894139c339ae" id="r_ad20a4032cfbaf4698d2a894139c339ae"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad20a4032cfbaf4698d2a894139c339ae">send_status_update</a> (uint32_t cycle, <a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7">TestState</a> state, uint8_t err_code=0)</td></tr>
-<tr class="memdesc:ad20a4032cfbaf4698d2a894139c339ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send STATUS_UPDATE with cycle count and state.  <br /></td></tr>
-<tr class="separator:ad20a4032cfbaf4698d2a894139c339ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37dbf71c15486999f072d89e26d3dd7e" id="r_a37dbf71c15486999f072d89e26d3dd7e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37dbf71c15486999f072d89e26d3dd7e">send_status_update</a> (uint32_t cycle, <a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7">TestState</a> state, uint8_t err_code=0, uint8_t bounds_valid=255)</td></tr>
+<tr class="memdesc:a37dbf71c15486999f072d89e26d3dd7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send STATUS_UPDATE with cycle count and state.  <br /></td></tr>
+<tr class="separator:a37dbf71c15486999f072d89e26d3dd7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e573039958657010ab3722b0eb6cfd8" id="r_a0e573039958657010ab3722b0eb6cfd8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e573039958657010ab3722b0eb6cfd8">send_error</a> (uint8_t err_code, uint32_t at_cycle)</td></tr>
 <tr class="memdesc:a0e573039958657010ab3722b0eb6cfd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send ERROR message.  <br /></td></tr>
 <tr class="separator:a0e573039958657010ab3722b0eb6cfd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24fe7b15e7685c89e8468b1fdbcbaf7d" id="r_a24fe7b15e7685c89e8468b1fdbcbaf7d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24fe7b15e7685c89e8468b1fdbcbaf7d">send_test_complete</a> ()</td></tr>
 <tr class="memdesc:a24fe7b15e7685c89e8468b1fdbcbaf7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send TEST_COMPLETE message.  <br /></td></tr>
 <tr class="separator:a24fe7b15e7685c89e8468b1fdbcbaf7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9b932eecdce82a9ad416a05c4b26437" id="r_ad9b932eecdce82a9ad416a05c4b26437"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9b932eecdce82a9ad416a05c4b26437">send_bounds_result</a> (uint8_t ok, uint8_t bounded, uint8_t cancelled, float min_deg_from_center, float max_deg_from_center, float global_min_deg, float global_max_deg)</td></tr>
+<tr class="memdesc:ad9b932eecdce82a9ad416a05c4b26437"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send BOUNDS_RESULT message.  <br /></td></tr>
+<tr class="separator:ad9b932eecdce82a9ad416a05c4b26437"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16c42bd3125d7e7342cef32c2c3113ee" id="r_a16c42bd3125d7e7342cef32c2c3113ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a16c42bd3125d7e7342cef32c2c3113ee">enter_pairing_mode</a> (uint32_t timeout_sec=<a class="el" href="espnow__security_8hpp.html#a3d9555d889ba78fd08e5c87e006331cf">PAIRING_MODE_TIMEOUT_SEC</a>)</td></tr>
+<tr class="memdesc:a16c42bd3125d7e7342cef32c2c3113ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enter pairing mode for the specified duration.  <br /></td></tr>
+<tr class="separator:a16c42bd3125d7e7342cef32c2c3113ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1a1c9f9ee3aecfe82feaf48161d650f" id="r_af1a1c9f9ee3aecfe82feaf48161d650f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1a1c9f9ee3aecfe82feaf48161d650f">exit_pairing_mode</a> ()</td></tr>
+<tr class="memdesc:af1a1c9f9ee3aecfe82feaf48161d650f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exit pairing mode immediately.  <br /></td></tr>
+<tr class="separator:af1a1c9f9ee3aecfe82feaf48161d650f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93d8c346666ea692686d6fccfe1c2226" id="r_a93d8c346666ea692686d6fccfe1c2226"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a93d8c346666ea692686d6fccfe1c2226">is_in_pairing_mode</a> ()</td></tr>
+<tr class="memdesc:a93d8c346666ea692686d6fccfe1c2226"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if device is currently in pairing mode.  <br /></td></tr>
+<tr class="separator:a93d8c346666ea692686d6fccfe1c2226"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8682f883c8425261fc29977173bc3ea7" id="r_a8682f883c8425261fc29977173bc3ea7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSecuritySettings.html">SecuritySettings</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8682f883c8425261fc29977173bc3ea7">get_security_settings</a> ()</td></tr>
+<tr class="memdesc:a8682f883c8425261fc29977173bc3ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get access to the security settings for peer management.  <br /></td></tr>
+<tr class="separator:a8682f883c8425261fc29977173bc3ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abffb366c1c55cb592662442c2531af86" id="r_abffb366c1c55cb592662442c2531af86"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abffb366c1c55cb592662442c2531af86">add_approved_peer</a> (const uint8_t mac[6], <a class="el" href="espnow__security_8hpp.html#adbd7c4c417b1498b333bef443182ce51">DeviceType</a> type, const char *name)</td></tr>
+<tr class="memdesc:abffb366c1c55cb592662442c2531af86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manually add a peer as approved (bypasses pairing).  <br /></td></tr>
+<tr class="separator:abffb366c1c55cb592662442c2531af86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a5b91a4e4f5330e3b0e33dc1c46f9d4" id="r_a6a5b91a4e4f5330e3b0e33dc1c46f9d4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a5b91a4e4f5330e3b0e33dc1c46f9d4">remove_approved_peer</a> (const uint8_t mac[6])</td></tr>
+<tr class="memdesc:a6a5b91a4e4f5330e3b0e33dc1c46f9d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a peer from the approved list.  <br /></td></tr>
+<tr class="separator:a6a5b91a4e4f5330e3b0e33dc1c46f9d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6727de741c906ee47a87f84604beeac" id="r_ab6727de741c906ee47a87f84604beeac"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6727de741c906ee47a87f84604beeac">get_approved_peer_count</a> ()</td></tr>
+<tr class="memdesc:ab6727de741c906ee47a87f84604beeac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of approved peers.  <br /></td></tr>
+<tr class="separator:ab6727de741c906ee47a87f84604beeac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="abffb366c1c55cb592662442c2531af86" name="abffb366c1c55cb592662442c2531af86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abffb366c1c55cb592662442c2531af86">&#9670;&#160;</a></span>add_approved_peer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EspNowReceiver::add_approved_peer </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t</td>          <td class="paramname"><span class="paramname"><em>mac</em>[6], </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="espnow__security_8hpp.html#adbd7c4c417b1498b333bef443182ce51">DeviceType</a></td>          <td class="paramname"><span class="paramname"><em>type</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Manually add a peer as approved (bypasses pairing). </p>
+<p>Useful for adding pre-configured peers or debugging.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mac</td><td>Peer's MAC address </td></tr>
+    <tr><td class="paramname">type</td><td>Peer's device type </td></tr>
+    <tr><td class="paramname">name</td><td>Human-readable name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if added successfully </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_abffb366c1c55cb592662442c2531af86_cgraph.svg" width="542" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a16c42bd3125d7e7342cef32c2c3113ee" name="a16c42bd3125d7e7342cef32c2c3113ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16c42bd3125d7e7342cef32c2c3113ee">&#9670;&#160;</a></span>enter_pairing_mode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EspNowReceiver::enter_pairing_mode </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>timeout_sec</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="espnow__security_8hpp.html#a3d9555d889ba78fd08e5c87e006331cf">PAIRING_MODE_TIMEOUT_SEC</a></span></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enter pairing mode for the specified duration. </p>
+<p>While in pairing mode, the test unit will respond to PairingRequest messages from remote controllers. After the timeout expires, pairing mode is automatically disabled.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timeout_sec</td><td>Duration of pairing mode in seconds (default: 30) </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a16c42bd3125d7e7342cef32c2c3113ee_icgraph.svg" width="538" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="af1a1c9f9ee3aecfe82feaf48161d650f" name="af1a1c9f9ee3aecfe82feaf48161d650f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1a1c9f9ee3aecfe82feaf48161d650f">&#9670;&#160;</a></span>exit_pairing_mode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EspNowReceiver::exit_pairing_mode </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Exit pairing mode immediately. </p>
+
+</div>
+</div>
+<a id="ab6727de741c906ee47a87f84604beeac" name="ab6727de741c906ee47a87f84604beeac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6727de741c906ee47a87f84604beeac">&#9670;&#160;</a></span>get_approved_peer_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t EspNowReceiver::get_approved_peer_count </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the number of approved peers. </p>
+<dl class="section return"><dt>Returns</dt><dd>Number of approved peers (including pre-configured) </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_ab6727de741c906ee47a87f84604beeac_cgraph.svg" width="411" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_ab6727de741c906ee47a87f84604beeac_icgraph.svg" width="534" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a8682f883c8425261fc29977173bc3ea7" name="a8682f883c8425261fc29977173bc3ea7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8682f883c8425261fc29977173bc3ea7">&#9670;&#160;</a></span>get_security_settings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSecuritySettings.html">SecuritySettings</a> &amp; EspNowReceiver::get_security_settings </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get access to the security settings for peer management. </p>
+<p>Use this with <a class="el" href="namespacePeerStore.html">PeerStore</a> functions to manage approved peers.</p>
+<dl class="section return"><dt>Returns</dt><dd>Reference to internal <a class="el" href="structSecuritySettings.html" title="Security settings stored in NVS.">SecuritySettings</a> </dd></dl>
+
+</div>
+</div>
 <a id="a7b5448c32668c4ce8c8b2e825fe523ee" name="a7b5448c32668c4ce8c8b2e825fe523ee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7b5448c32668c4ce8c8b2e825fe523ee">&#9670;&#160;</a></span>init()</h2>
 
@@ -165,12 +333,138 @@ Functions</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a7b5448c32668c4ce8c8b2e825fe523ee_cgraph.svg" width="634" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a7b5448c32668c4ce8c8b2e825fe523ee_cgraph.svg" width="1224" height="636"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a7b5448c32668c4ce8c8b2e825fe523ee_icgraph.svg" width="306" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a93d8c346666ea692686d6fccfe1c2226" name="a93d8c346666ea692686d6fccfe1c2226"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93d8c346666ea692686d6fccfe1c2226">&#9670;&#160;</a></span>is_in_pairing_mode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EspNowReceiver::is_in_pairing_mode </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if device is currently in pairing mode. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if in pairing mode </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a93d8c346666ea692686d6fccfe1c2226_icgraph.svg" width="998" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a6a5b91a4e4f5330e3b0e33dc1c46f9d4" name="a6a5b91a4e4f5330e3b0e33dc1c46f9d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a5b91a4e4f5330e3b0e33dc1c46f9d4">&#9670;&#160;</a></span>remove_approved_peer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EspNowReceiver::remove_approved_peer </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t</td>          <td class="paramname"><span class="paramname"><em>mac</em>[6]</span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Remove a peer from the approved list. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mac</td><td>Peer's MAC address </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if removed </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a6a5b91a4e4f5330e3b0e33dc1c46f9d4_cgraph.svg" width="598" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ad9b932eecdce82a9ad416a05c4b26437" name="ad9b932eecdce82a9ad416a05c4b26437"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9b932eecdce82a9ad416a05c4b26437">&#9670;&#160;</a></span>send_bounds_result()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EspNowReceiver::send_bounds_result </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>ok</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>bounded</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>cancelled</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>min_deg_from_center</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>max_deg_from_center</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>global_min_deg</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>global_max_deg</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send BOUNDS_RESULT message. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ok</td><td>1 if bounds finding completed (bounded or default unbounded window); 0 on failure. </td></tr>
+    <tr><td class="paramname">bounded</td><td>1 if mechanical bounds were detected. </td></tr>
+    <tr><td class="paramname">cancelled</td><td>1 if cancelled by user/STOP/PAUSE. </td></tr>
+    <tr><td class="paramname">min_deg_from_center</td><td>Local min bound relative to center/home (degrees). </td></tr>
+    <tr><td class="paramname">max_deg_from_center</td><td>Local max bound relative to center/home (degrees). </td></tr>
+    <tr><td class="paramname">global_min_deg</td><td>Global min (degrees). </td></tr>
+    <tr><td class="paramname">global_max_deg</td><td>Global max (degrees). </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_ad9b932eecdce82a9ad416a05c4b26437_cgraph.svg" width="648" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_ad9b932eecdce82a9ad416a05c4b26437_icgraph.svg" width="1026" height="143"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -206,7 +500,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a126f3feacea21b45e4af0a34deb50dcd_cgraph.svg" width="490" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a126f3feacea21b45e4af0a34deb50dcd_cgraph.svg" width="648" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -242,7 +536,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_ac4af6aafe2cc9de4cbd2354dfc627dc7_cgraph.svg" width="490" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_ac4af6aafe2cc9de4cbd2354dfc627dc7_cgraph.svg" width="648" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -283,12 +577,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a0e573039958657010ab3722b0eb6cfd8_cgraph.svg" width="490" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a0e573039958657010ab3722b0eb6cfd8_cgraph.svg" width="648" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a0e573039958657010ab3722b0eb6cfd8_icgraph.svg" width="1472" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a0e573039958657010ab3722b0eb6cfd8_icgraph.svg" width="1026" height="239"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -313,7 +607,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a4af879c40f8c3223b890b26dfcd1d7aa_cgraph.svg" width="490" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a4af879c40f8c3223b890b26dfcd1d7aa_cgraph.svg" width="648" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -343,7 +637,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a5996f034b8b0ad5a9e75441c454b8a52_cgraph.svg" width="490" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a5996f034b8b0ad5a9e75441c454b8a52_cgraph.svg" width="648" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -373,18 +667,18 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_afb76d5c6ce79015229aca11c94603692_cgraph.svg" width="490" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_afb76d5c6ce79015229aca11c94603692_cgraph.svg" width="648" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_afb76d5c6ce79015229aca11c94603692_icgraph.svg" width="1175" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_afb76d5c6ce79015229aca11c94603692_icgraph.svg" width="622" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="ad20a4032cfbaf4698d2a894139c339ae" name="ad20a4032cfbaf4698d2a894139c339ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad20a4032cfbaf4698d2a894139c339ae">&#9670;&#160;</a></span>send_status_update()</h2>
+<a id="a37dbf71c15486999f072d89e26d3dd7e" name="a37dbf71c15486999f072d89e26d3dd7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37dbf71c15486999f072d89e26d3dd7e">&#9670;&#160;</a></span>send_status_update()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -402,7 +696,12 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>err_code</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span>&#160;)</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>err_code</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>bounds_valid</em><span class="paramdefsep"> = </span><span class="paramdefval">255</span></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -420,12 +719,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_ad20a4032cfbaf4698d2a894139c339ae_cgraph.svg" width="490" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a37dbf71c15486999f072d89e26d3dd7e_cgraph.svg" width="648" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_ad20a4032cfbaf4698d2a894139c339ae_icgraph.svg" width="1552" height="326"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a37dbf71c15486999f072d89e26d3dd7e_icgraph.svg" width="1062" height="458"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -450,12 +749,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a5f9e63a444d010ed79c649b6a2467277_cgraph.svg" width="490" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a5f9e63a444d010ed79c649b6a2467277_cgraph.svg" width="648" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a5f9e63a444d010ed79c649b6a2467277_icgraph.svg" width="1175" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a5f9e63a444d010ed79c649b6a2467277_icgraph.svg" width="622" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -480,7 +779,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a24fe7b15e7685c89e8468b1fdbcbaf7d_cgraph.svg" width="490" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceEspNowReceiver_a24fe7b15e7685c89e8468b1fdbcbaf7d_cgraph.svg" width="648" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>

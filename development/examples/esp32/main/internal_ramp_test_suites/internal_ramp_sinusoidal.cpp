@@ -58,26 +58,32 @@ static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG =
 static const char* TAG = "Sinusoidal";
 
 /**
- * @brief Back-and-forth motion controller using positioning mode
+ * @brief Back-and-forth motion controller using positioning mode.
  *
+ * @details
  * Simple back-and-forth motion using TMC51x0's positioning mode.
  * Sets target position to one end, waits until reached, then sets target to other end.
- * Repeats continuously.
+ * Repeats continuously until max_cycles is reached (if specified).
  */
 class BackAndForthMotion {
 private:
-  tmc51x0::TMC51x0<Esp32SPI>* driver_;
-  float max_velocity_rpm_;        // Maximum velocity in RPM
-  float acceleration_rev_s2_;        // Acceleration in rev/s²
-  float travel_distance_deg_;  // Distance to travel in each direction (in degrees)
-  float center_position_deg_;   // Center position (starting point) in degrees
-  float target_position_deg_;   // Current target position in degrees
-  bool moving_forward_;        // Direction flag (true = forward, false = backward)
-  bool initialized_;
-  uint32_t cycles_completed_; // Number of complete back-and-forth cycles
-  int max_cycles_;            // Maximum cycles (-1 for infinite)
+  tmc51x0::TMC51x0<Esp32SPI>* driver_;  ///< Pointer to TMC51x0 driver instance
+  float max_velocity_rpm_;              ///< Maximum velocity in RPM
+  float acceleration_rev_s2_;            ///< Acceleration in rev/s²
+  float travel_distance_deg_;           ///< Distance to travel in each direction (degrees)
+  float center_position_deg_;           ///< Center position (starting point) in degrees
+  float target_position_deg_;           ///< Current target position in degrees
+  bool moving_forward_;                 ///< Direction flag (true = forward, false = backward)
+  bool initialized_;                    ///< Whether motion has been initialized
+  uint32_t cycles_completed_;           ///< Number of complete back-and-forth cycles
+  int max_cycles_;                      ///< Maximum cycles (-1 for infinite)
 
 public:
+  /**
+   * @brief Construct a back-and-forth motion controller.
+   * 
+   * @param driver Pointer to TMC51x0 driver instance (must remain valid for lifetime)
+   */
   BackAndForthMotion(tmc51x0::TMC51x0<Esp32SPI>* driver)
       : driver_(driver), max_velocity_rpm_(30.0f), acceleration_rev_s2_(1.0f),
         travel_distance_deg_(180.0f), center_position_deg_(0.0f), target_position_deg_(0.0f),
@@ -153,8 +159,13 @@ public:
   }
 
   /**
-   * @brief Update back-and-forth motion (call periodically)
-   * @return true if motion is active, false if completed
+   * @brief Update back-and-forth motion (call periodically).
+   * 
+   * @details
+   * Checks if target position has been reached and switches direction.
+   * Should be called from a periodic task or main loop.
+   * 
+   * @return true if motion is active, false if completed (max_cycles reached)
    */
   bool Update() {
     if (!initialized_) {
@@ -193,7 +204,11 @@ public:
   }
 
   /**
-   * @brief Stop back-and-forth motion
+   * @brief Stop back-and-forth motion.
+   * 
+   * @details
+   * Stops the motor and sets ramp mode to HOLD. Motion can be restarted
+   * by calling Start() again.
    */
   void Stop() {
     driver_->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
@@ -203,7 +218,9 @@ public:
   }
 
   /**
-   * @brief Get number of completed cycles
+   * @brief Get number of completed back-and-forth cycles.
+   * 
+   * @return Number of cycles completed since last Start() call
    */
   uint32_t GetCyclesCompleted() const {
     return cycles_completed_;

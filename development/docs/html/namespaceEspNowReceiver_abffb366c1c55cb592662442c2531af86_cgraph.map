@@ -1,0 +1,15 @@
+<map id="EspNowReceiver::add_approved_peer" name="EspNowReceiver::add_approved_peer">
+<area shape="rect" id="Node000001" title="Manually add a peer as approved (bypasses pairing)." alt="" coords="5,98,168,138"/>
+<area shape="rect" id="Node000002" href="$namespacePeerStore.html#afa0d1ce235ad40beccab05f96260bbb5" title="Add a new approved peer to storage." alt="" coords="216,68,363,93"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,100,206,93,207,98,169,106"/>
+<area shape="rect" id="Node000006" href="$espnow__receiver_8cpp.html#a0dc64484e6494b6182745f1898ef3738" title=" " alt="" coords="216,129,363,155"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="169,125,202,129,202,134,168,130"/>
+<area shape="rect" id="Node000003" href="$espnow__security_8hpp.html#a5404f39e50ea5a07bb38e958bfecd9d1" title="Check if a MAC address is all zeros." alt="" coords="428,5,519,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="326,65,421,33,423,38,328,71"/>
+<area shape="rect" id="Node000004" href="$espnow__security_8hpp.html#af7a73c0e28901c88d30288faf14c6a5d" title="Compare two MAC addresses." alt="" coords="427,55,519,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="363,73,413,69,414,74,363,78"/>
+<area shape="rect" id="Node000005" href="$namespacePeerStore.html#a3318088ed933db034120d60f25e2ec9f" title="Save the current peer list to NVS." alt="" coords="411,104,536,129"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="355,91,398,99,397,104,354,96"/>
+<area shape="rect" id="Node000007" href="$espnow__receiver_8cpp.html#a38ae343ba91aa93458377b341e1d9e4a" title=" " alt="" coords="428,153,519,179"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="363,149,415,156,414,161,363,154"/>
+</map>

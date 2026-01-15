@@ -463,11 +463,11 @@ Edit defaults in `app_main()`:
 // Default local bounds
 motion.SetLocalBoundsFromCenterDegrees(-amplitude, amplitude);
 
-// Default frequency
-motion.SetFrequency(Test::Motion::FATIGUE_FREQ_HZ);
+// Default frequency (example)
+motion.SetFrequency(0.5f);
 
-// Default dwell times
-motion.SetDwellTimes(dwell, dwell, 0);
+// Default dwell times (example)
+motion.SetDwellTimes(2000, 2000, 0);
 ```
 
 ### Adding Custom Commands

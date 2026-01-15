@@ -1,5 +1,6 @@
 var espnow__protocol_8hpp =
 [
+    [ "BoundsResultPayload", "structBoundsResultPayload.html", "structBoundsResultPayload" ],
     [ "EspNowHeader", "structEspNowHeader.html", "structEspNowHeader" ],
     [ "EspNowPacket", "structEspNowPacket.html", "structEspNowPacket" ],
     [ "ConfigPayload", "structConfigPayload.html", "structConfigPayload" ],
@@ -15,7 +16,8 @@ var espnow__protocol_8hpp =
       [ "Start", "espnow__protocol_8hpp.html#a62651afa1b82816bb6ca42a7dece0901aa6122a65eaa676f700ae68d393054a37", null ],
       [ "Pause", "espnow__protocol_8hpp.html#a62651afa1b82816bb6ca42a7dece0901a105b296a83f9c105355403f3332af50f", null ],
       [ "Resume", "espnow__protocol_8hpp.html#a62651afa1b82816bb6ca42a7dece0901af1cefec9e2196c672a622347f1fbc325", null ],
-      [ "Stop", "espnow__protocol_8hpp.html#a62651afa1b82816bb6ca42a7dece0901a11a755d598c0c417f9a36758c3da7481", null ]
+      [ "Stop", "espnow__protocol_8hpp.html#a62651afa1b82816bb6ca42a7dece0901a11a755d598c0c417f9a36758c3da7481", null ],
+      [ "RunBoundsFinding", "espnow__protocol_8hpp.html#a62651afa1b82816bb6ca42a7dece0901aa90c5bc2bb92333c1627b45de0f25299", null ]
     ] ],
     [ "MsgType", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2", [
       [ "DeviceDiscovery", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2aeaa9d092108601bfc0f307504f35074c", null ],
@@ -29,7 +31,13 @@ var espnow__protocol_8hpp =
       [ "StatusUpdate", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a6e09aeebd8293d23eb6717ce6a2b8843", null ],
       [ "Error", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a902b0d55fddef6f8d651fe1035b7d4bd", null ],
       [ "ErrorClear", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2adc045624031172f4a63f6bec9ba0370e", null ],
-      [ "TestComplete", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a83ba8397ea552f99fb3fb2d1543b5d58", null ]
+      [ "TestComplete", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a83ba8397ea552f99fb3fb2d1543b5d58", null ],
+      [ "BoundsResult", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a6614cfde97dac99555409c0c437fd673", null ],
+      [ "PairingRequest", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2aba73a4d8ed6e05d97f94b185d83efbf2", null ],
+      [ "PairingResponse", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2ac71cec36442b7532eb0d3306770ce1a0", null ],
+      [ "PairingConfirm", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a16a7fbc0e7d8f7194938cc3150bf5c86", null ],
+      [ "PairingReject", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2acd92dcd3a1d5f15b3a855205a47c09c5", null ],
+      [ "Unpair", "espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2ac72301f247098ce89e41698bf0e7ac05", null ]
     ] ],
     [ "ProtoEventType", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5ae", [
       [ "ConfigRequest", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aeab084422d74753e090a89ca958b75d62f", null ],
@@ -38,6 +46,7 @@ var espnow__protocol_8hpp =
       [ "CommandPause", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aeab84b21911985eb695b569c86276cbf32", null ],
       [ "CommandResume", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea744e0e7d8814c6ce12d2d7992131a5a9", null ],
       [ "CommandStop", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea15bc458ccd8081b6f7a5006e94f0fd36", null ],
+      [ "CommandRunBoundsFinding", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea8c5af051979b06c91e47e8373f7b621a", null ],
       [ "ConfigUpdated", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea89e049f20cbb75d50c912687cf036a22", null ],
       [ "ConfigApplyOk", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aead92b5dda2129b9614905aa23d482b5b1", null ],
       [ "ConfigApplyFail", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aeafb6038726e9e65a2426a75f8ac1b3175", null ],
@@ -47,7 +56,11 @@ var espnow__protocol_8hpp =
       [ "Stopped", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aeac23e2b09ebe6bf4cb5e2a9abe85c0be2", null ],
       [ "Status", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aeaec53a8c4f07baed5d8825072c89799be", null ],
       [ "ErrorEvent", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aead9b024b1a3a8208b7edc8eb711ff441e", null ],
-      [ "TestCompleted", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea716f0ec05d9f5bd5e06f08ae004686c4", null ]
+      [ "TestCompleted", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea716f0ec05d9f5bd5e06f08ae004686c4", null ],
+      [ "PairingRequest", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aeaba73a4d8ed6e05d97f94b185d83efbf2", null ],
+      [ "PairingComplete", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea834991040923d1ebcf233cfafa454365", null ],
+      [ "PairingFailed", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aea95bffc6912df58c71768c176be291840", null ],
+      [ "PeerUnpaired", "espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5aeaa7a083b02c3bf335b41cf22b8cd8eb92", null ]
     ] ],
     [ "TestState", "espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7", [
       [ "Idle", "espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7ae599161956d626eda4cb0a5ffb85271c", null ],

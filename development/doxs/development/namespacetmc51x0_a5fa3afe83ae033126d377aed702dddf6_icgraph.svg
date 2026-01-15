@@ -20,10 +20,10 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a05be94f504684f1c70c6738e3e4ac42b" target="_top" xlink:title="Configure stealthChop settings.">
+<g id="a_Node000002"><a xlink:href="structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a8db864b94d0ba10e5744b6695254c0de" target="_top" xlink:title="Configure chopper settings.">
 <polygon fill="white" stroke="#666666" points="181,-30 0,-30 0,0 181,0 181,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::TMC51x0::MotorControl</text>
-<text text-anchor="middle" x="90.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::ConfigureStealthChop</text>
+<text text-anchor="middle" x="90.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::ConfigureChopper</text>
 </a>
 </g>
 </g>

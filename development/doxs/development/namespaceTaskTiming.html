@@ -122,9 +122,10 @@ Variables</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Centralized timing constants for FreeRTOS tasks in this application. </p>
-<p>These are intentionally <code>static constexpr</code> so:</p><ul>
+<p>This namespace provides a single source of truth for all task timing parameters. These are intentionally <code>static constexpr</code> so:</p><ul>
 <li>all tasks share a single source of truth</li>
 <li>the compiler can still fold constants</li>
+<li>values can be easily tuned in one place</li>
 </ul>
 <p>Change values here to tune logging cadence and control-loop update rates. </p>
 </div><h2 class="groupheader">Variable Documentation</h2>

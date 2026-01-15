@@ -1,20 +1,21 @@
 var searchData=
 [
-  ['fatiguetestmotion_0',['FatigueTestMotion',['../classFatigueTest_1_1FatigueTestMotion.html#aa662bc01f52f211508789f8f55b45108',1,'FatigueTest::FatigueTestMotion']]],
-  ['findbound_1',['FindBound',['../classFatigueTest_1_1EncoderBoundsFinderImpl.html#a9b3eb529b3603d8bb65d9e41aaf3e8ea',1,'FatigueTest::EncoderBoundsFinderImpl::FindBound()'],['../classFatigueTest_1_1StallGuardBoundsFinderImpl.html#abda032e3fe1bc2a4b5ea75c2deacabb2',1,'FatigueTest::StallGuardBoundsFinderImpl::FindBound()']]],
-  ['findbounds_2',['FindBounds',['../structtmc51x0_1_1TMC51x0_1_1Homing.html#aeef1b5af5be99b10b64bdf9fec56d661',1,'tmc51x0::TMC51x0::Homing::FindBounds()'],['../classFatigueTest_1_1IBoundsFinder.html#a227bb2e3caf489b77f7aaa00d0d3f218',1,'FatigueTest::IBoundsFinder::FindBounds()'],['../classFatigueTest_1_1EncoderBoundsFinderImpl.html#a664059e6ebcd4547d3f4862de5fd2dd4',1,'FatigueTest::EncoderBoundsFinderImpl::FindBounds()'],['../classFatigueTest_1_1StallGuardBoundsFinderImpl.html#a42b464b8be7b92ae34ff940e09cb6adf',1,'FatigueTest::StallGuardBoundsFinderImpl::FindBounds()']]],
+  ['fataliniterror_0',['FatalInitError',['../main_8cpp.html#aa4c1f4ebe8d9f2e34a39b419936d8861',1,'main.cpp']]],
+  ['fatiguetestmotion_1',['FatigueTestMotion',['../classFatigueTest_1_1FatigueTestMotion.html#aa662bc01f52f211508789f8f55b45108',1,'FatigueTest::FatigueTestMotion']]],
+  ['findbounds_2',['FindBounds',['../structtmc51x0_1_1TMC51x0_1_1Homing.html#aeef1b5af5be99b10b64bdf9fec56d661',1,'tmc51x0::TMC51x0::Homing']]],
   ['findboundsencoder_3',['FindBoundsEncoder',['../structtmc51x0_1_1TMC51x0_1_1Homing.html#ab49cd9865a358a18fb5e94e026ff7a1b',1,'tmc51x0::TMC51x0::Homing']]],
   ['findboundsstallguard_4',['FindBoundsStallGuard',['../structtmc51x0_1_1TMC51x0_1_1Homing.html#a5aff97457b88a61646f146bcf2c0abcd',1,'tmc51x0::TMC51x0::Homing']]],
   ['findboundsswitch_5',['FindBoundsSwitch',['../structtmc51x0_1_1TMC51x0_1_1Homing.html#a3996b6e0a219e0874276ac7626fe60e5',1,'tmc51x0::TMC51x0::Homing']]],
   ['findoption_6',['FindOption',['../classOptionParser.html#ac8b6271049930c9ddcd7d4217fc998db',1,'OptionParser']]],
   ['findworkingvelocityrange_7',['FindWorkingVelocityRange',['../namespacetmc51x0.html#afaf6037a652c82c965a94e0433e13a7c',1,'tmc51x0']]],
   ['flip_5ftest_5fprogress_5findicator_8',['flip_test_progress_indicator',['../TestFramework_8h.html#a7bb80345e5681c19686df292fa897daf',1,'TestFramework.h']]],
-  ['formatstatusbits_9',['FormatStatusBits',['../structtmc51x0_1_1SpiStatus.html#a772e84571daef24f715d07b33f295f85',1,'tmc51x0::SpiStatus']]],
-  ['frombyte_10',['FromByte',['../structtmc51x0_1_1SpiStatus.html#a503043f0b56362c63d76225c4876b9a2',1,'tmc51x0::SpiStatus']]],
-  ['fromdeg_11',['FromDeg',['../structtmc51x0_1_1VelocityValue.html#a74e655b3745df386f7941a4c1f0f9ddf',1,'tmc51x0::VelocityValue::FromDeg()'],['../structtmc51x0_1_1AccelerationValue.html#a9a7a024e64f362bc4d63e486dec890c9',1,'tmc51x0::AccelerationValue::FromDeg()']]],
-  ['frommm_12',['FromMm',['../structtmc51x0_1_1VelocityValue.html#aa373410261d69bdcb70100c66f9d53c2',1,'tmc51x0::VelocityValue::FromMm()'],['../structtmc51x0_1_1AccelerationValue.html#ab3c7f482cc44985702fef59cfe135b75',1,'tmc51x0::AccelerationValue::FromMm()']]],
-  ['fromrad_13',['FromRad',['../structtmc51x0_1_1VelocityValue.html#aaaa54b0432cfb7d6af8e9ab508779a6f',1,'tmc51x0::VelocityValue::FromRad()'],['../structtmc51x0_1_1AccelerationValue.html#afd235f9430884ff943d951c144d78c91',1,'tmc51x0::AccelerationValue::FromRad()']]],
-  ['fromrevpersec_14',['FromRevPerSec',['../structtmc51x0_1_1VelocityValue.html#a3894a0c649f669521bf8b3991b7dbd53',1,'tmc51x0::VelocityValue::FromRevPerSec()'],['../structtmc51x0_1_1AccelerationValue.html#ab282ff8a138ec32ac5d0393c03f8bd0b',1,'tmc51x0::AccelerationValue::FromRevPerSec()']]],
-  ['fromrpm_15',['FromRPM',['../structtmc51x0_1_1VelocityValue.html#a1e06a16056ce5235879a18025b8bff93',1,'tmc51x0::VelocityValue']]],
-  ['fromsteps_16',['FromSteps',['../structtmc51x0_1_1VelocityValue.html#a0ca956cadfcc0330d787cd3c3531d591',1,'tmc51x0::VelocityValue::FromSteps()'],['../structtmc51x0_1_1AccelerationValue.html#a3b57bb39e325b92ceae802a97643bfa4',1,'tmc51x0::AccelerationValue::FromSteps()']]]
+  ['formatmac_9',['FormatMac',['../espnow__security_8hpp.html#a4cde605bea40f6aeeb62a30d700494c6',1,'espnow_security.hpp']]],
+  ['formatstatusbits_10',['FormatStatusBits',['../structtmc51x0_1_1SpiStatus.html#a772e84571daef24f715d07b33f295f85',1,'tmc51x0::SpiStatus']]],
+  ['frombyte_11',['FromByte',['../structtmc51x0_1_1SpiStatus.html#a503043f0b56362c63d76225c4876b9a2',1,'tmc51x0::SpiStatus']]],
+  ['fromdeg_12',['FromDeg',['../structtmc51x0_1_1VelocityValue.html#a74e655b3745df386f7941a4c1f0f9ddf',1,'tmc51x0::VelocityValue::FromDeg()'],['../structtmc51x0_1_1AccelerationValue.html#a9a7a024e64f362bc4d63e486dec890c9',1,'tmc51x0::AccelerationValue::FromDeg()']]],
+  ['frommm_13',['FromMm',['../structtmc51x0_1_1VelocityValue.html#aa373410261d69bdcb70100c66f9d53c2',1,'tmc51x0::VelocityValue::FromMm()'],['../structtmc51x0_1_1AccelerationValue.html#ab3c7f482cc44985702fef59cfe135b75',1,'tmc51x0::AccelerationValue::FromMm()']]],
+  ['fromrad_14',['FromRad',['../structtmc51x0_1_1VelocityValue.html#aaaa54b0432cfb7d6af8e9ab508779a6f',1,'tmc51x0::VelocityValue::FromRad()'],['../structtmc51x0_1_1AccelerationValue.html#afd235f9430884ff943d951c144d78c91',1,'tmc51x0::AccelerationValue::FromRad()']]],
+  ['fromrevpersec_15',['FromRevPerSec',['../structtmc51x0_1_1VelocityValue.html#a3894a0c649f669521bf8b3991b7dbd53',1,'tmc51x0::VelocityValue::FromRevPerSec()'],['../structtmc51x0_1_1AccelerationValue.html#ab282ff8a138ec32ac5d0393c03f8bd0b',1,'tmc51x0::AccelerationValue::FromRevPerSec()']]],
+  ['fromrpm_16',['FromRPM',['../structtmc51x0_1_1VelocityValue.html#a1e06a16056ce5235879a18025b8bff93',1,'tmc51x0::VelocityValue']]],
+  ['fromsteps_17',['FromSteps',['../structtmc51x0_1_1VelocityValue.html#a0ca956cadfcc0330d787cd3c3531d591',1,'tmc51x0::VelocityValue::FromSteps()'],['../structtmc51x0_1_1AccelerationValue.html#a3b57bb39e325b92ceae802a97643bfa4',1,'tmc51x0::AccelerationValue::FromSteps()']]]
 ];

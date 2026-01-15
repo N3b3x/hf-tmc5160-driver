@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['optiontype_0',['OptionType',['../main_8cpp.html#a976bded296a67e09242af85291a639d6',1,'main.cpp']]],
-  ['overtempprotection_1',['OverTempProtection',['../namespacetmc51x0.html#a06dfa560a9edb58f6e572b8e904ae79e',1,'tmc51x0']]]
+  ['pairingrejectreason_0',['PairingRejectReason',['../espnow__security_8hpp.html#a5b51642f162ee5a7535b3090a8967aeb',1,'espnow_security.hpp']]],
+  ['pendingstartkind_1',['PendingStartKind',['../main_8cpp.html#a806a56232ad25c740e34fcbbe00ef97a',1,'main.cpp']]],
+  ['platformtype_2',['PlatformType',['../namespacetmc51x0__test__config.html#af9a64c084cd330e868fabfadaea7102a',1,'tmc51x0_test_config']]],
+  ['protoeventtype_3',['ProtoEventType',['../espnow__protocol_8hpp.html#ae3e128b3e7e8c9e272e987f862e1d5ae',1,'espnow_protocol.hpp']]],
+  ['pwmfreewheel_4',['PWMFreewheel',['../namespacetmc51x0.html#ae988d381e96f02ccf88517740b83e5f1',1,'tmc51x0']]]
 ];

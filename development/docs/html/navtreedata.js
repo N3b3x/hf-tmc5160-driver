@@ -93,7 +93,7 @@ var NAVTREE =
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
-        [ "All", "namespacemembers.html", null ],
+        [ "All", "namespacemembers.html", "namespacemembers_dup" ],
         [ "Functions", "namespacemembers_func.html", null ],
         [ "Variables", "namespacemembers_vars.html", null ],
         [ "Typedefs", "namespacemembers_type.html", null ],
@@ -129,22 +129,23 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "TestFramework_8h.html",
-"classFatigueTest_1_1FatigueTestMotion.html#aed80d660e340f615abdeeaad3e9d1ea4",
-"classtmc51x0_1_1Result.html#aac2ec47cb8b220860282c357632bb00a",
-"esp32__tmc51x0__test__config_8hpp.html#af9a64c084cd330e868fabfadaea7102aa37963ffe381c387bd4a29dc8ba37b120",
-"index.html#autotoc_md47",
-"namespaceTaskTiming.html#a28efcb55ae61f55c96d4fef53b5e4c04",
-"namespacetmc51x0.html#afdc019b38a68bc8a317ade8ff4fafa0baac0b147690352ccd55facc0f3468846a",
-"structTestResults.html#a7eddc258a4288ac5f0a36a1008c9d014",
-"structtmc51x0_1_1GlobalConfig.html#ae65c6d9a0d196098717b4727edeb864a",
-"structtmc51x0_1_1SpiStatus.html#aa4ce0ac24fc4558ed4edb77ed93acbbe",
-"structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a9ce4981ebcb7cf056b76c82cdeeec7a4",
-"structtmc51x0__test__config_1_1BoardConfig__TMC51x0__BOB.html#a618ae32344432593510c67b64fe1e1f9",
-"structtmc51x0__test__config_1_1PlatformConfig__CoreDriverTestRig_1_1ReferenceSwitches.html#a24253f2defea151e3dc09a716c473e31",
-"tmc51x0__comm__interface_8hpp.html#a564533944e9fa3223c5db30f0f4106eba4d7aa7898beee1c19acd8d5b20d2793c",
-"tmc51x0__units_8hpp.html",
-"uniontmc51x0_1_1GCONF__Register.html#aab378beca174ccb6e9670311da25c2da",
-"uniontmc51x0_1_1RAMP__STAT__Register.html#afdcffb1685208e729293b9814d566e86"
+"classOptionParser.html#adefa0c88ca33ef5e90b54714f3e9f4bb",
+"classtmc51x0_1_1Result_3_01void_01_4.html#afc53fbd1b251bf950cf569f174003760",
+"espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a8a74f6c559c36ff78e885f75931a7cf2",
+"group__TMC51X0__CommInterface.html",
+"main_8cpp.html#a806a56232ad25c740e34fcbbe00ef97a",
+"namespacetmc51x0.html#a52bd7474fc03fcfde3c7249fea7ea055a41bc94cbd8eebea13ce0491b2ac11b88",
+"spi__daisy__chain__comprehensive__test_8cpp.html#a41fcf4530de550ff6f72008fcded08cc",
+"structtmc51x0_1_1ChopperConfig.html#a5ef340117697ea312c55069850035a9a",
+"structtmc51x0_1_1MotorSpec.html#a0a445408ce2fcca9983f4d580a707076",
+"structtmc51x0_1_1StealthChopConfig.html#ad417fd59a21f94c6bbb62d62917a1763",
+"structtmc51x0_1_1TMC51x0_1_1StallGuard.html#ae74734fcc106d28848936ad94d1f4c00",
+"structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#acf6df6095abbc899befe7818205d981a",
+"structtmc51x0__test__config_1_1TestConfigAccessor_1_1StallGuard.html",
+"tmc51x0__result_8hpp.html#a530ddae090151490fa12a61b9b9b57b3a89fe56ed105248667fe799031276ab23",
+"uniontmc51x0_1_1COOLCONF__Register.html#a0c15003c2bdfb0ae1ffe3e2a8814317a",
+"uniontmc51x0_1_1MSCURACT__Register.html#a8fe02a1615884368f89acf99aa8a7b6e",
+"uniontmc51x0_1_1UartFrame_1_1Frame.html#a33d27f1f0203472b2a5befa0922eef25"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

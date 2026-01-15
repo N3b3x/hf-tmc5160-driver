@@ -1,0 +1,32 @@
+<map id="GetBoundsValidFlag_" name="GetBoundsValidFlag_">
+<area shape="rect" id="Node000001" title="Get bounds validity flag for protocol status updates." alt="" coords="851,131,1011,156"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#aad11fcee042534d6e42aa0b3f79f5b0f" title="FreeRTOS task: perform bounds finding, then start motion." alt="" coords="648,55,803,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="882,128,760,83,762,78,884,123"/>
+<area shape="rect" id="Node000004" href="$main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" title="FreeRTOS task: process inbound ESP&#45;NOW protocol events." alt="" coords="219,155,397,180"/>
+<area shape="poly" id="edge11_Node000001_Node000004" title=" " alt="" coords="837,150,398,167,397,161,836,144"/>
+<area shape="rect" id="Node000008" href="$main_8cpp.html#a05b979a9e80a20ecf074106e268da672" title="Request a START/RESUME with optional bounds caching." alt="" coords="469,105,576,131"/>
+<area shape="poly" id="edge16_Node000001_Node000008" title=" " alt="" coords="836,140,576,124,577,119,837,135"/>
+<area shape="rect" id="Node000010" href="$main_8cpp.html#a39ccc4c53283879fb74a5a5538daa92b" title="Handle STOP command." alt="" coords="677,5,774,31"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="905,123,859,84,801,46,772,33,775,28,804,41,862,80,908,119"/>
+<area shape="rect" id="Node000011" href="$main_8cpp.html#a30da369114ee453fe81be5a919262abf" title="FreeRTOS task: drive the motion update loop and detect completion." alt="" coords="445,207,600,232"/>
+<area shape="poly" id="edge14_Node000001_Node000011" title=" " alt="" coords="887,164,803,190,698,208,601,218,600,212,697,203,802,185,885,159"/>
+<area shape="rect" id="Node000012" href="$main_8cpp.html#a087fdcdd7d4c34c0c22196a7223d96f5" title="FreeRTOS task: periodically send STATUS_UPDATE to the remote controller." alt="" coords="651,257,800,283"/>
+<area shape="poly" id="edge17_Node000001_Node000012" title=" " alt="" coords="906,167,860,203,804,240,763,260,761,255,801,236,857,199,903,163"/>
+<area shape="rect" id="Node000003" href="$main_8cpp.html#a03b28507170724db0aecf3bdf950b30a" title="Run bounds finding independently (without starting test)." alt="" coords="446,56,599,81"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="634,71,600,71,600,65,634,65"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="661,86,575,108,573,103,660,81"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="460,89,447,96,433,108,424,121,414,133,399,146,374,157,371,152,396,141,410,130,419,117,429,105,444,92,458,84"/>
+<area shape="rect" id="Node000006" href="$main_8cpp.html#a26ba4ef0d74eb1cdd930e9ed4f0b2c3d" title="Handle PAIR command." alt="" coords="250,56,366,81"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="432,71,366,71,366,66,432,66"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="45,207,131,232"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="241,186,132,212,131,207,240,181"/>
+<area shape="rect" id="Node000007" href="$classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68" title="Parse and execute a single command line." alt="" coords="5,49,171,89"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="236,71,171,71,171,66,236,66"/>
+<area shape="poly" id="edge8_Node000008_Node000004" title=" " alt="" coords="456,136,365,157,363,152,455,131"/>
+<area shape="rect" id="Node000009" href="$main_8cpp.html#af9a61f18ec0bf52c35280fd8748a0679" title="Handle START command." alt="" coords="259,105,357,131"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="455,121,358,121,358,115,455,115"/>
+<area shape="poly" id="edge10_Node000009_Node000007" title=" " alt="" coords="245,107,170,90,171,85,246,101"/>
+<area shape="poly" id="edge13_Node000010_Node000007" title=" " alt="" coords="663,21,465,28,342,35,219,47,171,55,170,49,218,42,342,30,465,22,663,16"/>
+<area shape="poly" id="edge15_Node000011_Node000005" title=" " alt="" coords="431,222,131,222,131,217,431,217"/>
+<area shape="poly" id="edge18_Node000012_Node000005" title=" " alt="" coords="637,266,131,225,132,220,637,260"/>
+</map>

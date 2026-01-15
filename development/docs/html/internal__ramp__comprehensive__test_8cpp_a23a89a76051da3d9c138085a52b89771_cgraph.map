@@ -1,5 +1,5 @@
 <map id="test_driver_initialization" name="test_driver_initialization">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,42,185,67"/>
+<area shape="rect" id="Node000001" title="Test driver initialization and basic setup verification." alt="" coords="5,42,185,67"/>
 <area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="233,42,373,67"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,52,219,52,219,57,186,57"/>
 <area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="421,5,584,45"/>

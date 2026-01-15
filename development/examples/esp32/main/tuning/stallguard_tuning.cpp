@@ -44,13 +44,13 @@ static const char* TAG = "SGT_Tuning";
 static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
     tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE;
 
-// Tuning Parameters (using RPM for user-friendly units)
-// For Applied Motion 5034-369 NEMA 34 motor:
-// - 60 RPM is above motor resonance zone (smoother operation)
-// - 30 RPM causes vibration due to mid-band resonance (~100 Hz step frequency)
-// - 5 rev/s² is the bounds search acceleration in fatigue test config
-static constexpr float TUNING_VELOCITY_RPM = 60.0f;       // Target velocity for tuning (above resonance)
-static constexpr float TUNING_ACCELERATION_REV_S2 = 5.0f; // Acceleration matching fatigue test config
+// Resolved test configuration for the selected rig (compile-time).
+using TestConfig = tmc51x0_test_config::GetTestConfigForTestRig<SELECTED_TEST_RIG>;
+
+// Tuning Parameters (use test config as source-of-truth).
+// SGT_HOMING is tied to the homing/bounds search velocity and validated across a velocity window.
+static constexpr float TUNING_VELOCITY_RPM = TestConfig::StallGuard::SGT_TUNED_AT_VELOCITY_RPM;
+static constexpr float TUNING_ACCELERATION_REV_S2 = TestConfig::Motion::BOUNDS_SEARCH_ACCEL_REV_S2;
 
 // Unit definitions
 static constexpr tmc51x0::Unit VELOCITY_UNIT = tmc51x0::Unit::RPM;
@@ -125,21 +125,20 @@ extern "C" void app_main(void) {
   // - Target: 60 RPM (above motor resonance zone for smooth operation)
   // - Min velocity: 40 RPM (above resonance, above SG min of 20 RPM)
   // - Max velocity: 120 RPM (2x target for velocity range validation)
-  float min_vel = 40.0f;  // Above resonance zone and SG min velocity
-  float max_vel = 120.0f; // 2x target for range testing
+  float min_vel = TestConfig::StallGuard::TUNING_MIN_VELOCITY_RPM;
+  float max_vel = TestConfig::StallGuard::TUNING_MAX_VELOCITY_RPM;
   
-  // Current reduction factor: reduces current to percentage of current motor current
-  // This helps avoid excessive torque during stall tests and makes StallGuard more responsive to load changes
-  // Recommended: 0.3 (30%) per Duet3D best practices for stall detection
-  // Set to 0.0 to disable current reduction (use nominal current)
-  // Matches TestConfig_AppliedMotion_5034::StallGuard::STALL_DETECTION_CURRENT_FACTOR
-  float current_reduction_factor = 0.3f; // 30% of current motor current
+  // Current reduction factor used during StallGuard tuning:
+  // Use the test rig's configured StallGuard stall-detection current factor so tuning matches your rig.
+  // Set this in test config (per-rig): TestRigConfig<...>::Test::StallGuard::STALL_DETECTION_CURRENT_FACTOR
+  constexpr float current_reduction_factor =
+      tmc51x0_test_config::TestRigConfig<SELECTED_TEST_RIG>::Test::StallGuard::STALL_DETECTION_CURRENT_FACTOR;
   // Using RPM units for velocity parameters, RevPerSec for acceleration (RPM is not valid for acceleration)
   ESP_LOGI(TAG, "Starting AutoTuneStallGuard...");
   ESP_LOGI(TAG, "  Target velocity: %.2f %s", TUNING_VELOCITY_RPM, (VELOCITY_UNIT == tmc51x0::Unit::RPM) ? "RPM" : "units");
   ESP_LOGI(TAG, "  Acceleration: %.2f rev/s²", TUNING_ACCELERATION_REV_S2);
   ESP_LOGI(TAG, "  Velocity range: %.2f - %.2f %s", min_vel, max_vel, (VELOCITY_UNIT == tmc51x0::Unit::RPM) ? "RPM" : "units");
-  ESP_LOGI(TAG, "  Current reduction factor: %.1f%%", current_reduction_factor * 100.0f);
+  ESP_LOGI(TAG, "  Current reduction factor (from test rig): %.1f%%", current_reduction_factor * 100.0f);
   
   auto tune_result = driver.tuning.AutoTuneStallGuard(TUNING_VELOCITY_RPM, result, -63, 20, 
                                                      TUNING_ACCELERATION_REV_S2, min_vel, max_vel, 

@@ -69,16 +69,46 @@ static constexpr uint8_t TEST_TOFF = 5;
 static constexpr tmc51x0::MicrostepResolution TEST_MRES = tmc51x0::MicrostepResolution::MRES_256; // 256 microsteps
 
 // Forward declarations
+/**
+ * @brief Test SPI daisy chain setup and initialization.
+ * @return true if test passed, false otherwise
+ */
 bool test_daisy_chain_setup() noexcept;
+
+/**
+ * @brief Test daisy chain position management and addressing.
+ * @return true if test passed, false otherwise
+ */
 bool test_daisy_chain_position_management() noexcept;
+
+/**
+ * @brief Test multi-motor coordination in daisy chain configuration.
+ * @return true if test passed, false otherwise
+ */
 bool test_multi_motor_coordination() noexcept;
 
 // Helper functions
+/**
+ * @brief Test driver handle for daisy chain tests.
+ * 
+ * @details
+ * Contains the shared SPI interface and a vector of driver instances,
+ * one for each position in the daisy chain.
+ */
 struct TestDriverHandle {
-  std::unique_ptr<Esp32SPI> spi;
-  std::vector<std::unique_ptr<tmc51x0::TMC51x0<Esp32SPI>>> drivers;
+  std::unique_ptr<Esp32SPI> spi;  ///< Shared SPI communication interface
+  std::vector<std::unique_ptr<tmc51x0::TMC51x0<Esp32SPI>>> drivers;  ///< Driver instances for each chain position
 };
 
+/**
+ * @brief Create and initialize daisy chain driver instances.
+ * 
+ * @details
+ * Creates a shared SPI interface and multiple driver instances configured
+ * for daisy chain operation. Each driver is assigned a unique chain position.
+ * 
+ * @return Unique pointer to TestDriverHandle, or nullptr on failure
+ */
 std::unique_ptr<TestDriverHandle> create_daisy_chain_drivers() noexcept {
   auto handle = std::make_unique<TestDriverHandle>();
   

@@ -106,13 +106,13 @@ $(function(){initNavTree('main_8cpp.html',''); initResizable(); });
 
 <p>Fatigue test unit with ESP-NOW communication.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;memory&gt;</code><br />
-<code>#include &lt;algorithm&gt;</code><br />
+<div class="textblock"><code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;cstring&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;cstdarg&gt;</code><br />
+<code>#include &lt;new&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;inttypes.h&gt;</code><br />
 <code>#include &quot;freertos/FreeRTOS.h&quot;</code><br />
@@ -133,18 +133,19 @@ $(function(){initNavTree('main_8cpp.html',''); initResizable(); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for main.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp__incl.svg" width="3371" height="506"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp__incl.svg" width="3274" height="652"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structParsedCommand.html">ParsedCommand</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parsed command structure.  <a href="structParsedCommand.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parsed command structure for UART command processing.  <a href="structParsedCommand.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOptionParser.html">OptionParser</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Option parser for SET command.  <a href="classOptionParser.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOptionParser_1_1OptionDef.html">OptionParser::OptionDef</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Option definition structure for SET command options.  <a href="structOptionParser_1_1OptionDef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUartCommandParser.html">UartCommandParser</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Redesigned UART command parser with word-based commands.  <a href="classUartCommandParser.html#details">More...</a><br /></td></tr>
@@ -155,10 +156,12 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceTaskTiming" id="r_namespaceTaskTiming"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceTaskTiming.html">TaskTiming</a></td></tr>
 <tr class="memdesc:namespaceTaskTiming"><td class="mdescLeft">&#160;</td><td class="mdescRight">Centralized timing constants for FreeRTOS tasks in this application. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceBoundsCache" id="r_namespaceBoundsCache"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceBoundsCache.html">BoundsCache</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceFatigueTest" id="r_namespaceFatigueTest"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFatigueTest.html">FatigueTest</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceCommandOutput" id="r_namespaceCommandOutput"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCommandOutput.html">CommandOutput</a></td></tr>
-<tr class="memdesc:namespaceCommandOutput"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visual output formatting system. <br /></td></tr>
+<tr class="memdesc:namespaceCommandOutput"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visual output formatting system for UART command interface. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
@@ -172,12 +175,19 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5abb1ca97ec761fc37101737ba0aa2e7c5">ERROR</a>
 <br />
  }</td></tr>
+<tr class="memdesc:aa041e16b2a09d6f2a5b8b74582790ed5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal application state machine for the fatigue test unit.  <a href="#aa041e16b2a09d6f2a5b8b74582790ed5">More...</a><br /></td></tr>
 <tr class="separator:aa041e16b2a09d6f2a5b8b74582790ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a806a56232ad25c740e34fcbbe00ef97a" id="r_a806a56232ad25c740e34fcbbe00ef97a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a806a56232ad25c740e34fcbbe00ef97a">PendingStartKind</a> : uint8_t { <a class="el" href="#a806a56232ad25c740e34fcbbe00ef97aab50339a10e1de285ac99d4c3990b8693">NONE</a> = 0
 , <a class="el" href="#a806a56232ad25c740e34fcbbe00ef97aab078ffd28db767c502ac367053f6e0ac">START</a>
 , <a class="el" href="#a806a56232ad25c740e34fcbbe00ef97aabac2aec3ee8d7d495123dbe5ca2fdac9">RESUME</a>
  }</td></tr>
+<tr class="memdesc:a806a56232ad25c740e34fcbbe00ef97a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pending start request type.  <a href="#a806a56232ad25c740e34fcbbe00ef97a">More...</a><br /></td></tr>
 <tr class="separator:a806a56232ad25c740e34fcbbe00ef97a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90f72dece0749919ebf0d39fc2594928" id="r_a90f72dece0749919ebf0d39fc2594928"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a90f72dece0749919ebf0d39fc2594928">BoundsTaskMode</a> : uint8_t { <a class="el" href="#a90f72dece0749919ebf0d39fc2594928a693d8019e2d5f9fca1fb5ba767e14deb">FIND_AND_START</a>
+, <a class="el" href="#a90f72dece0749919ebf0d39fc2594928a3e99edcd7a1e861a5cbd730c256fd7de">FIND_ONLY</a>
+ }</td></tr>
+<tr class="memdesc:a90f72dece0749919ebf0d39fc2594928"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pretty-print motor-current calculated and cached register values under the FatigueTestUnit tag.  <a href="#a90f72dece0749919ebf0d39fc2594928">More...</a><br /></td></tr>
+<tr class="separator:a90f72dece0749919ebf0d39fc2594928"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21e038f5b8958e203d28bc4f18472352" id="r_a21e038f5b8958e203d28bc4f18472352"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a21e038f5b8958e203d28bc4f18472352">CommandType</a> { <br />
 &#160;&#160;<a class="el" href="#a21e038f5b8958e203d28bc4f18472352a8c52684db8f49511e9b44471716bf164">SET</a>
 , <a class="el" href="#a21e038f5b8958e203d28bc4f18472352ab078ffd28db767c502ac367053f6e0ac">START</a>
@@ -185,17 +195,24 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#a21e038f5b8958e203d28bc4f18472352a291554596c183e837f0a6bec3767c891">PAUSE</a>
 , <br />
 &#160;&#160;<a class="el" href="#a21e038f5b8958e203d28bc4f18472352abac2aec3ee8d7d495123dbe5ca2fdac9">RESUME</a>
+, <a class="el" href="#a21e038f5b8958e203d28bc4f18472352a297aa690cb244f9804ad84b7cba60892">BOUNDS</a>
+, <a class="el" href="#a21e038f5b8958e203d28bc4f18472352a553baa5a5ca7bf9fbbd9344220355374">PAIR</a>
 , <a class="el" href="#a21e038f5b8958e203d28bc4f18472352ab5859d8721cfdc0312b2838b9c985bc1">RESET</a>
-, <a class="el" href="#a21e038f5b8958e203d28bc4f18472352a5f241c8c8f985b3c51e05d39cf030f4c">STATUS</a>
+, <br />
+&#160;&#160;<a class="el" href="#a21e038f5b8958e203d28bc4f18472352a5f241c8c8f985b3c51e05d39cf030f4c">STATUS</a>
 , <a class="el" href="#a21e038f5b8958e203d28bc4f18472352a4fc963e213bba362778f5c175eb4d5ff">HELP</a>
 <br />
  }</td></tr>
 <tr class="memdesc:a21e038f5b8958e203d28bc4f18472352"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command types for word-based commands.  <a href="#a21e038f5b8958e203d28bc4f18472352">More...</a><br /></td></tr>
 <tr class="separator:a21e038f5b8958e203d28bc4f18472352"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a976bded296a67e09242af85291a639d6" id="r_a976bded296a67e09242af85291a639d6"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a976bded296a67e09242af85291a639d6">OptionType</a> { <a class="el" href="#a976bded296a67e09242af85291a639d6a1e3e433edd76f91457ea26d0ae88ec2f">FREQUENCY</a>
+<tr class="memitem:a976bded296a67e09242af85291a639d6" id="r_a976bded296a67e09242af85291a639d6"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a976bded296a67e09242af85291a639d6">OptionType</a> { <br />
+&#160;&#160;<a class="el" href="#a976bded296a67e09242af85291a639d6a7b4354bded455eb379e3c764806cda7b">VELOCITY</a>
+, <a class="el" href="#a976bded296a67e09242af85291a639d6aee49d439f92c07271c132560998b73e1">ACCELERATION</a>
 , <a class="el" href="#a976bded296a67e09242af85291a639d6acecbe724c2b17ddafe095ad9d1208778">DWELL</a>
 , <a class="el" href="#a976bded296a67e09242af85291a639d6a297aa690cb244f9804ad84b7cba60892">BOUNDS</a>
-, <a class="el" href="#a976bded296a67e09242af85291a639d6af2d56265e12cb0fcd5828517291b6e21">CYCLES</a>
+, <br />
+&#160;&#160;<a class="el" href="#a976bded296a67e09242af85291a639d6af2d56265e12cb0fcd5828517291b6e21">CYCLES</a>
+<br />
  }</td></tr>
 <tr class="memdesc:a976bded296a67e09242af85291a639d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Option types for SET command.  <a href="#a976bded296a67e09242af85291a639d6">More...</a><br /></td></tr>
 <tr class="separator:a976bded296a67e09242af85291a639d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -214,20 +231,60 @@ Functions</h2></td></tr>
 <tr class="memitem:aad11fcee042534d6e42aa0b3f79f5b0f" id="r_aad11fcee042534d6e42aa0b3f79f5b0f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad11fcee042534d6e42aa0b3f79f5b0f">bounds_finding_task</a> (void *arg)</td></tr>
 <tr class="memdesc:aad11fcee042534d6e42aa0b3f79f5b0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">FreeRTOS task: perform bounds finding, then start motion.  <br /></td></tr>
 <tr class="separator:aad11fcee042534d6e42aa0b3f79f5b0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4eb0a6db10372b5c14aeaf29c2d28b0" id="r_ae4eb0a6db10372b5c14aeaf29c2d28b0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceBoundsCache.html#ae4eb0a6db10372b5c14aeaf29c2d28b0">BoundsCache::AreBoundsValid</a> () noexcept</td></tr>
+<tr class="memdesc:ae4eb0a6db10372b5c14aeaf29c2d28b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if bounds are still valid (within time window and motor energized).  <br /></td></tr>
+<tr class="separator:ae4eb0a6db10372b5c14aeaf29c2d28b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abceb0195eadedd85f49ac59e87ce3da3" id="r_abceb0195eadedd85f49ac59e87ce3da3"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceBoundsCache.html#abceb0195eadedd85f49ac59e87ce3da3">BoundsCache::GetRemainingValiditySec</a> () noexcept</td></tr>
+<tr class="memdesc:abceb0195eadedd85f49ac59e87ce3da3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get remaining time until bounds expire (seconds).  <br /></td></tr>
+<tr class="separator:abceb0195eadedd85f49ac59e87ce3da3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9344d5f823910fee3e630795b94757e" id="r_ac9344d5f823910fee3e630795b94757e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceBoundsCache.html#ac9344d5f823910fee3e630795b94757e">BoundsCache::MarkBoundsFound</a> () noexcept</td></tr>
+<tr class="memdesc:ac9344d5f823910fee3e630795b94757e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark bounds as freshly found and start de-energize timer.  <br /></td></tr>
+<tr class="separator:ac9344d5f823910fee3e630795b94757e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d78113e0bdf7bd30161718b9ace5298" id="r_a4d78113e0bdf7bd30161718b9ace5298"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceBoundsCache.html#a4d78113e0bdf7bd30161718b9ace5298">BoundsCache::CancelDeenergizeTimer</a> () noexcept</td></tr>
+<tr class="memdesc:a4d78113e0bdf7bd30161718b9ace5298"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cancel de-energize timer (e.g., when test starts).  <br /></td></tr>
+<tr class="separator:a4d78113e0bdf7bd30161718b9ace5298"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80342bed32196def75c6df3390744851" id="r_a80342bed32196def75c6df3390744851"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceBoundsCache.html#a80342bed32196def75c6df3390744851">BoundsCache::InvalidateBounds</a> () noexcept</td></tr>
+<tr class="memdesc:a80342bed32196def75c6df3390744851"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalidate bounds (e.g., on config change or explicit request).  <br /></td></tr>
+<tr class="separator:a80342bed32196def75c6df3390744851"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3bf6a5c64c0a59da71f08f4832bda91" id="r_ab3bf6a5c64c0a59da71f08f4832bda91"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceBoundsCache.html#ab3bf6a5c64c0a59da71f08f4832bda91">BoundsCache::SetValidityMinutes</a> (uint32_t minutes) noexcept</td></tr>
+<tr class="memdesc:ab3bf6a5c64c0a59da71f08f4832bda91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the validity window in minutes.  <br /></td></tr>
+<tr class="separator:ab3bf6a5c64c0a59da71f08f4832bda91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a471efef965016231bc4b531bc1c89161" id="r_a471efef965016231bc4b531bc1c89161"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceBoundsCache.html#a471efef965016231bc4b531bc1c89161">BoundsCache::Init</a> () noexcept</td></tr>
+<tr class="memdesc:a471efef965016231bc4b531bc1c89161"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the bounds cache system (create timer).  <br /></td></tr>
+<tr class="separator:a471efef965016231bc4b531bc1c89161"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90cfc923a234123f2a025465fadea26a" id="r_a90cfc923a234123f2a025465fadea26a"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a90cfc923a234123f2a025465fadea26a">GetBoundsValidFlag_</a> () noexcept</td></tr>
+<tr class="memdesc:a90cfc923a234123f2a025465fadea26a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get bounds validity flag for protocol status updates.  <br /></td></tr>
+<tr class="separator:a90cfc923a234123f2a025465fadea26a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa57215c763eed0b2d653533cf6392ffc" id="r_aa57215c763eed0b2d653533cf6392ffc"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa57215c763eed0b2d653533cf6392ffc">ApplyMotionConfigFromSettings_</a> () noexcept</td></tr>
+<tr class="memdesc:aa57215c763eed0b2d653533cf6392ffc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply motion configuration from global settings to the motion controller.  <br /></td></tr>
+<tr class="separator:aa57215c763eed0b2d653533cf6392ffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25a95fc0d7fa9ed58edd599d795ecd86" id="r_a25a95fc0d7fa9ed58edd599d795ecd86"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25a95fc0d7fa9ed58edd599d795ecd86">ShouldCancelBounds</a> ()</td></tr>
+<tr class="memdesc:a25a95fc0d7fa9ed58edd599d795ecd86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cancel callback for library homing/bounds routines.  <br /></td></tr>
 <tr class="separator:a25a95fc0d7fa9ed58edd599d795ecd86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77af09d9386bbe795dc848a935bff12f" id="r_a77af09d9386bbe795dc848a935bff12f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7">TestState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77af09d9386bbe795dc848a935bff12f">ToProtoState</a> (<a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5">InternalState</a> s) noexcept</td></tr>
 <tr class="memdesc:a77af09d9386bbe795dc848a935bff12f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map the internal application state machine to the protocol-visible <code>TestState</code>.  <br /></td></tr>
 <tr class="separator:a77af09d9386bbe795dc848a935bff12f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a037f6f66a2a5cdb66649782d6d16b96e" id="r_a037f6f66a2a5cdb66649782d6d16b96e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a037f6f66a2a5cdb66649782d6d16b96e">MotorStopHold</a> () noexcept</td></tr>
+<tr class="memdesc:a037f6f66a2a5cdb66649782d6d16b96e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Immediately stop motion and enter HOLD mode, but keep motor energized.  <br /></td></tr>
+<tr class="separator:a037f6f66a2a5cdb66649782d6d16b96e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f72921e4deaf387f7444281647ba4b9" id="r_a3f72921e4deaf387f7444281647ba4b9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f72921e4deaf387f7444281647ba4b9">MotorStopHoldDisable</a> () noexcept</td></tr>
 <tr class="memdesc:a3f72921e4deaf387f7444281647ba4b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Immediately stop motion, enter HOLD, and de-energize (disable) the motor.  <br /></td></tr>
 <tr class="separator:a3f72921e4deaf387f7444281647ba4b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4c1f4ebe8d9f2e34a39b419936d8861" id="r_aa4c1f4ebe8d9f2e34a39b419936d8861"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa4c1f4ebe8d9f2e34a39b419936d8861">FatalInitError</a> (const char *what, uint8_t err_code) noexcept</td></tr>
+<tr class="memdesc:aa4c1f4ebe8d9f2e34a39b419936d8861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle fatal initialization errors.  <br /></td></tr>
+<tr class="separator:aa4c1f4ebe8d9f2e34a39b419936d8861"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8aaffec68f13f95314677ea8f112a338" id="r_a8aaffec68f13f95314677ea8f112a338"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8aaffec68f13f95314677ea8f112a338">MotorEnable</a> () noexcept</td></tr>
 <tr class="memdesc:a8aaffec68f13f95314677ea8f112a338"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable (energize) the motor power stage.  <br /></td></tr>
 <tr class="separator:a8aaffec68f13f95314677ea8f112a338"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9129736e9ca5c05905c4c74e75cb969c" id="r_a9129736e9ca5c05905c4c74e75cb969c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9129736e9ca5c05905c4c74e75cb969c">DeenergizeTimerCallback</a> (void *arg)</td></tr>
+<tr class="memdesc:a9129736e9ca5c05905c4c74e75cb969c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timer callback to de-energize motor after bounds validity expires.  <br /></td></tr>
+<tr class="separator:a9129736e9ca5c05905c4c74e75cb969c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05b979a9e80a20ecf074106e268da672" id="r_a05b979a9e80a20ecf074106e268da672"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05b979a9e80a20ecf074106e268da672">RequestStart</a> (<a class="el" href="#a806a56232ad25c740e34fcbbe00ef97a">PendingStartKind</a> kind) noexcept</td></tr>
-<tr class="memdesc:a05b979a9e80a20ecf074106e268da672"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pretty-print motor-current calculated and cached register values under the FatigueTestUnit tag.  <br /></td></tr>
+<tr class="memdesc:a05b979a9e80a20ecf074106e268da672"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request a START/RESUME with optional bounds caching.  <br /></td></tr>
 <tr class="separator:a05b979a9e80a20ecf074106e268da672"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03b28507170724db0aecf3bdf950b30a" id="r_a03b28507170724db0aecf3bdf950b30a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a03b28507170724db0aecf3bdf950b30a">RequestBoundsOnly</a> () noexcept</td></tr>
+<tr class="memdesc:a03b28507170724db0aecf3bdf950b30a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run bounds finding independently (without starting test).  <br /></td></tr>
+<tr class="separator:a03b28507170724db0aecf3bdf950b30a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35d4c27b82242d39e341bf9d35d50a0f" id="r_a35d4c27b82242d39e341bf9d35d50a0f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35d4c27b82242d39e341bf9d35d50a0f">HandleSet</a> (const <a class="el" href="structParsedCommand.html">ParsedCommand</a> &amp;cmd, <a class="el" href="classFatigueTest_1_1FatigueTestMotion.html">FatigueTest::FatigueTestMotion</a> &amp;motion) noexcept</td></tr>
 <tr class="memdesc:a35d4c27b82242d39e341bf9d35d50a0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply SET command options to the motion controller.  <br /></td></tr>
 <tr class="separator:a35d4c27b82242d39e341bf9d35d50a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -252,6 +309,11 @@ Functions</h2></td></tr>
 <tr class="memitem:abda5ef2605b311dad7dc06cc34373d11" id="r_abda5ef2605b311dad7dc06cc34373d11"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abda5ef2605b311dad7dc06cc34373d11">HandleHelp</a> (const std::string &amp;topic) noexcept</td></tr>
 <tr class="memdesc:abda5ef2605b311dad7dc06cc34373d11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle HELP command.  <br /></td></tr>
 <tr class="separator:abda5ef2605b311dad7dc06cc34373d11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2aa671bbf1ab42f094fac2854c3e5fa" id="r_af2aa671bbf1ab42f094fac2854c3e5fa"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af2aa671bbf1ab42f094fac2854c3e5fa">HandlePair</a> () noexcept</td></tr>
+<tr class="separator:af2aa671bbf1ab42f094fac2854c3e5fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26ba4ef0d74eb1cdd930e9ed4f0b2c3d" id="r_a26ba4ef0d74eb1cdd930e9ed4f0b2c3d"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a26ba4ef0d74eb1cdd930e9ed4f0b2c3d">HandleBounds</a> () noexcept</td></tr>
+<tr class="memdesc:a26ba4ef0d74eb1cdd930e9ed4f0b2c3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle PAIR command.  <br /></td></tr>
+<tr class="separator:a26ba4ef0d74eb1cdd930e9ed4f0b2c3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2bed37b24a202a9189a9810ca7bd2ec2" id="r_a2bed37b24a202a9189a9810ca7bd2ec2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCommandOutput.html#a2bed37b24a202a9189a9810ca7bd2ec2">CommandOutput::PrintSuccess</a> (const char *format,...)</td></tr>
 <tr class="memdesc:a2bed37b24a202a9189a9810ca7bd2ec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a success message to the ESP-IDF log.  <br /></td></tr>
 <tr class="separator:a2bed37b24a202a9189a9810ca7bd2ec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -294,6 +356,10 @@ Variables</h2></td></tr>
 <tr class="separator:a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f1e89f6e3a0be599511d4a8cc389305" id="r_a3f1e89f6e3a0be599511d4a8cc389305"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f1e89f6e3a0be599511d4a8cc389305">SELECTED_TEST_RIG</a></td></tr>
 <tr class="separator:a3f1e89f6e3a0be599511d4a8cc389305"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc8be6c298064d21a8293a99e6f0332a" id="r_abc8be6c298064d21a8293a99e6f0332a"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc8be6c298064d21a8293a99e6f0332a">BOUNDS_FINDING_CENTER_OFFSET_DEG</a> = -3.6f</td></tr>
+<tr class="separator:abc8be6c298064d21a8293a99e6f0332a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53713d3df1e41068e727c8d4c10a5cd0" id="r_a53713d3df1e41068e727c8d4c10a5cd0"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53713d3df1e41068e727c8d4c10a5cd0">OSCILLATION_EDGE_BACKOFF_DEG</a> = 3.6f</td></tr>
+<tr class="separator:a53713d3df1e41068e727c8d4c10a5cd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58be5d5ca97b35c1686fa818847f4787" id="r_a58be5d5ca97b35c1686fa818847f4787"><td class="memItemLeft" align="right" valign="top">static constexpr int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceTaskTiming.html#a58be5d5ca97b35c1686fa818847f4787">TaskTiming::LOG_INTERVAL_US</a> = 5'000'000</td></tr>
 <tr class="separator:a58be5d5ca97b35c1686fa818847f4787"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f20df455bc5fda76473928e39ab345c" id="r_a3f20df455bc5fda76473928e39ab345c"><td class="memItemLeft" align="right" valign="top">static constexpr int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceTaskTiming.html#a3f20df455bc5fda76473928e39ab345c">TaskTiming::LOG_INTERVAL_LONG_US</a> = 30'000'000</td></tr>
@@ -316,6 +382,14 @@ Variables</h2></td></tr>
 <tr class="separator:afa1661a2fb6edee5161e88c785b539ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54a3aff038aa4ba3076f44534574404b" id="r_a54a3aff038aa4ba3076f44534574404b"><td class="memItemLeft" align="right" valign="top">static QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54a3aff038aa4ba3076f44534574404b">g_espnowQueue</a> = nullptr</td></tr>
 <tr class="separator:a54a3aff038aa4ba3076f44534574404b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a01805f904263e1fea529d49fe22892" id="r_a5a01805f904263e1fea529d49fe22892"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a01805f904263e1fea529d49fe22892">g_spi_storage</a> [sizeof(<a class="el" href="classEsp32SPI.html">Esp32SPI</a>)]</td></tr>
+<tr class="separator:a5a01805f904263e1fea529d49fe22892"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17622d84c3b600daefdae9272cab0dd5" id="r_a17622d84c3b600daefdae9272cab0dd5"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17622d84c3b600daefdae9272cab0dd5">g_driver_storage</a> [sizeof(<a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt;)]</td></tr>
+<tr class="separator:a17622d84c3b600daefdae9272cab0dd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade4419e04b057391c2f704ae8a940234" id="r_ade4419e04b057391c2f704ae8a940234"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ade4419e04b057391c2f704ae8a940234">g_motion_storage</a> [sizeof(<a class="el" href="classFatigueTest_1_1FatigueTestMotion.html">FatigueTest::FatigueTestMotion</a>)]</td></tr>
+<tr class="separator:ade4419e04b057391c2f704ae8a940234"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14d06632f402f3b8a57900fce7104190" id="r_a14d06632f402f3b8a57900fce7104190"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classEsp32SPI.html">Esp32SPI</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14d06632f402f3b8a57900fce7104190">g_spi</a> = nullptr</td></tr>
+<tr class="separator:a14d06632f402f3b8a57900fce7104190"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdeb1d6db89102aa21a20633088932a7" id="r_acdeb1d6db89102aa21a20633088932a7"><td class="memItemLeft" align="right" valign="top">static volatile <a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5">InternalState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acdeb1d6db89102aa21a20633088932a7">g_state</a> = <a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5aa5daf7f2ebbba4975d61dab1c40188c7">InternalState::IDLE</a></td></tr>
 <tr class="separator:acdeb1d6db89102aa21a20633088932a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a575838eaf0bca40b616abd93aa44c171" id="r_a575838eaf0bca40b616abd93aa44c171"><td class="memItemLeft" align="right" valign="top">static volatile bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a575838eaf0bca40b616abd93aa44c171">g_cancel_bounds</a> = false</td></tr>
@@ -328,10 +402,29 @@ Variables</h2></td></tr>
 <tr class="separator:a33f52b292f8b4fa1829a9ab0708a0d2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1015f103c81a7548604603c04c21901e" id="r_a1015f103c81a7548604603c04c21901e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1015f103c81a7548604603c04c21901e">g_use_stallguard</a> = true</td></tr>
 <tr class="separator:a1015f103c81a7548604603c04c21901e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3bb865236d215d6463a0e2d082bf207" id="r_ab3bb865236d215d6463a0e2d082bf207"><td class="memItemLeft" align="right" valign="top">static volatile <a class="el" href="#a806a56232ad25c740e34fcbbe00ef97a">PendingStartKind</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab3bb865236d215d6463a0e2d082bf207">g_pending_start</a> = <a class="el" href="#a806a56232ad25c740e34fcbbe00ef97aab50339a10e1de285ac99d4c3990b8693">PendingStartKind::NONE</a></td></tr>
-<tr class="separator:ab3bb865236d215d6463a0e2d082bf207"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fdb4d178d778692205547471b5e5857" id="r_a4fdb4d178d778692205547471b5e5857"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4fdb4d178d778692205547471b5e5857">g_enable_sg_monitoring</a> = false</td></tr>
+<tr class="separator:a4fdb4d178d778692205547471b5e5857"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d84da944f2a4e28cad3484c15fe0729" id="r_a8d84da944f2a4e28cad3484c15fe0729"><td class="memItemLeft" align="right" valign="top">static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceBoundsCache.html#a8d84da944f2a4e28cad3484c15fe0729">BoundsCache::DEFAULT_VALIDITY_MINUTES</a> = 2</td></tr>
+<tr class="memdesc:a8d84da944f2a4e28cad3484c15fe0729"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default time window (in minutes) during which bounds remain valid.  <br /></td></tr>
+<tr class="separator:a8d84da944f2a4e28cad3484c15fe0729"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a164478756304083eb77ddced3cabd5f5" id="r_a164478756304083eb77ddced3cabd5f5"><td class="memItemLeft" align="right" valign="top">static volatile int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceBoundsCache.html#a164478756304083eb77ddced3cabd5f5">BoundsCache::g_bounds_timestamp_us</a> = 0</td></tr>
+<tr class="memdesc:a164478756304083eb77ddced3cabd5f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time (microseconds, from esp_timer_get_time) when bounds were last found.  <br /></td></tr>
+<tr class="separator:a164478756304083eb77ddced3cabd5f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a978b3ef04faf46a69d0b27136600b0ec" id="r_a978b3ef04faf46a69d0b27136600b0ec"><td class="memItemLeft" align="right" valign="top">static volatile int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceBoundsCache.html#a978b3ef04faf46a69d0b27136600b0ec">BoundsCache::g_bounds_validity_us</a> = <a class="el" href="namespaceBoundsCache.html#a8d84da944f2a4e28cad3484c15fe0729">DEFAULT_VALIDITY_MINUTES</a> * 60 * 1000000LL</td></tr>
+<tr class="memdesc:a978b3ef04faf46a69d0b27136600b0ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bounds validity window in microseconds.  <br /></td></tr>
+<tr class="separator:a978b3ef04faf46a69d0b27136600b0ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76d9e5e3a876d1830ee676a9e7c9f608" id="r_a76d9e5e3a876d1830ee676a9e7c9f608"><td class="memItemLeft" align="right" valign="top">static volatile bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceBoundsCache.html#a76d9e5e3a876d1830ee676a9e7c9f608">BoundsCache::g_motor_energized_for_bounds</a> = false</td></tr>
+<tr class="memdesc:a76d9e5e3a876d1830ee676a9e7c9f608"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if motor is currently energized from bounds finding.  <br /></td></tr>
+<tr class="separator:a76d9e5e3a876d1830ee676a9e7c9f608"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bb1b6b36000f8341879deba0a2425c0" id="r_a0bb1b6b36000f8341879deba0a2425c0"><td class="memItemLeft" align="right" valign="top">static esp_timer_handle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceBoundsCache.html#a0bb1b6b36000f8341879deba0a2425c0">BoundsCache::g_deenergize_timer</a> = nullptr</td></tr>
+<tr class="memdesc:a0bb1b6b36000f8341879deba0a2425c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timer handle for de-energize timeout.  <br /></td></tr>
+<tr class="separator:a0bb1b6b36000f8341879deba0a2425c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d0550e6576a54512053ed0012f57ae0" id="r_a9d0550e6576a54512053ed0012f57ae0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classFatigueTest_1_1FatigueTestMotion.html">FatigueTest::FatigueTestMotion</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d0550e6576a54512053ed0012f57ae0">g_motion</a> = nullptr</td></tr>
 <tr class="separator:a9d0550e6576a54512053ed0012f57ae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3bb865236d215d6463a0e2d082bf207" id="r_ab3bb865236d215d6463a0e2d082bf207"><td class="memItemLeft" align="right" valign="top">static volatile <a class="el" href="#a806a56232ad25c740e34fcbbe00ef97a">PendingStartKind</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab3bb865236d215d6463a0e2d082bf207">g_pending_start</a> = <a class="el" href="#a806a56232ad25c740e34fcbbe00ef97aab50339a10e1de285ac99d4c3990b8693">PendingStartKind::NONE</a></td></tr>
+<tr class="separator:ab3bb865236d215d6463a0e2d082bf207"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21a844cda3665e0bb629bd82a6678152" id="r_a21a844cda3665e0bb629bd82a6678152"><td class="memItemLeft" align="right" valign="top">static volatile <a class="el" href="#a90f72dece0749919ebf0d39fc2594928">BoundsTaskMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a21a844cda3665e0bb629bd82a6678152">g_bounds_task_mode</a> = <a class="el" href="#a90f72dece0749919ebf0d39fc2594928a693d8019e2d5f9fca1fb5ba767e14deb">BoundsTaskMode::FIND_AND_START</a></td></tr>
+<tr class="separator:a21a844cda3665e0bb629bd82a6678152"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26cca625bfbb1df43ca6f8b4579dc39a" id="r_a26cca625bfbb1df43ca6f8b4579dc39a"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCommandOutput.html#a26cca625bfbb1df43ca6f8b4579dc39a">CommandOutput::BOX_WIDTH</a> = 78</td></tr>
 <tr class="separator:a26cca625bfbb1df43ca6f8b4579dc39a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -340,11 +433,62 @@ Variables</h2></td></tr>
 <p>This is the test unit (receiver) that:</p><ol type="1">
 <li>Receives commands from UI board via ESP-NOW</li>
 <li>Performs bounds finding (stallguard or encoder-based)</li>
-<li>Runs fatigue test with sinusoidal motion</li>
+<li>Runs fatigue test with point-to-point motion</li>
 <li>Sends status updates back to UI board</li>
 </ol>
 <p>Supports both StallGuard2 and encoder-based bounds detection. </p>
 </div><h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a90f72dece0749919ebf0d39fc2594928" name="a90f72dece0749919ebf0d39fc2594928"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90f72dece0749919ebf0d39fc2594928">&#9670;&#160;</a></span>BoundsTaskMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a90f72dece0749919ebf0d39fc2594928">BoundsTaskMode</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pretty-print motor-current calculated and cached register values under the FatigueTestUnit tag. </p>
+<p>The driver already logs these values under the "TMC5160" tag during Initialize(). This function prints the same information again under the application tag so field logs are easier to scan without mixing driver/component tags.</p>
+<p>Values are sourced from the driver’s internal calculated fields and write-only register cache via <code>TMC51x0::GetMotorCurrentDebugInfo()</code> (no duplicated math).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">driver</td><td>Initialized TMC51x0 driver instance.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Begin a START/RESUME sequence by launching cancellable bounds finding.</p>
+<p>This function transitions the application into <code><a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5a7496a1a0e479ed36762983a70d1dbb09" title="Searching for mechanical limits.">InternalState::BOUNDS_FINDING</a></code>, clears any prior bounds, and starts <code>bounds_finding_task</code> in its own FreeRTOS task.</p>
+<p>Bounds are always re-found (even if previously found) to handle the case where mechanical limits may have moved between runs.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">kind</td><td>Whether this request originated from START or RESUME.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>If bounds finding is already running, this call is ignored. </dd>
+<dd>
+Task creation failure transitions to <code>ERROR</code>, stops and disables the motor, and sends an error frame.</dd></dl>
+<p>Mode for bounds finding task. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a90f72dece0749919ebf0d39fc2594928a693d8019e2d5f9fca1fb5ba767e14deb" name="a90f72dece0749919ebf0d39fc2594928a693d8019e2d5f9fca1fb5ba767e14deb"></a>FIND_AND_START&#160;</td><td class="fielddoc"><p>Find bounds then start test (normal START flow) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a90f72dece0749919ebf0d39fc2594928a3e99edcd7a1e861a5cbd730c256fd7de" name="a90f72dece0749919ebf0d39fc2594928a3e99edcd7a1e861a5cbd730c256fd7de"></a>FIND_ONLY&#160;</td><td class="fielddoc"><p>Find bounds only, keep motor energized with timeout. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="a21e038f5b8958e203d28bc4f18472352" name="a21e038f5b8958e203d28bc4f18472352"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a21e038f5b8958e203d28bc4f18472352">&#9670;&#160;</a></span>CommandType</h2>
 
@@ -372,6 +516,8 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a21e038f5b8958e203d28bc4f18472352a615a46af313786fc4e349f34118be111" name="a21e038f5b8958e203d28bc4f18472352a615a46af313786fc4e349f34118be111"></a>STOP&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a21e038f5b8958e203d28bc4f18472352a291554596c183e837f0a6bec3767c891" name="a21e038f5b8958e203d28bc4f18472352a291554596c183e837f0a6bec3767c891"></a>PAUSE&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a21e038f5b8958e203d28bc4f18472352abac2aec3ee8d7d495123dbe5ca2fdac9" name="a21e038f5b8958e203d28bc4f18472352abac2aec3ee8d7d495123dbe5ca2fdac9"></a>RESUME&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a21e038f5b8958e203d28bc4f18472352a297aa690cb244f9804ad84b7cba60892" name="a21e038f5b8958e203d28bc4f18472352a297aa690cb244f9804ad84b7cba60892"></a>BOUNDS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a21e038f5b8958e203d28bc4f18472352a553baa5a5ca7bf9fbbd9344220355374" name="a21e038f5b8958e203d28bc4f18472352a553baa5a5ca7bf9fbbd9344220355374"></a>PAIR&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a21e038f5b8958e203d28bc4f18472352ab5859d8721cfdc0312b2838b9c985bc1" name="a21e038f5b8958e203d28bc4f18472352ab5859d8721cfdc0312b2838b9c985bc1"></a>RESET&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a21e038f5b8958e203d28bc4f18472352a5f241c8c8f985b3c51e05d39cf030f4c" name="a21e038f5b8958e203d28bc4f18472352a5f241c8c8f985b3c51e05d39cf030f4c"></a>STATUS&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a21e038f5b8958e203d28bc4f18472352a4fc963e213bba362778f5c175eb4d5ff" name="a21e038f5b8958e203d28bc4f18472352a4fc963e213bba362778f5c175eb4d5ff"></a>HELP&#160;</td><td class="fielddoc"></td></tr>
@@ -398,12 +544,27 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Internal application state machine for the fatigue test unit. </p>
+<p>Tracks the current operational state of the test unit. This is separate from the protocol-visible <code>TestState</code> which is mapped via <code><a class="el" href="#a77af09d9386bbe795dc848a935bff12f" title="Map the internal application state machine to the protocol-visible TestState.">ToProtoState()</a></code>.</p>
+<p>State transitions:</p><ul>
+<li>IDLE: System initialized, motor disabled, waiting for commands</li>
+<li>BOUNDS_FINDING: Actively searching for mechanical limits</li>
+<li>RUNNING: Fatigue test is active, motor oscillating between bounds</li>
+<li>PAUSED: Test paused, motor holding position but still energized</li>
+<li>ERROR: Error condition detected, motor disabled </li>
+</ul>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa041e16b2a09d6f2a5b8b74582790ed5aa5daf7f2ebbba4975d61dab1c40188c7" name="aa041e16b2a09d6f2a5b8b74582790ed5aa5daf7f2ebbba4975d61dab1c40188c7"></a>IDLE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aa041e16b2a09d6f2a5b8b74582790ed5a7496a1a0e479ed36762983a70d1dbb09" name="aa041e16b2a09d6f2a5b8b74582790ed5a7496a1a0e479ed36762983a70d1dbb09"></a>BOUNDS_FINDING&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aa041e16b2a09d6f2a5b8b74582790ed5a43491564ebcfd38568918efbd6e840fd" name="aa041e16b2a09d6f2a5b8b74582790ed5a43491564ebcfd38568918efbd6e840fd"></a>RUNNING&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aa041e16b2a09d6f2a5b8b74582790ed5a99b2439e63f73ad515f7ab2447a80673" name="aa041e16b2a09d6f2a5b8b74582790ed5a99b2439e63f73ad515f7ab2447a80673"></a>PAUSED&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aa041e16b2a09d6f2a5b8b74582790ed5abb1ca97ec761fc37101737ba0aa2e7c5" name="aa041e16b2a09d6f2a5b8b74582790ed5abb1ca97ec761fc37101737ba0aa2e7c5"></a>ERROR&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa041e16b2a09d6f2a5b8b74582790ed5aa5daf7f2ebbba4975d61dab1c40188c7" name="aa041e16b2a09d6f2a5b8b74582790ed5aa5daf7f2ebbba4975d61dab1c40188c7"></a>IDLE&#160;</td><td class="fielddoc"><p>System idle, motor disabled. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa041e16b2a09d6f2a5b8b74582790ed5a7496a1a0e479ed36762983a70d1dbb09" name="aa041e16b2a09d6f2a5b8b74582790ed5a7496a1a0e479ed36762983a70d1dbb09"></a>BOUNDS_FINDING&#160;</td><td class="fielddoc"><p>Searching for mechanical limits. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa041e16b2a09d6f2a5b8b74582790ed5a43491564ebcfd38568918efbd6e840fd" name="aa041e16b2a09d6f2a5b8b74582790ed5a43491564ebcfd38568918efbd6e840fd"></a>RUNNING&#160;</td><td class="fielddoc"><p>Fatigue test active. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa041e16b2a09d6f2a5b8b74582790ed5a99b2439e63f73ad515f7ab2447a80673" name="aa041e16b2a09d6f2a5b8b74582790ed5a99b2439e63f73ad515f7ab2447a80673"></a>PAUSED&#160;</td><td class="fielddoc"><p>Test paused, motor holding position. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa041e16b2a09d6f2a5b8b74582790ed5abb1ca97ec761fc37101737ba0aa2e7c5" name="aa041e16b2a09d6f2a5b8b74582790ed5abb1ca97ec761fc37101737ba0aa2e7c5"></a>ERROR&#160;</td><td class="fielddoc"><p>Error condition, motor disabled. </p>
+</td></tr>
 </table>
 
 </div>
@@ -430,7 +591,8 @@ Variables</h2></td></tr>
 
 <p>Option types for SET command. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a976bded296a67e09242af85291a639d6a1e3e433edd76f91457ea26d0ae88ec2f" name="a976bded296a67e09242af85291a639d6a1e3e433edd76f91457ea26d0ae88ec2f"></a>FREQUENCY&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a976bded296a67e09242af85291a639d6a7b4354bded455eb379e3c764806cda7b" name="a976bded296a67e09242af85291a639d6a7b4354bded455eb379e3c764806cda7b"></a>VELOCITY&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a976bded296a67e09242af85291a639d6aee49d439f92c07271c132560998b73e1" name="a976bded296a67e09242af85291a639d6aee49d439f92c07271c132560998b73e1"></a>ACCELERATION&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a976bded296a67e09242af85291a639d6acecbe724c2b17ddafe095ad9d1208778" name="a976bded296a67e09242af85291a639d6acecbe724c2b17ddafe095ad9d1208778"></a>DWELL&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a976bded296a67e09242af85291a639d6a297aa690cb244f9804ad84b7cba60892" name="a976bded296a67e09242af85291a639d6a297aa690cb244f9804ad84b7cba60892"></a>BOUNDS&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a976bded296a67e09242af85291a639d6af2d56265e12cb0fcd5828517291b6e21" name="a976bded296a67e09242af85291a639d6af2d56265e12cb0fcd5828517291b6e21"></a>CYCLES&#160;</td><td class="fielddoc"></td></tr>
@@ -457,10 +619,16 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Pending start request type. </p>
+<p>Used to distinguish between a fresh START (reset cycles) and a RESUME (continue from existing cycle count) when processing start requests. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a806a56232ad25c740e34fcbbe00ef97aab50339a10e1de285ac99d4c3990b8693" name="a806a56232ad25c740e34fcbbe00ef97aab50339a10e1de285ac99d4c3990b8693"></a>NONE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a806a56232ad25c740e34fcbbe00ef97aab078ffd28db767c502ac367053f6e0ac" name="a806a56232ad25c740e34fcbbe00ef97aab078ffd28db767c502ac367053f6e0ac"></a>START&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a806a56232ad25c740e34fcbbe00ef97aabac2aec3ee8d7d495123dbe5ca2fdac9" name="a806a56232ad25c740e34fcbbe00ef97aabac2aec3ee8d7d495123dbe5ca2fdac9"></a>RESUME&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a806a56232ad25c740e34fcbbe00ef97aab50339a10e1de285ac99d4c3990b8693" name="a806a56232ad25c740e34fcbbe00ef97aab50339a10e1de285ac99d4c3990b8693"></a>NONE&#160;</td><td class="fielddoc"><p>No pending start request. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a806a56232ad25c740e34fcbbe00ef97aab078ffd28db767c502ac367053f6e0ac" name="a806a56232ad25c740e34fcbbe00ef97aab078ffd28db767c502ac367053f6e0ac"></a>START&#160;</td><td class="fielddoc"><p>Fresh start (reset cycle count) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a806a56232ad25c740e34fcbbe00ef97aabac2aec3ee8d7d495123dbe5ca2fdac9" name="a806a56232ad25c740e34fcbbe00ef97aabac2aec3ee8d7d495123dbe5ca2fdac9"></a>RESUME&#160;</td><td class="fielddoc"><p>Resume from pause (keep cycle count) </p>
+</td></tr>
 </table>
 
 </div>
@@ -496,7 +664,46 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="1387" height="1750"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="847" height="2178"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aa57215c763eed0b2d653533cf6392ffc" name="aa57215c763eed0b2d653533cf6392ffc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa57215c763eed0b2d653533cf6392ffc">&#9670;&#160;</a></span>ApplyMotionConfigFromSettings_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void ApplyMotionConfigFromSettings_ </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Apply motion configuration from global settings to the motion controller. </p>
+<p>Updates the motion controller with current settings from <code>g_settings.test_unit</code>. This includes target cycles, velocity, acceleration, and dwell times.</p>
+<dl class="section note"><dt>Note</dt><dd>This function does nothing if <code>g_motion</code> is null. </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_aa57215c763eed0b2d653533cf6392ffc_cgraph.svg" width="476" height="243"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_aa57215c763eed0b2d653533cf6392ffc_icgraph.svg" width="1094" height="143"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -525,7 +732,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p>FreeRTOS task: perform bounds finding, then start motion. </p>
-<p>This task is launched by <code><a class="el" href="#a05b979a9e80a20ecf074106e268da672" title="Pretty-print motor-current calculated and cached register values under the FatigueTestUnit tag.">RequestStart()</a></code> and exists specifically so that PAUSE/STOP can cancel bounds finding while it is in progress (the bounds finders poll the <code>g_cancel_bounds</code> flag).</p>
+<p>This task is launched by <code><a class="el" href="#a05b979a9e80a20ecf074106e268da672" title="Request a START/RESUME with optional bounds caching.">RequestStart()</a></code> and exists specifically so that PAUSE/STOP can cancel bounds finding while it is in progress (the bounds finders poll the <code>g_cancel_bounds</code> flag).</p>
 <p>Sequence:</p><ul>
 <li>snapshot settings (<code>g_settings.test_unit</code>) and method (<code>g_use_stallguard</code>)</li>
 <li>enable motor power stage</li>
@@ -546,12 +753,49 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_aad11fcee042534d6e42aa0b3f79f5b0f_cgraph.svg" width="967" height="602"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_aad11fcee042534d6e42aa0b3f79f5b0f_cgraph.svg" width="1548" height="1460"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_aad11fcee042534d6e42aa0b3f79f5b0f_icgraph.svg" width="1254" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_aad11fcee042534d6e42aa0b3f79f5b0f_icgraph.svg" width="807" height="143"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a9129736e9ca5c05905c4c74e75cb969c" name="a9129736e9ca5c05905c4c74e75cb969c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9129736e9ca5c05905c4c74e75cb969c">&#9670;&#160;</a></span>DeenergizeTimerCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void DeenergizeTimerCallback </td>
+          <td>(</td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>arg</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Timer callback to de-energize motor after bounds validity expires. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a9129736e9ca5c05905c4c74e75cb969c_cgraph.svg" width="887" height="119"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a9129736e9ca5c05905c4c74e75cb969c_icgraph.svg" width="523" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -595,12 +839,148 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a282cbb4958ae3bf0285b9be28ecb1d79_cgraph.svg" width="1436" height="1180"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a282cbb4958ae3bf0285b9be28ecb1d79_cgraph.svg" width="1599" height="2026"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a282cbb4958ae3bf0285b9be28ecb1d79_icgraph.svg" width="324" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aa4c1f4ebe8d9f2e34a39b419936d8861" name="aa4c1f4ebe8d9f2e34a39b419936d8861"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4c1f4ebe8d9f2e34a39b419936d8861">&#9670;&#160;</a></span>FatalInitError()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void FatalInitError </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>what</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>err_code</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Handle fatal initialization errors. </p>
+<p>Called when a critical initialization step fails. This function:</p><ul>
+<li>Logs the error</li>
+<li>Sets system state to ERROR</li>
+<li>Attempts to notify remote controller (if ESP-NOW is initialized)</li>
+<li>Ensures motor is safely de-energized</li>
+<li>Enters infinite loop to keep system alive for diagnostics</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">what</td><td>Description of what failed </td></tr>
+    <tr><td class="paramname">err_code</td><td>Error code to send to remote controller</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This function never returns. The system remains in error state to allow remote diagnostics and log inspection. </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_aa4c1f4ebe8d9f2e34a39b419936d8861_cgraph.svg" width="802" height="119"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_aa4c1f4ebe8d9f2e34a39b419936d8861_icgraph.svg" width="251" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a90cfc923a234123f2a025465fadea26a" name="a90cfc923a234123f2a025465fadea26a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90cfc923a234123f2a025465fadea26a">&#9670;&#160;</a></span>GetBoundsValidFlag_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static uint8_t GetBoundsValidFlag_ </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get bounds validity flag for protocol status updates. </p>
+<dl class="section return"><dt>Returns</dt><dd>1 if bounds are valid (within time window and motor energized), 0 otherwise </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a90cfc923a234123f2a025465fadea26a_cgraph.svg" width="439" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a90cfc923a234123f2a025465fadea26a_icgraph.svg" width="1016" height="288"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a26ba4ef0d74eb1cdd930e9ed4f0b2c3d" name="a26ba4ef0d74eb1cdd930e9ed4f0b2c3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26ba4ef0d74eb1cdd930e9ed4f0b2c3d">&#9670;&#160;</a></span>HandleBounds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool HandleBounds </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Handle PAIR command. </p>
+<p>Enters pairing mode for 30 seconds to allow a remote controller to securely pair with this test unit. The remote controller must also initiate pairing and know the shared PAIRING_SECRET.</p>
+<dl class="section return"><dt>Returns</dt><dd>true always (pairing mode entered).</dd></dl>
+<p>Handle BOUNDS command - run bounds finding independently.</p>
+<p>Runs bounds finding without starting the test. After bounds are found, the motor stays energized for the configured validity period. If START is requested within this window, bounds finding is skipped.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if bounds finding started; false on error. </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a26ba4ef0d74eb1cdd930e9ed4f0b2c3d_cgraph.svg" width="1468" height="1410"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a26ba4ef0d74eb1cdd930e9ed4f0b2c3d_icgraph.svg" width="340" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -639,12 +1019,47 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_abda5ef2605b311dad7dc06cc34373d11_cgraph.svg" width="398" height="283"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_abda5ef2605b311dad7dc06cc34373d11_cgraph.svg" width="398" height="427"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_abda5ef2605b311dad7dc06cc34373d11_icgraph.svg" width="883" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_abda5ef2605b311dad7dc06cc34373d11_icgraph.svg" width="323" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="af2aa671bbf1ab42f094fac2854c3e5fa" name="af2aa671bbf1ab42f094fac2854c3e5fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2aa671bbf1ab42f094fac2854c3e5fa">&#9670;&#160;</a></span>HandlePair()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool HandlePair </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_af2aa671bbf1ab42f094fac2854c3e5fa_cgraph.svg" width="622" height="483"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_af2aa671bbf1ab42f094fac2854c3e5fa_icgraph.svg" width="316" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -684,12 +1099,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a7be4813339ba1cdf1178b4b5d079c512_cgraph.svg" width="362" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a7be4813339ba1cdf1178b4b5d079c512_cgraph.svg" width="362" height="60"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a7be4813339ba1cdf1178b4b5d079c512_icgraph.svg" width="891" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a7be4813339ba1cdf1178b4b5d079c512_icgraph.svg" width="331" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -729,12 +1144,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_ac1d6f7a1c228ebd547a7e992d2356eb1_cgraph.svg" width="387" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_ac1d6f7a1c228ebd547a7e992d2356eb1_cgraph.svg" width="387" height="60"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_ac1d6f7a1c228ebd547a7e992d2356eb1_icgraph.svg" width="890" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_ac1d6f7a1c228ebd547a7e992d2356eb1_icgraph.svg" width="330" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -774,12 +1189,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_ab522c1d58a0763675c4a3d7256071a13_cgraph.svg" width="376" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_ab522c1d58a0763675c4a3d7256071a13_cgraph.svg" width="376" height="60"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_ab522c1d58a0763675c4a3d7256071a13_icgraph.svg" width="906" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_ab522c1d58a0763675c4a3d7256071a13_icgraph.svg" width="346" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -824,12 +1239,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a35d4c27b82242d39e341bf9d35d50a0f_cgraph.svg" width="372" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a35d4c27b82242d39e341bf9d35d50a0f_cgraph.svg" width="372" height="280"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a35d4c27b82242d39e341bf9d35d50a0f_icgraph.svg" width="874" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a35d4c27b82242d39e341bf9d35d50a0f_icgraph.svg" width="314" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -869,12 +1284,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_af9a61f18ec0bf52c35280fd8748a0679_cgraph.svg" width="1402" height="623"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_af9a61f18ec0bf52c35280fd8748a0679_cgraph.svg" width="1590" height="1440"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_af9a61f18ec0bf52c35280fd8748a0679_icgraph.svg" width="883" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_af9a61f18ec0bf52c35280fd8748a0679_icgraph.svg" width="323" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -914,12 +1329,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_ac11dd858f48b436538b6a2bb4981db1c_cgraph.svg" width="408" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_ac11dd858f48b436538b6a2bb4981db1c_cgraph.svg" width="408" height="468"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_ac11dd858f48b436538b6a2bb4981db1c_icgraph.svg" width="894" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_ac11dd858f48b436538b6a2bb4981db1c_icgraph.svg" width="334" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -959,12 +1374,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a39ccc4c53283879fb74a5a5538daa92b_cgraph.svg" width="688" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a39ccc4c53283879fb74a5a5538daa92b_cgraph.svg" width="944" height="362"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a39ccc4c53283879fb74a5a5538daa92b_icgraph.svg" width="882" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a39ccc4c53283879fb74a5a5538daa92b_icgraph.svg" width="322" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1006,7 +1421,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a30da369114ee453fe81be5a919262abf_cgraph.svg" width="1122" height="379"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a30da369114ee453fe81be5a919262abf_cgraph.svg" width="1523" height="728"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1044,11 +1459,47 @@ Here is the caller graph for this function:</div>
 <dl class="section return"><dt>Returns</dt><dd>true if the motor was enabled successfully; false otherwise.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function does <em>not</em> start motion; it only energizes the driver. </dd>
 <dd>
-Thread-safe: acquires g_driver_mutex internally. </dd></dl>
+Thread-safe: acquires g_driver_mutex internally. </dd>
+<dd>
+Power stabilization delay should be handled by the caller after setting motor to a safe state (HOLD mode with current configured). </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a8aaffec68f13f95314677ea8f112a338_icgraph.svg" width="1406" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a8aaffec68f13f95314677ea8f112a338_icgraph.svg" width="959" height="143"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a037f6f66a2a5cdb66649782d6d16b96e" name="a037f6f66a2a5cdb66649782d6d16b96e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a037f6f66a2a5cdb66649782d6d16b96e">&#9670;&#160;</a></span>MotorStopHold()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void MotorStopHold </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Immediately stop motion and enter HOLD mode, but keep motor energized. </p>
+<p>This is used by PAUSE to stop motion while still delivering hold current. The motor remains energized and will hold position.</p>
+<dl class="section note"><dt>Note</dt><dd>Thread-safe: acquires g_driver_mutex internally. </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a037f6f66a2a5cdb66649782d6d16b96e_icgraph.svg" width="491" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1079,9 +1530,9 @@ Here is the caller graph for this function:</div>
 <p>Immediately stop motion, enter HOLD, and de-energize (disable) the motor. </p>
 <p>This is the hard-stop safety primitive used by:</p><ul>
 <li>STOP command handling (always)</li>
-<li>PAUSE handling (always)</li>
 <li>cancellation of bounds finding</li>
 <li>completion of a finite-cycle run</li>
+<li>bounds cache timeout (de-energize to prevent heating)</li>
 </ul>
 <p>It is safe to call multiple times.</p>
 <dl class="section warning"><dt>Warning</dt><dd>This disables the power stage. After this, the axis may be back-drivable. </dd></dl>
@@ -1091,7 +1542,46 @@ Thread-safe: acquires g_driver_mutex internally. </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a3f72921e4deaf387f7444281647ba4b9_icgraph.svg" width="1536" height="170"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a3f72921e4deaf387f7444281647ba4b9_icgraph.svg" width="1059" height="391"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a03b28507170724db0aecf3bdf950b30a" name="a03b28507170724db0aecf3bdf950b30a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03b28507170724db0aecf3bdf950b30a">&#9670;&#160;</a></span>RequestBoundsOnly()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool RequestBoundsOnly </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Run bounds finding independently (without starting test). </p>
+<p>After bounds are found, motor stays energized for the configured validity period. If START is requested within this window, bounds finding is skipped.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if bounds finding was started, false if already running or error </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a03b28507170724db0aecf3bdf950b30a_cgraph.svg" width="1750" height="1432"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a03b28507170724db0aecf3bdf950b30a_icgraph.svg" width="604" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1119,36 +1609,23 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Pretty-print motor-current calculated and cached register values under the FatigueTestUnit tag. </p>
-<p>The driver already logs these values under the "TMC5160" tag during Initialize(). This function prints the same information again under the application tag so field logs are easier to scan without mixing driver/component tags.</p>
-<p>Values are sourced from the driver’s internal calculated fields and write-only register cache via <code>TMC51x0::GetMotorCurrentDebugInfo()</code> (no duplicated math).</p>
+<p>Request a START/RESUME with optional bounds caching. </p>
+<p>If bounds were recently found (within validity window) and motor is still energized, bounds finding is skipped and motion starts immediately. Otherwise, bounds finding runs first.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">driver</td><td>Initialized TMC51x0 driver instance.</td></tr>
+    <tr><td class="paramname">kind</td><td>START or RESUME request type </td></tr>
   </table>
   </dd>
 </dl>
-<p>Begin a START/RESUME sequence by launching cancellable bounds finding.</p>
-<p>This function transitions the application into <code><a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5a7496a1a0e479ed36762983a70d1dbb09">InternalState::BOUNDS_FINDING</a></code>, clears any prior bounds, and starts <code>bounds_finding_task</code> in its own FreeRTOS task.</p>
-<p>Bounds are always re-found (even if previously found) to handle the case where mechanical limits may have moved between runs.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">kind</td><td>Whether this request originated from START or RESUME.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>If bounds finding is already running, this call is ignored. </dd>
-<dd>
-Task creation failure transitions to <code>ERROR</code>, stops and disables the motor, and sends an error frame. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a05b979a9e80a20ecf074106e268da672_cgraph.svg" width="1122" height="602"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a05b979a9e80a20ecf074106e268da672_cgraph.svg" width="1703" height="1526"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a05b979a9e80a20ecf074106e268da672_icgraph.svg" width="1051" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a05b979a9e80a20ecf074106e268da672_icgraph.svg" width="558" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1175,10 +1652,15 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Cancel callback for library homing/bounds routines. </p>
+<p>This function is called by the TMC51x0 library's bounds finding routines to check if the operation should be cancelled. The library polls this function during bounds finding to allow graceful cancellation.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if bounds finding should be cancelled, false otherwise</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Signature must be a free function pointer for library compatibility. </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a25a95fc0d7fa9ed58edd599d795ecd86_icgraph.svg" width="1460" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a25a95fc0d7fa9ed58edd599d795ecd86_icgraph.svg" width="1014" height="143"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1217,7 +1699,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a087fdcdd7d4c34c0c22196a7223d96f5_cgraph.svg" width="692" height="166"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a087fdcdd7d4c34c0c22196a7223d96f5_cgraph.svg" width="948" height="215"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1302,7 +1784,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a5a8d7cdba17444119b8f942be87ffe68_cgraph.svg" width="2135" height="959"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a5a8d7cdba17444119b8f942be87ffe68_cgraph.svg" width="388" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1313,6 +1795,28 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="abc8be6c298064d21a8293a99e6f0332a" name="abc8be6c298064d21a8293a99e6f0332a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc8be6c298064d21a8293a99e6f0332a">&#9670;&#160;</a></span>BOUNDS_FINDING_CENTER_OFFSET_DEG</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr float BOUNDS_FINDING_CENTER_OFFSET_DEG = -3.6f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a33f52b292f8b4fa1829a9ab0708a0d2f" name="a33f52b292f8b4fa1829a9ab0708a0d2f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a33f52b292f8b4fa1829a9ab0708a0d2f">&#9670;&#160;</a></span>g_bounds_found</h2>
 
@@ -1346,6 +1850,28 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">TaskHandle_t g_bounds_task_handle = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a21a844cda3665e0bb629bd82a6678152" name="a21a844cda3665e0bb629bd82a6678152"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21a844cda3665e0bb629bd82a6678152">&#9670;&#160;</a></span>g_bounds_task_mode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile <a class="el" href="#a90f72dece0749919ebf0d39fc2594928">BoundsTaskMode</a> g_bounds_task_mode = <a class="el" href="#a90f72dece0749919ebf0d39fc2594928a693d8019e2d5f9fca1fb5ba767e14deb">BoundsTaskMode::FIND_AND_START</a></td>
         </tr>
       </table>
   </td>
@@ -1445,6 +1971,50 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a17622d84c3b600daefdae9272cab0dd5" name="a17622d84c3b600daefdae9272cab0dd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17622d84c3b600daefdae9272cab0dd5">&#9670;&#160;</a></span>g_driver_storage</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t g_driver_storage[sizeof(<a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt;)]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4fdb4d178d778692205547471b5e5857" name="a4fdb4d178d778692205547471b5e5857"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fdb4d178d778692205547471b5e5857">&#9670;&#160;</a></span>g_enable_sg_monitoring</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool g_enable_sg_monitoring = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a54a3aff038aa4ba3076f44534574404b" name="a54a3aff038aa4ba3076f44534574404b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a54a3aff038aa4ba3076f44534574404b">&#9670;&#160;</a></span>g_espnowQueue</h2>
 
@@ -1478,6 +2048,28 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classFatigueTest_1_1FatigueTestMotion.html">FatigueTest::FatigueTestMotion</a>* g_motion = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ade4419e04b057391c2f704ae8a940234" name="ade4419e04b057391c2f704ae8a940234"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade4419e04b057391c2f704ae8a940234">&#9670;&#160;</a></span>g_motion_storage</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t g_motion_storage[sizeof(<a class="el" href="classFatigueTest_1_1FatigueTestMotion.html">FatigueTest::FatigueTestMotion</a>)]</td>
         </tr>
       </table>
   </td>
@@ -1533,6 +2125,50 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a14d06632f402f3b8a57900fce7104190" name="a14d06632f402f3b8a57900fce7104190"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14d06632f402f3b8a57900fce7104190">&#9670;&#160;</a></span>g_spi</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classEsp32SPI.html">Esp32SPI</a>* g_spi = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5a01805f904263e1fea529d49fe22892" name="a5a01805f904263e1fea529d49fe22892"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a01805f904263e1fea529d49fe22892">&#9670;&#160;</a></span>g_spi_storage</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t g_spi_storage[sizeof(<a class="el" href="classEsp32SPI.html">Esp32SPI</a>)]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="acdeb1d6db89102aa21a20633088932a7" name="acdeb1d6db89102aa21a20633088932a7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acdeb1d6db89102aa21a20633088932a7">&#9670;&#160;</a></span>g_state</h2>
 
@@ -1571,6 +2207,28 @@ Here is the caller graph for this function:</div>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a53713d3df1e41068e727c8d4c10a5cd0" name="a53713d3df1e41068e727c8d4c10a5cd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53713d3df1e41068e727c8d4c10a5cd0">&#9670;&#160;</a></span>OSCILLATION_EDGE_BACKOFF_DEG</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr float OSCILLATION_EDGE_BACKOFF_DEG = 3.6f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

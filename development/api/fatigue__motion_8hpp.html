@@ -97,8 +97,7 @@ $(function(){initNavTree('fatigue__motion_8hpp.html',''); initResizable(); });
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle"><div class="title">fatigue_motion.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -115,7 +114,7 @@ $(function(){initNavTree('fatigue__motion_8hpp.html',''); initResizable(); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for fatigue_motion.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="fatigue__motion_8hpp__incl.svg" width="2646" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="fatigue__motion_8hpp__incl.svg" width="2703" height="579"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -131,6 +130,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unified fatigue test motion controller.  <a href="classFatigueTest_1_1FatigueTestMotion.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFatigueTest_1_1FatigueTestMotion_1_1Status.html">FatigueTest::FatigueTestMotion::Status</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structFatigueTest_1_1FatigueTestMotion_1_1Status.html" title="Status structure containing current motion controller state.">Status</a> structure containing current motion controller state.  <a href="structFatigueTest_1_1FatigueTestMotion_1_1Status.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -142,17 +142,10 @@ Namespaces</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:a5107205eb56db2c01968c161856f69e9" id="r_a5107205eb56db2c01968c161856f69e9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5107205eb56db2c01968c161856f69e9">FATIGUE_MOTION_HEADER_INCLUDED</a></td></tr>
 <tr class="separator:a5107205eb56db2c01968c161856f69e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a48eb0e8a2a7aba7fca309c9c65aed80b" id="r_a48eb0e8a2a7aba7fca309c9c65aed80b"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFatigueTest.html#a48eb0e8a2a7aba7fca309c9c65aed80b">FatigueTest::AngleUnit</a> { <a class="el" href="namespaceFatigueTest.html#a48eb0e8a2a7aba7fca309c9c65aed80bafee20551b6d06fd83aa56a486e557307">FatigueTest::DEGREES</a>
-, <a class="el" href="namespaceFatigueTest.html#a48eb0e8a2a7aba7fca309c9c65aed80baea3c82298fac1c706a4076b4aff53015">FatigueTest::RADIANS</a>
- }</td></tr>
-<tr class="separator:a48eb0e8a2a7aba7fca309c9c65aed80b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Unified fatigue test motion controller. </p>
-<p>Extracted and improved from fatigue_test_encoder.cpp and fatigue_test_stallguard.cpp Provides sinusoidal back-and-forth motion between bounds for fatigue testing. </p>
+<p>Provides point-to-point back-and-forth motion between bounds for fatigue testing. Uses direct VMAX/AMAX control like <a class="el" href="bounds__finding__test_8cpp.html" title="Standalone Bounds Finding Test Tool.">bounds_finding_test.cpp</a> for smooth, predictable motion. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a5107205eb56db2c01968c161856f69e9" name="a5107205eb56db2c01968c161856f69e9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5107205eb56db2c01968c161856f69e9">&#9670;&#160;</a></span>FATIGUE_MOTION_HEADER_INCLUDED</h2>

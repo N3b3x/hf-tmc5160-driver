@@ -1,23 +1,23 @@
 <map id="esp32_tmc51x0_test_config.hpp" name="esp32_tmc51x0_test_config.hpp">
-<area shape="rect" id="Node000001" title="ESP32 GPIO pin configuration and compile&#45;time configuration for TMC51x0 driver (TMC5130 &amp; TMC5160)" alt="" coords="729,5,886,45"/>
+<area shape="rect" id="Node000001" title="ESP32 GPIO pin configuration and compile&#45;time configuration for TMC51x0 driver (TMC5130 &amp; TMC5160)" alt="" coords="631,5,789,45"/>
 <area shape="rect" id="Node000002" href="$abn__encoder__reader_8cpp.html" title="ABN Encoder Position Reader &#45; Continuously reads encoder position." alt="" coords="5,101,185,126"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="715,37,480,61,198,96,154,103,153,98,198,91,480,56,715,32"/>
-<area shape="rect" id="Node000003" href="$bounds__finder_8hpp.html" title="Abstract interface for bounds finding strategies." alt="" coords="209,101,349,126"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="715,41,551,64,362,96,327,103,326,98,362,91,550,59,715,36"/>
-<area shape="rect" id="Node000006" href="$bounds__finding__test_8cpp.html" title="Standalone Bounds Finding Test Tool." alt="" coords="374,101,553,126"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="719,51,510,103,508,98,718,46"/>
-<area shape="rect" id="Node000007" href="$internal__ramp__comprehensive__test_8cpp.html" title="Comprehensive internal ramp test suite for TMC51x0 (single motor)" alt="" coords="577,93,797,133"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="771,56,715,95,712,91,768,51"/>
-<area shape="rect" id="Node000008" href="$internal__ramp__sinusoidal_8cpp.html" title="Sinusoidal motion pattern example for TMC51x0 stepper motor driver." alt="" coords="822,101,1035,126"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="847,51,914,98,911,103,844,56"/>
-<area shape="rect" id="Node000009" href="$main_8cpp.html" title="Fatigue test unit with ESP&#45;NOW communication." alt="" coords="1059,101,1142,126"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="894,46,1048,91,1070,98,1068,103,1047,96,892,52"/>
-<area shape="rect" id="Node000010" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="1166,93,1398,133"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="900,41,1178,91,1177,96,899,46"/>
-<area shape="rect" id="Node000011" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Current Reduction." alt="" coords="1422,101,1585,126"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="900,32,1132,55,1410,91,1451,98,1450,103,1410,96,1132,60,899,37"/>
-<area shape="rect" id="Node000004" href="$bounds__finder__encoder_8cpp.html" title="Encoder&#45;based bounds finder implementation." alt="" coords="65,181,264,207"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="253,136,183,183,180,179,250,132"/>
-<area shape="rect" id="Node000005" href="$bounds__finder__stallguard_8cpp.html" title="StallGuard2&#45;based bounds finder implementation." alt="" coords="288,181,500,207"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="309,132,379,179,376,183,306,136"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="618,40,425,64,198,96,155,103,155,98,198,91,424,59,618,35"/>
+<area shape="rect" id="Node000003" href="$bounds__finding__test_8cpp.html" title="Standalone Bounds Finding Test Tool." alt="" coords="210,101,389,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="619,48,355,103,354,98,618,43"/>
+<area shape="rect" id="Node000004" href="$fatigue__motion__impl_8hpp.html" title="Full implementation of FatigueTestMotion class." alt="" coords="413,101,599,126"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="653,53,534,103,532,98,651,48"/>
+<area shape="rect" id="Node000006" href="$main_8cpp.html" title="Fatigue test unit with ESP&#45;NOW communication." alt="" coords="530,255,613,280"/>
+<area shape="poly" id="edge9_Node000001_Node000006" title=" " alt="" coords="690,58,666,95,614,187,579,256,575,253,609,184,661,92,686,55"/>
+<area shape="rect" id="Node000007" href="$internal__ramp__comprehensive__test_8cpp.html" title="Comprehensive internal ramp test suite for TMC51x0 (single motor)" alt="" coords="675,93,895,133"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="738,54,770,91,766,95,734,58"/>
+<area shape="rect" id="Node000008" href="$internal__ramp__sinusoidal_8cpp.html" title="Sinusoidal motion pattern example for TMC51x0 stepper motor driver." alt="" coords="919,101,1133,126"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="793,46,985,98,983,103,792,52"/>
+<area shape="rect" id="Node000009" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="1157,93,1389,133"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="802,38,1157,92,1156,97,802,43"/>
+<area shape="rect" id="Node000010" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Current Reduction." alt="" coords="1413,101,1575,126"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="803,30,1072,52,1236,69,1401,91,1442,98,1441,103,1400,96,1236,75,1071,57,802,35"/>
+<area shape="rect" id="Node000005" href="$fatigue__motion_8hpp.html" title="Unified fatigue test motion controller." alt="" coords="431,181,581,207"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="500,140,502,181,497,181,495,140"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="512,168,510,126,515,126,517,167"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="528,215,563,253,559,256,524,219"/>
 </map>

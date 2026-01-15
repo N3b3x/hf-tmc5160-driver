@@ -1,0 +1,16 @@
+<map id="FatalInitError" name="FatalInitError">
+<area shape="rect" id="Node000001" title="Handle fatal initialization errors." alt="" coords="5,35,111,60"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#a3f72921e4deaf387f7444281647ba4b9" title="Immediately stop motion, enter HOLD, and de&#45;energize (disable) the motor." alt="" coords="160,5,328,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,36,150,30,150,35,111,42"/>
+<area shape="rect" id="Node000003" href="$namespaceEspNowReceiver.html#a0e573039958657010ab3722b0eb6cfd8" title="Send ERROR message." alt="" coords="159,55,329,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="111,53,146,58,145,63,110,58"/>
+<area shape="rect" id="Node000004" href="$espnow__receiver_8cpp.html#af394d93fad387639cb5c155cfd037163" title=" " alt="" coords="377,63,500,88"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="330,73,363,73,363,78,330,78"/>
+<area shape="rect" id="Node000005" href="$espnow__receiver_8cpp.html#a38ae343ba91aa93458377b341e1d9e4a" title=" " alt="" coords="705,39,796,64"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="500,68,691,53,692,58,500,73"/>
+<area shape="rect" id="Node000006" href="$espnow__receiver_8cpp.html#a6eb0186376c3ffd1080f65ee4c597d9f" title=" " alt="" coords="548,88,657,113"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="500,82,534,87,534,93,500,87"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="641,85,698,66,700,71,642,90"/>
+<area shape="rect" id="Node000007" href="$espnow__protocol_8hpp.html#afa7c999b99fb5716dc9d60af3a151d11" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="706,88,795,113"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="658,98,692,98,692,103,658,103"/>
+</map>

@@ -296,6 +296,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a4d45170c0d7fb1027827bec0f403b59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae24512cf1719f91ae6cfa895079596ae" id="r_ae24512cf1719f91ae6cfa895079596ae"><td class="memItemLeft" align="right" valign="top">spi_device_handle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae24512cf1719f91ae6cfa895079596ae">device_handle_</a></td></tr>
 <tr class="separator:ae24512cf1719f91ae6cfa895079596ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79b8e9f8678aa4b2bec19212636ccf31" id="r_a79b8e9f8678aa4b2bec19212636ccf31"><td class="memItemLeft" align="right" valign="top">SemaphoreHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a79b8e9f8678aa4b2bec19212636ccf31">spi_mutex_</a> {nullptr}</td></tr>
+<tr class="separator:a79b8e9f8678aa4b2bec19212636ccf31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0920d2de140e51d54c94b5e01eed3fa4" id="r_a0920d2de140e51d54c94b5e01eed3fa4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0920d2de140e51d54c94b5e01eed3fa4">initialized_</a></td></tr>
 <tr class="separator:a0920d2de140e51d54c94b5e01eed3fa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13a97f1e317116fbe4ad7c5f6f55881f" id="r_a13a97f1e317116fbe4ad7c5f6f55881f"><td class="memItemLeft" align="right" valign="top">gpio_num_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13a97f1e317116fbe4ad7c5f6f55881f">pin_mapping_</a> [16] {}</td></tr>
@@ -352,7 +354,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">spi.SetPinMapping(<a class="code hl_enumvalue" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eba096538213f7a62873f3e7f37801559de">tmc51x0::TMC51x0CtrlPin::DIAG0</a>, GPIO_NUM_XX); <span class="comment">// DIAG0 pin</span></div>
 <div class="line">spi.SetPinMapping(<a class="code hl_enumvalue" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eba7ba8a2a766732ac17ad64ec3826f0281">tmc51x0::TMC51x0CtrlPin::DIAG1</a>, GPIO_NUM_XX); <span class="comment">// DIAG1 pin</span></div>
 <div class="line">spi.SetPinMapping(<a class="code hl_enumvalue" href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106ebafcea8677932f698f06799f81e024d7ab">tmc51x0::TMC51x0CtrlPin::CLK</a>, GPIO_NUM_10);   <span class="comment">// CLK pin (GPIO10)</span></div>
-<div class="ttc" id="aclassEsp32SPI_html"><div class="ttname"><a href="classEsp32SPI.html">Esp32SPI</a></div><div class="ttdoc">ESP32 SPI implementation of TMC51x0 communication interface.</div><div class="ttdef"><b>Definition</b> esp32_tmc51x0_bus.hpp:119</div></div>
+<div class="ttc" id="aclassEsp32SPI_html"><div class="ttname"><a href="classEsp32SPI.html">Esp32SPI</a></div><div class="ttdoc">ESP32 SPI implementation of TMC51x0 communication interface.</div><div class="ttdef"><b>Definition</b> esp32_tmc51x0_bus.hpp:120</div></div>
 <div class="ttc" id="anamespacetmc51x0_html_a564533944e9fa3223c5db30f0f4106eba096538213f7a62873f3e7f37801559de"><div class="ttname"><a href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eba096538213f7a62873f3e7f37801559de">tmc51x0::TMC51x0CtrlPin::DIAG0</a></div><div class="ttdeci">@ DIAG0</div></div>
 <div class="ttc" id="anamespacetmc51x0_html_a564533944e9fa3223c5db30f0f4106eba7ba8a2a766732ac17ad64ec3826f0281"><div class="ttname"><a href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106eba7ba8a2a766732ac17ad64ec3826f0281">tmc51x0::TMC51x0CtrlPin::DIAG1</a></div><div class="ttdeci">@ DIAG1</div></div>
 <div class="ttc" id="anamespacetmc51x0_html_a564533944e9fa3223c5db30f0f4106ebafcea8677932f698f06799f81e024d7ab"><div class="ttname"><a href="namespacetmc51x0.html#a564533944e9fa3223c5db30f0f4106ebafcea8677932f698f06799f81e024d7ab">tmc51x0::TMC51x0CtrlPin::CLK</a></div><div class="ttdeci">@ CLK</div></div>
@@ -1647,6 +1649,28 @@ Concurrency / RTOS Notes (Important)</h2>
       <table class="memname">
         <tr>
           <td class="memname">gpio_num_t Esp32SPI::sclk_pin_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a79b8e9f8678aa4b2bec19212636ccf31" name="a79b8e9f8678aa4b2bec19212636ccf31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79b8e9f8678aa4b2bec19212636ccf31">&#9670;&#160;</a></span>spi_mutex_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SemaphoreHandle_t Esp32SPI::spi_mutex_ {nullptr}</td>
         </tr>
       </table>
   </td>

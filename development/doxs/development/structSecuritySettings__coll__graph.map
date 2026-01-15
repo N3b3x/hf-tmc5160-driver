@@ -1,0 +1,5 @@
+<map id="SecuritySettings" name="SecuritySettings">
+<area shape="rect" id="Node000001" title="Security settings stored in NVS." alt="" coords="5,93,133,119"/>
+<area shape="rect" id="Node000002" href="$structApprovedPeer.html" title="Information about an approved (paired) peer." alt="" coords="13,5,126,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="72,45,72,93,67,93,67,45"/>
+</map>

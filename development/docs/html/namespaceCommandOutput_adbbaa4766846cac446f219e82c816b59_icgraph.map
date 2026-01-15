@@ -1,28 +1,31 @@
 <map id="CommandOutput::PrintInfo" name="CommandOutput::PrintInfo">
-<area shape="rect" id="Node000001" title="Print an informational message to the ESP&#45;IDF log." alt="" coords="992,129,1188,155"/>
-<area shape="rect" id="Node000002" href="$main_8cpp.html#abda5ef2605b311dad7dc06cc34373d11" title="Handle HELP command." alt="" coords="812,5,911,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1062,123,1009,83,943,44,910,32,912,27,945,40,1012,79,1065,119"/>
-<area shape="rect" id="Node000007" href="$main_8cpp.html#a7be4813339ba1cdf1178b4b5d079c512" title="Handle PAUSE command (UART path)." alt="" coords="808,55,915,80"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1040,127,943,94,906,83,908,77,945,89,1042,122"/>
-<area shape="rect" id="Node000008" href="$main_8cpp.html#ab522c1d58a0763675c4a3d7256071a13" title="Handle RESUME command (UART path)." alt="" coords="801,104,922,129"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="978,132,922,126,923,121,979,127"/>
-<area shape="rect" id="Node000009" href="$main_8cpp.html#a35d4c27b82242d39e341bf9d35d50a0f" title="Apply SET command options to the motion controller." alt="" coords="817,153,906,179"/>
-<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="979,156,907,164,906,159,978,151"/>
-<area shape="rect" id="Node000010" href="$main_8cpp.html#af9a61f18ec0bf52c35280fd8748a0679" title="Handle START command." alt="" coords="812,203,911,228"/>
-<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="1039,162,945,193,905,205,903,200,943,187,1037,157"/>
-<area shape="rect" id="Node000011" href="$classUartCommandParser.html#ab0e959fc2d336b5fbfb2dfafb901b167" title="Convert tokens into a structured ParsedCommand." alt="" coords="779,253,944,293"/>
-<area shape="poly" id="edge14_Node000001_Node000011" title=" " alt="" coords="1063,165,1009,203,945,242,917,255,915,250,943,237,1006,198,1059,161"/>
-<area shape="rect" id="Node000003" href="$classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68" title="Parse and execute a single command line." alt="" coords="565,122,731,162"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="800,36,780,44,719,84,672,124,668,120,716,80,777,40,798,31"/>
-<area shape="rect" id="Node000004" href="$classUartCommandParser.html#a867cccdf009c2a69f1edf9a02f50c984" title="Poll the UART for input and process complete lines." alt="" coords="343,122,517,162"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="552,145,518,145,518,139,552,139"/>
-<area shape="rect" id="Node000005" href="$main_8cpp.html#a5a8d7cdba17444119b8f942be87ffe68" title="FreeRTOS task: poll UART and process commands." alt="" coords="140,129,295,155"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="329,145,295,145,295,139,329,139"/>
-<area shape="rect" id="Node000006" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,129,92,155"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="126,145,92,145,92,139,126,139"/>
-<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="802,87,780,94,698,124,697,119,778,89,801,81"/>
-<area shape="poly" id="edge9_Node000008_Node000003" title=" " alt="" coords="787,128,731,135,731,130,786,123"/>
-<area shape="poly" id="edge11_Node000009_Node000003" title=" " alt="" coords="803,162,731,154,731,149,803,157"/>
-<area shape="poly" id="edge13_Node000010_Node000003" title=" " alt="" coords="804,201,778,193,700,165,702,160,780,187,805,196"/>
-<area shape="poly" id="edge15_Node000011_Node000003" title=" " alt="" coords="792,249,777,242,718,202,671,164,674,160,722,198,780,237,794,244"/>
+<area shape="rect" id="Node000001" title="Print an informational message to the ESP&#45;IDF log." alt="" coords="432,203,628,228"/>
+<area shape="poly" id="edge18_Node000001_Node000001" title=" " alt="" coords="571,193,560,185,530,181,506,183,493,188,490,194,497,201,493,204,485,194,489,184,505,178,530,176,562,180,574,189"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#a26ba4ef0d74eb1cdd930e9ed4f0b2c3d" title="Handle PAIR command." alt="" coords="243,5,359,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="512,192,461,118,425,78,383,44,359,33,361,28,385,40,428,75,465,115,517,189"/>
+<area shape="rect" id="Node000004" href="$main_8cpp.html#abda5ef2605b311dad7dc06cc34373d11" title="Handle HELP command." alt="" coords="252,55,351,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="506,194,453,144,419,117,383,94,350,80,352,75,385,89,422,112,457,140,510,191"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html#af2aa671bbf1ab42f094fac2854c3e5fa" title=" " alt="" coords="255,104,347,129"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="494,198,443,171,383,143,347,131,348,126,385,138,445,166,497,194"/>
+<area shape="rect" id="Node000006" href="$main_8cpp.html#a7be4813339ba1cdf1178b4b5d079c512" title="Handle PAUSE command (UART path)." alt="" coords="248,153,355,179"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="457,202,354,180,355,175,458,197"/>
+<area shape="rect" id="Node000007" href="$main_8cpp.html#ab522c1d58a0763675c4a3d7256071a13" title="Handle RESUME command (UART path)." alt="" coords="241,203,362,228"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="418,218,363,218,363,213,418,213"/>
+<area shape="rect" id="Node000008" href="$main_8cpp.html#a35d4c27b82242d39e341bf9d35d50a0f" title="Apply SET command options to the motion controller." alt="" coords="257,252,346,277"/>
+<area shape="poly" id="edge11_Node000001_Node000008" title=" " alt="" coords="458,234,347,258,345,253,457,228"/>
+<area shape="rect" id="Node000009" href="$main_8cpp.html#af9a61f18ec0bf52c35280fd8748a0679" title="Handle START command." alt="" coords="252,301,351,327"/>
+<area shape="poly" id="edge13_Node000001_Node000009" title=" " alt="" coords="496,237,444,264,385,291,349,304,347,299,383,286,442,259,493,232"/>
+<area shape="rect" id="Node000010" href="$main_8cpp.html#ac11dd858f48b436538b6a2bb4981db1c" title="Handle STATUS command." alt="" coords="247,351,356,376"/>
+<area shape="poly" id="edge15_Node000001_Node000010" title=" " alt="" coords="510,240,456,290,422,317,385,340,356,353,354,348,383,336,419,313,453,286,506,236"/>
+<area shape="rect" id="Node000011" href="$classUartCommandParser.html#ab0e959fc2d336b5fbfb2dfafb901b167" title="Convert tokens into a structured ParsedCommand." alt="" coords="219,401,384,441"/>
+<area shape="poly" id="edge17_Node000001_Node000011" title=" " alt="" coords="516,241,464,313,427,354,386,390,363,403,360,398,382,385,423,350,459,310,511,238"/>
+<area shape="rect" id="Node000003" href="$classUartCommandParser.html#a2b7090fe7118485c639dce94074b6e68" title="Parse and execute a single command line." alt="" coords="5,171,171,211"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="232,38,220,44,182,74,150,109,104,173,99,170,146,106,179,70,217,40,229,33"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="240,85,220,94,159,133,112,173,108,169,156,129,217,89,238,80"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="243,136,220,143,138,174,137,169,218,138,241,131"/>
+<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="235,177,171,184,170,179,234,171"/>
+<area shape="poly" id="edge10_Node000007_Node000003" title=" " alt="" coords="226,210,171,203,171,198,227,204"/>
+<area shape="poly" id="edge12_Node000008_Node000003" title=" " alt="" coords="244,250,218,242,140,214,142,209,220,237,245,245"/>
+<area shape="poly" id="edge14_Node000009_Node000003" title=" " alt="" coords="238,300,217,291,157,252,109,214,113,209,160,248,220,286,240,295"/>
+<area shape="poly" id="edge16_Node000010_Node000003" title=" " alt="" coords="233,349,217,340,179,310,146,276,100,213,104,210,150,272,183,306,220,336,235,344"/>
 </map>

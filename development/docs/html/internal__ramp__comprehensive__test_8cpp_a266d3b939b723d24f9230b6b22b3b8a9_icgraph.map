@@ -2,87 +2,87 @@
 <area shape="rect" id="Node000001" title="Verify mode pins match expected communication mode." alt="" coords="599,1024,736,1049"/>
 <area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="411,1024,551,1049"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="585,1039,551,1039,551,1034,585,1034"/>
-<area shape="rect" id="Node000003" href="$internal__ramp__comprehensive__test_8cpp.html#a2600323d32e9fbcfbfda121e6f3c6fe3" title=" " alt="" coords="152,5,351,31"/>
+<area shape="rect" id="Node000003" href="$internal__ramp__comprehensive__test_8cpp.html#a2600323d32e9fbcfbfda121e6f3c6fe3" title="Test chopper configuration (SpreadCycle mode)." alt="" coords="152,5,351,31"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="475,1010,464,806,440,497,424,341,405,204,384,99,373,64,361,44,348,33,351,29,365,40,377,62,389,98,411,203,429,341,445,497,469,805,481,1010"/>
-<area shape="rect" id="Node000005" href="$internal__ramp__comprehensive__test_8cpp.html#abf373a5fd5def37b9d63bf25e8fc94ac" title=" " alt="" coords="151,55,352,80"/>
+<area shape="rect" id="Node000005" href="$internal__ramp__comprehensive__test_8cpp.html#abf373a5fd5def37b9d63bf25e8fc94ac" title="Test CoolStep configuration and operation." alt="" coords="151,55,352,80"/>
 <area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="475,1010,463,815,438,522,422,374,404,244,383,146,372,113,361,93,348,82,351,78,365,90,377,110,388,144,409,243,428,374,444,522,468,814,481,1010"/>
-<area shape="rect" id="Node000006" href="$internal__ramp__comprehensive__test_8cpp.html#abf50153a25393e591674fa4265d68e83" title=" " alt="" coords="175,104,327,129"/>
+<area shape="rect" id="Node000006" href="$internal__ramp__comprehensive__test_8cpp.html#abf50153a25393e591674fa4265d68e83" title="Test motor current control (IRUN/IHOLD settings)." alt="" coords="175,104,327,129"/>
 <area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="477,1010,477,836,473,711,464,575,451,439,429,314,416,259,400,211,382,172,361,143,345,130,327,123,329,118,348,126,365,139,386,169,405,209,421,257,435,313,456,438,470,574,478,711,482,836,482,1010"/>
-<area shape="rect" id="Node000007" href="$internal__ramp__comprehensive__test_8cpp.html#a67ef8fb2678b38b29d6f9ab94c7c1ab8" title=" " alt="" coords="157,153,346,179"/>
+<area shape="rect" id="Node000007" href="$internal__ramp__comprehensive__test_8cpp.html#a67ef8fb2678b38b29d6f9ab94c7c1ab8" title="Test DCStep configuration and operation." alt="" coords="157,153,346,179"/>
 <area shape="poly" id="edge8_Node000002_Node000007" title=" " alt="" coords="477,1010,475,845,470,726,461,598,447,470,427,352,413,301,398,256,380,219,361,192,345,179,348,175,365,188,385,217,403,254,418,300,432,351,453,469,467,597,476,726,480,844,482,1010"/>
-<area shape="rect" id="Node000008" href="$internal__ramp__comprehensive__test_8cpp.html#a4a7a005e64bc36445451aaa71589810c" title=" " alt="" coords="160,203,343,228"/>
+<area shape="rect" id="Node000008" href="$internal__ramp__comprehensive__test_8cpp.html#a4a7a005e64bc36445451aaa71589810c" title="Test encoder deviation detection and warnings." alt="" coords="160,203,343,228"/>
 <area shape="poly" id="edge10_Node000002_Node000008" title=" " alt="" coords="477,1011,473,854,459,622,444,502,424,392,396,301,379,267,361,241,341,227,345,223,365,237,384,264,401,300,429,390,449,501,464,621,479,854,482,1010"/>
-<area shape="rect" id="Node000009" href="$internal__ramp__comprehensive__test_8cpp.html#a23a89a76051da3d9c138085a52b89771" title=" " alt="" coords="161,252,341,277"/>
+<area shape="rect" id="Node000009" href="$internal__ramp__comprehensive__test_8cpp.html#a23a89a76051da3d9c138085a52b89771" title="Test driver initialization and basic setup verification." alt="" coords="161,252,341,277"/>
 <area shape="poly" id="edge12_Node000002_Node000009" title=" " alt="" coords="476,1010,472,861,455,644,441,533,421,430,394,346,378,314,361,291,340,276,343,271,365,287,383,312,399,344,426,429,446,532,461,644,477,861,482,1010"/>
-<area shape="rect" id="Node000010" href="$internal__ramp__comprehensive__test_8cpp.html#add07f5d8e3a37544bb52a9d170db7bd3" title=" " alt="" coords="182,301,321,327"/>
+<area shape="rect" id="Node000010" href="$internal__ramp__comprehensive__test_8cpp.html#add07f5d8e3a37544bb52a9d170db7bd3" title="Test driver status reading (GSTAT, DRV_STATUS)." alt="" coords="182,301,321,327"/>
 <area shape="poly" id="edge14_Node000002_Node000010" title=" " alt="" coords="476,1010,470,871,452,668,438,564,418,469,392,392,377,362,361,340,342,326,320,319,322,314,345,322,365,336,382,359,397,390,423,468,443,563,458,668,475,870,481,1010"/>
-<area shape="rect" id="Node000011" href="$internal__ramp__comprehensive__test_8cpp.html#ae1de7e22448d5fad374b98efa76dc88e" title=" " alt="" coords="175,351,327,376"/>
+<area shape="rect" id="Node000011" href="$internal__ramp__comprehensive__test_8cpp.html#ae1de7e22448d5fad374b98efa76dc88e" title="Test motor enable/disable functionality." alt="" coords="175,351,327,376"/>
 <area shape="poly" id="edge16_Node000002_Node000011" title=" " alt="" coords="476,1010,468,880,449,692,434,596,415,509,390,437,376,410,361,389,345,377,326,370,328,365,348,373,365,385,381,407,395,435,420,507,439,595,455,692,473,879,481,1010"/>
-<area shape="rect" id="Node000012" href="$internal__ramp__comprehensive__test_8cpp.html#a94bc2799c4b3cfdd41dc058e3d7c535e" title=" " alt="" coords="152,400,351,425"/>
+<area shape="rect" id="Node000012" href="$internal__ramp__comprehensive__test_8cpp.html#a94bc2799c4b3cfdd41dc058e3d7c535e" title="Test encoder configuration and setup." alt="" coords="152,400,351,425"/>
 <area shape="poly" id="edge18_Node000002_Node000012" title=" " alt="" coords="475,1010,466,888,446,716,430,628,411,549,388,483,375,459,361,440,344,428,347,423,365,436,379,456,393,481,417,547,436,627,451,715,471,887,481,1010"/>
-<area shape="rect" id="Node000013" href="$internal__ramp__comprehensive__test_8cpp.html#acac19df35f0375adabdec9b20f2e45a4" title=" " alt="" coords="169,450,334,490"/>
+<area shape="rect" id="Node000013" href="$internal__ramp__comprehensive__test_8cpp.html#acac19df35f0375adabdec9b20f2e45a4" title="Test encoder position reading." alt="" coords="169,450,334,490"/>
 <area shape="poly" id="edge20_Node000002_Node000013" title=" " alt="" coords="474,1011,463,901,441,749,425,671,407,601,385,543,361,504,333,485,336,480,365,500,390,540,412,599,430,670,446,748,468,900,480,1010"/>
-<area shape="rect" id="Node000014" href="$internal__ramp__comprehensive__test_8cpp.html#a76b85489050cc8941b086f0f7c8dceb7" title=" " alt="" coords="162,515,341,540"/>
+<area shape="rect" id="Node000014" href="$internal__ramp__comprehensive__test_8cpp.html#a76b85489050cc8941b086f0f7c8dceb7" title="Test encoder resolution setting." alt="" coords="162,515,341,540"/>
 <area shape="poly" id="edge22_Node000002_Node000014" title=" " alt="" coords="474,1011,461,909,438,772,423,702,405,639,384,587,361,553,339,539,342,535,365,549,389,585,410,637,428,701,444,771,467,909,479,1010"/>
-<area shape="rect" id="Node000015" href="$internal__ramp__comprehensive__test_8cpp.html#a39a4ce51fa7ae53e0c966b2357eb143f" title=" " alt="" coords="164,564,339,589"/>
+<area shape="rect" id="Node000015" href="$internal__ramp__comprehensive__test_8cpp.html#a39a4ce51fa7ae53e0c966b2357eb143f" title="Test factory and OTP configuration reading." alt="" coords="164,564,339,589"/>
 <area shape="poly" id="edge24_Node000002_Node000015" title=" " alt="" coords="473,1011,459,919,435,796,420,734,402,678,382,633,361,603,338,588,341,583,365,599,387,630,407,676,425,733,440,795,465,919,479,1010"/>
-<area shape="rect" id="Node000016" href="$internal__ramp__comprehensive__test_8cpp.html#a9214bc15c23f41310ff37adb6ff2d577" title=" " alt="" coords="160,613,343,639"/>
+<area shape="rect" id="Node000016" href="$internal__ramp__comprehensive__test_8cpp.html#a9214bc15c23f41310ff37adb6ff2d577" title="Test freewheeling mode configuration." alt="" coords="160,613,343,639"/>
 <area shape="poly" id="edge26_Node000002_Node000016" title=" " alt="" coords="477,1010,474,939,459,841,444,790,423,739,396,692,361,652,342,639,345,635,364,648,400,689,428,737,449,788,464,840,479,938,483,1010"/>
-<area shape="rect" id="Node000017" href="$internal__ramp__comprehensive__test_8cpp.html#a18321790bb3a72af955b7b75fb4c1e2c" title=" " alt="" coords="158,663,345,688"/>
+<area shape="rect" id="Node000017" href="$internal__ramp__comprehensive__test_8cpp.html#a18321790bb3a72af955b7b75fb4c1e2c" title="Test global configuration settings (GCONF register)." alt="" coords="158,663,345,688"/>
 <area shape="poly" id="edge28_Node000002_Node000017" title=" " alt="" coords="476,1011,470,947,452,863,437,819,418,775,392,736,361,701,344,690,347,685,364,697,397,732,422,773,442,817,457,862,475,946,481,1010"/>
-<area shape="rect" id="Node000018" href="$internal__ramp__comprehensive__test_8cpp.html#abbcd09f1b6292b7bc2c3faaf1c7bc6b4" title=" " alt="" coords="181,712,321,737"/>
+<area shape="rect" id="Node000018" href="$internal__ramp__comprehensive__test_8cpp.html#abbcd09f1b6292b7bc2c3faaf1c7bc6b4" title="Test global scaler configuration." alt="" coords="181,712,321,737"/>
 <area shape="poly" id="edge30_Node000002_Node000018" title=" " alt="" coords="474,1011,465,956,445,885,431,848,412,812,389,779,361,751,342,739,320,732,322,727,344,734,364,747,393,776,416,809,435,846,450,883,470,955,479,1010"/>
-<area shape="rect" id="Node000019" href="$internal__ramp__comprehensive__test_8cpp.html#aa0938b7faa0c76b5902a7e1b29085cc2" title=" " alt="" coords="193,761,309,787"/>
+<area shape="rect" id="Node000019" href="$internal__ramp__comprehensive__test_8cpp.html#aa0938b7faa0c76b5902a7e1b29085cc2" title="Test GPIO pin reading functionality." alt="" coords="193,761,309,787"/>
 <area shape="poly" id="edge32_Node000002_Node000019" title=" " alt="" coords="472,1011,460,965,438,907,406,849,385,823,361,800,336,787,309,779,310,774,338,782,364,796,389,819,410,846,443,905,465,963,477,1010"/>
-<area shape="rect" id="Node000020" href="$internal__ramp__comprehensive__test_8cpp.html#aee105fad1f3169ed7d839101d4d97199" title=" " alt="" coords="171,811,332,836"/>
+<area shape="rect" id="Node000020" href="$internal__ramp__comprehensive__test_8cpp.html#aee105fad1f3169ed7d839101d4d97199" title="Test latched position reading (index pulse)." alt="" coords="171,811,332,836"/>
 <area shape="poly" id="edge34_Node000002_Node000020" title=" " alt="" coords="468,1012,453,975,431,930,400,886,361,850,331,835,333,830,364,845,404,883,435,928,458,972,473,1010"/>
-<area shape="rect" id="Node000021" href="$internal__ramp__comprehensive__test_8cpp.html#a5569bd50d3ac5eb42a316de8b409b776" title=" " alt="" coords="191,860,311,885"/>
+<area shape="rect" id="Node000021" href="$internal__ramp__comprehensive__test_8cpp.html#a5569bd50d3ac5eb42a316de8b409b776" title="Test lost steps detection and reading." alt="" coords="191,860,311,885"/>
 <area shape="poly" id="edge36_Node000002_Node000021" title=" " alt="" coords="464,1014,423,955,394,924,361,899,337,888,311,881,313,876,339,883,364,894,398,920,427,952,468,1011"/>
-<area shape="rect" id="Node000022" href="$internal__ramp__comprehensive__test_8cpp.html#a17006fb977eb94bf04572df33e608020" title=" " alt="" coords="151,909,351,935"/>
+<area shape="rect" id="Node000022" href="$internal__ramp__comprehensive__test_8cpp.html#a17006fb977eb94bf04572df33e608020" title="Test microstep diagnostics (counter, time between microsteps)." alt="" coords="151,909,351,935"/>
 <area shape="poly" id="edge38_Node000002_Node000022" title=" " alt="" coords="455,1017,414,982,362,950,327,937,328,932,364,945,417,978,459,1013"/>
-<area shape="rect" id="Node000023" href="$internal__ramp__comprehensive__test_8cpp.html#a2f3cb28a54242bbafdd722bf67b51faa" title=" " alt="" coords="167,959,336,999"/>
+<area shape="rect" id="Node000023" href="$internal__ramp__comprehensive__test_8cpp.html#a2f3cb28a54242bbafdd722bf67b51faa" title="Test microstep lookup table configuration." alt="" coords="167,959,336,999"/>
 <area shape="poly" id="edge40_Node000002_Node000023" title=" " alt="" coords="415,1023,331,1002,332,997,416,1018"/>
-<area shape="rect" id="Node000024" href="$internal__ramp__comprehensive__test_8cpp.html#ac2492c143f7a22b95d1cf254cfb57d1b" title=" " alt="" coords="152,1024,351,1049"/>
+<area shape="rect" id="Node000024" href="$internal__ramp__comprehensive__test_8cpp.html#ac2492c143f7a22b95d1cf254cfb57d1b" title="Test mode change speed thresholds (PWM_THRS, COOL_THRS, HIGH_THRS)." alt="" coords="152,1024,351,1049"/>
 <area shape="poly" id="edge42_Node000002_Node000024" title=" " alt="" coords="397,1039,351,1039,351,1034,397,1034"/>
-<area shape="rect" id="Node000025" href="$internal__ramp__comprehensive__test_8cpp.html#acdf7e542cbf22ddd24d4042951fa2b67" title=" " alt="" coords="167,1074,335,1114"/>
+<area shape="rect" id="Node000025" href="$internal__ramp__comprehensive__test_8cpp.html#acdf7e542cbf22ddd24d4042951fa2b67" title="Test motor parameter configuration and settings." alt="" coords="167,1074,335,1114"/>
 <area shape="poly" id="edge44_Node000002_Node000025" title=" " alt="" coords="416,1055,332,1077,331,1071,415,1050"/>
-<area shape="rect" id="Node000026" href="$internal__ramp__comprehensive__test_8cpp.html#afddbb1b19d6b88fad9494ce5cc1db5e1" title=" " alt="" coords="146,1139,357,1164"/>
+<area shape="rect" id="Node000026" href="$internal__ramp__comprehensive__test_8cpp.html#afddbb1b19d6b88fad9494ce5cc1db5e1" title="Test motor setup from specifications (automatic configuration)." alt="" coords="146,1139,357,1164"/>
 <area shape="poly" id="edge46_Node000002_Node000026" title=" " alt="" coords="459,1061,417,1096,364,1128,328,1141,327,1136,362,1124,414,1091,455,1057"/>
-<area shape="rect" id="Node000027" href="$internal__ramp__comprehensive__test_8cpp.html#a81e807a7bc8478f9d708c1ad6dcfc1e3" title=" " alt="" coords="168,1188,335,1213"/>
+<area shape="rect" id="Node000027" href="$internal__ramp__comprehensive__test_8cpp.html#a81e807a7bc8478f9d708c1ad6dcfc1e3" title="Test offset calibration reading." alt="" coords="168,1188,335,1213"/>
 <area shape="poly" id="edge48_Node000002_Node000027" title=" " alt="" coords="468,1062,427,1121,398,1152,364,1178,336,1190,334,1186,361,1173,394,1148,423,1117,464,1059"/>
-<area shape="rect" id="Node000028" href="$internal__ramp__comprehensive__test_8cpp.html#a6364147dbcc92fb5296fd902ffec39c7" title=" " alt="" coords="191,1237,312,1263"/>
+<area shape="rect" id="Node000028" href="$internal__ramp__comprehensive__test_8cpp.html#a6364147dbcc92fb5296fd902ffec39c7" title="Test open load detection functionality." alt="" coords="191,1237,312,1263"/>
 <area shape="poly" id="edge50_Node000002_Node000028" title=" " alt="" coords="473,1063,458,1100,435,1145,404,1189,364,1227,339,1240,313,1248,311,1242,337,1235,361,1222,400,1186,430,1142,453,1098,468,1061"/>
-<area shape="rect" id="Node000029" href="$internal__ramp__comprehensive__test_8cpp.html#af31e0aecf0e69b0d3284ef827320b550" title=" " alt="" coords="169,1287,333,1327"/>
+<area shape="rect" id="Node000029" href="$internal__ramp__comprehensive__test_8cpp.html#af31e0aecf0e69b0d3284ef827320b550" title="Test overtemperature protection status reading." alt="" coords="169,1287,333,1327"/>
 <area shape="poly" id="edge52_Node000002_Node000029" title=" " alt="" coords="476,1064,463,1109,441,1167,409,1225,388,1252,364,1276,335,1294,332,1289,361,1272,384,1249,404,1222,437,1164,458,1108,471,1062"/>
-<area shape="rect" id="Node000030" href="$internal__ramp__comprehensive__test_8cpp.html#adbcbddae5b1c1982d16f67c3c3763946" title=" " alt="" coords="175,1352,328,1377"/>
+<area shape="rect" id="Node000030" href="$internal__ramp__comprehensive__test_8cpp.html#adbcbddae5b1c1982d16f67c3c3763946" title="Test phase current reading (microstep current diagnostics)." alt="" coords="175,1352,328,1377"/>
 <area shape="poly" id="edge54_Node000002_Node000030" title=" " alt="" coords="480,1063,471,1121,452,1196,437,1236,418,1275,394,1310,364,1341,348,1352,329,1360,327,1355,345,1348,361,1337,390,1307,413,1272,432,1234,447,1195,466,1120,475,1062"/>
-<area shape="rect" id="Node000031" href="$internal__ramp__comprehensive__test_8cpp.html#ae8324f4478508efe6117929833d3d4c8" title=" " alt="" coords="172,1401,331,1427"/>
+<area shape="rect" id="Node000031" href="$internal__ramp__comprehensive__test_8cpp.html#ae8324f4478508efe6117929833d3d4c8" title="Test position control (target position, current position)." alt="" coords="172,1401,331,1427"/>
 <area shape="poly" id="edge56_Node000002_Node000031" title=" " alt="" coords="482,1063,476,1130,459,1218,444,1265,424,1311,398,1354,364,1391,349,1401,332,1409,330,1404,346,1397,361,1387,393,1350,419,1309,439,1263,454,1217,471,1129,476,1063"/>
-<area shape="rect" id="Node000032" href="$internal__ramp__comprehensive__test_8cpp.html#adcdf821c81673273181752fa85fb1ffe" title=" " alt="" coords="188,1451,315,1476"/>
+<area shape="rect" id="Node000032" href="$internal__ramp__comprehensive__test_8cpp.html#adcdf821c81673273181752fa85fb1ffe" title="Test PWM scale reading (PWM_AUTO, PWM_SCALE_SUM)." alt="" coords="188,1451,315,1476"/>
 <area shape="poly" id="edge58_Node000002_Node000032" title=" " alt="" coords="483,1063,480,1138,465,1239,451,1294,430,1347,401,1397,364,1440,341,1455,315,1463,314,1458,339,1450,361,1436,397,1394,425,1345,446,1292,460,1238,475,1137,477,1063"/>
-<area shape="rect" id="Node000033" href="$internal__ramp__comprehensive__test_8cpp.html#a1d9b1bffb30dd547a3ce93f8fa5ccc89" title=" " alt="" coords="182,1500,321,1525"/>
+<area shape="rect" id="Node000033" href="$internal__ramp__comprehensive__test_8cpp.html#a1d9b1bffb30dd547a3ce93f8fa5ccc89" title="Test ramp mode switching (POSITIONING, VELOCITY_POS, VELOCITY_NEG, HOLD)." alt="" coords="182,1500,321,1525"/>
 <area shape="poly" id="edge60_Node000002_Node000033" title=" " alt="" coords="479,1063,465,1158,441,1286,426,1350,408,1409,387,1457,365,1489,345,1503,322,1511,320,1506,342,1498,361,1485,383,1454,403,1407,420,1349,436,1284,460,1157,473,1062"/>
-<area shape="rect" id="Node000034" href="$internal__ramp__comprehensive__test_8cpp.html#a264a26cca5257487e044755be5d90b64" title=" " alt="" coords="170,1550,333,1590"/>
+<area shape="rect" id="Node000034" href="$internal__ramp__comprehensive__test_8cpp.html#a264a26cca5257487e044755be5d90b64" title="Test ramp parameter configuration (speed, acceleration, etc.)." alt="" coords="170,1550,333,1590"/>
 <area shape="poly" id="edge62_Node000002_Node000034" title=" " alt="" coords="479,1063,467,1167,443,1309,428,1381,409,1447,389,1501,365,1538,350,1550,334,1559,332,1554,347,1546,361,1535,384,1499,404,1445,423,1380,438,1308,461,1166,474,1063"/>
-<area shape="rect" id="Node000035" href="$internal__ramp__comprehensive__test_8cpp.html#a968d09e9b8b112e5ff4b56c190c1f179" title=" " alt="" coords="166,1615,337,1640"/>
+<area shape="rect" id="Node000035" href="$internal__ramp__comprehensive__test_8cpp.html#a968d09e9b8b112e5ff4b56c190c1f179" title="Test ramp parameters (VSTART, VSTOP, first acceleration, etc.)." alt="" coords="166,1615,337,1640"/>
 <area shape="poly" id="edge64_Node000002_Node000035" title=" " alt="" coords="480,1063,470,1179,449,1341,434,1424,415,1499,392,1561,379,1586,364,1604,338,1621,335,1617,361,1600,374,1583,387,1559,410,1498,428,1423,444,1340,465,1178,475,1063"/>
-<area shape="rect" id="Node000036" href="$internal__ramp__comprehensive__test_8cpp.html#aeee27dc8cea5ae970e534b7cba17ce8e" title=" " alt="" coords="169,1665,334,1705"/>
+<area shape="rect" id="Node000036" href="$internal__ramp__comprehensive__test_8cpp.html#aeee27dc8cea5ae970e534b7cba17ce8e" title="Test reference switch configuration and homing." alt="" coords="169,1665,334,1705"/>
 <area shape="poly" id="edge66_Node000002_Node000036" title=" " alt="" coords="481,1063,471,1187,451,1364,435,1454,416,1537,393,1606,379,1633,365,1653,336,1673,333,1669,361,1649,375,1630,388,1604,411,1536,430,1453,445,1363,466,1186,475,1063"/>
-<area shape="rect" id="Node000037" href="$internal__ramp__comprehensive__test_8cpp.html#afc4946e009df1458d86c324ea206cf63" title=" " alt="" coords="181,1729,321,1769"/>
+<area shape="rect" id="Node000037" href="$internal__ramp__comprehensive__test_8cpp.html#afc4946e009df1458d86c324ea206cf63" title="Test register read/write operations." alt="" coords="181,1729,321,1769"/>
 <area shape="poly" id="edge68_Node000002_Node000037" title=" " alt="" coords="481,1063,474,1199,455,1395,440,1496,420,1589,395,1666,381,1696,365,1718,345,1734,323,1744,321,1739,343,1729,361,1715,376,1693,390,1664,415,1588,435,1495,450,1395,468,1199,476,1063"/>
-<area shape="rect" id="Node000038" href="$internal__ramp__comprehensive__test_8cpp.html#a7a19853d77e65201bb05e50965d920a7" title=" " alt="" coords="162,1793,341,1819"/>
+<area shape="rect" id="Node000038" href="$internal__ramp__comprehensive__test_8cpp.html#a7a19853d77e65201bb05e50965d920a7" title="Test sensorless homing configuration (StallGuard2&#45;based)." alt="" coords="162,1793,341,1819"/>
 <area shape="poly" id="edge70_Node000002_Node000038" title=" " alt="" coords="482,1063,477,1211,460,1427,445,1539,425,1641,399,1725,383,1758,365,1783,342,1798,339,1794,361,1779,378,1755,394,1723,420,1640,440,1538,455,1427,471,1211,476,1063"/>
-<area shape="rect" id="Node000039" href="$internal__ramp__comprehensive__test_8cpp.html#a313007ba63d9511b529cc6c7c5cd26e6" title=" " alt="" coords="184,1843,319,1883"/>
+<area shape="rect" id="Node000039" href="$internal__ramp__comprehensive__test_8cpp.html#a313007ba63d9511b529cc6c7c5cd26e6" title="Test short circuit protection configuration." alt="" coords="184,1843,319,1883"/>
 <area shape="poly" id="edge72_Node000002_Node000039" title=" " alt="" coords="482,1063,477,1219,461,1449,447,1569,426,1678,399,1769,383,1805,365,1832,344,1848,320,1858,318,1853,341,1844,361,1828,378,1802,394,1767,421,1677,441,1568,456,1449,472,1219,476,1063"/>
-<area shape="rect" id="Node000040" href="$internal__ramp__comprehensive__test_8cpp.html#aa96e4a6a4062dcae4e3f3579bd5cfba3" title=" " alt="" coords="179,1908,324,1933"/>
+<area shape="rect" id="Node000040" href="$internal__ramp__comprehensive__test_8cpp.html#aa96e4a6a4062dcae4e3f3579bd5cfba3" title="Test speed control (max speed, acceleration, deceleration)." alt="" coords="179,1908,324,1933"/>
 <area shape="poly" id="edge74_Node000002_Node000040" title=" " alt="" coords="482,1063,481,1231,476,1351,467,1481,453,1612,432,1731,419,1784,403,1830,385,1868,365,1897,347,1911,325,1920,323,1915,344,1906,361,1893,381,1865,398,1828,414,1782,427,1730,448,1611,462,1481,471,1351,475,1231,477,1063"/>
-<area shape="rect" id="Node000041" href="$internal__ramp__comprehensive__test_8cpp.html#a7ade618fe4fc9f64d6438bb35444429d" title=" " alt="" coords="192,1957,311,1983"/>
+<area shape="rect" id="Node000041" href="$internal__ramp__comprehensive__test_8cpp.html#a7ade618fe4fc9f64d6438bb35444429d" title="Test StallGuard2 configuration and reading." alt="" coords="192,1957,311,1983"/>
 <area shape="poly" id="edge76_Node000002_Node000041" title=" " alt="" coords="483,1063,482,1240,478,1367,470,1505,456,1643,435,1770,421,1826,405,1875,386,1916,365,1947,340,1964,312,1972,310,1967,338,1959,361,1943,382,1913,400,1873,416,1825,430,1769,451,1642,465,1505,473,1366,477,1240,477,1063"/>
-<area shape="rect" id="Node000042" href="$internal__ramp__comprehensive__test_8cpp.html#a7bcd3779c8bf75555a2b7bbc3d8a98f1" title=" " alt="" coords="140,2007,363,2032"/>
+<area shape="rect" id="Node000042" href="$internal__ramp__comprehensive__test_8cpp.html#a7bcd3779c8bf75555a2b7bbc3d8a98f1" title="Test StealthChop configuration and automatic tuning." alt="" coords="140,2007,363,2032"/>
 <area shape="poly" id="edge78_Node000002_Node000042" title=" " alt="" coords="481,1063,468,1260,444,1557,428,1707,409,1839,388,1940,377,1974,365,1996,349,2008,346,2004,361,1992,372,1972,383,1939,404,1838,423,1706,439,1556,463,1260,475,1063"/>
-<area shape="rect" id="Node000043" href="$internal__ramp__comprehensive__test_8cpp.html#a7f57dae89130f73f5be194c79144123c" title=" " alt="" coords="166,2057,337,2097"/>
+<area shape="rect" id="Node000043" href="$internal__ramp__comprehensive__test_8cpp.html#a7f57dae89130f73f5be194c79144123c" title="Test UART transmission count reading." alt="" coords="166,2057,337,2097"/>
 <area shape="poly" id="edge80_Node000002_Node000043" title=" " alt="" coords="481,1063,468,1269,444,1581,428,1739,410,1879,389,1986,377,2022,365,2045,339,2065,336,2060,361,2042,372,2020,383,1984,404,1878,423,1739,439,1581,463,1269,475,1063"/>
-<area shape="rect" id="Node000044" href="$internal__ramp__comprehensive__test_8cpp.html#abf571a46a047286529687282395f173d" title=" " alt="" coords="169,2121,333,2147"/>
+<area shape="rect" id="Node000044" href="$internal__ramp__comprehensive__test_8cpp.html#abf571a46a047286529687282395f173d" title="Test unit conversion functions (RPM, degrees, millimeters, etc.)." alt="" coords="169,2121,333,2147"/>
 <area shape="poly" id="edge82_Node000002_Node000044" title=" " alt="" coords="481,1063,470,1281,448,1614,432,1784,413,1934,391,2048,378,2086,365,2110,351,2122,335,2130,332,2125,348,2118,361,2107,373,2084,385,2046,407,1933,426,1783,442,1614,465,1281,476,1063"/>
 <area shape="rect" id="Node000004" href="$internal__ramp__comprehensive__test_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,1024,92,1049"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="145,41,142,44,130,66,119,102,100,213,85,358,73,520,58,834,53,1024,48,1024,53,834,68,520,80,357,95,212,114,101,125,64,138,40,141,37"/>

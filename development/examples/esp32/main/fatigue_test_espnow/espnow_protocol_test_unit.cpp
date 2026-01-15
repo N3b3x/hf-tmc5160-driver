@@ -53,17 +53,26 @@ static void espnowCommandTask(void* arg)
                     
                 case ProtoEventType::ConfigSet:
                     ESP_LOGI(TAG, "✓ CONFIG_SET received:");
-                    ESP_LOGI(TAG, "    cycles=%lu, time_per_cycle=%lu sec, dwell=%lu sec, bounds_method=%s",
+                    ESP_LOGI(TAG, "    cycles=%lu, vmax=%.1f RPM, amax=%.2f rev/s², dwell=%lu ms, bounds_method=%s",
                              static_cast<unsigned long>(ev.data.config.cycle_amount),
-                             static_cast<unsigned long>(ev.data.config.time_per_cycle),
-                             static_cast<unsigned long>(ev.data.config.dwell_time),
+                             static_cast<double>(ev.data.config.oscillation_vmax_rpm),
+                             static_cast<double>(ev.data.config.oscillation_amax_rev_s2),
+                             static_cast<unsigned long>(ev.data.config.dwell_time_ms),
                              ev.data.config.bounds_method_stallguard ? "StallGuard" : "Encoder");
                     
                     // Store settings (but don't actually configure anything)
                     g_settings.test_unit.cycle_amount = ev.data.config.cycle_amount;
-                    g_settings.test_unit.time_per_cycle = ev.data.config.time_per_cycle;
-                    g_settings.test_unit.dwell_time = ev.data.config.dwell_time;
+                    g_settings.test_unit.oscillation_vmax_rpm = ev.data.config.oscillation_vmax_rpm;
+                    g_settings.test_unit.oscillation_amax_rev_s2 = ev.data.config.oscillation_amax_rev_s2;
+                    g_settings.test_unit.dwell_time_ms = ev.data.config.dwell_time_ms;
                     g_settings.test_unit.bounds_method_stallguard = ev.data.config.bounds_method_stallguard;
+
+                    // Optional bounds-finding tuning fields (keep for protocol parity)
+                    g_settings.test_unit.bounds_search_velocity_rpm = ev.data.config.bounds_search_velocity_rpm;
+                    g_settings.test_unit.stallguard_min_velocity_rpm = ev.data.config.stallguard_min_velocity_rpm;
+                    g_settings.test_unit.stall_detection_current_factor = ev.data.config.stall_detection_current_factor;
+                    g_settings.test_unit.bounds_search_accel_rev_s2 = ev.data.config.bounds_search_accel_rev_s2;
+                    g_settings.test_unit.stallguard_sgt = ev.data.config.stallguard_sgt;
                     
                     EspNowReceiver::send_config_ack(true, 0);
                     ESP_LOGI(TAG, "  → Sent CONFIG_ACK (success)");
@@ -206,17 +215,19 @@ extern "C" void app_main()
 
     // Initialize default settings
     g_settings.test_unit.cycle_amount = 1000;
-    g_settings.test_unit.time_per_cycle = 1;
-    g_settings.test_unit.dwell_time = 1;
+    g_settings.test_unit.oscillation_vmax_rpm = 60.0f;
+    g_settings.test_unit.oscillation_amax_rev_s2 = 10.0f;
+    g_settings.test_unit.dwell_time_ms = 500;
     g_settings.test_unit.bounds_method_stallguard = true;
     g_current_state = TestState::Idle;
     g_simulated_cycle = 0;
 
     ESP_LOGI(TAG, "Default settings:");
-    ESP_LOGI(TAG, "  cycles=%lu, time_per_cycle=%lu sec, dwell=%lu sec, bounds_method=%s",
+    ESP_LOGI(TAG, "  cycles=%lu, vmax=%.1f RPM, amax=%.2f rev/s², dwell=%lu ms, bounds_method=%s",
              static_cast<unsigned long>(g_settings.test_unit.cycle_amount),
-             static_cast<unsigned long>(g_settings.test_unit.time_per_cycle),
-             static_cast<unsigned long>(g_settings.test_unit.dwell_time),
+             static_cast<double>(g_settings.test_unit.oscillation_vmax_rpm),
+             static_cast<double>(g_settings.test_unit.oscillation_amax_rev_s2),
+             static_cast<unsigned long>(g_settings.test_unit.dwell_time_ms),
              g_settings.test_unit.bounds_method_stallguard ? "StallGuard" : "Encoder");
 
     // Create tasks

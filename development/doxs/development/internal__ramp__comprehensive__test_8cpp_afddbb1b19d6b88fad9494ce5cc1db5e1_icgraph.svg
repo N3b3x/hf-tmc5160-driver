@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Test motor setup from specifications (automatic configuration).">
 <polygon fill="#999999" stroke="#666666" points="259,-19 101,-19 101,0 259,0 259,-19"/>
 <text text-anchor="middle" x="180" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">test_motor_setup_from_spec</text>
 </a>

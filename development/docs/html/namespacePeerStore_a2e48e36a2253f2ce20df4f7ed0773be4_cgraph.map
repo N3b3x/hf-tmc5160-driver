@@ -1,0 +1,5 @@
+<map id="PeerStore::ClearAll" name="PeerStore::ClearAll">
+<area shape="rect" id="Node000001" title="Clear all approved peers (factory reset)." alt="" coords="5,5,149,31"/>
+<area shape="rect" id="Node000002" href="$namespacePeerStore.html#a3318088ed933db034120d60f25e2ec9f" title="Save the current peer list to NVS." alt="" coords="197,5,323,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,15,183,15,183,21,150,21"/>
+</map>

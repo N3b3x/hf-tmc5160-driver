@@ -1,0 +1,1537 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  <style id="jtd-nav-activation">
+  
+
+    
+    .site-nav > ul.nav-list:first-child > li:not(:nth-child(6)) > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:not(:first-child) a,
+    .site-nav li.external a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:first-child > li:nth-child(6) > a {
+      font-weight: 600;
+      text-decoration: none;
+    }.site-nav > ul.nav-list:first-child > li:nth-child(6) > button svg {
+      transform: rotate(-90deg);
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(6) > ul.nav-list {
+      display: block;
+    }
+  </style>
+
+  
+
+  
+    <script src="/hf-tmc5160-driver/development/assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="/hf-tmc5160-driver/development/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>ESP-NOW Secure Pairing Protocol | HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="ESP-NOW Secure Pairing Protocol" />
+<meta name="author" content="N3b3x" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
+<meta property="og:description" content="Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
+<link rel="canonical" href="https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/PAIRING_PROTOCOL.html" />
+<meta property="og:url" content="https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/PAIRING_PROTOCOL.html" />
+<meta property="og:site_name" content="HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="ESP-NOW Secure Pairing Protocol" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support","headline":"ESP-NOW Secure Pairing Protocol","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/PAIRING_PROTOCOL.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- =============================================================================
+     Custom Head Content for HardFOC Driver Documentation
+     =============================================================================
+     This file is included in the <head> section of every page.
+     It loads custom CSS and JavaScript for enhanced functionality.
+     ============================================================================= -->
+
+<!-- Custom CSS for enhanced styling and fixes -->
+<link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/custom.css">
+
+<!-- Custom JavaScript for interactive features -->
+<script src="/hf-tmc5160-driver/development/assets/js/custom.js" defer></script>
+
+
+
+</head>
+
+<body>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    <header class="side-bar">
+  <div class="site-header">
+    <a href="/hf-tmc5160-driver/development/" class="site-title lh-tight">
+  HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development
+
+</a>
+    <button id="menu-button" class="site-button btn-reset" aria-label="Menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Main" id="site-nav" class="site-nav">
+  
+  
+    <ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="HardFOC TMC51x0 Driver (TMC5130 & TMC5160) submenu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC51x0 Driver (TMC5130 & TMC5160)</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="📚 Documentation submenu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/dev_board_setup/" class="nav-list-link">🛠️ Dev Board Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/tmc5130_support/" class="nav-list-link">🔧 TMC5130 Support</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/BOUNDS_CACHING.html" class="nav-list-link">Bounds Finding Cache System</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_communication_interface.html" class="nav-list-link">Communication Interface</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/driver_configuration_guide.html" class="nav-list-link">Driver Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/PROTOCOL.html" class="nav-list-link">ESP-NOW Protocol Specification</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/PAIRING_PROTOCOL.html" class="nav-list-link">ESP-NOW Secure Pairing Protocol</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/" class="nav-list-link">ESP32 Examples and Tests Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/CODING_STANDARDS.html" class="nav-list-link">Embedded Systems Coding Standards</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/" class="nav-list-link">Fatigue Test ESP-NOW System Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/ARCHITECTURE.html" class="nav-list-link">Fatigue Test ESP-NOW Unit - Architecture Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/" class="nav-list-link">Fatigue Test with ESP-NOW Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/fatigue_test.html" class="nav-list-link">Fatigue Testing: Back-and-Forth Motion Between Bounds</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/gpio_pin_configuration.html" class="nav-list-link">GPIO Pin Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/HARDWARE_SETUP.html" class="nav-list-link">Hardware Setup Guide - Fatigue Test ESP-NOW Unit</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_comprehensive_test.html" class="nav-list-link">Internal Ramp Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html" class="nav-list-link">Motor Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/spi_daisy_chain_comprehensive_test.html" class="nav-list-link">SPI Daisy Chain Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_sinusoidal.html" class="nav-list-link">Sinusoidal Motion Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/" class="nav-list-link">TMC5160 Driver - ESP32 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_register_access.html" class="nav-list-link">TMC51x0 Register Access and Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/uart_multi_node_comprehensive_test.html" class="nav-list-link">UART Multi-Node Comprehensive Test</a></li></ul>
+  
+</nav>
+
+
+<div class="d-md-block d-none">
+  
+  
+    <div class="site-footer">
+      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+    </div>
+  
+  </div>
+</header>
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header">
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" autocomplete="off">
+    <label for="search-input" class="search-label">
+      <span class="sr-only">Search HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development</span>
+      <svg viewBox="0 0 24 24" class="search-icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+    </label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+    <nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    
+      <li class="aux-nav-list-item">
+        <a href="/hf-tmc5160-driver/development/api/index.html" class="site-button"
+          
+        >
+          📖 API Reference
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver" class="site-button"
+          
+        >
+          📚 GitHub Repository
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/issues" class="site-button"
+          
+        >
+          🐛 Report Issues
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/stargazers" class="site-button"
+          
+        >
+          ⭐ Star on GitHub
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+
+  
+</div>
+
+    <div class="main-content-wrap">
+      
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <h1 id="esp-now-secure-pairing-protocol">
+  
+  
+    <a href="#esp-now-secure-pairing-protocol" class="anchor-heading" aria-labelledby="esp-now-secure-pairing-protocol"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ESP-NOW Secure Pairing Protocol
+  
+  
+</h1>
+    
+<h2 id="overview">
+  
+  
+    <a href="#overview" class="anchor-heading" aria-labelledby="overview"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Overview
+  
+  
+</h2>
+    
+
+<p>This document describes the secure pairing protocol used between the Remote Controller and Fatigue Test Unit for ESP-NOW communication. The protocol provides mutual authentication using HMAC-SHA256 challenge-response, ensuring both devices share a pre-configured secret before establishing communication.</p>
+<h2 id="security-goals">
+  
+  
+    <a href="#security-goals" class="anchor-heading" aria-labelledby="security-goals"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Security Goals
+  
+  
+</h2>
+    
+
+<ol>
+  <li><strong>Mutual Authentication</strong>: Both devices prove knowledge of the shared secret</li>
+  <li><strong>Replay Attack Prevention</strong>: Random challenges prevent message replay</li>
+  <li><strong>Device Type Verification</strong>: Controllers only pair with testers, and vice versa</li>
+  <li><strong>Explicit User Action</strong>: Pairing requires manual action on both devices</li>
+  <li><strong>Persistence</strong>: Approved peers survive device reboots</li>
+  <li><strong>Backward Compatibility</strong>: Pre-configured MAC addresses work without pairing</li>
+</ol>
+<h2 id="protocol-participants">
+  
+  
+    <a href="#protocol-participants" class="anchor-heading" aria-labelledby="protocol-participants"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Protocol Participants
+  
+  
+</h2>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Role</th>
+      <th>Device</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Initiator</strong></td>
+      <td>Remote Controller</td>
+      <td>Starts pairing, sends challenge, verifies response</td>
+    </tr>
+    <tr>
+      <td><strong>Responder</strong></td>
+      <td>Fatigue Test Unit</td>
+      <td>Receives request (when in pairing mode), proves identity</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="shared-secret-configuration">
+  
+  
+    <a href="#shared-secret-configuration" class="anchor-heading" aria-labelledby="shared-secret-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Shared Secret Configuration
+  
+  
+</h2>
+    
+
+<p>Both devices must be compiled with the same 16-byte pairing secret. The secret is injected at build time and <strong>never hardcoded in the source code</strong>.</p>
+<h3 id="configuration-methods-priority-order">
+  
+  
+    <a href="#configuration-methods-priority-order" class="anchor-heading" aria-labelledby="configuration-methods-priority-order"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configuration Methods (Priority Order)
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Usage</th>
+      <th>Best For</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">--secret</code> argument</td>
+      <td><code class="language-plaintext highlighter-rouge">./build_app.sh app Release --secret &lt;hex&gt;</code></td>
+      <td>CI/CD pipelines</td>
+    </tr>
+    <tr>
+      <td>Environment variable</td>
+      <td><code class="language-plaintext highlighter-rouge">ESPNOW_PAIRING_SECRET=&lt;hex&gt; ./build_app.sh</code></td>
+      <td>Development sessions</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">secrets.local.yml</code></td>
+      <td>Copy from template, add secret</td>
+      <td>Local development</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="quick-setup">
+  
+  
+    <a href="#quick-setup" class="anchor-heading" aria-labelledby="quick-setup"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Quick Setup
+  
+  
+</h3>
+    
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="c"># 1. Generate a secret</span>
+openssl rand <span class="nt">-hex</span> 16
+
+<span class="c"># 2. Copy the template</span>
+<span class="nb">cp </span>secrets.template.yml secrets.local.yml
+
+<span class="c"># 3. Edit secrets.local.yml with your secret</span>
+espnow_pairing_secret: <span class="s2">"your_32_char_hex_secret"</span>
+
+<span class="c"># 4. Build (secret is automatically loaded)</span>
+./scripts/build_app.sh fatigue_test_espnow_unit Release
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="build-behavior">
+  
+  
+    <a href="#build-behavior" class="anchor-heading" aria-labelledby="build-behavior"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Build Behavior
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Build Type</th>
+      <th>Without Secret</th>
+      <th>With Secret</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Debug</strong></td>
+      <td>Uses placeholder (warning shown)</td>
+      <td>Uses configured secret</td>
+    </tr>
+    <tr>
+      <td><strong>Release</strong></td>
+      <td>Compile error with instructions</td>
+      <td>Uses configured secret</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p>The secret is parsed at compile time into the <code class="language-plaintext highlighter-rouge">PAIRING_SECRET</code> byte array for HMAC-SHA256 computation.</p><hr />
+<h2 id="message-types">
+  
+  
+    <a href="#message-types" class="anchor-heading" aria-labelledby="message-types"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Message Types
+  
+  
+</h2>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Value</th>
+      <th>Direction</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">PairingRequest</code></td>
+      <td>20</td>
+      <td>Controller → Broadcast</td>
+      <td>Initiate pairing</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">PairingResponse</code></td>
+      <td>21</td>
+      <td>Tester → Controller</td>
+      <td>Respond with HMAC proof</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">PairingConfirm</code></td>
+      <td>22</td>
+      <td>Controller → Tester</td>
+      <td>Confirm mutual authentication</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">PairingReject</code></td>
+      <td>23</td>
+      <td>Tester → Controller</td>
+      <td>Reject pairing request</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Unpair</code></td>
+      <td>24</td>
+      <td>Either direction</td>
+      <td>Remove a paired device</td>
+    </tr>
+  </tbody>
+</table></div><hr />
+<h2 id="message-structures">
+  
+  
+    <a href="#message-structures" class="anchor-heading" aria-labelledby="message-structures"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Message Structures
+  
+  
+</h2>
+    
+<h3 id="pairingrequest-controller--broadcast">
+  
+  
+    <a href="#pairingrequest-controller--broadcast" class="anchor-heading" aria-labelledby="pairingrequest-controller--broadcast"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> PairingRequest (Controller → Broadcast)
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="nc">PairingRequestPayload</span> <span class="p">{</span>
+    <span class="kt">uint8_t</span>  <span class="n">requester_mac</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>       <span class="c1">// Controller's MAC address</span>
+    <span class="kt">uint8_t</span>  <span class="n">device_type</span><span class="p">;</span>            <span class="c1">// DeviceType::RemoteController (1)</span>
+    <span class="kt">uint8_t</span>  <span class="n">expected_peer_type</span><span class="p">;</span>     <span class="c1">// DeviceType::FatigueTester (2)</span>
+    <span class="kt">uint8_t</span>  <span class="n">challenge</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>           <span class="c1">// Random 8-byte nonce</span>
+    <span class="kt">uint8_t</span>  <span class="n">protocol_version</span><span class="p">;</span>       <span class="c1">// Must be 1</span>
+<span class="p">};</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Size</strong>: 18 bytes</p>
+<h3 id="pairingresponse-tester--controller">
+  
+  
+    <a href="#pairingresponse-tester--controller" class="anchor-heading" aria-labelledby="pairingresponse-tester--controller"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> PairingResponse (Tester → Controller)
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="nc">PairingResponsePayload</span> <span class="p">{</span>
+    <span class="kt">uint8_t</span>  <span class="n">responder_mac</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>       <span class="c1">// Tester's MAC address</span>
+    <span class="kt">uint8_t</span>  <span class="n">device_type</span><span class="p">;</span>            <span class="c1">// DeviceType::FatigueTester (2)</span>
+    <span class="kt">uint8_t</span>  <span class="n">challenge</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>           <span class="c1">// Counter-challenge for mutual auth</span>
+    <span class="kt">uint8_t</span>  <span class="n">hmac_response</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>      <span class="c1">// HMAC(secret, requester_challenge)</span>
+    <span class="kt">char</span>     <span class="n">device_name</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>        <span class="c1">// Human-readable name</span>
+<span class="p">};</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Size</strong>: 47 bytes</p>
+<h3 id="pairingconfirm-controller--tester">
+  
+  
+    <a href="#pairingconfirm-controller--tester" class="anchor-heading" aria-labelledby="pairingconfirm-controller--tester"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> PairingConfirm (Controller → Tester)
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="nc">PairingConfirmPayload</span> <span class="p">{</span>
+    <span class="kt">uint8_t</span>  <span class="n">confirmer_mac</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>       <span class="c1">// Controller's MAC address</span>
+    <span class="kt">uint8_t</span>  <span class="n">hmac_response</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>      <span class="c1">// HMAC(secret, responder_challenge)</span>
+    <span class="kt">uint8_t</span>  <span class="n">success</span><span class="p">;</span>                <span class="c1">// 1 = success, 0 = failure</span>
+<span class="p">};</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Size</strong>: 23 bytes</p>
+<h3 id="pairingreject-tester--controller">
+  
+  
+    <a href="#pairingreject-tester--controller" class="anchor-heading" aria-labelledby="pairingreject-tester--controller"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> PairingReject (Tester → Controller)
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="nc">PairingRejectPayload</span> <span class="p">{</span>
+    <span class="kt">uint8_t</span>  <span class="n">rejecter_mac</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>        <span class="c1">// Tester's MAC address</span>
+    <span class="kt">uint8_t</span>  <span class="n">reason</span><span class="p">;</span>                 <span class="c1">// Rejection reason code</span>
+<span class="p">};</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Rejection Reasons</strong>:
+| Code | Reason |
+|——|——–|
+| 0 | Not in pairing mode |
+| 1 | Wrong device type |
+| 2 | HMAC verification failed |
+| 3 | Peer list full |
+| 4 | Protocol version mismatch |</p><hr />
+<h2 id="protocol-flow">
+  
+  
+    <a href="#protocol-flow" class="anchor-heading" aria-labelledby="protocol-flow"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Protocol Flow
+  
+  
+</h2>
+    
+<h3 id="successful-pairing-sequence">
+  
+  
+    <a href="#successful-pairing-sequence" class="anchor-heading" aria-labelledby="successful-pairing-sequence"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Successful Pairing Sequence
+  
+  
+</h3>
+    
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+</pre></td><td class="rouge-code"><pre>┌───────────────────┐                              ┌────────────────────┐
+│ Remote Controller │                              │ Fatigue Test Unit  │
+│   (Initiator)     │                              │    (Responder)     │
+└─────────┬─────────┘                              └──────────┬─────────┘
+          │                                                   │
+          │  User: Selects "Pair Device" in UI menu           │
+          │◄─────────────────────────────────────────         │
+          │                                                   │
+          │                           User: Types "pair" in UART terminal
+          │                         ──────────────────────────►│
+          │                                                   │
+          │              [Tester enters PAIRING MODE for 30s] │
+          │                                                   │
+          │  1. Generate random 8-byte challenge              │
+          │  ───────────────────────────────────              │
+          │                                                   │
+          │  2. PAIRING_REQUEST (broadcast)                   │
+          │  ─────────────────────────────────────────────────►│
+          │  - requester_mac = Controller MAC                 │
+          │  - device_type = RemoteController (1)             │
+          │  - expected_peer_type = FatigueTester (2)         │
+          │  - challenge = [8 random bytes]                   │
+          │  - protocol_version = 1                           │
+          │                                                   │
+          │                  [Tester validates request]       │
+          │                  - In pairing mode? ✓             │
+          │                  - Expected type matches? ✓       │
+          │                  - Protocol version matches? ✓    │
+          │                                                   │
+          │                  [Tester computes HMAC response]  │
+          │                  hmac = HMAC-SHA256(secret, challenge)
+          │                                                   │
+          │  3. PAIRING_RESPONSE (unicast to controller)      │
+          │◄─────────────────────────────────────────────────│
+          │  - responder_mac = Tester MAC                     │
+          │  - device_type = FatigueTester (2)                │
+          │  - challenge = [8 new random bytes]               │
+          │  - hmac_response = HMAC of controller's challenge │
+          │  - device_name = "Fatigue Tester"                 │
+          │                                                   │
+          │  [Controller verifies HMAC]                       │
+          │  expected = HMAC-SHA256(secret, my_challenge)     │
+          │  if (expected == received) → Tester is authentic  │
+          │                                                   │
+          │  [Controller computes HMAC for tester's challenge]│
+          │  my_hmac = HMAC-SHA256(secret, tester_challenge)  │
+          │                                                   │
+          │  4. PAIRING_CONFIRM (unicast to tester)           │
+          │  ─────────────────────────────────────────────────►│
+          │  - confirmer_mac = Controller MAC                 │
+          │  - hmac_response = HMAC of tester's challenge     │
+          │  - success = 1                                    │
+          │                                                   │
+          │                  [Tester verifies HMAC]           │
+          │                  expected = HMAC-SHA256(secret, my_challenge)
+          │                  if (expected == received) → Controller authentic
+          │                                                   │
+          │  [Controller adds Tester to approved list]        │
+          │                  [Tester adds Controller to approved list]
+          │                                                   │
+          │  ═══════════ PAIRING COMPLETE ═══════════         │
+          │                                                   │
+          │  [Both save peer lists to NVS]                    │
+          │                                                   │
+          ▼                                                   ▼
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="failed-pairing-not-in-pairing-mode">
+  
+  
+    <a href="#failed-pairing-not-in-pairing-mode" class="anchor-heading" aria-labelledby="failed-pairing-not-in-pairing-mode"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Failed Pairing: Not in Pairing Mode
+  
+  
+</h3>
+    
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre>┌───────────────────┐                              ┌────────────────────┐
+│ Remote Controller │                              │ Fatigue Test Unit  │
+└─────────┬─────────┘                              └──────────┬─────────┘
+          │                                                   │
+          │  PAIRING_REQUEST (broadcast)                      │
+          │  ─────────────────────────────────────────────────►│
+          │                                                   │
+          │                  [Tester checks: In pairing mode?]│
+          │                  Answer: NO                       │
+          │                                                   │
+          │  PAIRING_REJECT                                   │
+          │◄─────────────────────────────────────────────────│
+          │  - reason = 0 (Not in pairing mode)               │
+          │                                                   │
+          │  [Controller shows error in UI]                   │
+          ▼                                                   ▼
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="failed-pairing-hmac-verification-failed">
+  
+  
+    <a href="#failed-pairing-hmac-verification-failed" class="anchor-heading" aria-labelledby="failed-pairing-hmac-verification-failed"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Failed Pairing: HMAC Verification Failed
+  
+  
+</h3>
+    
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre>┌───────────────────┐                              ┌────────────────────┐
+│ Remote Controller │                              │ Fatigue Test Unit  │
+│ (Wrong Secret)    │                              │ (Correct Secret)   │
+└─────────┬─────────┘                              └──────────┬─────────┘
+          │                                                   │
+          │  PAIRING_REQUEST                                  │
+          │  ─────────────────────────────────────────────────►│
+          │                                                   │
+          │  PAIRING_RESPONSE                                 │
+          │◄─────────────────────────────────────────────────│
+          │                                                   │
+          │  [Controller computes HMAC with wrong secret]     │
+          │  [HMAC doesn't match response → REJECT]           │
+          │                                                   │
+          │  [Controller does NOT send PAIRING_CONFIRM]       │
+          │  [Pairing fails with "Unauthorized device" error] │
+          │                                                   │
+          ▼                                                   ▼
+</pre></td></tr></tbody></table></div></code></pre></div></div><hr />
+<h2 id="hmac-computation">
+  
+  
+    <a href="#hmac-computation" class="anchor-heading" aria-labelledby="hmac-computation"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> HMAC Computation
+  
+  
+</h2>
+    
+
+<p>HMAC is computed using HMAC-SHA256 with the shared secret as the key:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="n">ComputePairingHmac</span><span class="p">(</span><span class="k">const</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">challenge</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">challenge_len</span><span class="p">,</span>
+                        <span class="kt">uint8_t</span> <span class="n">out</span><span class="p">[</span><span class="mi">16</span><span class="p">])</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="kt">uint8_t</span> <span class="n">full_hmac</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>  <span class="c1">// SHA-256 output</span>
+    
+    <span class="n">mbedtls_md_hmac</span><span class="p">(</span>
+        <span class="n">mbedtls_md_info_from_type</span><span class="p">(</span><span class="n">MBEDTLS_MD_SHA256</span><span class="p">),</span>
+        <span class="n">PAIRING_SECRET</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span>      <span class="c1">// Key</span>
+        <span class="n">challenge</span><span class="p">,</span> <span class="n">challenge_len</span><span class="p">,</span> <span class="c1">// Message</span>
+        <span class="n">full_hmac</span>                 <span class="c1">// Output</span>
+    <span class="p">);</span>
+    
+    <span class="c1">// Truncate to 16 bytes</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">full_hmac</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Constant-Time Comparison</strong>: HMAC verification uses constant-time comparison to prevent timing attacks:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="kt">bool</span> <span class="n">VerifyPairingHmac</span><span class="p">(</span><span class="k">const</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">challenge</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">len</span><span class="p">,</span>
+                       <span class="k">const</span> <span class="kt">uint8_t</span> <span class="n">received</span><span class="p">[</span><span class="mi">16</span><span class="p">])</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="kt">uint8_t</span> <span class="n">expected</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+    <span class="n">ComputePairingHmac</span><span class="p">(</span><span class="n">challenge</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="n">expected</span><span class="p">);</span>
+    
+    <span class="kt">uint8_t</span> <span class="n">diff</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">diff</span> <span class="o">|=</span> <span class="p">(</span><span class="n">expected</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">^</span> <span class="n">received</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">diff</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// Constant-time comparison</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div><hr />
+<h2 id="state-machines">
+  
+  
+    <a href="#state-machines" class="anchor-heading" aria-labelledby="state-machines"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> State Machines
+  
+  
+</h2>
+    
+<h3 id="fatigue-test-unit-responder">
+  
+  
+    <a href="#fatigue-test-unit-responder" class="anchor-heading" aria-labelledby="fatigue-test-unit-responder"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Fatigue Test Unit (Responder)
+  
+  
+</h3>
+    
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+</pre></td><td class="rouge-code"><pre>                    ┌─────────┐
+                    │  IDLE   │◄────────────────────────────┐
+                    └────┬────┘                             │
+                         │ "pair" UART command              │
+                         ▼                                  │
+                ┌────────────────┐                          │
+         ┌──────│ PAIRING_MODE   │──────┐                   │
+         │      │ (30s timeout)  │      │                   │
+         │      └───────┬────────┘      │                   │
+         │              │               │                   │
+   timeout expires      │ PairingRequest received           │
+         │              ▼               │                   │
+         │   ┌──────────────────┐       │                   │
+         │   │ AWAITING_CONFIRM │       │                   │
+         │   │  (5s timeout)    │       │                   │
+         │   └────────┬─────────┘       │                   │
+         │            │                 │                   │
+         │  PairingConfirm received     │                   │
+         │            │                 │                   │
+         │            ▼                 │                   │
+         │   ┌──────────────────┐       │                   │
+         │   │ VERIFY HMAC      │       │                   │
+         │   └────────┬─────────┘       │                   │
+         │            │                 │                   │
+         │    ┌───────┴───────┐         │                   │
+         │    │               │         │                   │
+         │  PASS            FAIL        │                   │
+         │    │               │         │                   │
+         │    ▼               │         │                   │
+         │  ADD TO            │         │                   │
+         │  APPROVED          │         │                   │
+         │  LIST              │         │                   │
+         │    │               │         │                   │
+         └────┴───────────────┴─────────┴───────────────────┘
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="remote-controller-initiator">
+  
+  
+    <a href="#remote-controller-initiator" class="anchor-heading" aria-labelledby="remote-controller-initiator"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Remote Controller (Initiator)
+  
+  
+</h3>
+    
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+</pre></td><td class="rouge-code"><pre>                    ┌─────────┐
+                    │  IDLE   │◄────────────────────────────┐
+                    └────┬────┘                             │
+                         │ User selects "Pair"              │
+                         ▼                                  │
+              ┌──────────────────────┐                      │
+              │ WAITING_FOR_RESPONSE │                      │
+              │   (10s timeout)      │──────┐               │
+              └──────────┬───────────┘      │               │
+                         │                  │               │
+           PairingResponse received    timeout expires      │
+                         │                  │               │
+                         ▼                  │               │
+              ┌──────────────────────┐      │               │
+              │   VERIFY HMAC        │      │               │
+              └──────────┬───────────┘      │               │
+                         │                  │               │
+                 ┌───────┴───────┐          │               │
+                 │               │          │               │
+               PASS            FAIL         │               │
+                 │               │          │               │
+                 ▼               ▼          ▼               │
+         ┌─────────────┐   ┌─────────┐ ┌─────────┐          │
+         │SEND CONFIRM │   │ FAILED  │ │ FAILED  │          │
+         └──────┬──────┘   └────┬────┘ └────┬────┘          │
+                │               │           │               │
+                ▼               │           │               │
+         ┌─────────────┐        │           │               │
+         │ ADD TO LIST │        │           │               │
+         └──────┬──────┘        │           │               │
+                │               │           │               │
+                ▼               │           │               │
+         ┌─────────────┐        │           │               │
+         │  COMPLETE   │        │           │               │
+         └──────┬──────┘        │           │               │
+                │               │           │               │
+                └───────────────┴───────────┴───────────────┘
+</pre></td></tr></tbody></table></div></code></pre></div></div><hr />
+<h2 id="nvs-storage">
+  
+  
+    <a href="#nvs-storage" class="anchor-heading" aria-labelledby="nvs-storage"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> NVS Storage
+  
+  
+</h2>
+    
+<h3 id="storage-format">
+  
+  
+    <a href="#storage-format" class="anchor-heading" aria-labelledby="storage-format"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Storage Format
+  
+  
+</h3>
+    
+
+<p>Approved peers are stored in NVS under namespace <code class="language-plaintext highlighter-rouge">espnow_peers</code>:</p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">peers</code></td>
+      <td>Blob</td>
+      <td>Array of <code class="language-plaintext highlighter-rouge">ApprovedPeer</code> structures</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">peers_crc</code></td>
+      <td>u32</td>
+      <td>CRC32 for data integrity</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="approvedpeer-structure">
+  
+  
+    <a href="#approvedpeer-structure" class="anchor-heading" aria-labelledby="approvedpeer-structure"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ApprovedPeer Structure
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="nc">ApprovedPeer</span> <span class="p">{</span>
+    <span class="kt">uint8_t</span>  <span class="n">mac</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>             <span class="c1">// Peer's MAC address</span>
+    <span class="kt">uint8_t</span>  <span class="n">device_type</span><span class="p">;</span>        <span class="c1">// DeviceType enum value</span>
+    <span class="kt">char</span>     <span class="n">name</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>           <span class="c1">// Human-readable name</span>
+    <span class="kt">uint32_t</span> <span class="n">paired_timestamp</span><span class="p">;</span>   <span class="c1">// When paired (or 0)</span>
+    <span class="kt">bool</span>     <span class="n">valid</span><span class="p">;</span>              <span class="c1">// Slot in use?</span>
+<span class="p">};</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p>Maximum peers: 4 per device</p>
+<h3 id="pre-configured-peer">
+  
+  
+    <a href="#pre-configured-peer" class="anchor-heading" aria-labelledby="pre-configured-peer"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Pre-Configured Peer
+  
+  
+</h3>
+    
+
+<p>For backward compatibility, the compile-time MAC address (<code class="language-plaintext highlighter-rouge">TEST_UNIT_MAC_</code> or <code class="language-plaintext highlighter-rouge">UI_BOARD_MAC</code>) is always trusted and does not consume an NVS slot.</p><hr />
+<h2 id="message-validation">
+  
+  
+    <a href="#message-validation" class="anchor-heading" aria-labelledby="message-validation"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Message Validation
+  
+  
+</h2>
+    
+<h3 id="security-gate">
+  
+  
+    <a href="#security-gate" class="anchor-heading" aria-labelledby="security-gate"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Security Gate
+  
+  
+</h3>
+    
+
+<p>Every received message (except pairing messages) passes through this validation:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="kt">bool</span> <span class="nf">ValidateMessageSource</span><span class="p">(</span><span class="k">const</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">sender_mac</span><span class="p">,</span> <span class="n">MsgType</span> <span class="n">type</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Pairing messages bypass validation</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">type</span> <span class="o">==</span> <span class="n">PairingRequest</span> <span class="o">||</span> <span class="n">type</span> <span class="o">==</span> <span class="n">PairingResponse</span> <span class="o">||</span>
+        <span class="n">type</span> <span class="o">==</span> <span class="n">PairingConfirm</span> <span class="o">||</span> <span class="n">type</span> <span class="o">==</span> <span class="n">PairingReject</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="c1">// All other messages must be from approved peers</span>
+    <span class="k">return</span> <span class="n">PeerStore</span><span class="o">::</span><span class="n">IsPeerApproved</span><span class="p">(</span><span class="n">security_settings</span><span class="p">,</span> <span class="n">sender_mac</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Rejected messages are silently dropped</strong> to avoid giving attackers information about why their messages were rejected.</p><hr />
+<h2 id="api-reference">
+  
+  
+    <a href="#api-reference" class="anchor-heading" aria-labelledby="api-reference"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> API Reference
+  
+  
+</h2>
+    
+<h3 id="fatigue-test-unit-espnow_receiverhpp">
+  
+  
+    <a href="#fatigue-test-unit-espnow_receiverhpp" class="anchor-heading" aria-labelledby="fatigue-test-unit-espnow_receiverhpp"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Fatigue Test Unit (espnow_receiver.hpp)
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="rouge-code"><pre><span class="k">namespace</span> <span class="n">EspNowReceiver</span> <span class="p">{</span>
+    <span class="c1">// Enter pairing mode for specified duration (default 30s)</span>
+    <span class="kt">void</span> <span class="n">enter_pairing_mode</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">timeout_sec</span> <span class="o">=</span> <span class="mi">30</span><span class="p">);</span>
+    
+    <span class="c1">// Exit pairing mode early</span>
+    <span class="kt">void</span> <span class="n">exit_pairing_mode</span><span class="p">();</span>
+    
+    <span class="c1">// Check if currently in pairing mode</span>
+    <span class="kt">bool</span> <span class="n">is_in_pairing_mode</span><span class="p">();</span>
+    
+    <span class="c1">// Access security settings for peer management</span>
+    <span class="n">SecuritySettings</span><span class="o">&amp;</span> <span class="n">get_security_settings</span><span class="p">();</span>
+    
+    <span class="c1">// Manually add/remove approved peers</span>
+    <span class="kt">bool</span> <span class="n">add_approved_peer</span><span class="p">(</span><span class="k">const</span> <span class="kt">uint8_t</span> <span class="n">mac</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">DeviceType</span> <span class="n">type</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">remove_approved_peer</span><span class="p">(</span><span class="k">const</span> <span class="kt">uint8_t</span> <span class="n">mac</span><span class="p">[</span><span class="mi">6</span><span class="p">]);</span>
+    
+    <span class="c1">// Get peer count</span>
+    <span class="kt">size_t</span> <span class="n">get_approved_peer_count</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="remote-controller-espnow_protocolhpp">
+  
+  
+    <a href="#remote-controller-espnow_protocolhpp" class="anchor-heading" aria-labelledby="remote-controller-espnow_protocolhpp"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Remote Controller (espnow_protocol.hpp)
+  
+  
+</h3>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="k">namespace</span> <span class="n">espnow</span> <span class="p">{</span>
+    <span class="c1">// Start pairing (broadcasts discovery)</span>
+    <span class="kt">bool</span> <span class="n">StartPairing</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+    
+    <span class="c1">// Cancel pairing attempt</span>
+    <span class="kt">void</span> <span class="n">CancelPairing</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+    
+    <span class="c1">// Get current pairing state</span>
+    <span class="n">PairingState</span> <span class="n">GetPairingState</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+    
+    <span class="c1">// Peer management</span>
+    <span class="kt">bool</span> <span class="n">IsPeerApproved</span><span class="p">(</span><span class="k">const</span> <span class="kt">uint8_t</span> <span class="n">mac</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">AddApprovedPeer</span><span class="p">(</span><span class="k">const</span> <span class="kt">uint8_t</span> <span class="n">mac</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">DeviceType</span> <span class="n">type</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">RemoveApprovedPeer</span><span class="p">(</span><span class="k">const</span> <span class="kt">uint8_t</span> <span class="n">mac</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="kt">size_t</span> <span class="n">GetApprovedPeerCount</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+    
+    <span class="c1">// Get target device MAC for sending</span>
+    <span class="kt">bool</span> <span class="n">GetTargetDeviceMac</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">mac_out</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span> <span class="k">noexcept</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div><hr />
+<h2 id="uart-commands-fatigue-test-unit">
+  
+  
+    <a href="#uart-commands-fatigue-test-unit" class="anchor-heading" aria-labelledby="uart-commands-fatigue-test-unit"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> UART Commands (Fatigue Test Unit)
+  
+  
+</h2>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pair</code></td>
+      <td>Enter pairing mode for 30 seconds</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p><strong>Example Session</strong>:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre>&gt; pair
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                              PAIRING MODE                                     ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Pairing mode enabled for 30 seconds.                                         ║
+║ Start pairing from your remote controller now.                               ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Current approved peers:                                        1             ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+[After successful pairing]
+╔══════════════════════════════════════════════════════════════════════════════╗
+║ PAIRING SUCCESSFUL!                                                           ║
+║ Remote controller: 9C:9E:6E:77:24:F8                                         ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+</pre></td></tr></tbody></table></div></code></pre></div></div><hr />
+<h2 id="security-considerations">
+  
+  
+    <a href="#security-considerations" class="anchor-heading" aria-labelledby="security-considerations"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Security Considerations
+  
+  
+</h2>
+    
+<h3 id="threat-model">
+  
+  
+    <a href="#threat-model" class="anchor-heading" aria-labelledby="threat-model"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Threat Model
+  
+  
+</h3>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Threat</th>
+      <th>Mitigation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Unauthorized device sends commands</td>
+      <td>All messages validated against approved peer list</td>
+    </tr>
+    <tr>
+      <td>Rogue device tries to pair</td>
+      <td>HMAC verification ensures shared secret knowledge</td>
+    </tr>
+    <tr>
+      <td>Replay attack</td>
+      <td>Random 8-byte challenge in each pairing attempt</td>
+    </tr>
+    <tr>
+      <td>Timing attack on HMAC</td>
+      <td>Constant-time comparison</td>
+    </tr>
+    <tr>
+      <td>Eavesdropping during pairing</td>
+      <td>HMAC protects secret (only challenge/response visible)</td>
+    </tr>
+    <tr>
+      <td>Physical access to device</td>
+      <td>Pairing mode requires explicit action</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="recommendations">
+  
+  
+    <a href="#recommendations" class="anchor-heading" aria-labelledby="recommendations"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Recommendations
+  
+  
+</h3>
+    
+
+<ol>
+  <li><strong>Change the default secret</strong> before production deployment</li>
+  <li><strong>Limit pairing mode duration</strong> (30 seconds is reasonable)</li>
+  <li><strong>Review approved peer list</strong> periodically</li>
+  <li><strong>Consider enabling ESP-NOW encryption</strong> for encrypted data transmission</li>
+</ol><hr />
+<h2 id="troubleshooting">
+  
+  
+    <a href="#troubleshooting" class="anchor-heading" aria-labelledby="troubleshooting"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Troubleshooting
+  
+  
+</h2>
+    
+<h3 id="pairing-fails-with-not-in-pairing-mode">
+  
+  
+    <a href="#pairing-fails-with-not-in-pairing-mode" class="anchor-heading" aria-labelledby="pairing-fails-with-not-in-pairing-mode"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Pairing Fails with “Not in pairing mode”
+  
+  
+</h3>
+    
+
+<p><strong>Cause</strong>: Fatigue test unit is not in pairing mode when request is sent.</p>
+
+<p><strong>Solution</strong>:</p>
+<ol>
+  <li>On the fatigue test unit, type <code class="language-plaintext highlighter-rouge">pair</code> in UART terminal</li>
+  <li>Within 30 seconds, start pairing from the remote controller</li>
+</ol>
+<h3 id="pairing-fails-with-hmac-verification-failed">
+  
+  
+    <a href="#pairing-fails-with-hmac-verification-failed" class="anchor-heading" aria-labelledby="pairing-fails-with-hmac-verification-failed"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Pairing Fails with “HMAC verification failed”
+  
+  
+</h3>
+    
+
+<p><strong>Cause</strong>: Devices have different <code class="language-plaintext highlighter-rouge">PAIRING_SECRET</code> values.</p>
+
+<p><strong>Solution</strong>: Ensure both devices are compiled with identical <code class="language-plaintext highlighter-rouge">espnow_security.hpp</code> files.</p>
+<h3 id="device-not-responding-to-commands-after-pairing">
+  
+  
+    <a href="#device-not-responding-to-commands-after-pairing" class="anchor-heading" aria-labelledby="device-not-responding-to-commands-after-pairing"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Device Not Responding to Commands After Pairing
+  
+  
+</h3>
+    
+
+<p><strong>Cause</strong>: Message validation is rejecting messages from the peer.</p>
+
+<p><strong>Solution</strong>:</p>
+<ol>
+  <li>Check that pairing completed successfully on both sides</li>
+  <li>Verify peer was added to approved list: <code class="language-plaintext highlighter-rouge">get_approved_peer_count()</code></li>
+  <li>Check NVS storage is working (no corruption)</li>
+</ol>
+<h3 id="pairing-timeout">
+  
+  
+    <a href="#pairing-timeout" class="anchor-heading" aria-labelledby="pairing-timeout"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Pairing Timeout
+  
+  
+</h3>
+    
+
+<p><strong>Cause</strong>: Response not received within 10 seconds.</p>
+
+<p><strong>Solution</strong>:</p>
+<ol>
+  <li>Ensure devices are on same WiFi channel</li>
+  <li>Check for RF interference</li>
+  <li>Verify test unit is powered and in pairing mode</li>
+</ol>
+
+          
+
+          
+            
+          
+        </main>
+        
+<hr>
+<footer>
+  
+
+  <!-- =============================================================================
+     Custom Footer Content for HardFOC Driver Documentation
+     =============================================================================
+     This footer is displayed at the bottom of every page.
+     ============================================================================= -->
+
+<footer class="site-footer">
+  <div class="site-footer-credits">
+    <p>Built with ❤️ using <a href="https://just-the-docs.github.io/just-the-docs/">Just the Docs</a></p>
+    <p>
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development/blob/main/LICENSE">GPL v3 License</a> • 
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development">View on GitHub</a>
+    </p>
+  </div>
+</footer>
+
+
+
+  <div class="d-md-none">
+    
+    
+      <div class="mt-4 fs-2">
+        This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+      </div>
+    
+  </div>
+</footer>
+
+      </div>
+    </div>
+    
+      
+<button id="search-button" class="search-button btn-reset" aria-label="Focus on search">
+  <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+</button>
+
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+</body>
+</html>
+

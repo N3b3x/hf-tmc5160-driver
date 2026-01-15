@@ -1,0 +1,16 @@
+<map id="DeenergizeTimerCallback" name="DeenergizeTimerCallback">
+<area shape="rect" id="Node000001" title="Timer callback to de&#45;energize motor after bounds validity expires." alt="" coords="5,35,196,60"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#a3f72921e4deaf387f7444281647ba4b9" title="Immediately stop motion, enter HOLD, and de&#45;energize (disable) the motor." alt="" coords="245,5,413,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,32,231,28,232,33,197,38"/>
+<area shape="rect" id="Node000003" href="$namespaceEspNowReceiver.html#a37dbf71c15486999f072d89e26d3dd7e" title="Send STATUS_UPDATE with cycle count and state." alt="" coords="244,55,415,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="197,56,231,61,230,66,196,62"/>
+<area shape="rect" id="Node000004" href="$espnow__receiver_8cpp.html#af394d93fad387639cb5c155cfd037163" title=" " alt="" coords="463,63,585,88"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="415,73,448,73,448,78,415,78"/>
+<area shape="rect" id="Node000005" href="$espnow__receiver_8cpp.html#a38ae343ba91aa93458377b341e1d9e4a" title=" " alt="" coords="791,39,881,64"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="585,68,777,53,777,58,586,73"/>
+<area shape="rect" id="Node000006" href="$espnow__receiver_8cpp.html#a6eb0186376c3ffd1080f65ee4c597d9f" title=" " alt="" coords="633,88,743,113"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="586,82,620,87,619,93,585,87"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="726,85,783,66,785,71,728,90"/>
+<area shape="rect" id="Node000007" href="$espnow__protocol_8hpp.html#afa7c999b99fb5716dc9d60af3a151d11" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="791,88,881,113"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="743,98,778,98,778,103,743,103"/>
+</map>

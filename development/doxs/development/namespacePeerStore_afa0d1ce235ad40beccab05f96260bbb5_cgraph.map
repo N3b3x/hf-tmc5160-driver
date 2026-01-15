@@ -1,0 +1,9 @@
+<map id="PeerStore::AddPeer" name="PeerStore::AddPeer">
+<area shape="rect" id="Node000001" title="Add a new approved peer to storage." alt="" coords="5,55,152,80"/>
+<area shape="rect" id="Node000002" href="$espnow__security_8hpp.html#a5404f39e50ea5a07bb38e958bfecd9d1" title="Check if a MAC address is all zeros." alt="" coords="217,5,308,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,52,204,31,205,36,127,57"/>
+<area shape="rect" id="Node000003" href="$espnow__security_8hpp.html#af7a73c0e28901c88d30288faf14c6a5d" title="Compare two MAC addresses." alt="" coords="217,55,309,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="152,65,203,65,203,70,152,70"/>
+<area shape="rect" id="Node000004" href="$namespacePeerStore.html#a3318088ed933db034120d60f25e2ec9f" title="Save the current peer list to NVS." alt="" coords="200,104,325,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="127,77,202,98,200,103,126,83"/>
+</map>

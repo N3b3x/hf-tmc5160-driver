@@ -1,5 +1,5 @@
 <map id="tmc51x0::CalculateStealthChopLowerLimit" name="tmc51x0::CalculateStealthChopLowerLimit">
-<area shape="rect" id="Node000001" title="Calculate StealthChop lower current limit." alt="" coords="292,5,487,45"/>
-<area shape="rect" id="Node000002" href="$structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a5c2aead58303e40c2ac8a8c4df0220eb" title="Set DIAG0 pin configuration." alt="" coords="5,5,244,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="278,28,244,28,244,23,278,23"/>
+<area shape="rect" id="Node000001" title="Calculate StealthChop lower current limit." alt="" coords="296,13,491,53"/>
+<area shape="rect" id="Node000002" href="$structtmc51x0_1_1TMC51x0_1_1MotorControl.html#a7a0e6e6eeb8bd99999572d610df42ab0" title="Configure global configuration (GCONF register)" alt="" coords="5,5,248,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="282,35,248,35,248,30,282,30"/>
 </map>

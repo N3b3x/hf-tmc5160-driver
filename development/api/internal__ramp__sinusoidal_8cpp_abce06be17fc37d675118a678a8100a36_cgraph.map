@@ -5,54 +5,63 @@
 <area shape="rect" id="Node000003" href="$classtmc51x0_1_1TMC51x0.html#a2aca219d7b860bc5a35738a28900a151" title="Get the communication interface used by this TMC51x0 instance." alt="" coords="140,70,363,95"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="54,208,85,158,110,130,139,106,153,98,155,103,141,110,113,133,90,161,59,211"/>
 <area shape="rect" id="Node000004" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="170,120,333,160"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="73,208,139,176,175,162,177,167,141,181,75,212"/>
-<area shape="rect" id="Node000005" href="$classEsp32SPI.html#af6da72550da3f66fb49561b48e8cc3f0" title="Read GPIO pin state." alt="" coords="445,155,597,181"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="92,215,431,176,431,181,92,220"/>
-<area shape="rect" id="Node000009" href="$classEsp32SPI.html#a85d11c001a36b137e4d29ced49983d20" title="Initialize the SPI interface." alt="" coords="179,235,324,261"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="93,225,165,235,165,240,92,231"/>
-<area shape="rect" id="Node000012" href="$classtmc51x0_1_1TMC51x0.html#a60e918b0153cf9034871291ce27ea813" title="Initialize the TMC51x0 driver with configuration." alt="" coords="145,285,357,310"/>
-<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="71,233,103,252,141,270,169,279,167,284,139,274,101,257,68,238"/>
-<area shape="rect" id="Node000023" href="$classBackAndForthMotion.html#a6ababa55b07f6a7ccbe591b597f64ea3" title="Initialize and start back&#45;and&#45;forth motion." alt="" coords="442,363,599,403"/>
-<area shape="poly" id="edge28_Node000001_Node000023" title=" " alt="" coords="60,234,92,277,115,300,141,319,193,337,267,352,429,372,428,378,266,357,191,342,139,324,111,304,87,280,55,237"/>
-<area shape="rect" id="Node000024" href="$classBackAndForthMotion.html#afac7a78a30c9fafbcee5eb2626e3f409" title="Update back&#45;and&#45;forth motion (call periodically)" alt="" coords="173,385,330,425"/>
-<area shape="poly" id="edge29_Node000001_Node000024" title=" " alt="" coords="57,234,86,296,111,333,142,365,162,378,159,382,138,369,107,336,82,299,52,237"/>
-<area shape="rect" id="Node000006" href="$classEsp32SPI.html#a80cfec36b3cd69c2c7b6c38df0a64e72" title="Get pin mapping for a TMC51x0 control pin." alt="" coords="693,155,881,181"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="597,165,680,165,680,171,597,171"/>
-<area shape="rect" id="Node000007" href="$classEsp32SPI.html#a30bb5ec2d8ae7478228bb7c76d1f65b7" title="Convert physical GPIO level to signal state." alt="" coords="683,106,891,131"/>
-<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="589,153,704,131,705,137,590,158"/>
-<area shape="rect" id="Node000008" href="$structtmc51x0_1_1PinActiveLevels.html#a68fd62c73fac36a16577e9fa25b952dd" title="Get active level for a specific pin." alt="" coords="953,141,1143,181"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="866,129,940,141,939,146,865,134"/>
-<area shape="rect" id="Node000010" href="$classEsp32SPI.html#a434e1cfd74165d1e6fac1a940d1d513a" title="Set GPIO pin state." alt="" coords="451,205,591,230"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="324,237,437,224,437,229,324,242"/>
-<area shape="poly" id="edge10_Node000010_Node000006" title=" " alt="" coords="589,202,704,181,705,186,590,207"/>
-<area shape="rect" id="Node000011" href="$classEsp32SPI.html#a842da8d3bf354432cfbe134a148ed1ee" title="Convert signal state to physical GPIO level." alt="" coords="683,205,891,230"/>
-<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="591,215,669,215,669,220,591,220"/>
-<area shape="poly" id="edge12_Node000011_Node000008" title=" " alt="" coords="847,202,941,182,942,187,848,207"/>
-<area shape="rect" id="Node000013" href="$classtmc51x0_1_1TMC51x0.html#a20cfe6cdf1f4310965a619a81863d66b" title="Log a comprehensive, human&#45;readable summary of a DriverConfig." alt="" coords="411,299,631,339"/>
-<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="358,303,397,306,397,312,357,308"/>
-<area shape="rect" id="Node000014" href="$namespacetmc51x0_1_1detail.html#ac3de64d95185b08d40faab18e706ea8f" title=" " alt="" coords="683,457,891,497"/>
-<area shape="poly" id="edge15_Node000013_Node000014" title=" " alt="" coords="614,337,632,349,651,373,657,397,663,421,681,443,687,448,684,452,677,447,659,423,652,399,646,375,629,353,611,341"/>
-<area shape="rect" id="Node000019" href="$namespacetmc51x0_1_1detail.html#a7fbd9d5719c3c7ac393acfc49aa55132" title=" " alt="" coords="947,249,1149,274"/>
-<area shape="poly" id="edge20_Node000013_Node000019" title=" " alt="" coords="630,303,678,297,933,270,934,275,679,303,631,308"/>
-<area shape="rect" id="Node000020" href="$namespacetmc51x0_1_1detail.html#ad1f4b7d44b55921d635447a9266de1b8" title=" " alt="" coords="953,363,1143,403"/>
-<area shape="poly" id="edge22_Node000013_Node000020" title=" " alt="" coords="631,329,940,367,939,372,630,335"/>
-<area shape="rect" id="Node000021" href="$namespacetmc51x0_1_1detail.html#afd95b88236a2c35527927fb24f042666" title=" " alt="" coords="679,407,896,433"/>
-<area shape="poly" id="edge25_Node000013_Node000021" title=" " alt="" coords="604,336,632,348,656,367,680,386,717,401,715,406,677,390,653,371,629,353,602,341"/>
-<area shape="rect" id="Node000022" href="$namespacetmc51x0_1_1detail.html#a089bcd93942e19e55813e20b2f891293" title=" " alt="" coords="953,299,1143,339"/>
-<area shape="poly" id="edge26_Node000013_Node000022" title=" " alt="" coords="631,316,939,316,939,321,631,321"/>
-<area shape="rect" id="Node000015" href="$namespacetmc51x0_1_1detail.html#ae493739f70a91419eece66dd1d958094" title=" " alt="" coords="944,491,1152,517"/>
-<area shape="poly" id="edge16_Node000014_Node000015" title=" " alt="" coords="892,485,931,489,930,495,891,491"/>
-<area shape="rect" id="Node000018" href="$namespacetmc51x0_1_1detail.html#a042585aacefd87238f1c771567fd1647" title=" " alt="" coords="949,427,1147,467"/>
-<area shape="poly" id="edge19_Node000014_Node000018" title=" " alt="" coords="891,462,935,457,936,463,892,468"/>
-<area shape="rect" id="Node000016" href="$namespacetmc51x0_1_1detail.html#a443b2edee4617c6cc74c128d524b7edb" title=" " alt="" coords="1200,423,1428,449"/>
-<area shape="poly" id="edge17_Node000015_Node000016" title=" " alt="" coords="1101,489,1151,476,1252,450,1253,455,1153,481,1102,494"/>
-<area shape="rect" id="Node000017" href="$namespacetmc51x0_1_1detail.html#a833a4b389fcef9493fa5bd7aaf88ba48" title=" " alt="" coords="1211,338,1417,363"/>
-<area shape="poly" id="edge18_Node000015_Node000017" title=" " alt="" coords="1126,489,1150,476,1166,461,1175,446,1183,428,1198,410,1232,386,1267,367,1269,371,1235,390,1202,414,1187,431,1179,448,1171,465,1154,481,1128,494"/>
-<area shape="poly" id="edge21_Node000019_Node000017" title=" " alt="" coords="1107,271,1153,284,1273,330,1271,335,1151,289,1106,277"/>
-<area shape="poly" id="edge23_Node000020_Node000016" title=" " alt="" coords="1143,399,1237,418,1236,423,1142,404"/>
-<area shape="poly" id="edge24_Node000020_Node000017" title=" " alt="" coords="1143,369,1196,362,1197,367,1143,374"/>
-<area shape="poly" id="edge27_Node000022_Node000017" title=" " alt="" coords="1143,327,1197,334,1196,339,1143,333"/>
-<area shape="poly" id="edge30_Node000024_Node000023" title=" " alt="" coords="330,396,428,388,428,393,330,401"/>
-<area shape="rect" id="Node000025" href="$classBackAndForthMotion.html#ad4b85db6e9c6aecc174be8d5a97efe07" title="Stop back&#45;and&#45;forth motion." alt="" coords="442,427,599,467"/>
-<area shape="poly" id="edge31_Node000024_Node000025" title=" " alt="" coords="331,415,429,430,428,435,330,420"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="68,207,139,170,158,162,160,167,141,174,71,212"/>
+<area shape="rect" id="Node000005" href="$classEsp32SPI.html#af6da72550da3f66fb49561b48e8cc3f0" title="Read GPIO pin state." alt="" coords="445,118,597,143"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="93,227,147,232,215,235,289,232,362,219,399,205,434,187,492,149,495,154,437,192,401,210,363,224,290,237,215,240,147,238,92,232"/>
+<area shape="rect" id="Node000009" href="$classEsp32SPI.html#a85d11c001a36b137e4d29ced49983d20" title="Initialize the SPI interface." alt="" coords="179,185,324,210"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="92,215,165,205,165,211,93,220"/>
+<area shape="rect" id="Node000012" href="$classtmc51x0_1_1TMC51x0.html#a97c3a1773a03aaeeb0882d2096f868d8" title="Initialize the TMC51x0 driver with configuration." alt="" coords="145,286,357,311"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="74,233,141,264,187,280,186,285,139,269,72,238"/>
+<area shape="rect" id="Node000026" href="$classBackAndForthMotion.html#a6ababa55b07f6a7ccbe591b597f64ea3" title="Initialize and start back&#45;and&#45;forth motion." alt="" coords="442,364,599,404"/>
+<area shape="poly" id="edge34_Node000001_Node000026" title=" " alt="" coords="60,234,91,278,114,301,141,320,193,338,267,353,428,374,428,379,266,358,191,343,139,325,111,305,87,281,55,237"/>
+<area shape="rect" id="Node000027" href="$classBackAndForthMotion.html#afac7a78a30c9fafbcee5eb2626e3f409" title="Update back&#45;and&#45;forth motion (call periodically)." alt="" coords="173,387,330,427"/>
+<area shape="poly" id="edge35_Node000001_Node000027" title=" " alt="" coords="57,234,86,297,111,334,142,366,162,379,159,383,138,370,107,337,82,300,52,237"/>
+<area shape="rect" id="Node000006" href="$classEsp32SPI.html#a80cfec36b3cd69c2c7b6c38df0a64e72" title="Get pin mapping for a TMC51x0 control pin." alt="" coords="700,69,888,94"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="591,115,709,94,710,99,592,121"/>
+<area shape="rect" id="Node000007" href="$classEsp32SPI.html#a30bb5ec2d8ae7478228bb7c76d1f65b7" title="Convert physical GPIO level to signal state." alt="" coords="690,118,898,143"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="597,128,676,128,676,133,597,133"/>
+<area shape="rect" id="Node000008" href="$structtmc51x0_1_1PinActiveLevels.html#a68fd62c73fac36a16577e9fa25b952dd" title="Get active level for a specific pin." alt="" coords="966,61,1157,101"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="863,115,952,99,953,104,864,121"/>
+<area shape="rect" id="Node000010" href="$classEsp32SPI.html#a434e1cfd74165d1e6fac1a940d1d513a" title="Set GPIO pin state." alt="" coords="451,69,591,94"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="323,186,361,170,377,154,384,138,392,120,409,103,436,90,438,95,412,108,397,123,389,140,381,157,364,174,325,191"/>
+<area shape="poly" id="edge10_Node000010_Node000006" title=" " alt="" coords="591,79,686,79,686,84,591,84"/>
+<area shape="rect" id="Node000011" href="$classEsp32SPI.html#a842da8d3bf354432cfbe134a148ed1ee" title="Convert signal state to physical GPIO level." alt="" coords="690,19,898,45"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="591,66,709,44,710,50,591,71"/>
+<area shape="poly" id="edge12_Node000011_Node000008" title=" " alt="" coords="864,42,953,59,952,64,863,47"/>
+<area shape="rect" id="Node000013" href="$classtmc51x0_1_1TMC51x0.html#a20cfe6cdf1f4310965a619a81863d66b" title="Log a comprehensive, human&#45;readable summary of a DriverConfig." alt="" coords="411,300,631,340"/>
+<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="358,304,397,308,397,313,357,310"/>
+<area shape="rect" id="Node000014" href="$namespacetmc51x0_1_1detail.html#ac3de64d95185b08d40faab18e706ea8f" title=" " alt="" coords="690,332,898,372"/>
+<area shape="poly" id="edge15_Node000013_Node000014" title=" " alt="" coords="631,330,676,336,676,341,631,336"/>
+<area shape="rect" id="Node000019" href="$namespacetmc51x0_1_1detail.html#a7fbd9d5719c3c7ac393acfc49aa55132" title=" " alt="" coords="960,505,1163,530"/>
+<area shape="poly" id="edge20_Node000013_Node000019" title=" " alt="" coords="616,338,633,350,646,367,653,385,656,421,659,455,666,470,680,485,699,495,725,503,792,514,869,518,946,519,946,524,869,524,791,519,723,508,697,500,677,489,662,473,654,456,650,421,648,387,642,370,629,354,613,342"/>
+<area shape="rect" id="Node000020" href="$namespacetmc51x0_1_1detail.html#ad1f4b7d44b55921d635447a9266de1b8" title=" " alt="" coords="967,211,1156,251"/>
+<area shape="poly" id="edge22_Node000013_Node000020" title=" " alt="" coords="560,297,615,273,678,253,749,240,821,232,953,226,953,231,821,237,749,246,679,259,617,278,562,302"/>
+<area shape="rect" id="Node000021" href="$namespacetmc51x0_1_1detail.html#afd95b88236a2c35527927fb24f042666" title=" " alt="" coords="685,397,903,422"/>
+<area shape="poly" id="edge25_Node000013_Node000021" title=" " alt="" coords="602,338,632,350,656,366,680,382,704,390,702,395,677,386,653,371,629,354,600,343"/>
+<area shape="rect" id="Node000022" href="$namespacetmc51x0_1_1detail.html#a8c46bbcc44fe3dc439828d0786c43fb0" title=" " alt="" coords="699,268,889,308"/>
+<area shape="poly" id="edge27_Node000013_Node000022" title=" " alt="" coords="631,304,685,298,686,303,631,310"/>
+<area shape="rect" id="Node000023" href="$namespacetmc51x0_1_1detail.html#a089bcd93942e19e55813e20b2f891293" title=" " alt="" coords="967,440,1156,480"/>
+<area shape="poly" id="edge30_Node000013_Node000023" title=" " alt="" coords="613,338,632,350,650,372,656,394,663,415,680,433,712,449,745,462,816,476,887,480,953,476,953,481,887,485,816,481,744,467,709,454,677,437,658,417,651,396,645,374,629,354,610,342"/>
+<area shape="rect" id="Node000024" href="$namespacetmc51x0.html#a60be1af970c350d5071ed3ba6a96c489" title="Get microsteps&#45;per&#45;full&#45;step for an MRES value." alt="" coords="679,549,909,574"/>
+<area shape="poly" id="edge32_Node000013_Node000024" title=" " alt="" coords="618,338,633,350,649,373,657,396,657,441,658,485,665,506,681,527,697,540,694,544,677,531,660,509,652,486,652,441,652,397,644,375,629,354,614,342"/>
+<area shape="rect" id="Node000025" href="$namespacetmc51x0.html#a2687c1ffa238ddc4d2c6fbb36523ec24" title="Convert MotorDirection to human&#45;readable string." alt="" coords="725,167,863,193"/>
+<area shape="poly" id="edge33_Node000013_Node000025" title=" " alt="" coords="544,298,603,254,678,210,720,194,721,199,680,214,606,258,548,302"/>
+<area shape="rect" id="Node000015" href="$namespacetmc51x0_1_1detail.html#ae493739f70a91419eece66dd1d958094" title=" " alt="" coords="957,326,1165,351"/>
+<area shape="poly" id="edge16_Node000014_Node000015" title=" " alt="" coords="898,344,943,342,943,347,898,349"/>
+<area shape="rect" id="Node000018" href="$namespacetmc51x0_1_1detail.html#a042585aacefd87238f1c771567fd1647" title=" " alt="" coords="963,376,1160,416"/>
+<area shape="poly" id="edge19_Node000014_Node000018" title=" " alt="" coords="898,366,950,375,949,380,898,372"/>
+<area shape="rect" id="Node000016" href="$namespacetmc51x0_1_1detail.html#a443b2edee4617c6cc74c128d524b7edb" title=" " alt="" coords="1213,247,1441,273"/>
+<area shape="poly" id="edge17_Node000015_Node000016" title=" " alt="" coords="1105,323,1270,274,1271,279,1106,328"/>
+<area shape="rect" id="Node000017" href="$namespacetmc51x0_1_1detail.html#a833a4b389fcef9493fa5bd7aaf88ba48" title=" " alt="" coords="1224,326,1431,351"/>
+<area shape="poly" id="edge18_Node000015_Node000017" title=" " alt="" coords="1166,336,1210,336,1210,341,1166,341"/>
+<area shape="poly" id="edge21_Node000019_Node000017" title=" " alt="" coords="1134,502,1164,490,1208,460,1247,426,1306,361,1310,364,1251,429,1211,465,1167,494,1136,507"/>
+<area shape="poly" id="edge23_Node000020_Node000016" title=" " alt="" coords="1157,238,1200,243,1199,249,1156,244"/>
+<area shape="poly" id="edge24_Node000020_Node000017" title=" " alt="" coords="1119,248,1166,267,1286,318,1284,323,1164,272,1117,253"/>
+<area shape="poly" id="edge26_Node000021_Node000018" title=" " alt="" coords="903,401,948,399,949,404,903,407"/>
+<area shape="poly" id="edge29_Node000022_Node000015" title=" " alt="" coords="890,303,981,321,980,326,889,309"/>
+<area shape="poly" id="edge28_Node000022_Node000017" title=" " alt="" coords="889,289,1020,298,1166,311,1241,321,1241,326,1165,316,1020,303,889,295"/>
+<area shape="poly" id="edge31_Node000023_Node000017" title=" " alt="" coords="1133,437,1164,426,1234,391,1293,357,1296,361,1237,396,1166,430,1135,442"/>
+<area shape="poly" id="edge36_Node000027_Node000026" title=" " alt="" coords="330,397,428,389,428,394,330,403"/>
+<area shape="rect" id="Node000028" href="$classBackAndForthMotion.html#ad4b85db6e9c6aecc174be8d5a97efe07" title="Stop back&#45;and&#45;forth motion." alt="" coords="442,428,599,468"/>
+<area shape="poly" id="edge37_Node000027_Node000028" title=" " alt="" coords="331,416,429,431,428,437,330,421"/>
 </map>

@@ -129,65 +129,272 @@ static constexpr bool ENABLE_LATCHED_POSITION_TESTS = true;
 //=============================================================================
 
 // Core tests
+/**
+ * @brief Test driver initialization and basic setup verification.
+ * @return true if test passed, false otherwise
+ */
 bool test_driver_initialization() noexcept;
+
+/**
+ * @brief Test register read/write operations.
+ * @return true if test passed, false otherwise
+ */
 bool test_register_read_write() noexcept;
+
+/**
+ * @brief Test motor parameter configuration and settings.
+ * @return true if test passed, false otherwise
+ */
 bool test_motor_parameter_settings() noexcept;
+
+/**
+ * @brief Test ramp parameter configuration (speed, acceleration, etc.).
+ * @return true if test passed, false otherwise
+ */
 bool test_ramp_parameter_settings() noexcept;
+
+/**
+ * @brief Test global configuration settings (GCONF register).
+ * @return true if test passed, false otherwise
+ */
 bool test_global_configuration() noexcept;
 
 // Motor control tests
+/**
+ * @brief Test motor enable/disable functionality.
+ * @return true if test passed, false otherwise
+ */
 bool test_enable_disable() noexcept;
+
+/**
+ * @brief Test motor current control (IRUN/IHOLD settings).
+ * @return true if test passed, false otherwise
+ */
 bool test_current_control() noexcept;
+
+/**
+ * @brief Test chopper configuration (SpreadCycle mode).
+ * @return true if test passed, false otherwise
+ */
 bool test_chopper_configuration() noexcept;
+
+/**
+ * @brief Test StealthChop configuration and automatic tuning.
+ * @return true if test passed, false otherwise
+ */
 bool test_stealthchop_configuration() noexcept;
+
+/**
+ * @brief Test mode change speed thresholds (PWM_THRS, COOL_THRS, HIGH_THRS).
+ * @return true if test passed, false otherwise
+ */
 bool test_mode_change_speeds() noexcept;
+
+/**
+ * @brief Test global scaler configuration.
+ * @return true if test passed, false otherwise
+ */
 bool test_global_scaler() noexcept;
+
+/**
+ * @brief Test freewheeling mode configuration.
+ * @return true if test passed, false otherwise
+ */
 bool test_freewheeling_mode() noexcept;
+
+/**
+ * @brief Test CoolStep configuration and operation.
+ * @return true if test passed, false otherwise
+ */
 bool test_coolstep_configuration() noexcept;
+
+/**
+ * @brief Test DCStep configuration and operation.
+ * @return true if test passed, false otherwise
+ */
 bool test_dcstep_configuration() noexcept;
+
+/**
+ * @brief Test microstep lookup table configuration.
+ * @return true if test passed, false otherwise
+ */
 bool test_microstep_lookup_table() noexcept;
+
+/**
+ * @brief Test motor setup from specifications (automatic configuration).
+ * @return true if test passed, false otherwise
+ */
 bool test_motor_setup_from_spec() noexcept;
 
 // Ramp control tests
+/**
+ * @brief Test ramp mode switching (POSITIONING, VELOCITY_POS, VELOCITY_NEG, HOLD).
+ * @return true if test passed, false otherwise
+ */
 bool test_ramp_modes() noexcept;
+
+/**
+ * @brief Test position control (target position, current position).
+ * @return true if test passed, false otherwise
+ */
 bool test_position_control() noexcept;
+
+/**
+ * @brief Test speed control (max speed, acceleration, deceleration).
+ * @return true if test passed, false otherwise
+ */
 bool test_speed_control() noexcept;
+
+/**
+ * @brief Test ramp parameters (VSTART, VSTOP, first acceleration, etc.).
+ * @return true if test passed, false otherwise
+ */
 bool test_ramp_parameters() noexcept;
+
+/**
+ * @brief Test reference switch configuration and homing.
+ * @return true if test passed, false otherwise
+ */
 bool test_reference_switch_configuration() noexcept;
+
+/**
+ * @brief Test unit conversion functions (RPM, degrees, millimeters, etc.).
+ * @return true if test passed, false otherwise
+ */
 bool test_unit_conversions() noexcept;
 
 // Diagnostics tests
+/**
+ * @brief Test driver status reading (GSTAT, DRV_STATUS).
+ * @return true if test passed, false otherwise
+ */
 bool test_driver_status() noexcept;
+
+/**
+ * @brief Test StallGuard2 configuration and reading.
+ * @return true if test passed, false otherwise
+ */
 bool test_stallguard() noexcept;
+
+/**
+ * @brief Test lost steps detection and reading.
+ * @return true if test passed, false otherwise
+ */
 bool test_lost_steps() noexcept;
+
+/**
+ * @brief Test phase current reading (microstep current diagnostics).
+ * @return true if test passed, false otherwise
+ */
 bool test_phase_currents() noexcept;
+
+/**
+ * @brief Test PWM scale reading (PWM_AUTO, PWM_SCALE_SUM).
+ * @return true if test passed, false otherwise
+ */
 bool test_pwm_scale() noexcept;
+
+/**
+ * @brief Test microstep diagnostics (counter, time between microsteps).
+ * @return true if test passed, false otherwise
+ */
 bool test_microstep_diagnostics() noexcept;
+
+/**
+ * @brief Test GPIO pin reading functionality.
+ * @return true if test passed, false otherwise
+ */
 bool test_gpio_pins() noexcept;
+
+/**
+ * @brief Test factory and OTP configuration reading.
+ * @return true if test passed, false otherwise
+ */
 bool test_factory_otp_config() noexcept;
+
+/**
+ * @brief Test UART transmission count reading.
+ * @return true if test passed, false otherwise
+ */
 bool test_uart_transmission_count() noexcept;
+
+/**
+ * @brief Test offset calibration reading.
+ * @return true if test passed, false otherwise
+ */
 bool test_offset_calibration() noexcept;
+
+/**
+ * @brief Test sensorless homing configuration (StallGuard2-based).
+ * @return true if test passed, false otherwise
+ */
 bool test_sensorless_homing() noexcept;
+
+/**
+ * @brief Test open load detection functionality.
+ * @return true if test passed, false otherwise
+ */
 bool test_open_load() noexcept;
 
 // Protection tests
+/**
+ * @brief Test short circuit protection configuration.
+ * @return true if test passed, false otherwise
+ */
 bool test_short_circuit_protection() noexcept;
+
+/**
+ * @brief Test overtemperature protection status reading.
+ * @return true if test passed, false otherwise
+ */
 bool test_overtemperature_protection() noexcept;
 
 // Encoder tests
+/**
+ * @brief Test encoder configuration and setup.
+ * @return true if test passed, false otherwise
+ */
 bool test_encoder_configuration() noexcept;
+
+/**
+ * @brief Test encoder resolution setting.
+ * @return true if test passed, false otherwise
+ */
 bool test_encoder_resolution() noexcept;
+
+/**
+ * @brief Test encoder position reading.
+ * @return true if test passed, false otherwise
+ */
 bool test_encoder_position_reading() noexcept;
+
+/**
+ * @brief Test encoder deviation detection and warnings.
+ * @return true if test passed, false otherwise
+ */
 bool test_deviation_detection() noexcept;
+
+/**
+ * @brief Test latched position reading (index pulse).
+ * @return true if test passed, false otherwise
+ */
 bool test_latched_position() noexcept;
 
 //=============================================================================
 // HELPER FUNCTIONS
 //=============================================================================
 
+/**
+ * @brief Test driver handle containing SPI interface and driver instance.
+ * 
+ * @details
+ * This structure holds the lifetime-managed SPI communication interface
+ * and TMC51x0 driver instance for test functions. Uses unique_ptr for
+ * automatic resource management.
+ */
 struct TestDriverHandle {
-  std::unique_ptr<Esp32SPI> spi;
-  std::unique_ptr<tmc51x0::TMC51x0<Esp32SPI>> driver;
+  std::unique_ptr<Esp32SPI> spi;  ///< SPI communication interface
+  std::unique_ptr<tmc51x0::TMC51x0<Esp32SPI>> driver;  ///< TMC51x0 driver instance
 };
 
 /**

@@ -1,7 +1,7 @@
 <map id="tmc51x0::TMC51x0::GetCommAddress" name="tmc51x0::TMC51x0::GetCommAddress">
-<area shape="rect" id="Node000001" title="Get the appropriate address parameter for ReadRegister/WriteRegister." alt="" coords="525,5,748,45"/>
-<area shape="rect" id="Node000002" href="$classtmc51x0_1_1TMC51x0.html#abd5a49d0cb0c802a394a71ede9967b32" title="Check whether the chip is currently in internal ramp&#45;generator mode (SD_MODE=0)." alt="" coords="260,5,477,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="511,28,478,28,478,23,511,23"/>
-<area shape="rect" id="Node000003" href="$classtmc51x0_1_1TMC51x0.html#a699bab1a90d2f8a262daabfa855878b1" title="Require internal ramp&#45;generator mode (SD_MODE=0) for motion&#45;controller operations." alt="" coords="5,5,212,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="246,28,212,28,212,23,246,23"/>
+<area shape="rect" id="Node000001" title="Get the appropriate address parameter for ReadRegister/WriteRegister." alt="" coords="329,41,552,81"/>
+<area shape="rect" id="Node000002" href="$structtmc51x0_1_1TMC51x0_1_1PowerStage.html#ab7de57896f0768a61a870e0813945275" title="Configure power stage parameters (DRV_CONF register)" alt="" coords="9,5,278,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="315,49,278,44,278,39,316,44"/>
+<area shape="rect" id="Node000003" href="$structtmc51x0_1_1TMC51x0_1_1Thresholds.html#a090e1bf1ca74511a2b4185bd7347c4cf" title="Set StealthChop velocity threshold (TPWMTHRS)" alt="" coords="5,70,281,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="316,79,282,83,281,78,315,74"/>
 </map>

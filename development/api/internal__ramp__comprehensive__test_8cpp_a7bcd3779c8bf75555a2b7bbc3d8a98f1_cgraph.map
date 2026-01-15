@@ -1,5 +1,5 @@
 <map id="test_stealthchop_configuration" name="test_stealthchop_configuration">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,228,56"/>
+<area shape="rect" id="Node000001" title="Test StealthChop configuration and automatic tuning." alt="" coords="5,31,228,56"/>
 <area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a5252c49abf7d7f7cbc2b181ea72a39b7" title="Helper to calculate current register value (0&#45;31) from mA." alt="" coords="276,5,461,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="228,29,262,26,262,31,228,35"/>
 <area shape="rect" id="Node000003" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="299,55,439,80"/>

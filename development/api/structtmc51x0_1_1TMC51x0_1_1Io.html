@@ -329,7 +329,7 @@ template&lt;typename CommType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
 <p>This method controls the SPI_MODE (pin 22) and SD_MODE (pin 21) pins if they are connected to GPIO outputs. These pins determine both the communication interface (SPI/UART/Standalone) and the motion control method (Internal ramp generator vs External step/dir).</p>
-<p>⚠️ CRITICAL WARNINGS:</p><ul>
+<p>CRITICAL WARNINGS:</p><ul>
 <li>These pins are typically hardwired and read at startup</li>
 <li>Only use this method if SPI_MODE and SD_MODE pins are connected to GPIO outputs</li>
 <li>Changing the mode requires a chip reset (power cycle) to take effect</li>

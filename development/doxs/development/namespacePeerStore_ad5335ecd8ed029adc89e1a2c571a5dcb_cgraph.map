@@ -1,0 +1,9 @@
+<map id="PeerStore::Init" name="PeerStore::Init">
+<area shape="rect" id="Node000001" title="Initialize peer storage and load approved peers from NVS." alt="" coords="5,31,120,56"/>
+<area shape="rect" id="Node000002" href="$espnow__security_8hpp.html#a5404f39e50ea5a07bb38e958bfecd9d1" title="Check if a MAC address is all zeros." alt="" coords="199,5,289,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,33,185,24,185,29,120,38"/>
+<area shape="rect" id="Node000003" href="$namespacePeerStore.html#ac1554ebd96d59c1197a1822c38876523" title="Log all approved peers (for debugging)." alt="" coords="168,55,320,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="120,48,155,53,154,58,120,54"/>
+<area shape="rect" id="Node000004" href="$namespacePeerStore.html#a9b28e00929e22d7fc686a164ff2951cf" title="Get the number of valid approved peers." alt="" coords="368,55,551,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="320,65,354,65,354,70,320,70"/>
+</map>

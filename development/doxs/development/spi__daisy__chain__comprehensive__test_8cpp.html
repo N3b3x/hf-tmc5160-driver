@@ -113,23 +113,28 @@ $(function(){initNavTree('spi__daisy__chain__comprehensive__test_8cpp.html','');
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for spi_daisy_chain_comprehensive_test.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="spi__daisy__chain__comprehensive__test_8cpp__incl.svg" width="2658" height="520"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="spi__daisy__chain__comprehensive__test_8cpp__incl.svg" width="2774" height="520"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTestDriverHandle.html">TestDriverHandle</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test driver handle containing SPI interface and driver instance.  <a href="structTestDriverHandle.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aea4301824809cd2c54c2b3d81bd5f039" id="r_aea4301824809cd2c54c2b3d81bd5f039"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea4301824809cd2c54c2b3d81bd5f039">test_daisy_chain_setup</a> () noexcept</td></tr>
+<tr class="memdesc:aea4301824809cd2c54c2b3d81bd5f039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test SPI daisy chain setup and initialization.  <br /></td></tr>
 <tr class="separator:aea4301824809cd2c54c2b3d81bd5f039"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a829c4d999ee75addcd4a80486173795b" id="r_a829c4d999ee75addcd4a80486173795b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a829c4d999ee75addcd4a80486173795b">test_daisy_chain_position_management</a> () noexcept</td></tr>
+<tr class="memdesc:a829c4d999ee75addcd4a80486173795b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test daisy chain position management and addressing.  <br /></td></tr>
 <tr class="separator:a829c4d999ee75addcd4a80486173795b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1751b60bd475b13f7f12c4e3ab674011" id="r_a1751b60bd475b13f7f12c4e3ab674011"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1751b60bd475b13f7f12c4e3ab674011">test_multi_motor_coordination</a> () noexcept</td></tr>
+<tr class="memdesc:a1751b60bd475b13f7f12c4e3ab674011"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test multi-motor coordination in daisy chain configuration.  <br /></td></tr>
 <tr class="separator:a1751b60bd475b13f7f12c4e3ab674011"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1c358956ec587c7bd3a5105761b86a0" id="r_ae1c358956ec587c7bd3a5105761b86a0"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="structTestDriverHandle.html">TestDriverHandle</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1c358956ec587c7bd3a5105761b86a0">create_daisy_chain_drivers</a> () noexcept</td></tr>
+<tr class="memdesc:ae1c358956ec587c7bd3a5105761b86a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create and initialize daisy chain driver instances.  <br /></td></tr>
 <tr class="separator:ae1c358956ec587c7bd3a5105761b86a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a630544a7f0a2cc40d8a7fefab7e2fe70" id="r_a630544a7f0a2cc40d8a7fefab7e2fe70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a630544a7f0a2cc40d8a7fefab7e2fe70">app_main</a> (void)</td></tr>
 <tr class="separator:a630544a7f0a2cc40d8a7fefab7e2fe70"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -232,6 +237,10 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Create and initialize daisy chain driver instances. </p>
+<p>Creates a shared SPI interface and multiple driver instances configured for daisy chain operation. Each driver is assigned a unique chain position.</p>
+<dl class="section return"><dt>Returns</dt><dd>Unique pointer to <a class="el" href="structTestDriverHandle.html" title="Test driver handle containing SPI interface and driver instance.">TestDriverHandle</a>, or nullptr on failure </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -267,6 +276,9 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Test daisy chain position management and addressing. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if test passed, false otherwise </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -302,6 +314,9 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Test SPI daisy chain setup and initialization. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if test passed, false otherwise </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -337,6 +352,9 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Test multi-motor coordination in daisy chain configuration. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if test passed, false otherwise </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

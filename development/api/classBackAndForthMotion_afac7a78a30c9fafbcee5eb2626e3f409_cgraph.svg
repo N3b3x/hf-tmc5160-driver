@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Update back&#45;and&#45;forth motion (call periodically)">
+<g id="a_Node000001"><a xlink:title="Update back&#45;and&#45;forth motion (call periodically).">
 <polygon fill="#999999" stroke="#666666" points="118,-54 0,-54 0,-24 118,-24 118,-54"/>
 <text text-anchor="start" x="8" y="-42" font-family="Helvetica,sans-Serif" font-size="10.00">BackAndForthMotion</text>
 <text text-anchor="middle" x="59" y="-31" font-family="Helvetica,sans-Serif" font-size="10.00">::Update</text>

@@ -1,0 +1,18 @@
+<map id="BoundsCache::Init" name="BoundsCache::Init">
+<area shape="rect" id="Node000001" title="Initialize the bounds cache system (create timer)." alt="" coords="5,35,144,60"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#a9129736e9ca5c05905c4c74e75cb969c" title="Timer callback to de&#45;energize motor after bounds validity expires." alt="" coords="192,35,383,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,45,178,45,178,50,144,50"/>
+<area shape="rect" id="Node000003" href="$main_8cpp.html#a3f72921e4deaf387f7444281647ba4b9" title="Immediately stop motion, enter HOLD, and de&#45;energize (disable) the motor." alt="" coords="432,5,600,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="383,32,418,28,419,33,384,38"/>
+<area shape="rect" id="Node000004" href="$namespaceEspNowReceiver.html#a37dbf71c15486999f072d89e26d3dd7e" title="Send STATUS_UPDATE with cycle count and state." alt="" coords="431,55,601,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="384,56,417,61,417,66,383,62"/>
+<area shape="rect" id="Node000005" href="$espnow__receiver_8cpp.html#af394d93fad387639cb5c155cfd037163" title=" " alt="" coords="649,63,772,88"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="602,73,635,73,635,78,602,78"/>
+<area shape="rect" id="Node000006" href="$espnow__receiver_8cpp.html#a38ae343ba91aa93458377b341e1d9e4a" title=" " alt="" coords="977,39,1068,64"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="772,68,963,53,964,58,772,73"/>
+<area shape="rect" id="Node000007" href="$espnow__receiver_8cpp.html#a6eb0186376c3ffd1080f65ee4c597d9f" title=" " alt="" coords="820,88,929,113"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="772,82,806,87,806,93,772,87"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="913,85,970,66,972,71,914,90"/>
+<area shape="rect" id="Node000008" href="$espnow__protocol_8hpp.html#afa7c999b99fb5716dc9d60af3a151d11" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="978,88,1067,113"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="930,98,964,98,964,103,930,103"/>
+</map>

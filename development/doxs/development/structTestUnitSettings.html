@@ -108,26 +108,41 @@ $(function(){initNavTree('structTestUnitSettings.html',''); initResizable(); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a1ca3a2371e590915a33fba148bf7bd09" id="r_a1ca3a2371e590915a33fba148bf7bd09"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ca3a2371e590915a33fba148bf7bd09">cycle_amount</a> = 1000</td></tr>
+<tr class="memitem:a1ca3a2371e590915a33fba148bf7bd09" id="r_a1ca3a2371e590915a33fba148bf7bd09"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ca3a2371e590915a33fba148bf7bd09">cycle_amount</a> = 300</td></tr>
+<tr class="memdesc:a1ca3a2371e590915a33fba148bf7bd09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Target cycles (0 = infinite)  <br /></td></tr>
 <tr class="separator:a1ca3a2371e590915a33fba148bf7bd09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae158b5ef4634ddd0922137a329065765" id="r_ae158b5ef4634ddd0922137a329065765"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae158b5ef4634ddd0922137a329065765">time_per_cycle</a> = 5</td></tr>
-<tr class="separator:ae158b5ef4634ddd0922137a329065765"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4eadbca6eeb9fc2e5de9dce1750713e2" id="r_a4eadbca6eeb9fc2e5de9dce1750713e2"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4eadbca6eeb9fc2e5de9dce1750713e2">dwell_time</a> = 1</td></tr>
-<tr class="separator:a4eadbca6eeb9fc2e5de9dce1750713e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac63412309ce92db15e8fa95db7209232" id="r_ac63412309ce92db15e8fa95db7209232"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac63412309ce92db15e8fa95db7209232">oscillation_vmax_rpm</a> = 60.0f</td></tr>
+<tr class="memdesc:ac63412309ce92db15e8fa95db7209232"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max velocity during oscillation (RPM)  <br /></td></tr>
+<tr class="separator:ac63412309ce92db15e8fa95db7209232"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d1ea12b7e69fbcb849320c0ed99e0a6" id="r_a3d1ea12b7e69fbcb849320c0ed99e0a6"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d1ea12b7e69fbcb849320c0ed99e0a6">oscillation_amax_rev_s2</a> = 10.0f</td></tr>
+<tr class="memdesc:a3d1ea12b7e69fbcb849320c0ed99e0a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acceleration during oscillation (rev/s²)  <br /></td></tr>
+<tr class="separator:a3d1ea12b7e69fbcb849320c0ed99e0a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab84f2c67a8b840d50f69fa997d60f2b6" id="r_ab84f2c67a8b840d50f69fa997d60f2b6"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab84f2c67a8b840d50f69fa997d60f2b6">dwell_time_ms</a> = 500</td></tr>
+<tr class="memdesc:ab84f2c67a8b840d50f69fa997d60f2b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dwell at endpoints (ms)  <br /></td></tr>
+<tr class="separator:ab84f2c67a8b840d50f69fa997d60f2b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2186abd0ad8717551b638611de74285b" id="r_a2186abd0ad8717551b638611de74285b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2186abd0ad8717551b638611de74285b">bounds_method_stallguard</a> = true</td></tr>
+<tr class="memdesc:a2186abd0ad8717551b638611de74285b"><td class="mdescLeft">&#160;</td><td class="mdescRight">true = StallGuard2, false = encoder  <br /></td></tr>
 <tr class="separator:a2186abd0ad8717551b638611de74285b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a053bdd1049837f985e448259fcb71f22" id="r_a053bdd1049837f985e448259fcb71f22"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a053bdd1049837f985e448259fcb71f22">bounds_search_velocity_rpm</a> = 0.0f</td></tr>
+<tr class="memdesc:a053bdd1049837f985e448259fcb71f22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search speed during bounds finding (RPM, 0 = use test config default)  <br /></td></tr>
 <tr class="separator:a053bdd1049837f985e448259fcb71f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7767600ca72e070e74679a319932616f" id="r_a7767600ca72e070e74679a319932616f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7767600ca72e070e74679a319932616f">stallguard_min_velocity_rpm</a> = 0.0f</td></tr>
+<tr class="memdesc:a7767600ca72e070e74679a319932616f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Min velocity for StallGuard2 (RPM, 0 = use test config default)  <br /></td></tr>
 <tr class="separator:a7767600ca72e070e74679a319932616f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a4ea873f0665708b0c86e65d2689a80" id="r_a1a4ea873f0665708b0c86e65d2689a80"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1a4ea873f0665708b0c86e65d2689a80">stall_detection_current_factor</a> = 0.0f</td></tr>
+<tr class="memdesc:a1a4ea873f0665708b0c86e65d2689a80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current reduction factor (0.0-1.0, 0 = use test config default)  <br /></td></tr>
 <tr class="separator:a1a4ea873f0665708b0c86e65d2689a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6077309ea0f86a7c018f258d5b428ef" id="r_ac6077309ea0f86a7c018f258d5b428ef"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6077309ea0f86a7c018f258d5b428ef">bounds_search_accel_rev_s2</a> = 0.0f</td></tr>
+<tr class="memdesc:ac6077309ea0f86a7c018f258d5b428ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search acceleration (rev/s², 0 = use test config default)  <br /></td></tr>
 <tr class="separator:ac6077309ea0f86a7c018f258d5b428ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f6a5bf4ecd25e5a1e6bdc34da628d30" id="r_a4f6a5bf4ecd25e5a1e6bdc34da628d30"><td class="memItemLeft" align="right" valign="top">int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4f6a5bf4ecd25e5a1e6bdc34da628d30">stallguard_sgt</a> = 0</td></tr>
+<tr class="memdesc:a4f6a5bf4ecd25e5a1e6bdc34da628d30"><td class="mdescLeft">&#160;</td><td class="mdescRight">StallGuard threshold [-64..63], 127 = use test config default.  <br /></td></tr>
+<tr class="separator:a4f6a5bf4ecd25e5a1e6bdc34da628d30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Test unit settings - synchronized with test machine via ESP-NOW. </p>
-<p>These settings control the fatigue test behavior. </p>
+<p>These settings control the fatigue test behavior.</p>
+<p>PROTOCOL V2: Uses direct velocity/acceleration control instead of cycle time. </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a2186abd0ad8717551b638611de74285b" name="a2186abd0ad8717551b638611de74285b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2186abd0ad8717551b638611de74285b">&#9670;&#160;</a></span>bounds_method_stallguard</h2>
@@ -140,6 +155,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>true = StallGuard2, false = encoder </p>
 
 </div>
 </div>
@@ -155,6 +172,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Search acceleration (rev/s², 0 = use test config default) </p>
+
 </div>
 </div>
 <a id="a053bdd1049837f985e448259fcb71f22" name="a053bdd1049837f985e448259fcb71f22"></a>
@@ -169,6 +188,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Search speed during bounds finding (RPM, 0 = use test config default) </p>
+
 </div>
 </div>
 <a id="a1ca3a2371e590915a33fba148bf7bd09" name="a1ca3a2371e590915a33fba148bf7bd09"></a>
@@ -178,24 +199,60 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t TestUnitSettings::cycle_amount = 1000</td>
+          <td class="memname">uint32_t TestUnitSettings::cycle_amount = 300</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
+<p>Target cycles (0 = infinite) </p>
+
 </div>
 </div>
-<a id="a4eadbca6eeb9fc2e5de9dce1750713e2" name="a4eadbca6eeb9fc2e5de9dce1750713e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4eadbca6eeb9fc2e5de9dce1750713e2">&#9670;&#160;</a></span>dwell_time</h2>
+<a id="ab84f2c67a8b840d50f69fa997d60f2b6" name="ab84f2c67a8b840d50f69fa997d60f2b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab84f2c67a8b840d50f69fa997d60f2b6">&#9670;&#160;</a></span>dwell_time_ms</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t TestUnitSettings::dwell_time = 1</td>
+          <td class="memname">uint32_t TestUnitSettings::dwell_time_ms = 500</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Dwell at endpoints (ms) </p>
+
+</div>
+</div>
+<a id="a3d1ea12b7e69fbcb849320c0ed99e0a6" name="a3d1ea12b7e69fbcb849320c0ed99e0a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d1ea12b7e69fbcb849320c0ed99e0a6">&#9670;&#160;</a></span>oscillation_amax_rev_s2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TestUnitSettings::oscillation_amax_rev_s2 = 10.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Acceleration during oscillation (rev/s²) </p>
+
+</div>
+</div>
+<a id="ac63412309ce92db15e8fa95db7209232" name="ac63412309ce92db15e8fa95db7209232"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac63412309ce92db15e8fa95db7209232">&#9670;&#160;</a></span>oscillation_vmax_rpm</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TestUnitSettings::oscillation_vmax_rpm = 60.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Max velocity during oscillation (RPM) </p>
 
 </div>
 </div>
@@ -211,6 +268,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Current reduction factor (0.0-1.0, 0 = use test config default) </p>
+
 </div>
 </div>
 <a id="a7767600ca72e070e74679a319932616f" name="a7767600ca72e070e74679a319932616f"></a>
@@ -225,19 +284,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Min velocity for StallGuard2 (RPM, 0 = use test config default) </p>
+
 </div>
 </div>
-<a id="ae158b5ef4634ddd0922137a329065765" name="ae158b5ef4634ddd0922137a329065765"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae158b5ef4634ddd0922137a329065765">&#9670;&#160;</a></span>time_per_cycle</h2>
+<a id="a4f6a5bf4ecd25e5a1e6bdc34da628d30" name="a4f6a5bf4ecd25e5a1e6bdc34da628d30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f6a5bf4ecd25e5a1e6bdc34da628d30">&#9670;&#160;</a></span>stallguard_sgt</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t TestUnitSettings::time_per_cycle = 5</td>
+          <td class="memname">int8_t TestUnitSettings::stallguard_sgt = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>StallGuard threshold [-64..63], 127 = use test config default. </p>
 
 </div>
 </div>

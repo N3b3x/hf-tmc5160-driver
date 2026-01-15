@@ -5,5 +5,8 @@ var structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1StallGuard =
     [ "SEMAX", "structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1StallGuard.html#a465f83594cb78d3abde4e5bc1d00539e", null ],
     [ "SEMIN", "structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1StallGuard.html#a0743ca88cf82d7cfa67ff9cc276a151c", null ],
     [ "SGT_HOMING", "structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1StallGuard.html#a9f22c239c8405c1b90fd6abce1b6253d", null ],
-    [ "STALL_DETECTION_CURRENT_FACTOR", "structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1StallGuard.html#a11411c91ac18f2797d8e72d981107b89", null ]
+    [ "SGT_TUNED_AT_VELOCITY_RPM", "structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1StallGuard.html#a43ca7f30b299195b989a5d9962e23668", null ],
+    [ "STALL_DETECTION_CURRENT_FACTOR", "structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1StallGuard.html#a11411c91ac18f2797d8e72d981107b89", null ],
+    [ "TUNING_MAX_VELOCITY_RPM", "structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1StallGuard.html#a5e8e8089b8fcbb66012345ff3838d5c0", null ],
+    [ "TUNING_MIN_VELOCITY_RPM", "structtmc51x0__test__config_1_1TestConfig__17HS4401S_1_1StallGuard.html#abf446204b0faa8abaca788a931b5b636", null ]
 ];

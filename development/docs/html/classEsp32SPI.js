@@ -35,5 +35,6 @@ var classEsp32SPI =
     [ "mosi_pin_", "classEsp32SPI.html#a5c2653246fc10efe26990097fbffc92d", null ],
     [ "pin_mapping_", "classEsp32SPI.html#a13a97f1e317116fbe4ad7c5f6f55881f", null ],
     [ "sclk_pin_", "classEsp32SPI.html#a6e052263dab4270986ae0c923bd9baca", null ],
+    [ "spi_mutex_", "classEsp32SPI.html#a79b8e9f8678aa4b2bec19212636ccf31", null ],
     [ "step_pin_", "classEsp32SPI.html#acf87059491f5257cbfe3a97dd20dadf2", null ]
 ];

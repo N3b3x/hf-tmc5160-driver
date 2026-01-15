@@ -1,5 +1,6 @@
 <map id="HandleResume" name="HandleResume">
-<area shape="rect" id="Node000001" title="Handle RESUME command (UART path)." alt="" coords="5,5,127,31"/>
-<area shape="rect" id="Node000002" href="$namespaceCommandOutput.html#adbbaa4766846cac446f219e82c816b59" title="Print an informational message to the ESP&#45;IDF log." alt="" coords="175,5,371,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,15,161,15,161,21,127,21"/>
+<area shape="rect" id="Node000001" title="Handle RESUME command (UART path)." alt="" coords="5,29,127,55"/>
+<area shape="rect" id="Node000002" href="$namespaceCommandOutput.html#adbbaa4766846cac446f219e82c816b59" title="Print an informational message to the ESP&#45;IDF log." alt="" coords="175,29,371,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,39,161,39,161,45,127,45"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="239,31,232,21,235,11,249,5,273,3,301,6,313,15,309,20,299,11,273,8,251,10,239,15,237,20,243,28"/>
 </map>

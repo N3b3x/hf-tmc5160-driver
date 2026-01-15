@@ -113,6 +113,7 @@ Collaboration diagram for BackAndForthMotion:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a733388ec15f23b81e941c70681675b80" id="r_a733388ec15f23b81e941c70681675b80"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a733388ec15f23b81e941c70681675b80">BackAndForthMotion</a> (<a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; *driver)</td></tr>
+<tr class="memdesc:a733388ec15f23b81e941c70681675b80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a back-and-forth motion controller.  <br /></td></tr>
 <tr class="separator:a733388ec15f23b81e941c70681675b80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa090f6cf784e52cd82d0456426e301b5" id="r_aa090f6cf784e52cd82d0456426e301b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa090f6cf784e52cd82d0456426e301b5">Config</a> (float max_vel_rpm, float accel_rev_s2, float travel_dist_deg, int max_cycles=-1)</td></tr>
 <tr class="memdesc:aa090f6cf784e52cd82d0456426e301b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure back-and-forth motion parameters.  <br /></td></tr>
@@ -121,41 +122,51 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a6ababa55b07f6a7ccbe591b597f64ea3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize and start back-and-forth motion.  <br /></td></tr>
 <tr class="separator:a6ababa55b07f6a7ccbe591b597f64ea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afac7a78a30c9fafbcee5eb2626e3f409" id="r_afac7a78a30c9fafbcee5eb2626e3f409"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afac7a78a30c9fafbcee5eb2626e3f409">Update</a> ()</td></tr>
-<tr class="memdesc:afac7a78a30c9fafbcee5eb2626e3f409"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update back-and-forth motion (call periodically)  <br /></td></tr>
+<tr class="memdesc:afac7a78a30c9fafbcee5eb2626e3f409"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update back-and-forth motion (call periodically).  <br /></td></tr>
 <tr class="separator:afac7a78a30c9fafbcee5eb2626e3f409"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4b85db6e9c6aecc174be8d5a97efe07" id="r_ad4b85db6e9c6aecc174be8d5a97efe07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4b85db6e9c6aecc174be8d5a97efe07">Stop</a> ()</td></tr>
 <tr class="memdesc:ad4b85db6e9c6aecc174be8d5a97efe07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop back-and-forth motion.  <br /></td></tr>
 <tr class="separator:ad4b85db6e9c6aecc174be8d5a97efe07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72c57c6aa126bce3e05923edc65203a1" id="r_a72c57c6aa126bce3e05923edc65203a1"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72c57c6aa126bce3e05923edc65203a1">GetCyclesCompleted</a> () const</td></tr>
-<tr class="memdesc:a72c57c6aa126bce3e05923edc65203a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of completed cycles.  <br /></td></tr>
+<tr class="memdesc:a72c57c6aa126bce3e05923edc65203a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of completed back-and-forth cycles.  <br /></td></tr>
 <tr class="separator:a72c57c6aa126bce3e05923edc65203a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:aa7ba24ae1a089e9956ee518bc35e6e3d" id="r_aa7ba24ae1a089e9956ee518bc35e6e3d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; <a class="el" href="classEsp32SPI.html">Esp32SPI</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7ba24ae1a089e9956ee518bc35e6e3d">driver_</a></td></tr>
+<tr class="memdesc:aa7ba24ae1a089e9956ee518bc35e6e3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to TMC51x0 driver instance.  <br /></td></tr>
 <tr class="separator:aa7ba24ae1a089e9956ee518bc35e6e3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67d4a79a4e5b98c8c34d9819aa48d02a" id="r_a67d4a79a4e5b98c8c34d9819aa48d02a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67d4a79a4e5b98c8c34d9819aa48d02a">max_velocity_rpm_</a></td></tr>
+<tr class="memdesc:a67d4a79a4e5b98c8c34d9819aa48d02a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum velocity in RPM.  <br /></td></tr>
 <tr class="separator:a67d4a79a4e5b98c8c34d9819aa48d02a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3aaa94901a1baf0fd092228fe162463c" id="r_a3aaa94901a1baf0fd092228fe162463c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3aaa94901a1baf0fd092228fe162463c">acceleration_rev_s2_</a></td></tr>
+<tr class="memdesc:a3aaa94901a1baf0fd092228fe162463c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acceleration in rev/s²  <br /></td></tr>
 <tr class="separator:a3aaa94901a1baf0fd092228fe162463c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0df8109ba5e308ce7b6108c431e27dc" id="r_af0df8109ba5e308ce7b6108c431e27dc"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0df8109ba5e308ce7b6108c431e27dc">travel_distance_deg_</a></td></tr>
+<tr class="memdesc:af0df8109ba5e308ce7b6108c431e27dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distance to travel in each direction (degrees)  <br /></td></tr>
 <tr class="separator:af0df8109ba5e308ce7b6108c431e27dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27137bb10bd0b91b7ea3f382276b0880" id="r_a27137bb10bd0b91b7ea3f382276b0880"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a27137bb10bd0b91b7ea3f382276b0880">center_position_deg_</a></td></tr>
+<tr class="memdesc:a27137bb10bd0b91b7ea3f382276b0880"><td class="mdescLeft">&#160;</td><td class="mdescRight">Center position (starting point) in degrees.  <br /></td></tr>
 <tr class="separator:a27137bb10bd0b91b7ea3f382276b0880"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7d7138f8ba7497542ba1917f971cfb7" id="r_ac7d7138f8ba7497542ba1917f971cfb7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac7d7138f8ba7497542ba1917f971cfb7">target_position_deg_</a></td></tr>
+<tr class="memdesc:ac7d7138f8ba7497542ba1917f971cfb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current target position in degrees.  <br /></td></tr>
 <tr class="separator:ac7d7138f8ba7497542ba1917f971cfb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad56cc77409651dd72da462deb605cad3" id="r_ad56cc77409651dd72da462deb605cad3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad56cc77409651dd72da462deb605cad3">moving_forward_</a></td></tr>
+<tr class="memdesc:ad56cc77409651dd72da462deb605cad3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direction flag (true = forward, false = backward)  <br /></td></tr>
 <tr class="separator:ad56cc77409651dd72da462deb605cad3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cd6de390a140c43aeb99c4b098fe9b7" id="r_a0cd6de390a140c43aeb99c4b098fe9b7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0cd6de390a140c43aeb99c4b098fe9b7">initialized_</a></td></tr>
+<tr class="memdesc:a0cd6de390a140c43aeb99c4b098fe9b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether motion has been initialized.  <br /></td></tr>
 <tr class="separator:a0cd6de390a140c43aeb99c4b098fe9b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d8a369fe04b51daff3695274fbe4676" id="r_a7d8a369fe04b51daff3695274fbe4676"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d8a369fe04b51daff3695274fbe4676">cycles_completed_</a></td></tr>
+<tr class="memdesc:a7d8a369fe04b51daff3695274fbe4676"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of complete back-and-forth cycles.  <br /></td></tr>
 <tr class="separator:a7d8a369fe04b51daff3695274fbe4676"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3edc669c83a62d2e6d3c7624324b3b8b" id="r_a3edc669c83a62d2e6d3c7624324b3b8b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3edc669c83a62d2e6d3c7624324b3b8b">max_cycles_</a></td></tr>
+<tr class="memdesc:a3edc669c83a62d2e6d3c7624324b3b8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum cycles (-1 for infinite)  <br /></td></tr>
 <tr class="separator:a3edc669c83a62d2e6d3c7624324b3b8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Back-and-forth motion controller using positioning mode. </p>
-<p>Simple back-and-forth motion using TMC51x0's positioning mode. Sets target position to one end, waits until reached, then sets target to other end. Repeats continuously. </p>
+<p>Simple back-and-forth motion using TMC51x0's positioning mode. Sets target position to one end, waits until reached, then sets target to other end. Repeats continuously until max_cycles is reached (if specified). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a733388ec15f23b81e941c70681675b80" name="a733388ec15f23b81e941c70681675b80"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a733388ec15f23b81e941c70681675b80">&#9670;&#160;</a></span>BackAndForthMotion()</h2>
@@ -179,6 +190,14 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Construct a back-and-forth motion controller. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">driver</td><td>Pointer to TMC51x0 driver instance (must remain valid for lifetime) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -261,7 +280,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Get number of completed cycles. </p>
+<p>Get number of completed back-and-forth cycles. </p>
+<dl class="section return"><dt>Returns</dt><dd>Number of cycles completed since last <a class="el" href="#a6ababa55b07f6a7ccbe591b597f64ea3" title="Initialize and start back-and-forth motion.">Start()</a> call </dd></dl>
 
 </div>
 </div>
@@ -321,6 +341,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Stop back-and-forth motion. </p>
+<p>Stops the motor and sets ramp mode to HOLD. Motion can be restarted by calling <a class="el" href="#a6ababa55b07f6a7ccbe591b597f64ea3" title="Initialize and start back-and-forth motion.">Start()</a> again. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -352,8 +373,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Update back-and-forth motion (call periodically) </p>
-<dl class="section return"><dt>Returns</dt><dd>true if motion is active, false if completed </dd></dl>
+<p>Update back-and-forth motion (call periodically). </p>
+<p>Checks if target position has been reached and switches direction. Should be called from a periodic task or main loop.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if motion is active, false if completed (max_cycles reached) </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -388,6 +410,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Acceleration in rev/s² </p>
+
 </div>
 </div>
 <a id="a27137bb10bd0b91b7ea3f382276b0880" name="a27137bb10bd0b91b7ea3f382276b0880"></a>
@@ -409,6 +433,8 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Center position (starting point) in degrees. </p>
 
 </div>
 </div>
@@ -432,6 +458,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Number of complete back-and-forth cycles. </p>
+
 </div>
 </div>
 <a id="aa7ba24ae1a089e9956ee518bc35e6e3d" name="aa7ba24ae1a089e9956ee518bc35e6e3d"></a>
@@ -453,6 +481,8 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Pointer to TMC51x0 driver instance. </p>
 
 </div>
 </div>
@@ -476,6 +506,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Whether motion has been initialized. </p>
+
 </div>
 </div>
 <a id="a3edc669c83a62d2e6d3c7624324b3b8b" name="a3edc669c83a62d2e6d3c7624324b3b8b"></a>
@@ -497,6 +529,8 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Maximum cycles (-1 for infinite) </p>
 
 </div>
 </div>
@@ -520,6 +554,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Maximum velocity in RPM. </p>
+
 </div>
 </div>
 <a id="ad56cc77409651dd72da462deb605cad3" name="ad56cc77409651dd72da462deb605cad3"></a>
@@ -541,6 +577,8 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Direction flag (true = forward, false = backward) </p>
 
 </div>
 </div>
@@ -564,6 +602,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Current target position in degrees. </p>
+
 </div>
 </div>
 <a id="af0df8109ba5e308ce7b6108c431e27dc" name="af0df8109ba5e308ce7b6108c431e27dc"></a>
@@ -585,6 +625,8 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Distance to travel in each direction (degrees) </p>
 
 </div>
 </div>

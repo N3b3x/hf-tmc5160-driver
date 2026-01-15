@@ -76,7 +76,7 @@
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a2600323d32e9fbcfbfda121e6f3c6fe3" target="_top" xlink:title=" ">
+<g id="a_Node000007"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a2600323d32e9fbcfbfda121e6f3c6fe3" target="_top" xlink:title="Test chopper configuration (SpreadCycle mode).">
 <polygon fill="white" stroke="#666666" points="259,-764 110,-764 110,-745 259,-745 259,-764"/>
 <text text-anchor="middle" x="184.5" y="-752" font-family="Helvetica,sans-Serif" font-size="10.00">test_chopper_configuration</text>
 </a>
@@ -94,7 +94,7 @@
 <!-- Node11 -->
 <g id="Node000011" class="node">
 <title>Node11</title>
-<g id="a_Node000011"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#abf373a5fd5def37b9d63bf25e8fc94ac" target="_top" xlink:title=" ">
+<g id="a_Node000011"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#abf373a5fd5def37b9d63bf25e8fc94ac" target="_top" xlink:title="Test CoolStep configuration and operation.">
 <polygon fill="white" stroke="#666666" points="260,-727 109,-727 109,-708 260,-708 260,-727"/>
 <text text-anchor="middle" x="184.5" y="-715" font-family="Helvetica,sans-Serif" font-size="10.00">test_coolstep_configuration</text>
 </a>
@@ -112,7 +112,7 @@
 <!-- Node12 -->
 <g id="Node000012" class="node">
 <title>Node12</title>
-<g id="a_Node000012"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#abf50153a25393e591674fa4265d68e83" target="_top" xlink:title=" ">
+<g id="a_Node000012"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#abf50153a25393e591674fa4265d68e83" target="_top" xlink:title="Test motor current control (IRUN/IHOLD settings).">
 <polygon fill="white" stroke="#666666" points="241.5,-160 127.5,-160 127.5,-141 241.5,-141 241.5,-160"/>
 <text text-anchor="middle" x="184.5" y="-148" font-family="Helvetica,sans-Serif" font-size="10.00">test_current_control</text>
 </a>
@@ -130,7 +130,7 @@
 <!-- Node14 -->
 <g id="Node000014" class="node">
 <title>Node14</title>
-<g id="a_Node000014"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a67ef8fb2678b38b29d6f9ab94c7c1ab8" target="_top" xlink:title=" ">
+<g id="a_Node000014"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a67ef8fb2678b38b29d6f9ab94c7c1ab8" target="_top" xlink:title="Test DCStep configuration and operation.">
 <polygon fill="white" stroke="#666666" points="255.5,-690 113.5,-690 113.5,-671 255.5,-671 255.5,-690"/>
 <text text-anchor="middle" x="184.5" y="-678" font-family="Helvetica,sans-Serif" font-size="10.00">test_dcstep_configuration</text>
 </a>
@@ -148,7 +148,7 @@
 <!-- Node15 -->
 <g id="Node000015" class="node">
 <title>Node15</title>
-<g id="a_Node000015"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a4a7a005e64bc36445451aaa71589810c" target="_top" xlink:title=" ">
+<g id="a_Node000015"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a4a7a005e64bc36445451aaa71589810c" target="_top" xlink:title="Test encoder deviation detection and warnings.">
 <polygon fill="white" stroke="#666666" points="253,-653 116,-653 116,-634 253,-634 253,-653"/>
 <text text-anchor="middle" x="184.5" y="-641" font-family="Helvetica,sans-Serif" font-size="10.00">test_deviation_detection</text>
 </a>
@@ -166,7 +166,7 @@
 <!-- Node16 -->
 <g id="Node000016" class="node">
 <title>Node16</title>
-<g id="a_Node000016"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a23a89a76051da3d9c138085a52b89771" target="_top" xlink:title=" ">
+<g id="a_Node000016"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a23a89a76051da3d9c138085a52b89771" target="_top" xlink:title="Test driver initialization and basic setup verification.">
 <polygon fill="white" stroke="#666666" points="252,-616 117,-616 117,-597 252,-597 252,-616"/>
 <text text-anchor="middle" x="184.5" y="-604" font-family="Helvetica,sans-Serif" font-size="10.00">test_driver_initialization</text>
 </a>
@@ -184,7 +184,7 @@
 <!-- Node17 -->
 <g id="Node000017" class="node">
 <title>Node17</title>
-<g id="a_Node000017"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#add07f5d8e3a37544bb52a9d170db7bd3" target="_top" xlink:title=" ">
+<g id="a_Node000017"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#add07f5d8e3a37544bb52a9d170db7bd3" target="_top" xlink:title="Test driver status reading (GSTAT, DRV_STATUS).">
 <polygon fill="white" stroke="#666666" points="236.5,-579 132.5,-579 132.5,-560 236.5,-560 236.5,-579"/>
 <text text-anchor="middle" x="184.5" y="-567" font-family="Helvetica,sans-Serif" font-size="10.00">test_driver_status</text>
 </a>
@@ -202,7 +202,7 @@
 <!-- Node18 -->
 <g id="Node000018" class="node">
 <title>Node18</title>
-<g id="a_Node000018"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#ae1de7e22448d5fad374b98efa76dc88e" target="_top" xlink:title=" ">
+<g id="a_Node000018"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#ae1de7e22448d5fad374b98efa76dc88e" target="_top" xlink:title="Test motor enable/disable functionality.">
 <polygon fill="white" stroke="#666666" points="241.5,-542 127.5,-542 127.5,-523 241.5,-523 241.5,-542"/>
 <text text-anchor="middle" x="184.5" y="-530" font-family="Helvetica,sans-Serif" font-size="10.00">test_enable_disable</text>
 </a>
@@ -220,7 +220,7 @@
 <!-- Node19 -->
 <g id="Node000019" class="node">
 <title>Node19</title>
-<g id="a_Node000019"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a94bc2799c4b3cfdd41dc058e3d7c535e" target="_top" xlink:title=" ">
+<g id="a_Node000019"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a94bc2799c4b3cfdd41dc058e3d7c535e" target="_top" xlink:title="Test encoder configuration and setup.">
 <polygon fill="white" stroke="#666666" points="259,-505 110,-505 110,-486 259,-486 259,-505"/>
 <text text-anchor="middle" x="184.5" y="-493" font-family="Helvetica,sans-Serif" font-size="10.00">test_encoder_configuration</text>
 </a>
@@ -238,7 +238,7 @@
 <!-- Node20 -->
 <g id="Node000020" class="node">
 <title>Node20</title>
-<g id="a_Node000020"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#acac19df35f0375adabdec9b20f2e45a4" target="_top" xlink:title=" ">
+<g id="a_Node000020"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#acac19df35f0375adabdec9b20f2e45a4" target="_top" xlink:title="Test encoder position reading.">
 <polygon fill="white" stroke="#666666" points="246.5,-467.5 122.5,-467.5 122.5,-437.5 246.5,-437.5 246.5,-467.5"/>
 <text text-anchor="start" x="130.5" y="-455.5" font-family="Helvetica,sans-Serif" font-size="10.00">test_encoder_position</text>
 <text text-anchor="middle" x="184.5" y="-444.5" font-family="Helvetica,sans-Serif" font-size="10.00">_reading</text>
@@ -257,7 +257,7 @@
 <!-- Node21 -->
 <g id="Node000021" class="node">
 <title>Node21</title>
-<g id="a_Node000021"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a76b85489050cc8941b086f0f7c8dceb7" target="_top" xlink:title=" ">
+<g id="a_Node000021"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a76b85489050cc8941b086f0f7c8dceb7" target="_top" xlink:title="Test encoder resolution setting.">
 <polygon fill="white" stroke="#666666" points="251.5,-419 117.5,-419 117.5,-400 251.5,-400 251.5,-419"/>
 <text text-anchor="middle" x="184.5" y="-407" font-family="Helvetica,sans-Serif" font-size="10.00">test_encoder_resolution</text>
 </a>
@@ -275,7 +275,7 @@
 <!-- Node22 -->
 <g id="Node000022" class="node">
 <title>Node22</title>
-<g id="a_Node000022"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a39a4ce51fa7ae53e0c966b2357eb143f" target="_top" xlink:title=" ">
+<g id="a_Node000022"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a39a4ce51fa7ae53e0c966b2357eb143f" target="_top" xlink:title="Test factory and OTP configuration reading.">
 <polygon fill="white" stroke="#666666" points="250,-382 119,-382 119,-363 250,-363 250,-382"/>
 <text text-anchor="middle" x="184.5" y="-370" font-family="Helvetica,sans-Serif" font-size="10.00">test_factory_otp_config</text>
 </a>
@@ -293,7 +293,7 @@
 <!-- Node23 -->
 <g id="Node000023" class="node">
 <title>Node23</title>
-<g id="a_Node000023"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a9214bc15c23f41310ff37adb6ff2d577" target="_top" xlink:title=" ">
+<g id="a_Node000023"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a9214bc15c23f41310ff37adb6ff2d577" target="_top" xlink:title="Test freewheeling mode configuration.">
 <polygon fill="white" stroke="#666666" points="253,-345 116,-345 116,-326 253,-326 253,-345"/>
 <text text-anchor="middle" x="184.5" y="-333" font-family="Helvetica,sans-Serif" font-size="10.00">test_freewheeling_mode</text>
 </a>
@@ -311,7 +311,7 @@
 <!-- Node24 -->
 <g id="Node000024" class="node">
 <title>Node24</title>
-<g id="a_Node000024"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a18321790bb3a72af955b7b75fb4c1e2c" target="_top" xlink:title=" ">
+<g id="a_Node000024"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a18321790bb3a72af955b7b75fb4c1e2c" target="_top" xlink:title="Test global configuration settings (GCONF register).">
 <polygon fill="white" stroke="#666666" points="254.5,-308 114.5,-308 114.5,-289 254.5,-289 254.5,-308"/>
 <text text-anchor="middle" x="184.5" y="-296" font-family="Helvetica,sans-Serif" font-size="10.00">test_global_configuration</text>
 </a>
@@ -329,7 +329,7 @@
 <!-- Node25 -->
 <g id="Node000025" class="node">
 <title>Node25</title>
-<g id="a_Node000025"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#abbcd09f1b6292b7bc2c3faaf1c7bc6b4" target="_top" xlink:title=" ">
+<g id="a_Node000025"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#abbcd09f1b6292b7bc2c3faaf1c7bc6b4" target="_top" xlink:title="Test global scaler configuration.">
 <polygon fill="white" stroke="#666666" points="237,-271 132,-271 132,-252 237,-252 237,-271"/>
 <text text-anchor="middle" x="184.5" y="-259" font-family="Helvetica,sans-Serif" font-size="10.00">test_global_scaler</text>
 </a>
@@ -347,7 +347,7 @@
 <!-- Node26 -->
 <g id="Node000026" class="node">
 <title>Node26</title>
-<g id="a_Node000026"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#aa0938b7faa0c76b5902a7e1b29085cc2" target="_top" xlink:title=" ">
+<g id="a_Node000026"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#aa0938b7faa0c76b5902a7e1b29085cc2" target="_top" xlink:title="Test GPIO pin reading functionality.">
 <polygon fill="white" stroke="#666666" points="228,-234 141,-234 141,-215 228,-215 228,-234"/>
 <text text-anchor="middle" x="184.5" y="-222" font-family="Helvetica,sans-Serif" font-size="10.00">test_gpio_pins</text>
 </a>
@@ -365,7 +365,7 @@
 <!-- Node27 -->
 <g id="Node000027" class="node">
 <title>Node27</title>
-<g id="a_Node000027"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#aee105fad1f3169ed7d839101d4d97199" target="_top" xlink:title=" ">
+<g id="a_Node000027"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#aee105fad1f3169ed7d839101d4d97199" target="_top" xlink:title="Test latched position reading (index pulse).">
 <polygon fill="white" stroke="#666666" points="245,-197 124,-197 124,-178 245,-178 245,-197"/>
 <text text-anchor="middle" x="184.5" y="-185" font-family="Helvetica,sans-Serif" font-size="10.00">test_latched_position</text>
 </a>
@@ -383,7 +383,7 @@
 <!-- Node28 -->
 <g id="Node000028" class="node">
 <title>Node28</title>
-<g id="a_Node000028"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a5569bd50d3ac5eb42a316de8b409b776" target="_top" xlink:title=" ">
+<g id="a_Node000028"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a5569bd50d3ac5eb42a316de8b409b776" target="_top" xlink:title="Test lost steps detection and reading.">
 <polygon fill="white" stroke="#666666" points="229.5,-1624 139.5,-1624 139.5,-1605 229.5,-1605 229.5,-1624"/>
 <text text-anchor="middle" x="184.5" y="-1612" font-family="Helvetica,sans-Serif" font-size="10.00">test_lost_steps</text>
 </a>
@@ -401,7 +401,7 @@
 <!-- Node29 -->
 <g id="Node000029" class="node">
 <title>Node29</title>
-<g id="a_Node000029"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a17006fb977eb94bf04572df33e608020" target="_top" xlink:title=" ">
+<g id="a_Node000029"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a17006fb977eb94bf04572df33e608020" target="_top" xlink:title="Test microstep diagnostics (counter, time between microsteps).">
 <polygon fill="white" stroke="#666666" points="259.5,-1587 109.5,-1587 109.5,-1568 259.5,-1568 259.5,-1587"/>
 <text text-anchor="middle" x="184.5" y="-1575" font-family="Helvetica,sans-Serif" font-size="10.00">test_microstep_diagnostics</text>
 </a>
@@ -419,7 +419,7 @@
 <!-- Node30 -->
 <g id="Node000030" class="node">
 <title>Node30</title>
-<g id="a_Node000030"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a2f3cb28a54242bbafdd722bf67b51faa" target="_top" xlink:title=" ">
+<g id="a_Node000030"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a2f3cb28a54242bbafdd722bf67b51faa" target="_top" xlink:title="Test microstep lookup table configuration.">
 <polygon fill="white" stroke="#666666" points="248,-1549.5 121,-1549.5 121,-1519.5 248,-1519.5 248,-1549.5"/>
 <text text-anchor="start" x="129" y="-1537.5" font-family="Helvetica,sans-Serif" font-size="10.00">test_microstep_lookup</text>
 <text text-anchor="middle" x="184.5" y="-1526.5" font-family="Helvetica,sans-Serif" font-size="10.00">_table</text>
@@ -438,7 +438,7 @@
 <!-- Node31 -->
 <g id="Node000031" class="node">
 <title>Node31</title>
-<g id="a_Node000031"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#ac2492c143f7a22b95d1cf254cfb57d1b" target="_top" xlink:title=" ">
+<g id="a_Node000031"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#ac2492c143f7a22b95d1cf254cfb57d1b" target="_top" xlink:title="Test mode change speed thresholds (PWM_THRS, COOL_THRS, HIGH_THRS).">
 <polygon fill="white" stroke="#666666" points="259,-1501 110,-1501 110,-1482 259,-1482 259,-1501"/>
 <text text-anchor="middle" x="184.5" y="-1489" font-family="Helvetica,sans-Serif" font-size="10.00">test_mode_change_speeds</text>
 </a>
@@ -456,7 +456,7 @@
 <!-- Node32 -->
 <g id="Node000032" class="node">
 <title>Node32</title>
-<g id="a_Node000032"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#acdf7e542cbf22ddd24d4042951fa2b67" target="_top" xlink:title=" ">
+<g id="a_Node000032"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#acdf7e542cbf22ddd24d4042951fa2b67" target="_top" xlink:title="Test motor parameter configuration and settings.">
 <polygon fill="white" stroke="#666666" points="247.5,-122.5 121.5,-122.5 121.5,-92.5 247.5,-92.5 247.5,-122.5"/>
 <text text-anchor="start" x="129.5" y="-110.5" font-family="Helvetica,sans-Serif" font-size="10.00">test_motor_parameter</text>
 <text text-anchor="middle" x="184.5" y="-99.5" font-family="Helvetica,sans-Serif" font-size="10.00">_settings</text>
@@ -475,7 +475,7 @@
 <!-- Node33 -->
 <g id="Node000033" class="node">
 <title>Node33</title>
-<g id="a_Node000033"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#afddbb1b19d6b88fad9494ce5cc1db5e1" target="_top" xlink:title=" ">
+<g id="a_Node000033"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#afddbb1b19d6b88fad9494ce5cc1db5e1" target="_top" xlink:title="Test motor setup from specifications (automatic configuration).">
 <polygon fill="white" stroke="#666666" points="263.5,-1464 105.5,-1464 105.5,-1445 263.5,-1445 263.5,-1464"/>
 <text text-anchor="middle" x="184.5" y="-1452" font-family="Helvetica,sans-Serif" font-size="10.00">test_motor_setup_from_spec</text>
 </a>
@@ -493,7 +493,7 @@
 <!-- Node34 -->
 <g id="Node000034" class="node">
 <title>Node34</title>
-<g id="a_Node000034"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a81e807a7bc8478f9d708c1ad6dcfc1e3" target="_top" xlink:title=" ">
+<g id="a_Node000034"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a81e807a7bc8478f9d708c1ad6dcfc1e3" target="_top" xlink:title="Test offset calibration reading.">
 <polygon fill="white" stroke="#666666" points="247,-1427 122,-1427 122,-1408 247,-1408 247,-1427"/>
 <text text-anchor="middle" x="184.5" y="-1415" font-family="Helvetica,sans-Serif" font-size="10.00">test_offset_calibration</text>
 </a>
@@ -511,7 +511,7 @@
 <!-- Node35 -->
 <g id="Node000035" class="node">
 <title>Node35</title>
-<g id="a_Node000035"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a6364147dbcc92fb5296fd902ffec39c7" target="_top" xlink:title=" ">
+<g id="a_Node000035"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a6364147dbcc92fb5296fd902ffec39c7" target="_top" xlink:title="Test open load detection functionality.">
 <polygon fill="white" stroke="#666666" points="230,-1390 139,-1390 139,-1371 230,-1371 230,-1390"/>
 <text text-anchor="middle" x="184.5" y="-1378" font-family="Helvetica,sans-Serif" font-size="10.00">test_open_load</text>
 </a>
@@ -529,7 +529,7 @@
 <!-- Node36 -->
 <g id="Node000036" class="node">
 <title>Node36</title>
-<g id="a_Node000036"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#af31e0aecf0e69b0d3284ef827320b550" target="_top" xlink:title=" ">
+<g id="a_Node000036"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#af31e0aecf0e69b0d3284ef827320b550" target="_top" xlink:title="Test overtemperature protection status reading.">
 <polygon fill="white" stroke="#666666" points="246,-1352.5 123,-1352.5 123,-1322.5 246,-1322.5 246,-1352.5"/>
 <text text-anchor="start" x="131" y="-1340.5" font-family="Helvetica,sans-Serif" font-size="10.00">test_overtemperature</text>
 <text text-anchor="middle" x="184.5" y="-1329.5" font-family="Helvetica,sans-Serif" font-size="10.00">_protection</text>
@@ -548,7 +548,7 @@
 <!-- Node37 -->
 <g id="Node000037" class="node">
 <title>Node37</title>
-<g id="a_Node000037"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#adbcbddae5b1c1982d16f67c3c3763946" target="_top" xlink:title=" ">
+<g id="a_Node000037"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#adbcbddae5b1c1982d16f67c3c3763946" target="_top" xlink:title="Test phase current reading (microstep current diagnostics).">
 <polygon fill="white" stroke="#666666" points="242,-1304 127,-1304 127,-1285 242,-1285 242,-1304"/>
 <text text-anchor="middle" x="184.5" y="-1292" font-family="Helvetica,sans-Serif" font-size="10.00">test_phase_currents</text>
 </a>
@@ -566,7 +566,7 @@
 <!-- Node38 -->
 <g id="Node000038" class="node">
 <title>Node38</title>
-<g id="a_Node000038"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#ae8324f4478508efe6117929833d3d4c8" target="_top" xlink:title=" ">
+<g id="a_Node000038"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#ae8324f4478508efe6117929833d3d4c8" target="_top" xlink:title="Test position control (target position, current position).">
 <polygon fill="white" stroke="#666666" points="244,-1267 125,-1267 125,-1248 244,-1248 244,-1267"/>
 <text text-anchor="middle" x="184.5" y="-1255" font-family="Helvetica,sans-Serif" font-size="10.00">test_position_control</text>
 </a>
@@ -584,7 +584,7 @@
 <!-- Node39 -->
 <g id="Node000039" class="node">
 <title>Node39</title>
-<g id="a_Node000039"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#adcdf821c81673273181752fa85fb1ffe" target="_top" xlink:title=" ">
+<g id="a_Node000039"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#adcdf821c81673273181752fa85fb1ffe" target="_top" xlink:title="Test PWM scale reading (PWM_AUTO, PWM_SCALE_SUM).">
 <polygon fill="white" stroke="#666666" points="232,-1230 137,-1230 137,-1211 232,-1211 232,-1230"/>
 <text text-anchor="middle" x="184.5" y="-1218" font-family="Helvetica,sans-Serif" font-size="10.00">test_pwm_scale</text>
 </a>
@@ -602,7 +602,7 @@
 <!-- Node40 -->
 <g id="Node000040" class="node">
 <title>Node40</title>
-<g id="a_Node000040"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a1d9b1bffb30dd547a3ce93f8fa5ccc89" target="_top" xlink:title=" ">
+<g id="a_Node000040"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a1d9b1bffb30dd547a3ce93f8fa5ccc89" target="_top" xlink:title="Test ramp mode switching (POSITIONING, VELOCITY_POS, VELOCITY_NEG, HOLD).">
 <polygon fill="white" stroke="#666666" points="236.5,-1193 132.5,-1193 132.5,-1174 236.5,-1174 236.5,-1193"/>
 <text text-anchor="middle" x="184.5" y="-1181" font-family="Helvetica,sans-Serif" font-size="10.00">test_ramp_modes</text>
 </a>
@@ -620,7 +620,7 @@
 <!-- Node41 -->
 <g id="Node000041" class="node">
 <title>Node41</title>
-<g id="a_Node000041"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a264a26cca5257487e044755be5d90b64" target="_top" xlink:title=" ">
+<g id="a_Node000041"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a264a26cca5257487e044755be5d90b64" target="_top" xlink:title="Test ramp parameter configuration (speed, acceleration, etc.).">
 <polygon fill="white" stroke="#666666" points="245.5,-1155.5 123.5,-1155.5 123.5,-1125.5 245.5,-1125.5 245.5,-1155.5"/>
 <text text-anchor="start" x="131.5" y="-1143.5" font-family="Helvetica,sans-Serif" font-size="10.00">test_ramp_parameter</text>
 <text text-anchor="middle" x="184.5" y="-1132.5" font-family="Helvetica,sans-Serif" font-size="10.00">_settings</text>
@@ -639,7 +639,7 @@
 <!-- Node42 -->
 <g id="Node000042" class="node">
 <title>Node42</title>
-<g id="a_Node000042"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a968d09e9b8b112e5ff4b56c190c1f179" target="_top" xlink:title=" ">
+<g id="a_Node000042"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a968d09e9b8b112e5ff4b56c190c1f179" target="_top" xlink:title="Test ramp parameters (VSTART, VSTOP, first acceleration, etc.).">
 <polygon fill="white" stroke="#666666" points="248.5,-1107 120.5,-1107 120.5,-1088 248.5,-1088 248.5,-1107"/>
 <text text-anchor="middle" x="184.5" y="-1095" font-family="Helvetica,sans-Serif" font-size="10.00">test_ramp_parameters</text>
 </a>
@@ -657,7 +657,7 @@
 <!-- Node43 -->
 <g id="Node000043" class="node">
 <title>Node43</title>
-<g id="a_Node000043"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#aeee27dc8cea5ae970e534b7cba17ce8e" target="_top" xlink:title=" ">
+<g id="a_Node000043"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#aeee27dc8cea5ae970e534b7cba17ce8e" target="_top" xlink:title="Test reference switch configuration and homing.">
 <polygon fill="white" stroke="#666666" points="246.5,-1069.5 122.5,-1069.5 122.5,-1039.5 246.5,-1039.5 246.5,-1069.5"/>
 <text text-anchor="start" x="130.5" y="-1057.5" font-family="Helvetica,sans-Serif" font-size="10.00">test_reference_switch</text>
 <text text-anchor="middle" x="184.5" y="-1046.5" font-family="Helvetica,sans-Serif" font-size="10.00">_configuration</text>
@@ -676,7 +676,7 @@
 <!-- Node44 -->
 <g id="Node000044" class="node">
 <title>Node44</title>
-<g id="a_Node000044"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#afc4946e009df1458d86c324ea206cf63" target="_top" xlink:title=" ">
+<g id="a_Node000044"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#afc4946e009df1458d86c324ea206cf63" target="_top" xlink:title="Test register read/write operations.">
 <polygon fill="white" stroke="#666666" points="237,-1021.5 132,-1021.5 132,-991.5 237,-991.5 237,-1021.5"/>
 <text text-anchor="start" x="140" y="-1009.5" font-family="Helvetica,sans-Serif" font-size="10.00">test_register_read</text>
 <text text-anchor="middle" x="184.5" y="-998.5" font-family="Helvetica,sans-Serif" font-size="10.00">_write</text>
@@ -695,7 +695,7 @@
 <!-- Node45 -->
 <g id="Node000045" class="node">
 <title>Node45</title>
-<g id="a_Node000045"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a7a19853d77e65201bb05e50965d920a7" target="_top" xlink:title=" ">
+<g id="a_Node000045"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a7a19853d77e65201bb05e50965d920a7" target="_top" xlink:title="Test sensorless homing configuration (StallGuard2&#45;based).">
 <polygon fill="white" stroke="#666666" points="251.5,-973 117.5,-973 117.5,-954 251.5,-954 251.5,-973"/>
 <text text-anchor="middle" x="184.5" y="-961" font-family="Helvetica,sans-Serif" font-size="10.00">test_sensorless_homing</text>
 </a>
@@ -713,7 +713,7 @@
 <!-- Node46 -->
 <g id="Node000046" class="node">
 <title>Node46</title>
-<g id="a_Node000046"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a313007ba63d9511b529cc6c7c5cd26e6" target="_top" xlink:title=" ">
+<g id="a_Node000046"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a313007ba63d9511b529cc6c7c5cd26e6" target="_top" xlink:title="Test short circuit protection configuration.">
 <polygon fill="white" stroke="#666666" points="235,-935.5 134,-935.5 134,-905.5 235,-905.5 235,-935.5"/>
 <text text-anchor="start" x="142" y="-923.5" font-family="Helvetica,sans-Serif" font-size="10.00">test_short_circuit</text>
 <text text-anchor="middle" x="184.5" y="-912.5" font-family="Helvetica,sans-Serif" font-size="10.00">_protection</text>
@@ -732,7 +732,7 @@
 <!-- Node47 -->
 <g id="Node000047" class="node">
 <title>Node47</title>
-<g id="a_Node000047"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#aa96e4a6a4062dcae4e3f3579bd5cfba3" target="_top" xlink:title=" ">
+<g id="a_Node000047"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#aa96e4a6a4062dcae4e3f3579bd5cfba3" target="_top" xlink:title="Test speed control (max speed, acceleration, deceleration).">
 <polygon fill="white" stroke="#666666" points="239,-887 130,-887 130,-868 239,-868 239,-887"/>
 <text text-anchor="middle" x="184.5" y="-875" font-family="Helvetica,sans-Serif" font-size="10.00">test_speed_control</text>
 </a>
@@ -750,7 +750,7 @@
 <!-- Node48 -->
 <g id="Node000048" class="node">
 <title>Node48</title>
-<g id="a_Node000048"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a7ade618fe4fc9f64d6438bb35444429d" target="_top" xlink:title=" ">
+<g id="a_Node000048"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a7ade618fe4fc9f64d6438bb35444429d" target="_top" xlink:title="Test StallGuard2 configuration and reading.">
 <polygon fill="white" stroke="#666666" points="229,-850 140,-850 140,-831 229,-831 229,-850"/>
 <text text-anchor="middle" x="184.5" y="-838" font-family="Helvetica,sans-Serif" font-size="10.00">test_stallguard</text>
 </a>
@@ -768,7 +768,7 @@
 <!-- Node49 -->
 <g id="Node000049" class="node">
 <title>Node49</title>
-<g id="a_Node000049"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a7bcd3779c8bf75555a2b7bbc3d8a98f1" target="_top" xlink:title=" ">
+<g id="a_Node000049"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a7bcd3779c8bf75555a2b7bbc3d8a98f1" target="_top" xlink:title="Test StealthChop configuration and automatic tuning.">
 <polygon fill="white" stroke="#666666" points="268,-74 101,-74 101,-55 268,-55 268,-74"/>
 <text text-anchor="middle" x="184.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">test_stealthchop_configuration</text>
 </a>
@@ -786,7 +786,7 @@
 <!-- Node50 -->
 <g id="Node000050" class="node">
 <title>Node50</title>
-<g id="a_Node000050"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a7f57dae89130f73f5be194c79144123c" target="_top" xlink:title=" ">
+<g id="a_Node000050"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#a7f57dae89130f73f5be194c79144123c" target="_top" xlink:title="Test UART transmission count reading.">
 <polygon fill="white" stroke="#666666" points="248.5,-812.5 120.5,-812.5 120.5,-782.5 248.5,-782.5 248.5,-812.5"/>
 <text text-anchor="start" x="128.5" y="-800.5" font-family="Helvetica,sans-Serif" font-size="10.00">test_uart_transmission</text>
 <text text-anchor="middle" x="184.5" y="-789.5" font-family="Helvetica,sans-Serif" font-size="10.00">_count</text>
@@ -805,7 +805,7 @@
 <!-- Node51 -->
 <g id="Node000051" class="node">
 <title>Node51</title>
-<g id="a_Node000051"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#abf571a46a047286529687282395f173d" target="_top" xlink:title=" ">
+<g id="a_Node000051"><a xlink:href="internal__ramp__comprehensive__test_8cpp.html#abf571a46a047286529687282395f173d" target="_top" xlink:title="Test unit conversion functions (RPM, degrees, millimeters, etc.).">
 <polygon fill="white" stroke="#666666" points="246,-37 123,-37 123,-18 246,-18 246,-37"/>
 <text text-anchor="middle" x="184.5" y="-25" font-family="Helvetica,sans-Serif" font-size="10.00">test_unit_conversions</text>
 </a>

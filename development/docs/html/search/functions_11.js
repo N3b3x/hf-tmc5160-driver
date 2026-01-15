@@ -9,6 +9,5 @@ var searchData=
   ['unlock_6',['unlock',['../classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf',1,'TmcMutexGuard']]],
   ['update_7',['Update',['../classFatigueTest_1_1FatigueTestMotion.html#a3364c23a36aa498aa324bfa8afc48587',1,'FatigueTest::FatigueTestMotion::Update()'],['../classBackAndForthMotion.html#afac7a78a30c9fafbcee5eb2626e3f409',1,'BackAndForthMotion::Update()']]],
   ['updatechainlength_8',['UpdateChainLength',['../classtmc51x0_1_1TMC51x0DaisyChain.html#a27fde0b867d5e1943903e93ace73f905',1,'tmc51x0::TMC51x0DaisyChain']]],
-  ['updatemodehysteresis_9',['UpdateModeHysteresis',['../structtmc51x0_1_1TMC51x0_1_1Thresholds.html#a3e7f016e3c37d5ad050138e70ca49251',1,'tmc51x0::TMC51x0::Thresholds']]],
-  ['updatesinuousmotion_10',['UpdateSinuousMotion',['../classFatigueTest_1_1FatigueTestMotion.html#a5c2eb40cb4dda4c1db2501149d85b2e3',1,'FatigueTest::FatigueTestMotion']]]
+  ['updatemodehysteresis_9',['UpdateModeHysteresis',['../structtmc51x0_1_1TMC51x0_1_1Thresholds.html#a3e7f016e3c37d5ad050138e70ca49251',1,'tmc51x0::TMC51x0::Thresholds']]]
 ];

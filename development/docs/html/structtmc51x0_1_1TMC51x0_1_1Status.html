@@ -1285,7 +1285,7 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
-<p>⚠️ WARNING: This permanently changes the reset default for BBMCLKS. Once set to short (1), it cannot be changed back.</p>
+<p>WARNING: This permanently changes the reset default for BBMCLKS. Once set to short (1), it cannot be changed back.</p>
 <dl class="section note"><dt>Note</dt><dd>Programs bit 6 of OTP byte 0. </dd></dl>
 
 </div>
@@ -1334,7 +1334,7 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
-<p>⚠️ CRITICAL WARNING: OTP memory can only be programmed ONCE. Bits can only be set (0→1), never cleared. This operation is IRREVERSIBLE.</p>
+<p>CRITICAL WARNING: OTP memory can only be programmed ONCE. Bits can only be set (0→1), never cleared. This operation is IRREVERSIBLE.</p>
 <p>OTP bit mapping for byte 0 (TMC5160):</p><ul>
 <li>Bits 4..0: OTP_FCLKTRIM - Clock frequency trim (factory calibrated!)</li>
 <li>Bit 5: OTP_S2_LEVEL - Short detection level (0: level=6, 1: level=12)</li>
@@ -1386,7 +1386,7 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
-<p>⚠️ CRITICAL WARNING: This permanently changes the internal clock frequency. The factory already programs this for 12MHz. Only use if you need a different clock frequency AND understand the implications.</p>
+<p>CRITICAL WARNING: This permanently changes the internal clock frequency. The factory already programs this for 12MHz. Only use if you need a different clock frequency AND understand the implications.</p>
 <dl class="section note"><dt>Note</dt><dd>This programs bits 4..0 of OTP byte 0. Since OTP bits can only be set (not cleared), you can only increase the FCLKTRIM value from the current OTP setting. </dd></dl>
 
 </div>
@@ -1429,7 +1429,7 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
-<p>⚠️ WARNING: This permanently changes the reset default for S2G_LEVEL and S2VS_LEVEL. Once set to high (1), it cannot be changed back.</p>
+<p>WARNING: This permanently changes the reset default for S2G_LEVEL and S2VS_LEVEL. Once set to high (1), it cannot be changed back.</p>
 <dl class="section note"><dt>Note</dt><dd>Programs bit 5 of OTP byte 0. </dd></dl>
 
 </div>
@@ -1472,7 +1472,7 @@ template&lt;typename CommType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtmc51x0_1_1Result_3_01void_01_4.html" title="Result type for operations that don&#39;t return a value.">Result&lt;void&gt;</a> indicating success or error</dd></dl>
-<p>⚠️ WARNING: This permanently changes the reset default for TBL. Once set to short (1), it cannot be changed back.</p>
+<p>WARNING: This permanently changes the reset default for TBL. Once set to short (1), it cannot be changed back.</p>
 <dl class="section note"><dt>Note</dt><dd>Programs bit 7 of OTP byte 0. </dd></dl>
 
 </div>

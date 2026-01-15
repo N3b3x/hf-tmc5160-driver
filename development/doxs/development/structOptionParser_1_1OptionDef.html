@@ -100,23 +100,35 @@ $(function(){initNavTree('structOptionParser_1_1OptionDef.html',''); initResizab
   <div class="headertitle"><div class="title">OptionParser::OptionDef Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Option definition structure for SET command options.  
+ <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a53eac5d43f5516b48426a56f6a90bee8" id="r_a53eac5d43f5516b48426a56f6a90bee8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="main_8cpp.html#a976bded296a67e09242af85291a639d6">OptionType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53eac5d43f5516b48426a56f6a90bee8">type</a></td></tr>
+<tr class="memdesc:a53eac5d43f5516b48426a56f6a90bee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The option type enum value.  <br /></td></tr>
 <tr class="separator:a53eac5d43f5516b48426a56f6a90bee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5e241f876b246966dcf9f8ec1135d7f" id="r_af5e241f876b246966dcf9f8ec1135d7f"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af5e241f876b246966dcf9f8ec1135d7f">short_name</a></td></tr>
+<tr class="memdesc:af5e241f876b246966dcf9f8ec1135d7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short option name (e.g., "-v")  <br /></td></tr>
 <tr class="separator:af5e241f876b246966dcf9f8ec1135d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace652f81c03c1dbd64340385254b9173" id="r_ace652f81c03c1dbd64340385254b9173"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace652f81c03c1dbd64340385254b9173">long_name</a></td></tr>
+<tr class="memdesc:ace652f81c03c1dbd64340385254b9173"><td class="mdescLeft">&#160;</td><td class="mdescRight">Long option name (e.g., "--velocity")  <br /></td></tr>
 <tr class="separator:ace652f81c03c1dbd64340385254b9173"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39f86896b5474133320f09600d0f07e3" id="r_a39f86896b5474133320f09600d0f07e3"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a39f86896b5474133320f09600d0f07e3">description</a></td></tr>
+<tr class="memdesc:a39f86896b5474133320f09600d0f07e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Human-readable description.  <br /></td></tr>
 <tr class="separator:a39f86896b5474133320f09600d0f07e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1868e2b5b8492174286a69e5b92af6d" id="r_aa1868e2b5b8492174286a69e5b92af6d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa1868e2b5b8492174286a69e5b92af6d">min_args</a></td></tr>
+<tr class="memdesc:aa1868e2b5b8492174286a69e5b92af6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum number of arguments required.  <br /></td></tr>
 <tr class="separator:aa1868e2b5b8492174286a69e5b92af6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77c41a6f29cf960d9fac5cfa2c27873d" id="r_a77c41a6f29cf960d9fac5cfa2c27873d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77c41a6f29cf960d9fac5cfa2c27873d">max_args</a></td></tr>
+<tr class="memdesc:a77c41a6f29cf960d9fac5cfa2c27873d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of arguments allowed.  <br /></td></tr>
 <tr class="separator:a77c41a6f29cf960d9fac5cfa2c27873d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Option definition structure for SET command options. </p>
+<p>Defines a single command-line option including its type, names, description, and argument count requirements. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a39f86896b5474133320f09600d0f07e3" name="a39f86896b5474133320f09600d0f07e3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a39f86896b5474133320f09600d0f07e3">&#9670;&#160;</a></span>description</h2>
 
@@ -128,6 +140,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Human-readable description. </p>
 
 </div>
 </div>
@@ -143,6 +157,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Long option name (e.g., "--velocity") </p>
+
 </div>
 </div>
 <a id="a77c41a6f29cf960d9fac5cfa2c27873d" name="a77c41a6f29cf960d9fac5cfa2c27873d"></a>
@@ -156,6 +172,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Maximum number of arguments allowed. </p>
 
 </div>
 </div>
@@ -171,6 +189,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Minimum number of arguments required. </p>
+
 </div>
 </div>
 <a id="af5e241f876b246966dcf9f8ec1135d7f" name="af5e241f876b246966dcf9f8ec1135d7f"></a>
@@ -185,6 +205,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Short option name (e.g., "-v") </p>
+
 </div>
 </div>
 <a id="a53eac5d43f5516b48426a56f6a90bee8" name="a53eac5d43f5516b48426a56f6a90bee8"></a>
@@ -198,6 +220,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>The option type enum value. </p>
 
 </div>
 </div>

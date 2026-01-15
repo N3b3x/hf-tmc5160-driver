@@ -19,7 +19,7 @@ var classtmc51x0_1_1TMC51x0 =
     [ "GetDriverConfigString", "classtmc51x0_1_1TMC51x0.html#ada3e7090570b7221e2048445d4f22035", null ],
     [ "GetMotorCurrentDebugInfo", "classtmc51x0_1_1TMC51x0.html#acfb1a464c20f433450d1e96ce51744dc", null ],
     [ "HardReset", "classtmc51x0_1_1TMC51x0.html#a0819cf562bcbb0a747b56fc15a8da5b1", null ],
-    [ "Initialize", "classtmc51x0_1_1TMC51x0.html#a60e918b0153cf9034871291ce27ea813", null ],
+    [ "Initialize", "classtmc51x0_1_1TMC51x0.html#a97c3a1773a03aaeeb0882d2096f868d8", null ],
     [ "IsInitialized", "classtmc51x0_1_1TMC51x0.html#af1458eb313a868ca4860f44e32630c8c", null ],
     [ "IsInternalRampMode", "classtmc51x0_1_1TMC51x0.html#abd5a49d0cb0c802a394a71ede9967b32", null ],
     [ "LogConfigSummary", "classtmc51x0_1_1TMC51x0.html#a20cfe6cdf1f4310965a619a81863d66b", null ],

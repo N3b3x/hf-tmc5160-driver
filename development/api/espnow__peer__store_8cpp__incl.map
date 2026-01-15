@@ -1,0 +1,27 @@
+<map id="espnow_peer_store.cpp" name="espnow_peer_store.cpp">
+<area shape="rect" id="Node000001" title="NVS&#45;based storage implementation for approved ESP&#45;NOW peers." alt="" coords="474,5,649,31"/>
+<area shape="rect" id="Node000002" href="$espnow__peer__store_8hpp.html" title="NVS&#45;based storage for approved ESP&#45;NOW peers." alt="" coords="151,79,327,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="510,33,305,78,304,73,509,28"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="456,225,523,251"/>
+<area shape="poly" id="edge13_Node000001_Node000006" title=" " alt="" coords="520,33,483,51,467,64,454,80,447,96,445,114,449,150,461,184,476,213,472,215,456,186,443,151,439,113,442,95,450,77,463,60,480,47,517,28"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="465,79,559,104"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="555,33,530,69,526,66,551,29"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="583,79,641,104"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="572,29,598,66,594,69,568,33"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="665,79,749,104"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="586,28,672,70,670,75,584,33"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="773,79,856,104"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="603,28,761,72,760,77,601,33"/>
+<area shape="rect" id="Node000003" href="$espnow__security_8hpp.html" title="ESP&#45;NOW security and pairing protocol definitions." alt="" coords="160,152,317,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="241,104,241,138,236,138,236,104"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,225,72,251"/>
+<area shape="poly" id="edge8_Node000002_Node000004" title=" " alt="" coords="222,106,150,154,65,218,62,214,146,150,219,102"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="207,180,85,223,84,218,206,175"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="96,225,157,251"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="222,180,158,220,155,215,219,175"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="280,175,444,221,442,226,278,180"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="181,225,296,251"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="241,178,241,212,236,212,236,178"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="320,225,432,251"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="262,175,343,217,340,221,260,180"/>
+</map>

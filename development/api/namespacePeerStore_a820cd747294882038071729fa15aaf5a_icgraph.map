@@ -1,0 +1,5 @@
+<map id="PeerStore::RemovePeer" name="PeerStore::RemovePeer">
+<area shape="rect" id="Node000001" title="Remove a peer by MAC address." alt="" coords="243,13,419,38"/>
+<area shape="rect" id="Node000002" href="$namespaceEspNowReceiver.html#a6a5b91a4e4f5330e3b0e33dc1c46f9d4" title="Remove a peer from the approved list." alt="" coords="5,5,195,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="229,28,195,28,195,23,229,23"/>
+</map>

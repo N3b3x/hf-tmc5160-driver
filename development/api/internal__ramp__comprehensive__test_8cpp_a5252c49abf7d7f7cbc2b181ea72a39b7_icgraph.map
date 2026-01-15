@@ -1,10 +1,10 @@
 <map id="CalculateCurrentRegister" name="CalculateCurrentRegister">
 <area shape="rect" id="Node000001" title="Helper to calculate current register value (0&#45;31) from mA." alt="" coords="411,63,596,88"/>
-<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#abf50153a25393e591674fa4265d68e83" title=" " alt="" coords="175,5,327,31"/>
+<area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#abf50153a25393e591674fa4265d68e83" title="Test motor current control (IRUN/IHOLD settings)." alt="" coords="175,5,327,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="433,62,307,33,308,28,434,57"/>
-<area shape="rect" id="Node000004" href="$internal__ramp__comprehensive__test_8cpp.html#acdf7e542cbf22ddd24d4042951fa2b67" title=" " alt="" coords="167,55,335,95"/>
+<area shape="rect" id="Node000004" href="$internal__ramp__comprehensive__test_8cpp.html#acdf7e542cbf22ddd24d4042951fa2b67" title="Test motor parameter configuration and settings." alt="" coords="167,55,335,95"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="397,78,335,78,335,73,397,73"/>
-<area shape="rect" id="Node000005" href="$internal__ramp__comprehensive__test_8cpp.html#a7bcd3779c8bf75555a2b7bbc3d8a98f1" title=" " alt="" coords="140,120,363,145"/>
+<area shape="rect" id="Node000005" href="$internal__ramp__comprehensive__test_8cpp.html#a7bcd3779c8bf75555a2b7bbc3d8a98f1" title="Test StealthChop configuration and automatic tuning." alt="" coords="140,120,363,145"/>
 <area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="434,94,308,123,307,117,433,88"/>
 <area shape="rect" id="Node000003" href="$internal__ramp__comprehensive__test_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,63,92,88"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="177,36,141,46,84,65,82,60,139,41,175,31"/>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gpiosignal_0',['GpioSignal',['../namespacetmc51x0.html#a066cfe7d73f5a7f546c6d7215c0b4577',1,'tmc51x0']]]
+  ['homeplacement_0',['HomePlacement',['../structtmc51x0_1_1TMC51x0_1_1Homing.html#adf1f273c7ceedea89d64422e5541272e',1,'tmc51x0::TMC51x0::Homing']]]
 ];

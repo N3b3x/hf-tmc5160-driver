@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Test GPIO pin reading functionality.">
 <polygon fill="#999999" stroke="#666666" points="188,-19 101,-19 101,0 188,0 188,-19"/>
 <text text-anchor="middle" x="144.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">test_gpio_pins</text>
 </a>

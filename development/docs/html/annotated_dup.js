@@ -1,12 +1,7 @@
 var annotated_dup =
 [
     [ "FatigueTest", "namespaceFatigueTest.html", [
-      [ "BoundsFinderConfig", "structFatigueTest_1_1BoundsFinderConfig.html", "structFatigueTest_1_1BoundsFinderConfig" ],
-      [ "BoundsResult", "structFatigueTest_1_1BoundsResult.html", "structFatigueTest_1_1BoundsResult" ],
-      [ "EncoderBoundsFinderImpl", "classFatigueTest_1_1EncoderBoundsFinderImpl.html", "classFatigueTest_1_1EncoderBoundsFinderImpl" ],
-      [ "FatigueTestMotion", "classFatigueTest_1_1FatigueTestMotion.html", "classFatigueTest_1_1FatigueTestMotion" ],
-      [ "IBoundsFinder", "classFatigueTest_1_1IBoundsFinder.html", "classFatigueTest_1_1IBoundsFinder" ],
-      [ "StallGuardBoundsFinderImpl", "classFatigueTest_1_1StallGuardBoundsFinderImpl.html", "classFatigueTest_1_1StallGuardBoundsFinderImpl" ]
+      [ "FatigueTestMotion", "classFatigueTest_1_1FatigueTestMotion.html", "classFatigueTest_1_1FatigueTestMotion" ]
     ] ],
     [ "std", "namespacestd.html", [
       [ "tuple_element< 0, tmc51x0::Result< T > >", "structstd_1_1tuple__element_3_010_00_01tmc51x0_1_1Result_3_01T_01_4_01_4.html", "structstd_1_1tuple__element_3_010_00_01tmc51x0_1_1Result_3_01T_01_4_01_4" ],
@@ -93,7 +88,9 @@ var annotated_dup =
       [ "TestRigConfig< TestRigType::TEST_RIG_CORE_DRIVER >", "structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__CORE__DRIVER_01_4.html", "structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__CORE__DRIVER_01_4" ],
       [ "TestRigConfig< TestRigType::TEST_RIG_FATIGUE >", "structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4.html", "structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4" ]
     ] ],
+    [ "ApprovedPeer", "structApprovedPeer.html", "structApprovedPeer" ],
     [ "BackAndForthMotion", "classBackAndForthMotion.html", "classBackAndForthMotion" ],
+    [ "BoundsResultPayload", "structBoundsResultPayload.html", "structBoundsResultPayload" ],
     [ "CommandPayload", "structCommandPayload.html", "structCommandPayload" ],
     [ "ConfigAckPayload", "structConfigAckPayload.html", "structConfigAckPayload" ],
     [ "ConfigPayload", "structConfigPayload.html", "structConfigPayload" ],
@@ -104,9 +101,14 @@ var annotated_dup =
     [ "EspNowHeader", "structEspNowHeader.html", "structEspNowHeader" ],
     [ "EspNowPacket", "structEspNowPacket.html", "structEspNowPacket" ],
     [ "OptionParser", "classOptionParser.html", "classOptionParser" ],
+    [ "PairingConfirmPayload", "structPairingConfirmPayload.html", "structPairingConfirmPayload" ],
+    [ "PairingRejectPayload", "structPairingRejectPayload.html", "structPairingRejectPayload" ],
+    [ "PairingRequestPayload", "structPairingRequestPayload.html", "structPairingRequestPayload" ],
+    [ "PairingResponsePayload", "structPairingResponsePayload.html", "structPairingResponsePayload" ],
     [ "ParsedCommand", "structParsedCommand.html", "structParsedCommand" ],
     [ "ProtoEvent", "structProtoEvent.html", "structProtoEvent" ],
     [ "RawMsg", "structRawMsg.html", "structRawMsg" ],
+    [ "SecuritySettings", "structSecuritySettings.html", "structSecuritySettings" ],
     [ "Settings", "structSettings.html", "structSettings" ],
     [ "StatusPayload", "structStatusPayload.html", "structStatusPayload" ],
     [ "TestDriverHandle", "structTestDriverHandle.html", "structTestDriverHandle" ],

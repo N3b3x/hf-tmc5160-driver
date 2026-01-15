@@ -1,10 +1,10 @@
 <map id="create_daisy_chain_drivers" name="create_daisy_chain_drivers">
-<area shape="rect" id="Node000001" title=" " alt="" coords="411,63,557,103"/>
-<area shape="rect" id="Node000002" href="$spi__daisy__chain__comprehensive__test_8cpp.html#a829c4d999ee75addcd4a80486173795b" title=" " alt="" coords="156,5,347,45"/>
+<area shape="rect" id="Node000001" title="Create and initialize daisy chain driver instances." alt="" coords="411,63,557,103"/>
+<area shape="rect" id="Node000002" href="$spi__daisy__chain__comprehensive__test_8cpp.html#a829c4d999ee75addcd4a80486173795b" title="Test daisy chain position management and addressing." alt="" coords="156,5,347,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="397,64,332,48,334,43,398,59"/>
-<area shape="rect" id="Node000004" href="$spi__daisy__chain__comprehensive__test_8cpp.html#aea4301824809cd2c54c2b3d81bd5f039" title=" " alt="" coords="164,70,339,95"/>
+<area shape="rect" id="Node000004" href="$spi__daisy__chain__comprehensive__test_8cpp.html#aea4301824809cd2c54c2b3d81bd5f039" title="Test SPI daisy chain setup and initialization." alt="" coords="164,70,339,95"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="397,85,339,85,339,80,397,80"/>
-<area shape="rect" id="Node000005" href="$spi__daisy__chain__comprehensive__test_8cpp.html#a1751b60bd475b13f7f12c4e3ab674011" title=" " alt="" coords="140,119,363,145"/>
+<area shape="rect" id="Node000005" href="$spi__daisy__chain__comprehensive__test_8cpp.html#a1751b60bd475b13f7f12c4e3ab674011" title="Test multi&#45;motor coordination in daisy chain configuration." alt="" coords="140,119,363,145"/>
 <area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="398,104,312,122,311,117,397,98"/>
 <area shape="rect" id="Node000003" href="$spi__daisy__chain__comprehensive__test_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,70,92,95"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="168,52,93,73,91,68,166,47"/>

@@ -1,11 +1,18 @@
 /**
  * @file espnow_receiver.hpp
- * @brief ESP-NOW receiver for test unit
+ * @brief ESP-NOW receiver for test unit with secure pairing support
+ * 
+ * Features:
+ * - Pre-configured MAC address support (backward compatibility)
+ * - Secure pairing with HMAC mutual authentication
+ * - NVS-based approved peer storage
+ * - Message validation against approved peer list
  */
 
 #pragma once
 
 #include "espnow_protocol.hpp"
+#include "espnow_security.hpp"
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
 
@@ -71,7 +78,7 @@ bool send_stop_ack();
  * @param err_code Optional error code (used when state == ERROR).
  * @return true if the packet was queued for transmission; false otherwise.
  */
-bool send_status_update(uint32_t cycle, TestState state, uint8_t err_code = 0);
+bool send_status_update(uint32_t cycle, TestState state, uint8_t err_code = 0, uint8_t bounds_valid = 255);
 
 /**
  * @brief Send ERROR message.
@@ -86,5 +93,85 @@ bool send_error(uint8_t err_code, uint32_t at_cycle);
  * @return true if the packet was queued for transmission; false otherwise.
  */
 bool send_test_complete();
+
+/**
+ * @brief Send BOUNDS_RESULT message.
+ *
+ * @param ok 1 if bounds finding completed (bounded or default unbounded window); 0 on failure.
+ * @param bounded 1 if mechanical bounds were detected.
+ * @param cancelled 1 if cancelled by user/STOP/PAUSE.
+ * @param min_deg_from_center Local min bound relative to center/home (degrees).
+ * @param max_deg_from_center Local max bound relative to center/home (degrees).
+ * @param global_min_deg Global min (degrees).
+ * @param global_max_deg Global max (degrees).
+ */
+bool send_bounds_result(uint8_t ok,
+						uint8_t bounded,
+						uint8_t cancelled,
+						float min_deg_from_center,
+						float max_deg_from_center,
+						float global_min_deg,
+						float global_max_deg);
+
+// ============================================================================
+// PAIRING FUNCTIONS
+// ============================================================================
+
+/**
+ * @brief Enter pairing mode for the specified duration.
+ * 
+ * While in pairing mode, the test unit will respond to PairingRequest
+ * messages from remote controllers. After the timeout expires, pairing
+ * mode is automatically disabled.
+ * 
+ * @param timeout_sec Duration of pairing mode in seconds (default: 30)
+ */
+void enter_pairing_mode(uint32_t timeout_sec = PAIRING_MODE_TIMEOUT_SEC);
+
+/**
+ * @brief Exit pairing mode immediately.
+ */
+void exit_pairing_mode();
+
+/**
+ * @brief Check if device is currently in pairing mode.
+ * @return true if in pairing mode
+ */
+bool is_in_pairing_mode();
+
+/**
+ * @brief Get access to the security settings for peer management.
+ * 
+ * Use this with PeerStore functions to manage approved peers.
+ * 
+ * @return Reference to internal SecuritySettings
+ */
+SecuritySettings& get_security_settings();
+
+/**
+ * @brief Manually add a peer as approved (bypasses pairing).
+ * 
+ * Useful for adding pre-configured peers or debugging.
+ * 
+ * @param mac Peer's MAC address
+ * @param type Peer's device type
+ * @param name Human-readable name
+ * @return true if added successfully
+ */
+bool add_approved_peer(const uint8_t mac[6], DeviceType type, const char* name);
+
+/**
+ * @brief Remove a peer from the approved list.
+ * 
+ * @param mac Peer's MAC address
+ * @return true if removed
+ */
+bool remove_approved_peer(const uint8_t mac[6]);
+
+/**
+ * @brief Get the number of approved peers.
+ * @return Number of approved peers (including pre-configured)
+ */
+size_t get_approved_peer_count();
 
 } // namespace EspNowReceiver

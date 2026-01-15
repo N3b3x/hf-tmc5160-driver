@@ -8,7 +8,7 @@ The **Test Unit** is a unified fatigue tester with dual communication:
 - Receives commands from remote controller via ESP-NOW
 - Accepts direct commands via UART (for debugging/development)
 - Performs bounds finding using selectable method (StallGuard2 or encoder-based)
-- Runs sinusoidal fatigue test motion
+- Runs point-to-point fatigue test motion
 - Sends status updates back to remote controller (1 Hz while running)
 - **Unified Implementation**: Uses the driver library's built-in homing/bounds subsystem
 
@@ -52,13 +52,15 @@ The protocol uses a 6-byte header with sync byte (0xAA), version, device ID, and
 struct TestUnitSettings {
     // Base fields (always synchronized)
     uint32_t cycle_amount;              // Target number of cycles
-    uint32_t time_per_cycle;            // Time per cycle in seconds
-    uint32_t dwell_time;                // Dwell time at bounds in seconds
+   float    oscillation_vmax_rpm;       // Max velocity during oscillation (RPM)
+   float    oscillation_amax_rev_s2;    // Acceleration during oscillation (rev/s²)
+   uint32_t dwell_time_ms;             // Dwell time at endpoints (milliseconds)
     bool     bounds_method_stallguard;  // true = StallGuard2, false = encoder
     
     // Extended fields (0.0f = use test config defaults)
     float    bounds_search_velocity_rpm;       // Search speed during bounds finding (RPM)
     float    stallguard_min_velocity_rpm;      // Min velocity for StallGuard2 (RPM)
+   int8_t   stallguard_sgt;                   // StallGuard threshold [-64..63], 127=default
     float    stall_detection_current_factor;   // Current reduction factor (0.0-1.0)
     float    bounds_search_accel_rev_s2;       // Search acceleration (rev/s²)
 };
@@ -76,15 +78,16 @@ The remote controller provides a scrollable settings menu:
 | Setting | Range | Step | Description |
 |---------|-------|------|-------------|
 | Cycles | 1-100,000 | 100 | Target cycle count |
-| Time/Cycle | 1-3600 s | 1 | Oscillation period |
-| Dwell Time | 0-60 s | 1 | Pause at bounds |
+| VMAX | ≥ 5 RPM | 0.1 | Max velocity during oscillation |
+| AMAX | ≥ 0.5 rev/s² | 0.1 | Acceleration during oscillation |
+| Dwell | ≥ 0 ms | 1 | Pause at endpoints |
 | Bounds Mode | SG/ENC | Toggle | Detection method |
-| Search Speed | 0-300 RPM | 5 | Bounds search speed (0=AUTO) |
-| SG Min Vel | 0-100 RPM | 1 | StallGuard min velocity (0=AUTO) |
-| Curr Factor | 0.0-1.0 | 0.05 | Current reduction (0=AUTO) |
-| Search Accel | 0-20 rev/s² | 0.5 | Search acceleration (0=AUTO) |
-| Error Severity | 1-3 | 1 | Min error level to display |
-| Flip Screen | NORM/FLIP | Toggle | Display orientation |
+| Search Speed | 0=AUTO or >0 RPM | 0.1 | Bounds search speed |
+| SG Min Vel | 0=AUTO or >0 RPM | 0.1 | StallGuard min velocity |
+| Curr Factor | 0=AUTO or >0 | 0.05 | Current reduction |
+| Search Accel | 0=AUTO or >0 rev/s² | 0.1 | Search acceleration |
+| SGT | -64..63 / Default | 1 | StallGuard threshold tuning |
+| Brightness | 10-100% | 5% | Display brightness |
 
 ## Configuration
 
@@ -156,8 +159,10 @@ The protocol test unit (`espnow_protocol_test_unit.cpp`) is a minimal implementa
 - **Dual Communication**: ESP-NOW (wireless) + UART (direct serial)
 - **Dual Bounds Detection**: StallGuard2 or encoder-based (selectable)
 - **Library-Based Homing**: Uses `driver.homing.FindBounds()` for robust bounds detection
-- **Sinusoidal Motion**: Smooth oscillation between detected bounds
-- **Configurable Parameters**: All settings adjustable via remote controller
+- **Point-to-Point Motion**: Smooth oscillation between detected bounds using direct VMAX/AMAX control
+- **Bounds Caching**: Independent bounds finding with time-based validity window (default 2 min)
+- **Secure Pairing**: HMAC-based mutual authentication for ESP-NOW communication
+- **Configurable Parameters**: All settings adjustable via remote controller or UART
 - **Status Updates**: 1 Hz updates while running, immediate on state changes
 - **Error Reporting**: Error codes and cycle counts sent to remote
 
@@ -233,17 +238,45 @@ g_driver->homing.FindBounds(Homing::BoundsMethod::Encoder, options, home_config,
 
 ## UART Command Interface
 
-The test unit supports UART commands for debugging:
+The test unit supports UART commands for debugging and direct control:
 
 | Command | Description |
 |---------|-------------|
-| `-f <freq>` | Set frequency in Hz |
-| `-d <min> <max>` | Set dwell times in ms |
-| `-b <min> <max>` | Set angle bounds in degrees |
-| `-c <count>` | Set target cycle count (0 = infinite) |
-| `-a <action>` | start, stop, or reset |
-| `-s` | Show current status |
-| `-h` | Show help message |
+| `set [OPTIONS...]` | Configure test parameters (velocity, acceleration, dwell, bounds, cycles) |
+| `start` | Start fatigue test (runs bounds finding if needed) |
+| `stop` | Stop fatigue test |
+| `pause` | Pause running test |
+| `resume` | Resume paused test |
+| `bounds` | Run bounds finding independently (keeps motor ready) |
+| `reset` | Reset cycle counter |
+| `status` | Show current status |
+| `pair` | Enter pairing mode for remote controller |
+| `help [command]` | Show help (general or command-specific) |
+
+### SET Command Options
+
+The `set` command accepts multiple options in one command:
+
+| Option | Short | Long | Description | Example |
+|--------|-------|------|-------------|---------|
+| Velocity | `-v` | `--velocity` | Max velocity in RPM (5-120) | `set -v 60` or `set velocity 60` |
+| Acceleration | `-a` | `--acceleration` | Acceleration in rev/s² (0.5-30) | `set -a 10` or `set acceleration 10` |
+| Dwell | `-d` | `--dwell` | Dwell times in ms (min, max) | `set -d 500 1000` or `set dwell 500 1000` |
+| Bounds | `-b` | `--bounds` | Angle bounds in degrees (min, max) | `set -b -60 60` or `set bounds -60 60` |
+| Cycles | `-c` | `--cycles` | Target cycles (0 = infinite) | `set -c 1000` or `set cycles 1000` |
+
+**Examples:**
+```
+set velocity 60 acceleration 10
+set -v 60 -a 10 -d 500 1000 -b -60 60 -c 1000
+set -v 60 -d 500 1000
+```
+
+### Bounds Caching
+
+The `bounds` command runs bounds finding independently and keeps the motor energized for a validity window (default: 2 minutes). If `start` is run within this window, bounds finding is skipped for faster test startup.
+
+See **[docs/BOUNDS_CACHING.md](docs/BOUNDS_CACHING.md)** for complete details.
 
 ## Troubleshooting
 
@@ -262,6 +295,8 @@ Comprehensive documentation is available:
 - **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** - System architecture and design patterns
 - **[docs/PROTOCOL.md](docs/PROTOCOL.md)** - Complete ESP-NOW protocol specification
 - **[docs/HARDWARE_SETUP.md](docs/HARDWARE_SETUP.md)** - Hardware setup and pin configuration
+- **[docs/BOUNDS_CACHING.md](docs/BOUNDS_CACHING.md)** - Bounds finding cache system
+- **[docs/PAIRING_PROTOCOL.md](docs/PAIRING_PROTOCOL.md)** - Secure pairing protocol for ESP-NOW
 
 ## Implementation Details
 

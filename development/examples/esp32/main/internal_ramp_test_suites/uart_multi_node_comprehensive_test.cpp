@@ -56,9 +56,32 @@ static constexpr uint8_t TEST_TOFF = 5;
 static constexpr tmc51x0::MicrostepResolution TEST_MRES = tmc51x0::MicrostepResolution::MRES_256; // 256 microsteps
 
 // Forward declarations
+/**
+ * @brief Test UART node addressing functionality.
+ * @return true if test passed, false otherwise
+ * @note This test requires UART interface implementation
+ */
 bool test_uart_node_addressing() noexcept;
+
+/**
+ * @brief Test UART node address configuration.
+ * @return true if test passed, false otherwise
+ * @note This test requires UART interface implementation
+ */
 bool test_uart_node_address_configuration() noexcept;
+
+/**
+ * @brief Test send delay configuration for UART multi-node.
+ * @return true if test passed, false otherwise
+ * @note This test requires UART interface implementation
+ */
 bool test_send_delay_configuration() noexcept;
+
+/**
+ * @brief Test multi-node coordination via UART.
+ * @return true if test passed, false otherwise
+ * @note This test requires UART interface implementation
+ */
 bool test_multi_node_coordination() noexcept;
 
 // Note: UART implementation would need to be created similar to uart_daisy_chain_example.cpp

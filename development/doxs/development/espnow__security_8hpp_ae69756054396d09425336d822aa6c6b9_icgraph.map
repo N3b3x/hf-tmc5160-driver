@@ -1,0 +1,18 @@
+<map id="ComputePairingHmac" name="ComputePairingHmac">
+<area shape="rect" id="Node000001" title="Compute HMAC&#45;SHA256, truncated to HMAC_SIZE bytes." alt="" coords="1031,29,1193,55"/>
+<area shape="rect" id="Node000002" href="$espnow__receiver_8cpp.html#a969682e51603f89e14b08804e1434f86" title=" " alt="" coords="631,5,793,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1016,39,793,26,794,20,1017,34"/>
+<area shape="rect" id="Node000007" href="$espnow__security_8hpp.html#a6103306a96642435fea015548e305d67" title="Verify an HMAC response using constant&#45;time comparison." alt="" coords="841,55,983,80"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1017,57,983,61,982,56,1017,51"/>
+<area shape="rect" id="Node000003" href="$espnow__receiver_8cpp.html#a9a8bd25cb8fe8e608970454951acc1aa" title=" " alt="" coords="475,31,583,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="617,34,583,39,583,33,616,29"/>
+<area shape="rect" id="Node000004" href="$espnow__receiver_8cpp.html#acfefef0575d2f148427e2d4fc622f175" title=" " alt="" coords="348,31,427,56"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="461,46,427,46,427,41,461,41"/>
+<area shape="rect" id="Node000005" href="$namespaceEspNowReceiver.html#a7b5448c32668c4ce8c8b2e825fe523ee" title="Initialize ESP&#45;NOW (WiFi STA + ESP&#45;NOW) and start the receive task." alt="" coords="140,31,300,56"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="334,46,300,46,300,41,334,41"/>
+<area shape="rect" id="Node000006" href="$espnow__protocol__test__unit_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,31,92,56"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="126,46,92,46,92,41,126,41"/>
+<area shape="rect" id="Node000008" href="$espnow__receiver_8cpp.html#ad03b1f7a342f6c86bb9ce0beec5636f2" title=" " alt="" coords="631,55,793,80"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="828,70,793,70,793,65,828,65"/>
+<area shape="poly" id="edge8_Node000008_Node000003" title=" " alt="" coords="617,58,583,53,583,48,618,52"/>
+</map>

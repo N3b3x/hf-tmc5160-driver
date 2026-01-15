@@ -101,7 +101,7 @@ $(function(){initNavTree('namespaceCommandOutput.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 
-<p>Visual output formatting system.  
+<p>Visual output formatting system for UART command interface.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -143,7 +143,8 @@ Variables</h2></td></tr>
 <tr class="separator:a26cca625bfbb1df43ca6f8b4579dc39a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Visual output formatting system. </p>
+<div class="textblock"><p>Visual output formatting system for UART command interface. </p>
+<p>Provides formatted output functions for the UART command parser, including boxed headers, success/error messages, and table formatting. All output uses ESP-IDF logging macros for consistency. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ae19be1e7f6cf49a36ef024d47be9d1b7" name="ae19be1e7f6cf49a36ef024d47be9d1b7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae19be1e7f6cf49a36ef024d47be9d1b7">&#9670;&#160;</a></span>PrintCommandResult()</h2>
@@ -181,7 +182,12 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_ae19be1e7f6cf49a36ef024d47be9d1b7_cgraph.svg" width="520" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_ae19be1e7f6cf49a36ef024d47be9d1b7_cgraph.svg" width="520" height="134"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_ae19be1e7f6cf49a36ef024d47be9d1b7_icgraph.svg" width="250" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -203,9 +209,14 @@ Here is the call graph for this function:</div>
 
 <p>Print an empty boxed line for spacing in UART output. </p>
 <div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a17f37c6f2219b07e23e7ece83c27bb18_cgraph.svg" width="251" height="60"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a17f37c6f2219b07e23e7ece83c27bb18_icgraph.svg" width="1182" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a17f37c6f2219b07e23e7ece83c27bb18_icgraph.svg" width="628" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -239,9 +250,14 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Uses <code>ESP_LOGE</code> and includes an error glyph prefix. </dd></dl>
 <div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_afec2cba32302909a2cc824d7f986ce6a_cgraph.svg" width="214" height="60"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_afec2cba32302909a2cc824d7f986ce6a_icgraph.svg" width="1274" height="316"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_afec2cba32302909a2cc824d7f986ce6a_icgraph.svg" width="714" height="390"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -263,9 +279,14 @@ Here is the caller graph for this function:</div>
 
 <p>Print a boxed footer line for UART output. </p>
 <div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_ac1bb1e11fb1eac54489e3d3cae372fce_cgraph.svg" width="223" height="60"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_ac1bb1e11fb1eac54489e3d3cae372fce_icgraph.svg" width="1154" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_ac1bb1e11fb1eac54489e3d3cae372fce_icgraph.svg" width="600" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -294,9 +315,14 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This is presentation-only and does not affect system state. </dd></dl>
 <div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a1d3cebfb1eecf215784a06c6f3492241_cgraph.svg" width="230" height="60"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a1d3cebfb1eecf215784a06c6f3492241_icgraph.svg" width="1160" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a1d3cebfb1eecf215784a06c6f3492241_icgraph.svg" width="607" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -330,9 +356,14 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Uses <code>ESP_LOGI</code> and includes an info glyph prefix. </dd></dl>
 <div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_adbbaa4766846cac446f219e82c816b59_cgraph.svg" width="207" height="60"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_adbbaa4766846cac446f219e82c816b59_icgraph.svg" width="1194" height="299"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_adbbaa4766846cac446f219e82c816b59_icgraph.svg" width="634" height="447"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -353,6 +384,16 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Print a boxed separator line for UART output. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a42e6d85cd7a7f8567af2767bcb6efdd7_cgraph.svg" width="246" height="60"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a42e6d85cd7a7f8567af2767bcb6efdd7_icgraph.svg" width="246" height="60"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -385,9 +426,14 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Uses <code>ESP_LOGI</code> and includes a success glyph prefix. </dd></dl>
 <div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a2bed37b24a202a9189a9810ca7bd2ec2_cgraph.svg" width="234" height="60"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a2bed37b24a202a9189a9810ca7bd2ec2_icgraph.svg" width="1294" height="200"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a2bed37b24a202a9189a9810ca7bd2ec2_icgraph.svg" width="734" height="274"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -420,9 +466,14 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 <div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a2657a77facb7e74dce96aa9265d7407c_cgraph.svg" width="244" height="60"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a2657a77facb7e74dce96aa9265d7407c_icgraph.svg" width="1175" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a2657a77facb7e74dce96aa9265d7407c_icgraph.svg" width="615" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -456,9 +507,14 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Uses <code>ESP_LOGW</code> and includes a warning glyph prefix. </dd></dl>
 <div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a7530059a95b958a7d66c5b0613dcbb67_cgraph.svg" width="235" height="60"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a7530059a95b958a7d66c5b0613dcbb67_icgraph.svg" width="1155" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceCommandOutput_a7530059a95b958a7d66c5b0613dcbb67_icgraph.svg" width="612" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

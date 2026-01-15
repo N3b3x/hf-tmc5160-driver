@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Test daisy chain position management and addressing.">
 <polygon fill="#999999" stroke="#666666" points="143,-30 0,-30 0,0 143,0 143,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test_daisy_chain_position</text>
 <text text-anchor="middle" x="71.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_management</text>
@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="spi__daisy__chain__comprehensive__test_8cpp.html#ae1c358956ec587c7bd3a5105761b86a0" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="spi__daisy__chain__comprehensive__test_8cpp.html#ae1c358956ec587c7bd3a5105761b86a0" target="_top" xlink:title="Create and initialize daisy chain driver instances.">
 <polygon fill="white" stroke="#666666" points="289,-30 179,-30 179,0 289,0 289,-30"/>
 <text text-anchor="start" x="187" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">create_daisy_chain</text>
 <text text-anchor="middle" x="234" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_drivers</text>

@@ -1,7 +1,12 @@
 <map id="EspNowReceiver::send_error" name="EspNowReceiver::send_error">
-<area shape="rect" id="Node000001" title="Send ERROR message." alt="" coords="5,5,176,45"/>
-<area shape="rect" id="Node000002" href="$espnow__receiver_8cpp.html#af394d93fad387639cb5c155cfd037163" title=" " alt="" coords="224,13,347,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,23,210,23,210,28,176,28"/>
-<area shape="rect" id="Node000003" href="$espnow__protocol_8hpp.html#afa7c999b99fb5716dc9d60af3a151d11" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="395,13,484,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="347,23,381,23,381,28,347,28"/>
+<area shape="rect" id="Node000001" title="Send ERROR message." alt="" coords="5,22,176,62"/>
+<area shape="rect" id="Node000002" href="$espnow__receiver_8cpp.html#af394d93fad387639cb5c155cfd037163" title=" " alt="" coords="224,29,347,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,39,210,39,210,45,176,45"/>
+<area shape="rect" id="Node000003" href="$espnow__receiver_8cpp.html#a38ae343ba91aa93458377b341e1d9e4a" title=" " alt="" coords="552,5,643,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="346,35,538,20,538,25,347,40"/>
+<area shape="rect" id="Node000004" href="$espnow__receiver_8cpp.html#a6eb0186376c3ffd1080f65ee4c597d9f" title=" " alt="" coords="395,55,504,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="347,49,381,54,380,59,346,54"/>
+<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="487,52,545,33,546,38,489,57"/>
+<area shape="rect" id="Node000005" href="$espnow__protocol_8hpp.html#afa7c999b99fb5716dc9d60af3a151d11" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="553,55,642,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="504,65,539,65,539,70,504,70"/>
 </map>

@@ -1,5 +1,5 @@
 <map id="test_ramp_parameters" name="test_ramp_parameters">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,42,176,67"/>
+<area shape="rect" id="Node000001" title="Test ramp parameters (VSTART, VSTOP, first acceleration, etc.)." alt="" coords="5,42,176,67"/>
 <area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9" title="Create and initialize a test driver instance." alt="" coords="224,42,364,67"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,52,210,52,210,57,177,57"/>
 <area shape="rect" id="Node000003" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="412,5,575,45"/>

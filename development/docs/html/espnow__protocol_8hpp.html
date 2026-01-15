@@ -111,10 +111,11 @@ $(function(){initNavTree('espnow__protocol_8hpp.html',''); initResizable(); });
 <code>#include &quot;freertos/queue.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="esp__idf__pedantic__compat_8hpp_source.html">esp_idf_pedantic_compat.hpp</a>&quot;</code><br />
 <code>#include &quot;esp_log.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="espnow__security_8hpp_source.html">espnow_security.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for espnow_protocol.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol_8hpp__incl.svg" width="847" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol_8hpp__incl.svg" width="980" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -126,6 +127,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundsResultPayload.html">BoundsResultPayload</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Payload for BOUNDS_RESULT.  <a href="structBoundsResultPayload.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEspNowHeader.html">EspNowHeader</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ESP-NOW packet header (wire format) - 6 bytes.  <a href="structEspNowHeader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,6 +181,14 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a902b0d55fddef6f8d651fe1035b7d4bd">Error</a>
 , <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2adc045624031172f4a63f6bec9ba0370e">ErrorClear</a>
 , <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a83ba8397ea552f99fb3fb2d1543b5d58">TestComplete</a>
+, <br />
+&#160;&#160;<a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a6614cfde97dac99555409c0c437fd673">BoundsResult</a> = 13
+, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2aba73a4d8ed6e05d97f94b185d83efbf2">PairingRequest</a> = 20
+, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2ac71cec36442b7532eb0d3306770ce1a0">PairingResponse</a> = 21
+, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2a16a7fbc0e7d8f7194938cc3150bf5c86">PairingConfirm</a> = 22
+, <br />
+&#160;&#160;<a class="el" href="#a4d47dc9870566f2f294eaab1426094a2acd92dcd3a1d5f15b3a855205a47c09c5">PairingReject</a> = 23
+, <a class="el" href="#a4d47dc9870566f2f294eaab1426094a2ac72301f247098ce89e41698bf0e7ac05">Unpair</a> = 24
 <br />
  }</td></tr>
 <tr class="memdesc:a4d47dc9870566f2f294eaab1426094a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wire-level message type identifiers.  <a href="#a4d47dc9870566f2f294eaab1426094a2">More...</a><br /></td></tr>
@@ -192,10 +204,14 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a60f8cc7211722b1cc1767ba7c7a5d4d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protocol-visible test states encoded in <code>STATUS_UPDATE</code>.  <a href="#a60f8cc7211722b1cc1767ba7c7a5d4d7">More...</a><br /></td></tr>
 <tr class="separator:a60f8cc7211722b1cc1767ba7c7a5d4d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62651afa1b82816bb6ca42a7dece0901" id="r_a62651afa1b82816bb6ca42a7dece0901"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62651afa1b82816bb6ca42a7dece0901">CommandId</a> : uint8_t { <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901aa6122a65eaa676f700ae68d393054a37">Start</a> = 1
+<tr class="memitem:a62651afa1b82816bb6ca42a7dece0901" id="r_a62651afa1b82816bb6ca42a7dece0901"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62651afa1b82816bb6ca42a7dece0901">CommandId</a> : uint8_t { <br />
+&#160;&#160;<a class="el" href="#a62651afa1b82816bb6ca42a7dece0901aa6122a65eaa676f700ae68d393054a37">Start</a> = 1
 , <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901a105b296a83f9c105355403f3332af50f">Pause</a> = 2
 , <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901af1cefec9e2196c672a622347f1fbc325">Resume</a> = 3
 , <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901a11a755d598c0c417f9a36758c3da7481">Stop</a> = 4
+, <br />
+&#160;&#160;<a class="el" href="#a62651afa1b82816bb6ca42a7dece0901aa90c5bc2bb92333c1627b45de0f25299">RunBoundsFinding</a> = 5
+<br />
  }</td></tr>
 <tr class="memdesc:a62651afa1b82816bb6ca42a7dece0901"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command IDs for COMMAND message type.  <a href="#a62651afa1b82816bb6ca42a7dece0901">More...</a><br /></td></tr>
 <tr class="separator:a62651afa1b82816bb6ca42a7dece0901"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -207,18 +223,25 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea744e0e7d8814c6ce12d2d7992131a5a9">CommandResume</a>
 , <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea15bc458ccd8081b6f7a5006e94f0fd36">CommandStop</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea8c5af051979b06c91e47e8373f7b621a">CommandRunBoundsFinding</a>
 , <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea89e049f20cbb75d50c912687cf036a22">ConfigUpdated</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aead92b5dda2129b9614905aa23d482b5b1">ConfigApplyOk</a>
 , <br />
-&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeafb6038726e9e65a2426a75f8ac1b3175">ConfigApplyFail</a>
+&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aead92b5dda2129b9614905aa23d482b5b1">ConfigApplyOk</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeafb6038726e9e65a2426a75f8ac1b3175">ConfigApplyFail</a>
 , <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea8428552d86c0d262a542a528af490afa">Started</a>
 , <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeae99180abf47a8b3a856e0bcb2656990a">Paused</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeab2a21932ddc3b1e41c012d711c7bd238">Resumed</a>
 , <br />
-&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeac23e2b09ebe6bf4cb5e2a9abe85c0be2">Stopped</a>
+&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeab2a21932ddc3b1e41c012d711c7bd238">Resumed</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeac23e2b09ebe6bf4cb5e2a9abe85c0be2">Stopped</a>
 , <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeaec53a8c4f07baed5d8825072c89799be">Status</a>
 , <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aead9b024b1a3a8208b7edc8eb711ff441e">ErrorEvent</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea716f0ec05d9f5bd5e06f08ae004686c4">TestCompleted</a>
+, <br />
+&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea716f0ec05d9f5bd5e06f08ae004686c4">TestCompleted</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeaba73a4d8ed6e05d97f94b185d83efbf2">PairingRequest</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea834991040923d1ebcf233cfafa454365">PairingComplete</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea95bffc6912df58c71768c176be291840">PairingFailed</a>
+, <br />
+&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeaa7a083b02c3bf335b41cf22b8cd8eb92">PeerUnpaired</a>
 <br />
  }</td></tr>
 <tr class="memdesc:ae3e128b3e7e8c9e272e987f862e1d5ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Higher-level events emitted by the protocol layer.  <a href="#ae3e128b3e7e8c9e272e987f862e1d5ae">More...</a><br /></td></tr>
@@ -242,7 +265,7 @@ Variables</h2></td></tr>
 <tr class="separator:a4608441df3e488ee211a1ae34a0d5159"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98ebb7458d234a38d7ae44ddebd93366" id="r_a98ebb7458d234a38d7ae44ddebd93366"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98ebb7458d234a38d7ae44ddebd93366">WIFI_CHANNEL</a> = 1</td></tr>
 <tr class="separator:a98ebb7458d234a38d7ae44ddebd93366"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95f459db8f6dcc34bbb3e93dcb1f0749" id="r_a95f459db8f6dcc34bbb3e93dcb1f0749"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a95f459db8f6dcc34bbb3e93dcb1f0749">UI_BOARD_MAC</a> [6] = { 0x9C, 0x9E, 0x6E, 0x77, 0x24, 0xF8 }</td></tr>
+<tr class="memitem:a95f459db8f6dcc34bbb3e93dcb1f0749" id="r_a95f459db8f6dcc34bbb3e93dcb1f0749"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a95f459db8f6dcc34bbb3e93dcb1f0749">UI_BOARD_MAC</a> [6] = { 0xB0, 0x81, 0x84, 0x96, 0x90, 0x10 }</td></tr>
 <tr class="separator:a95f459db8f6dcc34bbb3e93dcb1f0749"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -277,6 +300,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901a105b296a83f9c105355403f3332af50f" name="a62651afa1b82816bb6ca42a7dece0901a105b296a83f9c105355403f3332af50f"></a>Pause&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901af1cefec9e2196c672a622347f1fbc325" name="a62651afa1b82816bb6ca42a7dece0901af1cefec9e2196c672a622347f1fbc325"></a>Resume&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901a11a755d598c0c417f9a36758c3da7481" name="a62651afa1b82816bb6ca42a7dece0901a11a755d598c0c417f9a36758c3da7481"></a>Stop&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901aa90c5bc2bb92333c1627b45de0f25299" name="a62651afa1b82816bb6ca42a7dece0901aa90c5bc2bb92333c1627b45de0f25299"></a>RunBoundsFinding&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -317,6 +341,17 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a902b0d55fddef6f8d651fe1035b7d4bd" name="a4d47dc9870566f2f294eaab1426094a2a902b0d55fddef6f8d651fe1035b7d4bd"></a>Error&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2adc045624031172f4a63f6bec9ba0370e" name="a4d47dc9870566f2f294eaab1426094a2adc045624031172f4a63f6bec9ba0370e"></a>ErrorClear&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a83ba8397ea552f99fb3fb2d1543b5d58" name="a4d47dc9870566f2f294eaab1426094a2a83ba8397ea552f99fb3fb2d1543b5d58"></a>TestComplete&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a6614cfde97dac99555409c0c437fd673" name="a4d47dc9870566f2f294eaab1426094a2a6614cfde97dac99555409c0c437fd673"></a>BoundsResult&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2aba73a4d8ed6e05d97f94b185d83efbf2" name="a4d47dc9870566f2f294eaab1426094a2aba73a4d8ed6e05d97f94b185d83efbf2"></a>PairingRequest&#160;</td><td class="fielddoc"><p>Initiate pairing (broadcast) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2ac71cec36442b7532eb0d3306770ce1a0" name="a4d47dc9870566f2f294eaab1426094a2ac71cec36442b7532eb0d3306770ce1a0"></a>PairingResponse&#160;</td><td class="fielddoc"><p>Response with HMAC proof. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2a16a7fbc0e7d8f7194938cc3150bf5c86" name="a4d47dc9870566f2f294eaab1426094a2a16a7fbc0e7d8f7194938cc3150bf5c86"></a>PairingConfirm&#160;</td><td class="fielddoc"><p>Final confirmation. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2acd92dcd3a1d5f15b3a855205a47c09c5" name="a4d47dc9870566f2f294eaab1426094a2acd92dcd3a1d5f15b3a855205a47c09c5"></a>PairingReject&#160;</td><td class="fielddoc"><p>Explicit rejection. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a4d47dc9870566f2f294eaab1426094a2ac72301f247098ce89e41698bf0e7ac05" name="a4d47dc9870566f2f294eaab1426094a2ac72301f247098ce89e41698bf0e7ac05"></a>Unpair&#160;</td><td class="fielddoc"><p>Remove a paired device. </p>
+</td></tr>
 </table>
 
 </div>
@@ -351,6 +386,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeab84b21911985eb695b569c86276cbf32" name="ae3e128b3e7e8c9e272e987f862e1d5aeab84b21911985eb695b569c86276cbf32"></a>CommandPause&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea744e0e7d8814c6ce12d2d7992131a5a9" name="ae3e128b3e7e8c9e272e987f862e1d5aea744e0e7d8814c6ce12d2d7992131a5a9"></a>CommandResume&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea15bc458ccd8081b6f7a5006e94f0fd36" name="ae3e128b3e7e8c9e272e987f862e1d5aea15bc458ccd8081b6f7a5006e94f0fd36"></a>CommandStop&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea8c5af051979b06c91e47e8373f7b621a" name="ae3e128b3e7e8c9e272e987f862e1d5aea8c5af051979b06c91e47e8373f7b621a"></a>CommandRunBoundsFinding&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea89e049f20cbb75d50c912687cf036a22" name="ae3e128b3e7e8c9e272e987f862e1d5aea89e049f20cbb75d50c912687cf036a22"></a>ConfigUpdated&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aead92b5dda2129b9614905aa23d482b5b1" name="ae3e128b3e7e8c9e272e987f862e1d5aead92b5dda2129b9614905aa23d482b5b1"></a>ConfigApplyOk&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeafb6038726e9e65a2426a75f8ac1b3175" name="ae3e128b3e7e8c9e272e987f862e1d5aeafb6038726e9e65a2426a75f8ac1b3175"></a>ConfigApplyFail&#160;</td><td class="fielddoc"></td></tr>
@@ -361,6 +397,14 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeaec53a8c4f07baed5d8825072c89799be" name="ae3e128b3e7e8c9e272e987f862e1d5aeaec53a8c4f07baed5d8825072c89799be"></a>Status&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aead9b024b1a3a8208b7edc8eb711ff441e" name="ae3e128b3e7e8c9e272e987f862e1d5aead9b024b1a3a8208b7edc8eb711ff441e"></a>ErrorEvent&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea716f0ec05d9f5bd5e06f08ae004686c4" name="ae3e128b3e7e8c9e272e987f862e1d5aea716f0ec05d9f5bd5e06f08ae004686c4"></a>TestCompleted&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeaba73a4d8ed6e05d97f94b185d83efbf2" name="ae3e128b3e7e8c9e272e987f862e1d5aeaba73a4d8ed6e05d97f94b185d83efbf2"></a>PairingRequest&#160;</td><td class="fielddoc"><p>Incoming pairing request (test unit receives) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea834991040923d1ebcf233cfafa454365" name="ae3e128b3e7e8c9e272e987f862e1d5aea834991040923d1ebcf233cfafa454365"></a>PairingComplete&#160;</td><td class="fielddoc"><p>Pairing completed successfully. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea95bffc6912df58c71768c176be291840" name="ae3e128b3e7e8c9e272e987f862e1d5aea95bffc6912df58c71768c176be291840"></a>PairingFailed&#160;</td><td class="fielddoc"><p>Pairing failed (rejected or timeout) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeaa7a083b02c3bf335b41cf22b8cd8eb92" name="ae3e128b3e7e8c9e272e987f862e1d5aeaa7a083b02c3bf335b41cf22b8cd8eb92"></a>PeerUnpaired&#160;</td><td class="fielddoc"><p>A peer was unpaired. </p>
+</td></tr>
 </table>
 
 </div>
@@ -437,7 +481,7 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol_8hpp_afa7c999b99fb5716dc9d60af3a151d11_icgraph.svg" width="1860" height="779"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__protocol_8hpp_afa7c999b99fb5716dc9d60af3a151d11_icgraph.svg" width="1738" height="919"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -541,7 +585,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t UI_BOARD_MAC[6] = { 0x9C, 0x9E, 0x6E, 0x77, 0x24, 0xF8 }</td>
+          <td class="memname">constexpr uint8_t UI_BOARD_MAC[6] = { 0xB0, 0x81, 0x84, 0x96, 0x90, 0x10 }</td>
         </tr>
       </table>
   </td>

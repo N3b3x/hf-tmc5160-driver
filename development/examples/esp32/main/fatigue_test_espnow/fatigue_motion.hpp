@@ -2,8 +2,8 @@
  * @file fatigue_motion.hpp
  * @brief Unified fatigue test motion controller
  * 
- * Extracted and improved from fatigue_test_encoder.cpp and fatigue_test_stallguard.cpp
- * Provides sinusoidal back-and-forth motion between bounds for fatigue testing.
+ * Provides point-to-point back-and-forth motion between bounds for fatigue testing.
+ * Uses direct VMAX/AMAX control like bounds_finding_test.cpp for smooth, predictable motion.
  */
 
 #pragma once
@@ -17,28 +17,31 @@
 
 namespace FatigueTest {
 
-enum class AngleUnit { DEGREES, RADIANS };
-
 /**
  * @brief Unified fatigue test motion controller
  * 
- * Provides pure sinusoidal back-and-forth motion between bounds for fatigue testing.
+ * Provides point-to-point back-and-forth motion between bounds for fatigue testing.
  * Supports global bounds (hardware limits) and local bounds (oscillation range).
  */
 class FatigueTestMotion {
 public:
+    /**
+     * @brief Status structure containing current motion controller state.
+     */
     struct Status {
-        bool running;
-        bool bounded;
-        float frequency_hz;
-        float min_degrees_from_center;
-        float max_degrees_from_center;
-        uint32_t current_cycles;
-        uint32_t target_cycles;
-        uint32_t dwell_min_ms;
-        uint32_t dwell_max_ms;
-        float global_min_degrees;
-        float global_max_degrees;
+        bool running;                      ///< Whether motion is currently active
+        bool bounded;                      ///< Whether mechanical bounds were detected
+        float vmax_rpm;                   ///< User-set max velocity (RPM)
+        float amax_rev_s2;                ///< User-set acceleration (rev/s²)
+        float estimated_frequency_hz;     ///< Derived cycle frequency (informational)
+        float min_degrees_from_center;    ///< Local min bound relative to center (degrees)
+        float max_degrees_from_center;    ///< Local max bound relative to center (degrees)
+        uint32_t current_cycles;          ///< Number of cycles completed
+        uint32_t target_cycles;           ///< Target cycle count (0 = infinite)
+        uint32_t dwell_min_ms;            ///< Dwell time at min position (ms)
+        uint32_t dwell_max_ms;            ///< Dwell time at max position (ms)
+        float global_min_degrees;         ///< Global min bound (degrees)
+        float global_max_degrees;         ///< Global max bound (degrees)
     };
 
     /**
@@ -98,14 +101,17 @@ public:
      * @brief Set local oscillation bounds (degrees) relative to the center.
      *
      * @details
-     * Local bounds are clipped to global bounds (if bounded) and used as the
-     * sinusoidal target range.
+     * Local bounds are clipped to global bounds (if bounded) and define the
+     * oscillation range. An optional edge_backoff_deg parameter specifies
+     * how far inside the mechanical bounds to stay during oscillation.
      *
      * @param min_degrees_from_center Minimum local bound.
      * @param max_degrees_from_center Maximum local bound.
+     * @param edge_backoff_deg How far inside bounds to stay (default 3.5°, like bounds_finding_test).
      * @return true if accepted; false if rejected.
      */
-    bool SetLocalBoundsFromCenterDegrees(float min_degrees_from_center, float max_degrees_from_center) noexcept;
+    bool SetLocalBoundsFromCenterDegrees(float min_degrees_from_center, float max_degrees_from_center, 
+                                         float edge_backoff_deg = 3.5f) noexcept;
 
     /**
      * @brief Read local bounds (degrees).
@@ -115,16 +121,35 @@ public:
     void GetLocalBoundsFromCenterDegrees(float& min_degrees, float& max_degrees) const noexcept;
 
     /**
-     * @brief Set target oscillation frequency (Hz).
-     * @param frequency_hz Frequency in Hz.
-     * @return true if accepted; false otherwise.
+     * @brief Set maximum velocity for oscillation (direct TMC5160 VMAX control).
+     * @param vmax_rpm Maximum velocity in RPM.
+     * @return true if accepted (value clamped to safe limits).
      */
-    bool SetFrequency(float frequency_hz) noexcept;
+    bool SetMaxVelocity(float vmax_rpm) noexcept;
 
     /**
-     * @brief Get configured frequency (Hz).
+     * @brief Get configured maximum velocity (RPM).
      */
-    float GetFrequency() const noexcept;
+    float GetMaxVelocity() const noexcept;
+
+    /**
+     * @brief Set acceleration for oscillation (direct TMC5160 AMAX control).
+     * @param amax_rev_s2 Acceleration in rev/s².
+     * @return true if accepted (value clamped to safe limits).
+     */
+    bool SetAcceleration(float amax_rev_s2) noexcept;
+
+    /**
+     * @brief Get configured acceleration (rev/s²).
+     */
+    float GetAcceleration() const noexcept;
+
+    /**
+     * @brief Get estimated cycle frequency based on current velocity/accel/distance.
+     * @return Estimated frequency in Hz (informational only).
+     * @note This is derived from the motion parameters, not a setpoint.
+     */
+    float GetEstimatedCycleFrequency() const noexcept;
 
     /**
      * @brief Set dwell times at local bounds.
@@ -181,6 +206,12 @@ public:
     bool Start() noexcept;
 
     /**
+     * @brief Pause active motion (stops movement but keeps motor energized for resume).
+     * @details Sets ramp mode to HOLD to maintain position. Motion can be resumed with Start().
+     */
+    void Pause() noexcept;
+
+    /**
      * @brief Stop active motion and command driver stop.
      */
     void Stop() noexcept;
@@ -205,11 +236,6 @@ public:
     Status GetStatus() const noexcept;
 
     /**
-     * @brief Get estimated realized frequency (Hz) based on dwell + trajectory.
-     */
-    float GetEstimatedFrequency() const noexcept;
-
-    /**
      * @brief Whether the controller is in bounded mode (mechanical stops found).
      */
     bool IsBounded() const noexcept;
@@ -225,41 +251,34 @@ private:
     float home_position_;
     bool bounded_;
     
-    // Motion parameters
+    // Motion parameters (directly user-controlled)
     float amplitude_;
-    float frequency_hz_;
+    float vmax_rpm_;                 // User-set max velocity (RPM) - direct to TMC5160
+    float amax_rev_s2_;              // User-set acceleration (rev/s²) - direct to TMC5160
     uint32_t dwell_at_min_ms_;
     uint32_t dwell_at_max_ms_;
     bool running_;
-    uint32_t start_time_us_;
-    float phase_offset_;
+    uint64_t start_time_us_;
     
     // Cycle tracking
     uint32_t target_cycles_;
     uint32_t current_cycles_;
     bool cycle_complete_;
-    bool last_was_negative_;
-    bool cycle_started_;
-    float last_target_relative_;
     
-    // State machine
-    enum class MotionState { MOVING_TO_MIN, MOVING_TO_MAX, DWELL_AT_MIN, DWELL_AT_MAX, STOPPED };
+    // State machine for point-to-point motion
+    enum class MotionState { MOVING_TO_MIN, MOVING_TO_MAX, DWELL_AT_MIN, DWELL_AT_MAX, PAUSED, STOPPED };
     MotionState state_;
     uint32_t dwell_start_time_ms_;
-    bool sinusoidal_mode_;
     
-    // Trajectory parameters (all in higher-level units)
-    float calculated_vmax_rpm_;      // Maximum velocity in RPM
-    float calculated_amax_rev_s2_;   // Maximum acceleration in rev/s²
-    float estimated_frequency_hz_;   // Estimated actual frequency
+    // Derived parameters (calculated from user inputs)
+    float estimated_frequency_hz_;   // Estimated cycle frequency based on vmax/amax/distance
     
     // Thread safety - reference to external mutex that protects ALL driver SPI access
     Esp32TmcMutex& driver_mutex_;
     
     // Internal methods
-    void RecalculateTrajectory() noexcept;
+    void RecalculateEstimatedFrequency() noexcept;
     void ClipLocalBoundsToGlobal() noexcept;
-    void UpdateSinuousMotion() noexcept;
 };
 
 } // namespace FatigueTest

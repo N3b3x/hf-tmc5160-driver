@@ -18,6 +18,9 @@
 #include "esp_idf_pedantic_compat.hpp"
 #include "esp_log.h"
 
+// Include security definitions for pairing support
+#include "espnow_security.hpp"
+
 // ------------- ESPNOW CONFIG -------------
 
 // Sync byte at start of every message
@@ -40,8 +43,8 @@ static constexpr uint8_t WIFI_CHANNEL = 1;
 // to "learn" the sender MAC from the first inbound ESPNOW message).
 //
 // Update this when the remote controller prints its MAC, e.g.:
-//   Remote Controller MAC (STA): 9C:9E:6E:77:24:F8
-static constexpr uint8_t UI_BOARD_MAC[6] = { 0x9C, 0x9E, 0x6E, 0x77, 0x24, 0xF8 };
+//   Remote Controller MAC (STA): B0:81:84:96:90:10
+static constexpr uint8_t UI_BOARD_MAC[6] = { 0xB0, 0x81, 0x84, 0x96, 0x90, 0x10 };
 
 // ------------- MESSAGE TYPES -------------
 
@@ -66,7 +69,17 @@ enum class MsgType : uint8_t {
     StatusUpdate,      // = 9
     Error,             // = 10
     ErrorClear,        // = 11
-    TestComplete       // = 12
+    TestComplete,      // = 12
+    
+        // Fatigue-test extensions
+        BoundsResult      = 13,
+    
+    // Security / Pairing messages (20-29 range)
+    PairingRequest  = 20,   ///< Initiate pairing (broadcast)
+    PairingResponse = 21,   ///< Response with HMAC proof
+    PairingConfirm  = 22,   ///< Final confirmation
+    PairingReject   = 23,   ///< Explicit rejection
+    Unpair          = 24,   ///< Remove a paired device
 };
 
 /**
@@ -91,8 +104,31 @@ enum class CommandId : uint8_t {
     Start = 1,
     Pause = 2,
     Resume = 3,
-    Stop = 4
+    Stop = 4,
+    // Dedicated bounds-finding command (independent of starting the test).
+    RunBoundsFinding = 5,
 };
+
+/**
+ * @brief Payload for BOUNDS_RESULT.
+ *
+ * @details
+ * Sends the bounds relative to the established center/home (degrees).
+ * `min_degrees_from_center` is typically negative and `max_degrees_from_center`
+ * is typically positive.
+ */
+#pragma pack(push, 1)
+struct BoundsResultPayload {
+    uint8_t ok;        ///< 1=success (bounded or intentionally unbounded default); 0=failure
+    uint8_t bounded;   ///< 1=mechanical stops detected; 0=unbounded default window used
+    uint8_t cancelled; ///< 1=cancelled by user/STOP/PAUSE
+    uint8_t reserved;
+    float   min_degrees_from_center;
+    float   max_degrees_from_center;
+    float   global_min_degrees;
+    float   global_max_degrees;
+};
+#pragma pack(pop)
 
 // ------------- PACKET STRUCTURES -------------
 
@@ -138,21 +174,30 @@ struct EspNowPacket {
  * @brief Payload for CONFIG_SET / CONFIG_RESPONSE.
  * 
  * @note Must match remote controller's FatigueTestConfigPayload structure.
- * Extended fields are optional - older remote controllers may send only 13 bytes.
+ * Extended fields are optional - older remote controllers may send only base bytes.
+ * 
+ * PROTOCOL V2 CHANGE: Replaced time_per_cycle_sec with oscillation_vmax_rpm and
+ * oscillation_amax_rev_s2 for direct TMC5160 ramp control.
  */
 #pragma pack(push, 1)
 struct ConfigPayload {
-    // Base fields (13 bytes) - required, always present
-    uint32_t cycle_amount;
-    uint32_t time_per_cycle_sec;
-    uint32_t dwell_time_sec;
-    uint8_t  bounds_method;      // 0 = stallguard, 1 = encoder
+    // Base fields (17 bytes) - required, always present
+    uint32_t cycle_amount;                     // Target number of cycles (0 = infinite)
+    float    oscillation_vmax_rpm;             // Max oscillation velocity (RPM) - directly to TMC5160 VMAX
+    float    oscillation_amax_rev_s2;          // Oscillation acceleration (rev/s²) - directly to TMC5160 AMAX
+    uint32_t dwell_time_ms;                    // Dwell time at endpoints (milliseconds)
+    uint8_t  bounds_method;                    // 0 = stallguard, 1 = encoder
     
-    // Extended fields (16 bytes) - optional, for advanced configuration
+    // Extended fields (16 bytes) - optional, for bounds finding configuration
     float    bounds_search_velocity_rpm;       // Search speed during bounds finding (RPM)
     float    stallguard_min_velocity_rpm;      // Minimum velocity threshold for StallGuard2 (RPM)
     float    stall_detection_current_factor;   // Current reduction factor (0.0-1.0)
     float    bounds_search_accel_rev_s2;       // Acceleration during bounds finding (rev/s²)
+
+    // Extended v2 field (optional)
+    // StallGuard threshold (SGT). Valid range is typically [-64, 63].
+    // 127 means "use test config default".
+    int8_t   stallguard_sgt;
 };
 
 /**
@@ -177,6 +222,10 @@ struct StatusPayload {
     uint32_t cycle_number;
     uint8_t  state;      // TestState enum value
     uint8_t  err_code;   // error code if state == Error
+    // 1 = bounds may be reused (motor still energized + within validity window)
+    // 0 = bounds invalid, must re-run bounds finding
+    // 255 = unknown/unspecified (backward compatibility)
+    uint8_t  bounds_valid;
 };
 
 /**
@@ -194,18 +243,23 @@ struct ErrorPayload {
  * @brief Test unit settings - synchronized with test machine via ESP-NOW.
  * 
  * These settings control the fatigue test behavior.
+ * 
+ * PROTOCOL V2: Uses direct velocity/acceleration control instead of cycle time.
  */
 struct TestUnitSettings {
-    uint32_t cycle_amount   = 1000;
-    uint32_t time_per_cycle = 5;    // seconds
-    uint32_t dwell_time     = 1;    // seconds
-    bool     bounds_method_stallguard = true; // true = stallguard, false = encoder
+    uint32_t cycle_amount = 300;                      ///< Target cycles (0 = infinite)
+    float    oscillation_vmax_rpm = 60.0f;            ///< Max velocity during oscillation (RPM)
+    float    oscillation_amax_rev_s2 = 10.0f;         ///< Acceleration during oscillation (rev/s²)
+    uint32_t dwell_time_ms = 500;                     ///< Dwell at endpoints (ms)
+    bool     bounds_method_stallguard = true;         ///< true = StallGuard2, false = encoder
     
-    // Extended configuration (configurable via remote controller)
-    float    bounds_search_velocity_rpm = 0.0f;       // 0 = use test config default
-    float    stallguard_min_velocity_rpm = 0.0f;      // 0 = use test config default
-    float    stall_detection_current_factor = 0.0f;   // 0 = use test config default
-    float    bounds_search_accel_rev_s2 = 0.0f;       // 0 = use test config default
+    // Extended configuration for bounds finding (configurable via remote controller)
+    float    bounds_search_velocity_rpm = 0.0f;       ///< Search speed during bounds finding (RPM, 0 = use test config default)
+    float    stallguard_min_velocity_rpm = 0.0f;      ///< Min velocity for StallGuard2 (RPM, 0 = use test config default)
+    float    stall_detection_current_factor = 0.0f;   ///< Current reduction factor (0.0-1.0, 0 = use test config default)
+    float    bounds_search_accel_rev_s2 = 0.0f;       ///< Search acceleration (rev/s², 0 = use test config default)
+
+    int8_t   stallguard_sgt = 0;                    ///< StallGuard threshold [-64..63], 127 = use test config default
 };
 
 /**
@@ -214,7 +268,7 @@ struct TestUnitSettings {
  * These settings control the UI board's display and behavior.
  */
 struct UISettings {
-    bool orientation_flipped = false;
+    bool orientation_flipped = false;                ///< Whether display orientation is flipped
     // Future UI settings can be added here (e.g., brightness, contrast, etc.)
 };
 
@@ -224,8 +278,8 @@ struct UISettings {
  * This is the main settings structure used throughout the application.
  */
 struct Settings {
-    TestUnitSettings test_unit;  // Test machine settings (synced via ESP-NOW)
-    UISettings       ui;         // UI board settings (local only)
+    TestUnitSettings test_unit;  ///< Test machine settings (synced via ESP-NOW)
+    UISettings       ui;         ///< UI board settings (local only)
 };
 
 // ------------- EVENTS -------------
@@ -247,6 +301,7 @@ enum class ProtoEventType {
     CommandPause,
     CommandResume,
     CommandStop,
+    CommandRunBoundsFinding,
     // Status/response events (both sides)
     ConfigUpdated,
     ConfigApplyOk,
@@ -257,7 +312,13 @@ enum class ProtoEventType {
     Stopped,
     Status,
     ErrorEvent,
-    TestCompleted
+    TestCompleted,
+    
+    // Pairing events
+    PairingRequest,     ///< Incoming pairing request (test unit receives)
+    PairingComplete,    ///< Pairing completed successfully
+    PairingFailed,      ///< Pairing failed (rejected or timeout)
+    PeerUnpaired,       ///< A peer was unpaired
 };
 
 /**
@@ -271,6 +332,11 @@ struct ProtoEvent {
         TestUnitSettings config;  // Config data (includes extended float fields)
         struct { uint32_t cycle; TestState state; uint8_t err_code; } status;
         struct { uint8_t err_code; uint32_t at_cycle; } error;
+        struct { 
+            uint8_t peer_mac[6];
+            uint8_t device_type;
+            char    device_name[MAX_DEVICE_NAME_LEN];
+        } pairing;
     } data;
 };
 

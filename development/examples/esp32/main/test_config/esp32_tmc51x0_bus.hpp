@@ -29,6 +29,7 @@
 #include "esp_log.h"
 #include "esp_rom_sys.h"
 #include "freertos/FreeRTOS.h"
+#include "freertos/semphr.h"
 #include "freertos/task.h"
 #include <cstdarg>
 #include <cstddef>
@@ -522,6 +523,14 @@ public:
       return tmc51x0::Result<void>();
     }
 
+    if (spi_mutex_ == nullptr) {
+      spi_mutex_ = xSemaphoreCreateMutex();
+      if (spi_mutex_ == nullptr) {
+        ESP_LOGE(BUS_TAG, "Failed to create SPI mutex");
+        return tmc51x0::Result<void>(tmc51x0::ErrorCode::COMM_ERROR);
+      }
+    }
+
     // Configure GPIO pins that are mapped
     constexpr gpio_num_t UNMAPPED_PIN = static_cast<gpio_num_t>(-1);
     if (en_pin_ != UNMAPPED_PIN) {
@@ -642,6 +651,11 @@ public:
 
     initialized_ = false;
     ESP_LOGI(BUS_TAG, "SPI interface deinitialized");
+
+    if (spi_mutex_ != nullptr) {
+      vSemaphoreDelete(spi_mutex_);
+      spi_mutex_ = nullptr;
+    }
     return tmc51x0::Result<void>();
   }
 
@@ -668,12 +682,20 @@ public:
       return tmc51x0::Result<void>(tmc51x0::ErrorCode::COMM_ERROR);
     }
 
+    if (spi_mutex_ != nullptr) {
+      xSemaphoreTake(spi_mutex_, portMAX_DELAY);
+    }
+
     spi_transaction_t trans = {};
     trans.length = length * 8;
     trans.tx_buffer = tx;
     trans.rx_buffer = rx;
 
     esp_err_t ret = spi_device_transmit(device_handle_, &trans);
+
+    if (spi_mutex_ != nullptr) {
+      xSemaphoreGive(spi_mutex_);
+    }
     if (ret != ESP_OK) {
       ESP_LOGE(BUS_TAG, "SPI transfer failed: %s", esp_err_to_name(ret));
       return tmc51x0::Result<void>(tmc51x0::ErrorCode::COMM_ERROR);
@@ -868,6 +890,7 @@ private:
   gpio_num_t step_pin_;
   uint32_t clock_speed_hz_;
   spi_device_handle_t device_handle_;
+  SemaphoreHandle_t spi_mutex_{nullptr};
   bool initialized_;
 
   /**

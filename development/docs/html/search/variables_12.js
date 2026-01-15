@@ -8,9 +8,10 @@ var searchData=
   ['ui_5',['ui',['../structSettings.html#afda192af017be4eb65689dd7547f9f7f',1,'Settings']]],
   ['ui_5fboard_5fmac_6',['UI_BOARD_MAC',['../espnow__protocol_8hpp.html#a95f459db8f6dcc34bbb3e93dcb1f0749',1,'espnow_protocol.hpp']]],
   ['unit_7',['unit',['../structtmc51x0_1_1VelocityValue.html#af32ecf32400ba804fb8706377d187d94',1,'tmc51x0::VelocityValue::unit'],['../structtmc51x0_1_1AccelerationValue.html#a34201928df1fb6c0f0658cc7625b3c08',1,'tmc51x0::AccelerationValue::unit']]],
-  ['upper_5fthreshold_5fsg_8',['upper_threshold_sg',['../structtmc51x0_1_1CoolStepConfig.html#a0b53d3498fdc44d5658e0097cc04a1ef',1,'tmc51x0::CoolStepConfig']]],
-  ['us_5fper_5fsec_9',['US_PER_SEC',['../namespacetmc51x0_1_1RegisterConstants.html#aec0fc50a9a829d404645482a7e641a35',1,'tmc51x0::RegisterConstants']]],
-  ['use_5fstallguard_10',['USE_STALLGUARD',['../bounds__finding__test_8cpp.html#a6bedd0fb4c6fca316840b645b6f28a6b',1,'bounds_finding_test.cpp']]],
-  ['user_5fspecified_5fchain_5flength_5f_11',['user_specified_chain_length_',['../classtmc51x0_1_1SpiCommInterface.html#ae51148b7e5a26f3318ee15d88ae5621d',1,'tmc51x0::SpiCommInterface']]],
-  ['uv_5fcp_12',['uv_cp',['../uniontmc51x0_1_1GSTAT__Register.html#a4e1e55cfd02a01cc02ee94c3f6a1ef62',1,'tmc51x0::GSTAT_Register']]]
+  ['unpair_8',['Unpair',['../namespacePairingMsgType.html#a1f36fcbe4db30d9386b7f2effc3b18af',1,'PairingMsgType']]],
+  ['upper_5fthreshold_5fsg_9',['upper_threshold_sg',['../structtmc51x0_1_1CoolStepConfig.html#a0b53d3498fdc44d5658e0097cc04a1ef',1,'tmc51x0::CoolStepConfig']]],
+  ['us_5fper_5fsec_10',['US_PER_SEC',['../namespacetmc51x0_1_1RegisterConstants.html#aec0fc50a9a829d404645482a7e641a35',1,'tmc51x0::RegisterConstants']]],
+  ['use_5fstallguard_11',['USE_STALLGUARD',['../bounds__finding__test_8cpp.html#a6bedd0fb4c6fca316840b645b6f28a6b',1,'bounds_finding_test.cpp']]],
+  ['user_5fspecified_5fchain_5flength_5f_12',['user_specified_chain_length_',['../classtmc51x0_1_1SpiCommInterface.html#ae51148b7e5a26f3318ee15d88ae5621d',1,'tmc51x0::SpiCommInterface']]],
+  ['uv_5fcp_13',['uv_cp',['../uniontmc51x0_1_1GSTAT__Register.html#a4e1e55cfd02a01cc02ee94c3f6a1ef62',1,'tmc51x0::GSTAT_Register']]]
 ];

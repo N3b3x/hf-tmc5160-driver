@@ -1,0 +1,15 @@
+<map id="setActiveUiMac" name="setActiveUiMac">
+<area shape="rect" id="Node000001" title=" " alt="" coords="840,24,964,50"/>
+<area shape="rect" id="Node000002" href="$espnow__receiver_8cpp.html#a9a8bd25cb8fe8e608970454951acc1aa" title=" " alt="" coords="475,24,583,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="843,24,792,14,711,8,631,14,571,27,570,22,630,9,711,3,792,9,844,19"/>
+<area shape="rect" id="Node000004" href="$namespaceEspNowReceiver.html#a7b5448c32668c4ce8c8b2e825fe523ee" title="Initialize ESP&#45;NOW (WiFi STA + ESP&#45;NOW) and start the receive task." alt="" coords="140,50,300,75"/>
+<area shape="poly" id="edge7_Node000001_Node000004" title=" " alt="" coords="841,56,792,64,657,74,522,77,300,70,300,65,522,71,657,68,792,58,840,50"/>
+<area shape="rect" id="Node000006" href="$espnow__receiver_8cpp.html#ad03b1f7a342f6c86bb9ce0beec5636f2" title=" " alt="" coords="631,24,792,50"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="826,40,792,40,792,34,826,34"/>
+<area shape="rect" id="Node000003" href="$espnow__receiver_8cpp.html#acfefef0575d2f148427e2d4fc622f175" title=" " alt="" coords="348,24,427,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="461,40,427,40,427,34,461,34"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="335,48,301,53,300,48,334,42"/>
+<area shape="rect" id="Node000005" href="$espnow__protocol__test__unit_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,50,92,75"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="126,65,92,65,92,60,126,60"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="617,40,583,40,583,34,617,34"/>
+</map>

@@ -14,7 +14,7 @@ The Fatigue Test ESP-NOW Unit is a unified fatigue testing system that combines 
 │  ┌─────────────────┐       ┌─────────────────┐       ┌─────────────────┐  │
 │  │   ESP-NOW       │       │   FreeRTOS      │       │   Motion        │  │
 │  │   Receiver      │──────▶│   Event Queue   │──────▶│   Controller    │  │
-│  │   (ISR-safe)    │       │                 │       │   (Sinusoidal)  │  │
+│  │   (ISR-safe)    │       │                 │       │ (Point-to-Point)│  │
 │  └─────────────────┘       └─────────────────┘       └────────┬────────┘  │
 │           │                                                    │          │
 │           │                ┌─────────────────┐                 │          │
@@ -115,9 +115,9 @@ struct BoundsOptions {
 
 **Files**: `fatigue_motion.hpp`, `fatigue_motion_impl.hpp`
 
-- **Purpose**: Generate sinusoidal back-and-forth motion between bounds
+- **Purpose**: Generate point-to-point back-and-forth motion between bounds
 - **Features**:
-  - Sinusoidal position profile generation
+  - Point-to-point position control (direct VMAX/AMAX)
   - Cycle counting (center-crossing detection)
   - Configurable dwell time at bounds
   - Thread-safe operation (RAII mutex guards)
@@ -148,13 +148,15 @@ Settings are stored in memory and synchronized via ESP-NOW. Extended fields supp
 struct TestUnitSettings {
     // Base fields (always synchronized)
     uint32_t cycle_amount   = 1000;   // Target cycles
-    uint32_t time_per_cycle = 5;      // Seconds per cycle
-    uint32_t dwell_time     = 1;      // Dwell time at bounds (seconds)
+        float    oscillation_vmax_rpm = 60.0f;    // Max velocity during oscillation (RPM)
+        float    oscillation_amax_rev_s2 = 10.0f; // Acceleration during oscillation (rev/s²)
+        uint32_t dwell_time_ms = 1000;            // Dwell time at endpoints (milliseconds)
     bool bounds_method_stallguard = true; // Detection method
     
     // Extended fields (0.0f = use TestConfig defaults)
     float bounds_search_velocity_rpm = 0.0f;       // Search speed (RPM)
     float stallguard_min_velocity_rpm = 0.0f;      // SG min velocity (RPM)
+        int8_t stallguard_sgt = 127;                   // StallGuard threshold [-64..63], 127=default
     float stall_detection_current_factor = 0.0f;   // Current reduction (0.0-1.0)
     float bounds_search_accel_rev_s2 = 0.0f;       // Search acceleration (rev/s²)
 };
@@ -220,13 +222,13 @@ The system uses FreeRTOS tasks for concurrent operation:
            │ Bounds found │  │ Cancelled│  │ Timeout/ │                      │
            │              │  │ (PAUSE)  │  │  Error   │                      │
            └──────┬───────┘  └────┬─────┘  └────┬─────┘                      │
-                  │               │              │                           │
-                  │               │              └───────────────────────────┤
+                  │               │             │                            │
+                  │               │             └────────────────────────────┤
                   │               │                                          │
                   ▼               ▼                                          │
          ┌─────────────────┐   ┌─────────────────┐                           │
          │    RUNNING      │   │     PAUSED      │                           │
-         │(sinusoidal move)│◀─▶│  (motor off)    │───────────────────────────┤
+         │(point-to-point) │◀─▶│  (motor off)    │───────────────────────────┤
          └────────┬────────┘   └─────────────────┘        STOP               │
                   │                    ▲                                     │
                   │ PAUSE              │ RESUME                              │

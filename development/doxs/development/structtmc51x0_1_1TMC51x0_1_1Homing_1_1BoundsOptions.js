@@ -8,6 +8,7 @@ var structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions =
     [ "preflight_clear_active_switch", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#ad5f8cc9ed8ef6e9cd386cdeb9007e3eb", null ],
     [ "search_accel", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a65b313b651648b7deda04e9ba3ddb823", null ],
     [ "search_decel", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a597ad0cd8dc7864df99dae3ab0817d73", null ],
+    [ "search_positive_first", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#adf369b33c0a767aa5f6077dccca90c47", null ],
     [ "search_span", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a31baea798652e903330c682a777598aa", null ],
     [ "search_speed", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#aa8ed5c5933c3592fb92f86f727fa91bc", null ],
     [ "speed_unit", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html#a3718deb5ff8da6a0fab18c248425a850", null ],

@@ -76,7 +76,7 @@
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="uart__multi__node__comprehensive__test_8cpp.html#a5540756c4425759d8d7f9a1a3cd1d8e9" target="_top" xlink:title=" ">
+<g id="a_Node000007"><a xlink:href="uart__multi__node__comprehensive__test_8cpp.html#a5540756c4425759d8d7f9a1a3cd1d8e9" target="_top" xlink:title="Test multi&#45;node coordination via UART.">
 <polygon fill="white" stroke="#666666" points="264,-142 103,-142 103,-123 264,-123 264,-142"/>
 <text text-anchor="middle" x="183.5" y="-130" font-family="Helvetica,sans-Serif" font-size="10.00">test_multi_node_coordination</text>
 </a>
@@ -94,7 +94,7 @@
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="uart__multi__node__comprehensive__test_8cpp.html#a6ee4f2081608954899837256fa107c7e" target="_top" xlink:title=" ">
+<g id="a_Node000008"><a xlink:href="uart__multi__node__comprehensive__test_8cpp.html#a6ee4f2081608954899837256fa107c7e" target="_top" xlink:title="Test send delay configuration for UART multi&#45;node.">
 <polygon fill="white" stroke="#666666" points="266,-105 101,-105 101,-86 266,-86 266,-105"/>
 <text text-anchor="middle" x="183.5" y="-93" font-family="Helvetica,sans-Serif" font-size="10.00">test_send_delay_configuration</text>
 </a>
@@ -112,7 +112,7 @@
 <!-- Node9 -->
 <g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_Node000009"><a xlink:href="uart__multi__node__comprehensive__test_8cpp.html#a3d51614a9462c934ba45b4fc950fa559" target="_top" xlink:title=" ">
+<g id="a_Node000009"><a xlink:href="uart__multi__node__comprehensive__test_8cpp.html#a3d51614a9462c934ba45b4fc950fa559" target="_top" xlink:title="Test UART node address configuration.">
 <polygon fill="white" stroke="#666666" points="250,-67.5 117,-67.5 117,-37.5 250,-37.5 250,-67.5"/>
 <text text-anchor="start" x="125" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">test_uart_node_address</text>
 <text text-anchor="middle" x="183.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">_configuration</text>
@@ -131,7 +131,7 @@
 <!-- Node10 -->
 <g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_Node000010"><a xlink:href="uart__multi__node__comprehensive__test_8cpp.html#af0d6b8c92d7be7f167aaecfa615f0f1a" target="_top" xlink:title=" ">
+<g id="a_Node000010"><a xlink:href="uart__multi__node__comprehensive__test_8cpp.html#af0d6b8c92d7be7f167aaecfa615f0f1a" target="_top" xlink:title="Test UART node addressing functionality.">
 <polygon fill="white" stroke="#666666" points="257.5,-19 109.5,-19 109.5,0 257.5,0 257.5,-19"/>
 <text text-anchor="middle" x="183.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">test_uart_node_addressing</text>
 </a>

@@ -101,15 +101,16 @@ $(function(){initNavTree('espnow__receiver_8hpp.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 
-<p>ESP-NOW receiver for test unit.  
+<p>ESP-NOW receiver for test unit with secure pairing support.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="espnow__protocol_8hpp_source.html">espnow_protocol.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="espnow__security_8hpp_source.html">espnow_security.hpp</a>&quot;</code><br />
 <code>#include &quot;freertos/FreeRTOS.h&quot;</code><br />
 <code>#include &quot;freertos/queue.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for espnow_receiver.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8hpp__incl.svg" width="846" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="espnow__receiver_8hpp__incl.svg" width="1147" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -147,18 +148,48 @@ Functions</h2></td></tr>
 <tr class="memitem:a5f9e63a444d010ed79c649b6a2467277" id="r_a5f9e63a444d010ed79c649b6a2467277"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceEspNowReceiver.html#a5f9e63a444d010ed79c649b6a2467277">EspNowReceiver::send_stop_ack</a> ()</td></tr>
 <tr class="memdesc:a5f9e63a444d010ed79c649b6a2467277"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send STOP_ACK (acknowledge STOP receipt).  <br /></td></tr>
 <tr class="separator:a5f9e63a444d010ed79c649b6a2467277"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad20a4032cfbaf4698d2a894139c339ae" id="r_ad20a4032cfbaf4698d2a894139c339ae"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceEspNowReceiver.html#ad20a4032cfbaf4698d2a894139c339ae">EspNowReceiver::send_status_update</a> (uint32_t cycle, <a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7">TestState</a> state, uint8_t err_code=0)</td></tr>
-<tr class="memdesc:ad20a4032cfbaf4698d2a894139c339ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send STATUS_UPDATE with cycle count and state.  <br /></td></tr>
-<tr class="separator:ad20a4032cfbaf4698d2a894139c339ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37dbf71c15486999f072d89e26d3dd7e" id="r_a37dbf71c15486999f072d89e26d3dd7e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceEspNowReceiver.html#a37dbf71c15486999f072d89e26d3dd7e">EspNowReceiver::send_status_update</a> (uint32_t cycle, <a class="el" href="espnow__protocol_8hpp.html#a60f8cc7211722b1cc1767ba7c7a5d4d7">TestState</a> state, uint8_t err_code=0, uint8_t bounds_valid=255)</td></tr>
+<tr class="memdesc:a37dbf71c15486999f072d89e26d3dd7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send STATUS_UPDATE with cycle count and state.  <br /></td></tr>
+<tr class="separator:a37dbf71c15486999f072d89e26d3dd7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e573039958657010ab3722b0eb6cfd8" id="r_a0e573039958657010ab3722b0eb6cfd8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceEspNowReceiver.html#a0e573039958657010ab3722b0eb6cfd8">EspNowReceiver::send_error</a> (uint8_t err_code, uint32_t at_cycle)</td></tr>
 <tr class="memdesc:a0e573039958657010ab3722b0eb6cfd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send ERROR message.  <br /></td></tr>
 <tr class="separator:a0e573039958657010ab3722b0eb6cfd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24fe7b15e7685c89e8468b1fdbcbaf7d" id="r_a24fe7b15e7685c89e8468b1fdbcbaf7d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceEspNowReceiver.html#a24fe7b15e7685c89e8468b1fdbcbaf7d">EspNowReceiver::send_test_complete</a> ()</td></tr>
 <tr class="memdesc:a24fe7b15e7685c89e8468b1fdbcbaf7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send TEST_COMPLETE message.  <br /></td></tr>
 <tr class="separator:a24fe7b15e7685c89e8468b1fdbcbaf7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9b932eecdce82a9ad416a05c4b26437" id="r_ad9b932eecdce82a9ad416a05c4b26437"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceEspNowReceiver.html#ad9b932eecdce82a9ad416a05c4b26437">EspNowReceiver::send_bounds_result</a> (uint8_t ok, uint8_t bounded, uint8_t cancelled, float min_deg_from_center, float max_deg_from_center, float global_min_deg, float global_max_deg)</td></tr>
+<tr class="memdesc:ad9b932eecdce82a9ad416a05c4b26437"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send BOUNDS_RESULT message.  <br /></td></tr>
+<tr class="separator:ad9b932eecdce82a9ad416a05c4b26437"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16c42bd3125d7e7342cef32c2c3113ee" id="r_a16c42bd3125d7e7342cef32c2c3113ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceEspNowReceiver.html#a16c42bd3125d7e7342cef32c2c3113ee">EspNowReceiver::enter_pairing_mode</a> (uint32_t timeout_sec=<a class="el" href="espnow__security_8hpp.html#a3d9555d889ba78fd08e5c87e006331cf">PAIRING_MODE_TIMEOUT_SEC</a>)</td></tr>
+<tr class="memdesc:a16c42bd3125d7e7342cef32c2c3113ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enter pairing mode for the specified duration.  <br /></td></tr>
+<tr class="separator:a16c42bd3125d7e7342cef32c2c3113ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1a1c9f9ee3aecfe82feaf48161d650f" id="r_af1a1c9f9ee3aecfe82feaf48161d650f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceEspNowReceiver.html#af1a1c9f9ee3aecfe82feaf48161d650f">EspNowReceiver::exit_pairing_mode</a> ()</td></tr>
+<tr class="memdesc:af1a1c9f9ee3aecfe82feaf48161d650f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exit pairing mode immediately.  <br /></td></tr>
+<tr class="separator:af1a1c9f9ee3aecfe82feaf48161d650f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93d8c346666ea692686d6fccfe1c2226" id="r_a93d8c346666ea692686d6fccfe1c2226"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceEspNowReceiver.html#a93d8c346666ea692686d6fccfe1c2226">EspNowReceiver::is_in_pairing_mode</a> ()</td></tr>
+<tr class="memdesc:a93d8c346666ea692686d6fccfe1c2226"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if device is currently in pairing mode.  <br /></td></tr>
+<tr class="separator:a93d8c346666ea692686d6fccfe1c2226"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8682f883c8425261fc29977173bc3ea7" id="r_a8682f883c8425261fc29977173bc3ea7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSecuritySettings.html">SecuritySettings</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceEspNowReceiver.html#a8682f883c8425261fc29977173bc3ea7">EspNowReceiver::get_security_settings</a> ()</td></tr>
+<tr class="memdesc:a8682f883c8425261fc29977173bc3ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get access to the security settings for peer management.  <br /></td></tr>
+<tr class="separator:a8682f883c8425261fc29977173bc3ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abffb366c1c55cb592662442c2531af86" id="r_abffb366c1c55cb592662442c2531af86"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceEspNowReceiver.html#abffb366c1c55cb592662442c2531af86">EspNowReceiver::add_approved_peer</a> (const uint8_t mac[6], <a class="el" href="espnow__security_8hpp.html#adbd7c4c417b1498b333bef443182ce51">DeviceType</a> type, const char *name)</td></tr>
+<tr class="memdesc:abffb366c1c55cb592662442c2531af86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manually add a peer as approved (bypasses pairing).  <br /></td></tr>
+<tr class="separator:abffb366c1c55cb592662442c2531af86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a5b91a4e4f5330e3b0e33dc1c46f9d4" id="r_a6a5b91a4e4f5330e3b0e33dc1c46f9d4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceEspNowReceiver.html#a6a5b91a4e4f5330e3b0e33dc1c46f9d4">EspNowReceiver::remove_approved_peer</a> (const uint8_t mac[6])</td></tr>
+<tr class="memdesc:a6a5b91a4e4f5330e3b0e33dc1c46f9d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a peer from the approved list.  <br /></td></tr>
+<tr class="separator:a6a5b91a4e4f5330e3b0e33dc1c46f9d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6727de741c906ee47a87f84604beeac" id="r_ab6727de741c906ee47a87f84604beeac"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceEspNowReceiver.html#ab6727de741c906ee47a87f84604beeac">EspNowReceiver::get_approved_peer_count</a> ()</td></tr>
+<tr class="memdesc:ab6727de741c906ee47a87f84604beeac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of approved peers.  <br /></td></tr>
+<tr class="separator:ab6727de741c906ee47a87f84604beeac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>ESP-NOW receiver for test unit. </p>
+<div class="textblock"><p>ESP-NOW receiver for test unit with secure pairing support. </p>
+<p>Features:</p><ul>
+<li>Pre-configured MAC address support (backward compatibility)</li>
+<li>Secure pairing with HMAC mutual authentication</li>
+<li>NVS-based approved peer storage</li>
+<li>Message validation against approved peer list </li>
+</ul>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

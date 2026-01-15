@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['imageloader_0',['ImageLoader',['../namespaceImageLoader.html',1,'']]]
+  ['pairingmsgtype_0',['PairingMsgType',['../namespacePairingMsgType.html',1,'']]],
+  ['pairingsecretparser_1',['PairingSecretParser',['../namespacePairingSecretParser.html',1,'']]],
+  ['peerstore_2',['PeerStore',['../namespacePeerStore.html',1,'']]]
 ];

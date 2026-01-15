@@ -1,5 +1,6 @@
 var stallguard__tuning_8cpp =
 [
+    [ "TestConfig", "stallguard__tuning_8cpp.html#a86d8411cd7a2af787df8f0ecf44509bc", null ],
     [ "app_main", "stallguard__tuning_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70", null ],
     [ "ACCELERATION_UNIT", "stallguard__tuning_8cpp.html#a721de94fd658d839797d4b54d72aebd9", null ],
     [ "SELECTED_TEST_RIG", "stallguard__tuning_8cpp.html#a3f1e89f6e3a0be599511d4a8cc389305", null ],
