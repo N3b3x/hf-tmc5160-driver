@@ -18,7 +18,11 @@ metadata:
 apps:
   # Internal Ramp Test Suites
   internal_ramp_comprehensive_test:
-    description: "Comprehensive internal ramp testing suite - combines core, motor control, ramp control, diagnostics, and protection tests into a single wholesome test suite for SPI internal ramp mode (single motor, with encoder and reference switches)"
+    description: >
+      Comprehensive internal ramp testing suite - combines core, motor control,
+      ramp control, diagnostics, and protection tests into a single wholesome
+      test suite for SPI internal ramp mode (single motor, with encoder and
+      reference switches)
     source_file: "internal_ramp_test_suites/internal_ramp_comprehensive_test.cpp"
     category: "testing"
     idf_versions: ["release/v5.5"]
@@ -27,7 +31,9 @@ apps:
     featured: true
 
   spi_daisy_chain_comprehensive_test:
-    description: "Comprehensive SPI daisy chain testing suite - SPI daisy chain setup, position management, multi-motor coordination (MULTI-MOTOR HARDWARE REQUIRED)"
+    description: >
+      Comprehensive SPI daisy chain testing suite - SPI daisy chain setup,
+      position management, multi-motor coordination (MULTI-MOTOR HARDWARE REQUIRED)
     source_file: "internal_ramp_test_suites/spi_daisy_chain_comprehensive_test.cpp"
     category: "testing"
     idf_versions: ["release/v5.5"]
@@ -36,7 +42,10 @@ apps:
     featured: false
 
   uart_multi_node_comprehensive_test:
-    description: "Comprehensive UART multi-node testing suite - UART node addressing, NODECONF node address configuration, send delay, multi-node coordination (MULTI-MOTOR HARDWARE REQUIRED)"
+    description: >
+      Comprehensive UART multi-node testing suite - UART node addressing,
+      NODECONF node address configuration, send delay, multi-node coordination
+      (MULTI-MOTOR HARDWARE REQUIRED)
     source_file: "internal_ramp_test_suites/uart_multi_node_comprehensive_test.cpp"
     category: "testing"
     idf_versions: ["release/v5.5"]
@@ -55,7 +64,10 @@ apps:
 
   # Fatigue Testing Application (Unified - supports both StallGuard2 and encoder)
   fatigue_test_espnow_unit:
-    description: "Unified fatigue test unit with ESP-NOW and UART support, dual bounds detection (StallGuard2/Encoder) - replaces fatigue_test_stallguard and fatigue_test_encoder"
+    description: >
+      Unified fatigue test unit with ESP-NOW and UART support, dual bounds
+      detection (StallGuard2/Encoder) - replaces fatigue_test_stallguard and
+      fatigue_test_encoder
     source_file: "fatigue_test_espnow/main.cpp"
     category: "motor_control"
     idf_versions: ["release/v5.5"]
@@ -65,7 +77,10 @@ apps:
 
   # ESP-NOW Protocol Test Unit (No Motor Control)
   espnow_protocol_test_unit:
-    description: "Minimal ESP-NOW protocol test unit - receives commands and responds with protocol messages, but does NOT control motors (useful for testing ESP-NOW communication without hardware dependencies)"
+    description: >
+      Minimal ESP-NOW protocol test unit - receives commands and responds with
+      protocol messages, but does NOT control motors (useful for testing ESP-NOW
+      communication without hardware dependencies)
     source_file: "fatigue_test_espnow/espnow_protocol_test_unit.cpp"
     category: "testing"
     idf_versions: ["release/v5.5"]
@@ -94,7 +109,9 @@ apps:
 
   # Sensor Examples
   abn_encoder_reader:
-    description: "ABN encoder position reader - Continuously reads and displays encoder position from ABN incremental encoder"
+    description: >
+      ABN encoder position reader - Continuously reads and displays encoder
+      position from ABN incremental encoder
     source_file: "sensors/abn_encoder_reader.cpp"
     category: "motor_control"
     idf_versions: ["release/v5.5"]

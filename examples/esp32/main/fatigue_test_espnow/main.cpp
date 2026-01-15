@@ -66,9 +66,11 @@ static constexpr float OSCILLATION_EDGE_BACKOFF_DEG = 3.6f;  // Stay 3.5° insid
  * @brief Centralized timing constants for FreeRTOS tasks in this application.
  *
  * @details
- * These are intentionally `static constexpr` so:
+ * This namespace provides a single source of truth for all task timing
+ * parameters. These are intentionally `static constexpr` so:
  * - all tasks share a single source of truth
  * - the compiler can still fold constants
+ * - values can be easily tuned in one place
  *
  * Change values here to tune logging cadence and control-loop update rates.
  */
@@ -113,12 +115,26 @@ alignas(FatigueTest::FatigueTestMotion) static uint8_t g_motion_storage[sizeof(F
 static Esp32SPI* g_spi = nullptr;
 
 // -------------------- Runtime control/state --------------------
+/**
+ * @brief Internal application state machine for the fatigue test unit.
+ * 
+ * @details
+ * Tracks the current operational state of the test unit. This is separate
+ * from the protocol-visible `TestState` which is mapped via `ToProtoState()`.
+ * 
+ * State transitions:
+ * - IDLE: System initialized, motor disabled, waiting for commands
+ * - BOUNDS_FINDING: Actively searching for mechanical limits
+ * - RUNNING: Fatigue test is active, motor oscillating between bounds
+ * - PAUSED: Test paused, motor holding position but still energized
+ * - ERROR: Error condition detected, motor disabled
+ */
 enum class InternalState : uint8_t {
-    IDLE = 0,
-    BOUNDS_FINDING,
-    RUNNING,
-    PAUSED,
-    ERROR
+    IDLE = 0,           ///< System idle, motor disabled
+    BOUNDS_FINDING,     ///< Searching for mechanical limits
+    RUNNING,            ///< Fatigue test active
+    PAUSED,             ///< Test paused, motor holding position
+    ERROR               ///< Error condition, motor disabled
 };
 
 static volatile InternalState g_state = InternalState::IDLE;
@@ -215,11 +231,25 @@ namespace BoundsCache {
 // Global motion instance (constructed via placement-new in app_main()).
 static FatigueTest::FatigueTestMotion* g_motion = nullptr;
 
+/**
+ * @brief Get bounds validity flag for protocol status updates.
+ * 
+ * @return 1 if bounds are valid (within time window and motor energized), 0 otherwise
+ */
 static inline uint8_t GetBoundsValidFlag_() noexcept
 {
     return BoundsCache::AreBoundsValid() ? 1 : 0;
 }
 
+/**
+ * @brief Apply motion configuration from global settings to the motion controller.
+ * 
+ * @details
+ * Updates the motion controller with current settings from `g_settings.test_unit`.
+ * This includes target cycles, velocity, acceleration, and dwell times.
+ * 
+ * @note This function does nothing if `g_motion` is null.
+ */
 static inline void ApplyMotionConfigFromSettings_() noexcept
 {
     if (!g_motion) {
@@ -231,11 +261,32 @@ static inline void ApplyMotionConfigFromSettings_() noexcept
     g_motion->SetDwellTimes(g_settings.test_unit.dwell_time_ms, g_settings.test_unit.dwell_time_ms);
 }
 
-enum class PendingStartKind : uint8_t { NONE = 0, START, RESUME };
+/**
+ * @brief Pending start request type.
+ * 
+ * @details
+ * Used to distinguish between a fresh START (reset cycles) and a RESUME
+ * (continue from existing cycle count) when processing start requests.
+ */
+enum class PendingStartKind : uint8_t { 
+    NONE = 0,   ///< No pending start request
+    START,      ///< Fresh start (reset cycle count)
+    RESUME      ///< Resume from pause (keep cycle count)
+};
 static volatile PendingStartKind g_pending_start = PendingStartKind::NONE;
 
-// Cancel callback for library homing/bounds routines.
-// (Signature must be a free function pointer; it reads our global cancel flag.)
+/**
+ * @brief Cancel callback for library homing/bounds routines.
+ * 
+ * @details
+ * This function is called by the TMC51x0 library's bounds finding routines
+ * to check if the operation should be cancelled. The library polls this
+ * function during bounds finding to allow graceful cancellation.
+ * 
+ * @return true if bounds finding should be cancelled, false otherwise
+ * 
+ * @note Signature must be a free function pointer for library compatibility.
+ */
 static bool ShouldCancelBounds() { return g_cancel_bounds; }
 
 /**
@@ -329,6 +380,23 @@ static void MotorStopHoldDisable() noexcept {
     (void)g_driver->motorControl.Disable();
 }
 
+/**
+ * @brief Handle fatal initialization errors.
+ * 
+ * @details
+ * Called when a critical initialization step fails. This function:
+ * - Logs the error
+ * - Sets system state to ERROR
+ * - Attempts to notify remote controller (if ESP-NOW is initialized)
+ * - Ensures motor is safely de-energized
+ * - Enters infinite loop to keep system alive for diagnostics
+ * 
+ * @param what Description of what failed
+ * @param err_code Error code to send to remote controller
+ * 
+ * @note This function never returns. The system remains in error state
+ *       to allow remote diagnostics and log inspection.
+ */
 static void FatalInitError(const char* what, uint8_t err_code) noexcept {
     ESP_LOGE(TAG, "FATAL init error: %s", what);
     g_state = InternalState::ERROR;
@@ -1696,16 +1764,28 @@ enum class OptionType {
 };
 
 /**
- * @brief Parsed command structure
+ * @brief Parsed command structure for UART command processing.
+ * 
+ * @details
+ * Contains the result of parsing a UART command line. The structure
+ * varies based on the command type:
+ * - SET commands: contain options vector with parsed option-value pairs
+ * - HELP commands: contain help_topic string
+ * - Other commands: only contain the command type
  */
 struct ParsedCommand {
-    CommandType type;
-    std::vector<std::pair<OptionType, std::vector<std::string>>> options; // For SET command
-    std::string help_topic; // For HELP command
+    CommandType type;   ///< The type of command that was parsed
+    std::vector<std::pair<OptionType, std::vector<std::string>>> options; ///< Parsed options for SET command (option type -> argument values)
+    std::string help_topic; ///< Help topic string for HELP command
 };
 
 /**
- * @brief Visual output formatting system
+ * @brief Visual output formatting system for UART command interface.
+ * 
+ * @details
+ * Provides formatted output functions for the UART command parser,
+ * including boxed headers, success/error messages, and table formatting.
+ * All output uses ESP-IDF logging macros for consistency.
  */
 namespace CommandOutput {
     static constexpr int BOX_WIDTH = 78;
@@ -1854,13 +1934,20 @@ namespace CommandOutput {
  */
 class OptionParser {
 public:
+    /**
+     * @brief Option definition structure for SET command options.
+     * 
+     * @details
+     * Defines a single command-line option including its type, names,
+     * description, and argument count requirements.
+     */
     struct OptionDef {
-        OptionType type;
-        const char* short_name;
-        const char* long_name;
-        const char* description;
-        int min_args;
-        int max_args;
+        OptionType type;         ///< The option type enum value
+        const char* short_name;  ///< Short option name (e.g., "-v")
+        const char* long_name;  ///< Long option name (e.g., "--velocity")
+        const char* description; ///< Human-readable description
+        int min_args;           ///< Minimum number of arguments required
+        int max_args;           ///< Maximum number of arguments allowed
     };
     
     /**
