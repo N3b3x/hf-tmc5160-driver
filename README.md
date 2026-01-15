@@ -13,7 +13,7 @@ permalink: /
 [![C++](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.cppreference.com/w/cpp/17.html)
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![CI](https://github.com/N3b3x/hf-tmc5160-driver/actions/workflows/esp32-examples-build-ci.yml/badge.svg?branch=main)](https://github.com/N3b3x/hf-tmc5160-driver/actions/workflows/esp32-examples-build-ci.yml)
-[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://github.com/N3b3x/hf-tmc5160-driver/tree/main/docs)
+[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://n3b3x.github.io/hf-tmc5160-driver/)
 
 ## 📚 Table of Contents
 1. [Overview](#-overview)
@@ -28,7 +28,7 @@ permalink: /
 
 ## 📦 Overview
 
-> **📖 [📚🌐 Complete Documentation](docs/index.md)** -
+> **📖 [📚🌐 Live Complete Documentation](https://n3b3x.github.io/hf-tmc5160-driver/)** -
 > Interactive guides, examples, and step-by-step tutorials
 
 **HF-TMC51x0** is a comprehensive, production-ready C++17 driver for the **Trinamic TMC51x0** stepper motor controller ICs (TMC5130 & TMC5160). 
@@ -495,7 +495,18 @@ All examples include detailed documentation and are ready to compile and run. Se
 
 ## 📚 Documentation
 
-For complete documentation, see the [docs directory](docs/index.md).
+**📖 [Complete Documentation](https://n3b3x.github.io/hf-tmc5160-driver/)**
+
+The complete documentation is available on GitHub Pages with interactive guides, API reference, examples, and step-by-step tutorials. This includes:
+
+- **Quick Start Guide**: Get up and running in minutes
+- **Installation Instructions**: Platform-specific setup guides
+- **API Reference**: Complete method documentation with examples
+- **Configuration Guides**: Hardware setup and driver configuration
+- **Examples**: Comprehensive example code for all features
+- **Advanced Topics**: Multi-chip communication, sensorless homing, tuning, and more
+
+For local documentation, see the [docs directory](docs/index.md).
 
 ## 🤝 Contributing
 
