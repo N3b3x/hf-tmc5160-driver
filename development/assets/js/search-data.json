@@ -15,7 +15,7 @@
   },"2": {
     "doc": "HardFOC TMC51x0 Driver (TMC5130 & TMC5160)",
     "title": "📦 Overview",
-    "content": "📖 📚🌐 Complete Documentation - Interactive guides, examples, and step-by-step tutorials . HF-TMC51x0 is a comprehensive, production-ready C++17 driver for the Trinamic TMC51x0 stepper motor controller ICs (TMC5130 &amp; TMC5160). The TMC51x0 family includes sophisticated stepper motor drivers supporting advanced features including stealthChop for silent operation, spreadCycle for high torque, StallGuard2 for stall detection, and encoder support for closed-loop control. This driver provides complete feature coverage of all 47 TMC51x0 registers with 100+ public API methods organized into intuitive, well-structured subsystems. It supports multi-chip communication via SPI daisy chaining and UART multi-node addressing, physical unit conversions (mm, degrees, RPM, belt teeth), automatic parameter tuning, sensorless homing, and many other advanced features not found in other TMC51x0 drivers. The driver automatically detects and supports both TMC5130 and TMC5160 chips. ",
+    "content": "📖 📚🌐 Live Complete Documentation - Interactive guides, examples, and step-by-step tutorials . HF-TMC51x0 is a comprehensive, production-ready C++17 driver for the Trinamic TMC51x0 stepper motor controller ICs (TMC5130 &amp; TMC5160). The TMC51x0 family includes sophisticated stepper motor drivers supporting advanced features including stealthChop for silent operation, spreadCycle for high torque, StallGuard2 for stall detection, and encoder support for closed-loop control. This driver provides complete feature coverage of all 47 TMC51x0 registers with 100+ public API methods organized into intuitive, well-structured subsystems. It supports multi-chip communication via SPI daisy chaining and UART multi-node addressing, physical unit conversions (mm, degrees, RPM, belt teeth), automatic parameter tuning, sensorless homing, and many other advanced features not found in other TMC51x0 drivers. The driver automatically detects and supports both TMC5130 and TMC5160 chips. ",
     "url": "/hf-tmc5160-driver/development/#-overview",
     
     "relUrl": "/#-overview"
@@ -211,7 +211,7 @@
   },"30": {
     "doc": "HardFOC TMC51x0 Driver (TMC5130 & TMC5160)",
     "title": "📚 Documentation",
-    "content": "For complete documentation, see the docs directory. ",
+    "content": "📖 Complete Documentation . The complete documentation is available on GitHub Pages with interactive guides, API reference, examples, and step-by-step tutorials. This includes: . | Quick Start Guide: Get up and running in minutes | Installation Instructions: Platform-specific setup guides | API Reference: Complete method documentation with examples | Configuration Guides: Hardware setup and driver configuration | Examples: Comprehensive example code for all features | Advanced Topics: Multi-chip communication, sensorless homing, tuning, and more | . For local documentation, see the docs directory. ",
     "url": "/hf-tmc5160-driver/development/#-documentation",
     
     "relUrl": "/#-documentation"
