@@ -1654,7 +1654,7 @@ public:
      * communication interface (SPI/UART/Standalone) and the motion control
      * method (Internal ramp generator vs External step/dir).
      *
-     * ⚠️ CRITICAL WARNINGS:
+     * CRITICAL WARNINGS:
      * - These pins are typically hardwired and read at startup
      * - Only use this method if SPI_MODE and SD_MODE pins are connected to GPIO
      * outputs
@@ -2339,7 +2339,7 @@ public:
      * @param confirm_permanent Must be true to confirm permanent operation
      * @return Result<void> indicating success or error
      *
-     * ⚠️ CRITICAL WARNING: OTP memory can only be programmed ONCE. Bits can only
+     * CRITICAL WARNING: OTP memory can only be programmed ONCE. Bits can only
      * be set (0→1), never cleared. This operation is IRREVERSIBLE.
      *
      * OTP bit mapping for byte 0 (TMC5160):
@@ -2362,7 +2362,7 @@ public:
      * @param confirm_permanent Must be true to confirm permanent operation
      * @return Result<void> indicating success or error
      *
-     * ⚠️ CRITICAL WARNING: This permanently changes the internal clock frequency.
+     * CRITICAL WARNING: This permanently changes the internal clock frequency.
      * The factory already programs this for 12MHz. Only use if you need a
      * different clock frequency AND understand the implications.
      *
@@ -2379,7 +2379,7 @@ public:
      * @param confirm_permanent Must be true to confirm permanent operation
      * @return Result<void> indicating success or error
      *
-     * ⚠️ WARNING: This permanently changes the reset default for S2G_LEVEL
+     * WARNING: This permanently changes the reset default for S2G_LEVEL
      * and S2VS_LEVEL. Once set to high (1), it cannot be changed back.
      *
      * @note Programs bit 5 of OTP byte 0.
@@ -2393,7 +2393,7 @@ public:
      * @param confirm_permanent Must be true to confirm permanent operation
      * @return Result<void> indicating success or error
      *
-     * ⚠️ WARNING: This permanently changes the reset default for BBMCLKS.
+     * WARNING: This permanently changes the reset default for BBMCLKS.
      * Once set to short (1), it cannot be changed back.
      *
      * @note Programs bit 6 of OTP byte 0.
@@ -2407,7 +2407,7 @@ public:
      * @param confirm_permanent Must be true to confirm permanent operation
      * @return Result<void> indicating success or error
      *
-     * ⚠️ WARNING: This permanently changes the reset default for TBL.
+     * WARNING: This permanently changes the reset default for TBL.
      * Once set to short (1), it cannot be changed back.
      *
      * @note Programs bit 7 of OTP byte 0.

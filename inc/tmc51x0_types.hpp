@@ -71,7 +71,7 @@ constexpr float DEGREES_PER_REV = 360.0F;  ///< Degrees per revolution
  * that determine the TMC51x0 operating mode. These pins are typically
  * hardwired and read at startup, but can be controlled via GPIO if connected.
  *
- * ⚠️ WARNING: Changing the mode requires a chip reset to take effect.
+ * WARNING: Changing the mode requires a chip reset to take effect.
  * The mode pins are read at startup, so any changes must be followed by
  * a reset cycle (power cycle since TMC51x0 has no reset pin).
  *

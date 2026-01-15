@@ -305,7 +305,7 @@ enum class TMC51x0CtrlPin : uint8_t {
        ///< internal clock)
 
   // Mode configuration pins (if made available as control pins)
-  // ⚠️ WARNING: These pins are typically hardwired and read at startup.
+  // WARNING: These pins are typically hardwired and read at startup.
   // Only use these if you have connected these pins to GPIO outputs for dynamic
   // control.
   // Changing these pins requires a chip reset to take effect.
@@ -555,7 +555,7 @@ struct TMC51x0PinConfig {
   int clk_pin{-1}; ///< Clock input (CLK, pin 12) - Optional
 
   // Mode configuration pins (if made available as control pins)
-  // ⚠️ WARNING: These pins are typically hardwired and read at startup.
+  // WARNING: These pins are typically hardwired and read at startup.
   // Only configure these if you have connected SPI_MODE (pin 22) and SD_MODE
   // (pin 21) to GPIO outputs for dynamic mode control. Changing these requires
   // a chip reset.
