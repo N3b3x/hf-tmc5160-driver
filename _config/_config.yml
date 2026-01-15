@@ -189,7 +189,8 @@ exclude:
   - .jekyll-cache
   - .jekyll-metadata
   - examples/esp32/scripts/  # ESP32 project tools (not part of docs)
-  - examples/esp32_remote_controller/  # ESP32 remote controller (moved to separate repo)
+  - examples/esp32_remote_controller/  # ESP32 remote controller 
+  - examples/esp32_m5dial_remote_controller/  # ESP32 M5Dial remote controller
   - _config/doxygen-extensions/  # Doxygen extensions (separate from Jekyll)
   - src/                      # Source code
   - inc/                      # Alternative header directory
