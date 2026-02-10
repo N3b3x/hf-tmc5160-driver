@@ -7,7 +7,6 @@ permalink: /
 ---
 
 # HF-TMC51x0 Driver (TMC5130 & TMC5160)
-(Work In Progress)
 **C++17 hardware-agnostic driver for Trinamic TMC51x0 stepper motor controllers (TMC5130 & TMC5160) with advanced features**
 
 [![C++](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.cppreference.com/w/cpp/17.html)
